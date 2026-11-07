@@ -89,6 +89,7 @@ func exercise_saved() -> void:
 				if dx*dx+dy*dy<=radius*radius and x+dx>=0 and x+dx<setup.extent[0] and y+dy>=0 and y+dy<setup.extent[1]:
 					edited[(y+dy)*setup.extent[0]+x+dx]=stamp[3]
 	if not require(panel.install_generated_start(setup,dialog._ready_packet),"fresh process generated start requested"): return
+	dialog.hide()
 	if not await until(installed,"fresh-process prepared World and Rapier acknowledged"): return
 	await until(func() -> bool: return host.last_uploaded_world_generation>0,"rendered fresh-process owner")
 	compare_materials(edited,setup.extent[0],setup.extent[1],"fresh-process edited starting map")
@@ -122,6 +123,7 @@ func exercise_new() -> void:
 		"native 1024x1024 copied material and receipts")
 	var model := Setup.fresh(panel._liquids.bridge.default_liquid_policy(),Vector2i(1024,1024))
 	if not require(panel.install_generated_start(model,source),"actual shared prepared-World request"): return
+	dialog.hide()
 	if not await until(installed,"generated 1024 native/Rapier install",180): return
 	if not await until(func() -> bool: return host.last_uploaded_world_generation>0,
 			"rendered world generation"): return
@@ -134,15 +136,38 @@ func exercise_new() -> void:
 	invalid.cells[128] = 10
 	invalid.sha256 = Store.digest(invalid.cells)
 	require(not panel.install_generated_start(model,invalid) and installed(),
-		"invalid material refused; old World preserved")
+		"invalid material rejected by source-attested dialog; old World preserved")
+	# Exercise the native constructor as well: a direct internal apply bypasses
+	# dialog attestation, so its validated copy must still reject forbidden ids.
+	var previous_epoch: int = host._physical_epoch
+	if panel.apply(model,false,0,false,false,invalid):
+		await until(func() -> bool: return host.pending_microscenario_apply.is_empty(),
+			"native malformed material refusal completed")
+	require(installed() and host._physical_epoch==previous_epoch and \
+			panel._generated_active.sha256==source.sha256,
+		"invalid material rejected by prepared native builder without World swap")
 	invalid = source.duplicate(true)
 	invalid.cells.resize(100)
 	require(not panel.install_generated_start(model,invalid) and installed(),
 		"truncated generated array refused; old World preserved")
+	previous_epoch=host._physical_epoch
+	if panel.apply(model,false,0,false,false,invalid):
+		await until(func() -> bool: return host.pending_microscenario_apply.is_empty(),
+			"native truncated array refusal completed")
+	require(installed() and host._physical_epoch==previous_epoch and \
+			panel._generated_active.sha256==source.sha256,
+		"truncated material refused without committing the prepared World")
 	invalid = source.duplicate(true)
 	invalid.sha256 = "0".repeat(64)
 	require(not panel.install_generated_start(model,invalid) and installed(),
 		"mismatched SHA refused; old World preserved")
+	previous_epoch=host._physical_epoch
+	if panel.apply(model,false,0,false,false,invalid):
+		await until(func() -> bool: return host.pending_microscenario_apply.is_empty(),
+			"native mismatched SHA refusal completed")
+	require(installed() and host._physical_epoch==previous_epoch and \
+			panel._generated_active.sha256==source.sha256,
+		"source hash mismatch rejected without changing the installed World")
 	var spawn: Vector2 = free_spawn(original,1024)
 	if not require(spawn.x>0,"actual generated flyer clearance found"): return
 	if not require(panel.place("midge",spawn),"existing controllable flyer placed"): return
