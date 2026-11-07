@@ -1774,7 +1774,7 @@ std::uint64_t World::liquid_comparison_hash(LiquidStateProjection projection) co
 }
 
 std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjection> projection) const {
-    if (solid_detachment_ && solid_detachment_->snapshot.phase != soliding::SolidPhase::Idle)
+    if (workbench_solid_count() || (solid_detachment_ && solid_detachment_->snapshot.phase != soliding::SolidPhase::Idle))
         throw std::logic_error("solid aggregate/transaction is not serializable in CYPS2/3");
     const bool quiescent = projection == LiquidStateProjection::QuiescentPhysicalContentV1;
     std::uint64_t hash = 1469598103934665603ULL;
@@ -1994,7 +1994,7 @@ void refuse_state(const char* detail) {
 }  // namespace
 
 std::vector<std::uint8_t> World::save_physical_state() const {
-    if (solid_detachment_ && solid_detachment_->snapshot.phase != soliding::SolidPhase::Idle)
+    if (workbench_solid_count() || (solid_detachment_ && solid_detachment_->snapshot.phase != soliding::SolidPhase::Idle))
         throw std::logic_error("solid aggregate/transaction is not serializable in CYPS2/3");
     require_healthy();
     if (tick_in_progress_) throw std::logic_error("cannot save during a world tick");

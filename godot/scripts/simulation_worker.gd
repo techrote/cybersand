@@ -140,6 +140,60 @@ var _workbench_consumed_sample: Dictionary = {}
 var _workbench_display: Dictionary = {}
 var _workbench_refusal: String = ""
 var _workbench_prepared_sample: int = -1
+var _workbench_cut_hold: bool = false
+var _workbench_cut_request: Dictionary = {}
+var _workbench_cut_reply: Dictionary = {}
+var _workbench_cut_serial: int = 0
+var _workbench_cut_admitted_sample: Dictionary = {}
+
+func queue_workbench_cut(command: Dictionary) -> int:
+	_mutex.lock()
+	var begin: bool=command.get("action")=="begin"
+	var ok: bool=_paused and _workbench_extent!=Vector2i.ZERO and _lab_request.is_empty() and not _reset_requested and _prepared_physical_publication.is_empty() and _workbench_cut_request.is_empty() and _workbench_cut_reply.is_empty() and (not _workbench_cut_hold if begin else _workbench_cut_hold)
+	if ok:
+		_workbench_cut_serial+=1
+		_workbench_cut_request=command.duplicate(true)
+		_workbench_cut_request["request_id"]=_workbench_cut_serial
+		_workbench_cut_request["world_generation"]=_world_generation
+		_workbench_cut_hold=true
+		_pending_physical_effects.clear();_cancel_physical_usables_locked();_cancel_workbench_emission_locked()
+	var serial: int=_workbench_cut_serial if ok else 0
+	_mutex.unlock()
+	return serial
+
+func take_workbench_cut_reply(serial: int) -> Dictionary:
+	_mutex.lock()
+	var output: Dictionary={}
+	if _workbench_cut_reply.get("request_id")==serial:
+		output=_workbench_cut_reply
+		_workbench_cut_reply={}
+	_mutex.unlock()
+	return output
+
+func _apply_workbench_cut(command: Dictionary, emissions: Array[Vector4i], cells: Array[Dictionary]) -> void:
+	if command.get("action")=="begin": _apply_emissions(emissions,cells)
+	var reply: Dictionary={"ok":false,"outcome":"Unavailable"}
+	if command.world_generation==_world_generation and _world.has_method(&"workbench_cut_command"):
+		reply=_world.workbench_cut_command(command)
+	if command.get("action")=="acknowledge" and reply.get("ok",false): _workbench_cut_admitted_sample=command.sample.duplicate(true)
+	if command.get("action")=="finalize" and reply.get("ok",false):
+		_workbench_sample=_workbench_cut_admitted_sample.duplicate(true)
+		_rigid_body_epoch=int(_workbench_sample.epoch)
+		_workbench_result={};_workbench_display={};_workbench_consumed_sample={}
+		_workbench_prepared_sample=-1;_workbench_completed_sample=-1
+		_workbench_last_emitter_sample=-1
+		_workbench_cut_admitted_sample={}
+	_snapshot_hard_surface_revision=-1
+	_publish_snapshot(0.0,true,DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC,true,PackedFloat32Array(),_rigid_body_epoch)
+	reply["terrain_chunks"]=_snapshot_hard_surface_chunk_rectangles.duplicate()
+	reply["terrain_chunks_valid"]=_snapshot_hard_surface_chunk_rectangles_valid
+	reply["terrain_snapshot_revision"]=str(_snapshot_hard_surface_revision)
+	reply["request_id"]=command.request_id
+	reply["world_generation"]=_world_generation
+	_mutex.lock()
+	if command.get("action")=="end" and reply.get("ok",false) or command.get("action")=="begin" and not reply.get("ok",false): _workbench_cut_hold=false
+	_workbench_cut_reply=reply
+	_mutex.unlock()
 var _scenario_request_serial: int = 0
 var _scenario_request_applied: bool = false
 var _water_exit_request_serial: int = 0
@@ -167,6 +221,9 @@ var _water_explicit_sink: int = 0
 
 func queue_lab(command: Dictionary) -> void:
 	_mutex.lock()
+	if _workbench_cut_hold:
+		_mutex.unlock()
+		return
 	_lab_request_revision += 1
 	_lab_request = command.duplicate(true)
 	_lab_request["_owner_request_revision"] = _lab_request_revision
@@ -567,6 +624,7 @@ func _apply_prepared_default_liquid(command: Dictionary) -> bool:
 	_default_liquid_identity = staged_identity
 	_mutex.lock();_default_liquid_published_record = record;_mutex.unlock()
 	_world_generation += 1
+	_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={}
 	_scenario_host.clear();_lab_active = false;_micro_active = false;_water_lab_active = false
 	_micro_capture = {};_lab_schedule.clear();_lab_inputs.clear()
 	_simulation_failed = false;_scenario_request_applied = true
@@ -615,6 +673,7 @@ func _apply_lab(command: Dictionary) -> bool:
 			_lab_status = _scenario_host.last_error
 			return false
 		_world_generation += 1
+		_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={}
 		if tower_setup.is_empty():
 			_activate_sampled_character(Vector2(tower_definition.player_start[0],tower_definition.player_start[1]),true)
 		else:
@@ -695,6 +754,7 @@ func _apply_lab(command: Dictionary) -> bool:
 			return false
 		if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
 		_world_generation += 1
+		_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={}
 		_lab_profile=profile_result.profile.duplicate(true)
 		_lab_profile_hash=str(profile_result.hash)
 		_lab_active=true
@@ -791,6 +851,7 @@ func _apply_lab(command: Dictionary) -> bool:
 			return false
 		if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
 		_world_generation += 1
+		_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={}
 		var definition: Dictionary = _scenario_host.definition()
 		var transport: Dictionary = CyberTransportProfiles.resolve(definition.transport_profile)
 		_lab_profile = transport.profile.duplicate(true)
@@ -1122,7 +1183,7 @@ func queue_actor_prototype_reset(definitions: Array, spawn_position: Vector2, sa
 	_mutex.lock()
 	# The experimental sandbox cannot rewrite a registered apparatus identity.
 	if (
-		not _lab_request.is_empty()
+		_workbench_cut_hold or not _lab_request.is_empty()
 		or (_published_snapshot != null and _published_snapshot.lab_context.get("active", false))
 	):
 		_mutex.unlock()
@@ -1585,7 +1646,7 @@ func queue_emit_disc(
 	var packed_material: int = (material_id & EMISSION_MATERIAL_MASK) | packed_flags
 	var emission_command: Vector4i = Vector4i(world_x, world_y, radius, packed_material)
 	_mutex.lock()
-	if not _prepared_physical_publication.is_empty() \
+	if _workbench_cut_hold or not _prepared_physical_publication.is_empty() \
 		or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty():
 		_mutex.unlock()
 		return false
@@ -1666,6 +1727,10 @@ func queue_reset(
 	runtime_enclosure_recovery_enabled: bool = true
 ) -> void:
 	_mutex.lock()
+	if _workbench_cut_hold:
+		_lab_status="Reset refused: finish the held cut transaction first"
+		_mutex.unlock()
+		return
 	_lab_request_revision += 1
 	_reset_requested = true
 	_reset_spawn = spawn_position
@@ -1781,6 +1846,8 @@ func _worker_loop() -> void:
 		var local_actor_prototype_serial: int = 0
 		var local_player_environment_profile: Dictionary = {}
 		var local_lab: Dictionary = {}
+		var local_cut: Dictionary = {}
+		var local_cut_hold: bool = false
 		var workbench_serial: int = -1
 
 		_mutex.lock()
@@ -1797,7 +1864,10 @@ func _worker_loop() -> void:
 		local_cadence_enabled = _cadence_lod_enabled
 		local_liquid_adhesion_enabled = _liquid_surface_adhesion_enabled
 		local_render_snapshot_interval_usec = _render_snapshot_interval_usec
-		var physical_wait: bool = _native_representation_fenced() or _lab_request.has("solid_detachment") \
+		local_cut=_workbench_cut_request
+		_workbench_cut_request={}
+		local_cut_hold=_workbench_cut_hold
+		var physical_wait: bool = local_cut_hold or _native_representation_fenced() or _lab_request.has("solid_detachment") \
 			or not _prepared_physical_publication.is_empty() \
 			or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty()
 		local_rigid_body_states = _rigid_body_states
@@ -1810,7 +1880,7 @@ func _worker_loop() -> void:
 			local_physical_usables = _pending_physical_usables
 			_pending_physical_usables = []
 		var retain_cells: bool = _workbench_extent != Vector2i.ZERO and _lab_request.get("controlled_liquid_setup",{}).get("workbench_retain_cells",false)
-		if not physical_wait or retain_cells:
+		if not physical_wait or retain_cells or local_cut.get("action")=="begin":
 			local_emissions = _pending_emissions
 			_pending_emissions = []
 			local_cell_emissions = _pending_cell_emissions
@@ -1836,6 +1906,11 @@ func _worker_loop() -> void:
 		if not local_running:
 			_retire_prepared_physical_liquid()
 			return
+		if local_cut_hold:
+			if not local_cut.is_empty(): _apply_workbench_cut(local_cut,local_emissions,local_cell_emissions)
+			OS.delay_usec(1000)
+			next_tick_usec=Time.get_ticks_usec()
+			continue
 
 		var step_start_usec: int = Time.get_ticks_usec()
 		if (
@@ -1981,6 +2056,7 @@ func _worker_loop() -> void:
 				_world.reset_demo_world()
 			if recovered:
 				_world_generation += 1
+				_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={}
 				_scenario_host.clear()
 				_lab_active = false
 				_micro_active = false

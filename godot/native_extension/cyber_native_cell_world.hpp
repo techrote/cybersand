@@ -120,6 +120,7 @@ public:
     [[nodiscard]] Dictionary workbench_coupling_results() const;
     bool diagnostic_enable_solid_workbench();
     bool diagnostic_bind_solid_workbench(const Dictionary& request);
+    Dictionary workbench_cut_command(const Dictionary& request);
     [[nodiscard]] String get_last_tick_error() const;
     [[nodiscard]] Dictionary get_water_experiment_policy() const;
     // Applied LCB-001 liquid solver policy receipt of the live World. The
@@ -303,6 +304,13 @@ private:
         cybersand::gcr::CompoundWorkspace workspace{};
     };
     std::unique_ptr<Workbench> workbench_;
+    struct WorkbenchCut {
+        bool held = false, staged = false;
+        std::array<Vector2i,64> seeds{};
+        std::size_t count = 0, cursor = 0;
+        WorkbenchSample next{};
+    };
+    WorkbenchCut workbench_cut_{};
     static bool parse_workbench_sample(WorkbenchSample& out, const Workbench& retained,
         const PackedFloat64Array& states, const PackedFloat64Array& geometry, const Array& owners,
         std::int64_t session, std::int64_t epoch);

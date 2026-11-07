@@ -50,6 +50,31 @@ func configure_instances(definitions: Array, rigs: Array, epoch: int) -> Error:
 	return OK
 
 
+func held_roster_checkpoint() -> Dictionary:
+	return {"session":_session,"epoch":_epoch,"response":_response,"geometry":_geometry.duplicate(),
+		"members":_members.duplicate(true),"rects":_rects.duplicate(true),"history":_history.duplicate(true),
+		"accepted":_accepted_samples.duplicate(),"snapshot":_last_snapshot,"application":last_application.duplicate(true)}
+
+func restore_held_roster(saved: Dictionary) -> void:
+	_session=saved.session;_epoch=saved.epoch;_response=saved.response;_geometry=saved.geometry
+	_members.assign(saved.members);_rects=saved.rects;_history.assign(saved.history)
+	_accepted_samples=saved.accepted;_last_snapshot=saved.snapshot;last_application=saved.application
+
+func append_held_roster(definitions: Array, rigs: Array, new_epoch: int) -> bool:
+	if new_epoch<=_epoch or definitions.size()!=_members.size()+1 or rigs.size()!=definitions.size(): return false
+	for slot: int in _members.size():
+		if definitions[slot].instance_id!=_members[slot].instance_id: return false
+	_session=0;_members.clear();_geometry.clear();_rects.clear();_history.clear();_accepted_samples.clear()
+	_last_snapshot=-1;last_application={}
+	# Keep serial monotonic: native one-use arrivals are not replenished by a
+	# roster change, and the old namespace cannot be accepted after admission.
+	return configure_instances(definitions,rigs,new_epoch)==OK
+
+func pack_held_sample() -> Dictionary:
+	var drives: Array[bool]=[]
+	drives.resize(_members.size());drives.fill(false)
+	return pack_sample(drives)
+
 func pack_sample(drives: Array[bool]) -> Dictionary:
 	if OS.get_thread_caller_id() != OS.get_main_thread_id() or not _initialized or _session == 0 or drives.size() != _members.size(): return {}
 	var serial: int = (_serial + 1) % SAMPLE_SERIAL_LIMIT

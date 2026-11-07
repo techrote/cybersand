@@ -573,6 +573,7 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
     // No allocations, capture, configuration changes or host callbacks after
     // this fence. All final native facts and copied receipts were prepared.
     adapter->world_.swap(pending->world);
+    adapter->workbench_cut_ = {};
     adapter->workbench_.swap(pending->workbench);
     adapter->extent_ = pending->extent;
     adapter->default_demo_recipe_active_ = pending->reset_demo_coupling;

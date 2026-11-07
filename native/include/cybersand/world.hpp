@@ -322,6 +322,13 @@ public:
     [[nodiscard]] std::size_t solid_detachment_storage_bytes() const noexcept;
     [[nodiscard]] std::size_t copy_solid_detachment_members(std::span<soliding::SolidMember> output) const noexcept;
     [[nodiscard]] std::size_t copy_solid_detachment_shapes(std::span<soliding::SolidShape> output) const noexcept;
+    [[nodiscard]] soliding::SolidOutcome configure_workbench_solids(soliding::SolidBounds canvas);
+    [[nodiscard]] soliding::SolidOutcome prepare_workbench_solid(std::int64_t x, std::int64_t y);
+    [[nodiscard]] soliding::SolidOutcome archive_workbench_solid(soliding::SolidToken token);
+    [[nodiscard]] std::size_t workbench_solid_count() const noexcept;
+    [[nodiscard]] std::array<std::uint64_t,2> workbench_solid_discovery_work() const noexcept;
+    [[nodiscard]] soliding::SolidSnapshot workbench_solid_record(std::size_t index) const noexcept;
+    [[nodiscard]] soliding::SolidOutcome rebind_workbench_solids(std::uint64_t old_epoch, std::uint64_t new_epoch);
 
     [[nodiscard]] TickStats tick();
     // tick_index identifies attempts; only completed_tick_index is successful.
@@ -486,6 +493,7 @@ private:
     };
 
     std::unique_ptr<soliding::SolidStore> solid_detachment_;
+    std::unique_ptr<soliding::SolidWorkbenchStore> workbench_solids_;
     void require_solid_mutation_allowed() const;
     WorldConfig config_;
     bool water_cellular_yield_ = false;

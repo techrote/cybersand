@@ -1,6 +1,7 @@
 extends VBoxContainer
 
 const Setup = preload("res://scripts/workbench_setup.gd")
+var cut=preload("res://scripts/workbench_cut.gd").new()
 const Fleet = Setup.Fleet
 const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
 const ZOOMS := [Vector2i(240,135),Vector2i(480,270),Vector2i(960,540)]
@@ -248,7 +249,7 @@ func refuse(reason: String) -> bool:
 	return false
 
 func busy() -> bool:
-	return not host.pending_microscenario_apply.is_empty() or step_pending or host.simulation_worker.has_failed()
+	return cut.busy or not host.pending_microscenario_apply.is_empty() or step_pending or host.simulation_worker.has_failed()
 
 func _editable() -> bool:
 	if busy() or applied.is_empty():
@@ -262,6 +263,7 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 	if busy(): return refuse("Wait for the current owner transaction.")
 	if preserve:
 		if applied.is_empty(): return refuse("No installed session to retain.")
+		if cut.capture_count>0: return refuse("Live freed objects cannot transfer to a replacement World yet. Save, then Restore or Load the complete canvas.")
 		# A retained request can change ownership/settings, never substitute a
 		# different starting paint history for the native cells being copied.
 		candidate = candidate.duplicate()
@@ -303,6 +305,7 @@ func new_canvas() -> bool:
 	return apply(candidate)
 
 func installed(candidate: Dictionary) -> void:
+	cut.capture_count=0
 	_pending_request_serial = 0
 	applied = candidate.duplicate(true)
 	var roster_choice := _model.selected
@@ -620,6 +623,7 @@ func _cancel() -> void:
 	if host != null: host.cancel_playable_course_input()
 
 func cancel_stroke() -> void:
+	cut.cancel_stroke()
 	_drag_button = 0
 	_pan = false
 	_last_cell = Vector2i(-1,-1)
@@ -651,7 +655,7 @@ func paint(pos: Vector2i, material: int) -> bool:
 	# The usual stroke path costs one record. Check coalesced capacity only when
 	# the maximum possible row count would exceed the reconstruction budget.
 	var runs := 2*int(applied.brush)+1
-	for old: Array in applied.edits: runs += 2*int(old[2])+1
+	for old: Array in applied.edits: runs += int(old[3]) if old.size()==5 else 2*int(old[2])+1
 	if new_stamp and runs > Setup.MAX_RUNS:
 		applied.edits.append(stamp)
 		var recipe := Setup.rectangles(applied)
@@ -659,7 +663,15 @@ func paint(pos: Vector2i, material: int) -> bool:
 		if recipe.has("error"): return refuse(recipe.error)
 	if not host.queue_brush_mutation(pos.x,pos.y,int(applied.brush),material): return refuse("Worker refused brush.")
 	if new_stamp: applied.edits.append(stamp)
+	if material==0: cut.note_erase(pos,int(applied.brush))
 	return true
+
+func adopt_cut_recipe(recipe: Dictionary) -> void:
+	applied=recipe
+	_instances.clear();_instances.add_item("Observer",0)
+	for a: Dictionary in applied.actors:
+		_instances.add_item("%d · %s" % [int(a.id),str(a.body.name) if a.model==Setup.CanvasBody.MODEL else str(a.model).capitalize()],int(a.id))
+	select_instance(selected_id(),true)
 
 func place_source(pos: Vector2i) -> bool:
 	if applied.is_empty() or busy(): return refuse("Wait for the session.")
@@ -712,6 +724,10 @@ func zoom_by(direction: int) -> void:
 
 func _input(event: InputEvent) -> void:
 	if host == null or applied.is_empty() or busy(): return
+	if event is InputEventMouseButton and not event.pressed and event.button_index==_drag_button:
+		_drag_button=0;_last_cell=Vector2i(-1,-1)
+		cut.finish_stroke(self)
+		return
 	var focus := get_viewport().gui_get_focus_owner()
 	if focus is LineEdit or focus is TextEdit: return
 	if event is InputEventJoypadButton:
@@ -758,6 +774,10 @@ func _world_input(event: InputEvent) -> void:
 			zoom_by(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1)
 			return
 		if event.button_index not in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]: return
+		if not event.pressed:
+			_drag_button=0;_last_cell=Vector2i(-1,-1)
+			cut.finish_stroke(self)
+			return
 		_commit_field()
 		_drag_button = event.button_index if event.pressed else 0
 		_last_cell = Vector2i(-1,-1)

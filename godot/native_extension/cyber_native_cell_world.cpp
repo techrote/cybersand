@@ -79,6 +79,7 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("diagnostic_reset", "options"), &CyberNativeCellWorld::diagnostic_reset);
     ClassDB::bind_method(D_METHOD("diagnostic_enable_solid_workbench"), &CyberNativeCellWorld::diagnostic_enable_solid_workbench);
     ClassDB::bind_method(D_METHOD("diagnostic_bind_solid_workbench","request"), &CyberNativeCellWorld::diagnostic_bind_solid_workbench);
+    ClassDB::bind_method(D_METHOD("workbench_cut_command","request"), &CyberNativeCellWorld::workbench_cut_command);
     ClassDB::bind_method(D_METHOD("diagnostic_fill_rect", "origin", "size", "material", "state_b"), &CyberNativeCellWorld::diagnostic_fill_rect, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("diagnostic_relocate_cell", "from", "to"),
                          &CyberNativeCellWorld::diagnostic_relocate_cell);
@@ -322,6 +323,7 @@ bool CyberNativeCellWorld::reset_demo_world() {
 
         candidate->set_simulation_region(world_->simulation_region());
         world_.swap(candidate);
+        workbench_cut_ = {};
         workbench_.reset(); extent_ = {kWorldWidth,kWorldHeight};
         retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
@@ -1674,6 +1676,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         auto diagnostics = config.physics_diagnostics.enabled
             ? std::make_unique<BodyDiagnostics>() : nullptr;
         world_.swap(candidate);
+        workbench_cut_ = {};
         workbench_.reset(); extent_ = {kWorldWidth,kWorldHeight};
         retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;

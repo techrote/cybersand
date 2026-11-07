@@ -1933,6 +1933,7 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if shared_workbench!=null and shared_workbench.cut.busy: return
 	if _pending_physical_candidate != null:
 		# The retained manually stepped space stays at its actual prior pose.
 		# Do not reconfigure its equipment, revoke its leases or publish stale

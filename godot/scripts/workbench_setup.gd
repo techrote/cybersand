@@ -5,8 +5,8 @@ const Fleet = preload("res://scripts/gcr_review_fleet.gd")
 const CanvasBody = preload("res://scripts/workbench_canvas_body.gd")
 const BARREL := "reference_barrel"
 const RESPONSES := ["LA-SELECTIVE", "LA", "LA-EVENT-OFF", "RFT"]
-const MATERIALS := [2,14,29,13,19,23,25,26,27,3,58,0]
-const MATERIAL_NAMES := ["Sand","Dust","Rust","Stone","Seed","Salt","Sodium","Gunpowder","Coal","Water","Hard wall","Erase"]
+const MATERIALS := [2,14,29,13,19,23,25,26,27,3,58,0,43]
+const MATERIAL_NAMES := ["Sand","Dust","Rust","Stone","Seed","Salt","Sodium","Gunpowder","Coal","Water","Hard wall","Erase","RedBrick"]
 const MAX_BODIES := 8
 const MAX_RUNS := 4096
 const MAX_STAMPS := 2048
@@ -83,7 +83,7 @@ static func _material(value: Variant, powders_only := false) -> bool:
 	return _integer(value,0,255) and int(value) in (MATERIALS.slice(0,9) if powders_only else MATERIALS)
 
 static func validate(value: Variant, check_starting_paint: bool = true) -> String:
-	if not _keys(value,ROOT_KEYS) or not _integer(value.version,2,3):
+	if not _keys(value,ROOT_KEYS) or not _integer(value.version,2,4):
 		return "Unsupported starting setup format."
 	if not value.extent is Array or value.extent.size() != 2:
 		return "Invalid canvas extent."
@@ -109,6 +109,9 @@ static func validate(value: Variant, check_starting_paint: bool = true) -> Strin
 	if check_starting_paint:
 		if value.edits.size() > MAX_STAMPS: return "Starting paint capacity exhausted."
 		for stamp: Variant in value.edits:
+			if int(value.version)>=4 and stamp is Array and stamp.size()==5:
+				if not _integer(stamp[0],0,size.x-1) or not _integer(stamp[1],0,size.y-1) or not _integer(stamp[2],1,size.x-int(stamp[0])) or not _integer(stamp[3],1,size.y-int(stamp[1])) or not _material(stamp[4]): return "Invalid rectangular stamp."
+				continue
 			if not stamp is Array or stamp.size() != 4 or not _integer(stamp[0],0,size.x-1) or not _integer(stamp[1],0,size.y-1) or not _integer(stamp[2],2,24) or not _material(stamp[3]):
 				return "Invalid brush stamp."
 	if not value.source is Array or (not value.source.is_empty() and (value.source.size() != 3 or not _integer(value.source[0],0,size.x-4) or not _integer(value.source[1],0,size.y-24) or not _material(value.source[2],true))):
@@ -139,6 +142,15 @@ static func rectangles(setup: Dictionary) -> Dictionary:
 	for stamp: Array in setup.edits:
 		var x := int(stamp[0])
 		var y := int(stamp[1])
+		if stamp.size()==5:
+			for row_y: int in range(y,y+int(stamp[3])):
+				if not rows.has(row_y):
+					var empty := PackedByteArray()
+					empty.resize(size.x)
+					rows[row_y]=empty
+				var row: PackedByteArray=rows[row_y]
+				for column: int in range(x,x+int(stamp[2])): row[column]=int(stamp[4])
+			continue
 		var radius := int(stamp[2])
 		for dy: int in range(maxi(-radius,-y),mini(radius,size.y-1-y)+1):
 			var half := floori(sqrt(radius*radius-dy*dy))

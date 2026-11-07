@@ -92,4 +92,19 @@ struct SolidStore {
     std::array<std::uint16_t, kSolidDomainCells> queue{};
     std::array<bool, kSolidDomainCells> seen{};
 };
+// Explicit paused-owner storage; never allocated by a tick or pool job.
+inline constexpr std::size_t kWorkbenchSolids = 8;
+struct SolidOwnedRecord {
+    SolidSnapshot snapshot{};
+    std::array<SolidMember, kSolidMembers> members{};
+    std::array<SolidShape, 8> shapes{};
+};
+struct SolidWorkbenchStore {
+    SolidBounds canvas{};
+    std::size_t count{};
+    std::uint64_t inspected{}, probes{};
+    std::array<SolidOwnedRecord, kWorkbenchSolids> owned{};
+    std::array<std::array<std::int64_t, 2>, kSolidMembers> queue{};
+    std::array<std::int16_t, kSolidDomainCells> lookup{};
+};
 } // namespace cybersand::soliding

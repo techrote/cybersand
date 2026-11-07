@@ -2862,6 +2862,7 @@ void World::clear() {
     if (physics_totals_ != nullptr) *physics_totals_ = {};
     if (tick_in_progress_) throw std::logic_error("cannot clear during a world tick");
     solid_detachment_.reset();
+    workbench_solids_.reset();
 
     // Retire every observation before destructive World reset begins. reset() is
     // allocation-free; if replacement construction later throws, discovery stays

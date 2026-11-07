@@ -232,6 +232,58 @@ func active() -> bool:
 	return _active
 
 
+func stage_workbench_piece(definition: Dictionary, new_epoch: int) -> Dictionary:
+	if not _active or not _suspended or not bridge is WorkbenchBridge or _rigs.size()>=MAX_ACTORS or definition.get("model")!=CanvasBody.MODEL or new_epoch<=epoch: return {}
+	var prospective: Array=_definitions.duplicate(true)
+	prospective.append(definition)
+	if not valid_definitions(prospective): return {}
+	var data: Dictionary=Equipment.definition(CanvasBody.definition(definition.canvas_body))
+	var rig=Rig.new()
+	add_child(rig)
+	if rig.configure(data,definition.position,_rigs.size(),new_epoch,-1,definition.workbench_options,definition.canvas_body)!=OK:
+		rig.free();return {}
+	var body: RigidBody2D=rig.bodies()[0]
+	body.freeze=true
+	var item=Equipment.new()
+	if not item.configure(rig,run_id,new_epoch,_rigs.size(),bodies().size(),-1):
+		rig.free();return {}
+	var saved: Dictionary=bridge.held_roster_checkpoint()
+	if not bridge.append_held_body(body,rig.body_sizes()[0]):
+		rig.free();return {}
+	var rigs: Array=_rigs.duplicate()
+	rigs.append(rig)
+	if not bridge.append_held_roster(prospective,rigs,new_epoch):
+		bridge.discard_held_body(body);bridge.restore_held_roster(saved);rig.free();return {}
+	return {"rig":rig,"equipment":item,"data":data,"definition":definition.duplicate(true),"saved":saved,"epoch":new_epoch}
+
+func discard_workbench_piece(staged: Dictionary) -> void:
+	bridge.discard_held_body(staged.rig.bodies()[0])
+	bridge.restore_held_roster(staged.saved)
+	staged.rig.free()
+
+func adopt_workbench_piece(staged: Dictionary) -> void:
+	# Native custody and terrain have already committed. Only bounded slot
+	# bookkeeping changes here; old RIDs, M/I, transforms and motion survive.
+	var slot: int=_rigs.size()
+	_body_offsets.append(bodies().size());_rigs.append(staged.rig);_catalogue.append(staged.data)
+	_equipment.append(staged.equipment);_definitions.append(staged.definition)
+	var pilot=Scripted.new()
+	pilot.configure(CanvasBody.MODEL,staged.definition.position,slot);_scripts.append(pilot)
+	_commands.append({});_flight_commands.append({});_flight_applied.append({});_flight_last_step.append({})
+	_fallback_reasons.append("freed");_button_edges.append([]);_accepted_buttons.append({});_applied_buttons.append({})
+	var history:=PackedInt64Array();history.resize(MAX_LEASE+1);history.fill(-1);_issued.append(history)
+	_sequences.append(-1);_deadlines.append(-1);_generations.append(0)
+	epoch=staged.epoch
+	for index: int in _rigs.size():
+		_rigs[index].epoch=epoch
+		_equipment[index]._epoch=epoch
+		_equipment[index].equipment_epoch+=1
+		_equipment[index].cancel(_generations[index])
+	_workbench_ports.clear();_workbench_emitted_at.clear();_effects.clear()
+	staged.rig.bodies()[0].freeze=false
+	bridge.retire_provisional_samples()
+
+
 func is_flight_actor(actor_id: int) -> bool:
 	return actor_id >= 0 and actor_id < _definitions.size() \
 		and StringName(str(_definitions[actor_id].model)) in Flight.IDS

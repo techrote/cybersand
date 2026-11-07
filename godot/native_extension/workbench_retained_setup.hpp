@@ -10,6 +10,8 @@ namespace godot::prepared_liquid_detail {
 // explicitly normalizes these quantities against the requested target policy.
 inline void workbench_copy_retained_cells(const cybersand::World& source,
                                           cybersand::normalization::FinalSetupInput& input) {
+    if (source.workbench_solid_count() || source.solid_detachment_fenced())
+        throw std::invalid_argument("Retained World replacement cannot transfer live freed-object custody; restore or load the complete canvas instead");
     const auto& domain = input.setup.domain;
     if (domain.x != 0 || domain.y != 0 || domain.width > 2048 || domain.height > 2048 ||
         input.mass_bits != source.config().water_experiment_policy.mass_bits() ||
