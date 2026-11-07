@@ -57,6 +57,14 @@ class SourceDriftTests(unittest.TestCase):
             (self.root / relative).write_bytes(normalized)
         self.assertEqual(before, subject.tested_inputs(self.root))
 
+    def test_frozen_hopper_source_joins_tracked_custody(self):
+        relative = subject.runner.WORKBENCH_HOPPER_FIXTURE_SOURCE
+        self.track_inputs({relative: b"frozen-source\n"})
+        before = subject.tested_inputs(self.root)
+        self.assertEqual(before[relative], digest(b"frozen-source\n"))
+        (self.root / relative).write_bytes(b"changed-source\n")
+        self.assertNotEqual(subject.tested_inputs(self.root), before)
+
     def test_declared_import_content_changes_are_drift(self):
         original = b'[remap]\r\n\r\nimporter="texture"\r\n'
         self.track_inputs({relative: original for relative in self.IMPORT_DESCRIPTORS})
@@ -204,6 +212,22 @@ class RetainedRuntimeTests(unittest.TestCase):
 
 
 class ExecutionTests(unittest.TestCase):
+    def test_workbench_graphics_remain_in_windows_coverage_exactly_once(self):
+        cases = [subject.runner.Case(name, (), 5, 1, True)
+                 for name in sorted(subject.runner.WINDOWS_WORKBENCH_GRAPHICAL_CASES)]
+        cases += [subject.runner.Case("ordinary", (), 5, 1),
+                  subject.runner.Case("other_visual_render", (), 5, 1, True)]
+        combined = []
+        for index in range(2):
+            report = {}
+            assigned = subject.plan_cases(report, cases, shard_count=2, shard_index=index)
+            combined += [case.name for case in assigned]
+            self.assertEqual(report["out_of_scope_graphical_cases"], ["other_visual_render"])
+        self.assertCountEqual(combined, [case.name for case in cases[:-1]])
+        self.assertEqual(len(combined), len(set(combined)))
+        for case in cases[:-2]:
+            self.assertNotIn("--headless", subject.runner.case_command("godot", case, "win32"))
+
     def execute_fixture(self, import_message: str = "imported",
                         *, shard_count: int = 1, shard_index: int = 0) -> dict:
         cases = [

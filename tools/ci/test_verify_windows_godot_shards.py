@@ -8,6 +8,7 @@ import tempfile
 import unittest
 
 import execution_policy
+import run_godot_regressions as runner
 import verify_windows_godot_shards as subject
 
 SOURCE = "a" * 40
@@ -75,9 +76,23 @@ def make_fixture(root: Path, expected: dict, manifest: bytes) -> None:
             report["results"].append({"role": role, "name": name, "status": "passed",
                 "log": log, "log_sha256": digest(data), "returncode": 0, "skip_messages": [],
                 "execution_policy": execution_policy.identity(), "natural_completion": True,
-                "requires_display": False, "timeout_seconds": item["timeout_seconds"],
-                "command": [r"C:\tools\Godot_v4.7-stable_win64_console.exe", "--headless", "--path",
-                            r"C:\source\godot", *item["flags"]]})
+                "requires_display": item["requires_display"], "timeout_seconds": item["timeout_seconds"],
+                "command": runner.case_command(r"C:\tools\Godot_v4.7-stable_win64_console.exe",
+                    runner.Case(name, tuple(item["flags"]), item["timeout_seconds"], 5,
+                                item["requires_display"]), "win32")})
+            command = report["results"][-1]["command"]
+            command[command.index("--path") + 1] = r"C:\source\godot"
+            if name in runner.WORKBENCH_HOPPER_CASES:
+                fixture_data = (runner.ROOT / runner.WORKBENCH_HOPPER_FIXTURE_SOURCE).read_bytes()
+                relative = name + "-artifacts/wb_agent_sand_hopper_v2.tsv"
+                retained = directory / relative
+                retained.parent.mkdir()
+                retained.write_bytes(fixture_data)
+                report["results"][-1]["runtime_fixture"] = {
+                    "source": runner.WORKBENCH_HOPPER_FIXTURE_SOURCE,
+                    "runtime": runner.WORKBENCH_HOPPER_FIXTURE_RUNTIME,
+                    "artifact": relative, "sha256": digest(fixture_data), "size": len(fixture_data),
+                    "created": True, "verified_after_execution": True, "runtime_cleaned_up": True}
             report["log_sha256"][log] = digest(data)
         (directory / "windows-execution.json").write_text(json.dumps(report), encoding="utf-8")
 
@@ -106,6 +121,35 @@ class WindowsCoverageTests(unittest.TestCase):
         self.assertEqual(result["source_tree"], self.expected["source_tree"])
         self.assertEqual(result["execution_policy"], execution_policy.identity())
         self.assertEqual(result["source_inputs_verified"], 2)
+
+    def test_graphical_windows_command_is_verified_without_headless_substitution(self):
+        expected = copy.deepcopy(self.expected)
+        expected["plans"][0][0]["requires_display"] = True
+        root = self.root / "graphical"
+        root.mkdir()
+        make_fixture(root, expected, self.manifest)
+        self.assertEqual(subject.verify(root, SOURCE, "123", "1", 2, expected=expected)["status"], "passed")
+        path = root / "shard-0/windows-execution.json"
+        report = json.loads(path.read_text())
+        report["results"][1]["command"].insert(1, "--headless")
+        path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError, "command or watchdog"):
+            subject.verify(root, SOURCE, "123", "1", 2, expected=expected)
+
+    def test_hopper_raw_fixture_custody_cannot_be_omitted_or_replaced(self):
+        expected = copy.deepcopy(self.expected)
+        name = "test_workbench_agent_hopper_godot"
+        expected["applicable_cases"][0] = name
+        expected["plans"][0][0] = case(name)
+        expected["plans"][0][0]["requires_display"] = True
+        root = self.root / "hopper"
+        root.mkdir()
+        make_fixture(root, expected, self.manifest)
+        self.assertEqual(subject.verify(root, SOURCE, "123", "1", 2, expected=expected)["status"], "passed")
+        retained = root / ("shard-0/" + name + "-artifacts/wb_agent_sand_hopper_v2.tsv")
+        retained.write_bytes(b"replaced fixture")
+        with self.assertRaisesRegex(ValueError, "retained hopper fixture"):
+            subject.verify(root, SOURCE, "123", "1", 2, expected=expected)
 
     def test_coordinated_omission_cannot_redefine_source_inventory(self):
         def omit(report):
@@ -360,7 +404,7 @@ class SourceContractTests(unittest.TestCase):
         self.runner = types.SimpleNamespace(
             discover_cases=mock.Mock(return_value=records),
             build_shard_plan=mock.Mock(return_value=([[records[0]], [records[1]]], [5.0, 5.0])),
-            case_dict=lambda c: case(c.name))
+            case_dict=lambda c: case(c.name), windows_case_supported=runner.windows_case_supported)
         self.windows = types.SimpleNamespace(
             git=git, INPUT_SCOPES=("godot", "native"), PROVENANCE=provenance,
             NATIVE=native, RAPIER=rapier, RAPIER_SHA256="1" * 64,

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Execute the complete current headless suite on Windows with the retained DLL."""
+"""Execute Windows regressions, including the explicit graphical workbench set."""
 
 from contextlib import contextmanager
 import argparse
@@ -30,6 +30,7 @@ GODOT_SHA512 = (
 )
 INPUT_SCOPES = (
     "godot", "native/include", "native/src", "tools/ci/run_godot_regressions.py",
+    "native/tests/fixtures/wb_agent_sand_hopper_v2.tsv",
     "tools/ci/run_windows_godot_regressions.py", "tools/ci/godot_timeout_diagnostics.py",
     "tools/ci/godot_process_monitor.py", "tools/ci/physical_progress_watchdog.py",
     "tools/ci/execution_policy.py", "tools/ci/execution_telemetry.py",
@@ -195,8 +196,8 @@ def tested_inputs(root: Path) -> dict[str, str]:
 def plan_cases(report: dict, cases: list[runner.Case], *, shard_count: int, shard_index: int) -> list[runner.Case]:
     if shard_count < 1 or not 0 <= shard_index < shard_count:
         raise ValueError("Windows shard index/count must describe one valid shard")
-    selected = [case for case in cases if not case.requires_display]
-    excluded = [case for case in cases if case.requires_display]
+    selected = [case for case in cases if runner.windows_case_supported(case)]
+    excluded = [case for case in cases if not runner.windows_case_supported(case)]
     if not selected or any(count != 1 for count in Counter(case.name for case in cases).values()):
         raise RuntimeError("Windows discovery must contain unique, applicable cases")
     shards, weights = runner.build_shard_plan(selected, shard_count)
@@ -204,7 +205,7 @@ def plan_cases(report: dict, cases: list[runner.Case], *, shard_count: int, shar
     if not assigned:
         raise RuntimeError("Windows shard must have at least one applicable case")
     report.update({
-        "scope": "Actual Windows headless tests, profiles and scene startup; Linux shards own rendered pixel cases",
+        "scope": "Windows headless tests plus the explicit native/framebuffer workbench graphical set; other rendered cases remain Linux-scoped",
         "all_discovered_case_count": len(cases), "applicable_case_count": len(selected),
         "out_of_scope_graphical_cases": [case.name for case in excluded],
         "applicable_cases": [case.name for case in selected],

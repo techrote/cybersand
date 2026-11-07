@@ -22,6 +22,8 @@ docs/audits/play-auto002-2026-10-28/linux-campaign.json -text
 *.md text eol=lf
 *.yml text eol=lf
 *.yaml text eol=lf
+# Frozen WB-AGENT control hashes identify these exact LF bytes on every host.
+native/tests/fixtures/wb_agent_sand_hopper_v2.tsv text eol=lf
 
 # Runtime libraries are required for drag-and-run checkouts but are not useful
 # as ordinary Git deltas. Git LFS keeps them versioned without bloating future

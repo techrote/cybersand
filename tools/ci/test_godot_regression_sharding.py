@@ -92,6 +92,54 @@ class ShardingTests(unittest.TestCase):
         self.assertEqual(command[command.index("--rendering-method") + 1], "gl_compatibility")
         self.assertIn("--headless", subject.case_command("godot", fake("test_cpu", 1), "linux"))
 
+    def test_existing_workbench_framebuffer_cases_are_graphical_without_renaming(self):
+        expected = {
+            "test_workbench_agent_owner", "test_workbench_agent_four_tool_join",
+            "test_workbench_agent_signed_join", "test_workbench_agent_hopper_godot",
+            "test_workbench_agent_mounted",
+        }
+        self.assertEqual(subject.WORKBENCH_GRAPHICAL_CASES, expected)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            tests = root / "godot/tests"
+            tests.mkdir(parents=True)
+            for name in expected | {"test_cpu", "test_new_render"}:
+                (tests / (name + ".gd")).write_text("extends SceneTree\n", encoding="utf-8")
+            with mock.patch.object(subject.execution_policy, "case_seconds", return_value=123) as seconds:
+                cases = subject.discover_cases(root)
+            by_name = {case.name: case for case in cases}
+            timeout_display = {call.args[0]: call.args[1]
+                               for call in seconds.call_args_list if len(call.args) > 1}
+        for name in expected | {"test_new_render"}:
+            self.assertTrue(by_name[name].requires_display)
+            self.assertTrue(timeout_display[name])
+            for platform in ("linux", "win32"):
+                command = subject.case_command("godot", by_name[name], platform)
+                self.assertNotIn("--headless", command)
+                self.assertEqual(command[command.index("--rendering-method") + 1], "gl_compatibility")
+        self.assertFalse(by_name["test_cpu"].requires_display)
+        self.assertFalse(timeout_display["test_cpu"])
+        shards, _ = subject.build_shard_plan(cases, 4)
+        self.assertCountEqual([case.name for shard in shards for case in shard], list(by_name))
+
+    def test_windows_workbench_display_support_is_narrow_and_keeps_eight_cases(self):
+        expected = subject.WORKBENCH_GRAPHICAL_CASES | {
+            "test_wb525_capacity_and_camera_render", "test_wb525_mounted_hopper_render",
+            "test_wb525_step_paused_boundary_render",
+        }
+        self.assertEqual(subject.WINDOWS_WORKBENCH_GRAPHICAL_CASES, expected)
+        self.assertEqual(len(expected), 8)
+        discovered = {case.name: case for case in subject.discover_cases()}
+        for name in expected:
+            self.assertTrue(discovered[name].requires_display)
+            self.assertTrue(subject.windows_case_supported(discovered[name]))
+        self.assertFalse(subject.windows_case_supported(subject.Case("unrelated_render", (), 5, 1, True)))
+        for name in ("test_workbench_agent_client", "test_workbench_agent_footprint",
+                     "test_workbench_agent_failures", "test_workbench_agent_signed_frame",
+                     "test_workbench_authoring_envelope", "test_workbench_agent_step_sequence"):
+            self.assertFalse(discovered[name].requires_display)
+            self.assertTrue(subject.windows_case_supported(discovered[name]))
+
     def test_unknown_case_weight_is_conservative(self):
         self.assertEqual(subject._weight("brand_new_test"), subject.DEFAULT_UNKNOWN_WEIGHT_SECONDS)
 
@@ -104,6 +152,206 @@ class ShardingTests(unittest.TestCase):
                  subject.Case("normal_ceiling", (), 1200, 30), fake("short_a", 10), fake("short_b", 10)]
         _, weights = subject.build_shard_plan(cases, 2)
         self.assertEqual(weights, [40, 40])
+
+
+class WorkbenchFixtureCustodyTests(unittest.TestCase):
+    def test_frozen_checkout_bytes_survive_windows_autocrlf(self):
+        import hashlib
+        import subprocess
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            relative = subject.WORKBENCH_HOPPER_FIXTURE_SOURCE
+            fixture = root / relative
+            fixture.parent.mkdir(parents=True)
+            data = (subject.ROOT / relative).read_bytes()
+            fixture.write_bytes(data)
+            attributes = root / ".gitattributes"
+            attributes.write_bytes(b"* text=auto\n")
+            def git(*args):
+                return subprocess.run(["git", "-C", str(root), *args], check=True,
+                                      stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            git("init", "-q")
+            git("config", "user.name", "fixture")
+            git("config", "user.email", "fixture@example.invalid")
+            git("config", "core.autocrlf", "true")
+            git("add", ".")
+            git("commit", "-qm", "original control")
+            fixture.unlink()
+            git("checkout", "HEAD", "--", relative)
+            self.assertIn(b"\r\n", fixture.read_bytes())
+            self.assertNotEqual(hashlib.sha256(fixture.read_bytes()).hexdigest(),
+                                subject.WORKBENCH_HOPPER_FIXTURE_SHA256)
+            attributes.write_bytes(b"* text=auto\n" + relative.encode() + b" text eol=lf\n")
+            git("add", ".gitattributes")
+            git("commit", "-qm", "pin frozen LF checkout")
+            fixture.unlink()
+            git("checkout", "HEAD", "--", relative)
+            self.assertEqual(fixture.read_bytes(), data)
+            self.assertEqual(hashlib.sha256(fixture.read_bytes()).hexdigest(),
+                             subject.WORKBENCH_HOPPER_FIXTURE_SHA256)
+
+    def setUp(self):
+        self.data = (subject.ROOT / subject.WORKBENCH_HOPPER_FIXTURE_SOURCE).read_bytes()
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = Path(self.directory.name)
+        self.source = self.root / subject.WORKBENCH_HOPPER_FIXTURE_SOURCE
+        self.runtime = self.root / subject.WORKBENCH_HOPPER_FIXTURE_RUNTIME
+        self.source.parent.mkdir(parents=True)
+        self.runtime.parent.mkdir(parents=True)
+        self.source.write_bytes(self.data)
+        self.output = self.root / "evidence"
+        self.output.mkdir()
+        self.case = subject.Case("test_workbench_agent_hopper_godot", (), 5, 1, True)
+
+    def stage(self, output=None):
+        return subject.stage_workbench_fixture(self.case, output or self.output, root=self.root)
+
+    def test_exact_frozen_bytes_are_staged_retained_verified_and_cleaned(self):
+        staged = self.stage()
+        self.assertTrue(staged["created"])
+        self.assertEqual(staged["source"], subject.WORKBENCH_HOPPER_FIXTURE_SOURCE)
+        self.assertEqual(staged["runtime"], subject.WORKBENCH_HOPPER_FIXTURE_RUNTIME)
+        self.assertEqual(staged["sha256"], subject.WORKBENCH_HOPPER_FIXTURE_SHA256)
+        self.assertEqual(staged["size"], len(self.data))
+        self.assertEqual(self.runtime.read_bytes(), self.data)
+        self.assertEqual(staged["artifact"], self.case.name + "-artifacts/wb_agent_sand_hopper_v2.tsv")
+        self.assertEqual((self.output / staged["artifact"]).read_bytes(), self.data)
+        subject.finish_workbench_fixture(staged, self.output, root=self.root)
+        self.assertTrue(staged["verified_after_execution"])
+        self.assertTrue(staged["runtime_cleaned_up"])
+        self.assertFalse(self.runtime.exists())
+        self.assertEqual(self.source.read_bytes(), self.data)
+        self.assertEqual((self.output / staged["artifact"]).read_bytes(), self.data)
+
+    def test_preexisting_identical_runtime_survives_cleanup(self):
+        self.runtime.write_bytes(self.data)
+        staged = self.stage()
+        self.assertFalse(staged["created"])
+        subject.finish_workbench_fixture(staged, self.output, root=self.root)
+        self.assertTrue(staged["verified_after_execution"])
+        self.assertFalse(staged["runtime_cleaned_up"])
+        self.assertEqual(self.runtime.read_bytes(), self.data)
+
+    def test_mutated_preexisting_runtime_is_failed_but_not_deleted(self):
+        self.runtime.write_bytes(self.data)
+        staged = self.stage()
+        self.runtime.write_bytes(b"changed preexisting fixture\n")
+        with self.assertRaisesRegex(RuntimeError, "runtime fixture changed"):
+            subject.finish_workbench_fixture(staged, self.output, root=self.root)
+        self.assertFalse(staged["runtime_cleaned_up"])
+        self.assertEqual(self.runtime.read_bytes(), b"changed preexisting fixture\n")
+
+    def test_retained_artifact_collision_cleans_only_created_runtime(self):
+        artifact = self.output / (self.case.name + "-artifacts/wb_agent_sand_hopper_v2.tsv")
+        artifact.parent.mkdir()
+        artifact.write_bytes(b"retain prior evidence\n")
+        with self.assertRaises(FileExistsError):
+            self.stage()
+        self.assertFalse(self.runtime.exists())
+        self.assertEqual(artifact.read_bytes(), b"retain prior evidence\n")
+
+    def test_different_existing_runtime_is_refused_without_overwrite(self):
+        self.runtime.write_bytes(b"stale runtime fixture\n")
+        with self.assertRaisesRegex(RuntimeError, "different existing"):
+            self.stage()
+        self.assertEqual(self.runtime.read_bytes(), b"stale runtime fixture\n")
+
+    def test_missing_and_altered_source_refuse_before_staging(self):
+        self.source.unlink()
+        with self.assertRaises(FileNotFoundError):
+            self.stage()
+        self.assertFalse(self.runtime.exists())
+        self.source.write_bytes(self.data + b"# altered\n")
+        with self.assertRaisesRegex(RuntimeError, "SHA-256 mismatch"):
+            self.stage()
+        self.assertFalse(self.runtime.exists())
+
+    def test_each_input_is_checked_after_execution_and_created_copy_is_cleaned(self):
+        for label in ("source", "runtime", "artifact"):
+            with self.subTest(input=label):
+                self.source.write_bytes(self.data)
+                output = self.output / label
+                output.mkdir()
+                staged = self.stage(output)
+                path = (output / staged[label]) if label == "artifact" else self.root / staged[label]
+                path.write_bytes(b"mutated during child execution\n")
+                with self.assertRaisesRegex(RuntimeError, label + " fixture changed"):
+                    subject.finish_workbench_fixture(staged, output, root=self.root)
+                self.assertFalse(staged["verified_after_execution"])
+                self.assertTrue(staged["runtime_cleaned_up"])
+                self.assertFalse(self.runtime.exists())
+
+    def test_missing_runtime_after_execution_fails_and_cleans_only_its_own_copy(self):
+        staged = self.stage()
+        self.runtime.unlink()
+        with self.assertRaises(FileNotFoundError):
+            subject.finish_workbench_fixture(staged, self.output, root=self.root)
+        self.assertTrue(staged["runtime_cleaned_up"])
+
+    def test_only_two_hopper_cases_require_fixture(self):
+        self.assertEqual(subject.WORKBENCH_HOPPER_CASES,
+                         {"test_workbench_agent_hopper_godot", "test_wb525_mounted_hopper_render"})
+        self.source.unlink()
+        self.assertIsNone(subject.stage_workbench_fixture(fake("test_workbench_agent_owner", 1),
+                                                        self.output, root=self.root))
+        self.assertFalse(self.runtime.exists())
+
+    def run_child(self, code):
+        with redirect_stdout(io.StringIO()), \
+             mock.patch.object(subject, "ROOT", self.root), \
+             mock.patch.object(subject, "case_command", return_value=[sys.executable, "-c", code]), \
+             mock.patch.object(subject.execution_telemetry, "record_case"):
+            return subject.run_case("unused", self.case, self.output, "case")
+
+    def test_child_sees_exact_fixture_and_original_frame_artifact_environment(self):
+        code = ("import os; from pathlib import Path; "
+                f"assert Path({subject.WORKBENCH_HOPPER_FIXTURE_RUNTIME!r}).read_bytes() == "
+                f"Path({subject.WORKBENCH_HOPPER_FIXTURE_SOURCE!r}).read_bytes(); "
+                "assert os.environ['WB_AGENT_EVIDENCE_DIR']==os.environ['CYBERSAND_TEST_ARTIFACT_DIR']; "
+                "assert os.environ['WB_AGENT_527_IMAGE_DIR']==os.environ['CYBERSAND_TEST_ARTIFACT_DIR']; "
+                "print('12 native assertions; 0 failures')")
+        record, failed = self.run_child(code)
+        self.assertFalse(failed)
+        self.assertEqual(record["status"], "passed")
+        self.assertTrue(record["runtime_fixture"]["verified_after_execution"])
+        self.assertTrue(record["runtime_fixture"]["runtime_cleaned_up"])
+        self.assertIsNone(record["fixture_error"])
+        self.assertFalse(self.runtime.exists())
+
+    def test_zero_exit_after_child_mutates_fixture_is_a_retained_failure(self):
+        record, failed = self.run_child("from pathlib import Path; "
+            f"Path({subject.WORKBENCH_HOPPER_FIXTURE_RUNTIME!r}).write_bytes(b'changed'); "
+            "print('12 assertions; 0 failures')")
+        self.assertTrue(failed)
+        self.assertEqual(record["returncode"], 0)
+        self.assertEqual(record["status"], "failed")
+        self.assertIn("runtime fixture changed", record["fixture_error"])
+        self.assertFalse(record["runtime_fixture"]["verified_after_execution"])
+        self.assertFalse(self.runtime.exists())
+        self.assertEqual((self.output / record["runtime_fixture"]["artifact"]).read_bytes(), self.data)
+
+    def test_launch_failure_still_cleans_staged_runtime(self):
+        with redirect_stdout(io.StringIO()), \
+             mock.patch.object(subject, "ROOT", self.root), \
+             mock.patch.object(subject, "case_command", return_value=[str(self.root / "missing-engine")]), \
+             mock.patch.object(subject.execution_telemetry, "record_case"):
+            record, failed = subject.run_case("unused", self.case, self.output, "case")
+        self.assertTrue(failed)
+        self.assertIsNotNone(record["launch_error"])
+        self.assertTrue(record["runtime_fixture"]["runtime_cleaned_up"])
+        self.assertFalse(self.runtime.exists())
+
+    def test_canonical_headless_step_does_not_receive_image_capture_environment(self):
+        case = subject.Case("test_workbench_agent_step_sequence", (), 5, 1)
+        with redirect_stdout(io.StringIO()), \
+             mock.patch.object(subject, "ROOT", self.root), \
+             mock.patch.object(subject, "case_command", return_value=[sys.executable, "-c",
+                 "import os; assert 'WB_AGENT_527_IMAGE_DIR' not in os.environ; print('headless step passed')"]), \
+             mock.patch.object(subject.execution_telemetry, "record_case"):
+            record, failed = subject.run_case("unused", case, self.output, "case", env={})
+        self.assertFalse(failed)
+        self.assertIsNone(record["runtime_fixture"])
 
 
 class ResultTests(unittest.TestCase):
