@@ -343,15 +343,17 @@ and maintenance complexity, or **REJECT** the production change.
 
 ## Final current-head status and independent handover
 
-**State observed 7 November 2026 00:05 UTC:**
+**State observed 7 November 2026 00:07 UTC:**
 
 - PR #406 was merged by a different actor on 6 November at 22:08 UTC.
 - PR #471 is **Draft, unmerged**; latest reviewed owner branch
-  `6c58a736f814faf48e9a616652760a45467d8d16` includes only additional
-  test-workflow and audit changes since the source-pinned measured cursor
-  candidate. Both temporary owner workflows have since been retired, preserving
-  their original hosted evidence. The protected `native/src/world.cpp` LF
-  SHA-256 remains `bbd9741311bc67905934048633846b8d011efd760033edd0ff9e88be5b262868`.
+  `27ce2aca9e061090160d8ca06e76da82bf2bc8b9` adds a dated **unadmitted
+  MAT-AUTH transition proposal** and new independent read-only review
+  [issue #485](https://github.com/techrote/cybersand/issues/485) after
+  the temporary owner workflows were retired. No new cursor engine source
+  bytes or source-admission records have been added since the pinned
+  measured candidate. The protected `native/src/world.cpp` LF SHA-256 remains
+  `bbd9741311bc67905934048633846b8d011efd760033edd0ff9e88be5b262868`.
 - PR #477 is a **separate Draft, unmerged**, with the independently corrected
   benchmark apparatus, edge fixtures, scoped workflows and this dated audit.
   This work has not changed the original implementation branch or protected
@@ -377,7 +379,7 @@ Host system `perf` still returns `perf_record_exit=255` with
 
 **Next bounded owner decisions, not another speculative implementation:**
 
-1. Conduct a **strictly read-only independent source-admission review** of
+1. Complete the already registered [#485 **strictly read-only MAT-AUTH source-admission review**](https://github.com/techrote/cybersand/issues/485) of
    the unchanged cursor source, full original GitHub Actions evidence and the
    ABI/phase/worker safety contracts. Reconcile the conclusion with the
    owner-requested admission review; do not change the protected lock.
