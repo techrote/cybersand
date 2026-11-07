@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Execute the complete current headless suite on Windows with the retained DLL."""
+"""Execute the complete current headless suite on Windows with proven native DLLs."""
 
 from contextlib import contextmanager
 import argparse
@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 import platform
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -30,7 +31,8 @@ GODOT_SHA512 = (
 )
 INPUT_SCOPES = (
     "godot", "native/include", "native/src", "tools/ci/run_godot_regressions.py",
-    "tools/ci/run_windows_godot_regressions.py", "tools/ci/godot_timeout_diagnostics.py",
+    "tools/ci/run_windows_godot_regressions.py", "tools/ci/windows_ci_runtime.py",
+    "tools/ci/godot_timeout_diagnostics.py",
     "tools/ci/godot_process_monitor.py", "tools/ci/physical_progress_watchdog.py",
     "tools/ci/execution_policy.py", "tools/ci/execution_telemetry.py",
     "tools/ci/godot_scheduling.py", "tools/ci/godot_scheduling_profile.json",
@@ -149,6 +151,52 @@ def verify_retained_runtime(root: Path, *, rapier_build: Path | None = None) -> 
     }
 
 
+
+def verify_ci_built_runtime(root: Path, runtime_dir: Path) -> dict:
+    """Bind the actual DLL from this run's Windows cross-build to native source."""
+    import windows_ci_runtime as ci
+    source = git(root, "rev-parse", "HEAD").decode().strip()
+    manifest, raw = ci.verify_bundle(
+        root, runtime_dir, source_sha=source,
+        run_id=os.environ.get("GITHUB_RUN_ID"),
+        attempt=os.environ.get("GITHUB_RUN_ATTEMPT"))
+    # Rapier is still a separately pinned, retained LFS runtime. Keep its
+    # existing source/pin validation; only CyberSand's freshly built DLL changes.
+    from check_repository import verify_rapier_overrides
+    rapier_lock = json.loads((root / "godot/third_party/rapier2d.lock.json").read_text(encoding="utf-8"))
+    errors = verify_rapier_overrides(root, rapier_lock)
+    if errors:
+        raise RuntimeError("Selected Rapier runtime provenance failed: " + "; ".join(errors))
+    pointer = git(root, "show", "HEAD:" + RAPIER)
+    match = re.fullmatch(
+        rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n",
+        pointer,
+    )
+    if match is None:
+        raise RuntimeError("Rapier runtime is not a canonical committed LFS pointer")
+    rapier = (root / RAPIER).read_bytes()
+    rapier_hash = hashlib.sha256(rapier).hexdigest()
+    if (not rapier.startswith(b"MZ") or rapier_hash != RAPIER_SHA256
+            or rapier_hash != match[1].decode() or len(rapier) != int(match[2])):
+        raise RuntimeError("Windows Rapier differs from pinned, committed LFS runtime")
+    # Only install *after* the build receipt, complete source inputs, exact
+    # Actions run identity and Rapier identity have independently passed.
+    dll = (runtime_dir / ci.DLL_NAME).read_bytes()
+    (root / NATIVE).write_bytes(dll)
+    if hashlib.sha256((root / NATIVE).read_bytes()).hexdigest() != manifest["sha256"]:
+        raise RuntimeError("Installed Windows extension differs from current-run build")
+    return {
+        "runtime_source_commit": manifest["source_commit"],
+        "runtime_build_commit": manifest["build_commit"],
+        "runtime_provenance": {"path": ci.PROVENANCE_PATH,
+                               "sha256": hashlib.sha256(raw).hexdigest()},
+        "native_source_inputs": manifest["source_inputs"],
+        "cybersand_runtime": {"path": NATIVE, "sha256": manifest["sha256"],
+                             "size": manifest["size"]},
+        "rapier_runtime": {"path": RAPIER, "sha256": rapier_hash,
+                           "size": len(rapier)},
+    }
+
 def prepare_godot(archive: Path) -> tuple[Path, dict]:
     data = archive.read_bytes()
     digest = hashlib.sha512(data).hexdigest()
@@ -262,6 +310,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--godot-archive", required=True, type=Path)
     parser.add_argument("--expected-source-sha", required=True)
+    parser.add_argument("--ci-runtime-dir", type=Path,
+                        help="Use same-run source-attested cross-build DLL instead of retained LFS DLL")
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--shard-count", type=int, default=1)
     parser.add_argument("--shard-index", type=int, default=0)
@@ -292,9 +342,18 @@ def main() -> int:
             if source != args.expected_source_sha:
                 raise RuntimeError("Windows checkout differs from the workflow's tested Git commit")
             report.update({"source_commit": source, "source_tree": git(ROOT, "rev-parse", "HEAD^{tree}").decode().strip()})
-            report.update(verify_retained_runtime(ROOT))
-            (output / "runtime-provenance.json").write_bytes((ROOT / PROVENANCE).read_bytes())
-            git(ROOT, "diff", "--exit-code", "HEAD", "--", *INPUT_SCOPES, ":!godot/.godot")
+            if args.ci_runtime_dir is not None:
+                report.update(verify_ci_built_runtime(ROOT, args.ci_runtime_dir.resolve()))
+                from windows_ci_runtime import RECEIPT_NAME
+                manifest_bytes = (args.ci_runtime_dir.resolve() / RECEIPT_NAME).read_bytes()
+                excluded = (":!" + NATIVE,)
+            else:
+                report.update(verify_retained_runtime(ROOT))
+                manifest_bytes = (ROOT / PROVENANCE).read_bytes()
+                excluded = ()
+            (output / "runtime-provenance.json").write_bytes(manifest_bytes)
+            git(ROOT, "diff", "--exit-code", "HEAD", "--",
+                *INPUT_SCOPES, ":!godot/.godot", *excluded)
             report["tested_inputs"] = tested_inputs(ROOT)
             godot, report["godot_identity"] = prepare_godot(args.godot_archive.resolve())
             report["godot_version"] = report["godot_identity"]["version"]

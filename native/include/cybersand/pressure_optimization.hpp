@@ -7,9 +7,10 @@ namespace cybersand {
 
 // Execution v3's deterministic certificate work budget is not a wall-clock
 // break-even model. Fixed weights and windows are bound by execution identity.
-// Execution v4 (#201 P1) adds derived sleeping-segment wake summaries; physical
-// results are unchanged, derived work differs, so the identity changes.
-inline constexpr std::uint64_t kPressureOptimizationExecutionVersion = 4;
+// Execution v4 (#201 P1) adds derived sleeping-segment wake summaries.
+// Execution v5 certifies stable sealed components during global gas churn;
+// physical-state rules are unchanged, derived execution work differs.
+inline constexpr std::uint64_t kPressureOptimizationExecutionVersion = 5;
 inline constexpr std::uint8_t kPressureCertificateWarmupVisits = 1;
 inline constexpr std::uint8_t kPressureCertificateBackoffVisits = 8;
 inline constexpr std::uint8_t kPressureCertificateTrialTicks = 8;

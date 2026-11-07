@@ -195,6 +195,7 @@ jobs:
           python3 -m py_compile tools/ci/run_godot_regressions.py tools/ci/test_godot_regression_sharding.py tools/ci/run_windows_godot_regressions.py tools/ci/test_windows_godot_regressions.py
           python3 tools/ci/test_godot_regression_sharding.py
           python3 tools/ci/test_windows_godot_regressions.py
+          python3 tools/ci/test_windows_ci_runtime.py
           python3 tools/ci/test_physical_timeout_diagnostics.py
           python3 tools/ci/test_physical_stress_contract.py
           python3 tools/ci/test_physical_timing_history.py
@@ -344,6 +345,26 @@ jobs:
           "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > "$RUNNER_TEMP/windows-imports.txt"
           sha256sum "$CYBERSAND_NATIVE_OUTPUT"
 
+      - name: Seal freshly built, source-matched Windows runtime
+        env:
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
+        run: |
+          python3 tools/ci/test_windows_ci_runtime.py
+          python3 tools/ci/windows_ci_runtime.py create \
+            --native "$CYBERSAND_NATIVE_OUTPUT" \
+            --directory build/windows-runtime \
+            --source-sha "$GITHUB_SHA" \
+            --run-id "$GITHUB_RUN_ID" \
+            --attempt "$GITHUB_RUN_ATTEMPT"
+
+      - name: Publish exact Windows native runtime for regression shards
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: windows-runtime-${{ github.run_id }}
+          path: build/windows-runtime/
+          if-no-files-found: error
+          retention-days: 2
+
       - name: Retain compiler process timing and original logs
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -355,10 +376,10 @@ jobs:
 
   windows-regression:
     name: windows headless regression shard ${{ matrix.shard }}
-    needs: [ready_scope, execution-plan]
+    needs: [ready_scope, execution-plan, windows-build]
     if: >-
       always() && inputs.physical_actor_stress != true &&
-      needs.execution-plan.result == 'success' &&
+      needs.execution-plan.result == 'success' && needs.windows-build.result == 'success' &&
       (github.event_name != 'pull_request' ||
        (github.event.pull_request.draft == false &&
         (github.event.action != 'ready_for_review' ||
@@ -390,12 +411,19 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Materialize retained Windows CyberSand and pinned Rapier runtimes
-        timeout-minutes: 20
+      - name: Fetch source-bound Windows DLL from this same workflow run
+        timeout-minutes: 5
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: windows-runtime-${{ github.run_id }}
+          path: build/windows-runtime
+
+      - name: Materialize pinned Rapier runtime only
+        timeout-minutes: 15
         run: |
           set -euo pipefail
           git lfs install --local
-          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
 
       - name: Validate Windows execution harness
         if: matrix.shard == 0
@@ -404,6 +432,7 @@ jobs:
           set -euo pipefail
           python tools/ci/test_godot_regression_sharding.py
           python tools/ci/test_windows_godot_regressions.py
+          python tools/ci/test_windows_ci_runtime.py
           python tools/ci/test_godot_timeout_diagnostics.py
           python tools/ci/test_godot_process_monitor.py
           python tools/ci/test_physical_progress_watchdog.py
@@ -418,11 +447,11 @@ jobs:
           set -euo pipefail
           curl --fail --location --retry 3 --connect-timeout 60 --max-time 1200 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
 
-      - name: Verify retained runtime and execute every applicable Windows case
+      - name: Verify exact current-run native runtime and execute every applicable Windows case
         timeout-minutes: ${{ fromJSON(needs.execution-plan.outputs.windows_execution_minutes) }}
         run: |
           set -euo pipefail
-          python tools/ci/run_windows_godot_regressions.py --godot-archive "$RUNNER_TEMP/godot-windows.zip" --expected-source-sha "$GITHUB_SHA" --output "build/godot-regressions/windows-${{ matrix.shard }}" --shard-count ${{ needs.execution-plan.outputs.windows_shard_count }} --shard-index ${{ matrix.shard }}
+          python tools/ci/run_windows_godot_regressions.py --godot-archive "$RUNNER_TEMP/godot-windows.zip" --expected-source-sha "$GITHUB_SHA" --ci-runtime-dir build/windows-runtime --output "build/godot-regressions/windows-${{ matrix.shard }}" --shard-count ${{ needs.execution-plan.outputs.windows_shard_count }} --shard-index ${{ matrix.shard }}
 
       - name: Prove internal watchdog observes a synchronously blocked Windows main thread
         if: matrix.shard == 0
@@ -443,7 +472,7 @@ jobs:
 
   windows-coverage:
     name: windows sharded execution coverage
-    needs: [ready_scope, execution-plan, windows-regression]
+    needs: [ready_scope, execution-plan, windows-build, windows-regression]
     if: >-
       always() && inputs.physical_actor_stress != true &&
       (github.event_name != 'pull_request' ||
@@ -463,6 +492,11 @@ jobs:
         with:
           pattern: windows-godot-headless-*-${{ github.run_id }}
           path: build/windows-coverage-input
+      - name: Independently fetch this run's original native build artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: windows-runtime-${{ github.run_id }}
+          path: build/windows-runtime
       - name: Independently verify complete, unique Windows case execution
         if: always()
         env:
@@ -471,12 +505,14 @@ jobs:
           set -euo pipefail
           mkdir -p build
           python3 tools/ci/test_verify_windows_godot_shards.py
+          python3 tools/ci/test_windows_ci_runtime.py
           python3 tools/ci/verify_windows_godot_shards.py \
             --root build/windows-coverage-input \
             --source-sha "${{ github.sha }}" \
             --run-id "${{ github.run_id }}" \
             --attempt "${{ github.run_attempt }}" \
             --shard-count ${{ needs.execution-plan.outputs.windows_shard_count }} \
+            --ci-runtime-dir build/windows-runtime \
             --output build/windows-coverage.json 2>&1 | tee build/windows-coverage-verification.log
           test "$SHARD_RESULT" = "success"
       - name: Retain Windows exact-coverage receipt

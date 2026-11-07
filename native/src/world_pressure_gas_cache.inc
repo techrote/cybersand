@@ -25,6 +25,11 @@ void World::prepare_pressure_gas_cache() {
             if (dirty) { component.valid = false; ++work.gas_component_invalidations; }
         }
     }
+    // All rejected certificates cannot accelerate discovery; keep the pooled
+    // reference seed prepass available rather than using the serial cache path.
+    if (cache.gas_ready && std::none_of(cache.gas_components.begin(), cache.gas_components.end(),
+                                       [](const auto& component) { return component.valid; }))
+        cache.gas_ready = false;
     for (const auto changed : cache.gas_dirty_chunks)
         if (auto* chunk = find_chunk(changed)) chunk->pressure->gas_dirty_queued = false;
     cache.gas_dirty_chunks.clear();
@@ -87,7 +92,21 @@ bool World::replay_pressure_gas_region(std::int64_t x, std::int64_t y,
 
 void World::rebuild_pressure_gas_cache(std::uint32_t stamp) {
     auto* cache = pressure_->cache.get();
-    if (cache == nullptr || !pressure_->gas_fixed_point || !cache->complete || cache->membership_dirty) return;
+    if (cache == nullptr || !cache->complete || cache->membership_dirty) return;
+    // A global fixed point is needed to skip the *whole* gas operator, not to
+    // certify a self-contained compartment. The reducer below already checks
+    // exact one-to-one old/new identity, volume and anchor for each region.
+    // During churn, retain unaffected certificates rather than rescanning the
+    // entire resident World just to rebuild identical derived member lists.
+    if (cache->gas_ready && !pressure_->gas_fixed_point) return;
+    // Never repeatedly pay for full-world certificate construction when
+    // completed replays have not amortised even a fraction of the scan cost.
+    // This derived cost gate changes no gas physics and is bypassed after a
+    // global fixed point, where the existing certificate policy applies.
+    const auto& prior_work = pressure_->optimization;
+    if (!pressure_->gas_fixed_point && prior_work.gas_cache_build_cells != 0U &&
+        prior_work.gas_member_validations <= prior_work.gas_cache_build_cells / 16U)
+        return;
     cache->gas_ready = false;
     cache->gas_components.clear(); cache->gas_members.clear();
     auto& work = pressure_->optimization;
@@ -120,6 +139,21 @@ void World::rebuild_pressure_gas_cache(std::uint32_t stamp) {
         total += component.count;
         cache->gas_components.push_back(component);
     }
+    // A full member scan is worthwhile during active global churn only if
+    // independently stable, sealed membership is large relative to resident
+    // cells. Tiny pockets cannot pay back a whole-world scan with BFS savings.
+    // A small resident World may still admit an active-change cache for tests
+    // and genuinely small workloads; this is a cost policy, not a proof rule.
+    const auto side = static_cast<std::size_t>(config_.chunk_size);
+    const auto resident_cells = cache->column_order.size() * side * side;
+    if (!pressure_->gas_fixed_point && resident_cells >= (1U << 16U) &&
+        total < resident_cells / 4U) {
+        cache->gas_components.clear();
+        return;
+    }
+    // No independently stable sealed compartment: do not spend a complete
+    // resident-cell pass building an empty certificate table.
+    if (cache->gas_components.empty()) return;
     std::sort(cache->gas_components.begin(), cache->gas_components.end(), [](const auto& a, const auto& b) { return a.id < b.id; });
     std::size_t offset = 0;
     for (std::size_t i = 0; i < cache->gas_components.size(); ++i) {
