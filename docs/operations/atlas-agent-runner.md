@@ -17,8 +17,7 @@ related-documents: [github-development-and-release.md, documentation-maintenance
 USD 0.0012, on the bundled synthetic fixture, plus a critique-only run and an owner-directed editing run (7 validated
 batches, 66 rectangles, real Godot before/after cycle, about USD 0.004) on real `lumen-fault` art. Not yet verified:
 that those edits are artistically better (human lane review), the optional Costs API cross-check, and a reconciliation with the billing dashboard. The Godot capture hand-off
-follows the documented contract of [#498](https://github.com/techrote/cybersand/issues/498) but has only been
-exercised with a contract double, not with real Godot output. No schedule is activated and no ChatGPT scheduled
+follows [#498](https://github.com/techrote/cybersand/issues/498) and **has been exercised locally with genuine Godot captures** on real Atlas art (see runs 3–4). Those real-pixel edits still failed human-quality acceptance; the complete hosted live art pipeline is not yet qualified. No schedule is activated and no ChatGPT scheduled
 chat is replaced.
 
 ## What it is, in plain words
@@ -49,6 +48,10 @@ python3 tools/atlas_agent_runner.py run --atlas-root /abs/art-checkout --collect
 
 Output directory contents: `receipt.json` (sealed), `patch.diff` (only if edits were made), `tool-log.jsonl`,
 `transcript.jsonl`. The last stdout line is `ATLAS_AGENT_RESULT {json}`.
+
+### Live execution security boundary (2026-11-07 qualification)
+
+The hosted `workflow_dispatch` path permits **manual live runs against the synthetic fixture only**, with the existing explicit spending authorisation/credit-attestation gates. A live GitHub Actions run with `source=atlas-ref` fails input validation **before any API credentials are read or chargeable calls are made**: source-supplied Python/Node scripts are pinned by Git blob SHA to reviewed Atlas executables, but a sanitized subprocess environment and script pinning are not an operating-system sandbox. Running these validators under a secret-bearing hosted live process is deliberately withheld until #500 provides separately isolated, no-credentials validation with tested filesystem/network restrictions. The earlier local owner-controlled real-art Responses API smoke remains recorded evidence; no hosted or automatic art-source paid execution is authorised by this document.
 
 ### Manual GitHub Actions run
 

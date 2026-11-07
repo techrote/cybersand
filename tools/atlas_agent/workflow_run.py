@@ -66,6 +66,10 @@ def parse_inputs(env: dict) -> dict:
     if (values["mode"] == "live" and env.get("GITHUB_ACTIONS") == "true"
             and env.get("GITHUB_EVENT_NAME") != "workflow_dispatch"):
         raise ConfigError("charged execution requires a manual workflow_dispatch event")
+    if (values["mode"] == "live" and values["source"] == "atlas-ref"
+            and env.get("GITHUB_ACTIONS") == "true"):
+        raise ConfigError("hosted live Atlas-source execution requires an isolated, no-credentials validator stage; "
+                          "source script pins alone are not an operating-system sandbox")
     if values["model"] and not MODEL.fullmatch(values["model"]):
         raise ConfigError("model contains invalid characters")
     for key in ("max_usd", "ceiling"):

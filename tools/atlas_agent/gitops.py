@@ -154,6 +154,9 @@ def publish_patch(repo: Path, patch_path: Path, expected_head: str, branch: str,
     if push:
         if not remote:
             raise ConfigError("--push requires --remote", "remote_required")
-        git(["push", remote, f"{commit}:refs/heads/{branch}"], repo, timeout=180)  # new ref only, never forced
+        # Atomic create-only remote update. A rival can create this ref after
+        # ls-remote; expecting an empty old OID prevents fast-forwarding it.
+        git(["push", f"--force-with-lease=refs/heads/{branch}:",
+             remote, f"{commit}:refs/heads/{branch}"], repo, timeout=180)
         result["pushed"] = True
     return result

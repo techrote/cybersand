@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """CyberSand Atlas credit-aware Responses API agent runner (MAP-AUTO-02 / #499).
 
-See docs/tools/atlas-agent-runner.md. Subcommands: run, credit-check, verify-receipt, publish.
+See docs/operations/atlas-agent-runner.md. Subcommands: run, credit-check, verify-receipt, publish.
 """
 from __future__ import annotations
 
