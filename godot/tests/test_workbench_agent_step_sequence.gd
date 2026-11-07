@@ -154,6 +154,17 @@ func run() -> void:
 	check(final_snapshot.tick_index==initial_tick+128
 		and final_snapshot.paused and not final_snapshot.simulation_failed,
 		"native completed tick total differs from ACKs")
+	# Original OpenGL viewport evidence; image is a visual receipt, not
+	# independent proof of matching native material IDs. #526 owns that join.
+	var image_dir: String = OS.get_environment("WB_AGENT_527_IMAGE_DIR")
+	if not image_dir.is_empty():
+		await RenderingServer.frame_post_draw
+		var image: Image = main.get_viewport().get_texture().get_image()
+		if check(image != null and not image.is_empty(),
+				"actual OpenGL viewport capture returned no image"):
+			check(image.save_png(image_dir.path_join(
+					"actual-paused-native-after-128-ticks.png")) == OK,
+				"could not preserve original workbench PNG")
 	print("WB_AGENT_527_STEP_RESULT " + JSON.stringify({
 		"checks":checks,"failures":failures,
 		"world_generation":final_snapshot.render_world_generation,
