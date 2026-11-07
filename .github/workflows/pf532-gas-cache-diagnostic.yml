@@ -1,17 +1,5 @@
 name: PF532 bounded gas-cache admission diagnostic
 on:
-  push:
-    branches: [sol/pf-gas-selective-bootstrap-20261107]
-    paths:
-      - '.github/workflows/pf532-gas-cache-diagnostic.yml'
-      - 'native/include/cybersand/pressure_optimization.hpp'
-      - 'native/src/world_pressure.inc'
-      - 'native/src/world_pressure_cache.inc'
-      - 'native/src/world_pressure_cache_state.inc'
-      - 'native/src/world_pressure_gas_cache.inc'
-      - 'native/bench/pf532_gas_cache_input_replay.cpp'
-      - 'tools/ci/pf532_emit_native_replay_tape.py'
-      - 'tools/ci/pf532_instrument_native_replay_diag.py'
   workflow_dispatch:
 permissions:
   contents: read
