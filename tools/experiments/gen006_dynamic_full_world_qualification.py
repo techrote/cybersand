@@ -87,6 +87,7 @@ def run() -> None:
         (OUTPUT / f"workers-{configured}.stdout").write_text(result.stdout, encoding="utf-8")
         (OUTPUT / f"workers-{configured}.stderr").write_text(result.stderr, encoding="utf-8")
         markers = (
+            f"GEN006_DYNAMIC_SELECTIVE_CAPACITY_HOLD_PASS configured_workers={configured} ",
             f"GEN006_DYNAMIC_COMPLETE_RESIDENT_BUNDLE_PASS configured_workers={configured} ",
             f"GEN006_DYNAMIC_ATOMIC_CROSS_SEAM_EDIT_PASS configured_workers={configured} ",
             f"GEN006_DYNAMIC_PRIVATE_NATIVE_TICKS_PASS configured_workers={configured} ",
