@@ -37,6 +37,7 @@ func wait_for(test: Callable, description: String) -> bool:
 
 
 func issue(command: Dictionary) -> Dictionary:
+	command["schema_version"] = 1
 	var serial: int = worker.queue_agent_authoring_command(command)
 	if not check(serial > 0,"owner rejected request admission: "+str(command.get("action",""))):
 		return {}
