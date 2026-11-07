@@ -1,0 +1,115 @@
+{
+  "schema": "mat354.source-intake.v1",
+  "review_date": "2026-11-04",
+  "accepted_source": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "production_tree": "36ce5a01e754a141c321f41cac7f1c6b6059c371",
+  "pull_requests": [
+    {
+      "number": 347,
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "branch": "sol-detach-001-current-main",
+      "head": "5b9b5a982e4638f4609309f996b92825d3dc36e4",
+      "merge_commit": null,
+      "url": "https://github.com/techrote/cybersand/pull/347",
+      "updated_at": "2026-11-04T01:09:29Z"
+    },
+    {
+      "number": 357,
+      "state": "closed",
+      "merged": true,
+      "draft": false,
+      "branch": "docs/mat-auth-catalogue-plan-20261102",
+      "head": "ad20ca47f11eb8f634b334c87521951400cc1cca",
+      "merge_commit": "3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d",
+      "url": "https://github.com/techrote/cybersand/pull/357",
+      "updated_at": "2026-11-04T01:00:42Z"
+    },
+    {
+      "number": 358,
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "branch": "codex/paired-materials-20261103",
+      "head": "7383946a3ed384966e9e5fb72553fc267f9aacb7",
+      "merge_commit": null,
+      "url": "https://github.com/techrote/cybersand/pull/358",
+      "updated_at": "2026-11-04T01:38:12Z"
+    },
+    {
+      "number": 370,
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "branch": "claude/lcb360-feel",
+      "head": "fbe82bcab8f821aac442c2bf59eb57b279717873",
+      "merge_commit": null,
+      "url": "https://github.com/techrote/cybersand/pull/370",
+      "updated_at": "2026-11-04T07:08:05Z"
+    },
+    {
+      "number": 371,
+      "state": "closed",
+      "merged": true,
+      "draft": false,
+      "branch": "feat/mat-auth-353a-compatibility-shadow-20261104",
+      "head": "d9284cc72a52dc46b5c73f182843d5d0c1602df1",
+      "merge_commit": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+      "url": "https://github.com/techrote/cybersand/pull/371",
+      "updated_at": "2026-11-04T02:21:21Z"
+    }
+  ],
+  "issues": [
+    {
+      "number": 354,
+      "state": "open",
+      "title": "MAT-AUTH-002: Reproduce and correct material cooling/retry liveness under bounded scheduling",
+      "updated_at": "2026-11-02T21:42:33Z",
+      "comments": 0
+    },
+    {
+      "number": 355,
+      "state": "open",
+      "title": "MAT-AUTH-003: Versioned reaction effects, eligibility diagnostics and conflict-safe authoring",
+      "updated_at": "2026-11-02T21:42:35Z",
+      "comments": 0
+    },
+    {
+      "number": 352,
+      "state": "open",
+      "title": "MAT-AUTH-000: Canonical material authoring — architecture, provenance and gated issue chain",
+      "updated_at": "2026-11-04T02:22:07Z",
+      "comments": 1
+    },
+    {
+      "number": 353,
+      "state": "open",
+      "title": "MAT-AUTH-001: Generate canonical material catalogue, capabilities and mirrors with exact parity",
+      "updated_at": "2026-11-04T02:22:08Z",
+      "comments": 2
+    },
+    {
+      "number": 201,
+      "state": "open",
+      "title": "LCB-002: Add bounded pressure caching and pressure-aware dormant liquid arms",
+      "updated_at": "2026-11-04T09:11:44Z",
+      "comments": 1
+    },
+    {
+      "number": 262,
+      "state": "open",
+      "title": "feat(playground): 22 distinct maps, agile players and live NPC tools",
+      "updated_at": "2026-10-26T09:51:48Z",
+      "comments": 1
+    },
+    {
+      "number": 373,
+      "state": "open",
+      "title": "experiment: selective granular arrival response fails joint qualification",
+      "updated_at": "2026-11-04T03:26:50Z",
+      "comments": 0
+    }
+  ],
+  "limitation": "Live observation, not a guarantee against later owner or branch changes. No competing source is imported."
+}

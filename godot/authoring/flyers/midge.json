@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "id": "midge",
+  "name": "Midge",
+  "description": "Ultralight microscout. Tiny hull, quick bursts, free contact tumble.",
+  "color": "99ffe0",
+  "control_mode": "body_thrust",
+  "markings": "scout",
+  "capabilities": {
+    "side_thrusters": false,
+    "reverse_thrust": true,
+    "dispenser_q": 12,
+    "dispenser_e": 8,
+    "dispenser_s": 0
+  },
+  "physics": {
+    "mass": 0.035,
+    "friction": 0.8,
+    "bounce": 0.04,
+    "gravity": 38,
+    "angular_drag": 0.18
+  },
+  "flight": {
+    "acceleration": 180,
+    "speed": 115,
+    "turn_speed": 8,
+    "turn_acceleration": 38,
+    "throttle_slew": 8,
+    "linear_drag": 0.22,
+    "force_limit": 8,
+    "torque_limit": 3,
+    "attitude_gain": 10,
+    "attitude_damping": 4,
+    "trim_angle": 0.4
+  },
+  "hull": {
+    "kind": "rectangle",
+    "size": [
+      4,
+      3
+    ]
+  }
+}

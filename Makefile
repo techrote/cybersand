@@ -70,6 +70,15 @@ $(BUILD_DIR)/test_solid_detachment_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) na
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -pthread $(CORE_SOURCES) native/tests/test_solid_detachment.cpp -o $@
 
 .PHONY: solid-detachment-test solid-detachment-sanitize
+.PHONY: workbench-freed-test workbench-freed-sanitize
+$(BUILD_DIR)/test_workbench_freed: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_workbench_freed.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(RELEASE_FLAGS) -pthread $(CORE_SOURCES) native/tests/test_workbench_freed.cpp -o $@
+$(BUILD_DIR)/test_workbench_freed_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_workbench_freed.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -pthread $(CORE_SOURCES) native/tests/test_workbench_freed.cpp -o $@
+workbench-freed-test: $(BUILD_DIR)/test_workbench_freed
+	./$(BUILD_DIR)/test_workbench_freed
+workbench-freed-sanitize: $(BUILD_DIR)/test_workbench_freed_sanitized
+	ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 ./$(BUILD_DIR)/test_workbench_freed_sanitized
 solid-detachment-test: $(BUILD_DIR)/test_solid_detachment
 	./$(BUILD_DIR)/test_solid_detachment
 

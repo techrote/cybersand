@@ -6,10 +6,62 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-07
 ---
 
 # Data ownership and lifetimes
+
+## Ordinary cut ownership
+
+The [normal-workbench release contract](workbench-freed-objects.md) adds a
+separate bounded native capture lane. One exclusive worker drains accepted
+stroke edits, prepares exact source tuples and retains up to eight active
+records. Brush capture admits up to64 exact shapes in the unchanged shared
+64-proxy budget; native acknowledgement rejects archived interval overlap
+before retirement. Lazy frontier work remains fixed and includes refusals.
+Only main constructs/appends RIDs. Commit retires native source before
+matching terrain, roster/session/epoch and activation are admitted; old RIDs
+and motion survive. Every completed/refused transaction re-primes fresh actual
+sample authority. Synchronous scene retirement invalidates all awaiting
+continuations. CYPS/hash and retained-copy refusals remain binding; deliberate
+whole-canvas replacement retires the entire owner, without active restoration.
+
+## Fresh canvas-body ownership
+
+Version3 file-local passive bodies enter the existing workbench preparation
+transaction as fresh authored Rapier geometry. One main-thread body owns all
+of its rectangle proxies; no original cell payload or native SOL token is
+claimed. The existing native World, immutable roster/sample fence, publication
+and retained replacement/reset contracts apply. Direct input/takeover is
+refused for this passive type. See [format and controls](../systems/player-control-playground.md#file-local-passive-canvas-bodies).
+This adds no E1/E2 capture, freed discovery or restoration authority.
+
+## SOL ordering observation ownership
+
+The [fixed-action ordering test](../systems/solid-detachment.md#fixed-action-correction-and-impulse-ordering--2026-11-06)
+retains value-only primitive readbacks on the main-thread Rapier owner. It does
+not retain mutable World storage or call Godot from pool workers. Six states
+per accepted action keep exact body/epoch/sample identities and primitive
+chronology. Held attempts do not advance the body. Census follows a paused
+exclusive-owner command; recorded native tick gaps are0/1, not restamped as
+synchronized clearance. The negative result grants no authority transfer.
+
+## SOL workbench diagnostic ownership
+
+The [actual-cut workbench experiment](../systems/solid-detachment.md#workbench-law-actual-cuts--2026-11-06)
+attaches once to the same fresh native World before worker ticks. Explicit
+paused token/body-generation/geometry/M/I/placement binding precedes sample1;
+retired provisional history is followed by live sample2 without a warm step.
+The existing main completion fence gates one consumed sample/one Rapier step.
+SOL generation and workbench epoch are separate identities. Only packed values
+cross ownership boundaries; pool workers never call Godot, Rapier/RIDs stay
+main-thread owned. Four census tiles are copied in one paused exclusive-owner
+command with same-tick/hash validation. No mutable storage or new E1/E2 authority.
+
+Review F4–F6 is applied: observation deep copy occurs only for explicit post;
+dropped/failed envelopes retain counters on their captured owner; unexpected
+post application rejection after a step fail-stops before publication. Post
+remains unused/default pre and its physical NO-GO remains historical evidence.
 
 ## SOL frame-local deferred contact
 

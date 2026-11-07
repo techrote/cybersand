@@ -1,0 +1,139 @@
+{
+  "source_commit": "a1291feef11883a150e94e730ace5c126306d63a",
+  "commands": [
+    {
+      "name": "docs",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_docs.py",
+        "--json",
+        "build/workbench-freed/checks-001/docs.json"
+      ],
+      "exit": 0,
+      "seconds": 2.2177150999195874,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-freed\\checks-001\\docs.log",
+      "log_sha256": "81c519ae63906a70bb649d53f98453342ec134b6a0abe0291f8db1a27bb4caa2",
+      "clean": true
+    },
+    {
+      "name": "m11",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_m11_consistency.py",
+        "--json",
+        "build/workbench-freed/checks-001/m11.json"
+      ],
+      "exit": 0,
+      "seconds": 1.1998061001067981,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-freed\\checks-001\\m11.log",
+      "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "clean": true
+    },
+    {
+      "name": "repository",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py",
+        "--require-materialized",
+        "--json",
+        "build/workbench-freed/checks-001/repository.json"
+      ],
+      "exit": 0,
+      "seconds": 3.5965150999836624,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-freed\\checks-001\\repository.log",
+      "log_sha256": "8c7c8dd14079c979700a197d54253daec74dbebb7dc2ff1937750680d4ad00a7",
+      "clean": true
+    },
+    {
+      "name": "material-guard",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 2.835259599960409,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-freed\\checks-001\\material-guard.log",
+      "log_sha256": "57d0a550fdfc2b0b758f8343650ba1e6519fb652924986a1800bd80419582e03",
+      "clean": true
+    },
+    {
+      "name": "compiler",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compiler.py",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.1783104999922216,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-freed\\checks-001\\compiler.log",
+      "log_sha256": "d645a144c75f3517397c704fe81a8efb86fd092f64d93147bcfa35a1afc8bd3b",
+      "clean": true
+    },
+    {
+      "name": "runtime-roster",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/sol281/workbench_check.py",
+        "--runtime-only"
+      ],
+      "exit": 0,
+      "seconds": 0.6240607999498025,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-freed\\checks-001\\runtime-roster.log",
+      "log_sha256": "a9b3e6f939edec578f61c021d7277a3138601379f85f06afdab6db799fa54878",
+      "clean": true
+    },
+    {
+      "name": "retrieval",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "build/workbench-freed/checks-001/retrieval.json"
+      ],
+      "exit": 0,
+      "seconds": 0.6566647000145167,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-freed\\checks-001\\retrieval.log",
+      "log_sha256": "3d635873825090de18bbda03eef76a539b4a1610066cd6a04c466df95c903fca",
+      "clean": true
+    },
+    {
+      "name": "retrieval-freed",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions-workbench-freed.json",
+        "--output",
+        "build/workbench-freed/checks-001/retrieval-freed.json"
+      ],
+      "exit": 0,
+      "seconds": 0.4686347000533715,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-freed\\checks-001\\retrieval-freed.log",
+      "log_sha256": "3f86eb71682779549cfb35f47ca1ac708aa8ed30af5cd32da662d3bd180abf5a",
+      "clean": true
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.04866310011129826,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-freed\\checks-001\\diff-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "clean": true
+    }
+  ]
+}

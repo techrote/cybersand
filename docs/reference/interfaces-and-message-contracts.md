@@ -6,10 +6,71 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-07
 ---
 
 # Interfaces and message contracts
+
+## Workbench cut protocol and version4 starts
+
+`CyberNativeCellWorld.workbench_cut_command` is a copied-value adapter for the
+exclusive worker. `cybersand.workbench-cut.v1` supports begin/next/acknowledge/
+commit/finalize/cancel/end/fail. One pending command/reply carries a monotonic
+request ID and World generation; native tokens bind full tuples, geometry,
+source tick/revision and body reservation. Native `body_id` names the first
+mask proxy, while workbench instance/physical-body IDs remain separate.
+The complete prospective roster is validated before retirement. End re-primes
+the unchanged/current roster even after zero release or begin refusal.
+Replies include cumulative `frontier_checks` (all enumerated face checks),
+`frontier_candidates` (outward directed incidences, including duplicates and
+non-RedBrick/out-of-canvas points), `discovery_attempts`, `frontier_complete`
+and `frontier_limited`. End preserves final counters. Incomplete discovery
+is a refusal, not evidence that remaining geometry is clear.
+No RID or scene object crosses this boundary; see [ownership](../architecture/workbench-freed-objects.md).
+Version4 retains the version2/3 root fields, adding numeric rectangle stamps
+`[x,y,width,height,material]` alongside discs `[x,y,radius,material]`.
+Capture appends exact source-erasure rectangles and one existing `canvas_body`
+record. Replay creates fresh bodies, not archived live material custody.
+
+## Passive canvas body format
+
+Version3 workbench starts preserve the version2 root fields. An actor with
+model `canvas_body` has the usual id/hash/spawn/options plus `body`, exactly
+`{name,rectangles}`. Each rectangle is integer `[x,y,width,height]` in a128-cell
+authoring box;1-64 nonoverlapping rectangles and area<=4096, within the shared
+64-proxy scene limit. This expands canvas-only validation; authored-fleet and
+original diagnostic eight-shape admission remain unchanged. Unit mass/COM/inertia
+derive from the union; arbitrary mass or extra fields refuse. Hashes normalize
+integer-valued JSON coordinates. The physical definition is rederived and
+checked exactly before the scoped mass/compound admission; ordinary catalogue
+mass guards remain unchanged. Native packet/ABI layout is unchanged. The
+[control contract](../systems/player-control-playground.md#file-local-passive-canvas-bodies)
+owns usage. A fresh saved body is not a native SOL aggregate capture.
+
+## SOL coupling diagnostic correction
+
+The reviewed P2 correction restores the existing public distinction before any
+parse/mutation: unavailable World→world_unavailable; failed World→world_failed;
+SOL fence→native_refusal. The actual capacity-failure facade regression now
+asserts world_failed. This changes diagnostic status, not mutation authority.
+The [ordering result](../audits/2026-11-06-sol-workbench-ordering.md) adds
+only test-local primitive-stage values, no production packet/ABI or mode change.
+
+## SOL workbench diagnostic adapter
+
+`diagnostic_enable_solid_workbench()` is diagnostic-only, once before worker
+start/ticks on the existing World. `diagnostic_bind_solid_workbench(Dictionary)`
+requires a paused active SOL aggregate's native token/body generation, matching
+source geometry/original common pose/zero velocity, native M/I, physics epoch,
+main budget20 and no external drive. The first body sample must match; later
+samples follow main's existing parser/identity rules. No general public recovery
+or authority transfer is introduced. Wrong/stale/duplicate bindings refuse.
+
+The worker's optional `snapshot_tiles` command returns four immutable512²
+censuses in one exclusive owner turn. Tick/hash equality and complete coverage
+are checked independently; no1024² single-query limit is weakened. Actual
+workbench packet/application readback is separate from incompatible old SOL
+contact observation. See the [contract and result](../systems/solid-detachment.md#workbench-law-actual-cuts--2026-11-06).
 
 ## SOL experimental order dispositions
 
@@ -770,7 +831,7 @@ World/cache storage or authorizes simulation skipping.
 | Call | Copied result |
 |---|---|
 | `CyberNativeCellWorld.get_liquid_comparison_hash(1 or 2)` | Sixteen hexadecimal digits in the named same-tick or quiescent diagnostic domain; unknown IDs/unavailable World return an empty string. Complete continuation hashes retain their separate meaning. |
-| `CyberNativeCellWorld.inspect_pressure_optimization()` | Schema1 status, actual cached/dormant flags, execution3/identity-encoding1, requested budgets, observed capacities and cumulative work. Unsigned fields are decimal strings; status/version fields are small integers. Attempts count actual proofs; declines include warmup/backoff and obligation deferrals. |
+| `CyberNativeCellWorld.inspect_pressure_optimization()` | Schema1 status, actual cached/dormant flags, execution4/identity-encoding1, requested budgets, observed capacities and cumulative work. Unsigned fields are decimal strings; status/version fields are small integers. Attempts count actual proofs; declines include warmup/backoff and obligation deferrals. |
 | `World::prepared_pressure_head(x, y)` | A value/status copy of the last prepared slot: family unavailable, nonresident, no head, unresolved encoded sentinel, or prepared numeric head. Valid zero differs from no head. It can be stale after transport/edits and unprepared after restore; it is not current cell pressure or certificate authority. |
 | `World::copy_pressure_head_chunk_coordinates(span)` | Required actual resident chunk count in a pressure World, including chunks allocated by gas discovery; sufficient caller storage receives copied coordinates, while a short span receives no partial result. A World without pressure returns zero. The call allocates and mutates nothing; the caller can sort its own roster and verify complete sampling. |
 

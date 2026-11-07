@@ -147,6 +147,32 @@ func shutdown() -> void:
 	clear_state()
 
 
+# Append only while the caller holds both simulation clocks. Existing RIDs,
+# terrain and manual-step counters remain untouched. A pending slot may be
+# removed before the caller commits its native ownership transaction.
+func append_held_body(body: RigidBody2D, size: Vector2) -> bool:
+	if OS.get_thread_caller_id()!=OS.get_main_thread_id() or not _initialized or not is_instance_valid(body) or not body.is_inside_tree() or not body.freeze or not size.is_finite() or size.x<=0 or size.y<=0 or _body_rids.size()>=8: return false
+	var rid: RID=body.get_rid()
+	if not rid.is_valid() or _body_index_by_rid.has(rid) or PhysicsServer2D.body_get_space(rid)!=_space: return false
+	var material: PhysicsMaterial=body.physics_material_override
+	PhysicsServer2D.body_set_param(rid,PhysicsServer2D.BODY_PARAM_FRICTION,material.friction if material!=null else HARD_SURFACE_FRICTION)
+	PhysicsServer2D.body_set_param(rid,PhysicsServer2D.BODY_PARAM_BOUNCE,material.bounce if material!=null else HARD_SURFACE_BOUNCE)
+	PhysicsServer2D.body_set_continuous_collision_detection_mode(rid,PhysicsServer2D.CCD_MODE_CAST_SHAPE)
+	_body_index_by_rid[rid]=_body_rids.size()
+	_bodies.append(body);_body_rids.append(rid);_body_sizes.append(size);_body_masses.append(body.mass)
+	_transforms.append(body.global_transform);_linear_velocities.append(Vector2.ZERO);_angular_velocities.append(0.0)
+	_sleeping.append(false);_applied_sample_serials.append(-1)
+	return true
+
+func discard_held_body(body: RigidBody2D) -> bool:
+	if not _initialized or _bodies.is_empty() or _bodies.back()!=body or not body.freeze: return false
+	_body_index_by_rid.erase(body.get_rid())
+	_bodies.pop_back();_body_rids.pop_back();_transforms.pop_back();_sleeping.pop_back()
+	_body_sizes.resize(_bodies.size());_body_masses.resize(_bodies.size());_linear_velocities.resize(_bodies.size())
+	_angular_velocities.resize(_bodies.size());_applied_sample_serials.resize(_bodies.size())
+	return true
+
+
 func is_initialized() -> bool:
 	return _initialized
 

@@ -21,6 +21,8 @@ const INPUT_ANGULAR_VELOCITY: int = 8
 const INPUT_MASS: int = 9
 const INPUT_SAMPLE_SERIAL: int = 10
 const INPUT_STRIDE: int = 11
+# Workbench proxy sample also carries inertia, COM, friction, dt and session.
+const GCR_INPUT_STRIDE: int = 17
 
 const RESULT_BODY_ID: int = 0
 const RESULT_IMPULSE_X: int = 1

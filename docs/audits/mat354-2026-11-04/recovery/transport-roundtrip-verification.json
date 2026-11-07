@@ -1,0 +1,31 @@
+{
+  "schema": "mat354.recovery-transport-verification.v1",
+  "status": "PASS",
+  "source_commit": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+  "packets": [
+    {
+      "mode": "asan-ubsan",
+      "manifest": "/workspace/scratch/56386914071b/recovery-runs/transport/asan-ubsan/recovered-asan-ubsan.manifest.json",
+      "manifest_sha256": "09100478b8ed7d3ad75d45c808d55155c3f6145da1707178131848e3cfc91d31",
+      "transport_files": 13,
+      "members_verified": 1123,
+      "decoded_bytes": 113239714,
+      "original_campaign_bytes_equal": true,
+      "relocated_raw_reduction_status": "PASS",
+      "reduction_equal_to_prepack": true
+    },
+    {
+      "mode": "tsan",
+      "manifest": "/workspace/scratch/56386914071b/recovery-runs/transport/tsan/recovered-tsan.manifest.json",
+      "manifest_sha256": "a8a9e8a2657dc96f68f6147f242ef46710e75e5a4c85bf5f39fc2327b40187a7",
+      "transport_files": 13,
+      "members_verified": 1123,
+      "decoded_bytes": 113228687,
+      "original_campaign_bytes_equal": true,
+      "relocated_raw_reduction_status": "PASS",
+      "reduction_equal_to_prepack": true
+    }
+  ],
+  "execution_context": "ASan/UBSan, TSan and protected-native control builds/runs overlapped on one local container. Durations and tick counters are descriptive, not a controlled performance comparison. Hosted cross-OS physical parity is separately authenticated.",
+  "leak_check": "UNEXECUTED: explicit --disable-leak-check retained after the historically reported LeakSanitizer environment failure. No leak-free conclusion."
+}

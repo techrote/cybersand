@@ -113,6 +113,7 @@ class CyberDemoBridge final : public RefCounted {
         candidate->set_simulation_region(adapter.world_->simulation_region());
         // All fallible allocation and validation precede these no-throw swaps.
         adapter.world_.swap(candidate);
+        adapter.workbench_cut_ = {};
         adapter.render_exchange_.swap(exchange);
         adapter.retire_liquid_construction_identity();
         ++adapter.liquid_policy_session_generation_;
@@ -626,7 +627,7 @@ public:
         if (adapter.is_null() || token <= 0 || !adapter->pending_liquid_world_ ||
             adapter->pending_liquid_world_->token != static_cast<std::uint64_t>(token)) return true;
         return CyberNativeCellWorld::character_box_collides_in(
-            adapter->pending_liquid_world_->world.get(), origin, size, mode);
+            adapter->pending_liquid_world_->world.get(), adapter->pending_liquid_world_->extent, origin, size, mode);
     }
     [[nodiscard]] Dictionary prepared_liquid_world_values(const Ref<CyberNativeCellWorld>& adapter, std::int64_t token) {
         error_ = String();
@@ -638,14 +639,15 @@ public:
         try {
             const auto& pending = *adapter->pending_liquid_world_;
             PackedByteArray cells;
-            const auto size = static_cast<std::int64_t>(CyberNativeCellWorld::kWorldWidth) * CyberNativeCellWorld::kWorldHeight;
+            const auto size = static_cast<std::int64_t>(pending.extent.x) * pending.extent.y;
             if (cells.resize(size) != OK) throw std::bad_alloc();
-            pending.world->copy_material_cells({0,0,CyberNativeCellWorld::kWorldWidth,CyberNativeCellWorld::kWorldHeight},
-                std::span<std::uint8_t>{cells.ptrw(),static_cast<std::size_t>(size)},CyberNativeCellWorld::kWorldWidth);
+            pending.world->copy_material_cells({0,0,pending.extent.x,pending.extent.y},
+                std::span<std::uint8_t>{cells.ptrw(),static_cast<std::size_t>(size)},pending.extent.x);
             Dictionary out;
             out["token"] = token;
-            out["terrain"] = CyberNativeCellWorld::hard_surface_chunks_from_cells(cells);
+            out["terrain"] = CyberNativeCellWorld::hard_surface_chunks_from_cells(cells,pending.extent);
             out["initial_bodies"] = pending.initial_body_input.duplicate();
+            if (pending.workbench) out["workbench_initial_sample_sha256"] = pending.workbench_initial_digest;
             out["initial_body_state_sha256"] = pending.initial_body_digest;
             out["candidate_physical_state_hash"] = String::num_uint64(pending.world->physical_state_hash(),16).lpad(16,"0");
             // Candidate facts are explicitly pending values. No applied receipt

@@ -1,0 +1,521 @@
+{
+  "build_source": "1b15f34356b310f83c2dd05c5d689f8a1f98c195",
+  "observer_source": "2253fad03eb693affe674c66c9d1d10669c9768e",
+  "platforms": {
+    "windows": {
+      "runtime_sha256": "d2084a0fcee00d8852b1cef4492b7166e7bc56b0fdfb5aba18e9bd742c88f6c3",
+      "rows": [
+        {
+          "worker": 1,
+          "checks": 165,
+          "observed_workers": 1,
+          "cuts": [
+            {
+              "message": "Cut: 1 piece(s) freed; kept as terrain: still attached to Wall, Hard wall or the canvas edge. Erase applied.",
+              "mass": 242.0,
+              "inertia": 12110.3330078125,
+              "position_before": [
+                80.5,
+                50.772727966308594
+              ],
+              "position_after": [
+                80.50536346435547,
+                51.77268981933594
+              ],
+              "members": 242,
+              "shapes": 15,
+              "discovery_attempts": 6,
+              "frontier_checks": 100,
+              "frontier_candidates": 20,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 12,
+              "max_command_usec": 174,
+              "max_publication_usec": 1142
+            },
+            {
+              "message": "Cut: 1 piece(s) freed; kept as terrain: still attached to Wall, Hard wall or the canvas edge. Erase applied.",
+              "mass": 449.0,
+              "inertia": 56606.13671875,
+              "position_before": [
+                81.77171325683594,
+                47.33964538574219
+              ],
+              "position_after": [
+                62.16933822631836,
+                68.44771575927734
+              ],
+              "members": 449,
+              "shapes": 27,
+              "discovery_attempts": 6,
+              "frontier_checks": 100,
+              "frontier_candidates": 20,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 12,
+              "max_command_usec": 323,
+              "max_publication_usec": 1400
+            },
+            {
+              "message": "Cut: 1 piece(s) freed",
+              "mass": 808.0,
+              "inertia": 615578.6875,
+              "position_before": [
+                115.5,
+                115.5
+              ],
+              "position_after": [
+                115.5,
+                156.6297149658203
+              ],
+              "members": 808,
+              "shapes": 64,
+              "discovery_attempts": 1,
+              "frontier_checks": 19208,
+              "frontier_candidates": 392,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 7,
+              "max_command_usec": 434,
+              "max_publication_usec": 1233
+            },
+            {
+              "message": "Cut: 0 piece(s) freed; kept as terrain: shape exceeds the available shared 64 collision-rectangle slots. Erase applied.",
+              "members": null,
+              "shapes": null,
+              "discovery_attempts": 1,
+              "frontier_checks": 100,
+              "frontier_candidates": 20,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 4,
+              "max_command_usec": 259,
+              "max_publication_usec": 976
+            },
+            {
+              "message": "Cut: 0 piece(s) freed; kept as terrain: piece exceeds 1,024 cells or 62-cell width/height. Erase applied.",
+              "members": null,
+              "shapes": null,
+              "discovery_attempts": 3,
+              "frontier_checks": 100,
+              "frontier_candidates": 20,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 6,
+              "max_command_usec": 136,
+              "max_publication_usec": 1018
+            },
+            {
+              "message": "Cut: 0 piece(s) freed; kept as terrain: still attached to Wall, Hard wall or the canvas edge; 64 cut-edge investigations reached; discovery incomplete. Erase applied.",
+              "members": null,
+              "shapes": null,
+              "discovery_attempts": 64,
+              "frontier_checks": 4503,
+              "frontier_candidates": 93,
+              "frontier_complete": false,
+              "frontier_limited": true,
+              "storage_bytes": 278208,
+              "rpc_count": 67,
+              "max_command_usec": 302,
+              "max_publication_usec": 896
+            }
+          ]
+        },
+        {
+          "worker": 4,
+          "checks": 165,
+          "observed_workers": 4,
+          "cuts": [
+            {
+              "message": "Cut: 1 piece(s) freed; kept as terrain: still attached to Wall, Hard wall or the canvas edge. Erase applied.",
+              "mass": 242.0,
+              "inertia": 12110.3330078125,
+              "position_before": [
+                80.5,
+                50.772727966308594
+              ],
+              "position_after": [
+                80.50536346435547,
+                51.77268981933594
+              ],
+              "members": 242,
+              "shapes": 15,
+              "discovery_attempts": 6,
+              "frontier_checks": 100,
+              "frontier_candidates": 20,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 12,
+              "max_command_usec": 175,
+              "max_publication_usec": 1185
+            },
+            {
+              "message": "Cut: 1 piece(s) freed; kept as terrain: still attached to Wall, Hard wall or the canvas edge. Erase applied.",
+              "mass": 449.0,
+              "inertia": 56606.13671875,
+              "position_before": [
+                81.77171325683594,
+                47.33964538574219
+              ],
+              "position_after": [
+                62.16933822631836,
+                68.44771575927734
+              ],
+              "members": 449,
+              "shapes": 27,
+              "discovery_attempts": 6,
+              "frontier_checks": 100,
+              "frontier_candidates": 20,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 12,
+              "max_command_usec": 268,
+              "max_publication_usec": 1214
+            },
+            {
+              "message": "Cut: 1 piece(s) freed",
+              "mass": 808.0,
+              "inertia": 615578.6875,
+              "position_before": [
+                115.5,
+                115.5
+              ],
+              "position_after": [
+                115.5,
+                156.6297149658203
+              ],
+              "members": 808,
+              "shapes": 64,
+              "discovery_attempts": 1,
+              "frontier_checks": 19208,
+              "frontier_candidates": 392,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 7,
+              "max_command_usec": 371,
+              "max_publication_usec": 1124
+            },
+            {
+              "message": "Cut: 0 piece(s) freed; kept as terrain: shape exceeds the available shared 64 collision-rectangle slots. Erase applied.",
+              "members": null,
+              "shapes": null,
+              "discovery_attempts": 1,
+              "frontier_checks": 100,
+              "frontier_candidates": 20,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 4,
+              "max_command_usec": 211,
+              "max_publication_usec": 1133
+            },
+            {
+              "message": "Cut: 0 piece(s) freed; kept as terrain: piece exceeds 1,024 cells or 62-cell width/height. Erase applied.",
+              "members": null,
+              "shapes": null,
+              "discovery_attempts": 3,
+              "frontier_checks": 100,
+              "frontier_candidates": 20,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 6,
+              "max_command_usec": 131,
+              "max_publication_usec": 957
+            },
+            {
+              "message": "Cut: 0 piece(s) freed; kept as terrain: still attached to Wall, Hard wall or the canvas edge; 64 cut-edge investigations reached; discovery incomplete. Erase applied.",
+              "members": null,
+              "shapes": null,
+              "discovery_attempts": 64,
+              "frontier_checks": 4503,
+              "frontier_candidates": 93,
+              "frontier_complete": false,
+              "frontier_limited": true,
+              "storage_bytes": 278208,
+              "rpc_count": 67,
+              "max_command_usec": 287,
+              "max_publication_usec": 813
+            }
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "runtime_sha256": "7dac3e72a11bbc97e1e4b00a9db57d3e8e2781d984db052f724ff41fa23e521d",
+      "rows": [
+        {
+          "worker": 1,
+          "checks": 165,
+          "observed_workers": 1,
+          "cuts": [
+            {
+              "message": "Cut: 1 piece(s) freed; kept as terrain: still attached to Wall, Hard wall or the canvas edge. Erase applied.",
+              "mass": 242.0,
+              "inertia": 12110.3330078125,
+              "position_before": [
+                80.5,
+                50.772727966308594
+              ],
+              "position_after": [
+                80.50536346435547,
+                51.77268981933594
+              ],
+              "members": 242,
+              "shapes": 15,
+              "discovery_attempts": 6,
+              "frontier_checks": 100,
+              "frontier_candidates": 20,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 12,
+              "max_command_usec": 873,
+              "max_publication_usec": 1230
+            },
+            {
+              "message": "Cut: 1 piece(s) freed; kept as terrain: still attached to Wall, Hard wall or the canvas edge. Erase applied.",
+              "mass": 449.0,
+              "inertia": 56606.13671875,
+              "position_before": [
+                81.77171325683594,
+                47.33964538574219
+              ],
+              "position_after": [
+                62.16933822631836,
+                68.44771575927734
+              ],
+              "members": 449,
+              "shapes": 27,
+              "discovery_attempts": 6,
+              "frontier_checks": 100,
+              "frontier_candidates": 20,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 12,
+              "max_command_usec": 291,
+              "max_publication_usec": 1192
+            },
+            {
+              "message": "Cut: 1 piece(s) freed",
+              "mass": 808.0,
+              "inertia": 615578.6875,
+              "position_before": [
+                115.5,
+                115.5
+              ],
+              "position_after": [
+                115.5,
+                156.6297149658203
+              ],
+              "members": 808,
+              "shapes": 64,
+              "discovery_attempts": 1,
+              "frontier_checks": 19208,
+              "frontier_candidates": 392,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 7,
+              "max_command_usec": 450,
+              "max_publication_usec": 1232
+            },
+            {
+              "message": "Cut: 0 piece(s) freed; kept as terrain: shape exceeds the available shared 64 collision-rectangle slots. Erase applied.",
+              "members": null,
+              "shapes": null,
+              "discovery_attempts": 1,
+              "frontier_checks": 100,
+              "frontier_candidates": 20,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 4,
+              "max_command_usec": 183,
+              "max_publication_usec": 849
+            },
+            {
+              "message": "Cut: 0 piece(s) freed; kept as terrain: piece exceeds 1,024 cells or 62-cell width/height. Erase applied.",
+              "members": null,
+              "shapes": null,
+              "discovery_attempts": 3,
+              "frontier_checks": 100,
+              "frontier_candidates": 20,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 6,
+              "max_command_usec": 119,
+              "max_publication_usec": 855
+            },
+            {
+              "message": "Cut: 0 piece(s) freed; kept as terrain: still attached to Wall, Hard wall or the canvas edge; 64 cut-edge investigations reached; discovery incomplete. Erase applied.",
+              "members": null,
+              "shapes": null,
+              "discovery_attempts": 64,
+              "frontier_checks": 4503,
+              "frontier_candidates": 93,
+              "frontier_complete": false,
+              "frontier_limited": true,
+              "storage_bytes": 278208,
+              "rpc_count": 67,
+              "max_command_usec": 372,
+              "max_publication_usec": 1006
+            }
+          ]
+        },
+        {
+          "worker": 4,
+          "checks": 165,
+          "observed_workers": 4,
+          "cuts": [
+            {
+              "message": "Cut: 1 piece(s) freed; kept as terrain: still attached to Wall, Hard wall or the canvas edge. Erase applied.",
+              "mass": 242.0,
+              "inertia": 12110.3330078125,
+              "position_before": [
+                80.5,
+                50.772727966308594
+              ],
+              "position_after": [
+                80.50536346435547,
+                51.77268981933594
+              ],
+              "members": 242,
+              "shapes": 15,
+              "discovery_attempts": 6,
+              "frontier_checks": 100,
+              "frontier_candidates": 20,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 12,
+              "max_command_usec": 903,
+              "max_publication_usec": 1215
+            },
+            {
+              "message": "Cut: 1 piece(s) freed; kept as terrain: still attached to Wall, Hard wall or the canvas edge. Erase applied.",
+              "mass": 449.0,
+              "inertia": 56606.13671875,
+              "position_before": [
+                81.77171325683594,
+                47.33964538574219
+              ],
+              "position_after": [
+                62.16933822631836,
+                68.44771575927734
+              ],
+              "members": 449,
+              "shapes": 27,
+              "discovery_attempts": 6,
+              "frontier_checks": 100,
+              "frontier_candidates": 20,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 12,
+              "max_command_usec": 367,
+              "max_publication_usec": 1439
+            },
+            {
+              "message": "Cut: 1 piece(s) freed",
+              "mass": 808.0,
+              "inertia": 615578.6875,
+              "position_before": [
+                115.5,
+                115.5
+              ],
+              "position_after": [
+                115.5,
+                156.6297149658203
+              ],
+              "members": 808,
+              "shapes": 64,
+              "discovery_attempts": 1,
+              "frontier_checks": 19208,
+              "frontier_candidates": 392,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 7,
+              "max_command_usec": 776,
+              "max_publication_usec": 1278
+            },
+            {
+              "message": "Cut: 0 piece(s) freed; kept as terrain: shape exceeds the available shared 64 collision-rectangle slots. Erase applied.",
+              "members": null,
+              "shapes": null,
+              "discovery_attempts": 1,
+              "frontier_checks": 100,
+              "frontier_candidates": 20,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 4,
+              "max_command_usec": 448,
+              "max_publication_usec": 375
+            },
+            {
+              "message": "Cut: 0 piece(s) freed; kept as terrain: piece exceeds 1,024 cells or 62-cell width/height. Erase applied.",
+              "members": null,
+              "shapes": null,
+              "discovery_attempts": 3,
+              "frontier_checks": 100,
+              "frontier_candidates": 20,
+              "frontier_complete": true,
+              "frontier_limited": false,
+              "storage_bytes": 278208,
+              "rpc_count": 6,
+              "max_command_usec": 173,
+              "max_publication_usec": 1040
+            },
+            {
+              "message": "Cut: 0 piece(s) freed; kept as terrain: still attached to Wall, Hard wall or the canvas edge; 64 cut-edge investigations reached; discovery incomplete. Erase applied.",
+              "members": null,
+              "shapes": null,
+              "discovery_attempts": 64,
+              "frontier_checks": 4503,
+              "frontier_candidates": 93,
+              "frontier_complete": false,
+              "frontier_limited": true,
+              "storage_bytes": 278208,
+              "rpc_count": 67,
+              "max_command_usec": 279,
+              "max_publication_usec": 897
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "native": {
+    "checks": 1246,
+    "original_checks": 19338,
+    "optimized": true,
+    "strict_asan_ubsan": true,
+    "leak_detection": false
+  },
+  "retained_failures": {
+    "initial_host_fixture_failures": 4,
+    "development_observer_input_queue_failures": 15,
+    "linux_abi_floor": "NO-GO",
+    "msvc": "UNAVAILABLE",
+    "instrumented_extension_host_sanitizers": "UNAVAILABLE",
+    "original_SOL_clearance": "NO-GO"
+  },
+  "resource": {
+    "bytes": 271796372,
+    "free_bytes": 15518691328,
+    "cap_bytes": 1073741824,
+    "minimum_free_bytes": 5368709120
+  }
+}

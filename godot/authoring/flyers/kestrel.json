@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "id": "kestrel",
+  "name": "Kestrel",
+  "description": "Agile field drone. A balanced explorer with a forgiving airbrake.",
+  "color": "ffcb7d",
+  "control_mode": "body_thrust",
+  "markings": "scout",
+  "capabilities": {
+    "side_thrusters": true,
+    "reverse_thrust": false,
+    "dispenser_q": 0,
+    "dispenser_e": 0,
+    "dispenser_s": 26
+  },
+  "physics": {
+    "mass": 0.1,
+    "friction": 0.8,
+    "bounce": 0.04,
+    "gravity": 38,
+    "angular_drag": 0.18
+  },
+  "flight": {
+    "acceleration": 145,
+    "speed": 115,
+    "turn_speed": 4.8,
+    "turn_acceleration": 20,
+    "throttle_slew": 5,
+    "linear_drag": 0.35,
+    "force_limit": 18,
+    "torque_limit": 22,
+    "attitude_gain": 10,
+    "attitude_damping": 4,
+    "trim_angle": 0.4
+  },
+  "hull": {
+    "kind": "rectangle",
+    "size": [
+      9,
+      6
+    ]
+  }
+}

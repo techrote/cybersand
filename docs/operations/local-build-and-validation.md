@@ -4,11 +4,94 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-07
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
 # Local build and validation
+
+## Brush-cut successor qualification
+
+Use `python tools/sol281/workbench_brush_cut.py build --run NAME`, then
+`native` and `hosts --build-run NAME`. After test-only observer corrections,
+`observe --reuse-run HOST-RUN --run NAME` checks unchanged production resources
+and compiled inputs, then runs a fresh process/World/session for each host and
+worker. Its separate1GiB evidence cap and5GiB reserve leave the original2GiB
+registration unchanged. The [brush dossier](../audits/2026-11-07-workbench-brush-cut.md)
+records165 checks per host/worker, four retained initial fixture failures,
+1,246 new and19,338 original optimized/strict native checks. Do not relabel
+old rectangle-fixture results as coverage for ordinary painting.
+
+## Initial ordinary workbench cutting qualification
+
+Use `python tools/sol281/workbench_freed.py build --run NAME`, then its
+`native`, `hosts --build-run NAME` and `observe --reuse-run HOST-RUN` modes.
+Every run uses a new output directory, exact source inventory and command/log
+receipt. Observe reuses byte-checked immutable project resources with a fresh
+process/World/session; it avoids extra copies under the2GiB/5GiB resource
+contract. Core Make targets are `workbench-freed-test` and
+`workbench-freed-sanitize`; actual registered compiler flags are in receipts.
+See the [dossier](../audits/2026-11-07-workbench-freed-objects.md) for83-check
+worker1/4 suites on both hosts,52-check lifecycle suites,1,184/19,338 optimized
+and strict native checks,118 material tests and parity. Windows is LLVM-MinGW;
+MSVC and instrumented extension-host sanitizers remain unavailable. Linux ABI
+floor still fails. Source/runtime identity checks are separate from acceptance.
+
+## Fresh workbench canvas qualification
+
+`test_workbench_canvas_body.gd` exercises normal named save/load, four actual
+passive bodies, native mode/proxies/M/I, passive refusal, live motion, step and
+restore. `test_workbench_canvas_start.gd` checks ordinary startup with
+`--workbench --workbench-start=NAME`. Both actual hosts pass, alongside retained
+fleet-session/canvas/pilot UI suites; Windows graphical viewport capture is
+separate. Native93 inputs and retained P2 binaries are unchanged, so no native
+rebuild is claimed. [Dossier](../audits/2026-11-06-sol-fresh-canvas.md) records
+failed observer iterations, hashes and the continuing Linux-floor/original SOL
+limits. Leave the owner's interactive workbench open.
+
+## SOL fixed-action ordering registration — 2026-11-06
+
+The [new actual-cut ordering dossier](../audits/2026-11-06-sol-workbench-ordering.md)
+records P2 builds at9a78d136, source13a9ec68 qualification/matrix and96 episodes
+/69,120 steps, with fixed M/I, gravity/damping and caps. Use
+`workbench_order_live.py --run NEW_SMOKE --build NEW_BUILD --smoke`, then
+`--run NEW_MATRIX --build NEW_BUILD --qualification NEW_SMOKE`;
+`workbench_order_reduce.py --run NEW_MATRIX` evaluates the frozen rule.
+`workbench_order_check.py --run NEW_CHECK` runs separate exact-head docs/M11,
+materialized repository, material guard/compiler, runtime93-input roster,
+focused adverse observers and original/additive retrieval gates.
+
+Reversal is physical NO-GO; four actual P2 facade runs pass3,260 checks each.
+All new artifacts share2GiB cap/5GiB reserve, with project/report leases and
+lossless authenticated archives. Full native source/build and actual loaded
+engine/Rapier identities are separate from scientific success. The unchanged
+Linux floor checker fails GLIBC2.35/GLIBCXX3.4.31. Actual Windows LLVM-MinGW and
+WSL Ubuntu24.04 are not MSVC/full-release/portable-floor acceptance. Historical
+core ASan/UBSan results are authenticated unchanged-source evidence, not reruns.
+The old collections and source qualifiers stay intact. No original CPU or60Hz
+claim; keep Draft.
+
+## SOL workbench law qualification — 2026-11-06
+
+Use `python tools/sol281/workbench_build.py --run NEW_BUILD`, then
+`python tools/sol281/workbench_live.py --run NEW_SMOKE --build NEW_BUILD --smoke --quick`.
+Run `workbench_live.py --run NEW_MATRIX --build NEW_BUILD` for registered144 fresh
+episodes; reduce with `workbench_reduce.py --run NEW_MATRIX`. Clean source,
+parent/main ancestry, pinned SDK/dependencies/engines, full native/material input
+maps and source equality are required. Preserve raw failure collections; no
+reduced denominator or source substitution. Collection2GiB, build2GiB, free5GiB
+reserve and lossless archived raw reports are registered before execution.
+
+Actual Windows LLVM-MinGW and WSL Linux builds/hosts pass scoped controls; no
+MSVC claim. New runtimes have exact93-input native rosters and fresh source-bound
+provenance, not inherited main UI/release acceptance. Linux's unchanged runtime
+floor check fails at GLIBC2.35/GLIBCXX3.4.31 against2.34/3.4.30; this remains a compatibility
+blocker. Native optimized/strict sanitizer/material qualification is separate
+from uninstrumented actual Godot/Rapier execution. Workbench wall pacing is not
+the original24×3 SOL CPU gate. Run `workbench_check.py --run NEW_CHECKS` at a clean
+head for docs/M11/materialized repository/material, focused adverse/geometry,
+original/additive retrieval and diff checks. The [dossier](../audits/2026-11-06-sol-workbench-law.md)
+records sources, commands, hashes, repeated NO-GO and missing gates.
 
 ## SOL contact ordering qualification — 2026-11-06
 

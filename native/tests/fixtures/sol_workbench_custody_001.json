@@ -1,0 +1,7 @@
+{
+  "registration":"SOL-WORKBENCH-CUSTODY-001",
+  "before_scientific_matrix":true,
+  "archive":"Godot writes compact full-precision JSON to a uniquely owned staging path. Driver records original SHA256/size, gzip-compresses without data changes, verifies byte-for-byte decompression from the written archive, then retires ONLY that new staging file. Archive SHA256 and raw SHA256/size are retained; every raw byte remains recoverable. No old artifacts/collections are removed.",
+  "bounds":"Original2GiB collection cap and5GiB free reserve unchanged, including retained native qualification. Reserve32MiB per next report before launch; at most two host staging files exist. Native build intermediate2GiB bound remains separate.",
+  "measurements":"Capture actual default liquid-policy readback once per endpoint and source-bound native timing at consumption. Water FreeMass conservation uses stored mass, not water occupied-cell count; granular/hard cell quantities remain exact. Workbench applied impulse/torque must agree with before/after backend states within16 float32 state ULPs propagated through actual M/I; correction clipping is accounted separately. This is an observer admission bound, not a force/state clamp. No physical rest/burial threshold or decision-rule change."
+}

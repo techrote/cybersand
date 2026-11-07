@@ -4,11 +4,27 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-07
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 ---
 
 # Configuration reference
+
+## Normal workbench release bounds
+
+The [normal cut lane](../architecture/workbench-freed-objects.md) admits
+256 erase dabs of radius at most24,64 actual bounded investigations, eight
+active bodies and64 total proxies. Lazy frontier traversal includes at most
+2,458,624 face checks/50,176 outward directed incidences. Each component has
+at most1,024 members, occupied width/height<=62, a padded64×64 scope and up to
+64 exact proxies sharing the scene budget. The native custody store reports
+278,208 bytes in the brush-qualified builds (previous267,456 is historical).
+The adapter also reserves256 fixed dabs and64 attempted coordinates; response
+aggregation uses512 bin pointers, matching the existing compound workspace.
+No tick/pool job allocates these stores. A persistent status explains refusal.
+See the [brush evidence](../audits/2026-11-07-workbench-brush-cut.md). New bodies retain unit mass/native inertia,
+gravity0.094, damping0.04/0.04, friction0.78,60Hz and budget20. This does not alter
+catalogue weights, coupling caps, liquid policy or accepted defaults.
 
 ## Structural detachment capacities — 2026-11-01
 
@@ -1252,3 +1268,13 @@ memory/work limits. A conservative maximum local candidate charge bounds each
 raster sample. Real geometry/mask checks and canonical ordering still select
 materials. Measured index checks and local chunk durations are distinct from
 these declared logical charges.
+
+## Workbench pressure-column scratch
+
+`WorldConfig::workbench_parallel_pressure_heads` defaults to false. The opt-in workbench reference PressureFlow route reserves at most `maximum_chunk_count` head-column tasks when a native pool is available. Each task includes a private failure category/flag and a fixed **192-byte** diagnostic buffer; overlong failure text ends with an explicit truncation marker. This adds bounded preallocated task storage, not a new per-cell object, runtime tuning control or healthy tick allocation. Capture performs at most the fixed-buffer scan; exception reconstruction happens on the serialized owner after workers join. The private `native/src/world_pressure_column_failure.inc` value and `World::PressureState::HeadColumnTask` own these limits. Cached P1 wake summaries retain serial preparation. See [threading ownership](../architecture/simulation-tick-and-threading.md#desktop-development-workbench-on-394) and the [resulting-source ABI qualification](../audits/2026-11-04-workbench394-ready-validation.md).
+
+## Desktop workbench message bounds
+
+`CyberSimulationWorker.MAX_PENDING_BRUSH_COMMANDS` admits eight pending disc commands and eight pending explicit-footprint commands, each footprint containing at most 4,096 cells. A full queue refuses admission; bulk apparatus must wait for acknowledged publication before sending another batch. This bound also applies to retained desktop scene tools. The Blacksite integration test submits its seam and nine room probes in two acknowledged batches.
+
+The main loop owns the workbench's monotonically increasing session identity, from 1 through 9,007,199,254,740,991. Closing/reconstructing a bridge does not recycle its ID; exhaustion refuses configuration. Only the main thread allocates IDs, and the metadata stores one integer rather than a script/resource reference. Response history retains two samples, permitting age at most one and corner travel at most 0.5 cells. Rendering retains its independently copied publication pose; test census copies do not extend response admission. See the [resulting-source qualification](../audits/2026-11-04-workbench394-ready-validation.md).

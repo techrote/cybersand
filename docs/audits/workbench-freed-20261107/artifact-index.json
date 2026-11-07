@@ -1,0 +1,1775 @@
+{
+  "scope": "Raw local logs/receipts/reports/build outputs including failed attempts; immutable copied project resource hashes are in host receipts, not duplicated here.",
+  "artifacts": [
+    {
+      "path": "build/workbench-freed/checks-001/compiler.log",
+      "sha256": "d645a144c75f3517397c704fe81a8efb86fd092f64d93147bcfa35a1afc8bd3b",
+      "bytes": 83
+    },
+    {
+      "path": "build/workbench-freed/checks-001/compiler.receipt.json",
+      "sha256": "d4010eb7d7f3b8600e29960c8eb171ef5ecd00437bc04843bd2f2704a406d61c",
+      "bytes": 414
+    },
+    {
+      "path": "build/workbench-freed/checks-001/diff-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "build/workbench-freed/checks-001/diff-check.receipt.json",
+      "sha256": "0dbb9da6048695037a1e64ec1347253b80b35d55a2556d77addb335bd09424fc",
+      "bytes": 321
+    },
+    {
+      "path": "build/workbench-freed/checks-001/docs.json",
+      "sha256": "ccfe6cbd8dd065b770dd5c7e06f2f69735b452234bc1869b5f02eb7ecf539bc9",
+      "bytes": 487
+    },
+    {
+      "path": "build/workbench-freed/checks-001/docs.log",
+      "sha256": "81c519ae63906a70bb649d53f98453342ec134b6a0abe0291f8db1a27bb4caa2",
+      "bytes": 733
+    },
+    {
+      "path": "build/workbench-freed/checks-001/docs.receipt.json",
+      "sha256": "86480dd72fa3edafa0deb8a8280e92d99d42b6e9ec5b0a387c217991265eda9d",
+      "bytes": 441
+    },
+    {
+      "path": "build/workbench-freed/checks-001/m11.json",
+      "sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "bytes": 318
+    },
+    {
+      "path": "build/workbench-freed/checks-001/m11.log",
+      "sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "bytes": 318
+    },
+    {
+      "path": "build/workbench-freed/checks-001/m11.receipt.json",
+      "sha256": "6747b4e000de9158ad753d2816f47081e95842ad7547e7e85eff7ea67092fa34",
+      "bytes": 449
+    },
+    {
+      "path": "build/workbench-freed/checks-001/material-guard.log",
+      "sha256": "57d0a550fdfc2b0b758f8343650ba1e6519fb652924986a1800bd80419582e03",
+      "bytes": 4305
+    },
+    {
+      "path": "build/workbench-freed/checks-001/material-guard.receipt.json",
+      "sha256": "a434c3de88c539d9a33a811d1d24885e2b0789c4d6a77854d8534ab780c27e40",
+      "bytes": 430
+    },
+    {
+      "path": "build/workbench-freed/checks-001/receipt.json",
+      "sha256": "d57f86129af160bdd0b51060245f007e8895cb4cd019d6760d9fdefbef4c29ed",
+      "bytes": 4635
+    },
+    {
+      "path": "build/workbench-freed/checks-001/repository.json",
+      "sha256": "8c7c8dd14079c979700a197d54253daec74dbebb7dc2ff1937750680d4ad00a7",
+      "bytes": 2592
+    },
+    {
+      "path": "build/workbench-freed/checks-001/repository.log",
+      "sha256": "8c7c8dd14079c979700a197d54253daec74dbebb7dc2ff1937750680d4ad00a7",
+      "bytes": 2592
+    },
+    {
+      "path": "build/workbench-freed/checks-001/repository.receipt.json",
+      "sha256": "1215180d4f41ec0cdf180770738c8a89b71d85d077e594d2b2a4ef07f5c480f1",
+      "bytes": 495
+    },
+    {
+      "path": "build/workbench-freed/checks-001/retrieval-freed.contexts.md",
+      "sha256": "26077eef7791670082335fb228c1fc93b5a7cd40714611eef9a2e95ffa30122f",
+      "bytes": 26328
+    },
+    {
+      "path": "build/workbench-freed/checks-001/retrieval-freed.json",
+      "sha256": "46be50ca388d3c89569d0819870063cf606c724ce78616f52e6e0b0acc2e9a81",
+      "bytes": 54326
+    },
+    {
+      "path": "build/workbench-freed/checks-001/retrieval-freed.log",
+      "sha256": "3f86eb71682779549cfb35f47ca1ac708aa8ed30af5cd32da662d3bd180abf5a",
+      "bytes": 648
+    },
+    {
+      "path": "build/workbench-freed/checks-001/retrieval-freed.receipt.json",
+      "sha256": "08b995c94dc5267cb0fd2f7a80c85d660f6263be132d65041f1b641cecc0f2c1",
+      "bytes": 562
+    },
+    {
+      "path": "build/workbench-freed/checks-001/retrieval.contexts.md",
+      "sha256": "07ece07616094609115e4a9bf7c643e36b6311a9a2cee4d71a8218a646fb0a17",
+      "bytes": 345939
+    },
+    {
+      "path": "build/workbench-freed/checks-001/retrieval.json",
+      "sha256": "cb93b1ea7ae7a8be59fe49e47853cb2b01cad1651bb1630a0d7a025cfd56d00c",
+      "bytes": 415039
+    },
+    {
+      "path": "build/workbench-freed/checks-001/retrieval.log",
+      "sha256": "3d635873825090de18bbda03eef76a539b4a1610066cd6a04c466df95c903fca",
+      "bytes": 4386
+    },
+    {
+      "path": "build/workbench-freed/checks-001/retrieval.receipt.json",
+      "sha256": "6078c520bfd4c5301d9de3fd8efc09bb8b3726923a2cf10e539cbc579123576c",
+      "bytes": 464
+    },
+    {
+      "path": "build/workbench-freed/checks-001/runtime-roster.log",
+      "sha256": "a9b3e6f939edec578f61c021d7277a3138601379f85f06afdab6db799fa54878",
+      "bytes": 172
+    },
+    {
+      "path": "build/workbench-freed/checks-001/runtime-roster.receipt.json",
+      "sha256": "8f17fad78b4d616e8aaad70a42e9ff2e4942e308d0e7fb0ce2587e59b4bc5e29",
+      "bytes": 428
+    },
+    {
+      "path": "build/workbench-freed/controls-001/linux-test_workbench_boundary_retention.log",
+      "sha256": "591ecbd3e84fe7e5b31b2de8f5e0f49fc364a40f22416861c3ea4beb0fa62a3c",
+      "bytes": 3171
+    },
+    {
+      "path": "build/workbench-freed/controls-001/linux-test_workbench_boundary_retention.receipt.json",
+      "sha256": "7be7379241df82319a4aea94c75963a4cad120b1c6b33aa3ab63eea130fa3d60",
+      "bytes": 752
+    },
+    {
+      "path": "build/workbench-freed/controls-001/linux-test_workbench_failure_recovery.log",
+      "sha256": "08e6c5e6fb7d8555647e13fa884c3beb069ab479dea751f1476517ff772ce093",
+      "bytes": 264
+    },
+    {
+      "path": "build/workbench-freed/controls-001/linux-test_workbench_failure_recovery.receipt.json",
+      "sha256": "0c4273a57f0b30324a8fbc18bcb13291bf4397348099e5c9e6897d7c64c4d06d",
+      "bytes": 745
+    },
+    {
+      "path": "build/workbench-freed/controls-001/linux-test_workbench_hard_placement.log",
+      "sha256": "20c993e4b569ea2e16a5a2d3c7a594e0e037c3923381f94623ad3e2b7688b4ff",
+      "bytes": 258
+    },
+    {
+      "path": "build/workbench-freed/controls-001/linux-test_workbench_hard_placement.receipt.json",
+      "sha256": "be83557fa6742536e712474e0da215f7a5b1f9e9cf953ad430882ea8fd5de390",
+      "bytes": 740
+    },
+    {
+      "path": "build/workbench-freed/controls-001/linux-test_workbench_retained_pressure.log",
+      "sha256": "3a6a19b8a36e99e6592b9ee6743b3b0a566fe31ae1a43fee1ab665783d939428",
+      "bytes": 280
+    },
+    {
+      "path": "build/workbench-freed/controls-001/linux-test_workbench_retained_pressure.receipt.json",
+      "sha256": "4dd22cc8f7ce6854ec799b242c966a89b5d6adf0cf02475f6a632435839e74e5",
+      "bytes": 747
+    },
+    {
+      "path": "build/workbench-freed/controls-001/receipt.json",
+      "sha256": "ca285d7b0f9c494150d1a5ef29679e0a9913a5c84aeeb72024f61bfeedb35c6b",
+      "bytes": 6259
+    },
+    {
+      "path": "build/workbench-freed/controls-001/windows-test_workbench_boundary_retention.log",
+      "sha256": "486faa242fded9853af3f83f3a235006317c4946c12ba18ef5fdabf2adb856fc",
+      "bytes": 3178
+    },
+    {
+      "path": "build/workbench-freed/controls-001/windows-test_workbench_boundary_retention.receipt.json",
+      "sha256": "9c3ff337c2eb8698b052032b1753e5f4e5d3b0c850ee13203bcf8c189476d3f4",
+      "bytes": 615
+    },
+    {
+      "path": "build/workbench-freed/controls-001/windows-test_workbench_failure_recovery.log",
+      "sha256": "092338f404816f7596a3d9d8b518d179c4f8bb54f1f65c4e2d450b91bb9911fa",
+      "bytes": 268
+    },
+    {
+      "path": "build/workbench-freed/controls-001/windows-test_workbench_failure_recovery.receipt.json",
+      "sha256": "856dbb5099ae26ea6d0e7d7ec6ec162548a8d456f582218be1c56d368599bf06",
+      "bytes": 610
+    },
+    {
+      "path": "build/workbench-freed/controls-001/windows-test_workbench_hard_placement.log",
+      "sha256": "340180d107b6d009ee07cbec4e4cc25485479f8bcfee450266d3562b6990e842",
+      "bytes": 262
+    },
+    {
+      "path": "build/workbench-freed/controls-001/windows-test_workbench_hard_placement.receipt.json",
+      "sha256": "972ec53fe8737a137c80ddf16a01b2189a4d96476d919e8e441acd96eb04b32f",
+      "bytes": 604
+    },
+    {
+      "path": "build/workbench-freed/controls-001/windows-test_workbench_retained_pressure.log",
+      "sha256": "407abc85b75d4e8f515b3a9dd886eb9ebe9e945b902bc122f28c814a0e0b0a60",
+      "bytes": 284
+    },
+    {
+      "path": "build/workbench-freed/controls-001/windows-test_workbench_retained_pressure.receipt.json",
+      "sha256": "919df15db73a2b405e80f2ddf8d5cf8a8383fcf30e60a5dafb99da908d345b2f",
+      "bytes": 613
+    },
+    {
+      "path": "build/workbench-freed/dev-001/build.log",
+      "sha256": "81ac3288a58d8073ca78b85cf5e9650534f8673b2750fdaed5fb46aafa71675d",
+      "bytes": 1758
+    },
+    {
+      "path": "build/workbench-freed/dev-001/canvas-regression.log",
+      "sha256": "bc19b6d74e76b8028be16b7daa2db935d19728c46837f97eb9a8d143898117d2",
+      "bytes": 261
+    },
+    {
+      "path": "build/workbench-freed/dev-001/debug-host.log",
+      "sha256": "c84a7a8018545349d407d4ef7501a623730149be0392a4c67c91b1830655e516",
+      "bytes": 1683
+    },
+    {
+      "path": "build/workbench-freed/dev-001/debug_freed.gd",
+      "sha256": "d4715b8ee062e82ef493c76bd57c8dce0c59ddadbff0050992964813463b4c74",
+      "bytes": 8258
+    },
+    {
+      "path": "build/workbench-freed/dev-001/godot-import.log",
+      "sha256": "456145cc6d2794b4d5ee3cfc840411eb4b132d8a2db1a7621a6523236c35adc5",
+      "bytes": 37991
+    },
+    {
+      "path": "build/workbench-freed/dev-001/live-region.json",
+      "sha256": "7a4e42cc2b6f253eb696443a82611e6ceeb5886bf5ef2910d3b624b320eb4fe7",
+      "bytes": 63054
+    },
+    {
+      "path": "build/workbench-freed/dev-001/live-region.log",
+      "sha256": "6eb85fb406ec9ea4019aada9aa04f6b8feced1ce0f946d869a4de468857ad4a2",
+      "bytes": 1496
+    },
+    {
+      "path": "build/workbench-freed/dev-001/live_region_debug.gd",
+      "sha256": "1e8cad536678e20f91ddbda82cf916c7c6d2db8a7615722f0accfc13a816a189",
+      "bytes": 10649
+    },
+    {
+      "path": "build/workbench-freed/dev-001/live_region_freed.gd",
+      "sha256": "849780eab4c559e84dbcb023e53344e5b034193220a8165e6ac6688836add93d",
+      "bytes": 10486
+    },
+    {
+      "path": "build/workbench-freed/dev-001/material-compatibility.json",
+      "sha256": "57d0a550fdfc2b0b758f8343650ba1e6519fb652924986a1800bd80419582e03",
+      "bytes": 4305
+    },
+    {
+      "path": "build/workbench-freed/dev-001/native-test",
+      "sha256": "b2f2cbffc6072e7a030d8ba432b0a50c90b430557303a15e771f1ea28d4effa5",
+      "bytes": 866832
+    },
+    {
+      "path": "build/workbench-freed/dev-001/parse-freed.log",
+      "sha256": "d53c18e4ac8861149a7e4f88d80760e79ec39e3fa23935ec0d77ef75f0b89198",
+      "bytes": 225
+    },
+    {
+      "path": "build/workbench-freed/dev-001/restore-debug.log",
+      "sha256": "7677e517c479d8d2e4d3b032b60e6a78049f277bb6150a5cd9d279ddbd57e6bd",
+      "bytes": 1672
+    },
+    {
+      "path": "build/workbench-freed/dev-001/run.log",
+      "sha256": "c784cd0c467c48420647f29a0f4a207374e815b8585bd91848a1102799ac1d96",
+      "bytes": 43
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/engine-hash.log",
+      "sha256": "510afe66a44e7343093617c0349b8a524d5039cdcf48a0630a98e6acf3483710",
+      "bytes": 134
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/engine-hash.receipt.json",
+      "sha256": "e907d818f9ca09588be900536b132626aa673e62c6b4288f41b9d8ee9b27edbf",
+      "bytes": 509
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/freed-w1.json",
+      "sha256": "19e0fc6c569d7f2c029924c0b75757ee767eedd359c4e863463c5eb5dd3bb1a5",
+      "bytes": 131
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/freed-w1.log",
+      "sha256": "604e2a23b5ec2b8d66586af3085376999ae2618ec280660d37bd34df27cc2888",
+      "bytes": 1514
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/freed-w1.receipt.json",
+      "sha256": "f333685eb7ba43467ab362be42a485aeccc61453ac4a6668681ef2ab81a252bd",
+      "bytes": 862
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/freed-w4.json",
+      "sha256": "19e0fc6c569d7f2c029924c0b75757ee767eedd359c4e863463c5eb5dd3bb1a5",
+      "bytes": 131
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/freed-w4.log",
+      "sha256": "604e2a23b5ec2b8d66586af3085376999ae2618ec280660d37bd34df27cc2888",
+      "bytes": 1514
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/freed-w4.receipt.json",
+      "sha256": "4f62c1b8f18b9df615782751cdf5a48548a371743ebf7cd385f3f747f1cfd660",
+      "bytes": 861
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/import.log",
+      "sha256": "b26145250625edb1d9b5858d9c405b9cb1edfc2b5f549f918f79b91df3202574",
+      "bytes": 37454
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/import.receipt.json",
+      "sha256": "c5badec4951bd3b2ac6a937cb3784e6a2ba784eecdbaf5d9964f4ac04cce5d54",
+      "bytes": 658
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/test_workbench_canvas.log",
+      "sha256": "273a5e810e394a743f741ff43fedfb5c87476060a4b47eb632f4da58b9cf428b",
+      "bytes": 597
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/test_workbench_canvas.receipt.json",
+      "sha256": "101c0ded0b5c196d0ce9faaf7f6742d5784a5ba76e23b07321cd9a53a60ad9f7",
+      "bytes": 719
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/test_workbench_canvas_body.log",
+      "sha256": "a97443e2438d3c5e39221c08c2657a5d69796e330c9a6265cb42fd9c68fe9ec6",
+      "bytes": 256
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/test_workbench_canvas_body.receipt.json",
+      "sha256": "38dd449d1ac259156d19082b6e072d9c5fcf0d9f67aac36fe3bd5d8a4f3c011f",
+      "bytes": 733
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/test_workbench_fleet_session.log",
+      "sha256": "de1a37723411ff3f440a3a7ffa1857ef7c78f992dfd435ead9e0af40307bae72",
+      "bytes": 258
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/test_workbench_fleet_session.receipt.json",
+      "sha256": "b8b326ae1da280074a80dd920ca19a167db92f7beb3aa7e0af527e7e7e8238dd",
+      "bytes": 740
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/test_workbench_input.log",
+      "sha256": "9429938d6382e7b945217a27ddf1e97c513e7842c9ade2c28efd868b4cac6ed2",
+      "bytes": 1231
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/test_workbench_input.receipt.json",
+      "sha256": "0009c7b987354808704f364610d142c9ac7dd0995fdf4a581036878f903da504",
+      "bytes": 715
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/test_workbench_pilot_ui.log",
+      "sha256": "05649b61218a5b7717c7bf1eb34041fc5811fdfe9cf24215b11008d0cfa961b7",
+      "bytes": 846
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/linux/test_workbench_pilot_ui.receipt.json",
+      "sha256": "828118b386a30cc010c769aed0b738c29416f4b3232407f26f0394a942dec1e1",
+      "bytes": 724
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/receipt.json",
+      "sha256": "0f510793ff98e8290ffeacc99b399742929ef3649900199d849629df27ff9ad5",
+      "bytes": 218610
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/freed-w1.json",
+      "sha256": "19e0fc6c569d7f2c029924c0b75757ee767eedd359c4e863463c5eb5dd3bb1a5",
+      "bytes": 131
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/freed-w1.log",
+      "sha256": "f497f24e4732c0c34bfb75070cce2135c73008f8646ae4570a5d25fa1da6b25c",
+      "bytes": 1512
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/freed-w1.receipt.json",
+      "sha256": "47404d859cdf6f6717dfc17955dc3d2339da603ae0e72ba890746d95d8084910",
+      "bytes": 544
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/freed-w4.json",
+      "sha256": "19e0fc6c569d7f2c029924c0b75757ee767eedd359c4e863463c5eb5dd3bb1a5",
+      "bytes": 131
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/freed-w4.log",
+      "sha256": "f497f24e4732c0c34bfb75070cce2135c73008f8646ae4570a5d25fa1da6b25c",
+      "bytes": 1512
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/freed-w4.receipt.json",
+      "sha256": "ea8f7c1e0bb502db3b7184b2eb6611d00ca4800872782266bc88f459875c5b46",
+      "bytes": 544
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/import.log",
+      "sha256": "33d48ce433eb364311567865c4baaccca18410c6d9c6110f5b96bec50e920dfa",
+      "bytes": 38049
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/import.receipt.json",
+      "sha256": "a72e1f617a01e4cef1d36d36395f5c6740ed0e6a51e73185912ab91d209c3abe",
+      "bytes": 509
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/test_workbench_canvas.log",
+      "sha256": "adb4383649eeaff4364d773bf60645edf19f0b20cfc84e53db8ac6816b06d843",
+      "bytes": 600
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/test_workbench_canvas.receipt.json",
+      "sha256": "7ef20b6f3744498d718802348ba2b862149e07ff581695a3c9bd8c5c1de9581d",
+      "bytes": 570
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/test_workbench_canvas_body.log",
+      "sha256": "45cde948d2686b3a44c1f27d7b1eceac30e8f9f06e6f24bc3851002dca963bfa",
+      "bytes": 260
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/test_workbench_canvas_body.receipt.json",
+      "sha256": "a1d08574cb48eba9b8971c60f66f5a293a2c87266a994fca6f64c51fd659e91d",
+      "bytes": 584
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/test_workbench_fleet_session.log",
+      "sha256": "634f905ac03e58d4737bde7eb8adf6ec8d661ce01f04c9b26bb3fe581f4a3724",
+      "bytes": 262
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/test_workbench_fleet_session.receipt.json",
+      "sha256": "b090c1757addb714f381cfaab5692074edf0120562166a6445256e9c18a8b231",
+      "bytes": 591
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/test_workbench_input.log",
+      "sha256": "e16e911a5bd1bcdcee5a4056f5be3ed29a32fa60e2a0381c133bb690a7479e42",
+      "bytes": 1235
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/test_workbench_input.receipt.json",
+      "sha256": "0bd5aa62285a6c3d6a8adeb1ca929ac1f0d27bc79bcfb5c6612b60966769ad78",
+      "bytes": 566
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/test_workbench_pilot_ui.log",
+      "sha256": "e552b6c8178f7e38044fd393dd14d44f2a98078dcdbef20afdf2eab323d76600",
+      "bytes": 865
+    },
+    {
+      "path": "build/workbench-freed/hosts-001/windows/test_workbench_pilot_ui.receipt.json",
+      "sha256": "963800fd47be74174ce5c6df39f6e7af7d415487ded32e779d975afbb6a4e9f9",
+      "bytes": 575
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/engine-hash.log",
+      "sha256": "510afe66a44e7343093617c0349b8a524d5039cdcf48a0630a98e6acf3483710",
+      "bytes": 134
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/engine-hash.receipt.json",
+      "sha256": "45968ac8db902d3eb30066df836f93ba90d244a3b45d98d3fb0db038a0d8fe65",
+      "bytes": 509
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/freed-w1.json",
+      "sha256": "2d1469bb322b8a04d548814d3686bebca4c7c8691a0415847404347bfcb70e09",
+      "bytes": 13551
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/freed-w1.log",
+      "sha256": "0f0ba78f4c0f25973d5ecc3731820f4eccae0a483ea557492e0c5eabd911cc63",
+      "bytes": 651
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/freed-w1.receipt.json",
+      "sha256": "fb1b5f1219f3f1ce04bd19e998e214212a6b275631e323499b991d122b56d982",
+      "bytes": 861
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/freed-w4.json",
+      "sha256": "2d1469bb322b8a04d548814d3686bebca4c7c8691a0415847404347bfcb70e09",
+      "bytes": 13551
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/freed-w4.log",
+      "sha256": "0f0ba78f4c0f25973d5ecc3731820f4eccae0a483ea557492e0c5eabd911cc63",
+      "bytes": 651
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/freed-w4.receipt.json",
+      "sha256": "3f7719b61073d9bc17d4b57471817486455ff440a45a2f9ee2789fe6501e554b",
+      "bytes": 861
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/import.log",
+      "sha256": "f343874d910484058914cda3898e6f5ebbb13f0818b8acf2c9450c8353e9b6f7",
+      "bytes": 37512
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/import.receipt.json",
+      "sha256": "43f340c3921269b22769229606dd2930ae82759eeab564945d186e093d886ac6",
+      "bytes": 658
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/test_workbench_canvas.log",
+      "sha256": "b0ae545a5dc1a0072fa623f0356a1602b3cb4512fa4360cad359bc7312065d9e",
+      "bytes": 597
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/test_workbench_canvas.receipt.json",
+      "sha256": "1e33309d1987e3045d62ed396faaafa4c2d1811e3ff68f7a652ffaf12f5b36fa",
+      "bytes": 718
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/test_workbench_canvas_body.log",
+      "sha256": "a97443e2438d3c5e39221c08c2657a5d69796e330c9a6265cb42fd9c68fe9ec6",
+      "bytes": 256
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/test_workbench_canvas_body.receipt.json",
+      "sha256": "4f7cd44500a439703bd9a7d75285ca9d1daaa2cb47a29cdc257c22d46602c1fe",
+      "bytes": 734
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/test_workbench_cut_lifecycle.log",
+      "sha256": "88d0bd339ffe379c8ac0400a3c48a61df7d73fd1036e9cb8b81e7a949f2de078",
+      "bytes": 1722
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/test_workbench_cut_lifecycle.receipt.json",
+      "sha256": "438047c0e2ae2ef587496bbae437cca17fd88e13ab8233c33b57acabf52a15f7",
+      "bytes": 741
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/test_workbench_fleet_session.log",
+      "sha256": "de1a37723411ff3f440a3a7ffa1857ef7c78f992dfd435ead9e0af40307bae72",
+      "bytes": 258
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/test_workbench_fleet_session.receipt.json",
+      "sha256": "0ac6dac9f733acc3678aae7cb1e4de2f2bbfded86a6f166e604b9995fb8de1cb",
+      "bytes": 740
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/test_workbench_input.log",
+      "sha256": "2b426c99150af5a9dc71e26b0becc4fa56e112ed88360b6cd7437e6c4d01f926",
+      "bytes": 1231
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/test_workbench_input.receipt.json",
+      "sha256": "c227a04404b270748f5e15db2dd33fc8c785aedeb2590357b32a38f6f36b3b1e",
+      "bytes": 716
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/test_workbench_pilot_ui.log",
+      "sha256": "05649b61218a5b7717c7bf1eb34041fc5811fdfe9cf24215b11008d0cfa961b7",
+      "bytes": 846
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/linux/test_workbench_pilot_ui.receipt.json",
+      "sha256": "a8c550c8d93faadef5e9f3fd9d63d8702b4c0cf5d1756f432806ad07dcfec3e6",
+      "bytes": 725
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/receipt.json",
+      "sha256": "f091ab97fd16e4be23236823e9b4f837bf62b0b9e289e3b372209e1493a35a8a",
+      "bytes": 220522
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/freed-w1.json",
+      "sha256": "2d1469bb322b8a04d548814d3686bebca4c7c8691a0415847404347bfcb70e09",
+      "bytes": 13551
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/freed-w1.log",
+      "sha256": "1670956aee12594386fb859636aa65394debaa1cbd39c296ad5c7223572d7676",
+      "bytes": 661
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/freed-w1.receipt.json",
+      "sha256": "881e05b6ada837c43d8427eaa7906d1c9bb84a30ff31948cb6609933776e125e",
+      "bytes": 543
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/freed-w4.json",
+      "sha256": "2d1469bb322b8a04d548814d3686bebca4c7c8691a0415847404347bfcb70e09",
+      "bytes": 13551
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/freed-w4.log",
+      "sha256": "1670956aee12594386fb859636aa65394debaa1cbd39c296ad5c7223572d7676",
+      "bytes": 661
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/freed-w4.receipt.json",
+      "sha256": "0fe39cf3de5f1b11ef9ea77bf54f9454ddbf3886dd36e957c2796866471f6ae2",
+      "bytes": 543
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/import.log",
+      "sha256": "d760810afc0f5f780a865ec54542e59674c530e9620b3ef5560ef1eee7f04313",
+      "bytes": 38108
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/import.receipt.json",
+      "sha256": "00edf42b2596ad51c641f133ff919efabafc172e5ab8090c6f59c1bf83c812aa",
+      "bytes": 510
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/test_workbench_canvas.log",
+      "sha256": "ea082ff716b731bbc9bdb67307f5430f04abac455144dca334f497665a6fea94",
+      "bytes": 600
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/test_workbench_canvas.receipt.json",
+      "sha256": "0d93aef1462b3564bdf31d601f51896e5005d912f813bca24ad1d1607bf50393",
+      "bytes": 569
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/test_workbench_canvas_body.log",
+      "sha256": "45cde948d2686b3a44c1f27d7b1eceac30e8f9f06e6f24bc3851002dca963bfa",
+      "bytes": 260
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/test_workbench_canvas_body.receipt.json",
+      "sha256": "b469257a5ad181b7b02a315c4bda8460ddef60329df470a0146add850758e0c1",
+      "bytes": 584
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/test_workbench_cut_lifecycle.log",
+      "sha256": "15145a26b132cf9436023ddb90fce65b36e4dae9a2456741545f870746e24cbd",
+      "bytes": 1750
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/test_workbench_cut_lifecycle.receipt.json",
+      "sha256": "64bf07ef8d859607b045c67ff1a7e24559cebb6d458c1a18336985b979d2f8df",
+      "bytes": 592
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/test_workbench_fleet_session.log",
+      "sha256": "634f905ac03e58d4737bde7eb8adf6ec8d661ce01f04c9b26bb3fe581f4a3724",
+      "bytes": 262
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/test_workbench_fleet_session.receipt.json",
+      "sha256": "2fb9741905ada67fde91b49c324409c06584fe1e1c5a2f185306b287baa06ea5",
+      "bytes": 591
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/test_workbench_input.log",
+      "sha256": "08eff6a26d411c2246303bc1098f8e8a0212df7ecd52e7144fbfc7df06a3d4e5",
+      "bytes": 1235
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/test_workbench_input.receipt.json",
+      "sha256": "e18cf1e8be37f6c762a63d2696298e1631480b1c936aafae30a2f60e65944b66",
+      "bytes": 566
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/test_workbench_pilot_ui.log",
+      "sha256": "e552b6c8178f7e38044fd393dd14d44f2a98078dcdbef20afdf2eab323d76600",
+      "bytes": 865
+    },
+    {
+      "path": "build/workbench-freed/hosts-003/windows/test_workbench_pilot_ui.receipt.json",
+      "sha256": "93a3eb8e61580f4c4f0987b776f64d82769bf9e745ff58bbc6b2b3dae521d329",
+      "bytes": 576
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/engine-hash.log",
+      "sha256": "510afe66a44e7343093617c0349b8a524d5039cdcf48a0630a98e6acf3483710",
+      "bytes": 134
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/engine-hash.receipt.json",
+      "sha256": "e5944e9d13b60a3b6b388f1f135402966afcd7805a2eeebd4ae23be13e55602f",
+      "bytes": 508
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/freed-w1.json",
+      "sha256": "6c81e3f4fe3190d025ec3397491845504dc94b58774b72991c976edbbac51cc9",
+      "bytes": 64494
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/freed-w1.log",
+      "sha256": "1e5514693589389f8a77a3890afab9d61b1ee2fb6aeb20267c8ec7b72fe704b2",
+      "bytes": 260
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/freed-w1.receipt.json",
+      "sha256": "c572cc5957efc78a710b72d2d991c41c769d04c1755238e8902be07b2c015cac",
+      "bytes": 861
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/freed-w4.json",
+      "sha256": "644098f7a77b669094a1ce6bd27e29f934d56f149f15404ed4a66ebfa54495b1",
+      "bytes": 64494
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/freed-w4.log",
+      "sha256": "1e5514693589389f8a77a3890afab9d61b1ee2fb6aeb20267c8ec7b72fe704b2",
+      "bytes": 260
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/freed-w4.receipt.json",
+      "sha256": "0b3c964b2f2382495604962787abaad3a6aa72279bcaa46e9f20f06a15a60ab8",
+      "bytes": 861
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/import.log",
+      "sha256": "f343874d910484058914cda3898e6f5ebbb13f0818b8acf2c9450c8353e9b6f7",
+      "bytes": 37512
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/import.receipt.json",
+      "sha256": "8f13b215d98cd2ce41a711ae377587b9bac972d4dd1dcff4df9013cf2e3d5a80",
+      "bytes": 657
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/test_workbench_canvas.log",
+      "sha256": "a1c20d7b584d43aff381e60b55b4577e9c0dae88ddffeea6809d0e24c5200753",
+      "bytes": 597
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/test_workbench_canvas.receipt.json",
+      "sha256": "096c9136cd5018c2ae39b6f4c4bbdc778214864400dfb25647cf949aba729bcd",
+      "bytes": 719
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/test_workbench_canvas_body.log",
+      "sha256": "a97443e2438d3c5e39221c08c2657a5d69796e330c9a6265cb42fd9c68fe9ec6",
+      "bytes": 256
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/test_workbench_canvas_body.receipt.json",
+      "sha256": "646b2de9db96dd74f047ad8814de74b376e3730a5287f3da64488b42aa154cfd",
+      "bytes": 733
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/test_workbench_cut_lifecycle.log",
+      "sha256": "433f98aa4b6d97f503bb2a0ba8ee99624ab5639d497719678768acc4a4956a5b",
+      "bytes": 258
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/test_workbench_cut_lifecycle.receipt.json",
+      "sha256": "2cfa7d69359e79869ba0bb679120e9ce00d1d8b8fa482300e058aa9a5ae980d0",
+      "bytes": 740
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/test_workbench_fleet_session.log",
+      "sha256": "de1a37723411ff3f440a3a7ffa1857ef7c78f992dfd435ead9e0af40307bae72",
+      "bytes": 258
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/test_workbench_fleet_session.receipt.json",
+      "sha256": "a5bbe5bbfb38f3b2a24d91c07aaf46e7e2285519471d76036197f18ffad4c5da",
+      "bytes": 740
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/test_workbench_input.log",
+      "sha256": "194ff939662f1ca70e9f2be13cab0ec67fe13ef3dc2566b1178509b346efc7a8",
+      "bytes": 1231
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/test_workbench_input.receipt.json",
+      "sha256": "f3b88de5ab5a82bc6711cd7d2d434aa9058ba9b7af75c878df0cc9dd38e6728a",
+      "bytes": 716
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/test_workbench_pilot_ui.log",
+      "sha256": "05649b61218a5b7717c7bf1eb34041fc5811fdfe9cf24215b11008d0cfa961b7",
+      "bytes": 846
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/linux/test_workbench_pilot_ui.receipt.json",
+      "sha256": "1e92dfdb7971845ab4c268b8a017ec98e01e10c5f20156a19ebba2d56e31e208",
+      "bytes": 724
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/receipt.json",
+      "sha256": "7cf349635700675d1f9dfcb974375bc7fea52cbceac400191a84a6d98c4b26d1",
+      "bytes": 220515
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/freed-w1.json",
+      "sha256": "63486f868ff51684f8c19a64fd75269ecb3c1cd1d3213f9be88a193078e074ad",
+      "bytes": 64496
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/freed-w1.log",
+      "sha256": "d6dbca4fd4e0912d9f2881c46823a8522e82236b66a0083105764a43d69b4c0e",
+      "bytes": 264
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/freed-w1.receipt.json",
+      "sha256": "ae7ea995366356ef5c6d3df9b1bd1c814bc4173fe6577d613633b3cf88980766",
+      "bytes": 543
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/freed-w4.json",
+      "sha256": "6a8e812bb68ba2ec749049e1abc5ad9476959fa493b892ab143a2b059cdef39e",
+      "bytes": 64493
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/freed-w4.log",
+      "sha256": "d6dbca4fd4e0912d9f2881c46823a8522e82236b66a0083105764a43d69b4c0e",
+      "bytes": 264
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/freed-w4.receipt.json",
+      "sha256": "c9b3d97d6136e7bdcd8b25dcf2a00c9d76615ddcef3f1cdc57a610db6e1cbf8c",
+      "bytes": 543
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/import.log",
+      "sha256": "d760810afc0f5f780a865ec54542e59674c530e9620b3ef5560ef1eee7f04313",
+      "bytes": 38108
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/import.receipt.json",
+      "sha256": "fd4b8f810d8f938a42854d45cb50cd8c2fba18fd243c00328a876570c55b319b",
+      "bytes": 509
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/test_workbench_canvas.log",
+      "sha256": "212c49903f7aab32aac69e7fe9ec1bcf355f36f224a3bcf73a6fbaa5751f9b30",
+      "bytes": 600
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/test_workbench_canvas.receipt.json",
+      "sha256": "c6f9700a46e3a2efa7a20bfe5c2099200f9949f71d5b4209cf78c21106ab2083",
+      "bytes": 570
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/test_workbench_canvas_body.log",
+      "sha256": "45cde948d2686b3a44c1f27d7b1eceac30e8f9f06e6f24bc3851002dca963bfa",
+      "bytes": 260
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/test_workbench_canvas_body.receipt.json",
+      "sha256": "f2db112bf3dfa67e17d97fe45c7d531a3d9831be933c95fa0c8f40bf3fe300d4",
+      "bytes": 584
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/test_workbench_cut_lifecycle.log",
+      "sha256": "0e598e0ef33e91cc512dd500cecc398e8cd7c3afe481579263153a7320714fe4",
+      "bytes": 262
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/test_workbench_cut_lifecycle.receipt.json",
+      "sha256": "e65b266a2a5750e1050ccf2a566a9b8c61cb1621cbe4d06abc941c62f5be9278",
+      "bytes": 590
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/test_workbench_fleet_session.log",
+      "sha256": "634f905ac03e58d4737bde7eb8adf6ec8d661ce01f04c9b26bb3fe581f4a3724",
+      "bytes": 262
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/test_workbench_fleet_session.receipt.json",
+      "sha256": "e9b2becac94f2cd68110b55e8a678d39cbb760e334b9e96eae105750399fe0ac",
+      "bytes": 591
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/test_workbench_input.log",
+      "sha256": "af8a833846b85543ee52ab04198d03f7fa325557626e2dab5c8da10bc7b18c6e",
+      "bytes": 1235
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/test_workbench_input.receipt.json",
+      "sha256": "5884625841728b6610c78664e1e5e0515393e141659af791ac8eb95b2be06607",
+      "bytes": 566
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/test_workbench_pilot_ui.log",
+      "sha256": "e552b6c8178f7e38044fd393dd14d44f2a98078dcdbef20afdf2eab323d76600",
+      "bytes": 865
+    },
+    {
+      "path": "build/workbench-freed/hosts-005/windows/test_workbench_pilot_ui.receipt.json",
+      "sha256": "79d3a99b3ec46688522b4d0b8955afb858ac90d6a884588e153edb688edef455",
+      "bytes": 575
+    },
+    {
+      "path": "build/workbench-freed/material-001/compatibility.log",
+      "sha256": "57d0a550fdfc2b0b758f8343650ba1e6519fb652924986a1800bd80419582e03",
+      "bytes": 4305
+    },
+    {
+      "path": "build/workbench-freed/material-002/compatibility.log",
+      "sha256": "57d0a550fdfc2b0b758f8343650ba1e6519fb652924986a1800bd80419582e03",
+      "bytes": 4305
+    },
+    {
+      "path": "build/workbench-freed/material-002/compatibility.receipt.json",
+      "sha256": "f4a0cc1cc5eeb2d913e35f96b4a0761784ef4118d4cc2c5e37bfd613d643010b",
+      "bytes": 431
+    },
+    {
+      "path": "build/workbench-freed/material-002/compiler.log",
+      "sha256": "d645a144c75f3517397c704fe81a8efb86fd092f64d93147bcfa35a1afc8bd3b",
+      "bytes": 83
+    },
+    {
+      "path": "build/workbench-freed/material-002/compiler.receipt.json",
+      "sha256": "b3a4287d4a48123da993b114d5706ebb01ac1bded188831e09488b19bd321190",
+      "bytes": 417
+    },
+    {
+      "path": "build/workbench-freed/material-002/native-parity.log",
+      "sha256": "20e42f6af3ccd6e3a505e9edc54ec81ee87d18a56f39c370151ce730dfbf6fe2",
+      "bytes": 86
+    },
+    {
+      "path": "build/workbench-freed/material-002/native-parity.receipt.json",
+      "sha256": "87c3bcb9736b707dd1f70ccb6f4747f5752354253237e5aa5e13a1a55be302df",
+      "bytes": 601
+    },
+    {
+      "path": "build/workbench-freed/material-002/receipt.json",
+      "sha256": "de173990814a037fb6e1831ebfee15de1cdf273d7e69feac4d355a3a85875e25",
+      "bytes": 2268
+    },
+    {
+      "path": "build/workbench-freed/material-002/unit-tests.log",
+      "sha256": "96943bf3c9f21b51b9fcabb2765e8927933da039199cead7366eab147215b15e",
+      "bytes": 27957
+    },
+    {
+      "path": "build/workbench-freed/material-002/unit-tests.receipt.json",
+      "sha256": "02df0effbf22c63e2c43bc4f84967ec595eef23c3a3b2069bdc800f499ea6a09",
+      "bytes": 473
+    },
+    {
+      "path": "build/workbench-freed/material-linux-001/native-parity.log",
+      "sha256": "1ed66b9c39af6f2ef9e3586abe68579c3b33cd1f62feda8757a5892724d43f52",
+      "bytes": 361
+    },
+    {
+      "path": "build/workbench-freed/material-linux-001/native-parity.receipt.json",
+      "sha256": "5918980db6f9f3f58455ab2bbb15d4c97bf6450e874c2fab190b757a011eaaea",
+      "bytes": 673
+    },
+    {
+      "path": "build/workbench-freed/material-linux-001/receipt.json",
+      "sha256": "9a8993d86a699279dc8e12f706ac3853feb0588f9ed28b8ada5c8f2682ac1216",
+      "bytes": 1601
+    },
+    {
+      "path": "build/workbench-freed/material-linux-001/unit-tests.log",
+      "sha256": "f2de15190872b22672711d7a78abb6509efbfb02523e59067c68dcb2162b7409",
+      "bytes": 3944
+    },
+    {
+      "path": "build/workbench-freed/material-linux-001/unit-tests.receipt.json",
+      "sha256": "d5422f177994791e684f03993737be56eef5d6e3287023681b0a8569d69e0431",
+      "bytes": 616
+    },
+    {
+      "path": "build/workbench-freed/material-linux-002/native-parity.json",
+      "sha256": "51efd4f44c8b8833bb600fe0a6c65467c719b8556e87e4849897e870af7bc38c",
+      "bytes": 15458
+    },
+    {
+      "path": "build/workbench-freed/material-linux-002/native-parity.log",
+      "sha256": "51efd4f44c8b8833bb600fe0a6c65467c719b8556e87e4849897e870af7bc38c",
+      "bytes": 15458
+    },
+    {
+      "path": "build/workbench-freed/material-linux-002/native-parity.receipt.json",
+      "sha256": "716188f4dba79a9de3d435bd806857d8cd0cd5a796826b6d618f65fc82f87564",
+      "bytes": 672
+    },
+    {
+      "path": "build/workbench-freed/material-linux-002/receipt.json",
+      "sha256": "eca38329c69740f947c082dba70bfb5da06b5ca9892901b6424e2597d40a38ea",
+      "bytes": 1721
+    },
+    {
+      "path": "build/workbench-freed/material-linux-002/unit-tests.log",
+      "sha256": "24aa2b84b7d33f9966ccb09869b5ed4c0413b41a25aa7bd1deea54db1c33474d",
+      "bytes": 220
+    },
+    {
+      "path": "build/workbench-freed/material-linux-002/unit-tests.receipt.json",
+      "sha256": "05bc414d5493a5cc5dcd52d5fbacfbe477bf3b17bef447d03ce6d322a2fec367",
+      "bytes": 614
+    },
+    {
+      "path": "build/workbench-freed/native-001/build-optimized-solid_detachment.log",
+      "sha256": "9262b451983b20f121265334ee10d2be807681ca65513110f18a96e058e341e2",
+      "bytes": 893
+    },
+    {
+      "path": "build/workbench-freed/native-001/build-optimized-solid_detachment.receipt.json",
+      "sha256": "cb9cd2b86e0722b7a4fb74f840cf7627cfc34b929511da807be2812800b3ff69",
+      "bytes": 1097
+    },
+    {
+      "path": "build/workbench-freed/native-001/build-optimized-workbench_freed.log",
+      "sha256": "9262b451983b20f121265334ee10d2be807681ca65513110f18a96e058e341e2",
+      "bytes": 893
+    },
+    {
+      "path": "build/workbench-freed/native-001/build-optimized-workbench_freed.receipt.json",
+      "sha256": "055a07e82b6edee40add4521efa5fdf57562ea182adfe35a365d5b738d12c814",
+      "bytes": 1093
+    },
+    {
+      "path": "build/workbench-freed/native-001/build-strict-asan-ubsan-solid_detachment.log",
+      "sha256": "8f9b5f1f17f75f7556b3ceec175abd6334d1cb83cb4184e86ef70421497e775d",
+      "bytes": 3721
+    },
+    {
+      "path": "build/workbench-freed/native-001/build-strict-asan-ubsan-solid_detachment.receipt.json",
+      "sha256": "6b9e6ed6e1143a22964a91d7cbc29091269a8ec2c88aa53319021f3c23b8b4b9",
+      "bytes": 1182
+    },
+    {
+      "path": "build/workbench-freed/native-001/build-strict-asan-ubsan-workbench_freed.log",
+      "sha256": "cce92f46e5d7909f2546241004b0df350d2f3bda2e4274e79ccdf541bf631eff",
+      "bytes": 3720
+    },
+    {
+      "path": "build/workbench-freed/native-001/build-strict-asan-ubsan-workbench_freed.receipt.json",
+      "sha256": "749c87dee92a5a69eed79424b4e9b723f51d01a4d7582b0fec62b1be898ee7c2",
+      "bytes": 1178
+    },
+    {
+      "path": "build/workbench-freed/native-001/optimized-solid_detachment",
+      "sha256": "f765e509304f14029496064d291bd8cfcc5964fb31c35e5cf0b2383ce5011cb4",
+      "bytes": 913672
+    },
+    {
+      "path": "build/workbench-freed/native-001/optimized-workbench_freed",
+      "sha256": "9cb2cdad32ff2ea216265fff2c683f46297090cfedafd44390eafca9f3b74adb",
+      "bytes": 866912
+    },
+    {
+      "path": "build/workbench-freed/native-001/receipt.json",
+      "sha256": "3c37dcc6caa3e2fa33f2cfb82d4f9ea9afcaa1579cb6c9082f5ba37a83f8a3c2",
+      "bytes": 39336
+    },
+    {
+      "path": "build/workbench-freed/native-001/run-optimized-solid_detachment.log",
+      "sha256": "7d393dd2e14c8d23b1f65962ec7dfb3a43d329c2250a99e89353ce17f312301d",
+      "bytes": 641
+    },
+    {
+      "path": "build/workbench-freed/native-001/run-optimized-solid_detachment.receipt.json",
+      "sha256": "41036163a9155c45d9ed806fa79abf3f6d7cfa6a684cd101ee1bcaf6a797239e",
+      "bytes": 784
+    },
+    {
+      "path": "build/workbench-freed/native-001/run-optimized-workbench_freed.log",
+      "sha256": "52ed06d26e209e179bd74757c9001e0e8a1e37a568893180337df0ae29d9caf9",
+      "bytes": 43
+    },
+    {
+      "path": "build/workbench-freed/native-001/run-optimized-workbench_freed.receipt.json",
+      "sha256": "3b930bed6c1a0211582bc3e0c64f56a3110fdb3b829f0daa53b625822728adc8",
+      "bytes": 781
+    },
+    {
+      "path": "build/workbench-freed/native-001/run-strict-asan-ubsan-solid_detachment.log",
+      "sha256": "7d393dd2e14c8d23b1f65962ec7dfb3a43d329c2250a99e89353ce17f312301d",
+      "bytes": 641
+    },
+    {
+      "path": "build/workbench-freed/native-001/run-strict-asan-ubsan-solid_detachment.receipt.json",
+      "sha256": "c74c813f416d417987921aec80c9d086f19064ab801e4246585547b962e3b38f",
+      "bytes": 806
+    },
+    {
+      "path": "build/workbench-freed/native-001/run-strict-asan-ubsan-workbench_freed.log",
+      "sha256": "52ed06d26e209e179bd74757c9001e0e8a1e37a568893180337df0ae29d9caf9",
+      "bytes": 43
+    },
+    {
+      "path": "build/workbench-freed/native-001/run-strict-asan-ubsan-workbench_freed.receipt.json",
+      "sha256": "53119e81600115a7f7ab26aeb55fed70a33e8d4d272fd52e7717ee7ea3f9aae2",
+      "bytes": 804
+    },
+    {
+      "path": "build/workbench-freed/native-001/strict-asan-ubsan-solid_detachment",
+      "sha256": "d9f2f8ba577791ad1663b942f5e2e41a7f892cec54f3bf299ef45305db6c9818",
+      "bytes": 50261560
+    },
+    {
+      "path": "build/workbench-freed/native-001/strict-asan-ubsan-workbench_freed",
+      "sha256": "a13201412d9a5b3edc3a0f503ef0c905a9b8c4252c940ca96b30ec6a20237843",
+      "bytes": 49759472
+    },
+    {
+      "path": "build/workbench-freed/native-002/build-optimized-solid_detachment.log",
+      "sha256": "9262b451983b20f121265334ee10d2be807681ca65513110f18a96e058e341e2",
+      "bytes": 893
+    },
+    {
+      "path": "build/workbench-freed/native-002/build-optimized-solid_detachment.receipt.json",
+      "sha256": "e57839cba9c5ed8e818984b55ca7f1fa9248b3ce9a1665a5bca2fa6141d3c2f8",
+      "bytes": 1097
+    },
+    {
+      "path": "build/workbench-freed/native-002/build-optimized-workbench_freed.log",
+      "sha256": "9262b451983b20f121265334ee10d2be807681ca65513110f18a96e058e341e2",
+      "bytes": 893
+    },
+    {
+      "path": "build/workbench-freed/native-002/build-optimized-workbench_freed.receipt.json",
+      "sha256": "01d9969dba8fc1d7fca139c8e7a5e26b58f93a5f51b0369a580db4c28d0e1a73",
+      "bytes": 1094
+    },
+    {
+      "path": "build/workbench-freed/native-002/build-strict-asan-ubsan-solid_detachment.log",
+      "sha256": "8f9b5f1f17f75f7556b3ceec175abd6334d1cb83cb4184e86ef70421497e775d",
+      "bytes": 3721
+    },
+    {
+      "path": "build/workbench-freed/native-002/build-strict-asan-ubsan-solid_detachment.receipt.json",
+      "sha256": "6d361915544418e8f58a83dbf6efa9fd575346f9245cc9981ad0cb2f1410a07e",
+      "bytes": 1182
+    },
+    {
+      "path": "build/workbench-freed/native-002/build-strict-asan-ubsan-workbench_freed.log",
+      "sha256": "cce92f46e5d7909f2546241004b0df350d2f3bda2e4274e79ccdf541bf631eff",
+      "bytes": 3720
+    },
+    {
+      "path": "build/workbench-freed/native-002/build-strict-asan-ubsan-workbench_freed.receipt.json",
+      "sha256": "b593cc5dd93b1b61f9597b56e63f8abe80d0aaccb7febcf3eeddf70096b7d48f",
+      "bytes": 1178
+    },
+    {
+      "path": "build/workbench-freed/native-002/optimized-solid_detachment",
+      "sha256": "6c91ea0a702d6140e39424341a794178418d993d7ecb506ba8049a1abdc26e51",
+      "bytes": 913672
+    },
+    {
+      "path": "build/workbench-freed/native-002/optimized-workbench_freed",
+      "sha256": "fdaa4427483f28aff43828f534f0e5e5eb0f54d68d618f9713d70e99431c62ba",
+      "bytes": 866912
+    },
+    {
+      "path": "build/workbench-freed/native-002/receipt.json",
+      "sha256": "65e7dbaef61d8be1e030ae94d1f01ecf0a88ea3d791617b96ebbb1b2671454ad",
+      "bytes": 39343
+    },
+    {
+      "path": "build/workbench-freed/native-002/run-optimized-solid_detachment.log",
+      "sha256": "7d393dd2e14c8d23b1f65962ec7dfb3a43d329c2250a99e89353ce17f312301d",
+      "bytes": 641
+    },
+    {
+      "path": "build/workbench-freed/native-002/run-optimized-solid_detachment.receipt.json",
+      "sha256": "74cf34c5c37184a43223c100d5a1bcde3047e1cc41b8927fe3ba9e007c63068a",
+      "bytes": 784
+    },
+    {
+      "path": "build/workbench-freed/native-002/run-optimized-workbench_freed.log",
+      "sha256": "cdb76269271e4e1af1db644cb78a2c0a99580e08c9a4d398e19e97fe5f1f9c08",
+      "bytes": 43
+    },
+    {
+      "path": "build/workbench-freed/native-002/run-optimized-workbench_freed.receipt.json",
+      "sha256": "e96e89f717059bd9775355b20a8b5fc361c7d974020f9b7f247c1007e3ae7e0c",
+      "bytes": 781
+    },
+    {
+      "path": "build/workbench-freed/native-002/run-strict-asan-ubsan-solid_detachment.log",
+      "sha256": "7d393dd2e14c8d23b1f65962ec7dfb3a43d329c2250a99e89353ce17f312301d",
+      "bytes": 641
+    },
+    {
+      "path": "build/workbench-freed/native-002/run-strict-asan-ubsan-solid_detachment.receipt.json",
+      "sha256": "57ef971717b40015abfae5dd433ed5782e1f1c361bb772b5585cfc050c3bf05c",
+      "bytes": 808
+    },
+    {
+      "path": "build/workbench-freed/native-002/run-strict-asan-ubsan-workbench_freed.log",
+      "sha256": "cdb76269271e4e1af1db644cb78a2c0a99580e08c9a4d398e19e97fe5f1f9c08",
+      "bytes": 43
+    },
+    {
+      "path": "build/workbench-freed/native-002/run-strict-asan-ubsan-workbench_freed.receipt.json",
+      "sha256": "78cc31638e8cda78534dd898e5b38bf225c0dccf6582beac5841482f6aa550b1",
+      "bytes": 804
+    },
+    {
+      "path": "build/workbench-freed/native-002/strict-asan-ubsan-solid_detachment",
+      "sha256": "09d2f269458322c58afe5b0f6307be875ff1ed5abbb43ad05ef09867df97d2f2",
+      "bytes": 50272440
+    },
+    {
+      "path": "build/workbench-freed/native-002/strict-asan-ubsan-workbench_freed",
+      "sha256": "5efea1b1490257c69c760dffa6d14ddfe0d062e2947c1e0126cc5a6f6f670ec9",
+      "bytes": 49768672
+    },
+    {
+      "path": "build/workbench-freed/observer-001/linux/freed-w1.json",
+      "sha256": "0af0d16f2dd81add297a329c93ebd163626c6866d07ce099968b19e8e8e523ac",
+      "bytes": 75345
+    },
+    {
+      "path": "build/workbench-freed/observer-001/linux/freed-w1.log",
+      "sha256": "1e5514693589389f8a77a3890afab9d61b1ee2fb6aeb20267c8ec7b72fe704b2",
+      "bytes": 260
+    },
+    {
+      "path": "build/workbench-freed/observer-001/linux/freed-w1.receipt.json",
+      "sha256": "f6791c9733355a85927e09a9170fd493172e479f1316904b7406e2fbc0d68585",
+      "bytes": 921
+    },
+    {
+      "path": "build/workbench-freed/observer-001/linux/freed-w4.json",
+      "sha256": "cd1df5fe313ce14dc8db124ba304eb70d3ca6876211e51ac9ecd00745f946b6c",
+      "bytes": 75346
+    },
+    {
+      "path": "build/workbench-freed/observer-001/linux/freed-w4.log",
+      "sha256": "1e5514693589389f8a77a3890afab9d61b1ee2fb6aeb20267c8ec7b72fe704b2",
+      "bytes": 260
+    },
+    {
+      "path": "build/workbench-freed/observer-001/linux/freed-w4.receipt.json",
+      "sha256": "cda3c5f868b5829659292776ad09ac517ffc985b78fcc4f9049375f78cfda07e",
+      "bytes": 921
+    },
+    {
+      "path": "build/workbench-freed/observer-001/receipt.json",
+      "sha256": "25128af236de118aa1fff7f7cdcd83801685cb8d0094340cab537025b5fb6578",
+      "bytes": 35004
+    },
+    {
+      "path": "build/workbench-freed/observer-001/windows/freed-w1.json",
+      "sha256": "0db0cb8fd62eb4e2141d544e201aeb2df39799f382a0499b9f542c797a1c9ccd",
+      "bytes": 75345
+    },
+    {
+      "path": "build/workbench-freed/observer-001/windows/freed-w1.log",
+      "sha256": "d6dbca4fd4e0912d9f2881c46823a8522e82236b66a0083105764a43d69b4c0e",
+      "bytes": 264
+    },
+    {
+      "path": "build/workbench-freed/observer-001/windows/freed-w1.receipt.json",
+      "sha256": "f72b8ebd35ddfa42f0835db52213dd3bdd9d9fafe3f8fe455767b689d1637d5c",
+      "bytes": 602
+    },
+    {
+      "path": "build/workbench-freed/observer-001/windows/freed-w4.json",
+      "sha256": "5427ec023dba48a532d4c1dcd3342c601fd8e1d60e56305a061d854724d5bfac",
+      "bytes": 75352
+    },
+    {
+      "path": "build/workbench-freed/observer-001/windows/freed-w4.log",
+      "sha256": "d6dbca4fd4e0912d9f2881c46823a8522e82236b66a0083105764a43d69b4c0e",
+      "bytes": 264
+    },
+    {
+      "path": "build/workbench-freed/observer-001/windows/freed-w4.receipt.json",
+      "sha256": "dac38fbe5c612379302e2c8be13216894b84b3923d510153ac1271058149976b",
+      "bytes": 603
+    },
+    {
+      "path": "build/workbench-freed/runtime-floor-001/linux-floor.log",
+      "sha256": "623746348b9a99748d32dcf6ac964eae7f209b5e29ef4b79e4c4d4dd0e25dfa0",
+      "bytes": 100
+    },
+    {
+      "path": "build/workbench-freed/runtime-floor-001/linux-floor.receipt.json",
+      "sha256": "c24045acb1bd4ba31b2fff33b78c0a404799911b780234fdc790f1bd02cb2a7e",
+      "bytes": 544
+    },
+    {
+      "path": "build/workbench-freed/runtime-floor-001/receipt.json",
+      "sha256": "c24045acb1bd4ba31b2fff33b78c0a404799911b780234fdc790f1bd02cb2a7e",
+      "bytes": 544
+    },
+    {
+      "path": "build/workbench-freed/runtime-floor-001/symbols.log",
+      "sha256": "247b81e1a4fb45a89c056dbbc090459ae79c9e249b391077a7989113149d2e73",
+      "bytes": 319
+    },
+    {
+      "path": "build/workbench-freed/runtime-floor-001/symbols.py",
+      "sha256": "1692cd101f9c9516f40bdb25a8691a1351d6487151397e6e89b6e417a0402d32",
+      "bytes": 502
+    },
+    {
+      "path": "build/workbench-freed/runtime-floor-001/symbols.receipt.json",
+      "sha256": "6f366a1678dc5ff774616243e9eb02574fbc0f0c39df399b0505ba91370dd7ea",
+      "bytes": 608
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/linux/build.log",
+      "sha256": "737132b6f7d68382f2eee8486dc63ed600dabf92b8efecd466307109b491d281",
+      "bytes": 25224
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/linux/build.receipt.json",
+      "sha256": "d3ee87563ecb758f2a961d10474f57ae47c2b3c5df6709add519b2e9ad123a4b",
+      "bytes": 1234
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/linux/dependencies-after.log",
+      "sha256": "81c7c4ea7134e5feb61d380233a8a39adce92de6c5b9fa7ae5ca28b335ade7d9",
+      "bytes": 277926
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/linux/dependencies-after.receipt.json",
+      "sha256": "e6e7d998459ecf85e50f91541c8d7b83d523945feb85bb7b423df1ca342b651b",
+      "bytes": 788
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/linux/dependencies-before.log",
+      "sha256": "81c7c4ea7134e5feb61d380233a8a39adce92de6c5b9fa7ae5ca28b335ade7d9",
+      "bytes": 277926
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/linux/dependencies-before.receipt.json",
+      "sha256": "1a4391ca4e9f24cc362993853f7186ce98922194359439a5d8fe93cbc9968340",
+      "bytes": 790
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/linux/g++",
+      "sha256": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09",
+      "bytes": 668
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/linux/libcybersand_native.linux.x86_64.so",
+      "sha256": "b7b9a1d51634951d47e2c26a80d409f9bb2c3d1c269b0c1aba451992bafc18b5",
+      "bytes": 4526808
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/linux/wrapper-mode.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/linux/wrapper-mode.receipt.json",
+      "sha256": "0b7c5ea496c88f474087a21d2b60e7211ba6b5732a844a845607dcb5c2456f5e",
+      "bytes": 622
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/receipt.json",
+      "sha256": "f59435fde9662b3ef5048e32614ab74c2dc25e3ec5ef424cc6b92adff7b6b553",
+      "bytes": 38398
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/windows/build.log",
+      "sha256": "807f016d7dd0eb2949b48d19f044327d028c7e05f5702ccd16fcff9d5f784851",
+      "bytes": 2386
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/windows/build.receipt.json",
+      "sha256": "665dbbc8d4844755e8baf9de8f6cf08132cca4fc5932353c655708c5f64f6e95",
+      "bytes": 370
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/windows/cybersand_native.windows.x86_64.dll",
+      "sha256": "60c82dc5a8fa3801a13a2bc8ecdba949d9fee028e4eb9e33fc43579ec1eafdbc",
+      "bytes": 5086720
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/windows/dependencies-after.log",
+      "sha256": "8b5e61d166ec1ae088970ef3147b259263fdeb5d838a000aa20c5b634213f294",
+      "bytes": 2017524
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/windows/dependencies-after.receipt.json",
+      "sha256": "d68df757d50b47143a2db55ebf99f200c046faf1aeff4fc30e902695b957dbdb",
+      "bytes": 720
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/windows/dependencies-before.log",
+      "sha256": "8b5e61d166ec1ae088970ef3147b259263fdeb5d838a000aa20c5b634213f294",
+      "bytes": 2017524
+    },
+    {
+      "path": "build/workbench-freed/runtimes-001/windows/dependencies-before.receipt.json",
+      "sha256": "d548342c2b9cf9d74a568bf19d88fd3461c2b2f3817e618b554a494d5790e6a3",
+      "bytes": 721
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/linux/build.log",
+      "sha256": "c426045cdeab2bea5a22e64d1fe1b1a9b0f1ff57f35beb9823be052d1c7ef620",
+      "bytes": 25224
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/linux/build.receipt.json",
+      "sha256": "0990ed82affa8c6bff773a0c58f33bedbc98407df193f268ee573befc765f776",
+      "bytes": 1233
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/linux/dependencies-after.log",
+      "sha256": "45cee758c37a0fe3b5651d5f65ff31c88476a7ac3b4ed24bcf0719093ab6a39f",
+      "bytes": 277926
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/linux/dependencies-after.receipt.json",
+      "sha256": "edda11a5b44eb22cd62482a964b9817f3292e5fadd4bae7a34460dbda0f2618a",
+      "bytes": 788
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/linux/dependencies-before.log",
+      "sha256": "45cee758c37a0fe3b5651d5f65ff31c88476a7ac3b4ed24bcf0719093ab6a39f",
+      "bytes": 277926
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/linux/dependencies-before.receipt.json",
+      "sha256": "60b9854f2ced75b8ef5cd1fb65a32def6b585541e4c5a6101709ac0fd4c4ee22",
+      "bytes": 790
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/linux/g++",
+      "sha256": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09",
+      "bytes": 668
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/linux/libcybersand_native.linux.x86_64.so",
+      "sha256": "5f046d45635e131d5f48b759ebb0fa1ecbe44c10ca3d18e92f181c8b52a63527",
+      "bytes": 4526808
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/linux/wrapper-mode.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/linux/wrapper-mode.receipt.json",
+      "sha256": "54a3d82471c6542e4053a6c97264026d33e1eebada0d1b64bb727121a783101c",
+      "bytes": 623
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/receipt.json",
+      "sha256": "ff6caee9f6199a7a610dfe57ecefc78d3cf3b57bb01315dd16d297b3593edb7d",
+      "bytes": 38398
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/windows/build.log",
+      "sha256": "d89a4b2bfccf2457e939671a223b5e6d3502590aa8325d1ed82242bebdaec45b",
+      "bytes": 2386
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/windows/build.receipt.json",
+      "sha256": "b21209557b75679564715117746821c0df54ae9639a98c0e2ac69ca5dd9f0bb3",
+      "bytes": 371
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/windows/cybersand_native.windows.x86_64.dll",
+      "sha256": "40cf90629fd9d8b0bad815b24e1ec4177c37552ef483b17fbe2afe6e7eaa1054",
+      "bytes": 5086720
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/windows/dependencies-after.log",
+      "sha256": "8b5e61d166ec1ae088970ef3147b259263fdeb5d838a000aa20c5b634213f294",
+      "bytes": 2017524
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/windows/dependencies-after.receipt.json",
+      "sha256": "640aa6e5132be7c559533a1fef2f4cbd65bc5700e36cca7612dc8040ff6c5f87",
+      "bytes": 719
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/windows/dependencies-before.log",
+      "sha256": "8b5e61d166ec1ae088970ef3147b259263fdeb5d838a000aa20c5b634213f294",
+      "bytes": 2017524
+    },
+    {
+      "path": "build/workbench-freed/runtimes-002/windows/dependencies-before.receipt.json",
+      "sha256": "8f26e3e096f47502e314da9138911ae69b790add26e76c498cab271de251af08",
+      "bytes": 721
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/linux/build.log",
+      "sha256": "ef2aca4f096fd25b7a3f6f3608094c64362e8c69d206f79a9961d2dce35e95fa",
+      "bytes": 25224
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/linux/build.receipt.json",
+      "sha256": "d9b0cb1c23732e322c96836ee0059765baafd0c88ef2bdf66a2752f9837482ae",
+      "bytes": 1233
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/linux/dependencies-after.log",
+      "sha256": "f69d94978645ab6b0818411df70b97cd50cb23980ef2614d644a4e2b5853328b",
+      "bytes": 277926
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/linux/dependencies-after.receipt.json",
+      "sha256": "f3e46140576bd8448f2a26ecea45f7e2c6f4543d47394216a31e4357b29501af",
+      "bytes": 789
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/linux/dependencies-before.log",
+      "sha256": "f69d94978645ab6b0818411df70b97cd50cb23980ef2614d644a4e2b5853328b",
+      "bytes": 277926
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/linux/dependencies-before.receipt.json",
+      "sha256": "556ed12678934dce652c2680f205903e4d822ad463b5baa967d07c3dfcf3e073",
+      "bytes": 790
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/linux/g++",
+      "sha256": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09",
+      "bytes": 668
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/linux/libcybersand_native.linux.x86_64.so",
+      "sha256": "f3ad8a054e739a7b4573b1bc22ff8de4d9f466acaacfc345a4231953b67a6cbe",
+      "bytes": 4530904
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/linux/wrapper-mode.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/linux/wrapper-mode.receipt.json",
+      "sha256": "0b66bab56115f3c1ad648502aaa4ddc93343742efb82e058df847bc3f29e100d",
+      "bytes": 622
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/receipt.json",
+      "sha256": "a2ae9d27b781df59b895be64d7056d6ece86dec9e22335b99cebb88d248cedf9",
+      "bytes": 38398
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/windows/build.log",
+      "sha256": "0f496b88cad53682e816e17157e90702f86eca8c89a3c64588538d4339860c33",
+      "bytes": 2386
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/windows/build.receipt.json",
+      "sha256": "3ef863d49f74d255f9e1eb1c88067ba245688454457baa063f25302126c94143",
+      "bytes": 370
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/windows/cybersand_native.windows.x86_64.dll",
+      "sha256": "e1d47696799f33f7ece9c763290c6044fea0c6f265b0815c3f2ce93d272e2151",
+      "bytes": 5088768
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/windows/dependencies-after.log",
+      "sha256": "8b5e61d166ec1ae088970ef3147b259263fdeb5d838a000aa20c5b634213f294",
+      "bytes": 2017524
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/windows/dependencies-after.receipt.json",
+      "sha256": "1a5edc875b8910e336d49c8c1d009f8b217f8923e7191a3def751f3019e52587",
+      "bytes": 720
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/windows/dependencies-before.log",
+      "sha256": "8b5e61d166ec1ae088970ef3147b259263fdeb5d838a000aa20c5b634213f294",
+      "bytes": 2017524
+    },
+    {
+      "path": "build/workbench-freed/runtimes-003/windows/dependencies-before.receipt.json",
+      "sha256": "6584f32ce1d57c748bc66fd6c3e75b81058a6bfbd185d02f8716deab92dcbe71",
+      "bytes": 721
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/linux/build.log",
+      "sha256": "925f50f0b77048c180c4b2067ef432b16f09eca32bda3a6174f1a2e5682009e1",
+      "bytes": 25224
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/linux/build.receipt.json",
+      "sha256": "1cda0fe4a827be232f26d3ec33a8d953595f03334c178f7ddc6a67fd59177d7b",
+      "bytes": 1232
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/linux/dependencies-after.log",
+      "sha256": "1171513ada5365f13ef20651d203f9ddb2922defdc131d629006941b52d0e3d3",
+      "bytes": 277926
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/linux/dependencies-after.receipt.json",
+      "sha256": "35f98cf8bf1f16ed2632485d14209e6d6ef0b7c428cd313712ad2b6df4b3e33a",
+      "bytes": 787
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/linux/dependencies-before.log",
+      "sha256": "1171513ada5365f13ef20651d203f9ddb2922defdc131d629006941b52d0e3d3",
+      "bytes": 277926
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/linux/dependencies-before.receipt.json",
+      "sha256": "d992c691421b9d0915714f966bbc801db06caa578bca282259a6319bd65bbf05",
+      "bytes": 789
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/linux/g++",
+      "sha256": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09",
+      "bytes": 668
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/linux/libcybersand_native.linux.x86_64.so",
+      "sha256": "fe24af10d495e0bbbe3382ce5ccbca4949937d833ae0f843c8f1a01f0e7b634b",
+      "bytes": 4530904
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/linux/wrapper-mode.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/linux/wrapper-mode.receipt.json",
+      "sha256": "c3f876b02f122defe4f1b9f2e4e5c005e75ab889cd1f30dcac570e75418e3939",
+      "bytes": 624
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/receipt.json",
+      "sha256": "e0e1686af365b9b10924ed1da1e937dffd4847f6092d1ab87abd29ab4445c812",
+      "bytes": 38397
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/windows/build.log",
+      "sha256": "8f104d75a865c89dca0ad2f40e749f87f8fd93ccc9c5a04aedad8df4d8ea6369",
+      "bytes": 2386
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/windows/build.receipt.json",
+      "sha256": "6314e0661d1c7c8764886ce79054900a1f6d2e4371d150b0b02d46134867071e",
+      "bytes": 370
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/windows/cybersand_native.windows.x86_64.dll",
+      "sha256": "d71541da1276bdcd0b6e667ecf741ff04b699c831c632bb3055a116edc97216d",
+      "bytes": 5088768
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/windows/dependencies-after.log",
+      "sha256": "8b5e61d166ec1ae088970ef3147b259263fdeb5d838a000aa20c5b634213f294",
+      "bytes": 2017524
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/windows/dependencies-after.receipt.json",
+      "sha256": "947a5405763e4673159e2e216ddc8675bc78f2e20c700a1e8b0d9a18fac5d163",
+      "bytes": 720
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/windows/dependencies-before.log",
+      "sha256": "8b5e61d166ec1ae088970ef3147b259263fdeb5d838a000aa20c5b634213f294",
+      "bytes": 2017524
+    },
+    {
+      "path": "build/workbench-freed/runtimes-004/windows/dependencies-before.receipt.json",
+      "sha256": "3ec261b3a7203b2900c23279682bc0b0704f63d2e7e4573f8e4771fca72f2787",
+      "bytes": 722
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/linux/build.log",
+      "sha256": "3b5fcfc7dc881258381011e852a658102d73d41a7394eec0bf5d4d5374525dad",
+      "bytes": 25224
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/linux/build.receipt.json",
+      "sha256": "9dfd4cfe09663643e0232ab9b900fa04c659320fed3d731062d7245ffd8f6f7c",
+      "bytes": 1233
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/linux/dependencies-after.log",
+      "sha256": "ae1ab2515b7b9ccf41eae5d71b792c36ec158632339b8b28e3b27e130616ae11",
+      "bytes": 277926
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/linux/dependencies-after.receipt.json",
+      "sha256": "96dcff995634c45f1d055715eadc1c5dce270a79d693c36e12fbbafff0bc82f8",
+      "bytes": 789
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/linux/dependencies-before.log",
+      "sha256": "ae1ab2515b7b9ccf41eae5d71b792c36ec158632339b8b28e3b27e130616ae11",
+      "bytes": 277926
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/linux/dependencies-before.receipt.json",
+      "sha256": "0b3e9f94dd3c026f85df737cf094b10e8914f2becff6af453756f31b09b61bcc",
+      "bytes": 790
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/linux/g++",
+      "sha256": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09",
+      "bytes": 668
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/linux/libcybersand_native.linux.x86_64.so",
+      "sha256": "1b93a937f17799d0385089125e4ad475469f4e3b61eb865cb9c1cbd5b8b92442",
+      "bytes": 4535000
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/linux/wrapper-mode.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/linux/wrapper-mode.receipt.json",
+      "sha256": "192fdfc203b4f230c1efbc70bfae7c599b34d6411ed6b7cfcb9138153d69a14b",
+      "bytes": 623
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/receipt.json",
+      "sha256": "2a3ba1b688a597ecc59fb8fe26fbbf7a9a886aeb5bc363bedf6a919765cbbf9a",
+      "bytes": 38398
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/windows/build.log",
+      "sha256": "d587533b481508cd1757e2e34577fff1b67fce3add35ff677d01b5370305ca2f",
+      "bytes": 2386
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/windows/build.receipt.json",
+      "sha256": "17e93166a13c5e193cd81c3d230b81e19a1d18f519c133d6c3cb5374cad780ab",
+      "bytes": 370
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/windows/cybersand_native.windows.x86_64.dll",
+      "sha256": "5d0b0e871b393e300695492c9bfaf9c0706195d97ef1e1dff06957f3a53a55c8",
+      "bytes": 5090304
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/windows/dependencies-after.log",
+      "sha256": "8b5e61d166ec1ae088970ef3147b259263fdeb5d838a000aa20c5b634213f294",
+      "bytes": 2017524
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/windows/dependencies-after.receipt.json",
+      "sha256": "776cba02f0a48e7e9f5316c0c0876433f513c59120259cfaa66839d95b216c8c",
+      "bytes": 719
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/windows/dependencies-before.log",
+      "sha256": "8b5e61d166ec1ae088970ef3147b259263fdeb5d838a000aa20c5b634213f294",
+      "bytes": 2017524
+    },
+    {
+      "path": "build/workbench-freed/runtimes-005/windows/dependencies-before.receipt.json",
+      "sha256": "c00807c950db16cbf51ca272f27098c6623612d96f32e883f9f1199e159f4722",
+      "bytes": 721
+    }
+  ]
+}

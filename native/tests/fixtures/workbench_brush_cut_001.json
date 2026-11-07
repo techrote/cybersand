@@ -1,0 +1,20 @@
+{
+  "id": "workbench-brush-cut-001",
+  "date": "2026-11-07",
+  "parent": "9136761ae91408adc0057df243dc0edfbd3e141a",
+  "purpose": "Regression for normal circular-brush RedBrick cutting; no physics parameter changes or SOL clearance claim.",
+  "resource": {"cap_bytes": 1073741824, "minimum_free_bytes": 5368709120},
+  "evidence_directory": "build/workbench-brush-cuts",
+  "registered_cases": [
+    "Default radius-8 round crown and radius-2 stem, actual erase and single-owner handoff",
+    "Curved/sloped painted component with more than eight exact rectangles",
+    "Round shell with more than 64 cut-boundary cells; bounded discovery and truthful capacity disposition",
+    "64 exact rectangles, 65 refusal, shared total-64 proxy capacity and source retention",
+    "Member/span/body/stroke refusals remain visible; no bounding-box or cell-splinter substitution",
+    "Preserve original 520/6 tree, 356/5 building, existing body RIDs, Step/Play, save/restore and teardown"
+  ],
+  "hosts": ["windows", "linux"],
+  "workers": [1, 4],
+  "invariants": ["unit member mass", "exact native inertia", "unchanged gravity/damping/friction", "unchanged LA-SELECTIVE arithmetic, budget and caps", "one World owner and one Rapier body per captured component", "old authored-fleet and SOL diagnostic eight-rectangle admission unchanged"],
+  "decision": "PASS only if admitted brush geometry is retired exactly once and moves on real Step/Play, refusals retain source with persistent plain-language status, and native plus host regressions pass. Original SOL clearance and general arbitrary-size cutting remain separate, unproved claims."
+}

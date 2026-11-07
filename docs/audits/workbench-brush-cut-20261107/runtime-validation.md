@@ -1,0 +1,5 @@
+# Brush-cut runtime custody — 2026-11-07
+
+Actual Windows and WSL Ubuntu24.04 execute Godot4.7/Rapier with the two native artifacts in summary.json. Native compilation source is1b15f343; corrected external observer source is2253fad0. All93 canonical native inputs plus15 build inputs are authenticated in runtime manifests. The observer verifies unchanged production project resources and creates a fresh process/World/session per host and worker. Each passes165 checks; workers4 actually observe4 workers. The prior host cohort retains four test-fixture failures; all old cut/lifecycle/control suites pass. These failures are not physical acceptance results.
+
+Core optimized and strict ASan/UBSan each pass1246 brush/ownership checks and19338 original transaction checks. Leak detection is disabled. Windows is LLVM-MinGW, not MSVC. The Linux ABI-floor blocker and original SOL failures remain. Raw command logs stay local; artifact-index.json retains their hashes. This is Draft development functional qualification, not main/default promotion or original SOL clearance/CPU acceptance.

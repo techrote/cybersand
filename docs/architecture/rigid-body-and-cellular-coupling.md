@@ -11,6 +11,43 @@ last-reviewed: 2026-11-06
 
 # Rigid-body and cellular coupling
 
+## Fresh passive compound canvases
+
+The ordinary workbench now accepts file-local passive rectangle unions through
+its existing LA-SELECTIVE/LA/events-off/RFT roster. Source-derived unit M/I,
+AUTO COM, reference friction0.78, gravity scale0.094 and combined authored
+damping0.04 are used at default options. Four live examples have owner-accepted
+visible behaviour; the old numerical rest-screen failure is not automatically
+a gameplay defect. [Evidence and limits](../audits/2026-11-06-sol-fresh-canvas.md)
+retain the distinction from native cut ownership, matched runs and original
+SOL gates. No contact equation, budget or global default changes.
+
+## Fixed-action SOL application-order registration
+
+The [fixed-action ordering result](../systems/solid-detachment.md#fixed-action-correction-and-impulse-ordering--2026-11-06)
+uses one native World/body, the same LA-SELECTIVE law/fence/constants and a
+test-only exchange of correction/clip versus the combined impulse/torque block.
+All96 episodes and345,600 primitive transitions are admitted; the reversed arm
+fails rest and worsens burial/sink. Production order and computed torque stay
+unchanged. This body-work ledger is not total Sand energy closure or separate
+passive/event/legacy causal attribution. No new authority/default follows.
+
+## SOL adopts the workbench package experimentally
+
+The [opt-in actual-cut route](../systems/solid-detachment.md#workbench-law-actual-cuts--2026-11-06)
+uses one native owner and one Rapier aggregate with main's six/five-proxy
+LA-SELECTIVE contact packet. It disables both legacy SOL281 Sand and separate
+ordinary application to avoid double counting, keeps main's completed-sample
+fence and overlap handling, and preserves M/I, gravity/damping and budget20.
+Arrival-only selection applies to the event wrench; legacy/passive/correction
+terms remain. No-arrival late response can still move the body.
+
+This is a law-plus-pacing package comparison. All five-repeat packed cells show
+less burial but fail rest; no isolated force-law causal claim or synchronized
+original SOL clearance follows. The old observer is incompatible with main's
+whole-M/I-per-proxy packet; its zeros are not a no-Water/no-work observation.
+The actual packet and paused independent census are separate evidence channels.
+
 ## SOL contact ordering experiment
 
 The [isolated route](../systems/solid-detachment.md#contact-and-gravity-ordering--2026-11-06)
@@ -294,3 +331,17 @@ and bounded enclosure recovery. REM-002 reuses the same support predicate for a
 separate bounded body-coupling observation against stored material; it does not
 make the sampled character a Rapier collider and does not add a second material
 owner.
+
+## Development workbench physical ownership
+
+The Draft #391 host stages one bounded multi-body roster at a time. Each
+instance has one session/epoch, generation, actual mass/inertia/centre of mass,
+gravity, drive sample and response budget. Collision rectangles contribute to
+the same body's wrench. The worker owns the cellular state, checks the copied
+geometry and samples in the native adapter, and publishes value-only rows.
+The main-thread bridge rejects retired or duplicated results and checks sample
+age and corner travel before applying the wrench to that instance's Rapier RID.
+The finite canvas owns interest independently of presentation. The
+[workbench guide](../systems/player-control-playground.md#development-workbench-on-desktop)
+and [qualification record](../audits/2026-11-04-workbench-consolidation.md)
+distinguish authoring controls, observed behavior and unresolved review gates.

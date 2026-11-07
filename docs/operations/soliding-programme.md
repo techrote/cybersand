@@ -4,11 +4,22 @@ status: Planned
 document-kind: design
 scope: Issue 12 stage dependencies, acceleration and macro-dynamics objectives, and current-main successor admission
 canonical-for: [scalable-soliding-programme]
-last-reviewed: 2026-09-20
+last-reviewed: 2026-11-07
 related-documents: [architecture-programme.md, ../architecture/soliding-lifecycle.md, soliding-measurement.md, soliding-stage3-freeze.md, ../audits/2026-09-19-issue-12-phase0-reuse.md]
 ---
 
 # Scalable reversible soliding programme
+
+## Bounded normal-workbench release continuation — 2026-11-07
+
+Current dependent Draft #466 adds [ordinary RedBrick release](../architecture/workbench-freed-objects.md)
+to the structural track, preserving the existing law and explicit source
+custody. This is a narrow eight-record normal-edit lane, with separate
+single-aggregate diagnostic semantics. It does not change the programme's
+dependency graph, admit general reversible soliding or unblock E1/E2 recovery,
+Wood/reactive/mixed cohesion, original clearance/CPU or #365. See the
+[dated functional qualification](../audits/2026-11-07-workbench-freed-objects.md).
+Independent review and portable runtime admission precede promotion.
 
 ## Structural detachment track — 2026-11-01
 

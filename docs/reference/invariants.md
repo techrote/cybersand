@@ -6,10 +6,20 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-07
 ---
 
 # Architectural and simulation invariants
+
+## Freed-object enforcement scope
+
+Current Draft #466 enforces bounded face connectivity, anchor/unknown refusal,
+full tuple retirement, one physical body per exact union and explicit epoch/
+roster rebind under held clocks. [The contract](../architecture/workbench-freed-objects.md)
+owns those rules. Native serialization remains refused while active custody is
+not encodable. Full-owner teardown is distinct from restoring a moving body
+into cells. Functional host tests do not prove original physical clearance,
+closed energy or universal performance.
 
 Use these stable IDs in reviews and fixtures. **Current** identifies inspected
 scope; **Approved** requires implementation where incomplete. **Planned**,
@@ -313,9 +323,10 @@ and [family material hooks](../architecture/liquid-solver-family-policy.md).
 | WATER-014 | Current #201 branch source, pending acceptance: a Water motion certificate preserves failed-motion body contacts, mandatory material/cadence/event work and unrelated liquids; it proves a no-op instead of freezing nonzero flow and grants no #12 skip ownership ([contract](../architecture/pressure-optimization.md)) |
 | WATER-015 | Current #201 source: incomplete derived heads/index/member proofs select complete admitted reference evaluation; no stale/partial summary is consumed as a valid cached head |
 | WATER-016 | Current #201 source: gas fixed point includes final labels and zero discovery allocation; component reuse retains global seed order, identity/history and relabelling, including paused contributors |
-| WATER-017 | Current #201 execution3: cold/invalidated inputs take ordinary warmup; failed proof defers eight eligible visits; only the exact valid tag skips motion. Usable heads/prior Water work admit bounded8-tick cost trials; deficit/uncertainty suspends32 eligible-head ticks. Off/cold invalidation never scans certificates; reactivation resets them before reading. Derived state is cold on restore and execution identity is separate from physical authority |
+| WATER-017 | Current #201 execution3 certificate law, retained unchanged by execution4: cold/invalidated inputs take ordinary warmup; failed proof defers eight eligible visits; only the exact valid tag skips motion. Usable heads/prior Water work admit bounded8-tick cost trials; deficit/uncertainty suspends32 eligible-head ticks. Off/cold invalidation never scans certificates; reactivation resets them before reading. Derived state is cold on restore and execution identity is separate from physical authority |
 | WATER-018 | Current #201 diagnostic interface: copied prepared heads may be stale after transport/edits; complete roster coverage and exact numerical errors do not grant freshness or rest authority. Net ROI Water balance is not gross face flux |
 | WATER-020 | Current repair branch, pending acceptance: final gas relabel changes unvisited labels absent from the new live table to vacuum, retains still-live masked identity, preserves already-reduced amounts/history, and treats sanitation as a non-fixed-point label change; CYPS still refuses dangling gas labels ([contract](../architecture/pressure-flow-v1.md#gas-compartments)) |
+| WATER-021 | #201 execution4 (PR #382): a cached/dormant wake-summary bit is set only by a complete negative state-only scan and is cleared by every wake-input path (±2 producer/host/mask rectangles across seams, changed final heads, every gas pass, rebuild/cold/restore, active blocks); elision needs `sleep_after_quiet_ticks >= 2`; wake decisions equal reference |
 | WATER-019 | Current #201 adapter source: copied unsigned budget/capacity/counter values use decimal strings without signed-u64 truncation; all adapter observations remain exclusive-owner calls, not worker-owned Godot APIs |
 
 ## Water IN isolated native invariants

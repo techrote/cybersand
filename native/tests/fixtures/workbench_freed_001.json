@@ -1,0 +1,18 @@
+{
+  "registration": "WORKBENCH-FREED-001",
+  "date": "2026-11-07",
+  "parent": "f56795ba8acd6c3c4a2e7d9280b83083e48e1c81",
+  "contract": "docs/architecture/workbench-freed-objects.md",
+  "purpose": "Ordinary erase-stroke release and same-World ownership qualification; unchanged response, no new SOL clearance or rest claim.",
+  "physics": "Existing LA-SELECTIVE workbench path, unit member mass/native inertia, gravity scale0.094, damping0.04/0.04, friction0.78, fixed60Hz, budget20; no post-ordering arm or tuning.",
+  "native": ["optimized", "strict-asan-ubsan", "original-solid-detachment-controls"],
+  "hosts": ["actual-windows", "actual-linux"],
+  "workers": [1,4],
+  "cases": ["actual520-tree-six-proxies-first-owner", "actual356-building-five-proxies-appended-owner", "erase-disc-stroke-at-support", "Sand-and-FreeMass-Water-contact", "retained-moving-body-RID-pose-velocity-M-I", "real-falling-and-contact-steps", "source-retirement-and-exact-recipe-replay", "save-load-restore-teardown", "native-anchor-diagonal-foreign-hot-masked-capacity-and-stale-refusals"],
+  "physical_steps_before_append": 64,
+  "live_authority_setup": "One ordinary initial Step applies the requested native region before cutting. No eligibility bypass or hidden tick inside handoff. Added before the live-qualified host rerun; cold tick-zero refusal is retained.",
+  "physical_steps_after_append": 120,
+  "evidence": "Every command, status and raw log; committed source tree and complete runtime inputs; full prepared native tuples/exact shapes and commit dispositions; actual Rapier readbacks and worker participation. No screenshots as sole proof.",
+  "resource": {"cap_bytes":2147483648, "minimum_free_bytes":5368709120, "project_cap_bytes":268435456},
+  "failures": "Retain all development failures and overwritten/refused work. Missing platform, stale provenance and runtime-floor failures remain blockers. No main/default change; PR466 stays Draft."
+}

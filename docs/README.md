@@ -4,11 +4,50 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-07
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+## Ordinary workbench cutting
+
+The [normal-brush correction](audits/2026-11-07-workbench-brush-cut.md) fixes
+the old eight-rectangle refusal and eager frontier cap. Round/sloped strokes
+and a64-proxy ring pass on both hosts/workers; larger pieces still have
+explicit member/span limits and persistent refusal status.
+
+The [freed-object rules](architecture/workbench-freed-objects.md) now drive
+ordinary erase-stroke cutting on Draft #466. Exact tree/building ownership,
+moving-body retention and lifecycle tests pass on actual Windows/Linux;
+[dated evidence](audits/2026-11-07-workbench-freed-objects.md) retains source pins,
+all failed work, platform limits and original SOL blockers. No new menu,
+physics tuning, general-default change or merge is part of this checkpoint.
+
+## Ordinary workbench fresh structures
+
+The [loadable four-body canvas](audits/2026-11-06-sol-fresh-canvas.md) uses the
+normal workbench, existing controls and fresh passive shapes. The owner accepts
+its visible behaviour. [Controls and file-local authoring](systems/player-control-playground.md#file-local-passive-canvas-bodies)
+explain loading and limits. It adds no test menu or native freed-object claim.
+
+## Fixed-action SOL application ordering
+
+The [preregistered actual-cut result](audits/2026-11-06-sol-workbench-ordering.md)
+follows the reviewed P2 repair. All96 episodes/69,120 steps complete; reversing
+correction/clip and combined impulse/torque fails rest and worsens burial/sink.
+Both arms retain the same law, fence, M/I, gravity and caps. Production order
+stays unchanged. See the [canonical SOL route](systems/solid-detachment.md#fixed-action-correction-and-impulse-ordering--2026-11-06)
+for qualified status, full-stage evidence and remaining platform/SOL blockers.
+
+## Actual cut structures under the workbench law
+
+The [current opt-in contract](systems/solid-detachment.md#workbench-law-actual-cuts--2026-11-06)
+and [repeated Windows/Linux dossier](audits/2026-11-06-sol-workbench-law.md)
+record144 fresh cut-tree/building episodes. LA-SELECTIVE's workbench package
+reduces burial but fails the fixed settling gate. Read the separate material,
+runtime-floor, ownership and causal qualifiers before assessing Draft #466.
+Keep #460/#461 stable Draft; no accepted default or integration changes.
 
 ## SOL contact and gravity ordering
 
@@ -112,6 +151,16 @@ preserves production authority and the frozen legacy compatibility baseline.
 experimental materials remain unintegrated. Dated architecture and implementation
 receipts keep their original source scope; the PR ledger owns final resulting-head
 checks and merge status.
+The [#353-A shadow compiler](operations/material-catalogue-shadow.md) merged in
+[#371](https://github.com/techrote/cybersand/pull/371), accepted main `7ef4856e`;
+legacy native/fallback definitions remain production authority. The
+[#354 Phase A investigation](operations/material-liveness-investigation.md)
+demonstrates lost isolated MoltenGlass cooling, distinguishes existing mutual
+heating and preserves documented generic yielding rest. Only tests, tooling and
+documentation are admitted. The [current programme boundary](architecture/material-authoring-catalogue-plan.md#14-material-liveness-phase-a-and-production-admission--2026-11-04)
+keeps production correction, #353-B migration and #355/#356 separately gated;
+#354 remains open. Exact source, failed attempts, review and platform outcomes
+belong to the [findings audit](audits/2026-11-04-mat354-findings.md) and PR ledger.
 
 Liquid reassessment #359: [current-main implementation and evidence audit](audits/2026-11-03-lcb-reassessment.md),
 [canonical family/material policy](architecture/liquid-solver-family-policy.md),
@@ -497,7 +546,7 @@ moving Above/Below, choosing viewpoints, editing native cells and capturing imag
 | Find a building material's ID, reactions or finish (IDs 81+) | [Building material catalogue](systems/building-material-catalogue.md), [interaction substrate](systems/intermaterial-interactions.md#mat-002-building-material-pass) |
 | Design a material's look or a procedural/generative fill | [Material visual pattern library](systems/material-visual-pattern-library.md), [effects register](reference/material-effects-register.md), [appearance contract](systems/material-appearance-and-rendering.md) |
 | Understand the persistent-reaction and body-mask wake repair | [Material cadence](systems/materials-and-rule-kernels.md#how-do-persistent-reactions-survive-sleep), [activity lifecycle](systems/activity-dirty-regions-and-waking.md), [MAT-001 evidence](audits/2026-10-18-mat001-material-reaction-progress.md) |
-| Inspect cached/dormant pressure source, hydraulic/gas obligations, execution identity and total bookkeeping cost | [#201 canonical optimization contract (branch Current, acceptance pending)](architecture/pressure-optimization.md), [dated qualification and retained negatives](audits/2026-10-25-lcb002-pressure-variants.md), [copied APIs](reference/interfaces-and-message-contracts.md#lcb-002-copied-pressure-optimization-observations) |
+| Inspect cached/dormant pressure source, hydraulic/gas obligations, execution identity and total bookkeeping cost | [#201 canonical optimization contract (branch Current, acceptance pending)](architecture/pressure-optimization.md), [dated qualification and retained negatives](audits/2026-10-25-lcb002-pressure-variants.md), [current-main host-scale idle cost (2026-11-04)](audits/2026-11-04-lcb201-pressure-idle-cost.md), [copied APIs](reference/interfaces-and-message-contracts.md#lcb-002-copied-pressure-optimization-observations) |
 | Plan the Liquid Comparison Build: solver families, Water comparison, Dam Break and mixed-liquid fixtures, manual UX | [Solver-family policy (Approved design; native foundation, W-CY and shared codecs Current on main)](architecture/liquid-solver-family-policy.md), [#200 foundation evidence](audits/2026-10-24-issue-200-policy-foundation.md), [`pressure_flow_v1` reference (Current from merged #245)](architecture/pressure-flow-v1.md), [pressure reference evidence](audits/2026-10-24-lcb001-pressure-reference-publication.md), [capability matrix](reference/liquid-solver-capability-matrix.json), [Water comparison and fixtures](operations/lcb-water-comparison-and-fixtures.md), [manual UX flow and constructor coverage (bounded experimental UI Current; remaining flow Planned)](operations/lcb-manual-comparison-ux.md), [scenario catalogue and runner](operations/lcb-scenario-catalogue.md), [Gate C/D/E evidence](audits/2026-10-23-lcb000-gates-cde-design-evidence.md), [scenario qualification evidence](audits/2026-10-23-lcb003-scenario-qualification.md), [state-transition matrix](architecture/liquid-state-transition-matrix.md), [pressure/inertial handoff](architecture/lcb-pressure-inertial-handoff.md), [physics mechanism report](audits/2026-10-23-lcb-physics-mechanism-report.md) |
 | Prepare or normalize native liquid setup, read typed construction/run receipts, and reconcile exact Water quantity | [Prepared setup, receipts and quantity accounting (native contract Current on accepted main)](architecture/liquid-prepared-setup-and-receipts.md), [accepted native checkpoint and qualified evidence](audits/2026-10-25-lcb001-shared-contract-acceptance.md), [whole-cell Water law](architecture/liquid-solver-family-policy.md#whole-cell-water-law-current-main), [bounded #202 controlled app route and its limits](architecture/liquid-prepared-setup-and-receipts.md#controlled-application-host-preparation-slice), [host evidence](audits/2026-10-24-lcb003-controlled-host-slice.md). [Bounded normal UI evidence](audits/2026-10-25-lcb003-liquid-comparison-ui.md) covers native-validated choices and protected controls. [Staged sampled/exploratory host](architecture/liquid-prepared-setup-and-receipts.md#staged-sampled-actors-and-exploratory-owners) preserves sampled owners and masked state across refusal. [Staged desktop articulated ownership](architecture/liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners) adds actual frozen body masks and a nonblocking permanent-space continuation. Verified application-host provenance, remaining body/constructor coverage and actual browser qualification remain open. |
 | Distinguish combined native host proof, explicit Web terminal apparatus and actual browser acceptance | [Prepared-host contract](architecture/liquid-prepared-setup-and-receipts.md), [terminal Web interface](reference/interfaces-and-message-contracts.md#explicit-lcb-application-web-apparatus), [combined local and apparatus evidence](audits/2026-10-25-lcb003-combined-host-web-prerequisite.md), [remaining constructor/UX matrix](operations/lcb-manual-comparison-ux.md#constructor-coverage-at-this-checkpoint) |

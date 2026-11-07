@@ -203,3 +203,12 @@ creates a fresh world; it does not resume the captured tick. Organic user action
 and reaction/outflow ledgers are not fabricated. Generic controlled scenarios
 refuse ordinary CYSD1 level import/export while active. See the
 [capture contract](../operations/microscenarios.md#capture-provenance-and-limits).
+
+## Workbench starting constructions
+
+The Draft desktop workbench has a separate, bounded named JSON recipe for
+authored starts. It reconstructs native material placement and body settings
+through the worker and a prepared Rapier session. The file omits evolved
+physics state. CYSD1 and solver checkpoints keep their existing interfaces.
+The [workbench controls and schema scope](../systems/player-control-playground.md#development-workbench-on-desktop)
+describe the stored fields and explicit refusal behavior.

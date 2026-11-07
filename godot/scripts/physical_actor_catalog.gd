@@ -8,6 +8,7 @@ extends RefCounted
 const Sampled = preload("res://scripts/actor_rig_catalog.gd")
 const Player = preload("res://scripts/player_actor_catalog.gd")
 const Flight = preload("res://scripts/physical_flight_profile.gd")
+const PASSIVE_BARREL: StringName = &"reference_barrel"
 const VERSION: int = 1
 const MAX_PARTS: int = 8
 const SET_IDS: Array[StringName] = [&"setA", &"setB", &"setF", &"setY", &"setU", &"setV", &"setX", &"setP", &"set4LY"]
@@ -30,7 +31,7 @@ const EXTRA_NAMES: Dictionary = {
 
 
 static func has_rig(rig_id: StringName) -> bool:
-	return rig_id in RIG_IDS or rig_id in Flight.IDS
+	return rig_id in RIG_IDS or rig_id in Flight.IDS or rig_id == PASSIVE_BARREL
 
 
 static func rigs_in_set(set_id: StringName) -> Array[StringName]:
@@ -69,6 +70,13 @@ static func definition(rig_id: StringName) -> Dictionary:
 
 
 static func entry(rig_id: StringName) -> Dictionary:
+	if rig_id == PASSIVE_BARREL:
+		# Independent instance of Main/TestBody1, with no pilot, usable or mount.
+		return {"id":rig_id, "name":"Passive barrel", "equipment_preparation":"none",
+			"parts":[{"id":"barrel", "offset":Vector2.ZERO, "size":Vector2(8,14), "mass":1.0,
+				"angle":0.0, "friction":0.78, "bounce":0.0, "color":Color.SANDY_BROWN}],
+			"joints":[], "mounts":[], "script":{}, "profile":{"air_drag":0.15, "angular_drag":0.35},
+			"bounds":Rect2(-4,-7,8,14), "body_size":Vector2(8,14)}
 	if not has_rig(rig_id):
 		return {}
 	if rig_id in Flight.IDS:

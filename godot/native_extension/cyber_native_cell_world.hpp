@@ -3,6 +3,8 @@
 #include "cybersand/render_snapshot.hpp"
 #include "cybersand/world.hpp"
 #include "cybersand/prepared_world.hpp"
+#include "cybersand/granular_contact_response.hpp"
+#include <godot_cpp/variant/packed_float64_array.hpp>
 
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
@@ -113,6 +115,12 @@ public:
     [[nodiscard]] double get_simulation_time_ms() const;
     [[nodiscard]] std::int64_t get_worker_threads() const;
     [[nodiscard]] String get_backend_name() const;
+    bool prepare_workbench_coupling(const PackedFloat64Array& states, const PackedFloat64Array& geometry,
+        const Array& bodies, std::int64_t session, std::int64_t epoch, bool resolve_overlaps);
+    [[nodiscard]] Dictionary workbench_coupling_results() const;
+    bool diagnostic_enable_solid_workbench();
+    bool diagnostic_bind_solid_workbench(const Dictionary& request);
+    Dictionary workbench_cut_command(const Dictionary& request);
     [[nodiscard]] String get_last_tick_error() const;
     [[nodiscard]] Dictionary get_water_experiment_policy() const;
     // Applied LCB-001 liquid solver policy receipt of the live World. The
@@ -180,6 +188,8 @@ private:
         double angular_velocity = 0.0;
         double mass = 1.0;
         std::int32_t sample_serial = 0;
+        double inertia = 1, friction = 0, dt = 0;
+        Vector2 com{};
         bool valid = false;
     };
 
@@ -267,14 +277,63 @@ private:
     std::uint64_t hard_surface_revision_ = 0;
     std::uint64_t tick_failure_count_ = 0;
     std::uint64_t liquid_policy_session_generation_ = 0;
+    Vector2i extent_{kWorldWidth, kWorldHeight};
+    static constexpr std::size_t kWorkbenchBodies = 8;
+    struct WorkbenchBody {
+        std::int64_t instance = 0, generation = 0;
+        std::int32_t first = 0, count = 0;
+        double budget = 20, gravity = 0;
+        bool external_drive = false;
+    };
+    struct WorkbenchSample {
+        BodyStates proxies{};
+        std::array<std::array<double,4>, cybersand::World::kMaximumTransientBodies + 1> geometry{};
+        std::array<WorkbenchBody,kWorkbenchBodies + 1> owners{};
+        std::array<std::uint16_t,cybersand::World::kMaximumTransientBodies + 1> owner_of{};
+        std::int64_t session = 0, epoch = 0;
+    };
+    struct Workbench {
+        String response;
+        bool solid_aggregate = false;
+        cybersand::soliding::SolidToken solid_token{};
+        std::uint64_t solid_generation = 0;
+        WorkbenchSample sample;
+        bool valid = false, sampled = false;
+        std::uint64_t prepared_tick = 0;
+        std::array<std::array<cybersand::gcr::Bin,8>,cybersand::World::kMaximumTransientBodies + 1> bins{};
+        cybersand::gcr::CompoundWorkspace workspace{};
+    };
+    std::unique_ptr<Workbench> workbench_;
+    struct WorkbenchCut {
+        bool held = false, staged = false;
+        std::array<std::array<int,3>,256> dabs{};
+        std::size_t dab_count = 0, dab_cursor = 0, frontier_cursor = 0;
+        std::array<Vector2i,64> seeds{};
+        std::size_t count = 0;
+        std::uint64_t frontier_checks = 0, frontier_candidates = 0;
+        bool frontier_complete = false, frontier_limited = false;
+        WorkbenchSample next{};
+    };
+    WorkbenchCut workbench_cut_{};
+    static bool parse_workbench_sample(WorkbenchSample& out, const Workbench& retained,
+        const PackedFloat64Array& states, const PackedFloat64Array& geometry, const Array& owners,
+        std::int64_t session, std::int64_t epoch);
+    void prepare_body_coupling(bool resolve_overlaps);
+    void accumulate_workbench_contacts();
+    bool admit_solid_workbench_sample(const WorkbenchSample& sample, std::int64_t epoch);
+    bool authored_entry_normal(std::uint16_t proxy, std::int32_t x, std::int32_t y,
+        Vector2& outward, double& penetration) const;
+    Dictionary workbench_body_result(std::size_t id) const;
     struct PendingLiquidWorld {
+        std::unique_ptr<Workbench> workbench;
+        Vector2i extent{kWorldWidth,kWorldHeight};
         std::unique_ptr<cybersand::World> world;
         std::unique_ptr<cybersand::RenderSnapshotExchange> exchange;
         cybersand::setup::SetupDescriptor setup;
         Dictionary receipt;
         BodyStates initial_bodies{};
         PackedFloat32Array initial_body_input;
-        String initial_body_digest;
+        String initial_body_digest, workbench_initial_digest;
         std::uint64_t token = 0, retained_generation = 0, retained_revision = 0, retained_hash = 0;
         Vector2i origin{}, size{};
         bool cadence = false, adhesion = true, window = true;
@@ -308,7 +367,7 @@ private:
     bool liquid_surface_adhesion_enabled_ = true;
     bool render_snapshot_full_refresh_required_ = true;
 
-    [[nodiscard]] static bool character_box_collides_in(const cybersand::World* world, Vector2 origin, Vector2 size, std::int64_t mode);
+    [[nodiscard]] static bool character_box_collides_in(const cybersand::World* world, Vector2i extent, Vector2 origin, Vector2 size, std::int64_t mode);
     void create_world();
     void retire_liquid_construction_identity();
     void reset_demo_coupling_parameters() noexcept;
@@ -322,8 +381,8 @@ private:
     void refresh_render_cells() const;
     void clear_observations();
     [[nodiscard]] static BodyStates parse_body_state_values(const PackedFloat32Array& states, bool strict);
-    [[nodiscard]] static PackedInt32Array hard_surface_chunks_from_cells(const PackedByteArray& cells);
-    static void rasterize_transform_in(cybersand::World& world, std::vector<std::int32_t>* indices,
+    [[nodiscard]] static PackedInt32Array hard_surface_chunks_from_cells(const PackedByteArray& cells, Vector2i extent);
+    static void rasterize_transform_in(cybersand::World& world, Vector2i extent, std::vector<std::int32_t>* indices,
         std::uint16_t body_id, Vector2 center, double rotation, Vector2 half_size);
     void parse_body_states(const PackedFloat32Array& states);
     void rasterize_body(const BodyState& body);
@@ -358,7 +417,7 @@ private:
                                                 std::uint16_t source_body_id) const;
     void record_impulse(std::uint16_t body_id, Vector2 impulse);
     [[nodiscard]] static std::int32_t symmetric_probe_offset(std::int32_t index);
-    [[nodiscard]] static bool in_bounds(std::int64_t x, std::int64_t y);
+    [[nodiscard]] bool in_bounds(std::int64_t x, std::int64_t y) const;
 };
 
 }  // namespace godot

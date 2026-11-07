@@ -4,11 +4,81 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-07
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Ordinary cut checkpoint — 2026-11-07
+
+Read the [brush regression and correction](../audits/2026-11-07-workbench-brush-cut.md)
+first. Source1b15f343 rebuilds normal-brush admission; observer2253fad0 passes
+165 checks on Windows/Linux workers1/4, with4 workers observed. Old fixture
+failures are retained. Shared64 exact proxies replace the per-canvas eight-shape
+limit; member/span limits remain explicit. The original owner window is kept
+open on its mapped prior build; launch a fresh process to use the correction.
+
+Rules were committed before implementation. The sole writer remains
+`C:/khybersand/build/sol466-order-owned/khybersand`, branch
+`codex/sol-workbench-law-20261106`, Draft #466 against unchanged #461.
+Read [freed rules](../architecture/workbench-freed-objects.md) and the
+[qualification dossier](../audits/2026-11-07-workbench-freed-objects.md) first.
+Code/build source isd5ebc491; exact-value observer isd258a82f. Native source was
+rebuilt with two reviewed consumer transitions; contact law/weights/caps remain
+unchanged. Actual Windows/Linux worker1/4 cutting and lifecycle pass. Preserve
+all failed attempts and Linux ABI-floor blocker. The owner's original live
+window remains open on its original build; do not reset or close it.
+No new test menu, main/default change, Ready or merge. Independent review is next.
+
+## Live canvas and owner direction
+
+The owner rejects additional fixture menus and accepts the visible behaviour
+of four fresh compound bodies in the ordinary workbench. Saved name is
+`sol-fresh-structures-20261106`; existing Load start/P/Step/Restore start work.
+The interactive window must remain open. The [fresh-canvas dossier](../audits/2026-11-06-sol-fresh-canvas.md)
+records actual Windows/Linux and graphical qualification. Source is still owned
+by `codex/sol-workbench-law-20261106` / Draft #466. At that fresh-canvas checkpoint native source and contact
+law were unchanged. Preserve old numerical failures without treating subpixel residual
+motion as an established gameplay bug. The bounded release continuation is documented above; do not resume rest tuning.
+
+## SOL fixed-action ordering continuation — 2026-11-06
+
+The sole writer is `C:/khybersand/build/sol466-order-owned/khybersand`, retaining
+`codex/sol-workbench-law-20261106` and Draft #466 against #461. Prior external
+worktrees/evidence and the unrelated dirty root checkout stay unchanged.
+P2 source9a78d136 restores terminal world_failed; fresh Windows/Linux binaries
+pass four worker1/4 facade suites of3,260 checks. Scientific source13a9ec68
+completes the [registered96-episode ordering experiment](../audits/2026-11-06-sol-workbench-ordering.md).
+
+Result is NO-GO: neither arm rests, and impulse-first worsens median Sand
+area/depth/sink in every primary comparison. Native law, fence, M/I,
+gravity/damping, caps/budget and production order remain unchanged. Full stage
+delivery/body-work audit passes, with zero independent geometry/rest/sink
+disagreement. New scoped runtime manifests bind build9a and validation13a;
+old evidence retains its source qualifiers. Linux GLIBC2.35/GLIBCXX3.4.31 still
+exceeds the supported floor. Keep Draft; no Ready, merge, default, restoration
+or E1/E2 authority. Review the negative result before any new support-law work.
+
+## SOL workbench package comparison — 2026-11-06
+
+Continue from sole-writer `codex/sol-workbench-law-20261106`, Draft #466 against
+stable Draft #461cba3c0de; #46061924a97 unchanged. Main554d27b1 is merged with
+admission ancestry preserved. Read the [dossier](../audits/2026-11-06-sol-workbench-law.md),
+[material transitions](../audits/2026-11-06-sol-workbench-material-transition.md)
+and [current contract](../systems/solid-detachment.md#workbench-law-actual-cuts--2026-11-06).
+All144×720 actual-host episodes complete. Workbench greatly reduces burial,
+but five-repeat packed rest0/20 fails preregistered gate; mixed rest0/20 too.
+Tail arrivals are zero and passive/correction/gravity cycling remains. Do not
+repeat the earlier F1 causal attribution or treat mixed nonregression as settling.
+
+Compiled native990cd5d3 and actual matrix026f7d04 have separate authenticated
+identities. Material guard/tools and optimized/sanitized native controls pass;
+new93-input runtime manifests replace stale current ones without rewriting
+history. New Linux SO fails GLIBC2.34/GLIBCXX3.4.30 limits at2.35/3.4.31; actual
+Ubuntu24.04 passes. Keep blocker and all original physical/CPU/#365/exclusions.
+Next is separate adversarial review, with actual structure rest-speed cycling
+as the narrow scientific target. No mass/cap/default/Ready/merge changes.
 
 ## Dependent SOL ordering result — 2026-11-06
 
@@ -196,8 +266,72 @@ physics. Do not promote local conservative chains as a packed-bed solution or
 copy GCR/PLAY implementations into this branch. The 11/9 coupling ABI remains.
 Dense resistance/penetration and representative GPU pacing remain unpassed;
 active restoration, fracture and normal gameplay remain deferred.
+## MAT-AUTH-002 Phase A integration gate — 2026-11-04
+
+The owner now authorizes current-main reconciliation, focused preflight, a
+Ready-for-review transition and one guarded integration of
+[PR #377](https://github.com/techrote/cybersand/pull/377), **only** for its
+investigation tests, tooling, CI, evidence and documentation. The earlier
+draft/unmerged hold below records the completed Phase A recovery assignment;
+this later integration authorization supersedes that hold, not the prohibition
+on production changes. Keep #354 and #352 open. H1 is not repaired by this PR.
+
+The integration intake is published head `58b8d27b003c812aff24152f903b6c6123f71e5c`
+(tree `ace1162ed3b0720407b8a5cd97d6f2b75de6fc91`) and accepted main
+`01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc`
+(tree `4cf99921dc2b33233c3a254f4b6f27ed7cb0f204`). Main now includes merged
+[#374](https://github.com/techrote/cybersand/pull/374)'s PressureFlow idle-cost
+evidence and benchmark, with no production-source change. Preserve that accepted
+work and every original MAT354 receipt/source identity in ancestry.
+
+The [material-liveness integration gate](material-liveness-investigation.md#which-gates-control-phase-a-integration)
+and live PR ledger separate final-candidate qualification from historical
+execution. Reconciliation alone is not acceptance. Require source guards,
+fresh focused Linux/Windows evidence after a head change, actual ready-state
+Documentation/materialized provenance, Native, Godot and palette checks, and
+an independent final read-only GO before merging. A failed, pending, stale or
+required-skipped gate blocks integration; the source-scope advisory grants no
+exemption. Recheck current base/head and repository review policy immediately
+before the authorized merge. Do not import #358/#383/#384/#386 or start #354-B.
+
+## MAT-AUTH-002 Phase A handover — 2026-11-04
+
+**Historical recovery assignment.** Its source-qualified results and limitations
+remain intact; the later integration gate above owns current readiness authority.
+
+Begin with the [material liveness investigation guide](material-liveness-investigation.md),
+[findings](../audits/2026-11-04-mat354-findings.md) and
+[correction admission](../audits/2026-11-04-mat354-correction-admission.md).
+Accepted main `7ef4856e` includes merged #371; its shadow catalogue is unconsumed
+by production, and the original native/fallback definitions remain authoritative.
+Only independent tests, tooling, evidence and documentation are admitted for
+#354 Phase A. Isolated MoltenGlass loses a cooling opportunity under sleep;
+mutual heating remains the existing law and generic yielding rest is preserved.
+
+Keep #354 open and its investigation PR draft/unmerged. Production correction
+requires separate owner admission and a reviewed transition for protected
+`native/src/world.cpp`; do not refresh lock hashes or import #353-B migration.
+Revalidate live main, exact runtime/source evidence and overlapping #355 ownership
+before future writes. Preserve #358/#347/#370/#373/#201 and Water phase/quantity
+boundaries. Use a separately owned worktree and serialize any shared kernel writes.
+PressureFlow #201 continues separately in [draft #374](https://github.com/techrote/cybersand/pull/374);
+do not import its optimization into this investigation.
+The audit/PR ledger carries actual campaign, sanitizer, platform and independent
+review status, including failed or incomplete attempts; no skipped gate is a pass.
+
+The stalled session has a separate
+[recovery qualification and custody record](../audits/2026-11-04-mat354-recovery-qualification.md).
+Use its indexed retained packet and fresh independent reviews. The original
+unpublished local raw directory is unavailable; preserve that limitation instead
+of treating new passing runs as recovery of the old bytes. Hosted Windows/Linux
+source1a06a0d is independently qualified; the final PR ledger owns the later
+documentation/evidence head and its resulting checks.
 
 ## MAT-AUTH adopted-main reconciliation — 2026-11-04
+
+**Historical integration assignment.** #371 subsequently merged at `7ef4856e`.
+The following handover preserves its earlier source and qualification boundary;
+the Phase A section above owns the current liveness assignment.
 
 Documentation [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)
 as accepted main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d`; the corrected
@@ -1840,3 +1974,7 @@ Use the [physical actor programme](physical-actor-programme.md) for the combined
 ## Reconstructed depth prototype — 2026-10-18
 
 PR #169 integrates [Strata Theatre](../systems/depth-layers-and-parallax.md) with the feature branches. Use its [fresh validation record](../audits/2026-10-18-depth-integration-validation.md); old local evidence does not certify the reconstructed source. F4 opens the separate lab; it does not attach four new owners to the ordinary gameplay World.
+
+## WORKBENCH-001 shared desktop destination
+
+The revised #391 candidate starts at main 751edc0b, which includes #390. For fresh work on playable engine capabilities, use the [shared desktop workbench](../systems/player-control-playground.md#development-workbench-on-desktop) and the [dated intake and qualification record](../audits/2026-11-04-workbench-consolidation.md). Keep the separate #389 experience reference and #392 first attempt recoverable. The linked Draft branch and its protected-source disposition determine current integration status.

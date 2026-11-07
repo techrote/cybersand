@@ -39,6 +39,42 @@ struct World::PressureCache {
             gas_components.reserve(PressureFlowParameters::kCompartmentCapacity);
             gas_dirty_chunks.reserve(capacity);
         }
+        // #201 P1: one derived wake-clean bit per indexed cell. Reserved here;
+        // the index rebuild zero-fills within this capacity (no tick allocation).
+        wake_words_per_chunk = (cell_area + 63U) / 64U;
+        if (capacity <= std::numeric_limits<std::size_t>::max() / wake_words_per_chunk)
+            wake_clean.reserve(capacity * wake_words_per_chunk);
+    }
+
+    // A set bit means: the last complete wake evaluation of this sleeping cell
+    // was negative and no input of the state-only wake predicate has changed
+    // since. Any doubt clears bits; a clear bit only costs an ordinary scan.
+    [[nodiscard]] bool wake_bits_ready() const noexcept {
+        return complete && wake_words_per_chunk != 0U &&
+               wake_clean.size() == column_order.size() * wake_words_per_chunk;
+    }
+    void wake_reset() noexcept {
+        std::fill(wake_clean.begin(), wake_clean.end(), std::uint64_t{0});
+        ++wake_resets;
+    }
+    [[nodiscard]] bool wake_test(std::size_t bit, std::size_t count) const noexcept {
+        while (count != 0U) {
+            const auto offset = bit % 64U;
+            const auto take = std::min<std::size_t>(count, 64U - offset);
+            const auto mask = take == 64U ? ~std::uint64_t{0} : ((std::uint64_t{1} << take) - 1U) << offset;
+            if ((wake_clean[bit / 64U] & mask) != mask) return false;
+            bit += take; count -= take;
+        }
+        return true;
+    }
+    void wake_assign(std::size_t bit, std::size_t count, bool value) noexcept {
+        while (count != 0U) {
+            const auto offset = bit % 64U;
+            const auto take = std::min<std::size_t>(count, 64U - offset);
+            const auto mask = take == 64U ? ~std::uint64_t{0} : ((std::uint64_t{1} << take) - 1U) << offset;
+            if (value) wake_clean[bit / 64U] |= mask; else wake_clean[bit / 64U] &= ~mask;
+            bit += take; count -= take;
+        }
     }
 
     [[nodiscard]] GasComponent* gas_component(std::uint32_t id) noexcept {
@@ -112,4 +148,7 @@ struct World::PressureCache {
     std::vector<GasMember> gas_members;
     std::vector<GasComponent> gas_components;
     std::vector<ChunkCoord> gas_dirty_chunks;
+    std::size_t wake_words_per_chunk = 0;
+    std::vector<std::uint64_t> wake_clean;
+    std::uint64_t wake_segments_scanned = 0, wake_segments_skipped = 0, wake_resets = 0;
 };

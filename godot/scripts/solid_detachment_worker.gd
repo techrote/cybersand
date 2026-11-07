@@ -10,6 +10,20 @@ var _solid_last_request: int = 0
 var _solid_refused_replacements: int = 0
 # Set before start_worker and immutable for this owner's lifetime.
 var solid_contact_observations_enabled: bool = false
+
+func install_solid_workbench_sample(value: Dictionary) -> bool:
+	# One initial immutable roster, installed while this owner is paused after
+	# native finalize. Native independently checks the active aggregate/geometry.
+	_mutex.lock()
+	var ok: bool = _paused and not _reset_requested and _workbench_sample.is_empty() \
+		and value.get("epoch",0)>0 and value.get("session",0)>0 and not value.get("states",PackedFloat64Array()).is_empty()
+	if ok:
+		_workbench_sample=value.duplicate(true)
+		_rigid_body_epoch=int(value.epoch)
+		_rigid_body_states=PackedFloat32Array()
+		_workbench_extent=Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT)
+	_mutex.unlock()
+	return ok
 var _contact_attempts: int = 0
 var _contact_usec: int = 0
 var _contact_max_usec: int = 0
@@ -129,7 +143,9 @@ func _apply_lab(command: Dictionary) -> bool:
 	if not _world.has_method(&"solid_detachment_command"):
 		_solid_pending_reply = {"ok":false,"outcome":"NativeAPIUnavailable"}
 	else:
-		_solid_pending_reply = _world.solid_detachment_command(input)
+		if input.get("action","")=="workbench_bind":
+			_solid_pending_reply={"ok":bool(_world.diagnostic_bind_solid_workbench(input)),"outcome":"WorkbenchBinding"}
+		else:_solid_pending_reply = _world.solid_detachment_command(input)
 		# Optional diagnostic values are copied only by the exclusive worker.
 		# They expose neither the native World nor a mutable aggregate payload.
 		var points: Variant = input.get("probe_points", PackedInt32Array())
@@ -146,6 +162,15 @@ func _apply_lab(command: Dictionary) -> bool:
 		if snapshot_origin is Vector2i and snapshot_size is Vector2i and snapshot_size.x > 0 and snapshot_size.y > 0:
 			_solid_pending_reply["diagnostic_snapshot"] = _world.diagnostic_snapshot(
 				snapshot_origin, snapshot_size, false)
+		if bool(input.get("snapshot_tiles",false)):
+			# One exclusive-owner command: no native tick/mask preparation can
+			# interleave the bounded diagnostic reads. No World storage escapes.
+			var tiles: Array=[]
+			for origin: Vector2i in [Vector2i(0,0),Vector2i(512,0),Vector2i(0,512),Vector2i(512,512)]:
+				var tile: Dictionary=_world.diagnostic_snapshot(origin,Vector2i(512,512),false)
+				tile["origin"]=origin;tile["size"]=Vector2i(512,512);tiles.append(tile)
+			_solid_pending_reply["diagnostic_tiles"]=tiles
+			_solid_pending_reply["liquid_policy"]=_world.get_liquid_solver_policy()
 		if bool(input.get("include_body_metrics", false)):
 			_solid_pending_reply["body_metrics"] = _world.diagnostic_body_metrics()
 	_solid_pending_reply["request_id"] = _solid_last_request

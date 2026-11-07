@@ -4,6 +4,8 @@
 // tick preparation never grows a container (capacity exhaustion throws and the
 // World quarantines, like the other bounded World capacities).
 
+#include "world_pressure_column_failure.inc"
+
 namespace {
 
 [[nodiscard]] PressureFlowParameters pressure_parameters_from(const LiquidSolverPolicy& policy) {
@@ -194,4 +196,10 @@ struct World::PressureState {
     std::vector<std::uint32_t> member_compartments;
     std::vector<std::uint32_t> member_regions;
     std::vector<ChunkCoord> sorted_coordinates;
+    struct HeadColumnTask {
+        std::size_t begin = 0, end = 0;
+        std::uint64_t columns = 0, writes = 0, heads = 0, unknown = 0;
+        pressure_column_detail::PressureColumnFailure error{};
+    };
+    std::vector<HeadColumnTask> column_tasks;
 };

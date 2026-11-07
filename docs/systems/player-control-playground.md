@@ -4,11 +4,49 @@ status: Current
 document-kind: contract
 scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-11-02
+last-reviewed: 2026-11-07
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
 # Player control playground
+
+## Cutting ordinary workbench structures
+
+Choose RedBrick in the existing material picker. Build face-connected pieces
+with Wall/Hard wall supports, then erase a support using the existing RMB or
+Erase tool. Release the mouse to check adjacent pieces. A cold paused canvas
+needs one ordinary Step or Play first to apply its simulation region. Eligible
+unanchored pieces become passive bodies; refused pieces stay native and report
+why at the start of the existing status display until another cut or complete
+canvas replacement. Default round-brush and sloped strokes are covered by the
+[brush correction](../audits/2026-11-07-workbench-brush-cut.md). Pieces above
+1,024 cells or62 cells across remain terrain; do not expect arbitrary-size
+structures to release. No new test menu is present. See the [rules and limits](../architecture/workbench-freed-objects.md).
+After capture, retained body/settings replacements refuse until an admitted
+transfer exists. Save keeps an authored start; Restore/Load/New blank retire
+the complete old owner and start fresh. Existing painting, palette, powder,
+liquid and save/load controls remain; this is not full live-state persistence.
+
+## File-local passive canvas bodies
+
+**Current opt-in workbench authoring:** version3 named starts may include passive
+canvas-local compound bodies, without adding models to the flyer catalogue.
+[Fresh structures](../audits/2026-11-06-sol-fresh-canvas.md) supplies four live
+examples in one normal canvas. Load `sol-fresh-structures-20261106` using the
+existing Details/name/Load start controls; P runs, Step advances and Restore
+start reconstructs the paused start. `--workbench --workbench-start=NAME` loads
+an installed named recipe directly. The repository canvas JSON can be copied to
+`user://workbench/setup-sol-fresh-structures-20261106.json` on another machine.
+
+A body uses strict name/rectangle data, one Rapier body with at most64 exact
+proxies within the shared64-proxy scene budget,
+unit-area mass/inertia, AUTO COM, gravity scale0.094 and combined0.04 damping.
+It is observer-only and has no drive/equipment authority. Geometry and content
+hashes persist through normal save/load. Version2 recipes, palette, existing
+controls and selectable responses remain valid; eight bodies/64 proxies still
+bound the owner. These fresh bodies need no native-cell capture or freed rule.
+The owner accepts the demonstrated visible behaviour; do not tune contact law
+merely to satisfy the retained numerical rest screen.
 
 ## Current PLAY acceptance boundary — 2026-10-30
 
@@ -771,3 +809,23 @@ routes, real gamepad/window-focus behavior and browser execution are not
 established by headless tests. Actual Windows headless execution does not
 establish interactive Windows feel. Generic body/granular, soliding and Water successor acceptance
 retain their existing programme owners.
+
+## Development workbench on desktop
+
+On the #391 development branch, choose **Development workbench** from F2 or launch Godot with `-- --workbench`. The application opens a paused, empty 2048 × 2048 canvas. Details contains the construction size for the next blank canvas. The two sides are independent multiples of 64 between 512 and 2048. The full finite domain owns simulation interest across the session. Camera pan, overview, follow and zoom only change presentation.
+
+1. Choose a craft in **Pilot** (or press 1–8) to fly it immediately. If it already exists, the workbench selects it. Otherwise the workbench replaces the selected flyer at its saved spawn, retaining its six applied tuning values (budget, mass, inertia, thrust, torque and Shift multiplier), or places the new flyer at X/Y if no flyer is selected. Selecting an existing instance keeps that instance's own tuning; newly placed instances use their model defaults. **Place model** and **Place at X/Y** let you add another independent instance, including a duplicate model or passive barrel. Cursor placement uses **Place body**. Select an instance through the list or **Select body**. Up to eight physical bodies fit. Scooper has five rectangle proxies on one Rapier body. Instance IDs survive setup reconstruction.
+2. Paint in the viewport, erase with the right button, pan with the middle button and zoom with the wheel. The powder palette, Water, hard wall and erase use radius 2–24. **Place source** uses the selected powder. **B** queues one 4 × 24 burst. Stream inserts at most four cells per tick for 600 ticks. Read the inserted/blocked counters. The source and actor dispensers add material only at admitted empty locations.
+3. **P** toggles play and **.** advances one acknowledged step while paused. Cockpit controls come from the flyer's JSON and controller. Shift boosts, Ctrl brakes and Kestrel S dispenses Gunpowder. Scooper uses W/S for height, A/D for strafe, Space for lift and Q/E for tilt. In Details, stage the selected instance's mass, inertia, thrust and torque limits, Shift multiplier and response budget. **Apply settings** prepares the replacement. **Defaults** restores LA-SA and the selected body defaults. Setting/capturing a reset spawn leaves the live body where it is.
+4. The World response selector offers selective arrivals (LA-SA), LA, events off and RFT. RFT requires a budget of 20 for each instance. Use Details to select a liquid material, admitted family/variant, IN damping, execution radius and explicit Water normalization. **Apply liquid selection** requests a prepared World and permits conversion of incompatible live solver state. A whole-cell Water target rounds fractional cells using the native normalization rule. A fractional target preserves the visible amounts unless normalization is explicitly selected. The completed conversion reports discarded pressure overfill and trapped gas, plus Water added or removed by normalization. Water and powder that move outside the editable canvas are transferred into the replacement World wherever its reserved chunks can store them. The receipt reports what stayed outside the canvas and what was lost beyond reserved storage. Switching live solvers uses the evolved native cells even when the paint history exceeds the limits for a saved starting setup. The status shows the installed Water family and variant. Historical creep, burial, sealing and late-rebound results are still qualified. A liquid choice supplies its existing cellular behavior.
+5. **R** resets the selected body to its saved spawn with neutral motion, including while flying. **Restore start** reconstructs the whole starting recipe, and **New blank** clears the canvas. If an experiment fails, Reset can retire the failed worker and rebuild the authored start. Actor changes transfer the current cells, compatible pressure inventory and unaffected bodies through the exclusive owner. For contact experiments you can place bodies together, or reset into painted hard terrain. Starting-setup saves retain the authored brush history, actor definitions by stable name and content hash, spawns, options, selection, response, policy, source and tool state. They omit evolved cell motion, transient impulses, held commands and stream progress. The named JSON files under `user://workbench` have an explicit version, 1 MiB file budget, 2048-stamp and 4096-run reconstruction limits. Load verifies the currently installed authored definitions and the complete candidate before adoption.
+
+Open **Details** during play to see the native pool size, the peak number of workers claiming jobs in a sampled solver phase, the jobs by phase and the native tick time. These values describe one completed tick. The OS CPU meter also includes time between ticks. Native and Rapier can advance while the renderer holds its previous frame. The [edge conversion and parallelism measurements](../audits/2026-11-04-workbench-boundary-and-pacing.md) include a fixed-work comparison and the graphical pacing control.
+
+The common desktop application is the destination for future playable capabilities. A new map supplies bounded extent, terrain and authored setup to this runtime. A controlled scientific fixture can still supply separate evidence. The [consolidation audit](../audits/2026-11-04-workbench-consolidation.md) owns tested platform results, failures and compatibility disposition. The [live-editing follow-up](../audits/2026-11-04-workbench-live-editing.md) records the pilot, reset, conversion and recovery tests. The [cleanup qualification](../audits/2026-11-04-workbench394-cleanup.md) records retained tuning, fleet registry lifetime and the corrected core-log citation. The [protected source transition](../audits/2026-11-04-workbench394-material-source-transition.md) separately owns MAT admission.
+
+The flyer authoring registry is a bounded copied-value cache owned by the current main loop. Its stateless façade shares accepted definitions across live workbench sessions and retires them before script shutdown. It owns no scene nodes, scripts, resources, callables, physics bodies or native cells. Reload validation and defensive-copy getters preserve the authored values and existing flight/contact laws.
+
+The workbench bridge likewise obtains its monotonically increasing session ID from main-loop-owned integer metadata. Retiring a scene cannot recycle that ID within the same process. It holds no GDScript static state: complete host qualification exposed static-script lifetime leaks and Windows exit faults beyond the earlier fleet-only controls. The [final-validation record](../audits/2026-11-04-workbench394-ready-validation.md) preserves those failures and the scoped repair; the response history, material laws and authored controls are unchanged.
+
+The [owner-accepted final-validation record](../audits/2026-11-04-workbench394-ready-validation.md) distinguishes the tested package, current-main reconciliation, rebuilt runtime identities and resulting-source hosted gates. Owner acceptance of this desktop workbench does not close the broader PLAY or REM-004 programmes.

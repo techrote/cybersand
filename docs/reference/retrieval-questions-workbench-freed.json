@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-07",
+  "purpose": "Three additive post-implementation development questions; older frozen query objects unchanged.",
+  "questions": [
+    {
+      "id": "FREED-RULES-001",
+      "query": "When does an erased RedBrick workbench structure become a freed object, and what anchors or unknown states refuse it?",
+      "canonical": [
+        "architecture/workbench-freed-objects.md"
+      ],
+      "facts": [
+        "Face-connected RedBrick; Wall1/Hardwall58/canvas edge anchors.",
+        "Applied/resident/ambient/unmasked authority and bounded members/proxies required; refusal is not clearance."
+      ],
+      "sources": [
+        "../native/src/world_solid_detachment.inc",
+        "../godot/scripts/workbench_cut.gd"
+      ]
+    },
+    {
+      "id": "FREED-OWNER-001",
+      "query": "How does normal workbench cutting retain a moving body RID and native ownership, then save or restore freed objects?",
+      "canonical": [
+        "architecture/workbench-freed-objects.md",
+        "architecture/data-ownership-and-lifetimes.md"
+      ],
+      "facts": [
+        "Same World/worker, held clocks, exact tuples and one compound body per aggregate.",
+        "Fresh sample after all dispositions; version4 authored start, whole-owner restart, no active restoration/CYPS bypass."
+      ],
+      "sources": [
+        "../godot/scripts/physical_actor_session.gd",
+        "../godot/scripts/simulation_worker.gd"
+      ]
+    },
+    {
+      "id": "FREED-QUALIFY-001",
+      "query": "What does ordinary workbench cutting qualification prove on Windows Linux workers1/4, and does it solve original SOL clearance or change physics?",
+      "canonical": [
+        "operations/local-build-and-validation.md",
+        "systems/solid-detachment.md"
+      ],
+      "facts": [
+        "83 checks per host/worker plus52 lifecycle; native and source gates distinct.",
+        "Unchanged physics; original clearance/CPU/365 and Linux ABI-floor blockers retained."
+      ],
+      "sources": [
+        "../native/tests/fixtures/workbench_freed_001.json",
+        "../godot/tests/test_workbench_freed.gd"
+      ]
+    },
+    {
+      "id": "FREED-BRUSH-001",
+      "query": "Why could a normal round-brush RedBrick cut stay suspended, what was corrected, and what size or capacity limits still refuse release?",
+      "canonical": [
+        "architecture/workbench-freed-objects.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "Old eight-rectangle admission rejected default brush; canvas64 exact rectangles share64 total proxies.",
+        "Lazy frontier allows64 investigations;1024 members and62-cell span remain. Persistent refusal is not clearance."
+      ],
+      "sources": [
+        "../godot/native_extension/solid_workbench_adapter.inc",
+        "../godot/scripts/workbench_cut.gd",
+        "../native/tests/fixtures/workbench_brush_cut_001.json"
+      ]
+    }
+  ]
+}

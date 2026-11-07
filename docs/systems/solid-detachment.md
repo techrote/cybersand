@@ -4,11 +4,78 @@ status: Current
 document-kind: contract
 scope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance
 canonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-07
 related-documents: [../operations/soliding-programme.md, ../architecture/soliding-lifecycle.md, ../architecture/rigid-body-and-cellular-coupling.md, ../audits/2026-11-01-sol281-current-main.md, ../audits/2026-11-03-sol281-dense-contact-registration.md, ../audits/2026-11-03-sol281-dense-contact.md]
 ---
 
 # Native structural detachment
+
+## Ordinary workbench cut release — 2026-11-07
+
+**Current on dependent Draft #466:** ordinary erasing can release bounded
+RedBrick structures through the [freed-object contract](../architecture/workbench-freed-objects.md).
+One native World retains complete tuple custody; one main-thread Rapier body
+owns each exact proxy union. This normal lane supports eight active records;
+the older single-aggregate diagnostic lane remains separate. Cold unapplied
+regions and all eligibility/capacity/authority refusals remain native.
+The [dated qualification](../audits/2026-11-07-workbench-freed-objects.md) records
+actual520/6 tree and356/5 building, Windows/Linux workers1/4, moving-owner
+retention, Step/Play/refusal/replay/teardown and unchanged physics. This is
+functional ownership admission, not original SOL physical clearance or rollout.
+
+## Fixed-action correction and impulse ordering — 2026-11-06
+
+**Current result: NO-GO for impulse-first order.** The preregistered actual-cut
+comparison completes96 fresh episodes/69,120 physical steps on Windows/Linux,
+workers1 with five repeats and separate worker4 spots. Both arms use the same
+LA-SELECTIVE law, fence, computed torque, M/I, gravity/damping and caps. Only a
+test-local adapter exchanges correction/velocity clipping with the combined
+central/torque impulse block. Production application order stays unchanged.
+
+Packed and mixed rest are0/20 per arm; reversal worsens median Sand area/depth
+and tail sinking in all8 primary comparisons. Packed-tree area0.831949 ->55.137890
+cell2, building1.632579 ->52.301418. Every cell's five geometry/sink observations
+repeat exactly (IQR0), without a population-uncertainty claim. All345,600
+primitive transitions pass actual delivery/readback. Missing/misaligned arrival
+histories stay counted; correction-first tail events are zero, while reversed
+tails include real arrivals. More upward impulse is not physical clearance.
+
+The [dated dossier](../audits/2026-11-06-sol-workbench-ordering.md) retains the
+prospective rule, full medians/spreads, terminal census age0/1, clipped work and
+independent audit. P2 restores world_failed at terminal quarantine; four actual
+host worker1/4 facade runs pass3,260 checks each. Fresh runtime identities do
+not clear the Linux ABI floor. Keep #466 Draft; F1 remains mechanism engaged,
+causal role unproven; original SOL failures, hard exclusions and #365 stand.
+
+## Workbench-law actual cuts — 2026-11-06
+
+**Current on the isolated dependent Draft #466:** owner D1 selects main's
+LA-SELECTIVE workbench law for actual520-member/six-proxy tree and356-member/
+five-proxy building cuts. `solid_workbench_session.gd` is opt-in; ordinary SOL
+still defaults pre. A one-shot diagnostic native adapter binds the existing
+World/token/body generation and exact source pose/M/I before its first sample.
+It calls main's actual contact accumulation and `workbench_granular_coupling.inc`,
+with one physical aggregate/body, budget20, no SOL281 Sand or second ordinary
+application. Main's overlap handling/completed-sample fence are used unchanged;
+legacy controls keep conservative displacement/asynchronous pacing. No mass,
+gravity/damping, cap, material policy or accepted default changes.
+
+The [registered repeated result](../audits/2026-11-06-sol-workbench-law.md) admits
+144 fresh720-step episodes on Windows/Linux, workers1/4. Five-repeat worker1
+packed cells all fail rest (0/20); terminal area/depth and tail sink improve in
+all8 primary comparisons. Mixed nonregression passes, while mixed rest remains
+0/20. Late arrivals/event wrench are zero; passive support/correction/integration
+continues. LA-SELECTIVE is not arrival-only total physics or automatic clearance.
+F1 is mechanism engaged, causal role unproven; post-ordering NO-GO stands.
+Workbench packet readback is authoritative; old SOL contact observation reports
+IncompleteOrIncoherentCompound and cannot qualify intermediate Water contact.
+Actual mixed terminal Water overlap is measured separately.
+
+Reviewed per-file MAT transitions and new93-input native provenance pass scoped
+source checks; the frozen lock and historical results remain unchanged. Linux's
+new SO fails the retained2.34 floor (`hypot@GLIBC_2.35` and GLIBCXX3.4.31>3.4.30) despite actual Ubuntu
+execution passing. Keep Draft, original clearance/CPU/#365/hard-material blockers
+and request independent adversarial review. Reduced burial is not solved settling.
 
 ## Contact and gravity ordering — 2026-11-06
 

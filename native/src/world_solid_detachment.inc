@@ -38,6 +38,7 @@ void World::require_solid_mutation_allowed() const {
 soliding::SolidOutcome World::configure_solid_detachment(soliding::SolidLimits limits) {
     using namespace soliding;
     if (tick_failed_) return SolidOutcome::WorldFailed;
+    if (workbench_solid_count()) return SolidOutcome::Busy;
     if (tick_in_progress_ || (solid_detachment_ &&
         solid_detachment_->snapshot.phase != SolidPhase::Idle)) return SolidOutcome::Busy;
     if (limits.members == 0 || limits.members > kSolidMembers ||
@@ -217,6 +218,17 @@ soliding::SolidOutcome World::acknowledge_solid_detachment(const soliding::Solid
         body.shape_count > static_cast<std::size_t>(kMaximumTransientBodies - body.body_id + 1U) ||
         body.shape_count != s.shape_count || body.payload_digest != s.payload_digest ||
         body.shape_digest != s.shape_digest) return SolidOutcome::Invalid;
+    if (workbench_solids_) {
+        if (workbench_solids_->count==kWorkbenchSolids) return SolidOutcome::MemberCapacity;
+        std::size_t total_shapes=s.shape_count;
+        for (std::size_t i=0;i<workbench_solids_->count;++i) {
+            const auto& previous=workbench_solids_->owned[i].snapshot;
+            total_shapes+=previous.shape_count;
+            if (body.body_id<previous.body_id+previous.shape_count && previous.body_id<body.body_id+body.shape_count)
+                return SolidOutcome::Occupied;
+        }
+        if (total_shapes>kWorkbenchSolidShapes) return SolidOutcome::ShapeCapacity;
+    }
     s.body_id = body.body_id;
     s.body_generation = body.body_generation;
     s.phase = SolidPhase::Acknowledged;
@@ -347,7 +359,8 @@ soliding::SolidOutcome World::complete_solid_rollback(const soliding::SolidColli
 }
 
 std::size_t World::solid_detachment_storage_bytes() const noexcept {
-    return solid_detachment_ ? sizeof(soliding::SolidStore) : 0;
+    return (solid_detachment_ ? sizeof(soliding::SolidStore) : 0) +
+        (workbench_solids_ ? sizeof(soliding::SolidWorkbenchStore) : 0);
 }
 
 soliding::SolidSnapshot World::inspect_solid_detachment() const noexcept {
@@ -364,4 +377,130 @@ std::size_t World::copy_solid_detachment_shapes(std::span<soliding::SolidShape> 
     const auto count = solid_detachment_->snapshot.shape_count;
     if (output.size() >= count) std::copy_n(solid_detachment_->shapes.begin(), count, output.begin());
     return count;
+}
+
+soliding::SolidOutcome World::configure_workbench_solids(soliding::SolidBounds canvas) {
+    using namespace soliding;
+    if (tick_failed_) return SolidOutcome::WorldFailed;
+    if (tick_in_progress_ || solid_detachment_fenced()) return SolidOutcome::Busy;
+    if (canvas.x != 0 || canvas.y != 0 || canvas.width < 512 || canvas.height < 512 ||
+        canvas.width > 2048 || canvas.height > 2048) return SolidOutcome::Invalid;
+    if (workbench_solids_) return workbench_solids_->canvas == canvas ? SolidOutcome::Accepted : SolidOutcome::Busy;
+    if (solid_detachment_) return SolidOutcome::Busy;
+    auto candidate = std::make_unique<SolidWorkbenchStore>();
+    candidate->canvas = canvas;
+    const auto result = configure_solid_detachment({kSolidMembers, kWorkbenchSolidShapes});
+    if (result == SolidOutcome::Accepted) workbench_solids_ = std::move(candidate);
+    return result;
+}
+
+soliding::SolidOutcome World::prepare_workbench_solid(std::int64_t x, std::int64_t y) {
+    using namespace soliding;
+    if (tick_failed_) return SolidOutcome::WorldFailed;
+    if (!workbench_solids_) return SolidOutcome::Disabled;
+    if (tick_in_progress_ || solid_detachment_->snapshot.phase != SolidPhase::Idle) return SolidOutcome::Busy;
+    if (selected_core_region_ != applied_core_region_) return SolidOutcome::Excluded;
+    auto& work = *workbench_solids_;
+    work.inspected=work.probes=0;
+    if (work.count == kWorkbenchSolids) return SolidOutcome::MemberCapacity;
+    if (!solid_detail::contains(work.canvas,x,y)) return SolidOutcome::Invalid;
+    if (!contact_cell_available(x,y)) return SolidOutcome::NotResident;
+    if (stored_material(x,y) != Material::RedBrick) return SolidOutcome::Ineligible;
+    work.lookup.fill(-1);
+    std::size_t head=0, tail=0;
+    const auto add = [&](std::int64_t px,std::int64_t py) {
+        const auto key = (static_cast<std::uint64_t>(px)*0x9e3779b185ebca87ULL ^
+            static_cast<std::uint64_t>(py)*0xc2b2ae3d27d4eb4fULL) % kSolidDomainCells;
+        auto bucket=static_cast<std::size_t>(key);
+        while (work.lookup[bucket] >= 0) {
+            if (work.queue[static_cast<std::size_t>(work.lookup[bucket])] == std::array<std::int64_t,2>{px,py}) return true;
+            bucket=(bucket+1)%kSolidDomainCells;
+        }
+        if (tail == kSolidMembers) return false;
+        work.lookup[bucket]=static_cast<std::int16_t>(tail);
+        work.queue[tail++]={px,py}; return true;
+    };
+    (void)add(x,y);
+    auto min_x=x,max_x=x,min_y=y,max_y=y;
+    constexpr std::array<std::array<int,2>,4> offsets{{{{0,-1}},{{-1,0}},{{1,0}},{{0,1}}}};
+    while (head < tail) {
+        const auto point=work.queue[head++];
+        ++work.inspected;
+        const auto px=point[0],py=point[1];
+        if (px==0 || py==0 || px+1==work.canvas.width || py+1==work.canvas.height) return SolidOutcome::Anchored;
+        if (!contact_cell_available(px,py)) return SolidOutcome::NotResident;
+        if (transient_obstacle_at(px,py)) return SolidOutcome::Occupied;
+        if (stored_temperature(px,py)!=config_.ambient_temperature) return SolidOutcome::Thermal;
+        if (stored_state_a(px,py) || stored_state_b(px,py)) return SolidOutcome::Ineligible;
+        min_x=std::min(min_x,px);max_x=std::max(max_x,px);
+        min_y=std::min(min_y,py);max_y=std::max(max_y,py);
+        if (max_x-min_x+3>64 || max_y-min_y+3>64) return SolidOutcome::MemberCapacity;
+        for (const auto& offset:offsets) {
+            ++work.probes;
+            const auto nx=px+offset[0],ny=py+offset[1];
+            if (!contact_cell_available(nx,ny)) return SolidOutcome::NotResident;
+            if (transient_obstacle_at(nx,ny)) return SolidOutcome::Occupied;
+            const auto material=stored_material(nx,ny);
+            if (material==Material::Wall || material==Material::ReinforcedConcrete) return SolidOutcome::Anchored;
+            if (material==Material::RedBrick) {
+                if (!add(nx,ny)) return SolidOutcome::MemberCapacity;
+            } else if (material==Material::Sand || (material==Material::Water && !water_cellular_yield_)) {
+                if (stored_temperature(nx,ny)!=config_.ambient_temperature) return SolidOutcome::Thermal;
+            } else if (material!=Material::Empty) return SolidOutcome::Ineligible;
+        }
+    }
+    const auto prepared=prepare_solid_detachment({{min_x-1,min_y-1,static_cast<std::uint16_t>(max_x-min_x+3),
+        static_cast<std::uint16_t>(max_y-min_y+3)}, {0,work.canvas.height-1,work.canvas.width,1},x,y});
+    if (prepared!=SolidOutcome::Accepted) return prepared;
+    std::size_t total_shapes=solid_detachment_->snapshot.shape_count;
+    for (std::size_t i=0;i<work.count;++i) total_shapes+=work.owned[i].snapshot.shape_count;
+    if (total_shapes>kWorkbenchSolidShapes) {
+        (void)cancel_solid_detachment(solid_detachment_->snapshot.token);
+        return SolidOutcome::ShapeCapacity;
+    }
+    return SolidOutcome::Accepted;
+}
+
+soliding::SolidOutcome World::archive_workbench_solid(soliding::SolidToken token) {
+    using namespace soliding;
+    if (tick_failed_) return SolidOutcome::WorldFailed;
+    if (!workbench_solids_ || !solid_detachment_) return SolidOutcome::Disabled;
+    auto& s=solid_detachment_->snapshot;
+    if (s.phase!=SolidPhase::Active || token!=s.token) return SolidOutcome::Stale;
+    auto& work=*workbench_solids_;
+    if (work.count==kWorkbenchSolids || s.shape_count>kWorkbenchSolidShapes) return SolidOutcome::MemberCapacity;
+    std::size_t total_shapes=s.shape_count;
+    for (std::size_t i=0;i<work.count;++i) total_shapes+=work.owned[i].snapshot.shape_count;
+    if (total_shapes>kWorkbenchSolidShapes) return SolidOutcome::ShapeCapacity;
+    for (std::size_t i=0;i<work.count;++i) {
+        const auto& previous=work.owned[i].snapshot;
+        if (previous.physics_epoch!=s.physics_epoch ||
+            (s.body_id<previous.body_id+previous.shape_count && previous.body_id<s.body_id+s.shape_count))
+            return SolidOutcome::Stale;
+    }
+    auto& record=work.owned[work.count++];record.snapshot=s;
+    std::copy_n(solid_detachment_->members.begin(),s.member_count,record.members.begin());
+    std::copy_n(solid_detachment_->shapes.begin(),s.shape_count,record.shapes.begin());
+    const auto incarnation=s.token.incarnation;
+    s={};s.phase=SolidPhase::Idle;s.token.incarnation=incarnation;
+    return SolidOutcome::Accepted;
+}
+std::size_t World::workbench_solid_count() const noexcept {
+    return workbench_solids_ ? workbench_solids_->count : 0;
+}
+std::array<std::uint64_t,2> World::workbench_solid_discovery_work() const noexcept {
+    return workbench_solids_ ? std::array<std::uint64_t,2>{workbench_solids_->inspected,workbench_solids_->probes} : std::array<std::uint64_t,2>{};
+}
+soliding::SolidSnapshot World::workbench_solid_record(std::size_t index) const noexcept {
+    return index<workbench_solid_count() ? workbench_solids_->owned[index].snapshot : soliding::SolidSnapshot{};
+}
+soliding::SolidOutcome World::rebind_workbench_solids(std::uint64_t old_epoch,std::uint64_t new_epoch) {
+    using namespace soliding;
+    if (tick_failed_) return SolidOutcome::WorldFailed;
+    if (!workbench_solids_ || !new_epoch || old_epoch==new_epoch) return SolidOutcome::Invalid;
+    for (std::size_t i=0;i<workbench_solid_count();++i)
+        if (workbench_solids_->owned[i].snapshot.physics_epoch!=old_epoch) return SolidOutcome::Stale;
+    for (std::size_t i=0;i<workbench_solid_count();++i)
+        workbench_solids_->owned[i].snapshot.physics_epoch=new_epoch;
+    return SolidOutcome::Accepted;
 }

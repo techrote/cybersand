@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-06",
+  "purpose": "Additive post-result ordering questions; all earlier frozen question objects unchanged.",
+  "questions": [
+    {
+      "id": "SOL-WORKBENCH-ORDER-RESULT-001",
+      "query": "Does reversing correction clipping and passive combined impulse order fix the actual cut tree and building settling with five repeats and unchanged mass gravity caps?",
+      "canonical": [
+        "systems/solid-detachment.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "96 episodes /69120 steps; packed and mixed rest0/20 each arm.",
+        "Impulse-first worsens median Sand area/depth/sink in all8 primary comparisons; NO-GO, production unchanged."
+      ],
+      "sources": [
+        "../native/tests/fixtures/sol_workbench_order_001.json",
+        "../tools/sol281/workbench_order_reduce.py"
+      ]
+    },
+    {
+      "id": "SOL-WORKBENCH-ORDER-READBACK-001",
+      "query": "How do actual Rapier primitive stages distinguish delivered impulse later clipped from missing application, and does this close total material energy?",
+      "canonical": [
+        "architecture/rigid-body-and-cellular-coupling.md",
+        "architecture/data-ownership-and-lifetimes.md",
+        "systems/solid-detachment.md"
+      ],
+      "facts": [
+        "Six main-thread value states per action;345600 transitions check delivery before clipping.",
+        "Body work ledger only, no total Sand closure or isolated passive/event/legacy attribution; census gap0/1."
+      ],
+      "sources": [
+        "../godot/tests/test_sol_workbench_order.gd",
+        "../tools/sol281/workbench_order_reduce.py"
+      ]
+    },
+    {
+      "id": "SOL-WORKBENCH-ORDER-BUILD-001",
+      "query": "What P2 world_failed build sources hosts facade counts runtime ABI blockers commands and artifact resource caps qualify the SOL fixed-action ordering experiment?",
+      "canonical": [
+        "operations/local-build-and-validation.md",
+        "reference/interfaces-and-message-contracts.md"
+      ],
+      "facts": [
+        "Build9a/validation13a; four facade suites3260; workbench_order live reduce check; exact93 native inputs.",
+        "2GiB/5GiBreserve; Linux GLIBC2.35/GLIBCXX3.4.31 floor failure; historical sanitizers source authenticated not rerun."
+      ],
+      "sources": [
+        "../tools/sol281/workbench_order_check.py",
+        "../godot/native_extension/cyber_native_cell_world.cpp"
+      ]
+    },
+    {
+      "id": "SOL-FRESH-CANVAS-001",
+      "query": "How can I load four fresh passive tree building shapes in the ordinary workbench, unpause, restore, and distinguish owner visible acceptance from the numerical rest screen?",
+      "canonical": [
+        "systems/player-control-playground.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "Version3 canvas-local geometry, no catalogue/test menu; existing Load start P Step Restore start.",
+        "Owner accepts visible behaviour; current response stays, native freed ownership remains next."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_canvas_body.gd",
+        "../godot/canvases/sol-fresh-structures.json"
+      ]
+    }
+  ]
+}

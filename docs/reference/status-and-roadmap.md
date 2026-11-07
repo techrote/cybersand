@@ -4,11 +4,72 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-07
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## Bounded ordinary cutting — Draft466
+
+The owner exposed an ordinary-brush gap after the initial rectangular fixtures.
+The [brush correction](../audits/2026-11-07-workbench-brush-cut.md) admits
+64 exact shared proxies and uses lazy frontier traversal. Each actual host/worker
+passes165 checks. General larger-component cutting remains Planned:1,024-cell/
+62-span limits still apply. No additional contact-law tuning follows this defect.
+
+The [freed rules and same-World release](../architecture/workbench-freed-objects.md)
+are implemented and functionally qualified for RedBrick in the ordinary
+workbench. Actual520/6 tree and356/5 building, workers1/4, retained motion,
+refusal recovery, replay and scene retirement pass on Windows/Linux. The
+[dated dossier](../audits/2026-11-07-workbench-freed-objects.md) preserves the
+unchanged contact law and historical SOL failures. Next is independent review
+and portable runtime admission, then separately admitted retained editing/
+broader stress as needed. Keep Draft; no rest-screen tuning or default change.
+
+## Owner-accepted fresh-body demonstration
+
+Four fresh passive tree/building representations now run in the ordinary
+workbench as one saved canvas, with Sand/mixed beds and existing controls.
+The owner accepts their visible behaviour. Keep the current response and stop
+using the numerical rest screen alone to justify gameplay physics changes.
+The [canvas evidence](../audits/2026-11-06-sol-fresh-canvas.md) does not rewrite
+historical ordering/clearance results. The freed-object contract and bounded ordinary-edit integration are now
+qualified above.
+Keep #466 Draft; no new test menu, solver/default promotion or guard removal.
+
+## SOL fixed-action ordering registration — 2026-11-06
+
+**Current qualified negative experiment:** P2 diagnostic repair passes four
+actual Windows/Linux worker1/4 facade suites (3,260 checks each). The
+[registered fixed-action ordering comparison](../audits/2026-11-06-sol-workbench-ordering.md)
+completes96 episodes/69,120 steps. Both arms retain the same LA-SELECTIVE law,
+completed-sample fence, mass/inertia, gravity/damping and caps. Reversal fails
+rest (packed0/20 and mixed0/20 in each arm), worsens Sand area/depth/sink in all8
+primary comparisons and remains test-only. Five repeats per cell have zero
+observed geometry/sink spread. Independent delivery and body-work audits pass;
+this does not prove original SOL clearance or close total material energy.
+
+**NO-GO** for ordering promotion or SOL settling; **CONDITIONAL** intended
+LA-SELECTIVE gameplay direction retains D1. Linux ABI floor, historical SOL CPU,
+#365 and source/ownership gates remain blockers. #466 stays Draft against #461;
+#460/#461 unchanged. Next is independent review and a registered contact
+support/correction geometry audit, before any equation or weight/cap change.
+
+## SOL workbench-law repeated result — 2026-11-06
+
+**Current isolated Draft #466:** D1's main LA-SELECTIVE workbench package is
+wired to actual cut tree/building with unchanged unit M/I, gravity/damping and
+caps/budget. The [preregistered144-episode result](../audits/2026-11-06-sol-workbench-law.md)
+reduces median burial/depth and tail sink in all8 primary host/structure/
+surroundings cells, but packed rest is0/20 and mixed rest0/20: **NO-GO for
+settling**. Late selected arrivals are zero; passive/correction/integration
+motion persists. F1 remains mechanism engaged, causal role unproven; post NO-GO
+stands. Source/material transition checks pass scoped; Linux GLIBC2.34/GLIBCXX3.4.30 runtime-floor
+compatibility fails. Historical strict clearance/CPU/#365/exclusions remain.
+**Planned:** independent adversarial review, then a new fixed actual-structure
+application/integration trace or common-pacing causal control if selected. No
+weight/cap tuning, default promotion or integration follows this result.
 
 ## SOL ordering result — 2026-11-06
 
@@ -157,6 +218,45 @@ open: dense-bed resistance, reactive cohesion, fracture, moved-body restoration,
 persistence, normal gameplay and hardware physical acceptance remain incomplete.
 No automatic Stage3B or GCR dependency is added; frozen #283 and other PLAY/GCR
 branches remain separate.
+## MAT-AUTH reviewed per-file transitions — 2026-11-04
+
+The owner approved a narrow way to admit a reviewed, behaviour-preserving edit
+to one protected legacy consumer without refreshing the compatibility lock
+([decision record](../audits/2026-11-04-mat-auth-reviewed-transitions.md),
+[rules](../operations/material-catalogue-shadow.md#reviewed-per-file-transitions)).
+Entries are code-pinned, authenticated against retained Git history and a
+committed record, and refused for identity inputs. The table starts empty;
+the lock, baseline and digests are unchanged. #382 (#201 P1) is the first PR
+to add an entry, together with its source change.
+
+## PressureFlow desktop region flip (#201) — 2026-11-04
+
+The [region-flip record](../audits/2026-11-04-lcb201-region-flip.md) fixes a
+desktop worker ordering that discarded the PressureFlow cache twice per step in
+fixed-interest scenarios. In the real host on main's runtime, the cached quiet
+pool improves from ≈36 ms to ≈10 ms per worker step and reaches the 60 Hz cap;
+reference and FreeMass are unchanged. Camera-motion invalidation remains a
+separate follow-up.
+
+## PressureFlow idle cost (#201) — 2026-11-04
+
+The [#201 idle-cost record](../audits/2026-11-04-lcb201-pressure-idle-cost.md)
+measures accepted main `3da7e7be` natively, and is consistent with draft #370's
+≈30 ms quiet-pool PressureFlow tick.
+The pool's Water sleeps; the cost is serial reference preparation over the 1.64M
+cells that the prepared 1024² route makes resident. Same-law cached and
+cached_dormant variants cut quiet cost from ≈31–41 ms to ≈9–12 ms per native tick (FreeMass ≈0.02 ms). They are not
+idle-free: a per-tick wake scan remains, and gas-input edits or moving body
+masks restore roughly reference cost.
+**Task outcome B** (not #26's): residual cost is excessive at this scale. Two bounded
+cached-only proposals (P1 wake-summary elision, P2 narrowed gas revocation) are
+**Planned, not implemented**. No production code, default or host changed; #201
+stays open, and a full-host cohort remains the next practical-cost experiment.
+An [experimental P1 draft](../audits/2026-11-04-lcb201-p1-wake-summaries.md),
+not accepted and not on main, cuts the quiet cached tick to ≈0.32 ms with exact
+parity. It shows a small cost under continuous index churn. In the real desktop
+host, a per-step simulation-region flip erased the gain (cached ≈34 ms); with
+the flip fixed on main (above), the committed in-app cached step is ≈0.9 ms at 60 Hz.
 
 ## Material shadow foundation and integration — 2026-11-04
 
@@ -164,8 +264,11 @@ branches remain separate.
 and the [corrected architecture is owner-adopted as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 [#353-A's shadow compiler](../operations/material-catalogue-shadow.md) is already
 implemented and merged through #371 as accepted main `7ef4856e`. It provides deterministic candidate metadata,
+[#353-A's shadow compiler](../operations/material-catalogue-shadow.md) merged in
+#371 at accepted main `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`.
+It provides deterministic candidate metadata,
 independent native parity and frozen source/identity guards; it does not replace
-production material authority. The [current boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
+production material authority. The [current boundary](../architecture/material-authoring-catalogue-plan.md#14-material-liveness-phase-a-and-production-admission--2026-11-04)
 and [#371 ledger](https://github.com/techrote/cybersand/pull/371) separate code,
 resulting-head acceptance and actual merge status.
 
@@ -173,14 +276,22 @@ resulting-head acceptance and actual merge status.
 |---|---|
 | #357 architecture | Owner-adopted Planned baseline, documentation merged |
 | #353-A / #371 | A-only shadow implementation merged as main `7ef4856e`; this SOL composition has a separate two-consumer protected-source mismatch, not an approved baseline refresh |
+| #353-A / #371 | Merged shadow tooling and 27-source guard; legacy production definitions remain authoritative |
 | #353-B | Separate consumer-migration admission required; no production switch authorized |
-| #354 / #355 | Separate liveness and endpoint-effects work; serialize overlapping World/quantity writes |
+| #354 / #377 | Phase A evidence-only current-main reconciliation and guarded integration authorized, subject to [fresh final-candidate gates](../operations/material-liveness-investigation.md#which-gates-control-phase-a-integration); H1 remains unrepaired, H2/H3 preserved, production admission pending and issue open |
+| #355 | Separate endpoint-effects implementation programme; serialize any overlapping World/quantity writes |
 | #356 | Separate inspector/editing work; effective controls need actual native consumers and applied readback |
 | #358 | Independent experimental material work;132–137 not integrated here |
 
 Broad #353 and parent #352 remain open. The original implementation receipts
 retain their tested source; no metadata or source-byte comparison by itself
 establishes fallback simulation, new physics or human gameplay acceptance.
+
+The [liveness guide](../operations/material-liveness-investigation.md) routes
+reproduction and the [ranked correction design](../audits/2026-11-04-mat354-correction-admission.md).
+No scheduler or physical-law patch is part of Phase A. Source-qualified execution,
+retained failures, actual worker participation and unexecuted platform gates remain
+in the [findings](../audits/2026-11-04-mat354-findings.md) and live PR ledger.
 
 ## Material authoring Planned adoption — 2026-11-04
 
@@ -1993,3 +2104,15 @@ The [physical actor programme](../operations/physical-actor-programme.md) retain
 ## Strata Theatre integration — 2026-10-18
 
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
+
+## WORKBENCH-001 / #391 integration candidate
+
+The [desktop development workbench](../systems/player-control-playground.md#development-workbench-on-desktop) is being qualified on a separate Draft branch from main 751edc0b. The required baseline includes the eight-flyer fleet, five-piece Scooper and actual multi-body granular response. The preserved #392 attempt covers an earlier assignment. Review the [dated evidence and source compatibility disposition](../audits/2026-11-04-workbench-consolidation.md) before making a platform, physics or promotion claim.
+
+[Owner-feedback follow-up](../audits/2026-11-04-workbench-live-editing.md) records immediate pilot switching, acknowledged reset during play, recovery of the authored start and explicit workbench-only liquid conversions on PR #394.
+
+The [edge-conversion and desktop pacing follow-up](../audits/2026-11-04-workbench-boundary-and-pacing.md) covers live solver changes after material leaves the canvas, render-independent body stepping, and parity and throughput of workbench pressure-column dispatch.
+
+The [PR #394 cleanup](../audits/2026-11-04-workbench394-cleanup.md) retains tuning across missing-model pilot replacement and repairs the fleet registry shutdown lifetime. Its [three-consumer MAT source transition](../audits/2026-11-04-workbench394-material-source-transition.md) reuses the approved #396 mechanism and preserves the frozen lock. Technical admission, owner adoption and merge are separately recorded; #394 remains Draft and unmerged.
+
+The owner accepted the playable workbench and authorized [current-main reconciliation and Ready qualification](../audits/2026-11-04-workbench394-ready-validation.md). Accepted main now includes #396 and #382 at `ee92dc45`; the combined native source requires rebuilt desktop runtimes and its own complete gates. The earlier Draft checkpoints remain historical; merge remains held.

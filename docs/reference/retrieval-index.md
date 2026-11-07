@@ -4,11 +4,32 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-07
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
+
+## Freed-object rules and ordinary cutting
+
+For face connectivity, anchors, source eligibility, caps and handoff semantics,
+retrieve [freed objects](../architecture/workbench-freed-objects.md).
+[Workbench controls](../systems/player-control-playground.md#cutting-ordinary-workbench-structures),
+[protocol/format](interfaces-and-message-contracts.md#workbench-cut-protocol-and-version4-starts)
+and [qualification](../operations/local-build-and-validation.md#brush-cut-successor-qualification)
+own their respective surfaces. The dated audit preserves failures and platform
+limits. `retrieval-questions-workbench-freed.json` adds three post-implementation
+development questions; older frozen questions remain unchanged.
+
+## SOL workbench law on actual cut structures
+
+For the opt-in same-World LA-SELECTIVE adapter and zero-arrival late response,
+start at [detachment](../systems/solid-detachment.md#workbench-law-actual-cuts--2026-11-06).
+[Coupling](../architecture/rigid-body-and-cellular-coupling.md#sol-adopts-the-workbench-package-experimentally)
+qualifies the law/pacing comparison; [build qualification](../operations/local-build-and-validation.md#sol-workbench-law-qualification--2026-11-06)
+owns source/runtime/MAT commands and Linux floor blocker. The
+[dated five-repeat result](../audits/2026-11-06-sol-workbench-law.md) preserves
+burial benefit, settling NO-GO and historical failures separately.
 
 ## SOL contact and gravity ordering
 
@@ -106,6 +127,27 @@ The [supplementary contact questions](retrieval-questions-sol281-contact.json)
 exercise those new claims separately from the unchanged 1 November questions.
 Passing a narrow mechanism gate does not establish buried-body clearance,
 native restoration, GPU pacing, human feel or #281 completion.
+## Branch reconciliation and design choices
+
+For how agents reconcile stacked or long-running branches with main, and which
+choices must be recorded for the owner, retrieve
+[reconciliation and design choices](../operations/github-development-and-release.md#reconciliation-and-design-choices).
+It is a record-and-continue rule, not an approval gate.
+
+## Material liveness Phase A and implementation admission — 2026-11-04
+
+| Question | Canonical route |
+|---|---|
+| What does the real-World investigation establish about cooling, mutual heating and stochastic rest? | [Investigation guide](../operations/material-liveness-investigation.md), [material kernel contract](../systems/materials-and-rule-kernels.md#material-liveness-investigation-boundary--2026-11-04) |
+| What distinguishes an actual visit, worker claimant and authenticated result from configuration or an unchanged image? | [Reproduction and evidence guide](../operations/material-liveness-investigation.md), [validation ledger](validation-evidence.md#mat-auth-002-phase-a-evidence-boundary--2026-11-04) |
+| May the next agent change production cooling, generic retries or protected source hashes? | [Current admission boundary](../architecture/material-authoring-catalogue-plan.md#14-material-liveness-phase-a-and-production-admission--2026-11-04), [shadow compatibility guards](../operations/material-catalogue-shadow.md#compatibility-protection-and-independent-source-authority) |
+| How is a reviewed, behaviour-preserving edit to a protected legacy consumer admitted without refreshing the compatibility lock? | [Reviewed per-file transitions](../operations/material-catalogue-shadow.md#reviewed-per-file-transitions), [owner decision and adverse controls](../audits/2026-11-04-mat-auth-reviewed-transitions.md). Identity inputs still need a cutover. |
+| Which resting, mask and region obligations must a correction preserve? | [Activity and deadline boundary](../systems/activity-dirty-regions-and-waking.md#material-liveness-phase-a--2026-11-04) |
+
+[Focused MAT354 questions](retrieval-questions-mat354.json) are additive; frozen32
+and challenge157 remain unchanged. The dated registration, findings and correction
+memo are excluded from default retrieval and reached through these current
+contracts. Their original failed or incomplete attempts remain evidence.
 
 ## Material catalogue compiler and compatibility guards — 2026-11-04
 
@@ -124,7 +166,10 @@ stay fixed. Original version1 and its evidence remain at implementation head
 The [adopted Planned architecture](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
 and [current A-only integration boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
 distinguish merged #357 documentation, implemented #353-A tooling in #371,
-resulting-head qualification and separately unadmitted #353-B/#354–#356 work.
+resulting-head qualification and separately gated successor work. The
+[later Phase A boundary](../architecture/material-authoring-catalogue-plan.md#14-material-liveness-phase-a-and-production-admission--2026-11-04)
+records merged #371 and the tests/tooling/documentation-only admission for #354;
+production implementation remains pending.
 The [corrected technical contract](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
 owns header-byte identity, backend distinctions, endpoint effects, experimental
 IDs and successor gates. Original proposal and review statements retain their
@@ -278,6 +323,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Which liquid solver families exist, which materialÃ—family combinations are allowed, and how is a family selected? | [Solver-family policy](../architecture/liquid-solver-family-policy.md), [capability matrix](liquid-solver-capability-matrix.json), [materials and rule kernels](../systems/materials-and-rule-kernels.md) |
 | Is the native liquid policy API implemented, what does this build accept or refuse, and what does readback report? | [Native policy foundation](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24), [roadmap](status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24), [dated evidence](../audits/2026-10-24-issue-200-policy-foundation.md) |
 | Is the pressure_flow_v1 Water family implemented, how do its gas compartments, heads and kernel work, and what did it measure? | [`pressure_flow_v1` reference](../architecture/pressure-flow-v1.md), [roadmap](status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24), [dated evidence](../audits/2026-10-24-lcb001-pressure-reference-publication.md), [handoff requirements](../architecture/lcb-pressure-inertial-handoff.md#pressure-pressure_flow_v1-water-only-200) |
+| Why does a quiet PressureFlow pool cost tens of milliseconds per tick when FreeMass sleeps, and do cached/dormant variants fix it? | [#201 idle-cost diagnosis, measurements and Planned P1/P2](../audits/2026-11-04-lcb201-pressure-idle-cost.md), [current-main cost at host scale](../architecture/pressure-optimization.md#current-main-cost-at-host-scale), [desktop region-flip fix and in-app before/after](../audits/2026-11-04-lcb201-region-flip.md), [experimental unaccepted P1 draft evidence](../audits/2026-11-04-lcb201-p1-wake-summaries.md). Native only; no full-host or default claim. |
 | When may an optimized pressure pool skip Water motion, how do distant head or gas changes wake it, and what do identity and total cost actually prove? | [Bounded #201 head/gas/motion obligations, cost admission and execution identity](../architecture/pressure-optimization.md), [source-qualified evidence and remaining gates](../audits/2026-10-25-lcb002-pressure-variants.md). Native mask parity is not real Rapier displacement or global speedup. |
 | What happens to gas labels hidden beneath a moving body when their compartment retires, and can a closing ledger make a quarantined World acceptable? | [Gas topology and masked-label retirement](../architecture/pressure-flow-v1.md#gas-compartments), [source-qualified failure and repair](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md). Still-live labels retain identity; retired hidden labels become vacuum, and merge acceptance remains a separate gate. |
 | How can pressure variants be compared at one tick, or a static pool observed across ticks, without changing complete continuation hashes? | [Named liquid comparison projections](../architecture/pressure-flow-v1.md#liquid-comparison-projections). A static-content diagnostic does not authorize dormant motion skips. |
@@ -478,3 +524,9 @@ GEN-005 projection, typed link, fixture lifecycle, atomic admission and frozen-b
 
 For authored checkpoint visibility, Return to launcher, sampled task participants and
 coalesced publication counts, use the [player-control contract](../systems/player-control-playground.md#course-target-visibility-and-optional-worker-details).
+
+## Development application
+
+How do I place multiple independently configured flyers with a passive barrel, select granular and liquid responses, paint a large canvas and save an authored start? Use the [desktop workbench controls and format](../systems/player-control-playground.md#development-workbench-on-desktop) and its [qualification record](../audits/2026-11-04-workbench-consolidation.md). Tuning retention and lifetime corrections are in the [cleanup evidence](../audits/2026-11-04-workbench394-cleanup.md); MAT source admission is [separate](../audits/2026-11-04-workbench394-material-source-transition.md).
+
+For #394 owner acceptance, accepted-main pressure reconciliation and final gate status, use the [resulting-source qualification record](../audits/2026-11-04-workbench394-ready-validation.md). Current workbench controls remain in the player playground guide.
