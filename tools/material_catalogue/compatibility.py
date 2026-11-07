@@ -267,7 +267,14 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': '484b48f67ba4db68b1b4c73cd63f1a187594523d',
   'record': 'docs/audits/2026-11-07-pf471-world-transition-proposal.md',
   'issue': 492,
-  'pr': 471})
+  'pr': 471},
+  {'path': 'native/src/world_pressure.inc',
+   'from_lf_sha256': '26051b0d10ab10d65db822c993742e0a0bf13711f3bd56158e95d77735737aca',
+   'to_lf_sha256': 'a71d593a7ce3831e96f8bae47f5ff520ea75220da0ce94314d6d9ffc57960641',
+   'source_commit': '250f91bc4bb41d5ec0c8115933d87ade5648aa5e',
+   'record': 'docs/audits/2026-11-07-pf-gas-exact-hotpath-transition.md',
+   'issue': 504,
+   'pr': 504})
 
 
 class CompatibilityError(ValueError):
