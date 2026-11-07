@@ -148,7 +148,7 @@ func run_variant(rows: Array, variant: String) -> void:
 		await process_frame
 	check(main.latest_snapshot.tick_index == stopped_tick and stopped_tick == TOTAL_TICKS,
 		"native mutated after mounted Stop ACK "+variant)
-	check(agent_panel.proposal_overlay._footprint.is_empty(),
+	check(agent_panel.proposal_overlay._cells.is_empty(),
 		"mounted Stop failed to clear the unapplied proposal preview "+variant)
 	# Save/Load is the normal human workbench UI path, not a native-state
 	# checkpoint or an agent-provided filesystem operation.
