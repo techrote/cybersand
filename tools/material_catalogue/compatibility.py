@@ -302,6 +302,13 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': 'd281bb41700197539f313190f7b4d68844686cf1',
   'record': 'docs/audits/2026-11-07-pf-gas-selective-cache-transition.md',
   'issue': 201,
+  'pr': 532},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'af72f8e71c0f6b155e2e78f188f956f06af383217df6ccc23d28087ea1c63abf',
+  'to_lf_sha256': '33445b83c3759c495680256e5ac781abdee26d257e516b7edb9d601a57460bd0',
+  'source_commit': 'd73c4ee016cdbd92f2d7e95d588891350f32d8c3',
+  'record': 'docs/audits/2026-11-07-pf-gas-selective-cache-transition.md',
+  'issue': 201,
   'pr': 532})
 
 
