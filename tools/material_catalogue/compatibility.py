@@ -281,6 +281,13 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
    'source_commit': '6eab269bebd70e4bb4fa98dc108f77afbc919ae8',
    'record': 'docs/audits/2026-11-07-pf-gas-cached-seed-transition.md',
    'issue': 504,
+   'pr': 504},
+  {'path': 'native/src/world_pressure.inc',
+   'from_lf_sha256': '3f044246d306c8c56b072d3d040beebaf8d2aa04fb713eaebdd2e6a231511a9d',
+   'to_lf_sha256': '0753b354e88f659759b5b5d800850b77c081b687874d701f2b3ee898710ebb3e',
+   'source_commit': '731d2444ef7bb367587e31d3c1d4eca921eca086',
+   'record': 'docs/audits/2026-11-07-pf-gas-label-mask-transition.md',
+   'issue': 504,
    'pr': 504})
 
 
