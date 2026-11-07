@@ -10,6 +10,16 @@ related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-cou
 
 # Freed objects in the ordinary workbench
 
+## Implementation paused by owner — 2026-11-07
+
+Further SOL cutting, representation, asynchronous handoff and response work is
+**Deferred** until the majority of major physics integrations reconcile with main.
+The [owner decision](../reference/product-intent-and-priorities.md#sol-deferred-during-physics-reconciliation--2026-11-07)
+supersedes earlier continuation suggestions. Existing Draft implementations and
+failures stay source-bound; [the findings handoff](../audits/2026-11-07-cut-outcomes-and-triage.md#owner-pause-and-reusable-findings--2026-11-07)
+identifies independently useful work. This documentation does not select a
+material outcome, change physics or admit a new ownership contract.
+
 ## Asynchronous cut status and post-cut outcome comparison
 
 Current capture globally fences native ticks, commit requires the original tick

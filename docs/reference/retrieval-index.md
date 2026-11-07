@@ -10,6 +10,18 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## SOL pause and findings useful to other work
+
+For why SOL is benched and what permits a later restart, retrieve
+[owner intent](product-intent-and-priorities.md#sol-deferred-during-physics-reconciliation--2026-11-07).
+The [dated inventory](../audits/2026-11-07-cut-outcomes-and-triage.md#owner-pause-and-reusable-findings--2026-11-07)
+links reusable findings to [backend coupling](../architecture/rigid-body-and-cellular-coupling.md#source-local-sol-mass-readiness--2026-11-06),
+[applied-sample ownership](../architecture/data-ownership-and-lifetimes.md#fresh-response-age-and-application-chronology),
+[scheduling](../architecture/simulation-tick-and-threading.md#held-cut-scheduling-lessons-for-other-integrations)
+and [carried appearance](../systems/material-appearance-and-rendering.md#carried-redbrick-appearance-on-the-experimental-cutting-stack).
+`retrieval-questions-sol-handoff.json` is an additive post-result development set;
+older query objects remain unchanged. Main reconciliation is not performed here.
+
 ## Freed-object rules and ordinary cutting
 
 For face connectivity, anchors, source eligibility, caps and handoff semantics,

@@ -203,3 +203,89 @@ sets and diff-check. Canonical top5 results are32/32 default,7/7 freed,2/2 hitch
 **1/2 wake and1/2 cut-outcomes**. The latter two remain retrieval gaps even
 though the evaluation command exits0; source review is separate from ranking.
 The exact final publication-head checks and receipt hash are recorded in the PR.
+
+## Owner pause and reusable findings — 2026-11-07
+
+After reviewing the triage, the owner benches SOL until the majority of major
+physics integrations are reconciled with main, and asks that findings useful to
+other work be documented now. The canonical [owner direction](../reference/product-intent-and-priorities.md#sol-deferred-during-physics-reconciliation--2026-11-07)
+supersedes earlier continuation instructions. This is a docs-only handoff;
+SOL implementation, geometry design and further physical campaigns are Deferred.
+PRs stay Draft. No integration, issue completion or solver/default change follows.
+
+### Reusable repairs and unresolved observations
+
+The receiving workstream should inspect these records before rediscovering a
+known issue or copying an experimental implementation. **Keep** means retain a
+review candidate and its evidence; it is not accepted-main status. Source and
+runtime qualifiers belong to the linked original record, not this summary.
+
+| Finding | Useful receiving work | Source-qualified result and required boundary |
+|---|---|---|
+| Effective mass readiness | Rapier actor/aggregate construction | [Readiness oracle and repair](2026-11-06-sol-stage-and-mass-readiness.md), Draft46061924a97: cached M/I could be correct while first impulses were lost. Keep actual immediate/post-step wrench tests and zero-step handoff; do not infer physical weight calibration. [Canonical coupling](../architecture/rigid-body-and-cellular-coupling.md#source-local-sol-mass-readiness--2026-11-06). |
+| Rounded-state energy arithmetic | Planner guards and numerical diagnostics | [Scalar64 repair](2026-11-05-sol-energy-precision.md), executed861440e9: eight false refusals corrected and two previously accepted excessive proposals refused on the registered grid. Keep actual rounded-component accounting and genuine refusals; no general energy closure or engine speedup follows. |
+| Public failure/readback correctness | Native facade, failure quarantine and tools | [Facade repair](2026-11-04-sol-facade-refusal-repair.md) and [terminal world_failed P2](2026-11-06-sol-workbench-ordering.md#p2-repair-and-source-custody) fix distinct boundary observations. Preserve native refusal authority; wrapper success is not healthy-World or ownership admission. |
+| Actual gravity/damping operator | Actor mechanics and any later support predictor | [Draft42967f93a28 oracle](https://github.com/techrote/cybersand/blob/67f93a28bc05fc3b90beec9ea32e60f0864af642/docs/audits/2026-11-05-sol-gravity-operator.md): one-step no-contact gravity-then-rational-damping compatibility is source-bound. Barrel and flyer effective gravity/damping differ. No native-owner binding, exact long rollout or implemented support predictor follows. |
+| Stale passive-response protection | Generic granular body application | [Draft400a38098b1 qualification](https://github.com/techrote/cybersand/blob/a38098b1a807fc3ac7b60166e75b217dd7bc629e/docs/audits/2026-11-05-la-physical-qualification.md): retain the opt-in guard as a separately reviewed candidate; two broader passive-energy filters weakened support and were rejected. Do not silently enable or port it into SOL. |
+| Mixed-body regression | Workbench law/policy reconciliation | [Draft429 contact/application result](https://github.com/techrote/cybersand/blob/67f93a28bc05fc3b90beec9ea32e60f0864af642/docs/audits/2026-11-05-sol-contact-application.md): clipping-only repair failed and the recorded Kestrel regression remains unresolved at that source. Keep it as gameplay regression evidence; it does not stand in for actual structural cuts or establish current-main behaviour. |
+| LA-SELECTIVE contact package | Shared granular coupling | [Draft466 law+pacing result](2026-11-06-sol-workbench-law.md) reduces burial/depth/sink in all eight primary comparisons but fails packed rest0/20. Selective arrival changes the event wrench; legacy/passive/correction remain. Avoid duplicate SOL281 response; preserve liquid policy and completed-sample pacing. Equation-only causality is unproved. |
+| Application/sample chronology | Async host observations and fresh authored spawning | At07d86d10 all48 fresh rigid episodes have one age-refused first application; Rapier still steps. Latest native rows may lead actual application. [Canonical ownership caveat](../architecture/data-ownership-and-lifetimes.md#fresh-response-age-and-application-chronology) requires identity-aligned accepted actions before work attribution. This is unresolved; do not hide it with a warm-up or weakened guard. |
+| Relative material weight | Material catalogue and actor mass work | [Actual-cut quantities](2026-11-06-sol-structural-cut-behaviour.md): unit structural mass is authenticated, Sand/object physical weight is not. Catalogue density ranks are not calibrated mass; cap/gravity comparison alone omits correction/clipping/hard contact. Keep these limits visible before any separately authorized tuning. |
+| Native/rigid ownership and ordinary brush admission | Shared host and future cutting | [Freed rules](../architecture/workbench-freed-objects.md) preserve full tuples, one owner/body, old RIDs and fresh terrain/roster/sample fences. [Default-brush correction](2026-11-07-workbench-brush-cut.md) fixes a real eight-proxy admission defect. Current bounds remain1024 members,62-cell occupied span,8 bodies and64 shared proxies; do not silently split or replace an over-capacity shape. |
+| Carried material instead of visible proxy seams | Rendering/material appearance | [Draft510 feedback repair](2026-11-07-workbench-cut-feedback.md) and [shader transition](2026-11-07-workbench-carried-shader-transition.md) retain one bounded RG8 image, holes and original coordinates without changing collision. [Canonical appearance route](../systems/material-appearance-and-rendering.md#carried-redbrick-appearance-on-the-experimental-cutting-stack); general reactive-body rendering is unqualified. |
+| Changed-terrain scheduling and exact recipe rows | Terrain installation, authoring and saves | [Feedback](2026-11-07-workbench-cut-feedback.md) skips unchanged chunks; [rectangle-core follow-ups](2026-11-07-workbench-rectangle-core.md) avoid dense history replay with exact ordered row spans. Keep partial-supersession/removal handling, source-once replay and final budgets. Authored fresh starts are not active-token runtime continuation; fragmented peak memory is unmeasured. |
+| Held-worker wake, notifications and prefetch | Worker scheduling/latency integration | [Wake/resume comparison](2026-11-07-workbench-rectangle-core.md#cut-wake-and-live-resume-follow-up--2026-11-07) reduces live Windows medians to about140–152ms in its two cases. [Canonical threading route](../architecture/simulation-tick-and-threading.md#held-cut-scheduling-lessons-for-other-integrations) preserves stop wake, serial checks and all refused work. A global hold remains; this is not fully asynchronous capture or a universal60Hz result. |
+| Failed mechanisms and representation variants | Future SOL design and acceptance planning | Keep clipping-only, post-gravity and impulse-first negative results. Tiny Sand/Rust debris, inscribed core+Sand, all-Sand and discard remain provisional gameplay comparisons. The latter two are not live-cut modes. Contours/triangles, true Wood/bark/mixed cohesion, live-body recutting and fully async ownership remain Deferred, not established solutions. |
+
+### Reuse and restart contract
+
+For an independently authorized receiving integration: compare the actual
+receiving source and dependency pins, identify overlap with existing main fixes,
+preserve admission ancestry and original MAT locks, record real design choices,
+then run its focused native/Godot/Rapier, ownership/lifecycle and platform checks.
+Rebuild source-authenticated artifacts when executable inputs change. Never
+relabel old executions as tests of the newly reconciled source. Compare paused
+latency, live-resume latency, native cost, main/GPU work, memory and refused work
+separately. First-step readback must establish actual application, not only a mode
+selector or cached property. No mass/cap tuning or solver change is authorized here.
+
+Before SOL resumes, inspect current main reconciliation progress and agree the
+cutting scope: material cohesion/anchors, shape fidelity/capacity, moving-body
+recutting, ownership transfer latency and supported persistence. The owner has
+not defined a numeric majority or restart date. Do not restart automatically
+because one PR lands. Keep original clearance84/84, depth64/84, async36/36,
+1452 refusals, original CPU, hard exclusions, tiny RedBrick1e-9 and365 unchanged.
+
+### Documentation checkpoint identity and routing
+
+Input is clean owned branch `codex/workbench-rectangle-core-20261107` at
+07d86d10c7f14d7473501d399e5f297c0003a4a2, tree90cc25a87b01c62b8cd161dd87bb0252e33ee967.
+Read-only remote observation finds main81bbd5ff5cf366159e2b8a630609359c13560080;
+that is not a tested integration base or proof that the requested reconciliation
+is complete. Draft466b140265d and Draft51053d642b8 stay unchanged. Draft519 is
+the sole publication target. Native artifacts/manifests remain the df5fa14e build
+described above; no compiler, sanitizer, physics campaign or GUI reset occurs.
+
+| Documentation surface | Disposition |
+|---|---|
+| Owner intent, roadmap, handover, soliding programme | Record execution deferral; earlier next-step suggestions are superseded without changing programme dependency graphs or issue states. |
+| Detachment and freed-object contracts | Add explicit pause routes; preserve executable behaviour/capacities and historical results. |
+| Coupling, ownership, threading, material appearance | Add focused reusable lessons and source-specific unresolved observations; do not copy ownership into a second canonical home. |
+| Docs/retrieval indexes and manifest | Route new findings; existing canonical files remain in the corpus, this dated audit stays excluded. Add separate post-result questions without rewriting frozen sets. |
+| Interfaces, invariants, configuration, ADRs, user controls and build tools | No executable/format/default/architectural decision changes; existing contracts and qualified commands remain applicable. |
+| Evidence and checks | Keep prior runtime identities. New docs/M11/materialized-repository/material/runtime/retrieval/diff receipts are local and cited on Draft519 at final source. No runtime replay is needed for prose-only changes. |
+
+Local `git lfs status` is clean, but the captured standalone read-only
+`git lfs ls-files` exits2 with missing Git object
+d058b3d1cbfaafa614fc9f4534209fb883e480f7. Earlier composite shell invocations
+reported exit1; the standalone command/log is separate. This whole-tree LFS
+inventory gap is retained separately from materialized artifact/provenance
+checks; no object repair or universal-LFS-completeness claim is made here.
+
+Docs-only precheck-001 passes docs/M11/materialized-repository/material/compiler/
+runtime/diff commands. Canonical top5 is32/32 frozen,7/7 freed,2/2 hitch,1/2 wake,
+1/2 outcomes and4/5 new handoff; wake hit@1 is0/2. Ranking gaps remain explicit,
+and no query wording or expected destinations are tuned to improve them. A
+read-only factual review corrected one nonexistent script class name; no material
+overclaim or contradictory pause scope remained. Final-head checks are cited in
+the PR, without rerunning physics campaigns for these documentation-only edits.

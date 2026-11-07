@@ -10,6 +10,15 @@ related-documents: [../operations/soliding-programme.md, ../architecture/solidin
 
 # Native structural detachment
 
+## SOL work is deferred — 2026-11-07
+
+The [owner has benched this experiment stack](../reference/product-intent-and-priorities.md#sol-deferred-during-physics-reconciliation--2026-11-07)
+pending reconciliation of the majority of major physics integrations with main.
+The source-bound implementations and results below remain available, not
+promoted or newly qualified. The [reusable findings inventory](../audits/2026-11-07-cut-outcomes-and-triage.md#owner-pause-and-reusable-findings--2026-11-07)
+routes backend/numerical, ownership, response, appearance and scheduling work.
+Earlier next-experiment recommendations are deferred. Keep the stack Draft.
+
 ## Ordinary workbench cut release — 2026-11-07
 
 **Current on dependent Draft #466:** ordinary erasing can release bounded

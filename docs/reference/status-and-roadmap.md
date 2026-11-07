@@ -10,6 +10,18 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## SOL deferred while major physics integrations reconcile
+
+**Deferred by owner, 2026-11-07:** bench the SOL cutting/recovery experiment
+stack until the majority of major physics integrations are reconciled with main.
+Record reusable findings now; keep PRs Draft. This replaces earlier SOL next-step
+recommendations below, without rewriting their results or the programme graph.
+See [owner intent](product-intent-and-priorities.md#sol-deferred-during-physics-reconciliation--2026-11-07)
+and the [findings handoff](../audits/2026-11-07-cut-outcomes-and-triage.md#owner-pause-and-reusable-findings--2026-11-07).
+No main reconciliation, physics/default change or runtime requalification is
+performed here. A later restart needs fresh source inspection and a defined
+cutting contract; no count of remaining integrations or restart date is asserted.
+
 ## Cut outcomes and explicit triage stop
 
 The [three-outcome dossier](../audits/2026-11-07-cut-outcomes-and-triage.md)

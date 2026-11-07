@@ -11,6 +11,25 @@ last-reviewed: 2026-11-07
 
 # Data ownership and lifetimes
 
+## Fresh-response age and application chronology
+
+**Current source-bound observation, Draft #519 at07d86d10:** all48 fresh rigid
+episodes in the [cut-outcome cohort](../audits/2026-11-07-cut-outcomes-and-triage.md#executed-comparison-and-observations)
+reject their first contact application with an individual `age` refusal while
+the physical step executes; each then accepts119 applications. This is an
+unresolved fresh-authored-start observation, not a newly established live-cut
+defect or a fixed safety invariant. Genuine cut finalization primes samples
+differently. Do not insert a warm step or weaken age checks to hide it.
+
+The native `tower_context.workbench_gcr.rows` publication may lead the sample in
+`workbench_physics_bridge.gd::last_application`. A native row count or selected wrench
+is therefore not by itself an applied one-use impulse ledger. Match actual
+application acceptance, body/session/epoch/sample identity and physical step
+before attributing work. Source: [apply_packet](../../godot/scripts/workbench_physics_bridge.gd)
+and [the observer](../../godot/tests/test_workbench_cut_outcomes.gd). Native pools
+still call no Godot APIs. The [owner pause](../reference/product-intent-and-priorities.md#sol-deferred-during-physics-reconciliation--2026-11-07)
+defers investigation; this record supplies no new application authority.
+
 ## Ordinary cut ownership
 
 The [normal-workbench release contract](workbench-freed-objects.md) adds a

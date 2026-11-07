@@ -10,6 +10,20 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## SOL benched; findings handoff only — 2026-11-07
+
+The [latest owner direction](../reference/product-intent-and-priorities.md#sol-deferred-during-physics-reconciliation--2026-11-07)
+defers this SOL experiment stack until the majority of major physics integrations
+are reconciled with main. It supersedes earlier next-experiment instructions in
+this handover. No further cutting, mesh, support-law or async implementation is
+active. Keep all PRs Draft and preserve source/evidence; do not merge or promote.
+
+The [reusable findings and custody inventory](../audits/2026-11-07-cut-outcomes-and-triage.md#owner-pause-and-reusable-findings--2026-11-07)
+separates backend/numerical repairs, contact observations, rendering and scheduling
+lessons from provisional material choices. Other integration work must compare
+actual receiving source, preserve ownership/MAT contracts, and run focused
+source-matched checks. This docs-only checkpoint does not reconcile main itself.
+
 ## Stop for cut-outcome and SOL triage — 2026-11-07
 
 Owner directs stopping after the three-outcome comparison. Read the

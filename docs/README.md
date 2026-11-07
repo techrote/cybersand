@@ -10,6 +10,16 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## SOL pause and reusable physics findings
+
+The [owner has deferred SOL](reference/product-intent-and-priorities.md#sol-deferred-during-physics-reconciliation--2026-11-07)
+while major physics integrations reconcile with main. The
+[findings inventory](audits/2026-11-07-cut-outcomes-and-triage.md#owner-pause-and-reusable-findings--2026-11-07)
+routes mass/energy diagnostics, unresolved contact/sample observations, carried
+material rendering and worker/terrain latency repairs to their canonical homes.
+These are source-qualified reuse candidates, not accepted-main changes.
+Keep the stack Draft; earlier SOL continuation suggestions are deferred.
+
 ## Cut outcomes and triage checkpoint
 
 The [three-outcome comparison and triage](audits/2026-11-07-cut-outcomes-and-triage.md)
