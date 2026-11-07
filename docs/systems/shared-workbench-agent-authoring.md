@@ -101,6 +101,11 @@ The three candidate owner actions are:
   `image_status` is `awaiting_matched_framebuffer`; the main-thread
   `RenderJoin.join_after_draw` separately converts that to `observed`
   with PNG bytes and full render identity, or returns `pending`.
+  After successful post-draw capture, the trusted host sends internal
+  `confirm_observation_frame` with the same observation ID and render
+  identity. The owner checks exact native generation/revision/tick and
+  its mutex-latched acknowledged render serial; **prepare refuses** until
+  this confirmation succeeds. This internal action is not model-accessible.
 - `prepare_edit`: `observation_id: String`,
   `operations: Array[Dictionary]`, fields below. Returns `proposed`,
   `proposal_id`, identity, exact owner-read `footprint` rows
