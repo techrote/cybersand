@@ -282,6 +282,13 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'record': 'docs/audits/2026-11-07-pf-c2048-mat-auth-transition.md',
   'issue': 200,
   'pr': 491},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': '8a40c7dff894a121a234fbd18de6fa21a43c0c5330ccdc9e12b200af14a4f37d',
+  'to_lf_sha256': 'b6cedf52e795073630f12f77668a461b6f9c3bb5fe02c64e7b6649bee4a6239a',
+  'source_commit': 'e77ca8475bbe5333d1af520e44b400e70ba8570c',
+  'record': 'docs/audits/2026-11-07-pr405-current-main-reconciliation.md',
+  'issue': 201,
+  'pr': 405},
   {'path': 'native/src/world_pressure.inc',
    'from_lf_sha256': '71723fa32bbd29aafe93f1a8dd233cece1eec7ed295da81c1e021f635085c17a',
    'to_lf_sha256': '899ada71b89d30ba063e047bdd5b02346948008f1b7c0bec9fa0f2272e4d86ec',
@@ -289,7 +296,6 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
    'record': 'docs/audits/2026-11-07-pf-gas-c2048-merge-transition.md',
    'issue': 504,
    'pr': 504})
-
 
 class CompatibilityError(ValueError):
     """An actionable source or baseline mismatch; never repairs the source."""

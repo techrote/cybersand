@@ -4104,7 +4104,6 @@ void test_lcb_pressure_gas_id_split_exhaustion();
 void test_lcb_pressure_quantity_bounds();
 void test_lcb_pressure_event_restore_bounds();
 void test_lcb_pressure_gas_pockets();
-void test_lcb_pressure_gas_exact_hotpath();
 void test_lcb_pressure_gas_merge();
 void test_lcb_pressure_gas_vent_reseal();
 void test_lcb_pressure_gas_split();
@@ -4132,6 +4131,8 @@ void test_lcb_pressure_variants_basins_acceptance();
 void test_lcb_pressure_variants_vent_acceptance();
 void test_pressure_moving_mask_retired_labels();
 void test_lcb_pressure_wake_summaries();
+void test_lcb_pressure_gas_exact_hotpath();
+void test_lcb_pressure_moving_region();
 void test_pressure_setup_capacity();
 void test_water_cy_admission_ingress();
 void test_water_cy_coherence_masks();
@@ -4277,7 +4278,6 @@ int main(int argc, char** argv) {
         {"LCB-001 pressure quantity rectangle bounds", test_lcb_pressure_quantity_bounds},
         {"LCB-001 pressure pending event restore bounds", test_lcb_pressure_event_restore_bounds},
         {"LCB-001 pressure gas single and twin pockets", test_lcb_pressure_gas_pockets},
-        {"LCB-001 gas exact hotpath seams, masks and worker parity", test_lcb_pressure_gas_exact_hotpath},
         {"LCB-001 pressure gas unequal merge", test_lcb_pressure_gas_merge},
         {"LCB-001 pressure gas compress, vent and reseal", test_lcb_pressure_gas_vent_reseal},
         {"LCB-001 pressure gas split", test_lcb_pressure_gas_split},
@@ -4305,6 +4305,8 @@ int main(int argc, char** argv) {
         {"LCB-002 acceptance isolated vent into certified target", test_lcb_pressure_variants_vent_acceptance},
         {"LCB-002 moving gas masks retire and preserve exact identities", test_pressure_moving_mask_retired_labels},
         {"LCB-002 P1 wake summaries skip quiet scans and stay exact", test_lcb_pressure_wake_summaries},
+        {"LCB-001 gas exact hotpath seams, masks and worker parity", test_lcb_pressure_gas_exact_hotpath},
+        {"LCB-002 #201 moving region keeps exact warm pressure caches", test_lcb_pressure_moving_region},
         {"LCB-003 prepared initial pressure gas capacity", test_pressure_setup_capacity},
         {"LCB-001 liquid policy C API allocation failures", test_liquid_policy_c_api_allocation_failures},
         {"LCB-001 W-CY admission and ingress", test_water_cy_admission_ingress},
