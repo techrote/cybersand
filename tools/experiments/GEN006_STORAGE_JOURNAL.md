@@ -306,3 +306,15 @@ World-clone overhead, 30 Hz ticks, memory, end-to-end IPC ACKs, power loss or
 simulated workload throughput. The **batch** path admits only one group-wide
 ACK after all five edits, whereas the sequential path admits each edit
 individually; group latency must not be misreported as per-edit ACK latency.
+
+### Failed-write fence and bounded-input correction
+
+Batch admission now requires an already bounded `tuple` or `list`, refusing
+unbounded generators *before materialization*. After any descriptor/write/
+fsync/postwrite failure, the journal handle becomes permanently poisoned:
+a follow-on append refuses even if the file is externally truncated back
+to the original length. The caller must retire it and perform fresh,
+authoritative crash/recovery reconciliation. Tests inject a failed fsync,
+restore the old byte length, and verify the stale handle still cannot ACK.
+This guard improves failure handling but does not itself establish
+atomic multi-record rollback or recoverable ACK identity across processes.
