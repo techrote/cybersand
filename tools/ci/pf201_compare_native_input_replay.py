@@ -97,7 +97,11 @@ def main()->None:
         "native_source_matched_physical_hashes":sum(x["matched_tick_hashes"] for x in comparisons),
         "native_source_matched_water_gas_ledgers":sum(x["matched_water_ledgers"] for x in comparisons),
         "cross_worker_parity":cross,
-        "work_by_source":{f"{role}-w{workers}-camera{camera}":{\n            key:int(traces[role,workers,camera][-1][key])\n            for key in ("gas_reference_passes","gas_reuses","seed_cells","bfs_cells","relabel_cells",\n                        "gas_component_reuses","gas_cache_builds","gas_member_validations","gas_cache_build_cells")}\n            for workers in (1,4) for camera in (0,1) for role in ("baseline","candidate")},
+        "work_by_source":{f"{role}-w{workers}-camera{camera}":{
+            key:int(traces[role,workers,camera][-1][key])
+            for key in ("gas_reference_passes","gas_reuses","seed_cells","bfs_cells","relabel_cells",
+                        "gas_component_reuses","gas_cache_builds","gas_member_validations","gas_cache_build_cells")}
+            for workers in (1,4) for camera in (0,1) for role in ("baseline","candidate")},
         "traces":files,
         "boundaries":[
           "Each source runs the same Godot-authored 2048x1024 material geometry",
