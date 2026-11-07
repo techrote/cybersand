@@ -114,11 +114,16 @@ func _run() -> void:
             or not OS.is_process_running(owner_pid):
         _fail("native PID changed or owner died during simulated pin")
         return
-    if demo.pinned_native_shards < 1 \
-            or not demo.pin_notice.contains("chunk=(-2,1)"):
+    # Status has the complete resident/pin roster. The current HUD's
+    # single pin_notice displays the LAST pinned resident only; when two
+    # different surface shards pin, require the target in the full native
+    # receipt and a nonempty visible notice, not target==last notice.
+    if demo.pinned_native_shards < 1 or demo.pin_notice.is_empty() \
+            or not demo.last_receipts.contains("chunk=(-2,1)") \
+            or not demo.last_receipts.contains("pinned=1"):
         _fail("unsupported surface pin not visible in Godot receipts/HUD: "
             + str(demo.pinned_native_shards) + " / " + demo.pin_notice
-            + " / " + demo.last_receipts.right(320))
+            + " / " + demo.last_receipts.right(450))
         return
     var pin_frame: Image = await _frame("01-native-pin-visible", evidence)
     if pin_frame == null:
