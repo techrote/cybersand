@@ -1721,6 +1721,13 @@ func queue_agent_authoring_command(command: Dictionary) -> int:
 	return serial
 
 
+func agent_manual_intent_revision() -> int:
+	_mutex.lock()
+	var revision: int = _agent_manual_intent_revision
+	_mutex.unlock()
+	return revision
+
+
 func latest_agent_authoring_result(after_serial: int) -> Dictionary:
 	_mutex.lock()
 	var result: Dictionary = {}
