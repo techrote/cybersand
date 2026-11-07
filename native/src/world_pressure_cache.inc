@@ -149,6 +149,7 @@ void World::rebuild_pressure_index() {
     cache.certificate_contents_cold=true; cache.certificate_layer_enabled=false;
     cache.gas_dirty_chunks.clear();
     cache.gas_dirty_overflow = false;
+    cache.gas_previous_relabel_valid = false;
     for (auto& [coord, chunk] : chunks_) {
         (void)coord;
         chunk->pressure->gas_dirty_queued = false;
@@ -300,7 +301,8 @@ PressureOptimizationSnapshot World::pressure_optimization_snapshot() const {
     out.gas_capacity_bytes = cache.gas_members.capacity() * sizeof(PressureCache::GasMember) +
         cache.gas_components.capacity() * sizeof(PressureCache::GasComponent) +
         cache.gas_dirty_chunks.capacity() * sizeof(ChunkCoord) +
-        cache.gas_relabel_bits.capacity() * sizeof(std::uint64_t) +
+        (cache.gas_relabel_bits.capacity() + cache.gas_previous_relabel_bits.capacity()) *
+            sizeof(std::uint64_t) +
         cache.gas_hidden_labels.capacity() * sizeof(std::uint8_t);
     out.wake_segments_scanned = cache.wake_segments_scanned; out.wake_segments_skipped = cache.wake_segments_skipped;
     out.wake_resets = cache.wake_resets;
