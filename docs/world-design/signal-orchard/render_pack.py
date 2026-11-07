@@ -110,11 +110,11 @@ out.extend([
     '<svg x="62" y="1902" width="626" height="250" viewBox="450 14 505 260" preserveAspectRatio="xMidYMid meet">',
     *alt_details,
     '</svg>',
-    '<svg x="752" y="1902" width="626" height="250" viewBox="895 85 413 235" preserveAspectRatio="xMidYMid meet">',
+    '<svg x="752" y="1902" width="626" height="250" viewBox="156 265 480 123" preserveAspectRatio="xMidYMid meet">',
     *alt_details,
     '</svg>',
     '<text x="62" y="2167" font-family="monospace" font-size="12" fill="#9db4a9">LEFT: BROKEN CANOPY / SERVICE DESCENT</text>',
-    '<text x="752" y="2167" font-family="monospace" font-size="12" fill="#9db4a9">RIGHT: STRANDED FRUIT / RECEIVER MAST</text>',
+    '<text x="752" y="2167" font-family="monospace" font-size="12" fill="#9db4a9">RIGHT: FORGOTTEN ROOT LEDGER / THREE FAILED VAULTS</text>',
     '<text x="50" y="2213" font-family="monospace" font-size="12" fill="#9db4a9">TWO COMPOSITIONS • 8 REUSED MODULES • PALETTE SVG ONLY • NOT GODOT OUTPUT</text>',
     "</svg>",
 ])
