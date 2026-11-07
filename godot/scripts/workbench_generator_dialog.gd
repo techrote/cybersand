@@ -224,7 +224,9 @@ func _start() -> void:
 	if not _configuration.get("ok",false):
 		_fail(str(_configuration.get("error","Native generator refused the recipe.")))
 		return
-	_cells.resize(_size.x * _size.y)
+	if _cells.resize(_size.x * _size.y) != OK:
+		_fail("Cannot allocate the bounded native preview buffer.")
+		return
 	if _configuration.has("plane_fingerprint"):
 		var plan: Dictionary = _generator.get_plane_plan()
 		if not plan.get("ok",false) or not plan.get("bounds",Rect2i()).encloses(_region):
@@ -300,7 +302,9 @@ func _chunk_result(coord: Vector2i, packet: Dictionary) -> bool:
 
 func _begin_render() -> void:
 	_phase = "render"
-	_pixels.resize(_cells.size()*4)
+	if _pixels.resize(_cells.size()*4) != OK:
+		_fail("Cannot allocate the requested material-colour preview.")
+		return
 	_render_at = 0
 	_material_counts.clear()
 	_status.text = "Native terrain complete; preparing preview colours…"
@@ -358,6 +362,18 @@ func _complete() -> void:
 	_status.text = "Verified native proposal · %dx%d · %d nonempty cells · %d source receipts · %.2fs to preview. Install replaces unsaved work." % [
 		_size.x,_size.y,nonempty,_receipts.size(),(Time.get_ticks_usec()-_start_usec)/1000000.0]
 	get_ok_button().disabled = false
+
+# Source-session fence: a caller cannot relabel the dialog's native proposal
+# with a different fingerprint, revision, region or arbitrarily edited bytes.
+func attests(packet: Dictionary) -> bool:
+	if _phase != "ready" or _ready_packet.is_empty() or packet.size() != _ready_packet.size():
+		return false
+	for key: String in _ready_packet:
+		if packet.get(key) != _ready_packet[key]: return false
+	return Store.digest(packet.cells) == _ready_packet.sha256 and \
+		int(_configuration.get("revision",-1)) == int(packet.generator_revision) and \
+		str(_configuration.get("fingerprint","")) == str(packet.generator_fingerprint) and \
+		str(_configuration.get("plane_fingerprint","")) == str(packet.plane_revision)
 
 func _install() -> void:
 	if _phase != "ready" or _ready_packet.is_empty() or owner == null:
