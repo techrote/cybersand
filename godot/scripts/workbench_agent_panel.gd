@@ -182,3 +182,8 @@ func _task_finished(_outcome: String) -> void:
 func _exit_tree() -> void:
 	if client != null and client.is_active():
 		client.stop_task("Panel destroyed")
+	if is_instance_valid(proposal_overlay):
+		if proposal_overlay.is_inside_tree():
+			proposal_overlay.queue_free()
+		else:
+			proposal_overlay.free()
