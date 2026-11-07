@@ -5,6 +5,7 @@ on:
       - codex/neighbour-cursor-independent-qualification-20261106
     paths:
       - .github/workflows/pf471-reviewed-docs-exact-head.yml
+      - docs/audits/2026-11-07-pf471-world-transition-proposal.md
   workflow_dispatch:
 permissions:
   contents: read
