@@ -227,14 +227,26 @@ func step(host: Control, workbench: Control, requested: Variant,
 			# receipt. Never automatically retry an ambiguous command.
 			_uncertain = true
 			break
+		# #526's worker counts the existing human Step command itself as
+		# one manual-intent revision when queue_lab admits the requested
+		# single tick. Preserve strict human conflict detection by allowing
+		# ONLY that one attributable increment per actual ACK. Any other
+		# brush/settings/Play intent adds another revision and retires the
+		# remaining agent ticks; do not suppress or reset that counter.
+		var next_manual_revision: int = _manual_revision()
 		last_serial = expected_serial
 		observed_tick = current.tick_index
-		completed += 1
+		completed += 1 # The matching native tick was really completed.
 		step_completed.emit({
 			"completed":completed,"requested":requested,
 			"before_tick":observed_tick-1,"after_tick":observed_tick,
 			"world_generation":generation, "workbench_step_serial":last_serial
 		})
+		if manual_revision >= 0:
+			if next_manual_revision != manual_revision + 1:
+				reason = "manual_intent_changed_during_step"
+				break
+			manual_revision = next_manual_revision
 	if reason.is_empty():
 		reason = "requested_steps_completed"
 	var status: String = "completed" if completed == requested else (
