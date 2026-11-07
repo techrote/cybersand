@@ -166,3 +166,53 @@ negative controls. Assess the exact-head hosted results before claiming PASS.
 privately staged, persistent native World, crash that actual native owner
 immediately after journal ACK (without normal save-all), and compare real
 recovery state plus matched fsync policy and p50/p95/p99 latency against #486.
+
+
+## 7 November 2026 — native-owner hard-crash incumbent checkpoint control
+
+The independent tools/experiments/gen006_storage_native_owner_control.py
+extends the pinned #486 native qualification without modifying #486 or the
+protected World implementation. It runs the **actual long-lived native
+--serve owner** at 30 Hz, using the existing file-IPC request/response
+protocol. It focuses signed chunk (-1,-3), submits five individual edits,
+validates every GEN006_EDIT_DURABLE_ACK, checks that the native G6SLICE1/CYPS
+file carries the acknowledged mutation generation, then invokes an actual OS
+hard kill on the **native process**, without quit, save_all or graceful exit.
+An independently launched native World process reloads that same file and
+must reproduce exactly the last acknowledged generation, completed tick,
+physical hash, complete native CYPS carrier bytes, Water17, temperature417
+and explicit Empty intent.
+
+Execute after compiling pinned native #486 native/tests/gen006_streaming_slice.cpp
+with its native World sources as in
+.github/workflows/gen006-storage-native-pilot.yml:
+
+    python tools/experiments/gen006_storage_native_owner_control.py --exe build/g6j-native/streaming-slice --root build/g6j-native/owner-control-one --workers 1 --native-sha 876859839df581b400b24a0a182b95d8ed259b1c
+
+Repeat with --workers 4 and a fresh workroot. Windows uses
+streaming-slice.exe. The existing native pilot workflow now runs both
+worker configurations on Ubuntu 24.04 and Windows Server 2022, preserving
+the actual process output, original record, restored record and
+native-owner-crash-control.json, including five per-request IPC round-trip
+latencies, exploratory nearest-rank p50/p95/p99, saved bytes and SHA-256.
+The round-trip includes IPC polling plus the incumbent full-CYPS edit
+clone/fsync path. Five observations **do not** provide a stable latency
+distribution. Compare only equivalent scenarios, timing scopes and flush
+policies.
+
+**Critical distinction:** This is a genuine **native-owner-crash CONTROL
+for the existing full-checkpoint mechanism**, not journal-integrated native
+owner execution. The current G6J1 journal still runs separately. It probes
+whether the incumbent last acknowledged checkpoint survives termination;
+subsequent unsaved simulation ticks may be lost. It does not establish
+hardware power-loss guarantees, Windows directory metadata durability,
+dynamic inter-chunk transport, journal throughput gains, or a no-clone owner.
+Do not claim end-to-end journal speedup. Check the exact-head hosted workflow
+before declaring platform qualification.
+
+**Next implementation dependency:** builder-owned, narrow non-persisting
+staged native edit/owner interface preserving one World owner and current
+native hash/receipt policy. Bind journal append and fsync before externally
+visible ACK, then repeat this exact owner-crash test with no per-edit full
+CYPS publication. Measure matched ACK latency, native tick cost and recovery.
+Coordinate with #486; never edit its live branch or use a mock native World.
