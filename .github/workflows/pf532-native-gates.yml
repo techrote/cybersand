@@ -1,0 +1,77 @@
+name: PF532 native correctness and sanitizer gates
+on:
+  push:
+    branches: [sol/pf-gas-selective-bootstrap-20261107]
+    paths:
+      - '.github/workflows/pf532-native-gates.yml'
+      - 'native/**'
+      - 'Makefile'
+      - 'tools/material_catalogue/compatibility.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pf532-native-gates-${{ github.run_id }}
+  cancel-in-progress: false
+env:
+  ACCEPTED_MAIN: 81bbd5ff5cf366159e2b8a630609359c13560080
+jobs:
+  native:
+    name: Native full suite
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Lock source and MAT-AUTH
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$ACCEPTED_MAIN" HEAD
+          git diff --check
+          python3 tools/material_catalogue/compatibility.py --check
+      - name: Build and run complete native tests
+        run: |
+          set -euo pipefail
+          make -j2 CXX=g++-13 build/tests
+          timeout 3600 ./build/tests
+  asan-ubsan:
+    name: ASan + UBSan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Build and run sanitized native tests
+        env:
+          ASAN_OPTIONS: detect_leaks=1:halt_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+        run: |
+          set -euo pipefail
+          python3 tools/material_catalogue/compatibility.py --check
+          make -j2 CXX=g++-13 build/tests_sanitized
+          timeout 3600 ./build/tests_sanitized
+  tsan:
+    name: TSan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Build and run threaded native tests
+        env:
+          TSAN_OPTIONS: halt_on_error=1:second_deadlock_stack=1
+        run: |
+          set -euo pipefail
+          python3 tools/material_catalogue/compatibility.py --check
+          make -j2 CXX=g++-13 build/tests_tsan
+          timeout 3600 ./build/tests_tsan
