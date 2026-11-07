@@ -137,8 +137,10 @@ func mount(workbench: Control) -> void:
 	root.add_child(_preview)
 	confirmed.connect(_install)
 	canceled.connect(_stop)
+	# AcceptDialog may hide before emitting confirmed. Keep the verified
+	# proposal alive across that transition; cancel only unfinished generation.
 	visibility_changed.connect(func() -> void:
-		if not visible: _stop())
+		if not visible and _phase in ["plane","chunks","render"]: _stop())
 
 func open_new() -> void:
 	if _workbench == null: return
@@ -403,3 +405,6 @@ func _install() -> void:
 	if not _workbench.install_generated_start(candidate,_ready_packet):
 		_status.text = _workbench.message
 		popup_centered(Vector2i(720,610))
+	else:
+		# The owner already made a source-qualified copy for its pending commit.
+		_stop()
