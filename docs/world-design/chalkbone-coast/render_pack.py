@@ -95,7 +95,7 @@ def generate(pack):
         tx=24+placement['x']*1.5;ty=1470+placement['y']*1.5
         parts.append(f'<text x="{tx+2:g}" y="{max(1484,ty-8):g}" fill="#EBD8BE" font-family="monospace" font-size="10">{html.escape(placement["feature"])}</text>')
     parts.append('<text x="28" y="2040" fill="#DBD6C8" font-family="monospace" font-size="17">SPIRAL FOSSIL / LEFT ERODED COAST · TRUE NATIVE-CELL CROPS</text>')
-    for ox,sx,sy,title in ((36,270,99,'SPIRAL SHELL · DISCONTINUOUS CALYX'),(624,0,153,'LEFT SEDIMENT SCARP · CAVITIES CUT WITH ID 0')):
+    for ox,sx,sy,title in ((36,270,99,'SPIRAL SHELL · DISCONTINUOUS CALYX'),(624,512,64,'FOSSIL RIB CROWN · SEVEN SOUNDINGS / DRY RELIEF')):
         crop=[]
         for cy in range(sy,sy+100):
             crop.extend(alt_pixels[cy*aw+sx:cy*aw+sx+240])
