@@ -103,8 +103,20 @@ func _run() -> void:
         _fail("could not capture initial actual GL framebuffer")
         return
     var before_orange := _orange_loading_pixels(before)
-    # Frame capture may complete an unrelated initial refresh request; capture
-    # the baseline only after it finishes, immediately before the native stall.
+    # Freeze the periodic refresh producer and DRAIN any already-submitted
+    # background focus before SIGSTOP. Otherwise a preexisting response can be
+    # consumed after suspension and falsify the no-new-ACK assertion.
+    demo.interactive_async = false
+    demo.focus_dirty = false
+    var drain_deadline := Time.get_ticks_msec() + 6500
+    while demo.ipc_outstanding and Time.get_ticks_msec() < drain_deadline:
+        demo._service_live_ipc()
+        await process_frame
+    if demo.ipc_outstanding or not demo.failure.is_empty():
+        _fail("pre-stall native refresh did not drain cleanly: " + demo.failure)
+        return
+    demo.refresh_accumulator = 0.0
+    demo.interactive_async = true
     var initial_requests: int = demo.total_calls
 
     if not _signal_native(native_pid, "-STOP"):
