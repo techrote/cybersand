@@ -412,7 +412,9 @@ def _build_patch(source_root: Path, work_root: Path, original: dict, policy: Pat
 
 def _visual_cycle(rec: dict, executor: ToolExecutor, edited: bool) -> None:
     comparison = executor.comparison
-    if executor.input_bundle is None:
+    if rec["run"]["mode"] != "live":
+        reason = "dry-run: no model critiqued the images, so no improvement cycle is claimed"
+    elif executor.input_bundle is None:
         reason = "no input capture bundle was supplied"
     elif not edited:
         reason = "no source edit was applied"

@@ -637,9 +637,9 @@ class RendererIntegrationTests(RunCase):
 
 
 class VisualCycleLogicTests(unittest.TestCase):
-    def cycle(self, comparison, edited=True, bundle=True):
+    def cycle(self, comparison, edited=True, bundle=True, mode="live"):
         from types import SimpleNamespace
-        rec = {}
+        rec = {"run": {"mode": mode}}
         runner._visual_cycle(rec, SimpleNamespace(input_bundle="b" if bundle else None, comparison=comparison), edited)
         return rec["visual_cycle"]
 
@@ -647,6 +647,7 @@ class VisualCycleLogicTests(unittest.TestCase):
         good = {"comparable": True, "godot_to_godot": True, "visual_change_observed": True,
                 "evidence_classes": ["godot-capture", "godot-capture"]}
         self.assertTrue(self.cycle(good)["claimed"])
+        self.assertFalse(self.cycle(good, mode="dry-run")["claimed"], "a scripted dry run never claims a cycle")
         for mutation, edited, bundle in (({"godot_to_godot": False}, True, True), ({"comparable": False}, True, True),
                                          ({"visual_change_observed": False}, True, True), ({}, False, True),
                                          ({}, True, False)):
