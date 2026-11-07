@@ -109,6 +109,7 @@ var _agent_authoring = AgentAuthoring.new() # Exclusive simulation-worker owner.
 var _agent_request: Dictionary = {} # Mutex-owned request value.
 var _agent_result: Dictionary = {} # Mutex-owned copied result.
 var _agent_request_serial: int = 0 # Mutex-owned monotonically increasing ID.
+var _agent_result_consumed_serial: int = 0 # Mutex-owned acknowledgement.
 var _agent_manual_intent_revision: int = 0 # Mutex-owned, never reset for this owner.
 var _agent_inflight: bool = false # Mutex-owned; reject human brush during native apply.
 var _reset_requested: bool = false
@@ -1262,7 +1263,9 @@ func _cancel_workbench_emission_locked() -> void:
 func queue_water_spray(settings: Dictionary) -> bool:
 	_mutex.lock()
 	var ok := _water_spray_requests.size() < 8
-	if ok: _water_spray_requests.append(settings.duplicate(true))
+	if ok:
+		_water_spray_requests.append(settings.duplicate(true))
+		_agent_manual_intent_revision += 1
 	_mutex.unlock()
 	return ok
 
@@ -1271,7 +1274,9 @@ func queue_workbench_source(origin: Vector2i, material: int, command: String) ->
 	var ok := _workbench_extent != Vector2i.ZERO and _prepared_physical_publication.is_empty() and _lab_request.is_empty() and _workbench_source_commands.size() < 8
 	if ok:
 		ok = command in ["configure","burst","stream","stop"] and (command != "configure" or _workbench_source.valid(origin,material,_workbench_extent))
-	if ok: _workbench_source_commands.append({"command":command,"origin":origin,"material":material})
+	if ok:
+		_workbench_source_commands.append({"command":command,"origin":origin,"material":material})
+		_agent_manual_intent_revision += 1
 	_mutex.unlock()
 	return ok
 
@@ -1703,7 +1708,8 @@ func set_render_snapshot_hz(render_hz: int) -> void:
 func queue_agent_authoring_command(command: Dictionary) -> int:
 	_mutex.lock()
 	if not _running or not _paused or _workbench_extent == Vector2i.ZERO \
-			or _simulation_failed or not _agent_request.is_empty() or _agent_inflight:
+			or _simulation_failed or not _agent_request.is_empty() or _agent_inflight \
+			or int(_agent_result.get("request_serial",0)) > _agent_result_consumed_serial:
 		_mutex.unlock()
 		return -1
 	if not _prepared_physical_publication.is_empty() or not _lab_request.is_empty() \
@@ -1733,6 +1739,7 @@ func latest_agent_authoring_result(after_serial: int) -> Dictionary:
 	var result: Dictionary = {}
 	if int(_agent_result.get("request_serial",0)) > after_serial:
 		result = _agent_result.duplicate(true)
+		_agent_result_consumed_serial = int(result.request_serial)
 	_mutex.unlock()
 	return result
 
@@ -1895,6 +1902,7 @@ func queue_player_environment_profile(profile: Dictionary) -> bool:
 	if not resolved.get("ok", false):
 		return false
 	_mutex.lock()
+	_agent_manual_intent_revision += 1
 	_construction_settings_revision += 1
 	_pending_player_environment_profile = resolved.profile.duplicate(true)
 	# PENV tuning remains fresh-reset only. The presentation owner follows this
