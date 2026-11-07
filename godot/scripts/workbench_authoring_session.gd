@@ -284,6 +284,12 @@ func execute(command: Dictionary, world: Object, generation: int,
 	if typeof(command.get("schema_version",null)) != TYPE_INT \
 			or int(command.schema_version) != SCHEMA_VERSION:
 		return _refused("unsupported_tool_schema_version")
+	# An already consumed apply is a read-only receipt lookup, including after
+	# a task is retired or a newer generation is installed.
+	if action == "apply_edit":
+		var previously_consumed: String = str(command.get("proposal_id",""))
+		if _receipts.has(previously_consumed):
+			return _receipts[previously_consumed].duplicate(true)
 	if _quarantined:
 		if action == "apply_edit":
 			var old_id: String = str(command.get("proposal_id",""))
