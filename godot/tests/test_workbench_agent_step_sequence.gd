@@ -116,11 +116,12 @@ func run() -> void:
 	# The callback is synchronous at this acknowledgment boundary; it
 	# deterministically revokes ticks 4..10 without a polling race.
 	var interrupted = Driver.new()
-	interrupted.step_completed.connect(func(receipt: Dictionary) -> void:
+	var stop_on_third: Callable = func(receipt: Dictionary) -> void:
 		if int(receipt.completed)==3:
 			interrupted.request_stop()
-	)
+	interrupted.step_completed.connect(stop_on_third)
 	var stopped: Dictionary = await interrupted.step(main,workbench,10)
+	interrupted.step_completed.disconnect(stop_on_third)
 	check(stopped.get("status")=="stopped"
 		and stopped.get("reason")=="human_stop" and stopped.get("completed")==3
 		and stopped.get("before_tick")==after_manual
@@ -155,12 +156,19 @@ func run() -> void:
 		"stop_completed":stopped.get("completed",-1),
 		"bounded_call_completed":cap.get("completed",-1),
 		"paused":final_snapshot.paused}))
+	# Release the test's self-capturing Stop callback before shutting down:
+	# RefCounted signal -> closure -> driver otherwise retains a cycle.
+	stop_on_third = Callable()
+	interrupted = null
+	driver = null
+	max_call = null
 	finish()
 
 
 func finish() -> void:
 	if is_instance_valid(main):
 		main.queue_free()
-	await process_frame
+		await process_frame
+		await process_frame
 	print("WB_AGENT_527_STEP: %d assertions, %d failures" % [checks,failures])
 	quit(1 if failures else 0)
