@@ -38,6 +38,11 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install repository-pinned audit dependencies
+        run: |
+          python -m pip install --require-hashes -r tools/requirements-ci-audit.txt
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned audit dependencies failed' }
+
       - name: Qualify CI policy and candidate script
         run: |
           python tools/ci/check_ci_provider_policy.py
