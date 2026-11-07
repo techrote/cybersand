@@ -5,6 +5,7 @@ extends SceneTree
 const Setup = preload("res://scripts/workbench_setup.gd")
 const RenderJoin = preload("res://scripts/workbench_authoring_render_join.gd")
 const StartCommit = preload("res://scripts/workbench_authoring_start_commit.gd")
+const AuthoringHost = preload("res://scripts/workbench_authoring_host.gd")
 const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 
 var main: Control
@@ -304,6 +305,64 @@ func run() -> void:
 	check(no_sand.get("status")=="refused"
 		and no_sand.get("reason")=="source_material_protected",
 		"agent attempted to erase an actual native Sand cell")
+
+	# Full user-facing #526 host path, not a direct worker bypass. Authorize
+	# locally, submit strict model-shaped JSON, await real owner/renderer,
+	# preflight the named-start, apply+verify, and test duplicate idempotence.
+	var adapter = AuthoringHost.new()
+	check(adapter.bind(main),"main-thread host could not bind existing workbench")
+	var host_authorized: Dictionary = await adapter.authorize_task(
+		"host-json-integration",Rect2i(Vector2i(1160,360),Vector2i(64,64)),
+		[],[0,58])
+	check(host_authorized.get("status")=="authorized",
+		"host-only task authorization did not reach owner")
+	var unauthorized: Dictionary = await adapter.call_tool("authorize_task",{
+		"task_id":"model-cannot-reauthorize"})
+	check(unauthorized.get("status")=="refused",
+		"model dispatcher exposed privileged task authorization")
+	var wrong_region: Dictionary = await adapter.call_tool("observe",{
+		"region":{"x":1160.5,"y":360,"width":6,"height":5},"detail":"cells"})
+	check(wrong_region.get("status")=="refused",
+		"float JSON world coordinate was silently narrowed")
+	var region: Dictionary = {"x":1170,"y":374,"width":8,"height":8}
+	var host_observed: Dictionary = await adapter.call_tool("observe",{
+		"region":region,"detail":"cells"})
+	check(host_observed.get("status")=="observed"
+		and host_observed.get("image_status")=="matched_post_draw"
+		and host_observed.get("framebuffer_png",PackedByteArray()).size()>8
+		and host_observed.get("native_material_ids",[]).size()==64,
+		"host failed true native->frame->worker confirmation")
+	if host_observed.get("status")=="observed":
+		var host_prepared: Dictionary = await adapter.call_tool("prepare_edit",{
+			"observation_id":host_observed.observation_id,
+			"operations":[{"shape":"rectangle","x0":1171,"y0":375,
+				"x1":1173,"y1":377,"material":58,
+				"replace_only_material":null}]})
+		check(host_prepared.get("status")=="proposed"
+			and host_prepared.get("changed_cells",0)==9,
+			"strict JSON nullable filter did not stage a recordable native proposal")
+		if host_prepared.get("status")=="proposed":
+			var host_applied: Dictionary = await adapter.call_tool("apply_edit",{
+				"proposal_id":host_prepared.proposal_id})
+			check(host_applied.get("status")=="applied"
+				and host_applied.get("authored_start",{}).get("status")=="recorded"
+				and host_applied.get("changed_cells",-1)==9,
+				"native verified host edit not committed into named authored start")
+			var same: Dictionary = await adapter.call_tool("apply_edit",{
+				"proposal_id":host_prepared.proposal_id})
+			check(same==host_applied,
+				"host duplicate apply did not replay exact immutable receipt")
+			var host_after: Dictionary = await adapter.call_tool("observe",{
+				"region":region,"detail":"counts"})
+			check(host_after.get("status")=="observed"
+				and int(host_after.get("native_counts",{}).get(58,0))==9,
+				"host applied result failed native material readback")
+			var unexpected: Dictionary = await adapter.call_tool("step",{"ticks":1})
+			check(unexpected.get("status")=="refused",
+				"#526 adapter illegally exposed #527 step tool")
+	var retired: Dictionary = await adapter.retire_task()
+	check(retired.get("status")=="retired",
+		"host failed to retire privileged task without disclosing World")
 	finish()
 
 
