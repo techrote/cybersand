@@ -95,7 +95,7 @@ func _run() -> void:
 
     # Product-facing first frame must contain REAL generated cells, not merely
     # an empty sky texture that becomes visible only after manual painting.
-    if demo.world_chunk != Vector2i(-1, 1) or \
+    if demo.world_chunk != Vector2i(-2, 1) or \
             demo.occupied_native_cells < 512 or demo.occupied_native_cells >= 4096:
         _fail("default first scene lacks substantial native Strata terrain: "
             + str(demo.occupied_native_cells))
@@ -206,7 +206,7 @@ func _run() -> void:
     # This also forces the independently saved first chunk to reload after
     # native World eviction; terrain must remain visibly present.
     _key(demo, KEY_HOME)
-    if not demo.failure.is_empty() or demo.world_chunk != Vector2i(-1, 1) or \
+    if not demo.failure.is_empty() or demo.world_chunk != Vector2i(-2, 1) or \
             demo.occupied_native_cells < 512:
         _fail("Home failed to restore native terrain-bearing start: "
             + str(demo.occupied_native_cells) + " " + demo.failure)
