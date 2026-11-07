@@ -75,6 +75,9 @@ def evaluate(data: dict[str, Any]) -> tuple[str, list[str]]:
         problems.append("unexpected or missing result schema")
     if data.get("registered_main") != BASE_MAIN:
         problems.append("result does not pin the registered main baseline")
+    configured = data.get("configured_native_workers")
+    if configured not in (1, 4):
+        problems.append("missing explicit 1/4-worker configuration identity")
     rows = data.get("profiles")
     if not isinstance(rows, list):
         return "REPAIR", problems + ["profiles are missing"]
@@ -85,6 +88,19 @@ def evaluate(data: dict[str, Any]) -> tuple[str, list[str]]:
         row = by_name.get(name, {})
         if not row:
             continue
+        if row.get("worker_request") != configured or row.get("worker_capacity") != configured:
+            problems.append(f"{name}: requested/resolved native workers differ from matrix arm")
+        if row.get("native_backend") != "native-phased":
+            problems.append(f"{name}: non-native backend")
+        observed = row.get("workers_observed_max", -1)
+        samples = row.get("worker_samples", [])
+        if (not isinstance(samples, list) or not samples or not isinstance(observed, int)
+                or observed < 1 or (configured in (1, 4) and observed > configured)):
+            problems.append(f"{name}: missing or invalid actual native participation")
+        elif not all(isinstance(sample, dict) and sample.get("capacity") == configured
+                     and 1 <= sample.get("observed", -1) <= configured
+                     and sample.get("completed_tick", -1) > 0 for sample in samples):
+            problems.append(f"{name}: worker participation sample identity mismatch")
         if not bool(row.get("completed")):
             problems.append(f"{name}: workload did not complete")
         if float(row.get("elapsed_wall_ms", 0.0)) < 59000.0:
@@ -107,6 +123,9 @@ def evaluate(data: dict[str, Any]) -> tuple[str, list[str]]:
         if (str(assignment.get("applied_family", "")) != "pressure_flow_v1"
                 or str(assignment.get("applied_variant", "")) != "cached_dormant"):
             problems.append(f"{name}: PressureFlow cached_dormant readback missing")
+    if configured == 4 and max((int(r.get("workers_observed_max", -1))
+                                  for r in by_name.values()), default=-1) < 2:
+        problems.append("four-worker arm never observed two native task claimants")
     impact_profiles = 0
     for row in by_name.values():
         spray = row.get("spray_final", {}) if isinstance(row, dict) else {}
@@ -135,12 +154,15 @@ def write_summary(data: dict[str, Any], output: Path, csv_output: Path, qualific
         f"- Platform / display: {data.get('platform', '')} / {data.get('display_server', '')}",
         f"- Godot: {data.get('godot', '')}",
         "- Three production-workbench profiles, 60 seconds each.",
+        f"- Native worker arm: requested {data.get('configured_native_workers')} / "
+        f"maximum observed task claimants {data.get('observed_native_workers_max')} "
+        "(sampled on completed native ticks, not CPU utilization).",
         "- Performance distributions are measurements, not pass/fail thresholds.",
         "- PR #474 opt-in lockstep wiring is merged into production; this fixture asserts the default asynchronous path and does not test opt-in lockstep.",
         "- Collider extraction is not isolated on this source; terrain-gate timing, hard-packet sizes/revisions and the explicitly non-isolated worker residual are reported instead.",
         "",
-        "| Profile | Native Hz | Rapier Hz | frame p95 ms | native p95 ms | snapshot age p95 ms | terrain gate p95 ms | Rapier wait | hard revs | Water mismatches |",
-        "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+        "| Profile | Requested/resolved/observed workers | Native Hz | Rapier Hz | frame p95 ms | native p95 ms | snapshot age p95 ms | terrain gate p95 ms | Rapier wait | hard revs | Water mismatches |",
+        "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     csv_rows = []
     for name in REQUIRED_PROFILES:
@@ -150,6 +172,10 @@ def write_summary(data: dict[str, Any], output: Path, csv_output: Path, qualific
         wait = f"{wait_callbacks}/{callbacks}"
         fields = {
             "profile": name,
+            "worker_request": int(row.get("worker_request", -1)),
+            "worker_capacity": int(row.get("worker_capacity", -1)),
+            "workers_observed_max": int(row.get("workers_observed_max", -1)),
+            "worker_sample_count": len(row.get("worker_samples", [])),
             "native_hz": float(row.get("completed_native_hz", 0.0)),
             "rapier_hz": float(row.get("completed_rapier_hz", 0.0)),
             "frame_p95_ms": stat(row, "process_interval_ms"),
@@ -164,7 +190,8 @@ def write_summary(data: dict[str, Any], output: Path, csv_output: Path, qualific
         }
         csv_rows.append(fields)
         lines.append(
-            f"| {name} | {fields['native_hz']:.3f} | {fields['rapier_hz']:.3f} | "
+            f"| {name} | {fields['worker_request']}/{fields['worker_capacity']}/{fields['workers_observed_max']} "
+            f"({fields['worker_sample_count']} samples) | {fields['native_hz']:.3f} | {fields['rapier_hz']:.3f} | "
             f"{fields['frame_p95_ms']:.3f} | {fields['native_p95_ms']:.3f} | "
             f"{fields['snapshot_age_p95_ms']:.3f} | {fields['terrain_gate_p95_ms']:.3f} | "
             f"{wait} | {fields['hard_surface_revision_changes']} | {fields['water_mismatches']} |"
@@ -187,6 +214,8 @@ def write_summary(data: dict[str, Any], output: Path, csv_output: Path, qualific
         "problems": problems,
         "registered_main": data.get("registered_main"),
         "qualification_source": data.get("source_revision"),
+        "configured_native_workers": configured if (configured := data.get("configured_native_workers")) else None,
+        "observed_native_workers_max": data.get("observed_native_workers_max"),
         "results_sha256": sha256(Path(data["_results_path"])) if data.get("_results_path") else None,
         "profiles": csv_rows,
         "limitations": {
