@@ -130,3 +130,60 @@ validates its SHA-256 and restores Wall state, temperature417, both precise
 Empty tombstones and quantity accounting into a new native World. Full
 new-process custody remains test-only; production host save scheduling,
 multiwriter power-cut resolution and dynamic-state bundles are still separate.
+
+
+## Signed-coordinate G6KC1 restore preflight — 7 November 2026 (Draft)
+
+This bounded extension protects the existing opt-in static G6KC1 path;
+it does **not** expand the supported material or sidecar domain.
+Before any directory lookup or allocation, chunk capture and restore now
+apply the **same** signed cell-origin multiplication limits and
+maximum-rule-radius endpoint preflight as
+`World::install_generated_chunk`. A checkpoint with a correctly recomputed
+SHA-256 is still refused if its chunk coordinates would overflow native
+cell/rule arithmetic. Invalid attempts must not alter resident count,
+allocated cell bytes or physical hash. The finite chunk-directory mirror
+in this path also avoids signed-subtraction overflow.
+
+The test publishes a real native World G6KC1 record, rewrites *both* its
+signed chunk-coordinate fields and SHA-256 using
+`tools/experiments/gen006_chunk_signed_extent_qa.py`, and executes
+`native/tests/gen006_chunk_checkpoint_transaction.cpp --extent` in fresh
+native processes. It checks twelve rehashed cases per worker setting:
+eight out-of-domain multiplication/rule-radius endpoints refused without
+state mutation, and four just-inside-boundary coordinates restored with
+Wall/temperature417/precise Empty intent intact. Both Windows and Linux
+workflows run worker settings 1 and 4; their exact-head runtime results
+must be checked separately and are not presumed passed here.
+
+**Still blocked:** The independently reproduced stale-residency ACK ABA
+scenario in Draft #514 is **not** repaired by coordinate preflight.
+Unique native admission-incarnation fencing across remove/re-admit and
+`World::clear()` requires controlled changes to protected source/headers,
+to be reconciled with concurrently active physics and MAT-AUTH source
+ownership. Do not merge, mark Ready, repin compatibility without owner
+review or promote the static experiment to dynamic streaming.
+
+## Monotonic native admission-incarnation correction (7 November 2026, pending hosted execution)
+
+Independent PR #514 reproduced a real Windows/Linux ABA defect: identical
+G6KC1 bytes and mutation/tick fences do not distinguish an earlier residency
+A from newly restored residency B. This candidate adds a unique, monotonically
+allocated, per-native-World admission incarnation for opt-in GEN-006 chunks.
+Its counter is never reset by World::clear(); exhaustion refuses admission.
+A captured checkpoint exposes the incarnation *out of band*, preserving the
+entire serialized G6KC1 digest and exact continuation bytes. Durable ACK must
+bind the same incarnation; eviction checks it against the current live chunk
+before any destructive erase. Legacy five-field ACKs safely refuse.
+
+The native World counter is **not a cross-process identity**. The external
+storage owner must fence world/session/recipe and durable-writer identities
+across separate World instances and restarts, and prove actual sync/publication.
+The changed implementation does not claim native fsync or host persistence.
+
+The hosted workflow now executes a source-derived copy of #514's original
+real A -> B regression at both configured worker counts on Windows and Linux,
+with explicit fresh-ACK B and a further C admission after World::clear().
+Its existence is not a CI PASS claim; inspect exact-head workflow results.
+MAT-AUTH protected-world source transition remains an explicit independent
+admission gate; this commit does not repin or bypass it.

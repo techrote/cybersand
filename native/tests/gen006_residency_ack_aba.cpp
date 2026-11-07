@@ -96,7 +96,8 @@ int run(const fs::path& root, unsigned workers) {
     durable_publish(root / "residency-A.g6c", first.checkpoint.bytes);
     const ChunkDurableAck old_ack {
         first.checkpoint.coord, first.checkpoint.generation,
-        first.checkpoint.world_tick, first.checkpoint.sha256, true
+        first.checkpoint.world_tick, first.checkpoint.sha256, true,
+        first.checkpoint.admission_incarnation
     };
     require(world.evict_durable_checkpoint(first.checkpoint, old_ack) ==
             ChunkCheckpointStatus::Evicted, "ABA_A_DURABLE_EVICTION");
@@ -111,7 +112,13 @@ int run(const fs::path& root, unsigned workers) {
             second.checkpoint.bytes == first.checkpoint.bytes &&
             second.checkpoint.sha256 == first.checkpoint.sha256,
             "ABA_EQUAL_BYTES_CONTROL_FAILED");
+    require(first.checkpoint.admission_incarnation > 0 &&
+            second.checkpoint.admission_incarnation >
+                first.checkpoint.admission_incarnation,
+            "ABA_RESTORED_INCARCATION_MUST_ADVANCE");
     const auto before_hash = world.physical_state_hash();
+    const auto before_state_hash = world.state_hash();
+    const auto before_ledger = world.quantity_ledger();
     const auto before_bytes = world.resident_cell_bytes();
     const auto before_tick = world.completed_tick_index();
     const auto stale_outcome = world.evict_durable_checkpoint(first.checkpoint, old_ack);
@@ -127,6 +134,8 @@ int run(const fs::path& root, unsigned workers) {
     require(world.chunk_count() == 2 &&
             world.resident_cell_bytes() == before_bytes &&
             world.physical_state_hash() == before_hash &&
+            world.state_hash() == before_state_hash &&
+            world.quantity_ledger() == before_ledger &&
             world.completed_tick_index() == before_tick &&
             world.stored_material(x + 30, y + 30) == Material::Wall &&
             world.stored_temperature(x + 30, y + 30) == 417 &&
@@ -135,11 +144,63 @@ int run(const fs::path& root, unsigned workers) {
     // Refusing the stale A must not disable legitimate eviction of B.
     const ChunkDurableAck fresh_ack {
         second.checkpoint.coord, second.checkpoint.generation,
-        second.checkpoint.world_tick, second.checkpoint.sha256, true
+        second.checkpoint.world_tick, second.checkpoint.sha256, true,
+        second.checkpoint.admission_incarnation
     };
     durable_publish(root / "residency-B.g6c", second.checkpoint.bytes);
     require(world.evict_durable_checkpoint(second.checkpoint, fresh_ack) ==
             ChunkCheckpointStatus::Evicted, "ABA_FRESH_B_EVICTION_REFUSED");
+    // World::clear must not recycle native admission identity.
+    world.clear();
+    require(world.chunk_count() == 0, "ABA_CLEAR_DID_NOT_FREE_WORLD");
+    require(world.install_generated_chunk(coord, empty) ==
+            ChunkInstallOutcome::Installed, "ABA_C_POST_CLEAR_ADMISSION");
+    world.set(x + 8, y + 8, Material::Empty);
+    world.set(x + 30, y + 30, Material::Wall);
+    world.set_temperature(x + 30, y + 30, 417);
+    ChunkCheckpointCapture third{};
+    for (int t = 0; t < 32; ++t) {
+        (void)world.tick();
+        third = world.capture_chunk_checkpoint(coord);
+        if (third.status == ChunkCheckpointStatus::Captured) break;
+        require(third.status == ChunkCheckpointStatus::PendingActivity,
+                "ABA_POST_CLEAR_CAPTURE_UNEXPECTED_REFUSAL");
+    }
+    require(third.status == ChunkCheckpointStatus::Captured &&
+            third.checkpoint.admission_incarnation >
+                second.checkpoint.admission_incarnation,
+            "ABA_POST_CLEAR_INCARCATION_RECYCLED");
+    const auto c_hash = world.physical_state_hash();
+    const auto c_state = world.state_hash();
+    const auto c_ledger = world.quantity_ledger();
+    const auto c_bytes = world.resident_cell_bytes();
+    const auto c_tick = world.completed_tick_index();
+    require(world.evict_durable_checkpoint(second.checkpoint, fresh_ack) !=
+                ChunkCheckpointStatus::Evicted &&
+            world.evict_durable_checkpoint(third.checkpoint, fresh_ack) ==
+                ChunkCheckpointStatus::MissingDurabilityAck &&
+            world.chunk_count() == 1 &&
+            world.physical_state_hash() == c_hash &&
+            world.state_hash() == c_state &&
+            world.quantity_ledger() == c_ledger &&
+            world.resident_cell_bytes() == c_bytes &&
+            world.completed_tick_index() == c_tick &&
+            world.stored_material(x + 30, y + 30) == Material::Wall &&
+            world.stored_temperature(x + 30, y + 30) == 417 &&
+            world.gen006_player_edit_intent_at(x + 8, y + 8),
+            "ABA_STALE_B_ACK_OR_CLEAR_MUTATED_C");
+    durable_publish(root / "residency-C.g6c", third.checkpoint.bytes);
+    const ChunkDurableAck fresh_c_ack {
+        third.checkpoint.coord, third.checkpoint.generation,
+        third.checkpoint.world_tick, third.checkpoint.sha256, true,
+        third.checkpoint.admission_incarnation
+    };
+    require(world.evict_durable_checkpoint(third.checkpoint, fresh_c_ack) ==
+            ChunkCheckpointStatus::Evicted && world.chunk_count() == 0,
+            "ABA_FRESH_C_ACK_OR_CLEAR_EVICTION_REFUSED");
+    std::cout << "GEN006_CLEAR_C_INCARCATION_PASS"
+              << " stale_B_after_clear_refused=1"
+              << " fresh_C_ack_accepted=1\n";
     std::cout << "GEN006_RESIDENCY_ABA_FENCE_PASS"
               << " configured_workers=" << workers
               << " signed_chunk=(-16,-8)"

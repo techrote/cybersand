@@ -8,7 +8,9 @@ on:
       - 'native/src/world.cpp'
       - 'native/tests/gen006_shared_world_pristine_release.cpp'
       - 'native/tests/gen006_chunk_checkpoint_transaction.cpp'
+      - 'native/tests/gen006_residency_ack_incarnation.cpp'
       - 'native/src/world_chunk_checkpoint.inc'
+      - 'tools/experiments/gen006_chunk_signed_extent_qa.py'
       - '.github/workflows/gen006-shared-world-pristine-release.yml'
   workflow_dispatch:
 
@@ -42,7 +44,7 @@ jobs:
           git rev-parse HEAD | tee "$d/head.txt"
           git rev-parse 'HEAD^{tree}' | tee "$d/tree.txt"
           test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
-          for f in native/src/world.cpp native/include/cybersand/world.hpp native/src/world_chunk_checkpoint.inc native/tests/gen006_shared_world_pristine_release.cpp native/tests/gen006_chunk_checkpoint_transaction.cpp; do
+          for f in native/src/world.cpp native/include/cybersand/world.hpp native/src/world_chunk_checkpoint.inc native/tests/gen006_shared_world_pristine_release.cpp native/tests/gen006_chunk_checkpoint_transaction.cpp native/tests/gen006_residency_ack_incarnation.cpp; do
             git hash-object "$f" | tee -a "$d/blobs.txt"
           done
           python3 tools/ci/check_ci_provider_policy.py
@@ -81,6 +83,24 @@ jobs:
           grep -q 'GEN006_CHUNK_RESTART_PROCESS_PASS configured_workers=4' "$d/restart-four.log"
           grep -q 'GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=1' "$d/transaction-one.log"
           grep -q 'GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=4' "$d/transaction-four.log"
+          python3 tools/experiments/gen006_chunk_signed_extent_qa.py \
+            "$d/chunk-transaction" "$d/transaction-one/chunk_x-16_y-8.g6c" "$d/extent-one" 1 | tee "$d/extent-one.log"
+          python3 tools/experiments/gen006_chunk_signed_extent_qa.py \
+            "$d/chunk-transaction" "$d/transaction-four/chunk_x-16_y-8.g6c" "$d/extent-four" 4 | tee "$d/extent-four.log"
+          grep -q 'GEN006_REHASHED_SIGNED_EXTENT_QA_PASS workers=1' "$d/extent-one.log"
+          grep -q 'GEN006_REHASHED_SIGNED_EXTENT_QA_PASS workers=4' "$d/extent-four.log"
+          g++-13 -std=c++20 -O0 -g0 -pthread -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/src/world_generation.cpp native/src/generation_fields.cpp \
+            native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp \
+            native/src/generation_grammar.cpp native/src/generation_planes.cpp \
+            native/tests/gen006_residency_ack_incarnation.cpp \
+            -o "$d/residency-aba" > "$d/aba-compile.log" 2>&1 || { cat "$d/aba-compile.log"; exit 1; }
+          "$d/residency-aba" "$d/aba-one" 1 | tee "$d/aba-one.log"
+          "$d/residency-aba" "$d/aba-four" 4 | tee "$d/aba-four.log"
+          grep -q 'GEN006_RESIDENCY_ABA_FENCE_PASS configured_workers=1' "$d/aba-one.log"
+          grep -q 'GEN006_RESIDENCY_ABA_FENCE_PASS configured_workers=4' "$d/aba-four.log"
       - name: Preserve native evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -112,7 +132,7 @@ jobs:
           d=pathlib.Path("build/gen006-shared-release");d.mkdir(parents=True,exist_ok=True)
           def git(*args):return subprocess.check_output(["git",*args],text=True).strip()
           assert git("rev-parse","HEAD")==os.environ["EXPECTED_HEAD"]
-          for k,a in {"head":["rev-parse","HEAD"],"tree":["rev-parse","HEAD^{tree}"],"world":["hash-object","native/src/world.cpp"],"header":["hash-object","native/include/cybersand/world.hpp"],"test":["hash-object","native/tests/gen006_shared_world_pristine_release.cpp"],"checkpoint":["hash-object","native/src/world_chunk_checkpoint.inc"],"transaction":["hash-object","native/tests/gen006_chunk_checkpoint_transaction.cpp"]}.items():
+          for k,a in {"head":["rev-parse","HEAD"],"tree":["rev-parse","HEAD^{tree}"],"world":["hash-object","native/src/world.cpp"],"header":["hash-object","native/include/cybersand/world.hpp"],"test":["hash-object","native/tests/gen006_shared_world_pristine_release.cpp"],"checkpoint":["hash-object","native/src/world_chunk_checkpoint.inc"],"transaction":["hash-object","native/tests/gen006_chunk_checkpoint_transaction.cpp"],"aba":["hash-object","native/tests/gen006_residency_ack_incarnation.cpp"]}.items():
             (d/(k+".txt")).write_text(git(*a)+"\n")
           subprocess.run([sys.executable,"tools/ci/check_ci_provider_policy.py"],check=True)
       - name: MSVC LLVM Clang actual native test
@@ -161,6 +181,28 @@ jobs:
           findstr /C:"GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=1" build\gen006-shared-release\transaction-one.log
           if errorlevel 1 exit /b 1
           findstr /C:"GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=4" build\gen006-shared-release\transaction-four.log
+          if errorlevel 1 exit /b 1
+          python tools/experiments/gen006_chunk_signed_extent_qa.py build\gen006-shared-release\chunk-transaction.exe build\gen006-shared-release\transaction-one\chunk_x-16_y-8.g6c build\gen006-shared-release\extent-one 1 > build\gen006-shared-release\extent-one.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\extent-one.log & exit /b 1)
+          python tools/experiments/gen006_chunk_signed_extent_qa.py build\gen006-shared-release\chunk-transaction.exe build\gen006-shared-release\transaction-four\chunk_x-16_y-8.g6c build\gen006-shared-release\extent-four 4 > build\gen006-shared-release\extent-four.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\extent-four.log & exit /b 1)
+          type build\gen006-shared-release\extent-one.log
+          type build\gen006-shared-release\extent-four.log
+          findstr /C:"GEN006_REHASHED_SIGNED_EXTENT_QA_PASS workers=1" build\gen006-shared-release\extent-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_REHASHED_SIGNED_EXTENT_QA_PASS workers=4" build\gen006-shared-release\extent-four.log
+          if errorlevel 1 exit /b 1
+          "%GEN006_CXX%" -std=c++20 -O0 -I native/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/world_generation.cpp native/src/generation_fields.cpp native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp native/src/generation_grammar.cpp native/src/generation_planes.cpp native/tests/gen006_residency_ack_incarnation.cpp -o build\gen006-shared-release\residency-aba.exe > build\gen006-shared-release\aba-compile.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\aba-compile.log & exit /b 1)
+          build\gen006-shared-release\residency-aba.exe build\gen006-shared-release\aba-one 1 > build\gen006-shared-release\aba-one.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\aba-one.log & exit /b 1)
+          build\gen006-shared-release\residency-aba.exe build\gen006-shared-release\aba-four 4 > build\gen006-shared-release\aba-four.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\aba-four.log & exit /b 1)
+          type build\gen006-shared-release\aba-one.log
+          type build\gen006-shared-release\aba-four.log
+          findstr /C:"GEN006_RESIDENCY_ABA_FENCE_PASS configured_workers=1" build\gen006-shared-release\aba-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_RESIDENCY_ABA_FENCE_PASS configured_workers=4" build\gen006-shared-release\aba-four.log
           if errorlevel 1 exit /b 1
       - name: Preserve native evidence
         if: always()

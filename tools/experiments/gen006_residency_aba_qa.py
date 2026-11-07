@@ -73,11 +73,16 @@ def main() -> None:
             run.stderr, encoding="utf-8")
         print(run.stdout, end="")
         print(run.stderr, end="", file=sys.stderr)
-        if run.returncode:
-            failures.append(f"workers={workers} return={run.returncode}")
+        required = ("GEN006_RESIDENCY_ABA_FENCE_PASS",
+                    "GEN006_CLEAR_C_INCARCATION_PASS",
+                    "stale_B_after_clear_refused=1",
+                    "fresh_C_ack_accepted=1")
+        if run.returncode or not all(token in run.stdout for token in required):
+            failures.append(f"workers={workers} return={run.returncode} "
+                            "missing independently required native receipt")
     (OUTPUT / "disposition.json").write_text(json.dumps({
         "failed": failures,
-        "gate": "GEN006_RESIDENCY_INCARCATION_FENCE",
+        "gate": "GEN006_RESIDENCY_INCARNATION_FENCE",
         "source": head,
         "test": "real native ACK(A), evict(A), restore(B), replay ACK(A), protect B",
     }, indent=2) + "\n", encoding="utf-8")

@@ -350,6 +350,7 @@ struct World::Chunk {
     // fresh restored Worlds are conservatively pinned unless imported through
     // the dedicated GEN-006 checkpoint.
     std::uint64_t mutation_generation = 0;
+    std::uint64_t gen006_admission_incarnation = 0;
     // Only populated when opt-in GEN-006 owner is enabled. A bit represents
     // external player edit intent, including same-value Empty tombstones.
     std::vector<std::uint8_t> gen006_edit_intent;
@@ -1754,6 +1755,9 @@ World::Chunk& World::ensure_chunk(ChunkCoord coord) {
     if (chunks_.size() >= config_.maximum_chunk_count) {
         throw std::runtime_error("maximum chunk capacity exhausted");
     }
+    // Exhaustion fails closed rather than recycling a durable-ACK identity.
+    if (config_.gen006_track_edit_intent && next_gen006_admission_incarnation_ == 0)
+        throw std::runtime_error("GEN-006 admission incarnation exhausted");
     auto chunk = std::make_unique<Chunk>(config_.chunk_size, config_.activity_block_size);
     if (config_.gen006_track_edit_intent)
         chunk->gen006_edit_intent.assign((chunk->cells.size() + 7U) / 8U, 0U);
@@ -1770,6 +1774,8 @@ World::Chunk& World::ensure_chunk(ChunkCoord coord) {
         chunk->granular_arrivals = std::make_unique<std::vector<std::uint64_t>>(chunk->cells.size(), 0);
     }
     const auto [iterator, inserted] = chunks_.try_emplace(coord, std::move(chunk));
+    if (inserted && config_.gen006_track_edit_intent)
+        iterator->second->gen006_admission_incarnation = next_gen006_admission_incarnation_++;
     if (inserted) {
         const auto dx = static_cast<std::uint64_t>(coord.x - chunk_directory_x_);
         const auto dy = static_cast<std::uint64_t>(coord.y - chunk_directory_y_);
@@ -2411,8 +2417,6 @@ void World::set_simulation_region(std::optional<RectI64> region) {
     const auto previous_selected = selected_core_region_;
     simulation_region_ = region;
     selected_core_region_ = selected;
-    if (pressure_ != nullptr && pressure_->cache != nullptr && selected_core_region_ != previous_selected)
-        pressure_->cache->cold();
     if (settled_discovery_ != nullptr && selected_core_region_ != previous_selected) {
         const auto outcome = settled_discovery_->begin_inclusion_request();
         if (outcome == soliding::DiscoveryOutcome::Accepted)

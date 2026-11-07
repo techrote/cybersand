@@ -40,7 +40,7 @@ jobs:
       - name: Checkout exact accepted source underlying #512
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: 24a8bbe8ccf0d17196ebbab580b924930a964584
+          ref: 81bbd5ff5cf366159e2b8a630609359c13560080
           path: accepted
           fetch-depth: 1
           lfs: false
@@ -86,7 +86,7 @@ jobs:
       - name: Checkout exact accepted source underlying #512
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: 24a8bbe8ccf0d17196ebbab580b924930a964584
+          ref: 81bbd5ff5cf366159e2b8a630609359c13560080
           path: accepted
           fetch-depth: 1
           lfs: false

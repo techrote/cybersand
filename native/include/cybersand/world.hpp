@@ -128,6 +128,9 @@ struct ChunkCheckpoint {
     std::uint64_t world_tick = 0;
     std::array<std::uint8_t,32> sha256{};
     std::vector<std::uint8_t> bytes;
+    // Out-of-band native ownership fence (not serialized into G6KC1).
+    // The external host separately binds world/session/recipe identity.
+    std::uint64_t admission_incarnation = 0;
 };
 struct ChunkCheckpointCapture {
     ChunkCheckpointStatus status = ChunkCheckpointStatus::UnsupportedDomain;
@@ -142,6 +145,8 @@ struct ChunkDurableAck {
     std::uint64_t source_tick = 0;
     std::array<std::uint8_t,32> sha256{};
     bool durable = false;
+    // Copied from the exact staged native admission; never from payload bytes.
+    std::uint64_t admission_incarnation = 0;
 };
 
 struct RectI64 {
@@ -589,6 +594,9 @@ private:
     bool flow_mixing_enabled_ = false;
     bool flow_carrying_enabled_ = false;
     std::unordered_map<ChunkCoord, std::unique_ptr<Chunk>, ChunkCoordHash> chunks_;
+    // 0 = exhausted. Only opt-in GEN-006 admissions use this counter.
+    // Never reset in clear(), or an old durable ACK could be reused.
+    std::uint64_t next_gen006_admission_incarnation_ = 1;
     // Dense, authoritative mirror of chunks_ inside one reserved coordinate
     // window (owner-maintained; read-only during jobs). Coordinates outside it
     // use the hash map. Pointers are stable: chunks are only inserted or

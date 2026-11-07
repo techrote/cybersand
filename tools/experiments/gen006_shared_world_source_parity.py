@@ -3,7 +3,7 @@
 
 Usage (after setting up toolchain): python3 tools/experiments/gen006_shared_world_source_parity.py
 Layout: WORKSPACE/candidate = stacked support PR; WORKSPACE/accepted = exact
-base of #512 (24a8bbe8...). Never updates protected production source.
+current accepted main (81bbd5ff...). Never updates protected production source.
 """
 import hashlib
 import json
@@ -13,7 +13,7 @@ import platform
 import subprocess
 import sys
 
-PINNED_MAIN = "24a8bbe8ccf0d17196ebbab580b924930a964584"
+PINNED_MAIN = "81bbd5ff5cf366159e2b8a630609359c13560080"
 SOURCES = [
     "native/src/world.cpp",
     "native/src/material_rules.cpp",
