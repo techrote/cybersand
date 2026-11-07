@@ -1,0 +1,200 @@
+name: Representative stress canvas CPU and pacing
+
+on:
+  push:
+    branches: [perf/stress-canvas-representative-20261107]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: stress-representative-${{ github.sha }}
+  cancel-in-progress: false
+
+env:
+  GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+  GODOT_WINDOWS_SHA512: 41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+
+jobs:
+  representative:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: full-pf-off-60
+            kind: full-pf-off
+            max_fps: 60
+            physics_hz: 60
+          - label: full-pf-off-120
+            kind: full-pf-off
+            max_fps: 0
+            physics_hz: 120
+          - label: reduced-pf-gas-60
+            kind: reduced-pf-gas
+            max_fps: 60
+            physics_hz: 60
+          - label: reduced-pf-gas-120
+            kind: reduced-pf-gas
+            max_fps: 0
+            physics_hz: 120
+    runs-on: windows-2022
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Preserve exact checkout
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Verify source and materialize current-main runtimes
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor 4c2c97323d862afdd3ec6730017127cc8e4ec05c HEAD
+          python tools/ci/check_ci_provider_policy.py
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          mkdir -p "build/stress/${{ matrix.label }}"
+          python - <<'PY'
+          import json, pathlib, sys
+          root=pathlib.Path.cwd()
+          sys.path.insert(0,str(root/'tools/ci'))
+          import run_windows_godot_regressions as runtime
+          with runtime.metadata_budget():
+              identity=runtime.verify_retained_runtime(root)
+          (root/'build/stress'/'${{ matrix.label }}'/'runtime-identity.json').write_text(json.dumps(identity,indent=2)+'\n',encoding='utf-8')
+          PY
+
+      - name: Run representative workload
+        env:
+          GODOT_SILENCE_ROOT_WARNING: '1'
+          PYTHONUTF8: '1'
+          CYBERSAND_STRESS_KIND: ${{ matrix.kind }}
+          CYBERSAND_STRESS_MAX_FPS: ${{ matrix.max_fps }}
+          CYBERSAND_STRESS_PHYSICS_HZ: ${{ matrix.physics_hz }}
+          STRESS_LABEL: ${{ matrix.label }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import ctypes, hashlib, json, os, subprocess, time, urllib.request, zipfile
+          from ctypes import wintypes
+          from pathlib import Path
+
+          root=Path.cwd()
+          out=(root/'build/stress'/os.environ['STRESS_LABEL']).resolve()
+          archive=out/'godot.zip'
+          urllib.request.urlretrieve(os.environ['GODOT_WINDOWS_URL'],archive)
+          digest=hashlib.sha512(archive.read_bytes()).hexdigest()
+          if digest!=os.environ['GODOT_WINDOWS_SHA512']:
+              raise RuntimeError('Godot archive identity mismatch')
+          engine_dir=out/'engine'; engine_dir.mkdir(exist_ok=True)
+          with zipfile.ZipFile(archive) as z:
+              if z.testzip() is not None: raise RuntimeError('Godot archive CRC failure')
+              for member in ('Godot_v4.7-stable_win64.exe','Godot_v4.7-stable_win64_console.exe'):
+                  z.extract(member,engine_dir)
+          archive.unlink()
+          engine=engine_dir/'Godot_v4.7-stable_win64_console.exe'
+          version=subprocess.check_output([str(engine),'--version'],text=True,timeout=30).strip()
+          if version!=os.environ['GODOT_VERSION']: raise RuntimeError('Godot version mismatch: '+version)
+
+          env={**os.environ,'CYBERSAND_STRESS_OUTPUT':str(out)}
+          imp=subprocess.run([str(engine),'--headless','--editor','--path','godot','--import'],
+              stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=180,env=env)
+          (out/'import.log').write_text(imp.stdout,encoding='utf-8')
+          if imp.returncode: raise RuntimeError('project import failed')
+
+          k32=ctypes.WinDLL('kernel32',use_last_error=True)
+          PROCESS_QUERY_LIMITED_INFORMATION=0x1000
+          k32.OpenProcess.argtypes=[wintypes.DWORD,wintypes.BOOL,wintypes.DWORD]
+          k32.OpenProcess.restype=wintypes.HANDLE
+          k32.GetProcessTimes.argtypes=[wintypes.HANDLE,ctypes.POINTER(wintypes.FILETIME),ctypes.POINTER(wintypes.FILETIME),ctypes.POINTER(wintypes.FILETIME),ctypes.POINTER(wintypes.FILETIME)]
+          k32.QueryProcessCycleTime.argtypes=[wintypes.HANDLE,ctypes.POINTER(ctypes.c_ulonglong)]
+          def ft(v): return (int(v.dwHighDateTime)<<32)|int(v.dwLowDateTime)
+          def sample(handle):
+              c=wintypes.FILETIME(); e=wintypes.FILETIME(); k=wintypes.FILETIME(); u=wintypes.FILETIME()
+              if not k32.GetProcessTimes(handle,ctypes.byref(c),ctypes.byref(e),ctypes.byref(k),ctypes.byref(u)):
+                  raise OSError(ctypes.get_last_error(),'GetProcessTimes')
+              cycles=ctypes.c_ulonglong()
+              if not k32.QueryProcessCycleTime(handle,ctypes.byref(cycles)):
+                  raise OSError(ctypes.get_last_error(),'QueryProcessCycleTime')
+              return {'cpu_100ns':ft(k)+ft(u),'cycles':int(cycles.value),'sampled_unix_ns':time.time_ns()}
+
+          argv=[str(engine),'--rendering-driver','opengl3_angle','--path','godot',
+                '--script','res://tests/performance/stress_canvas_representative_windows.gd']
+          (out/'command.json').write_text(json.dumps(argv,indent=2)+'\n',encoding='utf-8')
+          log=(out/'godot.log').open('w',encoding='utf-8')
+          p=subprocess.Popen(argv,stdout=log,stderr=subprocess.STDOUT,env=env)
+          handle=k32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION,False,p.pid)
+          if not handle: raise OSError(ctypes.get_last_error(),'OpenProcess')
+          start_marker=out/'measurement-start.json'; end_marker=out/'measurement-end.json'
+          cpu_start=None; cpu_end=None
+          deadline=time.monotonic()+220
+          while time.monotonic()<deadline and p.poll() is None:
+              if cpu_start is None and start_marker.exists():
+                  cpu_start=sample(handle)
+              if cpu_start is not None and cpu_end is None and end_marker.exists():
+                  cpu_end=sample(handle)
+              if cpu_end is not None:
+                  break
+              time.sleep(0.01)
+          try:
+              code=p.wait(timeout=max(1,int(deadline-time.monotonic())))
+          except subprocess.TimeoutExpired:
+              p.kill(); code=p.wait(); raise RuntimeError('Godot representative workload timed out')
+          if cpu_start is None and start_marker.exists(): cpu_start=sample(handle)
+          if cpu_end is None and end_marker.exists(): cpu_end=sample(handle)
+          k32.CloseHandle(handle); log.close()
+          if code: raise RuntimeError('Godot representative workload exit '+str(code))
+          result=json.loads((out/'fixture-result.json').read_text(encoding='utf-8'))
+          if cpu_start is None or cpu_end is None:
+              raise RuntimeError('measurement CPU markers were not observed')
+          wall=float(result['elapsed_seconds'])
+          cpu_seconds=(cpu_end['cpu_100ns']-cpu_start['cpu_100ns'])/10_000_000.0
+          result['process_cpu']={
+              'cpu_seconds':cpu_seconds,
+              'equivalent_cores':cpu_seconds/wall if wall>0 else None,
+              'cycle_delta':cpu_end['cycles']-cpu_start['cycles'],
+              'start':cpu_start,'end':cpu_end,
+          }
+          result['source_head']=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          result['godot_version']=version
+          (out/'summary.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+          print('STRESS_REP_SUMMARY '+json.dumps({
+              'kind':result['kind'],
+              'requested_hz':result['requested_physics_hz'],
+              'native_hz':result['native_ticks_per_second'],
+              'rapier_hz':result['rapier_steps_per_second'],
+              'cpu_cores':result['process_cpu']['equivalent_cores'],
+              'space_p95':result['space_step_ms'].get('p95'),
+              'space_p99':result['space_step_ms'].get('p99'),
+              'space_max':result['space_step_ms'].get('max'),
+              'over40':result['space_step_over_40ms'],
+              'launched':result['water_spray']['launched_parcels'],
+              'body_contacts':result['water_spray']['body_contacts'],
+              'body_count':result['body_count'],
+              'worker_failed':result['worker_failed'],
+          },sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: stress-representative-${{ matrix.label }}-${{ github.run_id }}
+          path: build/stress/${{ matrix.label }}/
+          if-no-files-found: warn
+          retention-days: 14
