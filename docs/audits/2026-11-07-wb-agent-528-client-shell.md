@@ -191,3 +191,27 @@ not a fresh #531-head GDExtension build. Retain separate engineering,
 live-agent and human status under parent #525. Keep all children Draft
 until independent integration review, source-matched intended gates and
 explicit owner permission. No merge.
+
+
+## Follow-up: signed coordinate *client transport* correction (7 November 2026)
+
+This #528-only increment removes an unintended nonnegative clamp in the
+Responses argument validator and in the opt-in panel X/Y controls. Signed
+int32 world-space coordinates are now represented faithfully for bounded
+observation rectangles and Hard Wall/Empty edit primitives; nonnegative
+radius, 4096-cell and 1–120-tick limits, 32-bit overflow and strict schemas
+remain enforced. A focused fake-provider regression must verify JSON
+forwarding and negative/out-of-range controls; existing true-native mounted
+regressions must be rerun at the new exact head.
+
+**Critical ownership and acceptance boundary:** this is transport/UI support,
+not signed-native World admission. The present #526 host and its finite
+native domain still reject negative authoring scopes. The immutable #527
+32-Sand hopper v2 is NOT yet playable in this host, and no synthetic or
+translated fixture may count as that control. The smallest upstream handoff
+is a source-qualified supported signed authoring domain, or a separately
+frozen and independently verified translated real-native equivalent.
+This Draft does not change the #526 worker, native simulation, physics,
+production defaults or protected upstream branches. Live trials remain 0/3;
+human desktop acceptance remains pending. Update this record with actual
+new-run receipts rather than assuming any CI outcome from source edits.

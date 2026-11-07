@@ -13,6 +13,10 @@ const NAMES := ["observe", "prepare_edit", "apply_edit", "step"]
 const MAX_TEXT := 8192
 const MAX_BODY := 2 * 1024 * 1024
 const MAX_TOOL_OUTPUT := 65536
+# Transport parses signed native coordinates without granting out-of-domain
+# authority. #526's exclusive worker still validates its finite canvas.
+const MIN_WORLD_COORD: int = -2147483648
+const MAX_WORLD_COORD: int = 2147483647
 
 var request_budget := 12
 var tool_budget := 32
@@ -158,7 +162,7 @@ func _valid_arguments(name: String, args: Variant) -> bool:
 				for key: String in ["x","y","width","height"]:
 					if not args.region.has(key) or not _safe_integer(args.region[key]):
 						return false
-				if args.region.x < 0 or args.region.y < 0 						or args.region.width < 1 or args.region.height < 1 						or args.region.width > 4096 or args.region.height > 4096 						or args.region.width * args.region.height > 4096 						or args.region.x + args.region.width > 2147483647 						or args.region.y + args.region.height > 2147483647:
+				if args.region.x < MIN_WORLD_COORD or args.region.y < MIN_WORLD_COORD 						or args.region.width < 1 or args.region.height < 1 						or args.region.width > 4096 or args.region.height > 4096 						or args.region.width * args.region.height > 4096 						or args.region.x + args.region.width > MAX_WORLD_COORD 						or args.region.y + args.region.height > MAX_WORLD_COORD:
 					return false
 		"prepare_edit":
 			if not args.observation_id is String or args.observation_id.is_empty() 					or args.observation_id.length() > 128:
@@ -181,14 +185,24 @@ func _valid_arguments(name: String, args: Variant) -> bool:
 					if not item.has(key):
 						return false
 				for key: String in coordinates:
-					if not _safe_integer(item[key]) or item[key] < 0 or item[key] > 2147483647:
+					if not _safe_integer(item[key]):
+						return false
+					# Negative world positions are valid signed coordinates;
+					# radius is a nonnegative length, not a position.
+					if key == "radius":
+						if item[key] < 0 or item[key] > 36:
+							return false
+					elif item[key] < MIN_WORLD_COORD or item[key] > MAX_WORLD_COORD:
 						return false
 				if not _safe_integer(item.material) or int(item.material) not in [0,58]:
 					return false
 				if item.replace_only_material != null and (
 						not _safe_integer(item.replace_only_material) 						or int(item.replace_only_material) not in [0,58]):
 					return false
-				if item.shape == "disc" and item.radius > 36:
+				if item.shape == "disc" and (item.x - item.radius < MIN_WORLD_COORD \
+						or item.y - item.radius < MIN_WORLD_COORD \
+						or item.x + item.radius > MAX_WORLD_COORD \
+						or item.y + item.radius > MAX_WORLD_COORD):
 					return false
 				if item.shape == "rectangle" and (
 						item.x1 < item.x0 or item.y1 < item.y0):

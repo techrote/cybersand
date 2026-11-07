@@ -51,8 +51,8 @@ func _ready() -> void:
 	add_child(_model)
 	var row := HFlowContainer.new()
 	add_child(row)
-	for spec: Array in [["X", 0.0, 2147483647.0, 0.0],
-			["Y", 0.0, 2147483647.0, 0.0],
+	for spec: Array in [["X", -2147483648.0, 2147483647.0, 0.0],
+			["Y", -2147483648.0, 2147483647.0, 0.0],
 			["W", 1.0, 4096.0, 32.0], ["H", 1.0, 4096.0, 32.0]]:
 		var text := Label.new()
 		text.text = str(spec[0])

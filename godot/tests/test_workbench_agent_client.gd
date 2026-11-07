@@ -38,6 +38,7 @@ func _new_client() -> Node:
 
 func _run() -> void:
 	await process_frame
+	_test_signed_coordinates_transport()
 	_test_tool_loop_and_stop()
 	_test_full_serial_four_tool_loop()
 	_test_provider_errors()
@@ -49,6 +50,59 @@ func _run() -> void:
 	await process_frame
 	print("WB_AGENT_528 fake-provider checks %d, failures %d" % [assertions, failures])
 	quit(1 if failures else 0)
+
+func _test_signed_coordinates_transport() -> void:
+	# The immutable #527 hopper uses negative X/Y; transport must preserve
+	# signs, but this fake provider never claims the #526 worker accepts them.
+	var c := _new_client()
+	var region := {"x": -36, "y": -4, "width": 64, "height": 64}
+	var observe_args := {"region": region, "detail": "cells"}
+	var edit := {"shape": "rectangle", "x0": -35, "y0": -3,
+		"x1": -32, "y1": -2, "material": 58, "replace_only_material": null}
+	_expect(c._valid_arguments("observe", observe_args),
+		"signed bounded observation rejected before authoritative owner")
+	_expect(c._valid_arguments("prepare_edit",
+		{"observation_id": "signed-obs", "operations": [edit]}),
+		"signed bounded Hard Wall edit rejected before authoritative owner")
+	_expect(c._valid_arguments("prepare_edit", {"observation_id": "signed-obs",
+		"operations": [{"shape": "disc", "x": -8, "y": -1, "radius": 2,
+			"material": 0, "replace_only_material": null}]}),
+		"signed disc with nonnegative radius rejected")
+	_expect(not c._valid_arguments("observe",
+		{"region": {"x": -2147483649, "y": 0, "width": 1, "height": 1},
+		"detail": "counts"}), "signed coordinate below int32 admitted")
+	_expect(not c._valid_arguments("observe",
+		{"region": {"x": 2147483647, "y": 0, "width": 2, "height": 1},
+		"detail": "counts"}), "signed region endpoint overflow admitted")
+	_expect(not c._valid_arguments("prepare_edit", {"observation_id": "signed-obs",
+		"operations": [{"shape": "disc", "x": -2147483648, "y": -3,
+			"radius": 1, "material": 58, "replace_only_material": null}]}),
+		"disc footprint overflowing signed int32 admitted")
+	_expect(not c._valid_arguments("prepare_edit", {"observation_id": "signed-obs",
+		"operations": [{"shape": "line", "x0": -2147483649, "y0": -3,
+			"x1": -1, "y1": -2, "material": 58, "replace_only_material": null}]}),
+		"out-of-range line endpoint admitted")
+	var forwarded: Array = []
+	c.tool_requested.connect(func(name: String, args: Dictionary, epoch: int, call_id: String) -> void:
+		forwarded.append({"name": name, "args": args, "epoch": epoch, "call_id": call_id}))
+	_expect(c.begin_task("Prove signed wire preservation", "fake-vision", _scope()),
+		"fake signed transport task did not start")
+	_deliver(c, _response("signed-response-1",
+		[_tool("observe", "signed-observe", observe_args)]))
+	_expect(forwarded.size() == 1 and forwarded[0].args.region.x == -36
+		and forwarded[0].args.region.y == -4,
+		"signed observation coordinates lost in JSON normalization")
+	_expect(c.submit_tool_result(c.current_epoch(), "signed-observe",
+		{"status": "observed", "observation_id": "signed-obs"}),
+		"signed observation continuation not accepted")
+	_deliver(c, _response("signed-response-2",
+		[_tool("prepare_edit", "signed-prepare",
+		{"observation_id": "signed-obs", "operations": [edit]})]))
+	_expect(forwarded.size() == 2 and forwarded[1].args.operations[0].x0 == -35
+		and forwarded[1].args.operations[0].y0 == -3,
+		"signed prepared geometry lost in JSON normalization")
+	c.stop_task("End fake-only signed transport test")
+	c.queue_free()
 
 func _test_tool_loop_and_stop() -> void:
 	var c := _new_client()
@@ -248,6 +302,12 @@ func _test_ui_shell() -> void:
 	panel.bind_authoritative_dispatcher(func(_name: String, _args: Dictionary,
 			_epoch: int, _id: String, _client: Node) -> void: pass)
 	panel.client.configure_fake_transport_for_tests(true)
+	_expect(panel._region[0].min_value < 0 and panel._region[1].min_value < 0,
+		"signed native coordinates cannot be entered in the opt-in panel")
+	panel._region[0].value = -35
+	panel._region[1].value = -4
+	_expect(int(panel._region[0].value) == -35 and int(panel._region[1].value) == -4,
+		"panel silently clamped signed hopper coordinates")
 	panel._task.text = "Build native chute"
 	panel._model.text = "local-test-model"
 	panel._on_start()
