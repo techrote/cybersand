@@ -131,3 +131,17 @@ admission/negative-control layer, not the native selective transaction.
 
 **CI qualification:** Pending this revision's exact-head Linux/Windows
 workflow. Earlier #523 runs apply to earlier heads, not this revision.
+
+### Signed seam overflow negative control
+
+Independent static review caught a false-adjacency possibility in the first
+unsigned-distance test: `INT64_MIN` and `INT64_MAX` are not consecutive
+signed chunk coordinates even though one modular subtraction can equal 1.
+The corrected predicate first establishes signed ordering, then computes
+unsigned positive distance without overflow. The native test now requires a
+manifest claiming that extreme seam to fail at the seam-admission gate,
+without touching the original World. Normal signed `(-2,-2)` to `(-2,-1)`
+adjacency is still the positive execution control.
+
+This correction supersedes the first bundle-admission CI result; the new
+exact-head CI must pass independently before claiming qualification.
