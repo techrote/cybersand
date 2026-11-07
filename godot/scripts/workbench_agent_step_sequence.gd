@@ -182,14 +182,22 @@ func step(host: Control, workbench: Control, requested: Variant,
 					or current.render_world_generation != generation:
 				reason = "native_world_failed_or_replaced"
 				break
-			if not _host.paused or not current.paused:
-				reason = "pause_revoked_mid_step"
+			# The existing single-step owner temporarily runs its *one*
+			# native tick with a nonpaused worker publication. That is NOT
+			# human Play: main.paused remains true. Refuse only an actual
+			# host resume, and require paused again at the final ACK.
+			if not _host.paused:
+				reason = "human_play_during_step"
 				break
 			if not str(_host.tower_context.get("workbench_refusal","")).is_empty():
 				reason = "workbench_refusal_mid_step"
 				break
 			if not _workbench.step_pending and int(_host.tower_context.get(
 					"workbench_step_serial",-1)) == expected_serial:
+				# Wait for the matching paused native publication, not a
+				# transient between single-step execution and re-pause.
+				if not current.paused:
+					continue
 				if current.tick_index != observed_tick + 1:
 					reason = "native_tick_delta_not_exactly_one"
 					break
