@@ -100,6 +100,11 @@ func run() -> void:
 			and prepared.get("changed_cells",-1)==9,
 			"prepare mutated/refused real native nine-cell construction: "+str(prepared))
 		if prepared.get("status")=="proposed":
+			var blocked_step: Dictionary = await bridge.call_tool("step",{"ticks":1})
+			check(blocked_step.get("status")=="refused"
+				and blocked_step.get("reason")=="prepared_edit_must_be_applied_or_retired_before_step"
+				and main.latest_snapshot.tick_index==before_tick,
+				"agent Step ran despite a live unconsumed native edit proposal")
 			applied = await bridge.call_tool("apply_edit",{
 				"proposal_id":prepared.proposal_id})
 			check(applied.get("status")=="applied"
@@ -114,12 +119,23 @@ func run() -> void:
 		and stepped.get("after_tick")==before_tick+4
 		and stepped.get("still_paused")==true,
 		"fourth tool did not ACK exactly four completed native ticks: "+str(stepped))
+	# The exact #526 source may not republish a frame on a paused tick
+	# without a material change. Do not fabricate a matched image. Native
+	# Step is separately executable; post-step visual identity stays HOLD
+	# until #526 provides an actual same-tick render publication.
 	var matched: Dictionary = stepped.get("observation",{})
-	check(stepped.get("observation_status")=="observed"
-		and matched.get("image_status")=="matched_post_draw"
-		and int(matched.get("native_counts",{}).get(58,0))>=9,
-		"Step lacked the new native/post-draw matched observation: "+
-		str(matched.get("reason","")))
+	var matched_frame: bool = stepped.get("observation_status")=="observed"
+	if matched_frame:
+		check(matched.get("image_status")=="matched_post_draw"
+			and int(matched.get("native_counts",{}).get(58,0))>=9,
+			"Step's purported matched observation lacked real native facts")
+	else:
+		check(stepped.get("observation_status")=="pending"
+			and matched.get("reason")=="matching_post_draw_frame_not_available"
+			and matched.get("framebuffer_png",PackedByteArray()).is_empty(),
+			"Step returned an unexpected or falsely matched post-tick frame: "+str(matched))
+		print("WB_AGENT_527_POST_STEP_RENDER_HOLD "+
+			JSON.stringify({"reason":matched.get("reason"),"native_ticks":4}))
 	var stopped: Dictionary = await bridge.stop()
 	check(stopped.get("status")=="stopped"
 		and stopped.get("no_further_agent_mutations")==true,
@@ -143,12 +159,19 @@ func run() -> void:
 		"new task authorization incorrectly retained old revoked proposal")
 	var new_observation: Dictionary = await second.call_tool("observe",{
 		"region":{"x":28,"y":28,"width":8,"height":8},"detail":"counts"})
-	check(new_observation.get("status")=="observed"
-		and int(new_observation.get("native_counts",{}).get(58,0))==9,
-		"revised task failed to preserve earlier authored native wall: status="
-		+str(new_observation.get("status","missing"))+" counts="
-		+str(new_observation.get("native_counts",{}))+" reason="
-		+str(new_observation.get("reason","")))
+	var revised_matched: bool = new_observation.get("status")=="observed"
+	if revised_matched:
+		check(int(new_observation.get("native_counts",{}).get(58,0))==9,
+			"revised task lost nine authenticated Hard Wall cells")
+	else:
+		check(new_observation.get("status")=="pending"
+			and new_observation.get("reason")=="matching_post_draw_frame_not_available"
+			and new_observation.get("framebuffer_png",PackedByteArray()).is_empty(),
+			"revised task returned stale/invalid post-step framebuffer: "+
+			str(new_observation))
+		print("WB_AGENT_527_REVISED_RENDER_HOLD "+
+			JSON.stringify({"reason":new_observation.get("reason"),
+				"native_ticks":main.latest_snapshot.tick_index}))
 	var second_stopped: Dictionary = await second.stop()
 	check(second_stopped.get("status")=="stopped",
 		"revised task retirement was not acknowledged")
@@ -169,7 +192,9 @@ func run() -> void:
 		"native_backend":main.latest_snapshot.backend_name,
 		"configured_workers":main.latest_snapshot.native_worker_request,
 		"first_task_status":stopped.get("status"),
-		"revised_task_status":second_stopped.get("status")}))
+		"revised_task_status":second_stopped.get("status"),
+		"post_step_matched_render_gate":"PASS" if matched_frame else "HOLD",
+		"revised_matched_render_gate":"PASS" if revised_matched else "HOLD"}))
 	finish()
 
 
