@@ -126,6 +126,10 @@ these distinctions without modifying the frozen32 or existing157 challenges.
 
 - [Prepared Water Feel reference bodies](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies): actual frozen masks, permanent-space adoption/refusal and normal unpaused feedback; preserve local-source limits, actual Web and host-mask continuation gaps.
 
+## Shared workbench agent authoring — WB-AGENT (#525–#528)
+
+- [Stage-1 agent authoring tools and qualification boundaries](../systems/shared-workbench-agent-authoring.md): an **Approved, partially implemented** opt-in human+agent workflow in the existing simulation workbench. Distinguishes pure geometry from actual native observation, authoritative edit receipts, post-draw framebuffer matching, authored-start recording, stepping/Stop, live model and owner's Windows acceptance. Source-only Draft #529 is not a current user-facing agent feature.
+
 ## Generation Workbench 2 and procedural quality
 
 - [Workbench inspection and transactions](../systems/generation-workbench-2.md): accepted native identities, bounded deterministic replay, actual stage meanings, invalid-edit preservation, graph/hierarchy/plane editing, undo/redo, seeds and comparison.

@@ -1,0 +1,143 @@
+name: WB-AGENT-001 focused Godot owner qualification
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'godot/scripts/workbench_agent_footprint.gd'
+      - 'godot/scripts/workbench_authoring_*.gd'
+      - 'godot/scripts/simulation_worker.gd'
+      - 'godot/tests/test_workbench_agent_*.gd'
+      - 'godot/tests/test_workbench_authoring_*.gd'
+      - '.github/workflows/wb-agent-526.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wb-agent-526-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  linux-owner:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feature/wb-agent-authoring-foundation-526-20261107'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      EVIDENCE: build/wb-agent-526
+      WB_AGENT_EVIDENCE_DIR: ${{ github.workspace }}/build/wb-agent-526
+      GODOT_SILENCE_ROOT_WARNING: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - name: Check out the immutable PR source
+        timeout-minutes: 5
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        timeout-minutes: 5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Record source and CI provider identity
+        timeout-minutes: 3
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          git rev-parse HEAD | tee "$EVIDENCE/source-commit.txt"
+          git rev-parse 'HEAD^{tree}' | tee "$EVIDENCE/source-tree.txt"
+          git diff --check HEAD | tee "$EVIDENCE/diff-check.log"
+          python tools/ci/check_ci_provider_policy.py 2>&1 | tee "$EVIDENCE/provider.log"
+      - name: Materialize the current source's pinned native and Rapier binaries
+        timeout-minutes: 6
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude='' 2>&1 | tee "$EVIDENCE/lfs.log"
+          # A selective LFS pull deliberately leaves other-platform pointers absent.
+          # Global 'git lfs fsck' reports those unrelated absent objects as errors;
+          # verify the two materialized binaries and capture their exact hashes below.
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          files = [
+              'godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so',
+              'godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so',
+          ]
+          hashes = {}
+          for path in files:
+              data = Path(path).read_bytes()
+              assert len(data) > 1024, f'Native dependency is missing or still an LFS pointer: {path}'
+              assert not data.startswith(b'version https://git-lfs.github.com/spec/v1'), f'Unmaterialized LFS pointer: {path}'
+              hashes[path] = {'size':len(data), 'sha256':hashlib.sha256(data).hexdigest()}
+          Path('build/wb-agent-526/runtime-hashes.json').write_text(json.dumps(hashes, indent=2) + '\n')
+          PY
+      - name: Download and authenticate the locked official Godot 4.7 editor
+        timeout-minutes: 7
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          lock = json.loads(Path('third_party/godot-runtime.lock.json').read_text())
+          Path('build/wb-agent-526/godot-lock.json').write_text(json.dumps(lock,indent=2) + '\n')
+          with open('build/wb-agent-526/godot-url.txt','w') as f:
+              f.write(lock['editor']['origin_url']+'\n')
+          PY
+          curl --fail --location --connect-timeout 45 --max-time 260 --output "$RUNNER_TEMP/wb-agent-526-godot.zip" "$(cat "$EVIDENCE/godot-url.txt")"
+          python - <<'PY'
+          import hashlib, json, os, zipfile
+          from pathlib import Path
+          lock = json.loads(Path('third_party/godot-runtime.lock.json').read_text())
+          archive = Path(os.environ['RUNNER_TEMP'])/'wb-agent-526-godot.zip'
+          assert archive.stat().st_size == lock['editor']['size'], 'Godot archive size mismatch'
+          assert hashlib.sha256(archive.read_bytes()).hexdigest() == lock['editor']['sha256'], 'Godot archive SHA256 mismatch'
+          binary = 'Godot_v4.7-stable_linux.x86_64'
+          dest = Path(os.environ['RUNNER_TEMP'])/'wb-agent-526-godot'
+          with zipfile.ZipFile(archive) as z:
+              assert z.testzip() is None, 'Damaged Godot archive'
+              assert z.namelist().count(binary)==1, 'Godot binary missing/duplicate'
+              z.extract(binary,dest)
+          (dest/binary).chmod(0o755)
+          with open(os.environ['GITHUB_ENV'],'a') as out:
+              out.write('GODOT_BIN='+str(dest/binary)+'\n')
+          PY
+      - name: Import exact project and run ownerless geometry/envelope/failure controls
+        timeout-minutes: 8
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$GODOT_BIN" --version | tee "$EVIDENCE/godot-version.txt"
+          grep -Fx '4.7.stable.official.5b4e0cb0f' "$EVIDENCE/godot-version.txt"
+          timeout 120 "$GODOT_BIN" --headless --path godot --editor --import --quit 2>&1 | tee "$EVIDENCE/import.log"
+          for script in test_workbench_agent_footprint.gd test_workbench_authoring_envelope.gd test_workbench_agent_failures.gd; do
+            timeout 120 "$GODOT_BIN" --headless --path godot --script "res://tests/$script" 2>&1 | tee "$EVIDENCE/$script.log"
+          done
+      - name: Run real-worker native-ID and actual post-draw framebuffer acceptance
+        timeout-minutes: 7
+        shell: bash
+        run: |
+          set -euo pipefail
+          for program in xvfb-run Xvfb xauth; do command -v "$program"; done
+          timeout 360 xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            "$GODOT_BIN" --path godot --rendering-method gl_compatibility \
+            --script res://tests/test_workbench_agent_owner.gd \
+            2>&1 | tee "$EVIDENCE/real-owner-graphical.log"
+      - name: Retain original execution logs and all failed checkpoints
+        if: always()
+        timeout-minutes: 5
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wb-agent-526-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/wb-agent-526/
+          if-no-files-found: error
+          retention-days: 90
