@@ -54,7 +54,7 @@ The right sidebar controls glow, animated presentation time, structured material
 3. Edit a **writable copy** of pack.json using your generator or editor. Keep the original #454 checkout read-only; select your working copy with --pack.
 4. Click **Reload**. Parsing, geometry validation and RG8 creation must all succeed before replacing the last good image. Invalid JSON or geometry retains the previous rendering and displays an error. Successful reload preserves camera and presentation settings.
 5. Use **Show before / Show after** to toggle the captured baseline and newly rendered view. The camera, time, zoom and material-detail settings restore to those of the pinned image for alignment. After window resize the baseline screenshot is rescaled, so pin again for native pixel-for-pixel comparison.
-6. Export visible viewport, **full combined composition**, selected feature or central detail crop. All images are **actual Godot framebuffer readbacks**.
+6. Export visible viewport, **full combined composition**, selected feature or central detail crop. All images are **actual Godot framebuffer readbacks**. When **Show before** is active, viewport/detail exports contain the originally pinned framebuffer pixels and its original source hash—not a rerender of current art. Full/feature exports always render the current art.
 
 The selected feature export uses its authored variant. **Save full composition** always uses the combined scene and its authored placements/variants. Large full exports use 512-native-cell tiles with 32-native-cell halo overdraw and source-world coordinates. Crops originate from the current framebuffer. Exports are bounded to 50 million output pixels and fail visibly rather than silently clip.
 
