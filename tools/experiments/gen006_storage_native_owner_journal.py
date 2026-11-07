@@ -247,10 +247,7 @@ def main() -> int:
     control_bytes = native_record(work / "control" / "world").read_bytes()
     require(replay_records[-1] == control_bytes,
             "G6J_STAGE_REPLAY_FULL_CARRIER_CONTROL_DRIFT")
-    restored_out, restored_bytes = run_native(
-        original, work / "post-restart", work, [], args.workers, "fresh-restart")
-    # The fresh process above starts a fresh generated World. Now independently
-    # re-open the recovered carrier in a second new native process.
+    # Independently reopen the journal-recovered carrier in a fresh native process.
     restore_dir = work / "verified-restart"
     restore_dir.mkdir()
     native_record(restore_dir).write_bytes(replay_records[-1])
@@ -303,7 +300,12 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    import sys
     try:
+        if len(sys.argv) == 4 and sys.argv[1] == "--prepare-source":
+            print("G6J_STAGED_SOURCE_SHA256=" + prepare_staging_source(
+                Path(sys.argv[2]), Path(sys.argv[3])))
+            raise SystemExit(0)
         raise SystemExit(main())
     except (AssertionError, ValueError, OSError, subprocess.SubprocessError) as exc:
         import sys
