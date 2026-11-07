@@ -1,8 +1,41 @@
 # CyberSand — fast in-chunk neighbour cursor independent qualification
 
 **Date:** 2026-11-06  
-**Decision:** REVISE — correctness strongly qualified and six-worker benefit repeatably positive **on an oversubscribed hosted machine**, but only +2.68% versus the 5–10% target; six-core deployment-host testing, independent review and source admission remain open.  
+**Decision (7 November 2026): ACCEPT FOR FURTHER ADMISSION — independent #485 source review ACCEPT; code-pinned LF-verified transition prepared on Draft #477. Exactness PASS, modest but statistically positive multiworker gain +2.677% on the tested 4-logical-CPU host; not a 5–10% claim or a production/merge approval. Deployment 6-core/12-thread performance and actual Godot/Rapier FPS remain untested.**  
 **Scope:** `techrote/cybersand` PR [#471](https://github.com/techrote/cybersand/pull/471); isolated follow-up Draft [#477](https://github.com/techrote/cybersand/pull/477); no merge or production publication.
+
+## Final transition-preparation status — 7 November 2026
+
+**Accepted for further admission only, not merge or production publication.**
+After the earlier REVISE qualification snapshots were written, the separate
+[issue #485 read-only MAT-AUTH source review](https://github.com/techrote/cybersand/issues/485#issuecomment-6699706678)
+returned **ACCEPT** for semantic preservation of the exact protected
+`native/src/world.cpp` delta. The original 5–10% performance target was a
+working aspiration, not an acceptance assumption; independent repeated
+1,800-tick six-worker trials support a **+2.6771%** whole-native-tick effect
+(95% paired CI **+2.0865% to +3.2677%**) on a four-logical-CPU hosted runner.
+The narrow read-only cursor saves about 1.12 ms per heavy tick there, with
+zero state/physical/work discrepancies across the native, sanitizer and
+focused signed/non-power-of-two/mask/epoch execution gates.
+
+**Prepared source admission is not historical acceptance.** A dedicated
+[2026-11-07 reviewed-transition record](2026-11-07-pf471-reviewed-world-transition.md)
+now accompanies the chained, exact Git-ancestry
+`REVIEWED_TRANSITIONS` entry prepared on independent Draft #477:
+`native/src/world.cpp`
+`5a9de5e09a8665392677902ab501696aafefb5bbd2d2800e3dc1059b87a6f17d`
+→ `bbd9741311bc67905934048633846b8d011efd760033edd0ff9e88be5b262868`,
+`source_commit=b51f01536db6408458442c532d75256d33422fba`,
+issue #485, PR #471. The repository's immutable material compatibility
+lock and BASELINE are still untouched. Normal documentation/provenance,
+Native and Godot exact-head checks remain a separate admission gate.
+No merge or runtime publication has been authorized.
+
+**Historical qualification and earlier REVISE notes below remain as dated
+intermediate records.** Read the terminal disposition in conjunction with
+this section; do not treat earlier "unreviewed source" statements as
+current. The exact source-identity audit and all original raw evidence
+links are preserved.
 
 ## Source identity and isolation
 
