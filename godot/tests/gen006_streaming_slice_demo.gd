@@ -6,8 +6,8 @@ extends Control
 # RGBA frames; it never receives mutable native cells. Still NOT production
 # shared-World streaming, production GDExtension ownership or cross-shard physics.
 const SIDE: int = 64
-# Open on the compiled Strata generator's actual surface instead of empty sky.
-const DEMO_START: Vector2i = Vector2i(-2, 1)
+# Open on a nonempty native-tick-safe cave, not unsafe surface or empty sky.
+const DEMO_START: Vector2i = Vector2i(-2, 2)
 const DISPLAY_SIZE: float = 640.0
 const DISPLAY_TOP_LEFT: Vector2 = Vector2(28.0, 76.0)
 const FRAME_BYTES: int = SIDE * SIDE * 4
@@ -307,7 +307,7 @@ func _draw() -> void:
     draw_rect(Rect2(Vector2.ZERO, size), Color("#0d1220"), true)
     var font: Font = ThemeDB.fallback_font
     draw_string(font, Vector2(28, 30), "GEN-006 / Native World Stream [experimental]", HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color("#dee9fb"))
-    draw_string(font, Vector2(28, 54), "Arrows: chunk  |  Shift+arrows: 1536px  |  Home: surface  |  L: wall  R-click: dig  Middle: Water17  Space: tick", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#a3b5ce"))
+    draw_string(font, Vector2(28, 54), "Arrows: chunk  |  Shift+arrows: 1536px  |  Home: terrain  |  L: wall  R-click: dig  Middle: Water17  Space: tick", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#a3b5ce"))
     draw_rect(Rect2(DISPLAY_TOP_LEFT - Vector2(2, 2),
                    Vector2(DISPLAY_SIZE + 4, DISPLAY_SIZE + 4)),
                    Color("#3f5972"), false, 2.0)
