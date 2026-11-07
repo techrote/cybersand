@@ -160,6 +160,17 @@ struct World::PressureCache {
         certificate_water_calls_begin=0; certificate_prior_water_calls=0;
     }
 
+    void head_reference_fallback() noexcept {
+        // A head-repair budget fallback does not change resident membership or
+        // gas topology authority. Invalidate only head/certificate/wake reuse;
+        // preserving the complete index lets bounded gas-derived proofs survive.
+        use_heads = false;
+        certificate_layer_enabled = false;
+        certificate_contents_cold = true;
+        certificate_tick_eligible = false;
+        wake_reset();
+    }
+
     void cold() noexcept {
         complete = false; membership_dirty = true; gas_dirty = true;
         use_heads = false;
