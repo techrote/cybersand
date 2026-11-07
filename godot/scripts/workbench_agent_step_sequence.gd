@@ -109,6 +109,19 @@ func stop() -> Dictionary:
 	return _last_result.duplicate(true)
 
 
+## Narrow model-visible fourth-tool adapter for the existing #526/#528
+## dispatcher. Exactly one integer key; no coercion, extras or hidden tick
+## allowance. A trusted host must gate task/session authorization before
+## calling this method. This adapter does NOT itself authorize a task.
+func call_step(host: Control, workbench: Control, args: Variant) -> Dictionary:
+	if not args is Dictionary:
+		return {"status":"refused","reason":"invalid_step_arguments","completed":0}
+	if args.size() != 1 or not args.has("ticks") \
+			or typeof(args["ticks"]) != TYPE_INT:
+		return {"status":"refused","reason":"invalid_step_arguments","completed":0}
+	return await step(host,workbench,args["ticks"])
+
+
 func step(host: Control, workbench: Control, requested: Variant,
 		timeout_ms: int = DEFAULT_ACK_TIMEOUT_MS) -> Dictionary:
 	if typeof(requested) != TYPE_INT or requested < 1 or requested > MAX_STEP_TICKS:
