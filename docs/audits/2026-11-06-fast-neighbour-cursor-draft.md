@@ -125,3 +125,10 @@ No sysctl, capability or runner policy was changed to obtain profiling access.
 The unavailable source-line attribution is explicitly retained as a host/tooling
 limitation. It does not substitute for, or invalidate, the successful repeated
 A/B/B/A wall-clock result.
+
+
+## Temporary workflow retirement
+
+The two branch-only qualification workflows were removed after their one-time
+campaigns completed. The retained Actions runs/artifacts and this audit are the
+reproduction record; no PR-specific workflow is proposed for integration.
