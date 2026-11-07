@@ -250,3 +250,45 @@ The extended real-native test starts from the prior actual Sand/Water negative-c
 **Qualification requirement:** The exact resulting Git commit must pass the dedicated real production-native Windows and Linux jobs with configured workers 1/4, actual worker participation reported (not inferred), all existing legacy fixture markers, the new `GEN006_DYNAMIC_ORDERED_REPLAY_PASS`, the new `GEN006_DYNAMIC_REPLAY_EXPECTED`, and independent process-cold replay/corrupt/forged receipt controls. Also require source-scope and documentation/provenance checks on the same head. General production Native/GDExtension/Godot/Water/palette skipped due Draft do not count as accepted. Preserve raw compiler/source, executable SHA-256 and original stdout/stderr artifacts.
 
 **Remaining protected-source dependency:** true partial native multi-chunk stage+commit+reinstall with resident/halo/scheduler/solver/quantity authority requires an explicit serialized release of the #512 protected World implementation. The separate active owner may continue adding independently testable full-World controls without crossing that boundary. Draft, opt-in, no merge.
+
+## 7 November — three-resident genuine dynamic selective-capacity negative acceptance
+
+The new `selective_dynamic_residency_capacity_control()` executable constructs
+**three real native residents** at signed `(-2,-2)`, `(-2,-1)` and distant
+`(8,0)`, under strict `maximum_chunk_count=3`. Two physically exchange moving
+Sand and moving Water across their signed seam; the unrelated third holds live
+Wall/temperature state. An independently constructed never-restored World
+advances with the live World as the correctness oracle.
+
+The test then stages **only** the two moving chunks using the existing
+complete-residency API. This must return `RosterCountMismatch`; the original
+World pointer, complete CYPS, tick, physical hash, quantity ledger, resident
+count and measured `resident_cell_bytes()` are unchanged. Narrowing simulation
+interest to the unrelated third resident does **not** deallocate the first two:
+a fourth admission returns `CapacityFull` without mutating source. A disposable
+restored World verifies that global `clear()` frees **all three**, not one.
+The still-live World resumes eight unrestricted native physics ticks with
+exact physical-state and quantity parity to the uninterrupted reference.
+
+The new `GEN006_DYNAMIC_SELECTIVE_CAPACITY_HOLD_PASS` marker records measured
+resident counts and native cell bytes before and after, true selectively
+reclaimed bytes (required zero), global-clear reclaimed bytes, seam crossing
+tick, configured/observed workers and real native continuation. This is a
+passing safe refusal **and a failed selective product capability**, not an
+implementation of selective Sand/Water eviction, disk fsync or memory reclaim.
+
+The exact native source/API ownership-transfer request to the integration
+owner remains: after #512 explicitly releases `native/src/world.cpp`,
+`native/include/cybersand/world.hpp` and `native/src/world_chunk_checkpoint.inc`,
+implement a serialized-owner multi-chunk prepare/checkpoint/durable-ACK/
+evict/reinstall of complete native Sand/Water, sidecar scheduler/halo/pressure/
+quantity and pending boundary work with unchanged unrelated residents.
+Positive acceptance requires resident count **3 → 1**, a corresponding
+measured native resident-cell-byte reduction, unaffected `(8,0)` remaining
+live, followed by exact bundle readmission and tick/flux parity. The retained
+negative control is the source-built fail-closed baseline until this is real.
+
+Requalify on the exact new commit in native Linux and Windows with 1/4
+configured worker modes and report observed participation. Previous evidence
+does not qualify the new test; Draft-skipped full Native/Godot/Water gates
+do not count as PASS.
