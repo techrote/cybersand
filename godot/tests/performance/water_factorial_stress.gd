@@ -52,7 +52,7 @@ func ready_initial() -> bool:
 		and not host.shared_workbench.applied.is_empty() and host.simulation_worker != null
 
 func ready_installed() -> bool:
-	return host != null and not host.pending_microscenario_apply.is_empty() == false \
+	return host != null and host.pending_microscenario_apply.is_empty() \
 		and host._physical_epoch > current_epoch \
 		and host.physical_actor_session != null and host._physical_terrain_ready \
 		and panel != null and not panel.busy() and panel.applied.actors.size() == ACTOR_COUNT
