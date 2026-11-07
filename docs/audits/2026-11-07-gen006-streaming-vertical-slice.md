@@ -403,3 +403,81 @@ actors, sidecars, historic MAT-AUTH import and a shared-World native API
 remain unqualified. Per-click native clone/serialization + sync imposes
 measurable cost; replace with a qualified batching/journaling policy before
 production adoption. No production ABI, defaults or CYPS codec were changed.
+
+## Nonblocking camera/edit Godot host — 7 November 2026
+
+**Experimental opt-in prototype; not default game integration or a replacement
+for the protected shared-native-World residency engine.** The first persistent
+Godot scene synchronized every 10 Hz render request, camera move and paint
+command with a blocking five-second native IPC wait on the Godot input/render
+thread. A slow native checkpoint therefore froze interactive camera movement
+and rendering, even though native simulation ran in a separate process.
+
+The standalone `godot/tests/gen006_streaming_slice_demo.gd` now uses an
+**actual per-frame asynchronous file-IPC state machine** for interactive play:
+one explicitly sequenced native request in flight, a coalesced latest-demand
+camera refresh, at most **16** ordered player commands, and native command
+responses sampled without waiting on the input/render thread. Every queued
+player edit carries the signed chunk coordinate of its input event and is
+preceded by native owner `focus` before the edit; later camera motion cannot
+silently paint a different chunk. Each render response is accepted for the
+requested chunk only if it still matches the latest camera target. The HUD
+shows copied-frame versus requested coordinates, BUSY/READY IPC state, queue
+depth/backpressure, successful **native durable-edit ACK** count, request
+latency and actual resident eviction/reload receipt counts.
+
+**Correctness/failure boundaries:** A mouse edit while the requested camera
+chunk is not yet rendered is visibly refused rather than painting a stale
+frame's invisible destination. A full command queue visibly refuses new edits
+(no false ACK). Only the exact native
+`GEN006_EDIT_DURABLE_ACK` receipt counts as successful edit publication.
+Timeout, mismatch, missing ACK or native disappearance is treated as an
+ambiguous/failed outcome; the host never transparently replays an ambiguous
+edit. On orderly scene exit, native pending responses and queued player edits
+are drained within a bounded seven seconds before quit; an unresponsive owner
+is explicitly diagnosed and fail-stopped rather than orphaned. This is not
+hardware power-loss or arbitrary process-kill durability, and the separate
+experimental Persistence & Throughput worker owns future storage optimization.
+
+The existing `godot/tests/gen006_graphical_qualification.gd` retains its
+deliberate synchronous deterministic fixture; this does **not** describe the
+normal player-input execution path. A new isolated, **actual OpenGL** test
+`godot/tests/gen006_async_input_qualification.gd` checks zero synchronous
+native requests during rapid signed-coordinate arrow input, ordered
+asynchronous Wall ACK, coalesced camera demands, refusal of a click on a
+not-yet-rendered chunk, 1536-pixel movement through more than two genuinely
+resident native Worlds, native eviction/reload, original native PID survival,
+correct original-chunk edit intent on native readback, and a real framebuffer
+PNG. `gen006-graphical-qualification.yml` builds the actual native
+World/generator and executes both paths in independently started Godot 4.7
+OpenGL/Xvfb processes, retaining original frame/source/runtime hashes.
+
+**Execution provenance:** The first combined Actions
+[run #42347311372](https://github.com/techrote/cybersand/actions/runs/42347311372)
+passed its preexisting eight-frame real Godot workload but **FAILED** the new
+second step due to the step-local GitHub Actions environment not inheriting
+`GEN006_SLICE_EXECUTABLE`. No native/Godot correctness claim is made for that
+failed step. The corrected, exact-head
+[run #42347430238](https://github.com/techrote/cybersand/actions/runs/42347430238)
+passed both real OpenGL tests: the asynchronous test reported one native PID,
+82 microseconds for the input burst, a durable edit ACK, two actual native
+evictions, one reload and an original 1280×800 PNG (SHA-256
+`0b3872ef2a5cfb129333f7f5c669567ddbd64edc0842cf1c8fd066fcf423830d`).
+Its [original evidence ZIP](https://github.com/techrote/cybersand/actions/runs/42347430238/artifacts/13563879166)
+is preserved. **These results precede the later stale-frame/refusal and
+bounded shutdown corrections**; those must receive their own final exact-head
+qualification before claiming their execution succeeded. No assertion of four
+actually participating native workers is made.
+
+**Remaining limitations:** A single initial synchronous startup/render handshake
+still runs before interactive control begins. The serial file transport is a
+prototype and accepts at most one in-flight request; the cost of each native
+checkpoint remains with the separate persistence lane. Continuous native
+simulation may advance beyond the last acknowledged edit without a committed
+simulation-only checkpoint. The demo still uses one real native World per
+shard, not selective chunk eviction from the same shared World, nor
+cross-boundary Water/actor/semantic sidecar persistence. Protected #512 was
+not imported; its independently reproduced stale-incarnation ACK defect
+remains an explicit integration blocker pending the Native Residency Engine
+owner's corrected contract. Current production defaults, materials, ABI and
+physics are unchanged.
