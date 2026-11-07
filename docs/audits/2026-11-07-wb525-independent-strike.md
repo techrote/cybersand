@@ -40,8 +40,38 @@ recovery, not evolved-state persistence. The package's two changed Godot files
 are refreshed to1390c3e3 and the manifest records that source; the native DLL
 remains the independently qualified accepted-main1f82 build. The generic
 CI correction is released as6718d544,4174dcc3 andf659e040 for the existing
-integrator to consume, with final GDExtension42412686929 still requiring its
-terminal aggregate result. Documentation/provenance42412688902 passed onf659.
+integrator to consume. Documentation/provenance42413856735 passed on final
+documentation checkpoint`fe8a8ed182e316743a4501936a9942f03d06e0b9`, tree
+`94019a09c3ddaf9867d39c4a0781b5936d4e1fd5`.
+
+### Cold Windows startup diagnostic
+
+Full GDExtension42412686929 is not a pass. The Windows capacity/camera case in
+[shard20](https://github.com/techrote/cybersand/actions/runs/42412686929/job/128524227239)
+failed its inherited45-second native-start wait after64.639 seconds, with the
+hosted display initializing ANGLE/Microsoft Basic Render Driver. All other
+Windows shards passed; the independent coverage reducer correctly rejected
+this nonpassing case rather than certifying partial execution. Original
+[shard artifact13590087604](https://github.com/techrote/cybersand/actions/runs/42412686929/artifacts/13590087604)
+and [coverage artifact13590218649](https://github.com/techrote/cybersand/actions/runs/42412686929/artifacts/13590218649)
+retain the failure. The two decoded job logs are also in the local evidence.
+
+The isolated capacity regression now overrides only its inherited wait helper
+to consume the existing canonical`operation_seconds` allowance300 seconds.
+It preserves the actual native readiness/receipt predicates, failure behavior,
+4096-cell readback, graphical evidence and independent outer watchdog. An
+independent review also requires a strict deadline: a synchronous frame or
+predicate crossing the bound fails when control returns, rather than accepting
+a post-deadline poll. No production code, worker-owned parent test, timing
+policy or simulation inputs change. The initial policy-only local Windows
+run passes28/28, with201010-character proposal,258648-character applied receipt,
+4096 confirmed native writes and native tick0
+(`build/wb525-strike/windows-cold-start-policy`). The final strict-deadline
+revision also passes28/28 on the rebuilt Windows DLL in5.398 seconds, with
+unchanged source/runtime identity (`windows-cold-start-strict`). The completed
+42412686929 has a passing Linux aggregate and failing Windows aggregate. Its
+hosted replacement requires its own completed result; local passes do not
+relabel42412686929.
 
 ## Production CI integration repair
 
