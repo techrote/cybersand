@@ -1,9 +1,6 @@
 name: World-art preview real GUI qualification
 
 on:
-  push:
-    branches:
-      - 'tools/world-art-interactive-preview-*'
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
