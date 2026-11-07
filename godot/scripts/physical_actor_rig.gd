@@ -142,7 +142,7 @@ static func validate_definition(definition: Dictionary, canvas_body: Dictionary 
 		if size.x < 0.5 or size.y < 0.5 or size.x > maximum_size or size.y > maximum_size or offset.length() > 64.0:
 			return "part geometry outside authored envelope"
 		if str(item.get("shape", "rectangle")) == "rectangle_union":
-			var compound_error: String = _validate_compound_part(item)
+			var compound_error: String = _validate_compound_part(item,CanvasBody.MAX_RECTANGLES if not canvas_body.is_empty() else MAX_COMPOUND_RECTS)
 			if not compound_error.is_empty(): return compound_error
 		if not _finite_number(item.get("mass", 1.0)) or float(item.get("mass", 1.0)) < 0.02 \
 			or float(item.get("mass", 1.0)) > (4096.0 if not canvas_body.is_empty() else 20.0):
@@ -242,9 +242,9 @@ static func validate_definition(definition: Dictionary, canvas_body: Dictionary 
 	return ""
 
 
-static func _validate_compound_part(part: Dictionary) -> String:
+static func _validate_compound_part(part: Dictionary, rectangle_limit: int=MAX_COMPOUND_RECTS) -> String:
 	var rectangles: Variant = part.get("collision_rects")
-	if not rectangles is Array or rectangles.is_empty() or rectangles.size()>MAX_COMPOUND_RECTS:
+	if not rectangles is Array or rectangles.is_empty() or rectangles.size()>rectangle_limit:
 		return "compound rectangle capacity"
 	if Vector2(part.offset)!=Vector2.ZERO or float(part.get("angle",0.0))!=0.0:
 		return "compound part requires physical COM origin"

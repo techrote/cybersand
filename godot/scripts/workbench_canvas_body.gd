@@ -3,14 +3,15 @@ extends RefCounted
 # Passive exact geometry for authored starts and admitted freed-object shapes.
 # Native tuple custody remains in World; this representation is not a flyer.
 const MODEL := "canvas_body"
+const MAX_RECTANGLES: int = 64 # Shared native proxy budget, not 64 per scene slot.
 
 static func error(value: Variant) -> String:
 	if not value is Dictionary or value.size()!=2 or not value.has_all(["name","rectangles"]):
 		return "Invalid canvas body fields."
 	if not value.name is String or value.name.is_empty() or value.name.length()>48:
 		return "Invalid canvas body name."
-	if not value.rectangles is Array or value.rectangles.is_empty() or value.rectangles.size()>8:
-		return "Canvas bodies require one to eight rectangles."
+	if not value.rectangles is Array or value.rectangles.is_empty() or value.rectangles.size()>MAX_RECTANGLES:
+		return "Canvas bodies require one to 64 rectangles within the shared 64-proxy budget."
 	var rectangles: Array[Rect2]=[]
 	var area: float=0.0
 	for r: Variant in value.rectangles:

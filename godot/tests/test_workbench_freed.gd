@@ -133,8 +133,8 @@ func run() -> void:
 	evidence.refused_strokes.append(ui.cut.receipts.duplicate(true))
 	check(host.rigid_bodies.size()==bodies and ui.cut.capture_count==2,"zero release preserves custody")
 	if not await run_steps(5): finish();return
-	# A wide ring exceeds the 64-seed preflight before native can consume the
-	# held body sample. Both refusals must leave the old roster usable.
+	# An intentionally over-detailed ring refuses after lazy investigations.
+	# Refused work remains counted and the old roster stays usable.
 	for manual: bool in [false,true]:
 		ui.applied.brush=24
 		check(ui.paint(Vector2i(350,160),43),"author wide structural sheet")
@@ -142,7 +142,7 @@ func run() -> void:
 		check(ui.paint(Vector2i(350,160),0) and ui.cut.finish_stroke(ui),"overflowing erase stroke")
 		if not check(await until(installed),"capacity refusal releases the hold safely"): finish();return
 		evidence.refused_strokes.append(ui.cut.receipts.duplicate(true))
-		check(ui.cut.receipts[0].outcome=="MemberCapacity" and host.rigid_bodies.size()==2,"seed capacity is a refusal, not clearance")
+		check(ui.cut.receipts.any(func(row: Dictionary):return row.get("frontier_limited",false)) and host.rigid_bodies.size()==2,"bounded frontier exhaustion is a refusal, not clearance")
 		if manual:
 			var count: int=host.rapier_bridge.manual_step_count()
 			check(ui.step_once(),"Step after begin refusal")

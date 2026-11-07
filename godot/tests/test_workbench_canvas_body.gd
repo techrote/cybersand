@@ -38,8 +38,14 @@ func run() -> void:
 	check(not Setup.validate(bad).is_empty(),"geometry hash admission")
 	bad=data.actors[0].body.duplicate(true);bad.rectangles.append(bad.rectangles[0])
 	check(not Body.error(bad).is_empty(),"overlapping shape refusal")
-	bad=data.actors[0].body.duplicate(true);bad.rectangles.resize(9)
+	bad={"name":"too detailed","rectangles":[]}
+	for x: int in range(65): bad.rectangles.append([x,0,1,1])
 	check(not Body.error(bad).is_empty(),"proxy capacity refusal")
+	bad.rectangles.pop_back()
+	check(Body.error(bad).is_empty(),"64 exact canvas rectangles")
+	var detailed: Dictionary=Equipment.definition(Body.definition(bad))
+	check(Rig.validate_definition(detailed,bad).is_empty(),"canvas-only 64-shape rig admission")
+	check(not Rig.validate_definition(detailed).is_empty(),"authored rig eight-shape guard retained")
 	bad=data.actors[0].body.duplicate(true);bad["mass"]=1
 	check(not Body.error(bad).is_empty(),"no hidden mass override")
 	for index: int in data.actors.size():

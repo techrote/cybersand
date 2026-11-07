@@ -94,10 +94,11 @@ struct SolidStore {
 };
 // Explicit paused-owner storage; never allocated by a tick or pool job.
 inline constexpr std::size_t kWorkbenchSolids = 8;
+inline constexpr std::size_t kWorkbenchSolidShapes = 64;
 struct SolidOwnedRecord {
     SolidSnapshot snapshot{};
     std::array<SolidMember, kSolidMembers> members{};
-    std::array<SolidShape, 8> shapes{};
+    std::array<SolidShape, kWorkbenchSolidShapes> shapes{};
 };
 struct SolidWorkbenchStore {
     SolidBounds canvas{};

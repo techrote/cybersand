@@ -39,7 +39,7 @@ bool CyberNativeCellWorld::parse_workbench_sample(WorkbenchSample& next, const W
         const auto instance = integer(row,"instance_id"), generation = integer(row,"generation");
         const double budget = number(row,"budget"), gravity = number(row,"gravity");
         if (id < 1 || id > static_cast<int>(kWorkbenchBodies) || next.owners[id].instance ||
-            instance < 1 || generation < 1 || first < 1 || count < 1 || count > 8 ||
+            instance < 1 || generation < 1 || first < 1 || count < 1 || count > static_cast<int>(cybersand::gcr::kCompoundShapes) ||
             first > proxy_count - count + 1 || !std::isfinite(budget) || budget < 5 || budget > 80 ||
             (retained.response == "RFT" && budget != 20) || !std::isfinite(gravity) || gravity < 0 ||
             row.get("external_drive",Variant()).get_type() != Variant::BOOL) return false;
@@ -270,7 +270,7 @@ Dictionary CyberNativeCellWorld::workbench_body_result(std::size_t id) const {
     std::int64_t gx_sum=0, gy_sum=0, ax_sum=0, ay_sum=0, event_moment=0, arrival_moment=0;
     double legacy_moment=0, legacy_cost=0, area=0, radius=0;
     std::int64_t arrivals=0, missing=0, misaligned=0, contacts=0, displaced=0, unresolved=0;
-    std::array<const cybersand::gcr::Bin*,8*8> bins{};
+    std::array<const cybersand::gcr::Bin*,cybersand::gcr::kCompoundBins> bins{};
     std::size_t bin_count=0;
     for (int i=owner.first; i<owner.first+owner.count; ++i) {
         const auto proxy=static_cast<std::uint16_t>(i);

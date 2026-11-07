@@ -10,6 +10,7 @@ var capture_count: int=0
 var dabs:=PackedInt32Array()
 var overflow: bool=false
 var receipts: Array[Dictionary]=[]
+var last_disposition: String=""
 var _prior_paused: bool=true
 var _token: String=""
 var _committed: bool=false
@@ -44,7 +45,10 @@ func finish_stroke(owner) -> bool:
 	var input: PackedInt32Array=dabs.duplicate()
 	var exceeded: bool=overflow
 	cancel_stroke()
-	if exceeded: return panel.refuse("Cut discovery exceeds 256 dabs; the erase itself is retained.")
+	last_disposition="Checking cut…"
+	if exceeded:
+		last_disposition="Cut kept as terrain: stroke exceeds 256 dabs. Erase applied."
+		return panel.refuse(last_disposition)
 	busy=true;receipts.clear();_prior_paused=panel.host.paused
 	panel.host.paused=true
 	panel.host.cancel_playable_course_input()
@@ -109,6 +113,7 @@ func _discard() -> void:
 
 func _abort(reason: String) -> void:
 	if not _alive(): return
+	last_disposition="Cut handoff stopped: "+reason
 	panel.refuse(reason)
 	if _committed:
 		await _rpc({"action":"fail","token":_token})
@@ -144,6 +149,7 @@ func _run(input: PackedInt32Array) -> void:
 	var begun: Dictionary=await _rpc({"action":"begin","dabs":input,"sample":old_sample})
 	if not _alive(): return
 	if not begun.get("ok",false):
+		last_disposition="Cut kept as terrain: "+_reason(begun)+". Erase applied."
 		panel.refuse(str(begun.outcome))
 		if not str(begun.outcome).contains("timeout"):
 			var ended: Dictionary=await _end()
@@ -155,14 +161,20 @@ func _run(input: PackedInt32Array) -> void:
 	for attempt: int in range(65):
 		var payload: Dictionary=await _rpc({"action":"next"})
 		if not _alive(): return
-		if payload.get("done",false): break
 		if not payload.get("ok",false):
-			var reason: String=str(payload.outcome)
+			var reason: String=_reason(payload)
 			refused[reason]=int(refused.get(reason,0))+1
-			if reason in ["WorldFailed","Quarantined"] or reason.contains("timeout"):
+			if str(payload.outcome) in ["WorldFailed","Quarantined"] or reason.contains("timeout"):
+				last_disposition="Cut stopped: "+reason
 				panel.refuse(reason);return
+			if payload.get("done",false): break
 			continue
+		if payload.get("done",false): break
 		_token=payload.token
+		var total_proxies: int=int(payload.shape_count)
+		for body: RigidBody2D in host.rigid_bodies: total_proxies+=PhysicsServer2D.body_get_shape_count(body.get_rid())
+		if total_proxies>64:
+			await _abort("Existing objects leave too few of the shared 64 collision-rectangle slots. Erase applied.");return
 		if not _prepare_recipe(payload) or not _stage():
 			await _abort("The piece exceeds the saved-canvas or physical-owner budget.");return
 		for frame: int in range(2):
@@ -209,7 +221,24 @@ func _run(input: PackedInt32Array) -> void:
 	var ended: Dictionary=await _end()
 	if not _alive(): return
 	if not ended.get("ok",false): panel.refuse(str(ended.outcome));return
-	panel.message="Cut: %d piece(s) freed" % released
-	if not refused.is_empty(): panel.message+=" · retained checks "+str(refused)
-	if refused.has("Excluded"): panel.message+=" · Step or Play first to apply the requested simulation region."
+	last_disposition="Cut: %d piece(s) freed" % released
+	if not refused.is_empty():
+		last_disposition+="; kept as terrain: "+"; ".join(refused.keys())+". Erase applied."
+	elif released==0: last_disposition+="; no adjacent RedBrick piece found."
+	panel.message=last_disposition
 	_finish()
+
+func _reason(payload: Dictionary) -> String:
+	match str(payload.get("outcome","Unknown")):
+		"ShapeCapacity": return "shape exceeds the available shared 64 collision-rectangle slots"
+		"MemberCapacity":
+			if payload.get("frontier_limited",false): return "64 cut-edge investigations reached; discovery incomplete"
+			if int(payload.get("active_count",0))>=8: return "eight freed-body slots already used"
+			return "piece exceeds 1,024 cells or 62-cell width/height"
+		"Anchored": return "still attached to Wall, Hard wall or the canvas edge"
+		"Excluded": return "simulation region not applied; use Step or Play first"
+		"NotResident": return "source region unavailable"
+		"Occupied": return "touching an existing body mask"
+		"Thermal": return "hot material is unsupported"
+		"Ineligible": return "unsupported material or cell state"
+	return str(payload.get("outcome","Unknown"))

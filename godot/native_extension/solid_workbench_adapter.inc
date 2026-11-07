@@ -109,6 +109,11 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
         const auto work=world_ ? world_->workbench_solid_discovery_work() : std::array<std::uint64_t,2>{};
         result["discovery_cells"]=static_cast<std::int64_t>(work[0]);
         result["discovery_neighbours"]=static_cast<std::int64_t>(work[1]);
+        result["frontier_checks"]=static_cast<std::int64_t>(workbench_cut_.frontier_checks);
+        result["frontier_candidates"]=static_cast<std::int64_t>(workbench_cut_.frontier_candidates);
+        result["discovery_attempts"]=static_cast<std::int64_t>(workbench_cut_.count);
+        result["frontier_complete"]=workbench_cut_.frontier_complete;
+        result["frontier_limited"]=workbench_cut_.frontier_limited;
         result["held"]=workbench_cut_.held;
         result["roster_session"]=workbench_ ? workbench_->sample.session : 0;
         result["roster_epoch"]=workbench_ ? workbench_->sample.epoch : 0;
@@ -143,40 +148,53 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
             const auto configured=world_->configure_workbench_solids({0,0,static_cast<std::uint16_t>(extent_.x),static_cast<std::uint16_t>(extent_.y)});
             if (configured!=SolidOutcome::Accepted) return finish(configured);
             cut={};cut.held=true;
-            // Only face neighbours immediately outside the actual erased discs
-            // can have lost a structural bond. No global unsupported-cell scan.
-            constexpr std::array<Vector2i,4> neighbours{{{0,-1},{-1,0},{1,0},{0,1}}};
-            for (int i=0;i<dabs.size();i+=3) {
-                const int x=dabs[i],y=dabs[i+1],r=dabs[i+2];
-                for (int dy=-r;dy<=r;++dy) for (int dx=-r;dx<=r;++dx) {
-                    if (dx*dx+dy*dy>r*r) continue;
-                    for (const auto& offset:neighbours) {
-                        const int nx=dx+offset.x,ny=dy+offset.y;
-                        if (nx*nx+ny*ny<=r*r) continue;
-                        const Vector2i point{x+nx,y+ny};
-                        if (point.x<0 || point.y<0 || point.x>=extent_.x || point.y>=extent_.y ||
-                            world_->stored_material(point.x,point.y)!=cybersand::Material::RedBrick) continue;
-                        bool duplicate=false;
-                        for (std::size_t k=0;k<cut.count;++k) duplicate|=cut.seeds[k]==point;
-                        if (duplicate) continue;
-                        if (cut.count==cut.seeds.size()) {cut={};return finish(SolidOutcome::MemberCapacity);}
-                        cut.seeds[cut.count++]=point;
-                    }
-                }
-            }
+            // Traverse the frontier lazily after each handoff. Other boundary
+            // cells of a retired piece are then Empty, not extra investigations.
+            // All storage and work remain bounded by the validated stroke.
+            cut.dab_count=static_cast<std::size_t>(dabs.size()/3);
+            for (std::size_t i=0;i<cut.dab_count;++i)
+                cut.dabs[i]={dabs[static_cast<int>(3*i)],dabs[static_cast<int>(3*i+1)],dabs[static_cast<int>(3*i+2)]};
             if (!sample.is_empty() && !prepare_workbench_coupling(sample["states"],sample["geometry"],sample["bodies"],
                 sample.get("session",0),sample.get("epoch",0),false)) return finish(SolidOutcome::Stale);
-            auto result=finish(SolidOutcome::Accepted);result["seed_count"]=static_cast<std::int64_t>(cut.count);return result;
+            return finish(SolidOutcome::Accepted);
         }
         // A failed begin still owns the worker hold until an unchanged roster
         // is re-primed. No source tuple or transaction is cancelled by end.
         if (!cut.held && action!="end") return finish(SolidOutcome::Stale);
         if (action=="next") {
             if (world_->inspect_solid_detachment().phase!=SolidPhase::Idle) return finish(SolidOutcome::Busy);
-            if (cut.cursor==cut.count) {auto r=finish(SolidOutcome::Accepted);r["done"]=true;return r;}
-            const auto point=cut.seeds[cut.cursor++];
-            const auto outcome=world_->prepare_workbench_solid(point.x,point.y);
-            auto result=finish(outcome,outcome==SolidOutcome::Accepted);result["seed"]=point;return result;
+            if (cut.frontier_limited) {auto r=finish(SolidOutcome::MemberCapacity);r["done"]=true;return r;}
+            constexpr std::array<Vector2i,4> neighbours{{{0,-1},{-1,0},{1,0},{0,1}}};
+            while (cut.dab_cursor<cut.dab_count) {
+                const auto& dab=cut.dabs[cut.dab_cursor];
+                const int radius=dab[2],side=2*radius+1;
+                const auto bound=static_cast<std::size_t>(side*side*4);
+                if (cut.frontier_cursor==bound) {++cut.dab_cursor;cut.frontier_cursor=0;continue;}
+                const auto index=cut.frontier_cursor++;
+                ++cut.frontier_checks;
+                const int dx=static_cast<int>((index/4)%static_cast<std::size_t>(side))-radius;
+                const int dy=static_cast<int>((index/4)/static_cast<std::size_t>(side))-radius;
+                if (dx*dx+dy*dy>radius*radius) continue;
+                const auto offset=neighbours[index%4];
+                const int nx=dx+offset.x,ny=dy+offset.y;
+                if (nx*nx+ny*ny<=radius*radius) continue;
+                ++cut.frontier_candidates;
+                const Vector2i point{dab[0]+nx,dab[1]+ny};
+                if (point.x<0 || point.y<0 || point.x>=extent_.x || point.y>=extent_.y ||
+                    world_->stored_material(point.x,point.y)!=cybersand::Material::RedBrick) continue;
+                bool duplicate=false;
+                for (std::size_t k=0;k<cut.count;++k) duplicate|=cut.seeds[k]==point;
+                if (duplicate) continue;
+                if (cut.count==cut.seeds.size()) {
+                    cut.frontier_limited=true;
+                    auto r=finish(SolidOutcome::MemberCapacity);r["done"]=true;return r;
+                }
+                cut.seeds[cut.count++]=point;
+                const auto outcome=world_->prepare_workbench_solid(point.x,point.y);
+                auto result=finish(outcome,outcome==SolidOutcome::Accepted);result["seed"]=point;return result;
+            }
+            cut.frontier_complete=true;
+            auto r=finish(SolidOutcome::Accepted);r["done"]=true;return r;
         }
         if (action=="end") {
             const auto phase=world_->inspect_solid_detachment().phase;
@@ -193,7 +211,9 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
                     !parse_workbench_sample(checked,*workbench_,sample["states"],sample["geometry"],sample["bodies"],
                         sample.get("session",0),sample.get("epoch",0))) return finish(SolidOutcome::Stale);
             }
-            cut={};return finish(SolidOutcome::Accepted);
+            auto result=finish(SolidOutcome::Accepted);
+            result["held"]=false;
+            cut={};return result;
         }
         const auto source=world_->inspect_solid_detachment();
         if (!text_matches(request,"token",token_text(source.token))) return finish(SolidOutcome::Stale);

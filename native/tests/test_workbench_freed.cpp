@@ -46,6 +46,8 @@ static void exercise(unsigned workers) {
         expect(w.prepare_workbench_solid(10+i*4,10)==SolidOutcome::Accepted,"sequential disjoint cut");
         const auto p=w.inspect_solid_detachment();
         expect(p.token.sequence>s.token.sequence,"monotonic transaction sequence");
+        expect(w.acknowledge_solid_detachment({p.token,1,2,p.payload_digest,p.shape_digest,p.shape_count})==SolidOutcome::Occupied,"overlapping owner refuses before source retirement");
+        expect(w.inspect_solid_detachment().phase==SolidPhase::Prepared && w.stored_material(10+i*4,10)==Material::RedBrick,"overlap refusal retains source and pending payload");
         expect(w.acknowledge_solid_detachment({p.token,static_cast<std::uint16_t>(6+i),2,p.payload_digest,p.shape_digest,p.shape_count})==SolidOutcome::Accepted,"disjoint owner reservation");
         expect(w.commit_solid_detachment(p.token)==SolidOutcome::Accepted,"sequential commit");
         expect(w.finalize_solid_detachment({p.token,static_cast<std::uint16_t>(6+i),2,w.hard_surface_revision(),2})==SolidOutcome::Accepted,"sequential finalize");
@@ -93,5 +95,37 @@ static void refusals() {
     span.set_simulation_region(RectI64{0,0,128,128});
     expect(span.prepare_workbench_solid(10,20)==SolidOutcome::Excluded,"unapplied region is excluded, not clearance");
 }
-int main() {try{exercise(1);exercise(4);refusals();std::cout<<"workbench freed native: "<<checks<<" checks passed\n";return 0;}
+static void brush_geometry(unsigned workers) {
+    World w(config(workers));w.reserve_region({0,0,128,128});
+    expect(w.configure_workbench_solids({0,0,512,512})==SolidOutcome::Accepted,"brush configure");
+    for(int y=-8;y<=8;++y)for(int x=-8;x<=8;++x)
+        if(x*x+y*y<=64)w.set(35+x,35+y,Material::RedBrick);
+    expect(w.prepare_workbench_solid(35,35)==SolidOutcome::Accepted,"default round brush must fit");
+    auto s=w.inspect_solid_detachment();
+    expect(s.member_count==197 && s.shape_count==11 && s.mass==197,"exact brush cells, not AABB or splinters");
+    expect(w.cancel_solid_detachment(s.token)==SolidOutcome::Accepted,"brush cancel");
+    w.clear();w.reserve_region({0,0,128,128});
+    expect(w.configure_workbench_solids({0,0,512,512})==SolidOutcome::Accepted,"ring configure");
+    std::size_t count=0;
+    for(int y=10;y<=60;++y)for(int x=10;x<=60;++x)
+        if((x-35)*(x-35)+(y-35)*(y-35)>24*24){w.set(x,y,Material::RedBrick);++count;}
+    expect(count==808,"ring member oracle");
+    expect(w.prepare_workbench_solid(10,10)==SolidOutcome::Accepted,"64 exact proxies fit");
+    s=w.inspect_solid_detachment();expect(s.member_count==808 && s.shape_count==64,"ring endpoint");
+    expect(w.acknowledge_solid_detachment({s.token,1,2,s.payload_digest,s.shape_digest,s.shape_count})==SolidOutcome::Accepted,"64-proxy receipt");
+    expect(w.commit_solid_detachment(s.token)==SolidOutcome::Accepted,"64-proxy source retirement");
+    expect(w.finalize_solid_detachment({s.token,1,2,w.hard_surface_revision(),2})==SolidOutcome::Accepted,"64-proxy finalize");
+    expect(w.archive_workbench_solid(s.token)==SolidOutcome::Accepted,"64-proxy archive");
+    w.set(80,20,Material::RedBrick);
+    expect(w.prepare_workbench_solid(80,20)==SolidOutcome::ShapeCapacity,"shared total 65 refuses before commit");
+    expect(w.stored_material(80,20)==Material::RedBrick && w.inspect_solid_detachment().phase==SolidPhase::Idle,"shared capacity retains source and usable transaction");
+    w.clear();w.reserve_region({0,0,128,128});
+    expect(w.configure_workbench_solids({0,0,512,512})==SolidOutcome::Accepted,"detailed comb configure");
+    for(int y=10;y<=70;++y){w.set(10,y,Material::RedBrick);w.set(13,y,Material::RedBrick);
+        if(y%2==0){w.set(11,y,Material::RedBrick);w.set(14,y,Material::RedBrick);}}
+    w.set(12,10,Material::RedBrick);
+    expect(w.prepare_workbench_solid(10,10)==SolidOutcome::ShapeCapacity,"over-64 exact geometry refuses");
+    expect(w.stored_material(10,10)==Material::RedBrick,"no geometry fallback or source retirement");
+}
+int main() {try{exercise(1);exercise(4);refusals();brush_geometry(1);brush_geometry(4);std::cout<<"workbench freed native: "<<checks<<" checks passed\n";return 0;}
 catch(const std::exception& e){std::cerr<<"FAIL "<<checks<<": "<<e.what()<<'\n';return 1;}}

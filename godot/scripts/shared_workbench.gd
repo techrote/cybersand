@@ -308,6 +308,7 @@ func new_canvas() -> bool:
 
 func installed(candidate: Dictionary) -> void:
 	cut.capture_count=0
+	cut.last_disposition=""
 	_pending_request_serial = 0
 	applied = candidate.duplicate(true)
 	var roster_choice := _model.selected
@@ -851,6 +852,7 @@ func _process(_delta: float) -> void:
 	_status.text = "%s · cell %s · %s · %s   |   source %d inserted / %d blocked" % [
 		state,cursor,str(applied.get("extent","")),reason,int(source.get("inserted",0)),int(source.get("blocked",0))]
 	_status.text += " · granular %s · active Water %s" % [gcr.get("response","pending"),_water_identity(context)]
+	if not cut.last_disposition.is_empty(): _status.text=cut.last_disposition+"\n"+_status.text
 	if _details.visible:
 		var selected := body_state(selected_id())
 		var policy: Dictionary = context.get("liquid_solver_policy",{})
