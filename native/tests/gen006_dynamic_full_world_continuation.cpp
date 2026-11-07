@@ -1,11 +1,12 @@
 // Real native World dynamic-frontier qualification, opt-in and full-World only.
 // This compiles the accepted source, not an invented Sand/Water rule model.
-#include "cybersand/gen006_dynamic_full_world_stage.hpp"
+#include "cybersand/gen006_dynamic_bundle_admission.hpp"
 
 #include <algorithm>
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
+#include <limits>
 #include <memory>
 #include <stdexcept>
 #include <vector>
@@ -112,7 +113,68 @@ void actual_dynamic_frontier(std::uint32_t workers) {
 
     constexpr std::size_t kBoundedBytes = 4U * 1024U * 1024U;
     const FullWorldFence a{0x1234U, 0x5678U, 101U, 1U};
-    auto staged = FullWorldContinuationStage::capture(live, a, kBoundedBytes);
+    // Complete native resident-set bundle: true moving Water and Sand are
+    // already present at both sides of this signed seam. Negative contracts
+    // must fail without altering any aspect of the live native World.
+    const std::vector<ChunkCoord> full_roster{{-2, -2}, {-2, -1}};
+    const std::vector<BundleSeam> full_seams{{{-2, -2}, {-2, -1}}};
+    const auto refusal_pointer = live.get();
+    const auto refusal_hash = live->physical_state_hash();
+    const auto refusal_tick = live->completed_tick_index();
+    const auto refusal_ledger = live->quantity_ledger();
+    const auto refusal_count = live->chunk_count();
+    const auto refusal_bytes = live->resident_cell_bytes();
+    auto refuse_bundle = [&](std::vector<ChunkCoord> roster,
+                             std::vector<BundleSeam> seams,
+                             BundleAdmissionStatus expected, const char* reason) {
+        bool refused = false;
+        try {
+            auto bad = FullResidentBundleStage::capture(
+                live, a, roster, seams, kBoundedBytes);
+            (void)bad;
+        } catch (const BundleAdmissionError& error) {
+            refused = (error.status() == expected);
+        }
+        check(refused && live.get() == refusal_pointer &&
+              live->physical_state_hash() == refusal_hash &&
+              live->completed_tick_index() == refusal_tick &&
+              live->quantity_ledger() == refusal_ledger &&
+              live->chunk_count() == refusal_count &&
+              live->resident_cell_bytes() == refusal_bytes, reason);
+    };
+    refuse_bundle({{-2, -2}}, {}, BundleAdmissionStatus::EmptyOrOversizedRoster,
+                  "GEN006_DYNAMIC_PARTIAL_BUNDLE_ACCEPTED");
+    refuse_bundle({{-2, -2}, {-2, -2}}, full_seams,
+                  BundleAdmissionStatus::DuplicateChunk,
+                  "GEN006_DYNAMIC_DUPLICATE_BUNDLE_ACCEPTED");
+    refuse_bundle(full_roster, {}, BundleAdmissionStatus::UncoveredInternalSeam,
+                  "GEN006_DYNAMIC_MISSING_SEAM_ACCEPTED");
+    refuse_bundle(full_roster, {{{-2, -2}, {-2, 0}}},
+                  BundleAdmissionStatus::InvalidSeam,
+                  "GEN006_DYNAMIC_INVALID_SEAM_ACCEPTED");
+    refuse_bundle(full_roster, {full_seams[0], full_seams[0]},
+                  BundleAdmissionStatus::DuplicateSeam,
+                  "GEN006_DYNAMIC_DUPLICATE_SEAM_ACCEPTED");
+    refuse_bundle({{-2, -2}, {-2, 0}}, {},
+                  BundleAdmissionStatus::MissingResident,
+                  "GEN006_DYNAMIC_PHANTOM_RESIDENT_ACCEPTED");
+    refuse_bundle({{-2, -2}, {std::numeric_limits<std::int64_t>::max(), -1}}, {},
+                  BundleAdmissionStatus::InvalidCoordinate,
+                  "GEN006_DYNAMIC_OVERFLOW_RESIDENT_ACCEPTED");
+
+    auto staged = FullResidentBundleStage::capture(
+        live, a, full_roster, full_seams, kBoundedBytes);
+    check(staged.residents().size() == live->chunk_count() &&
+          staged.internal_seams().size() == 1,
+          "GEN006_DYNAMIC_BUNDLE_COVERAGE_INCOMPLETE");
+    std::cout << "GEN006_DYNAMIC_COMPLETE_RESIDENT_BUNDLE_PASS"
+              << " configured_workers=" << workers
+              << " real_residents=" << staged.residents().size()
+              << " internal_seams=" << staged.internal_seams().size()
+              << " partial_refused=1 duplicate_refused=1"
+              << " uncovered_seam_refused=1 phantom_refused=1"
+              << " invalid_signed_coordinate_refused=1"
+              << " scope=FULL_WORLD_ONLY" << std::endl;
     const std::vector<std::uint8_t> verified(staged.bytes().begin(), staged.bytes().end());
     const auto original_ptr = live.get();
     const auto before_hash = live->physical_state_hash();
