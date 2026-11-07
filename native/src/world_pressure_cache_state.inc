@@ -148,6 +148,8 @@ struct World::PressureCache {
         certificate_layer_enabled=false; certificate_contents_cold=true;
         certificate_tick_eligible=false;
         gas_ready = false;
+        gas_dirty_overflow = false;
+        gas_bootstrap_attempted = false;
         status = PressureOptimizationStatus::Cold;
     }
 
@@ -176,6 +178,10 @@ struct World::PressureCache {
     std::uint64_t certificate_water_calls_begin=0, certificate_prior_water_calls=0;
     bool use_heads = false;
     bool gas_ready = false;
+    // Dirty-chunk evidence is complete only while overflow is false. A partial
+    // component bootstrap is attempted at most once between complete cache builds.
+    bool gas_dirty_overflow = false;
+    bool gas_bootstrap_attempted = false;
     std::size_t gas_member_limit = 0;
     std::vector<GasMember> gas_members;
     std::vector<GasComponent> gas_components;
