@@ -145,7 +145,10 @@ func run() -> void:
 		"region":{"x":28,"y":28,"width":8,"height":8},"detail":"counts"})
 	check(new_observation.get("status")=="observed"
 		and int(new_observation.get("native_counts",{}).get(58,0))==9,
-		"revised task failed to preserve earlier authored native wall")
+		"revised task failed to preserve earlier authored native wall: status="
+		+str(new_observation.get("status","missing"))+" counts="
+		+str(new_observation.get("native_counts",{}))+" reason="
+		+str(new_observation.get("reason","")))
 	var second_stopped: Dictionary = await second.stop()
 	check(second_stopped.get("status")=="stopped",
 		"revised task retirement was not acknowledged")
