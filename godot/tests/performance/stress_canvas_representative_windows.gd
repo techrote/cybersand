@@ -18,6 +18,9 @@ var failures: Array[String] = []
 var assertions := 0
 var out_dir := ""
 
+func _initialize() -> void:
+	run.call_deferred()
+
 class ObservedMain:
 	extends "res://scripts/main.gd"
 	var measurement_active := false
