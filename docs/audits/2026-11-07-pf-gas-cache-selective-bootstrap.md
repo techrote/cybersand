@@ -72,8 +72,8 @@ while the BFS actually visited ~207 thousand cells per tick.
 
 Execution v5 adds bounded derived bookkeeping to cached variants:
 
-1. One construction-time bit per admitted resident cell records cells actually
-   reached by the authoritative BFS.
+1. Two construction-time bits per admitted resident cell retain the current
+   and immediately previous authoritative BFS visit sets.
 2. The existing owner-reduced gas-dirty chunk set is retained until relabelling
    finishes rather than being drained immediately after cache invalidation.
 3. Every gas-dirty chunk executes the original complete relabel scan.
@@ -82,10 +82,12 @@ Execution v5 adds bounded derived bookkeeping to cached variants:
    chunk remains on the complete-scan path because a remote split/merge could
    later retire that label.
 5. Only a clean indexed chunk with no latent-label obligation may publish labels
-   by iterating the exact BFS visit bitset.
-6. Dirty-set overflow, cache/index uncertainty, gas-cache replay, gas-pass chunk
-   allocation, or a malformed visit/bit relation falls back to the original
-   complete relabel sweep.
+   by iterating the union of the current and previous exact BFS visit sets.
+   Prior-only cells are deliberately revisited so a remote vent/split that makes
+   a formerly visited cell unvisited cannot strand a stale positive label.
+6. Missing prior-visit history, dirty-set overflow, cache/index uncertainty,
+   gas-cache replay, gas-pass chunk allocation, or a malformed visit/bit
+   relation falls back to the original complete relabel sweep.
 
 The complete scan's dangling-label retirement rule is retained exactly. Sparse
 relabelling therefore does not infer topology from visible pixels, Water
@@ -95,7 +97,7 @@ complete proof that no hidden positive label needs retirement.
 
 ## Cost and authority boundary
 
-The new storage is bounded at cache construction: one bit per admitted cell plus
+The new storage is bounded at cache construction: two bits per admitted cell plus
 one latent-label byte per admitted chunk. It is derived, nonserialized and
 reported through existing gas/derived capacity accounting. There are no
 per-tick heap allocations and no per-cell atomics.
