@@ -60,35 +60,49 @@ func _field(t: String, description: String = "") -> Dictionary:
 func _object(properties: Dictionary, required: Array) -> Dictionary:
 	return {"type": "object", "properties": properties, "required": required, "additionalProperties": false}
 
+func _primitive_schema(shape: String, coordinates: Array) -> Dictionary:
+	var properties: Dictionary = {
+		"shape":{"type":"string","enum":[shape]},
+		"material":{"type":"integer","enum":[0,58]},
+		"replace_only_material":{"type":["integer","null"]}
+	}
+	var fields: Array = ["shape","material","replace_only_material"]
+	for key: String in coordinates:
+		properties[key] = _field("integer")
+		fields.append(key)
+	if shape == "disc":
+		properties["radius"]["minimum"] = 0
+		properties["radius"]["maximum"] = 36
+	return _object(properties,fields)
+
 func strict_tools() -> Array:
-	# Strict Responses function schemas: all object properties required and no extras.
-	# The operation shape/keys are a provisional adapter to #526, NOT native validation.
-	var region := _object({"x": _field("integer"), "y": _field("integer"),
-		"width": _field("integer"), "height": _field("integer")},
-		["x", "y", "width", "height"])
-	var operation := _object({
-		"shape": {"type": "string", "enum": ["disc", "line", "rectangle"]},
-		"x": _field("integer"), "y": _field("integer"),
-		"x2": _field("integer"), "y2": _field("integer"),
-		"radius": _field("integer"),
-		"material_id": _field("integer"),
-		"replace_only_material_id": {"type": ["integer", "null"]}
-	}, ["shape", "x", "y", "x2", "y2", "radius", "material_id", "replace_only_material_id"])
+	# Exact #526 v1 shape-specific model envelope; #527 owns step's native
+	# implementation. Strict JSON remains separate from native authorization.
+	var region := _object({"x":_field("integer"),"y":_field("integer"),
+		"width":_field("integer"),"height":_field("integer")},
+		["x","y","width","height"])
+	var operations: Dictionary = {"type":"array","items":{"anyOf":[
+		_primitive_schema("disc",["x","y","radius"]),
+		_primitive_schema("line",["x0","y0","x1","y1"]),
+		_primitive_schema("rectangle",["x0","y0","x1","y1"])
+	]}}
 	return [
-		{"type": "function", "name": "observe", "description": "Read a bounded, source-matched actual workbench observation. No mutation.",
-			"strict": true, "parameters": _object({
-				"region": {"anyOf": [region, {"type": "null"}]},
-				"detail": {"type": "string", "enum": ["summary", "cells"]}
-			}, ["region", "detail"])},
-		{"type": "function", "name": "prepare_edit", "description": "Preflight a limited proposal; never edits World. Native owner may refuse.",
-			"strict": true, "parameters": _object({
-				"observation_id": _field("string"),
-				"operations": {"type": "array", "items": operation}
-			}, ["observation_id", "operations"])},
-		{"type": "function", "name": "apply_edit", "description": "Ask authoritative owner to revalidate and apply an existing proposal. Queue acceptance is not applied.",
-			"strict": true, "parameters": _object({"proposal_id": _field("string")}, ["proposal_id"])},
-		{"type": "function", "name": "step", "description": "Perform 1 to 120 acknowledged native steps, subject to Stop and pause rules.",
-			"strict": true, "parameters": _object({"ticks": {"type": "integer", "minimum": 1, "maximum": 120}}, ["ticks"])}
+		{"type":"function","name":"observe","strict":true,
+			"description":"Read native cells AND a matching real post-draw PNG in the paused workbench.",
+			"parameters":_object({"region":{"anyOf":[region,{"type":"null"}]},
+				"detail":{"type":"string","enum":["cells","counts"]}},
+				["region","detail"])},
+		{"type":"function","name":"prepare_edit","strict":true,
+			"description":"Preflight 1-8 Hard Wall/Empty native operations; zero mutation.",
+			"parameters":_object({"observation_id":_field("string"),
+				"operations":operations},["observation_id","operations"])},
+		{"type":"function","name":"apply_edit","strict":true,
+			"description":"Apply existing opaque proposal with authoritative native readback.",
+			"parameters":_object({"proposal_id":_field("string")},["proposal_id"])},
+		{"type":"function","name":"step","strict":true,
+			"description":"Only after #527 owner ACK: request 1-120 bounded native ticks.",
+			"parameters":_object({"ticks":{"type":"integer","minimum":1,"maximum":120}},
+				["ticks"])}
 	]
 
 func _safe_integer(value: Variant) -> bool:
@@ -103,16 +117,20 @@ func _safe_integer(value: Variant) -> bool:
 func _normalise_arguments(name: String, args: Dictionary) -> Dictionary:
 	var result := args.duplicate(true)
 	if name == "step":
-		result.ticks = int(args.ticks)
+		result["ticks"] = int(args.ticks)
 	elif name == "observe" and args.region is Dictionary:
-		for k: String in ["x", "y", "width", "height"]:
-			result.region[k] = int(args.region[k])
+		for key: String in ["x","y","width","height"]:
+			result.region[key] = int(args.region[key])
 	elif name == "prepare_edit":
 		for op: Dictionary in result.operations:
-			for k: String in ["x", "y", "x2", "y2", "radius", "material_id"]:
-				op[k] = int(op[k])
-			if op.replace_only_material_id != null:
-				op.replace_only_material_id = int(op.replace_only_material_id)
+			for key: String in op.keys():
+				if key in ["x","y","x0","y0","x1","y1","radius","material"]:
+					op[key] = int(op[key])
+			# Typed #526 envelope: JSON null becomes ABSENT filter, never Empty.
+			if op.get("replace_only_material",null) == null:
+				op.erase("replace_only_material")
+			else:
+				op["replace_only_material"] = int(op["replace_only_material"])
 	return result
 
 func _valid_arguments(name: String, args: Variant) -> bool:
@@ -120,8 +138,8 @@ func _valid_arguments(name: String, args: Variant) -> bool:
 		return false
 	var expected: Array = []
 	match name:
-		"observe": expected = ["region", "detail"]
-		"prepare_edit": expected = ["observation_id", "operations"]
+		"observe": expected = ["region","detail"]
+		"prepare_edit": expected = ["observation_id","operations"]
 		"apply_edit": expected = ["proposal_id"]
 		"step": expected = ["ticks"]
 		_: return false
@@ -132,36 +150,51 @@ func _valid_arguments(name: String, args: Variant) -> bool:
 			return false
 	match name:
 		"observe":
-			if args.detail not in ["summary", "cells"]:
+			if args.detail not in ["cells","counts"]:
 				return false
 			if args.region != null:
 				if not args.region is Dictionary or args.region.size() != 4:
 					return false
-				for k: String in ["x", "y", "width", "height"]:
-					if not args.region.has(k) or not _safe_integer(args.region[k]):
+				for key: String in ["x","y","width","height"]:
+					if not args.region.has(key) or not _safe_integer(args.region[key]):
 						return false
-				if args.region.width < 1 or args.region.height < 1 or args.region.width > 64 or args.region.height > 64:
+				if args.region.x < 0 or args.region.y < 0 						or args.region.width < 1 or args.region.height < 1 						or args.region.width > 4096 or args.region.height > 4096 						or args.region.width * args.region.height > 4096 						or args.region.x + args.region.width > 2147483647 						or args.region.y + args.region.height > 2147483647:
 					return false
 		"prepare_edit":
-			if not args.observation_id is String or args.observation_id.is_empty():
+			if not args.observation_id is String or args.observation_id.is_empty() 					or args.observation_id.length() > 128:
 				return false
 			if not args.operations is Array or args.operations.is_empty() or args.operations.size() > 8:
 				return false
-			for op: Variant in args.operations:
-				if not op is Dictionary or op.size() != 8:
+			for item: Variant in args.operations:
+				if not item is Dictionary or not item.has("shape"):
 					return false
-				for field: String in ["shape", "x", "y", "x2", "y2", "radius", "material_id", "replace_only_material_id"]:
-					if not op.has(field):
-						return false
-				if op.shape not in ["disc", "line", "rectangle"]:
+				var coordinates: Array = []
+				match item.shape:
+					"disc": coordinates = ["x","y","radius"]
+					"line","rectangle": coordinates = ["x0","y0","x1","y1"]
+					_: return false
+				var keys: Array = ["shape","material","replace_only_material"]
+				keys.append_array(coordinates)
+				if item.size() != keys.size():
 					return false
-				for field: String in ["x", "y", "x2", "y2", "radius", "material_id"]:
-					if not _safe_integer(op[field]):
+				for key: String in keys:
+					if not item.has(key):
 						return false
-				if op.replace_only_material_id != null and not _safe_integer(op.replace_only_material_id):
+				for key: String in coordinates:
+					if not _safe_integer(item[key]) or item[key] < 0 or item[key] > 2147483647:
+						return false
+				if not _safe_integer(item.material) or item.material not in [0,58]:
+					return false
+				if item.replace_only_material != null and (
+						not _safe_integer(item.replace_only_material) 						or item.replace_only_material not in [0,58]):
+					return false
+				if item.shape == "disc" and item.radius > 36:
+					return false
+				if item.shape == "rectangle" and (
+						item.x1 < item.x0 or item.y1 < item.y0):
 					return false
 		"apply_edit":
-			if not args.proposal_id is String or args.proposal_id.is_empty():
+			if not args.proposal_id is String or args.proposal_id.is_empty() 					or args.proposal_id.length() > 128:
 				return false
 		"step":
 			if not _safe_integer(args.ticks) or args.ticks < 1 or args.ticks > 120:

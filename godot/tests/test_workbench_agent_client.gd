@@ -42,6 +42,7 @@ func _run() -> void:
 	_test_full_serial_four_tool_loop()
 	_test_provider_errors()
 	_test_budget_and_duplicates()
+	_test_526_exact_envelopes()
 	await _test_ui_shell()
 	# Let deferred queued Node deletions and emitted signals finish before exit.
 	await process_frame
@@ -72,8 +73,8 @@ func _test_tool_loop_and_stop() -> void:
 		{"status": "observed", "observation_id": "native-1", "native_counts": {"Sand": 32}}),
 		"native observation result should continue")
 	_expect(c._response_id == "response-1" and c._serial == 2, "continuation must retain previous response")
-	var op := {"shape": "line", "x": 1028, "y": -25, "x2": 1031, "y2": -25,
-		"radius": 0, "material_id": 3, "replace_only_material_id": null}
+	var op := {"shape": "line", "x0": 1028, "y0": 25, "x1": 1031, "y1": 25,
+		"material": 58, "replace_only_material": null}
 	_deliver(c, _response("response-2",
 		[_tool("prepare_edit", "call-2", {"observation_id": "native-1", "operations": [op]})]))
 	_expect(invocations.size() == 2 and invocations[1].name == "prepare_edit", "prepare not dispatched")
@@ -120,12 +121,12 @@ func _test_full_serial_four_tool_loop() -> void:
 	_expect(continuation.input[1].content[1].type == "input_image", "image not presented as vision input")
 	_expect(str(continuation.input[0].output).find("image_data_url") < 0,
 		"image base64 must not be duplicated as plain text tool result")
-	var op := {"shape": "rectangle", "x": 1026, "y": -33, "x2": 1029, "y2": -32,
-		"radius": 0, "material_id": 3, "replace_only_material_id": null}
+	var op := {"shape": "rectangle", "x0": 1026, "y0": 33, "x1": 1029, "y1": 34,
+		"material": 58, "replace_only_material": null}
 	_deliver(c, _response("r2", [_tool("prepare_edit", "p1",
 		{"observation_id": "observed-native-1", "operations": [op]})]))
 	_expect(calls.size() == 2 and calls[1].name == "prepare_edit", "prepare in chain")
-	_expect(typeof(calls[1].args.operations[0].x) == TYPE_INT,
+	_expect(typeof(calls[1].args.operations[0].x0) == TYPE_INT,
 		"exact integer-shaped model arguments must be normalized to integers")
 	_expect(c.submit_tool_result(c.current_epoch(), "p1",
 		{"status": "proposed", "proposal_id": "proposal-native-1",
@@ -145,6 +146,41 @@ func _test_full_serial_four_tool_loop() -> void:
 		{"type": "output_text", "text": "Model finished; native acceptance not implied."}]}]))
 	_expect(not c.is_active() and calls.size() == 4, "complete serial four-tool loop must terminate")
 	c.queue_free()
+
+func _test_526_exact_envelopes() -> void:
+	var c := _new_client()
+	var calls: Array = []
+	c.tool_requested.connect(func(name: String, args: Dictionary, _epoch: int, _id: String) -> void:
+		calls.append({"name":name,"args":args}))
+	_expect(c.begin_task("Construct", "configured-model", _scope()), "owner envelope start")
+	_deliver(c, _response("owner-1", [_tool("observe","owner-observe",
+		{"region":{"x":1140,"y":240,"width":8,"height":8},"detail":"counts"})]))
+	_expect(calls.size() == 1 and calls[0].args.region.x == 1140,
+		"model rectangular observation not normalized")
+	_expect(c.submit_tool_result(c.current_epoch(),"owner-observe",
+		{"status":"observed","observation_id":"qualified-obs"}),
+		"observed native result failed")
+	var disc := {"shape":"disc","x":1144,"y":245,"radius":2,"material":58,
+		"replace_only_material":null}
+	_deliver(c,_response("owner-2",[_tool("prepare_edit","owner-prepare",
+		{"observation_id":"qualified-obs","operations":[disc]})]))
+	_expect(calls.size() == 2 and not calls[1].args.operations[0].has("replace_only_material"),
+		"#526 null filter must become absent, never Empty")
+	_expect(calls[1].args.operations[0].material == 58,
+		"#526 Hard Wall native material ID changed")
+	c.queue_free()
+	for invalid: Dictionary in [
+		{"shape":"disc","x":12,"y":5,"radius":37,"material":58,"replace_only_material":null},
+		{"shape":"line","x0":1,"y0":1,"x1":2,"y1":2,"material":2,"replace_only_material":null},
+		{"shape":"rectangle","x0":7,"y0":3,"x1":2,"y1":3,"material":0,"replace_only_material":null},
+		{"shape":"line","x0":1.5,"y0":1,"x1":2,"y1":2,"material":58,"replace_only_material":null}
+	]:
+		_expect(not c._valid_arguments("prepare_edit",
+			{"observation_id":"o","operations":[invalid]}),
+			"invalid operation admitted to #526 tool boundary: "+str(invalid))
+	_expect(c._valid_arguments("prepare_edit",
+		{"observation_id":"o","operations":[disc]}),
+		"actual #526 disc schema rejected")
 
 func _test_provider_errors() -> void:
 	for http_status: int in [401, 403, 429, 500]:
@@ -170,23 +206,23 @@ func _test_budget_and_duplicates() -> void:
 	var c := _new_client()
 	c.request_budget = 1
 	_expect(c.begin_task("Attempt", "model", _scope()), "budget fixture start")
-	_deliver(c, _response("r1", [_tool("observe", "c1", {"region": null, "detail": "summary"})]))
+	_deliver(c, _response("r1", [_tool("observe", "c1", {"region": null, "detail": "counts"})]))
 	_expect(c.submit_tool_result(c.current_epoch(), "c1", {"status": "observed", "observation_id": "o"}),
 		"observed continuation accepted")
 	_expect(not c.is_active(), "second request should be refused at budget")
 	c.queue_free()
 	var d := _new_client()
 	_expect(d.begin_task("Attempt", "model", _scope()), "duplicate fixture start")
-	_deliver(d, _response("r1", [_tool("observe", "c1", {"region": null, "detail": "summary"})]))
+	_deliver(d, _response("r1", [_tool("observe", "c1", {"region": null, "detail": "counts"})]))
 	_expect(d.submit_tool_result(d.current_epoch(), "c1", {"status": "observed", "observation_id": "o"}),
 		"duplicate setup accepted")
-	_deliver(d, _response("r2", [_tool("observe", "c1", {"region": null, "detail": "summary"})]))
+	_deliver(d, _response("r2", [_tool("observe", "c1", {"region": null, "detail": "counts"})]))
 	_expect(not d.is_active(), "replayed call ID should fail closed")
 	d.queue_free()
 	var p := _new_client()
 	_expect(p.begin_task("Attempt", "model", _scope()), "parallel fixture start")
 	_deliver(p, _response("r1", [
-		_tool("observe", "c1", {"region": null, "detail": "summary"}),
+		_tool("observe", "c1", {"region": null, "detail": "counts"}),
 		_tool("step", "c2", {"ticks": 1})]))
 	_expect(not p.is_active(), "parallel model calls should fail closed")
 	p.queue_free()
