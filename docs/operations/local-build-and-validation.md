@@ -4,11 +4,26 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-07
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
 # Local build and validation
+
+## Ordinary workbench cutting qualification
+
+Use `python tools/sol281/workbench_freed.py build --run NAME`, then its
+`native`, `hosts --build-run NAME` and `observe --reuse-run HOST-RUN` modes.
+Every run uses a new output directory, exact source inventory and command/log
+receipt. Observe reuses byte-checked immutable project resources with a fresh
+process/World/session; it avoids extra copies under the2GiB/5GiB resource
+contract. Core Make targets are `workbench-freed-test` and
+`workbench-freed-sanitize`; actual registered compiler flags are in receipts.
+See the [dossier](../audits/2026-11-07-workbench-freed-objects.md) for83-check
+worker1/4 suites on both hosts,52-check lifecycle suites,1,184/19,338 optimized
+and strict native checks,118 material tests and parity. Windows is LLVM-MinGW;
+MSVC and instrumented extension-host sanitizers remain unavailable. Linux ABI
+floor still fails. Source/runtime identity checks are separate from acceptance.
 
 ## Fresh workbench canvas qualification
 

@@ -4,11 +4,22 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-07
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
+
+## Freed-object rules and ordinary cutting
+
+For face connectivity, anchors, source eligibility, caps and handoff semantics,
+retrieve [freed objects](../architecture/workbench-freed-objects.md).
+[Workbench controls](../systems/player-control-playground.md#cutting-ordinary-workbench-structures),
+[protocol/format](interfaces-and-message-contracts.md#workbench-cut-protocol-and-version4-starts)
+and [qualification](../operations/local-build-and-validation.md#ordinary-workbench-cutting-qualification)
+own their respective surfaces. The dated audit preserves failures and platform
+limits. `retrieval-questions-workbench-freed.json` adds three post-implementation
+development questions; older frozen questions remain unchanged.
 
 ## SOL workbench law on actual cut structures
 

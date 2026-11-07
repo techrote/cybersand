@@ -1,14 +1,24 @@
 ---
 title: Freed objects in the ordinary workbench
-status: Approved design
+status: Current
 document-kind: contract
-scope: Bounded RedBrick release after ordinary erasing, same-World ownership and unchanged physical response; implementation tracked separately
+scope: Bounded RedBrick release after ordinary erasing, same-World ownership and unchanged physical response; implementation and functional qualification on Draft466
 canonical-for: [workbench-freed-object-rules, workbench-native-aggregate-handoff]
 last-reviewed: 2026-11-07
 related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../systems/solid-detachment.md, ../systems/player-control-playground.md, ../reference/interfaces-and-message-contracts.md]
 ---
 
 # Freed objects in the ordinary workbench
+
+## Implementation checkpoint
+
+Current on Draft #466: the registered release rules are implemented. Actual
+Windows/Linux workers1/4 pass83 checks each and52 lifecycle checks per host.
+The [dated dossier](../audits/2026-11-07-workbench-freed-objects.md) owns execution,
+failures and runtime identities. A cold requested/applied region mismatch
+refuses; use an ordinary Step or Play first. No hidden tick admits it. Full
+Restore/Load/New blank uses checked whole-scene retirement when custody is live;
+retained edits refuse. Contact law, parameters and accepted defaults stay fixed.
 
 ## Owner boundary and current source
 

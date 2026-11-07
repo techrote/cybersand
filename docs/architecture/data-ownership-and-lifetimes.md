@@ -6,10 +6,22 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-07
 ---
 
 # Data ownership and lifetimes
+
+## Ordinary cut ownership
+
+The [normal-workbench release contract](workbench-freed-objects.md) adds a
+separate bounded native capture lane. One exclusive worker drains accepted
+stroke edits, prepares exact source tuples and retains up to eight active
+records. Only main constructs/appends RIDs. Commit retires native source before
+matching terrain, roster/session/epoch and activation are admitted; old RIDs
+and motion survive. Every completed/refused transaction re-primes fresh actual
+sample authority. Synchronous scene retirement invalidates all awaiting
+continuations. CYPS/hash and retained-copy refusals remain binding; deliberate
+whole-canvas replacement retires the entire owner, without active restoration.
 
 ## Fresh canvas-body ownership
 

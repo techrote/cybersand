@@ -4,11 +4,23 @@ status: Current
 document-kind: reference
 scope: Approved owner direction and deliberately preserved behavior; not current implementation or performance evidence
 canonical-for: [owner-intent, product-priorities, preserved-material-feel]
-last-reviewed: 2026-10-30
+last-reviewed: 2026-11-07
 related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approximate-fidelity.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
 # Product intent and priorities
+
+## Normal workbench and SOL owner direction — 2026-11-07
+
+**Approved owner direction:** define freed-object rules, then implement cutting
+in the ordinary workbench. Preserve the accepted visible granular response;
+subpixel rest-screen failure alone is not a demonstrated gameplay defect.
+Keep mass, gravity, damping, gains and caps fixed. Use the existing canvas,
+materials and controls without new fixture menus. LA-SELECTIVE remains the
+intended primary granular candidate; a workbench default is not general-main
+rollout. Keep #466 Draft. [The release contract](../architecture/workbench-freed-objects.md)
+and [dated evidence](../audits/2026-11-07-workbench-freed-objects.md) separately
+record implementation and qualification. Original SOL blockers remain failures.
 
 This page carries forward owner direction recorded in the
 [pre-rewrite handover](../audits/pre-rag-rewrite-2026-09-08/cybersand-codex-development-handover.md.txt)

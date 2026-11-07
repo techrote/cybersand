@@ -4,11 +4,22 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-07
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## Bounded ordinary cutting — Draft466
+
+The [freed rules and same-World release](../architecture/workbench-freed-objects.md)
+are implemented and functionally qualified for RedBrick in the ordinary
+workbench. Actual520/6 tree and356/5 building, workers1/4, retained motion,
+refusal recovery, replay and scene retirement pass on Windows/Linux. The
+[dated dossier](../audits/2026-11-07-workbench-freed-objects.md) preserves the
+unchanged contact law and historical SOL failures. Next is independent review
+and portable runtime admission, then separately admitted retained editing/
+broader stress as needed. Keep Draft; no rest-screen tuning or default change.
 
 ## Owner-accepted fresh-body demonstration
 
@@ -17,8 +28,8 @@ workbench as one saved canvas, with Sand/mixed beds and existing controls.
 The owner accepts their visible behaviour. Keep the current response and stop
 using the numerical rest screen alone to justify gameplay physics changes.
 The [canvas evidence](../audits/2026-11-06-sol-fresh-canvas.md) does not rewrite
-historical ordering/clearance results. Next is the gameplay definition of freed
-objects, then a bounded ordinary-edit native/Rapier ownership integration.
+historical ordering/clearance results. The freed-object contract and bounded ordinary-edit integration are now
+qualified above.
 Keep #466 Draft; no new test menu, solver/default promotion or guard removal.
 
 ## SOL fixed-action ordering registration — 2026-11-06

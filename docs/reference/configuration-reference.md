@@ -4,11 +4,21 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-07
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 ---
 
 # Configuration reference
+
+## Normal workbench release bounds
+
+The [normal cut lane](../architecture/workbench-freed-objects.md) admits
+256 erase dabs of radius at most24,64 adjacent seeds, eight active bodies and
+64 total proxies. Each component has at most1,024 members, a padded64×64 scope
+and eight exact proxies. The lazy native store is267,456 bytes in the qualified
+build; no tick/pool job allocates it. New bodies retain unit mass/native inertia,
+gravity0.094, damping0.04/0.04, friction0.78,60Hz and budget20. This does not alter
+catalogue weights, coupling caps, liquid policy or accepted defaults.
 
 ## Structural detachment capacities — 2026-11-01
 

@@ -4,11 +4,25 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-07
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Ordinary cut checkpoint — 2026-11-07
+
+Rules were committed before implementation. The sole writer remains
+`C:/khybersand/build/sol466-order-owned/khybersand`, branch
+`codex/sol-workbench-law-20261106`, Draft #466 against unchanged #461.
+Read [freed rules](../architecture/workbench-freed-objects.md) and the
+[qualification dossier](../audits/2026-11-07-workbench-freed-objects.md) first.
+Code/build source isd5ebc491; exact-value observer isd258a82f. Native source was
+rebuilt with two reviewed consumer transitions; contact law/weights/caps remain
+unchanged. Actual Windows/Linux worker1/4 cutting and lifecycle pass. Preserve
+all failed attempts and Linux ABI-floor blocker. The owner's original live
+window remains open on its original build; do not reset or close it.
+No new test menu, main/default change, Ready or merge. Independent review is next.
 
 ## Live canvas and owner direction
 
@@ -17,10 +31,9 @@ of four fresh compound bodies in the ordinary workbench. Saved name is
 `sol-fresh-structures-20261106`; existing Load start/P/Step/Restore start work.
 The interactive window must remain open. The [fresh-canvas dossier](../audits/2026-11-06-sol-fresh-canvas.md)
 records actual Windows/Linux and graphical qualification. Source is still owned
-by `codex/sol-workbench-law-20261106` / Draft #466. No native source or contact
-law change. Preserve old numerical failures without treating subpixel residual
-motion as an established gameplay bug. Next scope is a freed-object contract
-and bounded ordinary-workbench ownership integration, not more rest tuning.
+by `codex/sol-workbench-law-20261106` / Draft #466. At that fresh-canvas checkpoint native source and contact
+law were unchanged. Preserve old numerical failures without treating subpixel residual
+motion as an established gameplay bug. The bounded release continuation is documented above; do not resume rest tuning.
 
 ## SOL fixed-action ordering continuation — 2026-11-06
 

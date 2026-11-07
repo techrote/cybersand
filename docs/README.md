@@ -4,11 +4,20 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-07
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+## Ordinary workbench cutting
+
+The [freed-object rules](architecture/workbench-freed-objects.md) now drive
+ordinary erase-stroke cutting on Draft #466. Exact tree/building ownership,
+moving-body retention and lifecycle tests pass on actual Windows/Linux;
+[dated evidence](audits/2026-11-07-workbench-freed-objects.md) retains source pins,
+all failed work, platform limits and original SOL blockers. No new menu,
+physics tuning, general-default change or merge is part of this checkpoint.
 
 ## Ordinary workbench fresh structures
 

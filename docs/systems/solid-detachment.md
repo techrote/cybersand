@@ -4,11 +4,24 @@ status: Current
 document-kind: contract
 scope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance
 canonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-07
 related-documents: [../operations/soliding-programme.md, ../architecture/soliding-lifecycle.md, ../architecture/rigid-body-and-cellular-coupling.md, ../audits/2026-11-01-sol281-current-main.md, ../audits/2026-11-03-sol281-dense-contact-registration.md, ../audits/2026-11-03-sol281-dense-contact.md]
 ---
 
 # Native structural detachment
+
+## Ordinary workbench cut release — 2026-11-07
+
+**Current on dependent Draft #466:** ordinary erasing can release bounded
+RedBrick structures through the [freed-object contract](../architecture/workbench-freed-objects.md).
+One native World retains complete tuple custody; one main-thread Rapier body
+owns each exact proxy union. This normal lane supports eight active records;
+the older single-aggregate diagnostic lane remains separate. Cold unapplied
+regions and all eligibility/capacity/authority refusals remain native.
+The [dated qualification](../audits/2026-11-07-workbench-freed-objects.md) records
+actual520/6 tree and356/5 building, Windows/Linux workers1/4, moving-owner
+retention, Step/Play/refusal/replay/teardown and unchanged physics. This is
+functional ownership admission, not original SOL physical clearance or rollout.
 
 ## Fixed-action correction and impulse ordering — 2026-11-06
 

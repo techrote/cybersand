@@ -4,11 +4,24 @@ status: Current
 document-kind: contract
 scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-07
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
 # Player control playground
+
+## Cutting ordinary workbench structures
+
+Choose RedBrick in the existing material picker. Build face-connected pieces
+with Wall/Hard wall supports, then erase a support using the existing RMB or
+Erase tool. Release the mouse to check adjacent pieces. A cold paused canvas
+needs one ordinary Step or Play first to apply its simulation region. Eligible
+unanchored pieces become passive bodies; refused pieces stay native and report
+why. No new test menu is present. See the [rules and limits](../architecture/workbench-freed-objects.md).
+After capture, retained body/settings replacements refuse until an admitted
+transfer exists. Save keeps an authored start; Restore/Load/New blank retire
+the complete old owner and start fresh. Existing painting, palette, powder,
+liquid and save/load controls remain; this is not full live-state persistence.
 
 ## File-local passive canvas bodies
 

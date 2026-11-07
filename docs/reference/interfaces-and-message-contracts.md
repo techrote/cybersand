@@ -6,10 +6,26 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-07
 ---
 
 # Interfaces and message contracts
+
+## Workbench cut protocol and version4 starts
+
+`CyberNativeCellWorld.workbench_cut_command` is a copied-value adapter for the
+exclusive worker. `cybersand.workbench-cut.v1` supports begin/next/acknowledge/
+commit/finalize/cancel/end/fail. One pending command/reply carries a monotonic
+request ID and World generation; native tokens bind full tuples, geometry,
+source tick/revision and body reservation. Native `body_id` names the first
+mask proxy, while workbench instance/physical-body IDs remain separate.
+The complete prospective roster is validated before retirement. End re-primes
+the unchanged/current roster even after zero release or begin refusal.
+No RID or scene object crosses this boundary; see [ownership](../architecture/workbench-freed-objects.md).
+Version4 retains the version2/3 root fields, adding numeric rectangle stamps
+`[x,y,width,height,material]` alongside discs `[x,y,radius,material]`.
+Capture appends exact source-erasure rectangles and one existing `canvas_body`
+record. Replay creates fresh bodies, not archived live material custody.
 
 ## Passive canvas body format
 

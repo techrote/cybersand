@@ -6,10 +6,20 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-07
 ---
 
 # Architectural and simulation invariants
+
+## Freed-object enforcement scope
+
+Current Draft #466 enforces bounded face connectivity, anchor/unknown refusal,
+full tuple retirement, one physical body per exact union and explicit epoch/
+roster rebind under held clocks. [The contract](../architecture/workbench-freed-objects.md)
+owns those rules. Native serialization remains refused while active custody is
+not encodable. Full-owner teardown is distinct from restoring a moving body
+into cells. Functional host tests do not prove original physical clearance,
+closed energy or universal performance.
 
 Use these stable IDs in reviews and fixtures. **Current** identifies inspected
 scope; **Approved** requires implementation where incomplete. **Planned**,
