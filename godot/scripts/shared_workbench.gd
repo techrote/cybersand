@@ -312,7 +312,8 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 
 func install_generated_start(candidate: Dictionary, packet: Dictionary) -> bool:
 	if busy(): return refuse("Wait for the current native-owner transaction.")
-	if packet.is_empty(): return refuse("Generator has no complete verified proposal.")
+	if packet.is_empty() or not _generated_dialog.attests(packet):
+		return refuse("Generated map is not the current verified native preview; regenerate first.")
 	# Explicit dialog confirmation is the only replacement path. No partial
 	# native writes occur before the owner's acknowledged prepared commit.
 	if not apply(candidate,false,0,false,false,packet): return false
