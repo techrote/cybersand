@@ -28,14 +28,14 @@ CASES = [
     ("envelope", "test_workbench_authoring_envelope.gd", True, []),
     ("failure-controls", "test_workbench_agent_failures.gd", True, []),
     ("step", "test_workbench_agent_step_sequence.gd", False, []),
-    ("step-paused-boundary", "test_wb525_step_paused_boundary.gd", False, []),
+    ("step-paused-boundary", "test_wb525_step_paused_boundary_render.gd", False, []),
     ("native-owner", "test_workbench_agent_owner.gd", False, []),
     ("four-tool-join", "test_workbench_agent_four_tool_join.gd", False, []),
     ("signed-join", "test_workbench_agent_signed_join.gd", False, []),
     ("hopper", "test_workbench_agent_hopper_godot.gd", False, []),
-    ("mounted-hopper", "test_wb525_mounted_hopper.gd", False, []),
+    ("mounted-hopper", "test_wb525_mounted_hopper_render.gd", False, []),
     ("mounted", "test_workbench_agent_mounted.gd", False, []),
-    ("capacity-camera", "test_wb525_capacity_and_camera.gd", False, []),
+    ("capacity-camera", "test_wb525_capacity_and_camera_render.gd", False, []),
     ("manual-input", "test_workbench_input.gd", False, []),
     ("render-bridge", "test_native_render_bridge_regression.gd", False, []),
     ("manual-save", "test_workbench_agent_disabled.gd", False, []),
@@ -172,7 +172,7 @@ def main() -> int:
                 command += ["--headless"]
             elif args.xvfb:
                 command = ["xvfb-run", "--auto-servernum", "--server-args=-screen 0 1920x1080x24 -nolisten tcp", *command]
-            command += ["--path", str(ROOT / "godot")]
+            command += ["--path", str(ROOT / "godot"), "--audio-driver", "Dummy"]
             command += ["--editor", "--import", "--quit"] if script is None else [
                 "--rendering-method", "gl_compatibility", "--script", "res://tests/" + script, *extra]
             case_env = dict(env)
