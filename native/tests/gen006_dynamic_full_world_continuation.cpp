@@ -534,9 +534,219 @@ void actual_dynamic_frontier(std::uint32_t workers, const std::string& output_pa
               << " final_native_tick=" << live->completed_tick_index()
               << " scope=FULL_WORLD_NON_DURABLE" << '\n';
 
+    // A complete *chronological* native replay: editing Water/Sand in TWO
+    // signed residents, advancing real physics, editing those residents AGAIN,
+    // advancing real physics, then publishing ONE full-World candidate. The
+    // reference is an independent, never-restored World with direct inputs.
+    // This exercises real between-tick edit timing, not an edit-list shuffle.
+    const FullWorldFence replay_fence{
+        a.session, a.recipe, a.incarnation + 3U, a.generation + 3U};
+    auto replay = FullResidentBundleStage::capture(
+        live, replay_fence, full_roster, full_seams, kBoundedBytes);
+    const auto replay_original = live.get();
+    const auto replay_base = live->save_physical_state();
+    const auto replay_base_hash = live->physical_state_hash();
+    const auto replay_base_tick = live->completed_tick_index();
+    const auto replay_base_ledger = live->quantity_ledger();
+    const auto replay_base_memory = live->resident_cell_bytes();
+    const std::vector<BundleReplayStep> script{
+        BundleReplayStep::material_edit({{-2, -2}, 3, 18, Material::Water}),
+        BundleReplayStep::material_edit({{-2, -1}, 4, 22, Material::Sand}),
+        BundleReplayStep::native_ticks(2),
+        // Same exact cell is valid AGAIN after a native tick epoch.
+        BundleReplayStep::material_edit({{-2, -2}, 3, 18, Material::Empty}),
+        BundleReplayStep::material_edit({{-2, -1}, 6, 23, Material::Water}),
+        BundleReplayStep::native_ticks(3),
+        BundleReplayStep::material_edit({{-2, -2}, 9, 21, Material::Sand}),
+        BundleReplayStep::native_ticks(1),
+    };
+    auto refuse_script = [&](std::vector<BundleReplayStep> candidate,
+                             BundleAdmissionStatus status, const char* message) {
+        bool refused = false;
+        try { (void)replay.stage_replay_script(candidate); }
+        catch (const BundleAdmissionError& e) { refused = e.status() == status; }
+        check(refused && live.get() == replay_original &&
+              live->save_physical_state() == replay_base &&
+              live->physical_state_hash() == replay_base_hash &&
+              live->completed_tick_index() == replay_base_tick &&
+              live->quantity_ledger() == replay_base_ledger &&
+              live->resident_cell_bytes() == replay_base_memory, message);
+    };
+    refuse_script({}, BundleAdmissionStatus::InvalidReplayScript,
+                  "GEN006_REPLAY_EMPTY_ACCEPTED");
+    refuse_script({BundleReplayStep::material_edit({{-2, -2}, 1, 1, Material::Water}),
+                   BundleReplayStep::native_ticks(0),
+                   BundleReplayStep::native_ticks(1)},
+                  BundleAdmissionStatus::InvalidReplayScript,
+                  "GEN006_REPLAY_ZERO_TICKS_ACCEPTED");
+    refuse_script({BundleReplayStep::material_edit({{-2, -2}, 1, 1, Material::Water}),
+                   BundleReplayStep::material_edit({{-2, -2}, 1, 1, Material::Sand}),
+                   BundleReplayStep::native_ticks(1)},
+                  BundleAdmissionStatus::DuplicateEdit,
+                  "GEN006_REPLAY_SAME_EPOCH_DUPLICATE_ACCEPTED");
+    refuse_script({BundleReplayStep::material_edit({{-2, 0}, 1, 1, Material::Water}),
+                   BundleReplayStep::native_ticks(1),
+                   BundleReplayStep::material_edit({{-2, -2}, 1, 2, Material::Sand})},
+                  BundleAdmissionStatus::EditOutsideResident,
+                  "GEN006_REPLAY_NONRESIDENT_EDIT_ACCEPTED");
+    refuse_script({BundleReplayStep::material_edit({{-2, -2}, 1, 1, Material::Water}),
+                   BundleReplayStep::native_ticks(16),
+                   BundleReplayStep::native_ticks(1)},
+                  BundleAdmissionStatus::InvalidReplayScript,
+                  "GEN006_REPLAY_OVER_BUDGET_ACCEPTED");
+
+    const auto script_receipt = replay.stage_replay_script(script);
+    check(script_receipt.steps == script.size() &&
+          script_receipt.edits == 5 && script_receipt.ticks == 6 &&
+          script_receipt.completed_tick == replay_base_tick + 6 &&
+          script_receipt.resident_chunks == full_roster.size() &&
+          replay.replay_script().size() == script.size() &&
+          live.get() == replay_original &&
+          live->save_physical_state() == replay_base &&
+          live->physical_state_hash() == replay_base_hash &&
+          live->completed_tick_index() == replay_base_tick &&
+          live->quantity_ledger() == replay_base_ledger &&
+          live->resident_cell_bytes() == replay_base_memory,
+          "GEN006_REPLAY_PRIVATE_STAGE_MUTATED_LIVE");
+    refuse_script(script, BundleAdmissionStatus::ReplayAlreadyStaged,
+                  "GEN006_REPLAY_DOUBLE_STAGE_ACCEPTED");
+    bool legacy_refused = false;
+    try { replay.stage_material_edits({}); }
+    catch (const BundleAdmissionError& e) {
+        legacy_refused = e.status() == BundleAdmissionStatus::ReplayConflictsWithLegacy;
+    }
+    check(legacy_refused, "GEN006_REPLAY_LEGACY_INPUT_MIX_ACCEPTED");
+
+    // Independent direct application: never run this test's stage_script()
+    // on the control, and never construct it from the replay's CYPS output.
+    reference->set(-128 + 3, -128 + 18, Material::Water);
+    reference->set(-128 + 4, -64 + 22, Material::Sand);
+    for (unsigned i = 0; i < 2; ++i) (void)reference->tick();
+    reference->set(-128 + 3, -128 + 18, Material::Empty);
+    reference->set(-128 + 6, -64 + 23, Material::Water);
+    for (unsigned i = 0; i < 3; ++i) (void)reference->tick();
+    reference->set(-128 + 9, -128 + 21, Material::Sand);
+    (void)reference->tick();
+    check(!reference->has_failed() &&
+          script_receipt.completed_tick == reference->completed_tick_index() &&
+          script_receipt.physical_hash == reference->physical_state_hash() &&
+          script_receipt.quantity == reference->quantity_ledger() &&
+          script_receipt.resident_cell_bytes == reference->resident_cell_bytes(),
+          "GEN006_REPLAY_NOT_EQUAL_TO_UNINTERRUPTED_NATIVE");
+
+    const auto replay_post_receipt = replay.seal_publication(kBoundedBytes);
+    check(replay_post_receipt.replay_steps == script.size() &&
+          replay_post_receipt.edit_count == 5 &&
+          replay_post_receipt.preview_ticks == 6 &&
+          replay_post_receipt.physical_hash == reference->physical_state_hash() &&
+          replay_post_receipt.quantity == reference->quantity_ledger(),
+          "GEN006_REPLAY_SEALED_RECEIPT_INCORRECT");
+    const std::vector<std::uint8_t> replay_post(
+        replay.publication_bytes().begin(), replay.publication_bytes().end());
+    const auto replay_path = output_path + ".replay";
+    {
+        std::ofstream output(replay_path, std::ios::binary | std::ios::trunc);
+        check(static_cast<bool>(output), "GEN006_REPLAY_FILE_OPEN_FAILED");
+        output.write(reinterpret_cast<const char*>(replay_post.data()),
+                     static_cast<std::streamsize>(replay_post.size()));
+        output.flush();
+        check(static_cast<bool>(output), "GEN006_REPLAY_FILE_WRITE_FAILED");
+    }
+    std::ifstream reread_stream(replay_path, std::ios::binary);
+    check(static_cast<bool>(reread_stream), "GEN006_REPLAY_REREAD_FAILED");
+    const std::vector<std::uint8_t> replay_reread(
+        (std::istreambuf_iterator<char>(reread_stream)), std::istreambuf_iterator<char>());
+    check(replay_reread == replay_post, "GEN006_REPLAY_READBACK_DIFFERENT");
+    auto replay_cold = World::restore_physical_state(cfg, replay_reread);
+    check(replay_cold && !replay_cold->has_failed() &&
+          replay_cold->save_physical_state() == replay_reread &&
+          replay_cold->physical_state_hash() == reference->physical_state_hash() &&
+          replay_cold->quantity_ledger() == reference->quantity_ledger() &&
+          replay_cold->completed_tick_index() == reference->completed_tick_index(),
+          "GEN006_REPLAY_COLD_NATIVE_NOT_EQUAL");
+    auto altered_script = script;
+    altered_script[0].edit.material = Material::Sand;
+    auto altered_receipt = script_receipt;
+    ++altered_receipt.completed_tick;
+    auto altered_post = replay_reread;
+    altered_post.back() ^= 1U;
+    check(replay.commit(live, replay_fence, replay_base) ==
+              FullWorldCommitStatus::UnverifiedCopy &&
+          replay.commit_published(live, replay_fence, replay_base, {},
+                                  BundleTickReceipt{}, replay_reread,
+                                  replay_post_receipt) ==
+              FullWorldCommitStatus::UnverifiedCopy &&
+          replay.commit_replay_published(live, replay_fence, replay_base,
+                                         altered_script, script_receipt,
+                                         replay_reread, replay_post_receipt) ==
+              FullWorldCommitStatus::UnverifiedCopy &&
+          replay.commit_replay_published(live, replay_fence, replay_base,
+                                         script, altered_receipt,
+                                         replay_reread, replay_post_receipt) ==
+              FullWorldCommitStatus::UnverifiedCopy &&
+          replay.commit_replay_published(live, replay_fence, replay_base,
+                                         script, script_receipt,
+                                         altered_post, replay_post_receipt) ==
+              FullWorldCommitStatus::UnverifiedCopy &&
+          replay.commit_replay_published(live, wrong_recipe, replay_base,
+                                         script, script_receipt,
+                                         replay_reread, replay_post_receipt) ==
+              FullWorldCommitStatus::StaleFence &&
+          live.get() == replay_original &&
+          live->save_physical_state() == replay_base &&
+          live->physical_state_hash() == replay_base_hash &&
+          live->completed_tick_index() == replay_base_tick &&
+          live->quantity_ledger() == replay_base_ledger &&
+          live->resident_cell_bytes() == replay_base_memory,
+          "GEN006_REPLAY_REFUSAL_MUTATED_LIVE");
+    check(replay.commit_replay_published(live, replay_fence, replay_base,
+                                         script, script_receipt,
+                                         replay_reread, replay_post_receipt) ==
+              FullWorldCommitStatus::Committed &&
+          replay.commit_replay_published(live, replay_fence, replay_base,
+                                         script, script_receipt,
+                                         replay_reread, replay_post_receipt) ==
+              FullWorldCommitStatus::AlreadyCommitted &&
+          live->physical_state_hash() == reference->physical_state_hash() &&
+          live->quantity_ledger() == reference->quantity_ledger() &&
+          live->completed_tick_index() == reference->completed_tick_index(),
+          "GEN006_REPLAY_ATOMIC_COMMIT_NOT_UNINTERRUPTED");
+    for (unsigned i = 0; i < 8; ++i) {
+        const auto l = live->tick();
+        const auto c = reference->tick();
+        observed = std::max(observed, l.worker_threads_observed);
+        check(!live->has_failed() && !reference->has_failed() &&
+              l.tick == c.tick &&
+              live->physical_state_hash() == reference->physical_state_hash() &&
+              live->quantity_ledger() == reference->quantity_ledger() &&
+              live->completed_tick_index() == reference->completed_tick_index() &&
+              live->resident_cell_bytes() == reference->resident_cell_bytes(),
+              "GEN006_REPLAY_EIGHT_TICK_CONTINUATION_DIVERGED");
+    }
+    std::cout << "GEN006_DYNAMIC_ORDERED_REPLAY_PASS"
+              << " configured_workers=" << workers
+              << " replay_steps=" << script.size()
+              << " alternating_edit_phases=3"
+              << " material_edits=" << script_receipt.edits
+              << " private_ticks=" << script_receipt.ticks
+              << " independently_uninterrupted=1"
+              << " post_commit_ticks=8"
+              << " observed_workers_max=" << observed
+              << " scope=FULL_WORLD_NON_DURABLE" << '\n';
+    std::cout << "GEN006_DYNAMIC_REPLAY_EXPECTED"
+              << " configured_workers=" << workers
+              << " published_tick=" << replay_post_receipt.completed_tick
+              << " published_physical=" << replay_post_receipt.physical_hash
+              << " final_tick=" << live->completed_tick_index()
+              << " final_physical=" << live->physical_state_hash()
+              << " final_water=" << live->quantity_ledger().water_visible
+              << " resident_chunks=" << live->chunk_count()
+              << " snapshot_bytes=" << replay_reread.size()
+              << " scope=FULL_WORLD_READBACK_NOT_DURABLE" << '\n';
+
     // Stale stage must not swap an owner changed by native tick. A separate
     // pointer-identity check rejects an equal-content new residency (ABA).
-    const FullWorldFence b{a.session, a.recipe, a.incarnation + 3U, a.generation + 3U};
+    const FullWorldFence b{a.session, a.recipe, a.incarnation + 4U, a.generation + 4U};
     auto stale = FullWorldContinuationStage::capture(live, b, kBoundedBytes);
     const std::vector<std::uint8_t> old(stale.bytes().begin(), stale.bytes().end());
     (void)live->tick();
