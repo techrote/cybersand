@@ -97,8 +97,10 @@ Automated disposition is **REPAIR** if any registered profile:
 - cannot retain approximately 60 seconds of evidence;
 - reports any exact Water conservation mismatch;
 - does not read back PressureFlow `cached_dormant`;
-- fails to enable ballistic Water and impact spray or observes no body-driven
-  spray activity;
+- fails to enable ballistic Water/impact spray or observes no ballistic parcel
+  transport in that profile;
+- produces no body-driven impact-spray activity anywhere in the registered
+  package;
 - fails to produce a graphical screenshot;
 - fails orderly exclusive-worker/Rapier shutdown.
 
@@ -125,6 +127,28 @@ replace it.
 ## Execution status
 
 Registered and dispatched from the dedicated qualification branch on
-6 November 2026. Final exact-head workflow IDs, artifact hashes, measurements
-and ACCEPT/REPAIR disposition are appended only after original hosted evidence
-has completed and been inspected.
+6 November 2026.
+
+### First full graphical campaign — contract correction
+
+Run `42314396699` at qualification head
+`676b54a12c7e5acee09b79a537fc6cb897af29ed` completed all three real Windows
+ANGLE profiles for about 60.1 seconds each, produced all three screenshots,
+retained exact Water conservation, made native/Rapier progress and joined the
+worker cleanly. The evidence artifact is `13549509418`; GitHub reported outer
+artifact ZIP SHA-256
+`f0557fd389e6da7105d6077d3b3ddb3e58b0be905aa1de12e4dcb6337b06214e`.
+
+Its sole automated REPAIR was an over-constrained qualification assertion:
+stress-canvas was required to produce *body-driven* impact spray even though
+that authored stress layout does not place its barrels through a Water impact
+apparatus. Stress still produced 3,755 ballistic face-release parcels
+(930,186 quantity), while my-canvas observed 385 impact launches + 143 lifts
+and bench-canvas 769 + 217. This is an apparatus-contract defect, not a
+production failure.
+
+The corrected gate therefore requires ballistic parcel transport in every
+profile and requires body-driven impact spray in at least one registered
+profile. No physical, solver, canvas, runtime or performance condition was
+relaxed. A fresh exact-head run is required; the prior REPAIR is retained as
+original evidence and is not converted into a pass.

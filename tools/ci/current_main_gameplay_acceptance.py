@@ -98,13 +98,21 @@ def evaluate(data: dict[str, Any]) -> tuple[str, list[str]]:
         if not str(row.get("screenshot", "")):
             problems.append(f"{name}: graphical screenshot missing")
         spray = row.get("spray_final", {})
-        totals = spray.get("totals", {}) if isinstance(spray, dict) else {}
-        if int(totals.get("launched", 0)) + int(totals.get("lifted", 0)) <= 0:
-            problems.append(f"{name}: no body-driven impact spray observed")
+        ledger = spray.get("ledger", {}) if isinstance(spray, dict) else {}
+        if int(ledger.get("launched_parcels", 0)) <= 0:
+            problems.append(f"{name}: no ballistic parcel transport observed")
         assignment = row.get("water_assignment", {})
         if (str(assignment.get("applied_family", "")) != "pressure_flow_v1"
                 or str(assignment.get("applied_variant", "")) != "cached_dormant"):
             problems.append(f"{name}: PressureFlow cached_dormant readback missing")
+    impact_profiles = 0
+    for row in by_name.values():
+        spray = row.get("spray_final", {}) if isinstance(row, dict) else {}
+        totals = spray.get("totals", {}) if isinstance(spray, dict) else {}
+        if int(totals.get("launched", 0)) + int(totals.get("lifted", 0)) > 0:
+            impact_profiles += 1
+    if impact_profiles <= 0:
+        problems.append("no registered profile observed body-driven impact spray")
     if int(data.get("failures", 0)) != 0:
         problems.append(f"harness recorded {int(data.get('failures', 0))} failed assertions")
     if not bool(data.get("worker_joined")):

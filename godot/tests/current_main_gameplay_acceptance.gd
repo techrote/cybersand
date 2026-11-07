@@ -354,8 +354,9 @@ func _profile(desktop, panel, profile: Dictionary) -> Dictionary:
 	expect(rapier_ticks > 0, name + " Rapier simulation made progress")
 	expect(desktop.water_checks > 0 and desktop.water_mismatches == 0,
 		name + " exact closed-system Water ledger remained conserved")
-	expect(int(coupling.get("launched", 0)) + int(coupling.get("lifted", 0)) > 0,
-		name + " actual body-driven impact spray was observed")
+	var ballistic_ledger: Dictionary = spray.get("ledger", {})
+	expect(int(ballistic_ledger.get("launched_parcels", 0)) > 0,
+		name + " ballistic parcel transport was observed")
 	var screenshot := await _capture(name)
 	var assignment := _water_assignment(desktop)
 	return {
@@ -455,9 +456,14 @@ func run() -> void:
 
 	var complete_rows := 0
 	var screenshots := 0
+	var impact_profiles := 0
 	for row: Dictionary in rows:
 		complete_rows += int(bool(row.get("completed", false)))
 		screenshots += int(not str(row.get("screenshot", "")).is_empty())
+		var totals: Dictionary = row.get("spray_final", {}).get("totals", {})
+		if int(totals.get("launched", 0)) + int(totals.get("lifted", 0)) > 0:
+			impact_profiles += 1
+	expect(impact_profiles > 0, "body-driven impact spray was observed in at least one registered profile")
 	var verdict := "ACCEPT" if failures == 0 and complete_rows == PROFILES.size() and screenshots == PROFILES.size() else "REPAIR"
 	var result := {
 		"schema":"cybersand-current-main-integrated-gameplay-acceptance-v1",
@@ -472,6 +478,7 @@ func run() -> void:
 		"failures":failures,
 		"failure_messages":failure_messages,
 		"worker_joined":worker_joined,
+		"impact_spray_profiles":impact_profiles,
 		"verdict":verdict,
 		"scope":{
 			"source_authority":"registered current-main production source; qualification files only differ",

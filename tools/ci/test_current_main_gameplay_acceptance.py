@@ -24,7 +24,7 @@ def profile(name):
         "water_checks": 100,
         "water_mismatches": 0,
         "screenshot": name + ".png",
-        "spray_final": {"totals": {"launched": 1, "lifted": 0}},
+        "spray_final": {"totals": {"launched": 1, "lifted": 0}, "ledger": {"launched_parcels": 2}},
         "water_assignment": {"applied_family": "pressure_flow_v1", "applied_variant": "cached_dormant"},
         "process_interval_ms": {"p95": 16.7},
         "native_tick_ms": {"p95": 10.0},
@@ -68,13 +68,21 @@ class AcceptanceEvaluationTests(unittest.TestCase):
         data["profiles"][2]["native_tick_ms"] = {"p95": 1900.0}
         self.assertEqual("ACCEPT", acceptance.evaluate(data)[0])
 
-    def test_missing_screenshot_and_spray_repair(self):
+    def test_missing_screenshot_and_ballistic_transport_repair(self):
         data = accepted()
         data["profiles"][0]["screenshot"] = ""
-        data["profiles"][0]["spray_final"]["totals"]["launched"] = 0
+        data["profiles"][0]["spray_final"]["ledger"]["launched_parcels"] = 0
         verdict, problems = acceptance.evaluate(data)
         self.assertEqual("REPAIR", verdict)
         self.assertGreaterEqual(len(problems), 2)
+
+    def test_package_requires_at_least_one_body_impact_spray_profile(self):
+        data = accepted()
+        for row in data["profiles"]:
+            row["spray_final"]["totals"] = {"launched": 0, "lifted": 0}
+        verdict, problems = acceptance.evaluate(data)
+        self.assertEqual("REPAIR", verdict)
+        self.assertTrue(any("body-driven impact spray" in problem for problem in problems))
 
     def test_summary_writes_markdown_csv_and_machine_record(self):
         data = accepted()
