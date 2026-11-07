@@ -42,6 +42,9 @@ func _run() -> void:
 	_test_provider_errors()
 	_test_budget_and_duplicates()
 	await _test_ui_shell()
+	# Let deferred queued Node deletions and emitted signals finish before exit.
+	await process_frame
+	await process_frame
 	print("WB_AGENT_528 fake-provider checks %d, failures %d" % [assertions, failures])
 	quit(1 if failures else 0)
 
