@@ -74,11 +74,16 @@ def selected(rep: int, subset: str) -> list[dict]:
     rows = selection(rep)
     if subset == "full":
         return rows
-    if subset != "quick":
+    if subset not in ("quick", "pfprofile"):
         raise ValueError("Unknown comparison subset: " + subset)
     rows = [r for r in rows if r["group"] in QUICK_GROUPS]
-    if len(rows) != 20 or len({r["id"] for r in rows}) != 20:
-        raise AssertionError("Incomplete 20-configuration Godot quick slice")
+    if subset == "pfprofile":
+        # All six PressureFlow modes plus FreeMass/CellularYield controls per core.
+        rows = [r for r in rows if r["family"] in
+                ("pressure_flow_v1", "freemass_v1", "cellular_yield_v1")]
+    expected = 20 if subset == "quick" else 16
+    if len(rows) != expected or len({r["id"] for r in rows}) != expected:
+        raise AssertionError("Incomplete legal Godot profile subset")
     for i, row in enumerate(rows):
         row["sequence"] = i
     return rows
@@ -386,12 +391,12 @@ def main() -> int:
     p.add_argument("--rapier", default=str(RAPIER))
     p.add_argument("--out", required=True)
     p.add_argument("--timeout", type=int, default=3600)
-    p.add_argument("--subset", choices=("full","quick"), default="full")
+    p.add_argument("--subset", choices=("full","quick","pfprofile"), default="full")
     a = commands.add_parser("compare")
     a.add_argument("--baseline", required=True)
     a.add_argument("--candidate", required=True)
     a.add_argument("--output", required=True)
-    a.add_argument("--subset", choices=("full","quick"), default="full")
+    a.add_argument("--subset", choices=("full","quick","pfprofile"), default="full")
     args = parser.parse_args()
     if args.command == "check":
         check()
