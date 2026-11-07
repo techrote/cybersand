@@ -5,6 +5,23 @@ constexpr std::uint32_t kGen006ChunkMagic = 0x434b3647U; // "G6KC"
 constexpr std::uint32_t kGen006ChunkVersion = 1U;
 constexpr std::size_t kGen006MaxBytes = 16U * 1024U * 1024U;
 
+// Reuse the same signed-cell multiplication and rule-radius admission bound
+// as install_generated_chunk. A rehashed checkpoint is not a spatial permit.
+[[nodiscard]] bool gen006_chunk_extent_valid(
+    ChunkCoord coord, std::int32_t chunk_size, std::int32_t rule_radius) noexcept {
+    if (chunk_size <= 0 || rule_radius < 0) return false;
+    constexpr auto minimum = std::numeric_limits<std::int64_t>::min();
+    constexpr auto maximum = std::numeric_limits<std::int64_t>::max();
+    const auto size = static_cast<std::int64_t>(chunk_size);
+    const auto radius = static_cast<std::int64_t>(rule_radius);
+    if (coord.x < minimum / size || coord.y < minimum / size ||
+        coord.x > maximum / size || coord.y > maximum / size) return false;
+    const auto origin_x = coord.x * size;
+    const auto origin_y = coord.y * size;
+    return origin_x >= minimum + radius && origin_y >= minimum + radius &&
+        origin_x <= maximum - (size - 1) - radius &&
+        origin_y <= maximum - (size - 1) - radius;
+}
 
 } // namespace
 
@@ -21,6 +38,9 @@ ChunkCheckpointCapture World::capture_chunk_checkpoint(ChunkCoord coord) const {
     ChunkCheckpointCapture result{};
     if (tick_failed_) { result.status = ChunkCheckpointStatus::WorldFailed; return result; }
     if (tick_in_progress_) { result.status = ChunkCheckpointStatus::TickInProgress; return result; }
+    if (!gen006_chunk_extent_valid(coord, config_.chunk_size, config_.maximum_rule_radius)) {
+        result.status = ChunkCheckpointStatus::InvalidRecord; return result;
+    }
     const auto* chunk = find_chunk(coord);
     if (!chunk) { result.status = ChunkCheckpointStatus::NotResident; return result; }
     // Global sidecars and external-host coupling cannot be carried through
@@ -139,9 +159,12 @@ ChunkCheckpointStatus World::evict_durable_checkpoint(
         return ChunkCheckpointStatus::UnsupportedDomain;
     // From here on: no allocation or throws. Acknowledged checkpoint exists
     // outside World before its last native copy is destroyed.
-    const auto dx=static_cast<std::uint64_t>(staged.coord.x-chunk_directory_x_);
-    const auto dy=static_cast<std::uint64_t>(staged.coord.y-chunk_directory_y_);
-    if(dx < static_cast<std::uint64_t>(chunk_directory_width_) &&
+    const auto dx=static_cast<std::uint64_t>(staged.coord.x)-
+                  static_cast<std::uint64_t>(chunk_directory_x_);
+    const auto dy=static_cast<std::uint64_t>(staged.coord.y)-
+                  static_cast<std::uint64_t>(chunk_directory_y_);
+    if(staged.coord.x >= chunk_directory_x_ && staged.coord.y >= chunk_directory_y_ &&
+       dx < static_cast<std::uint64_t>(chunk_directory_width_) &&
        dy < static_cast<std::uint64_t>(chunk_directory_height_)) {
         chunk_directory_[static_cast<std::size_t>(
             dy*static_cast<std::uint64_t>(chunk_directory_width_)+dx)]=nullptr;
@@ -157,6 +180,9 @@ ChunkCheckpointStatus World::restore_chunk_checkpoint(
     ChunkCoord expected,std::span<const std::uint8_t> bytes) {
     if(tick_failed_)return ChunkCheckpointStatus::WorldFailed;
     if(tick_in_progress_)return ChunkCheckpointStatus::TickInProgress;
+    // Refuse before native directory lookup, allocation or owner mutation.
+    if(!gen006_chunk_extent_valid(expected,config_.chunk_size,config_.maximum_rule_radius))
+        return ChunkCheckpointStatus::InvalidRecord;
     if(find_chunk(expected))return ChunkCheckpointStatus::AlreadyResident;
     if(chunks_.size()>=config_.maximum_chunk_count)return ChunkCheckpointStatus::CapacityFull;
     if(bytes.size()<32U+64U || bytes.size()>kGen006MaxBytes)
@@ -256,9 +282,12 @@ ChunkCheckpointStatus World::restore_chunk_checkpoint(
         auto [it,inserted]=chunks_.try_emplace(expected,std::move(candidate));
         if(!inserted)return ChunkCheckpointStatus::AlreadyResident;
         quantity_.material_cells[index]+=wall_count;
-        const auto dx=static_cast<std::uint64_t>(expected.x-chunk_directory_x_);
-        const auto dy=static_cast<std::uint64_t>(expected.y-chunk_directory_y_);
-        if(dx < static_cast<std::uint64_t>(chunk_directory_width_) &&
+        const auto dx=static_cast<std::uint64_t>(expected.x)-
+                      static_cast<std::uint64_t>(chunk_directory_x_);
+        const auto dy=static_cast<std::uint64_t>(expected.y)-
+                      static_cast<std::uint64_t>(chunk_directory_y_);
+        if(expected.x >= chunk_directory_x_ && expected.y >= chunk_directory_y_ &&
+           dx < static_cast<std::uint64_t>(chunk_directory_width_) &&
            dy < static_cast<std::uint64_t>(chunk_directory_height_))
             chunk_directory_[static_cast<std::size_t>(
                 dy*static_cast<std::uint64_t>(chunk_directory_width_)+dx)]=it->second.get();
