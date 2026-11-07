@@ -346,6 +346,10 @@ struct World::Chunk {
     // including same-value external Empty intent, permanently clears this
     // unpersisted witness. A restored chunk starts pinned by default.
     bool pristine_generated_empty = false;
+    // Exclusive owner monotonic mutation fence. Never serialized in CYPS;
+    // fresh restored Worlds are conservatively pinned unless imported through
+    // the dedicated GEN-006 checkpoint.
+    std::uint64_t mutation_generation = 0;
     std::int32_t dirty_min_x = 0;
     std::int32_t dirty_min_y = 0;
     std::int32_t dirty_max_x = 0;
@@ -2130,6 +2134,8 @@ void World::mark_hard_surface_dirty(const Address& target) noexcept {
 
 void World::mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y) {
     chunk.pristine_generated_empty = false;
+    if (chunk.mutation_generation < std::numeric_limits<std::uint64_t>::max())
+        ++chunk.mutation_generation;
     if (chunk.pressure != nullptr)
         invalidate_pressure_input(chunk.pressure->coordinate, local_x, local_y, local_x, local_y, false);
     const auto block_x = local_x / config_.activity_block_size;
@@ -2283,6 +2289,8 @@ void World::set_with_quantity_kind(std::int64_t x, std::int64_t y, Material mate
     // Preserve explicit no-op player edits: a later Empty release must not
     // silently discard intent merely because material bytes stayed Empty.
     chunk.pristine_generated_empty = false;
+    if (chunk.mutation_generation < std::numeric_limits<std::uint64_t>::max())
+        ++chunk.mutation_generation;
     if (chunk.granular_arrivals) (*chunk.granular_arrivals)[target.index] = 0;
     const auto previous_material = chunk.cells[target.index].material_value();
     const auto previous_overfill = chunk.pressure == nullptr ? std::uint16_t{0}
@@ -2357,7 +2365,11 @@ bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
     const auto mark_on_success = [this, x, y](bool accepted) {
         if (accepted)
             if (auto* chunk = find_chunk(address(x, y).chunk))
-                chunk->pristine_generated_empty = false;
+                {
+                    chunk->pristine_generated_empty = false;
+                    if (chunk->mutation_generation < std::numeric_limits<std::uint64_t>::max())
+                        ++chunk->mutation_generation;
+                }
         return accepted;
     };
     if (material == Material::Water && state_a_value == 0U) {
@@ -5657,5 +5669,6 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::
 #include "world_pressure.inc"
 #include "world_inertial.inc"
 #include "world_ballistic.inc"
+#include "world_chunk_checkpoint.inc"
 
 }  // namespace cybersand

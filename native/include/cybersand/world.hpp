@@ -108,6 +108,39 @@ enum class ChunkReleaseOutcome : std::uint8_t {
     NotPristine, SidecarOrOwnerPinned, NeighbourPinned,
 };
 
+
+enum class ChunkCheckpointStatus : std::uint8_t {
+    Captured, Evicted, Restored, NotResident, AlreadyResident, CapacityFull,
+    UnsupportedDomain, PendingActivity, NeighbourPinned, StaleGeneration,
+    InvalidRecord, MissingDurabilityAck, WorldFailed, TickInProgress,
+    AllocationFailed,
+};
+
+// GEN-006: the live owner controls the serialized per-chunk continuation and
+// monotonically increased mutation generation. This is NOT a general World
+// snapshot, and is NOT sufficient for Water/actors or physics sidecars.
+struct ChunkCheckpoint {
+    ChunkCoord coord{};
+    std::uint64_t generation = 0;
+    std::uint64_t world_tick = 0;
+    std::array<std::uint8_t,32> sha256{};
+    std::vector<std::uint8_t> bytes;
+};
+struct ChunkCheckpointCapture {
+    ChunkCheckpointStatus status = ChunkCheckpointStatus::UnsupportedDomain;
+    ChunkCheckpoint checkpoint{};
+};
+// The storage owner constructs this only after fsync + atomic publication
+// and readback of the exact checkpoint bytes. Native validates the bound
+// coordinate/generation/tick/digest again before deleting live authority.
+struct ChunkDurableAck {
+    ChunkCoord coord{};
+    std::uint64_t generation = 0;
+    std::uint64_t source_tick = 0;
+    std::array<std::uint8_t,32> sha256{};
+    bool durable = false;
+};
+
 struct RectI64 {
     std::int64_t x = 0;
     std::int64_t y = 0;
@@ -271,6 +304,16 @@ public:
     // historic/modified chunks fail closed. No serializer or default changes.
     // Exclusive World owner, between ticks. Not a dynamic-state checkpoint API.
     [[nodiscard]] ChunkReleaseOutcome release_pristine_empty_chunk(ChunkCoord coord) noexcept;
+    // Static isolated chunks only (Wall / Empty + native thermal and inactive
+    // activity metadata). Capture never changes live owner state. Eviction
+    // requires verified durable ACK of exactly that capture, a matching
+    // mutation-generation/tick fence and a second full eligibility check.
+    [[nodiscard]] ChunkCheckpointCapture capture_chunk_checkpoint(ChunkCoord coord) const;
+    [[nodiscard]] ChunkCheckpointStatus evict_durable_checkpoint(
+        const ChunkCheckpoint& staged, const ChunkDurableAck& ack);
+    [[nodiscard]] ChunkCheckpointStatus restore_chunk_checkpoint(
+        ChunkCoord expected, std::span<const std::uint8_t> bytes);
+
     void set_simulation_region(std::optional<RectI64> region);
     [[nodiscard]] std::optional<RectI64> simulation_region() const noexcept;
     [[nodiscard]] std::optional<SimulationCoreRange> selected_simulation_cores() const noexcept {
