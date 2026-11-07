@@ -297,7 +297,8 @@ void run(const fs::path& file,std::uint32_t workers) {
              <<" configured_workers="<<workers
              <<" observed_workers_max="<<observed
              <<" sand_and_water_cross_seam=1"
-             <<" selected_dynamic_eviction=REFUSED"\n             <<" stale_inflight_durable_ack=REFUSED"
+             <<" selected_dynamic_eviction=REFUSED"
+             <<" stale_inflight_durable_ack=REFUSED"
              <<" selective_static_count="<<count<<"->"<<remaining_count<<"->"<<live.chunk_count()
              <<" selective_static_bytes="<<bytes<<"->"<<remaining_bytes<<"->"<<live.resident_cell_bytes()
              <<" static_bytes_reclaimed="<<(bytes-remaining_bytes)
