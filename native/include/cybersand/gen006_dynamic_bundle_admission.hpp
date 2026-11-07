@@ -79,12 +79,19 @@ public:
         // Sign-correct adjacency, including coordinates close to INT64 limits.
         // Unsigned subtraction cannot trigger signed overflow.
         auto adjacent = [](ChunkCoord a, ChunkCoord b) {
-            const auto dx = static_cast<std::uint64_t>(a.x) -
-                            static_cast<std::uint64_t>(b.x);
-            const auto dy = static_cast<std::uint64_t>(a.y) -
-                            static_cast<std::uint64_t>(b.y);
-            return (a.x == b.x && (dy == 1U || dy == UINT64_MAX)) ||
-                   (a.y == b.y && (dx == 1U || dx == UINT64_MAX));
+            // Use signed ordering BEFORE unsigned distance: MAX and MIN
+            // differ by 2^64-1, not one. A modular +/-1 test would falsely
+            // connect them across the signed coordinate seam.
+            auto consecutive = [](std::int64_t lhs, std::int64_t rhs) {
+                return lhs < rhs
+                    ? static_cast<std::uint64_t>(rhs) -
+                          static_cast<std::uint64_t>(lhs) == 1U
+                    : rhs < lhs &&
+                          static_cast<std::uint64_t>(lhs) -
+                              static_cast<std::uint64_t>(rhs) == 1U;
+            };
+            return (a.x == b.x && consecutive(a.y, b.y)) ||
+                   (a.y == b.y && consecutive(a.x, b.x));
         };
         auto canonical = [](BundleSeam edge) {
             if (edge.second < edge.first) std::swap(edge.first, edge.second);
