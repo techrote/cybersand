@@ -11,6 +11,17 @@ last-reviewed: 2026-11-06
 
 # Rigid-body and cellular coupling
 
+## Fresh passive compound canvases
+
+The ordinary workbench now accepts file-local passive rectangle unions through
+its existing LA-SELECTIVE/LA/events-off/RFT roster. Source-derived unit M/I,
+AUTO COM, reference friction0.78, gravity scale0.094 and combined authored
+damping0.04 are used at default options. Four live examples have owner-accepted
+visible behaviour; the old numerical rest-screen failure is not automatically
+a gameplay defect. [Evidence and limits](../audits/2026-11-06-sol-fresh-canvas.md)
+retain the distinction from native cut ownership, matched runs and original
+SOL gates. No contact equation, budget or global default changes.
+
 ## Fixed-action SOL application-order registration
 
 The [fixed-action ordering result](../systems/solid-detachment.md#fixed-action-correction-and-impulse-ordering--2026-11-06)

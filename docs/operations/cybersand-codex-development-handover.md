@@ -10,6 +10,18 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Live canvas and owner direction
+
+The owner rejects additional fixture menus and accepts the visible behaviour
+of four fresh compound bodies in the ordinary workbench. Saved name is
+`sol-fresh-structures-20261106`; existing Load start/P/Step/Restore start work.
+The interactive window must remain open. The [fresh-canvas dossier](../audits/2026-11-06-sol-fresh-canvas.md)
+records actual Windows/Linux and graphical qualification. Source is still owned
+by `codex/sol-workbench-law-20261106` / Draft #466. No native source or contact
+law change. Preserve old numerical failures without treating subpixel residual
+motion as an established gameplay bug. Next scope is a freed-object contract
+and bounded ordinary-workbench ownership integration, not more rest tuning.
+
 ## SOL fixed-action ordering continuation — 2026-11-06
 
 The sole writer is `C:/khybersand/build/sol466-order-owned/khybersand`, retaining

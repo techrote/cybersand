@@ -2,6 +2,7 @@ extends RefCounted
 
 # A starting construction recipe. Native runtime state and command leases are never serialized.
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
+const CanvasBody = preload("res://scripts/workbench_canvas_body.gd")
 const BARREL := "reference_barrel"
 const RESPONSES := ["LA-SELECTIVE", "LA", "LA-EVENT-OFF", "RFT"]
 const MATERIALS := [2,14,29,13,19,23,25,26,27,3,58,0]
@@ -35,6 +36,9 @@ static func point(pair: Array) -> Vector2:
 static func bounds(model: String) -> Rect2:
 	return Rect2(-4,-7,8,14) if model == BARREL else Fleet.bounds(Fleet.index_for_id(model))
 
+static func actor_bounds(actor: Dictionary) -> Rect2:
+	return CanvasBody.definition(actor.body).bounds if actor.model==CanvasBody.MODEL else bounds(str(actor.model))
+
 static func _keys(obj: Variant, fields: Array) -> bool:
 	return obj is Dictionary and obj.size() == fields.size() and obj.has_all(fields)
 
@@ -44,18 +48,23 @@ static func _number(value: Variant, low: float, high: float) -> bool:
 static func _integer(value: Variant, low: int, high: int) -> bool:
 	return _number(value,low,high) and floor(value) == value
 
-static func _actor_error(a: Variant, size: Vector2i, response: String) -> String:
-	if not _keys(a,["id","model","hash","spawn","options"]) or not _integer(a.id,1,2147483646) or not a.model is String:
+static func _actor_error(a: Variant, size: Vector2i, response: String, canvas_bodies: bool = false) -> String:
+	var custom: bool = a is Dictionary and a.get("model") == CanvasBody.MODEL
+	var fields: Array = ["id","model","hash","spawn","options"]
+	if custom: fields.append("body")
+	if not _keys(a,fields) or not _integer(a.id,1,2147483646) or not a.model is String:
 		return "Invalid actor fields or instance ID."
 	var model := str(a.model)
 	var index := Fleet.index_for_id(model)
-	if model != BARREL and index < 0:
+	if custom:
+		if not canvas_bodies or not CanvasBody.error(a.body).is_empty(): return "Invalid file-local passive body."
+	elif model != BARREL and index < 0:
 		return "Unavailable actor definition: " + model
-	if a.hash != (Fleet.definition_hash(index) if index >= 0 else "reference-barrel-v1"):
+	if a.hash != (CanvasBody.digest(a.body) if custom else (Fleet.definition_hash(index) if index >= 0 else "reference-barrel-v1")):
 		return "Definition changed for " + model + ". Reload definitions or use its original authoring records."
 	if not a.spawn is Array or a.spawn.size() != 2 or not _number(a.spawn[0],0,size.x) or not _number(a.spawn[1],0,size.y):
 		return "Invalid saved spawn."
-	var body_bounds := bounds(model)
+	var body_bounds: Rect2 = CanvasBody.definition(a.body).bounds if custom else bounds(model)
 	body_bounds.position += point(a.spawn)
 	if not Rect2(Vector2.ZERO,Vector2(size)).encloses(body_bounds):
 		return "Place the whole body inside the canvas."
@@ -74,7 +83,7 @@ static func _material(value: Variant, powders_only := false) -> bool:
 	return _integer(value,0,255) and int(value) in (MATERIALS.slice(0,9) if powders_only else MATERIALS)
 
 static func validate(value: Variant, check_starting_paint: bool = true) -> String:
-	if not _keys(value,ROOT_KEYS) or not _integer(value.version,2,2):
+	if not _keys(value,ROOT_KEYS) or not _integer(value.version,2,3):
 		return "Unsupported starting setup format."
 	if not value.extent is Array or value.extent.size() != 2:
 		return "Invalid canvas extent."
@@ -90,7 +99,7 @@ static func validate(value: Variant, check_starting_paint: bool = true) -> Strin
 		return "Up to eight independent bodies fit in the physical session."
 	var ids := {}
 	for a: Variant in value.actors:
-		var error := _actor_error(a,size,str(value.response))
+		var error := _actor_error(a,size,str(value.response),int(value.version)>=3)
 		if not error.is_empty(): return error
 		if ids.has(int(a.id)) or a.id >= value.next_id: return "Duplicate or retired instance ID."
 		ids[int(a.id)] = true
@@ -115,8 +124,10 @@ static func physical_definitions(setup: Dictionary) -> Array:
 	for actor: Dictionary in setup.actors:
 		var options: Dictionary = actor.options.duplicate()
 		options.response = setup.response
-		result.append({"model":actor.model,"instance_id":int(actor.id),"producer":"passive" if actor.model == BARREL else "human",
-			"position":point(actor.spawn),"workbench_options":options,"canvas_extent":extent_of(setup)})
+		var item := {"model":actor.model,"instance_id":int(actor.id),"producer":"passive" if actor.model in [BARREL,CanvasBody.MODEL] else "human",
+			"position":point(actor.spawn),"workbench_options":options,"canvas_extent":extent_of(setup)}
+		if actor.model==CanvasBody.MODEL:item["canvas_body"]=actor.body.duplicate(true)
+		result.append(item)
 	return result
 
 # Discs use the same integer circle and clipped extent as native paint_disc.

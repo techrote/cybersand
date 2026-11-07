@@ -1,0 +1,420 @@
+{
+  "artifacts": [
+    {
+      "path": "build/sol-fresh-canvas/actual-loaded-start.png",
+      "sha256": "711b87ba45eca51c251e97119275543c4edbb85d47365109eb8c537d9479528c",
+      "bytes": 117229
+    },
+    {
+      "path": "build/sol-fresh-canvas/actual-workbench.png",
+      "sha256": "a0456082e8d710365a829e68249ed891d750196fefcfe0878fa3898b206d14c3",
+      "bytes": 116841
+    },
+    {
+      "path": "build/sol-fresh-canvas/graphical-result.json",
+      "sha256": "8be90cf8e93659fa77e73b73add94d63efe34362a182e3338701bc1a01221cdb",
+      "bytes": 759
+    },
+    {
+      "path": "build/sol-fresh-canvas/graphical-start.log",
+      "sha256": "77d1ddd68dd3af5ac2c820d2259ea003ba6dcf85cd4c938cf1458919dc6a24cd",
+      "bytes": 230
+    },
+    {
+      "path": "build/sol-fresh-canvas/graphical.log",
+      "sha256": "5af92cf380e59cd1eaa72980c908240cba11e01248c67a03ca9c2e060e7a8b2b",
+      "bytes": 231
+    },
+    {
+      "path": "build/sol-fresh-canvas/kept-open-workbench.log",
+      "sha256": "7633b98b331a61fcc15fd4bc7c25edb96b5992f8f57980456b69d96dad2f0c17",
+      "bytes": 196
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/canvas-001.log",
+      "sha256": "1ff50e564ea8e183297ee9a86d93caa6c944edd7431ad488554390f98125c708",
+      "bytes": 613
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/canvas-001.receipt.json",
+      "sha256": "4cc9cfc3d5c738fbd4ee9bfb59a156d644e88a8ab784cb13b75230af3eadce5e",
+      "bytes": 932
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/canvas-002.log",
+      "sha256": "ca50bf1a5effa5c641c8f09b75531064e1fb34d7ebc8f706308eaec82f301b14",
+      "bytes": 605
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/canvas-002.receipt.json",
+      "sha256": "e1b8c91ee79c524b5e6c0c10cb0df4034f4e70e3fa232e18e3108a31a4363fa8",
+      "bytes": 931
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/canvas-003.log",
+      "sha256": "402cafe42790004d5a538c60aa4087da9c74b7860ad78f44eb9368aad1a81c35",
+      "bytes": 1716
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/canvas-003.receipt.json",
+      "sha256": "9d2700adc703b1c07c71e6d5580ecda11c2ded10d4508252135e3b9c57016375",
+      "bytes": 932
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/canvas-004.log",
+      "sha256": "a97443e2438d3c5e39221c08c2657a5d69796e330c9a6265cb42fd9c68fe9ec6",
+      "bytes": 256
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/canvas-004.receipt.json",
+      "sha256": "84d4f1c6fe09221bd2b24cbbb8fc7cf585f5848b6934e38ca0f2f2dd975199ba",
+      "bytes": 931
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/import-001.log",
+      "sha256": "a6f6f4dc4e12a848e4afe5c6b102165fa059c1a6cdd345832588d360878d4288",
+      "bytes": 37280
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/import-001.receipt.json",
+      "sha256": "b0b3c1717c9da3164719bed15f074962cac7aaf06d1f16201db13f138c5e38e3",
+      "bytes": 883
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/named-start.log",
+      "sha256": "7b479c5ad8d2033199eea6ac828ff61da72ad6154e28f116375f1c3c42a8dc23",
+      "bytes": 255
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/named-start.receipt.json",
+      "sha256": "b4911c2aa5f928603c9037fff1be8fa7f305bdca9e17a01391e56e8aeca16c7e",
+      "bytes": 1017
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/receipt-001.json",
+      "sha256": "cd3622974033ed8905a381f5f057638e83ed899fbc856e7cfb5bc60921ca0de3",
+      "bytes": 2092
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/receipt-002.json",
+      "sha256": "8588c61f8cfbdb7683628c92794d0c2ab932dc854600986bd30b309836459c96",
+      "bytes": 1083
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/receipt-003.json",
+      "sha256": "0dcaff19337e9147e2101a5095546084cc157ba0766b978cd43a5ebcbb2db6f5",
+      "bytes": 1084
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/receipt-004.json",
+      "sha256": "4eea1fb2857d368bf3a5cd7631fdb1502e9300651f70e58705b75f1f0e96a171",
+      "bytes": 1083
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/receipt-regression.json",
+      "sha256": "e1efd44c849c3b5f34a164cd6f7616182b0578e6f998a29763ed77a9bc27493f",
+      "bytes": 5616
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/regression-test_workbench_canvas.log",
+      "sha256": "f6addc3deda4cf5aafcb071e0044278529d8e3cbe1e61eba9ea055af6590396e",
+      "bytes": 597
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/regression-test_workbench_canvas.receipt.json",
+      "sha256": "ff4e8e332ed2cbd27f051a8a4740639571fb682fa7ccedfc10f693259431b02b",
+      "bytes": 969
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/regression-test_workbench_canvas_body.log",
+      "sha256": "a97443e2438d3c5e39221c08c2657a5d69796e330c9a6265cb42fd9c68fe9ec6",
+      "bytes": 256
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/regression-test_workbench_canvas_body.receipt.json",
+      "sha256": "d93d6f2e15f98e134952ad053892a9aadbcfb4d17a68b2d199cf13fbed3c4358",
+      "bytes": 984
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/regression-test_workbench_fleet_session.log",
+      "sha256": "de1a37723411ff3f440a3a7ffa1857ef7c78f992dfd435ead9e0af40307bae72",
+      "bytes": 258
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/regression-test_workbench_fleet_session.receipt.json",
+      "sha256": "acb58937cf12647059a2b6a5c7bdb4f3f30601bc2150488ce1fd844389dc2bc0",
+      "bytes": 990
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/regression-test_workbench_pilot_ui.log",
+      "sha256": "05649b61218a5b7717c7bf1eb34041fc5811fdfe9cf24215b11008d0cfa961b7",
+      "bytes": 846
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/regression-test_workbench_pilot_ui.receipt.json",
+      "sha256": "1d054201d4d75035a7ac367956bacb7dd317c323bb57100a71e5dccf75f5514c",
+      "bytes": 976
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/result-001.json",
+      "sha256": "b6c3ed80900c4c63e67965d69b86a069f6bb9184bf64761c8673e9848a63a238",
+      "bytes": 794
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/result-002.json",
+      "sha256": "93630bea2e079ffd461613adb5b9a989637e659eee506c65b12320f2b582afc1",
+      "bytes": 73
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/result-003.json",
+      "sha256": "84efc7db1c7c3802a01a3dd5eb24a75ea09b569bbe164d865699eb7fccdec323",
+      "bytes": 948
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/result-004.json",
+      "sha256": "06ab521954c943fcd42cea7a59d03d904b52384533c46d787d323777f8ba1096",
+      "bytes": 753
+    },
+    {
+      "path": "build/sol-fresh-canvas/linux/result.json",
+      "sha256": "06ab521954c943fcd42cea7a59d03d904b52384533c46d787d323777f8ba1096",
+      "bytes": 753
+    },
+    {
+      "path": "build/sol-fresh-canvas/ready-workbench.log",
+      "sha256": "7633b98b331a61fcc15fd4bc7c25edb96b5992f8f57980456b69d96dad2f0c17",
+      "bytes": 196
+    },
+    {
+      "path": "build/sol-fresh-canvas/regressions.py",
+      "sha256": "88fd9701f3f368f10e5a22a62c3e51e73954cd01d6812034eb4214f4a5ecd68f",
+      "bytes": 1486
+    },
+    {
+      "path": "build/sol-fresh-canvas/run.py",
+      "sha256": "2c7cc22d300a83985225782da7aef40187d66085e43f24a8e2dd07de95a46fcd",
+      "bytes": 1250
+    },
+    {
+      "path": "build/sol-fresh-canvas/run2.py",
+      "sha256": "d68f74eb74f81a8f73ef89ea1d8fdb764baf86f13feb6f4f0e5dac1a612de9a4",
+      "bytes": 1180
+    },
+    {
+      "path": "build/sol-fresh-canvas/run3.py",
+      "sha256": "28e9066227740ae140e79acdfadfe07a824b145c9334e821996270e8f37ea8f1",
+      "bytes": 1180
+    },
+    {
+      "path": "build/sol-fresh-canvas/run4.py",
+      "sha256": "a0f1915b0be1d8fba290ff38fd8693921ef6f9e9ef2d4c5d77b8bf26cc30f435",
+      "bytes": 1180
+    },
+    {
+      "path": "build/sol-fresh-canvas/visible-001.log",
+      "sha256": "7633b98b331a61fcc15fd4bc7c25edb96b5992f8f57980456b69d96dad2f0c17",
+      "bytes": 196
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/canvas-001.log",
+      "sha256": "b46b0260ffaff7df2272ba714062f7e8c60e2836f5159784b081627efa30b317",
+      "bytes": 623
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/canvas-001.receipt.json",
+      "sha256": "933453718b49ccaa0a95f7ec231006063bc09a541fa118e582abf99dc873979f",
+      "bytes": 596
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/canvas-002.log",
+      "sha256": "d957d49ecc7ab24381ff978bcac409e00e46f9e251bc622d6ac7b017797f11aa",
+      "bytes": 615
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/canvas-002.receipt.json",
+      "sha256": "cd1cd3dabb2b2b7340d6a3694f9ce12dae6fe41d2050eeda93b17e92e74c71ca",
+      "bytes": 597
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/canvas-003.log",
+      "sha256": "d6e24921949bbf30c477d99431f5cc7145fcd2a610ca7d05275d6289d01ff36a",
+      "bytes": 1744
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/canvas-003.receipt.json",
+      "sha256": "c5d96b9c13546582826e074b0b7899e2168d7a3c9f68733363ccc26cfed56466",
+      "bytes": 595
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/canvas-004.log",
+      "sha256": "45cde948d2686b3a44c1f27d7b1eceac30e8f9f06e6f24bc3851002dca963bfa",
+      "bytes": 260
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/canvas-004.receipt.json",
+      "sha256": "f73ab1097519248b7266d72db5d721a6fac1819b64e9a641ee6ef1e4a38c69c0",
+      "bytes": 595
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/import-001.log",
+      "sha256": "2144634026346d52bf76c465f83eb4cea23a2ea80f59b7de62d7bd46abbc75e5",
+      "bytes": 37872
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/import-001.receipt.json",
+      "sha256": "e36f7044e4c884fc34d461242588c40af346d19178f3aca6a3bd22a482ad5ad9",
+      "bytes": 549
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/named-start.log",
+      "sha256": "430f567d5fc5b7a0ea90ff7a6e54c536ec73db449fafd7778268792ee120fed0",
+      "bytes": 259
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/named-start.receipt.json",
+      "sha256": "5d0a5737ab39923cd78261428cd2cc959d0747d8a028358ffe27cd2d20e5e5d8",
+      "bytes": 682
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/receipt-001.json",
+      "sha256": "2f7f9e04cd3bd8c168b7e504cac8a50280ca967ea52d45b497d51b07fd2a6e3b",
+      "bytes": 1334
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/receipt-002.json",
+      "sha256": "20e0298355e0fb5462676f96af44765c20ba133acb3565965d181a78055dea9c",
+      "bytes": 705
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/receipt-003.json",
+      "sha256": "018502329d79100df2044a1bb888c18607e3526d595fe54b44e654922d1bbde6",
+      "bytes": 703
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/receipt-004.json",
+      "sha256": "63c2d0917a6a751062124533a8dab6359c6b177aa403651a5fda9bc8413ec5a0",
+      "bytes": 703
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/receipt-regression.json",
+      "sha256": "8fa305cf65f337b6ac00e71fa238f102cda34872990dc2086e9378118beae67a",
+      "bytes": 3722
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/regression-test_workbench_canvas.log",
+      "sha256": "aeb1e03be5821e63e92c9bf5fdce8a2914ccb59de3e9db46ac17bd7ef4f9f7c5",
+      "bytes": 600
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/regression-test_workbench_canvas.receipt.json",
+      "sha256": "d2ec5cbcdc9913e9c6230d02ecb3b0bf38aea35819a047cb662ca79f623a8355",
+      "bytes": 634
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/regression-test_workbench_canvas_body.log",
+      "sha256": "45cde948d2686b3a44c1f27d7b1eceac30e8f9f06e6f24bc3851002dca963bfa",
+      "bytes": 260
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/regression-test_workbench_canvas_body.receipt.json",
+      "sha256": "ae9d9ff2f2c05fa85b956e861668ddab094e9b4930b51480515bcba10d87c900",
+      "bytes": 649
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/regression-test_workbench_fleet_session.log",
+      "sha256": "634f905ac03e58d4737bde7eb8adf6ec8d661ce01f04c9b26bb3fe581f4a3724",
+      "bytes": 262
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/regression-test_workbench_fleet_session.receipt.json",
+      "sha256": "eb6d8932b8c135b8bd045933ea527d6750944d6c8b0aee9f31e9e02c414e2388",
+      "bytes": 656
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/regression-test_workbench_pilot_ui.log",
+      "sha256": "e552b6c8178f7e38044fd393dd14d44f2a98078dcdbef20afdf2eab323d76600",
+      "bytes": 865
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/regression-test_workbench_pilot_ui.receipt.json",
+      "sha256": "8c889df49fb6e8a5467cd88628fc8563f830eb255aadd615b2ec675ce3f1df89",
+      "bytes": 641
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/result-001.json",
+      "sha256": "6ba4c66739f0cdcb06cfcd7570d13445136bee1cefcb26d3dc5c7f0d0c0b3c39",
+      "bytes": 800
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/result-002.json",
+      "sha256": "93630bea2e079ffd461613adb5b9a989637e659eee506c65b12320f2b582afc1",
+      "bytes": 73
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/result-003.json",
+      "sha256": "b22f69195af0d18057517188b778789c5bc1b6924517a7acbd0b84a8e162b0bb",
+      "bytes": 954
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/result-004.json",
+      "sha256": "39e39ce344eb347b115e122999251ce8733e53e6cd68f6899ca0b23988d0d3fd",
+      "bytes": 759
+    },
+    {
+      "path": "build/sol-fresh-canvas/windows/result.json",
+      "sha256": "39e39ce344eb347b115e122999251ce8733e53e6cd68f6899ca0b23988d0d3fd",
+      "bytes": 759
+    }
+  ],
+  "compiled_runtime": "Unchanged P2 Windows d8dc09c1 /Linux aa78df39; complete native93 inputs unchanged; source9a78d136",
+  "graphical_result": {
+    "checks": 92,
+    "evidence": {
+      "name": "sol-fresh-structures-20261106",
+      "native_tick": 64,
+      "physical_steps": 65,
+      "response": "LA-SELECTIVE",
+      "states": [
+        {
+          "inertia": 70453.6484375,
+          "mass": 520.0,
+          "omega": 0.17012783885002136,
+          "position": [
+            59.697025299072266,
+            63.733116149902344
+          ]
+        },
+        {
+          "inertia": 59192.15234375,
+          "mass": 356.0,
+          "omega": 0.1713200956583023,
+          "position": [
+            282.0960388183594,
+            67.16427612304688
+          ]
+        },
+        {
+          "inertia": 70453.6484375,
+          "mass": 520.0,
+          "omega": 0.1701277792453766,
+          "position": [
+            59.69704055786133,
+            193.7330780029297
+          ]
+        },
+        {
+          "inertia": 59192.15234375,
+          "mass": 356.0,
+          "omega": 0.1713200807571411,
+          "position": [
+            282.0960388183594,
+            197.16429138183594
+          ]
+        }
+      ],
+      "user_path": "C:/Users/_/AppData/Roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-sol-fresh-structures-20261106.json"
+    },
+    "failures": []
+  },
+  "scope": "Local retained raw logs/reports, including failed observer assertions; raw output and executable files are not committed."
+}

@@ -11,6 +11,19 @@ last-reviewed: 2026-11-06
 
 # Interfaces and message contracts
 
+## Passive canvas body format
+
+Version3 workbench starts preserve the version2 root fields. An actor with
+model `canvas_body` has the usual id/hash/spawn/options plus `body`, exactly
+`{name,rectangles}`. Each rectangle is integer `[x,y,width,height]` in a128-cell
+authoring box;1-8 nonoverlapping rectangles and area<=4096. Unit mass/COM/inertia
+derive from the union; arbitrary mass or extra fields refuse. Hashes normalize
+integer-valued JSON coordinates. The physical definition is rederived and
+checked exactly before the scoped mass/compound admission; ordinary catalogue
+mass guards remain unchanged. Native packet/ABI layout is unchanged. The
+[control contract](../systems/player-control-playground.md#file-local-passive-canvas-bodies)
+owns usage. A fresh saved body is not a native SOL aggregate capture.
+
 ## SOL coupling diagnostic correction
 
 The reviewed P2 correction restores the existing public distinction before any

@@ -10,6 +10,17 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Owner-accepted fresh-body demonstration
+
+Four fresh passive tree/building representations now run in the ordinary
+workbench as one saved canvas, with Sand/mixed beds and existing controls.
+The owner accepts their visible behaviour. Keep the current response and stop
+using the numerical rest screen alone to justify gameplay physics changes.
+The [canvas evidence](../audits/2026-11-06-sol-fresh-canvas.md) does not rewrite
+historical ordering/clearance results. Next is the gameplay definition of freed
+objects, then a bounded ordinary-edit native/Rapier ownership integration.
+Keep #466 Draft; no new test menu, solver/default promotion or guard removal.
+
 ## SOL fixed-action ordering registration — 2026-11-06
 
 **Current qualified negative experiment:** P2 diagnostic repair passes four

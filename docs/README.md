@@ -10,6 +10,13 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## Ordinary workbench fresh structures
+
+The [loadable four-body canvas](audits/2026-11-06-sol-fresh-canvas.md) uses the
+normal workbench, existing controls and fresh passive shapes. The owner accepts
+its visible behaviour. [Controls and file-local authoring](systems/player-control-playground.md#file-local-passive-canvas-bodies)
+explain loading and limits. It adds no test menu or native freed-object claim.
+
 ## Fixed-action SOL application ordering
 
 The [preregistered actual-cut result](audits/2026-11-06-sol-workbench-ordering.md)

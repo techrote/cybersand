@@ -11,6 +11,16 @@ last-reviewed: 2026-11-06
 
 # Data ownership and lifetimes
 
+## Fresh canvas-body ownership
+
+Version3 file-local passive bodies enter the existing workbench preparation
+transaction as fresh authored Rapier geometry. One main-thread body owns all
+of its rectangle proxies; no original cell payload or native SOL token is
+claimed. The existing native World, immutable roster/sample fence, publication
+and retained replacement/reset contracts apply. Direct input/takeover is
+refused for this passive type. See [format and controls](../systems/player-control-playground.md#file-local-passive-canvas-bodies).
+This adds no E1/E2 capture, freed discovery or restoration authority.
+
 ## SOL ordering observation ownership
 
 The [fixed-action ordering test](../systems/solid-detachment.md#fixed-action-correction-and-impulse-ordering--2026-11-06)

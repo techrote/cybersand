@@ -1,0 +1,299 @@
+{
+  "parent": "b944f3cf8d15fdc11f5f605acc34ea3b6dbf0bb2",
+  "source_inputs": {
+    "godot/scripts/workbench_canvas_body.gd": "859316559e9713ea5f3a2951a4b00346cf14462bc5f5a2af5270b3dcb730794d",
+    "godot/scripts/workbench_setup.gd": "78dd9b653289956abd4b4bd80fab7e000b16b12b8aacbf8f1aede83fab6bfe6f",
+    "godot/scripts/physical_actor_rig.gd": "dc84e2b29329a1073e694ca478b81aa736b56aa8c736e074dcac6ccb8812592c",
+    "godot/scripts/physical_actor_session.gd": "ee0c77df7d52638ac3cff7a2596a302422fe9a4a49b75213d6002bc25f0ae703",
+    "godot/scripts/shared_workbench.gd": "bd85b3ebb56d053eb9fec3c3fef5fe44d4906953d9dd8424f9c9e8183e0b8c7f",
+    "godot/tests/test_workbench_canvas_body.gd": "9f093b13e1a821b624b9bbdf32a4453fd0e4b28d4b2df7bd901cd0ca01cfe66b",
+    "godot/tests/test_workbench_canvas_start.gd": "1aec0b83864da1dc154151abb9a0df69b5be4a07effc22ee667fb9f39c6d0f4e",
+    "godot/canvases/sol-fresh-structures.json": "dc9a107c7a24529f6e2de879be22e447fca86cd77bfae769638b72ef5a7fd469"
+  },
+  "source_project_files_equal": true,
+  "host": "windows",
+  "receipts": {
+    "receipt-001.json": {
+      "commands": [
+        {
+          "name": "import-001",
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\sol-fresh-canvas\\windows\\godot",
+            "--editor",
+            "--import",
+            "--quit"
+          ],
+          "exit": 0,
+          "seconds": 14.611237399978563,
+          "timeout_seconds": 180,
+          "log": "build\\sol-fresh-canvas\\windows\\import-001.log",
+          "log_sha256": "2144634026346d52bf76c465f83eb4cea23a2ea80f59b7de62d7bd46abbc75e5",
+          "clean": true
+        },
+        {
+          "name": "canvas-001",
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\sol-fresh-canvas\\windows\\godot",
+            "--max-fps",
+            "120",
+            "--script",
+            "res://tests/test_workbench_canvas_body.gd"
+          ],
+          "exit": 1,
+          "seconds": 7.538351200055331,
+          "timeout_seconds": 180,
+          "log": "build\\sol-fresh-canvas\\windows\\canvas-001.log",
+          "log_sha256": "b46b0260ffaff7df2272ba714062f7e8c60e2836f5159784b081627efa30b317",
+          "clean": false
+        }
+      ]
+    },
+    "receipt-002.json": {
+      "commands": [
+        {
+          "name": "canvas-002",
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\sol-fresh-canvas\\windows\\godot",
+            "--max-fps",
+            "120",
+            "--script",
+            "res://tests/test_workbench_canvas_body.gd"
+          ],
+          "exit": 1,
+          "seconds": 3.3886930000735447,
+          "timeout_seconds": 180,
+          "log": "build\\sol-fresh-canvas\\windows\\canvas-002.log",
+          "log_sha256": "d957d49ecc7ab24381ff978bcac409e00e46f9e251bc622d6ac7b017797f11aa",
+          "clean": false
+        }
+      ]
+    },
+    "receipt-003.json": {
+      "commands": [
+        {
+          "name": "canvas-003",
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\sol-fresh-canvas\\windows\\godot",
+            "--max-fps",
+            "120",
+            "--script",
+            "res://tests/test_workbench_canvas_body.gd"
+          ],
+          "exit": 1,
+          "seconds": 8.20153159997426,
+          "timeout_seconds": 180,
+          "log": "build\\sol-fresh-canvas\\windows\\canvas-003.log",
+          "log_sha256": "d6e24921949bbf30c477d99431f5cc7145fcd2a610ca7d05275d6289d01ff36a",
+          "clean": false
+        }
+      ]
+    },
+    "receipt-004.json": {
+      "commands": [
+        {
+          "name": "canvas-004",
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\sol-fresh-canvas\\windows\\godot",
+            "--max-fps",
+            "120",
+            "--script",
+            "res://tests/test_workbench_canvas_body.gd"
+          ],
+          "exit": 0,
+          "seconds": 7.481261800043285,
+          "timeout_seconds": 180,
+          "log": "build\\sol-fresh-canvas\\windows\\canvas-004.log",
+          "log_sha256": "45cde948d2686b3a44c1f27d7b1eceac30e8f9f06e6f24bc3851002dca963bfa",
+          "clean": true
+        }
+      ]
+    },
+    "receipt-regression.json": {
+      "commands": [
+        {
+          "name": "regression-test_workbench_canvas_body",
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\sol-fresh-canvas\\windows\\godot",
+            "--max-fps",
+            "120",
+            "--script",
+            "res://tests/test_workbench_canvas_body.gd"
+          ],
+          "exit": 0,
+          "seconds": 7.976707399939187,
+          "timeout_seconds": 180,
+          "log": "build\\sol-fresh-canvas\\windows\\regression-test_workbench_canvas_body.log",
+          "log_sha256": "45cde948d2686b3a44c1f27d7b1eceac30e8f9f06e6f24bc3851002dca963bfa",
+          "clean": true
+        },
+        {
+          "name": "regression-test_workbench_fleet_session",
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\sol-fresh-canvas\\windows\\godot",
+            "--max-fps",
+            "120",
+            "--script",
+            "res://tests/test_workbench_fleet_session.gd"
+          ],
+          "exit": 0,
+          "seconds": 0.7861532000824809,
+          "timeout_seconds": 180,
+          "log": "build\\sol-fresh-canvas\\windows\\regression-test_workbench_fleet_session.log",
+          "log_sha256": "634f905ac03e58d4737bde7eb8adf6ec8d661ce01f04c9b26bb3fe581f4a3724",
+          "clean": true
+        },
+        {
+          "name": "regression-test_workbench_canvas",
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\sol-fresh-canvas\\windows\\godot",
+            "--max-fps",
+            "120",
+            "--script",
+            "res://tests/test_workbench_canvas.gd"
+          ],
+          "exit": 0,
+          "seconds": 27.48824110010173,
+          "timeout_seconds": 180,
+          "log": "build\\sol-fresh-canvas\\windows\\regression-test_workbench_canvas.log",
+          "log_sha256": "aeb1e03be5821e63e92c9bf5fdce8a2914ccb59de3e9db46ac17bd7ef4f9f7c5",
+          "clean": true
+        },
+        {
+          "name": "regression-test_workbench_pilot_ui",
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\sol-fresh-canvas\\windows\\godot",
+            "--max-fps",
+            "120",
+            "--script",
+            "res://tests/test_workbench_pilot_ui.gd"
+          ],
+          "exit": 0,
+          "seconds": 19.477996699977666,
+          "timeout_seconds": 180,
+          "log": "build\\sol-fresh-canvas\\windows\\regression-test_workbench_pilot_ui.log",
+          "log_sha256": "e552b6c8178f7e38044fd393dd14d44f2a98078dcdbef20afdf2eab323d76600",
+          "clean": true
+        },
+        {
+          "name": "named-start",
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\sol-fresh-canvas\\windows\\godot",
+            "--max-fps",
+            "120",
+            "--script",
+            "res://tests/test_workbench_canvas_start.gd",
+            "--",
+            "--workbench",
+            "--workbench-start=sol-fresh-structures-20261106"
+          ],
+          "exit": 0,
+          "seconds": 3.538165699923411,
+          "timeout_seconds": 180,
+          "log": "build\\sol-fresh-canvas\\windows\\named-start.log",
+          "log_sha256": "430f567d5fc5b7a0ea90ff7a6e54c536ec73db449fafd7778268792ee120fed0",
+          "clean": true
+        }
+      ]
+    }
+  },
+  "result": {
+    "checks": 91,
+    "evidence": {
+      "name": "sol-fresh-structures-20261106",
+      "native_tick": 64,
+      "physical_steps": 65,
+      "response": "LA-SELECTIVE",
+      "states": [
+        {
+          "inertia": 70453.6484375,
+          "mass": 520.0,
+          "omega": 0.17012783885002136,
+          "position": [
+            59.697025299072266,
+            63.733116149902344
+          ]
+        },
+        {
+          "inertia": 59192.15234375,
+          "mass": 356.0,
+          "omega": 0.1713200956583023,
+          "position": [
+            282.0960388183594,
+            67.16427612304688
+          ]
+        },
+        {
+          "inertia": 70453.6484375,
+          "mass": 520.0,
+          "omega": 0.1701277792453766,
+          "position": [
+            59.69704055786133,
+            193.7330780029297
+          ]
+        },
+        {
+          "inertia": 59192.15234375,
+          "mass": 356.0,
+          "omega": 0.1713200807571411,
+          "position": [
+            282.0960388183594,
+            197.16429138183594
+          ]
+        }
+      ],
+      "user_path": "C:/Users/_/AppData/Roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-sol-fresh-structures-20261106.json"
+    },
+    "failures": []
+  },
+  "scope": "Actual ordinary workbench fresh-body demonstration qualification; no native cut or original SOL clearance/CPU acceptance."
+}

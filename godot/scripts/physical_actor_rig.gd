@@ -20,6 +20,7 @@ const MAX_ROPE_LENGTH: float = 96.0
 const MIN_ROPE_LENGTH: float = 6.0
 const PROFILE_VERSION: int = 1
 const TERRAIN_MASK: int = 1
+const CanvasBody = preload("res://scripts/workbench_canvas_body.gd")
 const ReviewFleetController = preload("res://scripts/gcr_review_fleet_controller.gd")
 const ReviewFleet = preload("res://scripts/gcr_review_fleet.gd")
 const PlayerVehicle = preload("res://scripts/player_vehicle_controller.gd")
@@ -103,7 +104,12 @@ var _flight_capabilities: Dictionary = {}
 var _flight_mode_name: String = "passive_no_lease"
 
 
-static func validate_definition(definition: Dictionary) -> String:
+static func validate_definition(definition: Dictionary, canvas_body: Dictionary = {}) -> String:
+	if not canvas_body.is_empty():
+		var expected: Dictionary = CanvasBody.definition(canvas_body)
+		if expected.is_empty(): return "invalid canvas body"
+		expected["equipment_managed"]=true
+		if definition!=expected:return "canvas body definition mismatch"
 	if str(definition.get("id", "")).is_empty():
 		return "missing rig id"
 	var parts = definition.get("parts", null)
@@ -139,7 +145,7 @@ static func validate_definition(definition: Dictionary) -> String:
 			var compound_error: String = _validate_compound_part(item)
 			if not compound_error.is_empty(): return compound_error
 		if not _finite_number(item.get("mass", 1.0)) or float(item.get("mass", 1.0)) < 0.02 \
-			or float(item.get("mass", 1.0)) > 20.0:
+			or float(item.get("mass", 1.0)) > (4096.0 if not canvas_body.is_empty() else 20.0):
 			return "invalid part mass"
 		for key: String in ["angle", "friction", "bounce"]:
 			if item.has(key) and not _finite_number(item[key]):
@@ -313,18 +319,20 @@ static func valid_review_options(options: Dictionary) -> bool:
 
 
 func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnation: int = 1,
-		review_fleet_index: int = -1, review_options: Dictionary = {}) -> Error:
+		review_fleet_index: int = -1, review_options: Dictionary = {}, canvas_body: Dictionary = {}) -> Error:
 	if configured:
 		return ERR_ALREADY_IN_USE
 	if not is_inside_tree() or not origin.is_finite() or slot < 0 or slot >= 8 or incarnation <= 0:
 		return ERR_INVALID_PARAMETER
-	var invalid: String = validate_definition(definition)
+	var invalid: String = validate_definition(definition,canvas_body)
 	if not invalid.is_empty():
 		fault = invalid
 		return ERR_INVALID_DATA
 	# Developer overrides apply only to the exact retained single-hull fleet.
 	# Validate ordinary authored mass first; never widen catalogue admission.
-	var passive: bool = definition.get("id") == &"reference_barrel"
+	var canvas: bool = not canvas_body.is_empty()
+	if canvas and (review_fleet_index!=-1 or review_options.is_empty()): return ERR_INVALID_DATA
+	var passive: bool = definition.get("id") == &"reference_barrel" or canvas
 	if not valid_review_options(review_options) or (not review_options.is_empty() and review_fleet_index==-1 and not passive):
 		return ERR_INVALID_DATA
 	if review_fleet_index!=-1:
@@ -332,7 +340,7 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		var expected: Dictionary = ReviewFleet.definition(review_fleet_index)
 		expected["equipment_managed"]=true
 		if definition!=expected: return ERR_INVALID_DATA
-	elif definition.parts.any(func(part: Dictionary) -> bool: return str(part.get("shape","rectangle"))=="rectangle_union"):
+	elif not canvas and definition.parts.any(func(part: Dictionary) -> bool: return str(part.get("shape","rectangle"))=="rectangle_union"):
 		# Other actor owners must explicitly select the matching compound native
 		# publication path before they may construct a compound body.
 		return ERR_UNAVAILABLE
@@ -399,8 +407,8 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		body.inertia = maxf(0.01, body.mass * Vector2(part.size).length_squared() / 12.0)
 		var compound: bool=str(part.get("shape","rectangle"))=="rectangle_union"
 		if compound:
-			body.center_of_mass_mode=RigidBody2D.CENTER_OF_MASS_MODE_CUSTOM
-			body.center_of_mass=Vector2.ZERO
+			body.center_of_mass_mode=RigidBody2D.CENTER_OF_MASS_MODE_AUTO if canvas else RigidBody2D.CENTER_OF_MASS_MODE_CUSTOM
+			if not canvas:body.center_of_mass=Vector2.ZERO
 			body.inertia=float(part.inertia)*float(review_options.get("mass_multiplier",1.0))
 		if _flight_controller != null:
 			body.inertia = float(_definition.flight_profile.inertia)
@@ -425,13 +433,17 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		var material: PhysicsMaterial = PhysicsMaterial.new()
 		material.friction = clampf(float(part.get("friction", 0.8)), 0.0, 1.0)
 		material.bounce = clampf(float(part.get("bounce", 0.02)), 0.0, 0.6)
-		if rig_id == &"reference_barrel":
+		if rig_id == &"reference_barrel" or canvas:
 			body.gravity_scale = 0.094
 			_gravity = body.gravity_scale * float(ProjectSettings.get_setting("physics/2d/default_gravity"))
 			body.linear_damp_mode = RigidBody2D.DAMP_MODE_COMBINE
 			body.angular_damp_mode = RigidBody2D.DAMP_MODE_COMBINE
 			material.rough = true
 			material.absorbent = true
+		if canvas:
+			body.continuous_cd=RigidBody2D.CCD_MODE_DISABLED
+			body.contact_monitor=false
+			body.max_contacts_reported=0
 		body.physics_material_override = material
 		if compound:
 			for rectangle: Dictionary in part.collision_rects:

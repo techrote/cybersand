@@ -10,6 +10,26 @@ related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-l
 
 # Player control playground
 
+## File-local passive canvas bodies
+
+**Current opt-in workbench authoring:** version3 named starts may include passive
+canvas-local compound bodies, without adding models to the flyer catalogue.
+[Fresh structures](../audits/2026-11-06-sol-fresh-canvas.md) supplies four live
+examples in one normal canvas. Load `sol-fresh-structures-20261106` using the
+existing Details/name/Load start controls; P runs, Step advances and Restore
+start reconstructs the paused start. `--workbench --workbench-start=NAME` loads
+an installed named recipe directly. The repository canvas JSON can be copied to
+`user://workbench/setup-sol-fresh-structures-20261106.json` on another machine.
+
+A body uses strict name/rectangle data, one Rapier body with at most8 proxies,
+unit-area mass/inertia, AUTO COM, gravity scale0.094 and combined0.04 damping.
+It is observer-only and has no drive/equipment authority. Geometry and content
+hashes persist through normal save/load. Version2 recipes, palette, existing
+controls and selectable responses remain valid; eight bodies/64 proxies still
+bound the owner. These fresh bodies need no native-cell capture or freed rule.
+The owner accepts the demonstrated visible behaviour; do not tune contact law
+merely to satisfy the retained numerical rest screen.
+
 ## Current PLAY acceptance boundary — 2026-10-30
 
 The [authoritative owner decision](https://github.com/techrote/cybersand/issues/263#issuecomment-6522029843)

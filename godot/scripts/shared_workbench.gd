@@ -185,8 +185,20 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	var binary := "cybersand_native.windows.x86_64.dll" if OS.get_name() == "Windows" else "libcybersand_native.linux.x86_64.so"
 	var binary_hash := FileAccess.get_sha256("res://addons/cybersand_native/bin/"+binary)
 	_runtime_label = "%s · Godot %s · native %s · definitions %s" % [OS.get_name(),Engine.get_version_info().string,binary_hash.left(12),Fleet.registry_hash().left(12)]
-	if recovery.is_empty(): new_canvas.call_deferred()
-	else: apply.call_deferred(recovery)
+	if not recovery.is_empty(): apply.call_deferred(recovery)
+	else:
+		var named: String=""
+		for argument: String in OS.get_cmdline_user_args():
+			if argument.begins_with("--workbench-start="):named=argument.trim_prefix("--workbench-start=")
+		if named.is_empty():new_canvas.call_deferred()
+		else:
+			var saved := Setup.read_named(named)
+			if saved.has("error"):
+				push_error(saved.error);new_canvas.call_deferred()
+			else:
+				_name.text=named
+				DisplayServer.window_set_title("CyberSand · Development workbench · "+named)
+				apply.call_deferred(saved.setup)
 
 
 func _fill_roster() -> void:
@@ -330,7 +342,7 @@ func installed(candidate: Dictionary) -> void:
 	_instances.clear()
 	_instances.add_item("Observer",0)
 	for a: Dictionary in applied.actors:
-		_instances.add_item("%d · %s" % [int(a.id),str(a.model).capitalize()],int(a.id))
+		_instances.add_item("%d · %s" % [int(a.id),str(a.body.name) if a.model==Setup.CanvasBody.MODEL else str(a.model).capitalize()],int(a.id))
 	select_instance(selected_id(),true)
 	if not applied.source.is_empty():
 		host.workbench_source(Vector2i(applied.source[0],applied.source[1]),int(applied.source[2]),"configure")
@@ -436,7 +448,7 @@ func select_instance(id: int, installing: bool = false) -> bool:
 	_cancel()
 	applied.selected = id
 	pilot_slot = -1
-	if id != 0 and a.model != Setup.BARREL and host.physical_actor_session != null:
+	if id != 0 and a.model not in [Setup.BARREL,Setup.CanvasBody.MODEL] and host.physical_actor_session != null:
 		pilot_slot = host.physical_actor_session.slot_for_instance(id)
 	_instances.select(_instances.get_item_index(id))
 	var options: Dictionary = a.get("options",Setup.DEFAULT_OPTIONS)
@@ -471,7 +483,7 @@ func pilot_model(model: String) -> bool:
 	if current.get("model","") == model: return select_instance(selected_id())
 	for other: Dictionary in applied.actors:
 		if other.model == model: return select_instance(int(other.id))
-	if not current.is_empty() and current.model != Setup.BARREL:
+	if not current.is_empty() and Fleet.valid_index(Fleet.index_for_id(current.model)):
 		return _replace_actor(model)
 	return place(model,entered_position())
 
@@ -570,7 +582,7 @@ func reload_definitions(manifest: String = Fleet.DEFAULT_MANIFEST) -> bool:
 	if not Fleet.reload_definitions(manifest): return refuse(Fleet.last_error())
 	var next := applied.duplicate(true)
 	for a: Dictionary in next.actors:
-		if a.model != Setup.BARREL: a.hash = Fleet.definition_hash(Fleet.index_for_id(a.model))
+		if Fleet.valid_index(Fleet.index_for_id(a.model)): a.hash = Fleet.definition_hash(Fleet.index_for_id(a.model))
 	if not apply(next,true,selected_id(),false,not host.paused):
 		Fleet.restore_registry(previous)
 		return false
@@ -730,7 +742,7 @@ func _pick(pos: Vector2i) -> void:
 		var state := body_state(int(a.id))
 		if state.is_empty(): continue
 		var local := (Vector2(pos)-Vector2(state.position)).rotated(-float(state.rotation))
-		if Setup.bounds(str(a.model)).grow(2).has_point(local):
+		if Setup.actor_bounds(a).grow(2).has_point(local):
 			select_instance(int(a.id))
 			return
 	select_instance(0)

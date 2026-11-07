@@ -5,6 +5,7 @@ signal input_cancelled(actor_id: int, actor_epoch: int)
 
 # ACT-004 main-thread owner. Only copied commands/observations/effects cross its
 # boundary. The native cellular worker never receives these nodes or RIDs.
+const CanvasBody = preload("res://scripts/workbench_canvas_body.gd")
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
 const WorkbenchBridge = preload("res://scripts/workbench_physics_bridge.gd")
 const WorkbenchEmitter = preload("res://scripts/workbench_emitter.gd")
@@ -71,9 +72,9 @@ static func _finite_scalar(value: Variant) -> bool:
 	return (value is int or value is float) and is_finite(float(value))
 
 
-static func _hulls_inside(extent: Vector2i, origin: Vector2, angle: float, index: int) -> bool:
+static func _hulls_inside(extent: Vector2i, origin: Vector2, angle: float, index: int, custom: Array = []) -> bool:
 	var pose := Transform2D(angle,origin)
-	var shapes: Array = Fleet.collision_rects(index) if index >= 0 else [{"center":Vector2.ZERO,"size":Vector2(8,14)}]
+	var shapes: Array = custom if not custom.is_empty() else (Fleet.collision_rects(index) if index >= 0 else [{"center":Vector2.ZERO,"size":Vector2(8,14)}])
 	for shape: Dictionary in shapes:
 		for sign_x: float in [-1.0,1.0]:
 			for sign_y: float in [-1.0,1.0]:
@@ -96,6 +97,10 @@ static func valid_definitions(definitions: Array) -> bool:
 		var model := StringName(str(value.get("model", "")))
 		var producer := StringName(str(value.get("producer", "")))
 		var fleet_index: int = Fleet.index_for_id(str(model)) if workbench else -1
+		var canvas: bool = workbench and model==CanvasBody.MODEL
+		if value.has("canvas_body")!=canvas:return false
+		var canvas_data: Dictionary = CanvasBody.definition(value.canvas_body) if canvas and value.canvas_body is Dictionary else {}
+		if canvas and canvas_data.is_empty():return false
 		if workbench != value.has("workbench_options"): return false
 		if workbench:
 			if not _integer(value.get("instance_id"), 1, 9007199254740991) or identities.has(int(value.instance_id)):
@@ -110,12 +115,12 @@ static func valid_definitions(definitions: Array) -> bool:
 			if extent != Vector2i.ZERO and extent != value.canvas_extent: return false
 			extent = value.canvas_extent
 			if extent.x < 1 or extent.y < 1 or extent.x > 2048 or extent.y > 2048: return false
-			if (fleet_index < 0 and model != Catalog.PASSIVE_BARREL) or (fleet_index >= 0 and producer != &"human"):
+			if (fleet_index < 0 and model != Catalog.PASSIVE_BARREL and not canvas) or (fleet_index >= 0 and producer != &"human"):
 				return false
 			if value.has("retained_motion") and not _valid_retained_motion(value.retained_motion): return false
 			var motion: Dictionary = value.get("retained_motion",{})
-			if not _hulls_inside(extent,value.position,float(motion.get("rotation",0)),fleet_index): return false
-		if model == Catalog.PASSIVE_BARREL:
+			if not _hulls_inside(extent,value.position,float(motion.get("rotation",0)),fleet_index,canvas_data.parts[0].collision_rects if canvas else []): return false
+		if model == Catalog.PASSIVE_BARREL or canvas:
 			if producer != &"passive" or value.get("usable_index", -1) != -1:
 				return false
 		elif (not Catalog.has_rig(model) and not (workbench and fleet_index >= 0)) or producer not in PRODUCERS:
@@ -125,7 +130,7 @@ static func valid_definitions(definitions: Array) -> bool:
 		if not workbench and value.has("retained_motion"): return false
 		if not workbench and (value.position.x < 0.0 or value.position.y < 0.0 or value.position.x >= 1024.0 or value.position.y >= 1024.0):
 			return false
-		var prepared: Dictionary = Equipment.definition(Fleet.definition(fleet_index)) if workbench and fleet_index >= 0 else Equipment.definition(Catalog.entry(model), Loadouts.entry(model))
+		var prepared: Dictionary = Equipment.definition(canvas_data) if canvas else (Equipment.definition(Fleet.definition(fleet_index)) if workbench and fleet_index >= 0 else Equipment.definition(Catalog.entry(model), Loadouts.entry(model)))
 		if prepared.is_empty() or not _integer(value.get("usable_index", Loadouts.entry(model).get("usable_index", -1)), -1, 31):
 			return false
 		if model in Flight.IDS and int(value.get("usable_index", -1)) != -1:
@@ -162,7 +167,9 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 		var loadout: Dictionary = Loadouts.entry(StringName(str(definition.model)))
 		var data: Dictionary = Equipment.definition(Catalog.entry(StringName(str(definition.model))), loadout)
 		var fleet_index: int = Fleet.index_for_id(str(definition.model)) if definition.has("workbench_options") else -1
-		if fleet_index >= 0:
+		if definition.has("canvas_body"):
+			data = Equipment.definition(CanvasBody.definition(definition.canvas_body))
+		elif fleet_index >= 0:
 			data = Equipment.definition(Fleet.definition(fleet_index))
 		_catalogue.append(data)
 		var rig = Rig.new()
@@ -170,7 +177,7 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 		_body_offsets.append(all_bodies.size())
 		_rigs.append(rig)
 		var options: Dictionary = definition.get("workbench_options", {})
-		if rig.configure(data, definition.position, index, epoch, fleet_index, options) != OK:
+		if rig.configure(data, definition.position, index, epoch, fleet_index, options, definition.get("canvas_body",{})) != OK:
 			last_error = "Physical rig refused: " + str(definition.model)
 			close()
 			return false
@@ -243,7 +250,7 @@ func takeover(actor_id: int, expected_epoch: int, producer: StringName) -> bool:
 	# Ownership changes revoke issued observations before the replacement source
 	# can request a fresh lease. Physical state is not reconstructed here.
 	if not _active or actor_id < 0 or actor_id >= _rigs.size() or expected_epoch != epoch \
-		or producer not in PRODUCERS or _definitions[actor_id].model == Catalog.PASSIVE_BARREL:
+		or producer not in PRODUCERS or _definitions[actor_id].model in [Catalog.PASSIVE_BARREL,CanvasBody.MODEL]:
 		return false
 	if not cancel_input(actor_id, expected_epoch, StringName(str(_definitions[actor_id].producer))):
 		return false
@@ -469,7 +476,7 @@ func submit(command: Variant, producer: StringName = &"policy") -> bool:
 	if not _integer(command.get("actor_id"), 0, _rigs.size() - 1):
 		return _reject("actor_id")
 	var actor_id: int = int(command.actor_id)
-	if _definitions[actor_id].model == Catalog.PASSIVE_BARREL:
+	if _definitions[actor_id].model in [Catalog.PASSIVE_BARREL,CanvasBody.MODEL]:
 		return _reject("passive_prop")
 	if producer != StringName(str(_definitions[actor_id].producer)):
 		return _reject("producer")

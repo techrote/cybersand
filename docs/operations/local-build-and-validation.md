@@ -10,6 +10,18 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Fresh workbench canvas qualification
+
+`test_workbench_canvas_body.gd` exercises normal named save/load, four actual
+passive bodies, native mode/proxies/M/I, passive refusal, live motion, step and
+restore. `test_workbench_canvas_start.gd` checks ordinary startup with
+`--workbench --workbench-start=NAME`. Both actual hosts pass, alongside retained
+fleet-session/canvas/pilot UI suites; Windows graphical viewport capture is
+separate. Native93 inputs and retained P2 binaries are unchanged, so no native
+rebuild is claimed. [Dossier](../audits/2026-11-06-sol-fresh-canvas.md) records
+failed observer iterations, hashes and the continuing Linux-floor/original SOL
+limits. Leave the owner's interactive workbench open.
+
 ## SOL fixed-action ordering registration — 2026-11-06
 
 The [new actual-cut ordering dossier](../audits/2026-11-06-sol-workbench-ordering.md)

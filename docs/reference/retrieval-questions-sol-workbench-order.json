@@ -51,6 +51,22 @@
         "../tools/sol281/workbench_order_check.py",
         "../godot/native_extension/cyber_native_cell_world.cpp"
       ]
+    },
+    {
+      "id": "SOL-FRESH-CANVAS-001",
+      "query": "How can I load four fresh passive tree building shapes in the ordinary workbench, unpause, restore, and distinguish owner visible acceptance from the numerical rest screen?",
+      "canonical": [
+        "systems/player-control-playground.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "Version3 canvas-local geometry, no catalogue/test menu; existing Load start P Step Restore start.",
+        "Owner accepts visible behaviour; current response stays, native freed ownership remains next."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_canvas_body.gd",
+        "../godot/canvases/sol-fresh-structures.json"
+      ]
     }
   ]
 }
