@@ -1,0 +1,138 @@
+---
+title: "MAP-AUTO-02 #499 live Responses API runs (2026-11-07)"
+status: Current
+document-kind: evidence
+scope: Dated record of four real, charged gpt-6-luna runs of the Atlas agent runner (two on the bundled synthetic fixture, one critique-only and one owner-directed editing run on real Atlas art with genuine Godot captures), with retained receipts, hashes and explicit gaps
+canonical-for: [issue-499-live-smoke-2026-11-07]
+last-reviewed: 2026-11-07
+related-documents: [../operations/atlas-agent-runner.md, ../operations/github-development-and-release.md]
+---
+
+# MAP-AUTO-02 #499 live Responses API runs
+
+**Result.** Four genuine runs through the official `openai` SDK (3.46.0) against the live Responses API with model
+`gpt-6-luna`: run 1 was cleanly **stopped** by its own iteration limit; run 2 **succeeded** with a verifiable receipt,
+at about **USD 0.0012** computed from reported usage (ceiling USD 0.25). This proves the live request shape, the
+credit gate, stateless (`store: false`) reasoning replay, strict function tools, image input, the bounded edit and
+the receipt on this fixture. It does **not** prove that the art is better (that is a human judgement), the optional Costs API cross-check, or a
+reconciliation with the billing dashboard. Run 3 (below) shows a critique of genuine Godot captures of the real
+`lumen-fault` collection; run 4 shows the first complete model-made edit, real Godot re-render and comparison cycle.
+
+## Identity and authorisation
+
+| Item | Value |
+|---|---|
+| Date / host | 2026-11-07, owner's Windows 11 machine, Python 3.13, `openai==3.46.0`, key supplied only through the owner's own terminal environment |
+| Source head | `a14ff2caf83b41bbc0dda65388cc40cc3d63f9fd` (PR [#516](https://github.com/techrote/cybersand/pull/516)), working tree clean |
+| Collection | bundled synthetic fixture `mini-vault` (lane Terrain Art, writable), one fixture capture bundle (evidence class `fixture`, **not** Godot) |
+| Model | `gpt-6-luna`, `reasoning.effort` low, image detail high, `store: false`; the API reported the same model id |
+| Rates used | USD 0.10 input / 0.01 cached input / 0.50 output per 1M tokens, read on 2026-11-07 from the published pricing and model pages (no image rule is published for this model; a conservative bound was used) |
+| Spending authorisation | Owner go-ahead in the session chat; ceiling USD 0.25 per run, USD 0.05 per call |
+| Credit attestation (owner, from the billing overview) | Free-trial API credit USD 88.00, next expiration USD 88.00 on 2026-11-27, no payment method on file, auto-recharge off; the dashboard lists no model restriction. The runner cannot verify these itself (`headroom_basis: owner-attestation-only`). |
+| Gate | every check passed, including an uncharged `models.retrieve` for `gpt-6-luna` |
+
+## Runs
+
+| Run | Config difference | Outcome | Calls / tool calls | Tokens in (cached) / out (reasoning) | Computed cost |
+|---|---|---|---|---|---|
+| 1 | defaults (8 iterations) | `stopped` / `max_iterations`, exit 4, no report, no patch | 8 / 12 | 23,220 (18,102) / 559 (191) | USD 0.000972 |
+| 2 | `max_iterations` 14, `max_api_calls` 16 | `success`, exit 0 | 9 / 13 | 28,931 (25,327) / 1,165 (158) | USD 0.001196 |
+
+Run 1 shows the fail-closed limit working: the model issued about one tool call per response, so it ran out of
+iterations before `submit_report`. Run 2 inspected the pack, ran the validator, viewed the fixture image, made one
+bounded `replace_text` edit (a 2x2 rusted-steel accent on the copper rail), saw its own `render_check` fail because
+the preview was stale, regenerated it with `render_write`, re-validated, and submitted a seven-dimension critique
+with proposals. The runner's own final `validate` and `render_check` passed; the exported patch
+(`run2-patch.diff`, two files) applies cleanly with `git apply --check` and the patched fixture re-validates
+(9 rectangles) and matches its regenerated preview. Reserved worst-case total USD 0.026; no retries; no
+possibly-charged attempts; `visual_cycle.claimed` is **false** (fixture evidence, no after-capture).
+
+## Run 3: real Atlas art, genuine Godot captures (critique only)
+
+| Item | Value |
+|---|---|
+| Source | art branch head `c4aab63eed538a25687c66d368b0801d2d2e04d0` (read-only sparse worktree, clean, pinned with `expected_source_sha`); collection `lumen-fault` (Terrain Art, writable) |
+| Runner code | `c9eb5b485d1aa697b77f8e2f1be1136419e67204`, tree clean (recorded in the receipt) |
+| Input evidence | genuine #498 capture bundle (PR #506 head `7b960b5e`, Godot 4.7 console build, `opengl3_angle`): `full` 1280x512, `viewport` 1920x1080, `detail` 1920x768; bundle seal `a81f9954ca61ab221db08cb8853f893a88a81644b743a7d59d75b9af65cde564`, evidence class `godot-capture`, verified independently by the runner |
+| Limits | 18 iterations, 20 calls, USD 0.25 ceiling; same attestation and authorisation as runs 1-2 |
+| Outcome | `success`, exit 0: 7 real responses, 11 tool calls (inspect, baseline `validate_pack.py` pass, 3 `view_image`), no retries/violations; 53,603 input (31,116 cached) / 1,249 output (240 reasoning) tokens; computed cost USD 0.003184 |
+| Model report | `critique_only`: seven-dimension critique of the real Godot images (scores 4-5, with concrete observations such as a visually busy central collapse and near-continuous orange deck-edge marks) and two revision proposals; it **made no edit**, judging the tightly authored geometry safer untouched |
+| Claims | `visual_cycle.claimed` is **false** (no edit, no after-capture); no improvement is claimed |
+
+A separate no-cost dry run on the same real collection exercised the whole pipeline with a scripted edit: real
+Python and Node validators, an after-capture rendered by the real launcher (class `godot-capture`), and a
+before/after comparison showing the pack and all three images changed. It is not a model result and claims nothing.
+
+## Run 4: owner-directed editing cycle on real art
+
+| Item | Value |
+|---|---|
+| Source / runner | art head `c4aab63eed538a25687c66d368b0801d2d2e04d0` (pinned, unchanged after the run); runner `0c1f0d67e635d3181a0a8e953ad04128056ce2ed`, tree clean; instruction text `atlas-agent-instructions/2` |
+| Owner directive (recorded with its SHA-256 in the receipt) | make several sweeping and several detail edits, work in validated batches, regenerate the preview, re-render with Godot, compare and view the new image, and report honestly which edits helped or regressed |
+| Limits | 30 iterations, 36 calls, 100 tool calls, USD 0.25 ceiling; same attestation and authorisation |
+| Outcome | `success`, exit 0, report `improved`: 15 responses over 20 attempts (**5 provider rate-limit 429s**, each retried after 1-12 s with the provider's delay, none charged), 24 tool calls, 3 images viewed, no malformed calls or violations; 139,865 input (121,082 cached) / 2,441 output (163 reasoning) tokens; computed cost **USD 0.004310** |
+| Edits | 7 `pack_add_rectangles` calls adding 66 rectangles across 7 of the 8 features (`fault-strata` 11, `seal-gate` 11, `collapsed-gantry` 10, `archive-console` 10, `quartz-fan` 8, `survey-tripod` 8, `sealed-cistern` 8), +5,833 bytes of pack text; validators re-run after each batch, then `render_write` and `render_check` |
+| Runner's own final gate | patched collection passed `validate_pack.py` and the `--check` render |
+| Godot cycle | after-capture rendered by the #498 launcher through the runner (class `godot-capture`, same `opengl3_angle` driver and framing as the before bundle), comparison reported full, viewport and detail as comparable with the pack, RG8 cells and PNG changed; `visual_cycle.claimed` is **true**, meaning the cycle executed and was verified, not that the result is accepted as better |
+| Patch | full patch SHA-256 `b5887c121aa8f8302088c86351dac9a3a037e9658fcfbbaa53cce80454ecc55b` (644,832 bytes, almost all of it the single-line regenerated `preview.svg`); `git apply --check` passes on the art content and the patched pack passes `validate_pack.py` and, run from its own directory, `render_pack.mjs --check`; a compact `pack.json`-only diff is retained |
+
+**Reviewer's analysis (author's review, not acceptance).** Measured exactly from the before and after pack data
+(composed scene, last write wins) and from the Godot PNGs:
+
+| Measure | Value |
+|---|---|
+| Scene cells changed | 2,615 of 163,840 (1.6%): 1,862 newly filled, 753 overwritten, 0 erased; 23,351 of 655,360 PNG pixels differ (3.6%) |
+| Materials | 16 existing palette materials, none movable; palette, scene foundation and placements unchanged |
+| New mass that touches nothing that existed before | **17 of 52 new components, 905 of 1,862 new cells (49%)**: for example two basalt/granite slabs of 282 and 173 cells hovering about 20 cells above the leftmost module's rubble, bars and a rust column inside the empty cistern chamber, a grating bar floating inside the seal-gate opening, and small rust/amber/cyan marks in the void around the gantry |
+| New mass attached to existing structure | 35 components, 957 cells (for example the taller quartz-fan flanking pillars and the seal-gate shoulders and crown, which read as real improvements) |
+| Focal breach | unchanged, although the directive named it |
+| Rule check on `sealed-cistern` (status `contained-dynamic`, placement rule "insert only into previously empty cavity; don't intersect seals") | the 8 added rectangles overwrite 158 existing module cells: 51 steel-plate and 45 rusted-steel (frame/seal material) and, **in the wet base variant, 62 Water cells**; no movable material was added. The validator cannot see this; the module's Water containment is unqualified either way. |
+
+Reading: execution is sound, but about half of the added mass is unattached debris, which the QUALITY_BAR says to
+reject, and the cistern edits breach that module's own placement rule. A curated patch keeping only the attached
+additions and dropping the cistern edits would be a better candidate; the patch as run should **not** be accepted.
+The retained images are `review-diff-map.png` (magenta = changed pixels, yellow = floating components),
+`review-crop-left-modules.png` and `review-crop-cistern.png` (2-3x, before above after, floating fragments boxed).
+
+## Run 5: gpt-6.1-sol critique-and-improve attempt, first try (stopped)
+
+| Item | Value |
+|---|---|
+| Source | derived local commit `381fb0bf0ea54e8b21141fbedeefee24c934e76c` = art head `c4aab63e` + run 4's patch + two read-only context files (never published); input bundle = Godot captures of that exact pack, reference bundle = the original art before run 4 |
+| Model / limits | `gpt-6.1-sol` (USD 2.00 / 0.10 / 10.00 per 1M tokens), reasoning medium, 30 iterations, 36 API calls, USD 1.00 ceiling (set by the assistant, approved by the owner running the command) |
+| Outcome | `stopped` / `max_api_calls`, exit 4, no report, **no patch** (a stopped run exports nothing); 15 responses, 19 provider rate-limit rejections (waits of up to 30 s, none charged) which at the time counted against the 36-call allowance, 47 tool calls; 454,072 input (306,100 cached) / 3,580 output (797 reasoning) tokens; computed cost **USD 0.362** |
+| What it did | critiqued luna's work correctly from the reference and input images (taller quartz flanks and gate crown help; detached chips and bars clutter the void; the central register faces are still hard to read), then removed 49 of luna's rectangles in 11 batches; it then burned most of its allowance paging through the 19,000-line `pack.json` with `read_file` (about 24 reads) looking for the central breach, and one `replace_text` failed because the edit-size cap was derived from the read cap |
+| Fixes made after this run | rate-limit rejections no longer consume `max_api_calls` (new `max_total_retries`); `list_rectangles` compact reader and `@scene` addressing; edit-size cap decoupled from the read cap; instruction text v3 |
+
+The run's receipt is retained; the partial edits were lost with its disposable workspace.
+
+## Retained evidence
+
+Directory `docs/audits/issue-499-live-smoke-2026-11-07/` (credential-scan clean, sealed receipts verify with
+`verify-receipt`):
+
+| File | SHA-256 of file | Sealed `receipt_sha256` |
+|---|---|---|
+| `run1-stopped-receipt.json` | `e92bf134665f24a766e359128d06523f56729eea25f518d5c1510bba9e1e90e0` | `273eafb7e3e1eb61665323be97542ab10343c98efc70723146d3f8968d3dbed7` |
+| `run2-success-receipt.json` | `5da47c7cd4359fcc9d2a401e1f3377648d489499e9b8f5eda490600d3001c3ed` | `1db066498047f7d7142d56eaa5b1a96be456e59d82b9f8e030bee6b343b11bd7` |
+| `run2-patch.diff` | `bc0724037e26523014c07bd2e3195ae99ec950d3a3f8798c885b64109f78dc55` | patch hash recorded in the receipt |
+| `run3-real-art-critique-receipt.json` | `f524ca6b2bff45cf63f73805175b286f18d1cd1a6840a435e734896577529f25` | `fd59274c63f2c5074e2ab24a59cd326a25ad854cca56390b3e2feb85102de322` |
+| `run4-directed-real-art-receipt.json` | `f11c10a31b5d9c777826bb1f2a7fbc8e17f9cec35b0f7a047abcfef5912ced4c` | `5a0623e9068ddf26942285e699254c6de7e31d1c7a53d8e4fdd4f59507779439` |
+| `run4-pack-only.diff` | `03da6a9c380ba45c4106ac510dde7a7e64c8b9282bd548433a979ae8b9673684` | compact excerpt of the full patch (pack.json only) |
+| `run4-before-full.png` | `a8a957f8824f654567752d0417068a65c1c072f696d65f63a81c248266035058` | Godot capture, bundle seal `a81f9954ca61ab221db08cb8853f893a88a81644b743a7d59d75b9af65cde564` |
+| `run4-after-full.png` | `dcf088e0f9e2db332921f8969c0907d96aa6c6a90a31bf25339c99cf330c7412` | Godot capture, bundle seal `b83e204bdae6c9cb81498fb049dd77565310d386b673f6611ebcc0f2245c3b76` |
+| `run5-sol-first-attempt-stopped-receipt.json` | `b7809fa20913b3ecfb6453ae9d1a055a3869154a4f81924a7b5b41a876a400c8` | `55738e4339c5244cdb033a9ebebf02a9fd6dc0b317766f6c3f9a367b949b524d` |
+| `review-diff-map.png` | `d90bfddcefced959281f02472c6359b752ae06830c2713a06919f6f36ca7862d` | review analysis image, derived from the two Godot captures |
+| `review-crop-left-modules.png` | `faac05e92ae4c5351a68993f2e1caccfc3cec99fd3258ae1c3c24551a45655af` | review analysis image, derived from the two Godot captures |
+| `review-crop-cistern.png` | `04485005f9b2634ce3dc7fa6d9622466ab849e4b8b044371cd99c0bd5b3e973b` | review analysis image, derived from the two Godot captures |
+
+Command shape (key only in the environment): `python tools/atlas_agent_runner.py run --config <live config> --output-dir <new dir>`.
+
+## Gaps
+
+- Cost is token counts times published rates, **not a bill**; compare the dashboard's usage for the day to confirm.
+- `x-ratelimit-*` and organisation/project headers were not returned by the model probe, so no project identity was recorded.
+- The live Costs API cross-check was not exercised (no admin key); `expected_project` was not set.
+- Runs 1-2 used a flat fixture raster. Runs 3-4 used genuine Godot captures; the #498 PR (#506) is still an unmerged Draft that the runner reads only through its documented CLI (a local worktree of its head was used, unmodified).
+- Run 4's patch is a local candidate only: it was not published, no human lane review or reference-gallery comparison has happened, and one before/after pair at one renderer (NVIDIA via ANGLE) is not a quality or cross-platform result.
+- One model, one machine: not a quality, performance or Linux-hosted run. Real art was read with the pack formatted one number per line (about 19,000 lines).
