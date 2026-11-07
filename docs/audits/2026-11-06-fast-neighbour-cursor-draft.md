@@ -110,3 +110,18 @@ matrix and produces a small, repeatable same-host six-worker gain. Do not merge
 the current stacked Draft or add a reviewed transition until an independent
 MAT-AUTH source reviewer accepts the exact protected delta and the resulting
 current-main candidate passes its own gates.
+
+
+## Source-line profiling follow-up
+
+A bounded source-line profiling attempt ran in [Actions 42315420376](https://github.com/techrote/cybersand/actions/runs/42315420376).
+The runner provides `perf 7.0.14` but has `/proc/sys/kernel/perf_event_paranoid = 4`
+and no privileged performance-monitoring capability. Both parent and candidate
+`perf record` invocations therefore refused before executing the benchmark with
+`Failure to open any events for recording`. Empty perf data and the complete
+refusal stderr are retained in artifact `pf471-perf-42315420376-1`.
+
+No sysctl, capability or runner policy was changed to obtain profiling access.
+The unavailable source-line attribution is explicitly retained as a host/tooling
+limitation. It does not substitute for, or invalidate, the successful repeated
+A/B/B/A wall-clock result.

@@ -1,8 +1,8 @@
 name: PF471 neighbour cursor source-line profile
 
+# Profiling attempt complete; preserve exact manual reproduction only.
 on:
-  push:
-    branches: [codex/fast-in-chunk-neighbour-cursor-20261106]
+  workflow_dispatch:
 
 permissions:
   contents: read
