@@ -350,3 +350,37 @@ executed pass.** Confirm the final publisher run, source SHA and runtime
 manifest hashes before accepting the resulting publication commit and
 running the last Ready Native/GDExtension/Docs gates. Production merge remains
 conditional on those checks, not on prior-source greens.
+
+## Executed source-matched runtime publication — 2026-11-07
+
+**PASS on publisher run [42320008406](https://github.com/techrote/cybersand/actions/runs/42320008406)**; source commit
+`fa2a371e66c6e53c25f969ab260b5cfe69d94cd6` includes mainline
+COUPLING-LOCKSTEP-001 and the previously reviewed HS-PKT C++/adapter bits.
+
+- Native focused hard-mask/oracle/worker-parity cases: **PASS**.
+- Linux GDExtension source-matched build and actual pinned Godot 4.7 import,
+  complete packet byte oracle, lockstep semantics and actual 90-tick Rapier
+  lockstep self-check, render patch handoff, worker interest ownership and
+  full workbench canvas cases: **PASS**.
+- Windows GDExtension source-matched cross-build, followed by actual Windows
+  Godot 4.7 execution of the same scoped cases: **PASS**.
+- Publisher single-parent append `fa1c5b72a35b28f75c91203004ac171e4d325a95`
+  changed **only** the following paths:
+  `godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so`,
+  `godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll`,
+  `godot/addons/cybersand_native/runtime-provenance.linux.json`,
+  `godot/addons/cybersand_native/runtime-provenance.json`.
+- Linux ELF SHA-256 `1409f2799da6335892a414ba2e87770549081602e5fb8528cdb2905af1ac30ea`,
+  size 4,511,824 bytes.
+- Windows PE SHA-256 `d27139de8070cbaf04d741564966593e31a4d46abd35d2714bcc50b5c6400c9c`,
+  size 5,064,192 bytes.
+- Both source manifests use schema 1, status
+  `validated-development-runtime`, exactly 87 hashed native inputs and
+  source-built provenance for the same immutable publish request head.
+- No direct `main` branch write and no squash/rebase of the reviewed MAT-AUTH
+  ancestry. The publisher's request and temporary workflow/helper/test
+  scripts are retired by a separate descendant cleanup commit.
+
+**The publication is complete, not an implied Ready-PR qualification.**
+The final cleanup source head still requires current-source Docs, Native,
+GDExtension/Windows/Linux and any scoped required CI results before merge.
