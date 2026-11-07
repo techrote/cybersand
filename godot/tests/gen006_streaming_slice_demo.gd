@@ -370,10 +370,11 @@ func _send_quit() -> void:
             push_error("GEN006_SHUTDOWN_UNCONFIRMED_EDIT outstanding=%s queued=%d error=%s" % [
                 str(ipc_outstanding), queued_actions.size(), failure
             ])
-            # Preserve the native process for its own recovery/quarantine path
-            # instead of publishing a conflicting second request.
-            if ipc_outstanding:
-                return
+            # Explicitly fail-stop an unresponsive owner. Otherwise a Godot
+            # exit would orphan a continuously ticking native child process.
+            # Submitted edit outcome remains UNKNOWN, never falsely ACKed.
+            OS.kill(native_pid)
+            return
     var commands := PackedStringArray(["quit"])
     var started := Time.get_ticks_usec()
     if _write_request(commands):
