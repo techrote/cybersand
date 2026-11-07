@@ -4,9 +4,11 @@ extends RefCounted
 ## only binds UI, converts copied receipts and enforces local response fences.
 const AgentPanel = preload("res://scripts/workbench_agent_panel.gd")
 const AuthoringHost = preload("res://scripts/workbench_authoring_host.gd")
+# Source-identical #527 handoff; native World remains exclusively #526-owned.
+const FourToolBridge = preload("res://scripts/workbench_agent_four_tool_bridge.gd")
 
 const MAX_IMAGE_BYTES: int = 590000
-const RETIRE_TIMEOUT_MSEC: int = 15000
+const RETIRE_TIMEOUT_MSEC: int = 35000
 
 var _workbench: Control
 var _host: Control
@@ -23,7 +25,7 @@ func mount(workbench: Control) -> bool:
 		return false
 	_workbench = workbench
 	_host = workbench.host
-	_bridge = AuthoringHost.new()
+	_bridge = FourToolBridge.new()
 	if not _bridge.bind(_host):
 		return false
 	_agent_panel = AgentPanel.new()
@@ -112,9 +114,10 @@ func retire() -> Dictionary:
 		if not _authorised:
 			answer = {"status":"retired","reason":"no_native_task"}
 			break
-		answer = await _bridge.retire_task()
-		if answer.get("status") == "retired":
+		answer = await _bridge.stop()
+		if answer.get("status") == "stopped" and answer.get("no_further_agent_mutations") == true:
 			_authorised = false
+			answer = {"status":"retired","reason":"native_527_stop_ack","owner_receipt":answer}
 			break
 		if str(answer.get("reason","")) not in [
 			"authoring_host_quarantined_or_busy","host_tool_busy"]:
@@ -134,17 +137,14 @@ func invalidate_human(reason: String) -> void:
 func dispatch(name: String, args: Dictionary, epoch: int, call_id: String, client: Node) -> void:
 	if not is_instance_valid(client) or not client.is_active() 			or client.current_epoch() != epoch or not _authorised:
 		return
-	if name == "step":
-		# #527 is the sole owner of actual step/Stop integration.
-		client.submit_tool_result(epoch,call_id,{
-			"status":"refused","reason":"step_awaiting_527_qualified_handoff"})
-		return
+	# All four tools execute through the SAME qualified #527 bridge, which
+	# delegates first three to #526 and sequences native ACKed workbench ticks.
 	var result: Dictionary = await _bridge.call_tool(name,args)
 	if not is_instance_valid(client) or not client.is_active() 			or client.current_epoch() != epoch:
 		# In-flight native work may have completed; retirement fences the
 		# next task. Never synthesize a cancellation/rollback receipt.
 		return
-	client.submit_tool_result(epoch,call_id,to_model_receipt(result))
+	client.submit_tool_result(epoch,call_id,to_model_receipt(result,name))
 
 static func _json_safe(value: Variant) -> Variant:
 	if value is Vector2i:
@@ -166,7 +166,41 @@ static func _json_safe(value: Variant) -> Variant:
 		return Array(value)
 	return value
 
-static func to_model_receipt(native: Dictionary) -> Dictionary:
+static func to_model_receipt(native: Dictionary, tool: String = "") -> Dictionary:
+	# #527 completed ticks are only model-visible as "stepped" with a genuine
+	# #526 post-draw observation at EXACTLY the completed native tick.
+	if tool == "step":
+		var step_result: Dictionary = native.duplicate(true)
+		if step_result.get("status") == "stopped":
+			step_result["status"] = "refused"
+			return _json_safe(step_result)
+		if step_result.get("status") != "completed":
+			return _json_safe(step_result)
+		var observed: Variant = step_result.get("observation",{})
+		var requested: int = int(step_result.get("requested",-1))
+		var completed: int = int(step_result.get("completed",-1))
+		var before: int = int(step_result.get("before_tick",-1))
+		var after: int = int(step_result.get("after_tick",-1))
+		if requested < 1 or requested > 120 or completed != requested \
+				or before < 0 or after != before + completed \
+				or step_result.get("still_paused") != true \
+				or not observed is Dictionary \
+				or observed.get("status") != "observed" \
+				or observed.get("image_status") != "matched_post_draw" \
+				or int(observed.get("identity",{}).get("completed_tick",-1)) != after \
+				or int(observed.get("render_identity",{}).get("tick",-1)) != after:
+			return {"status":"unconfirmed","reason":"step_missing_exact_matched_observation",
+				"requested":requested,"completed":completed,
+				"before_tick":before,"after_tick":after}
+		var png: Variant = observed.get("framebuffer_png",null)
+		if not png is PackedByteArray or png.size() < 8 or png.size() > MAX_IMAGE_BYTES:
+			return {"status":"unconfirmed","reason":"step_matched_image_missing_or_oversized",
+				"requested":requested,"completed":completed,
+				"before_tick":before,"after_tick":after}
+		step_result["observation"].erase("framebuffer_png")
+		step_result["status"] = "stepped"
+		step_result["image_data_url"] = "data:image/png;base64," + Marshalls.raw_to_base64(png)
+		return _json_safe(step_result)
 	# Preserve original matched PNG bytes, never generate a fake screenshot.
 	# Sending a copied PNG to OpenAI does not give it any native World authority.
 	var result: Dictionary = native.duplicate(true)

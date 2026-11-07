@@ -65,7 +65,7 @@ func _receipt() -> Dictionary:
 	var value: Variant = JSON.parse_string(str(item.get("output","")))
 	return value if value is Dictionary else {}
 
-func _capture_original() -> void:
+func _capture_original(prefix: String = "mounted-native") -> void:
 	var payload: Dictionary = panel.client.pending_fake_payload()
 	var input: Array = payload.get("input",[])
 	check(input.size() == 2,"native observe did not attach an actual image item")
@@ -83,12 +83,12 @@ func _capture_original() -> void:
 	if evidence_dir.is_empty() or image.is_empty():
 		return
 	DirAccess.make_dir_recursive_absolute(evidence_dir)
-	var file: FileAccess = FileAccess.open(evidence_dir.path_join("mounted-native-frame.png"),FileAccess.WRITE)
+	var file: FileAccess = FileAccess.open(evidence_dir.path_join(prefix+"-frame.png"),FileAccess.WRITE)
 	if check(file != null,"cannot retain original mounted PNG"):
 		file.store_buffer(image)
 		file.close()
 	var receipt: Dictionary = _receipt()
-	var data: FileAccess = FileAccess.open(evidence_dir.path_join("mounted-native-receipt.json"),FileAccess.WRITE)
+	var data: FileAccess = FileAccess.open(evidence_dir.path_join(prefix+"-receipt.json"),FileAccess.WRITE)
 	if check(data != null,"cannot retain exact native/render identity"):
 		data.store_string(JSON.stringify(receipt,"  ")+"\n")
 		data.close()
@@ -172,6 +172,27 @@ func _run() -> void:
 	check(applied.get("status") == "applied" 		and applied.get("readback",[]).size() == 9 		and applied.get("authored_start",{}).get("status") == "recorded",
 		"native readback and authored-start commit missing")
 	check(not panel.proposal_overlay.visible,"applied proposal overlay remained visible")
+	# The fourth tool goes through #527's real pause/serial/tick fencing; no
+	# fabricated model receipt or stale PNG can satisfy this acceptance.
+	s = panel.client._serial
+	var tick_before: int = host.latest_snapshot.tick_index
+	print("WB528_STAGE actual four-tool step dispatched")
+	_fake("step","step1",{"ticks":4})
+	if not await until(func() -> bool: return _next_request(s),
+			"four acknowledged native steps and post-draw join did not complete"):
+		_finish()
+		return
+	var stepped: Dictionary = _receipt()
+	check(stepped.get("status") == "stepped"
+			and stepped.get("requested") == 4 and stepped.get("completed") == 4
+			and stepped.get("before_tick") == tick_before
+			and stepped.get("after_tick") == tick_before + 4
+			and stepped.get("still_paused") == true,
+			"real 4-tick Step did not return exact native acknowledgment")
+	check(stepped.get("observation",{}).get("image_status") == "matched_post_draw"
+			and stepped.get("observation",{}).get("render_identity",{}).get("tick") == tick_before + 4,
+			"Step result lacked genuine same-tick framebuffer")
+	_capture_original("mounted-poststep")
 	# The fake API is deliberately held after the real application receipt.
 	print("WB528_STAGE native applied; manual edit conflict")
 	var stale_epoch: int = panel.client.current_epoch()

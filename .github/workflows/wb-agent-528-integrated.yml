@@ -6,6 +6,8 @@ on:
     paths:
       - 'godot/scripts/workbench_agent_footprint.gd'
       - 'godot/scripts/workbench_agent_mount.gd'
+      - 'godot/scripts/workbench_agent_four_tool_bridge.gd'
+      - 'godot/scripts/workbench_agent_step_sequence.gd'
       - 'godot/scripts/workbench_agent_panel.gd'
       - 'godot/scripts/workbench_agent_client.gd'
       - 'godot/scripts/shared_workbench.gd'

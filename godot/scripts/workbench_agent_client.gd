@@ -399,6 +399,23 @@ func submit_tool_result(epoch: int, call_id: String, receipt: Dictionary) -> boo
 	if status not in ["proposed", "queued", "applied", "refused", "error", "unconfirmed", "observed", "stepped"]:
 		_fail("Invalid authoritative receipt status.")
 		return false
+	if _pending_tool == "step" and status == "stepped":
+		var observed: Variant = receipt.get("observation",{})
+		var count: int = int(receipt.get("completed",-1))
+		if not observed is Dictionary or observed.get("status") != "observed" \
+				or observed.get("image_status") != "matched_post_draw" \
+				or count < 1 or count != int(receipt.get("requested",-1)) \
+				or int(receipt.get("after_tick",-1)) != int(receipt.get("before_tick",-2)) + count \
+				or receipt.get("still_paused") != true \
+				or int(observed.get("render_identity",{}).get("tick",-1)) != int(receipt.get("after_tick",-2)) \
+				or not receipt.has("image_data_url"):
+			_fail("Step receipt lacks exact completed native ticks and matched post-draw image.")
+			return false
+	if status == "unconfirmed" or (_pending_tool == "step" and status == "refused" \
+			and int(receipt.get("completed",0)) > 0):
+		# Ambiguous/partly executed native work is not retried by the model.
+		_fail("Native tool result uncertain; human Stop/recovery required.")
+		return false
 	if _pending_tool == "apply_edit" and status == "applied" and not receipt.has("readback"):
 		_fail("Apply receipt lacks native readback.")
 		return false
@@ -413,7 +430,7 @@ func submit_tool_result(epoch: int, call_id: String, receipt: Dictionary) -> boo
 	# #526 supplies original viewport PNG matched to the native observation.
 	# Text-only base64 is NOT a vision input: send it as an input_image item.
 	var image_url := ""
-	if _pending_tool == "observe" and bounded_receipt.has("image_data_url"):
+	if _pending_tool in ["observe","step"] and bounded_receipt.has("image_data_url"):
 		image_url = str(bounded_receipt["image_data_url"])
 		bounded_receipt.erase("image_data_url")
 		if not image_url.begins_with("data:image/png;base64,") or image_url.length() > 800000:

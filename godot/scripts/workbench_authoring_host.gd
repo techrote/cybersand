@@ -149,16 +149,27 @@ func _observe(args: Dictionary) -> Dictionary:
 		return native
 	var deadline: int = Time.get_ticks_msec() + RESPONSE_TIMEOUT_MSEC
 	var joined: Dictionary = {}
+	var requested_fresh_render: bool = false
 	while Time.get_ticks_msec() < deadline and _available():
 		joined = await RenderJoin.join_after_draw(_host,native)
 		if joined.get("status") == "observed":
 			break
-		if joined.get("reason") not in [
+		var reason: String = str(joined.get("reason",""))
+		if reason not in [
 			"native_and_uploaded_render_not_matched",
 			"publication_changed_during_draw",
 			"publication_changed_after_capture"
 		]:
 			return joined
+		# A paused native step can complete without changing any material ID.
+		# Normal render publication is revision-driven in that case, leaving an
+		# older render tick even though the owner returned a fresh observation.
+		# Request ONE normal full-refresh packet through the existing owner;
+		# never relabel old pixels or weaken the exact tick/render ACK check.
+		if reason == "native_and_uploaded_render_not_matched" \
+				and not requested_fresh_render:
+			_host.simulation_worker.request_render_full_refresh()
+			requested_fresh_render = true
 		await _host.get_tree().process_frame
 	if joined.get("status") != "observed":
 		return {"status":"pending","reason":"matching_post_draw_frame_not_available",
