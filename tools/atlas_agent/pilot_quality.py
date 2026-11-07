@@ -93,9 +93,12 @@ def evaluate(before: dict, after: dict, allowed: set[str]) -> dict:
         width, height = before_f["size"]
         before_cells = cells(old_rects, width, height)
         after_cells = cells(new_rects, width, height)
-        changed = {xy for xy in after_cells if before_cells.get(xy) != after_cells[xy]}
-        overwritten = {xy for xy in changed if xy in before_cells}
-        added = changed - overwritten
+        # Even identical-material overlays are placement-rule intersections.
+        overwritten = set()
+        for x, y, w, h, _material in added_rects:
+            overwritten.update((xx, yy) for yy in range(y, y + h)
+                               for xx in range(x, x + w) if (xx, yy) in before_cells)
+        added = set(after_cells) - set(before_cells)
         components, detached = attached_components(added, set(before_cells))
         total += len(added)
         metrics.append({"feature": name, "new_rectangles": len(added_rects),
