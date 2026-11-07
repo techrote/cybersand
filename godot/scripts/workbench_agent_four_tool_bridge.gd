@@ -1,4 +1,5 @@
 extends RefCounted
+signal stop_acknowledged(receipt: Dictionary)
 ## WB-AGENT-002 (#527): narrow fourth-tool and Stop composition over the
 ## ACTUAL #526 host adapter, and the existing acknowledged workbench Step.
 ## No native World, second dispatcher, mutable snapshots or model/network API.
@@ -132,8 +133,12 @@ func stop() -> Dictionary:
 	_proposal_pending = false
 	_epoch += 1
 	_step_driver.retire()
-	return {"status":"stopped","reason":"native_task_retired_after_boundary",
-		"no_further_agent_mutations":true}
+	var receipt: Dictionary = {
+		"status":"stopped","reason":"native_task_retired_after_boundary",
+		"no_further_agent_mutations":true
+	}
+	stop_acknowledged.emit(receipt.duplicate(true))
+	return receipt
 
 
 ## Do not rebind a retired task to an old driver. A revised destination
