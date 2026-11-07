@@ -1502,9 +1502,12 @@ func set_physical_usable_state(frame: Dictionary, requests: Array = [], states: 
 	if reason.is_empty():
 		_physical_usable_frame = frame.duplicate(true)
 		if not states.is_empty():
+			# Coherent with the admitted frame, but not a body publication: main
+			# follows with set_rigid_body_states in the same physics callback, the
+			# single publication point per Rapier step. Counting both let a fenced
+			# owner tick twice for one step (PR #474 review).
 			_rigid_body_states = states.duplicate()
 			_rigid_body_epoch = int(frame.epoch)
-			_rigid_body_publication += 1
 		# A changed generation/selection or cancelled lease invalidates packets
 		# even if the worker already extracted them from the pending array.
 		for actor: Variant in _physical_usable_inflight.keys():
@@ -2415,6 +2418,7 @@ func _publish_snapshot(
 		snapshot.player_representation = "actor-prototype/" + str(snapshot.actor_prototypes.models[0])
 	snapshot.current_rigid_body_states = rigid_body_states.duplicate()
 	snapshot.consumed_rigid_body_publication = _lockstep_completed_publication
+	snapshot.lockstep_fence_active = _lockstep_fence_applies()
 	snapshot.character_runtime_recovery_enabled = (
 		_character.runtime_enclosure_recovery_enabled
 	)
