@@ -29,6 +29,7 @@ GROUPS = (
     "b1-f1-s1-j0-c1-n0",  # identical complete effects; 32-cell cores
 )
 REPEATS = 2
+QUICK_GROUPS = ("b1-f1-s1-j0-c0-n0", "b1-f1-s1-j0-c1-n0")
 ABBA = {
     ("baseline", 0): 0,
     ("candidate", 0): 1,
@@ -68,6 +69,21 @@ def selection(rep: int) -> list[dict]:
     return rows
 
 
+def selected(rep: int, subset: str) -> list[dict]:
+    """Keep the complete 40-case screen intact; quick is the two-core gameplay slice."""
+    rows = selection(rep)
+    if subset == "full":
+        return rows
+    if subset != "quick":
+        raise ValueError("Unknown comparison subset: " + subset)
+    rows = [r for r in rows if r["group"] in QUICK_GROUPS]
+    if len(rows) != 20 or len({r["id"] for r in rows}) != 20:
+        raise AssertionError("Incomplete 20-configuration Godot quick slice")
+    for i, row in enumerate(rows):
+        row["sequence"] = i
+    return rows
+
+
 def check() -> None:
     for rep in range(REPEATS):
         rows = selection(rep)
@@ -78,6 +94,7 @@ def check() -> None:
             assert not row["jet"]
             assert not row["normalize"]
         assert {r["id"] for r in rows} == {r["id"] for r in selection(0)}
+    assert len(selected(0, "quick")) == 20
     print(json.dumps({
         "schema": "pf-gas-rapid-plan-v1",
         "source_planner": str(GENERATOR),
@@ -161,7 +178,7 @@ def execute(args: argparse.Namespace) -> int:
     }
     # Receipt precedes execution so a crash does not destroy source/runtime identity.
     write_json(receipt_path, receipt)
-    cases = selection(args.replicate)
+    cases = selected(args.replicate, args.subset)
     write_json(manifest_path, {
         "schema": "water-factorial-manifest-v1",
         "seed": "pf-gas-rapid-from-493-v1",
@@ -223,7 +240,7 @@ def execute(args: argparse.Namespace) -> int:
     return 1 if summary["errors"] else 0
 
 
-def load_role(root: Path, role: str) -> tuple[dict, dict, dict]:
+def load_role(root: Path, role: str, subset: str) -> tuple[dict, dict, dict]:
     receipts = {}
     trials = {}
     counts = {}
@@ -237,9 +254,9 @@ def load_role(root: Path, role: str) -> tuple[dict, dict, dict]:
         if doc.get("schema") != "water-factorial-result-v1":
             raise ValueError(f"Bad {role} result schema")
         rows = doc.get("cases", [])
-        expected = selection(rep)
-        if len(rows) != 40:
-            raise ValueError(f"{role}/{rep}: expected 40 trials, found {len(rows)}")
+        expected = selected(rep, subset)
+        if len(rows) != len(expected):
+            raise ValueError(f"{role}/{rep}: expected {len(expected)} trials, found {len(rows)}")
         for i, (row, cfg) in enumerate(zip(rows, expected)):
             key = (row.get("id"), row.get("replicate"))
             if key != (cfg["id"], rep) or key in trials:
@@ -256,8 +273,8 @@ def load_role(root: Path, role: str) -> tuple[dict, dict, dict]:
 def compare(args: argparse.Namespace) -> int:
     errors = []
     gaps = []
-    a_receipts, a_rows, a_counts = load_role(Path(args.baseline), "baseline")
-    b_receipts, b_rows, b_counts = load_role(Path(args.candidate), "candidate")
+    a_receipts, a_rows, a_counts = load_role(Path(args.baseline), "baseline", args.subset)
+    b_receipts, b_rows, b_counts = load_role(Path(args.candidate), "candidate", args.subset)
     for key in ("hardware", "godot_version", "godot_sha256",
                 "rapier_sha256", "fixture_sha256", "generator_sha256",
                 "acceptance_runner_sha256", "source_revision_harness"):
@@ -283,7 +300,7 @@ def compare(args: argparse.Namespace) -> int:
         errors.append("At least one physical trial failed; preserve and investigate")
     per_config = []
     if not errors:
-        for cfg in selection(0):
+        for cfg in selected(0, args.subset):
             ident = cfg["id"]
             src = [a_rows[(ident, rep)] for rep in range(REPEATS)]
             dst = [b_rows[(ident, rep)] for rep in range(REPEATS)]
@@ -318,7 +335,7 @@ def compare(args: argparse.Namespace) -> int:
                                "spray_ledgers_present": all(
                                    isinstance(r["summary"].get("spray_ledger"), dict)
                                    for r in src + dst)})
-    if len(per_config) != 40:
+    if len(per_config) != len(selected(0, args.subset)):
         errors.append("Incomplete paired statistical distribution")
     # #493 does not expose these data. Missing telemetry blocks final acceptance;
     # do not confuse tick wall time with CPU time, nor async actor motion with lockstep.
@@ -337,10 +354,10 @@ def compare(args: argparse.Namespace) -> int:
         "scope": "rapid screen only; 360x3 plus gameplay still required",
         "source_commits": source_ids,
         "coverage": {
-            "configurations": 40,
+            "configurations": len(selected(0, args.subset)),
             "baseline_trials": len(a_rows), "candidate_trials": len(b_rows),
             "baseline_statuses": a_counts, "candidate_statuses": b_counts,
-            "missing_or_duplicate": bool(set(a_rows) != set(b_rows) or len(a_rows) != 80 or len(b_rows) != 80),
+            "missing_or_duplicate": bool(set(a_rows) != set(b_rows) or len(a_rows) != 2*len(selected(0, args.subset)) or len(b_rows) != 2*len(selected(0, args.subset))),
         },
         "median_p50_candidate_over_baseline": statistics.median(ratios) if ratios else None,
         "p50_improved_configurations": sum(r < 1 for r in ratios),
@@ -369,10 +386,12 @@ def main() -> int:
     p.add_argument("--rapier", default=str(RAPIER))
     p.add_argument("--out", required=True)
     p.add_argument("--timeout", type=int, default=3600)
+    p.add_argument("--subset", choices=("full","quick"), default="full")
     a = commands.add_parser("compare")
     a.add_argument("--baseline", required=True)
     a.add_argument("--candidate", required=True)
     a.add_argument("--output", required=True)
+    a.add_argument("--subset", choices=("full","quick"), default="full")
     args = parser.parse_args()
     if args.command == "check":
         check()
