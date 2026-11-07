@@ -241,7 +241,8 @@ def _run(cfg, rec, out_dir, ctx, env, sdk, sleep, clock, now, costs_probe, launc
     if renderer is not None and not task["godot"]:
         renderer = None
     executor = ToolExecutor(cfg, work_root, policy, collection, writable, task["read_extra_collections"], redactor,
-                            resolve_executables(), bundle, renderer, out_dir, reference)
+                            resolve_executables(), bundle, renderer, out_dir, reference,
+                            require_trusted_scripts=not fixture)
     ctx["executor"] = executor
     tool_names = executor.tool_names()
     rec["policy"]["tools_advertised"] = tool_names
@@ -280,7 +281,8 @@ def _run(cfg, rec, out_dir, ctx, env, sdk, sleep, clock, now, costs_probe, launc
             request["reasoning"] = {"effort": api["reasoning_effort"]}
             request["include"] = ["reasoning.encrypted_content"]
         upper = estimate_input_tokens(request, sent, rates, api["image_detail"],
-                                      float(limits["token_estimate_bytes_per_token"]))
+                                      min(1.0, float(limits["token_estimate_bytes_per_token"])) if live
+                                      else float(limits["token_estimate_bytes_per_token"]))
         result = backend.respond(budget, request, upper, request["max_output_tokens"]) if not live else \
             client.respond(budget, request, upper, request["max_output_tokens"])
         response = result["response"]
@@ -381,7 +383,8 @@ def _run(cfg, rec, out_dir, ctx, env, sdk, sleep, clock, now, costs_probe, launc
         for kind in ("validate", "render_check"):
             try:
                 final = atlas.run_script(work_root, collection, kind, float(limits["max_tool_seconds"]),
-                                         int(limits["max_tool_output_bytes"]) // 2)
+                                         int(limits["max_tool_output_bytes"]) // 2,
+                                         require_trusted=not fixture)
             except ValidationFailed as exc:
                 if kind == "render_check" and exc.reason_code == "render_check_unsupported":
                     continue  # this collection's render script has no --check mode: recorded by omission
