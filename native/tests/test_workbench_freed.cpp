@@ -90,6 +90,8 @@ static void refusals() {
     span.set(72,20,Material::RedBrick);
     expect(span.prepare_workbench_solid(10,20)==SolidOutcome::MemberCapacity,"63-cell span refuses before removal");
     expect(span.workbench_solid_discovery_work()[0]<=kSolidMembers && span.workbench_solid_discovery_work()[1]<=4*kSolidMembers,"refused work remains bounded and counted");
+    span.set_simulation_region(RectI64{0,0,128,128});
+    expect(span.prepare_workbench_solid(10,20)==SolidOutcome::Excluded,"unapplied region is excluded, not clearance");
 }
 int main() {try{exercise(1);exercise(4);refusals();std::cout<<"workbench freed native: "<<checks<<" checks passed\n";return 0;}
 catch(const std::exception& e){std::cerr<<"FAIL "<<checks<<": "<<e.what()<<'\n';return 1;}}

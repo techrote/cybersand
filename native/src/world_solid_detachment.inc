@@ -388,6 +388,7 @@ soliding::SolidOutcome World::prepare_workbench_solid(std::int64_t x, std::int64
     if (tick_failed_) return SolidOutcome::WorldFailed;
     if (!workbench_solids_) return SolidOutcome::Disabled;
     if (tick_in_progress_ || solid_detachment_->snapshot.phase != SolidPhase::Idle) return SolidOutcome::Busy;
+    if (selected_core_region_ != applied_core_region_) return SolidOutcome::Excluded;
     auto& work = *workbench_solids_;
     work.inspected=work.probes=0;
     if (work.count == kWorkbenchSolids) return SolidOutcome::MemberCapacity;

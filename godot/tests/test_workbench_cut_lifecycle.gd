@@ -36,6 +36,8 @@ func one(append: bool, committed: bool) -> void:
 		setup.actors=[Setup.instance(Setup.BARREL,1,Vector2(400,32))];setup.next_id=2
 	check(panel.apply(setup),"authored native structure")
 	if not check(await until(installed),"source installed"): return
+	check(panel.step_once(),"ordinary Step applies source region")
+	if not check(await until(func():return not panel.step_pending and host.latest_snapshot.tick_index>0),"source eligibility applied"): return
 	panel.applied.brush=2
 	for x: int in range(50,54): check(panel.paint(Vector2i(x,67),0),"accepted ordinary erase dab")
 	var cut=panel.cut

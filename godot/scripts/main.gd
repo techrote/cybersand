@@ -651,8 +651,8 @@ func _queue_failed_playable_restart() -> void:
 	_reload_failed_playable_scene.call_deferred(request)
 
 
-func workbench_restart(candidate: Dictionary) -> bool:
-	if shared_workbench == null or not simulation_worker.has_failed(): return false
+func workbench_restart(candidate: Dictionary, retire_freed: bool = false) -> bool:
+	if shared_workbench == null or (not simulation_worker.has_failed() and not (retire_freed and shared_workbench.cut.capture_count>0)): return false
 	if _playable_recovery_queued or _playable_recovery_cancelled or not is_inside_tree() or get_tree().current_scene != self:
 		microscenario_error = "A scene change is already pending."
 		return false
@@ -665,13 +665,17 @@ func workbench_restart(candidate: Dictionary) -> bool:
 	if recipe.has("error"):
 		microscenario_error = recipe.error
 		return false
+	if not candidate.actors.is_empty() and not PhysicalSession.valid_definitions(Setup.physical_definitions(candidate)):
+		microscenario_error="Invalid physical owner in the replacement canvas."
+		return false
 	var checked: Dictionary = playable_session_panel.policy_editor.bridge.validate_liquid_policy(PackedInt32Array(candidate.liquid_policy))
 	if not checked.get("accepted",false) or candidate.rule_radius < checked.receipt.minimum_rule_radius:
 		microscenario_error = "Invalid liquid policy or rule radius for this starting setup."
 		return false
-	# A failed World cannot provide live cells or accept another prepared
-	# replacement. Carry only the checked authored setup across teardown and
-	# let fresh Main create its own worker before constructing this setup.
+	# Failed Worlds and live aggregate custody cannot authenticate the old
+	# complete CYPS state. An explicit whole-canvas replacement retires that
+	# complete owner and carries only its checked authored start into fresh Main.
+	# Retained edits never use this route and no serialization guard is weakened.
 	_playable_recovery_queued = true
 	_playable_recovery_error = ""
 	paused = true

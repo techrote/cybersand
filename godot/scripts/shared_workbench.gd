@@ -270,6 +270,8 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		candidate.edits = applied.edits
 	var error := Setup.validate(candidate,not preserve)
 	if not error.is_empty(): return refuse(error)
+	if not preserve and cut.capture_count>0:
+		return host.workbench_restart(candidate,true)
 	var runs := []
 	if not preserve:
 		var recipe := Setup.rectangles(candidate)

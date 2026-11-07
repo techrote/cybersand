@@ -209,4 +209,5 @@ func _run(input: PackedInt32Array) -> void:
 	if not ended.get("ok",false): panel.refuse(str(ended.outcome));return
 	panel.message="Cut: %d piece(s) freed" % released
 	if not refused.is_empty(): panel.message+=" · retained checks "+str(refused)
+	if refused.has("Excluded"): panel.message+=" · Step or Play first to apply the requested simulation region."
 	_finish()

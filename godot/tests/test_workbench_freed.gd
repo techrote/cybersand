@@ -101,6 +101,7 @@ func run() -> void:
 	change_scene_to_file("res://feature_launcher.tscn");await scene_changed
 	current_scene.launch("shared_workbench");await scene_changed
 	host=current_scene;ui=host.shared_workbench
+	host.simulation_worker.set_worker_participation_sampling(true)
 	if not check(await until(installed),"normal workbench starts"): finish();return
 	var recipe: Dictionary=Setup.fresh(PackedInt32Array(ui.applied.liquid_policy),Vector2i(512,512))
 	recipe.version=4
@@ -109,6 +110,8 @@ func run() -> void:
 	check(Setup.validate(recipe).is_empty(),"version4 exact native authoring recipe")
 	check(ui.apply(recipe),"normal canvas apply")
 	if not check(await until(installed),"canvas owner installed"): finish();return
+	check(ui.step_once(),"ordinary initial Step applies live region eligibility")
+	if not check(await until(func():return not ui.step_pending and host.latest_snapshot.tick_index>0),"source region is applied before cutting"): finish();return
 	var menu_items: int=ui._model.item_count
 	if not await cut(0,520,6): finish();return
 	await create_timer(.1).timeout
@@ -142,6 +145,8 @@ func run() -> void:
 	var saved: Dictionary=Setup.read_named(name)
 	check(saved.has("setup") and saved.setup.version==4 and saved.setup.actors.size()==2,"load recipe without duplicate representation")
 	check(ui.restore_start(),"ordinary Restore retires complete live owner")
+	await scene_changed
+	host=current_scene;ui=host.shared_workbench
 	if check(await until(installed),"Restore installs authored start"):
 		check(ui.cut.capture_count==0 and host.rigid_bodies.size()==2 and host.rapier_bridge.manual_step_count()==0,"fresh replay has two bodies and no stale native archive")
 	finish()

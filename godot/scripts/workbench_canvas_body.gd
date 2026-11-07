@@ -1,6 +1,7 @@
 extends RefCounted
 
-# File-local passive geometry; never captured native cells or a flyer model.
+# Passive exact geometry for authored starts and admitted freed-object shapes.
+# Native tuple custody remains in World; this representation is not a flyer.
 const MODEL := "canvas_body"
 
 static func error(value: Variant) -> String:
