@@ -27,6 +27,7 @@ jobs:
     env:
       SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
       EVIDENCE: build/wb-agent-526
+      WB_AGENT_EVIDENCE_DIR: ${{ github.workspace }}/build/wb-agent-526
       GODOT_SILENCE_ROOT_WARNING: '1'
       PYTHONUTF8: '1'
     steps:
