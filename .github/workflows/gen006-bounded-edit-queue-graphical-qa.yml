@@ -7,6 +7,7 @@ on:
       - 'godot/tests/gen006_bounded_edit_queue_graphical_qa.gd'
       - 'godot/tests/gen006_drag_material_roundtrip_qa.gd'
       - 'godot/tests/gen006_signed_go_stalled_owner_qa.gd'
+      - 'godot/tests/gen006_diagonal_corner_graphical_qa.gd'
       - '.github/workflows/gen006-bounded-edit-queue-graphical-qa.yml'
   workflow_dispatch:
 
@@ -23,13 +24,13 @@ jobs:
     timeout-minutes: 30
     env:
       # Pinned builder #486 head, not the QA branch's older stacked baseline.
-      GEN006_BUILDER_HEAD: 6f97e91093bdf4ddb109e21c3df13e90676eab6e
+      GEN006_BUILDER_HEAD: 5d04639f922d9e67240cdf8106656547c187be0a
       GEN006_QA_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
       - name: Checkout exact qualified builder #486 source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: 6f97e91093bdf4ddb109e21c3df13e90676eab6e
+          ref: 5d04639f922d9e67240cdf8106656547c187be0a
           fetch-depth: 1
           lfs: false
           persist-credentials: false
@@ -59,6 +60,7 @@ jobs:
           git -C qa-only hash-object godot/tests/gen006_bounded_edit_queue_graphical_qa.gd | tee "$dir/qa-test-blob.txt"
           git -C qa-only hash-object godot/tests/gen006_drag_material_roundtrip_qa.gd | tee "$dir/qa-drag-test-blob.txt"
           git -C qa-only hash-object godot/tests/gen006_signed_go_stalled_owner_qa.gd | tee "$dir/qa-signed-go-stall-test-blob.txt"
+          git -C qa-only hash-object godot/tests/gen006_diagonal_corner_graphical_qa.gd | tee "$dir/qa-diagonal-test-blob.txt"
           python3 tools/ci/check_ci_provider_policy.py
           lsb_release -a 2>&1 | tee "$dir/os.txt"
       - name: Build real CyberSand native World and generator
@@ -181,6 +183,29 @@ jobs:
             test -s "$dir/go-stall-screenshots/$name.png"
           done
           sha256sum "$dir"/go-stall-screenshots/*.png | tee "$dir/go-stall-screenshots.sha256"
+      - name: Qualify four real native RGBA corner tiles across negative signed diagonal seam
+        shell: bash
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          dir=build/gen006-bounded-queue-qa
+          mkdir -p "$dir/corner-screenshots"
+          cp qa-only/godot/tests/gen006_diagonal_corner_graphical_qa.gd "$dir/project/tests/"
+          export GEN006_SLICE_EXECUTABLE="$PWD/$dir/streaming-slice"
+          export GEN006_SLICE_ROOT="$PWD/$dir/corner-world"
+          export GEN006_CORNER_EVIDENCE="$PWD/$dir/corner-screenshots"
+          export GEN006_SLICE_FORCE_ASYNC_TEST=1
+          export LIBGL_ALWAYS_SOFTWARE=1
+          godot_bin="$(find "$dir/bin" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          xvfb-run -a -s '-screen 0 1280x800x24' \
+            timeout 480 "$godot_bin" --rendering-driver opengl3 \
+              --path "$dir/project" --script res://tests/gen006_diagonal_corner_graphical_qa.gd \
+            2>&1 | tee "$dir/corner-godot.log"
+          grep -q GEN006_DIAGONAL_CORNER_PASS "$dir/corner-godot.log"
+          grep -q 'four_signed_native_tiles=1 native_corner_demands=3' "$dir/corner-godot.log"
+          test -s "$dir/corner-screenshots/00-native-negative-origin.png"
+          test -s "$dir/corner-screenshots/01-native-four-tile-corner.png"
+          sha256sum "$dir"/corner-screenshots/*.png | tee "$dir/corner-screenshots.sha256"
       - name: Preserve original source / native / Godot evidence on success or failure
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -198,5 +223,8 @@ jobs:
             build/gen006-bounded-queue-qa/go-stall-godot.log
             build/gen006-bounded-queue-qa/go-stall-screenshots/*.png
             build/gen006-bounded-queue-qa/go-stall-screenshots.sha256
+            build/gen006-bounded-queue-qa/corner-godot.log
+            build/gen006-bounded-queue-qa/corner-screenshots/*.png
+            build/gen006-bounded-queue-qa/corner-screenshots.sha256
           if-no-files-found: warn
           retention-days: 90
