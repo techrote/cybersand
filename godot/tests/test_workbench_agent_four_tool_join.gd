@@ -273,6 +273,56 @@ func run() -> void:
 	check(third_stopped.get("status")=="stopped"
 		and main.latest_snapshot.tick_index==paint_tick,
 		"human-readback task did not retire without extra ticks")
+	# Human Stop may race an outstanding trusted authorization itself.
+	# This path must not refuse Stop merely because the native task ACK has
+	# not arrived: doing so leaves a live authorized agent AFTER opt-out.
+	# Start the genuine owner call without awaiting, then request Stop in
+	# the same main-thread turn, before any worker response frame arrives.
+	var pending_authorization = Bridge.new()
+	check(pending_authorization.bind(main),
+		"pending-authorization Stop test could not bind native host")
+	var raced_authorizations: Array = []
+	var start_authorization: Callable = func() -> void:
+		var answer: Dictionary = await pending_authorization.authorize_task(
+			"joined-stop-during-authorize-527",Rect2i(40,40,16,16),[],[0,58])
+		raced_authorizations.append(answer.duplicate(true))
+	start_authorization.call()
+	check(bool(pending_authorization.get("_authorization_pending")),
+		"actual native authorize had already completed; race not exercised")
+	var authorize_stop_tick: int = main.latest_snapshot.tick_index
+	var stopped_during_authorize: Dictionary = await pending_authorization.stop()
+	check(stopped_during_authorize.get("status")=="stopped"
+		and stopped_during_authorize.get("no_further_agent_mutations")==true
+		and stopped_during_authorize.get("reason")==
+			"native_task_retired_after_boundary",
+		"Stop did not wait for pending owner authorize and native retire ACK: "+
+		str(stopped_during_authorize))
+	await wait_until(func() -> bool: return raced_authorizations.size()==1,
+		"pending authorization returned no truthful native receipt")
+	var raced: Dictionary = raced_authorizations[0] if not raced_authorizations.is_empty() else {}
+	check(raced.get("status")=="authorized"
+		and raced.get("interrupted_by_human")==true,
+		"late native authorization silently survived human Stop: "+str(raced))
+	var after_raced_stop: Dictionary = await pending_authorization.call_tool(
+		"step",{"ticks":1})
+	check(after_raced_stop.get("status")=="refused"
+		and main.latest_snapshot.tick_index==authorize_stop_tick,
+		"late tool ran after Stop raced genuine native authorization")
+	# The retirement must be real: a fresh bridge on this same World may
+	# authorize again, while the retired bridge remains terminal.
+	var after_race = Bridge.new()
+	check(after_race.bind(main),"post-authorization Stop could not bind new bridge")
+	var after_race_authorized: Dictionary = await after_race.authorize_task(
+		"joined-after-authorization-stop-527",Rect2i(40,40,16,16),[],[0,58])
+	check(after_race_authorized.get("status")=="authorized"
+		and main.latest_snapshot.tick_index==authorize_stop_tick,
+		"native task was not really retired before fresh authorization: "+
+		str(after_race_authorized))
+	var after_race_stopped: Dictionary = await after_race.stop()
+	check(after_race_stopped.get("status")=="stopped"
+		and main.latest_snapshot.tick_index==authorize_stop_tick,
+		"new same-World task did not retire without unauthorized Step")
+	start_authorization = Callable()
 	# Retain the ORIGINAL renderer-owned PNGs for the initial observation,
 	# post-Step 0->4 image and the independently reobserved human brush.
 	# Material authority is separately asserted through native IDs above.
