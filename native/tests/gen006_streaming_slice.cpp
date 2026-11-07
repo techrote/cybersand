@@ -480,7 +480,7 @@ void self_test(const fs::path& path, std::uint32_t workers) {
 void interactive(const fs::path& path, std::uint32_t workers) {
     StreamingSlice streamer(path, 2, workers);
     std::cout << "GEN006 experimental native stream (independent World per shard). "
-                 "Commands: focus X Y | wall X Y | dig X Y | water X Y Q | 
+                 "Commands: focus X Y | wall X Y | dig X Y | water X Y Q | "
                  "watertemp X Y Q T | "
                  "tick N | inspect LOCAL_X LOCAL_Y | status | quit. " 
                  "X/Y are world chunk coords for focus, "
