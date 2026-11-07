@@ -1758,6 +1758,7 @@ func _consume_agent_authoring_request(local_paused: bool) -> void:
 	_agent_request.clear()
 	_agent_inflight = true
 	var manual_revision: int = _agent_manual_intent_revision
+	var acknowledged_render_serial: int = _acknowledged_render_snapshot_serial
 	var conflicted: bool = not _pending_emissions.is_empty() \
 		or not _pending_cell_emissions.is_empty() or _reset_requested \
 		or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty()
@@ -1769,7 +1770,7 @@ func _consume_agent_authoring_request(local_paused: bool) -> void:
 	else:
 		result = _agent_authoring.execute(
 			command, _world, _world_generation, _workbench_extent,
-			still_paused, manual_revision
+			still_paused, manual_revision, acknowledged_render_serial
 		)
 	result["request_serial"] = int(command.request_serial)
 	result["schema_version"] = AgentAuthoring.SCHEMA_VERSION
