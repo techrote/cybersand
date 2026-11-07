@@ -111,7 +111,6 @@
     "systems/physical-flight-lab.md",
     "operations/deepworks-exhibition.md",
     "systems/player-control-playground.md",
-    "systems/shared-workbench-agent-authoring.md",
     "systems/procedural-typed-spatial-fields.md",
     "reference/procedural-spatial-operators.md",
     "systems/procedural-hierarchical-generation.md",
@@ -120,8 +119,10 @@
     "operations/semantic-depth-authoring.md",
     "decisions/ADR-014-semantic-plane-admission.md",
     "systems/generation-workbench-2.md",
+    "systems/shared-workbench-agent-authoring.md",
     "operations/procedural-qualification.md",
     "architecture/pressure-optimization.md",
+    "operations/atlas-agent-runner.md",
     "operations/ci-execution-and-performance.md",
     "operations/material-catalogue-shadow.md",
     "operations/material-liveness-investigation.md"

@@ -291,3 +291,15 @@ upgrading the native 32-Sand, live 0/3 or human pending gates. The frozen
 signed-coordinate 32-Sand reference and its 480 **TOTAL** tick allowance
 are unchanged; a positive-only coordinate translation is still not
 independently accepted as equivalent.
+
+## Current-main source reconciliation (7 November 2026)
+
+Reconcile the prequalified #528 code-bearing branch against accepted `main`
+`662ed4d88c08070dbb6f313931146a23e3631471` without changing any accepted physics, material defaults or
+GEN-006 source. A source-file comparison found **no overlapping executable
+paths**. The only overlapping paths were the documentation routes
+`docs/README.md`, `docs/reference/retrieval-corpus.json` and
+`docs/reference/retrieval-index.md`: preserve both accepted Atlas-agent
+navigation and this experimental WB-AGENT authoring route. The source
+reconciliation does not itself qualify Native/GDExtension binaries, a
+full signed 32-Sand Godot hopper, genuine OpenAI trials or owner desktop UI.
