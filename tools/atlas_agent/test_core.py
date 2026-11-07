@@ -28,6 +28,14 @@ COLLECTION = "mini-vault"
 PACK = f"docs/world-design/{COLLECTION}/pack.json"
 
 
+def check_config_task_args(args: list) -> list:
+    """Schema problems for task.capture_args (the pattern is the first line of defence)."""
+    from atlas_agent.schema import load_schema, validate
+    cfg = base_config()
+    cfg["task"]["capture_args"] = args
+    return validate(cfg, load_schema("config.schema.json"))
+
+
 def links_unavailable(case: unittest.TestCase, what: str) -> None:
     """Local Windows accounts often cannot create links; CI (Linux) must run these tests."""
     if os.environ.get("ATLAS_AGENT_REQUIRE_LINKS") == "1":
@@ -514,6 +522,18 @@ class CaptureTests(unittest.TestCase):
             captures.run_capture(self.root / "evil.py", str(godot), self.pack_dir, self.root / "o", 5, exes)
         with self.assertRaises(ConfigError):
             captures.run_capture(launcher, str(self.root / "missing.exe"), self.pack_dir, self.root / "o2", 5, exes)
+        # only presentation flags may be forwarded; output/engine/source selection stays with the runner
+        for evil in (["--output-dir=/tmp/x"], ["--godot=evil.exe"], ["--pack=/x"], ["--art-root=/x"], ["--allow-blank"]):
+            with self.assertRaises(ConfigError, msg=str(evil)) as ctx:
+                captures.run_capture(launcher, str(godot), self.pack_dir, self.root / "o3", 5, exes, evil)
+            self.assertEqual(ctx.exception.reason_code, "capture_flag_not_allowed")
+        (self.root / "mode.txt").write_text("ok", encoding="utf-8")
+        outcome = captures.run_capture(launcher, str(godot), self.pack_dir, self.root / "out-flags", 60, exes,
+                                       ["--rendering-driver=opengl3_angle", "--scale=1"])
+        self.assertEqual(outcome["status"], "completed")
+        for bad in ("--rendering-driver=a b", "rendering-driver=x", "--Scale=1", "--x;rm"):
+            problems = check_config_task_args([bad])
+            self.assertTrue(problems, msg=bad)
 
 
 def git(cwd, *args):

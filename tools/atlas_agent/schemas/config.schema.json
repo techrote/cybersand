@@ -97,6 +97,7 @@
         "capture_bundle": {"type": ["string", "null"]},
         "capture_launcher": {"type": ["string", "null"]},
         "godot": {"type": ["string", "null"]},
+        "capture_args": {"type": "array", "maxItems": 8, "items": {"type": "string", "maxLength": 80, "pattern": "^--[a-z][a-z0-9-]*(=[A-Za-z0-9_.,:x-]+)?$"}},
         "read_extra_collections": {"type": "array", "items": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,62}$"}, "maxItems": 14},
         "dry_run_plan": {"type": ["string", "null"]}
       }

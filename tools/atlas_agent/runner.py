@@ -162,6 +162,9 @@ def _run(cfg, rec, out_dir, ctx, env, sdk, sleep, clock, now, costs_probe, launc
                           "reasoning_unsupported")
     rec["run"]["mode"], rec["run"]["openai_sdk"] = cfg["mode"], sdk_version()
     rec["run"]["model_calls_simulated"] = not live
+    runner_identity = gitops.repo_identity(PACKAGE)
+    rec["run"].update({"runner_git_head": runner_identity["repository_head"],
+                       "runner_tree_dirty": runner_identity["dirty"]})
     rec["model"].update({"requested": cfg["model"], "reasoning_effort": api["reasoning_effort"],
                          "max_output_tokens_per_call": limits["max_output_tokens_per_call"],
                          "image_detail": api["image_detail"],

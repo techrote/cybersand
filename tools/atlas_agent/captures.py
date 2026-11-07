@@ -22,6 +22,11 @@ SCHEMA_BATCH = "cybersand.world_art_capture.batch-manifest/1"
 SCHEMA_JOB = "cybersand.world_art_capture.job-manifest/1"
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 LAUNCHER_NAME = "world_art_preview_launcher.py"
+# Presentation flags a run may pass to the launcher (identical flags for before/after captures).
+# Output, engine, pack and source selection stay under the runner's control.
+ALLOWED_CAPTURE_FLAGS = {"--rendering-driver", "--display-driver", "--scale", "--shots", "--resolution", "--framing",
+                         "--time", "--no-glow", "--no-detail", "--no-background", "--zoom", "--center", "--view",
+                         "--crop", "--detail-zoom", "--timeout"}
 LAUNCHER_EXIT = {0: "completed", 2: "usage", 3: "engine_unusable", 4: "render_failed", 5: "evidence_invalid",
                  6: "source_changed", 7: "no_display"}
 
@@ -219,6 +224,10 @@ def run_capture(launcher: Path, godot: str, pack_dir: Path, output_dir: Path, ti
         raise ConfigError(f"capture launcher must be an existing {LAUNCHER_NAME}", "launcher_unavailable")
     if not godot or not Path(godot).is_file():
         raise ConfigError("a Godot 4.7 executable path (task.godot) is required for rendering", "godot_unavailable")
+    for flag in extra or []:
+        if flag.split("=", 1)[0] not in ALLOWED_CAPTURE_FLAGS:
+            raise ConfigError(f"capture flag {flag.split('=', 1)[0]!r} is not an allowed presentation flag",
+                              "capture_flag_not_allowed")
     argv = [executables["python"], str(launcher), "--capture", f"--godot={godot}", "--pack", str(pack_dir),
             "--output-dir", str(output_dir), *(extra or [])]
     done = run_allowlisted(argv, pack_dir, timeout, 200_000, executables)

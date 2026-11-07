@@ -335,7 +335,8 @@ class ToolExecutor:
         pack_dir = self.work_root / atlas.WORLD_DESIGN / self.collection
         try:
             outcome = captures.run_capture(self.launcher, self.task.get("godot") or "", pack_dir, target,
-                                           self._budget_timeout(), self.executables)
+                                           self._budget_timeout(), self.executables,
+                                           list(self.task.get("capture_args") or []))
         except Exception as exc:  # configuration problems are reported to the model, not crashed on
             outcome = {"status": "unavailable", "reason": str(exc)[:200]}
         self.render_attempts.append({k: v for k, v in outcome.items() if k != "stderr_tail"})
