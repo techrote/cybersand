@@ -4,7 +4,7 @@ status: Current
 document-kind: design
 scope: Accepted-main LCB-002 cached and cached_dormant implementation — derived head and sealed-component caches, conservative motion certificates, execution identity, source-qualified cost and remaining product/platform boundaries
 canonical-for: [pressure-optimization, pressure-motion-certificates]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-07
 related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../reference/configuration-reference.md, ../reference/invariants.md, ../audits/2026-10-25-lcb002-pressure-variants.md, ../audits/2026-11-04-lcb201-pressure-idle-cost.md]
 ---
 
@@ -85,7 +85,22 @@ of unvisited labels whose compartment retired beneath a body mask; reference,
 cached and dormant variants share that authority repair. Still-live masked
 labels remain intact. The [repair evidence](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md)
 retains the six-arm failing control and pending acceptance. Equal compartment amounts alone
-do not establish that fixed point. Gas resolution revokes all Water motion
+do not establish that fixed point.
+
+**Execution version 5 (PR #532, proposed)** preserves that global fixed-point
+requirement for whole-operator reuse, but removes it as a prerequisite for
+constructing every selective component certificate. After one complete
+authoritative gas pass, cached variants may perform one bounded bootstrap from
+the resulting sealed regions when the resident index is complete, no discovery
+allocation occurred and the owner retained a complete non-overflowing dirty-
+chunk set. Components whose one-chunk-expanded dependency bounds intersect any
+dirty chunk are immediately invalidated; only the remaining summaries may be
+replayed on later reference passes, and every member is still validated before
+stamping. Pair/member capacity uncertainty, stale replay or incomplete proof
+falls back to the complete reference operator. This derived state is not
+serialized and does not alter gas IDs, lineage, amount or CYPS/physical hashes.
+
+Gas resolution revokes all Water motion
 certificates because a remote volume/gauge change can alter a local gradient.
 
 ## Motion certificates preserve ordinary obligations
