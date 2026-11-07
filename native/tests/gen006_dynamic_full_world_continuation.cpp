@@ -161,6 +161,14 @@ void actual_dynamic_frontier(std::uint32_t workers) {
     refuse_bundle({{-2, -2}, {std::numeric_limits<std::int64_t>::max(), -1}}, {},
                   BundleAdmissionStatus::InvalidCoordinate,
                   "GEN006_DYNAMIC_OVERFLOW_RESIDENT_ACCEPTED");
+    // MIN and MAX must not become neighbours via modular uint64 subtraction.
+    // Reject the bogus *seam itself*, before reaching coordinate admission.
+    const auto coordinate_min = std::numeric_limits<std::int64_t>::min();
+    const auto coordinate_max = std::numeric_limits<std::int64_t>::max();
+    refuse_bundle({{coordinate_min, 0}, {coordinate_max, 0}},
+                  {{{coordinate_min, 0}, {coordinate_max, 0}}},
+                  BundleAdmissionStatus::InvalidSeam,
+                  "GEN006_DYNAMIC_SIGNED_WRAP_SEAM_ACCEPTED");
 
     auto staged = FullResidentBundleStage::capture(
         live, a, full_roster, full_seams, kBoundedBytes);
