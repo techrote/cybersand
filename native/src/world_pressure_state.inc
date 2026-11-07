@@ -224,7 +224,9 @@ struct World::PressureState {
     struct GasChunkTask {
         std::size_t position = 0;
         std::uint64_t skipped_water = 0;
+        std::uint64_t relabel_cells = 0;
         bool labels_changed = false;
+        bool hidden_labels = false;
     };
     std::vector<GasChunkTask> gas_tasks;
     std::vector<std::uint64_t> gas_seed_bits; // gas_seed_words per task position
