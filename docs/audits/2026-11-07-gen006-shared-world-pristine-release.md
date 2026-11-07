@@ -63,7 +63,7 @@ native per-chunk G6KC1 envelope and three real native operations.
 
 Lossless within this bounded domain: isolated static Wall/Empty chunks,
 including edited nonempty Walls, same-value player Empty edit-intent
-tracked by mutation generation, exact native cell state/epochs, optional
+tracked in an explicit per-cell opt-in bitmask AND mutation generation, exact native cell state/epochs, optional
 stored temperatures and fully inactive activity metadata with no pending
 future deadlines. An original checkpoint can be read by a new process's
 fresh World and restored without reconstructing terrain. Other resident
@@ -92,3 +92,5 @@ bytes. This new source transition is intentionally NOT repinned by the
 implementation. An independent admission of that protected source and
 exact-head full Native/Godot qualification is required before Ready or
 merge. Native scoped test passes cannot override that gate.
+
+The per-cell GEN-006 edit-intent mask is opt-in via gen006_track_edit_intent=false by default. It is allocated only under this experimental flag and serialized in G6KC1; old whole-World CYPS has no mask, so a restored historical World cannot silently claim admission into this checkpoint domain. Query gen006_player_edit_intent_at() to verify exact Empty tombstone coordinates after native restart.

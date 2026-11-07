@@ -8,6 +8,15 @@ constexpr std::size_t kGen006MaxBytes = 16U * 1024U * 1024U;
 
 } // namespace
 
+bool World::gen006_player_edit_intent_at(std::int64_t x,std::int64_t y) const noexcept {
+    if(!config_.gen006_track_edit_intent)return false;
+    const auto at=address(x,y);
+    const auto* chunk=find_chunk(at.chunk);
+    return chunk && chunk->gen006_edit_intent.size()==(chunk->cells.size()+7U)/8U &&
+        (chunk->gen006_edit_intent[at.index/8U] &
+         static_cast<std::uint8_t>(1U<<(at.index%8U)))!=0U;
+}
+
 ChunkCheckpointCapture World::capture_chunk_checkpoint(ChunkCoord coord) const {
     ChunkCheckpointCapture result{};
     if (tick_failed_) { result.status = ChunkCheckpointStatus::WorldFailed; return result; }
@@ -33,19 +42,22 @@ ChunkCheckpointCapture World::capture_chunk_checkpoint(ChunkCoord coord) const {
             if ((x || y) && find_chunk({coord.x+x,coord.y+y})) {
                 result.status = ChunkCheckpointStatus::NeighbourPinned; return result;
             }
-    if (chunk->pressure || chunk->inertial || chunk->granular_arrivals ||
-        chunk->active || chunk->changed_this_tick ||
-        chunk->mutation_generation == std::numeric_limits<std::uint64_t>::max()) {
-        result.status = ChunkCheckpointStatus::PendingActivity; return result;
-    }
-    // This first version can capture an edited static wall/air World, including
-    // exact cell states, epochs, temperatures and render/quiet metadata. A
-    // dynamic, reactive, moving or liquid material requires solver history.
+    // A moving or reactive material is an unsupported *physical* domain,
+    // regardless of its present scheduling activity.
     for (const auto& c:chunk->cells) {
         const auto material=c.material_value();
         if (material != Material::Empty && material != Material::Wall) {
             result.status = ChunkCheckpointStatus::UnsupportedDomain; return result;
         }
+    }
+    if (!config_.gen006_track_edit_intent || chunk->pristine_generated_empty ||
+        chunk->gen006_edit_intent.size() != (chunk->cells.size()+7U)/8U) {
+        result.status = ChunkCheckpointStatus::UnsupportedDomain; return result;
+    }
+    if (chunk->pressure || chunk->inertial || chunk->granular_arrivals ||
+        chunk->active || chunk->changed_this_tick ||
+        chunk->mutation_generation == std::numeric_limits<std::uint64_t>::max()) {
+        result.status = ChunkCheckpointStatus::PendingActivity; return result;
     }
     for (const auto& block : chunk->activity_blocks) {
         if (block.active || block.changed_this_tick || block.next_interaction_tick) {
@@ -81,6 +93,8 @@ ChunkCheckpointCapture World::capture_chunk_checkpoint(ChunkCoord coord) const {
     out.put(static_cast<std::uint8_t>(chunk->temperatures != nullptr));
     if (chunk->temperatures)
         for (const auto value:*chunk->temperatures)out.put(value);
+    out.put(static_cast<std::uint32_t>(chunk->gen006_edit_intent.size()));
+    for(const auto bit:chunk->gen006_edit_intent)out.put(bit);
     if (out.bytes.size() > kGen006MaxBytes - 32U) {
         result.status = ChunkCheckpointStatus::UnsupportedDomain;return result;
     }
@@ -212,6 +226,12 @@ ChunkCheckpointStatus World::restore_chunk_checkpoint(
             candidate->temperatures->resize(candidate->cells.size());
             for(auto& value:*candidate->temperatures)value=in.get<std::int16_t>();
         }
+        if (!config_.gen006_track_edit_intent)
+            return ChunkCheckpointStatus::UnsupportedDomain;
+        if(in.get<std::uint32_t>()!=(candidate->cells.size()+7U)/8U)
+            return ChunkCheckpointStatus::InvalidRecord;
+        candidate->gen006_edit_intent.resize((candidate->cells.size()+7U)/8U);
+        for(auto& value:candidate->gen006_edit_intent)value=in.get<std::uint8_t>();
         if(!in.done())return ChunkCheckpointStatus::InvalidRecord;
         // Same no-neighbour/no-owner restrictions as preparation.
         if(expected.x==std::numeric_limits<std::int64_t>::min() ||

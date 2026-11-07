@@ -36,6 +36,7 @@ WorldConfig config(unsigned workers) {
     c.initial_chunk_reserve=2;c.maximum_chunk_count=2;
     c.active_chunk_capacity=32;c.active_core_capacity=32;
     c.parallel_job_threshold=1;c.worker_threads=workers;
+    c.gen006_track_edit_intent=true;
     return c;
 }
 void persist_exactly(const fs::path& file,std::span<const std::uint8_t> bytes) {
@@ -96,7 +97,9 @@ void run(const fs::path& root,unsigned workers) {
     world.set(x+30,y+30,Material::Wall);
     world.set_temperature(x+30,y+30,417);
     require(world.stored_material(x+30,y+30)==Material::Wall &&
-            world.stored_temperature(x+30,y+30)==417,
+            world.stored_temperature(x+30,y+30)==417 &&
+            world.gen006_player_edit_intent_at(x+8,y+8) &&
+            world.gen006_player_edit_intent_at(x+30,y+30),
             "GEN006_STATIC_AUTHORITATIVE_EDIT");
 
     // No active kernels/halo/sidecar may be silently frozen. A Wall edit wakes
@@ -199,8 +202,11 @@ void run(const fs::path& root,unsigned workers) {
             world.stored_state_a(x+30,y+30)==cell_a &&
             world.stored_state_b(x+30,y+30)==cell_b &&
             world.stored_temperature(x+30,y+30)==temperature &&
-            world.completed_tick_index()==saved_tick,
-            "GEN006_LOSSLESS_STATIC_CELLS_TEMPERATURE_CLOCK_DRIFT");
+            world.completed_tick_index()==saved_tick &&
+            world.gen006_player_edit_intent_at(x+8,y+8) &&
+            world.gen006_player_edit_intent_at(x+9,y+9) &&
+            world.gen006_player_edit_intent_at(x+30,y+30),
+            "GEN006_LOSSLESS_STATIC_CELLS_TEMPERATURE_INTENT_DRIFT");
     require(world.restore_chunk_checkpoint(edited,payload)==
             ChunkCheckpointStatus::AlreadyResident,
             "GEN006_DUPLICATE_RESTORE_ADMITTED");
@@ -219,7 +225,10 @@ void run(const fs::path& root,unsigned workers) {
             restarted.stored_material(x+30,y+30)==Material::Wall &&
             restarted.stored_state_a(x+30,y+30)==cell_a &&
             restarted.stored_state_b(x+30,y+30)==cell_b &&
-            restarted.stored_temperature(x+30,y+30)==temperature,
+            restarted.stored_temperature(x+30,y+30)==temperature &&
+            restarted.gen006_player_edit_intent_at(x+8,y+8) &&
+            restarted.gen006_player_edit_intent_at(x+9,y+9) &&
+            restarted.gen006_player_edit_intent_at(x+30,y+30),
             "GEN006_NEW_WORLD_RESTART_RESTORE_FAILED");
 
     // Uncheckpointed dynamic Water and adjacent resident haloes stay pinned.
@@ -247,6 +256,7 @@ void run(const fs::path& root,unsigned workers) {
              <<" wall=RESTORED"
              <<" temperature417=RESTORED"
              <<" cell_registers=RESTORED"
+             <<" cell_specific_Empty_intent=RESTORED"
              <<" mutation_generation="<<staged.checkpoint.generation
              <<" durable_fsync_atomic_rename=1"
              <<" stale_edit=REFUSED stale_tick=REFUSED"

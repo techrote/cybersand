@@ -78,6 +78,9 @@ struct WorldConfig {
     // IN-B1 (experimental): signed-vertical inertial law for every IN material.
     // Requires an applied IN assignment; false keeps inertial_cellular_v1 exact.
     bool inertial_signed_vertical = false;
+    // Default OFF: optional per-cell GEN-006 user mutation/tombstone provenance.
+    // Ordinary native World and existing CYPS bytes are unchanged.
+    bool gen006_track_edit_intent = false;
 };
 
 struct ChunkCoord {
@@ -308,6 +311,7 @@ public:
     // activity metadata). Capture never changes live owner state. Eviction
     // requires verified durable ACK of exactly that capture, a matching
     // mutation-generation/tick fence and a second full eligibility check.
+    [[nodiscard]] bool gen006_player_edit_intent_at(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] ChunkCheckpointCapture capture_chunk_checkpoint(ChunkCoord coord) const;
     [[nodiscard]] ChunkCheckpointStatus evict_durable_checkpoint(
         const ChunkCheckpoint& staged, const ChunkDurableAck& ack);
