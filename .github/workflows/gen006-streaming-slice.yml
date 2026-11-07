@@ -6,6 +6,8 @@ on:
     paths:
       - 'native/tests/gen006_streaming_slice.cpp'
       - 'tools/experiments/gen006_cross_process_restart.py'
+      - 'godot/tests/gen006_streaming_slice_demo.gd'
+      - 'godot/tests/gen006_streaming_slice_demo.tscn'
       - '.github/workflows/gen006-streaming-slice.yml'
       - 'native/src/**'
       - 'native/include/**'
@@ -44,6 +46,8 @@ jobs:
                   "world_hpp_blob":git("hash-object","native/include/cybersand/world.hpp"),
                   "slice_blob":git("hash-object","native/tests/gen006_streaming_slice.cpp"),
                   "restart_fixture_blob":git("hash-object","tools/experiments/gen006_cross_process_restart.py"),
+                  "godot_demo_blob":git("hash-object","godot/tests/gen006_streaming_slice_demo.gd"),
+                  "godot_scene_blob":git("hash-object","godot/tests/gen006_streaming_slice_demo.tscn"),
                   "scope":"experimental sharded native Worlds; no single-World selective eviction, Rapier, Godot or cross-shard physics"}
           assert record["sha"]==record["github_sha"]
           (out/"source.json").write_text(json.dumps(record,indent=2)+"\n")
@@ -84,6 +88,34 @@ jobs:
             | tee build/gen006-streaming-slice/restart-four.log
           grep -q 'GEN006_CROSS_PROCESS_RESTART_PASS configured_workers=1' build/gen006-streaming-slice/restart-one.log
           grep -q 'GEN006_CROSS_PROCESS_RESTART_PASS configured_workers=4' build/gen006-streaming-slice/restart-four.log
+      - name: Execute opt-in Godot 4.7 native-RGBA demo (headless smoke only)
+        shell: bash
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          dir=build/gen006-streaming-slice
+          curl -fsSL --retry 3 --retry-delay 3 \
+            'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7' \
+            -o "$dir/godot-4.7-linux.zip"
+          echo '0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  '"$dir/godot-4.7-linux.zip" | sha256sum --check --strict
+          mkdir -p "$dir/godot-bin" "$dir/godot-mini/tests"
+          unzip -q "$dir/godot-4.7-linux.zip" -d "$dir/godot-bin"
+          godot_bin="$(find "$dir/godot-bin" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$godot_bin"
+          chmod +x "$godot_bin"
+          "$godot_bin" --version | tee "$dir/godot-version.txt"
+          cp godot/tests/gen006_streaming_slice_demo.gd "$dir/godot-mini/tests/"
+          cp godot/tests/gen006_streaming_slice_demo.tscn "$dir/godot-mini/tests/"
+          printf 'config_version=5\n[application]\nconfig/name="GEN006 Opt-in Native Viewer"\nrun/main_scene="res://tests/gen006_streaming_slice_demo.tscn"\n' > "$dir/godot-mini/project.godot"
+          GEN006_SLICE_EXECUTABLE="$PWD/$dir/streaming-slice" \
+          GEN006_SLICE_ROOT="$PWD/$dir/godot-save" \
+          GEN006_SLICE_VERIFY=1 \
+            "$godot_bin" --headless --path "$dir/godot-mini" \
+              --quit-after 180 res://tests/gen006_streaming_slice_demo.tscn \
+            2>&1 | tee "$dir/godot-smoke.log"
+          grep -q 'GEN006_GODOT_NATIVE_FRAME_PASS' "$dir/godot-smoke.log"
+          test -s "$dir/godot-save/gen006-current.rgba"
+          test "$(wc -c < "$dir/godot-save/gen006-current.rgba")" = 16384
       - name: Preserve original native evidence and failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -99,6 +131,8 @@ jobs:
             build/gen006-streaming-slice/restart-four.log
             build/gen006-streaming-slice/restart-one/
             build/gen006-streaming-slice/restart-four/
+            build/gen006-streaming-slice/godot-smoke.log
+            build/gen006-streaming-slice/godot-version.txt
           if-no-files-found: warn
           retention-days: 45
   native-stream-windows:
@@ -134,6 +168,8 @@ jobs:
                   "world_hpp_blob":git("hash-object","native/include/cybersand/world.hpp"),
                   "slice_blob":git("hash-object","native/tests/gen006_streaming_slice.cpp"),
                   "restart_fixture_blob":git("hash-object","tools/experiments/gen006_cross_process_restart.py"),
+                  "godot_demo_blob":git("hash-object","godot/tests/gen006_streaming_slice_demo.gd"),
+                  "godot_scene_blob":git("hash-object","godot/tests/gen006_streaming_slice_demo.tscn"),
                   "scope":"experimental sharded native Worlds; no single-World selective eviction, Rapier, Godot or cross-shard physics"}
           assert record["sha"]==record["github_sha"]
           (out/"source.json").write_text(json.dumps(record,indent=2)+"\n")
