@@ -19,18 +19,18 @@ related-documents: [2026-11-07-pf504-actual-workbench-stress-ab.md, ../architect
 
 ## Immutable source and runtime evidence
 
-- Source baseline: accepted C2048 main **\`24a8bbe8ccf0d17196ebbab580b924930a964584\`**; candidate source under study **\`186452b9f035961325ad71917a76ba8834e30bcf\`**. These are exactly the two source arms used by the original independent full workbench [#515](https://github.com/techrote/cybersand/pull/515) and its prior positive [run 42342604239](https://github.com/techrote/cybersand/actions/runs/42342604239). The only native production code difference was **\`native/src/world_pressure.inc\`**. No #405 source was imported.
-- Both native/GDExtension libraries were built with the same pinned Godot 4.7 \`godot-cpp=101ae38034304346a46ea9ea84ae156d3e860496\`, GCC 13, SCons 4.10.1 and original pinned Linux Rapier. Original full-size scene, workbench script, material distribution, real physical actors and native/graphics ownership were retained.
-- Identical test-only probes were injected in each *detached build checkout* using \`tools/ci/pf504_full_cpu_probe.py\`: Linux \`clock_gettime(CLOCK_PROCESS_CPUTIME_ID)\` for the complete process across native gas-stage boundaries, \`CLOCK_THREAD_CPUTIME_ID\` for the owning thread, existing high-resolution gas/head wall counters, separate discovery/identity/relabel CPU windows, and read-only C++ World six-kind Water quantity ledger readback. The exact original/instrumented SHA-256 pairs are in \`evidence/probe-patch-identities.json\`.
+- Source baseline: accepted C2048 main **`24a8bbe8ccf0d17196ebbab580b924930a964584`**; candidate source under study **`186452b9f035961325ad71917a76ba8834e30bcf`**. These are exactly the two source arms used by the original independent full workbench [#515](https://github.com/techrote/cybersand/pull/515) and its prior positive [run 42342604239](https://github.com/techrote/cybersand/actions/runs/42342604239). The only native production code difference was **`native/src/world_pressure.inc`**. No #405 source was imported.
+- Both native/GDExtension libraries were built with the same pinned Godot 4.7 `godot-cpp=101ae38034304346a46ea9ea84ae156d3e860496`, GCC 13, SCons 4.10.1 and original pinned Linux Rapier. Original full-size scene, workbench script, material distribution, real physical actors and native/graphics ownership were retained.
+- Identical test-only probes were injected in each *detached build checkout* using `tools/ci/pf504_full_cpu_probe.py`: Linux `clock_gettime(CLOCK_PROCESS_CPUTIME_ID)` for the complete process across native gas-stage boundaries, `CLOCK_THREAD_CPUTIME_ID` for the owning thread, existing high-resolution gas/head wall counters, separate discovery/identity/relabel CPU windows, and read-only C++ World six-kind Water quantity ledger readback. The exact original/instrumented SHA-256 pairs are in `evidence/probe-patch-identities.json`.
 - Test-only GDScript owner snapshots (identical in both arms) add read-only running counters, actual native task-participant inspection, and physical hash5 / Water / gas / ballistic closure samples **once per 48 completed native ticks**. The host code did not change tick pacing, gameplay controls or native physical laws.
 - **Original full execution:** [GitHub Actions run 42356806615](https://github.com/techrote/cybersand/actions/runs/42356806615), [retained complete raw logs, both build records, four workbench receipts and source SHA archive](https://github.com/techrote/cybersand/actions/runs/42356806615/artifacts/13568252504). The two source builds, official Godot import and all four executable workbench cases **PASS**. That run's final reduction step failed on a Python reference typo after successful execution; no physics/test failure. The raw bytes were preserved.
-- **Independent archival reduction after one-line correction, NO replay or rebuild:** [successful run 42357747749](https://github.com/techrote/cybersand/actions/runs/42357747749), [machine-readable \`fullsize-cpu-physics-report.json\` and hashes](https://github.com/techrote/cybersand/actions/runs/42357747749/artifacts/13568109169). Final programmatic verdict \`HOLD_SMALL_POSITIVE_UNQUALIFIED\`, \`decision=NO_MERGE_NO_FULL_FACTORIAL\`, all checks valid.
+- **Independent archival reduction after one-line correction, NO replay or rebuild:** [successful run 42357747749](https://github.com/techrote/cybersand/actions/runs/42357747749), [machine-readable `fullsize-cpu-physics-report.json` and hashes](https://github.com/techrote/cybersand/actions/runs/42357747749/artifacts/13568109169). Final programmatic verdict `HOLD_SMALL_POSITIVE_UNQUALIFIED`, `decision=NO_MERGE_NO_FULL_FACTORIAL`, all checks valid.
 
 This is **not** the original historical 1,080-trial #493 factorial, a new scene, a renderer-FPS benchmark or a production runtime publication.
 
 ## Actual complete workbench workload and coverage
 
-The built-in \`workbench_setup.gd::stress_canvas\` uses the actual **2048 × 1024** live workbench, **eight real Rapier barrels**, **explicit C2048** PF \`cached_dormant\` + gas ON, ballistic Water with face/spray/jet, and sustained hard-wall/erase edits every two native ticks. Each of four new Godot processes executed **24 warmup + 240 measured native ticks**, with hundreds of actor steps, >200 collected original simulation samples, >=45 accepted hard edits, >=35 distinct hard-surface revisions, live collider packets, true ballistic launches and no native failed state.
+The built-in `workbench_setup.gd::stress_canvas` uses the actual **2048 × 1024** live workbench, **eight real Rapier barrels**, **explicit C2048** PF `cached_dormant` + gas ON, ballistic Water with face/spray/jet, and sustained hard-wall/erase edits every two native ticks. Each of four new Godot processes executed **24 warmup + 240 measured native ticks**, with hundreds of actor steps, >200 collected original simulation samples, >=45 accepted hard edits, >=35 distinct hard-surface revisions, live collider packets, true ballistic launches and no native failed state.
 
 Two pairs were run on one Linux runner in **B1–C1–C2–B2** order, source-compiled native DLL switched at each process boundary. Both sources used identical instrumented native API/host scripts. No change to a physical rule, simulation RNG, gas-compartment law or source-authority lock occurred.
 
@@ -58,7 +58,7 @@ By contrast, the earlier **reduced** Windows Godot 1024×512 screen [42340715185
 
 **Directly observed in actual 2048×1024 gameplay:**
 - Approximately **2,949,120 seed cells and 2,949,120 relabelled cells per tick**, **228,000–228,300 BFS cells per tick**.
-- **1.00 complete reference gas pass per native tick**, **zero gas-cache reuse**, **zero component reuse** and **zero gas-restart fallbacks** in *both* source variants. Even \`cached_dormant\` recomputes topology under this actively edited, reacting scene.
+- **1.00 complete reference gas pass per native tick**, **zero gas-cache reuse**, **zero component reuse** and **zero gas-restart fallbacks** in *both* source variants. Even `cached_dormant` recomputes topology under this actively edited, reacting scene.
 - Total worker participation **four real task-claiming workers** in all four source runs (maximum and median 4; capacities 4), sampled at the exclusive owner. This is measured task participation, not assumed from configuration.
 - Both variants perform essentially the same global work; the candidate runs that compulsory work faster. Gas discovery/seed/BFS process CPU is reduced by about **15%** here, consistent with the benefit of optimized same-chunk reads at a larger traversal scale. This is workload-level attribution; exclusive per-instruction CPU or proof of a specific mask branch is **not** established.
 - Native gas-stage cost accounts for roughly 20 ms of the ~76 ms baseline tick and improves ~2.17 ms; this bounds the whole-tick improvement near 3%, rather than 14%.
@@ -67,11 +67,11 @@ The full-size scene is therefore not benefiting from topology **cache reuse**. I
 
 ## Physical-state and native conservation checks
 
-Each source recorded periodic completed-tick native state hashes (\`hash5\`), exact native Water quantity (baseline, six cause kinds, visible+overfill+ballistic), gas compartment count/capacity and the complete gas creation/vent/collapse balance. **Every one of the 20 native checkpoints across four workbench runs passed**:
+Each source recorded periodic completed-tick native state hashes (`hash5`), exact native Water quantity (baseline, six cause kinds, visible+overfill+ballistic), gas compartment count/capacity and the complete gas creation/vent/collapse balance. **Every one of the 20 native checkpoints across four workbench runs passed**:
 
-- \`actual Water = baseline + all six produced causes − all six consumed causes\`.
-- Water \`visible + overfill + ballistic\` equaled the same native expected total and the Water amount separately reported by ballistic spray.
-- Gas \`amount_live + vented + collapsed = created + absorbed\`.
+- `actual Water = baseline + all six produced causes − all six consumed causes`.
+- Water `visible + overfill + ballistic` equaled the same native expected total and the Water amount separately reported by ballistic spray.
+- Gas `amount_live + vented + collapsed = created + absorbed`.
 - Applied capacity 2048; native physical hash version 5; no missing/invalid hashes or over-capacity gas census.
 - Actual four-worker participation at 84–89 exclusive-owner samples per run.
 
@@ -87,4 +87,4 @@ Therefore: **physics conservation PASS in the live application; deterministic cr
 4. **No merge authority.** The current #504 branch also includes retained-runtime publication/source-provenance steps that are not requalified by this historical exact source pair. Before merging #504, a deterministic same-input full-size native physical/quantity parity, final-head platform/runtime source publication and owner approval remain essential; do not treat async hash divergence as a physics defect.
 5. **No broad expansion from this task.** The requested bounded qualification ends here. Do not trigger the 360×3×2 factorial, more synthetic campaigns, an optimization feature branch or a speculative physics repair.
 
-**Final disposition: \`HOLD_SMALL_POSITIVE_UNQUALIFIED\` — #504 merits preservation and guarded follow-on exactness/integration consideration, but not immediate merge.** This is the strongest verified application-CPU evidence now available for the current gas hotpath. Leave #515 and #521 Draft, the existing native source and current \`main\` unchanged.
+**Final disposition: `HOLD_SMALL_POSITIVE_UNQUALIFIED` — #504 merits preservation and guarded follow-on exactness/integration consideration, but not immediate merge.** This is the strongest verified application-CPU evidence now available for the current gas hotpath. Leave #515 and #521 Draft, the existing native source and current `main` unchanged.
