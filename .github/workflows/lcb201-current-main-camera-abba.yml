@@ -1,0 +1,52 @@
+name: LCB201 current-main camera-only ABBA
+
+# Test-only current-main native comparison. No production source or runtime writes.
+on:
+  push:
+    branches: [claude/pf201-moving-camera]
+    paths:
+      - '.github/workflows/lcb201-current-main-camera-abba.yml'
+      - 'tools/ci/lcb201_current_main_camera_abba.py'
+permissions:
+  contents: read
+concurrency:
+  group: lcb201-camera-abba
+  cancel-in-progress: true
+jobs:
+  source-matched-screen:
+    if: github.repository == 'techrote/cybersand'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Check out #405 diagnostic tool and fixture
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+      - name: Fetch and establish current main as independent baseline
+        run: |
+          set -euo pipefail
+          export GIT_LFS_SKIP_SMUDGE=1
+          git fetch --no-tags origin +refs/heads/main:refs/remotes/origin/main
+          git worktree add --detach /tmp/lcb201-current-main refs/remotes/origin/main
+          git -C /tmp/lcb201-current-main rev-parse HEAD HEAD^{tree} > current-main-identity.txt
+          git rev-parse HEAD HEAD^{tree} > diagnostic-branch-identity.txt
+      - name: Build native baseline plus one-delta camera variant and execute B-C-C-B
+        run: |
+          set -euo pipefail
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/lcb201_current_main_camera_abba.py \
+            --main-worktree /tmp/lcb201-current-main \
+            --output lcb201-camera-evidence
+      - name: Preserve source, original output, and failed evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lcb201-camera-abba-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            current-main-identity.txt
+            diagnostic-branch-identity.txt
+            lcb201-camera-evidence/
+          retention-days: 30
+          if-no-files-found: warn
