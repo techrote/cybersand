@@ -107,11 +107,11 @@ jobs:
           trials=re.findall(r'^TRIAL variant=(\w+) workers=(\d+) shift_x=(\d+) shift_y=(\d+).*exact_physics=(PASS|HOLD)$',log,re.M)
           offsets=re.findall(r'^OFFSET_SUMMARY shift_x=(\d+) shift_y=(\d+) all_four_exact=(PASS|HOLD) all_four_final_32=(PASS|HOLD)$',log,re.M)
           assert len(baselines)==4 and all(x[2]=='32' for x in baselines),baselines
-          assert len(trials)==28, (len(trials),trials)
-          assert len(offsets)==7, (len(offsets),offsets)
+          assert len(trials)==1024, (len(trials),trials)
+          assert len(offsets)==256, (len(offsets),offsets)
           eligible=[(int(x),int(y)) for x,y,exact,final in offsets if exact=='PASS' and final=='PASS']
-          result={'frozen_native_reference':'PASS','candidate_translations':7,
-                  'both_destinations_workers_1_4':4,'trial_arms':28,
+          result={'frozen_native_reference':'PASS','candidate_translations':256,
+                  'both_destinations_workers_1_4':4,'trial_arms':1024,
                   'strictly_equivalent_offsets':eligible,
                   'status':'PHYSICALLY_EQUIVALENT' if eligible else 'NO_STRICT_TRANSLATION_EQUIVALENCE'}
           (path/'conclusion.json').write_text(json.dumps(result,indent=2)+'\n')
