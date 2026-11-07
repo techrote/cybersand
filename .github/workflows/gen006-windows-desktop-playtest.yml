@@ -61,3 +61,93 @@ jobs:
           path: build/gen006-desktop/
           if-no-files-found: warn
           retention-days: 45
+
+  windows-native-portable-package:
+    runs-on: windows-2022
+    timeout-minutes: 40
+    env:
+      EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - name: Preserve LF and exact source
+        shell: cmd
+        run: |
+          git config --global core.autocrlf false
+          if errorlevel 1 exit /b 1
+          git config --global core.eol lf
+          if errorlevel 1 exit /b 1
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Source receipt and policy
+        shell: pwsh
+        run: |
+          $d = "build/gen006-desktop-package"
+          New-Item -ItemType Directory -Force $d | Out-Null
+          $head = (& git rev-parse HEAD).Trim()
+          if ($head -ne $env:EXPECTED_HEAD) { throw "Wrong checked-out head" }
+          $head | Set-Content "$d/head.txt"
+          (& git rev-parse 'HEAD^{tree}') | Set-Content "$d/tree.txt"
+          (& git hash-object native/src/world.cpp) | Set-Content "$d/native-world-blob.txt"
+          (& git hash-object native/tests/gen006_streaming_slice.cpp) | Set-Content "$d/native-slice-blob.txt"
+          python tools/ci/check_ci_provider_policy.py
+      - name: Compile portable real-native streaming slice
+        shell: cmd
+        timeout-minutes: 30
+        run: |
+          for /f "tokens=*" %%i in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath') do set "GEN006_VSROOT=%%i"
+          if not defined GEN006_VSROOT exit /b 1
+          call "%GEN006_VSROOT%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          set "GEN006_CXX=%ProgramFiles%\LLVM\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" set "GEN006_CXX=%GEN006_VSROOT%\VC\Tools\Llvm\x64\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" exit /b 1
+          "%GEN006_CXX%" --version > build\gen006-desktop-package\compiler.txt 2>&1
+          if errorlevel 1 exit /b 1
+          "%GEN006_CXX%" -std=c++20 -O0 -I native/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/world_generation.cpp native/src/generation_fields.cpp native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp native/src/generation_grammar.cpp native/src/generation_planes.cpp native/tests/gen006_streaming_slice.cpp -o build\gen006-desktop-package\streaming-slice.exe > build\gen006-desktop-package\compile.log 2>&1
+          if errorlevel 1 (type build\gen006-desktop-package\compile.log & exit /b 1)
+      - name: Real native executable self-test and immutable manifest
+        shell: pwsh
+        timeout-minutes: 8
+        run: |
+          $d = "build/gen006-desktop-package"
+          & "$d/streaming-slice.exe" --self-test "$d/selftest-one" 1 > "$d/native-one.log" 2>&1
+          if ($LASTEXITCODE -ne 0) { Get-Content "$d/native-one.log"; throw "Native selftest 1 failed" }
+          & "$d/streaming-slice.exe" --self-test "$d/selftest-four" 4 > "$d/native-four.log" 2>&1
+          if ($LASTEXITCODE -ne 0) { Get-Content "$d/native-four.log"; throw "Native selftest 4 failed" }
+          foreach ($w in @(1,4)) {
+            if (-not (Select-String -Quiet -Path "$d/native-$(@{1='one';4='four'}[$w]).log" -Pattern "GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=$w")) {
+              throw "Missing real native PASS for workers=$w"
+            }
+          }
+          $exeHash = (Get-FileHash -Algorithm SHA256 "$d/streaming-slice.exe").Hash
+          $sha = (Get-Content "$d/head.txt" -Raw).Trim()
+          $tree = (Get-Content "$d/tree.txt" -Raw).Trim()
+          $manifest = [ordered]@{
+            schema = "GEN006_WIN_DESKTOP_PACKAGE_V1"
+            source_head = $sha
+            source_tree = $tree
+            executable_sha256 = $exeHash
+            native_selftest_1 = "PASS"
+            native_selftest_4 = "PASS"
+            production_release = $false
+            requires_human_desktop_acceptance = $true
+          }
+          $manifest | ConvertTo-Json -Depth 4 | Set-Content "$d/manifest.json"
+          Copy-Item tools/experiments/gen006_windows_desktop_playtest.ps1 "$d/gen006_windows_desktop_playtest.ps1"
+          "GEN006_WINDOWS_DESKTOP_NATIVE_PACKAGE_PASS source=$sha exe_sha256=$exeHash" | Tee-Object -FilePath "$d/package.log"
+      - name: Upload source-attested Windows test executable
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-win-desktop-native-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/gen006-desktop-package/streaming-slice.exe
+            build/gen006-desktop-package/*.txt
+            build/gen006-desktop-package/*.log
+            build/gen006-desktop-package/manifest.json
+            build/gen006-desktop-package/gen006_windows_desktop_playtest.ps1
+          if-no-files-found: warn
+          retention-days: 45
