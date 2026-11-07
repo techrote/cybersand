@@ -1,0 +1,23 @@
+# GEN-006 G6J1 — experimental append-only mutation journal
+
+**Scope:** isolated, opt-in storage primitive for GEN-006 #194 (https://github.com/techrote/cybersand/issues/194), **not integrated** with the active PR #486 native controller or the separate shared-World residency engine. Keep this PR Draft and unmerged. No native physics, production storage, World ABI or default runtime is changed.
+
+This is a bounded Python prototype for durable edit logging, not a completed native optimization. It accepts an opaque real CYPS checkpoint (maximum 2 MiB) and up to 4,096 fixed-size mutation records (48 bytes each). The header carries signed native chunk coordinates, a nonzero residency incarnation, starting mutation generation, fixed native tick and physical hash. Each append validates the next generation, fixed tick, coordinates, edit kind, monotonic chain and CRC, then synchronously flushes/fsyncs the appended record. **Only after a successful append may the native caller issue its durable edit ACK.** The initial checkpoint uses same-directory no-clobber hard-link publication and POSIX parent-directory fsync.
+
+Recovery checks the baseline and each complete record. A torn final unacknowledged record returns the complete valid prefix, clearly marked as torn; opening for subsequent writes refuses until a separately authorized repair/rollover procedure exists. Complete record corruption refuses rather than pretending the data never existed. The digest chain is a bounded accidental-corruption detector, not an authenticated or multi-writer protocol. There is no cross-process lock; a single serialized owner is a **required precondition**.
+
+**Very narrow admitted domain:** a frozen native tick. A caller must restore the actual CYPS snapshot into a private native World, replay each command with the replay_checked function (verifying each resulting physical-state hash), and only then admit the candidate into the live owner. Missing host/Rapier/solver sidecars, tick changes and unmatched physics state are **refusal conditions**, not implicit support. A new durable checkpoint and incarnation are necessary before proceeding into a new tick epoch. Do not replay into a live World or claim preserved simulation activity solely from physical hashes.
+
+## Exact local test
+
+From the tools/experiments directory, run:
+
+    python3 -m unittest -v test_gen006_storage_journal
+
+The independent standard-library tests cover 200 file-synced edits; signed coordinates; incarnation, generation and tick fencing; external file size modification; checked replay hashes; no-clobber creation; torn-tail recovery and write refusal; corrupted complete records; and a child process doing os._exit(0) after a persisted edit, recovered by another process. Tests passed locally with Python 3.13.5 on Linux. Dedicated hosted Windows/Linux results must be inspected before claiming cross-platform acceptance.
+
+The synthetic 512 KiB baseline plus 200 edits uses **533,952 bytes** in total, compared with **104,870,400 bytes** for 200 hypothetical full-record rewrites of the same size (99.49% fewer bytes for this contrived static-edit scenario). This is **not** a measured improvement in PR #486's actual native tick wall time, p50/p95/p99 ACK latency, memory, durable simulation ticks, or sustained gameplay throughput. No source-matched native benchmark was executed.
+
+## Builder handoff
+
+The #486 owner should not adopt this utility as-is for continuous 30 Hz physics. The next substantive integration experiment is to bridge it to a real staged native World under strict frozen-tick admission, test a durable ACK followed by actual process restart and equal physical state, and measure matched baseline-vs-candidate edit latency and write volume on Windows and Linux. The Native Residency Engine separately owns all actual shared-World chunk deletion/restore. Keep all experiments isolated and Draft; do not merge or change default physics.
