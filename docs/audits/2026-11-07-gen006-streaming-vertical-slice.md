@@ -362,3 +362,44 @@ and restore chunks while respecting cross-chunk mass, events and activity;
 then switch the Godot demo adapter to that shared-World owner. The present
 rollback/pin is a safe experimental refusal, not completion of general
 GEN-006 streaming or replacement for approved source-owner admission.
+
+## Acknowledged player edits survive abrupt process termination — 7 November 2026
+
+**Opt-in one-native-World-per-shard demonstrator only.** Previous restart
+acceptance exercised orderly `save_all()` and/or LRU eviction. A successful
+`dig`/`wall`/`water` command previously could be acknowledged solely in RAM
+and lost if the owner was killed before save or eviction. This is distinct
+from the independently repaired surface-tick failure in #507.
+
+Each player edit is now applied to a **privately restored real CYPS World**.
+The candidate retains material, state, Water quantity, temperature, scheduler
+state, monotonic mutation generation and explicit Empty/same-value intent.
+The owner persists the candidate via the existing bounded file sync/replace,
+then swaps it into the live resident and emits the receipt:
+
+    GEN006_EDIT_DURABLE_ACK chunk=(X,Y) local=(X,Y) generation=N physical_hash=H native_tick=T file_published=1
+
+Preparation and pre-publication failures retain the old live native World,
+and cannot return the successful edit ACK. This remains a serialized single
+owner and synchronous filesystem mechanism; it is not an async, multiwriter
+or crash-proof transaction. A rename that succeeds followed by a directory
+sync failure is still a commit-uncertainty boundary requiring future work.
+
+The actual-native fixture `tools/experiments/gen006_durable_edit_ack.py`
+drives two separate operating-system processes. Process one applies five
+edits to signed chunk (-1,-3), including Empty intent and a native contained
+Water17/temperature417, demands five monotonically increasing file-published
+ACKs, and is then **killed without quit, save_all or resident eviction**.
+Process two must reload the identical saved record with original edit intent,
+Water17, temperature417, mutation generation and record SHA-256. The
+`gen006-streaming-slice.yml` workflow runs the fixture with configured
+native workers 1 and 4 on actual hosted Ubuntu and Windows. Check results
+before claiming PASS; source creation alone is not execution.
+
+**Limits:** Simulation proceeds after the last edit, and subsequent native
+simulation-only changes are not automatically disk-committed each tick.
+Hardware power loss, Windows directory durability, cross-shard mass, Rapier
+actors, sidecars, historic MAT-AUTH import and a shared-World native API
+remain unqualified. Per-click native clone/serialization + sync imposes
+measurable cost; replace with a qualified batching/journaling policy before
+production adoption. No production ABI, defaults or CYPS codec were changed.
