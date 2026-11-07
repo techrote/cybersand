@@ -292,3 +292,55 @@ Requalify on the exact new commit in native Linux and Windows with 1/4
 configured worker modes and report observed participation. Previous evidence
 does not qualify the new test; Draft-skipped full Native/Godot/Water gates
 do not count as PASS.
+
+## 7 November — actual STATIC release in one shared World with moving Sand/Water
+
+**Strictly static subset, not the target dynamic bundle.** A new #523-owned
+source-built test exercises three real native residents: signed (-2,-2) and
+(-2,-1) exchange moving Sand and Water across their seam; distant (8,0)
+contains edited static Wall, temperature417 and an explicit same-value Empty
+intent. A separate never-restored World supplies the uninterrupted physics
+oracle. The test compiles against an independently checked-out, unchanged,
+READ-ONLY #512 source, commit af5ab47e210bac53d70b51e923588a4ad630aea9:
+world.cpp blob ac2ef2e65f2baf4ef0799f2be93de872bc7e9dfd,
+world.hpp blob 8afc3959b41d2281d9c16dc7320475a960f44de6,
+world_chunk_checkpoint.inc blob a2c13748c02ffe29e208cb8d5a07d4b2b49fb5ea.
+Protected source and other workers' branches are never modified.
+
+The moving pair remains pinned by the native checkpoint API. Only the distant
+STATIC chunk receives an exact readback-checked G6KC1 checkpoint, externally
+synced file, admission-incarnation durable ACK and real in-place native
+World::evict_durable_checkpoint. Missing-durability and forged-incarnation
+receipts are refused without live mutation. It truly removes one chunk while
+the two dynamic residents remain live in the SAME World, then reinstalls only
+the static bytes via World::restore_chunk_checkpoint, refuses stale old ACK,
+preserves edited Wall/temperature/Empty intent and compares physical/content/
+state hashes, full quantity ledger, resident bytes/count and native clock to
+the independently uninterrupted World through eight additional native ticks.
+A different OS process reloads the static file and rejects a corrupted record.
+The Linux parent directory is fsynced after rename; on Windows the file is
+_committed but parent-directory durability is not asserted. No dynamic
+bundle restart or intervening simulation tick while static chunk is absent
+is claimed.
+
+**Measured original hosted execution:** #523 exact test-source HEAD
+c02181b0f99462c53a374355480f773f844dca74,
+[Windows/Linux workflow #42403261894](https://github.com/techrote/cybersand/actions/runs/42403261894)
+**PASS 2/2**, each with configured workers 1 and 4, observed 1 and 2
+actual participants respectively. Native residents **3 -> 2 -> 3**;
+resident cell memory **107,264 -> 66,048 -> 107,264 bytes**; exactly
+**41,216 bytes STATIC selectively reclaimed** and reinstated.
+Real Sand and Water crossed the signed native seam, and after restoration
+the native oracle matched for eight ticks through completed tick 11,
+physical hash 1625194446743225930 on both platforms.
+Negative receipts and process-cold static readback also passed.
+
+**Unchanged hard boundary:** selecting the two moving residents still refuses;
+measured dynamic release remains **3 -> 3, zero bytes reclaimed** in the
+existing three-resident negative fixture, also executed in the same run.
+This bridge proves real native static selective reclamation in the presence
+of dynamic neighbour activity, NOT selective dynamic Sand/Water bundle
+eviction, multi-chunk halo or sidecar transfer, moving material persistence,
+or default playable streaming. The exact protected dynamic prepare/evict/
+reinstall source/API transfer request under issue #194 remains pending.
+All GEN-006 PRs stay Draft, opt-in, NO MERGE and no source-lock repin.

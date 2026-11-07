@@ -8,6 +8,7 @@ on:
       - 'native/include/cybersand/gen006_dynamic_bundle_admission.hpp'
       - 'native/tests/gen006_dynamic_full_world_continuation.cpp'
       - 'native/tests/gen006_dynamic_static_residency_bridge.cpp'
+      - 'docs/audits/2026-11-07-gen006-dynamic-full-world-stage.md'
       - 'tools/experiments/gen006_dynamic_full_world_qualification.py'
       - '.github/workflows/gen006-dynamic-full-world-continuation.yml'
   workflow_dispatch:
