@@ -25,6 +25,9 @@ const IPC_HARD_TIMEOUT_MSEC: int = 30000
 const MAX_QUEUED_ACTIONS: int = 16
 # Explicit signed chunk range; finite prototype prevents cell-coordinate overflow.
 const MAX_ABS_JUMP_CHUNK: int = 4096
+# Optional visual-only subchunk view; never changes native World authority.
+const ROAM_CELLS_PER_SECOND: float = 36.0
+const MAX_ROAM_FRAME_TILES: int = 8
 
 var world_chunk := DEMO_START
 var selected_cell := Vector2i(18, 30)
@@ -70,6 +73,11 @@ var drag_last_chunk := DEMO_START
 var jump_x_edit: LineEdit
 var jump_y_edit: LineEdit
 var jump_go_button: Button
+var roam_button: Button
+var roam_enabled: bool = false
+var roam_origin: Vector2 = Vector2(DEMO_START.x * SIDE, DEMO_START.y * SIDE)
+var roam_frame_cache: Dictionary = {}
+var roam_frame_order: Array[Vector2i] = []
 
 
 func _ready() -> void:
@@ -142,6 +150,113 @@ func _install_jump_controls() -> void:
     jump_go_button.pressed.connect(_jump_to_coordinates)
     jump_x_edit.text_submitted.connect(_on_jump_text_submitted)
     jump_y_edit.text_submitted.connect(_on_jump_text_submitted)
+    roam_button = Button.new()
+    roam_button.name = "RoamToggle"
+    roam_button.text = "Roam: OFF"
+    roam_button.position = Vector2(1112, 654)
+    roam_button.size = Vector2(134, 34)
+    roam_button.tooltip_text = "WASD subchunk preview; switch Roam OFF to edit native terrain"
+    add_child(roam_button)
+    roam_button.pressed.connect(_toggle_roam_mode)
+
+
+
+# The eight-frame cache holds copied pixels, not editable native cells.
+func _remember_roam_frame(chunk: Vector2i, image: Image) -> void:
+    if roam_frame_cache.has(chunk):
+        roam_frame_order.erase(chunk)
+    roam_frame_cache[chunk] = ImageTexture.create_from_image(image)
+    roam_frame_order.append(chunk)
+    while roam_frame_order.size() > MAX_ROAM_FRAME_TILES:
+        var expired: Vector2i = roam_frame_order.pop_front()
+        roam_frame_cache.erase(expired)
+
+
+func _visible_roam_tiles(origin: Vector2) -> Array[Vector2i]:
+    var first := Vector2i(floori(origin.x / float(SIDE)),
+        floori(origin.y / float(SIDE)))
+    var last := Vector2i(floori((origin.x + float(SIDE) - 0.001) / float(SIDE)),
+        floori((origin.y + float(SIDE) - 0.001) / float(SIDE)))
+    var tiles: Array[Vector2i] = []
+    for y in range(first.y, last.y + 1):
+        for x in range(first.x, last.x + 1):
+            tiles.append(Vector2i(x, y))
+    return tiles
+
+
+func _toggle_roam_mode() -> void:
+    if not controller_started or not failure.is_empty():
+        input_refusal = "Roam refused: native owner unavailable."
+        queue_redraw()
+        return
+    if not roam_enabled and displayed_chunk != world_chunk:
+        input_refusal = "Roam refused: await authoritative native frame."
+        queue_redraw()
+        return
+    roam_enabled = not roam_enabled
+    roam_button.text = "Roam: ON" if roam_enabled else "Roam: OFF"
+    drag_button = 0
+    drag_last_cell = Vector2i(-1, -1)
+    roam_origin = Vector2(world_chunk.x * SIDE, world_chunk.y * SIDE)
+    if roam_enabled and texture != null:
+        _remember_roam_frame(displayed_chunk, texture.get_image())
+    if not roam_enabled:
+        roam_frame_cache.clear()
+        roam_frame_order.clear()
+        _queue_live_focus()
+    input_refusal = ""
+    queue_redraw()
+
+
+func _advance_roam(delta: float, direction: Vector2) -> void:
+    if not roam_enabled or direction == Vector2.ZERO or not failure.is_empty():
+        return
+    var proposed := roam_origin + direction.normalized() * (
+        minf(delta, 0.10) * ROAM_CELLS_PER_SECOND)
+    var tiles := _visible_roam_tiles(proposed)
+    for tile in tiles:
+        if absi(tile.x) > MAX_ABS_JUMP_CHUNK or absi(tile.y) > MAX_ABS_JUMP_CHUNK:
+            input_refusal = "Roam refused: signed native boundary."
+            queue_redraw()
+            return
+    for tile in tiles:
+        if not roam_frame_cache.has(tile):
+            # Freeze rather than present invented cells. Focus one adjacent
+            # signed tile through the existing bounded native controller.
+            if world_chunk != tile:
+                world_chunk = tile
+                jump_x_edit.text = str(tile.x)
+                jump_y_edit.text = str(tile.y)
+            _queue_live_focus()
+            input_refusal = "Roam waiting for signed native tile (%d,%d)." % [
+                tile.x, tile.y
+            ]
+            queue_redraw()
+            return
+    roam_origin = proposed
+    if input_refusal.begins_with("Roam waiting"):
+        input_refusal = ""
+    queue_redraw()
+
+
+func _draw_roam_viewport() -> void:
+    var viewport_world := Rect2(roam_origin, Vector2(SIDE, SIDE))
+    draw_rect(Rect2(DISPLAY_TOP_LEFT, Vector2(DISPLAY_SIZE, DISPLAY_SIZE)),
+        Color("#080a12"), true)
+    for chunk in _visible_roam_tiles(roam_origin):
+        if not roam_frame_cache.has(chunk):
+            continue
+        var chunk_world := Rect2(Vector2(chunk.x * SIDE, chunk.y * SIDE),
+            Vector2(SIDE, SIDE))
+        var overlap := viewport_world.intersection(chunk_world)
+        if not overlap.has_area():
+            continue
+        var target := Rect2(DISPLAY_TOP_LEFT +
+            (overlap.position - roam_origin) * (DISPLAY_SIZE / float(SIDE)),
+            overlap.size * (DISPLAY_SIZE / float(SIDE)))
+        var source := Rect2(overlap.position - chunk_world.position, overlap.size)
+        var copied_frame: Texture2D = roam_frame_cache[chunk]
+        draw_texture_rect_region(copied_frame, target, source)
 
 
 func _on_jump_text_submitted(_value: String) -> void:
@@ -177,6 +292,7 @@ func _jump_to_coordinates() -> void:
 func _request_camera_chunk(target: Vector2i) -> void:
     # A single latest-target demand; no intermediate shards or edit rebinding.
     world_chunk = target
+    roam_origin = Vector2(target.x * SIDE, target.y * SIDE)
     drag_button = 0
     drag_last_cell = Vector2i(-1, -1)
     drag_last_chunk = target
@@ -314,6 +430,8 @@ func _update_texture() -> bool:
         texture = ImageTexture.create_from_image(image)
     else:
         texture.update(image)
+    if roam_enabled:
+        _remember_roam_frame(world_chunk, image)
     queue_redraw()
     return true
 
@@ -509,6 +627,12 @@ func _process(delta: float) -> void:
         return
     if not interactive_async:
         return
+    if roam_enabled and not jump_x_edit.has_focus() and not jump_y_edit.has_focus():
+        var movement := Vector2(
+            float(int(Input.is_key_pressed(KEY_D)) - int(Input.is_key_pressed(KEY_A))),
+            float(int(Input.is_key_pressed(KEY_S)) - int(Input.is_key_pressed(KEY_W)))
+        )
+        _advance_roam(delta, movement)
     refresh_accumulator += delta
     if refresh_accumulator >= FRAME_REFRESH_SECONDS:
         refresh_accumulator = 0.0
@@ -567,6 +691,13 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 
 func _gui_input(event: InputEvent) -> void:
+    if roam_enabled:
+        # Cached pixels never grant edit permission over stale native material.
+        if event is InputEventMouseButton and event.pressed:
+            input_refusal = "Roam preview is read-only; Roam OFF to paint/dig."
+            queue_redraw()
+            accept_event()
+        return
     if event is InputEventMouseMotion:
         var motion_event := event as InputEventMouseMotion
         var held := (
@@ -669,11 +800,13 @@ func _draw() -> void:
     draw_rect(Rect2(Vector2.ZERO, size), Color("#0d1220"), true)
     var font: Font = ThemeDB.fallback_font
     draw_string(font, Vector2(28, 30), "GEN-006 / Native World Stream [experimental]", HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color("#dee9fb"))
-    draw_string(font, Vector2(28, 54), "Arrows: chunk  |  Shift+arrows: 1536px  |  Signed x/y + Go: jump  |  Home: terrain  |  Left-click: Wall  |  Right-click: dig  |  Middle: Water17  |  Drag: stroke  |  Space: tick", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#a3b5ce"))
+    draw_string(font, Vector2(28, 54), "Arrows: chunk | Shift+arrows: 1536px | Go: signed jump | Roam ON: WASD pan (read-only) | Roam OFF: drag Wall, dig, Water17 | Space: tick", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#a3b5ce"))
     draw_rect(Rect2(DISPLAY_TOP_LEFT - Vector2(2, 2),
                    Vector2(DISPLAY_SIZE + 4, DISPLAY_SIZE + 4)),
                    Color("#3f5972"), false, 2.0)
-    if texture != null:
+    if roam_enabled:
+        _draw_roam_viewport()
+    elif texture != null:
         draw_texture_rect(texture, Rect2(DISPLAY_TOP_LEFT,
                           Vector2(DISPLAY_SIZE, DISPLAY_SIZE)), false)
     else:
@@ -682,7 +815,8 @@ func _draw() -> void:
     var cursor := DISPLAY_TOP_LEFT + Vector2(selected_cell) * (
         DISPLAY_SIZE / float(SIDE)
     )
-    draw_rect(Rect2(cursor, Vector2(10, 10)), Color("#f1d876"), false, 1.0)
+    if not roam_enabled:
+        draw_rect(Rect2(cursor, Vector2(10, 10)), Color("#f1d876"), false, 1.0)
     var px_x := world_chunk.x * SIDE
     var px_y := world_chunk.y * SIDE
     draw_string(font, Vector2(710, 106),
@@ -718,7 +852,9 @@ func _draw() -> void:
             reload_receipts
         ], HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color("#9caec9"))
     draw_string(font, Vector2(710, 370),
-        "Copied native RGBA 64x64 (not Godot production shader)",
+        ("Roam origin %.1f,%.1f | %d/8 copied RGBA tiles | editing OFF" % [
+            roam_origin.x, roam_origin.y, roam_frame_cache.size()
+        ]) if roam_enabled else "Copied native RGBA 64x64 (not Godot production shader)",
         HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#9caec9"))
     draw_string(font, Vector2(710, 255),
         "Native occupied cells: %d / 4096" % occupied_native_cells,
