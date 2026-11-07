@@ -39,6 +39,15 @@ struct World::PressureCache {
             gas_members.reserve(gas_member_limit);
             gas_components.reserve(gas_compartment_capacity);
             gas_dirty_chunks.reserve(capacity);
+            // One bounded bit per indexed cell records cells visited by the
+            // authoritative gas BFS. Clean chunks can then relabel only those
+            // cells instead of rescanning every resident cell.
+            gas_relabel_words = (cell_area + 63U) / 64U;
+            if (gas_relabel_words != 0U &&
+                capacity <= std::numeric_limits<std::size_t>::max() / gas_relabel_words) {
+                gas_relabel_bits.resize(capacity * gas_relabel_words);
+                gas_hidden_labels.resize(capacity, std::uint8_t{1});
+            }
         }
         // #201 P1: one derived wake-clean bit per indexed cell. Reserved here;
         // the index rebuild zero-fills within this capacity (no tick allocation).
@@ -84,6 +93,13 @@ struct World::PressureCache {
             if (value) wake_clean[bit / 64U] |= mask; else wake_clean[bit / 64U] &= ~mask;
             bit += take; count -= take;
         }
+    }
+
+    [[nodiscard]] bool gas_relabel_storage_ready() const noexcept {
+        return complete && gas_relabel_words != 0U &&
+               column_order.size() <= gas_hidden_labels.size() &&
+               column_order.size() <= std::numeric_limits<std::size_t>::max() / gas_relabel_words &&
+               column_order.size() * gas_relabel_words <= gas_relabel_bits.size();
     }
 
     [[nodiscard]] GasComponent* gas_component(std::uint32_t id) noexcept {
@@ -149,7 +165,6 @@ struct World::PressureCache {
         certificate_tick_eligible=false;
         gas_ready = false;
         gas_dirty_overflow = false;
-        gas_bootstrap_attempted = false;
         status = PressureOptimizationStatus::Cold;
     }
 
@@ -178,14 +193,16 @@ struct World::PressureCache {
     std::uint64_t certificate_water_calls_begin=0, certificate_prior_water_calls=0;
     bool use_heads = false;
     bool gas_ready = false;
-    // Dirty-chunk evidence is complete only while overflow is false. A partial
-    // component bootstrap is attempted at most once between complete cache builds.
     bool gas_dirty_overflow = false;
-    bool gas_bootstrap_attempted = false;
     std::size_t gas_member_limit = 0;
     std::vector<GasMember> gas_members;
     std::vector<GasComponent> gas_components;
     std::vector<ChunkCoord> gas_dirty_chunks;
+    std::size_t gas_relabel_words = 0;
+    std::vector<std::uint64_t> gas_relabel_bits;
+    // One byte per indexed chunk is a conservative proof that an unvisited
+    // positive gas label may still exist under material/mask occlusion.
+    std::vector<std::uint8_t> gas_hidden_labels;
     std::size_t wake_words_per_chunk = 0;
     std::vector<std::uint64_t> wake_clean;
     std::uint64_t wake_segments_scanned = 0, wake_segments_skipped = 0, wake_resets = 0;
