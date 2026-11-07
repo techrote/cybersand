@@ -24,7 +24,7 @@ C2048="24a8bbe8ccf0d17196ebbab580b924930a964584"
 CANDIDATE_BUILD="b7f151f85676ffc6b2ea87f3e5c6165b890727e0"
 
 def verify_and_stage(out:Path, app:Path, binaries:Path)->None:
-    doc=read_json(binaries/"probe-patch-identities.json")
+    doc=read_json(binaries/"source/probe-patch-identities.json")
     attest={
        "baseline":(C2048,doc["baseline"]),
        "candidate":(CANDIDATE_BUILD,doc["candidate"]),
