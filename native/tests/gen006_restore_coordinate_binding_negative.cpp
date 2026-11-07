@@ -56,6 +56,24 @@ int main(int argc, char** argv) {
         check(!controller.contains(a) && !controller.contains(b),
               "eviction setup failure");
 
+        // Positive control: restore B's intact native CYPS separately from the
+        // owner map and verify the same identity guard admits the right chunk.
+        // This uses the known G6SLICE1 envelope layout only in test apparatus.
+        const auto correct_b_record = read_record(controller.path_for(b));
+        constexpr std::size_t kHeaderBytes = 68;
+        check(correct_b_record.size() > kHeaderBytes + kMaskBytes,
+              "GEN006_VALID_B_RECORD_TRUNCATED");
+        auto valid_b = World::restore_physical_state(
+            controller.config(),
+            std::span<const std::uint8_t>(correct_b_record).subspan(
+                kHeaderBytes + kMaskBytes));
+        check(valid_b && valid_b->chunk_count() == 1 && !valid_b->has_failed(),
+              "GEN006_VALID_B_RESTORE_REFUSED");
+        assert_readonly_membership(*valid_b, b,
+                                   ChunkInstallOutcome::AlreadyResident);
+        assert_readonly_membership(*valid_b, a,
+                                   ChunkInstallOutcome::CapacityFull);
+
         // The outer record envelope's body checksum covers edit intent and
         // native CYPS bytes but not the outer chunk coordinates. Copy A's
         // entire valid record into B's path and edit ONLY the outer x field.
@@ -103,7 +121,7 @@ int main(int argc, char** argv) {
                   << " valid_A=AlreadyResident"
                   << " wrong_B=CapacityFull"
                   << " native_hash_unchanged=1"
-                  << " resident_budget=1\\n";
+                  << " resident_budget=1\n";
 
         std::cout << "GEN006_REBIND_NEGATIVE_CONTROL_PASS"
                   << " outer_chunk=(0,-3)"
