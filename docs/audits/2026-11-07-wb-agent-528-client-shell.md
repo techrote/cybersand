@@ -303,3 +303,24 @@ paths**. The only overlapping paths were the documentation routes
 navigation and this experimental WB-AGENT authoring route. The source
 reconciliation does not itself qualify Native/GDExtension binaries, a
 full signed 32-Sand Godot hopper, genuine OpenAI trials or owner desktop UI.
+
+## Mounted protected-region controls and native authority (7 November 2026)
+
+The existing opt-in #528 panel now exposes a **human-configurable protected
+rectangle** (signed PX/PY and bounded PW/PH) alongside the authorized scope.
+Both authorized and protected world-space rectangles are drawn as
+mouse-transparent overlays through the real host camera/frame projection.
+This preview is not a replacement for #526 native enforcement: the final
+Start scope includes those protected regions and #526 independently refuses
+operations crossing them. Editing the region retires incompatible active model
+tasks, preserving completed human construction. Opt-out hides both overlays
+and retires the native session. The separate original proposal footprint
+continues to display only #526-prepared cells.
+
+The real mounted regression first requests a protected Hard Wall rectangle
+and expects an actual native `protected_region` refusal, no authored edit
+and no new native tick; it then uses the same matched observation to prepare
+and apply the adjacent allowed nine-cell wall, run genuine acknowledged
+Step, exercise human intervention, and opt out. This is non-paid fake-transport
+control over the **real exclusive native workbench**, not a genuine model-driven
+Sand-hopper or owner desktop verdict.

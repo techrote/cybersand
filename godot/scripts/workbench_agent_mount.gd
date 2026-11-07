@@ -45,13 +45,18 @@ func mount(workbench: Control) -> bool:
 			# acknowledgement before another task can be authorized.
 			_agent_panel.invalidate_due_to_owner_change("agent panel opted out")
 			_agent_panel.proposal_overlay.set_footprint([])
-		_agent_panel.visible = enabled)
+		_agent_panel.visible = enabled
+		_agent_panel.scope_overlay.set_active(enabled))
 	row.add_child(_toggle)
 	_agent_panel.bind_authoritative_dispatcher(
 		Callable(self,"dispatch"),Callable(self,"project_cell"),
 		Callable(self,"authorize"),Callable(self,"retire"))
+	_agent_panel.scope_overlay.set_world_to_screen(Callable(self,"project_region"))
+	_host.world_view.add_child(_agent_panel.scope_overlay)
 	_host.world_view.add_child(_agent_panel.proposal_overlay)
+	_agent_panel.scope_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_agent_panel.proposal_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_host.world_view.resized.connect(_agent_panel.scope_overlay.queue_redraw)
 	_host.world_view.resized.connect(_agent_panel.proposal_overlay.queue_redraw)
 	return true
 
@@ -70,6 +75,24 @@ func project_cell(cell: Vector2i) -> Variant:
 		return null
 	var scale: Vector2 = content.size / Vector2(dimensions)
 	return Rect2(content.position + offset * scale, scale)
+
+func project_region(region: Rect2i) -> Variant:
+	# Read-only world-to-pixel projection of actual task scope/protection.
+	# Intersect with current camera bounds; never grant native edit authority.
+	if not is_instance_valid(_host) or not is_instance_valid(_host.world_view):
+		return null
+	var content: Rect2 = _host.view_content_rect()
+	var dimensions: Vector2i = _host.current_view_size
+	if not content.has_area() or dimensions.x <= 0 or dimensions.y <= 0:
+		return null
+	var visible_world: Rect2 = Rect2(_host.camera_origin,Vector2(dimensions))
+	var clipped: Rect2 = visible_world.intersection(
+		Rect2(Vector2(region.position),Vector2(region.size)))
+	if not clipped.has_area():
+		return null
+	var scale: Vector2 = content.size / Vector2(dimensions)
+	return Rect2(content.position + (clipped.position - visible_world.position) * scale,
+		clipped.size * scale)
 
 func authorize(scope: Dictionary) -> Dictionary:
 	if _bridge == null:

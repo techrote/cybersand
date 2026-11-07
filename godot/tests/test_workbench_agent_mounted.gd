@@ -109,6 +109,8 @@ func _run() -> void:
 		_finish()
 		return
 	check(not panel.visible,"opt-in panel unexpectedly visible by default")
+	check(panel.scope_overlay.get_parent() == host.world_view 			and not panel.scope_overlay.visible,
+		"scope overlay not correctly mounted and opt-in hidden")
 	check(mount._toggle.text.contains("opt-in"),"toggle absent from shared workbench")
 	mount._toggle.button_pressed = true
 	check(panel.visible,"user opt-in toggle cannot reveal panel")
@@ -127,6 +129,15 @@ func _run() -> void:
 	panel._region[1].value = 220
 	panel._region[2].value = 64
 	panel._region[3].value = 64
+	panel._guard_region[0].value = 1148
+	panel._guard_region[1].value = 262
+	panel._guard_region[2].value = 2
+	panel._guard_region[3].value = 2
+	panel._guard.button_pressed = true
+	check(panel.scope_overlay.visible and panel.scope_overlay._protected_regions.size() == 1,
+		"human-configured protected region is not visibly projected")
+	check(mount.project_region(Rect2i(1148,262,2,2)) is Rect2,
+		"protected native rectangle has no real viewport projection")
 	panel.client.configure_fake_transport_for_tests(true)
 	# Race control: press human Stop BEFORE the exclusive native worker
 	# acknowledges queued authorization. This exercises the actual #526
@@ -168,6 +179,28 @@ func _run() -> void:
 	check(observed.get("status") == "observed" 		and observed.get("image_status") == "matched_post_draw" 		and observed.get("native_material_ids",[]).size() == 64,
 		"matched native observation does not have 64 real cells")
 	_capture_original()
+	# The SAME authorized native task must reject an agent edit crossing
+	# the user-protected rectangle, without consuming Sand or painting cells.
+	s = panel.client._serial
+	var before_forbidden: int = wb.applied.edits.size()
+	var tick_forbidden: int = host.latest_snapshot.tick_index
+	print("WB528_STAGE native protected rectangle refusal")
+	_fake("prepare_edit","protected-reject",
+		{"observation_id":observed.get("observation_id",""),
+		"operations":[{"shape":"rectangle","x0":1148,"y0":262,
+			"x1":1149,"y1":263,"material":58,"replace_only_material":null}]})
+	if not await until(func() -> bool: return _next_request(s),
+			"native protected-region prepare did not refuse/complete"):
+		_finish()
+		return
+	var refused_protection: Dictionary = _receipt()
+	check(refused_protection.get("status") == "refused"
+			and refused_protection.get("reason") == "protected_region",
+		"protected region was not enforced by the authoritative native owner")
+	check(wb.applied.edits.size() == before_forbidden
+			and host.latest_snapshot.tick_index == tick_forbidden
+			and not panel.proposal_overlay.visible,
+		"protected refusal mutated terrain, stepped, or left proposal overlay")
 	s = panel.client._serial
 	print("WB528_STAGE native prepare dispatched")
 	_fake("prepare_edit","prep1",{"observation_id":observed.get("observation_id",""),
@@ -282,6 +315,8 @@ func _run() -> void:
 		"turning off opt-in left a hidden live model task")
 	check(not panel.proposal_overlay.visible,
 		"world_view retained a hidden panel's proposal overlay")
+	check(not panel.scope_overlay.visible,
+		"opt-out retained a protected/scope overlay over manual workbench")
 	if not await until(func() -> bool:
 		return not panel._retire_pending and not mount._authorised,
 		"opt-out lacked acknowledged native Stop"):

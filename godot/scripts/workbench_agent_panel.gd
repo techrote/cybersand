@@ -7,10 +7,12 @@ signal progress(status: String, detail: String)
 
 const Client = preload("res://scripts/workbench_agent_client.gd")
 const Overlay = preload("res://scripts/workbench_agent_proposal_overlay.gd")
+const ScopeOverlay = preload("res://scripts/workbench_agent_scope_overlay.gd")
 const MAX_LOG_LINES := 32
 
 var client: Node
 var proposal_overlay: Control
+var scope_overlay: Control
 var _dispatcher: Callable
 var _authorizer: Callable
 var _retirement: Callable
@@ -20,6 +22,8 @@ var _start_nonce := 0
 var _task := TextEdit.new()
 var _model := LineEdit.new()
 var _region: Array[SpinBox] = []
+var _guard_region: Array[SpinBox] = []
+var _guard := CheckBox.new()
 var _wall := CheckBox.new()
 var _empty := CheckBox.new()
 var _start := Button.new()
@@ -38,6 +42,7 @@ func _ready() -> void:
 	client.proposal_changed.connect(_proposal_updated)
 	client.task_finished.connect(_task_finished)
 	proposal_overlay = Overlay.new()
+	scope_overlay = ScopeOverlay.new()
 	name = "Agent authoring (opt-in)"
 	var heading := Label.new()
 	heading.text = "Agent authoring (experimental / opt-in)"
@@ -64,7 +69,7 @@ func _ready() -> void:
 		field.rounded = true
 		field.value = spec[3]
 		field.custom_minimum_size.x = 86
-		field.value_changed.connect(func(_value: float) -> void: _retire_on_human_change())
+		field.value_changed.connect(func(_value: float) -> void: _on_scope_change())
 		row.add_child(field)
 		_region.append(field)
 	_wall.text = "Allow Hard Wall"
@@ -77,8 +82,30 @@ func _ready() -> void:
 	row.add_child(_wall)
 	row.add_child(_empty)
 	add_child(row)
-	_protection_label.text = "Protection: awaiting authoritative owner regions"
+	_protection_label.text = "Protected areas: none (agent-edit exclusion)"
 	add_child(_protection_label)
+	_guard.text = "Protect a rectangle from agent edits"
+	_guard.toggled.connect(func(_value: bool) -> void: _on_scope_change())
+	add_child(_guard)
+	var protection_row := HFlowContainer.new()
+	add_child(protection_row)
+	for spec: Array in [["PX",-2147483648.0,2147483647.0,0.0],
+			["PY",-2147483648.0,2147483647.0,0.0],
+			["PW",1.0,4096.0,4.0],["PH",1.0,4096.0,4.0]]:
+		var caption := Label.new()
+		caption.text = str(spec[0])
+		protection_row.add_child(caption)
+		var field := SpinBox.new()
+		field.min_value = spec[1]
+		field.max_value = spec[2]
+		field.step = 1.0
+		field.rounded = true
+		field.value = spec[3]
+		field.custom_minimum_size.x = 86
+		field.value_changed.connect(func(_value: float) -> void: _on_scope_change())
+		protection_row.add_child(field)
+		_guard_region.append(field)
+	_sync_scope_overlay()
 	var actions := HBoxContainer.new()
 	_start.text = "Start (authorize within scope)"
 	_start.pressed.connect(_on_start)
@@ -111,7 +138,35 @@ func bind_authoritative_dispatcher(dispatcher: Callable, world_to_screen: Callab
 func set_protected_regions(regions: Array) -> void:
 	# Actual scope/protection comes from the host, never from model text.
 	_protected_regions = regions.duplicate(true)
-	_protection_label.text = "Protected regions: %d (authoritative owner)" % regions.size()
+	_on_scope_change()
+
+func _rect_from_fields(fields: Array[SpinBox]) -> Rect2i:
+	return Rect2i(int(fields[0].value),int(fields[1].value),
+		int(fields[2].value),int(fields[3].value))
+
+func _configured_protection() -> Array:
+	var result: Array = _protected_regions.duplicate(true)
+	if _guard.button_pressed:
+		var guard: Rect2i = _rect_from_fields(_guard_region)
+		result.append({"x":guard.position.x,"y":guard.position.y,
+			"width":guard.size.x,"height":guard.size.y})
+	return result
+
+func _sync_scope_overlay() -> void:
+	if scope_overlay == null or _region.size() != 4 or _guard_region.size() != 4:
+		return
+	var protections: Array[Rect2i] = []
+	for item: Variant in _configured_protection():
+		if item is Rect2i:
+			protections.append(item)
+		elif item is Dictionary and item.has("x") and item.has("y") 				and item.has("width") and item.has("height"):
+			protections.append(Rect2i(int(item.x),int(item.y),
+				int(item.width),int(item.height)))
+	scope_overlay.set_scope(_rect_from_fields(_region),protections)
+	_protection_label.text = "Protected regions: %d; no agent edits inside" % protections.size()
+
+func _on_scope_change() -> void:
+	_sync_scope_overlay()
 	_retire_on_human_change()
 
 func invalidate_due_to_owner_change(reason: String) -> void:
@@ -149,7 +204,7 @@ func _on_start() -> void:
 			"x": int(_region[0].value), "y": int(_region[1].value),
 			"width": int(_region[2].value), "height": int(_region[3].value)
 		},
-		"protected_regions": _protected_regions.duplicate(true),
+		"protected_regions": _configured_protection(),
 		"allowed_materials": materials
 	}
 	if scope.region.width * scope.region.height > 4096:
@@ -237,3 +292,8 @@ func _exit_tree() -> void:
 			proposal_overlay.queue_free()
 		else:
 			proposal_overlay.free()
+	if is_instance_valid(scope_overlay):
+		if scope_overlay.is_inside_tree():
+			scope_overlay.queue_free()
+		else:
+			scope_overlay.free()
