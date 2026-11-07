@@ -13,6 +13,7 @@ var _workbench: Control
 var _authoring: RefCounted
 var _step_driver: RefCounted = StepSequence.new()
 var _authorized: bool = false
+var _authorization_pending: bool = false
 var _proposal_pending: bool = false
 var _busy: bool = false
 var _stopping: bool = false
@@ -62,14 +63,24 @@ func authorize_task(task_id: String, scope: Rect2i, protected: Array,
 	if not is_instance_valid(_main) or _authoring == null:
 		return _refused("foundation_not_bound")
 	_busy = true
+	_authorization_pending = true
 	var answer: Dictionary = await _authoring.authorize_task(
 		task_id,scope,protected,allowed_materials)
+	_authorization_pending = false
 	_busy = false
+	if answer.get("status") == "unconfirmed":
+		# The owner may have installed authority despite a missing receipt.
+		# Never issue another authorize or claim a Stop ACK in that state.
+		_uncertain = true
 	if answer.get("status") == "authorized":
 		_authorized = true
 		_epoch += 1
 		_manual_intent_revision = _owner_manual_revision()
 		_manual_intent_conflict = false
+	if _stopping:
+		# Preserve the truthful owner authorization receipt, but tell the
+		# caller it was revoked before the model could use it.
+		answer["interrupted_by_human"] = true
 	return answer
 
 
@@ -150,7 +161,10 @@ func call_tool(name: String, args: Variant) -> Dictionary:
 ## edit/tick must finish (or be marked UNCONFIRMED) before task retirement.
 ## Only the #526 owner retirement ACK permits a truthful Stop ACK.
 func stop() -> Dictionary:
-	if not _authorized:
+	# Stop is also permitted while the trusted authorization request is
+	# already queued but not ACKed. Refusing here previously allowed its
+	# late success to install an active task AFTER the human pressed Stop.
+	if not _authorized and not _authorization_pending:
 		return _refused("no_active_authorized_task")
 	if _stopping:
 		return _refused("stop_already_pending")
@@ -167,6 +181,17 @@ func stop() -> Dictionary:
 		return {"status":"unconfirmed","reason":"in_flight_tool_not_settled"}
 	if _uncertain:
 		return {"status":"unconfirmed","reason":"prior_native_result_unconfirmed"}
+	if not _authorized:
+		# The queued owner request was explicitly refused; there is no
+		# authoritative task to retire. A new bridge is required for retry.
+		_epoch += 1
+		_step_driver.retire()
+		var never_authorized: Dictionary = {
+			"status":"stopped","reason":"native_authorization_refused_before_stop",
+			"no_further_agent_mutations":true,"native_retirement_required":false
+		}
+		stop_acknowledged.emit(never_authorized.duplicate(true))
+		return never_authorized
 	var retired: Dictionary = await _authoring.retire_task()
 	if retired.get("status") != "retired":
 		_uncertain = true

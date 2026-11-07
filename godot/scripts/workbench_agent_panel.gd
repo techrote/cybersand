@@ -162,7 +162,7 @@ func _on_start() -> void:
 		var authorization: Dictionary = await _authorizer.call(scope)
 		_start_pending = false
 		if nonce != _start_nonce:
-			if authorization.get("status") == "authorized" and _retirement.is_valid():
+			if authorization.get("status") == "authorized" 					and _retirement.is_valid() and not _retire_pending:
 				_retire_pending = true
 				await _retirement.call()
 				_retire_pending = false
@@ -180,8 +180,13 @@ func _on_start() -> void:
 
 func _on_stop() -> void:
 	_start_nonce += 1
-	# #527 adapter must separately confirm stop at its bounded native boundary.
-	# Client Stop cancels new API dispatch; does not claim a native Stop ACK.
+	# A click can precede the native authorize_task ACK and client.begin_task.
+	# Immediately request #527's native Stop even without an active HTTP
+	# session. The superseded _on_start continuation must not repeat Stop.
+	if _start_pending and _retirement.is_valid() and not _retire_pending:
+		_retire_pending = true
+		_complete_retirement.call_deferred()
+	# HTTP cancellation is NOT native retirement acknowledgment.
 	client.stop_task("Human Stop — API dispatch revoked; native Stop ACK is separate.")
 	_refresh_buttons()
 

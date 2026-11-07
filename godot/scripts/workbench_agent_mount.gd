@@ -8,7 +8,6 @@ const AuthoringHost = preload("res://scripts/workbench_authoring_host.gd")
 const FourToolBridge = preload("res://scripts/workbench_agent_four_tool_bridge.gd")
 
 const MAX_IMAGE_BYTES: int = 590000
-const RETIRE_TIMEOUT_MSEC: int = 35000
 
 var _workbench: Control
 var _host: Control
@@ -105,9 +104,15 @@ func authorize(scope: Dictionary) -> Dictionary:
 				return {"status":"refused","reason":"material_not_allowlisted"}
 	_task_serial += 1
 	_authorizing = true
-	var receipt: Dictionary = await _bridge.authorize_task(
+	var candidate: RefCounted = _bridge
+	var receipt: Dictionary = await candidate.authorize_task(
 		"wb528-%d" % _task_serial,r,protected,materials)
 	_authorizing = false
+	# Stop can retire the native task while the authorization await is
+	# suspended. Never resurrect authority from a late success receipt.
+	if candidate != _bridge or _pending_retirement or 			receipt.get("interrupted_by_human") == true:
+		return {"status":"refused","reason":"human_stop_during_authorization",
+			"owner_status":str(receipt.get("status","unknown"))}
 	_authorised = receipt.get("status") == "authorized"
 	return receipt
 
@@ -115,43 +120,39 @@ func retire() -> Dictionary:
 	if _pending_retirement:
 		return {"status":"unconfirmed","reason":"retirement_already_pending"}
 	_pending_retirement = true
-	var deadline: int = Time.get_ticks_msec() + RETIRE_TIMEOUT_MSEC
 	var answer: Dictionary = {}
-	while Time.get_ticks_msec() < deadline and is_instance_valid(_host):
-		if _authorizing:
-			await _host.get_tree().process_frame
-			continue
-		if not _authorised:
-			answer = {"status":"retired","reason":"no_native_task"}
-			break
-		answer = await _bridge.stop()
-		if answer.get("status") == "stopped" and answer.get("no_further_agent_mutations") == true:
+	if _bridge == null:
+		answer = {"status":"unconfirmed","reason":"authoring_bridge_not_bound"}
+	elif _authorizing or _authorised:
+		# #527 supports Stop while authorize_task is queued but not ACKed.
+		# Waiting for authorization BEFORE requesting Stop was a race:
+		# a late native authorize could succeed after UI opt-out.
+		var stopping_bridge: RefCounted = _bridge
+		var native: Dictionary = await stopping_bridge.stop()
+		if native.get("status") == "stopped" 				and native.get("no_further_agent_mutations") == true:
 			_authorised = false
-			# #527's StepSequence is permanently retired after Stop and its
-			# bridge deliberately remains in the stopping state. Reuse would
-			# refuse EVERY later authoring session. Only after the exclusive
-			# native owner acknowledges retirement may this #528 host adapter
-			# bind a fresh bridge for deliberate human reauthorization.
-			var native_ack: Dictionary = answer.duplicate(true)
+			# The #527 bridge is terminal after Stop. Only a real owner ACK
+			# permits a new, independently bound bridge on the same World.
 			var replacement: RefCounted = FourToolBridge.new()
 			if is_instance_valid(_host) and replacement.bind(_host):
 				_bridge = replacement
 				answer = {"status":"retired","reason":"native_527_stop_ack",
-					"ready_for_new_task":true,"owner_receipt":native_ack}
+					"ready_for_new_task":true,"owner_receipt":native}
 			else:
-				_bridge = null # Fail closed; never fall back to a retired bridge.
+				_bridge = null
 				answer = {"status":"retired","reason":"native_ack_but_new_bridge_unavailable",
-					"ready_for_new_task":false,"owner_receipt":native_ack}
-			break
-		if str(answer.get("reason","")) not in [
-			"authoring_host_quarantined_or_busy","host_tool_busy"]:
-			break
-		await _host.get_tree().process_frame
+					"ready_for_new_task":false,"owner_receipt":native}
+		else:
+			# An uncertain native outcome cannot authorize another task:
+			# do not retry a possibly applied retirement operation.
+			_bridge = null
+			_authorised = true
+			answer = {"status":"unconfirmed",
+				"reason":"native_retirement_not_acknowledged","owner_receipt":native}
+	else:
+		answer = {"status":"retired","reason":"no_native_task",
+			"ready_for_new_task":true}
 	_pending_retirement = false
-	# A timed out retirement must not enable a new session. The worker could
-	# still have the previous task; keep _authorised as a fail-closed fence.
-	if answer.is_empty():
-		answer = {"status":"unconfirmed","reason":"native_retirement_timeout"}
 	return answer
 
 func invalidate_human(reason: String) -> void:

@@ -128,7 +128,30 @@ func _run() -> void:
 	panel._region[2].value = 64
 	panel._region[3].value = 64
 	panel.client.configure_fake_transport_for_tests(true)
-	print("WB528_STAGE native authorization requested")
+	# Race control: press human Stop BEFORE the exclusive native worker
+	# acknowledges queued authorization. This exercises the actual #526
+	# owner and #527 bridge, not a fake World or fabricated Stop receipt.
+	print("WB528_STAGE Stop while native task authorization is in flight")
+	var race_tick_before: int = host.latest_snapshot.tick_index
+	var race_edits_before: int = wb.applied.edits.size()
+	panel._on_start()
+	check(panel._start_pending and mount._authorizing,
+		"queued native task authorization did not enter pending state")
+	panel._on_stop()
+	check(panel._retire_pending,
+		"human Stop did not request native retirement during authorization")
+	if not await until(func() -> bool:
+		return not panel._start_pending and not panel._retire_pending \
+			and not mount._authorizing and not mount._authorised,
+		"native authorization/Stop race did not settle with retirement"):
+		_finish()
+		return
+	check(mount._bridge != null and not panel.client.is_active(),
+		"Stop acknowledgment failed to bind a fresh, inactive native bridge")
+	check(host.latest_snapshot.tick_index == race_tick_before
+		and wb.applied.edits.size() == race_edits_before,
+		"Stop while authorizing mutated cells or advanced native ticks")
+	print("WB528_STAGE native authorization requested after prior Stop ACK")
 	panel._on_start()
 	if not await until(Callable(self,"_ready_panel_task"),"native host authorization missing"):
 		_finish()

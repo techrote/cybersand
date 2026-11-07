@@ -261,3 +261,33 @@ acceptance. At this checkpoint the immutable signed-native 32-Sand hopper
 remains blocked by #526's finite nonnegative host domain; actual live
 OpenAI trials remain **0/3** and human acceptance **PENDING**. Retain parent
 #525's engineering, live-model and human gates separately. No merge/Ready.
+
+## Follow-up: #526/#527 source handoff and Stop-before-authorization ACK (7 November 2026)
+
+This checkpoint composes **exact upstream authority without editing their
+branches**: #526 native session and its real-owner/failure regressions from
+Draft #529 `e7afa264605c818a3ef0a17fcbe5fb611ee13fab` (blobs
+`08c324c7`, `30cfb048`, `3b6ff277`), and #527's single-task bridge
+from Draft #530 `a9a3f5b9e7075406d8e469515294220c562eecc2`
+(blob `3b880d8d`). Their tested behavior is not represented as a
+new #528 native algorithm.
+
+A previously unfenced UI race is addressed in **#528's own mount/panel**:
+when human Stop arrives before the exclusive owner acknowledges
+`authorize_task`, the panel now initiates the real #527 Stop immediately;
+the mount does not wait for authorization before asking #527 to retire.
+A subsequently returned `authorized` receipt is fenced by task/bridge
+identity and retirement state rather than starting a canceled agent. A
+fresh bridge is bound **only** on real `stopped` plus
+`no_further_agent_mutations=true`; ambiguous Stop remains fail-closed.
+The mounted real-native regression explicitly exercises Start → Stop while
+authorization is pending → owner retirement → fresh same-generation Start,
+and verifies no extra native ticks or human authored edits.
+
+Exact-head CI qualification for the new composition is **pending execution**
+at this source-edit checkpoint. Preserve any failures and report the actual
+result, Linux/Xvfb versus Windows and source/LFS distinctions, without
+upgrading the native 32-Sand, live 0/3 or human pending gates. The frozen
+signed-coordinate 32-Sand reference and its 480 **TOTAL** tick allowance
+are unchanged; a positive-only coordinate translation is still not
+independently accepted as equivalent.
