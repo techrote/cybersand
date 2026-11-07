@@ -180,10 +180,10 @@ func _run() -> void:
             + " failure=" + demo.failure)
         return
 
-    # Actual authoritative native inspection, not rendered-pixel guesses.
-    # The refused 18th edit must have no player edit-intent tombstone.
+    # Inspect ALL seventeen authoritative native cells, not just samples.
+    # The refused eighteenth edit must have no player edit-intent tombstone.
     demo.interactive_async = false
-    for x in [FIRST_X, FIRST_X + 8, REFUSED_X - 1, REFUSED_X]:
+    for x in range(FIRST_X, REFUSED_X + 1):
         demo._invoke(PackedStringArray(["inspect %d 8" % x]), false, true)
         var expected_intent := "intent=0" if x == REFUSED_X else "intent=1"
         if not demo.failure.is_empty() or \
