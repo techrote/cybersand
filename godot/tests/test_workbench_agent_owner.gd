@@ -357,6 +357,24 @@ func run() -> void:
 			check(host_after.get("status")=="observed"
 				and int(host_after.get("native_counts",{}).get(58,0))==9,
 				"host applied result failed native material readback")
+			var human_race: Dictionary = await adapter.call_tool("prepare_edit",{
+				"observation_id":host_after.observation_id,
+				"operations":[{"shape":"disc","x":1176,"y":380,
+					"radius":0,"material":58}]})
+			check(human_race.get("status")=="proposed",
+				"host cannot stage a second protected manual-race proposal")
+			if human_race.get("status")=="proposed":
+				check(ui.paint(Vector2i(1176,380),58),
+					"human brush blocked while an agent proposal awaited apply")
+				var race_result: Dictionary = await adapter.call_tool("apply_edit",{
+					"proposal_id":human_race.proposal_id})
+				check(race_result.get("status")=="refused"
+					and race_result.get("reason")=="stale_proposal",
+					"queued human intent did not fence host native consumption")
+				var duplicate_refusal: Dictionary = await adapter.call_tool("apply_edit",{
+					"proposal_id":human_race.proposal_id})
+				check(duplicate_refusal==race_result,
+					"host repeated refused proposal instead of retaining outcome")
 			var unexpected: Dictionary = await adapter.call_tool("step",{"ticks":1})
 			check(unexpected.get("status")=="refused",
 				"#526 adapter illegally exposed #527 step tool")
