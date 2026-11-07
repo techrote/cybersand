@@ -1,0 +1,131 @@
+name: Atlas three-lane real-Godot keyless pilot
+
+# MAP-AUTO-03 / #500. Actual Godot 4.7 RG8 captures + source-pinned art
+# + #516's complete bounded runner, but a SCRIPTED dry-run planner. This is
+# not a paid model run, human quality acceptance, or a scheduled agent.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'tools/atlas_agent/**'
+      - '.github/workflows/atlas-agent-pilot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: atlas-pilot-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  three-lanes:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - collection: lumen-fault
+            lane: terrain-art
+            feature: seal-gate
+          - collection: silt-clockworks
+            lane: ruin-detail
+            feature: flood-beacon
+          - collection: drowned-observatory
+            lane: art-curation
+            feature: broken-star-dome
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      COLLECTION: ${{ matrix.collection }}
+      LANE: ${{ matrix.lane }}
+      FEATURE: ${{ matrix.feature }}
+      ART_SHA: c4aab63eed538a25687c66d368b0801d2d2e04d0
+      CAPTURE_SHA: 7b960b5eac5b7a4ed159ade97b1093a1b623ac19
+      GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      GODOT_SILENCE_ROOT_WARNING: '1'
+    steps:
+      - name: Check out pilot runner (read only)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          lfs: false
+      - name: Pin real Godot capture implementation from MAP-AUTO-01
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.CAPTURE_SHA }}
+          path: capture-tool
+          persist-credentials: false
+          lfs: false
+      - name: Pin exact shared Atlas art source, never write it
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.ART_SHA }}
+          path: art-source
+          persist-credentials: false
+          lfs: false
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Download source-pinned real Godot 4.7
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 \
+            -o "$RUNNER_TEMP/godot.zip" \
+            'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/engine"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/engine"
+          chmod +x "$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64"
+          echo "GODOT_BIN=$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64" >> "$GITHUB_ENV"
+          test "$(git -C art-source rev-parse HEAD)" = "$ART_SHA"
+          test "$(git -C capture-tool rev-parse HEAD)" = "$CAPTURE_SHA"
+      - name: Real Godot BEFORE → bounded edit/validator → real Godot AFTER
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "build/atlas-pilot/$COLLECTION"
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            timeout 1500 bash -euo pipefail -c '
+              python3 capture-tool/tools/world_art_preview_launcher.py --capture \
+                --godot="$GODOT_BIN" --rendering-driver=opengl3 \
+                --pack "$GITHUB_WORKSPACE/art-source/docs/world-design/$COLLECTION" \
+                --output-dir "$RUNNER_TEMP/atlas-before"
+              python3 tools/atlas_agent_runner.py run --mode dry-run \
+                --atlas-root "$GITHUB_WORKSPACE/art-source" \
+                --expected-source-sha "$ART_SHA" --collection "$COLLECTION" --lane "$LANE" \
+                --dry-run-plan "tools/atlas_agent/pilots/$COLLECTION.json" \
+                --capture-bundle "$RUNNER_TEMP/atlas-before" \
+                --capture-launcher "$GITHUB_WORKSPACE/capture-tool/tools/world_art_preview_launcher.py" \
+                --godot "$GODOT_BIN" --max-iterations 12 \
+                --output-dir "$GITHUB_WORKSPACE/build/atlas-pilot/$COLLECTION"
+            '
+          python3 tools/atlas_agent_runner.py verify-receipt "build/atlas-pilot/$COLLECTION/receipt.json"
+      - name: Independent structural and real-pixel acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp -a art-source art-candidate
+          git -C art-candidate apply --check "$GITHUB_WORKSPACE/build/atlas-pilot/$COLLECTION/patch.diff"
+          git -C art-candidate apply "$GITHUB_WORKSPACE/build/atlas-pilot/$COLLECTION/patch.diff"
+          python3 tools/atlas_agent/pilot_quality.py \
+            --before "art-source/docs/world-design/$COLLECTION/pack.json" \
+            --after "art-candidate/docs/world-design/$COLLECTION/pack.json" \
+            --allowed-feature "$FEATURE" \
+            --before-bundle "$RUNNER_TEMP/atlas-before" \
+            --after-bundle "build/atlas-pilot/$COLLECTION/captures/after" \
+            --receipt "build/atlas-pilot/$COLLECTION/receipt.json" \
+            --output "build/atlas-pilot/$COLLECTION/quality.json"
+          cp -a "$RUNNER_TEMP/atlas-before" "build/atlas-pilot/$COLLECTION/before-godot"
+          test "$(git -C art-source rev-parse HEAD)" = "$ART_SHA"
+          test -z "$(git -C art-source status --porcelain)"
+      - name: Retain all real-pixel, source and receipt evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atlas-three-lane-${{ matrix.collection }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/atlas-pilot/${{ matrix.collection }}/
+          if-no-files-found: warn
+          retention-days: 30
