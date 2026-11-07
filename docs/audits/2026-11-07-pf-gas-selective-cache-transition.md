@@ -19,14 +19,18 @@ PR #532 changes one MAT-AUTH protected consumer while preserving the material ca
 - First investigative source commit: `f0fffc6a488f585ff10966427e87cfc3d23ed04b`
 - Sparse-relabel LF SHA-256: `af72f8e71c0f6b155e2e78f188f956f06af383217df6ccc23d28087ea1c63abf`
 - Sparse-relabel source commit: `d281bb41700197539f313190f7b4d68844686cf1`
-- Final prior-visit proof LF SHA-256: `33445b83c3759c495680256e5ac781abdee26d257e516b7edb9d601a57460bd0`
-- Final prior-visit proof source commit: `d73c4ee016cdbd92f2d7e95d588891350f32d8c3`
+- Prior-visit proof LF SHA-256: `33445b83c3759c495680256e5ac781abdee26d257e516b7edb9d601a57460bd0`
+- Prior-visit proof source commit: `d73c4ee016cdbd92f2d7e95d588891350f32d8c3`
+- Final head-budget separation LF SHA-256: `ee0b330e76fc3c5de100d30af6942598232c0b3665f8af1067b81a07b2b70dd8`
+- Final head-budget separation source commit: `95de28826b948a902faf2361fb00bc14ab2d69ad`
 - Parent issue: #201
 - Implementation PR: #532
 
 The first transition implemented the bounded selective-component bootstrap experiment. Exact workbench-derived replay then proved that the mechanism could not admit a single component: 1,659 component proof checks and one 2,097,152-cell build scan produced zero members/builds/reuses, while all source-paired physical ticks remained exact. That path is retained in history as an explicitly reviewed investigation but is not the final production mechanism.
 
 The second transition replaces that NO-GO with a lower-cost authoritative relabel path. The gas BFS and identity reducer remain unchanged. For cached variants with a complete resident index, a bounded bitset records cells actually visited by the authoritative BFS. Relabelling still performs the original complete scan for every gas-dirty chunk and every chunk known to contain an occluded positive label; only clean/no-hidden-label chunks may relabel from the exact visited-cell bitset. Dirty-proof overflow, cache membership uncertainty, gas-cache replay, allocation, or any bit/index inconsistency falls back to the original complete relabel sweep. The final transition additionally retains the previous authoritative visit bitset: sparse relabelling processes the union of current and prior visits so a remote vent/split cannot strand a formerly visited positive label in a clean chunk. If prior-visit history is unavailable, the first pass is a complete sweep and re-establishes it.
+
+The final transition separates an unrelated head-repair budget fallback from full cache invalidation. The full workbench runs the head operator in `ReferenceBudgetFallback`; previously that path called `cache->cold()`, falsely discarding complete resident-index and gas visit evidence every tick. It now invalidates only head/certificate/wake reuse. Actual membership, restore, policy or authority changes retain the full cold path.
 
 ## Authority boundary
 
