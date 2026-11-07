@@ -1,0 +1,118 @@
+name: GEN006 independent shared-World source parity and re-admission
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'native/tests/gen006_shared_world_source_parity.cpp'
+      - 'tools/experiments/gen006_shared_world_source_parity.py'
+      - '.github/workflows/gen006-shared-world-source-parity.yml'
+      - 'native/src/world.cpp'
+      - 'native/tests/gen006_residency_ack_aba.cpp'
+      - 'tools/experiments/gen006_residency_aba_qa.py'
+      - 'native/include/cybersand/world.hpp'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gen006-shared-parity-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  linux-accepted-vs-candidate:
+    name: Ubuntu 24.04 real native source parity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    steps:
+      - name: Checkout support head (not synthetic merge)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: candidate
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Checkout exact accepted source underlying #512
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 81bbd5ff5cf366159e2b8a630609359c13560080
+          path: accepted
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Execute actual native candidate + original-source controls
+        shell: bash
+        timeout-minutes: 50
+        run: |
+          set -euo pipefail
+          cd candidate
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/experiments/gen006_shared_world_source_parity.py
+          python3 tools/experiments/gen006_residency_aba_qa.py
+      - name: Preserve original source and execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-shared-parity-ubuntu-${{ github.run_id }}
+          path: candidate/build/gen006-source-parity/
+          if-no-files-found: warn
+          retention-days: 45
+
+  windows-accepted-vs-candidate:
+    name: Windows Server 2022 real native source parity
+    runs-on: windows-2022
+    timeout-minutes: 55
+    steps:
+      - name: Preserve LF bytes
+        shell: cmd
+        run: |
+          git config --global core.autocrlf false
+          if errorlevel 1 exit /b 1
+          git config --global core.eol lf
+          if errorlevel 1 exit /b 1
+      - name: Checkout support head (not synthetic merge)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: candidate
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Checkout exact accepted source underlying #512
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 81bbd5ff5cf366159e2b8a630609359c13560080
+          path: accepted
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Compile baseline and candidate with LLVM Clang under MSVC
+        shell: cmd
+        timeout-minutes: 50
+        run: |
+          for /f "tokens=*" %%i in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath') do set "GEN006_VSROOT=%%i"
+          if not defined GEN006_VSROOT exit /b 1
+          call "%GEN006_VSROOT%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          set "GEN006_CXX=%ProgramFiles%\LLVM\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" set "GEN006_CXX=%GEN006_VSROOT%\VC\Tools\Llvm\x64\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" exit /b 1
+          python candidate\tools\ci\check_ci_provider_policy.py
+          if errorlevel 1 exit /b 1
+          python candidate\tools\experiments\gen006_shared_world_source_parity.py
+          if errorlevel 1 exit /b 1
+          python candidate\tools\experiments\gen006_residency_aba_qa.py
+          if errorlevel 1 exit /b 1
+      - name: Preserve original source and execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-shared-parity-windows-${{ github.run_id }}
+          path: candidate/build/gen006-source-parity/
+          if-no-files-found: warn
+          retention-days: 45
