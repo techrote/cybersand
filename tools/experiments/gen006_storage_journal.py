@@ -11,6 +11,7 @@ import hashlib
 import os
 from pathlib import Path
 import struct
+import tempfile
 import zlib
 from dataclasses import dataclass
 
@@ -139,19 +140,29 @@ class Journal:
         require(0 < len(checkpoint) <= MAX_CHECKPOINT, 'G6J_BASE_SIZE_REFUSED')
         path.parent.mkdir(parents=True, exist_ok=True)
         require(not path.exists(), 'G6J_DESTINATION_EXISTS')
-        stage = path.with_name(path.name + '.staging')
+        # A killed writer may leave its stage behind. A unique, exclusive stage
+        # avoids permanently wedging creation after that crash and cannot
+        # truncate another process's staged checkpoint. It is NOT an owner lock.
         first = HEADER.pack(MAGIC, identity.x, identity.y, identity.incarnation,
                             identity.generation, identity.tick, identity.physical_hash,
                             len(checkpoint), crc(checkpoint), 0)
         header = first[:-4] + struct.pack('<I', crc(first[:-4]))
-        with stage.open('xb') as f:
-            f.write(header)
-            f.write(checkpoint)
-            f.flush()
-            os.fsync(f.fileno())
-        os.link(stage, path)  # no-clobber publication, same directory
-        stage.unlink()
-        sync_dir(path.parent)
+        fd, stage_name = tempfile.mkstemp(prefix='.' + path.name + '.g6j-',
+                                          suffix='.staging', dir=path.parent)
+        stage = Path(stage_name)
+        try:
+            with os.fdopen(fd, 'wb') as f:
+                f.write(header)
+                f.write(checkpoint)
+                f.flush()
+                os.fsync(f.fileno())
+            # Hard-link publication refuses to overwrite an existing checkpoint.
+            os.link(stage, path)
+        finally:
+            # A successful link retains the checkpoint inode at destination.
+            # A failed sync/link must not leave a new busy stage behind.
+            stage.unlink(missing_ok=True)
+        sync_dir(path.parent)  # publication ACK is not allowed before this
         return cls(path, recover(path))
 
     @classmethod
