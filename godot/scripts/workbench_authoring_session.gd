@@ -5,6 +5,7 @@ extends RefCounted
 const Geometry = preload("res://scripts/workbench_agent_footprint.gd")
 const Setup = preload("res://scripts/workbench_setup.gd")
 
+const SCHEMA_VERSION: int = 1
 const MAX_OBSERVATION_CELLS: int = 4096
 const MAX_RETAINED_RECEIPTS: int = 64
 const ALLOWED_OUTPUTS: Array = [0, 58]
@@ -280,6 +281,9 @@ func _apply(command: Dictionary, world: Object,
 func execute(command: Dictionary, world: Object, generation: int,
 		extent: Vector2i, paused: bool, manual_revision: int) -> Dictionary:
 	var action: String = str(command.get("action",""))
+	if typeof(command.get("schema_version",null)) != TYPE_INT \
+			or int(command.schema_version) != SCHEMA_VERSION:
+		return _refused("unsupported_tool_schema_version")
 	if _quarantined:
 		if action == "apply_edit":
 			var old_id: String = str(command.get("proposal_id",""))
