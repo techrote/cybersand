@@ -180,6 +180,28 @@ func _run() -> void:
 	await preview.export_art("viewport")
 	_expect(first_dir != preview.last_export_dir, "new unique directory for second export")
 	_expect(FileAccess.file_exists(first_dir.path_join("viewport.png")), "first export retained")
+	await preview.export_art("detail")
+	_expect(FileAccess.file_exists(preview.last_export_dir.path_join("detail.png")),
+		"detail crop exports actual framebuffer PNG")
+	preview.feature_picker.select(1)
+	preview.feature_picker.item_selected.emit(1)
+	preview.variant_picker.select(0)
+	await preview.export_art("feature")
+	var feature_dir: String = preview.last_export_dir
+	_expect(FileAccess.file_exists(feature_dir.path_join("feature.png")), "selected feature export PNG")
+	var feature_metadata: Variant = JSON.parse_string(FileAccess.get_file_as_string(
+		feature_dir.path_join("metadata.json")))
+	_expect(typeof(feature_metadata) == TYPE_DICTIONARY
+		and feature_metadata.get("source_rg8_sha256", "") == preview._result.get("rg8_sha256", ""),
+		"feature export metadata identifies actual selected RG8 source")
+	preview.feature_picker.select(0)
+	preview.feature_picker.item_selected.emit(0)
+	preview._playing = true
+	var prior_time: float = preview._presentation_time
+	for tick: int in range(6):
+		await process_frame
+	_expect(preview._presentation_time > prior_time, "play updates shader presentation time")
+	preview._playing = false
 	await _frame()
 	var ui_image: Image = root.get_texture().get_image()
 	_expect(ui_image != null and not ui_image.is_empty(), "actual desktop application window framebuffer")
