@@ -29,3 +29,66 @@ The dedicated GitHub-hosted Linux/Windows workflow checks exact PR head and sour
 ## Next production gate
 
 Dynamic selective eviction requires native per-chunk physical/sidecar checkpointing, owner mutation-generation fencing, durable save/ACK, pending boundary/halo and event handling, externally owned bodies, and complete semantic bundle authority. Until independently implemented and accepted, those domains remain pinned. Retain Draft and do not merge this experimental first primitive into main without separate integration approval.
+
+## Extended implementation: G6KC1 lossless static chunk checkpoint and durable CAS
+
+The next (still opt-in, still Draft) implementation introduces a separate
+native per-chunk G6KC1 envelope and three real native operations.
+
+1. capture_chunk_checkpoint(coord) stages immutable bytes with signed
+   coordinates, geometry, backend, ambient temperature, 64-bit mutation
+   generation, source completed-tick serial, exact cell values/registers
+   and epochs, inactive activity-block quiet counters, render dirtiness,
+   hard-surface invalidation words and optional temperature arrays.
+   The body is bounded with versioning and SHA-256 integrity. It is read-only.
+2. The exclusive durable storage owner fsyncs a same-directory temporary
+   file, atomically publishes it and (on POSIX) fsyncs the directory,
+   then reads back the complete record and verifies exact bytes.
+   Only then may it construct a bound ChunkDurableAck. Native
+   evict_durable_checkpoint verifies the ACK coordinate, generation,
+   source tick and digest, then recaptures the current native chunk and
+   demands exact byte equality before deleting the live authority.
+   No new edit, simulation tick, changed source or missing ACK may pass.
+   The host owns the filesystem durability assertion: native cannot
+   independently establish that a caller actually invoked fsync.
+3. restore_chunk_checkpoint(expected, bytes) validates the SHA-256 envelope,
+   coordinates, schema, dimensions, material domain and quantities into a
+   private chunk candidate before admitting it into the same World. It
+   restores all admitted cell, temperature and quiet-block bits and the
+   mutation generation. The global World tick is never rewound or
+   walltime-caught-up. Native Wall cell-count accounting is updated on
+   removal/re-admission so whole-World CYPS validation stays coherent.
+
+### Explicit supported domain
+
+Lossless within this bounded domain: isolated static Wall/Empty chunks,
+including edited nonempty Walls, same-value player Empty edit-intent
+tracked by mutation generation, exact native cell state/epochs, optional
+stored temperatures and fully inactive activity metadata with no pending
+future deadlines. An original checkpoint can be read by a new process's
+fresh World and restored without reconstructing terrain. Other resident
+native chunks remain alive within the same original World.
+
+Pinned/refused: moving/reactive Sand or Water, all other non-Wall/Empty
+materials, neighbouring chunks within a one-chunk halo, active or scheduled
+blocks, pending events, pressure/inertial/ballistic/granular sidecars,
+settled discovery, transient bodies/actors, construction-bound quantity
+histories, semantic multi-plane/fixture authority and reconfiguration.
+This is NOT universal dynamic-chunk continuation, cross-shard transport,
+production GDExtension admission or a safe generic save codec.
+
+### Executable acceptance and source gates
+
+The new native test gen006_chunk_checkpoint_transaction.cpp uses the real
+CyberSand World on hosted Windows/Linux with configured workers 1 and 4.
+It performs actual durable file publication, generation/tick staleness and
+no-ACK refusal, checksum tampering, coordinate mismatch, edited Wall and
+temperature restoration, same-World other-resident continuity, native
+quantity-ledger validation, cold restart and unsupported dynamic-domain
+refusal. Report actual observed workers, not merely configured workers.
+
+The material-catalogue compatibility test protects reviewed world.cpp LF
+bytes. This new source transition is intentionally NOT repinned by the
+implementation. An independent admission of that protected source and
+exact-head full Native/Godot qualification is required before Ready or
+merge. Native scoped test passes cannot override that gate.
