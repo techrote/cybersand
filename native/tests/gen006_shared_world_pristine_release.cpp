@@ -93,11 +93,13 @@ void test(std::uint32_t workers) {
     World state_edit(config(workers));
     require(state_edit.install_generated_chunk(vacant, empty) == ChunkInstallOutcome::Installed,
             "GEN006_STATE_INTENT_SETUP");
+    // Accepted state edit is non-pristine. Refused no-op state requests are
+    // not player edits: only the void World::set(Empty) API carries intent.
     require(state_edit.set_cell_state(vacant.x * 64 + 8, vacant.y * 64 + 8,
-                                      Material::Empty, 0, 0),
-            "GEN006_STATE_INTENT_REFUSED");
+                                      Material::Wall, 0, 0),
+            "GEN006_STATE_EDIT_REFUSED");
     require(state_edit.release_pristine_empty_chunk(vacant) == ChunkReleaseOutcome::NotPristine,
-            "GEN006_STATE_EMPTY_INTENT_DROPPED");
+            "GEN006_ACCEPTED_STATE_EDIT_DROPPED");
 
     // The full-World native serializer lacks the newly introduced
     // untouched-origin evidence. Restored empty chunks are pinned, never
