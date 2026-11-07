@@ -36,6 +36,27 @@ func _ready() -> void:
         queue_redraw()
         return
     _invoke(PackedStringArray())
+    # Headless acceptance deliberately uses the same Godot UI script and the
+    # real native executable, then closes without requiring manual input.
+    if OS.get_environment("GEN006_SLICE_VERIFY") == "1":
+        _invoke(PackedStringArray(), true)
+        _qualify_and_quit()
+
+
+func _qualify_and_quit() -> void:
+    var qualified: bool = (
+        texture != null and failure.is_empty()
+        and last_receipts.contains("RENDER_RGBA ")
+        and last_receipts.contains("EVICT ")
+        and last_receipts.contains("RELOAD ")
+    )
+    if qualified:
+        print("GEN006_GODOT_NATIVE_FRAME_PASS width=64 height=64"
+            + " actual_native_rgba=1 real_eviction=1")
+    else:
+        push_error("GEN006_GODOT_NATIVE_FRAME_FAIL " + failure
+            + " receipts=" + last_receipts.right(500))
+    get_tree().quit(0 if qualified else 1)
 
 
 func _invoke(actions: PackedStringArray, force_eviction: bool = false) -> void:
