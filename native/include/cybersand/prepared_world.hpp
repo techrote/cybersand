@@ -42,9 +42,13 @@ public:
         };
         try {
             if (initial_pressure_capacity(candidate, domain, maximum_side, retained_workbench).exceeds_capacity())
+                // A fixed literal avoids GCC 13 std::string::_M_replace_cold,
+                // which would raise our published Linux GLIBCXX ABI floor.
                 return refused(LiquidPolicyRefusalCode::CapacityRefused,
-                    "initial pressure gas compartment capacity exceeds " +
-                        std::to_string(candidate.config().pressure_gas_compartment_capacity));
+                    candidate.config().pressure_gas_compartment_capacity ==
+                        PressureFlowParameters::kAdmittedCompartmentCapacity
+                        ? "initial pressure gas compartment capacity exceeds 2048"
+                        : "initial pressure gas compartment capacity exceeds 1024");
             return std::nullopt;
         } catch (const std::bad_alloc&) {
             return refused(LiquidPolicyRefusalCode::CapacityRefused, "initial pressure capacity allocation refused");

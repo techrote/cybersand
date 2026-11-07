@@ -513,6 +513,7 @@ private:
     struct PressureState;
     struct PressureCache;
     struct Address;
+    struct KernelReadCursor;
     struct JobEffects;
     struct ParallelState;
     struct TransientObstacleState;
@@ -621,7 +622,8 @@ private:
     void schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint64_t due,
                                    JobEffects* effects) noexcept;
     void schedule_pending_reaction_wake(Material material, std::int64_t x,
-                                        std::int64_t y, JobEffects* effects) noexcept;
+                                        std::int64_t y, JobEffects* effects,
+                                        const KernelReadCursor& cursor) noexcept;
     struct MotionFootprint;
     [[nodiscard]] bool exchange_permitted(Material source, Material target,
         std::int64_t x, std::int64_t y, std::int64_t target_x, std::int64_t target_y,
@@ -697,7 +699,7 @@ private:
                                       std::uint8_t state_b_value) const noexcept;
     [[nodiscard]] bool update_rule_kernel(RuleKernel kernel, Material source_material,
                                           std::int64_t x, std::int64_t y,
-                                          JobEffects* effects);
+                                          JobEffects* effects, const KernelReadCursor& cursor);
     [[nodiscard]] std::uint8_t deterministic_random(std::int64_t x, std::int64_t y,
                                                     std::uint32_t stream) const noexcept;
     [[nodiscard]] bool granular_sample_stable(std::int64_t x, std::int64_t y,
