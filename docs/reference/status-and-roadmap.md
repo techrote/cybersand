@@ -10,6 +10,15 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Cut feedback and next approximation
+
+Dependent Draft510's [cut feedback correction](../audits/2026-11-07-workbench-cut-feedback.md)
+removes per-collider display seams for newly freed brick and the whole-canvas
+terrain scheduling wait. Fixed repeated comparisons retain source/platform
+qualifiers and unchanged physics. Planned owner-directed tangent: one inscribed
+rigid rectangle plus excess native Sand, with separate full-source/core custody
+and material accounting. No original SOL clearance or general mesh admission.
+
 ## Small detached-material tangent
 
 A separate branch from Draft466 tests <=16-cell RedBrick fragments as loose

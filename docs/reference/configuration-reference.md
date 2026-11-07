@@ -10,6 +10,15 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+## Cut presentation and terrain work
+
+Draft510 retains existing cell/body/proxy limits and the cut's8-chunk/2000-usec
+terrain budget, but unchanged/empty chunks no longer consume pending slots.
+Only occupied addressed chunks allocate static RIDs. Carried RedBrick raw RG8
+masks are bounded by8×130×130×2 bytes; this is image payload, not a measurement
+of total Godot/GPU memory. No new menu, physics parameter or liquid policy.
+See [release rules](../architecture/workbench-freed-objects.md#cut-responsiveness-and-carried-material).
+
 ## Normal workbench release bounds
 
 On the separate small-debris tangent, fixed threshold16 counts actual

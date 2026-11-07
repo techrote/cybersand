@@ -1,0 +1,162 @@
+[
+  {
+    "phase": "baseline",
+    "platform": "windows",
+    "worker": "1",
+    "kind": "tree",
+    "median_ms": 2532.963,
+    "min_ms": 2503.014,
+    "max_ms": 2565.409,
+    "frame_gap_ms": 31.885
+  },
+  {
+    "phase": "baseline",
+    "platform": "windows",
+    "worker": "1",
+    "kind": "debris",
+    "median_ms": 203.051,
+    "min_ms": 176.026,
+    "max_ms": 203.762,
+    "frame_gap_ms": 30.513
+  },
+  {
+    "phase": "baseline",
+    "platform": "windows",
+    "worker": "4",
+    "kind": "tree",
+    "median_ms": 2544.387,
+    "min_ms": 2526.215,
+    "max_ms": 2554.581,
+    "frame_gap_ms": 31.966
+  },
+  {
+    "phase": "baseline",
+    "platform": "windows",
+    "worker": "4",
+    "kind": "debris",
+    "median_ms": 217.081,
+    "min_ms": 202.038,
+    "max_ms": 230.33,
+    "frame_gap_ms": 30.52
+  },
+  {
+    "phase": "baseline",
+    "platform": "linux",
+    "worker": "1",
+    "kind": "tree",
+    "median_ms": 2399.977,
+    "min_ms": 2383.29,
+    "max_ms": 2400.156,
+    "frame_gap_ms": 17.221
+  },
+  {
+    "phase": "baseline",
+    "platform": "linux",
+    "worker": "1",
+    "kind": "debris",
+    "median_ms": 133.365,
+    "min_ms": 133.344,
+    "max_ms": 133.483,
+    "frame_gap_ms": 16.874
+  },
+  {
+    "phase": "baseline",
+    "platform": "linux",
+    "worker": "4",
+    "kind": "tree",
+    "median_ms": 2399.829,
+    "min_ms": 2399.682,
+    "max_ms": 2400.53,
+    "frame_gap_ms": 18.08
+  },
+  {
+    "phase": "baseline",
+    "platform": "linux",
+    "worker": "4",
+    "kind": "debris",
+    "median_ms": 133.689,
+    "min_ms": 133.501,
+    "max_ms": 150.031,
+    "frame_gap_ms": 16.838
+  },
+  {
+    "phase": "candidate",
+    "platform": "windows",
+    "worker": "1",
+    "kind": "tree",
+    "median_ms": 463.363,
+    "min_ms": 450.613,
+    "max_ms": 500.297,
+    "frame_gap_ms": 31.225
+  },
+  {
+    "phase": "candidate",
+    "platform": "windows",
+    "worker": "1",
+    "kind": "debris",
+    "median_ms": 200.957,
+    "min_ms": 186.048,
+    "max_ms": 218.243,
+    "frame_gap_ms": 30.015
+  },
+  {
+    "phase": "candidate",
+    "platform": "windows",
+    "worker": "4",
+    "kind": "tree",
+    "median_ms": 481.705,
+    "min_ms": 431.79,
+    "max_ms": 483.953,
+    "frame_gap_ms": 30.857
+  },
+  {
+    "phase": "candidate",
+    "platform": "windows",
+    "worker": "4",
+    "kind": "debris",
+    "median_ms": 202.882,
+    "min_ms": 199.712,
+    "max_ms": 215.677,
+    "frame_gap_ms": 31.333
+  },
+  {
+    "phase": "candidate",
+    "platform": "linux",
+    "worker": "1",
+    "kind": "tree",
+    "median_ms": 316.586,
+    "min_ms": 300.037,
+    "max_ms": 316.697,
+    "frame_gap_ms": 16.987
+  },
+  {
+    "phase": "candidate",
+    "platform": "linux",
+    "worker": "1",
+    "kind": "debris",
+    "median_ms": 133.325,
+    "min_ms": 116.815,
+    "max_ms": 133.41,
+    "frame_gap_ms": 16.899
+  },
+  {
+    "phase": "candidate",
+    "platform": "linux",
+    "worker": "4",
+    "kind": "tree",
+    "median_ms": 316.885,
+    "min_ms": 316.686,
+    "max_ms": 333.531,
+    "frame_gap_ms": 16.908
+  },
+  {
+    "phase": "candidate",
+    "platform": "linux",
+    "worker": "4",
+    "kind": "debris",
+    "median_ms": 150.014,
+    "min_ms": 133.644,
+    "max_ms": 150.184,
+    "frame_gap_ms": 16.881
+  }
+]

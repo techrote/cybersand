@@ -1,0 +1,1496 @@
+{
+  "source": "45e4c55b4a3ea071bcbe2bcd0ddd188bdea02f5e",
+  "production_source": "c799863fb535f0cc6c7b1b2d641b7e62b1fe3dd0",
+  "native_build_source": "1826c9943c83166c7f36fb22085a6fac7a5dcfbd",
+  "scope": "new cut presentation and terrain scheduling; physics unchanged",
+  "campaigns": {
+    "hosts-002": {
+      "receipt_sha256": "76c19540f5ed6999b84e633ac2255a09ec792d5ce9decbcb504fcb041ca65272",
+      "post_source_equality": true,
+      "hosts": {
+        "windows": {
+          "runtime_sha256": "fd40f270cc659fae567c4b08cae6a6d55aaebc486a3760e63493fb23f7c417e6",
+          "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+          "commands": [
+            {
+              "name": "import",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--editor",
+                "--quit"
+              ],
+              "exit": 0,
+              "seconds": 11.876660700072534,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\windows\\import.log",
+              "log_sha256": "bed0bce014aeeb3bac35cc42818b19c2c68e4a270eed69bd1ae7232736d31f65",
+              "clean": true
+            },
+            {
+              "name": "test_workbench_cut_responsiveness-w1",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--script",
+                "res://tests/test_workbench_cut_responsiveness.gd"
+              ],
+              "exit": 1,
+              "seconds": 16.192155600059777,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_cut_responsiveness-w1.log",
+              "log_sha256": "01c20991161dd2eb320db850ba6871c9ee9d9aba72d19ded9cdc35c251809751",
+              "clean": false,
+              "report_complete": false,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_cut_responsiveness-w1.json",
+                "sha256": "30321295b684496cd138d85d0865c39454270ceef54aacfd4073a07f602cfa5c",
+                "checks": 219
+              }
+            },
+            {
+              "name": "test_workbench_small_debris-w1",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--script",
+                "res://tests/test_workbench_small_debris.gd"
+              ],
+              "exit": 0,
+              "seconds": 30.980168999987654,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_small_debris-w1.log",
+              "log_sha256": "24c55ca17d3b96fd57eff2b384c8252777222334be376a0804d0e68a3610dd2a",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_small_debris-w1.json",
+                "sha256": "b5da055c73e73fffaba70d42e22f12146356fcf5515d2cbe7fa035681341eb0f",
+                "checks": 230
+              }
+            },
+            {
+              "name": "test_workbench_brush_cuts-w1",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--script",
+                "res://tests/test_workbench_brush_cuts.gd"
+              ],
+              "exit": 0,
+              "seconds": 14.287610800005496,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_brush_cuts-w1.log",
+              "log_sha256": "c66147b2e5ae6d52d66fa531a773fc468f96995d5435481575618b5b38e1b7d2",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_brush_cuts-w1.json",
+                "sha256": "ee9828c5d3bead58c7345bfc534e784bed7ad16de1368209f2d79702668b75c3",
+                "checks": 165
+              }
+            },
+            {
+              "name": "test_workbench_freed-w1",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--script",
+                "res://tests/test_workbench_freed.gd"
+              ],
+              "exit": 0,
+              "seconds": 11.017929999972694,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_freed-w1.log",
+              "log_sha256": "d6dbca4fd4e0912d9f2881c46823a8522e82236b66a0083105764a43d69b4c0e",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_freed-w1.json",
+                "sha256": "b4f2e4749c110577dad6dc4c69f55df74ee88d2da1a42a6daf0478fa1d3771df",
+                "checks": 83
+              }
+            },
+            {
+              "name": "test_workbench_cut_responsiveness-w4",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--script",
+                "res://tests/test_workbench_cut_responsiveness.gd"
+              ],
+              "exit": 1,
+              "seconds": 15.476007099961862,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_cut_responsiveness-w4.log",
+              "log_sha256": "01c20991161dd2eb320db850ba6871c9ee9d9aba72d19ded9cdc35c251809751",
+              "clean": false,
+              "report_complete": false,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_cut_responsiveness-w4.json",
+                "sha256": "6218c74b8bc4ffe014e91386f1155c99cb7b2686cded620b4ba68ddb32510d94",
+                "checks": 219
+              }
+            },
+            {
+              "name": "test_workbench_small_debris-w4",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--script",
+                "res://tests/test_workbench_small_debris.gd"
+              ],
+              "exit": 0,
+              "seconds": 31.41159850009717,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_small_debris-w4.log",
+              "log_sha256": "24c55ca17d3b96fd57eff2b384c8252777222334be376a0804d0e68a3610dd2a",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_small_debris-w4.json",
+                "sha256": "9a964fc37fad9c71865c4960c9f3c48c7d4ffdb3f05d2fbfffe9b8ae773aa473",
+                "checks": 230
+              }
+            },
+            {
+              "name": "test_workbench_brush_cuts-w4",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--script",
+                "res://tests/test_workbench_brush_cuts.gd"
+              ],
+              "exit": 0,
+              "seconds": 13.616026100004092,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_brush_cuts-w4.log",
+              "log_sha256": "c66147b2e5ae6d52d66fa531a773fc468f96995d5435481575618b5b38e1b7d2",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_brush_cuts-w4.json",
+                "sha256": "7356afa2ad66a28e2322cdd63e4c01db7834d58b1fb4c8fb59210c45ee04fd4c",
+                "checks": 165
+              }
+            },
+            {
+              "name": "test_workbench_freed-w4",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--script",
+                "res://tests/test_workbench_freed.gd"
+              ],
+              "exit": 0,
+              "seconds": 9.64826919999905,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_freed-w4.log",
+              "log_sha256": "d6dbca4fd4e0912d9f2881c46823a8522e82236b66a0083105764a43d69b4c0e",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_freed-w4.json",
+                "sha256": "49c7591a24bad3a9f2b1729bb9bfc8f1f631b95412bd2797c72fb1c4e487d330",
+                "checks": 83
+              }
+            },
+            {
+              "name": "test_workbench_cut_lifecycle",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--script",
+                "res://tests/test_workbench_cut_lifecycle.gd"
+              ],
+              "exit": 0,
+              "seconds": 9.189036599942483,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_cut_lifecycle.log",
+              "log_sha256": "0e598e0ef33e91cc512dd500cecc398e8cd7c3afe481579263153a7320714fe4",
+              "clean": true
+            },
+            {
+              "name": "test_workbench_canvas_body",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--script",
+                "res://tests/test_workbench_canvas_body.gd"
+              ],
+              "exit": 0,
+              "seconds": 5.946940599940717,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_canvas_body.log",
+              "log_sha256": "1cf91c3b35f42e2e9d16a51f73da1b8b81137cf257c11c9fc9f7424806682a6c",
+              "clean": true
+            },
+            {
+              "name": "test_workbench_fleet_session",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--script",
+                "res://tests/test_workbench_fleet_session.gd"
+              ],
+              "exit": 0,
+              "seconds": 0.7546181000070646,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_fleet_session.log",
+              "log_sha256": "634f905ac03e58d4737bde7eb8adf6ec8d661ce01f04c9b26bb3fe581f4a3724",
+              "clean": true
+            },
+            {
+              "name": "test_workbench_canvas",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--script",
+                "res://tests/test_workbench_canvas.gd"
+              ],
+              "exit": 0,
+              "seconds": 24.38199580006767,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_canvas.log",
+              "log_sha256": "b31456f54173309dc38335df203bfd633e7cc07c81d33d4ace9ab48db9a6e5d0",
+              "clean": true
+            },
+            {
+              "name": "test_workbench_pilot_ui",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--script",
+                "res://tests/test_workbench_pilot_ui.gd"
+              ],
+              "exit": 0,
+              "seconds": 17.882228800095618,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_pilot_ui.log",
+              "log_sha256": "e552b6c8178f7e38044fd393dd14d44f2a98078dcdbef20afdf2eab323d76600",
+              "clean": true
+            },
+            {
+              "name": "test_workbench_input",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--script",
+                "res://tests/test_workbench_input.gd"
+              ],
+              "exit": 0,
+              "seconds": 6.044698600075208,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\windows\\test_workbench_input.log",
+              "log_sha256": "447c2cc62fd43c483cd9da3a72b54c81338a786d4121750d8f2f5f871f8b3b0d",
+              "clean": true
+            }
+          ]
+        },
+        "linux": {
+          "runtime_sha256": "ef05b4a63a1a8bc1bc3054b6a466d20c6ddf31f68a5e8dd707df7718e306742b",
+          "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "commands": [
+            {
+              "name": "import",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--editor",
+                "--quit"
+              ],
+              "exit": 0,
+              "seconds": 50.41579660004936,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\linux\\import.log",
+              "log_sha256": "e723534795b3277617927b20224f8bde54e6daa8e5a9eb5083ed959643ef2355",
+              "clean": true
+            },
+            {
+              "name": "test_workbench_cut_responsiveness-w1",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_FREED_WORKERS=1",
+                "CYBERSAND_FREED_REPORT=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/test_workbench_cut_responsiveness-w1.json",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--script",
+                "res://tests/test_workbench_cut_responsiveness.gd"
+              ],
+              "exit": 1,
+              "seconds": 21.388986599980853,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_cut_responsiveness-w1.log",
+              "log_sha256": "9c7718793c38e24cc81008c1991d5ee2a73c3dd1f634cc41b7981f414cfb0fb7",
+              "clean": false,
+              "report_complete": false,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_cut_responsiveness-w1.json",
+                "sha256": "b3d93d22b45bd094b7b078eec894599f2013e6b2194cd39f6545d8da7f25decd",
+                "checks": 219
+              }
+            },
+            {
+              "name": "test_workbench_small_debris-w1",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_FREED_WORKERS=1",
+                "CYBERSAND_FREED_REPORT=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/test_workbench_small_debris-w1.json",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--script",
+                "res://tests/test_workbench_small_debris.gd"
+              ],
+              "exit": 0,
+              "seconds": 35.77802780002821,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_small_debris-w1.log",
+              "log_sha256": "7876f7f46a2dd061e02a492da34b1d7fa6cc8a392d7fc1ef58866fa7675ba55f",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_small_debris-w1.json",
+                "sha256": "f4cdc754a0db06c74ec43b93629b74ec13a4f3654472ad602e67c061ff767058",
+                "checks": 230
+              }
+            },
+            {
+              "name": "test_workbench_brush_cuts-w1",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_FREED_WORKERS=1",
+                "CYBERSAND_FREED_REPORT=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/test_workbench_brush_cuts-w1.json",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--script",
+                "res://tests/test_workbench_brush_cuts.gd"
+              ],
+              "exit": 0,
+              "seconds": 18.364873499958776,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_brush_cuts-w1.log",
+              "log_sha256": "bd472bba9b430b9213406b9fd0b3504209897a83c85ee72d2d051dcc319533c8",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_brush_cuts-w1.json",
+                "sha256": "9dd4bb9cf18fc2ad6c6ea75d7182d3d184b400bd906bc84b63026adcdab86369",
+                "checks": 165
+              }
+            },
+            {
+              "name": "test_workbench_freed-w1",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_FREED_WORKERS=1",
+                "CYBERSAND_FREED_REPORT=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/test_workbench_freed-w1.json",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--script",
+                "res://tests/test_workbench_freed.gd"
+              ],
+              "exit": 0,
+              "seconds": 14.017556800041348,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_freed-w1.log",
+              "log_sha256": "1e5514693589389f8a77a3890afab9d61b1ee2fb6aeb20267c8ec7b72fe704b2",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_freed-w1.json",
+                "sha256": "23d7a86d025abbe0d017b5cda7f5f24add8adfcb28d2c418edeb307af6be5d7a",
+                "checks": 83
+              }
+            },
+            {
+              "name": "test_workbench_cut_responsiveness-w4",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_FREED_WORKERS=4",
+                "CYBERSAND_FREED_REPORT=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/test_workbench_cut_responsiveness-w4.json",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--script",
+                "res://tests/test_workbench_cut_responsiveness.gd"
+              ],
+              "exit": 1,
+              "seconds": 20.44913359999191,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_cut_responsiveness-w4.log",
+              "log_sha256": "9c7718793c38e24cc81008c1991d5ee2a73c3dd1f634cc41b7981f414cfb0fb7",
+              "clean": false,
+              "report_complete": false,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_cut_responsiveness-w4.json",
+                "sha256": "cf3c500ec73229b4d5ade078682aec1cb49880599029f9367f49428986d21fbc",
+                "checks": 219
+              }
+            },
+            {
+              "name": "test_workbench_small_debris-w4",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_FREED_WORKERS=4",
+                "CYBERSAND_FREED_REPORT=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/test_workbench_small_debris-w4.json",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--script",
+                "res://tests/test_workbench_small_debris.gd"
+              ],
+              "exit": 0,
+              "seconds": 35.72182680002879,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_small_debris-w4.log",
+              "log_sha256": "7876f7f46a2dd061e02a492da34b1d7fa6cc8a392d7fc1ef58866fa7675ba55f",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_small_debris-w4.json",
+                "sha256": "7ea4edc560a6d4f1549de0a6cb5f38d7e850f39aa90abe7c9b4763049ac15015",
+                "checks": 230
+              }
+            },
+            {
+              "name": "test_workbench_brush_cuts-w4",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_FREED_WORKERS=4",
+                "CYBERSAND_FREED_REPORT=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/test_workbench_brush_cuts-w4.json",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--script",
+                "res://tests/test_workbench_brush_cuts.gd"
+              ],
+              "exit": 0,
+              "seconds": 18.918075899942778,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_brush_cuts-w4.log",
+              "log_sha256": "bd472bba9b430b9213406b9fd0b3504209897a83c85ee72d2d051dcc319533c8",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_brush_cuts-w4.json",
+                "sha256": "ebe02bebb8d9bfadcb60e1b0cdcd421785d3e570f7fe8534d58014d394613c62",
+                "checks": 165
+              }
+            },
+            {
+              "name": "test_workbench_freed-w4",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_FREED_WORKERS=4",
+                "CYBERSAND_FREED_REPORT=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/test_workbench_freed-w4.json",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--script",
+                "res://tests/test_workbench_freed.gd"
+              ],
+              "exit": 0,
+              "seconds": 13.433586600003764,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_freed-w4.log",
+              "log_sha256": "1e5514693589389f8a77a3890afab9d61b1ee2fb6aeb20267c8ec7b72fe704b2",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_freed-w4.json",
+                "sha256": "b7c319ca56af319d02a746bba775bc49da74ec0c508191ee66175efb211dc5bb",
+                "checks": 83
+              }
+            },
+            {
+              "name": "test_workbench_cut_lifecycle",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--script",
+                "res://tests/test_workbench_cut_lifecycle.gd"
+              ],
+              "exit": 0,
+              "seconds": 13.218154400005005,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_cut_lifecycle.log",
+              "log_sha256": "433f98aa4b6d97f503bb2a0ba8ee99624ab5639d497719678768acc4a4956a5b",
+              "clean": true
+            },
+            {
+              "name": "test_workbench_canvas_body",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--script",
+                "res://tests/test_workbench_canvas_body.gd"
+              ],
+              "exit": 0,
+              "seconds": 9.465318399947137,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_canvas_body.log",
+              "log_sha256": "3d710f26f38d2b7d5491482afe99b7d208ce9edcf87f54b5b2bb0672442d908d",
+              "clean": true
+            },
+            {
+              "name": "test_workbench_fleet_session",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--script",
+                "res://tests/test_workbench_fleet_session.gd"
+              ],
+              "exit": 0,
+              "seconds": 1.6247876000124961,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_fleet_session.log",
+              "log_sha256": "de1a37723411ff3f440a3a7ffa1857ef7c78f992dfd435ead9e0af40307bae72",
+              "clean": true
+            },
+            {
+              "name": "test_workbench_canvas",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--script",
+                "res://tests/test_workbench_canvas.gd"
+              ],
+              "exit": 0,
+              "seconds": 27.14011290005874,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_canvas.log",
+              "log_sha256": "107159b9e993b37aeccc66b0bd9b78f29a1f7b0ac320f30e48b18c28aa404935",
+              "clean": true
+            },
+            {
+              "name": "test_workbench_pilot_ui",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--script",
+                "res://tests/test_workbench_pilot_ui.gd"
+              ],
+              "exit": 0,
+              "seconds": 21.634074500063434,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_pilot_ui.log",
+              "log_sha256": "05649b61218a5b7717c7bf1eb34041fc5811fdfe9cf24215b11008d0cfa961b7",
+              "clean": true
+            },
+            {
+              "name": "test_workbench_input",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--script",
+                "res://tests/test_workbench_input.gd"
+              ],
+              "exit": 0,
+              "seconds": 9.882450300035998,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\hosts-002\\linux\\test_workbench_input.log",
+              "log_sha256": "9429938d6382e7b945217a27ddf1e97c513e7842c9ade2c28efd868b4cac6ed2",
+              "clean": true
+            }
+          ]
+        }
+      }
+    },
+    "observer-001": {
+      "receipt_sha256": "28cd0a9663bb7b31283728cdaa5093c9df107bb337ba3e044201a593ac549a16",
+      "post_source_equality": true,
+      "hosts": {
+        "windows": {
+          "commands": [
+            {
+              "name": "feedback-w1",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--script",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\godot\\tests\\test_workbench_cut_responsiveness.gd"
+              ],
+              "exit": 0,
+              "seconds": 17.818421799922362,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\observer-001\\windows\\feedback-w1.log",
+              "log_sha256": "11f2be3fe06aa9047e197d47d3c7cedf3262715723b55c7b436870e9954f9cd5",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\observer-001\\windows\\feedback-w1.json",
+                "sha256": "278784797f700694e2d9d5a9dfed1cd4ebbeda276d70e2db7f50f812f8b6e2fa",
+                "checks": 219
+              }
+            },
+            {
+              "name": "feedback-w4",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--script",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\godot\\tests\\test_workbench_cut_responsiveness.gd"
+              ],
+              "exit": 0,
+              "seconds": 18.17349259997718,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\observer-001\\windows\\feedback-w4.log",
+              "log_sha256": "11f2be3fe06aa9047e197d47d3c7cedf3262715723b55c7b436870e9954f9cd5",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\observer-001\\windows\\feedback-w4.json",
+                "sha256": "c5934fa8b9303690bdf6eb9d64185cf089e1fdf6b082a799defc8275944478a9",
+                "checks": 219
+              }
+            }
+          ]
+        },
+        "linux": {
+          "commands": [
+            {
+              "name": "feedback-w1",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_FREED_WORKERS=1",
+                "CYBERSAND_FREED_REPORT=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/observer-001/linux/feedback-w1.json",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--script",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/godot/tests/test_workbench_cut_responsiveness.gd"
+              ],
+              "exit": 0,
+              "seconds": 23.829626599908806,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\observer-001\\linux\\feedback-w1.log",
+              "log_sha256": "a7f87150f1f4b257c58a3176f3de16bc012cac1a50de5b7e83b81ed6955750f9",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\observer-001\\linux\\feedback-w1.json",
+                "sha256": "c6180540eb0bfdf7a12bc4514312ba77e76e3319a981a6332c0d159d5f4de221",
+                "checks": 219
+              }
+            },
+            {
+              "name": "feedback-w4",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_FREED_WORKERS=4",
+                "CYBERSAND_FREED_REPORT=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/observer-001/linux/feedback-w4.json",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--script",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/godot/tests/test_workbench_cut_responsiveness.gd"
+              ],
+              "exit": 0,
+              "seconds": 22.863473000004888,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\observer-001\\linux\\feedback-w4.log",
+              "log_sha256": "a7f87150f1f4b257c58a3176f3de16bc012cac1a50de5b7e83b81ed6955750f9",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\observer-001\\linux\\feedback-w4.json",
+                "sha256": "ec50b08b9dd5080420bb1eb14bbe7a4c3e3caadbd0fe112b9ece7b95229ffc40",
+                "checks": 219
+              }
+            }
+          ]
+        }
+      }
+    },
+    "baseline-003": {
+      "receipt_sha256": "38dc2beacc7358625567368253caebf4a40c0b675a6a2481124c3c0ab233cc61",
+      "post_source_equality": true,
+      "hosts": {
+        "windows": {
+          "commands": [
+            {
+              "name": "baseline-w1",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\baseline-003\\windows\\godot",
+                "--script",
+                "res://tests/test_workbench_cut_responsiveness.gd"
+              ],
+              "exit": 0,
+              "seconds": 28.27801060001366,
+              "timeout_seconds": 600,
+              "log": "build\\workbench-cut-feedback\\baseline-003\\windows\\baseline-w1.log",
+              "log_sha256": "b3a8e1b3a7d137a7cbbe0b5cc43add0d2d6ca66e27d4d58c1fc4c11b47df6152",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\baseline-003\\windows\\baseline-w1.json",
+                "sha256": "5facd9c3c48c53654ede06eca77ea72f8346deb0aefe908209176e0437f4e758",
+                "checks": 151
+              }
+            },
+            {
+              "name": "baseline-w4",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--headless",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\baseline-003\\windows\\godot",
+                "--script",
+                "res://tests/test_workbench_cut_responsiveness.gd"
+              ],
+              "exit": 0,
+              "seconds": 28.900975600001402,
+              "timeout_seconds": 600,
+              "log": "build\\workbench-cut-feedback\\baseline-003\\windows\\baseline-w4.log",
+              "log_sha256": "b3a8e1b3a7d137a7cbbe0b5cc43add0d2d6ca66e27d4d58c1fc4c11b47df6152",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\baseline-003\\windows\\baseline-w4.json",
+                "sha256": "9fd8377f8cdd2ead75e2691b3fdd514d9cef55fb6f400100fe4e97677058e29a",
+                "checks": 151
+              }
+            }
+          ],
+          "runtime_sha256": "fd40f270cc659fae567c4b08cae6a6d55aaebc486a3760e63493fb23f7c417e6"
+        },
+        "linux": {
+          "commands": [
+            {
+              "name": "baseline-w1",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "600s",
+                "env",
+                "CYBERSAND_FREED_WORKERS=1",
+                "CYBERSAND_CUT_BASELINE=1",
+                "CYBERSAND_FREED_REPORT=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/baseline-003/linux/baseline-w1.json",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/baseline-003/linux/godot",
+                "--script",
+                "res://tests/test_workbench_cut_responsiveness.gd"
+              ],
+              "exit": 0,
+              "seconds": 31.589932999922894,
+              "timeout_seconds": 600,
+              "log": "build\\workbench-cut-feedback\\baseline-003\\linux\\baseline-w1.log",
+              "log_sha256": "efcaadacfd6b274d00b6b0928e178ca9bb66a8c00e5b0696a3cbbb7372051047",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\baseline-003\\linux\\baseline-w1.json",
+                "sha256": "5d2a3eab6645fff8b715314ee14448880edb2eef98f9978e693aa5f60db80267",
+                "checks": 151
+              }
+            },
+            {
+              "name": "baseline-w4",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "600s",
+                "env",
+                "CYBERSAND_FREED_WORKERS=4",
+                "CYBERSAND_CUT_BASELINE=1",
+                "CYBERSAND_FREED_REPORT=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/baseline-003/linux/baseline-w4.json",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--headless",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/baseline-003/linux/godot",
+                "--script",
+                "res://tests/test_workbench_cut_responsiveness.gd"
+              ],
+              "exit": 0,
+              "seconds": 31.68081589997746,
+              "timeout_seconds": 600,
+              "log": "build\\workbench-cut-feedback\\baseline-003\\linux\\baseline-w4.log",
+              "log_sha256": "efcaadacfd6b274d00b6b0928e178ca9bb66a8c00e5b0696a3cbbb7372051047",
+              "clean": true,
+              "report_complete": true,
+              "report": {
+                "path": "build\\workbench-cut-feedback\\baseline-003\\linux\\baseline-w4.json",
+                "sha256": "6ae8d4839064c0e194e4da95b9913b2f0990b3b513feb74e48c2e8c0a155b49b",
+                "checks": 151
+              }
+            }
+          ],
+          "runtime_sha256": "ef05b4a63a1a8bc1bc3054b6a466d20c6ddf31f68a5e8dd707df7718e306742b"
+        }
+      }
+    },
+    "graphics-001": {
+      "receipt_sha256": "b8e85cdea49e8414e42c1f4cabfb90b7b07142271d7cd96ff89eb237a10df911",
+      "post_source_equality": true,
+      "hosts": {
+        "windows": {
+          "commands": [
+            {
+              "name": "test_workbench_carried_material_render",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--rendering-method",
+                "gl_compatibility",
+                "--script",
+                "res://tests/test_workbench_carried_material_render.gd"
+              ],
+              "exit": 0,
+              "seconds": 1.9051346000051126,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\graphics-001\\windows\\test_workbench_carried_material_render.log",
+              "log_sha256": "d87e4b19e6ae97d5901b43983b4a4278bcc735915da4ff96c5e209cced7ae125",
+              "clean": true
+            },
+            {
+              "name": "test_material_presentation_render",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--rendering-method",
+                "gl_compatibility",
+                "--script",
+                "res://tests/test_material_presentation_render.gd"
+              ],
+              "exit": 1,
+              "seconds": 8.799383400008082,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\graphics-001\\windows\\test_material_presentation_render.log",
+              "log_sha256": "c1a61ae9286a79fac30fccb08bfb77403eed3822922f65868572b796935f29ad",
+              "clean": false
+            },
+            {
+              "name": "test_palette_shader_compile_bounds",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--rendering-method",
+                "gl_compatibility",
+                "--script",
+                "res://tests/test_palette_shader_compile_bounds.gd"
+              ],
+              "exit": 0,
+              "seconds": 1.567463199957274,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\graphics-001\\windows\\test_palette_shader_compile_bounds.log",
+              "log_sha256": "fa6cb1d40f95e778d4896a6e3fd2efa4f998c32470a40e143abbf6362e71aaa7",
+              "clean": true
+            },
+            {
+              "name": "test_material_appearance_lut",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--rendering-method",
+                "gl_compatibility",
+                "--script",
+                "res://tests/test_material_appearance_lut.gd"
+              ],
+              "exit": 0,
+              "seconds": 55.56071700004395,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\graphics-001\\windows\\test_material_appearance_lut.log",
+              "log_sha256": "9e5a33da06125d675c476b09d5dfcb9b43cccaaffc1b12ffd4b8d7caa006cab3",
+              "clean": true
+            }
+          ]
+        },
+        "linux": {
+          "commands": [
+            {
+              "name": "test_workbench_carried_material_render",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_SOURCE_REVISION=c799863fb535f0cc6c7b1b2d641b7e62b1fe3dd0",
+                "CYBERSAND_SHADER_CAPTURE=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/graphics-001/linux/captures",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--rendering-method",
+                "gl_compatibility",
+                "--script",
+                "res://tests/test_workbench_carried_material_render.gd"
+              ],
+              "exit": 1,
+              "seconds": 4.250476600020193,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\graphics-001\\linux\\test_workbench_carried_material_render.log",
+              "log_sha256": "15407b6c82e94703932ed6e935df62b4fe198addd0f1767eaaac353d60d87d02",
+              "clean": false
+            },
+            {
+              "name": "test_material_presentation_render",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_SOURCE_REVISION=c799863fb535f0cc6c7b1b2d641b7e62b1fe3dd0",
+                "CYBERSAND_SHADER_CAPTURE=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/graphics-001/linux/captures",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--rendering-method",
+                "gl_compatibility",
+                "--script",
+                "res://tests/test_material_presentation_render.gd"
+              ],
+              "exit": 1,
+              "seconds": 0.1342350000049919,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\graphics-001\\linux\\test_material_presentation_render.log",
+              "log_sha256": "15407b6c82e94703932ed6e935df62b4fe198addd0f1767eaaac353d60d87d02",
+              "clean": false
+            },
+            {
+              "name": "test_palette_shader_compile_bounds",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_SOURCE_REVISION=c799863fb535f0cc6c7b1b2d641b7e62b1fe3dd0",
+                "CYBERSAND_SHADER_CAPTURE=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/graphics-001/linux/captures",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--rendering-method",
+                "gl_compatibility",
+                "--script",
+                "res://tests/test_palette_shader_compile_bounds.gd"
+              ],
+              "exit": 1,
+              "seconds": 0.12026380002498627,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\graphics-001\\linux\\test_palette_shader_compile_bounds.log",
+              "log_sha256": "15407b6c82e94703932ed6e935df62b4fe198addd0f1767eaaac353d60d87d02",
+              "clean": false
+            },
+            {
+              "name": "test_material_appearance_lut",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_SOURCE_REVISION=c799863fb535f0cc6c7b1b2d641b7e62b1fe3dd0",
+                "CYBERSAND_SHADER_CAPTURE=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/graphics-001/linux/captures",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--rendering-method",
+                "gl_compatibility",
+                "--script",
+                "res://tests/test_material_appearance_lut.gd"
+              ],
+              "exit": 1,
+              "seconds": 0.12123359995894134,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\graphics-001\\linux\\test_material_appearance_lut.log",
+              "log_sha256": "15407b6c82e94703932ed6e935df62b4fe198addd0f1767eaaac353d60d87d02",
+              "clean": false
+            }
+          ]
+        }
+      }
+    },
+    "graphics-002": {
+      "receipt_sha256": "8887dd85b8e1ccac329f94253037d763d0a875389f3141b1134352b485690435",
+      "post_source_equality": true,
+      "hosts": {
+        "windows": {
+          "commands": [
+            {
+              "name": "test_workbench_carried_material_render",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--rendering-method",
+                "gl_compatibility",
+                "--script",
+                "res://tests/test_workbench_carried_material_render.gd"
+              ],
+              "exit": 0,
+              "seconds": 1.8884909999324009,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\graphics-002\\windows\\test_workbench_carried_material_render.log",
+              "log_sha256": "1be65791d2089f231660ddc94394b031f10a084c97b17624dc87611c70876110",
+              "clean": true
+            },
+            {
+              "name": "test_material_presentation_render",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--rendering-method",
+                "gl_compatibility",
+                "--script",
+                "res://tests/test_material_presentation_render.gd"
+              ],
+              "exit": 1,
+              "seconds": 8.85513489996083,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\graphics-002\\windows\\test_material_presentation_render.log",
+              "log_sha256": "a924c0ec8bac92704ef85ee924c59b80a38924e9e51842bfe4338a4c8245d403",
+              "clean": false
+            },
+            {
+              "name": "test_palette_shader_compile_bounds",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--rendering-method",
+                "gl_compatibility",
+                "--script",
+                "res://tests/test_palette_shader_compile_bounds.gd"
+              ],
+              "exit": 0,
+              "seconds": 1.5918273000279441,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\graphics-002\\windows\\test_palette_shader_compile_bounds.log",
+              "log_sha256": "af87ee67c44cdcb430f969e0b2b5ca6f40f889d31227a44e7a343d1f56a807b6",
+              "clean": true
+            },
+            {
+              "name": "test_material_appearance_lut",
+              "command": [
+                "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+                "--path",
+                "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\hosts-002\\windows\\godot",
+                "--rendering-method",
+                "gl_compatibility",
+                "--script",
+                "res://tests/test_material_appearance_lut.gd"
+              ],
+              "exit": 0,
+              "seconds": 57.2771893000463,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\graphics-002\\windows\\test_material_appearance_lut.log",
+              "log_sha256": "9e5a33da06125d675c476b09d5dfcb9b43cccaaffc1b12ffd4b8d7caa006cab3",
+              "clean": true
+            }
+          ]
+        },
+        "linux": {
+          "commands": [
+            {
+              "name": "test_workbench_carried_material_render",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_SOURCE_REVISION=45e4c55b4a3ea071bcbe2bcd0ddd188bdea02f5e",
+                "CYBERSAND_SHADER_CAPTURE=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/graphics-002/linux/captures",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--rendering-method",
+                "gl_compatibility",
+                "--script",
+                "res://tests/test_workbench_carried_material_render.gd"
+              ],
+              "exit": 0,
+              "seconds": 15.642868399969302,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\graphics-002\\linux\\test_workbench_carried_material_render.log",
+              "log_sha256": "28e0fd59b46969675774e940c8befd10c1cf6afd87213b7b9151a6c62e2d1e36",
+              "clean": false
+            },
+            {
+              "name": "test_material_presentation_render",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_SOURCE_REVISION=45e4c55b4a3ea071bcbe2bcd0ddd188bdea02f5e",
+                "CYBERSAND_SHADER_CAPTURE=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/graphics-002/linux/captures",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--rendering-method",
+                "gl_compatibility",
+                "--script",
+                "res://tests/test_material_presentation_render.gd"
+              ],
+              "exit": 0,
+              "seconds": 20.617378999944776,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\graphics-002\\linux\\test_material_presentation_render.log",
+              "log_sha256": "65df590cb86dbfa9e29434911ba23a445c47d0f51d1c089279bec10c2d3ba7a9",
+              "clean": false
+            },
+            {
+              "name": "test_palette_shader_compile_bounds",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_SOURCE_REVISION=45e4c55b4a3ea071bcbe2bcd0ddd188bdea02f5e",
+                "CYBERSAND_SHADER_CAPTURE=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/graphics-002/linux/captures",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--rendering-method",
+                "gl_compatibility",
+                "--script",
+                "res://tests/test_palette_shader_compile_bounds.gd"
+              ],
+              "exit": 0,
+              "seconds": 1.4835643999977037,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\graphics-002\\linux\\test_palette_shader_compile_bounds.log",
+              "log_sha256": "d6a92a8672fa10982f865c99f0bdd9af80e239a232ba3abcd0b9f54f2e55e76d",
+              "clean": false
+            },
+            {
+              "name": "test_material_appearance_lut",
+              "command": [
+                "wsl.exe",
+                "-d",
+                "Ubuntu-24.04",
+                "--",
+                "timeout",
+                "--signal=TERM",
+                "--kill-after=5s",
+                "300s",
+                "env",
+                "CYBERSAND_SOURCE_REVISION=45e4c55b4a3ea071bcbe2bcd0ddd188bdea02f5e",
+                "CYBERSAND_SHADER_CAPTURE=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/graphics-002/linux/captures",
+                "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+                "--path",
+                "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+                "--rendering-method",
+                "gl_compatibility",
+                "--script",
+                "res://tests/test_material_appearance_lut.gd"
+              ],
+              "exit": 0,
+              "seconds": 45.20016959996428,
+              "timeout_seconds": 300,
+              "log": "build\\workbench-cut-feedback\\graphics-002\\linux\\test_material_appearance_lut.log",
+              "log_sha256": "b97883ca0fc1f51c964d3d6c4bf4eaf1b7aeda2ca8496ab84d8a263e4d0561dc",
+              "clean": false
+            }
+          ]
+        }
+      }
+    }
+  },
+  "linux_dummy_audio": {
+    "name": "linux-carried",
+    "command": [
+      "wsl.exe",
+      "-d",
+      "Ubuntu-24.04",
+      "--",
+      "timeout",
+      "--signal=TERM",
+      "--kill-after=5s",
+      "300s",
+      "env",
+      "CYBERSAND_SOURCE_REVISION=45e4c55b4a3ea071bcbe2bcd0ddd188bdea02f5e",
+      "CYBERSAND_SHADER_CAPTURE=/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/graphics-audio-dummy/captures",
+      "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+      "--path",
+      "/mnt/c/khybersand/build/sol466-order-owned/khybersand/build/workbench-cut-feedback/hosts-002/linux/godot",
+      "--audio-driver",
+      "Dummy",
+      "--rendering-method",
+      "gl_compatibility",
+      "--script",
+      "res://tests/test_workbench_carried_material_render.gd"
+    ],
+    "exit": 0,
+    "seconds": 17.264290099963546,
+    "timeout_seconds": 300,
+    "log": "build\\workbench-cut-feedback\\graphics-audio-dummy\\linux-carried.log",
+    "log_sha256": "9ea602f79f2348fa14cda1d48bab8aa9096cc327f58a921d95bad3827a63c758",
+    "clean": true
+  },
+  "baseline_growth_decor": {
+    "name": "baseline-material-presentation",
+    "command": [
+      "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "--path",
+      "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-cut-feedback\\baseline-002\\windows\\godot",
+      "--rendering-method",
+      "gl_compatibility",
+      "--script",
+      "res://tests/test_material_presentation_render.gd"
+    ],
+    "exit": 1,
+    "seconds": 8.83772880001925,
+    "timeout_seconds": 300,
+    "log": "build\\workbench-cut-feedback\\baseline-002\\windows\\baseline-material-presentation.log",
+    "log_sha256": "191410a7ef139c529a8719e5de85df1a5db20b91db10ff194c3e6ebe5573725b",
+    "clean": false
+  }
+}
