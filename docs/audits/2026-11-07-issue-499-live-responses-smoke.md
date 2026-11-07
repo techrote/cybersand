@@ -76,13 +76,23 @@ before/after comparison showing the pack and all three images changed. It is not
 | Godot cycle | after-capture rendered by the #498 launcher through the runner (class `godot-capture`, same `opengl3_angle` driver and framing as the before bundle), comparison reported full, viewport and detail as comparable with the pack, RG8 cells and PNG changed; `visual_cycle.claimed` is **true**, meaning the cycle executed and was verified, not that the result is accepted as better |
 | Patch | full patch SHA-256 `b5887c121aa8f8302088c86351dac9a3a037e9658fcfbbaa53cce80454ecc55b` (644,832 bytes, almost all of it the single-line regenerated `preview.svg`); `git apply --check` passes on the art content and the patched pack passes `validate_pack.py` and, run from its own directory, `render_pack.mjs --check`; a compact `pack.json`-only diff is retained |
 
-**Reviewer's reading of the images (author's judgement, not acceptance).** The retained before/after `full` shots
-show real, readable changes: the quartz fan gains a taller, more jagged silhouette, the seal gate gets shoulders
-and inner bars, and several modules gain seams and small accents; the model's own report says "modestly better, with
-some risk of extra noise". Against the QUALITY_BAR rule to reject noise, several additions also read as small
-**floating fragments in the void** (above the leftmost module, in the lower middle and above the gate), and the
-busy central breach is unchanged although the directive named it. Treat the patch as a candidate for the owning
-lane's human review, not as an accepted improvement; the reference-gallery comparison gate remains untested.
+**Reviewer's analysis (author's review, not acceptance).** Measured exactly from the before and after pack data
+(composed scene, last write wins) and from the Godot PNGs:
+
+| Measure | Value |
+|---|---|
+| Scene cells changed | 2,615 of 163,840 (1.6%): 1,862 newly filled, 753 overwritten, 0 erased; 23,351 of 655,360 PNG pixels differ (3.6%) |
+| Materials | 16 existing palette materials, none movable; palette, scene foundation and placements unchanged |
+| New mass that touches nothing that existed before | **17 of 52 new components, 905 of 1,862 new cells (49%)**: for example two basalt/granite slabs of 282 and 173 cells hovering about 20 cells above the leftmost module's rubble, bars and a rust column inside the empty cistern chamber, a grating bar floating inside the seal-gate opening, and small rust/amber/cyan marks in the void around the gantry |
+| New mass attached to existing structure | 35 components, 957 cells (for example the taller quartz-fan flanking pillars and the seal-gate shoulders and crown, which read as real improvements) |
+| Focal breach | unchanged, although the directive named it |
+| Rule check on `sealed-cistern` (status `contained-dynamic`, placement rule "insert only into previously empty cavity; don't intersect seals") | the 8 added rectangles overwrite 158 existing module cells: 51 steel-plate and 45 rusted-steel (frame/seal material) and, **in the wet base variant, 62 Water cells**; no movable material was added. The validator cannot see this; the module's Water containment is unqualified either way. |
+
+Reading: execution is sound, but about half of the added mass is unattached debris, which the QUALITY_BAR says to
+reject, and the cistern edits breach that module's own placement rule. A curated patch keeping only the attached
+additions and dropping the cistern edits would be a better candidate; the patch as run should **not** be accepted.
+The retained images are `review-diff-map.png` (magenta = changed pixels, yellow = floating components),
+`review-crop-left-modules.png` and `review-crop-cistern.png` (2-3x, before above after, floating fragments boxed).
 
 ## Retained evidence
 
@@ -99,6 +109,9 @@ Directory `docs/audits/issue-499-live-smoke-2026-11-07/` (credential-scan clean,
 | `run4-pack-only.diff` | `03da6a9c380ba45c4106ac510dde7a7e64c8b9282bd548433a979ae8b9673684` | compact excerpt of the full patch (pack.json only) |
 | `run4-before-full.png` | `a8a957f8824f654567752d0417068a65c1c072f696d65f63a81c248266035058` | Godot capture, bundle seal `a81f9954ca61ab221db08cb8853f893a88a81644b743a7d59d75b9af65cde564` |
 | `run4-after-full.png` | `dcf088e0f9e2db332921f8969c0907d96aa6c6a90a31bf25339c99cf330c7412` | Godot capture, bundle seal `b83e204bdae6c9cb81498fb049dd77565310d386b673f6611ebcc0f2245c3b76` |
+| `review-diff-map.png` | `d90bfddcefced959281f02472c6359b752ae06830c2713a06919f6f36ca7862d` | review analysis image, derived from the two Godot captures |
+| `review-crop-left-modules.png` | `faac05e92ae4c5351a68993f2e1caccfc3cec99fd3258ae1c3c24551a45655af` | review analysis image, derived from the two Godot captures |
+| `review-crop-cistern.png` | `04485005f9b2634ce3dc7fa6d9622466ab849e4b8b044371cd99c0bd5b3e973b` | review analysis image, derived from the two Godot captures |
 
 Command shape (key only in the environment): `python tools/atlas_agent_runner.py run --config <live config> --output-dir <new dir>`.
 
