@@ -116,16 +116,117 @@ func run_variant(rows: Array, variant: String) -> void:
 	check(guard.get("native_counts",{}).get("58",0) == 17,"mounted protected motif changed")
 	check(total == TOTAL_TICKS and main.latest_snapshot.tick_index == TOTAL_TICKS,
 		"mounted TOTAL native ticks !=480")
+	# Leave a valid native prepare unapplied. It must not reappear when the
+	# human stops, saves the authored apparatus and reopens a new generation.
+	# The test's 24 fake-HTTP call allowance still bounds both variants.
+	var pending_site: Dictionary = {"x":-39,"y":-4,"width":1,"height":1}
+	var before_pending: Dictionary = await _panel_call("observe",{
+		"region":pending_site,"detail":"cells"})
+	check(before_pending.get("status")=="observed"
+		and before_pending.get("native_counts",{}).get("0",-1)==1,
+		"unapplied site was not native Empty before Stop "+variant)
+	var pending: Dictionary = await _panel_call("prepare_edit",{
+		"observation_id":before_pending.get("observation_id",""),
+		"operations":[{
+			"shape":"rectangle","x0":-39,"y0":-4,"x1":-39,"y1":-4,
+			"material":58,"replace_only_material":0}]})
+	check(pending.get("status")=="proposed"
+		and not str(pending.get("proposal_id","")).is_empty(),
+		"mounted panel failed to prepare an unapplied native proposal "+variant)
+	var original_request_count: int = agent_panel.client._request_count
+	var obsolete_epoch: int = agent_panel.client.current_epoch()
+	var obsolete_serial: int = agent_panel.client._serial
+	var stop_generation: int = main.latest_snapshot.render_world_generation
 	agent_panel._on_stop()
-	await wait_for(func() -> bool: return not agent_panel._retire_pending and not agent_mount._authorised,
-		"mounted native Stop did not acknowledge")
+	if not await wait_for(func() -> bool:
+		return not agent_panel._retire_pending and not agent_mount._authorised
+			and not agent_panel.client.is_active(),
+		"mounted native Stop did not acknowledge "+variant):
+		return
 	var stopped_tick: int = main.latest_snapshot.tick_index
 	for _frame: int in range(4):
 		await process_frame
 	check(main.latest_snapshot.tick_index == stopped_tick and stopped_tick == TOTAL_TICKS,
-		"native mutated after mounted Stop ACK")
+		"native mutated after mounted Stop ACK "+variant)
+	check(agent_panel.proposal_overlay._footprint.is_empty(),
+		"mounted Stop failed to clear the unapplied proposal preview "+variant)
+	# Save/Load is the normal human workbench UI path, not a native-state
+	# checkpoint or an agent-provided filesystem operation.
+	var name: String = "wb-agent-528-panel-reopen-" + variant
+	workbench._name.text = name
+	if not check(workbench.save_setup(),
+		"mounted authored-start save refused "+variant):
+		return
+	var saved_start: Dictionary = Setup.read_named(name)
+	check(saved_start.has("setup")
+		and saved_start.get("setup",{}).get("edits",[]).size()==workbench.applied.edits.size(),
+		"mounted authored-start file did not retain human/agent geometry "+variant)
+	if not check(workbench.load_setup(),
+		"mounted authored-start load refused "+variant):
+		return
+	if not await wait_for(func() -> bool:
+		return _native_ready() and main.latest_snapshot.render_world_generation != stop_generation
+			and main.latest_snapshot.tick_index==0,
+		"mounted authored-start load did not create a fresh paused World "+variant):
+		return
+	var reopened_generation: int = main.latest_snapshot.render_world_generation
+	# The old fake-provider response may arrive while a NEW task is active.
+	# Neither the old response nor the retired native proposal has authority.
+	agent_panel._task.text = "Read-only audit of reopened authored start; do not mutate."
+	agent_panel._on_start()
+	if not await wait_for(func() -> bool:
+		return agent_panel.client.is_active() and not agent_panel._start_pending
+			and agent_mount._authorised,
+		"mounted panel could not authorize new generation after Save/Load "+variant):
+		return
+	agent_panel.client.receive_fake_response(obsolete_epoch,obsolete_serial,200,{
+		"id":"wb525-late-retired-%s" % variant,"status":"completed","output":[{
+			"type":"function_call","name":"apply_edit",
+			"call_id":"wb525-retired-%s" % variant,
+			"arguments":JSON.stringify({"proposal_id":pending.get("proposal_id","")})}]})
+	for _frame: int in range(4):
+		await process_frame
+	check(main.latest_snapshot.tick_index==0
+		and main.latest_snapshot.render_world_generation==reopened_generation,
+		"late old-generation API completion changed new native World "+variant)
+	var reopened_source: Dictionary = await _panel_call("observe",{
+		"region":SOURCE_OBSERVATION,"detail":"cells"})
+	check(reopened_source.get("status")=="observed"
+		and reopened_source.get("native_counts",{}).get("2",-1)==32
+		and reopened_source.get("image_status")=="matched_post_draw"
+		and reopened_source.get("identity",{}).get("completed_tick",-1)==0,
+		"mounted reopened start lacked 32 original Sand and matching PNG "+variant)
+	preserve_png(variant,"mounted-reopened-authored-start",reopened_source)
+	var reopened_guard: Dictionary = await _panel_call("observe",{
+		"region":{"x":30,"y":-3,"width":5,"height":7},"detail":"cells"})
+	check(reopened_guard.get("native_counts",{}).get("58",-1)==17,
+		"mounted reopened start lost 17 protected Hard Wall cells "+variant)
+	var reopened_pending: Dictionary = await _panel_call("observe",{
+		"region":pending_site,"detail":"cells"})
+	check(reopened_pending.get("status")=="observed"
+		and reopened_pending.get("native_counts",{}).get("0",-1)==1,
+		"retired unapplied proposal leaked into reopened native World "+variant)
+	var reopened_request_count: int = agent_panel.client._request_count
+	agent_panel._on_stop()
+	await wait_for(func() -> bool:
+		return not agent_panel._retire_pending and not agent_mount._authorised
+			and not agent_panel.client.is_active(),
+		"mounted reopened task did not receive native Stop ACK "+variant)
+	check(main.latest_snapshot.tick_index==0
+		and main.latest_snapshot.render_world_generation==reopened_generation,
+		"reopened read-only panel audit mutated native World "+variant)
+	check(DirAccess.remove_absolute(ProjectSettings.globalize_path(
+		Setup._path(name)))==OK,
+		"mounted test failed to clean named authored-start file "+variant)
 	print("WB525_MOUNTED_HOPPER "+JSON.stringify({"variant":variant,
-		"sand":final.get("native_counts",{}).get("2",-1),"protected":guard.get("native_counts",{}).get("58",-1),
+		"sand":final.get("native_counts",{}).get("2",-1),
+		"protected":guard.get("native_counts",{}).get("58",-1),
 		"completed_ticks":total,"applied_batches":batches,"fake_request_budget":24,
-		"fake_requests_used":agent_panel.client._request_count,"genuine_api_calls":0,
+		"fake_requests_used":original_request_count,"reopen_fake_requests_used":reopened_request_count,
+		"reopened_initial_sand":reopened_source.get("native_counts",{}).get("2",-1),
+		"reopened_protected":reopened_guard.get("native_counts",{}).get("58",-1),
+		"reopened_unapplied_empty":reopened_pending.get("native_counts",{}).get("0",-1),
+		"reopened_native_tick":main.latest_snapshot.tick_index,
+		"reopened_matched_png":reopened_source.get("image_status",""),
+		"genuine_api_calls":0,
 		"experimental_frame_not_signed_trajectory_acceptance":true}))
