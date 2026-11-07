@@ -36,7 +36,7 @@ MAX_SHOTS_PER_JOB = 100
 
 def _member(root: Path, relative: object) -> Path:
     """Manifest-provided paths never escape their capture bundle or traverse symlinks."""
-    if not isinstance(relative, str) or not relative or len(relative) > 240 or "\\\\" in relative:
+    if not isinstance(relative, str) or not relative or len(relative) > 240 or "\\" in relative:
         raise ToolError("capture_path_unsafe", "invalid capture member name")
     parts = relative.split("/")
     if relative.startswith("/") or any(x in ("", ".", "..") or ":" in x for x in parts):
