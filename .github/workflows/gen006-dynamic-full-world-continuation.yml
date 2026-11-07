@@ -71,6 +71,7 @@ jobs:
             build/gen006-dynamic/bridge "build/gen006-dynamic/static-$workers.g6c" "$workers" --reopen | tee "build/gen006-dynamic/bridge-cold-$workers.log"
             grep -q "GEN006_BRIDGE_SHARED_WORLD_STATIC_WITH_LIVE_DYNAMIC_PASS configured_workers=$workers" "build/gen006-dynamic/bridge-$workers.log"
             grep -q "GEN006_BRIDGE_COLD_STATIC_READBACK_PASS configured_workers=$workers" "build/gen006-dynamic/bridge-cold-$workers.log"
+            grep -q "absent_dynamic_ticks=8 absent_observed_workers_max=1" "build/gen006-dynamic/bridge-$workers.log"
           done
       - name: Preserve compiler, source and actual native results
         if: always()
@@ -154,6 +155,10 @@ jobs:
           findstr /C:"GEN006_BRIDGE_COLD_STATIC_READBACK_PASS configured_workers=1" build\gen006-dynamic\bridge-cold-1.log
           if errorlevel 1 exit /b 1
           findstr /C:"GEN006_BRIDGE_COLD_STATIC_READBACK_PASS configured_workers=4" build\gen006-dynamic\bridge-cold-4.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"absent_dynamic_ticks=8 absent_observed_workers_max=1" build\gen006-dynamic\bridge-1.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"absent_dynamic_ticks=8 absent_observed_workers_max=1" build\gen006-dynamic\bridge-4.log
           if errorlevel 1 exit /b 1
       - name: Preserve compiler, source and actual native results
         if: always()
