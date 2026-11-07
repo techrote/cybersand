@@ -83,6 +83,31 @@ jobs:
             tail -120 build/pf-c2048-host/prepared.log; exit 1; }
           cat build/pf-c2048-host/prepared.log
           grep -Eq 'PF_C2048_PREPARED: [0-9]+ checks; 0 failures' build/pf-c2048-host/prepared.log
+      - name: Actual long-window 8-actor C1024 vs C2048 workbench comparison
+        run: |
+          set -euo pipefail
+          bash tools/ci/prepare_linux_display.sh
+          export LIBGL_ALWAYS_SOFTWARE=1 LP_NUM_THREADS=2 GALLIVM_PERF=nopt
+          export CYBERSAND_SOURCE_SHA="$(git rev-parse HEAD)"
+          for capacity in 1024 2048; do
+            export PF_C2048_CAPACITY="$capacity"
+            if timeout 1500 xvfb-run --auto-servernum \
+                --server-args="-screen 0 1920x1080x24 -nolisten tcp" \
+                "$GODOT_BIN" --headless --path godot \
+                --script res://tests/pf_c2048_actual_workbench.gd \
+                > "build/pf-c2048-host/workbench-C${capacity}.log" 2>&1; then
+              outcome=0
+            else
+              outcome=$?
+            fi
+            echo "WORKBENCH_CAPACITY_C${capacity}_EXIT $outcome"
+            if [ "$capacity" -eq 2048 ] && [ "$outcome" -ne 0 ]; then
+              tail -130 "build/pf-c2048-host/workbench-C${capacity}.log"
+              exit 1
+            fi
+          done
+          python3 tools/ci/pf_c2048_workbench_readback.py \
+            build/pf-c2048-host "$(git rev-parse HEAD)"
       - name: Preserve exact original source, compile, import and host evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
