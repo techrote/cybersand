@@ -6,6 +6,7 @@ param(
     [string]$GodotExe = "godot",
     [string]$NativeExe = "",
     [string]$EvidenceRoot = "",
+    [string]$RepositoryRoot = "",
     [switch]$SkipBuild,
     [switch]$AutomatedOnly
 )
@@ -17,7 +18,12 @@ function Require([bool]$condition, [string]$message) {
     if (-not $condition) { throw $message }
 }
 
-$repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot "../.."))
+if ([string]::IsNullOrWhiteSpace($RepositoryRoot)) {
+    $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot "../.."))
+} else {
+    $repo = [IO.Path]::GetFullPath($RepositoryRoot)
+}
+Require (Test-Path -LiteralPath (Join-Path $repo "native/tests/gen006_streaming_slice.cpp")) "RepositoryRoot must name a CyberSand checkout containing the experimental GEN-006 source."
 Push-Location $repo
 try {
     $godotCommand = Get-Command $GodotExe -ErrorAction SilentlyContinue
