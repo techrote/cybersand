@@ -8,6 +8,7 @@ signal progress(status: String, detail: String)
 const Client = preload("res://scripts/workbench_agent_client.gd")
 const Overlay = preload("res://scripts/workbench_agent_proposal_overlay.gd")
 const ScopeOverlay = preload("res://scripts/workbench_agent_scope_overlay.gd")
+const SignedFrame = preload("res://scripts/workbench_agent_signed_frame.gd")
 const MAX_LOG_LINES := 32
 
 var client: Node
@@ -21,6 +22,7 @@ var _retire_pending := false
 var _start_nonce := 0
 var _task := TextEdit.new()
 var _model := LineEdit.new()
+var _signed_frame := CheckBox.new()
 var _region: Array[SpinBox] = []
 var _guard_region: Array[SpinBox] = []
 var _guard := CheckBox.new()
@@ -54,6 +56,10 @@ func _ready() -> void:
 	_model.placeholder_text = "Vision-capable Responses model ID (required)"
 	_model.text_changed.connect(func(_value: String) -> void: _retire_on_human_change())
 	add_child(_model)
+	_signed_frame.text = "EXPERIMENTAL +512 signed finite frame (trajectory NOT identical)"
+	_signed_frame.tooltip_text = "Explicit host-only native mapping; 26 NORMAL transient trajectory differences. Not approved as equivalent for live trials."
+	_signed_frame.toggled.connect(func(_value: bool) -> void: _on_scope_change())
+	add_child(_signed_frame)
 	var row := HFlowContainer.new()
 	add_child(row)
 	for spec: Array in [["X", -2147483648.0, 2147483647.0, 0.0],
@@ -207,6 +213,9 @@ func _on_start() -> void:
 		"protected_regions": _configured_protection(),
 		"allowed_materials": materials
 	}
+	if _signed_frame.button_pressed:
+		# Host-only experiment; it does not add any model-visible tool.
+		scope["coordinate_frame_id"] = SignedFrame.FRAME_ID
 	if scope.region.width * scope.region.height > 4096:
 		_log_status("refused","Authorized scope exceeds 4096 native cells.")
 		return

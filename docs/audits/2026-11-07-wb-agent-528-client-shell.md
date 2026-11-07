@@ -324,3 +324,31 @@ and apply the adjacent allowed nine-cell wall, run genuine acknowledged
 Step, exercise human intervention, and opt out. This is non-paid fake-transport
 control over the **real exclusive native workbench**, not a genuine model-driven
 Sand-hopper or owner desktop verdict.
+
+## 7 November — explicitly experimental signed-native mounted-client composition
+
+The opt-in #528 Godot panel now offers a **separate, off-by-default, human-only**
+`+512` signed finite frame choice. The host maps logical signed scope and
+protection into the existing exclusive finite 2048-square native World.
+Viewport previews for the proposed footprint and protected region use the
+same native camera translation. This changes neither the four Responses
+tool declarations nor the normal default World/physics/material behavior.
+The authoritative native owner still enforces permitted cells and materials.
+
+The source-composed mounted regression tests genuine #526/#527 native
+observe, protected refusal, nine-cell signed prepare/apply with readback,
+exact two-tick Step with matched original post-draw PNG and acknowledged Stop.
+Only the external Responses provider is simulated, never the native World.
+No API key or paid call is used in CI. This checkpoint consumes #526 source
+`6a9967fbd47c992c8f1bcd109163563d0f3ab18f` and #527 source
+`ffde819818556c61a335674fc366ab3b4a865af2`, with no writes to
+either worker's branch.
+
+**Physical admission remains HOLD.** The independent #537 +512 mapping study
+reported 26 transient nonidentical NORMAL trajectory states despite correct
+terminal 32/32 catchment. The original negative-world, immutable v2 reference,
+17 protected walls, and 480 **TOTAL** completed ticks have not changed.
+This source composition and the mounted engineering regression do not certify
+bit-exact physical equivalence, paid-model acceptance (0/3), owner desktop
+inspection, source-rebuilt production native binaries or a live 32-Sand trial.
+Only source-matched exact-head CI results may be reported as passing.

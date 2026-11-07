@@ -334,6 +334,107 @@ func _run() -> void:
 	check(wb.applied.edits.size() == opt_edits
 		and host.latest_snapshot.tick_index == opt_tick,
 		"opt-out mutated authored terrain or advanced native ticks")
+	# Experimental #526/#527 signed-native composition, NOT paid or
+	# physically trajectory-equivalent acceptance of the frozen Sand hopper.
+	print("WB528_STAGE signed native four-tool mounted interaction")
+	mount._toggle.button_pressed = true
+	panel._signed_frame.button_pressed = true
+	panel._region[0].value = -16
+	panel._region[1].value = -16
+	panel._region[2].value = 32
+	panel._region[3].value = 32
+	panel._guard_region[0].value = -8
+	panel._guard_region[1].value = -8
+	panel._guard_region[2].value = 2
+	panel._guard_region[3].value = 2
+	wb._set_view(Vector2(480,480),host.current_view_size)
+	await process_frame
+	check(mount.project_cell(Vector2i(-4,-4)) is Rect2,
+		"signed logical preview does not project to real finite camera")
+	check(mount.project_region(Rect2i(-8,-8,2,2)) is Rect2,
+		"signed protected overlay has no native-view projection")
+	panel._on_start()
+	if not await until(Callable(self,"_ready_panel_task"),
+			"signed native host authorization failed"):
+		_finish()
+		return
+	check(mount._authorised,"signed task not authorized by native owner")
+	s = panel.client._serial
+	_fake("observe","signed-observe",
+		{"region":{"x":-9,"y":-9,"width":16,"height":16},"detail":"cells"})
+	if not await until(func() -> bool: return _next_request(s),
+			"signed real native observation did not return"):
+		_finish()
+		return
+	var signed_observation: Dictionary = _receipt()
+	check(signed_observation.get("status") == "observed"
+			and signed_observation.get("image_status") == "matched_post_draw"
+			and signed_observation.get("coordinate_frame_id") ==
+				"wb-agent-signed-frame-candidate-v1:origin=512,512:extent=2048x2048",
+		"signed native observation missing frame identity/matched PNG")
+	_capture_original("mounted-signed-observation")
+	s = panel.client._serial
+	_fake("prepare_edit","signed-protected",
+		{"observation_id":signed_observation.get("observation_id",""),
+		"operations":[{"shape":"rectangle","x0":-8,"y0":-8,"x1":-7,
+			"y1":-7,"material":58,"replace_only_material":null}]})
+	if not await until(func() -> bool: return _next_request(s),
+			"signed protected edit refusal missing"):
+		_finish()
+		return
+	check(_receipt().get("status") == "refused",
+		"signed logical protected region failed to refuse edit")
+	s = panel.client._serial
+	_fake("prepare_edit","signed-proposal",
+		{"observation_id":signed_observation.get("observation_id",""),
+		"operations":[{"shape":"rectangle","x0":-4,"y0":-4,"x1":-2,
+			"y1":-2,"material":58,"replace_only_material":null}]})
+	if not await until(func() -> bool: return _next_request(s),
+			"signed real-native proposal missing"):
+		_finish()
+		return
+	var signed_prepared: Dictionary = _receipt()
+	check(signed_prepared.get("status") == "proposed"
+			and signed_prepared.get("changed_cells") == 9
+			and panel.proposal_overlay.visible
+			and panel.proposal_overlay._cells.size() == 9,
+		"signed native footprint differs from UI proposal")
+	s = panel.client._serial
+	_fake("apply_edit","signed-apply",
+		{"proposal_id":signed_prepared.get("proposal_id","")})
+	if not await until(func() -> bool: return _next_request(s),
+			"signed native application/readback missing"):
+		_finish()
+		return
+	var signed_applied: Dictionary = _receipt()
+	check(signed_applied.get("status") == "applied"
+			and signed_applied.get("readback",[]).size() == 9
+			and signed_applied.get("coordinate_frame_id") ==
+				"wb-agent-signed-frame-candidate-v1:origin=512,512:extent=2048x2048"
+			and not panel.proposal_overlay.visible,
+		"signed native application lacks nine verified logical cells")
+	s = panel.client._serial
+	var signed_before: int = host.latest_snapshot.tick_index
+	_fake("step","signed-step",{"ticks":2})
+	if not await until(func() -> bool: return _next_request(s),
+			"signed native two ticks/render join missing"):
+		_finish()
+		return
+	var signed_stepped: Dictionary = _receipt()
+	check(signed_stepped.get("status") == "stepped"
+			and signed_stepped.get("completed") == 2
+			and signed_stepped.get("after_tick") == signed_before + 2
+			and signed_stepped.get("observation",{}).get("image_status") == "matched_post_draw",
+		"signed Step missing exact ticks/matched original PNG")
+	_capture_original("mounted-signed-poststep")
+	panel._on_stop()
+	if not await until(func() -> bool: return not panel._retire_pending and not mount._authorised,
+			"signed native Stop acknowledgment missing"):
+		_finish()
+		return
+	check(host.latest_snapshot.tick_index == signed_before + 2,
+		"signed Stop completed extra unauthorized tick")
+	mount._toggle.button_pressed = false
 	# No API keys or paid calls; actual native edit and Godot frame were used.
 	print("WB528_STAGE completed conflict and late-response checks")
 	_finish()

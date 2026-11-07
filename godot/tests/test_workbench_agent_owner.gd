@@ -447,6 +447,106 @@ func run() -> void:
 	var retired: Dictionary = await adapter.retire_task()
 	check(retired.get("status")=="retired",
 		"host failed to retire privileged task without disclosing World")
+
+	# The signed candidate MUST traverse this exact, existing authoritative
+	# native owner and the original post-draw viewport. Unlike the pure mapper
+	# regression, these cells and stamps are genuinely written/read by World.
+	# This is a bounded host-adapter gate, NOT frozen hopper parity acceptance.
+	var signed_host = AuthoringHost.new()
+	check(signed_host.bind(main),"signed host did not bind the real workbench")
+	var wrong_frame: Dictionary = await signed_host.authorize_task(
+		"bad-signed-frame",Rect2i(-40,-16,100,128),[],[0,58],"unapproved-frame")
+	check(wrong_frame.get("status")=="refused"
+		and wrong_frame.get("reason")=="unsupported_coordinate_frame",
+		"unsupported signed task frame was silently accepted")
+	var signed_scope := Rect2i(-40,-16,100,128)
+	var signed_guard := Rect2i(30,-3,5,7)
+	var signed_authorized: Dictionary = await signed_host.authorize_task(
+		"real-signed-native",signed_scope,[signed_guard],[0,58],
+		"wb-agent-signed-frame-candidate-v1:origin=512,512:extent=2048x2048")
+	check(signed_authorized.get("status")=="authorized"
+		and signed_authorized.get("native_scope",Rect2i())==Rect2i(472,496,100,128)
+		and signed_authorized.get("logical_scope",Rect2i())==signed_scope,
+		"negative task/protection did not authorize exact positive native cells")
+	if signed_authorized.get("status")=="authorized":
+		main.camera_origin = Vector2(464,496)
+		var bad_signed: Dictionary = await signed_host.call_tool("observe",{
+			"region":{"x":-513,"y":0,"width":1,"height":1},"detail":"cells"})
+		check(bad_signed.get("status")=="refused",
+			"negative outside-finite observation slipped through signed host")
+		var overflow_signed: Dictionary = await signed_host.call_tool("observe",{
+			"region":{"x":9223372036854775807,"y":0,"width":1,"height":1}})
+		check(overflow_signed.get("status")=="refused",
+			"int64 signed observation narrowed/wrapped into native extent")
+		var before_signed: Dictionary = await signed_host.call_tool("observe",{
+			"region":{"x":-12,"y":-4,"width":16,"height":12},"detail":"cells"})
+		check(before_signed.get("status")=="observed"
+			and before_signed.get("region",Rect2i())==Rect2i(-12,-4,16,12)
+			and before_signed.get("native_region",Rect2i())==Rect2i(500,508,16,12)
+			and before_signed.get("native_material_ids",[]).size()==192
+			and before_signed.get("framebuffer_png",PackedByteArray()).size()>8
+			and int(before_signed.get("identity",{}).get("world_generation",-1))
+				== int(signed_authorized.get("generation",-2))
+			and before_signed.get("render_identity",{}).get("tick",-1)
+				== before_signed.get("identity",{}).get("completed_tick",-2),
+			"signed native observation did not join true original tick-matched PNG")
+		if before_signed.get("status")=="observed":
+			retain_matched_frame(before_signed,before_signed)
+			var guard_refusal: Dictionary = await signed_host.call_tool("prepare_edit",{
+				"observation_id":before_signed.observation_id,
+				"operations":[{"shape":"disc","x":32,"y":-2,
+					"radius":0,"material":58}]})
+			check(guard_refusal.get("status")=="refused",
+				"protected logical motif not refused by mapped owner")
+			# Protection error above does not change native World/revision;
+			# prepare the same observed Empty cells through the real worker.
+			var signed_proposed: Dictionary = await signed_host.call_tool("prepare_edit",{
+				"observation_id":before_signed.observation_id,
+				"operations":[{"shape":"rectangle","x0":-8,"y0":6,
+					"x1":-1,"y1":6,"material":58}]})
+			check(signed_proposed.get("status")=="proposed"
+				and signed_proposed.get("changed_cells",-1)==8
+				and signed_proposed.get("footprint",[]).size()==8
+				and signed_proposed.get("footprint",[])[0].get("x",0)==-8,
+				"negative model geometry not prepared against real local native cells")
+			if signed_proposed.get("status")=="proposed":
+				var signed_applied: Dictionary = await signed_host.call_tool(
+					"apply_edit",{"proposal_id":signed_proposed.proposal_id})
+				check(signed_applied.get("status")=="applied"
+					and signed_applied.get("authored_start",{}).get("status")=="recorded"
+					and signed_applied.get("readback",[]).size()==8
+					and signed_applied.get("readback",[])[0].get("x",0)==-8
+					and signed_applied.get("readback",[])[0].get("actual",-1)==58,
+					"signed native apply/readback and named authored start mismatched")
+				var dedup_signed: Dictionary = await signed_host.call_tool(
+					"apply_edit",{"proposal_id":signed_proposed.proposal_id})
+				check(dedup_signed==signed_applied,
+					"signed repeat apply did not retain original receipt")
+				var signed_after: Dictionary = await signed_host.call_tool("observe",{
+					"region":{"x":-8,"y":6,"width":8,"height":1},"detail":"counts"})
+				check(signed_after.get("status")=="observed"
+					and int(signed_after.get("native_counts",{}).get(58,0))==8,
+					"signed destination native Hard Wall count not real")
+				# Deliberate manual Sand at the mapped native cell. The agent
+				# must never erase it, even with an apparently legal Empty brush.
+				check(ui.paint(Vector2i(506,512),2),
+					"manual Sand input unavailable in signed native frame")
+				var sand_signed: Dictionary = await signed_host.call_tool("observe",{
+					"region":{"x":-8,"y":0,"width":8,"height":3},"detail":"cells"})
+				check(sand_signed.get("status")=="observed"
+					and int(sand_signed.get("native_counts",{}).get(2,0))>0,
+					"manual signed-region Sand not found in real native readback")
+				if sand_signed.get("status")=="observed":
+					var blocked_sand: Dictionary = await signed_host.call_tool("prepare_edit",{
+						"observation_id":sand_signed.observation_id,
+						"operations":[{"shape":"disc","x":-6,"y":0,
+							"radius":0,"material":0}]})
+					check(blocked_sand.get("status")=="refused"
+						and blocked_sand.get("reason")=="source_material_protected",
+						"real negative-region Sand improperly erased by agent")
+		var stop_signed: Dictionary = await signed_host.retire_task()
+		check(stop_signed.get("status")=="retired",
+			"signed native authorization did not retire at ACK")
 	finish()
 
 

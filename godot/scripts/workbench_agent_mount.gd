@@ -4,6 +4,7 @@ extends RefCounted
 ## only binds UI, converts copied receipts and enforces local response fences.
 const AgentPanel = preload("res://scripts/workbench_agent_panel.gd")
 const AuthoringHost = preload("res://scripts/workbench_authoring_host.gd")
+const SignedFrame = preload("res://scripts/workbench_agent_signed_frame.gd")
 # Source-identical #527 handoff; native World remains exclusively #526-owned.
 const FourToolBridge = preload("res://scripts/workbench_agent_four_tool_bridge.gd")
 
@@ -63,6 +64,13 @@ func mount(workbench: Control) -> bool:
 func panel() -> Control:
 	return _agent_panel
 
+func _presentation_origin() -> Vector2:
+	# Map logical signed preview to actual finite World camera only when
+	# explicitly human-selected; the native owner still enforces scope.
+	if is_instance_valid(_agent_panel) and _agent_panel._signed_frame.button_pressed:
+		return Vector2(SignedFrame.ORIGIN)
+	return Vector2.ZERO
+
 func project_cell(cell: Vector2i) -> Variant:
 	if not is_instance_valid(_host) or not is_instance_valid(_host.world_view):
 		return null
@@ -70,7 +78,7 @@ func project_cell(cell: Vector2i) -> Variant:
 	var dimensions: Vector2i = _host.current_view_size
 	if not content.has_area() or dimensions.x <= 0 or dimensions.y <= 0:
 		return null
-	var offset: Vector2 = Vector2(cell) - _host.camera_origin
+	var offset: Vector2 = Vector2(cell) + _presentation_origin() - _host.camera_origin
 	if offset.x < 0 or offset.y < 0 or offset.x >= dimensions.x or offset.y >= dimensions.y:
 		return null
 	var scale: Vector2 = content.size / Vector2(dimensions)
@@ -87,7 +95,7 @@ func project_region(region: Rect2i) -> Variant:
 		return null
 	var visible_world: Rect2 = Rect2(_host.camera_origin,Vector2(dimensions))
 	var clipped: Rect2 = visible_world.intersection(
-		Rect2(Vector2(region.position),Vector2(region.size)))
+		Rect2(Vector2(region.position) + _presentation_origin(),Vector2(region.size)))
 	if not clipped.has_area():
 		return null
 	var scale: Vector2 = content.size / Vector2(dimensions)
@@ -101,7 +109,15 @@ func authorize(scope: Dictionary) -> Dictionary:
 		return {"status":"refused","reason":"prior_authoring_task_not_retired"}
 	if not is_instance_valid(_host) or not _host.paused:
 		return {"status":"refused","reason":"workbench_must_be_paused"}
+	var frame_id: String = str(scope.get("coordinate_frame_id",""))
+	if frame_id not in ["",SignedFrame.FRAME_ID]:
+		return {"status":"refused","reason":"unsupported_coordinate_frame"}
 	var r: Variant = AuthoringHost._typed_region(scope.get("region",null))
+	if frame_id == SignedFrame.FRAME_ID:
+		var mapped: Dictionary = SignedFrame.region(scope.get("region",null))
+		if mapped.get("status") != "mapped":
+			return {"status":"refused","reason":"invalid_signed_authorized_region:" + str(mapped.get("reason",""))}
+		r = mapped.logical
 	if not r is Rect2i or r.size.x * r.size.y > 4096:
 		return {"status":"refused","reason":"invalid_or_oversized_authorized_region"}
 	var protected: Array = []
@@ -110,6 +126,11 @@ func authorize(scope: Dictionary) -> Dictionary:
 		return {"status":"refused","reason":"invalid_protection"}
 	for item: Variant in raw_protected:
 		var region: Variant = AuthoringHost._typed_region(item)
+		if frame_id == SignedFrame.FRAME_ID:
+			var checked: Dictionary = SignedFrame.region(item)
+			if checked.get("status") != "mapped":
+				return {"status":"refused","reason":"invalid_signed_protection:" + str(checked.get("reason",""))}
+			region = checked.logical
 		if not region is Rect2i:
 			return {"status":"refused","reason":"invalid_protected_region"}
 		protected.append(region)
@@ -129,7 +150,7 @@ func authorize(scope: Dictionary) -> Dictionary:
 	_authorizing = true
 	var candidate: RefCounted = _bridge
 	var receipt: Dictionary = await candidate.authorize_task(
-		"wb528-%d" % _task_serial,r,protected,materials)
+		"wb528-%d" % _task_serial,r,protected,materials,frame_id)
 	_authorizing = false
 	# Stop can retire the native task while the authorization await is
 	# suspended. Never resurrect authority from a late success receipt.

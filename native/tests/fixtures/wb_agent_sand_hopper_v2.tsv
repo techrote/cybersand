@@ -1,0 +1,37 @@
+# WB-AGENT-002 #527 | v2 preregistered positive-control candidate; preserves v1 immutable RED evidence
+# Native CyberSand World, ordinary default material/physics, no sources/bodies
+# v1 failed 30/32 at tick 480 on both configured 1/4 workers and both variants:
+# NORMAL stranded (-9,7),(-8,7); REVISED stranded (-1,7),(0,7).
+# v2 adds exactly one two-cell y=7 apron upstream of each v1 ramp to
+# prevent this confirmed stranded-pocket defect. v1 stays unchanged.
+# Freeze v2 geometry and total budget before any agent trial; any failure is HOLD.
+# TOTAL native tick allowance per NORMAL or REVISED attempt: 480 (four 120-step calls maximum)
+# Columns: variant phase shape a b c d
+# rect: x y width height, all cells inclusive of origin, exclusive of far edge
+# wedge_right: minimum_x start_y first_rightmost_wall_x row_count (boundary increases +1 each row)
+# wedge_left: maximum_x start_y first_leftmost_wall_x row_count (boundary decreases -1 each row)
+# "manual_wall"/"protected_wall"/"initial_sand" = authored initial start, no agent tool
+# "agent_wall"/"agent_empty" = reference Hard Wall/Empty-only intervention
+# "target" = fixed final count region, not construction
+both manual_wall rect -9 -1 1 8
+both manual_wall rect 0 -1 1 8
+both manual_wall rect -8 -1 8 1
+both manual_wall rect -8 6 8 1
+both initial_sand rect -8 0 8 4
+both protected_wall rect 30 -3 1 7
+both protected_wall rect 30 -3 5 1
+both protected_wall rect 34 -2 1 3
+both protected_wall rect 30 0 5 1
+normal agent_wall wedge_right -35 8 -7 21
+normal agent_wall rect -9 7 2 1
+normal agent_wall rect 9 29 1 12
+normal agent_wall rect 23 29 1 12
+normal agent_wall rect 9 40 15 1
+normal target rect 10 29 13 11
+revised agent_wall wedge_left 35 8 -2 21
+revised agent_wall rect -1 7 2 1
+revised agent_wall rect -32 29 1 12
+revised agent_wall rect -18 29 1 12
+revised agent_wall rect -32 40 15 1
+revised target rect -31 29 13 11
+both agent_empty rect -8 6 8 1
