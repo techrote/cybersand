@@ -554,3 +554,33 @@ persistent Wall intent and three original framebuffer PNGs. This remains a
 SHARDED native-World experimental capability, NOT in-place selective
 shared-World eviction or cross-shard Water continuation. Final exact-head
 Windows/Linux and Godot CI evidence must be checked before declaring PASS.
+
+
+## Builder-owned multi-material executable acceptance (7 November 2026)
+
+The existing Draft #486 graphical workflow now incorporates the **exact source
+bytes** of the previously independently qualified #511 Godot regression
+`godot/tests/gen006_drag_material_roundtrip_qa.gd`, from QA commit
+`d78dd695544a6859ee2aa5034bc1ed32c9cd276b` (original blob
+`651f27a6dc977aebd15ce6726aab8f6dde45b8e7`). This is adoption of an
+existing implementation-driven test, not a new test-only research programme.
+The original independent Ubuntu Godot/native evidence is
+[run #42358729277](https://github.com/techrote/cybersand/actions/runs/42358729277).
+
+The newly added builder-workflow step recompiles the **builder's exact native
+World source**, performs a left-Wall/right-Empty/middle-Water17 drag with
+20 genuine durable native edit acknowledgments, inspects four explicit Empty
+tombstones and Water quantity 34, traverses distant signed chunks to force
+native sharded-World eviction/reload under the two-resident budget, checks the
+same native PID and material/quantity restoration, and retains two original
+Godot OpenGL screenshots compared against native RGBA bytes. It uses a private
+save root isolated from the other graphical tests, records the executable
+SHA-256 and uploads compiler, source-tree, screenshot and runtime evidence.
+The test is **not** proof of shared-World selective eviction, cross-boundary
+Water transport, general dynamic-state continuation or production readiness.
+
+The source change only registers the executable test; its **new builder exact-head
+PASS/FAIL** must be taken from the resulting GitHub Actions run. Prior QA
+success is not automatically evidence for the new builder head. No accepted
+production native or GDExtension/default source is modified, and this entire
+prototype remains experimental/Draft.
