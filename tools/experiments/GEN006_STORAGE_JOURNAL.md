@@ -256,3 +256,34 @@ complete-carrier journal append is durable, without republishing full
 CYPS per edit. Run the actual native-owner hard-kill control on that
 isolated adapter and compare source-matched end-to-end ACK latency,
 write amplification and tick cost. Keep #518 Draft and unmerged.
+
+## 7 November 2026 — bounded G6J1 group-durability increment
+
+The experimental `Journal.append_batch(edits, expected_generation)` accepts
+**1–64** pre-staged, same-tick, consecutive-generation mutations. It validates
+the *entire* batch before modifying disk, retains the exact existing 48-byte
+EDIT record format, writes one contiguous bounded payload, and performs
+**one file fsync before allowing one group ACK**. The original `append` is
+a one-element batch and retains its existing interface. Individual edits
+within a batch must **not** be acknowledged separately before the barrier.
+
+A write/fsync/postwrite failure returns no group ACK. Complete but unacknowledged
+frames may remain visible in the OS cache. This is **not atomic rollback**:
+the external native owner must retire the old handle and reconcile the
+authoritative state before attempting continuation. Multiwriter coordination,
+dynamic native simulation ticks, power-loss guarantees and Windows directory
+durability remain unsupported.
+
+Executable unit regressions check one fsync for five records versus five
+fsyncs for five independent append calls, exact on-disk byte identity,
+late-batch invalid edit/tick/generation refusal without partial publication,
+injected fsync failure with no ACK, and hard-exited child group recovery in
+a fresh process. The pinned native CYPS pilot now also group-commits its five
+source-matched pre-staged edit receipts, retaining all original real-native
+replay, Water/temperature/Empty and damaged-sixth-record controls.
+
+**Measured scope:** this removes four of five file fsync calls *inside the
+isolated journal writer* on the five-record fixture. It does **not** yet
+reduce native owner ACK latency or tick cost: #486 continues to produce
+full-checkpoint ACKs independently, and the journal remains outside that
+live owner. No production adoption or general 30 Hz state durability claim.
