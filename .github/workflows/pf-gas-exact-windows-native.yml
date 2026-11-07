@@ -6,11 +6,13 @@ on:
       - 'native/src/world_pressure.inc'
       - 'native/tests/test_lcb_pressure.cpp'
       - 'native/tests/test_world.cpp'
+      - 'native/tests/test_water_inertial.cpp'
       - '.github/workflows/pf-gas-exact-windows-native.yml'
   push:
     branches: [integration/pf504-after-405-20261107]
     paths:
       - '.github/workflows/pf-gas-exact-windows-native.yml'
+      - 'native/tests/test_water_inertial.cpp'
   workflow_dispatch:
 
 permissions:
