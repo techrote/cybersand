@@ -63,3 +63,57 @@ reuse, not interprocess synchronization. An adversarial or independently live
 writer can still race a path replacement, and same-inode external tampering is
 not a supported storage ownership model. No claim of multiwriter safety, power-loss
 atomicity, integrated native correctness or improved throughput follows.
+
+
+## 7 November 2026 — real-native frozen-tick CYPS replay pilot
+
+The new `tools/experiments/gen006_storage_native_pilot.py` exercises the
+**actual native C++ World and CYPS serializer** from independently pinned
+experimental streaming PR #486, source commit
+`876859839df581b400b24a0a182b95d8ed259b1c`, without modifying #486.
+The source is checked out separately and compiled for actual Windows/Linux
+execution. The dedicated workflow is
+`.github/workflows/gen006-storage-native-pilot.yml`.
+
+The pilot generates a real signed chunk, saves the genuine CYPS checkpoint,
+collects five actual same-tick native edit receipts (Empty, three Walls,
+Water17/temperature417), binds a G6J1 checkpoint to the starting native hash
+and mutation generation, appends the receipts in a child storage process,
+hard-exits that process after durable writes, and recovers the exact records.
+`replay_checked` then launches **five fresh native World processes**, each
+restoring the original source-matched checkpoint and executing one longer edit
+prefix, verifying every intermediate native physical hash, generation and
+tick receipt. The final G6SLICE1 carrier and inner CYPS bytes must match the
+original staged native result exactly.
+
+**Qualified code/workflow head:** `95be518c34ce78a9e75b7c6aa023aa0725c01241`.
+The [actual Linux/Windows workflow #42356905328](https://github.com/techrote/cybersand/actions/runs/42356905328)
+passed both platforms with 1 and 4 configured workers; all four cases
+returned frozen tick 0, five replayed edits, final generation 5 and identical
+final native physical-state hash `8955484617271482506`.
+Evidence artifacts include the actual native compiler logs, real native
+process stdout/stderr and immutable Git checkout identities.
+
+A following source-only pilot change additionally reports the sum of the
+**five actual native-produced complete checkpoint payload lengths** versus
+one G6J1 CYPS baseline plus five append frames. This is a payload-size
+comparison, not a measured native disk-write count, fsync/ACK latency,
+30 Hz tick improvement, memory improvement or CPU speedup; inspect the
+new exact-head workflow outcome before accepting its measurements.
+
+**Critical limits:** The process exited abruptly here is the external
+G6J1 writer, **not the actual native simulation owner**. The real native
+World processes used for candidate execution and replay terminate normally.
+The journal is not integrated into #486's live 30 Hz controller and still
+does not track arbitrary simulation changes, sidecars or moving tick domains.
+This evidence qualifies the bounded *frozen-tick native checkpoint/replay
+interface* only. Production physics, GDExtension, default streaming and
+shared-World residency remain untouched.
+
+**Next engineering action:** introduce the narrowly scoped journal adapter
+into an isolated persistent native staging owner so a native-owner kill
+immediately after journal ACK (without normal CYPS save-all) recovers an actual
+candidate World. Then benchmark matched durable-ACK p50/p95/p99 latency,
+write amplification, and per-tick cost against the original #486 mechanism
+on both platforms, preserving full mutation/incarnation fencing. Do not
+merge or mark Ready without owner authorization.
