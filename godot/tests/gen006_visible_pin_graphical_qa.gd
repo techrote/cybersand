@@ -35,6 +35,58 @@ func _wall(demo: Control, x: int, y: int) -> void:
     event.pressed = true
     demo._gui_input(event)
 
+func _await_durable_edit(demo: Control, expected_acks: int) -> bool:
+    var deadline := Time.get_ticks_msec() + 20000
+    while Time.get_ticks_msec() < deadline:
+        await process_frame
+        if not demo.failure.is_empty():
+            return false
+        if demo.acknowledged_edits >= expected_acks:
+            return true
+    return false
+
+
+func _await_live_frame(demo: Control, chunk: Vector2i) -> bool:
+    var deadline := Time.get_ticks_msec() + 20000
+    while Time.get_ticks_msec() < deadline:
+        await process_frame
+        if not demo.failure.is_empty():
+            return false
+        if demo.displayed_chunk == chunk and demo.native_pid == demo.server_pid:
+            return true
+    return false
+
+
+func _await_empty_intent(demo: Control) -> bool:
+    # Inspect is a sequenced *native owner request*, not an overlapping
+    # synchronous _invoke while the interactive queue owns IPC.
+    var prior_calls: int = demo.total_calls
+    demo._queue_live_action("inspect 5 5", false)
+    var deadline := Time.get_ticks_msec() + 20000
+    while Time.get_ticks_msec() < deadline:
+        await process_frame
+        if not demo.failure.is_empty():
+            return false
+        if demo.total_calls > prior_calls and demo.last_receipts.contains(
+                "CELL chunk=(-2,2) local=(5,5)") and demo.last_receipts.contains(
+                "intent=1"):
+            return true
+    return false
+
+
+func _await_surface_pin(demo: Control) -> bool:
+    var deadline := Time.get_ticks_msec() + 15000
+    while Time.get_ticks_msec() < deadline:
+        await process_frame
+        if not demo.failure.is_empty():
+            return false
+        if demo.pinned_native_shards >= 1 and not demo.pin_notice.is_empty() and \
+                demo.last_receipts.contains("chunk=(-2,1)") and \
+                demo.last_receipts.contains("pinned=1"):
+            return true
+    return false
+
+
 func _frame(label: String, dir: String) -> Image:
     await process_frame
     await process_frame
@@ -74,7 +126,7 @@ func _run() -> void:
     var demo: Control = DEMO.instantiate()
     root.add_child(demo)
     demo.size = Vector2(1280, 800)
-    if not demo.failure.is_empty() or demo.texture == null:
+    if not demo.failure.is_empty() or demo.texture == null or not demo.interactive_async:
         _fail("native/Godot demonstration did not initialize: " + demo.failure)
         return
     var owner_pid: int = demo.native_pid
@@ -89,13 +141,13 @@ func _run() -> void:
         return
     var baseline_warm: int = _visible_orange_pin_pixels(before)
 
-    # An actual player right-click establishes deliberate Empty intent.
+    # A real queued player right-click must complete its native durable ACK
+    # before inspection. Never overlap direct _invoke with outstanding async IPC.
+    var first_acks: int = demo.acknowledged_edits
     _dig(demo, 5, 5)
-    demo._invoke(PackedStringArray(["inspect 5 5"]))
-    if not demo.failure.is_empty() or not demo.last_receipts.contains(
-            "CELL chunk=(-2,2) local=(5,5)") \
-            or not demo.last_receipts.contains("intent=1"):
-        _fail("real player Empty edit missing before unsafe camera movement")
+    if not await _await_durable_edit(demo, first_acks + 1) or \
+            not await _await_empty_intent(demo):
+        _fail("native Empty edit/intent not durably acknowledged before pin: " + demo.failure)
         return
 
     # The actual player camera Up key enters the already reproduced
@@ -105,10 +157,12 @@ func _run() -> void:
     if demo.world_chunk != Vector2i(-2, 1) or not demo.failure.is_empty():
         _fail("camera failed to navigate to unsupported surface: " + demo.failure)
         return
+    if not await _await_live_frame(demo, Vector2i(-2, 1)):
+        _fail("native owner did not display requested surface chunk: " + demo.failure)
+        return
     await create_timer(0.70).timeout
-    demo._invoke(PackedStringArray(), false, true)
-    if not demo.failure.is_empty():
-        _fail("native owner failed after surface tick: " + demo.failure)
+    if not await _await_surface_pin(demo):
+        _fail("native owner did not return a simulation-pin receipt: " + demo.failure)
         return
     if owner_pid != demo.native_pid or owner_pid != demo.server_pid \
             or not OS.is_process_running(owner_pid):
@@ -141,15 +195,17 @@ func _run() -> void:
     if not demo.failure.is_empty() or demo.world_chunk != Vector2i(-2, 2):
         _fail("Home could not restore the safe terrain view: " + demo.failure)
         return
-    demo._invoke(PackedStringArray(["inspect 5 5"]), false, true)
-    if not demo.failure.is_empty() or not demo.last_receipts.contains("intent=1"):
-        _fail("player Empty-intent lost after surface pin and actual eviction/reload: "
+    if not await _await_live_frame(demo, Vector2i(-2, 2)) or \
+            not await _await_empty_intent(demo):
+        _fail("player Empty-intent lost on actual native Home reload: "
             + demo.failure + " / " + demo.last_receipts.right(350))
         return
+    var before_wall_ack: int = demo.acknowledged_edits
     _wall(demo, 8, 8)
-    if not demo.failure.is_empty() or owner_pid != demo.native_pid \
-            or owner_pid != demo.server_pid or not OS.is_process_running(owner_pid):
-        _fail("scene cannot accept a later player paint on original native PID")
+    if not await _await_durable_edit(demo, before_wall_ack + 1) or \
+            owner_pid != demo.native_pid or owner_pid != demo.server_pid or \
+            not OS.is_process_running(owner_pid):
+        _fail("native owner did not durably acknowledge post-pin player Wall edit")
         return
     var recovered: Image = await _frame("02-home-and-edit-after-pin", evidence)
     if recovered == null:
