@@ -1,0 +1,143 @@
+name: Native #292 signed-copy endpoint regression (paired red / green)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'native/src/world.cpp'
+      - 'native/tests/test_copy_extreme_coordinates.cpp'
+      - '.github/workflows/native-copy-extreme-292.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: copy-extreme-292-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  baseline_original_ubsan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      BASE_SHA: 662ed4d88c08070dbb6f313931146a23e3631471
+      EVIDENCE: build/copy-extreme-292/baseline
+    steps:
+      - name: Checkout immutable candidate with exact upstream history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 0
+          persist-credentials: false
+          lfs: false
+      - name: Reproduce original main UBSan failures against the same test source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          git rev-parse HEAD > "$EVIDENCE/test-source.txt"
+          git rev-parse "HEAD:native/tests/test_copy_extreme_coordinates.cpp" > "$EVIDENCE/test-blob.txt"
+          git worktree add --detach "$RUNNER_TEMP/copy292-baseline" "$BASE_SHA"
+          echo "$BASE_SHA" > "$EVIDENCE/base-commit.txt"
+          git -C "$RUNNER_TEMP/copy292-baseline" rev-parse HEAD^{tree} > "$EVIDENCE/base-tree.txt"
+          git -C "$RUNNER_TEMP/copy292-baseline" rev-parse HEAD:native/src/world.cpp > "$EVIDENCE/original-world-blob.txt"
+          g++ --version | head -n 1 | tee "$EVIDENCE/compiler.txt"
+          localroot="$RUNNER_TEMP/copy292-baseline"
+          g++ -std=c++20 -O1 -g1 -pthread -fsanitize=undefined \
+            -fno-sanitize-recover=undefined -fno-omit-frame-pointer \
+            -I "$localroot/native/include" \
+            "$localroot/native/src/world.cpp" "$localroot/native/src/material_rules.cpp" \
+            "$localroot/native/src/scheduler_geometry.cpp" \
+            "$localroot/native/src/settled_world_discovery.cpp" \
+            "$localroot/native/src/render_snapshot.cpp" "$localroot/native/src/c_api.cpp" \
+            native/tests/test_copy_extreme_coordinates.cpp \
+            -o "$EVIDENCE/original-ubsan"
+          sha256sum "$EVIDENCE/original-ubsan" > "$EVIDENCE/original-binary.sha256"
+          failures=0
+          for fixture in material-max1 material-max2 rgba-max2 cabi-max2 zero; do
+            set +e
+            UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 \
+              "$EVIDENCE/original-ubsan" "$fixture" \
+              > "$EVIDENCE/RED-$fixture.log" 2>&1
+            rc=$?
+            set -e
+            if test "$rc" -eq 0 || ! grep -Fq 'runtime error: signed integer overflow' "$EVIDENCE/RED-$fixture.log"; then
+              echo "RED_CONTROL_FAILED $fixture exit=$rc"
+              tail -60 "$EVIDENCE/RED-$fixture.log"
+              exit 1
+            fi
+            echo "BASELINE_RED_CONFIRMED case=$fixture exit=$rc"
+            failures=$((failures+1))
+          done
+          test "$failures" -eq 5
+          echo "COPY_EXTREME_BASELINE: 5/5 original UBSan overflow reproductions confirmed"
+      - name: Retain authentic baseline sanitizer failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-copy292-original-red-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/copy-extreme-292/baseline/
+          if-no-files-found: error
+          retention-days: 90
+
+  candidate_ubsan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      EVIDENCE: build/copy-extreme-292/candidate
+    steps:
+      - name: Checkout candidate exact head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 0
+          persist-credentials: false
+          lfs: false
+      - name: Compile source-matched production World and C ABI with UBSan
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          git rev-parse HEAD > "$EVIDENCE/source-head.txt"
+          git rev-parse HEAD^{tree} > "$EVIDENCE/source-tree.txt"
+          git rev-parse HEAD:native/src/world.cpp > "$EVIDENCE/world-blob.txt"
+          git diff --check HEAD
+          python3 tools/ci/check_ci_provider_policy.py > "$EVIDENCE/provider.json"
+          g++ --version | head -n 1 | tee "$EVIDENCE/compiler.txt"
+          g++ -std=c++20 -O1 -g1 -pthread -fsanitize=undefined \
+            -fno-sanitize-recover=undefined -fno-omit-frame-pointer -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/src/render_snapshot.cpp native/src/c_api.cpp \
+            native/tests/test_copy_extreme_coordinates.cpp -o "$EVIDENCE/candidate-ubsan"
+          sha256sum "$EVIDENCE/candidate-ubsan" > "$EVIDENCE/binary.sha256"
+      - name: Execute every case as separate real native UBSan process
+        shell: bash
+        run: |
+          set -euo pipefail
+          count=0
+          for fixture in material-max1 material-max2 material-ymax1 material-ymax2 \
+                         rgba-max1 rgba-max2 rgba-ymax1 rgba-ymax2 \
+                         cabi-max1 cabi-max2 cabi-ymax1 cabi-ymax2 \
+                         min2 zero pad-and-projection negative-extent render-control; do
+            UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 \
+              timeout 35 "$EVIDENCE/candidate-ubsan" "$fixture" \
+              2>&1 | tee "$EVIDENCE/PASS-$fixture.log"
+            grep -Fx "COPY_EXTREME_PASS case=$fixture" "$EVIDENCE/PASS-$fixture.log"
+            count=$((count+1))
+          done
+          test "$count" -eq 17
+          echo "COPY_EXTREME_CANDIDATE: 17/17 cases PASS under real UBSan"
+      - name: Retain original candidate output including failed cases
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-copy292-candidate-ubsan-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/copy-extreme-292/candidate/
+          if-no-files-found: error
+          retention-days: 90
