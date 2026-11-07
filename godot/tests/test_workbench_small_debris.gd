@@ -74,11 +74,11 @@ func run() -> void:
 			var after: Dictionary=await census()
 			check(counts(after)==before,"actual native pixels survive falling/settling")
 			if n<=16:
-				var moved: bool=false
+				var source_still_occupied: bool=false
 				var pixels: PackedInt32Array=after.pixels
 				for i: int in range(0,pixels.size(),3):
-					if pixels[i+1]>43 and pixels[i+2] in [2,29]: moved=true
-				check(moved,"released material really falls")
+					if pixels[i]>=78 and pixels[i]<=82 and pixels[i+1]>=39 and pixels[i+1]<=43 and pixels[i+2] in [2,29]: source_still_occupied=true
+				check(not source_still_occupied,"all converted pixels vacate the original piece, independent of pre-existing Sand")
 			cut.merge({"before":first,"after":after,"tick_window":evidence.last_tick_window})
 	# Disabled control proves the route changes representation, not the rigid law.
 	var edits: Array=[[0,49,512,4,58]];edits.append_array(source(16))
@@ -102,6 +102,8 @@ func run() -> void:
 	check(counts(mixed)[29]==8 and counts(mixed)[2]==8,"mixed owner retains16 native granular cells")
 	var name: String="small-debris-"+OS.get_environment("CYBERSAND_FREED_WORKERS")
 	check(Setup.write_named(name,ui.applied).is_empty(),"save post-cut authored material recipe")
+	var saved: Dictionary=Setup.read_named(name)
+	check(saved.has("setup") and JSON.parse_string(JSON.stringify(saved.setup))==JSON.parse_string(JSON.stringify(ui.applied)),"disk recipe round trip preserves the blend and actor")
 	check(ui.restore_start(),"normal Restore retires whole mixed owner")
 	await scene_changed;host=current_scene;ui=host.shared_workbench
 	if not check(await until(installed),"fresh replay installed"): finish();return
@@ -110,4 +112,20 @@ func run() -> void:
 	var restored: Dictionary=await census(144)
 	check(host.rigid_bodies.size()==1 and ui.cut.capture_count==0 and counts(restored)[29]==8 and counts(restored)[2]==8,"replay has one fresh body and blend, no duplicate brick/body")
 	evidence["maximum_observed_workers"]=observed_workers
+	# Depart while the new native phase is visible and terrain is being installed.
+	var recipe: Dictionary=Setup.fresh(PackedInt32Array(ui.applied.liquid_policy),Vector2i(512,512))
+	recipe.version=4;recipe.edits=[[0,49,512,4,58]];recipe.edits.append_array(source(16))
+	recipe.actors=[Setup.instance(Setup.BARREL,1,Vector2(400,24))];recipe.next_id=2
+	check(ui.apply(recipe),"prepare interrupted conversion with an existing owner")
+	if not check(await until(installed),"interruption canvas ready"): finish();return
+	check(ui.step_once(),"apply interruption region")
+	if not check(await until(func():return not ui.step_pending),"interruption Step completes"): finish();return
+	var controller=ui.cut
+	ui.applied.brush=2;check(ui.paint(Vector2i(79,46),0) and controller.finish_stroke(ui),"start interrupted small conversion")
+	if not check(await until(func():return controller.receipts.any(func(row: Dictionary):return row.get("phase")==8)),"observe actual DebrisCommitted phase"): finish();return
+	evidence["interrupted_receipts"]=controller.receipts.duplicate(true)
+	change_scene_to_file("res://feature_launcher.tscn");await scene_changed
+	host=null;ui=null
+	await create_timer(.1).timeout
+	check(controller._retired and not controller.busy and controller.panel==null,"phase8 departure retires the complete owner and coroutine")
 	finish()
