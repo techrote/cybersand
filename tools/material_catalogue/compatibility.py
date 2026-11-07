@@ -260,7 +260,14 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': '9ad76b21854b3e44fc9444f8293d3c36c619746b',
   'record': 'docs/audits/2026-11-06-hard-surface-packet-incremental.md',
   'issue': 362,
-  'pr': 470})
+  'pr': 470},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': '8bf0cb0058b139c32c030f5bbbc7e7e4555814c601598e1d6c7abecf7397d7fb',
+  'to_lf_sha256': 'e23935738a1424b6e0009ae935e6f79fdc0d56c4162766061acb0ae2ec3de6ee',
+  'source_commit': '484b48f67ba4db68b1b4c73cd63f1a187594523d',
+  'record': 'docs/audits/2026-11-07-pf471-world-transition-proposal.md',
+  'issue': 492,
+  'pr': 471})
 
 
 class CompatibilityError(ValueError):
