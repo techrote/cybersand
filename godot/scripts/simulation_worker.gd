@@ -1716,7 +1716,9 @@ func queue_agent_authoring_command(command: Dictionary) -> int:
 			or _reset_requested:
 		_mutex.unlock()
 		return -1
-	if not command.has("action") or typeof(command.action) != TYPE_STRING:
+	if not command.has("action") or typeof(command.action) != TYPE_STRING \
+			or typeof(command.get("schema_version",null)) != TYPE_INT \
+			or int(command.schema_version) != AgentAuthoring.SCHEMA_VERSION:
 		_mutex.unlock()
 		return -1
 	_agent_request_serial += 1
@@ -1770,6 +1772,7 @@ func _consume_agent_authoring_request(local_paused: bool) -> void:
 			still_paused, manual_revision
 		)
 	result["request_serial"] = int(command.request_serial)
+	result["schema_version"] = AgentAuthoring.SCHEMA_VERSION
 	_mutex.lock()
 	_agent_result = result.duplicate(true)
 	_agent_inflight = false
