@@ -28,6 +28,7 @@ const RENDER_PATCH_METADATA_STRIDE: int = 6
 const MAX_PENDING_RENDER_PATCHES: int = 256
 const MAX_BRUSH_FOOTPRINT_CELLS: int = 4096
 const MAX_PENDING_BRUSH_COMMANDS: int = 8
+const AgentAuthoring = preload("res://scripts/workbench_authoring_session.gd")
 const PARTICIPATION_SAMPLE_INTERVAL_USEC: int = 250000
 
 var _thread: Thread = Thread.new()
@@ -101,6 +102,15 @@ var _physical_usable_cancelled_generations := PackedInt64Array([-1, -1, -1, -1, 
 
 var _pending_emissions: Array[Vector4i] = []
 var _pending_cell_emissions: Array[Dictionary] = []
+# #526 agent work is value-only across the same simulation-owner mutex.
+# There is ONE bounded in-flight tool request and ONE copied result publication.
+# Ordinary brush admissions fence prepared proposals even before owner consume.
+var _agent_authoring = AgentAuthoring.new() # Exclusive simulation-worker owner.
+var _agent_request: Dictionary = {} # Mutex-owned request value.
+var _agent_result: Dictionary = {} # Mutex-owned copied result.
+var _agent_request_serial: int = 0 # Mutex-owned monotonically increasing ID.
+var _agent_manual_intent_revision: int = 0 # Mutex-owned, never reset for this owner.
+var _agent_inflight: bool = false # Mutex-owned; reject human brush during native apply.
 var _reset_requested: bool = false
 var _reset_spawn: Vector2 = Vector2(150.0, 145.0)
 var _reset_sampled_character_enabled: bool = true
@@ -189,6 +199,7 @@ var _water_explicit_sink: int = 0
 
 func queue_lab(command: Dictionary) -> void:
 	_mutex.lock()
+	_agent_manual_intent_revision += 1
 	_lab_request_revision += 1
 	_lab_request = command.duplicate(true)
 	_lab_request["_owner_request_revision"] = _lab_request_revision
@@ -1191,6 +1202,8 @@ func set_frame_state(
 		_cancel_physical_usables_locked()
 		for actor: int in range(PhysicalEffects.MAX_ACTORS):
 			_physical_effect_generations[actor] += 1
+	if _paused != paused:
+		_agent_manual_intent_revision += 1
 	_paused = paused
 	if _prepared_frame_hold.is_empty():
 		if _view_size != view_size or _simulation_window_enabled != simulation_window_enabled or _cadence_lod_enabled != cadence_lod_enabled \
@@ -1685,6 +1698,70 @@ func set_render_snapshot_hz(render_hz: int) -> void:
 	_mutex.unlock()
 
 
+# These are narrow, non-blocking main->owner->main value interfaces.
+# No UI/model client is given direct mutable World or session access.
+func queue_agent_authoring_command(command: Dictionary) -> int:
+	_mutex.lock()
+	if not _running or not _paused or _workbench_extent == Vector2i.ZERO \
+			or _simulation_failed or not _agent_request.is_empty() or _agent_inflight:
+		_mutex.unlock()
+		return -1
+	if not _prepared_physical_publication.is_empty() or not _lab_request.is_empty() \
+			or _reset_requested:
+		_mutex.unlock()
+		return -1
+	if not command.has("action") or typeof(command.action) != TYPE_STRING:
+		_mutex.unlock()
+		return -1
+	_agent_request_serial += 1
+	_agent_request = command.duplicate(true)
+	_agent_request["request_serial"] = _agent_request_serial
+	var serial: int = _agent_request_serial
+	_mutex.unlock()
+	return serial
+
+
+func latest_agent_authoring_result(after_serial: int) -> Dictionary:
+	_mutex.lock()
+	var result: Dictionary = {}
+	if int(_agent_result.get("request_serial",0)) > after_serial:
+		result = _agent_result.duplicate(true)
+	_mutex.unlock()
+	return result
+
+
+# Called on the single native owner after existing human brush emissions and
+# before any new physical tick. The lock is held only to claim/release ownership,
+# NOT while reading/painting up to the bounded 4096 cells.
+func _consume_agent_authoring_request(local_paused: bool) -> void:
+	_mutex.lock()
+	if _agent_request.is_empty():
+		_mutex.unlock()
+		return
+	var command: Dictionary = _agent_request.duplicate(true)
+	_agent_request.clear()
+	_agent_inflight = true
+	var manual_revision: int = _agent_manual_intent_revision
+	var conflicted: bool = not _pending_emissions.is_empty() \
+		or not _pending_cell_emissions.is_empty() or _reset_requested \
+		or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty()
+	var still_paused: bool = local_paused and _paused and not _simulation_failed
+	_mutex.unlock()
+	var result: Dictionary
+	if conflicted:
+		result = {"status":"refused", "reason":"concurrent_manual_or_owner_transition"}
+	else:
+		result = _agent_authoring.execute(
+			command, _world, _world_generation, _workbench_extent,
+			still_paused, manual_revision
+		)
+	result["request_serial"] = int(command.request_serial)
+	_mutex.lock()
+	_agent_result = result.duplicate(true)
+	_agent_inflight = false
+	_mutex.unlock()
+
+
 func queue_emit_disc(
 	world_x: int,
 	world_y: int,
@@ -1698,6 +1775,9 @@ func queue_emit_disc(
 	var packed_material: int = (material_id & EMISSION_MATERIAL_MASK) | packed_flags
 	var emission_command: Vector4i = Vector4i(world_x, world_y, radius, packed_material)
 	_mutex.lock()
+	if _agent_inflight:
+		_mutex.unlock()
+		return false
 	if not _prepared_physical_publication.is_empty() \
 		or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty():
 		_mutex.unlock()
@@ -1714,6 +1794,7 @@ func queue_emit_disc(
 			_mutex.unlock()
 			return false
 		_pending_emissions.append(emission_command)
+	_agent_manual_intent_revision += 1
 	_mutex.unlock()
 	return true
 
@@ -1734,6 +1815,9 @@ func queue_emit_cells(
 		"packed_material": packed_material,
 	}
 	_mutex.lock()
+	if _agent_inflight:
+		_mutex.unlock()
+		return false
 	if not _prepared_physical_publication.is_empty() \
 		or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty():
 		_mutex.unlock()
@@ -1751,12 +1835,14 @@ func queue_emit_cells(
 			int(last_command.get("packed_material", -1)) == packed_material
 			and last_command.get("points", PackedInt32Array()) == points
 		):
+			_agent_manual_intent_revision += 1
 			_mutex.unlock()
 			return true
 	if _pending_cell_emissions.size() >= MAX_PENDING_BRUSH_COMMANDS:
 		_mutex.unlock()
 		return false
 	_pending_cell_emissions.append(command)
+	_agent_manual_intent_revision += 1
 	_mutex.unlock()
 	return true
 
@@ -1779,6 +1865,7 @@ func queue_reset(
 	runtime_enclosure_recovery_enabled: bool = true
 ) -> void:
 	_mutex.lock()
+	_agent_manual_intent_revision += 1
 	_lab_request_revision += 1
 	_reset_requested = true
 	_reset_spawn = spawn_position
@@ -2172,6 +2259,9 @@ func _worker_loop() -> void:
 					_world, local_physical_effects, local_rigid_body_epoch)
 			_consume_physical_usables(local_physical_usables, local_rigid_body_epoch, physical_effects_allowed, local_physical_usable_frame)
 			_apply_emissions(local_emissions,local_cell_emissions)
+			# Native agent tool commands share this World owner and cannot overtake
+			# an already-admitted manual emission or transition.
+			_consume_agent_authoring_request(local_paused)
 
 			if not local_paused:
 				if (
