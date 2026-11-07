@@ -2352,14 +2352,19 @@ bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
         throw std::invalid_argument("invalid material identifier");
     }
     if (material != Material::Empty && transient_obstacle_at(x, y) != 0U) return false;
-    // Even a successful same-value Empty set is an external mutation intent.
-    if (auto* chunk = find_chunk(address(x, y).chunk))
-        chunk->pristine_generated_empty = false;
+    // Never reclassify a pristine generated Empty shard after a successful
+    // external edit. A refused no-op state write is NOT an accepted mutation.
+    const auto mark_on_success = [this, x, y](bool accepted) {
+        if (accepted)
+            if (auto* chunk = find_chunk(address(x, y).chunk))
+                chunk->pristine_generated_empty = false;
+        return accepted;
+    };
     if (material == Material::Water && state_a_value == 0U) {
         if (find_chunk(address(x, y).chunk) == nullptr) return false;
-        return write_cell(x, y, Material::Empty, 0U, 0U, nullptr, true);
+        return mark_on_success(write_cell(x, y, Material::Empty, 0U, 0U, nullptr, true));
     }
-    return write_cell(x, y, material, state_a_value, state_b_value, nullptr, true);
+    return mark_on_success(write_cell(x, y, material, state_a_value, state_b_value, nullptr, true));
 }
 
 void World::set_simulation_region(std::optional<RectI64> region) {
