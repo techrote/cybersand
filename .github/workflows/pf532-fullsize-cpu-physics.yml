@@ -1,3 +1,4 @@
+# Qualification generation: final-v2 after cross-variant test correction
 name: PF532 sparse gas relabel full-size CPU and gameplay qualification
 on:
   push:
