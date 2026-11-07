@@ -45,7 +45,8 @@ def instrument(text: str) -> str:
         """    std::uint32_t participants=0;
     bool slept=false,reacted=false;
     int first_worker_tick=-1, first_sleep_tick=-1, first_reaction_tick=-1;
-    std::uint32_t sleep_ticks=0, max_scheduled=0, actual_worker_tick_count=0;""", "predicate initialization")
+    std::uint32_t sleep_ticks=0, actual_worker_tick_count=0;
+    std::uint64_t max_scheduled=0;""", "predicate initialization")
     body=only(body,
         "        participants=std::max(participants,stats.worker_threads_observed);\n"
         "        slept|=stats.scheduled_cores==0;",
