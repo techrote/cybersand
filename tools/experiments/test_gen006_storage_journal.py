@@ -208,6 +208,59 @@ class Tests(unittest.TestCase):
                 bad, self.path.with_name('bad-successor.g6j'), -17, 201,
                 ident().incarnation, 6, verify_staged)
 
+
+    def test_group_commit_one_fsync_byte_parity_and_preflight(self):
+        j = Journal.create(self.path, ident(), b'native-host-envelope')
+        edits = tuple(Mutation(1, i, 1, 0, 0, i + 6, 42, i + 100)
+                      for i in range(5))
+        pristine = self.path.read_bytes()
+        with self.assertRaisesRegex(ValueError, 'G6J_BATCH_SIZE_REFUSED'):
+            j.append_batch((), 5)
+        with self.assertRaisesRegex(ValueError, 'G6J_BATCH_SIZE_REFUSED'):
+            j.append_batch(edits * 13, 5)
+        with self.assertRaisesRegex(ValueError, 'G6J_GENERATION_SEQUENCE_REFUSED'):
+            j.append_batch((edits[0], Mutation(1, 5, 1, 0, 0, 99, 42, 1)), 5)
+        with self.assertRaisesRegex(ValueError, 'G6J_TICK_DOMAIN_REFUSED'):
+            j.append_batch((edits[0], Mutation(1, 5, 1, 0, 0, 7, 43, 1)), 5)
+        with self.assertRaisesRegex(ValueError, 'G6J_STALE_GENERATION'):
+            j.append_batch(edits, 6)
+        self.assertEqual(self.path.read_bytes(), pristine)
+        with mock.patch('gen006_storage_journal.os.fsync', wraps=os.fsync) as sync:
+            j.append_batch(edits, 5)
+            self.assertEqual(sync.call_count, 1)
+        self.assertEqual(recover(self.path).edits, edits)
+        self.assertEqual(j.state.generation, 10)
+
+        other = self.path.with_name('sequential.g6j')
+        seq = Journal.create(other, ident(), b'native-host-envelope')
+        with mock.patch('gen006_storage_journal.os.fsync', wraps=os.fsync) as sync:
+            for edit in edits:
+                seq.append(edit, seq.state.generation)
+            self.assertEqual(sync.call_count, 5)
+        self.assertEqual(self.path.read_bytes(), other.read_bytes())
+
+    def test_group_fsync_failure_never_acknowledged(self):
+        j = Journal.create(self.path, ident(), b'native-host-envelope')
+        edits = tuple(Mutation(2, i, 1, 0, 0, i + 6, 42, i + 100)
+                      for i in range(3))
+        with mock.patch('gen006_storage_journal.os.fsync',
+                        side_effect=OSError('G6J_INJECTED_SYNC_FAILURE')):
+            with self.assertRaisesRegex(OSError, 'G6J_INJECTED_SYNC_FAILURE'):
+                j.append_batch(edits, 5)
+        self.assertEqual(j.state.generation, 5)  # No durable group ACK.
+        # A complete *unacknowledged* suffix may be visible from OS cache.
+        # The original handle must not append after an uncertain publication.
+        with self.assertRaisesRegex(ValueError, 'G6J_EXTERNAL_WRITE_REFUSED'):
+            j.append(Mutation(1, 1, 1, 0, 0, 6, 42, 1), 5)
+
+    def test_group_hard_exit_fresh_recovery(self):
+        subprocess.run([sys.executable, __file__, '--batch-child',
+                        str(self.path)], check=True)
+        r = recover(self.path)
+        self.assertEqual(r.generation, 10)
+        self.assertEqual([e.generation for e in r.edits], [6, 7, 8, 9, 10])
+        self.assertFalse(r.torn_tail)
+
     def test_separate_process_abrupt_exit(self):
         subprocess.run([sys.executable, __file__, '--child', str(self.path)], check=True)
         r = recover(self.path)
@@ -221,4 +274,9 @@ if __name__ == '__main__':
         j = Journal.create(Path(sys.argv[2]), ident(), baseline())
         j.append(Mutation(4, 7, 9, 17, 417, 6, 42, 0x123456789), 5)
         os._exit(0)  # no atexit, no final save, real child process
+    if len(sys.argv) == 3 and sys.argv[1] == '--batch-child':
+        j = Journal.create(Path(sys.argv[2]), ident(), b'native-host-envelope')
+        j.append_batch(tuple(Mutation(1, i, 1, 0, 0, i + 6, 42, i + 100)
+                             for i in range(5)), 5)
+        os._exit(0)
     unittest.main(verbosity=2)
