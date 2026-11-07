@@ -7,7 +7,7 @@ extends Control
 # shared-World streaming, production GDExtension ownership or cross-shard physics.
 const SIDE: int = 64
 # Open on the compiled Strata generator's actual surface instead of empty sky.
-const DEMO_START: Vector2i = Vector2i(-1, 1)
+const DEMO_START: Vector2i = Vector2i(-2, 1)
 const DISPLAY_SIZE: float = 640.0
 const DISPLAY_TOP_LEFT: Vector2 = Vector2(28.0, 76.0)
 const FRAME_BYTES: int = SIDE * SIDE * 4
