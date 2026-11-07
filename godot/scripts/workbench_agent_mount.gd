@@ -73,6 +73,8 @@ func project_cell(cell: Vector2i) -> Variant:
 	return Rect2(content.position + offset * scale, scale)
 
 func authorize(scope: Dictionary) -> Dictionary:
+	if _bridge == null:
+		return {"status":"refused","reason":"authoring_bridge_not_bound"}
 	if _pending_retirement or _authorizing or _authorised:
 		return {"status":"refused","reason":"prior_authoring_task_not_retired"}
 	if not is_instance_valid(_host) or not _host.paused:
@@ -125,7 +127,21 @@ func retire() -> Dictionary:
 		answer = await _bridge.stop()
 		if answer.get("status") == "stopped" and answer.get("no_further_agent_mutations") == true:
 			_authorised = false
-			answer = {"status":"retired","reason":"native_527_stop_ack","owner_receipt":answer}
+			# #527's StepSequence is permanently retired after Stop and its
+			# bridge deliberately remains in the stopping state. Reuse would
+			# refuse EVERY later authoring session. Only after the exclusive
+			# native owner acknowledges retirement may this #528 host adapter
+			# bind a fresh bridge for deliberate human reauthorization.
+			var native_ack: Dictionary = answer.duplicate(true)
+			var replacement: RefCounted = FourToolBridge.new()
+			if is_instance_valid(_host) and replacement.bind(_host):
+				_bridge = replacement
+				answer = {"status":"retired","reason":"native_527_stop_ack",
+					"ready_for_new_task":true,"owner_receipt":native_ack}
+			else:
+				_bridge = null # Fail closed; never fall back to a retired bridge.
+				answer = {"status":"retired","reason":"native_ack_but_new_bridge_unavailable",
+					"ready_for_new_task":false,"owner_receipt":native_ack}
 			break
 		if str(answer.get("reason","")) not in [
 			"authoring_host_quarantined_or_busy","host_tool_busy"]:
