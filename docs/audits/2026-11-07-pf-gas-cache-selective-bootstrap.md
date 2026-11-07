@@ -1,113 +1,130 @@
 ---
-title: PressureFlow gas-cache admission diagnosis and selective bootstrap
+title: PressureFlow gas-cache admission NO-GO and sparse relabel implementation
 status: Proposed
 document-kind: audit
-scope: PR #532 causal diagnosis, proof boundary and qualification record
+scope: PR #532 causal diagnosis, rejected cache bootstrap, bounded replacement and qualification record
 last-reviewed: 2026-11-07
 related-documents: [../architecture/pressure-optimization.md, 2026-11-07-pf-gas-selective-cache-transition.md]
 ---
 
-# PressureFlow gas-cache admission diagnosis and selective bootstrap
+# PressureFlow gas-cache admission NO-GO and sparse relabel implementation
 
-## Source baseline
+## Source baseline and existing evidence
 
 PR #532 branches from accepted main `81bbd5ff5cf366159e2b8a630609359c13560080`.
-The implementation deliberately does not import the #504 BFS/seed fast paths or
-rewrite the #505/#515/#522 evidence branches.
+It does not import the #504 BFS/seed fast paths or rewrite #505/#515/#522.
 
-Prior production-facing evidence established the problem boundary:
+Existing application evidence established one complete gas reference pass per
+gas-enabled tick, zero cache/component reuse, and a much smaller real-workbench
+benefit than #504's isolated native result. PR #532 therefore bounded its first
+investigation to the existing cache admission path.
 
-- the native-only #504 source can reduce isolated gas discovery work;
-- the actual application still executes one complete reference gas pass per
-  gas-enabled tick and observed zero whole-gas or component cache reuses;
-- the full 2048x1024 stress-canvas reduced the apparent native-only benefit to
-  a low-single-digit tick improvement.
+## Bounded cache investigation — NO-GO
 
-Those observations make cache admission, rather than another BFS micro-fastpath,
-the bounded subject of this change.
-
-## Causal diagnosis
-
-The cache already contains a selective component mechanism:
-`replay_pressure_gas_region()` can replay a recorded sealed component at its
-actual reference seed, and `prepare_pressure_gas_cache()` can invalidate
-individual summaries against owner-reduced dirty chunks.
-
-The mechanism was nevertheless cold under sustained topology activity because
-`rebuild_pressure_gas_cache()` constructed **all** component summaries only
-when the complete gas operator reported a global fixed point:
+The current cache already has selective component replay and dirty-chunk
+invalidation, but component summaries are normally built only after the
+complete gas operator reaches a global fixed point:
 
 `!topology_changed && !labels_changed && chunk_allocations == 0`.
 
-That requirement is necessary for **whole-operator** reuse, but it is stronger
-than the proof already available for an individual sealed component. A local
-edit can legitimately make `topology_changed` or `labels_changed` true while
-many unrelated compartments retain identical membership and identity. Before
-PR #532, those unrelated compartments received no certificate at all.
+PR #532 first tested whether that global prerequisite was unnecessarily keeping
+otherwise stable components cold. A bounded experimental bootstrap constructed
+candidate summaries from one completed authoritative pass, retained the
+owner-reduced dirty set and invalidated dirty-adjacent components before any
+future replay.
 
-## Selective proof admitted by PR #532
+The workbench-derived exact-input diagnostic disproved that hypothesis for the
+target workload:
 
-A component can bootstrap only from a gas pass that has just completed through
-the authoritative reference reducer. It must satisfy the pre-existing strong
-component proof:
+- 264 gas-enabled ticks;
+- 1,659 component proof checks;
+- one 2,097,152-cell component-build scan;
+- zero member initializations;
+- zero member builds;
+- zero cache builds;
+- zero component reuses;
+- zero capacity or pair-budget fallbacks;
+- 22,094 dirty chunks queued cumulatively;
+- 54,537,949 authoritative BFS cells;
+- 572,309,504 seed cells and 572,309,504 relabel cells.
 
-1. sealed, positive-ID, bounded-volume region;
-2. no fresh or atmosphere cells and no nonresident-node dependency;
-3. exactly one prior-compartment overlap;
-4. that overlap count equals the complete region volume;
-5. the prior compartment ID equals the reducer-selected region label;
-6. the live compartment still has identical ID, volume and anchor;
-7. resident cache membership is complete and the gas pass allocated no chunks.
+Thus the cache was not merely being refused by the global fixed-point gate or a
+capacity budget. Under continuous authored-workbench churn, no region inspected
+by the existing strong component proof qualified as a safely reusable sealed
+component. The experimental bootstrap is therefore rejected rather than
+weakening the proof or forcing unsafe reuse.
 
-For the new active-churn bootstrap, the owner must additionally retain a
-complete bounded dirty-chunk set. Any component whose one-chunk-expanded bounds
-intersect that set is invalidated before it can be replayed. Dirty-set overflow,
-pair-budget exhaustion, member-capacity exhaustion, incomplete resident
-membership or other uncertainty declines the cache.
+The same exact-input run compared accepted main with the experimental candidate
+for 264 ticks in each of four source lanes (1/4 workers, camera off/on). All
+1,056 source-paired ticks matched physical hash, quantity digest, gas digest,
+Water quantities, gas ledgers and compartment counts exactly. The failure was
+strictly “no useful cache opportunity”, not a physics mismatch.
 
-Replay remains optimistic only until validation. Before a single member is
-stamped, every recorded member must still resolve to the same indexed chunk and
-cell, remain Empty, retain the same gas label, be clear of transient obstacles
-and not already belong to the current reference region. A stale proof requests
-one complete uncached restart before authoritative identity reduction.
+## Implemented lower-cost alternative: sparse authoritative relabel
 
-Whole-gas reuse remains unchanged and still requires the original global fixed
-point.
+The reference gas operator remains the oracle. PR #532 now leaves its seed
+census, BFS, identity/lineage reducer, quantity law and whole/component cache
+admission unchanged.
 
-## Cost bound
+The measured redundancy is instead in the final label publication sweep:
+the diagnostic examined ~2.17 million resident cells per gas tick for relabel
+while the BFS actually visited ~207 thousand cells per tick.
 
-The selective bootstrap performs at most one extra component/member construction
-between complete cache/index builds. It is not permitted to rescan the complete
-resident World every active tick. Once admitted, existing valid summaries are
-retained across unrelated churn and independently invalidated as owner-reduced
-gas inputs arrive.
+Execution v5 adds bounded derived bookkeeping to cached variants:
 
-No new per-cell storage is introduced. Existing bounded gas-member,
-gas-component and dirty-chunk reservations are reused; PR #532 adds only
-owner-side proof state. The pressure-optimization execution identity advances
-from v4 to v5 because derived work changes. Physical state, gas/save authority,
-capacity identities and serialization do not.
+1. One construction-time bit per admitted resident cell records cells actually
+   reached by the authoritative BFS.
+2. The existing owner-reduced gas-dirty chunk set is retained until relabelling
+   finishes rather than being drained immediately after cache invalidation.
+3. Every gas-dirty chunk executes the original complete relabel scan.
+4. A complete scan records whether a chunk still contains any unvisited,
+   positive live gas label under material or transient-mask occlusion. Such a
+   chunk remains on the complete-scan path because a remote split/merge could
+   later retire that label.
+5. Only a clean indexed chunk with no latent-label obligation may publish labels
+   by iterating the exact BFS visit bitset.
+6. Dirty-set overflow, cache/index uncertainty, gas-cache replay, gas-pass chunk
+   allocation, or a malformed visit/bit relation falls back to the original
+   complete relabel sweep.
 
-## Qualification status
+The complete scan's dangling-label retirement rule is retained exactly. Sparse
+relabelling therefore does not infer topology from visible pixels, Water
+quantity, pressure stability or apparent motion; it merely avoids revisiting
+cells that the authoritative BFS did not touch when the owner already has a
+complete proof that no hidden positive label needs retirement.
+
+## Cost and authority boundary
+
+The new storage is bounded at cache construction: one bit per admitted cell plus
+one latent-label byte per admitted chunk. It is derived, nonserialized and
+reported through existing gas/derived capacity accounting. There are no
+per-tick heap allocations and no per-cell atomics.
+
+The pressure-optimization execution identity advances from v4 to v5. Physical
+state, gas IDs/generations/parents, gas quantities, pressure law, C1024/C2048
+capacity identities, CYPS/hash semantics, Water defaults and save authority are
+unchanged.
+
+## Qualification gates
 
 The exact-source deterministic replay and actual 2048x1024 eight-Rapier-barrel
-B-C-C-B CPU qualification are branch-scoped evidence gates:
+B-C-C-B CPU qualification are branch-scoped gates:
 
-- deterministic replay: https://github.com/techrote/cybersand/actions/workflows/pf532-gas-cache-identical-replay.yml
-- real workbench CPU/gameplay: https://github.com/techrote/cybersand/actions/workflows/pf532-fullsize-cpu-physics.yml
+- deterministic replay: `pf532-gas-cache-identical-replay.yml`
+- actual gameplay CPU/workbench: `pf532-fullsize-cpu-physics.yml`
 
 The deterministic gate requires exact per-tick physical/gas/Water parity across
-accepted main and PR #532, one/four-worker parity, unchanged complete-reference
-pass count, actual component-member validation/replay and reduced BFS cell work.
+accepted main and PR #532 and exact 1/4-worker parity. It additionally requires
+unchanged seed/BFS/reference-pass/component-cache work and a relabel-cell
+reduction in every lane.
 
-The workbench gate builds accepted main and PR #532 with one compiler and
-temporary identical timing probes, then runs the original 2048x1024
-`stress-canvas` with eight live Rapier barrels in B-C-C-B order. It records
-native tick timing, gas wall/process/owner CPU windows, discovery/identity/
-relabel CPU windows, cache work, memory observations, native worker
-participation and native conservation checkpoints.
+The workbench gate builds accepted main and the exact PR head with the same
+compiler and temporary identical stage probes, then executes the original
+2048x1024 `stress-canvas` with eight live Rapier barrels in balanced B-C-C-B
+order. It records native tick p50/p95, gas wall/process/owner CPU, discovery,
+identity and relabel CPU windows, cache work/memory, actual worker
+participation and conservation checkpoints.
 
-**No performance GO is asserted by this document.** The optimization remains
-proposed until those exact-head measurements demonstrate worthwhile real
-gameplay CPU savings. If they show negligible or negative benefit, the
-implementation is a NO-GO rather than a reason to expand cache complexity.
+**No performance GO is asserted until those final sparse-relabel measurements
+complete.** If real gameplay CPU does not improve by more than the maintenance
+cost, execution v5 is a NO-GO and must not be integrated.
