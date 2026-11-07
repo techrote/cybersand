@@ -22,16 +22,20 @@ def require(condition: bool, message: str) -> None:
         raise ValueError(message)
 
 
-def source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
+def source_contract(root: Path, source_sha: str, shard_count: int, *,
+                    ci_runtime_dir: Path | None = None,
+                    run_id: str | None = None, attempt: str | None = None) -> dict:
     import run_windows_godot_regressions as windows
 
     # Source discovery, attributes and blob reads share one operation allowance;
     # additional inputs must not create a sequence of per-file watchdogs.
     with windows.metadata_budget():
-        return _source_contract(root, source_sha, shard_count)
+        return _source_contract(root, source_sha, shard_count, ci_runtime_dir=ci_runtime_dir,
+                                run_id=run_id, attempt=attempt)
 
 
-def source_input_hashes(root: Path, paths: list[str], required_lfs: set[str]) -> dict:
+def source_input_hashes(root: Path, paths: list[str], required_lfs: set[str], *,
+                        ci_native_sha: str | None = None) -> dict:
     """Allow only committed bytes or their declared Windows checkout form."""
     import run_windows_godot_regressions as windows
 
@@ -78,13 +82,23 @@ def source_input_hashes(root: Path, paths: list[str], required_lfs: set[str]) ->
                 permitted = {hashlib.sha256(data.replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")).hexdigest()}
             elif attributes["eol"] == "unspecified" and b"\r" not in data:
                 permitted.add(hashlib.sha256(data.replace(b"\n", b"\r\n")).hexdigest())
+        if path == windows.NATIVE and ci_native_sha is not None:
+            require(attributes["filter"] == "lfs" and
+                    re.fullmatch(r"[0-9a-f]{64}", ci_native_sha) is not None,
+                    "CI native replacement requires committed LFS source path")
+            # The executor installs the same-run compiled DLL over the LFS
+            # checkout pointer. Independently use the downloaded build proof
+            # rather than trusting the digest claimed by the shard report.
+            permitted = {ci_native_sha}
         hashes[path] = sorted(permitted)
     require(not blobs.read(), "extra committed source blob output")
     windows.metadata_remaining()
     return hashes
 
 
-def _source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
+def _source_contract(root: Path, source_sha: str, shard_count: int, *,
+                     ci_runtime_dir: Path | None = None,
+                     run_id: str | None = None, attempt: str | None = None) -> dict:
     """Derive authority from the exact checkout, never from shard reports.
 
     The reducer need not materialize either LFS DLL. Compare committed LFS
@@ -104,9 +118,19 @@ def _source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
     excluded = [case.name for case in cases if case.requires_display]
     require(bool(selected), "source discovery has no applicable Windows cases")
     shards, _ = runner.build_shard_plan(selected, shard_count)
-    raw_manifest = windows.git(root, "show", "HEAD:" + windows.PROVENANCE)
-    manifest = json.loads(raw_manifest)
-    require(manifest.get("schema_version") == 1
+    if ci_runtime_dir is not None:
+        import windows_ci_runtime as ci
+        manifest, raw_manifest = ci.verify_bundle(
+            root, ci_runtime_dir, source_sha=source_sha,
+            run_id=run_id, attempt=attempt)
+        provenance_path = ci.PROVENANCE_PATH
+        expected_schema = 2
+    else:
+        raw_manifest = windows.git(root, "show", "HEAD:" + windows.PROVENANCE)
+        manifest = json.loads(raw_manifest)
+        provenance_path = windows.PROVENANCE
+        expected_schema = 1
+    require(manifest.get("schema_version") == expected_schema
             and manifest.get("artifact") == windows.NATIVE,
             "unexpected source runtime manifest")
     inputs = manifest.get("source_inputs", {})
@@ -118,6 +142,12 @@ def _source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
                 "source runtime manifest is stale: " + relative)
     binaries = {}
     for relative in (windows.NATIVE, windows.RAPIER):
+        if relative == windows.NATIVE and ci_runtime_dir is not None:
+            # Not retained LFS bytes: the independently downloaded same-run
+            # native-build artifact supplies the current-source binary digest.
+            binaries[relative] = {"path": relative, "sha256": manifest["sha256"],
+                                  "size": manifest["size"]}
+            continue
         pointer = windows.git(root, "show", "HEAD:" + relative)
         match = re.fullmatch(
             rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n",
@@ -143,7 +173,7 @@ def _source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
         "plans": [[runner.case_dict(case) for case in shard] for shard in shards],
         "runtime_source_commit": manifest["source_commit"],
         "runtime_build_commit": manifest["build_commit"],
-        "runtime_provenance": {"path": windows.PROVENANCE,
+        "runtime_provenance": {"path": provenance_path,
                                "sha256": hashlib.sha256(raw_manifest).hexdigest()},
         "native_source_inputs": inputs,
         "cybersand_runtime": binaries[windows.NATIVE],
@@ -151,7 +181,9 @@ def _source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
         "godot_version": windows.GODOT_VERSION,
         "godot_archive_sha512": windows.GODOT_SHA512,
         "tested_input_paths": paths,
-        "tested_input_sha256": source_input_hashes(root, paths, {windows.NATIVE, windows.RAPIER}),
+        "tested_input_sha256": source_input_hashes(
+            root, paths, {windows.NATIVE, windows.RAPIER},
+            ci_native_sha=manifest["sha256"] if ci_runtime_dir is not None else None),
     }
 
 
@@ -366,9 +398,13 @@ def main() -> None:
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--attempt", required=True)
     parser.add_argument("--shard-count", type=int, required=True)
+    parser.add_argument("--ci-runtime-dir", type=Path,
+                        help="Same-run Windows build artifact, independently checked by coverage")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    expected = source_contract(Path(__file__).resolve().parents[2], args.source_sha, args.shard_count)
+    expected = source_contract(Path(__file__).resolve().parents[2], args.source_sha,
+                               args.shard_count, ci_runtime_dir=args.ci_runtime_dir,
+                               run_id=args.run_id, attempt=args.attempt)
     result = verify(args.root, args.source_sha, args.run_id,
                     args.attempt, args.shard_count, expected=expected)
     args.output.parent.mkdir(parents=True, exist_ok=True)

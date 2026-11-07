@@ -335,7 +335,7 @@ class SourceContractTests(unittest.TestCase):
         self.git = git
         subprocess.run(["git", "init", "-q", str(self.root)], check=True)
         git(self.root, "config", "user.name", "fixture"); git(self.root, "config", "user.email", "fixture@example.invalid")
-        native = "godot/addons/cybersand_native/bin/native.dll"
+        native = "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
         rapier = "godot/addons/godot-rapier2d/bin/rapier.dll"
         provenance = "godot/addons/cybersand_native/runtime-provenance.json"
         self.native = native; self.provenance = provenance
@@ -419,6 +419,35 @@ class SourceContractTests(unittest.TestCase):
         (self.root / "native/src/world.cpp").write_text("changed\n")
         with self.assertRaises(subprocess.CalledProcessError):
             self.contract()
+
+    def test_same_run_compiled_native_replaces_stale_retained_runtime(self):
+        # Current-source CI DLL must work even while the immutable retained
+        # LFS DLL/manifest still truthfully describes the old release.
+        path = self.root / "native/src/world.cpp"
+        path.write_bytes(b"current experimental native source\n")
+        self.git(self.root, "add", ".")
+        self.git(self.root, "commit", "-qm", "experimental native input")
+        self.sha = self.git(self.root, "rev-parse", "HEAD").decode().strip()
+        import windows_ci_runtime as ci
+        dll = self.root / "compiled.dll"
+        dll.write_bytes(b"MZ" + b"same-run windows build" * 90)
+        bundle = self.root / "build/windows-runtime"
+        receipt = ci.write_bundle(self.root, dll, bundle, source_sha=self.sha,
+                                  run_id="123", attempt="1")
+        expected = subject.source_contract(
+            self.root, self.sha, 2, ci_runtime_dir=bundle,
+            run_id="123", attempt="1")
+        self.assertEqual(expected["runtime_source_commit"], self.sha)
+        self.assertEqual(expected["cybersand_runtime"]["sha256"], receipt["sha256"])
+        self.assertEqual(expected["tested_input_sha256"][self.native],
+                         [receipt["sha256"]])
+        self.assertEqual(expected["rapier_runtime"]["sha256"], "1" * 64)
+        self.assertEqual(expected["runtime_provenance"]["path"], ci.PROVENANCE_PATH)
+        self.assertNotEqual(expected["cybersand_runtime"]["sha256"], "d" * 64)
+        (bundle / ci.DLL_NAME).write_bytes(b"MZ" + b"tampered" * 200)
+        with self.assertRaisesRegex(RuntimeError, "compiled DLL bytes"):
+            subject.source_contract(self.root, self.sha, 2,
+                                    ci_runtime_dir=bundle, run_id="123", attempt="1")
 
     def test_committed_stale_manifest_is_rejected(self):
         (self.root / "native/src/world.cpp").write_text("changed\n")
