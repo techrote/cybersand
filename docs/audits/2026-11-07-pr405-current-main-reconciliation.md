@@ -20,7 +20,7 @@ C1024 historical identity, Water/ballistic, chemistry, dense directory,
 - Accepted main baseline: `e90abd9d25702a9a92e8a3cfe0aaa5e45a277b9d`
 - From LF SHA-256: `8a40c7dff894a121a234fbd18de6fa21a43c0c5330ccdc9e12b200af14a4f37d`
 - To LF SHA-256: `b6cedf52e795073630f12f77668a461b6f9c3bb5fe02c64e7b6649bee4a6239a`
-- Source merge commit: `__SOURCE_MERGE_COMMIT__`
+- Source merge commit: `e77ca8475bbe5333d1af520e44b400e70ba8570c`
 - Original #405 historical head: `ad566a24982b9b54673b6d44e60a0ad98ef921a9` (first parent), accepted main
   second parent. Frozen MAT-AUTH lock and prior transitions are unchanged.
 
