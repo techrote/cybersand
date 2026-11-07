@@ -125,6 +125,16 @@ class PricingBudgetTests(unittest.TestCase):
         tile = pricing.rates_for("gpt-4.1", self.table, enforce_age=False)
         self.assertEqual(pricing.image_tokens_upper_bound(tile, 100, 100, "low"), 85)
 
+    def test_gpt_6_luna_rates_and_conservative_image_bound(self):
+        luna = pricing.rates_for("gpt-6-luna", self.table, enforce_age=False)
+        self.assertAlmostEqual(luna.cost(1_000_000, 0, 1_000_000), 0.10 + 0.50)
+        self.assertAlmostEqual(luna.cost(1_000_000, 1_000_000, 0), 0.01)
+        self.assertTrue(luna.supports_reasoning)
+        # no published image rule for this model: the bound must not undercut the highest published rule
+        small = pricing.image_tokens_upper_bound(luna, 192, 96, "high")
+        self.assertGreaterEqual(small, 6 * 3 * 2.46 - 1)
+        self.assertGreaterEqual(pricing.image_tokens_upper_bound(luna, 4000, 4000, "high"), 73_000)
+
     def make_budget(self, live=False, **overrides):
         cfg = copy.deepcopy(DEFAULTS)
         cfg["limits"].update(overrides.pop("limits", {}))
