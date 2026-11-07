@@ -145,12 +145,51 @@ func _run() -> void:
         _fail("cannot preserve actual async Godot framebuffer")
         return
 
+    # Close immediately after another real player edit: _exit_tree's
+    # bounded drain must publish its durable ACK before native quit. Reopen
+    # using a SECOND real native process and inspect the saved Wall intent.
+    demo.interactive_async = true
+    _click(demo, 9, 9, MOUSE_BUTTON_LEFT)
+    if demo.queued_actions.size() != 1:
+        _fail("shutdown durability edit was not queued")
+        return
+    demo._send_quit()
+    if demo.acknowledged_edits != 2 or demo.ipc_outstanding or \
+            not demo.queued_actions.is_empty() or OS.is_process_running(native_pid):
+        _fail("bounded graceful shutdown lost queued native ACK or live PID")
+        return
+    if not FileAccess.file_exists(demo.ipc_root.path_join("stopped.txt")):
+        _fail("native stopped receipt absent after edit drain")
+        return
+    demo.interactive_async = false
+    demo.ipc_root = demo.save_root.path_join(
+        "async-reopen-%d" % Time.get_ticks_usec()
+    )
+    if DirAccess.make_dir_recursive_absolute(demo.ipc_root) != OK:
+        _fail("cannot create fresh native restart IPC root")
+        return
+    demo._start_controller()
+    if demo.native_pid <= 0 or demo.native_pid == native_pid or \
+            demo.server_pid != demo.native_pid or not demo.failure.is_empty():
+        _fail("independent native restart failed")
+        return
+    demo.world_chunk = Vector2i(-2, 2)
+    demo._invoke(PackedStringArray(["inspect 9 9"]), false, true)
+    if not demo.failure.is_empty() or \
+            not demo.last_receipts.contains("chunk=(-2,2) local=(9,9)") or \
+            not demo.last_receipts.contains("intent=1"):
+        _fail("restarted native World did not preserve shutdown-drained edit"
+            + " " + demo.last_receipts.right(300))
+        return
+
     print("GEN006_GODOT_ASYNC_INPUT_PASS"
         + " real_gl_framebuffer=1"
         + " compiled_native_owner=1"
         + " stable_native_pid=%d" % native_pid
         + " enqueue_usec=%d" % input_usec
         + " queued_player_edit_ack=1"
+        + " shutdown_drained_second_edit=1"
+        + " native_restart_edit_preserved=1"
         + " captured_chunk_identity=1"
         + " coalesced_camera_requests=1"
         + " native_evictions=%d" % demo.eviction_receipts
