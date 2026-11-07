@@ -302,8 +302,17 @@ void resume_partial(const fs::path& file,std::uint32_t workers) {
     const auto static_record=read_exact(file);
     auto invalid=active;
     invalid.back() ^= 1U;
-    auto corrupt=World::restore_physical_state(config(workers),invalid);
-    demand(!corrupt,"GEN006_BRIDGE_COLD_CORRUPT_DYNAMIC_CYPS_ADMITTED");
+    // The genuine CYPS decoder rejects a corrupt integrity digest by
+    // throwing; a null candidate is also refusal. Neither may be mistaken
+    // for a failure of the positive two-resident cold continuation.
+    bool corrupt_rejected=false;
+    try {
+        auto corrupt=World::restore_physical_state(config(workers),invalid);
+        corrupt_rejected=!corrupt;
+    } catch(const std::exception&) {
+        corrupt_rejected=true;
+    }
+    demand(corrupt_rejected,"GEN006_BRIDGE_COLD_CORRUPT_DYNAMIC_CYPS_ADMITTED");
     auto resumed=World::restore_physical_state(config(workers),active);
     demand(resumed && !resumed->has_failed() &&
            resumed->chunk_count()==2 &&
