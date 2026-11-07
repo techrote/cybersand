@@ -6,6 +6,7 @@ var ui
 var checks: int=0
 var failures: Array[String]=[]
 var evidence: Dictionary={"cuts":[]}
+var observed_workers: int=0
 
 func _initialize() -> void:
 	ProjectSettings.set_setting("cybersand/native_worker_threads",int(OS.get_environment("CYBERSAND_FREED_WORKERS")))
@@ -19,6 +20,8 @@ func check(ok: bool, why: String) -> bool:
 func until(predicate: Callable) -> bool:
 	var deadline: int=Time.get_ticks_msec()+90000
 	while Time.get_ticks_msec()<deadline:
+		if host!=null and host.latest_snapshot!=null:
+			observed_workers=maxi(observed_workers,int(host.latest_snapshot.native_worker_participation.get("workers_observed",0)))
 		if predicate.call(): return true
 		if host!=null and host.simulation_worker.has_failed(): return false
 		await process_frame
@@ -82,12 +85,14 @@ func cut(offset: int, members: int, proxies: int) -> bool:
 func run_steps(count: int) -> bool:
 	var target: int=host.rapier_bridge.manual_step_count()+count
 	var fresh: int=host._workbench_wait_sample
+	var cut_wait: bool=host._workbench_cut_wait
 	var first: int=host.rapier_bridge.manual_step_count()+1
 	check(ui.toggle_pause(),"unpause existing controls")
 	if not check(await until(func():return host.rapier_bridge.manual_step_count()>=first),"first physical step completes after fresh native result"): return false
-	check(host.rapier_bridge.last_application.get("accepted",false),"first post-cut step applies a current-roster response")
-	for row: Dictionary in host.rapier_bridge.last_application.get("bodies",[]):
-		check(row.get("sample")==fresh and not row.has("refusal"),"first post-cut application uses the fresh sample")
+	if cut_wait:
+		check(host.rapier_bridge.last_application.get("accepted",false),"first post-cut step applies a current-roster response")
+		for row: Dictionary in host.rapier_bridge.last_application.get("bodies",[]):
+			check(row.get("sample")==fresh and not row.has("refusal"),"first post-cut application uses the fresh sample")
 	if not check(await until(func():return host.rapier_bridge.manual_step_count()>=target),"native/Rapier completed-sample fence advances"): return false
 	check(ui.toggle_pause(),"pause existing controls")
 	return true
@@ -106,19 +111,32 @@ func run() -> void:
 	if not check(await until(installed),"canvas owner installed"): finish();return
 	var menu_items: int=ui._model.item_count
 	if not await cut(0,520,6): finish();return
+	await create_timer(.1).timeout
+	var before_step: int=host.rapier_bridge.manual_step_count()
+	var before_native: int=host.latest_snapshot.tick_index
+	check(ui.step_once(),"paused cut accepts ordinary Step")
+	if not check(await until(func():return not ui.step_pending and host.rapier_bridge.manual_step_count()==before_step+1),"paused cut Step completes once"): finish();return
+	check(host.latest_snapshot.tick_index==before_native+1,"one native tick for one requested Step")
 	if not await run_steps(64): finish();return
 	if not await cut(128,356,5): finish();return
 	check(ui._model.item_count==menu_items,"no new model or test menu")
 	check(ui.cut.capture_count==2 and host.rigid_bodies.size()==2,"two separate aggregate owners")
 	check(not ui.apply(ui.applied,true),"retained replacement cannot drop native custody")
 	if not await run_steps(120): finish();return
+	var bodies: int=host.rigid_bodies.size()
+	check(ui.paint(Vector2i(300,30),0) and ui.cut.finish_stroke(ui),"empty erase starts ordinary zero-release transaction")
+	if not check(await until(installed),"zero-release handoff ends"): finish();return
+	check(host.rigid_bodies.size()==bodies and ui.cut.capture_count==2,"zero release preserves custody")
+	if not await run_steps(5): finish();return
 	check(host.tower_context.workbench_gcr.response=="LA-SELECTIVE" and host.tower_context.workbench_gcr.rows.size()==2,"applied native law and complete roster")
 	evidence["states"]=[]
 	for id: int in [1,2]:
 		var state: Dictionary=host.physical_actor_session.workbench_actor_state(id)
 		check(state.position.is_finite() and state.linear_velocity.is_finite() and is_finite(state.angular_velocity),"finite real falling/collision state")
 		evidence.states.append(state)
-	evidence["participation"]=host.latest_snapshot.lab_context.get("worker_participation",{})
+	evidence["participation"]=host.latest_snapshot.native_worker_participation.duplicate(true)
+	evidence["maximum_observed_workers"]=observed_workers
+	check(evidence.participation.get("worker_capacity")==int(OS.get_environment("CYBERSAND_FREED_WORKERS")),"actual configured native worker capacity")
 	var name: String="freed-qualification-"+OS.get_environment("CYBERSAND_FREED_WORKERS")
 	check(Setup.write_named(name,ui.applied).is_empty(),"save exact source-removal/body recipe")
 	var saved: Dictionary=Setup.read_named(name)

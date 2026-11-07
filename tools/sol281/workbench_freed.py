@@ -94,7 +94,7 @@ def hosts(run,build_run):
                     data=json.loads(output.read_text());row['report_complete']=not data['failures'] and len(data['evidence']['cuts'])==2
                     row['report']=dict(path=str(output.relative_to(ROOT)),sha256=p.sha(output),checks=data['checks'])
                 save()
-            for script in ['test_workbench_canvas_body','test_workbench_fleet_session','test_workbench_canvas','test_workbench_pilot_ui','test_workbench_input']:
+            for script in ['test_workbench_cut_lifecycle','test_workbench_canvas_body','test_workbench_fleet_session','test_workbench_canvas','test_workbench_pilot_ui','test_workbench_input']:
                 execute(script,script)
         save();resource()
     receipt['post_source_equality']=info==identity();receipt['resource_after']=resource();save()

@@ -118,7 +118,7 @@ func _abort(reason: String) -> void:
 		if not _alive(): return
 		if not cancelled.get("ok",false): return
 	_discard()
-	var ended: Dictionary=await _rpc({"action":"end"})
+	var ended: Dictionary=await _end()
 	if not _alive(): return
 	if ended.get("ok",false): _finish()
 
@@ -127,6 +127,16 @@ func _finish() -> void:
 	busy=false;_token="";_committed=false
 	panel.host.paused=_prior_paused
 	panel.host.update_worker_frame_state()
+
+func _end() -> Dictionary:
+	var host=panel.host
+	var sample: Dictionary={} if host.physical_actor_session==null else host.rapier_bridge.pack_held_sample()
+	var reply: Dictionary=await _rpc({"action":"end","sample":sample})
+	if _alive() and reply.get("ok",false) and not sample.is_empty():
+		host._workbench_wait_sample=int(sample.states[10])
+		host._workbench_cut_wait=true
+		host._workbench_cut_prepare_sent=false
+	return reply
 
 func _run(input: PackedInt32Array) -> void:
 	var host=panel.host
@@ -191,12 +201,10 @@ func _run(input: PackedInt32Array) -> void:
 			_staged={}
 		host.last_hard_surface_revision=int(committed.commit_revision)
 		host._physical_terrain_ready=true
-		host._publish_physical_body_state()
-		host._workbench_cut_wait=true
 		panel.adopt_cut_recipe(_recipe)
 		_sample={};_recipe={};_committed=false;_token=""
 		released+=1;capture_count=int(final.active_count)
-	var ended: Dictionary=await _rpc({"action":"end"})
+	var ended: Dictionary=await _end()
 	if not _alive(): return
 	if not ended.get("ok",false): panel.refuse(str(ended.outcome));return
 	panel.message="Cut: %d piece(s) freed" % released

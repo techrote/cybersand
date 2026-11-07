@@ -145,6 +145,7 @@ var _workbench_cut_request: Dictionary = {}
 var _workbench_cut_reply: Dictionary = {}
 var _workbench_cut_serial: int = 0
 var _workbench_cut_admitted_sample: Dictionary = {}
+var _workbench_cut_prime: bool = false
 
 func queue_workbench_cut(command: Dictionary) -> int:
 	_mutex.lock()
@@ -176,14 +177,19 @@ func _apply_workbench_cut(command: Dictionary, emissions: Array[Vector4i], cells
 	if command.world_generation==_world_generation and _world.has_method(&"workbench_cut_command"):
 		reply=_world.workbench_cut_command(command)
 	if command.get("action")=="acknowledge" and reply.get("ok",false): _workbench_cut_admitted_sample=command.sample.duplicate(true)
-	if command.get("action")=="cancel" and reply.get("ok",false): _workbench_cut_admitted_sample={}
+	if command.get("action")=="cancel" and reply.get("ok",false): _workbench_cut_admitted_sample={};_workbench_cut_prime=false
+	if command.get("action")=="end" and reply.get("ok",false) and not command.sample.is_empty():
+		_workbench_sample=command.sample.duplicate(true)
+		_workbench_result={};_workbench_display={};_workbench_consumed_sample={}
+		_workbench_prepared_sample=-1;_workbench_completed_sample=-1
+		_workbench_cut_prime=true
 	if command.get("action")=="finalize" and reply.get("ok",false):
 		_workbench_sample=_workbench_cut_admitted_sample.duplicate(true)
 		_rigid_body_epoch=int(_workbench_sample.epoch)
 		_workbench_result={};_workbench_display={};_workbench_consumed_sample={}
 		_workbench_prepared_sample=-1;_workbench_completed_sample=-1
 		_workbench_last_emitter_sample=-1
-		_workbench_cut_admitted_sample={}
+		_workbench_cut_admitted_sample={};_workbench_cut_prime=false
 	_snapshot_hard_surface_revision=-1
 	_publish_snapshot(0.0,true,DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC,true,PackedFloat32Array(),_rigid_body_epoch)
 	reply["terrain_chunks"]=_snapshot_hard_surface_chunk_rectangles.duplicate()
@@ -625,7 +631,7 @@ func _apply_prepared_default_liquid(command: Dictionary) -> bool:
 	_default_liquid_identity = staged_identity
 	_mutex.lock();_default_liquid_published_record = record;_mutex.unlock()
 	_world_generation += 1
-	_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={}
+	_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={};_workbench_cut_prime=false
 	_scenario_host.clear();_lab_active = false;_micro_active = false;_water_lab_active = false
 	_micro_capture = {};_lab_schedule.clear();_lab_inputs.clear()
 	_simulation_failed = false;_scenario_request_applied = true
@@ -674,7 +680,7 @@ func _apply_lab(command: Dictionary) -> bool:
 			_lab_status = _scenario_host.last_error
 			return false
 		_world_generation += 1
-		_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={}
+		_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={};_workbench_cut_prime=false
 		if tower_setup.is_empty():
 			_activate_sampled_character(Vector2(tower_definition.player_start[0],tower_definition.player_start[1]),true)
 		else:
@@ -755,7 +761,7 @@ func _apply_lab(command: Dictionary) -> bool:
 			return false
 		if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
 		_world_generation += 1
-		_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={}
+		_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={};_workbench_cut_prime=false
 		_lab_profile=profile_result.profile.duplicate(true)
 		_lab_profile_hash=str(profile_result.hash)
 		_lab_active=true
@@ -852,7 +858,7 @@ func _apply_lab(command: Dictionary) -> bool:
 			return false
 		if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
 		_world_generation += 1
-		_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={}
+		_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={};_workbench_cut_prime=false
 		var definition: Dictionary = _scenario_host.definition()
 		var transport: Dictionary = CyberTransportProfiles.resolve(definition.transport_profile)
 		_lab_profile = transport.profile.duplicate(true)
@@ -2057,7 +2063,7 @@ func _worker_loop() -> void:
 				_world.reset_demo_world()
 			if recovered:
 				_world_generation += 1
-				_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={}
+				_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={};_workbench_cut_prime=false
 				_scenario_host.clear()
 				_lab_active = false
 				_micro_active = false
@@ -2099,7 +2105,13 @@ func _worker_loop() -> void:
 				workbench_serial = int(sample.states[10]) if not sample.states.is_empty() else -1
 				if workbench_serial >= 0 and workbench_serial == _workbench_prepared_sample:
 					local_paused = true
-				if _workbench_refusal.is_empty() and (_workbench_result.is_empty() or not local_paused):
+				# A post-cut sample is prepared once on Play, or explicitly on
+				# Step using the existing paused-result/one-native-step route.
+				# Preparing it speculatively while paused would strand the normal
+				# completed-sample fence on a sample that never received a tick.
+				var prime_wait: bool=_workbench_cut_prime and local_paused and not local_lab.get("workbench_cut_prepare",false)
+				if not prime_wait and _workbench_refusal.is_empty() and (_workbench_result.is_empty() or not local_paused):
+					_workbench_cut_prime=false
 					if not _workbench_sample_inside(sample.states,_workbench_extent):
 						_workbench_refusal = "A body reached the finite canvas edge. Move, reset or remove it while paused."
 					elif not _world.prepare_workbench_coupling(sample.states,sample.geometry,sample.bodies,

@@ -175,6 +175,18 @@ Dictionary CyberNativeCellWorld::workbench_cut_command(const Dictionary& request
         }
         if (action=="end") {
             if (world_->inspect_solid_detachment().phase!=SolidPhase::Idle) return finish(SolidOutcome::Busy);
+            if (request.get("sample",Variant()).get_type()!=Variant::DICTIONARY) return finish(SolidOutcome::Invalid);
+            const Dictionary sample=request["sample"];
+            if (sample.is_empty()) {
+                for (const auto& owner:workbench_->sample.owners) if (owner.instance) return finish(SolidOutcome::Stale);
+            } else {
+                WorkbenchSample checked;
+                if (sample.get("states",Variant()).get_type()!=Variant::PACKED_FLOAT64_ARRAY ||
+                    sample.get("geometry",Variant()).get_type()!=Variant::PACKED_FLOAT64_ARRAY ||
+                    sample.get("bodies",Variant()).get_type()!=Variant::ARRAY ||
+                    !parse_workbench_sample(checked,*workbench_,sample["states"],sample["geometry"],sample["bodies"],
+                        sample.get("session",0),sample.get("epoch",0))) return finish(SolidOutcome::Stale);
+            }
             cut={};return finish(SolidOutcome::Accepted);
         }
         const auto source=world_->inspect_solid_detachment();
