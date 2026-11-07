@@ -1,0 +1,688 @@
+{
+  "artifacts": {
+    "patch": null,
+    "tool_log": {
+      "entries": 11,
+      "path": "tool-log.jsonl",
+      "sha256": "1bc4aa3f045df48e2e96b49ab643235100438a3583438a872a2d3bc6b0911d81"
+    },
+    "transcript": {
+      "entries": 7,
+      "path": "transcript.jsonl",
+      "sha256": "259f8c433070511ab3672b9f64b7273926b79837e0b20bbdec6534bc01f3236f"
+    }
+  },
+  "calls": [
+    {
+      "cached_input_tokens": 0,
+      "computed_from_reported_usage_usd": 0.0001772,
+      "duration_ms": 2130,
+      "images_in_request": 0,
+      "input_tokens": 1342,
+      "input_tokens_estimated_upper": 4186,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 1,
+      "output_tokens": 86,
+      "reasoning_tokens": 0,
+      "request_id": "req_f5506d3e468a40b0abe471aff56854cc",
+      "reserved_worst_case_usd": 0.0024186,
+      "response_id": "resp_0d0dcd21fc8c670f016aeec22ddaf087d28f4d5d92a1705bed",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 1339,
+      "computed_from_reported_usage_usd": 0.00032799,
+      "duration_ms": 1300,
+      "images_in_request": 0,
+      "input_tokens": 4090,
+      "input_tokens_estimated_upper": 8866,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 2,
+      "output_tokens": 79,
+      "reasoning_tokens": 0,
+      "request_id": "req_6008bef6d2bb485c851d70b268553ec7",
+      "reserved_worst_case_usd": 0.0028866,
+      "response_id": "resp_0d0dcd21fc8c670f016aeec2301f3887d28d51d3614405b1c7",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 4087,
+      "computed_from_reported_usage_usd": 0.00050717,
+      "duration_ms": 1570,
+      "images_in_request": 1,
+      "input_tokens": 8600,
+      "input_tokens_estimated_upper": 19516,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 3,
+      "output_tokens": 30,
+      "reasoning_tokens": 0,
+      "request_id": "req_505d7f9936e3486fba8bccf14b9d72ba",
+      "reserved_worst_case_usd": 0.0039516,
+      "response_id": "resp_0d0dcd21fc8c670f016aeec2317b0487d29b2111d99fa13b09",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 8597,
+      "computed_from_reported_usage_usd": 0.00031107,
+      "duration_ms": 1714,
+      "images_in_request": 2,
+      "input_tokens": 10488,
+      "input_tokens_estimated_upper": 23461,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 4,
+      "output_tokens": 72,
+      "reasoning_tokens": 33,
+      "request_id": "req_cee2403db45f4e90a1d31c3dfe91a033",
+      "reserved_worst_case_usd": 0.0043461,
+      "response_id": "resp_0d0dcd21fc8c670f016aeec233085887d28c4c413971335322",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 4087,
+      "computed_from_reported_usage_usd": 0.00071497,
+      "duration_ms": 2656,
+      "images_in_request": 1,
+      "input_tokens": 10273,
+      "input_tokens_estimated_upper": 24029,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 5,
+      "output_tokens": 111,
+      "reasoning_tokens": 72,
+      "request_id": "req_ae3e2365c3084f6fb506234ba30b8da5",
+      "reserved_worst_case_usd": 0.0044029,
+      "response_id": "resp_0d0dcd21fc8c670f016aeec234eff487d2a95d8760eb58548d",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 4087,
+      "computed_from_reported_usage_usd": 0.00055887,
+      "duration_ms": 3234,
+      "images_in_request": 0,
+      "input_tokens": 8922,
+      "input_tokens_estimated_upper": 22398,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 6,
+      "output_tokens": 69,
+      "reasoning_tokens": 37,
+      "request_id": "req_493c5483a63c40738214480f53842528",
+      "reserved_worst_case_usd": 0.0042398,
+      "response_id": "resp_0d0dcd21fc8c670f016aeec2375bfc87d2a22812567f6446ab",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 8919,
+      "computed_from_reported_usage_usd": 0.00058709,
+      "duration_ms": 9095,
+      "images_in_request": 1,
+      "input_tokens": 9888,
+      "input_tokens_estimated_upper": 25506,
+      "kind": "responses.create",
+      "model": "gpt-6-luna",
+      "n": 7,
+      "output_tokens": 802,
+      "reasoning_tokens": 98,
+      "request_id": "req_9d679d8724d9426fb75eff243f702027",
+      "reserved_worst_case_usd": 0.0045506,
+      "response_id": "resp_0d0dcd21fc8c670f016aeec23aa3a887d2b40d41466020421a",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    }
+  ],
+  "captures": {
+    "comparison": null,
+    "input_bundle": {
+      "art_revision": "c4aab63eed538a25687c66d368b0801d2d2e04d0",
+      "batch_manifest_sha256": "a81f9954ca61ab221db08cb8853f893a88a81644b743a7d59d75b9af65cde564",
+      "evidence_class": "godot-capture",
+      "label": "input",
+      "problems": [],
+      "renderer": "opengl3_angle",
+      "shots": [
+        {
+          "collection": "lumen-fault",
+          "height": 512,
+          "kind": "full",
+          "pack_sha256": "828de8b69c437c3d2b4f108d3f79e9ce3f9a0d904e6b1dfedb1fd825cf508fdd",
+          "png_sha256": "a8a957f8824f654567752d0417068a65c1c072f696d65f63a81c248266035058",
+          "shot_id": "full",
+          "verified": true,
+          "width": 1280
+        },
+        {
+          "collection": "lumen-fault",
+          "height": 1080,
+          "kind": "viewport",
+          "pack_sha256": "828de8b69c437c3d2b4f108d3f79e9ce3f9a0d904e6b1dfedb1fd825cf508fdd",
+          "png_sha256": "0503a438a092b5ac86d66a1bc5b0293d5fcadd76f86576371cc640eb9011c358",
+          "shot_id": "viewport",
+          "verified": true,
+          "width": 1920
+        },
+        {
+          "collection": "lumen-fault",
+          "height": 768,
+          "kind": "detail",
+          "pack_sha256": "828de8b69c437c3d2b4f108d3f79e9ce3f9a0d904e6b1dfedb1fd825cf508fdd",
+          "png_sha256": "d392fe8c8f13ccd4c696dc3af685783c70b6f7179c25aea25a11491008bc69df",
+          "shot_id": "detail",
+          "verified": true,
+          "width": 1920
+        }
+      ],
+      "verified": true
+    },
+    "render_attempts": [],
+    "rendered_bundle": null
+  },
+  "cost": {
+    "ambiguous_charge_assumed_usd": 0.0,
+    "authorised_ceiling_usd": 0.25,
+    "basis": "token counts x published rates; the API reports tokens, not dollars",
+    "billing_reconciliation": "not-performed",
+    "committed_usd": 0.00318436,
+    "computed_from_reported_usage_usd": 0.00318436,
+    "currency": "USD",
+    "peak_reservation_usd": 0.0045506,
+    "per_call_ceiling_usd": 0.05,
+    "per_run_ceiling_usd": 0.25,
+    "rates": {
+      "cached_input_usd_per_1m": 0.01,
+      "input_usd_per_1m": 0.1,
+      "model": "gpt-6-luna",
+      "output_usd_per_1m": 0.5,
+      "retrieved_utc": "2026-11-07",
+      "source_url": "https://developers.openai.com/api/docs/pricing"
+    },
+    "remaining_allowance_usd": 0.24681564,
+    "reservation_overruns": 0,
+    "reserved_worst_case_total_usd": 0.0267962,
+    "simulated": false
+  },
+  "credit_gate": {
+    "checks": [
+      {
+        "detail": "environment variable OPENAI_API_KEY is set",
+        "name": "api_key_present",
+        "ok": true
+      },
+      {
+        "detail": "authorised ceiling $0.25 vs per-run limit $0.25; authorisation reference present",
+        "name": "spend_authorised",
+        "ok": true
+      },
+      {
+        "detail": "rates for gpt-6-luna retrieved 2026-11-07",
+        "name": "pricing_known",
+        "ok": true
+      },
+      {
+        "detail": "source checkout is clean",
+        "name": "source_clean",
+        "ok": true
+      },
+      {
+        "detail": "owner credit attestation supplied",
+        "name": "credit_attestation",
+        "ok": true
+      },
+      {
+        "detail": "attestation age 0.3h (max 72h); expires 2026-11-27 (required margin 24h)",
+        "name": "credit_not_expired",
+        "ok": true
+      },
+      {
+        "detail": "attested remaining $88.00 vs per-run limit $0.25; grant attested to cover API usage",
+        "name": "credit_sufficient",
+        "ok": true
+      },
+      {
+        "detail": "auto-recharge attested disabled",
+        "name": "auto_recharge_disabled",
+        "ok": true
+      },
+      {
+        "detail": "gpt-6-luna is in the attested eligible list",
+        "name": "model_attested_eligible",
+        "ok": true
+      },
+      {
+        "detail": "models.retrieve(gpt-6-luna) returned HTTP 200",
+        "name": "model_retrievable",
+        "ok": true
+      }
+    ],
+    "facts": {
+      "credit_balance_programmatically_verifiable": false,
+      "headroom_basis": "owner-attestation-only",
+      "note": "grant balance/expiry/auto-recharge cannot be read via a supported API-key endpoint; the owner attestation is the only source for them",
+      "organization_id_sha256_12": null,
+      "project_id_sha256_12": null,
+      "rate_limit_headers": {}
+    },
+    "headroom_basis": "owner-attestation-only",
+    "passed": true,
+    "performed": true
+  },
+  "edits": [],
+  "final_report": {
+    "critique": [
+      {
+        "dimension": "silhouette_scale_hierarchy",
+        "evidence": "The overhead basalt roof and opposing upper platforms frame a striking central breach; quartz, the gate and signal totem form readable vertical landmarks. Some silhouettes at the two damaged central structures are visually busy at this scene scale.",
+        "score_0_to_5": 4
+      },
+      {
+        "dimension": "architectural_geologic_richness",
+        "evidence": "The capture shows varied ceiling teeth, stratified rock edges, interrupted decks, piers and multiple levels of service structures, making the environment feel site-specific rather than a repeated platform strip.",
+        "score_0_to_5": 5
+      },
+      {
+        "dimension": "authentic_micro_detail",
+        "evidence": "Rust, rails, cables, instrument marks and small lights create convincing authored texture. In the central collapse area, numerous fine elements compete and lose legibility at the full panorama scale.",
+        "score_0_to_5": 4
+      },
+      {
+        "dimension": "value_colour_discipline",
+        "evidence": "Dark rock and void dominate while cyan, amber and quartz accents provide focal contrast. Bright accents are generally restrained, though the dense center concentrates many competing bright marks.",
+        "score_0_to_5": 4
+      },
+      {
+        "dimension": "environmental_narrative",
+        "evidence": "The severed central datum, broken spans, survey instruments and isolated tiered courts communicate a damaged underground calibration site; the void is an effective narrative element.",
+        "score_0_to_5": 5
+      },
+      {
+        "dimension": "coherent_integrated_composition",
+        "evidence": "The architectural and geological masses relate across both sides of the central rupture, and the upper/lower levels establish coherent depth. The center is intentionally disordered but could benefit from a slightly stronger focal hierarchy.",
+        "score_0_to_5": 4
+      },
+      {
+        "dimension": "cross_theme_distinctiveness",
+        "evidence": "Basalt, quartz and survey apparatus give the setting a distinct geological-instrumental identity, differentiated from a generic industrial ruin.",
+        "score_0_to_5": 4
+      }
+    ],
+    "edits_applied": [],
+    "outcome": "critique_only",
+    "revision_proposals": [
+      {
+        "change": "At matched full-scene scale, test reducing or consolidating a few of the smallest bright rail/cable indicators immediately around the breach, keeping the paired broken register faces as the dominant focal cue.",
+        "rationale": "The capture's central collapse is narratively strong but locally dense; selective subtraction may improve focal legibility without changing the larger silhouette.",
+        "target": "Central Severed Datum Exchange in the flagship scene"
+      },
+      {
+        "change": "Review whether the repeated thin orange deck-edge marks can be grouped into a few purposeful damaged or instrumented sections rather than read as a near-continuous highlight.",
+        "rationale": "A more selective warm accent rhythm could further separate structural silhouette from small instrumentation.",
+        "target": "Platform and deck accents across the flagship"
+      }
+    ],
+    "summary": "Reviewed the verified Godot full-scene capture and baseline pack. The composition is already unusually developed, with a clear central rupture and layered survey-station narrative; I made no edits rather than risk disturbing the tightly authored geometry without identifying a specific safe improvement.",
+    "validation_notes": "Baseline validator passed: 8 source-checked authoring pieces with bounds, variant and classification checks; native execution was not performed. No edits were made, so no post-edit validation or render comparison was run. Visual critique is based on the verified input Godot capture; no after-capture improvement is claimed.",
+    "visual_evidence_used": true
+  },
+  "images": [
+    {
+      "bundle": "input",
+      "bytes": 236746,
+      "collection": "lumen-fault",
+      "evidence_class": "godot-capture",
+      "height": 512,
+      "sent_in_calls": [
+        3,
+        4,
+        7
+      ],
+      "sha256": "a8a957f8824f654567752d0417068a65c1c072f696d65f63a81c248266035058",
+      "shot_id": "full",
+      "width": 1280
+    },
+    {
+      "bundle": "input",
+      "bytes": 96895,
+      "collection": "lumen-fault",
+      "evidence_class": "godot-capture",
+      "height": 768,
+      "sent_in_calls": [
+        4,
+        5
+      ],
+      "sha256": "d392fe8c8f13ccd4c696dc3af685783c70b6f7179c25aea25a11491008bc69df",
+      "shot_id": "detail",
+      "width": 1920
+    }
+  ],
+  "limits": {
+    "limits": {
+      "backoff_base_seconds": 1.0,
+      "backoff_max_seconds": 30.0,
+      "image_resend_calls": 2,
+      "max_api_calls": 20,
+      "max_edit_bytes": 20000,
+      "max_files_edited": 3,
+      "max_image_bytes": 5000000,
+      "max_image_edge_pixels": 2048,
+      "max_images": 4,
+      "max_input_tokens_per_call": 200000,
+      "max_iterations": 18,
+      "max_malformed_tool_calls": 3,
+      "max_output_tokens_per_call": 4000,
+      "max_read_bytes": 32768,
+      "max_retries": 3,
+      "max_run_seconds": 1500,
+      "max_sandbox_violations": 2,
+      "max_tool_calls": 40,
+      "max_tool_calls_per_response": 4,
+      "max_tool_output_bytes": 30000,
+      "max_tool_seconds": 300,
+      "max_total_image_bytes": 12000000,
+      "max_total_input_tokens": 1500000,
+      "max_total_output_tokens": 20000,
+      "max_total_tool_seconds": 900,
+      "token_estimate_bytes_per_token": 2.0
+    },
+    "spend": {
+      "attestation_max_age_hours": 72,
+      "authorisation_ref": "Owner go-ahead in the Claude Code session chat on 2026-11-07: live smoke test, ceiling USD 0.25, model gpt-6-luna",
+      "authorised_ceiling_usd": 0.25,
+      "costs_key_env": "OPENAI_ADMIN_KEY",
+      "credit_expiry_margin_hours": 24,
+      "expected_project": null,
+      "max_usd_per_call": 0.05,
+      "max_usd_per_run": 0.25,
+      "require_costs_crosscheck": false
+    }
+  },
+  "model": {
+    "api_endpoint": "openai-default",
+    "image_detail": "high",
+    "max_output_tokens_per_call": 4000,
+    "observed": [
+      "gpt-6-luna"
+    ],
+    "reasoning_effort": "low",
+    "requested": "gpt-6-luna",
+    "store": false,
+    "truncation": "disabled"
+  },
+  "policy": {
+    "generated_globs": [
+      "docs/world-design/lumen-fault/preview.svg"
+    ],
+    "instructions_sha256": "e7a7bb11dddeb2ae38cc612435d5c78e4257297e5f55ff982c829914f3c8b5be",
+    "instructions_version": "atlas-agent-instructions/1",
+    "pricing_sha256": "ca99942d7c4f947fbf21b44ee5ac9b621b699372934b680c792df57753e7ca76",
+    "read_globs": [
+      "docs/world-design/lumen-fault/**",
+      "docs/world-design/QUALITY_BAR.md",
+      "docs/world-design/README.md",
+      "native/include/cybersand/material.hpp",
+      "materials/catalogue/catalogue.json"
+    ],
+    "tool_schema_sha256": "4d3d03c9a6ccc49318679eb035e3279466f9fab3eaa5bdf05bf9e9a0699d3005",
+    "tools_advertised": [
+      "list_files",
+      "read_file",
+      "inspect_pack",
+      "run_validator",
+      "list_captures",
+      "view_image",
+      "render_capture",
+      "compare_captures",
+      "replace_text",
+      "submit_report"
+    ],
+    "write_globs": [
+      "docs/world-design/lumen-fault/pack.json",
+      "docs/world-design/lumen-fault/README.md"
+    ]
+  },
+  "publication": {
+    "mode": "none",
+    "performed": false
+  },
+  "receipt_sha256": "fd59274c63f2c5074e2ab24a59cd326a25ad854cca56390b3e2feb85102de322",
+  "run": {
+    "ci": false,
+    "duration_seconds": 23.658,
+    "finished_utc": "2026-11-07T06:16:31Z",
+    "id": "20261107T061608Z-2aefaa7a",
+    "mode": "live",
+    "model_calls_simulated": false,
+    "openai_sdk": "3.46.0",
+    "python": "3.13.16",
+    "runner_git_head": "c9eb5b485d1aa697b77f8e2f1be1136419e67204",
+    "runner_tree_dirty": false,
+    "runner_version": "1.0.0",
+    "started_utc": "2026-11-07T06:16:08Z"
+  },
+  "schema": "cybersand.atlas-agent.receipt/1",
+  "source": {
+    "collection": "unknown",
+    "expected_source_sha": "c4aab63eed538a25687c66d368b0801d2d2e04d0",
+    "files": {
+      "docs/world-design/QUALITY_BAR.md": {
+        "bytes": 9065,
+        "sha256": "92bb4c2a608a3b9af91aa050f85a7933380e965fd5a4bf434ea767590ee783f4"
+      },
+      "docs/world-design/README.md": {
+        "bytes": 5151,
+        "sha256": "9c82b5e2fe95244507507b45bb3b06f69628c6ecbc113144a5a2caf31919127b"
+      },
+      "docs/world-design/lumen-fault/README.md": {
+        "bytes": 16427,
+        "sha256": "5a9732c92f8d456c7a370e1b349d4f0267db3829d6d5ef2582a9ac9cd6887b5e"
+      },
+      "docs/world-design/lumen-fault/pack.json": {
+        "bytes": 260546,
+        "sha256": "828de8b69c437c3d2b4f108d3f79e9ce3f9a0d904e6b1dfedb1fd825cf508fdd"
+      },
+      "docs/world-design/lumen-fault/preview.svg": {
+        "bytes": 312836,
+        "sha256": "fcfd056940d465b80acb79e714529f9a464073a55e0b8762d0393ca735be8523"
+      },
+      "docs/world-design/lumen-fault/render_pack.mjs": {
+        "bytes": 6757,
+        "sha256": "90adf460c91a88f94ab56720a72a7875992953a1839fdf4425a8a522974422f3"
+      },
+      "docs/world-design/lumen-fault/validate_pack.py": {
+        "bytes": 4411,
+        "sha256": "3550472d18e9e99668af3e4356cd2f5ffe1ef1f81ba9c560653f24bd95507814"
+      },
+      "materials/catalogue/catalogue.json": {
+        "bytes": 195969,
+        "sha256": "3a5250a07912dc9530172cb2fccecd526606e242209d666cb2da202e1cfc9f14"
+      },
+      "native/include/cybersand/material.hpp": {
+        "bytes": 29262,
+        "sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+      }
+    },
+    "fixture": false,
+    "head_after_run": "c4aab63eed538a25687c66d368b0801d2d2e04d0",
+    "lane": "terrain-art",
+    "lane_writable": true,
+    "repository_head": "c4aab63eed538a25687c66d368b0801d2d2e04d0",
+    "source_dirty": false,
+    "source_manifest_sha256": "22c08a607e4c985945ee8a9a626e0ed74ddbba787a3e36da34eb42d513659b46",
+    "source_unchanged_after_run": true
+  },
+  "status": {
+    "exit_code": 0,
+    "final": "success",
+    "phase": "done",
+    "reason": "report submitted, validations passed, limits respected",
+    "reason_code": "completed"
+  },
+  "tools": [
+    {
+      "args_sha256": "a0ee7d31d80a30ff536c2f69509f02151c9d72594906fb07bc0cc7b63c0c9385",
+      "duration_ms": 4,
+      "error_code": null,
+      "n": 1,
+      "name": "inspect_pack",
+      "ok": true,
+      "output_bytes": 5025,
+      "output_sha256": "4cc0aacdd1c40dd5f0c67d10930398567842cfd6429e93e39acd554818b5ef1e"
+    },
+    {
+      "args_sha256": "b1a1a2b3c2f0c83e3cf24fa90a7372a9ced546140d07a64ed59327a87628ab1c",
+      "duration_ms": 85,
+      "error_code": null,
+      "n": 2,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 300,
+      "output_sha256": "25f5fbf1ecce9103e74b240745cffce0963ca7eacb6f1b7d5b8c415fe67293ed"
+    },
+    {
+      "args_sha256": "07a8c76bdd9a11603b5535d4af9ef1b69a7258e238b8b61416a94cbf1a7f14a8",
+      "duration_ms": 5,
+      "error_code": null,
+      "n": 3,
+      "name": "list_files",
+      "ok": true,
+      "output_bytes": 821,
+      "output_sha256": "f749bb1ed093c1050ee4200b287fa7107b7078c7a992cb38c603d8e95e30ac4e"
+    },
+    {
+      "args_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "duration_ms": 121,
+      "error_code": null,
+      "n": 4,
+      "name": "list_captures",
+      "ok": true,
+      "output_bytes": 1154,
+      "output_sha256": "cf8f95c0271077653950f5c51a550bbf335cd5f550bbd22fdbab46cee386fbef"
+    },
+    {
+      "args_sha256": "93954f1a92cb35c3ba5a30e8c04f9fed0d97ca81d62ca94041e5f20443abf1fa",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 5,
+      "name": "view_image",
+      "ok": true,
+      "output_bytes": 210,
+      "output_sha256": "e49f69a9dee457784a2e74f0af437a545acb952eff1a8ad5ebc747945d0b4098"
+    },
+    {
+      "args_sha256": "cc59406bb33e49c2c501c676e4122c5808e5e7dd0f572df590ca83d96ca91663",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 6,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 16832,
+      "output_sha256": "00be42de239a5e34c6558724d1195ac77059f921cfa20dc916543b8b71d28fc2"
+    },
+    {
+      "args_sha256": "6d87e75af5fb3bcfd5d98dc7f4dcf710e3ed2c55e8a310f2302ce610c8e26dae",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 7,
+      "name": "view_image",
+      "ok": true,
+      "output_bytes": 210,
+      "output_sha256": "5cb725cf8be0d8f5d0f8e7056876ba2af6c7b19baa311e14735579117788359c"
+    },
+    {
+      "args_sha256": "2d61b5c581ff234758642651199031e64b3250a4d8e703d98f86197f530ac712",
+      "duration_ms": 1,
+      "error_code": null,
+      "n": 8,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 1534,
+      "output_sha256": "62a3fece4d8f8dba58e55b0b847a2a3ee399eb75ade5ef843f99fed1760eb1a2"
+    },
+    {
+      "args_sha256": "3f6ebf454c792d5bb36ffdbdd1543ba72399fce6e26e953196563f69302831b4",
+      "duration_ms": 1,
+      "error_code": null,
+      "n": 9,
+      "name": "read_file",
+      "ok": true,
+      "output_bytes": 713,
+      "output_sha256": "5c159603bde4e09f9fa020d315e18a44089ff22beff37e8b9934d992947e1bc2"
+    },
+    {
+      "args_sha256": "93954f1a92cb35c3ba5a30e8c04f9fed0d97ca81d62ca94041e5f20443abf1fa",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 10,
+      "name": "view_image",
+      "ok": true,
+      "output_bytes": 210,
+      "output_sha256": "e49f69a9dee457784a2e74f0af437a545acb952eff1a8ad5ebc747945d0b4098"
+    },
+    {
+      "args_sha256": "ec5fa0291e67886c7f9d82a80903b282edf9e2dabb3490021f7b34ead9bbb983",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 11,
+      "name": "submit_report",
+      "ok": true,
+      "output_bytes": 18,
+      "output_sha256": "46248d8383d58e9e01b587db1fbff8bd2c36b9fabaa984aaea5b50d03bcc6ca7"
+    }
+  ],
+  "usage": {
+    "api_attempts": 7,
+    "api_responses": 7,
+    "cached_input_tokens": 31116,
+    "image_bytes": 333641,
+    "image_sends": 5,
+    "images_loaded": 2,
+    "input_tokens": 53603,
+    "iterations": 7,
+    "malformed_tool_calls": 0,
+    "output_tokens": 1249,
+    "reasoning_tokens": 240,
+    "retries": 0,
+    "sandbox_violations": 0,
+    "tool_calls": 11,
+    "tool_seconds": 0.222
+  },
+  "validation": [
+    {
+      "argv": [
+        "python.exe",
+        "-I",
+        "docs/world-design/lumen-fault/validate_pack.py"
+      ],
+      "collection": "lumen-fault",
+      "duration_seconds": 0.072,
+      "exit_code": 0,
+      "kind": "validate",
+      "n": 1,
+      "passed": true,
+      "script": "docs/world-design/lumen-fault/validate_pack.py",
+      "script_sha256": "3550472d18e9e99668af3e4356cd2f5ffe1ef1f81ba9c560653f24bd95507814",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: 8 source-checked authoring pieces, bounds/variant/classification checks; native execution NOT performed\r\n",
+      "timed_out": false
+    }
+  ],
+  "visual_cycle": {
+    "claimed": false,
+    "reason": "no source edit was applied"
+  }
+}
