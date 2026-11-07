@@ -126,6 +126,7 @@ ChunkCheckpointCapture World::capture_chunk_checkpoint(ChunkCoord coord) const {
     result.checkpoint.world_tick=completed_tick_index_;
     result.checkpoint.sha256=digest;
     result.checkpoint.bytes=std::move(out.bytes);
+    result.checkpoint.admission_incarnation=chunk->gen006_admission_incarnation;
     return result;
 }
 
@@ -133,13 +134,16 @@ ChunkCheckpointStatus World::evict_durable_checkpoint(
     const ChunkCheckpoint& staged,const ChunkDurableAck& ack) {
     if (!ack.durable || ack.coord != staged.coord ||
         ack.generation != staged.generation ||
-        ack.source_tick != staged.world_tick || ack.sha256 != staged.sha256)
+        ack.source_tick != staged.world_tick || ack.sha256 != staged.sha256 ||
+        staged.admission_incarnation == 0 ||
+        ack.admission_incarnation != staged.admission_incarnation)
         return ChunkCheckpointStatus::MissingDurabilityAck;
     if (tick_failed_)return ChunkCheckpointStatus::WorldFailed;
     if (tick_in_progress_)return ChunkCheckpointStatus::TickInProgress;
     const auto it=chunks_.find(staged.coord);
     if(it==chunks_.end())return ChunkCheckpointStatus::NotResident;
-    if(it->second->mutation_generation != staged.generation ||
+    if(it->second->gen006_admission_incarnation != staged.admission_incarnation ||
+       it->second->mutation_generation != staged.generation ||
        completed_tick_index_ != staged.world_tick)
         return ChunkCheckpointStatus::StaleGeneration;
     // A second complete capture also detects source changes which a native
@@ -147,7 +151,8 @@ ChunkCheckpointStatus World::evict_durable_checkpoint(
     auto current=capture_chunk_checkpoint(staged.coord);
     if (current.status != ChunkCheckpointStatus::Captured)
         return current.status;
-    if (staged.bytes != current.checkpoint.bytes ||
+    if (staged.admission_incarnation != current.checkpoint.admission_incarnation ||
+        staged.bytes != current.checkpoint.bytes ||
         staged.sha256 != current.checkpoint.sha256)
         return ChunkCheckpointStatus::StaleGeneration;
     const auto& chunk=*it->second;
@@ -277,10 +282,14 @@ ChunkCheckpointStatus World::restore_chunk_checkpoint(
         const auto index=static_cast<std::uint8_t>(Material::Wall);
         if(wall_count>std::numeric_limits<std::uint64_t>::max()-quantity_.material_cells[index])
             return ChunkCheckpointStatus::UnsupportedDomain;
-        // Allocation must finish before publishing the restored chunk.
+        // Identical restored bytes are a NEW native residency. Keep G6KC1
+        // bytes/digest intact; the live owner allocates its own identity.
+        if(next_gen006_admission_incarnation_==0)
+            return ChunkCheckpointStatus::CapacityFull;
         chunks_.reserve(chunks_.size()+1);
         auto [it,inserted]=chunks_.try_emplace(expected,std::move(candidate));
         if(!inserted)return ChunkCheckpointStatus::AlreadyResident;
+        it->second->gen006_admission_incarnation=next_gen006_admission_incarnation_++;
         quantity_.material_cells[index]+=wall_count;
         const auto dx=static_cast<std::uint64_t>(expected.x)-
                       static_cast<std::uint64_t>(chunk_directory_x_);

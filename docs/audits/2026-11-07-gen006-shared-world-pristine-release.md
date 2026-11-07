@@ -163,3 +163,27 @@ Unique native admission-incarnation fencing across remove/re-admit and
 to be reconciled with concurrently active physics and MAT-AUTH source
 ownership. Do not merge, mark Ready, repin compatibility without owner
 review or promote the static experiment to dynamic streaming.
+
+## Monotonic native admission-incarnation correction (7 November 2026, pending hosted execution)
+
+Independent PR #514 reproduced a real Windows/Linux ABA defect: identical
+G6KC1 bytes and mutation/tick fences do not distinguish an earlier residency
+A from newly restored residency B. This candidate adds a unique, monotonically
+allocated, per-native-World admission incarnation for opt-in GEN-006 chunks.
+Its counter is never reset by World::clear(); exhaustion refuses admission.
+A captured checkpoint exposes the incarnation *out of band*, preserving the
+entire serialized G6KC1 digest and exact continuation bytes. Durable ACK must
+bind the same incarnation; eviction checks it against the current live chunk
+before any destructive erase. Legacy five-field ACKs safely refuse.
+
+The native World counter is **not a cross-process identity**. The external
+storage owner must fence world/session/recipe and durable-writer identities
+across separate World instances and restarts, and prove actual sync/publication.
+The changed implementation does not claim native fsync or host persistence.
+
+The hosted workflow now executes a source-derived copy of #514's original
+real A -> B regression at both configured worker counts on Windows and Linux,
+with explicit fresh-ACK B and a further C admission after World::clear().
+Its existence is not a CI PASS claim; inspect exact-head workflow results.
+MAT-AUTH protected-world source transition remains an explicit independent
+admission gate; this commit does not repin or bypass it.

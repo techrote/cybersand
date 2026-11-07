@@ -75,7 +75,7 @@ std::vector<std::uint8_t> read_exactly(const fs::path& file) {
     return result;
 }
 ChunkDurableAck ack_for(const ChunkCheckpoint& c,bool durable=true) {
-    return {c.coord,c.generation,c.world_tick,c.sha256,durable};
+    return {c.coord,c.generation,c.world_tick,c.sha256,durable,c.admission_incarnation};
 }
 void run(const fs::path& root,unsigned workers) {
     require(!fs::exists(root),"GEN006_TEST_FRESH_ROOT");
