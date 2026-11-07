@@ -35,9 +35,12 @@ their reviewed targets:
 
 No change was made to the frozen material compatibility lock, material IDs,
 physical state serialization, solver policy/defaults, or Rapier authority.
-The separate PR-specific runtime-publication workflows were not copied into
-the combined source tree: a release, if admitted, must use **one** exact-source
-binary custody chain, not two branch-scoped publishers.
+The original PR-specific runtime-publication workflows were not carried into
+the source-composition merge. A separate, single, source-bound publisher profile
+was subsequently staged for this integration branch. It must validate both
+platforms and append only the four retained runtime/provenance paths after an
+explicit request; it must never rewrite frozen historical hashes or bypass
+post-publication full Native/Godot/provenance gates.
 
 ## Combined protected-source change and review boundary
 

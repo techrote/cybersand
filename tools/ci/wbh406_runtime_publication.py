@@ -27,17 +27,17 @@ _spec.loader.exec_module(engine)
 _historical_workflow = engine.WORKFLOW
 _historical_request = engine.REQUEST
 _shared_markers = dict(engine.CASE_MARKERS)
-engine.BRANCH = "claude/water-ballistic-hybrid"
+engine.BRANCH = "integrate/hs-pkt-neighbour-20261107"
 engine.WORKFLOW = ".github/workflows/wbh406-runtime-publication.yml"
 engine.REQUEST = "tools/ci/wbh406_publish_request.json"
-engine.EVIDENCE = "docs/audits/2026-11-06-whole-engine-bench.md"
+engine.EVIDENCE = "docs/audits/2026-11-07-hs-pkt-neighbour-integration.md"
 engine.BUNDLE_PREFIX = "wbh406-runtime-attempt-" + os.environ.get("GITHUB_RUN_ATTEMPT", "1")
 engine.PRESSURE_CASE = "godot/tests/test_lcb_pressure_optimization.gd"
 engine.REQUEST_VALUE = {
     "schema": "wbh406-publish-request-v1",
     "family": "pressure_flow_v1",
     "variant": "reference-cached-cached_dormant",
-    "scope": "wbh406-ballistic-water-workbench-engine-speedups",
+    "scope": "hs-pkt489-combined-runtime-refresh",
     "intent": "publish-source-matched-runtimes",
 }
 engine.CASE_MARKERS = {
