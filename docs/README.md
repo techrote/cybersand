@@ -10,6 +10,14 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+**Current owner development direction — 7 November 2026:** consult the
+[canonical product intent and priorities](reference/product-intent-and-priorities.md#owner-direction-physics-convergence-and-gameplay-first-development--2026-11-07).
+After reconciling queued physics work, focus on one shared painting/GEN/WB-AGENT
+workbench and three or more playable vertical slices; new nanotech/energetic
+materials follow the initial slices, preferably before game/demo promotion.
+Convincing bounded effects and per-game tuning are intentional; source and
+validation contracts remain independently authoritative.
+
 IN-TOOLS #361: [renewed current-main admission](architecture/in-tools-gameplay-admission.md)
 and [six Planned/NOT_RUN fixture concepts](operations/in-tools-fixtures-and-playtest.md).
 The [2026-11-07 source authority audit](audits/2026-11-07-in-tools-361-source-authority-renewal.md)
