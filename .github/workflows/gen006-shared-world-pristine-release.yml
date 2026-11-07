@@ -1,0 +1,214 @@
+name: GEN006 shared-World checkpoint and durable eviction
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'native/include/cybersand/world.hpp'
+      - 'native/src/world.cpp'
+      - 'native/tests/gen006_shared_world_pristine_release.cpp'
+      - 'native/tests/gen006_chunk_checkpoint_transaction.cpp'
+      - 'native/tests/gen006_residency_ack_incarnation.cpp'
+      - 'native/src/world_chunk_checkpoint.inc'
+      - 'tools/experiments/gen006_chunk_signed_extent_qa.py'
+      - '.github/workflows/gen006-shared-world-pristine-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gen006-shared-pristine-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  linux-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Source and provider
+        shell: bash
+        run: |
+          set -euo pipefail
+          d=build/gen006-shared-release
+          mkdir -p "$d"
+          git rev-parse HEAD | tee "$d/head.txt"
+          git rev-parse 'HEAD^{tree}' | tee "$d/tree.txt"
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          for f in native/src/world.cpp native/include/cybersand/world.hpp native/src/world_chunk_checkpoint.inc native/tests/gen006_shared_world_pristine_release.cpp native/tests/gen006_chunk_checkpoint_transaction.cpp native/tests/gen006_residency_ack_incarnation.cpp; do
+            git hash-object "$f" | tee -a "$d/blobs.txt"
+          done
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Actual native World compile and 1/4 worker tests
+        shell: bash
+        timeout-minutes: 30
+        run: |
+          set -euo pipefail
+          d=build/gen006-shared-release
+          g++-13 --version | head -1 | tee "$d/compiler.txt"
+          g++-13 -std=c++20 -O0 -g0 -pthread -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/src/world_generation.cpp native/src/generation_fields.cpp \
+            native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp \
+            native/src/generation_grammar.cpp native/src/generation_planes.cpp \
+            native/tests/gen006_shared_world_pristine_release.cpp \
+            -o "$d/shared-release" > "$d/compile.log" 2>&1 || { cat "$d/compile.log"; exit 1; }
+          "$d/shared-release" 1 | tee "$d/one.log"
+          "$d/shared-release" 4 | tee "$d/four.log"
+          grep -q 'GEN006_SHARED_WORLD_PRISTINE_RELEASE_PASS configured_workers=1' "$d/one.log"
+          grep -q 'GEN006_SHARED_WORLD_PRISTINE_RELEASE_PASS configured_workers=4' "$d/four.log"
+          g++-13 -std=c++20 -O0 -g0 -pthread -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/src/world_generation.cpp native/src/generation_fields.cpp \
+            native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp \
+            native/src/generation_grammar.cpp native/src/generation_planes.cpp \
+            native/tests/gen006_chunk_checkpoint_transaction.cpp \
+            -o "$d/chunk-transaction" > "$d/transaction-compile.log" 2>&1 || { cat "$d/transaction-compile.log"; exit 1; }
+          "$d/chunk-transaction" "$d/transaction-one" 1 | tee "$d/transaction-one.log"
+          "$d/chunk-transaction" "$d/transaction-four" 4 | tee "$d/transaction-four.log"
+          "$d/chunk-transaction" --reopen "$d/transaction-one" 1 | tee "$d/restart-one.log"
+          "$d/chunk-transaction" --reopen "$d/transaction-four" 4 | tee "$d/restart-four.log"
+          grep -q 'GEN006_CHUNK_RESTART_PROCESS_PASS configured_workers=1' "$d/restart-one.log"
+          grep -q 'GEN006_CHUNK_RESTART_PROCESS_PASS configured_workers=4' "$d/restart-four.log"
+          grep -q 'GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=1' "$d/transaction-one.log"
+          grep -q 'GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=4' "$d/transaction-four.log"
+          python3 tools/experiments/gen006_chunk_signed_extent_qa.py \
+            "$d/chunk-transaction" "$d/transaction-one/chunk_x-16_y-8.g6c" "$d/extent-one" 1 | tee "$d/extent-one.log"
+          python3 tools/experiments/gen006_chunk_signed_extent_qa.py \
+            "$d/chunk-transaction" "$d/transaction-four/chunk_x-16_y-8.g6c" "$d/extent-four" 4 | tee "$d/extent-four.log"
+          grep -q 'GEN006_REHASHED_SIGNED_EXTENT_QA_PASS workers=1' "$d/extent-one.log"
+          grep -q 'GEN006_REHASHED_SIGNED_EXTENT_QA_PASS workers=4' "$d/extent-four.log"
+          g++-13 -std=c++20 -O0 -g0 -pthread -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/src/world_generation.cpp native/src/generation_fields.cpp \
+            native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp \
+            native/src/generation_grammar.cpp native/src/generation_planes.cpp \
+            native/tests/gen006_residency_ack_incarnation.cpp \
+            -o "$d/residency-aba" > "$d/aba-compile.log" 2>&1 || { cat "$d/aba-compile.log"; exit 1; }
+          "$d/residency-aba" "$d/aba-one" 1 | tee "$d/aba-one.log"
+          "$d/residency-aba" "$d/aba-four" 4 | tee "$d/aba-four.log"
+          grep -q 'GEN006_RESIDENCY_ABA_FENCE_PASS configured_workers=1' "$d/aba-one.log"
+          grep -q 'GEN006_RESIDENCY_ABA_FENCE_PASS configured_workers=4' "$d/aba-four.log"
+      - name: Preserve native evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-shared-ubuntu-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-shared-release/
+          if-no-files-found: warn
+          retention-days: 45
+
+  windows-native:
+    runs-on: windows-2022
+    timeout-minutes: 40
+    steps:
+      - name: Preserve LF
+        shell: cmd
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Source identity and CI provider
+        shell: python
+        run: |
+          import os,pathlib,subprocess,sys
+          d=pathlib.Path("build/gen006-shared-release");d.mkdir(parents=True,exist_ok=True)
+          def git(*args):return subprocess.check_output(["git",*args],text=True).strip()
+          assert git("rev-parse","HEAD")==os.environ["EXPECTED_HEAD"]
+          for k,a in {"head":["rev-parse","HEAD"],"tree":["rev-parse","HEAD^{tree}"],"world":["hash-object","native/src/world.cpp"],"header":["hash-object","native/include/cybersand/world.hpp"],"test":["hash-object","native/tests/gen006_shared_world_pristine_release.cpp"],"checkpoint":["hash-object","native/src/world_chunk_checkpoint.inc"],"transaction":["hash-object","native/tests/gen006_chunk_checkpoint_transaction.cpp"],"aba":["hash-object","native/tests/gen006_residency_ack_incarnation.cpp"]}.items():
+            (d/(k+".txt")).write_text(git(*a)+"\n")
+          subprocess.run([sys.executable,"tools/ci/check_ci_provider_policy.py"],check=True)
+      - name: MSVC LLVM Clang actual native test
+        shell: cmd
+        timeout-minutes: 30
+        run: |
+          for /f "tokens=*" %%i in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath') do set "GEN006_VSROOT=%%i"
+          if not defined GEN006_VSROOT exit /b 1
+          call "%GEN006_VSROOT%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          set "GEN006_CXX=%ProgramFiles%\LLVM\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" set "GEN006_CXX=%GEN006_VSROOT%\VC\Tools\Llvm\x64\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" exit /b 1
+          "%GEN006_CXX%" --version > build\gen006-shared-release\compiler.txt 2>&1
+          if errorlevel 1 exit /b 1
+          "%GEN006_CXX%" -std=c++20 -O0 -I native/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/world_generation.cpp native/src/generation_fields.cpp native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp native/src/generation_grammar.cpp native/src/generation_planes.cpp native/tests/gen006_shared_world_pristine_release.cpp -o build\gen006-shared-release\shared-release.exe > build\gen006-shared-release\compile.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\compile.log & exit /b 1)
+          build\gen006-shared-release\shared-release.exe 1 > build\gen006-shared-release\one.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\one.log & exit /b 1)
+          build\gen006-shared-release\shared-release.exe 4 > build\gen006-shared-release\four.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\four.log & exit /b 1)
+          type build\gen006-shared-release\one.log
+          type build\gen006-shared-release\four.log
+          findstr /C:"GEN006_SHARED_WORLD_PRISTINE_RELEASE_PASS configured_workers=1" build\gen006-shared-release\one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_SHARED_WORLD_PRISTINE_RELEASE_PASS configured_workers=4" build\gen006-shared-release\four.log
+          if errorlevel 1 exit /b 1
+          "%GEN006_CXX%" -std=c++20 -O0 -I native/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/world_generation.cpp native/src/generation_fields.cpp native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp native/src/generation_grammar.cpp native/src/generation_planes.cpp native/tests/gen006_chunk_checkpoint_transaction.cpp -o build\gen006-shared-release\chunk-transaction.exe > build\gen006-shared-release\transaction-compile.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\transaction-compile.log & exit /b 1)
+          build\gen006-shared-release\chunk-transaction.exe build\gen006-shared-release\transaction-one 1 > build\gen006-shared-release\transaction-one.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\transaction-one.log & exit /b 1)
+          build\gen006-shared-release\chunk-transaction.exe build\gen006-shared-release\transaction-four 4 > build\gen006-shared-release\transaction-four.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\transaction-four.log & exit /b 1)
+          build\gen006-shared-release\chunk-transaction.exe --reopen build\gen006-shared-release\transaction-one 1 > build\gen006-shared-release\restart-one.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\restart-one.log & exit /b 1)
+          build\gen006-shared-release\chunk-transaction.exe --reopen build\gen006-shared-release\transaction-four 4 > build\gen006-shared-release\restart-four.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\restart-four.log & exit /b 1)
+          type build\gen006-shared-release\transaction-one.log
+          type build\gen006-shared-release\transaction-four.log
+          type build\gen006-shared-release\restart-one.log
+          type build\gen006-shared-release\restart-four.log
+          findstr /C:"GEN006_CHUNK_RESTART_PROCESS_PASS configured_workers=1" build\gen006-shared-release\restart-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_CHUNK_RESTART_PROCESS_PASS configured_workers=4" build\gen006-shared-release\restart-four.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=1" build\gen006-shared-release\transaction-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_LOSSLESS_STATIC_CHUNK_TRANSACTION_PASS configured_workers=4" build\gen006-shared-release\transaction-four.log
+          if errorlevel 1 exit /b 1
+          python tools/experiments/gen006_chunk_signed_extent_qa.py build\gen006-shared-release\chunk-transaction.exe build\gen006-shared-release\transaction-one\chunk_x-16_y-8.g6c build\gen006-shared-release\extent-one 1 > build\gen006-shared-release\extent-one.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\extent-one.log & exit /b 1)
+          python tools/experiments/gen006_chunk_signed_extent_qa.py build\gen006-shared-release\chunk-transaction.exe build\gen006-shared-release\transaction-four\chunk_x-16_y-8.g6c build\gen006-shared-release\extent-four 4 > build\gen006-shared-release\extent-four.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\extent-four.log & exit /b 1)
+          type build\gen006-shared-release\extent-one.log
+          type build\gen006-shared-release\extent-four.log
+          findstr /C:"GEN006_REHASHED_SIGNED_EXTENT_QA_PASS workers=1" build\gen006-shared-release\extent-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_REHASHED_SIGNED_EXTENT_QA_PASS workers=4" build\gen006-shared-release\extent-four.log
+          if errorlevel 1 exit /b 1
+          "%GEN006_CXX%" -std=c++20 -O0 -I native/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/world_generation.cpp native/src/generation_fields.cpp native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp native/src/generation_grammar.cpp native/src/generation_planes.cpp native/tests/gen006_residency_ack_incarnation.cpp -o build\gen006-shared-release\residency-aba.exe > build\gen006-shared-release\aba-compile.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\aba-compile.log & exit /b 1)
+          build\gen006-shared-release\residency-aba.exe build\gen006-shared-release\aba-one 1 > build\gen006-shared-release\aba-one.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\aba-one.log & exit /b 1)
+          build\gen006-shared-release\residency-aba.exe build\gen006-shared-release\aba-four 4 > build\gen006-shared-release\aba-four.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\aba-four.log & exit /b 1)
+          type build\gen006-shared-release\aba-one.log
+          type build\gen006-shared-release\aba-four.log
+          findstr /C:"GEN006_RESIDENCY_ABA_FENCE_PASS configured_workers=1" build\gen006-shared-release\aba-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_RESIDENCY_ABA_FENCE_PASS configured_workers=4" build\gen006-shared-release\aba-four.log
+          if errorlevel 1 exit /b 1
+      - name: Preserve native evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-shared-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-shared-release/
+          if-no-files-found: warn
+          retention-days: 45
