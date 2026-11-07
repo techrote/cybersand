@@ -41,7 +41,7 @@ func _run() -> void:
 	_test_tool_loop_and_stop()
 	_test_provider_errors()
 	_test_budget_and_duplicates()
-	_test_ui_shell()
+	await _test_ui_shell()
 	print("WB_AGENT_528 fake-provider checks %d, failures %d" % [assertions, failures])
 	quit(1 if failures else 0)
 
