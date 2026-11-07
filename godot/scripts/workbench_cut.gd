@@ -95,7 +95,14 @@ func _rpc(command: Dictionary) -> Dictionary:
 		timings["rpc_count"]=int(timings.get("rpc_count",0))+1
 	for refusal: Dictionary in reply.get("batched_refusals",[]): receipts.append(refusal.duplicate(true))
 	reply.erase("batched_refusals")
+	var prefetched: Variant=reply.get("prefetched_payload",{})
+	reply.erase("prefetched_payload")
 	receipts.append(reply.duplicate(true))
+	if prefetched is Dictionary and not prefetched.is_empty():
+		for refusal: Dictionary in prefetched.get("batched_refusals",[]): receipts.append(refusal.duplicate(true))
+		prefetched.erase("batched_refusals")
+		receipts.append(prefetched.duplicate(true))
+		reply["prefetched_payload"]=prefetched
 	return reply
 
 func _prepare_recipe(payload: Dictionary) -> bool:
@@ -223,7 +230,7 @@ func _end() -> Dictionary:
 func _run(input: PackedInt32Array) -> void:
 	var host=panel.host
 	var old_sample: Dictionary={} if host.physical_actor_session==null else host.rapier_bridge.pack_held_sample()
-	var begun: Dictionary=await _rpc({"action":"begin","dabs":input,"sample":old_sample,"small_debris_limit":small_debris_limit,"rectangle_core":rectangle_core})
+	var begun: Dictionary=await _rpc({"action":"begin","dabs":input,"sample":old_sample,"small_debris_limit":small_debris_limit,"rectangle_core":rectangle_core,"prefetch_next":true})
 	if not _alive(): return
 	if not begun.get("ok",false):
 		last_disposition="Cut kept as terrain: "+_reason(begun)+". Erase applied."
@@ -232,14 +239,21 @@ func _run(input: PackedInt32Array) -> void:
 			var ended: Dictionary=await _end()
 			if _alive() and ended.get("ok",false): _finish()
 		return
+	var prefetched: Variant=begun.get("prefetched_payload")
+	if not prefetched is Dictionary or not prefetched.has_all(["ok","outcome"]):
+		last_disposition="Cut stopped: missing or malformed prefetched discovery; clocks remain held"
+		panel.refuse(last_disposition);return
 	_native_session=int(begun.roster_session);_native_epoch=int(begun.roster_epoch)
 	var released: int=0
 	var crumbled: int=0
 	var loose_pixels: int=0
 	var fringe_pixels: int=0
 	var refused: Dictionary={}
+	var first_payload: Dictionary=prefetched
 	for attempt: int in range(65):
-		var payload: Dictionary=await _rpc({"action":"next","batch_refusals":true})
+		var payload: Dictionary=first_payload
+		first_payload={}
+		if payload.is_empty(): payload=await _rpc({"action":"next","batch_refusals":true})
 		if not _alive(): return
 		for refusal: Dictionary in payload.get("refusal_summaries",[]):
 			var refused_reason: String=_reason(refusal)

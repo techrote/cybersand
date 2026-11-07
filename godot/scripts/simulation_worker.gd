@@ -147,14 +147,17 @@ var _workbench_cut_serial: int = 0
 var _workbench_cut_admitted_sample: Dictionary = {}
 var _workbench_cut_prime: bool = false
 var _workbench_cut_wakeup: RefCounted
+var _workbench_cut_signal: Semaphore=Semaphore.new()
 
 func _replace_cut_world_mailbox() -> void:
 	_mutex.lock()
 	_world_generation+=1
+	var held: bool=_running and _workbench_cut_hold
 	var wakeup: RefCounted=_workbench_cut_wakeup
 	_workbench_cut_wakeup=null
 	_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={};_workbench_cut_prime=false
 	_mutex.unlock()
+	if held: _workbench_cut_signal.post()
 	if wakeup!=null: wakeup.resolve.call_deferred("World changed; clocks remain held",wakeup)
 
 func queue_workbench_cut(command: Dictionary, wakeup: RefCounted=null) -> int:
@@ -173,6 +176,7 @@ func queue_workbench_cut(command: Dictionary, wakeup: RefCounted=null) -> int:
 		_pending_physical_effects.clear();_cancel_physical_usables_locked();_cancel_workbench_emission_locked()
 	var serial: int=_workbench_cut_serial if ok else 0
 	_mutex.unlock()
+	if ok: _workbench_cut_signal.post()
 	return serial
 
 func take_workbench_cut_reply(serial: int) -> Dictionary:
@@ -186,27 +190,41 @@ func take_workbench_cut_reply(serial: int) -> Dictionary:
 	_mutex.unlock()
 	return output
 
+func _execute_cut_native(command: Dictionary) -> Dictionary:
+	var reply: Dictionary={}
+	var native_command: Dictionary=command.duplicate(true)
+	native_command.erase("batch_refusals");native_command.erase("prefetch_next")
+	var refusals: Array[Dictionary]=[]
+	var limit: int=8 if command.get("action")=="next" and command.get("batch_refusals",false) else 1
+	for attempt: int in range(limit):
+		var native_started: int=Time.get_ticks_usec()
+		reply=_world.workbench_cut_command(native_command)
+		reply["native_command_usec"]=Time.get_ticks_usec()-native_started
+		reply["native_action"]=command.get("action")
+		if reply.get("ok",false) or reply.get("done",false) or str(reply.get("outcome")) in ["WorldFailed","Quarantined","Unavailable"]: break
+		if attempt+1==limit or str(reply.get("outcome")) not in ["Anchored","UnknownBoundary","NotResident","Excluded","Ineligible","Thermal","Occupied","PendingEvent","MemberCapacity","ShapeCapacity"]: break
+		reply["request_id"]=command.request_id;reply["world_generation"]=_world_generation
+		reply["batch_index"]=attempt
+		refusals.append(reply.duplicate(true))
+	if not refusals.is_empty():
+		reply["batched_refusals"]=refusals
+		reply["refusal_summaries"]=refusals.map(func(row: Dictionary):return {"outcome":row.get("outcome"),"frontier_limited":row.get("frontier_limited",false),"active_count":row.get("active_count",0)})
+	return reply
+
 func _apply_workbench_cut(command: Dictionary, emissions: Array[Vector4i], cells: Array[Dictionary]) -> void:
 	var started: int=Time.get_ticks_usec()
 	if command.get("action")=="begin": _apply_emissions(emissions,cells)
 	var reply: Dictionary={"ok":false,"outcome":"Unavailable"}
 	if command.world_generation==_world_generation and _world.has_method(&"workbench_cut_command"):
-		var native_command: Dictionary=command.duplicate(true)
-		native_command.erase("batch_refusals")
-		var refusals: Array[Dictionary]=[]
-		var limit: int=8 if command.get("action")=="next" and command.get("batch_refusals",false) else 1
-		for attempt: int in range(limit):
-			var native_started: int=Time.get_ticks_usec()
-			reply=_world.workbench_cut_command(native_command)
-			reply["native_command_usec"]=Time.get_ticks_usec()-native_started
-			if reply.get("ok",false) or reply.get("done",false) or str(reply.get("outcome")) in ["WorldFailed","Quarantined","Unavailable"]: break
-			if attempt+1==limit or str(reply.get("outcome")) not in ["Anchored","UnknownBoundary","NotResident","Excluded","Ineligible","Thermal","Occupied","PendingEvent","MemberCapacity","ShapeCapacity"]: break
-			reply["request_id"]=command.request_id;reply["world_generation"]=_world_generation
-			reply["batch_index"]=attempt
-			refusals.append(reply.duplicate(true))
-		if not refusals.is_empty():
-			reply["batched_refusals"]=refusals
-			reply["refusal_summaries"]=refusals.map(func(row: Dictionary):return {"outcome":row.get("outcome"),"frontier_limited":row.get("frontier_limited",false),"active_count":row.get("active_count",0)})
+		reply=_execute_cut_native(command)
+		if command.get("action")=="begin" and command.get("prefetch_next",false) and reply.get("ok",false):
+			# Capture begin before discovery. Neither operation retires source;
+			# stop before accepted payload needs main-thread recipe/Rapier work.
+			var next_command: Dictionary=command.duplicate(true)
+			next_command["action"]="next";next_command["batch_refusals"]=true
+			var prefetched: Dictionary=_execute_cut_native(next_command)
+			prefetched["request_id"]=command.request_id;prefetched["world_generation"]=_world_generation
+			reply["prefetched_payload"]=prefetched
 	if command.get("action")=="acknowledge" and reply.get("ok",false): _workbench_cut_admitted_sample=command.sample.duplicate(true)
 	if command.get("action")=="cancel" and reply.get("ok",false): _workbench_cut_admitted_sample={};_workbench_cut_prime=false
 	if command.get("action")=="end" and reply.get("ok",false) and not command.sample.is_empty():
@@ -1149,6 +1167,7 @@ func stop_worker() -> void:
 	_workbench_cut_wakeup=null
 	_lab_request_revision += 1
 	_mutex.unlock()
+	_workbench_cut_signal.post()
 	if wakeup!=null: wakeup.resolve.call_deferred("Worker stopped; clocks remain held",wakeup)
 	_thread.wait_to_finish()
 	_actor_session.set_suspended(true)
@@ -1956,8 +1975,15 @@ func _worker_loop() -> void:
 			_retire_prepared_physical_liquid()
 			return
 		if local_cut_hold:
-			if not local_cut.is_empty(): _apply_workbench_cut(local_cut,local_emissions,local_cell_emissions)
-			OS.delay_usec(1000)
+			if not local_cut.is_empty():
+				_apply_workbench_cut(local_cut,local_emissions,local_cell_emissions)
+			else:
+				_mutex.lock()
+				var wait_for_cut: bool=_running and _workbench_cut_hold and _workbench_cut_request.is_empty()
+				_mutex.unlock()
+				# A post between check/wait stays latched. Queue, stop and
+				# replacement post after unlocking; never hold mutex here.
+				if wait_for_cut: _workbench_cut_signal.wait()
 			next_tick_usec=Time.get_ticks_usec()
 			continue
 

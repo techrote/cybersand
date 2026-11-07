@@ -10,6 +10,7 @@ class FakeWorker extends RefCounted:
 	var pending: RefCounted
 	var reply: Dictionary={}
 	var discovery: bool=false
+	var omit_prefetch: bool=false
 	var calls: int=0
 	func queue_workbench_cut(command: Dictionary, wakeup: RefCounted=null) -> int:
 		calls+=1
@@ -17,6 +18,7 @@ class FakeWorker extends RefCounted:
 		if discovery:
 			if command.action=="begin":
 				reply={"ok":true,"roster_session":1,"roster_epoch":1,"request_id":1,"world_generation":7}
+				if not omit_prefetch: reply["prefetched_payload"]={"ok":false,"outcome":"Anchored"}
 				wakeup.resolve.call_deferred("Reply",wakeup)
 			else: wakeup.resolve.call_deferred("Worker stopped; clocks remain held",wakeup)
 			return 1
@@ -72,8 +74,13 @@ func run() -> void:
 	var discovery=Cut.new();discovery.panel=panel;discovery.busy=true
 	await discovery._run(PackedInt32Array())
 	check(panel.host.simulation_worker.calls==2 and discovery.busy,"discovery transport failure stops once without retry/end")
-	check(discovery.receipts.size()==1 and panel.refusal.contains("stopped"),"transport failure is not an eligibility refusal")
-	discovery.retire();panel.queue_free();await process_frame
+	check(discovery.receipts.size()==2 and panel.refusal.contains("stopped"),"prefetched refusal retained; transport failure is not an eligibility refusal")
+	discovery.retire()
+	panel.host.simulation_worker=FakeWorker.new();panel.host.simulation_worker.discovery=true;panel.host.simulation_worker.omit_prefetch=true
+	var missing=Cut.new();missing.panel=panel;missing.busy=true
+	await missing._run(PackedInt32Array())
+	check(panel.host.simulation_worker.calls==1 and missing.busy and panel.refusal.contains("prefetched"),"missing prefetch fail-stops without another native next")
+	missing.retire();panel.queue_free();await process_frame
 	print("CUT_WAKEUP ",checks," checks / ",failures," failures")
 	quit(int(failures>0))
 

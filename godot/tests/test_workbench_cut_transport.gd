@@ -40,6 +40,17 @@ func run() -> void:
 		check(worker.queue_workbench_cut({"action":"next"},Wakeup.new())==0,"stopped queue refuses")
 		check(host.paused and host.latest_snapshot.tick_index==tick,"stop never resumes clocks")
 	if not await fresh_host(): finish();return
+	var sleeping_worker=host.simulation_worker
+	var idle=Wakeup.new()
+	var idle_serial: int=sleeping_worker.queue_workbench_cut({"action":"begin","dabs":PackedInt32Array([350,350,2]),"sample":{}},idle)
+	if not check(await until(func():return idle.done),"idle held worker replies"): finish();return
+	check(sleeping_worker.take_workbench_cut_reply(idle_serial).get("ok",false),"drain reply before empty held wait")
+	for frame: int in range(5): await process_frame
+	var stop_started: int=Time.get_ticks_usec()
+	sleeping_worker.stop_worker()
+	check(not sleeping_worker._thread.is_started(),"empty held semaphore is woken before join")
+	evidence["idle_stop_usec"]=Time.get_ticks_usec()-stop_started
+	if not await fresh_host(): finish();return
 	# Replacements race only on detached notification/mailbox bookkeeping here;
 	# no test thread calls native World or live Godot/Rapier APIs.
 	var worker=host.simulation_worker

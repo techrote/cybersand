@@ -215,3 +215,33 @@ reset or closed. Existing local launchers now select this package. It starts the
 same native512-square cut canvas with one initial region Step before any body
 exists. OpenGL/NVIDIA581.80/TITAN RTX, Godot4.7 and Rapier0.35.2 startup/readback
 are recorded; this is a GUI startup observation, not a graphical latency cohort.
+
+
+## Cut wake and live-resume follow-up — 2026-11-07
+
+Owner still observes tens/hundreds of milliseconds after c7af5809. Registration
+87dbe5f6 fixes the next experiment before implementation. It retains the same
+paused inputs and reuses the immutable14f7c60c/c7af5809 production cohort as a
+historical baseline; wall-clock cohorts differ. A new source-identical observer
+runs fresh live Windows/Linux worker1/60FPS tree/building repeats five times per
+cell, measuring held completion and first observed actual native/Rapier resume
+separately. The exact first physical-step count and cut-end sample are asserted;
+no missing first observation is silently treated as complete coverage.
+
+Design choices: a cut-only semaphore replaces the held-owner polling sleep.
+Only an empty held turn may wait after a mutex recheck. Request/stop/retired-hold
+replacement post after unlock; stop posts before joining. Normal tick cadence
+is unchanged. Separately, opt-in normal cuts prefetch the first bounded native
+next after accepted begin; main had no mutation between these two calls. Begin
+and every native discovery receipt retain their order. Main consumes prefetch
+once; missing/malformed data fail-stops. Direct census/control begins retain old
+semantics. Publication follows prefetch, while the native begin receipt captures
+the earlier Idle state. No acknowledgement/commit/finalize fusion occurs; both
+frozen physics frames and all existing ownership/terrain/sample fences remain.
+[Godot Semaphore](https://docs.godotengine.org/en/stable/classes/class_semaphore.html)
+requires waking waits before owner/thread destruction. Native pool workers call
+no Godot APIs; the existing exclusive GDScript owner uses this value-only signal.
+
+Qualification is pending at this checkpoint. Native93+15 compiled/build inputs,
+material guards, physics/core mass/gravity/caps and all historical failures stay.
+The fixed profile is `native/tests/fixtures/workbench_cut_wake_001.json`.
