@@ -14,7 +14,7 @@ related-documents: [../architecture/workbench-freed-objects.md, 2026-11-07-workb
 
 The owner reported suspended hand-painted RedBrick structures and occasional falling chips. This was a product admission defect, not evidence for another contact-law change. At previous Draft #466 head 9136761ae91408adc0057df243dc0edfbd3e141a, a fresh ordinary radius8 crown/stem cut reproducibly returns ShapeCapacity and creates zero bodies on both actual Windows and Linux. The original rectangle-authored520/6 and356/5 fixtures did not cover ordinary brush geometry. A radius8 disc alone contains197 cells and needs11 exact rectangles, exceeding the old eight-shape limit. The exact owner's canvas/authority was not captured, so its individual refusal causes remain unknown; member/span/anchors can also apply.
 
-The sole writer is the independent checkout C:/khybersand/build/sol466-order-owned/khybersand on codex/sol-workbench-law-20261106. Build/native source is 1b15f34356b310f83c2dd05c5d689f8a1f98c195, tree 97296b69412c21ea6e374a6e14215b8de73cf9b7. The parent 9136761ae is retained. Draft #466 still targets unchanged #461 cba3c0de;#460 61924a97 remains unchanged and Draft. There is no main merge or default change. The owner windowPID 23804 remains untouched on its previous mapped build.
+The sole writer is the independent checkout C:/khybersand/build/sol466-order-owned/khybersand on codex/sol-workbench-law-20261106. Build/native source is 1b15f34356b310f83c2dd05c5d689f8a1f98c195, tree 97296b69412c21ea6e374a6e14215b8de73cf9b7. The parent 9136761ae is retained. Draft #466 still targets unchanged #461 cba3c0de;#460 61924a97 remains unchanged and Draft. There is no main merge or default change. The earlier owner window PID23804 was left untouched on its previous mapped build during testing.
 
 ## Design choices
 
@@ -106,7 +106,10 @@ accepted2.34/3.4.30 floors; no floor or frozen guard was relaxed.
 
 A read-only second-agent source review found no remaining actionable P1/P2 in
 the production delta. This is not a substitute for the requested separate
-independent adversarial review or an owner integration decision. The existing
-interactive drawing remains open; the previous mapped DLL was preserved by
-renaming it before materializing the new runtime, so no running module was
-overwritten. A fresh normal-workbench process uses the corrected build.
+independent adversarial review or an owner integration decision. The previous mapped DLL was preserved by renaming it before materializing
+the new runtime, so no running module was overwritten. Final GUI verification
+finds corrected normal-workbench process48268 open; earlier process23804 has
+exited. No agent close, kill or canvas-reset command was issued to that
+process; its exit cause and unsaved-canvas custody are unavailable. Do not
+claim the earlier drawing is still open. The fresh process uses the corrected
+build, with a clean startup log.
