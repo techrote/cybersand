@@ -76,6 +76,17 @@ def make_project(destination: Path) -> dict[str, str]:
     return hashes
 
 
+def resolve_engine(requested: str) -> str | None:
+    """Resolve an explicitly supplied executable or a command on PATH.
+
+    Do not silently download Godot or infer a machine-specific install path.
+    """
+    direct = Path(os.path.expandvars(os.path.expanduser(requested)))
+    if direct.is_file():
+        return str(direct.resolve())
+    return shutil.which(requested)
+
+
 def checked_run(command: list[str], env: dict[str, str]) -> int:
     print("WORLD_ART_EXEC", json.dumps(command, ensure_ascii=False), flush=True)
     try:
@@ -114,6 +125,15 @@ def main() -> int:
         parser.error("The --smoke-output path must be absolute")
     if args.export_root and not Path(args.export_root).is_absolute():
         parser.error("The --export-root path must be absolute")
+    godot_executable = resolve_engine(args.godot)
+    if godot_executable is None:
+        parser.error(
+            "Godot executable not found: " + repr(args.godot)
+            + ". Supply --godot=PATH_TO_YOUR_INSTALLED_GODOT_4_7_EXE"
+            + " or add the executable to PATH. On Windows PowerShell, try"
+            + " 'Get-Command godot, godot4 -ErrorAction SilentlyContinue'."
+            + " This viewer does not need another CyberSand clone or native libraries."
+        )
     with tempfile.TemporaryDirectory(prefix="cybersand-world-art-") as scratch:
         project = Path(scratch)
         hashes = make_project(project)
@@ -126,16 +146,16 @@ def main() -> int:
         }), flush=True)
         # Import/class scan is required on a newly assembled minimal project;
         # no native plugins are present to attempt loading.
-        preflight = [args.godot, "--headless", "--path", str(project),
+        preflight = [godot_executable, "--headless", "--path", str(project),
                      "--editor", "--import", "--quit"]
         code = checked_run(preflight, os.environ.copy())
         if code:
             return code
         if args.adapter_oracle:
-            return checked_run([args.godot, "--headless", "--path", str(project),
+            return checked_run([godot_executable, "--headless", "--path", str(project),
                                 "--script", "res://tests/test_world_design_pack_adapter.gd"],
                                os.environ.copy())
-        command = [args.godot, "--path", str(project), "--audio-driver", "Dummy"]
+        command = [godot_executable, "--path", str(project), "--audio-driver", "Dummy"]
         if args.rendering_driver:
             command += ["--rendering-driver", args.rendering_driver]
         if args.quit_after:
