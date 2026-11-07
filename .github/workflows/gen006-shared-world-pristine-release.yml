@@ -1,0 +1,132 @@
+name: GEN006 shared-World pristine release
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'native/include/cybersand/world.hpp'
+      - 'native/src/world.cpp'
+      - 'native/tests/gen006_shared_world_pristine_release.cpp'
+      - '.github/workflows/gen006-shared-world-pristine-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gen006-shared-pristine-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  linux-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Source and provider
+        shell: bash
+        run: |
+          set -euo pipefail
+          d=build/gen006-shared-release
+          mkdir -p "$d"
+          git rev-parse HEAD | tee "$d/head.txt"
+          git rev-parse 'HEAD^{tree}' | tee "$d/tree.txt"
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          for f in native/src/world.cpp native/include/cybersand/world.hpp native/tests/gen006_shared_world_pristine_release.cpp; do
+            git hash-object "$f" | tee -a "$d/blobs.txt"
+          done
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Actual native World compile and 1/4 worker tests
+        shell: bash
+        timeout-minutes: 30
+        run: |
+          set -euo pipefail
+          d=build/gen006-shared-release
+          g++-13 --version | head -1 | tee "$d/compiler.txt"
+          g++-13 -std=c++20 -O0 -g0 -pthread -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/src/world_generation.cpp native/src/generation_fields.cpp \
+            native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp \
+            native/src/generation_grammar.cpp native/src/generation_planes.cpp \
+            native/tests/gen006_shared_world_pristine_release.cpp \
+            -o "$d/shared-release" > "$d/compile.log" 2>&1 || { cat "$d/compile.log"; exit 1; }
+          "$d/shared-release" 1 | tee "$d/one.log"
+          "$d/shared-release" 4 | tee "$d/four.log"
+          grep -q 'GEN006_SHARED_WORLD_PRISTINE_RELEASE_PASS configured_workers=1' "$d/one.log"
+          grep -q 'GEN006_SHARED_WORLD_PRISTINE_RELEASE_PASS configured_workers=4' "$d/four.log"
+      - name: Preserve native evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-shared-ubuntu-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-shared-release/
+          if-no-files-found: warn
+          retention-days: 45
+
+  windows-native:
+    runs-on: windows-2022
+    timeout-minutes: 40
+    steps:
+      - name: Preserve LF
+        shell: cmd
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Source identity and CI provider
+        shell: python
+        run: |
+          import os,pathlib,subprocess,sys
+          d=pathlib.Path("build/gen006-shared-release");d.mkdir(parents=True,exist_ok=True)
+          def git(*args):return subprocess.check_output(["git",*args],text=True).strip()
+          assert git("rev-parse","HEAD")==os.environ["EXPECTED_HEAD"]
+          for k,a in {"head":["rev-parse","HEAD"],"tree":["rev-parse","HEAD^{tree}"],"world":["hash-object","native/src/world.cpp"],"header":["hash-object","native/include/cybersand/world.hpp"],"test":["hash-object","native/tests/gen006_shared_world_pristine_release.cpp"]}.items():
+            (d/(k+".txt")).write_text(git(*a)+"\n")
+          subprocess.run([sys.executable,"tools/ci/check_ci_provider_policy.py"],check=True)
+      - name: MSVC LLVM Clang actual native test
+        shell: cmd
+        timeout-minutes: 30
+        run: |
+          for /f "tokens=*" %%i in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath') do set "GEN006_VSROOT=%%i"
+          if not defined GEN006_VSROOT exit /b 1
+          call "%GEN006_VSROOT%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          set "GEN006_CXX=%ProgramFiles%\LLVM\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" set "GEN006_CXX=%GEN006_VSROOT%\VC\Tools\Llvm\x64\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" exit /b 1
+          "%GEN006_CXX%" --version > build\gen006-shared-release\compiler.txt 2>&1
+          if errorlevel 1 exit /b 1
+          "%GEN006_CXX%" -std=c++20 -O0 -I native/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/world_generation.cpp native/src/generation_fields.cpp native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp native/src/generation_grammar.cpp native/src/generation_planes.cpp native/tests/gen006_shared_world_pristine_release.cpp -o build\gen006-shared-release\shared-release.exe > build\gen006-shared-release\compile.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\compile.log & exit /b 1)
+          build\gen006-shared-release\shared-release.exe 1 > build\gen006-shared-release\one.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\one.log & exit /b 1)
+          build\gen006-shared-release\shared-release.exe 4 > build\gen006-shared-release\four.log 2>&1
+          if errorlevel 1 (type build\gen006-shared-release\four.log & exit /b 1)
+          type build\gen006-shared-release\one.log
+          type build\gen006-shared-release\four.log
+          findstr /C:"GEN006_SHARED_WORLD_PRISTINE_RELEASE_PASS configured_workers=1" build\gen006-shared-release\one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_SHARED_WORLD_PRISTINE_RELEASE_PASS configured_workers=4" build\gen006-shared-release\four.log
+          if errorlevel 1 exit /b 1
+      - name: Preserve native evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-shared-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-shared-release/
+          if-no-files-found: warn
+          retention-days: 45
