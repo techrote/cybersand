@@ -15,6 +15,10 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - 'native/src/world.cpp'
+      - 'native/src/world_ballistic.inc'
+      - 'native/src/c_api.cpp'
+      - 'native/src/material_rules.cpp'
+      - 'native/include/cybersand/**'
       - 'native/tests/test_copy_extreme_coordinates.cpp'
       - '.github/workflows/native-copy-extreme-292.yml'
   workflow_dispatch:
