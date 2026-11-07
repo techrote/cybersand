@@ -168,6 +168,41 @@ void run(const fs::path& file,std::uint32_t workers) {
            live.save_physical_state()==before,
            "GEN006_BRIDGE_FORGED_INCARCATION");
 
+    // A valid, *actually published* checkpoint can become stale while a
+    // different native resident is advancing. Keep the old file on disk as
+    // a realistic late durable ACK: no render-dirty or unchanged static
+    // material shortcut may override the source completed-tick fence.
+    const auto inflight=captured.checkpoint;
+    const fs::path stale_file=file.string()+".stale.g6c";
+    durable_write(stale_file,inflight.bytes);
+    demand(read_exact(stale_file)==inflight.bytes,
+           "GEN006_BRIDGE_INFLIGHT_OLD_DISK_READBACK");
+    for(unsigned i=0;i<2;++i) {
+        const auto a=live.tick(),b=control.tick();
+        observed=std::max(observed,a.worker_threads_observed);
+        demand(a.tick==b.tick && !live.has_failed() && !control.has_failed(),
+               "GEN006_BRIDGE_INFLIGHT_NATIVE_TICK_FAILED");
+        parity(live,control,"GEN006_BRIDGE_INFLIGHT_CONTROL_DIVERGED");
+    }
+    const auto advanced_state=live.save_physical_state();
+    demand(live.completed_tick_index()>inflight.world_tick &&
+           live.evict_durable_checkpoint(inflight,ack(inflight))==
+               ChunkCheckpointStatus::StaleGeneration &&
+           live.chunk_count()==count && live.resident_cell_bytes()==bytes &&
+           live.save_physical_state()==advanced_state,
+           "GEN006_BRIDGE_LATE_DURABLE_ACK_EVICTED_LIVE_RESIDENT");
+
+    // Recapture and publish an exact new source-tick identity. Only this
+    // current acknowledged generation may reclaim the static resident,
+    // leaving the genuinely moving two-resident Sand/Water seam untouched.
+    auto refreshed=live.capture_chunk_checkpoint({8,0});
+    demand(refreshed.status==ChunkCheckpointStatus::Captured &&
+           refreshed.checkpoint.world_tick==live.completed_tick_index() &&
+           refreshed.checkpoint.world_tick>inflight.world_tick &&
+           refreshed.checkpoint.admission_incarnation==
+               inflight.admission_incarnation,
+           "GEN006_BRIDGE_INFLIGHT_REFRESH_NOT_CURRENT");
+    captured=std::move(refreshed);
     durable_write(file,captured.checkpoint.bytes);
     const auto readback=read_exact(file);
     demand(readback==captured.checkpoint.bytes,
@@ -262,7 +297,7 @@ void run(const fs::path& file,std::uint32_t workers) {
              <<" configured_workers="<<workers
              <<" observed_workers_max="<<observed
              <<" sand_and_water_cross_seam=1"
-             <<" selected_dynamic_eviction=REFUSED"
+             <<" selected_dynamic_eviction=REFUSED"\n             <<" stale_inflight_durable_ack=REFUSED"
              <<" selective_static_count="<<count<<"->"<<remaining_count<<"->"<<live.chunk_count()
              <<" selective_static_bytes="<<bytes<<"->"<<remaining_bytes<<"->"<<live.resident_cell_bytes()
              <<" static_bytes_reclaimed="<<(bytes-remaining_bytes)
