@@ -93,6 +93,29 @@ func _run() -> void:
         _fail("persistent native controller PID receipt missing")
         return
 
+    # Product-facing first frame must contain REAL generated cells, not merely
+    # an empty sky texture that becomes visible only after manual painting.
+    if demo.world_chunk != Vector2i(-1, 1) or \
+            demo.occupied_native_cells < 512 or demo.occupied_native_cells >= 4096:
+        _fail("default first scene lacks substantial native Strata terrain: "
+            + str(demo.occupied_native_cells))
+        return
+    var terrain_first: Dictionary = await _capture(
+        "00-generated-terrain", evidence, chunk_root, 8, 50)
+    if terrain_first.has("error") or float(terrain_first.get("delta", 1.0)) > 0.20:
+        _fail("first terrain framebuffer does not match actual native RGBA")
+        return
+    print("GEN006_TERRAIN_FIRST_FRAME_PASS occupied=%d total=4096"
+        % demo.occupied_native_cells)
+
+    # The original fixed-sky Water17 diagnostic remains a valuable native
+    # control, but it should no longer dictate the player's starting view.
+    demo.world_chunk = Vector2i(-1, -3)
+    demo._invoke(PackedStringArray(), true, true)
+    if not demo.failure.is_empty() or demo.world_chunk != Vector2i(-1, -3):
+        _fail("cannot enter signed sky qualification shard: " + demo.failure)
+        return
+
     # First deliberately dig, then paint a Wall at exactly the same pixel.
     # These must produce changed native RGBA bytes AND changed *rendered*
     # framebuffer pixels at the magnified cell centre.
@@ -139,9 +162,9 @@ func _run() -> void:
 
     # Return to the first signed chunk and prove saved native Wall really
     # reappears as the same on-screen pixel, not just the same CLI receipt.
-    _key(demo, KEY_HOME)
+    _key(demo, KEY_LEFT, true)
     if not demo.failure.is_empty() or demo.world_chunk != Vector2i(-1, -3):
-        _fail("Home native restore failed: " + demo.failure)
+        _fail("reverse 1536-pixel native restore failed: " + demo.failure)
         return
     var restored: Dictionary = await _capture("04-reloaded-wall", evidence, chunk_root, 8, 8)
     if restored.has("error"):
@@ -165,6 +188,20 @@ func _run() -> void:
         _fail("native Water17 pixel missing from Godot viewport: " + str(water))
         return
 
+    # The user-facing Home control returns to the terrain-bearing start.
+    # This also forces the independently saved first chunk to reload after
+    # native World eviction; terrain must remain visibly present.
+    _key(demo, KEY_HOME)
+    if not demo.failure.is_empty() or demo.world_chunk != Vector2i(-1, 1) or \
+            demo.occupied_native_cells < 512:
+        _fail("Home failed to restore native terrain-bearing start: "
+            + str(demo.occupied_native_cells) + " " + demo.failure)
+        return
+    var terrain_back: Dictionary = await _capture(
+        "06-reloaded-terrain", evidence, chunk_root, 8, 50)
+    if terrain_back.has("error") or float(terrain_back.get("delta", 1.0)) > 0.20:
+        _fail("restored terrain framebuffer does not match native RGBA")
+        return
     if demo.native_pid != persistent_pid or demo.server_pid != persistent_pid:
         _fail("native controller process changed during graphical interaction")
         return
@@ -178,5 +215,7 @@ func _run() -> void:
         + " real_eviction_reload=1"
         + " restored_pixels=1"
         + " water17_visual=1"
-        + " screenshots=5")
+        + " native_surface_first_frame=1"
+        + " native_surface_home_restore=1"
+        + " screenshots=7")
     quit(0)
