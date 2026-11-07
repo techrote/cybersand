@@ -17,6 +17,15 @@ choices must be recorded for the owner, retrieve
 [reconciliation and design choices](../operations/github-development-and-release.md#reconciliation-and-design-choices).
 It is a record-and-continue rule, not an approval gate.
 
+## Coupled desktop determinism — 2026-11-06
+
+Retrieve the [determinism contract](../architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06),
+the [interface](interfaces-and-message-contracts.md) and the
+[packing note](../architecture/rigid-body-and-cellular-coupling.md). The
+[lockstep questions](retrieval-questions-lockstep.json) are additive. The dated
+[feasibility audit](../audits/2026-11-06-coupling-lockstep-feasibility.md) stays
+excluded from default retrieval.
+
 ## Material liveness Phase A and implementation admission — 2026-11-04
 
 | Question | Canonical route |

@@ -229,6 +229,36 @@ uses a numeric tolerance. [Level saves and replay](../reference/level-saves-and-
 owns the format and omitted continuation state. Complete replay persistence and
 a selectable strict runtime policy remain **Planned**.
 
+## Coupled lockstep measurement — 2026-11-06
+
+The [COUPLING-LOCKSTEP-001 fixture](../../godot/tests/test_coupling_lockstep.gd)
+compares lossless per-step body bits, consumed samples, native results and the
+per-tick `physical_state_hash` across fresh processes. Run without arguments, it
+is a short self-check: each step must apply the result of publication N−1. Run
+the registered measurement from a committed, clean source with materialized LFS
+runtimes. The runner uses a 300 s per-episode bound, the pinned Godot 4.7 paths
+named in the runner and WSL `Ubuntu-24.04` for Linux.
+
+```text
+godot --headless --path godot --script res://tests/test_coupling_lockstep.gd
+python tools/lockstep/run_coupling_lockstep.py --run NEW [--hosts windows,linux] [--arms async,lockstep] [--ticks 600] [--delay-usec 0]
+python tools/lockstep/reduce_coupling_lockstep.py --run NEW
+python -m unittest discover -s tools/lockstep -p test_reduce_coupling_lockstep.py
+godot --headless --path godot --script res://tests/test_coupling_lockstep_semantics.gd
+```
+
+The reducer validates the complete registered matrix and every artifact
+(source identity, result/log hashes, durations, tick and trace coverage, fence
+invariants) before deciding, and writes `reduction-v2.json`. Any validation
+error yields no decisions and exit 2. Its negative regressions run in
+Documentation CI. `test_coupling_lockstep_semantics.gd` checks pause, reset,
+failure and duplicate publications for the consumed-publication field.
+
+Evidence is written to uncommitted `build/coupling-lockstep/`. The sealed
+archive is published as the `evidence-coupling-lockstep-001-20261106`
+pre-release asset. Results, its hash and limits are in the
+[feasibility audit](../audits/2026-11-06-coupling-lockstep-feasibility.md).
+
 ## Required future validation
 
 These are **Planned gates**, not executed pass lists:

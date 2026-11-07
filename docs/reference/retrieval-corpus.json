@@ -555,6 +555,10 @@
       "reason": "Dated ranked MAT354 implementation proposal, not an implemented scheduler or admitted physical-law change. Canonical programme and compatibility guides preserve separate owner authorization, protected-source transition and runtime qualification."
     },
     {
+      "path": "audits/2026-11-06-coupling-lockstep-feasibility.md",
+      "reason": "Dated preregistered COUPLING-LOCKSTEP-001 feasibility evidence: async run-to-run races, opt-in lockstep same-host bit identity, Windows/Linux divergence sources and cost. Canonical current routing belongs to the determinism, threading, coupling and interface contracts."
+    },
+    {
       "path": "audits/2026-11-05-wcx-ballistic-water.md",
       "reason": "Dated experimental-branch evidence for WCX-001/002, BW-001 and IN-B1. Retrieve the design, controls and limits through the ballistic Water reference."
     },

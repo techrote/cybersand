@@ -18,6 +18,7 @@ const SIMULATION_HZ: float = 60.0
 const FIXED_TIMESTEP: float = 1.0 / SIMULATION_HZ
 const TICK_INTERVAL_USEC: int = 16667
 const MAX_BACKLOG_TICKS: int = 3
+const LOCKSTEP_POLL_USEC: int = 100
 const WORKBENCH_SAMPLE_POLL_USEC: int = 250
 const EMISSION_MATERIAL_MASK: int = 255
 const EMISSION_FLAGS_SHIFT: int = 8
@@ -62,6 +63,22 @@ var _liquid_surface_adhesion_enabled: bool = true
 var _render_snapshot_interval_usec: int = DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 var _rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 var _rigid_body_epoch: int = 0
+# COUPLING-LOCKSTEP-001 opt-in fence (default off; see set_lockstep_coupling).
+# Every main-thread body publication increments this mutex-owned counter.
+var _rigid_body_publication: int = 0
+var _lockstep_enabled: bool = false
+var _lockstep_hold_timeout_usec: int = 250000
+var _lockstep_consumed_publication: int = 0 # Worker-exclusive; fence comparison.
+# Worker-exclusive publication consumed by the last successfully completed
+# native tick (-1 before one). Paused, reset-only, failed and refused turns do
+# not advance it; snapshots copy it as consumed_rigid_body_publication.
+var _lockstep_completed_publication: int = -1
+var _lockstep_holds: int = 0 # Mutex-owned counters below.
+var _lockstep_superseded_publications: int = 0
+var _lockstep_hold_usec_total: int = 0
+var _lockstep_hold_usec_max: int = 0
+var _lockstep_timeouts: int = 0
+var _lockstep_ticks: int = 0
 var _physical_effect_epoch: int = 0
 var _physical_effect_generations := PackedInt64Array([0, 0, 0, 0, 0, 0, 0, 0])
 var _pending_physical_effects: Array = []
@@ -1309,6 +1326,72 @@ func _consume_workbench_emissions(paused: bool, sample: Dictionary) -> void:
 				_workbench_emitter_receipts = retired + preload("res://scripts/workbench_emitter.gd").apply(_world,matched,_workbench_extent)
 	_mutex.unlock()
 
+func set_lockstep_coupling(enabled: bool, hold_timeout_usec: int = 250000) -> bool:
+	# COUPLING-LOCKSTEP-001 prototype, default off. When enabled, the ordinary
+	# coupling path ticks only after a body publication newer than the one its
+	# previous tick consumed; it never blocks main and never ticks on a stale
+	# sample. Labs, MicroScenarios and the workbench keep their own pacing.
+	# Refused after start: the fence changes pacing semantics of a live owner.
+	if _thread.is_started() or hold_timeout_usec < 1000 or hold_timeout_usec > 10000000:
+		return false
+	_lockstep_enabled = enabled
+	_lockstep_hold_timeout_usec = hold_timeout_usec
+	return true
+
+
+func rigid_body_publication() -> int:
+	_mutex.lock()
+	var value: int = _rigid_body_publication
+	_mutex.unlock()
+	return value
+
+
+func lockstep_metrics() -> Dictionary:
+	_mutex.lock()
+	var values: Dictionary = {"enabled":_lockstep_enabled,"ticks":_lockstep_ticks,
+		"holds":_lockstep_holds,"hold_usec_total":_lockstep_hold_usec_total,
+		"hold_usec_max":_lockstep_hold_usec_max,"timeouts":_lockstep_timeouts,
+		"superseded_publications":_lockstep_superseded_publications,
+		"completed_publication":_lockstep_completed_publication,
+		"hold_timeout_usec":_lockstep_hold_timeout_usec}
+	_mutex.unlock()
+	return values
+
+
+func _lockstep_fence_applies() -> bool:
+	# Worker-exclusive state; the fence covers only the ordinary coupling path.
+	return _lockstep_enabled and not _lab_active and _workbench_extent == Vector2i.ZERO \
+		and _pending_physical_liquid.is_empty()
+
+
+func _lockstep_record_tick(publication: int, succeeded: bool) -> bool:
+	# Owner-exclusive bookkeeping after a native tick attempt. Only a successful
+	# tick records its latched publication; a fenced tick that skipped newer
+	# publications (several main publications before one tick) counts them.
+	if not succeeded:
+		return false
+	var fenced: bool = _lockstep_fence_applies()
+	var superseded: int = maxi(0, publication - _lockstep_consumed_publication - 1)
+	_lockstep_consumed_publication = publication
+	_lockstep_completed_publication = publication
+	if fenced:
+		_mutex.lock()
+		_lockstep_ticks += 1
+		_lockstep_superseded_publications += superseded
+		_mutex.unlock()
+	return fenced
+
+
+func _lockstep_waiting() -> bool:
+	if not _lockstep_fence_applies():
+		return false
+	_mutex.lock()
+	var waiting: bool = (_running and not _paused and not _reset_requested
+		and _lab_request.is_empty() and _rigid_body_publication <= _lockstep_consumed_publication)
+	_mutex.unlock()
+	return waiting
+
+
 func set_rigid_body_states(states: PackedFloat32Array, body_epoch: int = 0, effects: Array = []) -> Dictionary:
 	# Packed value data is copied at the bridge; scene-tree nodes and Physics RIDs
 	# remain exclusively on the main/physics thread. Body publication is independent
@@ -1322,6 +1405,7 @@ func set_rigid_body_states(states: PackedFloat32Array, body_epoch: int = 0, effe
 		return held
 	_rigid_body_states = states.duplicate()
 	_rigid_body_epoch = body_epoch
+	_rigid_body_publication += 1
 	var requested: int = effects.size()
 	var result: Dictionary = {"epoch": body_epoch, "status": "no_effects", "reason": "",
 		"requested": requested, "queued": 0, "refused": 0}
@@ -1420,6 +1504,7 @@ func set_physical_usable_state(frame: Dictionary, requests: Array = [], states: 
 		if not states.is_empty():
 			_rigid_body_states = states.duplicate()
 			_rigid_body_epoch = int(frame.epoch)
+			_rigid_body_publication += 1
 		# A changed generation/selection or cancelled lease invalidates packets
 		# even if the worker already extracted them from the pending array.
 		for actor: Variant in _physical_usable_inflight.keys():
@@ -1771,7 +1856,32 @@ func _apply_emissions(local_emissions: Array, local_cell_emissions: Array) -> vo
 
 func _worker_loop() -> void:
 	var next_tick_usec: int = Time.get_ticks_usec()
+	var lockstep_hold_start_usec: int = -1
+	var lockstep_hold_timed_out: bool = false
 	while true:
+		if _lockstep_waiting():
+			# Bounded non-blocking hold: no latch, no extraction, no tick.
+			var hold_now_usec: int = Time.get_ticks_usec()
+			if lockstep_hold_start_usec < 0:
+				lockstep_hold_start_usec = hold_now_usec
+			elif not lockstep_hold_timed_out and hold_now_usec - lockstep_hold_start_usec > _lockstep_hold_timeout_usec:
+				lockstep_hold_timed_out = true
+				_mutex.lock()
+				_lockstep_timeouts += 1
+				_mutex.unlock()
+			OS.delay_usec(LOCKSTEP_POLL_USEC)
+			continue
+		if lockstep_hold_start_usec >= 0:
+			var held_usec: int = Time.get_ticks_usec() - lockstep_hold_start_usec
+			_mutex.lock()
+			_lockstep_holds += 1
+			_lockstep_hold_usec_total += held_usec
+			_lockstep_hold_usec_max = maxi(_lockstep_hold_usec_max, held_usec)
+			_mutex.unlock()
+			lockstep_hold_start_usec = -1
+			lockstep_hold_timed_out = false
+		var local_body_publication: int = 0
+		var lockstep_ticked: bool = false
 		var local_running: bool = false
 		var local_paused: bool = false
 		var local_horizontal_input: float = 0.0
@@ -1821,6 +1931,7 @@ func _worker_loop() -> void:
 			or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty()
 		local_rigid_body_states = _rigid_body_states
 		local_rigid_body_epoch = _rigid_body_epoch
+		local_body_publication = _rigid_body_publication
 		if not physical_wait:
 			local_physical_effects = _pending_physical_effects
 			_pending_physical_effects = []
@@ -2077,6 +2188,7 @@ func _worker_loop() -> void:
 					_simulation_failed = not bool(_world.simulation_tick())
 				else:
 					_world.simulation_tick()
+				lockstep_ticked = _lockstep_record_tick(local_body_publication, not _simulation_failed)
 				if not _simulation_failed and _workbench_extent != Vector2i.ZERO:
 					_capture_workbench_result()
 					_workbench_completed_sample = workbench_serial
@@ -2099,6 +2211,10 @@ func _worker_loop() -> void:
 			local_rigid_body_epoch
 		)
 
+		if lockstep_ticked:
+			# Main's publications pace a fenced owner; no wall-clock deadline.
+			next_tick_usec = Time.get_ticks_usec()
+			continue
 		next_tick_usec += TICK_INTERVAL_USEC
 		var now_usec: int = Time.get_ticks_usec()
 		if _workbench_extent != Vector2i.ZERO and not _simulation_failed:
@@ -2298,6 +2414,7 @@ func _publish_snapshot(
 	if not snapshot.actor_prototypes.is_empty():
 		snapshot.player_representation = "actor-prototype/" + str(snapshot.actor_prototypes.models[0])
 	snapshot.current_rigid_body_states = rigid_body_states.duplicate()
+	snapshot.consumed_rigid_body_publication = _lockstep_completed_publication
 	snapshot.character_runtime_recovery_enabled = (
 		_character.runtime_enclosure_recovery_enabled
 	)

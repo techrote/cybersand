@@ -29,6 +29,9 @@ durable replay and a selectable strict runtime policy are
 
 The native fixture hashes are also incomplete replay identities. Their precise
 coverage belongs to [determinism](../architecture/determinism-and-boundary-transfers.md#replay-state-coverage).
+A default-off desktop lockstep prototype made one fixture's repeated same-host
+runs bit-identical. It does not add input capture or a replay format; see
+[coupled desktop determinism](../architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06).
 
 ## What is stored in CYSD1?
 
