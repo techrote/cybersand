@@ -6,6 +6,8 @@ extends Control
 # RGBA frames; it never receives mutable native cells. Still NOT production
 # shared-World streaming, production GDExtension ownership or cross-shard physics.
 const SIDE: int = 64
+# Open on the compiled Strata generator's actual surface instead of empty sky.
+const DEMO_START: Vector2i = Vector2i(-1, 1)
 const DISPLAY_SIZE: float = 640.0
 const DISPLAY_TOP_LEFT: Vector2 = Vector2(28.0, 76.0)
 const FRAME_BYTES: int = SIDE * SIDE * 4
@@ -13,7 +15,7 @@ const CONTROLLER_TICK_HZ: int = 30
 const FRAME_REFRESH_SECONDS: float = 0.10
 const IPC_TIMEOUT_MSEC: int = 5000
 
-var world_chunk := Vector2i(-1, -3)
+var world_chunk := DEMO_START
 var selected_cell := Vector2i(18, 30)
 var native_executable: String = ""
 var save_root: String = ""
@@ -26,6 +28,7 @@ var last_call_usec: int = 0
 var native_pid: int = -1
 var server_pid: int = -1
 var service_ticks: int = 0
+var occupied_native_cells: int = -1
 var request_sequence: int = 0
 var refresh_accumulator: float = 0.0
 var controller_started: bool = false
@@ -55,7 +58,7 @@ func _ready() -> void:
     if not failure.is_empty():
         queue_redraw()
         return
-    _invoke(PackedStringArray())
+    _invoke(PackedStringArray(), false, true)
     controller_started = failure.is_empty() and texture != null
     set_process(controller_started)
 
@@ -148,6 +151,10 @@ func _read_response(started_usec: int) -> bool:
                     server_pid = int(field.split("=")[1])
                 elif field.begins_with("continuous_ticks="):
                     service_ticks = int(field.split("=")[1])
+        elif line.begins_with("CHUNK_SURVEY "):
+            for field in line.split(" ", false):
+                if field.begins_with("occupied="):
+                    occupied_native_cells = int(field.split("=")[1])
     if server_pid != native_pid:
         failure = "Persistent native process identity changed."
         return false
@@ -170,7 +177,8 @@ func _update_texture() -> bool:
     return true
 
 
-func _invoke(actions: PackedStringArray, force_eviction: bool = false) -> void:
+func _invoke(actions: PackedStringArray, force_eviction: bool = false,
+             include_survey: bool = false) -> void:
     if native_pid <= 0 or not OS.is_process_running(native_pid):
         failure = "Persistent native controller is not running."
         queue_redraw()
@@ -186,6 +194,8 @@ func _invoke(actions: PackedStringArray, force_eviction: bool = false) -> void:
         commands.append("focus %d %d" % [world_chunk.x, world_chunk.y])
     for action in actions:
         commands.append(action)
+    if include_survey:
+        commands.append("survey")
     commands.append("render")
     commands.append("status")
     var started := Time.get_ticks_usec()
@@ -254,16 +264,16 @@ func _unhandled_key_input(event: InputEvent) -> void:
         KEY_RIGHT: move = Vector2i(1, 0)
         KEY_UP: move = Vector2i(0, -1)
         KEY_DOWN: move = Vector2i(0, 1)
-        KEY_HOME: world_chunk = Vector2i(-1, -3)
+        KEY_HOME: world_chunk = DEMO_START
         KEY_SPACE: _invoke(PackedStringArray(["tick 1"]))
         KEY_R: _invoke(PackedStringArray())
     if move != Vector2i.ZERO:
         world_chunk += move * (24 if key.shift_pressed else 1)
         failure = ""
-        _invoke(PackedStringArray(), true)
+        _invoke(PackedStringArray(), true, true)
     elif key.keycode == KEY_HOME:
         failure = ""
-        _invoke(PackedStringArray(), true)
+        _invoke(PackedStringArray(), true, true)
     elif key.keycode in [KEY_SPACE, KEY_R]:
         get_viewport().set_input_as_handled()
 
@@ -290,14 +300,14 @@ func _gui_input(event: InputEvent) -> void:
         MOUSE_BUTTON_MIDDLE:
             edit = "water %d %d 17" % [selected_cell.x, selected_cell.y]
     if not edit.is_empty():
-        _invoke(PackedStringArray([edit]))
+        _invoke(PackedStringArray([edit]), false, true)
         accept_event()
 
 func _draw() -> void:
     draw_rect(Rect2(Vector2.ZERO, size), Color("#0d1220"), true)
     var font: Font = ThemeDB.fallback_font
     draw_string(font, Vector2(28, 30), "GEN-006 / Native World Stream [experimental]", HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color("#dee9fb"))
-    draw_string(font, Vector2(28, 54), "Arrows: chunk  |  Shift+arrows: 1536px jump  |  Left: wall  Right: dig  Middle: Water17  Space: tick  R: reload", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#a3b5ce"))
+    draw_string(font, Vector2(28, 54), "Arrows: chunk  |  Shift+arrows: 1536px  |  Home: surface  |  L: wall  R-click: dig  Middle: Water17  Space: tick", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#a3b5ce"))
     draw_rect(Rect2(DISPLAY_TOP_LEFT - Vector2(2, 2),
                    Vector2(DISPLAY_SIZE + 4, DISPLAY_SIZE + 4)),
                    Color("#3f5972"), false, 2.0)
@@ -332,14 +342,17 @@ func _draw() -> void:
     draw_string(font, Vector2(710, 233),
         "Copied native RGBA 64x64 (not Godot production shader)",
         HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#9caec9"))
+    draw_string(font, Vector2(710, 255),
+        "Native occupied cells: %d / 4096" % occupied_native_cells,
+        HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color("#b6dcaa"))
     if not failure.is_empty():
-        draw_string(font, Vector2(710, 267), failure,
+        draw_string(font, Vector2(710, 292), failure,
                     HORIZONTAL_ALIGNMENT_LEFT, 550.0, 15, Color("#ff967b"))
     else:
         var lines := last_receipts.split("\n", false)
         var tail := lines.slice(maxi(0, lines.size() - 14))
         for i in range(tail.size()):
-            draw_string(font, Vector2(710, 277 + i * 22),
+            draw_string(font, Vector2(710, 314 + i * 22),
                         tail[i].left(92), HORIZONTAL_ALIGNMENT_LEFT,
                         520.0, 13, Color("#a5be9d"))
     draw_string(font, Vector2(28, 751),
