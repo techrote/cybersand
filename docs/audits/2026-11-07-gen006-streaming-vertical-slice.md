@@ -584,3 +584,30 @@ PASS/FAIL** must be taken from the resulting GitHub Actions run. Prior QA
 success is not automatically evidence for the new builder head. No accepted
 production native or GDExtension/default source is modified, and this entire
 prototype remains experimental/Draft.
+
+## Optional subchunk signed-seam roaming — 7 November 2026
+
+The experimental Godot host now has a Roam ON/OFF button and continuous WASD
+subchunk visual movement. It composes copied real native 64x64 RGBA frames;
+up to eight cached tiles amount to 131072 raw RGBA bytes before GPU texture
+overhead. Actual native residency remains a separate two-shard-World budget.
+Before moving into an uncached signed-adjacent tile, the visual camera
+freezes, requests the tile via the existing single native owner and only
+continues when the real frame arrives. Floor-based signed chunk indexing
+avoids negative-coordinate truncation.
+
+Roam deliberately does NOT paint/dig into cached visual images. Editing in
+Roam ON is explicitly refused; Roam OFF restores the existing authoritative
+native Wall/dig/Water action path. Cached frames can be visually stale;
+they are never presented as a durable edit acknowledgment. This milestone
+is visual subchunk movement, NOT shared-World selective chunk eviction,
+cross-shard Water transport, synchronized multi-World simulation or exact-tick
+state continuation. No protected native, physics, MAT-AUTH, solver, storage,
+ABI, default Godot or production behavior changes.
+
+The source-qualified Godot 4.7/OpenGL test newly exercises real positive and
+negative signed chunk seams, the native-request-before-camera-motion fence,
+actual framebuffer composition, strict read-only cache rejection, stable
+native PID, bounded resident Worlds, and two original PNG screenshots.
+Exact-head execution evidence must be checked before describing the result
+as qualified. CI-pending is not success.
