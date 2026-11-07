@@ -54,6 +54,7 @@ func mount(workbench: Control) -> bool:
 	_agent_panel.bind_authoritative_dispatcher(
 		Callable(self,"dispatch"),Callable(self,"project_cell"),
 		Callable(self,"authorize"),Callable(self,"retire"))
+	_agent_panel.set_canvas_region_provider(Callable(self,"canvas_region"))
 	_agent_panel.scope_overlay.set_world_to_screen(Callable(self,"project_region"))
 	_host.world_view.add_child(_agent_panel.scope_overlay)
 	_host.world_view.add_child(_agent_panel.proposal_overlay)
@@ -87,6 +88,16 @@ func _refresh_projection() -> void:
 
 func panel() -> Control:
 	return _agent_panel
+
+func canvas_region() -> Variant:
+	if not is_instance_valid(_host) or _host.world_extent.x <= 0 or _host.world_extent.y <= 0:
+		return null
+	var origin := Vector2i.ZERO
+	if is_instance_valid(_agent_panel) and _agent_panel._signed_frame.button_pressed:
+		if _host.world_extent != SignedFrame.EXTENT:
+			return null
+		origin = -SignedFrame.ORIGIN
+	return Rect2i(origin,_host.world_extent)
 
 func _presentation_origin() -> Vector2:
 	# Map logical signed preview to actual finite World camera only when
@@ -142,8 +153,9 @@ func authorize(scope: Dictionary) -> Dictionary:
 		if mapped.get("status") != "mapped":
 			return {"status":"refused","reason":"invalid_signed_authorized_region:" + str(mapped.get("reason",""))}
 		r = mapped.logical
-	if not r is Rect2i or r.size.x * r.size.y > 4096:
-		return {"status":"refused","reason":"invalid_or_oversized_authorized_region"}
+	var canvas: Variant = canvas_region()
+	if not r is Rect2i or not canvas is Rect2i or not canvas.encloses(r):
+		return {"status":"refused","reason":"authorized_region_outside_installed_canvas"}
 	var protected: Array = []
 	var raw_protected: Variant = scope.get("protected_regions",null)
 	if not raw_protected is Array or raw_protected.size() > 32:

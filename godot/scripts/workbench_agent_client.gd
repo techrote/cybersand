@@ -95,12 +95,12 @@ func strict_tools() -> Array:
 	]}}
 	return [
 		{"type":"function","name":"observe","strict":true,
-			"description":"Read native cells AND a matching real post-draw PNG in the paused workbench.",
+			"description":"Read at most 4096 native cells AND a matching original post-draw PNG. Explicit region selects a bounded window inside task scope. null selects the whole scope if it fits, otherwise a camera-centered window of at most 64x64 cells clamped inside scope. Read the returned exact region and viewport mapping; counts describe that inspection, not the whole canvas.",
 			"parameters":_object({"region":{"anyOf":[region,{"type":"null"}]},
 				"detail":{"type":"string","enum":["cells","counts"]}},
 				["region","detail"])},
 		{"type":"function","name":"prepare_edit","strict":true,
-			"description":"Preflight 1-8 Hard Wall/Empty native operations; zero mutation.",
+			"description":"Preflight 1-8 Hard Wall/Empty native operations covering at most 4096 distinct cells inside the authorized task scope; zero mutation.",
 			"parameters":_object({"observation_id":_field("string"),
 				"operations":operations},["observation_id","operations"])},
 		{"type":"function","name":"apply_edit","strict":true,
