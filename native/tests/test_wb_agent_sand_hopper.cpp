@@ -181,6 +181,18 @@ Report run_control(const std::vector<Operation>& recipe, const std::string& vari
     report.completed = world.completed_tick_index();
     report.caught = target_count(world,*target);
     report.total = sand_count(world);
+    // Preserve the *actual* locations of grains outside the preregistered
+    // catchment when a frozen control is RED; never auto-expand the target.
+    std::set<Cell> target_cells;
+    cells(*target,[&](int x,int y) { target_cells.insert({x,y}); });
+    for (int y=-24; y<72; ++y) for (int x=-96; x<96; ++x) {
+        if (world.stored_material(x,y) == Material::Sand &&
+            target_cells.count({x,y}) == 0) {
+            std::cout << "OUTSIDE variant=" << variant
+                      << " configured_workers=" << workers
+                      << " x=" << x << " y=" << y << '\n';
+        }
+    }
     for (const auto& pos : protection) {
         need(world.stored_material(pos.first,pos.second) == Material::Wall,
              "protected_wall_changed");
