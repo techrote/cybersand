@@ -324,6 +324,41 @@ void sand_boundary_refusal_test(unsigned workers) {
              <<" native_state=UNCHANGED_ON_REFUSAL\n";
 }
 
+// Executed by the matching Python fixture, which alters both signed chunk
+// coordinates in a genuine G6KC1 record and recomputes its valid SHA-256.
+// The native World, not the Python reference model, decides admissibility.
+void verify_signed_extent_record(const fs::path& path, unsigned workers,
+                                 ChunkCoord coordinate, bool admissible) {
+    const auto record=read_exactly(path);
+    World world(config(workers));
+    const auto before_hash=world.physical_state_hash();
+    const auto before_bytes=world.resident_cell_bytes();
+    const auto before_count=world.chunk_count();
+    const auto result=world.restore_chunk_checkpoint(coordinate,record);
+    if(admissible) {
+        require(result==ChunkCheckpointStatus::Restored &&
+                world.chunk_count()==before_count+1 &&
+                world.resident_cell_bytes()>before_bytes,
+                "GEN006_SIGNED_SAFE_ENDPOINT_REFUSED");
+        const auto recaptured=world.capture_chunk_checkpoint(coordinate);
+        require(recaptured.status==ChunkCheckpointStatus::Captured &&
+                recaptured.checkpoint.bytes==record,
+                "GEN006_SIGNED_SAFE_ENDPOINT_RECAPTURE_DRIFT");
+    } else {
+        require(result==ChunkCheckpointStatus::InvalidRecord &&
+                world.chunk_count()==before_count &&
+                world.resident_cell_bytes()==before_bytes &&
+                world.physical_state_hash()==before_hash,
+                "GEN006_HASHED_OVERFLOW_RECORD_ADMITTED_OR_MUTATED");
+    }
+    std::cout<<"GEN006_SIGNED_EXTENT_NATIVE_PASS"
+             <<" configured_workers="<<workers
+             <<" x="<<coordinate.x<<" y="<<coordinate.y
+             <<" admissible="<<admissible
+             <<" actual_result="<<static_cast<int>(result)
+             <<" atomic="<<(admissible ? "RESTORED" : "REFUSED")<<"\n";
+}
+
 void verify_separate_native_process(const fs::path& root,unsigned workers) {
     // CI invokes this mode through a NEW operating-system process, after the
     // previous command published the file with fsync/atomic rename and exited.
@@ -354,12 +389,19 @@ void verify_separate_native_process(const fs::path& root,unsigned workers) {
 
 int main(int argc,char** argv) {
     try {
+        const bool extent=argc==7 && std::string(argv[1])=="--extent";
         const bool reopen=argc==4 && std::string(argv[1])=="--reopen";
-        require((reopen && argc==4) || (!reopen && argc==3),
-                "usage: gen006-chunk-transaction ROOT 1|4 OR --reopen ROOT 1|4");
-        const auto workers=static_cast<unsigned>(std::stoul(argv[reopen?3:2]));
+        require(extent || reopen || argc==3,
+                "usage: gen006-chunk-transaction ROOT 1|4 OR --reopen ROOT 1|4 OR --extent RECORD 1|4 X Y 0|1");
+        const auto workers=static_cast<unsigned>(std::stoul(argv[extent?3:reopen?3:2]));
         require(workers==1||workers==4,"GEN006_INVALID_WORKERS");
-        if (reopen) verify_separate_native_process(argv[2],workers);
+        if(extent) {
+            const auto x=static_cast<std::int64_t>(std::stoll(argv[4]));
+            const auto y=static_cast<std::int64_t>(std::stoll(argv[5]));
+            const auto admit=std::string(argv[6])=="1";
+            require(admit || std::string(argv[6])=="0","GEN006_INVALID_EXTENT_EXPECTATION");
+            verify_signed_extent_record(argv[2],workers,{x,y},admit);
+        } else if (reopen) verify_separate_native_process(argv[2],workers);
         else {
             run(argv[1],workers);
             sand_boundary_refusal_test(workers);
