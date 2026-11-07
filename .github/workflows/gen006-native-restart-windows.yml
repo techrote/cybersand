@@ -1,0 +1,110 @@
+name: GEN006 native Windows whole-World process restart (experimental)
+on:
+  push:
+    branches: [experiment/gen006-native-cyps-scaling-20261106]
+    paths:
+      - .github/workflows/gen006-native-restart-windows.yml
+      - native/tests/test_gen006_native_restart.cpp
+      - tools/experiments/gen006_native_restart.py
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gen006-native-restart-windows
+  cancel-in-progress: false
+jobs:
+  windows-native-process-restart:
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - name: Preserve original LF source identities
+        shell: cmd
+        run: |
+          git config --global core.autocrlf false
+          if errorlevel 1 exit /b 1
+          git config --global core.eol lf
+          if errorlevel 1 exit /b 1
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Capture source and runtime
+        shell: python
+        timeout-minutes: 3
+        run: |
+          import json, os, pathlib, platform, subprocess, sys
+          p = pathlib.Path("build/gen006-native-windows")
+          p.mkdir(parents=True, exist_ok=True)
+          def git(*args):
+              return subprocess.check_output(["git", *args], text=True).strip()
+          x = {"source_sha": git("rev-parse", "HEAD"),
+               "source_tree": git("rev-parse", "HEAD^{tree}"),
+               "github_sha": os.environ["GITHUB_SHA"],
+               "world_cpp_blob": git("hash-object", "native/src/world.cpp"),
+               "world_hpp_blob": git("hash-object", "native/include/cybersand/world.hpp"),
+               "probe_cpp_blob": git("hash-object", "native/tests/test_gen006_native_restart.cpp"),
+               "driver_blob": git("hash-object", "tools/experiments/gen006_native_restart.py"),
+               "platform": platform.platform(), "python": sys.version,
+               "scope": "experimental native whole-World only; no selective eviction"}
+          (p / "source-receipt.json").write_text(json.dumps(x, indent=2)+"\n")
+          assert x["source_sha"] == x["github_sha"]
+          assert x["world_cpp_blob"] == "aed1bb10e480493397f5c5eac8ba2336f495b9f9"
+          assert x["world_hpp_blob"] == "bb2f6e33dd1ad8e4a2b2aec7b34ccfb8229b6cb3"
+          subprocess.run([sys.executable, "tools/ci/check_ci_provider_policy.py"], check=True, timeout=90)
+      - name: Build and run actual native restart using Windows child processes
+        shell: cmd
+        timeout-minutes: 21
+        run: |
+          for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set "GEN006_VSROOT=%%i"
+          if not defined GEN006_VSROOT exit /b 1
+          call "%GEN006_VSROOT%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          set "GEN006_CXX=%ProgramFiles%\LLVM\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" set "GEN006_CXX=%GEN006_VSROOT%\VC\Tools\Llvm\x64\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" exit /b 1
+          "%GEN006_CXX%" --version > build\gen006-native-windows\compiler.txt 2>&1
+          if errorlevel 1 exit /b 1
+          "%GEN006_CXX%" -std=c++20 -O2 -DNDEBUG -I native/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/tests/test_gen006_native_restart.cpp -o build\gen006-native-windows\native-restart-probe.exe > build\gen006-native-windows\native-compile.log 2>&1
+          if errorlevel 1 (type build\gen006-native-windows\native-compile.log & exit /b 1)
+          python tools/experiments/gen006_native_restart.py --native build\gen006-native-windows\native-restart-probe.exe --out build\gen006-native-windows > build\gen006-native-windows\native-restart.log 2>&1
+          if errorlevel 1 (type build\gen006-native-windows\native-restart.log & exit /b 1)
+          type build\gen006-native-windows\native-restart.log
+      - name: Validate raw native process witness
+        shell: python
+        timeout-minutes: 3
+        run: |
+          import json, pathlib
+          p=pathlib.Path("build/gen006-native-windows")
+          x=json.loads((p/"native-restart-witness.json").read_text())
+          assert x["status"]=="EXPERIMENTAL" and x["host"]=="nt"
+          assert not x["power_cut_durability_tested"] and not x["selective_eviction_tested"]
+          assert len(x["cohorts"])==2
+          assert {r["configured_workers"] for r in x["cohorts"]}=={1,4}
+          for r in x["cohorts"]:
+              assert r["result"]=="PASS"
+              for k in ("initial_restart","old_root_after_crash","updated_restart"):
+                  assert "continuation_ticks" in r[k] and '"result":"PASS"' in r[k]
+              assert "GEN006_NATIVE_RESTART_REFUSED" in r["truncated_native_refusal"]
+              assert "GEN006_NATIVE_RESTART_REFUSED" in r["same_length_native_decoder_refusal"]
+              assert "native length/receipt mismatch" not in r["same_length_native_decoder_refusal"]
+          assert "GEN006_NATIVE_PROCESS_RESTART_PASS cohorts=2" in (p/"native-restart.log").read_text()
+          print("GEN006_NATIVE_WINDOWS_PROCESS_RESTART_PASS configured=1,4")
+      - name: Preserve original native Windows result and failure traces
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-native-restart-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/gen006-native-windows/source-receipt.json
+            build/gen006-native-windows/compiler.txt
+            build/gen006-native-windows/native-compile.log
+            build/gen006-native-windows/native-restart.log
+            build/gen006-native-windows/native-restart-witness.json
+          if-no-files-found: warn
+          retention-days: 45
