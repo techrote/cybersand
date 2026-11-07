@@ -23,14 +23,6 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     steps:
-      - name: Preserve LF source identity
-        if: runner.os == 'Windows'
-        shell: cmd
-        run: |
-          git config --global core.autocrlf false
-          if errorlevel 1 exit /b 1
-          git config --global core.eol lf
-          if errorlevel 1 exit /b 1
       - name: Checkout exact source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -76,32 +68,6 @@ jobs:
             | tee build/gen006-streaming-slice/four.log
           grep -q 'GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=1' build/gen006-streaming-slice/one.log
           grep -q 'GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=4' build/gen006-streaming-slice/four.log
-      - name: Build and execute on Windows (MSVC environment, LLVM Clang)
-        if: runner.os == 'Windows'
-        shell: cmd
-        timeout-minutes: 30
-        run: |
-          for /f "tokens=*" %%i in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath') do set "GEN006_VSROOT=%%i"
-          if not defined GEN006_VSROOT exit /b 1
-          call "%GEN006_VSROOT%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64
-          if errorlevel 1 exit /b 1
-          set "GEN006_CXX=%ProgramFiles%\LLVM\bin\clang++.exe"
-          if not exist "%GEN006_CXX%" set "GEN006_CXX=%GEN006_VSROOT%\VC\Tools\Llvm\x64\bin\clang++.exe"
-          if not exist "%GEN006_CXX%" exit /b 1
-          "%GEN006_CXX%" --version > build\gen006-streaming-slice\compiler.txt 2>&1
-          if errorlevel 1 exit /b 1
-          "%GEN006_CXX%" -std=c++20 -O0 -I native/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/world_generation.cpp native/src/generation_fields.cpp native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp native/src/generation_grammar.cpp native/src/generation_planes.cpp native/tests/gen006_streaming_slice.cpp -o build\gen006-streaming-slice\streaming-slice.exe > build\gen006-streaming-slice\compile.log 2>&1
-          if errorlevel 1 (type build\gen006-streaming-slice\compile.log & exit /b 1)
-          build\gen006-streaming-slice\streaming-slice.exe --self-test build\gen006-streaming-slice\one 1 > build\gen006-streaming-slice\one.log 2>&1
-          if errorlevel 1 (type build\gen006-streaming-slice\one.log & exit /b 1)
-          build\gen006-streaming-slice\streaming-slice.exe --self-test build\gen006-streaming-slice\four 4 > build\gen006-streaming-slice\four.log 2>&1
-          if errorlevel 1 (type build\gen006-streaming-slice\four.log & exit /b 1)
-          type build\gen006-streaming-slice\one.log
-          type build\gen006-streaming-slice\four.log
-          findstr /C:"GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=1" build\gen006-streaming-slice\one.log
-          if errorlevel 1 exit /b 1
-          findstr /C:"GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=4" build\gen006-streaming-slice\four.log
-          if errorlevel 1 exit /b 1
       - name: Preserve original native evidence and failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -151,28 +117,6 @@ jobs:
           assert record["sha"]==record["github_sha"]
           (out/"source.json").write_text(json.dumps(record,indent=2)+"\n")
           subprocess.run([sys.executable,"tools/ci/check_ci_provider_policy.py"],check=True,timeout=120)
-      - name: Build and execute on Ubuntu
-        if: runner.os == 'Linux'
-        shell: bash
-        timeout-minutes: 30
-        run: |
-          set -euo pipefail
-          g++-13 --version | head -n 1 | tee build/gen006-streaming-slice/compiler.txt
-          g++-13 -std=c++20 -O0 -g0 -pthread -I native/include \
-            native/src/world.cpp native/src/material_rules.cpp \
-            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
-            native/src/world_generation.cpp native/src/generation_fields.cpp \
-            native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp \
-            native/src/generation_grammar.cpp native/src/generation_planes.cpp \
-            native/tests/gen006_streaming_slice.cpp \
-            -o build/gen006-streaming-slice/streaming-slice \
-            > build/gen006-streaming-slice/compile.log 2>&1 || { cat build/gen006-streaming-slice/compile.log; exit 1; }
-          build/gen006-streaming-slice/streaming-slice --self-test build/gen006-streaming-slice/one 1 \
-            | tee build/gen006-streaming-slice/one.log
-          build/gen006-streaming-slice/streaming-slice --self-test build/gen006-streaming-slice/four 4 \
-            | tee build/gen006-streaming-slice/four.log
-          grep -q 'GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=1' build/gen006-streaming-slice/one.log
-          grep -q 'GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=4' build/gen006-streaming-slice/four.log
       - name: Build and execute on Windows (MSVC environment, LLVM Clang)
         if: runner.os == 'Windows'
         shell: cmd
