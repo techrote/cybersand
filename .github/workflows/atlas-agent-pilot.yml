@@ -22,6 +22,7 @@ jobs:
   three-lanes:
     strategy:
       fail-fast: false
+      max-parallel: 2
       matrix:
         include:
           - collection: lumen-fault
