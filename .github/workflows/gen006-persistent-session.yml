@@ -1,0 +1,173 @@
+name: GEN006 persistent native/Godot session qualification
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'native/tests/gen006_persistent_stream.cpp'
+      - 'godot/tests/gen006_persistent_stream_demo.gd'
+      - 'godot/tests/gen006_persistent_stream_demo.tscn'
+      - 'tools/experiments/gen006_persistent_session.py'
+      - '.github/workflows/gen006-persistent-session.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gen006-persistent-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  GEN006_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  linux-native-and-godot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Source provenance and policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/gen006-persistent
+          git rev-parse HEAD | tee build/gen006-persistent/head.txt
+          git rev-parse 'HEAD^{tree}' | tee build/gen006-persistent/tree.txt
+          test "$(git rev-parse HEAD)" = "$GEN006_EXPECTED_HEAD"
+          for f in native/src/world.cpp native/tests/gen006_streaming_slice.cpp native/tests/gen006_persistent_stream.cpp godot/tests/gen006_persistent_stream_demo.gd tools/experiments/gen006_persistent_session.py; do
+            git hash-object "$f" | tee -a build/gen006-persistent/blobs.txt
+          done
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Compile native persistent World owner
+        shell: bash
+        timeout-minutes: 25
+        run: |
+          set -euo pipefail
+          dir=build/gen006-persistent
+          g++-13 --version | head -n 1 | tee "$dir/compiler.txt"
+          g++-13 -std=c++20 -O0 -g0 -pthread -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/src/world_generation.cpp native/src/generation_fields.cpp \
+            native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp \
+            native/src/generation_grammar.cpp native/src/generation_planes.cpp \
+            native/tests/gen006_persistent_stream.cpp -o "$dir/persistent-native" \
+            > "$dir/native-compile.log" 2>&1 || { cat "$dir/native-compile.log"; exit 1; }
+      - name: Real native 1/4-worker, idle ticking, edits, eviction and restart
+        shell: bash
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          dir=build/gen006-persistent
+          python3 tools/experiments/gen006_persistent_session.py --exe "$dir/persistent-native" --root "$dir/cases-one" --workers 1 | tee "$dir/test-one.log"
+          python3 tools/experiments/gen006_persistent_session.py --exe "$dir/persistent-native" --root "$dir/cases-four" --workers 4 | tee "$dir/test-four.log"
+          grep -q 'GEN006_PERSISTENT_NATIVE_SESSION_PASS configured_workers=1' "$dir/test-one.log"
+          grep -q 'GEN006_PERSISTENT_NATIVE_SESSION_PASS configured_workers=4' "$dir/test-four.log"
+      - name: Godot 4.7 continuous native-session headless acceptance
+        shell: bash
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          dir=build/gen006-persistent
+          mkdir -p "$dir/godot-bin" "$dir/godot-mini/tests"
+          curl -fsSL --retry 3 --retry-delay 3 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7' -o "$dir/godot.zip"
+          echo '0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  '"$dir/godot.zip" | sha256sum --check --strict
+          unzip -q "$dir/godot.zip" -d "$dir/godot-bin"
+          godot_bin="$(find "$dir/godot-bin" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$godot_bin"
+          chmod +x "$godot_bin"
+          "$godot_bin" --version | tee "$dir/godot-version.txt"
+          cp godot/tests/gen006_persistent_stream_demo.gd godot/tests/gen006_persistent_stream_demo.tscn "$dir/godot-mini/tests/"
+          printf 'config_version=5\n[application]\nconfig/name="GEN006 Persistent Session"\nrun/main_scene="res://tests/gen006_persistent_stream_demo.tscn"\n' > "$dir/godot-mini/project.godot"
+          GEN006_PERSISTENT_EXECUTABLE="$PWD/$dir/persistent-native" \
+          GEN006_PERSISTENT_ROOT="$PWD/$dir/godot-world" \
+          GEN006_PERSISTENT_CONTROL="$PWD/$dir/godot-control" \
+          GEN006_PERSISTENT_VERIFY=1 \
+            timeout 90 "$godot_bin" --headless --path "$dir/godot-mini" res://tests/gen006_persistent_stream_demo.tscn > "$dir/godot.log" 2>&1 || { cat "$dir/godot.log"; exit 1; }
+          cat "$dir/godot.log"
+          grep -q 'GEN006_PERSISTENT_GODOT_PASS' "$dir/godot.log"
+      - name: Original Linux runtime evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-persistent-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/gen006-persistent/*.txt
+            build/gen006-persistent/*.log
+            build/gen006-persistent/cases-one/**/*.log
+            build/gen006-persistent/cases-four/**/*.log
+          if-no-files-found: warn
+          retention-days: 45
+
+  windows-native:
+    runs-on: windows-2022
+    timeout-minutes: 40
+    steps:
+      - name: Preserve LF source
+        shell: cmd
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Source provenance and policy
+        shell: python
+        run: |
+          import os,pathlib,subprocess,sys
+          p=pathlib.Path("build/gen006-persistent");p.mkdir(parents=True,exist_ok=True)
+          def git(*args):return subprocess.check_output(["git",*args],text=True).strip()
+          assert git("rev-parse","HEAD")==os.environ["GEN006_EXPECTED_HEAD"]
+          for key,args in {"head":["rev-parse","HEAD"],"tree":["rev-parse","HEAD^{tree}"],"world-blob":["hash-object","native/src/world.cpp"],"session-blob":["hash-object","native/tests/gen006_persistent_stream.cpp"]}.items():
+            (p/(key+".txt")).write_text(git(*args)+"\n")
+          subprocess.run([sys.executable,"tools/ci/check_ci_provider_policy.py"],check=True)
+      - name: Compile persistent native World under MSVC/LLVM Clang
+        shell: cmd
+        timeout-minutes: 30
+        run: |
+          for /f "tokens=*" %%i in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath') do set "GEN006_VSROOT=%%i"
+          if not defined GEN006_VSROOT exit /b 1
+          call "%GEN006_VSROOT%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          set "GEN006_CXX=%ProgramFiles%\LLVM\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" set "GEN006_CXX=%GEN006_VSROOT%\VC\Tools\Llvm\x64\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" exit /b 1
+          "%GEN006_CXX%" --version > build\gen006-persistent\compiler.txt 2>&1
+          if errorlevel 1 exit /b 1
+          "%GEN006_CXX%" -std=c++20 -O0 -I native/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/world_generation.cpp native/src/generation_fields.cpp native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp native/src/generation_grammar.cpp native/src/generation_planes.cpp native/tests/gen006_persistent_stream.cpp -o build\gen006-persistent\persistent-native.exe > build\gen006-persistent\native-compile.log 2>&1
+          if errorlevel 1 (type build\gen006-persistent\native-compile.log & exit /b 1)
+      - name: Real native 1/4-worker session and independent restart
+        shell: cmd
+        timeout-minutes: 12
+        run: |
+          python tools/experiments/gen006_persistent_session.py --exe build\gen006-persistent\persistent-native.exe --root build\gen006-persistent\cases-one --workers 1 > build\gen006-persistent\test-one.log 2>&1
+          if errorlevel 1 (type build\gen006-persistent\test-one.log & exit /b 1)
+          python tools/experiments/gen006_persistent_session.py --exe build\gen006-persistent\persistent-native.exe --root build\gen006-persistent\cases-four --workers 4 > build\gen006-persistent\test-four.log 2>&1
+          if errorlevel 1 (type build\gen006-persistent\test-four.log & exit /b 1)
+          type build\gen006-persistent\test-one.log
+          type build\gen006-persistent\test-four.log
+          findstr /C:"GEN006_PERSISTENT_NATIVE_SESSION_PASS configured_workers=1" build\gen006-persistent\test-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_PERSISTENT_NATIVE_SESSION_PASS configured_workers=4" build\gen006-persistent\test-four.log
+          if errorlevel 1 exit /b 1
+      - name: Original Windows runtime evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-persistent-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/gen006-persistent/*.txt
+            build/gen006-persistent/*.log
+            build/gen006-persistent/cases-one/**/*.log
+            build/gen006-persistent/cases-four/**/*.log
+          if-no-files-found: warn
+          retention-days: 45
