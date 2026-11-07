@@ -23,6 +23,34 @@ int main(int argc, char** argv) {
               "initial native Water17 missing");
         const auto a_hash = controller.at(a).physical_state_hash();
 
+        // A no-ABI, no-mutation membership guard is possible with the existing
+        // native installer, but ONLY while maximum_chunk_count == 1 and exactly
+        // one World chunk is resident. For a present coordinate it returns
+        // AlreadyResident before writing; for an absent coordinate the capacity
+        // check returns CapacityFull before writing. A full Empty payload is
+        // still needed to satisfy the length precondition.
+        const std::vector<Material> empty_materials(kSide * kSide, Material::Empty);
+        auto assert_readonly_membership = [&](World& world, ChunkCoord query,
+                                              ChunkInstallOutcome expected) {
+            check(!world.has_failed() && world.chunk_count() == 1,
+                  "GEN006_PROBE_REQUIRES_ONE_HEALTHY_CHUNK");
+            const auto hash_before = world.physical_state_hash();
+            const auto bytes_before = world.resident_cell_bytes();
+            const auto ticks_before = world.completed_tick_index();
+            const auto count_before = world.chunk_count();
+            const auto outcome = world.install_generated_chunk(query, empty_materials);
+            check(outcome == expected, "GEN006_PROBE_UNEXPECTED_OUTCOME");
+            check(world.physical_state_hash() == hash_before &&
+                  world.resident_cell_bytes() == bytes_before &&
+                  world.completed_tick_index() == ticks_before &&
+                  world.chunk_count() == count_before,
+                  "GEN006_MEMBERSHIP_PROBE_MUTATED_WORLD");
+        };
+        assert_readonly_membership(controller.at(a), a,
+                                   ChunkInstallOutcome::AlreadyResident);
+        assert_readonly_membership(controller.at(a), b,
+                                   ChunkInstallOutcome::CapacityFull);
+
         controller.focus(b); // persists A, destroys A World
         controller.focus(c); // persists B, destroys B World
         check(!controller.contains(a) && !controller.contains(b),
@@ -64,6 +92,18 @@ int main(int argc, char** argv) {
               "loaded native World does not retain original A chunk");
         check(rebound.liquid_mass(18, -192 + 30) == 0,
               "unexpected B material appeared in native A chunk");
+
+        // This is the direct implementation repair witness: candidate for B
+        // must return AlreadyResident in the real native one-chunk World;
+        // because it actually contains A, the result is CapacityFull instead.
+        // Both outcomes leave the native World byte/hash/tick identity intact.
+        assert_readonly_membership(rebound, b, ChunkInstallOutcome::CapacityFull);
+        assert_readonly_membership(rebound, a, ChunkInstallOutcome::AlreadyResident);
+        std::cout << "GEN006_NONMUTATING_IDENTITY_GUARD_PASS"
+                  << " valid_A=AlreadyResident"
+                  << " wrong_B=CapacityFull"
+                  << " native_hash_unchanged=1"
+                  << " resident_budget=1\\n";
 
         std::cout << "GEN006_REBIND_NEGATIVE_CONTROL_PASS"
                   << " outer_chunk=(0,-3)"
