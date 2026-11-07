@@ -12,18 +12,18 @@ git -C cybersand-preview switch --track origin/tools/world-art-interactive-previ
 git clone --no-checkout https://github.com/techrote/cybersand.git art-source
 git -C art-source checkout 05632d52e8bfb6ac302da1158653505ae203fbf6
 cd cybersand-preview
-godot --path godot res://tools/world_art_preview.tscn -- --art-root="$(cd ../art-source/docs/world-design && pwd)" --design-revision=05632d52e8bfb6ac302da1158653505ae203fbf6
+python3 tools/world_art_preview_launcher.py --godot=godot --art-root="$(cd ../art-source/docs/world-design && pwd)" --design-revision=05632d52e8bfb6ac302da1158653505ae203fbf6
 ~~~
 
 On Windows, change the final line in PowerShell to the following, using your installed Godot 4.7 console executable:
 
 ~~~powershell
-& "C:\Tools\Godot_v4.7-stable_win64_console.exe" --path godot --rendering-driver opengl3_angle res://tools/world_art_preview.tscn -- "--art-root=$((Resolve-Path ..\art-source\docs\world-design).Path)" --design-revision=05632d52e8bfb6ac302da1158653505ae203fbf6
+python tools/world_art_preview_launcher.py --godot="C:\Tools\Godot_v4.7-stable_win64_console.exe" --rendering-driver=opengl3_angle "--art-root=$((Resolve-Path ..\art-source\docs\world-design).Path)" --design-revision=05632d52e8bfb6ac302da1158653505ae203fbf6
 ~~~
 
 Alternatively give an individual file with --pack=/absolute/path/pack.json rather than --art-root. You can paste a directory into the **World-design root** field, press Enter, or use **Choose directory**. The folder should contain lumen-fault/pack.json, coral-telegraph/pack.json, etc. The window lists the 15 known collections in their logical order; additional collection folders with pack files are discovered automatically.
 
-The tool does **not** import #454 data into this branch or start Scheduswarm. Revision text is explicit caller-provided attribution; the displayed SHA-256 validates the loaded pack bytes.
+The small Python launcher constructs a **temporary, standalone Godot 4.7 project** by copying exact shader/LUT/preview script bytes from the checked-out repository, then invokes the real Godot desktop scene. The temporary project contains **no native/GDExtension or Rapier plugin**, so no CyberSand simulation library needs to be installed or loaded. Its compiled shaders are source-bound to the copied production files. The temporary project is deleted when Godot exits, but screenshots remain in the configured user-data/output directory. The tool does **not** import #454 art into this branch or start Scheduswarm. Revision text is caller-provided attribution; the displayed SHA-256 validates actual pack bytes.
 
 ## Camera and inspection
 
@@ -69,7 +69,7 @@ user://world-art-preview/captures/<timestamp>-<kind>-<random>/
     status.json
 ~~~
 
-The Godot user-data directory for the **Cyber Sand Reference Sandbox** project is typically under %APPDATA%\Godot\app_userdata\Cyber Sand Reference Sandbox\ on Windows or ~/.local/share/godot/app_userdata/Cyber Sand Reference Sandbox/ on Linux.
+The isolated Godot project is named **CyberSand World Art Preview**; its user-data directory is typically under %APPDATA%\Godot\app_userdata\CyberSand World Art Preview\ on Windows or ~/.local/share/godot/app_userdata/CyberSand World Art Preview/ on Linux.
 
 Override with --export-root=/absolute/output/folder. Every click creates a **new** directory and never overwrites earlier captures. Status initially says incomplete; only a successful PNG and metadata write marks it complete. Partial output stays visible on error. Output inside the source pack's directory is refused. The app never rewrites, renames or deletes source art. No locks, leases, PID checks or capture recovery are used.
 
@@ -84,12 +84,11 @@ Only the active composition/feature texture is held, not all 15 maps. JSON parsi
 The dedicated [GUI evidence workflow](../../.github/workflows/world-art-preview.yml) checks #454 at exact source revision on Linux OpenGL/llvmpipe and Windows ANGLE. The smoke covers 15 combined collections, 120 feature identities and variants, camera inputs, actual source edit/reload, last-good retention, before/after, actual glow/time pixel changes and PNG export. The adapted RG8 geometry/condition oracle is a separate focused test.
 
 ~~~bash
-godot --headless --path godot --script res://tests/test_world_design_pack_adapter.gd
-xvfb-run -a godot --path godot --rendering-driver opengl3 \
-  --script res://tests/world_art_preview_smoke.gd -- \
-  --art-root=/absolute/art-source/docs/world-design \
+python3 tools/world_art_preview_launcher.py --godot=godot --adapter-oracle
+xvfb-run -a python3 tools/world_art_preview_launcher.py --godot=godot \
+  --rendering-driver=opengl3 --art-root=/absolute/art-source/docs/world-design \
   --design-revision=05632d52e8bfb6ac302da1158653505ae203fbf6 \
-  --smoke-output=/absolute/evidence
+  --export-root=/absolute/evidence/exports --smoke-output=/absolute/evidence
 ~~~
 
 Inspect the original retained screenshots and logs before claiming graphical qualification. This tool does not alter production gameplay, renderer shaders, native material authority or Scheduswarm.
