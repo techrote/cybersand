@@ -38,6 +38,7 @@ var _busy := false
 var _loaded := false
 var _baseline: Image
 var _baseline_hash := ""
+var _baseline_rg8_hash := ""
 var _baseline_origin := Vector2.ZERO
 var _baseline_zoom := 1.0
 var _baseline_time := 1.37
@@ -578,6 +579,7 @@ func _pin_after_frames() -> void:
 	_baseline_quality = _quality
 	_baseline_dimensions = rig.size
 	_baseline_hash = pack_hash
+	_baseline_rg8_hash = _result.get("rg8_sha256", "")
 	baseline_overlay.texture = ImageTexture.create_from_image(_baseline)
 	baseline_overlay.visible = false
 	compare_button.disabled = false
@@ -651,10 +653,17 @@ func export_art(kind: String) -> void:
 	var exported: Image
 	var source_size: Vector2i = _native_size
 	var source_rg8_hash: String = _result.get("rg8_sha256", "")
+	var pinned_before: bool = kind in ["viewport", "detail"] and baseline_overlay.visible and _baseline != null
 	if kind in ["viewport", "detail"]:
-		await RenderingServer.frame_post_draw
-		await RenderingServer.frame_post_draw
-		exported = rig.get_texture().get_image()
+		if pinned_before:
+			# The visible Before view is a captured original framebuffer, not
+			# a regenerated frame from the current RG8 map.
+			exported = _baseline.duplicate()
+			source_rg8_hash = _baseline_rg8_hash
+		else:
+			await RenderingServer.frame_post_draw
+			await RenderingServer.frame_post_draw
+			exported = rig.get_texture().get_image()
 		if kind == "detail" and exported != null and not exported.is_empty():
 			var half: Vector2i = Vector2i(maxi(1, exported.get_width() / 2),
 				maxi(1, exported.get_height() / 2))
@@ -678,7 +687,10 @@ func export_art(kind: String) -> void:
 		_status("PNG write failed; incomplete status retained: " + directory, true)
 		return
 	var metadata := {
-		"kind": kind, "pack_path": pack_path, "pack_sha256": pack_hash,
+		"kind": kind, "pack_path": pack_path,
+		"pack_sha256": _baseline_hash if pinned_before else pack_hash,
+		"currently_loaded_pack_sha256": pack_hash,
+		"visible_frame": "pinned-before" if pinned_before else "current",
 		"design_revision": design_revision, "selected_feature": _chosen_feature(),
 		"selected_variant": _chosen_variant(), "native_dimensions": [source_size.x, source_size.y],
 		"pixels": [exported.get_width(), exported.get_height()],
