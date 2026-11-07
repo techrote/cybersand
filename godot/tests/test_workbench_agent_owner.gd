@@ -82,15 +82,26 @@ func observe(x: int, y: int, width: int, height: int) -> Dictionary:
 	return native
 
 
+# Named predicates avoid a multiline anonymous-function argument whose
+# unparenthesized return-expression continuation Godot 4.7 cannot parse.
+func _initial_workbench_ready() -> bool:
+	return ui != null and not ui.applied.is_empty() and not ui.busy() \
+		and main.latest_snapshot != null and main.paused
+
+
+func _new_workbench_ready() -> bool:
+	return not ui.applied.is_empty() and ui.applied.extent == [2048,2048] \
+		and not ui.busy() and main.pending_microscenario_apply.is_empty() \
+		and main.world_extent == Vector2i(2048,2048)
+
+
 func run() -> void:
 	main = load("res://main.tscn").instantiate()
 	root.add_child(main)
 	ui = main.shared_workbench
 	worker = main.simulation_worker
-	if not await wait_for(func()->bool:
-		return ui != null and not ui.applied.is_empty() and not ui.busy()
-			and main.latest_snapshot != null and main.paused,
-		"shared workbench did not initialize paused"):
+	if not await wait_for(Callable(self, "_initial_workbench_ready"),
+			"shared workbench did not initialize paused"):
 		finish()
 		return
 	var new_setup: Dictionary = Setup.fresh(
@@ -98,11 +109,8 @@ func run() -> void:
 	if not check(ui.apply(new_setup),"blank real native owner was not accepted"):
 		finish()
 		return
-	if not await wait_for(func()->bool:
-		return not ui.applied.is_empty() and ui.applied.extent == [2048,2048]
-			and not ui.busy() and main.pending_microscenario_apply.is_empty()
-			and main.world_extent == Vector2i(2048,2048),
-		"fresh 2048-square native workbench did not install"):
+	if not await wait_for(Callable(self, "_new_workbench_ready"),
+			"fresh 2048-square native workbench did not install"):
 		finish()
 		return
 
