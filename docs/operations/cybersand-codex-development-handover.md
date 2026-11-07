@@ -10,6 +10,14 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Remaining cut hitch — 2026-11-07
+
+Draft519's rectangle geometry and physics stay fixed. The registered follow-up
+removes frame polling, batches at most8 refused investigations without skipping
+any, and reconstructs saved material rows as exact intervals. Read the
+[correction checkpoint](../audits/2026-11-07-workbench-rectangle-core.md#remaining-cut-hitch-correction--2026-11-07)
+for source-qualified timing, tests and retained gaps. Preserve open user canvases.
+
 ## Interior core experiment — 2026-11-07
 
 Owner's rectangle-plus-Sand request is on `codex/workbench-rectangle-core-20261107`,

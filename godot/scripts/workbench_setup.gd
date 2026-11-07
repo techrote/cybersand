@@ -134,8 +134,28 @@ static func physical_definitions(setup: Dictionary) -> Array:
 	return result
 
 # Discs use the same integer circle and clipped extent as native paint_disc.
-# Coalesce each affected row; repeated edits over the same area do not consume
-# a rectangle for every historical stamp. Empty spans vanish from a blank recipe.
+# Exact last-write-wins spans, independent of painted area. Empty writes remove
+# coverage; the run budget applies only to the final recipe, as before.
+static func _write_span(rows: Dictionary, y: int, left: int, right: int, material: int) -> void:
+	var output: Array[Vector3i]=[]
+	var inserted: bool=false
+	for span: Vector3i in rows.get(y,[]):
+		if span.y<=left: output.append(span);continue
+		if not inserted:
+			if span.x<left: output.append(Vector3i(span.x,left,span.z))
+			if material!=0: output.append(Vector3i(left,right,material))
+			inserted=true
+		if span.x>=right: output.append(span)
+		elif span.y>right: output.append(Vector3i(right,span.y,span.z))
+	if not inserted and material!=0: output.append(Vector3i(left,right,material))
+	var merged: Array[Vector3i]=[]
+	for span: Vector3i in output:
+		if not merged.is_empty() and merged.back().y==span.x and merged.back().z==span.z:
+			merged[-1]=Vector3i(merged.back().x,span.y,span.z)
+		else: merged.append(span)
+	if merged.is_empty(): rows.erase(y)
+	else: rows[y]=merged
+
 static func rectangles(setup: Dictionary) -> Dictionary:
 	var size := extent_of(setup)
 	var rows := {}
@@ -144,37 +164,19 @@ static func rectangles(setup: Dictionary) -> Dictionary:
 		var y := int(stamp[1])
 		if stamp.size()==5:
 			for row_y: int in range(y,y+int(stamp[3])):
-				if not rows.has(row_y):
-					var empty := PackedByteArray()
-					empty.resize(size.x)
-					rows[row_y]=empty
-				var row: PackedByteArray=rows[row_y]
-				for column: int in range(x,x+int(stamp[2])): row[column]=int(stamp[4])
+				_write_span(rows,row_y,x,x+int(stamp[2]),int(stamp[4]))
 			continue
 		var radius := int(stamp[2])
 		for dy: int in range(maxi(-radius,-y),mini(radius,size.y-1-y)+1):
 			var half := floori(sqrt(radius*radius-dy*dy))
-			var row_y := y+dy
-			if not rows.has(row_y):
-				var empty := PackedByteArray()
-				empty.resize(size.x)
-				rows[row_y] = empty
-			var row: PackedByteArray = rows[row_y]
-			for column: int in range(maxi(0,x-half),mini(size.x,x+half+1)):
-				row[column] = int(stamp[3])
+			_write_span(rows,y+dy,maxi(0,x-half),mini(size.x,x+half+1),int(stamp[3]))
 	var runs := []
 	var row_keys := rows.keys()
 	row_keys.sort()
 	for y: int in row_keys:
-		var row: PackedByteArray = rows[y]
-		var x := 0
-		while x < size.x:
-			var start := x
-			var mat := int(row[x])
-			while x < size.x and row[x] == mat: x += 1
-			if mat == 0: continue
+		for span: Vector3i in rows[y]:
 			if runs.size() >= MAX_RUNS*5: return {"error":"Starting terrain exceeds 4096 horizontal runs."}
-			runs.append_array([start,y,x-start,1,mat])
+			runs.append_array([span.x,y,span.y-span.x,1,span.z])
 	return {"runs":runs}
 
 

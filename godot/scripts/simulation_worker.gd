@@ -146,16 +146,29 @@ var _workbench_cut_reply: Dictionary = {}
 var _workbench_cut_serial: int = 0
 var _workbench_cut_admitted_sample: Dictionary = {}
 var _workbench_cut_prime: bool = false
+var _workbench_cut_wakeup: RefCounted
 
-func queue_workbench_cut(command: Dictionary) -> int:
+func _replace_cut_world_mailbox() -> void:
+	_mutex.lock()
+	_world_generation+=1
+	var wakeup: RefCounted=_workbench_cut_wakeup
+	_workbench_cut_wakeup=null
+	_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={};_workbench_cut_prime=false
+	_mutex.unlock()
+	if wakeup!=null: wakeup.resolve.call_deferred("World changed; clocks remain held",wakeup)
+
+func queue_workbench_cut(command: Dictionary, wakeup: RefCounted=null) -> int:
 	_mutex.lock()
 	var begin: bool=command.get("action")=="begin"
-	var ok: bool=_paused and _workbench_extent!=Vector2i.ZERO and _lab_request.is_empty() and not _reset_requested and _prepared_physical_publication.is_empty() and _workbench_cut_request.is_empty() and _workbench_cut_reply.is_empty() and (not _workbench_cut_hold if begin else _workbench_cut_hold)
+	var ok: bool=_running and _paused and _workbench_extent!=Vector2i.ZERO and _lab_request.is_empty() and not _reset_requested and _prepared_physical_publication.is_empty() and _workbench_cut_request.is_empty() and _workbench_cut_reply.is_empty() and (not _workbench_cut_hold if begin else _workbench_cut_hold)
 	if ok:
 		_workbench_cut_serial+=1
 		_workbench_cut_request=command.duplicate(true)
 		_workbench_cut_request["request_id"]=_workbench_cut_serial
 		_workbench_cut_request["world_generation"]=_world_generation
+		_workbench_cut_request["enqueued_usec"]=Time.get_ticks_usec()
+		_workbench_cut_wakeup=wakeup
+		if wakeup!=null: wakeup.serial=_workbench_cut_serial;wakeup.generation=_world_generation
 		_workbench_cut_hold=true
 		_pending_physical_effects.clear();_cancel_physical_usables_locked();_cancel_workbench_emission_locked()
 	var serial: int=_workbench_cut_serial if ok else 0
@@ -165,7 +178,9 @@ func queue_workbench_cut(command: Dictionary) -> int:
 func take_workbench_cut_reply(serial: int) -> Dictionary:
 	_mutex.lock()
 	var output: Dictionary={}
-	if _workbench_cut_reply.get("request_id")==serial:
+	if not _running:
+		output={"ok":false,"outcome":"Worker stopped; clocks remain held","transport_failure":true,"request_id":serial,"world_generation":_world_generation}
+	elif _workbench_cut_reply.get("request_id")==serial:
 		output=_workbench_cut_reply
 		_workbench_cut_reply={}
 	_mutex.unlock()
@@ -176,7 +191,22 @@ func _apply_workbench_cut(command: Dictionary, emissions: Array[Vector4i], cells
 	if command.get("action")=="begin": _apply_emissions(emissions,cells)
 	var reply: Dictionary={"ok":false,"outcome":"Unavailable"}
 	if command.world_generation==_world_generation and _world.has_method(&"workbench_cut_command"):
-		reply=_world.workbench_cut_command(command)
+		var native_command: Dictionary=command.duplicate(true)
+		native_command.erase("batch_refusals")
+		var refusals: Array[Dictionary]=[]
+		var limit: int=8 if command.get("action")=="next" and command.get("batch_refusals",false) else 1
+		for attempt: int in range(limit):
+			var native_started: int=Time.get_ticks_usec()
+			reply=_world.workbench_cut_command(native_command)
+			reply["native_command_usec"]=Time.get_ticks_usec()-native_started
+			if reply.get("ok",false) or reply.get("done",false) or str(reply.get("outcome")) in ["WorldFailed","Quarantined","Unavailable"]: break
+			if attempt+1==limit or str(reply.get("outcome")) not in ["Anchored","UnknownBoundary","NotResident","Excluded","Ineligible","Thermal","Occupied","PendingEvent","MemberCapacity","ShapeCapacity"]: break
+			reply["request_id"]=command.request_id;reply["world_generation"]=_world_generation
+			reply["batch_index"]=attempt
+			refusals.append(reply.duplicate(true))
+		if not refusals.is_empty():
+			reply["batched_refusals"]=refusals
+			reply["refusal_summaries"]=refusals.map(func(row: Dictionary):return {"outcome":row.get("outcome"),"frontier_limited":row.get("frontier_limited",false),"active_count":row.get("active_count",0)})
 	if command.get("action")=="acknowledge" and reply.get("ok",false): _workbench_cut_admitted_sample=command.sample.duplicate(true)
 	if command.get("action")=="cancel" and reply.get("ok",false): _workbench_cut_admitted_sample={};_workbench_cut_prime=false
 	if command.get("action")=="end" and reply.get("ok",false) and not command.sample.is_empty():
@@ -192,6 +222,8 @@ func _apply_workbench_cut(command: Dictionary, emissions: Array[Vector4i], cells
 		_workbench_last_emitter_sample=-1
 		_workbench_cut_admitted_sample={};_workbench_cut_prime=false
 	reply["command_usec"]=Time.get_ticks_usec()-started
+	reply["worker_started_usec"]=started
+	reply["enqueued_usec"]=command.get("enqueued_usec",started)
 	var publishing: int=Time.get_ticks_usec()
 	var committed: bool=command.get("action") in ["commit","crumble"] and reply.get("ok",false)
 	if command.get("action")=="begin" or committed: _snapshot_hard_surface_revision=-1
@@ -206,8 +238,12 @@ func _apply_workbench_cut(command: Dictionary, emissions: Array[Vector4i], cells
 	reply["publication_usec"]=Time.get_ticks_usec()-publishing
 	_mutex.lock()
 	if command.get("action")=="end" and reply.get("ok",false): _workbench_cut_hold=false
+	reply["worker_replied_usec"]=Time.get_ticks_usec()
 	_workbench_cut_reply=reply
+	var wakeup: RefCounted=_workbench_cut_wakeup
+	_workbench_cut_wakeup=null
 	_mutex.unlock()
+	if wakeup!=null: wakeup.resolve.call_deferred("Reply",wakeup)
 var _scenario_request_serial: int = 0
 var _scenario_request_applied: bool = false
 var _water_exit_request_serial: int = 0
@@ -637,8 +673,7 @@ func _apply_prepared_default_liquid(command: Dictionary) -> bool:
 	if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
 	_default_liquid_identity = staged_identity
 	_mutex.lock();_default_liquid_published_record = record;_mutex.unlock()
-	_world_generation += 1
-	_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={};_workbench_cut_prime=false
+	_replace_cut_world_mailbox()
 	_scenario_host.clear();_lab_active = false;_micro_active = false;_water_lab_active = false
 	_micro_capture = {};_lab_schedule.clear();_lab_inputs.clear()
 	_simulation_failed = false;_scenario_request_applied = true
@@ -686,8 +721,7 @@ func _apply_lab(command: Dictionary) -> bool:
 		):
 			_lab_status = _scenario_host.last_error
 			return false
-		_world_generation += 1
-		_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={};_workbench_cut_prime=false
+		_replace_cut_world_mailbox()
 		if tower_setup.is_empty():
 			_activate_sampled_character(Vector2(tower_definition.player_start[0],tower_definition.player_start[1]),true)
 		else:
@@ -767,8 +801,7 @@ func _apply_lab(command: Dictionary) -> bool:
 			if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
 			return false
 		if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
-		_world_generation += 1
-		_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={};_workbench_cut_prime=false
+		_replace_cut_world_mailbox()
 		_lab_profile=profile_result.profile.duplicate(true)
 		_lab_profile_hash=str(profile_result.hash)
 		_lab_active=true
@@ -864,8 +897,7 @@ func _apply_lab(command: Dictionary) -> bool:
 			if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
 			return false
 		if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
-		_world_generation += 1
-		_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={};_workbench_cut_prime=false
+		_replace_cut_world_mailbox()
 		var definition: Dictionary = _scenario_host.definition()
 		var transport: Dictionary = CyberTransportProfiles.resolve(definition.transport_profile)
 		_lab_profile = transport.profile.duplicate(true)
@@ -1113,8 +1145,11 @@ func stop_worker() -> void:
 		return
 	_mutex.lock()
 	_running = false
+	var wakeup: RefCounted=_workbench_cut_wakeup
+	_workbench_cut_wakeup=null
 	_lab_request_revision += 1
 	_mutex.unlock()
+	if wakeup!=null: wakeup.resolve.call_deferred("Worker stopped; clocks remain held",wakeup)
 	_thread.wait_to_finish()
 	_actor_session.set_suspended(true)
 
@@ -2069,8 +2104,7 @@ func _worker_loop() -> void:
 			else:
 				_world.reset_demo_world()
 			if recovered:
-				_world_generation += 1
-				_workbench_cut_hold=false;_workbench_cut_request={};_workbench_cut_reply={};_workbench_cut_admitted_sample={};_workbench_cut_prime=false
+				_replace_cut_world_mailbox()
 				_scenario_host.clear()
 				_lab_active = false
 				_micro_active = false

@@ -35,4 +35,4 @@ if __name__=='__main__':
     f.resource(256*1024**2);reuse()
     scripts=['test_workbench_cut_hitch']
     if a.full: scripts+=['test_workbench_rectangle_core','test_workbench_small_debris','test_workbench_brush_cuts','test_workbench_freed']
-    sys.exit(b.hosts(a.run,'unchanged-runtimes',scripts,['test_workbench_rectangle_core_lifecycle']))
+    sys.exit(b.hosts(a.run,'unchanged-runtimes',scripts,['test_workbench_rectangle_core_lifecycle','test_workbench_row_spans','test_workbench_cut_wakeup','test_workbench_cut_transport']))

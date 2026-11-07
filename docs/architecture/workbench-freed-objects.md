@@ -46,6 +46,23 @@ The [dated correction](../audits/2026-11-07-workbench-cut-feedback.md) records
 2048² five-repeat Windows/Linux1/4 comparisons and the separate shader transition.
 Physics, source eligibility and cell/body capacities remain unchanged here.
 
+## Cut scheduling and exact recipe reconstruction
+
+On the dependent rectangle-core branch, the remaining hitch correction replaces
+frame-polled worker replies with deferred one-use main-thread notifications.
+Reply values still cross the mutex mailbox under exact serial/generation checks.
+Timeout/stop/stale transport leaves clocks held; retirement wakes pending work.
+The GDScript owner schedules notifications, never native pool workers. Up to8
+consecutive refused discovery attempts share a publication; every refusal and
+counter is retained. Accepted preparation, two frozen physics checks, terrain
+installation, adoption and fresh-sample fences are unchanged.
+
+Authored history reconstructs exact ordered material row intervals. Empty
+writes erase spans; the4096 final-run budget,2048-stamp budget and disc raster
+are unchanged. Fragmented histories can still cost more; no universal60Hz or
+original SOL CPU qualification follows. Cut timings freeze before observer
+census. See the [registered correction and evidence](../audits/2026-11-07-workbench-rectangle-core.md#remaining-cut-hitch-correction--2026-11-07).
+
 ## Small native-debris tangent
 
 Current only on dependent branch `codex/workbench-small-cut-debris-20261107`,

@@ -4,6 +4,7 @@ extends RefCounted
 const Setup=preload("res://scripts/workbench_setup.gd")
 const Prepared=preload("res://scripts/prepared_physical_session.gd")
 const Bridge=preload("res://scripts/workbench_physics_bridge.gd")
+const Wakeup=preload("res://scripts/workbench_cut_wakeup.gd")
 const SMALL_DEBRIS_CELLS: int=16
 # Fixed experimental profile. Zero is retained for matched legacy controls.
 var small_debris_limit: int=SMALL_DEBRIS_CELLS
@@ -27,6 +28,7 @@ var _native_session: int=0
 var _native_epoch: int=0
 var timings: Dictionary={}
 var _started_usec: int=0
+var _waiting: RefCounted
 
 func _alive() -> bool:
 	return not _retired and is_instance_valid(panel) and is_instance_valid(panel.host)
@@ -37,6 +39,7 @@ func retire() -> void:
 	# no captured payload is restored into cells.
 	_discard()
 	busy=false;panel=null
+	if _waiting!=null: _waiting.resolve("Retired")
 
 func note_erase(position: Vector2i, radius: int) -> void:
 	if dabs.size()>=256*3: overflow=true;return
@@ -68,20 +71,32 @@ func finish_stroke(owner) -> bool:
 func _rpc(command: Dictionary) -> Dictionary:
 	if not _alive(): return {"ok":false,"outcome":"Retired"}
 	var worker=panel.host.simulation_worker
-	var tree: SceneTree=panel.get_tree()
 	var started: int=Time.get_ticks_usec()
-	var serial: int=worker.queue_workbench_cut(command)
-	if serial==0: return {"ok":false,"outcome":"Worker admission refused"}
-	var deadline: int=Time.get_ticks_msec()+20000
-	while Time.get_ticks_msec()<deadline:
-		if not _alive(): return {"ok":false,"outcome":"Retired"}
-		var reply: Dictionary=worker.take_workbench_cut_reply(serial)
-		if not reply.is_empty():
-			timings["rpc_usec"]=int(timings.get("rpc_usec",0))+Time.get_ticks_usec()-started
-			receipts.append(reply.duplicate(true))
-			return reply
-		await tree.process_frame
-	return {"ok":false,"outcome":"Worker reply timeout; clocks remain held"}
+	var wakeup=Wakeup.new()
+	_waiting=wakeup
+	var timer: SceneTreeTimer=panel.get_tree().create_timer(20.0,true,false,true)
+	var expired: Callable=wakeup.resolve.bind("Worker reply timeout; clocks remain held",wakeup)
+	timer.timeout.connect(expired,CONNECT_ONE_SHOT)
+	var serial: int=worker.queue_workbench_cut(command,wakeup)
+	if serial!=0 and not wakeup.done: await wakeup.completed
+	if timer.timeout.is_connected(expired): timer.timeout.disconnect(expired)
+	timer.time_left=0
+	_waiting=null
+	if not _alive(): return {"ok":false,"outcome":"Retired"}
+	if serial==0: return {"ok":false,"outcome":"Worker admission refused","transport_failure":true}
+	if wakeup.outcome!="Reply": return {"ok":false,"outcome":wakeup.outcome,"transport_failure":true}
+	var reply: Dictionary=worker.take_workbench_cut_reply(serial)
+	if reply.is_empty() or int(reply.get("world_generation",-1))!=wakeup.generation:
+		return {"ok":false,"outcome":"Stale worker reply; clocks remain held","transport_failure":true}
+	reply["consumed_usec"]=Time.get_ticks_usec()
+	# Census observations after completion must not contaminate cut timings.
+	if busy:
+		timings["rpc_usec"]=int(timings.get("rpc_usec",0))+Time.get_ticks_usec()-started
+		timings["rpc_count"]=int(timings.get("rpc_count",0))+1
+	for refusal: Dictionary in reply.get("batched_refusals",[]): receipts.append(refusal.duplicate(true))
+	reply.erase("batched_refusals")
+	receipts.append(reply.duplicate(true))
+	return reply
 
 func _prepare_recipe(payload: Dictionary) -> bool:
 	_recipe=panel.applied.duplicate(true)
@@ -213,7 +228,7 @@ func _run(input: PackedInt32Array) -> void:
 	if not begun.get("ok",false):
 		last_disposition="Cut kept as terrain: "+_reason(begun)+". Erase applied."
 		panel.refuse(str(begun.outcome))
-		if not str(begun.outcome).contains("timeout"):
+		if not begun.get("transport_failure",false) and not str(begun.outcome).contains("timeout"):
 			var ended: Dictionary=await _end()
 			if _alive() and ended.get("ok",false): _finish()
 		return
@@ -224,12 +239,15 @@ func _run(input: PackedInt32Array) -> void:
 	var fringe_pixels: int=0
 	var refused: Dictionary={}
 	for attempt: int in range(65):
-		var payload: Dictionary=await _rpc({"action":"next"})
+		var payload: Dictionary=await _rpc({"action":"next","batch_refusals":true})
 		if not _alive(): return
+		for refusal: Dictionary in payload.get("refusal_summaries",[]):
+			var refused_reason: String=_reason(refusal)
+			refused[refused_reason]=int(refused.get(refused_reason,0))+1
 		if not payload.get("ok",false):
 			var reason: String=_reason(payload)
-			refused[reason]=int(refused.get(reason,0))+1
-			if str(payload.outcome) in ["WorldFailed","Quarantined"] or reason.contains("timeout"):
+			if not payload.get("transport_failure",false): refused[reason]=int(refused.get(reason,0))+1
+			if payload.get("transport_failure",false) or str(payload.outcome) in ["WorldFailed","Quarantined"] or reason.contains("timeout"):
 				last_disposition="Cut stopped: "+reason
 				panel.refuse(reason);return
 			if payload.get("done",false): break

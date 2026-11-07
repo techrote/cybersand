@@ -119,3 +119,44 @@ Integration remains CONDITIONAL with ABI, inherited Windows growth/camera test,
 MSVC and authority/material gates. This does not admit a general mesh solver,
 live-body recutting, restoration or cross-owner recovery. Keep all PRs Draft;
 request independent review before an owner integration decision.
+
+
+## Remaining cut-hitch correction — 2026-11-07
+
+Owner reports a remaining pause on the accepted rectangle-core build. Fixed
+registration35f41ba7 precedes the correction; baseline production is55cbc819,
+with observer-only v4/fresh-scene fixes40c36b41/b041f576. The profile is
+`native/tests/fixtures/workbench_cut_hitch_001.json`. Initial baseline attempts
+001/002 had harness errors and were stopped; their logs remain local. The
+corrected benchmark uses a fresh native World for each repeat, four routes,
+60/30 FPS, five repeats, Windows/Linux workers1/4, plus a2048-square erased
+paint-history stress case. Thresholds and physics are unchanged.
+
+Design choices: replace per-frame RPC polling with a one-use main-thread
+notification latch; keep the mutex-protected copied reply mailbox, serial,
+World generation,20-second timeout and fail-stop behavior. The GDScript owner
+schedules deferred wakeups after unlocking; native pool workers call no Godot
+APIs. Stop/replacement/retirement retire notifications. Each refused `next`
+investigation still executes; up to eight run consecutively before one immutable
+publication, stopping at an accepted payload, terminal status or unexpected
+failure. Every native refusal and counter remains in ordered receipts and the
+status denominator. Body staging, both frozen physics frames, commit, terrain
+installation, finalization and fresh-sample pacing stay separate and unchanged.
+No acknowledgement/commit fusion is introduced.
+
+Saved-canvas reconstruction uses exact sorted disjoint row spans rather than
+per-cell replay and full-row scanning. Original stamp order, integer disc raster,
+Empty erasure, same-material coalescing, output order and final4096-run limit
+remain. Intermediate excess can still be erased. This reduces uniform-area
+work; adversarial fragmented histories remain bounded by existing authoring
+limits rather than a universal frame-time promise. Cut timing stops accumulating
+at completion; later census RPCs cannot inflate it. First render-parts observer
+CPU time can hit an existing cache and is not GPU first-presentation latency.
+
+Qualification is pending at this implementation checkpoint. New notification,
+actual-worker stop and independent dense-bitmap row-span tests join the retained
+ownership, tuple, material, lifecycle, replay and actual application controls.
+Native93-source plus15-build-input inventories, material guards and both compiled
+binaries remain unchanged. No fresh native compilation or sanitizer run is
+claimed for this GDScript-only correction. Draft519/510/466, historical SOL
+failures and platform admission blockers remain separate and unchanged.

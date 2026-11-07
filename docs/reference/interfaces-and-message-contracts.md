@@ -34,7 +34,13 @@ with one Empty-cell pad and follows the bridge's displayed pose. No mutable
 native data or new physics writer crosses this interface.
 `workbench_cut.timings` exposes total, recipe, staging and RPC usec plus changed
 terrain chunks and yielded terrain frames. Whole transaction time includes
-polling/physics-frame waits; it is not native CPU cost. See the
+transport/physics-frame waits; it is not native CPU cost. On the dependent
+rectangle-core branch, RPC count and enqueue/worker/reply/consume timestamps
+separate scheduler delay from native work. A one-use deferred notification
+wakes main; copied replies still use the serial/generation mutex mailbox.
+Up to8 refused discovery attempts retain individual receipts under one request.
+Timeout/stopped/stale transport is terminal, not an eligibility refusal.
+Post-completion census RPCs leave the cut timings frozen. See the
 [source/evidence correction](../audits/2026-11-07-workbench-cut-feedback.md).
 
 ## Workbench cut protocol and version4 starts
