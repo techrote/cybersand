@@ -1,0 +1,36 @@
+{
+  "schema": "paired-material-observer-coordination.v1",
+  "purpose": "PR370-owned observer admission before qualifying a union with PR358; data only, not an executed observer result",
+  "pr358_source": "ffee6cd0f052fbe9a44fed08d9d99b3565a19205",
+  "pr370_reviewed_source": "9a7436aa3d078a4efa190bc442e61aa0dc91c065",
+  "world_extent": [1024, 1024],
+  "mass_bits": 8,
+  "water_family": "FreeMass",
+  "tick": 0,
+  "admitted_material_slots": 138,
+  "cells": [
+    {"x": 1, "y": 1, "material_id": 2, "name": "Sand"},
+    {"x": 3, "y": 1, "material_id": 3, "name": "Water", "stored_water_quantity": 7, "pressure_overfill": 0},
+    {"x": 5, "y": 1, "material_id": 132, "name": "Stone Wall"},
+    {"x": 7, "y": 1, "material_id": 133, "name": "Salt Wall"},
+    {"x": 9, "y": 1, "material_id": 134, "name": "Coal Wall"},
+    {"x": 11, "y": 1, "material_id": 135, "name": "Dry Binder"},
+    {"x": 13, "y": 1, "material_id": 136, "name": "Activated Binder", "state_a": 180, "state_b": 255},
+    {"x": 15, "y": 1, "material_id": 137, "name": "Binder Crust", "state_a": 0, "state_b": 255}
+  ],
+  "expected": {
+    "counts": {"0": 1048568, "2": 1, "3": 1, "132": 1, "133": 1, "134": 1, "135": 1, "136": 1, "137": 1},
+    "all_other_valid_material_counts": 0,
+    "counted_cells": 1048576,
+    "complete": true,
+    "stored_free_water": 7,
+    "bound_water_separate_from_free_water": 510
+  },
+  "adversaries": [
+    {"observed_material_id": 10, "expected": "refuse reserved identity; never report complete"},
+    {"observed_material_id": 138, "expected": "refuse unknown identity; never fold into Empty"},
+    {"observed_material_id": 255, "expected": "refuse unknown identity; never fold into Empty"}
+  ],
+  "pressure_control": "Retain PR370's authoritative stored-Water plus overfill control; do not substitute visible occupancy or reinterpret bound stateB as free Water.",
+  "authoring_boundary": "Internal136 is deliberately constructed only for read-only observer qualification, not admitted as a public paint material."
+}
