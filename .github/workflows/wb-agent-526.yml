@@ -170,3 +170,139 @@ jobs:
           path: build/wb-agent-526/
           if-no-files-found: error
           retention-days: 90
+
+  windows-owner:
+    # An independent actual Windows Godot/GL owner run on the same exact
+    # GDScript source. This uses retained LFS native binaries; it is NOT
+    # a substitute for exact-head native source rebuild/production admission.
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feature/wb-agent-authoring-foundation-526-20261107'
+    runs-on: windows-2022
+    timeout-minutes: 50
+    defaults:
+      run:
+        shell: bash
+    env:
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      EVIDENCE: build/wb-agent-526-windows
+      GODOT_SILENCE_ROOT_WARNING: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - name: Check out the same immutable PR head
+        timeout-minutes: 5
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python 3.12
+        timeout-minutes: 5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify source and materialize retained Windows native DLLs
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          git rev-parse HEAD > "$EVIDENCE/source-commit.txt"
+          git rev-parse 'HEAD^{tree}' > "$EVIDENCE/source-tree.txt"
+          git diff --check HEAD
+          python tools/ci/check_ci_provider_policy.py > "$EVIDENCE/provider.log" 2>&1
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude='' > "$EVIDENCE/lfs.log" 2>&1
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          paths=[
+              'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll',
+              'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll',
+          ]
+          result={}
+          for name in paths:
+              payload=Path(name).read_bytes()
+              assert len(payload)>1024 and payload[:2]==b'MZ',f'Not a materialized PE DLL: {name}'
+              result[name]={'size':len(payload),'sha256':hashlib.sha256(payload).hexdigest(),'origin':'repository LFS; NOT rebuilt at candidate head'}
+          Path('build/wb-agent-526-windows/runtime-hashes.json').write_text(json.dumps(result,indent=2)+'\n')
+          PY
+      - name: Obtain official Windows Godot 4.7 and record binary identity
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 45 --max-time 600             -o "$EVIDENCE/godot.zip"             'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          python - <<'PY'
+          import hashlib,json,zipfile
+          from pathlib import Path
+          root=Path('build/wb-agent-526-windows')
+          archive=root/'godot.zip'
+          with zipfile.ZipFile(archive) as z:
+              assert z.testzip() is None,'Corrupt Windows Godot editor archive'
+              names=z.namelist()
+              assert names.count('Godot_v4.7-stable_win64_console.exe')==1
+              assert names.count('Godot_v4.7-stable_win64.exe')==1
+              z.extractall(root/'editor')
+          (root/'godot-editor.txt').write_text(str((root/'editor'/'Godot_v4.7-stable_win64_console.exe').resolve())+'\n')
+          (root/'godot-archive-identity.json').write_text(json.dumps({
+              'origin':'official Godot 4.7 stable release URL; archive SHA recorded, not pinned by third_party linux lock',
+              'size':archive.stat().st_size,
+              'sha256':hashlib.sha256(archive.read_bytes()).hexdigest()
+          },indent=2)+'\n')
+          archive.unlink()
+          PY
+      - name: Run real Windows native-worker and graphical workbench regressions
+        timeout-minutes: 32
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os,subprocess,sys
+          from pathlib import Path
+          evidence=Path('build/wb-agent-526-windows')
+          editor=(evidence/'godot-editor.txt').read_text().strip()
+          env=os.environ.copy()
+          env['WB_AGENT_EVIDENCE_DIR']=str(evidence.resolve())
+          cases=[
+              ('version',['--version'],30),
+              ('import',['--headless','--path','godot','--editor','--import','--quit'],240),
+              ('geometry',['--headless','--path','godot','--script','res://tests/test_workbench_agent_footprint.gd'],180),
+              ('envelope',['--headless','--path','godot','--script','res://tests/test_workbench_authoring_envelope.gd'],180),
+              ('failure-controls',['--headless','--path','godot','--script','res://tests/test_workbench_agent_failures.gd'],180),
+              # No --headless: this must produce an ACTUAL Windows render/draw.
+              ('native-owner-graphical',['--path','godot','--rendering-method','gl_compatibility','--script','res://tests/test_workbench_agent_owner.gd'],420),
+              ('manual-input-graphical',['--path','godot','--rendering-method','gl_compatibility','--script','res://tests/test_workbench_input.gd'],240),
+              ('manual-save-graphical',['--path','godot','--rendering-method','gl_compatibility','--script','res://tests/test_workbench_agent_disabled.gd'],240),
+              ('manual-reopen-graphical',['--path','godot','--rendering-method','gl_compatibility','--script','res://tests/test_workbench_agent_disabled.gd'],240),
+          ]
+          failures=[]
+          for name,args,timeout in cases:
+              local=env.copy()
+              if name=='manual-reopen-graphical':
+                  local['WB_AGENT_DISABLED_REOPEN']='1'
+              else:
+                  local.pop('WB_AGENT_DISABLED_REOPEN',None)
+              output=evidence/(name+'.log')
+              with output.open('wb') as log:
+                  try:
+                      r=subprocess.run([editor]+args,stdout=log,stderr=subprocess.STDOUT,env=local,timeout=timeout,check=False)
+                      code=r.returncode
+                  except subprocess.TimeoutExpired:
+                      code=124
+              print(name,'exit',code,flush=True)
+              if code:
+                  failures.append(name)
+                  # Source import is a dependency for meaningful later tests.
+                  if name=='import': break
+          (evidence/'actual-result.txt').write_text('FAILED: '+','.join(failures) if failures else 'PASS: all real Windows cases')
+          if failures: sys.exit('Real Windows owner qualification failed: '+','.join(failures))
+          version=(evidence/'version.log').read_text(errors='replace').strip()
+          assert '4.7.stable.official.5b4e0cb0f' in version, 'Wrong Godot 4.7 build: '+version
+          PY
+      - name: Preserve original Windows test and frame evidence, including RED
+        if: always()
+        timeout-minutes: 5
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wb-agent-526-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/wb-agent-526-windows/
+          if-no-files-found: error
+          retention-days: 90

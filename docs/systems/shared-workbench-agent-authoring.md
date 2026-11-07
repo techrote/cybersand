@@ -102,9 +102,16 @@ The first request is a trusted host-only `authorize_task` with
 `task_id: String` (nonempty, <=128 chars), `scope: Rect2i`,
 `protected: Array[Rect2i]` (<=32), `allowed_materials: Array[int]`
 from **0 Empty / 58 Hard Wall**. Model calls cannot extend this authority.
-The owner remembers a single active task/generation. Source-cell
-allowlist also restricts changes to IDs **0 and 58**; Sand ID 2 is never
-directly editable, regardless of replacement filter.
+The exclusive owner retains exactly one active task per World generation.
+A second `authorize_task` on the **same live World** now returns
+`refused: task_already_authorized` without replacing scope/protection,
+allowlist, observation or a prepared proposal. An explicit host-only
+`retire_task` ACK is required before authorizing a successor; a genuinely
+new World generation retires stale task authority without retaining an
+old proposal. This closes the cross-host task-takeover path and is
+regressed by synthetic fault and actual native/host owner tests.
+Source-cell allowlist also restricts changes to IDs **0 and 58**;
+Sand ID 2 is never directly editable, regardless of replacement filter.
 
 The three candidate owner actions are:
 
