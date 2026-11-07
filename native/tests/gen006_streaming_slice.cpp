@@ -671,9 +671,9 @@ void persistent_service(const fs::path& path, const fs::path& ipc_directory,
             check(sequence_tag == "SEQ" && bool(input),
                   "GEN006_STREAM_REQUEST_HEADER");
             input.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            const std::string command_text(
+            const std::string command_text{
                 std::istreambuf_iterator<char>(input),
-                std::istreambuf_iterator<char>());
+                std::istreambuf_iterator<char>()};
             check(!input.bad(), "GEN006_STREAM_REQUEST_READ_ERROR");
 
             std::istringstream commands(command_text);
