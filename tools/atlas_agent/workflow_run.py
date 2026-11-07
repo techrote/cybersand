@@ -63,6 +63,9 @@ def parse_inputs(env: dict) -> dict:
         raise ConfigError("expected_source_sha must be 40 lowercase hex characters (or empty)")
     if values["mode"] not in ("dry-run", "live"):
         raise ConfigError("mode must be dry-run or live")
+    if (values["mode"] == "live" and env.get("GITHUB_ACTIONS") == "true"
+            and env.get("GITHUB_EVENT_NAME") != "workflow_dispatch"):
+        raise ConfigError("charged execution requires a manual workflow_dispatch event")
     if values["model"] and not MODEL.fullmatch(values["model"]):
         raise ConfigError("model contains invalid characters")
     for key in ("max_usd", "ceiling"):
