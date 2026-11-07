@@ -1,0 +1,74 @@
+name: PF504 finalize retained full-size CPU and physics evidence only
+
+on:
+  push:
+    branches: [test/pf504-fullsize-cpu-physics-20261107]
+    paths:
+      - '.github/workflows/pf504-fullsize-reduce-retained.yml'
+      - 'tools/ci/pf504_fullsize_cpu_physics_readback.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pf504-final-retained-evidence-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  qualify-retained-raw:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out exact independent reducer and stable original #515 reader
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Fetch prior complete immutable B-C-C-B gameplay evidence — no Godot replay
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          repository: techrote/cybersand
+          run-id: 42356806615
+          name: pf504-fullsize-cpu-physics-42356806615
+          github-token: ${{ github.token }}
+          path: evidence
+      - name: Independently validate original raw source and physical/CPU measurements
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/ci/pf504_stress_workbench_readback.py tools/ci/pf504_fullsize_cpu_physics_readback.py
+          python3 tools/ci/pf504_fullsize_cpu_physics_readback.py evidence
+          python3 - <<'PY'
+          import json, pathlib
+          p=pathlib.Path('evidence/fullsize-cpu-physics-report.json')
+          d=json.loads(p.read_text())
+          assert d['schema']=='pf504-full-workbench-cpu-physics-v1'
+          assert d['decision']=='NO_MERGE_NO_FULL_FACTORIAL'
+          assert d['four_executable_runs']=='4/4 PASS'
+          assert d['physics']['all_native_water_and_gas_ledgers_closed']
+          for case in ('B1','C1','C2','B2'):
+              w=d['worker_participation'][case]
+              assert w['samples']>=2 and 1<=w['max_actual_participants']<=w['max_configured_capacity']
+              assert d['raw_run_metric_and_physics_copies'][case]['physics']['snapshots']>=3
+          assert d['base']=='24a8bbe8ccf0d17196ebbab580b924930a964584'
+          assert d['candidate']=='186452b9f035961325ad71917a76ba8834e30bcf'
+          print('PF504_FINAL_RETAINED_QUALIFICATION_PASS',d['status'],
+                'native',d['performance']['simulation']['p50_ms']['median_paired_speedup_percent'],
+                'gas_wall',d['cpu_and_gas_work_per_tick']['gas_nanoseconds']['median_paired_speedup_percent'],
+                'gas_process_cpu',d['cpu_and_gas_work_per_tick']['pf_probe_gas_process_cpu_ns']['median_paired_speedup_percent'])
+          PY
+      - name: Preserve independently reduced source, CPU, worker, physics and raw logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf504-fullsize-final-independent-report-${{ github.run_id }}
+          path: |
+            evidence/fullsize-cpu-physics-report.json
+            evidence/fullsize-cpu-physics-error.txt
+            evidence/workbench-stress-comparison.json
+            evidence/source-identities.txt
+            evidence/probe-patch-identities.json
+            evidence/godot-source-probe.json
+          if-no-files-found: warn
+          retention-days: 90
