@@ -38,11 +38,13 @@ world-revision/generation/tick/upload match exists. A
 `workbench_authoring_start_commit.gd` adapter stages the existing
 named-start representation and records it only after an actual readback.
 
-This is real implementation **source**, with two focused Godot test
-scripts, but it is NOT source-matched executable qualification, final UI
-integration, live model or human acceptance. Current main has none of
-these features. In particular, native-only `native_observed` is NOT a
-matched visual `observed`; the render join is mandatory for that claim.
+This is real isolated **implementation source**, now exercised against pinned
+Godot 4.7 and published native/Rapier libraries in GitHub-hosted Linux/Xvfb
+Mesa GL. The four focused scripts passed 124 assertions on 7 November 2026;
+this does **not** establish Windows qualification, independent review, final
+UI/client integration, live agent trials or human acceptance. Accepted main
+still has none of this #526 code. Native-only `native_observed` is **not**
+a matched visual `observed`; the render join is mandatory for that claim.
 
 ## Approved four-tool contract
 
@@ -72,7 +74,7 @@ Unknown or partially applied native results are explicitly unconfirmed/error,
 retain bounded receipts where possible and follow existing quarantine;
 there is no fabricated rollback, implicit retry or universal undo.
 
-## #526 versioned local worker contract (Draft source, unqualified)
+## #526 versioned local worker contract (Draft source, focused Linux execution PASS)
 
 **Queue-admission hardening (Draft #529):** Before copying an untrusted
 Dictionary into the mutex-owned command queue,
@@ -84,7 +86,8 @@ and non-integer coordinates are refused at admission (`-1`), before
 `duplicate(true)`. The gate does not replace exclusive-owner native
 validation, nor does acceptance of an envelope mean an edit was applied.
 `godot/tests/test_workbench_authoring_envelope.gd` covers its permitted and
-malformed inputs; test remains **NOT RUN** until source-matched Godot execution.
+malformed inputs; 20/20 assertions passed with pinned Godot 4.7 in the
+[7 November 2026 focused Linux CI](https://github.com/techrote/cybersand/actions/runs/42379815975).
 
 The main/UI owner sends a **Godot Dictionary** to
 `CyberSimulationWorker.queue_agent_authoring_command(command)`, which
@@ -249,11 +252,33 @@ native `material_at` / `emit_disc`, post-draw image, Sand protection,
 deliberate manual-queued-intervention race, retained duplicate receipt and
 named authored-start reopen, not a model/native mock.
 
-**7 Nov 2026 execution status:** NOT RUN in this preparation environment
-(no Godot executable or container access to GitHub source). Source was
-submitted as a separate Draft candidate, not installed into the client;
-no native/desktop/Windows pass, exact compiled runtime identity or practical
-agent outcome is claimed.
+**7 November 2026 execution checkpoint:** exact source `de036d3ac435df7ba355072932b34d5457bd9080` on existing Draft #529
+(base accepted main `81bbd5ff5cf366159e2b8a630609359c13560080`).
+GitHub-hosted Ubuntu 24.04, authenticated official Godot
+`4.7.stable.official.5b4e0cb0f`, source-pinned Linux native GDExtension
+and Rapier binaries: **focused [run 42379815975](https://github.com/techrote/cybersand/actions/runs/42379815975) PASS**.
+- Pure integer footprint: **24/24**; bounded command envelope: **20/20**;
+  fault-injected partial native readback/retained dedup/quarantine: **12/12**
+  (synthetic failure test, not native-failure evidence).
+- Real native/worker shared workbench with Linux Xvfb Mesa OpenGL: **68/68**.
+  Native material IDs/counts, prepared no-write, ordered disc/line/rectangle,
+  exact real native readback, protection, queued human brush conflict, duplicate
+  receipt, authored-start save/reopen and matching post-draw framebuffer were
+  exercised. The original PNG and paired native/render identities were
+  preserved under [source-matched workflow artifact](https://github.com/techrote/cybersand/actions/runs/42379815975/artifacts/13576899035).
+- Latest exact-head [documentation/provenance run](https://github.com/techrote/cybersand/actions/runs/42379815920) **PASS** and
+  [native source-scope advisory](https://github.com/techrote/cybersand/actions/runs/42379815947) **PASS**.
+  Repository-wide Native C++ and GDExtension matrix remain **SKIPPED** by Draft
+  policy, not passed. Linux-only source/library reuse is not an exact-head
+  rebuilt binary and does not establish Windows, broader regressions, independent
+  review, human desktop acceptance or a working live OpenAI client.
+
+For the downstream #527 and #528 owners, the **versioned proposed strict
+model-visible four-tool JSON declarations** are in
+[`wb-agent-model-tools-v1.json`](../reference/wb-agent-model-tools-v1.json).
+The three #526 internal worker actions are exercised, but the JSON->typed Godot
+translation/client adapter is exclusively #528, and `step`/Stop remain #527.
+No consumer may treat this declaration file as a deployed four-tool API.
 
 Before accepting #526, run source-exact docs/provenance/M11/retrieval,
 applicable native and Godot tests, manual-intervention race/readback,
