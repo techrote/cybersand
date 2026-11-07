@@ -529,18 +529,32 @@ void World::resolve_gas_topology(bool allow_cache) {
         return a.y != b.y ? a.y < b.y : a.x < b.x;
     });
 
-    const auto compartment_index = [&state](std::uint32_t id) -> std::uint32_t {
+    // A BFS usually visits many adjacent Empty cells bearing the *same* old
+    // compartment ID. The immutable old table can be memoized for the serial
+    // discovery phase, avoiding a sorted-table search for every visited cell.
+    // A new ID still uses the complete checked search and original refusal.
+    std::uint32_t last_compartment_id = 0U;
+    std::uint32_t last_compartment_index = 0U;
+    const auto compartment_index = [&state, &last_compartment_id,
+                                    &last_compartment_index](std::uint32_t id) -> std::uint32_t {
+        if (id == last_compartment_id) return last_compartment_index;
         const auto found = std::lower_bound(
             state.compartments.begin(), state.compartments.end(), id,
             [](const State::Compartment& c, std::uint32_t value) { return c.id < value; });
         if (found == state.compartments.end() || found->id != id)
             throw std::logic_error("pressure gas label refers to a retired compartment");
-        return static_cast<std::uint32_t>(found - state.compartments.begin());
+        last_compartment_id = id;
+        last_compartment_index = static_cast<std::uint32_t>(found - state.compartments.begin());
+        return last_compartment_index;
     };
 
     // Breadth-first labelling of one Empty region. A non-resident chunk is
     // uniformly Empty, so it is one node whatever its size and allocation never
     // changes the topology.
+    // The transient mask's occupied-index set is authoritative for this tick;
+    // body_ids are cleared together with that set. No geometry can change in
+    // the phased gas discovery and parallel read-only seed prepass.
+    const bool has_masks = !masks.occupied_indices.empty();
     std::size_t head = 0;
     bool stop = false;
     bool retry_requested = false;
@@ -571,7 +585,7 @@ void World::resolve_gas_topology(bool allow_cache) {
         if (stop) return;
         if (state.queue.size() == state.queue.capacity())
             throw std::logic_error("pressure gas queue exceeded its reserved bound");
-        if (transient_obstacle_at(x, y) != 0U) return;
+        if (has_masks && transient_obstacle_at(x, y) != 0U) return;
         auto& region = state.regions[current];
         // A BFS dequeue already knows its own chunk address. Reuse direct
         // in-chunk neighbour offsets without recalculating floor division,
@@ -653,7 +667,7 @@ void World::resolve_gas_topology(bool allow_cache) {
 
     const auto seed_needed = [&](std::int64_t x, std::int64_t y) {
         ++state.optimization.gas_seed_probes;
-        if (transient_obstacle_at(x, y) != 0U) return false;
+        if (has_masks && transient_obstacle_at(x, y) != 0U) return false;
         const auto target = address(x, y);
         const auto* chunk = chunk_at(target.chunk);
         if (chunk == nullptr) {
@@ -723,7 +737,7 @@ void World::resolve_gas_topology(bool allow_cache) {
     const auto seed_cell = [&](const Chunk& chunk, std::size_t index, std::int64_t x, std::int64_t y) {
         const auto material = chunk.cells[index].material_value();
         if (material == Material::Water) {
-            if (transient_obstacle_at(x, y) != 0U) return;
+            if (has_masks && transient_obstacle_at(x, y) != 0U) return;
             const std::array<std::pair<std::int64_t, std::int64_t>, 4> around{{
                 {x, y - 1}, {x - 1, y}, {x + 1, y}, {x, y + 1}}};
             for (const auto& [nx, ny] : around) {
@@ -762,7 +776,6 @@ void World::resolve_gas_topology(bool allow_cache) {
             const auto stride = static_cast<std::size_t>(size);
             // occupied_indices is the authoritative sparse set maintained by
             // set/clear_transient_obstacle; no mask probe is needed when empty.
-            const bool has_masks = !masks.occupied_indices.empty();
             const auto open = [&](std::int64_t nx, std::int64_t ny) {
                 if (has_masks && transient_obstacle_at(nx, ny) != 0U) return false;
                 const auto at = address(nx, ny);
