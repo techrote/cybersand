@@ -299,6 +299,8 @@ bool CyberNativeCellWorld::reset_demo_world() {
         config.physics_diagnostics = {};
         config.interaction_policy = {};
         config.liquid_solver_policy = {}; // The ordinary demo runs every liquid's default.
+        // Resetting to FreeMass also retires the PF-only gas-capacity profile.
+        config.pressure_gas_compartment_capacity = cybersand::PressureFlowParameters::kCompartmentCapacity;
         config.maximum_rule_radius = kProtectedCurrentRuleRadius;
         if (workbench_) {
             config.maximum_chunk_count = 128;
@@ -1916,7 +1918,8 @@ Dictionary CyberNativeCellWorld::liquid_policy_receipt(
         pressure["compartment_volume_limit"] =
             static_cast<std::int64_t>(cybersand::PressureFlowParameters::kCompartmentVolumeLimit);
         pressure["compartment_capacity"] =
-            static_cast<std::int64_t>(cybersand::PressureFlowParameters::kCompartmentCapacity);
+            static_cast<std::int64_t>(actual ? actual->config().pressure_gas_compartment_capacity
+                                              : cybersand::PressureFlowParameters::kCompartmentCapacity);
         pressure["acceleration"] = static_cast<std::int64_t>(cybersand::PressureFlowParameters::kAccelNumerator);
         pressure["retain_per_256"] = static_cast<std::int64_t>(cybersand::PressureFlowParameters::kRetain);
         pressure["friction"] = static_cast<std::int64_t>(cybersand::PressureFlowParameters::kFriction);
@@ -1994,6 +1997,7 @@ Dictionary CyberNativeCellWorld::inspect_gas_compartments() const {
     if (world_ == nullptr || !world_->pressure_flow_enabled()) return out;
     const auto parameters = world_->pressure_flow_parameters();
     out["gas_enabled"] = parameters.gas_enabled;
+    out["compartment_capacity"] = static_cast<std::int64_t>(parameters.gas_compartment_capacity);
     out["atmospheric_head_rows"] = static_cast<std::int64_t>(parameters.atmospheric_head_rows);
     out["topology_revision"] = static_cast<std::int64_t>(world_->gas_topology_revision());
     out["next_id"] = static_cast<std::int64_t>(world_->gas_next_id());

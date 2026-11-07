@@ -77,6 +77,8 @@ World::WorkbenchLiquidTransfer World::inherit_workbench_liquid_state(const World
     WorkbenchLiquidTransfer transfer;
     const bool keep_pressure = source.pressure_ && pressure_;
     const bool keep_gas = keep_pressure && source.pressure_->parameters.gas_enabled && pressure_->parameters.gas_enabled;
+    if (keep_gas && source.pressure_->compartments.size() > pressure_->parameters.gas_compartment_capacity)
+        throw std::invalid_argument("retained gas compartments exceed destination capacity");
     if (!keep_pressure) transfer.discarded_overfill = source.quantity_.water_overfill;
     if (!keep_gas && source.pressure_) transfer.discarded_gas = source.pressure_->gas.amount_live;
     if (!allow_conversion && (transfer.discarded_overfill || transfer.discarded_gas))
@@ -85,7 +87,8 @@ World::WorkbenchLiquidTransfer World::inherit_workbench_liquid_state(const World
     // cell. Preserve its measured amount whenever any of its labels can be
     // retained. Let the regular next pressure pass resolve the new topology.
     constexpr std::uint8_t retained_label=1, clipped_label=2;
-    std::array<std::uint8_t,PressureFlowParameters::kCompartmentCapacity> gas_coverage{};
+    // This allocation is in the non-tick workbench owner transfer only.
+    std::vector<std::uint8_t> gas_coverage(source.pressure_ ? source.pressure_->compartments.size() : 0U);
     const auto size=config_.chunk_size;
     const auto maximum=config_.water_experiment_policy.maximum();
     const auto copy_exterior=[&](const Chunk& origin, std::size_t i, std::int64_t x, std::int64_t y, bool resident) {
@@ -937,7 +940,7 @@ void World::resolve_gas_topology(bool allow_cache) {
         bool any_atmosphere = false;
         for (const auto r : members_r) any_atmosphere = any_atmosphere || state.regions[r].atmosphere;
         const auto create = [&](std::uint32_t r, bool sealed_from_open = false) {
-            if (next.size() >= PressureFlowParameters::kCompartmentCapacity)
+            if (next.size() >= state.parameters.gas_compartment_capacity)
                 throw std::runtime_error("pressure gas compartment capacity exhausted");
             auto& region = state.regions[r];
             State::Compartment made;
@@ -1046,7 +1049,7 @@ void World::resolve_gas_topology(bool allow_cache) {
         std::uint8_t parent_count = static_cast<std::uint8_t>(std::min(members_c.size(), ids.size()));
         for (std::size_t i = 0; i < parent_count; ++i) ids[i] = state.compartments[members_c[i]].id;
         for (const auto r : members_r) {
-            if (next.size() >= PressureFlowParameters::kCompartmentCapacity)
+            if (next.size() >= state.parameters.gas_compartment_capacity)
                 throw std::runtime_error("pressure gas compartment capacity exhausted");
             auto& region = state.regions[r];
             State::Compartment made;
@@ -2232,6 +2235,10 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
         hash_integer(hash, PressureFlowParameters::kVersion);
         hash_integer(hash, static_cast<std::uint8_t>(pressure_->parameters.gas_enabled));
         hash_integer(hash, pressure_->parameters.atmospheric_head_rows);
+        // CYPS/hash5 is a new explicitly declared capacity contract. The v2/3/4
+        // physical hash stream remains byte-for-byte unchanged for C1024.
+        if (config_.pressure_gas_compartment_capacity != PressureFlowParameters::kCompartmentCapacity)
+            hash_integer(hash, config_.pressure_gas_compartment_capacity);
     }
     hash_integer(hash, static_cast<std::uint64_t>(pending_explosions_.size()));
     for (const auto& event : pending_explosions_) {
@@ -2409,11 +2416,17 @@ std::vector<std::uint8_t> World::save_physical_state() const {
     const auto envelope = config_.liquid_solver_policy.envelope();
     out.put(static_cast<std::uint32_t>(envelope.size()));
     for (const auto word : envelope) out.put(word);
-    if (physical_state_format_version() == 4U) {
-        // CYPS4 extension flags: bit0 IN sidecars, bit1 BW-001 parcels, bit2 IN-B1 signed law.
+    if (physical_state_format_version() >= 4U) {
+        // CYPS4 extension flags are unchanged. CYPS5 adds bit3, then a versioned
+        // capacity field before the other optional per-family extensions.
         out.put(static_cast<std::uint8_t>((inertial_enabled_ ? 1U : 0U) |
                                           (config_.ballistic_water.enabled ? 2U : 0U) |
-                                          (inertial_parameters_.signed_vertical ? 4U : 0U)));
+                                          (inertial_parameters_.signed_vertical ? 4U : 0U) |
+                                          (physical_state_format_version() == 5U ? 8U : 0U)));
+        if (physical_state_format_version() == 5U) {
+            out.put(PressureFlowParameters::kCapacityContractVersion);
+            out.put(config_.pressure_gas_compartment_capacity);
+        }
     }
     if (config_.ballistic_water.enabled) {
         const auto& c = config_.ballistic_water;
@@ -2575,7 +2588,7 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
     StateReader in(body);
     if (in.get<std::uint32_t>() != kPhysicalStateMagic) refuse_state("bad magic");
     const auto format=in.get<std::uint32_t>();
-    if (format != 2U && format != 3U && format != 4U) refuse_state("unknown format version");
+    if (format != 2U && format != 3U && format != 4U && format != 5U) refuse_state("unknown format version");
     // WorldConfig contains the fixed transport catalogue. Keep preparation's
     // copy off the caller/decoder stack (notably MSVC debug's 1 MiB default).
     auto config_owner = std::make_unique<WorldConfig>(execution);
@@ -2622,11 +2635,29 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
             return a.family==LiquidSolverFamily::InertialCellularV1;
         });
     std::uint8_t extensions = format == 3U ? 1U : 0U;
-    if (format == 4U) {
+    if (format >= 4U) {
         extensions = in.get<std::uint8_t>();
-        if ((extensions & ~7U) != 0U || (extensions & 6U) == 0U ||
-            ((extensions & 4U) != 0U && (extensions & 1U) == 0U))
+        if (format == 4U && ((extensions & ~7U) != 0U || (extensions & 6U) == 0U ||
+            ((extensions & 4U) != 0U && (extensions & 1U) == 0U)))
             refuse_state("unknown CYPS4 extension set");
+        if (format == 5U && ((extensions & ~15U) != 0U || (extensions & 8U) == 0U ||
+            ((extensions & 4U) != 0U && (extensions & 1U) == 0U)))
+            refuse_state("unknown CYPS5 extension set");
+    }
+    // A high-capacity state must never silently upgrade an ordinary receiving
+    // World. CYPS2/3/4 are pinned to the historical C1024 contract.
+    if (format == 5U) {
+        if (in.get<std::uint16_t>() != PressureFlowParameters::kCapacityContractVersion)
+            refuse_state("unknown gas capacity contract version");
+        const auto saved_capacity = in.get<std::uint16_t>();
+        if (saved_capacity != PressureFlowParameters::kAdmittedCompartmentCapacity ||
+            execution.pressure_gas_compartment_capacity != saved_capacity)
+            refuse_state("gas capacity profile mismatch");
+        config.pressure_gas_compartment_capacity = saved_capacity;
+    } else {
+        if (execution.pressure_gas_compartment_capacity != PressureFlowParameters::kCompartmentCapacity)
+            refuse_state("legacy save requires default gas capacity profile");
+        config.pressure_gas_compartment_capacity = PressureFlowParameters::kCompartmentCapacity;
     }
     if (has_inertial != ((extensions & 1U) != 0U)) refuse_state("IN requires its explicit CYPS3/CYPS4 format");
     config.ballistic_water = {};
@@ -2826,7 +2857,7 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
             return c;
         };
         const auto count = in.get<std::uint32_t>();
-        if (count > PressureFlowParameters::kCompartmentCapacity) refuse_state("compartment count exceeds capacity");
+        if (count > state.parameters.gas_compartment_capacity) refuse_state("compartment count exceeds capacity");
         std::uint64_t live = 0;
         for (std::uint32_t i = 0; i < count; ++i) {
             const auto c = get_compartment();

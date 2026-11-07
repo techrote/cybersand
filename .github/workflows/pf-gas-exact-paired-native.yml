@@ -20,8 +20,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:
-      BASELINE_SHA: ab12ccef49ba2afaed2520d4d9a86eb14c7779cb
-      PREVIOUS_SHA: 6eab269bebd70e4bb4fa98dc108f77afbc919ae8
+      BASELINE_SHA: 24a8bbe8ccf0d17196ebbab580b924930a964584
     steps:
       - name: Checkout exact PR head with complete history
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -36,14 +35,11 @@ jobs:
           mkdir -p build/pf-gas-paired
           echo "candidate_source=$(git rev-parse HEAD)" | tee build/pf-gas-paired/identity.txt
           echo "baseline_source=$BASELINE_SHA" | tee -a build/pf-gas-paired/identity.txt
-          echo "previous_candidate_source=$PREVIOUS_SHA" | tee -a build/pf-gas-paired/identity.txt
           echo "runner_os=$RUNNER_OS runner_arch=$RUNNER_ARCH" | tee -a build/pf-gas-paired/identity.txt
           g++-13 --version | head -n 1 | tee -a build/pf-gas-paired/identity.txt
           git worktree add --detach "$RUNNER_TEMP/pf-gas-base" "$BASELINE_SHA"
-          git worktree add --detach "$RUNNER_TEMP/pf-gas-prev" "$PREVIOUS_SHA"
           cp native/bench/pf_gas_exact_pairs.cpp "$RUNNER_TEMP/pf-gas-base/native/bench/"
-          cp native/bench/pf_gas_exact_pairs.cpp "$RUNNER_TEMP/pf-gas-prev/native/bench/"
-          sha256sum native/bench/pf_gas_exact_pairs.cpp "$RUNNER_TEMP/pf-gas-base/native/bench/pf_gas_exact_pairs.cpp" "$RUNNER_TEMP/pf-gas-prev/native/bench/pf_gas_exact_pairs.cpp" |
+          sha256sum native/bench/pf_gas_exact_pairs.cpp "$RUNNER_TEMP/pf-gas-base/native/bench/pf_gas_exact_pairs.cpp" |
             tee build/pf-gas-paired/harness-sha256.txt
       - name: Build same optimized native harness against baseline and candidate
         shell: bash
@@ -55,12 +51,8 @@ jobs:
             cd "$RUNNER_TEMP/pf-gas-base"
             g++-13 "${flags[@]}" "${sources[@]}" native/bench/pf_gas_exact_pairs.cpp -o "$GITHUB_WORKSPACE/build/pf-gas-paired/baseline"
           )
-          (
-            cd "$RUNNER_TEMP/pf-gas-prev"
-            g++-13 "${flags[@]}" "${sources[@]}" native/bench/pf_gas_exact_pairs.cpp -o "$GITHUB_WORKSPACE/build/pf-gas-paired/previous"
-          )
           g++-13 "${flags[@]}" "${sources[@]}" native/bench/pf_gas_exact_pairs.cpp -o build/pf-gas-paired/candidate
-          sha256sum build/pf-gas-paired/baseline build/pf-gas-paired/previous build/pf-gas-paired/candidate |
+          sha256sum build/pf-gas-paired/baseline build/pf-gas-paired/candidate |
             tee build/pf-gas-paired/runtime-sha256.txt
       - name: Compare exact 40-tick native traces and repeated paired timings
         shell: bash
@@ -70,7 +62,6 @@ jobs:
           import itertools, json, os, pathlib, statistics, subprocess
           out = pathlib.Path('build/pf-gas-paired')
           binary = {'baseline': str((out / 'baseline').resolve()),
-                    'previous': str((out / 'previous').resolve()),
                     'candidate': str((out / 'candidate').resolve())}
           rows = []
           worker_parity = {}
@@ -78,23 +69,20 @@ jobs:
               for repetition in range(3):
                   pair = {}
                   # Alternate order within each exact workload to suppress warm-up drift.
-                  order = (('baseline', 'previous', 'candidate'),
-                            ('candidate', 'baseline', 'previous'),
-                            ('previous', 'candidate', 'baseline'))[repetition % 3]
+                  order = ('baseline', 'candidate') if repetition % 2 == 0 else ('candidate', 'baseline')
                   for label in order:
                       command = [binary[label], str(gas), str(variant), str(workers),
                                  str(mask), str(repetition)]
                       result = subprocess.run(command, check=True, capture_output=True,
                                               text=True, timeout=180)
                       pair[label] = json.loads(result.stdout)
-                  left, previous, right = pair['baseline'], pair['previous'], pair['candidate']
-                  if left['hashes'] != previous['hashes'] or left['hashes'] != right['hashes']:
-                      mismatching = previous if left['hashes'] != previous['hashes'] else right
-                      position = next(i for i, (a, b) in enumerate(zip(left['hashes'], mismatching['hashes'])) if a != b)
+                  left, right = pair['baseline'], pair['candidate']
+                  if left['hashes'] != right['hashes']:
+                      position = next(i for i, (a, b) in enumerate(zip(left['hashes'], right['hashes'])) if a != b)
                       raise RuntimeError(f'PHYSICAL HASH MISMATCH {gas=} {variant=} {workers=} '
                                          f'{mask=} {repetition=} tick={position}')
                   for key in ('gas_seed_cells', 'gas_bfs_cells', 'gas_relabel_cells'):
-                      if left[key] != previous[key] or left[key] != right[key]:
+                      if left[key] != right[key]:
                           raise RuntimeError(f'WORK COUNT MISMATCH {key} {gas=} {variant=} {workers=} {mask=}')
                   for label, record in pair.items():
                       parity_key = (label, gas, variant, mask, repetition)
@@ -105,12 +93,10 @@ jobs:
                   rows.append({'gas': gas, 'variant': variant, 'workers': workers, 'mask': mask,
                                'repeat': repetition,
                                'baseline_p50_ms': left['median_ms'],
-                               'previous_p50_ms': previous['median_ms'],
                                'candidate_p50_ms': right['median_ms'],
                                'baseline_p95_ms': left['p95_ms'],
                                'candidate_p95_ms': right['p95_ms'],
                                'baseline_gas_ns': left['gas_ns'],
-                               'previous_gas_ns': previous['gas_ns'],
                                'candidate_gas_ns': right['gas_ns'],
                                'same_40_physical_hashes': True,
                                'gas_seed_cells': left['gas_seed_cells'],
@@ -120,32 +106,26 @@ jobs:
           for gas in (0, 1):
               subset = [r for r in rows if r['gas'] == gas]
               differences = [100.0 * (1.0 - r['candidate_p50_ms']/r['baseline_p50_ms']) for r in subset]
-              incremental = [100.0 * (1.0 - r['candidate_p50_ms']/r['previous_p50_ms']) for r in subset]
               phase = [100.0 * (1.0-r['candidate_gas_ns']/r['baseline_gas_ns'])
                        for r in subset if r['baseline_gas_ns'] != 0]
               report['gas_on' if gas else 'gas_off'] = {
                   'pairs': len(subset),
                   'median_baseline_tick_ms': statistics.median(r['baseline_p50_ms'] for r in subset),
                   'median_candidate_tick_ms': statistics.median(r['candidate_p50_ms'] for r in subset),
-                  'median_previous_tick_ms': statistics.median(r['previous_p50_ms'] for r in subset),
-                  'median_incremental_improvement_percent': statistics.median(incremental),
-                  'min_incremental_improvement_percent': min(incremental),
-                  'max_incremental_improvement_percent': max(incremental),
                   'median_paired_tick_improvement_percent': statistics.median(differences),
                   'min_paired_tick_improvement_percent': min(differences),
                   'max_paired_tick_improvement_percent': max(differences),
                   'median_gas_phase_improvement_percent': statistics.median(phase) if phase else None}
           bundle = {'baseline_source': os.environ['BASELINE_SHA'],
-                    'previous_source': os.environ['PREVIOUS_SHA'],
                     'candidate_source': os.environ['GITHUB_SHA'],
                     'method': 'same 1024x512 360-pocket input, 8 warmup+32 measured native ticks, '
                               'one/four workers, PF reference/cached/dormant, gas on/off, '
-                              'mask on/off, three repetitions, rotated baseline/previous/candidate',
+                              'mask on/off, three repetitions, alternated A/B',
                     'hash_and_worker_parity': 'PASS',
                     'summary': report, 'pairs': rows}
           (out / 'paired-results.json').write_text(json.dumps(bundle, indent=2) + '\n')
           print(json.dumps(report, indent=2))
-          print(f'PASS: {len(rows)} identical 40-tick source triples + worker parity')
+          print(f'PASS: {len(rows)} identical 40-tick source pairs + worker parity')
           PY
       - name: Retain exact source and paired timing evidence
         if: always()
