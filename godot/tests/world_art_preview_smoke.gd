@@ -20,7 +20,7 @@ func _frame() -> void:
 	await RenderingServer.frame_post_draw
 	await RenderingServer.frame_post_draw
 
-func _save_frame(preview: Control, name: String) -> void:
+func _save_frame(preview: Variant, name: String) -> void:
 	await _frame()
 	var image: Image = preview.rig.get_texture().get_image()
 	_expect(image != null and not image.is_empty(), "viewport framebuffer " + name)
@@ -29,7 +29,7 @@ func _save_frame(preview: Control, name: String) -> void:
 		_expect(image.save_png(output.path_join(name + ".png")) == OK, "write actual pixels " + name)
 		var center := image.get_pixel(image.get_width() / 2, image.get_height() / 2)
 		var corner := image.get_pixel(1, 1)
-		_expect(center.distance_to(corner) > 0.005, "nonblank pixel variation " + name)
+		_expect(Vector3(center.r, center.g, center.b).distance_to(Vector3(corner.r, corner.g, corner.b)) > 0.005, "nonblank pixel variation " + name)
 
 func _run() -> void:
 	if DisplayServer.get_name() == "headless":
@@ -46,7 +46,7 @@ func _run() -> void:
 	if DirAccess.make_dir_recursive_absolute(output) != OK:
 		quit(2)
 		return
-	var preview: Control = SCENE.instantiate()
+	var preview = SCENE.instantiate()
 	root.add_child(preview)
 	for i: int in range(5):
 		await process_frame
