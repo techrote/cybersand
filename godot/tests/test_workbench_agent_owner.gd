@@ -153,6 +153,12 @@ func _new_workbench_ready() -> bool:
 		and main.world_extent == Vector2i(2048,2048)
 
 
+func _completed_single_step(expected_tick: int) -> bool:
+	return main.latest_snapshot != null \
+		and int(main.latest_snapshot.tick_index) == expected_tick \
+		and not ui.step_pending
+
+
 func run() -> void:
 	main = load("res://main.tscn").instantiate()
 	root.add_child(main)
@@ -306,6 +312,25 @@ func run() -> void:
 		and no_sand.get("reason")=="source_material_protected",
 		"agent attempted to erase an actual native Sand cell")
 
+	# Real owner regression: no second host may silently replace task scope,
+	# protection, allowlist, or pending authority. Retire explicitly before
+	# the following independent host task takes ownership.
+	var takeover: Dictionary = await issue({
+		"action":"authorize_task", "task_id":"illegal-second-task",
+		"scope":Rect2i(Vector2i(0,0),Vector2i(32,32)),
+		"protected":[], "allowed_materials":[0]
+	})
+	check(takeover.get("status")=="refused"
+		and takeover.get("reason")=="task_already_authorized",
+		"second host silently replaced the existing native authoring task")
+	var still_owned: Dictionary = await observe(1220,270,6,6)
+	check(still_owned.get("status")=="native_observed"
+		and still_owned.get("task_id")=="fixture-526",
+		"refused second host retired or replaced the current task")
+	var first_retired: Dictionary = await issue({"action":"retire_task"})
+	check(first_retired.get("status")=="retired",
+		"first native authoring task did not retire before handoff")
+
 	# Full user-facing #526 host path, not a direct worker bypass. Authorize
 	# locally, submit strict model-shaped JSON, await real owner/renderer,
 	# preflight the named-start, apply+verify, and test duplicate idempotence.
@@ -324,7 +349,48 @@ func run() -> void:
 		"region":{"x":1160.5,"y":360,"width":6,"height":5},"detail":"cells"})
 	check(wrong_region.get("status")=="refused",
 		"float JSON world coordinate was silently narrowed")
+	# Regression for real paused stepping on an otherwise Empty 2048^2
+	# native World: tick may advance without any material-revision change.
+	# The host must request an actual new render publication/ACK, not reuse
+	# a previous framebuffer with stale tick provenance.
+	var idle_step_start: int = int(main.latest_snapshot.tick_index)
+	var idle_steps_completed: int = 0
+	for _step: int in range(4):
+		var before_tick: int = int(main.latest_snapshot.tick_index)
+		if not check(ui.step_once(),
+				"manual paused Step request refused on blank real workbench"):
+			break
+		if not await wait_for(
+				Callable(self,"_completed_single_step").bind(before_tick + 1),
+				"paused Step did not ACK exactly one real native tick"):
+			break
+		idle_steps_completed += 1
+	check(idle_steps_completed == 4 and main.paused
+		and int(main.latest_snapshot.tick_index) == idle_step_start + 4,
+		"four paused steps did not complete exactly four native ticks")
 	var region: Dictionary = {"x":1170,"y":374,"width":8,"height":8}
+	if idle_steps_completed == 4:
+		var fresh_after_step: Dictionary = await adapter.call_tool("observe",{
+			"region":region,"detail":"counts"})
+		check(fresh_after_step.get("status") == "observed"
+			and int(fresh_after_step.get("identity",{}).get("completed_tick",-1))
+				== idle_step_start + 4
+			and int(fresh_after_step.get("render_identity",{}).get("tick",-1))
+				== idle_step_start + 4
+			and fresh_after_step.get("framebuffer_png",PackedByteArray()).size()>8,
+			"post-step native observation did not get a fresh real tick-matched PNG")
+		if fresh_after_step.get("status") == "observed":
+			var fake_stale: Dictionary = {
+				"status":"native_observed",
+				"observation_id":"deliberately-stale-tick",
+				"identity":fresh_after_step.identity.duplicate(true)
+			}
+			fake_stale.identity.completed_tick = idle_step_start
+			var stale_result: Dictionary = await RenderJoin.join_after_draw(main,fake_stale)
+			check(stale_result.get("status") == "pending"
+				and stale_result.get("reason") ==
+					"native_and_uploaded_render_not_matched",
+				"old native-tick identity incorrectly joined to newer framebuffer")
 	var host_observed: Dictionary = await adapter.call_tool("observe",{
 		"region":region,"detail":"cells"})
 	check(host_observed.get("status")=="observed"
