@@ -203,3 +203,65 @@ The separately executed [frozen C++ Sand-hopper workflow 42389675533](https://gi
 The following small, separately committed improvement preserves the **original post-Step and human-intervention framebuffers**, not only the initial matched PNG, in the same real four-tool evidence bundle. Its new exact-head CI results must be inspected independently; the 30/30 checkpoint above is not silently inherited.
 
 Remaining genuine product blocker: the **unchanged** frozen signed-coordinate native v2 hopper includes negative x/y, while #526's tested nonnegative Godot workbench authoring extent and region parser cannot admit those literal coordinates. The native 32/32 control is not yet a four-tool Godot hopper run. Any mapping must retain the immutable reference and obtain a separate real-native positive control before live trials; do not count an untested translated geometry. The complete Godot 32-Sand construction, Windows desktop, three paid live OpenAI trials and owner human verdict remain HOLD. Keep all branches Draft and parent #525 open.
+
+
+## 7 November 2026 — Stop versus queued native authorization (real owner race)
+
+The existing #527 bridge had a separate lifecycle gap before the first model
+tool call: `authorize_task` queues an asynchronous exclusive-worker request,
+but the bridge considered the task active **only after the native authorization
+ACK**. Human Stop arriving while that authorization was in flight returned
+`no_active_authorized_task`, allowing a subsequently acknowledged task to
+become active after opt-out. No physics revision or API transport change is
+required to reproduce this main-thread timing race.
+
+The #527 bridge now explicitly tracks *pending authorization* and immediately
+fences new model calls when Stop is requested. Stop waits for the outstanding
+authorization boundary, then (if the worker actually authorized the task)
+awaits the existing **#526 native `retire_task` ACK** before reporting
+`stopped/no_further_agent_mutations`. The late authorization receipt remains
+truthfully `authorized` but is marked `interrupted_by_human`; it cannot be
+used for further work. A genuinely refused authorization has no native task
+to retire; missing/uncertain native ACKs are `unconfirmed`, never silently
+retried or reported as successful retirement. Retired bridge instances remain
+terminal; fresh tasks require the existing fresh-instance handoff.
+
+The new deterministic **actual native/Godot** join regression starts a real
+trusted authorization without awaiting its worker ACK, establishes that it is
+still pending, requests Stop in the **same main-thread turn**, verifies
+the eventual worker authorization was interrupted, requires real retirement
+ACK and no additional native tick, then authorizes/stops a fresh task on the
+same generation. This adds eight genuine checks over the previous 38/38.
+
+At exact implementation commit
+`e1549faaad6c53f2e337cbb54b090d394245728f`:
+- [Real Linux Godot 4.7/OpenGL + native four-tool joined workflow
+  42399455154](https://github.com/techrote/cybersand/actions/runs/42399455154)
+  **PASS 46/46**, preserving native material ID 58 human readback,
+  paused tick `0→4→6`, Stop at exactly two ACKs and matching PNGs.
+  [Unmodified native source + original evidence artifact
+  13584921904](https://github.com/techrote/cybersand/actions/runs/42399455154/artifacts/13584921904).
+- [Existing real-native Step/Stop 42399455158](https://github.com/techrote/cybersand/actions/runs/42399455158)
+  PASS; [frozen original/revised 32-Sand control
+  42399455152](https://github.com/techrote/cybersand/actions/runs/42399455152)
+  PASS without changing the fixture, 32 conserved Sand, 17 protected walls,
+  480 **TOTAL** ticks, one/four configured workers.
+- [Documentation/provenance 42399455164](https://github.com/techrote/cybersand/actions/runs/42399455164)
+  and [native-source advisory 42399455165](https://github.com/techrote/cybersand/actions/runs/42399455165)
+  PASS on that implementation checkpoint; documentation additions below must
+  be rechecked at their own exact source head.
+
+Separately, the [independent signed-positive-coordinate native discrimination
+#537](https://github.com/techrote/cybersand/pull/537) observed terminal 32/32
+outcomes for multiple translations but reported **zero strictly matched
+intermediate trajectories across seven offsets**; source-matched physical
+equivalence therefore remains **HOLD**, not an approved substitute for frozen
+signed v2. A larger scan is owned independently by that test-only PR; #527
+must not reinterpret it as an admitted signed-native/Godot authoring contract.
+
+**Acceptance is still incomplete:** this is experimental GitHub-hosted Linux
+native/Godot/Xvfb source composition with retained pinned LFS GDExtensions,
+not full rebuilt production Native/GDExtension, Windows desktop, a 32-Sand
+four-tool Godot trial, three live OpenAI tasks or owner-human acceptance.
+No #526 session/worker/host files, #528 panel files, GEN-006, native physics,
+defaults or frozen fixture were modified. The one #527 Draft remains unmerged.
