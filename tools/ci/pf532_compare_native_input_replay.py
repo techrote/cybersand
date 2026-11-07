@@ -55,22 +55,26 @@ def main() -> int:
             exact(lanes[(1,camera,role)],lanes[(4,camera,role)],f"worker parity {role} camera{camera}")
 
     summaries={}
-    positive=0
+    relabel_positive=0
     for workers in (1,4):
         for camera in (0,1):
             b=final(lanes[(workers,camera,"baseline")])
             c=final(lanes[(workers,camera,"candidate")])
             need(c["gas_reference_passes"] == b["gas_reference_passes"],
                  f"w{workers} camera{camera}: whole-gas reference-pass count changed")
-            if c["gas_component_reuses"] > b["gas_component_reuses"]:
-                positive += 1
+            need(c["seed_cells"] == b["seed_cells"] and c["bfs_cells"] == b["bfs_cells"],
+                 f"w{workers} camera{camera}: discovery work changed outside sparse relabel scope")
+            need(c["gas_component_reuses"] == b["gas_component_reuses"],
+                 f"w{workers} camera{camera}: component-cache execution changed outside sparse relabel scope")
+            if c["relabel_cells"] < b["relabel_cells"]:
+                relabel_positive += 1
             summaries[f"w{workers}-camera{camera}"]={"baseline":b,"candidate":c}
-    need(positive >= 2, f"selective cache did not activate in enough workbench-derived lanes: {positive}/4")
-    need(sum(v["candidate"]["gas_member_validations"] for v in summaries.values()) > 0,
-         "candidate never validated cached gas members")
-    need(sum(v["candidate"]["bfs_cells"] for v in summaries.values()) <
-         sum(v["baseline"]["bfs_cells"] for v in summaries.values()),
-         "candidate did not reduce authoritative BFS cell visits")
+    need(relabel_positive == 4,
+         f"sparse relabel did not reduce examined relabel cells in every lane: {relabel_positive}/4")
+    baseline_relabel=sum(v["baseline"]["relabel_cells"] for v in summaries.values())
+    candidate_relabel=sum(v["candidate"]["relabel_cells"] for v in summaries.values())
+    need(candidate_relabel < baseline_relabel,
+         "candidate did not reduce authoritative relabel bookkeeping")
 
     observed=max(int(row["workers_observed"]) for row in lanes[(4,0,"candidate")])
     need(observed >= 2, f"four-worker lane did not dispatch native work: observed {observed}")
@@ -81,7 +85,10 @@ def main() -> int:
         "physical_fields":list(PHYSICAL),
         "source_physical_parity":"exact every tick",
         "worker_physical_parity":"exact every tick",
-        "cache_positive_lanes":positive,
+        "sparse_relabel_positive_lanes":relabel_positive,
+        "baseline_relabel_cells":baseline_relabel,
+        "candidate_relabel_cells":candidate_relabel,
+        "relabel_cell_reduction_pct":100.0*(baseline_relabel-candidate_relabel)/baseline_relabel,
         "candidate_worker_participants_max":observed,
         "lanes":summaries,
     }
