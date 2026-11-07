@@ -620,7 +620,7 @@ class RendererIntegrationTests(RunCase):
         self.assertTrue(comparison["visual_change_observed"], "the edit must change the rendered pixels")
         self.assertEqual(comparison["evidence_classes"], ["fixture", "fixture"])
         self.assertFalse(rec["visual_cycle"]["claimed"])
-        self.assertIn("not both godot-capture", rec["visual_cycle"]["reason"])
+        self.assertIn("dry-run", rec["visual_cycle"]["reason"])
 
     def test_unavailable_renderer_is_reported_not_faked(self):
         godot = self.env.root / "Godot_fake.exe"
