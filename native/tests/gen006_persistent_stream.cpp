@@ -85,6 +85,12 @@ public:
         auto heartbeat_check = Clock::now() + 1500ms;
         const auto boot = Clock::now();
         while (running_) {
+            if (fs::exists(control_ / "shutdown.txt")) {
+                // The Godot owner can exit while a command is outstanding.
+                // Save and release the lease without waiting for its receipt.
+                std::cout << "GEN006_SESSION_CLIENT_SHUTDOWN" << std::endl;
+                break;
+            }
             const fs::path command_file = control_ / "command.txt";
             if (fs::exists(command_file)) {
                 std::ifstream input(command_file, std::ios::binary);
@@ -166,6 +172,10 @@ private:
         std::string outcome = "OK";
         std::string reason = "accepted";
         bool publish = true;
+        auto require_end = [&] {
+            std::string trailing;
+            check(!(in >> trailing), "GEN006_SESSION_COMMAND_TRAILING");
+        };
         try {
             if (command == "FOCUS") {
                 std::int64_t x = 0, y = 0;
@@ -173,6 +183,7 @@ private:
                 check(x >= -1'000'000 && x <= 1'000'000 &&
                       y >= -1'000'000 && y <= 1'000'000,
                       "GEN006_DEMAND_COORDINATE_RANGE");
+                require_end();
                 const ChunkCoord target{x, y};
                 stream_.focus(target);
                 active_ = target;
@@ -189,37 +200,43 @@ private:
                     check(mass >= 1 && mass <= 31 &&
                           temp >= -32768 && temp <= 32767,
                           "GEN006_SESSION_WATER_RANGE");
+                    require_end();
                     stream_.edit(active_, x, y, Material::Water,
                                  static_cast<std::uint16_t>(mass),
                                  static_cast<std::int16_t>(temp));
                 } else {
+                    require_end();
                     stream_.edit(active_, x, y,
                                  command == "WALL" ? Material::Wall :
                                                      Material::Empty);
                 }
             } else if (command == "PAUSE") {
+                require_end();
                 paused_ = true;
             } else if (command == "RESUME") {
+                require_end();
                 paused_ = false;
             } else if (command == "STEP") {
                 unsigned n = 0;
                 check(bool(in >> n) && n >= 1 && n <= 4,
                       "GEN006_SESSION_STEP_BUDGET");
+                require_end();
                 last_observed_ = stream_.simulate(n);
                 session_ticks_ += n;
             } else if (command == "SAVE") {
+                require_end();
                 stream_.save_all();
             } else if (command == "STATUS") {
+                require_end();
                 // Force a native state readback without mutating the World.
             } else if (command == "QUIT") {
+                require_end();
                 stream_.save_all();
                 running_ = false;
                 publish = false;
             } else {
                 throw std::runtime_error("GEN006_SESSION_COMMAND_UNKNOWN");
             }
-            std::string extra;
-            check(!(in >> extra), "GEN006_SESSION_COMMAND_TRAILING");
             if (publish) publish_frame();
         } catch (const std::exception& error) {
             outcome = "ERR";
