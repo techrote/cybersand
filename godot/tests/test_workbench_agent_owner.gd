@@ -61,6 +61,26 @@ func authorize() -> Dictionary:
 	})
 
 
+# Rendering and the exclusive World owner publish on independent clocks.
+# The join helper correctly reports pending before the next matching draw.
+# Test only a genuinely matched draw, rather than assuming queue result == GPU ACK.
+func join_when_published(native: Dictionary) -> Dictionary:
+	var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("operation_seconds")
+	var latest: Dictionary = {}
+	while Time.get_ticks_msec() < deadline:
+		latest = await RenderJoin.join_after_draw(main,native)
+		if latest.get("status") == "observed":
+			return latest
+		if str(latest.get("reason","")) not in [
+			"native_and_uploaded_render_not_matched",
+			"publication_changed_during_draw",
+			"publication_changed_after_capture"
+		]:
+			return latest
+		await process_frame
+	return latest
+
+
 func observe(x: int, y: int, width: int, height: int) -> Dictionary:
 	var native: Dictionary = await issue({
 		"action":"observe",
@@ -68,7 +88,7 @@ func observe(x: int, y: int, width: int, height: int) -> Dictionary:
 	})
 	if native.get("status")!="native_observed":
 		return native
-	var joined: Dictionary = await RenderJoin.join_after_draw(main,native)
+	var joined: Dictionary = await join_when_published(native)
 	if not check(joined.get("status")=="observed",
 			"native/render post-draw join refused: "+str(joined.get("reason",""))):
 		return native
@@ -124,7 +144,7 @@ func run() -> void:
 		"native-only observation fabricated a matched frame")
 	check(original.get("identity",{}).get("world_generation",-1)>0,
 		"native observation omitted World identity")
-	var joined: Dictionary = await RenderJoin.join_after_draw(main,original)
+	var joined: Dictionary = await join_when_published(original)
 	check(joined.get("status")=="observed"
 		and joined.get("image_status")=="matched_post_draw"
 		and joined.get("framebuffer_png",PackedByteArray()).size()>8,
