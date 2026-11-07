@@ -38,6 +38,13 @@ var _pending_hard_surface_chunks: int = 0
 
 var _initialized: bool = false
 var _sample_serial: int = 0
+# Opt-in lockstep packing (COUPLING-LOCKSTEP-001 amendment_002). Default off:
+# ordinary play keeps Transform2D.get_rotation() (platform float32 atan2), which
+# differed by 1 ulp between Windows and Linux. When on, the packed rotation is
+# atan2 of the basis evaluated in double and then stored as float32, exactly
+# the measured lockstep-f64rot arm. Qualified: double libm atan2 is not
+# guaranteed correctly rounded on every platform.
+var deterministic_rotation_packing: bool = false
 var _last_result_snapshot_serial: int = -1
 var _manual_step_count: int = 0
 var _last_active_body_count: int = 0
@@ -702,11 +709,14 @@ func pack_body_states() -> PackedFloat32Array:
 	_sample_serial = (_sample_serial + 1) % SAMPLE_SERIAL_LIMIT
 	for body_index: int in range(_body_rids.size()):
 		var transform: Transform2D = _transforms[body_index]
+		var rotation: float = transform.get_rotation()
+		if deterministic_rotation_packing:
+			rotation = atan2(float(transform.x.y), float(transform.x.x))
 		CyberRigidBodyCoupling.append_input(
 			states,
 			body_index + 1,
 			transform.origin,
-			transform.get_rotation(),
+			rotation,
 			_body_sizes[body_index],
 			_linear_velocities[body_index],
 			_angular_velocities[body_index],

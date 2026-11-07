@@ -26,7 +26,8 @@ struct World::PressureCache {
         bool valid = true;
     };
 
-    PressureCache(std::size_t chunks, std::size_t cell_area, bool gas_enabled, PressureOptimizationConfig settings)
+    PressureCache(std::size_t chunks, std::size_t cell_area, bool gas_enabled,
+                  PressureOptimizationConfig settings, std::size_t gas_compartment_capacity)
         : config(settings), capacity(std::min(chunks, settings.index_chunk_capacity)) {
         column_order.reserve(capacity); row_order.reserve(capacity);
         columns.reserve(capacity); rows.reserve(capacity);
@@ -36,7 +37,7 @@ struct World::PressureCache {
         if (gas_enabled) {
             gas_member_limit = std::min(settings.gas_member_capacity, cells);
             gas_members.reserve(gas_member_limit);
-            gas_components.reserve(PressureFlowParameters::kCompartmentCapacity);
+            gas_components.reserve(gas_compartment_capacity);
             gas_dirty_chunks.reserve(capacity);
         }
         // #201 P1: one derived wake-clean bit per indexed cell. Reserved here;

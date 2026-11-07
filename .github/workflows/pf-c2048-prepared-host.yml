@@ -1,0 +1,118 @@
+name: PF C2048 prepared-host Linux native execution (Draft)
+on:
+  push:
+    branches: [codex/pf-c2048-admitted-20261107]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: pf-c2048-host-${{ github.run_id }}
+  cancel-in-progress: false
+env:
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+jobs:
+  prepared-host:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - name: Checkout exact isolated C2048 implementation
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Record provenance and verify CI provider policy
+        run: |
+          set -euo pipefail
+          mkdir -p build/pf-c2048-host
+          git rev-parse HEAD | tee build/pf-c2048-host/source-sha.txt
+          g++-13 --version | head -1 | tee build/pf-c2048-host/compiler.txt
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Stage exact Rapier native dependency
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+      - name: Install pinned build tools
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+      - name: Checkout pinned godot-cpp
+        run: |
+          set -euo pipefail
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+      - name: Build actual Linux C2048 GDExtension and stage local runtime
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: "2"
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label pf-c2048-godot-cpp --output-dir build/pf-c2048-host/godot-cpp-timing -- tools/build_pinned_godot_cpp.sh linux
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label pf-c2048-extension --output-dir build/pf-c2048-host/extension-timing -- tools/build_native_extension.sh
+          file "$CYBERSAND_NATIVE_OUTPUT" | tee build/pf-c2048-host/runtime-type.txt
+          sha256sum "$CYBERSAND_NATIVE_OUTPUT" > build/pf-c2048-host/native-binary.sha256
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+      - name: Download and verify exact Godot 4.7
+        run: |
+          set -euo pipefail
+          mkdir "$RUNNER_TEMP/godot-c2048"
+          timeout 300 curl -fL --retry 3 -o "$RUNNER_TEMP/godot-c2048.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot-c2048.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot-c2048.zip" -d "$RUNNER_TEMP/godot-c2048"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot-c2048" -maxdepth 1 -type f -name 'Godot*' | head -1)"
+          chmod +x "$GODOT_BIN"
+          "$GODOT_BIN" --version | tee build/pf-c2048-host/godot-version.txt
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+      - name: Import and run actual C2048 prepared native-default host test
+        run: |
+          set -euo pipefail
+          timeout 180 "$GODOT_BIN" --headless --path godot --editor --quit > build/pf-c2048-host/import.log 2>&1 || {
+            tail -90 build/pf-c2048-host/import.log; exit 1; }
+          timeout 300 "$GODOT_BIN" --headless --path godot --script res://tests/test_pf_c2048_prepared.gd > build/pf-c2048-host/prepared.log 2>&1 || {
+            tail -120 build/pf-c2048-host/prepared.log; exit 1; }
+          cat build/pf-c2048-host/prepared.log
+          grep -Eq 'PF_C2048_PREPARED: [0-9]+ checks; 0 failures' build/pf-c2048-host/prepared.log
+      - name: Actual long-window 8-actor C1024 vs C2048 workbench comparison
+        run: |
+          set -euo pipefail
+          bash tools/ci/prepare_linux_display.sh
+          export LIBGL_ALWAYS_SOFTWARE=1 LP_NUM_THREADS=2 GALLIVM_PERF=nopt
+          export CYBERSAND_SOURCE_SHA="$(git rev-parse HEAD)"
+          for capacity in 1024 2048; do
+            export PF_C2048_CAPACITY="$capacity"
+            if timeout 1500 xvfb-run --auto-servernum \
+                --server-args="-screen 0 1920x1080x24 -nolisten tcp" \
+                "$GODOT_BIN" --headless --path godot \
+                --script res://tests/pf_c2048_actual_workbench.gd \
+                > "build/pf-c2048-host/workbench-C${capacity}.log" 2>&1; then
+              outcome=0
+            else
+              outcome=$?
+            fi
+            echo "WORKBENCH_CAPACITY_C${capacity}_EXIT $outcome"
+            if [ "$capacity" -eq 2048 ] && [ "$outcome" -ne 0 ]; then
+              tail -130 "build/pf-c2048-host/workbench-C${capacity}.log"
+              exit 1
+            fi
+          done
+          python3 tools/ci/pf_c2048_workbench_readback.py \
+            build/pf-c2048-host "$(git rev-parse HEAD)"
+      - name: Preserve exact original source, compile, import and host evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf-c2048-prepared-host-evidence
+          path: build/pf-c2048-host/
+          if-no-files-found: warn
+          retention-days: 90

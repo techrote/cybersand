@@ -29,10 +29,14 @@ PLATFORMS = {'windows': 'Windows', 'linux': 'Linux'}
 # (amendment_001.apparatus_defect): both fields must be empty, and the tail
 # comparison reports them as not compared rather than equal.
 FINAL_HASH_DEFECT_RUNS = ('matrix-001', 'smoke-001')
+# amendment_002: the production packing arm must reproduce a validated earlier arm.
+CROSS_RUN_REFERENCES = {'packed-001': ('horizon-001', 'lockstep-f64rot', 'lockstep-packed')}
 IDENTITY_FILES = {'registration_sha256': 'native/tests/fixtures/coupling_lockstep_001.json',
                   'runner_sha256': 'tools/lockstep/run_coupling_lockstep.py',
                   'fixture_sha256': 'godot/tests/test_coupling_lockstep.gd',
                   'worker_sha256': 'godot/scripts/simulation_worker.gd'}
+# Recorded from amendment_002 on (packing moved into the bridge); checked when present.
+OPTIONAL_IDENTITY_FILES = {'bridge_sha256': 'godot/scripts/rapier_physics_bridge.gd'}
 
 
 def registered_matrix(run, registration):
@@ -50,6 +54,10 @@ def registered_matrix(run, registration):
     names = {'f64rot-001': 'f64rot', 'horizon-001': 'long_horizon'}
     if run in names:
         m = amendment[names[run]]
+        return dict(hosts=m['hosts'], workers=m['workers'], arms=m['arms'], repeats=m['repeats'],
+                    ticks=m['ticks'], delay_usec=0, decisional=True)
+    if run == 'packed-001' and 'amendment_002' in registration:
+        m = registration['amendment_002']['matrix']['packed']
         return dict(hosts=m['hosts'], workers=m['workers'], arms=m['arms'], repeats=m['repeats'],
                     ticks=m['ticks'], delay_usec=0, decisional=True)
     match = re.fullmatch(r'load-(\d+)', run)
@@ -82,7 +90,10 @@ def validate_identity(receipt, show=git_show, notes=None):
         return ['receipt: source_commit missing or malformed']
     if receipt.get('post_source_equality') is not True:
         errors.append('receipt: post_source_equality is not true')
-    for key, path in IDENTITY_FILES.items():
+    files = dict(IDENTITY_FILES, **{k: p for k, p in OPTIONAL_IDENTITY_FILES.items() if k in identity})
+    if CROSS_RUN_REFERENCES.get(receipt.get('matrix', {}).get('run')) and 'bridge_sha256' not in identity:
+        errors.append('receipt: bridge_sha256 missing for a packed run')
+    for key, path in files.items():
         data = show(commit, path)
         if data is None:
             errors.append('receipt: %s not readable at %s' % (path, commit[:12]))
@@ -310,6 +321,12 @@ def reduce(run, show=git_show, base=None):
     receipt, groups, expected, errors, notes = load(run, show, base)
     out = dict(run=run, reducer='v2', source_commit=(receipt or {}).get('identity', {}).get('source_commit'),
                expected_matrix=expected, validation=dict(valid=not errors, errors=errors, notes=notes))
+    reference = CROSS_RUN_REFERENCES.get(run)
+    if reference and not errors:
+        # The reference run is validated exactly as if it were reduced on its own.
+        _, ref_groups, _, ref_errors, _ = load(reference[0], show, base)
+        errors.extend('reference %s: %s' % (reference[0], e) for e in ref_errors)
+        out['validation']['valid'] = not errors
     if errors:
         out['decisions'] = None
         return out
@@ -351,6 +368,11 @@ def reduce(run, show=git_show, base=None):
     d['b_cross_host_first_divergence'] = {k: [v.get('step'), v.get('kind'), v.get('fields')]
                                           for k, v in out['cross_host'].items() if not v['equal']}
     d['final_hashes_compared'] = recorded
+    if reference:
+        ref_run, ref_arm, arm = reference
+        out['cross_run'] = {'%s/w%d' % (h, w): compare(groups[(h, arm, w)][0], ref_groups[(h, ref_arm, w)][0], recorded)
+                            for h in hosts for w in workers}
+        d['packed_equals_%s' % ref_arm.replace('lockstep-', '')] = {k: v['equal'] for k, v in out['cross_run'].items()}
     return out
 
 

@@ -17,7 +17,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import reduce_coupling_lockstep as reducer  # noqa: E402
 
 COMMIT = 'a' * 40
-SOURCES = {path: ('source of %s\n' % path).encode() for path in reducer.IDENTITY_FILES.values()}
+SOURCES = {path: ('source of %s\n' % path).encode()
+           for path in list(reducer.IDENTITY_FILES.values()) + list(reducer.OPTIONAL_IDENTITY_FILES.values())}
 
 
 def show(commit, path):
@@ -52,13 +53,16 @@ class Run:
         registration = json.loads(reducer.REGISTRATION.read_text(encoding='utf-8'))
         self.expected = reducer.registered_matrix(run, registration)
         self.folder = self.base / 'build/coupling-lockstep' / run
-        self.receipt = dict(identity=dict(source_commit=COMMIT, **{k: sha(SOURCES[p]) for k, p in reducer.IDENTITY_FILES.items()}),
-                            matrix={}, episodes=[], post_source_equality=True)
+        files = dict(reducer.IDENTITY_FILES, **(reducer.OPTIONAL_IDENTITY_FILES if run in reducer.CROSS_RUN_REFERENCES else {}))
+        self.receipt = dict(identity=dict(source_commit=COMMIT, **{k: sha(SOURCES[p]) for k, p in files.items()}),
+                            matrix=dict(run=run), episodes=[], post_source_equality=True)
         for host in self.expected['hosts']:
             for repeat in range(self.expected['repeats']):
                 for workers in self.expected['workers']:
                     for arm in self.expected['arms']:
-                        self.write(host, arm, workers, repeat, episode(arm, workers, self.expected['ticks']))
+                        data = episode(arm, workers, self.expected['ticks'])
+                        data['platform'] = reducer.PLATFORMS[host]
+                        self.write(host, arm, workers, repeat, data)
 
     def write(self, host, arm, workers, repeat, data, log=b'COUPLING_LOCKSTEP {"ok":true}\n'):
         folder = self.folder / host / ('%s-w%d-r%d' % (arm, workers, repeat))
@@ -208,6 +212,63 @@ class DefectRunTests(unittest.TestCase):
             self.assertTrue(out['validation']['valid'], out['validation']['errors'])
             self.assertFalse(out['repeatability']['windows/lockstep/w1']['final_hashes_compared'])
             self.assertEqual(out['decisions'], 'excluded (registered smoke)')
+
+
+class PackedReferenceTests(unittest.TestCase):
+    """amendment_002: lockstep-packed must equal the validated horizon-001 lockstep-f64rot."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.reference = Run(self.tmp.name, 'horizon-001')
+        self.reference.reduce()  # writes its receipt
+        self.packed = Run(self.tmp.name, 'packed-001')
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_packed_run_is_registered(self):
+        self.assertEqual(self.packed.expected['arms'], ['lockstep-packed'])
+        self.assertEqual(self.packed.expected['ticks'], self.reference.expected['ticks'])
+
+    def test_packed_equal_to_reference_decides(self):
+        out = self.packed.reduce()
+        self.assertTrue(out['validation']['valid'], out['validation']['errors'])
+        self.assertEqual(set(out['decisions']['packed_equals_f64rot'].values()), {True})
+        self.assertTrue(out['decisions']['b_cross_host_lockstep_match']['lockstep-packed/w4'])
+
+    def test_packed_difference_from_reference_is_classified(self):
+        ticks = self.packed.expected['ticks']
+        for repeat in (0, 1):
+            data = episode('lockstep-packed', 1, ticks)
+            data['platform'] = reducer.PLATFORMS['windows']
+            data['steps'][20]['post'] = 'ffff'
+            self.packed.write('windows', 'lockstep-packed', 1, repeat, data)
+        out = self.packed.reduce()
+        self.assertTrue(out['validation']['valid'], out['validation']['errors'])
+        self.assertFalse(out['decisions']['packed_equals_f64rot']['windows/w1'])
+        self.assertTrue(out['decisions']['packed_equals_f64rot']['linux/w4'])
+        detail = out['cross_run']['windows/w1']
+        self.assertEqual((detail['step'], detail['kind']), (20, 'RAPIER'))
+
+    def test_packed_run_requires_bridge_identity(self):
+        del self.packed.receipt['identity']['bridge_sha256']
+        out = self.packed.reduce()
+        self.assertFalse(out['validation']['valid'])
+        self.assertIn('receipt: bridge_sha256 missing for a packed run', out['validation']['errors'])
+
+    def test_packed_bridge_identity_mismatch_refused(self):
+        self.packed.receipt['identity']['bridge_sha256'] = '0' * 64
+        out = self.packed.reduce()
+        self.assertFalse(out['validation']['valid'])
+        self.assertTrue(any('bridge_sha256 does not match' in e for e in out['validation']['errors']))
+
+    def test_invalid_reference_refuses_decisions(self):
+        path = self.reference.base / self.reference.row('lockstep-f64rot', 0)['result']
+        path.write_text(path.read_text(encoding='utf-8').replace('"00bb"', '"00bc"'), encoding='utf-8')
+        out = self.packed.reduce()
+        self.assertFalse(out['validation']['valid'])
+        self.assertIsNone(out['decisions'])
+        self.assertTrue(any(e.startswith('reference horizon-001:') for e in out['validation']['errors']))
 
 
 if __name__ == '__main__':

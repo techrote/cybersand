@@ -31,6 +31,15 @@ std::uint16_t quantity_kernel_rule(RuleKernel kernel) noexcept;
 
 std::atomic<std::uint64_t> next_discovery_incarnation{1};
 
+// Hard-surface collider publication uses a fixed 64x64 tile grid. Storage
+// chunks up to the supported 1024-cell maximum need at most 16x16 tile bits
+// when aligned to that grid. Non-aligned storage geometry falls back to an
+// explicit full refresh rather than creating ambiguous/overlapping ownership.
+constexpr std::int32_t kHardSurfaceTileSize = 64;
+constexpr std::size_t kHardSurfaceTilesPerChunkAxisMax = 16;
+constexpr std::size_t kHardSurfaceDirtyWordCount =
+    (kHardSurfaceTilesPerChunkAxisMax * kHardSurfaceTilesPerChunkAxisMax + 63U) / 64U;
+
 std::uint64_t allocate_discovery_incarnation() {
     auto current = next_discovery_incarnation.load(std::memory_order_relaxed);
     for (;;) {
@@ -337,6 +346,9 @@ struct World::Chunk {
     std::int32_t dirty_min_y = 0;
     std::int32_t dirty_max_x = 0;
     std::int32_t dirty_max_y = 0;
+    // Independent from render dirty bounds. Bits name 64x64 collider tiles
+    // within an aligned storage chunk using a fixed 16-wide local tile grid.
+    std::array<std::uint64_t, kHardSurfaceDirtyWordCount> hard_surface_dirty_tiles{};
 };
 
 struct World::Address {
@@ -344,6 +356,57 @@ struct World::Address {
     std::int32_t local_x = 0;
     std::int32_t local_y = 0;
     std::size_t index = 0;
+};
+
+// Read-only per-cell view of the source chunk. Pointers stay stable across a
+// phased job; cell values are deliberately NOT cached because kernels mutate them.
+struct World::KernelReadCursor {
+    const World& world;
+    const Chunk* chunk;
+    Address source;
+    std::int64_t source_x;
+    std::int64_t source_y;
+
+    [[nodiscard]] Material visible(std::int64_t x, std::int64_t y) const noexcept {
+        // Preserve World::get's transient body-mask contact authority.
+        if (world.transient_obstacle_at(x, y) != 0U) return Material::Wall;
+
+        // Avoid signed-overflow when checking the relative distance of arbitrary
+        // int64 coordinates. All rule reads are within 3; larger jumps fall back.
+        const auto delta_within = [](std::int64_t from, std::int64_t to,
+                                     std::int32_t& delta) noexcept {
+            if (to >= from) {
+                const auto gap = static_cast<std::uint64_t>(to) - static_cast<std::uint64_t>(from);
+                if (gap > 3U) return false;
+                delta = static_cast<std::int32_t>(gap);
+            } else {
+                const auto gap = static_cast<std::uint64_t>(from) - static_cast<std::uint64_t>(to);
+                if (gap > 3U) return false;
+                delta = -static_cast<std::int32_t>(gap);
+            }
+            return true;
+        };
+
+        std::int32_t dx = 0, dy = 0;
+        if (chunk != nullptr && delta_within(source_x, x, dx) &&
+            delta_within(source_y, y, dy)) {
+            const auto lx = static_cast<std::int64_t>(source.local_x) + dx;
+            const auto ly = static_cast<std::int64_t>(source.local_y) + dy;
+            const auto width = static_cast<std::int64_t>(world.config_.chunk_size);
+            if (lx >= 0 && lx < width && ly >= 0 && ly < width) {
+                const auto value = chunk->cells[static_cast<std::size_t>(ly) *
+                                                static_cast<std::size_t>(width) +
+                                                static_cast<std::size_t>(lx)].material_value();
+#if defined(CYBERSAND_VERIFY_LOCAL_NEIGHBOUR)
+                if (value != world.get(x, y)) std::terminate();
+#endif
+                return value;
+            }
+        }
+        // Preserve missing-chunk Empty values, signed coordinates, non-pow2
+        // chunk geometry and any rule read crossing a chunk boundary.
+        return world.stored_material(x, y);
+    }
 };
 
 struct World::JobEffects {
@@ -355,6 +418,7 @@ struct World::JobEffects {
         std::int32_t maximum_x = 0;
         std::int32_t maximum_y = 0;
         std::int64_t non_empty_delta = 0;
+        std::array<std::uint64_t, kHardSurfaceDirtyWordCount> hard_surface_dirty_tiles{};
     };
     struct DiscoveryMutationReport {
         ChunkCoord chunk{};
@@ -400,6 +464,7 @@ struct World::JobEffects {
     bool discovery_mutation_overflow = false;
     bool discovery_signal_overflow = false;
     bool hard_surface_changed = false;
+    bool hard_surface_full_refresh_required = false;
     bool pressure_gas_changed = false;
     PhysicsJobHistogram* physics = nullptr;
     PressureKernelWork* pressure_work = nullptr;
@@ -493,6 +558,7 @@ struct World::JobEffects {
         discovery_mutation_overflow = false;
         discovery_signal_overflow = false;
         hard_surface_changed = false;
+        hard_surface_full_refresh_required = false;
         pressure_gas_changed = false;
         if (physics != nullptr) *physics = {};
         if (pressure_work != nullptr) *pressure_work = {};
@@ -521,6 +587,36 @@ struct World::JobEffects {
             address_value.local_y,
             non_empty_delta,
         };
+    }
+
+    void record_hard_surface(const Address& address_value,
+                             std::int32_t chunk_size) noexcept {
+        hard_surface_changed = true;
+        if (chunk_size <= 0 || chunk_size % kHardSurfaceTileSize != 0) {
+            hard_surface_full_refresh_required = true;
+            return;
+        }
+        const auto tile_x = address_value.local_x / kHardSurfaceTileSize;
+        const auto tile_y = address_value.local_y / kHardSurfaceTileSize;
+        if (tile_x < 0 || tile_y < 0 ||
+            tile_x >= static_cast<std::int32_t>(kHardSurfaceTilesPerChunkAxisMax) ||
+            tile_y >= static_cast<std::int32_t>(kHardSurfaceTilesPerChunkAxisMax)) {
+            hard_surface_full_refresh_required = true;
+            return;
+        }
+        const auto bit = static_cast<std::size_t>(tile_y) *
+                             kHardSurfaceTilesPerChunkAxisMax +
+                         static_cast<std::size_t>(tile_x);
+        for (std::size_t index = 0; index < chunk_count; ++index) {
+            auto& effect = chunks[index];
+            if (effect.chunk != address_value.chunk) continue;
+            effect.hard_surface_dirty_tiles[bit / 64U] |=
+                std::uint64_t{1} << (bit % 64U);
+            return;
+        }
+        // record() precedes this call. If it could not retain the chunk, the
+        // ordinary overflow path will abort the tick; keep recovery conservative.
+        hard_surface_full_refresh_required = true;
     }
 
     void record_discovery_signal(const Address& address_value,
@@ -675,6 +771,12 @@ World::World(WorldConfig config)
     inertial_parameters_ = inertial_parameters_for_policy(config_.liquid_solver_policy);
     inertial_parameters_.signed_vertical = config_.inertial_signed_vertical;
     const bool pressure_requested = policy_selects_pressure(config_.liquid_solver_policy);
+    if (config_.pressure_gas_compartment_capacity != PressureFlowParameters::kCompartmentCapacity &&
+        config_.pressure_gas_compartment_capacity != PressureFlowParameters::kAdmittedCompartmentCapacity)
+        throw std::invalid_argument("unsupported pressure gas compartment capacity (1024 or 2048)");
+    if (config_.pressure_gas_compartment_capacity != PressureFlowParameters::kCompartmentCapacity &&
+        (!pressure_requested || !pressure_parameters_from(config_.liquid_solver_policy).gas_enabled))
+        throw std::invalid_argument("C2048 requires an applied gas-enabled PressureFlow Water policy");
     for (const auto& item : config_.liquid_solver_policy.assignments()) {
         if (item.family != LiquidSolverFamily::InertialCellularV1) continue;
         inertial_materials_[item.material] = true;
@@ -798,7 +900,9 @@ World::World(WorldConfig config)
         ballistic_face_water_.resize(config_.maximum_chunk_count);
     }
     if (pressure_requested) {
-        pressure_ = std::make_unique<PressureState>(pressure_parameters_from(config_.liquid_solver_policy));
+        auto parameters = pressure_parameters_from(config_.liquid_solver_policy);
+        parameters.gas_compartment_capacity = config_.pressure_gas_compartment_capacity;
+        pressure_ = std::make_unique<PressureState>(parameters);
         pressure_->sorted_coordinates.reserve(config_.maximum_chunk_count);
         if (parallel_ != nullptr) {
             pressure_->job_optimization.resize(parallel_->results.size());
@@ -822,7 +926,8 @@ World::World(WorldConfig config)
                 throw std::invalid_argument("pressure index capacity must be positive");
             pressure_->cache = std::make_unique<PressureCache>(config_.maximum_chunk_count,
                 static_cast<std::size_t>(config_.chunk_size) * static_cast<std::size_t>(config_.chunk_size),
-                pressure_->parameters.gas_enabled, config_.pressure_optimization);
+                pressure_->parameters.gas_enabled, config_.pressure_optimization,
+                config_.pressure_gas_compartment_capacity);
             pressure_->cache->dormant = selection->variant == LiquidSolverVariant::CachedDormant;
         }
     }
@@ -1975,8 +2080,8 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
         effects->pressure_gas_changed = effects->pressure_gas_changed || before != material;
         if (settled_discovery_ != nullptr)
             effects->record_discovery_mutation(target, config_.activity_block_size);
-        effects->hard_surface_changed =
-            effects->hard_surface_changed || hard_surface_changed;
+        if (hard_surface_changed)
+            effects->record_hard_surface(target, config_.chunk_size);
     } else {
         invalidate_pressure_input(target.chunk, target.local_x, target.local_y,
                                   target.local_x, target.local_y, before != material);
@@ -1985,10 +2090,38 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
         chunk->changed_this_tick = true;
     mark_cell_dirty(*chunk, target.local_x, target.local_y);
     wake_cell_neighborhood(x, y);
-    if (hard_surface_changed) ++hard_surface_revision_;
+    if (hard_surface_changed) {
+        mark_hard_surface_dirty(target);
+        ++hard_surface_revision_;
+    }
     dirty_discovery_cell(x, y, soliding::ProducerReason::DirectMutation);
     }
     return true;
+}
+
+void World::mark_hard_surface_dirty(const Address& target) noexcept {
+    if (config_.chunk_size <= 0 || config_.chunk_size % kHardSurfaceTileSize != 0) {
+        hard_surface_full_refresh_required_ = true;
+        return;
+    }
+    auto* chunk = find_chunk(target.chunk);
+    if (chunk == nullptr) {
+        hard_surface_full_refresh_required_ = true;
+        return;
+    }
+    const auto tile_x = target.local_x / kHardSurfaceTileSize;
+    const auto tile_y = target.local_y / kHardSurfaceTileSize;
+    if (tile_x < 0 || tile_y < 0 ||
+        tile_x >= static_cast<std::int32_t>(kHardSurfaceTilesPerChunkAxisMax) ||
+        tile_y >= static_cast<std::int32_t>(kHardSurfaceTilesPerChunkAxisMax)) {
+        hard_surface_full_refresh_required_ = true;
+        return;
+    }
+    const auto bit = static_cast<std::size_t>(tile_y) *
+                         kHardSurfaceTilesPerChunkAxisMax +
+                     static_cast<std::size_t>(tile_x);
+    chunk->hard_surface_dirty_tiles[bit / 64U] |=
+        std::uint64_t{1} << (bit % 64U);
 }
 
 void World::mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y) {
@@ -2186,7 +2319,10 @@ void World::set_with_quantity_kind(std::int64_t x, std::int64_t y, Material mate
                               target.local_x, target.local_y, previous_material != material);
     mark_cell_dirty(chunk, target.local_x, target.local_y);
     wake_cell_neighborhood(x, y);
-    if (hard_surface_changed) ++hard_surface_revision_;
+    if (hard_surface_changed) {
+        mark_hard_surface_dirty(target);
+        ++hard_surface_revision_;
+    }
     dirty_discovery_cell(x, y, soliding::ProducerReason::DirectMutation);
 }
 
@@ -2233,8 +2369,6 @@ void World::set_simulation_region(std::optional<RectI64> region) {
     const auto previous_selected = selected_core_region_;
     simulation_region_ = region;
     selected_core_region_ = selected;
-    if (pressure_ != nullptr && pressure_->cache != nullptr && selected_core_region_ != previous_selected)
-        pressure_->cache->cold();
     if (settled_discovery_ != nullptr && selected_core_region_ != previous_selected) {
         const auto outcome = settled_discovery_->begin_inclusion_request();
         if (outcome == soliding::DiscoveryOutcome::Accepted)
@@ -2947,6 +3081,7 @@ void World::clear() {
     tick_chunk_allocations_ = 0;
     tick_temperature_field_allocations_ = 0;
     ++hard_surface_revision_;
+    hard_surface_full_refresh_required_ = true;
     if (pressure_ != nullptr) pressure_->reset();
     inertial_ledger_ = {};
     initialize_settled_discovery();
@@ -3002,11 +3137,14 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
     };
     const auto destination_delta = non_empty_delta(destination_material, source_material);
     const auto source_delta = non_empty_delta(source_material, source_replacement);
-    const bool hard_surface_changed =
+    const bool source_hard_surface_changed =
         MaterialRules::is_hard_surface(source_material) !=
-            MaterialRules::is_hard_surface(source_replacement) ||
+        MaterialRules::is_hard_surface(source_replacement);
+    const bool destination_hard_surface_changed =
         MaterialRules::is_hard_surface(destination_material) !=
-            MaterialRules::is_hard_surface(source_material);
+        MaterialRules::is_hard_surface(source_material);
+    const bool hard_surface_changed =
+        source_hard_surface_changed || destination_hard_surface_changed;
     if (effects == nullptr) {
         destination.non_empty_cell_count = static_cast<std::size_t>(
             static_cast<std::int64_t>(destination.non_empty_cell_count) + destination_delta);
@@ -3072,8 +3210,10 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
             effects->record_discovery_mutation(source_address, config_.activity_block_size);
             effects->record_discovery_mutation(destination_address, config_.activity_block_size);
         }
-        effects->hard_surface_changed =
-            effects->hard_surface_changed || hard_surface_changed;
+        if (source_hard_surface_changed)
+            effects->record_hard_surface(source_address, config_.chunk_size);
+        if (destination_hard_surface_changed)
+            effects->record_hard_surface(destination_address, config_.chunk_size);
     } else {
         invalidate_pressure_input(source_address.chunk, source_address.local_x, source_address.local_y,
             source_address.local_x, source_address.local_y, true);
@@ -3085,7 +3225,11 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
         mark_cell_dirty(destination, destination_address.local_x, destination_address.local_y);
         wake_cell_neighborhood(from_x, from_y);
         wake_cell_neighborhood(to_x, to_y);
-        if (hard_surface_changed) ++hard_surface_revision_;
+        if (hard_surface_changed) {
+            if (source_hard_surface_changed) mark_hard_surface_dirty(source_address);
+            if (destination_hard_surface_changed) mark_hard_surface_dirty(destination_address);
+            ++hard_surface_revision_;
+        }
         dirty_discovery_cell(from_x, from_y, soliding::ProducerReason::DirectMutation);
         dirty_discovery_cell(to_x, to_y, soliding::ProducerReason::DirectMutation);
     }
@@ -3478,7 +3622,7 @@ bool World::update_water_cellular_yield(std::int64_t x, std::int64_t y, JobEffec
 
 bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                                std::int64_t x, std::int64_t y,
-                               JobEffects* effects) {
+                               JobEffects* effects, const KernelReadCursor& cursor) {
     if (pressure_ != nullptr && source_material != Material::Water &&
         MaterialRules::descriptor(source_material).state == MaterialState::Liquid) {
         auto& work = effects != nullptr && effects->pressure_work != nullptr
@@ -3492,12 +3636,12 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
         const auto offset = kMooreNeighbours[index % kMooreNeighbours.size()];
         return std::pair{x + offset.x, y + offset.y};
     };
-    const auto find_neighbour = [this, x, y](auto predicate)
+    const auto find_neighbour = [this, x, y, &cursor](auto predicate)
         -> std::optional<std::pair<std::int64_t, std::int64_t>> {
         for (const auto offset : kMooreNeighbours) {
             const auto target_x = x + offset.x;
             const auto target_y = y + offset.y;
-            if (predicate(get(target_x, target_y), target_x, target_y)) {
+            if (predicate(cursor.visible(target_x, target_y), target_x, target_y)) {
                 return std::pair{target_x, target_y};
             }
         }
@@ -3518,9 +3662,9 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
     const auto slow_interaction_due = [&temporal_lane_due](std::uint32_t stream) {
         return temporal_lane_due(120U, stream);
     };
-    const auto ignite = [this, effects](std::int64_t target_x, std::int64_t target_y,
+    const auto ignite = [this, effects, &cursor](std::int64_t target_x, std::int64_t target_y,
                                         std::uint8_t duration) {
-        const auto target = get(target_x, target_y);
+        const auto target = cursor.visible(target_x, target_y);
         if (target == Material::Dust || target == Material::Seed) {
             return write_cell(target_x, target_y, Material::Fire, duration, 0, effects);
         }
@@ -3560,7 +3704,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
         const auto probability_roll = deterministic_random(x, y, 201U);
         for (std::size_t step = 0; step < kMooreNeighbours.size(); ++step) {
             const auto [target_x, target_y] = neighbour(start + step);
-            const auto target = get(target_x, target_y);
+            const auto target = cursor.visible(target_x, target_y);
             if (!may_pair_react(material, target)) continue;
             const auto reaction =
                 MaterialRules::pair_reaction(material, target, probability_roll);
@@ -3658,7 +3802,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                 std::uint8_t smoke_neighbours = 0;
                 for (const auto offset : kMooreNeighbours) {
                     smoke_neighbours += static_cast<std::uint8_t>(
-                        get(x + offset.x, y + offset.y) == Material::Smoke);
+                        cursor.visible(x + offset.x, y + offset.y) == Material::Smoke);
                 }
                 // Dense clouds thin from within twice as quickly, producing a
                 // slow collapsing-bubble texture without a separate gas field.
@@ -3700,7 +3844,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
 
             const auto drift = kMooreNeighbours[static_cast<std::size_t>(
                 deterministic_random(x, y, 11U) % kMooreNeighbours.size())];
-            if (drift.y <= 0 && get(x + drift.x, y + drift.y) == Material::Empty) {
+            if (drift.y <= 0 && cursor.visible(x + drift.x, y + drift.y) == Material::Empty) {
                 move_cell(x, y, x + drift.x, y + drift.y, false, effects);
                 return true;
             }
@@ -3725,7 +3869,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                                       static_cast<std::uint8_t>(burn - 1U), effects);
             if ((burn & 7U) == 0U) {
                 const auto [target_x, target_y] = neighbour(deterministic_random(x, y, 12U));
-                if (get(target_x, target_y) == Material::Empty) {
+                if (cursor.visible(target_x, target_y) == Material::Empty) {
                     changed = write_kernel_cell(target_x, target_y, Material::Fire, 32, 0, effects) ||
                               changed;
                 }
@@ -3766,7 +3910,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                                       static_cast<std::uint8_t>(burn - 1U), effects);
             if ((burn & 7U) == 0U) {
                 const auto [target_x, target_y] = neighbour(deterministic_random(x, y, 121U));
-                if (get(target_x, target_y) == Material::Empty) {
+                if (cursor.visible(target_x, target_y) == Material::Empty) {
                     const auto emission = (burn & 15U) == 0U ? Material::Fire : Material::Smoke;
                     const auto& definition = MaterialRules::descriptor(emission);
                     changed = write_kernel_cell(target_x, target_y, emission,
@@ -3789,7 +3933,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             const auto start = deterministic_random(x, y, 122U);
             for (std::size_t step = 0; step < kMooreNeighbours.size(); ++step) {
                 const auto [target_x, target_y] = neighbour(start + step);
-                if (get(target_x, target_y) == Material::Metal &&
+                if (cursor.visible(target_x, target_y) == Material::Metal &&
                     state_b(target_x, target_y) == 0U) {
                     changed = write_kernel_cell(target_x, target_y, Material::Metal, 0,
                                          static_cast<std::uint8_t>(charge / 2U), effects) ||
@@ -3799,7 +3943,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             }
             if ((charge & 3U) == 0U) {
                 const auto [target_x, target_y] = neighbour(deterministic_random(x, y, 123U));
-                if (get(target_x, target_y) == Material::Water) {
+                if (cursor.visible(target_x, target_y) == Material::Water) {
                     changed = write_kernel_cell(target_x, target_y, Material::Steam, 90, 0,
                                          effects) ||
                               changed;
@@ -3819,7 +3963,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                 bool touches_water = false;
                 bool touches_concrete = false;
                 for (const auto offset : kMooreNeighbours) {
-                    const auto candidate = get(x + offset.x, y + offset.y);
+                    const auto candidate = cursor.visible(x + offset.x, y + offset.y);
                     touches_air = touches_air || candidate == Material::Empty;
                     touches_water = touches_water || candidate == Material::Water ||
                                     candidate == Material::Brine;
@@ -3859,7 +4003,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                                       effects);
             const auto drift = kMooreNeighbours[static_cast<std::size_t>(
                 deterministic_random(x, y, 126U) % kMooreNeighbours.size())];
-            if (drift.y <= 0 && get(x + drift.x, y + drift.y) == Material::Empty) {
+            if (drift.y <= 0 && cursor.visible(x + drift.x, y + drift.y) == Material::Empty) {
                 move_cell(x, y, x + drift.x, y + drift.y, false, effects);
                 return true;
             }
@@ -3895,7 +4039,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             if (contact_chemistry_due) {
                 const auto sample_index = deterministic_random(x, y, 20U);
                 const auto [sample_x, sample_y] = neighbour(sample_index);
-                const auto sampled = get(sample_x, sample_y);
+                const auto sampled = cursor.visible(sample_x, sample_y);
                 if (sampled == Material::Ice) {
                     changed = write_kernel_cell(sample_x, sample_y, Material::Water,
                                          config_.water_experiment_policy.maximum(), 0, effects);
@@ -3920,7 +4064,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             }
             if (!temporal_lane_due(16U, 192U)) return false;
             const auto [target_x, target_y] = neighbour(deterministic_random(x, y, 30U));
-            if (get(target_x, target_y) != Material::Water) return false;
+            if (cursor.visible(target_x, target_y) != Material::Water) return false;
             return write_kernel_cell(target_x, target_y, Material::Ice, 0, 0, effects);
         }
 
@@ -3932,7 +4076,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             if (!lifecycle_due) return false;
             const auto strength = state_a(x, y);
             const auto [target_x, target_y] = neighbour(deterministic_random(x, y, 40U));
-            const auto target = get(target_x, target_y);
+            const auto target = cursor.visible(target_x, target_y);
             if (target == Material::Empty || target == Material::Wall ||
                 target == Material::Acid) {
                 return false;
@@ -3948,8 +4092,8 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
         }
 
         case RuleKernel::Stone:
-            if (state_b(x, y) == 0U && get(x - 1, y - 1) == Material::Stone &&
-                get(x + 1, y - 1) == Material::Stone) {
+            if (state_b(x, y) == 0U && cursor.visible(x - 1, y - 1) == Material::Stone &&
+                cursor.visible(x + 1, y - 1) == Material::Stone) {
                 return false;
             }
             return try_move(material, x, y, x, y + 1, true, effects);
@@ -3992,7 +4136,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                     if ((burn & 3U) == 0U) {
                         const auto [target_x, target_y] =
                             neighbour(deterministic_random(x, y, 50U));
-                        if (get(target_x, target_y) == Material::Empty) {
+                        if (cursor.visible(target_x, target_y) == Material::Empty) {
                             changed = write_kernel_cell(target_x, target_y, Material::Fire, 32, 0,
                                                  effects) ||
                                       changed;
@@ -4019,7 +4163,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                 const auto start = deterministic_random(x, y, 60U);
                 for (std::size_t step = 0; step < kMooreNeighbours.size(); ++step) {
                     const auto [target_x, target_y] = neighbour(start + step);
-                    const auto candidate = get(target_x, target_y);
+                    const auto candidate = cursor.visible(target_x, target_y);
                     if (candidate == Material::Empty || candidate == Material::Wall ||
                         candidate == Material::Cloner) {
                         continue;
@@ -4034,7 +4178,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             const auto start = deterministic_random(x, y, 61U);
             for (std::size_t step = 0; step < kMooreNeighbours.size(); ++step) {
                 const auto [target_x, target_y] = neighbour(start + step);
-                if (get(target_x, target_y) != Material::Empty) continue;
+                if (cursor.visible(target_x, target_y) != Material::Empty) continue;
                 const auto cloned = static_cast<Material>(captured);
                 const auto& definition = MaterialRules::descriptor(cloned);
                 const auto initial_state_a = cloned == Material::Water
@@ -4049,7 +4193,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
         case RuleKernel::Plant:
         case RuleKernel::Fungus: {
             if (state_b(x, y) != 0U) {
-                return update_rule_kernel(RuleKernel::Combustible, material, x, y, effects);
+                return update_rule_kernel(RuleKernel::Combustible, material, x, y, effects, cursor);
             }
             if (contact_chemistry_due && find_neighbour([](Material candidate, auto, auto) {
                     return is_hot(candidate);
@@ -4067,7 +4211,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                 x, y, kernel == RuleKernel::Plant ? 70U : 71U);
             for (std::size_t step = 0; step < kMooreNeighbours.size(); ++step) {
                 const auto [target_x, target_y] = neighbour(start + step);
-                const auto target = get(target_x, target_y);
+                const auto target = cursor.visible(target_x, target_y);
                 const bool eligible =
                     kernel == RuleKernel::Plant
                         ? (target == Material::Empty || target == Material::Water ||
@@ -4088,7 +4232,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
         case RuleKernel::Mite: {
             std::size_t nearby_mites = 0;
             for (const auto offset : kMooreNeighbours) {
-                const auto candidate = get(x + offset.x, y + offset.y);
+                const auto candidate = cursor.visible(x + offset.x, y + offset.y);
                 if (candidate == Material::Mite) ++nearby_mites;
                 if (candidate == Material::Fire || candidate == Material::Lava ||
                     candidate == Material::Water || candidate == Material::Oil) {
@@ -4102,7 +4246,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             if (try_move(material, x, y, x, y + 1, false, effects)) return true;
             const auto heading = state_a(x, y) == 255U ? -1 : 1;
             const auto target_x = x + heading;
-            const auto target = get(target_x, y);
+            const auto target = cursor.visible(target_x, y);
             if (target == Material::Empty) {
                 move_cell(x, y, target_x, y, false, effects);
                 return true;
@@ -4120,7 +4264,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                 changed = write_kernel_cell(x, y, Material::Empty, 0, 0, effects) || changed;
                 return changed;
             }
-            if (get(x, y + 1) == Material::Ice &&
+            if (cursor.visible(x, y + 1) == Material::Ice &&
                 try_move(material, x, y, target_x, y, false, effects)) {
                 return true;
             }
@@ -4156,7 +4300,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                 const auto start = deterministic_random(x, y, 91U);
                 for (std::size_t step = 0; step < kMooreNeighbours.size(); ++step) {
                     const auto [target_x, target_y] = neighbour(start + step);
-                    const auto candidate = get(target_x, target_y);
+                    const auto candidate = cursor.visible(target_x, target_y);
                     if (candidate == Material::Empty || candidate == Material::Wall ||
                         candidate == Material::Cloner || candidate == Material::Rocket) {
                         continue;
@@ -4173,7 +4317,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             const auto offset = kMooreNeighbours[static_cast<std::size_t>(flight - 1U)];
             const auto target_x = x + static_cast<std::int64_t>(offset.x) * 2;
             const auto target_y = y + static_cast<std::int64_t>(offset.y) * 2;
-            const auto target = get(target_x, target_y);
+            const auto target = cursor.visible(target_x, target_y);
             if (target == Material::Empty || target == Material::Fire ||
                 target == Material::Smoke) {
                 const auto payload_material = static_cast<Material>(payload);
@@ -4202,7 +4346,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             auto stage = state_a(x, y);
             auto germinated = state_b(x, y);
             if (germinated == 0U) {
-                const auto support = get(x, y + 1);
+                const auto support = cursor.visible(x, y + 1);
                 if (support == Material::Sand || support == Material::Plant ||
                     support == Material::Fungus) {
                     if (!contact_chemistry_due) {
@@ -4222,7 +4366,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             }
             if (stage == 0U) return write_kernel_cell(x, y, Material::Plant, 16, 0, effects);
             bool changed = false;
-            if ((stage & 1U) == 0U && get(x, y - 1) == Material::Empty) {
+            if ((stage & 1U) == 0U && cursor.visible(x, y - 1) == Material::Empty) {
                 changed = write_kernel_cell(x, y - 1, Material::Plant,
                                      static_cast<std::uint8_t>(stage / 2U), 0, effects);
             }
@@ -4235,7 +4379,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
 }
 
 void World::schedule_pending_reaction_wake(Material material, std::int64_t x,
-                                           std::int64_t y, JobEffects* effects) noexcept {
+                                           std::int64_t y, JobEffects* effects, const KernelReadCursor& cursor) noexcept {
     const bool has_pair_reactions = MaterialRules::has_pair_reactions(material);
     const bool is_ice = material == Material::Ice;
     if (!has_pair_reactions && !is_ice) return;
@@ -4245,7 +4389,7 @@ void World::schedule_pending_reaction_wake(Material material, std::int64_t x,
     bool freeze_pending = false;
     for (const auto offset : kMooreNeighbours) {
         // The visible neighbour is the contact authority, including body masks.
-        const auto target = get(x + offset.x, y + offset.y);
+        const auto target = cursor.visible(x + offset.x, y + offset.y);
         if (has_pair_reactions && !pair_pending) {
             // A failed probability roll must retain its next opportunity too.
             pair_pending = may_pair_react(material, target) &&
@@ -4288,12 +4432,13 @@ bool World::update_cell(std::int64_t x, std::int64_t y, JobEffects* effects) {
     // using the body occupancy proxy as source or contact authority.
     if (transient_obstacle_at(x, y) != 0U) return false;
     const auto& definition = MaterialRules::descriptor(material);
-    const bool changed = update_rule_kernel(definition.kernel, material, x, y, effects);
+    const KernelReadCursor cursor{*this, source_chunk, source_address, x, y};
+    const bool changed = update_rule_kernel(definition.kernel, material, x, y, effects, cursor);
     // Source writes/motion already keep their block active. A neighbour-only
     // success can leave this source unchanged, so the kernel result alone is
     // insufficient to decide whether its next opportunity survives sleep.
     if (source_chunk->cells[source_address.index].epoch_value() != update_epoch_) {
-        schedule_pending_reaction_wake(material, x, y, effects);
+        schedule_pending_reaction_wake(material, x, y, effects, cursor);
     }
     return changed;
 }
@@ -4678,6 +4823,8 @@ void World::merge_job_effects(const JobEffects& effects) {
         physics_totals_->overflow += effects.physics->overflow;
     }
     if (effects.hard_surface_changed) ++hard_surface_revision_;
+    if (effects.hard_surface_full_refresh_required)
+        hard_surface_full_refresh_required_ = true;
     if (pressure_ != nullptr) merge_pressure_effects(effects);
     if (inertial_enabled_) {
         auto& a=inertial_ledger_; const auto& b=effects.inertial;
@@ -4700,6 +4847,11 @@ void World::merge_job_effects(const JobEffects& effects) {
         auto* chunk = find_chunk(effect.chunk);
         if (chunk == nullptr) {
             throw std::logic_error("job effect references missing chunk");
+        }
+        if (!hard_surface_full_refresh_required_) {
+            for (std::size_t word = 0; word < kHardSurfaceDirtyWordCount; ++word)
+                chunk->hard_surface_dirty_tiles[word] |=
+                    effect.hard_surface_dirty_tiles[word];
         }
         const auto updated_non_empty =
             static_cast<std::int64_t>(chunk->non_empty_cell_count) + effect.non_empty_delta;
@@ -5204,6 +5356,61 @@ std::vector<DirtyChunk> World::take_dirty_chunks() {
     return result;
 }
 
+HardSurfaceInvalidation World::take_hard_surface_invalidation() {
+    require_healthy();
+    HardSurfaceInvalidation result;
+    if (hard_surface_full_refresh_required_ ||
+        config_.chunk_size <= 0 ||
+        config_.chunk_size % kHardSurfaceTileSize != 0) {
+        result.full_refresh = true;
+        hard_surface_full_refresh_required_ = false;
+        for (auto& [coord, chunk] : chunks_) {
+            (void)coord;
+            chunk->hard_surface_dirty_tiles.fill(0);
+        }
+        return result;
+    }
+
+    const auto tiles_per_chunk =
+        static_cast<std::int64_t>(config_.chunk_size / kHardSurfaceTileSize);
+    for (auto& [coord, chunk] : chunks_) {
+        for (std::size_t word = 0; word < kHardSurfaceDirtyWordCount; ++word) {
+            auto bits = chunk->hard_surface_dirty_tiles[word];
+            while (bits != 0U) {
+                const auto bit_in_word =
+                    static_cast<std::size_t>(std::countr_zero(bits));
+                const auto bit = word * 64U + bit_in_word;
+                const auto local_y = bit / kHardSurfaceTilesPerChunkAxisMax;
+                const auto local_x = bit % kHardSurfaceTilesPerChunkAxisMax;
+                if (local_x < static_cast<std::size_t>(tiles_per_chunk) &&
+                    local_y < static_cast<std::size_t>(tiles_per_chunk)) {
+                    result.tiles.push_back({
+                        coord.x * tiles_per_chunk + static_cast<std::int64_t>(local_x),
+                        coord.y * tiles_per_chunk + static_cast<std::int64_t>(local_y),
+                    });
+                } else {
+                    result.full_refresh = true;
+                }
+                bits &= bits - 1U;
+            }
+        }
+        // Do not retire any stamp until collection and vector growth have
+        // succeeded for every chunk. An allocation failure leaves the entire
+        // invalidation stream intact for an owner retry or full recovery.
+    }
+    std::sort(result.tiles.begin(), result.tiles.end());
+    result.tiles.erase(std::unique(result.tiles.begin(), result.tiles.end()),
+                       result.tiles.end());
+    if (result.full_refresh) result.tiles.clear();
+    // Transactional acknowledgement: no operation below this point allocates
+    // or throws. Render dirty state remains completely independent.
+    for (auto& [coord, chunk] : chunks_) {
+        (void)coord;
+        chunk->hard_surface_dirty_tiles.fill(0);
+    }
+    return result;
+}
+
 void World::copy_render_cells(RectI64 region, std::span<std::uint8_t> destination,
                               std::size_t stride_bytes) const {
     (void)validate_copy_layout(region, 2U, stride_bytes, destination.size());
@@ -5252,19 +5459,26 @@ void World::copy_render_cells(RectI64 region, std::span<std::uint8_t> destinatio
 void World::copy_material_cells(RectI64 region, std::span<std::uint8_t> destination,
                                 std::size_t stride_bytes) const {
     (void)validate_copy_layout(region, 1U, stride_bytes, destination.size());
-    const auto end_x = region.x + region.width;
+    if (region.width == 0 || region.height == 0) return;
+    // The last included cell must fit int64; the exclusive end need not.
+    // Complete preflight before writing any byte, including a later row.
+    if (region.x > std::numeric_limits<std::int64_t>::max() - (region.width - 1) ||
+        region.y > std::numeric_limits<std::int64_t>::max() - (region.height - 1)) {
+        throw std::overflow_error("material copy region exceeds signed coordinate range");
+    }
     for (std::int64_t row = 0; row < region.height; ++row) {
         auto* output = destination.data() + static_cast<std::size_t>(row) * stride_bytes;
         const auto world_y = region.y + row;
-        auto world_x = region.x;
-        while (world_x < end_x) {
+        std::int64_t processed = 0;
+        while (processed < region.width) {
+            const auto world_x = region.x + processed;
             const auto first = address(world_x, world_y);
             const auto* chunk = find_chunk(first.chunk);
             const auto run = std::min<std::int64_t>(
-                end_x - world_x,
+                region.width - processed,
                 static_cast<std::int64_t>(config_.chunk_size - first.local_x));
             for (std::int64_t offset = 0; offset < run; ++offset) {
-                const auto output_index = static_cast<std::size_t>(world_x - region.x + offset);
+                const auto output_index = static_cast<std::size_t>(processed + offset);
                 if (chunk == nullptr) {
                     output[output_index] = static_cast<std::uint8_t>(Material::Empty);
                     continue;
@@ -5284,7 +5498,7 @@ void World::copy_material_cells(RectI64 region, std::span<std::uint8_t> destinat
                 }
                 output[output_index] = static_cast<std::uint8_t>(material);
             }
-            world_x += run;
+            processed += run;
         }
     }
     overlay_ballistic_render(region, destination, stride_bytes, 1U);
@@ -5328,6 +5542,13 @@ void World::copy_hard_surface_bits(RectI64 region, std::span<std::uint64_t> dest
 
 void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::size_t stride_bytes) const {
     (void)validate_copy_layout(region, 4U, stride_bytes, destination.size());
+    if (region.width == 0 || region.height == 0) return;
+    // Preflight both axes before touching output; an invalid later column/row
+    // must never leave a partially written buffer or overflow signed int64.
+    if (region.x > std::numeric_limits<std::int64_t>::max() - (region.width - 1) ||
+        region.y > std::numeric_limits<std::int64_t>::max() - (region.height - 1)) {
+        throw std::overflow_error("RGBA copy region exceeds signed coordinate range");
+    }
 
     for (std::int64_t row = 0; row < region.height; ++row) {
         auto* output = destination.data() + static_cast<std::size_t>(row) * stride_bytes;

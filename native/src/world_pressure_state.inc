@@ -75,8 +75,8 @@ struct World::PressureState {
     static constexpr std::size_t kChunkNodeCapacity = 1024;
 
     explicit PressureState(PressureFlowParameters value) : parameters(value) {
-        compartments.reserve(PressureFlowParameters::kCompartmentCapacity);
-        next_compartments.reserve(PressureFlowParameters::kCompartmentCapacity);
+        compartments.reserve(parameters.gas_compartment_capacity);
+        next_compartments.reserve(parameters.gas_compartment_capacity);
         history.reserve(PressureFlowParameters::kHistoryCapacity);
         // One entry per visited resident cell or chunk node; a fill stops once its
         // volume exceeds the limit, so this bound is never exceeded.
@@ -84,9 +84,9 @@ struct World::PressureState {
         regions.reserve(kRegionCapacity);
         overlaps.reserve(kOverlapCapacity);
         nodes.reserve(kChunkNodeCapacity);
-        uf_parent.reserve(PressureFlowParameters::kCompartmentCapacity + kRegionCapacity);
-        component_order.reserve(PressureFlowParameters::kCompartmentCapacity + kRegionCapacity);
-        member_compartments.reserve(PressureFlowParameters::kCompartmentCapacity);
+        uf_parent.reserve(parameters.gas_compartment_capacity + kRegionCapacity);
+        component_order.reserve(parameters.gas_compartment_capacity + kRegionCapacity);
+        member_compartments.reserve(parameters.gas_compartment_capacity);
         member_regions.reserve(kRegionCapacity);
         sorted_coordinates.reserve(4096);
     }

@@ -10,7 +10,7 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-BASE_MAIN = "4c2c97323d862afdd3ec6730017127cc8e4ec05c"
+BASE_MAIN = "1f82dac1cebc9b38a319153354e4bcc774289417"
 SCHEMA = "cybersand-current-main-integrated-gameplay-acceptance-v1"
 REQUIRED_PROFILES = ("my-canvas", "bench-canvas", "stress-canvas")
 ALLOWED_PREFIXES = (

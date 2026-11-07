@@ -10,6 +10,11 @@ related-documents: [../operations/play-desktop-manual-qualification.md, 2026-11-
 
 # Current-main integrated gameplay acceptance
 
+## Superseding current-main execution registration — 2026-11-07
+
+The previous 2026-11-06 run and its source locks below remain a **historical accepted test result only**, not evidence for the latest production source. On 2026-11-07, this qualification-only PR was reconciled without altering native, Godot production, material, physics-law, worker, Rapier or retained runtime files onto accepted main `1f82dac1cebc9b38a319153354e4bcc774289417` (Git tree `ea78c459535b7806de8e200656aa78f97de539e4`), which contains merged #522 PressureFlow and merged #538 signed-copy repair. The qualified production bytes are exactly those of that main commit; the five acceptance-only paths are the entire branch delta. The new workflow's own source guard requires this exact baseline and that narrow path set before compiling and executing the actual Windows/Godot three-canvas campaign. **No performance or correctness PASS is claimed for this new source until its fresh executable workflow is terminal-success.** Existing profile semantics (gas-on my/bench, gas-off stress) are deliberately unchanged to preserve longitudinal comparability; they do not qualify gas-on C2048 stress or 1/4-worker variance. Human/device feel is separately outstanding.
+
+
 ## Registered source
 
 The final campaign is pinned to accepted production `main`

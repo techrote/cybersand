@@ -66,6 +66,9 @@ struct WorldConfig {
     // assignment is refused at construction and never reaches a kernel.
     LiquidSolverPolicy liquid_solver_policy{};
     PressureOptimizationConfig pressure_optimization{};
+    // Explicit native C2048 opt-in; 1024 is the unchanged ordinary default.
+    // There is no implicit growth or live resize.
+    std::uint16_t pressure_gas_compartment_capacity = PressureFlowParameters::kCompartmentCapacity;
     // Execution-only, opt-in for the finite desktop workbench. Each job owns
     // complete x-columns of the reference head field before row interpolation.
     bool workbench_parallel_pressure_heads = false;
@@ -135,6 +138,15 @@ struct TickStats {
 struct DirtyChunk {
     ChunkCoord chunk;
     RectI64 local_rect;
+};
+
+// Collider invalidation is deliberately independent from render dirty chunks.
+// Each coordinate names a fixed 64x64 hard-surface tile in world tile space.
+// full_refresh is the explicit recovery/reset path; consumers must rebuild all
+// tiles in their finite viewport and may ignore the coordinate list.
+struct HardSurfaceInvalidation {
+    bool full_refresh = false;
+    std::vector<ChunkCoord> tiles;
 };
 
 // Optional, serialized player control over ordinary native Sand/Water cells.
@@ -438,7 +450,8 @@ public:
     static constexpr std::uint32_t kPhysicalStateHashVersion = 2;
     // BW-001 ballistic Worlds report and emit version4 (IN or not).
     [[nodiscard]] std::uint32_t physical_state_hash_version() const noexcept {
-        return config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
+        return config_.pressure_gas_compartment_capacity == PressureFlowParameters::kAdmittedCompartmentCapacity ? 5U
+             : config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
              : inertial_enabled_ ? 3U : 2U;
     }
     [[nodiscard]] std::uint64_t physical_state_hash() const;
@@ -460,7 +473,8 @@ public:
     // incompatible payloads; the caller's live World is never touched.
     static constexpr std::uint32_t kPhysicalStateFormatVersion = 2;
     [[nodiscard]] std::uint32_t physical_state_format_version() const noexcept {
-        return config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
+        return config_.pressure_gas_compartment_capacity == PressureFlowParameters::kAdmittedCompartmentCapacity ? 5U
+             : config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
              : inertial_enabled_ ? 3U : 2U;
     }
     [[nodiscard]] std::vector<std::uint8_t> save_physical_state() const;
@@ -469,6 +483,10 @@ public:
 
     [[nodiscard]] std::size_t dirty_chunk_count() const noexcept;
     [[nodiscard]] std::vector<DirtyChunk> take_dirty_chunks();
+    // Serialized collider owner only. This consumes a separate hard-surface
+    // invalidation stream and never acknowledges or mutates render dirtiness.
+    // Normal 128x128 storage chunks map exactly to four 64x64 collider tiles.
+    [[nodiscard]] HardSurfaceInvalidation take_hard_surface_invalidation();
     void copy_render_cells(RectI64 region, std::span<std::uint8_t> destination,
                            std::size_t stride_bytes) const;
     // One display material byte per cell. Fractional Water uses stable
@@ -495,6 +513,7 @@ private:
     struct PressureState;
     struct PressureCache;
     struct Address;
+    struct KernelReadCursor;
     struct JobEffects;
     struct ParallelState;
     struct TransientObstacleState;
@@ -587,6 +606,9 @@ private:
     std::uint64_t tick_chunk_allocations_ = 0;
     std::uint64_t tick_temperature_field_allocations_ = 0;
     std::uint64_t hard_surface_revision_ = 0;
+    // True for construction/destructive reset and as a conservative recovery
+    // when storage geometry cannot be represented by aligned 64x64 tile bits.
+    bool hard_surface_full_refresh_required_ = true;
 
     [[nodiscard]] Address address(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] Chunk* find_chunk(ChunkCoord coord) noexcept;
@@ -600,12 +622,14 @@ private:
     void schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint64_t due,
                                    JobEffects* effects) noexcept;
     void schedule_pending_reaction_wake(Material material, std::int64_t x,
-                                        std::int64_t y, JobEffects* effects) noexcept;
+                                        std::int64_t y, JobEffects* effects,
+                                        const KernelReadCursor& cursor) noexcept;
     struct MotionFootprint;
     [[nodiscard]] bool exchange_permitted(Material source, Material target,
         std::int64_t x, std::int64_t y, std::int64_t target_x, std::int64_t target_y,
         JobEffects* effects, MotionFootprint* footprint = nullptr);
     void mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y);
+    void mark_hard_surface_dirty(const Address& target) noexcept;
     void move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_x,
                    std::int64_t to_y, bool swap, JobEffects* effects,
                    PhysicsEvent swap_event = PhysicsEvent::DensitySwap);
@@ -675,7 +699,7 @@ private:
                                       std::uint8_t state_b_value) const noexcept;
     [[nodiscard]] bool update_rule_kernel(RuleKernel kernel, Material source_material,
                                           std::int64_t x, std::int64_t y,
-                                          JobEffects* effects);
+                                          JobEffects* effects, const KernelReadCursor& cursor);
     [[nodiscard]] std::uint8_t deterministic_random(std::int64_t x, std::int64_t y,
                                                     std::uint32_t stream) const noexcept;
     [[nodiscard]] bool granular_sample_stable(std::int64_t x, std::int64_t y,

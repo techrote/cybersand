@@ -1276,8 +1276,12 @@ fields are `epoch`, `status`, `reason`, `requested`, `queued` and `refused`.
 reset/lab replacement and invalid actor-slot refusals remain explicit.
 
 **Current, opt-in only (2026-11-06):** every accepted body publication through
-`set_rigid_body_states` or `set_physical_usable_state` increments a mutex-owned
-counter read by `rigid_body_publication()`. The additive snapshot field
+`set_rigid_body_states` increments a mutex-owned counter read by
+`rigid_body_publication()`. `set_physical_usable_state` still stores the body
+sample coherently with its admitted frame, but since the PR #474 review it no
+longer counts as a publication. Main follows it with `set_rigid_body_states` in
+the same physics callback, so each Rapier step publishes once; counting both had
+let a fenced owner tick twice for one step. The additive snapshot field
 `consumed_rigid_body_publication` names the publication consumed by the last
 successfully completed native tick (`-1` before one). Paused, reset-only and
 failed turns keep the previous value, even though they latch a newer sample
@@ -1286,9 +1290,41 @@ failed turns keep the previous value, even though they latch a newer sample
 refused after `start_worker`. It fences only the ordinary coupling path; labs,
 MicroScenarios and the workbench keep their own pacing. `lockstep_metrics()`
 returns copied `ticks`, `holds`, hold time, `timeouts`, `superseded_publications`
-(publications replaced before a fenced tick consumed them) and
-`completed_publication`. No production caller
-enables it. See [coupled desktop determinism](../architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06).
+(publications replaced before a fenced tick consumed them, including samples
+main keeps publishing while the worker is paused) and
+`completed_publication`. See [coupled desktop determinism](../architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06).
+
+**Current, opt-in desktop mode (owner decision 2026-11-06):** `main.gd` enables
+the fence only when the `--lockstep-coupling` user argument is present on a
+non-Web build (`lockstep_coupling_requested()`), before `start_worker`. The
+default launch is unchanged. In that mode:
+
+- each ordinary `_physics_process` peeks `take_latest_snapshot(0)` and skips the
+  frame (no Rapier step, no new publication) until the snapshot consumed main's
+  last publication and has not been applied;
+- a hold longer than `LOCKSTEP_MAIN_HOLD_LIMIT_MSEC` (500 ms) of consecutive
+  physics frames runs one counted stale step instead of freezing; a frame that
+  skipped the decision (pause, reset, actor install, early return) restarts
+  the bound;
+- a step after a refused body publication, or whose fresh result belongs to
+  another body owner epoch, is counted as unfenced, not held or fenced;
+- `CyberRapierPhysicsBridge.deterministic_rotation_packing` (default `false`) is
+  set on every bridge main adopts (the `rapier_bridge` setter: sandbox, actor,
+  prepared and replacement bridges), so all its `pack_body_states()` callers store
+  `atan2(float(basis.x.y), float(basis.x.x))` evaluated in double as float32
+  instead of `Transform2D.get_rotation()`;
+- `lockstep_coupling_status()` returns copied main counters
+  (`main_fenced_steps`, `main_held_frames`, `main_hold_timeouts`) with the worker's
+  `lockstep_metrics()`, and `recording_runtime_identity()` reports
+  `desktop_configuration.lockstep_coupling_enabled`.
+
+Each snapshot also carries `lockstep_fence_active`: whether the worker's fence
+applied at that publication. It is false in labs, MicroScenarios, the workbench
+and while prepared physical liquid is pending. When the newest snapshot reports
+it false, main steps asynchronously, as the default does, and counts
+`main_unfenced_steps` instead of holding, so both owners follow the same
+applicability contract. The workbench keeps its own sample fence and is not held
+by this mode.
 
 `physical_actor_effect_admission()` and the additive snapshot field of the same
 name return copied `capacity`, `pending_requests`, accepted/refused batch and

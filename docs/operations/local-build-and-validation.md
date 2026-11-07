@@ -1655,6 +1655,11 @@ small fixture. CI timings are not performance acceptance measurements.
 
 The project now defaults to `res://feature_launcher.tscn`; F2 returns there and discards the current session. Direct `res://main.tscn` and showcase user arguments remain available. See the [physical actor programme](physical-actor-programme.md) for the Blacksite comparison and `test_physical_actor_trial.gd` regression.
 
+Opt-in coupled lockstep (desktop, default off): `godot --path godot -- --lockstep-coupling`
+makes cells and bodies take turns, so the same start gives the same result. Under
+load it runs in slow motion instead of going stale. Labs and the workbench keep
+their own pacing. See [coupled desktop determinism](../architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06).
+
 
 ## Deepworks and depth dimensions
 

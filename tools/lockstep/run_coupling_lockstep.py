@@ -27,6 +27,12 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def committed_sha(path):
+    # Source is committed and clean before execution; hash the committed blob so a
+    # Windows CRLF checkout cannot change the recorded identity.
+    return hashlib.sha256(subprocess.check_output(['git', '-C', str(ROOT), 'show', 'HEAD:' + path])).hexdigest()
+
+
 def git(*args):
     return subprocess.check_output(['git', '-C', str(ROOT), *args]).decode().strip()
 
@@ -85,9 +91,12 @@ def main():
     assert not folder.exists(), 'Run folders are never reused'
     folder.mkdir(parents=True)
     hosts = args.hosts.split(',')
-    identity = dict(source_commit=git('rev-parse', 'HEAD'), registration_sha256=sha(REGISTRATION),
-                    runner_sha256=sha(__file__), fixture_sha256=sha(ROOT / 'godot/tests/test_coupling_lockstep.gd'),
-                    worker_sha256=sha(ROOT / 'godot/scripts/simulation_worker.gd'),
+    identity = dict(source_commit=git('rev-parse', 'HEAD'),
+                    registration_sha256=committed_sha('native/tests/fixtures/coupling_lockstep_001.json'),
+                    runner_sha256=committed_sha('tools/lockstep/run_coupling_lockstep.py'),
+                    fixture_sha256=committed_sha('godot/tests/test_coupling_lockstep.gd'),
+                    worker_sha256=committed_sha('godot/scripts/simulation_worker.gd'),
+                    bridge_sha256=committed_sha('godot/scripts/rapier_physics_bridge.gd'),
                     engines={'windows': sha(ENGINES['windows'])} | ({'linux': linux_engine_sha()} if 'linux' in hosts else {}),
                     runtimes={p: sha(ROOT / p) for h in hosts for p in RUNTIMES[h]})
     receipt = dict(identity=identity, matrix=vars(args), episodes=[])

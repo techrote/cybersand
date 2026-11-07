@@ -11,7 +11,7 @@
       ],
       "facts": [
         "The default independently paced worker prepares whichever body sample main last published; every repeated asynchronous pair diverged by that race.",
-        "A default-off lockstep fence (set_lockstep_coupling) plus a main-side frame hold made same-host repeats and 1/4 native workers bit-identical in one fixture; main.gd does not use it."
+        "A default-off lockstep fence (set_lockstep_coupling) plus a main-side frame hold made same-host repeats and 1/4 native workers bit-identical in one fixture; the desktop game uses it only when launched with --lockstep-coupling (owner opt-in decision 2026-11-06)."
       ],
       "sources": [
         "../godot/scripts/simulation_worker.gd",
@@ -44,11 +44,30 @@
       ],
       "facts": [
         "set_lockstep_coupling(enabled, hold_timeout_usec=250000) is default off and refused after start_worker; it covers only the ordinary coupling path.",
-        "rigid_body_publication(), the snapshot field consumed_rigid_body_publication and lockstep_metrics() expose publications, holds, hold time and timeouts."
+        "rigid_body_publication(), the snapshot field consumed_rigid_body_publication and lockstep_metrics() expose publications, holds, hold time and timeouts.",
+        "main.gd enables it before start_worker only for the --lockstep-coupling user argument on desktop; lockstep_coupling_status() adds main_fenced_steps, main_held_frames and main_hold_timeouts (500 ms bounded hold)."
       ],
       "sources": [
         "../godot/scripts/simulation_worker.gd",
-        "../godot/scripts/simulation_snapshot.gd"
+        "../godot/scripts/simulation_snapshot.gd",
+        "../godot/scripts/main.gd"
+      ]
+    },
+    {
+      "id": "LOCKSTEP-004",
+      "query": "How do I start the desktop game in deterministic lockstep mode, and what changes when it is on?",
+      "canonical": [
+        "reference/interfaces-and-message-contracts.md",
+        "architecture/determinism-and-boundary-transfers.md"
+      ],
+      "facts": [
+        "Launch with the --lockstep-coupling user argument on desktop; the default launch keeps asynchronous coupling and Transform2D.get_rotation() packing.",
+        "In the mode main skips physics frames until the newest snapshot consumed its last body publication, a hold over 500 ms runs one counted stale step, and the bridge packs rotation as double atan2 of the basis (deterministic_rotation_packing)."
+      ],
+      "sources": [
+        "../godot/scripts/main.gd",
+        "../godot/scripts/rapier_physics_bridge.gd",
+        "../godot/tests/test_coupling_lockstep_desktop.gd"
       ]
     }
   ]

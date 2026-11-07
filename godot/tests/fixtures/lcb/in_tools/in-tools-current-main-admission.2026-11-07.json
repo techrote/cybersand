@@ -1,0 +1,143 @@
+{
+  "schema": "in-tools-current-main-admission-v2",
+  "id": "in-tools-361-main-a01-successor-20261107",
+  "parent_issue": 361,
+  "predecessor": {
+    "pr": 379,
+    "head": "e7e404b696fb9fc48cdadc95a69baf3a6f5fc6d1",
+    "tree": "3b5acd41fd7fb49ac8b06c94719fa1a700d8fd57",
+    "disposition": "frozen-historical-unmerged"
+  },
+  "assignment_pin": "24a8bbe8ccf0d17196ebbab580b924930a964584",
+  "adopted_main": "24a8bbe8ccf0d17196ebbab580b924930a964584",
+  "authority": [
+    {
+      "path": "godot/scripts/usable_catalog.gd",
+      "git_blob": "f94d92bbeae0eb510ba5e5d0ed4dc83fd705e358",
+      "role": "U10 liquid_drain identity, cost, range and operation"
+    },
+    {
+      "path": "godot/scripts/usable_runtime.gd",
+      "git_blob": "f86a439f659e5dfcb359f704571abc814df4b2c9",
+      "role": "current usable execution path and bounded edits"
+    },
+    {
+      "path": "godot/scripts/physical_usable_script.gd",
+      "git_blob": "f802aea7d80787db540a7e68ef2b3789b15dd0e1",
+      "role": "physical usable material selection and liquid sink behavior"
+    },
+    {
+      "path": "godot/scripts/physical_actor_session.gd",
+      "git_blob": "bde4503df99d7e317cfb0987004d525f72177316",
+      "role": "physical actor/session generation and owner lifetime"
+    },
+    {
+      "path": "godot/scripts/physical_usable_equipment.gd",
+      "git_blob": "1c33a1b0cad5499161a997e13dfcf7df9a4f5616",
+      "role": "physical equipment request identity, button lifetime and receipt acceptance"
+    },
+    {
+      "path": "godot/scripts/physical_usable_runtime.gd",
+      "git_blob": "207a53c7f57ba955cbfadbf5fae1a0af698548c2",
+      "role": "exclusive physical usable cellular-effect owner, admission and readback"
+    },
+    {
+      "path": "godot/scripts/simulation_worker.gd",
+      "git_blob": "0e2471d72906cffffdc0a52431e20074dfd3ee4a",
+      "role": "exclusive World worker ownership and execution settings"
+    },
+    {
+      "path": "godot/native_extension/cyber_native_cell_world.cpp",
+      "git_blob": "b43ac4421cf45f6684e2febcad0e793fd1312c16",
+      "role": "Godot/native World adapter, readback and mutation surface"
+    },
+    {
+      "path": "godot/native_extension/cyber_native_cell_world.hpp",
+      "git_blob": "2acbbd5fceaaeaf2665a73b6d53ec718184ea4d5",
+      "role": "adapter ownership and prepared/native state"
+    },
+    {
+      "path": "native/include/cybersand/world.hpp",
+      "git_blob": "c44f766e9d3a4d070466952e03807b4a2a97669f",
+      "role": "authoritative World API and quantity ledger contract"
+    },
+    {
+      "path": "native/src/world.cpp",
+      "git_blob": "3cfc1b47c32dacd00f864cf031588ab637a6b2bd",
+      "role": "authoritative cell/material/quantity execution"
+    },
+    {
+      "path": "native/include/cybersand/water_normalization.hpp",
+      "git_blob": "f295e74d7fcc5b442d68530f5b3cd99a14dac5c5",
+      "role": "Water quantity and normalization semantics"
+    },
+    {
+      "path": "native/src/world_inertial.inc",
+      "git_blob": "da44b76b699bb459d88128b8dbc5106f24ddaa17",
+      "role": "current inertial Water motion/state semantics relevant to #361"
+    }
+  ],
+  "current": {
+    "liquid_drain": {
+      "status": "Current",
+      "claim": "Existing U10 selective local liquid sink only; no exact-metered successor command is claimed by this admission."
+    },
+    "actor_usable_owner": {
+      "status": "Current",
+      "claim": "Existing physical usable/session path on adopted main."
+    }
+  },
+  "planned": [
+    {
+      "id": "in-tools.valve-side.v2",
+      "status": "Planned",
+      "execution": "NOT_RUN"
+    },
+    {
+      "id": "in-tools.valve-bottom.v2",
+      "status": "Planned",
+      "execution": "NOT_RUN"
+    },
+    {
+      "id": "in-tools.sink-bottom.v2",
+      "status": "Planned",
+      "execution": "NOT_RUN"
+    },
+    {
+      "id": "in-tools.sink-side.v2",
+      "status": "Planned",
+      "execution": "NOT_RUN"
+    },
+    {
+      "id": "in-tools.source-channel.v2",
+      "status": "Planned",
+      "execution": "NOT_RUN"
+    },
+    {
+      "id": "in-tools.usable-liquid-drain.v2",
+      "status": "Planned",
+      "execution": "NOT_RUN"
+    }
+  ],
+  "required_contracts": [
+    "finite explicit supply for sources",
+    "exact quantity accounting",
+    "no hidden material creation or destruction",
+    "refusal preserves world state",
+    "exact event and tick semantics",
+    "explicit geometry semantics",
+    "owner-safe current-source execution",
+    "deterministic qualification readback"
+  ],
+  "gameplay_qualified": false,
+  "runtime_qualified": false,
+  "windows_gate": "NOT_RUN",
+  "authority_count": 13,
+  "predecessor_successor": {
+    "pr": 404,
+    "head": "20e668ce66536f9365d07718bfbb5266a2f8502c",
+    "tree": "19e8842f778f3a916f83805aa8af83307b4756d8",
+    "adopted_main": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+    "disposition": "historical-draft-a01-source-witnessed-unmerged"
+  }
+}

@@ -63,6 +63,10 @@ var current_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 # native tick (-1 before one); paused, reset-only and failed turns keep the
 # previous value. Used by the opt-in lockstep fence.
 var consumed_rigid_body_publication: int = -1
+# True when the worker's opt-in lockstep fence applied at this publication.
+# Labs, MicroScenarios, the workbench and prepared physical liquid are unfenced;
+# main bypasses its frame hold there so both owners agree on the contract.
+var lockstep_fence_active: bool = false
 var rigid_body_epoch: int = 0 # Main-thread physical owner incarnation, or reference 0.
 var physical_actor_effects: Array = [] # Bounded copied native-owner receipts.
 var physical_actor_effect_admission: Dictionary = {} # Copied queue counts and last batch outcome.
@@ -102,6 +106,12 @@ var rigid_body_unresolved_last_tick: int = 0
 var simulation_time_ms: float = 0.0
 var worker_step_time_ms: float = 0.0
 var snapshot_copy_time_ms: float = 0.0
+# Diagnostic-only decomposition of _publish_snapshot. These are timing
+# observations, never render/collider transport fields and never admission
+# inputs; existing consumers may ignore them.
+var render_exchange_time_ms: float = 0.0
+var hard_surface_packet_time_ms: float = 0.0
+var snapshot_publication_time_ms: float = 0.0
 var worker_overruns: int = 0
 var tick_failure_count: int = 0
 var last_tick_error: String = ""

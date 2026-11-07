@@ -263,6 +263,12 @@ inline void native_facts(encoding::Writer& out, const NativeFacts& facts) {
         out.digest(ballistic_water_identity(c.ballistic_water));
     }
     if (c.inertial_signed_vertical) out.text("cybersand-inertial-b1-signed-vertical-receipt-v1");
+    if (c.pressure_gas_compartment_capacity == PressureFlowParameters::kAdmittedCompartmentCapacity) {
+        // Append-only opt-in capacity identity; legacy receipt bytes stay frozen.
+        out.text("cybersand-pressure-gas-capacity-v1");
+        out.integer(PressureFlowParameters::kCapacityContractVersion);
+        out.integer(c.pressure_gas_compartment_capacity);
+    }
 }
 inline void normalization(encoding::Writer& out, const std::optional<normalization::Receipt>& value,
                           const NativeFacts& facts, const SetupDescriptor& setup) {

@@ -125,5 +125,36 @@
     "authority_limits": "Exploratory development lane. No production packing, native, Rapier or default change follows from this amendment.",
     "registered": "2026-11-06, after matrix-001 completed and was reduced; matrix-001 decisions are unchanged",
     "apparatus_defect": "matrix-001 read diagnostic_snapshot keys state_hash/content_hash, but the adapter returns state_hash as \"hash\" and no content_hash, so both final-hash fields were empty strings in all 40 episodes and that tail comparison was vacuous. Per-tick physical_state_hash and per-step body/result/state bits were complete. Amendment runs record state_hash from \"hash\" plus a final physical_state_hash. matrix-001 evidence is retained unchanged."
+  },
+  "amendment_002": {
+    "registered": "2026-11-06, before any amendment_002 episode, after the owner chose lockstep as an opt-in mode; amendment_001 and matrix-001 decisions are unchanged",
+    "reason": "The owner chose lockstep as an opt-in mode (not everywhere). The production opt-in path packs rotation through CyberRapierPhysicsBridge.deterministic_rotation_packing instead of the fixture-only repack. This amendment checks that the production path reproduces the measured lockstep-f64rot result.",
+    "arms": {
+      "lockstep_packed": "As lockstep, with CyberRapierPhysicsBridge.deterministic_rotation_packing = true: pack_body_states() stores atan2(float(basis.x.y), float(basis.x.x)) evaluated in double as float32. Same arithmetic as lockstep-f64rot, but inside the bridge."
+    },
+    "matrix": {
+      "packed": {
+        "hosts": [
+          "windows",
+          "linux"
+        ],
+        "workers": [
+          1,
+          4
+        ],
+        "arms": [
+          "lockstep-packed"
+        ],
+        "repeats": 2,
+        "ticks": 1800
+      }
+    },
+    "decisions": {
+      "packed_repeatable": "Per host, every repeat equals repeat 0 on every recorded field with zero worker timeouts.",
+      "packed_cross_host": "MATCH only if Windows equals Linux on every recorded field for each worker count.",
+      "packed_equals_f64rot": "Per host and worker count, repeat 0 of lockstep-packed equals repeat 0 of horizon-001 lockstep-f64rot on every recorded per-step field (applied serial, tick, publication, states, results, pre/post body bits, character) and every per-tick native hash. Final hashes are compared too. Any difference is reported with its first step and class."
+    },
+    "prediction": "All three hold: the packing arithmetic is identical, and nothing else in the fixture path changed since horizon-001 except main.gd wiring, which the fixture does not use.",
+    "authority_limits": "Evidence for an opt-in mode only. No default pacing or packing change, no native, Rapier, material or physics-parameter change, and no replay, save-format, multiplayer or Web claim. Inherited guard failures stay blockers; no guard or hash refresh."
   }
 }

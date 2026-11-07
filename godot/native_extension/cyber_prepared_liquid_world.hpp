@@ -152,6 +152,18 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         if (default_demo && seed != 0)
             throw std::invalid_argument("The native default demo recipe has fixed seed zero");
         auto config = std::make_unique<cybersand::WorldConfig>(adapter->world_->config());
+        // Explicit capacity belongs to the prepared World, never the mutable v1
+        // liquid policy envelope. Invalid types and bounds refuse before staging.
+        if (options.has("pressure_gas_compartment_capacity") &&
+            options["pressure_gas_compartment_capacity"].get_type() != Variant::INT)
+            throw std::invalid_argument("Pressure gas capacity must be a signed integer");
+        const auto gas_capacity = static_cast<std::int64_t>(
+            options.get("pressure_gas_compartment_capacity", std::int64_t{1024}));
+        if (gas_capacity != 1024 && gas_capacity != 2048)
+            throw std::invalid_argument("Unsupported pressure gas capacity (1024 or 2048)");
+        if (retain && adapter->world_->config().pressure_gas_compartment_capacity != gas_capacity)
+            throw std::invalid_argument("Retained gas capacity change requires a fresh World");
+        config->pressure_gas_compartment_capacity = static_cast<std::uint16_t>(gas_capacity);
         config->workbench_parallel_pressure_heads = workbench;
         // Bound the finite reservation, halo, eligible chunks and active task list.
         // Ordinary controlled/demo replacements keep their established limits.

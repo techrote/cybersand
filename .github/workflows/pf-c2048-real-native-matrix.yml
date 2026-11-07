@@ -1,0 +1,116 @@
+name: PF C2048 authored native production stress and CYPS matrix
+on:
+  push:
+    branches: [codex/pf-c2048-admitted-20261107]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pf-c2048-authored-${{ github.run_id }}
+  cancel-in-progress: false
+jobs:
+  authored-native-world:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Pin source and compiler, initialize raw evidence
+        run: |
+          set -euo pipefail
+          mkdir -p build/pf-c2048-real/{fixtures,rows,logs,saves}
+          git rev-parse HEAD | tee build/pf-c2048-real/source.txt
+          g++-13 --version | head -1 | tee build/pf-c2048-real/compiler.txt
+          sha256sum native/bench/pf_c2048_actual_native.cpp godot/tests/pf_c2048_export_fixtures.gd godot/scripts/workbench_setup.gd >build/pf-c2048-real/inputs.sha256
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Export original three authored workbench canvases via pinned Godot 4.7
+        run: |
+          set -euo pipefail
+          url='https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          timeout 300 curl -fL --retry 3 -o "$RUNNER_TEMP/pf-godot.zip" "$url"
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/pf-godot.zip" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/pf-godot"
+          unzip -q "$RUNNER_TEMP/pf-godot.zip" -d "$RUNNER_TEMP/pf-godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/pf-godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          chmod +x "$GODOT_BIN"
+          export PF_CAPACITY_FIXTURE_DIR="$GITHUB_WORKSPACE/build/pf-c2048-real/fixtures"
+          timeout 180 "$GODOT_BIN" --headless --path godot --script res://tests/pf_c2048_export_fixtures.gd >build/pf-c2048-real/logs/fixture-export.log 2>&1 || {
+            tail -100 build/pf-c2048-real/logs/fixture-export.log; exit 1; }
+          for name in my-canvas bench-canvas stress-canvas; do test -s "build/pf-c2048-real/fixtures/$name.csv"; done
+          sha256sum build/pf-c2048-real/fixtures/*.csv >build/pf-c2048-real/fixture-sha256.txt
+      - name: Build the SAME actual compiled World for both capacity selections
+        run: |
+          set -euo pipefail
+          g++-13 -std=c++20 -O2 -DNDEBUG -Wall -Wextra -pthread -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp \
+            native/src/settled_world_discovery.cpp native/bench/pf_c2048_actual_native.cpp \
+            -o build/pf-c2048-real/native >build/pf-c2048-real/logs/build.log 2>&1 || {
+              tail -140 build/pf-c2048-real/logs/build.log;exit 1; }
+          sha256sum build/pf-c2048-real/native >build/pf-c2048-real/native-sha256.txt
+      - name: Execute boundaries, all variants, authored canvases and 900-tick stress
+        run: |
+          set -euo pipefail
+          root=build/pf-c2048-real
+          : > "$root/cases.tsv"
+          run() {
+            local cap="$1" scene="$2" variant="$3" workers="$4" ticks="$5" rooms="$6"
+            local stem="C${cap}_${scene}_v${variant}_w${workers}_n${rooms}"
+            echo "CASE $stem ticks=$ticks"
+            timeout 900 "$root/native" "$cap" "$scene" "$variant" "$workers" "$ticks" "$rooms" \
+              "$root/fixtures/$scene.csv" "$root/saves/$stem" >"$root/rows/$stem.csv" 2>"$root/logs/$stem.log" || {
+                tail -120 "$root/logs/$stem.log"; exit 1; }
+            printf '%s\t%d\n' "$stem" "$ticks" >>"$root/cases.tsv"
+          }
+          run 1024 isolated 0 1 2 1024
+          run 1024 isolated 0 1 2 1025
+          run 2048 isolated 0 1 2 2048
+          run 2048 isolated 0 1 2 2049
+          run 2048 dynamic 0 1 3 2049
+          run 2048 atmosphere 0 1 2 16384
+          run 2048 atmosphere 0 1 2 16385
+          run 1024 default 0 1 1 1025
+          run 2048 default 0 1 30 1025
+          run 2048 default 1 4 10 1025
+          run 2048 default 2 1 10 1025
+          for variant in 0 1 2; do
+            run 1024 isolated "$variant" 1 10 512
+            run 2048 isolated "$variant" 1 10 512
+          done
+          run 1024 my-canvas 2 1 40 0
+          run 2048 my-canvas 2 1 40 0
+          run 2048 bench-canvas 0 1 40 0
+          run 2048 bench-canvas 1 4 40 0
+          run 2048 bench-canvas 2 1 40 0
+          run 1024 stress-canvas 2 1 300 0
+          run 2048 stress-canvas 0 1 300 0
+          run 2048 stress-canvas 1 4 300 0
+          run 2048 stress-canvas 2 1 900 0
+          run 2048 stress-canvas 2 4 120 0
+          python3 tools/ci/pf_c2048_native_readback.py "$root" | tee "$root/qualification.log"
+      - name: Check CYPS2/CYPS5 in-capacity roundtrips and cross-capacity refusal
+        run: |
+          set -euo pipefail
+          root=build/pf-c2048-real
+          low="$root/saves/C1024_isolated_v0_w1_n512-t1.cyps"
+          high="$root/saves/C2048_isolated_v0_w1_n2048-t1.cyps"
+          test -s "$low" && test -s "$high"
+          "$root/native" --restore 1024 0 1 "$low" >"$root/logs/restore-legacy.log"
+          "$root/native" --restore 2048 0 1 "$high" >"$root/logs/restore-c2048.log"
+          for pair in "1024 0 1 $high high-to-old" "2048 0 1 $low old-to-high"; do
+            read -r capacity variant workers save label <<<"$pair"
+            if "$root/native" --restore "$capacity" "$variant" "$workers" "$save" >"$root/logs/restore-$label.log" 2>&1; then
+              echo "Expected decoder refusal absent: $label" >&2;exit 1
+            else
+              code=$?
+            fi
+            test "$code" -eq 7
+            grep -Eq '(gas capacity profile mismatch|legacy save requires default gas capacity profile)' "$root/logs/restore-$label.log"
+          done
+          echo "PF_C2048_CYPS_MATRIX_PASS"
+      - name: Preserve source-authenticated raw measurements and failed outcomes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf-c2048-production-authored-matrix
+          path: build/pf-c2048-real/
+          retention-days: 90
+          if-no-files-found: warn

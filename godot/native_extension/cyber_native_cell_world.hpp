@@ -222,10 +222,19 @@ private:
     // and each 64x64 collision chunk's rectangles, a pure function of its mask
     // block. A chunk whose block is unchanged reuses its rectangles.
     struct HardSurfaceRectangle { std::int32_t x = 0, y = 0, width = 0, height = 0; };
-    mutable std::vector<std::uint64_t> hard_surface_bits_, hard_surface_previous_bits_;
+    mutable std::vector<std::uint64_t> hard_surface_bits_;
     mutable std::vector<std::vector<HardSurfaceRectangle>> hard_surface_chunk_cache_;
+    // The invalidation stream is consumed before packet assembly. A partial
+    // rebuild must not allow the next query to trust residual tile bits.
+    mutable bool hard_surface_cache_valid_ = false;
+    mutable const cybersand::World* hard_surface_cache_world_ = nullptr;
     mutable Vector2i hard_surface_cache_extent_{};
     mutable std::uint64_t hard_surface_chunks_rebuilt_ = 0, hard_surface_chunks_reused_ = 0;
+    mutable std::uint64_t hard_surface_full_mask_copies_ = 0;
+    mutable std::uint64_t hard_surface_tile_mask_copies_ = 0;
+    mutable std::uint64_t hard_surface_recovery_full_refreshes_ = 0;
+    mutable std::uint64_t hard_surface_last_invalidated_tiles_ = 0;
+    mutable std::uint64_t hard_surface_last_changed_tiles_ = 0;
     mutable std::uint64_t render_cells_revision_ = UINT64_MAX;
     mutable std::uint64_t hard_surface_rectangles_revision_ = UINT64_MAX;
     mutable std::uint64_t hard_surface_chunk_rectangles_revision_ = UINT64_MAX;
