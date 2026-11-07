@@ -1,0 +1,18 @@
+{
+  "schema": "cybersand.workbench-cut-hitch.001",
+  "registered": "2026-11-07",
+  "baseline": "55cbc8199dee01b670536d1c6721bb82c92f0622",
+  "scope": "Scheduling and exact authored-row reconstruction only; unchanged rectangle/core/debris rules and physics",
+  "cases": ["first-tree-core", "appended-building-core", "small-debris", "anchored-refusal"],
+  "fps": [60, 30],
+  "repeats": 5,
+  "hosts": ["windows", "linux"],
+  "workers": [1, 4],
+  "extent": [512, 512],
+  "history": {"extent": [2048, 2048], "full_paint_erase_pairs": 24, "repeats": 5},
+  "correctness": "Exact ordered native attempt outcomes, ownership/member/proxy/mass/inertia parity, no hidden native or Rapier step, independent dense recipe oracle, teardown and fresh-sample controls",
+  "metrics": ["cut-held usec", "whole-observation usec", "RPC count and worker/consume timestamps", "recipe/stage usec", "maximum process-frame gap", "first visual CPU usec"],
+  "decision": "Accept only with all functional fences preserved, lower median held time in every cut-route cell, and lower median long-history reconstruction time. Report worst/spread; no universal frame-rate claim.",
+  "resource": {"cap_bytes": 1073741824, "minimum_free_bytes": 5368709120},
+  "limits": "Headless matched scheduling benchmark; interactive rendering is a separate spot-check. Preserve all historical SOL/platform blockers. No cap/mass/gravity/contact tuning."
+}
