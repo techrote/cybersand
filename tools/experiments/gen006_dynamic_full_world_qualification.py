@@ -33,6 +33,7 @@ SOURCES = [
 ]
 OWNED = [
     "native/include/cybersand/gen006_dynamic_full_world_stage.hpp",
+    "native/include/cybersand/gen006_dynamic_bundle_admission.hpp",
     "native/tests/gen006_dynamic_full_world_continuation.cpp",
     "tools/experiments/gen006_dynamic_full_world_qualification.py",
     ".github/workflows/gen006-dynamic-full-world-continuation.yml",
