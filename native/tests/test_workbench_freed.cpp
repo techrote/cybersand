@@ -134,5 +134,6 @@ static void brush_geometry(unsigned workers) {
     expect(w.stored_material(10,10)==Material::RedBrick,"no geometry fallback or source retirement");
 }
 #include "workbench_small_debris_cases.inc"
-int main() {try{exercise(1);exercise(4);refusals();brush_geometry(1);brush_geometry(4);small_debris(1);small_debris(4);std::cout<<"workbench freed native: "<<checks<<" checks passed\n";return 0;}
+#include "workbench_rectangle_core_cases.inc"
+int main() {try{exercise(1);exercise(4);refusals();brush_geometry(1);brush_geometry(4);small_debris(1);small_debris(4);rectangle_core(1);rectangle_core(4);std::cout<<"workbench freed native: "<<checks<<" checks passed\n";return 0;}
 catch(const std::exception& e){std::cerr<<"FAIL "<<checks<<": "<<e.what()<<'\n';return 1;}}

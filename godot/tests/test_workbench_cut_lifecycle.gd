@@ -30,6 +30,7 @@ func one(append: bool, committed: bool) -> void:
 	current_scene.launch("shared_workbench");await scene_changed
 	host=current_scene;panel=host.shared_workbench
 	if not check(await until(installed),"normal workbench starts"): return
+	panel.cut.rectangle_core=OS.get_environment("CYBERSAND_RECTANGLE_CORE_LIFECYCLE")=="1"
 	var setup: Dictionary=Setup.fresh(PackedInt32Array(panel.applied.liquid_policy),Vector2i(512,512))
 	setup.version=4;setup.edits=[[0,72,512,4,58],[50,40,4,32,43],[44,27,29,13,43],[54,40,11,4,43],[60,32,1,1,0]]
 	if append:

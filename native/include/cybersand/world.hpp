@@ -321,10 +321,12 @@ public:
     [[nodiscard]] soliding::SolidSnapshot inspect_solid_detachment() const noexcept;
     [[nodiscard]] std::size_t solid_detachment_storage_bytes() const noexcept;
     [[nodiscard]] std::size_t copy_solid_detachment_members(std::span<soliding::SolidMember> output) const noexcept;
+    [[nodiscard]] std::size_t copy_solid_detachment_fringe(std::span<soliding::SolidMember> output) const noexcept;
     [[nodiscard]] std::size_t copy_solid_detachment_shapes(std::span<soliding::SolidShape> output) const noexcept;
     [[nodiscard]] soliding::SolidOutcome configure_workbench_solids(soliding::SolidBounds canvas);
     [[nodiscard]] soliding::SolidOutcome prepare_workbench_solid(std::int64_t x, std::int64_t y,
-        std::size_t small_debris_limit = 0);
+        std::size_t small_debris_limit = 0, bool rectangle_core = false);
+    [[nodiscard]] std::array<std::uint64_t,4> workbench_rectangle_core_ledger() const noexcept;
     [[nodiscard]] soliding::SolidOutcome crumble_workbench_solid(soliding::SolidToken token);
     [[nodiscard]] soliding::SolidOutcome finalize_workbench_crumble(soliding::SolidToken token,
         std::uint64_t terrain_revision);
@@ -477,6 +479,8 @@ public:
     void copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::size_t stride_bytes) const;
 
 private:
+    [[nodiscard]] soliding::SolidOutcome prepare_solid_detachment_impl(
+        const soliding::SolidRequest& request, bool rectangle_core, std::size_t small_debris_limit);
     [[nodiscard]] std::uint64_t physical_state_hash_impl(
         std::optional<LiquidStateProjection> projection) const;
     friend class PreparedWorldBuilder;

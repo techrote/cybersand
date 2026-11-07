@@ -7,6 +7,7 @@ const Bridge=preload("res://scripts/workbench_physics_bridge.gd")
 const SMALL_DEBRIS_CELLS: int=16
 # Fixed experimental profile. Zero is retained for matched legacy controls.
 var small_debris_limit: int=SMALL_DEBRIS_CELLS
+var rectangle_core: bool=true
 var panel
 var busy: bool=false
 var capture_count: int=0
@@ -93,6 +94,16 @@ func _prepare_recipe(payload: Dictionary) -> bool:
 		local.append([rectangles[i]-origin.x,rectangles[i+1]-origin.y,rectangles[i+2],rectangles[i+3]])
 		_recipe.edits.append([rectangles[i],rectangles[i+1],rectangles[i+2],rectangles[i+3],0])
 	var body: Dictionary={"name":"Freed %d" % int(_recipe.next_id),"rectangles":local}
+	if payload.get("rectangle_core",false):
+		var fringe: PackedInt32Array=payload.get("fringe",PackedInt32Array())
+		if rectangles.size()!=4 or fringe.size()!=int(payload.fringe_count)*6 or int(payload.source_member_count)!=int(payload.member_count)+int(payload.fringe_count): return false
+		# Native returns sorted full tuples. Coalesce only contiguous row spans;
+		# holes/unrelated cells never become Sand on authored replay.
+		var i: int=0
+		while i<fringe.size():
+			var end: int=i+6
+			while end<fringe.size() and fringe[end+1]==fringe[i+1] and fringe[end]==fringe[end-6]+1: end+=6
+			_recipe.edits.append([fringe[i],fringe[i+1],(end-i)/6,1,2]);i=end
 	body["appearance"]={"material":43,"origin":[origin.x,origin.y]}
 	var actor: Dictionary=Setup.instance(Setup.CanvasBody.MODEL,int(_recipe.next_id),payload.center)
 	actor["body"]=body;actor.hash=Setup.CanvasBody.digest(body)
@@ -197,7 +208,7 @@ func _end() -> Dictionary:
 func _run(input: PackedInt32Array) -> void:
 	var host=panel.host
 	var old_sample: Dictionary={} if host.physical_actor_session==null else host.rapier_bridge.pack_held_sample()
-	var begun: Dictionary=await _rpc({"action":"begin","dabs":input,"sample":old_sample,"small_debris_limit":small_debris_limit})
+	var begun: Dictionary=await _rpc({"action":"begin","dabs":input,"sample":old_sample,"small_debris_limit":small_debris_limit,"rectangle_core":rectangle_core})
 	if not _alive(): return
 	if not begun.get("ok",false):
 		last_disposition="Cut kept as terrain: "+_reason(begun)+". Erase applied."
@@ -210,6 +221,7 @@ func _run(input: PackedInt32Array) -> void:
 	var released: int=0
 	var crumbled: int=0
 	var loose_pixels: int=0
+	var fringe_pixels: int=0
 	var refused: Dictionary={}
 	for attempt: int in range(65):
 		var payload: Dictionary=await _rpc({"action":"next"})
@@ -284,10 +296,12 @@ func _run(input: PackedInt32Array) -> void:
 		panel.adopt_cut_recipe(_recipe)
 		_sample={};_recipe={};_committed=false;_token=""
 		released+=1;capture_count=int(final.active_count)
+		fringe_pixels+=int(payload.get("fringe_count",0))
 	var ended: Dictionary=await _end()
 	if not _alive(): return
 	if not ended.get("ok",false): panel.refuse(str(ended.outcome));return
 	last_disposition="Cut: %d piece(s) freed" % released
+	if fringe_pixels>0: last_disposition+="; %d excess pixel(s) became Sand" % fringe_pixels
 	if crumbled>0: last_disposition+="; %d small piece(s) crumbled into %d Sand/Rust pixels" % [crumbled,loose_pixels]
 	if not refused.is_empty():
 		last_disposition+="; kept as terrain: "+"; ".join(refused.keys())+". Erase applied."
