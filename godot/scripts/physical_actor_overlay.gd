@@ -8,6 +8,8 @@ var _parts: Array = []
 var source_origin: Vector2 = Vector2.INF
 var _origin: Vector2 = Vector2.ZERO
 var _view_size: Vector2 = Vector2.ONE
+var palette_material: ShaderMaterial
+var _carried: Array[Sprite2D]=[]
 
 
 func _ready() -> void:
@@ -22,7 +24,41 @@ func present(parts: Array, origin: Vector2, view_size: Vector2i, content: Rect2)
 	position = content.position
 	size = content.size
 	visible = not _parts.is_empty() or source_origin.is_finite()
+	_present_carried()
 	queue_redraw()
+
+func _present_carried() -> void:
+	var used: int=0
+	for part: Dictionary in _parts:
+		if part.get("shape")!="material": continue
+		if used==_carried.size():
+			var created:=Sprite2D.new()
+			created.centered=false;created.texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST
+			add_child(created);_carried.append(created)
+		var sprite: Sprite2D=_carried[used];used+=1
+		sprite.visible=true
+		var visual: Dictionary=part.visual
+		if sprite.texture!=visual.texture or sprite.material==null:
+			sprite.texture=visual.texture
+			# Same Shader and LUTs already used by the canvas: no first-cut
+			# shader variant or GPU readback. Only cropped uniforms differ.
+			var shader_material: ShaderMaterial=palette_material.duplicate() if palette_material!=null else ShaderMaterial.new()
+			for key: String in ["current_world_texture","previous_world_texture"]: shader_material.set_shader_parameter(key,visual.texture)
+			shader_material.set_shader_parameter("carried_material",true)
+			shader_material.set_shader_parameter("material_texture_origin_px",visual.source)
+			shader_material.set_shader_parameter("camera_origin_px",visual.source)
+			shader_material.set_shader_parameter("world_size_px",visual.size)
+			shader_material.set_shader_parameter("view_size_px",visual.size)
+			shader_material.set_shader_parameter("view_rect_uv",Vector4(0,0,1,1))
+			shader_material.set_shader_parameter("player_origin_px",Vector2(-10000,-10000))
+			shader_material.set_shader_parameter("snapshot_blend",1.0)
+			shader_material.set_shader_parameter("vapour_trail_strength",0.0)
+			shader_material.set_shader_parameter("growth_decor",0.0)
+			sprite.material=shader_material
+		var scale: Vector2=size/_view_size
+		sprite.transform=Transform2D(Vector2(scale.x,0),Vector2(0,scale.y),-_origin*scale)*part.transform
+	for index: int in range(used,_carried.size()):
+		_carried[index].visible=false;_carried[index].texture=null;_carried[index].material=null
 
 
 func polygon(part: Dictionary) -> PackedVector2Array:
@@ -83,6 +119,7 @@ func _draw() -> void:
 			outline.append(_point(source_origin + delta))
 		draw_polyline(outline,Color("80e9d1"),1.0)
 	for part: Dictionary in _parts:
+		if part.get("shape")=="material": continue
 		var vertices: PackedVector2Array = polygon(part)
 		var color: Color = part.color
 		draw_colored_polygon(vertices, color.darkened(0.18))

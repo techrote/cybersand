@@ -3150,6 +3150,7 @@ func setup_actor_prototypes() -> void:
 	$Layout/World.add_child(playable_course_overlay)
 	playable_course_overlay.clear_course()
 	physical_actor_overlay = PhysicalOverlay.new()
+	physical_actor_overlay.palette_material=world_shader
 	physical_actor_overlay.name = "PhysicalActorOverlay"
 	$Layout/World.add_child(physical_actor_overlay)
 

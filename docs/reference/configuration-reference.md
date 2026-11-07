@@ -10,7 +10,26 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+## Cut presentation and terrain work
+
+Draft510 retains existing cell/body/proxy limits and the cut's8-chunk/2000-usec
+terrain budget, but unchanged/empty chunks no longer consume pending slots.
+Only occupied addressed chunks allocate static RIDs. Carried RedBrick raw RG8
+masks are bounded by8×130×130×2 bytes; this is image payload, not a measurement
+of total Godot/GPU memory. No new menu, physics parameter or liquid policy.
+See [release rules](../architecture/workbench-freed-objects.md#cut-responsiveness-and-carried-material).
+
 ## Normal workbench release bounds
+
+On the separate small-debris tangent, fixed threshold16 counts actual
+remaining members, inclusively. Zero retains the old native route. Outputs
+are ceil(N/2) Sand and floor(N/2) Rust; no rigid slots/proxies are consumed.
+The normal stroke limit64 investigations bounds conversion to at most1024
+cells per stroke. Existing World activity/capacity quarantine remains. No new
+per-cell motion sidecar or material/solver parameter is added. The measured
+native custody store is278,384 bytes in this tangent, versus278,208 in the
+prior brush build. See [small cut-debris tangent](../audits/2026-11-07-workbench-small-debris.md).
+
 
 The [normal cut lane](../architecture/workbench-freed-objects.md) admits
 256 erase dabs of radius at most24,64 actual bounded investigations, eight

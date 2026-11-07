@@ -1,0 +1,142 @@
+{
+  "source": "db7b6777bb4701450df07a59b5e442602d154dda",
+  "tree": "c3bc01a61685a63dfd282e5cdc2774d39a61edc3",
+  "commands": [
+    {
+      "name": "docs",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_docs.py",
+        "--json",
+        "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-small-debris\\checks-001\\docs.json"
+      ],
+      "exit": 0,
+      "seconds": 2.1679650000296533,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-small-debris\\checks-001\\docs.log",
+      "log_sha256": "83884146b07fecc9e59e2232f18163e4515e681ef3ae4571b3aeaf5af3cdfb00",
+      "clean": true
+    },
+    {
+      "name": "m11",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_m11_consistency.py",
+        "--json",
+        "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-small-debris\\checks-001\\m11.json"
+      ],
+      "exit": 0,
+      "seconds": 1.1497982000000775,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-small-debris\\checks-001\\m11.log",
+      "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "clean": true
+    },
+    {
+      "name": "repository",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/ci/check_repository.py",
+        "--require-materialized",
+        "--json",
+        "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-small-debris\\checks-001\\repository.json"
+      ],
+      "exit": 0,
+      "seconds": 3.137920100009069,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-small-debris\\checks-001\\repository.log",
+      "log_sha256": "319e59000e5b0e628462c95b5a03f41f76881d6ab1e86de8347afa78912cbbe2",
+      "clean": true
+    },
+    {
+      "name": "material",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 2.5074409999651834,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-small-debris\\checks-001\\material.log",
+      "log_sha256": "57d0a550fdfc2b0b758f8343650ba1e6519fb652924986a1800bd80419582e03",
+      "clean": true
+    },
+    {
+      "name": "compiler",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/material_catalogue/compiler.py",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.13520520005840808,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-small-debris\\checks-001\\compiler.log",
+      "log_sha256": "d645a144c75f3517397c704fe81a8efb86fd092f64d93147bcfa35a1afc8bd3b",
+      "clean": true
+    },
+    {
+      "name": "runtime",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/sol281/workbench_check.py",
+        "--runtime-only"
+      ],
+      "exit": 0,
+      "seconds": 0.5383144000079483,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-small-debris\\checks-001\\runtime.log",
+      "log_sha256": "2005b5d7e4601fb1359888f092b6989c2ee361e326192c52b1eeb4ee71099bd1",
+      "clean": true
+    },
+    {
+      "name": "retrieval",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-small-debris\\checks-001\\retrieval.json"
+      ],
+      "exit": 0,
+      "seconds": 0.5549458999885246,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-small-debris\\checks-001\\retrieval.log",
+      "log_sha256": "8eb5c747722c3afa9f4508441e08cdd5930f77e6b20a35affd7cd79cf537f498",
+      "clean": true
+    },
+    {
+      "name": "retrieval-freed",
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions-workbench-freed.json",
+        "--output",
+        "C:\\khybersand\\build\\sol466-order-owned\\khybersand\\build\\workbench-small-debris\\checks-001\\retrieval-freed.json"
+      ],
+      "exit": 0,
+      "seconds": 0.44269910000730306,
+      "timeout_seconds": 180,
+      "log": "build\\workbench-small-debris\\checks-001\\retrieval-freed.log",
+      "log_sha256": "3d62d8ef9b46d24b05baaa2b2123aaea70c0746317cb8b5beba45a76be6bc698",
+      "clean": true
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.0441458000568673,
+      "timeout_seconds": 300,
+      "log": "build\\workbench-small-debris\\checks-001\\diff-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "clean": true
+    }
+  ],
+  "source_unchanged": true,
+  "inherited_blocker": "Linux ABI floor; separate actual symbol census retained"
+}

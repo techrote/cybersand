@@ -33,6 +33,7 @@ var tick: int = 0
 var run_id: String = ""
 var _definitions: Array = []
 var _catalogue: Array = []
+var _carried_visuals: Dictionary = {}
 var _workbench_ports: Dictionary = {}
 var _workbench_emitted_at: Dictionary = {}
 var _rigs: Array = []
@@ -856,6 +857,14 @@ func render_parts(display_frame: Dictionary = {}) -> Array:
 			var body_index: int = _body_offsets[index]+part_index
 			var physical_pose: Transform2D = bridge.display_pose(body_index,display_frame) if bridge is WorkbenchBridge else bridge.body_transform(body_index)
 			if str(parts[part_index].get("shape","rectangle"))=="rectangle_union":
+				var canvas: Dictionary=_definitions[index].get("canvas_body",{})
+				if canvas.has("appearance"):
+					var key: int=index # Admitted indices only append within this owner.
+					if not _carried_visuals.has(key): _carried_visuals[key]=CanvasBody.visual(canvas)
+					var visual: Dictionary=_carried_visuals[key]
+					result.append({"actor_id":index,"part_id":str(parts[part_index].id),"shape":"material",
+						"transform":physical_pose*Transform2D(0,visual.offset),"size":visual.size,"visual":visual})
+					continue
 				var shape_index: int=0
 				for child in body.get_children():
 					if not child is CollisionShape2D or not child.shape is RectangleShape2D: continue
@@ -904,6 +913,7 @@ func close() -> void:
 	_equipment.clear()
 	_definitions.clear()
 	_catalogue.clear()
+	_carried_visuals.clear()
 	_body_offsets.clear()
 	_sequences.clear()
 	_deadlines.clear()

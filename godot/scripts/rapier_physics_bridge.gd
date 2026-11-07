@@ -36,6 +36,7 @@ var _hard_surface_chunk_shape_rids: Array = []
 var _hard_surface_chunk_rectangles: Array = []
 var _pending_hard_surface_chunk_snapshot: PackedInt32Array = PackedInt32Array()
 var _pending_hard_surface_scan_cursor: int = 0
+var _pending_hard_surface_indices := PackedInt32Array()
 var _pending_hard_surface_chunks: int = 0
 
 var _initialized: bool = false
@@ -707,9 +708,23 @@ func queue_hard_surface_chunk_snapshot(packed_chunks: PackedInt32Array) -> bool:
 	if previous_offset != packed_chunks.size():
 		return false
 
-	_pending_hard_surface_chunk_snapshot = packed_chunks.duplicate()
-	_pending_hard_surface_scan_cursor %= chunk_count
-	_pending_hard_surface_chunks = chunk_count
+	# Diff installed geometry, including when a pending packet is superseded.
+	# Unchanged/empty chunks do not consume frame-budget slots.
+	var changed := PackedInt32Array()
+	for chunk_index: int in range(maxi(chunk_count,_hard_surface_chunk_rectangles.size())):
+		var next := PackedInt32Array()
+		if chunk_index < chunk_count:
+			next=packed_chunks.slice(packed_chunks[chunk_index+1],packed_chunks[chunk_index+2])
+		var installed: PackedInt32Array=(_hard_surface_chunk_rectangles[chunk_index]
+			if chunk_index<_hard_surface_chunk_rectangles.size() else PackedInt32Array())
+		if next!=installed: changed.append(chunk_index)
+	# Global-list terrain is replaced even by an entirely empty packet.
+	_hard_surface_shape_count-=_hard_surface_shape_rids.size()
+	_clear_full_hard_surface_shapes()
+	_pending_hard_surface_indices=changed
+	_pending_hard_surface_chunk_snapshot=packed_chunks.duplicate() if not changed.is_empty() else PackedInt32Array()
+	_pending_hard_surface_scan_cursor=0
+	_pending_hard_surface_chunks=changed.size()
 	return true
 
 
@@ -730,12 +745,11 @@ func process_hard_surface_collider_budget(
 	var processed: int = 0
 	_clear_full_hard_surface_shapes()
 	while processed < maximum_chunks and _pending_hard_surface_chunks > 0:
-		var chunk_index: int = _pending_hard_surface_scan_cursor
-		var rectangle_start: int = _pending_hard_surface_chunk_snapshot[chunk_index + 1]
-		var rectangle_end: int = _pending_hard_surface_chunk_snapshot[chunk_index + 2]
-		var next_rectangles: PackedInt32Array = (
-			_pending_hard_surface_chunk_snapshot.slice(rectangle_start, rectangle_end)
-		)
+		var chunk_index: int = _pending_hard_surface_indices[_pending_hard_surface_scan_cursor]
+		var next_rectangles := PackedInt32Array()
+		if chunk_index < chunk_count:
+			next_rectangles=_pending_hard_surface_chunk_snapshot.slice(
+				_pending_hard_surface_chunk_snapshot[chunk_index+1],_pending_hard_surface_chunk_snapshot[chunk_index+2])
 		_ensure_hard_surface_chunk_bodies(chunk_index + 1)
 		var previous_rectangles: PackedInt32Array = (
 			_hard_surface_chunk_rectangles[chunk_index]
@@ -750,7 +764,7 @@ func process_hard_surface_collider_budget(
 				next_rectangles.size() / 4 - previous_shape_count
 			)
 
-		_pending_hard_surface_scan_cursor = (chunk_index + 1) % chunk_count
+		_pending_hard_surface_scan_cursor += 1
 		_pending_hard_surface_chunks -= 1
 		processed += 1
 		if (
@@ -764,6 +778,7 @@ func process_hard_surface_collider_budget(
 	)
 	if _pending_hard_surface_chunks <= 0:
 		_pending_hard_surface_chunk_snapshot = PackedInt32Array()
+		_pending_hard_surface_indices.clear()
 	return processed
 
 
@@ -794,7 +809,9 @@ func _create_hard_surface_body() -> RID:
 
 func _ensure_hard_surface_chunk_bodies(chunk_count: int) -> void:
 	while _hard_surface_chunk_bodies.size() < chunk_count:
-		_hard_surface_chunk_bodies.append(_create_hard_surface_body())
+		# Logical empty chunks need no physics object. A late occupied chunk
+		# must not allocate hundreds of preceding empty RIDs in one budget slot.
+		_hard_surface_chunk_bodies.append(RID())
 		_hard_surface_chunk_shape_rids.append([])
 		_hard_surface_chunk_rectangles.append(PackedInt32Array())
 
@@ -804,6 +821,9 @@ func _replace_hard_surface_chunk_shapes(
 	packed_rectangles: PackedInt32Array
 ) -> void:
 	var body: RID = _hard_surface_chunk_bodies[chunk_index]
+	if not body.is_valid() and not packed_rectangles.is_empty():
+		body=_create_hard_surface_body()
+		_hard_surface_chunk_bodies[chunk_index]=body
 	if not body.is_valid():
 		return
 	PhysicsServer2D.body_clear_shapes(body)
@@ -945,6 +965,7 @@ func _destroy_chunk_hard_surface_colliders() -> void:
 	_hard_surface_chunk_rectangles.clear()
 	_pending_hard_surface_chunk_snapshot = PackedInt32Array()
 	_pending_hard_surface_scan_cursor = 0
+	_pending_hard_surface_indices.clear()
 	_pending_hard_surface_chunks = 0
 
 
@@ -1217,5 +1238,6 @@ func clear_state() -> void:
 	_hard_surface_chunk_rectangles.clear()
 	_pending_hard_surface_chunk_snapshot = PackedInt32Array()
 	_pending_hard_surface_scan_cursor = 0
+	_pending_hard_surface_indices.clear()
 	_pending_hard_surface_chunks = 0
 	_hard_surface_shape_count = 0

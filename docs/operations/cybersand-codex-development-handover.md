@@ -10,6 +10,26 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Cut feedback correction — 2026-11-07
+
+Draft510 now retains new cuts' RedBrick appearance and skips unchanged terrain
+chunks. Read the [dossier](../audits/2026-11-07-workbench-cut-feedback.md) and
+[reviewed shader transition](../audits/2026-11-07-workbench-carried-shader-transition.md).
+No native/physics tuning; Draft466 remains b140265d. Owner next proposes an
+inscribed rectangle core with excess converted to Sand; that is a separate
+representation/material experiment, not evidence that exact520-member SOL is
+solved. Preserve all existing source/evidence and any open user canvases.
+
+## Small cut-debris tangent — 2026-11-07
+
+The owner explicitly chose existing Sand/Rust granular rules after clarifying
+that liquid IN supports only Water/Brine. The sole writer continues in this
+owned checkout on `codex/workbench-small-cut-debris-20261107`, dependent on
+unchanged Draft466 b140265d. Read the [small cut-debris tangent](../audits/2026-11-07-workbench-small-debris.md). The rule is fixed16 cells;
+no material law, rigid mass/gravity/caps or accepted default changes. Keep the
+new PR Draft and preserve current workbench windows.
+
+
 ## Ordinary cut checkpoint — 2026-11-07
 
 Read the [brush regression and correction](../audits/2026-11-07-workbench-brush-cut.md)

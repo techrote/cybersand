@@ -323,7 +323,12 @@ public:
     [[nodiscard]] std::size_t copy_solid_detachment_members(std::span<soliding::SolidMember> output) const noexcept;
     [[nodiscard]] std::size_t copy_solid_detachment_shapes(std::span<soliding::SolidShape> output) const noexcept;
     [[nodiscard]] soliding::SolidOutcome configure_workbench_solids(soliding::SolidBounds canvas);
-    [[nodiscard]] soliding::SolidOutcome prepare_workbench_solid(std::int64_t x, std::int64_t y);
+    [[nodiscard]] soliding::SolidOutcome prepare_workbench_solid(std::int64_t x, std::int64_t y,
+        std::size_t small_debris_limit = 0);
+    [[nodiscard]] soliding::SolidOutcome crumble_workbench_solid(soliding::SolidToken token);
+    [[nodiscard]] soliding::SolidOutcome finalize_workbench_crumble(soliding::SolidToken token,
+        std::uint64_t terrain_revision);
+    [[nodiscard]] std::array<std::uint64_t,4> workbench_debris_ledger() const noexcept;
     [[nodiscard]] soliding::SolidOutcome archive_workbench_solid(soliding::SolidToken token);
     [[nodiscard]] std::size_t workbench_solid_count() const noexcept;
     [[nodiscard]] std::array<std::uint64_t,2> workbench_solid_discovery_work() const noexcept;

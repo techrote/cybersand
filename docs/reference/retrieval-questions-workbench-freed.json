@@ -66,6 +66,39 @@
         "../godot/scripts/workbench_cut.gd",
         "../native/tests/fixtures/workbench_brush_cut_001.json"
       ]
+    },
+    {
+      "id": "FREED-SMALL-DEBRIS-001",
+      "query": "How does the small-cut tangent route detached RedBrick pieces of16 cells or fewer to Sand/Rust, and does it extend the inertial liquid solver?",
+      "canonical": [
+        "architecture/workbench-freed-objects.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "Inclusive remaining-cell threshold16; alternating Sand2/Rust29, native pixels, no Rapier allocation; larger rigid.",
+        "Existing granular law, not liquid IN; eligibility, terrain fence and authored replay remain."
+      ],
+      "sources": [
+        "../native/src/world_solid_detachment.inc",
+        "../godot/scripts/workbench_cut.gd"
+      ]
+    },
+    {
+      "id": "FREED-FEEDBACK-001",
+      "query": "Why did cutting pause for seconds and show laminated rigid blocks, and how do carried brick appearance and sparse terrain installation preserve physics?",
+      "canonical": [
+        "architecture/workbench-freed-objects.md",
+        "reference/interfaces-and-message-contracts.md"
+      ],
+      "facts": [
+        "Old1024-chunk scheduling consumed128 rendered frames; only installed-geometry differences now consume the existing budget.",
+        "One carried RedBrick image keeps source-coordinate pattern and transparent holes, with legacy hashes and physics unchanged."
+      ],
+      "sources": [
+        "../godot/scripts/rapier_physics_bridge.gd",
+        "../godot/scripts/physical_actor_overlay.gd",
+        "../godot/scripts/workbench_canvas_body.gd"
+      ]
     }
   ]
 }

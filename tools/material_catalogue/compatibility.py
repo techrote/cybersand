@@ -155,7 +155,14 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
  'source_commit': 'ca9a8287e29ad36c07ae6b5b76c5d6221c389ef8',
  'record': 'docs/audits/2026-11-07-workbench-freed-material-transition.md',
  'issue': 364,
- 'pr': 466})
+ 'pr': 466},
+ {'path': 'godot/shaders/material_palette.gdshader',
+ 'from_lf_sha256': 'f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1',
+ 'to_lf_sha256': 'd7e412b687971e5f17d2af680c3f3b138054e64befb71dfb1c3131a53ecc80f8',
+ 'source_commit': '299866d81a02d2a516f2109d0feef5bfeb0235c0',
+ 'record': 'docs/audits/2026-11-07-workbench-carried-shader-transition.md',
+ 'issue': 364,
+ 'pr': 510})
 
 
 class CompatibilityError(ValueError):

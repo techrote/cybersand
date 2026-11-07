@@ -10,6 +10,44 @@ related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-cou
 
 # Freed objects in the ordinary workbench
 
+## Cut responsiveness and carried material
+
+Dependent Draft510 now draws newly freed RedBrick from one exact cropped RG8
+material image, with transparent holes and original source-coordinate pattern.
+Optional saved `body.appearance` is `{material:43, origin:[x,y]}`; old two-field
+body hashes remain unchanged. Appearance does not enter the physical definition.
+Main-thread session/overlay caches hold at most8 images of at most130×130 cells;
+no per-frame image rebuild or GPU readback. Old authored bodies without metadata
+retain their placeholder appearance. The existing palette Shader/LUTs are shared.
+
+Terrain scheduling diffs each validated full packet against installed geometry,
+including partial supersession and trailing removals. Only changed chunks consume
+the unchanged8-chunk/2000-usec cut budget; empty chunks create no static RID.
+Native commit, terrain revision and fresh-roster sample fences remain mandatory.
+The [dated correction](../audits/2026-11-07-workbench-cut-feedback.md) records
+2048² five-repeat Windows/Linux1/4 comparisons and the separate shader transition.
+Physics, source eligibility and cell/body capacities remain unchanged here.
+
+## Small native-debris tangent
+
+Current only on dependent branch `codex/workbench-small-cut-debris-20261107`,
+from unchanged Draft466 b140265d: a detached RedBrick component of1..16
+remaining cells converts in place to alternating Sand2/Rust29 in sorted y,x
+order, starting with Sand. This is the owner-selected existing granular path,
+not the liquid inertial solver. Larger pieces retain the existing rigid route.
+Native callers default to threshold0; the tangent workbench profile uses16.
+No new menu or threshold setting is added.
+
+Full eligibility precedes classification. Anchors and unknown/hot/masked/stateful
+geometry still refuse. Main preflights exact version4 one-cell material stamps;
+native revalidates all tuples and converts without aggregate removal/restoration
+or Rapier allocation. DebrisCommitted phase8 fences ticks and mutations until
+the updated terrain is installed; end re-primes the unchanged live roster.
+Normal granular motion follows with no injected velocity or fabricated arrival.
+Cell counts are preserved; material identity/density changes intentionally.
+See the [small cut-debris tangent](../audits/2026-11-07-workbench-small-debris.md) for execution, source and limits.
+
+
 ## Brush admission correction
 
 The owner found a real ordinary-painting gap in the initial qualification. The

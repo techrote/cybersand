@@ -11,6 +11,7 @@ func fresh(edits: Array) -> bool:
 		if not check(ui.apply(recipe),"ordinary canvas replacement without live custody"): return false
 	host.simulation_worker.set_worker_participation_sampling(true)
 	if not check(await until(installed),"fresh ordinary canvas"): return false
+	ui.cut.small_debris_limit=0 # Retain the registered pre-tangent geometry control.
 	check(ui.step_once(),"ordinary initial Step")
 	return check(await until(func():return not ui.step_pending and host.latest_snapshot.tick_index>0),"applied native region")
 

@@ -4,6 +4,10 @@ render_mode unshaded;
 // Rendering has its own view of the world. Panning changes only these uniforms;
 // it does not move or copy the cellular backing store.
 uniform vec2 world_size_px = vec2(1024.0, 1024.0);
+// Carried rigid material uses a cropped, padded image in original coordinates.
+// Defaults preserve the ordinary world renderer.
+uniform vec2 material_texture_origin_px = vec2(0.0);
+uniform bool carried_material = false;
 uniform vec2 view_size_px = vec2(320.0, 180.0);
 // Aspect-fitted logical camera rectangle inside the TextureRect, expressed as
 // x/y origin plus width/height in local UV space. The same rectangle is used
@@ -156,7 +160,7 @@ vec2 corrosion_field(vec2 pixel, float up_bias) {
 }
 
 int sampled_material_id(vec2 pixel, bool previous_snapshot) {
-	vec2 clamped_pixel = clamp(floor(pixel), vec2(0.0), world_size_px - vec2(1.0));
+	vec2 clamped_pixel = clamp(floor(pixel) - material_texture_origin_px, vec2(0.0), world_size_px - vec2(1.0));
 	vec2 world_uv = (clamped_pixel + vec2(0.5)) / world_size_px;
 	// Relief reads the same snapshot as the material being shaded, so the old
 	// side of a crossfade keeps its own neighbourhood. Same four reads.
@@ -1748,7 +1752,7 @@ vec4 apply_material_flair(
 }
 
 vec2 sampled_cell(vec2 pixel) {
-	vec2 clamped_pixel = clamp(floor(pixel), vec2(0.0), world_size_px - vec2(1.0));
+	vec2 clamped_pixel = clamp(floor(pixel) - material_texture_origin_px, vec2(0.0), world_size_px - vec2(1.0));
 	return texture(current_world_texture, (clamped_pixel + vec2(0.5)) / world_size_px).rg;
 }
 
@@ -2004,7 +2008,7 @@ int water_add_ordered_sample(int mask, int sample_count, int rank, int subcell) 
 }
 
 int sampled_water_condition_byte(vec2 pixel, bool previous_snapshot) {
-	vec2 clamped_pixel = clamp(floor(pixel), vec2(0.0), world_size_px - vec2(1.0));
+	vec2 clamped_pixel = clamp(floor(pixel) - material_texture_origin_px, vec2(0.0), world_size_px - vec2(1.0));
 	vec2 world_uv = (clamped_pixel + vec2(0.5)) / world_size_px;
 	vec2 cell_sample;
 	if (previous_snapshot) {
@@ -2738,10 +2742,11 @@ void fragment() {
 	vec2 view_pixel = floor(continuous_view_pixel);
 	vec2 world_pixel = camera_origin_px + view_pixel;
 	vec2 cell_fraction = fract(camera_origin_px + continuous_view_pixel);
-	vec2 world_uv = (world_pixel + vec2(0.5)) / world_size_px;
+	vec2 world_uv = (world_pixel - material_texture_origin_px + vec2(0.5)) / world_size_px;
 	vec2 cell_sample = texture(TEXTURE, world_uv).rg;
 	vec2 previous_cell_sample = texture(previous_world_texture, world_uv).rg;
 	int stored_material_id = int(floor(cell_sample.r * 255.0 + 0.5));
+	if (carried_material && stored_material_id == 0) { discard; }
 	int previous_stored_material_id = int(floor(previous_cell_sample.r * 255.0 + 0.5));
 	float condition = cell_sample.g;
 	float previous_condition = previous_cell_sample.g;

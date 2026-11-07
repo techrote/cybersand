@@ -1,0 +1,26 @@
+{
+  "command": {
+    "name": "linux-floor",
+    "command": [
+      "wsl.exe",
+      "-d",
+      "Ubuntu-24.04",
+      "--cd",
+      "/mnt/c/khybersand/build/sol466-order-owned/khybersand",
+      "--",
+      "timeout",
+      "--signal=TERM",
+      "--kill-after=5s",
+      "300s",
+      "bash",
+      "tools/check_linux_runtime_floor.sh"
+    ],
+    "exit": 1,
+    "seconds": 3.870222199941054,
+    "timeout_seconds": 300,
+    "log": "build\\workbench-small-debris\\abi\\linux-floor.log",
+    "log_sha256": "623746348b9a99748d32dcf6ac964eae7f209b5e29ef4b79e4c4d4dd0e25dfa0",
+    "clean": false
+  },
+  "qualification": "Retained supported-Linux ABI floor blocker; successful Ubuntu24.04 execution is a separate result"
+}

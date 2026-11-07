@@ -15,7 +15,8 @@ inline constexpr std::size_t kSolidMembers = 1024;
 inline constexpr std::size_t kSolidShapes = 256;
 
 enum class SolidPhase : std::uint8_t {
-    Disabled, Idle, Prepared, Acknowledged, Committed, Restored, Active, Quarantined
+    Disabled, Idle, Prepared, Acknowledged, Committed, Restored, Active, Quarantined,
+    DebrisCommitted
 };
 enum class SolidOutcome : std::uint8_t {
     Accepted, Disabled, Busy, Invalid, Anchored, UnknownBoundary, NotResident,
@@ -64,6 +65,8 @@ struct SolidSnapshot {
     // Homogeneous unit-cell masses. COM offsets are relative to domain.x/y.
     double mass{}, com_x{}, com_y{}, inertia{};
     std::uint64_t inspected_cells{}, neighbour_probes{};
+    bool granular_piece{};
+    std::size_t granular_converted_count{};
 };
 // Trusted main-thread bridge receipt for RESERVED INACTIVE objects. These values
 // are bindings, not native proof that a live Rapier RID has been constructed.
@@ -95,6 +98,7 @@ struct SolidStore {
 // Explicit paused-owner storage; never allocated by a tick or pool job.
 inline constexpr std::size_t kWorkbenchSolids = 8;
 inline constexpr std::size_t kWorkbenchSolidShapes = 64;
+inline constexpr std::size_t kWorkbenchSmallDebrisCells = 16;
 struct SolidOwnedRecord {
     SolidSnapshot snapshot{};
     std::array<SolidMember, kSolidMembers> members{};
@@ -104,6 +108,8 @@ struct SolidWorkbenchStore {
     SolidBounds canvas{};
     std::size_t count{};
     std::uint64_t inspected{}, probes{};
+    // Completed pieces, RedBrick consumed, Sand produced, Rust produced.
+    std::array<std::uint64_t,4> debris{};
     std::array<SolidOwnedRecord, kWorkbenchSolids> owned{};
     std::array<std::array<std::int64_t, 2>, kSolidMembers> queue{};
     std::array<std::int16_t, kSolidDomainCells> lookup{};

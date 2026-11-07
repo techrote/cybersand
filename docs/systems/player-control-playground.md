@@ -10,7 +10,24 @@ related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-l
 
 # Player control playground
 
+## Cut material appearance
+
+Newly freed RedBrick on dependent Draft510 keeps its brick shading as one
+carried image, including holes, instead of drawing collision-rectangle seams.
+The source pattern moves/rotates with the actual body. Ordinary erase, Save,
+Load and Restore controls remain; old body records without appearance retain
+their prior placeholder. No new fixture menu or force/weight controls.
+[Cut responsiveness evidence](../audits/2026-11-07-workbench-cut-feedback.md)
+separates reduced terrain wait from unchanged physics and retained SOL failures.
+
 ## Cutting ordinary workbench structures
+
+The separate [small cut-debris tangent](../audits/2026-11-07-workbench-small-debris.md) uses the same controls: fragments up to16 remaining
+RedBrick cells crumble into native Sand/Rust pixels;17 or more use the existing
+rigid-body route. This is a fixed experimental profile with no new menu.
+Anchored pieces remain brick. Save start records the converted material map;
+Restore is a fresh authored replay, not live-state continuation.
+
 
 Choose RedBrick in the existing material picker. Build face-connected pieces
 with Wall/Hard wall supports, then erase a support using the existing RMB or

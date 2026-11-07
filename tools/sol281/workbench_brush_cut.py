@@ -15,7 +15,7 @@ def identity():
     return dict(**original_identity(),campaign_runner_sha256=p.sha(__file__))
 f.identity=identity
 
-def hosts(run,build_run):
+def hosts(run,build_run,scripts=None):
     info=identity();folder=f.OUT/run
     assert not folder.exists();folder.mkdir()
     build=json.loads((f.OUT/build_run/'receipt.json').read_text())
@@ -47,7 +47,7 @@ def hosts(run,build_run):
             state['commands'].append(row);save();return row
         if execute('import')['clean']:
             for worker in [1,4]:
-                for script in ['test_workbench_brush_cuts','test_workbench_freed']:
+                for script in (scripts or ['test_workbench_brush_cuts','test_workbench_freed']):
                     output=target/f'{script}-w{worker}.json'
                     row=execute(f'{script}-w{worker}',script,dict(CYBERSAND_FREED_WORKERS=str(worker),CYBERSAND_FREED_REPORT=str(output) if platform=='windows' else p.wsl(output)))
                     row['report_complete']=False

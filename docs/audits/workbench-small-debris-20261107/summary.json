@@ -1,0 +1,57 @@
+{
+  "rule": "1..16 detached RedBrick cells -> alternating Sand/Rust; larger rigid, zero control disables",
+  "build_source": "1826c9943c83166c7f36fb22085a6fac7a5dcfbd",
+  "host_source": "d42ce4729eaa6b1524facbc20998bb43b3085790",
+  "native_checks": 1742,
+  "original_native_checks": 19338,
+  "native_modes": [
+    "optimized",
+    "strict-asan-ubsan with leak detection disabled"
+  ],
+  "hosts": {
+    "windows": {
+      "1": {
+        "checks": 230,
+        "cuts": 11,
+        "observed_workers": 1,
+        "raw_report_sha256": "c168cd5434b2f079942dee6551fd43f3dab1ec3fd75e3f6bbed994f2be972b41",
+        "native_storage_bytes": 278384
+      },
+      "4": {
+        "checks": 230,
+        "cuts": 11,
+        "observed_workers": 4,
+        "raw_report_sha256": "981b8f196195d9d978c7884025ab993b0bfdbd80aa9732bf59cce8a5ec7839f9",
+        "native_storage_bytes": 278384
+      }
+    },
+    "linux": {
+      "1": {
+        "checks": 230,
+        "cuts": 11,
+        "observed_workers": 1,
+        "raw_report_sha256": "dbd1d4ac796b9255383f7709c1a74691dd6d7f990da40a919d8995c73938c29c",
+        "native_storage_bytes": 278384
+      },
+      "4": {
+        "checks": 230,
+        "cuts": 11,
+        "observed_workers": 4,
+        "raw_report_sha256": "03b2efcd9c5f746ce9a686f2133ea347eb568cec7157748b6b3e42d027ff5b74",
+        "native_storage_bytes": 278384
+      }
+    }
+  },
+  "resource": {
+    "bytes": 273427445,
+    "free_bytes": 15136088064,
+    "cap_bytes": 1073741824,
+    "minimum_free_bytes": 5368709120
+  },
+  "limitations": [
+    "Existing granular rules, not inertial_cellular_v1",
+    "Explicit material conversion; cell-count conservation does not claim unchanged physical material mass",
+    "Linux ABI floor and unavailable MSVC/extension sanitizers remain",
+    "Original SOL clearance/CPU/365 and hard exclusions unchanged"
+  ]
+}

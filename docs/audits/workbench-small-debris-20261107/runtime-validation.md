@@ -1,0 +1,5 @@
+# Small cut-debris runtime custody — 2026-11-07
+
+The build and host receipts identify separate committed sources. Full93-file native and15-file build input inventories are authenticated in the runtime manifests. Both actual Windows and WSL Ubuntu24.04 run the fixed <=16-cell Sand/Rust conversion profile at worker1 and4. The native optimized and strict ASan/UBSan modes each pass1742 workbench/debris and19338 original transaction checks; leak detection is disabled. Windows uses LLVM-MinGW, not MSVC. No instrumented extension-host sanitizer is claimed.
+
+Complete raw commands, logs, runtimes and reports remain under build/workbench-small-debris, bounded by the separately registered1GiB cap and5GiB free reserve. The compact host ledgers retain all cut receipts and complete nonempty native census coordinates; omitted census coordinates are declared Empty within the full sampled rectangle. This is native granular material conversion, not a liquid-IN extension or original SOL clearance acceptance. The Linux supported ABI-floor failure and all historical SOL blockers remain.

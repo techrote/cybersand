@@ -10,6 +10,21 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## Cut appearance and responsiveness
+
+The [Draft510 correction](audits/2026-11-07-workbench-cut-feedback.md) replaces
+visible proxy seams with carried brick material and schedules only changed
+terrain chunks. Native ownership and physics remain unchanged; full-size
+repeated timings and retained failures have separate source qualifiers.
+
+## Small cut-debris tangent
+
+The [separate small-fragment experiment](audits/2026-11-07-workbench-small-debris.md)
+converts detached RedBrick components of up to16 cells into loose Sand/Rust.
+It uses existing granular rules, preserves larger rigid behavior and leaves
+Draft466 unchanged. No new test menu or liquid-IN extension is involved.
+
+
 ## Ordinary workbench cutting
 
 The [normal-brush correction](audits/2026-11-07-workbench-brush-cut.md) fixes
