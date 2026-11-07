@@ -1115,6 +1115,7 @@ void test_physical_hash_and_persistence() {
 #include "test_pressure_variants_acceptance.inc"
 #include "test_pressure_wake_summaries.inc"
 #include "test_pressure_column_failure.inc"
+#include "test_pressure_moving_region.inc"
 
 void test_default_policy_untouched() {
     // A default World never allocates or runs pressure state, and its historic
@@ -1167,6 +1168,7 @@ void test_lcb_pressure_dormant_obligations() {
 void test_lcb_pressure_optimization_identity() { test_pressure_optimization_identity_readback(); }
 void test_lcb_pressure_cost_admission() { test_dormant_cost_admission(); }
 void test_lcb_pressure_variants_remote_acceptance() { test_variants_remote_hydraulic_acceptance(); }
+void test_lcb_pressure_moving_region() { test_pressure_moving_region_exact_and_warm(); }
 void test_lcb_pressure_wake_summaries() {
     test_pressure_wake_summary_quiet_and_invalidation();
     test_pressure_wake_summary_remote_head_wake();

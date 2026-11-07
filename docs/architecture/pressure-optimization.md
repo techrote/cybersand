@@ -293,3 +293,21 @@ and integrated #203 work. The full ready-PR Documentation/provenance, Native,
 Windows/Linux Godot and applicable Water apparatus gates remain required before
 this branch merges. Current defaults and earlier pressure characterization
 retain their original source/artifact qualifications.
+
+## Camera-only derived-cache retention (#201 / PR #405, 2026-11-07)
+
+A selected-core change by itself does not mutate PressureFlow derived-state
+inputs. The #405 candidate removes only the selected-camera-core
+`pressure_->cache->cold()` call in `World::set_simulation_region`; the settled
+discovery inclusion wake and all actual authority-change invalidations remain.
+There is **no** new global/thread-local chunk pointer cache, and the accepted
+dense directory, chemistry lookup, C1024/C2048 and default FreeMass are unchanged.
+
+On current main `e90abd9d25702a9a92e8a3cfe0aaa5e45a277b9d`, the counterbalanced same-runner B–C–C–B native
+comparison [42353922828](https://github.com/techrote/cybersand/actions/runs/42353922828)
+measured +89.76% cached and +89.70% cached_dormant median tick improvement at
+camera speed 16 cells/tick, with exact normalized PressureFlow and Water outputs.
+Static, FreeMass, inertial and no-camera gas-free controls were within about
+0.4–2.0% of baseline. These data do not claim Windows/Godot performance,
+universal speedup or cross-platform gameplay replay exactness.
+See the [current-source transition audit](../audits/2026-11-07-pr405-current-main-reconciliation.md).
