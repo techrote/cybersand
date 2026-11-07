@@ -178,6 +178,18 @@ def main() -> int:
             native_cyps(recovered.checkpoint) == (base_generation, cyps) and
             recovered.edits == tuple(edits) and recovered.torn_tail,
             "G6J_ABRUPT_WRITER_TORN_PREFIX_RECOVERY_REFUSED")
+    # A valid G6J1 container may carry an unsupported native baseline.
+    # Explicitly refuse the former CYPS-only pilot: it loses host-owned
+    # recipe, coordinate, and player-erasure intent metadata. The recovery
+    # primitive is intentionally format-agnostic; this native adapter is not.
+    legacy = Journal.create(work / "cyps-only-negative.g6j", identity, cyps)
+    try:
+        native_cyps(recover(legacy.path).checkpoint)
+        raise AssertionError("G6J_NATIVE_CYPS_ONLY_BASELINE_ACCEPTED")
+    except AssertionError as exc:
+        require(str(exc) == "G6J_NATIVE_OUTER_SCHEMA_REFUSED",
+                "G6J_NATIVE_CYPS_ONLY_NEGATIVE_DRIFT")
+
     # Replay cannot rely on auxiliary baseline files. The original source
     # record remains preserved under base/ for immutable failure evidence.
     (work / "native-base.cyps").unlink()
