@@ -1,0 +1,88 @@
+name: PR405 exact-source native Clang and sanitizers
+on:
+  push:
+    branches: [codex/pr405-sanitizer-20261107]
+permissions:
+  contents: read
+jobs:
+  clang:
+    name: Clang 18 O2 native focused acceptance
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+      - name: Compile optimized Clang 18 and test #201 plus Water parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/pr405-extra
+          clang++-18 --version | head -n1 | tee build/pr405-extra/compiler.txt
+          timeout 1200 make CXX=clang++-18 DEBUG_FLAGS='-O2 -DNDEBUG' build/tests
+          timeout 300 ./build/tests 'LCB-002' 2>&1 | tee build/pr405-extra/clang-lcb002.log
+          timeout 300 ./build/tests 'LCB-001 pressure' 2>&1 | tee build/pr405-extra/clang-lcb001.log
+          sha256sum build/tests > build/pr405-extra/clang-binary.sha256
+      - name: Retain Clang logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pr405-clang-o2
+          path: build/pr405-extra/
+          retention-days: 90
+          if-no-files-found: warn
+  asan:
+    name: GCC 13 ASan and UBSan native focused acceptance
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+      - name: Compile and run pressure plus move assignment with sanitizers
+        shell: bash
+        env:
+          ASAN_OPTIONS: detect_leaks=1:halt_on_error=1
+          UBSAN_OPTIONS: print_stacktrace=1:halt_on_error=1
+        run: |
+          set -euo pipefail
+          mkdir -p build/pr405-extra
+          timeout 1800 make CXX=g++-13 build/tests_sanitized
+          timeout 480 ./build/tests_sanitized 'LCB-002' 2>&1 | tee build/pr405-extra/asan-lcb002.log
+          timeout 480 ./build/tests_sanitized 'LCB-001 pressure' 2>&1 | tee build/pr405-extra/asan-lcb001.log
+          sha256sum build/tests_sanitized > build/pr405-extra/asan-binary.sha256
+      - name: Retain sanitizer logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pr405-asan-ubsan
+          path: build/pr405-extra/
+          retention-days: 90
+          if-no-files-found: warn
+  tsan:
+    name: GCC 13 ThreadSanitizer move-assignment and worker tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+      - name: Compile and run concurrent cache lifetime contract
+        shell: bash
+        env:
+          TSAN_OPTIONS: halt_on_error=1:report_signal_unsafe=0
+        run: |
+          set -euo pipefail
+          mkdir -p build/pr405-extra
+          timeout 1800 make CXX=g++-13 build/tests_tsan
+          timeout 480 ./build/tests_tsan 'LCB-002 #201' 2>&1 | tee build/pr405-extra/tsan-direct-move.log
+          timeout 480 ./build/tests_tsan 'LCB-002 P1' 2>&1 | tee build/pr405-extra/tsan-wake.log
+          sha256sum build/tests_tsan > build/pr405-extra/tsan-binary.sha256
+      - name: Retain TSAN logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pr405-tsan
+          path: build/pr405-extra/
+          retention-days: 90
+          if-no-files-found: warn
