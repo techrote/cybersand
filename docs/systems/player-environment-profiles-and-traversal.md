@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: PENV-001 sampled-player mass, gravity, terminal/jetpack tuning, material-response identity and step/knee/clamber traversal; excludes Water semantic changes and generic-body physics
 canonical-for: [player-environment-tuning, sampled-character-traversal-bands]
-last-reviewed: 2026-09-25
+last-reviewed: 2026-09-26
 related-documents: [granular-interaction-policy.md, ../operations/gameplay-recording.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/configuration-reference.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
 ---
 
@@ -89,24 +89,50 @@ than treating this field as permission to invent a second liquid solver.
 
 ## Step, knee and clamber bands
 
-Horizontal sampled-character traversal tests obstacle clearance from the smallest
-height upward:
+### Rejected PENV-001 classification
 
-- **Step:** height at or below `step_height` traverses at the full horizontal
-  increment, preserving the historical one-pixel no-slowdown behavior.
-- **Knee:** above step and at/below `knee_height` requires body clearance and
-  uses `knee_slowdown` as the horizontal progress factor for that simulation tick.
-- **Clamber:** above knee and at/below `clamber_height` requires the same bounded
-  clearance/support check and uses `clamber_slowdown`.
-- **Above clamber:** the sampled horizontal move is blocked unless another
-  explicitly owned mechanic applies.
+The first PENV-001 implementation classified the band by lifting the entire 8×14
+player box from one pixel upward until it found a collision-free placement. Owner
+review rejected that model even with separated 2/4/6 thresholds: shoulders/slopes
+could feel globally sluggish because whole-body clearance, rather than the local
+ledge at the leading foot, selected knee/clamber.
 
-The exact-current profile sets all three thresholds to one pixel, so a two-pixel
-or larger obstacle remains blocked exactly as before. PENV-001 regression fixtures
-cover one-pixel, two-pixel, configured larger clamber and above-clamber cases.
+That historical behavior is retained in the dated PENV-002 remediation record but
+is **not** the Current traversal contract.
 
-This is a bounded sampled-character traversal rule, not ledge grabbing, animation,
-stamina, arbitrary collision-shape climbing or a generic Rapier-body semantic.
+### Current PENV-002 local-contour classification
+
+For a grounded horizontal collision, the sampled controller now measures the
+contiguous **local rise at the leading foot cell** relative to the actor's current
+foot height. That local ledge height selects the band:
+
+- **Step:** local rise at/below `step_height`; full requested horizontal progress,
+  with no deliberate slowdown.
+- **Knee:** local rise above step and at/below `knee_height`; horizontal progress
+  is multiplied by `knee_slowdown`.
+- **Clamber:** local rise above knee and at/below `clamber_height`; horizontal
+  progress is multiplied by `clamber_slowdown`.
+- **Above clamber / non-foot obstruction:** blocked.
+
+Whole-body clearance and support are still required, but they are now a separate
+safety gate and do not select the band. This prevents a long one-pixel staircase
+from becoming a knee/clamber merely because the player's eight-pixel width spans
+several stair columns.
+
+When a knee/clamber slowdown leaves the actor short of the actual edge, the
+controller moves only that horizontal amount for the tick. It does not apply an
+upward correction until the admitted movement itself still intersects the ledge.
+
+The exact-current profile remains the historical 1/1/1 control. Custom profiles
+such as 2/4/6 are tuning candidates rather than new defaults until owner review.
+
+The controller exposes the last selected band, local ledge height, required
+whole-body clearance and admitted horizontal progress through the worker snapshot;
+the compact desktop HUD shows these diagnostics after a traversal collision.
+
+This remains a bounded sampled-character traversal rule, not ledge grabbing,
+animation, stamina, arbitrary collision-shape climbing or a generic Rapier-body
+semantic. Engineering validation does not replace owner feel acceptance.
 
 ## Desktop visibility and recording provenance
 
