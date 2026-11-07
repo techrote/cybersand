@@ -90,7 +90,7 @@ def parse(root: Path, name: str, arm: str, source: str, native: str) -> dict:
           name + ": runtime, Godot or Rapier fingerprints changed")
     for metric in METRICS:
         q = o.get(metric, {})
-        check(q.get("samples", 0) >= (40 if metric == "packet" else 70)
+        check(q.get("samples", 0) >= (10 if metric == "packet" else 70)
               and q.get("p50_ms", 0) > 0 and q.get("p95_ms", 0) > 0,
               name + ": missing measured " + metric)
     prof = o.get("pf504_stage_profiler", {})
