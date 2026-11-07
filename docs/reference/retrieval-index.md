@@ -5,7 +5,7 @@ document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
 last-reviewed: 2026-11-04
-related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
+related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
@@ -211,6 +211,8 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | What survives #26 review, what did #49 repair, and what now gates #45? | [Water design](../systems/water-design.md), [#26 post-merge review](../audits/2026-09-19-issue-26-post-merge-review.md), [#49 v2 registration](../audits/2026-09-20-issue-49-water-apparatus-v2-registration.md), [#49 Current-Water v2 baseline](../audits/2026-09-20-issue-49-water-apparatus-v2-baseline.md), [architecture programme](../operations/architecture-programme.md) |
 | Why can deep connected Water keep unequal levels, what did #26 reject, and what comes next? | [Water design](../systems/water-design.md), [architecture programme](../operations/architecture-programme.md), [#26 evidence](../audits/2026-09-19-issue-26-water-leveling.md) |
 | Why test hybrid Water sheets before adding another pressure solver, and why is WEX-002 currently blocked? | [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md), [WEX-002 blocked disposition](../audits/2026-09-24-wex002-water-sheet-blocked-disposition.md), [Water design](../systems/water-design.md), [soliding programme](../operations/soliding-programme.md) |
+| What must hold before the Atlas API agent runner makes a charged call, what stops it, and what does its receipt prove? | [Atlas agent runner](../operations/atlas-agent-runner.md) |
+| How is the Atlas agent kept to its own files and prevented from claiming an unrendered Godot improvement? | [Atlas agent runner security model](../operations/atlas-agent-runner.md#security-model), [receipts](../operations/atlas-agent-runner.md#receipts) |
 | Is the barrel a special physics object, and was its historical support result owner-accepted? | [Product intent](product-intent-and-priorities.md), [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md), [remediation programme](../operations/development-claims-remediation-programme.md) |
 | Which liquid solver families exist, which materialÃ—family combinations are allowed, and how is a family selected? | [Solver-family policy](../architecture/liquid-solver-family-policy.md), [capability matrix](liquid-solver-capability-matrix.json), [materials and rule kernels](../systems/materials-and-rule-kernels.md) |
 | Is the native liquid policy API implemented, what does this build accept or refuse, and what does readback report? | [Native policy foundation](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24), [roadmap](status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24), [dated evidence](../audits/2026-10-24-issue-200-policy-foundation.md) |

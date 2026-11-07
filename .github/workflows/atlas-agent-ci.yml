@@ -1,0 +1,66 @@
+name: Atlas agent runner CI
+
+# Deterministic, keyless checks of the Atlas agent runner (MAP-AUTO-02 / #499). Never
+# calls a model API and never reads a secret. Not a schedule.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
+    paths:
+      - 'tools/atlas_agent/**'
+      - 'tools/atlas_agent_runner.py'
+      - '.github/workflows/atlas-agent-*.yml'
+      - 'docs/operations/atlas-agent-runner.md'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: atlas-agent-ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out the source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install the pinned official OpenAI SDK
+        run: python3 -m pip install --disable-pip-version-check -r tools/atlas_agent/requirements.txt
+      - name: Deterministic runner tests (real SDK against a loopback API double)
+        env:
+          ATLAS_AGENT_REQUIRE_SDK: '1'
+          ATLAS_AGENT_REQUIRE_LINKS: '1'
+        run: python3 -m unittest discover -s tools/atlas_agent -p "test_*.py" -v
+      - name: Capture the runner receipt of an offline run
+        run: |
+          python3 tools/atlas_agent_runner.py run --fixture --collection mini-vault \
+            --dry-run-plan tools/atlas_agent/fixtures/mini-vault-plan.json --output-dir "$RUNNER_TEMP/offline-run"
+          python3 tools/atlas_agent_runner.py verify-receipt "$RUNNER_TEMP/offline-run/receipt.json"
+      - name: Retain the offline receipt
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atlas-agent-ci-offline-receipt-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/offline-run
+          if-no-files-found: warn
+          retention-days: 30
+
+  complete-dry-run-workflow:
+    # The complete manual workflow, exercised as a reusable workflow in dry-run mode.
+    uses: ./.github/workflows/atlas-agent-runner.yml
+    with:
+      source: fixture
+      collection: mini-vault
+      mode: dry-run
+      artifact_name: atlas-agent-ci-dry-run-receipt
+    permissions:
+      contents: read
+      actions: read

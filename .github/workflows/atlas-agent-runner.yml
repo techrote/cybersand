@@ -1,0 +1,174 @@
+name: Atlas agent runner
+
+# Manual, bounded Atlas design-agent run (MAP-AUTO-02 / #499). One documented entry
+# point: workflow_dispatch. There is NO schedule. See docs/operations/atlas-agent-runner.md.
+#
+#  * dry-run  : no key, no network, no chargeable request; exercises the whole runner.
+#  * live     : needs the restricted OPENAI_API_KEY secret, an explicit spending
+#               authorisation, a fresh owner credit attestation and a priced model; the
+#               runner refuses (exit 3) otherwise. API charges are separate from the
+#               GitHub Actions compute charged for this job.
+# Output is a receipt + patch artifact only; nothing is pushed or merged.
+
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "Atlas source: bundled synthetic fixture, or a read-only checkout of atlas_ref"
+        type: choice
+        options: [fixture, atlas-ref]
+        default: fixture
+      collection:
+        description: "Collection slug (fixture: mini-vault)"
+        type: string
+        default: mini-vault
+      lane:
+        description: "Worker lane (auto = the collection's owner; another lane is read-only critique)"
+        type: choice
+        options: [auto, terrain-art, ruin-detail, art-curation]
+        default: auto
+      atlas_ref:
+        description: "Git ref of the Atlas art branch to read (source=atlas-ref only)"
+        type: string
+        default: ""
+      expected_source_sha:
+        description: "Full 40-hex HEAD the Atlas checkout must have (required for live atlas-ref runs)"
+        type: string
+        default: ""
+      mode:
+        description: "dry-run (no key, no cost) or live (charged API calls, gated)"
+        type: choice
+        options: [dry-run, live]
+        default: dry-run
+      model:
+        description: "Explicit model id (required for live; must be in the pricing table; no fallback)"
+        type: string
+        default: gpt-5.4-mini
+      max_usd_per_run:
+        description: "Hard per-run spending ceiling in USD (worst-case reserved before every call)"
+        type: string
+        default: "0.25"
+      authorised_ceiling_usd:
+        description: "Owner-authorised spending ceiling in USD (live only; must be >= max_usd_per_run)"
+        type: string
+        default: "0"
+      authorisation_ref:
+        description: "Reference to the owner's spending authorisation (issue/comment URL; live only)"
+        type: string
+        default: ""
+      credit_attestation_json:
+        description: "Owner credit attestation JSON read from the billing dashboard (live only; see docs)"
+        type: string
+        default: ""
+      max_iterations:
+        description: "Maximum model iterations (1-30)"
+        type: string
+        default: "8"
+      capture_bundle_run_id:
+        description: "Optional: run id whose artifact holds a verified #498 capture bundle"
+        type: string
+        default: ""
+      capture_bundle_artifact:
+        description: "Optional: name of that capture-bundle artifact"
+        type: string
+        default: ""
+      artifact_name:
+        description: "Name of the uploaded receipt artifact"
+        type: string
+        default: atlas-agent-receipt
+  workflow_call:
+    inputs:
+      source: {type: string, default: fixture}
+      collection: {type: string, default: mini-vault}
+      lane: {type: string, default: auto}
+      atlas_ref: {type: string, default: ""}
+      expected_source_sha: {type: string, default: ""}
+      mode: {type: string, default: dry-run}
+      model: {type: string, default: gpt-5.4-mini}
+      max_usd_per_run: {type: string, default: "0.25"}
+      authorised_ceiling_usd: {type: string, default: "0"}
+      authorisation_ref: {type: string, default: ""}
+      credit_attestation_json: {type: string, default: ""}
+      max_iterations: {type: string, default: "8"}
+      capture_bundle_run_id: {type: string, default: ""}
+      capture_bundle_artifact: {type: string, default: ""}
+      artifact_name: {type: string, default: atlas-agent-receipt}
+    secrets:
+      OPENAI_API_KEY:
+        required: false
+      OPENAI_ADMIN_KEY:
+        required: false
+
+permissions:
+  contents: read
+  actions: read # only to download an earlier run's capture-bundle artifact
+
+concurrency:
+  group: atlas-agent-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      IN_SOURCE: ${{ inputs.source }}
+      IN_COLLECTION: ${{ inputs.collection }}
+      IN_LANE: ${{ inputs.lane }}
+      IN_ATLAS_SHA: ${{ inputs.expected_source_sha }}
+      IN_MODE: ${{ inputs.mode }}
+      IN_MODEL: ${{ inputs.model }}
+      IN_MAX_USD_RUN: ${{ inputs.max_usd_per_run }}
+      IN_AUTH_CEILING: ${{ inputs.authorised_ceiling_usd }}
+      IN_AUTH_REF: ${{ inputs.authorisation_ref }}
+      IN_ATTEST_JSON: ${{ inputs.credit_attestation_json }}
+      IN_MAX_ITER: ${{ inputs.max_iterations }}
+      IN_ARTIFACT_NAME: ${{ inputs.artifact_name }}
+    steps:
+      - name: Check out the runner source (read-only, no persisted credentials)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Validate workflow inputs (strict patterns; inputs reach code only as environment)
+        run: python3 tools/atlas_agent/workflow_run.py --validate-only
+      - name: Check out the Atlas art source read-only
+        if: ${{ inputs.source == 'atlas-ref' }}
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ inputs.atlas_ref }}
+          path: atlas-source
+          persist-credentials: false
+          lfs: false
+          fetch-depth: 1
+      - name: Download the optional capture bundle
+        if: ${{ inputs.capture_bundle_run_id != '' && inputs.capture_bundle_artifact != '' }}
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: ${{ inputs.capture_bundle_artifact }}
+          run-id: ${{ inputs.capture_bundle_run_id }}
+          github-token: ${{ github.token }}
+          path: capture-bundle
+      - name: Install the pinned official OpenAI SDK (live runs only)
+        if: ${{ inputs.mode == 'live' }}
+        run: python3 -m pip install --disable-pip-version-check -r tools/atlas_agent/requirements.txt
+      - name: Dry run (no key, no network, no chargeable request)
+        if: ${{ inputs.mode != 'live' }}
+        run: python3 tools/atlas_agent/workflow_run.py
+      - name: Live run (charged API calls; refuses unless every gate passes)
+        if: ${{ inputs.mode == 'live' }}
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_ADMIN_KEY: ${{ secrets.OPENAI_ADMIN_KEY }}
+        run: python3 tools/atlas_agent/workflow_run.py
+      - name: Retain receipt, patch, tool log and transcript (also after failures)
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ${{ inputs.artifact_name }}
+          path: ${{ runner.temp }}/atlas-agent-out
+          if-no-files-found: error
+          retention-days: 30
