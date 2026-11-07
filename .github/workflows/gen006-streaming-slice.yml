@@ -8,6 +8,7 @@ on:
       - 'native/tests/gen006_restore_coordinate_binding_negative.cpp'
       - 'tools/experiments/gen006_cross_process_restart.py'
       - 'tools/experiments/gen006_persistent_controller.py'
+      - 'tools/experiments/gen006_surface_owner_containment.py'
       - 'godot/tests/gen006_streaming_slice_demo.gd'
       - 'godot/tests/gen006_streaming_slice_demo.tscn'
       - '.github/workflows/gen006-streaming-slice.yml'
@@ -55,6 +56,7 @@ jobs:
                   "expected_pr_head":os.environ["GEN006_EXPECTED_HEAD"],
                   "restart_fixture_blob":git("hash-object","tools/experiments/gen006_cross_process_restart.py"),
                   "persistent_fixture_blob":git("hash-object","tools/experiments/gen006_persistent_controller.py"),
+                  "containment_fixture_blob":git("hash-object","tools/experiments/gen006_surface_owner_containment.py"),
                   "godot_demo_blob":git("hash-object","godot/tests/gen006_streaming_slice_demo.gd"),
                   "godot_scene_blob":git("hash-object","godot/tests/gen006_streaming_slice_demo.tscn"),
                   "scope":"experimental sharded native Worlds; no single-World selective eviction, Rapier, Godot or cross-shard physics"}
@@ -109,6 +111,18 @@ jobs:
             | tee build/gen006-streaming-slice/persistent-four.log
           grep -q 'GEN006_PERSISTENT_CONTROLLER_PASS configured_workers=1' build/gen006-streaming-slice/persistent-one.log
           grep -q 'GEN006_PERSISTENT_CONTROLLER_PASS configured_workers=4' build/gen006-streaming-slice/persistent-four.log
+          python3 tools/experiments/gen006_surface_owner_containment.py \
+            --exe build/gen006-streaming-slice/streaming-slice \
+            --root build/gen006-streaming-slice/containment-world-one \
+            --logs build/gen006-streaming-slice/containment-logs-one --workers 1 \
+            | tee build/gen006-streaming-slice/containment-one.log
+          python3 tools/experiments/gen006_surface_owner_containment.py \
+            --exe build/gen006-streaming-slice/streaming-slice \
+            --root build/gen006-streaming-slice/containment-world-four \
+            --logs build/gen006-streaming-slice/containment-logs-four --workers 4 \
+            | tee build/gen006-streaming-slice/containment-four.log
+          grep -q 'GEN006_SURFACE_OWNER_CONTAINMENT_PASS configured_workers=1' build/gen006-streaming-slice/containment-one.log
+          grep -q 'GEN006_SURFACE_OWNER_CONTAINMENT_PASS configured_workers=4' build/gen006-streaming-slice/containment-four.log
           g++-13 -std=c++20 -O0 -g0 -pthread -I native/include \
             native/src/world.cpp native/src/material_rules.cpp \
             native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
@@ -169,6 +183,10 @@ jobs:
             build/gen006-streaming-slice/restart-four/
             build/gen006-streaming-slice/persistent-one.log
             build/gen006-streaming-slice/persistent-four.log
+            build/gen006-streaming-slice/containment-one.log
+            build/gen006-streaming-slice/containment-four.log
+            build/gen006-streaming-slice/containment-logs-one/
+            build/gen006-streaming-slice/containment-logs-four/
             build/gen006-streaming-slice/persistent-ipc-one/
             build/gen006-streaming-slice/persistent-ipc-four/
             build/gen006-streaming-slice/coordinate-compile.log
@@ -215,6 +233,7 @@ jobs:
                   "expected_pr_head":os.environ["GEN006_EXPECTED_HEAD"],
                   "restart_fixture_blob":git("hash-object","tools/experiments/gen006_cross_process_restart.py"),
                   "persistent_fixture_blob":git("hash-object","tools/experiments/gen006_persistent_controller.py"),
+                  "containment_fixture_blob":git("hash-object","tools/experiments/gen006_surface_owner_containment.py"),
                   "godot_demo_blob":git("hash-object","godot/tests/gen006_streaming_slice_demo.gd"),
                   "godot_scene_blob":git("hash-object","godot/tests/gen006_streaming_slice_demo.tscn"),
                   "scope":"experimental sharded native Worlds; no single-World selective eviction, Rapier, Godot or cross-shard physics"}
@@ -271,6 +290,16 @@ jobs:
           if errorlevel 1 exit /b 1
           findstr /C:"GEN006_PERSISTENT_CONTROLLER_PASS configured_workers=4" build\gen006-streaming-slice\persistent-four.log
           if errorlevel 1 exit /b 1
+          python tools/experiments/gen006_surface_owner_containment.py --exe build\gen006-streaming-slice\streaming-slice.exe --root build\gen006-streaming-slice\containment-world-one --logs build\gen006-streaming-slice\containment-logs-one --workers 1 > build\gen006-streaming-slice\containment-one.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\containment-one.log & exit /b 1)
+          python tools/experiments/gen006_surface_owner_containment.py --exe build\gen006-streaming-slice\streaming-slice.exe --root build\gen006-streaming-slice\containment-world-four --logs build\gen006-streaming-slice\containment-logs-four --workers 4 > build\gen006-streaming-slice\containment-four.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\containment-four.log & exit /b 1)
+          type build\gen006-streaming-slice\containment-one.log
+          type build\gen006-streaming-slice\containment-four.log
+          findstr /C:"GEN006_SURFACE_OWNER_CONTAINMENT_PASS configured_workers=1" build\gen006-streaming-slice\containment-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_SURFACE_OWNER_CONTAINMENT_PASS configured_workers=4" build\gen006-streaming-slice\containment-four.log
+          if errorlevel 1 exit /b 1
           "%GEN006_CXX%" -std=c++20 -O0 -I native/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/world_generation.cpp native/src/generation_fields.cpp native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp native/src/generation_grammar.cpp native/src/generation_planes.cpp native/tests/gen006_restore_coordinate_binding_negative.cpp -o build\gen006-streaming-slice\coordinate-regression.exe > build\gen006-streaming-slice\coordinate-compile.log 2>&1
           if errorlevel 1 (type build\gen006-streaming-slice\coordinate-compile.log & exit /b 1)
           build\gen006-streaming-slice\coordinate-regression.exe build\gen006-streaming-slice\binding-one 1 > build\gen006-streaming-slice\binding-one.log 2>&1
@@ -300,6 +329,10 @@ jobs:
             build/gen006-streaming-slice/restart-four/
             build/gen006-streaming-slice/persistent-one.log
             build/gen006-streaming-slice/persistent-four.log
+            build/gen006-streaming-slice/containment-one.log
+            build/gen006-streaming-slice/containment-four.log
+            build/gen006-streaming-slice/containment-logs-one/
+            build/gen006-streaming-slice/containment-logs-four/
             build/gen006-streaming-slice/persistent-ipc-one/
             build/gen006-streaming-slice/persistent-ipc-four/
             build/gen006-streaming-slice/coordinate-compile.log
