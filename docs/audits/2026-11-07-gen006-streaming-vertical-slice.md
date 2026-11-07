@@ -235,3 +235,32 @@ shared-World selective chunk deletion, async job fencing, power-cut recovery
 and recipe reconciliation remain unimplemented. The next product-facing step
 is an owner-coordinated live GDExtension/World controller, preserving the
 no-default-change and explicit unsupported-domain refusal contracts.
+
+
+## Actual Godot framebuffer qualification — preserved #496 evidence
+
+Independent support PR #496 qualified this exact prototype through an actual
+Godot 4.7 OpenGL compatibility framebuffer under Xvfb, rather than only the
+earlier headless ImageTexture smoke. The source-matched run is
+[Actions #42327654878](https://github.com/techrote/cybersand/actions/runs/42327654878),
+stacked on #486 head `7d00e63e7f09f6dc9aeb8bd502c2dbc3a6ee4913`. The original downloadable artifact is
+[gen006-actual-godot-viewport-42327654878-1 / #13556425122](https://github.com/techrote/cybersand/actions/runs/42327654878/artifacts/13556425122).
+The integrated workflow retains subsequent framebuffer evidence for 90 days.
+
+The five **original framebuffer PNGs** from that accepted run are identified
+by these immutable SHA-256 receipts, recorded here so the original evidence is
+not conflated with later reruns:
+
+```text
+bd3e2042afeca56b648d872caca8427e9242aaf3a1d022d6c2cc6ecfa8ea5be9  01-dug.png
+2985ca19ecfbc3596699232ef4de4de1e10d302062461a8cdadb1d1fe2ea07f5  02-painted-wall.png
+3e6ec7375d57d348bf89d5ad5a91843c6fb72071c6e6ce150ee574178bb5e5ac  03-distant-chunk.png
+57c843e1d6995518876163e0534710fe5375b406b53441e845e3bddc72021198  04-reloaded-wall.png
+b804e2d966c857ec72a018b770113285f599eed789a01d5c44b906dcd2c16aa5  05-water17.png
+```
+
+That run passed `GEN006_GODOT_GRAPHICAL_FRAME_PASS` with real native RGBA,
+actual framebuffer readback, mouse dig/Wall/Water interaction, a 1536-pixel
+camera jump, real shard eviction/reload and restored pixels. These screenshots
+are prototype evidence only; they are not production renderer or human desktop
+gameplay acceptance.

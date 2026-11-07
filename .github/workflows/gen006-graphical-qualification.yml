@@ -1,0 +1,134 @@
+name: GEN006 actual Godot graphical framebuffer qualification
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'godot/tests/gen006_graphical_qualification.gd'
+      - '.github/workflows/gen006-graphical-qualification.yml'
+      - 'godot/tests/gen006_streaming_slice_demo.gd'
+      - 'godot/tests/gen006_streaming_slice_demo.tscn'
+      - 'native/tests/gen006_streaming_slice.cpp'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gen006-graphical-qa-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  native-godot-actual-framebuffer:
+    name: Ubuntu 24.04 / real GL compatibility viewport via Xvfb
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      GEN006_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - name: Checkout exact implementation/test head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Source provenance, driver and provider policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=build/gen006-graphical-qa
+          mkdir -p "$dir"
+          git rev-parse HEAD | tee "$dir/head.txt"
+          git rev-parse 'HEAD^{tree}' | tee "$dir/tree.txt"
+          test "$(git rev-parse HEAD)" = "$GEN006_EXPECTED_HEAD"
+          for f in native/src/world.cpp native/tests/gen006_streaming_slice.cpp godot/tests/gen006_streaming_slice_demo.gd godot/tests/gen006_graphical_qualification.gd; do
+            git hash-object "$f" | tee -a "$dir/source-blobs.txt"
+          done
+          lsb_release -a 2>&1 | tee "$dir/os.txt"
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Compile real native World and generator
+        shell: bash
+        timeout-minutes: 25
+        run: |
+          set -euo pipefail
+          dir=build/gen006-graphical-qa
+          g++-13 --version | head -n 1 | tee "$dir/compiler.txt"
+          g++-13 -std=c++20 -O0 -g0 -pthread -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/src/world_generation.cpp native/src/generation_fields.cpp \
+            native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp \
+            native/src/generation_grammar.cpp native/src/generation_planes.cpp \
+            native/tests/gen006_streaming_slice.cpp \
+            -o "$dir/streaming-slice" \
+            > "$dir/native-compile.log" 2>&1 || { cat "$dir/native-compile.log"; exit 1; }
+      - name: Execute actual Godot graphical viewport and preserve five PNGs
+        shell: bash
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          dir=build/gen006-graphical-qa
+          mkdir -p "$dir/bin" "$dir/project/tests" "$dir/screenshots"
+          if ! command -v xvfb-run >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq xvfb libgl1-mesa-dri
+          fi
+          curl -fsSL --retry 3 --retry-delay 3 \
+            'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7' \
+            -o "$dir/godot-4.7.zip"
+          echo '0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  '"$dir/godot-4.7.zip" | sha256sum --check --strict
+          unzip -q "$dir/godot-4.7.zip" -d "$dir/bin"
+          godot_bin="$(find "$dir/bin" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$godot_bin"
+          chmod +x "$godot_bin"
+          "$godot_bin" --version | tee "$dir/godot-version.txt"
+          cp godot/tests/gen006_streaming_slice_demo.gd \
+             godot/tests/gen006_streaming_slice_demo.tscn \
+             godot/tests/gen006_graphical_qualification.gd "$dir/project/tests/"
+          cat > "$dir/project/project.godot" <<'EOP'
+          config_version=5
+          [application]
+          config/name="GEN006 Actual Framebuffer Qualification"
+          [display]
+          window/size/viewport_width=1280
+          window/size/viewport_height=800
+          window/size/window_width_override=1280
+          window/size/window_height_override=800
+          [rendering]
+          renderer/rendering_method="gl_compatibility"
+          renderer/rendering_method.mobile="gl_compatibility"
+          EOP
+          export GEN006_SLICE_EXECUTABLE="$PWD/$dir/streaming-slice"
+          export GEN006_SLICE_ROOT="$PWD/$dir/world"
+          export GEN006_GRAPHICAL_EVIDENCE="$PWD/$dir/screenshots"
+          export LIBGL_ALWAYS_SOFTWARE=1
+          xvfb-run -a -s '-screen 0 1280x800x24' \
+            timeout 240 "$godot_bin" --rendering-driver opengl3 \
+              --path "$dir/project" --script res://tests/gen006_graphical_qualification.gd \
+            2>&1 | tee "$dir/graphical.log"
+          grep -q 'GEN006_GODOT_GRAPHICAL_FRAME_PASS' "$dir/graphical.log"
+          for name in 01-dug 02-painted-wall 03-distant-chunk 04-reloaded-wall 05-water17; do
+            test -s "$dir/screenshots/$name.png"
+          done
+          sha256sum "$dir"/screenshots/*.png | tee "$dir/screenshots.sha256"
+          test "$(wc -c < "$dir/world/gen006-current.rgba")" = 16384
+      - name: Preserve original graphical and native evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-actual-godot-viewport-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/gen006-graphical-qa/head.txt
+            build/gen006-graphical-qa/tree.txt
+            build/gen006-graphical-qa/source-blobs.txt
+            build/gen006-graphical-qa/os.txt
+            build/gen006-graphical-qa/compiler.txt
+            build/gen006-graphical-qa/native-compile.log
+            build/gen006-graphical-qa/godot-version.txt
+            build/gen006-graphical-qa/graphical.log
+            build/gen006-graphical-qa/screenshots/*.png
+            build/gen006-graphical-qa/screenshots.sha256
+            build/gen006-graphical-qa/world/gen006-current.rgba
+          if-no-files-found: warn
+          retention-days: 90
