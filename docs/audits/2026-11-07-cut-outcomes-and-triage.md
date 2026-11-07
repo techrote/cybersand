@@ -189,3 +189,10 @@ fidelity, whether a new asynchronous ownership contract is worth building, and
 which independently useful repairs to separate for review.** No winner/default
 is selected here. Keep the draft stack. Stop further tangents at this checkpoint
 and request independent adversarial review before any integration decision.
+
+
+Documentation routing correction: initial checks-final incorrectly placed this
+dated audit in the default corpus and failed docs/repository. It is now in the
+excluded dated inventory, with canonical answers in the freed-object contract.
+The two new query strings remain unchanged; canonical expectations now name that
+contract. Earlier retrieval scores using the invalid corpus are not acceptance.

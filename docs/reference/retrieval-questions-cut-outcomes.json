@@ -7,8 +7,7 @@
       "id": "CUT-OUTCOME-001",
       "query": "Can the current cutter run without globally pausing native Sand and Rapier bodies, and what ownership contract prevents it?",
       "canonical": [
-        "architecture/workbench-freed-objects.md",
-        "audits/2026-11-07-cut-outcomes-and-triage.md"
+        "architecture/workbench-freed-objects.md"
       ],
       "facts": [
         "Prepared globally fences tick; source tick/terrain and old-body pose must match.",
@@ -23,7 +22,6 @@
       "id": "CUT-OUTCOME-002",
       "query": "What does rectangle plus Sand versus all Sand versus rectangle-only discard compare, and which SOL decisions remain for owner triage?",
       "canonical": [
-        "audits/2026-11-07-cut-outcomes-and-triage.md",
         "architecture/workbench-freed-objects.md"
       ],
       "facts": [
