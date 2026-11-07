@@ -256,13 +256,25 @@ func run() -> void:
 	check(third_stopped.get("status")=="stopped"
 		and main.latest_snapshot.tick_index==paint_tick,
 		"human-readback task did not retire without extra ticks")
-	if observation.get("status")=="observed":
-		var evidence_dir: String = OS.get_environment("WB_AGENT_527_IMAGE_DIR")
-		if not evidence_dir.is_empty():
-			var png: PackedByteArray = observation.framebuffer_png
+	# Retain the ORIGINAL renderer-owned PNGs for the initial observation,
+	# post-Step 0->4 image and the independently reobserved human brush.
+	# Material authority is separately asserted through native IDs above.
+	var evidence_dir: String = OS.get_environment("WB_AGENT_527_IMAGE_DIR")
+	if not evidence_dir.is_empty():
+		var images: Array = [
+			{"name":"original-native-matched-before-step.png","receipt":observation},
+			{"name":"original-native-matched-after-four-steps.png","receipt":matched},
+			{"name":"original-native-matched-human-intervention.png","receipt":human_readback}
+		]
+		for entry: Dictionary in images:
+			var original: Dictionary = entry["receipt"]
+			var png: PackedByteArray = original.get("framebuffer_png",PackedByteArray())
+			if not check(original.get("status")=="observed" and png.size()>8,
+					"missing original image evidence "+str(entry["name"])):
+				continue
 			var file: FileAccess = FileAccess.open(evidence_dir.path_join(
-				"original-native-matched-before-step.png"),FileAccess.WRITE)
-			if check(file != null,"could not open original screenshot evidence"):
+				str(entry["name"])),FileAccess.WRITE)
+			if check(file != null,"could not open original image "+str(entry["name"])):
 				file.store_buffer(png)
 				file.close()
 	print("WB_AGENT_527_FOUR_TOOL_RESULT "+JSON.stringify({
