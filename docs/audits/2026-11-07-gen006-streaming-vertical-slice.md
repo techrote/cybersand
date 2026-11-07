@@ -114,3 +114,76 @@ cross-boundary activity/transfer, approved by the protected-source owner.
 Subsequently expose a genuine opt-in Godot camera/paint/tick UI. The prototype
 provides a runnable workload and actual native restart witness for that
 integration, rather than another invented model of World state.
+
+## Implementation continuation — coordinate-safe native reload and process restart (7 November)
+
+**Source checkpoint:** On the same Draft PR #486, reconciled the previous
+prototype onto accepted main `3d953ed1c1f5bd0bcf582359d47863689b9e2310`
+without replacing newly accepted native World, GDExtension or material changes.
+Requalification applies to the final exact branch and GitHub-hosted merge source;
+earlier run receipts do **not** qualify later edits.
+
+### Restore identity correction (native owner-boundary)
+
+Independent support PR #490 found that changing only the outer record coordinate
+could relabel a valid inner native A checkpoint as B. The body checksum remained
+valid; the previous restore accepted the one-chunk World without checking which
+chunk was resident. This was **actually reproduced** on Windows/Linux in
+[run #42320652643](https://github.com/techrote/cybersand/actions/runs/42320652643).
+
+The builder now validates the requested coordinate against the decoded native
+World before `focus()` commits any resident eviction. The first prototype
+requires `maximum_chunk_count == 1`, `chunk_count() == 1` and a healthy World.
+The existing `install_generated_chunk(c, Empty[4096])` preflight returns
+`AlreadyResident` for correct B and `CapacityFull` for a different chunk.
+These outcomes are read-only **under current native source implementation
+and this exact one-chunk scope**. They are not a general-purpose native
+residency API and must be replaced when a shared World selective-eviction
+API is admitted. No native World source, C ABI, checkpoint format or simulation
+policy changed.
+
+The self-test now injects a relabelled A checkpoint under B's path,
+requires `GEN006_RESTORED_CHUNK_COORDINATE` refusal with existing resident
+hash and count unchanged, restores the intact B record successfully and
+reconstitutes A's original Water17. Original CYPS-corruption refusal remains
+a separate control. This is a deliberate correction to the prototype, not
+proof of production-wide untrusted-save security.
+
+### Actual independent operating-system process restart
+
+`tools/experiments/gen006_cross_process_restart.py` runs **three separate
+native executable processes** against one private save directory. The first
+genuinely creates, simulates, paints Water17/temperature417, writes an explicit
+Empty tombstone and exits through `save_all()`. The second process restores
+the native World and verifies exact Water state, edit intent, physical hash,
+completed tick index, then focuses a distant x=24 chunk to force actual
+destruction, returns and reloads the source. A third process independently
+restores the persisted state and compares all receipts.
+
+The read-only `inspect LOCAL_X LOCAL_Y` command prints actual native cell
+material, liquid mass, stored temperature and explicit edit-intent bit.
+These values come from the native World; they are not Python model state.
+The dedicated workflow runs this acceptance under one/four **configured**
+workers on both Ubuntu and Windows with original process stdout/stderr in
+the retained CI artifacts. Qualification status follows the exact-head
+workflow; a four-worker setting is not proof of four active workers.
+
+Run the local additional acceptance after building the existing native
+executable (the directory must not exist before the run):
+
+```sh
+python3 tools/experiments/gen006_cross_process_restart.py \
+  --exe build/gen006-streaming-slice/streaming-slice \
+  --root build/gen006-streaming-slice/restart-probe \
+  --logs build/gen006-streaming-slice/restart-logs --workers 1
+```
+
+**Unchanged HOLD:** This is still separate one-chunk Worlds, not selective
+removal from the production shared World. Cross-chunk Water/halo/event transfer,
+live Rapier and multi-plane bundle ownership are explicitly unsupported.
+The synchronous record is not a qualified power-loss or multi-writer transaction.
+Camera/player-driven Godot display and input are not yet integrated. The most
+valuable next implementation step is an opt-in Godot host for the same native
+cells while preserving these exact save/refusal controls, coordinated with
+the production adapter owner; subsequently replace sharded Worlds with an
+owner-admitted shared-World selective eviction transaction.
