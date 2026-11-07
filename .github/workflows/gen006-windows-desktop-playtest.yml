@@ -1,0 +1,63 @@
+name: GEN006 Windows desktop playtest launcher qualification
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'tools/experiments/gen006_windows_desktop_playtest.ps1'
+      - 'docs/audits/2026-11-07-gen006-windows-desktop-playtest.md'
+      - '.github/workflows/gen006-windows-desktop-playtest.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gen006-win-desktop-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  windows-powershell-apparatus:
+    runs-on: windows-2022
+    timeout-minutes: 12
+    env:
+      EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Verify source receipt and CI provider
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force build/gen006-desktop | Out-Null
+          $head = (& git rev-parse HEAD).Trim()
+          if ($head -ne $env:EXPECTED_HEAD) { throw "Wrong PR head checked out" }
+          $head | Set-Content build/gen006-desktop/head.txt
+          (& git rev-parse 'HEAD^{tree}') | Set-Content build/gen006-desktop/tree.txt
+          (& git hash-object tools/experiments/gen006_windows_desktop_playtest.ps1) | Set-Content build/gen006-desktop/launcher-blob.txt
+          python tools/ci/check_ci_provider_policy.py
+      - name: Parse real PowerShell script without executing interactive GUI
+        shell: pwsh
+        run: |
+          $script = (Resolve-Path tools/experiments/gen006_windows_desktop_playtest.ps1).Path
+          $tokens = $null
+          $errors = $null
+          $null = [System.Management.Automation.Language.Parser]::ParseFile($script,[ref]$tokens,[ref]$errors)
+          foreach ($error in $errors) { Write-Error $error.ToString() }
+          if ($errors.Count -gt 0) { throw "Windows desktop runner parser failed" }
+          $source = Get-Content -LiteralPath $script -Raw
+          foreach ($must in @("GEN006_GODOT_GRAPHICAL_FRAME_PASS","persistent_native_process=1","manual_verdict","Get-FileHash","GodotExe","NativeExe","Auto")) {
+            if (-not $source.Contains($must)) { throw "Missing Windows acceptance control: $must" }
+          }
+          "GEN006_WINDOWS_DESKTOP_LAUNCHER_PARSE_PASS real_windows=1 manual_execution=NOT_PERFORMED" | Tee-Object -FilePath build/gen006-desktop/parser.log
+      - name: Preserve original parse/source evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-win-desktop-launcher-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-desktop/
+          if-no-files-found: warn
+          retention-days: 45
