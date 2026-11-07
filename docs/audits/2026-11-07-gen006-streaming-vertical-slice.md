@@ -611,3 +611,34 @@ actual framebuffer composition, strict read-only cache rejection, stable
 native PID, bounded resident Worlds, and two original PNG screenshots.
 Exact-head execution evidence must be checked before describing the result
 as qualified. CI-pending is not success.
+
+## Native-backed directional Roam prefetch — 7 November 2026 (CI pending)
+
+The opt-in experimental Godot host now maintains **one** background prefetch
+slot for real native RGBA pixels ahead of a moving camera. It projects 24 cells
+in the current direction, prioritizes missing tiles before those older than
+1.5 seconds, and gives player-edit requests and urgent camera demands higher
+dispatch priority. A refused speculative request backs off for 2 seconds
+without assigning a false edit acknowledgment or crashing a valid game session.
+
+A prefetch completion is cached only after validating its exact signed native
+RENDER_RGBA receipt and its 16,384-byte RGBA payload. It cannot replace the
+authoritative editable frame or change the player editing target. One native
+IPC remains in flight; at most 2 sharded Worlds and 8 copied RGBA tiles are
+resident. Cold seams still wait for native admission; directional lookahead
+allows a subsequent seam to cross without another cold request. Speculative
+visual tiles can become stale, are read-only, and are not native shared-World
+authority.
+
+New source-qualified Godot 4.7 OpenGL acceptance
+`godot/tests/gen006_roam_prefetch_qualification.gd` exercises the cold first
+seam, native prefetch of the second seam before it is visible, unchanged
+camera/edit authority, a second seam without visible waiting, same native PID,
+2-World and 8-image budgets, actual native eviction and two original 1280x800
+framebuffer captures. Its actual PASS/FAIL must be read from this exact-head
+GitHub Actions run; **do not infer PASS from registration**.
+
+No accepted native physics or default engine source, ABI, MAT-AUTH protected
+path, shared-World residency branch or storage-worker branch was changed.
+This remains Draft/sharded-World experimental code; selective dynamic chunk
+eviction in one World and cross-boundary Water are not claimed.
