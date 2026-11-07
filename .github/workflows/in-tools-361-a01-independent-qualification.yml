@@ -1,0 +1,60 @@
+# Review-only witness: uses the immutable #404 commit, never the mutable PR checkout.
+# This workflow is deliberately lightweight; Native/GDExtension are separate gates.
+name: IN-TOOLS 361 A01 exact-head independent qualification
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/in-tools-361-a01-independent-qualification.yml'
+      - 'tools/lcb/in_tools_current_main_admission.py'
+      - 'tools/lcb/test_in_tools_current_main_admission.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  a01-404-exact-source:
+    name: A01 #404 real-Git descendant and admission tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out immutable PR404 A01 repair
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 20e668ce66536f9365d07718bfbb5266a2f8502c
+          fetch-depth: 0
+          lfs: false
+
+      - name: Verify reviewed source and historical adopted base
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "20e668ce66536f9365d07718bfbb5266a2f8502c"
+          test "$(git rev-parse 'HEAD^{tree}')" = "19e8842f778f3a916f83805aa8af83307b4756d8"
+          git cat-file -e ba9cbc89029be88b812af59b19e5c59829bbcd90^{commit}
+          git merge-base --is-ancestor ba9cbc89029be88b812af59b19e5c59829bbcd90 HEAD
+          python3 --version
+          git --version
+
+      - name: Run actual-repository admission and 14 adversarial controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/in-tools-a01"
+          python3 tools/lcb/in_tools_current_main_admission.py | tee "$RUNNER_TEMP/in-tools-a01/admission.json"
+          python3 tools/lcb/test_in_tools_current_main_admission.py -v 2>&1 | tee "$RUNNER_TEMP/in-tools-a01/adversarial.log"
+          grep -Eq 'Ran 14 tests' "$RUNNER_TEMP/in-tools-a01/adversarial.log"
+          grep -Eq '^OK$' "$RUNNER_TEMP/in-tools-a01/adversarial.log"
+          git diff --exit-code
+          printf '%s\n' 'A01 exact HEAD/working tree remained clean; 14 unit tests PASS' | tee "$RUNNER_TEMP/in-tools-a01/disposition.txt"
+
+      - name: Retain independent A01 witness
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: in-tools-404-a01-exact-head-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/in-tools-a01/
+          if-no-files-found: warn
+          retention-days: 90
