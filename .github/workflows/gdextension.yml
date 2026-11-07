@@ -267,6 +267,17 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
+      # Candidate-only source/runtime identity. The production retained LFS
+      # runtime and provenance guard remain unchanged; this artifact is for
+      # exact-head review, not an admission of a new production binary.
+      - name: Retain source-matched Linux GDExtension candidate
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-candidate-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/linux-runtime/
+          if-no-files-found: error
+          retention-days: 90
+
       - name: Retain compiler process timing and original logs
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -343,6 +354,34 @@ jobs:
           grep -q 'PE32+ executable (DLL).*x86-64' "$RUNNER_TEMP/windows-file.txt"
           "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > "$RUNNER_TEMP/windows-imports.txt"
           sha256sum "$CYBERSAND_NATIVE_OUTPUT"
+
+      - name: Stage exact-source Windows GDExtension candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_sha="$(git rev-parse HEAD)"
+          test "$source_sha" = "$GITHUB_SHA"
+          mkdir -p build/windows-candidate
+          cp "$RUNNER_TEMP/cybersand_native.windows.x86_64.dll" build/windows-candidate/
+          printf '%s\\n' "$source_sha" > build/windows-candidate/source-sha.txt
+          {
+            echo "godot_cpp_commit=$GODOT_CPP_COMMIT"
+            echo "llvm_mingw_sha256=$LLVM_MINGW_SHA256"
+          } > build/windows-candidate/toolchain.txt
+          ( cd build/windows-candidate
+            sha256sum cybersand_native.windows.x86_64.dll > runtime.sha256
+            sha256sum --check --strict runtime.sha256
+          )
+
+      # This candidate is NOT a replacement for the committed LFS DLL or its
+      # source/identity manifest. No production provenance gate is bypassed.
+      - name: Retain source-matched Windows GDExtension candidate
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-candidate-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/windows-candidate/
+          if-no-files-found: error
+          retention-days: 90
 
       - name: Retain compiler process timing and original logs
         if: always()
