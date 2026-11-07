@@ -12,6 +12,15 @@ func material_census() -> Dictionary:
 	for i: int in range(0,values.size(),3): map[Vector2i(values[i],values[i+1])]=values[i+2]
 	return map
 
+func replay_image_census() -> Dictionary:
+	check(await until(func():return host.last_uploaded_world_generation==host.latest_snapshot.render_world_generation and host.last_uploaded_render_snapshot_serial>=host.latest_snapshot.render_snapshot_serial),"Restore image matches native generation/serial")
+	check(host.latest_snapshot.tick_index==0,"Restore census takes no native step")
+	var copy: Image=host.image.duplicate()
+	var map: Dictionary={}
+	for y: int in range(16,80):
+		for x: int in range(32,96): map[Vector2i(x,y)]=roundi(copy.get_pixel(x,y).r*255)
+	return map
+
 func expected_source(building: bool) -> Dictionary:
 	var recipe: Dictionary={"edits":[]};structure(recipe,0,building)
 	var cells: Dictionary={}
@@ -103,7 +112,7 @@ func release(building: bool, refuse: bool=false) -> bool:
 	check(ui.restore_start(),"ordinary Restore replaces complete owner");await scene_changed
 	host=current_scene;ui=host.shared_workbench
 	if not check(await until(installed),"fresh authored replay"): return false
-	map=await material_census()
+	map=await replay_image_census()
 	for point: Vector2i in source: check(map.get(point)==(0 if core.has_point(point) else 2),"Restore has exactly core plus native Sand, no duplicate brick")
 	check(host.rigid_bodies.back().mass==expected and host.rapier_bridge.manual_step_count()==0,"fresh body retains core mass without warm step")
 	return true
