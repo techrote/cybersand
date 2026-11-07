@@ -64,6 +64,37 @@ enum class BundleAdmissionStatus : std::uint8_t {
     PublicationAlreadySealed,
     PublicationSnapshotOversized,
     PublicationSnapshotInvalid,
+    InvalidReplayScript,
+    ReplayConflictsWithLegacy,
+    ReplayAlreadyStaged,
+    ReplayPrivateFailed,
+};
+
+// Ordered, opt-in cross-resident native command stream. Unlike the legacy
+// one-time edit+preview path, this can edit, advance, edit and advance again
+// inside ONE private physical World before one fenced publication. Order is
+// part of the external verification witness, including re-edits after ticks.
+enum class BundleReplayKind : std::uint8_t { MaterialEdit, NativeTicks };
+struct BundleReplayStep {
+    BundleReplayKind kind = BundleReplayKind::MaterialEdit;
+    BundleMaterialEdit edit{};
+    std::uint32_t ticks = 0;
+    static BundleReplayStep material_edit(BundleMaterialEdit value) {
+        return {BundleReplayKind::MaterialEdit, value, 0};
+    }
+    static BundleReplayStep native_ticks(std::uint32_t count) {
+        return {BundleReplayKind::NativeTicks, {}, count};
+    }
+    friend bool operator==(const BundleReplayStep&, const BundleReplayStep&) = default;
+};
+
+struct BundleReplayReceipt {
+    std::size_t steps = 0, edits = 0;
+    std::uint32_t ticks = 0, observed_workers_max = 0;
+    std::uint64_t completed_tick = 0, physical_hash = 0;
+    QuantityLedgerSnapshot quantity{};
+    std::size_t resident_chunks = 0, resident_cell_bytes = 0;
+    friend bool operator==(const BundleReplayReceipt&, const BundleReplayReceipt&) = default;
 };
 
 // Native-only, non-durable receipt of actually simulated private ticks.
@@ -89,6 +120,7 @@ struct BundlePublicationReceipt {
     std::size_t resident_chunks = 0, resident_cell_bytes = 0;
     std::size_t snapshot_bytes = 0, edit_count = 0;
     std::uint32_t preview_ticks = 0;
+    std::size_t replay_steps = 0;
     friend bool operator==(const BundlePublicationReceipt&,
                            const BundlePublicationReceipt&) = default;
 };
@@ -233,6 +265,8 @@ public:
     static constexpr std::size_t kMaximumStagedEdits = 64;
     void stage_material_edits(std::span<const BundleMaterialEdit> changes) {
         if (publication_) throw BundleAdmissionError(BundleAdmissionStatus::PublicationAlreadySealed);
+        if (replay_receipt_)
+            throw BundleAdmissionError(BundleAdmissionStatus::ReplayConflictsWithLegacy);
         if (tick_receipt_)
             throw BundleAdmissionError(BundleAdmissionStatus::EditsAfterTickBatch);
         if (!edits_.empty())
@@ -294,6 +328,8 @@ public:
     static constexpr std::uint32_t kMaximumStagedTicks = 16;
     [[nodiscard]] BundleTickReceipt stage_native_ticks(std::uint32_t ticks) {
         if (publication_) throw BundleAdmissionError(BundleAdmissionStatus::PublicationAlreadySealed);
+        if (replay_receipt_)
+            throw BundleAdmissionError(BundleAdmissionStatus::ReplayConflictsWithLegacy);
         if (tick_receipt_)
             throw BundleAdmissionError(BundleAdmissionStatus::TicksAlreadyStaged);
         if (ticks == 0 || ticks > kMaximumStagedTicks ||
@@ -336,14 +372,138 @@ public:
     [[nodiscard]] const std::optional<BundleTickReceipt>&
     staged_tick_receipt() const noexcept { return tick_receipt_; }
 
+    // Replay a bounded chronological sequence of native edits AND native ticks
+    // against the actual private World. All commands are preflighted before
+    // the first mutation; a failure consumes the PRIVATE candidate only.
+    // Within each tick epoch, a cell may be edited once, but later epochs may
+    // edit that same cell again. Native sidecars never leave the full World.
+    static constexpr std::size_t kMaximumReplaySteps = 64;
+    static constexpr std::size_t kMaximumReplayEdits = 32;
+    [[nodiscard]] BundleReplayReceipt stage_replay_script(
+            std::span<const BundleReplayStep> input) {
+        if (publication_)
+            throw BundleAdmissionError(BundleAdmissionStatus::PublicationAlreadySealed);
+        if (replay_receipt_)
+            throw BundleAdmissionError(BundleAdmissionStatus::ReplayAlreadyStaged);
+        if (!edits_.empty() || tick_receipt_)
+            throw BundleAdmissionError(BundleAdmissionStatus::ReplayConflictsWithLegacy);
+        if (input.size() < 3 || input.size() > kMaximumReplaySteps)
+            throw BundleAdmissionError(BundleAdmissionStatus::InvalidReplayScript);
+        const auto size = static_cast<std::int64_t>(chunk_size_);
+        if (size <= 0 || size > 256)
+            throw BundleAdmissionError(BundleAdmissionStatus::InvalidReplayScript);
+        std::size_t edit_count = 0;
+        std::uint32_t tick_count = 0;
+        std::vector<BundleMaterialEdit> epoch_edits;
+        for (const auto& step : input) {
+            if (step.kind == BundleReplayKind::MaterialEdit) {
+                const auto& edit = step.edit;
+                if (step.ticks != 0 || ++edit_count > kMaximumReplayEdits ||
+                    edit.local_x < 0 || edit.local_y < 0 ||
+                    edit.local_x >= size || edit.local_y >= size ||
+                    (edit.material != Material::Empty &&
+                     edit.material != Material::Wall &&
+                     edit.material != Material::Sand &&
+                     edit.material != Material::Water))
+                    throw BundleAdmissionError(BundleAdmissionStatus::InvalidReplayScript);
+                if (!std::binary_search(residents_.begin(), residents_.end(), edit.resident))
+                    throw BundleAdmissionError(BundleAdmissionStatus::EditOutsideResident);
+                if (std::any_of(epoch_edits.begin(), epoch_edits.end(),
+                        [&](const BundleMaterialEdit& previous) {
+                            return previous.resident == edit.resident &&
+                                   previous.local_x == edit.local_x &&
+                                   previous.local_y == edit.local_y;
+                        }))
+                    throw BundleAdmissionError(BundleAdmissionStatus::DuplicateEdit);
+                epoch_edits.push_back(edit);
+            } else if (step.kind == BundleReplayKind::NativeTicks) {
+                if (step.ticks == 0 ||
+                    step.ticks > kMaximumStagedTicks - tick_count ||
+                    step.edit != BundleMaterialEdit{})
+                    throw BundleAdmissionError(BundleAdmissionStatus::InvalidReplayScript);
+                tick_count += step.ticks;
+                epoch_edits.clear();
+            } else {
+                throw BundleAdmissionError(BundleAdmissionStatus::InvalidReplayScript);
+            }
+        }
+        if (!edit_count || !tick_count ||
+            transaction_.source_tick() >
+                std::numeric_limits<std::uint64_t>::max() - tick_count)
+            throw BundleAdmissionError(BundleAdmissionStatus::InvalidReplayScript);
+
+        auto script = std::vector<BundleReplayStep>(input.begin(), input.end());
+        BundleReplayReceipt receipt{};
+        receipt.steps = script.size();
+        receipt.edits = edit_count;
+        receipt.ticks = tick_count;
+        try {
+            transaction_.mutate_private([&](World& candidate) {
+                auto expected_tick = transaction_.source_tick();
+                for (const auto& step : script) {
+                    if (candidate.chunk_count() != residents_.size())
+                        throw BundleAdmissionError(BundleAdmissionStatus::PrivateResidentSetExpanded);
+                    if (step.kind == BundleReplayKind::MaterialEdit) {
+                        const auto& edit = step.edit;
+                        const auto x = edit.resident.x * size + edit.local_x;
+                        const auto y = edit.resident.y * size + edit.local_y;
+                        candidate.set(x, y, edit.material);
+                        if (candidate.stored_material(x, y) != edit.material ||
+                            candidate.has_failed())
+                            throw BundleAdmissionError(BundleAdmissionStatus::ReplayPrivateFailed);
+                    } else {
+                        for (std::uint32_t i = 0; i < step.ticks; ++i) {
+                            const auto stats = candidate.tick();
+                            receipt.observed_workers_max = std::max(
+                                receipt.observed_workers_max, stats.worker_threads_observed);
+                            ++expected_tick;
+                            if (candidate.has_failed() ||
+                                candidate.completed_tick_index() != expected_tick)
+                                throw BundleAdmissionError(BundleAdmissionStatus::ReplayPrivateFailed);
+                            if (candidate.chunk_count() != residents_.size())
+                                throw BundleAdmissionError(
+                                    BundleAdmissionStatus::PrivateResidentSetExpanded);
+                        }
+                    }
+                }
+                receipt.completed_tick = candidate.completed_tick_index();
+                receipt.physical_hash = candidate.physical_state_hash();
+                receipt.quantity = candidate.quantity_ledger();
+                receipt.resident_chunks = candidate.chunk_count();
+                receipt.resident_cell_bytes = candidate.resident_cell_bytes();
+            });
+        } catch (const BundleAdmissionError&) {
+            throw;
+        } catch (const std::exception&) {
+            throw BundleAdmissionError(BundleAdmissionStatus::ReplayPrivateFailed);
+        }
+        script_ = std::move(script);
+        replay_receipt_ = receipt;
+        return receipt;
+    }
+
+    [[nodiscard]] std::span<const BundleReplayStep> replay_script() const noexcept {
+        return script_;
+    }
+    [[nodiscard]] const std::optional<BundleReplayReceipt>&
+    replay_receipt() const noexcept { return replay_receipt_; }
+
     // Snapshot actual post-edit/post-native-tick private authority, then
     // round-trip via a distinct real native World. Cannot prove disk fsync,
     // selective release or a pre-serialization memory-allocation bound.
     [[nodiscard]] BundlePublicationReceipt seal_publication(std::size_t limit) {
         if (publication_)
             throw BundleAdmissionError(BundleAdmissionStatus::PublicationAlreadySealed);
-        if (!tick_receipt_)
+        if (!tick_receipt_ && !replay_receipt_)
             throw BundleAdmissionError(BundleAdmissionStatus::PublicationRequiresTicks);
+        const auto expected_tick = replay_receipt_
+            ? replay_receipt_->completed_tick : tick_receipt_->completed_tick;
+        const auto expected_hash = replay_receipt_
+            ? replay_receipt_->physical_hash : tick_receipt_->physical_hash;
+        const auto expected_quantity = replay_receipt_
+            ? replay_receipt_->quantity : tick_receipt_->quantity;
+        const auto expected_bytes = replay_receipt_
+            ? replay_receipt_->resident_cell_bytes : tick_receipt_->resident_cell_bytes;
         if (!limit)
             throw BundleAdmissionError(BundleAdmissionStatus::PublicationSnapshotOversized);
         try {
@@ -359,10 +519,10 @@ public:
                     restored->resident_cell_bytes() != candidate.resident_cell_bytes() ||
                     restored->chunk_count() != residents_.size() ||
                     restored->save_physical_state() != image ||
-                    restored->completed_tick_index() != tick_receipt_->completed_tick ||
-                    restored->physical_state_hash() != tick_receipt_->physical_hash ||
-                    restored->quantity_ledger() != tick_receipt_->quantity ||
-                    restored->resident_cell_bytes() != tick_receipt_->resident_cell_bytes)
+                    restored->completed_tick_index() != expected_tick ||
+                    restored->physical_state_hash() != expected_hash ||
+                    restored->quantity_ledger() != expected_quantity ||
+                    restored->resident_cell_bytes() != expected_bytes)
                     throw BundleAdmissionError(BundleAdmissionStatus::PublicationSnapshotInvalid);
                 BundlePublicationReceipt result{};
                 result.source_fence = transaction_.fence();
@@ -374,8 +534,9 @@ public:
                 result.resident_chunks = restored->chunk_count();
                 result.resident_cell_bytes = restored->resident_cell_bytes();
                 result.snapshot_bytes = image.size();
-                result.edit_count = edits_.size();
-                result.preview_ticks = tick_receipt_->ticks;
+                result.edit_count = replay_receipt_ ? replay_receipt_->edits : edits_.size();
+                result.preview_ticks = replay_receipt_ ? replay_receipt_->ticks : tick_receipt_->ticks;
+                result.replay_steps = replay_receipt_ ? script_.size() : 0;
                 publication_bytes_ = std::move(image);
                 return result;
             });
@@ -399,10 +560,31 @@ public:
             const BundleTickReceipt& tick_copy,
             std::span<const std::uint8_t> post_copy,
             const BundlePublicationReceipt& post_receipt) {
-        if (!publication_ || *publication_ != post_receipt ||
+        if (replay_receipt_ || !publication_ || *publication_ != post_receipt ||
             !tick_receipt_ || *tick_receipt_ != tick_copy ||
             edit_copy.size() != edits_.size() ||
             !std::equal(edits_.begin(), edits_.end(), edit_copy.begin()) ||
+            post_copy.size() != publication_bytes_.size() ||
+            !std::equal(publication_bytes_.begin(), publication_bytes_.end(), post_copy.begin()))
+            return FullWorldCommitStatus::UnverifiedCopy;
+        return transaction_.commit(live, current, base_copy);
+    }
+
+    // Only this entry point can publish a post-simulation ORDERED replay.
+    // The external reader must provide the exact complete chronological
+    // command list, receipt and POST-CYPS image. In-memory readback is not fsync.
+    [[nodiscard]] FullWorldCommitStatus commit_replay_published(
+            std::unique_ptr<World>& live, FullWorldFence current,
+            std::span<const std::uint8_t> base_copy,
+            std::span<const BundleReplayStep> script_copy,
+            const BundleReplayReceipt& replay_copy,
+            std::span<const std::uint8_t> post_copy,
+            const BundlePublicationReceipt& post_receipt) {
+        if (!publication_ || !replay_receipt_ ||
+            *publication_ != post_receipt ||
+            *replay_receipt_ != replay_copy ||
+            script_copy.size() != script_.size() ||
+            !std::equal(script_.begin(), script_.end(), script_copy.begin()) ||
             post_copy.size() != publication_bytes_.size() ||
             !std::equal(publication_bytes_.begin(), publication_bytes_.end(), post_copy.begin()))
             return FullWorldCommitStatus::UnverifiedCopy;
@@ -414,14 +596,16 @@ public:
     [[nodiscard]] FullWorldCommitStatus commit(
             std::unique_ptr<World>& live, FullWorldFence current,
             std::span<const std::uint8_t> verified_copy) {
-        if (!edits_.empty() || tick_receipt_) return FullWorldCommitStatus::UnverifiedCopy;
+        if (!edits_.empty() || tick_receipt_ || replay_receipt_)
+            return FullWorldCommitStatus::UnverifiedCopy;
         return transaction_.commit(live, current, verified_copy);
     }
     [[nodiscard]] FullWorldCommitStatus commit(
             std::unique_ptr<World>& live, FullWorldFence current,
             std::span<const std::uint8_t> verified_base_copy,
             std::span<const BundleMaterialEdit> verified_edits) {
-        if (tick_receipt_) return FullWorldCommitStatus::UnverifiedCopy;
+        if (tick_receipt_ || replay_receipt_)
+            return FullWorldCommitStatus::UnverifiedCopy;
         if (verified_edits.size() != edits_.size() ||
             !std::equal(edits_.begin(), edits_.end(), verified_edits.begin()))
             return FullWorldCommitStatus::UnverifiedCopy;
@@ -436,7 +620,8 @@ public:
             std::span<const std::uint8_t> verified_base_copy,
             std::span<const BundleMaterialEdit> verified_edits,
             const BundleTickReceipt& verified_ticks) {
-        if (publication_ || !tick_receipt_ || *tick_receipt_ != verified_ticks ||
+        if (publication_ || replay_receipt_ || !tick_receipt_ ||
+            *tick_receipt_ != verified_ticks ||
             verified_edits.size() != edits_.size() ||
             !std::equal(edits_.begin(), edits_.end(), verified_edits.begin()))
             return FullWorldCommitStatus::UnverifiedCopy;
@@ -455,7 +640,9 @@ private:
     std::vector<ChunkCoord> residents_;
     std::vector<BundleSeam> seams_;
     std::vector<BundleMaterialEdit> edits_;
+    std::vector<BundleReplayStep> script_;
     std::optional<BundleTickReceipt> tick_receipt_;
+    std::optional<BundleReplayReceipt> replay_receipt_;
     std::optional<BundlePublicationReceipt> publication_;
     std::vector<std::uint8_t> publication_bytes_;
     std::int32_t chunk_size_ = 0;
