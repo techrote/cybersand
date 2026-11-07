@@ -318,3 +318,57 @@ authoritative crash/recovery reconciliation. Tests inject a failed fsync,
 restore the old byte length, and verify the stale handle still cannot ACK.
 This guard improves failure handling but does not itself establish
 atomic multi-record rollback or recoverable ACK identity across processes.
+
+
+## 7 November 2026 — native owner journal-ACK staging (isolated opt-in)
+
+The gen006_storage_native_owner_journal.py experiment adds an executable
+journal-ACK boundary to a long-lived **actual C++ World owner**, without
+modifying PR #486 or the protected production World. It is NOT the live Godot
+controller and is not a general streaming replacement.
+
+- Native source is pinned to PR #486 commit
+  876859839df581b400b24a0a182b95d8ed259b1c. The scratch source
+  transformer requires exact original harness Git blob
+  c172bb0d9b82e31b97a6a002990d3f084e308d2f. Three uniquely validated
+  anchors change only in the temporary compiled staging service:
+  skip per-edit full checkpoint publication, label its response
+  UNDURABLE_STAGE and report file_published=0. The intact original service
+  is independently compiled as the exact-source checkpoint control.
+- A serialized outer owner verifies each genuine native coordinate,
+  generation, hash and tick against a real G6SLICE1 baseline, appends a
+  48-byte G6J1 mutation, fsyncs and **only then** returns an outer durable
+  ACK. Native state may be staged ahead of that ACK but a persistence
+  refusal immediately kills the native owner; its speculative state is
+  never offered to another request. Inner native stage receipts are NOT
+  durable acknowledgments.
+- The supported domain is frozen native tick 0, signed shard (-1,-3),
+  real native Wall, explicit Empty intent, and Water17/temperature417
+  edits. Native service runs at its slowest legal 1 Hz for this test,
+  but any observed tick movement is rejected. Moving Water, later
+  simulation ticks, pressure/inertial/ballistic sidecars, multi-chunk
+  eviction and general session migration are UNSUPPORTED.
+- After five fsync-before-ACK transactions, the actual native World owner
+  is hard-killed without graceful quit/save_all; the original unchanged
+  baseline working file is deleted. Five fresh native processes replay
+  cumulative journal prefixes from the complete embedded host carrier,
+  verify every physical hash, generation and tick, and compare the final
+  exact G6SLICE1 bytes against a separate actual full-checkpoint owner
+  run. A new process independently reopens that restored carrier.
+- The experiment emits journal-native-owner-report.json with original
+  process identities, per-edit ACK timing, p50/p95/p99, and payload bytes
+  from each arm. Five samples are exploratory, NOT steady-state 30 Hz
+  performance evidence. Per-edit native cloning still occurs. Actual
+  physical disk writes, CPU tick cost and power-loss guarantees are
+  unmeasured. Windows does not claim POSIX directory-fsync equivalence.
+
+The source-pinned Windows/Linux workflow runs 1/4 configured workers,
+retaining original test logs and runtime artifacts. Passing qualifies
+this narrow experimental owner only; Draft-skipped production Native
+and GDExtension gates remain unqualified.
+
+**Next builder dependency:** expose an actual staged World-generation
+commit/rollback boundary in #486, so the external storage owner can fsync
+journal records and commit exactly once without a patched scratch harness
+or per-edit full native checkpoint. Rejected commits must never become
+client-visible. #486 owns this interface; #518 must not edit its branch.
