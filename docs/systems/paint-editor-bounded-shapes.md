@@ -200,3 +200,48 @@ or executable checkout is available in this task environment; no PASS is
 claimed. All usual production Native, Windows/Linux GDExtension/Godot,
 Documentation/provenance, source-admission, owner-human and merge gates remain
 unexecuted for this new candidate.
+
+
+## Material-aware paste staging (PAINT-001 fifth increment; Draft only)
+
+Shapes.stamp_materials(source_cells, source_materials, source_origin,
+destination_origin, extent) takes interleaved integer x/y coordinates and
+**one corresponding authoritative native material ID per source cell**, in
+matching order. The caller must first capture a quiescent, generation- and
+revision-fenced native material snapshot; neither screenshot/dithering
+readback nor an unversioned observation is sufficient. The planner cannot
+establish that source identity itself. It is a **staging/preview primitive**,
+not an authoritative paste API and not a user-mounted editor control.
+
+The planner refuses missing/misaligned source IDs, values outside the
+native 0–255 ID range, source/destination out-of-bounds, conflicting IDs
+for repeated source coordinates, and more than 4096 source points. Identical
+coordinate/ID duplicates are coalesced. The entire operation refuses if
+any destination leaves the canvas: no clipping or partial paste. It returns
+a deterministic row-major union of destination points and deterministic
+per-material groups, sorted by numeric material ID; material **0 (Air) is
+retained** for a future authorized erase operation, not silently discarded.
+A successful geometry plan marks staging_only=true,
+atomic_commit_required=true, and applied=false.
+
+**Safety boundary:** the current CyberSimulationWorker.queue_emit_cells
+only admits independent bounded brush commands, with no cross-group
+atomic commit or source-revision fence. The Integration owner must **never**
+loop over the returned groups and queue them individually: a capacity
+refusal, Stop, World swap, concurrent agent edit or partial native apply
+would leave an inconsistent map. An all-or-refused, material-preserving
+transaction with native *applied* acknowledgment, protected-cell checks and
+generation/revision fencing is required before any multi-material paste
+or authoring-history entry may become user-operable. Source may contain
+multiple materials; none are changed by this planner.
+
+Dedicated GDScript regression now tests Air/other material grouping,
+row-major determinism, zero applied claims, repeated identical and
+conflicting cells, incomplete/native-invalid ID vectors, off-canvas
+destination and 4097-cell refusal. It retains its existing real
+native-owner test for the **five uniform-material plans** only; this
+new staging primitive deliberately makes **zero native submissions**.
+The actual GDScript/native run remains unexecuted in this environment;
+do not confuse tests added to source with passing runtime evidence.
+The outstanding Docs failure remains the Integration-owned
+docs/reference/retrieval-corpus.json registration for this focused file.
