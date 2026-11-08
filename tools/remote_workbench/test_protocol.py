@@ -204,8 +204,8 @@ class ProtocolTests(unittest.TestCase):
 
     def test_duplicate_batch_sequence_preflight(self):
         self.commands.write_text(
-            '{"version":1,"seq":1,"tool":"observe","args":{}}\\n'
-            '{"version":1,"seq":1,"tool":"stop","args":{}}\\n'
+            '{"version":1,"seq":1,"tool":"observe","args":{}}\n'
+            '{"version":1,"seq":1,"tool":"stop","args":{}}\n'
         )
         with self.assertRaisesRegex(ValueError, "monotonic"):
             runner.validate_commands(self.commands, live=False)
