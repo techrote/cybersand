@@ -11,6 +11,7 @@ import time
 from dataclasses import dataclass,field
 
 from atlas_agent.pricing import text_tokens_upper_bound, image_tokens_upper_bound
+from atlas_agent.errors import LimitReached
 from .config import ConfigError, validate_live
 from .backend import Workbench,NativeError,STATUS,validate_tool
 from .providers import ProviderError,Decision,HTTPAdapter,ScriptedAdapter
@@ -350,8 +351,16 @@ class Runner:
                 if decision.kind=='final':return self._finish('model_final','model_final',decision.text)
                 if decision.kind!='tool' or not decision.args:raise ProviderError('model_response_not_one_tool')
                 self._dispatch(decision)
-        except (NativeError,ProviderError,LimitError,ConfigError,ValueError) as exc:
-            reason=getattr(exc,'code',getattr(exc,'kind',str(exc)))
+        except (NativeError,ProviderError,LimitError,ConfigError,ValueError,LimitReached) as exc:
+            reason=getattr(exc,'code',getattr(exc,'kind',getattr(exc,'reason_code',str(exc))))
             self.failure=str(reason)
             self._event({'type':'runner_stop_reason','reason':str(reason)})
             return self._finish('stopped_or_failed',str(reason))
+        except Exception as exc:
+            # In particular, an unexpected Atlas/pricing or provider shape
+            # error must still initiate host Stop rather than strand a World.
+            # Do not serialize an exception message containing provider data.
+            self.failure='runner_internal_'+type(exc).__name__
+            try:self._event({'type':'runner_internal_failure','reason':self.failure})
+            except (OSError,ValueError,LimitError):pass
+            return self._finish('internal_failure',self.failure)

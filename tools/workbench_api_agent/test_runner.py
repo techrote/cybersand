@@ -106,6 +106,25 @@ class ScriptedTests(unittest.TestCase):
         self.assertEqual(r['status'],'stopped_or_failed')
         self.assertIn('model_call_limit',r['reason'])
         self.assertTrue(self.native.stop_called.is_set())
+    def test_atlas_reserved_budget_failure_still_stops_native(self):
+        from atlas_agent.errors import LimitReached
+        runner=self.runner()
+        def blocked():raise LimitReached('bound exceeded','max_total_input_tokens')
+        runner.budget.start_iteration=blocked
+        report=runner.run()
+        self.assertTrue(report['stop_acknowledged'])
+        self.assertEqual(report['reason'],'max_total_input_tokens')
+        self.assertEqual(self.native.commands,[])
+    def test_unexpected_provider_exception_still_stops_native(self):
+        class BrokenProvider:
+            def request(self,*args):raise IndexError('bad provider internal output shape')
+        runner=Runner(self.profile,self.task,self.auth,self.native,self.root/'result',
+                      adapter=BrokenProvider(),fixture_mode=True)
+        report=runner.run()
+        self.assertEqual(report['status'],'internal_failure')
+        self.assertTrue(report['stop_acknowledged'])
+        self.assertEqual(report['reason'],'runner_internal_IndexError')
+        self.assertNotIn('bad provider', (self.root/'result/receipt.json').read_text())
     def test_model_cannot_step_with_prepared_proposal(self):
         steps=self.turns[:2]+[{'tool':'step','args':{'ticks':4}}]
         report=self.runner(turns=steps).run()
@@ -165,6 +184,42 @@ class ProviderProtocolTests(unittest.TestCase):
         self.assertEqual(d.kind,'final')
         with self.assertRaises(ProviderError):parse_json('{"ticks":1,"ticks":2}')
         with self.assertRaises(ProviderError):parse_response({'status':'incomplete','output':[call]},'openai_responses','m')
+    def test_openai_private_file_key_uses_unmodified_atlas_credit_gate(self):
+        import os
+        import workbench_api_agent.config as configuration
+        cfg=load_profile(HERE/'profiles/openai-responses.example.json',fixture_mode=True)
+        with tempfile.TemporaryDirectory() as folder:
+            secret=Path(folder)/'key'
+            secret.write_text('only-test-secret-not-a-real-cloud-key-0123456789',encoding='utf-8')
+            secret.chmod(0o600)
+            cfg['credentials']={'file':str(secret)}
+            cfg['spend'].update({'max_usd_per_run':0.25,'max_usd_per_call':0.05,
+                                 'authorised_ceiling_usd':0.25,'authorisation_ref':'explicit-test-only'})
+            seen=[]
+            original_eval=configuration.atlas_credit_evaluate
+            original_enforce=configuration.atlas_credit_enforce
+            original_rates=configuration.pricing_rates
+            configuration.pricing_rates=lambda v:configuration.Rates(
+                v['model'],0.1,0.1,0.5,1000000,True,
+                {'method':'patch','patch_size':32,'patch_budget':{'low':30000,'high':30000,'auto':30000},'multiplier':2.46},
+                'test-fixture','test-only',120000)
+            def check_atlas_gate(gate_cfg,env,*a,**k):
+                seen.append((gate_cfg['api']['key_env'],env['CYBERSAND_WB_OPENAI_KEY']))
+                return {'passed':True,'checks':[],'facts':{},'rates':None}
+            configuration.atlas_credit_evaluate=check_atlas_gate
+            configuration.atlas_credit_enforce=lambda report:None
+            try:
+                from workbench_api_agent.config import validate_live
+                budget,gate=validate_live(cfg,allow_live=True,fixture_mode=False,
+                                          probe=lambda model:{'status':200,'headers':{}},
+                                          source_dirty=False)
+            finally:
+                configuration.atlas_credit_evaluate=original_eval
+                configuration.atlas_credit_enforce=original_enforce
+                configuration.pricing_rates=original_rates
+            self.assertEqual(seen,[('CYBERSAND_WB_OPENAI_KEY',secret.read_text())])
+            self.assertNotIn('CYBERSAND_WB_OPENAI_KEY',os.environ)
+            self.assertEqual(gate['mode'],'live')
     def test_profiles_keyless_validation(self):
         for name in ('openai-responses.example.json','nvidia-catalog.example.json',
                      'ollama-qwen3-vl-8b.example.json','fixture.json'):

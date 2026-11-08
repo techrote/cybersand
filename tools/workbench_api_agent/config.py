@@ -156,13 +156,19 @@ def validate_live(cfg:dict, *, allow_live:bool, fixture_mode:bool, probe=None, s
         if prov=='openai_responses':
             att_file=sp.get('credit_attestation_file')
             att=read_json(Path(att_file)) if att_file else None
+            # Atlas checks its selected env value but the workbench profile
+            # may also use a private credential FILE. Provide the same secret
+            # only in the in-memory gate environment: never mutate os.environ,
+            # write it to a receipt, or weaken Atlas credit requirements.
+            atlas_gate_env=dict(os.environ)
+            atlas_gate_env['CYBERSAND_WB_OPENAI_KEY']=credential(cfg)
             atlas_cfg={'spend':{'max_usd_per_call':sp['max_usd_per_call'], 'max_usd_per_run':sp['max_usd_per_run'],
                  'authorised_ceiling_usd':sp['authorised_ceiling_usd'],'authorisation_ref':sp['authorisation_ref'],
                  'require_costs_crosscheck':sp.get('require_costs_crosscheck',False), 'costs_key_env':'OPENAI_ADMIN_KEY', 'expected_project':sp.get('expected_project'),
                  'credit_expiry_margin_hours':24,'attestation_max_age_hours':72,'credit_attestation':att},
-                 'api':{'key_env':cfg['credentials'].get('env','OPENAI_API_KEY')},
+                 'api':{'key_env':'CYBERSAND_WB_OPENAI_KEY'},
                  'model':cfg['model'],'task':{'allow_dirty_source':False}}
-            report=atlas_credit_evaluate(atlas_cfg,os.environ,load_table(),dt.datetime.now(dt.timezone.utc),
+            report=atlas_credit_evaluate(atlas_cfg,atlas_gate_env,load_table(),dt.datetime.now(dt.timezone.utc),
                            probe,None,source_dirty=source_dirty,base_url='https://api.openai.com/v1')
             atlas_credit_enforce(report)
             gate['atlas_credit_gate']={k:v for k,v in report.items() if k!='rates'}
