@@ -323,6 +323,93 @@ func run() -> void:
 		and main.latest_snapshot.tick_index==authorize_stop_tick,
 		"new same-World task did not retire without unauthorized Step")
 	start_authorization = Callable()
+	# Stop must also fence an in-flight *native authoring edit*, not just
+	# authorization or Step. A successful already-admitted apply is allowed
+	# to finish and be recorded, but no deferred write may run after Stop ACK.
+	var apply_bridge = Bridge.new()
+	check(apply_bridge.bind(main),"pending-apply Stop could not bind real owner")
+	var apply_auth: Dictionary = await apply_bridge.authorize_task(
+		"joined-stop-during-apply-527",Rect2i(48,48,12,12),[],[0,58])
+	var apply_receipts: Array = []
+	var apply_readback: Dictionary = {}
+	var before_apply_tick: int = main.latest_snapshot.tick_index
+	var before_apply_generation: int = main.latest_snapshot.render_world_generation
+	if check(apply_auth.get("status")=="authorized",
+			"pending-apply task did not obtain real native authorization"):
+		var apply_observed: Dictionary = await apply_bridge.call_tool("observe",{
+			"region":{"x":52,"y":52,"width":1,"height":1},"detail":"cells"})
+		if check(apply_observed.get("status")=="observed"
+				and int(apply_observed.get("native_counts",{}).get(0,-1))==1
+				and apply_observed.get("image_status")=="matched_post_draw",
+				"pending-apply source was not native Empty with matched frame"):
+			var apply_prepared: Dictionary = await apply_bridge.call_tool("prepare_edit",{
+				"observation_id":apply_observed.get("observation_id",""),
+				"operations":[{"shape":"rectangle","x0":52,"y0":52,
+					"x1":52,"y1":52,"material":58,
+					"replace_only_material":0}]})
+			if check(apply_prepared.get("status")=="proposed"
+					and apply_prepared.get("changed_cells")==1,
+					"pending-apply real native proposal was not prepared"):
+				var begin_apply: Callable = func() -> void:
+					var result: Dictionary = await apply_bridge.call_tool("apply_edit",{
+						"proposal_id":apply_prepared.get("proposal_id","")})
+					apply_receipts.append(result.duplicate(true))
+				begin_apply.call()
+				check(bool(apply_bridge.get("_busy")),
+					"pending-apply Stop did not exercise an in-flight real owner edit")
+				var apply_stopped: Dictionary = await apply_bridge.stop()
+				check(apply_stopped.get("status")=="stopped"
+					and apply_stopped.get("no_further_agent_mutations")==true,
+					"Stop failed to await in-flight native edit and owner retirement: "+
+					str(apply_stopped))
+				await wait_until(func() -> bool: return apply_receipts.size()==1,
+					"in-flight native apply did not settle before Stop")
+				var apply_result: Dictionary = apply_receipts[0] if not apply_receipts.is_empty() else {}
+				check(apply_result.get("status")=="applied"
+					and apply_result.get("interrupted_by_human")==true
+					and apply_result.get("changed_cells")==1
+					and apply_result.get("authored_start",{}).get("status")=="recorded",
+					"already-admitted native edit lost its truthful receipt at Stop: "+
+					str(apply_result))
+				var late_apply: Dictionary = await apply_bridge.call_tool("apply_edit",{
+					"proposal_id":apply_prepared.get("proposal_id","")})
+				check(late_apply.get("status")=="refused",
+					"late duplicate native apply admitted after Stop ACK")
+				# Read through a new authorized task. The original edit must
+				# survive native retirement; native tick may not advance.
+				var verify_apply = Bridge.new()
+				check(verify_apply.bind(main),
+					"post-Stop native readback bridge could not bind")
+				var verify_apply_auth: Dictionary = await verify_apply.authorize_task(
+					"joined-post-apply-stop-readback-527",Rect2i(48,48,12,12),[],[0,58])
+				check(verify_apply_auth.get("status")=="authorized",
+					"post-Stop native retirement did not release task authority")
+				if verify_apply_auth.get("status")=="authorized":
+					apply_readback = await verify_apply.call_tool("observe",{
+						"region":{"x":52,"y":52,"width":1,"height":1},"detail":"cells"})
+					var apply_ids: Array = apply_readback.get("native_material_ids",[])
+					check(apply_readback.get("status")=="observed"
+						and apply_readback.get("image_status")=="matched_post_draw"
+						and apply_ids.size()==1 and int(apply_ids[0])==58
+						and int(apply_readback.get("native_counts",{}).get(58,-1))==1
+						and int(apply_readback.get("identity",{}).get("completed_tick",-1))==before_apply_tick
+						and int(apply_readback.get("render_identity",{}).get("tick",-1))==before_apply_tick,
+						"Stop lost the admitted native edit or its exact post-draw receipt")
+					var verify_apply_stop: Dictionary = await verify_apply.stop()
+					check(verify_apply_stop.get("status")=="stopped",
+						"post-Stop native readback task did not retire")
+				for _apply_stop_frame: int in 5:
+					await process_frame
+				check(main.latest_snapshot.tick_index==before_apply_tick
+					and main.latest_snapshot.render_world_generation==before_apply_generation
+					and main.latest_snapshot.paused,
+					"Stop during apply allowed an extra native tick or World replacement")
+				print("WB_AGENT_527_PENDING_APPLY_STOP_RESULT "+JSON.stringify({
+					"apply":apply_result,"stop":apply_stopped,
+					"native_tick":main.latest_snapshot.tick_index,
+					"generation":main.latest_snapshot.render_world_generation,
+					"readback":apply_readback.get("native_material_ids",[])}))
+				begin_apply = Callable()
 	# Retain the ORIGINAL renderer-owned PNGs for the initial observation,
 	# post-Step 0->4 image and the independently reobserved human brush.
 	# Material authority is separately asserted through native IDs above.
