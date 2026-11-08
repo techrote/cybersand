@@ -87,6 +87,26 @@ def evidence_size(folder: Path) -> int:
 
 
 def group_exists(pgid: int) -> bool:
+    # Linux /proc distinguishes exited-but-unreaped zombies from executable
+    # survivors; killpg(pgid, 0) alone can report a zombie-only group alive.
+    if sys.platform.startswith("linux") and Path("/proc").is_dir():
+        try:
+            members = []
+            for item in Path("/proc").iterdir():
+                if not item.name.isdecimal():
+                    continue
+                try:
+                    stat = (item / "stat").read_text()
+                    fields = stat.rsplit(")", 1)[1].split()
+                    if int(fields[2]) == pgid:
+                        members.append(fields[0])
+                except (OSError, IndexError, ValueError):
+                    continue
+            if members:
+                return any(state not in ("Z", "X", "x") for state in members)
+            return False
+        except OSError:
+            pass  # Unavailable procfs: retain conservative killpg probing.
     try:
         os.killpg(pgid, 0)
         return True
