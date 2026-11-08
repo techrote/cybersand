@@ -4,6 +4,8 @@ status: Planned
 document-kind: contract
 scope: GEN-007 final play plane to existing prepared finite shared-workbench World
 keywords: [EXPLORE-001, GEN-007, playable, workbench, native, map, save, reopen]
+canonical-for: [generated-playable-map-admission, generated-playable-map-persistence]
+last-reviewed: 2026-11-08
 related-documents: [generation-workbench-2.md, ../architecture/data-ownership-and-lifetimes.md, ../operations/github-development-and-release.md]
 ---
 
