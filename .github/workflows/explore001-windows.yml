@@ -2,7 +2,15 @@ name: EXPLORE-001 Windows source-built native and actual Godot regression
 on:
   push:
     branches: [feat/explore001-gen007-playable-workbench]
-    paths: ['.github/workflows/explore001-windows.yml']
+    paths:
+      - '.github/workflows/explore001-windows.yml'
+      - 'godot/native_extension/cyber_prepared_liquid_world.hpp'
+      - 'godot/scripts/workbench_generated_map.gd'
+      - 'godot/scripts/workbench_generator_dialog.gd'
+      - 'godot/scripts/shared_workbench.gd'
+      - 'godot/scripts/main.gd'
+      - 'godot/scripts/microscenario_host.gd'
+      - 'godot/tests/test_explore001_generated_workbench.gd'
   workflow_dispatch:
 permissions:
   contents: read
@@ -144,23 +152,48 @@ jobs:
             Get-Content evidence/import.log -Tail 150
             throw 'Windows Godot import refused'
           }
-      - name: Run actual native-owner generated workbench and fresh-process save/reopen
+      - name: Run bounded actual native-owner generated workbench and fresh-process save/reopen
         shell: pwsh
         run: |
-          $env:CYBERSAND_EXPLORE_REOPEN = ''
-          & $env:GODOT_EXE --headless --path godot --script res://tests/test_explore001_generated_workbench.gd *> evidence/explore-new.log
-          if ($LASTEXITCODE -ne 0) {
-            Get-Content evidence/explore-new.log -Tail 170
-            throw 'Windows generated-start test failed'
+          function Invoke-Explore($variant, $reopen) {
+            if ($reopen) { $env:CYBERSAND_EXPLORE_REOPEN = '1' }
+            else { Remove-Item Env:CYBERSAND_EXPLORE_REOPEN -ErrorAction SilentlyContinue }
+            $stdout = "evidence/explore-$variant.stdout.log"
+            $stderr = "evidence/explore-$variant.stderr.log"
+            $arguments = @('--headless','--path','godot','--script','res://tests/test_explore001_generated_workbench.gd')
+            $child = Start-Process -FilePath $env:GODOT_EXE -ArgumentList $arguments -PassThru -NoNewWindow -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+            try {
+              if (!$child.WaitForExit(600000)) {
+                Stop-Process -Id $child.Id -Force -ErrorAction SilentlyContinue
+                Get-Content $stdout -Tail 140 -ErrorAction SilentlyContinue
+                Get-Content $stderr -Tail 140 -ErrorAction SilentlyContinue
+                throw "Windows Explore $variant exceeded 600 seconds"
+              }
+              $child.Refresh()
+              if ($child.ExitCode -ne 0) {
+                Get-Content $stdout -Tail 140 -ErrorAction SilentlyContinue
+                Get-Content $stderr -Tail 140 -ErrorAction SilentlyContinue
+                throw "Windows Explore $variant exit code $($child.ExitCode)"
+              }
+              $match = Select-String -Path $stdout,$stderr -Pattern 'EXPLORE001_RESULTS checks=(\d+) failures=(\d+)'
+              if (!$match) { throw "Windows Explore $variant exited zero without the required completion receipt" }
+              $counts = [regex]::Match(($match | Select-Object -Last 1).Line, 'checks=(\d+) failures=(\d+)')
+              if (!$counts.Success -or [int]$counts.Groups[1].Value -lt 8 -or [int]$counts.Groups[2].Value -ne 0) {
+                Get-Content $stdout -Tail 120 -ErrorAction SilentlyContinue
+                Get-Content $stderr -Tail 120 -ErrorAction SilentlyContinue
+                throw "Windows Explore $variant did not execute all mandatory assertions"
+              }
+              if (Select-String -Path $stdout,$stderr -Pattern 'SCRIPT ERROR:|Failed to load script') {
+                throw "Windows Explore $variant emitted a Godot script failure despite zero process exit"
+              }
+              Write-Host ("Source-matched Windows Explore " + $variant + ": " + $counts.Value)
+            } finally {
+              if (!$child.HasExited) { Stop-Process -Id $child.Id -Force -ErrorAction SilentlyContinue }
+            }
           }
-          $env:CYBERSAND_EXPLORE_REOPEN = '1'
-          & $env:GODOT_EXE --headless --path godot --script res://tests/test_explore001_generated_workbench.gd *> evidence/explore-reopened.log
-          if ($LASTEXITCODE -ne 0) {
-            Get-Content evidence/explore-reopened.log -Tail 170
-            throw 'Windows fresh-process generated-map reopen failed'
-          }
-          Remove-Item Env:CYBERSAND_EXPLORE_REOPEN
-          Select-String -Path evidence/explore-new.log,evidence/explore-reopened.log -Pattern 'EXPLORE001_RESULTS'
+          Invoke-Explore 'new' $false
+          Invoke-Explore 'reopened' $true
+          Remove-Item Env:CYBERSAND_EXPLORE_REOPEN -ErrorAction SilentlyContinue
       - name: Retain actual Windows process/native-source and first-failure evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
