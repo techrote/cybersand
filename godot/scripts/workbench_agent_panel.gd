@@ -10,6 +10,10 @@ const Overlay = preload("res://scripts/workbench_agent_proposal_overlay.gd")
 const ScopeOverlay = preload("res://scripts/workbench_agent_scope_overlay.gd")
 const SignedFrame = preload("res://scripts/workbench_agent_signed_frame.gd")
 const MAX_LOG_LINES := 32
+const TrafficWindow = preload("res://scripts/workbench_agent_traffic_window.gd")
+const MODEL_HISTORY_PATH := "user://workbench-agent-models.cfg"
+const DEFAULT_MODEL := "gpt-5.6-luna"
+const MAX_MODEL_HISTORY := 12
 
 var client: Node
 var proposal_overlay: Control
@@ -26,6 +30,14 @@ var _request_limit := SpinBox.new()
 var _tool_limit := SpinBox.new()
 var _token_limit := SpinBox.new()
 var _timeout_limit := SpinBox.new()
+var _cell_limit := SpinBox.new()
+var _model_history := MenuButton.new()
+var _recent_models: Array[String] = []
+var _traffic: Window
+var _usage := Label.new()
+var _dashboard_clock := 0.0
+var _blocked_reason := ""
+var _native_unconfirmed := false
 var _signed_frame := CheckBox.new()
 var _whole_canvas := Button.new()
 var _canvas_region_provider: Callable
@@ -52,38 +64,52 @@ func _ready() -> void:
 	client.model_report_received.connect(_record_model_report)
 	client.proposal_changed.connect(_proposal_updated)
 	client.task_finished.connect(_task_finished)
+	if client.has_signal("diagnostic_event"):
+		client.connect("diagnostic_event", _on_diagnostic_event)
 	proposal_overlay = Overlay.new()
 	scope_overlay = ScopeOverlay.new()
 	name = "Agent authoring (opt-in)"
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	size_flags_vertical = Control.SIZE_EXPAND_FILL
-	add_theme_constant_override("separation",8)
+	add_theme_constant_override("separation",4)
+	# Title and task actions stay pinned while the form scrolls.
+	var actions := HBoxContainer.new()
+	actions.name = "AgentActions"
 	var heading := Label.new()
 	heading.name = "AgentHeading"
 	heading.text = "Agent authoring"
-	add_child(heading)
-	# These controls remain visible while the bounded form scrolls.
-	var actions := HBoxContainer.new()
-	actions.name = "AgentActions"
+	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	actions.add_child(heading)
 	_start.name = "AgentStart"
-	_start.text = "Start within scope"
-	_start.tooltip_text = "Authorize the selected task region and allowed materials."
+	_start.text = "Start"
+	_start.tooltip_text = "Authorize the task, limits, working area and allowed materials."
 	_start.focus_mode = Control.FOCUS_NONE
-	_start.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_start.pressed.connect(_on_start)
-	_stop.text = "Stop"
 	_stop.name = "AgentStop"
+	_stop.text = "Stop"
 	_stop.focus_mode = Control.FOCUS_NONE
 	_stop.disabled = true
 	_stop.pressed.connect(_on_stop)
 	actions.add_child(_start)
 	actions.add_child(_stop)
 	add_child(actions)
-	_state.text = "Native dispatcher not bound."
+	var dashboard := HBoxContainer.new()
 	_state.name = "AgentState"
-	_state.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_state.max_lines_visible = 3
-	add_child(_state)
+	_state.text = "Idle · not connected"
+	_state.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_state.clip_text = true
+	dashboard.add_child(_state)
+	var traffic_button := Button.new()
+	traffic_button.text = "Traffic…"
+	traffic_button.tooltip_text = "Open full request, response, tool and native-acknowledgement traffic. Copy or save JSONL."
+	traffic_button.pressed.connect(_show_traffic)
+	dashboard.add_child(traffic_button)
+	add_child(dashboard)
+	_usage.name = "AgentUsage"
+	_usage.add_theme_font_size_override("font_size",12)
+	_usage.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_usage.max_lines_visible = 2
+	add_child(_usage)
 	_form_scroll.name = "AgentFormScroll"
 	_form_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_form_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -92,118 +118,208 @@ func _ready() -> void:
 	_form_scroll.mouse_force_pass_scroll_events = false
 	add_child(_form_scroll)
 	_form.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_form.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_form.name = "AgentForm"
-	_form.add_theme_constant_override("separation",8)
+	_form.add_theme_constant_override("separation",5)
 	_form_scroll.add_child(_form)
-	var task_label := Label.new()
-	task_label.text = "Task"
-	_form.add_child(task_label)
-	_task.custom_minimum_size = Vector2(240,110)
+	_task.custom_minimum_size = Vector2(240,190)
+	_task.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_task.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
-	_task.placeholder_text = "Describe the apparatus to build and test."
+	_task.placeholder_text = "What would you like to build or change?"
+	_task.tooltip_text = "Describe your goal. Start authorizes the selected area and limits."
 	_task.text_changed.connect(_retire_on_human_change)
 	_form.add_child(_task)
-	var model_label := Label.new()
-	model_label.text = "Model"
-	_form.add_child(model_label)
-	_model.placeholder_text = "Vision-capable Responses model ID"
+	var model_row := HBoxContainer.new()
+	_model.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_model.placeholder_text = DEFAULT_MODEL
+	_model.tooltip_text = "Model ID. Type a name or choose a recently used model from the arrow."
+	_load_model_history()
+	_model.text = DEFAULT_MODEL
 	_model.text_changed.connect(func(_value: String) -> void: _retire_on_human_change())
-	_form.add_child(_model)
-	_add_budget_control("API requests / task", _request_limit, Client.DEFAULT_REQUEST_BUDGET, Client.MAX_REQUEST_BUDGET)
-	_add_budget_control("Tool calls / task", _tool_limit, Client.DEFAULT_TOOL_BUDGET, Client.MAX_TOOL_BUDGET)
-	_add_budget_control("Output tokens / response", _token_limit, Client.DEFAULT_TOKEN_BUDGET, Client.MAX_TOKEN_BUDGET)
-	_add_budget_control("Request timeout (seconds)", _timeout_limit, Client.DEFAULT_REQUEST_TIMEOUT, Client.MAX_REQUEST_TIMEOUT)
-	var presets := HBoxContainer.new()
-	var collaboration := Button.new()
-	collaboration.text = "Collaboration preset"
-	collaboration.tooltip_text = "128 requests, 256 tool calls, 32768 output tokens per response, 180 seconds per request. Select a model supporting this output cap."
-	collaboration.pressed.connect(func() -> void: _set_budgets(128,256,32768,180))
-	presets.add_child(collaboration)
-	var defaults := Button.new()
-	defaults.text = "Reset limits"
-	defaults.pressed.connect(func() -> void: _set_budgets(Client.DEFAULT_REQUEST_BUDGET,Client.DEFAULT_TOOL_BUDGET,Client.DEFAULT_TOKEN_BUDGET))
-	presets.add_child(defaults)
-	_form.add_child(presets)
-	var budget_help := Label.new()
-	budget_help.text = "Start authorizes these limits. Higher caps can increase API charges. Output cap must fit the model."
-	budget_help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_form.add_child(budget_help)
-	_signed_frame.text = "Experimental signed frame (+512)"
-	_signed_frame.tooltip_text = "Owner-admitted moved-hopper acceptance fixture (7 Nov 2026); 26 intermediate NORMAL trajectory differences remain. Host-only, opt-in, not strict signed-world parity. Genuine API trials and owner desktop acceptance remain separate."
-	_signed_frame.toggled.connect(func(_value: bool) -> void: _on_scope_change())
-	_form.add_child(_signed_frame)
-	_whole_canvas.text = "Use whole canvas"
-	_whole_canvas.tooltip_text = "Select the installed canvas as task scope. Each observation and edit remains limited to 4096 cells. Start authorizes the selected scope."
+	model_row.add_child(_model)
+	_model_history.text = "▾"
+	_model_history.tooltip_text = "Recent models"
+	_model_history.get_popup().id_pressed.connect(_select_model_history)
+	_rebuild_model_history()
+	model_row.add_child(_model_history)
+	_form.add_child(model_row)
+	var budgets := GridContainer.new()
+	budgets.columns = 2
+	budgets.add_theme_constant_override("h_separation",5)
+	budgets.add_theme_constant_override("v_separation",4)
+	budgets.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_form.add_child(budgets)
+	_add_budget_control(budgets,"API",_request_limit,Client.DEFAULT_REQUEST_BUDGET,Client.MAX_REQUEST_BUDGET,
+		"Maximum API requests in this task. Higher limits can increase charges.")
+	_add_budget_control(budgets,"Tools",_tool_limit,Client.DEFAULT_TOOL_BUDGET,Client.MAX_TOOL_BUDGET,
+		"Maximum model tool calls in this task.")
+	_add_budget_control(budgets,"Toks",_token_limit,Client.DEFAULT_TOKEN_BUDGET,Client.MAX_TOKEN_BUDGET,
+		"Maximum output tokens per response, not a total token budget. Must fit the model.")
+	_add_budget_control(budgets,"Time",_timeout_limit,Client.DEFAULT_REQUEST_TIMEOUT,Client.MAX_REQUEST_TIMEOUT,
+		"Timeout in seconds for each API request. Stop cancels without waiting for this deadline.")
+	var area_actions := HBoxContainer.new()
+	_add_budget_control(area_actions,"Cells",_cell_limit,16384,65536,
+		"Maximum cells in one edit or inspection; authorized at Start. This is not a task-wide edit quota.")
+	_whole_canvas.text = "Whole canvas"
+	_whole_canvas.tooltip_text = "Set the working area to the installed canvas. Calls stay within the Cells limit."
 	_whole_canvas.disabled = true
 	_whole_canvas.pressed.connect(_on_whole_canvas)
-	_form.add_child(_whole_canvas)
-	var scope_help := Label.new()
-	scope_help.text = "Scope is the working area, not a total edit quota. Each edit/inspection uses up to 4096 cells; continue in batches."
-	scope_help.tooltip_text = "There is no 4096-cell task-wide quota. The native owner separately retains at most 64 consumed-proposal receipts across tasks and World generations; capacity refusals remain explicit."
-	scope_help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_form.add_child(scope_help)
-	var row := HFlowContainer.new()
-	_form.add_child(row)
-	for spec: Array in [["X", -2147483648.0, 2147483647.0, 0.0],
-			["Y", -2147483648.0, 2147483647.0, 0.0],
-			["W", 1.0, 4096.0, 32.0], ["H", 1.0, 4096.0, 32.0]]:
-		var text := Label.new()
-		text.text = str(spec[0])
-		row.add_child(text)
-		var field := SpinBox.new()
-		field.min_value = spec[1]
-		field.max_value = spec[2]
-		field.step = 1.0
-		field.rounded = true
-		field.value = spec[3]
-		field.custom_minimum_size.x = 86
-		field.value_changed.connect(func(_value: float) -> void: _on_scope_change())
-		row.add_child(field)
-		_region.append(field)
-	_wall.text = "Allow Hard Wall"
-	_empty.text = "Allow Empty"
+	area_actions.add_child(_whole_canvas)
+	_form.add_child(area_actions)
+	_add_rectangle_row(_region,["X","Y","W","H"],[0,0,32,32])
+	_wall.text = "Hard Wall"
+	_empty.text = "Empty"
+	_wall.tooltip_text = "Allow the agent to place Hard Wall."
+	_empty.tooltip_text = "Allow the agent to erase cells to Empty."
 	_wall.button_pressed = true
 	_empty.button_pressed = true
 	_wall.toggled.connect(func(_value: bool) -> void: _retire_on_human_change())
 	_empty.toggled.connect(func(_value: bool) -> void: _retire_on_human_change())
-	row = HFlowContainer.new()
-	row.add_child(_wall)
-	row.add_child(_empty)
-	_form.add_child(row)
-	_protection_label.text = "Protected areas: none (agent-edit exclusion)"
-	_protection_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_form.add_child(_protection_label)
-	_guard.text = "Protect a rectangle"
+	var materials := HBoxContainer.new()
+	materials.add_child(_wall)
+	materials.add_child(_empty)
+	_guard.text = "Protect"
+	_guard.tooltip_text = "Exclude the rectangle below from agent edits."
 	_guard.toggled.connect(func(_value: bool) -> void: _on_scope_change())
-	_form.add_child(_guard)
-	var protection_row := HFlowContainer.new()
-	_form.add_child(protection_row)
-	for spec: Array in [["PX",-2147483648.0,2147483647.0,0.0],
-			["PY",-2147483648.0,2147483647.0,0.0],
-			["PW",1.0,4096.0,4.0],["PH",1.0,4096.0,4.0]]:
-		var caption := Label.new()
-		caption.text = str(spec[0])
-		protection_row.add_child(caption)
+	materials.add_child(_guard)
+	_form.add_child(materials)
+	_add_rectangle_row(_guard_region,["PX","PY","PW","PH"],[0,0,4,4])
+	# The translated signed fixture is a test adapter, not a normal authoring mode.
+	# Keep this detached control for explicit frozen-fixture automation only.
+	_signed_frame.button_pressed = false
+	_signed_frame.toggled.connect(func(_value: bool) -> void: _on_scope_change())
+	_sync_scope_overlay()
+	_traffic = TrafficWindow.new()
+	_traffic.name = "AgentTraffic"
+	add_child(_traffic)
+	_traffic.hide()
+	_refresh_buttons()
+
+func _process(delta: float) -> void:
+	_dashboard_clock += delta
+	if _dashboard_clock >= 0.2:
+		_dashboard_clock = 0.0
+		_refresh_dashboard()
+
+func _add_rectangle_row(fields: Array[SpinBox], captions: Array, values: Array) -> void:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation",2)
+	_form.add_child(row)
+	for i: int in range(4):
 		var field := SpinBox.new()
-		field.min_value = spec[1]
-		field.max_value = spec[2]
+		field.min_value = -2147483648.0 if i < 2 else 1.0
+		field.max_value = 2147483647.0 if i < 2 else 4096.0
 		field.step = 1.0
 		field.rounded = true
-		field.value = spec[3]
-		field.custom_minimum_size.x = 86
+		field.prefix = str(captions[i])
+		field.value = values[i]
+		field.custom_minimum_size.x = 62
+		field.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		field.get_line_edit().expand_to_text_length = false
+		field.tooltip_text = ["Left cell coordinate","Top cell coordinate","Width in cells","Height in cells"][i]
 		field.value_changed.connect(func(_value: float) -> void: _on_scope_change())
-		protection_row.add_child(field)
-		_guard_region.append(field)
-	_sync_scope_overlay()
-	var activity_label := Label.new()
-	activity_label.text = "Activity"
-	_form.add_child(activity_label)
-	_log.custom_minimum_size.y = 140
-	_log.bbcode_enabled = false # Model text is untrusted; never evaluate RichText markup.
-	_log.fit_content = false
-	_log.scroll_following = true
-	_form.add_child(_log)
-	_refresh_buttons()
+		row.add_child(field)
+		fields.append(field)
+
+func _load_model_history() -> void:
+	_recent_models.assign([DEFAULT_MODEL])
+	var config := ConfigFile.new()
+	if config.load(MODEL_HISTORY_PATH) != OK:
+		return
+	var saved: Variant = config.get_value("models","recent",[])
+	if saved is Array or saved is PackedStringArray:
+		for value: Variant in saved:
+			var model := str(value)
+			if _is_history_model(model) and not _recent_models.has(model):
+				_recent_models.append(model)
+			if _recent_models.size() >= MAX_MODEL_HISTORY:
+				break
+
+func _is_history_model(model: String) -> bool:
+	if model.is_empty() or model.length() > 128 or model.begins_with("sk-"):
+		return false
+	for character: String in model:
+		if not "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._:/".contains(character):
+			return false
+	return true
+
+func _remember_model() -> void:
+	var model := _model.text.strip_edges()
+	if not _is_history_model(model):
+		return
+	_recent_models.erase(model)
+	_recent_models.push_front(model)
+	while _recent_models.size() > MAX_MODEL_HISTORY:
+		_recent_models.pop_back()
+	var config := ConfigFile.new()
+	config.set_value("models","recent",_recent_models)
+	config.save(MODEL_HISTORY_PATH)
+	_rebuild_model_history()
+
+func _rebuild_model_history() -> void:
+	var popup := _model_history.get_popup()
+	popup.clear()
+	for i: int in range(_recent_models.size()):
+		popup.add_item(_recent_models[i],i)
+
+func _select_model_history(index: int) -> void:
+	if index >= 0 and index < _recent_models.size():
+		_model.text = _recent_models[index]
+		_retire_on_human_change()
+
+func _refresh_dashboard() -> void:
+	if client == null:
+		return
+	var snapshot: Dictionary = client.activity_snapshot() if client.has_method("activity_snapshot") else {}
+	var stage := str(snapshot.get("stage","Ready" if _dispatcher.is_valid() else "Not connected"))
+	var state := str(snapshot.get("state","Active" if client.is_active() else "Idle"))
+	if _start_pending:
+		state = "Starting"
+		stage = "Waiting for native authorization"
+	elif _retire_pending:
+		state = "Stopping"
+		stage = "Waiting for native acknowledgement"
+	elif _native_unconfirmed:
+		state = "Unconfirmed"
+		stage = "Native Stop unconfirmed; reopen workbench"
+	elif not _blocked_reason.is_empty():
+		state = "Blocked"
+		stage = _blocked_reason
+	_state.text = "%s · %s" % [state.capitalize(),stage]
+	_state.tooltip_text = _state.text
+	_state.modulate = Color(1.0,0.78,0.35) if client.is_active() or _start_pending or _retire_pending else (Color(1.0,0.55,0.5) if not _blocked_reason.is_empty() or _native_unconfirmed else Color(0.65,0.9,0.72))
+	var input_tokens := int(snapshot.get("input_tokens",-1))
+	var output_tokens := int(snapshot.get("output_tokens",-1))
+	var usage_text := "API %d/%d  Tools %d/%d  In %s  Out %s" % [
+		int(snapshot.get("requests",0)),int(snapshot.get("request_limit",_request_limit.value)),
+		int(snapshot.get("tools",0)),int(snapshot.get("tool_limit",_tool_limit.value)),
+		str(input_tokens) if input_tokens >= 0 else "?",str(output_tokens) if output_tokens >= 0 else "?"]
+	var complete: bool = bool(snapshot.get("usage_complete",false))
+	if not complete and (input_tokens >= 0 or output_tokens >= 0):
+		usage_text += " (partial)"
+	_usage.text = usage_text
+	_usage.tooltip_text = usage_text + "\nToken counts are provider-reported " + ("task totals." if complete else "subtotals; some usage was not supplied.") + " ? means unknown. Toks limits each response."
+
+func _show_traffic() -> void:
+	_refresh_traffic()
+	_traffic.popup_centered_ratio(0.8)
+
+func _refresh_traffic() -> void:
+	if client.has_method("diagnostic_records"):
+		var directory: String = client.diagnostic_directory() if client.has_method("diagnostic_directory") else ""
+		var metadata: Dictionary = client.activity_snapshot() if client.has_method("activity_snapshot") else {}
+		_traffic.set_records(client.diagnostic_records(),directory,metadata)
+		if client.has_method("export_diagnostics"):
+			_traffic.exporter = client.export_diagnostics
+
+func _on_diagnostic_event(_record: Dictionary) -> void:
+	if is_instance_valid(_traffic) and _traffic.visible:
+		_refresh_traffic()
+	_refresh_dashboard()
+
+func _diagnostic(kind: String, payload: Variant) -> void:
+	if client != null and client.has_method("record_diagnostic"):
+		client.record_diagnostic(kind,payload)
 
 func bind_authoritative_dispatcher(dispatcher: Callable, world_to_screen: Callable = Callable(),
 		authorizer: Callable = Callable(), retirement: Callable = Callable()) -> void:
@@ -213,7 +329,7 @@ func bind_authoritative_dispatcher(dispatcher: Callable, world_to_screen: Callab
 	_authorizer = authorizer
 	_retirement = retirement
 	proposal_overlay.set_world_to_screen(world_to_screen)
-	_state.text = "Dispatcher bound; waiting for human Start."
+	_blocked_reason = ""
 	_refresh_buttons()
 
 func set_protected_regions(regions: Array) -> void:
@@ -225,21 +341,26 @@ func set_canvas_region_provider(provider: Callable) -> void:
 	_canvas_region_provider = provider
 	_whole_canvas.disabled = not provider.is_valid()
 
-func _add_budget_control(title: String, field: SpinBox, initial: int, maximum: int) -> void:
+func _add_budget_control(parent: Container, title: String, field: SpinBox, initial: int, maximum: int, help: String) -> void:
 	var row := HBoxContainer.new()
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("separation",3)
 	var label := Label.new()
 	label.text = title
-	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.tooltip_text = help
 	row.add_child(label)
 	field.min_value = 1
 	field.max_value = maximum
 	field.step = 1
 	field.rounded = true
 	field.value = initial
-	field.custom_minimum_size.x = 112
+	field.custom_minimum_size.x = 88
+	field.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	field.get_line_edit().expand_to_text_length = false
+	field.tooltip_text = help
 	field.value_changed.connect(func(_value: float) -> void: _retire_on_human_change())
 	row.add_child(field)
-	_form.add_child(row)
+	parent.add_child(row)
 
 func _set_budgets(requests: int, tools: int, tokens: int, timeout_seconds: int = Client.DEFAULT_REQUEST_TIMEOUT) -> void:
 	for field: SpinBox in [_request_limit,_tool_limit,_token_limit,_timeout_limit]:
@@ -285,7 +406,7 @@ func _sync_scope_overlay() -> void:
 			protections.append(Rect2i(int(item.x),int(item.y),
 				int(item.width),int(item.height)))
 	scope_overlay.set_scope(_rect_from_fields(_region),protections)
-	_protection_label.text = "Protected regions: %d; no agent edits inside" % protections.size()
+
 
 func _on_scope_change() -> void:
 	_sync_scope_overlay()
@@ -298,6 +419,7 @@ func invalidate_due_to_owner_change(reason: String) -> void:
 	_refresh_buttons()
 
 func _retire_on_human_change() -> void:
+	_blocked_reason = ""
 	_start_nonce += 1
 	if client != null and client.is_active():
 		client.invalidate_after_human_change("Task/scope/material configuration changed.")
@@ -306,15 +428,16 @@ func _retire_on_human_change() -> void:
 func _refresh_buttons() -> void:
 	if client == null:
 		return
-	_start.disabled = client.is_active() or _start_pending or _retire_pending or not _dispatcher.is_valid()
+	_start.disabled = client.is_active() or _start_pending or _retire_pending or _native_unconfirmed or not _dispatcher.is_valid()
 	_stop.disabled = not client.is_active() and not _start_pending
+	_refresh_dashboard()
 
 func _on_start() -> void:
-	if not _dispatcher.is_valid() or client.is_active() or _start_pending or _retire_pending:
-		_log_status("refused", "No native dispatcher or task already active.")
+	if not _dispatcher.is_valid() or client.is_active() or _start_pending or _retire_pending or _native_unconfirmed:
+		_log_status("refused", "Native Stop unconfirmed; inspect Traffic and reopen the workbench." if _native_unconfirmed else "No native dispatcher or task already active.")
 		return
 	# Start has FOCUS_NONE: commit typed numbers even if the edit never lost focus.
-	for field: SpinBox in [_request_limit,_tool_limit,_token_limit,_timeout_limit]:
+	for field: SpinBox in [_request_limit,_tool_limit,_token_limit,_timeout_limit,_cell_limit] + _region + _guard_region:
 		if field.get_line_edit().has_focus():
 			field.apply()
 	var materials: Array[String] = []
@@ -331,7 +454,8 @@ func _on_start() -> void:
 			"width": int(_region[2].value), "height": int(_region[3].value)
 		},
 		"protected_regions": _configured_protection(),
-		"allowed_materials": materials
+		"allowed_materials": materials,
+		"cell_limit": int(_cell_limit.value)
 	}
 	if _signed_frame.button_pressed:
 		# Host-only experiment; it does not add any model-visible tool.
@@ -351,22 +475,31 @@ func _on_start() -> void:
 		_start_pending = true
 		var nonce: int = _start_nonce
 		_refresh_buttons()
+		_diagnostic("native_authorization_request",scope)
 		var authorization: Dictionary = await _authorizer.call(scope)
+		_diagnostic("native_authorization_ack",authorization)
 		_start_pending = false
 		if nonce != _start_nonce:
 			if authorization.get("status") == "authorized" 					and _retirement.is_valid() and not _retire_pending:
 				_retire_pending = true
-				await _retirement.call()
+				_diagnostic("native_retirement_request",{"reason":"superseded_authorization"})
+				var obsolete_retirement: Dictionary = await _retirement.call()
+				_record_retirement_ack(obsolete_retirement)
 				_retire_pending = false
 			_refresh_buttons()
 			return
 		if authorization.get("status") != "authorized":
 			_log_status("refused","Native task authorization: " + str(authorization.get("reason","unknown")))
 			return
+	_native_unconfirmed = false
+	if not client._fake_transport:
+		_remember_model()
 	# Recheck after native admission; the client handles a changed environment.
 	if not client.begin_task(_task.text, _model.text, scope) and _retirement.is_valid():
 		_retire_pending = true
+		_diagnostic("native_retirement_request",{"reason":"failed_client_start"})
 		var cleanup: Dictionary = await _retirement.call()
+		_record_retirement_ack(cleanup)
 		_retire_pending = false
 		_log_status("retirement",str(cleanup.get("status","unconfirmed")))
 	_refresh_buttons()
@@ -410,14 +543,16 @@ func _record_model_report(report: String) -> void:
 	progress.emit("model_report_unverified", plain)
 
 func _log_status(status: String, detail: String) -> void:
+	if status == "refused":
+		_diagnostic("panel.refused",{"detail":detail})
+	if status in ["refused","error"] and not client.is_active():
+		_blocked_reason = detail.substr(0,240)
 	# Model/provider text is untrusted and never parsed as RichText markup.
 	var line := "%s — %s" % [status, detail.substr(0, 240)]
 	_lines.append(line)
 	while _lines.size() > MAX_LOG_LINES:
 		_lines.pop_front()
 	_log.text = "\n".join(_lines)
-	_state.text = line
-	_state.tooltip_text = line
 	progress.emit(status, detail)
 	_refresh_buttons()
 
@@ -427,8 +562,14 @@ func _task_finished(_outcome: String) -> void:
 		_complete_retirement.call_deferred()
 	_refresh_buttons()
 
+func _record_retirement_ack(result: Dictionary) -> void:
+	_diagnostic("native_retirement_ack",result)
+	_native_unconfirmed = result.get("status") != "retired"
+
 func _complete_retirement() -> void:
+	_diagnostic("native_retirement_request",{})
 	var result: Dictionary = await _retirement.call()
+	_record_retirement_ack(result)
 	_retire_pending = false
 	if is_instance_valid(self):
 		_log_status("native_retirement",str(result.get("status","unconfirmed")) +
@@ -448,3 +589,6 @@ func _exit_tree() -> void:
 			scope_overlay.queue_free()
 		else:
 			scope_overlay.free()
+	for detached: Node in [_signed_frame,_log,_protection_label]:
+		if is_instance_valid(detached) and not detached.is_inside_tree():
+			detached.free()

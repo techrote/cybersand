@@ -30,6 +30,26 @@ func mouse(p: Vector2, index: int = 0, pressed: bool = false, delta: Vector2 = V
 func inspect_layout(screen: Vector2i, sequence: int) -> void:
 	root.content_scale_size = screen
 	root.size = screen
+	var saved_origin: Vector2 = host.camera_origin
+	var saved_edits: int = wb.applied.edits.size()
+	panel.client.record_diagnostic("ui.raw.test",{"body":"raw body marker"})
+	panel._show_traffic()
+	await settle()
+	check(panel._traffic.visible and panel._traffic._details.text.contains("raw body marker"),"raw Traffic content unavailable")
+	var traffic_point: Vector2 = panel._traffic._details.get_global_rect().get_center()
+	for button: int in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_MIDDLE]:
+		for down: bool in [true,false]:
+			var event := InputEventMouseButton.new()
+			event.window_id = panel._traffic.get_window_id()
+			event.position = traffic_point
+			event.global_position = traffic_point
+			event.button_index = button
+			event.pressed = down
+			Input.parse_input_event(event)
+			await process_frame
+	await settle()
+	check(host.camera_origin == saved_origin and wb.applied.edits.size() == saved_edits and not wb._pan,"Traffic input leaked into World")
+	panel._traffic.hide()
 	mount._toggle.button_pressed = false
 	await settle()
 	wb._zoom = 1
@@ -45,6 +65,12 @@ func inspect_layout(screen: Vector2i, sequence: int) -> void:
 	check(shown.size.x > screen.x*0.55 and root.get_visible_rect().encloses(shown),"canvas too small or outside window")
 	check(dock.size.x <= 360 and not dock.intersects(shown),"dock overlaps or expands across canvas")
 	check(host.camera_origin == origin and host.current_view_size == view,"dock toggle changed camera")
+	check(absf(rect(panel._start).position.y - rect(panel._stop).position.y) < 2,"Start/Stop not in one row")
+	check(rect(panel._task).size.y >= 189,"prompt shrunk")
+	check(absf(rect(panel._region[0]).position.y - rect(panel._region[3]).position.y) < 2,"scope coordinates wrapped")
+	check(absf(rect(panel._guard_region[0]).position.y - rect(panel._guard_region[3]).position.y) < 2,"Protect coordinates wrapped")
+	check(not panel._log.is_inside_tree() and not panel._signed_frame.is_inside_tree(),"legacy controls consume space")
+	check(not panel._traffic.visible,"traffic opened uninvited")
 	var stop_rect: Rect2 = rect(panel._stop)
 	var stop_relative := Rect2(stop_rect.position-dock.position,stop_rect.size)
 	panel._form_scroll.scroll_vertical = 100000
@@ -117,6 +143,26 @@ func inspect_layout(screen: Vector2i, sequence: int) -> void:
 		var retired: Dictionary = await mount.retire()
 		check(retired.get("status") == "retired","native test retirement failed")
 	print("WB525_DOCK_LAYOUT "+JSON.stringify({"logical_size":[screen.x,screen.y],"canvas":str(shown),"dock":str(dock),"native_tick":host.latest_snapshot.tick_index}))
+	var saved_origin: Vector2 = host.camera_origin
+	var saved_edits: int = wb.applied.edits.size()
+	panel.client.record_diagnostic("ui.raw.test",{"body":"raw body marker"})
+	panel._show_traffic()
+	await settle()
+	check(panel._traffic.visible and panel._traffic._details.text.contains("raw body marker"),"raw Traffic content unavailable")
+	var traffic_point: Vector2 = panel._traffic._details.get_global_rect().get_center()
+	for button: int in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_MIDDLE]:
+		for down: bool in [true,false]:
+			var event := InputEventMouseButton.new()
+			event.window_id = panel._traffic.get_window_id()
+			event.position = traffic_point
+			event.global_position = traffic_point
+			event.button_index = button
+			event.pressed = down
+			Input.parse_input_event(event)
+			await process_frame
+	await settle()
+	check(host.camera_origin == saved_origin and wb.applied.edits.size() == saved_edits and not wb._pan,"Traffic input leaked into World")
+	panel._traffic.hide()
 	mount._toggle.button_pressed = false
 	await settle()
 	check(absf(rect(host.world_view).size.x-hidden.size.x)<2,"opt-out did not restore canvas width")

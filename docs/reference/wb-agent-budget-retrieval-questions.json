@@ -3,13 +3,13 @@
   "questions": [
     {
       "id": "WB-BUDGET-01",
-      "query": "How do I configure agent API requests, tool calls, output tokens and timeout in the workbench Collaboration preset?",
+      "query": "How do I configure API requests, tool calls, output tokens and timeout in the compact agent workbench UI?",
       "canonical": [
         "systems/shared-workbench-agent-authoring.md"
       ],
       "facts": [
         "Numeric host controls select request, tool, per-response token and HTTP deadline limits; Start freezes them.",
-        "Collaboration preset selects128 requests,256 tools,32768 tokens and180seconds; default12/32/2048/25 remains."
+        "Opening defaults128/256/32768/180; Start freezes grants, no preset/reset buttons."
       ],
       "sources": [
         "../godot/scripts/workbench_agent_client.gd",
@@ -18,19 +18,34 @@
     },
     {
       "id": "WB-BUDGET-02",
-      "query": "Is4096 cells the total agent task quota, or can I edit the whole canvas in repeated batches?",
+      "query": "Can I raise Cells beyond4096 for one native edit and also authorize the whole canvas?",
       "canonical": [
         "systems/shared-workbench-agent-authoring.md"
       ],
       "facts": [
-        "4096 cells is per observation/edit, not a task total; whole-canvas authority supports repeated batches.",
+        "Cells is per operation, UI default16384, configurable1\u201365536; host freezes it and legacy absent grant stays4096.",
         "The native owner separately retains64 consumed-proposal receipts across tasks/generations; UI budgets do not raise it."
       ],
       "sources": [
         "../godot/scripts/workbench_authoring_session.gd",
         "../godot/tests/test_wb525_large_scope_render.gd"
       ]
+    },
+    {
+      "id": "WB-TRAFFIC-01",
+      "query": "Where can I read raw agent requests, response errors and native receipts and see active status and token usage?",
+      "canonical": [
+        "systems/shared-workbench-agent-authoring.md"
+      ],
+      "facts": [
+        "Separate Traffic window supports raw Content/Event, copy/export and bounded local JSONL/PNG artifacts; headers excluded and configured key redacted.",
+        "Dashboard separates HTTP/native/authorization/retirement waits and uses actual provider usage or unknown/partial."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_agent_diagnostics.gd",
+        "../godot/scripts/workbench_agent_panel.gd"
+      ]
     }
   ],
-  "expectations_reviewed": "2026-11-08 additive budget questions; original frozen32 unchanged."
+  "expectations_reviewed": "2026-11-08 current UI/cell/traffic follow-up; additive cases updated, original frozen32 unchanged."
 }

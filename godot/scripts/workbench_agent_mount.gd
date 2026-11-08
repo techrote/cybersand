@@ -184,6 +184,9 @@ func authorize(scope: Dictionary) -> Dictionary:
 	if not is_instance_valid(_host) or not _host.paused:
 		return {"status":"refused","reason":"workbench_must_be_paused"}
 	var frame_id: String = str(scope.get("coordinate_frame_id",""))
+	var cell_limit: Variant = scope.get("cell_limit",4096)
+	if typeof(cell_limit) != TYPE_INT or cell_limit < 1 or cell_limit > 65536:
+		return {"status":"refused","reason":"invalid_authorized_cell_limit"}
 	if frame_id not in ["",SignedFrame.FRAME_ID]:
 		return {"status":"refused","reason":"unsupported_coordinate_frame"}
 	var r: Variant = AuthoringHost._typed_region(scope.get("region",null))
@@ -225,7 +228,7 @@ func authorize(scope: Dictionary) -> Dictionary:
 	_authorizing = true
 	var candidate: RefCounted = _bridge
 	var receipt: Dictionary = await candidate.authorize_task(
-		"wb528-%d" % _task_serial,r,protected,materials,frame_id)
+		"wb528-%d" % _task_serial,r,protected,materials,frame_id,int(cell_limit))
 	_authorizing = false
 	# Stop can retire the native task while the authorization await is
 	# suspended. Never resurrect authority from a late success receipt.

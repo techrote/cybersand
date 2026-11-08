@@ -9,7 +9,6 @@ const SignedFrame = preload("res://scripts/workbench_agent_signed_frame.gd")
 const RESPONSE_TIMEOUT_MSEC: int = 10000
 const MAX_LOCAL_RECEIPTS: int = 64
 const MAX_OBSERVATION_CELLS: int = 4096
-const DEFAULT_OBSERVATION_SIDE: int = 64
 
 var _host: Control
 var _panel: Control
@@ -19,6 +18,7 @@ var _quarantined: bool = false
 var _task_id: String = ""
 # Copied only from acknowledged native task admission, never model arguments.
 var _native_task_scope: Rect2i = Rect2i()
+var _cell_limit: int = MAX_OBSERVATION_CELLS
 var _task_generation: int = -1
 # Experimental opt-in host-only frame: NEVER silently reinterpret an ordinary task.
 var _coordinate_frame_id: String = ""
@@ -40,6 +40,7 @@ func bind(host: Control) -> bool:
 	_host = host
 	_panel = host.shared_workbench
 	_native_task_scope = Rect2i()
+	_cell_limit = MAX_OBSERVATION_CELLS
 	_task_generation = -1
 	_coordinate_frame_id = ""
 	_coordinate_frame_generation = -1
@@ -101,10 +102,11 @@ func _frame_matches_owner(native: Dictionary) -> bool:
 
 
 func _default_observation_region() -> Rect2i:
-	if _native_task_scope.size.x * _native_task_scope.size.y <= MAX_OBSERVATION_CELLS:
+	if _native_task_scope.size.x * _native_task_scope.size.y <= _cell_limit:
 		return _native_task_scope
-	var size: Vector2i = _native_task_scope.size.min(
-		Vector2i(DEFAULT_OBSERVATION_SIDE,DEFAULT_OBSERVATION_SIDE))
+	var width: int = mini(_native_task_scope.size.x,maxi(1,int(sqrt(float(_cell_limit)))))
+	var height: int = mini(_native_task_scope.size.y,maxi(1,_cell_limit / width))
+	var size := Vector2i(width,height)
 	var center: Vector2 = _host.camera_origin + Vector2(_host.current_view_size) * 0.5
 	var origin: Vector2i = Vector2i((center - Vector2(size) * 0.5).floor())
 	origin = origin.clamp(_native_task_scope.position,_native_task_scope.end-size)
@@ -132,7 +134,7 @@ func _viewport_mapping() -> Dictionary:
 func _signed_rows(native_rows: Variant) -> Dictionary:
 	if _coordinate_frame_id.is_empty():
 		return {"status":"mapped","logical":native_rows}
-	return SignedFrame.readback_to_logical(native_rows)
+	return SignedFrame.readback_to_logical(native_rows,_cell_limit)
 
 
 func _available() -> bool:
@@ -175,7 +177,10 @@ func _owner(command: Dictionary) -> Dictionary:
 
 ## Host-only authorization. NEVER route this through model tool dispatch.
 func authorize_task(task_id: String, scope: Rect2i, protected: Array,
-		allowed_materials: Array, coordinate_frame_id: String = "") -> Dictionary:
+		allowed_materials: Array, coordinate_frame_id: String = "",
+		cell_limit: int = MAX_OBSERVATION_CELLS) -> Dictionary:
+	if cell_limit < 1 or cell_limit > 65536:
+		return _refused("invalid_authorized_cell_limit")
 	if _quarantined or _tool_busy:
 		return _refused("authoring_host_quarantined_or_busy")
 	if not _task_id.is_empty():
@@ -209,16 +214,19 @@ func authorize_task(task_id: String, scope: Rect2i, protected: Array,
 			native_protection.append(checked.native)
 	var answer: Dictionary = await _owner({
 		"action":"authorize_task","task_id":task_id,"scope":native_scope,
-		"protected":native_protection,"allowed_materials":allowed_materials
+		"protected":native_protection,"allowed_materials":allowed_materials,
+		"cell_limit":cell_limit
 	})
 	if answer.get("status") == "authorized":
 		var acknowledged_scope: Variant = answer.get("scope",null)
 		var generation: int = int(answer.get("generation",-1))
-		if not acknowledged_scope is Rect2i or acknowledged_scope != native_scope or generation < 0:
+		if not acknowledged_scope is Rect2i or acknowledged_scope != native_scope or generation < 0 \
+				or typeof(answer.get("cell_limit",null)) != TYPE_INT or answer.cell_limit != cell_limit:
 			_quarantined = true
 			return {"status":"unconfirmed","reason":"native_authorization_identity_mismatch"}
 		_task_id = task_id
 		_native_task_scope = acknowledged_scope
+		_cell_limit = int(answer.cell_limit)
 		_task_generation = generation
 		_plan.clear()
 		_coordinate_frame_id = coordinate_frame_id
@@ -241,6 +249,7 @@ func retire_task() -> Dictionary:
 	if answer.get("status") == "retired":
 		_task_id = ""
 		_native_task_scope = Rect2i()
+		_cell_limit = MAX_OBSERVATION_CELLS
 		_task_generation = -1
 		_plan.clear()
 		_coordinate_frame_id = ""
@@ -337,7 +346,7 @@ func _observe(args: Dictionary) -> Dictionary:
 	var png_size: Vector2 = Vector2(joined.render_identity.viewport_width,joined.render_identity.viewport_height)
 	var pixels: Rect2 = Rect2(normalized.position*png_size,normalized.size*png_size)
 	joined["region_selection"] = selection
-	joined["observation_cell_limit"] = MAX_OBSERVATION_CELLS
+	joined["observation_cell_limit"] = _cell_limit
 	joined["authorized_scope"] = Rect2i(_native_task_scope.position-frame_origin,_native_task_scope.size)
 	joined["viewport_native_region"] = captured_view
 	joined["viewport_logical_region"] = Rect2i(captured_view.position-frame_origin,captured_view.size)
@@ -366,7 +375,7 @@ func _prepare(args: Dictionary) -> Dictionary:
 		if typed[index] is Dictionary and typed[index].get("replace_only_material",false) == null:
 			typed[index].erase("replace_only_material")
 	if not _coordinate_frame_id.is_empty():
-		var mapped: Dictionary = SignedFrame.operations(typed)
+		var mapped: Dictionary = SignedFrame.operations(typed,_cell_limit)
 		if mapped.get("status") != "mapped":
 			return _refused("invalid_signed_operations:" + str(mapped.get("reason","")))
 		typed = mapped.native
@@ -382,7 +391,7 @@ func _prepare(args: Dictionary) -> Dictionary:
 		return {"status":"unconfirmed","reason":"coordinate_frame_world_epoch_changed"}
 	# Preflight the NAMED-START history *before* any native mutation. A
 	# readback-applied edit that cannot be saved is not a usable authoring tool.
-	var plan: Dictionary = StartCommit.stage(_panel.applied,native)
+	var plan: Dictionary = StartCommit.stage(_panel.applied,native,_cell_limit)
 	if plan.get("status") != "recordable":
 		return _refused("authored_start_preflight_failed:" + str(plan.get("reason","unknown")))
 	_plan = plan.duplicate(true)

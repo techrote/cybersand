@@ -78,7 +78,7 @@ static func valid(command: Variant) -> bool:
 	if not command is Dictionary:
 		return false
 	var value: Dictionary = command
-	if value.size() < 2 or value.size() > 6:
+	if value.size() < 2 or value.size() > 7:
 		return false
 	if typeof(value.get("schema_version",null)) != TYPE_INT \
 			or int(value.schema_version) != 1:
@@ -88,7 +88,10 @@ static func valid(command: Variant) -> bool:
 	match value.action:
 		"authorize_task":
 			if not _keys_only(value,["action","schema_version","task_id",
-					"scope","protected","allowed_materials"]):
+					"scope","protected","allowed_materials","cell_limit"]):
+				return false
+			if value.has("cell_limit") and (typeof(value.cell_limit) != TYPE_INT \
+					or value.cell_limit < 1 or value.cell_limit > 65536):
 				return false
 			if not _identifier(value.get("task_id",null)) \
 					or not value.get("scope",null) is Rect2i:

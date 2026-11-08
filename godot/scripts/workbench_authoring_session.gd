@@ -7,6 +7,7 @@ const Setup = preload("res://scripts/workbench_setup.gd")
 
 const SCHEMA_VERSION: int = 1
 const MAX_OBSERVATION_CELLS: int = 4096
+const MAX_AUTHORIZED_CELLS: int = Geometry.MAX_AUTHORIZED_CELLS
 const MAX_RETAINED_RECEIPTS: int = 64
 const ALLOWED_OUTPUTS: Array = [0, 58]
 # First-stage construction may only replace Empty / Hard Wall, not Sand.
@@ -63,6 +64,9 @@ func _authorized(command: Dictionary, extent: Vector2i, generation: int) -> Dict
 	var scope: Variant = command.get("scope",null)
 	var protected_regions: Variant = command.get("protected",null)
 	var allowed: Variant = command.get("allowed_materials",null)
+	var cell_limit: Variant = command.get("cell_limit",MAX_OBSERVATION_CELLS)
+	if typeof(cell_limit) != TYPE_INT or cell_limit < 1 or cell_limit > MAX_AUTHORIZED_CELLS:
+		return _refused("invalid_authorized_cell_limit")
 	if typeof(task_id) != TYPE_STRING or (task_id as String).is_empty() \
 			or (task_id as String).length() > 128:
 		return _refused("invalid_task_id")
@@ -85,12 +89,13 @@ func _authorized(command: Dictionary, extent: Vector2i, generation: int) -> Dict
 		"world_generation": generation,
 		"scope": scope,
 		"protected": protected_regions.duplicate(true),
-		"allowed_materials": allowed.duplicate()
+		"allowed_materials": allowed.duplicate(),
+		"cell_limit":cell_limit
 	}
 	_observation.clear()
 	_proposal.clear()
 	return {"status":"authorized", "task_id":task_id, "generation":generation,
-		"scope":scope, "allowed_materials":allowed.duplicate()}
+		"scope":scope, "allowed_materials":allowed.duplicate(),"cell_limit":cell_limit}
 
 
 func _observe(command: Dictionary, world: Object, extent: Vector2i,
@@ -104,8 +109,9 @@ func _observe(command: Dictionary, world: Object, extent: Vector2i,
 	var scope: Rect2i = _task.scope
 	if not scope.encloses(region):
 		return _refused("observation_outside_task")
-	if region.size.x > MAX_OBSERVATION_CELLS or region.size.y > MAX_OBSERVATION_CELLS \
-			or region.size.x * region.size.y > MAX_OBSERVATION_CELLS:
+	var cell_limit: int = int(_task.cell_limit)
+	if region.size.x > cell_limit or region.size.y > cell_limit \
+			or region.size.x * region.size.y > cell_limit:
 		return _refused("observation_cell_budget")
 	var points: Array[Vector2i] = []
 	for y: int in range(region.position.y, region.end.y):
@@ -185,7 +191,7 @@ func _prepare(command: Dictionary, world: Object, extent: Vector2i,
 		return _refused("receipt_history_full")
 	var compiled: Dictionary = Geometry.compile(
 		command.get("operations",null),extent,
-		_task.scope,_task.protected,_task.allowed_materials,Setup.MATERIALS)
+		_task.scope,_task.protected,_task.allowed_materials,Setup.MATERIALS,int(_task.cell_limit))
 	if compiled.status != "validated_geometry":
 		return compiled
 	var footprint: Array[Vector2i] = compiled.footprint

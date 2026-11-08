@@ -5,7 +5,7 @@ document-kind: contract
 scope: Opt-in human plus agent authoring in the existing shared desktop workbench, WB-AGENT-000 to 003
 canonical-for: [shared-workbench-agent-authoring, shared-workbench-agent-tool-contract]
 keywords: [WB-AGENT, authoring, observe, prepare_edit, apply_edit, step, native receipts, human intervention, Sand hopper]
-last-reviewed: 2026-11-07
+last-reviewed: 2026-11-08
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../systems/player-control-playground.md, ../reference/level-saves-and-replay.md, ../reference/interfaces-and-message-contracts.md]
 ---
 
@@ -68,9 +68,10 @@ hand-selected scope remains valid. Selection changes retire an active task
 through the existing intervention/Stop path. Protected regions and the
 Hard Wall/Empty source/output allowlists continue to apply across the area.
 
-The4096-cell bounds apply separately to each native observation and each edit,
-not to the task rectangle. For a large task, null inspection selects a
-camera-centered64x64 window clamped inside its acknowledged scope. Explicit
+The acknowledged cell_limit applies separately to each native observation and
+each edit, not to the task rectangle (legacy4096, UI default16384, maximum65536).
+For a large task, null inspection selects a camera-centered window bounded by
+that grant and clamped inside its acknowledged scope. Explicit
 bounded windows let the agent inspect other areas. Counts refer only to the
 returned region; the original full viewport PNG and its mapping are separately
 identified. Step returns a new matched bounded inspection. No full-canvas
@@ -82,8 +83,8 @@ separates this follow-up from the preceding fully qualifiedbd1325 baseline.
 ## How does the agent panel preserve the painting viewport?
 
 **Current on the isolated presentation follow-up:** agent controls live in a
-340-pixel side dock beside the existing World control. The form/log scroll;
-Start, Stop and a bounded status remain pinned. Opt-out restores canvas width.
+340-pixel side dock beside the existing World control. The compact form scrolls; Start/Stop share the pinned title row, with a
+usage dashboard. Raw Traffic opens in a separate hideable window. Opt-out restores canvas width.
 The mount preserves the same World object, shader, overlays and GUI-input
 connection. It does not change camera origin or logical view size. Cell and
 region previews use the same floored camera origin as rendering and pointer
@@ -161,8 +162,9 @@ a matched visual `observed`; the render join is mandatory for that claim.
 | `step(ticks)` | Actually acknowledged 1-120 paused ticks, completed count, before/after tick, matched fresh observation | Must remain paused, bounded and interruptible at tick boundary |
 
 Exactly one active task, one prepared proposal and one outstanding mutation.
-Each edit contains at most eight primitives and 4096 **distinct** world cells.
-Each bounded native observation contains at most 4096 cells. All tighter existing
+Each edit contains at most eight primitives and the acknowledged `cell_limit`
+**distinct** world cells (legacy4096, UI default16384, maximum65536).
+Each bounded native observation contains at most the acknowledged `cell_limit` cells. All tighter existing
 engine capacities still apply. Duplicated apply of a consumed proposal returns
 its retained original receipt and NEVER replays a native mutation; once bounded
 retention can no longer guarantee this, refuse new work before eviction.
@@ -214,8 +216,8 @@ directly editable, regardless of replacement filter.
 The three candidate owner actions are:
 
 - `observe`: optional `region: Rect2i` (native worker default is task scope;
-  the trusted host resolves null to the acknowledged whole scope when <=4096
-  cells, otherwise a camera-centered window of at most64x64 cells clamped
+  the trusted host resolves null to the acknowledged whole scope when within the acknowledged cell_limit,
+  otherwise a camera-centered window bounded by that grant and clamped
   inside that scope), wholly within authorized scope;
   `detail: "cells" | "counts"` defaults to `"cells"`. Returns `native_observed` with row-major actual
   `native_material_ids: Array[int]` (empty for counts-only detail),
@@ -332,34 +334,52 @@ serial dispatch (`parallel_tool_calls: false`), finite budgets, configured
 vision-capable model and credentials outside source/saves/logs. The worker,
 native pool and UI render loop must not wait synchronously on HTTP.
 
-**Current on the owner-requested isolated budget-controls candidate (8 November
-2026):** the mounted panel has numeric **API requests / task**, **Tool calls /
-task**, and **Output tokens / response** controls. Their ranges are1–4096,
-1–8192 and1–131072 respectively. A **Collaboration preset** explicitly selects
-128 requests,256 tool calls and32768 output tokens/response; **Reset limits**
-restores12/32/2048. A fourth control sets request timeout1–600 seconds,
-with default25 and Collaboration preset180, frozen at Start as well. Opening the app retains those conservative defaults.
-The model must support the selected output-token cap; the UI does not claim
-model-specific capability discovery or a monetary spending ceiling.
+**Current on the owner-requested compact-panel/traffic candidate (8 November
+2026):** the side dock places Start/Stop beside its title, a large untitled prompt,
+an editable recent-model dropdown (owner-requested default `gpt-5.6-luna`) and
+compact API/Tools/Toks/Time controls. Defaults are now **128 requests,256 tool
+calls,32768 output tokens per response and180 seconds per request**. Their host
+ceilings remain4096/8192/131072/600. Preset/reset buttons and inline terminal are
+removed. Model availability and supported token caps are provider-specific;
+these settings do not establish a monetary or total-token spending ceiling.
 
-The host validates and freezes all request/tool/token allowances and HTTP deadline at Start. Editing any
-control, including timeout, retires the existing task; public configuration cannot alter its active
-request/tool/token ceilings. Budget exhaustion stays explicit and dispatches no
-extra native tool. These are paid API allowances, not native capacities.
+**Cells** is a real per-edit/inspection grant, default16384 and configurable1–65536.
+The host copies it through authorization to the exclusive authoring session;
+model calls cannot expand it. Missing `cell_limit` retains legacy4096 for existing
+clients/fixtures. Geometry, observations, staged named-start edits, native
+readback and client receipt capacity honor the selected value. A larger shape
+can still exceed the exact selected footprint cap and refuse. Scope can cover
+the installed2048-square canvas. Native cell APIs and physics are unchanged.
+The separate64 consumed-proposal receipt history still persists across tasks
+and World generations in one worker; raising Cells/API/tool limits does not
+clear or expand that store. Changing controls retires the active task; all
+limits are frozen at Start.
 
-**4096 cells is a per-observation/edit bound, not a total task quota.** Repeated
-batches can cover the authorized canvas. The real native large-scope regression
-now includes two disjoint4096-cell batches,8192 confirmed writes in one task,
-with native readback and no extra ticks. Its execution status and original PNGs
-must be recorded against the resulting source head before claiming a runtime
-pass. The existing native owner separately retains64 consumed-proposal receipts across tasks and World generations;
-that capacity, protection, Step limits, snapshots and physical laws are unchanged.
-Do not drop receipts, silently reset the World or claim unlimited total work.
+The dashboard distinguishes idle, model waiting, native-tool waiting, starting,
+stopping and unconfirmed retirement, and shows requests/tools used versus grants.
+Input/output token counts use actual provider usage; `?` means unavailable.
+The experimental+512 coordinate translation is absent from normal controls and
+defaults off; the hidden fixture hook remains for the owner-admitted moved
+hopper. It maps signed fixture positions into the finite canvas; it is not a
+normal painting setting or signed-trajectory equivalence.
 
-The previous12/24 checkbox was replaced by these controls. No paid acceptance
-trial is authorized by implementation/testing; fake-provider evidence remains
-separate. Source/qualification details are in the
-[budget-controls record](../audits/2026-11-08-wb531-configurable-budgets.md).
+**Traffic…** opens a separate hideable, selectable raw event viewer with copy,
+JSONL export and local log-folder access. It records timestamp/epoch/request/call
+correlation, outgoing JSON, incoming raw bodies (including malformed/error/stale
+responses), tool calls and native authorization/retirement/readback receipts.
+Authorization headers are excluded and the configured API key is redacted from
+all recorded strings. Original PNGs are stored separately with path/hash/size
+instead of base64 walls. Logs contain local prompt/World/model content: inspect
+before sharing. Live logging uses `user://agent-traffic/events.jsonl` and one
+rotated predecessor,32MiB each;32 PNGs are retained. Memory retains at most256
+events/16MiB; an individual diagnostic record over10MiB becomes an explicit
+size/hash omission. Dropped counts, storage errors and retention boundaries
+appear in viewer/export metadata. Fake transport keeps diagnostics in memory
+unless a focused test explicitly exercises a disposable disk logger.
+
+See the [compact UI and diagnostics evidence](../audits/2026-11-08-wb531-usable-console.md).
+The earlier [budget-controls record](../audits/2026-11-08-wb531-configurable-budgets.md)
+retains its original defaults/tests as historical evidence.
 
 The parent maintains three distinct acceptance outcomes: (1) engineering
 source-matched native/Godot tests, (2) **three predeclared actual API** Sand-hopper
@@ -431,10 +451,10 @@ confirmation, not merely each queue submission.
 
 The bridge accepts strict Responses JSON rectangle objects with exact integer
 `x,y,width,height`, or an already-validated Godot `Rect2i`. The required
-model-visible `region:null` means the acknowledged task scope when it fits4096
-cells, otherwise a bounded camera-centered window inside it. The response
+model-visible `region:null` means the acknowledged task scope when it fits the frozen cell_limit,
+otherwise a bounded camera-centered window inside it. The response
 names the exact inspected rectangle, `region_selection`, `authorized_scope`,
-the4096-cell limit, native/logical viewport rectangles and the viewport's
+the acknowledged cell limit, native/logical viewport rectangles and the viewport's
 pixel rectangle in the unchanged original PNG. A capture-time projection
 change causes a bounded retry; a changed World generation refuses. A nullable
 `replace_only_material:null` becomes **absence of the filter**, never

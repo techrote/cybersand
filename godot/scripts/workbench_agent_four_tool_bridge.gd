@@ -57,7 +57,7 @@ func bind(main: Control) -> bool:
 
 
 func authorize_task(task_id: String, scope: Rect2i, protected: Array,
-		allowed_materials: Array, coordinate_frame_id: String = "") -> Dictionary:
+		allowed_materials: Array, coordinate_frame_id: String = "", cell_limit: int = 4096) -> Dictionary:
 	if _authorized or _busy or _stopping or _uncertain:
 		return _refused("task_or_transition_busy")
 	if not is_instance_valid(_main) or _authoring == null:
@@ -68,7 +68,7 @@ func authorize_task(task_id: String, scope: Rect2i, protected: Array,
 	# finite frame. This parameter is NEVER accepted from a model-visible
 	# call_tool invocation, and does not imply physical-equivalence admission.
 	var answer: Dictionary = await _authoring.authorize_task(
-		task_id,scope,protected,allowed_materials,coordinate_frame_id)
+		task_id,scope,protected,allowed_materials,coordinate_frame_id,cell_limit)
 	_authorization_pending = false
 	_busy = false
 	if answer.get("status") == "unconfirmed":

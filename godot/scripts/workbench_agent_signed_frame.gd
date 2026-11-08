@@ -78,7 +78,9 @@ static func regions(regions_value: Variant) -> Dictionary:
 	return {"status":"mapped","native":out,"frame_id":FRAME_ID}
 
 
-static func operations(ops: Variant) -> Dictionary:
+static func operations(ops: Variant, cell_limit: int = 4096) -> Dictionary:
+	if cell_limit < 1 or cell_limit > 65536:
+		return _refused("invalid_authorized_cell_limit")
 	if not ops is Array or ops.is_empty() or ops.size() > MAX_PRIMITIVES:
 		return _refused("invalid_primitive_count")
 	var out: Array = []
@@ -115,7 +117,8 @@ static func operations(ops: Variant) -> Dictionary:
 			mapped["replace_only_material"]=op.replace_only_material
 		if op.shape == "disc":
 			var radius: int = op["radius"]
-			if radius<0 or radius>MAX_DISC_RADIUS:
+			var radius_limit: int = MAX_DISC_RADIUS if cell_limit <= 4096 else 144
+			if radius<0 or radius>radius_limit:
 				return _refused("disc_radius_exceeds_budget")
 			var center: Dictionary = point(op["x"],op["y"])
 			if center.status != "mapped":
@@ -142,14 +145,16 @@ static func operations(ops: Variant) -> Dictionary:
 			mapped["x1"]=b.native.x
 			mapped["y1"]=b.native.y
 		out.append(mapped)
-	# The authoritative #526 raster compiler STILL must enforce <=4096
-	# distinct cells, source-ID filters, protection, pending revision and
+	# The authoritative #526 raster compiler STILL enforces the frozen task's
+	# distinct-cell cap, source-ID filters, protection, pending revision and
 	# actual native readback after this lossless spatial conversion.
 	return {"status":"mapped","native":out,"frame_id":FRAME_ID}
 
 
-static func readback_to_logical(native_rows: Variant) -> Dictionary:
-	if not native_rows is Array or native_rows.size()>4096:
+static func readback_to_logical(native_rows: Variant, cell_limit: int = 4096) -> Dictionary:
+	if cell_limit < 1 or cell_limit > 65536:
+		return _refused("invalid_authorized_cell_limit")
+	if not native_rows is Array or native_rows.size()>cell_limit:
 		return _refused("invalid_readback_length")
 	var rows: Array = []
 	for raw: Variant in native_rows:

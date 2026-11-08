@@ -23,6 +23,9 @@ ROOT = Path(__file__).resolve().parents[2]
 FIXTURE_SHA = "549a1db2520bcfb35f068f46b62320d7325d6297037ca2faf23c3b488d80347c"
 CASES = [
     ("client", "test_workbench_agent_client.gd", True, []),
+    ("diagnostics", "test_workbench_agent_diagnostics.gd", True, []),
+    ("cell-limit", "test_workbench_agent_cell_limit.gd", True, []),
+    ("configurable-cells", "test_wb531_configurable_cells_render.gd", False, []),
     ("geometry", "test_workbench_agent_footprint.gd", True, []),
     ("signed-frame", "test_workbench_agent_signed_frame.gd", True, []),
     ("envelope", "test_workbench_authoring_envelope.gd", True, []),
@@ -80,6 +83,9 @@ def identity(godot: Path) -> dict:
 def validate_output(text: str, case: str) -> bool:
     summaries = {
         "client": r"WB_AGENT_528 fake-provider checks [1-9]\d*, failures 0",
+        "diagnostics": r"WB_AGENT_DIAGNOSTICS: [1-9]\d* checks, 0 failures",
+        "cell-limit": r"WB_AGENT_CELL_LIMIT: [1-9]\d* checks, 0 failures",
+        "configurable-cells": r"WB_AGENT_528 mounted real-native checks [1-9]\d*, failures 0",
         "geometry": r"WB_AGENT_FOOTPRINT: [1-9]\d* assertions, 0 failure",
         "signed-frame": r"WB_AGENT_SIGNED_FRAME: [1-9]\d* assertions, 0 failures",
         "envelope": r"WB_AGENT_ENVELOPE: [1-9]\d* assertions, 0 failures",

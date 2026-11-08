@@ -455,11 +455,11 @@ func _test_ui_shell() -> void:
 	panel._on_start()
 	_expect(authorizations.size() == 1 and panel.client.is_active(),
 		"valid Start did not authorize exactly once after local preflight")
-	_expect(panel.client.request_budget == 12, "default paid request limit changed")
-	panel._set_budgets(128,256,32768,180)
+	_expect(panel.client.request_budget == 128, "default paid request limit changed")
+	panel._set_budgets(256,256,32768,180)
 	_expect(not panel.client.is_active(), "changing paid request allowance failed to revoke task")
 	panel._on_start()
-	_expect(panel.client.is_active() and panel.client.request_budget == 128
+	_expect(panel.client.is_active() and panel.client.request_budget == 256
 		and panel.client.tool_budget == 256 and panel.client.token_budget == 32768
 		and panel.client._active_request_timeout_seconds == 180,
 		"human-selected collaboration budgets not authorized")
@@ -480,9 +480,9 @@ func _test_ui_shell() -> void:
 	panel._set_budgets(Client.DEFAULT_REQUEST_BUDGET,Client.DEFAULT_TOOL_BUDGET,Client.DEFAULT_TOKEN_BUDGET)
 	_expect(not panel.client.is_active(), "opting out did not retire the old task")
 	panel._on_start()
-	_expect(panel.client.is_active() and panel.client.request_budget == 12
-		and panel.client.tool_budget == 32 and panel.client.token_budget == 2048
-		and panel.client._active_request_timeout_seconds == 25,
+	_expect(panel.client.is_active() and panel.client.request_budget == 128
+		and panel.client.tool_budget == 256 and panel.client.token_budget == 32768
+		and panel.client._active_request_timeout_seconds == 180,
 		"next task did not restore all conservative defaults")
 	panel._model.text = "revised-test-model"
 	panel._retire_on_human_change()

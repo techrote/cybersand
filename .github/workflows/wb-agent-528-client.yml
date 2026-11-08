@@ -5,9 +5,14 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'godot/scripts/workbench_agent_client.gd'
+      - 'godot/scripts/workbench_agent_diagnostics.gd'
+      - 'godot/scripts/workbench_agent_traffic_window.gd'
       - 'godot/scripts/workbench_agent_panel.gd'
       - 'godot/scripts/workbench_agent_proposal_overlay.gd'
       - 'godot/tests/test_workbench_agent_client.gd'
+      - 'godot/tests/test_workbench_agent_diagnostics.gd'
+      - 'godot/tests/test_workbench_agent_cell_limit.gd'
+      - 'godot/tests/test_wb531_configurable_cells_render.gd'
       - '.github/workflows/wb-agent-528-client.yml'
   workflow_dispatch:
 
@@ -60,6 +65,26 @@ jobs:
           "$GODOT_BIN" --version | tee build/wb-agent-528/godot-version.txt
           test "$("$GODOT_BIN" --version)" = "4.7.stable.official.5b4e0cb0f"
           echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+      - name: Materialize pinned extensions required by the Godot bootstrap
+        shell: bash
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude='' 2>&1 | tee build/wb-agent-528/lfs.log
+          python3 - <<'PY'
+          import hashlib, json, re, subprocess
+          from pathlib import Path
+          hashes = {}
+          for path in ('godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so',
+                       'godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'):
+              pointer = subprocess.check_output(['git', 'show', 'HEAD:'+path])
+              expected = re.search(rb'oid sha256:([0-9a-f]{64})', pointer).group(1).decode()
+              data = Path(path).read_bytes()
+              actual = hashlib.sha256(data).hexdigest()
+              assert actual == expected, path + ': pinned runtime hash mismatch'
+              hashes[path] = {'sha256': actual, 'bytes': len(data)}
+          Path('build/wb-agent-528/runtime-hashes.json').write_text(json.dumps(hashes, indent=2)+'\n')
+          PY
       - name: Execute actual GDScript protocol/panel tests without API credentials
         shell: bash
         timeout-minutes: 5
@@ -67,7 +92,14 @@ jobs:
           OPENAI_API_KEY: ''
         run: |
           set -euo pipefail
-          timeout 180 "$GODOT_BIN" --headless --path godot --script res://tests/test_workbench_agent_client.gd 2>&1 | tee build/wb-agent-528/fake-provider.log
+          for script in test_workbench_agent_client.gd test_workbench_agent_diagnostics.gd test_workbench_agent_cell_limit.gd; do
+            log="build/wb-agent-528/${script%.gd}.log"
+            timeout 180 "$GODOT_BIN" --headless --path godot --script "res://tests/$script" 2>&1 | tee "$log"
+            if grep -E 'SCRIPT ERROR|(^|[[:space:]])ERROR:' "$log"; then exit 1; fi
+          done
+          grep -E 'WB_AGENT_528 fake-provider checks [1-9][0-9]*, failures 0' build/wb-agent-528/test_workbench_agent_client.log
+          grep -E 'WB_AGENT_DIAGNOSTICS: [1-9][0-9]* checks, 0 failures' build/wb-agent-528/test_workbench_agent_diagnostics.log
+          grep -E 'WB_AGENT_CELL_LIMIT: [1-9][0-9]* checks, 0 failures' build/wb-agent-528/test_workbench_agent_cell_limit.log
       - name: Preserve source, original failures and runtime evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -78,6 +110,8 @@ jobs:
             build/wb-agent-528/source-tree.txt
             build/wb-agent-528/provider.json
             build/wb-agent-528/godot-version.txt
-            build/wb-agent-528/fake-provider.log
+            build/wb-agent-528/lfs.log
+            build/wb-agent-528/runtime-hashes.json
+            build/wb-agent-528/test_workbench_agent_*.log
           if-no-files-found: warn
           retention-days: 60

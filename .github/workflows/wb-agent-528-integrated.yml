@@ -10,6 +10,8 @@ on:
       - 'godot/scripts/workbench_agent_step_sequence.gd'
       - 'godot/scripts/workbench_agent_panel.gd'
       - 'godot/scripts/workbench_agent_client.gd'
+      - 'godot/scripts/workbench_agent_diagnostics.gd'
+      - 'godot/scripts/workbench_agent_traffic_window.gd'
       - 'godot/scripts/shared_workbench.gd'
       - 'godot/scripts/workbench_authoring_*.gd'
       - 'godot/tests/test_workbench_agent_mounted.gd'
@@ -19,6 +21,9 @@ on:
       # A new #528 acceptance receipt/contract revision requires genuine
       # native+frame readback, not only documentation/provenance checks.
       - 'docs/audits/2026-11-07-wb-agent-528-client-shell.md'
+      - 'godot/tests/test_workbench_agent_diagnostics.gd'
+      - 'godot/tests/test_workbench_agent_cell_limit.gd'
+      - 'godot/tests/test_wb531_configurable_cells_render.gd'
       - '.github/workflows/wb-agent-528-integrated.yml'
   workflow_dispatch:
 
@@ -128,9 +133,12 @@ jobs:
           "$GODOT_BIN" --version | tee "$EVIDENCE/godot-version.txt"
           grep -Fx '4.7.stable.official.5b4e0cb0f' "$EVIDENCE/godot-version.txt"
           timeout 120 "$GODOT_BIN" --headless --path godot --editor --import --quit 2>&1 | tee "$EVIDENCE/import.log"
-          for script in test_workbench_agent_client.gd test_workbench_agent_footprint.gd test_workbench_authoring_envelope.gd test_workbench_agent_failures.gd; do
+          for script in test_workbench_agent_client.gd test_workbench_agent_diagnostics.gd test_workbench_agent_cell_limit.gd test_workbench_agent_footprint.gd test_workbench_authoring_envelope.gd test_workbench_agent_failures.gd; do
             timeout 120 "$GODOT_BIN" --headless --path godot --script "res://tests/$script" 2>&1 | tee "$EVIDENCE/$script.log"
+            if grep -E 'SCRIPT ERROR|(^|[[:space:]])ERROR:' "$EVIDENCE/$script.log"; then exit 1; fi
           done
+          grep -E 'WB_AGENT_DIAGNOSTICS: [1-9][0-9]* checks, 0 failures' "$EVIDENCE/test_workbench_agent_diagnostics.gd.log"
+          grep -E 'WB_AGENT_CELL_LIMIT: [1-9][0-9]* checks, 0 failures' "$EVIDENCE/test_workbench_agent_cell_limit.gd.log"
       - name: Run real-worker native-ID and actual post-draw framebuffer acceptance
         timeout-minutes: 7
         shell: bash
@@ -141,6 +149,20 @@ jobs:
             "$GODOT_BIN" --path godot --rendering-method gl_compatibility \
             --script res://tests/test_workbench_agent_mounted.gd \
             2>&1 | tee "$EVIDENCE/real-owner-graphical.log"
+      - name: Verify panel-selected expanded cell capacity against native World and framebuffer
+        timeout-minutes: 12
+        shell: bash
+        env:
+          OPENAI_API_KEY: ''
+        run: |
+          set -euo pipefail
+          timeout 600 xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            "$GODOT_BIN" --path godot --audio-driver Dummy --rendering-method gl_compatibility \
+            --script res://tests/test_wb531_configurable_cells_render.gd \
+            2>&1 | tee "$EVIDENCE/expanded-cell-capacity.log"
+          if grep -E 'SCRIPT ERROR|(^|[[:space:]])ERROR:' "$EVIDENCE/expanded-cell-capacity.log"; then exit 1; fi
+          grep -E 'WB_AGENT_528 mounted real-native checks [1-9][0-9]*, failures 0' "$EVIDENCE/expanded-cell-capacity.log"
+          grep -F 'WB531_EXPANDED_CELLS' "$EVIDENCE/expanded-cell-capacity.log"
       - name: Verify maximum native receipts, camera pan, and panel-driven frozen hopper
         timeout-minutes: 24
         shell: bash

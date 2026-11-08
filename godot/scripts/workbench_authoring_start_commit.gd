@@ -53,14 +53,16 @@ static func _boxes_for_changed_cells(rows: Array) -> Array:
 
 ## Proposed footprint is an Array of {x,y,before,after} from the OWNER.
 ## Returns an immutable plan tied to the entire existing authored setup.
-static func stage(setup: Dictionary, proposal: Dictionary) -> Dictionary:
+static func stage(setup: Dictionary, proposal: Dictionary, cell_limit: int = 4096) -> Dictionary:
+	if cell_limit < 1 or cell_limit > 65536:
+		return _refused("invalid_authorized_cell_limit")
 	if str(proposal.get("status","")) != "proposed" \
 			or not proposal.get("footprint",null) is Array:
 		return _refused("missing_authoritative_proposal")
 	if Setup.validate(setup) != "":
 		return _refused("invalid_existing_start")
 	var rows: Array = proposal.footprint
-	if rows.size() > 4096:
+	if rows.size() > cell_limit:
 		return _refused("edit_exceeds_capacity")
 	for row: Variant in rows:
 		if not row is Dictionary:

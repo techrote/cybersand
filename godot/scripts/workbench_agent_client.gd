@@ -8,6 +8,14 @@ signal status_changed(status: String, detail: String)
 signal model_report_received(report: String)
 signal proposal_changed(footprint: Array)
 signal task_finished(outcome: String)
+signal diagnostic_event(record: Dictionary)
+const Diagnostics = preload("res://scripts/workbench_agent_diagnostics.gd")
+var _diagnostics := Diagnostics.new()
+var _stage := "Ready"
+var _input_tokens := -1
+var _output_tokens := -1
+var _usage_ids := {}
+var _usage_complete := true
 
 const ENDPOINT := "https://api.openai.com/v1/responses"
 const NAMES := ["observe", "prepare_edit", "apply_edit", "step"]
@@ -17,16 +25,17 @@ const MAX_BODY := 2 * 1024 * 1024
 ## 4096 native rows may each contain two signed 32-bit coordinates and
 ## before/after IDs. Reserve 112 characters per row plus 64 KiB for bounded
 ## identity/count/palette metadata. Images have their separate existing cap.
-const MAX_TOOL_OUTPUT := 4096 * 112 + 65536
+const MAX_CELL_LIMIT := 65536
+const MAX_TOOL_OUTPUT := MAX_CELL_LIMIT * 112 + 65536
 # Host-selected budgets are validated and frozen together at Start.
 # Neither the model nor a tool result may expand an active task's allowance.
-const DEFAULT_REQUEST_BUDGET := 12
+const DEFAULT_REQUEST_BUDGET := 128
 const MAX_REQUEST_BUDGET := 4096
-const DEFAULT_TOOL_BUDGET := 32
+const DEFAULT_TOOL_BUDGET := 256
 const MAX_TOOL_BUDGET := 8192
-const DEFAULT_TOKEN_BUDGET := 2048
+const DEFAULT_TOKEN_BUDGET := 32768
 const MAX_TOKEN_BUDGET := 131072
-const DEFAULT_REQUEST_TIMEOUT := 25
+const DEFAULT_REQUEST_TIMEOUT := 180
 const MAX_REQUEST_TIMEOUT := 600
 # Permit one non-mutating model argument correction per task; no native replay.
 const MAX_ARGUMENT_REPAIRS := 1
@@ -63,6 +72,38 @@ var _fake_transport := false
 var _last_fake_payload: Dictionary = {}
 var _response_waiting := false
 
+func _init() -> void:
+	status_changed.connect(func(status: String, detail: String) -> void:
+		if status in ["stopped", "error", "completed", "refused"]:
+			_stage = {"stopped":"Stopped", "error":"Failed - open Traffic", "completed":"Finished", "refused":"Request refused"}[status]
+		record_diagnostic("task." + status, {"detail": detail}))
+
+func record_diagnostic(kind: String, payload: Variant) -> void:
+	var record := _diagnostics.append(kind, payload,
+		{"epoch": _epoch, "request": _serial, "call_id": _pending_call_id}, not _fake_transport)
+	diagnostic_event.emit(record)
+
+func diagnostic_records() -> Array[Dictionary]:
+	return _diagnostics.records.duplicate(true)
+
+func diagnostic_directory() -> String:
+	return ProjectSettings.globalize_path(_diagnostics.directory)
+
+func export_diagnostics(path: String) -> Error:
+	return _diagnostics.export_jsonl(path)
+
+func activity_snapshot() -> Dictionary:
+	return {"state": "active" if _active else "idle", "stage": _stage,
+		"requests": _request_count, "request_limit": _active_request_budget if _active or _request_count > 0 else request_budget,
+		"tools": _tool_count, "tool_limit": _active_tool_budget if _active or _request_count > 0 else tool_budget,
+		"input_tokens": _input_tokens, "output_tokens": _output_tokens,
+		"token_limit": _active_token_budget if _active or _request_count > 0 else token_budget,
+		"timeout": _active_request_timeout_seconds, "dropped_events": _diagnostics.dropped,
+		"usage_complete": _usage_complete, "log_error": _diagnostics.disk_error}
+
+func _cell_limit() -> int:
+	return int(_scope.get("cell_limit", 4096)) if _active else 4096
+
 func configure_fake_transport_for_tests(enabled: bool) -> void:
 	# Tests may deliver provider responses explicitly; never acts on World.
 	if _active:
@@ -77,6 +118,9 @@ func is_active() -> bool:
 
 func is_waiting_for_tool() -> bool:
 	return not _pending_call_id.is_empty()
+
+func _disc_radius_limit() -> int:
+	return mini(144, int(sqrt(float(_cell_limit()) / PI)))
 
 func _field(t: String, description: String = "") -> Dictionary:
 	var value := {"type": t}
@@ -99,7 +143,7 @@ func _primitive_schema(shape: String, coordinates: Array) -> Dictionary:
 		fields.append(key)
 	if shape == "disc":
 		properties["radius"]["minimum"] = 0
-		properties["radius"]["maximum"] = 36
+		properties["radius"]["maximum"] = _disc_radius_limit()
 	return _object(properties,fields)
 
 func strict_tools() -> Array:
@@ -115,12 +159,12 @@ func strict_tools() -> Array:
 	]}}
 	return [
 		{"type":"function","name":"observe","strict":true,
-			"description":"Read at most 4096 native cells AND a matching original post-draw PNG. Explicit region selects a bounded window inside task scope. null selects the whole scope if it fits, otherwise a camera-centered window of at most 64x64 cells clamped inside scope. Read the returned exact region and viewport mapping; counts describe that inspection, not the whole canvas.",
+			"description":"Read up to the authorized cell_limit native cells AND a matching original post-draw PNG. Explicit region selects a bounded window inside task scope. null selects the whole scope if it fits, otherwise a bounded camera-centered window clamped inside scope. Read the returned exact region and viewport mapping; counts describe that inspection, not the whole canvas.",
 			"parameters":_object({"region":{"anyOf":[region,{"type":"null"}]},
 				"detail":{"type":"string","enum":["cells","counts"]}},
 				["region","detail"])},
 		{"type":"function","name":"prepare_edit","strict":true,
-			"description":"Preflight 1-8 Hard Wall/Empty native operations covering at most 4096 distinct cells inside the authorized task scope; zero mutation.",
+			"description":"Preflight 1-8 Hard Wall/Empty native operations covering at most the authorized cell_limit distinct cells inside the authorized task scope; zero mutation.",
 			"parameters":_object({"observation_id":_field("string"),
 				"operations":operations},["observation_id","operations"])},
 		{"type":"function","name":"apply_edit","strict":true,
@@ -185,7 +229,7 @@ func _valid_arguments(name: String, args: Variant) -> bool:
 				for key: String in ["x","y","width","height"]:
 					if not args.region.has(key) or not _safe_integer(args.region[key]):
 						return false
-				if args.region.x < MIN_WORLD_COORD or args.region.y < MIN_WORLD_COORD 						or args.region.width < 1 or args.region.height < 1 						or args.region.width > 4096 or args.region.height > 4096 						or args.region.width * args.region.height > 4096 						or args.region.x + args.region.width > MAX_WORLD_COORD 						or args.region.y + args.region.height > MAX_WORLD_COORD:
+				if args.region.x < MIN_WORLD_COORD or args.region.y < MIN_WORLD_COORD 						or args.region.width < 1 or args.region.height < 1 						or args.region.width > _cell_limit() or args.region.height > _cell_limit() 						or args.region.width * args.region.height > _cell_limit() 						or args.region.x + args.region.width > MAX_WORLD_COORD 						or args.region.y + args.region.height > MAX_WORLD_COORD:
 					return false
 		"prepare_edit":
 			if not args.observation_id is String or args.observation_id.is_empty() 					or args.observation_id.length() > 128:
@@ -213,7 +257,7 @@ func _valid_arguments(name: String, args: Variant) -> bool:
 					# Negative world positions are valid signed coordinates;
 					# radius is a nonnegative length, not a position.
 					if key == "radius":
-						if item[key] < 0 or item[key] > 36:
+						if item[key] < 0 or item[key] > _disc_radius_limit():
 							return false
 					elif item[key] < MIN_WORLD_COORD or item[key] > MAX_WORLD_COORD:
 						return false
@@ -252,6 +296,8 @@ func launch_problem(task: String, model: String, scope: Dictionary) -> String:
 		return "Output-token budget must be between 1 and %d; choose a value supported by the model." % MAX_TOKEN_BUDGET
 	if not is_finite(request_timeout_seconds) or request_timeout_seconds < 1 or request_timeout_seconds > MAX_REQUEST_TIMEOUT:
 		return "Request timeout must be finite and between 1 and %d seconds." % MAX_REQUEST_TIMEOUT
+	if not _safe_integer(scope.get("cell_limit",4096)) or int(scope.get("cell_limit",4096)) < 1 or int(scope.get("cell_limit",4096)) > MAX_CELL_LIMIT:
+		return "Cells must be between 1 and %d." % MAX_CELL_LIMIT
 	if not _fake_transport and OS.get_environment("OPENAI_API_KEY").is_empty():
 		return "OPENAI_API_KEY is not set. Configure the local launch environment and restart the client."
 	return ""
@@ -276,6 +322,10 @@ func begin_task(task: String, model: String, scope: Dictionary) -> bool:
 	_active_token_budget = token_budget
 	_active_request_timeout_seconds = request_timeout_seconds
 	_tool_count = 0
+	_input_tokens = -1
+	_output_tokens = -1
+	_usage_ids.clear()
+	_usage_complete = true
 	_argument_repairs = 0
 	_pending_call_id = ""
 	_pending_tool = ""
@@ -345,6 +395,8 @@ func _send(input_items: Array) -> void:
 	if not _response_id.is_empty():
 		payload["previous_response_id"] = _response_id
 	_response_waiting = true
+	_stage = "Waiting for model response"
+	record_diagnostic("http.request", {"method":"POST", "url":ENDPOINT, "body":payload, "fake":_fake_transport})
 	if _fake_transport:
 		# Only explicit receive_fake_response calls can advance tests.
 		_last_fake_payload = payload.duplicate(true)
@@ -356,7 +408,7 @@ func _send(input_items: Array) -> void:
 	add_child(request)
 	_pending_http = request
 	request.request_completed.connect(func(result: int, status: int, headers: PackedStringArray, body: PackedByteArray) -> void:
-		_handle_transport(identity, nonce, result, status, body)
+		_handle_transport(identity, nonce, result, status, body, headers)
 		if is_instance_valid(request):
 			request.queue_free()
 		if _pending_http == request:
@@ -408,7 +460,14 @@ func _parse_json_value(raw: String) -> Variant:
 		return null
 	return decoder.data
 
-func _handle_transport(identity: int, nonce: int, result: int, http_status: int, body: PackedByteArray) -> void:
+func _handle_transport(identity: int, nonce: int, result: int, http_status: int, body: PackedByteArray, headers: PackedStringArray = PackedStringArray()) -> void:
+	var safe_headers := {}
+	for header: String in headers:
+		var split := header.find(":")
+		var name := header.substr(0, split).to_lower() if split > 0 else ""
+		if name in ["x-request-id", "retry-after", "x-ratelimit-remaining-requests", "x-ratelimit-remaining-tokens"]:
+			safe_headers[name] = header.substr(split + 1).strip_edges()
+	record_diagnostic("http.response", {"epoch":identity,"request":nonce,"transport_result":result,"http_status":http_status,"headers":safe_headers,"body":body.get_string_from_utf8(),"stale":not _active or identity != _epoch or nonce != _serial or not _response_waiting})
 	if not _active or identity != _epoch or nonce != _serial or not _response_waiting:
 		return
 	_response_waiting = false
@@ -416,7 +475,7 @@ func _handle_transport(identity: int, nonce: int, result: int, http_status: int,
 		_fail("Network error or timeout (%d)." % result)
 		return
 	if http_status < 200 or http_status >= 300:
-		# Never forward response body; it could contain request-specific sensitive data.
+		# Error bodies remain in redacted local diagnostics, never as native authority.
 		var kind := "API authentication" if http_status == 401 or http_status == 403 else ("API rate limit" if http_status == 429 else "API HTTP")
 		_fail("%s status %d" % [kind, http_status])
 		return
@@ -427,6 +486,14 @@ func _handle_transport(identity: int, nonce: int, result: int, http_status: int,
 	if not parsed is Dictionary or parsed.get("id", "") is not String or str(parsed.get("id", "")).is_empty():
 		_fail("Malformed Responses API envelope.")
 		return
+	var usage: Variant = parsed.get("usage", null)
+	if not _usage_ids.has(parsed.id):
+		_usage_ids[parsed.id] = true
+		if usage is Dictionary and _safe_integer(usage.get("input_tokens",null)) and _safe_integer(usage.get("output_tokens",null)) and usage.input_tokens >= 0 and usage.output_tokens >= 0:
+			_input_tokens = maxi(_input_tokens,0) + int(usage.input_tokens)
+			_output_tokens = maxi(_output_tokens,0) + int(usage.output_tokens)
+		else:
+			_usage_complete = false
 	if not parsed.get("output", null) is Array:
 		_fail("Missing model output list.")
 		return
@@ -496,6 +563,8 @@ func _handle_transport(identity: int, nonce: int, result: int, http_status: int,
 	_tool_count += 1
 	_pending_call_id = call_id
 	_pending_tool = name
+	_stage = "Waiting for native " + name
+	record_diagnostic("tool.request", {"name":name,"call_id":call_id,"arguments":args})
 	status_changed.emit("queued", "%s proposed; awaiting authoritative dispatcher." % name)
 	tool_requested.emit(name, _normalise_arguments(name, args), _epoch, call_id)
 
@@ -533,6 +602,7 @@ func _native_receipt_detail(tool: String, receipt: Dictionary, status: String) -
 
 func submit_tool_result(epoch: int, call_id: String, receipt: Dictionary) -> bool:
 	# Called asynchronously only by the shared #526/#527 adapter.
+	record_diagnostic("native.receipt", {"epoch":epoch,"call_id":call_id,"receipt":receipt,"stale":not _active or epoch != _epoch or call_id != _pending_call_id or call_id.is_empty()})
 	# A queue-only "success" must NOT become an applied claim.
 	if not _active or epoch != _epoch or call_id != _pending_call_id or call_id.is_empty():
 		return false

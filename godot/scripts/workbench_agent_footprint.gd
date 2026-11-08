@@ -12,9 +12,11 @@ extends RefCounted
 
 const MAX_PRIMITIVES: int = 8
 const MAX_DISTINCT_CELLS: int = 4096
+const MAX_AUTHORIZED_CELLS: int = 65536
 # Under the inclusive integer-disc rule radius 36 has 4053 cells;
 # radius 37 has 4293, already above the per-edit cell limit.
 const MAX_DISC_RADIUS: int = 36
+const MAX_AUTHORIZED_DISC_RADIUS: int = 144
 
 
 static func _refused(reason: String, operation_index: int = -1) -> Dictionary:
@@ -109,8 +111,11 @@ static func compile(
 	scope: Rect2i,
 	protection: Array,
 	allowed_materials: Array,
-	native_palette_ids: Array
+	native_palette_ids: Array,
+	cell_limit: int = MAX_DISTINCT_CELLS
 ) -> Dictionary:
+	if cell_limit < 1 or cell_limit > MAX_AUTHORIZED_CELLS:
+		return _refused("invalid_authorized_cell_limit")
 	if not operations is Array or operations.is_empty() or operations.size() > MAX_PRIMITIVES:
 		return _refused("invalid_primitive_count")
 	if extent.x <= 0 or extent.y <= 0:
@@ -173,7 +178,7 @@ static func compile(
 			var cx: int = op["x"]
 			var cy: int = op["y"]
 			var radius_check: int = op["radius"]
-			if radius_check < 0 or radius_check > MAX_DISC_RADIUS:
+			if radius_check < 0 or radius_check > MAX_AUTHORIZED_DISC_RADIUS:
 				return _refused("disc_exceeds_cell_budget", index)
 			if cx < 0 or cy < 0 or cx >= extent.x or cy >= extent.y:
 				return _refused("outside_authorized_scope", index)
@@ -199,12 +204,14 @@ static func compile(
 		match shape:
 			"disc":
 				var radius: int = op["radius"]
-				if radius < 0 or radius > MAX_DISC_RADIUS:
+				if radius < 0 or radius > MAX_AUTHORIZED_DISC_RADIUS:
 					return _refused("disc_exceeds_cell_budget", index)
 				points = _rasterize_disc(op)
+				if points.size() > cell_limit:
+					return _refused("disc_exceeds_cell_budget", index)
 			"line":
 				var span: int = maxi(absi(op["x1"] - op["x0"]), absi(op["y1"] - op["y0"])) + 1
-				if span > MAX_DISTINCT_CELLS:
+				if span > cell_limit:
 					return _refused("line_exceeds_cell_budget", index)
 				points = _rasterize_line(op)
 			"rectangle":
@@ -212,8 +219,8 @@ static func compile(
 					return _refused("reversed_rectangle_bounds", index)
 				var width: int = op["x1"] - op["x0"] + 1
 				var height: int = op["y1"] - op["y0"] + 1
-				if width > MAX_DISTINCT_CELLS or height > MAX_DISTINCT_CELLS \
-						or width * height > MAX_DISTINCT_CELLS:
+				if width > cell_limit or height > cell_limit \
+						or width * height > cell_limit:
 					return _refused("rectangle_exceeds_cell_budget", index)
 				points = _rasterize_rectangle(op)
 
@@ -226,7 +233,7 @@ static func compile(
 			if not seen.has(point):
 				seen[point] = true
 				unique.append(point)
-				if unique.size() > MAX_DISTINCT_CELLS:
+				if unique.size() > cell_limit:
 					return _refused("distinct_cell_budget_exceeded", index)
 		var ordered: Dictionary = {
 			"shape": shape,

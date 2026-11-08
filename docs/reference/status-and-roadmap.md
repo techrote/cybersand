@@ -10,6 +10,17 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Compact agent controls and raw traffic — 8 November 2026
+
+The isolated #531 follow-up adds the owner-requested compact prompt/model/budget
+panel, actual configurable1–65536-cell operations (UI default16384), active/idle
+usage dashboard and a separate raw traffic window with bounded local JSONL/PNG
+logs. Opening API/tool/token/timeout defaults are128/256/32768/180. Native cell
+APIs, physical laws and the separate64 receipt store are unchanged. Qualification
+is source-specific; live/human gates remain separate. See the
+[canonical workbench contract](../systems/shared-workbench-agent-authoring.md)
+and [dated record](../audits/2026-11-08-wb531-usable-console.md).
+
 ## WB-AGENT Stage-1 shared-workbench human+agent authoring (#525–#528) — 2026-11-07
 
 **Current source candidate; not accepted main.** Existing Drafts #529/#530/#531
