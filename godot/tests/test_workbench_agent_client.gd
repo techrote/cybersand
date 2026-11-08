@@ -378,9 +378,26 @@ func _test_ui_shell() -> void:
 	root.add_child(panel)
 	await process_frame
 	_expect(panel._start.disabled, "unbound panel must refuse Start")
+	var authorizations: Array = []
 	panel.bind_authoritative_dispatcher(func(_name: String, _args: Dictionary,
-			_epoch: int, _id: String, _client: Node) -> void: pass)
+			_epoch: int, _id: String, _client: Node) -> void: pass,
+		Callable(), func(_scope_value: Dictionary) -> Dictionary:
+			authorizations.append(true)
+			return {"status":"authorized"})
 	panel.client.configure_fake_transport_for_tests(true)
+	# Failure-before: a blank task/model formerly acquired native authority,
+	# then failed begin_task and entered a needless Stop/retirement cycle.
+	panel._model.text = "local-test-model"
+	panel._on_start()
+	_expect(authorizations.is_empty() and not panel.client.is_active()
+		and panel._state.text.find("Task, model") >= 0,
+		"blank task acquired native authoring authority before client preflight")
+	panel._task.text = "Build native chute"
+	panel._model.text = ""
+	panel._on_start()
+	_expect(authorizations.is_empty() and not panel.client.is_active()
+		and panel._state.text.find("Task, model") >= 0,
+		"blank model acquired native authoring authority before client preflight")
 	_expect(panel._region[0].min_value < 0 and panel._region[1].min_value < 0,
 		"signed native coordinates cannot be entered in the opt-in panel")
 	panel._region[0].value = -35
@@ -390,7 +407,8 @@ func _test_ui_shell() -> void:
 	panel._task.text = "Build native chute"
 	panel._model.text = "local-test-model"
 	panel._on_start()
-	_expect(panel.client.is_active(), "bound panel Start should begin")
+	_expect(authorizations.size() == 1 and panel.client.is_active(),
+		"valid Start did not authorize exactly once after local preflight")
 	_expect(panel.client.request_budget == 12, "default paid request limit changed")
 	panel._extended_requests.button_pressed = true
 	_expect(not panel.client.is_active(), "changing paid request allowance failed to revoke task")

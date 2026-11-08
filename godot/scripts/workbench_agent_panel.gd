@@ -289,6 +289,14 @@ func _on_start() -> void:
 	if _signed_frame.button_pressed:
 		# Host-only experiment; it does not add any model-visible tool.
 		scope["coordinate_frame_id"] = SignedFrame.FRAME_ID
+	# A blank task/model or missing local API key must not acquire native
+	# authority just to fail and retire it moments later. Keep the same
+	# validation in begin_task for changes during the async owner ACK.
+	client.request_budget = Client.MAX_REQUEST_BUDGET if _extended_requests.button_pressed else Client.DEFAULT_REQUEST_BUDGET
+	var launch_problem: String = client.launch_problem(_task.text, _model.text, scope)
+	if not launch_problem.is_empty():
+		_log_status("refused", launch_problem)
+		return
 	if _authorizer.is_valid():
 		_start_pending = true
 		var nonce: int = _start_nonce
@@ -305,8 +313,7 @@ func _on_start() -> void:
 		if authorization.get("status") != "authorized":
 			_log_status("refused","Native task authorization: " + str(authorization.get("reason","unknown")))
 			return
-	# Set after authoritative Start admission and before the first HTTP request.
-	client.request_budget = Client.MAX_REQUEST_BUDGET if _extended_requests.button_pressed else Client.DEFAULT_REQUEST_BUDGET
+	# Recheck after native admission; the client handles a changed environment.
 	if not client.begin_task(_task.text, _model.text, scope) and _retirement.is_valid():
 		_retire_pending = true
 		var cleanup: Dictionary = await _retirement.call()

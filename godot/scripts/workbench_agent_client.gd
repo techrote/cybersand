@@ -229,18 +229,26 @@ func _valid_arguments(name: String, args: Variant) -> bool:
 				return false
 	return true
 
+# Check all local Start prerequisites BEFORE the Godot panel asks #526/#527 to
+# acquire native authoring authority. No network request or World access here.
+# begin_task rechecks after the asynchronous native authorization boundary.
+func launch_problem(task: String, model: String, scope: Dictionary) -> String:
+	if task.strip_edges().is_empty() or model.strip_edges().is_empty() or scope.is_empty():
+		return "Task, model and explicit scope are required."
+	if request_budget < 1 or request_budget > MAX_REQUEST_BUDGET:
+		return "Request budget must be between 1 and 24."
+	if not _fake_transport and OS.get_environment("OPENAI_API_KEY").is_empty():
+		return "OPENAI_API_KEY is not set. Configure the local launch environment and restart the client."
+	return ""
+
+
 func begin_task(task: String, model: String, scope: Dictionary) -> bool:
 	if _active:
 		status_changed.emit("refused", "Stop the current task first.")
 		return false
-	if task.strip_edges().is_empty() or model.strip_edges().is_empty() or scope.is_empty():
-		status_changed.emit("refused", "Task, model and explicit scope are required.")
-		return false
-	if request_budget < 1 or request_budget > MAX_REQUEST_BUDGET:
-		status_changed.emit("refused", "Request budget must be between 1 and 24.")
-		return false
-	if not _fake_transport and OS.get_environment("OPENAI_API_KEY").is_empty():
-		status_changed.emit("refused", "OPENAI_API_KEY not set in this local process environment.")
+	var problem: String = launch_problem(task, model, scope)
+	if not problem.is_empty():
+		status_changed.emit("refused", problem)
 		return false
 	_epoch += 1
 	_active = true
