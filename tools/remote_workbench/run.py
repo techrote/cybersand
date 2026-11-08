@@ -16,6 +16,7 @@ import platform
 import re
 import secrets
 import signal
+import threading
 import shutil
 import subprocess
 import sys
@@ -38,6 +39,36 @@ DEFAULT_EVIDENCE_LIMIT_BYTES = 128 * 1024 * 1024
 MIN_EVIDENCE_LIMIT_BYTES = 13 * 1024 * 1024
 MAX_EVIDENCE_LIMIT_BYTES = 512 * 1024 * 1024
 TERMINAL_EVIDENCE_RESERVE_BYTES = 65536
+MAX_GODOT_LOG_BYTES = 4 * 1024 * 1024
+
+
+def pump_bounded_log(stream, destination, limit: int, accounting: dict) -> None:
+    """Drain child stdout without allowing log growth to interrupt a native ACK.
+
+    A bounded log is diagnostic evidence, never the native authority receipt.
+    Discarded overflow is counted and reported explicitly, not silently lost.
+    """
+    written = discarded = 0
+    marker = b"\n[WB-REMOTE host: godot.log truncated at cumulative byte ceiling]\n"
+    while True:
+        data = stream.read(65536)
+        if not data:
+            break
+        room = max(0, limit - written - len(marker))
+        accepted = min(room, len(data))
+        if accepted:
+            destination.write(data[:accepted])
+            written += accepted
+        discarded += len(data) - accepted
+    if discarded:
+        destination.write(marker)
+        written += len(marker)
+    destination.flush()
+    accounting.update({"godot_log_bytes": written,
+                       "godot_log_dropped_bytes": discarded,
+                       "godot_log_truncated": discarded > 0})
+
+
 
 
 class SessionInterrupted(Exception):
@@ -170,6 +201,9 @@ def supervise(invocation: list[str], env: dict, log, evidence: Path,
     started = time.monotonic()
     reason = "spawn_failed"
     previous_handlers = {}
+    log_accounting = {"godot_log_bytes": 0, "godot_log_dropped_bytes": 0,
+                      "godot_log_truncated": False}
+    pump = None
     def interrupted(signum, _frame):
         raise SessionInterrupted(f"signal_{signal.Signals(signum).name.lower()}")
     for signum in (signal.SIGINT, signal.SIGTERM):
@@ -177,8 +211,16 @@ def supervise(invocation: list[str], env: dict, log, evidence: Path,
     try:
         process = subprocess.Popen(
             invocation, cwd=ROOT, env=env, stdin=subprocess.DEVNULL,
-            stdout=log, stderr=subprocess.STDOUT, start_new_session=True,
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, start_new_session=True,
         )
+        # Reserve this upper bound in the Godot operation-level budget.
+        # Logs may be noisy, but their volume cannot evict a native receipt.
+        pump = threading.Thread(
+            target=pump_bounded_log,
+            args=(process.stdout, log, MAX_GODOT_LOG_BYTES, log_accounting),
+            daemon=True,
+        )
+        pump.start()
         custody = {
             "version": 1,
             "session_id": env.get("CYBERSAND_SESSION_ID", ""),
@@ -216,6 +258,12 @@ def supervise(invocation: list[str], env: dict, log, evidence: Path,
         cleanup = (cleanup_process_tree(process, reason) if process is not None else
                    {"reason": reason, "owned_processes_exited": False,
                     "launcher_child_reaped": False})
+        if pump is not None:
+            pump.join(timeout=2)
+            cleanup["godot_log_pump_stopped"] = not pump.is_alive()
+            if pump.is_alive():
+                cleanup["owned_processes_exited"] = False
+            cleanup.update(log_accounting)
         if process is not None:
             atomic_json(evidence / "launcher-process.json", {
                 "version": 1,
