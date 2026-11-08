@@ -17,8 +17,8 @@ jobs:
     runs-on: windows-2022
     timeout-minutes: 180
     env:
-      PREBUILT_SOURCE: cbd5c1c165ee8a7b329859d5d4d01fb4c408b1c7
-      SOURCE_BUILD_RUN: '42436921407'
+      PREBUILT_SOURCE: 32aee91a76a44275e1f9a0d403728489042e980c
+      SOURCE_BUILD_RUN: '42438795051'
     steps:
       - name: Check out complete candidate ancestry to verify compiler source identity
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -40,20 +40,21 @@ jobs:
             '.github/workflows/explore001-windows-replay.yml',
             'godot/tests/test_explore001_generated_workbench.gd',
             'godot/tests/test_explore001_admission_probe.gd',
-            'godot/scripts/workbench_generator_dialog.gd'
+            'godot/scripts/workbench_generator_dialog.gd',
+            'godot/tests/test_explore001_reopen_diagnostic.gd'
           )
           foreach ($path in $diffs) {
             if ($path -notin $allowed) { throw "Production source changed since pinned DLL build: $path" }
           }
-          if ('godot/tests/test_explore001_generated_workbench.gd' -notin $diffs) { throw 'Corrected test is not present' }
+          if ('godot/tests/test_explore001_reopen_diagnostic.gd' -notin $diffs) { throw 'Expected fresh-process identity diagnosis is absent' }
           "PREBUILT_NATIVE_SOURCE=$prebuilt" | Set-Content evidence/source-matched-proof.txt
           "CURRENT_TEST_SOURCE=$current" | Add-Content evidence/source-matched-proof.txt
           "Only test and independent CI source differences admitted" | Add-Content evidence/source-matched-proof.txt
       - name: Retrieve previous same-repo authenticated source-built DLL artifact
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: explore001-win-runtime-42436921407
-          run-id: 42436921407
+          name: explore001-win-runtime-42438795051
+          run-id: 42438795051
           repository: techrote/cybersand
           github-token: ${{ github.token }}
           path: build/windows-source-runtime
@@ -109,6 +110,24 @@ jobs:
             if ($child.ExitCode -ne 0) { throw "Admission probe failed with exit code $($child.ExitCode)" }
           } finally {
             if (!$child.HasExited) { Stop-Process -Id $child.Id -Force -ErrorAction SilentlyContinue }
+          }
+      - name: Prepare a fresh starting map and inspect exact saved-vs-regenerated source identity
+        shell: pwsh
+        run: |
+          & $env:GODOT_EXE --headless --path godot --script res://tests/test_explore001_generated_workbench.gd > evidence/source-first.stdout.log 2> evidence/source-first.stderr.log
+          if ($LASTEXITCODE -ne 0) {
+            Get-Content evidence/source-first.stdout.log -Tail 130
+            Get-Content evidence/source-first.stderr.log -Tail 130
+            throw 'Initial source-attested generated map did not complete'
+          }
+          if (!(Select-String evidence/source-first.stdout.log -Pattern 'EXPLORE001_RESULTS checks=55 failures=0')) {
+            throw 'Initial source process did not complete the 55-assertion control'
+          }
+          & $env:GODOT_EXE --headless --path godot --script res://tests/test_explore001_reopen_diagnostic.gd *> evidence/reopen-diagnostic.log
+          Get-Content evidence/reopen-diagnostic.log -Tail 65
+          if ($LASTEXITCODE -ne 0) { throw 'Fresh-process identity diagnostic failed to execute' }
+          if (!(Select-String evidence/reopen-diagnostic.log -Pattern 'EXPLORE_REOPEN_PROBE_RESULT')) {
+            throw 'Fresh-process identity diagnostic did not report its source comparison'
           }
       - name: Execute source-attested real native World with authored edits and fresh process
         shell: pwsh
