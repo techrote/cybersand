@@ -66,6 +66,30 @@ func _cli() -> bool:
 	return true
 
 
+## Godot's JSON parser reports JSON numeric literals as float, including 1,
+## 512 and 58. Convert ONLY exactly integral, 32-bit-bounded values to native
+## int before checking the schema or calling the actual worker. Fractional,
+## nonfinite, out-of-range and boolean values never become native integers.
+static func _canonical_json(value: Variant) -> Variant:
+	if typeof(value) == TYPE_FLOAT:
+		var number: float = value
+		if number >= -2147483648.0 and number <= 2147483647.0 \
+				and floorf(number) == number:
+			return int(number)
+		return value
+	if value is Array:
+		var mapped: Array = []
+		for item: Variant in value:
+			mapped.append(_canonical_json(item))
+		return mapped
+	if value is Dictionary:
+		var mapped: Dictionary = {}
+		for key: Variant in value.keys():
+			mapped[key] = _canonical_json(value[key])
+		return mapped
+	return value
+
+
 static func _region(value: Variant) -> Variant:
 	if not value is Dictionary or value.size() != 4:
 		return null
@@ -89,7 +113,7 @@ func _read_authorization() -> bool:
 	if raw.length() > MAX_INPUT_BYTES or raw.is_empty():
 		_fail("invalid_host_authorization_size")
 		return false
-	var value: Variant = JSON.parse_string(raw)
+	var value: Variant = _canonical_json(JSON.parse_string(raw))
 	if not value is Dictionary:
 		_fail("host_authorization_is_not_json_object")
 		return false
@@ -340,7 +364,7 @@ func _process_jsonl(line: String) -> void:
 	if _count >= MAX_COMMANDS:
 		_fail("max_session_commands_exceeded")
 		return
-	var parsed: Variant = JSON.parse_string(line)
+	var parsed: Variant = _canonical_json(JSON.parse_string(line))
 	if not parsed is Dictionary:
 		_fail("invalid_jsonl_command")
 		return
