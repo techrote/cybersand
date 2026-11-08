@@ -292,6 +292,20 @@ func _test_budget_and_duplicates() -> void:
 	_deliver(d, _response("r2", [_tool("observe", "c1", {"region": null, "detail": "counts"})]))
 	_expect(not d.is_active(), "replayed call ID should fail closed")
 	d.queue_free()
+	var replay := _new_client()
+	_expect(replay.begin_task("Attempt", "model", _scope()), "response-ID replay fixture start")
+	_deliver(replay, _response("r1", [_tool("observe", "c1", {"region": null, "detail": "counts"})]))
+	_expect(replay.submit_tool_result(replay.current_epoch(), "c1", {"status": "observed", "observation_id": "o"}),
+		"response-ID replay setup accepted")
+	# A new call_id on an old response_id is still stale; no native dispatch.
+	_deliver(replay, _response("r1", [_tool("step", "c2", {"ticks": 1})]))
+	_expect(not replay.is_active() and not replay.is_waiting_for_tool(),
+		"replayed response ID with fresh call ID should fail closed")
+	_expect(replay.begin_task("New task", "model", _scope()),
+		"new task must be able to start after a rejected response")
+	_deliver(replay, _response("r1", [_tool("observe", "c1", {"region": null, "detail": "counts"})]))
+	_expect(replay.is_waiting_for_tool(), "response IDs must be scoped to the task epoch")
+	replay.queue_free()
 	var p := _new_client()
 	_expect(p.begin_task("Attempt", "model", _scope()), "parallel fixture start")
 	_deliver(p, _response("r1", [

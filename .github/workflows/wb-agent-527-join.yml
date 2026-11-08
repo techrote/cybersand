@@ -40,8 +40,8 @@ jobs:
           lfs: false
       - name: Qualify integrated source or compose the isolated upstream foundation
         env:
-          FOUNDATION_SHA: 6a9967fbd47c992c8f1bcd109163563d0f3ab18f
-          COMMON_BASE: 761dac3b657ca8970e817d18c2005fda9c416948
+          FOUNDATION_SHA: 8f07084aeb4c8fbda5caf371ad791848c120fedf
+          COMMON_BASE: 1f82dac1cebc9b38a319153354e4bcc774289417
         run: |
           set -euo pipefail
           mkdir -p "$EVIDENCE"

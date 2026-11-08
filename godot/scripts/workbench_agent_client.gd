@@ -44,6 +44,7 @@ var _pending_call_id := ""
 var _pending_tool := ""
 var _pending_http: HTTPRequest
 var _seen_call_ids: Dictionary = {}
+var _seen_response_ids: Dictionary = {}
 var _fake_transport := false
 var _last_fake_payload: Dictionary = {}
 var _response_waiting := false
@@ -247,6 +248,7 @@ func begin_task(task: String, model: String, scope: Dictionary) -> bool:
 	_pending_call_id = ""
 	_pending_tool = ""
 	_seen_call_ids.clear()
+	_seen_response_ids.clear()
 	_response_id = ""
 	var instruction := "You operate ONLY the existing shared CyberSand workbench. Use observe before construction. " + 		"Exactly four tools exist. Never assume applied unless a native verified receipt says applied. " + 		"Do not manufacture Sand. Do not modify outside the human-authorized scope, protection, or material allowlist. " + 		"On refusal, revise safely; after Stop never issue further edits. Scope: " + JSON.stringify(_scope)
 	var messages: Array = [
@@ -371,6 +373,12 @@ func _handle_transport(identity: int, nonce: int, result: int, http_status: int,
 	if str(parsed.get("status", "")) != "completed":
 		_fail("Model response incomplete or failed.")
 		return
+	# A response is a unique provider continuation, not merely a fresh call_id.
+	# Refuse a repeated/stale response even when its tool call ID was changed.
+	var response_id := str(parsed.id)
+	if response_id.length() > 128 or _seen_response_ids.has(response_id):
+		_fail("Invalid or repeated Responses API response ID.")
+		return
 	var calls: Array = []
 	var messages: Array = []
 	for item: Variant in parsed.output:
@@ -384,7 +392,8 @@ func _handle_transport(identity: int, nonce: int, result: int, http_status: int,
 	if calls.size() > 1:
 		_fail("Parallel/duplicate tool calls refused.")
 		return
-	_response_id = str(parsed.id)
+	_seen_response_ids[response_id] = true
+	_response_id = response_id
 	if calls.is_empty():
 		_active = false
 		status_changed.emit("completed", "Model turn ended; native result must be checked independently.")
