@@ -1,0 +1,61 @@
+name: WB-REMOTE Codespaces transport
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.devcontainer/**'
+      - 'tools/remote_workbench/client.py'
+      - 'tools/remote_workbench/serve.py'
+      - 'tools/remote_workbench/test_transport.py'
+      - 'tools/remote_workbench/CODESPACES.md'
+      - '.github/workflows/wb-remote-codespaces-transport.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wb-remote-codespaces-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  transport-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Pure authenticated transport and client contract
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          python3 -m py_compile tools/remote_workbench/client.py tools/remote_workbench/serve.py tools/remote_workbench/test_transport.py tools/remote_workbench/qualify_live.py
+          python3 tools/remote_workbench/test_transport.py
+          python3 tools/remote_workbench/qualify_live.py --help >/dev/null
+          python3 -m json.tool .devcontainer/devcontainer.json >/dev/null
+          bash -n .devcontainer/post-create.sh
+          grep -F 'visibility": "private"' .devcontainer/devcontainer.json
+          grep -Eq '^FROM mcr\.microsoft\.com/devcontainers/base:noble@sha256:[0-9a-f]{64}$' .devcontainer/Dockerfile
+
+  container-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Build pinned devcontainer base and required system packages
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          docker build --pull=false -f .devcontainer/Dockerfile .devcontainer
