@@ -38,7 +38,8 @@ jobs:
           $allowed = @(
             '.github/workflows/explore001-qualification.yml',
             '.github/workflows/explore001-windows-replay.yml',
-            'godot/tests/test_explore001_generated_workbench.gd'
+            'godot/tests/test_explore001_generated_workbench.gd',
+            'godot/tests/test_explore001_admission_probe.gd'
           )
           foreach ($path in $diffs) {
             if ($path -notin $allowed) { throw "Production source changed since pinned DLL build: $path" }
@@ -87,6 +88,27 @@ jobs:
           'GODOT_EXE=' + $exe | Out-File -Append -FilePath $env:GITHUB_ENV
           & $exe --headless --path godot --editor --quit *> evidence/import.log
           if ($LASTEXITCODE -ne 0) { Get-Content evidence/import.log -Tail 160; throw 'Current script import rejected' }
+      - name: Execute bounded diagnostic to locate exact native World-admission checkpoint
+        shell: pwsh
+        run: |
+          $stdout = 'evidence/admission-probe.stdout.log'
+          $stderr = 'evidence/admission-probe.stderr.log'
+          $args = @('--headless','--path','godot','--script','res://tests/test_explore001_admission_probe.gd')
+          $child = Start-Process -FilePath $env:GODOT_EXE -ArgumentList $args -PassThru -NoNewWindow -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+          try {
+            if (!$child.WaitForExit(150000)) {
+              Stop-Process -Id $child.Id -Force -ErrorAction SilentlyContinue
+              Get-Content $stdout -Tail 120 -ErrorAction SilentlyContinue
+              Get-Content $stderr -Tail 120 -ErrorAction SilentlyContinue
+              throw 'Admission probe exceeded 150-second external process watchdog'
+            }
+            $child.Refresh()
+            Get-Content $stdout -Tail 120 -ErrorAction SilentlyContinue
+            Get-Content $stderr -Tail 120 -ErrorAction SilentlyContinue
+            if ($child.ExitCode -ne 0) { throw "Admission probe failed with exit code $($child.ExitCode)" }
+          } finally {
+            if (!$child.HasExited) { Stop-Process -Id $child.Id -Force -ErrorAction SilentlyContinue }
+          }
       - name: Execute source-attested real native World with authored edits and fresh process
         shell: pwsh
         run: |
