@@ -1,6 +1,7 @@
 ---
 title: Provider-neutral remote workbench API-agent runner
 status: Planned
+document-kind: runbook
 scope: New Draft #547 consumer, provider/tool protocol, keyless qualification and bounded host execution
 canonical-for: [workbench-api-agent-runner]
 last-reviewed: 2026-11-08
@@ -23,7 +24,7 @@ python3 tools/workbench_api_agent_runner.py dry-run \
  --profile tools/workbench_api_agent/profiles/fixture.json \
  --task tools/workbench_api_agent/fixtures/nine-then-eight.task.json \
  --authorization tools/remote_workbench/fixtures/roundtrip-authorization.json
-python3 -m unittest -v workbench_api_agent.test_runner
+PYTHONPATH=tools python3 -m unittest -v workbench_api_agent.test_runner
 ```
 
 Run tests from the `tools/` Python module search path (`PYTHONPATH=tools` when using the module form) or from an installed checkout. The tests exercise deterministic three-provider HTTP wire fixtures, actual non-streaming image payload construction and tool normalization, client request uncertainty, scope/material checks, provider refusal, bounded Stop and native-receipt projection. **No real provider inference occurs.**
