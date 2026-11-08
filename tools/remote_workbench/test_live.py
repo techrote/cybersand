@@ -51,6 +51,20 @@ def wait_event(folder: Path, sequence: int | None = None, *, timeout: int = TIME
     raise AssertionError(f"Real native response not observed: seq={sequence}, {folder}")
 
 
+def wait_health_seq(folder: Path, completed_sequence: int, *,
+                    timeout: int = TIMEOUT) -> dict:
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        try:
+            health = json.loads((folder / "session-health.json").read_text())
+            if health.get("last_completed_seq", -1) >= completed_sequence:
+                return health
+        except (OSError, ValueError, TypeError):
+            pass  # Atomic writer may not have published the first record.
+        time.sleep(0.1)
+    raise AssertionError(f"Session health never acknowledged seq={completed_sequence}")
+
+
 def send(commands: Path, *objects: dict) -> None:
     with commands.open("a", encoding="utf-8") as output:
         for obj in objects:
@@ -98,7 +112,7 @@ def client_first(commands: Path, evidence: Path, state: Path) -> None:
         "observation_id": native["observation_id"], "operations": [wall]
     }, "proposed"))
     proposed = check(wait_event(evidence, 2), "proposed")
-    health = json.loads((evidence / "session-health.json").read_text())
+    health = wait_health_seq(evidence, 2)
     state.write_text(json.dumps({
         "proposal_id": proposed["proposal_id"],
         "source_generation": native["identity"]["world_generation"],
@@ -124,7 +138,7 @@ def client_second(commands: Path, evidence: Path, state: Path) -> None:
     assert native["identity"]["world_generation"] == previous["source_generation"]
     assert native["identity"]["world_revision"] > previous["source_revision"]
     assert native["native_counts"].get("58") == 9, native["native_counts"]
-    health = json.loads((evidence / "session-health.json").read_text())
+    health = wait_health_seq(evidence, 4)
     assert health["godot_pid"] == previous["godot_pid"], health
     # Stale observation ID is authoritatively refused without accepting a mutation.
     send(commands, tool(5, "prepare_edit", {
@@ -224,7 +238,7 @@ def exercise(godot: Path, auth: Path, root: Path, xvfb: bool) -> dict:
         first = subprocess.run(cmd, check=False, timeout=90)
         assert first.returncode == 37, first.returncode
         assert positive.process.poll() is None, "Disconnected client retired host session"
-        health = json.loads((positive.evidence / "session-health.json").read_text())
+        health = wait_health_seq(positive.evidence, 2)
         assert health["last_completed_seq"] == 2, health
         second = subprocess.run(
             [sys.executable, str(Path(__file__).resolve()), "--client", "second",
@@ -245,7 +259,7 @@ def exercise(godot: Path, auth: Path, root: Path, xvfb: bool) -> dict:
             positive.log.close()
 
     controls = {}
-    for label in ("duplicate", "malformed", "rewrite", "budget", "interrupt"):
+    for label in ("duplicate", "malformed", "rewrite", "truncate", "budget", "interrupt"):
         budget = 13 * 1024 * 1024 if label == "budget" else 128 * 1024 * 1024
         run = NativeSession(root / label, godot, auth, xvfb, timeout=150, budget=budget)
         try:
@@ -264,6 +278,12 @@ def exercise(godot: Path, auth: Path, root: Path, xvfb: bool) -> dict:
                      "detail": "cells"}, "observed"))
                 check(wait_event(run.evidence, 1), "observed")
                 run.commands.write_text('{"invalidated":true}\n', encoding="utf-8")
+            elif label == "truncate":
+                send(run.commands, tool(1, "observe",
+                    {"region": {"x": 28, "y": 28, "width": 8, "height": 8},
+                     "detail": "cells"}, "observed"))
+                check(wait_event(run.evidence, 1), "observed")
+                run.commands.write_text("", encoding="utf-8")
             elif label == "budget":
                 send(run.commands, tool(1, "observe", {}, "refused"))
                 refused = wait_event(run.evidence, 1)
