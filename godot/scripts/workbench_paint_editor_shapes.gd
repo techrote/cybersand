@@ -258,3 +258,76 @@ static func fill_connected(
 	var plan: Dictionary = _finish(selected, state, extent)
 	plan["source_material_id"] = source_material_id
 	return plan
+
+
+# PAINT-001 staging-only multi-material paste. Each ID must come from ONE
+# authoritative, revision-fenced native capture in exactly source-cell order.
+# This function cannot establish that provenance: the host must provide and
+# recheck it. All groups are a single indivisible future transaction, NEVER
+# independent queue_emit_cells commands (which cannot roll back as a unit).
+# Includes native material 0, for which an eventual host must authorize erase.
+static func stamp_materials(
+		source_cells: PackedInt32Array,
+		source_materials: PackedInt32Array,
+		source_origin: Vector2i,
+		destination_origin: Vector2i,
+		extent: Vector2i
+) -> Dictionary:
+	if not _valid_extent(extent):
+		return _refuse("Canvas extent is not an admitted 512–2048 multiple of 64.")
+	if not _inside(source_origin, extent) or not _inside(destination_origin, extent):
+		return _refuse("Multi-material stencil anchors must lie within the canvas.")
+	if source_cells.is_empty() or (source_cells.size() & 1) != 0:
+		return _refuse("Multi-material stencil requires complete interleaved x,y coordinates.")
+	var source_count: int = int(source_cells.size() / 2)
+	if source_count > MAX_CELLS:
+		return _refuse("Multi-material stencil exceeds the 4096-cell transaction limit.")
+	if source_materials.size() != source_count:
+		return _refuse("Multi-material stencil must include one native material ID per source cell.")
+	var shift: Vector2i = destination_origin - source_origin
+	var selected := {}
+	var material_at_key := {}
+	var state := {"clipped": false}
+	for i: int in range(source_count):
+		var material_id: int = source_materials[i]
+		if material_id < 0 or material_id > 255:
+			return _refuse("Multi-material stencil contains an invalid native material ID.")
+		var source: Vector2i = Vector2i(source_cells[i * 2], source_cells[i * 2 + 1])
+		var destination: Vector2i = source + shift
+		if not _inside(source, extent) or not _inside(destination, extent):
+			return _refuse("Multi-material stencil extends beyond the canvas; no partial paste.")
+		var key: int = destination.y * extent.x + destination.x
+		if material_at_key.has(key):
+			if int(material_at_key[key]) != material_id:
+				return _refuse("Multi-material stencil assigns conflicting material IDs to one cell.")
+			continue
+		material_at_key[key] = material_id
+		if not _include(selected, state, extent, destination.x, destination.y):
+			return _refuse("Multi-material stencil exceeds one native 4096-cell transaction.")
+	var plan: Dictionary = _finish(selected, state, extent)
+	if not plan.get("accepted", false):
+		return plan
+	# Deterministic group order by numeric native ID; within each group
+	# _finish sorts world-space coordinates in row-major order.
+	var by_material := {}
+	for key: int in material_at_key:
+		var material_id: int = int(material_at_key[key])
+		if not by_material.has(material_id):
+			by_material[material_id] = {}
+		var members: Dictionary = by_material[material_id]
+		members[key] = true
+	var material_ids: Array = by_material.keys()
+	material_ids.sort()
+	var groups: Array[Dictionary] = []
+	for id_value: int in material_ids:
+		var subset: Dictionary = _finish(by_material[id_value], state, extent)
+		groups.append({
+			"material_id": id_value,
+			"count": subset["count"],
+			"cells": subset["cells"],
+		})
+	plan["groups"] = groups
+	plan["staging_only"] = true
+	plan["atomic_commit_required"] = true
+	plan["applied"] = false
+	return plan
