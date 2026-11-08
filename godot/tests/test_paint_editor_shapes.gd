@@ -177,6 +177,18 @@ func _run() -> void:
 		Vector2i(903, 303), Vector2i(900, 300), Vector2i(7, 7),
 		PackedInt32Array([7]), extent).get("accepted", true),
 		"missing source materials refuse")
+	var reserved_materials := pocket_materials.duplicate()
+	reserved_materials[0] = 10
+	expect(not Shapes.fill_connected(
+		Vector2i(903, 303), Vector2i(900, 300), Vector2i(7, 7),
+		reserved_materials, extent).get("accepted", true),
+		"native material slot 10 is reserved, even when outside the connected component")
+	var unknown_materials := pocket_materials.duplicate()
+	unknown_materials[0] = 132
+	expect(not Shapes.fill_connected(
+		Vector2i(903, 303), Vector2i(900, 300), Vector2i(7, 7),
+		unknown_materials, extent).get("accepted", true),
+		"material ID above accepted native enum refuses fill")
 	var invalid_materials := pocket_materials.duplicate()
 	invalid_materials[0] = -1
 	expect(not Shapes.fill_connected(
@@ -215,7 +227,7 @@ func _run() -> void:
 			and groups[1].get("cells", PackedInt32Array()) == PackedInt32Array([201,201])
 			and groups[2].get("material_id", -1) == 7
 			and groups[2].get("cells", PackedInt32Array()) == PackedInt32Array([200,200,200,201]),
-			"multi-material native-ID groups are deterministic, sorted and preserve Air zero")
+			"multi-material native-ID groups are deterministic, sorted and preserve Empty zero")
 	var dedup_multi: Dictionary = Shapes.stamp_materials(
 		PackedInt32Array([100,100,100,100]),
 		PackedInt32Array([7,7]), Vector2i(100,100), Vector2i(200,200), extent)
@@ -233,6 +245,14 @@ func _run() -> void:
 		multi_source, PackedInt32Array([7,0,-1,2]),
 		Vector2i(100,100), Vector2i(200,200), extent
 	).get("accepted", true), "invalid negative native material ID refuses")
+	expect(not Shapes.stamp_materials(
+		multi_source, PackedInt32Array([7,0,10,2]),
+		Vector2i(100,100), Vector2i(200,200), extent
+	).get("accepted", true), "reserved native slot 10 refuses multi-material paste")
+	expect(not Shapes.stamp_materials(
+		multi_source, PackedInt32Array([7,0,132,2]),
+		Vector2i(100,100), Vector2i(200,200), extent
+	).get("accepted", true), "unknown native material ID 132 refuses multi-material paste")
 	expect(not Shapes.stamp_materials(
 		multi_source, PackedInt32Array([7,0,256,2]),
 		Vector2i(100,100), Vector2i(200,200), extent
