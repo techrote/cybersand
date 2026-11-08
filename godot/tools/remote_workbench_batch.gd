@@ -112,7 +112,7 @@ func _cli() -> bool:
 		_fail("missing_host_session_identity_or_evidence_budget")
 		return false
 	_output_limit = int(limit_value)
-	if _deadline_seconds < 30 or _deadline_seconds > 1810 \
+	if _deadline_seconds < 30 or _deadline_seconds > 1795 \
 			or _output_limit < MIN_EVIDENCE_BYTES or _output_limit > MAX_EVIDENCE_BYTES:
 		_fail("invalid_host_session_deadline_or_evidence_limit")
 		return false
