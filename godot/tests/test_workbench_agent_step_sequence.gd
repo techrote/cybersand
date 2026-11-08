@@ -450,6 +450,46 @@ func run() -> void:
 	retire_at_ack_listener = Callable()
 	retire_at_ack_driver = null
 
+	# Stop can be requested by the human on the LAST native Step ACK.
+	# With no following loop iteration, the old driver silently completed.
+	# Preserve the one real tick while reporting the Stop boundary truthfully.
+	var stop_at_final_before: int = main.latest_snapshot.tick_index
+	var stop_at_final_driver = Driver.new()
+	var stop_at_final_signals: Array[Dictionary] = []
+	var stop_at_final_listener: Callable = func(receipt: Dictionary) -> void:
+		stop_at_final_signals.append(receipt.duplicate(true))
+		stop_at_final_driver.request_stop()
+	stop_at_final_driver.step_completed.connect(stop_at_final_listener)
+	var stop_at_final_result: Dictionary = await stop_at_final_driver.step(main,workbench,1)
+	stop_at_final_driver.step_completed.disconnect(stop_at_final_listener)
+	check(stop_at_final_signals.size()==1
+		and stop_at_final_signals[0].get("after_tick")==stop_at_final_before+1,
+		"final-ACK Stop was not delivered during a real native tick")
+	check(stop_at_final_result.get("status")=="stopped"
+		and stop_at_final_result.get("reason")=="human_stop"
+		and stop_at_final_result.get("requested")==1
+		and stop_at_final_result.get("completed")==1
+		and stop_at_final_result.get("before_tick")==stop_at_final_before
+		and stop_at_final_result.get("after_tick")==stop_at_final_before+1
+		and stop_at_final_result.get("still_paused")==true
+		and stop_at_final_result.get("world_generation")==pending_source.render_world_generation,
+		"human Stop at final native ACK was falsely reported as completed: "
+		+str(stop_at_final_result))
+	check(stop_at_final_driver.last_result()==stop_at_final_result,
+		"final-ACK Stop retained receipt differs from returned Step receipt")
+	for _stop_ack_frame: int in 5:
+		await process_frame
+	check(main.latest_snapshot.tick_index==stop_at_final_before+1
+		and main.latest_snapshot.paused
+		and main.latest_snapshot.render_world_generation==pending_source.render_world_generation,
+		"human Stop at last ACK permitted an unauthorized extra tick")
+	print("WB_AGENT_527_FINAL_ACK_STOP_RESULT " + JSON.stringify({
+		"step":stop_at_final_result,
+		"native_tick":main.latest_snapshot.tick_index,
+		"world_generation":main.latest_snapshot.render_world_generation}))
+	stop_at_final_listener = Callable()
+	stop_at_final_driver = null
+
 	# The final-ACK collision requires #526's authoritative worker revision.
 	# Standalone #530 uses the accepted-main worker without that method.
 	# Never classify an unexecuted composition-dependent control as PASS.

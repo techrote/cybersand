@@ -258,6 +258,12 @@ func step(host: Control, workbench: Control, requested: Variant,
 				reason = "manual_intent_changed_during_step"
 				break
 			manual_revision = post_signal_revision
+		# A human Stop can arrive synchronously on the last real tick ACK.
+		# Count that completed tick, but do not silently classify Stop as a
+		# normal completion. Retirement and manual intent take precedence.
+		if _stop_requested:
+			reason = "human_stop"
+			break
 	if reason.is_empty():
 		reason = "requested_steps_completed"
 	# Physically completed ticks are still counted, but a terminal conflict
