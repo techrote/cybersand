@@ -1,0 +1,230 @@
+name: WB-REMOTE Codespaces transport
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.devcontainer/**'
+      - 'tools/remote_workbench/client.py'
+      - 'tools/remote_workbench/serve.py'
+      - 'tools/remote_workbench/qualify_external.py'
+      - 'tools/remote_workbench/qualify_live.py'
+      - 'tools/remote_workbench/test_transport.py'
+      - 'tools/remote_workbench/CODESPACES.md'
+      - '.github/workflows/wb-remote-codespaces-transport.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wb-remote-codespaces-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  transport-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Pure authenticated transport and client contract
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          python3 -m py_compile tools/remote_workbench/client.py tools/remote_workbench/serve.py tools/remote_workbench/test_transport.py tools/remote_workbench/qualify_live.py tools/remote_workbench/qualify_external.py
+          python3 tools/remote_workbench/test_transport.py
+          python3 tools/remote_workbench/qualify_live.py --help >/dev/null
+          python3 -m json.tool .devcontainer/devcontainer.json >/dev/null
+          bash -n .devcontainer/post-create.sh
+          grep -F 'visibility": "private"' .devcontainer/devcontainer.json
+          grep -Eq '^FROM mcr\.microsoft\.com/devcontainers/base:noble@sha256:[0-9a-f]{64}$' .devcontainer/Dockerfile
+
+  ssh-container-bootstrap:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 17
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Verify SSH on two disposable isolated containers
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          docker build --pull=false -t cybersand-wb-ssh:exact -f .devcontainer/Dockerfile .devcontainer
+          cid1="wb-ssh-1-${{ github.run_id }}-${{ github.run_attempt }}"
+          cid2="wb-ssh-2-${{ github.run_id }}-${{ github.run_attempt }}"
+          tempdir="$(mktemp -d)"
+          cleanup() {
+            docker rm -f "$cid1" "$cid2" >/dev/null 2>&1 || true
+            rm -rf "$tempdir"
+          }
+          trap cleanup EXIT
+          chmod 700 "$tempdir"
+          for name in "$cid1" "$cid2"; do
+            docker run -d --init --name "$name" -p 127.0.0.1::22 cybersand-wb-ssh:exact sleep infinity
+            docker exec "$name" bash -lc 'shopt -s nullglob; keys=(/etc/ssh/ssh_host_*_key); test "${#keys[@]}" -eq 0'
+            docker exec -u root "$name" mkdir -p /workspaces/cybersand/.devcontainer
+            docker cp .devcontainer/start-sshd.sh "$name:/workspaces/cybersand/.devcontainer/start-sshd.sh"
+            docker exec -u vscode -w /workspaces/cybersand "$name" bash .devcontainer/start-sshd.sh
+            docker exec -u vscode -w /workspaces/cybersand "$name" bash .devcontainer/start-sshd.sh
+            docker exec "$name" test -s /etc/ssh/ssh_host_ed25519_key.pub
+          done
+          fp1="$(docker exec "$cid1" ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub | awk '{print $2}')"
+          fp2="$(docker exec "$cid2" ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub | awk '{print $2}')"
+          test -n "$fp1" && test -n "$fp2" && test "$fp1" != "$fp2"
+          test "$(docker exec "$cid1" dpkg-query -W -f='${Version}' openssh-server)" = '1:9.6p1-3ubuntu13.20'
+          ssh-keygen -q -t ed25519 -N '' -f "$tempdir/client"
+          ssh-keygen -q -t ed25519 -N '' -f "$tempdir/wrong"
+          docker exec -u root "$cid1" install -d -o vscode -g vscode -m 0700 /home/vscode/.ssh
+          docker cp "$tempdir/client.pub" "$cid1:/home/vscode/.ssh/authorized_keys"
+          docker exec -u root "$cid1" chown vscode:vscode /home/vscode/.ssh/authorized_keys
+          docker exec -u root "$cid1" chmod 0600 /home/vscode/.ssh/authorized_keys
+          port="$(docker port "$cid1" 22/tcp | sed -n 's/^127\.0\.0\.1:\([0-9][0-9]*\)$/\1/p')"
+          test -n "$port"
+          printf '[127.0.0.1]:%s %s\n' "$port" "$(docker exec "$cid1" cat /etc/ssh/ssh_host_ed25519_key.pub)" > "$tempdir/known_hosts"
+          common=( -p "$port" -o BatchMode=yes -o IdentitiesOnly=yes
+                   -o StrictHostKeyChecking=yes -o HostKeyAlgorithms=ssh-ed25519
+                   -o UserKnownHostsFile="$tempdir/known_hosts" )
+          result="$(timeout 15 ssh "${common[@]}" -i "$tempdir/client" vscode@127.0.0.1 id -un)"
+          test "$result" = vscode
+          if timeout 10 ssh "${common[@]}" -i "$tempdir/wrong" vscode@127.0.0.1 true; then
+            echo 'Rejected SSH identity unexpectedly authenticated' >&2
+            exit 1
+          fi
+          mkdir -p build/wb-remote-ssh
+          printf 'source=%s\npackage=%s\ncontainer1_hostkey=%s\ncontainer2_hostkey=%s\nexternal_publickey_auth=passed\nwrong_key=denied\nkeys_in_image=none\n' \
+            "$(git rev-parse HEAD)" '1:9.6p1-3ubuntu13.20' "$fp1" "$fp2" > build/wb-remote-ssh/qualification.txt
+          echo 'Disposable image + external SSH client + distinct host keys: PASS'
+      - name: Retain sanitized SSH qualification receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wb-remote-ssh-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/wb-remote-ssh/qualification.txt
+          if-no-files-found: warn
+          retention-days: 90
+  container-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Build pinned devcontainer base and required system packages
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          docker build --pull=false -f .devcontainer/Dockerfile .devcontainer
+
+  container-native-external-client:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    env:
+      EVIDENCE: build/wb-remote-codespaces-host
+    steps:
+      - name: Checkout exact qualified-source consumer head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Real pinned devcontainer, external host client, native lifecycle and cgroup stop
+        timeout-minutes: 94
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          test "$(git merge-base HEAD b7c6204625dad14fdf15430f7872d9841cf92afd)" = b7c6204625dad14fdf15430f7872d9841cf92afd
+          mkdir -p "$EVIDENCE"
+          cid="cybersand-wb-${{ github.run_id }}-${{ github.run_attempt }}"
+          cleanup() {
+            set +e
+            if docker container inspect "$cid" >/dev/null 2>&1; then
+              docker cp "$cid:/home/vscode/.local/state/cybersand-wb" "$EVIDENCE/container-session-state" 2>/dev/null || true
+              docker cp "$cid:/workspaces/cybersand/build/wb-remote-codespaces-live" "$EVIDENCE/container-native-qualifier" 2>/dev/null || true
+              docker cp "$cid:/workspaces/cybersand/build/wb-remote-codespaces-human-owner" "$EVIDENCE/human-owner" 2>/dev/null || true
+              docker cp "$cid:/home/vscode/.cache/cybersand-wb/service.log" "$EVIDENCE/service.log" 2>/dev/null || true
+              docker cp "$cid:/home/vscode/.cache/cybersand-wb/service-second.log" "$EVIDENCE/service-second.log" 2>/dev/null || true
+              if test "$(docker inspect -f '{{.State.Running}}' "$cid")" = true; then
+                docker stop -t 0 "$cid" >/dev/null || true
+              fi
+              docker inspect --format '{{json .State}}' "$cid" > "$EVIDENCE/container-terminal-state.json" || true
+              docker rm -f "$cid" >/dev/null || true
+            fi
+          }
+          trap cleanup EXIT
+          docker build --pull=false -t cybersand-wb-remote:exact -f .devcontainer/Dockerfile .devcontainer
+          docker run -d --init --network host --name "$cid" cybersand-wb-remote:exact sleep infinity
+          docker exec -u root "$cid" mkdir -p /workspaces/cybersand
+          docker cp . "$cid:/workspaces/cybersand"
+          docker exec -u root "$cid" chown -R vscode:vscode /workspaces/cybersand
+          docker exec -u vscode -w /workspaces/cybersand "$cid" bash .devcontainer/post-create.sh
+          docker exec -u vscode -w /workspaces/cybersand "$cid"             bash -lc 'test "$(git rev-parse HEAD)" = "'"${{ github.event.pull_request.head.sha }}"'" && source ~/.cache/cybersand-wb/runtime.env && "$GODOT_BIN" --version && sha256sum "$GODOT_BIN" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
+          docker exec -u vscode -w /workspaces/cybersand "$cid"             bash -lc 'source ~/.cache/cybersand-wb/runtime.env; python3 tools/remote_workbench/qualify_live.py --godot "$GODOT_BIN" --authorization "$PWD/tools/remote_workbench/fixtures/roundtrip-authorization.json" --output "$PWD/build/wb-remote-codespaces-live" --display-mode xvfb'
+          docker exec -u vscode -w /workspaces/cybersand "$cid"             bash -lc 'source ~/.cache/cybersand-wb/runtime.env; mkdir -p build/wb-remote-codespaces-human-owner; WB_AGENT_EVIDENCE_DIR="$PWD/build/wb-remote-codespaces-human-owner" timeout 360 xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" "$GODOT_BIN" --path godot --rendering-method gl_compatibility --script res://tests/test_workbench_agent_owner.gd > build/wb-remote-codespaces-human-owner/owner.log 2>&1; grep -E "WB_AGENT_OWNER: [0-9]+ assertions, 0 failures" build/wb-remote-codespaces-human-owner/owner.log'
+
+          # The container starts the ONLY Godot-native owner; the Python
+          # agent client executes on the host, outside the Docker PID/cgroup.
+          umask 077
+          python3 -c 'import secrets; print(secrets.token_urlsafe(48))' > "$RUNNER_TEMP/cybersand-external-token"
+          docker exec -u root "$cid" install -d -m 700 -o vscode -g vscode /home/vscode/.config/cybersand
+          docker cp "$RUNNER_TEMP/cybersand-external-token" "$cid:/home/vscode/.config/cybersand/wb.token"
+          docker exec -u root "$cid" chown vscode:vscode /home/vscode/.config/cybersand/wb.token
+          docker exec -u root "$cid" chmod 0600 /home/vscode/.config/cybersand/wb.token
+          docker exec -d -u vscode -w /workspaces/cybersand "$cid"             bash -lc 'source ~/.cache/cybersand-wb/runtime.env; exec python3 tools/remote_workbench/serve.py --godot "$GODOT_BIN" --authorization "$PWD/tools/remote_workbench/fixtures/roundtrip-authorization.json" --token-file "$HOME/.config/cybersand/wb.token" --state-root "$HOME/.local/state/cybersand-wb" --xvfb --seconds 1200 --bind 127.0.0.1 --port 8765 > ~/.cache/cybersand-wb/service.log 2>&1'
+          python3 tools/remote_workbench/qualify_external.py             --base http://127.0.0.1:8765 --token-file "$RUNNER_TEMP/cybersand-external-token"             --output "$EVIDENCE/external-client" --startup-deadline 300
+          # Restart/stop containment: a NEW native session is started and
+          # observed from the external runner, then the independent Docker
+          # container boundary is hard-stopped while it is still alive.
+          docker exec -d -u vscode -w /workspaces/cybersand "$cid"             bash -lc 'source ~/.cache/cybersand-wb/runtime.env; exec python3 tools/remote_workbench/serve.py --godot "$GODOT_BIN" --authorization "$PWD/tools/remote_workbench/fixtures/roundtrip-authorization.json" --token-file "$HOME/.config/cybersand/wb.token" --state-root "$HOME/.local/state/cybersand-wb" --xvfb --seconds 1200 --bind 127.0.0.1 --port 8766 > ~/.cache/cybersand-wb/service-second.log 2>&1'
+          python3 - <<'PY'
+          import json, subprocess, sys, time, os
+          cmd=[sys.executable, 'tools/remote_workbench/client.py', '--base', 'http://127.0.0.1:8766',
+               '--token-file', os.environ['RUNNER_TEMP']+'/cybersand-external-token', 'session']
+          deadline=time.monotonic()+300
+          while time.monotonic()<deadline:
+              proc=subprocess.run(cmd,capture_output=True,text=True)
+              if proc.returncode==0:
+                  result=json.loads(proc.stdout)
+                  if result.get('phase')=='ready' and result.get('native_generation') is not None:
+                      with open('build/wb-remote-codespaces-host/container-before-hard-stop.json','w') as stream:
+                          json.dump({k:result.get(k) for k in ('session_id','generation_id','native_generation','phase','process_alive','owner_health')},stream,indent=2)
+                      break
+                  if result.get('phase')=='unconfirmed':
+                      raise SystemExit('Second owner became unconfirmed before stop')
+              time.sleep(.4)
+          else: raise SystemExit('Second owner was not ready before hard stop')
+          PY
+          test "$(docker inspect -f '{{.State.Running}}' "$cid")" = true
+          docker stop -t 0 "$cid" > /dev/null
+          test "$(docker inspect -f '{{.State.Running}}' "$cid")" = false
+          docker inspect --format '{{json .State}}' "$cid" > "$EVIDENCE/container-hard-stop.json"
+          if python3 tools/remote_workbench/client.py               --base http://127.0.0.1:8766               --token-file "$RUNNER_TEMP/cybersand-external-token" session               > "$EVIDENCE/post-stop-client.json"; then
+            echo 'Native owner remained reachable after container hard-stop' >&2; exit 1
+          fi
+          # The wrapper was SIGKILLed; no evolved-World restart is claimed.
+          rm -f "$RUNNER_TEMP/cybersand-external-token"
+      - name: Retain original native images, receipts, sanitized external-client and container evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wb-remote-codespaces-container-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/wb-remote-codespaces-host/
+          if-no-files-found: warn
+          retention-days: 90
