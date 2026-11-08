@@ -4,13 +4,22 @@ on:
     branches: [feat/explore001-gen007-playable-workbench]
     paths:
       - '.github/workflows/explore001-qualification.yml'
+      - 'godot/tests/test_explore001_generated_workbench.gd'
+      - 'godot/scripts/workbench_generator_dialog.gd'
+      - 'godot/scripts/workbench_generated_map.gd'
+      - 'godot/scripts/shared_workbench.gd'
+      - 'godot/scripts/main.gd'
+      - 'godot/scripts/microscenario_host.gd'
+      - 'godot/native_extension/cyber_prepared_liquid_world.hpp'
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: explore001-${{ github.ref }}
-  cancel-in-progress: true
+  # Preserve independent manual requests; only newer push-source proposals
+  # supersede earlier push-source proposals for this one-off qualification.
+  group: explore001-${{ github.event_name }}-${{ github.event_name == 'workflow_dispatch' && github.run_id || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
 env:
   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
   GODOT_URL: 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
