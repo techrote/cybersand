@@ -67,6 +67,15 @@ func _stop_during_in_flight_step(driver: RefCounted) -> void:
 	driver.request_stop()
 
 
+func _retire_during_in_flight_step(driver: RefCounted) -> void:
+	# Task revision/scene exit may revoke authority while one native tick
+	# is already admitted. This is NOT a Stop ACK: its result is unconfirmed.
+	check(driver.active(), "deferred retirement missed the active sequence")
+	check(workbench.step_requested or workbench.step_pending,
+		"deferred retirement did not observe an admitted native tick")
+	driver.retire()
+
+
 func _initialize() -> void:
 	set_meta("cybersand_feature","shared_workbench")
 	run.call_deferred()
@@ -292,6 +301,56 @@ func run() -> void:
 		"native state changed after deferred human Stop acknowledgment")
 	print("WB_AGENT_527_PENDING_STOP_RESULT " + JSON.stringify(in_flight_stop))
 	pending_driver = null
+
+	# Lifecycle retirement is distinct from an ACKed human Stop. A native
+	# single tick may already be in flight and must settle under the old
+	# exclusive World, while the retired driver must NEVER auto-retry or
+	# dispatch the rest of its requested batch into this or a new task.
+	var retirement_tick: int = main.latest_snapshot.tick_index
+	var retirement_driver = Driver.new()
+	call_deferred("_retire_during_in_flight_step",retirement_driver)
+	var retired_in_flight: Dictionary = await retirement_driver.step(main,workbench,5)
+	check(retired_in_flight.get("status")=="unconfirmed"
+		and retired_in_flight.get("reason")=="lifecycle_retired_mid_step"
+		and retired_in_flight.get("requested")==5
+		and retired_in_flight.get("completed")==0
+		and retired_in_flight.get("before_tick")==retirement_tick
+		and retired_in_flight.get("world_generation")==pending_source.render_world_generation,
+		"mid-native-tick lifecycle retirement forged a completed/Stop ACK: "
+		+str(retired_in_flight))
+	var retired_late: Dictionary = await retirement_driver.call_step(
+		main,workbench,{"ticks":1})
+	check(retired_late.get("status")=="refused"
+		and retired_late.get("reason")=="task_lifecycle_retired"
+		and retired_late.get("completed")==0,
+		"retired task could schedule a new native Step: "+str(retired_late))
+	# The admitted owner tick must finish before we assert native stability.
+	# Unlike Stop, the former driver's response cannot claim this tick.
+	var retirement_serial: int = workbench.step_serial
+	if not await wait_until(_manual_step_ack.bind(retirement_serial,
+			retirement_tick+1,pending_source.render_world_generation),
+			"retired in-flight native owner did not publish its single paused tick"):
+		push_error("WB_AGENT_527_RETIRED_PENDING native publication: " +
+			"requested_serial=%d published_serial=%d " % [
+				retirement_serial,
+				int(main.tower_context.get("workbench_step_serial",-1))] +
+			"expected_tick=%d actual_tick=%d native_paused=%s" % [
+				retirement_tick+1,main.latest_snapshot.tick_index,
+				str(main.latest_snapshot.paused)])
+		finish()
+		return
+	for _retirement_frame: int in 5:
+		await process_frame
+	check(main.latest_snapshot.tick_index==retirement_tick+1
+		and main.latest_snapshot.paused
+		and main.latest_snapshot.render_world_generation==pending_source.render_world_generation,
+		"retired task dispatched more than the one admitted native tick")
+	print("WB_AGENT_527_RETIRED_PENDING_RESULT " + JSON.stringify({
+		"result":retired_in_flight,
+		"late_step":retired_late,
+		"settled_native_tick":main.latest_snapshot.tick_index,
+		"world_generation":main.latest_snapshot.render_world_generation}))
+	retirement_driver = null
 
 	# Release the test's self-capturing Stop callback before shutting down:
 	# RefCounted signal -> closure -> driver otherwise retains a cycle.
