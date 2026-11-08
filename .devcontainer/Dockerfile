@@ -9,6 +9,9 @@ RUN apt-get update \
       g++-13=13.3.0-6ubuntu2~24.04.1 \
       git-lfs=3.4.1-1ubuntu0.4 \
       libfontconfig1=2.15.0-1.1ubuntu2 \
+      libxcursor1=1:1.2.1-1build1 \
+      libxinerama1=2:1.1.4-3build1 \
+      libxi6=2:1.8.1-1build1 \
       libgl1-mesa-dri=25.2.8-0ubuntu0.24.04.4 \
       libglx-mesa0=25.2.8-0ubuntu0.24.04.4 \
       python3=3.12.3-0ubuntu2.1 \

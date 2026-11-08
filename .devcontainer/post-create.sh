@@ -59,7 +59,17 @@ fi
 test "$("$godot_bin" --version)" = '4.7.stable.official.5b4e0cb0f'
 # Godot's runtime graphics path uses Fontconfig via dynamic loading; a
 # headless import alone may succeed even when the display-backed player fails.
-test -r /usr/lib/x86_64-linux-gnu/libfontconfig.so.1
+# Godot dlopen()s several graphical libraries at display creation.
+# ldd and --version alone did not catch the original Fontconfig/Xcursor
+# startup failures: check the actual shared-library loading before launch.
+python3 - <<'PY'
+import ctypes
+for library in ("libfontconfig.so.1", "libXcursor.so.1",
+                "libXinerama.so.1", "libXi.so.6", "libXrandr.so.2",
+                "libXrender.so.1"):
+    ctypes.CDLL(library)
+print("All required Godot X11 runtime libraries load")
+PY
 if ldd "$godot_bin" | grep -q 'not found'; then
   echo 'Godot has unresolved runtime shared libraries' >&2
   ldd "$godot_bin" >&2
