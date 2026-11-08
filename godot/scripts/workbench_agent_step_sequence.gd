@@ -243,13 +243,20 @@ func step(host: Control, workbench: Control, requested: Variant,
 			"world_generation":generation, "workbench_step_serial":last_serial
 		})
 		if manual_revision >= 0:
-			if next_manual_revision != manual_revision + 1:
+			# Completion listeners can submit human intent synchronously at
+			# the last native ACK; recheck after emitting the receipt.
+			var post_signal_revision: int = _manual_revision()
+			if next_manual_revision != manual_revision + 1 \
+					or post_signal_revision != next_manual_revision:
 				reason = "manual_intent_changed_during_step"
 				break
-			manual_revision = next_manual_revision
+			manual_revision = post_signal_revision
 	if reason.is_empty():
 		reason = "requested_steps_completed"
-	var status: String = "completed" if completed == requested else (
+	# Physically completed ticks are still counted, but a terminal conflict
+	# must never be reported to the caller as a successful task Step.
+	var status: String = "completed" if completed == requested \
+			and reason == "requested_steps_completed" else (
 		"unconfirmed" if _uncertain else (
 		"stopped" if reason == "human_stop" else "refused"))
 	return _end(_record(status,reason,requested,completed,before_tick,
