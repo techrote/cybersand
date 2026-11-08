@@ -31,6 +31,25 @@ func _run() -> void:
 
 	var reverse: Dictionary = Shapes.line(Vector2i(765, 85), Vector2i(760, 80), 0, extent)
 	expect(reverse.get("cells", PackedInt32Array()) == diagonal.get("cells", PackedInt32Array()), "reversed diagonal is identical")
+	# Bresenham's midpoint ties are direction-sensitive unless the planner
+	# canonicalizes its endpoints. An equal-length diagonal cannot detect it.
+	var tie: Dictionary = Shapes.line(Vector2i(760, 90), Vector2i(761, 92), 0, extent)
+	expect(tie.get("cells", PackedInt32Array()) == PackedInt32Array([
+		760, 90, 761, 91, 761, 92
+	]), "shallow midpoint tie uses stable canonical rasterization")
+	for delta: Vector2i in [
+		Vector2i(1, 2), Vector2i(2, 1), Vector2i(6, 3),
+		Vector2i(-7, 4), Vector2i(0, 9), Vector2i(9, 0)
+	]:
+		for radius: int in [0, 2]:
+			var a: Vector2i = Vector2i(780, 120)
+			var b: Vector2i = a + delta
+			var forward: Dictionary = Shapes.line(a, b, radius, extent)
+			var backward: Dictionary = Shapes.line(b, a, radius, extent)
+			expect(bool(forward.get("accepted", false))
+				and bool(backward.get("accepted", false))
+				and forward.get("cells", PackedInt32Array()) == backward.get("cells", PackedInt32Array()),
+				"reverse drag is pixel-identical for %s radius %d" % [str(delta), radius])
 	var thick: Dictionary = Shapes.line(Vector2i(850, 80), Vector2i(850, 80), 1, extent)
 	expect(thick.get("accepted", false) and thick.get("count", 0) == 5, "radius-one native disc lattice")
 	var clipped: Dictionary = Shapes.line(Vector2i(0, 0), Vector2i(0, 0), 2, extent)
