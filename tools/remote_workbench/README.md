@@ -143,3 +143,111 @@ PAINT-001. The narrow integration seam requested of the #531 owner is **only**
 a stability check that a standalone SceneTree may bind and run the existing
 four-tool bridge on the current head; no new Godot patch or concurrent edit
 ownership is requested.
+
+
+## 8 November 2026 remediation: source-specific local contract (Draft)
+
+This layer is **trusted/cooperative local file ingress**, not authenticated
+network access, a sandbox or a security boundary against unrestricted same-user
+host filesystem/shell access. Keeping the versioned authorization in a separate
+file ensures the five workbench tools cannot modify it *through this protocol*.
+A process able to modify or read arbitrary files as the host user may instead
+alter that file, substitute the launcher, impersonate the command writer, read
+receipts or change the runtime. Do not claim otherwise.
+
+**Prompt 2 Codespaces transport responsibility:** keep its network service
+private by default; authenticate and authorize the *real external client path*
+before translating commands; enforce that an unauthenticated agent cannot
+reach host-only authorization/session limit inputs or arbitrarily access the
+host filesystem. An HTTP listener, GitHub sign-in response, or a browser login
+alone is not authentication proof. Transport/client/container sources are
+separately owned; no direct edits to this existing launcher or Godot engine
+without an explicit coordination handoff on Draft #545.
+
+**Host-owned inputs, never agent command fields:**
+
+- Version-1 authorization JSON: `task_id`, `extent`, `scope`,
+  `protected`, `allowed_materials`, optional `start_edits` and camera,
+  loaded exclusively at session startup. Canvas sides follow actual editor
+  `Setup.validate`: **512–2048 cells, multiples of 64**. Python preflight
+  reads that rule from the current source and fails closed if it changes;
+  Godot also calls `Setup.validate` before constructing the World.
+- Launcher `--timeout` is the total hard wall budget (60–1840 seconds).
+  It supplies Godot an internal deadline exactly **30 seconds earlier**,
+  counting initialization, commands and retirement. The remaining wall
+  budget is for Stop, flush and child-tree cleanup. On expiry or external
+  SIGINT/SIGTERM, the Linux launcher signals **its own** process session/group,
+  waits up to five seconds, escalates SIGKILL if needed and checks that no
+  executable group member survives. Nothing kills by process name.
+  SIGKILL or host crash against the *launcher* cannot guarantee cleanup.
+- `--evidence-limit-bytes` (13 MiB–512 MiB, default 128 MiB)
+  is a finite host-only ceiling on cumulative evidence. Godot reserves one
+  maximum 8 MiB original PNG, one 4 MiB native receipt, 1 MiB side-output
+  headroom and 64 KiB terminal headroom **before** each operation.
+  On insufficiency it returns an explicit refusal *before any native mutation*,
+  records the failure and attempts native Stop. The launcher additionally
+  polls **all** retained files, including `godot.log`, and terminates its
+  group if the total approaches the ceiling. A successful mutation's native
+  result is flushed before advancing completed progress. An unconfirmed result
+  is never treated as accepted or blindly retried.
+
+**Agent-writable ingress:** only the already-created append-only UTF-8 command
+file. Each complete LF-terminated line is one version-1 `seq/tool/args`
+envelope with one of the five tools. No host task, evidence path, deadline,
+evidence limit, shell command or credential can be set in that envelope.
+One ordered writer is required. Sequence numbers must **strictly increase**;
+gaps are allowed, repeated or regressing numbers are a fatal stream error,
+not replay or a second native mutation. Changing, truncating, replacing or
+rewriting the consumed prefix also fails the session closed. A partial final
+line is ignored until its LF arrives. An invalid complete JSON line is fatal
+and ends the session after the retirement attempt. The original bytes supplied
+at launch and every persisted receipt remain retained.
+
+**Result access:** `results.jsonl` gives flushed native/host receipts,
+including the `seq`, owner status and original `frame` path;
+`frames/*.png` are unmodified matched post-draw bytes. A client must pair
+result sequence and render/native identity rather than poll only the PNG
+filename. `manifest.json` is terminal acceptance/failure output;
+`cleanup-result.json` identifies process group, termination reason,
+SIGTERM/SIGKILL escalation and confirmed owned exit status;
+`process-result.json` records wrapper exit and evidence totals.
+
+**Health:** atomically replaced `session-health.json` reports opaque
+`session_id`, `godot_pid`, mode, state, monotonic last-heartbeat time,
+`last_completed_seq`, cumulative native completed ticks, last known native
+generation/tick and used output bytes. This is **not a native receipt**.
+A fresh heartbeat only means the Godot event loop is running, not that
+an edit or Step completed. The last-completed sequence advances after its
+receipt flush; inspect that result for application certainty. When the
+supervisor returns, it records `launcher_alive:false`,
+`process_group_exited` and the precise shutdown reason even if the Godot
+manifest could not be produced.
+
+**Disconnect/reconnect:** files have no socket connection concept. Client
+death or disconnect does **not** end the host-owned, time-bounded World.
+A replacement client with access to the same ingress/results may inspect
+session health, read the last completed receipt, and append the **next new**
+sequence, within remaining host deadline/evidence limits. It must never
+rewrite prior commands or assume a receipt was applied solely because a
+request was sent. Disconnect authentication, isolation, concurrent writer
+arbitration and network retry are explicitly **Prompt 2's transport gates**.
+
+**Evidence and qualification:** The previously accepted historical native
+nine-cell result changed 198 decoded framebuffer pixels under its recorded
+renderer; this is **not** a fixed cross-renderer pixel threshold. The current
+verifier requires native readback of the exact cells and a nonzero changed
+pixel witness inside their actual owner-reported projected canvas rectangle,
+with a separate unchanged on-canvas control. Its synthetic negative control
+tests that changes elsewhere cannot make that edit pass. A standalone
+`test_live.py` launches one *actual* Godot/native World, uses a separately
+spawned client process to examine the first native/PNG result before editing,
+abruptly kills that client, reconnects with a different client process,
+applies a second revision, Steps, observes and Stops. It also runs actual
+Godot/Xvfb negative sessions for duplicate, malformed, rewritten, exhausted
+and interrupted input, plus a test-injected hard supervisor timeout.
+Neither the old batch pass nor a synthetic transport demonstration satisfies
+that incremental gate; consult exact-head CI artifacts for its actual outcome.
+
+**No merge/Ready authority:** the upstream #531 Source and owner Windows/live
+model acceptance, Codespaces external authentication, combined-source
+independent QA and exact-head execution remain separate gates.
