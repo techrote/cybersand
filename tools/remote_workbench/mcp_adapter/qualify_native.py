@@ -97,8 +97,19 @@ def main():
     from client import read_token
     token = read_token(args.mcp_token_file)
     caller = MCPCaller(args.mcp_url,token,directory)
+    repo_root = Path(__file__).resolve().parents[3]
+    def git_identity(*arguments):
+        try:
+            return subprocess.check_output(["git", *arguments], cwd=repo_root,
+                                           text=True, stderr=subprocess.DEVNULL, timeout=5).strip()
+        except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired):
+            return None
     evidence={'schema_version':1,'result':'failed', 'scope':'scripted_external_MCP_native_not_Cloud_Sol_chat',
-              'started_at_unix_seconds':round(time.time(),3)}
+              'started_at_unix_seconds':round(time.time(),3),
+              'external_checkout_commit':git_identity('rev-parse','HEAD'),
+              'external_checkout_tree':git_identity('rev-parse','HEAD^{tree}'),
+              'adapter_sha256':hashlib.sha256(Path(__file__).with_name('adapter.py').read_bytes()).hexdigest(),
+              'upstream_client_sha256':hashlib.sha256((Path(__file__).resolve().parents[1]/'client.py').read_bytes()).hexdigest()}
     try:
         code,_=caller.wire('tools/list', token='')
         require(code==401,'missing MCP bearer unexpectedly permitted')
@@ -147,9 +158,24 @@ def main():
         after_duplicate=caller.result(caller.call('session_status'))['session']['commands_submitted']
         require(caller.result(apply1)['envelope']==caller.result(duplicate)['envelope']
                 and before_duplicate==after_duplicate,'duplicate mutation was submitted')
+        # A fresh independent MCP client recovers the known receipt by GET only.
+        reconnect = MCPCaller(args.mcp_url, token, directory)
+        recovery = reconnect.call('session_status', {'request_id':request['request_id']},
+                                  label='reconnect-readonly-request-recovery')
+        require(caller.result(recovery)['envelope'] == caller.result(apply1)['envelope'],
+                'fresh MCP connection could not recover prior native receipt')
+        caller.transcript.extend(reconnect.transcript)
         after=caller.call('observe',{'region':{'x':28,'y':28,'width':8,'height':8},'detail':'cells'})
         walls=result_native(after)['native_counts'].get('58')
         require(walls==9,'nine native Walls not confirmed')
+        # Independent original-frame equality is tested through SHA256 above.
+        # Decode pixel evidence using the existing #545 PNG verifier.
+        from qualify_live import changed_pixels
+        before_path = next(directory / x['image']['path'] for x in caller.transcript
+                           if x['label']=='observe' and x['image'] is not None)
+        after_path = directory / caller.transcript[-1]['image']['path']
+        changed_first = changed_pixels(before_path, after_path)
+        require(changed_first>0, 'first native edit did not change decoded PNG pixels')
         rev=caller.call('prepare_edit',{'observation_id':result_native(after)['observation_id'],
               'operations':[{'shape':'rectangle','x0':31,'y0':31,'x1':31,'y1':31,'material':0}]})
         require(not rev['isError'],'revision prepare failed')
@@ -158,6 +184,9 @@ def main():
         after2=caller.call('observe',{'region':{'x':28,'y':28,'width':8,'height':8},'detail':'cells'})
         walls2=result_native(after2)['native_counts'].get('58')
         require(walls2==8,'readback-driven second edit not confirmed')
+        revised_path = directory / caller.transcript[-1]['image']['path']
+        changed_second = changed_pixels(after_path, revised_path)
+        require(changed_second>0, 'second native edit did not change decoded PNG pixels')
         stepped=caller.call('step',{'ticks':4})
         require(not stepped['isError'] and result_native(stepped)['completed']==4,
                 'native four-tick Step failed')
@@ -175,7 +204,10 @@ def main():
         evidence.update(result='passed',generation_id=gen,native_generation=last['native_generation'],
                 transport_session_id=sid,native_ticks=5,walls_first=walls,walls_after_revision=walls2,
                 duplicate_mutation_prevented=True,stale_proposal_refused=True,
-                unauthorized_missing_and_wrong_401=True,stop_acknowledged=True)
+                unauthorized_missing_and_wrong_401=True,stop_acknowledged=True,
+                fresh_client_reconnect_receipt_recovery=True,
+                decoded_pixel_changes_first=changed_first,
+                decoded_pixel_changes_second=changed_second)
     except Exception as ex:
         evidence.update(result='failed',error_type=type(ex).__name__,error=str(ex)[:500])
         raise
