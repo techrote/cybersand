@@ -179,6 +179,28 @@ class ProtocolTests(unittest.TestCase):
                     stat = (runner.Path("/proc") / str(pid) / "stat").read_text()
                     self.assertIn(stat.rsplit(")", 1)[1].split()[0], ("Z", "X", "x"))
 
+    def test_log_overflow_is_explicit_and_does_not_interrupt_host_receipts(self):
+        evidence = self.root / "large-diagnostic-log"
+        evidence.mkdir()
+        large_output = [
+            sys.executable, "-c",
+            "import os;os.write(1, b'x' * 65536) if False else "
+            "[os.write(1, b'x' * 65536) for _ in range(70)]",
+        ]
+        with (evidence / "godot.log").open("wb") as log:
+            code, reason, cleanup = runner.supervise(
+                large_output, os.environ.copy(), log, evidence, 10,
+                runner.DEFAULT_EVIDENCE_LIMIT_BYTES,
+            )
+        self.assertEqual((code, reason), (0, "normal_exit"))
+        self.assertTrue(cleanup["owned_processes_exited"])
+        self.assertTrue(cleanup["godot_log_pump_stopped"])
+        self.assertTrue(cleanup["godot_log_truncated"])
+        self.assertGreater(cleanup["godot_log_dropped_bytes"], 0)
+        self.assertLessEqual((evidence / "godot.log").stat().st_size,
+                             runner.MAX_GODOT_LOG_BYTES)
+        self.assertIn(b"truncated", (evidence / "godot.log").read_bytes()[-100:])
+
     def test_host_only_process_custody_identifies_exact_group(self):
         evidence = self.root / "custody-case"
         evidence.mkdir()
