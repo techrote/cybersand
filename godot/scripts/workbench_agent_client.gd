@@ -20,6 +20,8 @@ const MAX_TOOL_OUTPUT := 4096 * 112 + 65536
 # Neither the model nor any tool result may select the request ceiling.
 const DEFAULT_REQUEST_BUDGET := 12
 const MAX_REQUEST_BUDGET := 24
+# Permit one non-mutating model argument correction per task; no native replay.
+const MAX_ARGUMENT_REPAIRS := 1
 # Transport parses signed native coordinates without granting out-of-domain
 # authority. #526's exclusive worker still validates its finite canvas.
 const MIN_WORLD_COORD: int = -2147483648
@@ -40,6 +42,7 @@ var _task_text := ""
 var _response_id := ""
 var _request_count := 0
 var _tool_count := 0
+var _argument_repairs := 0
 var _pending_call_id := ""
 var _pending_tool := ""
 var _pending_http: HTTPRequest
@@ -245,6 +248,7 @@ func begin_task(task: String, model: String, scope: Dictionary) -> bool:
 	_request_count = 0
 	_active_request_budget = request_budget
 	_tool_count = 0
+	_argument_repairs = 0
 	_pending_call_id = ""
 	_pending_tool = ""
 	_seen_call_ids.clear()
@@ -408,12 +412,23 @@ func _handle_transport(identity: int, nonce: int, result: int, http_status: int,
 	if name not in NAMES or call_id.is_empty() or _seen_call_ids.has(call_id):
 		_fail("Unknown or repeated tool call ID/name.")
 		return
-	if not call.get("arguments", null) is String:
-		_fail("Malformed tool arguments.")
-		return
-	var args: Variant = JSON.parse_string(str(call.arguments))
+	var raw_args: Variant = call.get("arguments", null)
+	var args: Variant = JSON.parse_string(raw_args) if raw_args is String else null
 	if not _valid_arguments(name, args):
-		_fail("Malformed or out-of-policy tool arguments.")
+		# No native dispatch has occurred. Return one truthful refused tool
+		# result via the existing Responses continuation, not a forged receipt.
+		# A second bad call terminates the task; repeated IDs are rejected above.
+		if _argument_repairs >= MAX_ARGUMENT_REPAIRS:
+			_fail("Repeated malformed or out-of-policy tool arguments.")
+			return
+		_argument_repairs += 1
+		_seen_call_ids[call_id] = true
+		_tool_count += 1
+		status_changed.emit("refused", "Invalid %s arguments; one bounded model correction." % name)
+		_send([{"type": "function_call_output", "call_id": call_id,
+			"output": JSON.stringify({"status": "refused",
+			"reason": "invalid_or_out_of_policy_arguments", "native_dispatched": false,
+			"repairs_remaining": 0})}])
 		return
 	_seen_call_ids[call_id] = true
 	_tool_count += 1

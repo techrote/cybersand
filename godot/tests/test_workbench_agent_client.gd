@@ -42,6 +42,7 @@ func _run() -> void:
 	_test_tool_loop_and_stop()
 	_test_full_serial_four_tool_loop()
 	_test_provider_errors()
+	_test_malformed_argument_repair()
 	_test_budget_and_duplicates()
 	_test_526_exact_envelopes()
 	await _test_ui_shell()
@@ -268,6 +269,60 @@ func _test_provider_errors() -> void:
 	n._handle_transport(n.current_epoch(), n._serial, HTTPRequest.RESULT_TIMEOUT, 0, PackedByteArray())
 	_expect(not n.is_active(), "timeout did not stop")
 	n.queue_free()
+
+func _test_malformed_argument_repair() -> void:
+	# A single invalid model call may receive a bounded, truthful refusal.
+	# No native dispatcher can observe the invalid arguments or replay work.
+	var c := _new_client()
+	var dispatched: Array = []
+	c.tool_requested.connect(func(name: String, _args: Dictionary, _epoch: int, _id: String) -> void:
+		dispatched.append(name))
+	_expect(c.begin_task("Repair malformed model arguments", "configured-model", _scope()),
+		"repair fixture must start")
+	_deliver(c, _response("bad-response-1", [{
+		"type": "function_call", "call_id": "bad-prepare-1",
+		"name": "prepare_edit", "arguments": "{invalid-json"
+	}]))
+	var continuation: Dictionary = c.pending_fake_payload()
+	var inputs: Array = continuation.get("input", [])
+	_expect(c.is_active() and dispatched.is_empty() and c._serial == 2,
+		"malformed tool arguments reached native dispatch or terminated before correction")
+	_expect(continuation.get("previous_response_id") == "bad-response-1"
+		and inputs.size() == 1 and inputs[0].get("type") == "function_call_output"
+		and inputs[0].get("call_id") == "bad-prepare-1",
+		"correction did not use the original Responses call ID and response chain")
+	var refusal: Variant = JSON.parse_string(str(inputs[0].get("output", ""))) if inputs.size() == 1 else null
+	_expect(refusal is Dictionary and refusal.get("status") == "refused"
+		and refusal.get("native_dispatched") == false
+		and refusal.get("repairs_remaining") == 0,
+		"model correction was not an explicit non-mutating bounded refusal")
+	_deliver(c, _response("fixed-response-2", [_tool("observe", "valid-observe-2",
+		{"region": null, "detail": "counts"})]))
+	_expect(dispatched == ["observe"] and c.is_waiting_for_tool(),
+		"valid model correction did not reach the existing serial dispatcher")
+	_expect(c.submit_tool_result(c.current_epoch(), "valid-observe-2",
+		{"status": "observed", "observation_id": "native-repair-observation"}),
+		"valid corrected call did not continue with authoritative output")
+	_deliver(c, _response("invalid-response-3", [{
+		"type": "function_call", "call_id": "invalid-step-3",
+		"name": "step", "arguments": JSON.stringify({"ticks": 121})
+	}]))
+	_expect(not c.is_active() and dispatched == ["observe"],
+		"second out-of-policy model call bypassed the one-correction limit")
+	c.queue_free()
+	# A correction cannot circumvent the frozen paid-request ceiling.
+	var capped := _new_client()
+	capped.request_budget = 1
+	_expect(capped.begin_task("Capped repair", "configured-model", _scope()),
+		"capped repair fixture must start")
+	_deliver(capped, _response("capped-bad", [{
+		"type": "function_call", "call_id": "capped-bad-call",
+		"name": "observe", "arguments": "not-json"
+	}]))
+	_expect(not capped.is_active() and capped._request_count == 1,
+		"invalid argument repair escaped frozen per-task request budget")
+	capped.queue_free()
+
 
 func _test_budget_and_duplicates() -> void:
 	var c := _new_client()
