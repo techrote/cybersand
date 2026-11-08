@@ -57,6 +57,14 @@ PY
   chmod 0755 "$godot_bin"
 fi
 test "$("$godot_bin" --version)" = '4.7.stable.official.5b4e0cb0f'
+# Godot's runtime graphics path uses Fontconfig via dynamic loading; a
+# headless import alone may succeed even when the display-backed player fails.
+test -r /usr/lib/x86_64-linux-gnu/libfontconfig.so.1
+if ldd "$godot_bin" | grep -q 'not found'; then
+  echo 'Godot has unresolved runtime shared libraries' >&2
+  ldd "$godot_bin" >&2
+  exit 1
+fi
 
 # Build the native owner from the checked-out CyberSand source through existing
 # repository build scripts. They verify GCC 13.3, binutils 2.42 and godot-cpp.

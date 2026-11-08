@@ -8,6 +8,7 @@ RUN apt-get update \
       file=1:5.45-3build1 \
       g++-13=13.3.0-6ubuntu2~24.04.1 \
       git-lfs=3.4.1-1ubuntu0.4 \
+      libfontconfig1=2.15.0-1.1ubuntu2 \
       libgl1-mesa-dri=25.2.8-0ubuntu0.24.04.4 \
       libglx-mesa0=25.2.8-0ubuntu0.24.04.4 \
       python3=3.12.3-0ubuntu2.1 \
