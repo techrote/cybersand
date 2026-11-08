@@ -202,7 +202,7 @@ static func conversation(records: Array, enabled: Dictionary) -> String:
 				seen[key] = true
 			var heading := str(block.heading)
 			var payload: Variant = record.get("payload",{})
-			if payload is Dictionary and typeof(payload.get("stale",false)) == TYPE_BOOL and payload.stale:
+			if payload is Dictionary and typeof(payload.get("stale",false)) == TYPE_BOOL and payload.get("stale",false):
 				heading = "Ignored stale event · " + heading
 			var section := "%s  ·  %s\n%s" % [str(record.get("utc","")),heading,str(block.text)]
 			sections.append(section)
