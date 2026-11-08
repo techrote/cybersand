@@ -1,0 +1,11 @@
+[
+ {"tool":"observe","args":{"region":{"x":28,"y":28,"width":8,"height":8},"detail":"cells"}},
+ {"tool":"prepare_edit","args":{"observation_id":"$last_obs","operations":[{"shape":"rectangle","x0":30,"y0":30,"x1":32,"y1":32,"material":58}]}},
+ {"tool":"apply_edit","args":{"proposal_id":"$last_proposal"}},
+ {"tool":"observe","args":{"region":{"x":28,"y":28,"width":8,"height":8},"detail":"cells"}},
+ {"tool":"prepare_edit","require_native_counts":{"58":9},"args":{"observation_id":"$last_obs","operations":[{"shape":"rectangle","x0":31,"y0":31,"x1":31,"y1":31,"material":0}]}},
+ {"tool":"apply_edit","args":{"proposal_id":"$last_proposal"}},
+ {"tool":"observe","args":{"region":{"x":28,"y":28,"width":8,"height":8},"detail":"cells"}},
+ {"tool":"step","args":{"ticks":4}},
+ {"final":"Scripted fixture reached final request; host must evaluate real native receipts and Stop."}
+]
