@@ -4,6 +4,11 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
+import signal
+import subprocess
+import sys
+import threading
 from pathlib import Path
 import struct
 import tempfile
@@ -129,6 +134,81 @@ class ProtocolTests(unittest.TestCase):
         path.write_bytes(data)
         with self.assertRaises(AssertionError):
             verifier.decode_png(path)
+
+    def test_canvas_extent_exact_setup_policy(self):
+        for extent in ([512, 512], [2048, 2048], [640, 768]):
+            with self.subTest(extent=extent):
+                data = json.loads(self.auth.read_text())
+                data["extent"] = extent
+                self.auth.write_text(json.dumps(data))
+                self.assertEqual(runner.validate_authorization(self.auth)["extent"], extent)
+        for extent in ([32, 512], [511, 512], [513, 512], [2049, 512],
+                       [512, 65], [512, True], [512, 512.0]):
+            with self.subTest(extent=extent):
+                data = json.loads(self.auth.read_text())
+                data["extent"] = extent
+                self.auth.write_text(json.dumps(data))
+                with self.assertRaisesRegex(ValueError, "Setup.validate"):
+                    runner.validate_authorization(self.auth)
+
+    def test_live_timeout_and_normal_completion_reap_owned_children(self):
+        wrapper = ("import subprocess,sys,time;"
+                   "child=subprocess.Popen([sys.executable,'-c',"
+                   "'import time;time.sleep(40)']);"
+                   "open(sys.argv[1],'w').write(str(child.pid));"
+                   "time.sleep(40) if sys.argv[2]=='wait' else None")
+        for mode, timeout, expected_reason in (
+            ("wait", 1, "timeout"), ("exit", 5, "normal_exit")
+        ):
+            with self.subTest(mode=mode):
+                evidence = self.root / ("evidence-" + mode)
+                evidence.mkdir()
+                child_pid = evidence / "child.pid"
+                with (evidence / "child.log").open("wb") as log:
+                    code, reason, cleanup = runner.supervise(
+                        [sys.executable, "-c", wrapper, str(child_pid), mode],
+                        os.environ.copy(), log, evidence, timeout,
+                        runner.DEFAULT_EVIDENCE_LIMIT_BYTES,
+                    )
+                self.assertEqual(reason, expected_reason)
+                self.assertTrue(cleanup["owned_processes_exited"], cleanup)
+                self.assertTrue(cleanup["launcher_child_reaped"], cleanup)
+                self.assertTrue(child_pid.is_file())
+                pid = int(child_pid.read_text())
+                if sys.platform.startswith("linux") and (runner.Path("/proc") / str(pid) / "stat").exists():
+                    stat = (runner.Path("/proc") / str(pid) / "stat").read_text()
+                    self.assertIn(stat.rsplit(")", 1)[1].split()[0], ("Z", "X", "x"))
+
+    def test_launcher_interruption_reaps_owned_children(self):
+        evidence = self.root / "interrupted"
+        evidence.mkdir()
+        command = [sys.executable, "-c",
+                   "import subprocess,sys,time;"
+                   "subprocess.Popen([sys.executable,'-c','import time;time.sleep(30)']);"
+                   "print('started', flush=True);time.sleep(30)"]
+        interrupt = threading.Timer(0.8, lambda: os.kill(os.getpid(), signal.SIGINT))
+        interrupt.start()
+        try:
+            with (evidence / "child.log").open("wb") as log:
+                code, reason, cleanup = runner.supervise(
+                    command, os.environ.copy(), log, evidence, 10,
+                    runner.DEFAULT_EVIDENCE_LIMIT_BYTES,
+                )
+            self.assertEqual(reason, "signal_sigint")
+            self.assertEqual(code, 125)
+            self.assertTrue(cleanup["owned_processes_exited"], cleanup)
+            self.assertTrue(cleanup["launcher_child_reaped"], cleanup)
+        finally:
+            interrupt.cancel()
+            interrupt.join()
+
+    def test_duplicate_batch_sequence_preflight(self):
+        self.commands.write_text(
+            '{"version":1,"seq":1,"tool":"observe","args":{}}\\n'
+            '{"version":1,"seq":1,"tool":"stop","args":{}}\\n'
+        )
+        with self.assertRaisesRegex(ValueError, "monotonic"):
+            runner.validate_commands(self.commands, live=False)
 
     def test_live_mode_has_one_process_not_one_per_command(self):
         godot = self.root / "Godot"
