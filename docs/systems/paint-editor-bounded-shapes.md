@@ -213,13 +213,12 @@ readback nor an unversioned observation is sufficient. The planner cannot
 establish that source identity itself. It is a **staging/preview primitive**,
 not an authoritative paste API and not a user-mounted editor control.
 
-The planner refuses missing/misaligned source IDs, values outside the
-native 0–255 ID range, source/destination out-of-bounds, conflicting IDs
+The planner refuses missing/misaligned source IDs, IDs not admitted by the accepted native material enum (0–131, except reserved slot 10), source/destination out-of-bounds, conflicting IDs
 for repeated source coordinates, and more than 4096 source points. Identical
 coordinate/ID duplicates are coalesced. The entire operation refuses if
 any destination leaves the canvas: no clipping or partial paste. It returns
 a deterministic row-major union of destination points and deterministic
-per-material groups, sorted by numeric material ID; material **0 (Air) is
+per-material groups, sorted by numeric material ID; material **0 (Empty) is
 retained** for a future authorized erase operation, not silently discarded.
 A successful geometry plan marks staging_only=true,
 atomic_commit_required=true, and applied=false.
@@ -245,3 +244,16 @@ The actual GDScript/native run remains unexecuted in this environment;
 do not confuse tests added to source with passing runtime evidence.
 The outstanding Docs failure remains the Integration-owned
 docs/reference/retrieval-corpus.json registration for this focused file.
+
+
+**Accepted-source material identity (8 Nov 2026):** Native
+`native/include/cybersand/material.hpp` enumerates Material::Empty=0 through
+Material::HeatShieldTile=131; slot 10 is reserved and invalid. Both
+`fill_connected` and `stamp_materials` now refuse any source material ID
+outside 0–131 or equal to 10, even if the invalid value lies outside the
+selected connected region. This is a rejection-only compatibility constraint,
+not a second material catalogue or permission to paint arbitrary IDs; the
+Integration host must still check allowed material capabilities, protection,
+source-generation identity and actual native applied receipt. Update and
+requalify this compatibility bound when MAT-AUTH adopts additional IDs.
+These are source/test changes, not successful actual-native execution.
