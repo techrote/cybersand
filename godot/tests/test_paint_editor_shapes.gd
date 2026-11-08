@@ -113,6 +113,85 @@ func _run() -> void:
 		oversized_stencil, Vector2i(0,0), Vector2i(10,10), extent
 	).get("accepted", true), "4097-cell stencil refused before application")
 
+
+	# FILL: synthetic authoritative-ID fixture only (algorithm test). It is
+	# not a native observation or proof of applied paint; the ordinary host
+	# must capture those IDs and revalidate source generation before commit.
+	var pocket_materials := PackedInt32Array()
+	pocket_materials.resize(49)
+	for sample_y: int in range(1, 6):
+		for sample_x: int in range(1, 6):
+			pocket_materials[sample_y * 7 + sample_x] = 7
+	var pocket: Dictionary = Shapes.fill_connected(
+		Vector2i(903, 303), Vector2i(900, 300), Vector2i(7, 7),
+		pocket_materials, extent)
+	expect(pocket.get("accepted", false) and pocket.get("count", 0) == 25
+		and pocket.get("source_material_id", -1) == 7,
+		"closed four-neighbor native-ID pocket fills 25 cells")
+	expect(pocket.get("cells", PackedInt32Array())[0] == 901
+		and pocket.get("cells", PackedInt32Array())[1] == 301
+		and pocket.get("cells", PackedInt32Array())[48] == 905
+		and pocket.get("cells", PackedInt32Array())[49] == 305,
+		"connected fill is uniquely row-major, bounded and deterministic")
+	var unknown_border := PackedInt32Array()
+	unknown_border.resize(49)
+	for i: int in range(49):
+		unknown_border[i] = 7
+	var unsafe_crop: Dictionary = Shapes.fill_connected(
+		Vector2i(903, 303), Vector2i(900, 300), Vector2i(7, 7),
+		unknown_border, extent)
+	expect(not unsafe_crop.get("accepted", true)
+		and unsafe_crop.get("cells", PackedInt32Array()).is_empty(),
+		"component reaching unread crop boundary refuses without partial fill")
+	var exact_source := PackedInt32Array()
+	exact_source.resize(66 * 66)
+	for sample_y: int in range(1, 65):
+		for sample_x: int in range(1, 65):
+			exact_source[sample_y * 66 + sample_x] = 7
+	var exact_fill: Dictionary = Shapes.fill_connected(
+		Vector2i(1004, 204), Vector2i(1000, 200), Vector2i(66, 66),
+		exact_source, extent)
+	expect(exact_fill.get("accepted", false) and exact_fill.get("count", 0) == 4096,
+		"closed 4096-cell connected fill passes exact native limit")
+	var over_source := PackedInt32Array()
+	over_source.resize(67 * 66)
+	for sample_y: int in range(1, 65):
+		for sample_x: int in range(1, 66):
+			over_source[sample_y * 67 + sample_x] = 7
+	var refused_over: Dictionary = Shapes.fill_connected(
+		Vector2i(1004, 204), Vector2i(1000, 200), Vector2i(67, 66),
+		over_source, extent)
+	expect(not refused_over.get("accepted", true)
+		and refused_over.get("cells", PackedInt32Array()).is_empty(),
+		"4160 connected cells refuse atomically rather than truncating at 4096")
+	var corner_materials := PackedInt32Array()
+	corner_materials.resize(64)
+	corner_materials[0] = 7
+	var world_corner: Dictionary = Shapes.fill_connected(
+		Vector2i(0, 0), Vector2i(0, 0), Vector2i(8, 8),
+		corner_materials, extent)
+	expect(world_corner.get("accepted", false) and world_corner.get("count", 0) == 1,
+		"real canvas boundary is safe, unlike an unread crop edge")
+	expect(not Shapes.fill_connected(
+		Vector2i(903, 303), Vector2i(900, 300), Vector2i(7, 7),
+		PackedInt32Array([7]), extent).get("accepted", true),
+		"missing source materials refuse")
+	var invalid_materials := pocket_materials.duplicate()
+	invalid_materials[0] = -1
+	expect(not Shapes.fill_connected(
+		Vector2i(903, 303), Vector2i(900, 300), Vector2i(7, 7),
+		invalid_materials, extent).get("accepted", true),
+		"invalid source material refuses without treating unknown as a boundary")
+	expect(not Shapes.fill_connected(
+		Vector2i(800, 80), Vector2i(900, 300), Vector2i(7, 7),
+		pocket_materials, extent).get("accepted", true),
+		"seed outside authoritative native sample refuses")
+	expect(not Shapes.fill_connected(
+		Vector2i(903, 303), Vector2i(2044, 300), Vector2i(7, 7),
+		pocket_materials, extent).get("accepted", true),
+		"source capture outside canvas refuses")
+
+
 	# These three accepted plans exercise the existing native owner once each.
 	# A successful queue result by itself is NOT treated as an applied receipt.
 	var worker := CyberSimulationWorker.new()
