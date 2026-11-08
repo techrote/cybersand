@@ -240,6 +240,8 @@ func _add_budget_control(title: String, field: SpinBox, initial: int, maximum: i
 	_form.add_child(row)
 
 func _set_budgets(requests: int, tools: int, tokens: int) -> void:
+	for field: SpinBox in [_request_limit,_tool_limit,_token_limit]:
+		field.get_line_edit().release_focus()
 	_request_limit.value = requests
 	_tool_limit.value = tools
 	_token_limit.value = tokens
@@ -310,7 +312,8 @@ func _on_start() -> void:
 		return
 	# Start has FOCUS_NONE: commit typed numbers even if the edit never lost focus.
 	for field: SpinBox in [_request_limit,_tool_limit,_token_limit]:
-		field.apply()
+		if field.get_line_edit().has_focus():
+			field.apply()
 	var materials: Array[String] = []
 	if _wall.button_pressed:
 		materials.append("Hard Wall")

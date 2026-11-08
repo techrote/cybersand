@@ -63,3 +63,13 @@ select that canonical contract; no competing canonical topic is introduced.
 Historical2048-token/12-or24-request evidence remains historical. Runtime and
 live/human acceptance stay separate. Run docs, M11, repository/retrieval and
 focused Godot checks, then record the recoverable source checkpoint.
+
+## Retained focused failure
+
+Initial source checkpoint436d577d added eager SpinBox.apply at Start. The
+Windows fake-provider suite reported135 checks/3 failures: applying stale,
+unfocused edit text could override newly selected preset values in the same
+frame. The follow-up applies only a focused typed edit and releases numeric
+focus before setting a preset. The focused135-check rerun passes. Original
+failed and corrected logs remain under ignored build/budget-client-final.log
+and build/budget-client-focus.log; final runtime gates bind the resulting head.

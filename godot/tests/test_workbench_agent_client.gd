@@ -459,6 +459,7 @@ func _test_ui_shell() -> void:
 	panel._tool_limit.value = 512
 	_expect(not panel.client.is_active(), "changing tool-call cap did not retire task")
 	panel._request_limit.get_line_edit().text = "256"
+	panel._request_limit.get_line_edit().grab_focus()
 	panel._on_start()
 	_expect(panel.client._active_request_budget == 256, "Start ignored typed unsubmitted budget text")
 	panel._set_budgets(Client.DEFAULT_REQUEST_BUDGET,Client.DEFAULT_TOOL_BUDGET,Client.DEFAULT_TOKEN_BUDGET)
