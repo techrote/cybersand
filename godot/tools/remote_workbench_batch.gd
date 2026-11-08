@@ -9,7 +9,11 @@ const MAX_COMMANDS: int = 96
 const MAX_INPUT_BYTES: int = 262144
 const MAX_TOTAL_TICKS: int = 480
 const MAX_PNG_BYTES: int = 8388608
-const LIVE_DEADLINE_MSEC: int = 1800000
+const MAX_RECEIPT_BYTES: int = 4194304
+const TERMINAL_RESERVE_BYTES: int = 65536
+const OUTPUT_OVERHEAD_RESERVE_BYTES: int = 1048576
+const MIN_EVIDENCE_BYTES: int = 16777216
+const MAX_EVIDENCE_BYTES: int = 536870912
 
 var _main: Control
 var _workbench: Control
@@ -32,6 +36,14 @@ var _total_ticks: int = 0
 var _previous_seq: int = 0
 var _consumed_input: String = ""
 var _start_msec: int = 0
+var _deadline_seconds: int = -1
+var _output_limit: int = -1
+var _output_used: int = 0
+var _last_completed_seq: int = 0
+var _last_native_generation: int = -1
+var _last_native_tick: int = -1
+var _session_id: String = ""
+var _last_health_msec: int = 0
 
 
 func _initialize() -> void:
@@ -44,6 +56,37 @@ func _fail(reason: String) -> void:
 	push_error("REMOTE_WB: " + reason)
 
 
+func _health(state: String) -> void:
+	# Atomic replacement; clients never infer completed work from a heartbeat.
+	if _output.is_empty():
+		return
+	var now: int = Time.get_ticks_msec()
+	var value: Dictionary = {
+		"version":PROTOCOL_VERSION, "session_id":_session_id,
+		"godot_pid":OS.get_process_id(), "mode":_mode,
+		"state":state, "alive_at_msec":now,
+		"elapsed_msec":now - _start_msec,
+		"last_completed_seq":_last_completed_seq,
+		"completed_native_ticks_total":_total_ticks,
+		"native_world_generation":_last_native_generation,
+		"native_completed_tick":_last_native_tick,
+		"evidence_output_bytes":_output_used,
+		"evidence_limit_bytes":_output_limit,
+		"failures":_failures.duplicate()
+	}
+	var destination: String = _output.path_join("session-health.json")
+	var temporary: String = destination + ".tmp"
+	var file := FileAccess.open(temporary,FileAccess.WRITE)
+	if file == null:
+		_fail("session_health_open_failed")
+		return
+	file.store_string(JSON.stringify(value) + "\n")
+	file.close()
+	if DirAccess.rename_absolute(temporary,destination) != OK:
+		_fail("session_health_atomic_replace_failed")
+	_last_health_msec = now
+
+
 func _cli() -> bool:
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--authorization="):
@@ -54,9 +97,25 @@ func _cli() -> bool:
 			_output = arg.trim_prefix("--output=")
 		elif arg == "--live":
 			_mode = "live"
+		elif arg.begins_with("--deadline-seconds="):
+			var value: String = arg.trim_prefix("--deadline-seconds=")
+			if not value.is_valid_int():
+				_fail("invalid_host_deadline")
+				return false
+			_deadline_seconds = int(value)
 		else:
 			_fail("unknown_command_line_option")
 			return false
+	_session_id = OS.get_environment("CYBERSAND_SESSION_ID")
+	var limit_value: String = OS.get_environment("CYBERSAND_EVIDENCE_LIMIT_BYTES")
+	if _session_id.is_empty() or not limit_value.is_valid_int():
+		_fail("missing_host_session_identity_or_evidence_budget")
+		return false
+	_output_limit = int(limit_value)
+	if _deadline_seconds < 30 or _deadline_seconds > 1810 \
+			or _output_limit < MIN_EVIDENCE_BYTES or _output_limit > MAX_EVIDENCE_BYTES:
+		_fail("invalid_host_session_deadline_or_evidence_limit")
+		return false
 	if _authority_path.is_empty() or _commands_path.is_empty() or _output.is_empty():
 		_fail("required_authorization_commands_output")
 		return false
@@ -125,9 +184,16 @@ func _read_authorization() -> bool:
 		_fail("invalid_host_canvas")
 		return false
 	for side: Variant in _authority.extent:
-		if typeof(side) != TYPE_INT or side < 32 or side > 2048:
-			_fail("invalid_host_canvas_extent")
+		if typeof(side) != TYPE_INT:
+			_fail("invalid_host_canvas_extent_type")
 			return false
+	# Validate against the actual editor Setup, never a parallel size policy.
+	var initial: Dictionary = Setup.fresh(PackedInt32Array([0]),
+		Vector2i(_authority.extent[0],_authority.extent[1]))
+	var extent_error: String = Setup.validate(initial)
+	if not extent_error.is_empty():
+		_fail("invalid_host_canvas_extent:" + extent_error)
+		return false
 	if _region(_authority.get("scope")) == null:
 		_fail("invalid_host_scope")
 		return false
@@ -246,9 +312,21 @@ static func _json_safe(value: Variant) -> Variant:
 
 
 func _append(value: Dictionary) -> void:
-	if _results != null:
-		_results.store_string(JSON.stringify(value) + "\n")
-		_results.flush()
+	if _results == null:
+		return
+	var record: String = JSON.stringify(value) + "\n"
+	var bytes: int = record.to_utf8_buffer().size()
+	# The terminal/forced-Stop lane uses the reserved capacity, not the normal lane.
+	var terminal: bool = value.get("type","") == "forced_stop"
+	var ceiling: int = _output_limit - OUTPUT_OVERHEAD_RESERVE_BYTES
+	if not terminal:
+		ceiling -= TERMINAL_RESERVE_BYTES
+	if bytes > MAX_RECEIPT_BYTES or _output_used + bytes > ceiling:
+		_fail("session_evidence_receipt_capacity_exhausted")
+		return
+	_results.store_string(record)
+	_results.flush()
+	_output_used += bytes
 
 
 func _capture_png(answer: Dictionary, seq: int, name: String) -> Dictionary:
@@ -275,6 +353,10 @@ func _capture_png(answer: Dictionary, seq: int, name: String) -> Dictionary:
 		if previous.load_png_from_buffer(_last_png) == OK:
 			changed = previous.get_width() != image.get_width() 				or previous.get_height() != image.get_height() 				or previous.get_data() != image.get_data()
 	_last_png = bytes
+	if _output_used + bytes.size() + MAX_RECEIPT_BYTES \
+			+ TERMINAL_RESERVE_BYTES + OUTPUT_OVERHEAD_RESERVE_BYTES > _output_limit:
+		_fail("session_evidence_png_capacity_exhausted")
+		return {"status":"budget_exhausted"}
 	var relative: String = "frames/%03d-%s.png" % [seq,name]
 	var absolute: String = _output.path_join(relative)
 	var file := FileAccess.open(absolute,FileAccess.WRITE)
@@ -283,6 +365,7 @@ func _capture_png(answer: Dictionary, seq: int, name: String) -> Dictionary:
 		return {"status":"invalid"}
 	file.store_buffer(bytes)
 	file.close()
+	_output_used += bytes.size()
 	var record: Dictionary = {"status":"original_post_draw","path":relative,
 		"sha256":FileAccess.get_sha256(absolute),"bytes":bytes.size(),
 		"width":image.get_width(),"height":image.get_height(),
@@ -302,6 +385,16 @@ func _execute_command(command: Dictionary) -> void:
 	_previous_seq = seq
 	if _count > MAX_COMMANDS:
 		_fail("session_command_budget_exhausted")
+		return
+	# Reserve a worst-case original PNG and native receipt BEFORE any mutation.
+	# Exhaustion is a refusal, never a successfully mutated but unreported World.
+	if _output_used + MAX_PNG_BYTES + MAX_RECEIPT_BYTES \
+			+ TERMINAL_RESERVE_BYTES + OUTPUT_OVERHEAD_RESERVE_BYTES > _output_limit:
+		_append({"version":PROTOCOL_VERSION,"type":"tool_result","seq":seq,
+			"tool":str(tool),"status":"refused",
+			"result":{"status":"refused","reason":"session_evidence_budget_exhausted"},
+			"frame":{"status":"none"},"completed_native_ticks_total":_total_ticks})
+		_fail("session_evidence_budget_exhausted")
 		return
 	var allowed_keys := ["seq","tool","args","expect_status","version"]
 	for key: Variant in command.keys():
@@ -346,6 +439,15 @@ func _execute_command(command: Dictionary) -> void:
 		"tool":name,"status":reply.get("status",""),"result":_json_safe(reply),
 		"frame":frame,"completed_native_ticks_total":_total_ticks}
 	_append(result)
+	if _failures.is_empty():
+		_last_completed_seq = seq
+		var native: Variant = reply.get("identity",{})
+		if name == "step":
+			native = reply.get("observation",{}).get("identity",{})
+		if native is Dictionary:
+			_last_native_generation = int(native.get("world_generation",_last_native_generation))
+			_last_native_tick = int(native.get("completed_tick",_last_native_tick))
+		_health("stopped" if _stopped else "running")
 	if command.has("expect_status") and command.expect_status != reply.get("status"):
 		_fail("unexpected_status_seq_%d:%s" % [seq,str(reply.get("status",""))])
 	if reply.get("status") == "unconfirmed":
@@ -372,8 +474,10 @@ func _process_jsonl(line: String) -> void:
 
 
 func _run_commands() -> void:
-	var deadline: int = Time.get_ticks_msec() + LIVE_DEADLINE_MSEC
+	var deadline: int = _start_msec + _deadline_seconds * 1000
 	while _failures.is_empty():
+		if Time.get_ticks_msec() - _last_health_msec >= 1000:
+			_health("running")
 		if Time.get_ticks_msec() >= deadline:
 			_fail("live_session_deadline_reached")
 			break
@@ -419,7 +523,9 @@ func _run() -> void:
 		_fail("results_file_unavailable")
 		quit(2)
 		return
+	_health("starting")
 	_manifest = {"version":PROTOCOL_VERSION,"mode":_mode,"task":{},
+		"session_id":_session_id,"evidence_limit_bytes":_output_limit,
 		"source_commit":OS.get_environment("CYBERSAND_SOURCE_SHA"),
 		"source_tree":OS.get_environment("CYBERSAND_SOURCE_TREE"),
 		"native_runtime_sha256":OS.get_environment("CYBERSAND_NATIVE_SHA256"),
@@ -452,11 +558,13 @@ func _run() -> void:
 	_manifest["result"] = "passed" if _failures.is_empty() else "failed"
 	_manifest["failures"] = _failures.duplicate()
 	_manifest["elapsed_msec"] = Time.get_ticks_msec() - _start_msec
+	_manifest["results_and_frames_bytes"] = _output_used
 	var report := FileAccess.open(_output.path_join("manifest.json"),FileAccess.WRITE)
 	if report != null:
 		report.store_string(JSON.stringify(_manifest,"  ") + "\n")
 		report.close()
 	_results.close()
+	_health("stopped" if _failures.is_empty() else "failed")
 	if is_instance_valid(_main):
 		_main.queue_free()
 		await process_frame
