@@ -235,7 +235,7 @@ func exercise_new() -> void:
 	if not require(panel.place("midge",spawn),"existing controllable flyer placed"): return
 	if not await until(installed,"flyer accepted on generated map"): return
 	require(panel.select_instance(1),"flyer selected to pilot")
-	var body := panel.body_state(1)
+	var body: Dictionary = panel.body_state(1)
 	require(not body.is_empty() and body.get("model")=="midge","real Rapier flyer body registered")
 	# An Erase changes the authored starting map, not only the evolving World.
 	var at := Vector2i(160,160)
@@ -249,7 +249,7 @@ func exercise_new() -> void:
 	require(panel.applied.edits.size()==2 and panel.applied.edits[0][3]==0,
 		"ordered Erase and Hard wall edits retained without rectangles")
 	await screenshot("explore001-painted")
-	var earlier := panel.body_state(1).position
+	var earlier: Vector2 = Vector2(panel.body_state(1).position)
 	var tick: int=host.latest_snapshot.tick_index
 	require(panel.toggle_pause(),"play generated map")
 	var input := InputEventKey.new()
