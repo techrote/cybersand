@@ -90,6 +90,7 @@ static func native_packet(metadata: Dictionary, cells: PackedByteArray, edits: A
 		"generator_fingerprint":metadata.generator_fingerprint,
 		"plane_revision":metadata.plane_revision,
 		"generator_revision":int(metadata.generator_revision),
+		"generator_seed":int(metadata.recipe.get("seed",0)),
 		"receipt_hashes":metadata.receipt_hashes.duplicate(true),
 		"edits":edits.duplicate(true)
 	}
