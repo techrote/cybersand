@@ -193,6 +193,54 @@ jobs:
             "$GODOT_BIN" --path godot --rendering-method gl_compatibility \
             --script res://tests/test_workbench_agent_disabled.gd \
             2>&1 | tee "$EVIDENCE/agent-disabled-manual-reopen.log"
+      - name: Fail closed on actual Linux Godot test summaries and original render packet
+        timeout-minutes: 3
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          root=Path("build/wb-agent-526")
+          # Exiting 0 is not evidence that the test body ran. Compare each
+          # source-defined success sentinel with its previously qualified floor.
+          required={
+              "test_workbench_agent_footprint.gd.log":(r"WB_AGENT_FOOTPRINT: (\d+) assertions, 0 failure\(s\)",24),
+              "test_workbench_agent_signed_frame.gd.log":(r"WB_AGENT_SIGNED_FRAME: (\d+) assertions, 0 failures",28),
+              "test_workbench_authoring_envelope.gd.log":(r"WB_AGENT_ENVELOPE: (\d+) assertions, 0 failures",20),
+              "test_workbench_agent_failures.gd.log":(r"WB_AGENT_FAILURE: (\d+) assertions, 0 failures",13),
+              "real-owner-graphical.log":(r"WB_AGENT_OWNER: (\d+) assertions, 0 failures",141),
+              "test_workbench_input.gd.manual-regression.log":(r'WORKBENCH_INPUT \{"checks":(\d+),"failures":\[\]',24),
+              "agent-disabled-manual-save.log":(r"WB_AGENT_DISABLED: (\d+) assertions, 0 failures, second_process=false",6),
+              "agent-disabled-manual-reopen.log":(r"WB_AGENT_DISABLED: (\d+) assertions, 0 failures, second_process=true",3),
+          }
+          for name,(pattern,minimum) in required.items():
+              source=(root/name).read_text(encoding="utf-8",errors="replace")
+              found=re.findall(pattern,source)
+              assert len(found)==1 and int(found[0])>=minimum, (
+                  f"{name}: missing, repeated, failed, or undercounted test assertion summary"
+              )
+              print(f"REAL_LINUX_ASSERTIONS {name} {found[0]} >= {minimum}")
+          bridge=(root/"test_native_render_bridge_regression.gd.manual-regression.log").read_text(
+              encoding="utf-8",errors="replace"
+          )
+          packets=re.findall(
+              r"Native RenderBridge regression passed; full (\d+) bytes, delta (\d+) bytes/(\d+) patches",
+              bridge
+          )
+          assert len(packets)==1, "Native RenderBridge success sentinel absent or repeated"
+          full,delta,patches=map(int,packets[0])
+          # Source test already verifies full == WORLD_WIDTH * WORLD_HEIGHT *
+          # RG8 channels. The default native World can be 1024x1024 while
+          # the opt-in signed logical frame spans 2048x2048: do not conflate them.
+          assert full>1024 and full%2==0 and 0<delta<full and patches>0, (
+              f"Native RenderBridge packet shape invalid: {packets[0]}"
+          )
+          print(f"REAL_LINUX_RENDER_BRIDGE full={full} delta={delta} patches={patches}")
+          (root/"assertion-summary-qualification.txt").write_text(
+              "PASS: 8 zero-failure source-defined assertion families plus actual RG8 full/delta packet\n"
+          )
+          PY
       - name: Retain original execution logs and all failed checkpoints
         if: always()
         timeout-minutes: 5
@@ -478,6 +526,25 @@ jobs:
           timeout 360 xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
             "$GODOT_BIN" --path godot --rendering-method gl_compatibility \
             --script res://tests/test_workbench_agent_owner.gd 2>&1 | tee "$EVIDENCE/real-signed-owner-rebuilt.log"
+          # A successful process exit without the expected real native assertions
+          # is not a source-built qualification. Verify source-matched log files.
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          root=Path("build/wb-agent-526-source-rebuilt")
+          for filename,pattern,minimum in [
+              ("signed-bounds-rebuilt.log",r"WB_AGENT_SIGNED_FRAME: (\d+) assertions, 0 failures",28),
+              ("real-signed-owner-rebuilt.log",r"WB_AGENT_OWNER: (\d+) assertions, 0 failures",141),
+          ]:
+              matches=re.findall(pattern,(root/filename).read_text(encoding="utf-8",errors="replace"))
+              assert len(matches)==1 and int(matches[0])>=minimum, (
+                  f"Source-built {filename} lacked exactly one zero-failure assertion summary"
+              )
+              print(f"SOURCE_BUILT_ASSERTIONS {filename} {matches[0]} >= {minimum}")
+          (root/"assertion-summary-qualification.txt").write_text(
+              "PASS: real source-built signed 28+ and native-owner 141+ zero-failure assertions\n"
+          )
+          PY
           python3 - <<'PY'
           import hashlib,json,os
           from pathlib import Path
