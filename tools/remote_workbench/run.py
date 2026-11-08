@@ -51,7 +51,7 @@ def pump_bounded_log(stream, destination, limit: int, accounting: dict) -> None:
     written = discarded = 0
     marker = b"\n[WB-REMOTE host: godot.log truncated at cumulative byte ceiling]\n"
     while True:
-        data = stream.read(65536)
+        data = os.read(stream.fileno(), 65536)
         if not data:
             break
         room = max(0, limit - written - len(marker))
