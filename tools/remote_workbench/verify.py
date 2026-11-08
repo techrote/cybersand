@@ -188,9 +188,11 @@ def inspect(folder: Path, roundtrip: bool) -> dict:
         assert applied["result"].get("changed_cells") == 9
         assert applied["result"].get("confirmed_writes") == 9
         cells = applied["result"].get("readback", [])
-        require(len(cells) == 9 and all(
-            c["before"] == 0 and c["after"] == 58 and c["actual"] == 58 for c in cells
-        ), "Native writer did not verify all nine changed cells")
+        expected_cells = {(x, y) for x in range(30, 33) for y in range(30, 33)}
+        require(len(cells) == 9 and
+                {(c.get("x"), c.get("y")) for c in cells} == expected_cells and
+                all(c.get("actual") == 58 for c in cells),
+                "Native readback did not verify the exact nine Hard Wall cells")
         require(applied["result"].get("authored_start", {}).get("status") == "recorded",
                 "Constructed authored start was not recorded")
         before_image = frames[before["frame"]["path"]]
