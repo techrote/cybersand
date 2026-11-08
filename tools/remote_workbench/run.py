@@ -86,6 +86,15 @@ def evidence_size(folder: Path) -> int:
     return total
 
 
+def linux_start_ticks(pid: int) -> int | None:
+    """Linux /proc starttime (field 22) fences reused process-group PIDs."""
+    try:
+        fields = (Path("/proc") / str(pid) / "stat").read_text().rsplit(")", 1)[1].split()
+        return int(fields[19])
+    except (OSError, IndexError, ValueError):
+        return None
+
+
 def group_exists(pgid: int) -> bool:
     # Linux /proc distinguishes exited-but-unreaped zombies from executable
     # survivors; killpg(pgid, 0) alone can report a zombie-only group alive.
@@ -170,6 +179,20 @@ def supervise(invocation: list[str], env: dict, log, evidence: Path,
             invocation, cwd=ROOT, env=env, stdin=subprocess.DEVNULL,
             stdout=log, stderr=subprocess.STDOUT, start_new_session=True,
         )
+        custody = {
+            "version": 1,
+            "session_id": env.get("CYBERSAND_SESSION_ID", ""),
+            "launcher_pid": os.getpid(),
+            "child_pid": process.pid,
+            "owned_process_group": process.pid,
+            "group_leader_start_ticks": linux_start_ticks(process.pid),
+            "state": "running",
+            "host_only": True,
+        }
+        # This file is a *local host-side recovery hint*, never a remote tool
+        # capability or authorization. A recovery supervisor must revalidate
+        # the process identity before any signal; stale PIDs can be recycled.
+        atomic_json(evidence / "launcher-process.json", custody)
         while True:
             remaining = timeout - (time.monotonic() - started)
             if remaining <= 0:
@@ -193,6 +216,20 @@ def supervise(invocation: list[str], env: dict, log, evidence: Path,
         cleanup = (cleanup_process_tree(process, reason) if process is not None else
                    {"reason": reason, "owned_processes_exited": False,
                     "launcher_child_reaped": False})
+        if process is not None:
+            atomic_json(evidence / "launcher-process.json", {
+                "version": 1,
+                "session_id": env.get("CYBERSAND_SESSION_ID", ""),
+                "launcher_pid": os.getpid(),
+                "child_pid": process.pid,
+                "owned_process_group": process.pid,
+                "group_leader_start_ticks": custody["group_leader_start_ticks"],
+                "state": "cleaned" if cleanup["owned_processes_exited"] else "cleanup_failed",
+                "shutdown_reason": reason,
+                "owned_processes_exited": cleanup["owned_processes_exited"],
+                "launcher_child_reaped": cleanup["launcher_child_reaped"],
+                "host_only": True,
+            })
         for signum, handler in previous_handlers.items():
             signal.signal(signum, handler)
     return (process.returncode if reason == "normal_exit" and
