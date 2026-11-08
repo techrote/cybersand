@@ -285,7 +285,7 @@ jobs:
         run: |
           set -euo pipefail
           python - <<'PY'
-          import os,subprocess,sys
+          import os,re,subprocess,sys
           from pathlib import Path
           evidence=Path('build/wb-agent-526-windows')
           editor=(evidence/'godot-editor.txt').read_text().strip()
@@ -304,6 +304,20 @@ jobs:
               ('manual-save-graphical',['--path','godot','--rendering-method','gl_compatibility','--script','res://tests/test_workbench_agent_disabled.gd'],240),
               ('manual-reopen-graphical',['--path','godot','--rendering-method','gl_compatibility','--script','res://tests/test_workbench_agent_disabled.gd'],240),
           ]
+          # A zero process exit is not an assertion result: demand the explicit
+          # source-defined summary from each executed real Godot test, including
+          # at least its previously qualified checks and exactly zero failures.
+          # Minima permit future tests to add stronger coverage without a CI edit.
+          expected_summaries={
+              'geometry':(r'WB_AGENT_FOOTPRINT: (\d+) assertions, 0 failure\(s\)',24),
+              'signed-frame':(r'WB_AGENT_SIGNED_FRAME: (\d+) assertions, 0 failures',28),
+              'envelope':(r'WB_AGENT_ENVELOPE: (\d+) assertions, 0 failures',20),
+              'failure-controls':(r'WB_AGENT_FAILURE: (\d+) assertions, 0 failures',13),
+              'native-owner-graphical':(r'WB_AGENT_OWNER: (\d+) assertions, 0 failures',141),
+              'manual-input-graphical':(r'WORKBENCH_INPUT \{"checks":(\d+),"failures":\[\]',24),
+              'manual-save-graphical':(r'WB_AGENT_DISABLED: (\d+) assertions, 0 failures, second_process=false',6),
+              'manual-reopen-graphical':(r'WB_AGENT_DISABLED: (\d+) assertions, 0 failures, second_process=true',3),
+          }
           failures=[]
           for name,args,timeout in cases:
               local=env.copy()
@@ -319,6 +333,12 @@ jobs:
                   except subprocess.TimeoutExpired:
                       code=124
               print(name,'exit',code,flush=True)
+              if code==0 and name in expected_summaries:
+                  pattern,minimum=expected_summaries[name]
+                  match=re.search(pattern,output.read_text(encoding='utf-8',errors='replace'))
+                  if match is None or int(match.group(1))<minimum:
+                      print(name,'missing or insufficient zero-failure test summary',flush=True)
+                      failures.append(name+'-test-summary')
               if code:
                   failures.append(name)
                   # Source import is a dependency for meaningful later tests.
