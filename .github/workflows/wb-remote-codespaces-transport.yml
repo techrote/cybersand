@@ -46,6 +46,75 @@ jobs:
           grep -F 'visibility": "private"' .devcontainer/devcontainer.json
           grep -Eq '^FROM mcr\.microsoft\.com/devcontainers/base:noble@sha256:[0-9a-f]{64}$' .devcontainer/Dockerfile
 
+  ssh-container-bootstrap:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 17
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Verify SSH on two disposable isolated containers
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          docker build --pull=false -t cybersand-wb-ssh:exact -f .devcontainer/Dockerfile .devcontainer
+          cid1="wb-ssh-1-${{ github.run_id }}-${{ github.run_attempt }}"
+          cid2="wb-ssh-2-${{ github.run_id }}-${{ github.run_attempt }}"
+          tempdir="$(mktemp -d)"
+          cleanup() {
+            docker rm -f "$cid1" "$cid2" >/dev/null 2>&1 || true
+            rm -rf "$tempdir"
+          }
+          trap cleanup EXIT
+          chmod 700 "$tempdir"
+          for name in "$cid1" "$cid2"; do
+            docker run -d --init --name "$name" -p 127.0.0.1::22 cybersand-wb-ssh:exact sleep infinity
+            docker exec "$name" bash -lc 'shopt -s nullglob; keys=(/etc/ssh/ssh_host_*_key); test "${#keys[@]}" -eq 0'
+            docker exec -u root "$name" mkdir -p /workspaces/cybersand/.devcontainer
+            docker cp .devcontainer/start-sshd.sh "$name:/workspaces/cybersand/.devcontainer/start-sshd.sh"
+            docker exec -u vscode -w /workspaces/cybersand "$name" bash .devcontainer/start-sshd.sh
+            docker exec -u vscode -w /workspaces/cybersand "$name" bash .devcontainer/start-sshd.sh
+            docker exec "$name" test -s /etc/ssh/ssh_host_ed25519_key.pub
+          done
+          fp1="$(docker exec "$cid1" ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub | awk '{print $2}')"
+          fp2="$(docker exec "$cid2" ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub | awk '{print $2}')"
+          test -n "$fp1" && test -n "$fp2" && test "$fp1" != "$fp2"
+          test "$(docker exec "$cid1" dpkg-query -W -f='${Version}' openssh-server)" = '1:9.6p1-3ubuntu13.20'
+          ssh-keygen -q -t ed25519 -N '' -f "$tempdir/client"
+          ssh-keygen -q -t ed25519 -N '' -f "$tempdir/wrong"
+          docker exec -u root "$cid1" install -d -o vscode -g vscode -m 0700 /home/vscode/.ssh
+          docker cp "$tempdir/client.pub" "$cid1:/home/vscode/.ssh/authorized_keys"
+          docker exec -u root "$cid1" chown vscode:vscode /home/vscode/.ssh/authorized_keys
+          docker exec -u root "$cid1" chmod 0600 /home/vscode/.ssh/authorized_keys
+          port="$(docker port "$cid1" 22/tcp | sed -n 's/^127\.0\.0\.1:\([0-9][0-9]*\)$/\1/p')"
+          test -n "$port"
+          printf '[127.0.0.1]:%s %s\n' "$port" "$(docker exec "$cid1" cat /etc/ssh/ssh_host_ed25519_key.pub)" > "$tempdir/known_hosts"
+          common=( -p "$port" -o BatchMode=yes -o IdentitiesOnly=yes
+                   -o StrictHostKeyChecking=yes -o HostKeyAlgorithms=ssh-ed25519
+                   -o UserKnownHostsFile="$tempdir/known_hosts" )
+          result="$(timeout 15 ssh "${common[@]}" -i "$tempdir/client" vscode@127.0.0.1 id -un)"
+          test "$result" = vscode
+          if timeout 10 ssh "${common[@]}" -i "$tempdir/wrong" vscode@127.0.0.1 true; then
+            echo 'Rejected SSH identity unexpectedly authenticated' >&2
+            exit 1
+          fi
+          mkdir -p build/wb-remote-ssh
+          printf 'source=%s\npackage=%s\ncontainer1_hostkey=%s\ncontainer2_hostkey=%s\nexternal_publickey_auth=passed\nwrong_key=denied\nkeys_in_image=none\n' \
+            "$(git rev-parse HEAD)" '1:9.6p1-3ubuntu13.20' "$fp1" "$fp2" > build/wb-remote-ssh/qualification.txt
+          echo 'Disposable image + external SSH client + distinct host keys: PASS'
+      - name: Retain sanitized SSH qualification receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wb-remote-ssh-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/wb-remote-ssh/qualification.txt
+          if-no-files-found: warn
+          retention-days: 90
   container-build:
     runs-on: ubuntu-24.04
     timeout-minutes: 15

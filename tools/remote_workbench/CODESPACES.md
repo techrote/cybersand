@@ -50,6 +50,60 @@ Final acceptance must record `git rev-parse HEAD`, `git rev-parse HEAD^{tree}`,
 the corrected #545 source SHA consumed, Rapier SHA-256, native SHA-256 and Godot
 SHA-256.
 
+## SSH prerequisite and fresh-container lifecycle
+
+The real Codespaces acceptance on the owner's `scaling-potato-wr6jw9rrgv97h5j6w`
+identified a reproducibility gap: the initial container lacked `sshd` and
+`gh codespace ssh` could not establish its authenticated connection. An
+operator manually installed `openssh-server` version
+`1:9.6p1-3ubuntu13.20`, after which a genuine WSL-to-Codespaces external
+native-workbench test passed. Source-specific [operator evidence]
+(https://github.com/techrote/cybersand/pull/547#issuecomment-6725659281).
+
+The Dockerfile now pins that package version. Debian's package installation
+may generate SSH host private keys; the Dockerfile deletes them **within the
+same build layer**. The `postCreateCommand` starts SSH *before* the longer
+Godot/native source bootstrap, and `postStartCommand` rechecks SSH on every
+subsequent container start. Both use `.devcontainer/start-sshd.sh`, which
+generates missing keys with `ssh-keygen -A` in **the current container** only,
+validates root-only host-key permissions, checks the effective SSH settings
+(public-key auth enabled, password and keyboard-interactive auth disabled,
+root login disabled, TCP forwarding enabled), starts `ssh` if it is not
+already running and confirms service health. It does not rewrite
+`authorized_keys`, regenerate existing container keys, or touch workbench
+authorization. A new/rebuilt container gets a distinct SSH identity; a
+normal restart of that same container preserves its identity.
+
+After **fresh** Codespace creation, `gh codespace ssh -c "$CODESPACE"`
+should work without any manual `apt install`. Verify from the **external**
+authenticated GitHub CLI host:
+
+~~~bash
+gh codespace ssh -c "$CODESPACE" \
+  'dpkg-query -W -f="${Version}\n" openssh-server; sudo -n /usr/sbin/sshd -t; sudo -n service ssh status'
+~~~
+
+Expected package version: `1:9.6p1-3ubuntu13.20`; `sshd -t` and
+`service ssh status` must exit successfully. No SSH host private keys,
+CyberSand bearer tokens or GitHub credentials belong in PRs or Actions
+artifacts. Keep private port forwarding for the *workbench* itself on 8765.
+
+A dedicated **disposable-container** CI job checks an actual SSH connection
+from outside a freshly built image through a *loopback-only* Docker port
+mapping, key-based login, wrong-key refusal, idempotent restart and distinct
+host keys on a second fresh container. That test establishes OpenSSH runtime
+readiness and package reproducibility; it does **not** impersonate the GitHub
+Codespaces control plane. The owner's historical Codespace test preceded
+this new Dockerfile, so that historical success cannot be labeled a
+zero-touch fresh-Codespace rebuild result.
+
+**Do not rebuild the owner's active Codespace** solely to exercise this
+change: its uncommitted/generated work and local evidence must first be
+preserved in coordination with the owner. Use a separate disposable
+Codespace/CI container. New Codespace creation can incur billing.
+
+---
+
 ## Token setup without command-line disclosure
 
 On the **external client host**:
