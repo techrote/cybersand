@@ -185,6 +185,16 @@ jobs:
           fi
           python3 tools/remote_workbench/verify.py "${verify_flags[@]}" --evidence "$EVIDENCE/roundtrip" \
             2>&1 | tee "$EVIDENCE/roundtrip-verification.log"
+      - name: Exercise real incremental file transport, reconnect and owned tree cleanup
+        if: ${{ inputs.authorization_json == '' && inputs.commands_jsonl == '' }}
+        timeout-minutes: 24
+        run: |
+          set -euo pipefail
+          python3 tools/remote_workbench/test_live.py --xvfb --godot "$GODOT_BIN" \
+            --authorization "$EVIDENCE/input/host-authorization.json" \
+            --evidence "$EVIDENCE/live-acceptance" \
+            2>&1 | tee "$EVIDENCE/live-qualification.log"
+          test -f "$EVIDENCE/live-acceptance/live-qualification.json"
       - name: Reuse frozen +512 moved Sand-hopper native Godot control
         timeout-minutes: 25
         run: |
