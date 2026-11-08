@@ -12,6 +12,8 @@ var main: Control
 var workbench: Control
 var failures: int = 0
 var checks: int = 0
+var direct_stop_finished: bool = false
+var direct_stop_receipt: Dictionary = {}
 
 
 func check(condition: bool, reason: String) -> bool:
@@ -74,6 +76,16 @@ func _retire_during_in_flight_step(driver: RefCounted) -> void:
 	check(workbench.step_requested or workbench.step_pending,
 		"deferred retirement did not observe an admitted native tick")
 	driver.retire()
+
+
+func _await_direct_stop_in_flight(driver: RefCounted) -> void:
+	# Exercise the public asynchronous Stop join, not merely request_stop().
+	# The existing worker must complete its admitted tick before this yields ACK.
+	check(driver.active(), "direct Stop missed the active native sequence")
+	check(workbench.step_requested or workbench.step_pending,
+		"direct Stop was not delivered during an admitted native tick")
+	direct_stop_receipt = await driver.stop()
+	direct_stop_finished = true
 
 
 func _initialize() -> void:
@@ -351,6 +363,44 @@ func run() -> void:
 		"settled_native_tick":main.latest_snapshot.tick_index,
 		"world_generation":main.latest_snapshot.render_world_generation}))
 	retirement_driver = null
+
+	# Direct trusted-host Stop is asynchronous: it must join the same actual
+	# native ACK as step(), not report success at command-admission time.
+	# Distinct from request_stop() and task retirement tested above.
+	var direct_before: int = main.latest_snapshot.tick_index
+	var direct_driver = Driver.new()
+	call_deferred("_await_direct_stop_in_flight",direct_driver)
+	var direct_step: Dictionary = await direct_driver.step(main,workbench,5)
+	if not await wait_until(
+			func() -> bool: return direct_stop_finished,
+			"public Stop never returned after the admitted native tick"):
+		finish()
+		return
+	check(direct_step.get("status")=="stopped"
+		and direct_step.get("reason")=="human_stop"
+		and int(direct_step.get("completed",-1))>=1
+		and int(direct_step.get("completed",-1))<5
+		and direct_step.get("before_tick")==direct_before
+		and direct_step.get("after_tick")==direct_before+direct_step.get("completed")
+		and direct_step.get("world_generation")==pending_source.render_world_generation,
+		"direct asynchronous Stop did not interrupt a bounded native batch: "
+		+str(direct_step))
+	check(direct_stop_receipt==direct_step
+		and direct_stop_receipt.get("status")=="stopped"
+		and direct_stop_receipt.get("still_paused")==true,
+		"public Stop did not join the truthful native Step receipt: "
+		+str(direct_stop_receipt))
+	for _direct_frame: int in 5:
+		await process_frame
+	check(main.latest_snapshot.tick_index==direct_step.get("after_tick",-1)
+		and main.latest_snapshot.paused
+		and main.latest_snapshot.render_world_generation==pending_source.render_world_generation,
+		"public Stop ACK permitted an unauthorized extra native tick")
+	print("WB_AGENT_527_DIRECT_STOP_RESULT " + JSON.stringify({
+		"step":direct_step,"stop":direct_stop_receipt,
+		"settled_native_tick":main.latest_snapshot.tick_index,
+		"world_generation":main.latest_snapshot.render_world_generation}))
+	direct_driver = null
 
 	# Release the test's self-capturing Stop callback before shutting down:
 	# RefCounted signal -> closure -> driver otherwise retains a cycle.
