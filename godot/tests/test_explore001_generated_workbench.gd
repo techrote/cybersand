@@ -36,6 +36,17 @@ func until(predicate: Callable, detail: String, seconds: int = 180) -> bool:
 func installed() -> bool:
 	return not panel.applied.is_empty() and not panel.busy() and host.pending_microscenario_apply.is_empty()
 
+# A previous blank map can already have an uploaded image. Only a fresh,
+# source-matched presentation generation from the new native owner can satisfy
+# installation/readback assertions.
+func uploaded_after(previous: int) -> bool:
+	if host.latest_snapshot == null: return false
+	var snapshot: CyberSimulationSnapshot = host.latest_snapshot
+	return host.last_uploaded_world_generation > previous and \
+		host.last_uploaded_world_generation == snapshot.render_world_generation and \
+		host.last_uploaded_revision == snapshot.world_revision and \
+		snapshot.world_revision == snapshot.simulation_world_revision
+
 func screenshot(label: String) -> void:
 	var directory := OS.get_environment("CYBERSAND_EXPLORE_CAPTURE")
 	if directory.is_empty(): return
@@ -88,10 +99,11 @@ func exercise_saved() -> void:
 			for dx: int in range(-radius,radius+1):
 				if dx*dx+dy*dy<=radius*radius and x+dx>=0 and x+dx<setup.extent[0] and y+dy>=0 and y+dy<setup.extent[1]:
 					edited[(y+dy)*setup.extent[0]+x+dx]=stamp[3]
+	var previous_generation: int = host.last_uploaded_world_generation
 	if not require(panel.install_generated_start(setup,dialog._ready_packet),"fresh process generated start requested"): return
 	dialog.hide()
 	if not await until(installed,"fresh-process prepared World and Rapier acknowledged"): return
-	await until(func() -> bool: return host.last_uploaded_world_generation>0,"rendered fresh-process owner")
+	if not await until(uploaded_after.bind(previous_generation),"matching published fresh-process native World"): return
 	compare_materials(edited,setup.extent[0],setup.extent[1],"fresh-process edited starting map")
 	require(panel.applied.actors==setup.actors and panel.applied.selected==setup.selected,
 		"fresh-process authored spawns and selected flyer")
@@ -130,17 +142,20 @@ func exercise_small() -> void:
 	require(global_chunk.get("ok",false) and global_chunk.cells[0]==source.cells[0],
 		"global (256,256) native sampler maps exactly to destination local (0,0)")
 	var candidate: Dictionary=Setup.fresh(panel._liquids.bridge.default_liquid_policy(),Vector2i(512,512))
+	var previous_generation: int = host.last_uploaded_world_generation
 	if not require(panel.install_generated_start(candidate,source),"512 native World constructor"): return
 	dialog.hide()
 	if not await until(installed,"512 native World and Rapier installed"): return
-	await until(func() -> bool: return host.image.get_width()==512,"512 pixel publication")
+	if not await until(uploaded_after.bind(previous_generation),"source-matched 512 pixel publication"): return
 	compare_materials(source.cells,512,512,"512 native generated Water and hard surface")
 	var tick: int=host.latest_snapshot.tick_index
 	require(panel.toggle_pause(),"512 Water Play")
 	await until(func() -> bool: return host.latest_snapshot.tick_index>=tick+18,"512 Water native ticks")
 	panel.toggle_pause()
+	previous_generation = host.last_uploaded_world_generation
 	if not require(panel.restore_start(),"512 generated initial-state reset"): return
 	if not await until(installed,"512 generated reset acknowledged"): return
+	if not await until(uploaded_after.bind(previous_generation),"512 generated native reset render identity"): return
 	compare_materials(source.cells,512,512,"512 exact generated reset after evolved Water")
 	var old: Dictionary=panel.applied.duplicate(true)
 	dialog.open_new()
@@ -168,11 +183,12 @@ func exercise_new() -> void:
 	require(source.cells.size()==1048576 and source.receipt_hashes.size()>0,
 		"native 1024x1024 copied material and receipts")
 	var model := Setup.fresh(panel._liquids.bridge.default_liquid_policy(),Vector2i(1024,1024))
+	var previous_generation: int = host.last_uploaded_world_generation
 	if not require(panel.install_generated_start(model,source),"actual shared prepared-World request"): return
 	dialog.hide()
 	if not await until(installed,"generated 1024 native/Rapier install",180): return
-	if not await until(func() -> bool: return host.last_uploaded_world_generation>0,
-			"rendered world generation"): return
+	if not await until(uploaded_after.bind(previous_generation),
+			"source-matched 1024 native material publication"): return
 	compare_materials(source.cells,1024,1024,"generated-before-simulation")
 	require(panel._generated_active.sha256==source.sha256,"preserved generator metadata")
 	require(panel.applied.edits.is_empty(),"no procedural cells translated to paint history")
