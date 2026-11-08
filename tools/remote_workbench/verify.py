@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 import struct
 import zlib
@@ -94,6 +95,71 @@ def decode_png(path: Path) -> tuple[int, int, bytes]:
         output[y * stride : (y + 1) * stride] = scanline
         prev = scanline
     return width, height, bytes(output)
+
+
+def projected_pixel_changes(
+    before: tuple[int, int, bytes], after: tuple[int, int, bytes],
+    observation: dict, expected_world: tuple[int, int, int, int],
+    control_world: tuple[int, int, int, int],
+) -> dict:
+    """Relate native-cell edits to the actual post-draw canvas projection.
+
+    A negative control outside the edit cannot satisfy the expected-region
+    witness. Test only the original PNGs, never a synthetic acceptance frame.
+    """
+    require(before[:2] == after[:2], "Original image dimensions changed")
+    width, height, prior = before
+    current = after[2]
+    require(len(prior) == len(current) and len(prior) % (width * height) == 0,
+            "Invalid paired decoded PNG buffer")
+    bpp = len(prior) // (width * height)
+    require(bpp in (3, 4), "Unexpected PNG channel stride")
+    view = observation.get("viewport_native_region", {})
+    rect = observation.get("viewport_framebuffer_rect", {})
+    require(all(isinstance(view.get(key), (int, float)) for key in
+                ("x", "y", "width", "height")), "Missing native viewport projection")
+    require(all(isinstance(rect.get(key), (int, float)) for key in
+                ("x", "y", "width", "height")), "Missing framebuffer projection")
+    require(view["width"] > 0 and view["height"] > 0 and
+            rect["width"] > 0 and rect["height"] > 0, "Degenerate canvas projection")
+
+    def box(world: tuple[int, int, int, int], margin: int = 0) -> tuple[int, int, int, int]:
+        x0, y0, x1, y1 = world
+        sx = rect["width"] / view["width"]
+        sy = rect["height"] / view["height"]
+        return (
+            max(0, math.floor(rect["x"] + (x0 - view["x"]) * sx) - margin),
+            max(0, math.floor(rect["y"] + (y0 - view["y"]) * sy) - margin),
+            min(width, math.ceil(rect["x"] + (x1 - view["x"]) * sx) + margin),
+            min(height, math.ceil(rect["y"] + (y1 - view["y"]) * sy) + margin),
+        )
+
+    expected = box(expected_world, 2)
+    control = box(control_world)
+    require(expected[0] < expected[2] and expected[1] < expected[3],
+            "Edited cells not projected into framebuffer")
+    require(control[0] < control[2] and control[1] < control[3],
+            "Unchanged control cells not visible in framebuffer")
+    total = inside = unchanged_control = 0
+    for y in range(height):
+        for x in range(width):
+            offset = (y * width + x) * bpp
+            if prior[offset:offset + bpp] == current[offset:offset + bpp]:
+                continue
+            total += 1
+            if expected[0] <= x < expected[2] and expected[1] <= y < expected[3]:
+                inside += 1
+            if control[0] <= x < control[2] and control[1] <= y < control[3]:
+                unchanged_control += 1
+    require(inside > 0, "Unrelated framebuffer changes cannot prove native edit projection")
+    require(unchanged_control == 0, "Expected-unchanged canvas control region changed")
+    return {
+        "changed_decoded_pixels_total": total,
+        "changed_pixels_in_native_edit_projection": inside,
+        "changed_pixels_in_unchanged_control": unchanged_control,
+        "expected_pixel_rect": expected,
+        "control_pixel_rect": control,
+    }
 
 
 def load_evidence(folder: Path) -> tuple[dict, dict, list[dict]]:
@@ -201,6 +267,16 @@ def inspect(folder: Path, roundtrip: bool) -> dict:
                 before_image[2] != after_image[2], "Decoded original framebuffer pixels did not change")
         require(edited["frame"].get("pixels_changed_from_previous_frame") is True,
                 "Godot decoded original framebuffer pixels did not change")
+        require(before["result"].get("viewport_native_region") ==
+                edited["result"].get("viewport_native_region") and
+                before["result"].get("viewport_framebuffer_rect") ==
+                edited["result"].get("viewport_framebuffer_rect"),
+                "Canvas projection changed between native edit witness frames")
+        projection = projected_pixel_changes(
+            before_image, after_image, edited["result"],
+            (30, 30, 33, 33), (40, 40, 44, 44),
+        )
+        result["projected_pixel_witness"] = projection
         step = stepped["result"]
         require(step.get("requested") == 4 and step.get("completed") == 4 and
                 step.get("before_tick") == 0 and step.get("after_tick") == 4 and
@@ -217,6 +293,9 @@ def inspect(folder: Path, roundtrip: bool) -> dict:
         require(manifest["completed_native_ticks_total"] == 4, "Unexpected ticks outside Step")
         require(len(frames) >= 4, "Initial/post-edit/step/post-step original PNGs not retained")
         result["pixel_changes_verified"] = True
+        result["historical_prior_run_198_pixel_witness"] = (
+            "retained historical result; not a cross-renderer threshold"
+        )
         result["native_cells_changed"] = 9
         result["stop_refused_late_edit"] = True
     return result
