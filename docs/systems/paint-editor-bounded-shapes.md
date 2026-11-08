@@ -58,6 +58,22 @@ exist; this work is not another single-stamp implementation.
   plan**. Accepted extents are 512–2048, multiple of 64, matching Setup-v2.
   Clipped line *radii* are labelled; endpoints themselves must be inside.
 
+**8 November directional-raster correction (Draft, not runtime admitted):**
+The original Bresenham traversal was reverse-sensitive on half-pixel slope ties:
+for example, (760,90) → (761,92) selected (761,91), while its reverse
+selected (760,91). Paint strokes therefore changed a cell based solely on
+the drag direction. The line planner now orders endpoints lexicographically
+before rasterization and unions the same discs in either direction; it does
+not reorder the authoritative native mutations beyond the existing row-major
+plan. The GDScript regression checks both directions at radius 0 and 2 for
+horizontal, vertical, mixed-sign and asymmetric slopes, plus the exact
+midpoint-tie result. An independent Python mirror exhaustively compared 961
+endpoint offsets (Δx,Δy each -15…15): **280/961** old radius-zero masks
+differed between directions, **0/3,844** canonicalized comparisons differed
+over radii 0,1,2,4. This is a static algorithm discriminator, not a Godot,
+native, CI or mounted-editor PASS. The actual GDScript/native regression
+remains unexecuted until a source-matched Godot runtime is available.
+
 This module does **not** own a World or a UI control. A geometry PASS is neither
 a worker admission nor a material readback. The dedicated GDScript test:
 `godot --headless --path godot --script res://tests/test_paint_editor_shapes.gd`
