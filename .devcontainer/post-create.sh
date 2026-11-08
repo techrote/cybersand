@@ -11,7 +11,9 @@ godot_bin="$godot_dir/Godot_v4.7-stable_linux.x86_64"
 mkdir -p "$runtime" "$godot_dir"
 
 # Materialize only the Linux Rapier runtime required by the desktop workbench.
-git lfs install --local
+# Explicit git-lfs pull needs no hook installation. Never rewrite an existing
+# repo pre-push hook (Codespaces/Actions can provide a guarded hook already).
+git lfs version
 git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
 printf '%s  %s\n' \
   '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a' \
