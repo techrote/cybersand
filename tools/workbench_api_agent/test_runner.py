@@ -245,7 +245,11 @@ class NativeUncertaintyTests(unittest.TestCase):
             return 200,{'phase':'ready','session_id':'native-sid','generation_id':'native-sid:3','native_generation':3}
         backend.api=api
         try:
-            wb=Workbench('http://127.0.0.1:8765',Path('unused'),1)
+            with tempfile.TemporaryDirectory(prefix='wbapi-test-token-') as temp:
+                owner_token=Path(temp)/'workbench-token'
+                owner_token.write_text('m'*48,encoding='utf-8')
+                owner_token.chmod(0o600)
+                wb=Workbench('http://127.0.0.1:8765',owner_token,1)
             wb.open()
             code,doc=wb._submit('apply_edit',{'proposal_id':'p'},'native-id')
             self.assertEqual((code,doc['state']),(202,'pending'))
