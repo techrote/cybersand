@@ -30,26 +30,6 @@ func mouse(p: Vector2, index: int = 0, pressed: bool = false, delta: Vector2 = V
 func inspect_layout(screen: Vector2i, sequence: int) -> void:
 	root.content_scale_size = screen
 	root.size = screen
-	var saved_origin: Vector2 = host.camera_origin
-	var saved_edits: int = wb.applied.edits.size()
-	panel.client.record_diagnostic("ui.raw.test",{"body":"raw body marker"})
-	panel._show_traffic()
-	await settle()
-	check(panel._traffic.visible and panel._traffic._details.text.contains("raw body marker"),"raw Traffic content unavailable")
-	var traffic_point: Vector2 = panel._traffic._details.get_global_rect().get_center()
-	for button: int in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_MIDDLE]:
-		for down: bool in [true,false]:
-			var event := InputEventMouseButton.new()
-			event.window_id = panel._traffic.get_window_id()
-			event.position = traffic_point
-			event.global_position = traffic_point
-			event.button_index = button
-			event.pressed = down
-			Input.parse_input_event(event)
-			await process_frame
-	await settle()
-	check(host.camera_origin == saved_origin and wb.applied.edits.size() == saved_edits and not wb._pan,"Traffic input leaked into World")
-	panel._traffic.hide()
 	mount._toggle.button_pressed = false
 	await settle()
 	wb._zoom = 1
@@ -148,8 +128,8 @@ func inspect_layout(screen: Vector2i, sequence: int) -> void:
 	panel.client.record_diagnostic("ui.raw.test",{"body":"raw body marker"})
 	panel._show_traffic()
 	await settle()
-	check(panel._traffic.visible and panel._traffic._details.text.contains("raw body marker"),"raw Traffic content unavailable")
-	var traffic_point: Vector2 = panel._traffic._details.get_global_rect().get_center()
+	check(panel._traffic.visible and panel._traffic._body.text.contains("raw body marker"),"raw Traffic content unavailable")
+	var traffic_point: Vector2 = panel._traffic._body.get_global_rect().get_center()
 	for button: int in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_MIDDLE]:
 		for down: bool in [true,false]:
 			var event := InputEventMouseButton.new()

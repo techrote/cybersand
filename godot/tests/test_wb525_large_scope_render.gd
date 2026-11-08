@@ -30,6 +30,8 @@ func _run() -> void:
 	mount = wb._agent_mount
 	panel = mount.panel()
 	mount._toggle.button_pressed = true
+	# Explicit legacy grant; larger defaults have their own native capacity test.
+	panel._cell_limit.value = 4096
 	panel._on_whole_canvas()
 	check(panel._rect_from_fields(panel._region) == Rect2i(0,0,2048,2048),"whole canvas selection incorrect")
 	panel._guard.button_pressed = true
