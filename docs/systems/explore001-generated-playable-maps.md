@@ -100,6 +100,13 @@ mid-tick is deliberately not serialized.
 - A 2048² chunk profile requires up to 1024 receipts at aligned 64-cell chunks;
   region/profile capacity still applies. Deepworks' declared semantic plan is
   1024², so a 2048² request is refused while preserving the installed map.
+  Chunked previews now preflight the *exact* global source-chunk count, including
+  unaligned origins, against the saved-map provenance limit of 1024 receipts.
+  For example, a 512² request at eight-cell chunks needs 4096 receipts and is
+  refused before allocating preview bytes or generating any source chunks;
+  the installed native World remains unchanged. A 2048² aligned region at
+  64-cell chunks fits exactly 1024 receipts, but still needs its normal
+  native, memory and source admission checks.
   Source material storage is one byte per cell (4 MiB at 2048²) and the preview
   is four bytes per cell (16 MiB); prepared/old Worlds and other staging memory
   coexist. Those buffer bounds are not a total-memory or responsiveness claim.
