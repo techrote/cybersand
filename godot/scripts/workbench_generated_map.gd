@@ -6,6 +6,8 @@ extends RefCounted
 const Setup = preload("res://scripts/workbench_setup.gd")
 const FORMAT := "cybersand-generated-start-v1"
 const LIMIT := 1024 * 1024
+# Native generation receipts are bounded in saved/reloaded authored-start maps.
+const MAX_GENERATION_RECEIPTS := 1024
 
 static func digest(bytes: PackedByteArray) -> String:
 	var h := HashingContext.new()
@@ -59,7 +61,7 @@ static func valid_provenance(prov: Variant, size: Vector2i) -> String:
 		return "Invalid generator revision."
 	if int(prov.generator_revision) < 1 or int(prov.generator_revision) != prov.generator_revision:
 		return "Invalid generator revision."
-	if not prov.receipt_hashes is Array or prov.receipt_hashes.size() > 1024:
+	if not prov.receipt_hashes is Array or prov.receipt_hashes.size() > MAX_GENERATION_RECEIPTS:
 		return "Invalid native generation receipt count."
 	for receipt: Variant in prov.receipt_hashes:
 		if not _hex(receipt,16): return "Malformed native receipt."
