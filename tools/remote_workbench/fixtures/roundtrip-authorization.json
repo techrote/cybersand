@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "task_id": "remote-wb-source-built-roundtrip",
+  "extent": [
+    512,
+    512
+  ],
+  "scope": {
+    "x": 24,
+    "y": 24,
+    "width": 48,
+    "height": 48
+  },
+  "protected": [
+    {
+      "x": 66,
+      "y": 66,
+      "width": 3,
+      "height": 3
+    }
+  ],
+  "allowed_materials": [
+    0,
+    58
+  ],
+  "start_edits": [],
+  "camera_origin": [
+    0,
+    0
+  ]
+}
