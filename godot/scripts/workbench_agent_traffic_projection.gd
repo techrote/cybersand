@@ -200,7 +200,11 @@ static func conversation(records: Array, enabled: Dictionary) -> String:
 				continue
 			if not key.is_empty():
 				seen[key] = true
-			var section := "%s  ·  %s\n%s" % [str(record.get("utc","")),str(block.heading),str(block.text)]
+			var heading := str(block.heading)
+			var payload: Variant = record.get("payload",{})
+			if payload is Dictionary and typeof(payload.get("stale",false)) == TYPE_BOOL and payload.stale:
+				heading = "Ignored stale event · " + heading
+			var section := "%s  ·  %s\n%s" % [str(record.get("utc","")),heading,str(block.text)]
 			sections.append(section)
 			length += section.length()+2
 			while sections.size() > 1 and length > MAX_CONVERSATION_CHARS:

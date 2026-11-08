@@ -124,5 +124,6 @@ func _run() -> void:
 	check(window._visible_indices.is_empty() and window._body.text.is_empty() and window._details.text.is_empty(),"empty filters leave stale raw detail")
 	window.queue_free()
 	await process_frame
+	check(TrafficProjection.conversation([{"kind":"ignored.test","payload":{"stale":true}}],{"Raw":true}).contains("Ignored stale event"),"discarded late activity shown as active")
 	print("WB_AGENT_TRAFFIC_FILTERS: %d checks, %d failures" % [checks,failures])
 	quit(1 if failures else 0)
