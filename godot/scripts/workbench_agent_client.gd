@@ -300,6 +300,9 @@ func _fail(reason: String) -> void:
 	_pending_call_id = ""
 	_pending_tool = ""
 	_response_waiting = false
+	# A terminal provider/client failure retires the pending native plan.
+	# Clear its presentation-only footprint; never imply it was applied.
+	proposal_changed.emit([])
 	status_changed.emit("error", reason)
 	task_finished.emit("error")
 
@@ -428,6 +431,9 @@ func _handle_transport(identity: int, nonce: int, result: int, http_status: int,
 	_response_id = response_id
 	if calls.is_empty():
 		_active = false
+		# A tool-free model completion is not an apply: retire any unconsumed
+		# proposed overlay before the native Stop/retirement acknowledgment.
+		proposal_changed.emit([])
 		var final_report: String = _final_model_report(messages)
 		if not final_report.is_empty():
 			model_report_received.emit(final_report)
