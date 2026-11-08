@@ -4,13 +4,18 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-08
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
 
 ## Generated terrain in the playable workbench
+
+For shared baseline/edits/actors versus live session, Save versus Flatten,
+desktop/agent/remote convergence and the required combined regression, retrieve
+the [authoring data contract](../architecture/shared-workbench-authoring-data.md).
+It distinguishes Approved direction and Planned successors from current source.
 
 For GEN-007 preview/install, global coordinates, material receipts, authored-start
 save/reopen and capacity limits, retrieve the

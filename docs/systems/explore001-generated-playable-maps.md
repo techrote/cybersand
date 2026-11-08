@@ -166,6 +166,11 @@ physical monitor. These are geometry tests, not human camera/traversal acceptanc
 
 ## Protected-source integration
 
+The owner-approved [shared authoring data and convergence contract](../architecture/shared-workbench-authoring-data.md)
+defines the common foundation and planned generated-map/agent/save join gate.
+Ready qualification of #542 is now explicitly authorized; merging and #548
+implementation are not. Existing formats and runtime behavior remain unchanged.
+
 This feature changes the existing prepared native constructor and main
 workbench host explicitly, **not** the #525 signed-frame adapter, #529/#530
 agent source, MAT-AUTH catalogue, #402 flyer options or #409 setup schema.

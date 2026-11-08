@@ -22,6 +22,7 @@
     "architecture/ballistic-water-v1.md",
     "architecture/inertial-cellular-v1.md",
     "architecture/simulation-tick-and-threading.md",
+    "architecture/shared-workbench-authoring-data.md",
     "decisions/ADR-001-native-simulation-core.md",
     "decisions/ADR-002-double-buffered-tile-jobs.md",
     "decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",

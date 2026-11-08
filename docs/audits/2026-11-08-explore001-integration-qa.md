@@ -214,3 +214,38 @@ test phase now consumes the existing named `graphical_case_seconds` allowance
 capacity, native code and the policy's numeric values are unchanged. A corrected
 rendered execution must finish with the material/receipt/install assertions;
 increasing the test allowance alone supplies no runtime or performance pass.
+
+## Owner-authorized authoring contract and Ready transition — 2026-11-08
+
+After owner acceptance of the corrected dialog, the owner explicitly directs:
+record the shared authoring/data contract and convergence plan, then move #542
+to Ready and run required checks; **do not merge or implement #548**. Earlier
+Draft holds above retain their historical scope. The approved semantic home is
+[shared workbench authoring data](../architecture/shared-workbench-authoring-data.md),
+with Current/Approved/Planned distinctions, dependency heads, source ownership
+and the future generated-map/human-agent/save/reopen/stale-proposal join gate.
+
+This checkpoint starts at `9319e6893cd9b1ff89bcb11d1a781539ccedb9cb`, tree
+`d7cda8ee8e9a512596a8d2c49cc4a1d3b52a19cb`; fetched main remains `1f82dac1`.
+Changes are documentation/retrieval only. All runtime source, 87 native input
+identities, libraries, Rapier/toolchain pins, schemas and controls are unchanged.
+No World/actor/worker/API/configuration implementation or new ADR is introduced.
+The contract records Approved direction, not a claim of combined-branch execution.
+Canonical roadmap, owner intent, handover, docs/retrieval routes, explicit corpus
+and one additive challenge are synchronized; frozen32 is unchanged.
+
+Local Windows Python3.13 `check_docs.py`, `check_repository.py` (18 materialized
+runtime files), `check_m11_consistency.py` (18 records/28 historical hashes) and
+`git diff --check` pass. The first additive retrieval console output failed on
+Windows cp1252 encoding of an arrow after writing its JSON; rerun with
+`python -X utf8 tools/docs/retrieval_eval.py` completes. This is an output-encoding
+failure, not runtime evidence. Retain evaluation JSON/contexts and raw logs at
+`../evidence/ready-authoring/`. Runtime testing here is hosted on the final
+committed head, not inferred from documentation checks or previous artifacts.
+
+Ready-state Documentation/current provenance, full Native, full Godot/Windows
+and Linux coverage, Palette and scoped EXPLORE separate-process controls are
+recorded against the final source/tree in PR #542. The existing `9319e689`
+desktop candidate and acceptance remain identified by their actual commit;
+they are not relabelled as a later exact-head package. No schedule, production
+release, active foreign branch or merge is changed.
