@@ -412,6 +412,44 @@ func run() -> void:
 		"world_generation":main.latest_snapshot.render_world_generation}))
 	direct_driver = null
 
+	# Regression: task authority can be retired synchronously by a listener
+	# on the FINAL completed native tick. The native ACK remains a true tick,
+	# but returning task status=completed would be an unauthorized success.
+	var retire_at_ack_before: int = main.latest_snapshot.tick_index
+	var retire_at_ack_driver = Driver.new()
+	var retire_at_ack_listener: Callable = func(receipt: Dictionary) -> void:
+		if int(receipt.get("completed",0)) == 1:
+			retire_at_ack_driver.retire()
+	retire_at_ack_driver.step_completed.connect(retire_at_ack_listener)
+	var retire_at_ack_result: Dictionary = await retire_at_ack_driver.step(main,workbench,1)
+	retire_at_ack_driver.step_completed.disconnect(retire_at_ack_listener)
+	check(retire_at_ack_result.get("status")=="unconfirmed"
+		and retire_at_ack_result.get("reason")=="lifecycle_retired_after_step_ack"
+		and retire_at_ack_result.get("requested")==1
+		and retire_at_ack_result.get("completed")==1
+		and retire_at_ack_result.get("before_tick")==retire_at_ack_before
+		and retire_at_ack_result.get("after_tick")==retire_at_ack_before+1
+		and retire_at_ack_result.get("world_generation")==pending_source.render_world_generation,
+		"retirement at final native ACK incorrectly completed a revoked task: "
+		+str(retire_at_ack_result))
+	var retire_at_ack_late: Dictionary = await retire_at_ack_driver.step(main,workbench,1)
+	check(retire_at_ack_late.get("status")=="refused"
+		and retire_at_ack_late.get("reason")=="task_lifecycle_retired"
+		and retire_at_ack_late.get("completed")==0,
+		"retired final-ACK task admitted another native Step: "+str(retire_at_ack_late))
+	for _retire_ack_frame: int in 5:
+		await process_frame
+	check(main.latest_snapshot.tick_index==retire_at_ack_before+1
+		and main.latest_snapshot.paused
+		and main.latest_snapshot.render_world_generation==pending_source.render_world_generation,
+		"retirement at final native ACK permitted further native mutation")
+	print("WB_AGENT_527_FINAL_ACK_RETIRE_RESULT " + JSON.stringify({
+		"step":retire_at_ack_result,"late_step":retire_at_ack_late,
+		"settled_native_tick":main.latest_snapshot.tick_index,
+		"world_generation":main.latest_snapshot.render_world_generation}))
+	retire_at_ack_listener = Callable()
+	retire_at_ack_driver = null
+
 	# The final-ACK collision requires #526's authoritative worker revision.
 	# Standalone #530 uses the accepted-main worker without that method.
 	# Never classify an unexecuted composition-dependent control as PASS.
