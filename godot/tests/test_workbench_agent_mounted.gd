@@ -183,6 +183,8 @@ func _run() -> void:
 	check(observed.get("status") == "observed" 		and observed.get("image_status") == "matched_post_draw" 		and observed.get("native_material_ids",[]).size() == 64,
 		"matched native observation does not have 64 real cells")
 	_capture_original()
+	check(panel._log.text.contains("observe: observed; inspected 64 native cells; framebuffer matched"),
+		"mounted Activity lacks factual native observation cell count/framebuffer status")
 	# The SAME authorized native task must reject an agent edit crossing
 	# the user-protected rectangle, without consuming Sand or painting cells.
 	s = panel.client._serial
@@ -201,6 +203,8 @@ func _run() -> void:
 	check(refused_protection.get("status") == "refused"
 			and refused_protection.get("reason") == "protected_region",
 		"protected region was not enforced by the authoritative native owner")
+	check(panel._log.text.contains("prepare_edit: refused; reason=protected_region"),
+		"protected native refusal reason is not visible to the human")
 	check(wb.applied.edits.size() == before_forbidden
 			and host.latest_snapshot.tick_index == tick_forbidden
 			and not panel.proposal_overlay.visible,
@@ -217,6 +221,8 @@ func _run() -> void:
 	var prepared: Dictionary = _receipt()
 	check(prepared.get("status") == "proposed" 		and prepared.get("changed_cells") == 9,
 		"authoritative nine-cell rectangle preflight failed")
+	check(panel._log.text.contains("prepare_edit: proposed; 9 changed cells proposed"),
+		"native prepared count is missing from mounted Activity")
 	check(panel.proposal_overlay.visible 		and panel.proposal_overlay._cells.size() == 9,
 		"visible overlay not bound to actual prepared native cells")
 	check(mount.project_cell(Vector2i(1144,260)) is Rect2,
@@ -231,6 +237,8 @@ func _run() -> void:
 	var applied: Dictionary = _receipt()
 	check(applied.get("status") == "applied" 		and applied.get("readback",[]).size() == 9 		and applied.get("authored_start",{}).get("status") == "recorded",
 		"native readback and authored-start commit missing")
+	check(panel._log.text.contains("apply_edit: applied; 9 native readback cells; authored start recorded"),
+		"verified native application and named-start outcome absent from Activity")
 	check(not panel.proposal_overlay.visible,"applied proposal overlay remained visible")
 	# The fourth tool goes through #527's real pause/serial/tick fencing; no
 	# fabricated model receipt or stale PNG can satisfy this acceptance.
@@ -252,6 +260,8 @@ func _run() -> void:
 	check(stepped.get("observation",{}).get("image_status") == "matched_post_draw"
 			and stepped.get("observation",{}).get("render_identity",{}).get("tick") == tick_before + 4,
 			"Step result lacked genuine same-tick framebuffer")
+	check(panel._log.text.contains("step: stepped; 4 completed ticks; paused at tick %d; framebuffer matched" % (tick_before + 4)),
+		"actual native Step count/tick and framebuffer status missing from Activity")
 	_capture_original("mounted-poststep")
 	# The fake API is deliberately held after the real application receipt.
 	print("WB528_STAGE native applied; manual edit conflict")
