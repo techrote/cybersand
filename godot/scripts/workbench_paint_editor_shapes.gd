@@ -108,7 +108,10 @@ static func rectangle(from_cell: Vector2i, to_cell: Vector2i, filled: bool, exte
 	var height: int = bottom - top + 1
 	if filled and width * height > MAX_CELLS:
 		return _refuse("Filled rectangle exceeds one native 4096-cell command.")
-	if not filled and (2 * width + 2 * height - 4 if width > 1 and height > 1 else width * height) > MAX_CELLS:
+	var perimeter: int = width * height
+	if width > 1 and height > 1:
+		perimeter = 2 * width + 2 * height - 4
+	if not filled and perimeter > MAX_CELLS:
 		return _refuse("Outline rectangle exceeds one native 4096-cell command.")
 	var selected := {}
 	var state := {"clipped": false}
