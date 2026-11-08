@@ -43,6 +43,9 @@ func _run() -> void:
   return
  var report: Dictionary = panel.client._finished_receipt.duplicate(true)
  check(report.get("provider") == "fixture","qualified genuine provider unexpectedly")
+ check(report.get("status") == "passed","Runner ended before successful scripted final: " + str(report.get("reason","missing reason")))
+ check(report.get("model_final_unverified_report") == "Scripted fixture reached final request; host must evaluate real native receipts and Stop.","scripted final response was not reached")
+ check(report.get("measured",{}).get("model_calls") == 9,"fixture did not complete its nine model decisions")
  check(report.get("stop_acknowledged") == true and panel.client._native_stop_acknowledged(),"Python result lacks actual native Stop ACK")
  check(report.get("measured",{}).get("applied_edits") == 2,"Runner did not apply two native edits")
  check(report.get("measured",{}).get("native_ticks") == 4 and host.latest_snapshot.tick_index == 4,"Python/native completed tick mismatch")

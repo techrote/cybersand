@@ -15,7 +15,7 @@ from atlas_agent.pricing import text_tokens_upper_bound, image_tokens_upper_boun
 from atlas_agent.errors import LimitReached
 from .config import ConfigError, validate_live
 from .backend import Workbench,NativeError,STATUS,validate_tool
-from .providers import ProviderError,Decision,HTTPAdapter,ScriptedAdapter
+from .providers import ProviderError,Decision,HTTPAdapter,ScriptedAdapter,request_body
 
 class LimitError(RuntimeError):pass
 
@@ -172,7 +172,11 @@ class Runner:
                 meta=h.pop('image')
                 h['text']+='\n[EARLIER ORIGINAL PNG OMITTED FROM MODEL CONTEXT; sha256='+meta['sha256']+'; original retained in evidence]'
                 self.stats.images_projected+=1
-        text_bytes=sum(len(clean_payload({k:v for k,v in h.items() if k!='image'}).encode()) for h in self.history)
+        # Count the provider's real message/tool/schema projection, not local
+        # h.native evidence (which remains retained, never silently truncated).
+        # Images are represented by a marker here and priced separately below.
+        projection=request_body(self.cfg,self.history,getattr(self.wb,'tool_schemas',None),include_image_bytes=False)
+        text_bytes=len(clean_payload(projection).encode())
         if text_bytes>self.limit['max_history_bytes']:
             raise LimitError('canonical_history_bytes_exceeded_no_silent_truncation')
         images=sum(1 for h in self.history if h.get('image'))

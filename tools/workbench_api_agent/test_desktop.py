@@ -220,7 +220,7 @@ class DesktopTests(unittest.TestCase):
         from .controller import Runner
         from .test_runner import FakeNative
         cfg=load_profile(HERE/'profiles/fixture.json',fixture_mode=True,desktop=True)
-        cfg['limits'].update({'tokens_per_minute':1024,'max_output_tokens':1024})
+        cfg['limits'].update({'tokens_per_minute':50000,'max_output_tokens':1024})
         native=FakeNative();native.desktop=True
         class Never:
             calls=0
@@ -230,10 +230,31 @@ class DesktopTests(unittest.TestCase):
         events=[]
         r=Runner(cfg,{'instructions':'test','acceptance':{}},self.auth,native,self.root/'wait',adapter=adapter,fixture_mode=True,stop_event=event,rate_wait=cancel,event_callback=lambda name,payload:events.append((name,payload)))
         r.output.mkdir();r.history=[{'kind':'user','text':'test'}]
-        r._rate_reservations=[{'at':time.monotonic(),'tokens':1024}]
+        r._rate_reservations=[{'at':time.monotonic(),'tokens':50000}]
         with self.assertRaises(NativeError):r._provider()
         self.assertEqual(adapter.calls,0);self.assertEqual(len(r._rate_history()),1)
-        self.assertTrue(any(name=='rate.wait' and value['reserved_tokens']==1024 for name,value in events))
+        self.assertTrue(any(name=='rate.wait' and value['reserved_tokens']==50000 for name,value in events))
+
+    def test_local_native_evidence_does_not_inflate_model_text_or_reservation(self):
+        from .controller import Runner
+        from .providers import request_body
+        from .test_runner import FakeNative
+        from atlas_agent.errors import LimitReached
+        cfg=load_profile(HERE/'profiles/fixture.json',fixture_mode=True,desktop=True)
+        r=Runner(cfg,{'instructions':'test','acceptance':{}},self.auth,FakeNative(),self.root/'counting',fixture_mode=True)
+        r.history=[{'kind':'user','text':'inspect native facts'},
+                   {'kind':'result','id':'call1','text':'selected native count58=8','native':{'native_counts':{'58':8}}}]
+        before=r._history_safeguard()[0];first=r._reserve();r.budget.release(first)
+        original={'local_only_sentinel':'x'*3000000,'readback':[{'x':n,'actual':58} for n in range(65536)]}
+        r.history[-1]['native']=original;r.history[-1]['receipt_sha256']='a'*64
+        self.assertEqual(r._history_safeguard()[0],before)
+        second=r._reserve();self.assertEqual(second.input_tokens,first.input_tokens);r.budget.release(second)
+        body=request_body(cfg,r.history,include_image_bytes=False)
+        self.assertNotIn('local_only_sentinel',json.dumps(body));self.assertIs(r.history[-1]['native'],original)
+        self.assertIn('selected native count58=8',json.dumps(body));self.assertIn('tools',body)
+        r.history[0]['text']='x'*30000
+        with self.assertRaises(LimitReached) as raised:r._reserve()
+        self.assertEqual(raised.exception.reason_code,'max_input_tokens_per_call')
 
     def test_forged_apply_and_missing_original_image_fail_closed(self):
         b=self.backend()

@@ -189,6 +189,17 @@ retries must honor Retry-After without shortening its minimum, charge attempts,
 keep the same pending input and never replay a native mutation. Provider backoff,
 TPM wait, network timeout, native deadline and task deadline are different clocks.
 
+The integration's first 22-check native run exposed an acceptance hole: edits,
+frames, ticks and Stop passed, but the controller stopped at its input-token gate
+before the fixture's final response. Its text estimate included audit-only native
+fields that the provider serializer omitted. The corrected estimator shares the
+actual provider request projection, including tool schemas/envelope, and prices
+original image dimensions separately. A regression adds 3 MiB of local native
+evidence without changing model-byte/reservation totals, while genuinely large
+model text still triggers the input limit. The mounted gate now additionally
+requires successful controller status, the exact scripted final and nine model
+decisions. Retain the failed checkpoint; native success alone was insufficient.
+
 ## Questions for the independent reviewer
 
 1. Can you trace one visible Start through exactly one Runner to the existing

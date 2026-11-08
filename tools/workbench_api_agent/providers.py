@@ -154,31 +154,31 @@ def image_data(entry:dict, max_bytes:int)->str:
     return 'data:image/png;base64,'+base64.b64encode(data).decode('ascii')
 
 
-def render_history_response(history:list[dict], max_image_bytes:int,detail:str)->list[dict]:
+def render_history_response(history:list[dict], max_image_bytes:int,detail:str,*,include_image_bytes:bool=True)->list[dict]:
     inp=[]
     for h in history:
         kind=h['kind']
         if kind in ('user','comment'):
             content=[{'type':'input_text','text':h['text']}]
-            uri=image_data(h,max_image_bytes)
+            uri=image_data(h,max_image_bytes) if include_image_bytes else ('original-image-accounted-separately' if h.get('image') else '')
             if uri:content.append({'type':'input_image','image_url':uri,'detail':detail})
             inp.append({'role':'user','content':content})
         elif kind=='call':inp.append({'type':'function_call','call_id':h['id'],'name':h['tool'],
                                       'arguments':json.dumps(h['args'],sort_keys=True,separators=(',',':'))})
         elif kind=='result':
             content=[{'type':'input_text','text':h['text']}]
-            uri=image_data(h,max_image_bytes)
+            uri=image_data(h,max_image_bytes) if include_image_bytes else ('original-image-accounted-separately' if h.get('image') else '')
             if uri:content.append({'type':'input_image','image_url':uri,'detail':detail})
             inp.append({'type':'function_call_output','call_id':h['id'],'output':content})
     return inp
 
 
-def render_history_chat(history:list[dict],max_image_bytes:int,detail:str)->list[dict]:
+def render_history_chat(history:list[dict],max_image_bytes:int,detail:str,*,include_image_bytes:bool=True)->list[dict]:
     messages=[]
     for h in history:
         kind=h['kind']
         if kind in ('user','comment'):
-            uri=image_data(h,max_image_bytes)
+            uri=image_data(h,max_image_bytes) if include_image_bytes else ('original-image-accounted-separately' if h.get('image') else '')
             if uri:content=[{'type':'text','text':h['text']},{'type':'image_url','image_url':{'url':uri,'detail':detail}}]
             else:content=h['text']
             messages.append({'role':'user','content':content})
@@ -188,10 +188,29 @@ def render_history_chat(history:list[dict],max_image_bytes:int,detail:str)->list
                     'name':h['tool'],'arguments':json.dumps(h['args'],separators=(',',':'),sort_keys=True)}}]})
         elif kind=='result':
             messages.append({'role':'tool','tool_call_id':h['id'],'content':h['text']})
-            uri=image_data(h,max_image_bytes)
+            uri=image_data(h,max_image_bytes) if include_image_bytes else ('original-image-accounted-separately' if h.get('image') else '')
             if uri:messages.append({'role':'user','content':[{'type':'text','text':'Original post-draw observation for the immediately preceding tool result; same native session.'},
                 {'type':'image_url','image_url':{'url':uri,'detail':detail}}]})
     return messages
+
+def request_body(cfg:dict,history:list[dict],tool_schemas=None,*,include_image_bytes:bool=True)->dict:
+    """The actual provider projection; local native/evidence fields never enter it.
+
+    Text accounting uses the identical envelope/schema with image bytes replaced
+    by a marker; original image dimensions receive their separate price reserve.
+    """
+    provider=cfg['provider'];caps=cfg['capabilities'];lim=cfg['limits']
+    if provider=='openai_responses':
+        body={'model':cfg['model'],'input':render_history_response(history,lim['max_image_bytes'],caps['image_detail'],include_image_bytes=include_image_bytes),
+              'tools':tool_defs(provider,caps['strict_tools'],tool_schemas),'max_output_tokens':lim['max_output_tokens'],
+              'store':False,'stream':False,'truncation':'disabled'}
+    else:
+        body={'model':cfg['model'],'messages':[{'role':'system','content':SYSTEM_MESSAGE},
+              *render_history_chat(history,lim['max_image_bytes'],caps['image_detail'],include_image_bytes=include_image_bytes)],
+              'tools':tool_defs(provider,caps['strict_tools'],tool_schemas),'max_tokens':lim['max_output_tokens'],'stream':False}
+    if caps['parallel_tools']:body['parallel_tool_calls']=False
+    return body
+
 
 class HTTPAdapter:
     def __init__(self,cfg:dict, *, fixture_mode:bool=False,trace=None,tool_schemas=None,argument_feedback=False):
@@ -213,18 +232,8 @@ class HTTPAdapter:
         self.trace(event,clean(payload))
 
     def request(self,history:list[dict],max_request_bytes:int,timeout:float)->Decision:
-        cfg=self.cfg;provider=cfg['provider'];model=cfg['model'];caps=cfg['capabilities'];lim=cfg['limits']
-        if provider=='openai_responses':
-            body={'model':model,'input':render_history_response(history,lim['max_image_bytes'],caps['image_detail']),
-                  'tools':tool_defs(provider,caps['strict_tools'],self.tool_schemas), 'max_output_tokens':lim['max_output_tokens'],
-                  'store':False, 'stream':False, 'truncation':'disabled'}
-            if caps['parallel_tools']:body['parallel_tool_calls']=False
-        else:
-            body={'model':model,'messages':[{'role':'system','content':SYSTEM_MESSAGE},
-                  *render_history_chat(history,lim['max_image_bytes'],caps['image_detail'])],
-                  'tools':tool_defs(provider,caps['strict_tools'],self.tool_schemas),
-                  'max_tokens':lim['max_output_tokens'],'stream':False}
-            if caps['parallel_tools']:body['parallel_tool_calls']=False
+        cfg=self.cfg;provider=cfg['provider'];model=cfg['model']
+        body=request_body(cfg,history,self.tool_schemas)
         answer=http_post(cfg['endpoint'],self.key,body,timeout,max_request_bytes,self._trace if self.trace else None)
         sha=hashlib.sha256(json.dumps(answer,sort_keys=True,separators=(',',':')).encode()).hexdigest()
         seen=any(h.get('image') for h in history)

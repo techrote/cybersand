@@ -150,7 +150,11 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
-          test "$(git merge-base HEAD b7c6204625dad14fdf15430f7872d9841cf92afd)" = b7c6204625dad14fdf15430f7872d9841cf92afd
+          # A single-parent source composition need not carry upstream ancestry.
+          # Require the qualified #547 transport/container sources byte-for-byte;
+          # only its operator documentation may differ, then execute native gates.
+          git diff --exit-code 2b6b8f4ae7da631a81d7393ed01c7940f54bfe93 HEAD -- \
+            .devcontainer tools/remote_workbench ':!tools/remote_workbench/CODESPACES.md'
           mkdir -p "$EVIDENCE"
           cid="cybersand-wb-${{ github.run_id }}-${{ github.run_attempt }}"
           cleanup() {
