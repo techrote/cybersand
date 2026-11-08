@@ -213,6 +213,24 @@ filename. `manifest.json` is terminal acceptance/failure output;
 SIGTERM/SIGKILL escalation and confirmed owned exit status;
 `process-result.json` records wrapper exit and evidence totals.
 
+**Host-only process custody for Prompt 2:** `launcher-process.json` is
+atomically published immediately after the launcher starts the separate
+Godot/Xvfb process session. It records `session_id`, `launcher_pid`,
+`child_pid`, `owned_process_group` and the Linux group's leader
+`group_leader_start_ticks`. On ordinary controlled shutdown this becomes
+`cleaned` or `cleanup_failed` with the specific reason and observed owned
+exit status. The outer **trusted host supervisor** may use this file to
+detect a vanished launcher with a surviving known process group, but MUST
+verify the exact session identity and live process start-time, and MUST NOT
+signal a recycled PID or blindly kill by process name. If the group leader
+has vanished or the identity cannot be verified, declare cleanup
+**unconfirmed** and quarantine instead of targeting a potentially unrelated
+session. Catastrophic SIGKILL/host crash in the spawn-to-record window is
+not solved by this file; hard guarantees against arbitrary parent death
+require an outer supervisor/cgroup or equivalent independent process
+custody. The remote/client interface must never expose arbitrary PID
+selection or modification of this host-only status.
+
 **Health:** atomically replaced `session-health.json` reports opaque
 `session_id`, `godot_pid`, mode, state, monotonic last-heartbeat time,
 `last_completed_seq`, cumulative native completed ticks, last known native
