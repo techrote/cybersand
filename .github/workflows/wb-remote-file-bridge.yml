@@ -161,12 +161,14 @@ jobs:
               if not data.strip():
                   source = home / ("roundtrip-authorization.json" if "authorization" in name else "roundtrip-commands.jsonl")
                   data=source.read_text(encoding="utf-8")
-              elif name.endswith(".jsonl") and not data.endswith("\\n"):
-                  data += "\\n"
+              elif name.endswith(".jsonl") and not data.endswith("\n"):
+                  data += "\n"
               (output/name).write_text(data,encoding="utf-8")
           PY
       - name: Import source and run real native/rendered remote roundtrip
         timeout-minutes: 12
+        env:
+          USING_DEFAULT_FIXTURE: ${{ inputs.authorization_json == '' && inputs.commands_jsonl == '' }}
         run: |
           set -euo pipefail
           for executable in xvfb-run Xvfb xauth; do command -v "$executable"; done
@@ -178,7 +180,7 @@ jobs:
             --commands "$EVIDENCE/input/commands.jsonl" \
             --evidence "$EVIDENCE/roundtrip" --timeout 480
           verify_flags=()
-          if test -z "${{ inputs.authorization_json }}" && test -z "${{ inputs.commands_jsonl }}"; then
+          if test "$USING_DEFAULT_FIXTURE" = "true"; then
             verify_flags+=(--roundtrip)
           fi
           python3 tools/remote_workbench/verify.py "${verify_flags[@]}" --evidence "$EVIDENCE/roundtrip" \
