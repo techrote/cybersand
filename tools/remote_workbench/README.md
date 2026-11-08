@@ -172,10 +172,11 @@ without an explicit coordination handoff on Draft #545.
   `Setup.validate`: **512–2048 cells, multiples of 64**. Python preflight
   reads that rule from the current source and fails closed if it changes;
   Godot also calls `Setup.validate` before constructing the World.
-- Launcher `--timeout` is the total hard wall budget (60–1840 seconds).
-  It supplies Godot an internal deadline exactly **30 seconds earlier**,
+- Launcher `--timeout` is the total hard wall budget (75–1840 seconds).
+  It supplies Godot an internal deadline exactly **45 seconds earlier**,
   counting initialization, commands and retirement. The remaining wall
-  budget is for Stop, flush and child-tree cleanup. On expiry or external
+  budget reserves up to 30 seconds for native Stop and 15 seconds for flush,
+  owned process-group escalation and reaping. On expiry or external
   SIGINT/SIGTERM, the Linux launcher signals **its own** process session/group,
   waits up to five seconds, escalates SIGKILL if needed and checks that no
   executable group member survives. Nothing kills by process name.
