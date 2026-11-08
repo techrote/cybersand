@@ -81,6 +81,38 @@ func _run() -> void:
 	expect(not Shapes.line(Vector2i(800, 80), Vector2i(800, 80), 0, Vector2i(2049, 2048)).get("accepted", true),
 		"invalid canvas size refused")
 
+
+	# Single-material stencil geometry is independent of source material and
+	# MUST receive the same ordinary host/ACK authorization as any shape.
+	var stencil: Dictionary = Shapes.stamp(
+		filled.get("cells", PackedInt32Array()),
+		Vector2i(800, 80), Vector2i(900, 130), extent)
+	expect(stencil.get("accepted", false) and stencil.get("count", 0) == 12,
+		"bounded stencil translation retains unique cell count")
+	expect(stencil.get("cells", PackedInt32Array())[0] == 900
+		and stencil.get("cells", PackedInt32Array())[1] == 130
+		and stencil.get("cells", PackedInt32Array())[22] == 903
+		and stencil.get("cells", PackedInt32Array())[23] == 132,
+		"stencil destination is row-major and translated exactly")
+	var source_twice := PackedInt32Array([800,80,800,80])
+	var dedup: Dictionary = Shapes.stamp(source_twice, Vector2i(800,80), Vector2i(900,130), extent)
+	expect(dedup.get("accepted", false) and dedup.get("count", 0) == 1,
+		"stencil de-duplicates source coordinates before a native command")
+	expect(not Shapes.stamp(
+		filled.get("cells", PackedInt32Array()), Vector2i(800,80), Vector2i(2047,130), extent
+	).get("accepted", true), "out-of-bounds stamp refuses entire operation")
+	expect(not Shapes.stamp(
+		PackedInt32Array([800,80,801]), Vector2i(800,80), Vector2i(900,130), extent
+	).get("accepted", true), "odd-length source mask is refused")
+	expect(not Shapes.stamp(
+		PackedInt32Array([2048,80]), Vector2i(800,80), Vector2i(900,130), extent
+	).get("accepted", true), "source coordinate outside canvas is refused")
+	var oversized_stencil := PackedInt32Array()
+	oversized_stencil.resize(8194)
+	expect(not Shapes.stamp(
+		oversized_stencil, Vector2i(0,0), Vector2i(10,10), extent
+	).get("accepted", true), "4097-cell stencil refused before application")
+
 	# These three accepted plans exercise the existing native owner once each.
 	# A successful queue result by itself is NOT treated as an applied receipt.
 	var worker := CyberSimulationWorker.new()
@@ -90,13 +122,13 @@ func _run() -> void:
 	)
 	var outside: Vector2i = Vector2i(822, 82)
 	var before: int = int(worker._world.material_at(outside.x, outside.y))
-	var emitted: Array[Dictionary] = [diagonal, filled, outline, thick]
+	var emitted: Array[Dictionary] = [diagonal, filled, outline, thick, stencil]
 	var queued := true
 	for plan: Dictionary in emitted:
 		if not plan.get("accepted", false) or not worker.queue_emit_cells(
 			plan.cells, CyberCellWorld.NEON_MAGENTA):
 			queued = false
-	expect(queued, "four exact-cell plans admitted by existing worker")
+	expect(queued, "five exact-cell plans admitted by existing worker")
 	var start_error: Error = worker.start_worker(Vector2(150.0, 145.0))
 	expect(start_error == OK, "exclusive native worker started")
 	var snapshot: CyberSimulationSnapshot
