@@ -332,6 +332,17 @@ serial dispatch (`parallel_tool_calls: false`), finite budgets, configured
 vision-capable model and credentials outside source/saves/logs. The worker,
 native pool and UI render loop must not wait synchronously on HTTP.
 
+The mounted panel defaults to **12 Responses requests per task**. A human can
+explicitly select **Extended run: up to 24 API requests** before Start; this
+changes only the finite request ceiling for that task, not the 32-tool-call
+limit, per-request output token bound, native edit/step caps or any physics.
+The choice is not supplied to model tools or persisted in saves, and changing
+it during a task revokes that task. The client freezes the selected ceiling at
+Start and refuses values outside 1–24. Extended mode can incur additional
+API charges; it makes the previously insufficient 12-request live hopper
+budget *configurable*, but does not certify model success or authorize any
+paid acceptance trials. Fake-provider/native tests remain non-paid evidence.
+
 The parent maintains three distinct acceptance outcomes: (1) engineering
 source-matched native/Godot tests, (2) **three predeclared actual API** Sand-hopper
 trials, max one repair cycle per attempt and all attempts preserved, and

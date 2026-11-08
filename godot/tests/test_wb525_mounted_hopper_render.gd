@@ -66,8 +66,8 @@ func run_variant(rows: Array, variant: String) -> void:
 	agent_panel._guard.button_pressed = true
 	main.shared_workbench._set_view(Vector2(460,490),main.current_view_size)
 	agent_panel.client.configure_fake_transport_for_tests(true)
-	# Explicit TEST-ONLY transcript budget. Production paid limits unchanged.
-	agent_panel.client.request_budget = 24
+	# Exercise human extended-budget opt-in via actual mounted UI, using only fake HTTP.
+	agent_panel._extended_requests.button_pressed = true
 	agent_panel.client.tool_budget = 24
 	agent_panel._on_start()
 	if not await wait_for(func() -> bool:

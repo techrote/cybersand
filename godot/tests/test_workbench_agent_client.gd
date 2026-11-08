@@ -273,11 +273,17 @@ func _test_budget_and_duplicates() -> void:
 	var c := _new_client()
 	c.request_budget = 1
 	_expect(c.begin_task("Attempt", "model", _scope()), "budget fixture start")
+	# Changing the public configuration later must not expand this active task.
+	c.request_budget = 24
 	_deliver(c, _response("r1", [_tool("observe", "c1", {"region": null, "detail": "counts"})]))
 	_expect(c.submit_tool_result(c.current_epoch(), "c1", {"status": "observed", "observation_id": "o"}),
 		"observed continuation accepted")
 	_expect(not c.is_active(), "second request should be refused at budget")
 	c.queue_free()
+	var over := _new_client()
+	over.request_budget = 25
+	_expect(not over.begin_task("Attempt", "model", _scope()), "out-of-policy 25-request budget admitted")
+	over.queue_free()
 	var d := _new_client()
 	_expect(d.begin_task("Attempt", "model", _scope()), "duplicate fixture start")
 	_deliver(d, _response("r1", [_tool("observe", "c1", {"region": null, "detail": "counts"})]))
@@ -312,6 +318,17 @@ func _test_ui_shell() -> void:
 	panel._model.text = "local-test-model"
 	panel._on_start()
 	_expect(panel.client.is_active(), "bound panel Start should begin")
+	_expect(panel.client.request_budget == 12, "default paid request limit changed")
+	panel._extended_requests.button_pressed = true
+	_expect(not panel.client.is_active(), "changing paid request allowance failed to revoke task")
+	panel._on_start()
+	_expect(panel.client.is_active() and panel.client.request_budget == 24,
+		"human opt-in failed to authorize 24 bounded Responses requests")
+	panel._extended_requests.button_pressed = false
+	_expect(not panel.client.is_active(), "opting out did not retire the old task")
+	panel._on_start()
+	_expect(panel.client.is_active() and panel.client.request_budget == 12,
+		"next task did not restore default 12-request ceiling")
 	panel._model.text = "revised-test-model"
 	panel._retire_on_human_change()
 	_expect(not panel.client.is_active(), "human task revision must invalidate pending response")

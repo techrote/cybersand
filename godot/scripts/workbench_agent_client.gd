@@ -16,12 +16,17 @@ const MAX_BODY := 2 * 1024 * 1024
 ## before/after IDs. Reserve 112 characters per row plus 64 KiB for bounded
 ## identity/count/palette metadata. Images have their separate existing cap.
 const MAX_TOOL_OUTPUT := 4096 * 112 + 65536
+# Normal paid tasks remain at 12 requests; the human may opt in to 24.
+# Neither the model nor any tool result may select the request ceiling.
+const DEFAULT_REQUEST_BUDGET := 12
+const MAX_REQUEST_BUDGET := 24
 # Transport parses signed native coordinates without granting out-of-domain
 # authority. #526's exclusive worker still validates its finite canvas.
 const MIN_WORLD_COORD: int = -2147483648
 const MAX_WORLD_COORD: int = 2147483647
 
-var request_budget := 12
+var request_budget := DEFAULT_REQUEST_BUDGET
+var _active_request_budget := DEFAULT_REQUEST_BUDGET
 var tool_budget := 32
 var token_budget := 2048
 var request_timeout_seconds := 25.0
@@ -225,6 +230,9 @@ func begin_task(task: String, model: String, scope: Dictionary) -> bool:
 	if task.strip_edges().is_empty() or model.strip_edges().is_empty() or scope.is_empty():
 		status_changed.emit("refused", "Task, model and explicit scope are required.")
 		return false
+	if request_budget < 1 or request_budget > MAX_REQUEST_BUDGET:
+		status_changed.emit("refused", "Request budget must be between 1 and 24.")
+		return false
 	if not _fake_transport and OS.get_environment("OPENAI_API_KEY").is_empty():
 		status_changed.emit("refused", "OPENAI_API_KEY not set in this local process environment.")
 		return false
@@ -234,6 +242,7 @@ func begin_task(task: String, model: String, scope: Dictionary) -> bool:
 	_scope = scope.duplicate(true)
 	_task_text = task.strip_edges()
 	_request_count = 0
+	_active_request_budget = request_budget
 	_tool_count = 0
 	_pending_call_id = ""
 	_pending_tool = ""
@@ -244,7 +253,7 @@ func begin_task(task: String, model: String, scope: Dictionary) -> bool:
 		{"role": "developer", "content": instruction},
 		{"role": "user", "content": [{"type": "input_text", "text": _task_text}]}
 	]
-	status_changed.emit("running", "Task started; awaiting model response.")
+	status_changed.emit("running", "Task started; up to %d Responses requests authorized." % _active_request_budget)
 	_send(messages)
 	return true
 
@@ -281,7 +290,7 @@ func _fail(reason: String) -> void:
 func _send(input_items: Array) -> void:
 	if not _active:
 		return
-	if _request_count >= request_budget:
+	if _request_count >= _active_request_budget:
 		_fail("Responses API request budget exhausted.")
 		return
 	_request_count += 1

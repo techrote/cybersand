@@ -22,6 +22,7 @@ var _retire_pending := false
 var _start_nonce := 0
 var _task := TextEdit.new()
 var _model := LineEdit.new()
+var _extended_requests := CheckBox.new()
 var _signed_frame := CheckBox.new()
 var _whole_canvas := Button.new()
 var _canvas_region_provider: Callable
@@ -104,6 +105,10 @@ func _ready() -> void:
 	_model.placeholder_text = "Vision-capable Responses model ID"
 	_model.text_changed.connect(func(_value: String) -> void: _retire_on_human_change())
 	_form.add_child(_model)
+	_extended_requests.text = "Extended run: up to 24 API requests (default 12)"
+	_extended_requests.tooltip_text = "Explicit per-task opt-in to a higher paid Responses request ceiling. Calls may incur API charges. Native edit/tick limits and LIVE/HUMAN acceptance requirements are unchanged."
+	_extended_requests.toggled.connect(func(_value: bool) -> void: _retire_on_human_change())
+	_form.add_child(_extended_requests)
 	_signed_frame.text = "Experimental signed frame (+512)"
 	_signed_frame.tooltip_text = "Owner-admitted moved-hopper acceptance fixture (7 Nov 2026); 26 intermediate NORMAL trajectory differences remain. Host-only, opt-in, not strict signed-world parity. Genuine API trials and owner desktop acceptance remain separate."
 	_signed_frame.toggled.connect(func(_value: bool) -> void: _on_scope_change())
@@ -298,6 +303,8 @@ func _on_start() -> void:
 		if authorization.get("status") != "authorized":
 			_log_status("refused","Native task authorization: " + str(authorization.get("reason","unknown")))
 			return
+	# Set after authoritative Start admission and before the first HTTP request.
+	client.request_budget = Client.MAX_REQUEST_BUDGET if _extended_requests.button_pressed else Client.DEFAULT_REQUEST_BUDGET
 	if not client.begin_task(_task.text, _model.text, scope) and _retirement.is_valid():
 		_retire_pending = true
 		var cleanup: Dictionary = await _retirement.call()
