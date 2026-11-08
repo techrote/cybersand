@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 import platform
 import re
+import secrets
 import signal
 import shutil
 import subprocess
@@ -311,6 +312,7 @@ def main(argv: list[str] | None = None) -> int:
     validate_commands(cmd_path, args.live)
     evidence.mkdir(parents=True, exist_ok=True)
     run_id = {
+        "session_id": secrets.token_hex(16),
         "source_commit": git("rev-parse", "HEAD"),
         "source_tree": git("rev-parse", "HEAD^{tree}"),
         "source_status": git("status", "--porcelain=v1"),
@@ -342,6 +344,7 @@ def main(argv: list[str] | None = None) -> int:
         if key.upper() in ("OPENAI_API_KEY", "OPENAI_ADMIN_KEY"):
             env.pop(key)
     env.update({
+        "CYBERSAND_SESSION_ID": run_id["session_id"],
         "CYBERSAND_SOURCE_SHA": run_id["source_commit"],
         "CYBERSAND_SOURCE_TREE": run_id["source_tree"],
         "CYBERSAND_NATIVE_SHA256": run_id["runtime_hashes"]["native"],
@@ -395,7 +398,7 @@ def main(argv: list[str] | None = None) -> int:
         "exit_code": exit_code, "timed_out": timed_out,
         "elapsed_seconds": time.monotonic() - started,
         "retained_original_log": "godot.log",
-        "shutdown_reason": reason,
+        "shutdown_reason": reason, "session_id": run_id["session_id"],
         "process_group_exited": cleanup["owned_processes_exited"],
         "evidence_bytes": evidence_size(evidence),
     }
