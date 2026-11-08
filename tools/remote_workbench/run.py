@@ -255,6 +255,7 @@ def validate_commands(path: Path, live: bool) -> None:
     if not raw.endswith("\n"):
         raise ValueError("Batch JSONL must terminate with a newline")
     seen = 0
+    previous_seq = 0
     for line in raw.splitlines():
         if not line.strip():
             continue
@@ -262,8 +263,9 @@ def validate_commands(path: Path, live: bool) -> None:
         command = json.loads(line)
         if not isinstance(command, dict) or command.get("version") != 1:
             raise ValueError(f"Invalid versioned command {seen}")
-        if type(command.get("seq")) is not int or command["seq"] <= 0:
+        if type(command.get("seq")) is not int or command["seq"] <= previous_seq:
             raise ValueError(f"Invalid monotonic sequence {seen}")
+        previous_seq = command["seq"]
         if command.get("tool") not in ("observe", "prepare_edit", "apply_edit", "step", "stop"):
             raise ValueError(f"Unsupported tool in command {seen}")
         if not isinstance(command.get("args", {}), dict):
