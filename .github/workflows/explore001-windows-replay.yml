@@ -41,6 +41,7 @@ jobs:
             'godot/tests/test_explore001_generated_workbench.gd',
             'godot/tests/test_explore001_admission_probe.gd',
             'godot/scripts/workbench_generator_dialog.gd',
+            'godot/scripts/workbench_generated_map.gd',
             'godot/tests/test_explore001_reopen_diagnostic.gd'
           )
           foreach ($path in $diffs) {
