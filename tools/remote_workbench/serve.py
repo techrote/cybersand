@@ -667,7 +667,16 @@ class Session:
                 "state_hard_limit_bytes": self.state_hard_limit_bytes,
                 "process_alive": bool(self.proc and self.proc.poll() is None),
                 "owner_health": self._owner_health(),
-                "custody_recovery": self.custody_recovery.copy(),
+                # Never send trusted launcher session/PID/PGID/start-tick
+                # custody records through the model-visible HTTP status API.
+                "custody_recovery": {
+                    "state": self.custody_recovery.get("state", "not_checked"),
+                    "owned_processes_exited": (
+                        self.custody_recovery.get("owned_processes_exited")
+                        if type(self.custody_recovery.get("owned_processes_exited"))
+                        is bool else None
+                    ),
+                },
                 "prior_session_recovery": self.prior_session_recovery.copy(),
                 "failure": self.failure,
                 "recovery": "none; restart creates a fresh World",

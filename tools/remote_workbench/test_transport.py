@@ -565,6 +565,26 @@ class TransportTests(unittest.TestCase):
         self.assertEqual(summary["already_terminal_or_prelaunch"], 2)
         self.assertEqual(summary["recovered_owned_groups"], 0)
 
+    def test_host_only_custody_pid_is_never_exposed_to_agent_status(self) -> None:
+        self.session.custody_recovery = {
+            "state": "recovered_orphaned_owned_group",
+            "session_id": "secret-host-owner-session",
+            "launcher_pid": 90821,
+            "owned_process_group": 90822,
+            "group_leader_start_ticks": 198001,
+            "owned_processes_exited": True,
+        }
+        code, status = self.client("session")
+        self.assertEqual(code, 0)
+        serialized = json.dumps(status)
+        for private in ("secret-host-owner-session", "90821", "90822",
+                        "198001", "owned_process_group",
+                        "group_leader_start_ticks"):
+            self.assertNotIn(private, serialized)
+        self.assertEqual(status["custody_recovery"]["state"],
+                         "recovered_orphaned_owned_group")
+        self.assertTrue(status["custody_recovery"]["owned_processes_exited"])
+
     def test_authorization_not_exposed_and_stale_session_refused(self) -> None:
         request = Request(
             self.base + "/v1/authorization",
