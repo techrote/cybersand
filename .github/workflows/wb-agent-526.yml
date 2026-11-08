@@ -314,6 +314,15 @@ jobs:
           from pathlib import Path
           root=Path('build/wb-agent-526-windows')
           archive=root/'godot.zip'
+          # Pin the *Windows* editor too. The Linux runtime lock only covers
+          # the Linux archive; recording an unverified Windows digest after
+          # extraction would admit silently replaced official-release bytes.
+          # GitHub Godot 4.7-stable release asset 451176037, published 2026-06-18.
+          expected_size=83764371
+          expected_sha256='02a5312236f4e0209c78bcb2f52135b1963e6b8888c873c9cee81459e60bcd71'
+          assert archive.stat().st_size==expected_size,'Windows Godot archive size mismatch'
+          actual_sha256=hashlib.sha256(archive.read_bytes()).hexdigest()
+          assert actual_sha256==expected_sha256,'Windows Godot archive SHA-256 mismatch'
           with zipfile.ZipFile(archive) as z:
               assert z.testzip() is None,'Corrupt Windows Godot editor archive'
               names=z.namelist()
@@ -322,9 +331,9 @@ jobs:
               z.extractall(root/'editor')
           (root/'godot-editor.txt').write_text(str((root/'editor'/'Godot_v4.7-stable_win64_console.exe').resolve())+'\n')
           (root/'godot-archive-identity.json').write_text(json.dumps({
-              'origin':'official Godot 4.7 stable release URL; archive SHA recorded, not pinned by third_party linux lock',
-              'size':archive.stat().st_size,
-              'sha256':hashlib.sha256(archive.read_bytes()).hexdigest()
+              'origin':'official Godot 4.7-stable GitHub release asset 451176037; SHA-256 and size verified BEFORE extraction',
+              'size':expected_size,
+              'sha256':actual_sha256
           },indent=2)+'\n')
           archive.unlink()
           PY
