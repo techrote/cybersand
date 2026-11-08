@@ -1,0 +1,298 @@
+{
+  "schema_version": 1,
+  "document_kind": "candidate_agent_tool_boundary",
+  "status": "Approved design; #526 observe/prepare/apply source-executed in isolated Draft #529, #527 step and #528 live transport pending",
+  "canonical_document": "docs/systems/shared-workbench-agent-authoring.md",
+  "owner_issues": [
+    526,
+    527,
+    528
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "name": "observe",
+      "description": "Read a paused existing workbench: actual post-draw viewport image matched to native material IDs, counts, palette, World and render revisions. Pending when provenance does not match; no IDs inferred from pixels.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "region": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "x": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "y": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "width": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "height": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "x",
+                  "y",
+                  "width",
+                  "height"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "null selects the authorized task region; must still fit 4096 native cells."
+          },
+          "detail": {
+            "type": "string",
+            "enum": [
+              "cells",
+              "counts"
+            ]
+          }
+        },
+        "required": [
+          "region",
+          "detail"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    {
+      "type": "function",
+      "name": "prepare_edit",
+      "description": "Non-mutating proposed Hard Wall/Empty authoring in task scope; ordered exact integer geometry, <=8 primitives, <=4096 distinct cells, no Sand editing; returns proposal token and native preflight.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "observation_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "operations": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 8,
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "description": "Inclusive integer-radius disc.",
+                  "properties": {
+                    "shape": {
+                      "type": "string",
+                      "const": "disc"
+                    },
+                    "x": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "y": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "radius": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 36
+                    },
+                    "material": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        58
+                      ]
+                    },
+                    "replace_only_material": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "description": "Native material ID or null; null means omit filter on the typed Godot worker command."
+                    }
+                  },
+                  "required": [
+                    "shape",
+                    "x",
+                    "y",
+                    "radius",
+                    "material",
+                    "replace_only_material"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "description": "Bresenham one-cell line with inclusive endpoints.",
+                  "properties": {
+                    "shape": {
+                      "type": "string",
+                      "const": "line"
+                    },
+                    "x0": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "y0": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "x1": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "y1": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "material": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        58
+                      ]
+                    },
+                    "replace_only_material": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "description": "Native material ID or null; null means omit filter on the typed Godot worker command."
+                    }
+                  },
+                  "required": [
+                    "shape",
+                    "x0",
+                    "y0",
+                    "x1",
+                    "y1",
+                    "material",
+                    "replace_only_material"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "description": "Inclusive rectangle; x1>=x0 and y1>=y0.",
+                  "properties": {
+                    "shape": {
+                      "type": "string",
+                      "const": "rectangle"
+                    },
+                    "x0": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "y0": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "x1": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "y1": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "material": {
+                      "type": "integer",
+                      "enum": [
+                        0,
+                        58
+                      ]
+                    },
+                    "replace_only_material": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "description": "Native material ID or null; null means omit filter on the typed Godot worker command."
+                    }
+                  },
+                  "required": [
+                    "shape",
+                    "x0",
+                    "y0",
+                    "x1",
+                    "y1",
+                    "material",
+                    "replace_only_material"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "observation_id",
+          "operations"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    {
+      "type": "function",
+      "name": "apply_edit",
+      "description": "Request a single authoritative worker-consumed proposal; success only with native per-cell readback receipt; duplicate returns original receipt, no mutation replay.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "proposal_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "proposal_id"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    {
+      "type": "function",
+      "name": "step",
+      "description": "Sequence 1-120 acknowledged paused shared-workbench steps, returning completed count and fresh matched observation. Owned by WB-AGENT #527; not executable in #526.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "ticks": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 120
+          }
+        },
+        "required": [
+          "ticks"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    }
+  ],
+  "translation_requirements": [
+    "The four function declarations are model-visible. Host-only authorize_task, confirm_observation_frame and retire_task MUST NOT be model tools.",
+    "#528 must convert JSON region to exact Godot Rect2i, including valid coordinates >1024 and actual finite native extent checks; null chooses the scoped default.",
+    "#528 must convert replace_only_material:null into absence of that key before invoking the typed Godot owner envelope. Never convert absent/null to native material 0.",
+    "#528 must enforce the exact worker schema_version:1 and strictly strip the JSON-to-Godot wrapper fields; all unknown payloads are refused.",
+    "#526 native owner alone validates actual World/source ID, protection, revisions and queued human intent. Accepted queue serial is NOT an applied receipt.",
+    "#527 owns step and Stop; freeze reference total tick budget independently of per-call 120.",
+    "All numeric cell coordinates are exact integers; reject oversized/nonfinite/float values and do not silently coerce or clip.",
+    "Any unsupported JSON Schema keyword in the selected Responses API client must fail closed with a reviewed equivalent, never silently weaken scope/material/protection/identity rules."
+  ]
+}

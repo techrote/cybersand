@@ -10,6 +10,26 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## WB-AGENT Stage-1 shared-workbench human+agent authoring (#525–#528) — 2026-11-07
+
+**Approved, partially implemented in isolated Draft PR #529; not on accepted main.**
+The [canonical Stage-1 contract](../systems/shared-workbench-agent-authoring.md)
+defines authoritative `observe` / `prepare_edit` / `apply_edit` / `step` in
+the existing shared simulation workbench. Current source in #529 includes
+bounded integer footprint validation, owner-side native ID reads and readback
+receipts, a post-draw render join and verified-only authored-start stage/commit
+adapters. These are candidate source, **not qualified runtime proof**; published
+tests, reliable end-to-end UI wiring and complete provenance remain open.
+
+Execution order is #526 authoritative tools -> #527 stepping/Stop plus registered
+32-Sand reference hopper -> #528 in-client asynchronous Responses API/panel.
+The parent #525 has separate engineering, three actual API trials and owner's
+physical Windows acceptance gates; none are accepted by this source checkpoint.
+This is not GEN-006 streaming, GEN-007 generation editing or a new simulation
+owner. Existing physics/defaults and named-start vs evolved-state distinctions
+remain unchanged.
+
+
 ## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05
 
 **Experimental draft, not on main; no default changed.** The
