@@ -193,6 +193,62 @@ func _run() -> void:
 		"source capture outside canvas refuses")
 
 
+	# Material-aware stencil preview is NOT native-applied and MUST NOT be
+	# submitted as multiple independent owner queue commands. The source IDs
+	# below are synthetic fixtures; a real host must capture/fence native IDs.
+	var multi_source := PackedInt32Array([100,100,101,100,100,101,101,101])
+	var multi_materials := PackedInt32Array([7,0,7,2])
+	var multi: Dictionary = Shapes.stamp_materials(
+		multi_source, multi_materials, Vector2i(100,100), Vector2i(200,200), extent)
+	expect(multi.get("accepted", false) and multi.get("count", 0) == 4
+		and multi.get("cells", PackedInt32Array()) == PackedInt32Array([
+			200,200,201,200,200,201,201,201
+		]), "multi-material stencil retains four exact translated cells in row-major order")
+	expect(multi.get("staging_only", false) and multi.get("atomic_commit_required", false)
+		and not multi.get("applied", true), "multi-material plan cannot claim an atomic native commit")
+	var groups: Array = multi.get("groups", [])
+	expect(groups.size() == 3, "multi-material stencil has three independent native IDs")
+	if groups.size() == 3:
+		expect(groups[0].get("material_id", -1) == 0
+			and groups[0].get("cells", PackedInt32Array()) == PackedInt32Array([201,200])
+			and groups[1].get("material_id", -1) == 2
+			and groups[1].get("cells", PackedInt32Array()) == PackedInt32Array([201,201])
+			and groups[2].get("material_id", -1) == 7
+			and groups[2].get("cells", PackedInt32Array()) == PackedInt32Array([200,200,200,201]),
+			"multi-material native-ID groups are deterministic, sorted and preserve Air zero")
+	var dedup_multi: Dictionary = Shapes.stamp_materials(
+		PackedInt32Array([100,100,100,100]),
+		PackedInt32Array([7,7]), Vector2i(100,100), Vector2i(200,200), extent)
+	expect(dedup_multi.get("accepted", false) and dedup_multi.get("count", 0) == 1,
+		"duplicate identical source cells and material IDs coalesce")
+	expect(not Shapes.stamp_materials(
+		PackedInt32Array([100,100,100,100]),
+		PackedInt32Array([7,2]), Vector2i(100,100), Vector2i(200,200), extent
+	).get("accepted", true), "conflicting material IDs for same source cell refuse entire paste")
+	expect(not Shapes.stamp_materials(
+		multi_source, PackedInt32Array([7,0,2]),
+		Vector2i(100,100), Vector2i(200,200), extent
+	).get("accepted", true), "partial material snapshot refuses")
+	expect(not Shapes.stamp_materials(
+		multi_source, PackedInt32Array([7,0,-1,2]),
+		Vector2i(100,100), Vector2i(200,200), extent
+	).get("accepted", true), "invalid negative native material ID refuses")
+	expect(not Shapes.stamp_materials(
+		multi_source, PackedInt32Array([7,0,256,2]),
+		Vector2i(100,100), Vector2i(200,200), extent
+	).get("accepted", true), "invalid high native material ID refuses")
+	expect(not Shapes.stamp_materials(
+		multi_source, multi_materials, Vector2i(100,100), Vector2i(2047,2047), extent
+	).get("accepted", true), "off-canvas multi-material destination refuses without clipping")
+	var oversized_multi := PackedInt32Array()
+	oversized_multi.resize(8194)
+	var oversized_ids := PackedInt32Array()
+	oversized_ids.resize(4097)
+	expect(not Shapes.stamp_materials(
+		oversized_multi, oversized_ids, Vector2i(0,0), Vector2i(1,1), extent
+	).get("accepted", true), "4097-cell multi-material source refuses before grouping")
+
+
 	# These three accepted plans exercise the existing native owner once each.
 	# A successful queue result by itself is NOT treated as an applied receipt.
 	var worker := CyberSimulationWorker.new()
