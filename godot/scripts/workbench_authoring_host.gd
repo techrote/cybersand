@@ -198,8 +198,9 @@ func retire_task() -> Dictionary:
 
 
 func _observe(args: Dictionary) -> Dictionary:
-	# An observation supersedes the previous worker-side proposal.
-	_plan.clear()
+	# A successful native observation supersedes the previous worker proposal.
+	# Invalid/refused observations must NOT discard a recordable pending plan:
+	# the exclusive worker has not retired that proposal on refusal.
 	var command: Dictionary = {"action":"observe"}
 	if not _coordinate_frame_id.is_empty() and not _signed_frame_available():
 		return _refused("signed_frame_lost_finite_world")
@@ -219,6 +220,8 @@ func _observe(args: Dictionary) -> Dictionary:
 	var native: Dictionary = await _owner(command)
 	if native.get("status") != "native_observed":
 		return native
+	# The worker has now retired any previous proposal; drop its host plan.
+	_plan.clear()
 	if not _frame_matches_owner(native):
 		_quarantined = true
 		return {"status":"unconfirmed","reason":"coordinate_frame_world_epoch_changed"}
@@ -274,7 +277,11 @@ func _observe(args: Dictionary) -> Dictionary:
 
 
 func _prepare(args: Dictionary) -> Dictionary:
-	_plan.clear()
+	# A second prepare cannot replace an unconsumed, persistable proposal.
+	# In particular, refusal must not lose the host's named-start preflight
+	# while the native owner still retains the original proposal.
+	if not _plan.is_empty():
+		return _refused("proposal_already_pending")
 	var operations: Variant = args.get("operations",null)
 	if not operations is Array:
 		return _refused("invalid_operations")
