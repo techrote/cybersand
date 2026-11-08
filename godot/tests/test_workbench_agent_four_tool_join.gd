@@ -368,8 +368,15 @@ func run() -> void:
 					"detail":"cells"})
 				var overlapped_duplicate: Dictionary = await apply_bridge.call_tool(
 					"apply_edit",{"proposal_id":apply_prepared.get("proposal_id","")})
+				# The fourth tool must share the same native owner fence too:
+				# a competing prepare cannot replace the in-flight proposal.
+				var overlapped_prepare: Dictionary = await apply_bridge.call_tool(
+					"prepare_edit",{"observation_id":apply_observed.get("observation_id",""),
+					"operations":[{"shape":"rectangle","x0":53,"y0":53,
+						"x1":53,"y1":53,"material":58,"replace_only_material":0}]})
 				for overlapping: Dictionary in [
-						overlapped_step, overlapped_observe, overlapped_duplicate]:
+						overlapped_step, overlapped_observe, overlapped_duplicate,
+						overlapped_prepare]:
 					check(overlapping.get("status")=="refused"
 						and overlapping.get("reason")=="agent_tool_busy",
 						"overlapping model call bypassed the real native edit serial fence: "
@@ -378,7 +385,44 @@ func run() -> void:
 					and main.latest_snapshot.tick_index==before_apply_tick
 					and main.latest_snapshot.render_world_generation==before_apply_generation,
 					"overlapped calls cleared native busy or advanced an unauthorized tick")
-				var apply_stopped: Dictionary = await apply_bridge.stop()
+				# A second Stop while the FIRST Stop is awaiting the native edit
+				# must not initiate another owner retirement or acknowledge early.
+				# Verify a single real retirement signal after the admitted edit settles.
+				var pending_stop_receipts: Array = []
+				var stop_signal_receipts: Array = []
+				var capture_stop: Callable = func(receipt: Dictionary) -> void:
+					stop_signal_receipts.append(receipt.duplicate(true))
+				apply_bridge.stop_acknowledged.connect(capture_stop)
+				var begin_pending_stop: Callable = func() -> void:
+					var receipt: Dictionary = await apply_bridge.stop()
+					pending_stop_receipts.append(receipt.duplicate(true))
+				begin_pending_stop.call()
+				check(bool(apply_bridge.get("_stopping"))
+					and bool(apply_bridge.get("_busy")),
+					"first Stop did not actually wait on the in-flight native apply")
+				var duplicate_stop: Dictionary = await apply_bridge.stop()
+				check(duplicate_stop.get("status")=="refused"
+					and duplicate_stop.get("reason")=="stop_already_pending"
+					and stop_signal_receipts.is_empty(),
+					"second Stop bypassed the pending native retirement fence: "
+					+str(duplicate_stop))
+				var late_observe_during_stop: Dictionary = await apply_bridge.call_tool(
+					"observe",{"region":{"x":52,"y":52,"width":1,"height":1},
+					"detail":"cells"})
+				check(late_observe_during_stop.get("status")=="refused"
+					and late_observe_during_stop.get("reason")==
+						"task_not_authorized_or_stopping",
+					"model observation entered during pending human Stop")
+				await wait_until(func() -> bool: return pending_stop_receipts.size()==1,
+					"first Stop never returned after native apply completion")
+				var apply_stopped: Dictionary = (
+					pending_stop_receipts[0] if not pending_stop_receipts.is_empty() else {})
+				check(stop_signal_receipts.size()==1
+					and stop_signal_receipts[0]==apply_stopped,
+					"Stop returned without exactly one matching native retirement event")
+				apply_bridge.stop_acknowledged.disconnect(capture_stop)
+				capture_stop = Callable()
+				begin_pending_stop = Callable()
 				check(apply_stopped.get("status")=="stopped"
 					and apply_stopped.get("no_further_agent_mutations")==true,
 					"Stop failed to await in-flight native edit and owner retirement: "+
