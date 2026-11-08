@@ -27,10 +27,10 @@ GODOT_SCRIPT = "res://tools/remote_workbench_batch.gd"
 NATIVE = GODOT_PROJECT / "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
 RAPIER = GODOT_PROJECT / "addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"
 SESSION_TIMEOUT_MAX = 1840
-MIN_SESSION_TIMEOUT = 60
+MIN_SESSION_TIMEOUT = 75
 # The Godot deadline includes startup; this much wall time remains for Stop,
 # manifest flush, termination and process-tree escalation.
-SESSION_CLEANUP_RESERVE_SECONDS = 30
+SESSION_CLEANUP_RESERVE_SECONDS = 45
 TERM_GRACE_SECONDS = 5
 KILL_GRACE_SECONDS = 3
 MAX_INPUT_BYTES = 262144
@@ -309,13 +309,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--xvfb", action="store_true",
                         help="Run actual display-backed OpenGL on hosted Linux")
     parser.add_argument("--timeout", type=int, default=480,
-                        help="Total hard wall deadline including 30s native/cleanup reserve")
+                        help="Total hard wall deadline including 45s Stop/cleanup reserve")
     parser.add_argument("--evidence-limit-bytes", type=int,
                         default=DEFAULT_EVIDENCE_LIMIT_BYTES,
                         help="Host-only cumulative evidence cap, including log and PNGs")
     args = parser.parse_args(argv)
     if not MIN_SESSION_TIMEOUT <= args.timeout <= SESSION_TIMEOUT_MAX:
-        parser.error("--timeout must be in [60,1840] seconds including cleanup reserve")
+        parser.error("--timeout must be in [75,1840] seconds including cleanup reserve")
     if not MIN_EVIDENCE_LIMIT_BYTES <= args.evidence_limit_bytes <= MAX_EVIDENCE_LIMIT_BYTES:
         parser.error("--evidence-limit-bytes must be in [13MiB,512MiB]")
     godot = args.godot.resolve(strict=True)
@@ -416,6 +416,15 @@ def main(argv: list[str] | None = None) -> int:
                 exit_code = 3
         except (OSError, ValueError, TypeError):
             exit_code = 3
+    # Native manifest validation runs AFTER the process group is reaped.
+    # A clean OS exit with a missing/invalid native ACK is a FAILED session.
+    if exit_code != 0:
+        health["state"] = "failed"
+        health["acceptance_failure"] = (
+            "invalid_native_manifest_or_failed_process" if reason == "normal_exit"
+            else reason
+        )
+        atomic_json(evidence / "session-health.json", health)
     outcome = {
         "exit_code": exit_code, "timed_out": timed_out,
         "elapsed_seconds": time.monotonic() - started,
