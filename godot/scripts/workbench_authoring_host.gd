@@ -249,8 +249,8 @@ func retire_task() -> Dictionary:
 
 
 func _observe(args: Dictionary) -> Dictionary:
-	# An observation supersedes the previous worker-side proposal.
-	_plan.clear()
+	# Only a successful native observation supersedes the pending worker proposal.
+	# A refused or invalid observation must not discard the host's recordable plan.
 	if not _available():
 		return _refused("paused_workbench_unavailable")
 	var command: Dictionary = {"action":"observe"}
@@ -281,6 +281,8 @@ func _observe(args: Dictionary) -> Dictionary:
 	var native: Dictionary = await _owner(command)
 	if native.get("status") != "native_observed":
 		return native
+	# The worker has now retired its former proposal; retire the host plan too.
+	_plan.clear()
 	if not _frame_matches_owner(native):
 		_quarantined = true
 		return {"status":"unconfirmed","reason":"coordinate_frame_world_epoch_changed"}
@@ -353,7 +355,9 @@ func _observe(args: Dictionary) -> Dictionary:
 
 
 func _prepare(args: Dictionary) -> Dictionary:
-	_plan.clear()
+	# Never replace a native-owned pending proposal or lose its saved-start plan.
+	if not _plan.is_empty():
+		return _refused("proposal_already_pending")
 	var operations: Variant = args.get("operations",null)
 	if not operations is Array:
 		return _refused("invalid_operations")

@@ -100,6 +100,17 @@ jobs:
             --script res://tests/test_workbench_agent_step_sequence.gd \
             2>&1 | tee "$EVIDENCE/real-native-step-original.log"
           grep -E 'WB_AGENT_527_STEP: [0-9]+ assertions, 0 failures' "$EVIDENCE/real-native-step-original.log"
+          # This standalone source tree predates #526's exclusive worker.
+          # Record the final-ACK collision as NOT APPLICABLE, never as PASS.
+          # The source-composed join workflow must actually execute that
+          # collision and require its RESULT receipt, not a skip marker.
+          if grep -Fq 'func agent_manual_intent_revision()' godot/scripts/simulation_worker.gd; then
+            grep -F 'WB_AGENT_527_FINAL_ACK_CONFLICT_RESULT ' "$EVIDENCE/real-native-step-original.log"
+            if grep -Fq 'WB_AGENT_527_FINAL_ACK_CONFLICT_NOT_APPLICABLE' "$EVIDENCE/real-native-step-original.log"; then exit 1; fi
+          else
+            grep -F 'WB_AGENT_527_FINAL_ACK_CONFLICT_NOT_APPLICABLE: requires #526 authoritative worker' "$EVIDENCE/real-native-step-original.log"
+            if grep -Fq 'WB_AGENT_527_FINAL_ACK_CONFLICT_RESULT ' "$EVIDENCE/real-native-step-original.log"; then exit 1; fi
+          fi
       - name: Preserve first-failure source/worker evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

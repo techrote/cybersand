@@ -139,6 +139,17 @@ jobs:
             --script res://tests/test_workbench_agent_signed_join.gd \
             2>&1 | tee "$EVIDENCE/real-signed-four-tool-experimental.log"
           grep -E 'WB_AGENT_527_SIGNED_JOIN: [0-9]+ assertions, 0 failures' "$EVIDENCE/real-signed-four-tool-experimental.log"
+          grep -Fq 'func agent_manual_intent_revision()' godot/scripts/simulation_worker.gd
+          timeout 420 xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            "$GODOT_BIN" --path godot --rendering-method gl_compatibility \
+            --script res://tests/test_workbench_agent_step_sequence.gd \
+            2>&1 | tee "$EVIDENCE/real-composed-step-final-ack-original.log"
+          grep -E 'WB_AGENT_527_STEP: [0-9]+ assertions, 0 failures' "$EVIDENCE/real-composed-step-final-ack-original.log"
+          grep -F 'WB_AGENT_527_FINAL_ACK_CONFLICT_RESULT ' "$EVIDENCE/real-composed-step-final-ack-original.log"
+          if grep -Fq 'WB_AGENT_527_FINAL_ACK_CONFLICT_NOT_APPLICABLE' "$EVIDENCE/real-composed-step-final-ack-original.log"; then
+            echo 'ERROR: composed final-ACK regression was skipped' >&2
+            exit 1
+          fi
       - name: Source-lock the unchanged frozen v2 Sand-hopper and run actual four-tool experiment
         timeout-minutes: 20
         run: |

@@ -408,6 +408,20 @@ func run() -> void:
 			and host_prepared.get("changed_cells",0)==9,
 			"strict JSON nullable filter did not stage a recordable native proposal")
 		if host_prepared.get("status")=="proposed":
+			# A refused second prepare or malformed observation must not discard
+			# the ORIGINAL pending named-start plan held by this real native host.
+			var second_prepare: Dictionary = await adapter.call_tool("prepare_edit",{
+				"observation_id":host_observed.observation_id,
+				"operations":[{"shape":"disc","x":1175,"y":379,
+					"radius":0,"material":58}]})
+			check(second_prepare.get("status")=="refused"
+				and second_prepare.get("reason")=="proposal_already_pending",
+				"refused second prepare replaced a persistable native proposal")
+			var bad_pending_observe: Dictionary = await adapter.call_tool("observe",{
+				"region":{"x":-1,"y":374,"width":1,"height":1}})
+			check(bad_pending_observe.get("status")=="refused"
+				and bad_pending_observe.get("reason")=="invalid_observation_region",
+				"invalid observation retired the unconsumed native proposal")
 			var host_applied: Dictionary = await adapter.call_tool("apply_edit",{
 				"proposal_id":host_prepared.proposal_id})
 			check(host_applied.get("status")=="applied"
@@ -510,6 +524,17 @@ func run() -> void:
 				and signed_proposed.get("footprint",[])[0].get("x",0)==-8,
 				"negative model geometry not prepared against real local native cells")
 			if signed_proposed.get("status")=="proposed":
+				var second_signed_prepare: Dictionary = await signed_host.call_tool(
+					"prepare_edit",{"observation_id":before_signed.observation_id,
+					"operations":[{"shape":"disc","x":-4,"y":7,"radius":0,"material":58}]})
+				check(second_signed_prepare.get("status")=="refused"
+					and second_signed_prepare.get("reason")=="proposal_already_pending",
+					"second signed prepare displaced pending owner/native proposal")
+				var invalid_signed_observe: Dictionary = await signed_host.call_tool(
+					"observe",{"region":{"x":-513,"y":0,"width":1,"height":1}})
+				check(invalid_signed_observe.get("status")=="refused"
+					and invalid_signed_observe.get("reason")=="invalid_observation_region",
+					"invalid signed observation displaced pending owner/native proposal")
 				var signed_applied: Dictionary = await signed_host.call_tool(
 					"apply_edit",{"proposal_id":signed_proposed.proposal_id})
 				check(signed_applied.get("status")=="applied"
