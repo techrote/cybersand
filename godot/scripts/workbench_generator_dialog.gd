@@ -239,6 +239,22 @@ func _start() -> void:
 	if not _configuration.get("ok",false):
 		_fail(str(_configuration.get("error","Native generator refused the recipe.")))
 		return
+	# Compute the exact chunk-grid footprint (including unaligned origins)
+	# before preview allocation and expensive native generation.
+	var first_chunk := Vector2i.ZERO
+	var last_chunk := Vector2i.ZERO
+	if not _configuration.has("plane_fingerprint"):
+		var step: int = int(_recipe.get("chunk_size",64))
+		if step <= 0 or step > 256:
+			_fail("Invalid source chunk size.")
+			return
+		first_chunk = Vector2i(floori(float(_origin.x)/step),floori(float(_origin.y)/step))
+		last_chunk = Vector2i(floori(float(_region.end.x-1)/step),floori(float(_region.end.y-1)/step))
+		var count: int = (last_chunk.x-first_chunk.x+1)*(last_chunk.y-first_chunk.y+1)
+		if count > Store.MAX_GENERATION_RECEIPTS:
+			_fail("Source region requires %d native chunk receipts; saved-map limit is %d. Increase chunk size or reduce the region." % [
+				count,Store.MAX_GENERATION_RECEIPTS])
+			return
 	if _cells.resize(_size.x * _size.y) != OK:
 		_fail("Cannot allocate the bounded native preview buffer.")
 		return
@@ -251,12 +267,8 @@ func _start() -> void:
 		var begun: Dictionary = _generator.begin_plane_region(_region)
 		_plane_result(begun)
 	else:
-		var step: int = int(_recipe.get("chunk_size",64))
-		if step <= 0 or step > 256:
-			_fail("Invalid source chunk size.")
-			return
-		for cy: int in range(floori(float(_origin.y)/step),floori(float(_region.end.y-1)/step)+1):
-			for cx: int in range(floori(float(_origin.x)/step),floori(float(_region.end.x-1)/step)+1):
+		for cy: int in range(first_chunk.y,last_chunk.y+1):
+			for cx: int in range(first_chunk.x,last_chunk.x+1):
 				_chunks.append(Vector2i(cx,cy))
 		_phase = "chunks"
 		_status.text = "Native generation: 0 / %d complete source chunks." % _chunks.size()
