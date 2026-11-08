@@ -179,6 +179,27 @@ class ProtocolTests(unittest.TestCase):
                     stat = (runner.Path("/proc") / str(pid) / "stat").read_text()
                     self.assertIn(stat.rsplit(")", 1)[1].split()[0], ("Z", "X", "x"))
 
+    def test_host_only_process_custody_identifies_exact_group(self):
+        evidence = self.root / "custody-case"
+        evidence.mkdir()
+        with (evidence / "child.log").open("wb") as log:
+            result, reason, cleanup = runner.supervise(
+                [sys.executable, "-c", "import time;time.sleep(0.3)"],
+                {**os.environ, "CYBERSAND_SESSION_ID": "host-fenced-session"},
+                log, evidence, 5, runner.DEFAULT_EVIDENCE_LIMIT_BYTES,
+            )
+        self.assertEqual(result, 0)
+        self.assertEqual(reason, "normal_exit")
+        self.assertTrue(cleanup["owned_processes_exited"])
+        custody = json.loads((evidence / "launcher-process.json").read_text())
+        self.assertEqual(custody["session_id"], "host-fenced-session")
+        self.assertEqual(custody["owned_process_group"], cleanup["session_process_group"])
+        self.assertEqual(custody["state"], "cleaned")
+        self.assertTrue(custody["host_only"])
+        self.assertTrue(custody["launcher_child_reaped"])
+        if sys.platform.startswith("linux"):
+            self.assertIsInstance(custody["group_leader_start_ticks"], int)
+
     def test_launcher_interruption_reaps_owned_children(self):
         evidence = self.root / "interrupted"
         evidence.mkdir()
