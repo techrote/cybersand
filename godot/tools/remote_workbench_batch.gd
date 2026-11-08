@@ -442,6 +442,10 @@ func _run() -> void:
 			_fail("native_retirement_not_acknowledged")
 		elif _failures.is_empty():
 			_fail("missing_explicit_stop")
+	# A GDScript coroutine exception can abort the entrypoint without ever
+	# returning a failure receipt. Never label an empty/unretired run as PASS.
+	if _failures.is_empty() and (not _authorized or not _stopped or _count < 1):
+		_fail("session_incomplete_missing_authorization_commands_or_native_stop")
 	_manifest["command_count"] = _count
 	_manifest["completed_native_ticks_total"] = _total_ticks
 	_manifest["stopped"] = _stopped

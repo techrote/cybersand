@@ -200,6 +200,20 @@ def main(argv: list[str] | None = None) -> int:
         except subprocess.TimeoutExpired:
             timed_out = True
             exit_code = 124
+    # An uncaught engine/runtime exception can abort a GDScript coroutine
+    # before it records a native receipt. The outer launcher must fail closed
+    # even when Godot itself exits zero.
+    if exit_code == 0:
+        try:
+            manifest = json.loads((evidence / "manifest.json").read_text(encoding="utf-8"))
+            if (manifest.get("result") != "passed"
+                    or manifest.get("stopped") is not True
+                    or manifest.get("command_count", 0) < 1
+                    or not manifest.get("frames", [])
+                    or manifest.get("failures")):
+                exit_code = 3
+        except (OSError, ValueError, TypeError):
+            exit_code = 3
     outcome = {
         "exit_code": exit_code, "timed_out": timed_out,
         "elapsed_seconds": time.monotonic() - started,

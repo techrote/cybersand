@@ -8,9 +8,13 @@ this package supplies a bounded, real-workbench command surface.
 
 ## One GitHub-hosted batch job
 
-Open **Actions → WB-REMOTE-001 real shared-workbench file bridge → Run
-workflow** on the isolated branch, or use a pull request containing these paths
-to trigger the same build. The job builds the native extension from its checked
+A **Draft pull request touching these paths** triggers the dedicated build
+on its exact immutable PR head. The workflow also declares trusted-host
+`workflow_dispatch` inputs (`authorization_json`, `commands_jsonl`) for
+custom batches and a `workflow_call` ingress. GitHub only exposes manual
+`workflow_dispatch` once the workflow file exists on the default branch:
+**while this is a Draft stacked PR, use its pull-request runs** or the local
+CLI rather than assuming the new workflow appears in the main Actions list. The job builds the native extension from its checked
 out exact source, downloads the hash-locked Godot 4.7 binary, runs Godot under
 Xvfb/actual OpenGL, and retains original matched render PNGs and native receipts.
 
