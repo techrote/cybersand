@@ -10,9 +10,18 @@ on:
       - 'godot/scripts/workbench_agent_signed_frame.gd'
       - 'godot/scripts/workbench_authoring_*.gd'
       - 'godot/scripts/simulation_worker.gd'
+      # This suite also executes the actual host, render identity, authored-start
+      # save/reopen, and agent-disabled manual workbench paths. They must not
+      # silently escape the dedicated native-owner gate after main integration.
+      - 'godot/scripts/main.gd'
+      - 'godot/scripts/shared_workbench.gd'
+      - 'godot/scripts/simulation_snapshot.gd'
+      - 'godot/scripts/workbench_setup.gd'
       - 'godot/native_extension/**'
       - 'godot/tests/test_workbench_agent_*.gd'
       - 'godot/tests/test_workbench_authoring_*.gd'
+      - 'godot/tests/test_native_render_bridge_regression.gd'
+      - 'godot/tests/test_workbench_input.gd'
       - '.github/workflows/wb-agent-526.yml'
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
@@ -21,9 +30,18 @@ on:
       - 'godot/scripts/workbench_agent_signed_frame.gd'
       - 'godot/scripts/workbench_authoring_*.gd'
       - 'godot/scripts/simulation_worker.gd'
+      # This suite also executes the actual host, render identity, authored-start
+      # save/reopen, and agent-disabled manual workbench paths. They must not
+      # silently escape the dedicated native-owner gate after main integration.
+      - 'godot/scripts/main.gd'
+      - 'godot/scripts/shared_workbench.gd'
+      - 'godot/scripts/simulation_snapshot.gd'
+      - 'godot/scripts/workbench_setup.gd'
       - 'godot/native_extension/**'
       - 'godot/tests/test_workbench_agent_*.gd'
       - 'godot/tests/test_workbench_authoring_*.gd'
+      - 'godot/tests/test_native_render_bridge_regression.gd'
+      - 'godot/tests/test_workbench_input.gd'
       - '.github/workflows/wb-agent-526.yml'
   workflow_dispatch:
 
