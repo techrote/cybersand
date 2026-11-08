@@ -229,18 +229,26 @@ func _valid_arguments(name: String, args: Variant) -> bool:
 				return false
 	return true
 
+# Check all local Start prerequisites BEFORE the Godot panel asks #526/#527 to
+# acquire native authoring authority. No network request or World access here.
+# begin_task rechecks after the asynchronous native authorization boundary.
+func launch_problem(task: String, model: String, scope: Dictionary) -> String:
+	if task.strip_edges().is_empty() or model.strip_edges().is_empty() or scope.is_empty():
+		return "Task, model and explicit scope are required."
+	if request_budget < 1 or request_budget > MAX_REQUEST_BUDGET:
+		return "Request budget must be between 1 and 24."
+	if not _fake_transport and OS.get_environment("OPENAI_API_KEY").is_empty():
+		return "OPENAI_API_KEY is not set. Configure the local launch environment and restart the client."
+	return ""
+
+
 func begin_task(task: String, model: String, scope: Dictionary) -> bool:
 	if _active:
 		status_changed.emit("refused", "Stop the current task first.")
 		return false
-	if task.strip_edges().is_empty() or model.strip_edges().is_empty() or scope.is_empty():
-		status_changed.emit("refused", "Task, model and explicit scope are required.")
-		return false
-	if request_budget < 1 or request_budget > MAX_REQUEST_BUDGET:
-		status_changed.emit("refused", "Request budget must be between 1 and 24.")
-		return false
-	if not _fake_transport and OS.get_environment("OPENAI_API_KEY").is_empty():
-		status_changed.emit("refused", "OPENAI_API_KEY not set in this local process environment.")
+	var problem: String = launch_problem(task, model, scope)
+	if not problem.is_empty():
+		status_changed.emit("refused", problem)
 		return false
 	_epoch += 1
 	_active = true
@@ -292,6 +300,9 @@ func _fail(reason: String) -> void:
 	_pending_call_id = ""
 	_pending_tool = ""
 	_response_waiting = false
+	# A terminal provider/client failure retires the pending native plan.
+	# Clear its presentation-only footprint; never imply it was applied.
+	proposal_changed.emit([])
 	status_changed.emit("error", reason)
 	task_finished.emit("error")
 
@@ -420,6 +431,9 @@ func _handle_transport(identity: int, nonce: int, result: int, http_status: int,
 	_response_id = response_id
 	if calls.is_empty():
 		_active = false
+		# A tool-free model completion is not an apply: retire any unconsumed
+		# proposed overlay before the native Stop/retirement acknowledgment.
+		proposal_changed.emit([])
 		var final_report: String = _final_model_report(messages)
 		if not final_report.is_empty():
 			model_report_received.emit(final_report)
@@ -459,6 +473,38 @@ func _handle_transport(identity: int, nonce: int, result: int, http_status: int,
 	_pending_tool = name
 	status_changed.emit("queued", "%s proposed; awaiting authoritative dispatcher." % name)
 	tool_requested.emit(name, _normalise_arguments(name, args), _epoch, call_id)
+
+# Compact *authoritative* status for the human co-author. A bare "applied"
+# or "refused" hides actionable native evidence. Never emit the 4096-cell rows
+# into Activity or infer a success from the model's own prose.
+func _native_receipt_detail(tool: String, receipt: Dictionary, status: String) -> String:
+	var detail := "%s: %s" % [tool, status]
+	if status in ["refused", "error"]:
+		var reason: String = str(receipt.get("reason", "")).strip_edges()
+		if not reason.is_empty():
+			detail += "; reason=" + reason.substr(0, 96)
+	elif tool == "observe" and status == "observed":
+		var ids: Variant = receipt.get("native_material_ids", null)
+		if ids is Array or ids is PackedInt32Array or ids is PackedInt64Array:
+			detail += "; inspected %d native cells" % ids.size()
+		if receipt.get("image_status") == "matched_post_draw":
+			detail += "; framebuffer matched"
+	elif tool == "prepare_edit" and status == "proposed":
+		var changed: Variant = receipt.get("changed_cells", null)
+		if typeof(changed) == TYPE_INT and changed >= 0:
+			detail += "; %d changed cells proposed" % changed
+	elif tool == "apply_edit" and status == "applied":
+		var readback: Variant = receipt.get("readback", null)
+		if readback is Array:
+			detail += "; %d native readback cells" % readback.size()
+		var authored: Variant = receipt.get("authored_start", null)
+		if authored is Dictionary and authored.get("status") == "recorded":
+			detail += "; authored start recorded"
+	elif tool == "step" and status == "stepped":
+		# submit_tool_result already validated exact native/PNG tick identity.
+		detail += "; %d completed ticks; paused at tick %d; framebuffer matched" % [
+			int(receipt.get("completed", 0)), int(receipt.get("after_tick", -1))]
+	return detail.substr(0, 220)
 
 func submit_tool_result(epoch: int, call_id: String, receipt: Dictionary) -> bool:
 	# Called asynchronously only by the shared #526/#527 adapter.
@@ -513,7 +559,7 @@ func submit_tool_result(epoch: int, call_id: String, receipt: Dictionary) -> boo
 	if output.length() > MAX_TOOL_OUTPUT:
 		_fail("Native receipt exceeds bounded result limit.")
 		return false
-	status_changed.emit(status, "%s: %s" % [_pending_tool, status])
+	status_changed.emit(status, _native_receipt_detail(_pending_tool, bounded_receipt, status))
 	_pending_call_id = ""
 	_pending_tool = ""
 	var next_input: Array = [{"type": "function_call_output", "call_id": call_id, "output": output}]

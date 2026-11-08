@@ -378,9 +378,26 @@ func _test_ui_shell() -> void:
 	root.add_child(panel)
 	await process_frame
 	_expect(panel._start.disabled, "unbound panel must refuse Start")
+	var authorizations: Array = []
 	panel.bind_authoritative_dispatcher(func(_name: String, _args: Dictionary,
-			_epoch: int, _id: String, _client: Node) -> void: pass)
+			_epoch: int, _id: String, _client: Node) -> void: pass,
+		Callable(), func(_scope_value: Dictionary) -> Dictionary:
+			authorizations.append(true)
+			return {"status":"authorized"})
 	panel.client.configure_fake_transport_for_tests(true)
+	# Failure-before: a blank task/model formerly acquired native authority,
+	# then failed begin_task and entered a needless Stop/retirement cycle.
+	panel._model.text = "local-test-model"
+	panel._on_start()
+	_expect(authorizations.is_empty() and not panel.client.is_active()
+		and panel._state.text.find("Task, model") >= 0,
+		"blank task acquired native authoring authority before client preflight")
+	panel._task.text = "Build native chute"
+	panel._model.text = ""
+	panel._on_start()
+	_expect(authorizations.is_empty() and not panel.client.is_active()
+		and panel._state.text.find("Task, model") >= 0,
+		"blank model acquired native authoring authority before client preflight")
 	_expect(panel._region[0].min_value < 0 and panel._region[1].min_value < 0,
 		"signed native coordinates cannot be entered in the opt-in panel")
 	panel._region[0].value = -35
@@ -390,7 +407,8 @@ func _test_ui_shell() -> void:
 	panel._task.text = "Build native chute"
 	panel._model.text = "local-test-model"
 	panel._on_start()
-	_expect(panel.client.is_active(), "bound panel Start should begin")
+	_expect(authorizations.size() == 1 and panel.client.is_active(),
+		"valid Start did not authorize exactly once after local preflight")
 	_expect(panel.client.request_budget == 12, "default paid request limit changed")
 	panel._extended_requests.button_pressed = true
 	_expect(not panel.client.is_active(), "changing paid request allowance failed to revoke task")
@@ -407,6 +425,20 @@ func _test_ui_shell() -> void:
 	_expect(not panel.client.is_active(), "human task revision must invalidate pending response")
 	panel._on_start()
 	_expect(panel.client.is_active(), "model report visibility task failed to start")
+	# Regression: the model can finish without applying its last prepared
+	# proposal. The expired plan must not linger as a blue viewport preview.
+	# This verifies UI presentation only; no native World is mocked as proof.
+	var preview_edit := {"shape":"rectangle", "x0":10, "y0":10,
+		"x1":10, "y1":10, "material":58, "replace_only_material":null}
+	_deliver(panel.client, _response("panel-preview", [_tool("prepare_edit",
+		"panel-preview-call", {"observation_id":"panel-observation",
+		"operations":[preview_edit]})]))
+	_expect(panel.client.is_waiting_for_tool(), "preview setup did not enter tool boundary")
+	_expect(panel.client.submit_tool_result(panel.client.current_epoch(),
+		"panel-preview-call", {"status":"proposed", "proposal_id":"panel-plan",
+		"footprint":[{"x":10,"y":10}]}), "preview setup did not continue")
+	_expect(panel.proposal_overlay._cells.size() == 1,
+		"source-proposed footprint was not represented in the panel overlay")
 	_deliver(panel.client, _response("panel-final-report", [{"type":"message",
 		"role":"assistant", "content":[{"type":"output_text",
 		"text":"Check the native receipts; this is a model summary, not proof."}]}]))
@@ -414,4 +446,20 @@ func _test_ui_shell() -> void:
 	_expect(panel._log.text.find("Model report (unverified; native receipts are authoritative)") >= 0
 		and panel._log.text.find("this is a model summary, not proof") >= 0,
 		"mounted panel dropped completed Responses text instead of displaying an unverified report")
+	_expect(panel.proposal_overlay._cells.is_empty(),
+		"completed model left a retired native proposal footprint on screen")
+	# The same stale overlay was previously retained when a provider failed
+	# after a valid prepare receipt. Never leave a finished task's preview live.
+	panel._on_start()
+	_deliver(panel.client, _response("panel-preview-error", [_tool("prepare_edit",
+		"panel-preview-error-call", {"observation_id":"panel-observation",
+		"operations":[preview_edit]})]))
+	_expect(panel.client.submit_tool_result(panel.client.current_epoch(),
+		"panel-preview-error-call", {"status":"proposed", "proposal_id":"panel-error-plan",
+		"footprint":[{"x":11,"y":11}]}), "error preview setup did not continue")
+	_expect(panel.proposal_overlay._cells.size() == 1,
+		"error fixture never showed its native-shaped proposal")
+	_deliver(panel.client, {"id":"provider-failure", "output":[]}, 429)
+	_expect(not panel.client.is_active() and panel.proposal_overlay._cells.is_empty(),
+		"HTTP failure left an unauthorized proposal preview visible")
 	panel.queue_free()
