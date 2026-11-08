@@ -7,6 +7,16 @@ const MAX_CELLS: int = 4096
 const MAX_RADIUS: int = 24
 const MAX_EXTENT: int = 2048
 
+# Accepted native/include/cybersand/material.hpp currently enumerates 0..131
+# with slot 10 explicitly invalid. A rejection-only source compatibility
+# fence, not an alternative material catalogue or a host authorization.
+# Integration must requalify this bound when MAT-AUTH/native source evolves.
+const MAX_ACCEPTED_NATIVE_MATERIAL_ID: int = 131
+
+
+static func _valid_native_material_id(material_id: int) -> bool:
+	return material_id >= 0 and material_id <= MAX_ACCEPTED_NATIVE_MATERIAL_ID and material_id != 10
+
 
 static func _valid_extent(extent: Vector2i) -> bool:
 	return extent.x >= 512 and extent.y >= 512 \
@@ -206,8 +216,8 @@ static func fill_connected(
 	# The material snapshot is not a display RGB mask; invalid/unknown values
 	# must refuse, not act as false component barriers.
 	for material_id: int in sample_materials:
-		if material_id < 0 or material_id > 255:
-			return _refuse("Connected fill source contains an invalid native material ID.")
+		if not _valid_native_material_id(material_id):
+			return _refuse("Connected fill source contains an unknown or reserved native material ID.")
 	var local_seed: Vector2i = seed_cell - sample_origin
 	var seed_index: int = local_seed.y * sample_size.x + local_seed.x
 	var source_material_id: int = sample_materials[seed_index]
@@ -265,7 +275,7 @@ static func fill_connected(
 # This function cannot establish that provenance: the host must provide and
 # recheck it. All groups are a single indivisible future transaction, NEVER
 # independent queue_emit_cells commands (which cannot roll back as a unit).
-# Includes native material 0, for which an eventual host must authorize erase.
+# Includes native Empty material 0, for which the host must authorize erase.
 static func stamp_materials(
 		source_cells: PackedInt32Array,
 		source_materials: PackedInt32Array,
@@ -290,8 +300,8 @@ static func stamp_materials(
 	var state := {"clipped": false}
 	for i: int in range(source_count):
 		var material_id: int = source_materials[i]
-		if material_id < 0 or material_id > 255:
-			return _refuse("Multi-material stencil contains an invalid native material ID.")
+		if not _valid_native_material_id(material_id):
+			return _refuse("Multi-material stencil contains an unknown or reserved native material ID.")
 		var source: Vector2i = Vector2i(source_cells[i * 2], source_cells[i * 2 + 1])
 		var destination: Vector2i = source + shift
 		if not _inside(source, extent) or not _inside(destination, extent):
