@@ -65,14 +65,22 @@ static func line(from_cell: Vector2i, to_cell: Vector2i, radius: int, extent: Ve
 		return _refuse("Both line endpoints must lie within the canvas.")
 	if radius < 0 or radius > MAX_RADIUS:
 		return _refuse("Line radius must be between 0 and 24 cells.")
+	# Integer Bresenham breaks exact half-cell ties differently in opposite
+	# traversal directions. Canonicalize endpoints so reversing a drag produces
+	# the exact same material mask, including thick-disc outlines.
+	var start_cell: Vector2i = from_cell
+	var end_cell: Vector2i = to_cell
+	if start_cell.x > end_cell.x or (start_cell.x == end_cell.x and start_cell.y > end_cell.y):
+		start_cell = to_cell
+		end_cell = from_cell
 	var selected := {}
 	var state := {"clipped": false}
-	var x: int = from_cell.x
-	var y: int = from_cell.y
-	var dx: int = absi(to_cell.x - x)
-	var dy: int = -absi(to_cell.y - y)
-	var step_x: int = 1 if x < to_cell.x else -1
-	var step_y: int = 1 if y < to_cell.y else -1
+	var x: int = start_cell.x
+	var y: int = start_cell.y
+	var dx: int = absi(end_cell.x - x)
+	var dy: int = -absi(end_cell.y - y)
+	var step_x: int = 1 if x < end_cell.x else -1
+	var step_y: int = 1 if y < end_cell.y else -1
 	var error: int = dx + dy
 	while true:
 		for offset_y: int in range(-radius, radius + 1):
@@ -81,7 +89,7 @@ static func line(from_cell: Vector2i, to_cell: Vector2i, radius: int, extent: Ve
 					continue
 				if not _include(selected, state, extent, x + offset_x, y + offset_y):
 					return _refuse("Line exceeds one native 4096-cell command; shorten the line or reduce the radius.")
-		if x == to_cell.x and y == to_cell.y:
+		if x == end_cell.x and y == end_cell.y:
 			break
 		var twice: int = 2 * error
 		if twice >= dy:
