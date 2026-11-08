@@ -168,3 +168,93 @@ static func stamp(
 		if not _include(selected, state, extent, destination_cell.x, destination_cell.y):
 			return _refuse("Stencil exceeds one native 4096-cell command.")
 	return _finish(selected, state, extent)
+
+
+# Conservative four-neighbor flood-fill of an AUTHORITATIVE, bounded native
+# material sample. This never reads a render-projection snapshot: Water pixels
+# and ballistic overlays are not authoritative native stored-material IDs.
+# A plan cannot be committed without separate current generation/revision
+# fencing and an applied native receipt from the shared-workbench host.
+# A component touching a cropped sample edge refuses rather than silently
+# treating unobserved native cells as a filled boundary.
+const MAX_FILL_SAMPLE_CELLS: int = 65536
+
+
+static func fill_connected(
+		seed_cell: Vector2i,
+		sample_origin: Vector2i,
+		sample_size: Vector2i,
+		sample_materials: PackedInt32Array,
+		extent: Vector2i
+) -> Dictionary:
+	if not _valid_extent(extent):
+		return _refuse("Canvas extent is not an admitted 512–2048 multiple of 64.")
+	if sample_size.x <= 0 or sample_size.y <= 0:
+		return _refuse("Connected fill requires a nonempty native source sample.")
+	if not _inside(sample_origin, extent) or sample_origin.x + sample_size.x > extent.x \
+			or sample_origin.y + sample_size.y > extent.y:
+		return _refuse("Connected fill source sample lies outside the native canvas.")
+	var sample_area: int = sample_size.x * sample_size.y
+	if sample_area > MAX_FILL_SAMPLE_CELLS:
+		return _refuse("Connected fill source sample exceeds 65536 material cells.")
+	if sample_materials.size() != sample_area:
+		return _refuse("Connected fill requires exactly one authoritative material ID per sampled cell.")
+	if seed_cell.x < sample_origin.x or seed_cell.y < sample_origin.y \
+			or seed_cell.x >= sample_origin.x + sample_size.x \
+			or seed_cell.y >= sample_origin.y + sample_size.y:
+		return _refuse("Connected fill seed lies outside the captured source sample.")
+	# The material snapshot is not a display RGB mask; invalid/unknown values
+	# must refuse, not act as false component barriers.
+	for material_id: int in sample_materials:
+		if material_id < 0 or material_id > 255:
+			return _refuse("Connected fill source contains an invalid native material ID.")
+	var local_seed: Vector2i = seed_cell - sample_origin
+	var seed_index: int = local_seed.y * sample_size.x + local_seed.x
+	var source_material_id: int = sample_materials[seed_index]
+	var visited := PackedByteArray()
+	visited.resize(sample_area)
+	visited[seed_index] = 1
+	var pending := PackedInt32Array()
+	pending.append(seed_index)
+	var head: int = 0
+	var selected := {}
+	var state := {"clipped": false}
+	while head < pending.size():
+		var index: int = pending[head]
+		head += 1
+		var local_x: int = index % sample_size.x
+		var local_y: int = int(index / sample_size.x)
+		var world_x: int = sample_origin.x + local_x
+		var world_y: int = sample_origin.y + local_y
+		# A target component that reaches an unknown adjacent source cell
+		# cannot be proved complete. Actual canvas edges are known boundaries.
+		if (local_x == 0 and world_x > 0) \
+				or (local_x == sample_size.x - 1 and world_x < extent.x - 1) \
+				or (local_y == 0 and world_y > 0) \
+				or (local_y == sample_size.y - 1 and world_y < extent.y - 1):
+			return _refuse("Connected fill reaches an unread capture edge; capture a wider native source region.")
+		if not _include(selected, state, extent, world_x, world_y):
+			return _refuse("Connected fill exceeds one native 4096-cell command.")
+		# Explicit 4-neighbor connectivity; no diagonal leaks or recursive DFS.
+		for direction: int in range(4):
+			var neighbor_x: int = local_x
+			var neighbor_y: int = local_y
+			match direction:
+				0: neighbor_x -= 1
+				1: neighbor_x += 1
+				2: neighbor_y -= 1
+				3: neighbor_y += 1
+			if neighbor_x < 0 or neighbor_y < 0 \
+					or neighbor_x >= sample_size.x or neighbor_y >= sample_size.y:
+				continue
+			var neighbor_index: int = neighbor_y * sample_size.x + neighbor_x
+			if visited[neighbor_index] != 0 \
+					or sample_materials[neighbor_index] != source_material_id:
+				continue
+			if pending.size() >= MAX_CELLS:
+				return _refuse("Connected fill exceeds one native 4096-cell command; no partial fill.")
+			visited[neighbor_index] = 1
+			pending.append(neighbor_index)
+	var plan: Dictionary = _finish(selected, state, extent)
+	plan["source_material_id"] = source_material_id
+	return plan
