@@ -368,7 +368,7 @@ func _run_commands() -> void:
 			await _process_jsonl(line)
 			if not _failures.is_empty():
 				break
-		if not _failures.is_empty() or _stopped and _mode == "batch":
+		if not _failures.is_empty():
 			break
 		if _mode == "batch":
 			if not unconsumed.is_empty() and not unconsumed.ends_with("\n"):
