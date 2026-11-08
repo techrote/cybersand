@@ -264,6 +264,8 @@ def supervise(invocation: list[str], env: dict, log, evidence: Path,
             if pump.is_alive():
                 cleanup["owned_processes_exited"] = False
             cleanup.update(log_accounting)
+        cleanup["session_id"] = env.get("CYBERSAND_SESSION_ID", "")
+        cleanup["launcher_pid"] = os.getpid()
         if process is not None:
             atomic_json(evidence / "launcher-process.json", {
                 "version": 1,
