@@ -14,6 +14,7 @@ var failures: int = 0
 var checks: int = 0
 var direct_stop_finished: bool = false
 var direct_stop_receipt: Dictionary = {}
+var injected_final_ack_intent: bool = false
 
 
 func check(condition: bool, reason: String) -> bool:
@@ -86,6 +87,15 @@ func _await_direct_stop_in_flight(driver: RefCounted) -> void:
 		"direct Stop was not delivered during an admitted native tick")
 	direct_stop_receipt = await driver.stop()
 	direct_stop_finished = true
+
+
+func _inject_manual_intent_at_final_ack(receipt: Dictionary) -> void:
+	# Deterministic re-entrant collision at the actual final native ACK:
+	# queue_lab({}) increments the exclusive worker's manual-intent revision
+	# but queues no material write or additional native tick.
+	if int(receipt.get("completed",0)) == 1:
+		main.simulation_worker.queue_lab({})
+		injected_final_ack_intent = true
 
 
 func _initialize() -> void:
@@ -401,6 +411,41 @@ func run() -> void:
 		"settled_native_tick":main.latest_snapshot.tick_index,
 		"world_generation":main.latest_snapshot.render_world_generation}))
 	direct_driver = null
+
+	# A signal listener can submit human intent at the FINAL acknowledged tick.
+	# With the old status/count ordering this returned status=completed even
+	# when reason=manual_intent_changed_during_step. The single real tick is
+	# truthfully counted, but the task result must fail closed.
+	var collision_before: int = main.latest_snapshot.tick_index
+	var revision_before: int = main.simulation_worker.agent_manual_intent_revision()
+	var collision_driver = Driver.new()
+	var collision_hook: Callable = Callable(self,"_inject_manual_intent_at_final_ack")
+	collision_driver.step_completed.connect(collision_hook)
+	var collision_result: Dictionary = await collision_driver.step(main,workbench,1)
+	collision_driver.step_completed.disconnect(collision_hook)
+	check(injected_final_ack_intent and
+		main.simulation_worker.agent_manual_intent_revision()==revision_before+2,
+		"final-ACK manual-intent collision did not reach the real owner counter")
+	check(collision_result.get("status")=="refused"
+		and collision_result.get("reason")=="manual_intent_changed_during_step"
+		and collision_result.get("requested")==1
+		and collision_result.get("completed")==1
+		and collision_result.get("before_tick")==collision_before
+		and collision_result.get("after_tick")==collision_before+1,
+		"final-ACK human intent was falsely reported as completed: "+str(collision_result))
+	for _collision_frame: int in 5:
+		await process_frame
+	check(main.latest_snapshot.tick_index==collision_before+1
+		and main.latest_snapshot.paused
+		and main.latest_snapshot.render_world_generation==pending_source.render_world_generation,
+		"terminal manual-intent collision caused an extra native tick")
+	print("WB_AGENT_527_FINAL_ACK_CONFLICT_RESULT " + JSON.stringify({
+		"result":collision_result,
+		"revision_before":revision_before,
+		"revision_after":main.simulation_worker.agent_manual_intent_revision(),
+		"native_tick":main.latest_snapshot.tick_index}))
+	collision_hook = Callable()
+	collision_driver = null
 
 	# Release the test's self-capturing Stop callback before shutting down:
 	# RefCounted signal -> closure -> driver otherwise retains a cycle.
