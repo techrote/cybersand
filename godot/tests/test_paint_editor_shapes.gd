@@ -128,10 +128,11 @@ func _run() -> void:
 	expect(pocket.get("accepted", false) and pocket.get("count", 0) == 25
 		and pocket.get("source_material_id", -1) == 7,
 		"closed four-neighbor native-ID pocket fills 25 cells")
-	expect(pocket.get("cells", PackedInt32Array())[0] == 901
-		and pocket.get("cells", PackedInt32Array())[1] == 301
-		and pocket.get("cells", PackedInt32Array())[48] == 905
-		and pocket.get("cells", PackedInt32Array())[49] == 305,
+	var pocket_cells: PackedInt32Array = pocket.get("cells", PackedInt32Array())
+	expect(pocket_cells.size() == 50 and pocket_cells[0] == 901
+		and pocket_cells[1] == 301
+		and pocket_cells[48] == 905
+		and pocket_cells[49] == 305,
 		"connected fill is uniquely row-major, bounded and deterministic")
 	var unknown_border := PackedInt32Array()
 	unknown_border.resize(49)
