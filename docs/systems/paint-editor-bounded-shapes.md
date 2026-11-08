@@ -118,6 +118,46 @@ owner must register this focused document (or a justified explicit exclusion)
 and re-run documentation plus retrieval checks; PAINT-001 must not silently
 edit someone else's registry or report Docs PASS.
 
+
+## Bounded connected-material fill (Draft, pure planner only)
+
+`Shapes.fill_connected(seed_cell, sample_origin, sample_size, sample_materials,
+extent)` builds a **four-neighbor** contiguous fill from a rectangular,
+row-major `PackedInt32Array` of **authoritative native stored-material IDs**,
+not presentation/render bytes. The sample must come from the current native
+World with a bound generation/revision identity. The host must verify those
+identities again before authorizing any operation; the pure planner does not
+fetch or prove the source, apply materials, or return a native ACK.
+
+Preflight rejects invalid world/capture extents, missing IDs, values outside
+0–255, or samples larger than **65,536 cells**. BFS processes at most **4,096
+connected target cells**. A component that reaches a sample boundary not also
+at the real canvas edge is **refused**, not silently truncated: outside the
+capture the authoritative material may continue. A truly closed region that
+does not touch an unknown sample edge succeeds, returning one ordered,
+de-duplicated `PackedInt32Array` of at most 4096 world-space x,y pairs and
+`source_material_id`; capacity failures return no plan.
+
+The new GDScript algorithm controls exercise a 25-cell enclosed pocket,
+4096-cell exact admission, 4160-cell full refusal, unread sample-edge refusal,
+canvas-corner behavior, malformed/invalid native IDs and row-major order.
+These synthetic material fixtures test **planner behavior only**; they are
+not actual native readback and cannot authorize a fill. The pre-existing
+line/rectangle/stencil owner-worker test still requires a real source-bound
+Godot/native run (not available here). This is not yet a mounted user control.
+
+**Source integration required:** the separate Workbench Integration owner must
+provide a **quiescent, generation/revision-fenced, authoritative native material
+sample** and the ordinary authorized cell-batch applied/refused receipt. It must
+not use visual Water dithering or an asynchronous, stale render payload as
+the fill's source. If the host cannot provide an adequately enclosed crop,
+it should visibly refuse/ask for a wider bounded sample, not permit a
+partial fill or mutate the source. No undo/history until ACKs and old material
+values are authoritative. Existing #531 agent protection and #542 generated
+map source identities must survive mounting.
+
+
+
 ## Integrator handoff — missing public host seam
 
 Only the independent cross-lane Integration owner may edit/mount
