@@ -39,7 +39,8 @@ jobs:
             '.github/workflows/explore001-qualification.yml',
             '.github/workflows/explore001-windows-replay.yml',
             'godot/tests/test_explore001_generated_workbench.gd',
-            'godot/tests/test_explore001_admission_probe.gd'
+            'godot/tests/test_explore001_admission_probe.gd',
+            'godot/scripts/workbench_generator_dialog.gd'
           )
           foreach ($path in $diffs) {
             if ($path -notin $allowed) { throw "Production source changed since pinned DLL build: $path" }
