@@ -198,7 +198,7 @@ func _start_world() -> bool:
 		return false
 	var camera: Variant = _authority.get("camera_origin",null)
 	if camera is Array and camera.size() == 2 and typeof(camera[0]) == TYPE_INT 			and typeof(camera[1]) == TYPE_INT:
-		_workbench.host._set_view(Vector2(camera[0],camera[1]),
+		_workbench._set_view(Vector2(camera[0],camera[1]),
 			_main.current_view_size)
 	_bridge = Bridge.new()
 	if not _bridge.bind(_main):
