@@ -136,3 +136,35 @@ static func rectangle(from_cell: Vector2i, to_cell: Vector2i, filled: bool, exte
 			if not _include(selected, state, extent, left, y) or not _include(selected, state, extent, right, y):
 				return _refuse("Outline rectangle exceeds the command capacity.")
 	return _finish(selected, state, extent)
+
+# Uniform-material stencil translation for future copy/paste. The caller must
+# separately authorize material, source generation, native owner and revision.
+# In particular these coordinates do NOT copy the source's material identities.
+# Refuse the WHOLE paste if one point would lie outside either canvas.
+static func stamp(
+		source_cells: PackedInt32Array,
+		source_origin: Vector2i,
+		destination_origin: Vector2i,
+		extent: Vector2i
+) -> Dictionary:
+	if not _valid_extent(extent):
+		return _refuse("Canvas extent is not an admitted 512–2048 multiple of 64.")
+	if not _inside(source_origin, extent) or not _inside(destination_origin, extent):
+		return _refuse("Both stencil anchors must lie within the canvas.")
+	if source_cells.is_empty() or (source_cells.size() & 1) != 0:
+		return _refuse("Stencil requires complete interleaved x,y cell coordinates.")
+	if source_cells.size() / 2 > MAX_CELLS:
+		return _refuse("Stencil source exceeds one native 4096-cell command.")
+	var offset: Vector2i = destination_origin - source_origin
+	var selected := {}
+	var state := {"clipped": false}
+	for index: int in range(0, source_cells.size(), 2):
+		var source_cell := Vector2i(source_cells[index], source_cells[index + 1])
+		var destination_cell: Vector2i = source_cell + offset
+		if not _inside(source_cell, extent):
+			return _refuse("Stencil source contains an out-of-canvas cell.")
+		if not _inside(destination_cell, extent):
+			return _refuse("Stencil destination extends beyond the canvas; no partial paste.")
+		if not _include(selected, state, extent, destination_cell.x, destination_cell.y):
+			return _refuse("Stencil exceeds one native 4096-cell command.")
+	return _finish(selected, state, extent)
