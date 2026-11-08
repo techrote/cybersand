@@ -26,6 +26,8 @@ const DEFAULT_TOOL_BUDGET := 32
 const MAX_TOOL_BUDGET := 8192
 const DEFAULT_TOKEN_BUDGET := 2048
 const MAX_TOKEN_BUDGET := 131072
+const DEFAULT_REQUEST_TIMEOUT := 25
+const MAX_REQUEST_TIMEOUT := 600
 # Permit one non-mutating model argument correction per task; no native replay.
 const MAX_ARGUMENT_REPAIRS := 1
 # Transport parses signed native coordinates without granting out-of-domain
@@ -39,7 +41,8 @@ var tool_budget := DEFAULT_TOOL_BUDGET
 var token_budget := DEFAULT_TOKEN_BUDGET
 var _active_tool_budget := DEFAULT_TOOL_BUDGET
 var _active_token_budget := DEFAULT_TOKEN_BUDGET
-var request_timeout_seconds := 25.0
+var request_timeout_seconds: float = DEFAULT_REQUEST_TIMEOUT
+var _active_request_timeout_seconds: float = DEFAULT_REQUEST_TIMEOUT
 
 var _epoch := 0
 var _serial := 0
@@ -247,6 +250,8 @@ func launch_problem(task: String, model: String, scope: Dictionary) -> String:
 		return "Tool-call budget must be between 1 and %d." % MAX_TOOL_BUDGET
 	if token_budget < 1 or token_budget > MAX_TOKEN_BUDGET:
 		return "Output-token budget must be between 1 and %d; choose a value supported by the model." % MAX_TOKEN_BUDGET
+	if not is_finite(request_timeout_seconds) or request_timeout_seconds < 1 or request_timeout_seconds > MAX_REQUEST_TIMEOUT:
+		return "Request timeout must be finite and between 1 and %d seconds." % MAX_REQUEST_TIMEOUT
 	if not _fake_transport and OS.get_environment("OPENAI_API_KEY").is_empty():
 		return "OPENAI_API_KEY is not set. Configure the local launch environment and restart the client."
 	return ""
@@ -269,6 +274,7 @@ func begin_task(task: String, model: String, scope: Dictionary) -> bool:
 	_active_request_budget = request_budget
 	_active_tool_budget = tool_budget
 	_active_token_budget = token_budget
+	_active_request_timeout_seconds = request_timeout_seconds
 	_tool_count = 0
 	_argument_repairs = 0
 	_pending_call_id = ""
@@ -281,7 +287,7 @@ func begin_task(task: String, model: String, scope: Dictionary) -> bool:
 		{"role": "developer", "content": instruction},
 		{"role": "user", "content": [{"type": "input_text", "text": _task_text}]}
 	]
-	status_changed.emit("running", "Task started: %d requests, %d tool calls, %d output tokens/response authorized." % [_active_request_budget, _active_tool_budget, _active_token_budget])
+	status_changed.emit("running", "Task started: %d requests, %d tool calls, %d output tokens/response, %ds timeout authorized." % [_active_request_budget, _active_tool_budget, _active_token_budget, int(_active_request_timeout_seconds)])
 	_send(messages)
 	return true
 
@@ -345,7 +351,7 @@ func _send(input_items: Array) -> void:
 		status_changed.emit("request", "Fake transport request %d" % _request_count)
 		return
 	var request := HTTPRequest.new()
-	request.timeout = request_timeout_seconds
+	request.timeout = _active_request_timeout_seconds
 	request.body_size_limit = MAX_BODY
 	add_child(request)
 	_pending_http = request
@@ -395,6 +401,13 @@ func _final_model_report(messages: Array) -> String:
 					parts.append(part)
 	return "\n".join(parts).substr(0, MAX_MODEL_REPORT)
 
+func _parse_json_value(raw: String) -> Variant:
+	# Invalid provider input is a handled refusal, not an engine diagnostic.
+	var decoder := JSON.new()
+	if decoder.parse(raw) != OK:
+		return null
+	return decoder.data
+
 func _handle_transport(identity: int, nonce: int, result: int, http_status: int, body: PackedByteArray) -> void:
 	if not _active or identity != _epoch or nonce != _serial or not _response_waiting:
 		return
@@ -410,7 +423,7 @@ func _handle_transport(identity: int, nonce: int, result: int, http_status: int,
 	if body.size() > MAX_BODY:
 		_fail("Provider response exceeds bounded size.")
 		return
-	var parsed: Variant = JSON.parse_string(body.get_string_from_utf8())
+	var parsed: Variant = _parse_json_value(body.get_string_from_utf8())
 	if not parsed is Dictionary or parsed.get("id", "") is not String or str(parsed.get("id", "")).is_empty():
 		_fail("Malformed Responses API envelope.")
 		return
@@ -462,7 +475,7 @@ func _handle_transport(identity: int, nonce: int, result: int, http_status: int,
 		_fail("Unknown or repeated tool call ID/name.")
 		return
 	var raw_args: Variant = call.get("arguments", null)
-	var args: Variant = JSON.parse_string(raw_args) if raw_args is String else null
+	var args: Variant = _parse_json_value(raw_args) if raw_args is String else null
 	if not _valid_arguments(name, args):
 		# No native dispatch has occurred. Return one truthful refused tool
 		# result via the existing Responses continuation, not a forged receipt.

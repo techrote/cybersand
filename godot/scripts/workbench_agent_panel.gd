@@ -25,6 +25,7 @@ var _model := LineEdit.new()
 var _request_limit := SpinBox.new()
 var _tool_limit := SpinBox.new()
 var _token_limit := SpinBox.new()
+var _timeout_limit := SpinBox.new()
 var _signed_frame := CheckBox.new()
 var _whole_canvas := Button.new()
 var _canvas_region_provider: Callable
@@ -111,11 +112,12 @@ func _ready() -> void:
 	_add_budget_control("API requests / task", _request_limit, Client.DEFAULT_REQUEST_BUDGET, Client.MAX_REQUEST_BUDGET)
 	_add_budget_control("Tool calls / task", _tool_limit, Client.DEFAULT_TOOL_BUDGET, Client.MAX_TOOL_BUDGET)
 	_add_budget_control("Output tokens / response", _token_limit, Client.DEFAULT_TOKEN_BUDGET, Client.MAX_TOKEN_BUDGET)
+	_add_budget_control("Request timeout (seconds)", _timeout_limit, Client.DEFAULT_REQUEST_TIMEOUT, Client.MAX_REQUEST_TIMEOUT)
 	var presets := HBoxContainer.new()
 	var collaboration := Button.new()
 	collaboration.text = "Collaboration preset"
-	collaboration.tooltip_text = "128 requests, 256 tool calls, 32768 output tokens per response. Select a model supporting this output cap."
-	collaboration.pressed.connect(func() -> void: _set_budgets(128,256,32768))
+	collaboration.tooltip_text = "128 requests, 256 tool calls, 32768 output tokens per response, 180 seconds per request. Select a model supporting this output cap."
+	collaboration.pressed.connect(func() -> void: _set_budgets(128,256,32768,180))
 	presets.add_child(collaboration)
 	var defaults := Button.new()
 	defaults.text = "Reset limits"
@@ -137,7 +139,7 @@ func _ready() -> void:
 	_form.add_child(_whole_canvas)
 	var scope_help := Label.new()
 	scope_help.text = "Scope is the working area, not a total edit quota. Each edit/inspection uses up to 4096 cells; continue in batches."
-	scope_help.tooltip_text = "There is no 4096-cell task-wide quota. The native owner separately retains at most 64 applied edit receipts per World; native capacity refusals remain explicit."
+	scope_help.tooltip_text = "There is no 4096-cell task-wide quota. The native owner separately retains at most 64 consumed-proposal receipts across tasks and World generations; capacity refusals remain explicit."
 	scope_help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_form.add_child(scope_help)
 	var row := HFlowContainer.new()
@@ -239,12 +241,13 @@ func _add_budget_control(title: String, field: SpinBox, initial: int, maximum: i
 	row.add_child(field)
 	_form.add_child(row)
 
-func _set_budgets(requests: int, tools: int, tokens: int) -> void:
-	for field: SpinBox in [_request_limit,_tool_limit,_token_limit]:
+func _set_budgets(requests: int, tools: int, tokens: int, timeout_seconds: int = Client.DEFAULT_REQUEST_TIMEOUT) -> void:
+	for field: SpinBox in [_request_limit,_tool_limit,_token_limit,_timeout_limit]:
 		field.get_line_edit().release_focus()
 	_request_limit.value = requests
 	_tool_limit.value = tools
 	_token_limit.value = tokens
+	_timeout_limit.value = timeout_seconds
 
 func _on_whole_canvas() -> void:
 	if not _canvas_region_provider.is_valid():
@@ -311,7 +314,7 @@ func _on_start() -> void:
 		_log_status("refused", "No native dispatcher or task already active.")
 		return
 	# Start has FOCUS_NONE: commit typed numbers even if the edit never lost focus.
-	for field: SpinBox in [_request_limit,_tool_limit,_token_limit]:
+	for field: SpinBox in [_request_limit,_tool_limit,_token_limit,_timeout_limit]:
 		if field.get_line_edit().has_focus():
 			field.apply()
 	var materials: Array[String] = []
@@ -339,6 +342,7 @@ func _on_start() -> void:
 	client.request_budget = int(_request_limit.value)
 	client.tool_budget = int(_tool_limit.value)
 	client.token_budget = int(_token_limit.value)
+	client.request_timeout_seconds = _timeout_limit.value
 	var launch_problem: String = client.launch_problem(_task.text, _model.text, scope)
 	if not launch_problem.is_empty():
 		_log_status("refused", launch_problem)

@@ -23,9 +23,9 @@ implementation, physics/default, material, provider, worker or CI file is edited
 
 ## Implemented scope
 
-The existing scrollable side dock adds three numeric controls, a Collaboration
+The existing scrollable side dock adds numeric controls, a Collaboration
 preset128 requests/256 tools/32768 tokens per response, and Reset limits12/32/2048.
-Client validation and frozen active copies enforce all three ceilings. The
+Client validation and frozen active copies enforce all budget ceilings. The
 ranges4096 requests/8192 tools/131072 tokens are finite host-selected maxima,
 not a claim that any particular model supports the entire range. No USD budget
 or provider capability discovery is implied. Changing controls retires the task.
@@ -34,7 +34,7 @@ The panel explains4096 is per operation, not per task. A new real-native
 regression prepares/applies/readback-verifies two disjoint4096-cell batches in
 one2048-square authorization. It also preserves oversized-edit refusal,
 protection, duplicate original receipt replay, native Step and Stop. The native
-64-receipt capacity and8-primitives/4096-cell operation caps remain unchanged.
+64-consumed-receipt capacity and8-primitives/4096-cell operation caps remain unchanged.
 
 ## Qualification and reproducibility
 
@@ -73,3 +73,26 @@ frame. The follow-up applies only a focused typed edit and releases numeric
 focus before setting a preset. The focused135-check rerun passes. Original
 failed and corrected logs remain under ignored build/budget-client-final.log
 and build/budget-client-focus.log; final runtime gates bind the resulting head.
+
+## Qualification corrections and bounded HTTP deadline
+
+The first dcd911 native run retained a normal hopper32/32 outcome but hit the
+local420-second process allowance before the full two-variant script completed;
+that is not a pass. Mounted73, capacity28, dock37 and save/reopen passed.
+The8192-cell case completed both native batches but its fixture assertion
+incorrectly expected a zero-count58 entry; native counts includes only present
+IDs. It now requires4096 Empty cells before each batch, a stronger fixture
+check. The original raw92-check/two-failure log is preserved.
+
+The135-check client returnedzero failures but the strict qualifier rejected
+engine ERROR diagnostics from deliberate malformed JSON input. The client now
+uses JSON.parse status/data rather than parse_string's automatic engine logging;
+existing bounded argument correction/refusal semantics are preserved. The
+qualifier's strict error check is not weakened.
+
+A request-timeout control accompanies larger output allowances:1–600 seconds,
+25 default and180 in the Collaboration preset. It is finite-validated, frozen
+at Start and cancellation remains nonblocking. It introduces no network retry.
+
+Two additive budget/scope retrieval questions are linked from the retrieval
+index and evaluated separately; the frozen32 questions are unchanged.

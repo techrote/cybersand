@@ -379,15 +379,18 @@ func _test_configurable_budgets() -> void:
 	c.request_budget = 128
 	c.tool_budget = 256
 	c.token_budget = 32768
+	c.request_timeout_seconds = 180
 	_expect(c.begin_task("Build across batches", "model", _scope()), "collaboration-sized task refused")
 	_expect(c._last_fake_payload.max_output_tokens == 32768, "selected token cap not sent")
 	c.request_budget = 1
 	c.tool_budget = 1
 	c.token_budget = 1
+	c.request_timeout_seconds = 1
 	_deliver(c, _response("budget-r1", [_tool("observe", "budget-c1", {"region":null,"detail":"counts"})]))
 	_expect(c.submit_tool_result(c.current_epoch(),"budget-c1",{"status":"observed","observation_id":"budget-o1"}), "budget continuation failed")
 	_expect(c.is_active() and c._active_request_budget == 128 and c._active_tool_budget == 256
-		and c._last_fake_payload.max_output_tokens == 32768, "active allowances changed after Start")
+		and c._last_fake_payload.max_output_tokens == 32768 and c._active_request_timeout_seconds == 180,
+		"active allowances changed after Start")
 	c.queue_free()
 	var limited := _new_client()
 	limited.tool_budget = 1
@@ -402,12 +405,19 @@ func _test_configurable_budgets() -> void:
 	limited.queue_free()
 	for spec: Array in [["request_budget",0],["request_budget",Client.MAX_REQUEST_BUDGET+1],
 		["tool_budget",0],["tool_budget",Client.MAX_TOOL_BUDGET+1],
-		["token_budget",0],["token_budget",Client.MAX_TOKEN_BUDGET+1]]:
+		["token_budget",0],["token_budget",Client.MAX_TOKEN_BUDGET+1],
+		["request_timeout_seconds",0],["request_timeout_seconds",601],
+		["request_timeout_seconds",INF],["request_timeout_seconds",NAN]]:
 		var bad := _new_client()
 		bad.set(spec[0],spec[1])
 		_expect(not bad.begin_task("Invalid ceiling", "model", _scope()) and bad._serial == 0,
 			"invalid %s admitted a request" % spec[0])
 		bad.queue_free()
+	var malformed := _new_client()
+	malformed.begin_task("Malformed envelope", "model", _scope())
+	malformed._handle_transport(malformed.current_epoch(),malformed._serial,HTTPRequest.RESULT_SUCCESS,200,"not JSON".to_utf8_buffer())
+	_expect(not malformed.is_active() and not malformed.is_waiting_for_tool(), "malformed envelope not refused")
+	malformed.queue_free()
 
 func _test_ui_shell() -> void:
 	var panel := AgentPanel.new()
@@ -446,11 +456,12 @@ func _test_ui_shell() -> void:
 	_expect(authorizations.size() == 1 and panel.client.is_active(),
 		"valid Start did not authorize exactly once after local preflight")
 	_expect(panel.client.request_budget == 12, "default paid request limit changed")
-	panel._set_budgets(128,256,32768)
+	panel._set_budgets(128,256,32768,180)
 	_expect(not panel.client.is_active(), "changing paid request allowance failed to revoke task")
 	panel._on_start()
 	_expect(panel.client.is_active() and panel.client.request_budget == 128
-		and panel.client.tool_budget == 256 and panel.client.token_budget == 32768,
+		and panel.client.tool_budget == 256 and panel.client.token_budget == 32768
+		and panel.client._active_request_timeout_seconds == 180,
 		"human-selected collaboration budgets not authorized")
 	panel._token_limit.value = 20480
 	_expect(not panel.client.is_active(), "changing output-token cap did not retire task")
@@ -458,15 +469,20 @@ func _test_ui_shell() -> void:
 	_expect(panel.client._active_token_budget == 20480, "next task did not select revised token cap")
 	panel._tool_limit.value = 512
 	_expect(not panel.client.is_active(), "changing tool-call cap did not retire task")
+	panel._on_start()
+	panel._timeout_limit.value = 240
+	_expect(not panel.client.is_active(), "changing timeout did not retire task")
 	panel._request_limit.get_line_edit().text = "256"
 	panel._request_limit.get_line_edit().grab_focus()
 	panel._on_start()
 	_expect(panel.client._active_request_budget == 256, "Start ignored typed unsubmitted budget text")
+	_expect(panel.client._active_request_timeout_seconds == 240, "next task did not select revised timeout")
 	panel._set_budgets(Client.DEFAULT_REQUEST_BUDGET,Client.DEFAULT_TOOL_BUDGET,Client.DEFAULT_TOKEN_BUDGET)
 	_expect(not panel.client.is_active(), "opting out did not retire the old task")
 	panel._on_start()
 	_expect(panel.client.is_active() and panel.client.request_budget == 12
-		and panel.client.tool_budget == 32 and panel.client.token_budget == 2048,
+		and panel.client.tool_budget == 32 and panel.client.token_budget == 2048
+		and panel.client._active_request_timeout_seconds == 25,
 		"next task did not restore all conservative defaults")
 	panel._model.text = "revised-test-model"
 	panel._retire_on_human_change()

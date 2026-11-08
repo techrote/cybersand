@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "questions": [
+    {
+      "id": "WB-BUDGET-01",
+      "query": "How do I configure agent API requests, tool calls, output tokens and timeout in the workbench Collaboration preset?",
+      "canonical": [
+        "systems/shared-workbench-agent-authoring.md"
+      ],
+      "facts": [
+        "Numeric host controls select request, tool, per-response token and HTTP deadline limits; Start freezes them.",
+        "Collaboration preset selects128 requests,256 tools,32768 tokens and180seconds; default12/32/2048/25 remains."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_agent_client.gd",
+        "../godot/scripts/workbench_agent_panel.gd"
+      ]
+    },
+    {
+      "id": "WB-BUDGET-02",
+      "query": "Is4096 cells the total agent task quota, or can I edit the whole canvas in repeated batches?",
+      "canonical": [
+        "systems/shared-workbench-agent-authoring.md"
+      ],
+      "facts": [
+        "4096 cells is per observation/edit, not a task total; whole-canvas authority supports repeated batches.",
+        "The native owner separately retains64 consumed-proposal receipts across tasks/generations; UI budgets do not raise it."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_authoring_session.gd",
+        "../godot/tests/test_wb525_large_scope_render.gd"
+      ]
+    }
+  ],
+  "expectations_reviewed": "2026-11-08 additive budget questions; original frozen32 unchanged."
+}

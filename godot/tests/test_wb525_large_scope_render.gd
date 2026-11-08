@@ -69,7 +69,7 @@ func _run() -> void:
 		wb._set_view(Vector2(x-16,1684),Vector2i(256,256))
 		var window := {"x":x,"y":1700,"width":64,"height":64}
 		var before_batch: Dictionary = await model_call("observe",{"region":window,"detail":"cells"})
-		check(before_batch.get("native_counts",{}).get("58",-1) == 0,"batch fixture not empty")
+		check(before_batch.get("native_counts",{}).get("0",-1) == 4096,"batch fixture not entirely Empty")
 		var batch: Dictionary = await model_call("prepare_edit",{"observation_id":before_batch.get("observation_id",""),
 			"operations":[{"shape":"rectangle","x0":x,"y0":1700,"x1":x+63,"y1":1763,"material":58,"replace_only_material":0}]})
 		check(batch.get("status") == "proposed" and batch.get("changed_cells") == 4096,"full batch not proposed")

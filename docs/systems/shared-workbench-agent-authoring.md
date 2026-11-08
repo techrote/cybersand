@@ -337,12 +337,13 @@ native pool and UI render loop must not wait synchronously on HTTP.
 task**, and **Output tokens / response** controls. Their ranges are1–4096,
 1–8192 and1–131072 respectively. A **Collaboration preset** explicitly selects
 128 requests,256 tool calls and32768 output tokens/response; **Reset limits**
-restores12/32/2048. Opening the app retains those conservative defaults.
+restores12/32/2048. A fourth control sets request timeout1–600 seconds,
+with default25 and Collaboration preset180, frozen at Start as well. Opening the app retains those conservative defaults.
 The model must support the selected output-token cap; the UI does not claim
 model-specific capability discovery or a monetary spending ceiling.
 
-The host validates and freezes all three allowances at Start. Editing any
-control retires the existing task; public configuration cannot alter its active
+The host validates and freezes all request/tool/token allowances and HTTP deadline at Start. Editing any
+control, including timeout, retires the existing task; public configuration cannot alter its active
 request/tool/token ceilings. Budget exhaustion stays explicit and dispatches no
 extra native tool. These are paid API allowances, not native capacities.
 
@@ -351,7 +352,7 @@ batches can cover the authorized canvas. The real native large-scope regression
 now includes two disjoint4096-cell batches,8192 confirmed writes in one task,
 with native readback and no extra ticks. Its execution status and original PNGs
 must be recorded against the resulting source head before claiming a runtime
-pass. The existing native owner separately retains64 applied receipts per World;
+pass. The existing native owner separately retains64 consumed-proposal receipts across tasks and World generations;
 that capacity, protection, Step limits, snapshots and physical laws are unchanged.
 Do not drop receipts, silently reset the World or claim unlimited total work.
 

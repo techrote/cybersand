@@ -430,3 +430,8 @@ coalesced publication counts, use the [player-control contract](../systems/playe
 How do I place multiple independently configured flyers with a passive barrel, select granular and liquid responses, paint a large canvas and save an authored start? Use the [desktop workbench controls and format](../systems/player-control-playground.md#development-workbench-on-desktop) and its [qualification record](../audits/2026-11-04-workbench-consolidation.md). Tuning retention and lifetime corrections are in the [cleanup evidence](../audits/2026-11-04-workbench394-cleanup.md); MAT source admission is [separate](../audits/2026-11-04-workbench394-material-source-transition.md).
 
 For #394 owner acceptance, accepted-main pressure reconciliation and final gate status, use the [resulting-source qualification record](../audits/2026-11-04-workbench394-ready-validation.md). Current workbench controls remain in the player playground guide.
+
+Workbench agent budget controls and per-operation versus task scope have two
+[additive retrieval cases](wb-agent-budget-retrieval-questions.json), evaluated
+separately from the unchanged frozen32. The canonical answer remains the
+[shared-workbench agent contract](../systems/shared-workbench-agent-authoring.md).
