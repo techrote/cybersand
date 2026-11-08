@@ -25,6 +25,9 @@ CASES = [
     ("traffic-filters", "test_workbench_agent_traffic_filters.gd", True, []),
     ("match-area", "test_workbench_agent_match_area.gd", True, []),
     ("rate-limit", "test_workbench_agent_rate_limit.gd", True, []),
+    ("runner-client", "test_workbench_agent_runner_client.gd", True, []),
+    ("runner-traffic", "test_workbench_agent_runner_traffic.gd", True, []),
+    ("runner-mounted", "test_workbench_agent_runner_mounted.gd", False, []),
     ("client", "test_workbench_agent_client.gd", True, []),
     ("diagnostics", "test_workbench_agent_diagnostics.gd", True, []),
     ("cell-limit", "test_workbench_agent_cell_limit.gd", True, []),
@@ -62,7 +65,8 @@ def git(*args: str) -> str:
 
 def identity(godot: Path) -> dict:
     paths = git("ls-files", "--cached", "--others", "--exclude-standard", "native", "godot/scripts", "godot/tests",
-                "godot/native_extension", "third_party", "tools/wb_agent").splitlines()
+                "godot/native_extension", "third_party", "tools/wb_agent",
+                "tools/workbench_api_agent", "tools/workbench_api_agent_runner.py").splitlines()
     source = {p: digest(ROOT / p) for p in paths if (ROOT / p).is_file()
               and not p.endswith(".uid") and "__pycache__" not in p}
     libraries = [ROOT / "godot/addons/cybersand_native/bin" /
@@ -88,6 +92,9 @@ def validate_output(text: str, case: str) -> bool:
         "traffic-filters": r"WB_AGENT_TRAFFIC_FILTERS: [1-9]\d* checks, 0 failures",
         "match-area": r"WB_MATCH_AREA: [1-9]\d* checks, 0 failures",
         "rate-limit": r"WB_RATE_LIMIT: [1-9]\d* checks, 0 failures",
+        "runner-client": r"WB_PROVIDER_UI_CLIENT: [1-9]\d* checks, 0 failures",
+        "runner-traffic": r"WB_PROVIDER_UI_TRAFFIC: [1-9]\d* checks, 0 failures",
+        "runner-mounted": r"WB_AGENT_528 mounted real-native checks [1-9]\d*, failures 0",
         "client": r"WB_AGENT_528 fake-provider checks [1-9]\d*, failures 0",
         "diagnostics": r"WB_AGENT_DIAGNOSTICS: [1-9]\d* checks, 0 failures",
         "cell-limit": r"WB_AGENT_CELL_LIMIT: [1-9]\d* checks, 0 failures",
@@ -176,6 +183,7 @@ def main() -> int:
     env = dict(os.environ)
     # Fake transport is selected inside existing tests; never pass a paid key.
     env.pop("OPENAI_API_KEY", None)
+    env.pop("NVIDIA_API_KEY", None)
     env["GODOT_SILENCE_ROOT_WARNING"] = "1"
     env["WB_AGENT_EVIDENCE_DIR"] = str(output)
     env["WB_AGENT_527_IMAGE_DIR"] = str(output)

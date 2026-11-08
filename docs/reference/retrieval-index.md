@@ -431,7 +431,9 @@ How do I place multiple independently configured flyers with a passive barrel, s
 
 For #394 owner acceptance, accepted-main pressure reconciliation and final gate status, use the [resulting-source qualification record](../audits/2026-11-04-workbench394-ready-validation.md). Current workbench controls remain in the player playground guide.
 
-Workbench agent budget controls and per-operation versus task scope and raw traffic/rate controls have four
+Workbench agent budget controls and per-operation versus task scope and raw traffic/rate controls have six
 [additive retrieval cases](wb-agent-budget-retrieval-questions.json), evaluated
 separately from the unchanged frozen32. The canonical answer remains the
 [shared-workbench agent contract](../systems/shared-workbench-agent-authoring.md).
+
+Provider UI composition and independent communication-efficiency review route to the [review packet](../reviews/2026-11-08-workbench-agent-design-and-semantics.md) and [runner runbook](../operations/workbench-api-agent.md).

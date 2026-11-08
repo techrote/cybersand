@@ -4,11 +4,19 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-07
+last-reviewed: 2026-11-08
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Provider UI composition and communication review — 2026-11-08
+
+Isolated integration composes #53129988 with #552be7 and #5472b6; no Main merge
+or Ready transition. The [review packet](../reviews/2026-11-08-workbench-agent-design-and-semantics.md)
+separates current semantics, necessary evidence, avoidable model-context overhead
+and qualification. Final command/runtime/source results belong to the existing
+integration PR record; genuine providers and human Windows acceptance are separate.
 
 ## Conversation and rate controls follow-up — 2026-11-08
 

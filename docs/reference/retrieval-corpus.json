@@ -126,7 +126,8 @@
     "operations/workbench-api-agent.md",
     "operations/ci-execution-and-performance.md",
     "operations/material-catalogue-shadow.md",
-    "operations/material-liveness-investigation.md"
+    "operations/material-liveness-investigation.md",
+    "reviews/2026-11-08-workbench-agent-design-and-semantics.md"
   ],
   "navigation": [
     "README.md",

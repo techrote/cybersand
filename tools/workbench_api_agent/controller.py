@@ -6,6 +6,7 @@ import math
 import os
 from pathlib import Path
 import secrets
+import random
 import threading
 import time
 from dataclasses import dataclass,field
@@ -60,6 +61,7 @@ def trusted_task(path:Path,auth_path:Path)->tuple[dict,dict]:
 @dataclass
 class Stats:
     model_calls:int=0
+    provider_attempts:int=0
     tool_calls:int=0
     native_ticks:int=0
     applied_edits:int=0
@@ -74,10 +76,13 @@ class Stats:
 class Runner:
     def __init__(self, cfg:dict,task:dict,auth:dict,wb:Workbench,output:Path,
                  *,adapter=None,fixture_mode:bool=False,allow_live:bool=False,
-                 credit_probe=None,stop_event=None,source_dirty:bool|None=True):
+                 credit_probe=None,stop_event=None,source_dirty:bool|None=True,event_callback=None,rate_clock=None,rate_wait=None):
         self.cfg=cfg;self.task=task;self.auth=auth;self.wb=wb
         self.output=output;self.stop_event=stop_event or threading.Event()
-        self.adapter=adapter or HTTPAdapter(cfg,fixture_mode=fixture_mode)
+        self.event_callback=event_callback
+        self.desktop=bool(getattr(wb,'desktop',False))
+        self.adapter=adapter or HTTPAdapter(cfg,fixture_mode=fixture_mode,trace=event_callback,
+            tool_schemas=getattr(wb,'tool_schemas',None),argument_feedback=getattr(wb,'allow_argument_feedback',False))
         self.budget,self.funding_gate=validate_live(cfg,allow_live=allow_live,fixture_mode=fixture_mode,probe=credit_probe,source_dirty=source_dirty)
         self.stats=Stats()
         self.history=[]
@@ -95,11 +100,19 @@ class Runner:
         self.stop_result=None
         self.report=None
         self._stop_thread=None
+        self._argument_repairs=0
+        self._retry_wait=0.
+        self._rate_reservations=[]
+        self._rate_clock=rate_clock or time.monotonic
+        self._rate_wait=rate_wait or self.stop_event.wait
+        for entry in auth.get('rate_history',[]) if self.desktop else []:
+            ttl=entry['expires_utc']-time.time()
+            if ttl>0:self._rate_reservations.append({'at':self._rate_clock()+ttl-60,'tokens':entry['tokens']})
 
     def _timeout(self)->float:
         remaining=self.limit['max_run_seconds']-(time.monotonic()-self.started)
         if remaining<=0:raise LimitError('task_wallclock_deadline')
-        return min(remaining,45.)
+        return min(remaining,float(self.limit.get('request_timeout_seconds',45)))
 
     def _id(self)->str:
         value=self.runner_id+'-'+str(self.stats.tool_calls+1)
@@ -108,22 +121,32 @@ class Runner:
         return value
 
     def _event(self,event:dict)->None:
-        record={**event,'at_elapsed_seconds':round(time.monotonic()-self.started,3)}
+        record={**event,'at_elapsed_seconds':round(time.monotonic()-self.started,3),
+                'measured':{k:getattr(self.stats,k) for k in ('model_calls','provider_attempts','tool_calls','native_ticks','applied_edits')}}
         encoded=clean_payload(record)
         if len(encoded)>35000:raise LimitError('event_record_capacity_exceeded')
         with (self.output/'events.jsonl').open('a',encoding='utf-8') as out:out.write(encoded+'\n')
+        if self.event_callback:
+            name=str(record.get('type','event'))
+            self.event_callback(name if name.startswith('rate.') else 'runner.'+name,record)
 
     def _native_summary(self,response:dict)->tuple[dict,dict]:
         receipt=response['receipt']
         native=receipt.get('result') or {}
         if not isinstance(native,dict):raise NativeError('native_result_not_object')
         # These fields are source-backed and bounded, never model-authored.
-        keys=('status','observation_id','proposal_id','confirmed_writes','native_counts',
-              'identity','completed','completed_tick','reason','revision','observation')
+        keys=('status','observation_id','proposal_id','confirmed_writes','changed_cells','native_counts',
+              'identity','completed','completed_tick','reason','revision','region','palette',
+              'render_identity','viewport_native_region','viewport_logical_region',
+              'viewport_framebuffer_rect','observation_cell_limit','authorized_scope')
         summary={k:native[k] for k in keys if k in native}
+        if self.desktop and isinstance(native.get('observation'),dict):
+            summary['observation']={k:native['observation'][k] for k in keys if k in native['observation']}
         summary['tool']=receipt.get('tool')
         summary['status']=receipt.get('status')
         summary['completed_native_ticks_total']=receipt.get('completed_native_ticks_total')
+        summary['projection']='selected_native_fields; original receipt retained in evidence'
+        summary['original_receipt_sha256']=hashlib.sha256(clean_payload(receipt).encode()).hexdigest()
         return summary,receipt
 
     def _project(self,summary:dict)->str:
@@ -190,13 +213,38 @@ class Runner:
         result=self.budget.commit(res,a,cached,b,reasoning)
         if result['exceeded_reservation']:raise LimitError('provider_usage_exceeded_reserved_upper_bound')
 
+    def _pace(self,res):
+        limit=self.limit.get('tokens_per_minute',0) if self.desktop else 0
+        if not limit:return None
+        estimate=max(res.input_tokens,res.output_tokens)
+        if estimate>limit:raise LimitError('estimated_request_above_TPM_reduce_output_or_inspection')
+        while True:
+            now=self._rate_clock()
+            self._rate_reservations[:]=[r for r in self._rate_reservations if now-r['at']<60]
+            if sum(r['tokens'] for r in self._rate_reservations)+estimate<=limit:break
+            delay=max(.01,min(r['at']+60-now for r in self._rate_reservations))
+            self._event({'type':'rate.wait','wait_seconds':round(delay,3),'estimated_tokens':estimate,'reserved_tokens':sum(r['tokens'] for r in self._rate_reservations),'tokens_per_minute':limit,'local_estimate':True})
+            if self._rate_wait(min(delay,self._timeout())):raise NativeError('host_stop_requested')
+            self._timeout()
+        item={'at':self._rate_clock(),'tokens':estimate}
+        self._rate_reservations.append(item)
+        self._event({'type':'rate.reservation','rate_history':self._rate_history(),'local_estimate':True})
+        return item
+
+    def _rate_history(self):
+        return [{'expires_utc':time.time()+max(0.,r['at']+60-self._rate_clock()),'tokens':r['tokens']} for r in self._rate_reservations if r['at']+60>self._rate_clock()]
+
     def _provider(self)->Decision:
         retry=0
         while True:
             if self.stop_event.is_set():raise NativeError('host_stop_requested')
-            if self.stats.model_calls>=self.limit['max_model_calls']:raise LimitError('model_call_limit')
+            if (self.stats.provider_attempts if self.desktop else self.stats.model_calls)>=self.limit['max_model_calls']:raise LimitError('model_call_limit')
             res=self._reserve()
+            paced=None
             try:
+                paced=self._pace(res)
+                if self.stop_event.is_set():raise NativeError('host_stop_requested')
+                self.stats.provider_attempts+=1
                 decision=self.adapter.request(self.history,self.limit['max_request_bytes'],self._timeout())
             except ProviderError as e:
                 if e.kind=='provider_rate_limit':
@@ -204,17 +252,30 @@ class Runner:
                     retry+=1;self.stats.provider_retries+=1
                     if retry>self.limit['max_retries'] or self.stats.provider_retries>self.limit['max_total_retries']:
                         raise LimitError('provider_rate_retry_exhausted') from None
-                    delay=min(30,e.retry_after if e.retry_after is not None else 0.5*2**retry)
+                    delay=e.retry_after if e.retry_after is not None else (10.*2**(retry-1) if self.desktop else .5*2**retry)
+                    if self.desktop and e.retry_after is None:delay+=random.uniform(.05,.25)
+                    if delay>60 or self._retry_wait+delay>120:raise LimitError('retry_after_exceeds_bounded_wait_not_shortened')
+                    self._retry_wait+=delay
                     if self._timeout()<=delay:raise LimitError('retry_exceeds_task_deadline')
-                    self.stop_event.wait(delay)
+                    self._event({'type':'rate.retry','attempt':self.stats.provider_retries,'wait_seconds':delay,'delay_seconds':delay,'same_history':True})
+                    self._rate_wait(delay)
                     continue
                 if e.kind in ('provider_request_rejected','provider_auth_denied','provider_quota_exhausted',
                               'provider_redirect_refused','model_request_oversize','provider_unsupported_tool',
-                              'invalid_provider_json'):
+                              'invalid_provider_json','provider_unclassified_429'):
                     self.budget.release(res)
                 else:self.budget.mark_ambiguous(res)
                 raise
+            except NativeError:
+                self.budget.release(res)
+                raise
             self._settle(res,decision)
+            if paced is not None:
+                usage=decision.usage or {}
+                a=usage.get('input_tokens',usage.get('prompt_tokens'));b=usage.get('output_tokens',usage.get('completion_tokens'))
+                if type(a) is int and type(b) is int:
+                    paced['tokens']=a+b
+                    self._event({'type':'rate.settled','rate_history':self._rate_history(),'source':'provider_usage','local_estimate':True})
             self.stats.model_calls+=1
             self.stats.model_seen_image|=decision.saw_image
             self._event({'type':'provider','call':self.stats.model_calls,
@@ -228,11 +289,22 @@ class Runner:
         if d.call_id in self.call_ids:raise ProviderError('reused_provider_call_id')
         self.call_ids.add(d.call_id)
         if self.stats.tool_calls>=self.limit['max_tools']:raise LimitError('tool_call_limit')
-        if self.pending_proposal and d.tool!='apply_edit':
+        if self.pending_proposal and d.tool!='apply_edit' and not (getattr(self.wb,'observe_retires_proposal',False) and d.tool=='observe'):
             raise NativeError('prepared_edit_must_be_applied_or_retired_before_another_tool')
         if self.stop_event.is_set():raise NativeError('host_stop_requested')
-        ticks=validate_tool(d.tool,d.args,self.auth['scope'],set(self.auth['allowed_materials']),self.auth['protected'],
-                            self.last_observation,self.pending_proposal,self.stats.native_ticks,self.limit['max_native_ticks'])
+        validator=getattr(self.wb,'validate',validate_tool)
+        try:
+            if d.kind=='invalid_tool':raise NativeError('invalid_tool_arguments')
+            ticks=validator(d.tool,d.args,self.auth['scope'],set(self.auth['allowed_materials']),self.auth['protected'],
+                                self.last_observation,self.pending_proposal,self.stats.native_ticks,self.limit['max_native_ticks'])
+        except NativeError as exc:
+            if not getattr(self.wb,'allow_argument_feedback',False) or self._argument_repairs>=1 or d.tool not in STATUS:raise
+            self._argument_repairs+=1;self.stats.tool_calls+=1
+            self.history.append({'kind':'call','id':d.call_id,'tool':d.tool,'args':d.args or {}})
+            feedback={'status':'refused','origin':'client_validation','native_dispatched':False,'reason':exc.code,'corrections_remaining':0}
+            self.history.append({'kind':'result','id':d.call_id,'text':clean_payload(feedback),'native':feedback})
+            self._event({'type':'tool_validation_refused','tool':d.tool,'provider_call_id':d.call_id,**feedback})
+            return
         rid=self._id()
         self.stats.tool_calls+=1
         self._event({'type':'tool_proposed','tool':d.tool,'provider_call_id':d.call_id,'native_request_id':rid,
@@ -248,6 +320,7 @@ class Runner:
         if receipt.get('status')!= {'observe':'observed','prepare_edit':'proposed','apply_edit':'applied','step':'completed'}[d.tool]:
             raise NativeError('native_nonacceptance_'+str(receipt.get('status')),rid)
         if d.tool=='observe':
+            if getattr(self.wb,'observe_retires_proposal',False):self.pending_proposal=None
             self.last_observation=summary.get('observation_id')
             if not isinstance(self.last_observation,str) or not self.last_observation:raise NativeError('native_observation_id_missing',rid)
             counts=summary.get('native_counts') or {}
@@ -264,6 +337,10 @@ class Runner:
         elif d.tool=='step':
             if type(receipt.get('completed_native_ticks_total')) is not int:raise NativeError('native_tick_total_missing',rid)
             self.stats.native_ticks=receipt['completed_native_ticks_total']
+            observed=summary.get('observation')
+            if self.desktop and isinstance(observed,dict):
+                self.last_observation=observed.get('observation_id')
+                self.last_counts=observed.get('native_counts',{})
         image=None;frame=receipt.get('frame') or {}
         if frame.get('status')=='original_post_draw':
             self.stats.original_frames+=1
@@ -330,6 +407,7 @@ class Runner:
                      'local_gpu_compute_cost':'unknown' if self.cfg['provider']=='ollama_chat' else 'not_local_gpu',
                      'context_projection':{'old_images_elided_from_model_history':self.stats.images_projected,
                                             'original_images_retained':self.stats.original_frames}}
+        if self.desktop:self.report['rate_history']=self._rate_history()
         (self.output/'receipt.json').write_text(json.dumps(self.report,sort_keys=True,indent=2)+'\n',encoding='utf-8')
         return self.report
 
@@ -349,7 +427,7 @@ class Runner:
             while True:
                 decision=self._provider()
                 if decision.kind=='final':return self._finish('model_final','model_final',decision.text)
-                if decision.kind!='tool' or not decision.args:raise ProviderError('model_response_not_one_tool')
+                if decision.kind not in ('tool','invalid_tool') or decision.args is None:raise ProviderError('model_response_not_one_tool')
                 self._dispatch(decision)
         except (NativeError,ProviderError,LimitError,ConfigError,ValueError,LimitReached) as exc:
             reason=getattr(exc,'code',getattr(exc,'kind',getattr(exc,'reason_code',str(exc))))

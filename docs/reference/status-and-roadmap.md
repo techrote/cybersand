@@ -4,11 +4,19 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-07
+last-reviewed: 2026-11-08
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## Provider UI composition and communication review — 2026-11-08
+
+Isolated integration composes #53129988 with #552be7 and #5472b6; no Main merge
+or Ready transition. The [review packet](../reviews/2026-11-08-workbench-agent-design-and-semantics.md)
+separates current semantics, necessary evidence, avoidable model-context overhead
+and qualification. Final command/runtime/source results belong to the existing
+integration PR record; genuine providers and human Windows acceptance are separate.
 
 ## Conversation and rate controls follow-up — 2026-11-08
 

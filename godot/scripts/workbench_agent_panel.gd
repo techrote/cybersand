@@ -5,7 +5,7 @@ extends VBoxContainer
 
 signal progress(status: String, detail: String)
 
-const Client = preload("res://scripts/workbench_agent_client.gd")
+const Client = preload("res://scripts/workbench_agent_runner_client.gd")
 const Overlay = preload("res://scripts/workbench_agent_proposal_overlay.gd")
 const ScopeOverlay = preload("res://scripts/workbench_agent_scope_overlay.gd")
 const SignedFrame = preload("res://scripts/workbench_agent_signed_frame.gd")
@@ -26,6 +26,16 @@ var _retire_pending := false
 var _start_nonce := 0
 var _task := TextEdit.new()
 var _model := LineEdit.new()
+var _provider := OptionButton.new()
+var _profile_button := Button.new()
+var _key_button := Button.new()
+var _profile_picker := FileDialog.new()
+var _key_dialog := ConfirmationDialog.new()
+var _key_entry := LineEdit.new()
+var _key_help := Label.new()
+var _live := CheckBox.new()
+var _selected_profile := ""
+var _profile_data: Dictionary = {}
 var _request_limit := SpinBox.new()
 var _tool_limit := SpinBox.new()
 var _token_limit := SpinBox.new()
@@ -132,6 +142,12 @@ func _ready() -> void:
 	_task.text_changed.connect(_retire_on_human_change)
 	_form.add_child(_task)
 	var model_row := HBoxContainer.new()
+	_provider.tooltip_text = "Provider is driven by the trusted profile. Fixture is keyless scripted qualification, not a model."
+	for spec: Array in [["Profile",""],["OpenAI","openai_responses"],["NVIDIA","nvidia_chat"],["Local","ollama_chat"],["Fixture","fixture"]]:
+		_provider.add_item(spec[0])
+		_provider.set_item_metadata(_provider.item_count-1,spec[1])
+	_provider.item_selected.connect(_provider_selected)
+	model_row.add_child(_provider)
 	_model.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_model.placeholder_text = DEFAULT_MODEL
 	_model.tooltip_text = "Model ID. Type a name or choose a recently used model from the arrow."
@@ -144,6 +160,31 @@ func _ready() -> void:
 	_model_history.get_popup().id_pressed.connect(_select_model_history)
 	_rebuild_model_history()
 	model_row.add_child(_model_history)
+	_profile_button.text = "Profile…"
+	_profile_button.tooltip_text = "Choose a trusted JSON provider profile with capabilities, rates and funding/compute controls."
+	_profile_button.pressed.connect(func() -> void: _profile_picker.popup_centered_ratio(0.8))
+	model_row.add_child(_profile_button)
+	_key_button.text = "Key…"
+	_key_button.tooltip_text = "Enter the selected provider's key locally. No key is saved or passed in command arguments."
+	_key_button.pressed.connect(_show_key_dialog)
+	model_row.add_child(_key_button)
+	_profile_picker.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	_profile_picker.access = FileDialog.ACCESS_FILESYSTEM
+	_profile_picker.filters = PackedStringArray(["*.json ; Trusted provider profile"])
+	_profile_picker.file_selected.connect(select_runner_profile)
+	add_child(_profile_picker)
+	_key_dialog.title = "Provider API key (local only)"
+	var key_column := VBoxContainer.new()
+	_key_help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_key_help.custom_minimum_size.x = 380
+	key_column.add_child(_key_help)
+	_key_entry.secret = true
+	_key_entry.placeholder_text = "Paste key here"
+	key_column.add_child(_key_entry)
+	_key_dialog.add_child(key_column)
+	_key_dialog.confirmed.connect(_accept_key)
+	_key_dialog.canceled.connect(func() -> void: _key_entry.clear())
+	add_child(_key_dialog)
 	_form.add_child(model_row)
 	var budgets := GridContainer.new()
 	budgets.columns = 2
@@ -188,6 +229,10 @@ func _ready() -> void:
 	_guard.tooltip_text = "Exclude the rectangle below from agent edits."
 	_guard.toggled.connect(func(_value: bool) -> void: _on_scope_change())
 	materials.add_child(_guard)
+	_live.text = "Live"
+	_live.tooltip_text = "Authorize inference when Start is pressed. Cloud profiles still require verified rates/funding and spend limits. Local GPU compute is not free. Fixture selection explicitly authorizes only scripted keyless checks."
+	_live.toggled.connect(func(_enabled: bool) -> void: _retire_on_human_change())
+	materials.add_child(_live)
 	_form.add_child(materials)
 	_add_rectangle_row(_guard_region,["PX","PY","PW","PH"],[0,0,4,4])
 	# The translated signed fixture is a test adapter, not a normal authoring mode.
@@ -492,6 +537,11 @@ func _on_start() -> void:
 	client.token_budget = int(_token_limit.value)
 	client.request_timeout_seconds = _timeout_limit.value
 	client.tokens_per_minute = int(_rate_limit.value)
+	client.profile_path = _selected_profile
+	client.provider_mode = str(_provider.get_item_metadata(_provider.selected))
+	client.fixture_mode = client.provider_mode == "fixture"
+	client.allow_live = _live.button_pressed
+	client.compute_consent = client.fixture_mode or _live.button_pressed
 	var launch_problem: String = client.launch_problem(_task.text, _model.text, scope)
 	if not launch_problem.is_empty():
 		_log_status("refused", launch_problem)
@@ -517,7 +567,7 @@ func _on_start() -> void:
 			_log_status("refused","Native task authorization: " + str(authorization.get("reason","unknown")))
 			return
 	_native_unconfirmed = false
-	if not client._fake_transport:
+	if not client._fake_transport and not client.fixture_mode:
 		_remember_model()
 	# Recheck after native admission; the client handles a changed environment.
 	if not client.begin_task(_task.text, _model.text, scope) and _retirement.is_valid():
@@ -617,3 +667,72 @@ func _exit_tree() -> void:
 	for detached: Node in [_signed_frame,_log,_protection_label,_whole_canvas]:
 		if is_instance_valid(detached) and not detached.is_inside_tree():
 			detached.free()
+
+func _provider_selected(index: int) -> void:
+	_retire_on_human_change()
+	_live.button_pressed = false
+	if str(_provider.get_item_metadata(index)) == "fixture":
+		select_runner_profile(ProjectSettings.globalize_path("res://../tools/workbench_api_agent/profiles/fixture.json"))
+	_update_key_button()
+
+func select_runner_profile(path: String) -> void:
+	_retire_on_human_change()
+	var file := FileAccess.open(path,FileAccess.READ)
+	if file == null or file.get_length() > 65536:
+		_log_status("refused","Provider profile unreadable or over64KiB.")
+		return
+	var parsed := JSON.new()
+	if parsed.parse(file.get_as_text()) != OK or not parsed.data is Dictionary:
+		_log_status("refused","Choose a trusted JSON provider profile.")
+		return
+	_selected_profile = path
+	_profile_data = parsed.data
+	var provider := str(_profile_data.get("provider",""))
+	for i: int in range(_provider.item_count):
+		if str(_provider.get_item_metadata(i)) == provider:
+			_provider.select(i)
+	_model.text = str(_profile_data.get("model",DEFAULT_MODEL))
+	_profile_button.tooltip_text = "Selected trusted profile: " + path + "\nStart still checks its rates, spend/funding and compute controls."
+	_live.button_pressed = false
+	_update_key_button()
+
+func _credential_environment() -> String:
+	var provider := str(_provider.get_item_metadata(_provider.selected))
+	var credentials: Variant = _profile_data.get("credentials",{})
+	if credentials is Dictionary and str(_profile_data.get("provider","")) == provider:
+		if not str(credentials.get("file","")).is_empty():
+			return ""
+		var selected := str(credentials.get("env",""))
+		if not selected.is_empty():
+			var pattern := RegEx.new()
+			pattern.compile("^[A-Za-z_][A-Za-z0-9_]{0,63}$")
+			if pattern.search(selected) != null and selected.to_upper() not in ["PATH","HOME","USERPROFILE","APPDATA","LOCALAPPDATA","COMSPEC","SYSTEMROOT","WINDIR","TEMP","TMP","CODEX_HOME"]:
+				return selected
+	return "OPENAI_API_KEY" if provider in ["","openai_responses"] else ("NVIDIA_API_KEY" if provider == "nvidia_chat" else "")
+
+func _update_key_button() -> void:
+	var selected := _credential_environment()
+	_key_button.disabled = selected.is_empty()
+	_key_button.tooltip_text = "Key is supplied by the profile's file reference, or no key is needed." if selected.is_empty() else "Enter " + selected + " locally; never saved."
+
+func _show_key_dialog() -> void:
+	var selected := _credential_environment()
+	if selected.is_empty():
+		return
+	_key_entry.clear()
+	_key_help.text = "Key for " + selected + ". Kept only in this application's process environment. A trusted funding/compute profile is still required."
+	_key_dialog.popup_centered(Vector2i(420,170))
+	_key_entry.grab_focus()
+
+func _accept_key() -> void:
+	var selected := _credential_environment()
+	var key := _key_entry.text.strip_edges()
+	_key_entry.clear()
+	if selected.is_empty() or key.is_empty() or key.contains(" ") or key.contains("\n") or key.contains("\r"):
+		_log_status("refused","Enter a provider key without spaces or line breaks.")
+		return
+	_retire_on_human_change()
+	OS.set_environment(selected,key)
+	if not client._diagnostics.secret_environment_names.has(selected):
+		client._diagnostics.secret_environment_names.append(selected)
+	key = ""

@@ -14,10 +14,15 @@ var _session := str(OS.get_process_id()) + "-" + str(Time.get_unix_time_from_sys
 var _images: Array[String] = []
 var _loaded_images := false
 var directory := "user://agent-traffic"
+var secret_environment_names: Array[String] = ["OPENAI_API_KEY", "NVIDIA_API_KEY"]
 
 func _redact(text: String) -> String:
-	var key := OS.get_environment("OPENAI_API_KEY")
-	return text.replace(key, "[REDACTED API KEY]") if not key.is_empty() else text
+	var clean := text
+	for name: String in secret_environment_names:
+		var key := OS.get_environment(name)
+		if not key.is_empty():
+			clean = clean.replace(key, "[REDACTED API KEY]")
+	return clean
 
 func _clean(value: Variant, persist: bool) -> Variant:
 	if value is String:

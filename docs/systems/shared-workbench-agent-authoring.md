@@ -11,6 +11,17 @@ related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architec
 
 # Shared workbench Stage-1 agent authoring contract
 
+## Desktop provider-runner integration candidate
+
+The owner-requested isolated composition joins #53129988 UI and #552be7 Runner
+without MCP. The desktop backend operates the existing native World through
+Godot's dispatcher, preserving logging/rate/Stop controls and provider funding/
+source gates. This is a Draft integration candidate; no genuine live-provider
+acceptance or production merge follows. The [runner runbook](../operations/workbench-api-agent.md)
+describes Profile/Key/Live setup and desktop versus remote bounds. The
+[independent reviewer supplement](../reviews/2026-11-08-workbench-agent-design-and-semantics.md)
+explains design, tool effects, measured overhead and unresolved alternatives.
+
 ## Released-source consumer integration — 2026-11-07
 
 **Current candidate, not accepted main:** isolated #531-derived branch

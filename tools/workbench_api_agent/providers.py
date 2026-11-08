@@ -4,6 +4,9 @@ import base64
 from dataclasses import dataclass
 import hashlib
 import json
+import math
+import datetime as dt
+from email.utils import parsedate_to_datetime
 import os
 import re
 import time
@@ -39,12 +42,18 @@ def retry_after(headers)->float|None:
     value=headers.get('Retry-After','')
     try:
         v=float(value)
-        return max(0,min(v,30)) if v == v else None
-    except (ValueError,TypeError):return None
+        return v if math.isfinite(v) and v>=0 else None
+    except (ValueError,TypeError):
+        try:
+            stamp=parsedate_to_datetime(value)
+            if stamp.tzinfo is None:return None
+            return max(0.,stamp.timestamp()-dt.datetime.now(dt.timezone.utc).timestamp())
+        except (ValueError,TypeError,OverflowError):return None
 
-def http_post(url:str, key:str, body:dict, timeout:float,max_request_bytes:int)->dict:
+def http_post(url:str, key:str, body:dict, timeout:float,max_request_bytes:int,trace=None)->dict:
     raw=json.dumps(body,separators=(',',':'),ensure_ascii=True,allow_nan=False).encode()
     if len(raw)>max_request_bytes: raise ProviderError('model_request_oversize')
+    if trace:trace('http.request',{'endpoint':url,'body':body,'request_bytes':len(raw)})
     head={'Content-Type':'application/json','Accept':'application/json'}
     if key:head['Authorization']='Bearer '+key
     req=Request(url,method='POST',data=raw,headers=head)
@@ -53,18 +62,27 @@ def http_post(url:str, key:str, body:dict, timeout:float,max_request_bytes:int)-
             if resp.status!=200 or resp.headers.get_content_type()!='application/json':
                 raise ProviderError('unexpected_provider_content_type_or_status',resp.status)
             data=resp.read(8500001)
+            if trace:trace('http.response',{'http_status':resp.status,'body':data.decode('utf-8','replace'),'response_bytes':len(data),'body_truncated':len(data)>8500000,'body_limit':8500000})
             if len(data)>8500000:raise ProviderError('provider_response_oversize')
             value=parse_json(data)
             if not isinstance(value,dict):raise ProviderError('provider_response_not_object')
             return value
     except HTTPError as e:
-        # Do not log provider-supplied text (may echo user data or credential).
+        data=e.read(8500001)
+        if trace:trace('http.response',{'http_status':e.code,'body':data.decode('utf-8','replace'),'response_bytes':len(data),'body_truncated':len(data)>8500000,'body_limit':8500000})
         if 300<=e.code<400:raise ProviderError('provider_redirect_refused',e.code) from None
         if e.code in (401,403):raise ProviderError('provider_auth_denied',e.code) from None
         if e.code==429:
-            body=e.read(2048).decode('utf-8','ignore').lower()
+            body=data[:2048].decode('utf-8','ignore').lower()
             if any(w in body for w in ('quota','billing','credit','balance','hard_limit','insufficient_quota')):
                 raise ProviderError('provider_quota_exhausted',429) from None
+            if trace:
+                try:
+                    err=parse_json(data).get('error',{})
+                    kinds=(err.get('code'),err.get('type'))
+                except (ProviderError,AttributeError):kinds=()
+                if not any(v in ('rate_limit_exceeded','slow_down','rate_limit_error') for v in kinds):
+                    raise ProviderError('provider_unclassified_429',429) from None
             raise ProviderError('provider_rate_limit',429,retry_after(e.headers)) from None
         if e.code>=500:raise ProviderError('provider_server_outcome_unknown',e.code) from None
         raise ProviderError('provider_request_rejected',e.code) from None
@@ -88,13 +106,15 @@ TOOL_SCHEMAS={
  'step':{'type':'object','additionalProperties':False,'properties':{'ticks':{'type':'integer','minimum':1,'maximum':120}},'required':['ticks']}
 }
 
-def tool_defs(provider:str,strict:bool)->list[dict]:
+def tool_defs(provider:str,strict:bool,schemas=None)->list[dict]:
     result=[]
-    for name,parameters in TOOL_SCHEMAS.items():
+    for name,parameters in (schemas or TOOL_SCHEMAS).items():
         desc={'observe':'Observe a bounded region and receive original rendered PNG plus native cell readback.',
               'prepare_edit':'Prepare one bounded rectangular material edit proposal; it is not applied yet.',
               'apply_edit':'Apply the matching prepared proposal against native revision fencing.',
               'step':'Advance the existing native World by 1 to 120 ticks.'}[name]
+        if schemas is not None and name=='prepare_edit':
+            desc='Prepare one bounded edit using 1 to 8 disc, line or rectangle primitives, with optional replace_only_material source filters. It is not applied until a matching native acknowledgment.'
         fn={'name':name,'description':desc,'parameters':parameters}
         if strict:fn['strict']=True
         result.append({'type':'function', 'function':fn} if provider!='openai_responses' else {'type':'function',**fn})
@@ -174,28 +194,56 @@ def render_history_chat(history:list[dict],max_image_bytes:int,detail:str)->list
     return messages
 
 class HTTPAdapter:
-    def __init__(self,cfg:dict, *, fixture_mode:bool=False):
+    def __init__(self,cfg:dict, *, fixture_mode:bool=False,trace=None,tool_schemas=None,argument_feedback=False):
         self.cfg=cfg;self.fixture_mode=fixture_mode
         strict_endpoint(cfg['provider'],cfg['endpoint'],fixture_mode)
         self.key='' if fixture_mode else credential(cfg)
+        self.trace=trace;self.tool_schemas=tool_schemas;self.argument_feedback=argument_feedback
+
+    def _trace(self,event,payload):
+        if not self.trace:return
+        def clean(value):
+            if isinstance(value,str):
+                if value.startswith('data:image/') and ';base64,' in value:
+                    raw=base64.b64decode(value.split(',',1)[1]);return {'image_bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+                return value.replace(self.key,'[REDACTED]') if self.key else value
+            if isinstance(value,list):return [clean(v) for v in value]
+            if isinstance(value,dict):return {k:clean(v) for k,v in value.items() if k.lower() not in ('authorization','api_key','api-key')}
+            return value
+        self.trace(event,clean(payload))
 
     def request(self,history:list[dict],max_request_bytes:int,timeout:float)->Decision:
         cfg=self.cfg;provider=cfg['provider'];model=cfg['model'];caps=cfg['capabilities'];lim=cfg['limits']
         if provider=='openai_responses':
             body={'model':model,'input':render_history_response(history,lim['max_image_bytes'],caps['image_detail']),
-                  'tools':tool_defs(provider,caps['strict_tools']), 'max_output_tokens':lim['max_output_tokens'],
+                  'tools':tool_defs(provider,caps['strict_tools'],self.tool_schemas), 'max_output_tokens':lim['max_output_tokens'],
                   'store':False, 'stream':False, 'truncation':'disabled'}
             if caps['parallel_tools']:body['parallel_tool_calls']=False
         else:
             body={'model':model,'messages':[{'role':'system','content':SYSTEM_MESSAGE},
                   *render_history_chat(history,lim['max_image_bytes'],caps['image_detail'])],
-                  'tools':tool_defs(provider,caps['strict_tools']),
+                  'tools':tool_defs(provider,caps['strict_tools'],self.tool_schemas),
                   'max_tokens':lim['max_output_tokens'],'stream':False}
             if caps['parallel_tools']:body['parallel_tool_calls']=False
-        answer=http_post(cfg['endpoint'],self.key,body,timeout,max_request_bytes)
+        answer=http_post(cfg['endpoint'],self.key,body,timeout,max_request_bytes,self._trace if self.trace else None)
         sha=hashlib.sha256(json.dumps(answer,sort_keys=True,separators=(',',':')).encode()).hexdigest()
         seen=any(h.get('image') for h in history)
-        return parse_response(answer,provider,model,sha,seen)
+        try:return parse_response(answer,provider,model,sha,seen)
+        except ProviderError as exc:
+            if not self.argument_feedback or exc.kind not in ('invalid_provider_json','provider_invalid_tool_arguments','provider_arguments_not_object'):
+                raise
+            if provider=='openai_responses':
+                if answer.get('status')!='completed':raise
+                calls=[c for c in answer.get('output',[]) if isinstance(c,dict) and c.get('type')=='function_call']
+            else:
+                choices=answer.get('choices') or []
+                if len(choices)!=1 or choices[0].get('finish_reason')!='tool_calls':raise
+                calls=(choices[0].get('message') or {}).get('tool_calls') or []
+            if len(calls)!=1 or not isinstance(calls[0],dict):raise
+            c=calls[0];fn=c if provider=='openai_responses' else c.get('function',{})
+            name=fn.get('name');cid=c.get('call_id') if provider=='openai_responses' else c.get('id')
+            if name not in TOOL_SCHEMAS or not isinstance(cid,str) or not re.fullmatch(r'[A-Za-z0-9_-]{1,100}',cid):raise
+            return Decision('invalid_tool',cid,name,{},text=exc.kind,usage=answer.get('usage'),model=model,raw_sha256=sha,saw_image=seen)
 
 SYSTEM_MESSAGE=('You are operating a native CyberSand World through four bounded authoring tools. '
  'Only propose operations within the trusted scope and allowed materials listed in the task. '

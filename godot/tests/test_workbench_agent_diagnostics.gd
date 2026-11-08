@@ -47,6 +47,7 @@ func _run() -> void:
 	else: OS.unset_environment("OPENAI_API_KEY")
 	await process_frame
 	await process_frame
+	test_provider_key_redaction()
 	print("WB_AGENT_DIAGNOSTICS: %d checks, %d failures" % [checks,failures])
 	quit(1 if failures else 0)
 
@@ -160,3 +161,16 @@ func cleanup() -> void:
 		var target := ProjectSettings.globalize_path(folder.path_join(filename)).replace("\\","/")
 		if target.begins_with(absolute+"/"): DirAccess.remove_absolute(target)
 	DirAccess.remove_absolute(folder)
+
+func test_provider_key_redaction() -> void:
+	for name: String in ["NVIDIA_API_KEY","CYBERSAND_TEST_PROVIDER_KEY"]:
+		var existed := OS.has_environment(name)
+		var before := OS.get_environment(name)
+		OS.set_environment(name,"dummy-provider-key-never-real")
+		var d := Diagnostics.new()
+		if not d.secret_environment_names.has(name):
+			d.secret_environment_names.append(name)
+		var event: Dictionary = d.append("provider.error",{"body":"echo dummy-provider-key-never-real"},{},false)
+		check(not JSON.stringify(event).contains("dummy-provider-key-never-real"),"provider credential leaked into diagnostics")
+		if existed: OS.set_environment(name,before)
+		else: OS.unset_environment(name)

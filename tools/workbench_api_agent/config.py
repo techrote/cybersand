@@ -29,6 +29,11 @@ DEFAULT = {'max_model_calls': 18, 'max_tools': 30, 'max_run_seconds': 900,
            'max_evidence_bytes': 40*1024*1024, 'max_history_bytes': 140000,
            'max_tool_result_bytes': 12000, 'max_retries': 2,
            'max_total_retries': 6, 'max_native_ticks': 120, 'max_request_bytes': 6000000}
+DESKTOP_HARD = HARD | {'max_model_calls':4096, 'max_tools':8192,
+    'max_output_tokens':131072, 'request_timeout_seconds':600, 'tokens_per_minute':10000000}
+DESKTOP_DEFAULT = DEFAULT | {'max_model_calls':128, 'max_tools':256,
+    'max_output_tokens':32768, 'request_timeout_seconds':180, 'tokens_per_minute':50000,
+    'max_total_output_tokens':250000, 'max_retries':2, 'max_total_retries':2}
 PROVIDERS = ('openai_responses','nvidia_chat','ollama_chat','fixture')
 KEY_ENV = {'openai_responses':'OPENAI_API_KEY','nvidia_chat':'NVIDIA_API_KEY'}
 ENDPOINTS = {'openai_responses':'https://api.openai.com/v1/responses',
@@ -75,7 +80,7 @@ def strict_endpoint(provider:str, url:str, fixture_mode:bool)->None:
                 raise ConfigError('NVIDIA Catalog host/path not allowlisted')
 
 
-def load_profile(path: Path, *, fixture_mode: bool=False) -> dict:
+def load_profile(path: Path, *, fixture_mode: bool=False, desktop: bool=False) -> dict:
     cfg=read_json(path)
     keys_exact(cfg,{'schema','provider','endpoint','model','capabilities','limits','credentials','pricing','spend','local_compute'},
                {'schema','provider','endpoint','model','capabilities','limits','credentials','spend'})
@@ -89,11 +94,12 @@ def load_profile(path: Path, *, fixture_mode: bool=False) -> dict:
     if cap['tools'] is not True or cap['images'] is not True: raise ConfigError('visual tool tasks require tools and image capability')
     if any(type(cap[k]) is not bool for k in ('strict_tools','parallel_tools')): raise ConfigError('invalid capability bool')
     if cap['image_detail'] not in ('low','high','auto'): raise ConfigError('unsupported image detail')
-    lim=cfg['limits'];keys_exact(lim,set(HARD),set())
-    merged=DEFAULT|lim
+    hard=DESKTOP_HARD if desktop else HARD
+    lim=cfg['limits'];keys_exact(lim,set(hard),set())
+    merged=(DESKTOP_DEFAULT if desktop else DEFAULT)|lim
     for k,v in merged.items():
-        if type(v) is not int or v<1 or v>HARD[k]:raise ConfigError('limit '+k+' outside hard bounds')
-    if merged['max_tools']>=96: raise ConfigError('reserve owner Stop slot')
+        if type(v) is not int or v<1 or v>hard[k]:raise ConfigError('limit '+k+' outside hard bounds')
+    if not desktop and merged['max_tools']>=96: raise ConfigError('reserve owner Stop slot')
     if merged['max_image_bytes']>merged['max_evidence_bytes']: raise ConfigError('image > evidence budget')
     cfg['limits']=merged
     key=cfg['credentials'];keys_exact(key,{'env','file'},set())
@@ -121,6 +127,8 @@ def credential(cfg:dict)->str:
         p=Path(ref['file']).expanduser()
         if not p.is_file() or p.is_symlink():raise ConfigError('credential file unavailable')
         st=p.stat()
+        if not callable(getattr(os,'getuid',None)):
+            raise ConfigError('private credential file ownership cannot be verified here; use an environment credential through the masked launcher')
         if st.st_uid!=os.getuid() or stat.S_IMODE(st.st_mode)&0o077: raise ConfigError('credential file must be owned by user mode 0600')
         key=p.read_text(encoding='utf-8').strip()
     if len(key)<20 or re.search(r'\s',key):raise ConfigError('credential missing/invalid; no paid request performed')

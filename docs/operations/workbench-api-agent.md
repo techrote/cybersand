@@ -10,6 +10,55 @@ related-documents: [atlas-agent-runner.md, github-development-and-release.md, do
 
 # Provider-neutral API workbench runner (Draft consumer)
 
+## Desktop provider-runner integration candidate
+
+The owner-requested isolated composition joins #531 head29988b7f with #552
+headbe7b5d47 without MCP. The desktop backend operates the existing native World
+through Godot's dispatcher; the same Python Runner owns provider calls, budget
+reservations and model history. Logging, pacing and independent human Stop remain
+in the UI. This is a Draft candidate, not merged production or accepted genuine
+provider inference. The [independent reviewer supplement](../reviews/2026-11-08-workbench-agent-design-and-semantics.md)
+explains design, tool effects, measured overhead and unresolved alternatives.
+
+### Use from the development workbench
+
+Launch the project from a complete clean Git checkout, with Python 3 available
+(`CYBERSAND_PYTHON` can select its executable). Open **Agent authoring**. Choose
+OpenAI, NVIDIA or local Ollama, then **Profile…** to select your trusted JSON
+profile. **Key…** accepts the profile's environment credential through a masked
+local dialog; it is inherited only by this process's child and is never saved.
+Private file credentials are supported on POSIX with ownership/mode verification;
+Windows must use the environment/key dialog route. Selecting **Live** and pressing
+**Start** authorizes an inference attempt within the chosen profile's gates.
+Example cloud profiles intentionally lack funding approval; a key alone does
+not make them runnable. Source/prices/credit checks can refuse before inference.
+
+For a keyless engineering check, select **Fixture** explicitly. It runs the same
+Runner with scripted decisions, not a language model. The mounted automated test
+installs the nine-then-eight scene, verifies original frames and native readback,
+then starts a second child and injects human Stop during Step. A blank prompt or
+arbitrary work area does not turn the fixed fixture into a general drawing agent.
+
+The UI's API/Tools/Toks/Time/Cells/TPM controls are enforced by the desktop
+configuration. Defaults remain 128 requests, 256 tools, 32,768 output tokens per
+response and 180 seconds per request. Desktop hard caps are 4,096 requests,
+8,192 tools, 131,072 output tokens and 65,536 cells per observation/edit; the
+profile's other history, cumulative token, run-time, image and cash budgets also
+apply. **Match area** sets Cells from W×H within that hard cap; it does not raise
+the cap or grant access outside XYWH. Cells is a per-operation footprint, not a
+lifetime edit allowance. Desktop tools permit up to eight disc/line/rectangle
+operations per prepared edit. The separate HTTP runner contract below retains
+its original 96-rectangle/4,096-cell bounds.
+
+**Traffic…** retains the common Content/Event viewer, filters, copy and JSONL
+export. Provider bodies are inspectable with credentials redacted and images
+represented in traffic by hash/size metadata; original PNGs remain in the owned
+session evidence. Pacing/response/native-ACK waits are explicit. Human **Stop**
+revokes dispatch immediately and retires the native task independently of Python
+or the provider. Wait for its acknowledgment and child cleanup before restarting.
+Per-endpoint local rate reservations survive successive UI tasks; this estimate
+cannot see other applications consuming the same provider quota.
+
 ## Current implementation and boundaries
 
 This new **one-controller** executable consumes the **already-running** #547 private remote workbench; it does not create a simulation, edit host authorization, provide a shell, register MCP or publish code. The host selects provider/model/endpoint/credential reference, capacity, material scope and acceptance criteria. Model-visible operations: **observe, prepare_edit, apply_edit, step** only. The operator retains **session and Stop**. The native owner remains authoritative for revision/generation, scope, protected cells and material provenance. A model's final text is never a verified edit.

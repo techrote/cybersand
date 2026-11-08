@@ -35,7 +35,51 @@ static func _pretty(value: Variant) -> String:
 
 static func _body(record: Dictionary) -> Dictionary:
 	var payload: Variant = record.get("payload",{})
-	return _json(payload.get("body",{})) if payload is Dictionary else {}
+	return _chat_body(_json(payload.get("body",{})),str(record.get("kind",""))) if payload is Dictionary else {}
+
+static func _chat_call(value: Dictionary) -> Dictionary:
+	var fn: Variant = value.get("function",{})
+	if not fn is Dictionary:
+		return {"type":[]}
+	return {"type":"function_call","call_id":str(value.get("id","")),"name":str(fn.get("name","")),"arguments":fn.get("arguments",{})}
+
+static func _chat_body(body: Dictionary, kind: String) -> Dictionary:
+	# Display-only translation. Original Chat/Responses bytes stay unchanged.
+	if kind == "http.request" and body.get("messages") is Array:
+		var result := body.duplicate(false)
+		var input: Array = []
+		for message: Variant in body.messages:
+			if not message is Dictionary:
+				continue
+			var role := str(message.get("role",""))
+			if role == "tool":
+				input.append({"type":"function_call_output","call_id":message.get("tool_call_id",""),"output":message.get("content","")})
+			else:
+				input.append({"role":role,"content":message.get("content",""),"_chat_history":true})
+				if message.get("tool_calls") is Array:
+					for call: Variant in message.tool_calls:
+						if call is Dictionary:
+							input.append(_chat_call(call))
+		result["input"] = input
+		return result
+	if kind == "http.response" and body.has("choices"):
+		var result := body.duplicate(false)
+		var output: Array = []
+		if body.choices is Array:
+			for choice: Variant in body.choices:
+				if not choice is Dictionary or not choice.get("message") is Dictionary:
+					output.append({"type":[]})
+					continue
+				var message: Dictionary = choice.message
+				output.append({"type":"message","content":message.get("content","")})
+				if message.get("tool_calls") is Array:
+					for call: Variant in message.tool_calls:
+						output.append(_chat_call(call) if call is Dictionary else {"type":[]})
+		else:
+			output.append({"type":[]})
+		result["output"] = output
+		return result
+	return body
 
 static func _scope(record: Dictionary) -> String:
 	var identity: Variant = record.get("identity",{})
@@ -107,11 +151,14 @@ static func blocks(record: Dictionary) -> Array:
 					var output: Variant = item.get("output","")
 					_add(result,"Tools","Tool → model [%s] · result summary" % call_id,_result(output),
 						scope+":output:"+call_id+":"+JSON.stringify(output).sha256_text())
+				elif str(item.get("type","")) == "function_call":
+					_call(result,item,scope)
 				elif item.has("role"):
 					var role := str(item.role)
 					var text := _text(item.get("content",""))
 					var heading: String = {"user":"Human → model","developer":"Developer instructions","system":"System instructions","assistant":"Model"}.get(role,role.capitalize())
-					_add(result,"Messages",heading,text,scope+":message:"+role+":"+text.sha256_text())
+					var key := scope+":assistant-history:"+text.sha256_text() if role == "assistant" and item.get("_chat_history",false) else scope+":message:"+role+":"+text.sha256_text()
+					_add(result,"Messages",heading,text,key)
 	elif kind == "http.response":
 		var output: Variant = body.get("output",[])
 		var has_prose := false
@@ -135,6 +182,8 @@ static func blocks(record: Dictionary) -> Array:
 					var text := _text(item.get("content",[]))
 					has_prose = has_prose or not text.is_empty()
 					_add(result,"Messages","Model",text,scope+":response:"+str(body.get("id",stable_id(record)))+":"+str(index))
+					if body.has("choices") and not text.is_empty():
+						result[-1]["record_alias"] = scope+":assistant-history:"+text.sha256_text()
 		if has_call and not has_prose:
 			_add(result,"Messages","Model","No assistant prose returned; this response contains tool calls.",scope+":no-prose:"+str(body.get("id",stable_id(record))))
 		if body.get("usage") is Dictionary:
@@ -150,6 +199,8 @@ static func blocks(record: Dictionary) -> Array:
 			if malformed:
 				description.detail = "Response JSON is malformed, empty or not an object; original body remains in Content/Event."
 			_add(result,"Errors","Response error",_pretty(description))
+	elif kind == "runner.finished" and payload.get("model_final_unverified_report") is String:
+		_add(result,"Messages","Model report (unverified)",payload.model_final_unverified_report)
 	elif kind == "tool.request":
 		_call(result,payload,scope)
 	elif kind in ["native.receipt","native_authorization_request","native_authorization_ack","native_retirement_request","native_retirement_ack"] or kind.ends_with(".ack"):
@@ -200,6 +251,8 @@ static func conversation(records: Array, enabled: Dictionary) -> String:
 				continue
 			if not key.is_empty():
 				seen[key] = true
+			if block.has("record_alias"):
+				seen[block.record_alias] = true
 			var heading := str(block.heading)
 			var payload: Variant = record.get("payload",{})
 			if payload is Dictionary and typeof(payload.get("stale",false)) == TYPE_BOOL and payload.get("stale",false):
