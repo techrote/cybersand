@@ -11,6 +11,9 @@ var panel: Control
 var dialog: ConfirmationDialog
 var checks := 0
 var failed := 0
+var _small_complete := false
+var _new_complete := false
+var _reopen_complete := false
 var start_ms := 0
 var name := "explore001-generated-acceptance"
 
@@ -31,7 +34,7 @@ func until(predicate: Callable, detail: String, seconds: int = 180) -> bool:
 		if predicate.call(): return true
 		if host.simulation_worker.has_failed(): break
 		await process_frame
-	return require(false,detail + " / " + dialog._status.text)
+	return require(false,detail + " / " + (dialog._status.text if dialog != null else "generator dialog not mounted"))
 
 func installed() -> bool:
 	return not panel.applied.is_empty() and not panel.busy() and host.pending_microscenario_apply.is_empty()
@@ -115,6 +118,7 @@ func exercise_saved() -> void:
 	require(panel.toggle_pause(),"reopened generated map Play")
 	await until(func() -> bool: return int(host.latest_snapshot.tick_index)>=prior_tick+8,"reopened native ticks")
 	panel.toggle_pause()
+	_reopen_complete = true
 
 # A second native source genuinely generates and installs 512² Water plus hard
 # terrain, without using the rich semantic fixture's non-play scripted water.
@@ -164,6 +168,7 @@ func exercise_small() -> void:
 	dialog._start()
 	dialog.hide()
 	require(panel.applied==old and installed(),"cancelled native generation left existing map unchanged")
+	_small_complete = true
 
 func exercise_new() -> void:
 	dialog.open_new()
@@ -275,6 +280,7 @@ func exercise_new() -> void:
 			"saved original base and two ordered manual edits")
 		require(saved.setup.actors.size()==1 and saved.setup.selected==1,
 			"saved physical setup and selected flyer")
+	_new_complete = true
 	print("EXPLORE001_SOURCE ",JSON.stringify({"source_sha256":source.sha256,"profile":source.recipe_sha256,
 		"native_receipts":source.receipt_hashes,"install_receipt":host.tower_context.get("liquid_construction_receipt",{}),
 		"elapsed_ms":Time.get_ticks_msec()-start_ms}))
@@ -292,13 +298,24 @@ func run() -> void:
 		quit(1)
 		return
 	dialog=panel._generated_dialog
+	if not require(dialog != null,"Godot 4.7 generator dialog compiled and mounted"):
+		quit(1)
+		return
 	if await until(installed,"initial native owner and blank canvas"):
 		if OS.get_environment("CYBERSAND_EXPLORE_REOPEN")=="1":
 			await exercise_saved()
+			require(_reopen_complete,"MANDATORY complete fresh-process generated start and native ticks")
 		else:
 			await exercise_small()
+			require(_small_complete,"MANDATORY complete 512 native Water/generation/reset")
 			await exercise_new()
-	print("EXPLORE001_RESULTS checks=",checks," failures=",failed," elapsed_ms=",Time.get_ticks_msec()-start_ms)
+			require(_new_complete,"MANDATORY complete 1024 Deepworks/flyer/paint/save")
+	else:
+		require(false,"MANDATORY initial World acknowledgment before scenarios")
+	require(checks >= 8,"MANDATORY multiple native/gameplay assertions actually ran")
+	print("EXPLORE001_RESULTS checks=",checks," failures=",failed,
+		" small=",_small_complete," new=",_new_complete," reopened=",_reopen_complete,
+		" elapsed_ms=",Time.get_ticks_msec()-start_ms)
 	host.queue_free()
 	await process_frame
 	await process_frame
