@@ -1,0 +1,8 @@
+{"version":1,"seq":1,"tool":"observe","args":{"region":{"x":28,"y":28,"width":8,"height":8},"detail":"cells"},"expect_status":"observed"}
+{"version":1,"seq":2,"tool":"prepare_edit","args":{"observation_id":"@last","operations":[{"shape":"rectangle","x0":30,"y0":30,"x1":32,"y1":32,"material":58}]},"expect_status":"proposed"}
+{"version":1,"seq":3,"tool":"apply_edit","args":{"proposal_id":"@last"},"expect_status":"applied"}
+{"version":1,"seq":4,"tool":"observe","args":{"region":{"x":28,"y":28,"width":8,"height":8},"detail":"cells"},"expect_status":"observed"}
+{"version":1,"seq":5,"tool":"step","args":{"ticks":4},"expect_status":"completed"}
+{"version":1,"seq":6,"tool":"observe","args":{"region":{"x":28,"y":28,"width":8,"height":8},"detail":"cells"},"expect_status":"observed"}
+{"version":1,"seq":7,"tool":"stop","args":{},"expect_status":"stopped"}
+{"version":1,"seq":8,"tool":"apply_edit","args":{"proposal_id":"@last"},"expect_status":"refused"}
