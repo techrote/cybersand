@@ -35,7 +35,7 @@ TERM_GRACE_SECONDS = 5
 KILL_GRACE_SECONDS = 3
 MAX_INPUT_BYTES = 262144
 DEFAULT_EVIDENCE_LIMIT_BYTES = 128 * 1024 * 1024
-MIN_EVIDENCE_LIMIT_BYTES = 16 * 1024 * 1024
+MIN_EVIDENCE_LIMIT_BYTES = 13 * 1024 * 1024
 MAX_EVIDENCE_LIMIT_BYTES = 512 * 1024 * 1024
 TERMINAL_EVIDENCE_RESERVE_BYTES = 65536
 
@@ -317,7 +317,7 @@ def main(argv: list[str] | None = None) -> int:
     if not MIN_SESSION_TIMEOUT <= args.timeout <= SESSION_TIMEOUT_MAX:
         parser.error("--timeout must be in [60,1840] seconds including cleanup reserve")
     if not MIN_EVIDENCE_LIMIT_BYTES <= args.evidence_limit_bytes <= MAX_EVIDENCE_LIMIT_BYTES:
-        parser.error("--evidence-limit-bytes must be in [16MiB,512MiB]")
+        parser.error("--evidence-limit-bytes must be in [13MiB,512MiB]")
     godot = args.godot.resolve(strict=True)
     auth = args.authorization.resolve(strict=True)
     cmd_path = args.commands.resolve(strict=not args.live)
