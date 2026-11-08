@@ -213,8 +213,8 @@ readback nor an unversioned observation is sufficient. The planner cannot
 establish that source identity itself. It is a **staging/preview primitive**,
 not an authoritative paste API and not a user-mounted editor control.
 
-The planner refuses missing/misaligned source IDs, IDs not admitted by the accepted native material enum (0–131, except reserved slot 10), source/destination out-of-bounds, conflicting IDs
-for repeated source coordinates, and more than 4096 source points. Identical
+The planner refuses missing/misaligned source IDs, IDs not admitted by the accepted native material enum (0–131, except reserved slot 10),
+source/destination out-of-bounds, conflicting IDs for repeated source coordinates, and more than 4096 source points. Identical
 coordinate/ID duplicates are coalesced. The entire operation refuses if
 any destination leaves the canvas: no clipping or partial paste. It returns
 a deterministic row-major union of destination points and deterministic
@@ -234,7 +234,7 @@ generation/revision fencing is required before any multi-material paste
 or authoring-history entry may become user-operable. Source may contain
 multiple materials; none are changed by this planner.
 
-Dedicated GDScript regression now tests Air/other material grouping,
+Dedicated GDScript regression now tests Empty/other material grouping,
 row-major determinism, zero applied claims, repeated identical and
 conflicting cells, incomplete/native-invalid ID vectors, off-canvas
 destination and 4097-cell refusal. It retains its existing real
