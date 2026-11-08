@@ -36,9 +36,9 @@ engine.REQUEST_VALUE = {
 }
 engine.CASE_MARKERS = {
     "test_explore001_generated_workbench":
-        r"(?m)^EXPLORE001_RESULTS checks=[1-9][0-9]* failures=0 small=true new=true reopened=false elapsed_ms=[0-9]+\\s*$",
+        r"(?m)^EXPLORE001_RESULTS checks=[1-9][0-9]* failures=0 small=true new=true reopened=false elapsed_ms=[0-9]+\s*$",
     "test_workbench_canvas":
-        r"(?m)^WORKBENCH_CANVAS [1-9][0-9]* checks, 0 failures\\s*$",
+        r"(?m)^WORKBENCH_CANVAS [1-9][0-9]* checks, 0 failures\s*$",
 }
 engine.CASE_TIMEOUTS = {
     "test_explore001_generated_workbench": 1800,
@@ -80,13 +80,13 @@ def verify_native(log: Path, output: Path, source: str, name_filter: str):
     engine.require(name_filter in NATIVE_FILTERS, "Unregistered native group")
     data = log.read_bytes()
     text = data.decode("utf-8")
-    passed = re.findall(r"(?m)^\\[pass\\] (.+?)\\s*$", text)
-    totals = re.findall(r"(?m)^([0-9]+) tests passed\\s*$", text)
+    passed = re.findall(r"(?m)^\[pass\] (.+?)\s*$", text)
+    totals = re.findall(r"(?m)^([0-9]+) tests passed\s*$", text)
     engine.require(len(totals) == 1 and int(totals[0]) == len(passed) and passed,
                    "Incomplete native group or mismatched totals")
     engine.require(len(set(passed)) == len(passed) and
                    all(name_filter in name for name in passed), "Duplicate/foreign native cases")
-    engine.require(re.search(r"(?im)^\\[fail\\]|\\b(?:runtime error|AddressSanitizer|UndefinedBehaviorSanitizer|skipped)\\b", text) is None,
+    engine.require(re.search(r"(?im)^\[fail\]|\b(?:runtime error|AddressSanitizer|UndefinedBehaviorSanitizer|skipped)\b", text) is None,
                    "Native group failed or skipped")
     engine.require(all(name in passed for name in NATIVE_REQUIRED[name_filter]),
                    "Named native control did not run")
