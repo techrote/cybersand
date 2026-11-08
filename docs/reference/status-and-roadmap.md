@@ -10,6 +10,19 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## EXPLORE-001 generated playable maps — 2026-11-08
+
+**Draft candidate, not accepted main:** [PR #542](https://github.com/techrote/cybersand/pull/542)
+connects the native GEN-007 final play plane to the ordinary Shared Workbench's
+prepared World, existing flyer/camera/brush controls and authored-start save/reopen.
+The [contract](../systems/explore001-generated-playable-maps.md) owns its finite
+limits and unchanged Setup-v2 wrapper. [Independent QA](../audits/2026-11-08-explore001-integration-qa.md)
+found and corrected a repeated chunk-preview cursor defect. Exact-head native,
+desktop and retained publication gates remain separately required; the
+[Windows playtest](../operations/explore001-desktop-playtest.md) requires a human
+verdict. Keep #402/#409/#531 isolated until Integration selects their controlled
+source transition. No Ready or merge authorization is implied.
+
 ## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05
 
 **Experimental draft, not on main; no default changed.** The

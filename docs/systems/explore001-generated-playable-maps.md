@@ -15,6 +15,16 @@ This branch introduces a **candidate implementation**. Code presence is not
 evidence of a rebuilt runtime, tested player movement, or integration
 authorization. Rebuild and execute its tests before using it with valued maps.
 
+The [8 November integration QA](../audits/2026-11-08-explore001-integration-qa.md)
+records independent native/persistence reviews, a reproduced repeated-preview
+cursor defect and its correction. Every preview now retires its chunk cursor
+with its copied buffers. Complete repeated previews, partial cancellation,
+larger/smaller canvases and saved-source corruption have explicit regressions.
+The [Windows candidate guide](../operations/explore001-desktop-playtest.md) owns
+launch and human playtest instructions. This remains a Draft source candidate;
+candidate runtime qualification and published retained-runtime provenance are
+separate gates.
+
 ## Ordinary workbench workflow
 
 1. Launch the existing desktop feature launcher and choose **Shared Workbench**
@@ -87,6 +97,12 @@ mid-tick is deliberately not serialized.
   selected with **Choose profile file…**.
 - Setup-v2 names without generated manifest `format` retain their old reader.
   #402/#409's Draft setup-v3/v4 formats are not independently changed here.
+- A 2048² chunk profile requires up to 1024 receipts at aligned 64-cell chunks;
+  region/profile capacity still applies. Deepworks' declared semantic plan is
+  1024², so a 2048² request is refused while preserving the installed map.
+  Source material storage is one byte per cell (4 MiB at 2048²) and the preview
+  is four bytes per cell (16 MiB); prepared/old Worlds and other staging memory
+  coexist. Those buffer bounds are not a total-memory or responsiveness claim.
 
 ## Qualification commands (run against a **source-matched rebuilt** native runtime)
 
@@ -100,8 +116,8 @@ Linux (in a suitable graphical environment):
 ```bash
 godot --path godot --script res://tests/test_explore001_generated_workbench.gd
 CYBERSAND_EXPLORE_REOPEN=1 godot --path godot --script res://tests/test_explore001_generated_workbench.gd
-godot --path godot --script res://tests/test_workbench_canvas.gd
-godot --path godot --script res://tests/test_worldgen_planes.gd
+godot --headless --path godot --script res://tests/test_workbench_canvas.gd
+godot --headless --path godot --script res://tests/test_worldgen_planes.gd
 ```
 
 PowerShell (replace the executable with the pinned Godot 4.7 console binary):
@@ -123,6 +139,13 @@ with the PR evidence. The script performs direct play-plane readback, actual
 shared-owner installation, native ticks, a selected flyer, brush/erase,
 native failure refusals and save/reopen. A human desktop session must separately
 check movement feel, camera, collisions and physical traversal.
+
+The ordinary regression planner discovers the self-contained generated-map test;
+the source-built qualification workflows additionally execute its fresh-process
+phase using `CYBERSAND_EXPLORE_REOPEN=1`. Temporary admission/reopen diagnostics
+and old-artifact Windows replay have been retired; their source and first-failure
+logs remain historical evidence. The Windows source-built workflow retains a
+pristine desktop bundle with `Open Workbench.cmd` and a complete payload manifest.
 
 ## Protected-source integration
 

@@ -185,6 +185,7 @@ func _stop() -> void:
 	_cells = PackedByteArray()
 	_pixels = PackedByteArray()
 	_chunks.clear()
+	_next_chunk = 0
 	_receipts.clear()
 	_ready_packet.clear()
 	get_ok_button().disabled = true

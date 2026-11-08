@@ -10,6 +10,16 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Generated terrain in the playable workbench
+
+For GEN-007 preview/install, global coordinates, material receipts, authored-start
+save/reopen and capacity limits, retrieve the
+[generated-map contract](../systems/explore001-generated-playable-maps.md).
+For the Windows bundle launcher and manual acceptance procedure, retrieve the
+[candidate playtest guide](../operations/explore001-desktop-playtest.md).
+The dated [QA findings](../audits/2026-11-08-explore001-integration-qa.md) are
+historical evidence, separately scoped from accepted-main availability.
+
 ## Branch reconciliation and design choices
 
 For how agents reconcile stacked or long-running branches with main, and which

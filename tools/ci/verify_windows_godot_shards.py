@@ -22,13 +22,13 @@ def require(condition: bool, message: str) -> None:
         raise ValueError(message)
 
 
-def source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
+def source_contract(root: Path, source_sha: str, shard_count: int, native_candidate: Path | None = None) -> dict:
     import run_windows_godot_regressions as windows
 
     # Source discovery, attributes and blob reads share one operation allowance;
     # additional inputs must not create a sequence of per-file watchdogs.
     with windows.metadata_budget():
-        return _source_contract(root, source_sha, shard_count)
+        return _source_contract(root, source_sha, shard_count, native_candidate)
 
 
 def source_input_hashes(root: Path, paths: list[str], required_lfs: set[str]) -> dict:
@@ -84,7 +84,7 @@ def source_input_hashes(root: Path, paths: list[str], required_lfs: set[str]) ->
     return hashes
 
 
-def _source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
+def _source_contract(root: Path, source_sha: str, shard_count: int, native_candidate: Path | None = None) -> dict:
     """Derive authority from the exact checkout, never from shard reports.
 
     The reducer need not materialize either LFS DLL. Compare committed LFS
@@ -104,8 +104,13 @@ def _source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
     excluded = [case.name for case in cases if case.requires_display]
     require(bool(selected), "source discovery has no applicable Windows cases")
     shards, _ = runner.build_shard_plan(selected, shard_count)
-    raw_manifest = windows.git(root, "show", "HEAD:" + windows.PROVENANCE)
-    manifest = json.loads(raw_manifest)
+    if native_candidate is None:
+        raw_manifest = windows.git(root, "show", "HEAD:" + windows.PROVENANCE)
+        manifest = json.loads(raw_manifest)
+    else:
+        import native_candidate_identity as identity
+        manifest = identity.verify(root, native_candidate)
+        raw_manifest = (native_candidate / identity.NAME).read_bytes()
     require(manifest.get("schema_version") == 1
             and manifest.get("artifact") == windows.NATIVE,
             "unexpected source runtime manifest")
@@ -126,6 +131,8 @@ def _source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
         require(match is not None, "noncanonical source LFS pointer: " + relative)
         binaries[relative] = {"path": relative, "sha256": match[1].decode(),
                               "size": int(match[2])}
+    if native_candidate is not None:
+        binaries[windows.NATIVE] = {"path": windows.NATIVE, "sha256": manifest["sha256"], "size": manifest["size"]}
     require(binaries[windows.NATIVE]["sha256"] == manifest.get("sha256")
             and binaries[windows.NATIVE]["size"] == manifest.get("size"),
             "source native pointer differs from runtime manifest")
@@ -133,6 +140,9 @@ def _source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
             "source Rapier pointer differs from selected pin")
     tracked = windows.git(root, "ls-files", "-z", "--", *windows.INPUT_SCOPES).decode().split("\0")
     paths = sorted(p for p in tracked if p and not p.startswith("godot/.godot/"))
+    input_hashes = source_input_hashes(root, paths, {windows.NATIVE, windows.RAPIER})
+    if native_candidate is not None:
+        input_hashes[windows.NATIVE] = [manifest["sha256"]]
     return {
         "execution_policy": execution_policy.identity(),
         "source_tree": tree,
@@ -143,7 +153,7 @@ def _source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
         "plans": [[runner.case_dict(case) for case in shard] for shard in shards],
         "runtime_source_commit": manifest["source_commit"],
         "runtime_build_commit": manifest["build_commit"],
-        "runtime_provenance": {"path": windows.PROVENANCE,
+        "runtime_provenance": {"path": windows.PROVENANCE if native_candidate is None else "source-built-candidate-provenance.json",
                                "sha256": hashlib.sha256(raw_manifest).hexdigest()},
         "native_source_inputs": inputs,
         "cybersand_runtime": binaries[windows.NATIVE],
@@ -151,7 +161,7 @@ def _source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
         "godot_version": windows.GODOT_VERSION,
         "godot_archive_sha512": windows.GODOT_SHA512,
         "tested_input_paths": paths,
-        "tested_input_sha256": source_input_hashes(root, paths, {windows.NATIVE, windows.RAPIER}),
+        "tested_input_sha256": input_hashes,
     }
 
 
@@ -367,8 +377,9 @@ def main() -> None:
     parser.add_argument("--attempt", required=True)
     parser.add_argument("--shard-count", type=int, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--native-candidate", type=Path)
     args = parser.parse_args()
-    expected = source_contract(Path(__file__).resolve().parents[2], args.source_sha, args.shard_count)
+    expected = source_contract(Path(__file__).resolve().parents[2], args.source_sha, args.shard_count, args.native_candidate)
     result = verify(args.root, args.source_sha, args.run_id,
                     args.attempt, args.shard_count, expected=expected)
     args.output.parent.mkdir(parents=True, exist_ok=True)

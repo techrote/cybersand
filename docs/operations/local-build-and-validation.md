@@ -10,6 +10,24 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Source-built Windows candidate validation — 2026-11-08
+
+GDExtension Windows shards consume the same-run `native-candidate-windows`
+artifact after its production build. `tools/ci/native_candidate_identity.py`
+binds the DLL SHA-256/size, complete native input inventory, source commit and
+tree; the Windows runner's explicit `--native-candidate` mode and independent
+coverage reducer verify those bytes. The default retained-runtime mode keeps
+its original committed provenance checks. Candidate manifests do not rewrite
+published provenance or waive `check_repository.py`.
+
+The [EXPLORE candidate](explore001-desktop-playtest.md) is assembled by
+`tools/package_explore001_candidate.py` from committed project/profile bytes,
+verified LFS dependencies, official pinned Godot, and the source-built artifact.
+Generated imports and caches are omitted. Two processes test a disposable copy
+of the packaged project, leaving the delivered bundle pristine. The dated
+[QA record](../audits/2026-11-08-explore001-integration-qa.md) separates candidate
+execution, retained publication and pending human acceptance.
+
 ## PLAY LIFE010 raw-evidence gate — 2026-10-31
 
 The five `test_play_life010_<rig>.gd` wrappers are discovered by the unchanged

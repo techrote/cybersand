@@ -120,6 +120,7 @@
     "decisions/ADR-014-semantic-plane-admission.md",
     "systems/generation-workbench-2.md",
     "systems/explore001-generated-playable-maps.md",
+    "operations/explore001-desktop-playtest.md",
     "operations/procedural-qualification.md",
     "architecture/pressure-optimization.md",
     "operations/atlas-agent-runner.md",
@@ -138,6 +139,10 @@
     "../.github/pull_request_template.md"
   ],
   "excluded": [
+    {
+      "path": "audits/2026-11-08-explore001-integration-qa.md",
+      "reason": "Dated Draft source review and qualification checkpoint; canonical generated-map contract and playtest guide preserve candidate/publication/human acceptance boundaries."
+    },
     {
       "path": "audits/2026-11-04-workbench394-ready-validation.md",
       "reason": "Dated owner acceptance, accepted-main pressure reconciliation and exact resulting-source qualification. Retrieve current controls through the player playground guide and transition rules through the material shadow guide."

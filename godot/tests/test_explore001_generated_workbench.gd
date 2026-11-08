@@ -99,6 +99,27 @@ func free_spawn(cells: PackedByteArray, side: int) -> Vector2:
 	return Vector2(-1,-1)
 
 func exercise_saved() -> void:
+	var chunk_data: Dictionary = Store.read_named(name+"-chunks")
+	if not require(chunk_data.get("generated",false),"fresh-process repeated chunk preview readable"): return
+	# Malformed source identities can be well-formed JSON: regeneration must
+	# reject them without touching the currently installed ordinary canvas.
+	var old: Dictionary = panel.applied.duplicate(true)
+	for key: String in ["sha256","generator_fingerprint","generator_revision","receipt_hashes"]:
+		var bad: Dictionary = chunk_data.generation.duplicate(true)
+		match key:
+			"generator_revision": bad[key] += 1
+			"receipt_hashes": bad[key][0] = "0".repeat(16)
+			_: bad[key] = "0".repeat(64 if key=="sha256" else 16)
+		dialog.open_saved(chunk_data.setup,bad)
+		if not await until(func() -> bool: return dialog._status.text.begins_with("Refused"),
+				"fresh-process corrupted source refusal "+key): return
+		require(panel.applied==old and installed(),"corrupted "+key+" preserves installed World")
+	dialog.open_saved(chunk_data.setup,chunk_data.generation)
+	if not await until(func() -> bool: return dialog._phase=="ready" or dialog._status.text.begins_with("Refused"),
+			"fresh-process repeated chunk source regeneration"): return
+	if not require(dialog._phase=="ready" and dialog._ready_packet.sha256==chunk_data.generation.sha256 and
+			dialog._ready_packet.receipt_hashes==chunk_data.generation.receipt_hashes,
+			"fresh-process repeated chunk preview exact materials and receipts"): return
 	var data: Dictionary = Store.read_named(name)
 	if not require(data.get("generated",false),"fresh-process versioned generated map readable"): return
 	dialog.open_saved(data.setup,data.generation)
@@ -159,6 +180,48 @@ func exercise_small() -> void:
 	var source: Dictionary=dialog._ready_packet.duplicate(true)
 	require(source.cells.size()==512*512 and source.cells.find(3)>=0 and source.cells.find(58)>=0,
 		"genuinely generated Water and hard rock exist")
+	# A repeated preview must actually traverse every native source chunk.
+	dialog._start()
+	if not await until(func() -> bool: return dialog._phase=="ready" or dialog._status.text.begins_with("Refused"),
+			"second complete chunk preview"): return
+	if not require(dialog._phase=="ready" and dialog._ready_packet.cells==source.cells and
+			dialog._ready_packet.receipt_hashes==source.receipt_hashes,
+			"second preview regenerates every source chunk and exact material"): return
+	dialog._start()
+	dialog._process(0.0)
+	require(dialog._next_chunk==1,"partial chunk generation began")
+	dialog.hide()
+	require(panel.applied.size()>0 and installed(),"partial cancellation preserves installed World")
+	dialog.popup_centered(Vector2i(720,610))
+	dialog._start()
+	if not await until(func() -> bool: return dialog._phase=="ready" or dialog._status.text.begins_with("Refused"),
+			"chunk preview after partial cancellation"): return
+	if not require(dialog._phase=="ready" and dialog._ready_packet.cells==source.cells and
+			dialog._ready_packet.receipt_hashes==source.receipt_hashes,
+			"cancel/restart regenerates every chunk"): return
+	var chunk_setup: Dictionary=Setup.fresh(panel._liquids.bridge.default_liquid_policy(),Vector2i(512,512))
+	require(Store.write_named(name+"-chunks",chunk_setup,dialog._ready_packet).is_empty(),
+		"save repeated chunk preview for independent fresh-process regeneration")
+	# Exercise both cursor directions and the supported largest generated
+	# canvas through the real prepared World owner, not only a preview array.
+	for side: int in [1024,2048,512]:
+		dialog._extent.select([512,1024,2048].find(side))
+		dialog._start()
+		var began: int = Time.get_ticks_msec()
+		if not await until(func() -> bool: return dialog._phase=="ready" or dialog._status.text.begins_with("Refused"),
+				"changed-size native chunks "+str(side),300): return
+		if not require(dialog._phase=="ready" and dialog._ready_packet.receipt_hashes.size()==(side/64)*(side/64),
+				"complete source receipts at changed size "+str(side)): return
+		print("EXPLORE001_CAPACITY side=",side," preview_ms=",Time.get_ticks_msec()-began,
+			" cells=",dialog._ready_packet.cells.size()," preview_rgba_bytes=",dialog._pixels.size())
+		if side==2048:
+			var large: Dictionary=Setup.fresh(panel._liquids.bridge.default_liquid_policy(),Vector2i(side,side))
+			if not require(panel.install_generated_start(large,dialog._ready_packet),"2048 generated preparation requested"): return
+			if not await until(installed,"2048 generated native/Rapier acknowledgment",300): return
+			authoritative_cells(dialog._ready_packet.cells,dialog._ready_packet.sha256,"2048 generated starting map")
+		if side==512:
+			require(dialog._ready_packet.cells==source.cells and dialog._ready_packet.receipt_hashes==source.receipt_hashes,
+				"smaller preview returns exact original terrain after larger previews")
 	var global_chunk: Dictionary=dialog._generator.generate_chunk(Vector2i(4,4))
 	require(global_chunk.get("ok",false) and global_chunk.cells[0]==source.cells[0],
 		"global (256,256) native sampler maps exactly to destination local (0,0)")
@@ -196,6 +259,13 @@ func exercise_new() -> void:
 			dialog._profile.select(i)
 			break
 	dialog._seed.set_value_no_signal(19337)
+	var before_refusal: Dictionary = panel.applied.duplicate(true)
+	dialog._extent.select(2)
+	dialog._x.set_value_no_signal(0)
+	dialog._y.set_value_no_signal(0)
+	dialog._start()
+	require(dialog._phase=="idle" and dialog._status.text.begins_with("Refused") and panel.applied==before_refusal,
+		"2048 outside the declared Deepworks semantic plan refuses and preserves installed map")
 	dialog._extent.select(1)
 	dialog._x.set_value_no_signal(0)
 	dialog._y.set_value_no_signal(0)
@@ -300,6 +370,12 @@ func exercise_new() -> void:
 			"saved original base and two ordered manual edits")
 		require(saved.setup.actors.size()==1 and saved.setup.selected==1,
 			"saved physical setup and selected flyer")
+	require(panel.new_canvas(),"generated to ordinary Setup-v2 canvas requested")
+	if not await until(installed,"ordinary canvas replaces generated start"): return
+	require(panel._generated_active.is_empty(),"ordinary canvas retires generated baseline")
+	panel._name.text=name+"-legacy"
+	require(panel.save_setup(),"ordinary Setup-v2 save remains available after generated authoring")
+	require(Store.read_named(name+"-legacy").get("legacy",false),"ordinary save retains legacy reader route")
 	_new_complete = true
 	print("EXPLORE001_SOURCE ",JSON.stringify({"source_sha256":source.sha256,"profile":source.recipe_sha256,
 		"native_receipts":source.receipt_hashes,"install_receipt":host.tower_context.get("liquid_construction_receipt",{}),

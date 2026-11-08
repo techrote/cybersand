@@ -10,6 +10,11 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+EXPLORE-001 Draft: [generated-map contract](systems/explore001-generated-playable-maps.md),
+[Windows candidate/playtest](operations/explore001-desktop-playtest.md), and
+[independent integration QA](audits/2026-11-08-explore001-integration-qa.md).
+Candidate execution does not satisfy retained runtime publication or human acceptance.
+
 IN-TOOLS #361: [renewed current-main admission](architecture/in-tools-gameplay-admission.md)
 and [six Planned/NOT_RUN fixture concepts](operations/in-tools-fixtures-and-playtest.md).
 The [2026-11-07 source authority audit](audits/2026-11-07-in-tools-361-source-authority-renewal.md)

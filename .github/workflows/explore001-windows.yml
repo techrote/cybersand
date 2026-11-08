@@ -11,6 +11,8 @@ on:
       - 'godot/scripts/main.gd'
       - 'godot/scripts/microscenario_host.gd'
       - 'godot/tests/test_explore001_generated_workbench.gd'
+      - 'tools/package_explore001_candidate.py'
+      - 'tools/ci/native_candidate_identity.py'
   workflow_dispatch:
 permissions:
   contents: read
@@ -79,6 +81,7 @@ jobs:
           cp "$CYBERSAND_NATIVE_OUTPUT" build/explore001-windows/
           cp evidence/source-commit.txt build/explore001-windows/
           cp evidence/native-dll.sha256 build/explore001-windows/
+          python3 tools/ci/native_candidate_identity.py build/explore001-windows --create
       - name: Preserve Windows DLL for exact-head hosted process
         if: success()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -117,6 +120,8 @@ jobs:
           git rev-parse HEAD | Set-Content evidence/source-commit.txt
           $expected = Get-Content build/explore001-windows/source-commit.txt
           if ((git rev-parse HEAD).Trim() -ne $expected.Trim()) { throw 'Source head differs from produced DLL' }
+          python tools/ci/native_candidate_identity.py build/explore001-windows
+          if ($LASTEXITCODE -ne 0) { throw 'Candidate provenance refused' }
           $dll = 'build/explore001-windows/cybersand_native.windows.x86_64.dll'
           if (!(Test-Path $dll)) { throw 'Candidate DLL is absent' }
           $dest = 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll'
@@ -194,6 +199,43 @@ jobs:
           Invoke-Explore 'new' $false
           Invoke-Explore 'reopened' $true
           Remove-Item Env:CYBERSAND_EXPLORE_REOPEN -ErrorAction SilentlyContinue
+      - name: Package a source-matched owner desktop candidate
+        shell: pwsh
+        run: |
+          $notices = Join-Path $env:RUNNER_TEMP 'godot-notices'
+          New-Item -ItemType Directory -Force $notices | Out-Null
+          foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            curl.exe -fL --retry 3 -o (Join-Path $notices $name) "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot notices download failed' }
+          }
+          if ((Get-FileHash (Join-Path $notices 'LICENSE.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80' -or (Get-FileHash (Join-Path $notices 'COPYRIGHT.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d') { throw 'Pinned Godot notices hash mismatch' }
+          $engine = Join-Path (Split-Path $env:GODOT_EXE) 'Godot_v4.7-stable_win64.exe'
+          python tools/package_explore001_candidate.py --engine $engine --engine-notices $notices --native-candidate build/explore001-windows --output build/explore001-desktop-candidate
+          if ($LASTEXITCODE -ne 0) { throw 'Desktop packaging refused' }
+          $manifest = 'build/explore001-desktop-candidate/candidate-manifest.json'
+          Get-FileHash $manifest -Algorithm SHA256 | Format-List | Out-File evidence/candidate-manifest-sha256.txt
+          # Qualify the delivered project and binary, not a neighboring checkout.
+          $validation = Join-Path $env:RUNNER_TEMP 'explore001-packaged-validation'
+          Copy-Item -LiteralPath 'build/explore001-desktop-candidate' -Destination $validation -Recurse
+          $project = Join-Path $validation 'godot'
+          & $env:GODOT_EXE --headless --path $project --editor --quit *> evidence/package-import.log
+          if ($LASTEXITCODE -ne 0) { throw 'Packaged import failed' }
+          & $env:GODOT_EXE --headless --path $project --script res://tests/test_explore001_generated_workbench.gd *> evidence/package-new.log
+          if ($LASTEXITCODE -ne 0) { throw 'Packaged generated gameplay failed' }
+          $env:CYBERSAND_EXPLORE_REOPEN='1'
+          & $env:GODOT_EXE --headless --path $project --script res://tests/test_explore001_generated_workbench.gd *> evidence/package-reopened.log
+          Remove-Item Env:CYBERSAND_EXPLORE_REOPEN
+          if ($LASTEXITCODE -ne 0) { throw 'Packaged fresh-process reopen failed' }
+          foreach ($log in @('evidence/package-new.log','evidence/package-reopened.log')) {
+            if (!(Select-String -Path $log -Pattern 'EXPLORE001_RESULTS checks=[1-9][0-9]+ failures=0') -or (Select-String -Path $log -Pattern 'SCRIPT ERROR:|Failed to load script')) { throw 'Packaged completion receipt missing or script failure' }
+          }
+      - name: Retain owner Windows desktop candidate (not a release)
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: explore001-windows-desktop-${{ github.sha }}
+          path: build/explore001-desktop-candidate/
+          if-no-files-found: error
+          retention-days: 90
       - name: Retain actual Windows process/native-source and first-failure evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
