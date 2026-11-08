@@ -203,3 +203,14 @@ order or source-owner transition changes. Additive retrieval questions cover
 early receipt admission and first-open button accessibility without altering
 the frozen32. Docs, M11, current repository, retrieval and whitespace checks are
 run separately, retaining original failures and explicit platform qualifiers.
+
+The first exact6119f917 full Godot matrix passes, but scoped rendered Linux
+run42497292424 fails its existing300second2048² preview wait while colour work
+is still progressing (2,859,008/4,194,304 cells). The raw first failure remains
+in `../evidence/layout-capacity/linux-scoped-first-failure/` and its Actions
+artifact. That is not a passed rendered2048² scenario. Only that largest-preview
+test phase now consumes the existing named `graphical_case_seconds` allowance
+(1200seconds), within the retained outer fixture bound. Production scheduling,
+capacity, native code and the policy's numeric values are unchanged. A corrected
+rendered execution must finish with the material/receipt/install assertions;
+increasing the test allowance alone supplies no runtime or performance pass.

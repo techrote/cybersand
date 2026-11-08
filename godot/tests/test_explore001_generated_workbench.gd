@@ -208,8 +208,12 @@ func exercise_small() -> void:
 		dialog._extent.select([512,1024,2048].find(side))
 		dialog._start()
 		var began: int = Time.get_ticks_msec()
+		# A full 2048² chunk preview spans 1024 native chunk turns plus 512
+		# colour turns. Software-rendered hosted frames need the registered
+		# graphical allowance, rather than the shorter ordinary-operation wait.
+		var preview_seconds: int = int(Watchdogs.milliseconds("graphical_case_seconds")/1000) if side==2048 else 300
 		if not await until(func() -> bool: return dialog._phase=="ready" or dialog._status.text.begins_with("Refused"),
-				"changed-size native chunks "+str(side),300): return
+				"changed-size native chunks "+str(side),preview_seconds): return
 		if not require(dialog._phase=="ready" and dialog._ready_packet.receipt_hashes.size()==(side/64)*(side/64),
 				"complete source receipts at changed size "+str(side)): return
 		print("EXPLORE001_CAPACITY side=",side," preview_ms=",Time.get_ticks_msec()-began,
