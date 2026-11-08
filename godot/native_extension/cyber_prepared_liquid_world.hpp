@@ -131,13 +131,14 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 !rectangles.is_empty() || !water_fills.is_empty())
                 throw std::invalid_argument("Generated-grid construction requires a fresh exclusive workbench");
             generated_claim = options["workbench_generated"];
-            if (generated_claim.size() != 11 ||
+            if (generated_claim.size() != 12 ||
                 !generated_claim.has("schema") || !generated_claim.has("extent") ||
                 !generated_claim.has("origin") || !generated_claim.has("cells") ||
                 !generated_claim.has("sha256") || !generated_claim.has("recipe_sha256") ||
                 !generated_claim.has("generator_fingerprint") ||
                 !generated_claim.has("plane_revision") ||
                 !generated_claim.has("generator_revision") ||
+                !generated_claim.has("generator_seed") ||
                 !generated_claim.has("receipt_hashes") || !generated_claim.has("edits") ||
                 generated_claim["schema"].get_type() != Variant::INT ||
                 generated_claim["extent"].get_type() != Variant::VECTOR2I ||
@@ -148,10 +149,12 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 generated_claim["generator_fingerprint"].get_type() != Variant::STRING ||
                 generated_claim["plane_revision"].get_type() != Variant::STRING ||
                 generated_claim["generator_revision"].get_type() != Variant::INT ||
+                generated_claim["generator_seed"].get_type() != Variant::INT ||
                 generated_claim["receipt_hashes"].get_type() != Variant::ARRAY ||
                 generated_claim["edits"].get_type() != Variant::ARRAY ||
                 static_cast<std::int64_t>(generated_claim["schema"]) != 1 ||
                 static_cast<std::int64_t>(generated_claim["generator_revision"]) < 1 ||
+                static_cast<std::int64_t>(generated_claim["generator_seed"]) < 0 ||
                 static_cast<Vector2i>(generated_claim["extent"]) != extent)
                 throw std::invalid_argument("Malformed generated-grid schema or dimensions");
             const auto origin = static_cast<Vector2i>(generated_claim["origin"]);
@@ -706,6 +709,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 pending->receipt["generated_generator_fingerprint"] = generated_claim["generator_fingerprint"];
                 pending->receipt["generated_plane_revision"] = generated_claim["plane_revision"];
                 pending->receipt["generated_generator_revision"] = generated_claim["generator_revision"];
+                pending->receipt["generated_generator_seed"] = generated_claim["generator_seed"];
                 pending->receipt["generated_receipt_hashes"] = generated_claim["receipt_hashes"];
                 pending->receipt["generated_edit_count"] = generated_edits.size();
             }
