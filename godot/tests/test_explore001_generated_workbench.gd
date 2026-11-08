@@ -243,6 +243,21 @@ func exercise_small() -> void:
 	if not await until(uploaded_after.bind(previous_generation),"512 generated native reset render identity"): return
 	authoritative_cells(source.cells,source.sha256,"512 exact generated reset after evolved Water")
 	compare_materials(source.cells,512,512,"512 exact generated reset after evolved Water")
+	# 512² at eight-cell chunks would require 4096 receipts: refuse before
+	# allocating preview bytes or generating any chunk. Preserve the old World.
+	var before_receipt_refusal: Dictionary=panel.applied.duplicate(true)
+	dialog.open_new()
+	dialog._saved_recipe=fixture.duplicate(true)
+	dialog._saved_recipe["chunk_size"]=8
+	dialog._extent.select(0)
+	dialog._x.set_value_no_signal(256)
+	dialog._y.set_value_no_signal(256)
+	dialog._start()
+	require(dialog._phase=="idle" and dialog._chunks.is_empty() and dialog._receipts.is_empty() and
+			dialog._cells.is_empty() and dialog._ready_packet.is_empty() and
+			dialog._status.text.contains("4096") and dialog._status.text.contains("1024") and
+			panel.applied==before_receipt_refusal and installed(),
+		"oversized source chunk receipt preflight preserves the installed World")
 	var old: Dictionary=panel.applied.duplicate(true)
 	dialog.open_new()
 	dialog._saved_recipe=fixture
