@@ -1,0 +1,77 @@
+name: EXPLORE-001 compare original workbench under Linux X11 baseline
+on:
+  push:
+    branches: [feat/explore001-gen007-playable-workbench]
+    paths: ['.github/workflows/explore001-baseline-x11.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: explore001-baseline-x11-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  accepted-main-x11-control:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact accepted main used by the previous successful full matrix
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 1f82dac1cebc9b38a319153354e4bcc774289417
+          path: baseline
+          persist-credentials: false
+      - name: Download original, already source-built native and Rapier runtime
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: linux-runtime-42408408211
+          run-id: 42408408211
+          repository: techrote/cybersand
+          github-token: ${{ github.token }}
+          path: baseline/build/main-runtime
+      - name: Attest immutable main source and runtime, stage exact Godot inputs
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          test "$(git -C baseline rev-parse HEAD)" = '1f82dac1cebc9b38a319153354e4bcc774289417'
+          test "$(cat baseline/build/main-runtime/source-sha.txt)" = '1f82dac1cebc9b38a319153354e4bcc774289417'
+          (cd baseline/build/main-runtime && sha256sum --check --strict runtime.sha256)
+          cp baseline/build/main-runtime/libcybersand_native.linux.x86_64.so baseline/godot/addons/cybersand_native/bin/
+          cp baseline/build/main-runtime/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so baseline/godot/addons/godot-rapier2d/bin/
+          git -C baseline rev-parse HEAD > evidence/source-commit.txt
+          git -C baseline rev-parse HEAD^{tree} > evidence/source-tree.txt
+          cp baseline/build/main-runtime/runtime.sha256 evidence/runtime.sha256
+          echo 'original accepted-main Linux headless fixture result: 164 checks / 0 failures (run 42408408211 shard 6)' > evidence/control-context.txt
+          mkdir -p "$RUNNER_TEMP/explore-main-godot"
+          timeout 600 curl -fL --retry 3 -o "$RUNNER_TEMP/explore-main-godot.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7' > evidence/download.log 2>&1
+          echo '0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  ' "$RUNNER_TEMP/explore-main-godot.zip" | tr -d '\n' > "$RUNNER_TEMP/checkline"
+          echo >> "$RUNNER_TEMP/checkline"
+          sha256sum --check --strict "$RUNNER_TEMP/checkline"
+          unzip -q "$RUNNER_TEMP/explore-main-godot.zip" -d "$RUNNER_TEMP/explore-main-godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/explore-main-godot" -maxdepth 1 -type f -name 'Godot*' | head -1)"
+          chmod +x "$GODOT_BIN"
+          "$GODOT_BIN" --version > evidence/godot-version.txt
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+      - name: Compare original non-render fixture in X11 software OpenGL instead of its standard headless mode
+        run: |
+          set -euo pipefail
+          bash baseline/tools/ci/prepare_linux_display.sh > evidence/display-setup.log 2>&1
+          export LIBGL_ALWAYS_SOFTWARE=1 LP_NUM_THREADS=2 GALLIVM_PERF=nopt
+          set +e
+          timeout 420 xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' "$GODOT_BIN" --path baseline/godot --script res://tests/test_workbench_canvas.gd > evidence/main-x11-workbench.log 2>&1
+          code=$?
+          set -e
+          printf '%s\n' "$code" > evidence/main-x11-exit-code.txt
+          tail -120 evidence/main-x11-workbench.log
+          if test "$code" -eq 0; then echo 'ACCEPTED_MAIN_X11_PASS'; else echo "ACCEPTED_MAIN_X11_RED exit=$code"; fi
+          # A diagnostic run reports the observed status via retained evidence,
+          # not via a false-claim required regression result.
+      - name: Preserve immutable source and authentic control outcome
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: explore001-main-x11-differential-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
