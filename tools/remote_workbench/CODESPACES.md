@@ -1,9 +1,12 @@
 # CyberSand remote workbench in GitHub Codespaces
 
-**Status:** development-only transport consumer. Final acceptance is blocked until
-PR #545 publishes a corrected, source-specific live-session head and this branch
-is recomposed onto it. Do not treat the current branch ancestry as final live
-qualification.
+**Status:** development-only transport consumer, Draft/unmerged. The
+independently qualified PR #545 head
+`b7c6204625dad14fdf15430f7872d9841cf92afd` (tree
+`24d80427c17ad9be6d354de2769b711a90973269`) is now the exact
+parent of this branch. Its real native source-built acceptance was
+[Actions run #42499041451](https://github.com/techrote/cybersand/actions/runs/42499041451).
+This source composition is **not** external Codespaces acceptance.
 
 ## Threat model
 
@@ -172,6 +175,69 @@ the Codespace may persist after an ordinary stop, but they are evidence only:
 CyberSand does **not** restore the evolved World from them. Restart creates a
 fresh session/World and must not be described as evolved-state recovery.
 
+## Execute from an external authorized client
+
+When the service is running in the Codespace and the **private**
+`gh codespace ports forward 8765:8765 -c "$CODESPACE"` tunnel is
+established on the external client host, these commands use the *same*
+`client.py` authentication, original-frame retrieval and Stop protocol
+without needing any local Godot or Windows editor.
+
+```bash
+# Run on the external machine, from the matching source checkout.
+# The token is local to this host; it is never passed as a command argument.
+python3 tools/remote_workbench/client.py \
+  --base http://127.0.0.1:8765 \
+  --token-file "$HOME/.cybersand-wb.token" session
+
+# A scripted end-to-end external run (ends with real native Stop):
+python3 tools/remote_workbench/qualify_external.py \
+  --base http://127.0.0.1:8765 \
+  --token-file "$HOME/.cybersand-wb.token" \
+  --output "$PWD/build/wb-remote-external"
+```
+
+The scripted driver checks unauthenticated GET/POST/image requests yield
+HTTP 401, a wrong bearer fails, and a correct bearer works. It performs native
+observe, original PNG retrieval with hash check, a nine-cell Hard Wall edit,
+readback-driven second edit removing one wall, four completed ticks, Stop and
+an explicit late-mutation refusal. It checks the one World generation and
+reuses one request ID for a duplicate mutation without double enqueue.
+Its output includes client transcript, original PNGs, native receipt identities
+and a summary; it **does not** record the token. Do not run this driver against
+an important editable World: it intentionally changes and stops that session.
+
+## Independent container qualification (not GitHub Codespaces)
+
+The dedicated transport workflow has an opt-in-through-PR **real native
+container-client job**: it builds the digest-pinned devcontainer, runs its
+full `post-create.sh` (locked Rapier LFS, Godot 4.7, godot-cpp,
+source-built native), and runs `qualify_live.py` plus the existing
+ordinary-human-paint stale-proposal control *inside that container*.
+It then starts the actual authenticated service inside that container and
+runs `qualify_external.py` as a **separate host process**, reaching the
+private loopback listener through Docker's host-network test arrangement
+(no public forwarded port). Original images, status, source/runtime identity,
+receipts and a sanitized client transcript are retained. Finally a second
+running owner is stopped by the *independent Docker container boundary* and
+the host verifies that process/container is no longer reachable.
+
+This is a useful reproducible Linux container and real external-process
+qualification, but it **cannot** prove that a separately authenticated
+GitHub Codespace tunnel is accessible from the user's machine. A private
+`*.app.github.dev` login page is not a successful tool connection.
+`gh codespace ports forward` must still be tested with an authorized,
+independent client when an actual Codespace is available.
+
+The independent Docker container process/cgroup boundary is the tested
+hard-stop containment for the container experiment. On an actual Codespace,
+container stop/restart must separately demonstrate its lifecycle. The upstream
+host-only `launcher-process.json` receipt and qualified external supervisor
+recover verifiably identified groups after an abnormal launcher exit. Neither
+file-based custody nor normal graceful Stop can guarantee survival-state
+recovery or close a pre-publication SIGKILL window without outer process
+containment.
+
 ## Final same-container qualification commands
 
 These commands are **final-source only**: run them after #547 has been recomposed
@@ -211,9 +277,9 @@ PNG evidence when `WB_AGENT_EVIDENCE_DIR` is set.
 
 ## Final acceptance still required
 
-After corrected #545 is released, refresh #531 and #545, compose this branch
-onto that exact #545 head, then demonstrate from a separate client process
-against one World:
+#545's qualified head has been consumed into the branch. The remaining
+acceptance tests must execute against the resulting immutable #547 head,
+from a separate client process and against one native World:
 
 `observe -> prepare/apply edit -> inspect PNG/native receipt -> revise -> step -> inspect -> Stop`
 
@@ -230,7 +296,7 @@ from local/container transport tests.
 and their original regressions. This branch owns only the new transport,
 client, container, documentation and dedicated CI paths. Final composition
 must use the **exact released** upstream source, never transplant historical
-copies of its owned files. #545 now has a **candidate** host-only process-custody seam:
+copies of its owned files. #545 now has a source-qualified host-only process-custody seam:
 `launcher-process.json` binds the launcher PID and separate Xvfb/Godot process
 group to the opaque owner session and the Linux group leader's `/proc` start
 ticks. This transport contains a guarded consumer: after an abnormal launcher
@@ -238,9 +304,10 @@ exit it may signal only that exact still-live group after session/PID/start-time
 revalidation; a missing or mismatched identity is quarantined as unconfirmed
 and is never killed by process name.
 
-That consumer is deliberately not counted as qualified on the current stale
-stack: its positive orphan-reap and PID-reuse-refusal tests are skipped until
-the final released #545 head is composed. A catastrophic parent death in the
+The current composed source executes both the orphaned-group cleanup and
+PID/start-tick mismatch-refusal regressions. The independent Docker hard-stop
+test and actual Codespaces deployment remain separately qualified or held by
+their own exact-source results. A catastrophic parent death in the
 upstream spawn-to-custody-publication window also remains outside the file
 seam; a hard guarantee for that interval requires independent cgroup/container
 custody. Therefore catastrophic process-tree cleanup remains **NOT_RUN** until
