@@ -230,7 +230,10 @@ jobs:
           )
           assert len(packets)==1, "Native RenderBridge success sentinel absent or repeated"
           full,delta,patches=map(int,packets[0])
-          assert full==2048*2048*2 and 0<delta<full and patches>0, (
+          # Source test already verifies full == WORLD_WIDTH * WORLD_HEIGHT *
+          # RG8 channels. The default native World can be 1024x1024 while
+          # the opt-in signed logical frame spans 2048x2048: do not conflate them.
+          assert full>1024 and full%2==0 and 0<delta<full and patches>0, (
               f"Native RenderBridge packet shape invalid: {packets[0]}"
           )
           print(f"REAL_LINUX_RENDER_BRIDGE full={full} delta={delta} patches={patches}")
