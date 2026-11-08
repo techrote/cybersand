@@ -352,3 +352,8 @@ This source composition and the mounted engineering regression do not certify
 bit-exact physical equivalence, paid-model acceptance (0/3), owner desktop
 inspection, source-rebuilt production native binaries or a live 32-Sand trial.
 Only source-matched exact-head CI results may be reported as passing.
+
+
+## 8 November 2026 — completed-model-report visibility on #531 (candidate)
+
+Read-only source inspection found that the previous Responses client collected `message` output items but discarded their `output_text` on a completed tool-free turn. The native tool receipts remained visible, but the human could not read the agent's final explanation. The #528-only candidate now emits at most 1024 characters of assistant `output_text` from a completed, unique Responses envelope, displays it as an **unverified model report** in the existing scrollable Activity log (without RichText markup), and keeps native readback/Stop authority unchanged. It does not display a response after Stop, treat model prose as successful application, or alter request budgets/tools/defaults. The focused fake-provider regression checks the existing four-tool continuation and visibly mounted panel rendering. Record actual exact-head CI outcomes and source SHA in PR #531; this design note alone does not certify runtime or live-provider acceptance.

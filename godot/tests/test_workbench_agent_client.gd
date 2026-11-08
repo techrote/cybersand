@@ -163,6 +163,8 @@ func _test_tool_loop_and_stop() -> void:
 func _test_full_serial_four_tool_loop() -> void:
 	var c := _new_client()
 	var calls: Array = []
+	var reports: Array = []
+	c.model_report_received.connect(func(text: String) -> void: reports.append(text))
 	c.tool_requested.connect(func(name: String, args: Dictionary, epoch: int, call_id: String) -> void:
 		calls.append({"name": name, "args": args, "epoch": epoch, "id": call_id}))
 	_expect(c.begin_task("Test full tool chain", "configured-model", _scope()), "full chain should start")
@@ -211,6 +213,8 @@ func _test_full_serial_four_tool_loop() -> void:
 	_deliver(c, _response("r5", [{"type": "message", "content": [
 		{"type": "output_text", "text": "Model finished; native acceptance not implied."}]}]))
 	_expect(not c.is_active() and calls.size() == 4, "complete serial four-tool loop must terminate")
+	_expect(reports == ["Model finished; native acceptance not implied."],
+		"completed Responses assistant output_text was silently discarded")
 	c.queue_free()
 
 func _test_526_exact_envelopes() -> void:
@@ -401,4 +405,13 @@ func _test_ui_shell() -> void:
 	panel._model.text = "revised-test-model"
 	panel._retire_on_human_change()
 	_expect(not panel.client.is_active(), "human task revision must invalidate pending response")
+	panel._on_start()
+	_expect(panel.client.is_active(), "model report visibility task failed to start")
+	_deliver(panel.client, _response("panel-final-report", [{"type":"message",
+		"role":"assistant", "content":[{"type":"output_text",
+		"text":"Check the native receipts; this is a model summary, not proof."}]}]))
+	_expect(not panel.client.is_active(), "completed model report did not finish task")
+	_expect(panel._log.text.find("Model report (unverified; native receipts are authoritative)") >= 0
+		and panel._log.text.find("this is a model summary, not proof") >= 0,
+		"mounted panel dropped completed Responses text instead of displaying an unverified report")
 	panel.queue_free()

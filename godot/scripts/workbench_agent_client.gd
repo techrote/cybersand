@@ -5,12 +5,14 @@ extends Node
 
 signal tool_requested(name: String, arguments: Dictionary, epoch: int, call_id: String)
 signal status_changed(status: String, detail: String)
+signal model_report_received(report: String)
 signal proposal_changed(footprint: Array)
 signal task_finished(outcome: String)
 
 const ENDPOINT := "https://api.openai.com/v1/responses"
 const NAMES := ["observe", "prepare_edit", "apply_edit", "step"]
 const MAX_TEXT := 8192
+const MAX_MODEL_REPORT := 1024
 const MAX_BODY := 2 * 1024 * 1024
 ## 4096 native rows may each contain two signed 32-bit coordinates and
 ## before/after IDs. Reserve 112 characters per row plus 64 KiB for bounded
@@ -352,6 +354,24 @@ func receive_fake_response(epoch: int, serial: int, http_status: int, body: Dict
 		return
 	_handle_transport(epoch, serial, HTTPRequest.RESULT_SUCCESS, http_status, JSON.stringify(body).to_utf8_buffer())
 
+func _final_model_report(messages: Array) -> String:
+	# Only a completed, tool-free assistant turn is a human-visible report.
+	# The report is untrusted prose, never a native receipt or edit authority.
+	var parts: Array[String] = []
+	for message: Variant in messages:
+		if not message is Dictionary or message.get("role", "assistant") != "assistant":
+			continue
+		var content: Variant = message.get("content", null)
+		if not content is Array:
+			continue
+		for item: Variant in content:
+			if item is Dictionary and item.get("type", "") == "output_text" \
+					and item.get("text", null) is String:
+				var part: String = str(item.text).strip_edges()
+				if not part.is_empty():
+					parts.append(part)
+	return "\n".join(parts).substr(0, MAX_MODEL_REPORT)
+
 func _handle_transport(identity: int, nonce: int, result: int, http_status: int, body: PackedByteArray) -> void:
 	if not _active or identity != _epoch or nonce != _serial or not _response_waiting:
 		return
@@ -400,6 +420,9 @@ func _handle_transport(identity: int, nonce: int, result: int, http_status: int,
 	_response_id = response_id
 	if calls.is_empty():
 		_active = false
+		var final_report: String = _final_model_report(messages)
+		if not final_report.is_empty():
+			model_report_received.emit(final_report)
 		status_changed.emit("completed", "Model turn ended; native result must be checked independently.")
 		task_finished.emit("model_finished")
 		return

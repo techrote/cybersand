@@ -46,6 +46,7 @@ func _ready() -> void:
 	add_child(client)
 	client.tool_requested.connect(_tool_request)
 	client.status_changed.connect(_log_status)
+	client.model_report_received.connect(_record_model_report)
 	client.proposal_changed.connect(_proposal_updated)
 	client.task_finished.connect(_task_finished)
 	proposal_overlay = Overlay.new()
@@ -179,6 +180,7 @@ func _ready() -> void:
 	activity_label.text = "Activity"
 	_form.add_child(activity_label)
 	_log.custom_minimum_size.y = 140
+	_log.bbcode_enabled = false # Model text is untrusted; never evaluate RichText markup.
 	_log.fit_content = false
 	_log.scroll_following = true
 	_form.add_child(_log)
@@ -337,6 +339,18 @@ func _proposal_updated(footprint: Array) -> void:
 		_log_status("preview", "Prepared footprint cleared.")
 	else:
 		_log_status("proposed", "%d native-prepared cells; host viewport projection required." % footprint.size())
+
+func _record_model_report(report: String) -> void:
+	# The actual assistant text was previously discarded at the final
+	# Responses turn. Show it in Activity, explicitly NOT as native evidence.
+	var plain: String = report.replace("\r", " ").replace("\n", " ").replace("\t", " ")
+	var line := "Model report (unverified; native receipts are authoritative): " + plain.substr(0, 1024)
+	_lines.append(line)
+	while _lines.size() > MAX_LOG_LINES:
+		_lines.pop_front()
+	_log.text = "\n".join(_lines)
+	_log.tooltip_text = line
+	progress.emit("model_report_unverified", plain)
 
 func _log_status(status: String, detail: String) -> void:
 	# Model/provider text is untrusted and never parsed as RichText markup.
