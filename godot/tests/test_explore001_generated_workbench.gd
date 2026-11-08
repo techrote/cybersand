@@ -246,18 +246,22 @@ func exercise_small() -> void:
 	# 512² at eight-cell chunks would require 4096 receipts: refuse before
 	# allocating preview bytes or generating any chunk. Preserve the old World.
 	var before_receipt_refusal: Dictionary=panel.applied.duplicate(true)
-	dialog.open_new()
-	dialog._saved_recipe=fixture.duplicate(true)
-	dialog._saved_recipe["chunk_size"]=8
-	dialog._extent.select(0)
-	dialog._x.set_value_no_signal(256)
-	dialog._y.set_value_no_signal(256)
-	dialog._start()
-	require(dialog._phase=="idle" and dialog._chunks.is_empty() and dialog._receipts.is_empty() and
-			dialog._cells.is_empty() and dialog._ready_packet.is_empty() and
-			dialog._status.text.contains("4096") and dialog._status.text.contains("1024") and
-			panel.applied==before_receipt_refusal and installed(),
-		"oversized source chunk receipt preflight preserves the installed World")
+	var epoch_before_refusal: int=host._physical_epoch
+	for capacity: Array in [[512,8,256,4096],[2048,32,0,4096],[512,16,255,1089],[512,16,-257,1089]]:
+		dialog.open_new()
+		dialog._saved_recipe=fixture.duplicate(true)
+		dialog._saved_recipe["chunk_size"]=capacity[1]
+		dialog._extent.select(2 if capacity[0]==2048 else 0)
+		dialog._x.set_value_no_signal(capacity[2])
+		dialog._y.set_value_no_signal(capacity[2])
+		dialog._start()
+		require(dialog._configuration.get("ok",false) and dialog._phase=="idle" and
+				dialog._chunks.is_empty() and dialog._receipts.is_empty() and dialog._next_chunk==0 and
+				dialog._cells.is_empty() and dialog._ready_packet.is_empty() and
+				dialog._status.text.contains("Source region requires") and
+				dialog._status.text.contains(str(capacity[3])) and dialog._status.text.contains("1024") and
+				panel.applied==before_receipt_refusal and host._physical_epoch==epoch_before_refusal and installed(),
+			"source receipt preflight preserves World: "+str(capacity))
 	var old: Dictionary=panel.applied.duplicate(true)
 	dialog.open_new()
 	dialog._saved_recipe=fixture

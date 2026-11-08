@@ -29,6 +29,8 @@ actor spawns; it does not resume the evolved simulation at the exit tick.
 1. In Shared Workbench click **New from generator…**, select
    **gen007-deepworks**, seed **19337**, source origin **0,0**, size **1024**.
    Generate a preview, inspect its materials, and explicitly install it.
+   On the very first opening, verify both bottom action buttons are on screen.
+   Resize the window and scroll the contents; action buttons should stay visible.
 2. Select an existing flyer such as **Midge**, place it in clear terrain, select
    it under **Pilot**, then press **Play**. Test the displayed movement controls
    (W/A/S/D for the flyer). Check contact with solid terrain and passage through

@@ -42,6 +42,9 @@ separate gates.
    The existing starting map is preserved if generation, source checking or
    native preparation refuses. Save any unsaved current work *before* confirming
    a replacement. Close the dialog to cancel its incremental generation.
+   The first popup and saved-load popup are bounded to the embedded viewport
+   or native screen usable area. On smaller windows the content scrolls;
+   **Install** and **Keep current map** remain outside the scrolling content.
 5. Use **Place model / Place at X/Y**, the existing **Pilot** selector, **Play /
    Pause**, **Step**, free/follow/overview camera, **Brush**, and left/right
    painting/erasure. A saved start records actor spawn and the authored ordered
@@ -153,6 +156,13 @@ phase using `CYBERSAND_EXPLORE_REOPEN=1`. Temporary admission/reopen diagnostics
 and old-artifact Windows replay have been retired; their source and first-failure
 logs remain historical evidence. The Windows source-built workflow retains a
 pristine desktop bundle with `Open Workbench.cmd` and a complete payload manifest.
+
+The six `test_explore001_dialog*_render.gd` cases are independent fresh-process
+graphical regressions for embedded/native first-open geometry, 1280×720 and
+1920×1080 parent windows, first saved-load opening, resizing and content scrolling.
+They check both action buttons and retain original frames. Native windows use
+the real display's usable bounds; a smaller parent is not a simulated smaller
+physical monitor. These are geometry tests, not human camera/traversal acceptance.
 
 ## Protected-source integration
 

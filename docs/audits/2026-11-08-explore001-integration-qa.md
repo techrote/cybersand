@@ -147,3 +147,59 @@ retrieval and focused Python/Godot tests are run with their individual outcomes
 retained; a failed publication gate is reported separately from source and
 candidate runtime execution. Final disposition and exact workflow/artifact links
 are appended to PR #542 without promoting or merging it.
+
+## Capacity and first-open layout correction — 2026-11-08
+
+Incoming source is `50ff2ac18685fb19a3d47608e6a65d9b8e29c813`, after actual
+retained runtime publication from `4713545c` (run42479952567). The earlier
+publication-blocked results above remain historical. Both published libraries
+match the unchanged87 native source inputs; Windows DLL SHA-256 is
+`e4e0f9e9bc23c8bfa1ded4247a3a507ffcf6f11835c656608f54fa0b3e7fc67d`.
+This correction changes only Godot dialog layout, tests and documentation;
+native ownership, interfaces, material laws, dependencies and save schema do not
+change. No new ADR, capacity value or runtime publication is required for these
+script changes. Current-source repository validation passes locally.
+
+The incoming early-capacity test executed in actual Windows Godot4.7 with that
+source-matched DLL:74/74 PASS. The expanded test covers512²/chunk8 and
+2048²/chunk32 (4096 receipts), positive and negative unaligned512²/chunk16
+(1089 receipts), refusal before buffers/queue/receipts and unchanged installed
+World/physical epoch. The existing aligned2048²/chunk64 native installation is
+the positive1024-receipt boundary. Expanded first process77/77 and a separate
+fresh process24/24 passed locally, with retained original outputs.
+
+Fresh-process graphical reproduction confirms the owner-reported layout defect:
+before the first container layout, the incoming dialog opened720×4875 inside a
+1280×720 embedded viewport; reopening was720×610. The negative fixture recorded
+9 checks/1 failure and an original framebuffer. This is an actual Godot4.7
+runtime observation, independent of the upstream issue cited in the PR review.
+
+The correction puts the content VBox inside a ScrollContainer, keeps inherited
+OK/Cancel outside it, and routes new/saved/refusal reopening through one bounded
+popup method. Native bounds use the owner's screen usable rect; embedded bounds
+use the viewport. Parent resize updates the bound. No new generation request or
+World mutation occurs during layout changes.
+
+Six standalone graphical cases exercise first new/saved opening, reopening,
+parent resize and deliberately short dialog/content scrolling. Windows local
+OpenGL3.3/NVIDIA TITAN RTX execution passed19/19 per process including two frame
+captures,114/114 total. Initial corrected embedded geometry is720×610 at both
+tested parent sizes; embedded resize to1100×500 bounds the dialog height to436.
+Native cases use the actual screen usable rect, not an emulated720p display.
+High-DPI transitions and human exploratory feel remain separately unqualified.
+
+Raw negative/corrected logs and PNGs are retained outside Git at
+`../evidence/layout-capacity/`; commands use pinned
+`C:/Godot47/Godot_v4.7-stable_win64_console.exe`, graphical `_render` fixtures
+and the generated-workbench/fresh-process script with existing gameplay fixture
+watchdogs. CI additionally applies the repository's outer process bounds.
+The exact final commit is identified by the PR
+qualification ledger. Linux/current-head hosted outcomes are not inferred from
+these local results; rerun the scoped and full Godot/Palette gates after freeze.
+
+The generated-map contract and manual playtest are the canonical updated homes.
+Existing ownership/ADR/configuration/roadmap routes remain valid; no dependency
+order or source-owner transition changes. Additive retrieval questions cover
+early receipt admission and first-open button accessibility without altering
+the frozen32. Docs, M11, current repository, retrieval and whitespace checks are
+run separately, retaining original failures and explicit platform qualifiers.

@@ -60,13 +60,17 @@ func mount(workbench: Control) -> void:
 	cancel_button_text = "Keep current map"
 	get_ok_button().disabled = true
 	exclusive = true
-	# Godot 4.7 ConfirmationDialog has no get_vbox() API. Direct Control
-	# children are arranged by AcceptDialog's wrap-controls layout.
+	# Bound content independently of AcceptDialog's action buttons. In Godot
+	# 4.7, unlaid-out autowrapped labels can inflate the first popup minimum.
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	add_child(scroll)
 	var root: VBoxContainer = VBoxContainer.new()
 	root.name = "GeneratedMapControls"
 	root.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	root.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	add_child(root)
+	scroll.add_child(root)
 	var warning := Label.new()
 	warning.text = "Preview uses the native generator. Install replaces the current map; save existing edits first."
 	warning.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -147,6 +151,26 @@ func mount(workbench: Control) -> void:
 	# proposal alive across that transition; cancel only unfinished generation.
 	visibility_changed.connect(func() -> void:
 		if not visible and _phase in ["plane","chunks","render"]: _stop())
+	get_tree().root.size_changed.connect(func() -> void:
+		if visible: _fit_available_bounds())
+
+func _available_bounds() -> Rect2i:
+	if is_embedded():
+		return Rect2i(Vector2i.ZERO,Vector2i(get_tree().root.get_visible_rect().size))
+	return DisplayServer.screen_get_usable_rect(get_tree().root.current_screen)
+
+func _fit_available_bounds() -> void:
+	var bounds := _available_bounds()
+	# Leave room for native window decorations and desktop chrome. Content
+	# scrolls; OK/Cancel remain outside the scroll container.
+	max_size = Vector2i(maxi(1,bounds.size.x-32),maxi(1,bounds.size.y-64))
+	if visible:
+		size = size.min(max_size)
+		position = position.clamp(bounds.position,bounds.end-size)
+
+func _popup_bounded() -> void:
+	_fit_available_bounds()
+	popup_centered_clamped(Vector2i(720,610),0.9)
 
 func open_new() -> void:
 	if _workbench == null: return
@@ -155,7 +179,7 @@ func open_new() -> void:
 	_saved_recipe.clear()
 	_invalidate()
 	title = "GEN-007 · New playable starting map"
-	popup_centered(Vector2i(720,610))
+	_popup_bounded()
 
 func open_saved(starting_setup: Dictionary, generation: Dictionary) -> void:
 	var reason := Store.valid_provenance(generation, Setup.extent_of(starting_setup))
@@ -173,7 +197,7 @@ func open_saved(starting_setup: Dictionary, generation: Dictionary) -> void:
 		if _extent.get_item_id(i) == side: _extent.select(i)
 	_invalidate()
 	title = "GEN-007 · Verify and reopen saved starting map"
-	popup_centered(Vector2i(720,610))
+	_popup_bounded()
 	_start()
 
 func _stop() -> void:
@@ -423,7 +447,7 @@ func _install() -> void:
 		candidate = _saved_setup.duplicate(true)
 	if not _workbench.install_generated_start(candidate,_ready_packet):
 		_status.text = _workbench.message
-		popup_centered(Vector2i(720,610))
+		_popup_bounded()
 	else:
 		# The owner already made a source-qualified copy for its pending commit.
 		_stop()
