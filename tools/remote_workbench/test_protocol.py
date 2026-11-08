@@ -210,6 +210,54 @@ class ProtocolTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "monotonic"):
             runner.validate_commands(self.commands, live=False)
 
+    def test_unrelated_pixel_changes_cannot_pass_projection_witness(self):
+        original = (16, 16, bytes(16 * 16 * 4))
+        projection = {
+            "viewport_native_region": {"x": 0, "y": 0, "width": 16, "height": 16},
+            "viewport_framebuffer_rect": {"x": 0, "y": 0, "width": 16, "height": 16},
+        }
+        unrelated = bytearray(original[2])
+        unrelated[(14 * 16 + 14) * 4] = 255
+        with self.assertRaisesRegex(AssertionError, "Unrelated framebuffer"):
+            verifier.projected_pixel_changes(
+                original, (16, 16, bytes(unrelated)), projection,
+                (2, 2, 4, 4), (9, 9, 11, 11)
+            )
+        expected = bytearray(original[2])
+        expected[(3 * 16 + 3) * 4] = 255
+        positive = verifier.projected_pixel_changes(
+            original, (16, 16, bytes(expected)), projection,
+            (2, 2, 4, 4), (9, 9, 11, 11)
+        )
+        self.assertEqual(positive["changed_pixels_in_native_edit_projection"], 1)
+        expected[(9 * 16 + 9) * 4] = 255
+        with self.assertRaisesRegex(AssertionError, "control region"):
+            verifier.projected_pixel_changes(
+                original, (16, 16, bytes(expected)), projection,
+                (2, 2, 4, 4), (9, 9, 11, 11)
+            )
+
+    def test_cumulative_output_cap_retains_cleanup(self):
+        evidence = self.root / "budget-case"
+        evidence.mkdir()
+        child = [sys.executable, "-c",
+                 "import sys,time;sys.stdout.buffer.write(b'x'*65536);"
+                 "sys.stdout.flush();time.sleep(30)"]
+        with (evidence / "godot.log").open("wb") as log:
+            code, reason, cleanup = runner.supervise(
+                child, os.environ.copy(), log, evidence, 10, 70000,
+            )
+        self.assertEqual(reason, "evidence_budget_exhausted")
+        self.assertEqual(code, 126)
+        self.assertTrue(cleanup["owned_processes_exited"], cleanup)
+
+    def test_atomic_health_file_can_be_replaced(self):
+        path = self.root / "session-health.json"
+        runner.atomic_json(path, {"state": "running", "last_completed_seq": 3})
+        runner.atomic_json(path, {"state": "stopped", "last_completed_seq": 4})
+        self.assertEqual(json.loads(path.read_text())["last_completed_seq"], 4)
+        self.assertFalse(path.with_name(path.name + ".tmp").exists())
+
     def test_live_mode_has_one_process_not_one_per_command(self):
         godot = self.root / "Godot"
         godot.write_text("binary placeholder", encoding="utf-8")
