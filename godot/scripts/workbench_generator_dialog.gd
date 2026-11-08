@@ -60,7 +60,13 @@ func mount(workbench: Control) -> void:
 	cancel_button_text = "Keep current map"
 	get_ok_button().disabled = true
 	exclusive = true
-	var root := get_vbox()
+	# Godot 4.7 ConfirmationDialog has no get_vbox() API. Direct Control
+	# children are arranged by AcceptDialog's wrap-controls layout.
+	var root: VBoxContainer = VBoxContainer.new()
+	root.name = "GeneratedMapControls"
+	root.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	root.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	add_child(root)
 	var warning := Label.new()
 	warning.text = "Preview uses the native generator. Install replaces the current map; save existing edits first."
 	warning.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
