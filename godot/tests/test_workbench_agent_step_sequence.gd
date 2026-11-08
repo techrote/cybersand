@@ -58,6 +58,15 @@ func _manual_step_ack(target: int, expected_tick: int, generation: int) -> bool:
 		and snapshot.tick_index == expected_tick
 
 
+func _stop_during_in_flight_step(driver: RefCounted) -> void:
+	# Delivered by the engine's deferred queue after step() has admitted its
+	# first native tick and yielded waiting for the real worker publication.
+	check(driver.active(), "deferred Stop was not delivered to an active step sequence")
+	check(workbench.step_requested or workbench.step_pending,
+		"deferred Stop did not observe a pending native step request")
+	driver.request_stop()
+
+
 func _initialize() -> void:
 	set_meta("cybersand_feature","shared_workbench")
 	run.call_deferred()
@@ -130,6 +139,17 @@ func run() -> void:
 	var after_manual: int = main.latest_snapshot.tick_index
 	check(after_manual==initial_tick+5,
 		"manual tick not exactly once after refusal")
+	# Failure-before controls for the serial-only/paused-only race: a valid
+	# serial and paused snapshot MUST NOT acknowledge a different native tick
+	# or a replacement native World generation.
+	check(_manual_step_ack(manual_serial,after_manual,source.render_world_generation),
+		"exact serial, paused native tick and generation were not acknowledged")
+	check(not _manual_step_ack(manual_serial,after_manual+1,
+			source.render_world_generation),
+		"stale paused native snapshot falsely ACKed a future tick")
+	check(not _manual_step_ack(manual_serial,after_manual,
+			source.render_world_generation+1),
+		"paused native snapshot falsely ACKed another World generation")
 
 	# Stop after the third *ACKed real native tick*, not after scheduling.
 	# The callback is synchronous at this acknowledgment boundary; it
@@ -230,6 +250,49 @@ func run() -> void:
 		"stop_completed":stopped.get("completed",-1),
 		"bounded_call_completed":cap.get("completed",-1),
 		"paused":final_snapshot.paused}))
+	# Independently interrupt a genuinely in-flight native tick from the
+	# deferred human input path, NOT a synchronous completed-tick callback.
+	# Use a fresh World so the original 130-tick framebuffer/proof above
+	# remains byte-for-byte semantically unchanged.
+	var previous_generation: int = final_snapshot.render_world_generation
+	var reopened: Dictionary = Setup.fresh(
+		PackedInt32Array(workbench.applied.liquid_policy),Vector2i(512,512))
+	if not check(workbench.apply(reopened),"fresh native owner for pending-Stop refused"):
+		finish()
+		return
+	if not await wait_until(
+			func() -> bool:
+				return _blank_ready() and \
+					main.latest_snapshot.render_world_generation != previous_generation,
+			"pending-Stop fresh native World was not published paused"):
+		finish()
+		return
+	var pending_source: CyberSimulationSnapshot = main.latest_snapshot
+	check(pending_source.tick_index==0 and pending_source.paused,
+		"pending-Stop fresh World did not begin at paused native tick zero")
+	var pending_driver = Driver.new()
+	call_deferred("_stop_during_in_flight_step",pending_driver)
+	var in_flight_stop: Dictionary = await pending_driver.step(main,workbench,5)
+	check(in_flight_stop.get("status")=="stopped"
+		and in_flight_stop.get("reason")=="human_stop"
+		and in_flight_stop.get("requested")==5
+		and int(in_flight_stop.get("completed",-1))>=1
+		and int(in_flight_stop.get("completed",-1))<5
+		and in_flight_stop.get("before_tick")==0
+		and in_flight_stop.get("after_tick")==in_flight_stop.get("completed")
+		and in_flight_stop.get("world_generation")==pending_source.render_world_generation
+		and in_flight_stop.get("still_paused")==true,
+		"deferred human Stop did not ACK a strict partial native sequence: "
+		+str(in_flight_stop))
+	for _late_frame: int in 5:
+		await process_frame
+	check(main.latest_snapshot.tick_index==in_flight_stop.get("after_tick",-1)
+		and main.latest_snapshot.paused
+		and main.latest_snapshot.render_world_generation==pending_source.render_world_generation,
+		"native state changed after deferred human Stop acknowledgment")
+	print("WB_AGENT_527_PENDING_STOP_RESULT " + JSON.stringify(in_flight_stop))
+	pending_driver = null
+
 	# Release the test's self-capturing Stop callback before shutting down:
 	# RefCounted signal -> closure -> driver otherwise retains a cycle.
 	stop_on_third = Callable()
