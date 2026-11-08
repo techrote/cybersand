@@ -10,6 +10,13 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Conversation and rate controls follow-up — 2026-11-08
+
+The isolated #531 follow-up adds plaintext/category-filtered traffic, Match area
+within the65536-cell operation capacity, and local TPM pacing in place of Whole
+canvas. Read the [workbench contract](../systems/shared-workbench-agent-authoring.md).
+Exact resulting source/qualification is recorded in the existing PR thread.
+
 ## Compact agent controls and raw traffic — 8 November 2026
 
 The isolated #531 follow-up adds the owner-requested compact prompt/model/budget

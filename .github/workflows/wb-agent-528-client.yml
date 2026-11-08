@@ -7,6 +7,10 @@ on:
       - 'godot/scripts/workbench_agent_client.gd'
       - 'godot/scripts/workbench_agent_diagnostics.gd'
       - 'godot/scripts/workbench_agent_traffic_window.gd'
+      - 'godot/scripts/workbench_agent_traffic*.gd'
+      - 'godot/tests/test_workbench_agent_traffic_filters.gd'
+      - 'godot/tests/test_workbench_agent_match_area.gd'
+      - 'godot/tests/test_workbench_agent_rate_limit.gd'
       - 'godot/scripts/workbench_agent_panel.gd'
       - 'godot/scripts/workbench_agent_proposal_overlay.gd'
       - 'godot/tests/test_workbench_agent_client.gd'
@@ -92,14 +96,17 @@ jobs:
           OPENAI_API_KEY: ''
         run: |
           set -euo pipefail
-          for script in test_workbench_agent_client.gd test_workbench_agent_diagnostics.gd test_workbench_agent_cell_limit.gd; do
+          for script in test_workbench_agent_client.gd test_workbench_agent_diagnostics.gd test_workbench_agent_cell_limit.gd test_workbench_agent_traffic_filters.gd test_workbench_agent_match_area.gd test_workbench_agent_rate_limit.gd; do
             log="build/wb-agent-528/${script%.gd}.log"
             timeout 180 "$GODOT_BIN" --headless --path godot --script "res://tests/$script" 2>&1 | tee "$log"
-            if grep -E 'SCRIPT ERROR|(^|[[:space:]])ERROR:' "$log"; then exit 1; fi
+          if grep -E 'SCRIPT ERROR|(^|[[:space:]])ERROR:' "$log"; then exit 1; fi
           done
           grep -E 'WB_AGENT_528 fake-provider checks [1-9][0-9]*, failures 0' build/wb-agent-528/test_workbench_agent_client.log
           grep -E 'WB_AGENT_DIAGNOSTICS: [1-9][0-9]* checks, 0 failures' build/wb-agent-528/test_workbench_agent_diagnostics.log
           grep -E 'WB_AGENT_CELL_LIMIT: [1-9][0-9]* checks, 0 failures' build/wb-agent-528/test_workbench_agent_cell_limit.log
+          grep -E 'WB_AGENT_TRAFFIC_FILTERS: [1-9][0-9]* checks, 0 failures' build/wb-agent-528/test_workbench_agent_traffic_filters.log
+          grep -E 'WB_MATCH_AREA: [1-9][0-9]* checks, 0 failures' build/wb-agent-528/test_workbench_agent_match_area.log
+          grep -E 'WB_RATE_LIMIT: [1-9][0-9]* checks, 0 failures' build/wb-agent-528/test_workbench_agent_rate_limit.log
       - name: Preserve source, original failures and runtime evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

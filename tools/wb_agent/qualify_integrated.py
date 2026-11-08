@@ -22,6 +22,9 @@ import time
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURE_SHA = "549a1db2520bcfb35f068f46b62320d7325d6297037ca2faf23c3b488d80347c"
 CASES = [
+    ("traffic-filters", "test_workbench_agent_traffic_filters.gd", True, []),
+    ("match-area", "test_workbench_agent_match_area.gd", True, []),
+    ("rate-limit", "test_workbench_agent_rate_limit.gd", True, []),
     ("client", "test_workbench_agent_client.gd", True, []),
     ("diagnostics", "test_workbench_agent_diagnostics.gd", True, []),
     ("cell-limit", "test_workbench_agent_cell_limit.gd", True, []),
@@ -82,6 +85,9 @@ def identity(godot: Path) -> dict:
 
 def validate_output(text: str, case: str) -> bool:
     summaries = {
+        "traffic-filters": r"WB_AGENT_TRAFFIC_FILTERS: [1-9]\d* checks, 0 failures",
+        "match-area": r"WB_MATCH_AREA: [1-9]\d* checks, 0 failures",
+        "rate-limit": r"WB_RATE_LIMIT: [1-9]\d* checks, 0 failures",
         "client": r"WB_AGENT_528 fake-provider checks [1-9]\d*, failures 0",
         "diagnostics": r"WB_AGENT_DIAGNOSTICS: [1-9]\d* checks, 0 failures",
         "cell-limit": r"WB_AGENT_CELL_LIMIT: [1-9]\d* checks, 0 failures",

@@ -61,8 +61,9 @@ hosted production workflows and resulting-owner-head review remain separate.
 
 ## How large can the agent's authorized working area be?
 
-**Current on the owner-authorized isolated scope follow-up:** click **Use whole
-canvas** to select the installed finite canvas, up to2048x2048 cells. This
+**Current on the conversation/rate follow-up:** set XYWH to the installed
+finite canvas bounds to authorize up to2048x2048 cells. Whole canvas is no
+longer a visible button; its internal fixture helper is retained. This
 changes the task fields; human **Start** still grants authority. A smaller
 hand-selected scope remains valid. Selection changes retire an active task
 through the existing intervention/Stop path. Protected regions and the
@@ -387,6 +388,28 @@ trials, max one repair cycle per attempt and all attempts preserved, and
 (3) the owner's own Windows graphical verdict on preview/intervention/recovery.
 No paid API key in CI and no fake-provider result counts as a live model run.
 If credentials or desktop are unavailable, mark live/human HOLD, not PASS.
+
+## Conversation filters, area matching and rate pacing
+
+The owner-requested follow-up on `codex/wb531-conversation-filters-20261108`
+adds a plaintext Conversation tab and independent Messages/Errors/Metrics/ACKs/
+Tools/Raw tickboxes. Filtering changes presentation only; the original bounded
+records and raw JSONL export remain intact. Conversation extracts actual role
+text and tool exchanges; no hidden model reasoning is reconstructed.
+
+Match area binds Cells to W × H and freezes the resulting grant at Start.
+Supported single-operation maximum remains65536. An oversized matched area
+blocks Start explicitly; turn matching off to work across a larger scope in
+bounded batches. Protection/material restrictions still apply to every pixel.
+Whole canvas is removed from the normal panel in favor of a TPM entry, default
+50000. Local token reservations pace HTTP dispatch, using max(estimated input, output
+cap) and settling completed reservations to reported actual usage. Missing usage
+keeps the estimate. This local approximation cannot mirror the provider bucket;
+waiting is visible and Stop
+cancels it. Provider/project traffic from other clients remains outside this
+local account. Rate-only retries are bounded and must not replay native tools.
+The final PR qualification record binds exact source, failures and artifacts;
+this implementation does not authorize live calls or a merge.
 
 ## Validation and engineering handoff
 

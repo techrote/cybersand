@@ -31,6 +31,8 @@ var _tool_limit := SpinBox.new()
 var _token_limit := SpinBox.new()
 var _timeout_limit := SpinBox.new()
 var _cell_limit := SpinBox.new()
+var _match_area := CheckBox.new()
+var _rate_limit := SpinBox.new()
 var _model_history := MenuButton.new()
 var _recent_models: Array[String] = []
 var _traffic: Window
@@ -160,11 +162,15 @@ func _ready() -> void:
 	var area_actions := HBoxContainer.new()
 	_add_budget_control(area_actions,"Cells",_cell_limit,16384,65536,
 		"Maximum cells in one edit or inspection; authorized at Start. This is not a task-wide edit quota.")
-	_whole_canvas.text = "Whole canvas"
-	_whole_canvas.tooltip_text = "Set the working area to the installed canvas. Calls stay within the Cells limit."
-	_whole_canvas.disabled = true
-	_whole_canvas.pressed.connect(_on_whole_canvas)
-	area_actions.add_child(_whole_canvas)
+	_cell_limit.custom_minimum_size.x = 72
+	_match_area.text = "Match area"
+	_match_area.tooltip_text = "Cells = W × H, maximum65536 per operation. Larger scopes can use batches with this off."
+	_match_area.toggled.connect(func(_enabled: bool) -> void: _on_scope_change())
+	area_actions.add_child(_match_area)
+	_add_budget_control(area_actions,"TPM",_rate_limit,50000,10000000,
+		"Local tokens-per-minute pacing. Set to your API project's allowance. Other clients share the provider limit.")
+	_rate_limit.min_value = 1024
+	_rate_limit.custom_minimum_size.x = 72
 	_form.add_child(area_actions)
 	_add_rectangle_row(_region,["X","Y","W","H"],[0,0,32,32])
 	_wall.text = "Hard Wall"
@@ -408,7 +414,21 @@ func _sync_scope_overlay() -> void:
 	scope_overlay.set_scope(_rect_from_fields(_region),protections)
 
 
+func _match_area_problem() -> String:
+	if _match_area.button_pressed and _region.size() == 4 and int(_region[2].value) * int(_region[3].value) > Client.MAX_CELL_LIMIT:
+		return "Match area exceeds 65536 cells. Reduce W/H or disable Match area to work in batches."
+	return ""
+
+func _sync_match_area() -> void:
+	_cell_limit.editable = not _match_area.button_pressed
+	if _match_area.button_pressed and _region.size() == 4:
+		var cells: int = int(_region[2].value) * int(_region[3].value)
+		if cells <= Client.MAX_CELL_LIMIT:
+			_cell_limit.value = cells
+	_match_area.modulate = Color.WHITE if _match_area_problem().is_empty() else Color(1.0,0.55,0.5)
+
 func _on_scope_change() -> void:
+	_sync_match_area()
 	_sync_scope_overlay()
 	_retire_on_human_change()
 
@@ -437,9 +457,13 @@ func _on_start() -> void:
 		_log_status("refused", "Native Stop unconfirmed; inspect Traffic and reopen the workbench." if _native_unconfirmed else "No native dispatcher or task already active.")
 		return
 	# Start has FOCUS_NONE: commit typed numbers even if the edit never lost focus.
-	for field: SpinBox in [_request_limit,_tool_limit,_token_limit,_timeout_limit,_cell_limit] + _region + _guard_region:
+	for field: SpinBox in [_request_limit,_tool_limit,_token_limit,_timeout_limit,_cell_limit,_rate_limit] + _region + _guard_region:
 		if field.get_line_edit().has_focus():
 			field.apply()
+	_sync_match_area()
+	if not _match_area_problem().is_empty():
+		_log_status("refused",_match_area_problem())
+		return
 	var materials: Array[String] = []
 	if _wall.button_pressed:
 		materials.append("Hard Wall")
@@ -467,6 +491,7 @@ func _on_start() -> void:
 	client.tool_budget = int(_tool_limit.value)
 	client.token_budget = int(_token_limit.value)
 	client.request_timeout_seconds = _timeout_limit.value
+	client.tokens_per_minute = int(_rate_limit.value)
 	var launch_problem: String = client.launch_problem(_task.text, _model.text, scope)
 	if not launch_problem.is_empty():
 		_log_status("refused", launch_problem)
@@ -589,6 +614,6 @@ func _exit_tree() -> void:
 			scope_overlay.queue_free()
 		else:
 			scope_overlay.free()
-	for detached: Node in [_signed_frame,_log,_protection_label]:
+	for detached: Node in [_signed_frame,_log,_protection_label,_whole_canvas]:
 		if is_instance_valid(detached) and not detached.is_inside_tree():
 			detached.free()

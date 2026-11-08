@@ -125,6 +125,8 @@ func inspect_layout(screen: Vector2i, sequence: int) -> void:
 	print("WB525_DOCK_LAYOUT "+JSON.stringify({"logical_size":[screen.x,screen.y],"canvas":str(shown),"dock":str(dock),"native_tick":host.latest_snapshot.tick_index}))
 	var saved_origin: Vector2 = host.camera_origin
 	var saved_edits: int = wb.applied.edits.size()
+	panel._traffic._filters["Raw"].button_pressed = true
+	panel._traffic._tabs.current_tab = 1
 	panel.client.record_diagnostic("ui.raw.test",{"body":"raw body marker"})
 	panel._show_traffic()
 	await settle()

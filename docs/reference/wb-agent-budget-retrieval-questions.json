@@ -45,6 +45,21 @@
         "../godot/scripts/workbench_agent_diagnostics.gd",
         "../godot/scripts/workbench_agent_panel.gd"
       ]
+    },
+    {
+      "id": "WB-RATE-01",
+      "query": "How do TPM pacing, rate-limit retries and Match area interact with Stop and the actual edit capacity?",
+      "canonical": [
+        "systems/shared-workbench-agent-authoring.md"
+      ],
+      "facts": [
+        "Match area freezes W times H, up to65536 cells; oversized matching blocks Start rather than silently clamping.",
+        "TPM is local token pacing, default50000; waiting is cancellable and temporary429 retries are bounded without native replay."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_agent_client.gd",
+        "../godot/scripts/workbench_agent_panel.gd"
+      ]
     }
   ],
   "expectations_reviewed": "2026-11-08 current UI/cell/traffic follow-up; additive cases updated, original frozen32 unchanged."

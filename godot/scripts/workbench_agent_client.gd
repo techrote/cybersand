@@ -37,6 +37,13 @@ const DEFAULT_TOKEN_BUDGET := 32768
 const MAX_TOKEN_BUDGET := 131072
 const DEFAULT_REQUEST_TIMEOUT := 180
 const MAX_REQUEST_TIMEOUT := 600
+const DEFAULT_TOKENS_PER_MINUTE := 50000
+const MIN_TOKENS_PER_MINUTE := 1024
+const MAX_TOKENS_PER_MINUTE := 10000000
+const RATE_WINDOW_MSEC := 60000
+const MAX_RATE_RETRIES := 2
+const MAX_RETRY_DELAY_SECONDS := 60.0
+const MAX_RETRY_WAIT_SECONDS := 120.0
 # Permit one non-mutating model argument correction per task; no native replay.
 const MAX_ARGUMENT_REPAIRS := 1
 # Transport parses signed native coordinates without granting out-of-domain
@@ -52,6 +59,21 @@ var _active_tool_budget := DEFAULT_TOOL_BUDGET
 var _active_token_budget := DEFAULT_TOKEN_BUDGET
 var request_timeout_seconds: float = DEFAULT_REQUEST_TIMEOUT
 var _active_request_timeout_seconds: float = DEFAULT_REQUEST_TIMEOUT
+var tokens_per_minute: int = DEFAULT_TOKENS_PER_MINUTE
+var _active_tokens_per_minute: int = DEFAULT_TOKENS_PER_MINUTE
+# Host-local reservation history intentionally survives Stop and task restarts.
+# This is an estimate, not a discovery of the provider/project's actual limits.
+var _rate_reservations: Array[Dictionary] = []
+var _rate_test_now_msec: int = -1
+var _context_token_estimate: int = 0
+var _queued_payload: Dictionary = {}
+var _queued_epoch: int = -1
+var _queued_estimate: int = 0
+var _queued_earliest_msec: int = 0
+var _last_sent_payload: Dictionary = {}
+var _last_sent_estimate: int = 0
+var _rate_retries: int = 0
+var _retry_wait_seconds: float = 0.0
 
 var _epoch := 0
 var _serial := 0
@@ -99,7 +121,10 @@ func activity_snapshot() -> Dictionary:
 		"input_tokens": _input_tokens, "output_tokens": _output_tokens,
 		"token_limit": _active_token_budget if _active or _request_count > 0 else token_budget,
 		"timeout": _active_request_timeout_seconds, "dropped_events": _diagnostics.dropped,
-		"usage_complete": _usage_complete, "log_error": _diagnostics.disk_error}
+		"usage_complete": _usage_complete, "log_error": _diagnostics.disk_error,
+		"tokens_per_minute": _active_tokens_per_minute if _active else tokens_per_minute,
+		"rate_reserved_tokens": _reserved_tokens(), "rate_estimated_request_tokens": _queued_estimate,
+		"rate_wait_seconds": _rate_wait_seconds(), "rate_retries": _rate_retries}
 
 func _cell_limit() -> int:
 	return int(_scope.get("cell_limit", 4096)) if _active else 4096
@@ -296,6 +321,8 @@ func launch_problem(task: String, model: String, scope: Dictionary) -> String:
 		return "Output-token budget must be between 1 and %d; choose a value supported by the model." % MAX_TOKEN_BUDGET
 	if not is_finite(request_timeout_seconds) or request_timeout_seconds < 1 or request_timeout_seconds > MAX_REQUEST_TIMEOUT:
 		return "Request timeout must be finite and between 1 and %d seconds." % MAX_REQUEST_TIMEOUT
+	if tokens_per_minute < MIN_TOKENS_PER_MINUTE or tokens_per_minute > MAX_TOKENS_PER_MINUTE:
+		return "TPM must be between %d and %d; enter your actual provider/project limit." % [MIN_TOKENS_PER_MINUTE,MAX_TOKENS_PER_MINUTE]
 	if not _safe_integer(scope.get("cell_limit",4096)) or int(scope.get("cell_limit",4096)) < 1 or int(scope.get("cell_limit",4096)) > MAX_CELL_LIMIT:
 		return "Cells must be between 1 and %d." % MAX_CELL_LIMIT
 	if not _fake_transport and OS.get_environment("OPENAI_API_KEY").is_empty():
@@ -321,6 +348,13 @@ func begin_task(task: String, model: String, scope: Dictionary) -> bool:
 	_active_tool_budget = tool_budget
 	_active_token_budget = token_budget
 	_active_request_timeout_seconds = request_timeout_seconds
+	_active_tokens_per_minute = tokens_per_minute
+	_context_token_estimate = 0
+	_queued_payload.clear()
+	_queued_epoch = -1
+	_last_sent_payload.clear()
+	_rate_retries = 0
+	_retry_wait_seconds = 0.0
 	_tool_count = 0
 	_input_tokens = -1
 	_output_tokens = -1
@@ -347,6 +381,8 @@ func stop_task(reason: String = "Human Stop") -> void:
 	_pending_call_id = ""
 	_pending_tool = ""
 	_response_waiting = false
+	_queued_payload.clear()
+	_queued_epoch = -1
 	if is_instance_valid(_pending_http):
 		_pending_http.cancel_request()
 		_pending_http.queue_free()
@@ -368,6 +404,8 @@ func _fail(reason: String) -> void:
 	_pending_call_id = ""
 	_pending_tool = ""
 	_response_waiting = false
+	_queued_payload.clear()
+	_queued_epoch = -1
 	# A terminal provider/client failure retires the pending native plan.
 	# Clear its presentation-only footprint; never imply it was applied.
 	proposal_changed.emit([])
@@ -380,10 +418,6 @@ func _send(input_items: Array) -> void:
 	if _request_count >= _active_request_budget:
 		_fail("Responses API request budget exhausted.")
 		return
-	_request_count += 1
-	_serial += 1
-	var nonce := _serial
-	var identity := _epoch
 	var payload: Dictionary = {
 		"model": _model,
 		"input": input_items,
@@ -394,6 +428,133 @@ func _send(input_items: Array) -> void:
 	}
 	if not _response_id.is_empty():
 		payload["previous_response_id"] = _response_id
+	_queue_rate_payload(payload,_now_msec())
+
+func _now_msec() -> int:
+	return _rate_test_now_msec if _fake_transport and _rate_test_now_msec >= 0 else Time.get_ticks_msec()
+
+func _rate_enabled() -> bool:
+	return not _fake_transport or _rate_test_now_msec >= 0
+
+func configure_rate_test_clock(now_msec: int = 0) -> bool:
+	# Explicit deterministic opt-in; ordinary fake-provider/native tests stay fast.
+	if not _fake_transport or _active or now_msec < 0:
+		return false
+	_rate_test_now_msec = now_msec
+	return true
+
+func advance_rate_test_clock(milliseconds: int) -> void:
+	if not _fake_transport or _rate_test_now_msec < 0 or milliseconds < 0:
+		return
+	_rate_test_now_msec += milliseconds
+	_pump_rate_limit()
+
+func _process(_delta: float) -> void:
+	if _active and not _queued_payload.is_empty():
+		_pump_rate_limit()
+
+func _prune_reservations() -> void:
+	var cutoff: int = _now_msec() - RATE_WINDOW_MSEC
+	while not _rate_reservations.is_empty() and int(_rate_reservations[0].at) <= cutoff:
+		_rate_reservations.pop_front()
+
+func _reserved_tokens() -> int:
+	_prune_reservations()
+	var total := 0
+	for reservation: Dictionary in _rate_reservations:
+		total += int(reservation.tokens)
+	return total
+
+func _estimate_value_tokens(value: Variant) -> int:
+	# Low-detail images are not text/base64 tokens. Reserve a separate allowance;
+	# tokenization and image accounting still vary by provider/model.
+	if value is Dictionary:
+		if typeof(value.get("type",null)) == TYPE_STRING and value.type == "input_image":
+			return 4096
+		var amount := 2
+		for key: Variant in value:
+			amount += int(ceil(float(str(key).length()) / 3.0)) + _estimate_value_tokens(value[key]) + 2
+		return amount
+	if value is Array:
+		var amount := 2
+		for item: Variant in value:
+			amount += _estimate_value_tokens(item) + 1
+		return amount
+	return maxi(1,int(ceil(float(JSON.stringify(value).length()) / 3.0)))
+
+func _estimate_request_tokens(payload: Dictionary) -> int:
+	# Last provider input+output usage includes the chained context. Without
+	# usage, retain the previous conservative request reservation as its basis.
+	# Provider rate accounting uses max(input estimate, output allowance).
+	var estimated_input: int = _context_token_estimate + _estimate_value_tokens(payload.get("input",[])) \
+		+ _estimate_value_tokens(payload.get("tools",[])) + 256
+	return maxi(estimated_input,int(payload.max_output_tokens))
+
+func _queue_rate_payload(payload: Dictionary, earliest_msec: int) -> void:
+	if not _active:
+		return
+	_queued_payload = payload.duplicate(true)
+	_queued_epoch = _epoch
+	_queued_estimate = _estimate_request_tokens(payload)
+	_queued_earliest_msec = earliest_msec
+	if _rate_enabled() and _queued_estimate > _active_tokens_per_minute:
+		_fail("Estimated request needs %d tokens, above %d TPM. Reduce Toks/inspection or increase TPM to your real provider limit." % [_queued_estimate,_active_tokens_per_minute])
+		return
+	_pump_rate_limit()
+	if _active and not _queued_payload.is_empty():
+		record_diagnostic("rate.wait", {"estimated_tokens":_queued_estimate,"reserved_tokens":_reserved_tokens(),"tokens_per_minute":_active_tokens_per_minute,"wait_seconds":_rate_wait_seconds(),"local_estimate":true})
+		status_changed.emit("waiting",_stage)
+
+func _next_rate_dispatch_msec() -> int:
+	var next: int = maxi(_now_msec(),_queued_earliest_msec)
+	if not _rate_enabled():
+		return next
+	_prune_reservations()
+	var total: int = _reserved_tokens()
+	var retained: int = _rate_reservations.size()
+	for reservation: Dictionary in _rate_reservations:
+		if total + _queued_estimate <= _active_tokens_per_minute and retained < MAX_REQUEST_BUDGET:
+			break
+		total -= int(reservation.tokens)
+		retained -= 1
+		next = maxi(next,int(reservation.at) + RATE_WINDOW_MSEC)
+	return next
+
+func _rate_wait_seconds() -> int:
+	if _queued_payload.is_empty() or _queued_epoch != _epoch:
+		return 0
+	return maxi(0,int(ceil(float(_next_rate_dispatch_msec()-_now_msec()) / 1000.0)))
+
+func _pump_rate_limit() -> void:
+	if not _active or _queued_payload.is_empty() or _queued_epoch != _epoch:
+		return
+	if _request_count >= _active_request_budget:
+		_fail("Responses API request budget exhausted.")
+		return
+	var wait_seconds: int = _rate_wait_seconds()
+	if wait_seconds > 0:
+		_stage = "Rate limit wait: %ds" % wait_seconds
+		return
+	var payload: Dictionary = _queued_payload.duplicate(true)
+	var estimate: int = _queued_estimate
+	_queued_payload.clear()
+	_queued_epoch = -1
+	_dispatch_payload(payload,estimate)
+
+func _dispatch_payload(payload: Dictionary, estimated_tokens: int) -> void:
+	if not _active:
+		return
+	if _request_count >= _active_request_budget:
+		_fail("Responses API request budget exhausted.")
+		return
+	_request_count += 1
+	_serial += 1
+	var nonce := _serial
+	var identity := _epoch
+	_last_sent_payload = payload.duplicate(true)
+	_last_sent_estimate = estimated_tokens
+	if _rate_enabled():
+		_rate_reservations.append({"at":_now_msec(),"tokens":estimated_tokens,"epoch":identity,"request":nonce})
 	_response_waiting = true
 	_stage = "Waiting for model response"
 	record_diagnostic("http.request", {"method":"POST", "url":ENDPOINT, "body":payload, "fake":_fake_transport})
@@ -430,23 +591,23 @@ func pending_fake_payload() -> Dictionary:
 		return {}
 	return _last_fake_payload.duplicate(true)
 
-func receive_fake_response(epoch: int, serial: int, http_status: int, body: Dictionary) -> void:
+func receive_fake_response(epoch: int, serial: int, http_status: int, body: Dictionary, headers: PackedStringArray = PackedStringArray()) -> void:
 	if not _fake_transport:
 		return
-	_handle_transport(epoch, serial, HTTPRequest.RESULT_SUCCESS, http_status, JSON.stringify(body).to_utf8_buffer())
+	_handle_transport(epoch, serial, HTTPRequest.RESULT_SUCCESS, http_status, JSON.stringify(body).to_utf8_buffer(),headers)
 
 func _final_model_report(messages: Array) -> String:
 	# Only a completed, tool-free assistant turn is a human-visible report.
 	# The report is untrusted prose, never a native receipt or edit authority.
 	var parts: Array[String] = []
 	for message: Variant in messages:
-		if not message is Dictionary or message.get("role", "assistant") != "assistant":
+		if not message is Dictionary or typeof(message.get("role", "assistant")) != TYPE_STRING or message.get("role", "assistant") != "assistant":
 			continue
 		var content: Variant = message.get("content", null)
 		if not content is Array:
 			continue
 		for item: Variant in content:
-			if item is Dictionary and item.get("type", "") == "output_text" \
+			if item is Dictionary and typeof(item.get("type",null)) == TYPE_STRING and item.get("type", "") == "output_text" \
 					and item.get("text", null) is String:
 				var part: String = str(item.text).strip_edges()
 				if not part.is_empty():
@@ -459,6 +620,68 @@ func _parse_json_value(raw: String) -> Variant:
 	if decoder.parse(raw) != OK:
 		return null
 	return decoder.data
+
+static func _retry_after_seconds(value: String, utc_now: float) -> float:
+	var text := value.strip_edges()
+	if text.is_valid_float():
+		var numeric := text.to_float()
+		return numeric if is_finite(numeric) and numeric >= 0 else -1.0
+	# IMF-fixdate, e.g. Sun, 08 Nov 2026 19:00:00 GMT. Invalid dates fall back
+	# to bounded backoff; a valid long minimum is never shortened.
+	var fields := text.split(" ",false)
+	var months := ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+	if fields.size() != 6 or not fields[0].ends_with(",") or fields[5] not in ["GMT","UTC"]:
+		return -1.0
+	var clock := fields[4].split(":")
+	if clock.size() != 3 or fields[2] not in months or not fields[1].is_valid_int() or not fields[3].is_valid_int():
+		return -1.0
+	for number: String in clock:
+		if not number.is_valid_int():
+			return -1.0
+	var date := {"year":fields[3].to_int(),"month":months.find(fields[2])+1,"day":fields[1].to_int(),"hour":clock[0].to_int(),"minute":clock[1].to_int(),"second":clock[2].to_int()}
+	if date.year < 1970 or date.month < 1 or date.day < 1 or date.day > 31 or date.hour > 23 or date.minute > 59 or date.second > 59 or date.hour < 0 or date.minute < 0 or date.second < 0:
+		return -1.0
+	var stamp: int = Time.get_unix_time_from_datetime_dict(date)
+	var restored: Dictionary = Time.get_datetime_dict_from_unix_time(stamp)
+	for key: String in date:
+		if restored[key] != date[key]:
+			return -1.0
+	return maxf(0.0,float(stamp)-utc_now)
+
+func _handle_rate_error(body: PackedByteArray, safe_headers: Dictionary) -> void:
+	var parsed: Variant = _parse_json_value(body.get_string_from_utf8())
+	var error: Variant = parsed.get("error",{}) if parsed is Dictionary else {}
+	var code := str(error.get("code","")) if error is Dictionary else ""
+	var kind := str(error.get("type","")) if error is Dictionary else ""
+	var classification := (code+" "+kind).to_lower()
+	for permanent: String in ["insufficient_quota","credit_balance_exhausted","organization_spend_limit_exceeded","project_spend_limit_exceeded","organization_usage_limit_exceeded","usage_limit_exceeded","billing_hard_limit_reached"]:
+		if classification.contains(permanent):
+			_fail("API quota/billing limit (429): check project credits and spending limits; retries cannot restore access. Open Traffic for the provider error.")
+			return
+	if code not in ["rate_limit_exceeded","slow_down","rate_limit_error"] and kind not in ["rate_limit_exceeded","slow_down","rate_limit_error"]:
+		_fail("API rate limit status 429; unclassified response was not retried. Open Traffic for the provider error.")
+		return
+	if _rate_retries >= MAX_RATE_RETRIES:
+		_fail("API rate limit persists after two bounded retries. Reduce Toks/inspection or TPM, then retry later.")
+		return
+	if _request_count >= _active_request_budget:
+		_fail("Responses API request budget exhausted; no rate-limit retry dispatched.")
+		return
+	var delay: float = _retry_after_seconds(str(safe_headers.get("retry-after","")),Time.get_unix_time_from_system())
+	if delay < 0:
+		delay = 10.0 * pow(2.0,_rate_retries)
+		if not _fake_transport:
+			delay += randf_range(0.05,0.25)
+	if delay > MAX_RETRY_DELAY_SECONDS or _retry_wait_seconds + delay > MAX_RETRY_WAIT_SECONDS:
+		_fail("Provider requests %.1fs before retry, beyond the bounded wait. Try later; Retry-After was not shortened." % delay)
+		return
+	if _last_sent_payload.is_empty():
+		_fail("Rate-limit retry has no immutable request payload.")
+		return
+	_rate_retries += 1
+	_retry_wait_seconds += delay
+	record_diagnostic("rate.retry", {"attempt":_rate_retries,"delay_seconds":delay,"classification":code if not code.is_empty() else kind,"same_input":true,"local_estimate":true})
+	_queue_rate_payload(_last_sent_payload,_now_msec()+int(ceil(delay*1000.0)))
 
 func _handle_transport(identity: int, nonce: int, result: int, http_status: int, body: PackedByteArray, headers: PackedStringArray = PackedStringArray()) -> void:
 	var safe_headers := {}
@@ -474,22 +697,36 @@ func _handle_transport(identity: int, nonce: int, result: int, http_status: int,
 	if result != HTTPRequest.RESULT_SUCCESS:
 		_fail("Network error or timeout (%d)." % result)
 		return
+	if body.size() > MAX_BODY:
+		_fail("Provider response exceeds bounded size.")
+		return
+	if http_status == 429:
+		_handle_rate_error(body,safe_headers)
+		return
 	if http_status < 200 or http_status >= 300:
 		# Error bodies remain in redacted local diagnostics, never as native authority.
 		var kind := "API authentication" if http_status == 401 or http_status == 403 else ("API rate limit" if http_status == 429 else "API HTTP")
 		_fail("%s status %d" % [kind, http_status])
-		return
-	if body.size() > MAX_BODY:
-		_fail("Provider response exceeds bounded size.")
 		return
 	var parsed: Variant = _parse_json_value(body.get_string_from_utf8())
 	if not parsed is Dictionary or parsed.get("id", "") is not String or str(parsed.get("id", "")).is_empty():
 		_fail("Malformed Responses API envelope.")
 		return
 	var usage: Variant = parsed.get("usage", null)
+	if usage is Dictionary and _safe_integer(usage.get("input_tokens",null)) and _safe_integer(usage.get("output_tokens",null)) and usage.input_tokens >= 0 and usage.output_tokens >= 0:
+		_context_token_estimate = int(usage.input_tokens) + int(usage.output_tokens)
+	else:
+		_context_token_estimate = _last_sent_estimate
 	if not _usage_ids.has(parsed.id):
 		_usage_ids[parsed.id] = true
 		if usage is Dictionary and _safe_integer(usage.get("input_tokens",null)) and _safe_integer(usage.get("output_tokens",null)) and usage.input_tokens >= 0 and usage.output_tokens >= 0:
+			# Reserve before dispatch, then settle to actual completed usage. This
+			# is local pacing, not a claim to mirror the provider's bucket.
+			for reservation: Dictionary in _rate_reservations:
+				if reservation.epoch == identity and reservation.request == nonce:
+					reservation.tokens = int(usage.input_tokens) + int(usage.output_tokens)
+					record_diagnostic("rate.settled",{"tokens":reservation.tokens,"source":"provider_usage","local_estimate":true})
+					break
 			_input_tokens = maxi(_input_tokens,0) + int(usage.input_tokens)
 			_output_tokens = maxi(_output_tokens,0) + int(usage.output_tokens)
 		else:
@@ -509,7 +746,7 @@ func _handle_transport(identity: int, nonce: int, result: int, http_status: int,
 	var calls: Array = []
 	var messages: Array = []
 	for item: Variant in parsed.output:
-		if not item is Dictionary:
+		if not item is Dictionary or typeof(item.get("type",null)) != TYPE_STRING:
 			_fail("Malformed response output item.")
 			return
 		if item.get("type", "") == "function_call":
