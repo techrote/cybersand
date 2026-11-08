@@ -357,6 +357,27 @@ func run() -> void:
 				begin_apply.call()
 				check(bool(apply_bridge.get("_busy")),
 					"pending-apply Stop did not exercise an in-flight real owner edit")
+				# A model/provider may submit further tool calls while an applied
+				# native write is still awaiting its receipt. All four tools share
+				# one serial owner boundary: concurrent Step, observe and duplicate
+				# apply must refuse without preempting or replaying this edit.
+				var overlapped_step: Dictionary = await apply_bridge.call_tool(
+					"step",{"ticks":1})
+				var overlapped_observe: Dictionary = await apply_bridge.call_tool(
+					"observe",{"region":{"x":52,"y":52,"width":1,"height":1},
+					"detail":"cells"})
+				var overlapped_duplicate: Dictionary = await apply_bridge.call_tool(
+					"apply_edit",{"proposal_id":apply_prepared.get("proposal_id","")})
+				for overlapping: Dictionary in [
+						overlapped_step, overlapped_observe, overlapped_duplicate]:
+					check(overlapping.get("status")=="refused"
+						and overlapping.get("reason")=="agent_tool_busy",
+						"overlapping model call bypassed the real native edit serial fence: "
+						+str(overlapping))
+				check(bool(apply_bridge.get("_busy"))
+					and main.latest_snapshot.tick_index==before_apply_tick
+					and main.latest_snapshot.render_world_generation==before_apply_generation,
+					"overlapped calls cleared native busy or advanced an unauthorized tick")
 				var apply_stopped: Dictionary = await apply_bridge.stop()
 				check(apply_stopped.get("status")=="stopped"
 					and apply_stopped.get("no_further_agent_mutations")==true,
