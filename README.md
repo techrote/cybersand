@@ -1,6 +1,17 @@
 
 # CyberSand
 
+**Current owner direction (7 November 2026):** the pixel-physics engine is near
+its intended architectural shape (owner assessment, not a completed qualification).
+Reconcile and finish work already in flight; then prioritise the **shared workbench
+as a painting/GEN/WB-AGENT authoring host** and **at least three playable vertical
+slices**. Introduce the next nanotech and energetic materials batch after those
+initial experiments, preferably before expanding them into provisional games or
+finished demos. Prefer convincing, bounded gameplay emulation over unnecessary
+universal physical simulation. The canonical [product intent and sequencing
+record](docs/reference/product-intent-and-priorities.md#owner-direction-physics-convergence-and-gameplay-first-development--2026-11-07)
+explains the boundaries and preserves earlier decisions.
+
 <img width="1196" height="2644" alt="cybersand_material_tiles_preview" src="https://github.com/user-attachments/assets/f49ebc85-d2bc-4404-96f2-a4eac07b6deb" />
 
 Desktop opens the [combined feature launcher](docs/operations/physical-actor-programme.md): showcase maps, the Deepworks exhibition, actor/material sandboxes, sampled and physical Thunderbowl, Strata Theatre depth studies, generation authoring and the retained barrel/Ripper Blacksite comparison. F2 returns to the launcher and closes the current session.

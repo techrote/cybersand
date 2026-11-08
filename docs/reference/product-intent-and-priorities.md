@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Approved owner direction and deliberately preserved behavior; not current implementation or performance evidence
 canonical-for: [owner-intent, product-priorities, preserved-material-feel]
-last-reviewed: 2026-10-30
+last-reviewed: 2026-11-07
 related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approximate-fidelity.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -14,6 +14,98 @@ This page carries forward owner direction recorded in the
 [pre-rewrite handover](../audits/pre-rag-rewrite-2026-09-08/cybersand-codex-development-handover.md.txt)
 at checkpoint `126175c`. It preserves intent separately from source and dated
 validation; later approved decisions should update this canonical reference.
+
+## Owner direction: physics convergence and gameplay-first development — 2026-11-07
+
+**Approved owner direction; product priorities, not a claim that all implementation
+or platform acceptance gates have passed.** The pixel-physics engine is considered
+**close to its intended overall shape**. It has rough edges, but already produces
+surprisingly convincing, lively and kinetic interactions. Preserve those strengths
+rather than repeatedly reinventing the substrate. This newer direction
+**supersedes the 2026-09-20 backend-first priority as the default sequencing
+after currently queued/in-flight physics work is reconciled**; it does not erase
+the older decision, negate accepted invariants, close existing issues automatically
+or assert that unresolved defects are fixed.
+
+### Near-term product sequence
+
+1. **Finish or disposition the existing physics queue first.** Reconcile active
+   branches, tests and pending optimizations against current main; integrate
+   qualified work, resolve credible reproduced defects, and explicitly close,
+   defer or reject remaining proposals. Do not sustain indefinite investigation
+   into speculative defects or pursue a new fundamental engine rewrite merely
+   because a more physically comprehensive model is imaginable.
+2. **Mature the shared development workbench into a comprehensive authoring
+   host.** Its coherent user experience should accommodate a capable
+   painting/construction editor, the GEN generation systems, and WB-AGENT's
+   human/agent shared authoring, inspection, bounded edit receipts and stepping
+   (see [WB-AGENT #525](https://github.com/techrote/cybersand/issues/525)
+   and [Generation Workbench 2](../systems/generation-workbench-2.md)).
+   This is a *shared host*, not a requirement to create several independent
+   editors or duplicate World ownership.
+3. **Create at least three distinct, genuinely playable vertical-slice
+   experiments** on that substrate. They should explore different gameplay
+   configurations/loops and exercise generation, authoring, native material
+   behaviour and Rapier interaction in the actual application. Use them as
+   development laboratories, not merely automated physics fixtures and not
+   prematurely polished standalone games. Hands-on feel and iteration matter.
+4. **Then expand the material catalogue**, particularly nanotech/programmed
+   cellular agents and energetic/exotic materials. This is intended to follow
+   initial workbench and playable-slice maturity, and *preferably precede*
+   promotion of the successful slices into provisional games or finished demos.
+   [MAT-AUTH](../architecture/material-authoring-catalogue-plan.md) remains the
+   authoring/compatibility foundation, not a reason to hold up gameplay slices
+   until universal material modelling exists. The
+   [Moonsbox project](https://github.com/KlasterK/moonsbox) is a **behavioural
+   and architectural reference**, not a code port; its GPL-3.0 implementation
+   must not be copied into CyberSand without a separate licensing decision.
+5. **Expand promising slices into games/demos by evidence and owner choice.**
+   Tuning, usability and the particular experience determine which ideas warrant
+   production scope. Unsuccessful prototypes remain useful reference cases.
+
+These are **priority stages, not hard global dependency locks**: workbench, GEN,
+WB-AGENT and different vertical slices may progress in parallel when their
+interfaces permit it. Focus on integrated, playable delivery and closing work,
+not merely accumulating candidate PRs or declaring new universal gates.
+New materials are not an immediate prerequisite for the first vertical slices.
+
+### Physics, fidelity and tuning policy
+
+- **The engine is converging, not frozen.** Expect targeted tuning of material
+  parameters and Rapier/cellular interactions, correction of meaningful
+  reproducible rough edges and further *measured* performance improvements.
+  Preserve compelling kinetic feel; avoid extensive speculative optimization
+  or retuning for a single synthetic benchmark without product benefit.
+- **Tuning is allowed to be game- and player-specific.** Different movement
+  archetypes, gameplay types and interaction scales can have separate explicit
+  parameter profiles and accepted reference scenarios. A universal compromise
+  profile is not required. Record chosen profiles, comparisons and human feel
+  judgements so successive tuning builds reusable evidence and understanding.
+- **Convincing emulation is preferable to unnecessary universal physics.**
+  For energetic or large-area events, it is acceptable to erase or transform
+  material, generate timed fragments/particles, apply bounded impulses or
+  scripted displacements, and use staged visual effects. A dynamite-style
+  explosion need not conserve every destroyed cell or emerge from a general
+  pressure/thermodynamics solver. Similarly, an exotic sink need not implement
+  real gravity. Add sophistication when the playable result warrants its
+  balancing, performance and integration cost.
+- **Selective invariants still apply.** Do not treat this as blanket permission
+  to violate existing Water quantity contracts, collision/ownership safety,
+  worker boundaries, deterministic bounded execution, save/version identities
+  or source-matched acceptance for mechanisms that explicitly require them.
+  Label intentional material sources/sinks and event budgets. A new effect may
+  deliberately have non-conservative semantics without weakening unrelated
+  solvers or quietly changing defaults.
+- **Keep mechanisms composable but not forcibly unified.** Purpose-built
+  kernels and controlled effects are appropriate. Avoid a growing
+  multidimensional global balancing problem caused by making every gameplay
+  interaction depend on a monolithic physical model. Protect the shared
+  contracts that make independent gameplay systems reliable.
+
+This section sets **current owner intent**, not implemented features, formal
+performance evidence or automatic permission to merge an active experimental
+branch. The [roadmap](status-and-roadmap.md), current source and validation
+ledger retain those distinct status claims.
 
 ## PLAY convergence and acceptance boundary — 2026-10-30
 

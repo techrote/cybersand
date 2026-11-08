@@ -10,6 +10,20 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Owner priority reset and sequencing — 2026-11-07
+
+**Approved product direction, not new runtime acceptance.** The owner considers
+native pixel physics near its intended shape. Reconcile in-flight physics first;
+then mature the shared painting/GEN/WB-AGENT workbench and deliver **at least
+three playable vertical-slice experiments**. Expand nanotech/energetic materials
+after initial slices and preferably before promoting slices into games/demos.
+Profile and tune Rapier/material interactions for the chosen gameplay; pursue
+performance work on measured need, not speculative simulation completeness.
+See the [canonical owner direction](product-intent-and-priorities.md#owner-direction-physics-convergence-and-gameplay-first-development--2026-11-07)
+for stage overlap, selective conservation, emulated effects and preserved gates.
+This supersedes historical backend-first *priority*, not existing source facts,
+independent acceptance obligations or active ownership without reconciliation.
+
 ## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05
 
 **Experimental draft, not on main; no default changed.** The

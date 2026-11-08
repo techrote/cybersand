@@ -10,6 +10,15 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Owner product direction and post-physics sequence — 2026-11-07
+
+| Question | Canonical route |
+|---|---|
+| Is the physics backend still the dominant open-ended development objective? | [Owner convergence decision](product-intent-and-priorities.md#owner-direction-physics-convergence-and-gameplay-first-development--2026-11-07); near-final is owner judgement, not a blanket pass or issue closure. |
+| What follows reconciliation of queued physics work? | [Near-term owner sequence](product-intent-and-priorities.md#near-term-product-sequence): one painting/GEN/WB-AGENT workbench and at least three playable slices. |
+| When do the nanotech and energetic/exotic materials arrive? | [Material expansion stage](product-intent-and-priorities.md#near-term-product-sequence): after the initial slices, preferably before game/demo promotion; MAT-AUTH retains separate implementation admission. |
+| Are realistic conservation and universal physics required for explosions/exotic effects? | [Physics, fidelity and tuning policy](product-intent-and-priorities.md#physics-fidelity-and-tuning-policy): bounded game-grade emulation is permitted, while existing explicitly conserved domains and engineering invariants remain protected. |
+
 ## Branch reconciliation and design choices
 
 For how agents reconcile stacked or long-running branches with main, and which

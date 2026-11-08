@@ -7,6 +7,18 @@ remotes, dependency pins and required LFS state. The companion workspace reposit
 is separate from this source repository; [identity](docs/operations/source-checkpoint-and-recovery.md)
 explains the established checkpoints. Preserve unrelated work.
 
+## Current owner product priority (7 November 2026)
+
+Before starting new foundational physics campaigns, creating new material families
+or expanding prototype games, read the latest [owner product direction](docs/reference/product-intent-and-priorities.md#owner-direction-physics-convergence-and-gameplay-first-development--2026-11-07).
+First reconcile queued physics work; concentrate next on the integrated painting,
+GEN and WB-AGENT workbench plus at least three playable vertical-slice experiments.
+The nanotech/energetic material expansion follows those initial slices and should
+preferably precede game/demo promotion. The physics backend is near its intended
+shape **by owner assessment**, not a claim that tests or defects are complete.
+Gameplay-specific tuning and purpose-built bounded effects are encouraged; retain
+explicit invariants, credible correctness gates and source-qualified evidence.
+
 ## Development-order safety
 
 GitHub issue numbers are identifiers, **not a serial execution order**. Before
