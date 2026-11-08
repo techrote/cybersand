@@ -521,13 +521,22 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         pending->extent = extent;
         pending->world->configure_transient_obstacles({0, 0, extent.x, extent.y}, workbench);
         if (generated) {
+            // Authoritative material-ID equality is not render-copy equality:
+            // copy_material_cells() intentionally dithers fractional Water and
+            // overlays in-flight ballistic parcels. Only stored_material()
+            // reflects the constructed World that native physics will tick.
+            // This is one bounded native construction-time scan, never a
+            // per-cell GDScript call or a tick-path traversal.
             std::vector<std::uint8_t> readback(static_cast<std::size_t>(extent.x) * extent.y);
-            pending->world->copy_material_cells({0, 0, extent.x, extent.y},
-                {readback.data(), readback.size()}, extent.x);
+            for (std::int32_t y = 0; y < extent.y; ++y) {
+                for (std::int32_t x = 0; x < extent.x; ++x)
+                    readback[static_cast<std::size_t>(y) * extent.x + x] =
+                        static_cast<std::uint8_t>(pending->world->stored_material(x, y));
+            }
             const auto installed_digest = prepared_liquid_detail::digest(cybersand::Sha256::of(
                 {readback.data(), readback.size()}));
             if (installed_digest != generated_expected_material_sha)
-                throw std::invalid_argument("Generated-grid prepared World readback differs from accepted input");
+                throw std::invalid_argument("Generated-grid authoritative prepared-World material readback differs from accepted input");
         }
         if (workbench) {
             if (options.get("workbench_sample",Variant()).get_type() != Variant::DICTIONARY)
