@@ -85,6 +85,39 @@ source-built native + Godot on Linux and Windows; retained binaries must be
 identified, not silently mistaken for the tested source. The test has not yet
 been executed in this authoring environment; its result is **NOT RUN**.
 
+## Bounded uniform-material stencils (Draft, not yet mounted)
+
+`Shapes.stamp(source_cells, source_origin, destination_origin, extent)`
+translates an existing row-major or unordered interleaved `x,y` mask by one
+integer offset. The caller supplies the already selected **one material**;
+the source mask does **not** contain/copy original native material IDs.
+Translation is fully bounded to one 4096-cell native command, de-duplicates
+cells, rejects malformed/oversized source masks, and refuses the *entire*
+operation if the source or translated destination includes any off-canvas
+cell. No partial paste is returned. Successful plans retain row-major ordering
+and use the same existing worker queue; no second World or host authority is
+created.
+
+This is an additive geometry primitive only. A practical material-preserving
+multi-material copy/paste requires a native-authoritative source readback,
+per-material grouping and **atomic ACK across all groups** (the worker only
+admits eight separate queued requests, which cannot substitute for that).
+Until the Integration owner admits that transaction and real edit receipts,
+expose the primitive only as a uniform-material stencil preview/plan; do not
+claim complete copy/paste, undo/redo or persisted painting.
+
+**Exact-head CI discrepancy diagnosed 8 November:** Documentation/provenance
+run [42482388310](https://github.com/techrote/cybersand/actions/runs/42482388310)
+executed actionlint and then failed `tools/ci/check_docs.py` with
+`Focused document has no corpus or explicit excluded entry:
+systems/paint-editor-bounded-shapes.md`. This is a real repository
+documentation gate failure, not transient download disruption. The required
+fix belongs to the separately owned `docs/reference/retrieval-corpus.json`
+source-registration seam, not PAINT-001's exclusive write set. The Integration
+owner must register this focused document (or a justified explicit exclusion)
+and re-run documentation plus retrieval checks; PAINT-001 must not silently
+edit someone else's registry or report Docs PASS.
+
 ## Integrator handoff — missing public host seam
 
 Only the independent cross-lane Integration owner may edit/mount
