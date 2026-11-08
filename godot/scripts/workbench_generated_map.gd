@@ -145,6 +145,15 @@ static func read_named(label: String) -> Dictionary:
 	if not error.is_empty(): return {"error":error}
 	error = valid_provenance(entry.generation,Setup.extent_of(setup))
 	if not error.is_empty(): return {"error":error}
+	# JSON decodes integral coordinate/revision values as floating numbers.
+	# They have been strictly checked for integer value and bounded range
+	# above; canonicalize their *types* before the exact-provenance comparison.
+	# No hash, native material or recipe identity is reconstructed/waived.
+	var generation: Dictionary = entry.generation
+	for key: String in ["origin","extent"]:
+		generation[key] = Array(PackedInt32Array(generation[key]))
+	for key: String in ["schema","generator_revision"]:
+		generation[key] = int(generation[key])
 	# Exact numerical typing for the native owner. JSON numeric conversion is
 	# admitted only after the original v2 validator has checked every field.
 	for key: String in ["version","next_id","selected","rule_radius","material","brush"]:
@@ -155,4 +164,4 @@ static func read_named(label: String) -> Dictionary:
 		setup.edits[index] = Array(PackedInt32Array(setup.edits[index]))
 	for actor: Dictionary in setup.actors:
 		actor.id = int(actor.id)
-	return {"generated":true,"setup":setup,"generation":entry.generation}
+	return {"generated":true,"setup":setup,"generation":generation}
