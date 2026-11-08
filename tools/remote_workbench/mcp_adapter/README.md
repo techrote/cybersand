@@ -110,7 +110,8 @@ read -rs -p 'Tunnel runtime API key: ' CONTROL_PLANE_API_KEY; printf '\n'
 export CONTROL_PLANE_API_KEY
 # Replace only with the tunnel ID shown in the operator's Platform settings.
 TUNNEL_ID='<operator-created-tunnel-id>'
-tunnel-client init --profile cybersand-wb --tunnel-id "$TUNNEL_ID" \
+tunnel-client init --sample sample_mcp_remote_no_auth \
+  --profile cybersand-wb --tunnel-id "$TUNNEL_ID" \
   --mcp-server-url http://127.0.0.1:8766/mcp
 # Read backend Authorization only from a trusted local file. It is NOT a model
 # argument, connector-forwarded secret, or public endpoint credential.
