@@ -19,6 +19,10 @@ tree; the Windows runner's explicit `--native-candidate` mode and independent
 coverage reducer verify those bytes. The default retained-runtime mode keeps
 its original committed provenance checks. Candidate manifests do not rewrite
 published provenance or waive `check_repository.py`.
+Candidate download and verification each have a five-minute allowance; only
+Rapier is fetched through LFS in the shard. The complete setup remains within
+the existing 70-minute reserve. Use **rerun all jobs** when retrying this
+same-run/attempt artifact chain, so producer and consumers share an attempt.
 
 The [EXPLORE candidate](explore001-desktop-playtest.md) is assembled by
 `tools/package_explore001_candidate.py` from committed project/profile bytes,

@@ -92,6 +92,24 @@ buffers1,048,576/4,194,304/16,777,216 bytes. Those are only buffer sizes; old an
 prepared native Worlds, staging structures and rendering add substantial memory.
 Per-process/tree timing and peak-memory evidence belongs with hosted/local logs.
 
+Exact source51526e6d local replay passed73/73 (39,457ms fixture time) and a
+separate process passed24/24 (14,068ms). The Windows PowerShell sampler retained
+the console wrapper and its directly owned Godot engine: peak sampled working
+set811,917,312bytes for the combined fixture including2048², and455,106,560bytes
+for reopen, with nominal100ms sampling. This is observed residency, not a total
+allocation bound. Source/tree, DLL/Rapier and raw-log SHA-256 accompany the local
+receipts. No native input differs from the rebuilt d02cf28e library.
+
+The first full source51526e6d GDExtension run
+[42474912481](https://github.com/techrote/cybersand/actions/runs/42474912481)
+failed budget preflight before regression execution: two new Windows candidate
+steps lacked explicit allowances. The follow-up changes only workflow/documents:
+allocate5minutes each for artifact download and verification, reduce the
+now-Rapier-only materialization allowance from20 to10minutes, retain the existing
+70minute total setup reserve. `test_godot_job_plan.py`11/11, provider/scheduling
+and pinned actionlint then passed. This failed run is not a runtime pass; final
+exact-head full matrices and candidate build are dispatched again.
+
 Local raw logs and negative controls are retained outside the source checkout in
 `../evidence/`; full hosted runs retain source/tree, compiler/dependency/build
 logs, binary hashes, original process outputs and rendered captures as Actions

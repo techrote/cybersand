@@ -430,20 +430,22 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Materialize retained Windows CyberSand and pinned Rapier runtimes
-        timeout-minutes: 20
+      - name: Materialize pinned Windows Rapier runtime
+        timeout-minutes: 10
         run: |
           set -euo pipefail
           git lfs install --local
-          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
 
       - name: Download same-run source-built Windows candidate
+        timeout-minutes: 5
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: native-candidate-windows-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/windows-candidate
 
       - name: Verify and install candidate without changing retained provenance
+        timeout-minutes: 5
         run: |
           python tools/ci/native_candidate_identity.py build/windows-candidate
           cp build/windows-candidate/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/
@@ -516,6 +518,7 @@ jobs:
           pattern: windows-godot-headless-*-${{ github.run_id }}
           path: build/windows-coverage-input
       - name: Download independently verified same-run Windows candidate
+        timeout-minutes: 5
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: native-candidate-windows-${{ github.run_id }}-${{ github.run_attempt }}
