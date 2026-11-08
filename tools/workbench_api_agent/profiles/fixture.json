@@ -1,0 +1,8 @@
+{
+ "schema":"cybersand.workbench-api-agent.profile/1", "provider":"fixture",
+ "endpoint":"http://127.0.0.1:19876/v1/chat/completions", "model":"scripted-provider-not-model",
+ "credentials":{"env":""},
+ "capabilities":{"tools":true,"images":true,"strict_tools":false,"parallel_tools":false,"image_detail":"low"},
+ "limits":{"max_model_calls":14,"max_tools":12,"max_run_seconds":900,"max_native_ticks":8},
+ "spend":{"max_usd_per_call":0,"max_usd_per_run":0,"authorised_ceiling_usd":0,"authorisation_ref":""}
+}
