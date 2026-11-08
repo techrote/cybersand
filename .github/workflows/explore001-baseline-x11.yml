@@ -45,9 +45,7 @@ jobs:
           echo 'original accepted-main Linux headless fixture result: 164 checks / 0 failures (run 42408408211 shard 6)' > evidence/control-context.txt
           mkdir -p "$RUNNER_TEMP/explore-main-godot"
           timeout 600 curl -fL --retry 3 -o "$RUNNER_TEMP/explore-main-godot.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7' > evidence/download.log 2>&1
-          echo '0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  ' "$RUNNER_TEMP/explore-main-godot.zip" | tr -d '\n' > "$RUNNER_TEMP/checkline"
-          echo >> "$RUNNER_TEMP/checkline"
-          sha256sum --check --strict "$RUNNER_TEMP/checkline"
+          printf '%s  %s\n' '0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c' "$RUNNER_TEMP/explore-main-godot.zip" | sha256sum --check --strict
           unzip -q "$RUNNER_TEMP/explore-main-godot.zip" -d "$RUNNER_TEMP/explore-main-godot"
           GODOT_BIN="$(find "$RUNNER_TEMP/explore-main-godot" -maxdepth 1 -type f -name 'Godot*' | head -1)"
           chmod +x "$GODOT_BIN"
