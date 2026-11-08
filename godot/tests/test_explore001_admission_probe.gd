@@ -96,7 +96,10 @@ func _run() -> void:
 	mark("WORKBENCH_OWNER_RESULT",{"pending":host.pending_microscenario_apply.size(),"epoch":host._physical_epoch,
 		"message":panel.message,"host_error":host.microscenario_error,
 		"active_source_sha256":str(panel._generated_active.get("sha256",""))})
-	if not ok or host._physical_epoch==prev_epoch or panel._generated_active.get("sha256","")!=proposal.sha256:
+	# An actor-free replacement may legitimately leave the physical actor epoch
+	# unchanged. The native World/source receipt, not a Rapier epoch delta,
+	# establishes that generated material was accepted.
+	if not ok or panel._generated_active.get("sha256","")!=proposal.sha256:
 		mark("INSTALL_REFUSED_OR_STALE")
 		quit(1)
 		return
