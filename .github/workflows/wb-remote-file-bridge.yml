@@ -10,6 +10,21 @@ on:
       - 'tools/remote_workbench/**'
       - '.github/workflows/wb-remote-file-bridge.yml'
   workflow_dispatch:
+    inputs:
+      authorization_json:
+        description: "Trusted host authorization JSON (empty = committed real-native fixture)"
+        type: string
+        required: false
+        default: ""
+      commands_jsonl:
+        description: "LF-separated version-1 workbench commands (empty = committed fixture)"
+        type: string
+        required: false
+        default: ""
+  workflow_call:
+    inputs:
+      authorization_json: {type: string, required: false, default: ""}
+      commands_jsonl: {type: string, required: false, default: ""}
 
 permissions:
   contents: read
@@ -124,6 +139,32 @@ jobs:
           with open(os.environ["GITHUB_ENV"],"a") as output:
               output.write("GODOT_BIN="+str(dest/binary)+"\n")
           PY
+      - name: Materialize one trusted host task and bounded command batch
+        env:
+          HOST_AUTHORIZATION_JSON: ${{ inputs.authorization_json }}
+          AGENT_COMMANDS_JSONL: ${{ inputs.commands_jsonl }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE/input"
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          authorization=os.environ.get("HOST_AUTHORIZATION_JSON","")
+          commands=os.environ.get("AGENT_COMMANDS_JSONL","")
+          if bool(authorization.strip()) != bool(commands.strip()):
+              raise SystemExit("Host authorization and agent JSONL must be provided together")
+          home=Path("tools/remote_workbench/fixtures")
+          output=Path("build/wb-remote/input")
+          files={"host-authorization.json":authorization,
+                 "commands.jsonl":commands}
+          for name,data in files.items():
+              if not data.strip():
+                  source = home / ("roundtrip-authorization.json" if "authorization" in name else "roundtrip-commands.jsonl")
+                  data=source.read_text(encoding="utf-8")
+              elif name.endswith(".jsonl") and not data.endswith("\\n"):
+                  data += "\\n"
+              (output/name).write_text(data,encoding="utf-8")
+          PY
       - name: Import source and run real native/rendered remote roundtrip
         timeout-minutes: 12
         run: |
@@ -133,10 +174,14 @@ jobs:
           grep -Fx '4.7.stable.official.5b4e0cb0f' "$EVIDENCE/godot-version.txt"
           timeout 180 "$GODOT_BIN" --headless --path godot --editor --import --quit 2>&1 | tee "$EVIDENCE/import.log"
           python3 tools/remote_workbench/run.py --xvfb --godot "$GODOT_BIN" \
-            --authorization tools/remote_workbench/fixtures/roundtrip-authorization.json \
-            --commands tools/remote_workbench/fixtures/roundtrip-commands.jsonl \
+            --authorization "$EVIDENCE/input/host-authorization.json" \
+            --commands "$EVIDENCE/input/commands.jsonl" \
             --evidence "$EVIDENCE/roundtrip" --timeout 480
-          python3 tools/remote_workbench/verify.py --roundtrip --evidence "$EVIDENCE/roundtrip" \
+          verify_flags=()
+          if test -z "${{ inputs.authorization_json }}" && test -z "${{ inputs.commands_jsonl }}"; then
+            verify_flags+=(--roundtrip)
+          fi
+          python3 tools/remote_workbench/verify.py "${verify_flags[@]}" --evidence "$EVIDENCE/roundtrip" \
             2>&1 | tee "$EVIDENCE/roundtrip-verification.log"
       - name: Reuse frozen +512 moved Sand-hopper native Godot control
         timeout-minutes: 25
