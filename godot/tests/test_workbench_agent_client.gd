@@ -44,6 +44,7 @@ func _run() -> void:
 	_test_provider_errors()
 	_test_malformed_argument_repair()
 	_test_budget_and_duplicates()
+	_test_configurable_budgets()
 	_test_526_exact_envelopes()
 	await _test_ui_shell()
 	# Let deferred queued Node deletions and emitted signals finish before exit.
@@ -340,8 +341,8 @@ func _test_budget_and_duplicates() -> void:
 	_expect(not c.is_active(), "second request should be refused at budget")
 	c.queue_free()
 	var over := _new_client()
-	over.request_budget = 25
-	_expect(not over.begin_task("Attempt", "model", _scope()), "out-of-policy 25-request budget admitted")
+	over.request_budget = Client.MAX_REQUEST_BUDGET + 1
+	_expect(not over.begin_task("Attempt", "model", _scope()), "out-of-policy request budget admitted")
 	over.queue_free()
 	var d := _new_client()
 	_expect(d.begin_task("Attempt", "model", _scope()), "duplicate fixture start")
@@ -372,6 +373,41 @@ func _test_budget_and_duplicates() -> void:
 		_tool("step", "c2", {"ticks": 1})]))
 	_expect(not p.is_active(), "parallel model calls should fail closed")
 	p.queue_free()
+
+func _test_configurable_budgets() -> void:
+	var c := _new_client()
+	c.request_budget = 128
+	c.tool_budget = 256
+	c.token_budget = 32768
+	_expect(c.begin_task("Build across batches", "model", _scope()), "collaboration-sized task refused")
+	_expect(c._last_fake_payload.max_output_tokens == 32768, "selected token cap not sent")
+	c.request_budget = 1
+	c.tool_budget = 1
+	c.token_budget = 1
+	_deliver(c, _response("budget-r1", [_tool("observe", "budget-c1", {"region":null,"detail":"counts"})]))
+	_expect(c.submit_tool_result(c.current_epoch(),"budget-c1",{"status":"observed","observation_id":"budget-o1"}), "budget continuation failed")
+	_expect(c.is_active() and c._active_request_budget == 128 and c._active_tool_budget == 256
+		and c._last_fake_payload.max_output_tokens == 32768, "active allowances changed after Start")
+	c.queue_free()
+	var limited := _new_client()
+	limited.tool_budget = 1
+	var dispatches: Array = []
+	limited.tool_requested.connect(func(name: String, _args: Dictionary, _epoch: int, _call: String) -> void: dispatches.append(name))
+	_expect(limited.begin_task("Bound tools", "model", _scope()), "tool ceiling fixture start")
+	limited.tool_budget = Client.MAX_TOOL_BUDGET
+	_deliver(limited, _response("tool-r1", [_tool("observe", "tool-c1", {"region":null,"detail":"counts"})]))
+	limited.submit_tool_result(limited.current_epoch(),"tool-c1",{"status":"observed","observation_id":"tool-o1"})
+	_deliver(limited, _response("tool-r2", [_tool("step", "tool-c2", {"ticks":1})]))
+	_expect(not limited.is_active() and dispatches == ["observe"], "tool cap bypass dispatched another native call")
+	limited.queue_free()
+	for spec: Array in [["request_budget",0],["request_budget",Client.MAX_REQUEST_BUDGET+1],
+		["tool_budget",0],["tool_budget",Client.MAX_TOOL_BUDGET+1],
+		["token_budget",0],["token_budget",Client.MAX_TOKEN_BUDGET+1]]:
+		var bad := _new_client()
+		bad.set(spec[0],spec[1])
+		_expect(not bad.begin_task("Invalid ceiling", "model", _scope()) and bad._serial == 0,
+			"invalid %s admitted a request" % spec[0])
+		bad.queue_free()
 
 func _test_ui_shell() -> void:
 	var panel := AgentPanel.new()
@@ -410,16 +446,27 @@ func _test_ui_shell() -> void:
 	_expect(authorizations.size() == 1 and panel.client.is_active(),
 		"valid Start did not authorize exactly once after local preflight")
 	_expect(panel.client.request_budget == 12, "default paid request limit changed")
-	panel._extended_requests.button_pressed = true
+	panel._set_budgets(128,256,32768)
 	_expect(not panel.client.is_active(), "changing paid request allowance failed to revoke task")
 	panel._on_start()
-	_expect(panel.client.is_active() and panel.client.request_budget == 24,
-		"human opt-in failed to authorize 24 bounded Responses requests")
-	panel._extended_requests.button_pressed = false
+	_expect(panel.client.is_active() and panel.client.request_budget == 128
+		and panel.client.tool_budget == 256 and panel.client.token_budget == 32768,
+		"human-selected collaboration budgets not authorized")
+	panel._token_limit.value = 20480
+	_expect(not panel.client.is_active(), "changing output-token cap did not retire task")
+	panel._on_start()
+	_expect(panel.client._active_token_budget == 20480, "next task did not select revised token cap")
+	panel._tool_limit.value = 512
+	_expect(not panel.client.is_active(), "changing tool-call cap did not retire task")
+	panel._request_limit.get_line_edit().text = "256"
+	panel._on_start()
+	_expect(panel.client._active_request_budget == 256, "Start ignored typed unsubmitted budget text")
+	panel._set_budgets(Client.DEFAULT_REQUEST_BUDGET,Client.DEFAULT_TOOL_BUDGET,Client.DEFAULT_TOKEN_BUDGET)
 	_expect(not panel.client.is_active(), "opting out did not retire the old task")
 	panel._on_start()
-	_expect(panel.client.is_active() and panel.client.request_budget == 12,
-		"next task did not restore default 12-request ceiling")
+	_expect(panel.client.is_active() and panel.client.request_budget == 12
+		and panel.client.tool_budget == 32 and panel.client.token_budget == 2048,
+		"next task did not restore all conservative defaults")
 	panel._model.text = "revised-test-model"
 	panel._retire_on_human_change()
 	_expect(not panel.client.is_active(), "human task revision must invalidate pending response")

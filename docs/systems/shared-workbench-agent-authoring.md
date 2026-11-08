@@ -332,16 +332,33 @@ serial dispatch (`parallel_tool_calls: false`), finite budgets, configured
 vision-capable model and credentials outside source/saves/logs. The worker,
 native pool and UI render loop must not wait synchronously on HTTP.
 
-The mounted panel defaults to **12 Responses requests per task**. A human can
-explicitly select **Extended run: up to 24 API requests** before Start; this
-changes only the finite request ceiling for that task, not the 32-tool-call
-limit, per-request output token bound, native edit/step caps or any physics.
-The choice is not supplied to model tools or persisted in saves, and changing
-it during a task revokes that task. The client freezes the selected ceiling at
-Start and refuses values outside 1–24. Extended mode can incur additional
-API charges; it makes the previously insufficient 12-request live hopper
-budget *configurable*, but does not certify model success or authorize any
-paid acceptance trials. Fake-provider/native tests remain non-paid evidence.
+**Current on the owner-requested isolated budget-controls candidate (8 November
+2026):** the mounted panel has numeric **API requests / task**, **Tool calls /
+task**, and **Output tokens / response** controls. Their ranges are1–4096,
+1–8192 and1–131072 respectively. A **Collaboration preset** explicitly selects
+128 requests,256 tool calls and32768 output tokens/response; **Reset limits**
+restores12/32/2048. Opening the app retains those conservative defaults.
+The model must support the selected output-token cap; the UI does not claim
+model-specific capability discovery or a monetary spending ceiling.
+
+The host validates and freezes all three allowances at Start. Editing any
+control retires the existing task; public configuration cannot alter its active
+request/tool/token ceilings. Budget exhaustion stays explicit and dispatches no
+extra native tool. These are paid API allowances, not native capacities.
+
+**4096 cells is a per-observation/edit bound, not a total task quota.** Repeated
+batches can cover the authorized canvas. The real native large-scope regression
+now includes two disjoint4096-cell batches,8192 confirmed writes in one task,
+with native readback and no extra ticks. Its execution status and original PNGs
+must be recorded against the resulting source head before claiming a runtime
+pass. The existing native owner separately retains64 applied receipts per World;
+that capacity, protection, Step limits, snapshots and physical laws are unchanged.
+Do not drop receipts, silently reset the World or claim unlimited total work.
+
+The previous12/24 checkbox was replaced by these controls. No paid acceptance
+trial is authorized by implementation/testing; fake-provider evidence remains
+separate. Source/qualification details are in the
+[budget-controls record](../audits/2026-11-08-wb531-configurable-budgets.md).
 
 The parent maintains three distinct acceptance outcomes: (1) engineering
 source-matched native/Godot tests, (2) **three predeclared actual API** Sand-hopper

@@ -40,6 +40,7 @@ func _run() -> void:
 	panel._task.text = "Work across the canvas with bounded inspections and protected edits."
 	panel._model.text = "fake-only-no-service"
 	panel.client.configure_fake_transport_for_tests(true)
+	panel._set_budgets(128,256,32768)
 	wb._set_view(Vector2(1740,1740),Vector2i(256,256))
 	panel._on_start()
 	if not await until(Callable(self,"_ready_panel_task"),"4194304-cell native authorization"):
@@ -62,6 +63,23 @@ func _run() -> void:
 	var applied: Dictionary = await model_call("apply_edit",{"proposal_id":prepared.get("proposal_id","")})
 	check(applied.get("status") == "applied" and applied.get("confirmed_writes") == 4,"four native writes missing")
 	check(host.latest_snapshot.tick_index == 0,"authoring advanced native ticks")
+	# 4096 is per operation, not total task authorization or edited-cell quota.
+	var batched_writes := 0
+	for x: int in [1400,1464]:
+		wb._set_view(Vector2(x-16,1684),Vector2i(256,256))
+		var window := {"x":x,"y":1700,"width":64,"height":64}
+		var before_batch: Dictionary = await model_call("observe",{"region":window,"detail":"cells"})
+		check(before_batch.get("native_counts",{}).get("58",-1) == 0,"batch fixture not empty")
+		var batch: Dictionary = await model_call("prepare_edit",{"observation_id":before_batch.get("observation_id",""),
+			"operations":[{"shape":"rectangle","x0":x,"y0":1700,"x1":x+63,"y1":1763,"material":58,"replace_only_material":0}]})
+		check(batch.get("status") == "proposed" and batch.get("changed_cells") == 4096,"full batch not proposed")
+		var receipt: Dictionary = await model_call("apply_edit",{"proposal_id":batch.get("proposal_id","")})
+		check(receipt.get("status") == "applied" and receipt.get("confirmed_writes") == 4096,"full batch not applied")
+		var after_batch: Dictionary = await model_call("observe",{"region":window,"detail":"cells"})
+		check(after_batch.get("native_counts",{}).get("58",-1) == 4096,"native batch readback not conserved")
+		batched_writes += int(receipt.get("confirmed_writes",0))
+		_capture_original("batch-%d" % x)
+	check(batched_writes == 8192 and host.latest_snapshot.tick_index == 0,"task-wide 4096 quota or extra ticks")
 	var duplicate: Dictionary = await model_call("apply_edit",{"proposal_id":prepared.get("proposal_id","")})
 	check(duplicate == applied,"duplicate changed receipt")
 	var stepped: Dictionary = await model_call("step",{"ticks":1})

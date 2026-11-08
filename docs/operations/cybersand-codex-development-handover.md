@@ -10,6 +10,18 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Workbench configurable agent budgets — 2026-11-08
+
+Owner-requested isolated branch`codex/wb531-configurable-budgets-20261108`
+starts from current #531`3cb6792abb904f912790ef077affa12570804250`.
+Numeric request/tool/output-token controls replace the12/24 checkbox; all
+three are frozen at Start. The Collaboration preset is128/256/32768.
+4096 remains a per-operation bound; a real8192-cell two-batch regression is
+added without changing native authority or64-receipt capacity. Follow the
+[contract](../systems/shared-workbench-agent-authoring.md) and
+[evidence record](../audits/2026-11-08-wb531-configurable-budgets.md).
+Source remains isolated pending tested handoff; no merge/Ready/live claim.
+
 ## WB-AGENT released-source consumer — 2026-11-07
 
 The owner requested integration and qualification of all released fixes,

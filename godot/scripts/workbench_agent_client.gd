@@ -18,10 +18,14 @@ const MAX_BODY := 2 * 1024 * 1024
 ## before/after IDs. Reserve 112 characters per row plus 64 KiB for bounded
 ## identity/count/palette metadata. Images have their separate existing cap.
 const MAX_TOOL_OUTPUT := 4096 * 112 + 65536
-# Normal paid tasks remain at 12 requests; the human may opt in to 24.
-# Neither the model nor any tool result may select the request ceiling.
+# Host-selected budgets are validated and frozen together at Start.
+# Neither the model nor a tool result may expand an active task's allowance.
 const DEFAULT_REQUEST_BUDGET := 12
-const MAX_REQUEST_BUDGET := 24
+const MAX_REQUEST_BUDGET := 4096
+const DEFAULT_TOOL_BUDGET := 32
+const MAX_TOOL_BUDGET := 8192
+const DEFAULT_TOKEN_BUDGET := 2048
+const MAX_TOKEN_BUDGET := 131072
 # Permit one non-mutating model argument correction per task; no native replay.
 const MAX_ARGUMENT_REPAIRS := 1
 # Transport parses signed native coordinates without granting out-of-domain
@@ -31,8 +35,10 @@ const MAX_WORLD_COORD: int = 2147483647
 
 var request_budget := DEFAULT_REQUEST_BUDGET
 var _active_request_budget := DEFAULT_REQUEST_BUDGET
-var tool_budget := 32
-var token_budget := 2048
+var tool_budget := DEFAULT_TOOL_BUDGET
+var token_budget := DEFAULT_TOKEN_BUDGET
+var _active_tool_budget := DEFAULT_TOOL_BUDGET
+var _active_token_budget := DEFAULT_TOKEN_BUDGET
 var request_timeout_seconds := 25.0
 
 var _epoch := 0
@@ -236,7 +242,11 @@ func launch_problem(task: String, model: String, scope: Dictionary) -> String:
 	if task.strip_edges().is_empty() or model.strip_edges().is_empty() or scope.is_empty():
 		return "Task, model and explicit scope are required."
 	if request_budget < 1 or request_budget > MAX_REQUEST_BUDGET:
-		return "Request budget must be between 1 and 24."
+		return "Request budget must be between 1 and %d." % MAX_REQUEST_BUDGET
+	if tool_budget < 1 or tool_budget > MAX_TOOL_BUDGET:
+		return "Tool-call budget must be between 1 and %d." % MAX_TOOL_BUDGET
+	if token_budget < 1 or token_budget > MAX_TOKEN_BUDGET:
+		return "Output-token budget must be between 1 and %d; choose a value supported by the model." % MAX_TOKEN_BUDGET
 	if not _fake_transport and OS.get_environment("OPENAI_API_KEY").is_empty():
 		return "OPENAI_API_KEY is not set. Configure the local launch environment and restart the client."
 	return ""
@@ -257,6 +267,8 @@ func begin_task(task: String, model: String, scope: Dictionary) -> bool:
 	_task_text = task.strip_edges()
 	_request_count = 0
 	_active_request_budget = request_budget
+	_active_tool_budget = tool_budget
+	_active_token_budget = token_budget
 	_tool_count = 0
 	_argument_repairs = 0
 	_pending_call_id = ""
@@ -269,7 +281,7 @@ func begin_task(task: String, model: String, scope: Dictionary) -> bool:
 		{"role": "developer", "content": instruction},
 		{"role": "user", "content": [{"type": "input_text", "text": _task_text}]}
 	]
-	status_changed.emit("running", "Task started; up to %d Responses requests authorized." % _active_request_budget)
+	status_changed.emit("running", "Task started: %d requests, %d tool calls, %d output tokens/response authorized." % [_active_request_budget, _active_tool_budget, _active_token_budget])
 	_send(messages)
 	return true
 
@@ -322,7 +334,7 @@ func _send(input_items: Array) -> void:
 		"tools": strict_tools(),
 		"tool_choice": "auto",
 		"parallel_tool_calls": false,
-		"max_output_tokens": token_budget
+		"max_output_tokens": _active_token_budget
 	}
 	if not _response_id.is_empty():
 		payload["previous_response_id"] = _response_id
@@ -440,7 +452,7 @@ func _handle_transport(identity: int, nonce: int, result: int, http_status: int,
 		status_changed.emit("completed", "Model turn ended; native result must be checked independently.")
 		task_finished.emit("model_finished")
 		return
-	if _tool_count >= tool_budget:
+	if _tool_count >= _active_tool_budget:
 		_fail("Native tool-call budget exhausted.")
 		return
 	var call: Dictionary = calls[0]

@@ -15,7 +15,9 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 **Current source candidate; not accepted main.** Existing Drafts #529/#530/#531
 provide native-authoritative four tools, bounded Step/Stop and the mounted
 asynchronous panel. Owner-released whole-canvas scope and the scrolling side
-dock are consumed by an isolated #531-derived integration candidate. Each
+dock are consumed by an isolated #531-derived integration candidate. The owner-requested8November budget-controls candidate adds numeric
+request/tool/output-token limits and a128/256/32768 Collaboration preset;
+see the canonical contract and source-specific audit for qualification. Each
 observation/edit remains bounded to4096 cells; native laws/defaults, material
 protection and authored-start semantics remain unchanged.
 

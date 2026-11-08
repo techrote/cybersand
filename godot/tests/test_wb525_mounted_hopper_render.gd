@@ -67,8 +67,7 @@ func run_variant(rows: Array, variant: String) -> void:
 	main.shared_workbench._set_view(Vector2(460,490),main.current_view_size)
 	agent_panel.client.configure_fake_transport_for_tests(true)
 	# Exercise human extended-budget opt-in via actual mounted UI, using only fake HTTP.
-	agent_panel._extended_requests.button_pressed = true
-	agent_panel.client.tool_budget = 24
+	agent_panel._set_budgets(24,24,2048)
 	agent_panel._on_start()
 	if not await wait_for(func() -> bool:
 		return agent_panel.client.is_active() and not agent_panel._start_pending,

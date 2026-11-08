@@ -22,7 +22,9 @@ var _retire_pending := false
 var _start_nonce := 0
 var _task := TextEdit.new()
 var _model := LineEdit.new()
-var _extended_requests := CheckBox.new()
+var _request_limit := SpinBox.new()
+var _tool_limit := SpinBox.new()
+var _token_limit := SpinBox.new()
 var _signed_frame := CheckBox.new()
 var _whole_canvas := Button.new()
 var _canvas_region_provider: Callable
@@ -106,10 +108,24 @@ func _ready() -> void:
 	_model.placeholder_text = "Vision-capable Responses model ID"
 	_model.text_changed.connect(func(_value: String) -> void: _retire_on_human_change())
 	_form.add_child(_model)
-	_extended_requests.text = "Extended run: up to 24 API requests (default 12)"
-	_extended_requests.tooltip_text = "Explicit per-task opt-in to a higher paid Responses request ceiling. Calls may incur API charges. Native edit/tick limits and LIVE/HUMAN acceptance requirements are unchanged."
-	_extended_requests.toggled.connect(func(_value: bool) -> void: _retire_on_human_change())
-	_form.add_child(_extended_requests)
+	_add_budget_control("API requests / task", _request_limit, Client.DEFAULT_REQUEST_BUDGET, Client.MAX_REQUEST_BUDGET)
+	_add_budget_control("Tool calls / task", _tool_limit, Client.DEFAULT_TOOL_BUDGET, Client.MAX_TOOL_BUDGET)
+	_add_budget_control("Output tokens / response", _token_limit, Client.DEFAULT_TOKEN_BUDGET, Client.MAX_TOKEN_BUDGET)
+	var presets := HBoxContainer.new()
+	var collaboration := Button.new()
+	collaboration.text = "Collaboration preset"
+	collaboration.tooltip_text = "128 requests, 256 tool calls, 32768 output tokens per response. Select a model supporting this output cap."
+	collaboration.pressed.connect(func() -> void: _set_budgets(128,256,32768))
+	presets.add_child(collaboration)
+	var defaults := Button.new()
+	defaults.text = "Reset limits"
+	defaults.pressed.connect(func() -> void: _set_budgets(Client.DEFAULT_REQUEST_BUDGET,Client.DEFAULT_TOOL_BUDGET,Client.DEFAULT_TOKEN_BUDGET))
+	presets.add_child(defaults)
+	_form.add_child(presets)
+	var budget_help := Label.new()
+	budget_help.text = "Start authorizes these limits. Higher caps can increase API charges. Output cap must fit the model."
+	budget_help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_form.add_child(budget_help)
 	_signed_frame.text = "Experimental signed frame (+512)"
 	_signed_frame.tooltip_text = "Owner-admitted moved-hopper acceptance fixture (7 Nov 2026); 26 intermediate NORMAL trajectory differences remain. Host-only, opt-in, not strict signed-world parity. Genuine API trials and owner desktop acceptance remain separate."
 	_signed_frame.toggled.connect(func(_value: bool) -> void: _on_scope_change())
@@ -120,7 +136,8 @@ func _ready() -> void:
 	_whole_canvas.pressed.connect(_on_whole_canvas)
 	_form.add_child(_whole_canvas)
 	var scope_help := Label.new()
-	scope_help.text = "Task scope may cover the canvas; each observation/edit uses at most 4096 cells."
+	scope_help.text = "Scope is the working area, not a total edit quota. Each edit/inspection uses up to 4096 cells; continue in batches."
+	scope_help.tooltip_text = "There is no 4096-cell task-wide quota. The native owner separately retains at most 64 applied edit receipts per World; native capacity refusals remain explicit."
 	scope_help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_form.add_child(scope_help)
 	var row := HFlowContainer.new()
@@ -206,6 +223,27 @@ func set_canvas_region_provider(provider: Callable) -> void:
 	_canvas_region_provider = provider
 	_whole_canvas.disabled = not provider.is_valid()
 
+func _add_budget_control(title: String, field: SpinBox, initial: int, maximum: int) -> void:
+	var row := HBoxContainer.new()
+	var label := Label.new()
+	label.text = title
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(label)
+	field.min_value = 1
+	field.max_value = maximum
+	field.step = 1
+	field.rounded = true
+	field.value = initial
+	field.custom_minimum_size.x = 112
+	field.value_changed.connect(func(_value: float) -> void: _retire_on_human_change())
+	row.add_child(field)
+	_form.add_child(row)
+
+func _set_budgets(requests: int, tools: int, tokens: int) -> void:
+	_request_limit.value = requests
+	_tool_limit.value = tools
+	_token_limit.value = tokens
+
 func _on_whole_canvas() -> void:
 	if not _canvas_region_provider.is_valid():
 		return
@@ -270,6 +308,9 @@ func _on_start() -> void:
 	if not _dispatcher.is_valid() or client.is_active() or _start_pending or _retire_pending:
 		_log_status("refused", "No native dispatcher or task already active.")
 		return
+	# Start has FOCUS_NONE: commit typed numbers even if the edit never lost focus.
+	for field: SpinBox in [_request_limit,_tool_limit,_token_limit]:
+		field.apply()
 	var materials: Array[String] = []
 	if _wall.button_pressed:
 		materials.append("Hard Wall")
@@ -292,7 +333,9 @@ func _on_start() -> void:
 	# A blank task/model or missing local API key must not acquire native
 	# authority just to fail and retire it moments later. Keep the same
 	# validation in begin_task for changes during the async owner ACK.
-	client.request_budget = Client.MAX_REQUEST_BUDGET if _extended_requests.button_pressed else Client.DEFAULT_REQUEST_BUDGET
+	client.request_budget = int(_request_limit.value)
+	client.tool_budget = int(_tool_limit.value)
+	client.token_budget = int(_token_limit.value)
 	var launch_problem: String = client.launch_problem(_task.text, _model.text, scope)
 	if not launch_problem.is_empty():
 		_log_status("refused", launch_problem)
