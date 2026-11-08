@@ -183,10 +183,12 @@ without an explicit coordination handoff on Draft #545.
   SIGKILL or host crash against the *launcher* cannot guarantee cleanup.
 - `--evidence-limit-bytes` (13 MiB–512 MiB, default 128 MiB)
   is a finite host-only ceiling on cumulative evidence. Godot reserves one
-  maximum 8 MiB original PNG, one 4 MiB native receipt, 1 MiB side-output
+  maximum 8 MiB original PNG, one 4 MiB native receipt, 5 MiB side-output (including a capped 4 MiB diagnostic log)
   headroom and 64 KiB terminal headroom **before** each operation.
   On insufficiency it returns an explicit refusal *before any native mutation*,
-  records the failure and attempts native Stop. The launcher additionally
+  records the failure and attempts native Stop. Godot output is piped through a bounded 4 MiB diagnostic-log drain;
+  any overflow is explicitly recorded as truncated, rather than allowing
+  raw log growth to interrupt a native receipt. The launcher additionally
   polls **all** retained files, including `godot.log`, and terminates its
   group if the total approaches the ceiling. A successful mutation's native
   result is flushed before advancing completed progress. An unconfirmed result
