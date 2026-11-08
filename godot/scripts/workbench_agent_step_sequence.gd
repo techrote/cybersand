@@ -242,6 +242,13 @@ func step(host: Control, workbench: Control, requested: Variant,
 			"before_tick":observed_tick-1,"after_tick":observed_tick,
 			"world_generation":generation, "workbench_step_serial":last_serial
 		})
+		# A synchronous completion listener may retire this task, including
+		# at the LAST tick. Count the actual native ACK, but never report a
+		# completed task after its authority has been revoked.
+		if epoch != _run_epoch or _retired:
+			reason = "lifecycle_retired_after_step_ack"
+			_uncertain = true
+			break
 		if manual_revision >= 0:
 			# Completion listeners can submit human intent synchronously at
 			# the last native ACK; recheck after emitting the receipt.
