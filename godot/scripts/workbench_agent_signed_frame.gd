@@ -155,11 +155,14 @@ static func readback_to_logical(native_rows: Variant) -> Dictionary:
 	for raw: Variant in native_rows:
 		if not raw is Dictionary or not _all_int(raw,["x","y"]):
 			return _refused("invalid_native_readback")
-		var logical: Dictionary = raw.duplicate(true)
-		var p: Vector2i = Vector2i(int(raw.x),int(raw.y))
-		if p.x < 0 or p.y < 0 or p.x >= EXTENT.x or p.y >= EXTENT.y:
+		# Read native coordinates as full-width integers BEFORE any Vector2i
+		# narrowing. An out-of-range int64 must not alias an in-range receipt.
+		var x: int = raw["x"]
+		var y: int = raw["y"]
+		if x < 0 or y < 0 or x >= EXTENT.x or y >= EXTENT.y:
 			return _refused("native_readback_outside_extent")
-		logical["x"] = p.x - ORIGIN.x
-		logical["y"] = p.y - ORIGIN.y
+		var logical: Dictionary = raw.duplicate(true)
+		logical["x"] = x - ORIGIN.x
+		logical["y"] = y - ORIGIN.y
 		rows.append(logical)
 	return {"status":"mapped","logical":rows,"frame_id":FRAME_ID}

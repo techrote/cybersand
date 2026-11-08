@@ -112,6 +112,27 @@ func _run() -> void:
 		"out-of-range native receipt must not become a signed valid readback")
 	check(Frame.readback_to_logical([{"x":512.0,"y":512}]).status=="refused",
 		"native receipt coordinates must be exact integers")
+	# Native readback must refuse huge int64 values BEFORE Godot's 32-bit
+	# Vector2i construction could alias them to a plausible native cell.
+	check(Frame.readback_to_logical([{"x":4294967808,"y":512}]).status=="refused"
+		and Frame.readback_to_logical([{"x":512,"y":4294967808}]).status=="refused",
+		"positive int64 overflow must not wrap to a valid 512 native cell")
+	check(Frame.readback_to_logical([{"x":-4294966784,"y":512}]).status=="refused"
+		and Frame.readback_to_logical([{"x":512,"y":-4294966784}]).status=="refused",
+		"negative int64 underflow must not wrap to a valid 512 native cell")
+	check(Frame.readback_to_logical([{"x":9223372036854775807,"y":512}]).status=="refused",
+		"maximal int64 native readback must be rejected without narrowing")
+	var extreme_valid: Dictionary = Frame.readback_to_logical([
+		{"x":0,"y":0,"before":0,"after":58,"actual":58},
+		{"x":2047,"y":2047,"before":58,"after":0,"actual":0}
+	])
+	check(extreme_valid.status=="mapped"
+		and extreme_valid.logical[0].x==-512
+		and extreme_valid.logical[0].y==-512
+		and extreme_valid.logical[1].x==1535
+		and extreme_valid.logical[1].y==1535
+		and extreme_valid.logical[1].actual==0,
+		"both exact native extrema and material IDs must survive reversible mapping")
 	var back: Dictionary = Frame.point(material_readback.logical[0].x,
 		material_readback.logical[0].y)
 	check(back.status=="mapped" and back.native==Vector2i(481,541),
