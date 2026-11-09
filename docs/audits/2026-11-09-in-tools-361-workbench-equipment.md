@@ -102,6 +102,16 @@ quantities via the native ledger `water_spray.water`. Water unit = 255 per cell.
   512 × 512 apparatus. Owner-thread CPU and frame pacing were not separately
   measured.
 
+## Retained frames
+
+Actual windowed Godot workbench frames from the `fdea66bd` windowed run
+(the window was resized by hand during capture, so the framing differs):
+
+- [Leak with the bottom valve open](../images/in-tools-361/liquid-lab-leak.png):
+  cavity column above the outlet, surface dimple, droplet stream and basin mound.
+- [Pumped nozzle striking the barrel](../images/in-tools-361/liquid-lab-nozzle.png):
+  status line shows the closed native ledger and constant loop total.
+
 ## Explicit gaps
 
 - Hosted Native/GDExtension/Water CI is suppressed while Draft; no hosted pass is claimed.
