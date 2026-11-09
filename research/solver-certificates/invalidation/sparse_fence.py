@@ -262,6 +262,42 @@ class Fence:
             raise ValueError("stale/forged/duplicate/capacity packet: REFUSE")
         self.packets[p.shard] = p
 
+    def _sites_and_kind(self, e):
+        """Prevalidate the complete declared input before any authoritative write."""
+        if not isinstance(e, (tuple, list)) or not e or not isinstance(e[0], str):
+            raise ValueError("malformed event: REFUSE")
+        kind = e[0]
+        s = self.engine.state
+        if kind == "set" and len(e) == 4:
+            _, x, y, material = e
+            if not all(type(v) is int for v in (x, y, material)) or material not in range(8):
+                raise ValueError("invalid cell write: REFUSE")
+            return kind, (s.index(x, y),)
+        if kind == "explode" and len(e) == 4:
+            _, x, y, radius = e
+            if not all(type(v) is int for v in (x, y, radius)) or not 0 <= radius <= 3:
+                raise ValueError("invalid bounded explosion: REFUSE")
+            s.index(x, y)
+            return kind, tuple(yy*s.width+xx
+                               for yy in range(max(0, y-radius), min(s.height, y+radius+1))
+                               for xx in range(max(0, x-radius), min(s.width, x+radius+1))
+                               if (xx-x)**2 + (yy-y)**2 <= radius*radius)
+        if kind == "body" and len(e) == 2:
+            positions = e[1]
+            if not isinstance(positions, (tuple, list)) or len(positions) > 32:
+                raise ValueError("unbounded body footprint: REFUSE")
+            for point in positions:
+                if (not isinstance(point, (tuple, list)) or len(point) != 2
+                        or not all(type(v) is int for v in point)):
+                    raise ValueError("malformed body position: REFUSE")
+                s.index(*point)
+            return kind, ()
+        if kind == "pressure" and len(e) == 2 and type(e[1]) is int and e[1] in (0, 1):
+            return kind, ()
+        if kind == "unknown" and len(e) == 1:
+            return kind, ()
+        raise ValueError("unsupported event shape: REFUSE")
+
     def advance(self):
         if len(self.packets) != self.workers:
             return "BLOCKED"  # not even full recompute is authoritative yet
@@ -270,15 +306,15 @@ class Fence:
         globals_seen = set()
         for shard in range(self.workers):
             for e in self.packets[shard].events:
-                if e[0] == "set":
-                    key = (e[1], e[2])
-                    if key in writers and writers[key] != shard:
+                kind, sites = self._sites_and_kind(e)
+                for site in sites:
+                    if site in writers and writers[site] != shard:
                         raise ValueError("cross-shard overlapping write: REFUSE")
-                    writers[key] = shard
-                if e[0] in ("body", "pressure"):
-                    if e[0] in globals_seen:
+                    writers[site] = shard
+                if kind in ("body", "pressure"):
+                    if kind in globals_seen:
                         raise ValueError("multiple global owners: REFUSE")
-                    globals_seen.add(e[0])
+                    globals_seen.add(kind)
                 events.append(e)
         self.engine.step(tuple(events), workers=self.workers)
         self.engine.counts.packets += self.workers
@@ -423,6 +459,24 @@ class Checks(unittest.TestCase):
             fence.accept(Packet.make(0, 0, i, event))
         with self.assertRaises(ValueError): fence.advance()
         self.assertEqual(fence.engine.state.tick, 0)
+
+    def test_explosion_overlap_and_late_bad_event_are_atomic_refusals(self):
+        for bad in ((("set", 5, 5, WATER),), (("set", 40, 5, WATER),)):
+            fence = Fence(Sparse(initial("quiet")), 4)
+            initial_state = fence.engine.state.copy()
+            inputs = [(("explode", 5, 5, 1),), bad, (), ()]
+            for shard, events in enumerate(inputs):
+                fence.accept(Packet.make(0, 0, shard, events))
+            with self.assertRaises(ValueError): fence.advance()
+            self.assertEqual(fence.engine.state, initial_state)
+        # An otherwise valid write preceding a malformed later shard must not
+        # partially apply before the preflight rejects the complete packet.
+        fence = Fence(Sparse(initial("quiet")), 4)
+        before = fence.engine.state.copy()
+        for shard, events in enumerate(((("set", 5, 5, EMPTY),), (), (), (("pressure", 7),))):
+            fence.accept(Packet.make(0, 0, shard, events))
+        with self.assertRaises(ValueError): fence.advance()
+        self.assertEqual(fence.engine.state, before)
 
     def test_contact_seam_and_unknown(self):
         s = State(8, 8, [ROCK]*64, frozenset({4*8+3}))
