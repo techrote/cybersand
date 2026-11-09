@@ -4,11 +4,21 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-08
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+Shared authoring: [approved data contract and convergence plan](architecture/shared-workbench-authoring-data.md)
+separates Current generated-start saves from Planned material-only Flatten and
+defines the common desktop/agent/remote foundation. #542 Ready qualification is
+owner-authorized; no merge or #548 implementation is authorized.
+
+EXPLORE-001 review candidate: [generated-map contract](systems/explore001-generated-playable-maps.md),
+[Windows candidate/playtest](operations/explore001-desktop-playtest.md), and
+[independent integration QA](audits/2026-11-08-explore001-integration-qa.md).
+Candidate execution does not satisfy retained runtime publication or human acceptance.
 
 IN-TOOLS #361: [renewed current-main admission](architecture/in-tools-gameplay-admission.md)
 and [six Planned/NOT_RUN fixture concepts](operations/in-tools-fixtures-and-playtest.md).

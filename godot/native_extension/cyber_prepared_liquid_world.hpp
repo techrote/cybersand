@@ -3,6 +3,7 @@
 #include "cyber_prepared_level_payload.hpp"
 
 #include <string_view>
+#include <cmath>
 #include "workbench_retained_setup.hpp"
 #include "cybersand/default_demo_recipe.hpp"
 
@@ -116,6 +117,87 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             throw std::invalid_argument("Workbench inventory conversion intent must be boolean");
         const bool convert = options.get("workbench_convert_liquid_inventory",false);
         const bool retain = options.get("workbench_retain_cells",false);
+        // EXPLORE-001: copied GEN-007 play-plane bytes are construction-only.
+        // Nothing in this input exposes a mutable World, or admits post-commit
+        // chunk mutation. Edits are ordered starting-map marks, not live state.
+        const bool generated = options.has("workbench_generated");
+        Dictionary generated_claim;
+        PackedByteArray generated_cells;
+        Array generated_edits;
+        String generated_expected_material_sha;
+        if (generated) {
+            if (!workbench || retain || default_demo || level_payload != nullptr ||
+                options["workbench_generated"].get_type() != Variant::DICTIONARY ||
+                !rectangles.is_empty() || !water_fills.is_empty())
+                throw std::invalid_argument("Generated-grid construction requires a fresh exclusive workbench");
+            generated_claim = options["workbench_generated"];
+            if (generated_claim.size() != 12 ||
+                !generated_claim.has("schema") || !generated_claim.has("extent") ||
+                !generated_claim.has("origin") || !generated_claim.has("cells") ||
+                !generated_claim.has("sha256") || !generated_claim.has("recipe_sha256") ||
+                !generated_claim.has("generator_fingerprint") ||
+                !generated_claim.has("plane_revision") ||
+                !generated_claim.has("generator_revision") ||
+                !generated_claim.has("generator_seed") ||
+                !generated_claim.has("receipt_hashes") || !generated_claim.has("edits") ||
+                generated_claim["schema"].get_type() != Variant::INT ||
+                generated_claim["extent"].get_type() != Variant::VECTOR2I ||
+                generated_claim["origin"].get_type() != Variant::VECTOR2I ||
+                generated_claim["cells"].get_type() != Variant::PACKED_BYTE_ARRAY ||
+                generated_claim["sha256"].get_type() != Variant::STRING ||
+                generated_claim["recipe_sha256"].get_type() != Variant::STRING ||
+                generated_claim["generator_fingerprint"].get_type() != Variant::STRING ||
+                generated_claim["plane_revision"].get_type() != Variant::STRING ||
+                generated_claim["generator_revision"].get_type() != Variant::INT ||
+                generated_claim["generator_seed"].get_type() != Variant::INT ||
+                generated_claim["receipt_hashes"].get_type() != Variant::ARRAY ||
+                generated_claim["edits"].get_type() != Variant::ARRAY ||
+                static_cast<std::int64_t>(generated_claim["schema"]) != 1 ||
+                static_cast<std::int64_t>(generated_claim["generator_revision"]) < 1 ||
+                static_cast<std::int64_t>(generated_claim["generator_seed"]) < 0 ||
+                static_cast<Vector2i>(generated_claim["extent"]) != extent)
+                throw std::invalid_argument("Malformed generated-grid schema or dimensions");
+            const auto origin = static_cast<Vector2i>(generated_claim["origin"]);
+            const auto valid_origin = [](std::int64_t start, std::int64_t side) {
+                return start >= -1'000'000 && side >= 1 &&
+                    start <= 1'000'000 - side;
+            };
+            if (!valid_origin(origin.x, extent.x) || !valid_origin(origin.y, extent.y))
+                throw std::invalid_argument("Generated-grid world region is outside bounded coordinates");
+            generated_cells = generated_claim["cells"];
+            generated_edits = generated_claim["edits"];
+            if (generated_cells.size() != static_cast<std::int64_t>(extent.x) * extent.y ||
+                generated_edits.size() > 4096)
+                throw std::invalid_argument("Generated-grid length or starting edit capacity invalid");
+            const auto is_hex = [](const String& value, std::int64_t length) {
+                if (value.length() != length) return false;
+                for (std::int64_t i = 0; i < value.length(); ++i) {
+                    const auto c = value[i];
+                    if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f'))) return false;
+                }
+                return true;
+            };
+            if (!is_hex(generated_claim["sha256"], 64) ||
+                !is_hex(generated_claim["recipe_sha256"], 64) ||
+                !is_hex(generated_claim["generator_fingerprint"], 16) ||
+                (!String(generated_claim["plane_revision"]).is_empty() &&
+                 !is_hex(generated_claim["plane_revision"], 16)))
+                throw std::invalid_argument("Generated-grid source identity is malformed");
+            const Array receipt_hashes = generated_claim["receipt_hashes"];
+            if (receipt_hashes.size() > 1024)
+                throw std::invalid_argument("Generated-grid receipt count exceeds capacity");
+            for (std::int64_t i = 0; i < receipt_hashes.size(); ++i)
+                if (receipt_hashes[i].get_type() != Variant::STRING ||
+                    !is_hex(receipt_hashes[i], 16))
+                    throw std::invalid_argument("Invalid generated-grid receipt hash");
+            const String actual = prepared_liquid_detail::digest(cybersand::Sha256::of(
+                {generated_cells.ptr(), static_cast<std::size_t>(generated_cells.size())}));
+            if (actual != static_cast<String>(generated_claim["sha256"]))
+                throw std::invalid_argument("Generated-grid SHA256 mismatch; existing World preserved");
+            for (std::int64_t i = 0; i < generated_cells.size(); ++i)
+                if (!cybersand::valid_material(static_cast<std::uint16_t>(generated_cells[i])))
+                    throw std::invalid_argument("Generated-grid contains an invalid material ID");
+        }
         if (retain && (!adapter->workbench_ || adapter->extent_ != extent))
             throw std::invalid_argument("Live content requires the retained workbench extent");
         const PackedInt32Array region = options.get("region", PackedInt32Array());
@@ -291,6 +373,17 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             struct Tuple { cybersand::Material material = cybersand::Material::Empty;
                 std::uint16_t a = 0; std::uint8_t b = 0; };
             std::vector<Tuple> map(static_cast<std::size_t>(extent.x) * extent.y);
+            if (generated) {
+                for (std::int32_t y = 0; y < extent.y; ++y) for (std::int32_t x = 0; x < extent.x; ++x) {
+                    const auto id = generated_cells[static_cast<std::size_t>(y) * extent.x + x];
+                    const auto material = static_cast<cybersand::Material>(id);
+                    const auto& initial = cybersand::MaterialRules::descriptor(material);
+                    map[static_cast<std::size_t>(y) * extent.x + x] = {
+                        material, material == cybersand::Material::Water
+                            ? config->water_experiment_policy.maximum() : initial.initial_state_a,
+                        initial.initial_state_b};
+                }
+            }
             if ((!workbench && rectangles.is_empty()) || rectangles.size() % 5 ||
                 rectangles.size() / 5 > static_cast<std::int64_t>(cybersand::demo::kMaximumRectangles))
                 throw std::invalid_argument("Invalid demo rectangle count");
@@ -330,11 +423,66 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 for (auto dy = y; dy < y+h; ++dy) for (auto dx = x; dx < x+w; ++dx)
                     map[static_cast<std::size_t>(dy) * extent.x + dx] = {cybersand::Material::Water, mass, coherence};
             }
+            if (generated) {
+                // The same integer-disc geometry as starting paint, with
+                // ordered overwrite and Erase (material zero) preserved.
+                for (std::int64_t i = 0; i < generated_edits.size(); ++i) {
+                    if (generated_edits[i].get_type() != Variant::ARRAY)
+                        throw std::invalid_argument("Generated-grid edit must be an array");
+                    const Array stamp = generated_edits[i];
+                    if (stamp.size() != 4 && stamp.size() != 5)
+                        throw std::invalid_argument("Generated-grid edit has invalid arity");
+                    std::int64_t v[5]{};
+                    for (std::int64_t j = 0; j < stamp.size(); ++j) {
+                        if (stamp[j].get_type() != Variant::INT)
+                            throw std::invalid_argument("Generated-grid edit requires integer values");
+                        v[j] = static_cast<std::int64_t>(stamp[j]);
+                    }
+                    const auto material_id = static_cast<std::uint16_t>(v[stamp.size()-1]);
+                    if (v[stamp.size()-1] < 0 || v[stamp.size()-1] > 255 ||
+                        !cybersand::valid_material(material_id) ||
+                        v[0] < 0 || v[1] < 0 || v[0] >= extent.x || v[1] >= extent.y)
+                        throw std::invalid_argument("Invalid generated-grid edit coordinates/material");
+                    const auto material = static_cast<cybersand::Material>(material_id);
+                    const auto& initial = cybersand::MaterialRules::descriptor(material);
+                    const Tuple cell{material, material == cybersand::Material::Water
+                        ? config->water_experiment_policy.maximum() : initial.initial_state_a,
+                        initial.initial_state_b};
+                    if (stamp.size() == 5) {
+                        if (v[2] < 1 || v[3] < 1 || v[2] > extent.x - v[0] ||
+                            v[3] > extent.y - v[1])
+                            throw std::invalid_argument("Generated-grid box edit outside extent");
+                        for (auto y = v[1]; y < v[1]+v[3]; ++y)
+                            for (auto x = v[0]; x < v[0]+v[2]; ++x)
+                                map[static_cast<std::size_t>(y)*extent.x + x] = cell;
+                    } else {
+                        const auto radius = v[2];
+                        if (radius < 2 || radius > 24)
+                            throw std::invalid_argument("Invalid generated-grid brush radius");
+                        for (auto dy = std::max<std::int64_t>(-radius,-v[1]);
+                             dy <= std::min<std::int64_t>(radius, extent.y-1-v[1]); ++dy) {
+                            const auto half = static_cast<std::int64_t>(
+                                std::floor(std::sqrt(static_cast<double>(radius*radius-dy*dy))));
+                            for (auto x = std::max<std::int64_t>(0,v[0]-half);
+                                 x < std::min<std::int64_t>(extent.x,v[0]+half+1); ++x)
+                                map[static_cast<std::size_t>(v[1]+dy)*extent.x + x] = cell;
+                        }
+                    }
+                }
+                std::vector<std::uint8_t> expected(map.size());
+                for (std::size_t i = 0; i < map.size(); ++i)
+                    expected[i] = static_cast<std::uint8_t>(map[i].material);
+                generated_expected_material_sha = prepared_liquid_detail::digest(cybersand::Sha256::of(
+                    {expected.data(), expected.size()}));
+            }
             input.mass_bits = config->water_experiment_policy.mass_bits();
             input.ambient_temperature = config->ambient_temperature;
             input.setup.kind = cybersand::setup::SetupKind::MicroScenario;
             input.setup.definition_schema = 2;
             input.setup.definition_digest.emplace();
+            // Retain the existing host-validated Workbench definition identity.
+            // Generator recipe and exact copied play-plane identities remain
+            // additional, independent receipt fields (not a false host digest).
             std::copy(definition_bytes.ptr(), definition_bytes.ptr()+32, input.setup.definition_digest->begin());
             input.setup.seed = static_cast<std::uint64_t>(seed);
             input.setup.domain = {0, 0, static_cast<std::uint32_t>(extent.x), static_cast<std::uint32_t>(extent.y)};
@@ -372,6 +520,24 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         pending->reset_demo_coupling = default_demo;
         pending->extent = extent;
         pending->world->configure_transient_obstacles({0, 0, extent.x, extent.y}, workbench);
+        if (generated) {
+            // Authoritative material-ID equality is not render-copy equality:
+            // copy_material_cells() intentionally dithers fractional Water and
+            // overlays in-flight ballistic parcels. Only stored_material()
+            // reflects the constructed World that native physics will tick.
+            // This is one bounded native construction-time scan, never a
+            // per-cell GDScript call or a tick-path traversal.
+            std::vector<std::uint8_t> readback(static_cast<std::size_t>(extent.x) * extent.y);
+            for (std::int32_t y = 0; y < extent.y; ++y) {
+                for (std::int32_t x = 0; x < extent.x; ++x)
+                    readback[static_cast<std::size_t>(y) * extent.x + x] =
+                        static_cast<std::uint8_t>(pending->world->stored_material(x, y));
+            }
+            const auto installed_digest = prepared_liquid_detail::digest(cybersand::Sha256::of(
+                {readback.data(), readback.size()}));
+            if (installed_digest != generated_expected_material_sha)
+                throw std::invalid_argument("Generated-grid authoritative prepared-World material readback differs from accepted input");
+        }
         if (workbench) {
             if (options.get("workbench_sample",Variant()).get_type() != Variant::DICTIONARY)
                 throw std::invalid_argument("Missing workbench initial body sample");
@@ -543,6 +709,19 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         pending->receipt["session_generation"] = static_cast<std::int64_t>(adapter->liquid_policy_session_generation_+1);
         if (workbench) {
             pending->receipt["workbench_response"] = response;
+            if (generated) {
+                pending->receipt["generated_grid_schema"] = 1;
+                pending->receipt["generated_source_origin"] = generated_claim["origin"];
+                pending->receipt["generated_source_sha256"] = generated_claim["sha256"];
+                pending->receipt["generated_prepared_material_sha256"] = generated_expected_material_sha;
+                pending->receipt["generated_recipe_sha256"] = generated_claim["recipe_sha256"];
+                pending->receipt["generated_generator_fingerprint"] = generated_claim["generator_fingerprint"];
+                pending->receipt["generated_plane_revision"] = generated_claim["plane_revision"];
+                pending->receipt["generated_generator_revision"] = generated_claim["generator_revision"];
+                pending->receipt["generated_generator_seed"] = generated_claim["generator_seed"];
+                pending->receipt["generated_receipt_hashes"] = generated_claim["receipt_hashes"];
+                pending->receipt["generated_edit_count"] = generated_edits.size();
+            }
             if (retain) pending->receipt["workbench_conversion"] = conversion_receipt;
             pending->receipt["workbench_extent"] = extent;
             pending->receipt["workbench_initial_sample_sha256"] = pending->workbench_initial_digest;

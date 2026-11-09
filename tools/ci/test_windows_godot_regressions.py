@@ -155,6 +155,22 @@ class RetainedRuntimeTests(unittest.TestCase):
         self.assertEqual(identity["cybersand_runtime"]["sha256"], self.manifest["sha256"])
         self.assertEqual(len(identity["native_source_inputs"]), 3)
 
+    def test_verified_candidate_requires_the_installed_candidate_bytes(self):
+        # The right artifact cannot bless an unchanged retained installed DLL.
+        directory = self.root / "candidate"
+        directory.mkdir()
+        data = b"MZ-source-built-candidate"
+        manifest = {**self.manifest, "sha256": digest(data), "size": len(data)}
+        (directory / "candidate-provenance.json").write_text(json.dumps(manifest), encoding="utf-8")
+        with mock.patch("native_candidate_identity.verify", return_value=manifest) as verify:
+            with self.assertRaisesRegex(RuntimeError, "Materialized Windows runtime"):
+                subject.verify_retained_runtime(self.root, native_candidate=directory)
+            (self.root / subject.NATIVE).write_bytes(data)
+            result = subject.verify_retained_runtime(self.root, native_candidate=directory)
+            self.assertEqual(result["cybersand_runtime"]["sha256"], digest(data))
+            self.assertEqual(result["runtime_provenance"]["path"], "source-built-candidate-provenance.json")
+            verify.assert_called_with(self.root, directory)
+
     def test_pointer_and_modified_runtime_cannot_pass(self):
         for data in (self.committed[subject.NATIVE], b"MZ-replaced-fixture"):
             with self.subTest(data=data):

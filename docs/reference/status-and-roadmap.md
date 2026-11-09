@@ -4,11 +4,28 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-08
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## EXPLORE-001 generated playable maps — 2026-11-08
+
+**Review candidate, not accepted main:** [PR #542](https://github.com/techrote/cybersand/pull/542)
+connects the native GEN-007 final play plane to the ordinary Shared Workbench's
+prepared World, existing flyer/camera/brush controls and authored-start save/reopen.
+The [contract](../systems/explore001-generated-playable-maps.md) owns its finite
+limits and unchanged Setup-v2 wrapper. [Independent QA](../audits/2026-11-08-explore001-integration-qa.md)
+found and corrected a repeated chunk-preview cursor defect. Exact-head native,
+desktop and retained publication gates remain separately required; the
+[Windows playtest](../operations/explore001-desktop-playtest.md) requires a human
+verdict. On 2026-11-08 the owner authorized recording the
+[shared authoring data contract and convergence plan](../architecture/shared-workbench-authoring-data.md),
+then #542 Ready promotion and resulting-head checks, **without merge**.
+Converge admitted desktop/painting/agent/remote work incrementally into main,
+preserving active owners and qualifying each join. #548 material-only Flatten
+is an Approved semantic successor with Planned implementation, not part of #542.
 
 ## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05
 

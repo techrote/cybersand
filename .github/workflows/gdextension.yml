@@ -372,6 +372,7 @@ jobs:
             sha256sum cybersand_native.windows.x86_64.dll > runtime.sha256
             sha256sum --check --strict runtime.sha256
           )
+          python3 tools/ci/native_candidate_identity.py build/windows-candidate --create
 
       # This candidate is NOT a replacement for the committed LFS DLL or its
       # source/identity manifest. No production provenance gate is bypassed.
@@ -394,10 +395,10 @@ jobs:
 
   windows-regression:
     name: windows headless regression shard ${{ matrix.shard }}
-    needs: [ready_scope, execution-plan]
+    needs: [ready_scope, execution-plan, windows-build]
     if: >-
       always() && inputs.physical_actor_stress != true &&
-      needs.execution-plan.result == 'success' &&
+      needs.execution-plan.result == 'success' && needs.windows-build.result == 'success' &&
       (github.event_name != 'pull_request' ||
        (github.event.pull_request.draft == false &&
         (github.event.action != 'ready_for_review' ||
@@ -429,12 +430,25 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Materialize retained Windows CyberSand and pinned Rapier runtimes
-        timeout-minutes: 20
+      - name: Materialize pinned Windows Rapier runtime
+        timeout-minutes: 10
         run: |
           set -euo pipefail
           git lfs install --local
-          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+
+      - name: Download same-run source-built Windows candidate
+        timeout-minutes: 5
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: native-candidate-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/windows-candidate
+
+      - name: Verify and install candidate without changing retained provenance
+        timeout-minutes: 5
+        run: |
+          python tools/ci/native_candidate_identity.py build/windows-candidate
+          cp build/windows-candidate/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/
 
       - name: Validate Windows execution harness
         if: matrix.shard == 0
@@ -443,6 +457,7 @@ jobs:
           set -euo pipefail
           python tools/ci/test_godot_regression_sharding.py
           python tools/ci/test_windows_godot_regressions.py
+          python tools/ci/test_native_candidate_identity.py
           python tools/ci/test_godot_timeout_diagnostics.py
           python tools/ci/test_godot_process_monitor.py
           python tools/ci/test_physical_progress_watchdog.py
@@ -461,7 +476,7 @@ jobs:
         timeout-minutes: ${{ fromJSON(needs.execution-plan.outputs.windows_execution_minutes) }}
         run: |
           set -euo pipefail
-          python tools/ci/run_windows_godot_regressions.py --godot-archive "$RUNNER_TEMP/godot-windows.zip" --expected-source-sha "$GITHUB_SHA" --output "build/godot-regressions/windows-${{ matrix.shard }}" --shard-count ${{ needs.execution-plan.outputs.windows_shard_count }} --shard-index ${{ matrix.shard }}
+          python tools/ci/run_windows_godot_regressions.py --native-candidate build/windows-candidate --godot-archive "$RUNNER_TEMP/godot-windows.zip" --expected-source-sha "$GITHUB_SHA" --output "build/godot-regressions/windows-${{ matrix.shard }}" --shard-count ${{ needs.execution-plan.outputs.windows_shard_count }} --shard-index ${{ matrix.shard }}
 
       - name: Prove internal watchdog observes a synchronously blocked Windows main thread
         if: matrix.shard == 0
@@ -502,6 +517,12 @@ jobs:
         with:
           pattern: windows-godot-headless-*-${{ github.run_id }}
           path: build/windows-coverage-input
+      - name: Download independently verified same-run Windows candidate
+        timeout-minutes: 5
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: native-candidate-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/windows-candidate
       - name: Independently verify complete, unique Windows case execution
         if: always()
         env:
@@ -511,7 +532,7 @@ jobs:
           mkdir -p build
           python3 tools/ci/test_verify_windows_godot_shards.py
           python3 tools/ci/verify_windows_godot_shards.py \
-            --root build/windows-coverage-input \
+            --root build/windows-coverage-input --native-candidate build/windows-candidate \
             --source-sha "${{ github.sha }}" \
             --run-id "${{ github.run_id }}" \
             --attempt "${{ github.run_attempt }}" \
