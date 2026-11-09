@@ -165,6 +165,7 @@ func run() -> void:
 	check(panel.equipment.toggle("valve"),"valve closing")
 	await until(func() -> bool: return receipt().valve.state == "closed","valve fully closed",60.0)
 	r = receipt()
+	check(int(r.valve.closed_cells) == 32,"all 32 gate cells refilled before closed is reported (%d)" % int(r.valve.closed_cells))
 	check(int(r.valve.trimmed_water) == 0,"whole-cell Water is moved, never trimmed")
 	check(int(water().total) == start_total,"closing preserves native Water exactly")
 	var closed := await observe()

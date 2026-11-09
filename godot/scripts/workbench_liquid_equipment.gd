@@ -54,6 +54,9 @@ var _reads := 0
 var _valve := Rect2i()
 var _valve_open := false
 var _valve_waiting := 0
+# A valve command is applied between ticks but the gate only changes in the
+# next device step; until then the receipt reports opening/closing.
+var _valve_pending := false
 var _valve_opened_cells := 0
 var _valve_closed_cells := 0
 var _valve_displaced := 0
@@ -165,6 +168,7 @@ func _reset_runtime() -> void:
 	_valve = Rect2i()
 	_valve_open = false
 	_valve_waiting = 0
+	_valve_pending = false
 	_valve_opened_cells = 0
 	_valve_closed_cells = 0
 	_valve_displaced = 0
@@ -222,7 +226,9 @@ func command(world: Object, request: Dictionary, extent: Vector2i) -> void:
 		return
 	match kind:
 		"valve":
-			if _valve.has_area(): _valve_open = bool(request.get("open",false))
+			if _valve.has_area():
+				_valve_open = bool(request.get("open",false))
+				_valve_pending = true
 			else: _refuse("valve: not installed")
 		"drain":
 			if _drain.has_area(): _drain_open = bool(request.get("open",false))
@@ -242,6 +248,7 @@ func command(world: Object, request: Dictionary, extent: Vector2i) -> void:
 				_nozzle_rate = int(request.rate)
 				_config.nozzle = [_nozzle.x,_nozzle.y,_angle,_speed,_nozzle_rate]
 		"stop":
+			_valve_pending = _valve_pending or _valve_open
 			_valve_open = false
 			_drain_open = false
 			_nozzle_on = false
@@ -349,6 +356,7 @@ func before_tick(world: Object) -> void:
 
 func _step_valve(world: Object) -> void:
 	_valve_waiting = 0
+	_valve_pending = false
 	if not _valve.has_area(): return
 	for y: int in range(_valve.position.y,_valve.end.y):
 		for x: int in range(_valve.position.x,_valve.end.x):
@@ -481,7 +489,8 @@ func receipt() -> Dictionary:
 	return {"version":VERSION,"configured":configured,"serial":serial,"config":_config.duplicate(true),
 		"water_unit":_unit,"whole_cell_water":_whole_cell,"nozzle_mode":"ballistic parcels" if _ballistic else "cells at rest","ticks":_ticks,"active_ticks":_active_ticks,
 		"valve":{"installed":_valve.has_area(),"open":_valve_open,"waiting":_valve_waiting,
-			"state":"absent" if not _valve.has_area() else ("open" if _valve_open else ("closing" if _valve_waiting > 0 else "closed")),
+			"state":"absent" if not _valve.has_area() else (("opening" if _valve_pending else "open") if _valve_open
+				else ("closing" if _valve_waiting > 0 or _valve_pending else "closed")),
 			"opened_cells":_valve_opened_cells,"closed_cells":_valve_closed_cells,"displaced_cells":_valve_displaced,
 			"trimmed_water":_valve_trimmed_water},
 		"drain":{"installed":_drain.has_area(),"open":_drain_open,"rate":_drain_rate,"drained_water":_drained_water,
