@@ -36,7 +36,7 @@ The [selected-runs CSV](agent-paint-001/selected-runs.csv) records model, task, 
 
 | Start UTC | Model | Task | Calls | Applied edit batches | Proposed primitives | Wall / erase |
 | --- | --- | --- | ---: | ---: | ---: | --- |
-| 21:52:30 | GPT-5.6 Luna? **No — Terra** | add robot (64×128) | 5 | 1 | 8 | 8 / 0 |
+| 21:52:30 | GPT-5.6 Terra | add robot (64×128) | 5 | 1 | 8 | 8 / 0 |
 | 21:52:56 | GPT-5.6 Luna | add robot (64×128) | 5 | 1 | 7 | 7 / 0 |
 | 21:53:29 | GPT-6 Astra | add robot (64×128) | 11 | 3 | 24 | 24 / 0 |
 | 21:57:52 | GPT-5.6 Terra | add robot (128×256) | 15 | 4 | 33 | 32 / 1 |
