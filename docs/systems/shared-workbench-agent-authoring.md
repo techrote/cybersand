@@ -5,7 +5,7 @@ document-kind: contract
 scope: Opt-in human plus agent authoring in the existing shared desktop workbench, WB-AGENT-000 to 003
 canonical-for: [shared-workbench-agent-authoring, shared-workbench-agent-tool-contract]
 keywords: [WB-AGENT, authoring, observe, prepare_edit, apply_edit, step, native receipts, human intervention, Sand hopper]
-last-reviewed: 2026-11-08
+last-reviewed: 2026-11-09
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../systems/player-control-playground.md, ../reference/level-saves-and-replay.md, ../reference/interfaces-and-message-contracts.md]
 ---
 
@@ -21,6 +21,17 @@ acceptance or production merge follows. The [runner runbook](../operations/workb
 describes Profile/Key/Live setup and desktop versus remote bounds. The
 [independent reviewer supplement](../reviews/2026-11-08-workbench-agent-design-and-semantics.md)
 explains design, tool effects, measured overhead and unresolved alternatives.
+
+The 2026-11-09 recovery candidate accepts named native source-material filters
+independently of output permissions. Known, confirmed prewrite refusals return
+corrective feedback; refused apply invalidates pending state and requires fresh
+observation. Unknown outcomes and human interruption still retire the task.
+Desktop TPM paces requests with a logged effective output cap, frozen across
+HTTP retries. The separate Boilerplate editor changes eleven host-authored
+language sections for the next Start; machine schemas, native permissions,
+protected regions and Stop remain independently enforced. Exact behavior and
+capacity limits are in the linked runner runbook. This remains Draft source,
+not a genuine-provider or human graphical acceptance claim.
 
 The 2026-11-09 consumer trim changes only model-facing summaries: compact edit
 counts/handles, regional observations with image mapping, concise Step outcomes

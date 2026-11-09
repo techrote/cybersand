@@ -18,6 +18,7 @@ from .desktop_backend import DesktopWorkbench
 from .providers import ScriptedAdapter,parse_json
 from .cli import git_status,openai_probe
 from atlas_agent.errors import AgentError
+from .boilerplate import from_start
 MAX_LINE=32768
 
 class Protocol:
@@ -74,6 +75,8 @@ def start_config(frame):
     if hashlib.sha256(path.read_bytes()).hexdigest()!=frame.get('profile_sha256'):raise ConfigError('profile changed before Start')
     fixture=frame.get('fixture_mode') is True
     cfg=load_profile(path,fixture_mode=fixture,desktop=True)
+    try:cfg['_boilerplate']=from_start(frame)
+    except ValueError as exc:raise ConfigError(str(exc)) from exc
     if cfg['provider']=='fixture' and not fixture:raise ConfigError('scripted provider requires explicit fixture mode')
     if fixture and cfg['provider']!='fixture':raise ConfigError('fixture mode cannot bypass cloud funding')
     if cfg['provider'] in ('fixture','ollama_chat') and frame.get('compute_consent') is not True:raise ConfigError('explicit local/scripted compute consent required')

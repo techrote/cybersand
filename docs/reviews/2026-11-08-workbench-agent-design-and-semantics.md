@@ -227,6 +227,29 @@ decisions. Retain the failed checkpoint; native success alone was insufficient.
 
 ## Questions for the independent reviewer
 
+The 2026-11-09 recovery correction separates source predicates from authority:
+Python and Godot accept the native named palette (including Sand2), but native
+still refuses protected source edits. Only source-backed prewrite reasons are
+recoverable. The model receives the precise refusal and corrective next action;
+refused apply discards its handles and requires a fresh observation/proposal.
+Unknown writes, identity/readback failures, quarantine, human interruption and
+partial Step remain terminal. Test both categories rather than treating any
+refusal as permission to retry a mutation.
+
+TPM now caps actual per-request output allowance and waits interruptibly when
+rolling capacity is occupied. The configured allowance does not change. A429
+retry freezes the initial effective cap and complete request body even if old
+reservations expire. Local input estimates, reported usage and provider limits
+remain distinct; inspect the rate.output_cap/rate.wait events and HTTP payload.
+
+Boilerplate exposes eleven host-authored language sections, including the four
+tool descriptions and image notices, through one separate editor. Changes stage
+for the next Start without interrupting active work. They are UTF-8 bounded and
+passed in an owned hash-checked file. Structured machine authority and native
+results are separate; adversarial prose cannot expand the native grant. Tests
+inspect the actual OpenAI, NVIDIA and Ollama request builders, not a parallel
+display-only preview.
+
 1. Can you trace one visible Start through exactly one Runner to the existing
    native World, including original image/readback and final native Stop ACK?
 2. Does the UI show actual provider, selected profile, task grant, reported versus

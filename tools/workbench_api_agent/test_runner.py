@@ -344,7 +344,8 @@ class LiveHTTPFixtureTests(unittest.TestCase):
         self.assertEqual(path,'/v1/responses')
         self.assertFalse(payload['store'])
         self.assertNotIn('previous_response_id',payload)
-        self.assertTrue(payload['input'][-1]['output'][1]['image_url'].startswith('data:image/png;base64,'))
+        image=next(item for item in payload['input'][-1]['output'] if item.get('type')=='input_image')
+        self.assertTrue(image['image_url'].startswith('data:image/png;base64,'))
     def test_http_nvidia_and_ollama_image_and_function_call(self):
         for provider,name in (('nvidia_chat','nvidia-catalog.example.json'),
                               ('ollama_chat','ollama-qwen3-vl-8b.example.json')):

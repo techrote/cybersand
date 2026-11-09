@@ -36,6 +36,15 @@ var _key_help := Label.new()
 var _live := CheckBox.new()
 var _selected_profile := ""
 var _profile_data: Dictionary = {}
+var _boilerplate_window := Window.new()
+var _boilerplate_section := OptionButton.new()
+var _boilerplate_editor := TextEdit.new()
+var _boilerplate_counter := Label.new()
+var _boilerplate_defaults: Dictionary = {}
+var _boilerplate_sections: Dictionary = {}
+var _boilerplate_key := "system"
+var _boilerplate_loading := false
+var _boilerplate_load_problem := ""
 var _request_limit := SpinBox.new()
 var _tool_limit := SpinBox.new()
 var _token_limit := SpinBox.new()
@@ -116,6 +125,12 @@ func _ready() -> void:
 	traffic_button.tooltip_text = "Open full request, response, tool and native-acknowledgement traffic. Copy or save JSONL."
 	traffic_button.pressed.connect(_show_traffic)
 	dashboard.add_child(traffic_button)
+	var wording := Button.new()
+	wording.text = "Boilerplate…"
+	wording.tooltip_text = "View and edit every host-authored language section sent to the model. The task remains in the main prompt."
+	wording.pressed.connect(_show_boilerplate)
+	dashboard.add_child(wording)
+	_build_boilerplate_editor()
 	add_child(dashboard)
 	_usage.name = "AgentUsage"
 	_usage.add_theme_font_size_override("font_size",12)
@@ -544,6 +559,11 @@ func _on_start() -> void:
 	client.token_budget = int(_token_limit.value)
 	client.request_timeout_seconds = _timeout_limit.value
 	client.tokens_per_minute = int(_rate_limit.value)
+	_flush_boilerplate_editor()
+	if not _boilerplate_load_problem.is_empty():
+		_log_status("refused",_boilerplate_load_problem)
+		return
+	client.boilerplate = _boilerplate_sections.duplicate(true)
 	client.profile_path = _selected_profile
 	client.provider_mode = str(_provider.get_item_metadata(_provider.selected))
 	client.fixture_mode = client.provider_mode == "fixture"
@@ -743,3 +763,97 @@ func _accept_key() -> void:
 	if not client._diagnostics.secret_environment_names.has(selected):
 		client._diagnostics.secret_environment_names.append(selected)
 	key = ""
+
+func _build_boilerplate_editor() -> void:
+	var path := ProjectSettings.globalize_path("res://../tools/workbench_api_agent/boilerplate.json")
+	var file := FileAccess.open(path,FileAccess.READ)
+	var parsed := JSON.new()
+	if file == null or file.get_length() > 65536 or parsed.parse(file.get_as_text()) != OK or not parsed.data is Dictionary:
+		_boilerplate_load_problem = "Outgoing wording defaults are missing or invalid in this checkout."
+	else:
+		_boilerplate_defaults = parsed.data
+		for key: String in Client.BOILERPLATE_KEYS:
+			if not _boilerplate_defaults.get(key) is String:
+				_boilerplate_load_problem = "Outgoing wording section missing: " + key
+		_boilerplate_sections = _boilerplate_defaults.duplicate(true)
+	_boilerplate_window.title = "Outgoing wording"
+	_boilerplate_window.size = Vector2i(720,440)
+	_boilerplate_window.min_size = Vector2i(540,300)
+	_boilerplate_window.transient = true
+	_boilerplate_window.exclusive = false
+	_boilerplate_window.visible = false
+	_boilerplate_window.close_requested.connect(_boilerplate_window.hide)
+	add_child(_boilerplate_window)
+	var margin := MarginContainer.new()
+	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	for edge: String in ["margin_left","margin_top","margin_right","margin_bottom"]:
+		margin.add_theme_constant_override(edge,10)
+	_boilerplate_window.add_child(margin)
+	var column := VBoxContainer.new()
+	margin.add_child(column)
+	var help := Label.new()
+	help.text = "Edit the wording sent to the model. Your main task stays separate; native permissions and machine tool data remain enforced. Changes apply at the next Start; an active run keeps its frozen wording."
+	help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	column.add_child(help)
+	var row := HBoxContainer.new()
+	_boilerplate_section.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	for spec: Array in [["System message","system"],["Task introduction","task_prefix"],["Permissions label","permissions"],["Work instructions","workflow"],["Result policy","summary_policy"],["Earlier-image note","earlier_image"],["Image caption","image_caption"],["Observe tool","tool_observe"],["Prepare-edit tool","tool_prepare_edit"],["Apply-edit tool","tool_apply_edit"],["Step tool","tool_step"]]:
+		_boilerplate_section.add_item(spec[0])
+		_boilerplate_section.set_item_metadata(_boilerplate_section.item_count-1,spec[1])
+	_boilerplate_section.item_selected.connect(_select_boilerplate_section)
+	row.add_child(_boilerplate_section)
+	var restore := Button.new()
+	restore.text = "Use default"
+	restore.tooltip_text = "Restore only the selected section to the source default."
+	restore.pressed.connect(_restore_boilerplate_section)
+	row.add_child(restore)
+	var close := Button.new()
+	close.text = "Hide"
+	close.pressed.connect(_boilerplate_window.hide)
+	row.add_child(close)
+	column.add_child(row)
+	_boilerplate_editor.editable = _boilerplate_load_problem.is_empty()
+	_boilerplate_editor.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_boilerplate_editor.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+	_boilerplate_editor.placeholder_text = "This section may be blank."
+	_boilerplate_editor.text_changed.connect(_flush_boilerplate_editor)
+	column.add_child(_boilerplate_editor)
+	_boilerplate_counter.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	column.add_child(_boilerplate_counter)
+	_select_boilerplate_section(0)
+
+func _show_boilerplate() -> void:
+	_boilerplate_window.popup_centered_ratio(0.65)
+	_boilerplate_editor.grab_focus()
+
+func _select_boilerplate_section(index: int) -> void:
+	_boilerplate_key = str(_boilerplate_section.get_item_metadata(index))
+	_boilerplate_loading = true
+	_boilerplate_editor.text = str(_boilerplate_sections.get(_boilerplate_key,""))
+	_boilerplate_loading = false
+	_refresh_boilerplate_counter()
+
+func _flush_boilerplate_editor() -> void:
+	if _boilerplate_loading or not _boilerplate_load_problem.is_empty():
+		return
+	if _boilerplate_editor.text == _boilerplate_sections.get(_boilerplate_key,""):
+		return # Opening/switching sections must never interrupt an active agent.
+	_boilerplate_sections[_boilerplate_key] = _boilerplate_editor.text
+	_refresh_boilerplate_counter()
+
+func _refresh_boilerplate_counter() -> void:
+	var bytes := 0
+	for value: Variant in _boilerplate_sections.values():
+		bytes += str(value).to_utf8_buffer().size()
+	var section_bytes := _boilerplate_editor.text.to_utf8_buffer().size()
+	var problem: String = client._boilerplate_problem(_boilerplate_sections)
+	_boilerplate_counter.text = "%d/8192 UTF-8 bytes · %d/24576 total. Changes stay in this workbench session." % [section_bytes,bytes]
+	if not _boilerplate_load_problem.is_empty():
+		_boilerplate_counter.text = _boilerplate_load_problem
+	elif not problem.is_empty():
+		_boilerplate_counter.text = problem
+	_boilerplate_counter.modulate = Color.WHITE if problem.is_empty() else Color(1,0.5,0.5)
+
+func _restore_boilerplate_section() -> void:
+	_boilerplate_editor.text = str(_boilerplate_defaults.get(_boilerplate_key,""))
+	_flush_boilerplate_editor()

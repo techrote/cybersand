@@ -11,6 +11,10 @@ var allow_live := false
 var compute_consent := false
 var fixture_mode := false
 var fixture_script_path := ""
+var boilerplate: Dictionary = {}
+var _active_boilerplate: Dictionary = {}
+const NativeSetup = preload("res://scripts/workbench_setup.gd")
+const BOILERPLATE_KEYS := ["system","task_prefix","permissions","workflow","summary_policy","earlier_image","image_caption","tool_observe","tool_prepare_edit","tool_apply_edit","tool_step"]
 var acceptance: Dictionary = {}
 var fixture_turns: Array = []
 var _rate_history_by_endpoint := {}
@@ -50,6 +54,8 @@ func runner_script() -> String:
 
 func launch_problem(task: String, model: String, scope: Dictionary) -> String:
  if _fake_transport: return super.launch_problem(task,model,scope)
+ var wording_problem := _boilerplate_problem(boilerplate)
+ if not wording_problem.is_empty(): return wording_problem
  var problem := super.launch_problem(task,model,scope)
  if not problem.is_empty() and not problem.begins_with("OPENAI_API_KEY is not set"): return problem
  if _runner_pid != 0: return "Previous provider runner is still shutting down. Wait before Start."
@@ -90,6 +96,7 @@ func _send(input_items: Array) -> void:
 
 func _start_runner() -> void:
  _runner_epoch = _epoch
+ _active_boilerplate = boilerplate.duplicate(true)
  _rate_endpoint = str(_profile.get("provider",""))+":"+str(_profile.get("endpoint",""))
  _retirement_ack.clear()
  _finished_receipt.clear()
@@ -130,6 +137,9 @@ func _start_runner() -> void:
  if not acceptance.is_empty(): document.task["acceptance"] = acceptance.duplicate(true)
  if fixture_mode and not fixture_turns.is_empty(): document["fixture_turns"] = fixture_turns.duplicate(true)
  document["rate_history"] = _rate_history_for_start()
+ var wording_fields := _boilerplate_file_fields()
+ if wording_fields.is_empty(): return
+ document.merge(wording_fields)
  _stage = "Starting Python provider runner"
  _startup_deadline = Time.get_ticks_msec()+STARTUP_TIMEOUT_MSEC
  record_diagnostic("runner.started",{"pid":_runner_pid,"provider":_profile.get("provider"),"profile_sha256":_profile_hash,"bridge_root":_bridge_root})
@@ -468,3 +478,36 @@ func _rate_history_for_start() -> Array:
  for expiry: int in buckets:
   result.append({"expires_utc":expiry,"tokens":buckets[expiry]})
  return result
+
+func _boilerplate_problem(values: Dictionary) -> String:
+ var bytes := 0
+ for key: Variant in values:
+  if not key is String or key not in BOILERPLATE_KEYS:
+   return "Unknown outgoing-wording section."
+  if not values[key] is String:
+   return "Outgoing wording must be plain text."
+  var length: int = values[key].to_utf8_buffer().size()
+  if length > 8192: return "Wording section '"+key+"' exceeds8192 UTF-8 bytes."
+  bytes += length
+ if bytes > 24576: return "Combined wording exceeds24576 UTF-8 bytes."
+ return ""
+
+func _valid_arguments(name: String, args: Variant) -> bool:
+ if name != "prepare_edit": return super._valid_arguments(name,args)
+ if not args is Dictionary or not args.get("operations") is Array: return false
+ var checked: Dictionary = args.duplicate(true)
+ for op: Variant in checked.operations:
+  if op is Dictionary and op.has("replace_only_material") and op.replace_only_material != null:
+   var filter: Variant = op.replace_only_material
+   if not _safe_integer(filter) or int(filter) not in NativeSetup.MATERIALS: return false
+   # Predicate validation is separate from the output/source authority guards.
+   op.replace_only_material = null
+ return super._valid_arguments(name,checked)
+
+func _boilerplate_file_fields() -> Dictionary:
+ if DirAccess.make_dir_recursive_absolute(_bridge_root.path_join("config")) != OK:
+  _runner_fail("Could not create owned wording configuration directory.")
+  return {}
+ var wording_hash := _write_owned("config/boilerplate.json",JSON.stringify(_active_boilerplate).to_utf8_buffer())
+ if wording_hash.is_empty(): return {}
+ return {"boilerplate_file":"config/boilerplate.json","boilerplate_sha256":wording_hash}

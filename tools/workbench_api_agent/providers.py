@@ -15,6 +15,7 @@ from urllib.request import Request, build_opener, HTTPRedirectHandler, ProxyHand
 from urllib.error import HTTPError, URLError
 
 from .config import ConfigError, credential, strict_endpoint
+from .boilerplate import sections
 
 class ProviderError(RuntimeError):
     def __init__(self,kind:str,status:int|None=None,retry_after:float|None=None):
@@ -106,15 +107,15 @@ TOOL_SCHEMAS={
  'step':{'type':'object','additionalProperties':False,'properties':{'ticks':{'type':'integer','minimum':1,'maximum':120}},'required':['ticks']}
 }
 
-def tool_defs(provider:str,strict:bool,schemas=None)->list[dict]:
+def tool_defs(provider:str,strict:bool,schemas=None,boilerplate=None)->list[dict]:
     result=[]
+    wording=sections(boilerplate)
     for name,parameters in (schemas or TOOL_SCHEMAS).items():
         desc={'observe':'Observe a bounded region and receive original rendered PNG plus native cell readback.',
               'prepare_edit':'Prepare one bounded rectangular material edit proposal; it is not applied yet.',
               'apply_edit':'Apply the matching prepared proposal against native revision fencing.',
               'step':'Advance the existing native World by 1 to 120 ticks.'}[name]
-        if schemas is not None and name=='prepare_edit':
-            desc='Prepare one bounded edit using 1 to 8 disc, line or rectangle primitives, with optional replace_only_material source filters. It is not applied until a matching native acknowledgment.'
+        if boilerplate is not None or schemas is not None:desc=wording['tool_'+name]
         fn={'name':name,'description':desc,'parameters':parameters}
         if strict:fn['strict']=True
         result.append({'type':'function', 'function':fn} if provider!='openai_responses' else {'type':'function',**fn})
@@ -154,26 +155,30 @@ def image_data(entry:dict, max_bytes:int)->str:
     return 'data:image/png;base64,'+base64.b64encode(data).decode('ascii')
 
 
-def render_history_response(history:list[dict], max_image_bytes:int,detail:str,*,include_image_bytes:bool=True)->list[dict]:
+def render_history_response(history:list[dict], max_image_bytes:int,detail:str,*,include_image_bytes:bool=True,image_caption:str='')->list[dict]:
     inp=[]
     for h in history:
         kind=h['kind']
         if kind in ('user','comment'):
             content=[{'type':'input_text','text':h['text']}]
             uri=image_data(h,max_image_bytes) if include_image_bytes else ('original-image-accounted-separately' if h.get('image') else '')
-            if uri:content.append({'type':'input_image','image_url':uri,'detail':detail})
+            if uri:
+                if image_caption:content.append({'type':'input_text','text':image_caption})
+                content.append({'type':'input_image','image_url':uri,'detail':detail})
             inp.append({'role':'user','content':content})
         elif kind=='call':inp.append({'type':'function_call','call_id':h['id'],'name':h['tool'],
                                       'arguments':json.dumps(h['args'],sort_keys=True,separators=(',',':'))})
         elif kind=='result':
             content=[{'type':'input_text','text':h['text']}]
             uri=image_data(h,max_image_bytes) if include_image_bytes else ('original-image-accounted-separately' if h.get('image') else '')
-            if uri:content.append({'type':'input_image','image_url':uri,'detail':detail})
+            if uri:
+                if image_caption:content.append({'type':'input_text','text':image_caption})
+                content.append({'type':'input_image','image_url':uri,'detail':detail})
             inp.append({'type':'function_call_output','call_id':h['id'],'output':content})
     return inp
 
 
-def render_history_chat(history:list[dict],max_image_bytes:int,detail:str,*,include_image_bytes:bool=True)->list[dict]:
+def render_history_chat(history:list[dict],max_image_bytes:int,detail:str,*,include_image_bytes:bool=True,image_caption:str='Original post-draw observation for the immediately preceding tool result; same native session.')->list[dict]:
     messages=[]
     for h in history:
         kind=h['kind']
@@ -189,25 +194,30 @@ def render_history_chat(history:list[dict],max_image_bytes:int,detail:str,*,incl
         elif kind=='result':
             messages.append({'role':'tool','tool_call_id':h['id'],'content':h['text']})
             uri=image_data(h,max_image_bytes) if include_image_bytes else ('original-image-accounted-separately' if h.get('image') else '')
-            if uri:messages.append({'role':'user','content':[{'type':'text','text':'Original post-draw observation for the immediately preceding tool result; same native session.'},
+            if uri:messages.append({'role':'user','content':[{'type':'text','text':image_caption},
                 {'type':'image_url','image_url':{'url':uri,'detail':detail}}]})
     return messages
 
-def request_body(cfg:dict,history:list[dict],tool_schemas=None,*,include_image_bytes:bool=True)->dict:
+def request_body(cfg:dict,history:list[dict],tool_schemas=None,*,include_image_bytes:bool=True,max_output_tokens:int|None=None)->dict:
     """The actual provider projection; local native/evidence fields never enter it.
 
     Text accounting uses the identical envelope/schema with image bytes replaced
     by a marker; original image dimensions receive their separate price reserve.
     """
     provider=cfg['provider'];caps=cfg['capabilities'];lim=cfg['limits']
+    wording=sections(cfg.get('_boilerplate'))
+    output_cap=lim['max_output_tokens'] if max_output_tokens is None else max_output_tokens
+    if type(output_cap) is not int or not 1<=output_cap<=lim['max_output_tokens']:
+        raise ConfigError('effective output cap outside configured allowance')
     if provider=='openai_responses':
-        body={'model':cfg['model'],'input':render_history_response(history,lim['max_image_bytes'],caps['image_detail'],include_image_bytes=include_image_bytes),
-              'tools':tool_defs(provider,caps['strict_tools'],tool_schemas),'max_output_tokens':lim['max_output_tokens'],
+        body={'model':cfg['model'],'input':[{'role':'developer','content':[{'type':'input_text','text':wording['system']}]}]+
+              render_history_response(history,lim['max_image_bytes'],caps['image_detail'],include_image_bytes=include_image_bytes,image_caption=wording['image_caption']),
+              'tools':tool_defs(provider,caps['strict_tools'],tool_schemas,cfg.get('_boilerplate')),'max_output_tokens':output_cap,
               'store':False,'stream':False,'truncation':'disabled'}
     else:
-        body={'model':cfg['model'],'messages':[{'role':'system','content':SYSTEM_MESSAGE},
-              *render_history_chat(history,lim['max_image_bytes'],caps['image_detail'],include_image_bytes=include_image_bytes)],
-              'tools':tool_defs(provider,caps['strict_tools'],tool_schemas),'max_tokens':lim['max_output_tokens'],'stream':False}
+        body={'model':cfg['model'],'messages':[{'role':'system','content':wording['system']},
+              *render_history_chat(history,lim['max_image_bytes'],caps['image_detail'],include_image_bytes=include_image_bytes,image_caption=wording['image_caption'])],
+              'tools':tool_defs(provider,caps['strict_tools'],tool_schemas,cfg.get('_boilerplate')),'max_tokens':output_cap,'stream':False}
     if caps['parallel_tools']:body['parallel_tool_calls']=False
     return body
 
@@ -231,9 +241,12 @@ class HTTPAdapter:
             return value
         self.trace(event,clean(payload))
 
-    def request(self,history:list[dict],max_request_bytes:int,timeout:float)->Decision:
+    def request_with_output_cap(self,history,max_request_bytes,timeout,max_output_tokens):
+        return self.request(history,max_request_bytes,timeout,max_output_tokens=max_output_tokens)
+
+    def request(self,history:list[dict],max_request_bytes:int,timeout:float,*,max_output_tokens:int|None=None)->Decision:
         cfg=self.cfg;provider=cfg['provider'];model=cfg['model']
-        body=request_body(cfg,history,self.tool_schemas)
+        body=request_body(cfg,history,self.tool_schemas,max_output_tokens=max_output_tokens)
         answer=http_post(cfg['endpoint'],self.key,body,timeout,max_request_bytes,self._trace if self.trace else None)
         sha=hashlib.sha256(json.dumps(answer,sort_keys=True,separators=(',',':')).encode()).hexdigest()
         seen=any(h.get('image') for h in history)

@@ -20,6 +20,34 @@ in the UI. This is a Draft candidate, not merged production or accepted genuine
 provider inference. The [independent reviewer supplement](../reviews/2026-11-08-workbench-agent-design-and-semantics.md)
 explains design, tool effects, measured overhead and unresolved alternatives.
 
+### Editable Boilerplate and recoverable edits — 2026-11-09
+
+The desktop Boilerplate editor offers section selection plus editable text for
+system instructions, task prefix, permission heading, workflow, summary policy,
+old-image notice, image caption and all four tool descriptions. Defaults are in
+`tools/workbench_api_agent/boilerplate.json`. Text changes are session-local and
+freeze at Start; scope/material/protection data and machine schemas remain host
+owned. The task itself uses the existing task box; model-generated replies and
+structured native results are not boilerplate. Maximum8KiB per section/24KiB
+total; the bridge uses an owned hash-checked file instead of a large control line.
+The actual rendered request remains inspectable in Traffic.
+
+Desktop Python and Godot now accept the same named source-material filter IDs,
+including2. A filter is a predicate, not permission: native still forbids edits
+to protected source materials and output outside the allowed material set.
+Known native prewrite refusals return their precise reason to the model for
+correction. Stale/refused apply clears pending handles and requires a fresh
+observation/new proposal; it never resubmits the old mutation. Uncertain writes,
+readback/identity failures, quarantine and partial Step still retire the task.
+
+TPM now controls pacing and the effective output cap of each HTTP request. The
+configured Toks value remains an upper allowance; a32768 allowance with20000TPM
+can send a smaller permitted request, then wait stop-aware as the rolling budget
+fills. The actual output cap is logged and does not mutate the frozen settings.
+An oversized unpriced heuristic input estimate may run alone in a fresh window
+with an explicit estimate warning rather than an immediate fatal stop. Actual
+reported usage, provider429 handling, run deadlines and human Stop remain active.
+
 ### Use from the development workbench
 
 The owner-authorized desktop OpenAI profile may explicitly select

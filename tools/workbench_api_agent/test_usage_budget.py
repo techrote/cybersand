@@ -57,6 +57,10 @@ class UsageBudgetTests(unittest.TestCase):
         with self.assertRaises(LimitReached) as error:b.commit(r,101,0,10)
         self.assertEqual(error.exception.reason_code,'max_input_tokens_per_call')
         self.assertEqual(b.input_tokens,101)
+        b=self.budget();r=b.reserve(100,10)
+        with self.assertRaises(LimitReached) as error:b.commit(r,100,0,11)
+        self.assertEqual(error.exception.reason_code,'max_output_tokens')
+        self.assertEqual(b.output_tokens,11)
 
     def test_image_estimate_uses_existing_generic_dimensions_rule_not_dollars(self):
         self.assertEqual(conservative_image_tokens(1,1),3)

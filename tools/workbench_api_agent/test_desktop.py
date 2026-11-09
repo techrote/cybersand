@@ -115,7 +115,7 @@ class DesktopTests(unittest.TestCase):
         self.assertIsNone(retry_after({'Retry-After':'inf'}))
         self.assertEqual(retry_after({'Retry-After':'Sun, 06 Nov 1994 08:49:37 GMT'}),0)
 
-    def run_bridge(self,turns=None):
+    def run_bridge(self,turns=None,refusals=None):
         frames=[];count=0;tick=0;serial=0;native_calls=[]
         p=Protocol(io.BytesIO());app=Desktop(p)
         def identity():return {'world_generation':3,'world_revision':serial,'completed_tick':tick,'manual_intent_revision':0}
@@ -127,7 +127,8 @@ class DesktopTests(unittest.TestCase):
             frames.append(frame)
             if frame['type']!='native_request':return
             tool=frame['tool'];native_calls.append(tool);serial+=1
-            if tool=='stop':raw={'status':'retired','owner_receipt':{'status':'stopped','no_further_agent_mutations':True}}
+            if serial in (refusals or {}):raw=copy.deepcopy(refusals[serial])
+            elif tool=='stop':raw={'status':'retired','owner_receipt':{'status':'stopped','no_further_agent_mutations':True}}
             elif tool=='observe':raw=observed()
             elif tool=='prepare_edit':raw={'status':'proposed','proposal_id':'prop-'+str(serial),'changed_cells':9 if count==0 else 1,'identity':identity()}
             elif tool=='apply_edit':

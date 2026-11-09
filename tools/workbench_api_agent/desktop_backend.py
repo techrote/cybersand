@@ -10,6 +10,17 @@ import time
 from .backend import NativeError, validate_tool
 
 MAX_FILE = 16*1024*1024
+DESKTOP_NATIVE_PALETTE = (2,14,29,13,19,23,25,26,27,3,58,0,8,16,12,7,9,28)
+# Exact pre-write exits in the frozen authoring Geometry/session/host paths.
+# Generic refusals, interrupted operations and unconfirmed outcomes are not proof.
+PREPARE_REFUSALS = frozenset(('source_material_protected','protected_region','invalid_replace_filter',
+    'outside_authorized_scope','replacement_material_not_allowed','disc_exceeds_cell_budget',
+    'line_exceeds_cell_budget','rectangle_exceeds_cell_budget','distinct_cell_budget_exceeded',
+    'invalid_primitive_count','operation_not_object','invalid_shape','unsupported_shape',
+    'non_integer_or_missing_field','unknown_operation_field','reversed_rectangle_bounds',
+    'missing_or_stale_observation','stale_observation','observation_not_matched_to_frame'))
+APPLY_REFUSALS = frozenset(('unknown_or_retired_proposal','stale_proposal','source_cells_changed',
+    'invalid_proposal_id','proposal_not_preflight_recordable'))
 
 def desktop_tool_schemas(allowed=(0,58)):
     from .providers import TOOL_SCHEMAS
@@ -20,7 +31,7 @@ def desktop_tool_schemas(allowed=(0,58)):
     for shape in ('disc','line','rectangle'):
         coords=('x','y','radius') if shape=='disc' else ('x0','y0','x1','y1')
         props={'shape':{'type':'string','enum':[shape]},'material':{'type':'integer','enum':list(allowed)},
-               **{k:{'type':'integer'} for k in coords},'replace_only_material':{'anyOf':[{'type':'integer'},{'type':'null'}]}}
+               **{k:{'type':'integer'} for k in coords},'replace_only_material':{'anyOf':[{'type':'integer','enum':list(DESKTOP_NATIVE_PALETTE)},{'type':'null'}]}}
         variants.append({'type':'object','additionalProperties':False,'properties':props,'required':list(props)})
     s['prepare_edit']['properties']['operations'].update({'maxItems':8,'items':{
         'anyOf':variants}})
@@ -59,7 +70,7 @@ def validate_desktop_tool(name,args,scope,allowed,protected,last_observation,las
         if shape not in ('disc','line','rectangle') or set(op)-required-{'replace_only_material'} or required-set(op):raise NativeError('edit_unknown_shape_or_keys')
         if any(type(op[k]) is not int for k in ('material',*coords)):raise NativeError('edit_integer_required')
         filt=op.get('replace_only_material')
-        if filt is not None and (type(filt) is not int or not 0<=filt<=255):raise NativeError('edit_filter_invalid')
+        if filt is not None and (type(filt) is not int or filt not in DESKTOP_NATIVE_PALETTE):raise NativeError('edit_filter_invalid')
         if op['material'] not in allowed:raise NativeError('edit_material_not_authorized')
         if shape=='disc':
             x,y,r=(op[k] for k in coords)
@@ -153,6 +164,27 @@ class DesktopWorkbench:
         from .providers import parse_json
         raw=parse_json(self._file(message['receipt_file'],message.get('receipt_sha256')),MAX_FILE) if message.get('receipt_file') else message.get('receipt')
         if not isinstance(raw,dict):raise NativeError('desktop_native_receipt_missing',rid)
+        if raw.get('status')=='refused' and tool in ('prepare_edit','apply_edit'):
+            allowed=PREPARE_REFUSALS if tool=='prepare_edit' else APPLY_REFUSALS
+            reason=raw.get('reason')
+            preflight=(tool=='prepare_edit' and isinstance(reason,str) and reason.startswith('authored_start_preflight_failed:') and len(reason)<=200)
+            if not isinstance(reason,str) or (reason not in allowed and not preflight):raise NativeError('native_nonacceptance_refused',rid)
+            if raw.get('interrupted_by_human') or any(raw.get(k,0)!=0 for k in
+                    ('issued_writes','confirmed_writes','changed_cells')) or raw.get('readback'):
+                raise NativeError('desktop_refusal_has_possible_mutation',rid)
+            if raw.get('task_id',self.session_id)!=self.session_id:
+                raise NativeError('desktop_native_identity_missing_or_changed',rid)
+            for key in ('identity','identity_before','identity_after'):
+                if key in raw and (not isinstance(raw[key],dict) or
+                        str(raw[key].get('world_generation'))!=self.generation_id):
+                    raise NativeError('desktop_native_identity_missing_or_changed',rid)
+            if ('identity_before' in raw and 'identity_after' in raw and raw['identity_before']!=raw['identity_after']):
+                raise NativeError('desktop_refusal_has_possible_mutation',rid)
+            if tool=='apply_edit' and raw.get('proposal_id',(args or {}).get('proposal_id'))!=(args or {}).get('proposal_id'):
+                raise NativeError('desktop_apply_proposal_identity_mismatch',rid)
+            return {'state':'complete','request_id':rid,'receipt':{'tool':tool,'status':'refused',
+                'result':raw,'frame':{'status':'none'},'non_mutating_refusal':True,
+                'completed_native_ticks_total':self._ticks}}
         if tool=='stop':
             native=raw.get('owner_receipt',raw)
             if not isinstance(native,dict) or native.get('status')!='stopped' or native.get('no_further_agent_mutations') is not True:raise NativeError('desktop_native_stop_unconfirmed',rid)

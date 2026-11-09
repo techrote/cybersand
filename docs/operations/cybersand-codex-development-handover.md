@@ -4,11 +4,23 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-08
+last-reviewed: 2026-11-09
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Provider refusal recovery and editable wording — 2026-11-09
+
+The isolated Draft #531 follow-up to5eed6c98 aligns source-material predicates,
+returns confirmed prewrite refusals for correction, and paces desktop requests
+with an effective output cap instead of rejecting a larger configured allowance.
+Stop/protection and uncertain-outcome retirement remain. The compact panel's
+Boilerplate window stages eleven editable language sections for the next Start.
+Use the [runner runbook](workbench-api-agent.md) and
+[review packet](../reviews/2026-11-08-workbench-agent-design-and-semantics.md).
+Source/runtime hashes, commands and original native evidence belong in the
+existing #531 qualification record; no merge or genuine inference is implied.
 
 ## Provider UI composition and communication review — 2026-11-08
 

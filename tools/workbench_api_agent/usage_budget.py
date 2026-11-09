@@ -95,6 +95,10 @@ class UsageBudget:
         self.reasoning_tokens += reasoning_tokens
         exceeded = input_tokens > res.input_tokens or output_tokens > res.output_tokens
         if exceeded: self.overruns += 1
+        # Input is heuristic for an unpriced model. The output ceiling, however,
+        # is the exact per-request value sent to the provider and remains hard.
+        if output_tokens > res.output_tokens:
+            raise LimitReached('reported output exceeds effective request cap', 'max_output_tokens')
         for value, key in ((input_tokens, 'max_input_tokens_per_call'), (output_tokens, 'max_output_tokens'),
                 (self.input_tokens, 'max_total_input_tokens'), (self.output_tokens, 'max_total_output_tokens')):
             if value > self.limits[key]:

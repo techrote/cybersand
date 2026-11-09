@@ -27,6 +27,55 @@ func mouse(p: Vector2, index: int = 0, pressed: bool = false, delta: Vector2 = V
 	root.push_input(event,true)
 	await process_frame
 
+func inspect_boilerplate(screen: Vector2i) -> void:
+	var canvas_before: Rect2 = rect(host.world_view)
+	var dock_before: Rect2 = rect(mount._dock)
+	var prompt_before: Rect2 = rect(panel._task)
+	var scroll_before: Rect2 = rect(panel._form_scroll)
+	var origin_before: Vector2 = host.camera_origin
+	var view_before: Vector2i = host.current_view_size
+	var edits_before: int = wb.applied.edits.size()
+	check(not panel._boilerplate_window.visible,"wording popup opened before request")
+	panel._show_boilerplate()
+	await settle()
+	var popup: Window = panel._boilerplate_window
+	var editor: Rect2 = panel._boilerplate_editor.get_global_rect()
+	var popup_content := Rect2(Vector2.ZERO,Vector2(popup.size))
+	check(popup.visible and popup_content.encloses(editor),"wording editor is outside popup")
+	check(editor.size.x >= 400 and editor.size.y >= 180,"wording editor is too small to use")
+	check(rect(host.world_view).is_equal_approx(canvas_before) and rect(mount._dock).is_equal_approx(dock_before),"wording popup changes canvas/dock layout")
+	check(rect(panel._task).is_equal_approx(prompt_before) and rect(panel._form_scroll).is_equal_approx(scroll_before),"wording editor adds height to the main form")
+	check(host.camera_origin == origin_before and host.current_view_size == view_before,"wording popup changes camera")
+	panel._boilerplate_section.select(10)
+	panel._select_boilerplate_section(10)
+	await settle()
+	check(panel._boilerplate_editor.text == panel._boilerplate_sections.tool_step,"wording dropdown does not display selected editable section")
+	var original_text: String = panel._boilerplate_editor.text
+	var point: Vector2 = panel._boilerplate_editor.get_global_rect().get_center()
+	for button: int in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_MIDDLE]:
+		for down: bool in [true,false]:
+			var event := InputEventMouseButton.new()
+			event.window_id = popup.get_window_id()
+			event.position = point
+			event.global_position = point
+			event.button_index = button
+			event.pressed = down
+			Input.parse_input_event(event)
+			await process_frame
+	await settle()
+	check(host.camera_origin == origin_before and host.current_view_size == view_before and wb.applied.edits.size() == edits_before and not wb._pan,"wording input leaked into native paint/zoom/pan")
+	# Middle-click can paste the X11 primary selection; restore this test's view.
+	panel._boilerplate_editor.text = original_text
+	panel._flush_boilerplate_editor()
+	if not evidence_dir.is_empty():
+		var image: Image = popup.get_texture().get_image()
+		check(image != null and not image.is_empty() and image.save_png(evidence_dir.path_join("boilerplate-%d-popup-original.png" % screen.x)) == OK,"original post-draw wording popup PNG missing")
+	print("WB_BOILERPLATE_LAYOUT "+JSON.stringify({"logical_size":[screen.x,screen.y],"popup_size":[popup.size.x,popup.size.y],"editor":str(editor),"canvas_unchanged":rect(host.world_view).is_equal_approx(canvas_before),"native_tick":host.latest_snapshot.tick_index}))
+	popup.close_requested.emit()
+	await settle()
+	check(not popup.visible and rect(host.world_view).is_equal_approx(canvas_before) and rect(mount._dock).is_equal_approx(dock_before),"wording popup close does not restore layout cleanly")
+	check(host.camera_origin == origin_before and host.current_view_size == view_before,"closing wording popup changes camera")
+
 func inspect_layout(screen: Vector2i, sequence: int) -> void:
 	root.content_scale_size = screen
 	root.size = screen
@@ -51,6 +100,7 @@ func inspect_layout(screen: Vector2i, sequence: int) -> void:
 	check(absf(rect(panel._guard_region[0]).position.y - rect(panel._guard_region[3]).position.y) < 2,"Protect coordinates wrapped")
 	check(not panel._log.is_inside_tree() and not panel._signed_frame.is_inside_tree(),"legacy controls consume space")
 	check(not panel._traffic.visible,"traffic opened uninvited")
+	await inspect_boilerplate(screen)
 	var stop_rect: Rect2 = rect(panel._stop)
 	var stop_relative := Rect2(stop_rect.position-dock.position,stop_rect.size)
 	panel._form_scroll.scroll_vertical = 100000

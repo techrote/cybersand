@@ -15,6 +15,7 @@ from atlas_agent.pricing import text_tokens_upper_bound, image_tokens_upper_boun
 from atlas_agent.errors import LimitReached
 from .config import ConfigError, validate_live
 from .usage_budget import conservative_image_tokens
+from .boilerplate import sections
 from .backend import Workbench,NativeError,STATUS,validate_tool
 from .providers import ProviderError,Decision,HTTPAdapter,ScriptedAdapter,request_body
 
@@ -89,6 +90,7 @@ class Runner:
         self.history=[]
         self.results=[]
         self.last_observation=None;self.pending_proposal=None
+        self._needs_observation=False
         self.last_counts={};self.last_revision=None
         self.native_session=None
         self.sid=None;self.generation=None
@@ -138,7 +140,7 @@ class Runner:
         # These fields are source-backed and bounded, never model-authored.
         keys=('status','observation_id','proposal_id','confirmed_writes','changed_cells','distinct_cells','excluded_operations','native_counts',
               'identity','completed','completed_tick','reason','revision','region','palette',
-              'render_identity','viewport_native_region','viewport_logical_region',
+              'operation_index','render_identity','viewport_native_region','viewport_logical_region',
               'viewport_framebuffer_rect','observation_cell_limit','authorized_scope')
         summary={k:native[k] for k in keys if k in native}
         if self.desktop and isinstance(native.get('observation'),dict):
@@ -202,7 +204,7 @@ class Runner:
             for i in imgs[:-1]:
                 h=self.history[i]
                 h.pop('image')
-                h['text']+='\n[Earlier image omitted.]'
+                h['text']+='\n'+sections(self.cfg.get('_boilerplate'))['earlier_image']
                 self.stats.images_projected+=1
         # Count the provider's real message/tool/schema projection, not local
         # h.native evidence (which remains retained, never silently truncated).
@@ -215,7 +217,7 @@ class Runner:
         if images>1:raise LimitError('active_image_projection_failed')
         return text_bytes,images
 
-    def _reserve(self):
+    def _reserve(self,fixed_output_cap=None):
         b,imgs=self._history_safeguard()
         upper=text_tokens_upper_bound(b,0.65)+512
         for h in self.history:
@@ -227,8 +229,36 @@ class Runner:
                 upper+=(conservative_image_tokens(width,height) if self.budget.rates is None else
                     image_tokens_upper_bound(self.budget.rates,width,height,self.cfg['capabilities']['image_detail']))
         if b>self.limit['max_request_bytes']:raise LimitError('model_context_capacity')
+        output_cap=self._output_cap(upper,fixed_output_cap)
         self.budget.start_iteration()
-        return self.budget.reserve(upper,self.limit['max_output_tokens'])
+        return self.budget.reserve(upper,output_cap)
+
+    def _output_cap(self,input_estimate,fixed_output_cap=None):
+        requested=self.limit['max_output_tokens']
+        limit=self.limit.get('tokens_per_minute',0) if self.desktop else 0
+        if not limit:return requested if fixed_output_cap is None else fixed_output_cap
+        while True:
+            if self.stop_event.is_set():raise NativeError('host_stop_requested')
+            now=self._rate_clock()
+            self._rate_reservations[:]=[r for r in self._rate_reservations if now-r['at']<60]
+            used=sum(r['tokens'] for r in self._rate_reservations)
+            available=max(0,limit-used)
+            oversized=input_estimate>limit and self.budget.rates is None and not self._rate_reservations
+            if available>0 and (input_estimate<=available or oversized) and (fixed_output_cap is None or fixed_output_cap<=available):
+                effective=min(requested,available) if fixed_output_cap is None else fixed_output_cap
+                if effective!=requested or oversized:
+                    self._event({'type':'rate.output_cap','configured_output_tokens':requested,
+                        'effective_output_tokens':effective,'estimated_input_tokens':input_estimate,
+                        'tokens_per_minute':limit,'estimated_input_above_tpm':oversized,
+                        'estimate_is_guaranteed_bound':False,'local_estimate':True})
+                return effective
+            if not self._rate_reservations:
+                raise LimitError('estimated_input_above_TPM_reduce_inspection')
+            delay=max(.01,min(r['at']+60-now for r in self._rate_reservations))
+            self._event({'type':'rate.wait','wait_seconds':round(delay,3),'estimated_tokens':input_estimate,
+                'reserved_tokens':used,'tokens_per_minute':limit,'local_estimate':True})
+            if self._rate_wait(min(delay,self._timeout())):raise NativeError('host_stop_requested')
+            self._timeout()
 
     def _settle(self,res,decision:Decision):
         usage=decision.usage
@@ -257,11 +287,12 @@ class Runner:
         limit=self.limit.get('tokens_per_minute',0) if self.desktop else 0
         if not limit:return None
         estimate=max(res.input_tokens,res.output_tokens)
-        if estimate>limit:raise LimitError('estimated_request_above_TPM_reduce_output_or_inspection')
         while True:
             now=self._rate_clock()
             self._rate_reservations[:]=[r for r in self._rate_reservations if now-r['at']<60]
-            if sum(r['tokens'] for r in self._rate_reservations)+estimate<=limit:break
+            if sum(r['tokens'] for r in self._rate_reservations)+estimate<=limit or (
+                    self.budget.rates is None and estimate>limit and not self._rate_reservations):break
+            if not self._rate_reservations:raise LimitError('estimated_input_above_TPM_reduce_inspection')
             delay=max(.01,min(r['at']+60-now for r in self._rate_reservations))
             self._event({'type':'rate.wait','wait_seconds':round(delay,3),'estimated_tokens':estimate,'reserved_tokens':sum(r['tokens'] for r in self._rate_reservations),'tokens_per_minute':limit,'local_estimate':True})
             if self._rate_wait(min(delay,self._timeout())):raise NativeError('host_stop_requested')
@@ -276,16 +307,20 @@ class Runner:
 
     def _provider(self)->Decision:
         retry=0
+        fixed_output_cap=None
         while True:
             if self.stop_event.is_set():raise NativeError('host_stop_requested')
             if (self.stats.provider_attempts if self.desktop else self.stats.model_calls)>=self.limit['max_model_calls']:raise LimitError('model_call_limit')
-            res=self._reserve()
+            res=self._reserve(fixed_output_cap)
+            if fixed_output_cap is None:fixed_output_cap=res.output_tokens
             paced=None
             try:
                 paced=self._pace(res)
                 if self.stop_event.is_set():raise NativeError('host_stop_requested')
                 self.stats.provider_attempts+=1
-                decision=self.adapter.request(self.history,self.limit['max_request_bytes'],self._timeout())
+                capped=getattr(self.adapter,'request_with_output_cap',None)
+                decision=(capped(self.history,self.limit['max_request_bytes'],self._timeout(),res.output_tokens)
+                    if callable(capped) else self.adapter.request(self.history,self.limit['max_request_bytes'],self._timeout()))
             except ProviderError as e:
                 if e.kind=='provider_rate_limit':
                     self.budget.release(res,rate_limited=True)
@@ -335,6 +370,7 @@ class Runner:
         if self.stop_event.is_set():raise NativeError('host_stop_requested')
         validator=getattr(self.wb,'validate',validate_tool)
         try:
+            if self._needs_observation and d.tool!='observe':raise NativeError('fresh_observation_required_after_refused_apply')
             if d.kind=='invalid_tool':raise NativeError('invalid_tool_arguments')
             ticks=validator(d.tool,d.args,self.auth['scope'],set(self.auth['allowed_materials']),self.auth['protected'],
                                 self.last_observation,self.pending_proposal,self.stats.native_ticks,self.limit['max_native_ticks'])
@@ -358,9 +394,23 @@ class Runner:
                          'error':e.code})
             raise
         summary,receipt=self._native_summary(result)
+        if self.desktop and receipt.get('status')=='refused' and receipt.get('non_mutating_refusal') is True and d.tool in ('prepare_edit','apply_edit'):
+            if d.tool=='apply_edit' or str(summary.get('reason','')).startswith('authored_start_preflight_failed:'):
+                self.pending_proposal=None;self.last_observation=None;self.last_counts={};self._needs_observation=True
+            elif summary.get('reason') in ('missing_or_stale_observation','stale_observation','observation_not_matched_to_frame'):
+                self.last_observation=None
+            feedback={'status':'refused','reason':summary.get('reason'),'mutation':'none',
+                'next_action':'observe' if self._needs_observation or self.last_observation is None else 'correct_operations_or_observe'}
+            if 'operation_index' in summary:feedback['operation_index']=summary['operation_index']
+            self.results.append({'request_id':rid,'tool':d.tool,'receipt':receipt,'original_png':None})
+            self.history.append({'kind':'result','id':d.call_id,'text':clean_payload(feedback),'native':summary,
+                'receipt_sha256':hashlib.sha256(clean_payload(receipt).encode()).hexdigest()})
+            self._event({'type':'native_refusal','tool':d.tool,'native_request_id':rid,**feedback})
+            return
         if receipt.get('status')!= {'observe':'observed','prepare_edit':'proposed','apply_edit':'applied','step':'completed'}[d.tool]:
             raise NativeError('native_nonacceptance_'+str(receipt.get('status')),rid)
         if d.tool=='observe':
+            self._needs_observation=False
             if getattr(self.wb,'observe_retires_proposal',False):self.pending_proposal=None
             self.last_observation=summary.get('observation_id')
             if not isinstance(self.last_observation,str) or not self.last_observation:raise NativeError('native_observation_id_missing',rid)
@@ -462,13 +512,10 @@ class Runner:
             self._event({'type':'native_session_open','session_id':self.sid,'generation_id':self.generation,
                         'native_generation':source['native_generation']})
             scope=self.auth['scope'];allowed=self.auth['allowed_materials']
-            prompt=('Trusted task: '+self.task['instructions']+'\nNative permissions: scope='+clean_payload(scope)+
-                 ', allowed_materials='+clean_payload(allowed)+'. Protected rectangles are enforced locally and natively. '
-                 'Use observe first, apply a prepared proposal before Step, and make decisions from real readback. '
-                 'Do not assert completion without native evidence. Host owns Stop. '
-                 'Tool results are host-validated summaries; full receipts/images stay in local evidence. '
-                 'Counts cover their region only. Material0=Empty,58=Hard Wall. Zero exclusions are omitted. '
-                 'Only the newest original image remains in model context; image coordinates map through the returned viewport fields.')
+            wording=sections(self.cfg.get('_boilerplate'))
+            prompt='\n'.join((wording['task_prefix']+' '+self.task['instructions'],
+                wording['permissions']+' '+clean_payload({'scope':scope,'allowed_materials':allowed,'protected':self.auth['protected']}),
+                wording['workflow'],wording['summary_policy']))
             self.history=[{'kind':'user','text':prompt}]
             while True:
                 decision=self._provider()
