@@ -48,7 +48,7 @@ service; the desktop backend must operate the existing mounted World.
 | Representation | Purpose | Information policy |
 | --- | --- | --- |
 | Native/audit receipt | Verification, recovery and independent evidence | Keep complete readback, identities, original PNGs and explicit failures within bounds |
-| Model-facing result | Choose the next action | Exact relevant status/counts/IDs/identity plus image; disclose projections, retain originals locally |
+| Model-facing result | Choose the next action | Relevant status/counts/handles/coordinates plus image; explain summaries once, retain originals locally |
 | Conversation view | Human understanding of intent and failures | Actual prose/readable exchanges, filters and separate raw Content/Event/export |
 
 A sparse Conversation view does not prove a short model context. A verbose local
@@ -233,15 +233,19 @@ decisions. Retain the failed checkpoint; native success alone was insufficient.
 
 `tools/wb_agent/analyse_communication_overhead.py` produces aggregate-only
 measurements from a diagnostic log, never copying prompt text or private IDs.
-The 990-cell receipt projection measured 38,164 to 394 bytes for preparation
-and 50,318 to 327 for application using the integrated desktop Runner projection
-(2026-11-08 replay of the owner's retained log). These are selected-result bytes,
-not a new live trial, exact wire compression ratio or proof of unchanged model
-quality. Full receipts remain local, with their SHA-256 and a projection label
-included in the model-facing result. Observation results retain useful region,
-view and identity metadata; their selected text grew from 1,333/1,338 to 1,385
-bytes in this replay. This is selective reduction of large cell lists, not a
-claim that every response becomes smaller.
+The initial 990-cell receipt projection measured 38,164 to394 bytes for preparation
+and 50,318 to327 for application. The owner-requested 2026-11-09 trim further
+reduces those same results to **70 and63 bytes**, with observations at **319 bytes**
+(previously1,385; legacy1,333/1,338). These are selected-result bytes replayed from
+the owner's retained log, not a new live trial, exact wire compression ratio or
+proof of unchanged model quality. Full receipt hashes/identities stay locally
+validated and retained; audit hashes, projection labels, redundant tool names,
+routine identity fields and per-edit tick totals no longer enter model results.
+The host explains this once. Observations retain region/counts, native-to-image
+mapping and names for other present materials. Nonzero exclusions, changed versus
+distinct-cell differences and error reasons remain explicit. Old images get a
+short omission marker; their hashes and originals remain in evidence. The actual
+tool-call/result history is preserved, with no unqualified context summarizer.
 
 Required final evidence includes provider request/response bytes and usage,
 raw-versus-projected receipt sizes, model calls/retries, native writes/ticks,

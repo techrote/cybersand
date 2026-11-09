@@ -22,6 +22,14 @@ describes Profile/Key/Live setup and desktop versus remote bounds. The
 [independent reviewer supplement](../reviews/2026-11-08-workbench-agent-design-and-semantics.md)
 explains design, tool effects, measured overhead and unresolved alternatives.
 
+The 2026-11-09 consumer trim changes only model-facing summaries: compact edit
+counts/handles, regional observations with image mapping, concise Step outcomes
+and short old-image notices. Native receipts, identities/fences, per-cell readback,
+original PNGs and raw diagnostics remain authoritative and retained. Audit hashes
+and repeated projection labels stay out of model context. The
+[runner runbook](../operations/workbench-api-agent.md#current-implementation-and-boundaries)
+defines the consumer summary policy; native tool contracts below are unchanged.
+
 ## Released-source consumer integration — 2026-11-07
 
 **Current candidate, not accepted main:** isolated #531-derived branch

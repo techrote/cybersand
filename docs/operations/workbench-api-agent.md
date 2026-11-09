@@ -75,6 +75,19 @@ cannot see other applications consuming the same provider quota.
 
 ## Current implementation and boundaries
 
+Model-facing traffic trimming (2026-11-09): routine edit successes return status,
+proposal handle when needed, and write/change counts. Distinct-cell counts are
+included when different from changes; nonzero exclusions/reasons remain explicit.
+Observations keep their handle, region/counts and native-to-image viewport mapping.
+Material0=Empty and58=Hard Wall are explained once; palette names are returned only
+for other materials actually present. Step includes completed/cumulative ticks and
+its compact observation. Full identities, receipt hashes, per-cell evidence and
+original PNGs remain locally validated/retained, not repeated in model results.
+One initial instruction explains the summaries; old-image notices are short and
+their original hashes remain in local evidence. Whole prior tool exchanges are
+not silently deleted. Oversized necessary results refuse explicitly instead of
+substituting a hash and dropping their view/count/error detail.
+
 This new **one-controller** executable consumes the **already-running** #547 private remote workbench; it does not create a simulation, edit host authorization, provide a shell, register MCP or publish code. The host selects provider/model/endpoint/credential reference, capacity, material scope and acceptance criteria. Model-visible operations: **observe, prepare_edit, apply_edit, step** only. The operator retains **session and Stop**. The native owner remains authoritative for revision/generation, scope, protected cells and material provenance. A model's final text is never a verified edit.
 
 The isolated implementation branch is stacked on the Draft #547 exact source; main's merged `tools/atlas_agent` is imported read-only for its **reserve-before-call Budget, rates and OpenAI credit gate**. Atlas's separate art editing/publishing permissions and validators are not imported. NVIDIA paid use requires host-supplied fresh model-specific rates, a verified funding attestation and an authorisation reference. Local model API spend is zero by design; GPU/electricity compute costs are **unknown**, not zero. Provider keys are environment variables or private 0600 files; key presence **never** authorizes a charge.
@@ -101,7 +114,7 @@ Profiles are trusted operator-authored JSON, never model-generated. The four exa
 - `profiles/ollama-qwen3-vl-8b.example.json`: named local Ollama 0.12.7+ `qwen3-vl:8b`, `/v1/chat/completions` on `127.0.0.1:11434`, no cloud credential. Ollama lists the model as vision + tools; a real deployment still needs independent tool+image inference qualification. No automatic model download, fallback or switch; model itself is several GB.
 - `profiles/fixture.json`: scripted provider, not a trained model. This is **B-gate** input for true native source-built #547 verification and **A-gate** fixture testing, never accepted as C.
 
-`capabilities.tools` and `.images` must both be true, and their actual requested wire formats must succeed during model qualification. `strict_tools` and `parallel_tools` control only the documented option fields on that endpoint; if unsupported they are omitted. Multiple returned calls, incomplete/truncated call arguments, unexpected models, JSON extracted from free-form prose, unsupported vision and missing usage fail closed. The `image_detail` profile choice is explicit (`low`, `high` or `auto`). Original PNG bytes are always retained; the model receives unmodified PNG data via base64 URI, not a simulated image. Previous images can be omitted **only with explicit on-history projection markers** and hashes, and context requests stop when byte limits would be exceeded.
+`capabilities.tools` and `.images` must both be true, and their actual requested wire formats must succeed during model qualification. `strict_tools` and `parallel_tools` control only the documented option fields on that endpoint; if unsupported they are omitted. Multiple returned calls, incomplete/truncated call arguments, unexpected models, JSON extracted from free-form prose, unsupported vision and missing usage fail closed. The `image_detail` profile choice is explicit (`low`, `high` or `auto`). Original PNG bytes are always retained; the model receives unmodified PNG data via base64 URI, not a simulated image. Previous images can be omitted **only with explicit on-history projection markers**; original hashes remain in local evidence rather than each marker. Context requests stop when byte limits would be exceeded.
 
 ## Actual Codespaces native workbench host
 

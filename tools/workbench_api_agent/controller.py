@@ -135,7 +135,7 @@ class Runner:
         native=receipt.get('result') or {}
         if not isinstance(native,dict):raise NativeError('native_result_not_object')
         # These fields are source-backed and bounded, never model-authored.
-        keys=('status','observation_id','proposal_id','confirmed_writes','changed_cells','native_counts',
+        keys=('status','observation_id','proposal_id','confirmed_writes','changed_cells','distinct_cells','excluded_operations','native_counts',
               'identity','completed','completed_tick','reason','revision','region','palette',
               'render_identity','viewport_native_region','viewport_logical_region',
               'viewport_framebuffer_rect','observation_cell_limit','authorized_scope')
@@ -150,14 +150,45 @@ class Runner:
         return summary,receipt
 
     def _project(self,summary:dict)->str:
-        text=clean_payload(summary)
-        if len(text)>self.limit['max_tool_result_bytes']:
-            # Do not silently truncate a native receipt: carry a labeled,
-            # deterministic projection plus original whole-object SHA.
-            keep={k:summary.get(k) for k in ('tool','status','observation_id','proposal_id',
-                  'confirmed_writes','native_counts','identity','completed_native_ticks_total') if k in summary}
-            text=clean_payload({'projection':'selected_native_fields','full_receipt_sha256':hashlib.sha256(text.encode()).hexdigest(),
-                                'fields':keep})
+        # Model context is not the audit archive. Tool-call IDs already name the
+        # operation; the host validates identities/readback before this display.
+        status=summary.get('status')
+        compact={'status':status}
+        def fields(source,names):return {k:source[k] for k in names if source.get(k) is not None}
+        def observation(source):
+            result=fields(source,('observation_id','region','native_counts',
+                'viewport_native_region','viewport_framebuffer_rect'))
+            counts=source.get('native_counts',{})
+            palette=[]
+            for item in source.get('palette') or []:
+                if not isinstance(item,dict):continue
+                material=item.get('id')
+                if type(material) in (int,float) and math.isfinite(material) and material==int(material) and material not in (0,58) and counts.get(str(int(material)),0)>0:
+                    palette.append(item)
+            if palette:result['palette']=palette
+            return result
+        if status=='proposed':
+            compact.update(fields(summary,('proposal_id','changed_cells')))
+            if summary.get('distinct_cells')!=summary.get('changed_cells'):
+                compact.update(fields(summary,('distinct_cells',)))
+        elif status=='applied':
+            compact.update(fields(summary,('confirmed_writes','changed_cells')))
+        elif status=='observed':
+            compact.update(observation(summary))
+        elif status=='completed':
+            compact.update(fields(summary,('completed','completed_native_ticks_total')))
+            compact.update(observation(summary))
+            if isinstance(summary.get('observation'),dict):
+                compact['observation']=observation(summary['observation'])
+        else:
+            # Unusual outcomes retain their detail; only audit annotations go.
+            compact={k:v for k,v in summary.items() if k not in
+                     ('projection','original_receipt_sha256','tool')}
+        if summary.get('excluded_operations'):compact['excluded_operations']=summary['excluded_operations']
+        if summary.get('reason'):compact['reason']=summary['reason']
+        text=clean_payload(compact)
+        # Do not replace necessary view/count/error detail with an opaque hash
+        # when it is oversized. Preserve the original and fail explicitly.
         if len(text)>self.limit['max_tool_result_bytes']:raise LimitError('native_projection_capacity')
         return text
 
@@ -169,8 +200,8 @@ class Runner:
         if len(imgs)>1:
             for i in imgs[:-1]:
                 h=self.history[i]
-                meta=h.pop('image')
-                h['text']+='\n[EARLIER ORIGINAL PNG OMITTED FROM MODEL CONTEXT; sha256='+meta['sha256']+'; original retained in evidence]'
+                h.pop('image')
+                h['text']+='\n[Earlier image omitted.]'
                 self.stats.images_projected+=1
         # Count the provider's real message/tool/schema projection, not local
         # h.native evidence (which remains retained, never silently truncated).
@@ -352,11 +383,12 @@ class Runner:
             image=self.wb.original_png(frame,self.output/'frames'/(rid+'.png'),self.limit['max_image_bytes'])
             self.stats.original_bytes+=image['bytes']
             if self.stats.original_bytes>self.limit['max_evidence_bytes']:raise LimitError('original_image_disk_budget')
+        # Retain confirmed native work even if the model summary hits capacity.
+        self.results.append({'request_id':rid,'tool':d.tool,'receipt':receipt,'original_png':image})
         projected=self._project(summary)
         record={'kind':'result','id':d.call_id,'text':projected,'native':summary,'receipt_sha256':hashlib.sha256(clean_payload(receipt).encode()).hexdigest()}
         if image:record['image']=image
         self.history.append(record)
-        self.results.append({'request_id':rid,'tool':d.tool,'receipt':receipt,'original_png':image})
         self._event({'type':'native_result','tool':d.tool,'native_request_id':rid,
                      'native_status':receipt.get('status'),'native_receipt_sha256':record['receipt_sha256'],
                      'original_png':{k:v for k,v in image.items() if k!='path'} if image else None})
@@ -426,7 +458,10 @@ class Runner:
             prompt=('Trusted task: '+self.task['instructions']+'\nNative permissions: scope='+clean_payload(scope)+
                  ', allowed_materials='+clean_payload(allowed)+'. Protected rectangles are enforced locally and natively. '
                  'Use observe first, apply a prepared proposal before Step, and make decisions from real readback. '
-                 'Do not assert completion without native evidence. Host owns Stop.')
+                 'Do not assert completion without native evidence. Host owns Stop. '
+                 'Tool results are host-validated summaries; full receipts/images stay in local evidence. '
+                 'Counts cover their region only. Material0=Empty,58=Hard Wall. Zero exclusions are omitted. '
+                 'Only the newest original image remains in model context; image coordinates map through the returned viewport fields.')
             self.history=[{'kind':'user','text':prompt}]
             while True:
                 decision=self._provider()

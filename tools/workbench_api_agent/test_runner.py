@@ -85,6 +85,81 @@ class ScriptedTests(unittest.TestCase):
         self.assertTrue(result['measured']['model_seen_image'])
         self.assertTrue((self.root/'result/receipt.json').exists())
         self.assertEqual(len(list((self.root/'result/frames').glob('*.png'))),4)
+
+    def test_compact_success_keeps_full_evidence_outside_model_context(self):
+        runner=self.runner()
+        for tool,status,rows in (('prepare_edit','proposed','footprint'),('apply_edit','applied','readback')):
+            native={'status':status,'proposal_id':'p1','changed_cells':990,'distinct_cells':990,
+                    'excluded_operations':0,'identity':{'world_generation':3,'world_revision':8},
+                    rows:[{'x':x,'y':0,'before':0,'after':58,'actual':58} for x in range(990)]}
+            if tool=='apply_edit':native['confirmed_writes']=990
+            receipt={'tool':tool,'status':status,'result':native,'completed_native_ticks_total':0}
+            original=copy.deepcopy(receipt)
+            summary,retained=runner._native_summary({'receipt':receipt})
+            message=json.loads(runner._project(summary))
+            expected={'status':status,'changed_cells':990}
+            if tool=='prepare_edit':expected['proposal_id']='p1'
+            else:expected['confirmed_writes']=990
+            self.assertEqual(message,expected)
+            self.assertLess(len(runner._project(summary)),100)
+            self.assertIs(retained,receipt);self.assertEqual(retained,original)
+            self.assertIn('original_receipt_sha256',summary)
+
+    def test_compact_exceptions_and_nonchanging_cells_remain_explicit(self):
+        runner=self.runner()
+        native={'status':'proposed','proposal_id':'p','changed_cells':0,'distinct_cells':9,
+                'excluded_operations':2,'reason':'source_material_excluded'}
+        self.assertEqual(json.loads(runner._project(native)),native)
+        refusal={'status':'refused','reason':'stale_observation','identity':{'revision':3}}
+        self.assertEqual(json.loads(runner._project(refusal)),refusal)
+        applied={'status':'applied','confirmed_writes':18,'changed_cells':9}
+        self.assertEqual(json.loads(runner._project(applied)),applied)
+
+    def test_observation_and_step_retain_model_navigation_and_rare_materials(self):
+        runner=self.runner()
+        obs={'status':'observed','observation_id':'o1','native_counts':{'0':23,'58':9,'1':32},
+             'region':{'x':0,'y':0,'width':8,'height':8},
+             'viewport_native_region':{'x':0,'y':0,'width':16,'height':16},
+             'viewport_framebuffer_rect':{'x':5,'y':5,'width':160,'height':160},
+             'palette':[{'id':0,'name':'Empty'},{'id':58,'name':'Hard Wall'},
+                        {'id':1,'name':'Sand'},{'id':2,'name':'Water'}],
+             'identity':{'world_revision':2},'original_receipt_sha256':'a'*64}
+        result=json.loads(runner._project(obs))
+        for k in ('observation_id','native_counts','region','viewport_native_region','viewport_framebuffer_rect'):
+            self.assertEqual(result[k],obs[k])
+        self.assertEqual(result['palette'],[{'id':1,'name':'Sand'}])
+        self.assertNotIn('identity',result);self.assertNotIn('original_receipt_sha256',result)
+        step=json.loads(runner._project({'status':'completed','completed':4,
+            'completed_native_ticks_total':12,'observation':obs}))
+        self.assertEqual(step['completed'],4);self.assertEqual(step['completed_native_ticks_total'],12)
+        self.assertEqual(step['observation']['observation_id'],'o1')
+        from .controller import LimitError
+        runner.limit=runner.limit|{'max_tool_result_bytes':80}
+        with self.assertRaisesRegex(LimitError,'native_projection_capacity'):runner._project(obs)
+        self.assertEqual(obs['original_receipt_sha256'],'a'*64)
+
+    def test_old_image_markers_are_short_and_model_audit_metadata_is_absent(self):
+        from .providers import request_body
+        runner=self.runner();report=runner.run()
+        self.assertEqual(report['status'],'passed')
+        text=json.dumps(request_body(runner.cfg,runner.history,include_image_bytes=False))
+        self.assertEqual(text.count('[Earlier image omitted.]'),3)
+        self.assertNotIn('original_receipt_sha256',text)
+        self.assertNotIn('selected_native_fields',text)
+        self.assertNotIn('EARLIER ORIGINAL PNG',text)
+        self.assertEqual(len(report['native_receipts']),8)
+        self.assertEqual(sum(r['original_png'] is not None for r in report['native_receipts']),4)
+        for r in report['native_receipts']:
+            if r['original_png']:self.assertTrue(Path(r['original_png']['path']).is_file())
+
+    def test_summary_capacity_failure_retains_native_receipt_and_stops(self):
+        cfg=copy.deepcopy(self.profile);cfg['limits']['max_tool_result_bytes']=1
+        report=self.runner(cfg=cfg).run()
+        self.assertEqual(report['reason'],'native_projection_capacity')
+        self.assertTrue(report['stop_acknowledged'])
+        self.assertEqual(len(report['native_receipts']),1)
+        self.assertEqual(report['native_receipts'][0]['receipt']['status'],'observed')
+        self.assertTrue(Path(report['native_receipts'][0]['original_png']['path']).is_file())
     def test_validations_refuse_before_mutation(self):
         scope=self.auth['scope']
         with self.assertRaises(NativeError):validate_tool('step',{'ticks':True},scope,{0,58},[],None,None,0,120)
