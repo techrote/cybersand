@@ -22,7 +22,7 @@ ACCEPTED_MAIN = "d4b18e7f06839b35c8f6a66195206da0f33c5fa3"
 
 
 def git_blob_id(data: bytes) -> str:
-    prefix = b"blob " + str(len(data)).encode("ascii") + b"\\x00"
+    prefix = b"blob " + str(len(data)).encode("ascii") + bytes([0])
     return hashlib.sha1(prefix + data).hexdigest()
 
 
