@@ -244,6 +244,9 @@ func _ready() -> void:
 	_traffic.name = "AgentTraffic"
 	add_child(_traffic)
 	_traffic.hide()
+	var startup_profile := OS.get_environment("CYBERSAND_WB_PROFILE")
+	if not startup_profile.is_empty():
+		select_runner_profile(startup_profile)
 	_refresh_buttons()
 
 func _process(delta: float) -> void:

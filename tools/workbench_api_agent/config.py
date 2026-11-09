@@ -109,11 +109,15 @@ def load_profile(path: Path, *, fixture_mode: bool=False, desktop: bool=False) -
         raise ConfigError('cloud credential env invalid')
     if provider in ('ollama_chat','fixture') and key != {'env':''}:
         raise ConfigError('local/fixture profile does not accept cloud credentials')
-    spend=cfg['spend'];keys_exact(spend, {'max_usd_per_run','max_usd_per_call','authorised_ceiling_usd','authorisation_ref','credit_attestation_file','rates','rates_checked_utc','rates_source','max_age_days','require_costs_crosscheck','expected_project'},
+    spend=cfg['spend'];keys_exact(spend, {'max_usd_per_run','max_usd_per_call','authorised_ceiling_usd','authorisation_ref','credit_attestation_file','rates','rates_checked_utc','rates_source','max_age_days','require_costs_crosscheck','expected_project','funding_mode'},
                 {'max_usd_per_run','max_usd_per_call','authorised_ceiling_usd','authorisation_ref'})
     for k in ('max_usd_per_run','max_usd_per_call','authorised_ceiling_usd'):
         if type(spend[k]) not in (int,float) or not math.isfinite(spend[k]) or not 0<=spend[k]<=1000:raise ConfigError('invalid spend '+k)
     if type(spend['authorisation_ref']) is not str or len(spend['authorisation_ref'])>160:raise ConfigError('authorization reference invalid')
+    mode=spend.get('funding_mode','attested_credit')
+    if mode not in ('attested_credit','operator_authorized_desktop'):raise ConfigError('unsupported funding mode')
+    if mode=='operator_authorized_desktop' and (not desktop or provider!='openai_responses'):
+        raise ConfigError('operator-authorized funding is available only to the desktop OpenAI backend')
     if provider=='ollama_chat' and cfg.get('local_compute','unknown') not in ('unknown','operator_metered'):
         raise ConfigError('local GPU compute costing is separate from API spend')
     return cfg
@@ -151,51 +155,87 @@ def pricing_rates(cfg:dict)->Rates:
     return Rates(model,0,0,0,1000000,False,{'method':'patch','patch_size':32,'patch_budget':{'low':30000,'high':30000,'auto':30000},'multiplier':2.46},'local-not-billed-api','local',120000)
 
 
-def validate_live(cfg:dict, *, allow_live:bool, fixture_mode:bool, probe=None, source_dirty:bool|None=True)->tuple[Budget,dict]:
+def validate_live(cfg:dict, *, allow_live:bool, fixture_mode:bool, probe=None, source_dirty:bool|None=True,desktop:bool=False)->tuple[Budget,dict]:
     if not fixture_mode and not allow_live:raise ConfigError('live requests require explicit --allow-live')
     sp=cfg['spend'];prov=cfg['provider']
+    funding_mode=sp.get('funding_mode','attested_credit')
+    if funding_mode not in ('attested_credit','operator_authorized_desktop'):raise ConfigError('unsupported funding mode')
+    if funding_mode=='operator_authorized_desktop' and (not desktop or prov!='openai_responses' or fixture_mode):
+        raise ConfigError('operator-authorized funding requires the live desktop OpenAI backend')
     if fixture_mode:rates=pricing_rates(cfg) if prov!='nvidia_chat' else Rates(cfg['model'],0,0,0,1000000,False,{'method':'patch','patch_size':32,'patch_budget':{'low':30000,'high':30000,'auto':30000},'multiplier':2.46},'fixture','fixture',120000)
     else:rates=pricing_rates(cfg)
-    gate={'mode':'fixture' if fixture_mode else 'live','model':cfg['model'],'pricing_source':rates.source_url}
+    gate={'mode':'fixture' if fixture_mode else 'live','model':cfg['model'],'pricing_source':rates.source_url,'funding_mode':funding_mode}
     if not fixture_mode and prov!='ollama_chat':
         credential(cfg)
         if not sp['authorisation_ref'] or sp['max_usd_per_run']<=0 or sp['authorised_ceiling_usd']<sp['max_usd_per_run']:
             raise ConfigError('charged provider needs spend reference, positive run budget and authorised ceiling')
         if prov=='openai_responses':
-            att_file=sp.get('credit_attestation_file')
-            att=read_json(Path(att_file)) if att_file else None
-            # Atlas checks its selected env value but the workbench profile
-            # may also use a private credential FILE. Provide the same secret
-            # only in the in-memory gate environment: never mutate os.environ,
-            # write it to a receipt, or weaken Atlas credit requirements.
-            atlas_gate_env=dict(os.environ)
-            atlas_gate_env['CYBERSAND_WB_OPENAI_KEY']=credential(cfg)
-            atlas_cfg={'spend':{'max_usd_per_call':sp['max_usd_per_call'], 'max_usd_per_run':sp['max_usd_per_run'],
-                 'authorised_ceiling_usd':sp['authorised_ceiling_usd'],'authorisation_ref':sp['authorisation_ref'],
-                 'require_costs_crosscheck':sp.get('require_costs_crosscheck',False), 'costs_key_env':'OPENAI_ADMIN_KEY', 'expected_project':sp.get('expected_project'),
-                 'credit_expiry_margin_hours':24,'attestation_max_age_hours':72,'credit_attestation':att},
-                 'api':{'key_env':'CYBERSAND_WB_OPENAI_KEY'},
-                 'model':cfg['model'],'task':{'allow_dirty_source':False}}
-            report=atlas_credit_evaluate(atlas_cfg,atlas_gate_env,load_table(),dt.datetime.now(dt.timezone.utc),
-                           probe,None,source_dirty=source_dirty,base_url='https://api.openai.com/v1')
-            atlas_credit_enforce(report)
-            gate['atlas_credit_gate']={k:v for k,v in report.items() if k!='rates'}
+            if funding_mode=='operator_authorized_desktop':
+                if not sp['authorisation_ref'].strip():raise ConfigError('operator funding requires an explicit authorization reference')
+                if source_dirty is not False:raise ConfigError('operator-authorized desktop source must be verified clean')
+                if sp.get('require_costs_crosscheck') or sp.get('credit_attestation_file'):
+                    raise ConfigError('operator funding does not verify account headroom; use attested_credit for credit/cost cross-checks')
+                if sp['max_usd_per_call']<=0 or sp['max_usd_per_call']>sp['max_usd_per_run']:
+                    raise ConfigError('operator funding needs a positive per-call USD cap within the run cap')
+                if probe is None:raise ConfigError('operator-authorized desktop requires a real model availability probe')
+                try:model_access=probe(cfg['model'])
+                except Exception as exc:raise ConfigError('OpenAI model availability probe failed') from exc
+                if not isinstance(model_access,dict) or model_access.get('status')!=200:
+                    raise ConfigError('OpenAI model unavailable to this credential; no inference requested')
+                headers={str(k).lower():v for k,v in model_access.get('headers',{}).items()}
+                if sp.get('expected_project') and headers.get('openai-project')!=sp['expected_project']:
+                    raise ConfigError('model probe project differs from the host-selected project')
+                gate.update({'credit_status':'not_verified_operator_authorized','model_probe_status':200,
+                    'authorization_basis':'host-owned bounded USD profile plus explicit desktop Live/Start',
+                    'credit_balance_programmatically_verified':False,'account_headroom_verified':False})
+            else:
+                _attested_openai_gate(cfg,sp,probe,source_dirty,gate)
         else:
-            # Never conflate a published catalog listing with an owner's credit/grant balance.
-            if not sp.get('credit_attestation_file'):raise ConfigError('NVIDIA requires explicit owner funding attestation file')
-            att=read_json(Path(sp['credit_attestation_file']))
-            required={'checked_utc','remaining_usd','expires_utc','auto_recharge_disabled','api_only','eligible_models'}
-            if not required.issubset(att):raise ConfigError('NVIDIA funding attestation fields missing')
-            checked=dt.datetime.fromisoformat(att['checked_utc'].replace('Z','+00:00'))
-            expires=dt.datetime.fromisoformat(att['expires_utc'].replace('Z','+00:00'))
-            now=dt.datetime.now(dt.timezone.utc)
-            if not (0<=(now-checked).total_seconds()<=72*3600 and expires>=now+dt.timedelta(hours=24)
-                    and att['auto_recharge_disabled'] is True and att['api_only'] is True and
-                    cfg['model'] in att['eligible_models'] and type(att['remaining_usd']) in (float,int)
-                    and att['remaining_usd']>=sp['max_usd_per_run']):
-                raise ConfigError('NVIDIA owner funding attestation is missing/expired/insufficient')
-            gate['funding_attestation']='owner-attested-not-machine-verified'
+            _nvidia_funding_gate(cfg,sp,gate)
+    return _budget(cfg,fixture_mode,rates),gate
+
+
+def _attested_openai_gate(cfg,sp,probe,source_dirty,gate):
+    att_file=sp.get('credit_attestation_file')
+    att=read_json(Path(att_file)) if att_file else None
+    # Atlas checks its selected env value but the workbench profile
+    # may also use a private credential FILE. Provide the same secret
+    # only in the in-memory gate environment: never mutate os.environ,
+    # write it to a receipt, or weaken Atlas credit requirements.
+    atlas_gate_env=dict(os.environ)
+    atlas_gate_env['CYBERSAND_WB_OPENAI_KEY']=credential(cfg)
+    atlas_cfg={'spend':{'max_usd_per_call':sp['max_usd_per_call'], 'max_usd_per_run':sp['max_usd_per_run'],
+         'authorised_ceiling_usd':sp['authorised_ceiling_usd'],'authorisation_ref':sp['authorisation_ref'],
+         'require_costs_crosscheck':sp.get('require_costs_crosscheck',False), 'costs_key_env':'OPENAI_ADMIN_KEY', 'expected_project':sp.get('expected_project'),
+         'credit_expiry_margin_hours':24,'attestation_max_age_hours':72,'credit_attestation':att},
+         'api':{'key_env':'CYBERSAND_WB_OPENAI_KEY'},
+         'model':cfg['model'],'task':{'allow_dirty_source':False}}
+    report=atlas_credit_evaluate(atlas_cfg,atlas_gate_env,load_table(),dt.datetime.now(dt.timezone.utc),
+                   probe,None,source_dirty=source_dirty,base_url='https://api.openai.com/v1')
+    atlas_credit_enforce(report)
+    gate['atlas_credit_gate']={k:v for k,v in report.items() if k!='rates'}
+
+
+def _nvidia_funding_gate(cfg,sp,gate):
+    # Never conflate a published catalog listing with an owner's credit/grant balance.
+    if not sp.get('credit_attestation_file'):raise ConfigError('NVIDIA requires explicit owner funding attestation file')
+    att=read_json(Path(sp['credit_attestation_file']))
+    required={'checked_utc','remaining_usd','expires_utc','auto_recharge_disabled','api_only','eligible_models'}
+    if not required.issubset(att):raise ConfigError('NVIDIA funding attestation fields missing')
+    checked=dt.datetime.fromisoformat(att['checked_utc'].replace('Z','+00:00'))
+    expires=dt.datetime.fromisoformat(att['expires_utc'].replace('Z','+00:00'))
+    now=dt.datetime.now(dt.timezone.utc)
+    if not (0<=(now-checked).total_seconds()<=72*3600 and expires>=now+dt.timedelta(hours=24)
+            and att['auto_recharge_disabled'] is True and att['api_only'] is True and
+            cfg['model'] in att['eligible_models'] and type(att['remaining_usd']) in (float,int)
+            and att['remaining_usd']>=sp['max_usd_per_run']):
+        raise ConfigError('NVIDIA owner funding attestation is missing/expired/insufficient')
+    gate['funding_attestation']='owner-attested-not-machine-verified'
+
+
+def _budget(cfg,fixture_mode,rates):
     # Atlas Budget preserves reservations and ambiguous spend accounting.
+    sp=cfg['spend'];prov=cfg['provider']
     limits=cfg['limits']; b=Budget(limits={'max_iterations':limits['max_model_calls'],
          'max_api_calls':limits['max_model_calls']+limits['max_total_retries'],
          'max_input_tokens_per_call':limits['max_input_tokens_per_call'],
@@ -206,4 +246,4 @@ def validate_live(cfg:dict, *, allow_live:bool, fixture_mode:bool, probe=None, s
                 'max_usd_per_run':sp['max_usd_per_run'] if not fixture_mode else 1000,
                 'authorised_ceiling_usd':sp['authorised_ceiling_usd'] if not fixture_mode else 1000},
          rates=rates, live=not fixture_mode and prov!='ollama_chat')
-    return b,gate
+    return b

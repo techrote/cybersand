@@ -140,7 +140,7 @@ jobs:
           "$GODOT_BIN" --version | tee "$EVIDENCE/godot-version.txt"
           grep -Fx '4.7.stable.official.5b4e0cb0f' "$EVIDENCE/godot-version.txt"
           timeout 120 "$GODOT_BIN" --headless --path godot --editor --import --quit 2>&1 | tee "$EVIDENCE/import.log"
-          PYTHONPATH=tools python -m unittest -v workbench_api_agent.test_runner workbench_api_agent.test_desktop workbench_api_agent.test_git_status 2>&1 | tee "$EVIDENCE/python-runner-tests.log"
+          PYTHONPATH=tools python -m unittest -v workbench_api_agent.test_runner workbench_api_agent.test_desktop workbench_api_agent.test_git_status workbench_api_agent.test_desktop_funding 2>&1 | tee "$EVIDENCE/python-runner-tests.log"
           for script in test_workbench_agent_runner_client.gd test_workbench_agent_runner_traffic.gd test_workbench_agent_traffic_filters.gd test_workbench_agent_match_area.gd test_workbench_agent_rate_limit.gd test_workbench_agent_client.gd test_workbench_agent_diagnostics.gd test_workbench_agent_cell_limit.gd test_workbench_agent_footprint.gd test_workbench_authoring_envelope.gd test_workbench_agent_failures.gd; do
             timeout 120 "$GODOT_BIN" --headless --path godot --script "res://tests/$script" 2>&1 | tee "$EVIDENCE/$script.log"
             if grep -E 'SCRIPT ERROR|(^|[[:space:]])ERROR:' "$EVIDENCE/$script.log"; then exit 1; fi

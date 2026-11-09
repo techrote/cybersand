@@ -83,7 +83,7 @@ class Runner:
         self.desktop=bool(getattr(wb,'desktop',False))
         self.adapter=adapter or HTTPAdapter(cfg,fixture_mode=fixture_mode,trace=event_callback,
             tool_schemas=getattr(wb,'tool_schemas',None),argument_feedback=getattr(wb,'allow_argument_feedback',False))
-        self.budget,self.funding_gate=validate_live(cfg,allow_live=allow_live,fixture_mode=fixture_mode,probe=credit_probe,source_dirty=source_dirty)
+        self.budget,self.funding_gate=validate_live(cfg,allow_live=allow_live,fixture_mode=fixture_mode,probe=credit_probe,source_dirty=source_dirty,desktop=self.desktop)
         self.stats=Stats()
         self.history=[]
         self.results=[]

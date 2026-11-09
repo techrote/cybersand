@@ -15,9 +15,15 @@ func check(ok: bool, detail: String) -> void:
 		push_error("WB_PROVIDER_UI_CLIENT: " + detail)
 
 func _run() -> void:
+	var previous_profile := OS.get_environment("CYBERSAND_WB_PROFILE")
+	var startup_profile := ProjectSettings.globalize_path("res://../tools/workbench_api_agent/profiles/fixture.json")
+	OS.set_environment("CYBERSAND_WB_PROFILE",startup_profile)
 	var panel := AgentPanel.new()
 	root.add_child(panel)
 	await process_frame
+	OS.set_environment("CYBERSAND_WB_PROFILE",previous_profile)
+	check(panel._selected_profile == startup_profile,"launcher-selected startup profile was not loaded")
+	check(panel._profile_data.get("provider") == "fixture","startup profile provider was not selected")
 	check(panel.client.get_script() == RunnerClient,"ordinary panel does not use Python Runner transport")
 	check(panel._provider.item_count == 5 and not panel._live.button_pressed,"provider choice or explicit live gate missing")
 	panel._provider.select(2)

@@ -22,6 +22,15 @@ explains design, tool effects, measured overhead and unresolved alternatives.
 
 ### Use from the development workbench
 
+The owner-authorized desktop OpenAI profile may explicitly select
+`spend.funding_mode: operator_authorized_desktop`, a positive per-call/run budget,
+ceiling and authorization reference. This retains credential, model-availability,
+verified-price, source and Budget checks without requiring an account-credit
+attestation. Its receipt states that account credits are not verified. The default
+attested-credit mode and remote CLI remain unchanged. `CYBERSAND_WB_PROFILE`
+preselects a trusted local profile at panel startup; it never enables Live or
+starts inference automatically.
+
 Launch the project from a complete clean Git checkout, with Python 3 available
 (`CYBERSAND_PYTHON` can select its executable). Open **Agent authoring**. Choose
 OpenAI, NVIDIA or local Ollama, then **Profile…** to select your trusted JSON
