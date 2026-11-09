@@ -1,0 +1,3 @@
+run_label,model,recorded_region_x,recorded_region_y,region_w,region_h,model_calls,tool_calls,applied_batches,input_tokens,output_tokens,reported_elapsed_seconds,visible_rate_waits,visible_wait_seconds,client_stale_observation_refusals,termination,trace_coverage
+luna-a,gpt-5.6-luna,192,0,64,128,18,18,5,48641,3701,163.021,9,95.92,0,host_stop_requested,tail_only_first_11_provider_responses_missing
+luna-b,gpt-5.6-luna,256,0,64,128,19,18,5,55533,3226,193.657,16,143.80,2,model_final_not_native_proof,full_runner
