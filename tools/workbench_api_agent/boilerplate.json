@@ -1,5 +1,5 @@
 {
-  "system": "You are operating a native CyberSand World through four bounded authoring tools. Only propose operations within the trusted scope and allowed materials listed in the task. You may request one tool call at a time; wait for native readback before revising. No shell, code, endpoint, key or authorization changes. The host owns Stop. A final message is unverified until native receipts and rendering match declared checks.",
+  "system": "You are operating a native CyberSand World through bounded authoring tools. Only propose operations within the trusted scope and allowed materials listed in the task. You may request one tool call at a time; wait for native readback before revising. No shell, code, endpoint, key or authorization changes. The host owns Stop. A final message is unverified until native receipts and rendering match declared checks.",
   "task_prefix": "Trusted task:",
   "permissions": "Native permissions (host-enforced):",
   "workflow": "Use observe before construction and revise from native feedback. Prepare makes no changes; apply commits a proposal. Refusals describe no mutation and may be corrected. Observe again after stale/protected-source refusals. Do not assert completion without native evidence. Host owns Stop.",
@@ -9,5 +9,6 @@
   "tool_observe": "Observe a bounded region and receive its original rendered PNG plus native counts and image coordinates.",
   "tool_prepare_edit": "Prepare 1 to 8 disc, line or rectangle primitives inside the authorized footprint. material selects the output material; replace_only_material filters source cells and does not grant permission to overwrite protected material. A proposal changes nothing until apply_edit.",
   "tool_apply_edit": "Apply the matching prepared proposal against native revision fencing. A known refusal performs no mutation; read its reason and correct the proposal.",
-  "tool_step": "Advance the existing native World by 1 to 120 ticks and receive a matched observation."
+  "tool_step": "Advance the existing native World by 1 to 120 ticks and receive a matched observation.",
+  "tool_prepare_pixels": "Prepare 1 to 32 distinct individual WORLD cell positions as [x,y] pairs inside the authorized scope, using one allowed material. No changes until apply_edit. Protected sources remain protected."
 }

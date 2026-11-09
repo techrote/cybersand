@@ -16,8 +16,8 @@ func _run() -> void:
  root.add_child(panel)
  await process_frame
  panel.client.configure_fake_transport_for_tests(true)
- check(panel._boilerplate_load_problem.is_empty() and panel._boilerplate_sections.size() == 11,"manifest not loaded into all11 sections")
- check(panel._boilerplate_section.item_count == 11 and not panel._boilerplate_window.visible,"editor opens uninvited or hides sections")
+ check(panel._boilerplate_load_problem.is_empty() and panel._boilerplate_sections.size() == 12,"manifest not loaded into all12 sections")
+ check(panel._boilerplate_section.item_count == 12 and not panel._boilerplate_window.visible,"editor opens uninvited or hides sections")
  check(panel._task.custom_minimum_size.y >= 190,"wording controls crush main prompt")
  panel.client._active = true
  var epoch: int = panel.client.current_epoch()
@@ -36,7 +36,7 @@ func _run() -> void:
   panel._flush_boilerplate_editor()
   check(panel._boilerplate_sections[str(panel._boilerplate_section.get_item_metadata(i))] == panel._boilerplate_editor.text,"ornamental wording section")
  panel._restore_boilerplate_section()
- check(panel._boilerplate_sections.tool_step == panel._boilerplate_defaults.tool_step,"selected default restoration fails")
+ check(panel._boilerplate_sections.tool_prepare_pixels == panel._boilerplate_defaults.tool_prepare_pixels,"selected default restoration fails")
  var client := RunnerClient.new()
  root.add_child(client)
  client.configure_fake_transport_for_tests(true)

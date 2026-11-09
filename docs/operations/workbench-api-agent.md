@@ -50,6 +50,55 @@ reported usage, provider429 handling, run deadlines and human Stop remain active
 
 ### Use from the development workbench
 
+#### Tools and separate Scanline printer mode — 2026-11-09
+
+Choose **Tools + pixels** or **Scanline printer** below the task. Each mode keeps
+its own session-local task and Boilerplate sections. Switching modes retires
+active work; the next Start freezes the selected mode. Provider/profile/key,
+native area/material/protection, rate limits and independent Stop are shared
+host controls. Neither mode grants additional native authority.
+
+Tools mode retains observe/prepare_edit/apply_edit/step and adds
+`prepare_pixels(observation_id, material, points)`. Points are1–32 distinct
+integer WORLD positions `[[x,y],...]` inside the authorized area. The tool
+prepares one proposal; apply_edit is still required. Empty0 explicitly erases;
+Hard Wall58 paints. A33rd point, duplicate, fraction or out-of-bounds position
+is refused. This is separate from the eight geometric primitives per shape edit.
+
+Scanline printer has its own twelve-section wording manifest,
+`tools/workbench_api_agent/boilerplate_scanline.json`. Requests expose no function
+tools. The model returns exactly one plaintext JSON packet, with action
+`inspect`, `stamp`, `print`, `advance` or `finish`. Replies contain JSON receipts
+and original images, with prior model packets retained as assistant messages.
+The same Runner handles funding, pacing, logging and lifecycle; there is no
+second World or independent permission path. Unknown packet actions/prose/invalid
+JSON refuse execution; known edit validation/refusal feedback remains bounded.
+
+Example stamp packet (prepare only):
+
+```json
+{"action":"stamp","observation_id":"returned-id","stamp":{"x":100,"y":100,"width":8,"height":4,"scale":1,"material":58,"rows":[{"repeat":4,"spans":[[2,4]]}]}}
+```
+
+Rows run top to bottom; spans are sorted, nonoverlapping `[start,length]` pairs
+from left to right. Empty spans leave cells unchanged. Row repeats must sum
+exactly to height. Logical dimensions are1–256 each, scale1–16, at most256 row
+groups/2048 spans. The complete expanded rectangle, including blank cells, must
+fit the authorized scope and Cells limit (maximum65536). No clipping occurs.
+One material per stamp; erasure uses an explicit Empty stamp. `print` supplies
+the returned proposal_id and uses the existing native apply fence. `inspect`
+accepts region/null and cells/counts; `advance` accepts1–120 ticks; `finish`
+contains a message and causes host-owned Stop. New rasters target the routine
+finite canvas; the hidden signed-frame experiment retains its existing grammar.
+
+The native exclusive owner independently compiles pixels/scanlines and validates
+sources, protected rectangles and revisions before proposal/application. The
+main-to-worker envelope bounds nested input before copying it across the queue.
+Original mask/point payloads, native receipts and PNGs remain inspectable in
+Traffic. Tools wording has twelve sections including Single pixels; scanner
+wording has packet descriptions instead of tool descriptions. Text changes stay
+session-local and apply on the next Start.
+
 The owner-authorized desktop OpenAI profile may explicitly select
 `spend.funding_mode: operator_authorized_desktop`. The chosen model is sent to
 Responses directly: no mandatory local-price listing or separate model-catalog

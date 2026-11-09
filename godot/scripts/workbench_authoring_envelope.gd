@@ -31,6 +31,8 @@ static func _operation(value: Variant) -> bool:
 	var op: Dictionary = value
 	if not op.has("shape") or typeof(op.shape) != TYPE_STRING:
 		return false
+	if op.shape in ["pixels","scanlines"]:
+		return preload("res://scripts/workbench_agent_raster.gd").valid_envelope(op)
 	var required: Array = ["material"]
 	var accepted: Array = ["shape","material","replace_only_material"]
 	match op.shape:

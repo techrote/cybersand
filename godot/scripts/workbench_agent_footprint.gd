@@ -10,6 +10,8 @@ extends RefCounted
 ## For overlapping operations, retain every ordered raster; do not collapse
 ## filters to a single final cell value before native readback.
 
+const Raster = preload("res://scripts/workbench_agent_raster.gd")
+
 const MAX_PRIMITIVES: int = 8
 const MAX_DISTINCT_CELLS: int = 4096
 const MAX_AUTHORIZED_CELLS: int = 65536
@@ -146,6 +148,16 @@ static func compile(
 		if not op.has("shape") or typeof(op["shape"]) != TYPE_STRING:
 			return _refused("invalid_shape", index)
 		var shape: String = op["shape"]
+		if shape in ["pixels","scanlines"]:
+			var raster: Dictionary = Raster.compile(op,extent,scope,protection,allowed_materials,cell_limit)
+			if raster.status != "validated_geometry": return _refused(str(raster.reason),index)
+			for point: Vector2i in raster.cells:
+				if not seen.has(point):
+					seen[point] = true
+					unique.append(point)
+					if unique.size() > cell_limit: return _refused("distinct_cell_budget_exceeded",index)
+			rasters.append({"shape":shape,"material":op.material,"cells":raster.cells})
+			continue
 		var mandatory: Array = ["material"]
 		var accepted: Array = ["shape", "material", "replace_only_material"]
 		match shape:

@@ -114,8 +114,8 @@ def tool_defs(provider:str,strict:bool,schemas=None,boilerplate=None)->list[dict
         desc={'observe':'Observe a bounded region and receive original rendered PNG plus native cell readback.',
               'prepare_edit':'Prepare one bounded rectangular material edit proposal; it is not applied yet.',
               'apply_edit':'Apply the matching prepared proposal against native revision fencing.',
-              'step':'Advance the existing native World by 1 to 120 ticks.'}[name]
-        if boilerplate is not None or schemas is not None:desc=wording['tool_'+name]
+              'step':'Advance the existing native World by 1 to 120 ticks.'}.get(name,'Prepare up to32 individual cells.')
+        if boilerplate is not None or schemas is not None:desc=wording.get('tool_'+name,desc)
         fn={'name':name,'description':desc,'parameters':parameters}
         if strict:fn['strict']=True
         result.append({'type':'function', 'function':fn} if provider!='openai_responses' else {'type':'function',**fn})
@@ -135,7 +135,7 @@ class Decision:
 
 
 def normalized_tool(name:object, raw:object, call_id:object)->tuple[str,dict,str]:
-    if not isinstance(name,str) or name not in TOOL_SCHEMAS:raise ProviderError('provider_unsupported_tool')
+    if not isinstance(name,str) or name not in (*TOOL_SCHEMAS,'prepare_pixels','prepare_stamp'):raise ProviderError('provider_unsupported_tool')
     if not isinstance(call_id,str) or not 1<=len(call_id)<=100 or not re.fullmatch(r'[A-Za-z0-9_-]+',call_id):
         raise ProviderError('provider_invalid_call_id')
     if not isinstance(raw,str) or len(raw)>32000:raise ProviderError('provider_invalid_tool_arguments')
@@ -159,13 +159,13 @@ def render_history_response(history:list[dict], max_image_bytes:int,detail:str,*
     inp=[]
     for h in history:
         kind=h['kind']
-        if kind in ('user','comment'):
+        if kind in ('user','comment','agent'):
             content=[{'type':'input_text','text':h['text']}]
             uri=image_data(h,max_image_bytes) if include_image_bytes else ('original-image-accounted-separately' if h.get('image') else '')
             if uri:
                 if image_caption:content.append({'type':'input_text','text':image_caption})
                 content.append({'type':'input_image','image_url':uri,'detail':detail})
-            inp.append({'role':'user','content':content})
+            inp.append({'role':'assistant' if kind=='agent' else 'user','content':content})
         elif kind=='call':inp.append({'type':'function_call','call_id':h['id'],'name':h['tool'],
                                       'arguments':json.dumps(h['args'],sort_keys=True,separators=(',',':'))})
         elif kind=='result':
@@ -182,11 +182,11 @@ def render_history_chat(history:list[dict],max_image_bytes:int,detail:str,*,incl
     messages=[]
     for h in history:
         kind=h['kind']
-        if kind in ('user','comment'):
+        if kind in ('user','comment','agent'):
             uri=image_data(h,max_image_bytes) if include_image_bytes else ('original-image-accounted-separately' if h.get('image') else '')
             if uri:content=[{'type':'text','text':h['text']},{'type':'image_url','image_url':{'url':uri,'detail':detail}}]
             else:content=h['text']
-            messages.append({'role':'user','content':content})
+            messages.append({'role':'assistant' if kind=='agent' else 'user','content':content})
         elif kind=='call':
             messages.append({'role':'assistant','content':None,'tool_calls':[
                 {'id':h['id'],'type':'function','function':{
@@ -198,6 +198,35 @@ def render_history_chat(history:list[dict],max_image_bytes:int,detail:str,*,incl
                 {'type':'image_url','image_url':{'url':uri,'detail':detail}}]})
     return messages
 
+SCANLINE_ACTIONS={'inspect':'observe','stamp':'prepare_stamp','print':'apply_edit','advance':'step'}
+
+def scanline_history(history):
+    result=[]
+    inverse={v:k for k,v in SCANLINE_ACTIONS.items()}
+    for h in history:
+        row=dict(h)
+        if h['kind']=='call':row={'kind':'agent','text':json.dumps({'action':inverse[h['tool']],**h['args']},separators=(',',':'))}
+        elif h['kind']=='result':
+            row['kind']='comment'
+            value,end=json.JSONDecoder().raw_decode(h['text'])
+            payload={'receipt':value}
+            if h['text'][end:].strip():payload['note']=h['text'][end:].strip()
+            row['text']=json.dumps(payload,separators=(',',':'))
+        result.append(row)
+    return result
+
+def scanline_decision(decision,call_id):
+    from dataclasses import replace
+    packet=parse_json(decision.text.encode(),32000)
+    if not isinstance(packet,dict):raise ProviderError('scanline_packet_not_object')
+    action=packet.get('action')
+    if action=='finish':
+        if set(packet)!={'action','message'} or not isinstance(packet['message'],str):raise ProviderError('invalid_scanline_finish')
+        return replace(decision,text=packet['message'])
+    if action not in SCANLINE_ACTIONS:raise ProviderError('unknown_scanline_action')
+    return replace(decision,kind='tool',tool=SCANLINE_ACTIONS[action],call_id=call_id,args={k:v for k,v in packet.items() if k!='action'},text='')
+
+
 def request_body(cfg:dict,history:list[dict],tool_schemas=None,*,include_image_bytes:bool=True,max_output_tokens:int|None=None)->dict:
     """The actual provider projection; local native/evidence fields never enter it.
 
@@ -205,20 +234,26 @@ def request_body(cfg:dict,history:list[dict],tool_schemas=None,*,include_image_b
     by a marker; original image dimensions receive their separate price reserve.
     """
     provider=cfg['provider'];caps=cfg['capabilities'];lim=cfg['limits']
-    wording=sections(cfg.get('_boilerplate'))
+    wording=sections(cfg.get('_boilerplate'),cfg.get('_authoring_mode','tools'))
+    scanline=cfg.get('_authoring_mode')=='scanline'
+    system=wording['system']
+    if scanline:
+        system+='\n'+'\n'.join(v for k,v in wording.items() if k.startswith('packet_'))
+        history=scanline_history(history)
     output_cap=lim['max_output_tokens'] if max_output_tokens is None else max_output_tokens
     if type(output_cap) is not int or not 1<=output_cap<=lim['max_output_tokens']:
         raise ConfigError('effective output cap outside configured allowance')
     if provider=='openai_responses':
-        body={'model':cfg['model'],'input':[{'role':'developer','content':[{'type':'input_text','text':wording['system']}]}]+
+        body={'model':cfg['model'],'input':[{'role':'developer','content':[{'type':'input_text','text':system}]}]+
               render_history_response(history,lim['max_image_bytes'],caps['image_detail'],include_image_bytes=include_image_bytes,image_caption=wording['image_caption']),
-              'tools':tool_defs(provider,caps['strict_tools'],tool_schemas,cfg.get('_boilerplate')),'max_output_tokens':output_cap,
+              'tools':([] if scanline else tool_defs(provider,caps['strict_tools'],tool_schemas,cfg.get('_boilerplate'))),'max_output_tokens':output_cap,
               'store':False,'stream':False,'truncation':'disabled'}
     else:
-        body={'model':cfg['model'],'messages':[{'role':'system','content':wording['system']},
+        body={'model':cfg['model'],'messages':[{'role':'system','content':system},
               *render_history_chat(history,lim['max_image_bytes'],caps['image_detail'],include_image_bytes=include_image_bytes,image_caption=wording['image_caption'])],
-              'tools':tool_defs(provider,caps['strict_tools'],tool_schemas,cfg.get('_boilerplate')),'max_tokens':output_cap,'stream':False}
-    if caps['parallel_tools']:body['parallel_tool_calls']=False
+              'tools':([] if scanline else tool_defs(provider,caps['strict_tools'],tool_schemas,cfg.get('_boilerplate'))),'max_tokens':output_cap,'stream':False}
+    if scanline:body.pop('tools',None)
+    if caps['parallel_tools'] and not scanline:body['parallel_tool_calls']=False
     return body
 
 
@@ -250,7 +285,14 @@ class HTTPAdapter:
         answer=http_post(cfg['endpoint'],self.key,body,timeout,max_request_bytes,self._trace if self.trace else None)
         sha=hashlib.sha256(json.dumps(answer,sort_keys=True,separators=(',',':')).encode()).hexdigest()
         seen=any(h.get('image') for h in history)
-        try:return parse_response(answer,provider,model,sha,seen)
+        try:
+            decision=parse_response(answer,provider,model,sha,seen,max_text=None if cfg.get("_authoring_mode")=="scanline" else 8000)
+            if cfg.get('_authoring_mode')=='scanline':
+                if decision.kind!='final':raise ProviderError('scanline_requires_json_text_packet')
+                self._scanline_sequence=getattr(self,'_scanline_sequence',0)+1
+                return scanline_decision(decision,'scanline-%06d'%self._scanline_sequence)
+            if self.tool_schemas is not None and decision.kind=='tool' and decision.tool not in self.tool_schemas:raise ProviderError('tool_not_advertised_in_this_mode')
+            return decision
         except ProviderError as exc:
             if not self.argument_feedback or exc.kind not in ('invalid_provider_json','provider_invalid_tool_arguments','provider_arguments_not_object'):
                 raise
@@ -264,7 +306,7 @@ class HTTPAdapter:
             if len(calls)!=1 or not isinstance(calls[0],dict):raise
             c=calls[0];fn=c if provider=='openai_responses' else c.get('function',{})
             name=fn.get('name');cid=c.get('call_id') if provider=='openai_responses' else c.get('id')
-            if name not in TOOL_SCHEMAS or not isinstance(cid,str) or not re.fullmatch(r'[A-Za-z0-9_-]{1,100}',cid):raise
+            if name not in (self.tool_schemas or TOOL_SCHEMAS) or not isinstance(cid,str) or not re.fullmatch(r'[A-Za-z0-9_-]{1,100}',cid):raise
             return Decision('invalid_tool',cid,name,{},text=exc.kind,usage=answer.get('usage'),model=model,raw_sha256=sha,saw_image=seen)
 
 SYSTEM_MESSAGE=('You are operating a native CyberSand World through four bounded authoring tools. '
@@ -274,7 +316,7 @@ SYSTEM_MESSAGE=('You are operating a native CyberSand World through four bounded
  'A final message is unverified until the native receipts and rendering match declared checks.')
 
 
-def parse_response(answer:dict,provider:str,requested_model:str,sha:str='',seen:bool=False)->Decision:
+def parse_response(answer:dict,provider:str,requested_model:str,sha:str='',seen:bool=False,*,max_text:int|None=8000)->Decision:
     model=answer.get('model')
     if model is not None and model!=requested_model:raise ProviderError('provider_model_changed')
     if provider=='openai_responses':
@@ -294,7 +336,7 @@ def parse_response(answer:dict,provider:str,requested_model:str,sha:str='',seen:
                 for part in it.get('content',[]):
                     if isinstance(part,dict) and part.get('type')=='output_text' and isinstance(part.get('text'),str):
                         texts.append(part['text'])
-        return Decision('final',text='\n'.join(texts)[:8000],usage=usage,model=model or requested_model,raw_sha256=sha,saw_image=seen)
+        return Decision('final',text='\n'.join(texts)[:max_text],usage=usage,model=model or requested_model,raw_sha256=sha,saw_image=seen)
     choices=answer.get('choices')
     if not isinstance(choices,list) or len(choices)!=1:raise ProviderError('chat_choices_invalid')
     one=choices[0];fin=one.get('finish_reason');msg=one.get('message')
@@ -311,7 +353,7 @@ def parse_response(answer:dict,provider:str,requested_model:str,sha:str='',seen:
     if fin!='stop':raise ProviderError('chat_completion_incomplete')
     text=msg.get('content');
     if not isinstance(text,str):raise ProviderError('final_text_missing')
-    return Decision('final',text=text[:8000],usage=usage,model=model or requested_model,raw_sha256=sha,saw_image=seen)
+    return Decision('final',text=text[:max_text],usage=usage,model=model or requested_model,raw_sha256=sha,saw_image=seen)
 
 class ScriptedAdapter:
     """Deterministic test fixture. Not a real model or paid provider."""
@@ -328,7 +370,7 @@ class ScriptedAdapter:
             args=step.get('args') or {}
             # Test fixture can use $last_obs/$last_proposal so that a revision is
             # based on actual returned native IDs, never fabricated provider IDs.
-            if name=='prepare_edit' and args.get('observation_id')=='$last_obs':
+            if name in ('prepare_edit','prepare_pixels','prepare_stamp') and args.get('observation_id')=='$last_obs':
                 result=next((h for h in reversed(history) if h['kind']=='result' and h.get('native',{}).get('observation_id')),None)
                 if result is None:raise ProviderError('fixture_no_native_observation')
                 args={**args,'observation_id':result['native']['observation_id']}

@@ -54,7 +54,7 @@ class Protocol:
         with path.open('xb') as stream:stream.write(data)
         self.send({'type':'event','event':event,'payload_file':rel,'payload_sha256':hashlib.sha256(data).hexdigest(),'bytes':len(data)})
     def finished(self,report):
-        keep=('schema','status','reason','detail','runner_id','provider','model','session_id','generation_id','native_acceptance','model_final_unverified_report','stop_acknowledged','measured','budget','applied_limits','funding_gate','billing','local_gpu_compute_cost','rate_history')
+        keep=('authoring_mode','schema','status','reason','detail','runner_id','provider','model','session_id','generation_id','native_acceptance','model_final_unverified_report','stop_acknowledged','measured','budget','applied_limits','funding_gate','billing','local_gpu_compute_cost','rate_history')
         selected={k:report[k] for k in keep if k in report}
         path=self.root/'runner-evidence/receipt.json' if self.root else None
         if path and path.is_file():
@@ -75,6 +75,8 @@ def start_config(frame):
     if hashlib.sha256(path.read_bytes()).hexdigest()!=frame.get('profile_sha256'):raise ConfigError('profile changed before Start')
     fixture=frame.get('fixture_mode') is True
     cfg=load_profile(path,fixture_mode=fixture,desktop=True)
+    cfg['_authoring_mode']=frame.get('authoring_mode','tools')
+    if cfg['_authoring_mode'] not in ('tools','scanline'):raise ConfigError('unknown authoring mode')
     try:cfg['_boilerplate']=from_start(frame)
     except ValueError as exc:raise ConfigError(str(exc)) from exc
     if cfg['provider']=='fixture' and not fixture:raise ConfigError('scripted provider requires explicit fixture mode')
@@ -160,7 +162,7 @@ class Desktop:
                 auth={'cell_limit':raw.get('cell_limit',4096),'scope':raw.get('scope',{}),
                       'allowed_materials':raw.get('allowed_materials',[0,58]),'protected':raw.get('protected_regions',[])}
                 # Only establish the host's already-acknowledged native authority.
-                self.backend=DesktopWorkbench(self.protocol.send,frame.get('session',{}),auth,root)
+                self.backend=DesktopWorkbench(self.protocol.send,frame.get('session',{}),auth,root,frame.get('authoring_mode','tools'))
                 self.backend.open();self._phase('start_received')
             except Exception as exc:
                 try:self.protocol.finished({'status':'unconfirmed_stop','reason':getattr(exc,'code','desktop_start_metadata_invalid'),'stop_acknowledged':False})

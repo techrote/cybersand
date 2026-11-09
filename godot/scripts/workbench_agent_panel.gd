@@ -27,6 +27,11 @@ var _start_nonce := 0
 var _task := TextEdit.new()
 var _model := LineEdit.new()
 var _provider := OptionButton.new()
+var _authoring_mode := OptionButton.new()
+var _mode_guide := Label.new()
+var _mode_name := "tools"
+var _mode_tasks := {}
+var _mode_wording := {}
 var _profile_button := Button.new()
 var _key_button := Button.new()
 var _profile_picker := FileDialog.new()
@@ -47,6 +52,7 @@ var _boilerplate_loading := false
 var _boilerplate_load_problem := ""
 var _request_limit := SpinBox.new()
 var _tool_limit := SpinBox.new()
+var _action_caption: Label
 var _token_limit := SpinBox.new()
 var _timeout_limit := SpinBox.new()
 var _cell_limit := SpinBox.new()
@@ -156,6 +162,18 @@ func _ready() -> void:
 	_task.tooltip_text = "Describe your goal. Start authorizes the selected area and limits."
 	_task.text_changed.connect(_retire_on_human_change)
 	_form.add_child(_task)
+	var mode_row := HBoxContainer.new()
+	_authoring_mode.add_item("Tools + pixels")
+	_authoring_mode.add_item("Scanline printer")
+	_authoring_mode.tooltip_text = "Independent authoring modes with separate tasks, wording and model message protocols. Changing mode stops active work."
+	_authoring_mode.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_authoring_mode.item_selected.connect(_select_authoring_mode)
+	mode_row.add_child(_authoring_mode)
+	_form.add_child(mode_row)
+	_mode_guide.text = "JSON print packets · top to bottom · spans [start, length] · blanks unchanged"
+	_mode_guide.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_mode_guide.visible = false
+	_form.add_child(_mode_guide)
 	var model_row := HBoxContainer.new()
 	_provider.tooltip_text = "Provider is driven by the trusted profile. Fixture is keyless scripted qualification, not a model."
 	for spec: Array in [["Profile",""],["OpenAI","openai_responses"],["NVIDIA","nvidia_chat"],["Local","ollama_chat"],["Fixture","fixture"]]:
@@ -368,7 +386,7 @@ func _refresh_dashboard() -> void:
 		usage_text += " (partial)"
 	if snapshot.get("cost_unknown",false):
 		usage_text += "  Cost ?"
-	_usage.text = usage_text
+	_usage.text = usage_text.replace("Tools","Packets") if _mode_name == "scanline" else usage_text
 	_usage.tooltip_text = usage_text + "\nToken counts are provider-reported " + ("task totals." if complete else "subtotals; some usage was not supplied.") + " ? means unknown. Toks limits each response."
 	if snapshot.get("cost_unknown",false):
 		_usage.tooltip_text += "\nNo verified local model price: USD cost and dollar ceilings are unavailable. Request, token, time and rate limits remain enforced."
@@ -420,6 +438,7 @@ func _add_budget_control(parent: Container, title: String, field: SpinBox, initi
 	row.add_theme_constant_override("separation",3)
 	var label := Label.new()
 	label.text = title
+	if field == _tool_limit: _action_caption = label
 	label.tooltip_text = help
 	row.add_child(label)
 	field.min_value = 1
@@ -564,6 +583,7 @@ func _on_start() -> void:
 		_log_status("refused",_boilerplate_load_problem)
 		return
 	client.boilerplate = _boilerplate_sections.duplicate(true)
+	client.authoring_mode = _mode_name
 	client.profile_path = _selected_profile
 	client.provider_mode = str(_provider.get_item_metadata(_provider.selected))
 	client.fixture_mode = client.provider_mode == "fixture"
@@ -765,14 +785,14 @@ func _accept_key() -> void:
 	key = ""
 
 func _build_boilerplate_editor() -> void:
-	var path := ProjectSettings.globalize_path("res://../tools/workbench_api_agent/boilerplate.json")
+	var path := ProjectSettings.globalize_path("res://../tools/workbench_api_agent/boilerplate_scanline.json" if _mode_name == "scanline" else "res://../tools/workbench_api_agent/boilerplate.json")
 	var file := FileAccess.open(path,FileAccess.READ)
 	var parsed := JSON.new()
 	if file == null or file.get_length() > 65536 or parsed.parse(file.get_as_text()) != OK or not parsed.data is Dictionary:
 		_boilerplate_load_problem = "Outgoing wording defaults are missing or invalid in this checkout."
 	else:
 		_boilerplate_defaults = parsed.data
-		for key: String in Client.BOILERPLATE_KEYS:
+		for key: String in _boilerplate_defaults:
 			if not _boilerplate_defaults.get(key) is String:
 				_boilerplate_load_problem = "Outgoing wording section missing: " + key
 		_boilerplate_sections = _boilerplate_defaults.duplicate(true)
@@ -797,9 +817,7 @@ func _build_boilerplate_editor() -> void:
 	column.add_child(help)
 	var row := HBoxContainer.new()
 	_boilerplate_section.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	for spec: Array in [["System message","system"],["Task introduction","task_prefix"],["Permissions label","permissions"],["Work instructions","workflow"],["Result policy","summary_policy"],["Earlier-image note","earlier_image"],["Image caption","image_caption"],["Observe tool","tool_observe"],["Prepare-edit tool","tool_prepare_edit"],["Apply-edit tool","tool_apply_edit"],["Step tool","tool_step"]]:
-		_boilerplate_section.add_item(spec[0])
-		_boilerplate_section.set_item_metadata(_boilerplate_section.item_count-1,spec[1])
+	_fill_wording_sections()
 	_boilerplate_section.item_selected.connect(_select_boilerplate_section)
 	row.add_child(_boilerplate_section)
 	var restore := Button.new()
@@ -857,3 +875,36 @@ func _refresh_boilerplate_counter() -> void:
 func _restore_boilerplate_section() -> void:
 	_boilerplate_editor.text = str(_boilerplate_defaults.get(_boilerplate_key,""))
 	_flush_boilerplate_editor()
+
+func _fill_wording_sections() -> void:
+	_boilerplate_section.clear()
+	var labels := {"system":"System message","task_prefix":"Task introduction","permissions":"Permissions label","workflow":"Work instructions","summary_policy":"Result policy","earlier_image":"Earlier-image note","image_caption":"Image caption","tool_observe":"Observe tool","tool_prepare_edit":"Prepare-edit tool","tool_apply_edit":"Apply-edit tool","tool_step":"Step tool","tool_prepare_pixels":"Single pixels tool","packet_inspect":"Inspect packet","packet_stamp":"Stamp packet","packet_apply":"Print packet","packet_step":"Advance packet","packet_finish":"Finish packet"}
+	for key: String in _boilerplate_defaults:
+		_boilerplate_section.add_item(str(labels.get(key,key)))
+		_boilerplate_section.set_item_metadata(_boilerplate_section.item_count-1,key)
+
+func _select_authoring_mode(index: int) -> void:
+	var selected := "scanline" if index == 1 else "tools"
+	if selected == _mode_name: return
+	_flush_boilerplate_editor()
+	_mode_tasks[_mode_name] = _task.text
+	_mode_wording[_mode_name] = _boilerplate_sections.duplicate(true)
+	_retire_on_human_change()
+	_mode_name = selected
+	_action_caption.text = "Packets" if selected == "scanline" else "Tools"
+	get_node("AgentActions/AgentHeading").text = "Scanline authoring" if selected == "scanline" else "Agent authoring"
+	client.authoring_mode = selected
+	_task.text = str(_mode_tasks.get(selected,""))
+	_task.placeholder_text = "Describe the print job. The model returns readable JSON scanlines." if selected == "scanline" else "Describe your task. The model can use shapes and up to32 single pixels."
+	_mode_guide.visible = selected == "scanline"
+	var path := "res://../tools/workbench_api_agent/boilerplate_scanline.json" if selected == "scanline" else "res://../tools/workbench_api_agent/boilerplate.json"
+	var parsed := JSON.new()
+	_boilerplate_load_problem = ""
+	if parsed.parse(FileAccess.get_file_as_string(path)) != OK or not parsed.data is Dictionary:
+		_boilerplate_load_problem = "Mode wording defaults missing or invalid."
+		_boilerplate_defaults = {}
+	else: _boilerplate_defaults = parsed.data
+	_boilerplate_sections = _mode_wording.get(selected,_boilerplate_defaults).duplicate(true)
+	_fill_wording_sections()
+	if _boilerplate_section.item_count > 0: _select_boilerplate_section(0)
+	_boilerplate_window.title = "Scanline wording" if selected == "scanline" else "Tool wording"

@@ -49,7 +49,7 @@ func inspect_boilerplate(screen: Vector2i) -> void:
 	panel._boilerplate_section.select(10)
 	panel._select_boilerplate_section(10)
 	await settle()
-	check(panel._boilerplate_editor.text == panel._boilerplate_sections.tool_step,"wording dropdown does not display selected editable section")
+	check(panel._boilerplate_editor.text == panel._boilerplate_sections[str(panel._boilerplate_section.get_item_metadata(10))],"wording dropdown does not display selected editable section")
 	var original_text: String = panel._boilerplate_editor.text
 	var point: Vector2 = panel._boilerplate_editor.get_global_rect().get_center()
 	for button: int in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_MIDDLE]:
@@ -69,7 +69,7 @@ func inspect_boilerplate(screen: Vector2i) -> void:
 	panel._flush_boilerplate_editor()
 	if not evidence_dir.is_empty():
 		var image: Image = popup.get_texture().get_image()
-		check(image != null and not image.is_empty() and image.save_png(evidence_dir.path_join("boilerplate-%d-popup-original.png" % screen.x)) == OK,"original post-draw wording popup PNG missing")
+		check(image != null and not image.is_empty() and image.save_png(evidence_dir.path_join("boilerplate-%s-%d-popup-original.png" % [panel._mode_name,screen.x])) == OK,"original post-draw wording popup PNG missing")
 	print("WB_BOILERPLATE_LAYOUT "+JSON.stringify({"logical_size":[screen.x,screen.y],"popup_size":[popup.size.x,popup.size.y],"editor":str(editor),"canvas_unchanged":rect(host.world_view).is_equal_approx(canvas_before),"native_tick":host.latest_snapshot.tick_index}))
 	popup.close_requested.emit()
 	await settle()
@@ -167,7 +167,7 @@ func inspect_layout(screen: Vector2i, sequence: int) -> void:
 		if ids.size() == 441: check(ids[220] == 58 and ids[228] == 0,"dispatched paint missed target or changed distant control")
 		var png: Variant = observed.get("framebuffer_png",null)
 		if png is PackedByteArray and not evidence_dir.is_empty():
-			var file: FileAccess = FileAccess.open(evidence_dir.path_join("dock-%d-original.png" % screen.x),FileAccess.WRITE)
+			var file: FileAccess = FileAccess.open(evidence_dir.path_join("dock-%s-%d-original.png" % [panel._mode_name,screen.x]),FileAccess.WRITE)
 			check(file != null,"original PNG unavailable")
 			if file != null: file.store_buffer(png)
 		var retired: Dictionary = await mount.retire()
@@ -213,4 +213,8 @@ func _run() -> void:
 		panel = mount.panel()
 		await inspect_layout(Vector2i(1920,1080),0)
 		await inspect_layout(Vector2i(1280,720),1)
+		panel._authoring_mode.select(1)
+		panel._select_authoring_mode(1)
+		await inspect_layout(Vector2i(1920,1080),2)
+		await inspect_layout(Vector2i(1280,720),3)
 	_finish()

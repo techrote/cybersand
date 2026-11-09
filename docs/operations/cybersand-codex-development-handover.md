@@ -10,6 +10,16 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Separate scanline printer and individual pixels — 2026-11-09
+
+The owner-requested follow-up toa3b064e9 keeps scanline printing out of the tool
+lineup: it has independent session task/Boilerplate and plain JSON packets.
+Tools mode adds prepare_pixels for up to32 distinct cells. Both retain bounded
+native proposals, protection, revision fencing, rate limits and human Stop.
+The [runner runbook](workbench-api-agent.md) owns the grammar and UI instructions.
+Exact-source native/PNG and platform outcomes belong in the existing Draft #531
+handoff. No merge, physics change or genuine inference is implied.
+
 ## Provider refusal recovery and editable wording — 2026-11-09
 
 The isolated Draft #531 follow-up to5eed6c98 aligns source-material predicates,

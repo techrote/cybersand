@@ -21,14 +21,15 @@ class BoilerplateTests(unittest.TestCase):
             report=runner.run();self.assertEqual(report['status'],'passed',report['reason'])
             for provider in ('openai_responses','nvidia_chat','ollama_chat'):
                 selected=copy.deepcopy(cfg);selected['provider']=provider
-                body=request_body(selected,runner.history,include_image_bytes=False)
+                from .desktop_backend import desktop_tool_schemas
+                body=request_body(selected,runner.history,desktop_tool_schemas(),include_image_bytes=False)
                 encoded=json.dumps(body)
                 for section,text in wording.items():self.assertIn(text,encoded,(provider,section))
             self.assertEqual(report['native_acceptance']['native_counts']['58']['actual'],8)
 
     def test_defaults_are_complete_independent_and_allow_empty_language(self):
         first=sections();second=sections()
-        self.assertEqual(len(first),11)
+        self.assertEqual(len(first),12)
         first['system']='local change'
         self.assertNotEqual(first,second)
         self.assertEqual(sections({'system':''})['system'],'')

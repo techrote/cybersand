@@ -10,6 +10,15 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Separate scanline authoring candidate — 2026-11-09
+
+Owner-requested Draft #531 follow-up toa3b064e9 adds a separate scanline packet
+interface/wording mode and a32-position pixel preparation tool in the existing
+tool mode. Both preserve native authority/protection and human Stop. See the
+[runner runbook](../operations/workbench-api-agent.md) for exact bounded semantics;
+source-specific native/rendered qualification is recorded in the existing PR.
+Genuine-provider drawing quality and Windows human acceptance remain separate.
+
 ## Provider UI composition and communication review — 2026-11-08
 
 Isolated integration composes #53129988 with #552be7 and #5472b6; no Main merge

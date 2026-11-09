@@ -9,7 +9,7 @@ import secrets
 import random
 import threading
 import time
-from dataclasses import dataclass,field
+from dataclasses import dataclass,field,replace
 
 from atlas_agent.pricing import text_tokens_upper_bound, image_tokens_upper_bound
 from atlas_agent.errors import LimitReached
@@ -204,7 +204,7 @@ class Runner:
             for i in imgs[:-1]:
                 h=self.history[i]
                 h.pop('image')
-                h['text']+='\n'+sections(self.cfg.get('_boilerplate'))['earlier_image']
+                h['text']+='\n'+sections(self.cfg.get('_boilerplate'),self.cfg.get('_authoring_mode','tools'))['earlier_image']
                 self.stats.images_projected+=1
         # Count the provider's real message/tool/schema projection, not local
         # h.native evidence (which remains retained, never silently truncated).
@@ -365,11 +365,22 @@ class Runner:
         if d.call_id in self.call_ids:raise ProviderError('reused_provider_call_id')
         self.call_ids.add(d.call_id)
         if self.stats.tool_calls>=self.limit['max_tools']:raise LimitError('tool_call_limit')
+        model_tool=d.tool; model_args=d.args
+        canonical=getattr(self.wb,'canonical_packet',None)
+        conversion_error=None
+        if callable(canonical):
+            try:
+                name,args=canonical(d.tool,d.args)
+                d=replace(d,tool=name,args=args)
+            except NativeError as exc:
+                conversion_error=exc
+                d=replace(d,tool='prepare_edit' if model_tool in ('prepare_stamp','prepare_pixels') else d.tool)
         if self.pending_proposal and d.tool!='apply_edit' and not (getattr(self.wb,'observe_retires_proposal',False) and d.tool=='observe'):
             raise NativeError('prepared_edit_must_be_applied_or_retired_before_another_tool')
         if self.stop_event.is_set():raise NativeError('host_stop_requested')
         validator=getattr(self.wb,'validate',validate_tool)
         try:
+            if conversion_error:raise conversion_error
             if self._needs_observation and d.tool!='observe':raise NativeError('fresh_observation_required_after_refused_apply')
             if d.kind=='invalid_tool':raise NativeError('invalid_tool_arguments')
             ticks=validator(d.tool,d.args,self.auth['scope'],set(self.auth['allowed_materials']),self.auth['protected'],
@@ -377,7 +388,7 @@ class Runner:
         except NativeError as exc:
             if not getattr(self.wb,'allow_argument_feedback',False) or self._argument_repairs>=1 or d.tool not in STATUS:raise
             self._argument_repairs+=1;self.stats.tool_calls+=1
-            self.history.append({'kind':'call','id':d.call_id,'tool':d.tool,'args':d.args or {}})
+            self.history.append({'kind':'call','id':d.call_id,'tool':model_tool,'args':model_args or {}})
             feedback={'status':'refused','origin':'client_validation','native_dispatched':False,'reason':exc.code,'corrections_remaining':0}
             self.history.append({'kind':'result','id':d.call_id,'text':clean_payload(feedback),'native':feedback})
             self._event({'type':'tool_validation_refused','tool':d.tool,'provider_call_id':d.call_id,**feedback})
@@ -386,7 +397,7 @@ class Runner:
         self.stats.tool_calls+=1
         self._event({'type':'tool_proposed','tool':d.tool,'provider_call_id':d.call_id,'native_request_id':rid,
                      'arguments_sha256':hashlib.sha256(clean_payload(d.args).encode()).hexdigest()})
-        self.history.append({'kind':'call','id':d.call_id,'tool':d.tool,'args':d.args})
+        self.history.append({'kind':'call','id':d.call_id,'tool':model_tool,'args':model_args})
         try:
             result=self.wb.call(d.tool,d.args,rid,self.stop_event,min(330,self._timeout()))
         except NativeError as e:
@@ -500,7 +511,9 @@ class Runner:
                      'local_gpu_compute_cost':'unknown' if self.cfg['provider']=='ollama_chat' else 'not_local_gpu',
                      'context_projection':{'old_images_elided_from_model_history':self.stats.images_projected,
                                             'original_images_retained':self.stats.original_frames}}
-        if self.desktop:self.report['rate_history']=self._rate_history()
+        if self.desktop:
+            self.report['rate_history']=self._rate_history()
+            self.report['authoring_mode']=self.cfg.get('_authoring_mode','tools')
         (self.output/'receipt.json').write_text(json.dumps(self.report,sort_keys=True,indent=2)+'\n',encoding='utf-8')
         return self.report
 
@@ -512,7 +525,7 @@ class Runner:
             self._event({'type':'native_session_open','session_id':self.sid,'generation_id':self.generation,
                         'native_generation':source['native_generation']})
             scope=self.auth['scope'];allowed=self.auth['allowed_materials']
-            wording=sections(self.cfg.get('_boilerplate'))
+            wording=sections(self.cfg.get('_boilerplate'),self.cfg.get('_authoring_mode','tools'))
             prompt='\n'.join((wording['task_prefix']+' '+self.task['instructions'],
                 wording['permissions']+' '+clean_payload({'scope':scope,'allowed_materials':allowed,'protected':self.auth['protected']}),
                 wording['workflow'],wording['summary_policy']))

@@ -227,6 +227,19 @@ decisions. Retain the failed checkpoint; native success alone was insufficient.
 
 ## Questions for the independent reviewer
 
+The separate scanline candidate consumes model text as one strict JSON printing
+packet per response; no function tools appear in its actual provider request.
+Its task, interface wording and packet descriptions are separate from Tools mode.
+Transport/control, budgets and exclusive native World ownership are deliberately
+shared. Verify assistant packet/user receipt roles, image continuation and absence
+of tool schemas in both OpenAI and Chat request builders. Malformed/unknown
+packets never imply a write. Tools mode independently adds prepare_pixels with
+1–32 distinct integer WORLD cells. Raster expansion is bounded by the entire
+scaled rectangle, with nested-envelope limits before the worker copy. Native
+source protection, preview, revision fencing, ACK and Stop remain authoritative.
+Compare exact chosen cells, blank-mask preservation and explicit erasure from
+readback, rather than accepting a plausible screenshot or provider final text.
+
 The 2026-11-09 recovery correction separates source predicates from authority:
 Python and Godot accept the native named palette (including Sand2), but native
 still refuses protected source edits. Only source-backed prewrite reasons are

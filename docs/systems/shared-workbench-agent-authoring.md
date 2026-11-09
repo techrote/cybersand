@@ -13,6 +13,15 @@ related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architec
 
 ## Desktop provider-runner integration candidate
 
+The 2026-11-09 owner follow-up adds a separate Scanline printer mode (plain JSON
+printing packets, separate task/interface/wording) and a dedicated1–32 individual
+WORLD-pixel preparation tool in Tools mode. Both compile through the exclusive
+native proposal owner and existing apply/Stop paths. Scaling, repeated rows,
+blank preservation, capacity and packet semantics are specified in the
+[runner runbook](../operations/workbench-api-agent.md#tools-and-separate-scanline-printer-mode--2026-11-09).
+This remains isolated Draft source; scripted native execution does not establish
+genuine model drawing quality or Windows human acceptance.
+
 The owner-requested isolated composition joins #53129988 UI and #552be7 Runner
 without MCP. The desktop backend operates the existing native World through
 Godot's dispatcher, preserving logging/rate/Stop controls and provider funding/

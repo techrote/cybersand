@@ -9,6 +9,8 @@ import threading
 import time
 from .backend import NativeError, validate_tool
 
+from .raster import raster_points,pixel_schema,native_packet
+
 MAX_FILE = 16*1024*1024
 DESKTOP_NATIVE_PALETTE = (2,14,29,13,19,23,25,26,27,3,58,0,8,16,12,7,9,28)
 # Exact pre-write exits in the frozen authoring Geometry/session/host paths.
@@ -18,6 +20,10 @@ PREPARE_REFUSALS = frozenset(('source_material_protected','protected_region','in
     'line_exceeds_cell_budget','rectangle_exceeds_cell_budget','distinct_cell_budget_exceeded',
     'invalid_primitive_count','operation_not_object','invalid_shape','unsupported_shape',
     'non_integer_or_missing_field','unknown_operation_field','reversed_rectangle_bounds',
+    'pixels_count_1_to_32_required','invalid_pixel_coordinate','duplicate_pixel_coordinate',
+    'invalid_stamp_fields','invalid_stamp_integer','invalid_stamp_dimensions','stamp_exceeds_cell_budget',
+    'invalid_scanline_rows','invalid_scanline_repeat','invalid_scanline_spans','scanline_span_capacity',
+    'invalid_scanline_span','overlapping_or_outside_scanline_span','scanline_height_mismatch',
     'missing_or_stale_observation','stale_observation','observation_not_matched_to_frame'))
 APPLY_REFUSALS = frozenset(('unknown_or_retired_proposal','stale_proposal','source_cells_changed',
     'invalid_proposal_id','proposal_not_preflight_recordable'))
@@ -35,6 +41,7 @@ def desktop_tool_schemas(allowed=(0,58)):
         variants.append({'type':'object','additionalProperties':False,'properties':props,'required':list(props)})
     s['prepare_edit']['properties']['operations'].update({'maxItems':8,'items':{
         'anyOf':variants}})
+    s["prepare_pixels"]=pixel_schema(allowed)
     return s
 
 def _line(x,y,ex,ey):
@@ -67,6 +74,18 @@ def validate_desktop_tool(name,args,scope,allowed,protected,last_observation,las
         if not isinstance(op,dict):raise NativeError('edit_unknown_shape_or_keys')
         shape=op.get('shape');coords=('x','y','radius') if shape=='disc' else ('x0','y0','x1','y1')
         required={'shape','material',*coords}
+        if shape in ('pixels','scanlines'):
+            if type(op.get('material')) is not int or op['material'] not in allowed:raise NativeError('edit_material_not_authorized')
+            points,bounds=raster_points(op,cell_limit)
+            if bounds is not None:
+                x,y,w,h=bounds
+                if not inside(x,y) or not inside(x+w-1,y+h-1):raise NativeError('edit_out_of_scope')
+            for point in points:
+                if not inside(*point):raise NativeError('edit_out_of_scope')
+                if any(p['x']<=point[0]<p['x']+p['width'] and p['y']<=point[1]<p['y']+p['height'] for p in protected):raise NativeError('edit_protected_area')
+                seen.add(point)
+                if len(seen)>cell_limit:raise NativeError('edit_total_cells_limit')
+            continue
         if shape not in ('disc','line','rectangle') or set(op)-required-{'replace_only_material'} or required-set(op):raise NativeError('edit_unknown_shape_or_keys')
         if any(type(op[k]) is not int for k in ('material',*coords)):raise NativeError('edit_integer_required')
         filt=op.get('replace_only_material')
@@ -96,7 +115,8 @@ class DesktopWorkbench:
     desktop=True
     allow_argument_feedback=True
     observe_retires_proposal=True
-    def __init__(self,send,session,auth,bridge_root):
+    def __init__(self,send,session,auth,bridge_root,mode="tools"):
+        self.mode=mode
         self.send=send;self.source=copy.deepcopy(session);self.auth=copy.deepcopy(auth)
         self.root=Path(bridge_root).resolve(strict=True)
         self.session_id=self.generation_id=None
@@ -110,6 +130,7 @@ class DesktopWorkbench:
         if ack.get('cell_limit')!=self.auth['cell_limit']:raise NativeError('desktop_native_grant_mismatch')
         self.session_id=tid;self.generation_id=str(gen)
         return {'phase':'ready','session_id':tid,'generation_id':self.generation_id,'native_generation':gen}
+    def canonical_packet(self,name,args):return native_packet(name,args,self.mode)
     def validate(self,*args):return validate_desktop_tool(*args,cell_limit=self.auth['cell_limit'])
     def deliver(self,frame):
         with self._lock:

@@ -12,9 +12,11 @@ var compute_consent := false
 var fixture_mode := false
 var fixture_script_path := ""
 var boilerplate: Dictionary = {}
+var authoring_mode := "tools"
+var _active_authoring_mode := "tools"
 var _active_boilerplate: Dictionary = {}
 const NativeSetup = preload("res://scripts/workbench_setup.gd")
-const BOILERPLATE_KEYS := ["system","task_prefix","permissions","workflow","summary_policy","earlier_image","image_caption","tool_observe","tool_prepare_edit","tool_apply_edit","tool_step"]
+const BOILERPLATE_KEYS := ["system","task_prefix","permissions","workflow","summary_policy","earlier_image","image_caption","tool_observe","tool_prepare_edit","tool_apply_edit","tool_step","tool_prepare_pixels","packet_inspect","packet_stamp","packet_apply","packet_step","packet_finish"]
 var acceptance: Dictionary = {}
 var fixture_turns: Array = []
 var _rate_history_by_endpoint := {}
@@ -97,6 +99,7 @@ func _send(input_items: Array) -> void:
 func _start_runner() -> void:
  _runner_epoch = _epoch
  _active_boilerplate = boilerplate.duplicate(true)
+ _active_authoring_mode = authoring_mode
  _rate_endpoint = str(_profile.get("provider",""))+":"+str(_profile.get("endpoint",""))
  _retirement_ack.clear()
  _finished_receipt.clear()
@@ -128,7 +131,7 @@ func _start_runner() -> void:
  var materials: Array = []
  for value: Variant in _scope.get("allowed_materials",[]): materials.append(58 if value == "Hard Wall" else 0)
  var document := {"type":"start","protocol":1,"profile_path":profile_path,"profile_sha256":_profile_hash,
-  "bridge_root":_bridge_root,"fixture_mode":fixture_mode,"allow_live":allow_live,"compute_consent":compute_consent,
+  "authoring_mode":_active_authoring_mode,"bridge_root":_bridge_root,"fixture_mode":fixture_mode,"allow_live":allow_live,"compute_consent":compute_consent,
   "overrides":{"model":_model,"max_model_calls":_active_request_budget,"max_tools":_active_tool_budget,
    "max_output_tokens":_active_token_budget,"request_timeout_seconds":int(_active_request_timeout_seconds),"tokens_per_minute":_active_tokens_per_minute},
   "task":{"prompt":_task_text,"scope":_scope.get("region",{}),"allowed_materials":materials,"protected_regions":_scope.get("protected_regions",[]),"cell_limit":_scope.get("cell_limit",4096)},
@@ -142,7 +145,7 @@ func _start_runner() -> void:
  document.merge(wording_fields)
  _stage = "Starting Python provider runner"
  _startup_deadline = Time.get_ticks_msec()+STARTUP_TIMEOUT_MSEC
- record_diagnostic("runner.started",{"pid":_runner_pid,"provider":_profile.get("provider"),"profile_sha256":_profile_hash,"bridge_root":_bridge_root})
+ record_diagnostic("runner.started",{"authoring_mode":_active_authoring_mode,"pid":_runner_pid,"provider":_profile.get("provider"),"profile_sha256":_profile_hash,"bridge_root":_bridge_root})
  _queue_frame(document)
 
 func _writer_loop(pipe: FileAccess) -> void:
@@ -495,6 +498,17 @@ func _boilerplate_problem(values: Dictionary) -> String:
 func _valid_arguments(name: String, args: Variant) -> bool:
  if name != "prepare_edit": return super._valid_arguments(name,args)
  if not args is Dictionary or not args.get("operations") is Array: return false
+ if args.get("operations",[]).any(func(op: Variant) -> bool: return op is Dictionary and op.get("shape") in ["pixels","scanlines"]):
+  if args.size() != 2 or not args.get("observation_id") is String or args.observation_id.is_empty() or args.observation_id.length() > 128 or args.operations.size() != 1: return false
+  var op: Variant = args.operations[0].duplicate(true)
+  if op.get("replace_only_material") == null: op.erase("replace_only_material")
+  if op.get("shape") != ("scanlines" if _active_authoring_mode == "scanline" else "pixels"): return false
+  var integers: Variant = _typed_raster(op)
+  if integers == null: return false
+  var r: Dictionary = _scope.get("region",{})
+  var region := Rect2i(int(r.get("x",0)),int(r.get("y",0)),int(r.get("width",1)),int(r.get("height",1)))
+  var result: Dictionary = preload("res://scripts/workbench_agent_raster.gd").compile(integers,region.end,region,[],[0,58],_cell_limit())
+  return result.get("status") == "validated_geometry"
  var checked: Dictionary = args.duplicate(true)
  for op: Variant in checked.operations:
   if op is Dictionary and op.has("replace_only_material") and op.replace_only_material != null:
@@ -511,3 +525,29 @@ func _boilerplate_file_fields() -> Dictionary:
  var wording_hash := _write_owned("config/boilerplate.json",JSON.stringify(_active_boilerplate).to_utf8_buffer())
  if wording_hash.is_empty(): return {}
  return {"boilerplate_file":"config/boilerplate.json","boilerplate_sha256":wording_hash}
+
+func _typed_raster(value: Variant) -> Variant:
+ if value is Dictionary:
+  var result := {}
+  for key: Variant in value:
+   var item: Variant = _typed_raster(value[key])
+   if item == null: return null
+   result[key] = item
+  return result
+ if value is Array:
+  var result: Array = []
+  for child: Variant in value:
+   var item: Variant = _typed_raster(child)
+   if item == null: return null
+   result.append(item)
+  return result
+ if value is String: return value
+ if not _safe_integer(value): return null
+ return int(value)
+
+func _normalise_arguments(name: String, args: Dictionary) -> Dictionary:
+ if name == "prepare_edit" and args.operations.size() == 1 and args.operations[0].get("shape") in ["pixels","scanlines"]:
+  var op: Dictionary = args.operations[0].duplicate(true)
+  if op.get("replace_only_material") == null: op.erase("replace_only_material")
+  return {"observation_id":args.observation_id,"operations":[_typed_raster(op)]}
+ return super._normalise_arguments(name,args)
