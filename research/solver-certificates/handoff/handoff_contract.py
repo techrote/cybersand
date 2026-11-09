@@ -11,7 +11,7 @@ from json import dumps
 from typing import Optional
 
 BASELINE = "d4b18e7f06839b35c8f6a66195206da0f33c5fa3"
-MODEL_VERSION = "B3-RESEARCH-1"
+MODEL_VERSION = "B3-RESEARCH-2"
 WHOLE_CELL = 256
 MAX_TX = 4096
 
@@ -41,6 +41,18 @@ class Refusal(str, Enum):
     SOURCE_ABSENT = "SOURCE_ABSENT"
     EXPIRED = "EXPIRED"
     BAD_SAMPLE = "BAD_SAMPLE"
+
+
+class ReceiptStatus(str, Enum):
+    """Research receipt type; only commit() itself performs a transition.
+
+    A historical acknowledgement never carries current worker/epoch permission.
+    Even COMMITTED is evidence of a completed *model* transition, not permission
+    for a later force, parcel spawn, native operation or Rapier body mutation.
+    """
+    REFUSED = "REFUSED"
+    COMMITTED = "COMMITTED"
+    HISTORICAL_ACK_ONLY = "HISTORICAL_ACK_ONLY"
 
 
 WATER_OWNERS = frozenset({Owner.FREE_MASS, Owner.PRESSURE, Owner.INERTIAL, Owner.BALLISTIC})
@@ -88,7 +100,7 @@ class Intent:
 @dataclass(frozen=True)
 class Receipt:
     token: str
-    status: str
+    status: ReceiptStatus
     reason: Refusal
     epoch: int
     source: str
@@ -193,7 +205,7 @@ def commit(w: World, intent: Intent, *, fenced: bool, now_epoch: int | None = No
     now = w.epoch if now_epoch is None else now_epoch
 
     def refused(cause: Refusal) -> Receipt:
-        return Receipt(intent.token, "REFUSED", cause, w.epoch, intent.source_id, "",
+        return Receipt(intent.token, ReceiptStatus.REFUSED, cause, w.epoch, intent.source_id, "",
                        before, before, moment_before, moment_before)
 
     fp = intent.fingerprint()
@@ -201,7 +213,10 @@ def commit(w: World, intent: Intent, *, fenced: bool, now_epoch: int | None = No
         old_fp, old_receipt = w.accepted[intent.token]
         if fp != old_fp:
             return refused(Refusal.TOKEN_REUSE)
-        return replace(old_receipt, status="IDEMPOTENT")
+        # Deliberately before the current fence/epoch checks: exact retries can
+        # retrieve history, but they cannot acquire *new* operational authority.
+        # Keep the original commit epoch and payload; do not touch World state.
+        return replace(old_receipt, status=ReceiptStatus.HISTORICAL_ACK_ONLY)
     if not fenced:
         return refused(Refusal.BAD_FENCE)
     if intent.generation != w.generation:
@@ -262,7 +277,7 @@ def commit(w: World, intent: Intent, *, fenced: bool, now_epoch: int | None = No
     # The momentum delta is observed, not an assertion of physical conservation;
     # an operator tag is NOT independent evidence that an impulse was measured.
     mstatus = "UNVERIFIED_INPUT_DECLARED" if intent.audit_tag else "UNVERIFIED"
-    result = Receipt(intent.token, "COMMITTED", Refusal.NONE, trial.epoch, src.identity,
+    result = Receipt(intent.token, ReceiptStatus.COMMITTED, Refusal.NONE, trial.epoch, src.identity,
                      dest_id, before, after, moment_before, moment_after, mstatus)
     trial.accepted[intent.token] = (fp, result)
     trial.assert_invariants()

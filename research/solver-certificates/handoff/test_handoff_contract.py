@@ -2,7 +2,7 @@
 import unittest
 from dataclasses import replace
 from handoff_contract import (World, Record, Owner, Refusal, prepare, commit, elapse,
-                              bound_cost_model, WHOLE_CELL)
+                              bound_cost_model, WHOLE_CELL, ReceiptStatus)
 
 
 def world(*, signed_inertial=False):
@@ -82,10 +82,60 @@ class ContractProofTests(unittest.TestCase):
     def test_idempotent_duplicate_and_token_mismatch(self):
         w = world(); i = prepare(w, token="t", source_id="water-0", target=Owner.BALLISTIC, amount=WHOLE_CELL)
         r = commit(w, i, fenced=True); h = w.material_identity()
-        self.assertEqual(commit(w, i, fenced=True).status, "IDEMPOTENT")
+        self.assertEqual(commit(w, i, fenced=True).status, ReceiptStatus.HISTORICAL_ACK_ONLY)
         self.assertEqual(h, w.material_identity())
         self.assert_refusal_unchanged(w, replace(i, amount=20), Refusal.TOKEN_REUSE)
         self.assertEqual(r.destination, "water-0")
+
+    def test_historical_ack_never_reauthorizes_current_fence_or_epoch(self):
+        # B4/B5 falsifier: COMMITTED at epoch 1 must not be replayable as a
+        # presently fenced permission after the real state has advanced.
+        w = world(signed_inertial=True)
+        w.record_contact(7, 42, "water-0", "rapier-impact")
+        i = prepare(w, token="contact-launch", source_id="water-0",
+                    target=Owner.BALLISTIC, amount=WHOLE_CELL,
+                    contact_sample=42, contact_body_id=7)
+        first = commit(w, i, fenced=True)
+        self.assertEqual((first.status, first.epoch), (ReceiptStatus.COMMITTED, 1))
+        self.assertEqual(w.records["water-0"].owner, Owner.BALLISTIC)
+        for fence in (False, True):
+            identity = w.material_identity()
+            replay = commit(w, i, fenced=fence)
+            self.assertEqual(replay.status, ReceiptStatus.HISTORICAL_ACK_ONLY)
+            self.assertEqual((replay.epoch, replay.destination),
+                             (first.epoch, first.destination))
+            self.assertEqual(replay.production_admission, "MODEL_ONLY")
+            self.assertNotEqual(replay.status, ReceiptStatus.COMMITTED)
+            self.assertEqual(w.material_identity(), identity)
+        elapse(w)
+        self.assertEqual(w.epoch, 2)
+        identity = w.material_identity()
+        replay = commit(w, i, fenced=False)
+        self.assertEqual((replay.status, replay.epoch),
+                         (ReceiptStatus.HISTORICAL_ACK_ONLY, 1))
+        self.assertEqual(w.material_identity(), identity)
+
+    def test_historical_ack_across_synthetic_restart_policy_and_token_spoof(self):
+        # A synthetic external replacement is NOT a qualified native restore.
+        # A retained old receipt still cannot become a new COMMITTED event.
+        w = world(signed_inertial=True)
+        i = prepare(w, token="old", source_id="water-0",
+                    target=Owner.BALLISTIC, amount=WHOLE_CELL,
+                    next_velocity_q256=(13, -32))
+        first = commit(w, i, fenced=True)
+        w.generation += 1  # simulated replacement; outside trusted model writer
+        w.signed_inertial_world_enabled = False
+        w.contact_samples.clear()
+        identity = w.material_identity()
+        replay = commit(w, i, fenced=False)
+        self.assertEqual((replay.status, replay.epoch),
+                         (ReceiptStatus.HISTORICAL_ACK_ONLY, first.epoch))
+        self.assertEqual(w.material_identity(), identity)
+        for bad in (replace(i, next_velocity_q256=(13, 32)),
+                    replace(i, audit_tag="forged-witness"),
+                    replace(i, generation=w.generation)):
+            self.assert_refusal_unchanged(w, bad, Refusal.TOKEN_REUSE)
+        self.assertEqual(w.records["water-0"].owner, Owner.BALLISTIC)
 
     def test_partial_water_launch_split_without_duplicate_ownership(self):
         w = world(); total = w.water_total()
