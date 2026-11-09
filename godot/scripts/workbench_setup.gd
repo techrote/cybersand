@@ -48,7 +48,8 @@ const BUILTIN_LABELS := [DEFAULT_LABEL,BENCH_LABEL,STRESS_LABEL]
 # IN-TOOLS #361 integrated leak / drain / nozzle apparatus. Kept apart from
 # BUILTIN_LABELS so terrain-only fixture exporters keep their exact inputs.
 const LIQUID_LAB_LABEL := "liquid-lab"
-const EQUIPMENT_LABELS := [LIQUID_LAB_LABEL]
+const RESERVOIR_LAB_LABEL := "reservoir-lab"
+const EQUIPMENT_LABELS := [LIQUID_LAB_LABEL,RESERVOIR_LAB_LABEL]
 const Equipment = preload("res://scripts/workbench_liquid_equipment.gd")
 # Optional root key. Absent = no equipment; a setup without it keeps exactly
 # the Setup-v2 bytes and older builds refuse (never silently drop) one with it.
@@ -321,6 +322,7 @@ static func builtin(label: String, policy: PackedInt32Array) -> Dictionary:
 	if label == BENCH_LABEL: return engine_benchmark(policy)
 	if label == STRESS_LABEL: return stress_canvas(policy)
 	if label == LIQUID_LAB_LABEL: return liquid_lab(policy)
+	if label == RESERVOIR_LAB_LABEL: return reservoir_lab(policy)
 	return {}
 
 # Built-in "liquid-lab" equipment apparatus (#361; used only while no user file
@@ -353,8 +355,50 @@ static func liquid_lab(policy: PackedInt32Array) -> Dictionary:
 	data.next_id = 2
 	data.material = WATER
 	data.rule_radius = 3
-	data[EQUIPMENT_KEY] = {"version":Equipment.VERSION,"valve":LIQUID_LAB_VALVE.duplicate(),
-		"drain":LIQUID_LAB_DRAIN.duplicate(),"nozzle":LIQUID_LAB_NOZZLE.duplicate(),"supply":150,"pump":true}
+	data[EQUIPMENT_KEY] = {"version":Equipment.VERSION,"valves":[LIQUID_LAB_VALVE.duplicate()],
+		"drain":LIQUID_LAB_DRAIN.duplicate(),"nozzle":LIQUID_LAB_NOZZLE.duplicate(),"supply":150,"pump":true,
+		"pipe_capacity":Equipment.MAX_PIPE_CELLS}
+	return data
+
+# Built-in "reservoir-lab" (#361; used only while no user file of that name
+# exists): a manually operated playground of connected reservoirs for the
+# pressure Water family (the workbench requests "Water: pressure reference").
+# Left to right in one 480 x 270 view:
+#   A  two tanks sharing a wall with valve 1 at its foot (connected vessels);
+#   B  three bins sharing walls, each shared wall with a low and a high valve
+#      (valves 2-5): low valves equalize, high valves only spill above them;
+#   C  an elevated sealed tank with an air pocket, a vent valve in its lid
+#      (valve 6) and the drain in its floor: draining with the vent shut can
+#      hold Water up under a vacuum, opening the vent lets air in;
+#   D  a pool with the nozzle submerged near its floor; the pump pipes the
+#      tank's drained Water into it, so the pool level rises.
+const RESERVOIR_LAB_VALVES := [[56,244,4,16],[176,246,4,14],[176,150,4,14],[232,246,4,14],[232,180,4,14],[330,146,6,4]]
+const RESERVOIR_LAB_DRAIN := [320,234,16,6,8]
+const RESERVOIR_LAB_NOZZLE := [420,256,-90.0,1.0,2]
+static func reservoir_lab(policy: PackedInt32Array) -> Dictionary:
+	var data := fresh(policy,Vector2i(512,512))
+	var e: Array = data.edits
+	_box(e,Vector2i(4,150),Vector2i(56,264),WATER)              # A: full left tank
+	_box(e,Vector2i(124,130),Vector2i(176,264),WATER)           # B: full bin 1
+	_box(e,Vector2i(180,200),Vector2i(232,264),WATER)           # B: half bin 2
+	_box(e,Vector2i(304,160),Vector2i(364,240),WATER)           # C: sealed tank below its air pocket
+	_box(e,Vector2i(380,220),Vector2i(476,264),WATER)           # D: pool
+	_box(e,Vector2i(0,264),Vector2i(512,272),WALL)              # floor
+	_box(e,Vector2i(0,20),Vector2i(4,264),WALL)                 # left boundary
+	_box(e,Vector2i(476,20),Vector2i(480,264),WALL)             # right boundary
+	_box(e,Vector2i(56,100),Vector2i(60,264),WALL)              # A: shared wall incl. valve 1
+	_box(e,Vector2i(112,100),Vector2i(116,264),WALL)            # A: right tank wall
+	for x: int in [120,176,232,288]:                            # B: bin walls incl. valves 2-5
+		_box(e,Vector2i(x,110),Vector2i(x+4,264),WALL)
+	_box(e,Vector2i(300,146),Vector2i(368,150),WALL)            # C: lid incl. vent valve 6
+	_box(e,Vector2i(300,146),Vector2i(304,244),WALL)            # C: walls and floor
+	_box(e,Vector2i(364,146),Vector2i(368,244),WALL)
+	_box(e,Vector2i(300,240),Vector2i(368,244),WALL)
+	_box(e,Vector2i(376,196),Vector2i(380,264),WALL)            # D: pool wall
+	data.material = WATER
+	data[EQUIPMENT_KEY] = {"version":Equipment.VERSION,"valves":RESERVOIR_LAB_VALVES.duplicate(true),
+		"drain":RESERVOIR_LAB_DRAIN.duplicate(),"nozzle":RESERVOIR_LAB_NOZZLE.duplicate(),"supply":0,"pump":true,
+		"pipe_capacity":Equipment.MAX_PIPE_CELLS}
 	return data
 
 static func instance(model: String, id: int, pos: Vector2) -> Dictionary:

@@ -2120,6 +2120,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				KEY_H: shared_workbench.equipment.toggle("nozzle")
 				KEY_J: shared_workbench.equipment.nudge_aim(-10.0)
 				KEY_K: shared_workbench.equipment.nudge_aim(10.0)
+				KEY_BRACKETLEFT: shared_workbench.equipment.select_valve(-1)
+				KEY_BRACKETRIGHT: shared_workbench.equipment.select_valve(1)
 				_: return
 			get_viewport().set_input_as_handled()
 		return

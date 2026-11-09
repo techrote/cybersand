@@ -9,6 +9,8 @@ extends SceneTree
 #
 # LIQUID_EQUIPMENT_WORKERS=1|4 selects the native pool request (default 4).
 # LIQUID_EQUIPMENT_BALLISTIC=0 runs the nozzle in resting-cell mode.
+# LIQUID_EQUIPMENT_PRESET selects another existing liquid preset label, for
+# example "Water: pressure reference" (default "Water: inertial").
 const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 const Setup = preload("res://scripts/workbench_setup.gd")
 const Equipment = preload("res://scripts/workbench_liquid_equipment.gd")
@@ -25,6 +27,11 @@ var evidence := {}
 var _observation := 0
 var _workers_peak := 0
 var _tick_ms := []
+# B6 pacing: main-thread process time, frame interval and worker step time.
+var _process_ms := []
+var _frame_ms := []
+var _worker_ms := []
+var _last_frame_usec := 0
 
 func _initialize() -> void:
 	run.call_deferred()
@@ -45,8 +52,13 @@ func until(test: Callable, label: String, seconds: float = -1.0) -> bool:
 	return check(test.call(), label + " / " + main.microscenario_error + " / " + str(receipt().get("last_refusal","")))
 
 func _sample() -> void:
+	var now := Time.get_ticks_usec()
+	if _last_frame_usec > 0 and _frame_ms.size() < 8192: _frame_ms.append(float(now - _last_frame_usec) / 1000.0)
+	_last_frame_usec = now
+	if _process_ms.size() < 8192: _process_ms.append(Performance.get_monitor(Performance.TIME_PROCESS) * 1000.0)
 	var snapshot = main.latest_snapshot
 	if snapshot == null: return
+	if _worker_ms.size() < 8192 and snapshot.render_worker_step_time_ms > 0.0: _worker_ms.append(float(snapshot.render_worker_step_time_ms))
 	var sample: Dictionary = snapshot.native_worker_participation
 	if not sample.is_empty():
 		_workers_peak = maxi(_workers_peak,int(sample.get("workers_observed",0)))
@@ -101,6 +113,9 @@ func run() -> void:
 	ProjectSettings.set_setting("cybersand/native_worker_threads",workers)
 	evidence.requested_workers = workers
 	evidence.ballistic_requested = ballistic
+	var preset := OS.get_environment("LIQUID_EQUIPMENT_PRESET")
+	if preset.is_empty(): preset = "Water: inertial"
+	evidence.preset = preset
 	_static_checks()
 	change_scene_to_file("res://feature_launcher.tscn")
 	await scene_changed
@@ -112,7 +127,7 @@ func run() -> void:
 	if not await until(installed,"workbench installed"): return finish()
 
 	# Install the built-in apparatus through the ordinary workbench action.
-	check(panel.load_liquid_lab(ballistic),"liquid-lab load requested")
+	check(panel.load_liquid_lab(ballistic,preset),"liquid-lab load requested")
 	if not await until(func() -> bool: return installed() and current(),"liquid-lab installed and configured"): return finish()
 	var r := receipt()
 	var policy: Dictionary = main.tower_context.get("liquid_solver_policy",{})
@@ -121,10 +136,15 @@ func run() -> void:
 		if int(assignment.material) == 3: family = str(assignment.applied_family)
 	evidence.water_family = family
 	evidence.rule_radius = int(policy.get("maximum_rule_radius",0))
-	check(family == "inertial_cellular_v1","liquid-lab applies opt-in inertial Water (got %s)" % family)
-	check(bool(r.whole_cell_water),"device owner sees whole-cell Water")
+	var expected_family: String = {"Water: inertial":"inertial_cellular_v1","Water: whole-cell":"cellular_yield_v1",
+		"Water: pressure reference":"pressure_flow_v1","Water: pressure cached":"pressure_flow_v1",
+		"Water: pressure dormant":"pressure_flow_v1"}.get(preset,"")
+	if not expected_family.is_empty():
+		check(family == expected_family,"liquid-lab applies the requested %s preset (got %s)" % [preset,family])
+	var whole := family in ["inertial_cellular_v1","cellular_yield_v1"]
+	check(bool(r.whole_cell_water) == whole,"device owner reports the Water quantity regime")
 	check(bool(spray().get("ballistic_enabled",false)) == ballistic,"ballistic Water construction matches the request")
-	check(r.valve.state == "closed" and not r.drain.open and not r.nozzle.on,"every device starts closed")
+	check(r.valves[0].state == "closed" and not r.drain.open and not r.nozzle.on,"every device starts closed")
 	var unit := int(r.water_unit)
 	evidence.water_unit = unit
 	check(unit > 0 and int(r.pipe.stock) == 150 * unit,"pipe starts with the authored 150-cell supply")
@@ -139,11 +159,12 @@ func run() -> void:
 
 	# Refusals: a command for an older configuration and an out-of-range tune.
 	var refused_before := int(receipt().refused)
-	main.workbench_equipment({"command":"valve","serial":panel.equipment.serial-1,"open":true})
+	main.workbench_equipment({"command":"valve","serial":panel.equipment.serial-1,"index":0,"open":true})
+	main.workbench_equipment({"command":"valve","serial":panel.equipment.serial,"index":5,"open":true})
 	main.workbench_equipment({"command":"tune","serial":panel.equipment.serial,"angle":720.0,"speed":4.0,"rate":2})
 	main.workbench_equipment({"command":"configure","serial":1,"config":{"version":1}})
-	await until(func() -> bool: return int(receipt().refused) >= refused_before + 3,"stale/invalid commands refused")
-	check(not receipt().valve.open and is_equal_approx(float(receipt().nozzle.angle),AIM),"refused commands changed nothing")
+	await until(func() -> bool: return int(receipt().refused) >= refused_before + 4,"stale/invalid commands refused")
+	check(not receipt().valves[0].open and is_equal_approx(float(receipt().nozzle.angle),AIM),"refused commands changed nothing")
 	check(not main.simulation_worker.queue_workbench_equipment({"command":"explode"}),"unknown command refused at the queue")
 
 	panel.toggle_pause()
@@ -152,7 +173,7 @@ func run() -> void:
 	if not await run_ticks(240,"leak"): return finish()
 	var leaking := await observe()
 	r = receipt()
-	check(int(r.valve.opened_cells) == 32,"all 32 gate cells opened (%d)" % int(r.valve.opened_cells))
+	check(int(r.valves[0].opened_cells) == 32,"all 32 gate cells opened (%d)" % int(r.valves[0].opened_cells))
 	check(int(leaking.tank.water_cells) < 120 * 90 - 400,"reservoir lost Water through the opening (%d)" % int(leaking.tank.water_cells))
 	check(int(leaking.basin.water_cells) > 400,"Water ran out laterally into the basin (%d)" % int(leaking.basin.water_cells))
 	check(int(water().total) == start_total,"leak is a pure transfer: native Water unchanged")
@@ -163,18 +184,22 @@ func run() -> void:
 
 	# Close: the gate refills, pushing caught whole cells aside exactly.
 	check(panel.equipment.toggle("valve"),"valve closing")
-	await until(func() -> bool: return receipt().valve.state == "closed","valve fully closed",60.0)
+	await until(func() -> bool: return receipt().valves[0].state == "closed","valve fully closed",60.0)
 	r = receipt()
-	check(int(r.valve.closed_cells) == 32,"all 32 gate cells refilled before closed is reported (%d)" % int(r.valve.closed_cells))
-	check(int(r.valve.trimmed_water) == 0,"whole-cell Water is moved, never trimmed")
-	check(int(water().total) == start_total,"closing preserves native Water exactly")
+	check(int(r.valves[0].closed_cells) == 32,"all 32 gate cells refilled before closed is reported (%d)" % int(r.valves[0].closed_cells))
+	var trimmed := int(r.valves[0].trimmed_water)
+	if whole: check(trimmed == 0,"whole-cell Water is moved, never trimmed")
+	# Every later quantity check is relative to the World after explicit trimming.
+	start_total -= trimmed
+	loop_total -= trimmed
+	check(int(water().total) == start_total,"closing changes native Water by exactly the booked trim (%d)" % trimmed)
 	var closed := await observe()
 	check(int(closed.gate.water_cells) == 0,"no Water left inside the closed gate")
 	if not await run_ticks(90,"after closure"): return finish()
 	var settled := await observe()
-	check(int(settled.tank.water_cells) == int(closed.tank.water_cells),"no flow through a closed valve")
+	check(int(settled.tank.water) == int(closed.tank.water),"no flow through a closed valve (quantity %d -> %d)" % [int(closed.tank.water),int(settled.tank.water)])
 	await capture("closed")
-	evidence.close = {"displaced_cells":int(r.valve.displaced_cells),"closed_cells":int(r.valve.closed_cells),
+	evidence.close = {"displaced_cells":int(r.valves[0].displaced_cells),"closed_cells":int(r.valves[0].closed_cells),"trimmed_water":trimmed,
 		"basin_cells_at_close":int(closed.basin.water_cells),"basin_cells_later":int(settled.basin.water_cells)}
 
 	# B. Drain: the bottom drain pipes basin Water to the nozzle.
@@ -182,13 +207,13 @@ func run() -> void:
 	if not await run_ticks(200,"drain"): return finish()
 	r = receipt()
 	var drained := int(r.drain.drained_water)
-	check(drained > 0 and drained % unit == 0,"drain removed whole Water cells (%d units)" % drained)
+	check(drained > 0 and (not whole or drained % unit == 0),"drain removed Water (%d units)" % drained)
 	check(int(r.pipe.stock) == 150 * unit + drained,"pump pipe holds exactly the drained Water")
 	check(int(water().total) == start_total - drained,"native Water fell by exactly the drained quantity")
 	check(int(water().total) + int(r.pipe.stock) == loop_total,"loop quantity conserved during drainage")
 	ledger_closed("drain")
 	await capture("drain")
-	evidence.drain = {"drained_cells":drained / unit,"masked_skips":int(r.drain.masked_skips)}
+	evidence.drain = {"drained_cells":float(drained) / unit,"masked_skips":int(r.drain.masked_skips)}
 
 	# C. Nozzle: pumped Water fired back over the ledge and barrel.
 	var barrel_before: Dictionary = panel.body_state(1)
@@ -203,8 +228,10 @@ func run() -> void:
 	ledger_closed("nozzle")
 	if ballistic:
 		var spray_after: Dictionary = spray().get("ledger",{})
-		check(int(spray_after.injected_parcels) - int(spray_before.get("injected_parcels",0)) == int(r.nozzle.emitted),
-			"every nozzle emission is a native ballistic parcel")
+		# A flooded muzzle switches to underwater injection; every other emission is a parcel.
+		check(int(spray_after.injected_parcels) - int(spray_before.get("injected_parcels",0))
+			== int(r.nozzle.emitted) - int(r.nozzle.column_injections) - int(r.nozzle.topped_up),
+			"every dry-muzzle nozzle emission is a native ballistic parcel")
 		evidence.ballistic = {"in_flight":int(w.get("ballistic",0)),"body_contacts":int(spray_after.body_contacts)-int(spray_before.get("body_contacts",0)),
 			"terrain_contacts":int(spray_after.terrain_contacts)-int(spray_before.get("terrain_contacts",0)),
 			"deposited":int(spray_after.deposited_parcels)-int(spray_before.get("deposited_parcels",0))}
@@ -215,8 +242,8 @@ func run() -> void:
 			"moved":Vector2(barrel_after.position).distance_to(Vector2(barrel_before.position))}
 	var spraying := await observe()
 	await capture("nozzle")
-	evidence.nozzle = {"emitted":int(r.nozzle.emitted),"injected_cells":injected / unit,"dry_zone_cells":int(spraying.dry.water_cells),
-		"mode":str(r.nozzle_mode),"pipe_cells":int(r.pipe.stock) / unit}
+	evidence.nozzle = {"emitted":int(r.nozzle.emitted),"injected_cells":float(injected) / unit,"dry_zone_cells":int(spraying.dry.water_cells),
+		"mode":str(r.nozzle_mode),"pipe_cells":float(r.pipe.stock) / unit,"underwater_injections":int(r.nozzle.column_injections) + int(r.nozzle.topped_up)}
 
 	# Live aim tuning keeps the devices running and is kept as authored data.
 	check(panel.equipment.nudge_aim(10.0),"aim nudged")
@@ -225,10 +252,30 @@ func run() -> void:
 
 	# Stop closes everything; residual Water keeps moving under the solver.
 	check(panel.equipment.stop_all(),"stop all")
-	await until(func() -> bool: return not receipt().drain.open and not receipt().nozzle.on and receipt().valve.state == "closed","all devices stopped")
+	await until(func() -> bool: return not receipt().drain.open and not receipt().nozzle.on and receipt().valves[0].state == "closed","all devices stopped")
 	var stock_after_stop := int(receipt().pipe.stock)
 	if not await run_ticks(30,"after stop"): return finish()
 	check(int(receipt().pipe.stock) == stock_after_stop,"stopped devices move no Water")
+
+	# B5: a full pipe stops the drain instead of deleting Water.
+	var authored: Dictionary = panel.applied.equipment
+	var original_capacity := int(authored.pipe_capacity)
+	authored.pipe_capacity = int(authored.supply) + 2
+	check(panel.equipment.configure(),"reconfigure with a 2-cell pipe headroom")
+	await until(current,"small pipe configured")
+	var loop_small := int(water().total) + int(receipt().pipe.stock)
+	check(panel.equipment.toggle("drain"),"drain opened into the small pipe")
+	check(panel.equipment.toggle("valve"),"valve reopened to feed the drain")
+	await until(func() -> bool: return int(receipt().drain.pipe_full) > 0,"pipe reports full",150.0)
+	if not await run_ticks(30,"pipe full"): return finish()
+	r = receipt()
+	check(int(r.pipe.stock) <= int(r.pipe.capacity) and int(r.pipe.capacity) - int(r.pipe.stock) < unit + 256,
+		"pipe filled to its capacity and no further (%d/%d)" % [int(r.pipe.stock),int(r.pipe.capacity)])
+	check(int(water().total) + int(r.pipe.stock) == loop_small,"a full pipe deletes nothing")
+	ledger_closed("pipe full")
+	evidence.pipe_full = {"stock":int(r.pipe.stock),"capacity":int(r.pipe.capacity),"pipe_full_events":int(r.drain.pipe_full)}
+	check(panel.equipment.stop_all(),"stop after pipe test")
+	authored.pipe_capacity = original_capacity
 	if not main.paused: panel.toggle_pause()
 
 	# Restore start rebuilds the World; equipment is reconstructed closed.
@@ -236,8 +283,8 @@ func run() -> void:
 	check(panel.restore_start(),"restore start")
 	if not await until(func() -> bool: return installed() and current() and panel.equipment.serial > old_serial,"restored and reconfigured"): return finish()
 	r = receipt()
-	check(r.valve.state == "closed" and int(r.drain.drained_water) == 0 and int(r.pipe.stock) == 150 * unit,"restore resets transient device state")
-	await until(func() -> bool: return not water().is_empty() and int(water().total) == start_total,"restored World has the authored Water")
+	check(r.valves[0].state == "closed" and int(r.drain.drained_water) == 0 and int(r.pipe.stock) == 150 * unit,"restore resets transient device state")
+	await until(func() -> bool: return not water().is_empty() and int(water().total) == int(evidence.start.world_water),"restored World has the authored Water")
 	var restored := await observe()
 	check(int(restored.tank.water_cells) == 120 * 90,"restored reservoir is full and sealed")
 	check(is_equal_approx(float(r.config.nozzle[2]),AIM+10.0),"restore keeps the authored aim")
@@ -259,22 +306,33 @@ func run() -> void:
 func _static_checks() -> void:
 	var lab := Setup.liquid_lab(PackedInt32Array([0]))
 	check(Setup.validate(lab).is_empty(),"liquid-lab start validates: " + Setup.validate(lab))
+	var reservoirs := Setup.reservoir_lab(PackedInt32Array([0]))
+	check(Setup.validate(reservoirs).is_empty(),"reservoir-lab start validates: " + Setup.validate(reservoirs))
 	check(not Setup.fresh(PackedInt32Array([0])).has("equipment"),"ordinary starts keep Setup-v2 keys")
 	var extent := Vector2i(512,512)
 	var cases := {
-		"unknown key": {"version":1,"valve":[],"drain":[],"nozzle":[],"supply":0,"pump":false,"x":1},
-		"oversized valve": {"version":1,"valve":[10,10,10,10],"drain":[],"nozzle":[],"supply":0,"pump":false},
-		"zero drain rate": {"version":1,"valve":[],"drain":[10,10,4,4,0],"nozzle":[],"supply":0,"pump":false},
-		"nozzle at edge": {"version":1,"valve":[],"drain":[],"nozzle":[0,5,0.0,2.0,1],"supply":0,"pump":false},
-		"pump without nozzle": {"version":1,"valve":[],"drain":[10,10,4,4,4],"nozzle":[],"supply":0,"pump":true},
-		"fractional geometry": {"version":1,"valve":[10.5,10,4,4],"drain":[],"nozzle":[],"supply":0,"pump":false},
-		"future version": {"version":2,"valve":[],"drain":[],"nozzle":[],"supply":0,"pump":false},
+		"unknown key": _block({"x":1}),
+		"old single valve key": {"version":1,"valve":[],"drain":[],"nozzle":[],"supply":0,"pump":false,"pipe_capacity":10},
+		"oversized valve": _block({"valves":[[10,10,10,10]]}),
+		"overlapping valves": _block({"valves":[[10,10,4,4],[12,12,4,4]]}),
+		"nine valves": _block({"valves":[[10,10,2,2],[20,10,2,2],[30,10,2,2],[40,10,2,2],[50,10,2,2],[60,10,2,2],[70,10,2,2],[80,10,2,2],[90,10,2,2]]}),
+		"zero drain rate": _block({"drain":[10,10,4,4,0]}),
+		"nozzle at edge": _block({"nozzle":[0,5,0.0,2.0,1]}),
+		"pump without nozzle": _block({"drain":[10,10,4,4,4],"pump":true}),
+		"fractional geometry": _block({"valves":[[10.5,10,4,4]]}),
+		"supply above pipe": _block({"nozzle":[20,20,0.0,2.0,1],"supply":30,"pipe_capacity":20}),
+		"future version": _block({"version":2}),
 	}
 	for label: String in cases:
 		check(not Equipment.validate(cases[label],extent).is_empty(),"refuses " + label)
 		var bad := lab.duplicate(true)
 		bad.equipment = cases[label]
 		check(not Setup.validate(bad).is_empty(),"Setup refuses " + label)
+
+func _block(changes: Dictionary) -> Dictionary:
+	var block := Equipment.empty_config()
+	block.merge(changes,true)
+	return block
 
 func finish() -> void:
 	if not _tick_ms.is_empty():
@@ -283,6 +341,14 @@ func finish() -> void:
 		var sorted := _tick_ms.duplicate()
 		sorted.sort()
 		evidence.native_tick_ms = {"samples":_tick_ms.size(),"mean":total/_tick_ms.size(),"p95":sorted[int(sorted.size()*0.95)]}
+	for pair: Array in [["main_process_ms",_process_ms],["frame_interval_ms",_frame_ms],["worker_step_ms",_worker_ms]]:
+		var values: Array = pair[1]
+		if values.is_empty(): continue
+		var ordered := values.duplicate()
+		ordered.sort()
+		var sum := 0.0
+		for value: float in values: sum += value
+		evidence[pair[0]] = {"samples":values.size(),"mean":sum / values.size(),"p95":ordered[int(ordered.size() * 0.95)],"max":ordered[-1]}
 	evidence.workers_observed_peak = _workers_peak
 	evidence.runtime = {"os":OS.get_name(),"godot":Engine.get_version_info().string,
 		"native_sha256":FileAccess.get_sha256("res://addons/cybersand_native/bin/" + ("cybersand_native.windows.x86_64.dll" if OS.get_name() == "Windows" else "libcybersand_native.linux.x86_64.so"))}

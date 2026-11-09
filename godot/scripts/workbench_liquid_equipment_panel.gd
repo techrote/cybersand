@@ -7,6 +7,7 @@ extends RefCounted
 # from the worker's published receipt and the native Water ledger.
 
 const Equipment = preload("res://scripts/workbench_liquid_equipment.gd")
+const Setup = preload("res://scripts/workbench_setup.gd")
 const DEFAULT_VALVE := Vector2i(4,8)
 const DEFAULT_DRAIN := [12,6,16]
 const DEFAULT_NOZZLE := [-135.0,4.0,2]
@@ -15,7 +16,9 @@ var host: Control
 var ui: Control
 var serial := 0
 var message := ""
-var _desired := {"valve":false,"drain":false,"nozzle":false}
+var selected_valve := 0
+var _desired := {"drain":false,"nozzle":false}
+var _valves_open: Array[bool] = []
 var _entered: Callable
 var _status := Label.new()
 var _speed := SpinBox.new()
@@ -32,11 +35,14 @@ func build(owner: Control, workbench: Control, row_factory: Callable, entered_po
 	var row: Control = row_factory.call(workbench)
 	var title := Label.new()
 	title.text = "Liquid equipment"
-	title.tooltip_text = "Valve, drain and nozzle devices (#361). Load the built-in liquid-lab start, or place devices at X/Y."
+	title.tooltip_text = "Valves, drain and nozzle devices (#361). Load a built-in equipment start, or place devices at X/Y."
 	row.add_child(title)
-	for spec: Array in [["valve","Valve [V]"],["drain","Drain [G]"],["nozzle","Nozzle [H]"]]:
-		var device: String = spec[0]
-		_buttons[device] = _add_button(row,spec[1],func() -> void: toggle(device))
+	_buttons.valve = _add_button(row,"Valve 1 [V]",func() -> void: toggle("valve"))
+	_add_button(row,"◀ [",func() -> void: select_valve(-1))
+	_add_button(row,"▶ ]",func() -> void: select_valve(1))
+	_add_button(row,"All valves",toggle_all_valves)
+	_buttons.drain = _add_button(row,"Drain [G]",func() -> void: toggle("drain"))
+	_buttons.nozzle = _add_button(row,"Nozzle [H]",func() -> void: toggle("nozzle"))
 	_add_button(row,"Aim − [J]",func() -> void: nudge_aim(-10.0))
 	_add_button(row,"Aim + [K]",func() -> void: nudge_aim(10.0))
 	_add_spin(row,"Speed",_speed,0.5,6.0,0.1,DEFAULT_NOZZLE[1])
@@ -45,7 +51,8 @@ func build(owner: Control, workbench: Control, row_factory: Callable, entered_po
 	_rate.value_changed.connect(func(_v: float) -> void: tune())
 	_add_button(row,"Stop all",stop_all)
 	row = row_factory.call(workbench)
-	_add_button(row,"Load liquid-lab",func() -> void: ui.load_liquid_lab())
+	_add_button(row,"Load liquid-lab",func() -> void: ui.load_equipment_start(Setup.LIQUID_LAB_LABEL))
+	_add_button(row,"Load reservoir-lab",func() -> void: ui.load_equipment_start(Setup.RESERVOIR_LAB_LABEL))
 	_add_button(row,"Valve at X/Y",func() -> void: place("valve"))
 	_add_button(row,"Drain at X/Y",func() -> void: place("drain"))
 	_add_button(row,"Nozzle at X/Y",func() -> void: place("nozzle"))
@@ -88,6 +95,10 @@ func config() -> Dictionary:
 	return ui.applied.get("equipment",{})
 
 
+func valve_count() -> int:
+	return config().get("valves",[]).size()
+
+
 func _refuse(reason: String) -> bool:
 	message = "Equipment refused · " + reason
 	return false
@@ -99,7 +110,10 @@ func configure() -> bool:
 	var authored := config()
 	if authored.is_empty(): return true
 	serial += 1
-	_desired = {"valve":false,"drain":false,"nozzle":false}
+	_desired = {"drain":false,"nozzle":false}
+	_valves_open = []
+	for _i: int in authored.valves.size(): _valves_open.append(false)
+	selected_valve = clampi(selected_valve,0,maxi(authored.valves.size()-1,0))
 	var nozzle: Array = authored.get("nozzle",[])
 	if not nozzle.is_empty():
 		_speed.set_value_no_signal(float(nozzle[3]))
@@ -117,17 +131,31 @@ func installed(_applied: Dictionary) -> void:
 
 
 func _send(request: Dictionary) -> bool:
-	if config().is_empty(): return _refuse("no equipment in this setup. Load liquid-lab or place a device.")
+	if config().is_empty(): return _refuse("no equipment in this setup. Load an equipment start or place a device.")
 	if ui.busy(): return _refuse("wait for the current owner transaction.")
 	request.serial = serial
 	if not host.workbench_equipment(request): return _refuse("the worker queue is full or the session is changing.")
 	return true
 
 
-func toggle(device: String) -> bool:
-	var receipt: Dictionary = host.tower_context.get("workbench_equipment",{})
-	if int(receipt.get("serial",-1)) == serial and receipt.get(device,{}).has("installed"):
-		if not receipt[device].installed: return _refuse("this setup has no %s." % device)
+func select_valve(step: int) -> bool:
+	if valve_count() == 0: return _refuse("this setup has no valves.")
+	selected_valve = posmod(selected_valve + step,valve_count())
+	message = "Valve %d of %d selected." % [selected_valve + 1,valve_count()]
+	return true
+
+
+func toggle(device: String, index: int = -2) -> bool:
+	if device == "valve":
+		if valve_count() == 0: return _refuse("this setup has no valves.")
+		var which := selected_valve if index == -2 else index
+		if which < 0 or which >= valve_count(): return _refuse("no valve %d." % (which + 1))
+		var next_open: bool = not _valves_open[which]
+		if not _send({"command":"valve","index":which,"open":next_open}): return false
+		_valves_open[which] = next_open
+		message = "Valve %d %s." % [which + 1,"opening" if next_open else "closing"]
+		return true
+	if config().get(device,[]).is_empty(): return _refuse("this setup has no %s." % device)
 	var next: bool = not bool(_desired.get(device,false))
 	var key := "on" if device == "nozzle" else "open"
 	if not _send({"command":device,key:next}): return false
@@ -136,9 +164,20 @@ func toggle(device: String) -> bool:
 	return true
 
 
+# Opens every valve unless all are already open, in which case it closes them.
+func toggle_all_valves() -> bool:
+	if valve_count() == 0: return _refuse("this setup has no valves.")
+	var open: bool = _valves_open.has(false)
+	if not _send({"command":"valve","index":-1,"open":open}): return false
+	for i: int in _valves_open.size(): _valves_open[i] = open
+	message = "All valves %s." % ("opening" if open else "closing")
+	return true
+
+
 func stop_all() -> bool:
 	if not _send({"command":"stop"}): return false
-	_desired = {"valve":false,"drain":false,"nozzle":false}
+	_desired = {"drain":false,"nozzle":false}
+	for i: int in _valves_open.size(): _valves_open[i] = false
 	message = "All devices closed."
 	return true
 
@@ -172,21 +211,24 @@ func _edit(change: Callable) -> bool:
 	return configure()
 
 
+# Valve at X/Y adds a gate (up to eight); Drain and Nozzle replace the single one.
 func place(device: String) -> bool:
 	var at := Vector2i(_entered.call())
 	var speed := float(_speed.value)
 	var rate := int(_rate.value)
 	var supply := int(_supply.value)
 	var pump := _pump.button_pressed
-	return _edit(func(next: Dictionary) -> void:
+	var placed := _edit(func(next: Dictionary) -> void:
 		if device == "valve":
-			next.valve = [at.x,at.y,DEFAULT_VALVE.x,DEFAULT_VALVE.y]
+			next.valves.append([at.x,at.y,DEFAULT_VALVE.x,DEFAULT_VALVE.y])
 		elif device == "drain":
 			next.drain = [at.x,at.y,DEFAULT_DRAIN[0],DEFAULT_DRAIN[1],DEFAULT_DRAIN[2]]
 		else:
 			next.nozzle = [at.x,at.y,DEFAULT_NOZZLE[0],speed,rate]
 			next.supply = supply
 			next.pump = pump)
+	if placed and device == "valve": selected_valve = valve_count() - 1
+	return placed
 
 
 func apply_supply() -> bool:
@@ -210,35 +252,48 @@ func remove_all() -> bool:
 func refresh(context: Dictionary) -> void:
 	var receipt: Dictionary = context.get("workbench_equipment",{})
 	if host.physical_actor_overlay != null and host.physical_actor_overlay.has_method(&"show_liquid_equipment"):
-		host.physical_actor_overlay.show_liquid_equipment(receipt if not config().is_empty() else {})
+		host.physical_actor_overlay.show_liquid_equipment(receipt if not config().is_empty() else {},selected_valve)
 	if config().is_empty():
-		_status.text = "Liquid equipment · none in this setup (load liquid-lab, or Valve/Drain/Nozzle at X/Y)" + _suffix()
+		_status.text = "Liquid equipment · none in this setup (load liquid-lab or reservoir-lab, or place devices at X/Y)" + _suffix()
 		return
 	if not receipt.get("configured",false) or int(receipt.get("serial",-1)) != serial:
 		_status.text = "Liquid equipment · installing…" + _suffix()
 		return
-	for device: String in _buttons:
+	var valves: Array = receipt.valves
+	for i: int in mini(valves.size(),_valves_open.size()): _valves_open[i] = bool(valves[i].open)
+	_buttons.valve.disabled = valves.is_empty()
+	if not valves.is_empty():
+		var chosen: Dictionary = valves[selected_valve]
+		_buttons.valve.text = "Valve %d/%d %s [V]" % [selected_valve + 1,valves.size(),"OPEN" if chosen.open else "shut"]
+	for device: String in ["drain","nozzle"]:
 		var state: Dictionary = receipt.get(device,{})
 		var live: bool = state.get("on",false) if device == "nozzle" else state.get("open",false)
 		_desired[device] = live
 		_buttons[device].disabled = not state.get("installed",false)
 		_buttons[device].text = "%s %s [%s]" % [device.capitalize(),("ON" if live else "off") if device == "nozzle" else ("OPEN" if live else "shut"),
-			{"valve":"V","drain":"G","nozzle":"H"}[device]]
+			"H" if device == "nozzle" else "G"]
 	var unit := maxi(int(receipt.water_unit),1)
-	var valve: Dictionary = receipt.valve
 	var drain: Dictionary = receipt.drain
 	var nozzle: Dictionary = receipt.nozzle
 	var pipe: Dictionary = receipt.pipe
 	var water: Dictionary = context.get("water_spray",{}).get("water",{})
 	var parts := PackedStringArray()
-	if valve.installed:
-		parts.append("valve %s%s" % [valve.state,(" (%d cells waiting)" % int(valve.waiting)) if int(valve.waiting) > 0 else ""])
+	if not valves.is_empty():
+		var states := PackedStringArray()
+		var trimmed := 0
+		for i: int in valves.size():
+			var mark: String = {"open":"O","opening":"o","closed":"·","closing":"c"}.get(str(valves[i].state),"?")
+			states.append(("[%s]" if i == selected_valve else "%s") % mark)
+			trimmed += int(valves[i].trimmed_water)
+		parts.append("valves %s%s" % [" ".join(states),(" · trimmed %.1f cells" % (float(trimmed)/unit)) if trimmed > 0 else ""])
 	if drain.installed:
-		parts.append("drain %s · %.1f cells drained" % ["open" if drain.open else "shut",float(drain.drained_water)/unit])
+		parts.append("drain %s · %.1f cells drained%s" % ["open" if drain.open else "shut",float(drain.drained_water)/unit,
+			" · PIPE FULL" if int(drain.pipe_full) > 0 and drain.open else ""])
 	if nozzle.installed:
-		parts.append("nozzle %s (%s) %.0f° · %.1f cells injected" % ["on" if nozzle.on else "off",receipt.get("nozzle_mode",""),
-			float(nozzle.angle),float(nozzle.injected_water)/unit])
-		parts.append("%s %.1f cells" % ["pump pipe" if pipe.pump else "supply",float(pipe.stock)/unit])
+		parts.append("nozzle %s (%s) %.0f° · %.1f cells injected%s" % ["on" if nozzle.on else "off",receipt.get("nozzle_mode",""),
+			float(nozzle.angle),float(nozzle.injected_water)/unit,
+			(" · %d raised the level underwater" % int(nozzle.column_injections)) if int(nozzle.column_injections) > 0 else ""])
+		parts.append("%s %.1f/%.0f cells" % ["pump pipe" if pipe.pump else "supply",float(pipe.stock)/unit,float(pipe.capacity)/unit])
 	var line := "Liquid equipment · " + " · ".join(parts)
 	if not water.is_empty():
 		var world_cells := float(water.total)/unit

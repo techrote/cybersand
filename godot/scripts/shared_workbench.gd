@@ -612,7 +612,7 @@ func load_setup() -> bool:
 	# benchmark and "stress-canvas" the heavy-activity stress start. A saved
 	# file of the name always wins.
 	if _name.text in Setup.EQUIPMENT_LABELS and not FileAccess.file_exists(Setup._path(_name.text)):
-		return load_liquid_lab()
+		return load_equipment_start(_name.text)
 	if _name.text in Setup.BUILTIN_LABELS and not FileAccess.file_exists(Setup._path(_name.text)):
 		if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
 		result = {"setup":Setup.builtin(_name.text,_liquids.bridge.default_liquid_policy())}
@@ -620,22 +620,30 @@ func load_setup() -> bool:
 	if host.simulation_worker.has_failed(): return host.workbench_restart(result.setup)
 	return apply(result.setup)
 
-# Built-in #361 apparatus. It asks the native validator for the existing
-# opt-in "Water: inertial" preset and enables ballistic Water for this World
-# so the nozzle fires real parcels. Either can be refused; the start then keeps
-# the policy it was given and the nozzle injects resting cells instead.
-func load_liquid_lab(ballistic: bool = true) -> bool:
+# Built-in #361 equipment starts. Each asks the native validator for one of
+# the existing opt-in liquid presets (inertial Water by default) and sets
+# ballistic Water for that World so the nozzle fires real parcels. Either can
+# be refused; the start then keeps the policy it was given and the nozzle
+# injects resting cells instead. Global defaults never change.
+const EQUIPMENT_PRESETS := {Setup.LIQUID_LAB_LABEL:"Water: inertial",Setup.RESERVOIR_LAB_LABEL:"Water: pressure reference"}
+
+func load_liquid_lab(ballistic: bool = true, preset_label: String = "") -> bool:
+	return load_equipment_start(Setup.LIQUID_LAB_LABEL,ballistic,preset_label)
+
+func load_equipment_start(label: String, ballistic: bool = true, preset_label: String = "") -> bool:
 	if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
+	if label not in Setup.EQUIPMENT_LABELS: return refuse("Unknown equipment start.")
 	if not host.simulation_worker.has_failed() and not _editable(): return false
+	if preset_label.is_empty(): preset_label = EQUIPMENT_PRESETS[label]
 	var policy: PackedInt32Array = _liquids.bridge.default_liquid_policy()
 	var note := ""
 	var preset := -1
 	for index: int in CyberLiquidComparisonPanel.PRESETS.size():
-		if CyberLiquidComparisonPanel.PRESETS[index].label == "Water: inertial": preset = index
+		if CyberLiquidComparisonPanel.PRESETS[index].label == preset_label: preset = index
 	var chosen: Dictionary = _liquids._preset(preset) if preset >= 0 else {"ok":false,"error":"preset missing"}
 	if chosen.get("ok",false): policy = chosen.request
-	else: note = " Inertial Water unavailable (%s); using the current policy." % str(chosen.get("error",""))
-	var candidate := Setup.liquid_lab(policy)
+	else: note = " %s unavailable (%s); using the current policy." % [preset_label,str(chosen.get("error",""))]
+	var candidate := Setup.builtin(label,policy)
 	var checked: Dictionary = _liquids.bridge.validate_liquid_policy(policy)
 	if checked.get("accepted",false):
 		candidate.rule_radius = maxi(int(candidate.rule_radius),int(checked.receipt.get("minimum_rule_radius",2)))
@@ -643,7 +651,7 @@ func load_liquid_lab(ballistic: bool = true) -> bool:
 	water_spray._ballistic.set_pressed_no_signal(ballistic)
 	if host.simulation_worker.has_failed(): return host.workbench_restart(candidate)
 	if not apply(candidate): return false
-	message = "Loading liquid-lab: V valve, G drain, H nozzle, J/K aim." + note
+	message = "Loading %s (%s): V valve, [ ] choose valve, G drain, H nozzle, J/K aim." % [label,preset_label] + note
 	return true
 
 func _cancel() -> void:

@@ -51,12 +51,16 @@ func show_workbench_source(receipt: Dictionary) -> void:
 
 
 # IN-TOOLS #361 device markers from the worker's copied equipment receipt.
-func show_liquid_equipment(receipt: Dictionary) -> void:
+func show_liquid_equipment(receipt: Dictionary, selected_valve: int = -1) -> void:
 	var markers := {}
 	if receipt.get("configured",false):
 		var config: Dictionary = receipt.get("config",{})
-		if not config.get("valve",[]).is_empty(): markers.valve = [config.valve,receipt.valve.open]
-		if not config.get("drain",[]).is_empty(): markers.drain = [config.drain,receipt.drain.open]
+		var rects := []
+		for i: int in receipt.get("valves",[]).size():
+			var valve: Dictionary = receipt.valves[i]
+			rects.append([valve.rect,valve.open,"valve",i == selected_valve])
+		if not config.get("drain",[]).is_empty(): rects.append([config.drain,receipt.drain.open,"drain",false])
+		markers.rects = rects
 		if not config.get("nozzle",[]).is_empty(): markers.nozzle = [config.nozzle,receipt.nozzle.on,receipt.nozzle.angle]
 	if markers != equipment_markers:
 		equipment_markers = markers
@@ -65,15 +69,14 @@ func show_liquid_equipment(receipt: Dictionary) -> void:
 
 
 func _draw_equipment() -> void:
-	for key: String in ["valve","drain"]:
-		if not equipment_markers.has(key): continue
-		var rect: Array = equipment_markers[key][0]
-		var live: bool = equipment_markers[key][1]
+	for marker: Array in equipment_markers.get("rects",[]):
+		var rect: Array = marker[0]
+		var live: bool = marker[1]
 		var corners := PackedVector2Array()
 		for delta: Vector2 in [Vector2.ZERO,Vector2(rect[2],0),Vector2(rect[2],rect[3]),Vector2(0,rect[3]),Vector2.ZERO]:
 			corners.append(_point(Vector2(rect[0],rect[1]) + delta))
-		var color := (Color("7dff9a") if live else Color("ffb347")) if key == "valve" else (Color("5fc8ff") if live else Color("3a6f8f"))
-		draw_polyline(corners,color,2.0 if live else 1.0)
+		var color := (Color("7dff9a") if live else Color("ffb347")) if marker[2] == "valve" else (Color("5fc8ff") if live else Color("3a6f8f"))
+		draw_polyline(corners,color,3.0 if marker[3] else (2.0 if live else 1.0))
 	if equipment_markers.has("nozzle"):
 		var nozzle: Array = equipment_markers.nozzle[0]
 		var centre := Vector2(nozzle[0],nozzle[1]) + Vector2(0.5,0.5)
