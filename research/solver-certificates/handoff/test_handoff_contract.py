@@ -5,13 +5,13 @@ from handoff_contract import (World, Record, Owner, Refusal, prepare, commit, el
                               bound_cost_model, WHOLE_CELL)
 
 
-def world():
+def world(*, signed_inertial=False):
     return World.start(3, [
         Record("water-0", Owner.FREE_MASS, WHOLE_CELL),
         Record("pf-0", Owner.PRESSURE, 100, overfill=25),
         Record("sand-0", Owner.GRANULAR, 1),
         Record("actor-7", Owner.RAPIER, 1, body_id=7),
-    ])
+    ], signed_inertial_world_enabled=signed_inertial)
 
 
 class ContractProofTests(unittest.TestCase):
@@ -22,7 +22,7 @@ class ContractProofTests(unittest.TestCase):
         self.assertEqual(before, w.material_identity())
 
     def test_upward_spray_impact_and_inertial_reentry(self):
-        w = world(); total = w.water_total()
+        w = world(signed_inertial=True); total = w.water_total()
         w.record_contact(7, 42, "water-0", "rapier-impact")
         launch = prepare(w, token="launch", source_id="water-0", target=Owner.BALLISTIC,
                          amount=WHOLE_CELL, next_velocity_q256=(+32, -256),
@@ -45,6 +45,39 @@ class ContractProofTests(unittest.TestCase):
         self.assertEqual(w.records["sand-0"].owner, Owner.GRANULAR)
         self.assertEqual(w.records["actor-7"].owner, Owner.RAPIER)
         self.assertEqual(len(w.records), 4)
+
+    def test_caller_signed_flag_cannot_upgrade_unadmitted_world(self):
+        # FALSIFIER (pre-correction): allow_signed_inertial=True alone used to COMMIT
+        # a negative-vy IN transfer in World.start's default, unsigned policy.
+        unsigned = world()
+        identity = unsigned.material_identity()
+        i = prepare(unsigned, token="forged-signed", source_id="water-0",
+                    target=Owner.INERTIAL, amount=WHOLE_CELL,
+                    next_velocity_q256=(16, -8), allow_signed_inertial=True)
+        self.assert_refusal_unchanged(unsigned, i, Refusal.UNSIGNED_UPWARD)
+        self.assertEqual(unsigned.material_identity(), identity)
+        self.assertFalse(unsigned.signed_inertial_world_enabled)
+        # The same request is admitted in this research model ONLY if the
+        # World was explicitly created with the opt-in signed-law capability.
+        signed = world(signed_inertial=True)
+        allowed = prepare(signed, token="admitted-signed", source_id="water-0",
+                          target=Owner.INERTIAL, amount=WHOLE_CELL,
+                          next_velocity_q256=(16, -8), allow_signed_inertial=True)
+        self.assertEqual(commit(signed, allowed, fenced=True).status, "COMMITTED")
+        self.assertTrue(signed.signed_inertial_world_enabled)
+        self.assertEqual(signed.records["water-0"].owner, Owner.INERTIAL)
+        signed.assert_invariants()
+        # No World opt-in can be inferred solely from an untrusted request flag.
+        no_request = world(signed_inertial=True)
+        no_flag = prepare(no_request, token="flag-missing", source_id="water-0",
+                          target=Owner.INERTIAL, amount=WHOLE_CELL,
+                          next_velocity_q256=(16, -8))
+        self.assert_refusal_unchanged(no_request, no_flag, Refusal.UNSIGNED_UPWARD)
+
+    def test_world_signed_option_rejects_non_boolean(self):
+        with self.assertRaises(ValueError):
+            World.start(3, [Record("water", Owner.FREE_MASS, 256)],
+                        signed_inertial_world_enabled=1)
 
     def test_idempotent_duplicate_and_token_mismatch(self):
         w = world(); i = prepare(w, token="t", source_id="water-0", target=Owner.BALLISTIC, amount=WHOLE_CELL)
