@@ -13,12 +13,12 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 ## Workbench liquid equipment (#361) — 2026-11-09
 
 **Draft PR branch, not on main; no default changed.** The shared workbench gains an
-opt-in [valve, drain, pumped nozzle and liquid-lab apparatus](../systems/workbench-liquid-equipment.md)
+opt-in [valves, drain, pumped nozzle and the liquid-lab / reservoir-lab starts](../systems/workbench-liquid-equipment.md)
 authored in an optional Setup-v2 `equipment` block and run by a worker-owned device
 owner through ordinary booked native edits and the #406 ballistic owner. No native or
 GDExtension source changed. [Dated evidence](../audits/2026-11-09-in-tools-361-workbench-equipment.md)
-records local Windows 1/4-worker and ballistic/cell-mode runs with exact native ledger
-closure. Linux, hosted CI, human feel acceptance, physical-actor usable, #542 generated-map
+records local Windows and WSL Linux 1/4-worker runs across the inertial, pressure,
+whole-cell and Current Water families with exact native ledger closure. Linux, hosted CI, human feel acceptance, physical-actor usable, #542 generated-map
 placement and #531 agent use remain open.
 
 ## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05

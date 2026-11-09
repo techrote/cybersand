@@ -112,9 +112,76 @@ Actual windowed Godot workbench frames from the `fdea66bd` windowed run
 - [Pumped nozzle striking the barrel](../images/in-tools-361/liquid-lab-nozzle.png):
   status line shows the closed native ledger and constant loop total.
 
+
+## Second round: pressure families, reservoir-lab and pacing — 2026-11-09
+
+Source `cfe2ba54` (after `004d3c2e`; tests and equipment scripts only, still no
+native/GDExtension change). Every row below ran on exactly that tree.
+
+| Case | Platform / workers | Result |
+|---|---|---|
+| liquid-lab, `Water: inertial` | Windows request 4 and 1; WSL Linux request 1 and 4 | 103/0 each |
+| liquid-lab, `Water: pressure reference` / `cached` / `dormant` | Windows request 4 | 102/0 each |
+| liquid-lab, `Water: whole-cell` | Windows request 4 | 103/0 |
+| liquid-lab, `Current defaults` (FreeMass) | Windows request 4 | 101/0 |
+| `test_workbench_reservoir_lab.gd` (pressure reference) | Windows request 4; WSL Linux request 4 | 81/0 each |
+
+Per-family liquid-lab observations (240 ticks after opening the 8 × 4 bottom
+valve; Windows request 4):
+
+| Water family | Reservoir after leak (of 10 800) | Trim on close (units; 255 = one cell) | Drained cells | Native tick mean |
+|---|---|---|---|---|
+| inertial | 10 072 | 0 | 25 | 1.43 ms |
+| whole-cell (CellularYield) | 8 990 | 0 | 825 | 1.81 ms |
+| Current (FreeMass) | 8 968 | 1 889 | 753 | 2.31 ms |
+| pressure reference / cached / dormant | 8 648–8 660 | 226 | 575–578 | 5.6–6.0 ms |
+
+Findings and repairs in this round:
+
+- **Flooded gates.** Under whole-cell and Current Water the basin floods up to
+  the floor valve, so a closing gate found no free cell within four cells and
+  waited forever. A caught liquid cell is now passed up to its free surface.
+- **Pressurized cells.** Under PressureFlow every deep cell carries overfill, so
+  closing a valve trimmed every caught cell (≈ 52 cells per close in the
+  connected tanks). A full cell now moves and only its overfill is trimmed
+  (connected-tank close 13 327 → 3 525 units; liquid-lab close 4 756 → 226).
+- **Underwater inlet.** No public native call adds PressureFlow overfill at depth.
+  The inlet tops up a partial cell or adds a cell at the free surface. Stacking on
+  its own column made a spire; at the owner's request this is now speed-based:
+  slow inlets spread over the surface (exact pool gain asserted), fast inlets
+  (≥ 3 cells/tick) raise a fountain column (asserted: 6 cells above the surface
+  box after 90 ticks at speed 4).
+- **Pipe capacity.** A 2-cell headroom pipe stopped the drain exactly at capacity
+  (31 `pipe_full` events) with native Water + pipe unchanged.
+- **Counting.** A half-submerged muzzle can place a resting cell; the receipt now
+  reports `cell_emissions`, and every other emission is asserted to be a native
+  ballistic parcel.
+
+reservoir-lab (pressure reference, Windows request 4):
+
+- Connected tanks: 1 038 cells crossed in 150 ticks; closing mid-flow held both
+  sides exactly for 90 ticks; after reopening the tanks reached 2 946 vs 2 950 cells.
+- Cascade: the low valve raised bin 2 from 3 328 to 4 959 cells while bin 3 stayed
+  dry; opening the high valve then spilled 1 198 cells into bin 3.
+- Sealed tank: the drain removed 2 441 cells in 240 ticks with the vent shut and
+  2 004 cells in the next 240 with it open. **No vacuum hold-up was observed**:
+  the drain removes cells directly, which PressureFlow's gas model does not resist.
+- Submerged inlet: 480 cells piped into the pool; the pool gained exactly that
+  quantity; native Water + pipe constant throughout.
+
+Pacing (windowed Windows, ANGLE, NVIDIA, request 4, liquid-lab with inertial and
+pressure reference): frame interval mean 17.0 ms, p95 17.3–17.4 ms (60 Hz), with
+isolated spikes up to 174–191 ms during World installs and observations. The
+sampled `TIME_PROCESS` monitor and worker step field include test bookkeeping and
+idle waits, so they are retained in the logs but are not claimed as CPU cost.
+
+Frames: [cascade with high valve open](../images/in-tools-361/reservoir-lab-cascade.png),
+[fast inlet fountain](../images/in-tools-361/reservoir-lab-fountain.png).
+
 ## Explicit gaps
 
 - Hosted Native/GDExtension/Water CI is suppressed while Draft; no hosted pass is claimed.
+- A true underwater pressure point (adding PressureFlow overfill at depth) needs a new native call.
 - No sanitizer run: no native source changed.
 - Human feel acceptance, physical-actor usable, #542 generated-map placement and
   #531 agent use are not done.
