@@ -113,15 +113,21 @@ class World:
     contact_samples: set[tuple[int, int, int, str]] = field(default_factory=set)
     accepted: dict[str, tuple[tuple, Receipt]] = field(default_factory=dict)
     contact_observations: list[tuple[int, int, int, str, str]] = field(default_factory=list)
+    # Research-only immutable-at-World-construction option. NOT native source authentication.
+    signed_inertial_world_enabled: bool = False
 
     @classmethod
-    def start(cls, generation: int, records: list[Record]) -> World:
+    def start(cls, generation: int, records: list[Record], *,
+              signed_inertial_world_enabled: bool = False) -> World:
+        if type(signed_inertial_world_enabled) is not bool:
+            raise ValueError("signed-IN World option must be boolean")
         if generation < 1 or len(records) != len({r.identity for r in records}) or not all(r.valid() for r in records):
             raise ValueError("invalid initial records")
         for r in records:
             if r.owner == Owner.INERTIAL and r.amount != WHOLE_CELL:
                 raise ValueError("IN requires whole-cell Water")
-        w = cls(generation, 0, {r.identity: r for r in records}, 0)
+        w = cls(generation, 0, {r.identity: r for r in records}, 0,
+                signed_inertial_world_enabled=signed_inertial_world_enabled)
         w.initial_water = w.water_total()
         w.assert_invariants()
         return w
@@ -141,10 +147,12 @@ class World:
         assert all(r.owner == Owner.PRESSURE or r.overfill == 0 for r in self.records.values())
         assert self.water_total() + self.external_consumed == self.initial_water + self.external_produced
         assert len(self.accepted) <= MAX_TX
+        assert type(self.signed_inertial_world_enabled) is bool
 
     def material_identity(self) -> str:
         # Not CyberSand's physical hash; model-only source-bound state identity.
         visible = (MODEL_VERSION, BASELINE, self.generation, self.epoch,
+                   self.signed_inertial_world_enabled,
                    [(k, r.owner.value, r.amount, r.revision, r.overfill, r.velocity_q256, r.body_id)
                     for k, r in sorted(self.records.items())], self.external_produced,
                    self.external_consumed, sorted(self.contact_samples), self.source_epoch,
@@ -228,7 +236,8 @@ def commit(w: World, intent: Intent, *, fenced: bool, now_epoch: int | None = No
             len(intent.next_velocity_q256) != 2 or
             any(type(v) is not int for v in intent.next_velocity_q256)):
         return refused(Refusal.UNSUPPORTED)
-    if intent.target == Owner.INERTIAL and intent.next_velocity_q256[1] < 0 and not intent.allow_signed_inertial:
+    if (intent.target == Owner.INERTIAL and intent.next_velocity_q256[1] < 0 and
+            (not intent.allow_signed_inertial or not w.signed_inertial_world_enabled)):
         return refused(Refusal.UNSIGNED_UPWARD)
 
     # Build a *candidate*, then commit all mutable state after its full validation.
@@ -244,7 +253,8 @@ def commit(w: World, intent: Intent, *, fenced: bool, now_epoch: int | None = No
                                 body_id=src.body_id)
     trial = World(w.generation, w.epoch+1, candidate, w.initial_water,
                   w.external_produced, w.external_consumed, w.source_epoch,
-                  set(w.contact_samples), dict(w.accepted), list(w.contact_observations))
+                  set(w.contact_samples), dict(w.accepted), list(w.contact_observations),
+                  w.signed_inertial_world_enabled)
     after = trial.water_total()
     moment_after = trial.water_momentum_q256()
     if after != before:
