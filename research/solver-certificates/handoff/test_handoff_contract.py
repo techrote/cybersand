@@ -101,6 +101,8 @@ class ContractProofTests(unittest.TestCase):
         w=world(); i=prepare(w,token="badvel",source_id="water-0",target=Owner.BALLISTIC,amount=256)
         self.assert_refusal_unchanged(w,replace(i,next_velocity_q256=(1,)),Refusal.UNSUPPORTED)
         self.assert_refusal_unchanged(w,replace(i,next_velocity_q256=(1,"2")),Refusal.UNSUPPORTED)
+        j=prepare(w,token="bad-in",source_id="water-0",target=Owner.INERTIAL,amount=WHOLE_CELL)
+        self.assert_refusal_unchanged(w,replace(j,next_velocity_q256=(1,)),Refusal.UNSUPPORTED)
 
     def test_fence_and_epoch_timeout_and_generation(self):
         w=world(); i=prepare(w,token="t",source_id="water-0",target=Owner.BALLISTIC,amount=256)
