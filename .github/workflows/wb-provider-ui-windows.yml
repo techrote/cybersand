@@ -55,10 +55,10 @@ jobs:
         shell: pwsh
         run: |
           $env:PYTHONPATH = 'tools'
-          python -m unittest -v workbench_api_agent.test_desktop workbench_api_agent.test_git_status workbench_api_agent.test_desktop_funding
+          python -m unittest -v workbench_api_agent.test_desktop workbench_api_agent.test_git_status workbench_api_agent.test_desktop_funding workbench_api_agent.test_desktop_startup
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
           $engine = Get-Content build/provider-ui-godot.txt -Raw
-          python tools/wb_agent/qualify_integrated.py --godot $engine --output build/provider-ui-windows --cases runner-client runner-traffic runner-mounted client diagnostics dock-layout manual-save manual-reopen
+          python tools/wb_agent/qualify_integrated.py --godot $engine --output build/provider-ui-windows --cases runner-client runner-startup runner-traffic runner-mounted client diagnostics dock-layout manual-save manual-reopen
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
       - name: Retain original native images, receipts, failures and runtime identities
         if: always()

@@ -4,6 +4,7 @@ const MAX_CONTROL_BYTES := 32768
 const MAX_IPC_FILE_BYTES := 10 * 1024 * 1024
 const MAX_IPC_TOTAL_BYTES := 128 * 1024 * 1024
 const MAX_READ_PER_FRAME := 256 * 1024
+const STARTUP_TIMEOUT_MSEC := 75000
 var profile_path := ""
 var provider_mode := ""
 var allow_live := false
@@ -32,6 +33,7 @@ var _native_stop_requested := false
 var _finished_receipt: Dictionary = {}
 var _closing_deadline := 0
 var _runner_failing := false
+var _startup_deadline := 0
 var _writer := Thread.new()
 var _write_mutex := Mutex.new()
 var _write_queue: Array[PackedByteArray] = []
@@ -127,6 +129,7 @@ func _start_runner() -> void:
  if fixture_mode and not fixture_turns.is_empty(): document["fixture_turns"] = fixture_turns.duplicate(true)
  document["rate_history"] = _rate_history_for_start()
  _stage = "Starting Python provider runner"
+ _startup_deadline = Time.get_ticks_msec()+STARTUP_TIMEOUT_MSEC
  record_diagnostic("runner.started",{"pid":_runner_pid,"provider":_profile.get("provider"),"profile_sha256":_profile_hash,"bridge_root":_bridge_root})
  _queue_frame(document)
 
@@ -204,6 +207,7 @@ func _process(delta: float) -> void:
  var write_error := _writer_error
  _write_mutex.unlock()
  if not write_error.is_empty() and _active: _runner_fail(write_error)
+ _check_startup_deadline()
  if _closing_deadline > 0 and Time.get_ticks_msec() >= _closing_deadline and _native_stop_acknowledged():
   _dispose_child(true)
   return
@@ -211,6 +215,11 @@ func _process(delta: float) -> void:
   var unfinished := _active
   _dispose_child(false)
   if unfinished: _runner_fail("Provider runner exited before final receipt; native Stop requested. Inspect Traffic.")
+
+func _check_startup_deadline() -> void:
+ if _active and _startup_deadline > 0 and Time.get_ticks_msec() >= _startup_deadline:
+  _startup_deadline = 0
+  _runner_fail("Python startup timed out during: " + _stage + ". Native Stop requested; inspect Traffic.")
 
 func _handle_frame(frame: Dictionary) -> void:
  var kind := str(frame.get("type",""))
@@ -224,7 +233,16 @@ func _handle_frame(frame: Dictionary) -> void:
   record_diagnostic(str(frame.get("event","runner.event")),payload)
   if not _active: return
   var event_name := str(frame.get("event",""))
+  if event_name == "runner.preflight" and payload is Dictionary:
+   var phases := {"waiting_for_start":"Waiting for Python startup","start_received":"Starting checks",
+    "validate_profile":"Checking profile","credential_check":"Checking API key",
+    "source_check":"Checking local source","funding_check":"Checking spend limits",
+    "model_probe":"Checking model access","model_probe_complete":"Model access checked",
+    "runner_ready":"Python runner ready"}
+   _stage = str(phases.get(str(payload.get("phase","")),payload.get("detail","Checking Python startup")))
+  if event_name == "runner.native_session_open": _startup_deadline = 0
   if event_name == "http.request":
+   _startup_deadline = 0
    _request_count += 1
    _serial += 1
    _runner_wait_seconds = 0
@@ -250,6 +268,7 @@ func _handle_frame(frame: Dictionary) -> void:
  if kind == "native_request":
   var id := str(frame.get("id",""))
   var tool := str(frame.get("tool",""))
+  _startup_deadline = 0
   if tool == "stop":
    _native_stop_id = id
    if not _retirement_ack.is_empty(): _send_retirement_result()
@@ -279,6 +298,7 @@ func _handle_frame(frame: Dictionary) -> void:
   _stage = "Native " + tool
   tool_requested.emit(tool,_normalise_arguments(tool,args),_epoch,id)
  elif kind == "finished":
+  _startup_deadline = 0
   var report: Variant = frame.get("receipt",{})
   if frame.has("receipt_file"): report = _load_owned_json(str(frame.receipt_file),str(frame.get("receipt_sha256","")))
   _finished_receipt = report if report is Dictionary else {}
@@ -377,6 +397,7 @@ func stop_task(reason: String = "Human Stop") -> void:
  if _fake_transport:
   super.stop_task(reason)
   return
+ _startup_deadline = 0
  if _runner_pid != 0: _queue_frame({"type":"stop","reason":reason})
  super.stop_task(reason)
 
@@ -390,6 +411,7 @@ func _runner_fail(reason: String) -> void:
  _runner_failing = false
 
 func _dispose_child(kill_owned: bool) -> void:
+ _startup_deadline = 0
  var pid := _runner_pid
  _runner_pid = 0
  _write_mutex.lock()

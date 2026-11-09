@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 import time
 from pathlib import Path
 import sys
@@ -20,7 +21,8 @@ MAX_LINE=32768
 
 class Protocol:
     def __init__(self,output=None):
-        self.output=output or sys.stdout.buffer;self.lock=threading.Lock();self.root=None;self.seq=0;self.total=0;self.secrets=[]
+        self.output=output;self.output_fd=None if output is not None else sys.stdout.fileno()
+        self.lock=threading.Lock();self.root=None;self.seq=0;self.total=0;self.secrets=[]
     def clean(self,value):
         if isinstance(value,str):
             for key in self.secrets:
@@ -32,7 +34,14 @@ class Protocol:
     def send(self,frame):
         data=json.dumps(self.clean(frame),separators=(',',':'),ensure_ascii=True,allow_nan=False).encode()+b'\n'
         if len(data)>MAX_LINE:raise ConfigError('desktop control frame exceeds32KiB')
-        with self.lock:self.output.write(data);self.output.flush()
+        with self.lock:
+            if self.output is not None:self.output.write(data);self.output.flush()
+            else:
+                offset=0
+                while offset<len(data):
+                    written=os.write(self.output_fd,data[offset:])
+                    if written<=0:raise BrokenPipeError('desktop stdout closed')
+                    offset+=written
     def event(self,event,payload):
         payload=self.clean(payload);data=json.dumps(payload,separators=(',',':'),ensure_ascii=True,allow_nan=False).encode()
         if len(data)<=16000:
@@ -108,17 +117,61 @@ class Desktop:
     def __init__(self,protocol):
         self.protocol=protocol;self.runner=None;self.backend=None;self.worker=None
         self.stop_event=threading.Event();self.finished=threading.Event();self.started=False
+        self._preflight_stop_thread=None
+    def _phase(self,name):
+        details={'start_received':'Start received; native task identity acknowledged.',
+                 'validate_profile':'Validating host profile and frozen grants.',
+                 'credential_check':'Checking selected provider credential; value is not logged.',
+                 'source_check':'Checking tracked source content against Git HEAD.',
+                 'funding_check':'Checking bounded spending authorization and funding mode.',
+                 'model_probe':'Checking model availability; no inference.',
+                 'model_probe_complete':'Model availability check returned.',
+                 'runner_ready':'Preflight complete; controller ready.'}
+        self.protocol.event('runner.preflight',{'phase':name,'detail':details.get(name,name)})
+    def _checkpoint(self,name):
+        if self.stop_event.is_set():raise NativeError('host_stop_requested')
+        self._phase(name)
+    def _request_preflight_stop(self):
+        if self.backend is None:return
+        if self._preflight_stop_thread and self._preflight_stop_thread.is_alive():return
+        def stop():
+            try:
+                result=self.backend.stop('desktop-preflight-stop',25)
+                self.protocol.event('startup.native_stop',{'native_stop_acknowledged':result['receipt']['status']=='stopped','receipt':result})
+            except Exception as exc:
+                try:self.protocol.event('startup.native_stop',{'native_stop_acknowledged':False,'reason':getattr(exc,'code','native_stop_unconfirmed')})
+                except Exception:pass
+        self._preflight_stop_thread=threading.Thread(target=stop,name='preflight-native-stop',daemon=True)
+        self._preflight_stop_thread.start()
     def receive(self,frame):
+        if self.finished.is_set():return
         kind=frame.get('type')
         if kind=='start':
             if self.started:raise ConfigError('desktop duplicate start refused')
             self.started=True
+            try:
+                root=Path(frame.get('bridge_root','')).resolve(strict=True)
+                if not root.is_dir():raise ConfigError('desktop bridge root unavailable')
+                self.protocol.root=root;raw=frame.get('task',{})
+                auth={'cell_limit':raw.get('cell_limit',4096),'scope':raw.get('scope',{}),
+                      'allowed_materials':raw.get('allowed_materials',[0,58]),'protected':raw.get('protected_regions',[])}
+                # Only establish the host's already-acknowledged native authority.
+                self.backend=DesktopWorkbench(self.protocol.send,frame.get('session',{}),auth,root)
+                self.backend.open();self._phase('start_received')
+            except Exception as exc:
+                try:self.protocol.finished({'status':'unconfirmed_stop','reason':getattr(exc,'code','desktop_start_metadata_invalid'),'stop_acknowledged':False})
+                finally:self.finished.set()
+                return
             self.worker=threading.Thread(target=self._run,args=(frame,),name='provider-neutral-runner',daemon=True);self.worker.start()
         elif kind=='native_result':
             if self.backend:self.backend.deliver(frame)
         elif kind=='stop':
             self.stop_event.set()
+            if not self.started:
+                self.protocol.finished({'status':'unconfirmed_stop','reason':'host_stop_before_start','stop_acknowledged':False})
+                self.finished.set();return
             if self.runner:self.runner.request_host_stop_async()
+            else:self._request_preflight_stop()
         else:raise ConfigError('desktop unknown protocol frame')
     def disconnected(self):
         self.stop_event.set()
@@ -130,13 +183,14 @@ class Desktop:
             root=Path(frame.get('bridge_root','')).resolve(strict=True)
             if not root.is_dir() or root.is_symlink():raise ConfigError('fresh desktop bridge root required')
             self.protocol.root=root
+            self._checkpoint('validate_profile')
             cfg,task,auth,fixture=start_config(frame)
-            self.backend=DesktopWorkbench(self.protocol.send,frame.get('session',{}),auth,root)
-            self.backend.open()
-            if self.stop_event.is_set():raise NativeError('host_stop_requested')
+            self.backend.auth=auth
+            self._checkpoint('credential_check')
             if cfg['provider'] not in ('fixture','ollama_chat'):self.protocol.secrets.append(credential(cfg))
             dirty=False
             if not fixture:
+                self._checkpoint('source_check')
                 _,dirty=git_status()
                 if dirty:raise ConfigError('tracked source dirty; live funding/source gate blocked')
             adapter=None
@@ -153,13 +207,20 @@ class Desktop:
                 if turns is None:turns=json.loads((Path(__file__).parent/'fixtures/nine-then-eight.fixture.json').read_text(encoding='utf-8'))
                 if not isinstance(turns,list) or not 1<=len(turns)<=4096:raise ConfigError('fixture turns invalid')
                 adapter=ScriptedAdapter(turns)
+            self._checkpoint('funding_check')
+            def model_probe(model):
+                self._checkpoint('model_probe')
+                result=openai_probe(model,credential(cfg))
+                if self.stop_event.is_set():raise NativeError('host_stop_requested')
+                self._phase('model_probe_complete');return result
             self.runner=Runner(cfg,task,auth,self.backend,root/'runner-evidence',adapter=adapter,
                 fixture_mode=fixture,allow_live=frame.get('allow_live') is True or (cfg['provider']=='ollama_chat' and frame.get('compute_consent') is True),stop_event=self.stop_event,
                 source_dirty=dirty,event_callback=self.protocol.event,
-                credit_probe=(lambda m:openai_probe(m,credential(cfg))) if cfg['provider']=='openai_responses' else None)
+                credit_probe=model_probe if cfg['provider']=='openai_responses' else None)
+            self._checkpoint('runner_ready')
             report=self.runner.run()
         except Exception as exc:
-            reason=str(exc) if isinstance(exc,ConfigError) else getattr(exc,'code','desktop_'+type(exc).__name__)
+            reason='host_stop_requested' if self.stop_event.is_set() else (str(exc) if isinstance(exc,ConfigError) else getattr(exc,'code','desktop_'+type(exc).__name__))
             ack=False
             try:
                 if self.backend is None and self.protocol.root:
@@ -167,28 +228,44 @@ class Desktop:
                     self.backend.open()
                 if self.backend and self.backend.session_id:ack=self.backend.stop('desktop-preflight-stop',25)['receipt']['status']=='stopped'
             except Exception:pass
-            report={'schema':'cybersand.workbench-api-agent.receipt/1','status':'refused' if ack else 'unconfirmed_stop','reason':reason,'stop_acknowledged':ack}
+            status=('stopped_or_failed' if self.stop_event.is_set() else 'refused') if ack else 'unconfirmed_stop'
+            report={'schema':'cybersand.workbench-api-agent.receipt/1','status':status,'reason':reason,'stop_acknowledged':ack}
         finally:
+            if self._preflight_stop_thread:self._preflight_stop_thread.join(timeout=28)
             try:self.protocol.finished(report or {'status':'internal_failure','reason':'desktop_missing_report','stop_acknowledged':False})
             except (OSError,ValueError,ConfigError):pass
             self.finished.set()
 
 def main():
     app=Desktop(Protocol())
+    app.protocol.event('runner.preflight',{'phase':'waiting_for_start','detail':'Python process ready; waiting for Start frame.'})
     def reader():
         try:
+            pending=bytearray()
             while True:
-                raw=sys.stdin.buffer.readline(MAX_LINE+1)
-                if not raw:break
-                if len(raw)>MAX_LINE or not raw.endswith(b'\n'):raise ConfigError('desktop input frame exceeds32KiB')
-                value=parse_json(raw,MAX_LINE)
-                if not isinstance(value,dict):raise ConfigError('desktop frame must be an object')
-                app.receive(value)
-        except Exception:pass
+                # A daemon blocked in BufferedReader.readline owns its Python
+                # buffer lock at interpreter finalization (_enter_buffered_busy).
+                # Raw OS reads have no Python buffered-stdio lock to strand.
+                block=os.read(sys.stdin.fileno(),4096)
+                if not block:
+                    if pending:raise ConfigError('desktop EOF inside protocol frame')
+                    break
+                pending.extend(block)
+                while b'\n' in pending:
+                    end=pending.index(10)+1;raw=bytes(pending[:end]);del pending[:end]
+                    if len(raw)>MAX_LINE:raise ConfigError('desktop input frame exceeds32KiB')
+                    value=parse_json(raw,MAX_LINE)
+                    if not isinstance(value,dict):raise ConfigError('desktop frame must be an object')
+                    app.receive(value)
+                if len(pending)>=MAX_LINE:raise ConfigError('desktop input frame exceeds32KiB')
+        except Exception as exc:
+            try:app.protocol.event('startup.error',{'reason':getattr(exc,'code','desktop_protocol_input_invalid')})
+            except Exception:pass
         finally:app.disconnected()
     thread=threading.Thread(target=reader,name='desktop-stdin',daemon=True);thread.start()
     while not app.finished.wait(.05):
         if not thread.is_alive() and not app.started:return 3
+    if app.worker:app.worker.join(timeout=1)
     return 0
 
 if __name__=='__main__':raise SystemExit(main())

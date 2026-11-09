@@ -47,6 +47,20 @@ Windows Godot-import stat-cache false positives without exempting import files
 or accepting real source changes; no caller-supplied clean-source assertion is
 trusted. Preserve the full Git checkout when distributing the development app.
 
+Windows startup (2026-11-09 repair): source commands capture output into bounded
+temporary-file reads, with detached console creation and an eight-second command
+timeout. Captured pipes could keep waiting for inherited-handle EOF during
+timeout cleanup even after Git exited. Startup now displays/logs profile, key,
+source, spending and model-access phases, with a75-second startup watchdog that
+revokes dispatch and requests native Stop. Python uses raw OS stdin/stdout for
+its JSONL process, avoiding the buffered-stdin daemon lock at interpreter exit.
+Stop can request native retirement while preflight is still blocked, before a
+Runner exists; no timeout/process exit is substituted for a native ACK. The
+keyless `test_workbench_agent_runner_startup.gd` exercises missing-key refusal,
+restart and live-path Git checks with deliberately unauthorised dummy credentials,
+so it reaches a funding refusal without contacting a provider. This is startup
+qualification with a synthetic owner ACK, separate from the real-native gate.
+
 For a keyless engineering check, select **Fixture** explicitly. It runs the same
 Runner with scripted decisions, not a language model. The mounted automated test
 installs the nine-then-eight scene, verifies original frames and native readback,

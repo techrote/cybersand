@@ -188,6 +188,18 @@ unstaged content separately, rejects Git errors/HEAD races and retains rejection
 of real changed/deleted source. It does not exempt import files, mark files
 assume-unchanged or accept a caller's cleanliness assertion.
 
+An actual Windows report later exposed a distinct live-path startup deadlock:
+the worker was in `subprocess.run` timeout cleanup, waiting indefinitely for its
+stdout/stderr reader threads after `git rev-parse` had exited. Fixture-native
+tests had bypassed this live-only source check. File-backed capture, no-console
+creation and the same command deadline remove the EOF dependency; an actual
+Godot/Python/Git startup regression now covers it. The original build reproduces
+the stuck restart and buffered-stdin fatal shutdown; raw OS JSONL reads/writes
+remove that separate daemon-lock failure. Visible phases, a75-second watchdog
+and pre-Runner native Stop make future failures explicit. Dummy credentials and
+a zero authorization ceiling prevent inference in this regression; synthetic
+startup ACKs must not be counted as real native or genuine-provider acceptance.
+
 Local TPM pacing is an approximation. Reserve max(estimated input,output cap)
 before dispatch, settle completed requests to reported usage, retain uncertain
 charges, preserve history across tasks and show waits explicitly. A local field

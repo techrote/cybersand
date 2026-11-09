@@ -4,6 +4,8 @@ import os
 from pathlib import Path
 import subprocess
 import tempfile
+import sys
+import time
 import unittest
 from unittest.mock import patch
 from . import cli
@@ -41,7 +43,7 @@ class SourceContentGateTests(unittest.TestCase):
             if 'rev-parse' in args:return subprocess.CompletedProcess(args,0,self.head+'\n','')
             if 'status' in args:return subprocess.CompletedProcess(args,0,' M source.txt\n','')
             return subprocess.CompletedProcess(args,0,'','')
-        with patch.object(cli.subprocess,'run',side_effect=result) as calls:
+        with patch.object(cli,'_source_command',side_effect=result) as calls:
             self.assertEqual(self.gate(),(self.head,False))
         self.assertTrue(any('--cached' in c.args[0] for c in calls.call_args_list))
         self.assertTrue(all('status' not in c.args[0] for c in calls.call_args_list))
@@ -50,11 +52,35 @@ class SourceContentGateTests(unittest.TestCase):
             def result(args,**kwargs):
                 if broken in args:return subprocess.CompletedProcess(args,128,'','failure')
                 return subprocess.CompletedProcess(args,0,self.head+'\n' if 'rev-parse' in args else '','')
-            with patch.object(cli.subprocess,'run',side_effect=result):
+            with patch.object(cli,'_source_command',side_effect=result):
                 with self.assertRaises(ConfigError):self.gate()
         heads=iter([self.head,'0'*40])
         def changed(args,**kwargs):return subprocess.CompletedProcess(args,0,next(heads)+'\n' if 'rev-parse' in args else '','')
-        with patch.object(cli.subprocess,'run',side_effect=changed):
+        with patch.object(cli,'_source_command',side_effect=changed):
             with self.assertRaises(ConfigError):self.gate()
-        with patch.object(cli.subprocess,'run',side_effect=subprocess.TimeoutExpired('git',8)):
+        with patch.object(cli,'_source_command',side_effect=subprocess.TimeoutExpired('git',8)):
             with self.assertRaises(ConfigError):self.gate()
+
+    def test_output_handle_inherited_by_child_does_not_delay_source_command(self):
+        # An exited parent with a still-open inherited stdout pipe reproduces
+        # communicate() waiting beyond process exit. This helper must not wait
+        # for that grandchild or inherit the workbench's stdin pipe.
+        flags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0
+        script=("import subprocess,sys; "
+                "subprocess.Popen([sys.executable,'-c','import time;time.sleep(1.5)'],"
+                f"stdout=sys.stdout,stderr=sys.stderr,creationflags={flags}); "
+                "print('source-head',flush=True)")
+        start=time.monotonic()
+        result=cli._source_command([sys.executable,'-c',script],timeout=.8)
+        self.assertEqual(result.returncode,0);self.assertEqual(result.stdout.strip(),'source-head')
+        self.assertLess(time.monotonic()-start,1.3)
+
+    def test_source_timeout_does_not_wait_for_inherited_output_eof(self):
+        flags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0
+        script=("import subprocess,sys,time; "
+                "subprocess.Popen([sys.executable,'-c','import time;time.sleep(1.5)'],"
+                f"stdout=sys.stdout,stderr=sys.stderr,creationflags={flags}); time.sleep(5)")
+        start=time.monotonic()
+        with self.assertRaises(subprocess.TimeoutExpired):
+            cli._source_command([sys.executable,'-c',script],timeout=.3)
+        self.assertLess(time.monotonic()-start,1.3)

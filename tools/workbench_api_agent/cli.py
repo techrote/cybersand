@@ -9,6 +9,7 @@ import re
 import signal
 import subprocess
 import sys
+import tempfile
 import threading
 from urllib.error import HTTPError
 from urllib.parse import quote
@@ -21,9 +22,24 @@ from .controller import Runner
 from .providers import ScriptedAdapter
 
 
+def _source_command(command,timeout=8):
+    # Windows descendants may retain inherited output handles after Git exits.
+    # PIPE communicate() then waits for EOF, even indefinitely during timeout
+    # cleanup. Files need no reader threads/EOF; DEVNULL avoids the Godot stdin.
+    with tempfile.TemporaryFile() as out,tempfile.TemporaryFile() as err:
+        result=subprocess.run(command,stdin=subprocess.DEVNULL,stdout=out,stderr=err,
+            timeout=timeout,close_fds=True,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
+        out.seek(0);err.seek(0)
+        stdout=out.read(65537);stderr=err.read(65537)
+    if len(stdout)>65536 or len(stderr)>65536:raise ConfigError('source command output exceeded capacity')
+    return subprocess.CompletedProcess(command,result.returncode,
+        stdout.decode('utf-8',errors='replace'),stderr.decode('utf-8',errors='replace'))
+
+
 def git_status()->tuple[str,bool]:
     root=Path(__file__).resolve().parents[2]
-    def git(*a):return subprocess.run(['git','-C',str(root),*a],capture_output=True,text=True,timeout=8)
+    def git(*a):return _source_command(['git','-C',str(root),*a])
     try:
         head=git('rev-parse','HEAD')
         # Godot can rewrite CRLF checkout bytes to their identical HEAD LF
