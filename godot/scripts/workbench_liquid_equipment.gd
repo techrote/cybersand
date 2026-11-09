@@ -76,6 +76,7 @@ var _nozzle_rate := 0
 var _nozzle_on := false
 var _injected_water := 0
 var _emitted := 0
+var _cell_emissions := 0          # emissions that were Water cells, not parcels
 var _topped_up := 0
 var _column_injections := 0
 var _nozzle_refused := {}
@@ -203,6 +204,7 @@ func _reset_runtime() -> void:
 	_nozzle_on = false
 	_injected_water = 0
 	_emitted = 0
+	_cell_emissions = 0
 	_topped_up = 0
 	_column_injections = 0
 	_nozzle_refused = {}
@@ -544,6 +546,7 @@ func _inject_cell(world: Object, axis: Vector2) -> bool:
 			_injected_water += added
 			_topped_up += 1
 			_emitted += 1
+			_cell_emissions += 1
 			return true
 		var top := _surface_cell(world,cell,WATER,underwater_spread(_speed))
 		if top.x >= 0: return _place_full(world,top,true)
@@ -597,6 +600,7 @@ func _place_full(world: Object, cell: Vector2i, column: bool) -> bool:
 	_stock -= _unit
 	_injected_water += _unit
 	_emitted += 1
+	_cell_emissions += 1
 	if column: _column_injections += 1
 	return true
 
@@ -618,7 +622,7 @@ func receipt() -> Dictionary:
 		"drain":{"installed":_drain.has_area(),"open":_drain_open,"rate":_drain_rate,"drained_water":_drained_water,
 			"drained_cells":counts,"masked_skips":_drain_masked,"pipe_full":_drain_pipe_full},
 		"nozzle":{"installed":_nozzle.x >= 0,"on":_nozzle_on,"angle":_angle,"speed":_speed,"rate":_nozzle_rate,
-			"emitted":_emitted,"injected_water":_injected_water,"topped_up":_topped_up,
+			"emitted":_emitted,"cell_emissions":_cell_emissions,"injected_water":_injected_water,"topped_up":_topped_up,
 			"column_injections":_column_injections,"refused":_nozzle_refused.duplicate()},
 		"pipe":{"pump":_pump,"stock":_stock,"supplied":_supplied,"capacity":_pipe_capacity},
 		"last":_last.duplicate(),"last_refusal":_last_refusal,"refused":_refused,

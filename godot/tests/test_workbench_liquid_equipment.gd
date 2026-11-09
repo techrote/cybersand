@@ -230,7 +230,7 @@ func run() -> void:
 		var spray_after: Dictionary = spray().get("ledger",{})
 		# A flooded muzzle switches to underwater injection; every other emission is a parcel.
 		check(int(spray_after.injected_parcels) - int(spray_before.get("injected_parcels",0))
-			== int(r.nozzle.emitted) - int(r.nozzle.column_injections) - int(r.nozzle.topped_up),
+			== int(r.nozzle.emitted) - int(r.nozzle.cell_emissions),
 			"every dry-muzzle nozzle emission is a native ballistic parcel")
 		evidence.ballistic = {"in_flight":int(w.get("ballistic",0)),"body_contacts":int(spray_after.body_contacts)-int(spray_before.get("body_contacts",0)),
 			"terrain_contacts":int(spray_after.terrain_contacts)-int(spray_before.get("terrain_contacts",0)),
@@ -243,7 +243,7 @@ func run() -> void:
 	var spraying := await observe()
 	await capture("nozzle")
 	evidence.nozzle = {"emitted":int(r.nozzle.emitted),"injected_cells":float(injected) / unit,"dry_zone_cells":int(spraying.dry.water_cells),
-		"mode":str(r.nozzle_mode),"pipe_cells":float(r.pipe.stock) / unit,"underwater_injections":int(r.nozzle.column_injections) + int(r.nozzle.topped_up)}
+		"mode":str(r.nozzle_mode),"pipe_cells":float(r.pipe.stock) / unit,"underwater_injections":int(r.nozzle.column_injections) + int(r.nozzle.topped_up),"cell_emissions":int(r.nozzle.cell_emissions)}
 
 	# Live aim tuning keeps the devices running and is kept as authored data.
 	check(panel.equipment.nudge_aim(10.0),"aim nudged")
