@@ -15,6 +15,9 @@ and [six Planned/NOT_RUN fixture concepts](operations/in-tools-fixtures-and-play
 The [2026-11-07 source authority audit](audits/2026-11-07-in-tools-361-source-authority-renewal.md)
 keeps the immutable #404 A01 witness separate from the new source and runtime gates.
 Ordinary U10 `liquid_drain` is Current; new exact-metered commands are not.
+The #361 Draft branch adds [workbench liquid equipment](systems/workbench-liquid-equipment.md)
+(valve, drain, pumped nozzle and the built-in liquid-lab apparatus) with
+[dated Windows evidence](audits/2026-11-09-in-tools-361-workbench-equipment.md).
 
 
 Coupled determinism: [desktop lockstep feasibility](architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06)
