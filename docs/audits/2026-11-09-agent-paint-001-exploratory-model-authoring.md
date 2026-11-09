@@ -66,6 +66,10 @@ Clone an identical blank or specified Setup-v2 fixture for every run, isolating 
 
 For authoring throughput, investigate scene-level macro decomposition **above** the existing eight-primitive / 4096-cell proposal boundary, retaining scope and protection checks and real native apply receipts. Any production contract change belongs to the separate #525/#531 agent lane and [PAINT-001 #543](https://github.com/techrote/cybersand/issues/543).
 
+## Additional Luna continuation evidence — 9 November 2026
+
+The owner subsequently supplied [a separately captured Luna 64×128 follow-up](2026-11-09-agent-paint-001-luna-followup.md), recording 18- and 19-call executions with five applied edit batches each, one confirmed 301-cell erase, and measurable rate pacing. Its ZIP and screenshot identities are preserved independently; it does **not** change the earlier exploratory comparison's source scope or make the model trials controlled.
+
 ## Validation record
 
 Performed: source ZIP enumeration, complete event parse and category counts, SHA-256 hashes, verification of 32 PNG content-addressed filenames, extraction of tool proposals and provider-reported tokens, and structural inspection of the Setup-v2 fixture.
