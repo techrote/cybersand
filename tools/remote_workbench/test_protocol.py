@@ -1,0 +1,316 @@
+#!/usr/bin/env python3
+"""No-network host/transport tests; native/renderer proof is the separate Xvfb job."""
+from __future__ import annotations
+
+import importlib.util
+import json
+import os
+import signal
+import subprocess
+import sys
+import threading
+from pathlib import Path
+import struct
+import tempfile
+import unittest
+import zlib
+
+HERE = Path(__file__).resolve().parent
+
+
+def load(name: str, filename: str):
+    spec = importlib.util.spec_from_file_location(name, HERE / filename)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+runner = load("remote_workbench_runner", "run.py")
+verifier = load("remote_workbench_verifier", "verify.py")
+
+
+def make_png(path: Path, pixel: tuple[int, int, int, int]) -> None:
+    def chunk(kind: bytes, data: bytes) -> bytes:
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(
+            ">I", zlib.crc32(kind + data) & 0xFFFFFFFF
+        )
+    path.write_bytes(
+        verifier.PNG_HEADER
+        + chunk(b"IHDR", struct.pack(">IIBBBBB", 1, 1, 8, 6, 0, 0, 0))
+        + chunk(b"IDAT", zlib.compress(bytes((0, *pixel))))
+        + chunk(b"IEND", b"")
+    )
+
+
+class ProtocolTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.root = Path(self.directory.name)
+        self.auth = self.root / "authorization.json"
+        self.commands = self.root / "commands.jsonl"
+        self.auth.write_text(
+            (HERE / "fixtures/roundtrip-authorization.json").read_text(),
+            encoding="utf-8",
+        )
+        self.commands.write_text(
+            (HERE / "fixtures/roundtrip-commands.jsonl").read_text(),
+            encoding="utf-8",
+        )
+
+    def tearDown(self):
+        self.directory.cleanup()
+
+    def test_committed_roundtrip_is_bounded(self):
+        doc = runner.validate_authorization(self.auth)
+        self.assertEqual(doc["extent"], [512, 512])
+        runner.validate_commands(self.commands, live=False)
+        lines = [json.loads(x) for x in self.commands.read_text().splitlines()]
+        self.assertEqual([c["seq"] for c in lines], list(range(1, 9)))
+        self.assertEqual(lines[-2]["tool"], "stop")
+        self.assertEqual(lines[-1]["tool"], "apply_edit")
+        self.assertEqual(lines[-1]["expect_status"], "refused")
+        self.assertEqual(lines[4]["args"]["ticks"], 4)
+
+    def test_no_authorization_inside_model_tool_envelope(self):
+        self.commands.write_text(
+            '{"version":1,"seq":1,"tool":"authorize_task","args":{}}\n',
+            encoding="utf-8",
+        )
+        with self.assertRaisesRegex(ValueError, "Unsupported tool"):
+            runner.validate_commands(self.commands, live=False)
+
+    def test_no_unlisted_material_authorized(self):
+        data = json.loads(self.auth.read_text())
+        data["allowed_materials"] = [2]
+        self.auth.write_text(json.dumps(data))
+        with self.assertRaisesRegex(ValueError, "Hard Wall"):
+            runner.validate_authorization(self.auth)
+
+    def test_no_float_material_allowed(self):
+        data = json.loads(self.auth.read_text())
+        data["allowed_materials"] = [58.0]
+        self.auth.write_text(json.dumps(data))
+        with self.assertRaisesRegex(ValueError, "Hard Wall"):
+            runner.validate_authorization(self.auth)
+
+    def test_no_malformed_jsonl(self):
+        self.commands.write_text('{"version":1, "seq":1,\n')
+        with self.assertRaises((json.JSONDecodeError, ValueError)):
+            runner.validate_commands(self.commands, live=False)
+
+    def test_requires_complete_last_jsonl_record(self):
+        self.commands.write_text('{"version":1,"seq":1,"tool":"stop","args":{}}')
+        with self.assertRaisesRegex(ValueError, "newline"):
+            runner.validate_commands(self.commands, live=False)
+
+    def test_maximum_batch_commands(self):
+        one = {"version": 1, "seq": 1, "tool": "observe", "args": {}}
+        self.commands.write_text(
+            "".join(json.dumps({**one, "seq": i}) + "\n" for i in range(1, 98))
+        )
+        with self.assertRaisesRegex(ValueError, "1-96"):
+            runner.validate_commands(self.commands, live=False)
+
+    def test_native_runtime_pointer_is_not_executable(self):
+        sample = self.root / "fake.so"
+        sample.write_bytes(b"version https://git-lfs.github.com/spec/v1\n" + b"x" * 1100)
+        with self.assertRaisesRegex(ValueError, "Unmaterialized"):
+            runner.verify_file(sample, binary=True)
+
+    def test_png_decodes_actual_rgba_pixels(self):
+        path = self.root / "frame.png"
+        make_png(path, (12, 120, 200, 255))
+        w, h, pixels = verifier.decode_png(path)
+        self.assertEqual((w, h, pixels), (1, 1, bytes((12, 120, 200, 255))))
+        make_png(path, (13, 120, 200, 255))
+        self.assertNotEqual(pixels, verifier.decode_png(path)[2])
+
+    def test_png_tampering_is_rejected(self):
+        path = self.root / "frame.png"
+        make_png(path, (12, 120, 200, 255))
+        data = bytearray(path.read_bytes())
+        data[-18] ^= 1
+        path.write_bytes(data)
+        with self.assertRaises(AssertionError):
+            verifier.decode_png(path)
+
+    def test_canvas_extent_exact_setup_policy(self):
+        for extent in ([512, 512], [2048, 2048], [640, 768]):
+            with self.subTest(extent=extent):
+                data = json.loads(self.auth.read_text())
+                data["extent"] = extent
+                self.auth.write_text(json.dumps(data))
+                self.assertEqual(runner.validate_authorization(self.auth)["extent"], extent)
+        for extent in ([32, 512], [511, 512], [513, 512], [2049, 512],
+                       [512, 65], [512, True], [512, 512.0]):
+            with self.subTest(extent=extent):
+                data = json.loads(self.auth.read_text())
+                data["extent"] = extent
+                self.auth.write_text(json.dumps(data))
+                with self.assertRaisesRegex(ValueError, "Setup.validate"):
+                    runner.validate_authorization(self.auth)
+
+    def test_live_timeout_and_normal_completion_reap_owned_children(self):
+        wrapper = ("import subprocess,sys,time;"
+                   "child=subprocess.Popen([sys.executable,'-c',"
+                   "'import time;time.sleep(40)']);"
+                   "open(sys.argv[1],'w').write(str(child.pid));"
+                   "time.sleep(40) if sys.argv[2]=='wait' else None")
+        for mode, timeout, expected_reason in (
+            ("wait", 1, "timeout"), ("exit", 5, "normal_exit")
+        ):
+            with self.subTest(mode=mode):
+                evidence = self.root / ("evidence-" + mode)
+                evidence.mkdir()
+                child_pid = evidence / "child.pid"
+                with (evidence / "child.log").open("wb") as log:
+                    code, reason, cleanup = runner.supervise(
+                        [sys.executable, "-c", wrapper, str(child_pid), mode],
+                        os.environ.copy(), log, evidence, timeout,
+                        runner.DEFAULT_EVIDENCE_LIMIT_BYTES,
+                    )
+                self.assertEqual(reason, expected_reason)
+                self.assertTrue(cleanup["owned_processes_exited"], cleanup)
+                self.assertTrue(cleanup["launcher_child_reaped"], cleanup)
+                self.assertTrue(child_pid.is_file())
+                pid = int(child_pid.read_text())
+                if sys.platform.startswith("linux") and (runner.Path("/proc") / str(pid) / "stat").exists():
+                    stat = (runner.Path("/proc") / str(pid) / "stat").read_text()
+                    self.assertIn(stat.rsplit(")", 1)[1].split()[0], ("Z", "X", "x"))
+
+    def test_log_overflow_is_explicit_and_does_not_interrupt_host_receipts(self):
+        evidence = self.root / "large-diagnostic-log"
+        evidence.mkdir()
+        large_output = [
+            sys.executable, "-c",
+            "import os;os.write(1, b'x' * 65536) if False else "
+            "[os.write(1, b'x' * 65536) for _ in range(70)]",
+        ]
+        with (evidence / "godot.log").open("wb") as log:
+            code, reason, cleanup = runner.supervise(
+                large_output, os.environ.copy(), log, evidence, 10,
+                runner.DEFAULT_EVIDENCE_LIMIT_BYTES,
+            )
+        self.assertEqual((code, reason), (0, "normal_exit"))
+        self.assertTrue(cleanup["owned_processes_exited"])
+        self.assertTrue(cleanup["godot_log_pump_stopped"])
+        self.assertTrue(cleanup["godot_log_truncated"])
+        self.assertGreater(cleanup["godot_log_dropped_bytes"], 0)
+        self.assertLessEqual((evidence / "godot.log").stat().st_size,
+                             runner.MAX_GODOT_LOG_BYTES)
+        self.assertIn(b"truncated", (evidence / "godot.log").read_bytes()[-100:])
+
+    def test_host_only_process_custody_identifies_exact_group(self):
+        evidence = self.root / "custody-case"
+        evidence.mkdir()
+        with (evidence / "child.log").open("wb") as log:
+            result, reason, cleanup = runner.supervise(
+                [sys.executable, "-c", "import time;time.sleep(0.3)"],
+                {**os.environ, "CYBERSAND_SESSION_ID": "host-fenced-session"},
+                log, evidence, 5, runner.DEFAULT_EVIDENCE_LIMIT_BYTES,
+            )
+        self.assertEqual(result, 0)
+        self.assertEqual(reason, "normal_exit")
+        self.assertTrue(cleanup["owned_processes_exited"])
+        custody = json.loads((evidence / "launcher-process.json").read_text())
+        self.assertEqual(custody["session_id"], "host-fenced-session")
+        self.assertEqual(custody["owned_process_group"], cleanup["session_process_group"])
+        self.assertEqual(custody["state"], "cleaned")
+        self.assertTrue(custody["host_only"])
+        self.assertTrue(custody["launcher_child_reaped"])
+        if sys.platform.startswith("linux"):
+            self.assertIsInstance(custody["group_leader_start_ticks"], int)
+
+    def test_launcher_interruption_reaps_owned_children(self):
+        evidence = self.root / "interrupted"
+        evidence.mkdir()
+        command = [sys.executable, "-c",
+                   "import subprocess,sys,time;"
+                   "subprocess.Popen([sys.executable,'-c','import time;time.sleep(30)']);"
+                   "print('started', flush=True);time.sleep(30)"]
+        interrupt = threading.Timer(0.8, lambda: os.kill(os.getpid(), signal.SIGINT))
+        interrupt.start()
+        try:
+            with (evidence / "child.log").open("wb") as log:
+                code, reason, cleanup = runner.supervise(
+                    command, os.environ.copy(), log, evidence, 10,
+                    runner.DEFAULT_EVIDENCE_LIMIT_BYTES,
+                )
+            self.assertEqual(reason, "signal_sigint")
+            self.assertEqual(code, 125)
+            self.assertTrue(cleanup["owned_processes_exited"], cleanup)
+            self.assertTrue(cleanup["launcher_child_reaped"], cleanup)
+        finally:
+            interrupt.cancel()
+            interrupt.join()
+
+    def test_duplicate_batch_sequence_preflight(self):
+        self.commands.write_text(
+            '{"version":1,"seq":1,"tool":"observe","args":{}}\n'
+            '{"version":1,"seq":1,"tool":"stop","args":{}}\n'
+        )
+        with self.assertRaisesRegex(ValueError, "monotonic"):
+            runner.validate_commands(self.commands, live=False)
+
+    def test_unrelated_pixel_changes_cannot_pass_projection_witness(self):
+        original = (16, 16, bytes(16 * 16 * 4))
+        projection = {
+            "viewport_native_region": {"x": 0, "y": 0, "width": 16, "height": 16},
+            "viewport_framebuffer_rect": {"x": 0, "y": 0, "width": 16, "height": 16},
+        }
+        unrelated = bytearray(original[2])
+        unrelated[(14 * 16 + 14) * 4] = 255
+        with self.assertRaisesRegex(AssertionError, "Unrelated framebuffer"):
+            verifier.projected_pixel_changes(
+                original, (16, 16, bytes(unrelated)), projection,
+                (2, 2, 4, 4), (9, 9, 11, 11)
+            )
+        expected = bytearray(original[2])
+        expected[(3 * 16 + 3) * 4] = 255
+        positive = verifier.projected_pixel_changes(
+            original, (16, 16, bytes(expected)), projection,
+            (2, 2, 4, 4), (9, 9, 11, 11)
+        )
+        self.assertEqual(positive["changed_pixels_in_native_edit_projection"], 1)
+        expected[(9 * 16 + 9) * 4] = 255
+        with self.assertRaisesRegex(AssertionError, "control region"):
+            verifier.projected_pixel_changes(
+                original, (16, 16, bytes(expected)), projection,
+                (2, 2, 4, 4), (9, 9, 11, 11)
+            )
+
+    def test_cumulative_output_cap_retains_cleanup(self):
+        evidence = self.root / "budget-case"
+        evidence.mkdir()
+        child = [sys.executable, "-c",
+                 "import sys,time;sys.stdout.buffer.write(b'x'*65536);"
+                 "sys.stdout.flush();time.sleep(30)"]
+        with (evidence / "godot.log").open("wb") as log:
+            code, reason, cleanup = runner.supervise(
+                child, os.environ.copy(), log, evidence, 10, 70000,
+            )
+        self.assertEqual(reason, "evidence_budget_exhausted")
+        self.assertEqual(code, 126)
+        self.assertTrue(cleanup["owned_processes_exited"], cleanup)
+
+    def test_atomic_health_file_can_be_replaced(self):
+        path = self.root / "session-health.json"
+        runner.atomic_json(path, {"state": "running", "last_completed_seq": 3})
+        runner.atomic_json(path, {"state": "stopped", "last_completed_seq": 4})
+        self.assertEqual(json.loads(path.read_text())["last_completed_seq"], 4)
+        self.assertFalse(path.with_name(path.name + ".tmp").exists())
+
+    def test_live_mode_has_one_process_not_one_per_command(self):
+        godot = self.root / "Godot"
+        godot.write_text("binary placeholder", encoding="utf-8")
+        invocation = runner.build_command(
+            godot, self.auth, self.commands, self.root / "out", True, False
+        )
+        self.assertEqual(invocation.count("--script"), 1)
+        self.assertIn("--live", invocation)
+        self.assertTrue(any("--commands=" in value for value in invocation))
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

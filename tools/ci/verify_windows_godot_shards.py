@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify complete Windows headless execution across independent CI shards.
+"""Verify complete Windows headless and admitted workbench graphical execution.
 
 This is a source/coverage/log-byte reducer, not an alternative runtime test.
 """
@@ -100,8 +100,8 @@ def _source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
                 ":!godot/.godot")
     tree = windows.git(root, "rev-parse", "HEAD^{tree}").decode().strip()
     cases = runner.discover_cases(root)
-    selected = [case for case in cases if not case.requires_display]
-    excluded = [case.name for case in cases if case.requires_display]
+    selected = [case for case in cases if runner.windows_case_supported(case)]
+    excluded = [case.name for case in cases if not runner.windows_case_supported(case)]
     require(bool(selected), "source discovery has no applicable Windows cases")
     shards, _ = runner.build_shard_plan(selected, shard_count)
     raw_manifest = windows.git(root, "show", "HEAD:" + windows.PROVENANCE)
@@ -198,28 +198,52 @@ def verify_source_report(report: dict, directory: Path, expected: dict, index: i
         command = result.get("command")
         require(result.get("name") == case["name"] and result.get("role") == role
                 and same_json(result.get("timeout_seconds"), case["timeout_seconds"])
-                and result.get("requires_display") is False
+                and result.get("requires_display") is case["requires_display"]
                 and isinstance(command, list) and len(command) >= 4
                 and all(isinstance(part, str) and part for part in command),
                 f"source-derived command or watchdog mismatch: {directory}")
+        require(command.count("--path") == 1, f"invalid original Windows project root: {directory}")
+        project_index = command.index("--path") + 1
+        require(project_index < len(command), f"missing original Windows project root: {directory}")
+        project = command[project_index]
         require(ntpath.isabs(command[0]) and ntpath.basename(command[0]) == "Godot_v4.7-stable_win64_console.exe"
-                and ntpath.isabs(command[3]) and ntpath.basename(command[3]) == "godot"
+                and ntpath.isabs(project) and ntpath.basename(project) == "godot"
                 and ".." not in command[0].replace("\\", "/").split("/")
-                and ".." not in command[3].replace("\\", "/").split("/"),
+                and ".." not in project.replace("\\", "/").split("/"),
                 f"source-derived command or watchdog mismatch: {directory}")
-        paths = (command[0], command[3])
+        paths = (command[0], project)
         require(host_paths is None or paths == host_paths, f"inconsistent original Windows command roots: {directory}")
         host_paths = paths
-        source_case = runner.Case(case["name"], tuple(case["flags"]), case["timeout_seconds"], 0)
+        source_case = runner.Case(case["name"], tuple(case["flags"]), case["timeout_seconds"], 0, case["requires_display"])
         expected_command = runner.case_command(command[0], source_case, "win32")
-        expected_command[3] = command[3]  # The original Windows checkout root is retained, not rewritten to Linux.
+        expected_command[expected_command.index("--path") + 1] = project  # Keep the original Windows root.
         require(command == expected_command, f"source-derived command or watchdog mismatch: {directory}")
         require(same_json(result.get("execution_policy"), expected["execution_policy"]),
                 f"source-derived execution policy mismatch: {directory}")
+        if case["name"] in runner.WORKBENCH_HOPPER_CASES:
+            fixture = result.get("runtime_fixture")
+            relative = case["name"] + "-artifacts/wb_agent_sand_hopper_v2.tsv"
+            require(isinstance(fixture, dict)
+                    and fixture.get("source") == runner.WORKBENCH_HOPPER_FIXTURE_SOURCE
+                    and fixture.get("runtime") == runner.WORKBENCH_HOPPER_FIXTURE_RUNTIME
+                    and fixture.get("artifact") == relative
+                    and fixture.get("sha256") == runner.WORKBENCH_HOPPER_FIXTURE_SHA256
+                    and type(fixture.get("size")) is int and 0 < fixture["size"] <= 65536
+                    and type(fixture.get("created")) is bool
+                    and fixture.get("verified_after_execution") is True
+                    and fixture.get("runtime_cleaned_up") is fixture["created"],
+                    f"missing immutable hopper fixture custody: {directory}")
+            retained = directory / relative
+            require(retained.is_file() and not retained.is_symlink()
+                    and retained.resolve().is_relative_to(directory.resolve())
+                    and retained.stat().st_size == fixture["size"]
+                    and hashlib.sha256(retained.read_bytes()).hexdigest() == runner.WORKBENCH_HOPPER_FIXTURE_SHA256,
+                    f"changed retained hopper fixture: {directory}")
     require(all(type(row.get("returncode")) is int and row["returncode"] == 0
                 and row.get("natural_completion") is True
                 and not row.get("skip_messages") and not row.get("launch_error")
                 and not row.get("diagnostic_error") and not row.get("timeout_kind")
+                and not row.get("fixture_error")
                 for row in results), f"nonpassing execution detail: {directory}")
 
 

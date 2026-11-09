@@ -1,0 +1,131 @@
+name: WB API agent controller (keyless)
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'tools/workbench_api_agent/**'
+      - 'tools/workbench_api_agent_runner.py'
+      - 'docs/operations/workbench-api-agent.md'
+      - '.github/workflows/wb-api-agent.yml'
+permissions:
+  contents: read
+concurrency:
+  group: wb-api-agent-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  keyless-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Keyless fixture/controller/provider tests and policy preflight
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          python3 -m compileall -q tools/workbench_api_agent tools/workbench_api_agent_runner.py
+          PYTHONPATH=tools python3 -m unittest -v workbench_api_agent.test_runner
+          python3 tools/workbench_api_agent_runner.py dry-run \
+            --profile tools/workbench_api_agent/profiles/fixture.json \
+            --task tools/workbench_api_agent/fixtures/nine-then-eight.task.json \
+            --authorization tools/remote_workbench/fixtures/roundtrip-authorization.json
+          python3 tools/ci/check_ci_provider_policy.py
+          git diff --check
+  native-scripted-controller:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 92
+    env:
+      EVIDENCE: build/wb-api-agent-qualification
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Actual native Godot and independent keyless scripted provider
+        timeout-minutes: 87
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          mkdir -p "$EVIDENCE"
+          cid="wb-api-agent-${{ github.run_id }}-${{ github.run_attempt }}"
+          cleanup() {
+            set +e
+            if docker inspect "$cid" >/dev/null 2>&1; then
+              docker cp "$cid:/home/vscode/.local/state/cybersand-wb" "$EVIDENCE/native-owner" 2>/dev/null || true
+              docker cp "$cid:/home/vscode/.cache/cybersand-wb/wb-api-service.log" "$EVIDENCE/native-server.log" 2>/dev/null || true
+              docker stop -t 10 "$cid" >/dev/null 2>&1 || true
+              docker rm -f "$cid" >/dev/null 2>&1 || true
+            fi
+          }
+          trap cleanup EXIT
+          docker build --pull=false -t wb-api-agent-runtime:exact -f .devcontainer/Dockerfile .devcontainer
+          docker run -d --init --network host --name "$cid" wb-api-agent-runtime:exact sleep infinity
+          docker exec -u root "$cid" mkdir -p /workspaces/cybersand
+          docker cp . "$cid:/workspaces/cybersand"
+          docker exec -u root "$cid" chown -R vscode:vscode /workspaces/cybersand
+          docker exec -u vscode -w /workspaces/cybersand "$cid" bash .devcontainer/post-create.sh
+          docker exec -u vscode -w /workspaces/cybersand "$cid" \
+            bash -lc 'test "$(git rev-parse HEAD)" = "'"${{ github.event.pull_request.head.sha }}"'" && source ~/.cache/cybersand-wb/runtime.env && "$GODOT_BIN" --version'
+          umask 077
+          python3 -c 'import secrets;print(secrets.token_urlsafe(48))' > "$RUNNER_TEMP/wb-api-agent-token"
+          docker exec -u root "$cid" install -d -o vscode -g vscode -m 0700 /home/vscode/.config/cybersand
+          docker cp "$RUNNER_TEMP/wb-api-agent-token" "$cid:/home/vscode/.config/cybersand/wb.token"
+          docker exec -u root "$cid" chown vscode:vscode /home/vscode/.config/cybersand/wb.token
+          docker exec -u root "$cid" chmod 0600 /home/vscode/.config/cybersand/wb.token
+          docker exec -d -u vscode -w /workspaces/cybersand "$cid" \
+            bash -lc 'source ~/.cache/cybersand-wb/runtime.env; exec python3 tools/remote_workbench/serve.py --godot "$GODOT_BIN" --authorization "$PWD/tools/remote_workbench/fixtures/roundtrip-authorization.json" --token-file "$HOME/.config/cybersand/wb.token" --state-root "$HOME/.local/state/cybersand-wb" --xvfb --seconds 1600 --bind 127.0.0.1 --port 8765 > ~/.cache/cybersand-wb/wb-api-service.log 2>&1'
+          python3 - <<'PY'
+          import subprocess,sys,time,os,json
+          cmd=[sys.executable,'tools/workbench_api_agent_runner.py','status','--base','http://127.0.0.1:8765','--token-file',os.environ['RUNNER_TEMP']+'/wb-api-agent-token']
+          until=time.monotonic()+210
+          while time.monotonic()<until:
+              p=subprocess.run(cmd,capture_output=True,text=True,timeout=15)
+              if p.returncode==0:
+                  j=json.loads(p.stdout)
+                  if j.get('phase')=='ready':break
+                  if j.get('phase')=='unconfirmed':raise SystemExit('Native owner unconfirmed: '+j.get('failure',''))
+              time.sleep(.5)
+          else:raise SystemExit('Real native owner did not enter ready')
+          PY
+          python3 tools/workbench_api_agent_runner.py run \
+            --profile tools/workbench_api_agent/profiles/fixture.json \
+            --task tools/workbench_api_agent/fixtures/nine-then-eight.task.json \
+            --authorization tools/remote_workbench/fixtures/roundtrip-authorization.json \
+            --fixture-script tools/workbench_api_agent/fixtures/nine-then-eight.fixture.json \
+            --base http://127.0.0.1:8765 --token-file "$RUNNER_TEMP/wb-api-agent-token" \
+            --output "$EVIDENCE/external-scripted-controller"
+          python3 - <<'PY'
+          import json, pathlib, hashlib,subprocess
+          root=pathlib.Path('build/wb-api-agent-qualification/external-scripted-controller')
+          r=json.loads((root/'receipt.json').read_text())
+          assert r['status']=='passed' and r['stop_acknowledged']
+          assert r['native_acceptance']['passed'] and r['native_acceptance']['native_counts']['58']['actual']==8
+          assert r['measured']['native_ticks']==4 and r['measured']['applied_edits']==2
+          assert r['measured']['model_seen_image'] and r['measured']['original_frames']>=4
+          assert len(r['native_receipts'])==8
+          for x in r['native_receipts']:
+              p=x.get('original_png')
+              if p:assert hashlib.sha256(pathlib.Path(p['path']).read_bytes()).hexdigest()==p['sha256']
+          print('REAL #547 native World + SCRIPTED (NOT model) provider: PASS, two edits, four ticks and host Stop')
+          PY
+          git rev-parse HEAD > "$EVIDENCE/source-head.txt"
+          git rev-parse HEAD^{tree} > "$EVIDENCE/source-tree.txt"
+          rm -f "$RUNNER_TEMP/wb-api-agent-token"
+      - name: Retain original PNGs, native receipts and sanitized runner diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wb-api-agent-native-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/wb-api-agent-qualification/
+          if-no-files-found: warn
+          retention-days: 90

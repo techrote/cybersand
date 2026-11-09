@@ -73,7 +73,7 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     cases = runner.discover_cases()
-    plans = {platform: plan([case for case in cases if platform == "linux" or not case.requires_display], platform=platform)
+    plans = {platform: plan([case for case in cases if platform == "linux" or runner.windows_case_supported(case)], platform=platform)
              for platform in ("linux", "windows")}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(plans, indent=2, sort_keys=True) + "\n", encoding="utf-8")

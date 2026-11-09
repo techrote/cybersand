@@ -4,11 +4,104 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-09
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Provider refusal recovery and editable wording — 2026-11-09
+
+The isolated Draft #531 follow-up to5eed6c98 aligns source-material predicates,
+returns confirmed prewrite refusals for correction, and paces desktop requests
+with an effective output cap instead of rejecting a larger configured allowance.
+Stop/protection and uncertain-outcome retirement remain. The compact panel's
+Boilerplate window stages eleven editable language sections for the next Start.
+Use the [runner runbook](workbench-api-agent.md) and
+[review packet](../reviews/2026-11-08-workbench-agent-design-and-semantics.md).
+Source/runtime hashes, commands and original native evidence belong in the
+existing #531 qualification record; no merge or genuine inference is implied.
+
+## Provider UI composition and communication review — 2026-11-08
+
+Isolated integration composes #53129988 with #552be7 and #5472b6; no Main merge
+or Ready transition. The [review packet](../reviews/2026-11-08-workbench-agent-design-and-semantics.md)
+separates current semantics, necessary evidence, avoidable model-context overhead
+and qualification. Final command/runtime/source results belong to the existing
+integration PR record; genuine providers and human Windows acceptance are separate.
+
+## Conversation and rate controls follow-up — 2026-11-08
+
+The isolated #531 follow-up adds plaintext/category-filtered traffic, Match area
+within the65536-cell operation capacity, and local TPM pacing in place of Whole
+canvas. Read the [workbench contract](../systems/shared-workbench-agent-authoring.md).
+Exact resulting source/qualification is recorded in the existing PR thread.
+
+## Compact agent controls and raw traffic — 8 November 2026
+
+The isolated #531 follow-up adds the owner-requested compact prompt/model/budget
+panel, actual configurable1–65536-cell operations (UI default16384), active/idle
+usage dashboard and a separate raw traffic window with bounded local JSONL/PNG
+logs. Opening API/tool/token/timeout defaults are128/256/32768/180. Native cell
+APIs, physical laws and the separate64 receipt store are unchanged. Qualification
+is source-specific; live/human gates remain separate. See the
+[canonical workbench contract](../systems/shared-workbench-agent-authoring.md)
+and [dated record](../audits/2026-11-08-wb531-usable-console.md).
+
+## Workbench configurable agent budgets — 2026-11-08
+
+Owner-requested isolated branch`codex/wb531-configurable-budgets-20261108`
+starts from current #531`3cb6792abb904f912790ef077affa12570804250`.
+Numeric request/tool/output-token controls replace the12/24 checkbox; all
+selected values are frozen at Start. The Collaboration preset is128/256/32768.
+4096 remains a per-operation bound; a real8192-cell two-batch regression is
+added without changing native authority or64-consumed-receipt capacity. Follow the
+[contract](../systems/shared-workbench-agent-authoring.md) and
+[evidence record](../audits/2026-11-08-wb531-configurable-budgets.md).
+Source remains isolated pending tested handoff; no merge/Ready/live claim.
+
+## WB-AGENT released-source consumer — 2026-11-07
+
+The owner requested integration and qualification of all released fixes,
+including whole-canvas scope and the scrolling side dock. The #531-derived
+`codex/wb525-combined-qualification-20261107` consumes main1f82dac1,
+#529e44f7024, #53038f74d39 and #531b704a127 with strike211898 scope/UI source.
+Use the [canonical contract](../systems/shared-workbench-agent-authoring.md)
+and [consumer evidence](../audits/2026-11-07-wb525-combined-qualification.md).
+Native authority/MAT-AUTH remain exact main; newer owner tests are preserved.
+New combined-head qualification is required; historical strike passes are not
+relabelled. No merge/Ready is authorized. API recovery is deferred; LIVE0/3 and
+human Windows acceptance remain separate. Initial foundation text below is
+retained historical onboarding, superseded by this consumer status.
+
+## WB-AGENT Stage-1 — first owner-side foundation checkpoint, 2026-11-07
+
+**Active Draft [#529](https://github.com/techrote/cybersand/pull/529); not
+merged or independently qualified.** Owner-scoped [#526](https://github.com/techrote/cybersand/issues/526)
+continues the **same** branch `feature/wb-agent-authoring-foundation-526-20261107`.
+Inspect its live HEAD and AGENTS.md before editing; the historical initial
+geometry seed was `335f7b2529eb8ea062303570030884bb0ac1bf86` on inspected
+main `81bbd5ff5cf366159e2b8a630609359c13560080`.
+
+#529 now contains source for pure edit geometry, a bounded native-owner
+authoring session, serialized worker request/result and manual-intent fence,
+actual native ID/readback semantics, an opt-in post-draw frame matching adapter
+and named-start commit only after a verified receipt. It is not connected to
+an in-client Agent panel. The new focused native/Godot/authoring tests and
+canonical [tool contract](../systems/shared-workbench-agent-authoring.md)
+need execution and reconciliation; the current worker invocation had no installed
+Godot binary and could not run actual source/runtimes locally. Neither a
+successful end-to-end native execution nor a screenshot is claimed.
+
+Next immediate #526 action: execute and repair the geometry and owner
+integration tests against built native/Godot; independently review source
+fencing, exact frame identity and authored-state race; finish tests/provenance
+and publish stabilized public schemas to #527/#528. #527 may build an
+independent 32-Sand hopper control before the handoff. #528 may build isolated
+panel/API transport but cannot bypass #526's native dispatcher or #527's
+step/Stop. All four tool, live-agent and owner acceptance gates stay separate
+on [#525](https://github.com/techrote/cybersand/issues/525).
+
 
 ## Coupling lockstep feasibility — 2026-11-06
 

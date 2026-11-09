@@ -1,0 +1,5 @@
+{
+ "schema":"cybersand.workbench-api-agent.task/1",
+ "instructions":"Observe region (28,28,8,8). Create nine Hard Wall cells in rectangle (30,30) to (32,32), observe native result, and if count is nine remove the central cell (31,31). Observe again and advance four ticks. Stop only through host; provide no claim of visible motion.",
+ "acceptance":{"native_counts":{"58":8},"completed_ticks":4,"min_applied_edits":2}
+}

@@ -1,0 +1,360 @@
+extends RefCounted
+## #528 opt-in attachment for the existing shared Godot workbench.
+## The native authority stays in #526 WorkbenchAuthoringHost; this class
+## only binds UI, converts copied receipts and enforces local response fences.
+const AgentPanel = preload("res://scripts/workbench_agent_panel.gd")
+const AuthoringHost = preload("res://scripts/workbench_authoring_host.gd")
+const SignedFrame = preload("res://scripts/workbench_agent_signed_frame.gd")
+# Source-identical #527 handoff; native World remains exclusively #526-owned.
+const FourToolBridge = preload("res://scripts/workbench_agent_four_tool_bridge.gd")
+
+const MAX_IMAGE_BYTES: int = 590000
+
+var _workbench: Control
+var _host: Control
+var _agent_panel: Control
+var _bridge: RefCounted
+var _toggle: Button
+var _authorizing: bool = false
+var _authorised: bool = false
+var _pending_retirement: bool = false
+var _task_serial: int = 0
+var _last_projection: Array = []
+var _projection_tree: SceneTree
+var _canvas_row: HBoxContainer
+var _dock: PanelContainer
+
+func mount(workbench: Control) -> bool:
+	if workbench == null or workbench.host == null:
+		return false
+	_workbench = workbench
+	_host = workbench.host
+	_bridge = FourToolBridge.new()
+	if not _bridge.bind(_host):
+		return false
+	# Preserve the actual World object, shaders and gui_input connection.
+	# Agent controls occupy a side dock, never extra canvas-height rows.
+	var layout: Node = _host.world_view.get_parent()
+	var world_index: int = _host.world_view.get_index()
+	_canvas_row = HBoxContainer.new()
+	_canvas_row.name = "WorkbenchCanvasDock"
+	_canvas_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_canvas_row.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_canvas_row.add_theme_constant_override("separation",10)
+	layout.add_child(_canvas_row)
+	layout.move_child(_canvas_row,world_index)
+	_host.world_view.reparent(_canvas_row,false)
+	_host.world_view.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_host.world_view.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_dock = PanelContainer.new()
+	_dock.name = "AgentAuthoringDock"
+	_dock.custom_minimum_size.x = 340
+	_dock.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_dock.theme = _workbench.theme
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.055,0.075,0.11,0.98)
+	style.content_margin_left = 10
+	style.content_margin_right = 10
+	style.content_margin_top = 10
+	style.content_margin_bottom = 10
+	_dock.add_theme_stylebox_override("panel",style)
+	_canvas_row.add_child(_dock)
+	_dock.hide()
+	_agent_panel = AgentPanel.new()
+	_dock.add_child(_agent_panel)
+	_agent_panel.hide()
+	var row: HFlowContainer
+	for child: Node in _workbench.get_children():
+		if child is HFlowContainer:
+			row = child
+			break
+	if row == null:
+		row = _workbench._row(_workbench)
+	_toggle = Button.new()
+	_toggle.name = "AgentToggle"
+	_toggle.text = "Agent authoring (opt-in)"
+	_toggle.toggle_mode = true
+	_toggle.button_pressed = false
+	_toggle.toggled.connect(func(enabled: bool) -> void:
+		if not is_instance_valid(_agent_panel):
+			return
+		if not enabled:
+			# The overlay is parented under world_view, not the panel: hiding
+			# the controls alone would leave a live, invisible agent editing.
+			# Revoke pending model/authorization work and require native Stop
+			# acknowledgement before another task can be authorized.
+			_agent_panel.invalidate_due_to_owner_change("agent panel opted out")
+			_agent_panel.proposal_overlay.set_footprint([])
+		_agent_panel.visible = enabled
+		_dock.visible = enabled
+		_agent_panel.scope_overlay.set_active(enabled))
+	row.add_child(_toggle)
+	_agent_panel.bind_authoritative_dispatcher(
+		Callable(self,"dispatch"),Callable(self,"project_cell"),
+		Callable(self,"authorize"),Callable(self,"retire"))
+	_agent_panel.set_canvas_region_provider(Callable(self,"canvas_region"))
+	_agent_panel.scope_overlay.set_world_to_screen(Callable(self,"project_region"))
+	_host.world_view.add_child(_agent_panel.scope_overlay)
+	_host.world_view.add_child(_agent_panel.proposal_overlay)
+	_agent_panel.scope_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_agent_panel.proposal_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_host.world_view.resized.connect(_agent_panel.scope_overlay.queue_redraw)
+	_host.world_view.resized.connect(_agent_panel.proposal_overlay.queue_redraw)
+	# CanvasItem draw commands are cached. A camera pan can leave the viewport
+	# size unchanged, so resize alone cannot refresh world-space previews.
+	_projection_tree = _host.get_tree()
+	_projection_tree.process_frame.connect(_refresh_projection)
+	_host.tree_exiting.connect(_disconnect_projection)
+	return true
+
+func _disconnect_projection() -> void:
+	if is_instance_valid(_projection_tree) and _projection_tree.process_frame.is_connected(_refresh_projection):
+		_projection_tree.process_frame.disconnect(_refresh_projection)
+	_projection_tree = null
+
+func _refresh_projection() -> void:
+	if not is_instance_valid(_host) or not is_instance_valid(_agent_panel) \
+			or not is_instance_valid(_host.world_view):
+		return
+	var projection: Array = [_host.camera_origin, _host.current_view_size,
+		_host.view_content_rect(), _presentation_origin()]
+	if projection == _last_projection:
+		return
+	_last_projection = projection
+	_agent_panel.scope_overlay.queue_redraw()
+	_agent_panel.proposal_overlay.queue_redraw()
+
+func panel() -> Control:
+	return _agent_panel
+
+func canvas_region() -> Variant:
+	if not is_instance_valid(_host) or _host.world_extent.x <= 0 or _host.world_extent.y <= 0:
+		return null
+	var origin := Vector2i.ZERO
+	if is_instance_valid(_agent_panel) and _agent_panel._signed_frame.button_pressed:
+		if _host.world_extent != SignedFrame.EXTENT:
+			return null
+		origin = -SignedFrame.ORIGIN
+	return Rect2i(origin,_host.world_extent)
+
+func _presentation_origin() -> Vector2:
+	# Map logical signed preview to actual finite World camera only when
+	# explicitly human-selected; the native owner still enforces scope.
+	if is_instance_valid(_agent_panel) and _agent_panel._signed_frame.button_pressed:
+		return Vector2(SignedFrame.ORIGIN)
+	return Vector2.ZERO
+
+func project_cell(cell: Vector2i) -> Variant:
+	if not is_instance_valid(_host) or not is_instance_valid(_host.world_view):
+		return null
+	var content: Rect2 = _host.view_content_rect()
+	var dimensions: Vector2i = _host.current_view_size
+	if not content.has_area() or dimensions.x <= 0 or dimensions.y <= 0:
+		return null
+	# Match the renderer and pointer map's integer camera origin exactly.
+	var offset: Vector2 = Vector2(cell) + _presentation_origin() - _host.camera_origin.floor()
+	if offset.x < 0 or offset.y < 0 or offset.x >= dimensions.x or offset.y >= dimensions.y:
+		return null
+	var scale: Vector2 = content.size / Vector2(dimensions)
+	return Rect2(content.position + offset * scale, scale)
+
+func project_region(region: Rect2i) -> Variant:
+	# Read-only world-to-pixel projection of actual task scope/protection.
+	# Intersect with current camera bounds; never grant native edit authority.
+	if not is_instance_valid(_host) or not is_instance_valid(_host.world_view):
+		return null
+	var content: Rect2 = _host.view_content_rect()
+	var dimensions: Vector2i = _host.current_view_size
+	if not content.has_area() or dimensions.x <= 0 or dimensions.y <= 0:
+		return null
+	var visible_world: Rect2 = Rect2(_host.camera_origin.floor(),Vector2(dimensions))
+	var clipped: Rect2 = visible_world.intersection(
+		Rect2(Vector2(region.position) + _presentation_origin(),Vector2(region.size)))
+	if not clipped.has_area():
+		return null
+	var scale: Vector2 = content.size / Vector2(dimensions)
+	return Rect2(content.position + (clipped.position - visible_world.position) * scale,
+		clipped.size * scale)
+
+func authorize(scope: Dictionary) -> Dictionary:
+	if _bridge == null:
+		return {"status":"refused","reason":"authoring_bridge_not_bound"}
+	if _pending_retirement or _authorizing or _authorised:
+		return {"status":"refused","reason":"prior_authoring_task_not_retired"}
+	if not is_instance_valid(_host) or not _host.paused:
+		return {"status":"refused","reason":"workbench_must_be_paused"}
+	var frame_id: String = str(scope.get("coordinate_frame_id",""))
+	var cell_limit: Variant = scope.get("cell_limit",4096)
+	if typeof(cell_limit) != TYPE_INT or cell_limit < 1 or cell_limit > 65536:
+		return {"status":"refused","reason":"invalid_authorized_cell_limit"}
+	if frame_id not in ["",SignedFrame.FRAME_ID]:
+		return {"status":"refused","reason":"unsupported_coordinate_frame"}
+	var r: Variant = AuthoringHost._typed_region(scope.get("region",null))
+	if frame_id == SignedFrame.FRAME_ID:
+		var mapped: Dictionary = SignedFrame.region(scope.get("region",null))
+		if mapped.get("status") != "mapped":
+			return {"status":"refused","reason":"invalid_signed_authorized_region:" + str(mapped.get("reason",""))}
+		r = mapped.logical
+	var canvas: Variant = canvas_region()
+	if not r is Rect2i or not canvas is Rect2i or not canvas.encloses(r):
+		return {"status":"refused","reason":"authorized_region_outside_installed_canvas"}
+	var protected: Array = []
+	var raw_protected: Variant = scope.get("protected_regions",null)
+	if not raw_protected is Array or raw_protected.size() > 32:
+		return {"status":"refused","reason":"invalid_protection"}
+	for item: Variant in raw_protected:
+		var region: Variant = AuthoringHost._typed_region(item)
+		if frame_id == SignedFrame.FRAME_ID:
+			var checked: Dictionary = SignedFrame.region(item)
+			if checked.get("status") != "mapped":
+				return {"status":"refused","reason":"invalid_signed_protection:" + str(checked.get("reason",""))}
+			region = checked.logical
+		if not region is Rect2i:
+			return {"status":"refused","reason":"invalid_protected_region"}
+		protected.append(region)
+	var selected: Variant = scope.get("allowed_materials",null)
+	if not selected is Array or selected.is_empty() or selected.size() > 2:
+		return {"status":"refused","reason":"invalid_material_selection"}
+	var materials: Array = []
+	for item: Variant in selected:
+		match item:
+			"Hard Wall":
+				if not materials.has(58): materials.append(58)
+			"Empty":
+				if not materials.has(0): materials.append(0)
+			_:
+				return {"status":"refused","reason":"material_not_allowlisted"}
+	_task_serial += 1
+	_authorizing = true
+	var candidate: RefCounted = _bridge
+	var receipt: Dictionary = await candidate.authorize_task(
+		"wb528-%d" % _task_serial,r,protected,materials,frame_id,int(cell_limit))
+	_authorizing = false
+	# Stop can retire the native task while the authorization await is
+	# suspended. Never resurrect authority from a late success receipt.
+	if candidate != _bridge or _pending_retirement or 			receipt.get("interrupted_by_human") == true:
+		return {"status":"refused","reason":"human_stop_during_authorization",
+			"owner_status":str(receipt.get("status","unknown"))}
+	_authorised = receipt.get("status") == "authorized"
+	return receipt
+
+func retire() -> Dictionary:
+	if _pending_retirement:
+		return {"status":"unconfirmed","reason":"retirement_already_pending"}
+	_pending_retirement = true
+	var answer: Dictionary = {}
+	if _bridge == null:
+		answer = {"status":"unconfirmed","reason":"authoring_bridge_not_bound"}
+	elif _authorizing or _authorised:
+		# #527 supports Stop while authorize_task is queued but not ACKed.
+		# Waiting for authorization BEFORE requesting Stop was a race:
+		# a late native authorize could succeed after UI opt-out.
+		var stopping_bridge: RefCounted = _bridge
+		var native: Dictionary = await stopping_bridge.stop()
+		if native.get("status") == "stopped" 				and native.get("no_further_agent_mutations") == true:
+			_authorised = false
+			# The #527 bridge is terminal after Stop. Only a real owner ACK
+			# permits a new, independently bound bridge on the same World.
+			var replacement: RefCounted = FourToolBridge.new()
+			if is_instance_valid(_host) and replacement.bind(_host):
+				_bridge = replacement
+				answer = {"status":"retired","reason":"native_527_stop_ack",
+					"ready_for_new_task":true,"owner_receipt":native}
+			else:
+				_bridge = null
+				answer = {"status":"retired","reason":"native_ack_but_new_bridge_unavailable",
+					"ready_for_new_task":false,"owner_receipt":native}
+		else:
+			# An uncertain native outcome cannot authorize another task:
+			# do not retry a possibly applied retirement operation.
+			_bridge = null
+			_authorised = true
+			answer = {"status":"unconfirmed",
+				"reason":"native_retirement_not_acknowledged","owner_receipt":native}
+	else:
+		answer = {"status":"retired","reason":"no_native_task",
+			"ready_for_new_task":true}
+	_pending_retirement = false
+	return answer
+
+func invalidate_human(reason: String) -> void:
+	if is_instance_valid(_agent_panel):
+		_agent_panel.invalidate_due_to_owner_change(reason)
+
+func dispatch(name: String, args: Dictionary, epoch: int, call_id: String, client: Node) -> void:
+	if not is_instance_valid(client) or not client.is_active() 			or client.current_epoch() != epoch or not _authorised:
+		return
+	# All four tools execute through the SAME qualified #527 bridge, which
+	# delegates first three to #526 and sequences native ACKed workbench ticks.
+	var result: Dictionary = await _bridge.call_tool(name,args)
+	if not is_instance_valid(client) or not client.is_active() 			or client.current_epoch() != epoch:
+		# In-flight native work may have completed; retirement fences the
+		# next task. Never synthesize a cancellation/rollback receipt.
+		return
+	client.submit_tool_result(epoch,call_id,to_model_receipt(result,name))
+
+static func _json_safe(value: Variant) -> Variant:
+	if value is Vector2i:
+		return {"x":value.x,"y":value.y}
+	if value is Rect2i:
+		return {"x":value.position.x,"y":value.position.y,
+			"width":value.size.x,"height":value.size.y}
+	if value is Array:
+		var output: Array = []
+		for item: Variant in value:
+			output.append(_json_safe(item))
+		return output
+	if value is Dictionary:
+		var output: Dictionary = {}
+		for key: Variant in value.keys():
+			output[str(key)] = _json_safe(value[key])
+		return output
+	if value is PackedInt32Array or value is PackedInt64Array:
+		return Array(value)
+	return value
+
+static func to_model_receipt(native: Dictionary, tool: String = "") -> Dictionary:
+	# #527 completed ticks are only model-visible as "stepped" with a genuine
+	# #526 post-draw observation at EXACTLY the completed native tick.
+	if tool == "step":
+		var step_result: Dictionary = native.duplicate(true)
+		if step_result.get("status") == "stopped":
+			step_result["status"] = "refused"
+			return _json_safe(step_result)
+		if step_result.get("status") != "completed":
+			return _json_safe(step_result)
+		var observed: Variant = step_result.get("observation",{})
+		var requested: int = int(step_result.get("requested",-1))
+		var completed: int = int(step_result.get("completed",-1))
+		var before: int = int(step_result.get("before_tick",-1))
+		var after: int = int(step_result.get("after_tick",-1))
+		if requested < 1 or requested > 120 or completed != requested \
+				or before < 0 or after != before + completed \
+				or step_result.get("still_paused") != true \
+				or not observed is Dictionary \
+				or observed.get("status") != "observed" \
+				or observed.get("image_status") != "matched_post_draw" \
+				or int(observed.get("identity",{}).get("completed_tick",-1)) != after \
+				or int(observed.get("render_identity",{}).get("tick",-1)) != after:
+			return {"status":"unconfirmed","reason":"step_missing_exact_matched_observation",
+				"requested":requested,"completed":completed,
+				"before_tick":before,"after_tick":after}
+		var png: Variant = observed.get("framebuffer_png",null)
+		if not png is PackedByteArray or png.size() < 8 or png.size() > MAX_IMAGE_BYTES:
+			return {"status":"unconfirmed","reason":"step_matched_image_missing_or_oversized",
+				"requested":requested,"completed":completed,
+				"before_tick":before,"after_tick":after}
+		step_result["observation"].erase("framebuffer_png")
+		step_result["status"] = "stepped"
+		step_result["image_data_url"] = "data:image/png;base64," + Marshalls.raw_to_base64(png)
+		return _json_safe(step_result)
+	# Preserve original matched PNG bytes, never generate a fake screenshot.
+	# Sending a copied PNG to OpenAI does not give it any native World authority.
+	var result: Dictionary = native.duplicate(true)
+	if result.has("framebuffer_png"):
+		var png: Variant = result["framebuffer_png"]
+		result.erase("framebuffer_png")
+		if result.get("status") != "observed" 				or result.get("image_status") != "matched_post_draw" 				or not png is PackedByteArray or png.size() < 8 				or png.size() > MAX_IMAGE_BYTES:
+			return {"status":"unconfirmed","reason":"matched_image_absent_or_over_limit"}
+		result["image_data_url"] = "data:image/png;base64," + Marshalls.raw_to_base64(png)
+	return _json_safe(result)

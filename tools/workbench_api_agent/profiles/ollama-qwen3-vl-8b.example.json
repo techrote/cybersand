@@ -1,0 +1,9 @@
+{
+ "schema":"cybersand.workbench-api-agent.profile/1", "provider":"ollama_chat",
+ "endpoint":"http://127.0.0.1:11434/v1/chat/completions", "model":"qwen3-vl:8b",
+ "credentials":{"env":""},
+ "capabilities":{"tools":true,"images":true,"strict_tools":false,"parallel_tools":false,"image_detail":"low"},
+ "limits":{"max_model_calls":16,"max_tools":28,"max_run_seconds":900,"max_native_ticks":12},
+ "spend":{"max_usd_per_call":0,"max_usd_per_run":0,"authorised_ceiling_usd":0,"authorisation_ref":""},
+ "local_compute":"unknown"
+}

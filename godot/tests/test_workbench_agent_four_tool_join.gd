@@ -1,0 +1,522 @@
+extends SceneTree
+## #527: compositional *real Godot/native* proof against qualified #526
+## foundation at a separately pinned source SHA. No standalone mock World.
+const Setup = preload("res://scripts/workbench_setup.gd")
+const Bridge = preload("res://scripts/workbench_agent_four_tool_bridge.gd")
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
+var main: Control
+var workbench: Control
+var checks: int = 0
+var failures: int = 0
+
+
+func check(ok: bool, message: String) -> bool:
+	checks += 1
+	if not ok:
+		failures += 1
+		push_error("WB_AGENT_527_JOIN: "+message)
+	return ok
+
+
+func wait_until(condition: Callable, message: String) -> bool:
+	var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("operation_seconds")
+	while Time.get_ticks_msec() < deadline:
+		if condition.call():
+			return true
+		await process_frame
+	return check(condition.call(),message)
+
+
+func _ready() -> bool:
+	return main != null and main.shared_workbench != null \
+		and not main.shared_workbench.applied.is_empty() \
+		and main.paused and main.latest_snapshot != null \
+		and not main.shared_workbench.busy()
+
+
+func _blank_ready() -> bool:
+	return main.pending_microscenario_apply.is_empty() \
+		and not workbench.applied.is_empty() \
+		and main.world_extent == Vector2i(512,512) \
+		and not workbench.busy() and main.paused \
+		and main.latest_snapshot != null and main.latest_snapshot.paused
+
+
+func _initialize() -> void:
+	set_meta("cybersand_feature","shared_workbench")
+	run.call_deferred()
+
+
+func run() -> void:
+	main = load("res://main.tscn").instantiate()
+	root.add_child(main)
+	if not await wait_until(Callable(self,"_ready"),
+			"actual Godot workbench did not initialize"):
+		finish()
+		return
+	workbench = main.shared_workbench
+	var blank: Dictionary = Setup.fresh(
+		PackedInt32Array(workbench.applied.liquid_policy),Vector2i(512,512))
+	if not check(workbench.apply(blank),"actual native blank canvas refused"):
+		finish()
+		return
+	if not await wait_until(Callable(self,"_blank_ready"),
+			"blank native owner did not acknowledge pause"):
+		finish()
+		return
+	var first_generation: int = main.latest_snapshot.render_world_generation
+	var before_tick: int = main.latest_snapshot.tick_index
+	var bridge = Bridge.new()
+	if not check(bridge.bind(main),"qualified #526 host adapter missing/unavailable"):
+		finish()
+		return
+	# Only the human host authorizes this task. Never expose this call as a
+	# model tool; protected motif remains outside the editable rectangle.
+	var authorized: Dictionary = await bridge.authorize_task(
+		"joined-real-native-527",Rect2i(24,24,48,48),
+		[Rect2i(66,66,3,3)],[0,58])
+	check(authorized.get("status")=="authorized",
+		"real #526 worker did not authorize task: "+str(authorized))
+	var invalid: Dictionary = await bridge.call_tool("step",{"ticks":1.0})
+	check(invalid.get("status")=="refused"
+		and invalid.get("completed",0)==0,
+		"fourth tool accepted float count")
+	var observation: Dictionary = await bridge.call_tool("observe",{
+		"region":{"x":28,"y":28,"width":8,"height":8},"detail":"cells"})
+	check(observation.get("status")=="observed"
+		and observation.get("image_status")=="matched_post_draw"
+		and observation.get("framebuffer_png",PackedByteArray()).size()>8,
+		"real native/render observe refused: "+str(observation.get("reason","")))
+	var prepared: Dictionary = {}
+	var applied: Dictionary = {}
+	if observation.get("status")=="observed":
+		prepared = await bridge.call_tool("prepare_edit",{
+			"observation_id":observation.observation_id,
+			"operations":[{"shape":"rectangle","x0":30,"y0":30,
+				"x1":32,"y1":32,"material":58,
+				"replace_only_material":null}]})
+		check(prepared.get("status")=="proposed"
+			and prepared.get("changed_cells",-1)==9,
+			"prepare mutated/refused real native nine-cell construction: "+str(prepared))
+		if prepared.get("status")=="proposed":
+			# #526 authority regression: a second host on this SAME live World
+			# cannot replace the authorized task or its prepared protection.
+			# An explicit native retire ACK is mandatory before a successor.
+			var competing = Bridge.new()
+			check(competing.bind(main), "competing host could not bind")
+			var takeover: Dictionary = await competing.authorize_task(
+				"unapproved-takeover-527", Rect2i(0,0,64,64), [], [0,58])
+			check(takeover.get("status")=="refused"
+				and takeover.get("reason")=="task_already_authorized"
+				and main.latest_snapshot.tick_index==before_tick,
+				"second host silently replaced the live protected task: "+str(takeover))
+			var still_prepared: Dictionary = await bridge.call_tool("step", {"ticks":1})
+			check(still_prepared.get("status")=="refused"
+				and still_prepared.get("reason")==
+				"prepared_edit_must_be_applied_or_retired_before_step"
+				and main.latest_snapshot.tick_index==before_tick,
+				"rejected second-host takeover invalidated pending edit fence")
+			# Regression: wrong-ID apply is host-refused before #526 can
+			# consume the genuine native proposal; Step must remain fenced.
+			var wrong_apply: Dictionary = await bridge.call_tool("apply_edit",{
+				"proposal_id":"wrong-proposal-id-527"})
+			check(wrong_apply.get("status")=="refused"
+				and wrong_apply.get("reason")=="proposal_not_preflight_recordable",
+				"wrong-ID proposal was not refused by #526 owner: "+str(wrong_apply))
+			var refused_step: Dictionary = await bridge.call_tool("step",{"ticks":1})
+			check(refused_step.get("status")=="refused"
+				and refused_step.get("reason")==
+				"prepared_edit_must_be_applied_or_retired_before_step"
+				and main.latest_snapshot.tick_index==before_tick,
+				"wrong-ID apply unlocked native Step across pending proposal")
+			var blocked_step: Dictionary = await bridge.call_tool("step",{"ticks":1})
+			check(blocked_step.get("status")=="refused"
+				and blocked_step.get("reason")=="prepared_edit_must_be_applied_or_retired_before_step"
+				and main.latest_snapshot.tick_index==before_tick,
+				"agent Step ran despite a live unconsumed native edit proposal")
+			applied = await bridge.call_tool("apply_edit",{
+				"proposal_id":prepared.proposal_id})
+			check(applied.get("status")=="applied"
+				and applied.get("authored_start",{}).get("status")=="recorded"
+				and applied.get("changed_cells",-1)==9,
+				"prepared real native material was not applied and saved: "+str(applied))
+	var stepped: Dictionary = await bridge.call_tool("step",{"ticks":4})
+	check(stepped.get("status")=="completed"
+		and stepped.get("completed")==4
+		and stepped.get("requested")==4
+		and stepped.get("before_tick")==before_tick
+		and stepped.get("after_tick")==before_tick+4
+		and stepped.get("still_paused")==true,
+		"fourth tool did not ACK exactly four completed native ticks: "+str(stepped))
+	# #526 corrected post-Step publication: an acknowledged native tick
+	# must have a newly rendered, owner-confirmed PNG at that exact tick.
+	# A merely pending image is no longer sufficient for this acceptance.
+	var matched: Dictionary = stepped.get("observation",{})
+	var matched_frame: bool = stepped.get("observation_status")=="observed"
+	check(matched_frame
+		and matched.get("image_status")=="matched_post_draw"
+		and matched.get("framebuffer_png",PackedByteArray()).size()>8
+		and int(matched.get("identity",{}).get("completed_tick",-1))==before_tick+4
+		and int(matched.get("render_identity",{}).get("tick",-1))==before_tick+4
+		and int(matched.get("native_counts",{}).get(58,0))>=9,
+		"post-Step native/PNG identity mismatch or stale frame: "+
+		str(stepped.get("observation_status","missing"))+" "+
+		str(matched.get("reason","")))
+	# Human Stop while the REAL fourth tool is inside a native tick
+	# sequence. The Stop coroutine begins at the second published ACK,
+	# prohibits a third command, then waits for #526 retirement before it
+	# signals acknowledgement. No main/worker/native source is patched.
+	var stop_receipts: Array = []
+	var native_step_driver: RefCounted = bridge.get("_step_driver")
+	var stop_at_second: Callable = func(ack: Dictionary) -> void:
+		if int(ack.completed)==2:
+			bridge.stop()
+	var consume_stop: Callable = func(answer: Dictionary) -> void:
+		stop_receipts.append(answer.duplicate(true))
+	native_step_driver.step_completed.connect(stop_at_second)
+	bridge.stop_acknowledged.connect(consume_stop)
+	var interrupted: Dictionary = await bridge.call_tool("step",{"ticks":10})
+	native_step_driver.step_completed.disconnect(stop_at_second)
+	check(interrupted.get("status")=="stopped"
+		and interrupted.get("reason")=="human_stop"
+		and interrupted.get("requested")==10
+		and interrupted.get("completed")==2
+		and interrupted.get("before_tick")==before_tick+4
+		and interrupted.get("after_tick")==before_tick+6,
+		"concurrent Stop did not fence remaining eight native ticks: "+str(interrupted))
+	await wait_until(func() -> bool: return stop_receipts.size()==1,
+		"Stop never received genuine #526 native retirement ACK")
+	var stopped: Dictionary = stop_receipts[0] if not stop_receipts.is_empty() else {}
+	check(stopped.get("status")=="stopped"
+		and stopped.get("no_further_agent_mutations")==true,
+		"Stop did not consume real #526 task retirement ACK: "+str(stopped))
+	bridge.stop_acknowledged.disconnect(consume_stop)
+	stop_at_second = Callable()
+	consume_stop = Callable()
+	for _frame: int in 4:
+		await process_frame
+	check(main.latest_snapshot.tick_index==before_tick+6
+		and main.latest_snapshot.render_world_generation==first_generation
+		and main.paused,"Stop ACK allowed a seventh native tick")
+	var late: Dictionary = await bridge.call_tool("apply_edit",{
+		"proposal_id":prepared.get("proposal_id","old")})
+	check(late.get("status")=="refused",
+		"late model tool mutated after human Stop ACK")
+	# A revised task must be a new owner binding, not a stale callback on the
+	# retired driver. No physics World reset or saved-authoring rollback.
+	var second = Bridge.new()
+	check(second.bind(main),"revised task could not rebind actual native host")
+	var revised: Dictionary = await second.authorize_task(
+		"joined-revised-task-527",Rect2i(24,24,48,48),[],[0,58])
+	check(revised.get("status")=="authorized",
+		"new task authorization incorrectly retained old revoked proposal")
+	var new_observation: Dictionary = await second.call_tool("observe",{
+		"region":{"x":28,"y":28,"width":8,"height":8},"detail":"counts"})
+	var revised_matched: bool = new_observation.get("status")=="observed"
+	check(revised_matched
+		and new_observation.get("image_status")=="matched_post_draw"
+		and int(new_observation.get("identity",{}).get("completed_tick",-1))==before_tick+6
+		and int(new_observation.get("render_identity",{}).get("tick",-1))==before_tick+6
+		and int(new_observation.get("native_counts",{}).get(58,0))==9,
+		"revised task lost native walls or accepted an old post-Step framebuffer: "+
+		str(new_observation.get("reason","")))
+	# A real human paint admission BETWEEN model calls must retire the
+	# previous authorized model task. The old Step driver would otherwise
+	# capture the already-changed owner revision as a new baseline and
+	# incorrectly step on the human's canvas. No native tick may be queued.
+	var paint_revision: int = main.simulation_worker.agent_manual_intent_revision()
+	var paint_tick: int = main.latest_snapshot.tick_index
+	check(main.simulation_worker.queue_emit_disc(44,44,0,58),
+		"real human Hard Wall brush intent was refused")
+	check(main.simulation_worker.agent_manual_intent_revision()==paint_revision+1,
+		"human brush did not advance exclusive native manual-intent fence")
+	var stale_step: Dictionary = await second.call_tool("step",{"ticks":1})
+	check(stale_step.get("status")=="refused"
+		and stale_step.get("reason")=="manual_intent_changed_requires_reauthorization"
+		and main.latest_snapshot.tick_index==paint_tick,
+		"stale model Step ran across human brush admission: "+str(stale_step))
+	var stale_observe: Dictionary = await second.call_tool("observe",{
+		"region":{"x":28,"y":28,"width":8,"height":8},"detail":"counts"})
+	check(stale_observe.get("status")=="refused"
+		and stale_observe.get("reason")=="manual_intent_changed_requires_reauthorization",
+		"old task received a new observation after human brush: "+str(stale_observe))
+	for _settle: int in 12:
+		await process_frame
+	check(main.latest_snapshot.tick_index==paint_tick,
+		"agent left an unacknowledged native tick after human brush refusal")
+	var second_stopped: Dictionary = await second.stop()
+	check(second_stopped.get("status")=="stopped",
+		"revised task retirement was not acknowledged")
+	# Previously only the human queue admission was measured. Independently
+	# reauthorize the SAME native World after Stop and read the exact cell
+	# back through #526's exclusive worker plus a newly matched framebuffer.
+	# The human brush must survive the blocked agent calls and retirement.
+	var third = Bridge.new()
+	check(third.bind(main),"post-intervention native owner rebind failed")
+	var after_human_authorized: Dictionary = await third.authorize_task(
+		"joined-human-readback-527",Rect2i(40,40,16,16),[],[0,58])
+	check(after_human_authorized.get("status")=="authorized",
+		"human paint readback task authorization refused: "+str(after_human_authorized))
+	var human_readback: Dictionary = await third.call_tool("observe",{
+		"region":{"x":44,"y":44,"width":1,"height":1},"detail":"cells"})
+	var human_ids: Array = human_readback.get("native_material_ids",[])
+	check(human_readback.get("status")=="observed"
+		and human_readback.get("image_status")=="matched_post_draw"
+		and human_ids.size()==1 and int(human_ids[0])==58
+		and int(human_readback.get("native_counts",{}).get(58,0))==1
+		and int(human_readback.get("identity",{}).get("completed_tick",-1))==paint_tick
+		and int(human_readback.get("render_identity",{}).get("tick",-1))==paint_tick,
+		"human Hard Wall was not preserved in native/material+image readback: "+
+		str(human_readback.get("reason","")))
+	var third_stopped: Dictionary = await third.stop()
+	check(third_stopped.get("status")=="stopped"
+		and main.latest_snapshot.tick_index==paint_tick,
+		"human-readback task did not retire without extra ticks")
+	# Human Stop may race an outstanding trusted authorization itself.
+	# This path must not refuse Stop merely because the native task ACK has
+	# not arrived: doing so leaves a live authorized agent AFTER opt-out.
+	# Start the genuine owner call without awaiting, then request Stop in
+	# the same main-thread turn, before any worker response frame arrives.
+	var pending_authorization = Bridge.new()
+	check(pending_authorization.bind(main),
+		"pending-authorization Stop test could not bind native host")
+	var raced_authorizations: Array = []
+	var start_authorization: Callable = func() -> void:
+		var answer: Dictionary = await pending_authorization.authorize_task(
+			"joined-stop-during-authorize-527",Rect2i(40,40,16,16),[],[0,58])
+		raced_authorizations.append(answer.duplicate(true))
+	start_authorization.call()
+	check(bool(pending_authorization.get("_authorization_pending")),
+		"actual native authorize had already completed; race not exercised")
+	var authorize_stop_tick: int = main.latest_snapshot.tick_index
+	var stopped_during_authorize: Dictionary = await pending_authorization.stop()
+	check(stopped_during_authorize.get("status")=="stopped"
+		and stopped_during_authorize.get("no_further_agent_mutations")==true
+		and stopped_during_authorize.get("reason")==
+			"native_task_retired_after_boundary",
+		"Stop did not wait for pending owner authorize and native retire ACK: "+
+		str(stopped_during_authorize))
+	await wait_until(func() -> bool: return raced_authorizations.size()==1,
+		"pending authorization returned no truthful native receipt")
+	var raced: Dictionary = raced_authorizations[0] if not raced_authorizations.is_empty() else {}
+	check(raced.get("status")=="authorized"
+		and raced.get("interrupted_by_human")==true,
+		"late native authorization silently survived human Stop: "+str(raced))
+	var after_raced_stop: Dictionary = await pending_authorization.call_tool(
+		"step",{"ticks":1})
+	check(after_raced_stop.get("status")=="refused"
+		and main.latest_snapshot.tick_index==authorize_stop_tick,
+		"late tool ran after Stop raced genuine native authorization")
+	# The retirement must be real: a fresh bridge on this same World may
+	# authorize again, while the retired bridge remains terminal.
+	var after_race = Bridge.new()
+	check(after_race.bind(main),"post-authorization Stop could not bind new bridge")
+	var after_race_authorized: Dictionary = await after_race.authorize_task(
+		"joined-after-authorization-stop-527",Rect2i(40,40,16,16),[],[0,58])
+	check(after_race_authorized.get("status")=="authorized"
+		and main.latest_snapshot.tick_index==authorize_stop_tick,
+		"native task was not really retired before fresh authorization: "+
+		str(after_race_authorized))
+	var after_race_stopped: Dictionary = await after_race.stop()
+	check(after_race_stopped.get("status")=="stopped"
+		and main.latest_snapshot.tick_index==authorize_stop_tick,
+		"new same-World task did not retire without unauthorized Step")
+	start_authorization = Callable()
+	# Stop must also fence an in-flight *native authoring edit*, not just
+	# authorization or Step. A successful already-admitted apply is allowed
+	# to finish and be recorded, but no deferred write may run after Stop ACK.
+	var apply_bridge = Bridge.new()
+	check(apply_bridge.bind(main),"pending-apply Stop could not bind real owner")
+	var apply_auth: Dictionary = await apply_bridge.authorize_task(
+		"joined-stop-during-apply-527",Rect2i(48,48,12,12),[],[0,58])
+	var apply_receipts: Array = []
+	var apply_readback: Dictionary = {}
+	var before_apply_tick: int = main.latest_snapshot.tick_index
+	var before_apply_generation: int = main.latest_snapshot.render_world_generation
+	if check(apply_auth.get("status")=="authorized",
+			"pending-apply task did not obtain real native authorization"):
+		var apply_observed: Dictionary = await apply_bridge.call_tool("observe",{
+			"region":{"x":52,"y":52,"width":1,"height":1},"detail":"cells"})
+		if check(apply_observed.get("status")=="observed"
+				and int(apply_observed.get("native_counts",{}).get(0,-1))==1
+				and apply_observed.get("image_status")=="matched_post_draw",
+				"pending-apply source was not native Empty with matched frame"):
+			var apply_prepared: Dictionary = await apply_bridge.call_tool("prepare_edit",{
+				"observation_id":apply_observed.get("observation_id",""),
+				"operations":[{"shape":"rectangle","x0":52,"y0":52,
+					"x1":52,"y1":52,"material":58,
+					"replace_only_material":0}]})
+			if check(apply_prepared.get("status")=="proposed"
+					and apply_prepared.get("changed_cells")==1,
+					"pending-apply real native proposal was not prepared"):
+				var begin_apply: Callable = func() -> void:
+					var result: Dictionary = await apply_bridge.call_tool("apply_edit",{
+						"proposal_id":apply_prepared.get("proposal_id","")})
+					apply_receipts.append(result.duplicate(true))
+				begin_apply.call()
+				check(bool(apply_bridge.get("_busy")),
+					"pending-apply Stop did not exercise an in-flight real owner edit")
+				# A model/provider may submit further tool calls while an applied
+				# native write is still awaiting its receipt. All four tools share
+				# one serial owner boundary: concurrent Step, observe and duplicate
+				# apply must refuse without preempting or replaying this edit.
+				var overlapped_step: Dictionary = await apply_bridge.call_tool(
+					"step",{"ticks":1})
+				var overlapped_observe: Dictionary = await apply_bridge.call_tool(
+					"observe",{"region":{"x":52,"y":52,"width":1,"height":1},
+					"detail":"cells"})
+				var overlapped_duplicate: Dictionary = await apply_bridge.call_tool(
+					"apply_edit",{"proposal_id":apply_prepared.get("proposal_id","")})
+				# The fourth tool must share the same native owner fence too:
+				# a competing prepare cannot replace the in-flight proposal.
+				var overlapped_prepare: Dictionary = await apply_bridge.call_tool(
+					"prepare_edit",{"observation_id":apply_observed.get("observation_id",""),
+					"operations":[{"shape":"rectangle","x0":53,"y0":53,
+						"x1":53,"y1":53,"material":58,"replace_only_material":0}]})
+				for overlapping: Dictionary in [
+						overlapped_step, overlapped_observe, overlapped_duplicate,
+						overlapped_prepare]:
+					check(overlapping.get("status")=="refused"
+						and overlapping.get("reason")=="agent_tool_busy",
+						"overlapping model call bypassed the real native edit serial fence: "
+						+str(overlapping))
+				check(bool(apply_bridge.get("_busy"))
+					and main.latest_snapshot.tick_index==before_apply_tick
+					and main.latest_snapshot.render_world_generation==before_apply_generation,
+					"overlapped calls cleared native busy or advanced an unauthorized tick")
+				# A second Stop while the FIRST Stop is awaiting the native edit
+				# must not initiate another owner retirement or acknowledge early.
+				# Verify a single real retirement signal after the admitted edit settles.
+				var pending_stop_receipts: Array = []
+				var stop_signal_receipts: Array = []
+				var capture_stop: Callable = func(receipt: Dictionary) -> void:
+					stop_signal_receipts.append(receipt.duplicate(true))
+				apply_bridge.stop_acknowledged.connect(capture_stop)
+				var begin_pending_stop: Callable = func() -> void:
+					var receipt: Dictionary = await apply_bridge.stop()
+					pending_stop_receipts.append(receipt.duplicate(true))
+				begin_pending_stop.call()
+				check(bool(apply_bridge.get("_stopping"))
+					and bool(apply_bridge.get("_busy")),
+					"first Stop did not actually wait on the in-flight native apply")
+				var duplicate_stop: Dictionary = await apply_bridge.stop()
+				check(duplicate_stop.get("status")=="refused"
+					and duplicate_stop.get("reason")=="stop_already_pending"
+					and stop_signal_receipts.is_empty(),
+					"second Stop bypassed the pending native retirement fence: "
+					+str(duplicate_stop))
+				var late_observe_during_stop: Dictionary = await apply_bridge.call_tool(
+					"observe",{"region":{"x":52,"y":52,"width":1,"height":1},
+					"detail":"cells"})
+				check(late_observe_during_stop.get("status")=="refused"
+					and late_observe_during_stop.get("reason")==
+						"task_not_authorized_or_stopping",
+					"model observation entered during pending human Stop")
+				await wait_until(func() -> bool: return pending_stop_receipts.size()==1,
+					"first Stop never returned after native apply completion")
+				var apply_stopped: Dictionary = (
+					pending_stop_receipts[0] if not pending_stop_receipts.is_empty() else {})
+				check(stop_signal_receipts.size()==1
+					and stop_signal_receipts[0]==apply_stopped,
+					"Stop returned without exactly one matching native retirement event")
+				apply_bridge.stop_acknowledged.disconnect(capture_stop)
+				capture_stop = Callable()
+				begin_pending_stop = Callable()
+				check(apply_stopped.get("status")=="stopped"
+					and apply_stopped.get("no_further_agent_mutations")==true,
+					"Stop failed to await in-flight native edit and owner retirement: "+
+					str(apply_stopped))
+				await wait_until(func() -> bool: return apply_receipts.size()==1,
+					"in-flight native apply did not settle before Stop")
+				var apply_result: Dictionary = apply_receipts[0] if not apply_receipts.is_empty() else {}
+				check(apply_result.get("status")=="applied"
+					and apply_result.get("interrupted_by_human")==true
+					and apply_result.get("changed_cells")==1
+					and apply_result.get("authored_start",{}).get("status")=="recorded",
+					"already-admitted native edit lost its truthful receipt at Stop: "+
+					str(apply_result))
+				var late_apply: Dictionary = await apply_bridge.call_tool("apply_edit",{
+					"proposal_id":apply_prepared.get("proposal_id","")})
+				check(late_apply.get("status")=="refused",
+					"late duplicate native apply admitted after Stop ACK")
+				# Read through a new authorized task. The original edit must
+				# survive native retirement; native tick may not advance.
+				var verify_apply = Bridge.new()
+				check(verify_apply.bind(main),
+					"post-Stop native readback bridge could not bind")
+				var verify_apply_auth: Dictionary = await verify_apply.authorize_task(
+					"joined-post-apply-stop-readback-527",Rect2i(48,48,12,12),[],[0,58])
+				check(verify_apply_auth.get("status")=="authorized",
+					"post-Stop native retirement did not release task authority")
+				if verify_apply_auth.get("status")=="authorized":
+					apply_readback = await verify_apply.call_tool("observe",{
+						"region":{"x":52,"y":52,"width":1,"height":1},"detail":"cells"})
+					var apply_ids: Array = apply_readback.get("native_material_ids",[])
+					check(apply_readback.get("status")=="observed"
+						and apply_readback.get("image_status")=="matched_post_draw"
+						and apply_ids.size()==1 and int(apply_ids[0])==58
+						and int(apply_readback.get("native_counts",{}).get(58,-1))==1
+						and int(apply_readback.get("identity",{}).get("completed_tick",-1))==before_apply_tick
+						and int(apply_readback.get("render_identity",{}).get("tick",-1))==before_apply_tick,
+						"Stop lost the admitted native edit or its exact post-draw receipt")
+					var verify_apply_stop: Dictionary = await verify_apply.stop()
+					check(verify_apply_stop.get("status")=="stopped",
+						"post-Stop native readback task did not retire")
+				for _apply_stop_frame: int in 5:
+					await process_frame
+				check(main.latest_snapshot.tick_index==before_apply_tick
+					and main.latest_snapshot.render_world_generation==before_apply_generation
+					and main.latest_snapshot.paused,
+					"Stop during apply allowed an extra native tick or World replacement")
+				print("WB_AGENT_527_PENDING_APPLY_STOP_RESULT "+JSON.stringify({
+					"apply":apply_result,"stop":apply_stopped,
+					"native_tick":main.latest_snapshot.tick_index,
+					"generation":main.latest_snapshot.render_world_generation,
+					"readback":apply_readback.get("native_material_ids",[])}))
+				begin_apply = Callable()
+	# Retain the ORIGINAL renderer-owned PNGs for the initial observation,
+	# post-Step 0->4 image and the independently reobserved human brush.
+	# Material authority is separately asserted through native IDs above.
+	var evidence_dir: String = OS.get_environment("WB_AGENT_527_IMAGE_DIR")
+	if not evidence_dir.is_empty():
+		var images: Array = [
+			{"name":"original-native-matched-before-step.png","receipt":observation},
+			{"name":"original-native-matched-after-four-steps.png","receipt":matched},
+			{"name":"original-native-matched-human-intervention.png","receipt":human_readback}
+		]
+		for entry: Dictionary in images:
+			var original: Dictionary = entry["receipt"]
+			var png: PackedByteArray = original.get("framebuffer_png",PackedByteArray())
+			if not check(original.get("status")=="observed" and png.size()>8,
+					"missing original image evidence "+str(entry["name"])):
+				continue
+			var file: FileAccess = FileAccess.open(evidence_dir.path_join(
+				str(entry["name"])),FileAccess.WRITE)
+			if check(file != null,"could not open original image "+str(entry["name"])):
+				file.store_buffer(png)
+				file.close()
+	print("WB_AGENT_527_FOUR_TOOL_RESULT "+JSON.stringify({
+		"checks":checks,"failures":failures,
+		"generation":first_generation,
+		"before_tick":before_tick,
+		"after_tick":main.latest_snapshot.tick_index,
+		"stop_mid_sequence_completed":interrupted.get("completed",-1),
+		"native_backend":main.latest_snapshot.backend_name,
+		"configured_workers":main.latest_snapshot.native_worker_request,
+		"first_task_status":stopped.get("status"),
+		"revised_task_status":second_stopped.get("status"),
+		"human_native_readback":human_readback.get("native_material_ids",[]),
+		"human_readback_status":human_readback.get("status"),
+		"post_step_matched_render_gate":"PASS" if matched_frame else "HOLD",
+		"revised_matched_render_gate":"PASS" if revised_matched else "HOLD"}))
+	finish()
+
+
+func finish() -> void:
+	if is_instance_valid(main):
+		main.queue_free()
+		await process_frame
+		await process_frame
+	print("WB_AGENT_527_JOIN: %d assertions, %d failures" % [checks,failures])
+	quit(1 if failures else 0)

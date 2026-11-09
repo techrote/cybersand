@@ -1,11 +1,13 @@
 extends VBoxContainer
 
 const Setup = preload("res://scripts/workbench_setup.gd")
+const AgentMount = preload("res://scripts/workbench_agent_mount.gd")
 const Fleet = Setup.Fleet
 const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
 const ZOOMS := [Vector2i(240,135),Vector2i(480,270),Vector2i(960,540)]
 const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place source"]
 var host: Control
+var _agent_mount: RefCounted
 var applied: Dictionary = {}
 var pilot_slot := -1
 var fire_enabled := false
@@ -183,6 +185,9 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_details.add_child(_detail_label)
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(_status)
+	_agent_mount = AgentMount.new()
+	if not _agent_mount.mount(self):
+		push_warning("Agent authoring panel unavailable; normal workbench remains active.")
 	DisplayServer.window_set_title("CyberSand · Development workbench")
 	_processor_label = "%s · %d logical CPUs" % [OS.get_processor_name(),OS.get_processor_count()]
 	var binary := "cybersand_native.windows.x86_64.dll" if OS.get_name() == "Windows" else "libcybersand_native.linux.x86_64.so"
@@ -286,6 +291,7 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 	return true
 
 func new_canvas() -> bool:
+	if _agent_mount != null: _agent_mount.invalidate_human("new canvas")
 	if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
 	if not applied.is_empty() and not host.simulation_worker.has_failed() and not _editable(): return false
 	var size := Vector2i(int(_extent[0].value),int(_extent[1].value))
@@ -546,11 +552,13 @@ func reset_selected() -> bool:
 	return _change_actor(applied,selected_id(),"Reset")
 
 func restore_start() -> bool:
+	if _agent_mount != null: _agent_mount.invalidate_human("restore authored start")
 	if applied.is_empty(): return refuse("No starting setup is installed.")
 	if host.simulation_worker.has_failed(): return host.workbench_restart(applied)
 	return apply(applied)
 
 func apply_settings() -> bool:
+	if _agent_mount != null: _agent_mount.invalidate_human("workbench settings")
 	if not _editable(): return false
 	var next := applied.duplicate(true)
 	next.response = _requested_response
@@ -601,6 +609,7 @@ func save_setup() -> bool:
 	return true
 
 func load_setup() -> bool:
+	if _agent_mount != null: _agent_mount.invalidate_human("load authored start")
 	if not host.simulation_worker.has_failed() and not _editable(): return false
 	var result := Setup.read_named(_name.text)
 	# Until the owner saves their own file of the name, "my-canvas" opens the
@@ -624,6 +633,7 @@ func cancel_stroke() -> void:
 	_stream.set_pressed_no_signal(false)
 
 func toggle_pause() -> bool:
+	if _agent_mount != null: _agent_mount.invalidate_human("human Play/Pause")
 	if applied.is_empty() or busy(): return refuse("Wait for the session.")
 	if not host.paused: _cancel()
 	host.paused = not host.paused
@@ -641,6 +651,7 @@ func step_once() -> bool:
 	return true
 
 func paint(pos: Vector2i, material: int) -> bool:
+	if _agent_mount != null: _agent_mount.invalidate_human("manual paint intent")
 	if busy() or applied.is_empty(): return false
 	if material not in Setup.MATERIALS or not Rect2i(Vector2i.ZERO,Setup.extent_of(applied)).has_point(pos): return false
 	var stamp := [pos.x,pos.y,int(applied.brush),material]

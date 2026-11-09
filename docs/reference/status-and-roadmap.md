@@ -4,11 +4,58 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-08
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## Provider UI composition and communication review — 2026-11-08
+
+Isolated integration composes #53129988 with #552be7 and #5472b6; no Main merge
+or Ready transition. The [review packet](../reviews/2026-11-08-workbench-agent-design-and-semantics.md)
+separates current semantics, necessary evidence, avoidable model-context overhead
+and qualification. Final command/runtime/source results belong to the existing
+integration PR record; genuine providers and human Windows acceptance are separate.
+
+## Conversation and rate controls follow-up — 2026-11-08
+
+The isolated #531 follow-up adds plaintext/category-filtered traffic, Match area
+within the65536-cell operation capacity, and local TPM pacing in place of Whole
+canvas. Read the [workbench contract](../systems/shared-workbench-agent-authoring.md).
+Exact resulting source/qualification is recorded in the existing PR thread.
+
+## Compact agent controls and raw traffic — 8 November 2026
+
+The isolated #531 follow-up adds the owner-requested compact prompt/model/budget
+panel, actual configurable1–65536-cell operations (UI default16384), active/idle
+usage dashboard and a separate raw traffic window with bounded local JSONL/PNG
+logs. Opening API/tool/token/timeout defaults are128/256/32768/180. Native cell
+APIs, physical laws and the separate64 receipt store are unchanged. Qualification
+is source-specific; live/human gates remain separate. See the
+[canonical workbench contract](../systems/shared-workbench-agent-authoring.md)
+and [dated record](../audits/2026-11-08-wb531-usable-console.md).
+
+## WB-AGENT Stage-1 shared-workbench human+agent authoring (#525–#528) — 2026-11-07
+
+**Current source candidate; not accepted main.** Existing Drafts #529/#530/#531
+provide native-authoritative four tools, bounded Step/Stop and the mounted
+asynchronous panel. Owner-released whole-canvas scope and the scrolling side
+dock are consumed by an isolated #531-derived integration candidate. The owner-requested8November budget-controls candidate adds numeric
+request/tool/output-token limits and a128/256/32768 Collaboration preset;
+see the canonical contract and source-specific audit for qualification. Each
+observation/edit remains bounded to4096 cells; native laws/defaults, material
+protection and authored-start semantics remain unchanged.
+
+The [canonical Stage-1 contract](../systems/shared-workbench-agent-authoring.md)
+and [consumer qualification record](../audits/2026-11-07-wb525-combined-qualification.md)
+identify refreshed source heads and distinguish new exact-head qualification
+from earlier strike/owner runs. Dependency order remains #526 authority ->
+#527 Step/Stop/control -> #528 panel/API. No merge or Ready is authorized.
+Engineering gates must qualify actual combined source. Registered live attempts
+remain0/3 and explicit human Windows acceptance remains pending; API recovery
+is deferred by the owner. This is not GEN-006 streaming or a new simulation owner.
+
 
 ## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05
 

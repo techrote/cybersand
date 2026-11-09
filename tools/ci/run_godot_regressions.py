@@ -26,6 +26,30 @@ import godot_scheduling as scheduling
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_UNKNOWN_WEIGHT_SECONDS = scheduling.UNKNOWN_SECONDS
 
+# These existing authority tests predate the *_render naming convention, but
+# every successful observation requires an actual post-draw framebuffer.
+WORKBENCH_GRAPHICAL_CASES = frozenset({
+    "test_workbench_agent_owner",
+    "test_workbench_agent_four_tool_join",
+    "test_workbench_agent_signed_join",
+    "test_workbench_agent_hopper_godot",
+    "test_workbench_agent_mounted",
+})
+WINDOWS_WORKBENCH_GRAPHICAL_CASES = WORKBENCH_GRAPHICAL_CASES | frozenset({
+    "test_wb525_capacity_and_camera_render",
+    "test_wb525_mounted_hopper_render",
+    "test_wb525_step_paused_boundary_render",
+    "test_wb525_large_scope_render",
+    "test_wb525_dock_layout_render",
+})
+WORKBENCH_HOPPER_CASES = frozenset({
+    "test_workbench_agent_hopper_godot",
+    "test_wb525_mounted_hopper_render",
+})
+WORKBENCH_HOPPER_FIXTURE_SOURCE = "native/tests/fixtures/wb_agent_sand_hopper_v2.tsv"
+WORKBENCH_HOPPER_FIXTURE_RUNTIME = "godot/tests/wb-agent-527-v2-runtime.tsv"
+WORKBENCH_HOPPER_FIXTURE_SHA256 = "549a1db2520bcfb35f068f46b62320d7325d6297037ca2faf23c3b488d80347c"
+
 # Approximate weights from the 2026-09-19 Linux CI run. They are scheduling hints,
 # not pass/fail thresholds. Unknown tests deliberately receive a conservative
 # weight so new fixtures are never omitted and are unlikely to overload one shard.
@@ -110,18 +134,26 @@ def _weight(name: str, *, profile: dict | None = None, root: Path = ROOT) -> flo
     return scheduling.estimate(name, fallback, profile or scheduling.load_profile(), root=root)[0]
 
 
+def requires_display(name: str) -> bool:
+    return name.endswith("_render") or name in WORKBENCH_GRAPHICAL_CASES
+
+
+def windows_case_supported(case: Case) -> bool:
+    return not case.requires_display or case.name in WINDOWS_WORKBENCH_GRAPHICAL_CASES
+
+
 def discover_cases(root: Path = ROOT) -> list[Case]:
     profile = scheduling.load_profile(root / "tools/ci/godot_scheduling_profile.json")
     cases = [
         Case(
             p.stem,
             ("--script", "res://tests/" + p.name),
-            execution_policy.case_seconds(p.stem, p.stem.endswith("_render"),
+            execution_policy.case_seconds(p.stem, requires_display(p.stem),
                 complex_fixture="support/ci_execution_policy.gd" in p.read_text(encoding="utf-8")),
             _weight(p.stem, profile=profile, root=root),
-            # Actual-pixel fixtures use this suffix so newly added render tests
-            # cannot silently inherit the headless server's no-frame shortcut.
-            requires_display=p.stem.endswith("_render"),
+            # Preserve automatic *_render discovery and explicit older native
+            # framebuffer tests; neither may inherit a headless no-frame path.
+            requires_display=requires_display(p.stem),
         )
         for p in sorted((root / "godot/tests").glob("test_*.gd"))
     ]
@@ -198,6 +230,69 @@ def sha256(path: Path) -> str:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def stage_workbench_fixture(case: Case, output_dir: Path, *, root: Path | None = None) -> dict | None:
+    """Materialize only the frozen hopper input, retaining its exact bytes."""
+    if case.name not in WORKBENCH_HOPPER_CASES:
+        return None
+    root = ROOT if root is None else root
+    source = root / WORKBENCH_HOPPER_FIXTURE_SOURCE
+    destination = root / WORKBENCH_HOPPER_FIXTURE_RUNTIME
+    if source.is_symlink() or destination.is_symlink():
+        raise RuntimeError("Frozen hopper fixture must not be a symbolic link")
+    data = source.read_bytes()
+    if hashlib.sha256(data).hexdigest() != WORKBENCH_HOPPER_FIXTURE_SHA256:
+        raise RuntimeError("Frozen hopper source fixture SHA-256 mismatch")
+    created = False
+    try:
+        if destination.exists():
+            if destination.read_bytes() != data:
+                raise RuntimeError("Refusing a different existing hopper runtime fixture")
+        else:
+            # Exclusive creation refuses a competing writer rather than
+            # replacing a file that appeared after our existing-file check.
+            with destination.open("xb") as handle:
+                created = True
+                handle.write(data)
+        artifact_dir = output_dir / (case.name + "-artifacts")
+        artifact_dir.mkdir(parents=True, exist_ok=True)
+        retained = artifact_dir / "wb_agent_sand_hopper_v2.tsv"
+        with retained.open("xb") as handle:
+            handle.write(data)
+        return {
+            "source": WORKBENCH_HOPPER_FIXTURE_SOURCE,
+            "runtime": WORKBENCH_HOPPER_FIXTURE_RUNTIME,
+            "artifact": retained.relative_to(output_dir).as_posix(),
+            "sha256": WORKBENCH_HOPPER_FIXTURE_SHA256,
+            "size": len(data),
+            "created": created,
+            "verified_after_execution": False,
+            "runtime_cleaned_up": False,
+        }
+    except Exception:
+        if created:
+            destination.unlink(missing_ok=True)
+        raise
+
+
+def finish_workbench_fixture(staged: dict | None, output_dir: Path, *, root: Path | None = None) -> None:
+    """Detect input drift, then remove only our invocation-created copy."""
+    if staged is None:
+        return
+    root = ROOT if root is None else root
+    destination = root / staged["runtime"]
+    try:
+        for label, path in (("source", root / staged["source"]),
+                            ("runtime", destination),
+                            ("artifact", output_dir / staged["artifact"])):
+            if path.is_symlink() or path.stat().st_size != staged["size"] or sha256(path) != staged["sha256"]:
+                raise RuntimeError("Frozen hopper " + label + " fixture changed during execution")
+        staged["verified_after_execution"] = True
+    finally:
+        if staged["created"]:
+            destination.unlink(missing_ok=True)
+            staged["runtime_cleaned_up"] = True
 
 
 def write_json(path: Path, value: object) -> None:
@@ -604,6 +699,8 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
     timeout_diagnostic_error = None
     capture_error = None
     timeout_kind = None
+    runtime_fixture = None
+    fixture_error = None
     resources = {"available": False, "scope": "direct_process_only"}
     def observe_resources(observed_pid):
         nonlocal resources
@@ -616,8 +713,14 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
     process_env["CYBERSAND_TEST_ARTIFACT_DIR"] = str(
         (output_dir / (case.name + "-artifacts")).resolve()
     )
+    if case.name in WINDOWS_WORKBENCH_GRAPHICAL_CASES:
+        artifact_dir = Path(process_env["CYBERSAND_TEST_ARTIFACT_DIR"])
+        artifact_dir.mkdir(parents=True, exist_ok=True)
+        process_env["WB_AGENT_EVIDENCE_DIR"] = str(artifact_dir)
+        process_env["WB_AGENT_527_IMAGE_DIR"] = str(artifact_dir)
     with log_path.open("w", encoding="utf-8") as log:
         try:
+            runtime_fixture = stage_workbench_fixture(case, output_dir)
             options = (
                 {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP}
                 if sys.platform == "win32" else {"start_new_session": True}
@@ -659,9 +762,15 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
                 # cleanup. A timeout always remains a failing result.
                 if timed_out or process.poll() is None:
                     _kill_process_tree(process)
-        except OSError as error:
+        except (OSError, RuntimeError) as error:
             launch_error = str(error)
             log.write(f"\nLAUNCH ERROR: {launch_error}\n")
+        finally:
+            try:
+                finish_workbench_fixture(runtime_fixture, output_dir)
+            except (OSError, RuntimeError) as error:
+                fixture_error = str(error)
+                log.write(f"\nERROR: frozen fixture custody failed: {fixture_error}\n")
     elapsed = time.perf_counter() - started
     output = log_path.read_text(encoding="utf-8", errors="replace")
     print(output, end="", flush=True)
@@ -670,10 +779,10 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
         line for line in output.splitlines()
         if re.search(r"\bskipped\b|^\s*SKIP\b", line, flags=re.IGNORECASE)
     ]
-    failed = timed_out or returncode != 0 or diagnostic_error or bool(skip_messages)
+    failed = timed_out or returncode != 0 or diagnostic_error or bool(skip_messages) or fixture_error is not None
     if timed_out:
         status = "timeout"
-    elif returncode != 0 or diagnostic_error:
+    elif returncode != 0 or diagnostic_error or fixture_error is not None:
         status = "failed"
     elif skip_messages:
         status = "skipped"
@@ -694,6 +803,8 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
         "diagnostic_error": diagnostic_error,
         "launch_error": launch_error,
         "capture_error": capture_error,
+        "runtime_fixture": runtime_fixture,
+        "fixture_error": fixture_error,
         "skip_messages": skip_messages,
         "requires_display": case.requires_display,
         "command": command,

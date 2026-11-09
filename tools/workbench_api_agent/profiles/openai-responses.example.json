@@ -1,0 +1,9 @@
+{
+ "schema":"cybersand.workbench-api-agent.profile/1", "provider":"openai_responses",
+ "endpoint":"https://api.openai.com/v1/responses", "model":"gpt-6-luna",
+ "credentials":{"env":"OPENAI_API_KEY"},
+ "capabilities":{"tools":true,"images":true,"strict_tools":false,"parallel_tools":true,"image_detail":"low"},
+ "limits":{"max_model_calls":16,"max_tools":28,"max_run_seconds":900,"max_native_ticks":12},
+ "spend":{"max_usd_per_call":0.05,"max_usd_per_run":0.25,"authorised_ceiling_usd":0,
+          "authorisation_ref":"","credit_attestation_file":null}
+}

@@ -327,6 +327,14 @@ constructor/refusal checks; remaining routes and full qualification stay open.
 
 For intermittent physical actor Godot timeouts, start with the [#234 qualified repair and acceptance ledger](audits/2026-10-24-issue-234-physical-hang-repair.md) and [live diagnostics/stress guide](operations/local-build-and-validation.md#physical-actor-timeout-investigation). The [admitted #233 baseline](audits/2026-10-24-issue-233-physical-regression-timeouts.md) retains its 600-attempt failures and causal limits. Separate [native-stack / paired evidence](audits/2026-10-24-physical-actor-bvh-validation.md) supports the selected desktop BVH backport. PR #236's integrated head passed ordinary admission and merged as `13b8e631f3e8fbaa2176ed41afc02c434b11e558`; fresh standard qualification run `40129364630` completed 600/600 physical passes, 0/600 timeouts, zero other failures and 20/20 import passes at that immutable source. This qualifies the registered Windows/Linux x86_64 workload and exact artifacts; native-worker count was not varied and the precise scheduler trigger remains unproven.
 
+
+For **WB-AGENT Stage-1 (#525–#528)** in the existing **shared simulation workbench**, consult the
+[agent-authoring tools and acceptance contract](systems/shared-workbench-agent-authoring.md).
+Experimental Drafts #529–#531 provide source-qualified native tools and an opt-in
+panel, but the complete 32-Sand Godot hopper, live OpenAI attempts and owner
+desktop acceptance remain outstanding. This programme is distinct from
+GEN-006 streaming and GEN-007 procedural authoring.
+
 For **Generation Workbench 2**, use the [inspection and authoring contract](systems/generation-workbench-2.md): truthful native replay, actual intermediate stages, graph/hierarchy tools, transactional undo/redo and bounded seed/recipe comparisons. The [procedural qualification guide](operations/procedural-qualification.md) routes the 1024 Ã— 1024 scene, final-raster paths, native exhibits and visual evidence.
 
 Choose all 46 [articulated Rapier actors](systems/physical-actor-rigs.md) with F5 in the sandbox and exploratory maps, using keyboard, local scripted or external-policy control. Sampled references and the initial hull arms remain available; [the physical actor programme](operations/physical-actor-programme.md) preserves owner intent and integration scope.
@@ -588,3 +596,5 @@ For final Gate Aâ€“E PASS, the landed stack, the bounded #200 policy founda
 the [current roadmap checkpoint](reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23),
 the [pressure reference entry](reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)
 and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).
+
+Independent review of agent-workbench communication, tool semantics and overhead: [supplementary packet](reviews/2026-11-08-workbench-agent-design-and-semantics.md).

@@ -1,0 +1,223 @@
+name: WB-REMOTE-001 real shared-workbench file bridge
+
+# Isolated draft qualification; never dispatch paid API calls or promote/merge.
+# New workflow only. Existing WB-AGENT and integration-owned jobs are untouched.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'godot/tools/remote_workbench_batch.gd'
+      - 'tools/remote_workbench/**'
+      - '.github/workflows/wb-remote-file-bridge.yml'
+  workflow_dispatch:
+    inputs:
+      authorization_json:
+        description: "Trusted host authorization JSON (empty = committed real-native fixture)"
+        type: string
+        required: false
+        default: ""
+      commands_jsonl:
+        description: "LF-separated version-1 workbench commands (empty = committed fixture)"
+        type: string
+        required: false
+        default: ""
+  workflow_call:
+    inputs:
+      authorization_json: {type: string, required: false, default: ""}
+      commands_jsonl: {type: string, required: false, default: ""}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wb-remote-001-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  linux-source-built-real-frame:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    env:
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+      GODOT_SILENCE_ROOT_WARNING: '1'
+      OPENAI_API_KEY: ''
+      EVIDENCE: build/wb-remote
+      PYTHONUTF8: '1'
+    steps:
+      - name: Checkout immutable PR head (not moving owner branch)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Python and source checkpoint
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Check source, provider and pure protocol regression
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          git rev-parse HEAD > "$EVIDENCE/source-commit.txt"
+          git rev-parse 'HEAD^{tree}' > "$EVIDENCE/source-tree.txt"
+          git diff --check HEAD > "$EVIDENCE/diff-check.txt"
+          python3 tools/ci/check_ci_provider_policy.py > "$EVIDENCE/ci-provider-policy.json"
+          python3 tools/remote_workbench/test_protocol.py 2>&1 | tee "$EVIDENCE/host-protocol-tests.log"
+      - name: Fetch ONLY locked Rapier runtime, never a stale native build
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum --check --strict
+          sha256sum godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so > "$EVIDENCE/rapier-sha256.txt"
+      - name: Build pinned godot-cpp and actual current-head native extension
+        timeout-minutes: 45
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$GODOT_CPP_ROOT"
+          git -C "$GODOT_CPP_ROOT" init
+          git -C "$GODOT_CPP_ROOT" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" git -C "$GODOT_CPP_ROOT" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$GODOT_CPP_ROOT" checkout --detach FETCH_HEAD
+          test "$(git -C "$GODOT_CPP_ROOT" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label wb-remote-godot-cpp --output-dir "$EVIDENCE/compile-cpp" -- tools/build_pinned_godot_cpp.sh linux
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label wb-remote-extension --output-dir "$EVIDENCE/compile-extension" -- tools/build_native_extension.sh
+          file "$CYBERSAND_NATIVE_OUTPUT" | tee "$EVIDENCE/source-built-native-file.txt"
+          grep -q 'ELF 64-bit.*x86-64' "$EVIDENCE/source-built-native-file.txt"
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          tools/check_linux_runtime_floor.sh
+          sha256sum "$CYBERSAND_NATIVE_OUTPUT" > "$EVIDENCE/native-source-build-sha256.txt"
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          paths = {
+              "native":Path(os.environ["RUNNER_TEMP"])/"libcybersand_native.linux.x86_64.so",
+              "rapier":Path("godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"),
+          }
+          Path("build/wb-remote/native-build-manifest.json").write_text(
+              json.dumps({k:{"sha256":hashlib.sha256(p.read_bytes()).hexdigest(),
+                             "bytes":p.stat().st_size} for k,p in paths.items()},indent=2)+"\n")
+          PY
+      - name: Download checksum-locked official Godot 4.7 editor
+        timeout-minutes: 8
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          lock=json.loads(Path("third_party/godot-runtime.lock.json").read_text())
+          Path("build/wb-remote/godot-lock.json").write_text(json.dumps(lock,indent=2)+"\n")
+          Path("build/wb-remote/godot-url.txt").write_text(lock["editor"]["origin_url"]+"\n")
+          PY
+          curl --fail --location --connect-timeout 45 --max-time 260 --output "$RUNNER_TEMP/wb-remote-godot.zip" "$(cat "$EVIDENCE/godot-url.txt")"
+          python3 - <<'PY'
+          import hashlib, json, os, zipfile
+          from pathlib import Path
+          lock=json.loads(Path("third_party/godot-runtime.lock.json").read_text())
+          archive=Path(os.environ["RUNNER_TEMP"])/"wb-remote-godot.zip"
+          assert archive.stat().st_size==lock["editor"]["size"]
+          assert hashlib.sha256(archive.read_bytes()).hexdigest()==lock["editor"]["sha256"]
+          binary="Godot_v4.7-stable_linux.x86_64"
+          dest=Path(os.environ["RUNNER_TEMP"])/"wb-remote-godot"
+          with zipfile.ZipFile(archive) as z:
+              assert z.testzip() is None and z.namelist().count(binary)==1
+              z.extract(binary,dest)
+          (dest/binary).chmod(0o755)
+          with open(os.environ["GITHUB_ENV"],"a") as output:
+              output.write("GODOT_BIN="+str(dest/binary)+"\n")
+          PY
+      - name: Materialize one trusted host task and bounded command batch
+        env:
+          HOST_AUTHORIZATION_JSON: ${{ inputs.authorization_json }}
+          AGENT_COMMANDS_JSONL: ${{ inputs.commands_jsonl }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE/input"
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          authorization=os.environ.get("HOST_AUTHORIZATION_JSON","")
+          commands=os.environ.get("AGENT_COMMANDS_JSONL","")
+          if bool(authorization.strip()) != bool(commands.strip()):
+              raise SystemExit("Host authorization and agent JSONL must be provided together")
+          home=Path("tools/remote_workbench/fixtures")
+          output=Path("build/wb-remote/input")
+          files={"host-authorization.json":authorization,
+                 "commands.jsonl":commands}
+          for name,data in files.items():
+              if not data.strip():
+                  source = home / ("roundtrip-authorization.json" if "authorization" in name else "roundtrip-commands.jsonl")
+                  data=source.read_text(encoding="utf-8")
+              elif name.endswith(".jsonl") and not data.endswith("\n"):
+                  data += "\n"
+              (output/name).write_text(data,encoding="utf-8")
+          PY
+      - name: Import source and run real native/rendered remote roundtrip
+        timeout-minutes: 12
+        env:
+          USING_DEFAULT_FIXTURE: ${{ inputs.authorization_json == '' && inputs.commands_jsonl == '' }}
+        run: |
+          set -euo pipefail
+          for executable in xvfb-run Xvfb xauth; do command -v "$executable"; done
+          "$GODOT_BIN" --version | tee "$EVIDENCE/godot-version.txt"
+          grep -Fx '4.7.stable.official.5b4e0cb0f' "$EVIDENCE/godot-version.txt"
+          timeout 180 "$GODOT_BIN" --headless --path godot --editor --import --quit 2>&1 | tee "$EVIDENCE/import.log"
+          python3 tools/remote_workbench/run.py --xvfb --godot "$GODOT_BIN" \
+            --authorization "$EVIDENCE/input/host-authorization.json" \
+            --commands "$EVIDENCE/input/commands.jsonl" \
+            --evidence "$EVIDENCE/roundtrip" --timeout 480
+          verify_flags=()
+          if test "$USING_DEFAULT_FIXTURE" = "true"; then
+            verify_flags+=(--roundtrip)
+          fi
+          python3 tools/remote_workbench/verify.py "${verify_flags[@]}" --evidence "$EVIDENCE/roundtrip" \
+            2>&1 | tee "$EVIDENCE/roundtrip-verification.log"
+      - name: Exercise real incremental file transport, reconnect and owned tree cleanup
+        if: ${{ inputs.authorization_json == '' && inputs.commands_jsonl == '' }}
+        timeout-minutes: 24
+        run: |
+          set -euo pipefail
+          python3 tools/remote_workbench/test_live.py --xvfb --godot "$GODOT_BIN" \
+            --authorization "$EVIDENCE/input/host-authorization.json" \
+            --evidence "$EVIDENCE/live-acceptance" \
+            2>&1 | tee "$EVIDENCE/live-qualification.log"
+          test -f "$EVIDENCE/live-acceptance/live-qualification.json"
+      - name: Reuse frozen +512 moved Sand-hopper native Godot control
+        timeout-minutes: 25
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE/hopper"
+          printf '%s  %s\n' \
+            '549a1db2520bcfb35f068f46b62320d7325d6297037ca2faf23c3b488d80347c' \
+            'native/tests/fixtures/wb_agent_sand_hopper_v2.tsv' | sha256sum --check --strict
+          cp native/tests/fixtures/wb_agent_sand_hopper_v2.tsv godot/tests/wb-agent-527-v2-runtime.tsv
+          cp native/tests/fixtures/wb_agent_sand_hopper_v2.tsv "$EVIDENCE/hopper/frozen-v2.tsv"
+          WB_AGENT_527_IMAGE_DIR="$PWD/$EVIDENCE/hopper" timeout 1100 \
+            xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            "$GODOT_BIN" --path godot --audio-driver Dummy \
+            --rendering-method gl_compatibility \
+            --script res://tests/test_workbench_agent_hopper_godot.gd \
+            2>&1 | tee "$EVIDENCE/hopper/real-source-native-hopper.log"
+          grep -E 'WB_AGENT_527_HOPPER_GODOT: [0-9]+ assertions, 0 failures' "$EVIDENCE/hopper/real-source-native-hopper.log"
+          grep -F 'WB_AGENT_527_HOPPER_GODOT_RESULT ' "$EVIDENCE/hopper/real-source-native-hopper.log"
+      - name: Retain original source-runtime-hopper PNGs, manifests and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wb-remote-001-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/wb-remote/
+          if-no-files-found: warn
+          retention-days: 90

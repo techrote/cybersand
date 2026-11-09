@@ -1,0 +1,10 @@
+{
+ "schema":"cybersand.workbench-api-agent.profile/1", "provider":"nvidia_chat",
+ "endpoint":"https://integrate.api.nvidia.com/v1/chat/completions", "model":"REPLACE_WITH_VERIFIED_VISION_AND_TOOL_MODEL",
+ "credentials":{"env":"NVIDIA_API_KEY"},
+ "capabilities":{"tools":true,"images":true,"strict_tools":false,"parallel_tools":false,"image_detail":"low"},
+ "limits":{"max_model_calls":16,"max_tools":28,"max_run_seconds":900,"max_native_ticks":12},
+ "spend":{"max_usd_per_call":0.05,"max_usd_per_run":0.25,"authorised_ceiling_usd":0,
+          "authorisation_ref":"","credit_attestation_file":null,"rates_checked_utc":"2026-11-08",
+          "rates_source":"https://build.nvidia.com/","rates":{"input_usd_per_1m":0,"output_usd_per_1m":0}}
+}

@@ -1,0 +1,529 @@
+extends SceneTree
+## Fake-provider protocol tests; NO real OpenAI calls and NO simulated native acceptance.
+const Client = preload("res://scripts/workbench_agent_client.gd")
+const AgentPanel = preload("res://scripts/workbench_agent_panel.gd")
+
+var assertions := 0
+var failures := 0
+
+func _init() -> void:
+	call_deferred("_run")
+
+func _expect(ok: bool, detail: String) -> void:
+	assertions += 1
+	if not ok:
+		failures += 1
+		push_error("WB_AGENT_528: " + detail)
+
+func _scope() -> Dictionary:
+	return {"region": {"x": 1025, "y": -34, "width": 32, "height": 32},
+		"allowed_materials": ["Hard Wall", "Empty"],
+		"protected_regions": [{"x": 1030, "y": -25, "width": 2, "height": 2}]}
+
+func _response(id: String, calls: Array) -> Dictionary:
+	return {"id": id, "status": "completed", "output": calls}
+
+func _tool(name: String, id: String, arguments: Dictionary) -> Dictionary:
+	return {"type": "function_call", "call_id": id, "name": name,
+		"arguments": JSON.stringify(arguments)}
+
+func _deliver(client: Node, message: Dictionary, status: int = 200) -> void:
+	client.receive_fake_response(client.current_epoch(), client._serial, status, message)
+
+func _new_client() -> Node:
+	var client := Client.new()
+	root.add_child(client)
+	client.configure_fake_transport_for_tests(true)
+	return client
+
+func _run() -> void:
+	await process_frame
+	_test_signed_coordinates_transport()
+	_test_tool_loop_and_stop()
+	_test_full_serial_four_tool_loop()
+	_test_provider_errors()
+	_test_malformed_argument_repair()
+	_test_budget_and_duplicates()
+	_test_configurable_budgets()
+	_test_526_exact_envelopes()
+	await _test_ui_shell()
+	# Let deferred queued Node deletions and emitted signals finish before exit.
+	await process_frame
+	await process_frame
+	print("WB_AGENT_528 fake-provider checks %d, failures %d" % [assertions, failures])
+	quit(1 if failures else 0)
+
+func _test_signed_coordinates_transport() -> void:
+	# The immutable #527 hopper uses negative X/Y; transport must preserve
+	# signs, but this fake provider never claims the #526 worker accepts them.
+	var c := _new_client()
+	var region := {"x": -36, "y": -4, "width": 64, "height": 64}
+	var observe_args := {"region": region, "detail": "cells"}
+	var edit := {"shape": "rectangle", "x0": -35, "y0": -3,
+		"x1": -32, "y1": -2, "material": 58, "replace_only_material": null}
+	_expect(c._valid_arguments("observe", observe_args),
+		"signed bounded observation rejected before authoritative owner")
+	_expect(c._valid_arguments("prepare_edit",
+		{"observation_id": "signed-obs", "operations": [edit]}),
+		"signed bounded Hard Wall edit rejected before authoritative owner")
+	_expect(c._valid_arguments("prepare_edit", {"observation_id": "signed-obs",
+		"operations": [{"shape": "disc", "x": -8, "y": -1, "radius": 2,
+			"material": 0, "replace_only_material": null}]}),
+		"signed disc with nonnegative radius rejected")
+	_expect(not c._valid_arguments("observe",
+		{"region": {"x": -2147483649, "y": 0, "width": 1, "height": 1},
+		"detail": "counts"}), "signed coordinate below int32 admitted")
+	_expect(not c._valid_arguments("observe",
+		{"region": {"x": 2147483647, "y": 0, "width": 2, "height": 1},
+		"detail": "counts"}), "signed region endpoint overflow admitted")
+	_expect(not c._valid_arguments("prepare_edit", {"observation_id": "signed-obs",
+		"operations": [{"shape": "disc", "x": -2147483648, "y": -3,
+			"radius": 1, "material": 58, "replace_only_material": null}]}),
+		"disc footprint overflowing signed int32 admitted")
+	_expect(not c._valid_arguments("prepare_edit", {"observation_id": "signed-obs",
+		"operations": [{"shape": "line", "x0": -2147483649, "y0": -3,
+			"x1": -1, "y1": -2, "material": 58, "replace_only_material": null}]}),
+		"out-of-range line endpoint admitted")
+	var forwarded: Array = []
+	c.tool_requested.connect(func(name: String, args: Dictionary, epoch: int, call_id: String) -> void:
+		forwarded.append({"name": name, "args": args, "epoch": epoch, "call_id": call_id}))
+	_expect(c.begin_task("Prove signed wire preservation", "fake-vision", _scope()),
+		"fake signed transport task did not start")
+	_deliver(c, _response("signed-response-1",
+		[_tool("observe", "signed-observe", observe_args)]))
+	_expect(forwarded.size() == 1 and forwarded[0].args.region.x == -36
+		and forwarded[0].args.region.y == -4,
+		"signed observation coordinates lost in JSON normalization")
+	_expect(c.submit_tool_result(c.current_epoch(), "signed-observe",
+		{"status": "observed", "observation_id": "signed-obs"}),
+		"signed observation continuation not accepted")
+	_deliver(c, _response("signed-response-2",
+		[_tool("prepare_edit", "signed-prepare",
+		{"observation_id": "signed-obs", "operations": [edit]})]))
+	_expect(forwarded.size() == 2 and forwarded[1].args.operations[0].x0 == -35
+		and forwarded[1].args.operations[0].y0 == -3,
+		"signed prepared geometry lost in JSON normalization")
+	c.stop_task("End fake-only signed transport test")
+	c.queue_free()
+
+func _test_tool_loop_and_stop() -> void:
+	var c := _new_client()
+	var invocations: Array = []
+	var statuses: Array = []
+	c.status_changed.connect(func(state: String, _detail: String) -> void: statuses.append(state))
+	c.tool_requested.connect(func(name: String, args: Dictionary, epoch: int, call_id: String) -> void:
+		invocations.append({"name": name, "args": args, "epoch": epoch, "call_id": call_id}))
+	var schemas: Array = c.strict_tools()
+	_expect(schemas.size() == 4, "must offer exactly four tools")
+	for i: int in range(4):
+		_expect(schemas[i].strict and schemas[i].parameters.additionalProperties == false,
+			"top-level tool schema must be strict")
+		_expect(schemas[i].parameters.required.size() == schemas[i].parameters.properties.size(),
+			"strict schema must require all properties")
+	_expect(c.begin_task("Build chute", "configured-vision-model", _scope()), "fake task should start")
+	_expect(c.pending_fake_payload().parallel_tool_calls == false, "parallel dispatch must be off")
+	_deliver(c, _response("response-1", [_tool("observe", "call-1", {"region": null, "detail": "cells"})]))
+	_expect(invocations.size() == 1 and invocations[0].name == "observe", "observe not dispatched")
+	_expect(c.is_waiting_for_tool(), "native handoff should be pending")
+	_expect(c.submit_tool_result(invocations[0].epoch, "call-1",
+		{"status": "observed", "observation_id": "native-1", "native_counts": {"Sand": 32}}),
+		"native observation result should continue")
+	_expect(c._response_id == "response-1" and c._serial == 2, "continuation must retain previous response")
+	var op := {"shape": "line", "x0": 1028, "y0": 25, "x1": 1031, "y1": 25,
+		"material": 58, "replace_only_material": null}
+	if not c._valid_arguments("prepare_edit", {"observation_id":"native-1","operations":[op]}):
+		print("WB528 DEBUG line pre-JSON rejected: ",JSON.stringify(op))
+	_deliver(c, _response("response-2",
+		[_tool("prepare_edit", "call-2", {"observation_id": "native-1", "operations": [op]})]))
+	_expect(invocations.size() == 2 and invocations[1].name == "prepare_edit", "prepare not dispatched")
+	_expect(c.submit_tool_result(invocations[1].epoch, "call-2",
+		{"status": "proposed", "proposal_id": "p-1",
+		"footprint": [{"x": 1028, "y": -25}, {"x": 1029, "y": -25}]}),
+		"prepared footprint not continued")
+	_deliver(c, _response("response-3", [_tool("apply_edit", "call-3", {"proposal_id": "p-1"})]))
+	_expect(invocations.size() == 3 and invocations[2].name == "apply_edit", "apply not delegated")
+	_expect(not c.submit_tool_result(invocations[2].epoch, "wrong-call",
+		{"status": "applied", "readback": {}}), "wrong call ID accepted")
+	_expect(not c.submit_tool_result(invocations[2].epoch, "call-3",
+		{"status": "applied"}), "queue-only applied without readback accepted")
+	_expect(not c.is_active(), "unverified apply should fail closed")
+	c.queue_free()
+	var c2 := _new_client()
+	var old_calls: Array = []
+	c2.tool_requested.connect(func(n: String, _a: Dictionary, _e: int, _id: String) -> void: old_calls.append(n))
+	_expect(c2.begin_task("Test Stop", "configured-vision-model", _scope()), "second task start")
+	var e: int = c2.current_epoch()
+	var s: int = c2._serial
+	c2.stop_task("slow response")
+	c2.receive_fake_response(e, s, 200, _response("late", [_tool("step", "late-1", {"ticks": 1})]))
+	_expect(old_calls.is_empty() and not c2.is_active(), "late response after Stop dispatched")
+	_expect(not c2.submit_tool_result(e, "late-1", {"status": "stepped"}),
+		"late native receipt after Stop was admitted")
+	c2.queue_free()
+
+func _test_full_serial_four_tool_loop() -> void:
+	var c := _new_client()
+	var calls: Array = []
+	var reports: Array = []
+	c.model_report_received.connect(func(text: String) -> void: reports.append(text))
+	c.tool_requested.connect(func(name: String, args: Dictionary, epoch: int, call_id: String) -> void:
+		calls.append({"name": name, "args": args, "epoch": epoch, "id": call_id}))
+	_expect(c.begin_task("Test full tool chain", "configured-model", _scope()), "full chain should start")
+	_deliver(c, _response("r1", [_tool("observe", "o1", {"region": null, "detail": "cells"})]))
+	_expect(calls.size() == 1 and calls[0].name == "observe", "first tool must be observe")
+	var png := "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB"
+	_expect(c.submit_tool_result(c.current_epoch(), "o1", {"status": "observed",
+		"observation_id": "observed-native-1", "image_data_url": png, "native_counts": {"Sand": 32}}),
+		"source-supplied image observation should be accepted")
+	var continuation: Dictionary = c.pending_fake_payload()
+	_expect(continuation.previous_response_id == "r1", "API continuation must link prior response")
+	_expect(continuation.input.size() == 2, "observation continuation must attach actual image input")
+	_expect(continuation.input[1].content[1].type == "input_image", "image not presented as vision input")
+	_expect(str(continuation.input[0].output).find("image_data_url") < 0,
+		"image base64 must not be duplicated as plain text tool result")
+	var op := {"shape": "rectangle", "x0": 1026, "y0": 33, "x1": 1029, "y1": 34,
+		"material": 58, "replace_only_material": null}
+	if not c._valid_arguments("prepare_edit", {"observation_id":"observed-native-1","operations":[op]}):
+		print("WB528 DEBUG rectangle pre-JSON rejected: ",JSON.stringify(op))
+	_deliver(c, _response("r2", [_tool("prepare_edit", "p1",
+		{"observation_id": "observed-native-1", "operations": [op]})]))
+	_expect(calls.size() == 2 and calls[1].name == "prepare_edit", "prepare in chain")
+	_expect(typeof(calls[1].args.operations[0].x0) == TYPE_INT,
+		"exact integer-shaped model arguments must be normalized to integers")
+	_expect(c.submit_tool_result(c.current_epoch(), "p1",
+		{"status": "proposed", "proposal_id": "proposal-native-1",
+		"footprint": [{"x": 1026, "y": -33}]}), "prepare must continue")
+	_deliver(c, _response("r3", [_tool("apply_edit", "a1", {"proposal_id": "proposal-native-1"})]))
+	_expect(calls.size() == 3 and calls[2].name == "apply_edit", "apply in chain")
+	_expect(c.submit_tool_result(c.current_epoch(), "a1",
+		{"status": "applied", "readback": {"verified_cells": 1}, "native_tick": 48}),
+		"verified native-shaped apply receipt must continue")
+	_deliver(c, _response("r4", [_tool("step", "s1", {"ticks": 120})]))
+	_expect(calls.size() == 4 and calls[3].name == "step" and calls[3].args.ticks == 120,
+		"step must use exact bounded integer argument")
+	_expect(c.submit_tool_result(c.current_epoch(), "s1",
+		{"status": "stepped", "requested": 120, "completed": 120,
+		"before_tick": 48, "after_tick": 168, "still_paused": true,
+		"observation": {"status": "observed", "image_status": "matched_post_draw",
+			"render_identity": {"tick": 168}},
+		"image_data_url": png}),
+		"acknowledged exact-step plus matched-image receipt must continue")
+	_expect(c.pending_fake_payload().input.size() == 2 and
+		c.pending_fake_payload().input[1].content[1].type == "input_image",
+		"step continuation must send a genuine matched image to the vision model")
+	_deliver(c, _response("r5", [{"type": "message", "content": [
+		{"type": "output_text", "text": "Model finished; native acceptance not implied."}]}]))
+	_expect(not c.is_active() and calls.size() == 4, "complete serial four-tool loop must terminate")
+	_expect(reports == ["Model finished; native acceptance not implied."],
+		"completed Responses assistant output_text was silently discarded")
+	c.queue_free()
+
+func _test_526_exact_envelopes() -> void:
+	var c := _new_client()
+	var calls: Array = []
+	c.tool_requested.connect(func(name: String, args: Dictionary, _epoch: int, _id: String) -> void:
+		calls.append({"name":name,"args":args}))
+	_expect(c.begin_task("Construct", "configured-model", _scope()), "owner envelope start")
+	_deliver(c, _response("owner-1", [_tool("observe","owner-observe",
+		{"region":{"x":1140,"y":240,"width":8,"height":8},"detail":"counts"})]))
+	_expect(calls.size() == 1 and calls[0].args.region.x == 1140,
+		"model rectangular observation not normalized")
+	_expect(c.submit_tool_result(c.current_epoch(),"owner-observe",
+		{"status":"observed","observation_id":"qualified-obs"}),
+		"observed native result failed")
+	var disc := {"shape":"disc","x":1144,"y":245,"radius":2,"material":58,
+		"replace_only_material":null}
+	if not c._valid_arguments("prepare_edit", {"observation_id":"qualified-obs","operations":[disc]}):
+		print("WB528 DEBUG disc pre-JSON rejected: ",JSON.stringify(disc))
+	_deliver(c,_response("owner-2",[_tool("prepare_edit","owner-prepare",
+		{"observation_id":"qualified-obs","operations":[disc]})]))
+	_expect(calls.size() == 2 and not calls[1].args.operations[0].has("replace_only_material"),
+		"#526 null filter must become absent, never Empty")
+	_expect(calls[1].args.operations[0].material == 58,
+		"#526 Hard Wall native material ID changed")
+	c.queue_free()
+	for invalid: Dictionary in [
+		{"shape":"disc","x":12,"y":5,"radius":37,"material":58,"replace_only_material":null},
+		{"shape":"line","x0":1,"y0":1,"x1":2,"y1":2,"material":2,"replace_only_material":null},
+		{"shape":"rectangle","x0":7,"y0":3,"x1":2,"y1":3,"material":0,"replace_only_material":null},
+		{"shape":"line","x0":1.5,"y0":1,"x1":2,"y1":2,"material":58,"replace_only_material":null}
+	]:
+		_expect(not c._valid_arguments("prepare_edit",
+			{"observation_id":"o","operations":[invalid]}),
+			"invalid operation admitted to #526 tool boundary: "+str(invalid))
+	_expect(c._valid_arguments("prepare_edit",
+		{"observation_id":"o","operations":[disc]}),
+		"actual #526 disc schema rejected")
+
+func _test_provider_errors() -> void:
+	for http_status: int in [401, 403, 429, 500]:
+		var c := _new_client()
+		var states: Array = []
+		c.status_changed.connect(func(state: String, _detail: String) -> void: states.append(state))
+		_expect(c.begin_task("Attempt", "model", _scope()), "error fixture start")
+		_deliver(c, {"id": "failure", "output": []}, http_status)
+		_expect(not c.is_active() and states.has("error"), "HTTP %d must fail closed" % http_status)
+		c.queue_free()
+	var m := _new_client()
+	_expect(m.begin_task("Attempt", "model", _scope()), "malformed fixture start")
+	_deliver(m, {"id": "bad", "output": "not-an-array"})
+	_expect(not m.is_active(), "malformed envelope did not stop")
+	m.queue_free()
+	var n := _new_client()
+	_expect(n.begin_task("Attempt", "model", _scope()), "network fixture start")
+	n._handle_transport(n.current_epoch(), n._serial, HTTPRequest.RESULT_TIMEOUT, 0, PackedByteArray())
+	_expect(not n.is_active(), "timeout did not stop")
+	n.queue_free()
+
+func _test_malformed_argument_repair() -> void:
+	# A single invalid model call may receive a bounded, truthful refusal.
+	# No native dispatcher can observe the invalid arguments or replay work.
+	var c := _new_client()
+	var dispatched: Array = []
+	c.tool_requested.connect(func(name: String, _args: Dictionary, _epoch: int, _id: String) -> void:
+		dispatched.append(name))
+	_expect(c.begin_task("Repair malformed model arguments", "configured-model", _scope()),
+		"repair fixture must start")
+	_deliver(c, _response("bad-response-1", [{
+		"type": "function_call", "call_id": "bad-prepare-1",
+		"name": "prepare_edit", "arguments": "{invalid-json"
+	}]))
+	var continuation: Dictionary = c.pending_fake_payload()
+	var inputs: Array = continuation.get("input", [])
+	_expect(c.is_active() and dispatched.is_empty() and c._serial == 2,
+		"malformed tool arguments reached native dispatch or terminated before correction")
+	_expect(continuation.get("previous_response_id") == "bad-response-1"
+		and inputs.size() == 1 and inputs[0].get("type") == "function_call_output"
+		and inputs[0].get("call_id") == "bad-prepare-1",
+		"correction did not use the original Responses call ID and response chain")
+	var refusal: Variant = JSON.parse_string(str(inputs[0].get("output", ""))) if inputs.size() == 1 else null
+	_expect(refusal is Dictionary and refusal.get("status") == "refused"
+		and refusal.get("native_dispatched") == false
+		and refusal.get("repairs_remaining") == 0,
+		"model correction was not an explicit non-mutating bounded refusal")
+	_deliver(c, _response("fixed-response-2", [_tool("observe", "valid-observe-2",
+		{"region": null, "detail": "counts"})]))
+	_expect(dispatched == ["observe"] and c.is_waiting_for_tool(),
+		"valid model correction did not reach the existing serial dispatcher")
+	_expect(c.submit_tool_result(c.current_epoch(), "valid-observe-2",
+		{"status": "observed", "observation_id": "native-repair-observation"}),
+		"valid corrected call did not continue with authoritative output")
+	_deliver(c, _response("invalid-response-3", [{
+		"type": "function_call", "call_id": "invalid-step-3",
+		"name": "step", "arguments": JSON.stringify({"ticks": 121})
+	}]))
+	_expect(not c.is_active() and dispatched == ["observe"],
+		"second out-of-policy model call bypassed the one-correction limit")
+	c.queue_free()
+	# A correction cannot circumvent the frozen paid-request ceiling.
+	var capped := _new_client()
+	capped.request_budget = 1
+	_expect(capped.begin_task("Capped repair", "configured-model", _scope()),
+		"capped repair fixture must start")
+	_deliver(capped, _response("capped-bad", [{
+		"type": "function_call", "call_id": "capped-bad-call",
+		"name": "observe", "arguments": "not-json"
+	}]))
+	_expect(not capped.is_active() and capped._request_count == 1,
+		"invalid argument repair escaped frozen per-task request budget")
+	capped.queue_free()
+
+
+func _test_budget_and_duplicates() -> void:
+	var c := _new_client()
+	c.request_budget = 1
+	_expect(c.begin_task("Attempt", "model", _scope()), "budget fixture start")
+	# Changing the public configuration later must not expand this active task.
+	c.request_budget = 24
+	_deliver(c, _response("r1", [_tool("observe", "c1", {"region": null, "detail": "counts"})]))
+	_expect(c.submit_tool_result(c.current_epoch(), "c1", {"status": "observed", "observation_id": "o"}),
+		"observed continuation accepted")
+	_expect(not c.is_active(), "second request should be refused at budget")
+	c.queue_free()
+	var over := _new_client()
+	over.request_budget = Client.MAX_REQUEST_BUDGET + 1
+	_expect(not over.begin_task("Attempt", "model", _scope()), "out-of-policy request budget admitted")
+	over.queue_free()
+	var d := _new_client()
+	_expect(d.begin_task("Attempt", "model", _scope()), "duplicate fixture start")
+	_deliver(d, _response("r1", [_tool("observe", "c1", {"region": null, "detail": "counts"})]))
+	_expect(d.submit_tool_result(d.current_epoch(), "c1", {"status": "observed", "observation_id": "o"}),
+		"duplicate setup accepted")
+	_deliver(d, _response("r2", [_tool("observe", "c1", {"region": null, "detail": "counts"})]))
+	_expect(not d.is_active(), "replayed call ID should fail closed")
+	d.queue_free()
+	var replay := _new_client()
+	_expect(replay.begin_task("Attempt", "model", _scope()), "response-ID replay fixture start")
+	_deliver(replay, _response("r1", [_tool("observe", "c1", {"region": null, "detail": "counts"})]))
+	_expect(replay.submit_tool_result(replay.current_epoch(), "c1", {"status": "observed", "observation_id": "o"}),
+		"response-ID replay setup accepted")
+	# A new call_id on an old response_id is still stale; no native dispatch.
+	_deliver(replay, _response("r1", [_tool("step", "c2", {"ticks": 1})]))
+	_expect(not replay.is_active() and not replay.is_waiting_for_tool(),
+		"replayed response ID with fresh call ID should fail closed")
+	_expect(replay.begin_task("New task", "model", _scope()),
+		"new task must be able to start after a rejected response")
+	_deliver(replay, _response("r1", [_tool("observe", "c1", {"region": null, "detail": "counts"})]))
+	_expect(replay.is_waiting_for_tool(), "response IDs must be scoped to the task epoch")
+	replay.queue_free()
+	var p := _new_client()
+	_expect(p.begin_task("Attempt", "model", _scope()), "parallel fixture start")
+	_deliver(p, _response("r1", [
+		_tool("observe", "c1", {"region": null, "detail": "counts"}),
+		_tool("step", "c2", {"ticks": 1})]))
+	_expect(not p.is_active(), "parallel model calls should fail closed")
+	p.queue_free()
+
+func _test_configurable_budgets() -> void:
+	var c := _new_client()
+	c.request_budget = 128
+	c.tool_budget = 256
+	c.token_budget = 32768
+	c.request_timeout_seconds = 180
+	_expect(c.begin_task("Build across batches", "model", _scope()), "collaboration-sized task refused")
+	_expect(c._last_fake_payload.max_output_tokens == 32768, "selected token cap not sent")
+	c.request_budget = 1
+	c.tool_budget = 1
+	c.token_budget = 1
+	c.request_timeout_seconds = 1
+	_deliver(c, _response("budget-r1", [_tool("observe", "budget-c1", {"region":null,"detail":"counts"})]))
+	_expect(c.submit_tool_result(c.current_epoch(),"budget-c1",{"status":"observed","observation_id":"budget-o1"}), "budget continuation failed")
+	_expect(c.is_active() and c._active_request_budget == 128 and c._active_tool_budget == 256
+		and c._last_fake_payload.max_output_tokens == 32768 and c._active_request_timeout_seconds == 180,
+		"active allowances changed after Start")
+	c.queue_free()
+	var limited := _new_client()
+	limited.tool_budget = 1
+	var dispatches: Array = []
+	limited.tool_requested.connect(func(name: String, _args: Dictionary, _epoch: int, _call: String) -> void: dispatches.append(name))
+	_expect(limited.begin_task("Bound tools", "model", _scope()), "tool ceiling fixture start")
+	limited.tool_budget = Client.MAX_TOOL_BUDGET
+	_deliver(limited, _response("tool-r1", [_tool("observe", "tool-c1", {"region":null,"detail":"counts"})]))
+	limited.submit_tool_result(limited.current_epoch(),"tool-c1",{"status":"observed","observation_id":"tool-o1"})
+	_deliver(limited, _response("tool-r2", [_tool("step", "tool-c2", {"ticks":1})]))
+	_expect(not limited.is_active() and dispatches == ["observe"], "tool cap bypass dispatched another native call")
+	limited.queue_free()
+	for spec: Array in [["request_budget",0],["request_budget",Client.MAX_REQUEST_BUDGET+1],
+		["tool_budget",0],["tool_budget",Client.MAX_TOOL_BUDGET+1],
+		["token_budget",0],["token_budget",Client.MAX_TOKEN_BUDGET+1],
+		["request_timeout_seconds",0],["request_timeout_seconds",601],
+		["request_timeout_seconds",INF],["request_timeout_seconds",NAN]]:
+		var bad := _new_client()
+		bad.set(spec[0],spec[1])
+		_expect(not bad.begin_task("Invalid ceiling", "model", _scope()) and bad._serial == 0,
+			"invalid %s admitted a request" % spec[0])
+		bad.queue_free()
+	var malformed := _new_client()
+	malformed.begin_task("Malformed envelope", "model", _scope())
+	malformed._handle_transport(malformed.current_epoch(),malformed._serial,HTTPRequest.RESULT_SUCCESS,200,"not JSON".to_utf8_buffer())
+	_expect(not malformed.is_active() and not malformed.is_waiting_for_tool(), "malformed envelope not refused")
+	malformed.queue_free()
+
+func _test_ui_shell() -> void:
+	var panel := AgentPanel.new()
+	root.add_child(panel)
+	await process_frame
+	_expect(panel._start.disabled, "unbound panel must refuse Start")
+	var authorizations: Array = []
+	panel.bind_authoritative_dispatcher(func(_name: String, _args: Dictionary,
+			_epoch: int, _id: String, _client: Node) -> void: pass,
+		Callable(), func(_scope_value: Dictionary) -> Dictionary:
+			authorizations.append(true)
+			return {"status":"authorized"})
+	panel.client.configure_fake_transport_for_tests(true)
+	# Failure-before: a blank task/model formerly acquired native authority,
+	# then failed begin_task and entered a needless Stop/retirement cycle.
+	panel._model.text = "local-test-model"
+	panel._on_start()
+	_expect(authorizations.is_empty() and not panel.client.is_active()
+		and panel._state.text.find("Task, model") >= 0,
+		"blank task acquired native authoring authority before client preflight")
+	panel._task.text = "Build native chute"
+	panel._model.text = ""
+	panel._on_start()
+	_expect(authorizations.is_empty() and not panel.client.is_active()
+		and panel._state.text.find("Task, model") >= 0,
+		"blank model acquired native authoring authority before client preflight")
+	_expect(panel._region[0].min_value < 0 and panel._region[1].min_value < 0,
+		"signed native coordinates cannot be entered in the opt-in panel")
+	panel._region[0].value = -35
+	panel._region[1].value = -4
+	_expect(int(panel._region[0].value) == -35 and int(panel._region[1].value) == -4,
+		"panel silently clamped signed hopper coordinates")
+	panel._task.text = "Build native chute"
+	panel._model.text = "local-test-model"
+	panel._on_start()
+	_expect(authorizations.size() == 1 and panel.client.is_active(),
+		"valid Start did not authorize exactly once after local preflight")
+	_expect(panel.client.request_budget == 128, "default paid request limit changed")
+	panel._set_budgets(256,256,32768,180)
+	_expect(not panel.client.is_active(), "changing paid request allowance failed to revoke task")
+	panel._on_start()
+	_expect(panel.client.is_active() and panel.client.request_budget == 256
+		and panel.client.tool_budget == 256 and panel.client.token_budget == 32768
+		and panel.client._active_request_timeout_seconds == 180,
+		"human-selected collaboration budgets not authorized")
+	panel._token_limit.value = 20480
+	_expect(not panel.client.is_active(), "changing output-token cap did not retire task")
+	panel._on_start()
+	_expect(panel.client._active_token_budget == 20480, "next task did not select revised token cap")
+	panel._tool_limit.value = 512
+	_expect(not panel.client.is_active(), "changing tool-call cap did not retire task")
+	panel._on_start()
+	panel._timeout_limit.value = 240
+	_expect(not panel.client.is_active(), "changing timeout did not retire task")
+	panel._request_limit.get_line_edit().text = "256"
+	panel._request_limit.get_line_edit().grab_focus()
+	panel._on_start()
+	_expect(panel.client._active_request_budget == 256, "Start ignored typed unsubmitted budget text")
+	_expect(panel.client._active_request_timeout_seconds == 240, "next task did not select revised timeout")
+	panel._set_budgets(Client.DEFAULT_REQUEST_BUDGET,Client.DEFAULT_TOOL_BUDGET,Client.DEFAULT_TOKEN_BUDGET)
+	_expect(not panel.client.is_active(), "opting out did not retire the old task")
+	panel._on_start()
+	_expect(panel.client.is_active() and panel.client.request_budget == 128
+		and panel.client.tool_budget == 256 and panel.client.token_budget == 32768
+		and panel.client._active_request_timeout_seconds == 180,
+		"next task did not restore all conservative defaults")
+	panel._model.text = "revised-test-model"
+	panel._retire_on_human_change()
+	_expect(not panel.client.is_active(), "human task revision must invalidate pending response")
+	panel._on_start()
+	_expect(panel.client.is_active(), "model report visibility task failed to start")
+	# Regression: the model can finish without applying its last prepared
+	# proposal. The expired plan must not linger as a blue viewport preview.
+	# This verifies UI presentation only; no native World is mocked as proof.
+	var preview_edit := {"shape":"rectangle", "x0":10, "y0":10,
+		"x1":10, "y1":10, "material":58, "replace_only_material":null}
+	_deliver(panel.client, _response("panel-preview", [_tool("prepare_edit",
+		"panel-preview-call", {"observation_id":"panel-observation",
+		"operations":[preview_edit]})]))
+	_expect(panel.client.is_waiting_for_tool(), "preview setup did not enter tool boundary")
+	_expect(panel.client.submit_tool_result(panel.client.current_epoch(),
+		"panel-preview-call", {"status":"proposed", "proposal_id":"panel-plan",
+		"footprint":[{"x":10,"y":10}]}), "preview setup did not continue")
+	_expect(panel.proposal_overlay._cells.size() == 1,
+		"source-proposed footprint was not represented in the panel overlay")
+	_deliver(panel.client, _response("panel-final-report", [{"type":"message",
+		"role":"assistant", "content":[{"type":"output_text",
+		"text":"Check the native receipts; this is a model summary, not proof."}]}]))
+	_expect(not panel.client.is_active(), "completed model report did not finish task")
+	_expect(panel._log.text.find("Model report (unverified; native receipts are authoritative)") >= 0
+		and panel._log.text.find("this is a model summary, not proof") >= 0,
+		"mounted panel dropped completed Responses text instead of displaying an unverified report")
+	_expect(panel.proposal_overlay._cells.is_empty(),
+		"completed model left a retired native proposal footprint on screen")
+	# The same stale overlay was previously retained when a provider failed
+	# after a valid prepare receipt. Never leave a finished task's preview live.
+	panel._on_start()
+	_deliver(panel.client, _response("panel-preview-error", [_tool("prepare_edit",
+		"panel-preview-error-call", {"observation_id":"panel-observation",
+		"operations":[preview_edit]})]))
+	_expect(panel.client.submit_tool_result(panel.client.current_epoch(),
+		"panel-preview-error-call", {"status":"proposed", "proposal_id":"panel-error-plan",
+		"footprint":[{"x":11,"y":11}]}), "error preview setup did not continue")
+	_expect(panel.proposal_overlay._cells.size() == 1,
+		"error fixture never showed its native-shaped proposal")
+	_deliver(panel.client, {"id":"provider-failure", "output":[]}, 429)
+	_expect(not panel.client.is_active() and panel.proposal_overlay._cells.is_empty(),
+		"HTTP failure left an unauthorized proposal preview visible")
+	panel.queue_free()

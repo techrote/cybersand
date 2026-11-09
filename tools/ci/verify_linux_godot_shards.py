@@ -32,6 +32,28 @@ def local_file(directory: Path, relative: object) -> Path:
     return path
 
 
+def verify_workbench_fixture(row: dict, case, directory: Path) -> None:
+    if case.name not in runner.WORKBENCH_HOPPER_CASES:
+        return
+    fixture = row.get("runtime_fixture")
+    relative = case.name + "-artifacts/wb_agent_sand_hopper_v2.tsv"
+    require(isinstance(fixture, dict)
+            and fixture.get("source") == runner.WORKBENCH_HOPPER_FIXTURE_SOURCE
+            and fixture.get("runtime") == runner.WORKBENCH_HOPPER_FIXTURE_RUNTIME
+            and fixture.get("artifact") == relative
+            and fixture.get("sha256") == runner.WORKBENCH_HOPPER_FIXTURE_SHA256
+            and type(fixture.get("size")) is int and 0 < fixture["size"] <= 65536
+            and type(fixture.get("created")) is bool
+            and fixture.get("verified_after_execution") is True
+            and fixture.get("runtime_cleaned_up") is fixture["created"],
+            "Missing immutable Linux hopper fixture custody")
+    retained = local_file(directory, relative)
+    require(retained.resolve().is_relative_to(directory.resolve())
+            and retained.stat().st_size == fixture["size"]
+            and digest(retained) == runner.WORKBENCH_HOPPER_FIXTURE_SHA256,
+            "Changed retained Linux hopper fixture")
+
+
 def verify(root: Path, *, cases: list, source: str, tree: str, runtime: dict,
            run_id: str, attempt: str, shard_count: int, godot_version: str,
            readback_output: Path | None = None) -> dict:
@@ -69,7 +91,7 @@ def verify(root: Path, *, cases: list, source: str, tree: str, runtime: dict,
             require(row.get("execution_policy") == execution_policy.identity()
                     and row.get("status") == "passed" and type(row.get("returncode")) is int
                     and row["returncode"] == 0 and row.get("natural_completion") is True
-                    and not any(row.get(key) for key in ("diagnostic_error", "launch_error", "skip_messages", "timeout_kind")),
+                    and not any(row.get(key) for key in ("diagnostic_error", "launch_error", "skip_messages", "timeout_kind", "fixture_error")),
                     "Linux case did not complete naturally with all checks passing")
             log = local_file(path.parent, row.get("log"))
             require(digest(log) == row.get("log_sha256"), "Original Linux log changed")
@@ -80,6 +102,7 @@ def verify(root: Path, *, cases: list, source: str, tree: str, runtime: dict,
                     and row["command"][1:] == runner.case_command("GODOT", case, "linux")[1:],
                     "Linux original command differs from source")
             if offset:
+                verify_workbench_fixture(row, case, path.parent)
                 if runner.case_readback_contract(case) is not None:
                     verify_retained_play_readback.verify(case, row, path.parent, source, "Linux",
                         output_dir=(readback_output / case.name) if readback_output is not None else None)

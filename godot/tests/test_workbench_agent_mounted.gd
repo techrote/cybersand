@@ -1,0 +1,461 @@
+extends SceneTree
+## #528 actual mounted Godot UI -> #526 exclusive native owner -> rendered observation.
+## Fake Responses transport only; this is NOT a paid live-model acceptance.
+const Setup = preload("res://scripts/workbench_setup.gd")
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
+var host: Control
+var wb: Control
+var mount: RefCounted
+var panel: Control
+var checks := 0
+var failed := 0
+var evidence_dir := ""
+
+func _initialize() -> void:
+	set_meta("cybersand_feature","shared_workbench")
+	_run.call_deferred()
+
+func check(ok: bool, reason: String) -> bool:
+	checks += 1
+	if not ok:
+		failed += 1
+		push_error("WB528_MOUNTED: " + reason)
+	return ok
+
+func until(predicate: Callable, reason: String) -> bool:
+	# A cold Windows ANGLE frame may block beyond the former 45-second clamp.
+	# Use the existing operation policy and still require a timely native ACK.
+	var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("operation_seconds")
+	while Time.get_ticks_msec() < deadline:
+		if predicate.call():
+			if Time.get_ticks_msec() <= deadline:
+				return true
+			break
+		await process_frame
+	# Synchronous frames can cross the deadline; never admit a late ACK.
+	return check(false,reason + " exceeded its execution allowance")
+
+func _ready_native() -> bool:
+	return wb != null and not wb.applied.is_empty() and not wb.busy() 		and host.latest_snapshot != null and host.paused
+
+func _ready_blank() -> bool:
+	return _ready_native() and wb.applied.extent == [2048,2048] 		and host.pending_microscenario_apply.is_empty()
+
+func _ready_panel_task() -> bool:
+	return panel.client.is_active() and not panel._start_pending
+
+func _next_request(serial: int) -> bool:
+	return panel.client.is_active() and panel.client._serial > serial 		and not panel.client.pending_fake_payload().is_empty()
+
+func _fake(name: String, id: String, arguments: Dictionary) -> void:
+	var model_response := {
+		"id":"wb528-"+id,"status":"completed","output":[{
+			"type":"function_call","name":name,"call_id":id,
+			"arguments":JSON.stringify(arguments)
+		}]
+	}
+	var client: Node = panel.client
+	client.receive_fake_response(client.current_epoch(),client._serial,
+		200,model_response)
+
+func _receipt() -> Dictionary:
+	var input: Array = panel.client.pending_fake_payload().get("input",[])
+	if input.is_empty():
+		return {}
+	var item: Variant = input[0]
+	if not item is Dictionary or item.get("type") != "function_call_output":
+		return {}
+	var value: Variant = JSON.parse_string(str(item.get("output","")))
+	return value if value is Dictionary else {}
+
+func _capture_original(prefix: String = "mounted-native") -> void:
+	var payload: Dictionary = panel.client.pending_fake_payload()
+	var input: Array = payload.get("input",[])
+	check(input.size() == 2,"native observe did not attach an actual image item")
+	if input.size() < 2:
+		return
+	var content: Array = input[1].get("content",[])
+	if not check(content.size() == 2 and content[1].get("type") == "input_image",
+			"native image was not forwarded as OpenAI input_image"):
+		return
+	var url: String = str(content[1].get("image_url",""))
+	check(url.begins_with("data:image/png;base64,"),"native image must use PNG data URL")
+	var image: PackedByteArray = Marshalls.base64_to_raw(url.trim_prefix("data:image/png;base64,"))
+	check(image.size() > 8 and image[0] == 137 and image[1] == 80,
+		"copied original PNG signature not present")
+	if evidence_dir.is_empty() or image.is_empty():
+		return
+	DirAccess.make_dir_recursive_absolute(evidence_dir)
+	var file: FileAccess = FileAccess.open(evidence_dir.path_join(prefix+"-frame.png"),FileAccess.WRITE)
+	if check(file != null,"cannot retain original mounted PNG"):
+		file.store_buffer(image)
+		file.close()
+	var receipt: Dictionary = _receipt()
+	var data: FileAccess = FileAccess.open(evidence_dir.path_join(prefix+"-receipt.json"),FileAccess.WRITE)
+	if check(data != null,"cannot retain exact native/render identity"):
+		data.store_string(JSON.stringify(receipt,"  ")+"\n")
+		data.close()
+
+func _run() -> void:
+	evidence_dir = OS.get_environment("WB_AGENT_EVIDENCE_DIR")
+	host = load("res://main.tscn").instantiate()
+	root.add_child(host)
+	print("WB528_STAGE main instanced and mounted probe")
+	wb = host.shared_workbench
+	if not await until(Callable(self,"_ready_native"),"shared workbench startup/worker pause"):
+		_finish()
+		return
+	mount = wb._agent_mount
+	panel = mount.panel() if mount != null else null
+	if not check(panel != null and panel.proposal_overlay.get_parent() == host.world_view,
+			"opt-in agent panel not mounted in existing client"):
+		_finish()
+		return
+	check(not panel.visible,"opt-in panel unexpectedly visible by default")
+	check(panel.scope_overlay.get_parent() == host.world_view 			and not panel.scope_overlay.visible,
+		"scope overlay not correctly mounted and opt-in hidden")
+	check(mount._toggle.text.contains("opt-in"),"toggle absent from shared workbench")
+	mount._toggle.button_pressed = true
+	check(panel.visible,"user opt-in toggle cannot reveal panel")
+	print("WB528_STAGE panel present; building blank real World")
+	var fresh: Dictionary = Setup.fresh(PackedInt32Array(wb.applied.liquid_policy),Vector2i(2048,2048))
+	if not check(wb.apply(fresh),"real 2048-square native owner declined blank workbench") 			or not await until(Callable(self,"_ready_blank"),"native blank extent never installed"):
+		_finish()
+		return
+	# Place the qualified native footprint within the actual visible viewport.
+	# Camera movement changes presentation only, never native edit authority.
+	wb._set_view(Vector2(1080,200),host.current_view_size)
+	await process_frame
+	panel._task.text = "Construct an exact native Wall and verify it."
+	panel._model.text = "test-vision-model-not-called"
+	panel._region[0].value = 1120
+	panel._region[1].value = 220
+	panel._region[2].value = 64
+	panel._region[3].value = 64
+	panel._guard_region[0].value = 1148
+	panel._guard_region[1].value = 262
+	panel._guard_region[2].value = 2
+	panel._guard_region[3].value = 2
+	panel._guard.button_pressed = true
+	check(panel.scope_overlay.visible and panel.scope_overlay._protected_regions.size() == 1,
+		"human-configured protected region is not visibly projected")
+	check(mount.project_region(Rect2i(1148,262,2,2)) is Rect2,
+		"protected native rectangle has no real viewport projection")
+	panel.client.configure_fake_transport_for_tests(true)
+	# Race control: press human Stop BEFORE the exclusive native worker
+	# acknowledges queued authorization. This exercises the actual #526
+	# owner and #527 bridge, not a fake World or fabricated Stop receipt.
+	print("WB528_STAGE Stop while native task authorization is in flight")
+	var race_tick_before: int = host.latest_snapshot.tick_index
+	var race_edits_before: int = wb.applied.edits.size()
+	panel._on_start()
+	check(panel._start_pending and mount._authorizing,
+		"queued native task authorization did not enter pending state")
+	panel._on_stop()
+	check(panel._retire_pending,
+		"human Stop did not request native retirement during authorization")
+	if not await until(func() -> bool:
+		return not panel._start_pending and not panel._retire_pending \
+			and not mount._authorizing and not mount._authorised,
+		"native authorization/Stop race did not settle with retirement"):
+		_finish()
+		return
+	check(mount._bridge != null and not panel.client.is_active(),
+		"Stop acknowledgment failed to bind a fresh, inactive native bridge")
+	check(host.latest_snapshot.tick_index == race_tick_before
+		and wb.applied.edits.size() == race_edits_before,
+		"Stop while authorizing mutated cells or advanced native ticks")
+	print("WB528_STAGE native authorization requested after prior Stop ACK")
+	panel._on_start()
+	if not await until(Callable(self,"_ready_panel_task"),"native host authorization missing"):
+		_finish()
+		return
+	check(mount._authorised,"model started without native task authorization")
+	var s: int = panel.client._serial
+	print("WB528_STAGE native observe dispatched")
+	_fake("observe","obs1",{"region":{"x":1144,"y":260,"width":8,"height":8},"detail":"cells"})
+	if not await until(func() -> bool: return _next_request(s),
+			"native observe / real frame did not complete"):
+		_finish()
+		return
+	var observed: Dictionary = _receipt()
+	check(observed.get("status") == "observed" 		and observed.get("image_status") == "matched_post_draw" 		and observed.get("native_material_ids",[]).size() == 64,
+		"matched native observation does not have 64 real cells")
+	_capture_original()
+	check(panel._log.text.contains("observe: observed; inspected 64 native cells; framebuffer matched"),
+		"mounted Activity lacks factual native observation cell count/framebuffer status")
+	# The SAME authorized native task must reject an agent edit crossing
+	# the user-protected rectangle, without consuming Sand or painting cells.
+	s = panel.client._serial
+	var before_forbidden: int = wb.applied.edits.size()
+	var tick_forbidden: int = host.latest_snapshot.tick_index
+	print("WB528_STAGE native protected rectangle refusal")
+	_fake("prepare_edit","protected-reject",
+		{"observation_id":observed.get("observation_id",""),
+		"operations":[{"shape":"rectangle","x0":1148,"y0":262,
+			"x1":1149,"y1":263,"material":58,"replace_only_material":null}]})
+	if not await until(func() -> bool: return _next_request(s),
+			"native protected-region prepare did not refuse/complete"):
+		_finish()
+		return
+	var refused_protection: Dictionary = _receipt()
+	check(refused_protection.get("status") == "refused"
+			and refused_protection.get("reason") == "protected_region",
+		"protected region was not enforced by the authoritative native owner")
+	check(panel._log.text.contains("prepare_edit: refused; reason=protected_region"),
+		"protected native refusal reason is not visible to the human")
+	check(wb.applied.edits.size() == before_forbidden
+			and host.latest_snapshot.tick_index == tick_forbidden
+			and not panel.proposal_overlay.visible,
+		"protected refusal mutated terrain, stepped, or left proposal overlay")
+	s = panel.client._serial
+	print("WB528_STAGE native prepare dispatched")
+	_fake("prepare_edit","prep1",{"observation_id":observed.get("observation_id",""),
+		"operations":[{"shape":"rectangle","x0":1144,"y0":260,
+			"x1":1146,"y1":262,"material":58,"replace_only_material":null}]})
+	if not await until(func() -> bool: return _next_request(s),
+			"real native prepare did not complete"):
+		_finish()
+		return
+	var prepared: Dictionary = _receipt()
+	check(prepared.get("status") == "proposed" 		and prepared.get("changed_cells") == 9,
+		"authoritative nine-cell rectangle preflight failed")
+	check(panel._log.text.contains("prepare_edit: proposed; 9 changed cells proposed"),
+		"native prepared count is missing from mounted Activity")
+	check(panel.proposal_overlay.visible 		and panel.proposal_overlay._cells.size() == 9,
+		"visible overlay not bound to actual prepared native cells")
+	check(mount.project_cell(Vector2i(1144,260)) is Rect2,
+		"cell-to-screen projection missing after opt-in")
+	s = panel.client._serial
+	print("WB528_STAGE native apply dispatched")
+	_fake("apply_edit","apply1",{"proposal_id":prepared.get("proposal_id","")})
+	if not await until(func() -> bool: return _next_request(s),
+			"real native verified application did not complete"):
+		_finish()
+		return
+	var applied: Dictionary = _receipt()
+	check(applied.get("status") == "applied" 		and applied.get("readback",[]).size() == 9 		and applied.get("authored_start",{}).get("status") == "recorded",
+		"native readback and authored-start commit missing")
+	check(panel._log.text.contains("apply_edit: applied; 9 native readback cells; authored start recorded"),
+		"verified native application and named-start outcome absent from Activity")
+	check(not panel.proposal_overlay.visible,"applied proposal overlay remained visible")
+	# The fourth tool goes through #527's real pause/serial/tick fencing; no
+	# fabricated model receipt or stale PNG can satisfy this acceptance.
+	s = panel.client._serial
+	var tick_before: int = host.latest_snapshot.tick_index
+	print("WB528_STAGE actual four-tool step dispatched")
+	_fake("step","step1",{"ticks":4})
+	if not await until(func() -> bool: return _next_request(s),
+			"four acknowledged native steps and post-draw join did not complete"):
+		_finish()
+		return
+	var stepped: Dictionary = _receipt()
+	check(stepped.get("status") == "stepped"
+			and stepped.get("requested") == 4 and stepped.get("completed") == 4
+			and stepped.get("before_tick") == tick_before
+			and stepped.get("after_tick") == tick_before + 4
+			and stepped.get("still_paused") == true,
+			"real 4-tick Step did not return exact native acknowledgment")
+	check(stepped.get("observation",{}).get("image_status") == "matched_post_draw"
+			and stepped.get("observation",{}).get("render_identity",{}).get("tick") == tick_before + 4,
+			"Step result lacked genuine same-tick framebuffer")
+	check(panel._log.text.contains("step: stepped; 4 completed ticks; paused at tick %d; framebuffer matched" % (tick_before + 4)),
+		"actual native Step count/tick and framebuffer status missing from Activity")
+	_capture_original("mounted-poststep")
+	# The fake API is deliberately held after the real application receipt.
+	print("WB528_STAGE native applied; manual edit conflict")
+	var stale_epoch: int = panel.client.current_epoch()
+	var stale_serial: int = panel.client._serial
+	var edits_before: int = wb.applied.edits.size()
+	check(wb.paint(Vector2i(1155,270),58),"human brush rejected during held model response")
+	check(wb.applied.edits.size() >= edits_before + 1,
+		"human authored intent was not preserved")
+	check(not panel.client.is_active(),"human edit did not revoke held API response")
+	await until(func() -> bool: return not panel._retire_pending,
+		"native task retirement after human intervention did not complete")
+	var old_response: Dictionary = {
+		"id":"late-model","status":"completed","output":[{
+			"type":"function_call","name":"apply_edit","call_id":"late-call",
+			"arguments":JSON.stringify({"proposal_id":prepared.get("proposal_id","")})
+		}]
+	}
+	panel.client.receive_fake_response(stale_epoch,stale_serial,200,old_response)
+	check(not panel.client.is_active() and not mount._authorised,
+		"late API result revived a retired worker-authoring task")
+	# Real UI regression: hiding the opt-in panel must not leave an
+	# invisible live author. Hold a fake provider turn AFTER native prepare,
+	# then revoke via the actual toggle and require native Stop ACK.
+	print("WB528_STAGE explicit opt-out during native-prepared proposal")
+	if not await until(Callable(self,"_ready_native"),
+			"native worker not ready for opt-out regression"):
+		_finish()
+		return
+	panel._on_start()
+	if not await until(Callable(self,"_ready_panel_task"),
+			"fresh authorization after human Stop missing"):
+		_finish()
+		return
+	check(mount._authorised,"opt-out setup did not authorize real native owner")
+	s = panel.client._serial
+	_fake("observe","obs-optout",
+		{"region":{"x":1150,"y":264,"width":8,"height":8},"detail":"cells"})
+	if not await until(func() -> bool: return _next_request(s),
+			"opt-out setup native observation did not complete"):
+		_finish()
+		return
+	var opt_observation: Dictionary = _receipt()
+	check(opt_observation.get("status") == "observed",
+		"opt-out setup did not use an authoritative observation")
+	s = panel.client._serial
+	_fake("prepare_edit","prep-optout",
+		{"observation_id":opt_observation.get("observation_id",""),
+		"operations":[{"shape":"rectangle","x0":1150,"y0":264,
+			"x1":1151,"y1":265,"material":58,"replace_only_material":null}]})
+	if not await until(func() -> bool: return _next_request(s),
+			"opt-out setup native prepare did not complete"):
+		_finish()
+		return
+	var opt_proposal: Dictionary = _receipt()
+	check(opt_proposal.get("status") == "proposed"
+		and panel.proposal_overlay.visible,
+		"opt-out setup lacks an actual prepared footprint")
+	var opt_epoch: int = panel.client.current_epoch()
+	var opt_serial: int = panel.client._serial
+	var opt_edits: int = wb.applied.edits.size()
+	var opt_tick: int = host.latest_snapshot.tick_index
+	mount._toggle.button_pressed = false
+	check(not panel.visible and not panel.client.is_active(),
+		"turning off opt-in left a hidden live model task")
+	check(not panel.proposal_overlay.visible,
+		"world_view retained a hidden panel's proposal overlay")
+	check(not panel.scope_overlay.visible,
+		"opt-out retained a protected/scope overlay over manual workbench")
+	if not await until(func() -> bool:
+		return not panel._retire_pending and not mount._authorised,
+		"opt-out lacked acknowledged native Stop"):
+		_finish()
+		return
+	panel.client.receive_fake_response(opt_epoch,opt_serial,200,{
+		"id":"late-optout","status":"completed","output":[{
+			"type":"function_call","name":"apply_edit",
+			"call_id":"late-optout-call",
+			"arguments":JSON.stringify({"proposal_id":opt_proposal.get("proposal_id","")})
+		}]
+	})
+	check(not panel.client.is_active() and not mount._authorised,
+		"late response recreated an opted-out native authoring task")
+	check(wb.applied.edits.size() == opt_edits
+		and host.latest_snapshot.tick_index == opt_tick,
+		"opt-out mutated authored terrain or advanced native ticks")
+	# Experimental #526/#527 signed-native composition, NOT paid or
+	# physically trajectory-equivalent acceptance of the frozen Sand hopper.
+	print("WB528_STAGE signed native four-tool mounted interaction")
+	mount._toggle.button_pressed = true
+	panel._signed_frame.button_pressed = true
+	panel._region[0].value = -16
+	panel._region[1].value = -16
+	panel._region[2].value = 32
+	panel._region[3].value = 32
+	panel._guard_region[0].value = -8
+	panel._guard_region[1].value = -8
+	panel._guard_region[2].value = 2
+	panel._guard_region[3].value = 2
+	wb._set_view(Vector2(480,480),host.current_view_size)
+	await process_frame
+	check(mount.project_cell(Vector2i(-4,-4)) is Rect2,
+		"signed logical preview does not project to real finite camera")
+	check(mount.project_region(Rect2i(-8,-8,2,2)) is Rect2,
+		"signed protected overlay has no native-view projection")
+	panel._on_start()
+	if not await until(Callable(self,"_ready_panel_task"),
+			"signed native host authorization failed"):
+		_finish()
+		return
+	check(mount._authorised,"signed task not authorized by native owner")
+	s = panel.client._serial
+	_fake("observe","signed-observe",
+		{"region":{"x":-9,"y":-9,"width":16,"height":16},"detail":"cells"})
+	if not await until(func() -> bool: return _next_request(s),
+			"signed real native observation did not return"):
+		_finish()
+		return
+	var signed_observation: Dictionary = _receipt()
+	check(signed_observation.get("status") == "observed"
+			and signed_observation.get("image_status") == "matched_post_draw"
+			and signed_observation.get("coordinate_frame_id") ==
+				"wb-agent-signed-frame-candidate-v1:origin=512,512:extent=2048x2048",
+		"signed native observation missing frame identity/matched PNG")
+	_capture_original("mounted-signed-observation")
+	s = panel.client._serial
+	_fake("prepare_edit","signed-protected",
+		{"observation_id":signed_observation.get("observation_id",""),
+		"operations":[{"shape":"rectangle","x0":-8,"y0":-8,"x1":-7,
+			"y1":-7,"material":58,"replace_only_material":null}]})
+	if not await until(func() -> bool: return _next_request(s),
+			"signed protected edit refusal missing"):
+		_finish()
+		return
+	check(_receipt().get("status") == "refused",
+		"signed logical protected region failed to refuse edit")
+	s = panel.client._serial
+	_fake("prepare_edit","signed-proposal",
+		{"observation_id":signed_observation.get("observation_id",""),
+		"operations":[{"shape":"rectangle","x0":-4,"y0":-4,"x1":-2,
+			"y1":-2,"material":58,"replace_only_material":null}]})
+	if not await until(func() -> bool: return _next_request(s),
+			"signed real-native proposal missing"):
+		_finish()
+		return
+	var signed_prepared: Dictionary = _receipt()
+	check(signed_prepared.get("status") == "proposed"
+			and signed_prepared.get("changed_cells") == 9
+			and panel.proposal_overlay.visible
+			and panel.proposal_overlay._cells.size() == 9,
+		"signed native footprint differs from UI proposal")
+	s = panel.client._serial
+	_fake("apply_edit","signed-apply",
+		{"proposal_id":signed_prepared.get("proposal_id","")})
+	if not await until(func() -> bool: return _next_request(s),
+			"signed native application/readback missing"):
+		_finish()
+		return
+	var signed_applied: Dictionary = _receipt()
+	check(signed_applied.get("status") == "applied"
+			and signed_applied.get("readback",[]).size() == 9
+			and signed_applied.get("coordinate_frame_id") ==
+				"wb-agent-signed-frame-candidate-v1:origin=512,512:extent=2048x2048"
+			and not panel.proposal_overlay.visible,
+		"signed native application lacks nine verified logical cells")
+	s = panel.client._serial
+	var signed_before: int = host.latest_snapshot.tick_index
+	_fake("step","signed-step",{"ticks":2})
+	if not await until(func() -> bool: return _next_request(s),
+			"signed native two ticks/render join missing"):
+		_finish()
+		return
+	var signed_stepped: Dictionary = _receipt()
+	check(signed_stepped.get("status") == "stepped"
+			and signed_stepped.get("completed") == 2
+			and signed_stepped.get("after_tick") == signed_before + 2
+			and signed_stepped.get("observation",{}).get("image_status") == "matched_post_draw",
+		"signed Step missing exact ticks/matched original PNG")
+	_capture_original("mounted-signed-poststep")
+	panel._on_stop()
+	if not await until(func() -> bool: return not panel._retire_pending and not mount._authorised,
+			"signed native Stop acknowledgment missing"):
+		_finish()
+		return
+	check(host.latest_snapshot.tick_index == signed_before + 2,
+		"signed Stop completed extra unauthorized tick")
+	mount._toggle.button_pressed = false
+	# No API keys or paid calls; actual native edit and Godot frame were used.
+	print("WB528_STAGE completed conflict and late-response checks")
+	_finish()
+
+func _finish() -> void:
+	print("WB_AGENT_528 mounted real-native checks %d, failures %d" % [checks,failed])
+	if is_instance_valid(host):
+		host.queue_free()
+	await process_frame
+	quit(1 if failed else 0)

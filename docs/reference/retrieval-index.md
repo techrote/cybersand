@@ -126,6 +126,11 @@ these distinctions without modifying the frozen32 or existing157 challenges.
 
 - [Prepared Water Feel reference bodies](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies): actual frozen masks, permanent-space adoption/refusal and normal unpaused feedback; preserve local-source limits, actual Web and host-mask continuation gaps.
 
+
+## Shared workbench agent authoring — WB-AGENT (#525–#528)
+
+- [Stage-1 agent authoring tools and qualification boundaries](../systems/shared-workbench-agent-authoring.md): **Approved, experimentally implemented** opt-in shared-workbench human+agent authoring. Native observe, prepare/apply, Step, Stop, post-draw image matching and panel have Linux source-matched tests; frozen signed 32-Sand Godot trial, 3 genuine OpenAI trials and owner Windows desktop verdict are **not accepted**. Keep #526, #527 and #528 owner-specific evidence separate from #525's three completion gates.
+
 ## Generation Workbench 2 and procedural quality
 
 - [Workbench inspection and transactions](../systems/generation-workbench-2.md): accepted native identities, bounded deterministic replay, actual stage meanings, invalid-edit preservation, graph/hierarchy/plane editing, undo/redo, seeds and comparison.
@@ -425,3 +430,10 @@ coalesced publication counts, use the [player-control contract](../systems/playe
 How do I place multiple independently configured flyers with a passive barrel, select granular and liquid responses, paint a large canvas and save an authored start? Use the [desktop workbench controls and format](../systems/player-control-playground.md#development-workbench-on-desktop) and its [qualification record](../audits/2026-11-04-workbench-consolidation.md). Tuning retention and lifetime corrections are in the [cleanup evidence](../audits/2026-11-04-workbench394-cleanup.md); MAT source admission is [separate](../audits/2026-11-04-workbench394-material-source-transition.md).
 
 For #394 owner acceptance, accepted-main pressure reconciliation and final gate status, use the [resulting-source qualification record](../audits/2026-11-04-workbench394-ready-validation.md). Current workbench controls remain in the player playground guide.
+
+Workbench agent budget controls and per-operation versus task scope and raw traffic/rate controls have six
+[additive retrieval cases](wb-agent-budget-retrieval-questions.json), evaluated
+separately from the unchanged frozen32. The canonical answer remains the
+[shared-workbench agent contract](../systems/shared-workbench-agent-authoring.md).
+
+Provider UI composition and independent communication-efficiency review route to the [review packet](../reviews/2026-11-08-workbench-agent-design-and-semantics.md) and [runner runbook](../operations/workbench-api-agent.md).
