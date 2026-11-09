@@ -224,13 +224,12 @@ def commit(w: World, intent: Intent, *, fenced: bool, now_epoch: int | None = No
     if (src.owner == Owner.INERTIAL and intent.amount != src.amount) or (
         intent.target == Owner.INERTIAL and intent.amount != WHOLE_CELL):
         return refused(Refusal.FRACTIONAL_CELL)
-    if intent.target == Owner.INERTIAL and intent.next_velocity_q256[1] < 0 and not intent.allow_signed_inertial:
-        return refused(Refusal.UNSIGNED_UPWARD)
-
     if (not isinstance(intent.next_velocity_q256, tuple) or
             len(intent.next_velocity_q256) != 2 or
             any(type(v) is not int for v in intent.next_velocity_q256)):
         return refused(Refusal.UNSUPPORTED)
+    if intent.target == Owner.INERTIAL and intent.next_velocity_q256[1] < 0 and not intent.allow_signed_inertial:
+        return refused(Refusal.UNSIGNED_UPWARD)
 
     # Build a *candidate*, then commit all mutable state after its full validation.
     split = intent.amount < src.amount
