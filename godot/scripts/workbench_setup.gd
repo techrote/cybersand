@@ -45,6 +45,14 @@ const GUNPOWDER := 26
 const COAL := 27
 const STRESS_LABEL := "stress-canvas"
 const BUILTIN_LABELS := [DEFAULT_LABEL,BENCH_LABEL,STRESS_LABEL]
+# IN-TOOLS #361 integrated leak / drain / nozzle apparatus. Kept apart from
+# BUILTIN_LABELS so terrain-only fixture exporters keep their exact inputs.
+const LIQUID_LAB_LABEL := "liquid-lab"
+const EQUIPMENT_LABELS := [LIQUID_LAB_LABEL]
+const Equipment = preload("res://scripts/workbench_liquid_equipment.gd")
+# Optional root key. Absent = no equipment; a setup without it keeps exactly
+# the Setup-v2 bytes and older builds refuse (never silently drop) one with it.
+const EQUIPMENT_KEY := "equipment"
 const SMOKE := 4
 const FIRE := 6
 const PLANT := 11
@@ -312,7 +320,42 @@ static func builtin(label: String, policy: PackedInt32Array) -> Dictionary:
 	if label == DEFAULT_LABEL: return water_evaluation(policy)
 	if label == BENCH_LABEL: return engine_benchmark(policy)
 	if label == STRESS_LABEL: return stress_canvas(policy)
+	if label == LIQUID_LAB_LABEL: return liquid_lab(policy)
 	return {}
+
+# Built-in "liquid-lab" equipment apparatus (#361; used only while no user file
+# of that name exists). Left to right in one 480 x 270 view: an elevated
+# reservoir with a closed 8 x 4 bottom valve in its floor; a catch basin under
+# and beside it with a bottom drain by its lip and a ledge carrying a barrel; a
+# nozzle on the dry floor beyond the lip aimed back up over the ledge. The pump
+# pipes drained Water to the nozzle, so the loop circulates a fixed quantity.
+# The workbench requests inertial Water (radius 3) and ballistic Water for
+# this start; the native validator decides, and refusals keep the policy given.
+# A bottom valve is used because inertial Water gates horizontal-only moves by
+# coherence: a side slot in a 4-cell wall leaks only about one cell per tick.
+const LIQUID_LAB_VALVE := [56,220,8,4]
+const LIQUID_LAB_DRAIN := [96,258,16,6,16]
+const LIQUID_LAB_NOZZLE := [420,246,-141.0,5.5,2]
+static func liquid_lab(policy: PackedInt32Array) -> Dictionary:
+	var data := fresh(policy,Vector2i(512,512))
+	var e: Array = data.edits
+	_box(e,Vector2i(16,130),Vector2i(136,220),WATER)            # reservoir contents
+	_box(e,Vector2i(0,264),Vector2i(512,272),WALL)              # floor
+	_box(e,Vector2i(0,20),Vector2i(4,264),WALL)                 # left boundary
+	_box(e,Vector2i(476,20),Vector2i(480,264),WALL)             # right boundary
+	_box(e,Vector2i(12,110),Vector2i(16,224),WALL)              # reservoir left wall
+	_box(e,Vector2i(12,220),Vector2i(140,224),WALL)             # reservoir floor incl. the closed valve gate
+	_box(e,Vector2i(136,110),Vector2i(140,220),WALL)            # reservoir right wall
+	_box(e,Vector2i(4,150),Vector2i(12,156),WALL)               # bracket to the left boundary
+	_box(e,Vector2i(330,226),Vector2i(334,264),WALL)            # basin lip beside the drain
+	_box(e,Vector2i(222,190),Vector2i(262,194),WALL)            # ledge under the barrel
+	data.actors = [instance(BARREL,1,Vector2(242,180))]
+	data.next_id = 2
+	data.material = WATER
+	data.rule_radius = 3
+	data[EQUIPMENT_KEY] = {"version":Equipment.VERSION,"valve":LIQUID_LAB_VALVE.duplicate(),
+		"drain":LIQUID_LAB_DRAIN.duplicate(),"nozzle":LIQUID_LAB_NOZZLE.duplicate(),"supply":150,"pump":true}
+	return data
 
 static func instance(model: String, id: int, pos: Vector2) -> Dictionary:
 	var index := Fleet.index_for_id(model)
@@ -383,7 +426,8 @@ static func _stamp_material(value: Variant) -> bool:
 	return _material(value) or (_integer(value,0,255) and int(value) in STAGED_MATERIALS)
 
 static func validate(value: Variant, check_starting_paint: bool = true) -> String:
-	if not _keys(value,ROOT_KEYS) or not _integer(value.version,2,2):
+	if not value is Dictionary or not _keys(value,ROOT_KEYS + ([EQUIPMENT_KEY] if value.has(EQUIPMENT_KEY) else [])) \
+			or not _integer(value.version,2,2):
 		return "Unsupported starting setup format."
 	if not value.extent is Array or value.extent.size() != 2:
 		return "Invalid canvas extent."
@@ -416,6 +460,9 @@ static func validate(value: Variant, check_starting_paint: bool = true) -> Strin
 		return "Invalid liquid policy envelope."
 	for word: Variant in value.liquid_policy:
 		if not _integer(word,-2147483648,2147483647): return "Invalid liquid policy word."
+	if value.has(EQUIPMENT_KEY):
+		var equipment_error := Equipment.validate(value[EQUIPMENT_KEY],size)
+		if not equipment_error.is_empty(): return "Liquid equipment: " + equipment_error
 	return ""
 
 static func physical_definitions(setup: Dictionary) -> Array:
@@ -553,4 +600,6 @@ static func read_named(label: String) -> Dictionary:
 		setup_data.edits[i] = Array(PackedInt32Array(setup_data.edits[i]))
 	for a: Dictionary in setup_data.actors:
 		a.id = int(a.id)
+	if setup_data.has(EQUIPMENT_KEY):
+		setup_data[EQUIPMENT_KEY] = Equipment.canonical(setup_data[EQUIPMENT_KEY])
 	return {"setup":setup_data}

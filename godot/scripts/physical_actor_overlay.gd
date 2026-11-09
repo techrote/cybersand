@@ -6,6 +6,7 @@ extends Control
 var outlines: bool = true
 var _parts: Array = []
 var source_origin: Vector2 = Vector2.INF
+var equipment_markers: Dictionary = {}
 var _origin: Vector2 = Vector2.ZERO
 var _view_size: Vector2 = Vector2.ONE
 
@@ -21,7 +22,7 @@ func present(parts: Array, origin: Vector2, view_size: Vector2i, content: Rect2)
 	_view_size = Vector2(view_size)
 	position = content.position
 	size = content.size
-	visible = not _parts.is_empty() or source_origin.is_finite()
+	visible = not _parts.is_empty() or source_origin.is_finite() or not equipment_markers.is_empty()
 	queue_redraw()
 
 
@@ -45,8 +46,41 @@ func show_workbench_source(receipt: Dictionary) -> void:
 	var origin: Vector2 = Vector2(receipt.origin) if receipt.get("armed",false) else Vector2.INF
 	if origin != source_origin:
 		source_origin = origin
-		visible = not _parts.is_empty() or source_origin.is_finite()
+		visible = not _parts.is_empty() or source_origin.is_finite() or not equipment_markers.is_empty()
 		queue_redraw()
+
+
+# IN-TOOLS #361 device markers from the worker's copied equipment receipt.
+func show_liquid_equipment(receipt: Dictionary) -> void:
+	var markers := {}
+	if receipt.get("configured",false):
+		var config: Dictionary = receipt.get("config",{})
+		if not config.get("valve",[]).is_empty(): markers.valve = [config.valve,receipt.valve.open]
+		if not config.get("drain",[]).is_empty(): markers.drain = [config.drain,receipt.drain.open]
+		if not config.get("nozzle",[]).is_empty(): markers.nozzle = [config.nozzle,receipt.nozzle.on,receipt.nozzle.angle]
+	if markers != equipment_markers:
+		equipment_markers = markers
+		visible = not _parts.is_empty() or source_origin.is_finite() or not equipment_markers.is_empty()
+		queue_redraw()
+
+
+func _draw_equipment() -> void:
+	for key: String in ["valve","drain"]:
+		if not equipment_markers.has(key): continue
+		var rect: Array = equipment_markers[key][0]
+		var live: bool = equipment_markers[key][1]
+		var corners := PackedVector2Array()
+		for delta: Vector2 in [Vector2.ZERO,Vector2(rect[2],0),Vector2(rect[2],rect[3]),Vector2(0,rect[3]),Vector2.ZERO]:
+			corners.append(_point(Vector2(rect[0],rect[1]) + delta))
+		var color := (Color("7dff9a") if live else Color("ffb347")) if key == "valve" else (Color("5fc8ff") if live else Color("3a6f8f"))
+		draw_polyline(corners,color,2.0 if live else 1.0)
+	if equipment_markers.has("nozzle"):
+		var nozzle: Array = equipment_markers.nozzle[0]
+		var centre := Vector2(nozzle[0],nozzle[1]) + Vector2(0.5,0.5)
+		var tip := centre + Vector2.RIGHT.rotated(deg_to_rad(float(equipment_markers.nozzle[2]))) * 8.0
+		var color := Color("9ef0ff") if equipment_markers.nozzle[1] else Color("6a8a99")
+		draw_circle(_point(centre),3.0,color)
+		draw_line(_point(centre),_point(tip),color,2.0,true)
 
 
 func _point(world: Vector2) -> Vector2:
@@ -82,6 +116,7 @@ func _draw() -> void:
 		for delta: Vector2 in [Vector2.ZERO,Vector2(4,0),Vector2(4,24),Vector2(0,24),Vector2.ZERO]:
 			outline.append(_point(source_origin + delta))
 		draw_polyline(outline,Color("80e9d1"),1.0)
+	if not equipment_markers.is_empty(): _draw_equipment()
 	for part: Dictionary in _parts:
 		var vertices: PackedVector2Array = polygon(part)
 		var color: Color = part.color

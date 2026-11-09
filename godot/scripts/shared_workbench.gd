@@ -47,6 +47,8 @@ var _runtime_label := ""
 var _processor_label := ""
 # WCX/BW-001 experimental Water spray controls (separate owner script).
 var water_spray := preload("res://scripts/workbench_water_spray_panel.gd").new()
+# IN-TOOLS #361 valve / drain / nozzle controls (separate owner script).
+var equipment := preload("res://scripts/workbench_liquid_equipment_panel.gd").new()
 
 func _row(parent: Control) -> HFlowContainer:
 	var row := HFlowContainer.new()
@@ -157,6 +159,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 		if not applied.is_empty(): applied.fire = enabled)
 	row.add_child(_fire)
 	water_spray.build(host,self,_row,entered_position)
+	equipment.build(host,self,_row,entered_position)
 	add_child(_details)
 	_details.visibility_changed.connect(_details_visibility_changed)
 	_details.hide()
@@ -337,6 +340,7 @@ func installed(candidate: Dictionary) -> void:
 	select_instance(selected_id(),true)
 	if not applied.source.is_empty():
 		host.workbench_source(Vector2i(applied.source[0],applied.source[1]),int(applied.source[2]),"configure")
+	equipment.installed(applied)
 	for i: int in 3:
 		host.world_shader.set_shader_parameter("rigid_body_data_%d" % i,Vector4(-1000,-1000,0,0))
 	host.update_worker_frame_state()
@@ -607,12 +611,40 @@ func load_setup() -> bool:
 	# built-in water evaluation start, "bench-canvas" the whole-engine
 	# benchmark and "stress-canvas" the heavy-activity stress start. A saved
 	# file of the name always wins.
+	if _name.text in Setup.EQUIPMENT_LABELS and not FileAccess.file_exists(Setup._path(_name.text)):
+		return load_liquid_lab()
 	if _name.text in Setup.BUILTIN_LABELS and not FileAccess.file_exists(Setup._path(_name.text)):
 		if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
 		result = {"setup":Setup.builtin(_name.text,_liquids.bridge.default_liquid_policy())}
 	if result.has("error"): return refuse(result.error)
 	if host.simulation_worker.has_failed(): return host.workbench_restart(result.setup)
 	return apply(result.setup)
+
+# Built-in #361 apparatus. It asks the native validator for the existing
+# opt-in "Water: inertial" preset and enables ballistic Water for this World
+# so the nozzle fires real parcels. Either can be refused; the start then keeps
+# the policy it was given and the nozzle injects resting cells instead.
+func load_liquid_lab(ballistic: bool = true) -> bool:
+	if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
+	if not host.simulation_worker.has_failed() and not _editable(): return false
+	var policy: PackedInt32Array = _liquids.bridge.default_liquid_policy()
+	var note := ""
+	var preset := -1
+	for index: int in CyberLiquidComparisonPanel.PRESETS.size():
+		if CyberLiquidComparisonPanel.PRESETS[index].label == "Water: inertial": preset = index
+	var chosen: Dictionary = _liquids._preset(preset) if preset >= 0 else {"ok":false,"error":"preset missing"}
+	if chosen.get("ok",false): policy = chosen.request
+	else: note = " Inertial Water unavailable (%s); using the current policy." % str(chosen.get("error",""))
+	var candidate := Setup.liquid_lab(policy)
+	var checked: Dictionary = _liquids.bridge.validate_liquid_policy(policy)
+	if checked.get("accepted",false):
+		candidate.rule_radius = maxi(int(candidate.rule_radius),int(checked.receipt.get("minimum_rule_radius",2)))
+	host.workbench_water_options["workbench_ballistic"] = ballistic
+	water_spray._ballistic.set_pressed_no_signal(ballistic)
+	if host.simulation_worker.has_failed(): return host.workbench_restart(candidate)
+	if not apply(candidate): return false
+	message = "Loading liquid-lab: V valve, G drain, H nozzle, J/K aim." + note
+	return true
 
 func _cancel() -> void:
 	if host != null: host.cancel_playable_course_input()
@@ -834,6 +866,7 @@ func _process(_delta: float) -> void:
 		state,cursor,str(applied.get("extent","")),reason,int(source.get("inserted",0)),int(source.get("blocked",0))]
 	_status.text += " · granular %s · active Water %s" % [gcr.get("response","pending"),_water_identity(context)]
 	water_spray.refresh(context)
+	equipment.refresh(context)
 	if _details.visible:
 		var selected := body_state(selected_id())
 		var policy: Dictionary = context.get("liquid_solver_policy",{})
