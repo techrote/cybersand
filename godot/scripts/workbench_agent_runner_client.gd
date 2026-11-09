@@ -34,6 +34,7 @@ var _finished_receipt: Dictionary = {}
 var _closing_deadline := 0
 var _runner_failing := false
 var _startup_deadline := 0
+var _cost_unknown := false
 var _writer := Thread.new()
 var _write_mutex := Mutex.new()
 var _write_queue: Array[PackedByteArray] = []
@@ -95,6 +96,7 @@ func _start_runner() -> void:
  _native_stop_requested = false
  _native_stop_id = ""
  _closing_deadline = 0
+ _cost_unknown = false
  _bridge_root = ProjectSettings.globalize_path("user://agent-runner/%d-%d" % [OS.get_process_id(),Time.get_ticks_usec()])
  if DirAccess.dir_exists_absolute(_bridge_root) or DirAccess.make_dir_recursive_absolute(_bridge_root.path_join("native")) != OK:
   _runner_fail("Cannot create a fresh private runner session directory.")
@@ -233,10 +235,12 @@ func _handle_frame(frame: Dictionary) -> void:
   record_diagnostic(str(frame.get("event","runner.event")),payload)
   if not _active: return
   var event_name := str(frame.get("event",""))
+  if event_name == "runner.cost_status" and payload is Dictionary:
+   _cost_unknown = payload.get("usd_limits_enforced",true) == false
   if event_name == "runner.preflight" and payload is Dictionary:
    var phases := {"waiting_for_start":"Waiting for Python startup","start_received":"Starting checks",
     "validate_profile":"Checking profile","credential_check":"Checking API key",
-    "source_check":"Checking local source","funding_check":"Checking spend limits",
+    "source_check":"Checking local source","funding_check":"Checking limits",
     "model_probe":"Checking model access","model_probe_complete":"Model access checked",
     "runner_ready":"Python runner ready"}
    _stage = str(phases.get(str(payload.get("phase","")),payload.get("detail","Checking Python startup")))
@@ -308,7 +312,7 @@ func _handle_frame(frame: Dictionary) -> void:
    _active = false
    _stage = "Finished" if _finished_receipt.get("stop_acknowledged") == true else "Unconfirmed native Stop"
    var outcome := "completed" if str(_finished_receipt.get("status","")) in ["passed","unverified_native_acceptance"] and _finished_receipt.get("stop_acknowledged") == true else "error"
-   status_changed.emit(outcome,str(_finished_receipt.get("reason",_stage)))
+   status_changed.emit(outcome,str(_finished_receipt.get("detail",_finished_receipt.get("reason",_stage))))
    if not _native_stop_requested: task_finished.emit("runner_finished")
   _closing_deadline = Time.get_ticks_msec()+1000
  elif kind in ["error","blocked"]:
@@ -436,6 +440,7 @@ func activity_snapshot() -> Dictionary:
   result["rate_wait_seconds"] = _runner_wait_seconds
   result["runner_pid"] = _runner_pid
   result["provider"] = _profile.get("provider","")
+  result["cost_unknown"] = _cost_unknown
  return result
 
 func _accept_rate_history(history: Array) -> void:

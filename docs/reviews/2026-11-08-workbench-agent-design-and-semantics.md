@@ -173,8 +173,14 @@ failure must retire any already-acquired native authority. Python provider waits
 must not hold the lock needed for human Stop. Native ACK and transport completion
 must remain distinct, including races between UI retirement and Runner.finish.
 
-Live startup retains the runner's existing provider funding/pricing/credential
-and source-provenance checks. A copied Godot-only folder cannot prove Python
+Attested live startup retains the runner's existing funding/pricing/credential
+and source-provenance checks. The owner-requested desktop operator mode instead
+sends the selected OpenAI model directly to Responses without a mandatory price
+catalog or model-access probe. Unknown/stale prices mean unknown USD costs and no
+enforced dollar ceiling, not a zero price; request/token/time/rate/Stop controls
+remain, and the UI displays Cost ?. Fresh known prices still support estimated
+USD caps. Other provider/remote/Atlas paths are unchanged.
+A copied Godot-only folder cannot prove Python
 source identity or supply Atlas assets. Delivery should be a real clean source
 checkout or genuinely verified immutable package, never an unverified caller's
 source_dirty:false. NVIDIA key entry cannot silently reuse an OpenAI key.

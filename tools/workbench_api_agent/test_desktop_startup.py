@@ -63,3 +63,19 @@ class StartupTests(unittest.TestCase):
         p=desktop.Protocol(io.BytesIO());app=desktop.Desktop(p);app.receive({'type':'stop'})
         self.assertTrue(app.finished.is_set());f=json.loads(p.output.getvalue())
         self.assertEqual(f['receipt']['status'],'unconfirmed_stop');self.assertFalse(f['receipt']['stop_acknowledged'])
+
+    def test_known_preflight_error_retains_reason_and_human_detail(self):
+        from atlas_agent.pricing import PricingUnavailable
+        frames=[];p=desktop.Protocol(io.BytesIO());app=desktop.Desktop(p)
+        def send(f):
+            frames.append(f)
+            if f['type']=='native_request':
+                self.assertEqual(f['tool'],'stop')
+                app.receive({'type':'native_result','id':f['id'],'receipt':{'status':'stopped','no_further_agent_mutations':True}})
+        p.send=send
+        with patch.object(desktop,'start_config',side_effect=PricingUnavailable('No rate for selected model','model_not_priced')):
+            app.receive(start_frame(self.root));self.assertTrue(app.finished.wait(2))
+        result=frames[-1]['receipt']
+        self.assertEqual(result['reason'],'model_not_priced')
+        self.assertEqual(result['detail'],'No rate for selected model')
+        self.assertTrue(result['stop_acknowledged'])

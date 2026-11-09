@@ -23,11 +23,14 @@ explains design, tool effects, measured overhead and unresolved alternatives.
 ### Use from the development workbench
 
 The owner-authorized desktop OpenAI profile may explicitly select
-`spend.funding_mode: operator_authorized_desktop`, a positive per-call/run budget,
-ceiling and authorization reference. This retains credential, model-availability,
-verified-price, source and Budget checks without requiring an account-credit
-attestation. Its receipt states that account credits are not verified. The default
-attested-credit mode and remote CLI remain unchanged. `CYBERSAND_WB_PROFILE`
+`spend.funding_mode: operator_authorized_desktop`. The chosen model is sent to
+Responses directly: no mandatory local-price listing or separate model-catalog
+probe. Fresh known prices permit the existing estimated USD ledger/caps; unknown
+or stale prices use request/token/run accounting and report USD values as unknown,
+with dollar caps unavailable. The compact dashboard shows **Cost ?** in that case.
+Native/source/credential checks, request/tool/token/time/rate limits and Stop remain.
+No account-credit attestation is required or invented. The default attested-credit
+mode and remote CLI remain unchanged. `CYBERSAND_WB_PROFILE`
 preselects a trusted local profile at panel startup; it never enables Live or
 starts inference automatically.
 
@@ -40,7 +43,8 @@ Private file credentials are supported on POSIX with ownership/mode verification
 Windows must use the environment/key dialog route. Selecting **Live** and pressing
 **Start** authorizes an inference attempt within the chosen profile's gates.
 Example cloud profiles intentionally lack funding approval; a key alone does
-not make them runnable. Source/prices/credit checks can refuse before inference.
+not make them runnable. The installed owner-authorized desktop profile is separate;
+it does not require a pricing-table entry to send the selected model to the API.
 The clean-source gate compares both staged and unstaged content, refuses Git
 errors or a moving HEAD, and ignores untracked caches as before. This avoids
 Windows Godot-import stat-cache false positives without exempting import files

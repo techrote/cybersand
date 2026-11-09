@@ -5,6 +5,7 @@ from pathlib import Path
 from unittest.mock import patch
 from atlas_agent.errors import GateRefused,LimitReached
 from .config import ConfigError,load_profile,validate_live
+from .usage_budget import UsageBudget
 HERE=Path(__file__).parent
 
 class DesktopOperatorFundingTests(unittest.TestCase):
@@ -23,21 +24,39 @@ class DesktopOperatorFundingTests(unittest.TestCase):
         budget,gate=self.gate(self.operator());self.assertTrue(budget.live);self.assertEqual(budget.run_allowance_usd(),2.)
         self.assertEqual(gate['credit_status'],'not_verified_operator_authorized')
         self.assertFalse(gate['credit_balance_programmatically_verified']);self.assertFalse(gate['account_headroom_verified']);self.assertNotIn('atlas_credit_gate',gate)
+        self.assertTrue(gate['usd_limits_enforced']);self.assertEqual(gate['pricing_status'],'known')
         with self.assertRaises(LimitReached):budget.reserve(100000,131072)
-    def test_remote_no_live_dirty_source_and_missing_or_failed_probe_refuse(self):
-        for kw in ({'desktop':False},{'allow_live':False},{'source_dirty':True},{'source_dirty':None},{'probe':None},{'probe':lambda _: {'status':404}}):
+    def test_remote_no_live_and_dirty_source_refuse(self):
+        for kw in ({'desktop':False},{'allow_live':False},{'source_dirty':True},{'source_dirty':None}):
             with self.subTest(kw=list(kw)):
                 with self.assertRaises(ConfigError):self.gate(self.operator(),**kw)
-    def test_credentials_prices_caps_and_crosscheck_still_enforced(self):
+    def test_credentials_known_price_caps_and_crosscheck_still_enforced(self):
         with patch.dict(os.environ,{'OPENAI_API_KEY':''}):
             with self.assertRaises(ConfigError):self.gate(self.operator())
-        cfg=self.operator();cfg['model']='unpriced-test-model'
-        with self.assertRaises(GateRefused):self.gate(cfg)
         for key,value in [('max_usd_per_call',0),('max_usd_per_run',0),('authorised_ceiling_usd',.01),('authorisation_ref',''),('authorisation_ref','   ')]:
             cfg=self.operator();cfg['spend'][key]=value
             with self.assertRaises(ConfigError):self.gate(cfg)
         cfg=self.operator();cfg['spend']['require_costs_crosscheck']=True
         with self.assertRaises(ConfigError):self.gate(cfg)
+    def test_model_catalog_probe_never_called_in_explicit_mode(self):
+        def forbidden(_):self.fail('operator-selected model must go to inference, not catalog preflight')
+        for model in ('gpt-6-luna','gpt-5.6-luna'):
+            cfg=self.operator();cfg['model']=model
+            _,gate=self.gate(cfg,probe=forbidden)
+            self.assertEqual(gate['model_probe_status'],'not_requested')
+        self.gate(self.operator(),probe=None)
+    def test_unknown_and_stale_prices_are_usage_only_exclusively_in_operator_mode(self):
+        from atlas_agent.pricing import PricingUnavailable
+        cfg=self.operator();cfg['model']='gpt-5.6-luna'
+        budget,gate=self.gate(cfg)
+        self.assertIsInstance(budget,UsageBudget);self.assertIsNone(budget.rates)
+        self.assertFalse(gate['usd_limits_enforced']);self.assertEqual(gate['pricing_status'],'unknown')
+        self.assertIsNone(gate['pricing_source'])
+        with patch('workbench_api_agent.config.pricing_rates',side_effect=PricingUnavailable('stale','pricing_stale')):
+            budget,gate=self.gate(self.operator());self.assertIsInstance(budget,UsageBudget)
+            with self.assertRaises(PricingUnavailable):self.gate(self.cfg)
+        cfg['spend'].pop('funding_mode')
+        with self.assertRaises(PricingUnavailable):self.gate(cfg)
     def test_actual_cash_and_run_deadline_gates_are_not_bypassed(self):
         cfg=self.operator();cfg['spend']['max_usd_per_call']=.000001
         budget,_=self.gate(cfg)

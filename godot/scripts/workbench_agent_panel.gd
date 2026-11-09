@@ -230,7 +230,7 @@ func _ready() -> void:
 	_guard.toggled.connect(func(_value: bool) -> void: _on_scope_change())
 	materials.add_child(_guard)
 	_live.text = "Live"
-	_live.tooltip_text = "Authorize inference when Start is pressed. Cloud profiles still require verified rates/funding and spend limits. Local GPU compute is not free. Fixture selection explicitly authorizes only scripted keyless checks."
+	_live.tooltip_text = "Authorize model calls when Start is pressed. Request/token/time/rate limits apply. Cost ? means no dollar ceiling is available. Fixture selection authorizes only scripted keyless checks."
 	_live.toggled.connect(func(_enabled: bool) -> void: _retire_on_human_change())
 	materials.add_child(_live)
 	_form.add_child(materials)
@@ -351,8 +351,12 @@ func _refresh_dashboard() -> void:
 	var complete: bool = bool(snapshot.get("usage_complete",false))
 	if not complete and (input_tokens >= 0 or output_tokens >= 0):
 		usage_text += " (partial)"
+	if snapshot.get("cost_unknown",false):
+		usage_text += "  Cost ?"
 	_usage.text = usage_text
 	_usage.tooltip_text = usage_text + "\nToken counts are provider-reported " + ("task totals." if complete else "subtotals; some usage was not supplied.") + " ? means unknown. Toks limits each response."
+	if snapshot.get("cost_unknown",false):
+		_usage.tooltip_text += "\nNo verified local model price: USD cost and dollar ceilings are unavailable. Request, token, time and rate limits remain enforced."
 
 func _show_traffic() -> void:
 	_refresh_traffic()

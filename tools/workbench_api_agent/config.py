@@ -12,7 +12,8 @@ from urllib.parse import urlsplit
 
 from atlas_agent.budget import Budget
 from atlas_agent.credit_gate import evaluate as atlas_credit_evaluate, enforce as atlas_credit_enforce
-from atlas_agent.pricing import Rates, load_table, rates_for, text_tokens_upper_bound, image_tokens_upper_bound
+from atlas_agent.pricing import Rates, PricingUnavailable, load_table, rates_for, text_tokens_upper_bound, image_tokens_upper_bound
+from .usage_budget import UsageBudget
 
 SCHEMA = 'cybersand.workbench-api-agent.profile/1'
 HARD = {'max_model_calls': 64, 'max_tools': 95, 'max_run_seconds': 3500,
@@ -155,13 +156,35 @@ def pricing_rates(cfg:dict)->Rates:
     return Rates(model,0,0,0,1000000,False,{'method':'patch','patch_size':32,'patch_budget':{'low':30000,'high':30000,'auto':30000},'multiplier':2.46},'local-not-billed-api','local',120000)
 
 
-def validate_live(cfg:dict, *, allow_live:bool, fixture_mode:bool, probe=None, source_dirty:bool|None=True,desktop:bool=False)->tuple[Budget,dict]:
+def validate_live(cfg:dict, *, allow_live:bool, fixture_mode:bool, probe=None, source_dirty:bool|None=True,desktop:bool=False)->tuple[Budget|UsageBudget,dict]:
     if not fixture_mode and not allow_live:raise ConfigError('live requests require explicit --allow-live')
     sp=cfg['spend'];prov=cfg['provider']
     funding_mode=sp.get('funding_mode','attested_credit')
     if funding_mode not in ('attested_credit','operator_authorized_desktop'):raise ConfigError('unsupported funding mode')
     if funding_mode=='operator_authorized_desktop' and (not desktop or prov!='openai_responses' or fixture_mode):
         raise ConfigError('operator-authorized funding requires the live desktop OpenAI backend')
+    if funding_mode=='operator_authorized_desktop':
+        # The operator chooses the model; the real inference response determines
+        # access. A local tariff or a model-catalog GET is not an access gate.
+        credential(cfg)
+        if not sp['authorisation_ref'].strip():raise ConfigError('operator funding requires an explicit authorization reference')
+        if source_dirty is not False:raise ConfigError('operator-authorized desktop source must be verified clean')
+        if sp.get('require_costs_crosscheck') or sp.get('credit_attestation_file'):
+            raise ConfigError('operator funding does not verify account headroom; use attested_credit for credit/cost cross-checks')
+        try:rates=pricing_rates(cfg)
+        except PricingUnavailable:rates=None
+        if rates is not None and (sp['max_usd_per_run']<=0 or sp['authorised_ceiling_usd']<sp['max_usd_per_run'] or
+                sp['max_usd_per_call']<=0 or sp['max_usd_per_call']>sp['max_usd_per_run']):
+            raise ConfigError('priced operator funding needs positive per-call/run USD caps within the authorized ceiling')
+        gate={'mode':'live','model':cfg['model'],'funding_mode':funding_mode,
+            'pricing_source':rates.source_url if rates is not None else None,
+            'pricing_status':'known' if rates is not None else 'unknown',
+            'usd_limits_enforced':rates is not None,
+            'credit_status':'not_verified_operator_authorized','model_probe_status':'not_requested',
+            'model_access':'determined_by_inference_response',
+            'authorization_basis':'host-owned profile plus explicit desktop Live/Start',
+            'credit_balance_programmatically_verified':False,'account_headroom_verified':False}
+        return (_budget(cfg,False,rates) if rates is not None else UsageBudget(cfg['limits'])),gate
     if fixture_mode:rates=pricing_rates(cfg) if prov!='nvidia_chat' else Rates(cfg['model'],0,0,0,1000000,False,{'method':'patch','patch_size':32,'patch_budget':{'low':30000,'high':30000,'auto':30000},'multiplier':2.46},'fixture','fixture',120000)
     else:rates=pricing_rates(cfg)
     gate={'mode':'fixture' if fixture_mode else 'live','model':cfg['model'],'pricing_source':rates.source_url,'funding_mode':funding_mode}
@@ -170,26 +193,7 @@ def validate_live(cfg:dict, *, allow_live:bool, fixture_mode:bool, probe=None, s
         if not sp['authorisation_ref'] or sp['max_usd_per_run']<=0 or sp['authorised_ceiling_usd']<sp['max_usd_per_run']:
             raise ConfigError('charged provider needs spend reference, positive run budget and authorised ceiling')
         if prov=='openai_responses':
-            if funding_mode=='operator_authorized_desktop':
-                if not sp['authorisation_ref'].strip():raise ConfigError('operator funding requires an explicit authorization reference')
-                if source_dirty is not False:raise ConfigError('operator-authorized desktop source must be verified clean')
-                if sp.get('require_costs_crosscheck') or sp.get('credit_attestation_file'):
-                    raise ConfigError('operator funding does not verify account headroom; use attested_credit for credit/cost cross-checks')
-                if sp['max_usd_per_call']<=0 or sp['max_usd_per_call']>sp['max_usd_per_run']:
-                    raise ConfigError('operator funding needs a positive per-call USD cap within the run cap')
-                if probe is None:raise ConfigError('operator-authorized desktop requires a real model availability probe')
-                try:model_access=probe(cfg['model'])
-                except Exception as exc:raise ConfigError('OpenAI model availability probe failed') from exc
-                if not isinstance(model_access,dict) or model_access.get('status')!=200:
-                    raise ConfigError('OpenAI model unavailable to this credential; no inference requested')
-                headers={str(k).lower():v for k,v in model_access.get('headers',{}).items()}
-                if sp.get('expected_project') and headers.get('openai-project')!=sp['expected_project']:
-                    raise ConfigError('model probe project differs from the host-selected project')
-                gate.update({'credit_status':'not_verified_operator_authorized','model_probe_status':200,
-                    'authorization_basis':'host-owned bounded USD profile plus explicit desktop Live/Start',
-                    'credit_balance_programmatically_verified':False,'account_headroom_verified':False})
-            else:
-                _attested_openai_gate(cfg,sp,probe,source_dirty,gate)
+            _attested_openai_gate(cfg,sp,probe,source_dirty,gate)
         else:
             _nvidia_funding_gate(cfg,sp,gate)
     return _budget(cfg,fixture_mode,rates),gate

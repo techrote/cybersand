@@ -17,6 +17,7 @@ from .controller import Runner
 from .desktop_backend import DesktopWorkbench
 from .providers import ScriptedAdapter,parse_json
 from .cli import git_status,openai_probe
+from atlas_agent.errors import AgentError
 MAX_LINE=32768
 
 class Protocol:
@@ -52,7 +53,7 @@ class Protocol:
         with path.open('xb') as stream:stream.write(data)
         self.send({'type':'event','event':event,'payload_file':rel,'payload_sha256':hashlib.sha256(data).hexdigest(),'bytes':len(data)})
     def finished(self,report):
-        keep=('schema','status','reason','runner_id','provider','model','session_id','generation_id','native_acceptance','model_final_unverified_report','stop_acknowledged','measured','budget','applied_limits','funding_gate','billing','local_gpu_compute_cost','rate_history')
+        keep=('schema','status','reason','detail','runner_id','provider','model','session_id','generation_id','native_acceptance','model_final_unverified_report','stop_acknowledged','measured','budget','applied_limits','funding_gate','billing','local_gpu_compute_cost','rate_history')
         selected={k:report[k] for k in keep if k in report}
         path=self.root/'runner-evidence/receipt.json' if self.root else None
         if path and path.is_file():
@@ -123,7 +124,7 @@ class Desktop:
                  'validate_profile':'Validating host profile and frozen grants.',
                  'credential_check':'Checking selected provider credential; value is not logged.',
                  'source_check':'Checking tracked source content against Git HEAD.',
-                 'funding_check':'Checking bounded spending authorization and funding mode.',
+                 'funding_check':'Checking host authorization and request limits.',
                  'model_probe':'Checking model availability; no inference.',
                  'model_probe_complete':'Model availability check returned.',
                  'runner_ready':'Preflight complete; controller ready.'}
@@ -217,10 +218,13 @@ class Desktop:
                 fixture_mode=fixture,allow_live=frame.get('allow_live') is True or (cfg['provider']=='ollama_chat' and frame.get('compute_consent') is True),stop_event=self.stop_event,
                 source_dirty=dirty,event_callback=self.protocol.event,
                 credit_probe=model_probe if cfg['provider']=='openai_responses' else None)
+            self.protocol.event('runner.cost_status',{
+                'usd_limits_enforced':self.runner.funding_gate.get('usd_limits_enforced',True),
+                'pricing_status':self.runner.funding_gate.get('pricing_status','known')})
             self._checkpoint('runner_ready')
             report=self.runner.run()
         except Exception as exc:
-            reason='host_stop_requested' if self.stop_event.is_set() else (str(exc) if isinstance(exc,ConfigError) else getattr(exc,'code','desktop_'+type(exc).__name__))
+            reason='host_stop_requested' if self.stop_event.is_set() else (str(exc) if isinstance(exc,ConfigError) else getattr(exc,'reason_code',getattr(exc,'code','desktop_'+type(exc).__name__)))
             ack=False
             try:
                 if self.backend is None and self.protocol.root:
@@ -230,6 +234,7 @@ class Desktop:
             except Exception:pass
             status=('stopped_or_failed' if self.stop_event.is_set() else 'refused') if ack else 'unconfirmed_stop'
             report={'schema':'cybersand.workbench-api-agent.receipt/1','status':status,'reason':reason,'stop_acknowledged':ack}
+            if isinstance(exc,AgentError) and not self.stop_event.is_set():report['detail']=str(exc)
         finally:
             if self._preflight_stop_thread:self._preflight_stop_thread.join(timeout=28)
             try:self.protocol.finished(report or {'status':'internal_failure','reason':'desktop_missing_report','stop_acknowledged':False})

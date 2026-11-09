@@ -37,6 +37,14 @@ func _run() -> void:
 	panel._provider_selected(4)
 	check(panel._profile_data.get("provider") == "fixture" and panel._model.text == "scripted-provider-not-model","explicit Fixture does not select actual fixture profile")
 	check(not panel._live.button_pressed,"fixture selection enabled live API calls")
+	panel.client._active = true
+	panel.client._runner_epoch = panel.client._epoch
+	panel.client._handle_frame({"type":"event","event":"runner.cost_status",
+		"payload":{"usd_limits_enforced":false,"pricing_status":"unknown"}})
+	panel._refresh_dashboard()
+	check(panel._usage.text.contains("Cost ?"),"unpriced model is not shown as unknown cost")
+	check(panel._usage.tooltip_text.contains("dollar ceilings are unavailable"),"unknown cost pretends to enforce a dollar cap")
+	panel.client._active = false
 	var client := RunnerClient.new()
 	root.add_child(client)
 	client.configure_fake_transport_for_tests(true) # memory-only diagnostics for protocol controls
@@ -75,6 +83,17 @@ func _run() -> void:
 	check(raw.contains("runner.ignored_stale") and raw.contains("runner.error"),"fence/failure evidence discarded")
 	client.queue_free()
 	panel.queue_free()
+	var reporter := RunnerClient.new()
+	root.add_child(reporter)
+	reporter.configure_fake_transport_for_tests(true)
+	reporter._active = true
+	reporter._runner_epoch = reporter._epoch
+	var details: Array[String] = []
+	reporter.status_changed.connect(func(_kind: String,detail: String) -> void: details.append(detail))
+	reporter._handle_frame({"type":"finished","receipt":{"status":"refused","reason":"model_not_priced",
+		"detail":"No local price for selected model","stop_acknowledged":false}})
+	check(details.has("No local price for selected model"),"known errors display opaque exception code instead of human detail")
+	reporter.queue_free()
 	await process_frame
 	await process_frame
 	print("WB_PROVIDER_UI_CLIENT: %d checks, %d failures" % [checks,failures])

@@ -14,6 +14,7 @@ from dataclasses import dataclass,field
 from atlas_agent.pricing import text_tokens_upper_bound, image_tokens_upper_bound
 from atlas_agent.errors import LimitReached
 from .config import ConfigError, validate_live
+from .usage_budget import conservative_image_tokens
 from .backend import Workbench,NativeError,STATUS,validate_tool
 from .providers import ProviderError,Decision,HTTPAdapter,ScriptedAdapter,request_body
 
@@ -223,7 +224,8 @@ class Runner:
                 width=image.get('width');height=image.get('height')
                 if type(width) is not int or type(height) is not int or width<1 or height<1:
                     raise LimitError('original_frame_missing_dimensions_for_cost_reservation')
-                upper+=image_tokens_upper_bound(self.budget.rates,width,height,self.cfg['capabilities']['image_detail'])
+                upper+=(conservative_image_tokens(width,height) if self.budget.rates is None else
+                    image_tokens_upper_bound(self.budget.rates,width,height,self.cfg['capabilities']['image_detail']))
         if b>self.limit['max_request_bytes']:raise LimitError('model_context_capacity')
         self.budget.start_iteration()
         return self.budget.reserve(upper,self.limit['max_output_tokens'])
@@ -246,7 +248,10 @@ class Runner:
             self.budget.mark_ambiguous(res)
             raise ProviderError('provider_usage_malformed_cost_unknown')
         result=self.budget.commit(res,a,cached,b,reasoning)
-        if result['exceeded_reservation']:raise LimitError('provider_usage_exceeded_reserved_upper_bound')
+        if result['exceeded_reservation']:
+            if self.budget.rates is not None:raise LimitError('provider_usage_exceeded_reserved_upper_bound')
+            self._event({'type':'token_estimate_exceeded','reported_input_tokens':a,'reported_output_tokens':b,
+                'estimate_is_guaranteed_bound':False,'configured_token_limits_enforced':True})
 
     def _pace(self,res):
         limit=self.limit.get('tokens_per_minute',0) if self.desktop else 0
@@ -317,7 +322,8 @@ class Runner:
                          'provider':self.cfg['provider'],'model':decision.model,
                          'kind':decision.kind,'reported_usage':decision.usage,
                          'raw_response_sha256':decision.raw_sha256,
-                         'api_cost_status':'local_api_cost_zero_gpu_compute_unknown' if self.cfg['provider'] in ('ollama_chat','fixture') else 'calculated_from_reported_tokens_not_bill'})
+                         'api_cost_status':('unknown_unpriced_model' if self.budget.rates is None else
+                             'local_api_cost_zero_gpu_compute_unknown' if self.cfg['provider'] in ('ollama_chat','fixture') else 'calculated_from_reported_tokens_not_bill')})
             return decision
 
     def _dispatch(self,d:Decision)->None:
@@ -439,7 +445,8 @@ class Runner:
                      'stop_receipt':self.stop_result,'stop_acknowledged':stop_ack,
                      'funding_gate':self.funding_gate,'applied_limits':self.limit,
                      'measured':self.stats.__dict__, 'budget':self.budget.snapshot(),
-                     'billing':'estimated-from-reported-tokens-not-provider-invoice',
+                     'billing':('unknown-unpriced-model; token-usage-only; no-USD-ceiling-enforced' if self.budget.rates is None else
+                         'estimated-from-reported-tokens-not-provider-invoice'),
                      'local_gpu_compute_cost':'unknown' if self.cfg['provider']=='ollama_chat' else 'not_local_gpu',
                      'context_projection':{'old_images_elided_from_model_history':self.stats.images_projected,
                                             'original_images_retained':self.stats.original_frames}}
