@@ -52,6 +52,21 @@ reported usage, provider429 handling, run deadlines and human Stop remain active
 
 #### Tools and separate Scanline printer mode — 2026-11-09
 
+The subsequent live-log correction selects Responses `final_answer` message text
+when phases are present; commentary remains in raw diagnostics and never becomes
+an executable packet. Legacy unphased responses retain their compatibility path.
+Assistant scanline packets are resent with their final_answer phase. This follows
+the [Responses message-phase contract](https://developers.openai.com/api/reference/resources/responses/methods/retrieve).
+There is no heuristic extraction of executable JSON from commentary.
+
+The host permissions JSON includes the actual cell_limit. An inspection can fit
+the authorized area and still exceed that per-operation limit:160×320 or160×160
+both exceed16384 cells. Such requests return observe_cell_limit_exceeded plus the
+limit and a recommended region:null bounded inspection. Invalid arguments remain
+non-dispatched and count against the selected overall tool/request/time budgets;
+there is no additional one-correction task-termination rule. Protection, pending
+proposal fencing, uncertain-outcome Stop and native authority remain unchanged.
+
 Choose **Tools + pixels** or **Scanline printer** below the task. Each mode keeps
 its own session-local task and Boilerplate sections. Switching modes retires
 active work; the next Start freezes the selected mode. Provider/profile/key,

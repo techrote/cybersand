@@ -161,10 +161,11 @@ class DesktopTests(unittest.TestCase):
         self.assertEqual(calls,['observe','stop'])
         self.assertEqual(app.runner.stats.tool_calls,2)
         self.assertTrue(any(h.get('native',{}).get('native_dispatched') is False for h in app.runner.history))
-    def test_second_argument_error_and_duplicate_call_fail_closed(self):
-        turns=[{'tool':'observe','args':{'region':'bad','detail':'cells'}}]*2
+    def test_repeated_argument_errors_stop_at_total_tool_budget(self):
+        self.frame['overrides']['max_tools']=2
+        turns=[{'tool':'observe','args':{'region':'bad','detail':'cells'}}]*3
         app,_,calls=self.run_bridge(turns)
-        self.assertEqual(calls,['stop']);self.assertEqual(app.runner.report['status'],'stopped_or_failed')
+        self.assertEqual(calls,['stop']);self.assertEqual(app.runner.report['reason'],'tool_call_limit')
     def test_parent_disconnect_releases_wait_without_success(self):
         b=self.backend();errors=[]
         def wait():
@@ -286,3 +287,21 @@ class DesktopTests(unittest.TestCase):
             if f['type']=='native_request':app.receive({'type':'native_result','id':f['id'],'receipt':{'status':'retired','owner_receipt':{'status':'stopped','no_further_agent_mutations':True}}})
         p.send=send;self.frame['profile_sha256']='0'*64;app.receive(self.frame)
         self.assertTrue(app.finished.wait(2));self.assertEqual([x['tool'] for x in frames if x['type']=='native_request'],['stop']);self.assertTrue(frames[-1]['receipt']['stop_acknowledged'])
+
+    def test_large_scope_observation_capacity_is_explained_and_repeated_errors_recover(self):
+        self.frame['task']['scope']={'x':0,'y':0,'width':160,'height':320}
+        self.frame['task']['cell_limit']=16384
+        self.frame['session']['authorization_receipt']['cell_limit']=16384
+        turns=[{'tool':'observe','args':{'region':{'x':0,'y':0,'width':160,'height':h},'detail':'cells'}} for h in (320,160)]
+        turns += [{'tool':'observe','args':{'region':None,'detail':'cells'}},{'final':'recovered'}]
+        app,_,calls=self.run_bridge(turns)
+        self.assertEqual(calls,['observe','stop'])
+        feedback=[h['native'] for h in app.runner.history if h['kind']=='result' and h.get('native',{}).get('native_dispatched') is False]
+        self.assertEqual(len(feedback),2)
+        for f in feedback:
+            self.assertEqual(f['reason'],'observe_cell_limit_exceeded')
+            self.assertEqual(f['cell_limit'],16384)
+            self.assertIsNone(f['recommended_arguments']['region'])
+        self.assertEqual(app.runner.report['model_final_unverified_report'],'recovered')
+        self.assertTrue(app.runner.report['stop_acknowledged'])
+        self.assertEqual(json.loads(app.runner.history[0]['text'].split('Native permissions (host-enforced): ')[1].split('\n')[0])['cell_limit'],16384)

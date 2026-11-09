@@ -227,6 +227,15 @@ decisions. Retain the failed checkpoint; native success alone was insufficient.
 
 ## Questions for the independent reviewer
 
+The live-log correction distinguishes Responses commentary from final_answer;
+only the final packet is executable. Multiple intermediate messages must never
+be concatenated into it or selected as fallback executable commands. Raw output
+is still retained for inspection. Follow-up assistant packets retain their phase.
+Verify that large authorized scope and per-operation cell_limit are separately
+communicated, oversized inspection returns an accurate corrective refusal, and
+repeated validation corrections consume normal budgets without a hidden single
+repair cutoff. None of these corrections bypass native protection or Stop.
+
 The separate scanline candidate consumes model text as one strict JSON printing
 packet per response; no function tools appear in its actual provider request.
 Its task, interface wording and packet descriptions are separate from Tools mode.

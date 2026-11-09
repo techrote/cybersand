@@ -6,7 +6,7 @@
   "summary_policy": "Tool results are host-validated summaries; full receipts/images stay in local evidence. Counts cover their region only. Material0=Empty,58=Hard Wall. Zero exclusions are omitted. Only the newest original image remains in model context; image coordinates map through the returned viewport fields.",
   "earlier_image": "[Earlier image omitted.]",
   "image_caption": "Original post-draw observation for the immediately preceding tool result; same native session.",
-  "tool_observe": "Observe a bounded region and receive its original rendered PNG plus native counts and image coordinates.",
+  "tool_observe": "Observe a bounded region and receive its original rendered PNG plus native counts and image coordinates. Explicit region width*height must fit the host cell_limit, even if the authorized scope is larger. Use region:null for a host-selected bounded window.",
   "tool_prepare_edit": "Prepare 1 to 8 disc, line or rectangle primitives inside the authorized footprint. material selects the output material; replace_only_material filters source cells and does not grant permission to overwrite protected material. A proposal changes nothing until apply_edit.",
   "tool_apply_edit": "Apply the matching prepared proposal against native revision fencing. A known refusal performs no mutation; read its reason and correct the proposal.",
   "tool_step": "Advance the existing native World by 1 to 120 ticks and receive a matched observation.",

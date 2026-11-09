@@ -64,7 +64,8 @@ def validate_desktop_tool(name,args,scope,allowed,protected,last_observation,las
         if area is None:return 0 # Host selects the bounded camera/scope window.
         if not isinstance(area,dict) or set(area)!={'x','y','width','height'} or any(type(v) is not int for v in area.values()):raise NativeError('invalid_observation_integer')
         x,y,w,h=(area[k] for k in ('x','y','width','height'))
-        if w<1 or h<1 or w*h>cell_limit or not inside(x,y) or not inside(x+w-1,y+h-1):raise NativeError('observe_out_of_scope')
+        if w<1 or h<1 or not inside(x,y) or not inside(x+w-1,y+h-1):raise NativeError('observe_out_of_scope')
+        if w*h>cell_limit:raise NativeError('observe_cell_limit_exceeded')
         return 0
     if set(args)!={'observation_id','operations'} or not isinstance(args['observation_id'],str) or args['observation_id']!=last_observation:raise NativeError('invalid_or_stale_observation_id')
     ops=args['operations']

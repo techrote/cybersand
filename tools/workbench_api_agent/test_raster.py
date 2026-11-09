@@ -82,3 +82,18 @@ class RasterTests(unittest.TestCase):
         self.assertEqual(len(decision.args['stamp']['rows']),256)
         _,args=native_packet(decision.tool,decision.args,'scanline')
         self.assertEqual(len(raster_points(args['operations'][0],256)[0]),256)
+
+    def test_openai_commentary_is_not_concatenated_into_final_packet(self):
+        from .providers import parse_response,render_history_response
+        final='{"action":"inspect","region":null,"detail":"cells"}'
+        answer={'status':'completed','model':'test','output':[
+            {'type':'message','phase':'commentary','content':[{'type':'output_text','text':'{"action":"inspect"} trailing commentary'}]},
+            {'type':'message','phase':'commentary','content':[{'type':'output_text','text':'{"action":"stamp","observation_id":"not-issued"}'}]},
+            {'type':'message','phase':'final_answer','content':[{'type':'output_text','text':final}]}]}
+        decision=parse_response(answer,'openai_responses','test')
+        self.assertEqual(decision.text,final)
+        self.assertEqual(scanline_decision(decision,'c').tool,'observe')
+        answer['output'].pop()
+        with self.assertRaisesRegex(ProviderError,'response_final_message_missing'):parse_response(answer,'openai_responses','test')
+        messages=render_history_response([{'kind':'agent','text':final}],1000,'low')
+        self.assertEqual(messages[0]['phase'],'final_answer')

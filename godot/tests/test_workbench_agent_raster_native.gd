@@ -37,7 +37,7 @@ func job(scanline: bool) -> bool:
  var malformed: Dictionary = first.duplicate(true)
  if scanline: malformed.args.stamp.rows = [{"repeat":3,"spans":[[1,2],[2,1]]}]
  else: malformed.args.points.append([62,30])
- panel.client.fixture_turns = [inspect,malformed,refused,inspect,first,{"tool":"apply_edit","args":{"proposal_id":"$last_proposal"}},inspect,erase,{"tool":"apply_edit","args":{"proposal_id":"$last_proposal"}},inspect,{"tool":"step","args":{"ticks":4}},{"final":label+" completed"}]
+ panel.client.fixture_turns = [inspect,malformed,malformed,refused,inspect,first,{"tool":"apply_edit","args":{"proposal_id":"$last_proposal"}},inspect,erase,{"tool":"apply_edit","args":{"proposal_id":"$last_proposal"}},inspect,{"tool":"step","args":{"ticks":4}},{"final":label+" completed"}]
  wb._set_view(Vector2(24,24),Vector2i(80,32))
  var prior_runner := str(panel.client._finished_receipt.get("runner_id",""))
  panel._on_start()

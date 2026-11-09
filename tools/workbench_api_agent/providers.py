@@ -165,7 +165,9 @@ def render_history_response(history:list[dict], max_image_bytes:int,detail:str,*
             if uri:
                 if image_caption:content.append({'type':'input_text','text':image_caption})
                 content.append({'type':'input_image','image_url':uri,'detail':detail})
-            inp.append({'role':'assistant' if kind=='agent' else 'user','content':content})
+            message={'role':'assistant' if kind=='agent' else 'user','content':content}
+            if kind=='agent':message['phase']='final_answer'
+            inp.append(message)
         elif kind=='call':inp.append({'type':'function_call','call_id':h['id'],'name':h['tool'],
                                       'arguments':json.dumps(h['args'],sort_keys=True,separators=(',',':'))})
         elif kind=='result':
@@ -330,8 +332,13 @@ def parse_response(answer:dict,provider:str,requested_model:str,sha:str='',seen:
         if calls:
             c=calls[0];n,args,id=normalized_tool(c.get('name'),c.get('arguments'),c.get('call_id'))
             return Decision('tool',id,n,args,usage=usage,model=model or requested_model,raw_sha256=sha,saw_image=seen)
+        messages=[it for it in items if isinstance(it,dict) and it.get('type')=='message']
+        if any(it.get('phase') is not None for it in messages):
+            if any(it.get('phase') not in ('commentary','final_answer',None) for it in messages):raise ProviderError('response_phase_unknown')
+            messages=[it for it in messages if it.get('phase')=='final_answer']
+            if not messages:raise ProviderError('response_final_message_missing')
         texts=[]
-        for it in items:
+        for it in messages:
             if isinstance(it,dict) and it.get('type')=='message':
                 for part in it.get('content',[]):
                     if isinstance(part,dict) and part.get('type')=='output_text' and isinstance(part.get('text'),str):

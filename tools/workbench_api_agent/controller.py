@@ -386,10 +386,13 @@ class Runner:
             ticks=validator(d.tool,d.args,self.auth['scope'],set(self.auth['allowed_materials']),self.auth['protected'],
                                 self.last_observation,self.pending_proposal,self.stats.native_ticks,self.limit['max_native_ticks'])
         except NativeError as exc:
-            if not getattr(self.wb,'allow_argument_feedback',False) or self._argument_repairs>=1 or d.tool not in STATUS:raise
+            if not getattr(self.wb,'allow_argument_feedback',False) or d.tool not in STATUS:raise
             self._argument_repairs+=1;self.stats.tool_calls+=1
             self.history.append({'kind':'call','id':d.call_id,'tool':model_tool,'args':model_args or {}})
-            feedback={'status':'refused','origin':'client_validation','native_dispatched':False,'reason':exc.code,'corrections_remaining':0}
+            feedback={'status':'refused','origin':'client_validation','native_dispatched':False,'reason':exc.code,'remaining_tool_calls':self.limit['max_tools']-self.stats.tool_calls}
+            if self.desktop:
+                feedback['cell_limit']=self.auth.get('cell_limit',4096)
+                if d.tool=='observe':feedback['recommended_arguments']={'region':None,'detail':'cells'}
             self.history.append({'kind':'result','id':d.call_id,'text':clean_payload(feedback),'native':feedback})
             self._event({'type':'tool_validation_refused','tool':d.tool,'provider_call_id':d.call_id,**feedback})
             return
@@ -527,7 +530,7 @@ class Runner:
             scope=self.auth['scope'];allowed=self.auth['allowed_materials']
             wording=sections(self.cfg.get('_boilerplate'),self.cfg.get('_authoring_mode','tools'))
             prompt='\n'.join((wording['task_prefix']+' '+self.task['instructions'],
-                wording['permissions']+' '+clean_payload({'scope':scope,'allowed_materials':allowed,'protected':self.auth['protected']}),
+                wording['permissions']+' '+clean_payload({'scope':scope,'allowed_materials':allowed,'protected':self.auth['protected'],**({'cell_limit':self.auth.get('cell_limit',4096)} if self.desktop else {})}),
                 wording['workflow'],wording['summary_policy']))
             self.history=[{'kind':'user','text':prompt}]
             while True:
