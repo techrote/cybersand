@@ -4,7 +4,7 @@ status: Planned
 document-kind: runbook
 scope: New Draft #547 consumer, provider/tool protocol, keyless qualification and bounded host execution
 canonical-for: [workbench-api-agent-runner]
-last-reviewed: 2026-11-08
+last-reviewed: 2026-11-09
 related-documents: [atlas-agent-runner.md, github-development-and-release.md, documentation-maintenance.md, ../systems/shared-workbench-agent-authoring.md, ../../tools/remote_workbench/CODESPACES.md]
 ---
 
@@ -32,6 +32,11 @@ Windows must use the environment/key dialog route. Selecting **Live** and pressi
 **Start** authorizes an inference attempt within the chosen profile's gates.
 Example cloud profiles intentionally lack funding approval; a key alone does
 not make them runnable. Source/prices/credit checks can refuse before inference.
+The clean-source gate compares both staged and unstaged content, refuses Git
+errors or a moving HEAD, and ignores untracked caches as before. This avoids
+Windows Godot-import stat-cache false positives without exempting import files
+or accepting real source changes; no caller-supplied clean-source assertion is
+trusted. Preserve the full Git checkout when distributing the development app.
 
 For a keyless engineering check, select **Fixture** explicitly. It runs the same
 Runner with scripted decisions, not a language model. The mounted automated test

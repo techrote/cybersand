@@ -54,6 +54,9 @@ jobs:
       - name: Actual Python child, native framebuffer and ordinary workbench
         shell: pwsh
         run: |
+          $env:PYTHONPATH = 'tools'
+          python -m unittest -v workbench_api_agent.test_desktop workbench_api_agent.test_git_status
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
           $engine = Get-Content build/provider-ui-godot.txt -Raw
           python tools/wb_agent/qualify_integrated.py --godot $engine --output build/provider-ui-windows --cases runner-client runner-traffic runner-mounted client diagnostics dock-layout manual-save manual-reopen
           if ($LASTEXITCODE) { exit $LASTEXITCODE }

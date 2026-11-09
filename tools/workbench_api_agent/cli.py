@@ -24,10 +24,21 @@ from .providers import ScriptedAdapter
 def git_status()->tuple[str,bool]:
     root=Path(__file__).resolve().parents[2]
     def git(*a):return subprocess.run(['git','-C',str(root),*a],capture_output=True,text=True,timeout=8)
-    head=git('rev-parse','HEAD')
-    status=git('status','--porcelain','--untracked-files=no')
-    if head.returncode or status.returncode:raise ConfigError('cannot establish source version/cleanliness')
-    return head.stdout.strip(),bool(status.stdout.strip())
+    try:
+        head=git('rev-parse','HEAD')
+        # Godot can rewrite CRLF checkout bytes to their identical HEAD LF
+        # content while Git's cached stat size still makes porcelain say M.
+        # Compare content, separately retaining staged AND unstaged checks.
+        options=('--no-ext-diff','--no-textconv','--ignore-submodules=none','--quiet')
+        unstaged=git('diff',*options,'--')
+        staged=git('diff','--cached',*options,'HEAD','--')
+        after=git('rev-parse','HEAD')
+    except (OSError,subprocess.SubprocessError) as exc:
+        raise ConfigError('cannot establish source version/cleanliness') from exc
+    revision=head.stdout.strip()
+    if head.returncode or after.returncode or not re.fullmatch(r'[0-9a-f]{40}|[0-9a-f]{64}',revision) or after.stdout.strip()!=revision or unstaged.returncode not in (0,1) or staged.returncode not in (0,1):
+        raise ConfigError('cannot establish stable source version/content cleanliness')
+    return revision,unstaged.returncode==1 or staged.returncode==1
 
 
 def openai_probe(model:str,key:str)->dict:

@@ -4,7 +4,7 @@ status: Current
 document-kind: evidence
 scope: Independent-review supplement for desktop and provider-runner integration, tool semantics and measured overhead
 canonical-for: []
-last-reviewed: 2026-11-08
+last-reviewed: 2026-11-09
 related-documents: [../systems/shared-workbench-agent-authoring.md, ../operations/workbench-api-agent.md]
 ---
 
@@ -180,6 +180,13 @@ checkout or genuinely verified immutable package, never an unverified caller's
 source_dirty:false. NVIDIA key entry cannot silently reuse an OpenAI key.
 Profiles/caps/credentials/endpoint references are host-controlled; model output
 cannot switch them. No paid inference is part of keyless/source qualification.
+
+The Windows package check on 2026-11-09 reproduced four Rapier import descriptors
+reported dirty by porcelain even though disk bytes equal HEAD: index cached sizes
+still reflected CRLF before Godot's LF rewrite. The gate now compares staged and
+unstaged content separately, rejects Git errors/HEAD races and retains rejection
+of real changed/deleted source. It does not exempt import files, mark files
+assume-unchanged or accept a caller's cleanliness assertion.
 
 Local TPM pacing is an approximation. Reserve max(estimated input,output cap)
 before dispatch, settle completed requests to reported usage, retain uncertain
