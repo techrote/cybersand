@@ -136,3 +136,45 @@ class DesktopRecoveryTests(unittest.TestCase):
         self.assertEqual([body['max_tokens'] for body in seen],[5000,5000])
         self.assertEqual(seen[0],seen[1])
         self.assertEqual(r.cfg['limits']['max_output_tokens'],32768)
+
+    def test_server_headers_replace_stale_local_estimate_and_reset_without_60second_wait(self):
+        r=self.rate_runner();r.cfg['provider']='openai_responses'
+        clock=[0.];r._rate_clock=lambda:clock[0]
+        r._rate_reservations=[{'at':0.,'tokens':19000}]
+        r.adapter.rate_limits={'x-ratelimit-limit-tokens':'20000','x-ratelimit-remaining-tokens':'18000','x-ratelimit-reset-tokens':'250ms'}
+        r._read_provider_rate()
+        self.assertEqual(r._output_cap(1000),18000)
+        clock[0]=.251
+        self.assertEqual(r._output_cap(1000),20000)
+        self.assertEqual(r._rate_reservations,[])
+        r.adapter.rate_limits['x-ratelimit-remaining-tokens']='0'
+        r._read_provider_rate()
+        r._rate_wait=lambda _:True
+        with self.assertRaisesRegex(NativeError,'host_stop_requested'):r._output_cap(1000)
+
+    def test_header_limits_never_raise_lower_user_ceiling_and_ignore_malformed_headers(self):
+        r=self.rate_runner();r.cfg['provider']='openai_responses'
+        r.adapter.rate_limits={'x-ratelimit-limit-tokens':'200000','x-ratelimit-remaining-tokens':'190000','x-ratelimit-reset-tokens':'1s'}
+        r._read_provider_rate();self.assertIsNone(r._provider_rate)
+        r.adapter.rate_limits={'x-ratelimit-limit-tokens':'20000','x-ratelimit-remaining-tokens':'999999','x-ratelimit-reset-tokens':'NaN'}
+        r._read_provider_rate();self.assertIsNone(r._provider_rate)
+
+    def test_openai_settlement_keeps_documented_max_basis_not_input_plus_output(self):
+        from workbench_api_agent.providers import Decision
+        r=self.rate_runner(max_output_tokens=8192,tokens_per_minute=50000);r.cfg['provider']='openai_responses'
+        r.budget=UsageBudget(r.cfg['limits'])
+        class Adapter:
+            rate_limits={}
+            def request_with_output_cap(self,*args):
+                return Decision('final',text='done',usage={'input_tokens':10000,'output_tokens':4000})
+        r.adapter=Adapter();history=copy.deepcopy(r.history)
+        r._provider()
+        self.assertEqual(r._rate_reservations[-1]['tokens'],10000)
+        self.assertEqual(r.history,history)
+        self.assertEqual(r.budget.snapshot()['input_tokens'],10000)
+        self.assertEqual(r.budget.snapshot()['output_tokens'],4000)
+
+    def test_rate_header_capture_is_explicit_allowlist(self):
+        from .providers import rate_headers
+        headers={'Authorization':'secret','Set-Cookie':'secret','x-ratelimit-limit-tokens':'50000','x-ratelimit-reset-tokens':'1s'}
+        self.assertEqual(rate_headers(headers),{'x-ratelimit-limit-tokens':'50000','x-ratelimit-reset-tokens':'1s'})

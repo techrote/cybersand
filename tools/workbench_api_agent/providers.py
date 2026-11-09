@@ -51,6 +51,13 @@ def retry_after(headers)->float|None:
             return max(0.,stamp.timestamp()-dt.datetime.now(dt.timezone.utc).timestamp())
         except (ValueError,TypeError,OverflowError):return None
 
+RATE_HEADERS=('x-ratelimit-limit-tokens','x-ratelimit-remaining-tokens','x-ratelimit-reset-tokens',
+ 'x-ratelimit-limit-project-tokens','x-ratelimit-remaining-project-tokens','x-ratelimit-reset-project-tokens')
+
+def rate_headers(headers):
+    # Explicit allowlist: never export authorization, cookies or arbitrary headers.
+    return {name:str(headers.get(name))[:100] for name in RATE_HEADERS if headers.get(name) is not None}
+
 def http_post(url:str, key:str, body:dict, timeout:float,max_request_bytes:int,trace=None)->dict:
     raw=json.dumps(body,separators=(',',':'),ensure_ascii=True,allow_nan=False).encode()
     if len(raw)>max_request_bytes: raise ProviderError('model_request_oversize')
@@ -63,14 +70,14 @@ def http_post(url:str, key:str, body:dict, timeout:float,max_request_bytes:int,t
             if resp.status!=200 or resp.headers.get_content_type()!='application/json':
                 raise ProviderError('unexpected_provider_content_type_or_status',resp.status)
             data=resp.read(8500001)
-            if trace:trace('http.response',{'http_status':resp.status,'body':data.decode('utf-8','replace'),'response_bytes':len(data),'body_truncated':len(data)>8500000,'body_limit':8500000})
+            if trace:trace('http.response',{'rate_limits':rate_headers(resp.headers),'http_status':resp.status,'body':data.decode('utf-8','replace'),'response_bytes':len(data),'body_truncated':len(data)>8500000,'body_limit':8500000})
             if len(data)>8500000:raise ProviderError('provider_response_oversize')
             value=parse_json(data)
             if not isinstance(value,dict):raise ProviderError('provider_response_not_object')
             return value
     except HTTPError as e:
         data=e.read(8500001)
-        if trace:trace('http.response',{'http_status':e.code,'body':data.decode('utf-8','replace'),'response_bytes':len(data),'body_truncated':len(data)>8500000,'body_limit':8500000})
+        if trace:trace('http.response',{'rate_limits':rate_headers(e.headers),'http_status':e.code,'body':data.decode('utf-8','replace'),'response_bytes':len(data),'body_truncated':len(data)>8500000,'body_limit':8500000})
         if 300<=e.code<400:raise ProviderError('provider_redirect_refused',e.code) from None
         if e.code in (401,403):raise ProviderError('provider_auth_denied',e.code) from None
         if e.code==429:
@@ -267,6 +274,7 @@ class HTTPAdapter:
         self.trace=trace;self.tool_schemas=tool_schemas;self.argument_feedback=argument_feedback
 
     def _trace(self,event,payload):
+        if event=="http.response":self.rate_limits=payload.get("rate_limits",{})
         if not self.trace:return
         def clean(value):
             if isinstance(value,str):
@@ -282,9 +290,10 @@ class HTTPAdapter:
         return self.request(history,max_request_bytes,timeout,max_output_tokens=max_output_tokens)
 
     def request(self,history:list[dict],max_request_bytes:int,timeout:float,*,max_output_tokens:int|None=None)->Decision:
+        self.rate_limits={}
         cfg=self.cfg;provider=cfg['provider'];model=cfg['model']
         body=request_body(cfg,history,self.tool_schemas,max_output_tokens=max_output_tokens)
-        answer=http_post(cfg['endpoint'],self.key,body,timeout,max_request_bytes,self._trace if self.trace else None)
+        answer=http_post(cfg['endpoint'],self.key,body,timeout,max_request_bytes,self._trace)
         sha=hashlib.sha256(json.dumps(answer,sort_keys=True,separators=(',',':')).encode()).hexdigest()
         seen=any(h.get('image') for h in history)
         try:

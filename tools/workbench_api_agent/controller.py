@@ -105,6 +105,7 @@ class Runner:
         self._stop_thread=None
         self._argument_repairs=0
         self._retry_wait=0.
+        self._provider_rate=None
         self._rate_reservations=[]
         self._rate_clock=rate_clock or time.monotonic
         self._rate_wait=rate_wait or self.stop_event.wait
@@ -233,6 +234,36 @@ class Runner:
         self.budget.start_iteration()
         return self.budget.reserve(upper,output_cap)
 
+    def _provider_allowance(self):
+        row=self._provider_rate
+        if not row:return None
+        if self._rate_clock()>=row['reset_at']:
+            self._provider_rate=None
+            self._rate_reservations.clear()
+            return None
+        return row
+
+    def _read_provider_rate(self):
+        if self.cfg['provider']!='openai_responses':return
+        import re
+        headers=getattr(self.adapter,'rate_limits',{})
+        candidates=[]
+        for suffix in ('tokens','project-tokens'):
+            try:
+                maximum=int(headers['x-ratelimit-limit-'+suffix]);remaining=int(headers['x-ratelimit-remaining-'+suffix])
+                raw=headers['x-ratelimit-reset-'+suffix]
+                parts=re.findall(r'(\d+(?:\.\d+)?)(ms|s|m|h)',raw)
+                if ''.join(a+b for a,b in parts)!=raw:continue
+                seconds=sum(float(a)*{'ms':.001,'s':1,'m':60,'h':3600}[b] for a,b in parts)
+                if not 0<=remaining<=maximum or not 0<seconds<=3600:continue
+                candidates.append({'limit':maximum,'remaining':remaining,'reset_at':self._rate_clock()+seconds,'reset_seconds':seconds})
+            except (ValueError,KeyError,TypeError):continue
+        # A lower user TPM remains an intentional local ceiling. Never override it.
+        eligible=[r for r in candidates if r['limit']<=self.limit.get('tokens_per_minute',0)]
+        self._provider_rate=min(eligible,key=lambda r:r['remaining']) if eligible else None
+        if candidates:self._event({'type':'rate.provider','buckets':candidates,'configured_tpm':self.limit.get('tokens_per_minute'),
+            'authority':'server_headers' if eligible else 'lower_configured_local_ceiling'})
+
     def _output_cap(self,input_estimate,fixed_output_cap=None):
         requested=self.limit['max_output_tokens']
         limit=self.limit.get('tokens_per_minute',0) if self.desktop else 0
@@ -241,8 +272,9 @@ class Runner:
             if self.stop_event.is_set():raise NativeError('host_stop_requested')
             now=self._rate_clock()
             self._rate_reservations[:]=[r for r in self._rate_reservations if now-r['at']<60]
+            server=self._provider_allowance()
             used=sum(r['tokens'] for r in self._rate_reservations)
-            available=max(0,limit-used)
+            available=max(0,limit-used) if server is None else server['remaining']
             oversized=input_estimate>limit and self.budget.rates is None and not self._rate_reservations
             if available>0 and (input_estimate<=available or oversized) and (fixed_output_cap is None or fixed_output_cap<=available):
                 effective=min(requested,available) if fixed_output_cap is None else fixed_output_cap
@@ -252,9 +284,9 @@ class Runner:
                         'tokens_per_minute':limit,'estimated_input_above_tpm':oversized,
                         'estimate_is_guaranteed_bound':False,'local_estimate':True})
                 return effective
-            if not self._rate_reservations:
+            if not self._rate_reservations and server is None:
                 raise LimitError('estimated_input_above_TPM_reduce_inspection')
-            delay=max(.01,min(r['at']+60-now for r in self._rate_reservations))
+            delay=max(.01,server['reset_at']-now) if server else max(.01,min(r['at']+60-now for r in self._rate_reservations))
             self._event({'type':'rate.wait','wait_seconds':round(delay,3),'estimated_tokens':input_estimate,
                 'reserved_tokens':used,'tokens_per_minute':limit,'local_estimate':True})
             if self._rate_wait(min(delay,self._timeout())):raise NativeError('host_stop_requested')
@@ -290,7 +322,8 @@ class Runner:
         while True:
             now=self._rate_clock()
             self._rate_reservations[:]=[r for r in self._rate_reservations if now-r['at']<60]
-            if sum(r['tokens'] for r in self._rate_reservations)+estimate<=limit or (
+            server=self._provider_allowance()
+            if (server is not None and estimate<=server['remaining']) or (server is None and sum(r['tokens'] for r in self._rate_reservations)+estimate<=limit) or (
                     self.budget.rates is None and estimate>limit and not self._rate_reservations):break
             if not self._rate_reservations:raise LimitError('estimated_input_above_TPM_reduce_inspection')
             delay=max(.01,min(r['at']+60-now for r in self._rate_reservations))
@@ -323,6 +356,7 @@ class Runner:
                     if callable(capped) else self.adapter.request(self.history,self.limit['max_request_bytes'],self._timeout()))
             except ProviderError as e:
                 if e.kind=='provider_rate_limit':
+                    self._read_provider_rate()
                     self.budget.release(res,rate_limited=True)
                     retry+=1;self.stats.provider_retries+=1
                     if retry>self.limit['max_retries'] or self.stats.provider_retries>self.limit['max_total_retries']:
@@ -349,7 +383,8 @@ class Runner:
                 usage=decision.usage or {}
                 a=usage.get('input_tokens',usage.get('prompt_tokens'));b=usage.get('output_tokens',usage.get('completion_tokens'))
                 if type(a) is int and type(b) is int:
-                    paced['tokens']=a+b
+                    paced['tokens']=(max(a,res.output_tokens) if self.cfg['provider']=='openai_responses' else a+b)
+                    self._read_provider_rate()
                     self._event({'type':'rate.settled','rate_history':self._rate_history(),'source':'provider_usage','local_estimate':True})
             self.stats.model_calls+=1
             self.stats.model_seen_image|=decision.saw_image

@@ -100,7 +100,8 @@ func _start_runner() -> void:
  _runner_epoch = _epoch
  _active_boilerplate = boilerplate.duplicate(true)
  _active_authoring_mode = authoring_mode
- _rate_endpoint = str(_profile.get("provider",""))+":"+str(_profile.get("endpoint",""))
+ var credential_env := str(_profile.get("credentials",{}).get("env",""))
+ _rate_endpoint = str(_profile.get("provider",""))+":"+str(_profile.get("endpoint",""))+":"+_model+":"+OS.get_environment(credential_env).sha256_text()
  _retirement_ack.clear()
  _finished_receipt.clear()
  _native_stop_requested = false

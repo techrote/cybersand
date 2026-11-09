@@ -50,6 +50,26 @@ reported usage, provider429 handling, run deadlines and human Stop remain active
 
 ### Use from the development workbench
 
+#### Provider-aware pacing correction — 2026-11-09
+
+Conversation/tool history remains intact. OpenAI fallback pacing now retains a
+consistent maximum of reported input and the effective sent output allowance;
+it no longer switches to input-plus-output after completion. Billed/quantity
+accounting still records actual input and output separately. This follows the
+[documented rate-limit basis](https://developers.openai.com/api/docs/guides/rate-limits).
+Other providers retain local input-plus-output settlement; provider quota rules
+are not inferred from OpenAI's rule.
+
+The transport captures only allowlisted token-limit/remaining/reset headers,
+including project-token buckets, into Traffic. Valid server budgets at or below
+the selected TPM ceiling replace speculative local availability during the active
+run; server reset releases the obsolete local window. A lower user-selected TPM
+remains enforced locally. Absent/malformed headers retain conservative fallback
+pacing, and Start still restores recent local reservations. Rate buckets now
+separate provider, endpoint, model and an in-memory credential fingerprint.
+No authorization/cookie headers or plaintext credentials are logged. Stop,
+Retry-After, immutable retry bodies and all other budgets remain enforced.
+
 #### Tools and separate Scanline printer mode — 2026-11-09
 
 The subsequent live-log correction selects Responses `final_answer` message text
