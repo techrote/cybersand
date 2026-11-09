@@ -81,7 +81,9 @@ def probe(mod, workers: int, kind: str) -> dict:
         outcome = fence.advance()
     except ValueError as exc:
         return dict(workers=workers, kind=kind, outcome="REFUSED",
-                    detail=str(exc), digest_changed=True, state_matches_original=True)
+                    detail=str(exc), digest_changed=True,
+                    state_matches_original=(fence.engine.state == baseline),
+                    falsifier_hit=False)
     actual = fence.engine.state
     diverges = actual != expected
     return dict(workers=workers, kind=kind, outcome=outcome,
