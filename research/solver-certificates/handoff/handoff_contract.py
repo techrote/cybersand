@@ -11,7 +11,7 @@ from json import dumps
 from typing import Optional
 
 BASELINE = "d4b18e7f06839b35c8f6a66195206da0f33c5fa3"
-MODEL_VERSION = "B3-RESEARCH-4"
+MODEL_VERSION = "B3-RESEARCH-5"
 WHOLE_CELL = 256
 MAX_TX = 4096
 
@@ -70,7 +70,17 @@ class Record:
     body_id: int = 0
 
     def valid(self) -> bool:
-        return bool(self.identity) and self.amount > 0 and self.revision >= 0 and self.overfill >= 0 and len(self.velocity_q256) == 2
+        # Public input can be list-backed, but admitted World records cannot.
+        # Reject nested booleans/nonintegers before any ownership handoff.
+        return (type(self.identity) is str and bool(self.identity)
+                and isinstance(self.owner, Owner)
+                and type(self.amount) is int and self.amount > 0
+                and type(self.revision) is int and self.revision >= 0
+                and type(self.overfill) is int and self.overfill >= 0
+                and type(self.body_id) is int and self.body_id >= 0
+                and type(self.velocity_q256) in (tuple, list)
+                and len(self.velocity_q256) == 2
+                and all(type(v) is int for v in self.velocity_q256))
 
 
 def inertial_seed_admissible(r: Record, signed_world_enabled: bool) -> bool:
@@ -166,7 +176,14 @@ class World:
         for r in records:
             if not inertial_seed_admissible(r, signed_inertial_world_enabled):
                 raise ValueError("inadmissible initial IN state for World signed policy")
-        w = cls(generation, 0, {r.identity: r for r in records}, 0,
+        # World.start is the trusted admission boundary. A frozen dataclass
+        # does NOT freeze a nested caller-owned list. Materialise an owned tuple
+        # before installing any seed, so later caller mutation cannot change
+        # its velocity, epoch, applied law, or source signature behind our back.
+        # No per-tick or per-transfer copying is added.
+        owned = [replace(r, velocity_q256=(r.velocity_q256[0], r.velocity_q256[1]))
+                 for r in records]
+        w = cls(generation, 0, {r.identity: r for r in owned}, 0,
                 signed_inertial_world_enabled=signed_inertial_world_enabled)
         w.initial_water = w.water_total()
         w.assert_invariants()
@@ -182,7 +199,10 @@ class World:
 
     def assert_invariants(self):
         assert len(self.records) == len(set(self.records))
-        assert all(k == r.identity and r.valid() for k, r in self.records.items())
+        assert all(k == r.identity and r.valid() and
+                   type(r.velocity_q256) is tuple for k, r in self.records.items())
+        # A directly constructed/restored World containing list-backed values
+        # is untrusted even if its current numerical values look admissible.
         # An explicitly validated restore must obey the same applied World
         # signed-law admission as start(); direct dataclass construction alone
         # is not a trusted or validated native restoration.
