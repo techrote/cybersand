@@ -50,9 +50,12 @@ func make_line(op: Dictionary) -> void:
 		if twice<=dx: e+=dx; y+=sy
 
 func next_chunk(capacity: int = 4096) -> Dictionary:
-	while index < operations.size():
+	var points := PackedInt32Array()
+	var material := -1
+	while index < operations.size() and points.size()/2 < capacity:
 		var op: Dictionary = operations[index]
-		var points := PackedInt32Array()
+		if not points.is_empty() and op.material != material: break
+		material = op.material
 		var total := 0
 		var width := 0
 		match op.shape:
@@ -72,5 +75,5 @@ func next_chunk(capacity: int = 4096) -> Dictionary:
 			if op.shape == "disc" and point.distance_squared_to(Vector2i(op.x,op.y)) > op.radius*op.radius: continue
 			points.append(point.x);points.append(point.y)
 		if cursor == total: index+=1;cursor=0;line.clear()
-		if not points.is_empty(): return {"points":points,"material":op.material}
-	return {}
+	if points.is_empty(): return {}
+	return {"points":points,"material":material}

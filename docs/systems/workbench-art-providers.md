@@ -177,7 +177,9 @@ opens the editable instructions for the selected mode.
 
 Scanline takes rows with local y, optional repeat and scale, and spans in
 [x,length,material] order. Omitted spans preserve cells. An explicit zero
-material erases. The normal executor applies the resulting ordered rectangles.
+material erases. The normal executor applies the resulting ordered rectangles. Consecutive
+shapes of the same material share native chunks up to the existing cell
+limit. Material changes preserve the original draw and erase order.
 
 Gap s sets an optional request interval. HTTP 429 with numeric Retry-After
 paces subsequent requests to that endpoint. Traffic supports visible filtering

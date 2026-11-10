@@ -68,11 +68,16 @@ func run() -> void:
 	panel.request_area = Rect2i(160,160,32,32)
 	panel.request_materials = [0,58]
 	var stencil: Array = panel.stencil_operations([
-		{"y":3,"repeat":2,"scale":2,"spans":[[5,3,58],[6,1,0]]}
+		{"y":3,"repeat":2,"scale":2,"spans":[[5,1,58],[6,2,58],[6,1,0]]}
 	])
+	var receipts := [0]
+	var count_receipt := func(_receipt: Dictionary) -> void: receipts[0] += 1
+	art.native_receipt.connect(count_receipt)
 	art.submit(panel.local_operations(stencil),panel.request_area,[],panel.request_materials)
 	await until(func(): return not art.active and main.image.get_pixel(170,169).r8==58,"scaled scanline reaches native canvas")
 	await until(func(): return main.image.get_pixel(172,169).r8==0 and main.image.get_pixel(175,169).r8==58 and main.image.get_pixel(176,169).r8==0,"ordered erase and blank preservation")
+	art.native_receipt.disconnect(count_receipt)
+	check(receipts[0]==2,"adjacent same-material scanline spans share a native batch")
 
 
 	art.wb = wb
