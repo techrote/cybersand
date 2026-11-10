@@ -51,6 +51,23 @@ func run() -> void:
  check(panel._task.text == "Tools task" and panel._boilerplate_sections.system == "Tool-only wording","tools mode state overwritten")
  panel._select_authoring_mode(1)
  check(panel._task.text == "Print task" and panel._boilerplate_sections.system == "Print-only wording","print mode state overwritten")
+ var previous_nv := OS.get_environment("CYBERSAND_WB_NVIDIA_PROFILE")
+ var previous_openai := OS.get_environment("CYBERSAND_WB_OPENAI_PROFILE")
+ var config_path := "user://nvidia-preset-selection-test.json"
+ var config_file := FileAccess.open(config_path,FileAccess.WRITE)
+ config_file.store_string(JSON.stringify({"provider":"nvidia_chat","model":"nvidia/nemotron-3.5-super-vl-120b-a12b","credentials":{"env":"NVIDIA_API_KEY"}}))
+ config_file.close()
+ OS.set_environment("CYBERSAND_WB_NVIDIA_PROFILE",ProjectSettings.globalize_path(config_path))
+ OS.set_environment("CYBERSAND_WB_OPENAI_PROFILE",ProjectSettings.globalize_path("res://../tools/workbench_api_agent/profiles/openai-responses.example.json"))
+ panel._provider.select(2)
+ panel._provider_selected(2)
+ check(panel._profile_data.provider == "nvidia_chat" and panel._model.text == "nvidia/nemotron-3.5-super-vl-120b-a12b","NVIDIA dropdown leaves old profile/model")
+ panel._provider.select(1)
+ panel._provider_selected(1)
+ check(panel._profile_data.provider == "openai_responses","OpenAI preset cannot be restored")
+ OS.set_environment("CYBERSAND_WB_NVIDIA_PROFILE",previous_nv)
+ OS.set_environment("CYBERSAND_WB_OPENAI_PROFILE",previous_openai)
+ DirAccess.remove_absolute(config_path)
  panel.queue_free()
  await process_frame
  await process_frame

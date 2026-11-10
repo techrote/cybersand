@@ -117,8 +117,8 @@ def load_profile(path: Path, *, fixture_mode: bool=False, desktop: bool=False) -
     if type(spend['authorisation_ref']) is not str or len(spend['authorisation_ref'])>160:raise ConfigError('authorization reference invalid')
     mode=spend.get('funding_mode','attested_credit')
     if mode not in ('attested_credit','operator_authorized_desktop'):raise ConfigError('unsupported funding mode')
-    if mode=='operator_authorized_desktop' and (not desktop or provider!='openai_responses'):
-        raise ConfigError('operator-authorized funding is available only to the desktop OpenAI backend')
+    if mode=='operator_authorized_desktop' and (not desktop or provider not in ('openai_responses','nvidia_chat')):
+        raise ConfigError('operator-authorized funding is available only to the desktop OpenAI/NVIDIA backend')
     if provider=='ollama_chat' and cfg.get('local_compute','unknown') not in ('unknown','operator_metered'):
         raise ConfigError('local GPU compute costing is separate from API spend')
     return cfg
@@ -161,8 +161,8 @@ def validate_live(cfg:dict, *, allow_live:bool, fixture_mode:bool, probe=None, s
     sp=cfg['spend'];prov=cfg['provider']
     funding_mode=sp.get('funding_mode','attested_credit')
     if funding_mode not in ('attested_credit','operator_authorized_desktop'):raise ConfigError('unsupported funding mode')
-    if funding_mode=='operator_authorized_desktop' and (not desktop or prov!='openai_responses' or fixture_mode):
-        raise ConfigError('operator-authorized funding requires the live desktop OpenAI backend')
+    if funding_mode=='operator_authorized_desktop' and (not desktop or prov not in ('openai_responses','nvidia_chat') or fixture_mode):
+        raise ConfigError('operator-authorized funding requires the live desktop OpenAI/NVIDIA backend')
     if funding_mode=='operator_authorized_desktop':
         # The operator chooses the model; the real inference response determines
         # access. A local tariff or a model-catalog GET is not an access gate.
@@ -171,7 +171,7 @@ def validate_live(cfg:dict, *, allow_live:bool, fixture_mode:bool, probe=None, s
         if source_dirty is not False:raise ConfigError('operator-authorized desktop source must be verified clean')
         if sp.get('require_costs_crosscheck') or sp.get('credit_attestation_file'):
             raise ConfigError('operator funding does not verify account headroom; use attested_credit for credit/cost cross-checks')
-        try:rates=pricing_rates(cfg)
+        try:rates=None if prov=='nvidia_chat' and not sp.get('rates') else pricing_rates(cfg)
         except PricingUnavailable:rates=None
         if rates is not None and (sp['max_usd_per_run']<=0 or sp['authorised_ceiling_usd']<sp['max_usd_per_run'] or
                 sp['max_usd_per_call']<=0 or sp['max_usd_per_call']>sp['max_usd_per_run']):

@@ -718,6 +718,10 @@ func _exit_tree() -> void:
 func _provider_selected(index: int) -> void:
 	_retire_on_human_change()
 	_live.button_pressed = false
+	var selected := str(_provider.get_item_metadata(index))
+	var preset := OS.get_environment("CYBERSAND_WB_NVIDIA_PROFILE" if selected == "nvidia_chat" else "CYBERSAND_WB_OPENAI_PROFILE") if selected in ["nvidia_chat","openai_responses"] else ""
+	if not preset.is_empty() and FileAccess.file_exists(preset):
+		select_runner_profile(preset)
 	if str(_provider.get_item_metadata(index)) == "fixture":
 		select_runner_profile(ProjectSettings.globalize_path("res://../tools/workbench_api_agent/profiles/fixture.json"))
 	_update_key_button()

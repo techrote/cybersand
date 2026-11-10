@@ -68,10 +68,17 @@ class DesktopOperatorFundingTests(unittest.TestCase):
         budget,_=self.gate(self.operator());budget.started-=budget.limits['max_run_seconds']+1
         with self.assertRaises(LimitReached) as error:budget.reserve(100,10)
         self.assertEqual(error.exception.reason_code,'max_run_seconds')
-    def test_profile_mode_is_desktop_openai_only(self):
+    def test_profile_mode_is_desktop_cloud_only(self):
         with tempfile.TemporaryDirectory() as tmp:
             path=Path(tmp)/'profile.json';path.write_text(json.dumps(self.operator()))
             load_profile(path,desktop=True)
             with self.assertRaises(ConfigError):load_profile(path)
-        cfg=self.operator();cfg['provider']='nvidia_chat'
-        with self.assertRaises(ConfigError):self.gate(cfg)
+        cfg=self.operator();cfg.update(provider='nvidia_chat',endpoint='https://integrate.api.nvidia.com/v1/chat/completions',model='nvidia/nemotron-3.5-super-vl-120b-a12b',credentials={'env':'NVIDIA_API_KEY'})
+        cfg['spend'].pop('rates',None)
+        with patch.dict(os.environ,{'NVIDIA_API_KEY':'dummy-nvidia-key-never-real-0123456789'}):
+            budget,gate=self.gate(cfg)
+            self.assertIsInstance(budget,UsageBudget)
+            self.assertFalse(gate['usd_limits_enforced'])
+            with self.assertRaises(ConfigError):self.gate(cfg,desktop=False)
+        with patch.dict(os.environ,{'NVIDIA_API_KEY':''}):
+            with self.assertRaises(ConfigError):self.gate(cfg)

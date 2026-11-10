@@ -50,6 +50,18 @@ reported usage, provider429 handling, run deadlines and human Stop remain active
 
 ### Use from the development workbench
 
+NVIDIA desktop setup (2026-11-10): operator_authorized_desktop also accepts the
+NVIDIA backend. A profile without a verified NVIDIA rate table uses explicit
+unknown-dollar usage accounting, not invented zero pricing or credit balance.
+Key, Live/Start, clean source, token/request/time budgets and Stop remain required;
+remote attested-credit behavior is unchanged. CYBERSAND_WB_NVIDIA_PROFILE and
+CYBERSAND_WB_OPENAI_PROFILE select trusted presets when the provider dropdown
+changes. The installed NVIDIA launcher preselects the owner-only NVIDIA profile
+for nvidia/nemotron-3.5-super-vl-120b-a12b at the existing integrate.api.nvidia.com
+Chat Completions endpoint. The key is entered locally, not stored in that profile.
+Preset selection and funding checks are automated; real NVIDIA inference still
+requires the owner's key/account and is not claimed by keyless qualification.
+
 #### Provider-aware pacing correction — 2026-11-09
 
 Conversation/tool history remains intact. OpenAI fallback pacing now retains a

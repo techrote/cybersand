@@ -72,7 +72,7 @@ func launch_problem(task: String, model: String, scope: Dictionary) -> String:
  _profile_hash = _hash(raw)
  var provider := str(_profile.get("provider",""))
  if provider not in ["openai_responses","nvidia_chat","ollama_chat","fixture"]: return "Unsupported profile provider. Select OpenAI, NVIDIA, local Ollama or explicit Fixture."
- if not provider_mode.is_empty() and provider_mode != provider: return "Selected provider does not match the chosen profile."
+ if not provider_mode.is_empty() and provider_mode != provider: return "Choose Profile… for the selected provider. Loaded profile: " + provider + "."
  if provider == "fixture" and not fixture_mode: return "Select Fixture explicitly for keyless scripted qualification."
  if provider != "fixture" and not allow_live: return "Enable Live to authorize inference. Profile funding, credit and rate gates still apply."
  if provider in ["fixture","ollama_chat"] and not compute_consent: return "Explicit local compute consent required. Select Fixture or enable Live, then Start."
