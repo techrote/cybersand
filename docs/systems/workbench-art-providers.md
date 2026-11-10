@@ -159,14 +159,16 @@ promotion are implied by this implementation.
 ## Collaboration, scanline and pacing preview
 
 Model prompt and Scanline keep a conversation for the mounted workbench. Turns
-limits requests per Send, including refusals and rate retries. Run s adds an
+limits requests per Send, including refusals and rate retries. Zero continues
+until Stop, completion or another limit. Run s adds an
 optional elapsed-time ceiling. After native completion, the next request can
 use the actual changed count and world epoch. An empty array ends the run.
 Stop cancels pending inference, pacing and queued native work. Clear starts
 a new conversation while the durable traffic retains earlier events.
 
 Full includes all text turns and saved images when Image is enabled. Compacted includes the latest twelve entries and
-discloses omissions. Custom initially uses the same window. None sends no
+discloses omissions. It omits reasoning prefixes from model context while
+retaining the original replies in traffic. Custom initially uses the same window. None sends no
 earlier turns. Historical image bytes remain in durable traffic. Image sends the
 visible intersection of the work area, or the whole visible canvas with Full view.
 The request includes pixel dimensions and the world rectangle. Identical captures
@@ -181,14 +183,19 @@ Gap s sets an optional request interval. HTTP 429 with numeric Retry-After
 paces subsequent requests to that endpoint. Traffic supports visible filtering
 and full disk export. Unknown cost remains unknown.
 
-On 2026-11-10 the Windows preview passed 113 native checks and 40 checks with
+On 2026-11-10 the Windows preview passed 113 native checks and 43 checks with
 LM Studio LFM2.5 1.2B, including a human follow-up and Stop during pacing.
 The Linux graphical transport fixtures passed for all three providers. The
 graphical run_art_scanline_vision.gd probe used the loaded LM Studio LFM3 Omni
 model through a loopback relay. It applied a four-cell wall, then erased its
 first cell after a second rendered observation. The earlier LFM2.5 text
 scanline trial returned malformed JSON. The vision test is a constrained
-placement test, and the issue's statue campaign and owner review remain open.
+placement test. In a separate graphical 64×128 statue trial, wb-art-local
+sent three requests over 50.5 seconds. The first two changed 226 and 132
+native cells. The last returned an empty array. Reported input and output
+totals were 11,900 and 6,707 tokens. This was text-only and predates the
+compacted reasoning-prefix omission. The rendered PNG and traffic retain
+the result for owner review.
 
 The workbench restores the last conversation from saved traffic into a
 separate log file on reopen. Full resends historical image bytes when Image

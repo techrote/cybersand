@@ -39,6 +39,12 @@ func run() -> void:
 	p.log_path = "user://does-not-exist/no/log.jsonl"
 	p.log_event("request","test")
 	check(not p.log_warning.is_empty() and p.traffic.contains("test"),"logging failure does not block live inspection")
+	p.log_path = ""
+	for index: int in range(300):
+		p.log_event("retention_fixture",{"index":index})
+	var archived := FileAccess.get_file_as_string(p.log_path)
+	check(archived.count('"kind":"retention_fixture"')==300 and archived.contains('"index":0') and archived.contains('"index":299'),"full traffic retains beginning and end beyond 256 events")
+	if not p.log_path.is_empty(): DirAccess.remove_absolute(p.log_path)
 	print("ART_PROVIDER_KEYLESS ",checks," checks, ",failures," failures")
 	p.queue_free()
 	await process_frame

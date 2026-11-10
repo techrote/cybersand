@@ -119,7 +119,9 @@ func resume_traffic(previous: String) -> Array:
 		if not parsed is Dictionary: continue
 		if parsed.get("kind") == "conversation_cleared": turns.clear()
 		elif parsed.get("kind") == "conversation" and parsed.get("data") is Dictionary:
-			turns.append(parsed.data)
+			var turn: Dictionary = parsed.data
+			if turn.has("image_offset"): turn.image_offset = int(turn.image_offset)
+			turns.append(turn)
 	traffic = "[Earlier conversation traffic retained in the export]\n"
 	readable = traffic
 	return turns

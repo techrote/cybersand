@@ -182,12 +182,12 @@ func _process(_delta: float) -> void:
 	executor.wb = wb
 	executor.poll()
 	if run_deadline_ms > 0 and Time.get_ticks_msec() >= run_deadline_ms:
-		if provider.active or capturing or executor.active or remaining_turns > 0: stop_all("Run time limit reached")
+		if provider.active or capturing or executor.active or remaining_turns != 0: stop_all("Run time limit reached")
 		run_deadline_ms = 0
 	draw.disabled = executor.active
 	stop.disabled = not executor.active and not provider.active and not capturing and remaining_turns == 0
 	if provider.active and wb.host.simulation_worker.art_state().epoch != request_epoch: stop_all("Canvas changed")
-	draw.disabled = executor.active or provider.active or capturing or remaining_turns > 0
+	draw.disabled = executor.active or provider.active or capturing or remaining_turns != 0
 	draw.text = "Draw" if input_mode.selected==0 else "Send"
 	for row: Control in rows: row.visible = input_mode.selected!=0
 	key_button.text = "Key ✓" if not str(keys.get(current_provider,"")).is_empty() else "Key…"
@@ -283,15 +283,19 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	context_mode.tooltip_text = "Conversation context for the next request. Custom currently uses Compacted."
 	row.add_child(context_mode)
 	turn_limit.prefix = "Turns"
-	turn_limit.min_value = 1
+	turn_limit.min_value = 0
+	turn_limit.value = 1
+	turn_limit.tooltip_text = "Maximum requests per Send. Zero continues until Stop, model completion or another limit."
 	turn_limit.max_value = 1000
 	row.add_child(turn_limit)
 	minimum_interval.prefix = "Gap s"
+	minimum_interval.custom_minimum_size.x = 100
 	minimum_interval.max_value = 3600
 	minimum_interval.step = 0.1
 	minimum_interval.tooltip_text = "Minimum seconds between model requests. Zero disables local pacing."
 	row.add_child(minimum_interval)
 	run_seconds.prefix = "Run s"
+	run_seconds.custom_minimum_size.x = 100
 	run_seconds.max_value = 86400
 	run_seconds.tooltip_text = "Maximum seconds for this run. Zero disables the limit."
 	row.add_child(run_seconds)
@@ -464,7 +468,10 @@ func model_context() -> Array:
 	if first > 0:
 		context.append({"role":"user","content":"Earlier turns omitted from this request; latest confirmed result: "+last_result})
 	for entry: Dictionary in conversation.slice(first):
-		var message := {"role":entry.role,"content":entry.content}
+		var content: String = entry.content
+		if not full and entry.role == "assistant" and content.contains("</think>"):
+			content = content.substr(content.rfind("</think>")+8).strip_edges()
+		var message := {"role":entry.role,"content":content}
 		if full and entry.has("image_offset") and not image_input.button_pressed:
 			message.content += "\nHistorical image omitted because Image is off."
 		elif full and entry.has("image_offset"):
@@ -481,7 +488,7 @@ func model_context() -> Array:
 func model_feedback(feedback: String) -> void:
 	last_result = feedback
 	remember_turn("user","Canvas result (world epoch %d): %s" % [request_epoch,feedback])
-	if remaining_turns > 0:
+	if remaining_turns != 0:
 		send_next.call_deferred(ui_epoch)
 
 func remember_turn(role: String, content: String, image_offset: int = -1) -> void:
@@ -497,7 +504,7 @@ func persist_traffic_path() -> void:
 		settings.save("user://art-provider.cfg")
 
 func send_prompt() -> void:
-	if executor.active or provider.active or capturing or remaining_turns > 0: return
+	if executor.active or provider.active or capturing or remaining_turns != 0: return
 	if wb.busy() or wb.applied.is_empty():
 		input_error = "Canvas is not ready."
 		return
@@ -512,12 +519,12 @@ func send_prompt() -> void:
 	run_mode = input_mode.selected
 	run_epoch = wb.host.simulation_worker.art_state().epoch
 	last_image = ""
-	remaining_turns = int(turn_limit.value)
+	remaining_turns = int(turn_limit.value) if turn_limit.value > 0 else -1
 	run_deadline_ms = Time.get_ticks_msec()+int(run_seconds.value*1000) if run_seconds.value > 0 else 0
 	send_next(ui_epoch)
 
 func send_next(expected_epoch: int) -> void:
-	if expected_epoch != ui_epoch or remaining_turns <= 0: return
+	if expected_epoch != ui_epoch or remaining_turns == 0: return
 	if run_epoch != wb.host.simulation_worker.art_state().epoch:
 		stop_all("Canvas changed")
 		return
@@ -603,7 +610,7 @@ func send_next(expected_epoch: int) -> void:
 		prompt += "\nThe current view matches the last capture. Image bytes omitted from this request."
 	last_image = image_hash
 	next_request_ms = Time.get_ticks_msec() + int(minimum_interval.value*1000)
-	remaining_turns -= 1
+	if remaining_turns > 0: remaining_turns -= 1
 	sent_turns += 1
 	request_url = endpoint.text.strip_edges()
 	sent_input_price = input_price.value
@@ -634,10 +641,12 @@ func provider_finished(_id: int, text: String, _response: Dictionary, error: Str
 			provider_wait_ms = Time.get_ticks_msec()+int(provider.retry_after_seconds*1000)
 			provider_wait_url = request_url
 			provider.log_event("provider_rate_wait",{"seconds":provider.retry_after_seconds})
-			if remaining_turns > 0:
+			if remaining_turns != 0:
 				send_next.call_deferred(ui_epoch)
 				return
 		input_error = error
+		if error.containsn("context_length") or error.containsn("context window"):
+			input_error = "Provider context limit reached. Choose Compacted or None and resend. "+error
 		remaining_turns = 0
 		remember_turn("user","Request failed: "+error)
 		return
