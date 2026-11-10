@@ -181,10 +181,19 @@ Gap s sets an optional request interval. HTTP 429 with numeric Retry-After
 paces subsequent requests to that endpoint. Traffic supports visible filtering
 and full disk export. Unknown cost remains unknown.
 
-The preview still needs the full issue acceptance campaign, including genuine
-image-guided revision and a local vision stencil round trip. The original
-LFM2.5 text scanline trial returned malformed JSON. Windows native tests cover
-scaled repeated rows and erasure independently of that model output.
+On 2026-11-10 the Windows preview passed 113 native checks and 40 checks with
+LM Studio LFM2.5 1.2B, including a human follow-up and Stop during pacing.
+The Linux graphical transport fixtures passed for all three providers. The
+graphical run_art_scanline_vision.gd probe used the loaded LM Studio LFM3 Omni
+model through a loopback relay. It applied a four-cell wall, then erased its
+first cell after a second rendered observation. The earlier LFM2.5 text
+scanline trial returned malformed JSON. The vision test is a constrained
+placement test, and the issue's statue campaign and owner review remain open.
+
+The preview archives historical image bytes in traffic. Full currently
+resends text history only. Reopening the workbench does not rehydrate that
+conversation, and spending ceilings and provider-specific quota resets are
+not implemented.
 
 ## Offset-area repair
 
