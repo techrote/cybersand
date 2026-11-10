@@ -25,6 +25,22 @@ class State:
     tick: int = 0
 
     def copy(self):
+        # The fixed-point proof is defined only on the finite, canonical
+        # material alphabet and a binary global pressure state. Checking the
+        # source BEFORE publishing it also makes hostile/restored snapshots
+        # atomic refusals: reset_certificates must not encounter foreign cell
+        # objects after the old engine state has already been replaced.
+        # This is a boundary O(width * height) copy/check, never a tick probe.
+        if (type(self.width) is not int or type(self.height) is not int
+                or self.width <= 0 or self.height <= 0):
+            raise ValueError("noncanonical source geometry: REFUSE")
+        if (type(self.cells) is not list
+                or len(self.cells) != self.width * self.height
+                or any(type(v) is not int or not 0 <= v <= STEAM
+                       for v in self.cells)):
+            raise ValueError("noncanonical material snapshot: REFUSE")
+        if type(self.pressure) is not int or self.pressure not in (0, 1):
+            raise ValueError("noncanonical pressure snapshot: REFUSE")
         # State.body is an externally supplied read dependency. Even a typed
         # frozenset annotation does not freeze a caller-owned mutable set.
         # Reject opaque iterables instead of executing their user-defined code.
