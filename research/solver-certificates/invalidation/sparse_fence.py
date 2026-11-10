@@ -226,6 +226,11 @@ def digest(gen, tick, shard, events):
     return sha256(wire.encode()).hexdigest()
 
 
+def bounded_i64(value):
+    """Prevent huge integer-to-JSON conversion in bounded admission."""
+    return type(value) is int and -(1 << 63) <= value < (1 << 63)
+
+
 def freeze_events(events):
     """Canonical, owned, bounded *data* snapshot; never trust a shallow tuple.
 
@@ -247,14 +252,14 @@ def freeze_events(events):
             points = []
             for p in positions:
                 if (type(p) not in (list, tuple) or len(p) != 2
-                        or any(type(v) is not int for v in p)):
+                        or any(not bounded_i64(v) for v in p)):
                     raise ValueError("noncanonical body point: REFUSE")
                 points.append((p[0], p[1]))
             result.append(("body", tuple(points)))
         elif ((kind == "set" and len(event) == 4)
               or (kind == "explode" and len(event) == 4)
               or (kind == "pressure" and len(event) == 2)):
-            if any(type(v) is not int for v in event[1:]):
+            if any(not bounded_i64(v) for v in event[1:]):
                 raise ValueError("noncanonical event fields: REFUSE")
             result.append(tuple(event))
         elif kind == "unknown" and len(event) == 1:
@@ -274,7 +279,8 @@ class Packet:
 
     @classmethod
     def make(cls, generation, tick, shard, events):
-        if any(type(v) is not int for v in (generation, tick, shard)):
+        if (any(not bounded_i64(v) for v in (generation, tick, shard))
+                or generation < 0 or tick < 0 or not 0 <= shard <= 3):
             raise ValueError("noncanonical packet header: REFUSE")
         owned = freeze_events(events)
         return cls(generation, tick, shard, owned,
