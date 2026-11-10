@@ -47,6 +47,37 @@ def checked_stats(stats, location):
             f"{location}: impossible percentile order")
     require(stats["mean_ms"] <= stats["max_ms"] + 1e-9,
             f"{location}: mean exceeds maximum")
+    checked_producer_order_statistics(stats, location)
+
+
+def checked_producer_order_statistics(stats, location):
+    """Necessary quantile/mean feasibility for this source-pinned Godot producer.
+
+    The Godot profiler reports sorted[int(round((n-1)*fraction))] using
+    positive-half-away rounding, with fractions .50 and .95. These
+    inequalities follow from ordering, nonnegative timings and exact sample
+    count. They are necessary, NOT sufficient to authenticate raw samples.
+    """
+    n = stats["samples"]
+    if not n:
+        return
+    midpoint = math.floor((n - 1) * 0.50 + 0.5)
+    upper_rank = math.floor((n - 1) * 0.95 + 0.5)
+    median, p95, maximum = (stats[k] for k in ("p50_ms", "p95_ms", "max_ms"))
+    require(midpoint != upper_rank or median == p95,
+            f"{location}: coincident producer quantiles disagree")
+    require(upper_rank != n - 1 or p95 == maximum,
+            f"{location}: producer p95 must equal maximum")
+    min_mean = ((upper_rank - midpoint) * median
+                + (n - 1 - upper_rank) * p95 + maximum) / n
+    max_mean = ((midpoint + 1) * median
+                + (upper_rank - midpoint) * p95
+                + (n - 1 - upper_rank) * maximum) / n
+    # 10 ns in milliseconds: larger than observed JSON floating-point rounding;
+    # not an accuracy claim about any physical or native timing stage.
+    tolerance_ms = 1e-8
+    require(min_mean - tolerance_ms <= stats["mean_ms"] <= max_mean + tolerance_ms,
+            f"{location}: infeasible producer mean/order statistics")
 
 
 def reduce(dataset):
