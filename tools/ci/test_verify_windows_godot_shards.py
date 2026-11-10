@@ -385,6 +385,22 @@ class SourceContractTests(unittest.TestCase):
         self.assertEqual(expected["execution_policy"], execution_policy.identity())
         self.runner.discover_cases.assert_called_once_with(self.root)
 
+    def test_source_built_candidate_has_independent_runtime_identity(self):
+        from unittest import mock
+        import native_candidate_identity as identity
+        directory = self.root / "candidate"
+        directory.mkdir()
+        binary = directory / Path(self.native).name
+        binary.write_bytes(b"MZsource-built-fixture")
+        with mock.patch.object(identity, "NATIVE", self.native):
+            candidate = identity.create(self.root, directory)
+            expected = subject.source_contract(self.root, self.sha, 2, directory)
+            self.assertEqual(expected["cybersand_runtime"]["sha256"], digest(binary.read_bytes()))
+            self.assertEqual(expected["runtime_source_commit"], self.sha)
+            self.assertEqual(expected["tested_input_sha256"][self.native], [candidate["sha256"]])
+            binary.write_bytes(b"MZdifferent")
+            with self.assertRaises(ValueError): subject.source_contract(self.root, self.sha, 2, directory)
+
     def test_source_hashes_respect_declared_checkout_bytes(self):
         hashes = self.contract()["tested_input_sha256"]
         self.assertEqual(hashes["godot/tests/test_one.gd"], [digest(b"extends Node\n")])

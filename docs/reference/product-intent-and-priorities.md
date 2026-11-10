@@ -4,11 +4,23 @@ status: Current
 document-kind: reference
 scope: Approved owner direction and deliberately preserved behavior; not current implementation or performance evidence
 canonical-for: [owner-intent, product-priorities, preserved-material-feel]
-last-reviewed: 2026-10-30
+last-reviewed: 2026-11-08
 related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approximate-fidelity.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
 # Product intent and priorities
+
+## Shared workbench convergence — 2026-11-08
+
+**Approved:** exploratory desktop, painting, agent and remote implementations
+should converge into the main Shared Workbench promptly through qualified
+incremental reconciliation. Use common baseline reconstruction, native authority,
+acknowledged authoring and persistence semantics, with interface-specific budgets
+and permissions. The [authoring data contract](../architecture/shared-workbench-authoring-data.md)
+owns this direction and its dependency/qualification plan. #548 intentionally
+forgets history through material-only Flatten; it is not an implicit evolved-state
+Save. The owner authorizes #542 Ready and required checks after recording the
+contract, but **no merge and no #548 implementation** in this task.
 
 This page carries forward owner direction recorded in the
 [pre-rewrite handover](../audits/pre-rag-rewrite-2026-09-08/cybersand-codex-development-handover.md.txt)

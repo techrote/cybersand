@@ -4,11 +4,21 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-08
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Shared workbench review transition — 2026-11-08
+
+Owner-authorized #542 Ready qualification follows the
+[shared authoring data contract and convergence plan](../architecture/shared-workbench-authoring-data.md).
+Record the resulting source and actual non-Draft gates in the PR ledger; retain
+the `9319e689` runtime/package evidence as its own checkpoint. Converge the
+painting/agent/remote successors incrementally, preserving source ownership and
+qualifying the joins. #548 is design-only here. No merge, release or paid API
+trial is authorized by this transition.
 
 ## Coupling lockstep feasibility — 2026-11-06
 
