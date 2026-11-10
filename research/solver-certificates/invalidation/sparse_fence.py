@@ -226,6 +226,44 @@ def digest(gen, tick, shard, events):
     return sha256(wire.encode()).hexdigest()
 
 
+def freeze_events(events):
+    """Canonical, owned, bounded *data* snapshot; never trust a shallow tuple.
+
+    Finite protocol grammar only. The owner separately validates coordinates,
+    conflicting writers and source authority before reducing the complete fence.
+    Refuse generators, subclasses and opaque objects rather than iterating them.
+    """
+    if type(events) not in (list, tuple) or len(events) > 24:
+        raise ValueError("unbounded or noncanonical event collection: REFUSE")
+    result = []
+    for event in events:
+        if type(event) not in (list, tuple) or not event or type(event[0]) is not str:
+            raise ValueError("noncanonical event: REFUSE")
+        kind = event[0]
+        if kind == "body" and len(event) == 2:
+            positions = event[1]
+            if type(positions) not in (list, tuple) or len(positions) > 32:
+                raise ValueError("unbounded body footprint: REFUSE")
+            points = []
+            for p in positions:
+                if (type(p) not in (list, tuple) or len(p) != 2
+                        or any(type(v) is not int for v in p)):
+                    raise ValueError("noncanonical body point: REFUSE")
+                points.append((p[0], p[1]))
+            result.append(("body", tuple(points)))
+        elif ((kind == "set" and len(event) == 4)
+              or (kind == "explode" and len(event) == 4)
+              or (kind == "pressure" and len(event) == 2)):
+            if any(type(v) is not int for v in event[1:]):
+                raise ValueError("noncanonical event fields: REFUSE")
+            result.append(tuple(event))
+        elif kind == "unknown" and len(event) == 1:
+            result.append(("unknown",))
+        else:
+            raise ValueError("unsupported event grammar: REFUSE")
+    return tuple(result)
+
+
 @dataclass(frozen=True)
 class Packet:
     generation: int
@@ -236,8 +274,11 @@ class Packet:
 
     @classmethod
     def make(cls, generation, tick, shard, events):
-        events = tuple(events)
-        return cls(generation, tick, shard, events, digest(generation, tick, shard, events))
+        if any(type(v) is not int for v in (generation, tick, shard)):
+            raise ValueError("noncanonical packet header: REFUSE")
+        owned = freeze_events(events)
+        return cls(generation, tick, shard, owned,
+                   digest(generation, tick, shard, owned))
 
 
 class Fence:
@@ -253,14 +294,23 @@ class Fence:
         self.workers = workers
         self.generation = 0
         self.packets = {}
+        self.accepted_checks = {}  # admission witness, distinct from packet object
 
     def accept(self, p: Packet):
-        if (p.generation != self.generation or p.tick != self.engine.state.tick
+        if (not isinstance(p, Packet)
+                or any(type(v) is not int for v in (p.generation, p.tick, p.shard))
+                or p.generation != self.generation or p.tick != self.engine.state.tick
                 or not (0 <= p.shard < self.workers)
-                or p.check != digest(p.generation, p.tick, p.shard, p.events)
-                or len(p.events) > 24 or p.shard in self.packets):
-            raise ValueError("stale/forged/duplicate/capacity packet: REFUSE")
-        self.packets[p.shard] = p
+                or p.shard in self.packets):
+            raise ValueError("stale/forged/duplicate packet: REFUSE")
+        # A caller may bypass Packet.make and supply nested mutable lists.
+        # Canonicalize and *own* every bounded leaf before comparing the witness.
+        owned = freeze_events(p.events)
+        if type(p.check) is not str or p.check != digest(
+                p.generation, p.tick, p.shard, owned):
+            raise ValueError("forged or drifting packet witness: REFUSE")
+        self.packets[p.shard] = Packet(p.generation, p.tick, p.shard, owned, p.check)
+        self.accepted_checks[p.shard] = p.check
 
     def _sites_and_kind(self, e):
         """Prevalidate the complete declared input before any authoritative write."""
@@ -301,6 +351,19 @@ class Fence:
     def advance(self):
         if len(self.packets) != self.workers:
             return "BLOCKED"  # not even full recompute is authoritative yet
+        # Revalidate the accepted witness at the FINAL owner barrier, before
+        # preflight or mutation. Direct replacement of the retained packet with
+        # a different, self-consistent checksum is not an accepted receipt.
+        for shard in range(self.workers):
+            p = self.packets.get(shard)
+            if (not isinstance(p, Packet)
+                    or any(type(v) is not int for v in (p.generation, p.tick, p.shard))
+                    or p.generation != self.generation or p.tick != self.engine.state.tick
+                    or p.shard != shard or p.check != self.accepted_checks.get(shard)):
+                raise ValueError("accepted packet identity drift: REFUSE")
+            owned = freeze_events(p.events)
+            if owned != p.events or digest(p.generation, p.tick, p.shard, owned) != p.check:
+                raise ValueError("accepted packet payload drift: REFUSE")
         events = []
         writers = {}
         globals_seen = set()
@@ -319,11 +382,13 @@ class Fence:
         self.engine.step(tuple(events), workers=self.workers)
         self.engine.counts.packets += self.workers
         self.packets.clear()
+        self.accepted_checks.clear()
         return "COMMITTED"
 
     def restore(self, state: State):
         self.generation += 1
         self.packets.clear()
+        self.accepted_checks.clear()
         self.engine.restore(state)
 
 
