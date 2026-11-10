@@ -226,6 +226,9 @@ def digest(gen, tick, shard, events):
     return sha256(wire.encode()).hexdigest()
 
 
+MAX_WITNESS_EPOCH = (1 << 63) - 1
+
+
 def bounded_i64(value):
     """Prevent huge integer-to-JSON conversion in bounded admission."""
     return type(value) is int and -(1 << 63) <= value < (1 << 63)
@@ -296,6 +299,8 @@ class Fence:
     def __init__(self, engine: Sparse, workers: int):
         if workers not in (1, 4):
             raise ValueError("bounded worker count")
+        if not bounded_i64(engine.state.tick) or engine.state.tick < 0:
+            raise ValueError("initial owner tick outside witness domain: REFUSE")
         self.engine = engine
         self.workers = workers
         self.generation = 0
@@ -357,6 +362,14 @@ class Fence:
     def advance(self):
         if len(self.packets) != self.workers:
             return "BLOCKED"  # not even full recompute is authoritative yet
+        # Preflight the NEXT epoch as well as the present one. Packet admission
+        # allows signed-64-bit tick MAX, but a commit there would make the
+        # following tick impossible to represent in any valid Packet.
+        if (not bounded_i64(self.engine.state.tick)
+                or self.engine.state.tick < 0
+                or self.engine.state.tick == MAX_WITNESS_EPOCH
+                or not bounded_i64(self.generation) or self.generation < 0):
+            raise ValueError("owner epoch outside successor domain: REFUSE")
         # Revalidate the accepted witness at the FINAL owner barrier, before
         # preflight or mutation. Direct replacement of the retained packet with
         # a different, self-consistent checksum is not an accepted receipt.
@@ -392,6 +405,13 @@ class Fence:
         return "COMMITTED"
 
     def restore(self, state: State):
+        # Rollback changes generation. Refuse before retiring accepted receipts
+        # if the next generation, or the supplied restored tick, is inadmissible.
+        if (not bounded_i64(self.generation)
+                or not 0 <= self.generation < MAX_WITNESS_EPOCH
+                or type(state) is not State
+                or not bounded_i64(state.tick) or state.tick < 0):
+            raise ValueError("restoration epoch outside witness domain: REFUSE")
         self.generation += 1
         self.packets.clear()
         self.accepted_checks.clear()
