@@ -93,6 +93,53 @@ class ContractProofTests(unittest.TestCase):
             Refusal.TOKEN_REUSE)
         self.assertEqual(w.material_identity(), old)
 
+    def test_seed_signed_inertial_policy_exact_controls(self):
+        # B4 source-critical falsifier: an initial negative-vy IN record
+        # must not bypass the same World-bound signed law that commit checks.
+        for enabled in (False, True):
+            for vy in (-512, -8, -1, 0, 1, 32, 512):
+                with self.subTest(enabled=enabled, vy=vy):
+                    r = Record("water", Owner.INERTIAL, WHOLE_CELL,
+                               velocity_q256=(5, vy))
+                    if vy < 0 and not enabled:
+                        with self.assertRaises(ValueError):
+                            World.start(3, [r], signed_inertial_world_enabled=enabled)
+                    else:
+                        w = World.start(3, [r], signed_inertial_world_enabled=enabled)
+                        self.assertEqual(w.records["water"].velocity_q256, (5, vy))
+                        self.assertEqual(w.water_total(), WHOLE_CELL)
+                        w.assert_invariants()
+
+    def test_restored_inertial_seed_must_revalidate_applied_world_law(self):
+        # A direct dataclass constructor stands in only for untrusted restored
+        # input; consumers must explicitly validate before using it.
+        negative = Record("water", Owner.INERTIAL, WHOLE_CELL,
+                          velocity_q256=(0, -8))
+        w = World(7, 0, {"water": negative}, WHOLE_CELL,
+                  signed_inertial_world_enabled=False)
+        with self.assertRaises(AssertionError):
+            w.assert_invariants()
+        self.assertEqual(w.records["water"], negative)
+        # Even a previously valid World becomes invalid if an external actor
+        # forges its construction-bound policy after construction.
+        w = World.start(7, [negative], signed_inertial_world_enabled=True)
+        w.signed_inertial_world_enabled = False  # explicitly illegal mutation
+        with self.assertRaises(AssertionError):
+            w.assert_invariants()
+        # Reject non-integer and boolean IN seeds without silently coercing.
+        for velocity in ((0, True), (0, "-8"), [0, -8]):
+            with self.subTest(velocity=velocity):
+                record = Record("bad", Owner.INERTIAL, WHOLE_CELL,
+                                velocity_q256=velocity)
+                if isinstance(velocity, list):
+                    # Mutable list of valid ints is supported by this model;
+                    # unsigned negative vertical still must refuse.
+                    with self.assertRaises(ValueError):
+                        World.start(3, [record])
+                else:
+                    with self.assertRaises(ValueError):
+                        World.start(3, [record], signed_inertial_world_enabled=True)
+
     def test_caller_signed_flag_cannot_upgrade_unadmitted_world(self):
         # FALSIFIER (pre-correction): allow_signed_inertial=True alone used to COMMIT
         # a negative-vy IN transfer in World.start's default, unsigned policy.
