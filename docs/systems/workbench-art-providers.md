@@ -156,3 +156,17 @@ instructions were clarified to describe parameter fields without numeric drawing
 examples; equivalent spellings were normalized and the comparison repeated.
 No paid calls or merge/Ready
 promotion are implied by this implementation.
+
+## Offset-area repair
+
+LM Studio receives coordinates relative to the selected work area. The panel
+validates individual shapes in that local frame and offsets usable geometry
+before handing it to the native executor. Malformed shapes are skipped;
+point-pair polylines and single pixel x/y forms are accepted. Traffic records
+the number of usable primitives. OpenAI retains its existing world-coordinate
+protocol. Native scope, protection and cancellation remain authoritative.
+
+The NVIDIA model dropdown includes Qwen3 Next Instruct, Qwen2.5 Coder,
+Nemotron Lightning and Nemotron Super VL. The two Nemotron presets disable
+thinking for direct drawing to leave output tokens for the drawing packet.
+These presets do not restrict manual model IDs.

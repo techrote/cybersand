@@ -22,7 +22,10 @@ static func payload(provider: String, model: String, prompt: String, instruction
 		return {"model":model,"instructions":instructions,"input":[{"role":"user","content":content}],"max_output_tokens":tokens,"store":false}
 	var content: Variant = prompt
 	if not png.is_empty(): content = [{"type":"text","text":prompt},{"type":"image_url","image_url":{"url":"data:image/png;base64,"+png}}]
-	return {"model":model,"messages":[{"role":"system","content":instructions},{"role":"user","content":content}],"max_tokens":tokens,"stream":false}
+	var packet := {"model":model,"messages":[{"role":"system","content":instructions},{"role":"user","content":content}],"max_tokens":tokens,"stream":false}
+	if provider == "NVIDIA" and model in ["nvidia/nemotron-3.5-lightning-30b-a3b","nvidia/nemotron-3.5-super-vl-120b-a12b"]:
+		packet.chat_template_kwargs = {"enable_thinking":false}
+	return packet
 
 static func decode(provider: String, data: Dictionary) -> Dictionary:
 	if data.has("error") and data.error != null: return {"text":"","error":JSON.stringify(data.error)}

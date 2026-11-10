@@ -37,6 +37,14 @@ var prompt_text := "Draw a cyberpunk robot statue using a few rectangles, discs 
 var json_text := '[{"shape":"rectangle","x0":32,"y0":32,"x1":95,"y1":159,"material":58},{"shape":"disc","x":64,"y":70,"radius":12,"material":0}]'
 var current_provider := "LM Studio"
 var request_epoch := 0
+var request_local := false
+const ArtPlan = preload("res://scripts/art_batch_plan.gd")
+const NVIDIA_MODELS := {
+	"Qwen3 Next 80B Instruct · text": "qwen/qwen3-next-80b-a3b-instruct",
+	"Qwen2.5 Coder 32B · text": "qwen/qwen2.5-coder-32b-instruct",
+	"Nemotron 3.5 Lightning · text": "nvidia/nemotron-3.5-lightning-30b-a3b",
+	"Nemotron 3.5 Super VL · image": "nvidia/nemotron-3.5-super-vl-120b-a12b",
+}
 var ui_epoch := 0
 var capturing := false
 var request_area: Rect2i
@@ -180,7 +188,7 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	history.clip_text = true
 	history.custom_minimum_size.x = 34
 	history.item_selected.connect(func(i: int) -> void:
-		if i>0: model.text = history.get_item_text(i)
+		if i>0: model.text = str(history.get_item_metadata(i)) if history.get_item_metadata(i) != null else history.get_item_text(i)
 		history.select(0))
 	row.add_child(history)
 	key_button.text = "Key…"
@@ -275,12 +283,16 @@ func change_provider(index: int) -> void:
 	load_profile()
 
 func load_profile() -> void:
-	var defaults := {"LM Studio":["http://127.0.0.1:1234/v1","wb-art-instruct"],"OpenAI":["https://api.openai.com/v1","gpt-5.6-luna"],"NVIDIA":["https://integrate.api.nvidia.com/v1","nvidia/nemotron-3.5-super-vl-120b-a12b"]}
+	var defaults := {"LM Studio":["http://127.0.0.1:1234/v1","wb-art-instruct"],"OpenAI":["https://api.openai.com/v1","gpt-5.6-luna"],"NVIDIA":["https://integrate.api.nvidia.com/v1","qwen/qwen3-next-80b-a3b-instruct"]}
 	endpoint.text = settings.get_value(current_provider,"endpoint",defaults[current_provider][0])
 	model.text = settings.get_value(current_provider,"model",defaults[current_provider][1])
 	tokens.value = settings.get_value(current_provider,"tokens",8192)
 	seconds.value = settings.get_value(current_provider,"seconds",180)
 	history.clear(); history.add_item("▾")
+	if current_provider == "NVIDIA":
+		for label: String in NVIDIA_MODELS:
+			history.add_item(label)
+			history.set_item_metadata(history.item_count-1,NVIDIA_MODELS[label])
 	for name_text: String in settings.get_value(current_provider,"history",[]): history.add_item(name_text)
 
 func stop_all(reason: String = "Human Stop") -> void:
@@ -330,6 +342,9 @@ func send_prompt() -> void:
 	if epoch != ui_epoch or request_epoch != wb.host.simulation_worker.art_state().epoch: return
 	save_profile()
 	var instructions := Provider.INSTRUCTIONS+" Work area XYWH="+JSON.stringify([request_area.position.x,request_area.position.y,request_area.size.x,request_area.size.y])+"; allowed materials="+JSON.stringify(request_materials)+"; protected rectangles="+str(request_guards)+"."
+	request_local = current_provider == "LM Studio"
+	if request_local:
+		instructions = Provider.INSTRUCTIONS+" Coordinates are LOCAL: top-left is (0,0), never add a world offset. XYWH="+JSON.stringify([0,0,request_area.size.x,request_area.size.y])+". Allowed materials="+JSON.stringify(request_materials)+". Use compact rectangles, discs and lines. Every rectangle and line requires all four endpoint fields. Do not enumerate filled areas as pixels."
 	input_error = provider.send(current_provider,endpoint.text.strip_edges(),model.text.strip_edges(),keys.get(current_provider,""),input.text,instructions,int(tokens.value),seconds.value,png)
 
 func provider_finished(_id: int, text: String, _response: Dictionary, error: String) -> void:
@@ -339,10 +354,55 @@ func provider_finished(_id: int, text: String, _response: Dictionary, error: Str
 	if not error.is_empty(): input_error = error; return
 	provider.log_event("message",text)
 	var operations: Variant = Provider.operations(text)
+	if request_local and operations is Array:
+		var fitted := local_operations(operations)
+		provider.log_event("local_geometry",{"accepted":fitted.size(),"returned":operations.size(),"origin":str(request_area.position)})
+		if fitted.is_empty():
+			input_error = "No usable shapes in the local response. See Traffic."
+			return
+		operations = fitted
 	var answer: Dictionary = executor.submit(operations,request_area,request_guards,request_materials)
 	provider.log_event("drawing_admission",answer)
 	if answer.status=="refused": input_error = answer.reason+" · Edit prompt/JSON and retry; see Traffic."
 	else: log_draw = true
+
+func local_operations(operations: Array) -> Array:
+	var fitted: Array = []
+	var bounds := Rect2i(Vector2i.ZERO,request_area.size)
+	for raw: Variant in operations:
+		if not raw is Dictionary: continue
+		var candidates: Array = [raw]
+		if raw.get("shape") == "pixels" and not raw.has("points") and raw.has("x") and raw.has("y"):
+			raw.points = [[raw.x,raw.y]]
+		if raw.get("shape") == "line" and not raw.has("x0") and raw.get("points") is Array:
+			candidates = []
+			for i: int in range(1,raw.points.size()):
+				var a: Variant = raw.points[i-1]
+				var b: Variant = raw.points[i]
+				if a is Array and b is Array and a.size()==2 and b.size()==2:
+					candidates.append({"shape":"line","material":raw.material,"x0":a[0],"y0":a[1],"x1":b[0],"y1":b[1]})
+		for candidate: Dictionary in candidates:
+			var op := fit_local_operation(candidate,bounds)
+			if not op.is_empty(): fitted.append(op)
+	return fitted
+
+func fit_local_operation(raw: Dictionary,bounds: Rect2i) -> Dictionary:
+	var plan := ArtPlan.new()
+	if not plan.configure([raw],bounds): return {}
+	var op: Dictionary = plan.operations[0]
+	if op.material not in request_materials: return {}
+	match op.shape:
+		"pixels":
+			for pair: Array in op.points:
+				pair[0] += request_area.position.x
+				pair[1] += request_area.position.y
+		"disc":
+			op.x += request_area.position.x
+			op.y += request_area.position.y
+		_:
+			for key: String in ["x0","x1"]: op[key] += request_area.position.x
+			for key: String in ["y0","y1"]: op[key] += request_area.position.y
+	return op
 
 func refresh_traffic() -> void:
 	traffic_text.text = provider.traffic if raw_traffic.button_pressed else provider.readable
