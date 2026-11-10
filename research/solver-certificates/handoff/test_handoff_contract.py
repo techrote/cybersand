@@ -268,8 +268,10 @@ class ContractProofTests(unittest.TestCase):
                     target=Owner.BALLISTIC, amount=WHOLE_CELL,
                     next_velocity_q256=(13, -32))
         first = commit(w, i, fenced=True)
-        w.generation += 1  # simulated replacement; outside trusted model writer
-        w.signed_inertial_world_enabled = False
+        # A separately constructed World is not a trusted restoration. The
+        # original World applied policy cannot be reassigned in place.
+        w = replace(w, generation=w.generation + 1,
+                    signed_inertial_world_enabled=False)
         w.contact_samples.clear()
         identity = w.material_identity()
         replay = commit(w, i, fenced=False)
@@ -393,6 +395,71 @@ class ContractProofTests(unittest.TestCase):
                 self.assertEqual(w.water_total(),WHOLE_CELL+n)
                 self.assertEqual(len(w.records),2)
                 w.assert_invariants()
+
+    def test_applied_policy_direct_assignment_is_atomic_refusal(self):
+        # B5 falsifier: caller-supplied allow_signed_inertial must not upgrade
+        # the existing unsigned World at unchanged epoch/source revision.
+        w = world()
+        intent = prepare(w, token="unsigned-law", source_id="water-0",
+                         target=Owner.INERTIAL, amount=WHOLE_CELL,
+                         next_velocity_q256=(0, -8), allow_signed_inertial=True)
+        before = w.material_identity()
+        self.assert_refusal_unchanged(w, intent, Refusal.UNSIGNED_UPWARD)
+        with self.assertRaises(AttributeError):
+            w.signed_inertial_world_enabled = True
+        self.assertEqual(before, w.material_identity())
+        self.assert_refusal_unchanged(w, intent, Refusal.UNSIGNED_UPWARD)
+
+    def test_policy_pin_refuses_same_generation_epoch_other_world(self):
+        # A fresh, synthetic dataclass reconstruction is not native restore.
+        # Even if generation/epoch/source fields match, the old prepared
+        # intent must not be consumable under a different applied model law.
+        unsigned = world()
+        old = prepare(unsigned, token="policy-aba", source_id="water-0",
+                      target=Owner.INERTIAL, amount=WHOLE_CELL,
+                      next_velocity_q256=(0, -8), allow_signed_inertial=True)
+        other = replace(unsigned, signed_inertial_world_enabled=True)
+        self.assertEqual((other.generation, other.epoch),
+                         (unsigned.generation, unsigned.epoch))
+        self.assert_refusal_unchanged(other, old, Refusal.POLICY_DRIFT)
+        self.assertEqual(other.records["water-0"].owner, Owner.FREE_MASS)
+        fresh = prepare(other, token="new-policy", source_id="water-0",
+                        target=Owner.INERTIAL, amount=WHOLE_CELL,
+                        next_velocity_q256=(0, -8), allow_signed_inertial=True)
+        self.assertEqual(commit(other, fresh, fenced=True).status, ReceiptStatus.COMMITTED)
+        other.assert_invariants()
+
+    def test_policy_pin_is_part_of_token_fingerprint(self):
+        signed = world(signed_inertial=True)
+        intent = prepare(signed, token="signed-live", source_id="water-0",
+                         target=Owner.INERTIAL, amount=WHOLE_CELL,
+                         next_velocity_q256=(0, -8), allow_signed_inertial=True)
+        first = commit(signed, intent, fenced=True)
+        self.assertEqual(first.status, ReceiptStatus.COMMITTED)
+        before = signed.material_identity()
+        self.assertEqual(commit(signed, intent, fenced=False).status,
+                         ReceiptStatus.HISTORICAL_ACK_ONLY)
+        self.assertEqual(before, signed.material_identity())
+        self.assert_refusal_unchanged(signed,
+                                      replace(intent, applied_signed_policy=False),
+                                      Refusal.TOKEN_REUSE)
+
+    def test_raw_internal_policy_rewrite_is_not_native_authentication(self):
+        # Deliberate retained NEGATIVE: a hostile direct dictionary write can
+        # still spoof World provenance. The old prepared token is now pinned,
+        # but a newly forged prepare under a hostile World may pass. This model
+        # cannot replace a native applied-policy receipt or exclusive writer.
+        w = world()
+        old = prepare(w, token="prior-law", source_id="water-0",
+                      target=Owner.INERTIAL, amount=WHOLE_CELL,
+                      next_velocity_q256=(0, -8), allow_signed_inertial=True)
+        w.__dict__["signed_inertial_world_enabled"] = True  # OUT OF CONTRACT
+        self.assert_refusal_unchanged(w, old, Refusal.POLICY_DRIFT)
+        forged = prepare(w, token="forged-new-law", source_id="water-0",
+                         target=Owner.INERTIAL, amount=WHOLE_CELL,
+                         next_velocity_q256=(0, -8), allow_signed_inertial=True)
+        self.assertEqual(commit(w, forged, fenced=True).status,
+                         ReceiptStatus.COMMITTED)  # NEGATIVE control, not approval
 
     def test_cost_model_is_not_runtime_benchmark(self):
         self.assertEqual(bound_cost_model(200,3000,14),{
