@@ -105,3 +105,20 @@ Exact-source model qualification remains a distinct blocker: run the full 22 tes
 **Cost envelope:** preparing the source value snapshot copies 7 fixed fields including two integer velocity components; admission adds one fixed-size tuple equality and token fingerprints include that tuple. Bounded model complexity O(1) per attempted transfer *for this guard*, before dictionaries and the existing model's O(N) Water total, momentum and candidate validation. No native microseconds, allocations, 1/4 real-worker parity, or speed claim are established. Never attach this Python checker to a per-cell hot path.
 
 **Requested independent tests:** B4 execute the published B3 suite and attempt same-revision velocity/sidecar substitution plus native receiver pin/provenance forgery. B2 require monotone invalidation on every World/material/actor mutation and UNKNOWN=>RECOMPUTE, missing authoritative barrier=>BLOCKED. B5 independently source-verify the accepted payload and applied-policy boundary before recommending any opt-in consumer. Keep Draft/HOLD.
+
+
+## 2026-11-10 B3-RESEARCH-4 — signed-IN seed and restored-state policy validation
+
+Independent B4 discovered that the previous model could **start** with a negative
+vertical IN velocity even when its construction-bound signed policy was false,
+although a new transfer with that velocity was refused. The model now enforces
+the same signed-IN seed predicate at `World.start` and in explicitly invoked
+`World.assert_invariants`. This closes a model-level admission gap under trusted
+construction/transition premises; it does not prove native restore correctness.
+
+Full exact-source identities, induction argument, preregistered falsifier,
+independent checker, bounded cost and remaining limitations are in
+[SEED-IN-POLICY-20261110.md](SEED-IN-POLICY-20261110.md).
+The standalone signed-policy checker executed 38 independent predicate controls,
+but the exact B3 model and expanded suite **have not been executed** at this
+head. Model-only Draft/HOLD remains in force; B4/B5 independent review required.
