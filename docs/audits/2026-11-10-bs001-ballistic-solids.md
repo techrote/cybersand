@@ -69,9 +69,19 @@ Frame: [launcher arc knocking over the barrel stack](../images/in-tools-361/soli
   cell within radius 2 and retried indefinitely (≈ 55 700 deferrals, 10 solids).
   It now climbs through powders and liquids to the first free cell.
 
+## Runtime publication — 2026-11-10
+
+[Publisher run 42901114315](https://github.com/techrote/cybersand/actions/runs/42901114315)
+built source `e890d50d` on GitHub-hosted runners: native BS-001 and BW-001 groups
+passed, then the Linux and Windows libraries were built from exact source and
+solids-lab, liquid-lab, reservoir-lab and the workbench canvas passed on actual
+Linux and Windows. The bot fast-forwarded the branch with `b0ac29e9`:
+Windows sha256 `0a9c14d790910308f37f1d16b648d612a52a5020f29a500c71326a007afe4f7c`,
+Linux sha256 `8080fb48eb52c85ceb3e6f48f3653691ce53a28d1a562354bc643c82d00b89e7`.
+`check_repository` then passed, and the native suite under ASan/UBSan passed
+199/199 on the final source.
+
 ## Gaps
 
-- Runtime publication and Linux Godot execution of this source are pending the
-  publisher run; hosted Native/GDExtension gates run only once the PR is Ready.
-- Sanitizer rerun on the final source is pending.
+- Hosted Ready-PR Native/GDExtension gates run only once the PR is Ready.
 - Human feel acceptance is open.
