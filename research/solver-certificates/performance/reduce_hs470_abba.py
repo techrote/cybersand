@@ -8,6 +8,7 @@ No third-party packages. python reduce_hs470_abba.py hs470_abba_profiles.json
 import argparse
 import json
 import math
+import hashlib
 from pathlib import Path
 
 CANVASES = ("my-canvas", "bench-canvas", "stress-canvas")
@@ -22,6 +23,14 @@ BINARY = {
 }
 METRICS = ("simulation", "hard_surface_packet_executed", "render_exchange_executed",
            "publication_build", "snapshot_copy_total")
+# Derived from the parsed, byte-verified historical Git blob 40e0813ed6b80bef6feb8d721c196e43ea8d0517.
+# This is content equality, NOT a signature or independent source authentication.
+PUBLISHED_CANONICAL_SHA256 = "34ed75b43b02058d52ce3fd68684a43d5afc241b3b8840a8696cb29d82caa4e2"
+
+
+def canonical_digest(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"),
+                                     ensure_ascii=True, allow_nan=False).encode()).hexdigest()
 
 
 class EvidenceError(ValueError):
@@ -81,8 +90,14 @@ def checked_producer_order_statistics(stats, location):
 
 
 def reduce(dataset):
+    require(type(dataset) is dict, "dataset must be a JSON object")
+    input_digest = canonical_digest(dataset)
+    source_matched = input_digest == PUBLISHED_CANONICAL_SHA256
     require(dataset.get("schema") == "b4-hs470-verbatim-profiles-v1", "wrong schema")
     provenance = dataset.get("provenance", {})
+    require(type(provenance) is dict, "invalid provenance")
+    require(type(provenance.get("run_id")) is int and type(provenance.get("job_id")) is int,
+            "run/job IDs must be integers")
     require(provenance.get("run_id") == 42302283599 and provenance.get("job_id") == 128182806453,
             "unrecognized published run/job")
     observations = dataset.get("records")
@@ -94,6 +109,8 @@ def reduce(dataset):
         arm = ARM_ORDER[i // 3]
         canvas = CANVASES[i % 3]
         where = f"record {i} ({arm}/{canvas})"
+        require(type(item) is dict, f"{where}: expected object")
+        require(type(item.get("run_index")) is int, f"{where}: run_index must be integer")
         require(item.get("arm") == arm and item.get("run_index") == i // 3 + 1,
                 f"{where}: ABBA arm/ordering mismatch")
         p = item.get("profile", {})
@@ -101,12 +118,20 @@ def reduce(dataset):
         require(p.get("schema") == "cybersand-hard-surface-profile-v1",
                 f"{where}: producer schema mismatch")
         require(p.get("source_sha") == SOURCE[arm], f"{where}: source mismatch")
+        require(type(p.get("requested_sample_ticks")) is int and type(p.get("warmup_ticks")) is int,
+                f"{where}: acquisition tick counts must be integers")
         require(p.get("requested_sample_ticks") == 180 and p.get("warmup_ticks") == 30,
                 f"{where}: acquisition window mismatch")
         runtime = p.get("runtime", {})
+        require(type(runtime) is dict, f"{where}: invalid runtime")
         require(runtime.get("native_sha256") == BINARY[arm], f"{where}: binary mismatch")
+        window = runtime.get("window")
+        require(type(runtime.get("logical_cpus")) is int and
+                type(window) is list and len(window) == 2 and
+                all(type(v) is int and v > 0 for v in window),
+                f"{where}: malformed host CPU/window grammar")
         host = (runtime.get("os"), runtime.get("godot"), runtime.get("processor"),
-                runtime.get("logical_cpus"), tuple(runtime.get("window", [])))
+                runtime.get("logical_cpus"), tuple(window))
         require(host[0] == "Linux" and host[3] == 4 and host[1], f"{where}: unexpected host")
         hosts.add(host)
         for metric in METRICS:
@@ -128,6 +153,8 @@ def reduce(dataset):
     require(len(hosts) == 1, "host/environment mismatch across arms")
 
     out = {"source": provenance,
+           "historical_input_integrity": "MATCHED_PUBLISHED_FIXTURE" if source_matched else "UNVERIFIED_MODIFIED_INPUT",
+           "canonical_input_sha256": input_digest,
            "scope": "independent reduction of existing hosted profiles; no new native run",
            "host": list(hosts)[0],
            "physical_parity": "NOT_OBSERVED_IN_THIS_PROFILE",
@@ -160,10 +187,25 @@ def reduce(dataset):
                           "simulation_p95_control_ms": ctrl["simulation"]["p95_ms"],
                           "simulation_p95_candidate_ms": cand["simulation"]["p95_ms"]})
         out["canvases"][canvas] = {"gate": gate, "reason": reason, "pairs": pairs}
-    out["decision"] = (
-        "GO for published #470 bench-canvas packet-stage reduction only; "
-        "HOLD on whole-tick/FPS attribution and B2/B3 new-performance claims; "
-        "stress packet count too small and my-canvas has zero packet samples")
+    bench = out["canvases"]["bench-canvas"]
+    packet_stage_win = (bench["gate"] == "STAGE_ONLY" and
+                        all(pair["packet_p50_reduction_pct"] is not None and
+                            pair["packet_p50_reduction_pct"] > 0 and
+                            pair["candidate_packet_p95_ms"] < pair["control_packet_p95_ms"]
+                            for pair in bench["pairs"]))
+    if source_matched and packet_stage_win:
+        out["decision"] = (
+            "GO for published #470 bench-canvas packet-stage reduction only; "
+            "HOLD on whole-tick/FPS attribution and B2/B3 new-performance claims; "
+            "stress packet count too small and my-canvas has zero packet samples")
+    elif not source_matched:
+        out["decision"] = (
+            "HOLD: input differs from immutable published #470 fixture; "
+            "no historical packet-stage GO or whole-tick inference permitted")
+    else:
+        out["decision"] = (
+            "NO-GO: both A/B/B/A packet p50 and p95 comparisons must improve for "
+            "a packet-stage win; no whole-tick inference permitted")
     return out
 
 

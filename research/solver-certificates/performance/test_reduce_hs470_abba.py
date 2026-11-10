@@ -27,6 +27,50 @@ class ABBAEvidenceTests(unittest.TestCase):
         self.assertGreater(r["canvases"]["bench-canvas"]["pairs"][0]["packet_p50_reduction_pct"], 94)
         self.assertEqual(r["physical_parity"], "NOT_OBSERVED_IN_THIS_PROFILE")
 
+    def test_historical_source_integrity_admission(self):
+        authentic = reduce(self.fixture)
+        self.assertEqual(authentic["historical_input_integrity"], "MATCHED_PUBLISHED_FIXTURE")
+        self.assertIn("GO for published #470 bench-canvas packet-stage", authentic["decision"])
+        self.assertTrue(all(pair["packet_p50_reduction_pct"] > 0
+                            for pair in authentic["canvases"]["bench-canvas"]["pairs"]))
+
+    def test_false_go_regressing_candidate_packet_stage_is_not_admitted(self):
+        # Original consumer used a constant GO string even for two ABBA regressions.
+        # These are feasible constant-valued candidate summaries, not historical evidence.
+        altered = self.mutated()
+        for record in altered["records"]:
+            if record["arm"] == "candidate" and record["profile"]["canvas"] == "bench-canvas":
+                for field in ("p50_ms", "p95_ms", "mean_ms", "max_ms"):
+                    record["profile"]["hard_surface_packet_executed"][field] = 0.65
+        outcome = reduce(altered)
+        self.assertEqual(outcome["historical_input_integrity"], "UNVERIFIED_MODIFIED_INPUT")
+        self.assertTrue(all(pair["packet_p50_reduction_pct"] < 0
+                            for pair in outcome["canvases"]["bench-canvas"]["pairs"]))
+        self.assertNotIn("GO for published", outcome["decision"])
+        self.assertIn("HOLD:", outcome["decision"])
+
+    def test_improved_but_modified_data_does_not_inherit_published_go(self):
+        altered = self.mutated()
+        for record in altered["records"]:
+            if record["arm"] == "candidate" and record["profile"]["canvas"] == "bench-canvas":
+                for field in ("p50_ms", "p95_ms", "mean_ms", "max_ms"):
+                    record["profile"]["hard_surface_packet_executed"][field] = 0.01
+        outcome = reduce(altered)
+        self.assertTrue(all(pair["packet_p50_reduction_pct"] > 0
+                            for pair in outcome["canvases"]["bench-canvas"]["pairs"]))
+        self.assertIn("HOLD:", outcome["decision"])
+
+    def test_bool_run_index_and_string_window_are_refused(self):
+        altered = self.mutated()
+        altered["records"][0]["run_index"] = True
+        with self.assertRaisesRegex(EvidenceError, "run_index must be integer"):
+            reduce(altered)
+        altered = self.mutated()
+        for record in altered["records"]:
+            record["profile"]["runtime"]["window"] = ["1920", "1080"]
+        with self.assertRaisesRegex(EvidenceError, "host CPU/window grammar"):
+            reduce(altered)
+
     def test_wrong_source_rejected(self):
         d = self.mutated(); d["records"][4]["profile"]["source_sha"] = "0" * 40
         with self.assertRaisesRegex(EvidenceError, "source mismatch"): reduce(d)
