@@ -11,7 +11,7 @@ from json import dumps
 from typing import Optional
 
 BASELINE = "d4b18e7f06839b35c8f6a66195206da0f33c5fa3"
-MODEL_VERSION = "B3-RESEARCH-2"
+MODEL_VERSION = "B3-RESEARCH-3"
 WHOLE_CELL = 256
 MAX_TX = 4096
 
@@ -39,6 +39,7 @@ class Refusal(str, Enum):
     FRACTIONAL_CELL = "FRACTIONAL_CELL"
     UNSIGNED_UPWARD = "UNSIGNED_UPWARD"
     SOURCE_ABSENT = "SOURCE_ABSENT"
+    SOURCE_DRIFT = "SOURCE_DRIFT"
     EXPIRED = "EXPIRED"
     BAD_SAMPLE = "BAD_SAMPLE"
 
@@ -72,6 +73,16 @@ class Record:
         return bool(self.identity) and self.amount > 0 and self.revision >= 0 and self.overfill >= 0 and len(self.velocity_q256) == 2
 
 
+def source_signature(r: Record) -> tuple:
+    """Bounded *value* snapshot, not a physical hash or authenticated producer pin.
+
+    The q256 pair is copied so a mutable nested caller-provided velocity cannot
+    silently change an already prepared intent's source witness.
+    """
+    return (r.identity, r.owner.value, r.amount, r.revision, r.overfill,
+            tuple(r.velocity_q256), r.body_id)
+
+
 @dataclass(frozen=True)
 class Intent:
     token: str
@@ -80,6 +91,7 @@ class Intent:
     expected_revision: int
     expected_owner: Owner
     expected_amount: int
+    expected_source_snapshot: tuple
     source_id: str
     target: Owner
     amount: int
@@ -92,7 +104,7 @@ class Intent:
 
     def fingerprint(self) -> tuple:
         return (self.token, self.generation, self.epoch, self.expected_revision, self.expected_owner.value, self.expected_amount,
-                self.source_id, self.target.value, self.amount, self.next_velocity_q256,
+                self.expected_source_snapshot, self.source_id, self.target.value, self.amount, self.next_velocity_q256,
                 self.max_age_epochs, self.contact_sample, self.contact_body_id, self.allow_signed_inertial,
                 self.audit_tag)
 
@@ -193,7 +205,7 @@ def prepare(w: World, *, token: str, source_id: str, target: Owner,
     if source_id not in w.records:
         raise KeyError(source_id)
     r = w.records[source_id]
-    return Intent(token, w.generation, w.epoch, r.revision, r.owner, r.amount, source_id, target,
+    return Intent(token, w.generation, w.epoch, r.revision, r.owner, r.amount, source_signature(r), source_id, target,
                   amount, next_velocity_q256, max_age_epochs, contact_sample,
                   contact_body_id, allow_signed_inertial, audit_tag)
 
@@ -231,6 +243,8 @@ def commit(w: World, intent: Intent, *, fenced: bool, now_epoch: int | None = No
     if (src.revision != intent.expected_revision or src.owner != intent.expected_owner
             or src.amount != intent.expected_amount):
         return refused(Refusal.STALE_REVISION)
+    if source_signature(src) != intent.expected_source_snapshot:
+        return refused(Refusal.SOURCE_DRIFT)
     if (intent.contact_sample is None) != (intent.contact_body_id is None):
         return refused(Refusal.BAD_SAMPLE)
     if (intent.contact_sample is not None and (w.epoch, intent.contact_body_id,
