@@ -93,6 +93,57 @@ class ContractProofTests(unittest.TestCase):
             Refusal.TOKEN_REUSE)
         self.assertEqual(w.material_identity(), old)
 
+    def test_seed_caller_alias_is_owned_before_policy_admission(self):
+        # B4's B3-RESEARCH-4 counterexample: a mutable nested seed list used
+        # to change unsigned IN vy without any epoch or revision transition.
+        # Distinct source owners and both policy modes form 24 bounded cases.
+        for owner in (Owner.FREE_MASS, Owner.PRESSURE,
+                      Owner.INERTIAL, Owner.BALLISTIC):
+            for enabled in (False, True):
+                for vy in (-8, 0, 7):
+                    with self.subTest(owner=owner, enabled=enabled, vy=vy):
+                        externally_owned = [11, vy]
+                        seed = Record("water", owner, WHOLE_CELL,
+                                      velocity_q256=externally_owned)
+                        if owner == Owner.INERTIAL and vy < 0 and not enabled:
+                            with self.assertRaises(ValueError):
+                                World.start(3, [seed], signed_inertial_world_enabled=enabled)
+                            continue
+                        w = World.start(3, [seed], signed_inertial_world_enabled=enabled)
+                        self.assertEqual(w.records["water"].velocity_q256, (11, vy))
+                        self.assertIs(type(w.records["water"].velocity_q256), tuple)
+                        self.assertIsNot(w.records["water"], seed)
+                        target = Owner.FREE_MASS if owner == Owner.BALLISTIC else Owner.BALLISTIC
+                        prepared = prepare(w, token="seed-alias", source_id="water",
+                                           target=target, amount=WHOLE_CELL)
+                        identity = w.material_identity()
+                        externally_owned[0] = 999
+                        externally_owned[1] = -4096
+                        self.assertEqual(w.records["water"].velocity_q256, (11, vy))
+                        self.assertEqual(w.material_identity(), identity)
+                        self.assertEqual((w.epoch, w.records["water"].revision), (0, 0))
+                        w.assert_invariants()
+                        self.assertEqual(commit(w, prepared, fenced=True).status,
+                                         ReceiptStatus.COMMITTED)
+                        self.assertEqual(w.water_total(), WHOLE_CELL)
+
+        # Neither bool, float nor any mutable malformed inner value is a
+        # valid numerical record. This is model grammar, not native q16 range.
+        for velocity in ([0, True], (True, 0), [0, "2"], [0, 1.5],
+                         [0], [0, 0, 0], None):
+            with self.subTest(malformed=velocity):
+                with self.assertRaises(ValueError):
+                    World.start(3, [Record("water", Owner.FREE_MASS,
+                                           WHOLE_CELL, velocity_q256=velocity)])
+
+        # A forged direct dataclass restoration must not be confused with
+        # World.start's owned, validated constructor.
+        unauthenticated = World(3, 0, {
+            "water": Record("water", Owner.INERTIAL, WHOLE_CELL,
+                            velocity_q256=[0, 0])}, WHOLE_CELL)
+        with self.assertRaises(AssertionError):
+            unauthenticated.assert_invariants()
+
     def test_seed_signed_inertial_policy_exact_controls(self):
         # B4 source-critical falsifier: an initial negative-vy IN record
         # must not bypass the same World-bound signed law that commit checks.
