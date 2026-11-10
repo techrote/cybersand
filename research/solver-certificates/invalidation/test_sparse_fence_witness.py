@@ -125,6 +125,9 @@ class WitnessTests(unittest.TestCase):
         self.assertFalse(bad.called)
         with self.assertRaises(ValueError):
             Packet.make(1 << 100, 0, 0, ())
+        with self.assertRaises(ValueError):
+            Fence(Sparse(initial("quiet")), 1).accept(
+                Packet(1 << 100, 0, 0, (), "0" * 64))
         for events in (
             [["unknown"]] * 25,
             [["body", [[0, 0]] * 33]],
