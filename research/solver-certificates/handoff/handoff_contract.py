@@ -11,7 +11,7 @@ from json import dumps
 from typing import Optional
 
 BASELINE = "d4b18e7f06839b35c8f6a66195206da0f33c5fa3"
-MODEL_VERSION = "B3-RESEARCH-5"
+MODEL_VERSION = "B3-RESEARCH-6"
 WHOLE_CELL = 256
 MAX_TX = 4096
 
@@ -40,6 +40,7 @@ class Refusal(str, Enum):
     UNSIGNED_UPWARD = "UNSIGNED_UPWARD"
     SOURCE_ABSENT = "SOURCE_ABSENT"
     SOURCE_DRIFT = "SOURCE_DRIFT"
+    POLICY_DRIFT = "POLICY_DRIFT"
     EXPIRED = "EXPIRED"
     BAD_SAMPLE = "BAD_SAMPLE"
 
@@ -127,12 +128,14 @@ class Intent:
     contact_body_id: int | None = None
     allow_signed_inertial: bool = False
     audit_tag: str = ""
+    # Policy of the World at prepare. A value pin, NOT native applied-policy provenance.
+    applied_signed_policy: bool = False
 
     def fingerprint(self) -> tuple:
         return (self.token, self.generation, self.epoch, self.expected_revision, self.expected_owner.value, self.expected_amount,
                 self.expected_source_snapshot, self.source_id, self.target.value, self.amount, self.next_velocity_q256,
                 self.max_age_epochs, self.contact_sample, self.contact_body_id, self.allow_signed_inertial,
-                self.audit_tag)
+                self.audit_tag, self.applied_signed_policy)
 
 
 @dataclass(frozen=True)
@@ -165,6 +168,14 @@ class World:
     contact_observations: list[tuple[int, int, int, str, str]] = field(default_factory=list)
     # Research-only immutable-at-World-construction option. NOT native source authentication.
     signed_inertial_world_enabled: bool = False
+
+    def __setattr__(self, name: str, value: object) -> None:
+        # For ordinary model clients, applied policy is a World-construction option.
+        # Direct __dict__/object.__setattr__ rewriting and invented World instances
+        # remain explicitly UNTRUSTED; no native applied-policy receipt is proved.
+        if name == "signed_inertial_world_enabled" and name in self.__dict__:
+            raise AttributeError("World applied signed-IN policy is construction-bound")
+        object.__setattr__(self, name, value)
 
     @classmethod
     def start(cls, generation: int, records: list[Record], *,
@@ -247,7 +258,8 @@ def prepare(w: World, *, token: str, source_id: str, target: Owner,
     r = w.records[source_id]
     return Intent(token, w.generation, w.epoch, r.revision, r.owner, r.amount, source_signature(r), source_id, target,
                   amount, next_velocity_q256, max_age_epochs, contact_sample,
-                  contact_body_id, allow_signed_inertial, audit_tag)
+                  contact_body_id, allow_signed_inertial, audit_tag,
+                  w.signed_inertial_world_enabled)
 
 
 def commit(w: World, intent: Intent, *, fenced: bool, now_epoch: int | None = None) -> Receipt:
@@ -277,6 +289,12 @@ def commit(w: World, intent: Intent, *, fenced: bool, now_epoch: int | None = No
         return refused(Refusal.EXPIRED)
     if now != w.epoch or intent.epoch != w.epoch:
         return refused(Refusal.STALE_EPOCH)
+    # A same-incarnation World reconstruction with a different applied policy
+    # must not consume a token prepared against another law. This remains a
+    # model value pin, not an authenticated native World/source-hash witness.
+    if (type(intent.applied_signed_policy) is not bool or
+            intent.applied_signed_policy != w.signed_inertial_world_enabled):
+        return refused(Refusal.POLICY_DRIFT)
     src = w.records.get(intent.source_id)
     if src is None:
         return refused(Refusal.SOURCE_ABSENT)
