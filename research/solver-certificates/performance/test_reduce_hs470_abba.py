@@ -60,5 +60,51 @@ class ABBAEvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(EvidenceError, "acquisition window mismatch"): reduce(d)
 
 
+    def test_original_12_profiles_obey_producer_sample_invariants(self):
+        for item in self.fixture["records"]:
+            p = item["profile"]
+            n = p["observed_snapshots"]
+            for metric in ("simulation", "snapshot_copy_total", "publication_build"):
+                self.assertEqual(p[metric]["samples"], n)
+            for metric in ("hard_surface_packet_executed", "render_exchange_executed"):
+                self.assertLessEqual(p[metric]["samples"], n)
+            for metric in ("simulation", "snapshot_copy_total", "publication_build",
+                           "hard_surface_packet_executed", "render_exchange_executed"):
+                self.assertLessEqual(p[metric]["mean_ms"], p[metric]["max_ms"] + 1e-9)
+
+    def test_forged_stress_packet_exposure_cannot_promote_gate(self):
+        d = self.mutated()
+        # Exact upstream producer appends at most one packet timing per snapshot.
+        # A mutator could previously inflate low-count stress arms >100 and
+        # turn HOLD_LOW_SAMPLE into STAGE_ONLY without touching source/host IDs.
+        for idx in (2, 5, 8, 11):
+            p = d["records"][idx]["profile"]
+            p["hard_surface_packet_executed"]["samples"] = p["observed_snapshots"] + 1
+        with self.assertRaisesRegex(EvidenceError, "event count exceeds snapshots"):
+            reduce(d)
+
+    def test_impossible_mean_above_maximum_refused(self):
+        d = self.mutated()
+        s = d["records"][1]["profile"]["hard_surface_packet_executed"]
+        s["mean_ms"] = s["max_ms"] + 1.0
+        with self.assertRaisesRegex(EvidenceError, "mean exceeds maximum"):
+            reduce(d)
+
+    def test_whole_snapshot_cardinality_refusals(self):
+        for metric in ("simulation", "snapshot_copy_total", "publication_build"):
+            with self.subTest(metric=metric):
+                d = self.mutated()
+                d["records"][1]["profile"][metric]["samples"] -= 1
+                with self.assertRaisesRegex(EvidenceError, "whole-snapshot sample mismatch"):
+                    reduce(d)
+
+    def test_executed_render_exposure_refusal(self):
+        d = self.mutated()
+        p = d["records"][3]["profile"]
+        p["render_exchange_executed"]["samples"] = p["observed_snapshots"] + 1
+        with self.assertRaisesRegex(EvidenceError, "event count exceeds snapshots"):
+            reduce(d)
+
+
 if __name__ == "__main__":
     unittest.main()
