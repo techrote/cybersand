@@ -106,5 +106,49 @@ class ABBAEvidenceTests(unittest.TestCase):
             reduce(d)
 
 
+    def test_orderstat_original_all_five_metrics_twelve_profiles(self):
+        # Source-derived necessary order-statistic constraints must preserve
+        # all 60 real summaries; do not rewrite the historical capture.
+        from reduce_hs470_abba import checked_producer_order_statistics
+        for idx, item in enumerate(self.fixture["records"]):
+            for metric in ("simulation", "hard_surface_packet_executed",
+                           "render_exchange_executed", "publication_build",
+                           "snapshot_copy_total"):
+                with self.subTest(record=idx, metric=metric):
+                    checked_producer_order_statistics(item["profile"][metric],
+                                                      f"original[{idx}].{metric}")
+        self.assertEqual(reduce(self.fixture)["canvases"]["stress-canvas"]["gate"],
+                         "HOLD_LOW_SAMPLE")
+
+    def test_single_sample_split_quantiles_refused(self):
+        d = self.mutated()
+        s = d["records"][5]["profile"]["hard_surface_packet_executed"]
+        self.assertEqual(s["samples"], 1)
+        s["p50_ms"], s["p95_ms"] = 0.010, 0.020
+        # Old checks see nonnegative ordered p50/p95 <= max and mean <= max.
+        with self.assertRaisesRegex(EvidenceError, "coincident producer quantiles"):
+            reduce(d)
+
+    def test_four_sample_infeasible_mean_refused(self):
+        d = self.mutated()
+        s = d["records"][2]["profile"]["hard_surface_packet_executed"]
+        self.assertEqual(s["samples"], 4)
+        self.assertEqual(s["p50_ms"], 1.598)
+        self.assertEqual(s["p95_ms"], s["max_ms"])
+        s["mean_ms"] = 1.620
+        # With rank indexes 2 and 3, mean <= (3*p50 + max)/4 = 1.60525.
+        with self.assertRaisesRegex(EvidenceError, "infeasible producer mean"):
+            reduce(d)
+
+    def test_small_sample_p95_must_be_maximum(self):
+        d = self.mutated()
+        s = d["records"][8]["profile"]["hard_surface_packet_executed"]
+        self.assertEqual(s["samples"], 4)
+        s["p95_ms"] = 0.160
+        # This lies between p50=.159 and max=.165, so old checks accepted.
+        with self.assertRaisesRegex(EvidenceError, "producer p95 must equal maximum"):
+            reduce(d)
+
+
 if __name__ == "__main__":
     unittest.main()
