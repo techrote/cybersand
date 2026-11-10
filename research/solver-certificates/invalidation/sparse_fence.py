@@ -152,6 +152,12 @@ class Sparse:
     Only safe for pure synchronous bounded-read stages with all writes witnessed.
     """
     def __init__(self, state: State, tile_size: int = 4, diagnostic: bool = False):
+        # A fixed-point certificate is meaningful only if the tile roster
+        # covers every source cell. Nonpositive sizes can silently produce a
+        # zero-tile roster, causing a false whole-World skip. Exact built-in
+        # integers exclude booleans and user-defined arithmetic hooks.
+        if type(tile_size) is not int or tile_size <= 0:
+            raise ValueError("noncanonical positive tile size: REFUSE")
         self.state = state.copy()
         self.tile_size = tile_size
         self.diagnostic = diagnostic
