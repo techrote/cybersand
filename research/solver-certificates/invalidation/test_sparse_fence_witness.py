@@ -123,12 +123,16 @@ class WitnessTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             Packet.make(0, 0, 0, bad)
         self.assertFalse(bad.called)
+        with self.assertRaises(ValueError):
+            Packet.make(1 << 100, 0, 0, ())
         for events in (
             [["unknown"]] * 25,
             [["body", [[0, 0]] * 33]],
             [["body", [[True, 0]]]],
             [["pressure", True]],
             [["set", 1, 1, object()]],
+            [["set", 1, 1, 1 << 100]],  # reject before huge-int JSON encoding
+            [["body", [[1 << 100, 0]]]],
             [["unexpected"]],
         ):
             with self.subTest(events=str(events)[:50]):
