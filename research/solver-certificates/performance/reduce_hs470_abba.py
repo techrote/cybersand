@@ -45,6 +45,8 @@ def checked_stats(stats, location):
                 f"{location}: nonzero timing without samples")
     require(stats["p50_ms"] <= stats["p95_ms"] <= stats["max_ms"] + 1e-9,
             f"{location}: impossible percentile order")
+    require(stats["mean_ms"] <= stats["max_ms"] + 1e-9,
+            f"{location}: mean exceeds maximum")
 
 
 def reduce(dataset):
@@ -78,8 +80,19 @@ def reduce(dataset):
         hosts.add(host)
         for metric in METRICS:
             checked_stats(p.get(metric), f"{where}.{metric}")
-        require(p.get("observed_snapshots", 0) >= p["simulation"]["samples"] - 1,
-                f"{where}: inconsistent snapshot count")
+        # Producer hard_surface_packet_profile.gd appends exactly one value to
+        # each whole-snapshot metric per observed snapshot. Its positive-only
+        # executed-event stages are subsets, never more than one per snapshot.
+        # These are provenance/feasibility guards, not performance thresholds.
+        observed = p.get("observed_snapshots")
+        require(type(observed) is int and 1 <= observed <= 100000,
+                f"{where}: invalid observed snapshot count")
+        for metric in ("simulation", "snapshot_copy_total", "publication_build"):
+            require(p[metric]["samples"] == observed,
+                    f"{where}.{metric}: whole-snapshot sample mismatch")
+        for metric in ("render_exchange_executed", "hard_surface_packet_executed"):
+            require(p[metric]["samples"] <= observed,
+                    f"{where}.{metric}: executed event count exceeds snapshots")
         by[(i // 3, canvas)] = p
     require(len(hosts) == 1, "host/environment mismatch across arms")
 
