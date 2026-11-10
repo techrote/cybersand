@@ -304,7 +304,7 @@ class Fence:
 
     def accept(self, p: Packet):
         if (not isinstance(p, Packet)
-                or any(type(v) is not int for v in (p.generation, p.tick, p.shard))
+                or any(not bounded_i64(v) for v in (p.generation, p.tick, p.shard))
                 or p.generation != self.generation or p.tick != self.engine.state.tick
                 or not (0 <= p.shard < self.workers)
                 or p.shard in self.packets):
@@ -363,7 +363,7 @@ class Fence:
         for shard in range(self.workers):
             p = self.packets.get(shard)
             if (not isinstance(p, Packet)
-                    or any(type(v) is not int for v in (p.generation, p.tick, p.shard))
+                    or any(not bounded_i64(v) for v in (p.generation, p.tick, p.shard))
                     or p.generation != self.generation or p.tick != self.engine.state.tick
                     or p.shard != shard or p.check != self.accepted_checks.get(shard)):
                 raise ValueError("accepted packet identity drift: REFUSE")
