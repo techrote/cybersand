@@ -52,6 +52,32 @@ var request_guards: Array = []
 var request_materials: Array = []
 var provider_message := "Idle"
 var log_draw := false
+var conversation: Array = []
+var context_mode := OptionButton.new()
+var turn_limit := SpinBox.new()
+var guidance := TextEdit.new()
+var remaining_turns := 0
+var sent_turns := 0
+var traffic_filter := LineEdit.new()
+var task_prompt := ""
+var run_mode := 1
+var last_image := ""
+var last_result := ""
+var request_scanline := false
+var run_epoch := 0
+var next_request_ms := 0
+var provider_wait_ms := 0
+var provider_wait_url := ""
+var request_url := ""
+var run_deadline_ms := 0
+var run_seconds := SpinBox.new()
+var waiting_until_ms := 0
+var minimum_interval := SpinBox.new()
+var stencil_guidance := TextEdit.new()
+var stencil_prompt := ""
+const STENCIL_INSTRUCTIONS := "Return a JSON array of rows. Each row is {y, repeat, scale, spans}. y is the local row index. repeat and scale default to 1. Each span is [x,length,material]. Scale multiplies x, y, length and repeat. Material 58 draws, 0 erases. Omitted spans preserve existing cells. Use local coordinates inside the stated area. Return [] when finished."
+
+
 var help := Label.new()
 
 func _ready() -> void:
@@ -82,6 +108,7 @@ func _ready() -> void:
 	actions.add_child(stop)
 	input_mode.add_item("Direct JSON")
 	input_mode.add_item("Model prompt")
+	input_mode.add_item("Scanline")
 	input_mode.select(1)
 	input_mode.item_selected.connect(change_mode)
 	actions.add_child(input_mode)
@@ -144,19 +171,25 @@ func _process(_delta: float) -> void:
 	if wb == null: return
 	executor.wb = wb
 	executor.poll()
+	if run_deadline_ms > 0 and Time.get_ticks_msec() >= run_deadline_ms:
+		if provider.active or capturing or executor.active or remaining_turns > 0: stop_all("Run time limit reached")
+		run_deadline_ms = 0
 	draw.disabled = executor.active
-	stop.disabled = not executor.active and not provider.active and not capturing
+	stop.disabled = not executor.active and not provider.active and not capturing and remaining_turns == 0
 	if provider.active and wb.host.simulation_worker.art_state().epoch != request_epoch: stop_all("Canvas changed")
-	draw.disabled = executor.active or provider.active or capturing
+	draw.disabled = executor.active or provider.active or capturing or remaining_turns > 0
 	draw.text = "Draw" if input_mode.selected==0 else "Send"
-	for row: Control in rows: row.visible = input_mode.selected==1
+	for row: Control in rows: row.visible = input_mode.selected!=0
 	key_button.text = "Key ✓" if not str(keys.get(current_provider,"")).is_empty() else "Key…"
-	help.text = "One request → direct drawing. Image sends the current canvas view; choose a vision model. Previous conversation is not sent in Stage 2." if input_mode.selected==1 else "Ordered JSON: rectangle / disc / line / pixels. Material 58 = Hard Wall; 0 = erase. Large drawings stream in native-sized chunks."
+	help.text = "One request → direct drawing. Image sends the current canvas view; choose a vision model. Turns controls how many requests Send can make." if input_mode.selected!=0 else "Ordered JSON: rectangle / disc / line / pixels. Material 58 = Hard Wall; 0 = erase. Large drawings stream in native-sized chunks."
 	if log_draw and not executor.active:
 		provider.log_event("native_result",executor.result)
 		log_draw = false
+		model_feedback(JSON.stringify(executor.result))
 	var status_text := "Idle"
 	if provider.active: status_text = "Waiting for model · Stop available"
+	elif waiting_until_ms > Time.get_ticks_msec():
+		status_text = "Waiting to send · %.1fs · Stop available" % ((waiting_until_ms-Time.get_ticks_msec())/1000.0)
 	elif capturing: status_text = "Capturing current view · Stop available"
 	elif not input_error.is_empty():
 		status_text = input_error.left(500)+(" … See Traffic for full details." if input_error.length()>500 else "")
@@ -164,7 +197,7 @@ func _process(_delta: float) -> void:
 		var r: Dictionary = executor.result
 		status_text = "%s · %d checked · %d changed · %d protected/outside skipped%s" % [str(r.status).capitalize(),r.checked,r.changed,r.excluded," · "+str(r.reason) if not str(r.reason).is_empty() else ""]
 
-	if input_mode.selected == 1 and not provider.requested_model.is_empty():
+	if input_mode.selected != 0 and not provider.requested_model.is_empty():
 		var u: Dictionary = provider.usage
 		status_text += " · In %s Out %s · Cost ?" % [str(u.get("input_tokens",u.get("prompt_tokens","?"))),str(u.get("output_tokens",u.get("completion_tokens","?")))]
 	if not provider.log_warning.is_empty(): status_text += " · "+provider.log_warning
@@ -221,6 +254,58 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	image_input.tooltip_text = "Send the rendered current canvas view; use a vision-capable model."
 	row.add_child(image_input)
 	column.add_child(row); rows.append(row)
+	row = HBoxContainer.new()
+	for label: String in ["Full","Compacted","Custom","None"]: context_mode.add_item(label)
+	context_mode.select(clampi(int(settings.get_value("session","context",1)),0,3))
+	context_mode.tooltip_text = "Conversation context for the next request. Custom currently uses Compacted."
+	row.add_child(context_mode)
+	turn_limit.prefix = "Turns"
+	turn_limit.min_value = 1
+	turn_limit.max_value = 1000
+	row.add_child(turn_limit)
+	minimum_interval.prefix = "Gap s"
+	minimum_interval.max_value = 3600
+	minimum_interval.step = 0.1
+	minimum_interval.tooltip_text = "Minimum seconds between model requests. Zero disables local pacing."
+	row.add_child(minimum_interval)
+	run_seconds.prefix = "Run s"
+	run_seconds.max_value = 86400
+	run_seconds.tooltip_text = "Maximum seconds for this run. Zero disables the limit."
+	row.add_child(run_seconds)
+	var clear := Button.new()
+	clear.text = "Clear conversation"
+	clear.pressed.connect(func() -> void:
+		stop_all("Conversation cleared")
+		conversation.clear()
+		log_draw = false
+		last_result = ""
+		last_image = ""
+		provider.log_event("conversation_cleared",{}))
+	row.add_child(clear)
+	var guidance_window := Window.new()
+	guidance_window.title = "Drawing guidance"
+	add_child(guidance_window)
+	guidance_window.hide()
+	guidance_window.close_requested.connect(guidance_window.hide)
+	guidance_window.add_child(guidance)
+	guidance.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	guidance.text = settings.get_value("session","guidance",Provider.INSTRUCTIONS)
+	var stencil_window := Window.new()
+	stencil_window.title = "Scanline guidance"
+	add_child(stencil_window)
+	stencil_window.hide()
+	stencil_window.close_requested.connect(stencil_window.hide)
+	stencil_window.add_child(stencil_guidance)
+	stencil_guidance.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	stencil_guidance.text = settings.get_value("session","scanline_guidance",STENCIL_INSTRUCTIONS)
+	var edit_guidance := Button.new()
+	edit_guidance.text = "Guidance…"
+	edit_guidance.pressed.connect(func() -> void:
+		var window := stencil_window if input_mode.selected == 2 else guidance_window
+		window.popup_centered(Vector2i(700,400)))
+	row.add_child(edit_guidance)
+	column.add_child(row)
+	rows.append(row)
 	key_field.secret = true
 	key_field.placeholder_text = "Paste API key; never saved in profiles or traffic"
 	key_field.custom_minimum_size.x = 500
@@ -245,6 +330,10 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	raw_traffic.text = "Raw JSONL"
 	raw_traffic.toggled.connect(func(_on: bool) -> void: refresh_traffic())
 	actions.add_child(raw_traffic)
+	traffic_filter.placeholder_text = "Filter traffic"
+	traffic_filter.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	traffic_filter.text_changed.connect(func(_value: String) -> void: refresh_traffic())
+	actions.add_child(traffic_filter)
 	var export_button := Button.new(); export_button.text = "Save full JSONL…"
 	var save := FileDialog.new()
 	save.file_mode = FileDialog.FILE_MODE_SAVE_FILE; save.access = FileDialog.ACCESS_FILESYSTEM
@@ -264,9 +353,18 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	box.add_child(traffic_text)
 	load_profile()
 
+var previous_mode := 1
+
 func change_mode(index: int) -> void:
-	if index==0: prompt_text = input.text; input.text = json_text
-	else: json_text = input.text; input.text = prompt_text
+	match previous_mode:
+		0: json_text = input.text
+		1: prompt_text = input.text
+		2: stencil_prompt = input.text
+	match index:
+		0: input.text = json_text
+		1: input.text = prompt_text
+		2: input.text = stencil_prompt
+	previous_mode = index
 	input_error = ""
 
 func save_profile() -> void:
@@ -277,6 +375,9 @@ func save_profile() -> void:
 	var names: Array = settings.get_value(current_provider,"history",[])
 	if not model.text.is_empty() and not names.has(model.text): names.append(model.text)
 	settings.set_value(current_provider,"history",names)
+	settings.set_value("session","context",context_mode.selected)
+	settings.set_value("session","guidance",guidance.text)
+	settings.set_value("session","scanline_guidance",stencil_guidance.text)
 	settings.save("user://art-provider.cfg")
 
 func change_provider(index: int) -> void:
@@ -298,15 +399,70 @@ func load_profile() -> void:
 	for name_text: String in settings.get_value(current_provider,"history",[]): history.add_item(name_text)
 
 func stop_all(reason: String = "Human Stop") -> void:
+	remaining_turns = 0
+	run_deadline_ms = 0
+	waiting_until_ms = 0
 	ui_epoch += 1; capturing = false
 	provider.cancel(reason)
 	executor.stop(reason)
 	provider_message = reason
 	input_error = reason
 
+func model_context() -> Array:
+	match context_mode.selected:
+		0: return conversation.duplicate()
+		3: return []
+	var recent := conversation.slice(maxi(0,conversation.size()-12))
+	if conversation.size() > recent.size():
+		recent.push_front({"role":"user","content":"Earlier turns omitted from this request; latest confirmed result: "+last_result})
+	return recent
+
+func model_feedback(feedback: String) -> void:
+	last_result = feedback
+	remember_turn("user","Canvas result (world epoch %d): %s" % [request_epoch,feedback])
+	if remaining_turns > 0:
+		send_next.call_deferred(ui_epoch)
+
+func remember_turn(role: String, content: String) -> void:
+	var entry := {"role":role,"content":provider.redact(content)}
+	conversation.append(entry)
+	provider.log_event("conversation",entry)
+
 func send_prompt() -> void:
+	if executor.active or provider.active or capturing or remaining_turns > 0: return
+	if wb.busy() or wb.applied.is_empty():
+		input_error = "Canvas is not ready."
+		return
+	sent_turns = 0
+	task_prompt = input.text
+	run_mode = input_mode.selected
+	run_epoch = wb.host.simulation_worker.art_state().epoch
+	last_image = ""
+	remaining_turns = int(turn_limit.value)
+	run_deadline_ms = Time.get_ticks_msec()+int(run_seconds.value*1000) if run_seconds.value > 0 else 0
+	send_next(ui_epoch)
+
+func send_next(expected_epoch: int) -> void:
+	if expected_epoch != ui_epoch or remaining_turns <= 0: return
+	if run_epoch != wb.host.simulation_worker.art_state().epoch:
+		stop_all("Canvas changed")
+		return
+	var due := next_request_ms
+	if endpoint.text.strip_edges() == provider_wait_url: due = maxi(due,provider_wait_ms)
+	var delay := due - Time.get_ticks_msec()
+	if delay > 0:
+		waiting_until_ms = due
+		provider.log_event("pace_wait",{"milliseconds":delay})
+		await get_tree().create_timer(delay/1000.0).timeout
+		if expected_epoch == ui_epoch:
+			waiting_until_ms = 0
+			send_next(expected_epoch)
+		return
 	if executor.active or provider.active or capturing: return
-	if wb.busy() or wb.applied.is_empty(): input_error = "Canvas is not ready."; return
+	if wb.busy() or wb.applied.is_empty():
+		remaining_turns = 0
+		input_error = "Canvas is not ready."
+		return
 	executor.wb = wb
 	input_error = ""
 	ui_epoch += 1
@@ -343,30 +499,93 @@ func send_prompt() -> void:
 		capturing = false
 	if epoch != ui_epoch or request_epoch != wb.host.simulation_worker.art_state().epoch: return
 	save_profile()
-	var instructions := Provider.INSTRUCTIONS+" Work area XYWH="+JSON.stringify([request_area.position.x,request_area.position.y,request_area.size.x,request_area.size.y])+"; allowed materials="+JSON.stringify(request_materials)+"; protected rectangles="+str(request_guards)+"."
-	request_local = current_provider == "LM Studio"
+	var instructions := guidance.text+" Work area XYWH="+JSON.stringify([request_area.position.x,request_area.position.y,request_area.size.x,request_area.size.y])+"; allowed materials="+JSON.stringify(request_materials)+"; protected rectangles="+str(request_guards)+"."
+	request_scanline = run_mode == 2
+	request_local = current_provider == "LM Studio" or request_scanline
 	if request_local:
-		instructions = Provider.INSTRUCTIONS+" Coordinates are LOCAL: top-left is (0,0), never add a world offset. XYWH="+JSON.stringify([0,0,request_area.size.x,request_area.size.y])+". Allowed materials="+JSON.stringify(request_materials)+". Use compact rectangles, discs and lines. Every rectangle and line requires all four endpoint fields. Do not enumerate filled areas as pixels."
-	input_error = provider.send(current_provider,endpoint.text.strip_edges(),model.text.strip_edges(),keys.get(current_provider,""),input.text,instructions,int(tokens.value),seconds.value,png)
+		instructions = guidance.text+" Coordinates are LOCAL: top-left is (0,0), never add a world offset. XYWH="+JSON.stringify([0,0,request_area.size.x,request_area.size.y])+". Allowed materials="+JSON.stringify(request_materials)+". Use compact rectangles, discs and lines. Every rectangle and line requires all four endpoint fields. Do not enumerate filled areas as pixels."
+	if request_scanline:
+		instructions = stencil_guidance.text+" Local area width %d, height %d. Allowed materials %s." % [request_area.size.x,request_area.size.y,str(request_materials)]
+	instructions += "\nReturn [] when the drawing is finished."
+	var context := model_context()
+	var prompt := task_prompt
+	if sent_turns > 0:
+		prompt += "\nContinue revising the current artwork. Latest confirmed result: "+last_result+"\nReturn [] when finished."
+	var image_hash := png.sha256_text()
+	if not png.is_empty() and image_hash == last_image and context_mode.selected != 3:
+		png = ""
+		prompt += "\nThe current view matches the last capture. Image bytes omitted from this request."
+	last_image = image_hash
+	next_request_ms = Time.get_ticks_msec() + int(minimum_interval.value*1000)
+	remaining_turns -= 1
+	sent_turns += 1
+	request_url = endpoint.text.strip_edges()
+	input_error = provider.send(current_provider,request_url,model.text.strip_edges(),keys.get(current_provider,""),prompt,instructions,int(tokens.value),seconds.value,png,context)
+	if input_error.is_empty(): remember_turn("user",prompt)
+	else: remaining_turns = 0
 
 func provider_finished(_id: int, text: String, _response: Dictionary, error: String) -> void:
 	if request_epoch != wb.host.simulation_worker.art_state().epoch:
 		provider.log_event("discarded","Canvas changed or Stop requested; no drawing")
 		return
-	if not error.is_empty(): input_error = error; return
+	if not error.is_empty():
+		if provider.retry_after_seconds > 0:
+			provider_wait_ms = Time.get_ticks_msec()+int(provider.retry_after_seconds*1000)
+			provider_wait_url = request_url
+			provider.log_event("provider_rate_wait",{"seconds":provider.retry_after_seconds})
+			if remaining_turns > 0:
+				send_next.call_deferred(ui_epoch)
+				return
+		input_error = error
+		remaining_turns = 0
+		remember_turn("user","Request failed: "+error)
+		return
 	provider.log_event("message",text)
+	remember_turn("assistant",text)
 	var operations: Variant = Provider.operations(text)
+	if request_scanline and operations is Array and not operations.is_empty():
+		operations = stencil_operations(operations)
+		if operations.is_empty():
+			input_error = "No usable scanline spans. Check y, repeat, scale, x, length and material."
+			model_feedback(input_error)
+			return
+	if operations is Array and operations.is_empty():
+		remaining_turns = 0
+		input_error = "Model finished."
+		return
 	if request_local and operations is Array:
 		var fitted := local_operations(operations)
 		provider.log_event("local_geometry",{"accepted":fitted.size(),"returned":operations.size(),"origin":str(request_area.position)})
 		if fitted.is_empty():
 			input_error = "No usable shapes in the local response. See Traffic."
+			model_feedback(input_error)
 			return
 		operations = fitted
 	var answer: Dictionary = executor.submit(operations,request_area,request_guards,request_materials)
 	provider.log_event("drawing_admission",answer)
-	if answer.status=="refused": input_error = answer.reason+" · Edit prompt/JSON and retry; see Traffic."
+	if answer.status=="refused":
+		input_error = answer.reason+" · See Traffic."
+		model_feedback(input_error)
 	else: log_draw = true
+
+func stencil_operations(rows_data: Array) -> Array:
+	var operations: Array = []
+	for row: Variant in rows_data:
+		if not row is Dictionary or not row.get("spans") is Array: continue
+		var y: Variant = row.get("y")
+		var repeat: Variant = row.get("repeat",1)
+		var scale: Variant = row.get("scale",1)
+		if not ArtPlan.integer(y) or not ArtPlan.integer(repeat) or not ArtPlan.integer(scale): continue
+		if y < 0 or repeat < 1 or scale < 1: continue
+		var top := int(y)*int(scale)
+		var bottom := (int(y)+int(repeat))*int(scale)-1
+		for span: Variant in row.spans:
+			if not span is Array or span.size() != 3: continue
+			if not ArtPlan.integer(span[0]) or not ArtPlan.integer(span[1]) or span[0] < 0 or span[1] < 1: continue
+			var material: Variant = span[2]
+			if material is String and material in ["0","58"]: material = int(material)
+			operations.append({"shape":"rectangle","x0":int(span[0])*int(scale),"x1":(int(span[0])+int(span[1]))*int(scale)-1,"y0":top,"y1":bottom,"material":material})
+	return operations
 
 func local_operations(operations: Array) -> Array:
 	var fitted: Array = []
@@ -407,5 +626,12 @@ func fit_local_operation(raw: Dictionary,bounds: Rect2i) -> Dictionary:
 	return op
 
 func refresh_traffic() -> void:
-	traffic_text.text = provider.traffic if raw_traffic.button_pressed else provider.readable
+	var content: String = provider.traffic if raw_traffic.button_pressed else provider.readable
+	var query := traffic_filter.text.strip_edges()
+	if not query.is_empty():
+		var matches := PackedStringArray()
+		for line: String in content.split("\n"):
+			if line.containsn(query): matches.append(line)
+		content = "\n".join(matches)
+	traffic_text.text = content
 	traffic_path.text = ProjectSettings.globalize_path(provider.log_path)+(" · "+provider.log_warning if not provider.log_warning.is_empty() else "")

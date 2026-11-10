@@ -52,6 +52,28 @@ func run() -> void:
 	panel.draw.pressed.emit()
 	await until(func(): return not art.active and main.image.get_pixel(5,5).r8 == 58,"Direct JSON Draw applies a native pixel")
 	panel.provider.requested_model = ""
+	for i: int in range(16): panel.conversation.append({"role":"user","content":"turn %d" % i})
+	panel.context_mode.select(0)
+	check(panel.model_context().size()==16,"Full supplies all text turns")
+	panel.context_mode.select(1)
+	var compacted: Array = panel.model_context()
+	check(compacted.size()==13 and compacted[0].content.contains("omitted"),"Compacted discloses omitted turns")
+	panel.context_mode.select(2)
+	check(panel.model_context()==compacted,"Custom starts with Compacted behavior")
+	panel.context_mode.select(3)
+	check(panel.model_context().is_empty() and panel.conversation.size()==16,"None omits context while retaining transcript")
+	panel.conversation.clear()
+	panel.context_mode.select(1)
+
+	panel.request_area = Rect2i(160,160,32,32)
+	panel.request_materials = [0,58]
+	var stencil: Array = panel.stencil_operations([
+		{"y":3,"repeat":2,"scale":2,"spans":[[5,3,58],[6,1,0]]}
+	])
+	art.submit(panel.local_operations(stencil),panel.request_area,[],panel.request_materials)
+	await until(func(): return not art.active and main.image.get_pixel(170,169).r8==58,"scaled scanline reaches native canvas")
+	await until(func(): return main.image.get_pixel(172,169).r8==0 and main.image.get_pixel(175,169).r8==58 and main.image.get_pixel(176,169).r8==0,"ordered erase and blank preservation")
+
 
 	art.wb = wb
 	check(main.paused,"drawing begins paused")

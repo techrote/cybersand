@@ -12,7 +12,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             assert self.headers["Authorization"] == "Bearer dummy-key-123"
         else:
             assert data["max_tokens"] in (4096,8192,16384)
-            assert len(data["messages"]) == 2
+            assert data["messages"][0]["role"] == "system"
+            assert data["messages"][-1]["role"] == "user"
         model = data["model"]
         if model == "slow": time.sleep(2)
         if model == "rate":

@@ -157,6 +157,34 @@ examples; equivalent spellings were normalized and the comparison repeated.
 No paid calls or merge/Ready
 promotion are implied by this implementation.
 
+## Collaboration, scanline and pacing preview
+
+Model prompt and Scanline keep a conversation for the mounted workbench. Turns
+limits requests per Send, including refusals and rate retries. Run s adds an
+optional elapsed-time ceiling. After native completion, the next request can
+use the actual changed count and world epoch. An empty array ends the run.
+Stop cancels pending inference, pacing and queued native work. Clear starts
+a new conversation while the durable traffic retains earlier events.
+
+Full includes all text turns. Compacted includes the latest twelve entries and
+discloses omissions. Custom initially uses the same window. None sends no
+earlier turns. Historical image bytes remain in durable traffic. Image sends the
+current rendered view and skips identical captures within a run. Guidance
+opens the editable instructions for the selected mode.
+
+Scanline takes rows with local y, optional repeat and scale, and spans in
+[x,length,material] order. Omitted spans preserve cells. An explicit zero
+material erases. The normal executor applies the resulting ordered rectangles.
+
+Gap s sets an optional request interval. HTTP 429 with numeric Retry-After
+paces subsequent requests to that endpoint. Traffic supports visible filtering
+and full disk export. Unknown cost remains unknown.
+
+The preview still needs the full issue acceptance campaign, including genuine
+image-guided revision and a local vision stencil round trip. The original
+LFM2.5 text scanline trial returned malformed JSON. Windows native tests cover
+scaled repeated rows and erasure independently of that model output.
+
 ## Offset-area repair
 
 LM Studio receives coordinates relative to the selected work area. The panel

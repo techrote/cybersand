@@ -11,18 +11,19 @@ var readable := ""
 var log_path := ""
 var log_warning := ""
 var usage: Dictionary = {}
+var retry_after_seconds := 0.0
 var requested_model := ""
 var returned_model := ""
 const INSTRUCTIONS := 'Create the user-requested subject as an original 2D pixel-art composition, filling the supplied work area. Build complex subjects from as many simple primitives as needed. Return ONLY a JSON array, no prose. Each object has shape and material. Literal shape values and required integer parameters: rectangle uses x0,y0,x1,y1 (inclusive endpoints); disc uses x,y,radius; line uses x0,y0,x1,y1; pixels uses points:[[x,y],...]. Choose your own coordinates and dimensions to depict the subject; these are field definitions, not a drawing to copy. Material 58 draws Hard Wall, material 0 erases; omitted material defaults to 58. Operations execute in order. Stay inside the supplied work area; keep every disc including its radius inside it. Existing other materials and protected regions cannot be overwritten. Do not call external tools.'
 
-static func payload(provider: String, model: String, prompt: String, instructions: String, tokens: int, png: String = "") -> Dictionary:
+static func payload(provider: String, model: String, prompt: String, instructions: String, tokens: int, png: String = "", context: Array = []) -> Dictionary:
 	if provider == "OpenAI":
 		var content: Array = [{"type":"input_text","text":prompt}]
 		if not png.is_empty(): content.append({"type":"input_image","image_url":"data:image/png;base64,"+png})
-		return {"model":model,"instructions":instructions,"input":[{"role":"user","content":content}],"max_output_tokens":tokens,"store":false}
+		return {"model":model,"instructions":instructions,"input":context + [{"role":"user","content":content}],"max_output_tokens":tokens,"store":false}
 	var content: Variant = prompt
 	if not png.is_empty(): content = [{"type":"text","text":prompt},{"type":"image_url","image_url":{"url":"data:image/png;base64,"+png}}]
-	var packet := {"model":model,"messages":[{"role":"system","content":instructions},{"role":"user","content":content}],"max_tokens":tokens,"stream":false}
+	var packet := {"model":model,"messages":[{"role":"system","content":instructions}] + context + [{"role":"user","content":content}],"max_tokens":tokens,"stream":false}
 	if provider == "NVIDIA" and model in ["nvidia/nemotron-3.5-lightning-30b-a3b","nvidia/nemotron-3.5-super-vl-120b-a12b"]:
 		packet.chat_template_kwargs = {"enable_thinking":false}
 	return packet
@@ -134,7 +135,7 @@ func cancel(reason: String = "Human Stop") -> void:
 	if active: log_event("cancelled",reason)
 	active = false
 
-func send(provider: String, endpoint: String, model: String, key: String, prompt: String, instructions: String, tokens: int, seconds: float, png: String = "") -> String:
+func send(provider: String, endpoint: String, model: String, key: String, prompt: String, instructions: String, tokens: int, seconds: float, png: String = "", context: Array = []) -> String:
 	if active: return "A model request is already active."
 	if model.strip_edges().is_empty(): return "Enter a model ID (discovery is optional)."
 	if not key.is_empty() and not secrets.has(key): secrets.append(key)
@@ -143,8 +144,9 @@ func send(provider: String, endpoint: String, model: String, key: String, prompt
 	var id := serial
 	requested_model = model
 	usage = {}; returned_model = ""
+	retry_after_seconds = 0.0
 	var url := endpoint.trim_suffix("/")+ ("/responses" if provider=="OpenAI" else "/chat/completions")
-	var body := payload(provider,model,prompt,instructions,tokens,png)
+	var body := payload(provider,model,prompt,instructions,tokens,png,context)
 	log_event("request",{"url":url,"provider":provider,"body":body})
 	request = HTTPRequest.new()
 	request.use_threads = true
@@ -157,6 +159,12 @@ func send(provider: String, endpoint: String, model: String, key: String, prompt
 		current.queue_free()
 		if id != serial: return
 		request = null; active = false
+		if code == 429:
+			for header: String in headers:
+				if header.get_slice(":",0).to_lower() == "retry-after":
+					var value := header.substr(header.find(":")+1).strip_edges()
+					if value.is_valid_float() and is_finite(value.to_float()):
+						retry_after_seconds = maxf(0.0,value.to_float())
 		var raw := bytes.get_string_from_utf8()
 		log_event("response",{"transport":result,"http":code,"headers":headers,"body":raw})
 		var parser := JSON.new()

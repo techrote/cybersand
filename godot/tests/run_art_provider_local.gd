@@ -63,6 +63,30 @@ func run() -> void:
 		await until(func(): return not panel.executor.active,"native drawing acknowledged")
 		await until(func(): return main.image.get_pixel(10,10).r8==58 and main.image.get_pixel(12,12).r8==58,"genuine model command applied to native World")
 		check(panel.executor.last_receipt.get("backend")=="CyberNativeCellWorld","real native response identity")
+	if OS.get_environment("WB_ART_COLLAB_TEST")=="1":
+		panel.turn_limit.value = 2
+		panel.context_mode.select(1)
+		panel.input.text = "Draw a rectangle from (20,20) to (23,23). If a canvas result says it was applied, revise by adding a rectangle from (25,25) to (27,27). Return only drawing JSON."
+		var before: int = panel.provider.serial
+		panel.send_prompt()
+		await until(func(): return not panel.provider.active and not panel.executor.active and not panel.log_draw and panel.remaining_turns==0,"two-turn collaboration finished")
+		check(panel.provider.serial==before+2,"two requests consumed the explicit allowance")
+		check(main.image.get_pixel(20,20).r8==58 and main.image.get_pixel(25,25).r8==58,"native draw and revision")
+		panel.turn_limit.value = 1
+		panel.context_mode.select(3)
+		panel.input.text = "Return only a JSON array with one rectangle. Set shape to rectangle, x0 to 20, y0 to 20, x1 to 23, y1 to 23, and material to 0."
+		panel.send_prompt()
+		await until(func(): return not panel.provider.active and not panel.executor.active and not panel.log_draw,"human follow-up finished")
+		await until(func(): return main.image.get_pixel(20,20).r8==0 and main.image.get_pixel(25,25).r8==58,"human follow-up erased first rectangle")
+		panel.minimum_interval.value = 2
+		panel.next_request_ms = Time.get_ticks_msec()+2000
+		var serial_before_stop: int = panel.provider.serial
+		panel.send_prompt()
+		panel.stop_all()
+		await create_timer(2.1).timeout
+		check(panel.provider.serial==serial_before_stop+1 and not panel.provider.active,"Stop cancelled a paced request")
+		panel.minimum_interval.value = 0
+
 	# Replacement also fences a response from the old World.
 	panel.input.text = "Draw a wall rectangle from (40,40) through (60,60)."
 	panel.send_prompt()
