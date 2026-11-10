@@ -2,7 +2,7 @@
 title: Art workbench provider connection, WB-ART-002 Stage 2
 status: Current
 document-kind: contract
-scope: Unmerged one-shot OpenAI Responses, NVIDIA and LM Studio UI, cancellation, raw traffic and local qualification; persistent collaboration remains Planned
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
 canonical-for: [workbench-art-providers]
 last-reviewed: 2026-11-10
 related-documents: [workbench-direct-art-batches.md, ../architecture/shared-workbench-authoring-data.md, ../reference/status-and-roadmap.md]
@@ -16,10 +16,9 @@ related-documents: [workbench-direct-art-batches.md, ../architecture/shared-work
 Draft PR #560. The [Stage-1 contract](workbench-direct-art-batches.md) owns direct
 geometry, execution-time protection, native completion and authored-start Save.
 No #531 controller, native defaults, prices, catalogs, credit gates or MCP are
-imported. Stage 2 sends one prompt and directly draws a returned packet; persistent
-conversation/follow-up and context modes are **Planned** for Stage 3. Repeated
-Send currently sends only that request, the drawing instructions/work area and
-an optional current-view image. Stored traffic is not model context.
+imported. Model prompt and Scanline send the current task, selected conversation
+context, drawing instructions, work area and optional canvas observation. Stored
+traffic remains separate from model context.
 
 Open **Art batches**, choose **Model prompt**, provider, editable model ID and base
 URL. Endpoint/model, output allowance and timeout occupy two shared rows. Enter a
@@ -169,7 +168,9 @@ a new conversation while the durable traffic retains earlier events.
 Full includes all text turns. Compacted includes the latest twelve entries and
 discloses omissions. Custom initially uses the same window. None sends no
 earlier turns. Historical image bytes remain in durable traffic. Image sends the
-current rendered view and skips identical captures within a run. Guidance
+visible intersection of the work area, or the whole visible canvas with Full view.
+The request includes pixel dimensions and the world rectangle. Identical captures
+are skipped within a run. Native chunk receipts remain in local traffic. Guidance
 opens the editable instructions for the selected mode.
 
 Scanline takes rows with local y, optional repeat and scale, and spans in

@@ -1,4 +1,6 @@
 extends RefCounted
+
+signal native_receipt(receipt: Dictionary)
 ## Main-thread direct drawing interface shared by the Stage-1 panel and future models.
 const Plan = preload("res://scripts/art_batch_plan.gd")
 var wb: Node
@@ -86,6 +88,7 @@ func poll() -> void:
 	var receipt: Dictionary = worker.art_take_result()
 	if not receipt.is_empty() and active:
 		last_receipt = receipt
+		native_receipt.emit(receipt)
 		waiting = false
 		remember(receipt.get("readback",[]))
 		for key: String in ["checked","changed","excluded"]: result[key] += int(receipt.get(key,0))

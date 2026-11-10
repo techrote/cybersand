@@ -62,6 +62,7 @@ var traffic_filter := LineEdit.new()
 var task_prompt := ""
 var run_mode := 1
 var last_image := ""
+var full_image := CheckBox.new()
 var last_result := ""
 var request_scanline := false
 var run_epoch := 0
@@ -210,6 +211,8 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	settings.load("user://art-provider.cfg")
 	add_child(provider)
 	provider.finished.connect(provider_finished)
+	executor.native_receipt.connect(func(receipt: Dictionary) -> void:
+		if log_draw: provider.log_event("native_receipt",receipt))
 	provider.traffic_changed.connect(refresh_traffic)
 	var row := HBoxContainer.new()
 	for name_text: String in ["LM Studio","OpenAI","NVIDIA"]: source.add_item(name_text)
@@ -253,6 +256,9 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	image_input.text = "Image"
 	image_input.tooltip_text = "Send the rendered current canvas view; use a vision-capable model."
 	row.add_child(image_input)
+	full_image.text = "Full view"
+	full_image.tooltip_text = "Send the whole visible canvas instead of its intersection with the work area."
+	row.add_child(full_image)
 	column.add_child(row); rows.append(row)
 	row = HBoxContainer.new()
 	for label: String in ["Full","Compacted","Custom","None"]: context_mode.add_item(label)
@@ -474,6 +480,7 @@ func send_next(expected_epoch: int) -> void:
 	if wall.button_pressed: request_materials.append(58)
 	if erase.button_pressed: request_materials.append(0)
 	var png := ""
+	var observation := ""
 	if image_input.button_pressed:
 		if DisplayServer.get_name()=="headless": input_error = "Image capture needs a graphical window. Turn Image off for text-only inference."; return
 		capturing = true
@@ -488,14 +495,24 @@ func send_next(expected_epoch: int) -> void:
 		if epoch != ui_epoch: return
 		var logical: Vector2 = wb.host.get_viewport().get_visible_rect().size
 		var scale := Vector2(frame.get_width(),frame.get_height())/logical
-		var rect: Rect2 = wb.host.world_view.get_global_rect()
-		var crop := Rect2i(rect.position*scale,rect.size*scale).intersection(Rect2i(Vector2i.ZERO,frame.get_size()))
+		var rect: Rect2 = wb.host.view_content_rect()
+		rect.position += wb.host.world_view.get_global_rect().position
+		var visible_cells := Rect2(Vector2(wb.host.camera_origin.floor()),Vector2(wb.host.current_view_size))
+		var image_cells := visible_cells
+		if not full_image.button_pressed:
+			var intersection := visible_cells.intersection(Rect2(request_area))
+			if intersection.has_area(): image_cells = intersection
+		var pixels_per_cell := rect.size/visible_cells.size
+		var image_rect := Rect2(rect.position+(image_cells.position-visible_cells.position)*pixels_per_cell,image_cells.size*pixels_per_cell)
+		var crop := Rect2i(image_rect.position*scale,image_rect.size*scale).intersection(Rect2i(Vector2i.ZERO,frame.get_size()))
 		if not crop.has_area(): capturing = false; input_error = "Canvas capture is empty."; return
 		var view := frame.get_region(crop)
 		if maxi(view.get_width(),view.get_height())>768:
 			var ratio := 768.0/maxi(view.get_width(),view.get_height())
 			view.resize(maxi(1,int(view.get_width()*ratio)),maxi(1,int(view.get_height()*ratio)),Image.INTERPOLATE_NEAREST)
 		png = Marshalls.raw_to_base64(view.save_png_to_buffer())
+		observation = "Image world rectangle x=%d y=%d w=%d h=%d, image %d by %d pixels, world epoch %d." % [image_cells.position.x,image_cells.position.y,image_cells.size.x,image_cells.size.y,view.get_width(),view.get_height(),request_epoch]
+		provider.log_event("observation",{"mapping":observation,"sha256":png.sha256_text()})
 		capturing = false
 	if epoch != ui_epoch or request_epoch != wb.host.simulation_worker.art_state().epoch: return
 	save_profile()
@@ -509,6 +526,7 @@ func send_next(expected_epoch: int) -> void:
 	instructions += "\nReturn [] when the drawing is finished."
 	var context := model_context()
 	var prompt := task_prompt
+	if not observation.is_empty(): prompt += "\n"+observation
 	if sent_turns > 0:
 		prompt += "\nContinue revising the current artwork. Latest confirmed result: "+last_result+"\nReturn [] when finished."
 	var image_hash := png.sha256_text()
