@@ -25,7 +25,16 @@ class State:
     tick: int = 0
 
     def copy(self):
-        return State(self.width, self.height, self.cells.copy(), self.body, self.pressure, self.tick)
+        # State.body is an externally supplied read dependency. Even a typed
+        # frozenset annotation does not freeze a caller-owned mutable set.
+        # Reject opaque iterables instead of executing their user-defined code.
+        if type(self.body) not in (set, frozenset):
+            raise ValueError("noncanonical body footprint: REFUSE")
+        if any(type(i) is not int or not 0 <= i < self.width * self.height
+               for i in self.body):
+            raise ValueError("body footprint outside source geometry: REFUSE")
+        return State(self.width, self.height, self.cells.copy(),
+                     frozenset(self.body), self.pressure, self.tick)
 
     def index(self, x, y):
         if not (0 <= x < self.width and 0 <= y < self.height):
@@ -233,7 +242,10 @@ class Sparse:
     def restore(self, snapshot: State):
         if not self.same_geometry(snapshot):
             raise ValueError("restored source geometry drift: REFUSE")
-        self.state = snapshot.copy()
+        # Validate and own body dependency before replacing the state; source
+        # mutation after this boundary cannot silently invalidate a proof.
+        owned = snapshot.copy()
+        self.state = owned
         self.reset_certificates()  # never restore derived certificates
 
 
@@ -429,10 +441,13 @@ class Fence:
                 or not bounded_i64(state.tick) or state.tick < 0
                 or not self.engine.same_geometry(state)):
             raise ValueError("restoration epoch or source geometry outside witness domain: REFUSE")
+        # Perform all admissible copy/footprint checks before retiring the
+        # accepted worker packets or incrementing owner generation.
+        owned = state.copy()
+        self.engine.restore(owned)
         self.generation += 1
         self.packets.clear()
         self.accepted_checks.clear()
-        self.engine.restore(state)
 
 
 def initial(kind: str, width=24, height=16):
