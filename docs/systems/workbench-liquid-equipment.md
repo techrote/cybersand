@@ -3,7 +3,7 @@ title: Workbench liquid equipment — valves, drain, nozzle and pump
 status: Current
 document-kind: contract
 scope: IN-TOOLS #361 shared-workbench liquid equipment (Draft PR branch); authored geometry, worker-owned device owner, native quantity accounting, controls, built-in liquid-lab and reservoir-lab starts, lifecycle and limits
-canonical-for: [workbench-liquid-equipment, liquid-lab-apparatus, reservoir-lab-apparatus, solids-lab-apparatus]
+canonical-for: [workbench-liquid-equipment, liquid-lab-apparatus, reservoir-lab-apparatus, solids-lab-apparatus, kinetic-lab-apparatus, kinetic-tools]
 last-reviewed: 2026-11-09
 related-documents: [../architecture/ballistic-solids-v1.md, ../architecture/in-tools-gameplay-admission.md, ../architecture/inertial-cellular-v1.md, ../architecture/ballistic-water-v1.md, actor-usables.md, ../audits/2026-11-09-in-tools-361-workbench-equipment.md]
 ---
@@ -120,6 +120,22 @@ horizontal-only moves by coherence, so a 4 × 10 slot in a 4-cell side wall
 leaked only about one cell per tick (measured). The bottom opening shows the
 reported #361 behaviour — a rising cavity/bubble column above the outlet and a
 surface dimple — as vacant-cell displacement, not as a gas-pressure model.
+
+## Kinetic tools (BS-001 branch)
+
+Built on the [kinetic mask core](../architecture/ballistic-solids-v1.md#launch-in-place-and-kinetic-masks):
+every Water or admitted solid cell inside the mask flies. **Kinetic** row:
+preset, **Radius** (2–24), **Power** (0.1–3), **Angle**, **Pulse emitters [T]**,
+**Hold emitters [Y]** (repeat at the preset's period), **Emitter at X/Y** (up to
+eight, authored as `kinetics: [[x, y, preset, radius, strength, angle], …]`) and
+**Load kinetic-lab**. The **Kinetic tool** in the tool picker applies the chosen
+preset at the cursor and keeps applying while dragged. Commands: `kinetic_at`
+(no equipment needed), `kinetic_pulse` and `kinetic_hold` (index −1 = all).
+Receipts count Water and solids flung per emitter and in total, plus refusals.
+
+**kinetic-lab:** a Sand hill with a Blast emitter, a Water pool with a Geyser and
+a Vortex, a Stone pile under two barrels with a Shockwave and a Dust patch with
+a Shaker; inertial Water, ballistic Water and solids enabled.
 
 ## Built-in solids-lab (BS-001 branch)
 

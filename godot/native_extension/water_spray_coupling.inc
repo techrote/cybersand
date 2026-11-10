@@ -272,6 +272,20 @@ String CyberNativeCellWorld::launch_solid_parcel(Vector2i cell, Vector2 position
     return spray_outcome_id(result.outcome);
 }
 
+String CyberNativeCellWorld::launch_water_parcel(Vector2i cell, Vector2 position, Vector2 velocity) {
+    if (world_ == nullptr) return "world_failed";
+    if (!position.is_finite() || !velocity.is_finite() || !in_bounds(cell.x, cell.y)) return "invalid_request";
+    const auto cap = static_cast<double>(world_->config().ballistic_water.max_speed_q);
+    const auto vx = std::clamp(static_cast<double>(velocity.x) * kSprayQ, -cap, cap);
+    const auto vy = std::clamp(static_cast<double>(velocity.y) * kSprayQ, -cap, cap);
+    const auto result = world_->launch_ballistic_water(cell.x, cell.y,
+        static_cast<std::int64_t>(std::floor(static_cast<double>(position.x) * kSprayQ)),
+        static_cast<std::int64_t>(std::floor(static_cast<double>(position.y) * kSprayQ)),
+        static_cast<std::int32_t>(vx), static_cast<std::int32_t>(vy));
+    if (result.outcome == cybersand::BallisticLaunchOutcome::Launched) ++revision_;
+    return spray_outcome_id(result.outcome);
+}
+
 Dictionary CyberNativeCellWorld::get_ballistic_solids() const {
     Dictionary d;
     if (world_ == nullptr) return d;

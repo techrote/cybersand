@@ -1277,7 +1277,7 @@ func queue_workbench_equipment(request: Dictionary) -> bool:
 	_mutex.lock()
 	var ok := _workbench_extent != Vector2i.ZERO and _prepared_physical_publication.is_empty() \
 		and _lab_request.is_empty() and _workbench_equipment_commands.size() < 16 \
-		and str(request.get("command","")) in ["configure","valve","drain","nozzle","tune","stop","observe","launcher","collector","tune_launcher"]
+		and str(request.get("command","")) in ["configure","valve","drain","nozzle","tune","stop","observe","launcher","collector","tune_launcher","kinetic_at","kinetic_pulse","kinetic_hold"]
 	if ok: _workbench_equipment_commands.append(request.duplicate(true))
 	_mutex.unlock()
 	return ok

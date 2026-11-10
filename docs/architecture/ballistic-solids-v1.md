@@ -97,8 +97,28 @@ powders/solids into stock and the **conveyor** links them. A sand **hopper** is 
 valve in the floor of a powder bin. The built-in **solids-lab** start shows all of
 them against a stack of Rapier barrels.
 
+## Launch in place and kinetic masks
+
+A launch may spawn in its **own source cell** (BW-001 Water and BS-001 solids):
+that cell is vacated by the same launch, so the interior of a pool or pile can
+fly even with no free neighbour. A spawn in any other occupied cell still refuses.
+`launch_water_parcel(cell, position, velocity)` exposes the existing BW-001 grid
+launch to the workbench.
+
+The [kinetic mask core](../../godot/scripts/workbench_kinetic_mask.gd) builds
+tools from this: a bounded **shape** (disc, ring, cone, column, box), a
+**pattern** (all, checker, random fraction, edge) and a **field** (radial,
+inward, vortex, direction, jitter, plus lift and deterministic noise). It plans
+on the worker, orders cells so those further along their own motion leave first,
+and hands each selected Water or admitted solid cell to the native owners (at
+most 640 per application, 6 000 reads). It never sets grid velocities or creates
+material. Presets: Blast, Implode, Vortex, Geyser, Shovel, Shockwave, Gust,
+Shaker, Pepper, Lattice lift and Skin peel.
+
 ## Limits
 
 - Opt-in and experimental; no default World uses it.
 - Bounded serial pass; cost grows with live solids (measured in the dated record).
 - Flying solids do not collide with each other or with flying Water drops.
+- Structural solids such as Stone land where they stop and do not slump, so
+  flung Stone can stack into spires.

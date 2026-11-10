@@ -81,6 +81,24 @@ Linux sha256 `8080fb48eb52c85ceb3e6f48f3653691ce53a28d1a562354bc643c82d00b89e7`.
 `check_repository` then passed, and the native suite under ASan/UBSan passed
 199/199 on the final source.
 
+## Kinetic mask tools — 2026-11-10
+
+Source change: in-place launch for BW-001 and BS-001 and the
+`launch_water_parcel` binding (native suite 200/200 on WSL Linux, new case
+"launch in place": interior Sand and Water launched with no loss), plus the
+GDScript kinetic mask core, emitters, pointer tool and kinetic-lab.
+
+`test_workbench_kinetic_lab.gd` (Windows, request 4, locally built library
+`611d4ac8…`): 55/0 headless and windowed. Single pulses flung Blast 586 Sand,
+Geyser 153 and Vortex 317 Water cells, Shockwave 377 Stone and Shaker 80 Dust;
+all eleven pointer presets applied; held emitters repeated; an unknown preset was
+refused. Across 74 applications (8 101 solids and 4 407 Water cells flung) grid
++ flying solids and the native Water total stayed exactly constant, and every
+cell landed after Stop. solids-lab 31/0, liquid-lab 103/0, reservoir-lab 81/0,
+workbench canvas 164/0 and spray rearm 10/0 pass on the same library.
+Frame: [after the pointer presets](../images/in-tools-361/kinetic-lab-pointer.png).
+Runtime publication for this source is request sequence 2.
+
 ## Gaps
 
 - Hosted Ready-PR Native/GDExtension gates run only once the PR is Ready.

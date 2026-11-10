@@ -64,6 +64,9 @@ func show_liquid_equipment(receipt: Dictionary, selected_valve: int = -1) -> voi
 		if not config.get("launcher",[]).is_empty(): markers.launcher = [config.launcher,receipt.launcher.on,receipt.launcher.angle]
 		markers.rects = rects
 		if not config.get("nozzle",[]).is_empty(): markers.nozzle = [config.nozzle,receipt.nozzle.on,receipt.nozzle.angle]
+		var rings := []
+		for emitter: Dictionary in receipt.get("kinetics",[]): rings.append([emitter.at,emitter.radius,emitter.hold])
+		if not rings.is_empty(): markers.kinetics = rings
 	if markers != equipment_markers:
 		equipment_markers = markers
 		visible = not _parts.is_empty() or source_origin.is_finite() or not equipment_markers.is_empty()
@@ -80,6 +83,10 @@ func _draw_equipment() -> void:
 		var color := (Color("7dff9a") if live else Color("ffb347")) if marker[2] == "valve" \
 			else ((Color("e8c170") if live else Color("8a7448")) if marker[2] == "collector" else (Color("5fc8ff") if live else Color("3a6f8f")))
 		draw_polyline(corners,color,3.0 if marker[3] else (2.0 if live else 1.0))
+	for ring: Array in equipment_markers.get("kinetics",[]):
+		var centre := Vector2(ring[0][0],ring[0][1]) + Vector2(0.5,0.5)
+		var tint := Color("ff6fd8") if ring[2] else Color("9a5a8a")
+		draw_arc(_point(centre),float(ring[1]) * size.x / _view_size.x,0.0,TAU,32,tint,2.0 if ring[2] else 1.0)
 	if equipment_markers.has("launcher"):
 		var launcher: Array = equipment_markers.launcher[0]
 		var origin := Vector2(launcher[0],launcher[1]) + Vector2(0.5,0.5)

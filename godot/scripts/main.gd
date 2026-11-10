@@ -2137,6 +2137,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				KEY_BRACKETRIGHT: shared_workbench.equipment.select_valve(1)
 				KEY_L: shared_workbench.equipment.toggle("launcher")
 				KEY_O: shared_workbench.equipment.toggle("collector")
+				KEY_T: shared_workbench.equipment.pulse_emitters()
+				KEY_Y: shared_workbench.equipment.hold_emitters()
 				_: return
 			get_viewport().set_input_as_handled()
 		return

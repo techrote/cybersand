@@ -3,8 +3,8 @@ name: 'BS-001 ballistic solids source-matched native runtime publication'
 # Temporary branch-scoped publisher. Runtime/manifests are deliberately absent
 # from this filter, and existing ready-for-review acceptance gates are unchanged.
 # Native BS-001 ballistic solids and BW-001 ballistic Water groups precede fresh
-# builds and actual target-OS solids-lab, liquid-lab, reservoir-lab and built-in
-# workbench-canvas cases.
+# builds and actual target-OS solids-lab, kinetic-lab, liquid-lab, reservoir-lab
+# and built-in workbench-canvas cases.
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -421,6 +421,6 @@ jobs:
             echo '### BS-001 runtime publication'
             echo "Built source: $GITHUB_SHA"
             echo "Runtime publication commit: $(git rev-parse HEAD)"
-            echo 'Both exact runtimes passed import and the four scoped cases on their actual target OS; native BS-001 and BW-001 groups passed before the builds.'
+            echo 'Both exact runtimes passed import and the five scoped cases on their actual target OS; native BS-001 and BW-001 groups passed before the builds.'
             echo 'The existing full ready-for-review validation gates remain required on the resulting PR head.'
           } >> "$GITHUB_STEP_SUMMARY"

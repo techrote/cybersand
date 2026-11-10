@@ -220,3 +220,23 @@ void test_ballistic_solids_buried_climb() {
     require(stone_y < 30, "the buried solid did not climb to free space");
     closes(world, "buried");
 }
+
+void test_ballistic_solids_launch_in_place() {
+    World world(solids_config());
+    box(world, 48, 48);
+    rect(world, 10, 30, 12, 17, Material::Sand);    // a solid pile: interior cells have no free neighbour
+    rect(world, 26, 30, 12, 17, Material::Water);   // a full pool
+    const auto sand = count(world, Material::Sand, 48, 48);
+    const auto water = world.water_quantity({0, 0, 48, 48});
+    require(world.launch_ballistic_solid(15, 40, centre(15), centre(40), 0, -900).outcome == BallisticLaunchOutcome::Launched,
+            "interior solid launch from its own cell refused");
+    require(world.launch_ballistic_water(31, 40, centre(31), centre(40), 0, -900).outcome == BallisticLaunchOutcome::Launched,
+            "interior Water launch from its own cell refused");
+    require(world.launch_ballistic_solid(15, 39, centre(16), centre(39), 0, -900).outcome == BallisticLaunchOutcome::InvalidRequest,
+            "spawn in a foreign occupied cell admitted");
+    for (int t = 0; t < 300 && (world.ballistic_solid_count() != 0U || world.ballistic_parcel_count() != 0U); ++t) (void)world.tick();
+    require(count(world, Material::Sand, 48, 48) + world.ballistic_solid_count() == sand, "interior launch lost Sand");
+    require(world.water_quantity({0, 0, 48, 48}) + world.ballistic_water_snapshot().in_flight_quantity == water,
+            "interior launch lost Water");
+    closes(world, "in place");
+}

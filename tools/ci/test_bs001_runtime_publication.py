@@ -48,6 +48,7 @@ class PublisherGuards(unittest.TestCase):
             "test_workbench_liquid_equipment": "LIQUID_EQUIPMENT 103 checks, 0 failures",
             "test_workbench_reservoir_lab": "RESERVOIR_LAB 81 checks, 0 failures",
             "test_workbench_canvas": "WORKBENCH_CANVAS 164 checks, 0 failures",
+            "test_workbench_kinetic_lab": "KINETIC_LAB 55 checks, 0 failures",
         }
         self.assertEqual(set(samples),set(engine.CASE_MARKERS))
         for key,line in samples.items():

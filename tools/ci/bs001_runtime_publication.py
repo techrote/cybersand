@@ -43,12 +43,15 @@ engine.CASE_MARKERS = {
         r"(?m)^RESERVOIR_LAB [1-9][0-9]* checks, 0 failures\s*$",
     "test_workbench_canvas":
         r"(?m)^WORKBENCH_CANVAS [1-9][0-9]* checks, 0 failures\s*$",
+    "test_workbench_kinetic_lab":
+        r"(?m)^KINETIC_LAB [1-9][0-9]* checks, 0 failures\s*$",
 }
 engine.CASE_TIMEOUTS = {
     "test_workbench_solids_lab": 1200,
     "test_workbench_liquid_equipment": 1500,
     "test_workbench_reservoir_lab": 1800,
     "test_workbench_canvas": 900,
+    "test_workbench_kinetic_lab": 1200,
 }
 engine.EXECUTION_SCOPE = (
     "Exact-source Linux/Windows rebuilt GDExtension, official Godot 4.7 import, "
@@ -70,6 +73,8 @@ engine.BUILD_EXACT = (set(engine.BUILD_EXACT) -
     "godot/tests/test_workbench_liquid_equipment.gd",
     "godot/tests/test_workbench_reservoir_lab.gd",
     "godot/tests/test_workbench_canvas.gd",
+    "godot/tests/test_workbench_kinetic_lab.gd",
+    "godot/scripts/workbench_kinetic_mask.gd",
     "godot/scripts/workbench_liquid_equipment.gd",
     "godot/scripts/workbench_liquid_equipment_panel.gd",
 }

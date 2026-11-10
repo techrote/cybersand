@@ -86,6 +86,8 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("launch_solid_parcel", "cell", "position", "velocity_cells_per_tick"),
                          &CyberNativeCellWorld::launch_solid_parcel);
     ClassDB::bind_method(D_METHOD("get_ballistic_solids"), &CyberNativeCellWorld::get_ballistic_solids);
+    ClassDB::bind_method(D_METHOD("launch_water_parcel", "cell", "position", "velocity_cells_per_tick"),
+                         &CyberNativeCellWorld::launch_water_parcel);
     ClassDB::bind_method(D_METHOD("inspect_ballistic_solids", "maximum"), &CyberNativeCellWorld::inspect_ballistic_solids);
     ClassDB::bind_method(D_METHOD("get_material_population", "material"), &CyberNativeCellWorld::get_material_population);
     ClassDB::bind_method(D_METHOD("get_water_experiment_policy"),

@@ -8,6 +8,7 @@ extends RefCounted
 
 const Equipment = preload("res://scripts/workbench_liquid_equipment.gd")
 const Setup = preload("res://scripts/workbench_setup.gd")
+const Kinetic = preload("res://scripts/workbench_kinetic_mask.gd")
 const DEFAULT_VALVE := Vector2i(4,8)
 const DEFAULT_DRAIN := [12,6,16]
 const DEFAULT_NOZZLE := [-135.0,4.0,2]
@@ -26,6 +27,12 @@ var _rate := SpinBox.new()
 var _supply := SpinBox.new()
 var _pump := CheckButton.new()
 var _launcher_speed := SpinBox.new()
+var _kinetic_preset := OptionButton.new()
+var _kinetic_radius := SpinBox.new()
+var _kinetic_strength := SpinBox.new()
+var _kinetic_angle := SpinBox.new()
+var _kinetic_hold := false
+var _last_kinetic_ms := -1000
 var _launcher_rate := SpinBox.new()
 var _buttons := {}
 
@@ -66,6 +73,21 @@ func build(owner: Control, workbench: Control, row_factory: Callable, entered_po
 	_launcher_speed.value_changed.connect(func(_v: float) -> void: tune_launcher())
 	_launcher_rate.value_changed.connect(func(_v: float) -> void: tune_launcher())
 	_add_button(row,"Load solids-lab",func() -> void: ui.load_equipment_start(Setup.SOLIDS_LAB_LABEL))
+	row = row_factory.call(workbench)
+	var kinetic_title := Label.new()
+	kinetic_title.text = "Kinetic"
+	kinetic_title.tooltip_text = "Kinetic mask tools: cells of Water and solids inside the mask fly. Choose the Kinetic tool to apply at the cursor (drag to repeat)."
+	row.add_child(kinetic_title)
+	_kinetic_preset.focus_mode = Control.FOCUS_NONE
+	for key: String in Kinetic.ORDER: _kinetic_preset.add_item(str(Kinetic.PRESETS[key].label))
+	row.add_child(_kinetic_preset)
+	_add_spin(row,"Radius",_kinetic_radius,2,Kinetic.MAX_RADIUS,1,10)
+	_add_spin(row,"Power",_kinetic_strength,0.1,3.0,0.1,1.0)
+	_add_spin(row,"Angle",_kinetic_angle,-180,180,5,-90)
+	_add_button(row,"Pulse emitters [T]",pulse_emitters)
+	_add_button(row,"Hold emitters [Y]",hold_emitters)
+	_add_button(row,"Emitter at X/Y",func() -> void: place("kinetic"))
+	_add_button(row,"Load kinetic-lab",func() -> void: ui.load_equipment_start(Setup.KINETIC_LAB_LABEL))
 	row = row_factory.call(workbench)
 	_add_button(row,"Load liquid-lab",func() -> void: ui.load_equipment_start(Setup.LIQUID_LAB_LABEL))
 	_add_button(row,"Load reservoir-lab",func() -> void: ui.load_equipment_start(Setup.RESERVOIR_LAB_LABEL))
@@ -198,6 +220,39 @@ func tune_launcher(angle_delta: float = 0.0) -> bool:
 	return true
 
 
+func kinetic_choice() -> String:
+	return Kinetic.ORDER[clampi(_kinetic_preset.selected,0,Kinetic.ORDER.size()-1)]
+
+
+# The pointer Kinetic tool: one application at a canvas cell (throttled while
+# dragging). It needs no authored equipment.
+func kinetic_at(cell: Vector2i, preset: String = "") -> bool:
+	if ui.applied.is_empty() or ui.busy(): return _refuse("wait for the session.")
+	if Time.get_ticks_msec() - _last_kinetic_ms < 60: return false
+	_last_kinetic_ms = Time.get_ticks_msec()
+	var chosen := preset if not preset.is_empty() else kinetic_choice()
+	if not host.workbench_equipment({"command":"kinetic_at","at":cell,"preset":chosen,"radius":int(_kinetic_radius.value),
+			"strength":float(_kinetic_strength.value),"angle":float(_kinetic_angle.value)}):
+		return _refuse("the worker queue is full or the session is changing.")
+	message = "%s at %s." % [Kinetic.PRESETS[chosen].label,str(cell)]
+	return true
+
+
+func pulse_emitters() -> bool:
+	if config().get("kinetics",[]).is_empty(): return _refuse("this setup has no kinetic emitters.")
+	if not _send({"command":"kinetic_pulse","index":-1}): return false
+	message = "Kinetic emitters pulsed."
+	return true
+
+
+func hold_emitters() -> bool:
+	if config().get("kinetics",[]).is_empty(): return _refuse("this setup has no kinetic emitters.")
+	_kinetic_hold = not _kinetic_hold
+	if not _send({"command":"kinetic_hold","index":-1,"on":_kinetic_hold}): return false
+	message = "Kinetic emitters %s." % ("held (repeating)" if _kinetic_hold else "released")
+	return true
+
+
 # Opens every valve unless all are already open, in which case it closes them.
 func toggle_all_valves() -> bool:
 	if valve_count() == 0: return _refuse("this setup has no valves.")
@@ -211,6 +266,7 @@ func toggle_all_valves() -> bool:
 func stop_all() -> bool:
 	if not _send({"command":"stop"}): return false
 	_desired = {"drain":false,"nozzle":false,"launcher":false,"collector":false}
+	_kinetic_hold = false
 	for i: int in _valves_open.size(): _valves_open[i] = false
 	message = "All devices closed."
 	return true
@@ -257,6 +313,8 @@ func place(device: String) -> bool:
 			next.valves.append([at.x,at.y,DEFAULT_VALVE.x,DEFAULT_VALVE.y])
 		elif device == "drain":
 			next.drain = [at.x,at.y,DEFAULT_DRAIN[0],DEFAULT_DRAIN[1],DEFAULT_DRAIN[2]]
+		elif device == "kinetic":
+			next.kinetics.append([at.x,at.y,kinetic_choice(),int(_kinetic_radius.value),float(_kinetic_strength.value),float(_kinetic_angle.value)])
 		else:
 			next.nozzle = [at.x,at.y,DEFAULT_NOZZLE[0],speed,rate]
 			next.supply = supply
@@ -339,6 +397,10 @@ func refresh(context: Dictionary) -> void:
 		var gathered := 0
 		for key: Variant in collector_state.collected: gathered += int(collector_state.collected[key])
 		parts.append("collector %s · %d collected" % ["open" if collector_state.open else "shut",gathered])
+	var kinetic_totals: Dictionary = receipt.get("kinetic_totals",{})
+	if not receipt.get("kinetics",[]).is_empty() or int(kinetic_totals.get("applications",0)) > 0:
+		parts.append("kinetic %d emitters%s · %d applied · %d water + %d solids flung" % [receipt.get("kinetics",[]).size(),
+			" (held)" if _kinetic_hold else "",int(kinetic_totals.get("applications",0)),int(kinetic_totals.get("water",0)),int(kinetic_totals.get("solids",0))])
 	var solids_state: Dictionary = context.get("ballistic_solids",{})
 	if solids_state.get("enabled",false):
 		parts.append("flying solids %d/%d%s" % [int(solids_state.live),int(solids_state.capacity),"" if solids_state.get("closed",true) else " · LEDGER OPEN"])
