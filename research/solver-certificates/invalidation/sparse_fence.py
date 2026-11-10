@@ -216,7 +216,23 @@ class Sparse:
                 self.certified.add(tile)
         return len(active), len(pending)
 
+    def same_geometry(self, snapshot: State):
+        """Source-geometry ownership: the sparse tile roster is construction-bound.
+
+        A different shape, even with the same flat cell count, requires a fresh
+        Sparse engine, never reuse of this engine's certified region indexing.
+        """
+        return (type(snapshot) is State
+                and type(snapshot.width) is int and type(snapshot.height) is int
+                and snapshot.width == self.state.width
+                and snapshot.height == self.state.height
+                and type(snapshot.cells) is list
+                and len(snapshot.cells) == len(self.state.cells)
+                and len(snapshot.cells) == snapshot.width * snapshot.height)
+
     def restore(self, snapshot: State):
+        if not self.same_geometry(snapshot):
+            raise ValueError("restored source geometry drift: REFUSE")
         self.state = snapshot.copy()
         self.reset_certificates()  # never restore derived certificates
 
@@ -410,8 +426,9 @@ class Fence:
         if (not bounded_i64(self.generation)
                 or not 0 <= self.generation < MAX_WITNESS_EPOCH
                 or type(state) is not State
-                or not bounded_i64(state.tick) or state.tick < 0):
-            raise ValueError("restoration epoch outside witness domain: REFUSE")
+                or not bounded_i64(state.tick) or state.tick < 0
+                or not self.engine.same_geometry(state)):
+            raise ValueError("restoration epoch or source geometry outside witness domain: REFUSE")
         self.generation += 1
         self.packets.clear()
         self.accepted_checks.clear()
