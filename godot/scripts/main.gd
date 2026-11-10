@@ -795,12 +795,17 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 	# Developer-only explicit C2048 opt-in. Omitted means the native C1024 default.
 	if workbench_water_options.get("pressure_gas_compartment_capacity",1024) is int:
 		settings["pressure_gas_compartment_capacity"] = int(workbench_water_options.get("pressure_gas_compartment_capacity",1024))
-	for key: String in ["workbench_ballistic","workbench_inertial_signed","workbench_face_release","workbench_fine_cores"]:
+	for key: String in ["workbench_ballistic","workbench_inertial_signed","workbench_face_release","workbench_fine_cores","workbench_ballistic_solids"]:
 		if workbench_water_options.get(key,false) is bool and workbench_water_options.get(key,false):
 			settings[key] = true
 	if settings.get("workbench_face_release",false) and settings.get("workbench_ballistic",false):
 		for key: String in FACE_TUNING:
 			if workbench_water_options.get(key) is int: settings[key] = workbench_water_options[key]
+	# BS-001 / BW-001 explicit capacities (default 4096 each, at most 65536).
+	if settings.get("workbench_ballistic",false) and workbench_water_options.get("workbench_ballistic_capacity") is int:
+		settings["workbench_ballistic_capacity"] = workbench_water_options.workbench_ballistic_capacity
+	if settings.get("workbench_ballistic_solids",false) and workbench_water_options.get("workbench_solids_capacity") is int:
+		settings["workbench_solids_capacity"] = workbench_water_options.workbench_solids_capacity
 	# Lossy conversion belongs only to an explicit developer policy switch.
 	# Ordinary replacements (including Apply of an unchanged policy) keep
 	# all compatible native inventory and use the normal refusal contract.
@@ -2130,6 +2135,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				KEY_K: shared_workbench.equipment.nudge_aim(10.0)
 				KEY_BRACKETLEFT: shared_workbench.equipment.select_valve(-1)
 				KEY_BRACKETRIGHT: shared_workbench.equipment.select_valve(1)
+				KEY_L: shared_workbench.equipment.toggle("launcher")
+				KEY_O: shared_workbench.equipment.toggle("collector")
 				_: return
 			get_viewport().set_input_as_handled()
 		return

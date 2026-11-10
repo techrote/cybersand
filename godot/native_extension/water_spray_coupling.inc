@@ -34,6 +34,7 @@ constexpr double kSprayQ = static_cast<double>(cybersand::BallisticWaterConfig::
         case O::Pressurized: return "pressurized";
         case O::NonResident: return "non_resident";
         case O::InsufficientQuantity: return "insufficient_quantity";
+        case O::NotAdmitted: return "not_admitted";
     }
     return "unknown";
 }
@@ -239,6 +240,85 @@ String CyberNativeCellWorld::inject_water_parcel(Vector2 position, Vector2 veloc
         static_cast<std::int32_t>(vx), static_cast<std::int32_t>(vy), static_cast<std::uint32_t>(q));
     if (result.outcome == cybersand::BallisticLaunchOutcome::Launched) ++revision_;
     return spray_outcome_id(result.outcome);
+}
+
+String CyberNativeCellWorld::inject_solid_parcel(Vector2 position, Vector2 velocity, std::int64_t material) {
+    if (world_ == nullptr) return "world_failed";
+    if (!position.is_finite() || !velocity.is_finite() || material < 0 || material > 255 ||
+        !cybersand::valid_material(static_cast<std::uint16_t>(material)))
+        return "invalid_request";
+    const auto cap = static_cast<double>(world_->config().ballistic_solids.max_speed_q);
+    const auto vx = std::clamp(static_cast<double>(velocity.x) * kSprayQ, -cap, cap);
+    const auto vy = std::clamp(static_cast<double>(velocity.y) * kSprayQ, -cap, cap);
+    const auto result = world_->inject_ballistic_solid(
+        static_cast<std::int64_t>(std::floor(static_cast<double>(position.x) * kSprayQ)),
+        static_cast<std::int64_t>(std::floor(static_cast<double>(position.y) * kSprayQ)),
+        static_cast<std::int32_t>(vx), static_cast<std::int32_t>(vy), static_cast<cybersand::Material>(material));
+    if (result.outcome == cybersand::BallisticLaunchOutcome::Launched) ++revision_;
+    return spray_outcome_id(result.outcome);
+}
+
+String CyberNativeCellWorld::launch_solid_parcel(Vector2i cell, Vector2 position, Vector2 velocity) {
+    if (world_ == nullptr) return "world_failed";
+    if (!position.is_finite() || !velocity.is_finite() || !in_bounds(cell.x, cell.y)) return "invalid_request";
+    const auto cap = static_cast<double>(world_->config().ballistic_solids.max_speed_q);
+    const auto vx = std::clamp(static_cast<double>(velocity.x) * kSprayQ, -cap, cap);
+    const auto vy = std::clamp(static_cast<double>(velocity.y) * kSprayQ, -cap, cap);
+    const auto result = world_->launch_ballistic_solid(cell.x, cell.y,
+        static_cast<std::int64_t>(std::floor(static_cast<double>(position.x) * kSprayQ)),
+        static_cast<std::int64_t>(std::floor(static_cast<double>(position.y) * kSprayQ)),
+        static_cast<std::int32_t>(vx), static_cast<std::int32_t>(vy));
+    if (result.outcome == cybersand::BallisticLaunchOutcome::Launched) ++revision_;
+    return spray_outcome_id(result.outcome);
+}
+
+Dictionary CyberNativeCellWorld::get_ballistic_solids() const {
+    Dictionary d;
+    if (world_ == nullptr) return d;
+    const auto s = world_->ballistic_solids_snapshot();
+    d["enabled"] = s.enabled;
+    d["live"] = static_cast<std::int64_t>(s.live);
+    d["capacity"] = static_cast<std::int64_t>(s.capacity);
+    d["pass_ms"] = static_cast<double>(s.last_advance_nanoseconds) / 1e6;
+    const auto& l = s.ledger;
+    Dictionary ledger;
+    ledger["launched"] = static_cast<std::int64_t>(l.launched);
+    ledger["injected"] = static_cast<std::int64_t>(l.injected);
+    ledger["landed"] = static_cast<std::int64_t>(l.landed);
+    ledger["deferred_landings"] = static_cast<std::int64_t>(l.deferred_landings);
+    ledger["refused_launches"] = static_cast<std::int64_t>(l.refused_launches);
+    ledger["forced_landings"] = static_cast<std::int64_t>(l.forced_landings);
+    ledger["surface_landings"] = static_cast<std::int64_t>(l.surface_landings);
+    ledger["terrain_contacts"] = static_cast<std::int64_t>(l.terrain_contacts);
+    ledger["body_contacts"] = static_cast<std::int64_t>(l.body_contacts);
+    ledger["liquid_contacts"] = static_cast<std::int64_t>(l.liquid_contacts);
+    ledger["maximum_live"] = static_cast<std::int64_t>(l.maximum_live);
+    d["ledger"] = ledger;
+    // Cell identity: in flight == launched + injected - landed.
+    d["closed"] = l.launched + l.injected == l.landed + s.live;
+    return d;
+}
+
+PackedFloat64Array CyberNativeCellWorld::inspect_ballistic_solids(std::int64_t maximum) const {
+    PackedFloat64Array out;
+    if (world_ == nullptr || maximum <= 0) return out;
+    std::vector<cybersand::BallisticSolid> solids(static_cast<std::size_t>(std::min<std::int64_t>(maximum, 65'536)));
+    const auto live = std::min(world_->copy_ballistic_solids(solids), solids.size());
+    out.resize(static_cast<std::int64_t>(live * 5U));
+    for (std::size_t i = 0; i < live; ++i) {
+        const auto& p = solids[i];
+        out.set(static_cast<std::int64_t>(i * 5U), static_cast<double>(p.x) / kSprayQ);
+        out.set(static_cast<std::int64_t>(i * 5U + 1U), static_cast<double>(p.y) / kSprayQ);
+        out.set(static_cast<std::int64_t>(i * 5U + 2U), static_cast<double>(p.vx) / kSprayQ);
+        out.set(static_cast<std::int64_t>(i * 5U + 3U), static_cast<double>(p.vy) / kSprayQ);
+        out.set(static_cast<std::int64_t>(i * 5U + 4U), static_cast<double>(p.material));
+    }
+    return out;
+}
+
+std::int64_t CyberNativeCellWorld::get_material_population(std::int64_t material) const {
+    if (world_ == nullptr || world_->has_failed() || material < 1 || material > 255) return -1;
+    return static_cast<std::int64_t>(world_->quantity_ledger().material_cells[static_cast<std::size_t>(material)]);
 }
 
 void CyberNativeCellWorld::water_spray_before_tick() {

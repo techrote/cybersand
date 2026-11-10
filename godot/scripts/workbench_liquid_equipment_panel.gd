@@ -17,7 +17,7 @@ var ui: Control
 var serial := 0
 var message := ""
 var selected_valve := 0
-var _desired := {"drain":false,"nozzle":false}
+var _desired := {"drain":false,"nozzle":false,"launcher":false,"collector":false}
 var _valves_open: Array[bool] = []
 var _entered: Callable
 var _status := Label.new()
@@ -25,6 +25,8 @@ var _speed := SpinBox.new()
 var _rate := SpinBox.new()
 var _supply := SpinBox.new()
 var _pump := CheckButton.new()
+var _launcher_speed := SpinBox.new()
+var _launcher_rate := SpinBox.new()
 var _buttons := {}
 
 
@@ -50,6 +52,20 @@ func build(owner: Control, workbench: Control, row_factory: Callable, entered_po
 	_speed.value_changed.connect(func(_v: float) -> void: tune())
 	_rate.value_changed.connect(func(_v: float) -> void: tune())
 	_add_button(row,"Stop all",stop_all)
+	row = row_factory.call(workbench)
+	var solids_title := Label.new()
+	solids_title.text = "Solids"
+	solids_title.tooltip_text = "Launcher, collector and conveyor (BS-001). A hopper is a valve in a powder bin's floor."
+	row.add_child(solids_title)
+	_buttons.launcher = _add_button(row,"Launcher [L]",func() -> void: toggle("launcher"))
+	_buttons.collector = _add_button(row,"Collector [O]",func() -> void: toggle("collector"))
+	_add_button(row,"L aim −",func() -> void: tune_launcher(-10.0))
+	_add_button(row,"L aim +",func() -> void: tune_launcher(10.0))
+	_add_spin(row,"L speed",_launcher_speed,0.5,6.0,0.1,4.5)
+	_add_spin(row,"L rate",_launcher_rate,1,Equipment.MAX_LAUNCHER_RATE,1,3)
+	_launcher_speed.value_changed.connect(func(_v: float) -> void: tune_launcher())
+	_launcher_rate.value_changed.connect(func(_v: float) -> void: tune_launcher())
+	_add_button(row,"Load solids-lab",func() -> void: ui.load_equipment_start(Setup.SOLIDS_LAB_LABEL))
 	row = row_factory.call(workbench)
 	_add_button(row,"Load liquid-lab",func() -> void: ui.load_equipment_start(Setup.LIQUID_LAB_LABEL))
 	_add_button(row,"Load reservoir-lab",func() -> void: ui.load_equipment_start(Setup.RESERVOIR_LAB_LABEL))
@@ -110,7 +126,7 @@ func configure() -> bool:
 	var authored := config()
 	if authored.is_empty(): return true
 	serial += 1
-	_desired = {"drain":false,"nozzle":false}
+	_desired = {"drain":false,"nozzle":false,"launcher":false,"collector":false}
 	_valves_open = []
 	for _i: int in authored.valves.size(): _valves_open.append(false)
 	selected_valve = clampi(selected_valve,0,maxi(authored.valves.size()-1,0))
@@ -118,6 +134,10 @@ func configure() -> bool:
 	if not nozzle.is_empty():
 		_speed.set_value_no_signal(float(nozzle[3]))
 		_rate.set_value_no_signal(int(nozzle[4]))
+	var launcher: Array = authored.get("launcher",[])
+	if not launcher.is_empty():
+		_launcher_speed.set_value_no_signal(float(launcher[3]))
+		_launcher_rate.set_value_no_signal(int(launcher[4]))
 	_supply.set_value_no_signal(int(authored.supply))
 	_pump.set_pressed_no_signal(bool(authored.pump))
 	if not host.workbench_equipment({"command":"configure","serial":serial,"config":authored.duplicate(true)}):
@@ -157,10 +177,24 @@ func toggle(device: String, index: int = -2) -> bool:
 		return true
 	if config().get(device,[]).is_empty(): return _refuse("this setup has no %s." % device)
 	var next: bool = not bool(_desired.get(device,false))
-	var key := "on" if device == "nozzle" else "open"
+	var key := "on" if device in ["nozzle","launcher"] else "open"
 	if not _send({"command":device,key:next}): return false
 	_desired[device] = next
-	message = "%s %s." % [device.capitalize(),("on" if next else "off") if device == "nozzle" else ("opening" if next else "closing")]
+	message = "%s %s." % [device.capitalize(),("on" if next else "off") if device in ["nozzle","launcher"] else ("opening" if next else "closing")]
+	return true
+
+
+# Launcher aim and power are authored like the nozzle's and apply live.
+func tune_launcher(angle_delta: float = 0.0) -> bool:
+	var authored := config()
+	if authored.get("launcher",[]).is_empty(): return _refuse("this setup has no launcher.")
+	var launcher: Array = authored.launcher.duplicate()
+	launcher[2] = wrapf(float(launcher[2]) + angle_delta,-180.0,180.0)
+	launcher[3] = float(_launcher_speed.value)
+	launcher[4] = int(_launcher_rate.value)
+	if not _send({"command":"tune_launcher","angle":launcher[2],"speed":launcher[3],"rate":launcher[4]}): return false
+	authored.launcher = launcher
+	message = "Launcher aim %.0f° · speed %.1f · rate %d." % [launcher[2],launcher[3],launcher[4]]
 	return true
 
 
@@ -176,7 +210,7 @@ func toggle_all_valves() -> bool:
 
 func stop_all() -> bool:
 	if not _send({"command":"stop"}): return false
-	_desired = {"drain":false,"nozzle":false}
+	_desired = {"drain":false,"nozzle":false,"launcher":false,"collector":false}
 	for i: int in _valves_open.size(): _valves_open[i] = false
 	message = "All devices closed."
 	return true
@@ -265,13 +299,13 @@ func refresh(context: Dictionary) -> void:
 	if not valves.is_empty():
 		var chosen: Dictionary = valves[selected_valve]
 		_buttons.valve.text = "Valve %d/%d %s [V]" % [selected_valve + 1,valves.size(),"OPEN" if chosen.open else "shut"]
-	for device: String in ["drain","nozzle"]:
+	for device: String in ["drain","nozzle","launcher","collector"]:
 		var state: Dictionary = receipt.get(device,{})
-		var live: bool = state.get("on",false) if device == "nozzle" else state.get("open",false)
+		var live: bool = state.get("on",false) if device in ["nozzle","launcher"] else state.get("open",false)
 		_desired[device] = live
 		_buttons[device].disabled = not state.get("installed",false)
-		_buttons[device].text = "%s %s [%s]" % [device.capitalize(),("ON" if live else "off") if device == "nozzle" else ("OPEN" if live else "shut"),
-			"H" if device == "nozzle" else "G"]
+		_buttons[device].text = "%s %s [%s]" % [device.capitalize(),("ON" if live else "off") if device in ["nozzle","launcher"] else ("OPEN" if live else "shut"),
+			{"nozzle":"H","drain":"G","launcher":"L","collector":"O"}[device]]
 	var unit := maxi(int(receipt.water_unit),1)
 	var drain: Dictionary = receipt.drain
 	var nozzle: Dictionary = receipt.nozzle
@@ -294,6 +328,20 @@ func refresh(context: Dictionary) -> void:
 			float(nozzle.angle),float(nozzle.injected_water)/unit,
 			(" · %d raised the level underwater" % int(nozzle.column_injections)) if int(nozzle.column_injections) > 0 else ""])
 		parts.append("%s %.1f/%.0f cells" % ["pump pipe" if pipe.pump else "supply",float(pipe.stock)/unit,float(pipe.capacity)/unit])
+	var launcher_state: Dictionary = receipt.get("launcher",{})
+	var collector_state: Dictionary = receipt.get("collector",{})
+	var stock: Dictionary = receipt.get("solid_stock",{})
+	if launcher_state.get("installed",false):
+		parts.append("launcher %s (%s) %.0f° · %d fired · stock %d%s" % ["on" if launcher_state.on else "off",receipt.get("solids_mode",""),
+			float(launcher_state.angle),int(launcher_state.launched),int(stock.get("stock",0)),
+			" · conveyor" if stock.get("conveyor",false) else ""])
+	if collector_state.get("installed",false):
+		var gathered := 0
+		for key: Variant in collector_state.collected: gathered += int(collector_state.collected[key])
+		parts.append("collector %s · %d collected" % ["open" if collector_state.open else "shut",gathered])
+	var solids_state: Dictionary = context.get("ballistic_solids",{})
+	if solids_state.get("enabled",false):
+		parts.append("flying solids %d/%d%s" % [int(solids_state.live),int(solids_state.capacity),"" if solids_state.get("closed",true) else " · LEDGER OPEN"])
 	var line := "Liquid equipment · " + " · ".join(parts)
 	if not water.is_empty():
 		var world_cells := float(water.total)/unit

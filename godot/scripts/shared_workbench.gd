@@ -676,7 +676,8 @@ func load_setup() -> bool:
 # ballistic Water for that World so the nozzle fires real parcels. Either can
 # be refused; the start then keeps the policy it was given and the nozzle
 # injects resting cells instead. Global defaults never change.
-const EQUIPMENT_PRESETS := {Setup.LIQUID_LAB_LABEL:"Water: inertial",Setup.RESERVOIR_LAB_LABEL:"Water: pressure reference"}
+const EQUIPMENT_PRESETS := {Setup.LIQUID_LAB_LABEL:"Water: inertial",Setup.RESERVOIR_LAB_LABEL:"Water: pressure reference",
+	Setup.SOLIDS_LAB_LABEL:"Current defaults"}
 
 func load_liquid_lab(ballistic: bool = true, preset_label: String = "") -> bool:
 	return load_equipment_start(Setup.LIQUID_LAB_LABEL,ballistic,preset_label)
@@ -699,6 +700,11 @@ func load_equipment_start(label: String, ballistic: bool = true, preset_label: S
 	if checked.get("accepted",false):
 		candidate.rule_radius = maxi(int(candidate.rule_radius),int(checked.receipt.get("minimum_rule_radius",2)))
 	host.workbench_water_options["workbench_ballistic"] = ballistic
+	# BS-001: the solids start also needs flying solids in its World.
+	if label == Setup.SOLIDS_LAB_LABEL:
+		host.workbench_water_options["workbench_ballistic_solids"] = ballistic
+		water_spray._solids.set_pressed_no_signal(ballistic)
+		water_spray.set_hit_force(10.0)
 	water_spray._ballistic.set_pressed_no_signal(ballistic)
 	if host.simulation_worker.has_failed(): return host.workbench_restart(candidate)
 	if not apply(candidate): return false

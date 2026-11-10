@@ -438,4 +438,5 @@ void World::validate_quantity_ledger(bool scan_authority) const {
     if (visible != quantity_.water_visible || overfill != quantity_.water_overfill || cells != quantity_.material_cells)
         throw std::invalid_argument("quantity accounting differs from stored authority");
     validate_ballistic_ledger();
+    validate_ballistic_solids_ledger();
 }

@@ -1277,7 +1277,7 @@ func queue_workbench_equipment(request: Dictionary) -> bool:
 	_mutex.lock()
 	var ok := _workbench_extent != Vector2i.ZERO and _prepared_physical_publication.is_empty() \
 		and _lab_request.is_empty() and _workbench_equipment_commands.size() < 16 \
-		and str(request.get("command","")) in ["configure","valve","drain","nozzle","tune","stop","observe"]
+		and str(request.get("command","")) in ["configure","valve","drain","nozzle","tune","stop","observe","launcher","collector","tune_launcher"]
 	if ok: _workbench_equipment_commands.append(request.duplicate(true))
 	_mutex.unlock()
 	return ok
@@ -2553,6 +2553,7 @@ func _publish_snapshot(
 		snapshot.lab_context["workbench_completed_sample"] = _workbench_completed_sample
 		snapshot.lab_context["workbench_refusal"] = _workbench_refusal
 		snapshot.lab_context["workbench_source"] = _workbench_source.receipt()
+		_workbench_equipment.refresh_population(_world)
 		snapshot.lab_context["workbench_equipment"] = _workbench_equipment.receipt()
 		_mutex.lock()
 		snapshot.lab_context["workbench_emitters"] = _workbench_emitter_receipts.duplicate(true)
@@ -2562,6 +2563,8 @@ func _publish_snapshot(
 			var spray: Dictionary = _world.get_water_spray()
 			spray["receipt"] = _water_spray_receipt.duplicate(true)
 			snapshot.lab_context["water_spray"] = spray
+		if _world.has_method(&"get_ballistic_solids"):
+			snapshot.lab_context["ballistic_solids"] = _world.get_ballistic_solids()
 	if render_generation_advanced:
 		var render_micro: Dictionary = snapshot.lab_context.get("microscenario", {})
 		var render_presentation: Dictionary = render_micro.get("presentation", {})

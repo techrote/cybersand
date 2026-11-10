@@ -60,6 +60,8 @@ func show_liquid_equipment(receipt: Dictionary, selected_valve: int = -1) -> voi
 			var valve: Dictionary = receipt.valves[i]
 			rects.append([valve.rect,valve.open,"valve",i == selected_valve])
 		if not config.get("drain",[]).is_empty(): rects.append([config.drain,receipt.drain.open,"drain",false])
+		if not config.get("collector",[]).is_empty(): rects.append([config.collector,receipt.collector.open,"collector",false])
+		if not config.get("launcher",[]).is_empty(): markers.launcher = [config.launcher,receipt.launcher.on,receipt.launcher.angle]
 		markers.rects = rects
 		if not config.get("nozzle",[]).is_empty(): markers.nozzle = [config.nozzle,receipt.nozzle.on,receipt.nozzle.angle]
 	if markers != equipment_markers:
@@ -75,8 +77,16 @@ func _draw_equipment() -> void:
 		var corners := PackedVector2Array()
 		for delta: Vector2 in [Vector2.ZERO,Vector2(rect[2],0),Vector2(rect[2],rect[3]),Vector2(0,rect[3]),Vector2.ZERO]:
 			corners.append(_point(Vector2(rect[0],rect[1]) + delta))
-		var color := (Color("7dff9a") if live else Color("ffb347")) if marker[2] == "valve" else (Color("5fc8ff") if live else Color("3a6f8f"))
+		var color := (Color("7dff9a") if live else Color("ffb347")) if marker[2] == "valve" \
+			else ((Color("e8c170") if live else Color("8a7448")) if marker[2] == "collector" else (Color("5fc8ff") if live else Color("3a6f8f")))
 		draw_polyline(corners,color,3.0 if marker[3] else (2.0 if live else 1.0))
+	if equipment_markers.has("launcher"):
+		var launcher: Array = equipment_markers.launcher[0]
+		var origin := Vector2(launcher[0],launcher[1]) + Vector2(0.5,0.5)
+		var end := origin + Vector2.RIGHT.rotated(deg_to_rad(float(equipment_markers.launcher[2]))) * 10.0
+		var tint := Color("ffd27a") if equipment_markers.launcher[1] else Color("8a7448")
+		draw_rect(Rect2(_point(origin) - Vector2(3,3),Vector2(6,6)),tint)
+		draw_line(_point(origin),_point(end),tint,2.0,true)
 	if equipment_markers.has("nozzle"):
 		var nozzle: Array = equipment_markers.nozzle[0]
 		var centre := Vector2(nozzle[0],nozzle[1]) + Vector2(0.5,0.5)

@@ -49,7 +49,8 @@ const BUILTIN_LABELS := [DEFAULT_LABEL,BENCH_LABEL,STRESS_LABEL]
 # BUILTIN_LABELS so terrain-only fixture exporters keep their exact inputs.
 const LIQUID_LAB_LABEL := "liquid-lab"
 const RESERVOIR_LAB_LABEL := "reservoir-lab"
-const EQUIPMENT_LABELS := [LIQUID_LAB_LABEL,RESERVOIR_LAB_LABEL]
+const SOLIDS_LAB_LABEL := "solids-lab"
+const EQUIPMENT_LABELS := [LIQUID_LAB_LABEL,RESERVOIR_LAB_LABEL,SOLIDS_LAB_LABEL]
 const Equipment = preload("res://scripts/workbench_liquid_equipment.gd")
 # Optional root key. Absent = no equipment; a setup without it keeps exactly
 # the Setup-v2 bytes and older builds refuse (never silently drop) one with it.
@@ -323,6 +324,7 @@ static func builtin(label: String, policy: PackedInt32Array) -> Dictionary:
 	if label == STRESS_LABEL: return stress_canvas(policy)
 	if label == LIQUID_LAB_LABEL: return liquid_lab(policy)
 	if label == RESERVOIR_LAB_LABEL: return reservoir_lab(policy)
+	if label == SOLIDS_LAB_LABEL: return solids_lab(policy)
 	return {}
 
 # Built-in "liquid-lab" equipment apparatus (#361; used only while no user file
@@ -357,7 +359,7 @@ static func liquid_lab(policy: PackedInt32Array) -> Dictionary:
 	data.rule_radius = 3
 	data[EQUIPMENT_KEY] = {"version":Equipment.VERSION,"valves":[LIQUID_LAB_VALVE.duplicate()],
 		"drain":LIQUID_LAB_DRAIN.duplicate(),"nozzle":LIQUID_LAB_NOZZLE.duplicate(),"supply":150,"pump":true,
-		"pipe_capacity":Equipment.MAX_PIPE_CELLS}
+		"pipe_capacity":Equipment.MAX_PIPE_CELLS,"launcher":[],"collector":[],"solid_supply":0,"conveyor":false}
 	return data
 
 # Built-in "reservoir-lab" (#361; used only while no user file of that name
@@ -398,7 +400,38 @@ static func reservoir_lab(policy: PackedInt32Array) -> Dictionary:
 	data.material = WATER
 	data[EQUIPMENT_KEY] = {"version":Equipment.VERSION,"valves":RESERVOIR_LAB_VALVES.duplicate(true),
 		"drain":RESERVOIR_LAB_DRAIN.duplicate(),"nozzle":RESERVOIR_LAB_NOZZLE.duplicate(),"supply":0,"pump":true,
-		"pipe_capacity":Equipment.MAX_PIPE_CELLS}
+		"pipe_capacity":Equipment.MAX_PIPE_CELLS,"launcher":[],"collector":[],"solid_supply":0,"conveyor":false}
+	return data
+
+# Built-in "solids-lab" (BS-001; used only while no user file of that name
+# exists). The workbench enables ballistic Water and ballistic solids for this
+# World. Left to right in one 480 x 270 view: a Sand hopper (a bin with valve 1
+# in its floor) above the collector pit; a Water pool where landing solids
+# settle on the surface and then sink; a stack of three barrels; the launcher
+# on the far floor, aimed back at the stack. The conveyor feeds collected Sand
+# to the launcher, so grid + flying + stock Sand stays constant.
+const SOLIDS_LAB_VALVES := [[52,150,16,4]]
+const SOLIDS_LAB_COLLECTOR := [44,258,16,6,16]
+const SOLIDS_LAB_LAUNCHER := [440,250,-150.0,4.5,3,SAND]
+static func solids_lab(policy: PackedInt32Array) -> Dictionary:
+	var data := fresh(policy,Vector2i(512,512))
+	var e: Array = data.edits
+	_box(e,Vector2i(20,60),Vector2i(100,150),SAND)               # hopper contents
+	_box(e,Vector2i(150,224),Vector2i(250,264),WATER)            # pool
+	_box(e,Vector2i(0,264),Vector2i(512,272),WALL)               # floor
+	_box(e,Vector2i(0,20),Vector2i(4,264),WALL)                  # left boundary
+	_box(e,Vector2i(476,20),Vector2i(480,264),WALL)              # right boundary
+	_box(e,Vector2i(16,40),Vector2i(20,154),WALL)                # hopper walls and floor incl. valve 1
+	_box(e,Vector2i(100,40),Vector2i(104,154),WALL)
+	_box(e,Vector2i(16,150),Vector2i(104,154),WALL)
+	_box(e,Vector2i(146,210),Vector2i(150,264),WALL)             # pool walls
+	_box(e,Vector2i(250,210),Vector2i(254,264),WALL)
+	data.actors = [instance(BARREL,1,Vector2(330,256)),instance(BARREL,2,Vector2(330,242)),instance(BARREL,3,Vector2(330,228))]
+	data.next_id = 4
+	data.material = SAND
+	data[EQUIPMENT_KEY] = {"version":Equipment.VERSION,"valves":SOLIDS_LAB_VALVES.duplicate(true),"drain":[],"nozzle":[],
+		"supply":0,"pump":false,"pipe_capacity":Equipment.MAX_PIPE_CELLS,"launcher":SOLIDS_LAB_LAUNCHER.duplicate(),
+		"collector":SOLIDS_LAB_COLLECTOR.duplicate(),"solid_supply":200,"conveyor":true}
 	return data
 
 static func instance(model: String, id: int, pos: Vector2) -> Dictionary:

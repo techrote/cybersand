@@ -8,6 +8,7 @@
 #include "cybersand/pressure_flow.hpp"
 #include "cybersand/inertial_cellular.hpp"
 #include "cybersand/ballistic_water.hpp"
+#include "cybersand/ballistic_solids.hpp"
 #include "cybersand/pressure_optimization.hpp"
 #include "cybersand/quantity_ledger.hpp"
 #include "cybersand/transport_policy.hpp"
@@ -75,6 +76,9 @@ struct WorldConfig {
     // BW-001 ballistic_water_v1: opt-in, bounded parcel owner for Water in
     // flight. Disabled leaves every Current hash, format and ledger unchanged.
     BallisticWaterConfig ballistic_water{};
+    // BS-001 ballistic_solids_v1: opt-in flying solid/powder cells. Requires
+    // ballistic Water; disabled leaves every hash, format and ledger unchanged.
+    BallisticSolidsConfig ballistic_solids{};
     // IN-B1 (experimental): signed-vertical inertial law for every IN material.
     // Requires an applied IN assignment; false keeps inertial_cellular_v1 exact.
     bool inertial_signed_vertical = false;
@@ -378,6 +382,8 @@ public:
         std::uint64_t halo_normalization_produced = 0, halo_normalization_consumed = 0;
         // BW-001: in-flight parcel Water carried into (or refused by) the new owner.
         std::uint64_t preserved_in_flight_water = 0, discarded_in_flight_water = 0;
+        // BS-001: in-flight solids carried into (or refused by) the new owner.
+        std::uint64_t preserved_in_flight_solids = 0, discarded_in_flight_solids = 0;
     };
     WorkbenchLiquidTransfer inherit_workbench_liquid_state(const World& source, RectI64 canvas,
         bool allow_conversion, bool normalize_water);
@@ -435,6 +441,19 @@ public:
     // Copies at most output.size() live parcels in slot order; returns the live count.
     [[nodiscard]] std::size_t copy_ballistic_parcels(std::span<BallisticParcel> output) const noexcept;
     [[nodiscard]] BallisticWaterSnapshot ballistic_water_snapshot() const noexcept;
+    // BS-001 ballistic_solids_v1. Serialized external owner, between ticks.
+    // launch moves one admitted grid cell (material and state) into a flying
+    // solid spawned at an unmasked Empty/gas cell; inject creates one from an
+    // external stock. Refusals are explicit outcomes and never mutate authority.
+    [[nodiscard]] bool ballistic_solids_enabled() const noexcept { return config_.ballistic_solids.enabled; }
+    [[nodiscard]] BallisticLaunchResult launch_ballistic_solid(std::int64_t source_x, std::int64_t source_y,
+        std::int64_t spawn_x_q, std::int64_t spawn_y_q, std::int32_t vx_q, std::int32_t vy_q,
+        std::uint16_t source_body = 0);
+    [[nodiscard]] BallisticLaunchResult inject_ballistic_solid(std::int64_t spawn_x_q, std::int64_t spawn_y_q,
+        std::int32_t vx_q, std::int32_t vy_q, Material material);
+    [[nodiscard]] std::size_t ballistic_solid_count() const noexcept { return ballistic_solids_.size(); }
+    [[nodiscard]] std::size_t copy_ballistic_solids(std::span<BallisticSolid> output) const noexcept;
+    [[nodiscard]] BallisticSolidsSnapshot ballistic_solids_snapshot() const noexcept;
     // IN-B1: add a bounded external velocity impulse to an IN carrier (booked
     // as external). Upward components require the signed law; refused otherwise.
     [[nodiscard]] bool impart_inertial_velocity(std::int64_t x, std::int64_t y, std::int32_t dvx, std::int32_t dvy);
@@ -561,6 +580,23 @@ private:
     std::uint64_t ballistic_advance_nanoseconds_ = 0; // diagnostic only
     std::array<std::int64_t, kMaximumTransientBodies + 1U> ballistic_body_px_{}, ballistic_body_py_{};
     enum class BallisticCell : std::uint8_t { Free, Water, Solid, Body, Outside };
+    std::vector<BallisticSolid> ballistic_solids_;
+    BallisticSolidsLedger ballistic_solids_ledger_{};
+    std::uint64_t ballistic_solids_advance_nanoseconds_ = 0; // diagnostic only
+    void validate_ballistic_solids_config() const;
+    void ballistic_write_solid(std::int64_t x, std::int64_t y, Material material,
+                               std::uint16_t state_a, std::uint8_t state_b);
+    void validate_ballistic_solids_ledger() const;
+    void reset_ballistic_solids() noexcept;
+    void advance_ballistic_solids();
+    [[nodiscard]] bool step_ballistic_solid(BallisticSolid& solid);
+    [[nodiscard]] bool land_ballistic_solid(BallisticSolid& solid, std::int64_t cx, std::int64_t cy, bool liquid);
+    [[nodiscard]] BallisticCell classify_ballistic_solid_cell(std::int64_t x, std::int64_t y,
+        const BallisticSolid& solid, std::uint16_t& body) const noexcept;
+    [[nodiscard]] BallisticLaunchResult admit_ballistic_solid_spawn(std::int64_t spawn_x, std::int64_t spawn_y,
+        std::int32_t vx, std::int32_t vy) const noexcept;
+    void overlay_ballistic_solids_render(RectI64 region, std::span<std::uint8_t> destination,
+                                         std::size_t stride_bytes, std::size_t bytes_per_cell) const noexcept;
     void validate_ballistic_config() const;
     void validate_ballistic_ledger() const;
     void reset_ballistic_water() noexcept;
