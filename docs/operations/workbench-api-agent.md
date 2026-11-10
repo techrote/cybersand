@@ -62,6 +62,15 @@ Chat Completions endpoint. The key is entered locally, not stored in that profil
 Preset selection and funding checks are automated; real NVIDIA inference still
 requires the owner's key/account and is not claimed by keyless qualification.
 
+The NVIDIA response may report a private deployment name. A host-owned
+response_model_aliases map explicitly binds a requested model to up to eight
+accepted response names (NVIDIA only); no general prefix stripping or arbitrary
+model substitution is allowed. The owner preset binds the requested VL model to
+the observed private/nvidia/nemotron-3.5-super-120b-a12b response name. Actual
+returned identity remains in diagnostics. Unknown identities still fail closed.
+Status now occupies a full-width wrapping area with readable common-error text;
+the raw reason and Traffic instructions remain available on hover.
+
 #### Provider-aware pacing correction — 2026-11-09
 
 Conversation/tool history remains intact. OpenAI fallback pacing now retains a

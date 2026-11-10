@@ -68,6 +68,9 @@ func run() -> void:
  OS.set_environment("CYBERSAND_WB_NVIDIA_PROFILE",previous_nv)
  OS.set_environment("CYBERSAND_WB_OPENAI_PROFILE",previous_openai)
  DirAccess.remove_absolute(config_path)
+ panel._log_status("error","provider_model_changed")
+ panel._refresh_dashboard()
+ check(panel._state.text.contains("unexpected model name") and not panel._state.clip_text and panel._state.max_lines_visible == 3,"error is clipped or opaque")
  panel.queue_free()
  await process_frame
  await process_frame

@@ -83,12 +83,16 @@ def strict_endpoint(provider:str, url:str, fixture_mode:bool)->None:
 
 def load_profile(path: Path, *, fixture_mode: bool=False, desktop: bool=False) -> dict:
     cfg=read_json(path)
-    keys_exact(cfg,{'schema','provider','endpoint','model','capabilities','limits','credentials','pricing','spend','local_compute'},
+    keys_exact(cfg,{'schema','provider','endpoint','model','capabilities','limits','credentials','pricing','spend','local_compute','response_model_aliases'},
                {'schema','provider','endpoint','model','capabilities','limits','credentials','spend'})
     if cfg['schema']!=SCHEMA or cfg['provider'] not in PROVIDERS: raise ConfigError('unsupported schema/provider')
     if not isinstance(cfg['model'],str) or not 1<=len(cfg['model'])<=120 or re.search(r'[\r\n\x00]',cfg['model']):
         raise ConfigError('invalid model name')
     if cfg['model'].startswith('REPLACE_') and not fixture_mode: raise ConfigError('placeholder is not a qualified model')
+    aliases=cfg.get('response_model_aliases',{})
+    if not isinstance(aliases,dict) or len(aliases)>8 or (aliases and cfg['provider']!='nvidia_chat'):raise ConfigError('response aliases require a bounded NVIDIA model map')
+    for canonical,names in aliases.items():
+        if not isinstance(canonical,str) or not 1<=len(canonical)<=120 or not isinstance(names,list) or not 1<=len(names)<=8 or any(not isinstance(n,str) or not 1<=len(n)<=160 or re.search(r'[\r\n\x00]',n) for n in names):raise ConfigError('invalid response model alias')
     strict_endpoint(cfg['provider'],cfg['endpoint'],fixture_mode)
     cap=cfg['capabilities']
     keys_exact(cap,{'tools','images','strict_tools','parallel_tools','image_detail'}, {'tools','images','strict_tools','parallel_tools','image_detail'})

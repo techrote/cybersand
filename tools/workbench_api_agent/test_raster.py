@@ -97,3 +97,14 @@ class RasterTests(unittest.TestCase):
         with self.assertRaisesRegex(ProviderError,'response_final_message_missing'):parse_response(answer,'openai_responses','test')
         messages=render_history_response([{'kind':'agent','text':final}],1000,'low')
         self.assertEqual(messages[0]['phase'],'final_answer')
+
+    def test_nvidia_explicit_alias_keeps_actual_identity_and_rejects_other_models(self):
+        from .providers import parse_response
+        canonical='nvidia/nemotron-3.5-super-vl-120b-a12b'
+        actual='private/nvidia/nemotron-3.5-super-120b-a12b'
+        answer={'model':actual,'choices':[{'finish_reason':'stop','message':{'content':'done'}}]}
+        with self.assertRaisesRegex(ProviderError,'provider_model_changed'):parse_response(answer,'nvidia_chat',canonical)
+        d=parse_response(answer,'nvidia_chat',canonical,allowed_models=[actual])
+        self.assertEqual(d.model,actual)
+        answer['model']='another-model'
+        with self.assertRaises(ProviderError):parse_response(answer,'nvidia_chat',canonical,allowed_models=[actual])

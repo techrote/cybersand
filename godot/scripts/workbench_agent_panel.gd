@@ -124,8 +124,10 @@ func _ready() -> void:
 	_state.name = "AgentState"
 	_state.text = "Idle · not connected"
 	_state.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_state.clip_text = true
-	dashboard.add_child(_state)
+	_state.clip_text = false
+	_state.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_state.max_lines_visible = 3
+	add_child(_state)
 	var traffic_button := Button.new()
 	traffic_button.text = "Traffic…"
 	traffic_button.tooltip_text = "Open full request, response, tool and native-acknowledgement traffic. Copy or save JSONL."
@@ -371,9 +373,9 @@ func _refresh_dashboard() -> void:
 		stage = "Native Stop unconfirmed; reopen workbench"
 	elif not _blocked_reason.is_empty():
 		state = "Blocked"
-		stage = _blocked_reason
+		stage = _friendly_error(_blocked_reason)
 	_state.text = "%s · %s" % [state.capitalize(),stage]
-	_state.tooltip_text = _state.text
+	_state.tooltip_text = _state.text + "\n" + _blocked_reason + "\nTraffic contains the complete request and response."
 	_state.modulate = Color(1.0,0.78,0.35) if client.is_active() or _start_pending or _retire_pending else (Color(1.0,0.55,0.5) if not _blocked_reason.is_empty() or _native_unconfirmed else Color(0.65,0.9,0.72))
 	var input_tokens := int(snapshot.get("input_tokens",-1))
 	var output_tokens := int(snapshot.get("output_tokens",-1))
@@ -912,3 +914,7 @@ func _select_authoring_mode(index: int) -> void:
 	_fill_wording_sections()
 	if _boilerplate_section.item_count > 0: _select_boilerplate_section(0)
 	_boilerplate_window.title = "Scanline wording" if selected == "scanline" else "Tool wording"
+
+func _friendly_error(reason: String) -> String:
+	var messages := {"provider_model_changed":"The server returned an unexpected model name. Open Traffic to compare the requested and returned model IDs.","provider_auth_denied":"API key rejected. Check the selected provider and enter its key with Key….","provider_quota_exhausted":"Provider quota or credits exhausted. Check your provider account.","provider_request_rejected":"Provider rejected the request. Open Traffic for the full server error.","provider_rate_retry_exhausted":"Provider rate limit persists after retries. Check TPM and the server response in Traffic.","invalid_provider_json":"The model returned an invalid packet. Open Traffic to inspect its complete response."}
+	return str(messages.get(reason,reason.replace("_"," ")))

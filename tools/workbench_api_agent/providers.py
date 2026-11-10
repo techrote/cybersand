@@ -297,7 +297,7 @@ class HTTPAdapter:
         sha=hashlib.sha256(json.dumps(answer,sort_keys=True,separators=(',',':')).encode()).hexdigest()
         seen=any(h.get('image') for h in history)
         try:
-            decision=parse_response(answer,provider,model,sha,seen,max_text=None if cfg.get("_authoring_mode")=="scanline" else 8000)
+            decision=parse_response(answer,provider,model,sha,seen,max_text=None if cfg.get("_authoring_mode")=="scanline" else 8000,allowed_models=cfg.get('response_model_aliases',{}).get(model,[]) if provider=='nvidia_chat' else ())
             if cfg.get('_authoring_mode')=='scanline':
                 if decision.kind!='final':raise ProviderError('scanline_requires_json_text_packet')
                 self._scanline_sequence=getattr(self,'_scanline_sequence',0)+1
@@ -327,9 +327,9 @@ SYSTEM_MESSAGE=('You are operating a native CyberSand World through four bounded
  'A final message is unverified until the native receipts and rendering match declared checks.')
 
 
-def parse_response(answer:dict,provider:str,requested_model:str,sha:str='',seen:bool=False,*,max_text:int|None=8000)->Decision:
+def parse_response(answer:dict,provider:str,requested_model:str,sha:str='',seen:bool=False,*,max_text:int|None=8000,allowed_models=())->Decision:
     model=answer.get('model')
-    if model is not None and model!=requested_model:raise ProviderError('provider_model_changed')
+    if model is not None and model!=requested_model and model not in allowed_models:raise ProviderError('provider_model_changed')
     if provider=='openai_responses':
         if answer.get('status')!='completed':raise ProviderError('response_incomplete_or_failed')
         items=answer.get('output')
