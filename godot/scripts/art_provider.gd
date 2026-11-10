@@ -13,7 +13,7 @@ var log_warning := ""
 var usage: Dictionary = {}
 var requested_model := ""
 var returned_model := ""
-const INSTRUCTIONS := 'Return ONLY a JSON array of drawing operations, no prose. Coordinates are integer world cells; rectangle endpoints inclusive. Material 58=Hard Wall; 0=erase. Existing other materials and protected regions cannot be overwritten. Operations execute in order. Shapes: {"shape":"rectangle","x0":1,"y0":1,"x1":8,"y1":20,"material":58}, {"shape":"disc","x":5,"y":5,"radius":2,"material":0}, {"shape":"line","x0":1,"y0":1,"x1":8,"y1":20,"material":58}, {"shape":"pixels","points":[[1,2],[3,4]],"material":58}. Use a few substantial shapes rather than thousands of pixels. Stay inside the supplied work area. Do not call external tools.'
+const INSTRUCTIONS := 'Create the user-requested subject as an original 2D pixel-art composition, filling the supplied work area. Build complex subjects from as many simple primitives as needed. Return ONLY a JSON array, no prose. Each object has shape and material. Literal shape values and required integer parameters: rectangle uses x0,y0,x1,y1 (inclusive endpoints); disc uses x,y,radius; line uses x0,y0,x1,y1; pixels uses points:[[x,y],...]. Choose your own coordinates and dimensions to depict the subject; these are field definitions, not a drawing to copy. Material 58 draws Hard Wall, material 0 erases; omitted material defaults to 58. Operations execute in order. Stay inside the supplied work area; keep every disc including its radius inside it. Existing other materials and protected regions cannot be overwritten. Do not call external tools.'
 
 static func payload(provider: String, model: String, prompt: String, instructions: String, tokens: int, png: String = "") -> Dictionary:
 	if provider == "OpenAI":
@@ -60,13 +60,20 @@ static func operations(text: String) -> Variant:
 		var lines := clean.split("\n")
 		if lines.size()>2: clean = "\n".join(lines.slice(1,lines.size()-1))
 	var parser := JSON.new()
-	if parser.parse(clean)!=OK: return null
+	if parser.parse(clean)!=OK:
+		# Accept a complete array followed by stray wrapper/prose, never a truncated array.
+		if not clean.begins_with("[") or parser.parse(clean.left(clean.rfind("]")+1))!=OK: return null
 	var value: Variant = parser.data
 	if value is Dictionary and value.has("operations"): value = value.operations
 	if value is Dictionary and (value.has("shape") or value.has("type")): value = [value]
 	if value is Array:
 		for op: Variant in value:
-			if op is Dictionary and not op.has("shape") and op.has("type"): op.shape = op.type
+			if not op is Dictionary: continue
+			if not op.has("shape"): op.shape = op.get("type",op.get("operation",""))
+			if op.shape is String:
+				op.shape = op.shape.trim_prefix("draw_")
+				op.shape = {"rect":"rectangle","circle":"disc","pixel":"pixels"}.get(op.shape,op.shape)
+			if not op.has("material"): op.material = 58
 	return value
 
 func redact(value: String) -> String:

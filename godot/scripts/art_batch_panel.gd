@@ -176,7 +176,12 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	model.placeholder_text = "Model ID"
 	row.add_child(model)
 	history.tooltip_text = "Previously used model IDs"
-	history.item_selected.connect(func(i: int) -> void: model.text = history.get_item_text(i))
+	history.fit_to_longest_item = false
+	history.clip_text = true
+	history.custom_minimum_size.x = 34
+	history.item_selected.connect(func(i: int) -> void:
+		if i>0: model.text = history.get_item_text(i)
+		history.select(0))
 	row.add_child(history)
 	key_button.text = "Key…"
 	key_button.pressed.connect(func() -> void:
@@ -275,7 +280,7 @@ func load_profile() -> void:
 	model.text = settings.get_value(current_provider,"model",defaults[current_provider][1])
 	tokens.value = settings.get_value(current_provider,"tokens",8192)
 	seconds.value = settings.get_value(current_provider,"seconds",180)
-	history.clear(); history.add_item("History")
+	history.clear(); history.add_item("▾")
 	for name_text: String in settings.get_value(current_provider,"history",[]): history.add_item(name_text)
 
 func stop_all(reason: String = "Human Stop") -> void:

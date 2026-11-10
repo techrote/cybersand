@@ -58,8 +58,11 @@ Stage-5 automatic pacing/advanced budgets are not claimed here.
 adapters. `art_batch_panel.gd` supplies compact controls and dispatches parsed
 operations to the existing Stage-1 executor. No second simulation or controller
 is introduced. Plain JSON arrays, an operations envelope, a single shape, JSON
-fences and a recognized final packet after `</think>` are accepted. `type` aliases
-`shape`; native geometry/material validation still applies. Arbitrary prose is
+fences and a recognized final packet after `</think>` are accepted. `type`/`operation` alias
+`shape`; draw_ prefixes and pixel/circle/rect spellings normalize to the same
+primitives. Omitted material explicitly defaults to Hard Wall (still refused if
+not enabled). A complete JSON array followed by a stray closing wrapper is
+accepted; a truncated array is not. Native geometry/material validation still applies. Arbitrary prose is
 not executed. Refused/malformed packets leave Send available for correction and
 retain the complete provider response. This is structured-text drawing, not a
 claim that every local model supports native tool calling.
@@ -147,5 +150,9 @@ Its optional WSL-to-Windows loopback relay is test-only, not a product dependenc
 No external port exposure or MCP is introduced.
 
 Cloud request shaping is keylessly qualified; genuine OpenAI/NVIDIA calls require
-owner key entry and remain separately reported. No paid calls or merge/Ready
+owner key entry and remain separately reported. The first nine statue trials copied literal numeric examples or used near-miss
+field names, and applied zero cells. Their failures are retained. The generic
+instructions were clarified to describe parameter fields without numeric drawing
+examples; equivalent spellings were normalized and the comparison repeated.
+No paid calls or merge/Ready
 promotion are implied by this implementation.
