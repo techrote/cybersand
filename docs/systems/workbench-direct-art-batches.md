@@ -18,8 +18,8 @@ related-documents: [../architecture/shared-workbench-authoring-data.md, ../refer
 #531 is read-only reference; none of its controller/configuration modules is
 imported. Native C++ and physics/material defaults are unchanged. This is a
 small direct-drawing interface in the ordinary desktop Shared Workbench, not
-another World or editor. Providers, inference, persistent context and scanlines
-are **Planned** in subsequent #559 stages.
+another World or editor. The [Stage-2 provider candidate](workbench-art-providers.md) now adds one-shot
+inference; persistent context and scanlines remain **Planned**.
 
 Open **Shared Workbench → Art batches**. The floating, hideable test input
 preserves the canvas layout. Draw/Stop sit beside its title. Enter ordered JSON,

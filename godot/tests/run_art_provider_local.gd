@@ -1,0 +1,99 @@
+extends SceneTree
+const P = preload("res://scripts/art_provider.gd")
+var main: Control
+var panel
+var checks := 0
+var failures := 0
+var original_settings := ""
+var had_settings := false
+func _initialize() -> void:
+	ProjectSettings.set_setting("cybersand/native_worker_threads",2)
+	run.call_deferred()
+func check(ok: bool, label: String) -> void:
+	checks += 1; print("PROVIDER_CHECK ",label," ",ok)
+	if not ok: failures += 1; push_error(label)
+func until(test: Callable, label: String) -> bool:
+	var deadline := Time.get_ticks_msec()+180000
+	while not test.call() and Time.get_ticks_msec()<deadline: await process_frame
+	var ok: bool = test.call(); check(ok,label); return ok
+func run() -> void:
+	had_settings = FileAccess.file_exists("user://art-provider.cfg")
+	if had_settings: original_settings = FileAccess.get_file_as_string("user://art-provider.cfg")
+	root.size = Vector2i(1920,1080)
+	change_scene_to_file("res://feature_launcher.tscn")
+	await scene_changed
+	current_scene.launch("shared_workbench")
+	await scene_changed
+	main = current_scene
+	panel = main.shared_workbench.art_batches
+	if not await until(func(): return not main.shared_workbench.applied.is_empty() and not main.shared_workbench.busy(),"native workbench ready"): quit(1); return
+	var one := P.payload("OpenAI","manual-alias","hello","instructions",4096,"PNG")
+	check(one.max_output_tokens==4096 and one.input[0].content[1].type=="input_image" and not one.store,"OpenAI Responses image and cap shaping")
+	one = P.payload("NVIDIA","alias","hello","instructions",8192,"PNG")
+	check(one.max_tokens==8192 and one.messages[1].content[1].image_url.url.ends_with("PNG"),"NVIDIA multimodal compatible shaping")
+	one = P.payload("LM Studio","alias","hello","instructions",32768)
+	check(one.max_tokens==32768 and one.messages[1].content is String and not one.has("api_key"),"local request without fabricated key")
+	check(P.decode("OpenAI",{"status":"incomplete","incomplete_details":{"reason":"max_output_tokens"}}).error.contains("incomplete"),"reasoning/output truncation is explicit")
+	check(P.decode("NVIDIA",{"choices":[{"finish_reason":"length","message":{"content":"[]"}}]}).error.contains("limit"),"chat truncation cannot partially draw")
+	check(P.operations("```json\n[{\"shape\":\"pixels\"}]\n```") is Array,"fenced structured response accepted")
+	panel.provider.secrets.append("TEST-secret-not-real")
+	check(not panel.provider.redact('Bearer abcdefghijklmnop TEST-secret-not-real sk-abcdefghijklmnop').contains("abcdefghijklmnop"),"credential redaction")
+	var base := OS.get_environment("WB_ART_TEST_ENDPOINT")
+	if base.is_empty(): base = "http://localhost:1234/v1"
+	var model_name := OS.get_environment("WB_ART_TEST_MODEL")
+	if model_name.is_empty(): model_name = "wb-art-local"
+	var profile := OS.get_environment("WB_ART_TEST_PROVIDER")
+	if profile in ["OpenAI","NVIDIA"]:
+		var index := 1 if profile=="OpenAI" else 2
+		panel.source.select(index); panel.change_provider(index)
+		panel.keys[profile] = "dummy-key-123"
+	panel.image_input.button_pressed = OS.get_environment("WB_ART_TEST_IMAGE")=="1"
+	panel.endpoint.text = base
+	panel.model.text = model_name
+	panel.fields[0].value = 0; panel.fields[1].value = 0
+	panel.fields[2].value = 64; panel.fields[3].value = 128
+	# Genuine inference from the same UI action used by the owner.
+	for cap: int in [4096,8192,16384]:
+		panel.tokens.value = cap
+		panel.input.text = 'Return only a JSON array drawing a Hard Wall rectangle exactly from (10,10) through (12,12), inclusive. Use one rectangle operation with material 58. No other operations.'
+		panel.send_prompt()
+		check(panel.provider.active or panel.capturing,"UI starts asynchronous provider request at cap "+str(cap))
+		await until(func(): return not panel.provider.active and not panel.capturing,"provider request finished at cap "+str(cap))
+		check(panel.input_error.is_empty(),"model structured response admitted: "+panel.input_error)
+		await until(func(): return not panel.executor.active,"native drawing acknowledged")
+		await until(func(): return main.image.get_pixel(10,10).r8==58 and main.image.get_pixel(12,12).r8==58,"genuine model command applied to native World")
+		check(panel.executor.last_receipt.get("backend")=="CyberNativeCellWorld","real native response identity")
+	# Replacement also fences a response from the old World.
+	panel.input.text = "Draw a wall rectangle from (40,40) through (60,60)."
+	panel.send_prompt()
+	check(main.shared_workbench.new_canvas(),"replace World during provider request")
+	await until(func(): return not main.shared_workbench.busy() and not main.shared_workbench.applied.is_empty(),"replacement acknowledged")
+	await until(func(): return not panel.provider.active and not panel.capturing,"old response retired after replacement")
+	check(main.image.get_pixel(40,40).r8==0,"no stale provider drawing after replacement")
+	# Cancellation fences any response even when a server continues generating.
+	panel.input.text = "Draw a wall rectangle from (40,40) through (60,60)."
+	panel.send_prompt()
+	panel.stop_all()
+	for i: int in range(30): await process_frame
+	check(not panel.provider.active and main.image.get_pixel(40,40).r8==0,"Stop during inference prevents late drawing")
+	check(FileAccess.file_exists(panel.provider.log_path),"durable traffic exists")
+	var log_text := FileAccess.get_file_as_string(panel.provider.log_path)
+	check(log_text.contains('"request"') and log_text.contains('"response"') and log_text.contains('"native_result"'),"full request response and native traffic retained")
+	check(not log_text.contains("TEST-secret-not-real"),"durable log excludes secret")
+	var folder := OS.get_environment("WB_ART_EVIDENCE_DIR")
+	if not folder.is_empty():
+		DirAccess.make_dir_recursive_absolute(folder)
+		DirAccess.copy_absolute(panel.provider.log_path,folder+"/provider-native-traffic.jsonl")
+		if DisplayServer.get_name()!="headless":
+			panel.popup_centered()
+			await process_frame
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(folder+"/provider-ui.png")
+	print("ART_PROVIDER_RESULT ",JSON.stringify({"checks":checks,"failures":failures,"provider":panel.current_provider,"requested_model":model_name,"model":panel.provider.returned_model,"usage":panel.provider.usage,"log":ProjectSettings.globalize_path(panel.provider.log_path)}))
+	main.queue_free()
+	await process_frame
+	if had_settings:
+		var file := FileAccess.open("user://art-provider.cfg",FileAccess.WRITE); file.store_string(original_settings)
+	else: DirAccess.remove_absolute("user://art-provider.cfg")
+	await process_frame
+	quit(1 if failures else 0)

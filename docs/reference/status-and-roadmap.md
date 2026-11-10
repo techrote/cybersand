@@ -12,7 +12,7 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## WB-ART-002 direct drawing — 2026-11-10
 
-**Unmerged Stage-1 candidate:** the [direct art batch contract](../systems/workbench-direct-art-batches.md) owns the fresh-main #559 drawing interface, native-sized streaming, actual completion, protection, Stop and save/reopen. #531 remains reference only. Providers/context/scanline stages are Planned. Existing Setup format capacity still applies to Save.
+**Unmerged Stage-1 candidate:** the [direct art batch contract](../systems/workbench-direct-art-batches.md) owns the fresh-main #559 drawing interface, native-sized streaming, actual completion, protection, Stop and save/reopen. #531 remains reference only. The [Stage-2 provider candidate](../systems/workbench-art-providers.md) adds OpenAI/NVIDIA/local one-shot requests and cancellation. Context/scanline stages remain Planned. Existing Setup format capacity still applies to Save.
 
 
 ## EXPLORE-001 generated playable maps — 2026-11-08
