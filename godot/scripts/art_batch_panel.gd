@@ -182,11 +182,13 @@ func _process(_delta: float) -> void:
 	draw.text = "Draw" if input_mode.selected==0 else "Send"
 	for row: Control in rows: row.visible = input_mode.selected!=0
 	key_button.text = "Key ✓" if not str(keys.get(current_provider,"")).is_empty() else "Key…"
-	help.text = "One request → direct drawing. Image sends the current canvas view; choose a vision model. Turns controls how many requests Send can make." if input_mode.selected!=0 else "Ordered JSON: rectangle / disc / line / pixels. Material 58 = Hard Wall; 0 = erase. Large drawings stream in native-sized chunks."
+	help.text = "Turns limits requests per Send. Image attaches a canvas crop. Select a vision model to use it." if input_mode.selected!=0 else "Ordered JSON: rectangle / disc / line / pixels. Material 58 = Hard Wall; 0 = erase. Large drawings stream in native-sized chunks."
 	if log_draw and not executor.active:
 		provider.log_event("native_result",executor.result)
 		log_draw = false
 		model_feedback(JSON.stringify(executor.result))
+	if remaining_turns == 0 and not provider.active and not capturing and not log_draw:
+		run_deadline_ms = 0
 	var status_text := "Idle"
 	if provider.active: status_text = "Waiting for model · Stop available"
 	elif waiting_until_ms > Time.get_ticks_msec():
