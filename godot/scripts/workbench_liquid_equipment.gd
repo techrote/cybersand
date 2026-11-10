@@ -41,6 +41,7 @@ extends RefCounted
 
 const UsableRuntime = preload("res://scripts/usable_runtime.gd")
 const Kinetic = preload("res://scripts/workbench_kinetic_mask.gd")
+const KineticUsables = preload("res://scripts/kinetic_usables.gd")
 const MAX_KINETICS := 8
 const VERSION := 1
 const GATE := 58                 # Hard wall
@@ -58,7 +59,7 @@ const MAX_COLUMN_RISE := 64
 const SURFACE_SPREAD := 6
 const SURFACE_DROP := 32
 const KEYS := ["version","valves","drain","nozzle","supply","pump","pipe_capacity",
-	"launcher","collector","solid_supply","conveyor","kinetics"]
+	"launcher","collector","solid_supply","conveyor","kinetics","loadout"]
 # Materials the solids devices may fire or collect (powders and Stone). The
 # native owner decides admission again and refuses anything else.
 const SOLIDS := [2,13,14,19,23,26,27,29,8,12,16,20,21,24,32,33,36]
@@ -144,7 +145,7 @@ var _observation_serial := 0
 
 static func empty_config() -> Dictionary:
 	return {"version":VERSION,"valves":[],"drain":[],"nozzle":[],"supply":0,"pump":false,"pipe_capacity":MAX_PIPE_CELLS,
-		"launcher":[],"collector":[],"solid_supply":0,"conveyor":false,"kinetics":[]}
+		"launcher":[],"collector":[],"solid_supply":0,"conveyor":false,"kinetics":[],"loadout":["","",""]}
 
 
 static func _int(value: Variant, low: int, high: int) -> bool:
@@ -227,6 +228,11 @@ static func validate(value: Variant, extent: Vector2i) -> String:
 		return "Solid supply must be 0-%d cells and conveyor a true/false switch." % MAX_SOLID_STOCK
 	if value.launcher.is_empty() and (value.conveyor or int(value.solid_supply) != 0):
 		return "Conveyor and solid supply need a launcher."
+	if not value.loadout is Array or value.loadout.size() != 3:
+		return "Loadout needs three port entries (Q, E, S)."
+	for usable: Variant in value.loadout:
+		if not usable is String or (not usable.is_empty() and not KineticUsables.valid(usable)):
+			return "Unknown port usable: " + str(usable)
 	if not value.kinetics is Array or value.kinetics.size() > MAX_KINETICS:
 		return "At most %d kinetic emitters." % MAX_KINETICS
 	for emitter: Variant in value.kinetics:
@@ -252,6 +258,7 @@ static func canonical(value: Dictionary) -> Dictionary:
 	result.collector = Array(PackedInt32Array(value.collector))
 	result.solid_supply = int(value.solid_supply)
 	result.conveyor = bool(value.conveyor)
+	result.loadout = [str(value.loadout[0]),str(value.loadout[1]),str(value.loadout[2])]
 	for emitter: Array in value.kinetics:
 		result.kinetics.append([int(emitter[0]),int(emitter[1]),str(emitter[2]),int(emitter[3]),float(emitter[4]),float(emitter[5])])
 	return result

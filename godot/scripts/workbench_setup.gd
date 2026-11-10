@@ -363,7 +363,7 @@ static func liquid_lab(policy: PackedInt32Array) -> Dictionary:
 	data.rule_radius = 3
 	data[EQUIPMENT_KEY] = {"version":Equipment.VERSION,"valves":[LIQUID_LAB_VALVE.duplicate()],
 		"drain":LIQUID_LAB_DRAIN.duplicate(),"nozzle":LIQUID_LAB_NOZZLE.duplicate(),"supply":150,"pump":true,
-		"pipe_capacity":Equipment.MAX_PIPE_CELLS,"launcher":[],"collector":[],"solid_supply":0,"conveyor":false,"kinetics":[]}
+		"pipe_capacity":Equipment.MAX_PIPE_CELLS,"launcher":[],"collector":[],"solid_supply":0,"conveyor":false,"kinetics":[],"loadout":["","",""]}
 	return data
 
 # Built-in "reservoir-lab" (#361; used only while no user file of that name
@@ -404,7 +404,7 @@ static func reservoir_lab(policy: PackedInt32Array) -> Dictionary:
 	data.material = WATER
 	data[EQUIPMENT_KEY] = {"version":Equipment.VERSION,"valves":RESERVOIR_LAB_VALVES.duplicate(true),
 		"drain":RESERVOIR_LAB_DRAIN.duplicate(),"nozzle":RESERVOIR_LAB_NOZZLE.duplicate(),"supply":0,"pump":true,
-		"pipe_capacity":Equipment.MAX_PIPE_CELLS,"launcher":[],"collector":[],"solid_supply":0,"conveyor":false,"kinetics":[]}
+		"pipe_capacity":Equipment.MAX_PIPE_CELLS,"launcher":[],"collector":[],"solid_supply":0,"conveyor":false,"kinetics":[],"loadout":["","",""]}
 	return data
 
 # Built-in "solids-lab" (BS-001; used only while no user file of that name
@@ -435,7 +435,7 @@ static func solids_lab(policy: PackedInt32Array) -> Dictionary:
 	data.material = SAND
 	data[EQUIPMENT_KEY] = {"version":Equipment.VERSION,"valves":SOLIDS_LAB_VALVES.duplicate(true),"drain":[],"nozzle":[],
 		"supply":0,"pump":false,"pipe_capacity":Equipment.MAX_PIPE_CELLS,"launcher":SOLIDS_LAB_LAUNCHER.duplicate(),
-		"collector":SOLIDS_LAB_COLLECTOR.duplicate(),"solid_supply":200,"conveyor":true,"kinetics":[]}
+		"collector":SOLIDS_LAB_COLLECTOR.duplicate(),"solid_supply":200,"conveyor":true,"kinetics":[],"loadout":["","",""]}
 	return data
 
 # Built-in "kinetic-lab" (kinetic mask tools; used only while no user file of
@@ -448,6 +448,8 @@ static func solids_lab(policy: PackedInt32Array) -> Dictionary:
 const KINETIC_LAB_EMITTERS := [[80,252,"blast",14,1.0,0.0],[230,261,"geyser",16,1.0,-90.0],
 	[196,238,"vortex",10,1.0,0.0],[360,254,"shockwave",16,1.0,0.0],[440,258,"pepper",8,0.6,0.0],
 	[230,211,"gust",12,1.0,-30.0]]
+# Flyer ports in kinetic-lab: Q gravel shotgun, E water cannon, S blast glove.
+const KINETIC_LAB_LOADOUT := ["gravel_shotgun","water_cannon","blast_glove"]
 static func kinetic_lab(policy: PackedInt32Array) -> Dictionary:
 	var data := fresh(policy,Vector2i(512,512))
 	var e: Array = data.edits
@@ -464,11 +466,14 @@ static func kinetic_lab(policy: PackedInt32Array) -> Dictionary:
 	_box(e,Vector2i(410,236),Vector2i(414,264),WALL)             # Lava basin walls
 	_box(e,Vector2i(468,236),Vector2i(472,264),WALL)
 	data.actors = [instance(BARREL,1,Vector2(340,224)),instance(BARREL,2,Vector2(380,224))]
-	data.next_id = 3
+	if Fleet.count() > 0:
+		data.actors.append(instance(Fleet.stable_id(0),3,Vector2(80,190)))
+		data.selected = 3
+	data.next_id = 4
 	data.material = SAND
 	data[EQUIPMENT_KEY] = {"version":Equipment.VERSION,"valves":[],"drain":[],"nozzle":[],"supply":0,"pump":false,
 		"pipe_capacity":Equipment.MAX_PIPE_CELLS,"launcher":[],"collector":[],"solid_supply":0,"conveyor":false,
-		"kinetics":KINETIC_LAB_EMITTERS.duplicate(true)}
+		"kinetics":KINETIC_LAB_EMITTERS.duplicate(true),"loadout":KINETIC_LAB_LOADOUT.duplicate()}
 	return data
 
 static func instance(model: String, id: int, pos: Vector2) -> Dictionary:

@@ -6,6 +6,7 @@ const CADENCE_TICKS: int = 6
 const MAX_NOZZLES: int = 3
 const MAX_TRACE_CELLS: int = 64
 const MAX_READS: int = 1024
+const KineticUsables = preload("res://scripts/kinetic_usables.gd")
 
 class Guard extends RefCounted:
 	var world: Object
@@ -35,7 +36,9 @@ static func valid_ports(ports: Dictionary) -> bool:
 	return true
 
 
-static func intents(rig, pose: Transform2D, binding: Dictionary, identity: Dictionary) -> Array:
+# `loadout` maps a port ("q", "e", "s") to a kinetic usable id; a bound port
+# fires that usable instead of the flyer definition's dispenser material.
+static func intents(rig, pose: Transform2D, binding: Dictionary, identity: Dictionary, loadout: Dictionary = {}) -> Array:
 	var profile: Dictionary = rig._profile
 	var action: Dictionary = rig._action
 	if action.is_empty() or rig._player_controller == null: return []
@@ -47,6 +50,10 @@ static func intents(rig, pose: Transform2D, binding: Dictionary, identity: Dicti
 			["e", "e-right", Vector2(half.x+2.0,0)],
 			["s", "s-rear", Vector2(half.x*0.65,half.y+3.0)]]:
 		var port: String = location[0]
+		var usable: Variant = loadout.get(port,"")
+		if KineticUsables.valid(usable) and binding.ports[port]:
+			nozzles.append({"nozzle":location[1], "material":0, "usable":usable, "target":pose * Vector2(location[2])})
+			continue
 		var material: int = profile.get("fleet_dispenser_" + port, 0)
 		if material != 0 and binding.ports[port]:
 			nozzles.append({"nozzle":location[1], "material":material, "target":pose * Vector2(location[2])})
@@ -84,6 +91,9 @@ static func apply(world: Object, emitters: Array, extent: Vector2i) -> Array:
 		var proxy: Guard = guards[id]
 		var reason: String = ""
 		var cell := Vector2i.ZERO
+		if intent.has("usable"):
+			receipts.append(_fire_usable(world,intent,extent,proxy,id))
+			continue
 		if not _inside(intent.source, extent) or not _inside(intent.target, extent): reason = "bounds"
 		elif proxy.first_proxy < 1 or proxy.count < 1 or proxy.first_proxy + proxy.count - 1 > 64: reason = "identity"
 		elif intent.get("material") not in [3,6,8,12,26]: reason = "material"
@@ -107,6 +117,38 @@ static func apply(world: Object, emitters: Array, extent: Vector2i) -> Array:
 		receipts.append({"instance_id":id,"epoch":intent.epoch,"sequence":intent.sequence,"tick":intent.tick,
 			"nozzle":intent.nozzle,"material":intent.material,"point":cell,"changed_cells":changed,"reason":reason})
 	return receipts
+
+
+# A kinetic usable on a flyer port (shooter or wand). The aim is the port's
+# outward direction from the flyer origin, so it turns with the body. Shooters
+# need a clear path from the origin to the port, like every dispenser.
+static func _fire_usable(world: Object, intent: Dictionary, extent: Vector2i, proxy: Guard, id: int) -> Dictionary:
+	var receipt := {"instance_id":id,"epoch":intent.get("epoch"),"sequence":intent.get("sequence"),"tick":intent.get("tick"),
+		"nozzle":intent.get("nozzle"),"usable":intent.get("usable"),"material":0,"point":Vector2i.ZERO,"changed_cells":0,"reason":""}
+	if not intent.get("source") is Vector2 or not intent.get("target") is Vector2 \
+			or not _inside(intent.source, extent) or not _inside(intent.target, extent):
+		receipt.reason = "bounds"
+		return receipt
+	if proxy.first_proxy < 1 or proxy.count < 1 or proxy.first_proxy + proxy.count - 1 > 64:
+		receipt.reason = "identity"
+		return receipt
+	if not KineticUsables.valid(intent.usable):
+		receipt.reason = "usable"
+		return receipt
+	var entry: Dictionary = KineticUsables.ENTRIES[intent.usable]
+	var cell := Vector2i(floori(intent.target.x),floori(intent.target.y))
+	receipt.point = cell
+	if entry.kind == "shooter" and not _path_clear(proxy,intent.source,intent.target):
+		receipt.reason = "blocked"
+		return receipt
+	var axis: Vector2 = (intent.target - intent.source).normalized()
+	var seed := int(intent.get("tick",0)) * 131 + id * 17 + KineticUsables.ORDER.find(intent.usable)
+	var result := KineticUsables.fire(world,extent,Vector2(cell) + Vector2(0.5,0.5),axis,intent.usable,1.0,seed)
+	receipt.changed_cells = int(result.launched)
+	receipt.water = int(result.water)
+	receipt.solids = int(result.solids)
+	if int(result.launched) == 0: receipt.reason = "nothing_launched" if result.refused.is_empty() else str(result.refused.keys()[0])
+	return receipt
 
 
 static func _inside(point: Vector2, extent: Vector2i) -> bool:

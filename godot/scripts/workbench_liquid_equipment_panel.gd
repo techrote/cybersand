@@ -9,6 +9,8 @@ extends RefCounted
 const Equipment = preload("res://scripts/workbench_liquid_equipment.gd")
 const Setup = preload("res://scripts/workbench_setup.gd")
 const Kinetic = preload("res://scripts/workbench_kinetic_mask.gd")
+const KineticUsables = preload("res://scripts/kinetic_usables.gd")
+const PORTS := ["q","e","s"]
 const DEFAULT_VALVE := Vector2i(4,8)
 const DEFAULT_DRAIN := [12,6,16]
 const DEFAULT_NOZZLE := [-135.0,4.0,2]
@@ -32,6 +34,7 @@ var _kinetic_radius := SpinBox.new()
 var _kinetic_strength := SpinBox.new()
 var _kinetic_angle := SpinBox.new()
 var _kinetic_hold := false
+var _port_pickers: Array[OptionButton] = []
 var _last_kinetic_ms := -1000
 var _launcher_rate := SpinBox.new()
 var _buttons := {}
@@ -88,6 +91,22 @@ func build(owner: Control, workbench: Control, row_factory: Callable, entered_po
 	_add_button(row,"Hold emitters [Y]",hold_emitters)
 	_add_button(row,"Emitter at X/Y",func() -> void: place("kinetic"))
 	_add_button(row,"Load kinetic-lab",func() -> void: ui.load_equipment_start(Setup.KINETIC_LAB_LABEL))
+	row = row_factory.call(workbench)
+	var ports_title := Label.new()
+	ports_title.text = "Flyer ports"
+	ports_title.tooltip_text = "Bind a material shooter or kinetic wand to a piloted flyer's Q, E or S port. It fires along the port's outward direction while the key is held."
+	row.add_child(ports_title)
+	for index: int in PORTS.size():
+		var label := Label.new()
+		label.text = PORTS[index].to_upper()
+		row.add_child(label)
+		var picker := OptionButton.new()
+		picker.focus_mode = Control.FOCUS_NONE
+		picker.add_item("Flyer default")
+		for id: String in KineticUsables.ORDER: picker.add_item(str(KineticUsables.ENTRIES[id].label))
+		picker.item_selected.connect(func(choice: int) -> void: set_port(index,"" if choice == 0 else KineticUsables.ORDER[choice - 1]))
+		row.add_child(picker)
+		_port_pickers.append(picker)
 	row = row_factory.call(workbench)
 	_add_button(row,"Load liquid-lab",func() -> void: ui.load_equipment_start(Setup.LIQUID_LAB_LABEL))
 	_add_button(row,"Load reservoir-lab",func() -> void: ui.load_equipment_start(Setup.RESERVOIR_LAB_LABEL))
@@ -160,6 +179,10 @@ func configure() -> bool:
 	if not launcher.is_empty():
 		_launcher_speed.set_value_no_signal(float(launcher[3]))
 		_launcher_rate.set_value_no_signal(int(launcher[4]))
+	var loadout: Array = authored.get("loadout",["","",""])
+	for index: int in mini(_port_pickers.size(),loadout.size()):
+		_port_pickers[index].select(0 if str(loadout[index]).is_empty() else KineticUsables.ORDER.find(str(loadout[index])) + 1)
+	push_loadout()
 	_supply.set_value_no_signal(int(authored.supply))
 	_pump.set_pressed_no_signal(bool(authored.pump))
 	if not host.workbench_equipment({"command":"configure","serial":serial,"config":authored.duplicate(true)}):
@@ -218,6 +241,23 @@ func tune_launcher(angle_delta: float = 0.0) -> bool:
 	authored.launcher = launcher
 	message = "Launcher aim %.0f° · speed %.1f · rate %d." % [launcher[2],launcher[3],launcher[4]]
 	return true
+
+
+# The actor session reads the loadout on the main thread when it packs flyer
+# port intents; the worker validates every intent again before firing.
+func push_loadout() -> void:
+	if host == null or host.physical_actor_session == null: return
+	var loadout: Array = config().get("loadout",["","",""])
+	var mapping := {}
+	for index: int in PORTS.size():
+		if index < loadout.size() and KineticUsables.valid(loadout[index]): mapping[PORTS[index]] = loadout[index]
+	host.physical_actor_session.workbench_loadout = mapping
+
+
+func set_port(index: int, usable: String) -> bool:
+	var placed := _edit(func(next: Dictionary) -> void: next.loadout[index] = usable)
+	if placed: message = "Port %s: %s." % [PORTS[index].to_upper(),"flyer default" if usable.is_empty() else KineticUsables.ENTRIES[usable].label]
+	return placed
 
 
 func kinetic_choice() -> String:
@@ -334,6 +374,7 @@ func remove_all() -> bool:
 	if ui.busy(): return _refuse("wait for the session.")
 	_send({"command":"stop"})
 	ui.applied.erase("equipment")
+	if host.physical_actor_session != null: host.physical_actor_session.workbench_loadout = {}
 	serial += 1
 	# An empty block deconfigures the worker owner without leaving a device live.
 	host.workbench_equipment({"command":"configure","serial":serial,"config":Equipment.empty_config()})

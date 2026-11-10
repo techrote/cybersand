@@ -33,6 +33,9 @@ var run_id: String = ""
 var _definitions: Array = []
 var _catalogue: Array = []
 var _workbench_ports: Dictionary = {}
+# Workbench flyer port loadout {"q"|"e"|"s": kinetic usable id}; set by the
+# shared workbench from the authored equipment block. Applies to every piloted flyer.
+var workbench_loadout: Dictionary = {}
 var _workbench_emitted_at: Dictionary = {}
 var _rigs: Array = []
 var _scripts: Array = []
@@ -319,7 +322,7 @@ func pack_workbench_sample() -> Dictionary:
 		var identity: Dictionary = {"actor_slot":slot, "instance_id":_definitions[slot].instance_id,
 			"session":packet.session, "epoch":epoch, "generation":binding.generation, "sequence":binding.sequence,
 			"tick":tick, "first_proxy":packet.bodies[slot].first_proxy, "count":packet.bodies[slot].count}
-		packet.emitters.append_array(WorkbenchEmitter.intents(_rigs[slot], bridge.body_transform(slot), binding, identity))
+		packet.emitters.append_array(WorkbenchEmitter.intents(_rigs[slot], bridge.body_transform(slot), binding, identity, workbench_loadout))
 	return packet
 
 
