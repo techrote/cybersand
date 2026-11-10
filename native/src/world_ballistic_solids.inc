@@ -208,7 +208,7 @@ bool World::land_ballistic_solid(BallisticSolid& solid, std::int64_t cx, std::in
     if (liquid) {
         for (std::int64_t rise = 1; rise <= kBallisticColumnReach; ++rise) {
             const auto ty = cy - rise;
-            if (transient_obstacle_at(cx, ty) != 0U) break;
+            if (transient_obstacle_at(cx, ty) != 0U) continue;
             const auto target = address(cx, ty);
             const auto* chunk = find_chunk(target.chunk);
             if (chunk == nullptr) break;
@@ -222,11 +222,13 @@ bool World::land_ballistic_solid(BallisticSolid& solid, std::int64_t cx, std::in
         if (free_at(x, y)) return land(x, y);
     }
     // Moving powder can bury a resting solid (solids never occupy cells). A
-    // buried solid climbs its own column through powders and liquids to the
-    // first free cell (<= 64 rows); walls, structural solids and bodies stop it.
+    // buried solid climbs its own column through powders, liquids and resting
+    // bodies to the first free unmasked cell (<= 64 rows); walls and structural
+    // solids stop it.
     for (std::int64_t rise = 1; rise <= kBallisticColumnReach; ++rise) {
         const auto ty = cy - rise;
-        if (transient_obstacle_at(cx, ty) != 0U) break;
+        // A resting body over a buried solid is passed behind, never landed under.
+        if (transient_obstacle_at(cx, ty) != 0U) continue;
         const auto target = address(cx, ty);
         const auto* chunk = find_chunk(target.chunk);
         if (chunk == nullptr) break;

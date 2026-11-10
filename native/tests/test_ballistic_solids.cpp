@@ -271,3 +271,23 @@ void test_ballistic_water_rises_through_oil() {
     require(world.water_quantity({0, 0, 32, 48}) == total, "deposit through Oil changed Water");
     closes(world, "oil column");
 }
+
+void test_ballistic_solids_climb_past_body() {
+    World world(solids_config());
+    box(world, 32, 48);
+    require(world.inject_ballistic_solid(centre(10), centre(36), 0, 0, Material::Sand).outcome == BallisticLaunchOutcome::Launched,
+            "inject refused");
+    rect(world, 4, 32, 13, 15, Material::Sand);          // bury it in Sand
+    world.configure_transient_obstacles({0, 0, 32, 48});
+    for (std::int64_t y = 26; y < 32; ++y)               // a body resting on the pile
+        for (std::int64_t x = 4; x < 17; ++x) require(world.set_transient_obstacle(x, y, 2), "body mask");
+    const auto sand = count(world, Material::Sand, 32, 48) + 1U;
+    for (int t = 0; t < 40 && world.ballistic_solid_count() != 0U; ++t) (void)world.tick();
+    require(world.ballistic_solid_count() == 0U, "a solid buried under a resting body never landed");
+    require(count(world, Material::Sand, 32, 48) == sand, "landing past the body changed Sand");
+    for (std::int64_t y = 26; y < 32; ++y)
+        for (std::int64_t x = 4; x < 17; ++x)
+            require(world.stored_material(x, y) == Material::Empty, "a solid landed under the body");
+    world.clear_transient_obstacles();
+    closes(world, "past body");
+}
