@@ -38,6 +38,21 @@ func run() -> void:
 	wb = main.shared_workbench
 	if not await until(installed,"blank native workbench ready"): quit(1); return
 	art = wb.art_batches.executor
+	var panel = wb.art_batches
+	panel.provider.requested_model = "fixture"
+	panel.provider.usage = {"prompt_tokens":275,"completion_tokens":170}
+	panel.input_error = "Previous provider error"
+	await process_frame
+	await process_frame
+	panel.input_mode.select(0)
+	panel.input_mode.item_selected.emit(0)
+	for i: int in range(5): await process_frame
+	check(panel.state.text == "Idle" and panel.draw.text == "Draw","Direct JSON clears provider status without growing")
+	panel.input.text = '[{"shape":"pixels","points":[[5,5]],"material":58}]'
+	panel.draw.pressed.emit()
+	await until(func(): return not art.active and main.image.get_pixel(5,5).r8 == 58,"Direct JSON Draw applies a native pixel")
+	panel.provider.requested_model = ""
+
 	art.wb = wb
 	check(main.paused,"drawing begins paused")
 	var viewport_size: Vector2 = main.get_node("Layout").size

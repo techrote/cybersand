@@ -155,18 +155,20 @@ func _process(_delta: float) -> void:
 	if log_draw and not executor.active:
 		provider.log_event("native_result",executor.result)
 		log_draw = false
-	if provider.active: state.text = "Waiting for model · Stop available"
-	elif capturing: state.text = "Capturing current view · Stop available"
+	var status_text := "Idle"
+	if provider.active: status_text = "Waiting for model · Stop available"
+	elif capturing: status_text = "Capturing current view · Stop available"
 	elif not input_error.is_empty():
-		state.text = input_error.left(500)+(" … See Traffic for full details." if input_error.length()>500 else "")
+		status_text = input_error.left(500)+(" … See Traffic for full details." if input_error.length()>500 else "")
 	elif executor.active or executor.result.status != "idle":
 		var r: Dictionary = executor.result
-		state.text = "%s · %d checked · %d changed · %d protected/outside skipped%s" % [str(r.status).capitalize(),r.checked,r.changed,r.excluded," · "+str(r.reason) if not str(r.reason).is_empty() else ""]
+		status_text = "%s · %d checked · %d changed · %d protected/outside skipped%s" % [str(r.status).capitalize(),r.checked,r.changed,r.excluded," · "+str(r.reason) if not str(r.reason).is_empty() else ""]
 
-	if not provider.requested_model.is_empty():
+	if input_mode.selected == 1 and not provider.requested_model.is_empty():
 		var u: Dictionary = provider.usage
-		state.text += " · In %s Out %s · Cost ?" % [str(u.get("input_tokens",u.get("prompt_tokens","?"))),str(u.get("output_tokens",u.get("completion_tokens","?")))]
-	if not provider.log_warning.is_empty(): state.text += " · "+provider.log_warning
+		status_text += " · In %s Out %s · Cost ?" % [str(u.get("input_tokens",u.get("prompt_tokens","?"))),str(u.get("output_tokens",u.get("completion_tokens","?")))]
+	if not provider.log_warning.is_empty(): status_text += " · "+provider.log_warning
+	if state.text != status_text: state.text = status_text
 
 func _exit_tree() -> void:
 	if wb != null: stop_all("Workbench closed")
