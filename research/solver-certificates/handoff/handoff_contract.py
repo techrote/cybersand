@@ -11,7 +11,7 @@ from json import dumps
 from typing import Optional
 
 BASELINE = "d4b18e7f06839b35c8f6a66195206da0f33c5fa3"
-MODEL_VERSION = "B3-RESEARCH-3"
+MODEL_VERSION = "B3-RESEARCH-4"
 WHOLE_CELL = 256
 MAX_TX = 4096
 
@@ -71,6 +71,22 @@ class Record:
 
     def valid(self) -> bool:
         return bool(self.identity) and self.amount > 0 and self.revision >= 0 and self.overfill >= 0 and len(self.velocity_q256) == 2
+
+
+def inertial_seed_admissible(r: Record, signed_world_enabled: bool) -> bool:
+    """Research-model IN seed/restoration predicate, not a native policy receipt.
+
+    Non-IN records are outside this particular predicate. A signed World may
+    admit negative vertical IN velocity; ordinary Worlds must not. The model
+    deliberately does not claim native q16 velocity-range or policy parity.
+    """
+    if r.owner != Owner.INERTIAL:
+        return True
+    velocity = r.velocity_q256
+    return (r.amount == WHOLE_CELL and isinstance(velocity, (tuple, list))
+            and len(velocity) == 2 and
+            type(velocity[0]) is int and type(velocity[1]) is int and
+            (signed_world_enabled or velocity[1] >= 0))
 
 
 def source_signature(r: Record) -> tuple:
@@ -148,8 +164,8 @@ class World:
         if generation < 1 or len(records) != len({r.identity for r in records}) or not all(r.valid() for r in records):
             raise ValueError("invalid initial records")
         for r in records:
-            if r.owner == Owner.INERTIAL and r.amount != WHOLE_CELL:
-                raise ValueError("IN requires whole-cell Water")
+            if not inertial_seed_admissible(r, signed_inertial_world_enabled):
+                raise ValueError("inadmissible initial IN state for World signed policy")
         w = cls(generation, 0, {r.identity: r for r in records}, 0,
                 signed_inertial_world_enabled=signed_inertial_world_enabled)
         w.initial_water = w.water_total()
@@ -167,7 +183,11 @@ class World:
     def assert_invariants(self):
         assert len(self.records) == len(set(self.records))
         assert all(k == r.identity and r.valid() for k, r in self.records.items())
-        assert all(r.owner != Owner.INERTIAL or r.amount == WHOLE_CELL for r in self.records.values())
+        # An explicitly validated restore must obey the same applied World
+        # signed-law admission as start(); direct dataclass construction alone
+        # is not a trusted or validated native restoration.
+        assert all(inertial_seed_admissible(r, self.signed_inertial_world_enabled)
+                   for r in self.records.values())
         assert all(r.owner == Owner.PRESSURE or r.overfill == 0 for r in self.records.values())
         assert self.water_total() + self.external_consumed == self.initial_water + self.external_produced
         assert len(self.accepted) <= MAX_TX
