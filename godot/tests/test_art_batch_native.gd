@@ -1,0 +1,165 @@
+extends SceneTree
+var main: Control
+var wb
+var art
+var failures := 0
+var checks := 0
+func _initialize() -> void:
+	ProjectSettings.set_setting("cybersand/native_worker_threads",2)
+	run.call_deferred()
+func check(ok: bool, label: String) -> void:
+	checks += 1
+	print("ART_CHECK ",label," ",ok)
+	if not ok: failures += 1; push_error(label)
+func until(test: Callable, label: String) -> bool:
+	var deadline := Time.get_ticks_msec()+90000
+	while not test.call() and Time.get_ticks_msec()<deadline: await process_frame
+	var ok: bool = test.call()
+	check(ok,label+(" / "+main.microscenario_error if main!=null and not ok else ""))
+	return ok
+func installed() -> bool:
+	return not wb.applied.is_empty() and not wb.busy() and main.pending_microscenario_apply.is_empty()
+func cell(x: int,y: int) -> int: return main.image.get_pixel(x,y).r8
+func submit(ops: Array, guards: Array = []) -> bool:
+	var r: Dictionary = art.submit(ops,Rect2i(0,0,2048,2048),guards)
+	check(r.status=="queued","batch admitted as queued")
+	return r.status=="queued"
+func finish() -> void:
+	await until(func(): return not art.active,"native batch completes")
+	check(art.result.status=="completed","completion is authoritative")
+	check(art.last_receipt.get("backend")=="CyberNativeCellWorld","compiled native World receipt")
+func run() -> void:
+	root.size = Vector2i(1920,1080)
+	change_scene_to_file("res://feature_launcher.tscn")
+	await scene_changed
+	current_scene.launch("shared_workbench")
+	await scene_changed
+	main = current_scene
+	wb = main.shared_workbench
+	if not await until(installed,"blank native workbench ready"): quit(1); return
+	art = wb.art_batches.executor
+	art.wb = wb
+	check(main.paused,"drawing begins paused")
+	var viewport_size: Vector2 = main.get_node("Layout").size
+	wb.art_batches.popup_centered()
+	await process_frame
+	check(main.get_node("Layout").size==viewport_size,"floating panel preserves viewport layout")
+	wb.art_batches.hide()
+	# A large rectangle followed by erase, a diagonal and >32 individual pixels.
+	var points: Array = []
+	for x: int in range(120,184): points.append([x,150])
+	submit([{"shape":"rectangle","x0":20,"y0":20,"x1":119,"y1":119,"material":58},
+	{"shape":"rectangle","x0":40,"y0":40,"x1":59,"y1":59,"material":0},
+	{"shape":"line","x0":130,"y0":20,"x1":170,"y1":60,"material":58},
+	{"shape":"pixels","points":points,"material":58}])
+	check(not wb.save_setup(),"save refuses unexecuted queued artwork")
+	await finish()
+	await until(func(): return cell(20,20)==58 and cell(59,59)==0 and cell(183,150)==58,"native published pixels")
+	var exact := true
+	for y: int in range(20,120):
+		for x: int in range(20,120):
+			var expected := 0 if x>=40 and x<=59 and y>=40 and y<=59 else 58
+			if cell(x,y)!=expected: exact = false
+	check(exact,"all 10000 rectangle cells and ordered erase exact")
+	for x: int in range(130,171): check(cell(x,x-110)==58,"line pixel "+str(x))
+	check(art.result.checked==10505 and art.result.changed==10505,"large batch counts span multiple chunks")
+	# Ordinary human Sand is protected from art, as is a selected rectangle.
+	wb.applied.brush = 2
+	check(wb.paint(Vector2i(200,200),2),"ordinary human Sand paint")
+	await until(func(): return cell(200,200)==2,"human Sand visible")
+	var excluded := 0
+	for y: int in range(198,203):
+		for x: int in range(198,203):
+			if cell(x,y)==2 or x>=201: excluded += 1
+	submit([{"shape":"rectangle","x0":198,"y0":198,"x1":202,"y1":202,"material":58}],[Rect2i(201,198,2,5)])
+	await finish()
+	await until(func(): return cell(198,198)==58,"protected batch published")
+	check(cell(200,200)==2 and cell(201,198)==0 and art.result.excluded==excluded,"source and rectangle protection executed")
+	# Stop before first chunk, then Stop an admitted large batch at a chunk boundary.
+	submit([{"shape":"rectangle","x0":300,"y0":300,"x1":700,"y1":700,"material":58}])
+	art.stop()
+	await until(func(): return not art.active,"Stop retires before queue")
+	check(art.result.checked==0 and cell(300,300)==0,"stopped unstarted batch writes nothing")
+	submit([{"shape":"rectangle","x0":300,"y0":300,"x1":700,"y1":700,"material":58}])
+	wb.art_batches.set_process(false)
+	art.poll()
+	await until(func(): return main.simulation_worker.art_state().receipt_ready,"one native chunk actually executed")
+	art.stop()
+	wb.art_batches.set_process(true)
+	await until(func(): return not art.active,"Stop native acknowledgement")
+	var prefix: int = art.result.checked
+	check(prefix==4096 and art.result.status in ["partial","cancelled"],"Stop preserves at most executing native chunk")
+	for i: int in range(20): await process_frame
+	check(art.result.checked==prefix and cell(700,700)==0,"no stale painting after Stop")
+	var late: Dictionary = main.simulation_worker.art_queue(PackedInt32Array([700,700]),58,Rect2i(0,0,2048,2048),[],art.epoch)
+	check(late.status=="refused","late old-epoch submission fenced")
+	# Saved recipe includes the confirmed prefix; never the remainder.
+	wb._name.text = "art-stage1-regression"
+	check(wb.save_setup(),"save confirmed native artwork / "+wb.message)
+	check(wb.load_setup(),"load saved artwork")
+	await until(installed,"saved recipe installed")
+	await until(func(): return cell(20,20)==58 and cell(200,200)==2,"saved native artwork reproduced")
+	check(cell(700,700)==0,"save excludes unexecuted remainder")
+	# Replacement invalidates pending art and cannot paint the new World.
+	submit([{"shape":"rectangle","x0":900,"y0":900,"x1":1200,"y1":1200,"material":58}])
+	wb.art_batches.set_process(false)
+	art.poll()
+	await until(func(): return main.simulation_worker.art_state().receipt_ready,"old native chunk ready before replacement")
+	check(wb.new_canvas(),"replace canvas with pending completion")
+	wb.art_batches.set_process(true)
+	await until(installed,"replacement native owner ready")
+	await until(func(): return not art.active,"old batch retired")
+	check(cell(900,900)==0 and wb.applied.edits.is_empty(),"new World excludes old callbacks and recipe")
+	# Disc raster uses an independent exact membership check.
+	submit([{"shape":"disc","x":60,"y":60,"radius":9,"material":58}])
+	await finish()
+	await until(func(): return cell(60,60)==58,"disc published")
+	exact = true
+	for y: int in range(50,71):
+		for x: int in range(50,71):
+			if cell(x,y)!=(58 if (x-60)*(x-60)+(y-60)*(y-60)<=81 else 0): exact=false
+	check(exact,"exact disc raster")
+	# Invalid input remains recoverable; local scope and material controls are enforced.
+	var refused: Dictionary = art.submit([{"shape":"pixels","points":[[1,1]],"material":58}],Rect2i(0,0,2048,2048),[],[0])
+	check(refused.status=="refused" and not art.active,"disabled material refused before native admission")
+	refused = art.submit([{"shape":"pixels","points":[[2048,1]],"material":58}],Rect2i(0,0,2048,2048),[])
+	check(refused.status=="refused","out of canvas rejected without ending future drawing")
+	refused = art.submit([{"shape":"rectangle","x0":220,"y0":220,"x1":229,"y1":229,"material":58}],Rect2i(220,220,3,2),[])
+	check(refused.status=="queued","limited work area accepted")
+	await finish()
+	await until(func(): return cell(220,220)==58,"scoped cells published")
+	check(art.result.changed==6 and art.result.excluded==94 and cell(223,220)==0,"selected area checked on native owner")
+	# Manual paint between chunks uses the same ordered recipe and survives reopen.
+	wb.art_batches.set_process(false)
+	submit([{"shape":"rectangle","x0":500,"y0":500,"x1":599,"y1":599,"material":58}])
+	art.poll()
+	await until(func(): return main.simulation_worker.art_state().receipt_ready,"chunk ready for manual intervention")
+	check(wb.paint(Vector2i(510,510),0),"human erase admitted alongside active batch")
+	wb.art_batches.set_process(true)
+	await finish()
+	await until(func(): return cell(510,510)==0 and cell(599,599)==58,"human erase ordered between chunks")
+	check(wb.save_setup(),"save mixed human and batch edits")
+	check(wb.load_setup(),"reopen mixed human and batch edits")
+	await until(installed,"mixed authored recipe installed")
+	await until(func(): return cell(510,510)==0 and cell(599,599)==58,"mixed recipe reproduces native order")
+	var evidence := OS.get_environment("WB_ART_EVIDENCE_DIR")
+	if evidence.is_empty(): evidence = OS.get_environment("CYBERSAND_TEST_ARTIFACT_DIR")
+	if not evidence.is_empty() and DisplayServer.get_name()!="headless":
+		DirAccess.make_dir_recursive_absolute(evidence)
+		main.image.save_png(evidence+"/native-material-readback.png")
+		wb._set_view(Vector2(0,0),Vector2i(960,540))
+		wb.art_batches.popup_centered()
+		await process_frame
+		await RenderingServer.frame_post_draw
+		check(root.get_texture().get_image().save_png(evidence+"/stage1.png")==OK,"original post-draw PNG")
+		root.size = Vector2i(1280,800)
+		wb.art_batches.popup_centered()
+		for i: int in range(3): await process_frame
+		check(Rect2i(Vector2i.ZERO,Vector2i(root.get_visible_rect().size)).encloses(Rect2i(wb.art_batches.position,wb.art_batches.size)),"panel fits 1280x800")
+		await RenderingServer.frame_post_draw
+		check(root.get_texture().get_image().save_png(evidence+"/stage1-1280.png")==OK,"smaller-window original PNG")
+	print("ART_STAGE1_RESULT ",JSON.stringify({"checks":checks,"failures":failures,"stop_prefix":prefix,"last_native_backend":art.last_receipt.get("backend"),"last_chunk_changed":art.last_receipt.get("changed"),"base":"d4b18e7f06839b35c8f6a66195206da0f33c5fa3"}))
+	main.queue_free()
+	await process_frame
+	await process_frame
+	quit(1 if failures else 0)

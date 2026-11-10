@@ -101,6 +101,11 @@ var _physical_usable_cancelled_generations := PackedInt64Array([-1, -1, -1, -1, 
 
 var _pending_emissions: Array[Vector4i] = []
 var _pending_cell_emissions: Array[Dictionary] = []
+# WB-ART-002: one bounded chunk/result, ordinary owner loop; no authorizing session.
+var _art_epoch := 1
+var _art_pending := {}
+var _art_result := {}
+var _art_inflight := false
 var _reset_requested: bool = false
 var _reset_spawn: Vector2 = Vector2(150.0, 145.0)
 var _reset_sampled_character_enabled: bool = true
@@ -342,6 +347,8 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 	if committed:
 		_pending_emissions.clear()
 		_pending_cell_emissions.clear()
+		_art_epoch += 1
+		_art_pending.clear()
 		_workbench_emitters.clear()
 		_workbench_last_emitter_sample = -1
 		_workbench_source_commands.clear()
@@ -1151,6 +1158,8 @@ func queue_actor_prototype_reset(definitions: Array, spawn_position: Vector2, sa
 		_mutex.unlock()
 		return 0
 	_lab_request_revision += 1
+	_art_epoch += 1
+	_art_pending.clear()
 	_reset_requested = true
 	_reset_spawn = spawn_position
 	_reset_sampled_character_enabled = sampled_enabled
@@ -1718,6 +1727,83 @@ func queue_emit_disc(
 	return true
 
 
+func art_state() -> Dictionary:
+	_mutex.lock()
+	var result := {"epoch":_art_epoch,"executing":_art_inflight,"queued":not _art_pending.is_empty(),"receipt_ready":not _art_result.is_empty()}
+	_mutex.unlock()
+	return result
+
+func art_stop() -> Dictionary:
+	_mutex.lock()
+	_art_epoch += 1
+	if not _art_pending.is_empty():
+		_art_result = {"status":"cancelled","readback":[],"changed":0,"checked":0,"excluded":0}
+		_art_pending.clear()
+	var result := {"epoch":_art_epoch,"acknowledged":not _art_inflight}
+	_mutex.unlock()
+	return result
+
+func art_take_result() -> Dictionary:
+	_mutex.lock()
+	var result := _art_result
+	_art_result = {}
+	_mutex.unlock()
+	return result
+
+func art_queue(points: PackedInt32Array, material: int, scope: Rect2i, protected: Array, epoch: int, allowed: Array = [0,58]) -> Dictionary:
+	if points.is_empty() or points.size()%2 != 0 or points.size()/2 > MAX_BRUSH_FOOTPRINT_CELLS or material not in [0,58] or material not in allowed: return {"status":"refused","reason":"Invalid native chunk"}
+	_mutex.lock()
+	var reason := ""
+	if epoch != _art_epoch: reason = "Batch stopped or canvas replaced"
+	elif _reset_requested or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty() or _workbench_extent == Vector2i.ZERO: reason = "Canvas changing"
+	elif _simulation_failed: reason = "Native simulation failed"
+	elif _art_inflight or not _art_pending.is_empty() or not _art_result.is_empty(): reason = "Native chunk busy"
+	if reason.is_empty(): _art_pending = {"points":points.duplicate(),"material":material,"scope":scope,"protected":protected.duplicate(),"epoch":epoch}
+	_mutex.unlock()
+	return {"status":"queued"} if reason.is_empty() else {"status":"refused","reason":reason}
+
+func _consume_art() -> void:
+	_mutex.lock()
+	var command: Dictionary = _art_pending
+	_art_pending = {}
+	if command.is_empty():
+		_mutex.unlock()
+		return
+	_art_inflight = true
+	_mutex.unlock()
+	var rows: Array = []
+	var changed := 0
+	var checked := 0
+	var excluded := 0
+	var points: PackedInt32Array = command.points
+	var world_bounds := Rect2i(Vector2i.ZERO,_workbench_extent)
+	var failure := ""
+	for i: int in range(0,points.size(),2):
+		checked += 1
+		var x: int = points[i]
+		var y: int = points[i+1]
+		var point := Vector2i(x,y)
+		var blocked: bool = not world_bounds.has_point(point) or not command.scope.has_point(point)
+		for guard: Rect2i in command.protected: blocked = blocked or guard.has_point(point)
+		if blocked:
+			excluded += 1
+			continue
+		var before: int = _world.material_at(x,y)
+		if before not in [0,58]:
+			excluded += 1
+			continue
+		_world.emit_disc(x,y,0,int(command.material))
+		var actual: int = _world.material_at(x,y)
+		rows.append([x,y,before,actual])
+		if actual != before: changed += 1
+		if actual != int(command.material):
+			failure = "Native write did not produce requested material"
+			break
+	_mutex.lock()
+	_art_inflight = false
+	_art_result = {"status":"completed" if failure.is_empty() else "partial","reason":failure,"checked":checked,"backend":_world.get_class(),"changed":changed,"excluded":excluded,"readback":rows,"generation":_world_generation,"tick":int(_world.tick_index)}
+	_mutex.unlock()
+
 func queue_emit_cells(
 	points: PackedInt32Array,
 	material_id: int,
@@ -1780,6 +1866,8 @@ func queue_reset(
 ) -> void:
 	_mutex.lock()
 	_lab_request_revision += 1
+	_art_epoch += 1
+	_art_pending.clear()
 	_reset_requested = true
 	_reset_spawn = spawn_position
 	_reset_sampled_character_enabled = sampled_character_enabled
@@ -1857,6 +1945,8 @@ func _apply_emissions(local_emissions: Array, local_cell_emissions: Array) -> vo
 				packed_material & EMISSION_MATERIAL_MASK,
 				packed_material >> EMISSION_FLAGS_SHIFT
 			)
+
+	_consume_art()
 
 func _worker_loop() -> void:
 	var next_tick_usec: int = Time.get_ticks_usec()
@@ -2005,6 +2095,7 @@ func _worker_loop() -> void:
 			next_tick_usec = Time.get_ticks_usec()
 			continue
 		if _apply_lab(local_lab):
+			art_stop()
 			local_emissions.clear()
 			local_cell_emissions.clear()
 			# Candidate Worlds may reuse a hard-surface revision number. Their

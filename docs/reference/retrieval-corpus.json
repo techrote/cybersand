@@ -3,6 +3,7 @@
   "reviewed": "2026-11-04",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
+    "systems/workbench-direct-art-batches.md",
     "MATERIAL_LAB.md",
     "architecture/chunk-tile-and-buffer-model.md",
     "architecture/data-ownership-and-lifetimes.md",

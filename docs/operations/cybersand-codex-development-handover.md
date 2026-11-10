@@ -10,6 +10,11 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## WB-ART-002 Stage 1 — 2026-11-10
+
+Owner-authorized fresh branch `codex/agent-art-workbench-v2` starts from main `d4b18e7f06839b35c8f6a66195206da0f33c5fa3`. Read the [direct art batch contract](../systems/workbench-direct-art-batches.md). This lane owns the new art modules/tests and narrow shared-workbench/worker completion seams; #531 is reference only. Preserve #543 ordinary-editor and #548 Flatten ownership. No inference, merge or Ready promotion.
+
+
 ## Shared workbench review transition — 2026-11-08
 
 Owner-authorized #542 Ready qualification follows the
