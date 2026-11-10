@@ -122,3 +122,9 @@ independent checker, bounded cost and remaining limitations are in
 The standalone signed-policy checker executed 38 independent predicate controls,
 but the exact B3 model and expanded suite **have not been executed** at this
 head. Model-only Draft/HOLD remains in force; B4/B5 independent review required.
+
+## 2026-11-10 B3-RESEARCH-5 — caller-held seed alias custody
+
+B4 independently showed that the previous B3-RESEARCH-4 model accepted a caller-supplied mutable velocity list as an unsigned IN seed, then leaked later list mutations into World state without an epoch/revision transition. [New bounded proof, exact source identities, counterexample and qualification limits](SEED-ALIAS-CUSTODY-20261110.md). `World.start` now validates exact integer fields and owns a fresh two-integer tuple per initial Record, and `assert_invariants` rejects list-backed purported restored records. Correctness is conditional on the research model's exclusive writer and admitted transitions; this is not a real runtime guarantee.
+
+The updated module has **28 authored deterministic test methods**. An independent semantic shadow confirmed 23 accepted alias controls, one expected signed-policy refusal and five malformed-value refusals, including reproduction of the old alias exposure; it did **not** execute the published 28-method suite. No native or production physics tests, tick measurements, physical hashes, workbench acceptance, MAT-AUTH or policy authorization are claimed. B5's independent unversioned applied-policy mutation falsifier remains open. Draft/HOLD pending exact-head independent B4/B5 replay.
