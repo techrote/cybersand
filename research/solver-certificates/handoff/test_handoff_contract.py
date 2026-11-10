@@ -46,6 +46,53 @@ class ContractProofTests(unittest.TestCase):
         self.assertEqual(w.records["actor-7"].owner, Owner.RAPIER)
         self.assertEqual(len(w.records), 4)
 
+    def test_prepare_snapshot_rejects_unversioned_source_mutation(self):
+        # B3-RESEARCH-3 negative control: same identity/owner/amount/revision,
+        # but stale velocity or source-associated body context.
+        for mutation in ("velocity", "body"):
+            with self.subTest(mutation=mutation):
+                w = world()
+                i = prepare(w, token="source-drift", source_id="water-0",
+                            target=Owner.BALLISTIC, amount=WHOLE_CELL)
+                old = w.records["water-0"]
+                changed = (replace(old, velocity_q256=(512, -37)) if mutation == "velocity"
+                           else replace(old, body_id=7))
+                w.records["water-0"] = changed  # adversarial unversioned write
+                self.assertEqual(changed.revision, old.revision)
+                before = w.material_identity()
+                self.assert_refusal_unchanged(w, i, Refusal.SOURCE_DRIFT)
+                self.assertEqual(before, w.material_identity())
+                # A newly prepared intent is valid for the new source state.
+                retry = prepare(w, token="source-drift", source_id="water-0",
+                                target=Owner.BALLISTIC, amount=WHOLE_CELL)
+                self.assertEqual(commit(w, retry, fenced=True).status,
+                                 ReceiptStatus.COMMITTED)
+                w.assert_invariants()
+
+    def test_prepare_snapshot_freezes_nested_mutable_velocity(self):
+        # Record is frozen, but Python annotations do not prevent a caller
+        # passing a mutable nested velocity list. Snapshot copies its values.
+        w = world()
+        w.records["water-0"] = replace(w.records["water-0"],
+                                       velocity_q256=[0, 0])
+        i = prepare(w, token="alias", source_id="water-0",
+                    target=Owner.BALLISTIC, amount=WHOLE_CELL)
+        w.records["water-0"].velocity_q256[1] = -7
+        self.assert_refusal_unchanged(w, i, Refusal.SOURCE_DRIFT)
+
+    def test_accepted_token_rejects_changed_source_snapshot_fingerprint(self):
+        w = world()
+        i = prepare(w, token="snapshot-fp", source_id="water-0",
+                    target=Owner.BALLISTIC, amount=WHOLE_CELL)
+        self.assertEqual(commit(w, i, fenced=True).status,
+                         ReceiptStatus.COMMITTED)
+        old = w.material_identity()
+        different_snapshot = i.expected_source_snapshot[:-1] + (7,)
+        self.assert_refusal_unchanged(
+            w, replace(i, expected_source_snapshot=different_snapshot),
+            Refusal.TOKEN_REUSE)
+        self.assertEqual(w.material_identity(), old)
+
     def test_caller_signed_flag_cannot_upgrade_unadmitted_world(self):
         # FALSIFIER (pre-correction): allow_signed_inertial=True alone used to COMMIT
         # a negative-vy IN transfer in World.start's default, unsigned policy.
