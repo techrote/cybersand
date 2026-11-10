@@ -10,6 +10,7 @@ var traffic := ""
 var readable := ""
 var log_path := ""
 var log_warning := ""
+var last_request_offset := -1
 var usage: Dictionary = {}
 var retry_after_seconds := 0.0
 var requested_model := ""
@@ -95,6 +96,49 @@ func redact(value: String) -> String:
 	userinfo.compile('(https?://)[^/@\\s]+:[^/@\\s]+@')
 	return userinfo.sub(clean,'$1[redacted]@',true)
 
+func new_log_path() -> String:
+	var folder := "user://art-traffic"
+	if DirAccess.make_dir_recursive_absolute(folder) != OK: return ""
+	return folder+"/"+str(Time.get_unix_time_from_system()).replace(".","-")+"-"+str(get_instance_id())+".jsonl"
+
+func resume_traffic(previous: String) -> Array:
+	var turns: Array = []
+	if not previous.begins_with("user://art-traffic/") or previous.get_base_dir() != "user://art-traffic":
+		return turns
+	var file := FileAccess.open(previous,FileAccess.READ)
+	if file == null: return turns
+	var destination := new_log_path()
+	if destination.is_empty() or DirAccess.copy_absolute(previous,destination) != OK:
+		log_warning = "Could not reopen saved conversation traffic."
+		return turns
+	log_path = destination
+	while file.get_position() < file.get_length():
+		var line := file.get_line()
+		if not line.contains('"kind":"conversation"') and not line.contains('"kind":"conversation_cleared"'): continue
+		var parsed: Variant = JSON.parse_string(line)
+		if not parsed is Dictionary: continue
+		if parsed.get("kind") == "conversation_cleared": turns.clear()
+		elif parsed.get("kind") == "conversation" and parsed.get("data") is Dictionary:
+			turns.append(parsed.data)
+	traffic = "[Earlier conversation traffic retained in the export]\n"
+	readable = traffic
+	return turns
+
+func historical_image(offset: int) -> String:
+	if offset < 0 or log_path.is_empty(): return ""
+	var file := FileAccess.open(log_path,FileAccess.READ)
+	if file == null or offset >= file.get_length(): return ""
+	file.seek(offset)
+	var event: Variant = JSON.parse_string(file.get_line())
+	if not event is Dictionary or event.get("kind") != "request": return ""
+	var body: Dictionary = event.data.body
+	var messages: Array = body.get("input",body.get("messages",[]))
+	if messages.is_empty() or not messages.back().get("content") is Array: return ""
+	for block: Dictionary in messages.back().content:
+		if block.get("type") == "input_image": return str(block.image_url)
+		if block.get("type") == "image_url": return str(block.image_url.url)
+	return ""
+
 func log_event(kind: String, data: Variant) -> void:
 	var line := redact(JSON.stringify({"utc":Time.get_datetime_string_from_system(true),"ms":Time.get_ticks_msec(),"request":serial,"kind":kind,"data":data}))
 	traffic += line+"\n"
@@ -115,14 +159,15 @@ func log_event(kind: String, data: Variant) -> void:
 	if readable.length()>2000000: readable = "[Earlier traffic retained on disk]\n"+readable.right(1500000)
 	# The live surface is bounded independently of the durable, full-session log.
 	if traffic.length()>2000000: traffic = "[Earlier traffic retained on disk]\n"+traffic.right(1500000)
-	if log_path.is_empty():
-		var folder := "user://art-traffic"
-		if DirAccess.make_dir_recursive_absolute(folder)==OK:
-			log_path = folder+"/"+str(Time.get_unix_time_from_system()).replace(".","-")+"-"+str(get_instance_id())+".jsonl"
+	if kind == "request": last_request_offset = -1
+	if log_path.is_empty(): log_path = new_log_path()
 	if not log_path.is_empty():
 		var file := FileAccess.open(log_path,FileAccess.READ_WRITE if FileAccess.file_exists(log_path) else FileAccess.WRITE)
 		if file != null:
-			file.seek_end(); file.store_line(line)
+			file.seek_end()
+			var offset := file.get_position()
+			file.store_line(line)
+			if kind == "request" and file.get_error() == OK: last_request_offset = offset
 			if file.get_error()!=OK: log_warning = "Traffic disk write failed; drawing continues."
 		else: log_warning = "Cannot write traffic log; live traffic remains available."
 	else: log_warning = "Cannot create traffic directory; drawing continues."

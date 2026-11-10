@@ -165,7 +165,7 @@ use the actual changed count and world epoch. An empty array ends the run.
 Stop cancels pending inference, pacing and queued native work. Clear starts
 a new conversation while the durable traffic retains earlier events.
 
-Full includes all text turns. Compacted includes the latest twelve entries and
+Full includes all text turns and saved images when Image is enabled. Compacted includes the latest twelve entries and
 discloses omissions. Custom initially uses the same window. None sends no
 earlier turns. Historical image bytes remain in durable traffic. Image sends the
 visible intersection of the work area, or the whole visible canvas with Full view.
@@ -190,10 +190,12 @@ first cell after a second rendered observation. The earlier LFM2.5 text
 scanline trial returned malformed JSON. The vision test is a constrained
 placement test, and the issue's statue campaign and owner review remain open.
 
-The preview archives historical image bytes in traffic. Full currently
-resends text history only. Reopening the workbench does not rehydrate that
-conversation, and spending ceilings and provider-specific quota resets are
-not implemented.
+The workbench restores the last conversation from saved traffic into a
+separate log file on reopen. Full resends historical image bytes when Image
+is enabled and identifies omitted images otherwise. Spend optionally stops
+subsequent requests at a user-priced
+estimate from reported tokens. One response can exceed the ceiling. Provider-
+specific quota-reset headers beyond numeric Retry-After are pending.
 
 ## Offset-area repair
 

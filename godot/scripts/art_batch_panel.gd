@@ -72,6 +72,15 @@ var provider_wait_url := ""
 var request_url := ""
 var run_deadline_ms := 0
 var run_seconds := SpinBox.new()
+var spend_limit := SpinBox.new()
+var input_price := SpinBox.new()
+var output_price := SpinBox.new()
+var run_spend := 0.0
+var spend_status := ""
+var run_spend_limit := 0.0
+var sent_input_price := 0.0
+var sent_output_price := 0.0
+
 var waiting_until_ms := 0
 var minimum_interval := SpinBox.new()
 var stencil_guidance := TextEdit.new()
@@ -203,6 +212,8 @@ func _process(_delta: float) -> void:
 	if input_mode.selected != 0 and not provider.requested_model.is_empty():
 		var u: Dictionary = provider.usage
 		status_text += " · In %s Out %s · Cost ?" % [str(u.get("input_tokens",u.get("prompt_tokens","?"))),str(u.get("output_tokens",u.get("completion_tokens","?")))]
+	if run_spend_limit > 0: status_text += " · Est. $%.4f / $%.4f" % [run_spend,run_spend_limit]
+	if input_mode.selected != 0 and not spend_status.is_empty(): status_text += " · "+spend_status
 	if not provider.log_warning.is_empty(): status_text += " · "+provider.log_warning
 	if state.text != status_text: state.text = status_text
 
@@ -211,6 +222,10 @@ func _exit_tree() -> void:
 
 func mount_provider_controls(column: VBoxContainer) -> void:
 	settings.load("user://art-provider.cfg")
+	conversation = provider.resume_traffic(settings.get_value("session","traffic_path",""))
+	for entry: Dictionary in conversation:
+		var content: String = entry.get("content","")
+		if content.begins_with("Canvas result ("): last_result = content
 	add_child(provider)
 	provider.finished.connect(provider_finished)
 	executor.native_receipt.connect(func(receipt: Dictionary) -> void:
@@ -280,6 +295,30 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	run_seconds.max_value = 86400
 	run_seconds.tooltip_text = "Maximum seconds for this run. Zero disables the limit."
 	row.add_child(run_seconds)
+	var spending := Window.new()
+	spending.title = "Estimated spending"
+	add_child(spending)
+	spending.hide()
+	spending.close_requested.connect(spending.hide)
+	var spending_fields := VBoxContainer.new()
+	spending.add_child(spending_fields)
+	spending_fields.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var spending_help := Label.new()
+	spending_help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	spending_help.text = "Enter your own rates. A zero ceiling disables spending control. The estimate uses reported tokens after each response and can exceed the ceiling by one request."
+	spending_fields.add_child(spending_help)
+	for field: SpinBox in [spend_limit,input_price,output_price]:
+		field.min_value = 0
+		field.max_value = 1000000
+		field.step = 0.001
+		spending_fields.add_child(field)
+	spend_limit.prefix = "Run USD"
+	input_price.prefix = "Input USD / 1M"
+	output_price.prefix = "Output USD / 1M"
+	var spending_button := Button.new()
+	spending_button.text = "Spend…"
+	spending_button.pressed.connect(func() -> void: spending.popup_centered(Vector2i(400,220)))
+	row.add_child(spending_button)
 	var clear := Button.new()
 	clear.text = "Clear conversation"
 	clear.pressed.connect(func() -> void:
@@ -288,7 +327,8 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 		log_draw = false
 		last_result = ""
 		last_image = ""
-		provider.log_event("conversation_cleared",{}))
+		provider.log_event("conversation_cleared",{})
+		persist_traffic_path())
 	row.add_child(clear)
 	var guidance_window := Window.new()
 	guidance_window.title = "Drawing guidance"
@@ -417,13 +457,26 @@ func stop_all(reason: String = "Human Stop") -> void:
 	input_error = reason
 
 func model_context() -> Array:
-	match context_mode.selected:
-		0: return conversation.duplicate()
-		3: return []
-	var recent := conversation.slice(maxi(0,conversation.size()-12))
-	if conversation.size() > recent.size():
-		recent.push_front({"role":"user","content":"Earlier turns omitted from this request; latest confirmed result: "+last_result})
-	return recent
+	if context_mode.selected == 3: return []
+	var full := context_mode.selected == 0
+	var first := 0 if full else maxi(0,conversation.size()-12)
+	var context: Array = []
+	if first > 0:
+		context.append({"role":"user","content":"Earlier turns omitted from this request; latest confirmed result: "+last_result})
+	for entry: Dictionary in conversation.slice(first):
+		var message := {"role":entry.role,"content":entry.content}
+		if full and entry.has("image_offset") and not image_input.button_pressed:
+			message.content += "\nHistorical image omitted because Image is off."
+		elif full and entry.has("image_offset"):
+			var url := provider.historical_image(int(entry.image_offset))
+			if url.is_empty():
+				message.content += "\nThis turn's image is unavailable in saved traffic."
+			elif current_provider == "OpenAI":
+				message.content = [{"type":"input_text","text":entry.content},{"type":"input_image","image_url":url}]
+			else:
+				message.content = [{"type":"text","text":entry.content},{"type":"image_url","image_url":{"url":url}}]
+		context.append(message)
+	return context
 
 func model_feedback(feedback: String) -> void:
 	last_result = feedback
@@ -431,10 +484,17 @@ func model_feedback(feedback: String) -> void:
 	if remaining_turns > 0:
 		send_next.call_deferred(ui_epoch)
 
-func remember_turn(role: String, content: String) -> void:
+func remember_turn(role: String, content: String, image_offset: int = -1) -> void:
 	var entry := {"role":role,"content":provider.redact(content)}
+	if image_offset >= 0: entry.image_offset = image_offset
 	conversation.append(entry)
 	provider.log_event("conversation",entry)
+	persist_traffic_path()
+
+func persist_traffic_path() -> void:
+	if not provider.log_path.is_empty() and settings.get_value("session","traffic_path","") != provider.log_path:
+		settings.set_value("session","traffic_path",provider.log_path)
+		settings.save("user://art-provider.cfg")
 
 func send_prompt() -> void:
 	if executor.active or provider.active or capturing or remaining_turns > 0: return
@@ -442,6 +502,12 @@ func send_prompt() -> void:
 		input_error = "Canvas is not ready."
 		return
 	sent_turns = 0
+	run_spend = 0.0
+	spend_status = ""
+	run_spend_limit = spend_limit.value
+	if run_spend_limit > 0 and (input_price.value <= 0 and output_price.value <= 0):
+		input_error = "Set a token rate in Spend, or set the spending ceiling to zero."
+		return
 	task_prompt = input.text
 	run_mode = input_mode.selected
 	run_epoch = wb.host.simulation_worker.art_state().epoch
@@ -540,14 +606,29 @@ func send_next(expected_epoch: int) -> void:
 	remaining_turns -= 1
 	sent_turns += 1
 	request_url = endpoint.text.strip_edges()
+	sent_input_price = input_price.value
+	sent_output_price = output_price.value
 	input_error = provider.send(current_provider,request_url,model.text.strip_edges(),keys.get(current_provider,""),prompt,instructions,int(tokens.value),seconds.value,png,context)
-	if input_error.is_empty(): remember_turn("user",prompt)
+	if input_error.is_empty(): remember_turn("user",prompt,provider.last_request_offset if not png.is_empty() else -1)
 	else: remaining_turns = 0
 
 func provider_finished(_id: int, text: String, _response: Dictionary, error: String) -> void:
 	if request_epoch != wb.host.simulation_worker.art_state().epoch:
 		provider.log_event("discarded","Canvas changed or Stop requested; no drawing")
 		return
+	var received_input: Variant = provider.usage.get("input_tokens",provider.usage.get("prompt_tokens"))
+	var received_output: Variant = provider.usage.get("output_tokens",provider.usage.get("completion_tokens"))
+	if ArtPlan.integer(received_input) and ArtPlan.integer(received_output) and received_input >= 0 and received_output >= 0 and (sent_input_price > 0 or sent_output_price > 0):
+		run_spend += (float(received_input)*sent_input_price+float(received_output)*sent_output_price)/1000000.0
+		provider.log_event("estimated_spend",{"run_usd":run_spend,"ceiling_usd":run_spend_limit})
+		if run_spend_limit > 0 and run_spend >= run_spend_limit:
+			remaining_turns = 0
+			spend_status = "Estimated spending ceiling reached"
+			provider.log_event("run_limit",spend_status)
+	elif run_spend_limit > 0 and error.is_empty():
+		remaining_turns = 0
+		spend_status = "Provider usage unavailable; spending ceiling cannot be tracked"
+		provider.log_event("run_limit",spend_status)
 	if not error.is_empty():
 		if provider.retry_after_seconds > 0:
 			provider_wait_ms = Time.get_ticks_msec()+int(provider.retry_after_seconds*1000)

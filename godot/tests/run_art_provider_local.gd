@@ -86,6 +86,17 @@ func run() -> void:
 		await create_timer(2.1).timeout
 		check(panel.provider.serial==serial_before_stop+1 and not panel.provider.active,"Stop cancelled a paced request")
 		panel.minimum_interval.value = 0
+		panel.turn_limit.value = 2
+		panel.spend_limit.value = 0.001
+		panel.input_price.value = 1000
+		panel.input.text = 'Return exactly one rectangle with x0=30, y0=30, x1=32, y1=32, material=58.'
+		var serial_before_spend: int = panel.provider.serial
+		panel.send_prompt()
+		await until(func(): return not panel.provider.active and not panel.executor.active and not panel.log_draw and panel.remaining_turns==0,"spending-limited run finished")
+		check(panel.provider.serial==serial_before_spend+1 and panel.run_spend>=0.001,"reported usage stops the next request at the estimate ceiling")
+		panel.spend_limit.value = 0
+		panel.input_price.value = 0
+		panel.turn_limit.value = 1
 
 	# Replacement also fences a response from the old World.
 	panel.input.text = "Draw a wall rectangle from (40,40) through (60,60)."
@@ -104,6 +115,19 @@ func run() -> void:
 	var log_text := FileAccess.get_file_as_string(panel.provider.log_path)
 	check(log_text.contains('"request"') and log_text.contains('"response"') and log_text.contains('"native_result"'),"full request response and native traffic retained")
 	check(not log_text.contains("TEST-secret-not-real"),"durable log excludes secret")
+	var resumed = P.new()
+	root.add_child(resumed)
+	var restored: Array = resumed.resume_traffic(panel.provider.log_path)
+	check(restored == panel.conversation and resumed.log_path != panel.provider.log_path,"restore transcript with independent traffic file")
+	if panel.image_input.button_pressed:
+		var original_image := ""
+		for entry: Dictionary in restored:
+			if entry.has("image_offset"):
+				original_image = resumed.historical_image(int(entry.image_offset))
+				if not original_image.is_empty(): break
+		check(original_image.begins_with("data:image/png;base64,"),"original canvas image restored from request log")
+	resumed.queue_free()
+
 	var folder := OS.get_environment("WB_ART_EVIDENCE_DIR")
 	if not folder.is_empty():
 		DirAccess.make_dir_recursive_absolute(folder)
