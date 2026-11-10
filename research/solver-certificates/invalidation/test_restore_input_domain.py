@@ -133,7 +133,7 @@ class InputDomainRestore(unittest.TestCase):
                     full_step(oracle, events)
                     self.assertEqual(fence.engine.state, oracle)
                 self.assertEqual(oracle.pressure, 0)
-                self.assertNotIn(WATER, oracle.cells)
+                self.assertEqual(oracle.cells[1], WATER)  # steam recondenses
 
 
 if __name__ == "__main__":
