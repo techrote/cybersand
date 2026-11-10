@@ -18,6 +18,9 @@ const WATER := 3
 # Solids the tools try to launch (powders and Stone); the native owner decides
 # admission again and refuses anything else.
 const SOLIDS := [2,13,14,19,23,26,27,29]
+# Non-Water liquids fly through the same owner as whole cells (BS-001).
+const LIQUIDS := [8,12,16,20,21,24,32,33,36]
+const CELLS := SOLIDS + LIQUIDS
 const MAX_RADIUS := 24
 const MAX_LAUNCHES := 640
 const MAX_READS := 6000
@@ -122,7 +125,7 @@ static func plan(world: Object, extent: Vector2i, center: Vector2i, preset: Stri
 			if reads >= MAX_READS: break
 			reads += 2
 			var material := int(world.material_at(cell.x,cell.y))
-			if material != WATER and not material in SOLIDS: continue
+			if material != WATER and not material in CELLS: continue
 			if int(world.rigid_body_id_at(cell.x,cell.y)) != 0: continue
 			var is_edge := false
 			if str(spec.pattern) == "edge":

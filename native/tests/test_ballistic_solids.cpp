@@ -79,6 +79,7 @@ void test_ballistic_solids_admission_and_defaults() {
     require(threw, "invalid solids configuration admitted");
     // Material admission: powders and breakable solids fly; liquids and walls never.
     require(ballistic_solid_admitted(Material::Sand) && ballistic_solid_admitted(Material::Stone) &&
+            ballistic_solid_admitted(Material::Oil) && ballistic_solid_admitted(Material::Lava) &&
             !ballistic_solid_admitted(Material::Water) && !ballistic_solid_admitted(Material::Wall) &&
             !ballistic_solid_admitted(Material::ReinforcedConcrete) && !ballistic_solid_admitted(Material::Empty),
             "solid admission set");
@@ -239,4 +240,34 @@ void test_ballistic_solids_launch_in_place() {
     require(world.water_quantity({0, 0, 48, 48}) + world.ballistic_water_snapshot().in_flight_quantity == water,
             "interior launch lost Water");
     closes(world, "in place");
+}
+
+void test_ballistic_solids_non_water_liquids() {
+    for (const auto liquid : {Material::Oil, Material::Lava, Material::Acid, Material::Brine, Material::Mercury}) {
+        World world(solids_config());
+        box(world, 64, 48);
+        rect(world, 8, 36, 12, 11, liquid);             // a full pool of the liquid
+        const auto cells = count(world, liquid, 64, 48);
+        for (std::int64_t x = 9; x < 19; x += 3)
+            require(world.launch_ballistic_solid(x, 40, centre(x), centre(40), 500, -900).outcome == BallisticLaunchOutcome::Launched,
+                    "liquid launch refused");
+        require(count(world, liquid, 64, 48) + world.ballistic_solid_count() == cells, "launch changed the liquid population");
+        for (int t = 0; t < 400 && world.ballistic_solid_count() != 0U; ++t) (void)world.tick();
+        require(world.ballistic_solid_count() == 0U, "flying liquid never landed");
+        require(world.ballistic_solids_snapshot().ledger.landed == 4U, "flying liquid ledger");
+        closes(world, "liquid");
+    }
+}
+
+void test_ballistic_water_rises_through_oil() {
+    World world(solids_config());
+    box(world, 32, 48);
+    require(world.inject_ballistic_water(centre(10), centre(30), 0, 0, 255).outcome == BallisticLaunchOutcome::Launched,
+            "Water injection refused");
+    rect(world, 4, 26, 13, 21, Material::Oil); // engulf the parcel in Oil
+    const auto total = world.water_quantity({0, 0, 32, 48}) + world.ballistic_water_snapshot().in_flight_quantity;
+    for (int t = 0; t < 40 && world.ballistic_parcel_count() != 0U; ++t) (void)world.tick();
+    require(world.ballistic_parcel_count() == 0U, "a parcel engulfed in Oil never deposited");
+    require(world.water_quantity({0, 0, 32, 48}) == total, "deposit through Oil changed Water");
+    closes(world, "oil column");
 }

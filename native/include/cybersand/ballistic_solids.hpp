@@ -7,7 +7,9 @@
 #include <cstddef>
 #include <cstdint>
 
-// BS-001 ballistic_solids_v1 (experimental, opt-in, #361 follow-up).
+// BS-001 ballistic_solids_v1 (experimental, opt-in, #361 follow-up). "Solids"
+// covers every whole-cell material that can fly: powders, breakable solids and
+// non-Water liquids.
 //
 // A bounded, World-owned pool of whole solid/powder cells in flight, the
 // granular counterpart of BW-001 ballistic Water. A serialized owner may move
@@ -75,8 +77,10 @@ struct BallisticSolidsSnapshot {
     BallisticSolidsLedger ledger{};
 };
 
-// Powders always; other solids unless they are structural walls. Liquids,
-// gases, agents and Empty never fly as solids.
+// Powders always; other solids unless they are structural walls; and every
+// non-Water liquid (Oil, Lava, Acid, Brine, Mercury, ...), which are whole-cell
+// materials and fly as their cell. Water flies through BW-001 parcels instead.
+// Gases, agents and Empty never fly.
 [[nodiscard]] constexpr bool ballistic_solid_admitted(Material material) noexcept {
     const auto id = static_cast<std::size_t>(material);
     if (id >= kMaterialDefinitions.size()) return false;
@@ -84,6 +88,7 @@ struct BallisticSolidsSnapshot {
     if (!d.valid) return false;
     if (material == Material::Wall || material == Material::ReinforcedConcrete) return false;
     if (d.state == MaterialState::Powder) return true;
+    if (d.state == MaterialState::Liquid) return material != Material::Water;
     return d.state == MaterialState::Solid && d.density < 65'535;
 }
 

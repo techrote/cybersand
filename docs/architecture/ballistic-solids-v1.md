@@ -39,8 +39,10 @@ rebuild).
 - **State:** `BallisticSolid` holds a q256 position and signed velocity, the cell's
   material and state bytes, age, contacts, deferrals and the launching body.
 - **Admission:** powders always; other solids unless they are structural walls
-  (`Wall`, `ReinforcedConcrete`, or wall density 65535). Liquids, gases, agents
-  and Empty never fly (`NotAdmitted`).
+  (`Wall`, `ReinforcedConcrete`, or wall density 65535); and every **non-Water
+  liquid** (Oil, Lava, Acid, Brine, Mercury, Slush, Paste, Toxic Sludge, Molten
+  Glass), which are whole-cell materials and fly as their own cell. Water flies as
+  BW-001 parcels. Gases, agents and Empty never fly (`NotAdmitted`).
 - **Launch** (`launch_ballistic_solid`, serialized between ticks) moves one grid
   cell (material and state) into a flying solid spawned at an unmasked Empty/gas
   cell. **Inject** (`inject_ballistic_solid`) creates one of an admitted
@@ -114,6 +116,10 @@ and hands each selected Water or admitted solid cell to the native owners (at
 most 640 per application, 6 000 reads). It never sets grid velocities or creates
 material. Presets: Blast, Implode, Vortex, Geyser, Shovel, Shockwave, Gust,
 Shaker, Pepper, Lattice lift and Skin peel.
+
+A BW-001 Water parcel engulfed beneath a lighter liquid (Oil over Water) now
+rises through that liquid layer to the free surface instead of deferring
+indefinitely; density exchange then settles it.
 
 ## Limits
 

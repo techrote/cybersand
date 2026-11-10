@@ -4071,6 +4071,8 @@ void test_ballistic_solids_persistence_and_parity();
 void test_ballistic_solids_render_overlay();
 void test_ballistic_solids_buried_climb();
 void test_ballistic_solids_launch_in_place();
+void test_ballistic_solids_non_water_liquids();
+void test_ballistic_water_rises_through_oil();
 void test_ballistic_water_face_release_dam_break();
 void test_ballistic_water_face_release_pooled_prepass();
 void test_ballistic_water_retained_rebuild_inheritance();
@@ -4352,6 +4354,8 @@ int main(int argc, char** argv) {
         {"BS-001 ballistic solids render overlay", test_ballistic_solids_render_overlay},
         {"BS-001 ballistic solids buried climb", test_ballistic_solids_buried_climb},
         {"BS-001 ballistic solids launch in place", test_ballistic_solids_launch_in_place},
+        {"BS-001 ballistic solids non-Water liquids", test_ballistic_solids_non_water_liquids},
+        {"BW-001 ballistic Water rises through Oil", test_ballistic_water_rises_through_oil},
         {"BW-001 ballistic Water face release pooled pre-pass matches serial", test_ballistic_water_face_release_pooled_prepass},
         {"IN-B1 signed vertical control and identity", test_inertial_signed_vertical_control_and_identity},
         {"IN-B1 signed vertical arc ceiling parity", test_inertial_signed_vertical_arc_ceiling_parity},

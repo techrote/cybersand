@@ -441,23 +441,28 @@ static func solids_lab(policy: PackedInt32Array) -> Dictionary:
 # Built-in "kinetic-lab" (kinetic mask tools; used only while no user file of
 # that name exists). Ballistic Water and ballistic solids are enabled for this
 # World. Left to right: a Sand hill with a Blast emitter under it; a Water pool
-# with a Geyser and a Vortex; a Stone pile under two barrels with a Shockwave;
-# a Dust patch with a Shaker. Each emitter can be pulsed or held, and the
-# pointer Kinetic tool applies any preset anywhere.
+# under an Oil layer with a Geyser, a Vortex and a Gust across the Oil; a Stone
+# pile under two barrels with a Shockwave; a walled Lava basin with Pepper. Each
+# emitter can be pulsed or held, and the pointer Kinetic tool applies any preset
+# anywhere (Water flies as BW-001 parcels, everything else as BS-001 cells).
 const KINETIC_LAB_EMITTERS := [[80,252,"blast",14,1.0,0.0],[230,261,"geyser",16,1.0,-90.0],
-	[196,238,"vortex",10,1.0,0.0],[360,254,"shockwave",16,1.0,0.0],[440,258,"shaker",10,1.0,0.0]]
+	[196,238,"vortex",10,1.0,0.0],[360,254,"shockwave",16,1.0,0.0],[440,258,"pepper",8,0.6,0.0],
+	[230,211,"gust",12,1.0,-30.0]]
 static func kinetic_lab(policy: PackedInt32Array) -> Dictionary:
 	var data := fresh(policy,Vector2i(512,512))
 	var e: Array = data.edits
 	_box(e,Vector2i(20,214),Vector2i(140,264),SAND)              # Sand hill
 	_box(e,Vector2i(160,216),Vector2i(300,264),WATER)            # pool
 	_box(e,Vector2i(320,232),Vector2i(400,264),STONE)            # Stone pile
-	_box(e,Vector2i(410,246),Vector2i(470,264),DUST)             # Dust patch
+	_box(e,Vector2i(160,206),Vector2i(300,216),OIL)              # Oil layer on the pool
+	_box(e,Vector2i(414,246),Vector2i(468,264),LAVA)             # Lava basin
 	_box(e,Vector2i(0,264),Vector2i(512,272),WALL)               # floor
 	_box(e,Vector2i(0,20),Vector2i(4,264),WALL)                  # boundaries
 	_box(e,Vector2i(476,20),Vector2i(480,264),WALL)
 	_box(e,Vector2i(156,200),Vector2i(160,264),WALL)             # pool walls
 	_box(e,Vector2i(300,200),Vector2i(304,264),WALL)
+	_box(e,Vector2i(410,236),Vector2i(414,264),WALL)             # Lava basin walls
+	_box(e,Vector2i(468,236),Vector2i(472,264),WALL)
 	data.actors = [instance(BARREL,1,Vector2(340,224)),instance(BARREL,2,Vector2(380,224))]
 	data.next_id = 3
 	data.material = SAND

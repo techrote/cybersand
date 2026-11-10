@@ -99,6 +99,17 @@ workbench canvas 164/0 and spray rearm 10/0 pass on the same library.
 Frame: [after the pointer presets](../images/in-tools-361/kinetic-lab-pointer.png).
 Runtime publication for this source is request sequence 2.
 
+## Non-Water liquids — 2026-11-10
+
+Owner report: kinetic tools did nothing to Oil or Lava. Repair: BS-001 admits
+every non-Water liquid as a whole flying cell, and a Water parcel engulfed under
+an Oil layer rises through it. Native 202/202 (WSL Linux; new cases for Oil, Lava,
+Acid, Brine and Mercury launch/land with exact populations, and Water rising
+through Oil). kinetic-lab now has an Oil layer (Gust) and a walled Lava basin
+(Pepper): 61/0 on Windows with locally built library `46e7a438…`; Gust flung 107
+cells, Pepper 14 Lava; Sand and Oil populations and both native ledgers exact.
+liquid-lab and reservoir-lab pass on the same library. Publication request 3.
+
 ## Gaps
 
 - Hosted Ready-PR Native/GDExtension gates run only once the PR is Ready.

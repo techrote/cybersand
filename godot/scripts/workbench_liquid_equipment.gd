@@ -61,7 +61,7 @@ const KEYS := ["version","valves","drain","nozzle","supply","pump","pipe_capacit
 	"launcher","collector","solid_supply","conveyor","kinetics"]
 # Materials the solids devices may fire or collect (powders and Stone). The
 # native owner decides admission again and refuses anything else.
-const SOLIDS := [2,13,14,19,23,26,27,29]
+const SOLIDS := [2,13,14,19,23,26,27,29,8,12,16,20,21,24,32,33,36]
 const MAX_COLLECTOR_CELLS := 96
 const MAX_COLLECTOR_RATE := 32
 const MAX_LAUNCHER_RATE := 8
@@ -837,7 +837,7 @@ func _kinetic_apply(world: Object, at: Vector2i, preset: String, radius: int, st
 func _sample_population(world: Object) -> void:
 	if not world.has_method(&"get_material_population"): return
 	if _launcher.x >= 0: _population = int(world.get_material_population(_launcher_material))
-	for material: int in Kinetic.SOLIDS: _populations[str(material)] = int(world.get_material_population(material))
+	for material: int in Kinetic.CELLS: _populations[str(material)] = int(world.get_material_population(material))
 
 
 func _step_launcher(world: Object) -> void:

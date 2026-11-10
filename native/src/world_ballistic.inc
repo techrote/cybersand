@@ -335,7 +335,11 @@ bool World::deposit_ballistic_parcel(BallisticParcel& parcel, std::int64_t cx, s
             const auto* chunk = find_chunk(target.chunk);
             if (chunk == nullptr) break;
             const auto material = chunk->cells[target.index].material_value();
-            if (material != Material::Water && material != Material::Empty) break;
+            // A lighter liquid layer (Oil above Water) is passed through: the
+            // parcel reaches the free surface and density exchange settles it.
+            if (material != Material::Water && material != Material::Empty &&
+                MaterialRules::descriptor(material).state != MaterialState::Liquid) break;
+            if (material != Material::Water && material != Material::Empty) continue;
             const auto before = remaining;
             try_cell(cx, ty);
             if (remaining != before) ++l.column_deposits;

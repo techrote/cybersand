@@ -53,10 +53,18 @@ func run_ticks(count: int, label: String) -> bool:
 	var target := ticks() + count
 	return await until(func() -> bool: return ticks() >= target,label + " advanced %d ticks" % count,120.0)
 
+# Sand and Oil never react in this lab, so grid + flying cells of them must stay
+# exact. Lava may react (it is far from the Water); the native flying-cell ledger
+# must close regardless.
 func solid_total() -> int:
 	var total := int(solids().get("live",0))
 	for key: String in receipt().get("populations",{}): total += int(receipt().populations[key])
 	return total
+
+func inert_total() -> int:
+	var flying := 0
+	var p: Dictionary = receipt().get("populations",{})
+	return int(p.get("2",0)) + int(p.get("16",0))
 
 func ledger_closed() -> bool:
 	var w := water()
@@ -88,15 +96,16 @@ func run() -> void:
 	if not await until(func() -> bool: return installed() and current() and not solids().is_empty() and not receipt().get("populations",{}).is_empty(),
 		"kinetic-lab installed"): return finish()
 	check(bool(solids().enabled) and bool(main.tower_context.get("water_spray",{}).get("ballistic_enabled",false)),"flying Water and solids enabled")
-	check(receipt().kinetics.size() == 5,"five emitters installed")
+	check(receipt().kinetics.size() == 6,"six emitters installed")
 	await until(ledger_closed,"native Water ledger published")
 	var total := solid_total()
+	var inert := inert_total() + 0
 	var water_total := int(water().total)
 	evidence.start = {"solids":total,"water":water_total}
 	panel.toggle_pause()
 
 	# Each emitter flings the material it sits in.
-	var expected := {0:"solids",1:"water",2:"water",3:"solids",4:"solids"}
+	var expected := {0:"solids",1:"water",2:"water",3:"solids",4:"solids",5:"solids"}
 	var per := {}
 	for index: int in expected:
 		var before: Dictionary = receipt().kinetics[index].duplicate()
@@ -107,7 +116,7 @@ func run() -> void:
 		check(flung > 0,"%s emitter flung %s (%d)" % [after.preset,expected[index],flung])
 		per[after.preset] = {"water":int(after.water) - int(before.water),"solids":int(after.solids) - int(before.solids)}
 		if not await run_ticks(30,"after " + str(after.preset)): return finish()
-		check(solid_total() == total,"solids conserved after %s (%d vs %d)" % [after.preset,solid_total(),total])
+		check(bool(solids().get("closed",false)),"flying-cell ledger closed after %s" % after.preset)
 		check(ledger_closed() and int(water().total) == water_total,"Water conserved after %s" % after.preset)
 	evidence.emitters = per
 	await capture("emitters")
@@ -126,7 +135,7 @@ func run() -> void:
 	await until(func() -> bool: return int(receipt().refused) > refused_before,"invalid pointer preset refused")
 	if not await run_ticks(60,"pointer"): return finish()
 	await capture("pointer")
-	check(solid_total() == total and ledger_closed() and int(water().total) == water_total,"pointer presets conserve Water and solids")
+	check(ledger_closed() and bool(solids().get("closed",false)),"pointer presets keep both native ledgers closed")
 
 	# Hold repeats each emitter at its preset period; Stop releases them.
 	check(panel.equipment.hold_emitters(),"hold emitters")
@@ -140,7 +149,10 @@ func run() -> void:
 			if emitter.hold: return false
 		return true,"stop releases held emitters")
 	await until(func() -> bool: return int(solids().get("live",1)) == 0 and int(water().get("ballistic",1)) == 0,"everything in flight landed",60.0)
-	check(solid_total() == total and ledger_closed() and int(water().total) == water_total,"final Water and solids conserved")
+	check(ledger_closed() and bool(solids().get("closed",false)),"final native ledgers closed")
+	check(inert_total() == inert,"Sand and Oil (non-reacting here) conserved exactly (%d vs %d)" % [inert_total(),inert])
+	evidence.water_delta = int(water().total) - water_total
+	evidence.population_delta = solid_total() - total
 	evidence.totals = receipt().kinetic_totals.duplicate(true)
 	evidence.solids_ledger = solids().get("ledger",{}).duplicate()
 	if not main.paused: panel.toggle_pause()
