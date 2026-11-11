@@ -81,6 +81,11 @@ func run() -> void:
 	for id: StringName in Catalog.KINETIC_IDS:
 		var definition: Dictionary = Catalog.entry(Catalog.index_for(id))
 		expect(str(definition.operation) == "kinetic" and str(definition.kinetic) == str(id), "catalogue entry " + str(id))
+	# The F5 panel pick is what Apply spawns the actor holding (not the rig default).
+	var picked: int = Catalog.index_for(&"stone_slug")
+	desktop.toggle_actor_prototypes()
+	desktop.actor_prototype_panel.usable_choice.select(picked + 1)
+	desktop.actor_prototype_panel.usable_choice.item_selected.emit(picked + 1)
 	expect(desktop.apply_actor_prototype_configuration(&"rapier/runner", &"human", false), "F5 human actor")
 	desktop.paused = false
 	var installed: bool = await wait_for(func() -> bool:
@@ -88,6 +93,7 @@ func run() -> void:
 		return desktop.physical_actor_session != null and desktop._actor_reset_receipt == 0 \
 			and desktop._physical_terrain_ready and desktop.physical_actor_session.tick >= 3)
 	if expect(installed, "physical actor installed"):
+		expect(int(equipment().get("usable_index", -1)) == picked, "Apply spawned the actor holding the panel pick: " + str(equipment().get("usable_index")))
 		for id: StringName in [&"gravel_shotgun", &"water_cannon"]:
 			var row: Dictionary = await fire(id)
 			expect(row.fired and int(row.receipt.get("changed_cells",0)) > 0, "%s fired: %s" % [id, str(row.receipt)])

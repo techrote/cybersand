@@ -1662,6 +1662,8 @@ var _actor_input_rearm: bool = true
 var _actor_reset_receipt: int = 0
 var _actor_effort: float = 0.7
 var actor_usable_index: int = -1
+# Equipment picked in the F5 panel before Apply (-2: use the rig's default).
+var _actor_spawn_usable: int = -2
 var _actor_usable_requested_index: int = -1
 var _actor_usable_power: float = 0.8
 var _actor_usable_input_epoch: int = -1
@@ -3364,7 +3366,9 @@ func physical_actor_definitions(model_id: StringName, producer: StringName, demo
 				origin = authored_origin
 		origin.x = clampf(origin.x, -bounds.position.x + 2.0, 1022.0 - bounds.end.x)
 		origin.y = clampf(origin.y, -bounds.position.y + 2.0, 1022.0 - bounds.end.y)
-		definitions.append({"model": models[index], "producer": producer if index == 0 else &"demo", "position": origin})
+		var row: Dictionary = {"model": models[index], "producer": producer if index == 0 else &"demo", "position": origin}
+		if index == 0 and _actor_spawn_usable >= -1: row.usable_index = _actor_spawn_usable
+		definitions.append(row)
 		next_x = origin.x + bounds.end.x
 	return definitions
 
@@ -3436,9 +3440,9 @@ func _adopt_prepared_physical_candidate() -> void:
 	last_hard_surface_revision = latest_snapshot.hard_surface_revision
 	hard_surface_rebuild_cooldown = 0.0
 	var loadout: Dictionary = PhysicalLoadouts.entry(physical_rig_id)
-	actor_usable_index = int(loadout.get("usable_index",-1))
+	actor_usable_index = int(loadout.get("usable_index",-1)) if _actor_spawn_usable < -1 else _actor_spawn_usable
 	_actor_usable_requested_index = actor_usable_index
-	_actor_usable_power = float(loadout.get("power",0.8))
+	if _actor_spawn_usable < -1: _actor_usable_power = float(loadout.get("power",0.8))
 	_actor_usable_transition_pending = false;_actor_usable_pointer_rearm = true
 	simulation_worker.set_physical_actor_epoch(_physical_epoch)
 	accepted.adopt()
@@ -3473,9 +3477,9 @@ func _activate_articulated_actor_rigs(spawn: Vector2) -> bool:
 	physical_actor_session.input_cancelled.connect(_on_physical_actor_input_cancelled)
 	physical_actor_session.set_suspended(true)
 	var loadout: Dictionary = PhysicalLoadouts.entry(physical_rig_id)
-	actor_usable_index = int(loadout.get("usable_index", -1))
+	actor_usable_index = int(loadout.get("usable_index", -1)) if _actor_spawn_usable < -1 else _actor_spawn_usable
 	_actor_usable_requested_index = actor_usable_index
-	_actor_usable_power = float(loadout.get("power", 0.8))
+	if _actor_spawn_usable < -1: _actor_usable_power = float(loadout.get("power", 0.8))
 	_actor_usable_transition_pending = false
 	_actor_usable_pointer_rearm = true
 	rapier_bridge = physical_actor_session.bridge
@@ -3767,6 +3771,10 @@ func apply_actor_prototype_configuration(model_id: StringName, producer: StringN
 			str(microscenario_definition.get("id", "")) if tower_context.get("micro_active", false) else "")):
 		return false
 	var arm: String = str(model_id).trim_prefix("physical/") if trial else ""
+	_actor_spawn_usable = -2
+	if articulated and actor_prototype_panel.usable_touched and not actor_prototype_panel._flight_selected():
+		_actor_spawn_usable = actor_prototype_panel.selected_usable_index()
+		_actor_usable_power = actor_prototype_panel.usable_power_slider.value
 	var configuration: Dictionary = {
 		"representation":"barrel-rapier" if physical else "sampled",
 		"runtime_recovery_enabled":not physical and model_id == &"",
