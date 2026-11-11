@@ -302,7 +302,28 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
    'source_commit': '7a2bab58bfb193b3f10e55bf63cdeec2a17f549f',
    'record': 'docs/audits/2026-11-07-native-copy292-mat-auth-transition.md',
    'issue': 292,
-   'pr': 538})
+   'pr': 538},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': '36f928740f554cde7542bc16e8ef897317ea51f3897af665ff6bb7f9e1ca812b',
+  'to_lf_sha256': '0270e9e3748bdc53ea3d0545974be5db21e0e1e517643c9bf493f428e7bd2c96',
+  'source_commit': 'bfe32564993d1ee05f03b9647569c355bad4ced8',
+  'record': 'docs/audits/2026-11-10-bs001-mat-auth-transition.md',
+  'issue': 361,
+  'pr': 561},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': '899ada71b89d30ba063e047bdd5b02346948008f1b7c0bec9fa0f2272e4d86ec',
+  'to_lf_sha256': 'a335e98d9438daf980ab0258713c92a1bcdaca788db1fec046a2df99a1b59ae7',
+  'source_commit': 'bfe32564993d1ee05f03b9647569c355bad4ced8',
+  'record': 'docs/audits/2026-11-10-bs001-mat-auth-transition.md',
+  'issue': 361,
+  'pr': 561},
+ {'path': 'native/src/world_quantity.inc',
+  'from_lf_sha256': 'd9e6835d092193e4976c728d90121c6dee4b421337e056b5fc3c74975491af6e',
+  'to_lf_sha256': '7d8c5a9be8fbc4b51832ad1ddacf7c221102cdd883ec625dd924e1e7f4857a8c',
+  'source_commit': 'eb77c7e52dab5515f7033018a7b034ca90e732c5',
+  'record': 'docs/audits/2026-11-10-bs001-mat-auth-transition.md',
+  'issue': 361,
+  'pr': 561})
 
 class CompatibilityError(ValueError):
     """An actionable source or baseline mismatch; never repairs the source."""
