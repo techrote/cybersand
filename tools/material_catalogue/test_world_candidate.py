@@ -4,6 +4,8 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
+import subprocess
 from pathlib import Path
 import tempfile
 import unittest
@@ -71,6 +73,48 @@ class WorldCandidateAdmissionTests(unittest.TestCase):
             (root / "candidate/native/include/cybersand/material.hpp").write_text("changed")
             with self.assertRaisesRegex(lab.LabError, "staged compiler input changed"):
                 world._verify_stage(root / "candidate", candidate)
+
+    def test_compiler_uses_staged_relative_paths_for_windows_and_gcc(self):
+        # Python's Windows TEMP can contain a DOS short-name alias which MinGW
+        # does not consistently resolve as an absolute compiler input path.
+        with tempfile.TemporaryDirectory() as temporary:
+            stage = Path(temporary) / "long staged path with spaces" / "reference"
+            stage.mkdir(parents=True)
+            scenario = {"first": 2, "second": 3, "seed": 2, "ticks": 1, "workers": 1}
+            for msvc in (False, True):
+                commands = []
+
+                def fake_run(argv, cwd, timeout, **kwargs):
+                    self.assertEqual(cwd, stage)
+                    commands.append(argv)
+                    if len(commands) == 1:
+                        suffix = ".exe" if os.name == "nt" else ""
+                        (stage / ("lab-world-probe" + suffix)).write_bytes(b"dummy native executable")
+                        return subprocess.CompletedProcess(argv, 0, "", "")
+                    return subprocess.CompletedProcess(argv, 0, '{"ok": true, "runtime_active": false}', "")
+
+                with mock.patch.object(lab, "_run", side_effect=fake_run):
+                    result, receipt = world._build_and_execute(
+                        stage, "cl.exe" if msvc else "g++.exe", msvc,
+                        scenario, 2, False)
+                self.assertTrue(result["ok"])
+                self.assertEqual(len(commands), 2)
+                compiler = commands[0]
+                for source in (world.PROBE, *world.SIMULATION_SOURCES):
+                    self.assertIn(source, compiler)
+                    self.assertNotIn(str(stage / source), compiler)
+                if msvc:
+                    self.assertIn("/Inative/include", compiler)
+                    self.assertIn("/Igenerated", compiler)
+                    self.assertIn("/Fe:lab-world-probe" + (".exe" if os.name == "nt" else ""), compiler)
+                else:
+                    self.assertIn("native/include", compiler)
+                    self.assertIn("generated", compiler)
+                    self.assertEqual(compiler[compiler.index("-o") + 1],
+                                     "lab-world-probe" + (".exe" if os.name == "nt" else ""))
+                self.assertFalse(any(str(stage) in part for part in compiler[1:]))
+                self.assertEqual(receipt["native_executable_sha256"],
+                                 hashlib.sha256(b"dummy native executable").hexdigest())
 
     def test_changed_table_shape_refuses_instead_of_guessing(self):
         declaration = "inline constexpr std::array<int, 1> table{{"
