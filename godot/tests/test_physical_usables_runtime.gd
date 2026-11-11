@@ -88,7 +88,7 @@ func _device_frame() -> void:
 
 
 func _all_catalogue_native() -> void:
-	_check(Catalog.count() == 32, "stable U01-U32 catalogue size")
+	_check(Catalog.count() == 45 and Catalog.USABLE_IDS[31] == &"firewarden", "stable U01-U32 catalogue size plus 13 kinetic")
 	for index: int in range(12):
 		_reset(index)
 		if index in [6, 7, 8, 9, 10]:

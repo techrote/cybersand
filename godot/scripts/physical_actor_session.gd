@@ -129,7 +129,7 @@ static func valid_definitions(definitions: Array) -> bool:
 		if not workbench and (value.position.x < 0.0 or value.position.y < 0.0 or value.position.x >= 1024.0 or value.position.y >= 1024.0):
 			return false
 		var prepared: Dictionary = Equipment.definition(Fleet.definition(fleet_index)) if workbench and fleet_index >= 0 else Equipment.definition(Catalog.entry(model), Loadouts.entry(model))
-		if prepared.is_empty() or not _integer(value.get("usable_index", Loadouts.entry(model).get("usable_index", -1)), -1, 31):
+		if prepared.is_empty() or not _integer(value.get("usable_index", Loadouts.entry(model).get("usable_index", -1)), -1, CyberUsableCatalog.count() - 1):
 			return false
 		if model in Flight.IDS and int(value.get("usable_index", -1)) != -1:
 			return false

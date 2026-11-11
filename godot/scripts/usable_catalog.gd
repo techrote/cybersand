@@ -14,6 +14,8 @@ const USABLE_IDS: Array[StringName] = [
 	&"cement_blob", &"water_contact_charge", &"stone_grinder", &"glass_reclaimer",
 	&"brine_splitter", &"glass_kiln", &"steam_condenser", &"cement_finisher",
 	&"sludge_scrubber", &"metal_reclaimer", &"seed_incubator", &"firewarden",
+	# Kinetic usables (BS-001 kinetic mask core), appended so earlier indices keep meaning.
+	&"sand_blaster", &"gravel_shotgun", &"stone_slug", &"water_cannon", &"oil_sprayer", &"lava_spitter", &"acid_mister", &"blast_glove", &"shovel_gauntlet", &"vortex_lance", &"shockwave_stomp", &"gust_fan", &"geyser_rod",
 ]
 
 const TOOL_IDS: Array[StringName] = [
@@ -26,6 +28,9 @@ const PROJECTILE_IDS: Array[StringName] = [
 	&"timer_airburst", &"water_capsule", &"oil_igniter", &"seed_pod",
 	&"cement_blob", &"water_contact_charge",
 ]
+# Kinetic usables share kinetic_usables.gd with workbench flyer ports. They are
+# tools (repeat while held) whose effect is the "kinetic" operation.
+const KINETIC_IDS: Array[StringName] = [&"sand_blaster", &"gravel_shotgun", &"stone_slug", &"water_cannon", &"oil_sprayer", &"lava_spitter", &"acid_mister", &"blast_glove", &"shovel_gauntlet", &"vortex_lance", &"shockwave_stomp", &"gust_fan", &"geyser_rod"]
 const OBJECT_IDS: Array[StringName] = [
 	&"stone_grinder", &"glass_reclaimer", &"brine_splitter", &"glass_kiln",
 	&"steam_condenser", &"cement_finisher", &"sludge_scrubber", &"metal_reclaimer",
@@ -67,6 +72,19 @@ const DEFINITIONS: Array[Dictionary] = [
 	{"id":&"metal_reclaimer","name":"Metal Reclaimer","category":CATEGORY_OBJECT,"description":"Rust + Coal -> Metal + Smoke.","operation":&"processor","cooldown":0.35,"cost":18.0,"stock":16,"lifetime":45.0,"inputs":[[29,1],[27,1]],"outputs":[[28,1],[4,1]],"color":Color(0.72,0.48,0.32)},
 	{"id":&"seed_incubator","name":"Seed Incubator","category":CATEGORY_OBJECT,"description":"Seed + Water -> Plant.","operation":&"processor","cooldown":0.35,"cost":18.0,"stock":16,"lifetime":45.0,"inputs":[[19,1],[3,1]],"outputs":[[11,1]],"color":Color(0.35,0.82,0.30)},
 	{"id":&"firewarden","name":"Firewarden","category":CATEGORY_OBJECT,"description":"Detects nearby Fire and emits Water; twelve pulses.","operation":&"firewarden","cooldown":0.30,"cost":18.0,"stock":12,"lifetime":45.0,"outputs":[[3,1]],"sensor_material":6,"color":Color(0.20,0.62,0.98)},
+	{"id":&"sand_blaster","name":"Sand Blaster","category":CATEGORY_TOOL,"description":"Fires a burst of flying Sand.","operation":&"kinetic","kinetic":"sand_blaster","cooldown":0.18,"cost":1.4,"range":12.0,"color":Color(0.85,0.70,0.40)},
+	{"id":&"gravel_shotgun","name":"Gravel Shotgun","category":CATEGORY_TOOL,"description":"Seven flying Stone pellets in a spread.","operation":&"kinetic","kinetic":"gravel_shotgun","cooldown":0.32,"cost":2.2,"range":12.0,"color":Color(0.62,0.62,0.60)},
+	{"id":&"stone_slug","name":"Stone Slug","category":CATEGORY_TOOL,"description":"One fast flying Stone cell.","operation":&"kinetic","kinetic":"stone_slug","cooldown":0.22,"cost":1.2,"range":12.0,"color":Color(0.70,0.70,0.66)},
+	{"id":&"water_cannon","name":"Water Cannon","category":CATEGORY_TOOL,"description":"Five ballistic Water parcels.","operation":&"kinetic","kinetic":"water_cannon","cooldown":0.16,"cost":1.2,"range":12.0,"color":Color(0.25,0.58,1.00)},
+	{"id":&"oil_sprayer","name":"Oil Sprayer","category":CATEGORY_TOOL,"description":"Wide flying Oil spray.","operation":&"kinetic","kinetic":"oil_sprayer","cooldown":0.18,"cost":1.3,"range":12.0,"color":Color(0.40,0.28,0.18)},
+	{"id":&"lava_spitter","name":"Lava Spitter","category":CATEGORY_TOOL,"description":"Three flying Lava cells.","operation":&"kinetic","kinetic":"lava_spitter","cooldown":0.30,"cost":2.4,"range":12.0,"color":Color(1.00,0.40,0.10)},
+	{"id":&"acid_mister","name":"Acid Mister","category":CATEGORY_TOOL,"description":"Wide light Acid mist.","operation":&"kinetic","kinetic":"acid_mister","cooldown":0.20,"cost":1.6,"range":12.0,"color":Color(0.45,1.00,0.25)},
+	{"id":&"blast_glove","name":"Blast Glove","category":CATEGORY_TOOL,"description":"Kinetic blast just ahead: nearby cells fly outward.","operation":&"kinetic","kinetic":"blast_glove","cooldown":0.45,"cost":3.0,"range":12.0,"color":Color(1.00,0.55,0.20)},
+	{"id":&"shovel_gauntlet","name":"Shovel Gauntlet","category":CATEGORY_TOOL,"description":"Kinetic cone scoop along the aim.","operation":&"kinetic","kinetic":"shovel_gauntlet","cooldown":0.30,"cost":2.0,"range":12.0,"color":Color(0.80,0.62,0.30)},
+	{"id":&"vortex_lance","name":"Vortex Lance","category":CATEGORY_TOOL,"description":"Kinetic vortex at reach.","operation":&"kinetic","kinetic":"vortex_lance","cooldown":0.40,"cost":2.6,"range":12.0,"color":Color(0.55,0.45,1.00)},
+	{"id":&"shockwave_stomp","name":"Shockwave Stomp","category":CATEGORY_TOOL,"description":"Kinetic ring around the muzzle.","operation":&"kinetic","kinetic":"shockwave_stomp","cooldown":0.60,"cost":3.4,"range":12.0,"color":Color(0.95,0.85,0.40)},
+	{"id":&"gust_fan","name":"Gust Fan","category":CATEGORY_TOOL,"description":"Kinetic gust along the aim.","operation":&"kinetic","kinetic":"gust_fan","cooldown":0.12,"cost":1.0,"range":12.0,"color":Color(0.75,0.90,1.00)},
+	{"id":&"geyser_rod","name":"Geyser Rod","category":CATEGORY_TOOL,"description":"Kinetic column lifted ahead.","operation":&"kinetic","kinetic":"geyser_rod","cooldown":0.40,"cost":2.4,"range":12.0,"color":Color(0.40,0.80,1.00)},
 ]
 
 static func count() -> int:
