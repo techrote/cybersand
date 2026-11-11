@@ -321,18 +321,49 @@ func stopped_agent_prefix() -> bool:
 	if not await until(func() -> bool: return worker.art_state().receipt_ready,"first agent chunk actually completed"):
 		panel.set_process(true)
 		return false
+	var receipts: Array = []
+	var receive_chunk := func(receipt: Dictionary) -> void: receipts.append(receipt.duplicate(true))
+	art.native_receipt.connect(receive_chunk)
+	# The rasterizer has a 2.5 ms time budget and may flush fewer than 4096
+	# points after 33 ms. Erase in its first row, which always reaches native
+	# execution before that timed flush; the retained receipt defines the prefix.
+	var erased_point := Vector2i(218,120)
 	bench.applied.brush = 2
 	bench._brush.value = 2
-	check(bench.paint(Vector2i(218,124),0),"human erasure accepted while agent completion awaits consumption")
+	check(bench.paint(erased_point,0),"human erasure accepted while agent completion awaits consumption")
 	art.stop("Combined fixture completed-prefix Stop")
 	panel.set_process(true)
-	if not await until(settled,"agent Stop and accepted human stroke both retire"): return false
+	var retired := await until(settled,"agent Stop and accepted human stroke both retire")
+	art.native_receipt.disconnect(receive_chunk)
+	if not retired: return false
 	stopped_prefix = int(art.result.checked)
-	check(stopped_prefix==4096 and art.result.status=="partial","Stop reports exactly the one completed 4096-cell prefix")
+	if not check(receipts.size()==1,"Stop consumes exactly one completed native chunk receipt"): return false
+	var completed_chunk: Dictionary = receipts.front()
+	check(stopped_prefix>0 and stopped_prefix<=worker.MAX_BRUSH_FOOTPRINT_CELLS and art.result.status=="partial",
+		"Stop reports a nonempty bounded completed prefix")
+	check(stopped_prefix>8,"deferred human erasure targets a confirmed Wall in the first native row")
+	check(completed_chunk.get("status")=="completed" and int(completed_chunk.get("requested",-1))==stopped_prefix
+		and int(completed_chunk.get("checked",-1))==stopped_prefix and int(completed_chunk.get("changed",-1))==stopped_prefix
+		and int(completed_chunk.get("confirmed",-1))==stopped_prefix and completed_chunk.readback.size()==stopped_prefix
+		and int(completed_chunk.get("excluded",-1))==0 and int(completed_chunk.get("refused",-1))==0
+		and int(completed_chunk.get("unchanged",-1))==0
+		and int(art.result.changed)==stopped_prefix and int(art.result.excluded)==0 and int(art.result.refused)==0,
+		"Stop totals exactly equal its consumed native receipt, not the raster capacity")
+	var exact_receipt := true
+	for index: int in stopped_prefix:
+		if completed_chunk.readback[index] != [210+index%128,120+index/128,0,58]: exact_receipt=false
+	check(exact_receipt,"completed receipt contains the exact ordered stored Empty-to-Wall prefix")
 	check(art.manual.is_empty(),"accepted deferred human stroke has no orphaned pending entry")
-	check(await capture(Rect2i(218,124,1,1))==PackedInt32Array([0]),"accepted human erasure was applied after agent chunk")
+	check(await capture(Rect2i(erased_point,Vector2i.ONE))==PackedInt32Array([0]),"accepted human erasure was applied after agent chunk")
 	check(await capture(Rect2i(210,120,1,1))==PackedInt32Array([58]),"completed prefix remains in native World")
 	check(await capture(Rect2i(337,247,1,1))==PackedInt32Array([0]),"unexecuted agent suffix is absent")
+	var stored: PackedInt32Array = await capture(Rect2i(210,120,128,128))
+	var exact_grid := stored.size()==128*128
+	for index: int in stored.size():
+		var point := Vector2i(210+index%128,120+index/128)
+		var expected := 58 if index<stopped_prefix and point.distance_squared_to(erased_point)>4 else 0
+		if stored[index]!=expected: exact_grid=false
+	check(exact_grid,"every native cell matches the completed prefix, deferred human disc and untouched suffix")
 	var late: Dictionary = worker.art_queue(PackedInt32Array([337,247]),58,AUTHOR_REGION,[],art.epoch)
 	check(late.status=="refused","old agent epoch remains fenced after Stop")
 	phases.stop = true
