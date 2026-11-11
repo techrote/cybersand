@@ -24,6 +24,16 @@ import materials_lab_runtime_publication as publication
 engine = publication.engine
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = "materials-lab-evaluation.json"
+CONTACT_CASE = "test_material_lab_diagnostics"
+CONTACT_DIRECTORY = "graphical-contact"
+CONTACT_MANIFEST = "contact-capture-manifest.json"
+CONTACT_READBACK = "contact-readback.json"
+CONTACT_IMAGE = "09-native-contact-inspector.png"
+CONTACT_SOURCES = {
+    "materials_lab.tscn", "scripts/material_lab_panel.gd", "scripts/material_lab_experiment.gd",
+    "tests/test_material_lab_diagnostics.gd", "native_extension/material_lab_inspection.inc",
+    "native_extension/cyber_demo_bridge.hpp",
+}
 GIT_LOCATION = {"GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE", "GIT_COMMON_DIR",
                 "GIT_OBJECT_DIRECTORY", "GIT_ALTERNATE_OBJECT_DIRECTORIES", "GIT_NAMESPACE",
                 "GIT_CONFIG", "GIT_CONFIG_COUNT", "GIT_CONFIG_PARAMETERS", "GIT_EXEC_PATH", "GIT_TEMPLATE_DIR"}
@@ -224,6 +234,146 @@ def runner_root(root: Path):
         engine.runner.ROOT = previous
 
 
+def smoke_cases(evidence: Path) -> list:
+    cases = [engine.runner.Case("import", ("--editor", "--quit"), 1200, 1.0)] + [
+        engine.runner.Case(name, ("--script", "res://tests/" + name + ".gd"), 1200, 1.0)
+        for name in ("test_material_lab_ui", "test_material_lab_world")]
+    cases.append(engine.runner.Case(CONTACT_CASE, (
+        "--rendering-driver", "opengl3_angle", "--script", "res://tests/" + CONTACT_CASE + ".gd",
+        "--", "--capture-output=" + str((evidence / CONTACT_DIRECTORY).resolve())), 1200, 1.0, True))
+    return cases
+
+
+def smoke_evidence_files(evidence: Path) -> dict[str, str]:
+    return {path.relative_to(evidence).as_posix(): sha(path) for path in sorted(evidence.rglob("*"))
+            if path.is_file() and path != evidence / "package-execution.json"}
+
+
+def verify_contact_capture(package: Path, evidence: Path, result: dict, identity: dict) -> dict:
+    """Admit original graphical/owner evidence from the disposable Windows copy.
+
+    The unit tests exercise this receipt boundary. Only smoke() executes the
+    real native/Godot case and can establish packaged graphical acceptance.
+    """
+    with runner_root(package / "source"):
+        expected_command = engine.runner.case_command(
+            str(package / "Godot_v4.7-stable_win64_console.exe"), smoke_cases(evidence)[-1], "win32")
+    engine.require(result.get("name") == CONTACT_CASE and result.get("status") == "passed" and
+                   result.get("returncode") == 0 and result.get("natural_completion") is True and
+                   result.get("requires_display") is True and result.get("skip_messages") == [] and
+                   not result.get("diagnostic_error") and result.get("launch_error") is None and
+                   result.get("capture_error") is None and result.get("command") == expected_command,
+                   "Packaged contact case did not naturally complete with its bundled Windows ANGLE command")
+    log = evidence / (CONTACT_CASE + ".log")
+    engine.require(log.is_file() and result.get("log_sha256") == sha(log), "Packaged contact process log changed")
+    markers = re.findall(r"(?m)^MATERIAL_LAB_DIAGNOSTICS: ([1-9][0-9]*) assertions; 0 failures\s*$",
+                         log.read_text(encoding="utf-8"))
+    engine.require(len(markers) == 1, "Packaged contact output omitted its unique passing assertion marker")
+    directory = evidence / CONTACT_DIRECTORY
+    for name in (CONTACT_MANIFEST, CONTACT_READBACK, CONTACT_IMAGE):
+        path = directory / name
+        engine.require(path.is_file() and not path.is_symlink(), "Missing original packaged contact capture: " + name)
+    manifest = publication.read_json(directory / CONTACT_MANIFEST)
+    engine.require(manifest.get("schema_id") == "cybersand.material-lab.contact-capture" and
+                   manifest.get("schema_version") == 1 and manifest.get("platform") == "Windows" and
+                   manifest.get("display") == "Windows" and manifest.get("rendering_method") == "gl_compatibility" and
+                   isinstance(manifest.get("renderer"), str) and bool(manifest["renderer"].strip()) and
+                   manifest.get("failures") == 0 and manifest.get("assertions") == int(markers[0]),
+                   "Packaged contact capture does not establish passing Windows graphical execution")
+    engine_info = manifest.get("engine", {})
+    engine.require(isinstance(engine_info, dict) and engine_info.get("major") == 4 and engine_info.get("minor") == 7 and
+                   engine_info.get("patch") == 0 and engine_info.get("status") == "stable" and
+                   engine_info.get("build") == "official" and isinstance(engine_info.get("hash"), str) and
+                   engine_info["hash"].startswith(engine.GODOT_VERSION.rsplit(".", 1)[-1]),
+                   "Packaged contact capture used a different Godot engine")
+    image = directory / CONTACT_IMAGE
+    with image.open("rb") as stream:
+        header = stream.read(24)
+    dimensions = [int.from_bytes(header[16:20], "big"), int.from_bytes(header[20:24], "big")]
+    engine.require(len(header) == 24 and header[:8] == b"\x89PNG\r\n\x1a\n" and header[12:16] == b"IHDR" and
+                   all(value > 0 for value in dimensions) and manifest.get("viewport") == dimensions and
+                   manifest.get("image_sha256") == sha(image), "Packaged contact image or viewport changed")
+    readback_path = directory / CONTACT_READBACK
+    engine.require(manifest.get("readback_sha256") == sha(readback_path), "Packaged contact readback changed")
+    sources = manifest.get("source_sha256", {})
+    engine.require(isinstance(sources, dict) and set(sources) == CONTACT_SOURCES,
+                   "Packaged contact capture omitted its UI/native source inputs")
+    original_files = identity.get("files_sha256", {})
+
+    def source_matches(relative: str, digest: str) -> bool:
+        if (not isinstance(relative, str) or "\\" in relative or Path(relative).is_absolute() or
+                ".." in Path(relative).parts or Path(relative).as_posix() != relative):
+            return False
+        name = "source/godot/" + relative
+        path = package / name
+        return path.is_file() and original_files.get(name) == digest == sha(path)
+
+    engine.require(all(source_matches(path, digest) for path, digest in sources.items()),
+                   "Packaged contact source differs from the original delivered files")
+    for name in ("Godot_v4.7-stable_win64_console.exe", "Godot_v4.7-stable_win64.exe"):
+        engine.require((package / name).is_file() and original_files.get(name) == sha(package / name),
+                       "Packaged contact Godot executable differs from the original: " + name)
+    runtime = package / "source" / engine.RUNTIMES["windows"]
+    runtime_path = "res://" + Path(engine.RUNTIMES["windows"]).relative_to("godot").as_posix()
+    engine.require(runtime.is_file() and manifest.get("native_library_path") == runtime_path and
+                   manifest.get("native_library_sha256") == identity.get("native_sha256") == sha(runtime) and
+                   original_files.get("source/" + engine.RUNTIMES["windows"]) == sha(runtime),
+                   "Packaged contact runtime differs from its qualified original")
+    readback = publication.read_json(readback_path)
+    contact, owner = readback.get("contact", {}), readback.get("owner", {})
+    engine.require(isinstance(contact, dict) and isinstance(owner, dict) and
+                   contact.get("schema_id") == "cybersand.material-lab.contact" and contact.get("schema_version") == 1 and
+                   contact.get("ok") is True and contact.get("reaction_executed") is False and
+                   contact.get("world_eligibility") == "unresolved" and contact.get("blockers") == [] and
+                   owner.get("ok") is True and owner.get("failed") is False and owner.get("platform") == "Windows" and
+                   owner.get("backend") == "native-phased" and owner.get("schema_version") == 2 and
+                   owner.get("material_lab_schema_version") == 1,
+                   "Packaged contact does not retain a successful isolated native owner inspection")
+    observed, native, runtime_identity = owner.get("readback", {}), owner.get("native", {}), owner.get("runtime_identity", {})
+    engine.require(all(isinstance(value, dict) for value in (observed, native, runtime_identity)) and
+                   observed.get("ok") is True and observed.get("backend") == "native World / existing MicroScenario host" and
+                   native == observed.get("native") and native.get("tick") == owner.get("completed_tick") ==
+                   observed.get("completed_tick") == contact.get("completed_tick") == 0 and
+                   owner.get("worker_count") == observed.get("workers") == 1 and
+                   isinstance(contact.get("definition_hash"), str) and
+                   re.fullmatch(r"[0-9a-f]{64}", contact["definition_hash"]) is not None and
+                   contact["definition_hash"] == owner.get("definition_hash") == observed.get("definition_hash"),
+                   "Packaged contact and native owner disagree about their definition or completed tick")
+    owner_sources = runtime_identity.get("script_sha256", {})
+    engine.require(runtime_identity.get("platform") == "Windows" and runtime_identity.get("native_path") == runtime_path and
+                   runtime_identity.get("native_sha256") == identity["native_sha256"] and
+                   runtime_identity.get("material_lab_experiment_sha256") == sources["scripts/material_lab_experiment.gd"] and
+                   isinstance(owner_sources, dict) and
+                   {"scripts/microscenario_identity.gd", "scripts/microscenario_host.gd", "scripts/cell_world.gd"}.issubset(owner_sources) and
+                   all(source_matches(path, digest) for path, digest in owner_sources.items()),
+                   "Packaged native owner source/runtime identity differs from the delivered files")
+    for endpoint, material, x, state_a in (("source", 23, 220, 0), ("target", 3, 221, 173)):
+        cell = contact.get(endpoint, {})
+        engine.require(isinstance(cell, dict) and cell.get("schema_id") == "cybersand.material-lab.cell" and
+                       cell.get("schema_version") == 1 and cell.get("ok") is True and cell.get("read_only") is True and
+                       cell.get("material") == cell.get("visible_material") == material and
+                       cell.get("x") == x and cell.get("y") == 130 and cell.get("state_a") == state_a and
+                       cell.get("state_b") == 0 and cell.get("completed_tick") == 0 and
+                       cell.get("transient_body_id") == 0 and cell.get("stored_temperature_available") is True and
+                       cell.get("stored_temperature_raw") == 200,
+                       "Packaged contact lacks its actual stored " + endpoint + " cell values")
+    resolver = contact.get("resolver", {})
+    engine.require(isinstance(resolver, dict) and resolver.get("ok") is True and resolver.get("matched") is True and
+                   resolver.get("selected") is True and resolver.get("outcome") == "selected_reaction" and
+                   resolver.get("source") == 23 and resolver.get("target") == 3 and
+                   resolver.get("source_product") == resolver.get("target_product") == 24 and
+                   resolver.get("probability_roll") == contact.get("supplied_roll") == 0 and
+                   resolver.get("probability_threshold") == 255 and
+                   resolver.get("probability_numerator") == resolver.get("probability_denominator") == 256,
+                   "Packaged contact lacks its native supplied-roll Salt/Water resolver result")
+    return {"status": "passed", "platform": "Windows", "display": manifest["display"],
+            "renderer": manifest["renderer"], "rendering_method": manifest["rendering_method"],
+            "assertions": manifest["assertions"], "native_sha256": identity["native_sha256"],
+            "definition_hash": contact["definition_hash"], "completed_tick": contact["completed_tick"],
+            "manifest_sha256": sha(directory / CONTACT_MANIFEST),
+            "scope": "Actual bundled Windows ANGLE contact inspector and native owner readback; supplied resolver roll is not an executed reaction."}
+
+
 def smoke(package: Path, evidence: Path) -> dict:
     publication.require_platform("windows")
     identity = verify_package(package)
@@ -232,7 +382,8 @@ def smoke(package: Path, evidence: Path) -> dict:
     evidence.mkdir(parents=True)
     report = {"schema": "materials-lab-package-execution-v1", "source_commit": identity["source_commit"],
               "package_manifest_sha256": sha(package / MANIFEST), "platform": "windows", "completed": False,
-              "status": "running", "results": [], "scope": "disposable copy using only bundled authoring prerequisites"}
+              "status": "running", "results": [],
+              "scope": "disposable copy using only bundled authoring prerequisites; graphical ANGLE contact inspector and native owner readback"}
     report_path = evidence / "package-execution.json"
     report_path.write_bytes(canonical(report))
     # Spaces deliberately exercise executable/source quoting on actual Windows.
@@ -247,9 +398,7 @@ def smoke(package: Path, evidence: Path) -> dict:
         (evidence / "compatibility.log").write_bytes((compatibility.stdout + compatibility.stderr).encode("utf-8"))
         engine.require(compatibility.returncode == 0, "Bundled Git/Python could not authenticate compatibility ancestry")
         godot = candidate / "Godot_v4.7-stable_win64_console.exe"
-        cases = [engine.runner.Case("import", ("--editor", "--quit"), 1200, 1.0)] + [
-            engine.runner.Case(name, ("--script", "res://tests/" + name + ".gd"), 1200, 1.0)
-            for name in ("test_material_lab_ui", "test_material_lab_world")]
+        cases = smoke_cases(evidence)
         with runner_root(source):
             for case in cases:
                 result, failed = engine.runner.run_case(str(godot), case, evidence, "packaged", env=environment)
@@ -257,14 +406,21 @@ def smoke(package: Path, evidence: Path) -> dict:
                 if case.name in engine.CASE_MARKERS:
                     output = (evidence / (case.name + ".log")).read_text(encoding="utf-8")
                     failed = failed or len(re.findall(engine.CASE_MARKERS[case.name], output)) != 1
+                if case.name == CONTACT_CASE and not failed:
+                    try:
+                        report["graphical_contact"] = verify_contact_capture(candidate, evidence, result, identity)
+                    except (OSError, ValueError, TypeError, KeyError, RuntimeError) as error:
+                        report["graphical_contact"] = {"status": "failed", "error": str(error)}
+                        failed = True
                 if failed: report["status"] = "failed"
+                report["files_sha256"] = smoke_evidence_files(evidence)
                 report_path.write_bytes(canonical(report))
                 if failed and case.name == "import": break
         engine.require(report["status"] != "failed" and len(report["results"]) == len(cases),
-                       "Delivered package failed actual Windows authoring; original evidence is retained")
+                       "Delivered package failed actual Windows authoring or graphical inspection; original evidence is retained")
     verify_package(package)
     report.update(status="passed", completed=True,
-                  files_sha256={path.name: sha(path) for path in evidence.iterdir() if path.is_file() and path != report_path})
+                  files_sha256=smoke_evidence_files(evidence))
     report_path.write_bytes(canonical(report))
     return report
 

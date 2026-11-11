@@ -209,7 +209,7 @@ jobs:
           set -euo pipefail
           timeout 10m curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 --output "$RUNNER_TEMP/godot-linux.zip" "$GODOT_URL"
           python3 tools/ci/materials_lab_runtime_publication.py test --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/materials-lab-linux
-          tools/ci/prepare_linux_display.sh
+          bash tools/ci/prepare_linux_display.sh
           xvfb-run -a python3 tools/ci/materials_lab_runtime_publication.py graphical --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/materials-lab-linux
 
       - name: Record artifact attempt

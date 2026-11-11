@@ -44,13 +44,50 @@ class GodotReceiptGuards(unittest.TestCase):
             self.receipt[group].reverse()
         self.validate()
 
+    def test_equivalent_unresolved_root_spellings_preserve_receipt_custody(self):
+        child = self.root / "existing-directory"
+        child.mkdir()
+        for root in (self.root, child / "..", child / ".." / child.name / ".."):
+            with self.subTest(root=str(root)):
+                check.validate_native_receipt(self.receipt, self.protected, root)
+        # Change directory so the relative-root control also works when the
+        # checkout and Windows temporary directory are on different drives.
+        with contextlib.chdir(self.root.parent):
+            check.validate_native_receipt(self.receipt, self.protected, Path(self.root.name) / child.name / "..")
+
+    def test_normalized_root_still_refuses_changed_or_missing_custody(self):
+        child = self.root / "existing-directory"
+        child.mkdir()
+        root = child / ".."
+        path = self.root / "materials/catalogue/generated/inspection.json"
+        original = path.read_bytes()
+        path.write_bytes(b"X" + original[1:])
+        with self.assertRaisesRegex(ValueError, "inspection.json.*sha256"):
+            check.validate_native_receipt(self.receipt, self.protected, root)
+        changed = copy.deepcopy(self.receipt)
+        changed["inputs"] = [row for row in changed["inputs"] if row["path"] != path.relative_to(self.root).as_posix()]
+        with self.assertRaisesRegex(ValueError, "complete 5-path custody inventory"):
+            check.validate_native_receipt(changed, self.protected, root)
+
+    def test_normalized_root_does_not_admit_a_symlinked_input_outside_repository(self):
+        child = self.root / "existing-directory"
+        child.mkdir()
+        with tempfile.TemporaryDirectory(prefix="mat353-outside-receipt-") as outside:
+            path = self.root / "materials/catalogue/catalogue.json"
+            external = Path(outside) / path.name
+            external.write_bytes(path.read_bytes())
+            path.unlink()
+            path.symlink_to(external)
+            with self.assertRaisesRegex(ValueError, "repository-bound native receipt inputs"):
+                check.validate_native_receipt(self.receipt, self.protected, child / "..")
+
     def test_missing_stale_input_row_cannot_bypass_hash_check(self):
         path = self.root / "materials/catalogue/generated/inspection.json"
         original = path.read_bytes()
         path.write_bytes(b"X" + original[1:])
         with self.assertRaisesRegex(ValueError, "inspection.json.*sha256"):
             self.validate()
-        self.receipt["inputs"] = [row for row in self.receipt["inputs"] if row["path"] != str(path.relative_to(self.root))]
+        self.receipt["inputs"] = [row for row in self.receipt["inputs"] if row["path"] != path.relative_to(self.root).as_posix()]
         with self.assertRaisesRegex(ValueError, "complete 5-path custody inventory"):
             self.validate()
 
