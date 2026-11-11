@@ -264,3 +264,17 @@ existing shapes.
 Desktop rasterization yields between frames even when a sparse shape produces no native chunk yet. Partial chunks are submitted periodically so sparse shapes can appear before rasterization finishes. Stop discards buffered cells that have not been submitted to the native owner.
 
 Traffic stays on disk while hidden. The open inspector refreshes at most twice per second during drawing and shows a bounded tail; Save JSONL exports the full session.
+
+On 2026-11-11, Windows/TITAN RTX local tests at source `e5bf2916` ran
+the mech-statue prompt twice per installed model on fresh 64×128 native canvases.
+LFM3 1.7B exhausted 8192 output tokens on reasoning twice; LFM2.5 1.2B
+returned unusable geometry twice. The installed LFM2.5 8B-A1B variant applied
+2344 and 1727 Hard Wall cells in 11.7 and 23.6 seconds, respectively, but
+rendered inspection did not establish the requested subject. A test-only
+reasoning-disabled LFM3 request on 256×512 applied 26741 cells in 3.8 seconds,
+but also failed visual subject assessment. These establish connection and native
+application outcomes, not artistic acceptance. No production provider settings
+were changed. The graphical benchmark accepts `WB_ART_BENCH_WIDTH` and
+`WB_ART_BENCH_HEIGHT`; defaults remain 64×128. Local original replies, native
+readback images, rendered PNGs and hashes are retained under
+`build/local-models-20261111/` (not committed).
