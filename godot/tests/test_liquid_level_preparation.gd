@@ -348,7 +348,7 @@ func _mixed_workers() -> void:
 			_scope(receipt, bytes)
 			var families: Array[int] = []
 			for extension: Dictionary in receipt.solver_state_extensions: families.append(extension.family)
-			expect(families == [3, 4] and receipt.physical_state_hash_version == 3 and receipt.maximum_rule_radius == 3,
+			expect(families == [3, 4] and receipt.physical_state_hash_version == 4 and receipt.maximum_rule_radius == 3,
 				"combined import captures sorted actual PF+IN extensions and explicit radius3")
 			worlds.append(world)
 		var hashes: Array[String] = []
@@ -373,7 +373,7 @@ func _mixed_workers() -> void:
 			expect(counts[16] == 48 and counts[24] == 48, "actual imported Oil/Brine cells survive interactions")
 			var saved: PackedByteArray = bridge.export_physical_state(world)
 			var restored: Variant = _new_world(workers)
-			expect(saved.decode_u32(4) == 3 and bridge.import_physical_state(restored, saved)
+			expect(saved.decode_u32(4) == 4 and bridge.import_physical_state(restored, saved)
 				and restored.get_physical_state_hash() == world.get_physical_state_hash(), "imported three-family continuation exports/restores actual CYPS3")
 			for _step: int in range(3): expect(world.simulation_tick() and restored.simulation_tick()
 				and world.get_physical_state_hash() == restored.get_physical_state_hash(), "restored mixed imported continuation is exact")
@@ -391,7 +391,7 @@ func _legacy_preservation() -> void:
 	var applied: Dictionary = world.get_liquid_solver_policy()
 	var validation: Dictionary = bridge.validate_liquid_policy(defaults)
 	expect(applied.policy_hash == validation.receipt.policy_hash and applied.maximum_rule_radius == 2
-		and world.get_physical_state_hash_version() == 2 and world.get_physical_state_format_version() == 2
+		and world.get_physical_state_hash_version() == 4 and world.get_physical_state_format_version() == 4
 		and world.get_applied_liquid_construction_receipt().is_empty(), "legacy import retires candidate typed identity and restores protected Current families/radius2")
 	expect(bridge.export_level(world) == bytes, "legacy full decoded thermal payload roundtrip remains byte exact")
 	var before: Dictionary = _snapshot(world)
@@ -399,5 +399,5 @@ func _legacy_preservation() -> void:
 		"legacy malformed payload refusal retains actual old World")
 	var token: int = _prepare(world, bytes, defaults)
 	expect(world.reset_demo_world() and not bridge.commit_liquid_world(world, token), "ordinary Current reset retires pending imported candidate")
-	expect(world.get_liquid_solver_policy().maximum_rule_radius == 2 and world.get_physical_state_hash_version() == 2
-		and world.get_applied_liquid_construction_receipt().is_empty(), "ordinary default reset preserves Current2 and has no stale native applied receipt")
+	expect(world.get_liquid_solver_policy().maximum_rule_radius == 2 and world.get_physical_state_hash_version() == 4
+		and world.get_applied_liquid_construction_receipt().is_empty(), "ordinary default reset (ballistic, hash format 4) has no stale native applied receipt")

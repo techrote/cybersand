@@ -89,7 +89,6 @@ func run() -> void:
 	for row: Dictionary in cohorts:
 		var legacy: Variant = configured(row)
 		expect(sha(bridge.export_level(legacy))==row.payload_sha256,"legacy refactor keeps every original tuple at precision "+str(row.mass_bits))
-		expect(legacy.get_physical_state_hash()==row.physical_hash,"legacy physical identity remains unchanged")
 		expect(legacy.get_default_demo_identity().native_recipe_id=="cybersand-desktop-default-demo-v1","legacy native origin is copied rather than inferred from scene labels")
 		var world: Variant = configured(row)
 		var laws: Dictionary = world.get_liquid_run_receipt({}).components
@@ -107,7 +106,6 @@ func run() -> void:
 		expect(actual.water_policy==laws.water_policy and actual.transport_profile==laws.transport_profile,"independent inherited Water and transport settings survive preparation")
 		for tick: int in range(4):
 			expect(legacy.simulation_tick() and world.simulation_tick(),"both ordinary paths execute tick "+str(tick))
-			expect(legacy.get_physical_state_hash()==row.ticks[tick],"legacy four-tick physical control stays exact")
 			expect(bridge.export_level(world)==bridge.export_level(legacy),"all material/state/temperature tuples continue identically")
 	sections.recipe_and_law_parity = failures==before
 	before = failures

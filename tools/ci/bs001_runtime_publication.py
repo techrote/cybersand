@@ -55,7 +55,7 @@ engine.CASE_TIMEOUTS = {
 }
 engine.EXECUTION_SCOPE = (
     "Exact-source Linux/Windows rebuilt GDExtension, official Godot 4.7 import, "
-    "actual shared-workbench solids-lab (BS-001 flying solids, hopper, collector, "
+    "actual shared-workbench solids-lab (BS-001 ballistic solids, hopper, collector, "
     "conveyor, launcher against Rapier barrels), liquid-lab and reservoir-lab "
     "equipment, and the ordinary workbench canvas. Full exact-head suite, "
     "sanitizers and human feel acceptance remain separate gates."

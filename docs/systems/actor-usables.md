@@ -171,8 +171,13 @@ piloted flyer, kinetic-lab) use too.
   (shape × pattern × field) at their reach and launch the cells it covers.
 
 Every shot goes through the native ballistic owners and never paints cells
-directly. The desktop World is built with both ballistic owners enabled (idle
-owners change no cell), so F5 actors and workbench flyer ports both fire them.
+directly. Every non-workbench World (the starting World and every prepared liquid
+setting) is built with both ballistic owners enabled; idle owners change no
+cell, so F5 actors and workbench flyer ports both fire them. The workbench keeps
+its explicit Ballistic Water toggle. Consequence: these Worlds report physical
+hash and continuation-snapshot format 4 (5 with the PF-C2048 gas option) instead
+of 2/3; level saves are unchanged, and older format-2 snapshots still load
+(`test_ballistic_default_old_snapshots.gd`).
 Evidence: `test_workbench_flyer_ports.gd` 31/0 and `test_f5_kinetic_usables.gd`
 (shotgun and water cannon fire native ballistic cells), Windows, Godot 4.7,
 2026-11-11.

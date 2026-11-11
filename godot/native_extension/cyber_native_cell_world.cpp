@@ -289,9 +289,8 @@ void CyberNativeCellWorld::create_world() {
                 "cybersand/native_active_core_capacity", 1024), 1, 1024));
         config.active_chunk_capacity = 128;
         config.parallel_job_threshold = 2;
-        // Kinetic flight: the desktop World carries the ballistic Water and
-        // BS-001 ballistic-solid owners so F5 kinetic usables can fling cells.
-        // Idle owners change no cell. diagnostic_reset builds its own config.
+        // Every starting World carries ballistic Water and BS-001 ballistic
+        // solids (see reset_demo_world); idle owners change no cell.
         config.ballistic_water.enabled = true;
         config.ballistic_solids.enabled = true;
         world_ = std::make_unique<cybersand::World>(config);
@@ -316,6 +315,13 @@ bool CyberNativeCellWorld::reset_demo_world() {
         // Resetting to FreeMass also retires the PF-only gas-capacity profile.
         config.pressure_gas_compartment_capacity = cybersand::PressureFlowParameters::kCompartmentCapacity;
         config.maximum_rule_radius = kProtectedCurrentRuleRadius;
+        // Every starting World carries ballistic Water and BS-001 ballistic
+        // solids (default capacities); idle owners change no cell.
+        config.ballistic_water = {};
+        config.ballistic_water.enabled = true;
+        config.ballistic_solids = {};
+        config.ballistic_solids.enabled = true;
+        config.inertial_signed_vertical = false;
         if (workbench_) {
             config.maximum_chunk_count = 128;
             config.active_chunk_capacity = 128;

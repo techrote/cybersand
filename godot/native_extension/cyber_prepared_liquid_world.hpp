@@ -303,14 +303,18 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             if (!workbench || options[key].get_type() != Variant::BOOL)
                 throw std::invalid_argument("Experimental Water options require the workbench and a boolean value");
         }
-        config->ballistic_water.enabled = options.get("workbench_ballistic", false);
+        // Outside the workbench every World carries ballistic Water and BS-001
+        // ballistic solids, like the starting World; the workbench keeps its
+        // explicit toggles.
+        config->ballistic_water.enabled = workbench ? static_cast<bool>(options.get("workbench_ballistic", false)) : true;
+        if (!workbench) config->ballistic_solids.enabled = true;
         config->inertial_signed_vertical = options.get("workbench_inertial_signed", false);
         config->ballistic_water.face_release = config->ballistic_water.enabled &&
             static_cast<bool>(options.get("workbench_face_release", false));
         // BS-001 ballistic solids need ballistic Water; capacities are explicit
         // integers inside the native admission bounds (default 4096 each).
         config->ballistic_solids.enabled = config->ballistic_water.enabled &&
-            static_cast<bool>(options.get("workbench_ballistic_solids", false));
+            (config->ballistic_solids.enabled || static_cast<bool>(options.get("workbench_ballistic_solids", false)));
         if (options.has("workbench_ballistic_solids") && static_cast<bool>(options["workbench_ballistic_solids"]) &&
             !config->ballistic_water.enabled)
             throw std::invalid_argument("Ballistic solids require ballistic Water");

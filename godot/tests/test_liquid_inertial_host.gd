@@ -99,12 +99,12 @@ func run() -> void:
 		var receipt: Dictionary = world.get_applied_liquid_construction_receipt()
 		expect(parameters.damping_numerator == numerator and parameters.damping_denominator == 16
 			and parameters.readback_source == "applied_world" and readback.maximum_rule_radius == 3
-			and world.get_physical_state_hash_version() == 3 and world.get_physical_state_format_version() == 3,
+			and world.get_physical_state_hash_version() == 4 and world.get_physical_state_format_version() == 4,
 			"readback uses actual immutable World parameters and instance versions")
 		var extension: Dictionary = receipt.solver_state_extensions[0]
 		expect(extension.family == 4 and extension.state_contract_version == 1 and extension.extension_identity_version == 1
 			and extension.extension_digest == parameters.extension_identity
-			and receipt.physical_state_hash_version == 3 and receipt.maximum_rule_radius == 3
+			and receipt.physical_state_hash_version == 4 and receipt.maximum_rule_radius == 3
 			and receipt.physical_state_hash == world.get_physical_state_hash(),"captured native extension and mask-free tick-zero hash match actual applied law")
 		expect(receipt.qualifications == 15 and not receipt.eligible_for_full_matched_evidence,"IN readback preserves frozen outer-v1 qualifications")
 		identities[parameters.extension_identity] = true
@@ -136,10 +136,10 @@ func three_families(bridge: Variant, definition: Dictionary, request: PackedInt3
 			and world.water_experiment_observation(Vector2i.ZERO,Vector2i(96,96)).water_integer == 48*255,
 			"retained Brine motion coexists with exact Water quantity and Oil/Brine cell counts through contact: "+str(end)+" / observed="+str(observed_motion))
 		var saved: PackedByteArray = bridge.export_physical_state(world)
-		expect(not saved.is_empty() and saved.decode_u32(4) == 3,"actual IN continuation exports CYPS3")
+		expect(not saved.is_empty() and saved.decode_u32(4) == 4,"actual IN continuation exports CYPS3")
 		var restored: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
-		expect(bridge.import_physical_state(restored,saved) and restored.get_physical_state_hash_version() == 3
-			and restored.get_physical_state_format_version() == 3 and restored.get_physical_state_hash() == world.get_physical_state_hash(),
+		expect(bridge.import_physical_state(restored,saved) and restored.get_physical_state_hash_version() == 4
+			and restored.get_physical_state_format_version() == 4 and restored.get_physical_state_hash() == world.get_physical_state_hash(),
 			"CYPS3 restores retained momentum and execution geometry into an initially Current adapter")
 		for _tick: int in range(5):
 			expect(world.simulation_tick() and restored.simulation_tick()
@@ -170,7 +170,7 @@ func application_controls(bridge: Variant) -> void:
 	expect(panel.load_selected(),"matched Current comparator uses same explicit radius three")
 	expect(await wait_for(func() -> bool: return desktop.pending_microscenario_apply.is_empty()),"matched Current acknowledges")
 	expect(desktop.tower_context.liquid_solver_policy.maximum_rule_radius == 3
-		and desktop.tower_context.liquid_solver_policy.physical_state_hash_version == 2,"non-IN comparator keeps hash/CYPS2 with explicitly matched geometry")
+		and desktop.tower_context.liquid_solver_policy.physical_state_hash_version == 4,"non-IN comparator keeps hash/CYPS2 with explicitly matched geometry")
 	expect(panel.load_current_control(),"original protected Current control remains distinct")
 	expect(await wait_for(func() -> bool: return desktop.pending_microscenario_apply.is_empty()),"original Current acknowledges")
 	desktop.simulation_worker.stop_worker()
@@ -179,7 +179,7 @@ func application_controls(bridge: Variant) -> void:
 	var current_host: CyberMicroScenarioHost = Host.new()
 	expect(current_host.install(reference,checked.definition,"Inspect",true),"independent ordinary Current host installs exact fixed execution")
 	expect(desktop.simulation_worker._world.get_liquid_solver_policy().maximum_rule_radius == 2
-		and desktop.simulation_worker._world.get_physical_state_hash_version() == 2
+		and desktop.simulation_worker._world.get_physical_state_hash_version() == 4
 		and desktop.simulation_worker._world.get_physical_state_hash() == reference.get_physical_state_hash(),
 		"original Current restores radius two and exact original constructor state after IN/matched controls")
 	desktop.queue_free();desktop = null;await process_frame
@@ -212,7 +212,7 @@ func application_physical(bridge: Variant, request: PackedInt32Array) -> void:
 		and PreparedPhysical._pose_values(desktop.simulation_worker._rigid_body_states) == PreparedPhysical._pose_values(staged.initial_body_states())
 		and receipt.physical_state_hash == world.get_physical_state_hash(),
 		"IN native receipt binds the actual retained initial poses and masks")
-	expect(receipt.physical_state_hash_version == 3 and receipt.maximum_rule_radius == 3
+	expect(receipt.physical_state_hash_version == 4 and receipt.maximum_rule_radius == 3
 		and applied.family_parameters.inertial_cellular_v1.damping_numerator == 7
 		and receipt.solver_state_extensions[0].extension_digest == applied.family_parameters.inertial_cellular_v1.extension_identity
 		and receipt.qualifications == 15 and not receipt.eligible_for_full_matched_evidence,

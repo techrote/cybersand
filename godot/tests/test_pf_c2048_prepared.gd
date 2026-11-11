@@ -85,7 +85,7 @@ func run() -> void:
             var saved_level: PackedByteArray = bridge.export_level(world)
             verify(not saved_level.is_empty(), "C2048 level export failed")
             # Ordinary reset must discard PF gas capacity along with the solver.
-            verify(world.reset_demo_world() and world.get_physical_state_hash_version() == 2 and
+            verify(world.reset_demo_world() and world.get_physical_state_hash_version() == 4 and
                     not world.inspect_gas_compartments().get("available", false),
                     "C2048 ordinary native reset retained PF-only capacity")
             # An explicit re-adoption may still use C2048 after that reset.
@@ -93,7 +93,7 @@ func run() -> void:
             if verify(again > 0 and bridge.commit_liquid_world(world, again),
                     "explicit C2048 re-adoption after ordinary reset failed"):
                 verify(bridge.import_level(world, saved_level) and
-                        world.get_physical_state_hash_version() == 2 and
+                        world.get_physical_state_hash_version() == 4 and
                         not world.inspect_gas_compartments().get("available", false),
                         "lossy CYSD1 default-family import incorrectly retained C2048")
     finish()

@@ -63,7 +63,7 @@ func run() -> void:
 	expect(worker._character.position == Vector2(20,Tower.landing(2).y) and not worker._prepared_frame_hold.is_empty()
 		and worker._scenario_host.definition().camera_origin == [0,int(Tower.floor_y(2))],
 		"final selected floor/player/camera are staged before capture; post-install floor tail does not reset them")
-	expect(receipt.physical_state_hash == worker._world.get_physical_state_hash() and receipt.physical_state_hash_version == 3
+	expect(receipt.physical_state_hash == worker._world.get_physical_state_hash() and receipt.physical_state_hash_version == 4
 		and receipt.maximum_rule_radius == 3 and receipt.run_intent == "exploratory" and receipt.qualifications == 15,
 		"ordinary Tower exposes actual native construction facts with retained qualifications")
 	expect(worker._lab_profile_hash == Profiles.resolve(Profiles.preset(2)).hash,"independent transport profile survives solver rebuild")
@@ -151,7 +151,7 @@ func synchronous(policy: PackedInt32Array) -> void:
 	web.select_demo("experiment_tower",false);web.tower_floor_select(2)
 	expect(web.liquid_comparison_apply_active(policy,false,true,"Inspect",3),"synchronous ordinary Tower uses explicit prepared owner")
 	expect(web._liquid_tower_active and not web.tower_context.get("micro_active",true)
-		and web.native_world.get_liquid_solver_policy().physical_state_hash_version == 3
+		and web.native_world.get_liquid_solver_policy().physical_state_hash_version == 4
 		and web.player.position == Vector2(20,Tower.landing(2).y),"synchronous Tower retains selected floor and actual native identity")
 	var canonical: PackedByteArray = web.native_world.get_applied_liquid_construction_receipt().canonical_bytes.duplicate()
 	expect(not web._apply_prepared_liquid_tower(policy,false,2,Profiles.resolve(web.tower_profile))
