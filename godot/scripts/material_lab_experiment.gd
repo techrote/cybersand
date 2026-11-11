@@ -285,7 +285,90 @@ func step(count: int = 1) -> bool:
 
 func inspect_cell(point: Vector2i) -> Dictionary:
 	if not active(): return {"ok":false,"error":"No native experiment is active."}
+	if _bridge.has_method(&"inspect_material_lab_cell"):
+		return _bridge.inspect_material_lab_cell(world, point)
 	return _bridge.inspect_cell(world, point)
+
+func preview_region() -> Rect2i:
+	return _region if active() else Rect2i()
+
+static func _contact_gate(checks: Array, blockers: Array, id: String, admitted: bool, explanation: String) -> void:
+	checks.append({"id":id,"status":"observed_pass" if admitted else "observed_blocker","explanation":explanation})
+	if not admitted: blockers.append(id)
+
+func inspect_contact(source_point: Vector2i, target_point: Vector2i, supplied_roll: int = 0) -> Dictionary:
+	# Called only by this serialized test owner between ticks. This bounded query
+	# reads two real cells and a compiled resolver; it never advances or edits them.
+	if not active(): return {"ok":false,"error":"Prepare a native experiment before inspecting a contact."}
+	if supplied_roll < 0 or supplied_roll > 255:
+		return {"ok":false,"error":"Contact inspection requires a supplied byte roll from 0 through 255."}
+	if not _bridge.has_method(&"inspect_material_lab_cell"):
+		return {"ok":false,"error":"Rebuild the matching native Materials Lab cell-inspection adapter; no scheduling facts are inferred."}
+	if not _ensure_source_identity(): return {"ok":false,"error":last_error}
+	var source: Dictionary = inspect_cell(source_point)
+	var target: Dictionary = inspect_cell(target_point)
+	if not source.get("ok",false): return {"ok":false,"error":"Source cell: " + str(source.get("error","Readback refused."))}
+	if not target.get("ok",false): return {"ok":false,"error":"Target cell: " + str(target.get("error","Readback refused."))}
+	if source.completed_tick != target.completed_tick or int(source.completed_tick) != int(world.get_tick_index()):
+		return {"ok":false,"error":"The two cell observations do not share one completed native tick."}
+	# World contact reads use visible IDs. A retained material behind a body mask
+	# must not be passed to the resolver as though it were an exposed contact.
+	var resolver: Dictionary = resolver_diagnostic(int(source.visible_material),int(target.visible_material),supplied_roll)
+	if not resolver.get("ok",false): return resolver
+	var checks: Array = []
+	var blockers: Array = []
+	var delta: Vector2i = target_point - source_point
+	_contact_gate(checks,blockers,"moore_neighbour",delta != Vector2i.ZERO and absi(delta.x) <= 1 and absi(delta.y) <= 1,
+		"The shared sparse-pair scan visits the eight immediate neighbours. Selected offset: (%d,%d)." % [delta.x,delta.y])
+	_contact_gate(checks,blockers,"source_mask",int(source.transient_body_id) == 0,
+		"Native source mask body ID is %d; a masked source does not execute its cellular kernel." % source.transient_body_id)
+	_contact_gate(checks,blockers,"target_mask",int(target.transient_body_id) == 0 or bool(resolver.get("matched",false)),
+		"Native target mask body ID is %d; this stored-pair inspection sees material %d, while storage retains %d. A masked target blocks this pair when its visible proxy has no matching native sparse rule; no claim is made about other mechanisms." % [target.transient_body_id,target.visible_material,target.material])
+	if int(source.scheduler.backend) == 1:
+		_contact_gate(checks,blockers,"source_core_window",bool(source.scheduler.selected_core_included),
+			"Native selected core range %s %s source core %s. Target cores are not used as a blocker because contacts can reach the write halo." % [
+				str(source.scheduler.selected_core_range),"includes" if source.scheduler.selected_core_included else "excludes",str(source.scheduler.core_coordinate)])
+	else:
+		checks.append({"id":"source_core_window","status":"unobserved","explanation":"This contact report qualifies core exclusion only for the current native phased backend."})
+	# World::rule_is_active applies this necessary descriptor/kernel gate before
+	# scan_rect or tick_serial calls update_cell. Pair capability alone is not it:
+	# inert Glass can be a reactive target while its None kernel cannot be a source.
+	_contact_gate(checks,blockers,"source_kernel_available",bool(source.current_rule_available) and int(source.kernel) != 0,
+		"Native source descriptor current_rule_available=%s and kernel=%d. World::rule_is_active excludes unavailable/None kernels before source dispatch; the target kernel is not gated." % [source.current_rule_available,source.kernel])
+	_contact_gate(checks,blockers,"source_pair_capability",bool(source.has_pair_reactions),
+		"Compiled native has_pair_reactions for stored source material %d is %s." % [source.material,source.has_pair_reactions])
+	_contact_gate(checks,blockers,"matching_visible_pair",bool(resolver.get("matched",false)),
+		"Native resolver outcome for visible IDs %d → %d: %s." % [source.visible_material,target.visible_material,resolver.outcome])
+	checks.append({"id":"probability","status":"supplied_roll","explanation":str(resolver.explanation) + " This supplied roll is not the World random stream."})
+	checks.append({"id":"source_state_activity","status":"unobserved","explanation":"Kernel availability is only a necessary source gate. The native state-dependent rule_is_active result is not exposed by this observation API."})
+	for unavailable: String in source.unobserved:
+		checks.append({"id":unavailable,"status":"unobserved","explanation":"The current owner API does not expose this fact; no value is inferred from pixels or global activity counters."})
+	return {"ok":true,"schema_id":"cybersand.material-lab.contact","schema_version":1,
+		"owner":"exclusive isolated native MicroScenario owner","completed_tick":source.completed_tick,
+		"definition_hash":str(_host.summary().definition_hash),"source":source,"target":target,
+		"supplied_roll":supplied_roll,"resolver":resolver,"checks":checks,"blockers":blockers,
+		"world_eligibility":"blocked_by_observed_fact" if not blockers.is_empty() else "unresolved",
+		"reaction_executed":false,"scope":"Source-oriented sparse-pair inspection at one completed tick. A selected resolver result is not an executed reaction or a prediction. Movement, scheduling and competing neighbours may change the next attempt."}
+
+static func contact_report_text(report: Dictionary) -> String:
+	if not report.get("ok",false): return "Native contact inspection refused: " + str(report.get("error","Unknown readback failure."))
+	var lines: Array[String] = ["NATIVE CONTACT / completed tick %d" % report.completed_tick,
+		"Definition " + str(report.definition_hash),""]
+	for endpoint: String in ["source","target"]:
+		var cell: Dictionary = report[endpoint]
+		lines.append("%s (%d,%d): %s [%d], visible %d, state A=%d B=%d, stored temperature=%d raw" % [
+			endpoint.capitalize(),cell.x,cell.y,cell.material_name,cell.material,cell.visible_material,cell.state_a,cell.state_b,cell.stored_temperature_raw])
+		lines.append("  Kernel ID %d; mask body %d; core %s; selected=%s; last applied=%s" % [
+			cell.kernel,cell.transient_body_id,str(cell.scheduler.core_coordinate),cell.scheduler.selected_core_included,str(cell.scheduler.last_applied_core_included)])
+	lines.append("\nRESOLVER / supplied byte roll %d" % report.supplied_roll)
+	lines.append(str(report.resolver.explanation))
+	if report.resolver.get("matched",false):
+		lines.append("Rule %s; source product %d; target product %d. %s" % [report.resolver.rule_id,report.resolver.source_product,report.resolver.target_product,report.resolver.endpoint_effect])
+	lines.append("\nWORLD ELIGIBILITY / " + str(report.world_eligibility))
+	for check: Dictionary in report.checks:
+		lines.append("%s / %s: %s" % [str(check.status).to_upper(),check.id,check.explanation])
+	lines.append("\n" + str(report.scope))
+	return "\n".join(lines)
 
 func readback() -> Dictionary:
 	if not active(): return {"ok":false,"error":"No native experiment is active."}
@@ -324,7 +407,7 @@ func readback() -> Dictionary:
 		"applied_policy":_host.liquid_solver_policy(),
 		"stored_probe":inspect_cell(Vector2i(182,238)),
 		"preview_scope":"Copied native material IDs with current Godot base palette; image is not the quantitative acceptance oracle.",
-		"activity_scope":"Completed-tick/global activity counters only; per-cell sleeping and future deadlines are unavailable.",
+		"activity_scope":"Completed-tick/global activity counters; the dedicated contact probe additionally copies native core-window and mask facts. Per-cell sleeping and future deadlines remain unavailable.",
 		"seed_scope":"Definition seed controls fixture geometry; native deterministic coordinates/tick streams remain the existing engine law.",
 		"runtime_scope":"Separate test World only; Workbench and production catalogue are unchanged."}
 	_readback_tick = tick
