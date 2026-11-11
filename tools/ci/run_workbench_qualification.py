@@ -1,0 +1,239 @@
+#!/usr/bin/env python3
+"""Execute source-built Workbench tests, including fresh installed layouts.
+
+This runner never supplies model credentials or invokes a cloud provider. The
+provider transport regression uses the repository's loopback HTTP fixtures.
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import io
+import json
+import os
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+import tarfile
+
+ROOT = Path(__file__).resolve().parents[2]
+REOPEN_VARS = (
+    "WB_GENERATOR_REOPEN", "WB_GENERATOR_EXPECT_MISSING", "PAINT_REOPEN",
+    "PAINT_GENERATED_REOPEN", "CYBERSAND_PAINT_HISTORY_REOPEN",
+)
+ERRORS = re.compile(r"SCRIPT ERROR:|Parse Error:|Failed to load script|Failed loading resource:")
+
+
+def digest(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def completion(text: str, marker: str) -> dict:
+    lines = [line.split(marker, 1)[1].strip() for line in text.splitlines() if marker in line]
+    if not lines:
+        raise RuntimeError(f"Required completion marker is absent: {marker}")
+    tail = lines[-1]
+    if tail.startswith("{"):
+        result = json.loads(tail)
+    else:
+        match = re.search(r"checks=(\d+)\s+failures=(\d+)", tail)
+        if match is None:
+            match = re.search(r"(\d+) checks, (\d+) failures", tail)
+        if match is None:
+            raise RuntimeError(f"Malformed completion marker: {marker} {tail}")
+        result = {"checks": int(match[1]), "failures": int(match[2])}
+    if not isinstance(result.get("checks"), int) or result["checks"] < 1 or result.get("failures") not in (0, []):
+        raise RuntimeError(f"Incomplete or failing checks: {marker} {tail}")
+    return result
+
+
+class Runner:
+    def __init__(self, args):
+        self.args = args
+        self.evidence = args.evidence.resolve()
+        self.evidence.mkdir(parents=True, exist_ok=True)
+        self.results = []
+        self.env = dict(os.environ)
+        for name in REOPEN_VARS:
+            self.env.pop(name, None)
+        self.env["XDG_DATA_HOME"] = str(self.evidence / "userdata")
+        self.env["WB_ART_EVIDENCE_DIR"] = str(self.evidence / "art-frames")
+
+    def execute(self, label, command, *, env=None, marker=None, timeout=1800):
+        log = self.evidence / f"{label}.log"
+        effective_env = dict(self.env, **(env or {}))
+        receipt = {"label": label, "command": command}
+        self.results.append(receipt)
+        try:
+            with log.open("w", encoding="utf-8") as output:
+                process = subprocess.run(command, cwd=self.evidence, env=effective_env,
+                                         stdout=output, stderr=subprocess.STDOUT, timeout=timeout)
+            text = log.read_text(encoding="utf-8", errors="replace")
+            receipt["exit_code"] = process.returncode
+            if process.returncode or ERRORS.search(text):
+                print(text[-14000:])
+                raise RuntimeError(f"{label} failed; retained log: {log}")
+            if marker:
+                receipt["completion"] = completion(text, marker)
+            receipt["status"] = "passed"
+            print(f"PASS {label}: {receipt.get('completion', {})}", flush=True)
+            return text
+        except Exception as error:
+            receipt["status"] = "failed"
+            receipt["error"] = str(error)
+            raise
+        finally:
+            (self.evidence / "results.json").write_text(json.dumps(self.results, indent=2)+"\n", encoding="utf-8")
+
+    def godot(self, project, label, script=None, marker=None, *, graphical=False, env=None):
+        command = [str(self.args.godot.resolve()), "--audio-driver", "Dummy"]
+        if graphical:
+            command += ["--rendering-method", "gl_compatibility"]
+            if sys.platform == "win32":
+                command += ["--rendering-driver", "opengl3_angle"]
+            else:
+                command += ["--display-driver", "x11"]
+        else:
+            command.append("--headless")
+        command += ["--path", str(project.resolve())]
+        if script:
+            command += ["--script", f"res://tests/{script}.gd"]
+        else:
+            command += ["--editor", "--quit"]
+        return self.execute(label, command, env=env, marker=marker)
+
+
+def stage_linux(args):
+    """Archive committed source, then install this run's rebuilt Linux runtime."""
+    destination = args.output.resolve()
+    if destination.exists():
+        raise ValueError("Linux install destination must be a new non-Git directory")
+    native = "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
+    rapier = "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"
+    payload = subprocess.check_output(["git", "archive", "HEAD", "--", "godot", "examples/worldgen"], cwd=ROOT)
+    destination.mkdir(parents=True)
+    with tarfile.open(fileobj=io.BytesIO(payload)) as archive:
+        for item in archive:
+            if not item.isfile() or item.name.startswith("godot/.godot/"):
+                continue
+            if "/bin/" in item.name and item.name not in (native, rapier):
+                continue
+            data = archive.extractfile(item).read()
+            if item.name in (native, rapier):
+                data = (ROOT / item.name).read_bytes()
+                if not data.startswith(b"\x7fELF"):
+                    raise ValueError(f"Missing materialized Linux runtime: {item.name}")
+            elif data.startswith(b"version https://git-lfs.github.com/spec/v1\n"):
+                match = re.fullmatch(rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n", data)
+                data = (ROOT / item.name).read_bytes()
+                if match is None or hashlib.sha256(data).hexdigest() != match[1].decode() or len(data) != int(match[2]):
+                    raise ValueError(f"Unmaterialized source asset: {item.name}")
+            target = destination / item.name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(data)
+    resources = destination / "godot/authoring/worldgen"
+    resources.mkdir(parents=True, exist_ok=True)
+    for profile in sorted((destination / "examples/worldgen").glob("*.json")):
+        shutil.copyfile(profile, resources / profile.name)
+    # Retained provenance describes the old committed binary, not this rebuild.
+    retained = destination / "godot/addons/cybersand_native/runtime-provenance.linux.json"
+    if retained.exists():
+        retained.rename(retained.with_name("retained-runtime-provenance.linux.reference.json"))
+    identity = {
+        "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+        "source_tree": subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], cwd=ROOT, text=True).strip(),
+        "native_sha256": digest(destination / native),
+        "files_sha256": {p.relative_to(destination).as_posix(): digest(p) for p in sorted(destination.rglob("*")) if p.is_file()},
+    }
+    (destination / "qualification-source.json").write_text(json.dumps(identity, indent=2)+"\n", encoding="utf-8")
+    print(destination)
+
+
+def installed(args):
+    runner = Runner(args)
+    package = args.package.resolve()
+    scratch = args.scratch.resolve()
+    if scratch.exists():
+        raise ValueError("Installed-validation scratch must be a new directory")
+    if any((p / ".git").exists() for p in (scratch, *scratch.parents)):
+        raise ValueError("Installed validation must run outside every Git worktree")
+    scratch.mkdir(parents=True)
+    inventory = {name: {p.name: digest(p) for p in sorted((package / name).glob("*.json"))}
+                 for name in ("examples/worldgen", "godot/authoring/worldgen")}
+    if not inventory["examples/worldgen"] or inventory["examples/worldgen"] != inventory["godot/authoring/worldgen"]:
+        raise ValueError("Packaged sibling and resource profile inventories must be present and identical")
+    (runner.evidence / "profile-inventory.json").write_text(json.dumps(inventory, indent=2)+"\n", encoding="utf-8")
+    for variant in ("complete", "resource-only", "missing-profiles"):
+        target = scratch / variant
+        shutil.copytree(package, target, ignore=shutil.ignore_patterns(".git", ".godot"))
+        if variant != "complete":
+            shutil.rmtree(target / "examples/worldgen")
+        if variant == "missing-profiles":
+            shutil.rmtree(target / "godot/authoring/worldgen")
+        project = target / "godot"
+        runner.godot(project, f"{variant}-import")
+        env = {"WB_GENERATOR_EXPECT_MISSING": "1" if variant == "missing-profiles" else "0"}
+        runner.godot(project, f"{variant}-discovery", "test_workbench_generator_discovery", "WB_GENERATOR_DISCOVERY", env=env)
+        if variant != "complete":
+            continue
+        for phase in ("author", "reopen"):
+            frames = runner.evidence / f"installed-{phase}-frames"
+            env = {"WB_GENERATOR_REOPEN": "1" if phase == "reopen" else "0",
+                   "WB_GENERATOR_SCREENSHOTS": str(frames), "WB_GENERATOR_REQUIRE_GRAPHICS": "1"}
+            runner.godot(project, f"installed-{phase}", "test_workbench_generator_installed",
+                         "WB_GENERATOR_INSTALLED", graphical=True, env=env)
+            screenshots = [p for p in frames.glob("*.png") if p.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")]
+            if not screenshots:
+                raise RuntimeError(f"Actual graphical {phase} emitted no PNG framebuffer evidence")
+
+
+def regressions(args):
+    runner = Runner(args)
+    project = args.project.resolve()
+    runner.godot(project, "regression-import")
+    runner.godot(project, "art-keyless", "test_art_provider", "ART_PROVIDER_KEYLESS")
+    runner.godot(project, "art-native", "test_art_batch_native", "ART_STAGE1_RESULT")
+    runner.execute("art-http-fixtures", [sys.executable, str(ROOT / "tools/test_art_provider_transport.py"),
+                   "--godot", str(args.godot.resolve()), "--output", str(runner.evidence / "http")])
+    if not args.paint:
+        return
+    for script, marker in (("shapes", "PAINT_EDITOR_SHAPES"), ("executor", "PAINT_EXECUTOR"), ("recovery", "PAINT_RECOVERY")):
+        runner.godot(project, f"paint-{script}", f"test_paint_editor_{script}", marker)
+    for workers in (1, 4):
+        runner.godot(project, f"paint-native-{workers}", "test_paint_editor_native", "PAINT_EDITOR_NATIVE",
+                     env={"PAINT_TEST_WORKERS": str(workers)})
+    for phase in ("author", "reopen"):
+        runner.godot(project, f"paint-history-{phase}", "test_paint_editor_history", "PAINT_EDITOR_HISTORY",
+                     env={"CYBERSAND_PAINT_HISTORY_REOPEN": "1" if phase == "reopen" else "0"})
+    for family, marker, flag in (("workbench", "PAINT_EDITOR_WORKBENCH", "PAINT_REOPEN"),
+                                ("generated_workbench", "PAINT_EDITOR_GENERATED_WORKBENCH", "PAINT_GENERATED_REOPEN")):
+        for phase in ("author", "reopen"):
+            runner.godot(project, f"paint-{family}-{phase}", f"test_paint_editor_{family}", marker,
+                         graphical=True, env={flag: "1" if phase == "reopen" else "0"})
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    sub = parser.add_subparsers(dest="mode", required=True)
+    stage = sub.add_parser("stage-linux")
+    stage.add_argument("--output", type=Path, required=True)
+    stage.set_defaults(run=stage_linux)
+    for name, function in (("installed", installed), ("regressions", regressions)):
+        command = sub.add_parser(name)
+        command.add_argument("--godot", type=Path, required=True)
+        command.add_argument("--evidence", type=Path, required=True)
+        command.set_defaults(run=function)
+        if name == "installed":
+            command.add_argument("--package", type=Path, required=True)
+            command.add_argument("--scratch", type=Path, required=True)
+        else:
+            command.add_argument("--project", type=Path, required=True)
+            command.add_argument("--paint", action="store_true")
+    args = parser.parse_args()
+    args.run(args)
+
+
+if __name__ == "__main__":
+    main()

@@ -27,6 +27,36 @@ separate gates.
 
 ## Ordinary workbench workflow
 
+### Standalone profile discovery repair — 2026-11-11
+
+The WB-ART repair candidate packages every canonical top-level JSON recipe from
+`examples/worldgen` inside `godot/authoring/worldgen` as well. The existing dialog
+prefers `res://authoring/worldgen`, then the checkout's sibling directory, and
+deduplicates filenames. Launch working directory and Git metadata are irrelevant.
+The package manifest records the exact recipe names and SHA-256 values. Missing
+required GEN-007 recipes fail packaging. This is a byte-exact packaging copy,
+not another authoring catalogue or profile browser.
+
+With neither directory present/readable, Preview is disabled and the dialog
+identifies the searched paths, complete-package reinstall and **Choose profile
+file…** recovery. Missing or invalid selected files report their actual paths.
+The chooser and saved embedded-recipe reconstruction remain available.
+
+The owner's original Stage-2 Windows installation is not accessible from this
+repair environment, so its missing-directory cause cannot be asserted from a
+folder inspection. The known failing configuration is retained as a fresh
+non-Git fixture with both recipe directories absent. Actual discovery is tested
+against the package inventory; a separate full-Workbench regression selects a
+discovered Deepworks recipe, generates native terrain, paints two materials,
+saves and reopens in another process. Windows graphical and source-built results
+belong to the candidate's qualification ledger, not a dialog-instantiation pass.
+
+Tests: `test_workbench_generator_discovery.gd`,
+`test_workbench_generator_installed.gd` (`WB_GENERATOR_REOPEN=1` for the second
+process), and `python3 tools/ci/test_workbench_profile_packaging.py`.
+
+### Authoring and reopen
+
 1. Launch the existing desktop feature launcher and choose **Shared Workbench**
    (or use the launcher's `--workbench` argument). There is no new game scene.
 2. Click **New from generator…**. Choose the native GEN-007 JSON profile
