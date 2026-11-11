@@ -12,6 +12,13 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Materials Lab v1 — 2026-11-11
 
+Separate [Draft #563](https://github.com/techrote/cybersand/pull/563) replaces the
+two native hard/granular predicates with canonical generated capability maps.
+The [source and native proof](../audits/2026-11-11-material-native-capability-cutover.md)
+preserve all values, IDs and policy/save identities; the frozen lock remains
+unchanged. This is one bounded #353-B consumer, not the wider catalogue cutover
+or #384's display-name route. Runtime publication and platform gates are separate.
+
 **Implemented review candidate; no Ready or merge authority.** The
 [Materials Lab](../operations/materials-lab-authoring.md) mounts in the existing
 desktop launcher/Workbench and provides native effective-property inspection,

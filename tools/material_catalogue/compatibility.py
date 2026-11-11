@@ -79,7 +79,15 @@ TRANSITION_FIELDS = frozenset(("path", "from_lf_sha256", "to_lf_sha256", "source
                                "record", "issue", "pr"))
 # #353-B authenticates this generated route separately from the frozen lock.
 # The entry is completed only after the source commit and native proof exist.
-NATIVE_CAPABILITY_ROUTE: dict | None = None
+NATIVE_CAPABILITY_ROUTE: dict | None = {'source_commit': 'b432d52d0d9acaa22f93eeb8d1fad48c64b4c087',
+ 'inputs_lf_sha256': {'materials/catalogue/catalogue.json': '3a5250a07912dc9530172cb2fccecd526606e242209d666cb2da202e1cfc9f14',
+                      'tools/material_catalogue/compiler.py': '81a0658655574ee5e65ecc144db9750b9128380595d51af70c2b04d0a209a098',
+                      'tools/material_catalogue/native_capabilities.py': 'a72f20047ac1619d0149ee3da29e97477c53815f79d79f6b2981542c8ae7e2d5',
+                      'native/include/cybersand/material_capabilities.hpp': '564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8'},
+ 'consumer_lf_sha256': '94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d',
+ 'record': 'docs/audits/2026-11-11-material-native-capability-cutover.md',
+ 'issue': 353,
+ 'pr': 563}
 NATIVE_CAPABILITY_INPUTS = frozenset((
     "materials/catalogue/catalogue.json",
     "tools/material_catalogue/compiler.py",
@@ -314,6 +322,16 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
    'record': 'docs/audits/2026-11-07-native-copy292-mat-auth-transition.md',
    'issue': 292,
    'pr': 538})
+
+# Bounded #353-B native capability consumer; retained values and identities are unchanged.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/material_rules.cpp',
+ 'from_lf_sha256': '3afda824571842e387b0cac70218ee5f1f96005d07aaaafcf95c146c3eee3254',
+ 'to_lf_sha256': '94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d',
+ 'source_commit': 'b432d52d0d9acaa22f93eeb8d1fad48c64b4c087',
+ 'record': 'docs/audits/2026-11-11-material-native-capability-cutover.md',
+ 'issue': 353,
+ 'pr': 563},)
+
 
 class CompatibilityError(ValueError):
     """An actionable source or baseline mismatch; never repairs the source."""

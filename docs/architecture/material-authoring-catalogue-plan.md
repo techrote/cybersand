@@ -12,7 +12,9 @@ related-documents: [../systems/materials-and-rule-kernels.md, ../systems/interma
 
 **11 November update:** [section 15](#15-materials-lab-v1-implementation-boundary--2026-11-11)
 records new owner authorization and the implemented Materials Lab review
-candidate. Production migration remains Planned. The dated 4 November
+candidate. [Section 16](#16-native-capability-consumer-candidate--2026-11-11)
+records the separate bounded native capability consumer. Wider production
+migration remains Planned. The dated 4 November
 statements below retain their original authorization and evidence scope.
 
 **Owner-adopted Planned baseline; #353-A merged and #354 Phase A investigation admitted — 2026-11-04.**
@@ -64,6 +66,8 @@ gameplay acceptance follows from matching metadata.
 12. [Owner adoption and shadow-compiler handover](#12-owner-adoption-and-shadow-compiler-handover--2026-11-04) — documentation-only approval, separate implementation assignment and preserved compatibility gates.
 13. [Bounded compatibility tooling and adopted-main reconciliation](#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04) — implemented shadow foundation, source-preserving integration and separate consumer-migration gates.
 14. [Material liveness Phase A and production admission](#14-material-liveness-phase-a-and-production-admission--2026-11-04) — merged foundation, three distinct findings and separately pending scheduler implementation.
+15. [Materials Lab v1 implementation boundary](#15-materials-lab-v1-implementation-boundary--2026-11-11) — mounted authoring, isolated native candidate tests and preserved production authority.
+16. [Native capability consumer candidate](#16-native-capability-consumer-candidate--2026-11-11) — generated hard/granular maps with unchanged policy/save identity and independent native proof.
 
 ## 1. Authority and preserved substrate
 
@@ -729,3 +733,24 @@ were rechecked before edits. The Lab adds a launcher/window seam and copied poli
 receipt; it does not add another Workbench, worker, resolver or native World.
 Existing production build/retained-runtime gates remain requirements for eventual
 integration. Broad #352–356 remain open after this v1 contribution.
+
+## 16. Native capability consumer candidate — 2026-11-11
+
+After the owner asked to complete the remaining work without waiting for hands-on
+acceptance, [Draft #563](https://github.com/techrote/cybersand/pull/563) isolates
+one #353-B consumer from the Lab: `MaterialRules::is_hard_surface` and
+`supports_granular_load` consume two generated four-word maps. The source is the
+existing strictly validated canonical catalogue. All 256 query results remain
+identical, including invalid 10 and unallocated values. Synthetic 132 remains an
+external non-hard/granular fixture, not an allocation.
+
+The [qualification record](../audits/2026-11-11-material-native-capability-cutover.md)
+binds the ordinary reviewed native-source transition plus a separately pinned
+JSON/validator/generator/header route. The frozen lock, both digest-bearing
+headers, capability matrix, policy vectors and saved-state identities remain
+unchanged. Independent source-paired queries and actual World save exchange
+cover the four Water families and one/four workers. This admits neither altered
+capabilities nor arbitrary runtime installation. Wider descriptor/appearance
+migration, #384 display names, source-matched runtime publication and platform
+acceptance retain their own scopes. No World scheduling/effects or H1 work is
+included, and the Draft is not Ready or merged.
