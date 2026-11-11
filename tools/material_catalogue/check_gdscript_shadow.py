@@ -62,6 +62,7 @@ def digest(data: bytes) -> str:
 
 
 def validate_native_receipt(receipt: dict, protected: dict, root: Path = ROOT) -> None:
+    root = root.resolve()
     if not isinstance(receipt, dict):
         raise ValueError("native receipt must be an object")
     compare("cybersand.material-catalogue.native-parity", receipt.get("schema_id"), "native receipt schema")

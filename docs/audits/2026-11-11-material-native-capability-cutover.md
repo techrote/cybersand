@@ -209,6 +209,46 @@ publisher is admitted only for its own branch; its artifacts cannot qualify the
 changed native capability consumer in #563. This Draft still requires its own
 source-matched runtime and platform qualification.
 
+## Separate runtime profile — 2026-11-11
+
+The owner subsequently requested fresh Linux/Windows qualification for this
+separate Draft. The existing Materials Lab publisher/workflow is reused on
+`codex/materials-native-capabilities-20261111` with a B-only branch lease, evidence
+record and request identity (`materials-native-capabilities-v1`,
+`unchanged-hard-granular-consumer`, sequence 1). No second publisher was added and
+no #562 branch files, artifacts or provenance were changed. The underlying
+four-path publication engine and unchanged Draft/manual-gate policy are retained.
+
+The implementation reconciles public capability source
+`770ec58e5b66b63aa4a323c1ce6ce26c273e83e0` with parent Lab request-3 source
+`8e2206d5a664cc86b2ca432e6ad976e5f6d86bff`. It retains the Linux display-shell,
+Windows LF/CRLF package fixture, graphical package smoke and canonical receipt-root
+fixes. Both native trees and all earlier native proof inputs remain unchanged;
+the frozen `b432d52` transition and generated-source pins are retained.
+
+The profile compares a receipt's unique test IDs to the complete inventory
+independently discovered from the same source: **231 cases currently**, including
+all 22 capability-specific controls and the four process-owner fixtures. A
+parent-only receipt, padded foreign cases, missing capability tests, old Lab
+request/branch/workflow identity, changed request bytes and stale branch lease
+are refused. The synthetic-header compile test uses the same explicitly selected
+compiler and process owner as the Lab; it still executes all 256 native byte
+queries and the non-hard/granular synthetic-132 assertions.
+
+Focused local Linux checks pass: 9 publisher controls, 12 package controls,
+30 unchanged-engine controls, 19 GDScript receipt controls, 9 generated-capability
+controls (including real C++ execution) and 12 consumer-route controls. These
+controls do not stand in for Windows or graphical execution. The new profile
+requires complete fresh target-OS catalogue results, seven native/Godot cases,
+graphical authoring captures and an actually executed Windows package before
+publishing its own four runtime/provenance paths. Its guarded final job requests
+the unchanged Documentation, Native, GDExtension and palette workflows on the
+exact publication child and records requests separately from completed gates.
+
+This record describes staged source/tooling qualification. No B runtime campaign
+or runtime publication had been started when this profile was prepared; future
+runtime results must identify their own source, run, platform and artifacts.
+
 ## Remaining release boundary
 
 This is a bounded Draft with a genuine native consumer and local native proof.

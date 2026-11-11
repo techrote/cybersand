@@ -5,11 +5,11 @@ import copy
 import json
 import os
 from pathlib import Path
-import subprocess
 import tempfile
 import unittest
 
 import compiler
+import lab
 import native_capabilities as capabilities
 
 
@@ -57,13 +57,19 @@ class NativeCapabilitiesTests(unittest.TestCase):
             'int main(){namespace c=cybersand::material_capability_catalogue;'
             'static_assert(!c::hard_surface(132)); static_assert(c::granular_support(132));'
             'static_assert(sizeof(c::kHardSurface)+sizeof(c::kGranularSupport)==64);'
-            'for(unsigned id=0;id<256;++id) std::cout << c::hard_surface(id)'
-            ' << c::granular_support(id) << "\\n";}\n', encoding="utf-8")
+            'for(unsigned id=0;id<256;++id){auto material=static_cast<std::uint8_t>(id);'
+            'std::cout << c::hard_surface(material)'
+            ' << c::granular_support(material) << "\\n";}}\n', encoding="utf-8")
         executable = self.directory / ("probe.exe" if os.name == "nt" else "probe")
-        subprocess.run(["c++", "-std=c++20", "-Wall", "-Wextra", "-Werror", str(probe),
-                        "-o", str(executable)], check=True, capture_output=True, timeout=30)
-        observed = subprocess.run([str(executable)], check=True, capture_output=True,
-                                  text=True, timeout=10).stdout.splitlines()
+        cxx, msvc = lab._toolchain()
+        if msvc:
+            command = [cxx, "/nologo", "/std:c++20", "/EHsc", "/W4", "/WX", str(probe),
+                       "/Fe:" + str(executable), "/Fo:" + str(self.directory / "probe.obj")]
+        else:
+            command = [cxx, "-std=c++20", "-Wall", "-Wextra", "-Werror", str(probe),
+                       "-o", str(executable)]
+        lab._run(command, self.directory, 30)
+        observed = lab._run([str(executable)], self.directory, 10).stdout.splitlines()
         rows = self.synthetic()["native"]["capabilities"]
         self.assertEqual(observed, [f"{int(row['hard_surface'])}{int(row['granular_support'])}" for row in rows])
         self.assertEqual(observed[10], "00")

@@ -19,7 +19,9 @@ engine = subject.engine
 class PublicationTests(unittest.TestCase):
     def test_existing_four_path_engine_is_private_and_unchanged(self):
         self.assertIsNot(engine, baseline)
-        self.assertEqual(engine.BRANCH, "codex/materials-lab-v1-20261111")
+        self.assertEqual(engine.BRANCH, "codex/materials-native-capabilities-20261111")
+        self.assertEqual(engine.REQUEST_VALUE["family"], "materials-native-capabilities-v1")
+        self.assertEqual(engine.EVIDENCE, "docs/audits/2026-11-11-material-native-capability-cutover.md")
         for name in ("context", "require_publication_request", "check_source", "check_index", "input_ledgers",
                      "runtime_identity", "record_build", "execute", "stage", "verify_bundle"):
             self.assertEqual(inspect.getsource(getattr(engine, name)), inspect.getsource(getattr(baseline, name)))
@@ -35,12 +37,12 @@ class PublicationTests(unittest.TestCase):
                      "tools/package_materials_lab_candidate.py", "tools/ci/test_materials_lab_package.py"):
             self.assertIn(path, engine.BUILD_EXACT)
         self.assertIn("tools/material_catalogue/world_candidate.py", engine.BUILD_EXACT)
+        self.assertIn("tools/material_catalogue/native_capabilities.py", engine.BUILD_EXACT)
         self.assertIn("materials/catalogue/compatibility-lock.json", engine.BUILD_EXACT)
 
     @staticmethod
     def suite(platform="linux"):
-        names = [*subject.WINDOWS_SKIPS, *sorted(subject.PROCESS_OWNER_CASES),
-                 *("fixture.test_%03d" % i for i in range(199))]
+        names = subject.discovered_suite_inventory()
         return {"inventory": names, "tests_run": len(names), "failures": [], "errors": [],
                 "expected_failures": [], "unexpected_successes": [],
                 "skipped": dict(subject.WINDOWS_SKIPS) if platform == "windows" else {}}
@@ -48,17 +50,81 @@ class PublicationTests(unittest.TestCase):
     def test_complete_suite_and_only_explicit_platform_skips(self):
         for platform in ("linux", "windows"):
             subject.verify_suite_record(self.suite(platform), platform)
-        for mutation in ("short", "duplicate", "failed", "skip", "partial", "owner_omitted"):
+        reordered = self.suite()
+        reordered["inventory"].reverse()
+        subject.verify_suite_record(reordered, "linux")
+        for mutation in ("short", "duplicate", "failed", "skip", "partial", "owner_omitted",
+                         "capability_omitted", "parent_only", "foreign_replacement", "extra", "count_type"):
             value = self.suite()
             if mutation == "short": value["inventory"].pop(); value["tests_run"] -= 1
             if mutation == "duplicate": value["inventory"][-1] = value["inventory"][0]
             if mutation == "failed": value["failures"] = [value["inventory"][0]]
             if mutation == "skip": value["skipped"] = {value["inventory"][0]: "compiler unavailable"}
             if mutation == "partial": value["tests_run"] -= 1
+            if mutation == "count_type": value["tests_run"] = float(value["tests_run"])
             if mutation == "owner_omitted":
                 value["inventory"][value["inventory"].index(sorted(subject.PROCESS_OWNER_CASES)[0])] = "fixture.unrelated_test"
+            if mutation == "capability_omitted":
+                value["inventory"][value["inventory"].index(sorted(subject.CAPABILITY_CASES)[0])] = "fixture.unrelated_test"
+            if mutation == "parent_only":
+                value["inventory"] = [name for name in value["inventory"] if name not in subject.CAPABILITY_CASES]
+                value["tests_run"] = len(value["inventory"])
+            if mutation == "foreign_replacement": value["inventory"][0] = "fixture.unrelated_test"
+            if mutation == "extra": value["inventory"].append("fixture.unrelated_test"); value["tests_run"] += 1
             with self.subTest(mutation=mutation), self.assertRaises(RuntimeError):
                 subject.verify_suite_record(value, "linux")
+
+    def test_source_inventory_contains_all_capability_and_process_owner_controls(self):
+        inventory = subject.discovered_suite_inventory()
+        self.assertGreaterEqual(len(inventory), 231)
+        self.assertEqual(len(subject.CAPABILITY_CASES), 22)
+        self.assertTrue((subject.CAPABILITY_CASES | subject.PROCESS_OWNER_CASES).issubset(inventory))
+
+    def test_source_admission_requires_exact_capability_branch_profile_and_lease(self):
+        source = "1" * 40
+        for mode in ("positive", "parent_branch", "parent_workflow", "parent_request",
+                     "boolean_sequence", "unknown_field", "request_drift", "stale_lease"):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                request = dict(engine.REQUEST_VALUE, request_sequence=1)
+                if mode == "parent_request":
+                    request.update(family="materials-lab-v1", variant="native-inspection-isolated-authoring",
+                                   scope="source-matched-linux-windows-native-and-graphical-lab")
+                if mode == "boolean_sequence": request["request_sequence"] = True
+                if mode == "unknown_field": request["accept_old_runtime"] = True
+                payload = (json.dumps(request, sort_keys=True) + "\n").encode("utf-8")
+                request_path = root / engine.REQUEST
+                request_path.parent.mkdir(parents=True)
+                request_path.write_bytes(payload + (b" " if mode == "request_drift" else b""))
+                for name in (engine.EVIDENCE, engine.PRESSURE_CASE,
+                             *("godot/tests/" + case + ".gd" for case in engine.CASE_MARKERS)):
+                    path = root / name
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.touch()
+                environment = self.dispatch_environment(source)
+                if mode == "parent_branch": environment["GITHUB_REF"] = "refs/heads/codex/materials-lab-v1-20261111"
+                if mode == "parent_workflow":
+                    environment["GITHUB_WORKFLOW_REF"] = "techrote/cybersand/" + engine.WORKFLOW + "@refs/heads/codex/materials-lab-v1-20261111"
+                remote_reads = []
+
+                def git(*arguments):
+                    if arguments == ("rev-parse", "HEAD"): return source.encode()
+                    if arguments == ("rev-parse", source + "^{tree}"): return ("2" * 40).encode()
+                    if arguments == ("show", source + ":" + engine.REQUEST): return payload
+                    self.assertEqual(arguments, ("ls-remote", "--exit-code", "origin", "refs/heads/" + engine.BRANCH))
+                    remote_reads.append(arguments)
+                    tip = "3" * 40 if mode == "stale_lease" else source
+                    return (tip + "\trefs/heads/" + engine.BRANCH).encode()
+
+                with patch.dict(os.environ, environment), patch.object(engine, "ROOT", root), \
+                     patch.object(engine, "git", side_effect=git):
+                    if mode == "positive":
+                        engine.check_source(argparse.Namespace(source_sha=source))
+                        self.assertEqual(len(remote_reads), 1)
+                    else:
+                        with self.assertRaises(RuntimeError):
+                            engine.check_source(argparse.Namespace(source_sha=source))
+                        self.assertEqual(len(remote_reads), 1 if mode == "stale_lease" else 0)
 
     def fixture(self, directory):
         source = {"digest": "1" * 64, "lf_sha256": {"native/source.cpp": "2" * 64}}
