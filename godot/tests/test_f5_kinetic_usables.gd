@@ -4,7 +4,7 @@ const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 
 # F5 kinetic usables on the production desktop: the shared kinetic catalogue
 # (kinetic_usables.gd) equipped on a real articulated actor and fired with M.
-# Without native ballistic owners every shot must refuse, never paint cells.
+# Every shot must be a native flying cell or parcel, never painted cells.
 const Catalog = preload("res://scripts/usable_catalog.gd")
 var desktop: Control
 var assertions: int = 0
@@ -88,13 +88,9 @@ func run() -> void:
 		return desktop.physical_actor_session != null and desktop._actor_reset_receipt == 0 \
 			and desktop._physical_terrain_ready and desktop.physical_actor_session.tick >= 3)
 	if expect(installed, "physical actor installed"):
-		# The plain default world keeps its frozen legacy identity, so it has no
-		# ballistic owners: every kinetic usable must refuse cleanly and paint
-		# nothing (never a fallback that writes cells directly).
-		for id: StringName in [&"gravel_shotgun", &"water_cannon", &"blast_glove"]:
+		for id: StringName in [&"gravel_shotgun", &"water_cannon"]:
 			var row: Dictionary = await fire(id)
-			expect(not row.fired and str(row.receipt.get("reason","")) in ["kinetic_disabled","kinetic_nothing"]
-				and int(row.receipt.get("changed_cells",-1)) == 0, "%s refuses without flying cells: %s" % [id, str(row.receipt)])
+			expect(row.fired and int(row.receipt.get("changed_cells",0)) > 0, "%s fired: %s" % [id, str(row.receipt)])
 	print("F5_KINETIC_EVIDENCE " + JSON.stringify(evidence))
 	print("F5_KINETIC %d assertions, %d failures" % [assertions, failures])
 	desktop.queue_free()

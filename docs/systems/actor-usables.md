@@ -171,11 +171,10 @@ piloted flyer, kinetic-lab) use too.
   (shape × pattern × field) at their reach and launch the cells it covers.
 
 Every shot goes through the native ballistic owners and never paints cells
-directly. **Gap:** F5 articulated actors run only in the plain default world,
-whose frozen legacy identity has no ballistic owners, so in F5 these usables
-currently refuse (`kinetic_disabled`/`kinetic_nothing`, zero changed cells).
-They fire on workbench flyer ports. Evidence: `test_workbench_flyer_ports.gd`
-31/0 and `test_f5_kinetic_usables.gd` 25/0 (refusal), Windows, Godot 4.7,
+directly. The desktop World is built with both ballistic owners enabled (idle
+owners change no cell), so F5 actors and workbench flyer ports both fire them.
+Evidence: `test_workbench_flyer_ports.gd` 31/0 and `test_f5_kinetic_usables.gd`
+(shotgun and water cannon fire native flying cells), Windows, Godot 4.7,
 2026-11-11.
 
 Ordinary processors have 16 successful batches, a 45-second lifetime and a

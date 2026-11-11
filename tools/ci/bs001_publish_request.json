@@ -4,5 +4,5 @@
   "variant": "workbench-solids-and-liquid-equipment",
   "scope": "bs001-exact-source-native-godot-rapier-linux-windows",
   "intent": "publish-source-matched-runtimes",
-  "request_sequence": 4
+  "request_sequence": 5
 }
