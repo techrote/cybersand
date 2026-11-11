@@ -388,8 +388,13 @@ bool CyberNativeCellWorld::simulation_tick() {
     const auto start = std::chrono::steady_clock::now();
     bool succeeded = false;
     try {
+        // Ballistic Water/solids in flight (or landing this tick) change the
+        // presented image without moving a grid cell; count them as a change
+        // so the render snapshot keeps up instead of freezing them.
+        const bool ballistic_before = world_->ballistic_parcel_count() != 0U || world_->ballistic_solid_count() != 0U;
         last_stats_ = world_->tick();
-        if (last_stats_.moved_cells != 0U || last_stats_.deferred_events != 0U) ++revision_;
+        const bool ballistic_after = world_->ballistic_parcel_count() != 0U || world_->ballistic_solid_count() != 0U;
+        if (last_stats_.moved_cells != 0U || last_stats_.deferred_events != 0U || ballistic_before || ballistic_after) ++revision_;
         succeeded = true;
     } catch (const std::exception& error) {
         ++tick_failure_count_;

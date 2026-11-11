@@ -38,5 +38,27 @@ func _initialize() -> void:
 	var fresh: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
 	if expect(bridge.import_level(fresh, level), "level saved by an old-format World loads"):
 		expect(cells(fresh) == cells(old), "loaded level keeps every sampled cell")
+	# Render cadence: with the grid at rest, a ballistic cell in flight must still
+	# advance the presentation revision every tick (otherwise it looks frozen).
+	var still: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+	# Erase the demo content so nothing on the grid keeps moving.
+	for y: int in range(0, 1024, 48):
+		for x: int in range(0, 1024, 48): still.paint_disc(x, y, 40, 0)
+	var settled := false
+	for _t: int in range(3000):
+		var before: int = still.revision
+		still.simulation_tick()
+		if still.revision == before:
+			settled = true
+			break
+	if expect(settled, "starting World settles"):
+		var outcome: Variant = still.inject_solid_parcel(Vector2(500.0, 100.0), Vector2(1.5, -0.5), 2)
+		expect(still.get_ballistic_solids().get("live", 0) == 1, "ballistic Sand launched: " + str(outcome))
+		var frozen := 0
+		for _t: int in range(6):
+			var before: int = still.revision
+			still.simulation_tick()
+			if still.revision == before: frozen += 1
+		expect(frozen == 0, "every in-flight tick advances the render revision (%d frozen)" % frozen)
 	print("BALLISTIC_OLD_SNAPSHOTS %d checks, %d failures" % [checks, failures])
 	quit(int(failures != 0))
