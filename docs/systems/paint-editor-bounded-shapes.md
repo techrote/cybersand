@@ -16,6 +16,12 @@ mounted, executable candidate, not accepted main. It retains the original
 canonical geometry implementation and reconciles it with accepted main
 `d4b18e7f06839b35c8f6a66195206da0f33c5fa3`, including merged GEN-007 / #542.
 
+The [qualification record](../audits/paint001-2026-11-11/qualification.json) includes
+source hashes, original failures and actual logs. These are native framebuffer
+captures of the [mounted editor](../audits/paint001-2026-11-11/screenshots/paint001-mounted-editor.png),
+[mixed-material preview](../audits/paint001-2026-11-11/screenshots/paint001-mixed-stamp-preview.png)
+and [generated start after reopening](../audits/paint001-2026-11-11/screenshots/paint001-generated-reopened.png).
+
 ## Using the editor
 
 Open the ordinary Workbench and pause. Its existing material picker now contains
@@ -63,6 +69,8 @@ agent branch or agent-only Empty/Hard Wall policy is imported. Human material
 admission comes from the loaded native bridge's `inspect_interaction` authority.
 At this source identity it admits 131 IDs: 0–131 excluding reserved slot 10.
 MAT-AUTH definitions, material IDs, native physics and Rapier behaviour are unchanged.
+The later #560 head `36d7686dff5beef35e04d009677665618f6ef920` was also inspected;
+its worker seam is unchanged from that reviewed source.
 
 `paint_queue` accepts one bounded edit or capture. Admission reports `queued`,
 not success. An edit contains unique row-major integer x/y/material triples;
@@ -155,6 +163,7 @@ No new C++ build or Windows execution is claimed.
 | Native execution, material capture, ordering, refusals, cancellation, source fences | 109 checks each with 1 and 4 native workers, zero failures |
 | Direct executor protections | 21 checks, zero failures |
 | Interrupted native recovery | 5 checks, zero failures |
+| Ordinary mounted Workbench, actual OpenGL | 59 checks; separate fresh process 12 checks, zero failures |
 | Authored-history encoding and native reconstruction | 981 checks; fresh process 961 checks, zero failures |
 | Generated Workbench authoring | Headless 39; actual OpenGL 40 checks, zero failures |
 | Generated Workbench fresh-process reopen | Headless 19; actual OpenGL 20 checks, zero failures |

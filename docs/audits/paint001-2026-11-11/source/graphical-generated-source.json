@@ -1,0 +1,14 @@
+{
+  "head": "686d374c0d524c5deff5f94dc593b643625a211e",
+  "sha256": {
+    "godot/scripts/shared_workbench.gd": "778729b4a7f0f58f84bb4aea7a2f7bd570660bd760de529d956de0dc1ff5426d",
+    "godot/scripts/simulation_worker.gd": "68962945ca4775526399beb4685f0ccf316218f06dfd35b17834ec0d4d42d69f",
+    "godot/scripts/workbench_setup.gd": "d071c87b3412683eb6b9cfdfbbdd517691a346691ac132676a0109e62f7f0e13",
+    "godot/scripts/workbench_paint_editor_controller.gd": "24c37b9108f7502d424ab83c1a01a7237f29391bd720fb90b5b517638589af9f",
+    "godot/scripts/workbench_paint_editor_executor.gd": "0c4cd32a49433c256a309a663859eb8df9a4ebb5de225ad6eac7e6cc88b5362c",
+    "godot/scripts/workbench_paint_editor_history.gd": "e5687cfe7ed7dd1b397f39f81a6cde35ab372ae9ae952e94449e281bdc458402",
+    "godot/scripts/workbench_paint_editor_overlay.gd": "f3f674f264bac2e2995750c2ee66043f0988ed932146eb00b3c7efcd5cfce1f0",
+    "godot/scripts/workbench_paint_editor_shapes.gd": "4ae5a699ad64a04f3c81c816b592f5baad9565679679ea07ca7acbefca278aab",
+    "godot/tests/test_paint_editor_generated_workbench.gd": "03c2dd6e75d5066c180ccc14e81f5b96a8b6795069688df313ff286fe259ee39"
+  }
+}

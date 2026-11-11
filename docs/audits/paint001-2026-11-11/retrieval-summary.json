@@ -1,0 +1,62 @@
+{
+  "retrieval-frozen-final.json": {
+    "created_utc": "2026-11-11T00:53:54.339581+00:00",
+    "method": {
+      "name": "heading-chunk BM25 lexical development baseline",
+      "k": 5,
+      "maximum_body_words": 420,
+      "overlap_words": 0,
+      "k1": 1.2,
+      "b": 0.75,
+      "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+      "query_expansion": false,
+      "stemming": false,
+      "reranker": false,
+      "embeddings": false,
+      "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+    },
+    "fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+    "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+    "corpus_manifest_sha256": "7f57aa39e1aa23e096e88a25c224d859908485413bf6ebf44b0655cab374609d",
+    "document_count": 126,
+    "chunk_count": 1681,
+    "summary": {
+      "questions": 32,
+      "canonical_hit_at_1": 18,
+      "canonical_hit_at_k": 31,
+      "mrr_at_k": 0.7318,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "full_report_sha256": "3c1f2e21cce645661e6f4f52f468027b0829aba538019742686c835ead6fdaea"
+  },
+  "retrieval-challenges-final.json": {
+    "created_utc": "2026-11-11T00:53:55.377031+00:00",
+    "method": {
+      "name": "heading-chunk BM25 lexical development baseline",
+      "k": 5,
+      "maximum_body_words": 420,
+      "overlap_words": 0,
+      "k1": 1.2,
+      "b": 0.75,
+      "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+      "query_expansion": false,
+      "stemming": false,
+      "reranker": false,
+      "embeddings": false,
+      "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+    },
+    "fixture_sha256": "37a9702dd65001d45ccc0b508bd713d5cffa435c8e8b5c8bc64a1eaf3ab25880",
+    "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+    "corpus_manifest_sha256": "7f57aa39e1aa23e096e88a25c224d859908485413bf6ebf44b0655cab374609d",
+    "document_count": 126,
+    "chunk_count": 1681,
+    "summary": {
+      "questions": 164,
+      "canonical_hit_at_1": 131,
+      "canonical_hit_at_k": 163,
+      "mrr_at_k": 0.8785,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "full_report_sha256": "7a688203f1a4967617e0fa8437dbf8899f3cecb2617b6564d57527ce08d551bd"
+  }
+}
