@@ -599,6 +599,8 @@ func _file_selected(path: String) -> void:
 			var directory: String = path.path_join("material-%d-%d" % [candidate.target_id,Time.get_ticks_usec()])
 			var request: Dictionary = {"op":"compile_test","candidate":candidate.duplicate(true),"output_dir":directory}
 			if not _compiler.text.strip_edges().is_empty(): request.cxx = _compiler.text.strip_edges()
+			var rule: Dictionary = _selected_reaction()
+			if not rule.is_empty(): request.diagnostic = {"source":rule.first,"target":rule.second,"roll":int(_roll.value)}
 			_start_job(request)
 		"import_preset": _start_job({"op":"import","path":path})
 		"export_preset": _start_job({"op":"export","candidate":candidate.duplicate(true),"path":path})
