@@ -103,6 +103,15 @@ func run() -> void:
 	art.stop()
 	await until(func(): return not art.active,"Stop cancels pending raster work")
 	check(art.result.checked==0,"Stop does not submit buffered raster cells")
+	var progress_before := Time.get_ticks_msec()
+	submit([{"shape":"polygon","points":[[0,1100],[900,1999],[900,2000]],"material":58}])
+	await until(func(): return art.result.changed>0,"sparse polygon publishes an early native receipt")
+	await until(func(): return cell(0,1100)==58,"first sparse pixels reach the display image")
+	var first_progress_ms := Time.get_ticks_msec()-progress_before
+	print("ART_FIRST_PROGRESS_MS ",first_progress_ms)
+	check(art.active and first_progress_ms<2000,"sparse polygon makes visible progress before raster completes")
+	art.stop()
+	await until(func(): return not art.active,"Stop retires sparse polygon after partial progress")
 	panel.provider.requested_model = ""
 	for i: int in range(16): panel.conversation.append({"role":"user","content":"turn %d" % i})
 	panel.context_mode.select(0)

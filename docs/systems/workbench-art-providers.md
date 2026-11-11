@@ -261,4 +261,4 @@ controls edge falloff, and repeating a seed repeats the pattern relative to the
 stamp center. All three use the same native edit batching and protection as the
 existing shapes.
 
-Desktop rasterization yields between frames even when a sparse shape produces no native chunk yet. Stop discards buffered cells that have not been submitted to the native owner.
+Desktop rasterization yields between frames even when a sparse shape produces no native chunk yet. Partial chunks are submitted periodically so sparse shapes can appear before rasterization finishes. Stop discards buffered cells that have not been submitted to the native owner.

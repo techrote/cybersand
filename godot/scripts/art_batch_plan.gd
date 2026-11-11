@@ -97,6 +97,7 @@ func make_line(op: Dictionary) -> void:
 
 var pending := PackedInt32Array()
 var pending_material := -1
+var pending_since := 0
 
 func exhausted() -> bool:
 	return index >= operations.size() and pending.is_empty()
@@ -104,7 +105,8 @@ func exhausted() -> bool:
 func next_chunk(capacity: int = 4096) -> Dictionary:
 	# Budget candidates, including misses. A thin diagonal can reject nearly
 	# its entire bounding box before it fills one native chunk.
-	var deadline := Time.get_ticks_usec()+2500
+	var started := Time.get_ticks_usec()
+	var deadline := started+2500
 	var visited := 0
 	var points := pending
 	var material := pending_material
@@ -146,6 +148,13 @@ func next_chunk(capacity: int = 4096) -> Dictionary:
 			radius_squared = pow(op.width*0.5,2)
 		while cursor < total and points.size()/2 < capacity:
 			if (visited & 63) == 0 and visited > 0 and Time.get_ticks_usec() >= deadline:
+				# Sparse drawings must show progress without waiting for 4096 hits.
+				if not points.is_empty():
+					if pending_since == 0: pending_since = started
+					if started-pending_since >= 33000:
+						pending = PackedInt32Array()
+						pending_since = 0
+						return {"points":points,"material":material}
 				pending = points
 				pending_material = material
 				return {}
@@ -198,6 +207,6 @@ func next_chunk(capacity: int = 4096) -> Dictionary:
 			points.append(point.x);points.append(point.y)
 		if cursor == total: index+=1;cursor=0;line.clear()
 	pending = PackedInt32Array()
+	pending_since = 0
 	if points.is_empty(): return {}
 	return {"points":points,"material":material}
-
