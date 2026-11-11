@@ -28,7 +28,7 @@
       "facts": [
         "Density, RGBA, explicit capabilities and visual projection are editable isolated candidates; viscosity is limited to supported yielding templates.",
         "Kernel, physical state, movement and state defaults remain held to the selected template.",
-        "Draft, validated, compiled/tested and runtime-active are distinct; v1 has no production installer or candidate World."
+        "Draft, validated, compiled/tested and runtime-active are distinct; existing-ID candidates execute in an external compiled World, with no production installer."
       ],
       "sources": [
         "operations/materials-lab-authoring.md"
@@ -93,6 +93,22 @@
         "Production132slots including invalid10,56rules, source identity and saved-world semantics remain unchanged.",
         "Production activation remains a separately qualified353-B consumer/identity transition.",
         "H1 already belongs to Draft395; sleeping-save/performance/source gates, mutual heating and generic yielding rest remain separate."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-07",
+      "query": "How can I compare an edited material in a compiled native World against untouched source and inspect actual cells and quantities?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Candidate test compiles the native World twice: untouched reference and externally adapted generated tables, with matching recipe and default solver configuration.",
+        "Density500 Sand and authored Salt/Water products have actual stored-cell outcomes; repeat, one/four workers, same-build persistence and quantity checks accompany the receipt.",
+        "Synthetic132 and changed hard/granular or visual-state capabilities are refused by this World backend. Production activation and cross-build saves remain unqualified."
       ],
       "sources": [
         "operations/materials-lab-authoring.md"

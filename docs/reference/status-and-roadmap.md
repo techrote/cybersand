@@ -16,12 +16,19 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 [Materials Lab](../operations/materials-lab-authoring.md) mounts in the existing
 desktop launcher/Workbench and provides native effective-property inspection,
 structured candidate editing, strict preset round-trips, compiled native pair
-tests and reproducible existing-material MicroScenarios. The
+tests, source-matched candidate/reference World comparisons and reproducible
+existing-material MicroScenarios. Review fixes cover source-custody races,
+complete reaction comparisons, preset path aliases, cancellable subprocesses,
+imported controls and incremental reference replay. The
 [qualification record](../audits/2026-11-11-materials-lab-v1.md) states executed
 platforms and limits. This advances #353/#355/#356 under the owner's new bounded
 implementation authorization; broad #352–356 remain open. Production has its
 unchanged 132 slots, reserved10, 56 pair rules and legacy World authority.
-Synthetic132 is isolated. Candidate compile/test does not install a material.
+Synthetic132 is descriptor-test-only. Existing-ID density/RGBA, admitted viscosity
+and pair edits execute in isolated compiled Worlds with native cell/quantity,
+repeat, one/four-worker and same-build persistence checks. Capability/projection
+edits are refused by that World backend. Candidate tests do not install a
+material in the running application.
 #353-B remains a separate consumer/identity transition. H1 is already owned by
 Draft [#395](https://github.com/techrote/cybersand/pull/395); its saved sleeping-state
 migration and source/performance gates are not resolved by the Lab. H2 mutual

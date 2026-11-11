@@ -11,8 +11,9 @@ related-documents: [systems/materials-and-rule-kernels.md, systems/themed-constr
 # 1024² material lab
 
 The separate **Materials Lab v1** desktop review candidate adds native browsing,
-effective-property inspection, structured source candidates and bounded native
-experiments. See its [launch and authoring guide](operations/materials-lab-authoring.md)
+effective-property inspection, structured source candidates, compiled candidate
+versus untouched-reference Worlds and bounded existing-material native experiments.
+See its [launch and authoring guide](operations/materials-lab-authoring.md)
 and [dated qualification](audits/2026-11-11-materials-lab-v1.md). It opens from the
 feature launcher or Shared Workbench; it does not make shadow definitions active
 in production or replace this historical manual-observation route.

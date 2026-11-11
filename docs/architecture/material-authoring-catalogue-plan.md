@@ -694,7 +694,10 @@ does not authorize Ready, merge or default promotion.
 
 Native read-only metadata is the inspector's authority. Candidate edits use the
 existing compiler and frozen source guards; generated definitions are exercised
-by an external native descriptor/pair-resolution probe. Existing-material tests
+by an external native descriptor/pair-resolution probe and a bounded compiled
+World comparison. The latter copies native source externally, adapts only its
+descriptor/pair tables and compares against a separately compiled untouched
+reference. Existing-material tests
 reuse the MicroScenario host and authoritative World readback. Draft, validated,
 compiled/tested and runtime-active states stay distinct; v1 has no production
 candidate installer. Identity slots, 56 production pairs, protected source,
@@ -705,7 +708,11 @@ branches' experimental identities.
 Explicit endpoint-effects v1 admits only legacy `replace_with_defaults`.
 `keep_existing`, state setting, new kernels and unsupported reaction slots remain
 rejected. The native probe reports state defaults and positional outcomes;
-candidate World movement and full quantity conservation are not inferred.
+the separate World backend executes candidate movement, contacts, quantities,
+fresh repeats, one/four workers and same-build persistence. Those results qualify
+their exact default-policy fixture, not every authored material or host. Synthetic132,
+capability and visual-projection edits remain excluded from World execution.
+Production and cross-build saved-world compatibility are not inferred.
 #353-B requires a separate consumer/identity transition. H1 MoltenGlass correction
 already has Draft [#395](https://github.com/techrote/cybersand/pull/395), with
 sleeping-save migration and performance/source gates still open. This work does

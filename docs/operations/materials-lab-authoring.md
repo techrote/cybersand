@@ -2,7 +2,7 @@
 title: Materials Lab v1 inspection, candidate authoring and native tests
 status: Current
 document-kind: runbook
-scope: Implemented desktop review candidate; native read-only inspection, isolated source candidates and existing-material MicroScenarios; no production material migration or runtime candidate activation
+scope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation
 canonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]
 last-reviewed: 2026-11-11
 related-documents: [../MATERIAL_LAB.md, material-catalogue-shadow.md, microscenario-reference-pack.md, ../architecture/material-authoring-catalogue-plan.md, ../systems/intermaterial-interactions.md, ../audits/2026-11-11-materials-lab-v1.md]
@@ -14,7 +14,7 @@ related-documents: [../MATERIAL_LAB.md, material-catalogue-shadow.md, microscena
 production activation remains unimplemented.** The desktop **Materials Lab** opens from the feature launcher,
 the ordinary Shared Workbench's **Materials Lab…** button, or `--materials-lab`.
 It combines native material inspection, structured candidate editing, compiled
-candidate tests and an isolated native MicroScenario. The
+candidate tests, a compiled candidate/reference World comparison and an isolated native MicroScenario. The
 [dated qualification record](../audits/2026-11-11-materials-lab-v1.md) distinguishes
 local Linux execution, graphical evidence and outstanding Windows/human checks.
 
@@ -120,7 +120,8 @@ encodings and rule slots remain fixed.
 
 | Property | Lab v1 boundary |
 |---|---|
-| Density; base RGBA; explicit hard/granular capability; visual-state projection | Editable isolated candidate fields; emitted by the canonical compiler and consumed by the native test |
+| Density; base RGBA | Editable candidate fields; consumed by the descriptor probe and isolated compiled World |
+| Explicit hard/granular capability; visual-state projection | Editable and exercised by the descriptor probe; edits are rejected by the World backend because it retains the native capability/projection consumers |
 | Descriptor viscosity | Editable only for generic YieldingLiquid, Cement and MoltenGlass templates; ineffective specialised-kernel edits are rejected |
 | Physical state, kernel, movement flags, density-motion mode, exchange permission, lateral-flow descriptor, initial state bytes and write radius | Held to the selected template; choose another template for a different admitted mechanism |
 | Existing sparse reaction slots owned by the template | Structured partners, products, match mode and inclusive probability threshold are editable; identity, slot and supported endpoint-effect semantics stay fixed |
@@ -134,7 +135,8 @@ means that exact candidate compiled and ran in the stated native probe.
 **Runtime-active** requires an authoritative production installation and engine
 acknowledgement; Lab v1 never assigns this state to a candidate. An edit revokes
 previous validation. A background response for an older revision cannot qualify
-newer edits.
+newer edits. Candidate World results also bind the exact test recipe; changing
+seed, placement, partner, tick count or workers retires the displayed comparison.
 
 Validation refuses invalid IDs/types, duplicate JSON keys, duplicate slots,
 unknown or conflicting definitions, invalid/inactive reaction sources, malformed
@@ -162,12 +164,23 @@ inputs, generated files and the probe executable; native source identity is
 checked before and after compilation.
 
 The probe consumes the generated descriptor/capability/appearance values and
-uses the actual native sparse pair resolver over all 256 byte rolls, both
-endpoint orientations and all 56 rules. It compares unedited outcomes with the
-production resolver and records changed outcomes and positional products. It
+uses the actual native sparse pair resolver over all 256 byte rolls and every
+unique directed pair in the union of production and candidate rules. Removed
+pairs remain in the comparison; self-pairs and opposite ordered rules are not
+double-counted. It records changed outcomes, deterministic example rolls and positional products. It
 reports the generated product descriptors' initial state bytes. **It does not
 execute World's endpoint/Water-quantity initialization, install a candidate in
 World, simulate candidate movement or establish quantity conservation over time.**
+The separate **Candidate test** backend below supplies that bounded World execution.
+
+Authoring runs in a polled child process with **Cancel authoring**, bounded
+output and a five-minute desktop wall limit. **Cancel World test** uses the same
+cancellation marker. The compiler/probe process tree is terminated on timeout or
+cancellation; cancelled/failed jobs cannot qualify a candidate. Closing gives
+cleanup at most two seconds before terminating an unresponsive process. These
+process controls are locally exercised on Linux; Windows cleanup remains a
+platform qualification item. CLI request/response paths cannot overwrite a
+preset or a compiled bundle through response-path aliasing.
 
 ### Reusable powder example
 
@@ -179,6 +192,60 @@ must report candidate 132, these exact values, a powder template and no
 production activation. Export and reimport: the digest remains
 `c2e7859cf568cd9d138c6444a9f26242cc1538be9b283977e6a24dc59ba5c24c`.
 This fixture does not reserve ID 132 against any other experimental branch.
+
+## Compare an edited candidate in a real native World
+
+The **Candidate test** tab compiles the actual native `World` twice in temporary
+directories: once from untouched source, once with only the staged descriptor
+and sparse-rule tables adapted to compiler-generated definitions. The same
+bounded bay, seed, placement and tick count run in both. Repository source,
+production binaries and the shared running World are not rewritten.
+
+Duplicate **Sand 2**, set density **500** and a distinct base RGBA, then select
+**Candidate test**, **Upper dose**, partner **Water 3**, seed **2**, **120** ticks
+and **4** workers. Press **Compile + compare World**. The candidate penetrates
+less deeply than the untouched reference while preserving Water quantity.
+Both images derive from actual stored material/state and compiled RGBA. The
+initial/final selector and stored-coordinate inspector expose material, state A,
+state B and temperature; the counts and ledger provide evidence beyond images.
+No palette-shader parity is claimed by this readback preview.
+The reusable [low-density Sand preset](../../materials/catalogue/fixtures/lab-low-density-sand-world-v1.json)
+contains the exact density/RGBA candidate exercised by native acceptance.
+
+Supported World edits are existing-ID density, base RGBA, consumed descriptor
+viscosity and admitted legacy sparse-pair edits. Synthetic132, capability changes
+and visual-state projection changes are refused with actionable paths; their
+descriptor compilation remains available. Kernels, identity and state contracts
+stay held to the chosen template. The test uses native default solver settings;
+it does not inherit the Workbench's applied solver configuration.
+
+Each build checks fresh deterministic repetition, one/four-worker equality,
+same-build persistence continuation and the full native quantity ledger. Receipts
+retain actual worker participation, full native source/staged/generated hashes,
+compiler identity, exact scenario, stored grids, initial/final state and products.
+Persistence compares canonical physical state, cells, registers, temperature and
+quantities; the historical state hash is retained separately because restoration
+normalizes inactive quiet counters. Fresh repeats and worker comparisons retain
+the exact historical-hash check as well. A one-tick regression covers this distinction.
+
+The native probe reuses the Lab's bay geometry and `demo::construct`; it is not
+an exact replay of the mounted `MicroScenarioHost`. Its receipt records raw
+native default transport, capacities and interest rectangle. Candidate and
+reference share these settings; their hashes are not asserted equal to the
+separate mounted host. Per-cell scheduling eligibility and sleep deadlines remain
+unavailable; aggregate activity and completed native ticks are reported.
+
+**Export World test bundle…** rebuilds/tests into a fresh external child directory
+and saves the versioned preset, full source-staged reference/candidate fixtures,
+generated definitions and `world-receipt.json`. Executables and saved Worlds are
+excluded. Import `preset.json` to edit it again. The receipt's `scenario` can be
+passed unchanged to `compile_world_test` through the existing JSON request CLI
+for reproduction. These test results qualify the stated fixture only; they do
+not establish cross-build saved-world compatibility or production activation.
+
+Sources: [World compiler backend](../../tools/material_catalogue/world_candidate.py),
+[native probe](../../tools/material_catalogue/lab_world_probe.cpp),
+[comparison view](../../godot/scripts/material_lab_world_panel.gd).
 
 ## Reaction authoring and deterministic diagnostics
 
@@ -205,13 +272,22 @@ the Lava/Water quench has one successful roll per orientation rather than 256,
 and the probe records 510 changed outcomes over both orientations. This isolates
 the edit from contact scheduling and preserves the production rule.
 
+For an actual authored contact, duplicate **Salt 23** and change both products
+of its Water pair to **Stone**. Run the Candidate test against Water. Native
+readback records Stone products, pair events and Water ledger changes instead
+of the reference's Brine products. The rule still uses the existing default
+initialization effect and priority. Changed candidate rules receive generated
+product/accounting descriptions, so legacy prose cannot describe different products.
+The [Salt-to-Stone World preset](../../materials/catalogue/fixtures/lab-salt-stone-world-v1.json)
+contains this exact candidate for import and repetition.
+
 ## Native simulation experiments and reproducible cases
 
 Select existing materials and a partner, then choose **Prepare selected +
 partner**. Set a bounded tick count, seed, one/four workers and the supported
 Water policy. **Step** advances one actual native tick; **Run bounded window**
 advances at most one tick per UI frame and stops at the requested endpoint.
-The UI allows up to 512 ticks; the helper rejects definitions above 600.
+The UI and helper admit 1 through 600 ticks.
 
 The experiment reuses `MicroScenarioHost`, its contract and the reference pack.
 It owns a separate native World. Native material counts, stored cells/state,
@@ -225,10 +301,13 @@ For a repeatable example, select **Salt 23 + Water 3**, seed 2, 120 ticks and
 four workers. Native readback observes the 384-cell Salt dose reacting with
 Water to produce **768 Brine cells**, with Water remaining in the bay.
 **Repeat / compare reference** reconstructs a
-clean owner with the same definition and checks exact final readback.
+clean owner with the same definition and checks exact final readback. Replay
+advances one tick per UI frame; **Pause** cancels it while preserving the source run.
 **Save test case…** records the definition, source identity, seed, worker count
 and applied Water-family selection in a digested envelope; **Import test case…**
-restores that configuration transactionally. Native source or digest mismatches
+restores that configuration and its visible seed/duration/worker/policy controls
+transactionally. Prepared-run identity is shown separately from controls for a
+new pair. Native source or digest mismatches
 are refused. This is reproducible fixture reconstruction, not arbitrary World
 continuation or a save-format migration.
 
@@ -255,12 +334,18 @@ separate controls and evidence.
   reference, save/reopen the test and check one/four-worker agreement.
 - Apply CellularYield in the isolated test, inspect acknowledged policy and
   verify the ordinary Workbench remains its existing owner.
+- Duplicate Sand, set density500, compare both native Worlds against Water,
+  inspect initial/final cells and export/reopen the World bundle. Edit settings
+  while a compile runs and verify its older result cannot qualify the new recipe.
+- Cancel a compile and a reference replay; confirm the Lab stays usable and
+  reports cancellation without a successful receipt.
 
 ## Qualification and remaining gates
 
 Focused executable regressions are `test_material_lab_catalogue.gd`,
-`test_material_lab_experiment.gd`, `test_material_lab_ui.gd` and
-`tools/material_catalogue/test_lab.py`. The UI regression mounts the actual
+`test_material_lab_experiment.gd`, `test_material_lab_ui.gd`,
+`test_material_lab_service.gd`, `test_material_lab_world.gd`,
+`tools/material_catalogue/test_lab.py` and `test_world_candidate.py`. The UI regression mounts the actual
 scene and executes Python, C++ and the native World. The graphical capture
 script is `godot/tests/capture_material_lab.gd`; its receipt names source inputs,
 engine, display and native results. Commands and outcomes are retained in the
