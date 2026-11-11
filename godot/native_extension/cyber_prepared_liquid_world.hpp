@@ -307,7 +307,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         config->inertial_signed_vertical = options.get("workbench_inertial_signed", false);
         config->ballistic_water.face_release = config->ballistic_water.enabled &&
             static_cast<bool>(options.get("workbench_face_release", false));
-        // BS-001 flying solids need ballistic Water; capacities are explicit
+        // BS-001 ballistic solids need ballistic Water; capacities are explicit
         // integers inside the native admission bounds (default 4096 each).
         config->ballistic_solids.enabled = config->ballistic_water.enabled &&
             static_cast<bool>(options.get("workbench_ballistic_solids", false));

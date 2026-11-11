@@ -165,7 +165,7 @@ piloted flyer, kinetic-lab) use too.
 
 - Shooters (U33–U39): `sand_blaster`, `gravel_shotgun`, `stone_slug`,
   `water_cannon`, `oil_sprayer`, `lava_spitter`, `acid_mister`. Water goes out
-  as BW-001 ballistic parcels; every other material as BS-001 flying cells.
+  as BW-001 ballistic parcels; every other material as BS-001 ballistic cells.
 - Wands (U40–U45): `blast_glove`, `shovel_gauntlet`, `vortex_lance`,
   `shockwave_stomp`, `gust_fan`, `geyser_rod`. They apply a kinetic mask
   (shape × pattern × field) at their reach and launch the cells it covers.
@@ -174,7 +174,7 @@ Every shot goes through the native ballistic owners and never paints cells
 directly. The desktop World is built with both ballistic owners enabled (idle
 owners change no cell), so F5 actors and workbench flyer ports both fire them.
 Evidence: `test_workbench_flyer_ports.gd` 31/0 and `test_f5_kinetic_usables.gd`
-(shotgun and water cannon fire native flying cells), Windows, Godot 4.7,
+(shotgun and water cannon fire native ballistic cells), Windows, Godot 4.7,
 2026-11-11.
 
 Ordinary processors have 16 successful batches, a 45-second lifetime and a

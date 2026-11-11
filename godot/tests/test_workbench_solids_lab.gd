@@ -1,10 +1,10 @@
 extends SceneTree
 
 # BS-001 solids-lab in the real shared workbench: a Sand hopper (valve), the
-# collector pit, a conveyor feeding the launcher, flying solids striking a
+# collector pit, a conveyor feeding the launcher, ballistic solids striking a
 # stack of Rapier barrels and a Water pool. Requires a native runtime built from
-# this source (flying solids). Quantities: the native Sand population, the live
-# flying-solid roster and the conveyor stock must always sum to the same total.
+# this source (ballistic solids). Quantities: the native Sand population, the live
+# ballistic-solid roster and the conveyor stock must always sum to the same total.
 # LIQUID_EQUIPMENT_WORKERS=1|4 selects the native pool request (default 4).
 const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 const Setup = preload("res://scripts/workbench_setup.gd")
@@ -54,7 +54,7 @@ func run_ticks(count: int, label: String) -> bool:
 	var target := ticks() + count
 	return await until(func() -> bool: return ticks() >= target,label + " advanced %d ticks" % count,180.0)
 
-# Grid Sand + flying solids + conveyor stock. Every flying solid in this lab is Sand.
+# Grid Sand + ballistic solids + conveyor stock. Every ballistic solid in this lab is Sand.
 func sand_total() -> int:
 	var r := receipt()
 	return int(r.solid_stock.population) + int(solids().get("live",0)) + int(r.solid_stock.stock)
@@ -86,10 +86,10 @@ func run() -> void:
 	check(panel.load_equipment_start(Setup.SOLIDS_LAB_LABEL),"solids-lab load requested")
 	if not await until(func() -> bool: return installed() and current() and not solids().is_empty(),"solids-lab installed"): return finish()
 	var spray: Dictionary = main.tower_context.get("water_spray",{})
-	check(bool(solids().enabled) and int(solids().capacity) == 8192,"flying solids enabled with the raised capacity (%s)" % str(solids().get("capacity")))
+	check(bool(solids().enabled) and int(solids().capacity) == 8192,"ballistic solids enabled with the raised capacity (%s)" % str(solids().get("capacity")))
 	check(bool(spray.get("ballistic_enabled",false)) and int(spray.get("capacity",0)) == 16384,"ballistic Water capacity raised (%s)" % str(spray.get("capacity")))
 	var r := receipt()
-	check(r.solids_mode == "flying solids" and r.launcher.installed and r.collector.installed,"launcher and collector installed")
+	check(r.solids_mode == "ballistic solids" and r.launcher.installed and r.collector.installed,"launcher and collector installed")
 	check(int(r.solid_stock.stock) == 200 and int(r.solid_stock.population) > 0,"conveyor starts with 200 Sand")
 	var total := sand_total()
 	evidence.start = {"sand_total":total,"population":int(r.solid_stock.population)}
@@ -113,7 +113,7 @@ func run() -> void:
 	await capture("hopper")
 	evidence.hopper = {"collected":collected}
 
-	# Launcher: flying Sand strikes the barrel stack.
+	# Launcher: ballistic Sand strikes the barrel stack.
 	var barrel_before: Dictionary = panel.body_state(3)
 	var before: Dictionary = solids().get("ledger",{}).duplicate()
 	check(panel.equipment.toggle("launcher"),"launcher on")
@@ -128,10 +128,10 @@ func run() -> void:
 	r = receipt()
 	var after: Dictionary = solids().ledger
 	check(int(r.launcher.launched) > 0 and int(after.injected) - int(before.get("injected",0)) == int(r.launcher.launched),
-		"every launcher shot is a native flying solid (%d)" % int(r.launcher.launched))
-	check(conserved and sand_total() == total,"grid + flying + conveyor Sand stays constant while firing")
-	check(bool(solids().get("closed",false)),"native flying-solid ledger closed")
-	check(int(after.body_contacts) - int(before.get("body_contacts",0)) > 0,"flying solids strike the barrels")
+		"every launcher shot is a native ballistic solid (%d)" % int(r.launcher.launched))
+	check(conserved and sand_total() == total,"grid + ballistic + conveyor Sand stays constant while firing")
+	check(bool(solids().get("closed",false)),"native ballistic-solid ledger closed")
+	check(int(after.body_contacts) - int(before.get("body_contacts",0)) > 0,"ballistic solids strike the barrels")
 	var barrel_after: Dictionary = panel.body_state(3)
 	evidence.launcher = {"fired":int(r.launcher.launched),"peak_live":peak,
 		"body_contacts":int(after.body_contacts) - int(before.get("body_contacts",0)),

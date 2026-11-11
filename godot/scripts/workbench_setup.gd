@@ -52,7 +52,7 @@ const RESERVOIR_LAB_LABEL := "reservoir-lab"
 const SOLIDS_LAB_LABEL := "solids-lab"
 const KINETIC_LAB_LABEL := "kinetic-lab"
 const EQUIPMENT_LABELS := [LIQUID_LAB_LABEL,RESERVOIR_LAB_LABEL,SOLIDS_LAB_LABEL,KINETIC_LAB_LABEL]
-# Starts whose World also needs flying solids (BS-001).
+# Starts whose World also needs ballistic solids (BS-001).
 const SOLIDS_LABELS := [SOLIDS_LAB_LABEL,KINETIC_LAB_LABEL]
 const Equipment = preload("res://scripts/workbench_liquid_equipment.gd")
 # Optional root key. Absent = no equipment; a setup without it keeps exactly
@@ -413,7 +413,7 @@ static func reservoir_lab(policy: PackedInt32Array) -> Dictionary:
 # in its floor) above the collector pit; a Water pool where landing solids
 # settle on the surface and then sink; a stack of three barrels; the launcher
 # on the far floor, aimed back at the stack. The conveyor feeds collected Sand
-# to the launcher, so grid + flying + stock Sand stays constant.
+# to the launcher, so grid + ballistic + stock Sand stays constant.
 const SOLIDS_LAB_VALVES := [[52,150,16,4]]
 const SOLIDS_LAB_COLLECTOR := [44,258,16,6,16]
 const SOLIDS_LAB_LAUNCHER := [440,250,-150.0,4.5,3,SAND]

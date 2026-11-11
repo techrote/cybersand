@@ -29,10 +29,10 @@ Issue / PR: [#361](https://github.com/techrote/cybersand/issues/361) /
 
 - `world.cpp`: includes `world_ballistic_solids.inc`; constructs, validates,
   reserves, clears and advances the opt-in solids owner at tick entry right after
-  ballistic Water; draws flying solids in the three presentation copies.
+  ballistic Water; draws ballistic solids in the three presentation copies.
 - `world_pressure.inc`: appends a solids section to the physical-state hash and
   CYPS (extension bit 16) only when solids are enabled; restores it with
-  validation; carries flying solids across a retained workbench rebuild.
+  validation; carries ballistic solids across a retained workbench rebuild.
 - `world_quantity.inc`: the authority-scan validator also runs the solids cell
   ledger validator.
 

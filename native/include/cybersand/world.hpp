@@ -76,7 +76,7 @@ struct WorldConfig {
     // BW-001 ballistic_water_v1: opt-in, bounded parcel owner for Water in
     // flight. Disabled leaves every Current hash, format and ledger unchanged.
     BallisticWaterConfig ballistic_water{};
-    // BS-001 ballistic_solids_v1: opt-in flying solid/powder cells. Requires
+    // BS-001 ballistic_solids_v1: opt-in ballistic solid/powder cells. Requires
     // ballistic Water; disabled leaves every hash, format and ledger unchanged.
     BallisticSolidsConfig ballistic_solids{};
     // IN-B1 (experimental): signed-vertical inertial law for every IN material.
@@ -442,7 +442,7 @@ public:
     [[nodiscard]] std::size_t copy_ballistic_parcels(std::span<BallisticParcel> output) const noexcept;
     [[nodiscard]] BallisticWaterSnapshot ballistic_water_snapshot() const noexcept;
     // BS-001 ballistic_solids_v1. Serialized external owner, between ticks.
-    // launch moves one admitted grid cell (material and state) into a flying
+    // launch moves one admitted grid cell (material and state) into a ballistic
     // solid spawned at an unmasked Empty/gas cell; inject creates one from an
     // external stock. Refusals are explicit outcomes and never mutate authority.
     [[nodiscard]] bool ballistic_solids_enabled() const noexcept { return config_.ballistic_solids.enabled; }

@@ -4,7 +4,7 @@ const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 
 # F5 kinetic usables on the production desktop: the shared kinetic catalogue
 # (kinetic_usables.gd) equipped on a real articulated actor and fired with M.
-# Every shot must be a native flying cell or parcel, never painted cells.
+# Every shot must be a native ballistic cell or parcel, never painted cells.
 const Catalog = preload("res://scripts/usable_catalog.gd")
 var desktop: Control
 var assertions: int = 0

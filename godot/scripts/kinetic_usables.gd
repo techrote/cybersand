@@ -2,7 +2,7 @@ extends RefCounted
 
 # Kinetic usables: one catalogue shared by workbench flyer ports and (later)
 # F5 actor equipment. Every entry is a small parameter set over two mechanisms:
-#   shooter - fires a burst of real flying cells of one material along the aim
+#   shooter - fires a burst of real ballistic cells of one material along the aim
 #             (Water as BW-001 parcels, everything else as BS-001 cells). It is
 #             an explicit material source: each launched cell is booked by the
 #             native owners as injected.

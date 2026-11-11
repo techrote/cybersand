@@ -290,7 +290,7 @@ void CyberNativeCellWorld::create_world() {
         config.active_chunk_capacity = 128;
         config.parallel_job_threshold = 2;
         // Kinetic flight: the desktop World carries the ballistic Water and
-        // BS-001 flying-solid owners so F5 kinetic usables can fling cells.
+        // BS-001 ballistic-solid owners so F5 kinetic usables can fling cells.
         // Idle owners change no cell. diagnostic_reset builds its own config.
         config.ballistic_water.enabled = true;
         config.ballistic_solids.enabled = true;

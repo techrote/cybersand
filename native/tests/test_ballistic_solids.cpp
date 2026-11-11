@@ -1,4 +1,4 @@
-// BS-001 ballistic_solids_v1: exact grid -> flying solid -> grid cell
+// BS-001 ballistic_solids_v1: exact grid -> ballistic solid -> grid cell
 // ownership, admission, swept contacts, liquid-surface landing, body impulse,
 // persistence and worker parity.
 #include "cybersand/world.hpp"
@@ -199,7 +199,7 @@ void test_ballistic_solids_render_overlay() {
             "inject refused");
     std::array<std::uint8_t, 32 * 32> cells{};
     world.copy_material_cells({0, 0, 32, 32}, cells, 32);
-    require(cells[8 * 32 + 10] == static_cast<std::uint8_t>(Material::Sand), "flying solid not presented");
+    require(cells[8 * 32 + 10] == static_cast<std::uint8_t>(Material::Sand), "ballistic solid not presented");
     require(world.stored_material(10, 8) == Material::Empty, "presentation wrote authority");
 }
 
@@ -253,8 +253,8 @@ void test_ballistic_solids_non_water_liquids() {
                     "liquid launch refused");
         require(count(world, liquid, 64, 48) + world.ballistic_solid_count() == cells, "launch changed the liquid population");
         for (int t = 0; t < 400 && world.ballistic_solid_count() != 0U; ++t) (void)world.tick();
-        require(world.ballistic_solid_count() == 0U, "flying liquid never landed");
-        require(world.ballistic_solids_snapshot().ledger.landed == 4U, "flying liquid ledger");
+        require(world.ballistic_solid_count() == 0U, "ballistic liquid never landed");
+        require(world.ballistic_solids_snapshot().ledger.landed == 4U, "ballistic liquid ledger");
         closes(world, "liquid");
     }
 }

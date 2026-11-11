@@ -444,7 +444,7 @@ func refresh(context: Dictionary) -> void:
 			" (held)" if _kinetic_hold else "",int(kinetic_totals.get("applications",0)),int(kinetic_totals.get("water",0)),int(kinetic_totals.get("solids",0))])
 	var solids_state: Dictionary = context.get("ballistic_solids",{})
 	if solids_state.get("enabled",false):
-		parts.append("flying solids %d/%d%s" % [int(solids_state.live),int(solids_state.capacity),"" if solids_state.get("closed",true) else " · LEDGER OPEN"])
+		parts.append("ballistic solids %d/%d%s" % [int(solids_state.live),int(solids_state.capacity),"" if solids_state.get("closed",true) else " · LEDGER OPEN"])
 	var line := "Liquid equipment · " + " · ".join(parts)
 	if not water.is_empty():
 		var world_cells := float(water.total)/unit

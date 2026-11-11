@@ -3,7 +3,7 @@ extends SceneTree
 # Kinetic mask tools in the real shared workbench (kinetic-lab start). Each
 # authored emitter and every pointer preset flings real Water and solid cells
 # through the native ballistic owners. Conservation: the native Water ledger
-# stays closed, and grid solids + flying solids stay constant. Requires a
+# stays closed, and grid solids + ballistic solids stay constant. Requires a
 # native runtime built from this source. LIQUID_EQUIPMENT_WORKERS=1|4.
 const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 const Setup = preload("res://scripts/workbench_setup.gd")
@@ -53,8 +53,8 @@ func run_ticks(count: int, label: String) -> bool:
 	var target := ticks() + count
 	return await until(func() -> bool: return ticks() >= target,label + " advanced %d ticks" % count,120.0)
 
-# Sand and Oil never react in this lab, so grid + flying cells of them must stay
-# exact. Lava may react (it is far from the Water); the native flying-cell ledger
+# Sand and Oil never react in this lab, so grid + ballistic cells of them must stay
+# exact. Lava may react (it is far from the Water); the native ballistic ledger
 # must close regardless.
 func solid_total() -> int:
 	var total := int(solids().get("live",0))
@@ -62,7 +62,7 @@ func solid_total() -> int:
 	return total
 
 func inert_total() -> int:
-	var flying := 0
+	var ballistic := 0
 	var p: Dictionary = receipt().get("populations",{})
 	return int(p.get("2",0)) + int(p.get("16",0))
 
@@ -95,7 +95,7 @@ func run() -> void:
 	check(panel.load_equipment_start(Setup.KINETIC_LAB_LABEL),"kinetic-lab load requested")
 	if not await until(func() -> bool: return installed() and current() and not solids().is_empty() and not receipt().get("populations",{}).is_empty(),
 		"kinetic-lab installed"): return finish()
-	check(bool(solids().enabled) and bool(main.tower_context.get("water_spray",{}).get("ballistic_enabled",false)),"flying Water and solids enabled")
+	check(bool(solids().enabled) and bool(main.tower_context.get("water_spray",{}).get("ballistic_enabled",false)),"ballistic Water and solids enabled")
 	check(receipt().kinetics.size() == 6,"six emitters installed")
 	await until(ledger_closed,"native Water ledger published")
 	var total := solid_total()
@@ -116,7 +116,7 @@ func run() -> void:
 		check(flung > 0,"%s emitter flung %s (%d)" % [after.preset,expected[index],flung])
 		per[after.preset] = {"water":int(after.water) - int(before.water),"solids":int(after.solids) - int(before.solids)}
 		if not await run_ticks(30,"after " + str(after.preset)): return finish()
-		check(bool(solids().get("closed",false)),"flying-cell ledger closed after %s" % after.preset)
+		check(bool(solids().get("closed",false)),"ballistic ledger closed after %s" % after.preset)
 		check(ledger_closed() and int(water().total) == water_total,"Water conserved after %s" % after.preset)
 	evidence.emitters = per
 	await capture("emitters")

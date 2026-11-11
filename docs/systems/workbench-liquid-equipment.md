@@ -39,13 +39,13 @@ remains the authority and closes by itself.
 
 | Device | Authored as | Operation |
 |---|---|---|
-| Launcher | `[x, y, angle°, speed, per tick, material]`, speed 0.5–6, rate 1–8; material Sand, Stone, Dust, Seed, Salt, Gunpowder, Coal or Rust | Fires one cell of its material per shot from the solids stock. In a World with [ballistic solids](../architecture/ballistic-solids-v1.md) each shot is a native flying solid; otherwise it places one resting cell at the muzzle. |
+| Launcher | `[x, y, angle°, speed, per tick, material]`, speed 0.5–6, rate 1–8; material Sand, Stone, Dust, Seed, Salt, Gunpowder, Coal or Rust | Fires one cell of its material per shot from the solids stock. In a World with [ballistic solids](../architecture/ballistic-solids-v1.md) each shot is a native ballistic solid; otherwise it places one resting cell at the muzzle. |
 | Collector | `[x, y, width, height, cells per tick]`, ≤ 96 cells, rate 1–32 | Bounded sink for those materials, bottom row first, masked cells skipped, counted per material. |
-| Conveyor | `solid_supply` (0–20000 cells), `conveyor` (bool) | With the conveyor on, collected cells of the launcher's material enter its stock (a full stock stops the collector): grid + flying + stock stays constant. |
+| Conveyor | `solid_supply` (0–20000 cells), `conveyor` (bool) | With the conveyor on, collected cells of the launcher's material enter its stock (a full stock stops the collector): grid + ballistic + stock stays constant. |
 | Hopper | a valve in the floor of a powder bin | The ordinary valve; closing pushes caught grains aside like liquid. |
 
 The receipt reports the native grid population of the launcher material
-(`solid_stock.population`), sampled at the same boundary as the flying-solid
+(`solid_stock.population`), sampled at the same boundary as the ballistic-solid
 roster (`lab_context.ballistic_solids`).
 
 Inertial cellular flow, injected resting cells and ballistic parcels remain

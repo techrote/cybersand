@@ -2,7 +2,7 @@
 title: BS-001 ballistic solids and solids equipment — implementation evidence
 status: Current
 document-kind: audit
-scope: Dated evidence for the Draft-branch BS-001 native flying-solids owner, raised ballistic capacities and the workbench solids equipment; source/runtime identities, commands, results and gaps
+scope: Dated evidence for the Draft-branch BS-001 native ballistic-solids owner, raised ballistic capacities and the workbench solids equipment; source/runtime identities, commands, results and gaps
 last-reviewed: 2026-11-10
 related-documents: [../architecture/ballistic-solids-v1.md, ../systems/workbench-liquid-equipment.md, 2026-11-09-in-tools-361-workbench-equipment.md]
 ---
@@ -46,15 +46,15 @@ buried-solid climb.
 
 ## solids-lab observations (Windows, request 4)
 
-- Raised capacities: ballistic Water 16 384 and flying solids 8 192 slots were
+- Raised capacities: ballistic Water 16 384 and ballistic solids 8 192 slots were
   admitted and reported natively.
 - Hopper: opening the floor valve for 240 ticks poured Sand into the collector
   pit; 1 534 cells were collected and fed the conveyor exactly (stock 200 → 1 734).
-- Launcher: 720 shots in 240 ticks, each a native flying solid (`injected` delta
+- Launcher: 720 shots in 240 ticks, each a native ballistic solid (`injected` delta
   equals shots); peak 231 in flight; 264 body contacts; with **Hit force ×** 10
-  the top barrel was knocked about 72 cells. Grid Sand + flying + conveyor stock
+  the top barrel was knocked about 72 cells. Grid Sand + ballistic + conveyor stock
   stayed exactly constant (7 400) at every sampled frame.
-- Stop: every device closed and every flying solid landed (0 deferred, 0 forced
+- Stop: every device closed and every ballistic solid landed (0 deferred, 0 forced
   after the buried-climb repair). Restore start reset the devices and kept the
   authored launcher aim; Save/read-back of the block was identical.
 
@@ -63,7 +63,7 @@ Frame: [launcher arc knocking over the barrel stack](../images/in-tools-361/soli
 ## Defects found and repaired
 
 - **Sampling skew:** the device receipt read the Sand population before the tick
-  but the flying roster after it. The worker now samples the population at
+  but the ballistic roster after it. The worker now samples the population at
   publication.
 - **Buried solids:** a resting solid buried by a moving Sand pile found no free
   cell within radius 2 and retried indefinitely (≈ 55 700 deferrals, 10 solids).
@@ -93,7 +93,7 @@ GDScript kinetic mask core, emitters, pointer tool and kinetic-lab.
 Geyser 153 and Vortex 317 Water cells, Shockwave 377 Stone and Shaker 80 Dust;
 all eleven pointer presets applied; held emitters repeated; an unknown preset was
 refused. Across 74 applications (8 101 solids and 4 407 Water cells flung) grid
-+ flying solids and the native Water total stayed exactly constant, and every
++ ballistic solids and the native Water total stayed exactly constant, and every
 cell landed after Stop. solids-lab 31/0, liquid-lab 103/0, reservoir-lab 81/0,
 workbench canvas 164/0 and spray rearm 10/0 pass on the same library.
 Frame: [after the pointer presets](../images/in-tools-361/kinetic-lab-pointer.png).
@@ -102,7 +102,7 @@ Runtime publication for this source is request sequence 2.
 ## Non-Water liquids — 2026-11-10
 
 Owner report: kinetic tools did nothing to Oil or Lava. Repair: BS-001 admits
-every non-Water liquid as a whole flying cell, and a Water parcel engulfed under
+every non-Water liquid as a whole ballistic cell, and a Water parcel engulfed under
 an Oil layer rises through it. Native 202/202 (WSL Linux; new cases for Oil, Lava,
 Acid, Brine and Mercury launch/land with exact populations, and Water rising
 through Oil). kinetic-lab now has an Oil layer (Gust) and a walled Lava basin

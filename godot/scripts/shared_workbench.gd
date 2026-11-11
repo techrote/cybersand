@@ -700,7 +700,7 @@ func load_equipment_start(label: String, ballistic: bool = true, preset_label: S
 	if checked.get("accepted",false):
 		candidate.rule_radius = maxi(int(candidate.rule_radius),int(checked.receipt.get("minimum_rule_radius",2)))
 	host.workbench_water_options["workbench_ballistic"] = ballistic
-	# BS-001: the solids start also needs flying solids in its World.
+	# BS-001: the solids start also needs ballistic solids in its World.
 	if label in Setup.SOLIDS_LABELS:
 		host.workbench_water_options["workbench_ballistic_solids"] = ballistic
 		water_spray._solids.set_pressed_no_signal(ballistic)

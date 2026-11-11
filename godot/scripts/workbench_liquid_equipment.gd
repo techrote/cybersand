@@ -25,7 +25,7 @@ extends RefCounted
 #            exact volume, rising level, but no local pressure jet. Slow inlets
 #            spread over the surface; fast ones stack a fountain column.
 #   launcher  - a finite directed solid source (BS-001). With ballistic solids
-#            in the World it fires native flying solids of one material from its
+#            in the World it fires native ballistic solids of one material from its
 #            stock; otherwise it places one resting cell at the muzzle.
 #   collector - a bounded sink rectangle for powders/solids; collected cells go
 #            to the solids stock by material (exact cell counts).
@@ -811,7 +811,7 @@ func _step_collector(world: Object) -> void:
 
 
 # Worker publication samples the population at the same boundary as the
-# flying-solid roster, so grid + flying + stock is read consistently.
+# ballistic-solid roster, so grid + ballistic + stock is read consistently.
 func refresh_population(world: Object) -> void:
 	if world != null and not world.has_failed() and (configured or _kinetic_totals.applications > 0): _sample_population(world)
 
@@ -910,7 +910,7 @@ func receipt() -> Dictionary:
 			"emitted":_emitted,"cell_emissions":_cell_emissions,"injected_water":_injected_water,"topped_up":_topped_up,
 			"column_injections":_column_injections,"refused":_nozzle_refused.duplicate()},
 		"pipe":{"pump":_pump,"stock":_stock,"supplied":_supplied,"capacity":_pipe_capacity},
-		"solids_mode":"flying solids" if _solids else "cells at rest",
+		"solids_mode":"ballistic solids" if _solids else "cells at rest",
 		"launcher":{"installed":_launcher.x >= 0,"on":_launcher_on,"angle":_launcher_angle,"speed":_launcher_speed,
 			"rate":_launcher_rate,"material":_launcher_material,"launched":_launched,"cell_launches":_launched_cells,
 			"refused":_launcher_refused.duplicate()},

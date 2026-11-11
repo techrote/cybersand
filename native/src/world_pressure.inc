@@ -237,7 +237,7 @@ World::WorkbenchLiquidTransfer World::inherit_workbench_liquid_state(const World
     }
     if (transfer.preserved_in_flight_water + transfer.discarded_in_flight_water != source.quantity_.water_ballistic)
         throw std::logic_error("Workbench in-flight Water transfer did not close");
-    // BS-001: carry flying solids into a solids owner (counted as injected); otherwise report them.
+    // BS-001: carry ballistic solids into a solids owner (counted as injected); otherwise report them.
     for (const auto& origin : source.ballistic_solids_) {
         if (!config_.ballistic_solids.enabled || ballistic_solids_.size() >= config_.ballistic_solids.capacity) {
             ++transfer.discarded_in_flight_solids;
@@ -2249,7 +2249,7 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
         }
     }
     if (config_.ballistic_solids.enabled) {
-        // BS-001: every flying solid is physical state; counters are not quiescent content.
+        // BS-001: every ballistic solid is physical state; counters are not quiescent content.
         for (const auto byte : ballistic_solids_identity(config_.ballistic_solids)) hash_byte(hash, byte);
         hash_integer(hash, static_cast<std::uint64_t>(ballistic_solids_.size()));
         for (const auto& p : ballistic_solids_) {

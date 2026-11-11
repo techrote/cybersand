@@ -2,7 +2,7 @@
 title: Ballistic solids (BS-001, experimental)
 status: Current
 document-kind: reference
-scope: Draft-branch BS-001 ballistic_solids_v1 native owner for flying solid/powder cells; admission, ownership, landing, body impulse, accounting, identity/persistence, capacity, workbench options and equipment; not on main, no default changed
+scope: Draft-branch BS-001 ballistic_solids_v1 native owner for ballistic solid/powder cells; admission, ownership, landing, body impulse, accounting, identity/persistence, capacity, workbench options and equipment; not on main, no default changed
 canonical-for: [ballistic-solids-v1]
 last-reviewed: 2026-11-10
 related-documents: [ballistic-water-v1.md, rigid-body-and-cellular-coupling.md, ../systems/workbench-liquid-equipment.md, ../audits/2026-11-10-bs001-ballistic-solids.md]
@@ -44,7 +44,7 @@ rebuild).
   Glass), which are whole-cell materials and fly as their own cell. Water flies as
   BW-001 parcels. Gases, agents and Empty never fly (`NotAdmitted`).
 - **Launch** (`launch_ballistic_solid`, serialized between ticks) moves one grid
-  cell (material and state) into a flying solid spawned at an unmasked Empty/gas
+  cell (material and state) into a ballistic solid spawned at an unmasked Empty/gas
   cell. **Inject** (`inject_ballistic_solid`) creates one of an admitted
   material from an external stock (counted as `injected`). Refusals never mutate.
 - **Advance:** once per tick at tick entry, immediately after ballistic Water,
@@ -63,7 +63,7 @@ rebuild).
   mass: a Water-density cell equals one 255-unit Water parcel) to the same per-body
   counters as ballistic Water, so the existing coupling delivers it to Rapier
   through the workbench droplet gain (**Hit force ×**).
-- **Presentation:** flying solids are drawn as their material in
+- **Presentation:** ballistic solids are drawn as their material in
   `copy_material_cells`, `copy_render_cells` and render-snapshot patches, only
   over Empty cells. Authority is untouched.
 
@@ -78,7 +78,7 @@ topology, IN storage, activity and discovery like any serialized external edit.
 |---|---|---|
 | Physical-state hash | unchanged | ballistic version 4 plus a solids section (identity, every solid, counters outside quiescent content) |
 | Persistence | unchanged CYPS4/5 | CYPS extension bit 16 (requires bit 2): configuration, identity, every solid and the ledger |
-| Retained workbench rebuild | — | flying solids carried into a solids owner (counted as injected) or reported as `discarded_in_flight_solids` |
+| Retained workbench rebuild | — | ballistic solids carried into a solids owner (counted as injected) or reported as `discarded_in_flight_solids` |
 
 `clear()` resets solids and their ledger. A failed tick quarantines the World as
 before. Thermal state is not carried in flight (the landing cell keeps its own).
@@ -125,6 +125,6 @@ indefinitely; density exchange then settles it.
 
 - Opt-in and experimental; no default World uses it.
 - Bounded serial pass; cost grows with live solids (measured in the dated record).
-- Flying solids do not collide with each other or with flying Water drops.
+- Ballistic solids do not collide with each other or with ballistic Water parcels.
 - Structural solids such as Stone land where they stop and do not slump, so
   flung Stone can stack into spires.

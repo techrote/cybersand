@@ -13,7 +13,7 @@
 //
 // A bounded, World-owned pool of whole solid/powder cells in flight, the
 // granular counterpart of BW-001 ballistic Water. A serialized owner may move
-// one admitted grid cell (material and state) into a flying solid (launch) or
+// one admitted grid cell (material and state) into a ballistic solid (launch) or
 // inject one from an external stock such as workbench equipment. Solids advance
 // serially at tick entry with gravity, drag, swept terrain/body/liquid contact
 // and land back in the grid as ordinary cells. On reaching a liquid they settle
@@ -92,7 +92,7 @@ struct BallisticSolidsSnapshot {
     return d.state == MaterialState::Solid && d.density < 65'535;
 }
 
-// Momentum weight of one flying cell, density-scaled so a Water-density cell
+// Momentum weight of one ballistic cell, density-scaled so a Water-density cell
 // weighs exactly one full ballistic Water parcel (255).
 [[nodiscard]] constexpr std::int64_t ballistic_solid_mass(Material material) noexcept {
     const auto id = static_cast<std::size_t>(material);

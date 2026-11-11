@@ -29,7 +29,7 @@ The #361 Draft branch adds [workbench liquid equipment](systems/workbench-liquid
 (valves, drain, pumped nozzle and the built-in liquid-lab and reservoir-lab starts) with
 [dated Windows evidence](audits/2026-11-09-in-tools-361-workbench-equipment.md).
 The stacked BS-001 branch adds [ballistic solids](architecture/ballistic-solids-v1.md)
-(flying sand/stone) with launcher, collector and conveyor equipment and a
+(ballistic sand/stone) with launcher, collector and conveyor equipment and a
 solids-lab start ([dated evidence](audits/2026-11-10-bs001-ballistic-solids.md)).
 
 

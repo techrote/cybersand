@@ -35,7 +35,7 @@ const SPINS := [
 	["jet_speed", "Jet speed", 0.0, 6.0, 0.1, 3.2],
 	["jet_rate", "Jet rate", 0, 16, 1, 3],
 ]
-# Body push from ballistic Water and flying solids: multiplies the native
+# Body push from ballistic Water and ballistic solids: multiplies the native
 # droplet gain (2e-7 impulse per mass x q256 momentum). Runtime setting.
 const BASE_DROPLET_GAIN := 2e-7
 # WCX-FR face release tuning (construction options; apply on rebuild). The
@@ -64,7 +64,7 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	_ballistic.tooltip_text = "Construction option: native ballistic_water_v1 parcels. Applies on the next Apply settings / Restore start."
 	_ballistic.toggled.connect(func(on: bool) -> void: _construction("workbench_ballistic", on))
 	_solids.text = "Ballistic solids"
-	_solids.tooltip_text = "Construction option (requires Ballistic Water): flying solid/powder cells (BS-001) for launchers and debris. Applies on rebuild."
+	_solids.tooltip_text = "Construction option (requires Ballistic Water): ballistic solid/powder cells (BS-001) for launchers and debris. Applies on rebuild."
 	_solids.toggled.connect(func(on: bool) -> void: _construction("workbench_ballistic_solids", on))
 	_signed.text = "IN signed"
 	_signed.tooltip_text = "Construction option: IN-B1 signed-vertical law (requires an Inertial Water assignment). Applies on rebuild."
@@ -118,7 +118,7 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	_hit_force.step = 0.5
 	_hit_force.value = 1.0
 	_hit_force.custom_minimum_size.x = 70
-	_hit_force.tooltip_text = "How hard flying Water and solids push bodies (1 = native default)."
+	_hit_force.tooltip_text = "How hard ballistic Water and solids push bodies (1 = native default)."
 	_hit_force.value_changed.connect(func(value: float) -> void: request({"droplet_gain": BASE_DROPLET_GAIN * value}))
 	row.add_child(_hit_force)
 	for spec: Array in CAPACITY_SPINS:
@@ -131,7 +131,7 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 		field.step = spec[4]
 		field.value = spec[5]
 		field.custom_minimum_size.x = 80
-		field.tooltip_text = "Flying drops/solids that can exist at once (native maximum 65536). Applies on rebuild."
+		field.tooltip_text = "Ballistic Water parcels/solids that can exist at once (native maximum 65536). Applies on rebuild."
 		var key: String = spec[0]
 		host.workbench_water_options[key] = int(spec[5])
 		field.value_changed.connect(func(value: float) -> void: host.workbench_water_options[key] = int(value))

@@ -4529,7 +4529,7 @@ void World::begin_tick(TickStats& stats) {
     // BW-001 parcels advance serially at the same boundary: deposits are
     // visible to pressure preparation and simulate from the next tick.
     advance_ballistic_water();
-    // BS-001 flying solids advance right after, in slot order.
+    // BS-001 ballistic solids advance right after, in slot order.
     advance_ballistic_solids();
     // Serial, deterministic gas topology and head preparation. It may wake
     // sleeping blocks, so it precedes the active-chunk list for this tick.

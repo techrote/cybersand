@@ -107,11 +107,11 @@ func test_ports() -> void:
 	check(launched("e-right/water_cannon") > 0,"E fires the water cannon (%s)" % str(rows.get("e-right/water_cannon")))
 	check(rows.has("s-rear/blast_glove"),"S uses the blast glove (%s)" % str(rows.get("s-rear/blast_glove")))
 	check(int(solids_after.injected) - int(solids.get("injected",0)) >= launched("q-left/gravel_shotgun"),
-		"every shotgun pellet is a native flying solid")
+		"every shotgun pellet is a native ballistic solid")
 	check(int(spray_after.injected_parcels) - int(spray.get("injected_parcels",0)) == launched("e-right/water_cannon"),
 		"every water-cannon shot is a native ballistic parcel")
 	evidence.blast_launched = launched("s-rear/blast_glove")
-	check(bool(host.tower_context.get("ballistic_solids",{}).get("closed",false)),"native flying-cell ledger closed")
+	check(bool(host.tower_context.get("ballistic_solids",{}).get("closed",false)),"native ballistic ledger closed")
 	var water: Dictionary = host.tower_context.get("water_spray",{}).get("water",{})
 	check(not water.is_empty() and int(water.total) == int(water.expected),"native Water ledger closed")
 	# Rebinding a port live: Q back to the flyer's own dispenser.
