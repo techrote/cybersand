@@ -71,11 +71,13 @@ func run() -> void:
 		finish()
 		return
 	var view: Variant = panel.world_panel
+	expect(panel._tabs.get_tab_title(4) == "Candidate test","World comparison has a readable mounted navigation label")
 	expect(view._run_button.disabled,"An absent candidate cannot start a World test")
 	press("New powder 132")
 	await wait_job()
 	expect(view._run_button.disabled and view._summary.text.contains("132"),"Synthetic132 remains descriptor-test-only")
 	panel.select_material(2)
+	expect(panel._list.get_selected_items().size() == 1 and int(panel._list.get_item_metadata(panel._list.get_selected_items()[0])) == 2,"Programmatic material selection synchronizes the native browser highlight")
 	press("Duplicate selected")
 	await wait_job()
 	expect(panel.candidate.target_id == 2 and not view._run_button.disabled,"Existing Sand candidate admits World testing")

@@ -107,6 +107,7 @@ func _spin(parent: Node, text: String, field: SpinBox, low: int, high: int, valu
 
 func _text(parent: Node, field: TextEdit, min_height: int = 150) -> void:
 	field.editable = false
+	field.add_theme_color_override("font_readonly_color",Color(0.86,0.89,0.93))
 	field.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	field.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	field.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -155,6 +156,7 @@ func _build() -> void:
 	_build_candidate(_tab("Candidate"))
 	_build_reactions(_tab("Reactions"))
 	_build_experiment(_tab("Native test"))
+	world_panel.name = "Candidate test"
 	_tabs.add_child(world_panel)
 	world_panel.test_requested.connect(_world_job)
 	world_panel.export_requested.connect(func(_scenario: Dictionary) -> void: _open_file("world_bundle",true))
@@ -410,6 +412,11 @@ func set_policy_readback(receipt: Dictionary, context: String) -> void:
 
 func select_material(id: int) -> void:
 	selected_id = id
+	_list.deselect_all()
+	for index: int in range(_list.item_count):
+		if int(_list.get_item_metadata(index)) == id:
+			_list.select(index)
+			break
 	_refresh_experiment_request()
 	var info: Dictionary = catalogue.inspect(id,applied_policy)
 	if not info.get("ok",false):
@@ -560,8 +567,9 @@ func _backend_completed(result: Dictionary) -> void:
 	_revision += 1
 	candidate_digest = str(result.get("digest",""))
 	candidate_state = {"draft":"Draft","validated_candidate":"Validated candidate","compiled_tested":"Compiled/tested — isolated native backend"}.get(str(result.get("state","draft")),str(result.get("state","Draft")))
-	_candidate_feedback.text = _candidate_result_text(result)
 	var world_result: bool = result.get("receipt",{}).get("schema_id","") == "cybersand.material-lab.world-receipt"
+	if world_result: candidate_state = "Compiled/tested — isolated native World"
+	_candidate_feedback.text = _candidate_result_text(result)
 	if result.has("receipt") and not world_result:
 		_reaction_report.text = "COMPILED CANDIDATE / ISOLATED NATIVE RESOLVER\n\n" + JSON.stringify(result.receipt.get("observed",{}).get("diagnostic",{}),"\t") + "\n\n" + str(result.get("boundary",""))
 		_reaction_report.text += "\n\nCHANGES ACROSS PRODUCTION + CANDIDATE PAIRS\n" + JSON.stringify(result.receipt.get("observed",{}).get("comparison",{}),"\t")

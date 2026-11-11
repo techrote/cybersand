@@ -94,7 +94,7 @@ func _ensure_built() -> void:
 	_export_button.text = "Export World test bundle…"
 	_export_button.pressed.connect(func() -> void: _request(true))
 	actions.add_child(_export_button)
-	_cancel_button.text = "Cancel"
+	_cancel_button.text = "Cancel World test"
 	_cancel_button.pressed.connect(func() -> void: cancel_requested.emit())
 	actions.add_child(_cancel_button)
 	_label(actions,"View")
@@ -135,6 +135,7 @@ func _ensure_built() -> void:
 	_cell_report.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(_cell_report)
 	_report.editable = false
+	_report.add_theme_color_override("font_readonly_color",Color(0.86,0.89,0.93))
 	_report.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	_report.custom_minimum_size.y = 145
 	_report.size_flags_horizontal = Control.SIZE_EXPAND_FILL
