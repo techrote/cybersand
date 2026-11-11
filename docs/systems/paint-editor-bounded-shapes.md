@@ -1,259 +1,230 @@
 ---
-title: PAINT-001 bounded shape planner and integration seam
-status: Planned
+title: PAINT-001 native-backed Workbench painting editor
+status: Current
 document-kind: design
-scope: New isolated editor geometry modules at PAINT-001 Draft; ordinary workbench mounting and native-ACKed authored persistence remain Planned
+scope: Mounted Draft PAINT-001 candidate on the shared Workbench; bounded native painting and reconstructible authored starts, not evolved simulation checkpoints
 canonical-for: []
-last-reviewed: 2026-11-08
+last-reviewed: 2026-11-11
 related-documents: [player-control-playground.md, procedural-world-generation.md, ../operations/github-development-and-release.md]
 ---
 
 # PAINT-001 — bounded painting editor
 
-Parent: [issue #543](https://github.com/techrote/cybersand/issues/543). This page records
-an additive **Draft candidate**, not a working mounted painting editor or an
-accepted-main implementation.
+[Issue #543](https://github.com/techrote/cybersand/issues/543) is implemented in the
+existing **Draft [PR #544](https://github.com/techrote/cybersand/pull/544)**. This is a
+mounted, executable candidate, not accepted main. It retains the original
+canonical geometry implementation and reconciles it with accepted main
+`d4b18e7f06839b35c8f6a66195206da0f33c5fa3`, including merged GEN-007 / #542.
 
-## Accepted-main baseline and duplicated functionality avoided
+## Using the editor
 
-At accepted main `1f82dac1cebc9b38a319153354e4bcc774289417`:
+Open the ordinary Workbench and pause. Its existing material picker now contains
+the loaded native runtime's supported materials. The additional compact tool row
+provides Brush, Eraser, Line, Rectangle, Outline, Select, Fill and Paste, with
+Copy, Undo, Redo, Cancel, named Save start and Load start beside it. A gesture
+queues and completes one operation; the status distinguishes planning, queued,
+native execution, completion, refusal and partial completion.
 
-- `shared_workbench.gd` already mounts paint/erase, a small 18-material
-  construction palette, a 2–24-radius brush, zoom, camera drag, bodies, pilot,
-  native World setup and named authored-start save/reopen.
-- `main.gd` has three distinct **single-stamp** brush shapes (circle, square,
-  rectangle), native-facing material IDs, and the one authoritative aspect-fit
-  screen-to-world transform. Do not replace them with another renderer.
-- `workbench_setup.gd` records native construction paint discs and boxes; its
-  deterministic rectangle-coalescing path caps authored construction at 4096
-  rectangles and file size at 1 MiB. A queued brush is *not* an ACKed native
-  mutation receipt. Do not call a saved authored start a live-physics checkpoint.
-- `simulation_worker.gd` admits `queue_emit_cells` with at most 4096 exact
-  world-space cell coordinates per command and eight pending commands. It is the
-  exclusive worker owner; production client code must obey the ordinary
-  `_microscenario_tool_allowed`/water/physical-owner/protection gates.
-- Experimental #542 provides GEN-007 play-plane import and separate-process
-  generated-map replay; experimental #531 supplies bounded model-authored edits
-  and protected overlays. Neither belongs to PAINT-001.
+| Action | Control |
+| --- | --- |
+| Freehand / erase | B / E; right-drag also erases |
+| Straight line / filled rectangle / outline | L / R / O, then drag |
+| Select a rectangle | S, then drag |
+| Capture exact selected native materials | Ctrl+C |
+| Paste the captured stamp | Ctrl+V or V, position preview, click or drag and release |
+| Four-connected fill | G, then click; a containing selection defines the capture bounds |
+| Brush radius 0–24 | Existing radius field; `[` / `]` |
+| Undo / redo | Ctrl+Z / Ctrl+Y or Ctrl+Shift+Z |
+| Save named authored start | Ctrl+S or Save start |
+| Cancel preview / stop native operation | Escape or Cancel |
 
-The user-visible gap is **multi-cell drag authoring as one bounded operation**:
-straight lines, filled rectangles and outlines, eventually reusable selections,
-copy/stamps and safe authored undo/redo. One-off rectangle footprints already
-exist; this work is not another single-stamp implementation.
+Tool keys apply to paused painting and respect focused text fields. Existing
+playing/actor controls retain their input paths. Pan and zoom use the existing
+host mapping: aspect-fit local coordinates plus the floored camera origin. A
+camera-button press cancels an unfinished gesture. Leaving the canvas or Escape
+cancels without committing. There is no second viewport or simulation controller.
 
-## Current isolated implementation (A: shape planning)
+The overlay shows selection, canonical brush/line/rectangle footprints and
+multi-material paste, including Empty. Up to 16,384 preview cells/spans are shown
+exactly; larger previews explicitly show bounds. A copied selection can be pasted
+repeatedly during the session. There is no disk-backed stamp library yet.
 
-`res://scripts/workbench_paint_editor_shapes.gd` exposes:
+## Ownership and native execution
 
-- `line(from_cell, to_cell, radius, extent)`: Bresenham integer centreline
-  unioned with a matching native integer-radius disc lattice; one-cell radius
-  zero is supported.
-- `rectangle(from_cell, to_cell, filled, extent)`: inclusive bounds,
-  drag-direction independent; outlines walk only the perimeter, never the
-  whole filled area.
-- Successful results include `accepted`, `cells: PackedInt32Array`
-  interleaved `x,y`, `count` and an explicit `clipped` flag. IDs are row-major
-  sorted, no duplicates, no out-of-world emission, 4096-cell absolute cap.
-  Invalid endpoints/radii/extents or oversized shapes refuse **without a partial
-  plan**. Accepted extents are 512–2048, multiple of 64, matching Setup-v2.
-  Clipped line *radii* are labelled; endpoints themselves must be inside.
+PAINT owns `workbench_paint_editor_{shapes,controller,overlay,executor,history}.gd`
+and its tests. The coordinated shared integration adds a small mount/input seam
+to `shared_workbench.gd` and a bounded operation seam to `simulation_worker.gd`.
+The existing worker remains the only live native World owner. Planning uses a
+separate value-only GDScript thread; that thread never accesses the World.
 
-**8 November directional-raster correction (Draft, not runtime admitted):**
-The original Bresenham traversal was reverse-sensitive on half-pixel slope ties:
-for example, (760,90) → (761,92) selected (761,91), while its reverse
-selected (760,91). Paint strokes therefore changed a cell based solely on
-the drag direction. The line planner now orders endpoints lexicographically
-before rasterization and unions the same discs in either direction; it does
-not reorder the authoritative native mutations beyond the existing row-major
-plan. The GDScript regression checks both directions at radius 0 and 2 for
-horizontal, vertical, mixed-sign and asymmetric slopes, plus the exact
-midpoint-tie result. An independent Python mirror exhaustively compared 961
-endpoint offsets (Δx,Δy each -15…15): **280/961** old radius-zero masks
-differed between directions, **0/3,844** canonicalized comparisons differed
-over radii 0,1,2,4. This is a static algorithm discriminator, not a Godot,
-native, CI or mounted-editor PASS. The actual GDScript/native regression
-remains unexecuted until a source-matched Godot runtime is available.
+The lifecycle and consumed-receipt pattern were reviewed against agent-art #560
+at `293dde66efbf5451dacb117080713cca2ac97449`. No provider/controller architecture,
+agent branch or agent-only Empty/Hard Wall policy is imported. Human material
+admission comes from the loaded native bridge's `inspect_interaction` authority.
+At this source identity it admits 131 IDs: 0–131 excluding reserved slot 10.
+MAT-AUTH definitions, material IDs, native physics and Rapier behaviour are unchanged.
 
-This module does **not** own a World or a UI control. A geometry PASS is neither
-a worker admission nor a material readback. The dedicated GDScript test:
-`godot --headless --path godot --script res://tests/test_paint_editor_shapes.gd`
-checks bounds/caps/reversed corners and passes the accepted line and rectangle
-plans to the **existing** `CyberSimulationWorker.queue_emit_cells`. It waits for
-an actual worker snapshot, joins the owner and reads every submitted cell back
-through the native World, including an untouched outline interior. Run against
-source-built native + Godot on Linux and Windows; retained binaries must be
-identified, not silently mistaken for the tested source. The test has not yet
-been executed in this authoring environment; its result is **NOT RUN**.
+`paint_queue` accepts one bounded edit or capture. Admission reports `queued`,
+not success. An edit contains unique row-major integer x/y/material triples;
+a capture contains a bounded rectangle. There is one pending operation and one
+unconsumed result slot, not an unbounded chain of old brush commands. The
+legacy `queue_emit_cells` 4,096-cell/eight-command limit remains intact.
 
-## Bounded uniform-material stencils (Draft, not yet mounted)
+Every request carries generation, revision and tick. The worker rechecks those
+identities, pause, settings, current scenario tool permission, native bounds,
+material authority, protected source rectangles and optional caller source-ID
+policy. It preflights the entire operation before writing. Applying and capture
+advance in slices of at most 4,096 cells, with a 262,144-cell operation limit.
+Existing brush queue admission cannot interleave with these operations.
 
-`Shapes.stamp(source_cells, source_origin, destination_origin, extent)`
-translates an existing row-major or unordered interleaved `x,y` mask by one
-integer offset. The caller supplies the already selected **one material**;
-the source mask does **not** contain/copy original native material IDs.
-Translation is fully bounded to one 4096-cell native command, de-duplicates
-cells, rejects malformed/oversized source masks, and refuses the *entire*
-operation if the source or translated destination includes any off-canvas
-cell. No partial paste is returned. Successful plans retain row-major ordering
-and use the same existing worker queue; no second World or host authority is
-created.
+Native `material_at` supplies material identity. Because it reports body masks as
+Wall, every covered rigid-body cell is refused before capture or editing; admitted
+reads therefore equal stored material IDs. This also works beyond the diagnostic
+bridge's 1,024-coordinate limit. RG8 colour, Water dithering and ballistic overlays
+are never interpreted as stored IDs.
 
-This is an additive geometry primitive only. A practical material-preserving
-multi-material copy/paste requires a native-authoritative source readback,
-per-material grouping and **atomic ACK across all groups** (the worker only
-admits eight separate queued requests, which cannot substitute for that).
-Until the Integration owner admits that transaction and real edit receipts,
-expose the primitive only as a uniform-material stencil preview/plan; do not
-claim complete copy/paste, undo/redo or persisted painting.
+Each written cell is read back. The immutable result reports operation ID,
+requested/applied counts, actual applied prefix, prior and resulting material IDs,
+source identity and recovery possibility. Stop, source replacement, revision
+change or a native mismatch cannot become a false completed acknowledgement.
+A cancelled operation with writes reports `partial`; it is not an atomic rollback.
+The UI records a representable acknowledged prefix and offers Undo when its source
+is still valid. If that prefix exceeds persistence limits, Save and new authoring
+remain held until recovery or Restore start. A retained-World actor/settings
+change cannot clear that hold. Stopping recovery also keeps Save blocked.
 
-**Exact-head CI discrepancy diagnosed 8 November:** Documentation/provenance
-run [42482388310](https://github.com/techrote/cybersand/actions/runs/42482388310)
-executed actionlint and then failed `tools/ci/check_docs.py` with
-`Focused document has no corpus or explicit excluded entry:
-systems/paint-editor-bounded-shapes.md`. This is a real repository
-documentation gate failure, not transient download disruption. The required
-fix belongs to the separately owned `docs/reference/retrieval-corpus.json`
-source-registration seam, not PAINT-001's exclusive write set. The Integration
-owner must register this focused document (or a justified explicit exclusion)
-and re-run documentation plus retrieval checks; PAINT-001 must not silently
-edit someone else's registry or report Docs PASS.
+## Geometry, selection and bounded fill
 
+The original Bresenham/disc line, filled/outline rectangle, translation and
+four-neighbour fill planners remain canonical. Endpoint normalization preserves
+reverse-drag parity; output is unique row-major order. Shapes default to the
+original 4,096-cell limit for existing callers. An explicit bounded capacity allows
+the editor to plan up to 262,144 cells. A rejected operation returns no partial plan.
+Rectangles produce row-major output directly; freehand gestures are bounded by
+4,096 pointer samples and 16 million estimated lattice visits.
 
-## Bounded connected-material fill (Draft, pure planner only)
+Copy captures a quiescent native rectangle and records its World generation.
+Paste translates its immutable snapshot, preserving every material ID and Empty.
+Source/destination overlap is therefore safe. Any off-canvas destination,
+unsupported material or protected cell refuses the complete operation during
+preflight. World replacement invalidates the clipboard; ordinary edits do not
+rewrite a captured stamp.
 
-`Shapes.fill_connected(seed_cell, sample_origin, sample_size, sample_materials,
-extent)` builds a **four-neighbor** contiguous fill from a rectangular,
-row-major `PackedInt32Array` of **authoritative native stored-material IDs**,
-not presentation/render bytes. The sample must come from the current native
-World with a bound generation/revision identity. The host must verify those
-identities again before authorizing any operation; the pure planner does not
-fetch or prove the source, apply materials, or return a native ACK.
+Fill captures a 256×256 window by default. A containing selection may enlarge the
+sample to 262,144 cells. Four-connected membership compares exact material IDs.
+A component touching an unknown cropped edge is refused; the real World boundary
+is a valid stopping edge. There is no global scan of a 1,024² or 2,048² World.
+The maximum explicit sample is bounded even on a 512² World. Capture, planning
+and native application are separate, cancellable stages with identity checks.
 
-Preflight rejects invalid world/capture extents, missing IDs, values outside
-0–255, or samples larger than **65,536 cells**. BFS processes at most **4,096
-connected target cells**. A component that reaches a sample boundary not also
-at the real canvas edge is **refused**, not silently truncated: outside the
-capture the authoritative material may continue. A truly closed region that
-does not touch an unknown sample edge succeeds, returning one ordered,
-de-duplicated `PackedInt32Array` of at most 4096 world-space x,y pairs and
-`source_material_id`; capacity failures return no plan.
+## Undo and authored-start persistence
 
-The new GDScript algorithm controls exercise a 25-cell enclosed pocket,
-4096-cell exact admission, 4160-cell full refusal, unread sample-edge refusal,
-canvas-corner behavior, malformed/invalid native IDs and row-major order.
-These synthetic material fixtures test **planner behavior only**; they are
-not actual native readback and cannot authorize a fill. The pre-existing
-line/rectangle/stencil owner-worker test still requires a real source-bound
-Godot/native run (not available here). This is not yet a mounted user control.
+Only acknowledged edits enter history. One gesture is one history record,
+including all native chunks. Up to 32 records and 1,048,576 retained edit cells
+are kept, with exact native before/after IDs. Undo/redo preflights expected source
+IDs and uses the same native execution path. A simulation tick, another editor's
+revision or World replacement invalidates history. This is paused construction
+undo, not physics rewind or restoration of temperature/velocity state.
 
-**Source integration required:** the separate Workbench Integration owner must
-provide a **quiescent, generation/revision-fenced, authoritative native material
-sample** and the ordinary authorized cell-batch applied/refused receipt. It must
-not use visual Water dithering or an asynchronous, stale render payload as
-the fill's source. If the host cannot provide an adequately enclosed crop,
-it should visibly refuse/ask for a wider bounded sample, not permit a
-partial fill or mutate the source. No undo/history until ACKs and old material
-values are authoritative. Existing #531 agent protection and #542 generated
-map source identities must survive mounting.
+Before native writes, `workbench_paint_editor_history.gd` checks that the complete
+operation can be reconstructed through existing Setup-v2 or GEN-007 start formats.
+It coalesces exact material row runs into boxes, preserving Empty. Existing limits
+remain 4,096 authored stamps/native reconstruction runs and a 1 MiB saved envelope.
+Simple large rectangles fit efficiently. Highly fragmented pastes may explicitly
+refuse before any write. Ordinary blank starts may compact equivalent construction;
+generated starts retain their ordered overlays and original generator provenance.
+The narrow Setup material check uses compiled native authority for edit stamps,
+without broadening source-emitter policy or changing the format version.
 
+Save waits for native completion and records the start recipe. It does not snapshot
+an evolved simulation. Actors, selected instance, solver settings and generated-map
+identity retain the existing #542 contracts. Flatten / #548 remains separate.
 
+## Executed qualification
 
-## Integrator handoff — missing public host seam
+All runtime results below use official Godot **4.7.stable.official.5b4e0cb0f** and
+source-matched retained native libraries. The Linux CyberSand library SHA-256 is
+`46a9c61d3540cfecbe38f9301bd08a7b69efa4865115a7ecb5bea029a5452361`;
+all 87 fingerprinted native source inputs match its manifest. Rapier is 0.35.2.
+No new C++ build or Windows execution is claimed.
 
-Only the independent cross-lane Integration owner may edit/mount
-`shared_workbench.gd`, `main.gd`, `simulation_worker.gd` and cross-branch
-persistence. After #542 and #531 release their shared-workbench source, supply
-a narrow ordinary host operation (name provisional):
+| Regression | Actual result |
+| --- | --- |
+| Original canonical shape/native test after main reconciliation | 119 checks, zero failures |
+| Expanded geometry, caps and existing native worker path | 157 checks, zero failures |
+| Native execution, material capture, ordering, refusals, cancellation, source fences | 109 checks each with 1 and 4 native workers, zero failures |
+| Direct executor protections | 21 checks, zero failures |
+| Interrupted native recovery | 5 checks, zero failures |
+| Authored-history encoding and native reconstruction | 981 checks; fresh process 961 checks, zero failures |
+| Generated Workbench authoring | Headless 39; actual OpenGL 40 checks, zero failures |
+| Generated Workbench fresh-process reopen | Headless 19; actual OpenGL 20 checks, zero failures |
 
-`queue_workbench_paint_cells(cells, material_id, source_generation, expected_revision)`
+The mounted ordinary-Workbench script additionally exercises all tools, overlapping
+native multi-material paste, Undo/Redo, fill refusal, pan/zoom, Escape, a 4,416-cell
+Water rectangle, larger reusable stamp, simulation invalidation and fresh-process
+reopen. The final qualification record and logs accompany the PR; counts there
+include the final retained-World recovery regression.
 
-The operation must check authoring state, full coordinate/size bounds, material
-capability, active water/physical-owner and agent/protected scope, pause/focus,
-generation/revision fencing and shared native owner exclusivity. It must return
-a distinguishable **queued** response and an eventual **applied/refused** native
-result; *only the latter* may update an authored-start recipe. Do not expose raw
-`simulation_worker.queue_emit_cells` as an unrestricted model/editor API or
-retry an ambiguous already-applied mutation. Plan previews are invalidated on
-camera/source/world generation change; mapping from local pointer to world-space
-continues to use `main.gd`'s authoritative transform.
+Generated qualification creates a real 512² source through 64 native generation
+receipts, retains a real Midge and solver choices, records 20 edit stamps, exits,
+then loads in a separate process. The complete reconstructed stored-material digest
+is `1242e14d217c86835673aa13e9158fcb4605faef1c6fcb1e53b7be28268d868b`,
+matching the independently captured authored start. The original source digest
+`0acd772d421b04131dac13917883ca15e6a1fdce55cb028b93b5fbf49b7f17b4`
+is preserved. Continued editing after reopening is checked.
 
-Use existing Setup-v2 rectangle stamps only where their original material
-identity and reconstruction budgets are faithfully preserved. Erasure, Water
-and generated-start overlays must have exact acknowledged effects, not a guessed
-record. If acknowledgement or undo history cannot be made authoritative,
-explicitly disable that UI affordance.
+Representative native apply time for 65,536 cells was 0.52–0.53 s on 512², 1,024²
+and 2,048² Worlds; 262,144 cells took 2.13 s. Maximum measured worker slice was
+18.3 ms with one worker and 13.3 ms with four. Eight authoritative material captures
+matched between worker counts (combined witness
+`5a11f2271d53ed3634936619fa67d019d2413905708f0b28ccb61b7596ad8154`).
+These are paused-edit material comparisons, not full-physics determinism claims.
+A maximum rectangle plans in approximately 11–15 ms; the maximum bounded fill
+measured approximately 815 ms, which is why planning runs off the UI thread.
+Linux graphical evidence uses Mesa llvmpipe OpenGL 4.5; it is not Windows/GPU
+performance qualification or a manual usability sign-off.
 
-## Remaining work and acceptance
+## Reproduce and finish owner acceptance
 
-1. Run the exact GDScript/native test and correct any actual RED.
-2. Integrator admits the public host operation and scene mounting with
-   non-overlapping #531/#542 source ownership and interactive preview.
-3. Extend selection/stamps/bounded fill; benchmark 512²/1024²/2048² planning.
-4. Authoring-only undo/redo with captured old values, native ACK and safe
-   invalidation after ticks/revisions/agent edits.
-5. Exact generated-map and legacy setup save, close, reopen, compare material
-   IDs/Water/actors; independent Windows graphical feel acceptance.
+Use the pinned Godot and source-matched native assets, then import the project:
 
-**Evidence boundary (8 November 2026):** static source review and planned
-standalone actual-native regression. No local Godot binary, source-matched DLL
-or executable checkout is available in this task environment; no PASS is
-claimed. All usual production Native, Windows/Linux GDExtension/Godot,
-Documentation/provenance, source-admission, owner-human and merge gates remain
-unexecuted for this new candidate.
+```sh
+git lfs pull
+godot --headless --path godot --editor --quit
+godot --path godot -- --workbench
+```
 
+Focused scripts run with `godot --headless --path godot --script res://tests/NAME.gd`:
+`test_paint_editor_shapes`, `test_paint_editor_native`, `test_paint_editor_executor`,
+`test_paint_editor_recovery`, `test_paint_editor_history`,
+`test_paint_editor_workbench` and `test_paint_editor_generated_workbench`.
+For history's second process set `CYBERSAND_PAINT_HISTORY_REOPEN=1`; for ordinary
+Workbench use `PAINT_REOPEN=1`; for generated Workbench use
+`PAINT_GENERATED_REOPEN=1`. Keep the same user-data location for each pair.
+`PAINT_CAPTURE_DIR` enables actual framebuffer evidence in a graphical run.
 
-## Material-aware paste staging (PAINT-001 fifth increment; Draft only)
+Owner acceptance should draw a line and both rectangle types, change materials,
+copy a Water/solid/Empty structure, overlap-paste it, Undo/Redo, fill a closed pocket,
+then save/exit/reopen both blank and generated starts. Exercise pan/zoom and Stop.
+Run this on Windows with the pinned 4.7 runtime before promoting the Draft.
+Further priorities are Windows graphical feel/latency, coordination of the generic
+worker seam with agent-art #560, and larger fragmented-stamp persistence plus a
+reusable on-disk stamp library. None requires adopting Flatten semantics.
 
-Shapes.stamp_materials(source_cells, source_materials, source_origin,
-destination_origin, extent) takes interleaved integer x/y coordinates and
-**one corresponding authoritative native material ID per source cell**, in
-matching order. The caller must first capture a quiescent, generation- and
-revision-fenced native material snapshot; neither screenshot/dithering
-readback nor an unversioned observation is sufficient. The planner cannot
-establish that source identity itself. It is a **staging/preview primitive**,
-not an authoritative paste API and not a user-mounted editor control.
+## Preserved failure history and integration boundary
 
-The planner refuses missing/misaligned source IDs, IDs not admitted by the accepted native material enum (0–131, except reserved slot 10),
-source/destination out-of-bounds, conflicting IDs for repeated source coordinates, and more than 4096 source points. Identical
-coordinate/ID duplicates are coalesced. The entire operation refuses if
-any destination leaves the canvas: no clipping or partial paste. It returns
-a deterministic row-major union of destination points and deterministic
-per-material groups, sorted by numeric material ID; material **0 (Empty) is
-retained** for a future authorized erase operation, not silently discarded.
-A successful geometry plan marks staging_only=true,
-atomic_commit_required=true, and applied=false.
+The original 8 November documentation run
+[42482388310](https://github.com/techrote/cybersand/actions/runs/42482388310)
+failed because this focused document lacked corpus registration. The 11 November
+candidate changes its unsupported `document-kind: system` to `design` and consumes
+the existing #550 registration delta unchanged from
+`9e4a25596e4c810d037ffb5f54f9bd98c108e7eb`. It does not independently redesign the
+Integration-owned retrieval manifest.
 
-**Safety boundary:** the current CyberSimulationWorker.queue_emit_cells
-only admits independent bounded brush commands, with no cross-group
-atomic commit or source-revision fence. The Integration owner must **never**
-loop over the returned groups and queue them individually: a capacity
-refusal, Stop, World swap, concurrent agent edit or partial native apply
-would leave an inconsistent map. An all-or-refused, material-preserving
-transaction with native *applied* acknowledgment, protected-cell checks and
-generation/revision fencing is required before any multi-material paste
-or authoring-history entry may become user-operable. Source may contain
-multiple materials; none are changed by this planner.
-
-Dedicated GDScript regression now tests Empty/other material grouping,
-row-major determinism, zero applied claims, repeated identical and
-conflicting cells, incomplete/native-invalid ID vectors, off-canvas
-destination and 4097-cell refusal. It retains its existing real
-native-owner test for the **five uniform-material plans** only; this
-new staging primitive deliberately makes **zero native submissions**.
-The actual GDScript/native run remains unexecuted in this environment;
-do not confuse tests added to source with passing runtime evidence.
-The outstanding Docs failure remains the Integration-owned
-docs/reference/retrieval-corpus.json registration for this focused file.
-
-
-**Accepted-source material identity (8 Nov 2026):** Native
-`native/include/cybersand/material.hpp` enumerates Material::Empty=0 through
-Material::HeatShieldTile=131; slot 10 is reserved and invalid. Both
-`fill_connected` and `stamp_materials` now refuse any source material ID
-outside 0–131 or equal to 10, even if the invalid value lies outside the
-selected connected region. This is a rejection-only compatibility constraint,
-not a second material catalogue or permission to paint arbitrary IDs; the
-Integration host must still check allowed material capabilities, protection,
-source-generation identity and actual native applied receipt. Update and
-requalify this compatibility bound when MAT-AUTH adopts additional IDs.
-These are source/test changes, not successful actual-native execution.
+The original static Python reverse-drag mirror was useful but not execution proof.
+The original GDScript regression now genuinely passes. Initial development logs
+are retained for the accidentally selected Godot 4.6 runtime, missing toolbar
+parenting, stale test helper names, capture conversion and JSON integer/float test
+comparisons. They are superseded only by identified corrected runs. Draft-skipped
+hosted native jobs are not passes. Windows, owner-human acceptance and merge
+remain outstanding; this document does not authorize promotion or merging.

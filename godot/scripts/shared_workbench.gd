@@ -2,6 +2,7 @@ extends VBoxContainer
 
 const Setup = preload("res://scripts/workbench_setup.gd")
 const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
+const PaintEditor = preload("res://scripts/workbench_paint_editor_controller.gd")
 const Fleet = Setup.Fleet
 const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
 const ZOOMS := [Vector2i(240,135),Vector2i(480,270),Vector2i(960,540)]
@@ -54,6 +55,7 @@ var _runtime_label := ""
 var _processor_label := ""
 # WCX/BW-001 experimental Water spray controls (separate owner script).
 var water_spray := preload("res://scripts/workbench_water_spray_panel.gd").new()
+var paint_editor: Control
 
 func _row(parent: Control) -> HFlowContainer:
 	var row := HFlowContainer.new()
@@ -139,10 +141,14 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Replace with model",replace_selected)
 	_button(row,"Remove",remove_selected)
 	_picker(row,_material,Setup.MATERIAL_NAMES,func(i: int) -> void:
-		if not applied.is_empty(): applied.material = Setup.MATERIALS[i])
-	_spin(row,"Brush",_brush,2,24,1,8)
+		if paint_editor != null:
+			var id: int = _material.get_item_id(i)
+			paint_editor.select_material(id)
+			if not applied.is_empty() and id in Setup.MATERIALS: applied.material = id
+		elif not applied.is_empty(): applied.material = Setup.MATERIALS[i])
+	_spin(row,"Radius",_brush,2,24,1,8)
 	_brush.value_changed.connect(func(value: float) -> void:
-		if not applied.is_empty(): applied.brush = int(value))
+		if not applied.is_empty(): applied.brush = maxi(2,int(value)))
 	_button(row,"Source at X/Y",func() -> void: place_source(Vector2i(entered_position())))
 	_button(row,"Burst [B]",burst)
 	_stream.text = "Stream ≤600 ticks"
@@ -181,10 +187,23 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_name.custom_minimum_size.x = 150
 	_name.focus_entered.connect(_cancel)
 	row.add_child(_name)
-	_button(row,"Save named start",save_setup)
-	_button(row,"Load start",load_setup)
+	var save_start_button := _button(row,"Save start [Ctrl+S]",save_setup)
+	var load_start_button := _button(row,"Load start",load_setup)
 	add_child(_generated_dialog)
 	_generated_dialog.mount(self)
+	paint_editor = PaintEditor.new()
+	add_child(paint_editor)
+	move_child(paint_editor,2)
+	paint_editor.mount(self)
+	_name.reparent(paint_editor)
+	_name.tooltip_text = "Name of the authored starting map; Save does not capture evolved simulation."
+	save_start_button.reparent(paint_editor)
+	load_start_button.reparent(paint_editor)
+	_material.clear()
+	for material_id: int in host.simulation_worker.paint_materials():
+		_material.add_item("%s · %d" % [host.material_name(material_id).capitalize(),material_id],material_id)
+	_brush.min_value = 0
+	_brush.tooltip_text = "Radius in cells. Zero paints one cell; [ and ] adjust width."
 	_liquids = host.playable_session_panel.policy_editor
 	_liquids.reparent(_details)
 	_liquids.use_one_shot_normalization()
@@ -249,7 +268,8 @@ func refuse(reason: String) -> bool:
 	return false
 
 func busy() -> bool:
-	return not host.pending_microscenario_apply.is_empty() or step_pending or host.simulation_worker.has_failed()
+	return not host.pending_microscenario_apply.is_empty() or step_pending or host.simulation_worker.has_failed() \
+		or (paint_editor != null and paint_editor.busy())
 
 func _editable() -> bool:
 	if busy() or applied.is_empty():
@@ -262,6 +282,8 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		convert_liquid_inventory: bool = false, resume_play: bool = false,
 		generated_packet: Dictionary = {}) -> bool:
 	if busy(): return refuse("Wait for the current owner transaction.")
+	if preserve and paint_editor != null and paint_editor.recovery_required():
+		return refuse("Undo the partial paint edit or Restore start before retaining the live World.")
 	if preserve:
 		if applied.is_empty(): return refuse("No installed session to retain.")
 		# A retained request can change ownership/settings, never substitute a
@@ -362,7 +384,7 @@ func installed(candidate: Dictionary) -> void:
 	_extent[0].value = size.x
 	_extent[1].value = size.y
 	for axis: int in 2: _position[axis].max_value = size[axis]-1
-	_material.select(Setup.MATERIALS.find(int(applied.material)))
+	if paint_editor == null: _material.select(Setup.MATERIALS.find(int(applied.material)))
 	_brush.set_value_no_signal(applied.brush)
 	_requested_response = applied.response
 	_response.select(Setup.RESPONSES.find(_requested_response))
@@ -395,6 +417,10 @@ func installed(candidate: Dictionary) -> void:
 			"Choose a flyer to pilot, or use Place model to add an independent body.")
 	var receipt: Dictionary = host.tower_context.get("liquid_construction_receipt",{}).get("workbench_conversion",{})
 	message += _inventory_report(receipt,rounded_on_apply)
+	if paint_editor != null:
+		paint_editor.installed()
+		paint_editor.select_material(int(applied.material))
+		_material.select(_material.get_item_index(int(applied.material)))
 
 
 func _material_counts(counts: Dictionary) -> String:
@@ -638,6 +664,7 @@ func apply_liquids() -> bool:
 	return true
 
 func save_setup() -> bool:
+	if paint_editor != null and not paint_editor.save_allowed(): return false
 	if not _editable(): return false
 	var error := (GeneratedMaps.write_named(_name.text,applied,_generated_active)
 		if not _generated_active.is_empty() else Setup.write_named(_name.text,applied))
@@ -669,6 +696,7 @@ func _cancel() -> void:
 	if host != null: host.cancel_playable_course_input()
 
 func cancel_stroke() -> void:
+	if paint_editor != null: paint_editor.cancel_preview()
 	_drag_button = 0
 	_pan = false
 	_last_cell = Vector2i(-1,-1)
@@ -720,11 +748,12 @@ func paint(pos: Vector2i, material: int) -> bool:
 
 func place_source(pos: Vector2i) -> bool:
 	if applied.is_empty() or busy(): return refuse("Wait for the session.")
+	var selected_material: int = paint_editor.material_id if paint_editor != null else int(applied.material)
 	var next := applied.duplicate(true)
-	next.source = [pos.x,pos.y,int(applied.material)]
+	next.source = [pos.x,pos.y,selected_material]
 	var error := Setup.validate(next)
 	if not error.is_empty(): return refuse(error)
-	if not host.workbench_source(pos,int(applied.material),"configure"): return refuse("Worker refused source.")
+	if not host.workbench_source(pos,selected_material,"configure"): return refuse("Worker refused source.")
 	applied.source = next.source
 	_stream.set_pressed_no_signal(false)
 	return true
@@ -768,6 +797,9 @@ func zoom_by(direction: int) -> void:
 	_set_view(centre-Vector2(ZOOMS[_zoom])*0.5,ZOOMS[_zoom])
 
 func _input(event: InputEvent) -> void:
+	if paint_editor != null and paint_editor.key_input(event):
+		get_viewport().set_input_as_handled()
+		return
 	if host == null or applied.is_empty() or busy(): return
 	var focus := get_viewport().gui_get_focus_owner()
 	if focus is LineEdit or focus is TextEdit: return
@@ -805,6 +837,7 @@ func _pick(pos: Vector2i) -> void:
 	select_instance(0)
 
 func _world_input(event: InputEvent) -> void:
+	if not applied.is_empty() and paint_editor != null and paint_editor.world_input(event): return
 	if applied.is_empty() or busy(): return
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_MIDDLE:
@@ -844,6 +877,7 @@ func _world_input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 	if host == null: return
+	if paint_editor != null and host.brush_preview != null: host.brush_preview.hide()
 	if step_pending:
 		if host.simulation_worker.has_failed() or not str(host.tower_context.get("workbench_refusal","")).is_empty():
 			step_requested = false

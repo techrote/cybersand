@@ -48,8 +48,11 @@ func author() -> void:
 	panel._fields.budget.value = 40
 	if not check(panel.apply_settings(),"apply independent settings"): return
 	if not await until(installed,"settings installed"): return
-	panel._material.select(1)
-	panel.applied.material = 14
+	# The mounted editor uses native material IDs in the expanded picker. Use
+	# its real selection signal so the editor and persisted choice agree.
+	var dust_index: int = panel._material.get_item_index(14)
+	panel._material.select(dust_index)
+	panel._material.item_selected.emit(dust_index)
 	check(panel.place_source(DISTANT+Vector2i(25,-30)),"distant Dust source")
 	var original: Dictionary = panel.applied.duplicate(true)
 	var invalid := original.duplicate(true)
