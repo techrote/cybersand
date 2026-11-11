@@ -1,7 +1,7 @@
 ---
 title: PAINT-001 bounded shape planner and integration seam
 status: Planned
-document-kind: system
+document-kind: design
 scope: New isolated editor geometry modules at PAINT-001 Draft; ordinary workbench mounting and native-ACKed authored persistence remain Planned
 canonical-for: []
 last-reviewed: 2026-11-08

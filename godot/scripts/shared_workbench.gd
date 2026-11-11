@@ -1,10 +1,17 @@
 extends VBoxContainer
 
 const Setup = preload("res://scripts/workbench_setup.gd")
+const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
 const Fleet = Setup.Fleet
 const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
 const ZOOMS := [Vector2i(240,135),Vector2i(480,270),Vector2i(960,540)]
 const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place source"]
+var _generated_dialog := preload("res://scripts/workbench_generator_dialog.gd").new()
+# These copied bytes are only a reconstructible authored starting baseline.
+# The sole live World remains owned by the existing native simulation worker.
+var _generated_active: Dictionary = {}
+var _pending_generated: Dictionary = {}
+var _pending_retain_generated := false
 var host: Control
 var applied: Dictionary = {}
 var pilot_slot := -1
@@ -112,6 +119,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Reset selected [R]",reset_selected)
 	_button(row,"Restore start",restore_start)
 	_button(row,"New blank",new_canvas)
+	_button(row,"New from generator…",func() -> void: _generated_dialog.open_new())
 	_picker(row,_camera,["Free camera","Follow selected","Overview"],func(i: int) -> void: set_camera(i))
 	_button(row,"−",func() -> void: zoom_by(1))
 	_button(row,"+",func() -> void: zoom_by(-1))
@@ -175,6 +183,8 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	row.add_child(_name)
 	_button(row,"Save named start",save_setup)
 	_button(row,"Load start",load_setup)
+	add_child(_generated_dialog)
+	_generated_dialog.mount(self)
 	_liquids = host.playable_session_panel.policy_editor
 	_liquids.reparent(_details)
 	_liquids.use_one_shot_normalization()
@@ -249,7 +259,8 @@ func _editable() -> bool:
 # On edits, build other actors at their actual positions while leaving the
 # saved spawn recipe intact. A deliberate restore/load uses saved spawns.
 func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
-		convert_liquid_inventory: bool = false, resume_play: bool = false) -> bool:
+		convert_liquid_inventory: bool = false, resume_play: bool = false,
+		generated_packet: Dictionary = {}) -> bool:
 	if busy(): return refuse("Wait for the current owner transaction.")
 	if preserve:
 		if applied.is_empty(): return refuse("No installed session to retain.")
@@ -259,8 +270,19 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		candidate.edits = applied.edits
 	var error := Setup.validate(candidate,not preserve)
 	if not error.is_empty(): return refuse(error)
+	if preserve and not generated_packet.is_empty():
+		return refuse("Cannot import generated cells while preserving a live session.")
+	var generation := {}
+	if not generated_packet.is_empty():
+		var meta := GeneratedMaps.provenance(generated_packet)
+		error = GeneratedMaps.valid_provenance(meta,Setup.extent_of(candidate))
+		if not error.is_empty(): return refuse(error)
+		if not generated_packet.get("cells") is PackedByteArray or \
+				GeneratedMaps.digest(generated_packet.cells) != meta.sha256:
+			return refuse("Generated material bytes changed after preview.")
+		generation = GeneratedMaps.native_packet(meta,generated_packet.cells,candidate.edits)
 	var runs := []
-	if not preserve:
+	if not preserve and generation.is_empty():
 		var recipe := Setup.rectangles(candidate)
 		if recipe.has("error"): return refuse(recipe.error)
 		runs = recipe.runs
@@ -280,9 +302,22 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		_saved_view.clear()
 	_cancel()
 	var ok: bool = host.workbench_apply(candidate,definitions,runs,Setup.extent_of(candidate),
-		PackedInt32Array(candidate.liquid_policy),candidate.normalize,int(candidate.rule_radius),str(candidate.response),preserve,convert_liquid_inventory,resume_play)
+		PackedInt32Array(candidate.liquid_policy),candidate.normalize,int(candidate.rule_radius),
+		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation)
 	if not ok: return refuse(host.microscenario_error)
+	_pending_generated = generated_packet.duplicate(true)
+	_pending_retain_generated = preserve
 	_pending_request_serial = int(host.pending_microscenario_apply.serial)
+	return true
+
+func install_generated_start(candidate: Dictionary, packet: Dictionary) -> bool:
+	if busy(): return refuse("Wait for the current native-owner transaction.")
+	if packet.is_empty() or not _generated_dialog.attests(packet):
+		return refuse("Generated map is not the current verified native preview; regenerate first.")
+	# Explicit dialog confirmation is the only replacement path. No partial
+	# native writes occur before the owner's acknowledged prepared commit.
+	if not apply(candidate,false,0,false,false,packet): return false
+	message = "Installing verified GEN-007 terrain…"
 	return true
 
 func new_canvas() -> bool:
@@ -295,6 +330,10 @@ func new_canvas() -> bool:
 
 func installed(candidate: Dictionary) -> void:
 	_pending_request_serial = 0
+	if not _pending_retain_generated:
+		_generated_active = _pending_generated.duplicate(true)
+	_pending_generated.clear()
+	_pending_retain_generated = false
 	applied = candidate.duplicate(true)
 	var roster_choice := _model.selected
 	_model.clear()
@@ -351,7 +390,9 @@ func installed(candidate: Dictionary) -> void:
 		_liquid_action = false
 		message = "Liquid settings applied."
 	else:
-		message = "Choose a flyer to pilot, or use Place model to add an independent body."
+		message = ("Generated native terrain installed. Place a flyer to explore; save the authored start when ready."
+			if not _generated_active.is_empty() else
+			"Choose a flyer to pilot, or use Place model to add an independent body.")
 	var receipt: Dictionary = host.tower_context.get("liquid_construction_receipt",{}).get("workbench_conversion",{})
 	message += _inventory_report(receipt,rounded_on_apply)
 
@@ -547,8 +588,11 @@ func reset_selected() -> bool:
 
 func restore_start() -> bool:
 	if applied.is_empty(): return refuse("No starting setup is installed.")
-	if host.simulation_worker.has_failed(): return host.workbench_restart(applied)
-	return apply(applied)
+	if host.simulation_worker.has_failed():
+		if not _generated_active.is_empty():
+			return refuse("Native owner failed. Restart the application and load the saved generated start.")
+		return host.workbench_restart(applied)
+	return apply(applied,false,0,false,false,_generated_active)
 
 func apply_settings() -> bool:
 	if not _editable(): return false
@@ -595,13 +639,20 @@ func apply_liquids() -> bool:
 
 func save_setup() -> bool:
 	if not _editable(): return false
-	var error := Setup.write_named(_name.text,applied)
+	var error := (GeneratedMaps.write_named(_name.text,applied,_generated_active)
+		if not _generated_active.is_empty() else Setup.write_named(_name.text,applied))
 	if not error.is_empty(): return refuse(error)
-	message = "Saved starting setup · " + _name.text
+	message = ("Saved generated starting map · " if not _generated_active.is_empty()
+		else "Saved starting setup · ") + _name.text
 	return true
 
 func load_setup() -> bool:
 	if not host.simulation_worker.has_failed() and not _editable(): return false
+	var generated := GeneratedMaps.read_named(_name.text)
+	if generated.has("error"): return refuse(generated.error)
+	if generated.get("generated",false):
+		_generated_dialog.open_saved(generated.setup,generated.generation)
+		return true
 	var result := Setup.read_named(_name.text)
 	# Until the owner saves their own file of the name, "my-canvas" opens the
 	# built-in water evaluation start, "bench-canvas" the whole-engine
@@ -645,7 +696,9 @@ func paint(pos: Vector2i, material: int) -> bool:
 	if material not in Setup.MATERIALS or not Rect2i(Vector2i.ZERO,Setup.extent_of(applied)).has_point(pos): return false
 	var stamp := [pos.x,pos.y,int(applied.brush),material]
 	var new_stamp: bool = applied.edits.is_empty() or applied.edits.back() != stamp
-	if new_stamp and applied.edits.size() >= Setup.MAX_STAMPS:
+	if new_stamp and not _generated_active.is_empty() and applied.edits.size() >= Setup.MAX_STAMPS:
+		return refuse("Generated-map starting edit budget exhausted; save and consolidate in a later format.")
+	if new_stamp and _generated_active.is_empty() and applied.edits.size() >= Setup.MAX_STAMPS:
 		# Compact the recorded history into the same cells' merged rectangles.
 		var compacted := Setup.compact_edits(applied)
 		if compacted.has("error"): return refuse(compacted.error)
@@ -656,7 +709,7 @@ func paint(pos: Vector2i, material: int) -> bool:
 	# the maximum possible row count would exceed the reconstruction budget.
 	var runs := 2*int(applied.brush)+1
 	for old: Array in applied.edits: runs += Setup.stamp_rows(old)
-	if new_stamp and runs > Setup.MAX_RUNS:
+	if _generated_active.is_empty() and new_stamp and runs > Setup.MAX_RUNS:
 		applied.edits.append(stamp)
 		var recipe := Setup.rectangles(applied)
 		applied.edits.pop_back()
@@ -800,6 +853,8 @@ func _process(_delta: float) -> void:
 			step_pending = false
 	if _pending_request_serial > 0 and host.pending_microscenario_apply.is_empty():
 		_pending_request_serial = 0
+		_pending_generated.clear()
+		_pending_retain_generated = false
 		_actor_action = ""
 		_liquid_action = false
 		_saved_view.clear()
