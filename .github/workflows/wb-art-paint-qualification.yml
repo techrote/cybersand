@@ -16,7 +16,7 @@ permissions:
   actions: read
 concurrency:
   group: wb-art-paint-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 env:
   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
@@ -64,6 +64,7 @@ jobs:
           git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
           test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
       - name: Compile and stage real source-matched native GDExtension
+        id: native_runtime
         env:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
           SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
@@ -86,6 +87,7 @@ jobs:
           cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
           bash tools/check_linux_runtime_floor.sh > evidence/abi-floor.log 2>&1
       - name: Install and import Godot 4.7 with source-matched native and Rapier
+        id: godot_runtime
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/godot-explore"
@@ -117,6 +119,9 @@ jobs:
             --package "$RUNNER_TEMP/wb-art-paint-package" --scratch "$RUNNER_TEMP/wb-art-paint-installed" \
             --evidence evidence/installed "${combined[@]}"
       - name: Execute accepted agent regressions and integrated PAINT suites
+        # Keep independent regression evidence when installed validation fails.
+        # A prior failure still fails this job and prevents candidate publication.
+        if: ${{ !cancelled() && steps.native_runtime.outcome == 'success' && steps.godot_runtime.outcome == 'success' }}
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
           LP_NUM_THREADS: '2'
@@ -224,6 +229,7 @@ jobs:
           name: wb-art-paint-win-runtime-${{ github.run_id }}
           path: build/wb-art-paint-windows
       - name: Install exact-source extension and pinned Rapier
+        id: native_runtime
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force evidence | Out-Null
@@ -244,6 +250,7 @@ jobs:
           $rapier = 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
           if ((Get-FileHash $rapier -Algorithm SHA256).Hash.ToLowerInvariant() -ne $env:RAPIER_WINDOWS_SHA256) { throw 'Pinned Rapier DLL mismatch' }
       - name: Fetch and authenticate official pinned Godot Windows 4.7
+        id: godot_runtime
         shell: pwsh
         run: |
           $url = 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
@@ -283,6 +290,7 @@ jobs:
           python tools/ci/run_workbench_qualification.py installed --godot $packagedEngine --package $candidate --scratch $validation --evidence evidence/installed @combined
           if ($LASTEXITCODE -ne 0) { throw 'Installed Windows graphical qualification failed' }
       - name: Execute accepted agent regressions and integrated PAINT suites on the same DLL
+        if: ${{ !cancelled() && steps.native_runtime.outcome == 'success' && steps.godot_runtime.outcome == 'success' }}
         shell: pwsh
         run: |
           $paint = @()
@@ -290,6 +298,7 @@ jobs:
           python tools/ci/run_workbench_qualification.py regressions --godot $env:GODOT_EXE --project godot --evidence evidence/regressions @paint
           if ($LASTEXITCODE -ne 0) { throw 'Source-matched Windows authoring regression failed' }
       - name: Retain qualified standalone Windows owner candidate
+        if: success()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: wb-art-paint-windows-desktop-${{ github.sha }}
