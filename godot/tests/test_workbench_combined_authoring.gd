@@ -33,6 +33,9 @@ var prepared_sha256 := ""
 var stopped_prefix := 0
 var source_identity: Dictionary = {}
 var started_usec := 0
+# Separate container invocations may reuse the same namespace-local PID.
+# This in-memory witness is never restored from the saved expectation.
+var process_instance := Crypto.new().generate_random_bytes(16).hex_encode()
 
 func _initialize() -> void:
 	started_usec = Time.get_ticks_usec()
@@ -215,7 +218,7 @@ func manual_tools() -> bool:
 	check(filled.size()==961 and filled[0]==58 and filled[32]==2 and filled[480]==2,"Fill preserves watertight boundary")
 	if not await gesture("Brush",Vector2i(184,44),Vector2i(184,44),28): return false
 	phases.manual = true
-	return reciprocal_lease_checks()
+	return await reciprocal_lease_checks()
 
 func agent_authoring() -> bool:
 	panel.popup_centered()
@@ -392,7 +395,7 @@ func author() -> void:
 	if not check(bench.save_setup(),"named generated start saves both confirmed editors"): return
 	var saved: Dictionary = Store.read_named(SAVE_NAME)
 	if not check(saved.get("generated",false) and saved.setup.edits==bench.applied.edits,"existing generated format contains exact common edit record"): return
-	var expectation := {"author_pid":OS.get_process_id(),"generation":saved.generation,"edits":saved.setup.edits,
+	var expectation := {"author_pid":OS.get_process_id(),"author_instance":process_instance,"generation":saved.generation,"edits":saved.setup.edits,
 		"actors":saved.setup.actors,"selected":saved.setup.selected,"liquid_policy":saved.setup.liquid_policy,
 		"response":saved.setup.response,"rule_radius":saved.setup.rule_radius,"brush":saved.setup.brush,
 		"prepared_sha256":prepared_sha256,"native_region":Marshalls.raw_to_base64(PackedByteArray(Array(actual))),
@@ -414,7 +417,8 @@ func reopen() -> void:
 	if not check(file!=null,"prior-process native expectation exists"): return
 	var expected: Variant = JSON.parse_string(file.get_as_text())
 	file.close()
-	if not check(expected is Dictionary and int(expected.author_pid)!=OS.get_process_id(),"reopen executes in a different Godot process"): return
+	if not check(expected is Dictionary and str(expected.get("author_instance","")).length()==32 \
+		and expected.author_instance!=process_instance,"reopen uses a fresh in-memory application instance"): return
 	var saved: Dictionary = Store.read_named(SAVE_NAME)
 	if not check(saved.get("generated",false),"fresh process reads existing generated-start format"): return
 	check(json_equivalent(saved.generation,expected.generation) and json_equivalent(saved.setup.edits,expected.edits),
