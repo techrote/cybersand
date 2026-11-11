@@ -367,3 +367,166 @@ threshold, compatibility lock or CI scheduling rule was altered to obtain a pass
 Production runtime publication, actual Windows execution/human acceptance,
 #353-B installation, new endpoint effects and #395's H1 gates remain separate.
 The PR stays Draft; broad #352–356 remain open.
+
+## Effects v2, World recipes and final review continuation
+
+The owner again requested review, repair and continued implementation, and
+explicitly excluded MoltenGlass H1. That exclusion supersedes the earlier
+next-step references above for this continuation; historical liveness evidence
+is preserved. This increment adds functional endpoint authoring and reusable
+compiled-World recipes without changing production physics or material identity.
+
+### Source and reconciliation
+
+| Identity | This continuation |
+|---|---|
+| Accepted main, fetched again before publication | `d4b18e7f06839b35c8f6a66195206da0f33c5fa3` |
+| Starting published Lab head | `55c25abf93328cc4d47f1a50941ee418c04d949a` |
+| Concurrent branch head preserved before publication | `ac218279cc6e43119d4be5cbeefa2607ac77ba4f` |
+| Published implementation | `6cc0b3213d9ac27ce0c1ef09161fb51a74aa7648` |
+| Equivalent local implementation | `65a9ea05d750441cd567280bf27a9fbf92624566` |
+| Identical implementation tree | `622fb32a75dd14344be3090b5417f7aebc6b7ab4` |
+| Final native executable-input digest, 93 files | `0edbf83c98bc5771f341372b9b67f14a0e626592be9954409ab1930db6ff0ae3` |
+
+The publication check found three concurrent commits: staged-relative Windows
+compiler arguments, the portable Godot class-cache synchronization and a
+Windows/GCC argument regression. All three remain ancestors of this increment.
+The relative-path fix and precompile stage checks were combined with the new
+adapter; both test additions were retained. No other worker's branch was changed.
+Native, sanitizer and UI qualification was repeated after reconciliation.
+
+Git Data publication verifies every uploaded blob and the complete tree, then
+uses an expected-head lease. The [publication map](materials-lab-v1/publication-tree-equivalence.json)
+records local/public equivalence. Native receipts bind captured working-file
+bytes; their informational Git HEAD alone is not the executable-input identity.
+The source-built Linux extension remains SHA256
+`5c0b84f8719c7c5165849d8f1993a0375db58c8a1fbdcfff4ffc730b6e458269`.
+After graphical qualification, the retained production library was restored.
+
+### Implemented authoring and review fixes
+
+The Reactions tab now admits explicit effects v2 through structured endpoint
+selectors. `keep_existing` preserves a non-Water participant's material, A, B
+and temperature. `set_state` writes only B for Metal charge and Combustible burn
+countdowns. Products must retain the participant's identity, with Ordered or
+Unordered role-preserving matching. Water retention/state writes, arbitrary
+registers, temperature setters, positional Symmetric effects and two keep-only
+endpoints are rejected. Effects v1 retains legacy replacement. Threshold
+probability remains inclusive `(T + 1) / 256`.
+
+The generated fixed-size effects table and pair-application adapter exist only
+in an external staged World. Target-before-source ordering, ordinary processed
+epochs, pair-event accounting and existing future-contact wake scheduling are
+retained. A processed retained cell does not initiate another source update in
+that tick; other sources can still select it as a target, as in production.
+The no-byte-change fixture demonstrates sleeping ticks, future pair events and
+zero reported movement. There is no unconditional keep-active workaround or
+per-cell allocation. Subsequent ordinary kernels can change retained state.
+The descriptor-only probe refuses extended effects instead of claiming execution.
+
+**Save World recipe…** and **Import World recipe…** store and restore the exact
+candidate, placement, partner, seed, duration and workers with source hashes and
+deterministic digests. Import grants only Validated candidate status. A saved
+case cannot use the optional compile API's implicit defaults: a rehashed
+`scenario: null`, missing fields and non-object recipes now fail without changing
+the existing file. Documentation-only commits do not invalidate equal executable
+inputs. Source drift requires explicit reconciliation.
+
+The review also repaired these concrete qualification defects:
+
+- Windows path keys used backslashes and could omit the native staging tree.
+  Source and manifest keys now use portable POSIX separators. This path-semantics
+  regression is not a claim of Windows execution.
+- Generated inputs, copied publication bytes and executed binaries are checked
+  against captured hashes. Added/changed staged inputs and post-execution binary
+  replacement cannot acquire a successful receipt.
+- A response could omit its candidate and qualify a different current draft.
+  The panel now captures the submitted normalized definition and computes its
+  own canonical SHA-256. Response definition, digest, backend, requested state
+  and native density/viscosity/kernel/RGBA must agree before promotion.
+- Import/export/validation responses cannot claim Compiled/tested. Malformed
+  results preserve the current draft, retire displayed evidence and release
+  controls. Godot/Python canonical parity includes Unicode whitespace, escaping,
+  reaction ordering and the `StringName` keys produced by state controls.
+
+### Native observations, presets and recipe round-trip
+
+The actual mounted Water3/Salt23 recipe used seed2, 120 ticks and four workers.
+Native Salt counts were **6,448 → 6,381** in the untouched reference and
+**6,448 → 6,448** in the retained-Salt candidate. Both builds passed fresh repeat,
+one/four-worker equality, persistence checkpoint/continuation and full quantity
+accounting. Native readback, rather than the images, establishes those results.
+
+Two importable fixtures execute under ASan/UBSan:
+
+| Preset | Deterministic candidate digest | Native endpoint evidence |
+|---|---|---|
+| [Retained Salt](../../materials/catalogue/fixtures/lab-salt-retain-world-v2.json) | `44e76a447145eab4b667a5d3ac37bee48efdd49433fc4c9201843e3ec454f104` | A173, B91 and temperature371 retained in both source orientations; the Water endpoint consumes its actual partial quantity83 |
+| [Metal charge](../../materials/catalogue/fixtures/lab-metal-charge-world-v2.json) | `ba732e00b75b2496fba18425d045201c68ff171e04b6617819d8deccab2b0928` | A173 and temperature371 retained, B set to73; native charge consumer reaches71 after four further ticks; same-build persistence passes |
+
+The named endpoint assertions require threshold255 and their declared fixture
+configuration. Other admitted edits report `not_applicable` for those additional
+assertions while still executing the primary authored World comparison. These
+receipts do not qualify arbitrary endpoint families or production installation.
+
+The mounted recipe round-trip deliberately uses different controls—Water3/Salt23,
+seed73, 37 ticks, four workers—to detect accidental defaults. Its case digest is
+`90dbf16934ec763253c3e72ce986d731bd8f9762ac067e7d42ae3bb2edff514f`;
+its candidate digest is
+`6bd22ab6f2372d6c10ec888bb63dcbcc2a81d554bb6484b71b2bb3b5234e6f8e`.
+The imported case is validated, not executed. It is separate from the displayed
+seed2/120-tick native result.
+
+Retained review artifacts:
+
+- [Actual 1680×1050 desktop PNG](../images/materials-lab-v1/08-kept-salt-world.png),
+  [display/source/library manifest](materials-lab-v1/effects-v2-capture-manifest.json)
+  and [displayed native receipt](materials-lab-v1/effects-v2-world-ui-receipt.json).
+- [Saved World recipe](materials-lab-v1/effects-v2-world-case.json),
+  [Salt sanitizer receipt](materials-lab-v1/effects-v2-salt-sanitizer-receipt.json)
+  and [Metal sanitizer receipt](materials-lab-v1/effects-v2-metal-sanitizer-receipt.json).
+- [Machine-readable qualification and local-log hashes](materials-lab-v1/effects-v2-qualification.json).
+
+### Executed final checks and remaining gates
+
+Linux, Python3.12.14, GCC14.2, pinned Godot4.7 and the source-matched development
+extension apply. The graphical run used X11 and Mesa llvmpipe; audio fell back to
+Dummy. No Windows or human acceptance is inferred.
+
+| Command / scope | Final result |
+|---|---|
+| `python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py' -v` | **202 passed**, 330.304s; includes all five actual effects-v2 and four legacy candidate/reference World cases |
+| `Godot --headless --path godot --script res://tests/test_material_lab_ui.gd` | **189 assertions passed**; actual Python/C++/native World and Shared Workbench |
+| Same UI test on X11 with `-- --capture-output=<directory>` | **196 assertions passed**; actual screenshot, native receipt and unchanged source/library hashes |
+| `test_material_lab_service.gd` | **87 checks passed**; actual process/protocol lifecycle |
+| `test_material_lab_world.gd -- --receipt-validation-only` | **145 checks passed**; retained native receipt/control adversaries, no new World execution in this mode |
+| Independent parent response-binding reproduction | **23 checks passed** with retained actual native evidence; no new native compilation |
+| `compile_world_test(import_candidate(preset), scenario=<receipt scenario>, sanitize=True)` | ASan+UBSan passed for both new presets, **71.561s / 72.124s**, including source-matched reference Worlds |
+| Compiler `--check`, compatibility `--check`, independent parity | Passed; immutable production guards retained; production cutover false |
+| Documentation / retained M11 | Passed; historical source hashes unchanged |
+| Frozen retrieval / challenge retrieval / Lab questions | **31/32 / 163/164 / 8/8** canonical top-five hits; MRR0.7318 / 0.8797 / 0.9167; seven Lab questions rank first |
+| `check_repository.py` | **Blocked** by the existing Windows/Linux runtime-provenance rebuild requirement for the initial `cyber_demo_bridge.hpp` inspector addition |
+
+Sanitizers use `ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1` and
+`UBSAN_OPTIONS=halt_on_error=1`; LeakSanitizer is not claimed. The previous full192
+production-native runs retain their original checkpoint. Production native
+sources, catalogue, lock and runtime binaries remain unchanged in this increment.
+Challenge hit coverage is unchanged; its MRR moved from the preceding checkpoint's
+0.8827 to0.8797. Frozen/challenge question bytes and evaluator thresholds were not changed.
+
+Development failures remain explicit: an early run correctly refused source
+changes; a duplicate test class initially hid three cases; threshold96 did not
+admit the deterministic endpoint fixture; specialised Acid corrosion preceded
+the original fixture's contact lane; a 40-tick bay had not yet contacted its
+partner; and one UI run exposed the interned-key normalization defect. The fixes
+use explicit fixture geometry and 120-tick recipes, restore all five native tests
+to discovery, and repair the JSON boundary. No production rule, compatibility
+lock or pass threshold was weakened. The pre-reconciliation201-test pass and two
+sanitizer passes remain earlier checkpoints; the202-test run and receipts linked
+above qualify the combined final source.
+
+Next priorities are source-matched retained-runtime publication and actual
+Windows graphical/human acceptance; a separately qualified #353-B authoritative
+consumer and identity transition; and wider explicit state/quantity contracts
+with owner-authoritative per-cell eligibility diagnostics. H1 is excluded.
+Draft status, no auto-merge and the broad open #352–356 issues are retained.

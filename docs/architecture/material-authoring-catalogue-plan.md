@@ -695,9 +695,11 @@ does not authorize Ready, merge or default promotion.
 Native read-only metadata is the inspector's authority. Candidate edits use the
 existing compiler and frozen source guards; generated definitions are exercised
 by an external native descriptor/pair-resolution probe and a bounded compiled
-World comparison. The latter copies native source externally, adapts only its
+World comparison. The latter copies native source externally, adapts its
 descriptor/pair tables and compares against a separately compiled untouched
-reference. Existing-material tests
+reference. The review continuation adds a bounded external pair-application
+adapter for explicit endpoint effects v2 and source-bound World recipe round-trips.
+Existing-material tests
 reuse the MicroScenario host and authoritative World readback. Draft, validated,
 compiled/tested and runtime-active states stay distinct; v1 has no production
 candidate installer. Identity slots, 56 production pairs, protected source,
@@ -705,18 +707,22 @@ quantity and saved-world semantics remain unchanged. Synthetic powder132 is an
 isolated non-hard fixture, with no production allocation or conflict with other
 branches' experimental identities.
 
-Explicit endpoint-effects v1 admits only legacy `replace_with_defaults`.
-`keep_existing`, state setting, new kernels and unsupported reaction slots remain
-rejected. The native probe reports state defaults and positional outcomes;
+Explicit endpoint-effects v1 retains legacy `replace_with_defaults`. The isolated
+World backend additionally admits effects v2 non-Water `keep_existing` and declared
+Metal/Combustible `state_b` updates with role-preserving matching. Water state/
+quantity effects, arbitrary registers, positional symmetric extended effects,
+new kernels and unsupported reaction slots remain rejected. The descriptor-only
+probe refuses extended effects rather than claiming it applied them. The native
+probe reports state defaults and positional outcomes;
 the separate World backend executes candidate movement, contacts, quantities,
 fresh repeats, one/four workers and same-build persistence. Those results qualify
 their exact default-policy fixture, not every authored material or host. Synthetic132,
 capability and visual-projection edits remain excluded from World execution.
 Production and cross-build saved-world compatibility are not inferred.
-#353-B requires a separate consumer/identity transition. H1 MoltenGlass correction
-already has Draft [#395](https://github.com/techrote/cybersand/pull/395), with
-sleeping-save migration and performance/source gates still open. This work does
-not compete with that owner or change mutual heating/generic yielding rest.
+#353-B requires a separate consumer/identity transition. On the 11 November
+review continuation the owner explicitly excluded MoltenGlass H1; it is not a
+Materials Lab delivery dependency. Historical investigation evidence remains
+unchanged, as do production thermal behavior and generic yielding rest.
 
 Current Workbench, agent-painting, liquid-equipment and ballistic-solids owners
 were rechecked before edits. The Lab adds a launcher/window seam and copied policy

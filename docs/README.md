@@ -14,7 +14,8 @@ Materials Lab v1 review candidate: [desktop launch, inspection, authoring and na
 [source/platform qualification](audits/2026-11-11-materials-lab-v1.md).
 The mounted interface consumes native read-only facts, compiles isolated presets
 and reuses MicroScenarios. Production material authority, IDs and saved-world
-semantics remain unchanged; #353-B and the separately owned #395 H1 repair remain open.
+semantics remain unchanged; #353-B remains separate. The owner excluded
+MoltenGlass H1 from this Materials Lab continuation.
 
 Shared authoring: [approved data contract and convergence plan](architecture/shared-workbench-authoring-data.md)
 separates Current generated-start saves from Planned material-only Flatten and

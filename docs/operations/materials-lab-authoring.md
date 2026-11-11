@@ -63,8 +63,12 @@ Python available. Select `cl` or its full executable path in the Candidate tab.
 An executable path alone cannot supply MSVC's missing SDK include/library
 environment. The Python default on Windows is `python`.
 
-```bat
-"C:\Tools\Godot\Godot_v4.7-stable_win64.exe" --path .\godot -- --materials-lab
+From **PowerShell inside the cloned repository**, resolve the checkout before
+launching. PowerShell requires `&` before a quoted executable path:
+
+```powershell
+$labCheckout = git rev-parse --show-toplevel
+& "C:\Tools\Godot\Godot_v4.7-stable_win64.exe" --path "$labCheckout\godot" -- --materials-lab
 ```
 
 The exact Windows execution status belongs to the dated qualification record.
@@ -95,8 +99,7 @@ Examples to check:
 - **Slush:** native density is 1080; the separately identified GDScript fallback
   has density 1100. Neither value is silently substituted for the other.
 - **MoltenGlass:** yielding movement and specialised thermal behaviour are shown
-  separately. The established isolated cooling/scheduling problem remains open;
-  the Lab does not claim to repair it.
+  separately, including the actual consumers and the admitted descriptor fields.
 - **Lava, Acid and Oil:** an ignored descriptor viscosity is labelled ineffective
   for the specialised kernel, and the candidate control is disabled.
 
@@ -125,7 +128,8 @@ encodings and rule slots remain fixed.
 | Descriptor viscosity | Editable only for generic YieldingLiquid, Cement and MoltenGlass templates; ineffective specialised-kernel edits are rejected |
 | Physical state, kernel, movement flags, density-motion mode, exchange permission, lateral-flow descriptor, initial state bytes and write radius | Held to the selected template; choose another template for a different admitted mechanism |
 | Existing sparse reaction slots owned by the template | Structured partners, products, match mode and inclusive probability threshold are editable; identity, slot and supported endpoint-effect semantics stay fixed |
-| New arbitrary production IDs, new kernels, unknown fields, state-setting/keep-existing effects, new pair-rule slots | Unsupported and rejected with a field path and explanation |
+| Explicit endpoint effects v2 | Non-Water `keep_existing`, or declared Metal/Combustible `state_b` updates, execute only in isolated compiled Worlds; see the reaction contract below |
+| New arbitrary production IDs, new kernels, unknown fields, Water retention/quantity effects, arbitrary state writes, new pair-rule slots | Unsupported and rejected with a field path and explanation |
 | Existing Water default/FreeMass/CellularYield selection in **Native test** | Applied through existing native admission to the isolated test World, with owner readback; does not reconfigure the shared running Workbench |
 | Empty 0 and reserved invalid 10 | Inspectable, not candidate templates |
 
@@ -196,8 +200,9 @@ This fixture does not reserve ID 132 against any other experimental branch.
 ## Compare an edited candidate in a real native World
 
 The **Candidate test** tab compiles the actual native `World` twice in temporary
-directories: once from untouched source, once with only the staged descriptor
-and sparse-rule tables adapted to compiler-generated definitions. The same
+directories: once from untouched source, once with staged descriptor and
+sparse-rule tables adapted to compiler-generated definitions. Extended endpoint
+effects additionally use a bounded external pair-application adapter. The same
 bounded bay, seed, placement and tick count run in both. Repository source,
 production binaries and the shared running World are not rewritten.
 
@@ -213,7 +218,7 @@ The reusable [low-density Sand preset](../../materials/catalogue/fixtures/lab-lo
 contains the exact density/RGBA candidate exercised by native acceptance.
 
 Supported World edits are existing-ID density, base RGBA, consumed descriptor
-viscosity and admitted legacy sparse-pair edits. Synthetic132, capability changes
+viscosity and admitted sparse-pair/effects edits. Synthetic132, capability changes
 and visual-state projection changes are refused with actionable paths; their
 descriptor compilation remains available. Kernels, identity and state contracts
 stay held to the chosen template. The test uses native default solver settings;
@@ -243,6 +248,16 @@ passed unchanged to `compile_world_test` through the existing JSON request CLI
 for reproduction. These test results qualify the stated fixture only; they do
 not establish cross-build saved-world compatibility or production activation.
 
+**Save World recipe…** stores the candidate, placement/partner, seed, ticks,
+workers and executable-source hashes in a versioned, digested JSON case.
+**Import World recipe…** restores the candidate and all visible controls together.
+Import validates the case but never restores a previous successful test claim:
+press **Compile + compare World** for a fresh result. Changed inputs, invalid
+IDs, malformed/duplicate fields and digest mismatches are refused. A
+documentation-only Git commit does not invalidate a recipe when all captured
+executable inputs are unchanged. A source mismatch requires explicit candidate
+reconciliation; it is not silently treated as the same experiment.
+
 Sources: [World compiler backend](../../tools/material_catalogue/world_candidate.py),
 [native probe](../../tools/material_catalogue/lab_world_probe.cpp),
 [comparison view](../../godot/scripts/material_lab_world_panel.gd).
@@ -253,8 +268,25 @@ Duplicate Salt or Water to expose its existing sparse reaction slots. The
 Reactions tab edits both partners, both products, ordered/unordered/symmetric
 matching and threshold. Slot order remains priority order. Endpoint effects
 are explicit version 1 **replace_with_defaults** at both endpoints, retaining
-legacy product initialization. `keep_existing` and state-setting effects are
-rejected rather than approximated. Arbitrary conservation claims are not inferred
+legacy product initialization. The endpoint selectors also admit a bounded
+**effects version 2** in the isolated compiled World:
+
+| Effect | Executed semantics and admission |
+|---|---|
+| `replace_with_defaults` | Existing product initialization, including same-identity products |
+| `keep_existing` | Preserve a non-Water participant's material, state A, state B and temperature; its product must equal its input identity |
+| `set_state` with `state_b` | Preserve material, state A and temperature; set B to an integer 0–255 only for the native Metal charge or Combustible burn countdown |
+
+Use Ordered or Unordered role-preserving matching for extended effects. Positional
+Symmetric effects, Water retention/state writes, undeclared registers and two
+keep-only endpoints are rejected. The editor aligns a retained endpoint's product
+with its participant. **Test reaction in World** selects the rule's pair and
+executes the native comparison; the descriptor/resolver-only test explicitly
+refuses extended effects. The production table and World implementation remain
+unchanged. State/epoch/wake details and executed acceptance belong to the dated
+audit and the [isolated adapter](../../tools/material_catalogue/reaction_effects.py).
+
+Arbitrary conservation claims are not inferred
 from product names; inspect the reported defaults and native experiment quantities.
 
 Historical probability is inclusive: threshold **T means (T + 1) / 256**.
@@ -280,6 +312,17 @@ initialization effect and priority. Changed candidate rules receive generated
 product/accounting descriptions, so legacy prose cannot describe different products.
 The [Salt-to-Stone World preset](../../materials/catalogue/fixtures/lab-salt-stone-world-v1.json)
 contains this exact candidate for import and repetition.
+
+For retained state, import the
+[retained-Salt preset](../../materials/catalogue/fixtures/lab-salt-retain-world-v2.json),
+or duplicate Salt, keep Water's replacement with Brine and select **Keep existing**
+for the Salt endpoint. Salt acts as a retained participant instead of being
+replaced with a fresh product. For state-setting, import the
+[Metal charge preset](../../materials/catalogue/fixtures/lab-metal-charge-world-v2.json),
+or duplicate Metal and select **Set state B** on its Metal endpoint, for example
+73, while retaining an admitted replacement on the other endpoint. Native
+endpoint fixtures seed non-default state and temperature, inspect the actual
+registers, quantity ledger and persistence, and exercise the countdown consumer.
 
 ## Native simulation experiments and reproducible cases
 
@@ -339,21 +382,28 @@ separate controls and evidence.
   while a compile runs and verify its older result cannot qualify the new recipe.
 - Cancel a compile and a reference replay; confirm the Lab stays usable and
   reports cancellation without a successful receipt.
+- Save/import a World recipe after changing placement, seed and workers; require
+  exact restored controls, a validated state and a fresh compile before qualification.
+- Exercise Salt retention and a Metal state-B edit through **Test reaction in World**;
+  check native registers/temperature and quantity evidence, not only the preview.
 
 ## Qualification and remaining gates
 
 Focused executable regressions are `test_material_lab_catalogue.gd`,
 `test_material_lab_experiment.gd`, `test_material_lab_ui.gd`,
 `test_material_lab_service.gd`, `test_material_lab_world.gd`,
-`tools/material_catalogue/test_lab.py` and `test_world_candidate.py`. The UI regression mounts the actual
+`tools/material_catalogue/test_lab.py`, `test_world_candidate.py`,
+`test_world_case.py` and `test_reaction_effects.py`. The UI regression mounts the actual
 scene and executes Python, C++ and the native World. The graphical capture
-script is `godot/tests/capture_material_lab.gd`; its receipt names source inputs,
-engine, display and native results. Commands and outcomes are retained in the
+script is `godot/tests/capture_material_lab.gd`; the full mounted UI test also
+accepts `-- --capture-output=<absolute-directory>` to retain its executed
+effects-v2 World view, native receipt and source/library/display manifest.
+Commands and outcomes are retained in the
 [audit](../audits/2026-11-11-materials-lab-v1.md).
 
 The next production step remains a separately qualified #353-B consumer/identity
-transition. New endpoint semantics need explicit state/quantity rules and tests
-before admission. #354's H1 repair is already owned by Draft #395; saved sleeping
-state migration and its performance/source gates remain separate. No mutual
-MoltenGlass heating, generic yielding rest, native material identities or saved
-World semantics change in this Lab implementation.
+transition. Wider endpoint and quantity semantics require additional native
+contracts. The owner explicitly excluded MoltenGlass H1 from this continuation;
+it is not a Materials Lab delivery dependency. Historical liveness evidence is
+preserved. No production thermal law, native identity or saved-World semantics
+change in this Lab implementation.

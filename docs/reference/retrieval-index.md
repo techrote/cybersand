@@ -19,6 +19,7 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 | How do presets round-trip, synthetic powder132 compile, and threshold0 reactions behave? | [Preset compilation](../operations/materials-lab-authoring.md#save-import-compile-and-compare), [reaction diagnostics](../operations/materials-lab-authoring.md#reaction-authoring-and-deterministic-diagnostics) |
 | How do I test materials in an actual native owner and reproduce the same configuration? | [Native experiments](../operations/materials-lab-authoring.md#native-simulation-experiments-and-reproducible-cases) |
 | Can edited candidates change real movement or products, with a clean reference and quantity/persistence checks? | [Compiled candidate World comparison](../operations/materials-lab-authoring.md#compare-an-edited-candidate-in-a-real-native-world) |
+| How do I save an explicit compiled-World recipe and author retained-state or Metal charge effects? | [Source-bound World recipes](../operations/materials-lab-authoring.md#compare-an-edited-candidate-in-a-real-native-world), [endpoint effects v2](../operations/materials-lab-authoring.md#reaction-authoring-and-deterministic-diagnostics) |
 | What was actually executed on Linux, Windows or graphically? | [Dated qualification](../audits/2026-11-11-materials-lab-v1.md); graphical evidence is separate from Windows/human acceptance |
 
 [Focused Lab questions](retrieval-questions-materials-lab.json) are additive;
