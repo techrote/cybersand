@@ -59,8 +59,7 @@ operations to the existing Stage-1 executor. No second simulation or controller
 is introduced. Plain JSON arrays, an operations envelope, a single shape, JSON
 fences and a recognized final packet after `</think>` are accepted. `type`/`operation` alias
 `shape`; draw_ prefixes and pixel/circle/rect spellings normalize to the same
-primitives. Omitted material explicitly defaults to Hard Wall (still refused if
-not enabled). A complete JSON array followed by a stray closing wrapper is
+primitives. Omitted material defaults to the selected paint material. Hard Wall is the initial selection. A complete JSON array followed by a stray closing wrapper is
 accepted; a truncated array is not. Native geometry/material validation still applies. Arbitrary prose is
 not executed. Refused/malformed packets leave Send available for correction and
 retain the complete provider response. This is structured-text drawing, not a
@@ -238,3 +237,9 @@ capture before dispatch, then drew and revised a stencil with the live local
 vision model. The OpenAI HTTP fixture verified a successful response with zero
 remaining requests and a 62.5-second reset, and verified that a billing quota
 error does not retry. These provider header cases use keyless fixtures.
+
+
+The art material picker offers every non-empty material from the ordinary
+Workbench paint palette. Erase remains a separate toggle. The selected ID
+applies to Direct JSON, Model prompt and Scanline. Existing non-Empty,
+non-Hard-Wall cells remain protected from art writes, including erase.

@@ -1750,8 +1750,10 @@ func art_take_result() -> Dictionary:
 	_mutex.unlock()
 	return result
 
+const ART_PALETTE = preload("res://scripts/workbench_setup.gd").MATERIALS
+
 func art_queue(points: PackedInt32Array, material: int, scope: Rect2i, protected: Array, epoch: int, allowed: Array = [0,58]) -> Dictionary:
-	if points.is_empty() or points.size()%2 != 0 or points.size()/2 > MAX_BRUSH_FOOTPRINT_CELLS or material not in [0,58] or material not in allowed: return {"status":"refused","reason":"Invalid native chunk"}
+	if points.is_empty() or points.size()%2 != 0 or points.size()/2 > MAX_BRUSH_FOOTPRINT_CELLS or material not in ART_PALETTE or material not in allowed: return {"status":"refused","reason":"Invalid native chunk"}
 	_mutex.lock()
 	var reason := ""
 	if epoch != _art_epoch: reason = "Batch stopped or canvas replaced"

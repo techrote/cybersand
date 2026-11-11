@@ -1,5 +1,6 @@
 extends RefCounted
 ## Lazy exact geometry; only a native-sized chunk is materialized at a time.
+const Setup = preload("res://scripts/workbench_setup.gd")
 var operations: Array = []
 var index := 0
 var cursor := 0
@@ -11,7 +12,7 @@ func configure(value: Variant, bounds: Rect2i) -> bool:
 	for raw: Variant in value:
 		if not raw is Dictionary or raw.get("shape") not in ["rectangle","disc","line","pixels"]: error = "Shapes: rectangle, disc, line, pixels."; return false
 		var op: Dictionary = raw.duplicate(true)
-		if not integer(op.get("material")) or int(op.material) not in [0,58]: error = "Material must be 0 (erase) or 58 (Hard Wall)."; return false
+		if not integer(op.get("material")) or int(op.material) not in Setup.MATERIALS: error = "Use a material ID from the workbench paint palette."; return false
 		op.material = int(op.material)
 		var keys: Array = ["x","y","radius"] if op.shape == "disc" else ["x0","y0","x1","y1"]
 		if op.shape == "pixels":

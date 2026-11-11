@@ -51,6 +51,15 @@ func run() -> void:
 	panel.input.text = '[{"shape":"pixels","points":[[5,5]],"material":58}]'
 	panel.draw.pressed.emit()
 	await until(func(): return not art.active and main.image.get_pixel(5,5).r8 == 58,"Direct JSON Draw applies a native pixel")
+	panel.paint_material.select(panel.paint_material.get_item_index(28))
+	panel.input.text = '[{"shape":"pixels","points":[[6,5]]}]'
+	panel.draw.pressed.emit()
+	await until(func(): return not art.active and main.image.get_pixel(6,5).r8==28,"material picker draws Metal through native readback")
+	panel.input.text = '[{"shape":"pixels","points":[[6,5]],"material":0}]'
+	panel.draw.pressed.emit()
+	await until(func(): return not art.active,"erase attempt completed")
+	check(art.result.excluded==1 and main.image.get_pixel(6,5).r8==28,"material picker preserves source protection")
+	panel.paint_material.select(panel.paint_material.get_item_index(58))
 	panel.provider.requested_model = ""
 	for i: int in range(16): panel.conversation.append({"role":"user","content":"turn %d" % i})
 	panel.context_mode.select(0)

@@ -15,7 +15,7 @@ var usage: Dictionary = {}
 var retry_after_seconds := 0.0
 var requested_model := ""
 var returned_model := ""
-const INSTRUCTIONS := 'Create the user-requested subject as an original 2D pixel-art composition, filling the supplied work area. Build complex subjects from as many simple primitives as needed. Return ONLY a JSON array, no prose. Each object has shape and material. Literal shape values and required integer parameters: rectangle uses x0,y0,x1,y1 (inclusive endpoints); disc uses x,y,radius; line uses x0,y0,x1,y1; pixels uses points:[[x,y],...]. Choose your own coordinates and dimensions to depict the subject; these are field definitions, not a drawing to copy. Material 58 draws Hard Wall, material 0 erases; omitted material defaults to 58. Operations execute in order. Stay inside the supplied work area; keep every disc including its radius inside it. Existing other materials and protected regions cannot be overwritten. Do not call external tools.'
+const INSTRUCTIONS := 'Create the user-requested subject as an original 2D pixel-art composition, filling the supplied work area. Build complex subjects from as many simple primitives as needed. Return ONLY a JSON array, no prose. Each object has shape and material. Literal shape values and required integer parameters: rectangle uses x0,y0,x1,y1 (inclusive endpoints); disc uses x,y,radius; line uses x0,y0,x1,y1; pixels uses points:[[x,y],...]. Choose your own coordinates and dimensions to depict the subject; these are field definitions, not a drawing to copy. Use the selected drawing material ID. Material 0 erases when enabled. Operations execute in order. Stay inside the supplied work area; keep every disc including its radius inside it. Existing other materials and protected regions cannot be overwritten. Do not call external tools.'
 
 static func payload(provider: String, model: String, prompt: String, instructions: String, tokens: int, png: String = "", context: Array = []) -> Dictionary:
 	if provider == "OpenAI":
@@ -58,7 +58,7 @@ static func decode(provider: String, data: Dictionary) -> Dictionary:
 	if text.is_empty() and error.is_empty(): error = "Provider returned no text. Inspect Traffic for refusal, reasoning usage or provider details."
 	return {"text":text,"error":error}
 
-static func operations(text: String) -> Variant:
+static func operations(text: String, default_material: int = 58) -> Variant:
 	var clean := text.strip_edges()
 	if clean.contains("</think>"): clean = clean.substr(clean.rfind("</think>")+8).strip_edges()
 	if clean.begins_with("```"):
@@ -78,7 +78,7 @@ static func operations(text: String) -> Variant:
 			if op.shape is String:
 				op.shape = op.shape.trim_prefix("draw_")
 				op.shape = {"rect":"rectangle","circle":"disc","pixel":"pixels"}.get(op.shape,op.shape)
-			if not op.has("material"): op.material = 58
+			if not op.has("material"): op.material = default_material
 	return value
 
 func redact(value: String) -> String:

@@ -11,7 +11,8 @@ var protect := CheckBox.new()
 var draw := Button.new()
 var stop := Button.new()
 var input_error := ""
-var wall := CheckBox.new()
+var paint_material := OptionButton.new()
+var request_material := 58
 var erase := CheckBox.new()
 const Provider = preload("res://scripts/art_provider.gd")
 var provider := Provider.new()
@@ -85,7 +86,7 @@ var waiting_until_ms := 0
 var minimum_interval := SpinBox.new()
 var stencil_guidance := TextEdit.new()
 var stencil_prompt := ""
-const STENCIL_INSTRUCTIONS := "Return a JSON array of rows. Each row is {y, repeat, scale, spans}. y is the local row index. repeat and scale default to 1. Each span is [x,length,material]. Scale multiplies x, y, length and repeat. Material 58 draws, 0 erases. Omitted spans preserve existing cells. Use local coordinates inside the stated area. Return [] when finished."
+const STENCIL_INSTRUCTIONS := "Return a JSON array of rows. Each row is {y, repeat, scale, spans}. y is the local row index. repeat and scale default to 1. Each span is [x,length,material]. Scale multiplies x, y, length and repeat. Use the selected drawing material ID. Material 0 erases when enabled. Omitted spans preserve existing cells. Use local coordinates inside the stated area. Return [] when finished."
 
 
 var help := Label.new()
@@ -128,11 +129,14 @@ func _ready() -> void:
 	column.add_child(state)
 	var row := HBoxContainer.new()
 	add_rectangle(row,fields,[0,0,2048,2048])
-	wall.text = "Hard Wall"
-	wall.button_pressed = true
+	for i: int in ArtPlan.Setup.MATERIALS.size():
+		var id: int = ArtPlan.Setup.MATERIALS[i]
+		if id != 0: paint_material.add_item("%s (%d)" % [ArtPlan.Setup.MATERIAL_NAMES[i],id],id)
+	paint_material.select(paint_material.get_item_index(58))
+	paint_material.tooltip_text = "Material available for art drawing. Erase is controlled separately."
 	erase.text = "Erase"
 	erase.button_pressed = true
-	row.add_child(wall)
+	row.add_child(paint_material)
 	row.add_child(erase)
 	column.add_child(row)
 	row = HBoxContainer.new()
@@ -171,8 +175,11 @@ func submit_text() -> void:
 	if parsed.parse(input.text) != OK:
 		input_error = "Invalid JSON at line%d: %s" % [parsed.get_error_line(),parsed.get_error_message()]
 		return
-	var allowed: Array = []
-	if wall.button_pressed: allowed.append(58)
+	var selected := paint_material.get_selected_id()
+	var allowed: Array = [selected]
+	if parsed.data is Array:
+		for op: Variant in parsed.data:
+			if op is Dictionary and not op.has("material"): op.material = selected
 	if erase.button_pressed: allowed.append(0)
 	var answer: Dictionary = executor.submit(parsed.data,rectangle(fields),[rectangle(protected_fields)] if protect.button_pressed else [],allowed)
 	if answer.status == "refused": input_error = answer.reason
@@ -191,7 +198,7 @@ func _process(_delta: float) -> void:
 	draw.text = "Draw" if input_mode.selected==0 else "Send"
 	for row: Control in rows: row.visible = input_mode.selected!=0
 	key_button.text = "Key ✓" if not str(keys.get(current_provider,"")).is_empty() else "Key…"
-	help.text = "Turns limits requests per Send. Image attaches a canvas crop. Select a vision model to use it." if input_mode.selected!=0 else "Ordered JSON: rectangle / disc / line / pixels. Material 58 = Hard Wall; 0 = erase. Large drawings stream in native-sized chunks."
+	help.text = "Turns limits requests per Send. Image attaches a canvas crop. Select a vision model to use it." if input_mode.selected!=0 else "Ordered JSON: rectangle / disc / line / pixels. Use the selected material ID. 0 erases when enabled. Large drawings stream in native-sized chunks."
 	if log_draw and not executor.active:
 		provider.log_event("native_result",executor.result)
 		log_draw = false
@@ -551,8 +558,8 @@ func send_next(expected_epoch: int) -> void:
 	request_epoch = wb.host.simulation_worker.art_state().epoch
 	request_area = rectangle(fields)
 	request_guards = [rectangle(protected_fields)] if protect.button_pressed else []
-	request_materials = []
-	if wall.button_pressed: request_materials.append(58)
+	request_material = paint_material.get_selected_id()
+	request_materials = [request_material]
 	if erase.button_pressed: request_materials.append(0)
 	var png := ""
 	var observation := ""
@@ -598,7 +605,7 @@ func send_next(expected_epoch: int) -> void:
 		instructions = guidance.text+" Coordinates are LOCAL: top-left is (0,0), never add a world offset. XYWH="+JSON.stringify([0,0,request_area.size.x,request_area.size.y])+". Allowed materials="+JSON.stringify(request_materials)+". Use compact rectangles, discs and lines. Every rectangle and line requires all four endpoint fields. Do not enumerate filled areas as pixels."
 	if request_scanline:
 		instructions = stencil_guidance.text+" Local area width %d, height %d. Allowed materials %s." % [request_area.size.x,request_area.size.y,str(request_materials)]
-	instructions += "\nReturn [] when the drawing is finished."
+	instructions += "\nSelected drawing material: %d. Use it for drawing. Return [] when finished." % request_material
 	var context := model_context()
 	var prompt := task_prompt
 	if not observation.is_empty(): prompt += "\n"+observation
@@ -652,7 +659,7 @@ func provider_finished(_id: int, text: String, _response: Dictionary, error: Str
 		return
 	provider.log_event("message",text)
 	remember_turn("assistant",text)
-	var operations: Variant = Provider.operations(text)
+	var operations: Variant = Provider.operations(text,request_material)
 	if request_scanline and operations is Array and not operations.is_empty():
 		operations = stencil_operations(operations)
 		if operations.is_empty():
@@ -696,7 +703,7 @@ func stencil_operations(rows_data: Array) -> Array:
 			if not span is Array or span.size() != 3: continue
 			if not ArtPlan.integer(span[0]) or not ArtPlan.integer(span[1]) or span[0] < 0 or span[1] < 1: continue
 			var material: Variant = span[2]
-			if material is String and material in ["0","58"]: material = int(material)
+			if material is String and material.is_valid_int(): material = int(material)
 			operations.append({"shape":"rectangle","x0":int(span[0])*int(scale),"x1":(int(span[0])+int(span[1]))*int(scale)-1,"y0":top,"y1":bottom,"material":material})
 	return operations
 
