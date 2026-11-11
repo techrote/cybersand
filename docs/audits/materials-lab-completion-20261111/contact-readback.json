@@ -1,0 +1,6667 @@
+{
+	"contact": {
+		"blockers": [],
+		"checks": [
+			{
+				"explanation": "The shared sparse-pair scan visits the eight immediate neighbours. Selected offset: (1,0).",
+				"id": "moore_neighbour",
+				"status": "observed_pass"
+			},
+			{
+				"explanation": "Native source mask body ID is 0; a masked source does not execute its cellular kernel.",
+				"id": "source_mask",
+				"status": "observed_pass"
+			},
+			{
+				"explanation": "Native target mask body ID is 0; this stored-pair inspection sees material 3, while storage retains 3. A masked target blocks this pair when its visible proxy has no matching native sparse rule; no claim is made about other mechanisms.",
+				"id": "target_mask",
+				"status": "observed_pass"
+			},
+			{
+				"explanation": "Native selected core range [2, 0, 4, 3] includes source core [3, 2]. Target cores are not used as a blocker because contacts can reach the write halo.",
+				"id": "source_core_window",
+				"status": "observed_pass"
+			},
+			{
+				"explanation": "Native source descriptor current_rule_available=true and kernel=1. World::rule_is_active excludes unavailable/None kernels before source dispatch; the target kernel is not gated.",
+				"id": "source_kernel_available",
+				"status": "observed_pass"
+			},
+			{
+				"explanation": "Compiled native has_pair_reactions for stored source material 23 is true.",
+				"id": "source_pair_capability",
+				"status": "observed_pass"
+			},
+			{
+				"explanation": "Native resolver outcome for visible IDs 23 → 3: selected_reaction.",
+				"id": "matching_visible_pair",
+				"status": "observed_pass"
+			},
+			{
+				"explanation": "Roll 0 ≤ threshold 255: selected; exact probability 256/256. Threshold zero remains 1/256. This supplied roll is not the World random stream.",
+				"id": "probability",
+				"status": "supplied_roll"
+			},
+			{
+				"explanation": "Kernel availability is only a necessary source gate. The native state-dependent rule_is_active result is not exposed by this observation API.",
+				"id": "source_state_activity",
+				"status": "unobserved"
+			},
+			{
+				"explanation": "The current owner API does not expose this fact; no value is inferred from pixels or global activity counters.",
+				"id": "per-cell sleeping status",
+				"status": "unobserved"
+			},
+			{
+				"explanation": "The current owner API does not expose this fact; no value is inferred from pixels or global activity counters.",
+				"id": "activity-block active flag and future wake deadline",
+				"status": "unobserved"
+			},
+			{
+				"explanation": "The current owner API does not expose this fact; no value is inferred from pixels or global activity counters.",
+				"id": "cell epoch and actual task dispatch",
+				"status": "unobserved"
+			},
+			{
+				"explanation": "The current owner API does not expose this fact; no value is inferred from pixels or global activity counters.",
+				"id": "contact temporal lane and actual random byte",
+				"status": "unobserved"
+			},
+			{
+				"explanation": "The current owner API does not expose this fact; no value is inferred from pixels or global activity counters.",
+				"id": "earlier neighbour or specialised mechanism competition",
+				"status": "unobserved"
+			}
+		],
+		"completed_tick": 0,
+		"definition_hash": "2e78e9ffb3f8e5428ff0a7395a9a3a868443feb0f45fc123be7e765496e6a2bc",
+		"ok": true,
+		"owner": "exclusive isolated native MicroScenario owner",
+		"reaction_executed": false,
+		"resolver": {
+			"accounting": "replace both participants with brine",
+			"authority": "InteractionRules via MaterialRules::pair_reaction",
+			"channel_resolution": [
+				{
+					"authored_layer_matched": false,
+					"channel": "thermal_phase",
+					"conflict": false,
+					"effective_origin": "none",
+					"pair_rule_applies": false,
+					"pair_rule_selected": false
+				},
+				{
+					"authored_layer_matched": false,
+					"channel": "dissolution_corrosion",
+					"conflict": false,
+					"effective_origin": "int.pair.water-salt.dissolve.v1",
+					"pair_match": "unordered_role_preserving",
+					"pair_rule_applies": true,
+					"pair_rule_id": "int.pair.water-salt.dissolve.v1",
+					"pair_rule_selected": true
+				},
+				{
+					"authored_layer_matched": false,
+					"channel": "chemical_conversion_products",
+					"conflict": false,
+					"effective_origin": "int.pair.water-salt.dissolve.v1",
+					"pair_match": "unordered_role_preserving",
+					"pair_rule_applies": true,
+					"pair_rule_id": "int.pair.water-salt.dissolve.v1",
+					"pair_rule_selected": true
+				},
+				{
+					"authored_layer_matched": false,
+					"channel": "combustion",
+					"conflict": false,
+					"effective_origin": "none",
+					"pair_rule_applies": false,
+					"pair_rule_selected": false
+				},
+				{
+					"authored_layer_matched": false,
+					"channel": "electrical",
+					"conflict": false,
+					"effective_origin": "none",
+					"pair_rule_applies": false,
+					"pair_rule_selected": false
+				},
+				{
+					"authored_layer_matched": false,
+					"channel": "curing_growth_special_state",
+					"conflict": false,
+					"effective_origin": "none",
+					"pair_rule_applies": false,
+					"pair_rule_selected": false
+				},
+				{
+					"authored_layer_matched": false,
+					"channel": "authoritative_emissions_byproducts",
+					"conflict": false,
+					"effective_origin": "none",
+					"pair_rule_applies": false,
+					"pair_rule_selected": false
+				}
+			],
+			"channels": [
+				"dissolution_corrosion",
+				"chemical_conversion_products"
+			],
+			"diagnostic_scope": "native sparse pair resolver only; no World mutation",
+			"endpoint_effect": "replace_with_defaults (legacy World initialization; same-ID products do not imply preservation)",
+			"explanation": "Roll 0 ≤ threshold 255: selected; exact probability 256/256. Threshold zero remains 1/256.",
+			"match": "unordered_role_preserving",
+			"matched": true,
+			"ok": true,
+			"outcome": "selected_reaction",
+			"probability_denominator": 256,
+			"probability_numerator": 256,
+			"probability_roll": 0,
+			"probability_threshold": 255,
+			"profile_id": "int.current-behaviour",
+			"profile_version": 2,
+			"provenance": "explicit sparse pair override / current-behaviour profile",
+			"provenance_chain": [
+				"int.current-behaviour",
+				"int.pass.current-oracle",
+				"int.pair.water-salt.dissolve.v1"
+			],
+			"quantity_scope": "Resolver products only. Native World performs target then source writes and its own quantity accounting.",
+			"revalidation_tags": [
+				"water_contact",
+				"granular_contact"
+			],
+			"reversed": true,
+			"rule_id": "int.pair.water-salt.dissolve.v1",
+			"schema_id": "cybersand.interactions",
+			"schema_version": 1,
+			"selected": true,
+			"source": 23,
+			"source_families": [],
+			"source_product": 24,
+			"source_specialized": [],
+			"supersedes": "",
+			"target": 3,
+			"target_families": [
+				"int.family.aqueous-contact"
+			],
+			"target_product": 24,
+			"target_specialized": [],
+			"trigger": "pair_contact",
+			"tuning_pass_changed_rules": "none",
+			"tuning_pass_disposition": "characterized-baseline",
+			"tuning_pass_id": "int.pass.current-oracle",
+			"tuning_pass_parent": "",
+			"version": 1,
+			"world_eligibility": "unobserved: scheduling, masks, inactivity and specialized competition are not resolver inputs"
+		},
+		"schema_id": "cybersand.material-lab.contact",
+		"schema_version": 1,
+		"scope": "Source-oriented sparse-pair inspection at one completed tick. A selected resolver result is not an executed reaction or a prediction. Movement, scheduling and competing neighbours may change the next attempt.",
+		"source": {
+			"activity_block_coordinate": [
+				6,
+				4
+			],
+			"chunk_coordinate": [
+				1,
+				1
+			],
+			"completed_tick": 0,
+			"current_rule_available": true,
+			"has_pair_reactions": true,
+			"kernel": 1,
+			"material": 23,
+			"material_name": "salt",
+			"ok": true,
+			"read_only": true,
+			"scheduler": {
+				"backend": 1,
+				"core_coordinate": [
+					3,
+					2
+				],
+				"core_size": 64,
+				"last_applied_core_included": null,
+				"last_applied_core_range": null,
+				"phase": 1,
+				"range_encoding": "inclusive min_core_x,min_core_y,max_core_x,max_core_y; null range is unrestricted",
+				"scope": "Selected source-core window and preceding completed-tick applied window, not task dispatch or per-cell activity. Neighbour reads/writes may reach the source core halo.",
+				"selected_core_included": true,
+				"selected_core_range": [
+					2,
+					0,
+					4,
+					3
+				]
+			},
+			"schema_id": "cybersand.material-lab.cell",
+			"schema_version": 1,
+			"scope": "Copied native stored/visible values and core-window facts, read between ticks by the exclusive owner. No reaction execution or next-tick eligibility guarantee.",
+			"selected_region": [
+				168,
+				56,
+				148,
+				200
+			],
+			"state_a": 0,
+			"state_b": 0,
+			"stored_temperature_available": true,
+			"stored_temperature_raw": 200,
+			"temperature_available": true,
+			"temperature_raw": 200,
+			"temperature_units": "engine raw integer; not a calibrated heat solver",
+			"transient_body_id": 0,
+			"unobserved": [
+				"per-cell sleeping status",
+				"activity-block active flag and future wake deadline",
+				"cell epoch and actual task dispatch",
+				"contact temporal lane and actual random byte",
+				"earlier neighbour or specialised mechanism competition"
+			],
+			"visible_material": 23,
+			"x": 220,
+			"y": 130
+		},
+		"supplied_roll": 0,
+		"target": {
+			"activity_block_coordinate": [
+				6,
+				4
+			],
+			"chunk_coordinate": [
+				1,
+				1
+			],
+			"completed_tick": 0,
+			"current_rule_available": true,
+			"has_pair_reactions": true,
+			"kernel": 2,
+			"material": 3,
+			"material_name": "water",
+			"ok": true,
+			"read_only": true,
+			"scheduler": {
+				"backend": 1,
+				"core_coordinate": [
+					3,
+					2
+				],
+				"core_size": 64,
+				"last_applied_core_included": null,
+				"last_applied_core_range": null,
+				"phase": 1,
+				"range_encoding": "inclusive min_core_x,min_core_y,max_core_x,max_core_y; null range is unrestricted",
+				"scope": "Selected source-core window and preceding completed-tick applied window, not task dispatch or per-cell activity. Neighbour reads/writes may reach the source core halo.",
+				"selected_core_included": true,
+				"selected_core_range": [
+					2,
+					0,
+					4,
+					3
+				]
+			},
+			"schema_id": "cybersand.material-lab.cell",
+			"schema_version": 1,
+			"scope": "Copied native stored/visible values and core-window facts, read between ticks by the exclusive owner. No reaction execution or next-tick eligibility guarantee.",
+			"selected_region": [
+				168,
+				56,
+				148,
+				200
+			],
+			"state_a": 173,
+			"state_b": 0,
+			"stored_temperature_available": true,
+			"stored_temperature_raw": 200,
+			"temperature_available": true,
+			"temperature_raw": 200,
+			"temperature_units": "engine raw integer; not a calibrated heat solver",
+			"transient_body_id": 0,
+			"unobserved": [
+				"per-cell sleeping status",
+				"activity-block active flag and future wake deadline",
+				"cell epoch and actual task dispatch",
+				"contact temporal lane and actual random byte",
+				"earlier neighbour or specialised mechanism competition"
+			],
+			"visible_material": 3,
+			"x": 221,
+			"y": 130
+		},
+		"world_eligibility": "unresolved"
+	},
+	"owner": {
+		"action_history": [],
+		"backend": "native-phased",
+		"body_enabled": false,
+		"budget_outcome": "admitted",
+		"capture_kind": "definition-and-observations; not a restorable runtime snapshot",
+		"completed_tick": 0,
+		"declared_observations": [
+			{
+				"id": "first-initial",
+				"material": 23,
+				"metric": "material_cells",
+				"region": [
+					180,
+					68,
+					124,
+					176
+				],
+				"tick": 0
+			},
+			{
+				"id": "second-initial",
+				"material": 3,
+				"metric": "material_cells",
+				"region": [
+					180,
+					68,
+					124,
+					176
+				],
+				"tick": 0
+			},
+			{
+				"id": "dose-state",
+				"material": 23,
+				"metric": "cell_state",
+				"region": [
+					226,
+					134,
+					1,
+					1
+				],
+				"tick": 0
+			},
+			{
+				"id": "first-final",
+				"material": 23,
+				"metric": "material_cells",
+				"region": [
+					180,
+					68,
+					124,
+					176
+				],
+				"tick": 20
+			},
+			{
+				"id": "second-final",
+				"material": 3,
+				"metric": "material_cells",
+				"region": [
+					180,
+					68,
+					124,
+					176
+				],
+				"tick": 20
+			},
+			{
+				"id": "reservoir-state",
+				"material": 3,
+				"metric": "cell_state",
+				"region": [
+					182,
+					238,
+					1,
+					1
+				],
+				"tick": 20
+			},
+			{
+				"id": "end",
+				"material": 0,
+				"metric": "tick",
+				"region": [
+					0,
+					0,
+					1,
+					1
+				],
+				"tick": 20
+			}
+		],
+		"definition": {
+			"body_enabled": false,
+			"camera_origin": [
+				168,
+				56
+			],
+			"conditions": [
+				{
+					"comparison": "eq",
+					"observation": "end",
+					"outcome": "complete",
+					"value": 20
+				}
+			],
+			"events": [],
+			"execution": {
+				"cadence_lod_enabled": false,
+				"liquid_surface_adhesion_enabled": true,
+				"policy": "fixed"
+			},
+			"id": "materials/authoring-pair",
+			"interest": {
+				"policy": "fixed",
+				"region": [
+					168,
+					56,
+					148,
+					200
+				]
+			},
+			"maturity": "exploratory",
+			"observations": [
+				{
+					"id": "first-initial",
+					"material": 23,
+					"metric": "material_cells",
+					"region": [
+						180,
+						68,
+						124,
+						176
+					],
+					"tick": 0
+				},
+				{
+					"id": "second-initial",
+					"material": 3,
+					"metric": "material_cells",
+					"region": [
+						180,
+						68,
+						124,
+						176
+					],
+					"tick": 0
+				},
+				{
+					"id": "dose-state",
+					"material": 23,
+					"metric": "cell_state",
+					"region": [
+						226,
+						134,
+						1,
+						1
+					],
+					"tick": 0
+				},
+				{
+					"id": "first-final",
+					"material": 23,
+					"metric": "material_cells",
+					"region": [
+						180,
+						68,
+						124,
+						176
+					],
+					"tick": 20
+				},
+				{
+					"id": "second-final",
+					"material": 3,
+					"metric": "material_cells",
+					"region": [
+						180,
+						68,
+						124,
+						176
+					],
+					"tick": 20
+				},
+				{
+					"id": "reservoir-state",
+					"material": 3,
+					"metric": "cell_state",
+					"region": [
+						182,
+						238,
+						1,
+						1
+					],
+					"tick": 20
+				},
+				{
+					"id": "end",
+					"material": 0,
+					"metric": "tick",
+					"region": [
+						0,
+						0,
+						1,
+						1
+					],
+					"tick": 20
+				}
+			],
+			"partial_water_fills": [
+				221,
+				130,
+				1,
+				1,
+				173,
+				0,
+				320,
+				130,
+				1,
+				1,
+				255,
+				0
+			],
+			"player_enabled": false,
+			"player_start": [
+				24,
+				222
+			],
+			"presentation": {
+				"baseline": "de332eaf8f4e70b25b097bed0c2e2a7b2aac0173 / Baseline transport / Water8-coherence12 / exploratory",
+				"duration_ticks": 20,
+				"instructions": "Existing native materials in an enclosed bay. The upper dose is released at tick 12 when the requested window permits it. Read stored native cells and the completed-tick counters. No reaction is guaranteed; the resolver preview does not observe World eligibility.",
+				"profile": "bounded-pair/v1",
+				"regions": [
+					{
+						"id": "contact",
+						"label": "23 + 3 / NATIVE",
+						"region": [
+							176,
+							64,
+							132,
+							184
+						]
+					}
+				],
+				"title": "Materials Lab / 23 + 3"
+			},
+			"recipe_version": 1,
+			"rectangles": [
+				218,
+				128,
+				6,
+				5,
+				1,
+				220,
+				130,
+				1,
+				1,
+				23,
+				317,
+				128,
+				6,
+				5,
+				1,
+				319,
+				130,
+				1,
+				1,
+				23,
+				238,
+				128,
+				6,
+				5,
+				1,
+				240,
+				130,
+				1,
+				1,
+				22,
+				241,
+				130,
+				1,
+				1,
+				9,
+				258,
+				128,
+				6,
+				5,
+				1,
+				260,
+				130,
+				1,
+				1,
+				35,
+				261,
+				130,
+				1,
+				1,
+				8
+			],
+			"schema_version": 2,
+			"seed": 2,
+			"source_recipe": "MAT-AUTH Materials Lab / ordinary schema-2 pair fixture v1",
+			"source_recipe_hash": "73eed5e4639763c48e039262ae54194cdedc2625758a1ce6ff23edb15540bc1b",
+			"tools": [],
+			"transport_profile": {
+				"families": {
+					"liquid": {
+						"cadence": 1,
+						"carrying": 0,
+						"erosion": 0,
+						"horizontal": 2,
+						"permeability": 1
+					},
+					"powder": {
+						"mixing": 0,
+						"packing": 8,
+						"pickup": 64
+					}
+				},
+				"materials": {
+					"33": {
+						"permeability": 30
+					}
+				},
+				"name": "Baseline",
+				"pairs": [],
+				"version": 1
+			},
+			"water_semantics": [
+				1,
+				8,
+				12,
+				0
+			]
+		},
+		"definition_budget": {
+			"event_limit": 24,
+			"events": 0,
+			"observation_limit": 24,
+			"observations": 7,
+			"partial_water_fills": 2,
+			"rectangles": 10
+		},
+		"definition_hash": "2e78e9ffb3f8e5428ff0a7395a9a3a868443feb0f45fc123be7e765496e6a2bc",
+		"effective_water_policy": {
+			"coherence_ticks": 12,
+			"film": 48,
+			"mass_bits": 8,
+			"maximum": 255,
+			"rest_policy": 0,
+			"tolerance": 1,
+			"version": 1
+		},
+		"error": "",
+		"event_limit": 24,
+		"events_applied": 0,
+		"execution_policy": "fixed",
+		"execution_settings": {
+			"cadence_lod_enabled": false,
+			"interest": {
+				"policy": "fixed",
+				"region": [
+					168,
+					56,
+					148,
+					200
+				]
+			},
+			"liquid_surface_adhesion_enabled": true,
+			"simulation_window_enabled": true
+		},
+		"failed": false,
+		"godot": "4.7-stable (official)",
+		"id": "materials/authoring-pair",
+		"instrumentation": true,
+		"interaction_inspection": [
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 0,
+				"source_families": [],
+				"source_specialized": [],
+				"target": 0,
+				"target_families": [],
+				"target_specialized": []
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 0,
+				"source_families": [],
+				"source_specialized": [],
+				"target": 1,
+				"target_families": [],
+				"target_specialized": []
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 0,
+				"source_families": [],
+				"source_specialized": [],
+				"target": 3,
+				"target_families": [
+					"int.family.aqueous-contact"
+				],
+				"target_specialized": []
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 0,
+				"source_families": [],
+				"source_specialized": [],
+				"target": 8,
+				"target_families": [
+					"int.family.hot-source"
+				],
+				"target_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Lava",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase",
+							"combustion"
+						],
+						"evaluated": false,
+						"represented_semantics": "sampled Ice-to-Water conversion or neighbour ignition; movement excluded",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.lava.contact.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				]
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 0,
+				"source_families": [],
+				"source_specialized": [],
+				"target": 9,
+				"target_families": [],
+				"target_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Ice",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "hot-neighbour melt and sampled Water freeze",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.ice.phase.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				]
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 0,
+				"source_families": [],
+				"source_specialized": [],
+				"target": 22,
+				"target_families": [],
+				"target_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Steam",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "lifetime expiry converts Steam to Water",
+						"revalidation_tags": [
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.steam.condense.v1",
+						"supersedes": "",
+						"trigger": "intrinsic_state",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				]
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 0,
+				"source_families": [],
+				"source_specialized": [],
+				"target": 23,
+				"target_families": [],
+				"target_specialized": []
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 0,
+				"source_families": [],
+				"source_specialized": [],
+				"target": 35,
+				"target_families": [
+					"int.family.reactive-base-glass"
+				],
+				"target_specialized": []
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 1,
+				"source_families": [],
+				"source_specialized": [],
+				"target": 1,
+				"target_families": [],
+				"target_specialized": []
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 1,
+				"source_families": [],
+				"source_specialized": [],
+				"target": 3,
+				"target_families": [
+					"int.family.aqueous-contact"
+				],
+				"target_specialized": []
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 1,
+				"source_families": [],
+				"source_specialized": [],
+				"target": 8,
+				"target_families": [
+					"int.family.hot-source"
+				],
+				"target_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Lava",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase",
+							"combustion"
+						],
+						"evaluated": false,
+						"represented_semantics": "sampled Ice-to-Water conversion or neighbour ignition; movement excluded",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.lava.contact.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				]
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 1,
+				"source_families": [],
+				"source_specialized": [],
+				"target": 9,
+				"target_families": [],
+				"target_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Ice",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "hot-neighbour melt and sampled Water freeze",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.ice.phase.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				]
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 1,
+				"source_families": [],
+				"source_specialized": [],
+				"target": 22,
+				"target_families": [],
+				"target_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Steam",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "lifetime expiry converts Steam to Water",
+						"revalidation_tags": [
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.steam.condense.v1",
+						"supersedes": "",
+						"trigger": "intrinsic_state",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				]
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 1,
+				"source_families": [],
+				"source_specialized": [],
+				"target": 23,
+				"target_families": [],
+				"target_specialized": []
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 1,
+				"source_families": [],
+				"source_specialized": [],
+				"target": 35,
+				"target_families": [
+					"int.family.reactive-base-glass"
+				],
+				"target_specialized": []
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 3,
+				"source_families": [
+					"int.family.aqueous-contact"
+				],
+				"source_specialized": [],
+				"target": 3,
+				"target_families": [
+					"int.family.aqueous-contact"
+				],
+				"target_specialized": []
+			},
+			{
+				"accounting": "replace both participants; preserve role-specific products",
+				"authority": "InteractionRules via MaterialRules::pair_reaction",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "int.pair.lava-water.quench.v1",
+						"pair_match": "unordered_role_preserving",
+						"pair_rule_applies": true,
+						"pair_rule_id": "int.pair.lava-water.quench.v1",
+						"pair_rule_selected": true
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "int.pair.lava-water.quench.v1",
+						"pair_match": "unordered_role_preserving",
+						"pair_rule_applies": true,
+						"pair_rule_id": "int.pair.lava-water.quench.v1",
+						"pair_rule_selected": true
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "int.pair.lava-water.quench.v1",
+						"pair_match": "unordered_role_preserving",
+						"pair_rule_applies": true,
+						"pair_rule_id": "int.pair.lava-water.quench.v1",
+						"pair_rule_selected": true
+					}
+				],
+				"channels": [
+					"thermal_phase",
+					"chemical_conversion_products",
+					"authoritative_emissions_byproducts"
+				],
+				"match": "unordered_role_preserving",
+				"matched": true,
+				"ok": true,
+				"probability_roll": 0,
+				"probability_threshold": 255,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"provenance": "explicit sparse pair override / current-behaviour profile",
+				"provenance_chain": [
+					"int.current-behaviour",
+					"int.pass.current-oracle",
+					"int.pair.lava-water.quench.v1"
+				],
+				"revalidation_tags": [
+					"water_contact",
+					"scheduler_contact"
+				],
+				"reversed": true,
+				"rule_id": "int.pair.lava-water.quench.v1",
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": true,
+				"source": 3,
+				"source_families": [
+					"int.family.aqueous-contact"
+				],
+				"source_product": 22,
+				"source_specialized": [],
+				"supersedes": "",
+				"target": 8,
+				"target_families": [
+					"int.family.hot-source"
+				],
+				"target_product": 13,
+				"target_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Lava",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase",
+							"combustion"
+						],
+						"evaluated": false,
+						"represented_semantics": "sampled Ice-to-Water conversion or neighbour ignition; movement excluded",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.lava.contact.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				],
+				"trigger": "pair_contact",
+				"tuning_pass_changed_rules": "none",
+				"tuning_pass_disposition": "characterized-baseline",
+				"tuning_pass_id": "int.pass.current-oracle",
+				"tuning_pass_parent": "",
+				"version": 1
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 3,
+				"source_families": [
+					"int.family.aqueous-contact"
+				],
+				"source_specialized": [],
+				"target": 9,
+				"target_families": [],
+				"target_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Ice",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "hot-neighbour melt and sampled Water freeze",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.ice.phase.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				]
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 3,
+				"source_families": [
+					"int.family.aqueous-contact"
+				],
+				"source_specialized": [],
+				"target": 22,
+				"target_families": [],
+				"target_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Steam",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "lifetime expiry converts Steam to Water",
+						"revalidation_tags": [
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.steam.condense.v1",
+						"supersedes": "",
+						"trigger": "intrinsic_state",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				]
+			},
+			{
+				"accounting": "replace both participants with brine",
+				"authority": "InteractionRules via MaterialRules::pair_reaction",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "int.pair.water-salt.dissolve.v1",
+						"pair_match": "unordered_role_preserving",
+						"pair_rule_applies": true,
+						"pair_rule_id": "int.pair.water-salt.dissolve.v1",
+						"pair_rule_selected": true
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "int.pair.water-salt.dissolve.v1",
+						"pair_match": "unordered_role_preserving",
+						"pair_rule_applies": true,
+						"pair_rule_id": "int.pair.water-salt.dissolve.v1",
+						"pair_rule_selected": true
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"channels": [
+					"dissolution_corrosion",
+					"chemical_conversion_products"
+				],
+				"match": "unordered_role_preserving",
+				"matched": true,
+				"ok": true,
+				"probability_roll": 0,
+				"probability_threshold": 255,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"provenance": "explicit sparse pair override / current-behaviour profile",
+				"provenance_chain": [
+					"int.current-behaviour",
+					"int.pass.current-oracle",
+					"int.pair.water-salt.dissolve.v1"
+				],
+				"revalidation_tags": [
+					"water_contact",
+					"granular_contact"
+				],
+				"reversed": false,
+				"rule_id": "int.pair.water-salt.dissolve.v1",
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": true,
+				"source": 3,
+				"source_families": [
+					"int.family.aqueous-contact"
+				],
+				"source_product": 24,
+				"source_specialized": [],
+				"supersedes": "",
+				"target": 23,
+				"target_families": [],
+				"target_product": 24,
+				"target_specialized": [],
+				"trigger": "pair_contact",
+				"tuning_pass_changed_rules": "none",
+				"tuning_pass_disposition": "characterized-baseline",
+				"tuning_pass_id": "int.pass.current-oracle",
+				"tuning_pass_parent": "",
+				"version": 1
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 3,
+				"source_families": [
+					"int.family.aqueous-contact"
+				],
+				"source_specialized": [],
+				"target": 35,
+				"target_families": [
+					"int.family.reactive-base-glass"
+				],
+				"target_specialized": []
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 8,
+				"source_families": [
+					"int.family.hot-source"
+				],
+				"source_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Lava",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase",
+							"combustion"
+						],
+						"evaluated": false,
+						"represented_semantics": "sampled Ice-to-Water conversion or neighbour ignition; movement excluded",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.lava.contact.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				],
+				"target": 8,
+				"target_families": [
+					"int.family.hot-source"
+				],
+				"target_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Lava",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase",
+							"combustion"
+						],
+						"evaluated": false,
+						"represented_semantics": "sampled Ice-to-Water conversion or neighbour ignition; movement excluded",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.lava.contact.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				]
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 8,
+				"source_families": [
+					"int.family.hot-source"
+				],
+				"source_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Lava",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase",
+							"combustion"
+						],
+						"evaluated": false,
+						"represented_semantics": "sampled Ice-to-Water conversion or neighbour ignition; movement excluded",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.lava.contact.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				],
+				"target": 9,
+				"target_families": [],
+				"target_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Ice",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "hot-neighbour melt and sampled Water freeze",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.ice.phase.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				]
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 8,
+				"source_families": [
+					"int.family.hot-source"
+				],
+				"source_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Lava",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase",
+							"combustion"
+						],
+						"evaluated": false,
+						"represented_semantics": "sampled Ice-to-Water conversion or neighbour ignition; movement excluded",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.lava.contact.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				],
+				"target": 22,
+				"target_families": [],
+				"target_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Steam",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "lifetime expiry converts Steam to Water",
+						"revalidation_tags": [
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.steam.condense.v1",
+						"supersedes": "",
+						"trigger": "intrinsic_state",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				]
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 8,
+				"source_families": [
+					"int.family.hot-source"
+				],
+				"source_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Lava",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase",
+							"combustion"
+						],
+						"evaluated": false,
+						"represented_semantics": "sampled Ice-to-Water conversion or neighbour ignition; movement excluded",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.lava.contact.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				],
+				"target": 23,
+				"target_families": [],
+				"target_specialized": []
+			},
+			{
+				"accounting": "preserve lava role; convert glass role to molten glass",
+				"authority": "InteractionRules via MaterialRules::pair_reaction",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "int.pair.lava-glass.melt.v1",
+						"pair_match": "unordered_role_preserving",
+						"pair_rule_applies": true,
+						"pair_rule_id": "int.pair.lava-glass.melt.v1",
+						"pair_rule_selected": true
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "int.pair.lava-glass.melt.v1",
+						"pair_match": "unordered_role_preserving",
+						"pair_rule_applies": true,
+						"pair_rule_id": "int.pair.lava-glass.melt.v1",
+						"pair_rule_selected": true
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"channels": [
+					"thermal_phase",
+					"chemical_conversion_products"
+				],
+				"match": "unordered_role_preserving",
+				"matched": true,
+				"ok": true,
+				"probability_roll": 0,
+				"probability_threshold": 255,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"provenance": "explicit sparse pair override / current-behaviour profile",
+				"provenance_chain": [
+					"int.current-behaviour",
+					"int.pass.current-oracle",
+					"int.pair.lava-glass.melt.v1"
+				],
+				"revalidation_tags": [
+					"thermal_cadence"
+				],
+				"reversed": false,
+				"rule_id": "int.pair.lava-glass.melt.v1",
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": true,
+				"source": 8,
+				"source_families": [
+					"int.family.hot-source"
+				],
+				"source_product": 8,
+				"source_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Lava",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase",
+							"combustion"
+						],
+						"evaluated": false,
+						"represented_semantics": "sampled Ice-to-Water conversion or neighbour ignition; movement excluded",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.lava.contact.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				],
+				"supersedes": "",
+				"target": 35,
+				"target_families": [
+					"int.family.reactive-base-glass"
+				],
+				"target_product": 36,
+				"target_specialized": [],
+				"trigger": "pair_contact",
+				"tuning_pass_changed_rules": "none",
+				"tuning_pass_disposition": "characterized-baseline",
+				"tuning_pass_id": "int.pass.current-oracle",
+				"tuning_pass_parent": "",
+				"version": 1
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 9,
+				"source_families": [],
+				"source_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Ice",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "hot-neighbour melt and sampled Water freeze",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.ice.phase.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				],
+				"target": 9,
+				"target_families": [],
+				"target_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Ice",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "hot-neighbour melt and sampled Water freeze",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.ice.phase.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				]
+			},
+			{
+				"accounting": "convert steam role to water; preserve ice role",
+				"authority": "InteractionRules via MaterialRules::pair_reaction",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "int.pair.steam-ice.condense.v1",
+						"pair_match": "unordered_role_preserving",
+						"pair_rule_applies": true,
+						"pair_rule_id": "int.pair.steam-ice.condense.v1",
+						"pair_rule_selected": true
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"channels": [
+					"thermal_phase"
+				],
+				"match": "unordered_role_preserving",
+				"matched": true,
+				"ok": true,
+				"probability_roll": 0,
+				"probability_threshold": 32,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"provenance": "explicit sparse pair override / current-behaviour profile",
+				"provenance_chain": [
+					"int.current-behaviour",
+					"int.pass.current-oracle",
+					"int.pair.steam-ice.condense.v1"
+				],
+				"revalidation_tags": [
+					"water_contact",
+					"thermal_cadence"
+				],
+				"reversed": true,
+				"rule_id": "int.pair.steam-ice.condense.v1",
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": true,
+				"source": 9,
+				"source_families": [],
+				"source_product": 9,
+				"source_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Ice",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "hot-neighbour melt and sampled Water freeze",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.ice.phase.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				],
+				"supersedes": "",
+				"target": 22,
+				"target_families": [],
+				"target_product": 3,
+				"target_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Steam",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "lifetime expiry converts Steam to Water",
+						"revalidation_tags": [
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.steam.condense.v1",
+						"supersedes": "",
+						"trigger": "intrinsic_state",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				],
+				"trigger": "pair_contact",
+				"tuning_pass_changed_rules": "none",
+				"tuning_pass_disposition": "characterized-baseline",
+				"tuning_pass_id": "int.pass.current-oracle",
+				"tuning_pass_parent": "",
+				"version": 1
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 9,
+				"source_families": [],
+				"source_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Ice",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "hot-neighbour melt and sampled Water freeze",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.ice.phase.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				],
+				"target": 23,
+				"target_families": [],
+				"target_specialized": []
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 9,
+				"source_families": [],
+				"source_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Ice",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "hot-neighbour melt and sampled Water freeze",
+						"revalidation_tags": [
+							"water_contact",
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.ice.phase.v1",
+						"supersedes": "",
+						"trigger": "neighbourhood_context",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				],
+				"target": 35,
+				"target_families": [
+					"int.family.reactive-base-glass"
+				],
+				"target_specialized": []
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 22,
+				"source_families": [],
+				"source_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Steam",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "lifetime expiry converts Steam to Water",
+						"revalidation_tags": [
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.steam.condense.v1",
+						"supersedes": "",
+						"trigger": "intrinsic_state",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				],
+				"target": 22,
+				"target_families": [],
+				"target_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Steam",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "lifetime expiry converts Steam to Water",
+						"revalidation_tags": [
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.steam.condense.v1",
+						"supersedes": "",
+						"trigger": "intrinsic_state",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				]
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 22,
+				"source_families": [],
+				"source_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Steam",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "lifetime expiry converts Steam to Water",
+						"revalidation_tags": [
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.steam.condense.v1",
+						"supersedes": "",
+						"trigger": "intrinsic_state",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				],
+				"target": 23,
+				"target_families": [],
+				"target_specialized": []
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 22,
+				"source_families": [],
+				"source_specialized": [
+					{
+						"authority": "native/src/world.cpp::RuleKernel::Steam",
+						"authority_state": "current-world-kernel",
+						"channels": [
+							"thermal_phase"
+						],
+						"evaluated": false,
+						"represented_semantics": "lifetime expiry converts Steam to Water",
+						"revalidation_tags": [
+							"thermal_cadence"
+						],
+						"rule_id": "int.kernel.steam.condense.v1",
+						"supersedes": "",
+						"trigger": "intrinsic_state",
+						"tuning_pass_id": "int.pass.current-oracle",
+						"version": 1
+					}
+				],
+				"target": 35,
+				"target_families": [
+					"int.family.reactive-base-glass"
+				],
+				"target_specialized": []
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 23,
+				"source_families": [],
+				"source_specialized": [],
+				"target": 23,
+				"target_families": [],
+				"target_specialized": []
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 23,
+				"source_families": [],
+				"source_specialized": [],
+				"target": 35,
+				"target_families": [
+					"int.family.reactive-base-glass"
+				],
+				"target_specialized": []
+			},
+			{
+				"authored_status": "no-compact-pair-rule",
+				"channel_resolution": [
+					{
+						"authored_layer_matched": false,
+						"channel": "thermal_phase",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "dissolution_corrosion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "chemical_conversion_products",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "combustion",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "electrical",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "curing_growth_special_state",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					},
+					{
+						"authored_layer_matched": false,
+						"channel": "authoritative_emissions_byproducts",
+						"conflict": false,
+						"effective_origin": "none",
+						"pair_rule_applies": false,
+						"pair_rule_selected": false
+					}
+				],
+				"matched": false,
+				"note": "No compact INT pair rule; specialized or kinetic mechanisms may still apply.",
+				"ok": true,
+				"probability_roll": 0,
+				"profile_id": "int.current-behaviour",
+				"profile_version": 2,
+				"schema_id": "cybersand.interactions",
+				"schema_version": 1,
+				"selected": false,
+				"source": 35,
+				"source_families": [
+					"int.family.reactive-base-glass"
+				],
+				"source_specialized": [],
+				"target": 35,
+				"target_families": [
+					"int.family.reactive-base-glass"
+				],
+				"target_specialized": []
+			}
+		],
+		"interaction_profile": {
+			"authored_layers": [],
+			"catalogue_validation": {
+				"conflicting_pair_overrides": 0,
+				"duplicate_rule_ids": 0,
+				"invalid_family_memberships": 0,
+				"invalid_supersession_links": 0,
+				"ok": true,
+				"unresolved_layer_conflicts": 0
+			},
+			"channels": [
+				{
+					"id": "thermal_phase"
+				},
+				{
+					"id": "dissolution_corrosion"
+				},
+				{
+					"id": "chemical_conversion_products"
+				},
+				{
+					"id": "combustion"
+				},
+				{
+					"id": "electrical"
+				},
+				{
+					"id": "curing_growth_special_state"
+				},
+				{
+					"id": "authoritative_emissions_byproducts"
+				}
+			],
+			"coverage": [
+				{
+					"authored_status": "explicit_override",
+					"channel_id": "multiple",
+					"effective_rule_id": "int.pair.*.v1",
+					"evidence_status": "current_regression",
+					"limitation": "all 14 compact pair rules are characterized against the frozen Current oracle",
+					"subject_id": "compact-pair-current"
+				},
+				{
+					"authored_status": "accepted_with_limitation",
+					"channel_id": "multiple",
+					"effective_rule_id": "int.kernel.*.v1",
+					"evidence_status": "current_regression",
+					"limitation": "represented/provenance-visible; authoritative execution remains in world.cpp",
+					"subject_id": "specialized-current-kernels"
+				},
+				{
+					"authored_status": "explicitly_non_interacting",
+					"channel_id": "chemical_conversion_products",
+					"effective_rule_id": "",
+					"evidence_status": "generated_fixture",
+					"limitation": "no INT conversion rule; kinetic Water/Sand transport remains owned elsewhere",
+					"subject_id": "control.water-sand"
+				},
+				{
+					"authored_status": "explicitly_non_interacting",
+					"channel_id": "electrical",
+					"effective_rule_id": "",
+					"evidence_status": "current_regression",
+					"limitation": "themed metals do not inherit base Metal electrical semantics",
+					"subject_id": "family.conductive-themed-metals"
+				},
+				{
+					"authored_status": "explicitly_non_interacting",
+					"channel_id": "chemical_conversion_products",
+					"effective_rule_id": "",
+					"evidence_status": "current_regression",
+					"limitation": "no themed metal inherits the base Acid+Metal Smoke/Rust pair override; the existing broad Acid neighbourhood corrosion kernel still applies",
+					"subject_id": "pair-override.acid-themed-metals"
+				},
+				{
+					"authored_status": "explicitly_non_interacting",
+					"channel_id": "thermal_phase",
+					"effective_rule_id": "",
+					"evidence_status": "current_regression",
+					"limitation": "themed glass names/appearance do not inherit base Glass pair semantics",
+					"subject_id": "family.reactive-themed-glass"
+				},
+				{
+					"authored_status": "accepted_with_limitation",
+					"channel_id": "multiple",
+					"effective_rule_id": "int.pair.*.v1@int.pass.mat002-building-materials",
+					"evidence_status": "current_regression",
+					"limitation": "42 authored pair rules for building materials 81+; probabilities are gameplay tuning, not calibrated chemistry",
+					"subject_id": "mat002-building-pair-rules"
+				},
+				{
+					"authored_status": "accepted_with_limitation",
+					"channel_id": "combustion",
+					"effective_rule_id": "int.kernel.combustible.burn.v1",
+					"evidence_status": "current_regression",
+					"limitation": "17 building woods/fibres/polymers reuse the bounded Combustible kernel; Fungus/Mite timber rules stay Wood/Oak only",
+					"subject_id": "mat002-building-combustibles"
+				},
+				{
+					"authored_status": "explicitly_non_interacting",
+					"channel_id": "multiple",
+					"effective_rule_id": "",
+					"evidence_status": "current_regression",
+					"limitation": "building materials without a pair rule (e.g. firebrick, terrazzo, gabion, heat-shield tile) are inert apart from the broad Acid neighbourhood kernel",
+					"subject_id": "mat002-building-inert"
+				},
+				{
+					"authored_status": "untested",
+					"channel_id": "multiple",
+					"effective_rule_id": "",
+					"evidence_status": "none",
+					"limitation": "later bounded versioned passes own new behavior; INT-000 does not fabricate it",
+					"subject_id": "future-mechanism-tuning"
+				}
+			],
+			"layer_kinds": [
+				{
+					"id": "channel_default",
+					"precedence": 100
+				},
+				{
+					"id": "family_default",
+					"precedence": 200
+				},
+				{
+					"id": "material_adjustment",
+					"precedence": 300
+				},
+				{
+					"id": "pair_override",
+					"precedence": 400
+				},
+				{
+					"id": "context_modifier",
+					"precedence": 500
+				}
+			],
+			"profile_id": "int.current-behaviour",
+			"profile_version": 2,
+			"schema_id": "cybersand.interactions",
+			"schema_version": 1,
+			"specialized_authority": "native/src/world.cpp",
+			"specialized_migration_state": "represented-provenance-visible; current world kernels remain authoritative",
+			"specialized_rule_count": 19,
+			"tuning_passes": [
+				{
+					"changed_rules": "none",
+					"disposition": "characterized-baseline",
+					"id": "int.pass.current-oracle",
+					"parent": "",
+					"version": 1
+				},
+				{
+					"changed_rules": "adds pair rules for building materials 81+ only; oracle rules 0-13 unchanged",
+					"disposition": "authored-extension",
+					"id": "int.pass.mat002-building-materials",
+					"parent": "int.pass.current-oracle",
+					"version": 1
+				}
+			]
+		},
+		"interaction_profile_full": {
+			"authored_layers": [],
+			"catalogue_validation": {
+				"conflicting_pair_overrides": 0,
+				"duplicate_rule_ids": 0,
+				"invalid_family_memberships": 0,
+				"invalid_supersession_links": 0,
+				"ok": true,
+				"unresolved_layer_conflicts": 0
+			},
+			"channels": [
+				{
+					"id": "thermal_phase"
+				},
+				{
+					"id": "dissolution_corrosion"
+				},
+				{
+					"id": "chemical_conversion_products"
+				},
+				{
+					"id": "combustion"
+				},
+				{
+					"id": "electrical"
+				},
+				{
+					"id": "curing_growth_special_state"
+				},
+				{
+					"id": "authoritative_emissions_byproducts"
+				}
+			],
+			"coverage": [
+				{
+					"authored_status": "explicit_override",
+					"channel_id": "multiple",
+					"effective_rule_id": "int.pair.*.v1",
+					"evidence_status": "current_regression",
+					"limitation": "all 14 compact pair rules are characterized against the frozen Current oracle",
+					"subject_id": "compact-pair-current"
+				},
+				{
+					"authored_status": "accepted_with_limitation",
+					"channel_id": "multiple",
+					"effective_rule_id": "int.kernel.*.v1",
+					"evidence_status": "current_regression",
+					"limitation": "represented/provenance-visible; authoritative execution remains in world.cpp",
+					"subject_id": "specialized-current-kernels"
+				},
+				{
+					"authored_status": "explicitly_non_interacting",
+					"channel_id": "chemical_conversion_products",
+					"effective_rule_id": "",
+					"evidence_status": "generated_fixture",
+					"limitation": "no INT conversion rule; kinetic Water/Sand transport remains owned elsewhere",
+					"subject_id": "control.water-sand"
+				},
+				{
+					"authored_status": "explicitly_non_interacting",
+					"channel_id": "electrical",
+					"effective_rule_id": "",
+					"evidence_status": "current_regression",
+					"limitation": "themed metals do not inherit base Metal electrical semantics",
+					"subject_id": "family.conductive-themed-metals"
+				},
+				{
+					"authored_status": "explicitly_non_interacting",
+					"channel_id": "chemical_conversion_products",
+					"effective_rule_id": "",
+					"evidence_status": "current_regression",
+					"limitation": "no themed metal inherits the base Acid+Metal Smoke/Rust pair override; the existing broad Acid neighbourhood corrosion kernel still applies",
+					"subject_id": "pair-override.acid-themed-metals"
+				},
+				{
+					"authored_status": "explicitly_non_interacting",
+					"channel_id": "thermal_phase",
+					"effective_rule_id": "",
+					"evidence_status": "current_regression",
+					"limitation": "themed glass names/appearance do not inherit base Glass pair semantics",
+					"subject_id": "family.reactive-themed-glass"
+				},
+				{
+					"authored_status": "accepted_with_limitation",
+					"channel_id": "multiple",
+					"effective_rule_id": "int.pair.*.v1@int.pass.mat002-building-materials",
+					"evidence_status": "current_regression",
+					"limitation": "42 authored pair rules for building materials 81+; probabilities are gameplay tuning, not calibrated chemistry",
+					"subject_id": "mat002-building-pair-rules"
+				},
+				{
+					"authored_status": "accepted_with_limitation",
+					"channel_id": "combustion",
+					"effective_rule_id": "int.kernel.combustible.burn.v1",
+					"evidence_status": "current_regression",
+					"limitation": "17 building woods/fibres/polymers reuse the bounded Combustible kernel; Fungus/Mite timber rules stay Wood/Oak only",
+					"subject_id": "mat002-building-combustibles"
+				},
+				{
+					"authored_status": "explicitly_non_interacting",
+					"channel_id": "multiple",
+					"effective_rule_id": "",
+					"evidence_status": "current_regression",
+					"limitation": "building materials without a pair rule (e.g. firebrick, terrazzo, gabion, heat-shield tile) are inert apart from the broad Acid neighbourhood kernel",
+					"subject_id": "mat002-building-inert"
+				},
+				{
+					"authored_status": "untested",
+					"channel_id": "multiple",
+					"effective_rule_id": "",
+					"evidence_status": "none",
+					"limitation": "later bounded versioned passes own new behavior; INT-000 does not fabricate it",
+					"subject_id": "future-mechanism-tuning"
+				}
+			],
+			"families": [
+				{
+					"id": "int.family.combustible-kernel",
+					"purpose": "materials explicitly using the bounded combustible kernel",
+					"version": 1
+				},
+				{
+					"id": "int.family.conductive-base-metal",
+					"purpose": "base Metal only; themed metals do not inherit",
+					"version": 1
+				},
+				{
+					"id": "int.family.reactive-base-glass",
+					"purpose": "base Glass only; themed glasses do not inherit",
+					"version": 1
+				},
+				{
+					"id": "int.family.hot-source",
+					"purpose": "current materials treated as hot by neighbourhood kernels",
+					"version": 1
+				},
+				{
+					"id": "int.family.aqueous-contact",
+					"purpose": "Water and Brine contact participants",
+					"version": 1
+				},
+				{
+					"id": "int.family.biological-growth",
+					"purpose": "current Plant/Fungus/Seed growth-state participants",
+					"version": 1
+				},
+				{
+					"id": "int.family.special-agent",
+					"purpose": "Cloner/Mite/Rocket special-state participants",
+					"version": 1
+				}
+			],
+			"layer_kinds": [
+				{
+					"id": "channel_default",
+					"precedence": 100
+				},
+				{
+					"id": "family_default",
+					"precedence": 200
+				},
+				{
+					"id": "material_adjustment",
+					"precedence": 300
+				},
+				{
+					"id": "pair_override",
+					"precedence": 400
+				},
+				{
+					"id": "context_modifier",
+					"precedence": 500
+				}
+			],
+			"pair_rules": [
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products",
+						"authoritative_emissions_byproducts"
+					],
+					"first": 8,
+					"first_product": 13,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"water_contact",
+						"scheduler_contact"
+					],
+					"rule_id": "int.pair.lava-water.quench.v1",
+					"second": 3,
+					"second_product": 22,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"thermal_phase",
+						"combustion",
+						"authoritative_emissions_byproducts"
+					],
+					"first": 6,
+					"first_product": 4,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"water_contact",
+						"scheduler_contact"
+					],
+					"rule_id": "int.pair.fire-water.extinguish.v1",
+					"second": 3,
+					"second_product": 22,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants with brine",
+					"channels": [
+						"dissolution_corrosion",
+						"chemical_conversion_products"
+					],
+					"first": 3,
+					"first_product": 24,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"water_contact",
+						"granular_contact"
+					],
+					"rule_id": "int.pair.water-salt.dissolve.v1",
+					"second": 23,
+					"second_product": 24,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"chemical_conversion_products",
+						"combustion",
+						"authoritative_emissions_byproducts"
+					],
+					"first": 3,
+					"first_product": 22,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"water_contact",
+						"granular_contact"
+					],
+					"rule_id": "int.pair.water-sodium.react.v1",
+					"second": 25,
+					"second_product": 6,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"chemical_conversion_products",
+						"combustion",
+						"authoritative_emissions_byproducts"
+					],
+					"first": 24,
+					"first_product": 22,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"granular_contact",
+						"scheduler_contact"
+					],
+					"rule_id": "int.pair.brine-sodium.react.v1",
+					"second": 25,
+					"second_product": 6,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants with water",
+					"channels": [
+						"dissolution_corrosion",
+						"chemical_conversion_products"
+					],
+					"first": 3,
+					"first_product": 3,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"water_contact"
+					],
+					"rule_id": "int.pair.water-toxic-sludge.purify.v1",
+					"second": 32,
+					"second_product": 3,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"accounting": "convert steam role to water; preserve ice role",
+					"channels": [
+						"thermal_phase"
+					],
+					"first": 22,
+					"first_product": 3,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 32,
+					"revalidation_tags": [
+						"water_contact",
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.steam-ice.condense.v1",
+					"second": 9,
+					"second_product": 9,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products",
+						"authoritative_emissions_byproducts"
+					],
+					"first": 3,
+					"first_product": 22,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"water_contact",
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.water-molten-glass.quench.v1",
+					"second": 36,
+					"second_product": 35,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"accounting": "preserve lava role; convert glass role to molten glass",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products"
+					],
+					"first": 8,
+					"first_product": 8,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.lava-glass.melt.v1",
+					"second": 35,
+					"second_product": 36,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"dissolution_corrosion",
+						"chemical_conversion_products",
+						"authoritative_emissions_byproducts"
+					],
+					"first": 12,
+					"first_product": 4,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 96,
+					"revalidation_tags": [
+						"scheduler_contact"
+					],
+					"rule_id": "int.pair.acid-metal.corrosion.v1",
+					"second": 28,
+					"second_product": 29,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants with fire",
+					"channels": [
+						"chemical_conversion_products",
+						"combustion"
+					],
+					"first": 6,
+					"first_product": 6,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"granular_contact"
+					],
+					"rule_id": "int.pair.fire-gunpowder.ignite.v1",
+					"second": 26,
+					"second_product": 6,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"accounting": "consume spark role; convert gunpowder role to fire",
+					"channels": [
+						"chemical_conversion_products",
+						"combustion",
+						"electrical"
+					],
+					"first": 34,
+					"first_product": 0,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"granular_contact"
+					],
+					"rule_id": "int.pair.spark-gunpowder.ignite.v1",
+					"second": 26,
+					"second_product": 6,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"accounting": "consume spark role; convert oil role to fire",
+					"channels": [
+						"chemical_conversion_products",
+						"combustion",
+						"electrical"
+					],
+					"first": 34,
+					"first_product": 0,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"scheduler_contact"
+					],
+					"rule_id": "int.pair.spark-oil.ignite.v1",
+					"second": 16,
+					"second_product": 6,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products",
+						"combustion"
+					],
+					"first": 6,
+					"first_product": 22,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 64,
+					"revalidation_tags": [
+						"water_contact",
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.fire-brine.evaporate.v1",
+					"second": 24,
+					"second_product": 23,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"dissolution_corrosion",
+						"chemical_conversion_products",
+						"authoritative_emissions_byproducts"
+					],
+					"first": 12,
+					"first_product": 37,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 192,
+					"revalidation_tags": [
+						"scheduler_contact"
+					],
+					"rule_id": "int.pair.acid-marble.effervesce.v1",
+					"second": 98,
+					"second_product": 23,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"dissolution_corrosion",
+						"chemical_conversion_products",
+						"authoritative_emissions_byproducts"
+					],
+					"first": 12,
+					"first_product": 37,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 224,
+					"revalidation_tags": [
+						"scheduler_contact"
+					],
+					"rule_id": "int.pair.acid-chalk.effervesce.v1",
+					"second": 99,
+					"second_product": 14,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Water role; convert ChalkBlock role",
+					"channels": [
+						"dissolution_corrosion",
+						"chemical_conversion_products"
+					],
+					"first": 3,
+					"first_product": 3,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 6,
+					"revalidation_tags": [
+						"water_contact"
+					],
+					"rule_id": "int.pair.water-chalk.soften.v1",
+					"second": 99,
+					"second_product": 20,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Lava role; convert BasaltColumns role",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products"
+					],
+					"first": 8,
+					"first_product": 8,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 6,
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.lava-basalt.remelt.v1",
+					"second": 100,
+					"second_product": 8,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Lava role; convert Obsidian role",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products"
+					],
+					"first": 8,
+					"first_product": 8,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 24,
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.lava-obsidian.remelt.v1",
+					"second": 101,
+					"second_product": 36,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Water role; convert AdobeBrick role",
+					"channels": [
+						"dissolution_corrosion",
+						"chemical_conversion_products"
+					],
+					"first": 3,
+					"first_product": 3,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 24,
+					"revalidation_tags": [
+						"water_contact"
+					],
+					"rule_id": "int.pair.water-adobe.erode.v1",
+					"second": 102,
+					"second_product": 20,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Lava role; convert AdobeBrick role",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products"
+					],
+					"first": 8,
+					"first_product": 8,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 64,
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.lava-adobe.fire.v1",
+					"second": 102,
+					"second_product": 43,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Fire role; convert RawClay role",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products"
+					],
+					"first": 6,
+					"first_product": 6,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 48,
+					"revalidation_tags": [
+						"scheduler_contact",
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.fire-raw-clay.fire.v1",
+					"second": 103,
+					"second_product": 48,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Lava role; convert RawClay role",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products"
+					],
+					"first": 8,
+					"first_product": 8,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 128,
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.lava-raw-clay.fire.v1",
+					"second": 103,
+					"second_product": 48,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Water role; convert RawClay role",
+					"channels": [
+						"dissolution_corrosion",
+						"chemical_conversion_products"
+					],
+					"first": 3,
+					"first_product": 3,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 10,
+					"revalidation_tags": [
+						"water_contact"
+					],
+					"rule_id": "int.pair.water-raw-clay.slake.v1",
+					"second": 103,
+					"second_product": 20,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"thermal_phase",
+						"combustion",
+						"authoritative_emissions_byproducts"
+					],
+					"first": 6,
+					"first_product": 22,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"water_contact",
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.fire-packed-snow.melt.v1",
+					"second": 105,
+					"second_product": 3,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products",
+						"authoritative_emissions_byproducts"
+					],
+					"first": 8,
+					"first_product": 13,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"water_contact",
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.lava-packed-snow.quench.v1",
+					"second": 105,
+					"second_product": 22,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "convert Steam role; preserve PackedSnow role",
+					"channels": [
+						"thermal_phase"
+					],
+					"first": 22,
+					"first_product": 3,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 32,
+					"revalidation_tags": [
+						"water_contact",
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.steam-packed-snow.condense.v1",
+					"second": 105,
+					"second_product": 105,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"thermal_phase",
+						"dissolution_corrosion",
+						"chemical_conversion_products"
+					],
+					"first": 23,
+					"first_product": 24,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 64,
+					"revalidation_tags": [
+						"water_contact",
+						"granular_contact"
+					],
+					"rule_id": "int.pair.salt-packed-snow.thaw.v1",
+					"second": 105,
+					"second_product": 21,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products",
+						"authoritative_emissions_byproducts"
+					],
+					"first": 36,
+					"first_product": 35,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"water_contact",
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.molten-glass-packed-snow.quench.v1",
+					"second": 105,
+					"second_product": 22,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"dissolution_corrosion",
+						"chemical_conversion_products"
+					],
+					"first": 3,
+					"first_product": 24,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 48,
+					"revalidation_tags": [
+						"water_contact"
+					],
+					"rule_id": "int.pair.water-rock-salt.dissolve.v1",
+					"second": 106,
+					"second_product": 23,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Water role; convert GypsumBoard role",
+					"channels": [
+						"dissolution_corrosion",
+						"chemical_conversion_products"
+					],
+					"first": 3,
+					"first_product": 3,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 16,
+					"revalidation_tags": [
+						"water_contact"
+					],
+					"rule_id": "int.pair.water-gypsum.soak.v1",
+					"second": 107,
+					"second_product": 20,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Fire role; convert GypsumBoard role",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products"
+					],
+					"first": 6,
+					"first_product": 6,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 6,
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.fire-gypsum.calcine.v1",
+					"second": 107,
+					"second_product": 14,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products",
+						"authoritative_emissions_byproducts"
+					],
+					"first": 3,
+					"first_product": 22,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 128,
+					"revalidation_tags": [
+						"water_contact",
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.water-quicklime.slake.v1",
+					"second": 108,
+					"second_product": 30,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Water role; convert RammedEarth role",
+					"channels": [
+						"dissolution_corrosion",
+						"chemical_conversion_products"
+					],
+					"first": 3,
+					"first_product": 3,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 6,
+					"revalidation_tags": [
+						"water_contact"
+					],
+					"rule_id": "int.pair.water-rammed-earth.erode.v1",
+					"second": 109,
+					"second_product": 2,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Fire role; convert Sandbag role",
+					"channels": [
+						"chemical_conversion_products",
+						"combustion"
+					],
+					"first": 6,
+					"first_product": 6,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 40,
+					"revalidation_tags": [
+						"scheduler_contact"
+					],
+					"rule_id": "int.pair.fire-sandbag.burn.v1",
+					"second": 110,
+					"second_product": 2,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"dissolution_corrosion",
+						"chemical_conversion_products",
+						"authoritative_emissions_byproducts"
+					],
+					"first": 12,
+					"first_product": 4,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 192,
+					"revalidation_tags": [
+						"scheduler_contact"
+					],
+					"rule_id": "int.pair.acid-zinc.dissolve.v1",
+					"second": 113,
+					"second_product": 23,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Fire role; convert MagnesiumPlate role",
+					"channels": [
+						"chemical_conversion_products",
+						"combustion"
+					],
+					"first": 6,
+					"first_product": 6,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 96,
+					"revalidation_tags": [
+						"scheduler_contact"
+					],
+					"rule_id": "int.pair.fire-magnesium.ignite.v1",
+					"second": 115,
+					"second_product": 6,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"chemical_conversion_products",
+						"combustion",
+						"electrical"
+					],
+					"first": 34,
+					"first_product": 0,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"scheduler_contact"
+					],
+					"rule_id": "int.pair.spark-magnesium.ignite.v1",
+					"second": 115,
+					"second_product": 6,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products",
+						"combustion",
+						"electrical"
+					],
+					"first": 34,
+					"first_product": 0,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"scheduler_contact"
+					],
+					"rule_id": "int.pair.spark-thermite.ignite.v1",
+					"second": 116,
+					"second_product": 8,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products",
+						"combustion"
+					],
+					"first": 6,
+					"first_product": 8,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 64,
+					"revalidation_tags": [
+						"scheduler_contact",
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.fire-thermite.ignite.v1",
+					"second": 116,
+					"second_product": 8,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Water role; convert BareIron role",
+					"channels": [
+						"dissolution_corrosion",
+						"chemical_conversion_products"
+					],
+					"first": 3,
+					"first_product": 3,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 3,
+					"revalidation_tags": [
+						"water_contact"
+					],
+					"rule_id": "int.pair.water-bare-iron.rust.v1",
+					"second": 117,
+					"second_product": 65,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Brine role; convert BareIron role",
+					"channels": [
+						"dissolution_corrosion",
+						"chemical_conversion_products"
+					],
+					"first": 24,
+					"first_product": 24,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 12,
+					"revalidation_tags": [
+						"water_contact"
+					],
+					"rule_id": "int.pair.brine-bare-iron.rust.v1",
+					"second": 117,
+					"second_product": 65,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"dissolution_corrosion",
+						"chemical_conversion_products",
+						"authoritative_emissions_byproducts"
+					],
+					"first": 12,
+					"first_product": 4,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 160,
+					"revalidation_tags": [
+						"scheduler_contact"
+					],
+					"rule_id": "int.pair.acid-bare-iron.corrode.v1",
+					"second": 117,
+					"second_product": 29,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Lava role; convert GlassBlock role",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products"
+					],
+					"first": 8,
+					"first_product": 8,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.lava-glass-block.melt.v1",
+					"second": 120,
+					"second_product": 36,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Lava role; convert FrostedGlass role",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products"
+					],
+					"first": 8,
+					"first_product": 8,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.lava-frosted-glass.melt.v1",
+					"second": 121,
+					"second_product": 36,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Lava role; convert QuartzCrystal role",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products"
+					],
+					"first": 8,
+					"first_product": 8,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 8,
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.lava-quartz.fuse.v1",
+					"second": 122,
+					"second_product": 36,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Lava role; convert UraniumGlass role",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products"
+					],
+					"first": 8,
+					"first_product": 8,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.lava-uranium-glass.melt.v1",
+					"second": 123,
+					"second_product": 36,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Water role; convert SugarGlass role",
+					"channels": [
+						"dissolution_corrosion",
+						"chemical_conversion_products"
+					],
+					"first": 3,
+					"first_product": 3,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 48,
+					"revalidation_tags": [
+						"water_contact"
+					],
+					"rule_id": "int.pair.water-sugar-glass.dissolve.v1",
+					"second": 124,
+					"second_product": 20,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products",
+						"combustion",
+						"authoritative_emissions_byproducts"
+					],
+					"first": 6,
+					"first_product": 4,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 64,
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.fire-sugar-glass.caramelise.v1",
+					"second": 124,
+					"second_product": 27,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Fire role; convert WaxBlock role",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products"
+					],
+					"first": 6,
+					"first_product": 6,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 64,
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.fire-wax.melt.v1",
+					"second": 125,
+					"second_product": 16,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Lava role; convert WaxBlock role",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products"
+					],
+					"first": 8,
+					"first_product": 8,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.lava-wax.melt.v1",
+					"second": 125,
+					"second_product": 16,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"chemical_conversion_products",
+						"combustion",
+						"authoritative_emissions_byproducts"
+					],
+					"first": 6,
+					"first_product": 4,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 96,
+					"revalidation_tags": [
+						"scheduler_contact"
+					],
+					"rule_id": "int.pair.fire-sulfur.burn.v1",
+					"second": 126,
+					"second_product": 6,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Lava role; convert SulfurBlock role",
+					"channels": [
+						"chemical_conversion_products",
+						"combustion"
+					],
+					"first": 8,
+					"first_product": 8,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 64,
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.lava-sulfur.ignite.v1",
+					"second": 126,
+					"second_product": 6,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Fire role; convert PhosphorPanel role",
+					"channels": [
+						"chemical_conversion_products",
+						"combustion"
+					],
+					"first": 6,
+					"first_product": 6,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 128,
+					"revalidation_tags": [
+						"scheduler_contact"
+					],
+					"rule_id": "int.pair.fire-phosphor.ignite.v1",
+					"second": 127,
+					"second_product": 6,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "preserve Lava role; convert PolymerPanel role",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products"
+					],
+					"first": 8,
+					"first_product": 8,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 255,
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.lava-polymer.melt.v1",
+					"second": 128,
+					"second_product": 16,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				},
+				{
+					"accounting": "replace both participants; preserve role-specific products",
+					"channels": [
+						"thermal_phase",
+						"chemical_conversion_products",
+						"combustion",
+						"authoritative_emissions_byproducts"
+					],
+					"first": 6,
+					"first_product": 4,
+					"match": "unordered_role_preserving",
+					"probability_threshold": 32,
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.pair.fire-polymer.melt.v1",
+					"second": 128,
+					"second_product": 16,
+					"supersedes": "",
+					"trigger": "pair_contact",
+					"tuning_pass_id": "int.pass.mat002-building-materials",
+					"version": 1
+				}
+			],
+			"profile_id": "int.current-behaviour",
+			"profile_version": 2,
+			"schema_id": "cybersand.interactions",
+			"schema_version": 1,
+			"specialized_authority": "native/src/world.cpp",
+			"specialized_migration_state": "represented-provenance-visible; current world kernels remain authoritative",
+			"specialized_rule_count": 19,
+			"specialized_rules": [
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Steam",
+					"channels": [
+						"thermal_phase"
+					],
+					"material": 22,
+					"represented_semantics": "lifetime expiry converts Steam to Water",
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.kernel.steam.condense.v1",
+					"supersedes": "",
+					"trigger": "intrinsic_state",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Fire",
+					"channels": [
+						"combustion",
+						"authoritative_emissions_byproducts"
+					],
+					"material": 6,
+					"represented_semantics": "sampled ignition and Fire lifetime ending as Smoke",
+					"revalidation_tags": [
+						"scheduler_contact"
+					],
+					"rule_id": "int.kernel.fire.ignite-smoke.v1",
+					"supersedes": "",
+					"trigger": "neighbourhood_context",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Combustible",
+					"channels": [
+						"combustion",
+						"authoritative_emissions_byproducts"
+					],
+					"material": 7,
+					"represented_semantics": "active burn, Water extinguishing, consumption and Fire emission",
+					"revalidation_tags": [
+						"water_contact"
+					],
+					"rule_id": "int.kernel.combustible.burn.v1",
+					"supersedes": "",
+					"trigger": "neighbourhood_context",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Gunpowder",
+					"channels": [
+						"combustion"
+					],
+					"material": 26,
+					"represented_semantics": "hot-neighbour ignition",
+					"revalidation_tags": [
+						"granular_contact"
+					],
+					"rule_id": "int.kernel.gunpowder.hot-ignite.v1",
+					"supersedes": "",
+					"trigger": "neighbourhood_context",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Coal",
+					"channels": [
+						"combustion",
+						"authoritative_emissions_byproducts"
+					],
+					"material": 27,
+					"represented_semantics": "hot ignition, Water/Brine extinguishing, Dust/Fire/Smoke products",
+					"revalidation_tags": [
+						"water_contact",
+						"granular_contact"
+					],
+					"rule_id": "int.kernel.coal.burn.v1",
+					"supersedes": "",
+					"trigger": "neighbourhood_context",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Spark",
+					"channels": [
+						"combustion",
+						"electrical"
+					],
+					"material": 34,
+					"represented_semantics": "adjacent base-Metal charging or sampled combustible ignition; Spark locomotion excluded",
+					"revalidation_tags": [
+						"scheduler_contact"
+					],
+					"rule_id": "int.kernel.spark.charge-ignite.v1",
+					"supersedes": "",
+					"trigger": "neighbourhood_context",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Metal",
+					"channels": [
+						"thermal_phase",
+						"electrical"
+					],
+					"material": 28,
+					"represented_semantics": "base-Metal charge propagation and charged-Metal Water-to-Steam consequence",
+					"revalidation_tags": [
+						"water_contact"
+					],
+					"rule_id": "int.kernel.metal.charge.v1",
+					"supersedes": "",
+					"trigger": "neighbourhood_context",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Cement",
+					"channels": [
+						"curing_growth_special_state"
+					],
+					"material": 30,
+					"represented_semantics": "air/Water/Brine/Concrete-context cure ending as Concrete",
+					"revalidation_tags": [
+						"water_contact"
+					],
+					"rule_id": "int.kernel.cement.cure.v1",
+					"supersedes": "",
+					"trigger": "neighbourhood_context",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::MoltenGlass",
+					"channels": [
+						"thermal_phase"
+					],
+					"material": 36,
+					"represented_semantics": "hot-neighbour cooling reset and eventual conversion to Glass",
+					"revalidation_tags": [
+						"thermal_cadence"
+					],
+					"rule_id": "int.kernel.molten-glass.cool.v1",
+					"supersedes": "",
+					"trigger": "neighbourhood_context",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Lava",
+					"channels": [
+						"thermal_phase",
+						"combustion"
+					],
+					"material": 8,
+					"represented_semantics": "sampled Ice-to-Water conversion or neighbour ignition; movement excluded",
+					"revalidation_tags": [
+						"water_contact",
+						"thermal_cadence"
+					],
+					"rule_id": "int.kernel.lava.contact.v1",
+					"supersedes": "",
+					"trigger": "neighbourhood_context",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Ice",
+					"channels": [
+						"thermal_phase"
+					],
+					"material": 9,
+					"represented_semantics": "hot-neighbour melt and sampled Water freeze",
+					"revalidation_tags": [
+						"water_contact",
+						"thermal_cadence"
+					],
+					"rule_id": "int.kernel.ice.phase.v1",
+					"supersedes": "",
+					"trigger": "neighbourhood_context",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Acid",
+					"channels": [
+						"dissolution_corrosion",
+						"chemical_conversion_products"
+					],
+					"material": 12,
+					"represented_semantics": "sampled broad corrosion of non-Empty/non-Wall/non-Acid targets; movement excluded",
+					"revalidation_tags": [
+						"scheduler_contact"
+					],
+					"rule_id": "int.kernel.acid.corrosion.v1",
+					"supersedes": "",
+					"trigger": "neighbourhood_context",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Cloner",
+					"channels": [
+						"curing_growth_special_state",
+						"authoritative_emissions_byproducts"
+					],
+					"material": 5,
+					"represented_semantics": "capture neighbour identity and emit initialized copies",
+					"revalidation_tags": [
+						"scheduler_contact"
+					],
+					"rule_id": "int.kernel.cloner.capture-emit.v1",
+					"supersedes": "",
+					"trigger": "neighbourhood_context",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Plant",
+					"channels": [
+						"combustion",
+						"curing_growth_special_state"
+					],
+					"material": 11,
+					"represented_semantics": "growth plus hot-neighbour ignition",
+					"revalidation_tags": [
+						"biological_contact"
+					],
+					"rule_id": "int.kernel.plant.growth.v1",
+					"supersedes": "",
+					"trigger": "neighbourhood_context",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Fungus",
+					"channels": [
+						"combustion",
+						"curing_growth_special_state"
+					],
+					"material": 18,
+					"represented_semantics": "growth plus hot-neighbour ignition",
+					"revalidation_tags": [
+						"biological_contact"
+					],
+					"rule_id": "int.kernel.fungus.growth.v1",
+					"supersedes": "",
+					"trigger": "neighbourhood_context",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Seed",
+					"channels": [
+						"combustion",
+						"curing_growth_special_state"
+					],
+					"material": 19,
+					"represented_semantics": "substrate/context germination plus hot-neighbour ignition",
+					"revalidation_tags": [
+						"granular_contact",
+						"biological_contact"
+					],
+					"rule_id": "int.kernel.seed.germinate.v1",
+					"supersedes": "",
+					"trigger": "neighbourhood_context",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Mite",
+					"channels": [
+						"curing_growth_special_state"
+					],
+					"material": 15,
+					"represented_semantics": "environmental death/consumption semantics; locomotion excluded",
+					"revalidation_tags": [
+						"biological_contact"
+					],
+					"rule_id": "int.kernel.mite.environment.v1",
+					"supersedes": "",
+					"trigger": "neighbourhood_context",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Rocket",
+					"channels": [
+						"curing_growth_special_state"
+					],
+					"material": 17,
+					"represented_semantics": "payload validation/capture and hot trigger state; ballistic motion excluded",
+					"revalidation_tags": [
+						"ballistic_contact"
+					],
+					"rule_id": "int.kernel.rocket.trigger.v1",
+					"supersedes": "",
+					"trigger": "neighbourhood_context",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				},
+				{
+					"authority": "native/src/world.cpp::RuleKernel::Foam",
+					"channels": [
+						"curing_growth_special_state"
+					],
+					"material": 37,
+					"represented_semantics": "bounded intrinsic lifetime/disappearance",
+					"revalidation_tags": [
+						"scheduler_contact"
+					],
+					"rule_id": "int.kernel.foam.lifecycle.v1",
+					"supersedes": "",
+					"trigger": "intrinsic_state",
+					"tuning_pass_id": "int.pass.current-oracle",
+					"version": 1
+				}
+			],
+			"tuning_passes": [
+				{
+					"changed_rules": "none",
+					"disposition": "characterized-baseline",
+					"id": "int.pass.current-oracle",
+					"parent": "",
+					"version": 1
+				},
+				{
+					"changed_rules": "adds pair rules for building materials 81+ only; oracle rules 0-13 unchanged",
+					"disposition": "authored-extension",
+					"id": "int.pass.mat002-building-materials",
+					"parent": "int.pass.current-oracle",
+					"version": 1
+				}
+			]
+		},
+		"interest_policy": "fixed",
+		"kinetic_contact_baseline": {
+			"effective_water_policy": {
+				"coherence_ticks": 12,
+				"film": 48,
+				"mass_bits": 8,
+				"maximum": 255,
+				"rest_policy": 0,
+				"tolerance": 1,
+				"version": 1
+			},
+			"execution": {
+				"cadence_lod_enabled": false,
+				"liquid_surface_adhesion_enabled": true,
+				"policy": "fixed"
+			},
+			"interest": {
+				"policy": "fixed",
+				"region": [
+					168,
+					56,
+					148,
+					200
+				]
+			},
+			"scope": "identity/provenance only; INT-000 does not own contact motion",
+			"source_runtime_identity": {
+				"godot": "4.7-stable (official)",
+				"material_catalogue": {
+					"authority": "native artifact; cell_world.gd identifies the UI mirror",
+					"count": 132,
+					"reserved_ids": [
+						10
+					]
+				},
+				"material_lab_experiment_sha256": "39107638d1c05829d34283a0d4e26ebfbb3d9f091b4ef4a34099bb89e3c51c59",
+				"material_lab_identity_scope": "File fingerprints observed around native construction and rechecked before export/capture; mapped-module identity is not independently measured.",
+				"native_path": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+				"native_sha256": "22f39a70915f4eb00636b0d85a6cd640f22dd70884965b4e8acbb026d5d0ba1c",
+				"platform": "Linux",
+				"revision_status": "not-embedded",
+				"script_set_sha256": "153cba309b99859fe977aa371305cc15073a6b5c30690d00898af420d725f927",
+				"script_sha256": {
+					"scripts/cell_world.gd": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+					"scripts/experiment_tower.gd": "aa65451d8bacba91c715445a41cd64ef3849d6dce4e207166abc1a9410a545e8",
+					"scripts/gameplay_recorder.gd": "d16aed6fdec7e5757522fd838ecc5e0c6f94ffdf4db2f71d6dabb3c4cb7b7c90",
+					"scripts/main.gd": "6de891fcd60708f8fa7f75eacdc649480f9e9f0a7b1e6dcd3bf3a81f39094204",
+					"scripts/material_appearance_lut.gd": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+					"scripts/microscenario_catalogue.gd": "37dfc628f5b23519a906fcb61cd2ba95671d49f9cc17a37704f55a7526182599",
+					"scripts/microscenario_comparison.gd": "a4aab7a504db70698dafedb368384bcce61b73edaa01795b5ae368a8912a4890",
+					"scripts/microscenario_contract.gd": "0e71637772a56eb1b89950ff44e4f651d55a5f219e4a126f2ff7f451db4c4a48",
+					"scripts/microscenario_host.gd": "e6a37a621f8de123b3b7628e3b2f2b3f57224fb2f850d41340c4be3be518fa3a",
+					"scripts/microscenario_identity.gd": "84131b8d511ad5ed46d17f1743fef74d61e9fc9fdfbb3acebc384e30424121f6",
+					"scripts/microscenario_panel.gd": "6ecb5a17645eaee40931a081a4e576a6be5c4df4a64130ab5f12f83c4113cba7",
+					"scripts/microscenario_reference_pack.gd": "98e3c2f8d215c698ac4b13501934dec2e8c48fe8f992650be0f7b658a540480f",
+					"scripts/microscenario_telemetry.gd": "539c9832b3514b844cd650afe56683dc2933bc8ed01822d04c2c1f793a52903d",
+					"scripts/microscenario_workbench.gd": "e5b0aabc5579338e58c2d08cce7e0bd463bd01dd8a8629fe7c84e1fe61e09887",
+					"scripts/sampled_character.gd": "fb56187c5fa44cfd2124dd003fb2bb046d3ef5377e346c933d0bd377fa29fe40",
+					"scripts/simulation_snapshot.gd": "b36ac0cd147714e573e7c1f507e58d1c0273823b8227a31ed6ff264c96f554ea",
+					"scripts/simulation_worker.gd": "a62ed807863bca70e99e783ac5aff9df6ba5a8d8b44ebf577f444be4120245ea",
+					"scripts/transport_profiles.gd": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+					"scripts/water_experiment_contract.gd": "80c3147e28885b099d67dcb89d4327e58d84fed7357c76d2d42db65cc8375d6a",
+					"scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+					"scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7",
+					"scripts/web_demo_controller.gd": "d2115bbc71901a2baa1e49245e93a9c0643fc8546a763e29d3c49410abf67e9e"
+				},
+				"source_revision": "unavailable",
+				"source_scope": "listed apparatus scripts; not a full checkout manifest"
+			},
+			"transport_hash": "1b27b4e934dc7560e6901eb09e634ed604c0111dcf26d5dac6b10885a3e5e268",
+			"water_semantics": [
+				1,
+				8,
+				12,
+				0
+			],
+			"worker_count": 1
+		},
+		"liquid_host_observation": {},
+		"liquid_host_observation_record": {},
+		"material_ids": [
+			0,
+			1,
+			3,
+			8,
+			9,
+			22,
+			23,
+			35
+		],
+		"material_lab_schema_version": 1,
+		"maturity": "exploratory",
+		"mode": "Inspect",
+		"native": {
+			"content_hash": "d033ada92e75c9cb",
+			"state_hash": "ef19cc349adda9cc",
+			"tick": 0,
+			"water_cells": 2,
+			"water_integer": 428,
+			"water_overfill": 0,
+			"water_visible": 428
+		},
+		"observation_limit": 24,
+		"observations": [
+			{
+				"id": "first-initial",
+				"metric": "material_cells",
+				"region": [
+					180,
+					68,
+					124,
+					176
+				],
+				"tick": 0,
+				"value": 1
+			},
+			{
+				"id": "second-initial",
+				"metric": "material_cells",
+				"region": [
+					180,
+					68,
+					124,
+					176
+				],
+				"tick": 0,
+				"value": 1
+			},
+			{
+				"id": "dose-state",
+				"metric": "cell_state",
+				"region": [
+					226,
+					134,
+					1,
+					1
+				],
+				"tick": 0,
+				"value": {
+					"activity_block_coordinate": [
+						7,
+						4
+					],
+					"chunk_coordinate": [
+						1,
+						1
+					],
+					"completed_tick": 0,
+					"material": 0,
+					"ok": true,
+					"scope": "stored cell values; block coordinates are not a per-cell awake flag",
+					"state_a": 0,
+					"state_b": 0,
+					"temperature_available": true,
+					"temperature_raw": 200,
+					"temperature_units": "engine raw integer; not a calibrated heat solver",
+					"transient_body_id": 0,
+					"x": 226,
+					"y": 134
+				}
+			}
+		],
+		"ok": true,
+		"outcome": "running",
+		"platform": "Linux",
+		"player_enabled": false,
+		"presentation": {
+			"baseline": "de332eaf8f4e70b25b097bed0c2e2a7b2aac0173 / Baseline transport / Water8-coherence12 / exploratory",
+			"duration_ticks": 20,
+			"instructions": "Existing native materials in an enclosed bay. The upper dose is released at tick 12 when the requested window permits it. Read stored native cells and the completed-tick counters. No reaction is guaranteed; the resolver preview does not observe World eligibility.",
+			"profile": "bounded-pair/v1",
+			"regions": [
+				{
+					"id": "contact",
+					"label": "23 + 3 / NATIVE",
+					"region": [
+						176,
+						64,
+						132,
+						184
+					]
+				}
+			],
+			"title": "Materials Lab / 23 + 3"
+		},
+		"readback": {
+			"activity_scope": "Completed-tick/global activity counters; the dedicated contact probe additionally copies native core-window and mask facts. Per-cell sleeping and future deadlines remain unavailable.",
+			"applied_policy": {
+				"admission": "current_defaults_only",
+				"assignments": [
+					{
+						"applied_family": "freemass_v1",
+						"applied_variant": "reference",
+						"material": 3,
+						"name": "water",
+						"requested_family": "freemass_v1"
+					},
+					{
+						"applied_family": "cellular_yield_v1",
+						"applied_variant": "reference",
+						"material": 8,
+						"name": "lava",
+						"requested_family": "cellular_yield_v1"
+					},
+					{
+						"applied_family": "cellular_yield_v1",
+						"applied_variant": "reference",
+						"material": 12,
+						"name": "acid",
+						"requested_family": "cellular_yield_v1"
+					},
+					{
+						"applied_family": "cellular_yield_v1",
+						"applied_variant": "reference",
+						"material": 16,
+						"name": "oil",
+						"requested_family": "cellular_yield_v1"
+					},
+					{
+						"applied_family": "cellular_yield_v1",
+						"applied_variant": "reference",
+						"material": 20,
+						"name": "paste",
+						"requested_family": "cellular_yield_v1"
+					},
+					{
+						"applied_family": "cellular_yield_v1",
+						"applied_variant": "reference",
+						"material": 21,
+						"name": "slush",
+						"requested_family": "cellular_yield_v1"
+					},
+					{
+						"applied_family": "cellular_yield_v1",
+						"applied_variant": "reference",
+						"material": 24,
+						"name": "brine",
+						"requested_family": "cellular_yield_v1"
+					},
+					{
+						"applied_family": "cellular_yield_v1",
+						"applied_variant": "reference",
+						"material": 30,
+						"name": "cement",
+						"requested_family": "cellular_yield_v1"
+					},
+					{
+						"applied_family": "cellular_yield_v1",
+						"applied_variant": "reference",
+						"material": 32,
+						"name": "toxic-sludge",
+						"requested_family": "cellular_yield_v1"
+					},
+					{
+						"applied_family": "cellular_yield_v1",
+						"applied_variant": "reference",
+						"material": 33,
+						"name": "mercury",
+						"requested_family": "cellular_yield_v1"
+					},
+					{
+						"applied_family": "cellular_yield_v1",
+						"applied_variant": "reference",
+						"material": 36,
+						"name": "molten-glass",
+						"requested_family": "cellular_yield_v1"
+					}
+				],
+				"capability_matrix_digest": "33c608f875e3d8b5730f1d3b81a54dbeff9579b433e061535610a8bfa276e237",
+				"catalogue_digest": "82b5ab9a6e87ae817072390105052f8a5ac6d0ee22b3301cd973efdfc7fdbad3",
+				"envelope": [
+					1279479895,
+					1,
+					1,
+					-2102023270,
+					1854385793,
+					1886533889,
+					84225930,
+					1522979054,
+					582168604,
+					-646713377,
+					-939672877,
+					868616440,
+					1977866421,
+					1930370363,
+					-2119873090,
+					-6981196,
+					870342995,
+					1443932351,
+					-1569267145,
+					11,
+					3,
+					1,
+					0,
+					8,
+					2,
+					0,
+					12,
+					2,
+					0,
+					16,
+					2,
+					0,
+					20,
+					2,
+					0,
+					21,
+					2,
+					0,
+					24,
+					2,
+					0,
+					30,
+					2,
+					0,
+					32,
+					2,
+					0,
+					33,
+					2,
+					0,
+					36,
+					2,
+					0,
+					0,
+					0
+				],
+				"family_blocks": [],
+				"family_parameters": {},
+				"material_blocks": [],
+				"maximum_rule_radius": 2,
+				"minimum_rule_radius": 2,
+				"normalization": null,
+				"physical_state_format_version": 2,
+				"physical_state_hash_version": 2,
+				"platform": "linux",
+				"policy_hash": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+				"refusal": null,
+				"session_generation": 3,
+				"version": 1,
+				"wire_version": 1
+			},
+			"backend": "native World / existing MicroScenario host",
+			"completed": false,
+			"completed_tick": 0,
+			"count_region": [
+				168,
+				56,
+				148,
+				200
+			],
+			"definition_hash": "2e78e9ffb3f8e5428ff0a7395a9a3a868443feb0f45fc123be7e765496e6a2bc",
+			"definition_id": "materials/authoring-pair",
+			"definition_title": "Materials Lab / 23 + 3",
+			"duration_ticks": 20,
+			"material_counts": {
+				"0": 29510,
+				"1": 84,
+				"22": 1,
+				"23": 1,
+				"3": 1,
+				"35": 1,
+				"8": 1,
+				"9": 1
+			},
+			"native": {
+				"content_hash": "d033ada92e75c9cb",
+				"state_hash": "ef19cc349adda9cc",
+				"tick": 0,
+				"water_cells": 2,
+				"water_integer": 428,
+				"water_overfill": 0,
+				"water_visible": 428
+			},
+			"ok": true,
+			"preview_scope": "Copied native material IDs with current Godot base palette; image is not the quantitative acceptance oracle.",
+			"runtime_scope": "Separate test World only; Workbench and production catalogue are unchanged.",
+			"seed": 2,
+			"seed_scope": "Definition seed controls fixture geometry; native deterministic coordinates/tick streams remain the existing engine law.",
+			"statistics": {
+				"completed_tick": 0,
+				"limits": {
+					"active_chunks": 128,
+					"active_cores": 1024,
+					"deferred_events": 1024,
+					"maximum_chunks": 128,
+					"maximum_explosion_radius": 64
+				},
+				"ok": true,
+				"phase_jobs_last_tick": [
+					0,
+					0,
+					0,
+					0
+				],
+				"scope": "completed native tick counts and current storage; worker_threads_observed is maximum distinct task-claiming participants in one dispatch, not utilization",
+				"unavailable": [
+					"total heap allocations",
+					"per-worker utilization",
+					"per-worker time share",
+					"pending queue occupancy/high-water",
+					"per-cell sleeping status"
+				],
+				"values": {
+					"active_blocks_after": 0,
+					"active_chunks": 2,
+					"chunk_allocations": 0,
+					"deferred_events_processed": 0,
+					"moved_cells": 0,
+					"resident_cell_bytes": 8404992,
+					"resident_chunks": 64,
+					"scheduled_cores": 0,
+					"temperature_field_allocations": 0,
+					"visited_cells": 0,
+					"worker_threads_observed": 0
+				}
+			},
+			"stored_probe": {
+				"activity_block_coordinate": [
+					5,
+					7
+				],
+				"chunk_coordinate": [
+					1,
+					1
+				],
+				"completed_tick": 0,
+				"current_rule_available": true,
+				"has_pair_reactions": false,
+				"kernel": 0,
+				"material": 0,
+				"material_name": "empty",
+				"ok": true,
+				"read_only": true,
+				"scheduler": {
+					"backend": 1,
+					"core_coordinate": [
+						2,
+						3
+					],
+					"core_size": 64,
+					"last_applied_core_included": null,
+					"last_applied_core_range": null,
+					"phase": 2,
+					"range_encoding": "inclusive min_core_x,min_core_y,max_core_x,max_core_y; null range is unrestricted",
+					"scope": "Selected source-core window and preceding completed-tick applied window, not task dispatch or per-cell activity. Neighbour reads/writes may reach the source core halo.",
+					"selected_core_included": true,
+					"selected_core_range": [
+						2,
+						0,
+						4,
+						3
+					]
+				},
+				"schema_id": "cybersand.material-lab.cell",
+				"schema_version": 1,
+				"scope": "Copied native stored/visible values and core-window facts, read between ticks by the exclusive owner. No reaction execution or next-tick eligibility guarantee.",
+				"selected_region": [
+					168,
+					56,
+					148,
+					200
+				],
+				"state_a": 0,
+				"state_b": 0,
+				"stored_temperature_available": true,
+				"stored_temperature_raw": 200,
+				"temperature_available": true,
+				"temperature_raw": 200,
+				"temperature_units": "engine raw integer; not a calibrated heat solver",
+				"transient_body_id": 0,
+				"unobserved": [
+					"per-cell sleeping status",
+					"activity-block active flag and future wake deadline",
+					"cell epoch and actual task dispatch",
+					"contact temporal lane and actual random byte",
+					"earlier neighbour or specialised mechanism competition"
+				],
+				"visible_material": 0,
+				"x": 182,
+				"y": 238
+			},
+			"water_family_request": "default",
+			"workers": 1
+		},
+		"recipe_version": 1,
+		"replay_complete": false,
+		"reproduction": "Reconstruct this complete definition with the recorded worker count, family request and matching source/runtime; this report is not a live-state save.",
+		"runtime_identity": {
+			"godot": "4.7-stable (official)",
+			"material_catalogue": {
+				"authority": "native artifact; cell_world.gd identifies the UI mirror",
+				"count": 132,
+				"reserved_ids": [
+					10
+				]
+			},
+			"material_lab_experiment_sha256": "39107638d1c05829d34283a0d4e26ebfbb3d9f091b4ef4a34099bb89e3c51c59",
+			"material_lab_identity_scope": "File fingerprints observed around native construction and rechecked before export/capture; mapped-module identity is not independently measured.",
+			"native_path": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+			"native_sha256": "22f39a70915f4eb00636b0d85a6cd640f22dd70884965b4e8acbb026d5d0ba1c",
+			"platform": "Linux",
+			"revision_status": "not-embedded",
+			"script_set_sha256": "153cba309b99859fe977aa371305cc15073a6b5c30690d00898af420d725f927",
+			"script_sha256": {
+				"scripts/cell_world.gd": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+				"scripts/experiment_tower.gd": "aa65451d8bacba91c715445a41cd64ef3849d6dce4e207166abc1a9410a545e8",
+				"scripts/gameplay_recorder.gd": "d16aed6fdec7e5757522fd838ecc5e0c6f94ffdf4db2f71d6dabb3c4cb7b7c90",
+				"scripts/main.gd": "6de891fcd60708f8fa7f75eacdc649480f9e9f0a7b1e6dcd3bf3a81f39094204",
+				"scripts/material_appearance_lut.gd": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+				"scripts/microscenario_catalogue.gd": "37dfc628f5b23519a906fcb61cd2ba95671d49f9cc17a37704f55a7526182599",
+				"scripts/microscenario_comparison.gd": "a4aab7a504db70698dafedb368384bcce61b73edaa01795b5ae368a8912a4890",
+				"scripts/microscenario_contract.gd": "0e71637772a56eb1b89950ff44e4f651d55a5f219e4a126f2ff7f451db4c4a48",
+				"scripts/microscenario_host.gd": "e6a37a621f8de123b3b7628e3b2f2b3f57224fb2f850d41340c4be3be518fa3a",
+				"scripts/microscenario_identity.gd": "84131b8d511ad5ed46d17f1743fef74d61e9fc9fdfbb3acebc384e30424121f6",
+				"scripts/microscenario_panel.gd": "6ecb5a17645eaee40931a081a4e576a6be5c4df4a64130ab5f12f83c4113cba7",
+				"scripts/microscenario_reference_pack.gd": "98e3c2f8d215c698ac4b13501934dec2e8c48fe8f992650be0f7b658a540480f",
+				"scripts/microscenario_telemetry.gd": "539c9832b3514b844cd650afe56683dc2933bc8ed01822d04c2c1f793a52903d",
+				"scripts/microscenario_workbench.gd": "e5b0aabc5579338e58c2d08cce7e0bd463bd01dd8a8629fe7c84e1fe61e09887",
+				"scripts/sampled_character.gd": "fb56187c5fa44cfd2124dd003fb2bb046d3ef5377e346c933d0bd377fa29fe40",
+				"scripts/simulation_snapshot.gd": "b36ac0cd147714e573e7c1f507e58d1c0273823b8227a31ed6ff264c96f554ea",
+				"scripts/simulation_worker.gd": "a62ed807863bca70e99e783ac5aff9df6ba5a8d8b44ebf577f444be4120245ea",
+				"scripts/transport_profiles.gd": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+				"scripts/water_experiment_contract.gd": "80c3147e28885b099d67dcb89d4327e58d84fed7357c76d2d42db65cc8375d6a",
+				"scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+				"scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7",
+				"scripts/web_demo_controller.gd": "d2115bbc71901a2baa1e49245e93a9c0643fc8546a763e29d3c49410abf67e9e"
+			},
+			"source_revision": "unavailable",
+			"source_scope": "listed apparatus scripts; not a full checkout manifest"
+		},
+		"scheduled_samples": [],
+		"schema_version": 2,
+		"seed": 2,
+		"source_recipe": "MAT-AUTH Materials Lab / ordinary schema-2 pair fixture v1",
+		"source_recipe_hash": "73eed5e4639763c48e039262ae54194cdedc2625758a1ce6ff23edb15540bc1b",
+		"timing": {
+			"count": 0,
+			"retained_count": 0,
+			"retention": "first-3600-completed-ticks",
+			"scope": "native simulation_tick only; observer and owner costs excluded",
+			"total_ms": 0.0,
+			"truncated": false
+		},
+		"tools": [],
+		"transport_hash": "1b27b4e934dc7560e6901eb09e634ed604c0111dcf26d5dac6b10885a3e5e268",
+		"utc": "2026-11-11T23:02:24",
+		"water_family_request": "default",
+		"water_ledger": {
+			"available": true,
+			"explicit_sink": 0,
+			"explicit_source": 0,
+			"initial_integer": 428,
+			"observed_current_integer": 428,
+			"scope": "scheduled edits only; reactions, user tools and ROI outflow are NOT inferred"
+		},
+		"water_semantics": [
+			1,
+			8,
+			12,
+			0
+		],
+		"work_statistics": {
+			"available": true,
+			"host_boundary_timing": {
+				"count": 0,
+				"retained_count": 0,
+				"retention": "first-3600-completed-ticks",
+				"scope": "before_tick + after_tick apparatus; includes observations and statistics; excludes native tick, renderer, Rapier, publication and frame pacing",
+				"total_ms": 0.0,
+				"truncated": false
+			},
+			"latest": {
+				"completed_tick": 0,
+				"limits": {
+					"active_chunks": 128,
+					"active_cores": 1024,
+					"deferred_events": 1024,
+					"maximum_chunks": 128,
+					"maximum_explosion_radius": 64
+				},
+				"ok": true,
+				"phase_jobs_last_tick": [
+					0,
+					0,
+					0,
+					0
+				],
+				"scope": "completed native tick counts and current storage; worker_threads_observed is maximum distinct task-claiming participants in one dispatch, not utilization",
+				"unavailable": [
+					"total heap allocations",
+					"per-worker utilization",
+					"per-worker time share",
+					"pending queue occupancy/high-water",
+					"per-cell sleeping status"
+				],
+				"values": {
+					"active_blocks_after": 0,
+					"active_chunks": 2,
+					"chunk_allocations": 0,
+					"deferred_events_processed": 0,
+					"moved_cells": 0,
+					"resident_cell_bytes": 8404992,
+					"resident_chunks": 64,
+					"scheduled_cores": 0,
+					"temperature_field_allocations": 0,
+					"visited_cells": 0,
+					"worker_threads_observed": 0
+				}
+			},
+			"max_observed": {
+				"active_blocks_after": 0,
+				"active_chunks": 2,
+				"chunk_allocations": 0,
+				"deferred_events_processed": 0,
+				"moved_cells": 0,
+				"resident_cell_bytes": 8404992,
+				"resident_chunks": 64,
+				"scheduled_cores": 0,
+				"temperature_field_allocations": 0,
+				"visited_cells": 0,
+				"worker_threads_observed": 0
+			},
+			"sampled_ticks": 0,
+			"sampling": "setup and each successful observed tick; peaks are counts, not queue occupancy",
+			"totals": {}
+		},
+		"worker_count": 1
+	}
+}

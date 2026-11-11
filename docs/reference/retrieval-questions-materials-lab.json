@@ -130,6 +130,38 @@
         "operations/materials-lab-authoring.md"
       ],
       "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-09",
+      "query": "How does native contact inspection distinguish masks and source-core window exclusion from a supplied reaction probability roll?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Left and right preview clicks select source and target; inspection pauses the exclusive owner and copies actual stored/visible IDs, state, temperature and masks at one completed tick.",
+        "The report distinguishes neighbour, source-core and mask facts from the compiled resolver result at a supplied byte roll; target-core halo access is not incorrectly excluded.",
+        "Per-cell sleeping, future deadlines, epochs, task dispatch and actual random bytes remain unobserved; inspection never executes a reaction and step/input changes retire it."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-10",
+      "query": "How do I open the Windows Materials Lab evaluation package without installing Python Git and a compiler, and what proves it was tested?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Extract the complete evaluation ZIP to a writable directory and run Open-Materials-Lab.cmd; keep source and dependencies together.",
+        "The branch-scoped publisher requires actual Windows native authoring and graphical receipts, then executes the copied package environment before delivery.",
+        "The manifest binds the native DLL and all package files; automated platform execution does not claim human acceptance or runtime activation of authored physics."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
     }
   ]
 }

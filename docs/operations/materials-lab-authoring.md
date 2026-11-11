@@ -16,7 +16,9 @@ the ordinary Shared Workbench's **Materials Lab…** button, or `--materials-lab
 It combines native material inspection, structured candidate editing, compiled
 candidate tests, a compiled candidate/reference World comparison and an isolated native MicroScenario. The
 [dated qualification record](../audits/2026-11-11-materials-lab-v1.md) distinguishes
-local Linux execution, graphical evidence and outstanding Windows/human checks.
+the preceding implementation's evidence. The
+[completion record](../audits/2026-11-11-materials-lab-completion.md) owns the subsequent
+native contact diagnostics, runtime publication and Windows package qualification.
 
 The Lab uses the accepted [catalogue compiler](material-catalogue-shadow.md).
 It does not replace native production definitions, the simulation worker, the
@@ -29,8 +31,10 @@ Use a complete checkout of the implementation branch and its history. Git LFS
 and the ordinary [desktop dependencies](local-build-and-validation.md) remain
 required. Godot is pinned to **4.7.stable.official.5b4e0cb0f** and godot-cpp to
 `101ae38034304346a46ea9ea84ae156d3e860496`. Rebuild the matching GDExtension:
-the retained production binary predates the new read-only inspector method.
+an older retained production binary predates the new read-only inspector methods.
 An older library causes an explicit rebuild message, not a metadata fallback.
+Use a freshly qualified branch runtime only when its provenance matches the
+checkout's native inputs; the completion publisher provides that explicit path.
 
 ```sh
 # Use the existing pinned build environment; see the local-build guide for setup.
@@ -48,6 +52,20 @@ Godot project; this is a desktop source workflow, not an exported/Web authoring
 service. No install operation writes production sources.
 
 ### Windows launch
+
+The branch-scoped **Materials Lab source-matched native runtime publication**
+workflow builds a Windows evaluation ZIP after actual Windows execution. Its
+**Open-Materials-Lab.cmd** launcher uses the included Godot, Python, Git history
+and C++ compiler. Extract the entire ZIP to a writable directory and keep its
+`source` and `dependencies` directories together. First launch imports the
+project, then opens the Lab with the qualified ANGLE renderer. It does not need
+a separately configured compiler environment. The bundle's manifest binds all
+files and the native DLL; `qualification` retains the original automated
+receipts and graphical captures. A package is delivered only after its copied
+environment also executes the native authoring tests. See the completion record
+for the actual run/artifact identity; workflow presence alone is not a passed run.
+
+For an ordinary source checkout instead of the evaluation package:
 
 Use the existing **GDExtension build and current Godot regression** workflow's
 source-built Windows candidate for the exact branch commit, or the pinned
@@ -182,8 +200,11 @@ output and a five-minute desktop wall limit. **Cancel World test** uses the same
 cancellation marker. The compiler/probe process tree is terminated on timeout or
 cancellation; cancelled/failed jobs cannot qualify a candidate. Closing gives
 cleanup at most two seconds before terminating an unresponsive process. These
-process controls are locally exercised on Linux; Windows cleanup remains a
-platform qualification item. CLI request/response paths cannot overwrite a
+process controls use a private Windows Job Object established before the child
+executes, or a POSIX process group. Descendants are retired even if their driver
+already exited or redirected its streams. Four actual descendant-lifetime
+fixtures run on both platforms; their platform-qualified results belong to the
+completion record. CLI request/response paths cannot overwrite a
 preset or a compiled bundle through response-path aliasing.
 
 ### Reusable powder example
@@ -293,8 +314,10 @@ Historical probability is inclusive: threshold **T means (T + 1) / 256**.
 Threshold 0 is a 1/256 chance. The native diagnostic distinguishes no matching
 rule, failed supplied roll and selected reaction. It reports endpoint products,
 priority and state/quantity implications where the native API provides them.
-It cannot establish whether World scheduled a particular contact, masked a
-cell, slept, or chose a competing kernel mechanism.
+This resolver-only diagnostic cannot establish whether World scheduled a
+particular contact. The separate native contact inspector below adds observed
+cell masks and core-window facts; actual dispatch, per-cell sleep and competing
+kernel mechanisms remain unobserved.
 
 For a concrete candidate comparison, duplicate Salt and set its Water reaction
 threshold to 0. Roll 0 succeeds; roll 1 fails in the compiled candidate. The
@@ -336,9 +359,30 @@ The experiment reuses `MicroScenarioHost`, its contract and the reference pack.
 It owns a separate native World. Native material counts, stored cells/state,
 Water quantity, content/state hashes, applied policy and aggregate statistics
 are the evidence. The image is an illustrative view of that same World. Seed
-selects fixture construction, not a new global/native RNG policy. Per-cell sleep
-deadlines and scheduler eligibility are not exposed by this owner and are
-explicitly labelled unavailable.
+selects fixture construction, not a new global/native RNG policy.
+
+### Inspect an actual native contact
+
+Left-click the native preview to select a source cell and right-click to select
+a target. **Swap endpoints** tests the opposite source orientation. Set a byte
+roll and press **Inspect contact**; this pauses the exclusive test owner and
+copies both native cells from the same completed tick. Inspection never executes
+a reaction. Stored material, visible material, state A/B, raw stored temperature,
+body-mask identity, compiled kernel and pair capability remain separate facts.
+
+The report combines the real sparse resolver with observed neighbour distance,
+mask and selected source-core window facts. It also shows the preceding completed
+tick's applied window; that value is unobserved before the first tick. A target
+outside the selected core range is not automatically excluded, because contacts
+can reach the source core's write halo. A selected supplied roll cannot prove
+next-tick execution: per-cell sleeping, future wake deadlines, cell epochs,
+actual task dispatch, random bytes and competing neighbours remain explicitly
+unobserved. Editing coordinates/roll or advancing the owner retires the report.
+
+For a deterministic probability example, inspect adjacent native **Steam/Ice**
+cells with rolls **32** and **33**. The compiled threshold32 rule selects the
+reaction on32 and rejects33. The separate eligibility section explains any
+observed blocker without presenting the supplied roll as World's random stream.
 
 For a repeatable example, select **Salt 23 + Water 3**, seed 2, 120 ticks and
 four workers. Native readback observes the 384-cell Salt dose reacting with
@@ -386,14 +430,18 @@ separate controls and evidence.
   exact restored controls, a validated state and a fresh compile before qualification.
 - Exercise Salt retention and a Metal state-B edit through **Test reaction in World**;
   check native registers/temperature and quantity evidence, not only the preview.
+- Select neighbouring native preview cells with left/right clicks, inspect a
+  supplied roll, swap source/target and advance one step; the old contact report
+  must retire and unobserved scheduling facts must remain labelled.
 
 ## Qualification and remaining gates
 
 Focused executable regressions are `test_material_lab_catalogue.gd`,
 `test_material_lab_experiment.gd`, `test_material_lab_ui.gd`,
 `test_material_lab_service.gd`, `test_material_lab_world.gd`,
+`test_material_lab_diagnostics.gd`,
 `tools/material_catalogue/test_lab.py`, `test_world_candidate.py`,
-`test_world_case.py` and `test_reaction_effects.py`. The UI regression mounts the actual
+`test_world_case.py`, `test_reaction_effects.py` and `test_process_owner.py`. The UI regression mounts the actual
 scene and executes Python, C++ and the native World. The graphical capture
 script is `godot/tests/capture_material_lab.gd`; the full mounted UI test also
 accepts `-- --capture-output=<absolute-directory>` to retain its executed
@@ -401,8 +449,11 @@ effects-v2 World view, native receipt and source/library/display manifest.
 Commands and outcomes are retained in the
 [audit](../audits/2026-11-11-materials-lab-v1.md).
 
-The next production step remains a separately qualified #353-B consumer/identity
-transition. Wider endpoint and quantity semantics require additional native
+The bounded #353-B hard/granular capability consumer is isolated in
+[Draft #563](https://github.com/techrote/cybersand/pull/563), stacked on the Lab
+Draft. Its generated maps, independent source-matched equivalence campaign and
+authenticated compatibility transition do not install authored candidates or
+alter the Lab branch's production consumers. Wider endpoint and quantity semantics require additional native
 contracts. The owner explicitly excluded MoltenGlass H1 from this continuation;
 it is not a Materials Lab delivery dependency. Historical liveness evidence is
 preserved. No production thermal law, native identity or saved-World semantics

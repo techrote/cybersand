@@ -11,7 +11,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 # CyberSand documentation
 
 Materials Lab v1 review candidate: [desktop launch, inspection, authoring and native tests](operations/materials-lab-authoring.md),
-[source/platform qualification](audits/2026-11-11-materials-lab-v1.md).
+[initial qualification](audits/2026-11-11-materials-lab-v1.md), and
+[completion/runtime/Windows package evidence](audits/2026-11-11-materials-lab-completion.md).
 The mounted interface consumes native read-only facts, compiles isolated presets
 and reuses MicroScenarios. Production material authority, IDs and saved-world
 semantics remain unchanged; #353-B remains separate. The owner excluded
