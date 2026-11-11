@@ -70,8 +70,10 @@ def validate_native_receipt(receipt: dict, protected: dict, root: Path = ROOT) -
     compare(compatibility.BASELINE, receipt.get("source_commit"), "native receipt baseline")
     compare(protected, receipt.get("protected_sources"), "native receipt protected sources")
     compare(True, receipt.get("native_authored_compiled_shadow_facts_equal"), "native receipt complete fact equality")
-    for flag in ("world_executed", "physics_qualification", "production_cutover"):
+    for flag in ("world_executed", "physics_qualification"):
         compare(False, receipt.get(flag), f"native receipt {flag}")
+    compare(protected.get("production_cutover", False), receipt.get("production_cutover"),
+            "native receipt production_cutover")
     for group, required in RECEIPT_PATHS.items():
         rows = receipt.get(group)
         if not isinstance(rows, list) or len(rows) != len(required):

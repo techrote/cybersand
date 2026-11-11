@@ -25,6 +25,11 @@ def admitted_sources(sources: dict[str, bytes]) -> dict[str, bytes]:
         current[entry["path"]] = subprocess.run(
             ["git", "-C", str(guard.ROOT), "show", f"{entry['source_commit']}:{entry['path']}"],
             check=True, capture_output=True, timeout=30, env=guard.git_environment()).stdout
+    if guard.NATIVE_CAPABILITY_ROUTE is not None:
+        for name in guard.NATIVE_CAPABILITY_INPUTS:
+            current[name] = subprocess.run(
+                ["git", "-C", str(guard.ROOT), "show", f"{guard.NATIVE_CAPABILITY_ROUTE['source_commit']}:{name}"],
+                check=True, capture_output=True, timeout=30, env=guard.git_environment()).stdout
     return current
 
 
@@ -63,7 +68,7 @@ class CompatibilityGuards(unittest.TestCase):
         result = self.check()
         self.assertEqual(result["status"], "PASS")
         self.assertEqual(result["protected_sources"], 27)
-        self.assertFalse(result["production_cutover"])
+        self.assertEqual(result["production_cutover"], guard.NATIVE_CAPABILITY_ROUTE is not None)
         self.assertFalse(result["runtime_execution"])
         self.assertEqual(before, {p: (p.read_bytes(), p.stat().st_mtime_ns)
                                   for p in self.root.rglob("*") if p.is_file()})

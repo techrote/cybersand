@@ -40,6 +40,13 @@ class GodotReceiptGuards(unittest.TestCase):
 
     def test_complete_inventory_is_required_independent_of_row_order(self):
         self.validate()
+
+    def test_scoped_native_cutover_claim_must_match_authenticated_guard(self):
+        self.protected["production_cutover"] = True
+        with self.assertRaisesRegex(ValueError, "production_cutover"):
+            self.validate()
+        self.receipt["production_cutover"] = True
+        self.validate()
         for group in check.RECEIPT_PATHS:
             self.receipt[group].reverse()
         self.validate()

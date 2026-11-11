@@ -77,6 +77,17 @@ IDENTITY_INPUTS = frozenset((
 ))
 TRANSITION_FIELDS = frozenset(("path", "from_lf_sha256", "to_lf_sha256", "source_commit",
                                "record", "issue", "pr"))
+# #353-B authenticates this generated route separately from the frozen lock.
+# The entry is completed only after the source commit and native proof exist.
+NATIVE_CAPABILITY_ROUTE: dict | None = None
+NATIVE_CAPABILITY_INPUTS = frozenset((
+    "materials/catalogue/catalogue.json",
+    "tools/material_catalogue/compiler.py",
+    "tools/material_catalogue/native_capabilities.py",
+    "native/include/cybersand/material_capabilities.hpp",
+))
+NATIVE_CAPABILITY_CONSUMER = "native/src/material_rules.cpp"
+NATIVE_CAPABILITY_HEADER = "native/include/cybersand/material_capabilities.hpp"
 # Git variables that would redirect `git -C <repository>` to another repository
 # or index (they are exported inside hooks and `git rebase -x`).
 GIT_LOCATION_VARIABLES = frozenset(("GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE", "GIT_COMMON_DIR",
@@ -575,6 +586,73 @@ def admitted_transitions(lock: dict, transitions, repository: Path = ROOT) -> di
     return targets
 
 
+def native_capability_route(root: Path, targets: dict[str, str],
+                            repository: Path = ROOT) -> dict | None:
+    """Authenticate one generated consumer without relaxing shadow imports.
+
+    Coherent edits to authored JSON and generated output cannot rebaseline this
+    route. It requires committed input pins and the ordinary native transition.
+    """
+    consumers = []
+    for tree in ("native", "godot"):
+        for source in sorted((root / tree).rglob("*")):
+            if source.suffix not in {".h", ".hh", ".hpp", ".hxx", ".c", ".cc", ".cpp", ".cxx", ".inc", ".gd", ".gdshader"} or not source.is_file():
+                continue
+            name = source.relative_to(root).as_posix()
+            if name == NATIVE_CAPABILITY_HEADER:
+                continue
+            if re.search(rb"material_capabilities\.hpp|material_capability_catalogue", source.read_bytes()):
+                consumers.append(name)
+    if not consumers:
+        return None
+    if consumers != [NATIVE_CAPABILITY_CONSUMER]:
+        raise CompatibilityError("native capability route: unadmitted consumer(s): " + ", ".join(consumers))
+    route = NATIVE_CAPABILITY_ROUTE
+    expected = {"source_commit", "inputs_lf_sha256", "consumer_lf_sha256", "record", "issue", "pr"}
+    if not isinstance(route, dict) or set(route) != expected:
+        raise CompatibilityError("native capability route: no complete code-pinned consumer transition")
+    commit, record = route["source_commit"], route["record"]
+    if type(commit) is not str or not re.fullmatch(r"[0-9a-f]{40}", commit):
+        raise CompatibilityError("native capability route: expected a full source commit")
+    for key in ("issue", "pr"):
+        if type(route[key]) is not int or route[key] <= 0:
+            raise CompatibilityError(f"native capability route: {key} must be a positive integer")
+    pins = route["inputs_lf_sha256"]
+    if not isinstance(pins, dict) or set(pins) != NATIVE_CAPABILITY_INPUTS:
+        raise CompatibilityError("native capability route: exact generated source inventory required")
+    if (not isinstance(record, str) or not re.fullmatch(r"docs/audits/[A-Za-z0-9._/-]+\.md", record)
+            or ".." in record.split("/")):
+        raise CompatibilityError("native capability route: expected a committed audit record")
+    if targets.get(NATIVE_CAPABILITY_CONSUMER) != route["consumer_lf_sha256"]:
+        raise CompatibilityError("native capability route: consumer is not the reviewed transition target")
+    if not _is_ancestor(repository, BASELINE, commit) or not _is_ancestor(repository, commit, "HEAD"):
+        raise CompatibilityError("native capability route: source commit must remain in admitted ancestry")
+    consumer = _git(repository, "show", f"{commit}:{NATIVE_CAPABILITY_CONSUMER}")
+    if consumer.returncode or sha(consumer.stdout) != route["consumer_lf_sha256"]:
+        raise CompatibilityError("native capability route: native consumer source commit mismatch")
+    written = _git(repository, "show", f"HEAD:{record}")
+    if written.returncode:
+        raise CompatibilityError("native capability route: audit record is not committed at HEAD")
+    text = written.stdout.decode("utf-8", errors="strict")
+    for fact in (commit, NATIVE_CAPABILITY_CONSUMER, route["consumer_lf_sha256"]):
+        if fact not in text:
+            raise CompatibilityError(f"native capability route: audit record does not name {fact}")
+    for name, expected_sha in pins.items():
+        if type(expected_sha) is not str or not re.fullmatch(r"[0-9a-f]{64}", expected_sha):
+            raise CompatibilityError(f"native capability route: invalid SHA-256 for {name}")
+        retained = _git(repository, "show", f"{commit}:{name}")
+        if retained.returncode or sha(retained.stdout) != expected_sha:
+            raise CompatibilityError(f"native capability route: {name} pin differs from retained source")
+        path = root / name
+        if path.is_symlink() or not path.is_file() or sha(path.read_bytes()) != expected_sha:
+            raise CompatibilityError(f"native capability route: {name} differs from reviewed source; a new consumer transition is required")
+        if name not in text or expected_sha not in text:
+            raise CompatibilityError(f"native capability route: audit record omits source pin {name}")
+    return {"consumer": NATIVE_CAPABILITY_CONSUMER, "source_commit": commit,
+            "fields": ["hard_surface", "granular_support"], "input_count": len(pins),
+            "identity_transition": False, "record": record, "issue": route["issue"], "pr": route["pr"]}
+
+
 def check(root: Path = ROOT, lock_path: Path | None = None,
           baseline_repository: Path = ROOT, transitions=None) -> dict:
     path = lock_path or root / LOCK
@@ -614,12 +692,14 @@ def check(root: Path = ROOT, lock_path: Path | None = None,
                          source.read_bytes()):
                 raise CompatibilityError(f"{source.relative_to(root)}: production/native test imports shadow output; "
                                          "#353-A permits tooling consumers only")
+    capability_route = native_capability_route(root, targets, baseline_repository)
     return {"status": "PASS", "baseline": BASELINE, "protected_sources": len(SOURCE_ROLES),
             "catalogue_digest": catalogue_digest(current),
             "capability_digest": capability_digest(current["docs/reference/liquid-solver-capability-matrix.json"]),
             "fallback_slush_density": actual_lock["fallback_source_facts"]["slush_density"],
             "reviewed_transitions": copy.deepcopy(list(reviewed)),
-            "production_cutover": False, "runtime_execution": False}
+            "production_cutover": capability_route is not None,
+            "generated_native_consumer": capability_route, "runtime_execution": False}
 
 
 def main(argv: list[str] | None = None) -> int:
