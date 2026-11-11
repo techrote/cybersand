@@ -56,6 +56,8 @@ func run() -> void:
 	host = current_scene
 	var wb: Node = host.shared_workbench
 	panel = wb.art_batches
+	# Ignore the human brush outline, which follows the physical mouse independently.
+	host.brush_preview.modulate.a = 0
 	if not await until(func(): return not wb.applied.is_empty() and not wb.busy(),"native canvas ready"): quit(1);return
 	panel.endpoint.text = OS.get_environment("WB_ART_TEST_ENDPOINT")
 	panel.model.text = "graphical-fixture"
@@ -93,7 +95,9 @@ func run() -> void:
 	var stopped_hash := await capture("03-stopped")
 	await create_timer(0.5).timeout
 	var late_hash := await capture("04-after-stop")
-	check(panel.executor.result.checked==stopped.checked and native_stopped==digest(host.image.get_data()) and stopped_hash==late_hash,"Stop prevents late native and rendered changes")
+	check(panel.executor.result.checked==stopped.checked,"Stop prevents late native receipts")
+	check(native_stopped==digest(host.image.get_data()),"Stop preserves native material image")
+	check(stopped_hash==late_hash,"Stop preserves rendered canvas pixels")
 	check(stopped.status=="partial" and stopped.checked-before_stop<=4096,"Stop preserves only admitted native prefix")
 	check(host.image.get_pixel(130,13).r8==0 and stopped.excluded>=128,"protected rectangle untouched")
 	check(host.image.get_pixel(100,900).r8==0,"uncompleted polygon remainder untouched")
