@@ -35,6 +35,26 @@ def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def committed_lfs_pins() -> dict:
+    """Read canonical pointer blobs even when Git archive smudges LFS data."""
+    paths = subprocess.check_output(["git", "lfs", "ls-files", "--name-only", "HEAD"],
+                                    cwd=ROOT, text=True).splitlines()
+    pins = {}
+    for name in paths:
+        pointer = subprocess.check_output(["git", "cat-file", "blob", "HEAD:"+name], cwd=ROOT)
+        match = re.fullmatch(rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n", pointer)
+        if match is None:
+            raise ValueError(f"Invalid committed LFS pointer: {name}")
+        pins[name] = (match[1].decode(), int(match[2]))
+    return pins
+
+
+def verify_lfs_payload(name: str, data: bytes, pins: dict) -> None:
+    expected_sha, expected_size = pins[name]
+    if hashlib.sha256(data).hexdigest() != expected_sha or len(data) != expected_size:
+        raise ValueError(f"Unmaterialized or changed LFS payload: {name}")
+
+
 def completion(text: str, marker: str) -> dict:
     lines = [line[len(marker):].strip() for line in text.splitlines() if line.startswith(marker + " ")]
     if not lines:
@@ -122,6 +142,7 @@ def stage_linux(args):
     commit, tree, source_inputs = native_candidate_identity.source(ROOT)
     subprocess.run(["git", "diff", "--exit-code", "HEAD", "--", "godot/scripts", "godot/tests", "examples/worldgen"],
                    cwd=ROOT, check=True)
+    lfs_pins = committed_lfs_pins()
     payload = subprocess.check_output(["git", "archive", "HEAD", "--", "godot", "examples/worldgen"], cwd=ROOT)
     destination.mkdir(parents=True)
     with tarfile.open(fileobj=io.BytesIO(payload)) as archive:
@@ -132,19 +153,15 @@ def stage_linux(args):
                 continue
             data = archive.extractfile(item).read()
             if item.name in (native, rapier):
-                pointer = data
                 data = (ROOT / item.name).read_bytes()
                 if not data.startswith(b"\x7fELF"):
                     raise ValueError(f"Missing materialized Linux runtime: {item.name}")
                 if item.name == rapier:
-                    match = re.fullmatch(rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n", pointer)
-                    if match is None or hashlib.sha256(data).hexdigest() != match[1].decode() or len(data) != int(match[2]):
-                        raise ValueError("Linux Rapier differs from the committed dependency pin")
-            elif data.startswith(b"version https://git-lfs.github.com/spec/v1\n"):
-                match = re.fullmatch(rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n", data)
-                data = (ROOT / item.name).read_bytes()
-                if match is None or hashlib.sha256(data).hexdigest() != match[1].decode() or len(data) != int(match[2]):
-                    raise ValueError(f"Unmaterialized source asset: {item.name}")
+                    verify_lfs_payload(item.name, data, lfs_pins)
+            elif item.name in lfs_pins:
+                if data.startswith(b"version https://git-lfs.github.com/spec/v1\n"):
+                    data = (ROOT / item.name).read_bytes()
+                verify_lfs_payload(item.name, data, lfs_pins)
             target = destination / item.name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
