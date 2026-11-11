@@ -379,8 +379,21 @@ static func _stamp_valid(stamp: Variant, size: Vector2i) -> bool:
 static func stamp_rows(stamp: Array) -> int:
 	return int(stamp[3]) if stamp.size() == 5 else 2*int(stamp[2])+1
 
+static var _extra_stamp_materials: Dictionary = {}
+
 static func _stamp_material(value: Variant) -> bool:
-	return _material(value) or (_integer(value,0,255) and int(value) in STAGED_MATERIALS)
+	if not _integer(value,0,255): return false
+	if _material(value) or int(value) in STAGED_MATERIALS: return true
+	var id := int(value)
+	if not _extra_stamp_materials.has(id):
+		# PAINT uses the loaded native catalogue's validity check. This does not
+		# expand powder sources or change the legacy selected-brush field.
+		if not ClassDB.class_exists(&"CyberDemoBridge"): return false
+		var bridge: Object = ClassDB.instantiate(&"CyberDemoBridge")
+		if not bridge.has_method(&"inspect_interaction"): return false
+		var receipt: Dictionary = bridge.call(&"inspect_interaction",id,id,0)
+		_extra_stamp_materials[id] = bool(receipt.get("ok",false))
+	return bool(_extra_stamp_materials[id])
 
 static func validate(value: Variant, check_starting_paint: bool = true) -> String:
 	if not _keys(value,ROOT_KEYS) or not _integer(value.version,2,2):

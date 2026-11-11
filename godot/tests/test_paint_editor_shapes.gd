@@ -8,6 +8,7 @@ const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 
 var failures: int = 0
 var checks: int = 0
+var planning_usec: Dictionary = {}
 
 
 func _initialize() -> void:
@@ -58,6 +59,12 @@ func _run() -> void:
 
 	var filled: Dictionary = Shapes.rectangle(Vector2i(800, 80), Vector2i(803, 82), true, extent)
 	expect(filled.get("accepted", false) and filled.get("count", 0) == 12, "inclusive filled rectangle")
+	expect(filled.get("cells", PackedInt32Array()) == Shapes.rectangle(
+		Vector2i(803, 82), Vector2i(800, 80), true, extent).get("cells", PackedInt32Array()),
+		"reverse drag has exact identical filled raster")
+	expect(filled.get("cells", PackedInt32Array()) == PackedInt32Array([
+		800,80,801,80,802,80,803,80,800,81,801,81,802,81,803,81,800,82,801,82,802,82,803,82
+	]), "filled rectangle exact row-major raster")
 	var outline: Dictionary = Shapes.rectangle(Vector2i(820, 80), Vector2i(825, 84), false, extent)
 	expect(outline.get("accepted", false) and outline.get("count", 0) == 18, "perimeter without interior")
 	expect(outline.get("cells", PackedInt32Array()) == Shapes.rectangle(
@@ -65,6 +72,10 @@ func _run() -> void:
 		"reverse drag has exact identical perimeter")
 	var one_row: Dictionary = Shapes.rectangle(Vector2i(825, 100), Vector2i(821, 100), false, extent)
 	expect(one_row.get("accepted", false) and one_row.get("count", 0) == 5, "degenerate rectangle is one row")
+	var one_column: Dictionary = Shapes.rectangle(Vector2i(825, 104), Vector2i(825, 100), false, extent)
+	expect(one_column.get("accepted", false) and one_column.get("cells", PackedInt32Array())
+		== PackedInt32Array([825,100,825,101,825,102,825,103,825,104]),
+		"one-column outline contains each row exactly once")
 	var capacity: Dictionary = Shapes.rectangle(Vector2i(900, 50), Vector2i(963, 113), true, extent)
 	expect(capacity.get("accepted", false) and capacity.get("count", 0) == 4096 and capacity.cells.size() == 8192,
 		"full 4096-cell native command bound")
@@ -268,10 +279,20 @@ func _run() -> void:
 		oversized_multi, oversized_ids, Vector2i(0,0), Vector2i(1,1), extent
 	).get("accepted", true), "4097-cell multi-material source refuses before grouping")
 
+	_test_operation_budgets()
 
-	# These three accepted plans exercise the existing native owner once each.
+	# These five accepted plans exercise the existing native owner once each.
 	# A successful queue result by itself is NOT treated as an applied receipt.
 	var worker := CyberSimulationWorker.new()
+	var actual_native: bool = worker._world.get_class() == "CyberNativeCellWorld"
+	expect(actual_native, "runtime is actual CyberNativeCellWorld, never serial fallback")
+	if not actual_native:
+		print("PAINT_EDITOR_SHAPES ", JSON.stringify({
+			"checks": checks, "failures": failures, "actual_native_readback": false,
+			"backend": worker._world.get_class(), "planning_usec": planning_usec,
+		}))
+		quit(1)
+		return
 	worker.set_frame_state(
 		0.0, false, true, Vector2i(800, 80), Vector2i(720, 40),
 		Vector2i(160, 100), 0, 0, true, true, true
@@ -311,6 +332,91 @@ func _run() -> void:
 			"outline interior unchanged by native owner")
 	print("PAINT_EDITOR_SHAPES ", JSON.stringify({
 		"checks": checks, "failures": failures,
-		"actual_native_readback": start_error == OK and snapshot != null and queued
+		"actual_native_readback": actual_native and start_error == OK and snapshot != null and queued,
+		"backend": worker._world.get_class(), "planning_usec": planning_usec,
 	}))
 	quit(1 if failures else 0)
+
+
+func _test_operation_budgets() -> void:
+	# Existing callers retain 4096-cell admission. The mounted executor opts
+	# into larger, still whole-operation-bounded plans and owns their ACKs.
+	for side: int in [512, 1024, 2048]:
+		var extent := Vector2i(side, side)
+		var started: int = Time.get_ticks_usec()
+		var large: Dictionary = Shapes.rectangle(
+			Vector2i.ZERO, Vector2i(511, 511), true, extent, Shapes.MAX_OPERATION_CELLS)
+		planning_usec["max_rectangle_%d" % side] = Time.get_ticks_usec() - started
+		expect(large.get("accepted", false) and large.get("count", 0) == 262144,
+			"262144-cell rectangle admitted explicitly on %d world" % side)
+		var cells: PackedInt32Array = large.get("cells", PackedInt32Array())
+		var exact_order: bool = cells.size() == 524288
+		for i: int in range(int(cells.size() / 2)):
+			if cells[i * 2] != i % 512 or cells[i * 2 + 1] != int(i / 512):
+				exact_order = false
+				break
+		expect(exact_order, "every large rectangle coordinate is exact row-major on %d world" % side)
+		expect(not Shapes.rectangle(Vector2i.ZERO, Vector2i(511, 511), true, extent,
+			262143).get("accepted", true), "whole oversized rectangle refused before raster on %d world" % side)
+		started = Time.get_ticks_usec()
+		var normal: Dictionary = Shapes.line(Vector2i(40, 40), Vector2i(140, 80), 2, extent)
+		planning_usec["normal_line_%d" % side] = Time.get_ticks_usec() - started
+		expect(normal.get("accepted", false), "normal feature line admitted on %d world" % side)
+	var extent := Vector2i(2048, 2048)
+	var started: int = Time.get_ticks_usec()
+	var thick: Dictionary = Shapes.line(Vector2i(30, 60), Vector2i(1800, 400), 8, extent,
+		Shapes.MAX_OPERATION_CELLS)
+	planning_usec["large_thick_line_2048"] = Time.get_ticks_usec() - started
+	expect(thick.get("accepted", false) and thick.get("count", 0) > 4096,
+		"large thick line passes explicit operation budget")
+	expect(thick.get("cells", PackedInt32Array()) == Shapes.line(
+		Vector2i(1800, 400), Vector2i(30, 60), 8, extent, Shapes.MAX_OPERATION_CELLS).get("cells"),
+		"large thick line remains reverse-drag exact")
+	for invalid_limit: int in [0, -1, 262145]:
+		expect(not Shapes.line(Vector2i(1, 1), Vector2i(2, 2), 0, extent, invalid_limit).get("accepted", true),
+			"line refuses invalid explicit operation budget %d" % invalid_limit)
+		expect(not Shapes.rectangle(Vector2i(1, 1), Vector2i(2, 2), true, extent,
+			invalid_limit).get("accepted", true), "rectangle refuses invalid explicit operation budget %d" % invalid_limit)
+		expect(not Shapes.stamp(PackedInt32Array([1, 1]), Vector2i(1, 1), Vector2i(2, 2),
+			extent, invalid_limit).get("accepted", true), "stencil refuses invalid explicit operation budget %d" % invalid_limit)
+		expect(not Shapes.stamp_materials(PackedInt32Array([1, 1]), PackedInt32Array([7]),
+			Vector2i(1, 1), Vector2i(2, 2), extent, invalid_limit).get("accepted", true),
+			"multi-material stencil refuses invalid explicit operation budget %d" % invalid_limit)
+		expect(not Shapes.fill_connected(Vector2i.ZERO, Vector2i.ZERO, Vector2i.ONE,
+			PackedInt32Array([7]), extent, invalid_limit).get("accepted", true),
+			"fill refuses invalid explicit operation budget %d" % invalid_limit)
+	var source: Dictionary = Shapes.rectangle(Vector2i(10, 10), Vector2i(137, 137), true, extent, 16384)
+	var ids := PackedInt32Array()
+	ids.resize(16384)
+	for i: int in range(ids.size()):
+		ids[i] = [0, 2, 7][i % 3]
+	started = Time.get_ticks_usec()
+	var paste: Dictionary = Shapes.stamp_materials(source.cells, ids, Vector2i(10, 10),
+		Vector2i(11, 11), extent, Shapes.MAX_OPERATION_CELLS)
+	planning_usec["mixed_stencil_16384"] = Time.get_ticks_usec() - started
+	expect(paste.get("accepted", false) and paste.get("count", 0) == 16384
+		and paste.get("materials", PackedInt32Array()) == ids,
+		"overlapping translated large stencil retains exact source identity including Empty")
+	var sample := PackedInt32Array()
+	sample.resize(512 * 512)
+	started = Time.get_ticks_usec()
+	var fill: Dictionary = Shapes.fill_connected(Vector2i(100, 100), Vector2i.ZERO,
+		Vector2i(512, 512), sample, Vector2i(512, 512), Shapes.MAX_OPERATION_CELLS)
+	planning_usec["bounded_fill_262144"] = Time.get_ticks_usec() - started
+	expect(fill.get("accepted", false) and fill.get("count", 0) == 262144,
+		"bounded 512-square capture fills exactly at operation ceiling and real world borders")
+	var cropped: Dictionary = Shapes.fill_connected(Vector2i(100, 100), Vector2i.ZERO,
+		Vector2i(512, 512), sample, extent, Shapes.MAX_OPERATION_CELLS)
+	expect(not cropped.get("accepted", true) and cropped.get("cells", PackedInt32Array()).is_empty(),
+		"same maximum sample refuses unread crop edge without a partial plan")
+	expect(not Shapes.fill_connected(Vector2i.ZERO, Vector2i.ZERO, Vector2i(513, 512),
+		sample, extent, Shapes.MAX_OPERATION_CELLS).get("accepted", true),
+		"sample above 262144 refuses before fill")
+	var diagonal_only := PackedInt32Array()
+	diagonal_only.resize(49)
+	diagonal_only[24] = 7
+	diagonal_only[32] = 7
+	var four_connected: Dictionary = Shapes.fill_connected(Vector2i(13, 13), Vector2i(10, 10),
+		Vector2i(7, 7), diagonal_only, extent, Shapes.MAX_OPERATION_CELLS)
+	expect(four_connected.get("accepted", false) and four_connected.get("count", 0) == 1,
+		"diagonal contact never joins a four-connected fill")

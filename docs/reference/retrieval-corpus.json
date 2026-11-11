@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-11-04",
+  "reviewed": "2026-11-08",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -112,6 +112,7 @@
     "systems/physical-flight-lab.md",
     "operations/deepworks-exhibition.md",
     "systems/player-control-playground.md",
+    "systems/paint-editor-bounded-shapes.md",
     "systems/procedural-typed-spatial-fields.md",
     "reference/procedural-spatial-operators.md",
     "systems/procedural-hierarchical-generation.md",
