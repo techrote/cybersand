@@ -276,13 +276,17 @@ func _request(kind: String, state: Dictionary) -> Dictionary:
 	return {"kind":kind,"expected_generation":int(state.generation),
 		"expected_revision":int(state.revision),"expected_tick":int(state.tick),"protected":guards}
 
-func _queue_capture(kind: String, region: Rect2i, seed: Vector2i = Vector2i.ZERO) -> bool:
+func _queue_capture(kind: String, region: Rect2i, seed: Vector2i = Vector2i.ZERO,
+		expected_source: Dictionary = {}) -> bool:
 	if not _ready_to_author(): return false
 	if not region.has_area() or region.size.x*region.size.y > MAX_CELLS \
 			or not Rect2i(Vector2i.ZERO,extent()).encloses(region):
 		_say("Select a complete region of at most 262144 cells inside the canvas.")
 		return false
 	var state := _current()
+	if not expected_source.is_empty() and _source(state) != expected_source:
+		_say("Native source changed during fill expansion; no paint applied.")
+		return false
 	var request := _request("capture",state)
 	request.region = region
 	var admitted: Dictionary = host.simulation_worker.paint_queue(request)
@@ -427,6 +431,21 @@ func _consume_plan() -> void:
 	_planning_job = {}
 	if _planning_cancelled:
 		_say("Planning cancelled; no cells queued.")
+		return
+	if planned is Dictionary and str(job.get("tool","")) == "Fill" \
+			and str(planned.get("unread_edge","")) != "":
+		# No edit has been queued; grow one bounded native capture toward the
+		# actual unread component boundary and retry against the same source.
+		if _source(_current()) != job.fence or not host.paused:
+			_say("Native source changed during fill expansion; no paint applied.")
+			return
+		var expanded: Rect2i = Shapes.grow_fill_capture(job.region,
+			str(planned.unread_edge),job.extent,MAX_CELLS)
+		if not expanded.has_area():
+			_say("Fill requires more than 262144 sampled cells. Use a smaller enclosed region.")
+			return
+		if _queue_capture("fill",expanded,job.seed,job.fence):
+			_say("Expanding fill capture to %d × %d cells…" % [expanded.size.x,expanded.size.y])
 		return
 	if not planned is Dictionary or not planned.get("accepted",false):
 		_say(str(planned.get("error","Paint planning failed.")) if planned is Dictionary else "Paint planning failed.")

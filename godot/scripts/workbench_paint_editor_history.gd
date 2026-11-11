@@ -56,7 +56,7 @@ static func stamps(cells: PackedInt32Array, extent: Vector2i) -> Dictionary:
 			result[existing][3] = int(result[existing][3])+1
 			continue
 		if result.size() >= Setup.MAX_STAMPS:
-			return _refuse("Paint is too detailed for the saved-start limit of 4096 rectangles.")
+			return _refuse("Paint is too detailed for the saved-start limit of %d rectangles." % Setup.MAX_STAMPS)
 		open[key] = result.size()
 		result.append([x,y,width,1,material])
 	return {"accepted":true,"error":"","stamps":result,"cell_count":cells.size()/3}
@@ -86,7 +86,7 @@ static func prepare(setup: Dictionary, cells: PackedInt32Array,
 			if compacted.has("error"): return _refuse(str(compacted.error))
 			candidate.edits = compacted.edits
 	elif candidate.edits.size() > Setup.MAX_STAMPS:
-		return _refuse("Generated-map starting paint is full (4096 rectangles); this operation was not queued.")
+		return _refuse("Generated-map starting paint is full (%d rectangles); this operation was not queued." % Setup.MAX_STAMPS)
 	error = Setup.validate(candidate)
 	if not error.is_empty(): return _refuse(error)
 	var body: String

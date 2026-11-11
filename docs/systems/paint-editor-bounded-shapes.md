@@ -122,7 +122,10 @@ Fill captures a 256×256 window by default. A containing selection may enlarge t
 sample to 262,144 cells. Four-connected membership compares exact material IDs.
 A component touching an unknown cropped edge is refused; the real World boundary
 is a valid stopping edge. There is no global scan of a 1,024² or 2,048² World.
-The maximum explicit sample is bounded even on a 512² World. Capture, planning
+The maximum explicit sample is bounded even on a 512² World. Cropped fills
+now automatically extend their native capture toward an unread connected edge,
+repeating within the same 262,144-cell limit and current World revision.
+No write occurs until the complete component has been planned. Capture, planning
 and native application are separate, cancellable stages with identity checks.
 
 ## Undo and authored-start persistence
@@ -136,8 +139,11 @@ undo, not physics rewind or restoration of temperature/velocity state.
 
 Before native writes, `workbench_paint_editor_history.gd` checks that the complete
 operation can be reconstructed through existing Setup-v2 or GEN-007 start formats.
-It coalesces exact material row runs into boxes, preserving Empty. Existing limits
-remain 4,096 authored stamps/native reconstruction runs and a 1 MiB saved envelope.
+It coalesces exact material row runs into boxes, preserving Empty. The Workbench-only constructor now admits **32,768** authored rectangles/
+stamps (previously 4,096), subject to the unchanged **1 MiB** save envelope
+and native construction-area checks. Other MicroScenario recipes retain
+their 4,096-record limit. This source change requires a rebuilt GDExtension
+before Windows qualification.
 Simple large rectangles fit efficiently. Highly fragmented pastes may explicitly
 refuse before any write. Ordinary blank starts may compact equivalent construction;
 generated starts retain their ordered overlays and original generator provenance.

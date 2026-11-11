@@ -10,11 +10,10 @@ const MATERIALS := [2,14,29,13,19,23,25,26,27,3,58,0,8,16,12,7,9,28]
 const MATERIAL_NAMES := ["Sand","Dust","Rust","Stone","Seed","Salt","Sodium","Gunpowder","Coal","Water","Hard wall","Erase",
 	"Lava","Oil","Acid","Wood","Ice","Metal"]
 const MAX_BODIES := 8
-const MAX_RUNS := 4096
-# Starting paint records. When the brush fills them, the history is compacted
-# into box stamps of its merged rectangles (compact_edits), so the practical
-# bound is the native construction budget of MAX_RUNS rectangles.
-const MAX_STAMPS := 4096
+# Workbench-only construction budget; other MicroScenario starts still
+# enforce 4096. All authored starts retain the 1 MiB saved-file budget.
+const MAX_RUNS := 32768
+const MAX_STAMPS := 32768
 const DIRECTORY := "user://workbench"
 const BYTE_LIMIT := 1024 * 1024
 const DEFAULT_OPTIONS := {"budget":20.0,"mass_multiplier":1.0,"inertia_multiplier":1.0,
@@ -489,7 +488,7 @@ static func rectangles(setup: Dictionary) -> Dictionary:
 			if index >= 0 and int(runs[index+1])+int(runs[index+3]) == y:
 				runs[index+3] = int(runs[index+3])+1
 				continue
-			if runs.size() >= MAX_RUNS*5: return {"error":"Starting terrain exceeds 4096 rectangles."}
+			if runs.size() >= MAX_RUNS*5: return {"error":"Starting terrain exceeds the %d-rectangle construction budget." % MAX_RUNS}
 			open[key] = runs.size()
 			runs.append_array([start,y,x-start,1,mat])
 	return {"runs":runs}

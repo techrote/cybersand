@@ -153,8 +153,16 @@ func _run() -> void:
 		Vector2i(903, 303), Vector2i(900, 300), Vector2i(7, 7),
 		unknown_border, extent)
 	expect(not unsafe_crop.get("accepted", true)
-		and unsafe_crop.get("cells", PackedInt32Array()).is_empty(),
-		"component reaching unread crop boundary refuses without partial fill")
+		and unsafe_crop.get("cells", PackedInt32Array()).is_empty()
+		and str(unsafe_crop.get("unread_edge","")) in ["left","right","top","bottom"],
+		"component reaching unread crop boundary returns direction without partial fill")
+	var grown: Rect2i = Shapes.grow_fill_capture(Rect2i(900,300,7,7),
+		str(unsafe_crop.get("unread_edge","")),extent)
+	expect(grown.has_area() and grown.encloses(Rect2i(900,300,7,7))
+		and grown.size.x*grown.size.y <= Shapes.MAX_FILL_SAMPLE_CELLS,
+		"unread edge grows an enclosing native capture within finite budget")
+	expect(not Shapes.grow_fill_capture(Rect2i(1,1,512,512),"right",extent).has_area(),
+		"maximum-size native capture refuses growth with no hidden writes")
 	var exact_source := PackedInt32Array()
 	exact_source.resize(66 * 66)
 	for sample_y: int in range(1, 65):

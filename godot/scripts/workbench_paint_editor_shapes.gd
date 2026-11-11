@@ -209,6 +209,36 @@ static func stamp(
 # treating unobserved native cells as a filled boundary.
 const MAX_FILL_SAMPLE_CELLS: int = 262144
 
+# Expand only toward the unread boundary that the four-neighbour planner
+# actually encountered. The next capture is always complete, within the
+# same finite sample budget; it never writes or scans the whole World.
+static func grow_fill_capture(region: Rect2i, unread_edge: String,
+		extent: Vector2i, cell_limit: int = MAX_FILL_SAMPLE_CELLS) -> Rect2i:
+	if not _valid_extent(extent) or not region.has_area() or cell_limit < 1 \
+			or region.position.x < 0 or region.position.y < 0 \
+			or region.end.x > extent.x or region.end.y > extent.y \
+			or region.size.x * region.size.y >= cell_limit:
+		return Rect2i()
+	var position := region.position
+	var size := region.size
+	var room := 0
+	var growth := 0
+	match unread_edge:
+		"left", "right":
+			room = position.x if unread_edge == "left" else extent.x-region.end.x
+			growth = mini(mini(room, size.x), int(cell_limit / size.y)-size.x)
+			if growth <= 0: return Rect2i()
+			if unread_edge == "left": position.x -= growth
+			size.x += growth
+		"top", "bottom":
+			room = position.y if unread_edge == "top" else extent.y-region.end.y
+			growth = mini(mini(room, size.y), int(cell_limit / size.x)-size.y)
+			if growth <= 0: return Rect2i()
+			if unread_edge == "top": position.y -= growth
+			size.y += growth
+		_: return Rect2i()
+	return Rect2i(position,size)
+
 
 static func fill_connected(
 		seed_cell: Vector2i,
@@ -261,11 +291,15 @@ static func fill_connected(
 		var world_y: int = sample_origin.y + local_y
 		# A target component that reaches an unknown adjacent source cell
 		# cannot be proved complete. Actual canvas edges are known boundaries.
-		if (local_x == 0 and world_x > 0) \
-				or (local_x == sample_size.x - 1 and world_x < extent.x - 1) \
-				or (local_y == 0 and world_y > 0) \
-				or (local_y == sample_size.y - 1 and world_y < extent.y - 1):
-			return _refuse("Connected fill reaches an unread capture edge; capture a wider native source region.")
+		var unread_edge := ""
+		if local_x == 0 and world_x > 0: unread_edge = "left"
+		elif local_x == sample_size.x - 1 and world_x < extent.x - 1: unread_edge = "right"
+		elif local_y == 0 and world_y > 0: unread_edge = "top"
+		elif local_y == sample_size.y - 1 and world_y < extent.y - 1: unread_edge = "bottom"
+		if not unread_edge.is_empty():
+			var cropped := _refuse("Connected fill reaches an unread capture edge.")
+			cropped["unread_edge"] = unread_edge
+			return cropped
 		if not _include(selected, state, extent, world_x, world_y, cell_limit):
 			return _refuse("Connected fill exceeds the %d-cell operation budget." % cell_limit)
 		# Explicit 4-neighbor connectivity; no diagonal leaks or recursive DFS.

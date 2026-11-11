@@ -114,10 +114,16 @@ func author() -> void:
 	await until(settled,"bounded fill completes")
 	var filled: PackedInt32Array=await capture(Rect2i(100,80,31,31))
 	check(filled.size()==961 and filled[0]==58 and filled[32]==2 and filled[480]==2,"fill leaves boundary intact")
-	var prior: Array=bench.applied.edits.duplicate(true)
-	check(editor.fill_at(Vector2i(180,80)),"open fill sample captured")
-	await until(settled,"cropped fill refuses")
-	check(bench.applied.edits==prior,"cropped refusal writes and records nothing")
+	# The 309-cell-wide pocket exceeds the default 256-wide source capture.
+	# Automatic expansion must find both walls before any native write.
+	await gesture("Outline",Vector2i(160,218),Vector2i(468,260),58)
+	editor.selection=Rect2i()
+	editor.select_material(2)
+	check(editor.fill_at(Vector2i(300,239)),"large watertight fill capture accepted")
+	await until(settled,"adaptive native fill completes",120000)
+	var expanded_fill: PackedInt32Array=await capture(Rect2i(165,235,3,3))
+	check(expanded_fill==PackedInt32Array([2,2,2,2,2,2,2,2,2]),
+		"large watertight fill extends beyond first 256-cell capture")
 	bench._set_view(Vector2(24,20),Vector2i(240,135))
 	await process_frame
 	check(editor.local_to_cell(local(Vector2i(160,90)))==Vector2i(160,90),"pan/zoom pointer mapping exact")

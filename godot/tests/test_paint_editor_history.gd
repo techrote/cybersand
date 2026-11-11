@@ -126,7 +126,8 @@ func controls(base: Dictionary, packet: Dictionary) -> void:
 	var detail := PackedInt32Array()
 	for index: int in 4097:
 		detail.append_array(PackedInt32Array([index%512,index/512,2 if (index+index/512)%2 else 58]))
-	check(not History.prepare(base,detail).accepted,"unpersistable detailed operation refuses before native queue")
+	check(History.prepare(base,detail).accepted,
+		"more than 4096 detailed authored cells admit with the expanded constructor budget")
 	var split_base := base.duplicate(true)
 	var split_cells := PackedInt32Array()
 	for index: int in 1500:
@@ -134,8 +135,13 @@ func controls(base: Dictionary, packet: Dictionary) -> void:
 		var y := (index/128)*2
 		split_base.edits.append([x,y,3,1,58])
 		split_cells.append_array(PackedInt32Array([x+1,y,2]))
-	check(not History.prepare(split_base,split_cells).accepted,
-		"overlapping stamps that split into 4500 native rectangles refuse before queue")
+	check(History.prepare(split_base,split_cells).accepted,
+		"4500 split rectangles admit within Workbench construction budget")
+	var excessive := PackedInt32Array()
+	for index: int in range(Setup.MAX_STAMPS + 1):
+		excessive.append_array(PackedInt32Array([(index%256)*2,int(index/256)*2,58]))
+	check(not History.stamps(excessive,EXTENT).accepted,
+		"beyond 32768 distinct rectangles refuse without native writes")
 	var full := base.duplicate(true)
 	full.edits = []
 	for index: int in Setup.MAX_STAMPS: full.edits.append([200,200,1,1,58])
@@ -181,6 +187,14 @@ func run() -> void:
 	if reopened:
 		var ordinary: Dictionary = Setup.read_named(LABEL)
 		var saved: Dictionary = Store.read_named(LABEL+"-generated")
+		var dense_plain: Dictionary = Setup.read_named(LABEL+"-dense")
+		var dense_gen: Dictionary = Store.read_named(LABEL+"-dense-generated")
+		if check(dense_plain.has("setup") and dense_gen.get("generated",false)
+				and dense_plain.setup.edits.size() > 4096 and dense_gen.setup.edits.size() > 4096,
+				"fresh process reads both >4096-rectangle starting formats"):
+			var dense_packet := generated(dense_gen.generation.recipe)
+			verify_native(dense_plain.setup)
+			verify_native(dense_gen.setup,dense_packet)
 		if check(ordinary.has("setup") and saved.get("generated",false),"fresh process reads both saved formats"):
 			var packet := generated(saved.generation.recipe)
 			check(Store.provenance(packet) == saved.generation,"fresh native regeneration matches all persisted identities")
@@ -196,6 +210,20 @@ func run() -> void:
 		base.selected = 1
 		base.source = [20,20,2]
 		controls(base,packet)
+		var dense_cells := PackedInt32Array()
+		for index: int in 4500:
+			dense_cells.append_array(PackedInt32Array([(index%100)*4,int(index/100)*4,58]))
+		var dense_plain: Dictionary = History.prepare(base,dense_cells)
+		var dense_gen: Dictionary = History.prepare(base,dense_cells,packet)
+		if check(dense_plain.accepted and dense_gen.accepted
+				and dense_plain.setup.edits.size() > 4096 and dense_gen.setup.edits.size() > 4096,
+				"4500-rectangle authored and generated starts preflight"):
+			check(Setup.write_named(LABEL+"-dense",dense_plain.setup).is_empty(),
+				"atomic high-detail authored start save")
+			check(Store.write_named(LABEL+"-dense-generated",dense_gen.setup,packet).is_empty(),
+				"atomic high-detail generated start save")
+			verify_native(dense_plain.setup)
+			verify_native(dense_gen.setup,packet)
 		var ordinary: Dictionary = History.prepare(base,mixed_cells())
 		var generated_start: Dictionary = History.prepare(base,mixed_cells(),packet)
 		if check(ordinary.accepted and generated_start.accepted,"both saved-start candidates admitted"):

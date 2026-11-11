@@ -167,7 +167,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             generated_cells = generated_claim["cells"];
             generated_edits = generated_claim["edits"];
             if (generated_cells.size() != static_cast<std::int64_t>(extent.x) * extent.y ||
-                generated_edits.size() > 4096)
+                generated_edits.size() > 32768)
                 throw std::invalid_argument("Generated-grid length or starting edit capacity invalid");
             const auto is_hex = [](const String& value, std::int64_t length) {
                 if (value.length() != length) return false;
@@ -385,7 +385,8 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 }
             }
             if ((!workbench && rectangles.is_empty()) || rectangles.size() % 5 ||
-                rectangles.size() / 5 > static_cast<std::int64_t>(cybersand::demo::kMaximumRectangles))
+                rectangles.size() / 5 > (workbench ? std::int64_t{32768} :
+                    static_cast<std::int64_t>(cybersand::demo::kMaximumRectangles)))
                 throw std::invalid_argument("Invalid demo rectangle count");
             std::uint64_t area = 0;
             const auto check_rect = [&](std::int32_t x, std::int32_t y, std::int32_t w, std::int32_t h) {
