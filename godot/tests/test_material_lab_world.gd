@@ -12,10 +12,12 @@ var capture_directory: String = ""
 var result: Dictionary = {}
 var capture_manifest: Dictionary = {}
 var capture_source_hashes: Dictionary = {}
+var receipt_validation_only: bool = false
 
 func _initialize() -> void:
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-output="): capture_directory = argument.trim_prefix("--capture-output=")
+		if argument == "--receipt-validation-only": receipt_validation_only = true
 	call_deferred("run")
 
 func expect(value: bool, detail: String) -> void:
@@ -53,7 +55,97 @@ func save_json(path: String, value: Dictionary) -> void:
 		file.store_string(JSON.stringify(value,"\t") + "\n")
 		file.close()
 
+func exercise_receipt_admission(view: Variant, valid: Dictionary) -> void:
+	# Adversaries mutate an actual executed receipt, not a simulated World.
+	var corruptions: Array = [
+		["numeric schema coercion",["schema_version"],"1"],
+		["runtime activation claim",["runtime_active"],true],
+		["wrong candidate digest",["candidate_digest"],"0".repeat(64)],
+		["source drift",["source_identity_after"],"0".repeat(64)],
+		["malformed source identity",["source_identity"],[]],
+		["failed source custody",["checks","source_unchanged"],false],
+		["missing reference qualification",["checks","reference_qualification"],null],
+		["failed candidate qualification",["checks","candidate_qualification"],false],
+		["wrong recipe",["scenario","seed"],99],
+		["malformed native checks",["candidate","checks"],[]],
+		["failed quantity check",["candidate","checks","quantity_balanced"],false],
+		["failed repeat",["reference","checks","deterministic_repeat"],false],
+		["failed worker comparison",["candidate","checks","worker_1_4_equal"],false],
+		["failed persistence checkpoint",["candidate","checks","persistence_checkpoint"],false],
+		["failed persistence continuation",["reference","checks","persistence_replay"],false],
+		["coerced native success",["candidate","ok"],1],
+		["native runtime activation",["reference","runtime_active"],true],
+		["wrong native worker request",["candidate","requested_workers"],1],
+		["wrong descriptor identity",["candidate","descriptor_readback","id"],3],
+		["partial native window",["candidate","final","completed_ticks"],119],
+		["malformed quantity ledger",["reference","initial","quantity_ledger"],"invalid"],
+		["unbalanced native ledger",["candidate","final","quantity_ledger","balanced"],false],
+		["malformed native counts",["candidate","final","material_cells"],[1]],
+		["negative native count",["candidate","final","material_cells",2],-1],
+		["inexact native hash",["reference","final","physical_state_hash"],7],
+		["fractional native quantity",["candidate","final","water_quantity"],1.25],
+		["reserved material in grid",["candidate","final","grid","runs",0,1],10],
+		["excessive preview bounds",["candidate","final","grid","rect",2],65536],
+		["invalid compiled colour",["candidate","palette_rgba",2,0],256],
+	]
+	for corruption: Array in corruptions:
+		expect(view.show_receipt(valid,valid.candidate_digest),"Actual receipt restores before " + str(corruption[0]))
+		var changed: Dictionary = valid.duplicate(true)
+		var at: Variant = changed
+		var path: Array = corruption[1]
+		for index: int in range(path.size() - 1): at = at[path[index]]
+		at[path[-1]] = corruption[2]
+		expect(not view.show_receipt(changed,valid.candidate_digest),"Refuse " + str(corruption[0]))
+		expect(view.receipt.is_empty() and view._reference_preview.texture == null and view._candidate_preview.texture == null,"Invalid receipt retires previous native evidence: " + str(corruption[0]))
+		expect(not view.last_error.is_empty() and not view._pending,"Receipt refusal is actionable and releases controls")
+	expect(view.show_receipt(valid,valid.candidate_digest),"Actual receipt is recoverable after malformed results")
+
+func exercise_recipe_controls(view: Variant, valid: Dictionary) -> void:
+	var original: Dictionary = view.scenario()
+	for entry: Array in [["seed",true],["seed",0.5],["seed",-1],["seed",2147483648],["ticks",0],["ticks",601],["workers",2],["first",10],["second",132]]:
+		var invalid: Dictionary = original.duplicate(true)
+		invalid[entry[0]] = entry[1]
+		expect(not view.set_scenario(invalid),"Recipe refuses invalid " + str(entry))
+		expect(view.scenario() == original and not view.receipt.is_empty(),"Invalid recipe preserves current controls and their accepted result")
+	var unrelated: Dictionary = original.duplicate(true)
+	unrelated.first = 3
+	unrelated.second = 4
+	expect(not view.set_scenario(unrelated),"Recipe must actually place the candidate")
+	var unknown: Dictionary = original.duplicate(true)
+	unknown["unrecognized"] = true
+	expect(not view.set_scenario(unknown),"Unknown recipe field is not silently ignored")
+	var missing: Dictionary = original.duplicate(true)
+	missing.erase("seed")
+	expect(not view.set_scenario(missing),"Missing recipe field is refused")
+	var loaded: Dictionary = {"first":3,"second":2,"seed":2147483647,"ticks":600,"workers":1}
+	expect(view.set_scenario(loaded) and view.scenario() == loaded,"Recipe import synchronizes placement, partner, seed, complete duration and workers")
+	expect(view.receipt.is_empty() and view._reference_preview.texture == null,"Loaded recipe retires an earlier native comparison")
+	expect(view.set_scenario(original),"Original executed recipe restores")
+	view.show_pending()
+	expect(not view.set_scenario(loaded) and view.scenario() == original,"Pending compile cannot be silently retargeted by recipe import")
+	view.show_failure("Completed fixture cleanup")
+	expect(view.show_receipt(valid,valid.candidate_digest),"Native receipt matches the restored recipe")
+
 func run() -> void:
+	if receipt_validation_only:
+		# Fast parser/controls regressions against a retained real native result.
+		# This mode does not claim fresh native execution; the ordinary path below
+		# compiles and executes the actual current source twice.
+		var view = load("res://scripts/material_lab_world_panel.gd").new()
+		root.add_child(view)
+		view.set_materials([{"id":2,"name":"Sand","valid":true},{"id":3,"name":"Water","valid":true},{"id":4,"name":"Smoke","valid":true}])
+		var preset: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../materials/catalogue/fixtures/lab-low-density-sand-world-v1.json"))
+		var retained: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../docs/audits/materials-lab-v1/world-ui-receipt.json"))
+		view.set_candidate(preset.candidate)
+		expect(view.set_scenario(retained.scenario),"Retained native recipe loads into controls")
+		expect(view.show_receipt(retained,retained.candidate_digest),"Retained real native receipt is valid parser input")
+		exercise_receipt_admission(view,retained)
+		exercise_recipe_controls(view,retained)
+		view.queue_free()
+		await process_frame
+		print("Retained receipt parser/controls only; no fresh native World execution claimed.")
+		finish()
+		return
 	if not capture_directory.is_empty():
 		root.size = Vector2i(1680,1050)
 		root.content_scale_size = Vector2i(1680,1050)
@@ -126,6 +218,8 @@ func run() -> void:
 	expect(view.inspect_cell(Vector2i(242,238)).stage == "initial","Before/after view refers to the matching native snapshot")
 	view._stage.select(0)
 	view._stage.item_selected.emit(0)
+	exercise_receipt_admission(view,receipt)
+	exercise_recipe_controls(view,receipt)
 	var bundle: String = str(result.output_dir)
 	# Generated-file parity is checked by the compiler/tooling tests. This
 	# Godot test reads receipts/presets, never generated native definitions.

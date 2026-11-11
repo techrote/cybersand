@@ -6,6 +6,7 @@ const Catalogue = preload("res://scripts/material_lab_catalogue.gd")
 const Experiment = preload("res://scripts/material_lab_experiment.gd")
 const Service = preload("res://scripts/material_lab_service.gd")
 const WorldPanel = preload("res://scripts/material_lab_world_panel.gd")
+const EFFECT_KINDS: Array[String] = ["replace_with_defaults","keep_existing","set_state"]
 var catalogue := Catalogue.new()
 var experiment := Experiment.new()
 var service := Service.new()
@@ -22,6 +23,8 @@ var _job_revision: int = 0
 var _job_op: String = ""
 var _job_reaction_slot: int = -1
 var _job_world_revision: int = -1
+var _job_candidate: Dictionary = {}
+var _job_candidate_digest: String = ""
 var _loading: bool = false
 var _running: bool = false
 var _file_action: String = ""
@@ -46,6 +49,7 @@ var _granular := CheckBox.new()
 var _visual := OptionButton.new()
 var _reaction_picker := OptionButton.new()
 var _reaction_fields: Dictionary = {}
+var _effect_fields: Dictionary = {}
 var _reaction_report := TextEdit.new()
 var _partner := OptionButton.new()
 var _experiment_partner := OptionButton.new()
@@ -162,6 +166,10 @@ func _build() -> void:
 	world_panel.export_requested.connect(func(_scenario: Dictionary) -> void: _open_file("world_bundle",true))
 	world_panel.cancel_requested.connect(func() -> void:
 		if service.busy: service.cancel("Candidate World test cancelled from the Materials Lab."))
+	var case_actions := _row(world_panel)
+	world_panel.move_child(case_actions,2)
+	_button(case_actions,"Save World recipe…",func() -> void: _open_file("export_world_case",true))
+	_button(case_actions,"Import World recipe…",func() -> void: _open_file("import_world_case",false))
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_status.text = "Opening native catalogue…"
 	add_child(_status)
@@ -301,7 +309,23 @@ func _build_reactions(page: VBoxContainer) -> void:
 	match_picker.item_selected.connect(func(index: int) -> void: _edit_reaction("match",index))
 	_button(row,"Validate candidate",func() -> void: _candidate_job("validate"))
 	_button(row,"Compile candidate reaction",func() -> void: _candidate_job("compile_test"))
-	_label(page,"Chance = (T + 1) / 256. T=0 still selects roll 0. Effects v1: replace_with_defaults at both endpoints. Other effects are rejected. Native World retains positional products and legacy initialisation.",true)
+	_button(row,"Test reaction in World",_test_reaction_world)
+	row = _row(page)
+	for endpoint: String in ["first","second"]:
+		var group := VBoxContainer.new()
+		row.add_child(group)
+		_label(group,endpoint.capitalize() + " endpoint effect")
+		var kind := OptionButton.new()
+		for caption: String in ["Replace with defaults","Keep existing","Set state B"]: kind.add_item(caption)
+		group.add_child(kind)
+		var value := SpinBox.new()
+		_spin(group,"State B",value,0,255,0)
+		var detail := _label(group,"",true)
+		detail.custom_minimum_size.x = 270
+		_effect_fields[endpoint] = {"kind":kind,"state_b":value,"detail":detail}
+		kind.item_selected.connect(func(index: int) -> void: _edit_effect(endpoint,index))
+		value.value_changed.connect(func(_number: float) -> void: _edit_effect(endpoint,kind.selected))
+	_label(page,"Chance = (T + 1) / 256; T=0 still selects roll 0. Replace uses legacy product defaults. Effects v2 retain a non-Water participant or set its declared Metal charge / Combustible burn countdown. These effects require Test reaction in World and role-preserving matching.",true)
 	_text(page,_reaction_report,220)
 
 func _build_experiment(page: VBoxContainer) -> void:
@@ -529,29 +553,154 @@ func _start_job(request: Dictionary) -> void:
 	_job_op = str(request.op)
 	_job_world_revision = world_panel.revision
 	_job_reaction_slot = _reaction_picker.get_selected_id() if request.has("diagnostic") and _reaction_picker.selected >= 0 else -1
+	_job_candidate = {}
+	_job_candidate_digest = ""
+	if request.has("candidate"):
+		if not request.candidate is Dictionary:
+			_reject_backend("Submit a structured material definition before requesting qualification.")
+			return
+		_job_candidate = _normalized_candidate(request.candidate)
+		_job_candidate_digest = _candidate_sha256(_job_candidate)
+		if _job_candidate_digest.is_empty():
+			_reject_backend("Candidate values must use the supported integer, text, boolean and structured fields.")
+			return
+		# Capture the exact canonical request before the process can reply.
+		request = request.duplicate(true)
+		request.candidate = _job_candidate.duplicate(true)
 	_status.text = "Authoring: %s…" % _job_op
 	service.request(request,_python.text.strip_edges())
 
 static func _integer_candidate(value: Variant) -> Variant:
 	# JSON.parse uses floats; all numeric preset fields have integer domains.
+	# Dictionary dot-assignment creates StringName keys, while Python JSON
+	# returns String keys. Normalize the same JSON text representation.
 	if value is Dictionary:
 		var result: Dictionary = {}
-		for key: Variant in value: result[key] = _integer_candidate(value[key])
+		for key: Variant in value:
+			result[str(key) if typeof(key) == TYPE_STRING_NAME else key] = _integer_candidate(value[key])
 		return result
 	if value is Array:
 		var result: Array = []
 		for item: Variant in value: result.append(_integer_candidate(item))
 		return result
 	if typeof(value) == TYPE_FLOAT and is_finite(value) and value == floor(value): return int(value)
+	if typeof(value) == TYPE_STRING_NAME: return str(value)
 	return value
+
+static func _python_space(codepoint: int) -> bool:
+	# Python str.strip's Unicode whitespace, including non-ASCII label edges.
+	return codepoint in [9,10,11,12,13,28,29,30,31,32,133,160,5760,8232,8233,8239,8287,12288] or (codepoint >= 8192 and codepoint <= 8202)
+
+static func _normalized_candidate(value: Dictionary) -> Dictionary:
+	var normalized: Dictionary = _integer_candidate(value)
+	if typeof(normalized.get("name")) == TYPE_STRING:
+		var label: String = normalized.name
+		var first: int = 0
+		var end: int = label.length()
+		while first < end and _python_space(label.unicode_at(first)): first += 1
+		while end > first and _python_space(label.unicode_at(end - 1)): end -= 1
+		normalized.name = label.substr(first,end - first)
+	if normalized.get("reactions") is Array:
+		var sortable: bool = true
+		for rule: Variant in normalized.reactions:
+			if not rule is Dictionary or typeof(rule.get("slot")) != TYPE_INT:
+				sortable = false
+				break
+		if sortable:
+			normalized.reactions.sort_custom(func(a: Dictionary,b: Dictionary) -> bool: return a.slot < b.slot)
+	return normalized
+
+static func _json_string(value: String) -> String:
+	var out: String = "\""
+	for index: int in range(value.length()):
+		var codepoint: int = value.unicode_at(index)
+		match codepoint:
+			34: out += "\\\""
+			92: out += "\\\\"
+			8: out += "\\b"
+			9: out += "\\t"
+			10: out += "\\n"
+			12: out += "\\f"
+			13: out += "\\r"
+			_:
+				out += "\\u%04x" % codepoint if codepoint < 32 else String.chr(codepoint)
+	return out + "\""
+
+static func _canonical_json(value: Variant, depth: int = 0) -> String:
+	# Python compiler.canonical_json parity for the integer-only candidate
+	# schema: sorted keys, indent=2, ensure_ascii=False, no lossy number coercion.
+	# Empty return denotes unsupported input; valid empty JSON is [] or {}.
+	if depth > 32: return ""
+	match typeof(value):
+		TYPE_NIL: return "null"
+		TYPE_BOOL: return "true" if value else "false"
+		TYPE_INT: return str(value)
+		TYPE_STRING: return _json_string(value)
+		TYPE_ARRAY, TYPE_DICTIONARY:
+			var object: bool = value is Dictionary
+			if value.is_empty(): return "{}" if object else "[]"
+			var children: PackedStringArray = []
+			var indentation: String = "  ".repeat(depth + 1)
+			if object:
+				var keys: Array = value.keys()
+				for key: Variant in keys:
+					if typeof(key) != TYPE_STRING: return ""
+				keys.sort()
+				for key: String in keys:
+					var encoded: String = _canonical_json(value[key],depth + 1)
+					if encoded.is_empty(): return ""
+					children.append(indentation + _json_string(key) + ": " + encoded)
+			else:
+				for item: Variant in value:
+					var encoded: String = _canonical_json(item,depth + 1)
+					if encoded.is_empty(): return ""
+					children.append(indentation + encoded)
+			return ("{\n" if object else "[\n") + ",\n".join(children) + "\n" + "  ".repeat(depth) + ("}" if object else "]")
+	return ""
+
+static func _candidate_sha256(value: Dictionary) -> String:
+	var encoded: String = _canonical_json(value)
+	return "" if encoded.is_empty() else (encoded + "\n").sha256_text()
+
+func _candidate_response_error(result: Dictionary, compiled: bool) -> String:
+	var expected_state: String = {"create":"draft","validate":"validated_candidate","import":"validated_candidate",
+		"export":"validated_candidate","import_world_case":"validated_candidate","export_world_case":"validated_candidate",
+		"compile_test":"compiled_tested","compile_world_test":"compiled_tested"}.get(_job_op,"")
+	if expected_state.is_empty() or result.get("state") != expected_state:
+		return "Authoring response state does not match the requested operation."
+	if typeof(result.get("runtime_active")) != TYPE_BOOL or result.runtime_active:
+		return "Authoring response must acknowledge that the candidate is not runtime-active."
+	if not compiled and result.has("receipt"):
+		return "Only an executed compile operation can return a native qualification receipt."
+	if compiled and _job_candidate.is_empty(): return "Compiled result has no captured submitted material definition."
+	if not _job_candidate.is_empty():
+		if _candidate_sha256(_normalized_candidate(candidate)) != _job_candidate_digest:
+			return "Current material values differ from the submitted definition; edits remain Draft."
+		if not result.get("candidate") is Dictionary:
+			return "Qualified response is missing its submitted material definition."
+		var returned: Dictionary = _integer_candidate(result.candidate)
+		if _canonical_json(returned) != _canonical_json(_job_candidate):
+			return "Qualified response describes a different material from the submitted definition."
+		if result.get("digest") != _job_candidate_digest:
+			return "Qualified response digest does not match the canonical submitted material."
+	if compiled:
+		if result.get("state") != "compiled_tested" or typeof(result.get("runtime_active")) != TYPE_BOOL or result.runtime_active:
+			return "Compiled result lacks an isolated compiled/tested acknowledgment."
+		var receipt: Variant = result.get("receipt")
+		var schema: String = "cybersand.material-lab.world-receipt" if _job_op == "compile_world_test" else "cybersand.material-lab.native-receipt"
+		if not receipt is Dictionary or receipt.get("schema_id") != schema or not WorldPanel._whole(receipt.get("schema_version"),1,1):
+			return "Compiled result has no receipt for the requested native backend."
+		if receipt.get("candidate_digest") != _job_candidate_digest:
+			return "Native execution receipt does not match the canonical submitted material."
+	return ""
 
 func _backend_completed(result: Dictionary) -> void:
 	if _revision != _job_revision:
 		_status.text = "Completed job refers to an older revision. Current edits remain Draft."
 		if _job_op == "compile_world_test": world_panel.show_failure(_status.text)
 		return
-	if _job_op == "compile_world_test" and _job_world_revision != world_panel.revision:
-		_status.text = "World test completed for an older recipe. Current test settings remain untested."
+	if _job_op in ["compile_world_test","import_world_case","export_world_case"] and _job_world_revision != world_panel.revision:
+		_status.text = "World operation completed for an older recipe. Current test settings remain untested."
 		world_panel.show_failure(_status.text)
 		return
 	last_backend_result = result.duplicate(true)
@@ -563,11 +712,36 @@ func _backend_completed(result: Dictionary) -> void:
 		if _job_op == "compile_world_test": world_panel.show_failure(_status.text)
 		_refresh_candidate_status()
 		return
-	if result.has("candidate"): candidate = _integer_candidate(result.candidate)
+	var response_receipt: Variant = result.get("receipt",{})
+	if not response_receipt is Dictionary:
+		_reject_backend("Native receipt must be an object; this result cannot qualify the candidate.")
+		return
+	var world_result: bool = _job_op == "compile_world_test"
+	var binding_error: String = _candidate_response_error(result,_job_op in ["compile_test","compile_world_test"])
+	if not binding_error.is_empty():
+		_reject_backend(binding_error)
+		return
+	var next_candidate: Dictionary = candidate.duplicate(true)
+	if result.has("candidate"):
+		if not result.candidate is Dictionary:
+			_reject_backend("Authoring result is missing its material definition.")
+			return
+		next_candidate = _integer_candidate(result.candidate)
+	world_panel.set_candidate(next_candidate)
+	if world_result:
+		if not world_panel.show_receipt(response_receipt,_job_candidate_digest):
+			_reject_backend("Native World receipt rejected: " + world_panel.last_error)
+			return
+	if _job_op == "import_world_case":
+		if not result.get("scenario") is Dictionary or not world_panel.set_scenario(_integer_candidate(result.scenario)):
+			_reject_backend("World recipe rejected: " + world_panel.last_error)
+			return
+		world_panel.invalidate("Source-bound recipe imported. Compile + compare World for a fresh native result.")
+	# Commit returned data only after every identity/receipt/recipe check passes.
+	candidate = next_candidate
 	_revision += 1
 	candidate_digest = str(result.get("digest",""))
 	candidate_state = {"draft":"Draft","validated_candidate":"Validated candidate","compiled_tested":"Compiled/tested — isolated native backend"}.get(str(result.get("state","draft")),str(result.get("state","Draft")))
-	var world_result: bool = result.get("receipt",{}).get("schema_id","") == "cybersand.material-lab.world-receipt"
 	if world_result: candidate_state = "Compiled/tested — isolated native World"
 	_candidate_feedback.text = _candidate_result_text(result)
 	if result.has("receipt") and not world_result:
@@ -576,13 +750,25 @@ func _backend_completed(result: Dictionary) -> void:
 	_status.text = "%s completed. %s" % [_job_op,candidate_state]
 	_refresh_candidate(_job_reaction_slot if result.has("receipt") else -1)
 	if world_result:
-		world_panel.show_receipt(result.receipt)
 		_tabs.current_tab = 4
+	if _job_op in ["import_world_case","export_world_case"]: _tabs.current_tab = 4
 	if _job_op in ["create","import"]: _tabs.current_tab = 1
+
+func _reject_backend(message: String) -> void:
+	candidate_state = "Draft — backend result refused"
+	candidate_digest = ""
+	last_backend_result = {"ok":false,"state":"draft","runtime_active":false,"errors":[message]}
+	_status.text = message
+	_candidate_feedback.text = message
+	world_panel.set_candidate(candidate)
+	world_panel.invalidate(message)
+	world_panel.show_failure(message)
+	_refresh_candidate_status()
 
 func _candidate_result_text(result: Dictionary) -> String:
 	var lines: Array[String] = [candidate_state,"",str(result.get("boundary","Editable candidate. Select supported fields, then validate."))]
 	if result.has("digest"): lines.append("\nPreset digest: " + str(result.digest))
+	if result.has("case_digest"): lines.append("\nWorld recipe digest: " + str(result.case_digest))
 	lines.append("\nCHANGES FROM TEMPLATE")
 	for change: Dictionary in result.get("changes",[]):
 		lines.append("%s: %s → %s" % [change.path,change.before,change.after])
@@ -618,6 +804,28 @@ func _refresh_reaction_fields() -> void:
 		_reaction_fields.match.select(int(rule.match))
 	else:
 		_reaction_report.text = "Duplicate a reactive material (for example Salt) to edit its authored rules. Powder 132 has no admitted pair-rule consumer."
+	for endpoint: String in ["first","second"]:
+		var controls: Dictionary = _effect_fields[endpoint]
+		controls.kind.disabled = rule.is_empty()
+		controls.state_b.editable = false
+		controls.detail.text = "Select an owned reaction slot."
+		if rule.is_empty(): continue
+		var effect: Dictionary = rule.effects[endpoint]
+		var index: int = EFFECT_KINDS.find(str(effect.kind))
+		controls.kind.select(index)
+		var participant: int = int(rule[endpoint])
+		var kernel: String = str(catalogue.materials[participant].kernel_name) if participant >= 0 and participant < catalogue.materials.size() else ""
+		var retain_allowed: bool = participant > 0 and participant != 3 and participant != 10 and int(rule.match) != 2
+		var state_allowed: bool = retain_allowed and kernel in ["Metal","Combustible"]
+		controls.kind.set_item_disabled(1,not retain_allowed)
+		controls.kind.set_item_disabled(2,not state_allowed)
+		controls.state_b.value = int(effect.get("state_b",0))
+		controls.state_b.editable = state_allowed and index == 2
+		_reaction_fields[endpoint + "_product"].disabled = index != 0
+		controls.detail.text = "Product defaults replace material and stored state." if index == 0 else "Material, state A and temperature are retained."
+		if index == 1: controls.detail.text += " State B is retained."
+		if index == 2: controls.detail.text += " State B: " + ("charge countdown." if kernel == "Metal" else "burn countdown.")
+		if not retain_allowed: controls.detail.text += " Retention requires a non-Water participant and role-preserving matching."
 	_loading = false
 
 func _edit_reaction(key: String, value: int) -> void:
@@ -625,8 +833,37 @@ func _edit_reaction(key: String, value: int) -> void:
 	var rule: Dictionary = _selected_reaction()
 	if rule.is_empty(): return
 	rule[key] = value
+	if key in ["first","second"] and rule.effects[key].kind != "replace_with_defaults": rule[key + "_product"] = value
 	_mark_draft()
+	_refresh_reaction_fields()
 	_show_candidate_rule()
+
+func _edit_effect(endpoint: String, index: int) -> void:
+	if _loading or index < 0 or index >= EFFECT_KINDS.size(): return
+	var rule: Dictionary = _selected_reaction()
+	if rule.is_empty(): return
+	var effect: Dictionary = {"kind":EFFECT_KINDS[index]}
+	if index == 2: effect.state_b = int(_effect_fields[endpoint].state_b.value)
+	if index != 0: rule[endpoint + "_product"] = int(rule[endpoint])
+	rule.effects[endpoint] = effect
+	rule.effects.version = 2 if rule.effects.first.kind != "replace_with_defaults" or rule.effects.second.kind != "replace_with_defaults" else 1
+	_mark_draft()
+	_refresh_reaction_fields()
+	_show_candidate_rule()
+
+func _test_reaction_world() -> void:
+	var rule: Dictionary = _selected_reaction()
+	if rule.is_empty():
+		_status.text = "Select a candidate reaction first."
+		return
+	var recipe: Dictionary = world_panel.scenario()
+	recipe.first = int(rule.first)
+	recipe.second = int(rule.second)
+	if not world_panel.set_scenario(recipe):
+		_status.text = world_panel.last_error
+		return
+	_tabs.current_tab = 4
+	_world_job(recipe)
 
 func _show_candidate_rule() -> void:
 	var rule: Dictionary = _selected_reaction()
@@ -728,7 +965,7 @@ func _process(_delta: float) -> void:
 		if not _running or experiment.completed_tick() % 4 == 0: _refresh_experiment()
 
 func _open_file(action: String, saving: bool) -> void:
-	if action in ["export_preset","compile_bundle","world_bundle"] and candidate.is_empty():
+	if action in ["export_preset","compile_bundle","world_bundle","export_world_case"] and candidate.is_empty():
 		_status.text = "Create a candidate before saving a preset."
 		return
 	_file_action = action
@@ -738,6 +975,7 @@ func _open_file(action: String, saving: bool) -> void:
 	DirAccess.make_dir_recursive_absolute("user://materials_lab/presets")
 	_file.current_dir = ProjectSettings.globalize_path("user://materials_lab/presets")
 	_file.current_file = "material-preset.json" if action == "export_preset" else "material-test.json"
+	if action == "export_world_case": _file.current_file = "material-world-recipe.json"
 	_file.popup_centered_ratio(0.7)
 
 func _file_selected(path: String) -> void:
@@ -753,6 +991,8 @@ func _file_selected(path: String) -> void:
 			_start_job(request)
 		"import_preset": _start_job({"op":"import","path":path})
 		"export_preset": _start_job({"op":"export","candidate":candidate.duplicate(true),"path":path})
+		"import_world_case": _start_job({"op":"import_world_case","path":path})
+		"export_world_case": _start_job({"op":"export_world_case","candidate":candidate.duplicate(true),"scenario":world_panel.scenario(),"path":path})
 		"import_test":
 			_running = false
 			if not experiment.start_case_json(FileAccess.get_file_as_string(path)):

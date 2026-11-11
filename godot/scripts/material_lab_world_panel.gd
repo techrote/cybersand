@@ -7,8 +7,12 @@ signal export_requested(scenario: Dictionary)
 signal cancel_requested
 
 const MAX_CELLS: int = 65536
+const MAX_JSON_INTEGER: int = 9007199254740991
+const SCENARIO_FIELDS: Array[String] = ["first","second","seed","ticks","workers"]
+const REQUIRED_CHECKS: Array[String] = ["deterministic_repeat","worker_1_4_equal","persistence_checkpoint","persistence_replay","quantity_balanced"]
 var revision: int = 0
 var receipt: Dictionary = {}
+var last_error: String = ""
 var _candidate: Dictionary = {}
 var _materials: Dictionary = {}
 var _decoded: Dictionary = {}
@@ -181,12 +185,46 @@ func scenario() -> Dictionary:
 	return {"first":partner if lower else id,"second":id if lower else partner,
 		"seed":int(_seed.value),"ticks":int(_ticks.value),"workers":_workers.get_selected_id()}
 
+func _scenario_error(value: Dictionary) -> String:
+	if value.size() != SCENARIO_FIELDS.size(): return "Test recipe must contain exactly first, second, seed, ticks and workers."
+	for key: String in SCENARIO_FIELDS:
+		if not value.has(key): return "Test recipe is missing %s." % key
+	for key: String in ["first","second"]:
+		if not _whole(value[key],0,131) or int(value[key]) == 10: return "Test recipe %s must be a valid native material ID; reserved ID 10 cannot be placed." % key
+	if not _whole(value.seed,0,2147483647): return "Test recipe seed must be an integer in 0..2147483647."
+	if not _whole(value.ticks,1,600): return "Test recipe ticks must be an integer in 1..600."
+	if not _whole(value.workers,1,4) or int(value.workers) not in [1,4]: return "Test recipe workers must be 1 or 4."
+	var id: int = int(_candidate.get("target_id",-1))
+	if id < 1 or id > 131 or id == 10: return "Load a supported existing material candidate before its World recipe."
+	if int(value.first) != id and int(value.second) != id: return "Test recipe must place this candidate as the upper dose or lower partner."
+	var partner: int = int(value.second) if int(value.first) == id else int(value.first)
+	if _partner.get_item_index(partner) < 0: return "Test recipe partner is unavailable in the native catalogue."
+	return ""
+
+func set_scenario(value: Dictionary) -> bool:
+	_ensure_built()
+	last_error = "Cancel the pending World test before loading a recipe." if _pending else _scenario_error(value)
+	if not last_error.is_empty(): return false
+	var id: int = int(_candidate.target_id)
+	var upper: bool = int(value.first) == id
+	var partner: int = int(value.second) if upper else int(value.first)
+	_loading = true
+	_placement.select(0 if upper else 1)
+	_partner.select(_partner.get_item_index(partner))
+	_seed.value = int(value.seed)
+	_ticks.value = int(value.ticks)
+	_workers.select(_workers.get_item_index(int(value.workers)))
+	_loading = false
+	invalidate("Test recipe loaded. Compile again to qualify this candidate and configuration.")
+	return true
+
 func _scenario_changed() -> void:
 	if not _loading: invalidate("Scenario changed. Compile again for this placement, seed, tick count and worker selection.")
 
 func invalidate(reason: String) -> void:
 	_ensure_built()
 	revision += 1
+	last_error = ""
 	receipt.clear()
 	_decoded.clear()
 	_reference_preview.texture = null
@@ -240,6 +278,7 @@ func show_failure(message: String) -> void:
 	_ensure_built()
 	_pending = false
 	invalidate(message)
+	last_error = message
 	_report.text = message
 
 static func _whole(value: Variant, low: int, high: int) -> bool:
@@ -284,37 +323,108 @@ func _decode(grid: Variant, palette: Variant) -> Dictionary:
 	var image := Image.create_from_data(width,height,false,Image.FORMAT_RGBA8,pixels)
 	return {"rect":Rect2i(int(rect[0]),int(rect[1]),width,height),"cells":cells,"texture":ImageTexture.create_from_image(image)}
 
-func show_receipt(world_receipt: Dictionary) -> void:
-	_ensure_built()
-	_pending = false
-	if world_receipt.get("schema_id","") != "cybersand.material-lab.world-receipt" or int(world_receipt.get("schema_version",0)) != 1 or world_receipt.get("runtime_active",true) != false:
-		show_failure("The World receipt is unsupported or incorrectly claims runtime activation.")
-		return
-	var staged: Dictionary = {}
+static func _true(value: Variant) -> bool:
+	return typeof(value) == TYPE_BOOL and value
+
+static func _false(value: Variant) -> bool:
+	return typeof(value) == TYPE_BOOL and not value
+
+static func _hex(value: Variant, length: int) -> bool:
+	return typeof(value) == TYPE_STRING and value.length() == length and value.is_valid_hex_number(false)
+
+func _receipt_error(world_receipt: Dictionary, expected_digest: String) -> String:
+	if world_receipt.get("schema_id","") != "cybersand.material-lab.world-receipt" or not _whole(world_receipt.get("schema_version"),1,1) or not _false(world_receipt.get("runtime_active")):
+		return "The World receipt is unsupported or incorrectly claims runtime activation."
+	if not _hex(world_receipt.get("candidate_digest"),64): return "The World receipt has no valid candidate digest."
+	if not expected_digest.is_empty() and world_receipt.candidate_digest != expected_digest: return "The World receipt belongs to a different candidate digest."
+	var config: Variant = world_receipt.get("scenario")
+	if not config is Dictionary: return "The World receipt is missing its test recipe."
+	var problem: String = _scenario_error(config)
+	if not problem.is_empty(): return problem
+	var current: Dictionary = scenario()
+	for key: String in SCENARIO_FIELDS:
+		if int(config[key]) != int(current[key]): return "The World receipt does not match the current %s setting." % key
+	var source: Variant = world_receipt.get("source_identity")
+	if not source is Dictionary or not _hex(source.get("digest"),64): return "The World receipt has no valid source identity."
+	if world_receipt.get("source_identity_after") != source.digest: return "The World source identity changed during the test."
+	var checks: Variant = world_receipt.get("checks")
+	if not checks is Dictionary: return "The World receipt has no qualification checks."
+	for key: String in ["source_unchanged","reference_qualification","candidate_qualification"]:
+		if not _true(checks.get(key)): return "World qualification did not pass: %s." % key
+	if typeof(checks.get("unchanged_candidate")) != TYPE_BOOL: return "The World receipt lacks its unchanged-candidate qualification."
+	if checks.unchanged_candidate and not _true(checks.get("unchanged_candidate_parity")): return "Unchanged candidate did not match the native reference."
 	for side: String in ["reference","candidate"]:
 		var native: Variant = world_receipt.get(side)
-		if not native is Dictionary or native.get("ok",false) != true or native.get("world_simulation",false) != true:
-			show_failure("The %s native World did not acknowledge a successful simulation." % side)
-			return
-		staged[side] = {}
+		if not native is Dictionary or not _true(native.get("ok")) or not _true(native.get("world_simulation")) or not _false(native.get("runtime_active")):
+			return "The %s native World did not acknowledge a successful isolated simulation." % side
+		var native_checks: Variant = native.get("checks")
+		if not native_checks is Dictionary: return "The %s native qualification checks are missing." % side
+		for key: String in REQUIRED_CHECKS:
+			if not _true(native_checks.get(key)): return "%s native qualification did not pass: %s." % [side.capitalize(),key]
+		if not _whole(native.get("requested_workers"),1,4) or int(native.requested_workers) != int(config.workers): return "The %s native worker request differs from the recipe." % side
+		var descriptor: Variant = native.get("descriptor_readback")
+		if not descriptor is Dictionary or not _whole(descriptor.get("id"),1,131) or int(descriptor.id) != int(_candidate.target_id): return "The %s descriptor readback belongs to another material." % side
+		for key: String in ["density","viscosity_index"]:
+			if not _whole(descriptor.get(key),0,65535 if key == "density" else 255): return "The %s descriptor %s is malformed." % [side,key]
+		if side == "candidate":
+			var authored: Variant = _candidate.get("descriptor")
+			if not authored is Dictionary: return "The current candidate has no authored native descriptor."
+			for key: String in ["density","viscosity_index","kernel"]:
+				if not _whole(descriptor.get(key),0,65535) or not _whole(authored.get(key),0,65535) or int(descriptor[key]) != int(authored[key]):
+					return "Compiled native %s does not match the authored candidate." % key
+			var colour: Variant = descriptor.get("rgba")
+			var expected_colour: Variant = authored.get("rgba")
+			if not colour is Array or colour.size() != 4 or not expected_colour is Array or expected_colour.size() != 4:
+				return "Compiled native RGBA is missing from the candidate descriptor."
+			for channel: int in range(4):
+				if not _whole(colour[channel],0,255) or not _whole(expected_colour[channel],0,255) or int(colour[channel]) != int(expected_colour[channel]):
+					return "Compiled native RGBA does not match the authored candidate."
 		for stage: String in ["initial","final"]:
 			var snapshot: Variant = native.get(stage)
-			if not snapshot is Dictionary:
-				show_failure("The %s %s native snapshot is missing." % [side,stage])
-				return
+			if not snapshot is Dictionary: return "The %s %s native snapshot is missing." % [side,stage]
+			var expected_tick: int = 0 if stage == "initial" else int(config.ticks)
+			if not _whole(snapshot.get("completed_ticks"),expected_tick,expected_tick): return "The %s %s snapshot does not cover the requested ticks." % [side,stage]
+			for key: String in ["water_quantity","active_chunks"]:
+				if not _whole(snapshot.get(key),0,MAX_JSON_INTEGER): return "The %s %s native %s is malformed." % [side,stage,key]
+			for key: String in ["content_hash","state_hash","physical_state_hash"]:
+				if not _hex(snapshot.get(key),16): return "The %s %s native %s is malformed." % [side,stage,key]
+			var ledger: Variant = snapshot.get("quantity_ledger")
+			if not ledger is Dictionary or not _true(ledger.get("balanced")): return "The %s %s native quantity ledger is missing or unbalanced." % [side,stage]
+			var counts: Variant = snapshot.get("material_cells")
+			# Native histogram covers the complete byte domain, including unused IDs.
+			if not counts is Array or counts.size() != 256: return "The %s %s material counts are malformed." % [side,stage]
+			for id: int in range(counts.size()):
+				if not _whole(counts[id],0,MAX_JSON_INTEGER): return "The %s %s material count is invalid." % [side,stage]
+				if (id == 10 or id >= 132) and int(counts[id]) != 0: return "The %s %s World contains a reserved or unallocated material." % [side,stage]
+	return ""
+
+func show_receipt(world_receipt: Dictionary, expected_digest: String = "") -> bool:
+	_ensure_built()
+	_pending = false
+	var problem: String = _receipt_error(world_receipt,expected_digest)
+	if not problem.is_empty():
+		show_failure(problem)
+		return false
+	var staged: Dictionary = {}
+	for side: String in ["reference","candidate"]:
+		var native: Dictionary = world_receipt[side]
+		staged[side] = {}
+		for stage: String in ["initial","final"]:
+			var snapshot: Dictionary = native[stage]
 			var decoded: Dictionary = _decode(snapshot.get("grid"),native.get("palette_rgba"))
 			if decoded.has("error"):
 				show_failure("%s %s: %s" % [side,stage,decoded.error])
-				return
+				return false
 			staged[side][stage] = decoded
 	var expected_rect: Rect2i = staged.reference.initial.rect
 	for side: String in ["reference","candidate"]:
 		for stage: String in ["initial","final"]:
 			if staged[side][stage].rect != expected_rect:
 				show_failure("Native snapshots cover different rectangles; stored-cell comparison refused.")
-				return
+				return false
 	receipt = world_receipt.duplicate(true)
 	_decoded = staged
+	last_error = ""
 	_status.text = "Compiled native World comparison complete. Preview and cell inspection use stored native readback; the running application is unchanged."
 	_loading = true
 	_cell_x.min_value = expected_rect.position.x
@@ -324,6 +434,7 @@ func show_receipt(world_receipt: Dictionary) -> void:
 	_loading = false
 	_refresh_controls()
 	_refresh_view()
+	return true
 
 func _stage_name() -> String:
 	return "initial" if _stage.get_selected_id() == 1 else "final"
@@ -341,7 +452,7 @@ func _material_name(id: int) -> String:
 
 func _check_text(checks: Dictionary) -> String:
 	var parts: PackedStringArray = []
-	for key: String in ["deterministic_repeat","worker_1_4_equal","persistence_checkpoint","persistence_replay","quantity_balanced"]:
+	for key: String in REQUIRED_CHECKS:
 		parts.append("%s %s" % [key.replace("_"," "),"PASS" if checks.get(key,false) == true else "unavailable/failed"])
 	return " · ".join(parts)
 

@@ -2,7 +2,7 @@
 """Materials Lab candidate authoring and bounded native compilation service.
 
 This is a tooling consumer of the accepted catalogue compiler. It never writes
-production material definitions, changes a World, allocates a production ID, or
+production material definitions, changes a running World, allocates a production ID, or
 claims that a compiled descriptor fixture is an installed simulation material.
 The JSON file protocol is also used by the desktop Materials Lab.
 """
@@ -28,6 +28,7 @@ from typing import Any
 
 import compatibility
 import compiler
+import reaction_effects
 
 # The CLI and lazily loaded backends must share one cancellation context.
 # Without this alias, `world_candidate` importing lab would create a second
@@ -62,6 +63,8 @@ SOURCE_FILES = tuple(dict.fromkeys((
     "tools/material_catalogue/compiler.py",
     "tools/material_catalogue/compatibility.py",
     "tools/material_catalogue/lab.py",
+    "tools/material_catalogue/world_case.py",
+    "tools/material_catalogue/reaction_effects.py",
     "tools/material_catalogue/lab_native_probe.cpp",
     *compatibility.SOURCE_ROLES,
 )))
@@ -170,8 +173,8 @@ def supported_fields(template_id: int) -> dict:
         "mechanism": {"editable": False, "kernel": source["kernel"],
                       "detail": "Select an existing material template to select its supported mechanism. Kernel, phase, movement, write-radius and state-default changes need a separately qualified contract."},
         "reactions": {"editable": True, "maximum": MAX_REACTIONS,
-                      "effects": ["replace_with_defaults"],
-                      "detail": "Edit existing sparse slots involving this template; rule IDs and legacy order are retained. Synthetic 132 cannot participate in schema-1 reactions."},
+                      "effects": list(reaction_effects.EFFECT_KINDS),
+                      "detail": "Edit existing owned sparse slots; rule IDs and order are retained. Effects v2 admit non-Water keep_existing and Metal/Combustible state_b only in compiled World tests, with role-preserving matching. Synthetic 132 has no reaction consumer."},
     }
 
 
@@ -209,12 +212,6 @@ def create_candidate(template_id: int, *, synthetic: bool = False) -> dict:
         "reactions": [] if synthetic else [_candidate_rule(rule) for rule in native["interactions"]["pairs"]
                                             if template_id in (rule["first"], rule["second"])],
     }
-
-
-def _effect(value: Any, pointer: str) -> None:
-    fields(value, ("kind",), pointer)
-    if value["kind"] != "replace_with_defaults":
-        fail(pointer + "/kind", "only replace_with_defaults is supported in v1; keep_existing/set_state require a reviewed native state, temperature and quantity-ledger contract and are not approximated")
 
 
 def expand_candidate(candidate: Any) -> tuple[dict, dict, list[dict]]:
@@ -298,12 +295,14 @@ def expand_candidate(candidate: Any) -> tuple[dict, dict, list[dict]]:
             fail(at + "/first", "an Ordered reaction requires an active source kernel; RuleKernel::None never initiates World contact chemistry. Keep inert materials as targets, or use a qualified unordered pair with an active partner.")
         if edited["match"] != 0 and not (first_active or second_active):
             fail(at, "neither partner has an active kernel to initiate World contact chemistry; inert targets are supported, but a pair needs an active participant")
-        effects = fields(edited["effects"], ("version", "first", "second"), at + "/effects")
-        if type(effects["version"]) is not int or effects["version"] != 1:
-            fail(at + "/effects/version", "only explicit endpoint-effects version 1 is supported")
-        _effect(effects["first"], at + "/effects/first")
-        _effect(effects["second"], at + "/effects/second")
+        reaction_effects.validate_rule(edited, native, at)
+        effects = edited["effects"]
         rule_changed = False
+        original_effects = _candidate_rule(original)["effects"]
+        if effects != original_effects:
+            changes.append({"path": at + "/effects", "before": original_effects,
+                            "after": copy.deepcopy(effects), "boundary": "isolated compiled World endpoint effects"})
+            rule_changed = True
         for key in ("first", "second", "first_product", "second_product", "probability", "match"):
             if edited[key] != original[key]:
                 changes.append({"path": at + "/" + key, "before": original[key], "after": edited[key], "boundary": "isolated native resolver fixture"})
@@ -315,8 +314,9 @@ def expand_candidate(candidate: Any) -> tuple[dict, dict, list[dict]]:
             first_name = native["materials"][original["first_product"]]["name"]
             second_name = native["materials"][original["second_product"]]["name"]
             orientation = ("source/target positions" if original["match"] == 2 else "first/second material roles")
-            original["accounting"] = (
-                f"candidate effects v1: replace_with_defaults at both endpoints; {orientation} "
+            original["accounting"] = reaction_effects.describe(edited, native) if any(
+                effects[endpoint]["kind"] != "replace_with_defaults" for endpoint in ("first", "second")) else (
+                f"candidate effects v{effects['version']}: replace_with_defaults at both endpoints; {orientation} "
                 f"produce {first_name} ({original['first_product']}) and {second_name} ({original['second_product']}); "
                 "World quantity accounting and conservation have not been qualified for this edit"
             )
@@ -519,6 +519,8 @@ def compile_test(candidate: Any, *, output_dir: Path | None = None, diagnostic: 
     identity_before = _source_identity()
     result = validate_candidate(candidate)
     normalized, catalogue, _changes = expand_candidate(result["candidate"])
+    if reaction_effects.has_extended(normalized):
+        fail("/reactions/effects", "keep_existing and set_state execute only in the compiled World backend. Open Candidate test and Compile + compare World; the descriptor/resolver probe does not apply endpoint state effects.")
     cxx, msvc = _toolchain(cxx)
     if diagnostic is None:
         rules = normalized["reactions"]
@@ -545,6 +547,17 @@ def compile_test(candidate: Any, *, output_dir: Path | None = None, diagnostic: 
         source.write_bytes(canonical(catalogue))
         generated = staging / "generated"
         compiler.compile_catalogue(source, generated, isolated=normalized["target_id"] == 132)
+        expected_input = hashlib.sha256(source.read_bytes()).hexdigest()
+        outputs = {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(generated.iterdir())}
+
+        def verify_generated(directory: Path) -> None:
+            if hashlib.sha256((directory / "candidate-catalogue.json").read_bytes()).hexdigest() != expected_input:
+                fail("/compile_test", "candidate catalogue bytes changed after generation; no tested status recorded")
+            observed_outputs = {path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+                                for path in sorted((directory / "generated").iterdir()) if path.is_file()}
+            if observed_outputs != outputs or any(not path.is_file() for path in (directory / "generated").iterdir()):
+                fail("/compile_test", "generated compiler inputs differ from the executed source packet; no tested status recorded")
+
         executable = staging / ("lab-native-probe.exe" if os.name == "nt" else "lab-native-probe")
         probe = ROOT / "tools/material_catalogue/lab_native_probe.cpp"
         if msvc:
@@ -558,6 +571,8 @@ def compile_test(candidate: Any, *, output_dir: Path | None = None, diagnostic: 
             if sanitize:
                 command += ["-g", "-fno-omit-frame-pointer", "-fsanitize=address,undefined", "-fno-sanitize-recover=all"]
         _run(command, staging, 60)
+        executable_digest = hashlib.sha256(executable.read_bytes()).hexdigest()
+        verify_generated(staging)
         executed = _run([str(executable), str(normalized["target_id"]),
                          str(diagnostic["source"]), str(diagnostic["target"]), str(diagnostic["roll"])], staging, 20)
         try:
@@ -568,7 +583,9 @@ def compile_test(candidate: Any, *, output_dir: Path | None = None, diagnostic: 
             fail("/compile_test", "native probe did not acknowledge candidate-only successful execution")
         version = _run([cxx] if msvc else [cxx, "--version"], staging, 10, check=False)
         version_text = (version.stdout + "\n" + version.stderr).strip().splitlines()
-        outputs = {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(generated.iterdir())}
+        verify_generated(staging)
+        if hashlib.sha256(executable.read_bytes()).hexdigest() != executable_digest:
+            fail("/compile_test", "native executable changed during execution/version capture; no tested status recorded")
         # Keep the emitted PASS tied to the same admitted protected consumers.
         # This also verifies every compatibility prerequisite at publication.
         compatibility.check()
@@ -582,7 +599,7 @@ def compile_test(candidate: Any, *, output_dir: Path | None = None, diagnostic: 
                    "compiler_version": version_text[0] if version_text else "unavailable",
                    "platform": sys.platform, "sanitizers": "address,undefined" if sanitize else "none",
                    "sanitizer_runtime_options": {key: os.environ.get(key, "") for key in ("ASAN_OPTIONS", "UBSAN_OPTIONS")} if sanitize else {},
-                   "native_executable_sha256": hashlib.sha256(executable.read_bytes()).hexdigest(),
+                   "native_executable_sha256": executable_digest,
                    "generated_sha256": outputs, "observed": observed}
         (staging / "native-receipt.json").write_bytes(canonical(receipt))
         # Reusable generated source is published only after the executed probe
@@ -596,9 +613,14 @@ def compile_test(candidate: Any, *, output_dir: Path | None = None, diagnostic: 
                 shutil.copyfile(staging / "native-receipt.json", publication / "native-receipt.json")
                 (publication / "preset.json").write_bytes(canonical({"schema_id": EXPORT_SCHEMA, "schema_version": 1,
                     "digest": result["digest"], "candidate": normalized}))
+                verify_generated(publication)
+                if (publication / "native-receipt.json").read_bytes() != canonical(receipt):
+                    fail("/output_dir", "copied native receipt does not match the executed result")
                 # rename is atomic on the same parent filesystem and never
                 # overwrites a non-empty prior build directory.
                 _check_cancelled()
+                if _source_identity()["digest"] != identity_before["digest"]:
+                    fail("/output_dir", "source changed during bundle publication; no tested fixture exported")
                 os.rename(publication, destination)
             finally:
                 if publication.exists():
@@ -623,9 +645,11 @@ def request(value: Any) -> dict:
         "compile_world_test": ({"op", "candidate"}, {"scenario", "output_dir", "sanitize", "cxx"}),
         "import": ({"op", "path"}, set()),
         "export": ({"op", "candidate", "path"}, set()),
+        "import_world_case": ({"op", "path"}, set()),
+        "export_world_case": ({"op", "candidate", "scenario", "path"}, set()),
     }
     if op not in allowed:
-        fail("/op", "expected create, validate, compile_test, compile_world_test, import or export")
+        fail("/op", "expected create, validate, compile_test, compile_world_test, import, export, import_world_case or export_world_case")
     required, optional = allowed[op]
     if not required <= value.keys() or value.keys() - required - optional:
         fail("/", f"invalid request fields for {op}; required={sorted(required)}, optional={sorted(optional)}")
@@ -635,9 +659,13 @@ def request(value: Any) -> dict:
                 "supported_fields": supported_fields(candidate["template_id"])}
     if op == "validate":
         return validate_candidate(value["candidate"])
-    if op in ("import", "export"):
+    if op in ("import", "export", "import_world_case", "export_world_case"):
         if type(value["path"]) is not str or not value["path"]:
             fail("/path", "expected an explicit file path")
+        if op in ("import_world_case", "export_world_case"):
+            import world_case
+            return (world_case.import_case(Path(value["path"])) if op == "import_world_case" else
+                    world_case.export_case(value["candidate"], value["scenario"], Path(value["path"])))
         return import_candidate(Path(value["path"])) if op == "import" else export_candidate(value["candidate"], Path(value["path"]))
     if "output_dir" in value and (type(value["output_dir"]) is not str or not value["output_dir"]):
         fail("/output_dir", "expected an external output directory path")
@@ -667,11 +695,11 @@ def _protocol_paths(value: Any, request_path: Path, response_path: Path | None,
             fail("/response", "response must be outside the source repository")
         protected.add(response_path)
     if type(value) is dict:
-        if value.get("op") in ("import", "export") and type(value.get("path")) is str and value["path"]:
+        if value.get("op") in ("import", "export", "import_world_case", "export_world_case") and type(value.get("path")) is str and value["path"]:
             preset_path = Path(value["path"]).resolve()
             if response_path == preset_path:
                 fail("/response", "response path must not overwrite the imported or exported preset")
-            if value["op"] == "export" and preset_path == request_path:
+            if value["op"] in ("export", "export_world_case") and preset_path == request_path:
                 fail("/path", "export path must not overwrite the request")
             protected.add(preset_path)
         if value.get("op") in ("compile_test", "compile_world_test") and type(value.get("output_dir")) is str and value["output_dir"]:

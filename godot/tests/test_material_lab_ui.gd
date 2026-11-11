@@ -9,8 +9,13 @@ var failures: int = 0
 var screen: Control
 var panel: Variant
 var output_directory: String = ""
+var capture_directory: String = ""
+var capture_source_hashes: Dictionary = {}
+var capture_manifest: Dictionary = {}
 
 func _initialize() -> void:
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output="): capture_directory = argument.trim_prefix("--capture-output=")
 	run.call_deferred()
 
 func expect(value: bool, message: String) -> void:
@@ -79,6 +84,213 @@ func selected_directory(caption: String, path: String) -> bool:
 	expect(panel.last_backend_result.get("ok",false),"Compiled bundle export uses the executed backend: " + str(panel.last_backend_result.get("errors",[])))
 	return bool(panel.last_backend_result.get("ok",false))
 
+func canonical_parity() -> void:
+	var controls: String = ""
+	for codepoint: int in range(1,32): controls += String.chr(codepoint)
+	# Independently generated with Python compiler.canonical_json: sorted
+	# non-BMP keys, UTF-8, escapes, empty containers and primitive values.
+	var vector: Dictionary = {"a":"é/砂🧪","control":controls,"z":[true,false,null,0,-1,65535],"𝄞":{"":[],"é":{},"𝄢":"z"}}
+	expect(panel._candidate_sha256(vector) == "d96ce94b8540b77a040a94ab447ac0b75a689a59e9702b2a2e93d6c0b68e30e1",
+		"Godot candidate hashing matches independent Python canonical JSON bytes")
+	expect(panel._candidate_sha256({"not_integer":0.5}).is_empty(),"Candidate hashing refuses fractional values instead of rounding")
+	var effect: Dictionary = {"kind":"set_state"}
+	effect.state_b = 7
+	expect(panel._candidate_sha256(panel._integer_candidate(effect)) == panel._candidate_sha256({"kind":"set_state","state_b":7}),
+		"New structured effect fields normalize Godot interned keys to their JSON text identity")
+
+func response_context(executed: Dictionary) -> void:
+	# Re-admit the same genuinely executed result to challenge the response
+	# boundary. This does not launch or claim a new native run.
+	panel._job_op = "compile_world_test"
+	panel._job_revision = panel._revision
+	panel._job_world_revision = panel.world_panel.revision
+	panel._job_candidate = panel._integer_candidate(executed.candidate)
+	panel._job_candidate_digest = panel._candidate_sha256(panel._job_candidate)
+
+func response_binding_adversaries(executed: Dictionary) -> void:
+	var original: Dictionary = panel.candidate.duplicate(true)
+	expect(panel._job_candidate == original and panel._job_candidate_digest == executed.digest,
+		"Actual process captured the submitted canonical definition and independent digest before reply")
+	for mode: String in ["missing_candidate","foreign_candidate","stale_digests","foreign_receipt_digest","native_density","native_viscosity","native_rgba"]:
+		response_context(executed)
+		panel._backend_completed(executed.duplicate(true))
+		expect(panel.candidate_state == "Compiled/tested — isolated native World","Executed receipt remains a positive control before " + mode)
+		var bad: Dictionary = executed.duplicate(true)
+		match mode:
+			"missing_candidate": bad.erase("candidate")
+			"foreign_candidate": bad.candidate.descriptor.density += 1
+			"stale_digests":
+				bad.digest = "0".repeat(64)
+				bad.receipt.candidate_digest = bad.digest
+			"foreign_receipt_digest": bad.receipt.candidate_digest = "0".repeat(64)
+			"native_density": bad.receipt.candidate.descriptor_readback.density += 1
+			"native_viscosity": bad.receipt.candidate.descriptor_readback.viscosity_index += 1
+			"native_rgba": bad.receipt.candidate.descriptor_readback.rgba[0] = (int(bad.receipt.candidate.descriptor_readback.rgba[0]) + 1) % 256
+		response_context(executed)
+		panel._backend_completed(bad)
+		expect(panel.candidate_state.begins_with("Draft") and panel.candidate_digest.is_empty() and panel.world_panel.receipt.is_empty(),
+			"Refuse false compiled qualification: " + mode)
+		expect(panel.candidate == original and not panel.last_backend_result.get("ok",true),"Refusal preserves the current authored definition: " + mode)
+	for op: String in ["create","validate","import","export","import_world_case","export_world_case"]:
+		response_context(executed)
+		panel._job_op = op
+		panel._backend_completed(executed.duplicate(true))
+		expect(panel.candidate == original and panel.candidate_state.begins_with("Draft") and panel.world_panel.receipt.is_empty(),
+			"A noncompile operation cannot promote an injected compiled response: " + op)
+	response_context(executed)
+	panel.candidate.descriptor.density += 1
+	var changed: Dictionary = panel.candidate.duplicate(true)
+	# Bypass the revision counter deliberately: submitted data still binds
+	# response admission even after mutation through a shared Dictionary.
+	panel._backend_completed(executed.duplicate(true))
+	expect(panel.candidate == changed and panel.candidate_state.begins_with("Draft") and panel.world_panel.receipt.is_empty(),
+		"Unsignalled draft mutation cannot be overwritten or qualified by an older definition")
+	panel.candidate = original
+	panel._mark_draft()
+	panel._refresh_candidate()
+
+func capture_effects_world(executed: Dictionary) -> bool:
+	if capture_directory.is_empty(): return true
+	expect(DisplayServer.get_name() != "headless","Graphical capture requires an actual display")
+	if DisplayServer.get_name() == "headless": return false
+	expect(DirAccess.make_dir_recursive_absolute(capture_directory) == OK,"Graphical output directory can be created")
+	await process_frame
+	await RenderingServer.frame_post_draw
+	var image: Image = screen.get_viewport().get_texture().get_image()
+	var path: String = capture_directory.path_join("08-kept-salt-world.png")
+	expect(not image.is_empty() and image.save_png(path) == OK,"Actual retained-Salt desktop viewport is captured")
+	var file := FileAccess.open(capture_directory.path_join("effects-ui-world-receipt.json"),FileAccess.WRITE)
+	expect(file != null,"Graphical capture stores the displayed native receipt")
+	if file == null: return false
+	file.store_string(JSON.stringify(executed.receipt,"\t") + "\n")
+	file.close()
+	var native_path: String = "res://addons/cybersand_native/bin/" + ("libcybersand_native.linux.x86_64.so" if OS.get_name() == "Linux" else "cybersand_native.windows.x86_64.dll")
+	expect(FileAccess.file_exists(native_path),"Graphical capture identifies the loaded desktop native library")
+	capture_manifest = {"engine":Engine.get_version_info(),"platform":OS.get_name(),"display":DisplayServer.get_name(),
+		"renderer":RenderingServer.get_video_adapter_name(),"rendering_method":RenderingServer.get_current_rendering_method(),
+		"viewport":[image.get_width(),image.get_height()],"image_sha256":FileAccess.get_sha256(path),
+		"native_library_path":native_path,"native_library_sha256":FileAccess.get_sha256(native_path),
+		"source_sha256":capture_source_hashes,"native_source_identity":executed.receipt.source_identity,
+		"candidate_digest":executed.digest,"runtime_active":false,
+		"scope":"Actual mounted UI performs effects-v2 native World test; stored cells establish results. No shader parity claim."}
+	return true
+
+func extended_authoring() -> bool:
+	# New effects are exercised through the mounted controls and actual World
+	# backend. Malformed-response cases below corrupt that executed evidence;
+	# they do not substitute a simulated successful native run.
+	search_select(23)
+	if not await authoring("Duplicate selected"): return false
+	var unicode_label: String = " " + String.chr(160) + String.chr(12288) + "β 砂🧪 \"trial\" \\ /" + String.chr(160) + " "
+	panel._candidate_name.text = unicode_label
+	panel._candidate_name.text_changed.emit(unicode_label)
+	if not await authoring("Validate"): return false
+	expect(panel.candidate.name == "β 砂🧪 \"trial\" \\ /" and panel.candidate_digest == panel._job_candidate_digest,
+		"Real Python validation matches Unicode normalization and locally computed canonical digest")
+	panel._candidate_name.text = "Retained Salt"
+	panel._candidate_name.text_changed.emit("Retained Salt")
+	panel._tabs.current_tab = 2
+	panel._reaction_picker.select(panel._reaction_picker.get_item_index(2))
+	panel._reaction_picker.item_selected.emit(panel._reaction_picker.selected)
+	var rule: Dictionary = panel._selected_reaction()
+	expect(int(rule.first) == 3 and int(rule.second) == 23,"Owned Water/Salt slot preserves endpoint roles")
+	var water: Dictionary = panel._effect_fields.first
+	var salt: Dictionary = panel._effect_fields.second
+	expect(water.kind.is_item_disabled(1) and water.kind.is_item_disabled(2),"Unsupported Water retention/state controls are disabled")
+	expect(not salt.kind.is_item_disabled(1) and salt.kind.is_item_disabled(2),"Salt admits retention but has no invented state-B contract")
+	salt.kind.select(1)
+	salt.kind.item_selected.emit(1)
+	rule = panel._selected_reaction()
+	expect(rule.effects.version == 2 and rule.effects.second.kind == "keep_existing" and int(rule.second_product) == 23,
+		"Keep-existing control emits explicit v2 and retains participant identity")
+	expect(panel._reaction_fields.second_product.disabled and not salt.state_b.editable,
+		"Retained identity and unsupported state are not decorative editable controls")
+	if not await authoring("Validate candidate"): return false
+	expect(panel._selected_reaction().effects.second.kind == "keep_existing" and panel.candidate_state == "Validated candidate",
+		"Real validator admits the structured non-Water retention candidate")
+	var view: Variant = panel.world_panel
+	expect(view.set_scenario({"first":23,"second":3,"seed":2,"ticks":120,"workers":4}),"Prospective World recipe is set before selected-reaction routing")
+	if not press("Test reaction in World"): return false
+	expect(view.scenario().first == 3 and view.scenario().second == 23 and panel._tabs.current_tab == 4,
+		"Selected-reaction button routes its actual positional pair into the mounted World test")
+	if not await wait_for(func() -> bool: return not panel.service.busy,"actual retained-endpoint World comparison",300000): return false
+	var executed: Dictionary = panel.last_backend_result.duplicate(true)
+	expect(executed.get("ok",false),"Effects-v2 candidate ran in actual native World: " + str(executed.get("errors",[])))
+	if not executed.get("ok",false): return false
+	expect(panel.candidate_state == "Compiled/tested — isolated native World" and not view.receipt.is_empty(),
+		"Only accepted actual World evidence promotes the parent candidate state")
+	expect(int(executed.receipt.candidate.final.material_cells[23]) > int(executed.receipt.reference.final.material_cells[23]),
+		"Native World retains more Salt than the legacy replacing reference")
+	expect(executed.receipt.candidate.checks.quantity_balanced and executed.receipt.candidate.checks.worker_1_4_equal,
+		"Actual retained-endpoint quantity and worker qualification pass")
+	var evidence := FileAccess.open(output_directory.path_join("ui-retained-salt-world-receipt.json"),FileAccess.WRITE)
+	expect(evidence != null,"Executed effect receipt is retained for review")
+	if evidence != null:
+		evidence.store_string(JSON.stringify(executed.receipt,"\t") + "\n")
+		evidence.close()
+	if not await capture_effects_world(executed): return false
+	response_binding_adversaries(executed)
+	var refused: Dictionary = executed.duplicate(true)
+	refused.receipt.checks.source_unchanged = false
+	response_context(executed)
+	panel._backend_completed(refused)
+	expect(panel.candidate_state.begins_with("Draft") and panel.candidate_digest.is_empty() and not panel.last_backend_result.get("ok",true),
+		"Parent cannot remain Compiled/tested after its World view rejects native evidence")
+	expect(view.receipt.is_empty() and not view._run_button.disabled and not panel._candidate_feedback.text.contains("Compiled/tested"),
+		"Rejected parent evidence clears previews/status and releases compile controls")
+	var recipe: Dictionary = {"first":3,"second":23,"seed":73,"ticks":37,"workers":4}
+	expect(view.set_scenario(recipe),"Distinct source-bound recipe can be selected")
+	var case_path: String = output_directory.path_join("retained-salt-world-case.json")
+	if not await selected_file("Save World recipe…",case_path): return false
+	expect(panel.last_backend_result.get("ok",false) and FileAccess.file_exists(case_path),"Mounted save exports a source-bound World recipe through the real service")
+	if not panel.last_backend_result.get("ok",false): return false
+	var saved: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(case_path))
+	expect(saved.schema_id == "cybersand.material-lab.world-case" and str(saved.digest).length() == 64 and not saved.source_identity.lf_sha256.is_empty(),
+		"Recipe stores versioned digests and exact executable source inputs")
+	var expected_candidate: Dictionary = panel.candidate.duplicate(true)
+	var expected_digest: String = panel.candidate_digest
+	expect(panel.candidate_state == "Validated candidate" and view.receipt.is_empty(),"Saving a recipe is validation, not a new native execution")
+	search_select(2)
+	if not await authoring("Duplicate selected"): return false
+	expect(view.set_scenario({"first":2,"second":1,"seed":99,"ticks":600,"workers":1}),"Unrelated candidate and controls are prepared before import")
+	if not await selected_file("Import World recipe…",case_path): return false
+	expect(panel.last_backend_result.get("ok",false) and panel.candidate == expected_candidate and panel.candidate_digest == expected_digest,
+		"Real recipe import restores the exact material and deterministic candidate digest")
+	expect(view.scenario() == recipe and panel._tabs.current_tab == 4,"Recipe import restores every control and opens its test tab")
+	expect(panel.candidate_state == "Validated candidate" and view.receipt.is_empty() and view._reference_preview.texture == null,
+		"Imported source-bound recipe carries no old Compiled/tested result")
+	var before_candidate: Dictionary = panel.candidate.duplicate(true)
+	var before_recipe: Dictionary = view.scenario()
+	saved.digest = "0".repeat(64)
+	var broken_path: String = output_directory.path_join("corrupt-world-case.json")
+	var broken := FileAccess.open(broken_path,FileAccess.WRITE)
+	broken.store_string(JSON.stringify(panel._integer_candidate(saved),"\t") + "\n")
+	broken.close()
+	if not await selected_file("Import World recipe…",broken_path): return false
+	expect(not panel.last_backend_result.get("ok",true) and panel.candidate == before_candidate and view.scenario() == before_recipe,
+		"Digest-corrupt recipe import preserves the current candidate and controls")
+	expect(panel._status.text.contains("/case/digest"),"Recipe digest refusal identifies the actionable field")
+	search_select(28)
+	if not await authoring("Duplicate selected"): return false
+	panel._tabs.current_tab = 2
+	panel._reaction_picker.select(0)
+	panel._reaction_picker.item_selected.emit(0)
+	var metal: Dictionary = panel._effect_fields.second
+	expect(not metal.kind.is_item_disabled(2),"Metal exposes its real charge-countdown state-B effect")
+	metal.kind.select(2)
+	metal.kind.item_selected.emit(2)
+	metal.state_b.value = 7
+	rule = panel._selected_reaction()
+	expect(rule.effects.second.kind == "set_state" and int(rule.effects.second.state_b) == 7 and int(rule.second_product) == 28,
+		"Metal structured state control retains identity and sets its declared register")
+	expect(metal.state_b.editable and metal.detail.text.contains("charge countdown"),"State editor names its actual native consumer")
+	if not await authoring("Validate candidate"): return false
+	if not press("Compile candidate reaction"): return false
+	if not await wait_for(func() -> bool: return not panel.service.busy,"descriptor-only backend refusal for extended effect"): return false
+	expect(not panel.last_backend_result.get("ok",true) and panel._status.text.contains("World"),
+		"Extended effects cannot silently fall back to the legacy descriptor/resolver probe")
+	return true
+
 func workbench_mount() -> void:
 	# Main owns its real worker and publishes copied tower_context snapshots.
 	# The Lab test never reaches into simulation_worker or its native World.
@@ -138,6 +350,11 @@ func workbench_mount() -> void:
 	else: set_meta("cybersand_feature",former_feature)
 
 func run() -> void:
+	if not capture_directory.is_empty():
+		root.size = Vector2i(1680,1050)
+		root.content_scale_size = Vector2i(1680,1050)
+		DisplayServer.window_set_size(Vector2i(1680,1050))
+		capture_source_hashes = _capture_sources()
 	output_directory = ProjectSettings.globalize_path("user://materials_lab/ui-acceptance-%d" % Time.get_ticks_usec())
 	expect(DirAccess.make_dir_recursive_absolute(output_directory) == OK,"Acceptance export directory created")
 	screen = load(SCENE).instantiate()
@@ -150,6 +367,7 @@ func run() -> void:
 		finish()
 		return
 	panel._python.text = "python" if OS.get_name() == "Windows" else "python3"
+	canonical_parity()
 	expect(panel._tabs.get_tab_count() == 5,"Inspect, Candidate, Reactions, Native test and Candidate test are mounted")
 	if not panel.catalogue.native_available:
 		expect(false,"Matching rebuilt native inspector is required: " + str(panel.catalogue.error))
@@ -400,10 +618,31 @@ func run() -> void:
 	file = FileAccess.open(receipt_path,FileAccess.WRITE)
 	file.store_string(JSON.stringify(compiled,"\t") + "\n")
 	file.close()
+	if not await extended_authoring():
+		finish()
+		return
 	await workbench_mount()
 	finish()
 
+func _capture_sources() -> Dictionary:
+	var hashes: Dictionary = {}
+	for path: String in ["materials_lab.tscn","addons/cybersand_native/cybersand_native.gdextension","scripts/material_lab_screen.gd","scripts/material_lab_panel.gd","scripts/material_lab_world_panel.gd",
+		"scripts/material_lab_service.gd","scripts/material_lab_catalogue.gd","scripts/material_lab_experiment.gd","tests/test_material_lab_ui.gd"]:
+		hashes[path] = FileAccess.get_sha256("res://" + path)
+	return hashes
+
 func finish() -> void:
+	if not capture_manifest.is_empty():
+		expect(capture_source_hashes == _capture_sources(),"Graphical UI source stayed unchanged through the run")
+		expect(capture_manifest.native_library_sha256 == FileAccess.get_sha256(capture_manifest.native_library_path),
+			"Graphical native library stayed unchanged through the run")
+		capture_manifest["assertions"] = assertions
+		capture_manifest["failures"] = failures
+		var file := FileAccess.open(capture_directory.path_join("effects-ui-capture-manifest.json"),FileAccess.WRITE)
+		if file != null:
+			file.store_string(JSON.stringify(capture_manifest,"\t") + "\n")
+			file.close()
+		else: expect(false,"Graphical capture manifest can be saved")
 	if is_instance_valid(panel): panel.experiment.close()
 	print("MATERIAL_LAB_UI: %d assertions; %d failures; artifacts=%s" % [assertions,failures,output_directory])
 	quit(1 if failures else 0)

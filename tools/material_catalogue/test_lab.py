@@ -215,6 +215,54 @@ class LabTests(unittest.TestCase):
         _, symmetric, _ = lab.expand_candidate(candidate)
         self.assertIn("source/target positions", symmetric["native"]["interactions"]["pairs"][rule["slot"]]["accounting"])
 
+    def test_v2_retention_roundtrips_but_descriptor_probe_refuses_state_claims(self):
+        candidate = lab.create_candidate(23)
+        rule = candidate["reactions"][0]
+        rule["effects"]["version"] = 2
+        rule["effects"]["second"] = {"kind": "keep_existing"}
+        rule["second_product"] = 23
+        result = lab.validate_candidate(candidate)
+        self.assertTrue(any(change["path"].endswith("/effects") for change in result["changes"]))
+        exported = self.directory / "retained-salt.json"
+        lab.export_candidate(candidate, exported)
+        self.assertEqual(lab.import_candidate(exported)["candidate"], candidate)
+        with mock.patch.object(lab, "_toolchain") as toolchain:
+            with self.assertRaisesRegex(lab.LabError, "compiled World backend"):
+                lab.compile_test(candidate)
+            toolchain.assert_not_called()
+
+    def test_descriptor_probe_rejects_input_or_executable_drift_after_execution(self):
+        original_run = lab._run
+        for target in ("generated", "executable"):
+            with self.subTest(target=target):
+                def mutate_after_execution(command, directory, timeout, *, check=True):
+                    result = original_run(command, directory, timeout, check=check)
+                    if command[-1] == "--version" or (len(command) == 1 and Path(command[0]).name.lower() in ("cl", "cl.exe")):
+                        path = (next((directory / "generated").glob("*.hpp")) if target == "generated" else
+                                directory / ("lab-native-probe.exe" if os.name == "nt" else "lab-native-probe"))
+                        with path.open("ab") as out:
+                            out.write(b"\nchanged-after-execution\n")
+                    return result
+                with mock.patch.object(lab, "_run", side_effect=mutate_after_execution):
+                    with self.assertRaisesRegex(lab.LabError, "compiler inputs differ|executable changed"):
+                        lab.compile_test(lab.create_candidate(2))
+
+    def test_descriptor_bundle_verifies_copied_generated_bytes(self):
+        original_copy = shutil.copytree
+        destination = self.directory / "changed-copy"
+
+        def corrupt_copy(source, target, *args, **kwargs):
+            result = original_copy(source, target, *args, **kwargs)
+            if Path(source).name == "generated":
+                with next(Path(target).glob("*.hpp")).open("ab") as out:
+                    out.write(b"\nchanged-during-copy\n")
+            return result
+
+        with mock.patch.object(lab.shutil, "copytree", side_effect=corrupt_copy):
+            with self.assertRaisesRegex(lab.LabError, "compiler inputs differ"):
+                lab.compile_test(lab.create_candidate(2), output_dir=destination)
+        self.assertFalse(destination.exists())
+
     def test_deterministic_normalization_and_export_import_round_trip(self):
         candidate = lab.create_candidate(3)
         candidate["name"] = "Zero-threshold quench"
@@ -239,6 +287,12 @@ class LabTests(unittest.TestCase):
         self.assertFalse(powder["candidate"]["capabilities"]["hard_surface"])
         self.assertEqual(quench["candidate"]["reactions"][0]["probability"], 0)
         self.assertEqual(powder["candidate"]["source_catalogue_sha256"], quench["candidate"]["source_catalogue_sha256"])
+        for name in ("lab-low-density-sand-world-v1.json", "lab-salt-stone-world-v1.json",
+                     "lab-salt-retain-world-v2.json", "lab-metal-charge-world-v2.json"):
+            with self.subTest(fixture=name):
+                imported = lab.import_candidate(fixtures / name)
+                self.assertEqual(imported["candidate"]["source_catalogue_sha256"], powder["candidate"]["source_catalogue_sha256"])
+                self.assertEqual(imported["state"], "validated_candidate")
 
     def test_unexecutable_rule_initiators_are_refused_but_inert_targets_survive(self):
         candidate = lab.create_candidate(3)

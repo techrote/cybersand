@@ -90,6 +90,32 @@ func _close_pipes() -> void:
 		if pipe != null: pipe.close()
 	_handle.clear()
 
+func _response_error(value: Dictionary) -> String:
+	# Refuse malformed protocol values before a scene consumer can promote a
+	# candidate or dereference nested response fields. Native receipts have their
+	# own consumer-specific admission in the corresponding view.
+	if typeof(value.get("state")) != TYPE_STRING or value.state not in ["draft","validated_candidate","compiled_tested"]:
+		return "Authoring response has an unsupported or missing candidate state."
+	if typeof(value.get("runtime_active")) != TYPE_BOOL or value.runtime_active:
+		return "Authoring response cannot claim runtime activation."
+	if not value.ok:
+		var errors: Variant = value.get("errors")
+		if not errors is Array or errors.is_empty(): return "Authoring failure must include an actionable error list."
+		for error: Variant in errors:
+			if typeof(error) != TYPE_STRING: return "Authoring error entries must be text."
+		return ""
+	if value.has("candidate") and not value.candidate is Dictionary: return "Authoring candidate response must be an object."
+	if value.has("receipt") and not value.receipt is Dictionary: return "Authoring native receipt must be an object."
+	if value.state == "compiled_tested" and not value.has("receipt"): return "Compiled/tested status requires a native execution receipt."
+	for key: String in ["digest","boundary","output_dir"]:
+		if value.has(key) and typeof(value[key]) != TYPE_STRING: return "Authoring %s response must be text." % key
+	if value.has("changes"):
+		if not value.changes is Array: return "Authoring changes must be a list."
+		for change: Variant in value.changes:
+			if not change is Dictionary or typeof(change.get("path")) != TYPE_STRING or not change.has_all(["before","after"]):
+				return "Authoring change entries must identify a path and before/after values."
+	return ""
+
 func _read_result(code: int) -> Dictionary:
 	if not _cancel_reason.is_empty():
 		return {"ok":false,"state":"draft","runtime_active":false,"cancelled":true,"forced_termination":_forced_termination,"errors":[_cancel_reason],"process_exit_code":code}
@@ -102,6 +128,9 @@ func _read_result(code: int) -> Dictionary:
 			var parsed: Variant = JSON.parse_string(file.get_as_text())
 			file.close()
 			if parsed is Dictionary and typeof(parsed.get("ok")) == TYPE_BOOL:
+				var problem: String = _response_error(parsed)
+				if not problem.is_empty():
+					return {"ok":false,"state":"draft","runtime_active":false,"errors":[problem + " No tested status was recorded."],"process_exit_code":code}
 				if parsed.ok and code != 0:
 					return {"ok":false,"errors":["Authoring process exited with %d after reporting success; no tested status was recorded." % code],"process_exit_code":code}
 				parsed["process_exit_code"] = code

@@ -1,0 +1,65 @@
+{
+  "candidate": {
+    "appearance": {
+      "visual_state_source": 2
+    },
+    "capabilities": {
+      "granular_support": false,
+      "hard_surface": true
+    },
+    "descriptor": {
+      "accepts_density_exchange": false,
+      "current_rule_available": true,
+      "density": 7800,
+      "density_motion": 0,
+      "id": 28,
+      "initial_state_a": 0,
+      "initial_state_b": 0,
+      "kernel": 22,
+      "lateral_flow": 0,
+      "maximum_write_radius": 1,
+      "movable": false,
+      "name": "metal",
+      "rgba": [
+        151,
+        161,
+        171,
+        255
+      ],
+      "state": 1,
+      "valid": true,
+      "viscosity_index": 0
+    },
+    "name": "Metal charge candidate",
+    "reactions": [
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "set_state",
+            "state_b": 73
+          },
+          "version": 2
+        },
+        "first": 12,
+        "first_product": 4,
+        "match": 1,
+        "probability": 255,
+        "rule_id": "int.pair.acid-metal.corrosion.v1",
+        "second": 28,
+        "second_product": 28,
+        "slot": 9
+      }
+    ],
+    "schema_id": "cybersand.material-lab.preset",
+    "schema_version": 1,
+    "source_catalogue_sha256": "491eb2248049014956b8a4fcc1e63e36c5e2ca6824b9d3c366ce94b1fd5d147f",
+    "target_id": 28,
+    "template_id": 28
+  },
+  "digest": "ba732e00b75b2496fba18425d045201c68ff171e04b6617819d8deccab2b0928",
+  "schema_id": "cybersand.material-lab.export",
+  "schema_version": 1
+}

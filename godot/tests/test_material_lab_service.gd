@@ -22,6 +22,15 @@ if mode=='large':
     pathlib.Path(a.response).write_text(' '*(8*1024*1024+1))
 else:
     result={'ok':True,'state':'draft','runtime_active':False,'marker':mode}
+    if mode=='active': result['runtime_active']=True
+    if mode=='state_type': result['state']=['compiled_tested']
+    if mode=='missing_receipt': result['state']='compiled_tested'
+    if mode=='receipt_type': result['receipt']=[]
+    if mode=='candidate_type': result['candidate']='invalid'
+    if mode=='changes_type': result['changes']={'path':'wrong'}
+    if mode=='change_entry': result['changes']=[{'path':'/density'}]
+    if mode=='errors_type': result.update(ok=False,errors='error text is not an array')
+    if mode=='error_entry': result.update(ok=False,errors=[7])
     pathlib.Path(a.response).write_text('[]' if mode=='invalid' else json.dumps(result))
 sys.exit(7 if mode=='bad_exit' else 0)
 """
@@ -60,7 +69,7 @@ func run() -> void:
 	fixture.fixture_path = path
 	root.add_child(fixture)
 	fixture.completed.connect(func(value: Dictionary) -> void: result = value)
-	for mode: String in ["normal","bad_exit","invalid","large"]:
+	for mode: String in ["normal","bad_exit","invalid","large","active","state_type","missing_receipt","receipt_type","candidate_type","changes_type","change_entry","errors_type","error_entry"]:
 		result = {}
 		expect(fixture.request({"mode":mode},python),"Launch real process: " + mode)
 		var pid: int = fixture.process_id()

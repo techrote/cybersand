@@ -6,7 +6,7 @@ import hashlib
 import json
 import os
 import subprocess
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import tempfile
 import unittest
 from unittest import mock
@@ -15,6 +15,45 @@ import world_candidate as world
 
 
 class WorldCandidateAdmissionTests(unittest.TestCase):
+    def test_windows_source_paths_keep_the_complete_native_staging_inventory(self):
+        # Emulate Windows relative-path spelling while reading the actual tree.
+        # This catches the old backslash keys dropped by _stage's native/ filter
+        # without pretending that Linux execution is Windows compilation.
+        class WindowsPathView:
+            def __init__(self, path):
+                self.path = Path(path)
+
+            def __truediv__(self, name):
+                return WindowsPathView(self.path.joinpath(*PureWindowsPath(name).parts))
+
+            def __str__(self):
+                return str(self.path)
+
+            def rglob(self, pattern):
+                return (WindowsPathView(path) for path in self.path.rglob(pattern))
+
+            def is_file(self):
+                return self.path.is_file()
+
+            def read_bytes(self):
+                return self.path.read_bytes()
+
+            @property
+            def suffix(self):
+                return self.path.suffix
+
+            def relative_to(self, root):
+                return PureWindowsPath(*self.path.relative_to(root.path).parts)
+
+        _, expected = world._source_snapshot()
+        with mock.patch.object(world, "ROOT", WindowsPathView(world.ROOT)), \
+             mock.patch.object(lab, "_run", return_value=subprocess.CompletedProcess([], 0, "test-head", "")):
+            identity, windows = world._source_snapshot()
+        self.assertEqual(set(windows), set(expected))
+        self.assertEqual(windows, expected)
+        self.assertTrue(all("\\" not in name for name in identity["lf_sha256"]))
+        self.assertTrue(any(name.startswith("native/src/") and name.endswith(".inc") for name in windows))
+
     def test_admits_existing_identity_with_supported_consumers(self):
         candidate = lab.create_candidate(2)
         candidate["descriptor"]["density"] = 500
@@ -121,6 +160,99 @@ class WorldCandidateAdmissionTests(unittest.TestCase):
         for source in ("", declaration, declaration + "\n}};\n" + declaration + "\n}};"):
             with self.assertRaises(lab.LabError):
                 world._replace_table(source, declaration, "replacement", "/table")
+
+    def test_staging_rejects_an_unrecorded_compiler_input(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "input.cpp").write_bytes(b"original")
+            manifest = {"files_sha256": {"input.cpp": hashlib.sha256(b"original").hexdigest()}}
+            (root / "unrecorded.hpp").write_text("// not captured by the qualification manifest\n")
+            with self.assertRaisesRegex(lab.LabError, "unrecorded staged file"):
+                world._verify_stage(root, manifest)
+
+    def test_publication_rechecks_the_copied_bytes(self):
+        identity, sources = world._source_snapshot()
+        candidate = lab.create_candidate(2)
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            staging = root / "staging"
+            staging.mkdir()
+            receipt = {"source_identity": identity}
+            for side in ("reference", "candidate"):
+                receipt[side + "_stage"] = world._stage(staging / side, sources, lab.baseline(),
+                                                       candidate=side == "candidate")
+            copy_tree = world.shutil.copytree
+
+            def changed_copy(source, destination, *args, **kwargs):
+                result = copy_tree(source, destination, *args, **kwargs)
+                if Path(destination).name == "candidate":
+                    path = Path(destination) / "native/include/cybersand/material.hpp"
+                    path.write_bytes(path.read_bytes() + b"\n// copied bytes changed\n")
+                return result
+
+            destination = root / "export"
+            with mock.patch.object(world.shutil, "copytree", side_effect=changed_copy), \
+                 self.assertRaisesRegex(lab.LabError, "staged compiler input changed"):
+                world._publish(staging, destination, receipt, candidate, lab.digest(candidate))
+            self.assertFalse(destination.exists())
+            self.assertEqual(list(root.glob(".lab-world-publish-*")), [])
+
+    def test_execution_cannot_relabel_a_changed_binary(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            executable = root / ("lab-world-probe.exe" if world.os.name == "nt" else "lab-world-probe")
+
+            def run(command, directory, timeout, **kwargs):
+                if command[0] == "review-compiler":
+                    executable.write_bytes(b"qualified executable")
+                    return subprocess.CompletedProcess(command, 0, "", "")
+                executable.write_bytes(b"different executable after execution")
+                return subprocess.CompletedProcess(command, 0,
+                    json.dumps({"ok": True, "runtime_active": False}), "")
+
+            with mock.patch.object(lab, "_run", side_effect=run), \
+                 self.assertRaisesRegex(lab.LabError, "executable changed during execution"):
+                world._build_and_execute(root, "review-compiler", False,
+                    {"first": 2, "second": 3, "seed": 2, "ticks": 1, "workers": 1}, 2, False)
+
+    def test_extended_effect_staging_is_explicit_and_reference_stays_original(self):
+        candidate = lab.create_candidate(23)
+        rule = next(row for row in candidate["reactions"] if row["slot"] == 2)
+        rule.update(match=1, first_product=24, second_product=23)
+        rule["effects"] = {"version": 2, "first": {"kind": "replace_with_defaults"},
+                           "second": {"kind": "keep_existing"}}
+        normalized, catalogue, _ = world.admit(candidate)
+        _, sources = world._source_snapshot()
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            reference = world._stage(root / "reference", sources, lab.baseline(), candidate=False)
+            authored = world._stage(root / "candidate", sources, catalogue, candidate=True, definition=normalized)
+            source = "native/src/world.cpp"
+            self.assertEqual((root / "reference" / source).read_bytes(), sources[source])
+            self.assertEqual(reference["transformations"], [])
+            self.assertNotEqual((root / "candidate" / source).read_bytes(), sources[source])
+            self.assertEqual(authored["transformations"][-1]["kind"], "external-endpoint-effects-v2")
+            self.assertIn("generated/lab-reaction-effects.hpp", authored["files_sha256"])
+            self.assertNotIn("generated/lab-reaction-effects.hpp", reference["files_sha256"])
+            world._verify_stage(root / "candidate", authored)
+
+    def test_effect_receipt_requires_matching_compiled_endpoint_readback(self):
+        candidate = lab.create_candidate(28)
+        rule = next(row for row in candidate["reactions"] if row["slot"] == 9)
+        rule.update(match=1, first_product=4, second_product=28)
+        rule["effects"] = {"version": 2, "first": {"kind": "replace_with_defaults"},
+                           "second": {"kind": "set_state", "state_b": 77}}
+        observed = {"endpoint_effects": {"version": 2, "extended_slots": [{"slot": 9,
+            "first": {"kind": "replace_with_defaults", "state_b": 0},
+            "second": {"kind": "set_state", "state_b": 77}}]}}
+        world._verify_effect_readback(observed, candidate)
+        for changed in ({}, {"endpoint_effects": {"version": 1, "extended_slots": []}},
+                        copy.deepcopy(observed)):
+            if changed.get("endpoint_effects", {}).get("version") == 2:
+                changed["endpoint_effects"]["extended_slots"][0]["second"]["state_b"] = 76
+            with self.assertRaisesRegex(lab.LabError, "compiled endpoint effects"):
+                world._verify_effect_readback(changed, candidate)
+        world._verify_effect_readback({"endpoint_effects": {"version": 1, "extended_slots": []}}, None)
 
     def test_custody_precedes_preflight_and_blocks_drift(self):
         candidate = lab.create_candidate(2)

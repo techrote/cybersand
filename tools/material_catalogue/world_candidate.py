@@ -19,10 +19,12 @@ from typing import Any
 
 import compiler
 import lab
+import reaction_effects
 
 ROOT = lab.ROOT
 SCENARIO_FIELDS = ("first", "second", "seed", "ticks", "workers")
 PROBE = "tools/material_catalogue/lab_world_probe.cpp"
+PROBE_SUPPORT = ("tools/material_catalogue/lab_effects_probe.hpp",)
 THIS_SOURCE = "tools/material_catalogue/world_candidate.py"
 SIMULATION_SOURCES = (
     "native/src/world.cpp", "native/src/material_rules.cpp",
@@ -75,6 +77,12 @@ def _sha256(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
+def _source_changes(before: dict, after: dict) -> str:
+    first, second = before["lf_sha256"], after["lf_sha256"]
+    changed = sorted(name for name in first.keys() | second.keys() if first.get(name) != second.get(name))
+    return "; changed files: " + ", ".join(changed) if changed else ""
+
+
 def admit(candidate: Any, scenario: Any = None) -> tuple[dict, dict, dict]:
     """Reject unsupported consumers before invoking a compiler."""
     normalized, catalogue, _changes = lab.expand_candidate(candidate)
@@ -105,9 +113,9 @@ def admit(candidate: Any, scenario: Any = None) -> tuple[dict, dict, dict]:
 
 
 def _source_snapshot() -> tuple[dict, dict[str, bytes]]:
-    paths = set(lab.SOURCE_FILES) | {PROBE, THIS_SOURCE} | set(FIXTURE_SOURCES)
+    paths = set(lab.SOURCE_FILES) | {PROBE, THIS_SOURCE} | set(PROBE_SUPPORT) | set(FIXTURE_SOURCES)
     for directory in (ROOT / "native/include", ROOT / "native/src"):
-        paths.update(str(path.relative_to(ROOT)) for path in directory.rglob("*")
+        paths.update(path.relative_to(ROOT).as_posix() for path in directory.rglob("*")
                      if path.is_file() and path.suffix in (".hpp", ".h", ".cpp", ".inc"))
     raw = {name: (ROOT / name).read_bytes() for name in sorted(paths)}
     hashes = {name: _sha256(value.replace(b"\r\n", b"\n")) for name, value in raw.items()}
@@ -128,10 +136,11 @@ def _replace_table(source: str, declaration: str, replacement: str, pointer: str
     return source[:start] + replacement + source[end + len("\n}};"):]
 
 
-def _stage(directory: Path, source: dict[str, bytes], catalogue: dict, *, candidate: bool) -> dict:
+def _stage(directory: Path, source: dict[str, bytes], catalogue: dict, *, candidate: bool,
+           definition: dict | None = None) -> dict:
     directory.mkdir()
     for name, value in source.items():
-        if name.startswith(("native/include/", "native/src/")) or name == PROBE:
+        if name.startswith(("native/include/", "native/src/")) or name == PROBE or name in PROBE_SUPPORT:
             destination = directory / name
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes(value)
@@ -157,7 +166,19 @@ def _stage(directory: Path, source: dict[str, bytes], catalogue: dict, *, candid
             path.write_bytes(after)
             transformations.append({"path": name, "before_sha256": _sha256(before),
                                     "after_sha256": _sha256(after), "kind": "external-generated-table-adapter-v1"})
-    files = {str(path.relative_to(directory)): _sha256(path.read_bytes())
+        if definition is not None and reaction_effects.has_extended(definition):
+            # Explicit endpoint effects are confined to this external build.
+            # Legacy candidates retain the original World source byte-for-byte.
+            header = directory / "generated/lab-reaction-effects.hpp"
+            header.write_bytes(reaction_effects.header(definition, catalogue["native"]))
+            path = directory / "native/src/world.cpp"
+            before = path.read_bytes()
+            after = reaction_effects.stage_world(before.decode("utf-8")).encode("utf-8")
+            path.write_bytes(after)
+            transformations.append({"path": "native/src/world.cpp",
+                "before_sha256": _sha256(before), "after_sha256": _sha256(after),
+                "kind": "external-endpoint-effects-v2"})
+    files = {path.relative_to(directory).as_posix(): _sha256(path.read_bytes())
              for path in sorted(directory.rglob("*")) if path.is_file()}
     return {"files_sha256": files, "digest": lab.digest(files), "transformations": transformations,
             "boundary": "External test fixture only; repository native source is never written."}
@@ -168,6 +189,19 @@ def _check_cancelled() -> None:
 
 
 def _verify_stage(directory: Path, manifest: dict) -> None:
+    # A changed include can affect compilation without modifying an existing
+    # manifest entry. Only known top-level compiler artifacts are unrecorded.
+    # They are never exported as source or treated as qualification inputs.
+    for path in directory.rglob("*"):
+        name = path.relative_to(directory).as_posix()
+        if path.is_symlink():
+            lab.fail("/stage/" + name, "staged compiler inputs cannot be replaced by symlinks")
+        if path.is_file() and name not in manifest["files_sha256"]:
+            build_output = path.parent == directory and (
+                path.name in ("lab-world-probe", "lab-world-probe.exe") or
+                path.suffix in (".obj", ".pdb", ".ilk"))
+            if not build_output:
+                lab.fail("/stage/" + name, "unrecorded staged file; no native qualification is recorded")
     for name, expected in manifest["files_sha256"].items():
         path = directory / name
         if not path.is_file() or _sha256(path.read_bytes()) != expected:
@@ -192,8 +226,11 @@ def _build_and_execute(directory: Path, cxx: str, msvc: bool, scenario: dict,
         if sanitize:
             command += ["-g1", "-fno-omit-frame-pointer", "-fsanitize=address,undefined", "-fno-sanitize-recover=all"]
     lab._run(command, directory, BUILD_TIMEOUT)
+    executable_hash = _sha256(executable.read_bytes())
     process = lab._run([str(executable), str(material_id), *(str(scenario[key]) for key in SCENARIO_FIELDS)],
                        directory, EXECUTE_TIMEOUT)
+    if not executable.is_file() or _sha256(executable.read_bytes()) != executable_hash:
+        lab.fail("/compile_world_test", "native executable changed during execution; no tested status recorded")
     try:
         observed = json.loads(process.stdout)
     except ValueError as error:
@@ -201,7 +238,7 @@ def _build_and_execute(directory: Path, cxx: str, msvc: bool, scenario: dict,
     if observed.get("ok") is not True or observed.get("runtime_active") is not False:
         lab.fail("/compile_world_test", "native World qualification failed: " + json.dumps(observed.get("checks", observed), sort_keys=True))
     build = {"argv": [part.replace(str(directory), "$STAGED_FIXTURE") for part in command],
-             "native_executable_sha256": _sha256(executable.read_bytes()),
+             "native_executable_sha256": executable_hash,
              "compile_timeout_seconds": BUILD_TIMEOUT, "execute_timeout_seconds": EXECUTE_TIMEOUT}
     return observed, build
 
@@ -215,6 +252,21 @@ def _compare(reference: dict, candidate: dict) -> dict:
             "reference_target_below_reservoir": before["target_below_reservoir"],
             "candidate_target_below_reservoir": after["target_below_reservoir"],
             "scope": "Actual stored native state at the requested completed tick. Unchanged output does not establish ineffectiveness for every configuration."}
+
+
+def _verify_effect_readback(observed: dict, definition: dict | None) -> None:
+    """Bind the authored effects to the table read by the compiled executable."""
+    slots = []
+    for rule in sorted(definition["reactions"] if definition else [], key=lambda row: row["slot"]):
+        if all(rule["effects"][side]["kind"] == "replace_with_defaults" for side in ("first", "second")):
+            continue
+        slots.append({"slot": rule["slot"], **{
+            side: {"kind": rule["effects"][side]["kind"],
+                   "state_b": rule["effects"][side].get("state_b", 0)}
+            for side in ("first", "second")}})
+    expected = {"version": 2 if slots else 1, "extended_slots": slots}
+    if observed.get("endpoint_effects") != expected:
+        lab.fail("/compile_world_test/endpoint_effects", "compiled endpoint effects do not match the authored candidate; no tested status recorded")
 
 
 def _receipt(result: dict, catalogue: dict, scenario: dict, identity_before: dict,
@@ -235,6 +287,11 @@ def _receipt(result: dict, catalogue: dict, scenario: dict, identity_before: dic
             "sanitizer_runtime_options": {key: os.environ.get(key, "") for key in ("ASAN_OPTIONS", "UBSAN_OPTIONS")} if sanitize else {},
             "reference_stage": reference_stage, "candidate_stage": candidate_stage,
             "reference_build": reference_build, "candidate_build": candidate_build,
+            "endpoint_effects": {
+                "backend": "external_effects_v2" if reaction_effects.has_extended(result["candidate"]) else "legacy_replace_with_defaults",
+                "authored_rules": copy.deepcopy(result["candidate"]["reactions"]),
+                "generated_header_sha256": candidate_stage["files_sha256"].get("generated/lab-reaction-effects.hpp"),
+                "scope": "Only the candidate's external World consumes extended effects; the reference and production retain legacy endpoint replacement."},
             "reference": reference, "candidate": observed, "comparison": comparison,
             "checks": {"source_unchanged": True, "reference_qualification": True,
                        "candidate_qualification": True, "unchanged_candidate": no_op,
@@ -262,7 +319,12 @@ def _publish(staging: Path, destination: Path, receipt: dict, normalized: dict, 
         # Source custody is checked again immediately before publication.
         identity, _ = _source_snapshot()
         if identity["digest"] != receipt["source_identity"]["digest"]:
-            lab.fail("/compile_world_test", "source changed before publication; no tested fixture exported")
+            lab.fail("/compile_world_test", "source changed before publication; no tested fixture exported" +
+                     _source_changes(receipt["source_identity"], identity))
+        # Staged bytes can change while copytree is running. Verify what will
+        # actually be published, after both copies and source custody checks.
+        for label in ("reference", "candidate"):
+            _verify_stage(publication / label, receipt[label + "_stage"])
         os.rename(publication, destination)
     finally:
         if publication.exists():
@@ -291,7 +353,7 @@ def compile_world_test(candidate: Any, *, scenario: Any = None, output_dir: Path
         staging = Path(temporary)
         baseline = lab.baseline()
         reference_stage = _stage(staging / "reference", inputs, baseline, candidate=False)
-        candidate_stage = _stage(staging / "candidate", inputs, catalogue, candidate=True)
+        candidate_stage = _stage(staging / "candidate", inputs, catalogue, candidate=True, definition=normalized)
         # Fail before compilation if staged sources are missing or changed.
         _verify_stage(staging / "reference", reference_stage)
         _verify_stage(staging / "candidate", candidate_stage)
@@ -303,9 +365,12 @@ def compile_world_test(candidate: Any, *, scenario: Any = None, output_dir: Path
         _verify_stage(staging / "candidate", candidate_stage)
         identity_after, _ = _source_snapshot()
         if identity_after["digest"] != identity_before["digest"]:
-            lab.fail("/compile_world_test", "source inputs changed during validation, staging, compilation or execution; rerun against stable source")
+            lab.fail("/compile_world_test", "source inputs changed during validation, staging, compilation or execution; rerun against stable source" +
+                     _source_changes(identity_before, identity_after))
+        _verify_effect_readback(reference, None)
+        _verify_effect_readback(observed, normalized)
         comparison = _compare(reference, observed)
-        no_op = catalogue == baseline
+        no_op = catalogue == baseline and not reaction_effects.has_extended(normalized)
         if no_op and not comparison["equal"]:
             lab.fail("/compile_world_test", "unchanged generated tables failed exact parity with untouched native source: " + json.dumps(comparison["differences"], sort_keys=True))
         receipt = _receipt(result, catalogue, scenario, identity_before, identity_after, reference_stage,
@@ -315,7 +380,8 @@ def compile_world_test(candidate: Any, *, scenario: Any = None, output_dir: Path
         lab.compatibility.check()
         final_identity, _ = _source_snapshot()
         if final_identity["digest"] != identity_before["digest"]:
-            lab.fail("/compile_world_test", "source inputs changed before the final receipt; no tested status recorded")
+            lab.fail("/compile_world_test", "source inputs changed before the final receipt; no tested status recorded" +
+                     _source_changes(identity_before, final_identity))
         if destination is not None:
             _publish(staging, destination, receipt, normalized, result["digest"])
             result["output_dir"] = str(destination)

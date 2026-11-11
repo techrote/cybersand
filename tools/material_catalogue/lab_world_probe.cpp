@@ -4,6 +4,11 @@
 #include "cybersand/interaction_rules.hpp"
 #include "cybersand/material_appearance.hpp"
 #include "cybersand/material_rules.hpp"
+#if __has_include("lab-reaction-effects.hpp")
+#include "lab-reaction-effects.hpp"
+#include "lab_effects_probe.hpp"
+#define CYBERSAND_LAB_EFFECTS_V2 1
+#endif
 #include <algorithm>
 #include <array>
 #include <iomanip>
@@ -279,6 +284,31 @@ void emit_snapshot(const Snapshot& value, bool include_grid) {
     if (include_grid) { std::cout << ",\"grid\":"; emit_grid(value); }
     std::cout << '}';
 }
+void emit_endpoint_effects() {
+#ifdef CYBERSAND_LAB_EFFECTS_V2
+    using namespace cybersand::material_lab_effects;
+    const auto emit_endpoint = [](const Endpoint& endpoint) {
+        const char* name = endpoint.kind == Kind::ReplaceWithDefaults ? "replace_with_defaults" :
+            endpoint.kind == Kind::KeepExisting ? "keep_existing" : "set_state";
+        std::cout << "{\"kind\":\"" << name << "\",\"state_b\":" << +endpoint.state_b << '}';
+    };
+    std::cout << "{\"version\":2,\"extended_slots\":[";
+    bool first = true;
+    for (std::size_t slot = 0; slot < kPairs.size(); ++slot) {
+        if (!is_extended(slot)) continue;
+        if (!first) std::cout << ',';
+        first = false;
+        std::cout << "{\"slot\":" << slot << ",\"first\":";
+        emit_endpoint(kPairs[slot].first);
+        std::cout << ",\"second\":";
+        emit_endpoint(kPairs[slot].second);
+        std::cout << '}';
+    }
+    std::cout << "]}";
+#else
+    std::cout << "{\"version\":1,\"extended_slots\":[]}";
+#endif
+}
 } // namespace
 
 int main(int argc, char** argv) {
@@ -292,6 +322,11 @@ int main(int argc, char** argv) {
             valid_material(static_cast<std::uint16_t>(first)) && valid_material(static_cast<std::uint16_t>(second)) &&
             (target == first || target == second) && ticks > 0 && (workers == 1 || workers == 4), "Fixture inputs refused");
         verify_tables();
+#ifdef CYBERSAND_LAB_EFFECTS_V2
+        const auto effect_contract_checks = cybersand::material_lab_effects_probe::verify();
+#else
+        const std::string effect_contract_checks = "{\"executed\":false,\"reason\":\"legacy backend\"}";
+#endif
         const auto primary = run(first, second, target, seed, ticks, workers, true);
         const auto repeated = run(first, second, target, seed, ticks, workers, false);
         const auto alternate = run(first, second, target, seed, ticks, workers == 1 ? 4U : 1U, false);
@@ -319,6 +354,8 @@ int main(int argc, char** argv) {
             << ",\"kernel\":" << static_cast<unsigned>(descriptor.kernel) << ",\"rgba\":";
         numbers(descriptor.rgba);
         std::cout << "},\"configuration\":"; emit_configuration(primary.applied);
+        std::cout << ",\"endpoint_effects\":"; emit_endpoint_effects();
+        std::cout << ",\"effect_contract_checks\":" << effect_contract_checks;
         std::cout << ",\"palette_rgba\":[";
         for (std::size_t i = 0; i < kMaterialDefinitions.size(); ++i) { if (i) std::cout << ','; numbers(kMaterialDefinitions[i].rgba); }
         std::cout << "],\"initial\":"; emit_snapshot(primary.initial, true);
