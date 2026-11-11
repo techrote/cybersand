@@ -195,12 +195,15 @@ func _solver(d: Dictionary, applied_policy: Dictionary) -> Dictionary:
 
 func _viscosity_row(d: Dictionary, solver: Dictionary, applied_policy: Dictionary) -> Dictionary:
 	var value: int = int(d.viscosity_index)
+	if solver.family == "inertial_cellular_v1":
+		var candidate_edit: bool = d.kernel_name in ["YieldingLiquid", "Cement", "MoltenGlass"]
+		return _row("Viscosity index", value, "Ineffective while the inertial family is selected", solver.consumer,
+			"IN uses its own damping parameter. Candidate descriptor edits apply only to the template's ordinary CellularYield path, not this IN assignment." if candidate_edit else "IN uses its own validated damping parameter, not descriptor viscosity.",
+			SOURCE_COMPILE if candidate_edit else WORLD_POLICY)
 	if d.kernel_name in ["Lava", "Acid", "Oil"]:
 		return _row("Viscosity index", value, "Ineffective in this specialized kernel", "World::update_rule_kernel::" + str(d.kernel_name), "Specialized movement bypasses the descriptor viscosity gate", "Unsupported edit: this field does not control this kernel")
 	if d.state_name != "Liquid":
 		return _row("Viscosity index", value, "Not applicable", "No liquid viscosity consumer", "Non-liquid kernel", "Unsupported")
-	if int(d.id) == 3 and solver.family == "inertial_cellular_v1":
-		return _row("Viscosity index", value, "Not the inertial damping parameter", solver.consumer, "IN uses its own validated damping parameter", WORLD_POLICY)
 	if int(d.id) == 3 and solver.family == "cellular_yield_v1":
 		var water_viscosity: int = int(native_metadata.water_yield_default_viscosity)
 		for block: Dictionary in applied_policy.get("material_blocks", []):

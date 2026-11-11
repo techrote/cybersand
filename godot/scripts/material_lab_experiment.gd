@@ -27,6 +27,7 @@ var _water_family: String = "default"
 var _readback: Dictionary = {}
 var _preview: Image
 var _readback_tick: int = -1
+var _construction_identity: Dictionary = {}
 
 static func _valid_material(id: int) -> bool:
 	return id >= 0 and id < Contract.MATERIAL_COUNT and id != 10
@@ -91,7 +92,34 @@ static func resolver_diagnostic(first: int, second: int, roll: int) -> Dictionar
 		result["quantity_scope"] = "Resolver products only. Native World performs target then source writes and its own quantity accounting."
 	return result
 
+func _current_source_identity() -> Dictionary:
+	var identity: Dictionary = Identity.current()
+	identity["material_lab_experiment_sha256"] = FileAccess.get_sha256("res://scripts/material_lab_experiment.gd")
+	identity["material_lab_identity_scope"] = "File fingerprints observed around native construction and rechecked before export/capture; mapped-module identity is not independently measured."
+	return identity
+
+static func _same_source_identity(left: Dictionary, right: Dictionary) -> bool:
+	for key: String in ["native_sha256", "script_set_sha256", "material_lab_experiment_sha256"]:
+		if not left.has(key) or not right.has(key) or left[key] != right[key]: return false
+	return true
+
+static func _source_identity_available(identity: Dictionary) -> bool:
+	for key: String in ["native_sha256", "script_set_sha256", "material_lab_experiment_sha256"]:
+		if not identity.get(key) is String or str(identity[key]).length() != 64: return false
+	for fingerprint: Variant in identity.get("script_sha256", {}).values():
+		if not fingerprint is String or str(fingerprint).length() != 64: return false
+	return not identity.get("script_sha256", {}).is_empty()
+
+func _ensure_source_identity() -> bool:
+	if _construction_identity.is_empty() or not _same_source_identity(_construction_identity, _current_source_identity()):
+		return _refuse("Source/runtime files changed since this experiment was constructed. Reopen the matching build and prepare a fresh experiment before exporting, capturing or comparing it; the current native run is preserved.")
+	last_error = ""
+	return true
+
 func start(definition: Dictionary, workers: int = 1, water_family: String = "default") -> bool:
+	return _start_with_identity(definition, workers, water_family, {})
+
+func _start_with_identity(definition: Dictionary, workers: int, water_family: String, expected_identity: Dictionary) -> bool:
 	# Validate all inputs and finish installation in a fresh owner before swapping
 	# our retained experiment. Rejected imports preserve the current run exactly.
 	var checked: Dictionary = Contract.validate(definition)
@@ -110,6 +138,11 @@ func start(definition: Dictionary, workers: int = 1, water_family: String = "def
 		return _refuse("Shared Workbench definitions belong to its existing owner; import a bounded MicroScenario fixture.")
 	if not ClassDB.class_exists(&"CyberNativeCellWorld") or not ClassDB.class_exists(&"CyberDemoBridge"):
 		return _refuse("Current native World and MicroScenario bridge are required. This test does not substitute a fallback.")
+	var identity_before: Dictionary = _current_source_identity()
+	if not _source_identity_available(identity_before):
+		return _refuse("Native artifact or host source fingerprints are unavailable; use the complete matching checkout to construct a reproducible Lab experiment.")
+	if not expected_identity.is_empty() and not _same_source_identity(identity_before, expected_identity):
+		return _refuse("Saved experiment source/runtime changed before reconstruction; the prior experiment is preserved.")
 	var next_bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
 	for method: StringName in [&"inspect_cell", &"inspect_statistics", &"inspect_interaction"]:
 		if not next_bridge.has_method(method): return _refuse("Rebuild the native observation adapter: missing " + str(method))
@@ -135,12 +168,15 @@ func start(definition: Dictionary, workers: int = 1, water_family: String = "def
 		return _refuse(str(next_host.last_error))
 	if not validation.is_empty() and next_host.liquid_solver_policy().get("policy_hash", "") != validation.get("policy_hash", "missing"):
 		return _refuse("Native applied policy did not acknowledge the validated request; prior experiment preserved.")
+	if not _same_source_identity(identity_before, _current_source_identity()):
+		return _refuse("Source/runtime files changed during native construction; no new experiment was installed. Reopen the matching build and retry.")
 	world = next_world
 	_bridge = next_bridge
 	_host = next_host
 	_definition = candidate.duplicate(true)
 	_workers = workers
 	_water_family = water_family
+	_construction_identity = identity_before.duplicate(true)
 	var interest: Array = candidate.interest.region
 	# Rendering/readback stays bounded even for an imported large fixture.
 	_region = Rect2i(int(interest[0]), int(interest[1]), mini(320,int(interest[2])), mini(240,int(interest[3])))
@@ -260,8 +296,10 @@ func preview_image() -> Image:
 
 func capture(source_revision: String = "unavailable") -> Dictionary:
 	if not active(): return {"ok":false,"error":"No native experiment is active."}
-	var identity: Dictionary = Identity.current(source_revision)
-	identity["material_lab_experiment_sha256"] = FileAccess.get_sha256("res://scripts/material_lab_experiment.gd")
+	if not _ensure_source_identity(): return {"ok":false,"error":last_error}
+	var identity: Dictionary = _construction_identity.duplicate(true)
+	identity["source_revision"] = source_revision
+	identity["revision_status"] = "caller-supplied" if source_revision != "unavailable" else "not-embedded"
 	var report: Dictionary = _host.capture(identity)
 	report["material_lab_schema_version"] = 1
 	report["ok"] = not report.get("failed",true)
@@ -279,12 +317,13 @@ static func _case_payload(checked: Dictionary, workers: int, family: String, ide
 	return {"schema_id":CASE_SCHEMA,"schema_version":1,"definition":checked.definition,
 		"definition_hash":str(checked.hash),"workers":workers,"water_family":family,
 		"native_sha256":str(identity.native_sha256),"host_scripts_sha256":str(identity.script_set_sha256),
-		"lab_script_sha256":FileAccess.get_sha256("res://scripts/material_lab_experiment.gd")}
+		"lab_script_sha256":str(identity.material_lab_experiment_sha256)}
 
 func case_json() -> String:
 	if not active(): return ""
+	if not _ensure_source_identity(): return ""
 	var checked: Dictionary = Contract.validate(_definition)
-	var payload: Dictionary = _case_payload(checked,_workers,_water_family,Identity.current())
+	var payload: Dictionary = _case_payload(checked,_workers,_water_family,_construction_identity)
 	payload["digest"] = JSON.stringify(payload,"",true).sha256_text()
 	return JSON.stringify(payload,"\t",true) + "\n"
 
@@ -302,28 +341,28 @@ func start_case_json(text: String) -> bool:
 	var checked: Dictionary = Contract.validate(value.definition)
 	if not checked.get("ok",false): return _refuse(str(checked.get("error","Invalid saved definition")))
 	if str(value.definition_hash) != str(checked.hash): return _refuse("Saved definition digest does not match its bytes.")
-	var identity: Dictionary = {"native_sha256":value.native_sha256,"script_set_sha256":value.host_scripts_sha256}
+	var identity: Dictionary = {"native_sha256":value.native_sha256,"script_set_sha256":value.host_scripts_sha256,
+		"material_lab_experiment_sha256":value.lab_script_sha256}
 	var payload: Dictionary = _case_payload(checked,int(value.workers),str(value.water_family),identity)
-	payload.lab_script_sha256 = value.lab_script_sha256
 	if not value.digest is String or str(value.digest) != JSON.stringify(payload,"",true).sha256_text():
 		return _refuse("Saved test-case digest mismatch; the case has been edited or corrupted.")
-	var current: Dictionary = Identity.current()
-	if value.native_sha256 != current.native_sha256 or value.host_scripts_sha256 != current.script_set_sha256 \
-		or value.lab_script_sha256 != FileAccess.get_sha256("res://scripts/material_lab_experiment.gd"):
+	if not _same_source_identity(identity, _current_source_identity()):
 		return _refuse("Test case belongs to another native artifact or host source. Use its matching build, or explicitly create a new experiment from its definition.")
-	return start(checked.definition,int(value.workers),str(value.water_family))
+	return _start_with_identity(checked.definition,int(value.workers),str(value.water_family),identity)
 
 func repeat_reference() -> Dictionary:
 	# Deliberately synchronous, bounded by the recorded <=600-tick Lab window.
 	# UI callers should run this only on explicit request, not every frame.
 	if not active(): return {"ok":false,"error":"No native experiment is active."}
+	if not _ensure_source_identity(): return {"ok":false,"error":last_error}
 	var reference: RefCounted = get_script().new()
-	if not reference.start(_definition,_workers,_water_family):
+	if not reference._start_with_identity(_definition,_workers,_water_family,_construction_identity):
 		return {"ok":false,"error":reference.last_error}
 	var target: int = int(world.get_tick_index())
 	while int(reference.world.get_tick_index()) < target:
 		if not reference.step(mini(MAX_STEPS,target-int(reference.world.get_tick_index()))):
 			return {"ok":false,"error":reference.last_error}
+	if not _ensure_source_identity(): return {"ok":false,"error":last_error}
 	var current: Dictionary = readback()
 	var repeated: Dictionary = reference.readback()
 	var equality: bool = current.get("ok",false) and repeated.get("ok",false) \
@@ -341,6 +380,7 @@ func close() -> void:
 	world = null
 	_bridge = null
 	_definition.clear()
+	_construction_identity.clear()
 	_readback.clear()
 	_preview = null
 	_readback_tick = -1

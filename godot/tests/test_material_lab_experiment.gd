@@ -2,6 +2,22 @@ extends SceneTree
 
 const Lab = preload("res://scripts/material_lab_experiment.gd")
 const Contract = preload("res://scripts/microscenario_contract.gd")
+
+# Only the file-identity observation is controlled in these refusal tests.
+# Installation, ticks and preserved-state readback still use a real native World.
+class SourceDriftLab:
+	extends "res://scripts/material_lab_experiment.gd"
+	var drift_field: String = ""
+	var identity_reads: int = 0
+	var drift_at_read: int = 0
+
+	func _current_source_identity() -> Dictionary:
+		var identity: Dictionary = super._current_source_identity()
+		identity_reads += 1
+		if not drift_field.is_empty() and (drift_at_read == 0 or identity_reads >= drift_at_read):
+			identity[drift_field] = "0".repeat(64)
+		return identity
+
 var assertions: int = 0
 var failures: int = 0
 
@@ -24,6 +40,56 @@ func advance_to_end(experiment: RefCounted) -> bool:
 func semantic(readback: Dictionary) -> Dictionary:
 	return {"tick":readback.completed_tick,"content_hash":readback.native.content_hash,
 		"water_integer":readback.native.water_integer,"counts":readback.material_counts}
+
+func check_construction_provenance() -> void:
+	var experiment := SourceDriftLab.new()
+	var fixture: Dictionary = Lab.definition_for_pair(23,3,2,120)
+	expect(experiment.start(fixture), "Provenance regression starts a real native experiment: " + experiment.last_error)
+	if not experiment.active(): return
+	expect(experiment.step(2), "Provenance regression advances actual native ticks")
+	var retained: Dictionary = semantic(experiment.readback())
+	var saved: String = experiment.case_json()
+	var envelope: Dictionary = JSON.parse_string(saved)
+	var captured: Dictionary = experiment.capture()
+	expect(captured.ok and envelope.native_sha256 == captured.runtime_identity.native_sha256
+		and envelope.host_scripts_sha256 == captured.runtime_identity.script_set_sha256
+		and envelope.lab_script_sha256 == captured.runtime_identity.material_lab_experiment_sha256,
+		"Saved case and capture bind the same construction-time native and source fingerprints")
+	for field: String in ["native_sha256", "script_set_sha256", "material_lab_experiment_sha256"]:
+		experiment.drift_field = field
+		expect(experiment.case_json().is_empty() and experiment.last_error.contains("changed since"),
+			"Case export refuses post-construction identity drift: " + field)
+		var refused_capture: Dictionary = experiment.capture()
+		expect(not refused_capture.ok and str(refused_capture.error).contains("changed since"),
+			"Capture refuses to relabel an old native run with new source bytes: " + field)
+		var refused_repeat: Dictionary = experiment.repeat_reference()
+		expect(not refused_repeat.ok and str(refused_repeat.error).contains("changed since"),
+			"Same-source comparison refuses identity drift: " + field)
+		expect(semantic(experiment.readback()) == retained, "Identity refusal preserves actual native state: " + field)
+		experiment.drift_field = ""
+		expect(experiment.case_json() == saved and experiment.capture().ok,
+			"Restored matching source retains the original deterministic case identity: " + field)
+	# The first observation matches, then the post-install check observes a
+	# changed native artifact. The speculative owner must not replace our run.
+	experiment.drift_field = "native_sha256"
+	experiment.drift_at_read = experiment.identity_reads + 2
+	expect(not experiment.start(fixture) and experiment.last_error.contains("during native construction"),
+		"Source drift during native construction refuses the new owner")
+	expect(semantic(experiment.readback()) == retained, "Construction-time source drift preserves the prior native run")
+	experiment.drift_field = ""
+	experiment.drift_at_read = 0
+	expect(experiment.case_json() == saved, "Refused replacement does not rewrite construction provenance")
+	# An imported envelope can match at preflight and become stale before its
+	# native owner is built; the expected fingerprint is carried across both.
+	experiment.drift_field = "script_set_sha256"
+	experiment.drift_at_read = experiment.identity_reads + 2
+	expect(not experiment.start_case_json(saved) and experiment.last_error.contains("before reconstruction"),
+		"Import keeps its expected source identity through native construction")
+	expect(semantic(experiment.readback()) == retained, "Source drift after import preflight preserves the prior native run")
+	experiment.drift_field = ""
+	experiment.drift_at_read = 0
+	expect(experiment.case_json() == saved, "Rejected import preserves the deterministic construction-bound case")
+	experiment.close()
 
 func run() -> void:
 	if not ClassDB.class_exists(&"CyberNativeCellWorld") or not ClassDB.class_exists(&"CyberDemoBridge"):
@@ -124,5 +190,6 @@ func run() -> void:
 		var restored_cy: Dictionary = runtime.readback().applied_policy
 		expect(restored_cy.policy_hash == applied.policy_hash,"Runtime family round trip has native policy-hash acknowledgment")
 		runtime.close()
+	check_construction_provenance()
 	print("MATERIAL_LAB_EXPERIMENT: %d assertions; %d failures" % [assertions,failures])
 	quit(1 if failures else 0)

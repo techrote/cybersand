@@ -7,6 +7,8 @@ const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA �
 const ZOOMS := [Vector2i(240,135),Vector2i(480,270),Vector2i(960,540)]
 const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place source"]
 var _generated_dialog := preload("res://scripts/workbench_generator_dialog.gd").new()
+var _materials_lab_window: Window
+var _materials_lab_panel: Control
 # These copied bytes are only a reconstructible authored starting baseline.
 # The sole live World remains owned by the existing native simulation worker.
 var _generated_active: Dictionary = {}
@@ -54,6 +56,28 @@ var _runtime_label := ""
 var _processor_label := ""
 # WCX/BW-001 experimental Water spray controls (separate owner script).
 var water_spray := preload("res://scripts/workbench_water_spray_panel.gd").new()
+
+func open_materials_lab() -> void:
+	_cancel()
+	if not is_instance_valid(_materials_lab_window):
+		_materials_lab_window = Window.new()
+		_materials_lab_window.title = "CyberSand / Materials Lab"
+		_materials_lab_window.min_size = Vector2i(1000,650)
+		_materials_lab_window.transient = true
+		add_child(_materials_lab_window)
+		var margin := MarginContainer.new()
+		margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		for side: String in ["left","right","top","bottom"]:
+			margin.add_theme_constant_override("margin_" + side,10)
+		_materials_lab_window.add_child(margin)
+		var panel := preload("res://scripts/material_lab_panel.gd").new()
+		_materials_lab_panel = panel
+		panel.name = "MaterialsLabPanel"
+		margin.add_child(panel)
+		panel.close_requested.connect(_materials_lab_window.hide)
+		_materials_lab_window.close_requested.connect(_materials_lab_window.hide)
+	_materials_lab_panel.set_policy_readback(host.tower_context.get("liquid_solver_policy",{}),"Workbench owner snapshot at opening; reopen to refresh")
+	_materials_lab_window.popup_centered_clamped(Vector2i(1520,900),0.95)
 
 func _row(parent: Control) -> HFlowContainer:
 	var row := HFlowContainer.new()
@@ -120,6 +144,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Restore start",restore_start)
 	_button(row,"New blank",new_canvas)
 	_button(row,"New from generator…",func() -> void: _generated_dialog.open_new())
+	_button(row,"Materials Lab…",open_materials_lab)
 	_picker(row,_camera,["Free camera","Follow selected","Overview"],func(i: int) -> void: set_camera(i))
 	_button(row,"−",func() -> void: zoom_by(1))
 	_button(row,"+",func() -> void: zoom_by(-1))

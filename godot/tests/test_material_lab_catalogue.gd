@@ -1,6 +1,8 @@
 extends SceneTree
 
 const Catalogue = preload("res://scripts/material_lab_catalogue.gd")
+const Host = preload("res://scripts/microscenario_host.gd")
+const Pack = preload("res://scripts/microscenario_reference_pack.gd")
 var assertions: int = 0
 var failures: int = 0
 
@@ -83,6 +85,24 @@ func run() -> void:
 	for assignment: Dictionary in actual.assignments:
 		if int(assignment.material) == 3:
 			expect(observed.solver.family == assignment.applied_family, "Water solver did not match authoritative readback")
+	# Brine is an admitted non-Water IN participant. Use an installed native
+	# policy receipt, not a manually assembled family-name dictionary.
+	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+	var brine_choice: Dictionary = {}
+	for choice: Dictionary in bridge.liquid_policy_assignment_choices(bridge.default_liquid_policy(), 24):
+		if choice.family == "inertial_cellular_v1" and choice.variant == "reference":
+			brine_choice = choice
+	expect(brine_choice.get("accepted", false), "Native Brine IN selection is required for this effective-property regression")
+	if brine_choice.get("accepted", false):
+		var host: RefCounted = Host.new()
+		expect(host.install(world, Pack.interaction_fixture("salt-water", 2, 32), "Inspect", true, brine_choice.request, {"maximum_rule_radius":3}), "Actual native Brine IN World construction failed: " + host.last_error)
+		var brine_receipt: Dictionary = world.get_liquid_solver_policy()
+		var brine: Dictionary = catalogue.inspect(24, brine_receipt)
+		var viscosity: Dictionary = row(brine, "Viscosity index")
+		expect(brine.solver.observed and brine.solver.family == "inertial_cellular_v1", "Inspector did not consume the actual Brine IN owner receipt")
+		expect(viscosity.declared == 32 and str(viscosity.effective).contains("Ineffective") and str(viscosity.consumer).contains("inertial"), "Brine's descriptor viscosity must not be presented as controlling an IN assignment")
+		expect(viscosity.editable_in_candidate and str(viscosity.applicability).contains("ordinary CellularYield"), "Candidate Brine viscosity edit must identify its separate ordinary-CY applicability")
+		host.clear()
 	# Authored order, probability boundaries, both endpoint orientations, and no
 	# matching-rule are actual compiled native resolver calls, not a UI mock.
 	for rule: Dictionary in catalogue.profile.pair_rules:
