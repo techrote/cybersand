@@ -21,6 +21,16 @@ const DEFAULT_OPTIONS := {"budget":20.0,"mass_multiplier":1.0,"inertia_multiplie
 const ROOT_KEYS := ["version","extent","actors","next_id","selected","edits","response","liquid_policy",
 	"normalize","rule_radius","source","material","brush","fire"]
 
+# Refuse to author an un-reopenable start against an older installed DLL/SO.
+# The bridge object reports only immutable constructor capability, not a World.
+static func native_rectangle_budget() -> int:
+	if not ClassDB.class_exists(&"CyberDemoBridge"): return 4096
+	var bridge: Object = ClassDB.instantiate(&"CyberDemoBridge")
+	if bridge == null or not bridge.has_method(&"workbench_start_rectangle_capacity"):
+		return 4096
+	return clampi(int(bridge.call(&"workbench_start_rectangle_capacity")),4096,MAX_RUNS)
+
+
 static func fresh(policy: PackedInt32Array, extent := Vector2i(2048,2048)) -> Dictionary:
 	return {"version":2,"extent":[extent.x,extent.y],"actors":[],"next_id":1,"selected":0,"edits":[],
 		"response":"LA-SELECTIVE","liquid_policy":Array(policy),"normalize":false,"rule_radius":2,

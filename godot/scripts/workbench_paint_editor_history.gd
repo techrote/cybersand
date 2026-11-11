@@ -71,6 +71,7 @@ static func prepare(setup: Dictionary, cells: PackedInt32Array,
 		generated_packet: Dictionary = {}) -> Dictionary:
 	var error: String = Setup.validate(setup)
 	if not error.is_empty(): return _refuse(error)
+	var native_limit: int = Setup.native_rectangle_budget()
 	var encoded := stamps(cells,Setup.extent_of(setup))
 	if not encoded.accepted: return encoded
 	var candidate := setup.duplicate(true)
@@ -81,12 +82,17 @@ static func prepare(setup: Dictionary, cells: PackedInt32Array,
 			# Each overwritten interval can split an older run into two. At
 			# most two boundaries per stamp/row bound the final row segments.
 			row_bound += 2*Setup.stamp_rows(stamp)
-		if candidate.edits.size() > Setup.MAX_STAMPS or row_bound > Setup.MAX_RUNS:
+		if candidate.edits.size() > native_limit or row_bound > native_limit:
 			var compacted := Setup.compact_edits(candidate)
 			if compacted.has("error"): return _refuse(str(compacted.error))
 			candidate.edits = compacted.edits
-	elif candidate.edits.size() > Setup.MAX_STAMPS:
-		return _refuse("Generated-map starting paint is full (%d rectangles); this operation was not queued." % Setup.MAX_STAMPS)
+		if candidate.edits.size() > native_limit:
+			return _refuse("This installed native runtime supports only %d starting rectangles; rebuild the GDExtension." % native_limit)
+	elif candidate.edits.size() > native_limit:
+		return _refuse("Generated-map starting paint exceeds the installed native limit of %d rectangles; rebuild the GDExtension." % native_limit)
+	if not generated_packet.is_empty():
+		error = GeneratedMaps.edit_work_error(candidate)
+		if not error.is_empty(): return _refuse(error)
 	error = Setup.validate(candidate)
 	if not error.is_empty(): return _refuse(error)
 	var body: String

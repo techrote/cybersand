@@ -146,6 +146,11 @@ func controls(base: Dictionary, packet: Dictionary) -> void:
 	full.edits = []
 	for index: int in Setup.MAX_STAMPS: full.edits.append([200,200,1,1,58])
 	check(not History.prepare(full,cells,packet).accepted,"generated edit capacity refuses without dropping erasure")
+	var excessive_work := base.duplicate(true)
+	for index: int in 65: excessive_work.edits.append([0,0,512,512,58])
+	check(not Store.edit_work_error(excessive_work).is_empty()
+		and not History.prepare(excessive_work,cells,packet).accepted,
+		"generated replay cost refuses before native writes even with few stamps")
 	var squeezed: Dictionary = History.prepare(full,cells)
 	check(squeezed.accepted and squeezed.setup.edits.size() == 7,
 		"ordinary blank-baseline compaction safely frees old history")
@@ -181,6 +186,8 @@ func run() -> void:
 		quit(1)
 		return
 	bridge = ClassDB.instantiate(&"CyberDemoBridge")
+	check(Setup.native_rectangle_budget() == Setup.MAX_RUNS,
+		"source-matched native constructor advertises the expanded Workbench budget")
 	checked = Contract.validate(Contract.parse(FileAccess.get_file_as_string(
 		"res://tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json")).definition)
 	var reopened := OS.get_environment("CYBERSAND_PAINT_HISTORY_REOPEN") == "1"
@@ -218,6 +225,11 @@ func run() -> void:
 		if check(dense_plain.accepted and dense_gen.accepted
 				and dense_plain.setup.edits.size() > 4096 and dense_gen.setup.edits.size() > 4096,
 				"4500-rectangle authored and generated starts preflight"):
+			var dense_runs: Array = Setup.rectangles(dense_plain.setup).runs
+			check(Contract._records(dense_runs,5,8*512*512,EXTENT,
+				Contract.WORKBENCH_MAX_RECORDS) != null
+				and Contract._records(dense_runs,5,8*512*512,EXTENT) == null,
+				"workbench may exceed 4096 but ordinary scenario admission remains bounded")
 			check(Setup.write_named(LABEL+"-dense",dense_plain.setup).is_empty(),
 				"atomic high-detail authored start save")
 			check(Store.write_named(LABEL+"-dense-generated",dense_gen.setup,packet).is_empty(),

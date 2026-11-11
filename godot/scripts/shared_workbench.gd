@@ -292,6 +292,9 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		candidate.edits = applied.edits
 	var error := Setup.validate(candidate,not preserve)
 	if not error.is_empty(): return refuse(error)
+	if not preserve and not generated_packet.is_empty() \
+			and candidate.edits.size() > Setup.native_rectangle_budget():
+		return refuse("This installed native runtime cannot reopen that detailed generated start; rebuild its GDExtension.")
 	if preserve and not generated_packet.is_empty():
 		return refuse("Cannot import generated cells while preserving a live session.")
 	var generation := {}
@@ -308,6 +311,8 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		var recipe := Setup.rectangles(candidate)
 		if recipe.has("error"): return refuse(recipe.error)
 		runs = recipe.runs
+		if runs.size() / 5 > Setup.native_rectangle_budget():
+			return refuse("This installed native runtime cannot reopen that detailed authored start; rebuild its GDExtension.")
 	# Retained authoring transfers the current native cells. Stamp replay and
 	# its rectangle limit apply only when constructing an authored start.
 	var definitions := Setup.physical_definitions(candidate)

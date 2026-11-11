@@ -425,6 +425,17 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                     map[static_cast<std::size_t>(dy) * extent.x + dx] = {cybersand::Material::Water, mass, coherence};
             }
             if (generated) {
+                // Bound total generated-start replay work independently of
+                // rectangle count and file size. These are construction writes,
+                // not arbitrary tick-time native World ownership.
+                const auto generated_limit = std::min<std::uint64_t>(
+                    64ULL * static_cast<std::uint64_t>(extent.x) * extent.y, 32'000'000ULL);
+                std::uint64_t generated_work = 0;
+                const auto reserve_generated_work = [&](std::uint64_t cells) {
+                    if (cells > generated_limit - generated_work)
+                        throw std::invalid_argument("Generated-grid edit replay budget exceeded");
+                    generated_work += cells;
+                };
                 // The same integer-disc geometry as starting paint, with
                 // ordered overwrite and Erase (material zero) preserved.
                 for (std::int64_t i = 0; i < generated_edits.size(); ++i) {
@@ -453,6 +464,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                         if (v[2] < 1 || v[3] < 1 || v[2] > extent.x - v[0] ||
                             v[3] > extent.y - v[1])
                             throw std::invalid_argument("Generated-grid box edit outside extent");
+                        reserve_generated_work(static_cast<std::uint64_t>(v[2]) * v[3]);
                         for (auto y = v[1]; y < v[1]+v[3]; ++y)
                             for (auto x = v[0]; x < v[0]+v[2]; ++x)
                                 map[static_cast<std::size_t>(y)*extent.x + x] = cell;
@@ -460,6 +472,11 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                         const auto radius = v[2];
                         if (radius < 2 || radius > 24)
                             throw std::invalid_argument("Invalid generated-grid brush radius");
+                        const auto left = std::max<std::int64_t>(0,v[0]-radius);
+                        const auto top = std::max<std::int64_t>(0,v[1]-radius);
+                        const auto right = std::min<std::int64_t>(extent.x,v[0]+radius+1);
+                        const auto bottom = std::min<std::int64_t>(extent.y,v[1]+radius+1);
+                        reserve_generated_work(static_cast<std::uint64_t>(right-left) * (bottom-top));
                         for (auto dy = std::max<std::int64_t>(-radius,-v[1]);
                              dy <= std::min<std::int64_t>(radius, extent.y-1-v[1]); ++dy) {
                             const auto half = static_cast<std::int64_t>(

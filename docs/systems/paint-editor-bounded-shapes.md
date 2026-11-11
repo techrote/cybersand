@@ -141,9 +141,13 @@ Before native writes, `workbench_paint_editor_history.gd` checks that the comple
 operation can be reconstructed through existing Setup-v2 or GEN-007 start formats.
 It coalesces exact material row runs into boxes, preserving Empty. The Workbench-only constructor now admits **32,768** authored rectangles/
 stamps (previously 4,096), subject to the unchanged **1 MiB** save envelope
-and native construction-area checks. Other MicroScenario recipes retain
+and native construction-area checks. Generated-map replay also has a
+conservative maximum of 64 world areas, capped at 32 million touched cells,
+validated before save and in the native prepared constructor. Other MicroScenario recipes retain
 their 4,096-record limit. This source change requires a rebuilt GDExtension
-before Windows qualification.
+before Windows qualification. The editor queries a native capability handshake
+and retains the old 4,096-rectangle refusal if the user has not rebuilt the
+GDExtension, rather than recording a start that cannot be reopened.
 Simple large rectangles fit efficiently. Highly fragmented pastes may explicitly
 refuse before any write. Ordinary blank starts may compact equivalent construction;
 generated starts retain their ordered overlays and original generator provenance.
