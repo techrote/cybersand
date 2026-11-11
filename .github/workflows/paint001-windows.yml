@@ -179,7 +179,7 @@ jobs:
                 throw "PAINT $label emitted a script/load failure"
               }
               if ($script.StartsWith('test_paint_editor_')) {
-                $lines = Select-String -Path $stdout,$stderr -Pattern 'PAINT_EDITOR_(SHAPES|NATIVE|EXECUTOR|HISTORY|WORKBENCH|GENERATED_WORKBENCH)|PAINT_EXECUTOR' -ErrorAction SilentlyContinue
+                $lines = Select-String -Path $stdout,$stderr -Pattern 'PAINT_EDITOR_(SHAPES|NATIVE|EXECUTOR|HISTORY|WORKBENCH|GENERATED_WORKBENCH)|PAINT_EXECUTOR|PAINT_RECOVERY' -ErrorAction SilentlyContinue
                 if (!$lines) { throw "PAINT $label exited zero without paint completion evidence" }
               }
               Write-Host "Windows PAINT $label completed"
