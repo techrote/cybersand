@@ -27,6 +27,16 @@ func configure(value: Variant, bounds: Rect2i) -> bool:
 			if op.shape == "disc":
 				if op.radius < 0 or op.radius > maxi(bounds.size.x,bounds.size.y) or not inside(op.x-op.radius,op.y-op.radius,bounds) or not inside(op.x+op.radius,op.y+op.radius,bounds): error = "Disc outside canvas."; return false
 			elif not inside(op.x0,op.y0,bounds) or not inside(op.x1,op.y1,bounds) or (op.shape == "rectangle" and (op.x1<op.x0 or op.y1<op.y0)): error = "Invalid or outside rectangle/line."; return false
+		if op.shape == "line":
+			var stroke_width: Variant = op.get("width",1)
+			if not integer(stroke_width) or stroke_width < 1 or stroke_width > maxi(bounds.size.x,bounds.size.y):
+				error = "Line width must be a positive integer within the canvas dimensions."
+				return false
+			op.width = int(stroke_width)
+			if op.width > 1:
+				var start := Vector2i(mini(op.x0,op.x1),mini(op.y0,op.y1))
+				var end := Vector2i(maxi(op.x0,op.x1),maxi(op.y0,op.y1))
+				op.stroke_bounds = Rect2i(start,end-start+Vector2i.ONE).grow(op.width/2).intersection(bounds)
 		operations.append(op)
 	return true
 
@@ -64,12 +74,39 @@ func next_chunk(capacity: int = 4096) -> Dictionary:
 			"rectangle": width = op.x1-op.x0+1; total = width*(op.y1-op.y0+1)
 			"disc": width = 2*op.radius+1; total = width*width
 			"line":
-				if line.is_empty(): make_line(op)
-				total = line.size()
+				if op.width == 1:
+					if line.is_empty(): make_line(op)
+					total = line.size()
+				else:
+					width = op.stroke_bounds.size.x
+					total = width*op.stroke_bounds.size.y
+		var stroke_start := Vector2.ZERO
+		var stroke_end := Vector2.ZERO
+		var radius_squared := 0.0
+		if op.shape == "line" and op.width > 1:
+			stroke_start = Vector2(op.x0,op.y0)
+			stroke_end = Vector2(op.x1,op.y1)
+			if op.width % 2 == 0:
+				var axis := (stroke_end-stroke_start).normalized()
+				if axis.x < 0 or (axis.x == 0 and axis.y < 0): axis = -axis
+				var offset := Vector2(-axis.y,axis.x)*0.5 if axis != Vector2.ZERO else Vector2(0,0.5)
+				stroke_start += offset
+				stroke_end += offset
+			radius_squared = pow(op.width*0.5,2)
 		while cursor < total and points.size()/2 < capacity:
 			var point: Vector2i
 			if op.shape == "pixels": point = Vector2i(int(op.points[cursor][0]),int(op.points[cursor][1]))
-			elif op.shape == "line": point = line[cursor]
+			elif op.shape == "line":
+				if op.width == 1:
+					point = line[cursor]
+				else:
+					point = op.stroke_bounds.position+Vector2i(cursor%width,cursor/width)
+					var closest := stroke_start
+					if stroke_start != stroke_end:
+						closest = Geometry2D.get_closest_point_to_segment(Vector2(point),stroke_start,stroke_end)
+					if Vector2(point).distance_squared_to(closest) >= radius_squared:
+						cursor += 1
+						continue
 			elif op.shape == "rectangle": point = Vector2i(op.x0+cursor%width,op.y0+cursor/width)
 			else: point = Vector2i(op.x-op.radius+cursor%width,op.y-op.radius+cursor/width)
 			cursor += 1

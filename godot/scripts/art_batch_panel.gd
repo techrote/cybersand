@@ -51,6 +51,12 @@ var capturing := false
 var request_area: Rect2i
 var request_guards: Array = []
 var request_materials: Array = []
+const SHAPES := ["rectangle","disc","line","pixels"]
+var tool_checks: Dictionary = {}
+var pixel_limit := SpinBox.new()
+var request_shapes: Array = []
+var request_pixel_limit := 0
+var tools_button := Button.new()
 var provider_message := "Idle"
 var log_draw := false
 var conversation: Array = []
@@ -123,6 +129,7 @@ func _ready() -> void:
 	input_mode.select(1)
 	input_mode.item_selected.connect(change_mode)
 	actions.add_child(input_mode)
+	mount_tools(actions)
 	column.add_child(actions)
 	mount_provider_controls(column)
 	state.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -153,6 +160,50 @@ func _ready() -> void:
 	help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	column.add_child(help)
 
+func mount_tools(actions: HBoxContainer) -> void:
+	var options := Window.new()
+	options.title = "Drawing tools"
+	options.close_requested.connect(options.hide)
+	add_child(options)
+	options.hide()
+	var fields_box := VBoxContainer.new()
+	fields_box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	options.add_child(fields_box)
+	var toggles := HBoxContainer.new()
+	fields_box.add_child(toggles)
+	for shape: String in SHAPES:
+		var toggle := CheckBox.new()
+		toggle.text = shape.capitalize()
+		toggle.button_pressed = true
+		tool_checks[shape] = toggle
+		toggles.add_child(toggle)
+	pixel_limit.prefix = "Pixels per operation"
+	pixel_limit.max_value = 2147483647
+	pixel_limit.tooltip_text = "Zero leaves the point count unrestricted by this setting."
+	fields_box.add_child(pixel_limit)
+	var hint := Label.new()
+	hint.text = "Line width is in cells. Pixel limit: 0 means no extra limit."
+	fields_box.add_child(hint)
+	tools_button.text = "Tools…"
+	tools_button.pressed.connect(func() -> void: options.popup_centered(Vector2i(430,110)))
+	actions.add_child(tools_button)
+
+func enabled_shapes() -> Array:
+	var enabled: Array = []
+	for shape: String in SHAPES:
+		if tool_checks[shape].button_pressed: enabled.append(shape)
+	return enabled
+
+func tool_error(operations: Variant, enabled: Array, max_pixels: int) -> String:
+	if not operations is Array: return ""
+	for op: Variant in operations:
+		if not op is Dictionary: continue
+		var shape: String = str(op.get("shape",""))
+		if shape in SHAPES and shape not in enabled: return shape.capitalize()+" is disabled in Tools."
+		if shape == "pixels" and max_pixels > 0 and op.get("points") is Array and op.points.size() > max_pixels:
+			return "Pixels operation exceeds the Tools limit of %d points." % max_pixels
+	return ""
+
 func add_rectangle(parent: Control, target: Array[SpinBox], values: Array) -> void:
 	for i: int in range(4):
 		var field := SpinBox.new()
@@ -175,6 +226,8 @@ func submit_text() -> void:
 	if parsed.parse(input.text) != OK:
 		input_error = "Invalid JSON at line%d: %s" % [parsed.get_error_line(),parsed.get_error_message()]
 		return
+	input_error = tool_error(parsed.data,enabled_shapes(),int(pixel_limit.value))
+	if not input_error.is_empty(): return
 	var selected := paint_material.get_selected_id()
 	var allowed: Array = [selected]
 	if parsed.data is Array:
@@ -195,6 +248,7 @@ func _process(_delta: float) -> void:
 	stop.disabled = not executor.active and not provider.active and not capturing and remaining_turns == 0
 	if provider.active and wb.host.simulation_worker.art_state().epoch != request_epoch: stop_all("Canvas changed")
 	draw.disabled = executor.active or provider.active or capturing or remaining_turns != 0
+	tools_button.visible = input_mode.selected != 2
 	draw.text = "Draw" if input_mode.selected==0 else "Send"
 	for row: Control in rows: row.visible = input_mode.selected!=0
 	key_button.text = "Key ✓" if not str(keys.get(current_provider,"")).is_empty() else "Key…"
@@ -558,6 +612,8 @@ func send_next(expected_epoch: int) -> void:
 	request_epoch = wb.host.simulation_worker.art_state().epoch
 	request_area = rectangle(fields)
 	request_guards = [rectangle(protected_fields)] if protect.button_pressed else []
+	request_shapes = enabled_shapes()
+	request_pixel_limit = int(pixel_limit.value)
 	request_material = paint_material.get_selected_id()
 	request_materials = [request_material]
 	if erase.button_pressed: request_materials.append(0)
@@ -605,6 +661,10 @@ func send_next(expected_epoch: int) -> void:
 		instructions = guidance.text+" Coordinates are LOCAL: top-left is (0,0), never add a world offset. XYWH="+JSON.stringify([0,0,request_area.size.x,request_area.size.y])+". Allowed materials="+JSON.stringify(request_materials)+". Use compact rectangles, discs and lines. Every rectangle and line requires all four endpoint fields. Do not enumerate filled areas as pixels."
 	if request_scanline:
 		instructions = stencil_guidance.text+" Local area width %d, height %d. Allowed materials %s." % [request_area.size.x,request_area.size.y,str(request_materials)]
+	if not request_scanline:
+		instructions += "\nEnabled shapes: "+JSON.stringify(request_shapes)+". Use only these shapes. Line accepts optional integer width in cells (default 1) with rounded ends."
+		if request_pixel_limit > 0:
+			instructions += " Maximum %d points per pixels operation." % request_pixel_limit
 	instructions += "\nSelected drawing material: %d. Use it for drawing. Return [] when finished." % request_material
 	var context := model_context()
 	var prompt := task_prompt
@@ -660,6 +720,11 @@ func provider_finished(_id: int, text: String, _response: Dictionary, error: Str
 	provider.log_event("message",text)
 	remember_turn("assistant",text)
 	var operations: Variant = Provider.operations(text,request_material)
+	if not request_scanline:
+		input_error = tool_error(operations,request_shapes,request_pixel_limit)
+		if not input_error.is_empty():
+			model_feedback(input_error)
+			return
 	if request_scanline and operations is Array and not operations.is_empty():
 		operations = stencil_operations(operations)
 		if operations.is_empty():

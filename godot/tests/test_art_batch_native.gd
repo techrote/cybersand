@@ -60,6 +60,21 @@ func run() -> void:
 	await until(func(): return not art.active,"erase attempt completed")
 	check(art.result.excluded==1 and main.image.get_pixel(6,5).r8==28,"material picker preserves source protection")
 	panel.paint_material.select(panel.paint_material.get_item_index(58))
+	panel.tool_checks.line.button_pressed = false
+	panel.input.text = '[{"shape":"line","x0":1440,"y0":1440,"x1":1448,"y1":1440,"width":4}]'
+	panel.draw.pressed.emit()
+	check(not art.active and panel.input_error.contains("disabled"),"Tools toggle refuses a disabled line")
+	panel.tool_checks.line.button_pressed = true
+	panel.draw.pressed.emit()
+	await until(func(): return not art.active and cell(1444,1439)==58 and cell(1444,1442)==58,"width four draws four native rows")
+	check(cell(1444,1438)==0 and cell(1444,1443)==0 and cell(1439,1442)==58 and cell(1438,1442)==0,"wide line has rounded ends")
+	panel.pixel_limit.value = 1
+	panel.input.text = '[{"shape":"pixels","points":[[1455,1455],[1456,1455]]}]'
+	panel.draw.pressed.emit()
+	check(not art.active and panel.input_error.contains("limit"),"pixel limit refuses excess points")
+	panel.pixel_limit.value = 0
+	panel.draw.pressed.emit()
+	await until(func(): return not art.active and cell(1455,1455)==58 and cell(1456,1455)==58,"zero pixel limit allows the batch")
 	panel.provider.requested_model = ""
 	for i: int in range(16): panel.conversation.append({"role":"user","content":"turn %d" % i})
 	panel.context_mode.select(0)

@@ -243,3 +243,12 @@ The art material picker offers every non-empty material from the ordinary
 Workbench paint palette. Erase remains a separate toggle. The selected ID
 applies to Direct JSON, Model prompt and Scanline. Existing non-Empty,
 non-Hard-Wall cells remain protected from art writes, including erase.
+
+
+Tools controls which shapes Direct JSON and Model prompt may submit. A
+nonzero Pixels per operation setting limits the length of each point list.
+Zero adds no point limit. The worker still streams large operations in native
+chunks. Lines accept an optional integer width in cells. Width one preserves
+the original raster. Wider strokes use rounded ends and clip to canvas bounds
+before the worker applies the selected area and protection checks. Scanline
+keeps its own span format.
