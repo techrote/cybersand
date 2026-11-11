@@ -994,6 +994,7 @@ protected:
     static void _bind_methods() {
         ClassDB::bind_method(D_METHOD("loaded_native_runtime_values"), &CyberDemoBridge::loaded_native_runtime_values);
         ClassDB::bind_method(D_METHOD("inspect_cell", "world", "point"), &CyberDemoBridge::inspect_cell);
+        ClassDB::bind_method(D_METHOD("inspect_material_lab_cell", "world", "point"), &CyberDemoBridge::inspect_material_lab_cell);
         ClassDB::bind_method(D_METHOD("inspect_statistics", "world"), &CyberDemoBridge::inspect_statistics);
         ClassDB::bind_method(D_METHOD("inspect_interaction_profile"), &CyberDemoBridge::inspect_interaction_profile);
         ClassDB::bind_method(D_METHOD("inspect_material_catalogue"), &CyberDemoBridge::inspect_material_catalogue);

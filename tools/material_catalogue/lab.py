@@ -28,6 +28,7 @@ from typing import Any
 
 import compatibility
 import compiler
+import process_owner
 import reaction_effects
 
 # The CLI and lazily loaded backends must share one cancellation context.
@@ -65,6 +66,7 @@ SOURCE_FILES = tuple(dict.fromkeys((
     "tools/material_catalogue/native_capabilities.py",
     "tools/material_catalogue/compatibility.py",
     "tools/material_catalogue/lab.py",
+    "tools/material_catalogue/process_owner.py",
     "tools/material_catalogue/world_case.py",
     "tools/material_catalogue/reaction_effects.py",
     "tools/material_catalogue/lab_native_probe.cpp",
@@ -417,18 +419,15 @@ def _toolchain(cxx: str | None = None) -> tuple[str, bool]:
     fail("/compiler", "No C++20 compiler was found. Install g++/clang++, or launch Godot from a Visual Studio x64 Developer Command Prompt with cl.exe available. CYBERSAND_LAB_CXX may select a compiler executable.")
 
 
-def _terminate_process_tree(process: subprocess.Popen) -> None:
+def _terminate_process_tree(process: subprocess.Popen, owner=None) -> None:
     """Kill compiler drivers and their children, not just the driver PID."""
     if os.name == "nt":
+        if owner is not None:
+            owner.terminate()
         if process.poll() is None:
-            try:
-                subprocess.run(["taskkill", "/PID", str(process.pid), "/T", "/F"],
-                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                               timeout=1.0, check=False)
-            except (OSError, subprocess.SubprocessError):
-                process.kill()
-            if process.poll() is None:
-                process.kill()
+            # Only the suspended creation/assignment failure path lacks an
+            # membership yet; the child cannot have executed descendants.
+            process.kill()
     else:
         try:
             os.killpg(process.pid, signal.SIGKILL)
@@ -444,17 +443,35 @@ def _run(command: list[str], directory: Path, timeout: int | float, *, check: bo
     """Execute a bounded child with cancellation and bounded stdout/stderr.
 
     Readers prevent pipe deadlocks while retaining at most one MiB per stream.
-    A process group contains compiler subprocesses on POSIX; Windows uses the
-    native process-tree termination command. No shell interprets the argv.
+    A process group contains compiler subprocesses on POSIX; a Windows Job
+    Object owns descendants before the suspended child begins execution.
+    No shell interprets the argv.
     """
     _check_cancelled()
     streams = [bytearray(), bytearray()]
     overflow = threading.Event()
-    options = ({"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP} if os.name == "nt"
+    owner = process_owner.WindowsJob() if os.name == "nt" else None
+    options = ({"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP | process_owner.CREATE_SUSPENDED} if owner is not None
                else {"start_new_session": True})
-    process = subprocess.Popen(command, cwd=directory, stdin=subprocess.DEVNULL,
-                               stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                               shell=False, **options)
+    process = None
+    try:
+        process = subprocess.Popen(command, cwd=directory, stdin=subprocess.DEVNULL,
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                   shell=False, **options)
+        if owner is not None:
+            owner.assign_and_resume(process)
+    except BaseException:
+        try:
+            if process is not None:
+                try:
+                    _terminate_process_tree(process, owner)
+                finally:
+                    for pipe in (process.stdout, process.stderr):
+                        pipe.close()
+        finally:
+            if owner is not None:
+                owner.close()
+        raise
 
     def capture(pipe, retained: bytearray) -> None:
         try:
@@ -469,10 +486,10 @@ def _run(command: list[str], directory: Path, timeout: int | float, *, check: bo
 
     readers = [threading.Thread(target=capture, args=(pipe, retained), daemon=True)
                for pipe, retained in zip((process.stdout, process.stderr), streams)]
-    for reader in readers:
-        reader.start()
     deadline = time.monotonic() + timeout
     try:
+        for reader in readers:
+            reader.start()
         while process.poll() is None:
             _check_cancelled()
             if overflow.is_set():
@@ -485,7 +502,7 @@ def _run(command: list[str], directory: Path, timeout: int | float, *, check: bo
         for reader in readers:
             reader.join(timeout=0.1)
         if any(reader.is_alive() for reader in readers):
-            _terminate_process_tree(process)
+            _terminate_process_tree(process, owner)
             for reader in readers:
                 reader.join(timeout=0.1)
             fail("/compile_test", "process returned before its child output streams closed; no tested status was recorded")
@@ -493,10 +510,18 @@ def _run(command: list[str], directory: Path, timeout: int | float, *, check: bo
         if overflow.is_set():
             fail("/compile_test", f"process output exceeded the {MAX_PROCESS_OUTPUT_BYTES}-byte per-stream limit; no tested status was recorded")
     except BaseException:
-        _terminate_process_tree(process)
+        _terminate_process_tree(process, owner)
         for reader in readers:
-            reader.join(timeout=0.1)
+            if reader.ident is not None:
+                reader.join(timeout=0.1)
         raise
+    finally:
+        # Also retire descendants which redirected their pipes and outlived a
+        # successful driver. The retained owner is valid after its PID exits.
+        if owner is not None:
+            owner.close()
+        else:
+            _terminate_process_tree(process)
     result = subprocess.CompletedProcess(command, process.returncode,
         streams[0].decode("utf-8", errors="replace"), streams[1].decode("utf-8", errors="replace"))
     if check and result.returncode:

@@ -1,6 +1,76 @@
-// Included in CyberDemoBridge's public section. This cold, read-only boundary
-// copies compiled descriptors and the actual predicates; it does not construct
+// Included in CyberDemoBridge's public section. These cold, read-only boundaries
+// copy compiled descriptors and exclusive-owner values. They do not construct
 // or mutate a World, replace material authority, or run on a pool worker.
+[[nodiscard]] Dictionary inspect_material_lab_cell(
+    const Ref<CyberNativeCellWorld>& adapter, Vector2i point) const {
+    if (adapter.is_null() || !adapter->world_)
+        return cyber_observation::rejected("Native world unavailable");
+    const auto& world = *adapter->world_;
+    auto out = cyber_observation::cell(world, point);
+    if (!static_cast<bool>(out.get("ok", false))) return out;
+    const auto material = world.stored_material(point.x, point.y);
+    const auto& descriptor = cybersand::MaterialRules::descriptor(material);
+    out["schema_id"] = "cybersand.material-lab.cell";
+    out["schema_version"] = 1;
+    out["read_only"] = true;
+    out["material_name"] = interaction_string(descriptor.name);
+    out["kernel"] = static_cast<std::int64_t>(descriptor.kernel);
+    out["current_rule_available"] = descriptor.current_rule_available;
+    out["has_pair_reactions"] = cybersand::MaterialRules::has_pair_reactions(material);
+    out["visible_material"] = static_cast<std::int64_t>(world.get(point.x, point.y));
+    // This newer owner API exposes the real thermal storage even under a mask.
+    // Preserve inspect_cell's established masked-temperature contract above.
+    out["stored_temperature_raw"] = world.stored_temperature(point.x, point.y);
+    out["stored_temperature_available"] = true;
+
+    const cybersand::SchedulerGeometry geometry(world.config().scheduling_core_size,
+                                                world.config().maximum_rule_radius);
+    const auto core = geometry.core_for_cell(point.x, point.y);
+    const auto contains = [core](const std::optional<cybersand::SimulationCoreRange>& range) {
+        return !range || (core.x >= range->min_x && core.x <= range->max_x &&
+                          core.y >= range->min_y && core.y <= range->max_y);
+    };
+    const auto encode_range = [](const std::optional<cybersand::SimulationCoreRange>& range) -> Variant {
+        if (!range) return Variant();
+        Array values;
+        values.append(range->min_x); values.append(range->min_y);
+        values.append(range->max_x); values.append(range->max_y);
+        return values;
+    };
+    Array coordinate;
+    coordinate.append(core.x); coordinate.append(core.y);
+    Dictionary scheduler;
+    scheduler["backend"] = static_cast<std::int64_t>(world.backend());
+    scheduler["core_size"] = world.config().scheduling_core_size;
+    scheduler["core_coordinate"] = coordinate;
+    scheduler["phase"] = geometry.phase(core);
+    scheduler["selected_core_range"] = encode_range(world.selected_simulation_cores());
+    scheduler["selected_core_included"] = contains(world.selected_simulation_cores());
+    scheduler["last_applied_core_range"] = encode_range(world.applied_simulation_cores());
+    scheduler["last_applied_core_included"] = world.completed_tick_index() == 0U
+        ? Variant() : Variant(contains(world.applied_simulation_cores()));
+    scheduler["range_encoding"] = "inclusive min_core_x,min_core_y,max_core_x,max_core_y; null range is unrestricted";
+    scheduler["scope"] = "Selected source-core window and preceding completed-tick applied window, not task dispatch or per-cell activity. Neighbour reads/writes may reach the source core halo.";
+    out["scheduler"] = scheduler;
+    if (const auto region = world.simulation_region()) {
+        Array values;
+        values.append(region->x); values.append(region->y);
+        values.append(region->width); values.append(region->height);
+        out["selected_region"] = values;
+    } else {
+        out["selected_region"] = Variant();
+    }
+    Array unobserved;
+    unobserved.append("per-cell sleeping status");
+    unobserved.append("activity-block active flag and future wake deadline");
+    unobserved.append("cell epoch and actual task dispatch");
+    unobserved.append("contact temporal lane and actual random byte");
+    unobserved.append("earlier neighbour or specialised mechanism competition");
+    out["unobserved"] = unobserved;
+    out["scope"] = "Copied native stored/visible values and core-window facts, read between ticks by the exclusive owner. No reaction execution or next-tick eligibility guarantee.";
+    return out;
+}
+
 [[nodiscard]] Dictionary inspect_material_catalogue() const {
     static constexpr std::array state_names{"Empty", "Solid", "Powder", "Liquid", "Gas", "Agent"};
     static constexpr std::array kernel_names{

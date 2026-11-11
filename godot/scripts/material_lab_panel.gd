@@ -64,6 +64,10 @@ var _experiment_summary := Label.new()
 var _experiment_report := TextEdit.new()
 var _cell_x := SpinBox.new()
 var _cell_y := SpinBox.new()
+var _target_x := SpinBox.new()
+var _target_y := SpinBox.new()
+var _contact_roll := SpinBox.new()
+var last_contact_report: Dictionary = {}
 var _file := FileDialog.new()
 
 func _ready() -> void:
@@ -381,13 +385,31 @@ func _build_experiment(page: VBoxContainer) -> void:
 	_preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_preview.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_preview.gui_input.connect(_pick_experiment_cell)
 	view.add_child(_preview)
 	row = _row(view)
-	_spin(row,"Cell X",_cell_x,0,1023,242)
+	_spin(row,"Source X",_cell_x,0,1023,242)
 	_spin(row,"Y",_cell_y,0,1023,238)
-	_button(row,"Read stored cell",func() -> void:
-		_experiment_report.text = JSON.stringify(experiment.inspect_cell(Vector2i(int(_cell_x.value),int(_cell_y.value))),"\t"))
-	_label(view,"Preview is illustrative. Native IDs, state, quantities and content hashes establish what happened.",true)
+	_button(row,"Read stored cell",_inspect_test_cell)
+	row = _row(view)
+	_spin(row,"Target X",_target_x,0,1023,243)
+	_spin(row,"Y",_target_y,0,1023,238)
+	_spin(row,"Supplied roll",_contact_roll,0,255,0)
+	row = _row(view)
+	_button(row,"Inspect contact",_inspect_test_contact)
+	_button(row,"Swap endpoints",func() -> void:
+		var source: Vector2i = Vector2i(int(_cell_x.value),int(_cell_y.value))
+		_cell_x.value = _target_x.value
+		_cell_y.value = _target_y.value
+		_target_x.value = source.x
+		_target_y.value = source.y
+		_inspect_test_contact())
+	for field: SpinBox in [_cell_x,_cell_y,_target_x,_target_y,_contact_roll]:
+		field.value_changed.connect(func(_value: float) -> void:
+			if not last_contact_report.is_empty():
+				last_contact_report.clear()
+				_experiment_report.text = "Contact inputs changed. Inspect contact to read the current native cells and supplied roll.")
+	_label(view,"Left-click the preview for source; right-click for target. Inspection pauses this test owner. Native stored values establish facts; the supplied resolver roll does not predict scheduling or an executed reaction.",true)
 	_text(split,_experiment_report,300)
 
 func reload_catalogue() -> void:
@@ -923,6 +945,7 @@ func _step_experiment(count: int) -> void:
 	_refresh_experiment()
 
 func _refresh_experiment() -> void:
+	last_contact_report.clear()
 	var readback: Dictionary = experiment.readback()
 	_experiment_report.text = JSON.stringify(readback,"\t")
 	if readback.get("ok",false):
@@ -938,6 +961,42 @@ func _refresh_experiment() -> void:
 		_preview.texture = null
 	var image: Image = experiment.preview_image()
 	if image != null and not image.is_empty(): _preview.texture = ImageTexture.create_from_image(image)
+
+func _inspect_test_cell() -> void:
+	_running = false
+	experiment.cancel_reference("Reference paused to inspect native cell storage.")
+	_refresh_experiment()
+	var observation: Dictionary = experiment.inspect_cell(Vector2i(int(_cell_x.value),int(_cell_y.value)))
+	_experiment_report.text = JSON.stringify(observation,"\t")
+	_status.text = "Stored native cell read at the paused completed tick." if observation.get("ok",false) else str(observation.get("error","Cell readback refused."))
+
+func _inspect_test_contact() -> void:
+	_running = false
+	experiment.cancel_reference("Reference paused to inspect native contact facts.")
+	_refresh_experiment()
+	last_contact_report = experiment.inspect_contact(Vector2i(int(_cell_x.value),int(_cell_y.value)),
+		Vector2i(int(_target_x.value),int(_target_y.value)),int(_contact_roll.value))
+	_experiment_report.text = Experiment.contact_report_text(last_contact_report)
+	_status.text = "Contact snapshot read from the paused native owner; no reaction was executed by inspection." if last_contact_report.get("ok",false) else str(last_contact_report.get("error","Contact readback refused."))
+
+func _pick_experiment_cell(event: InputEvent) -> void:
+	if not event is InputEventMouseButton or not event.pressed or event.button_index not in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]: return
+	if _preview.texture == null or not experiment.active(): return
+	var image_size: Vector2 = _preview.texture.get_size()
+	if image_size.x <= 0 or image_size.y <= 0: return
+	var scale: float = minf(_preview.size.x / image_size.x,_preview.size.y / image_size.y)
+	if scale <= 0: return
+	var drawn: Rect2 = Rect2((_preview.size - image_size * scale) / 2.0,image_size * scale)
+	if not drawn.has_point(event.position): return
+	var point: Vector2i = experiment.preview_region().position + Vector2i(((event.position - drawn.position) / scale).floor())
+	if event.button_index == MOUSE_BUTTON_LEFT:
+		_cell_x.value = point.x
+		_cell_y.value = point.y
+	else:
+		_target_x.value = point.x
+		_target_y.value = point.y
+	_inspect_test_contact()
+	_preview.accept_event()
 
 func _compare_reference() -> void:
 	_running = false

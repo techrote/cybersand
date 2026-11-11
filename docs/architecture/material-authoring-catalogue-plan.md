@@ -734,6 +734,16 @@ receipt; it does not add another Workbench, worker, resolver or native World.
 Existing production build/retained-runtime gates remain requirements for eventual
 integration. Broad #352–356 remain open after this v1 contribution.
 
+The owner-requested completion continuation adds a cold, copied native contact
+snapshot on the exclusive MicroScenario owner. Masks, stored/visible identities
+and source-core windows are observed; sleeping, deadlines and actual dispatch
+remain unknown. Its Windows process owner and branch-scoped runtime/package
+publisher close executable delivery work without changing the Draft acceptance
+policy. The [completion audit](../audits/2026-11-11-materials-lab-completion.md)
+records actual execution. The separately stacked [Draft #563](https://github.com/techrote/cybersand/pull/563)
+owns only the generated native hard/granular predicates and independently
+qualified compatibility transition; #384 retains display-name ownership.
+
 ## 16. Native capability consumer candidate — 2026-11-11
 
 After the owner asked to complete the remaining work without waiting for hands-on

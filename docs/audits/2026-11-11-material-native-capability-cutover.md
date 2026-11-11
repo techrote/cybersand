@@ -107,7 +107,7 @@ An isolated compiled poison changes Wood's hard bit to false and fails exactly
 `parity: capability mismatch at 7,0,0`, proving the actual MaterialRules consumer
 uses the generated maps. The poison never writes production input.
 
-| Executed Linux check | Result |
+| Initial capability-source Linux check | Result |
 |---|---|
 | Generator and output controls | 9 tests passed; actual C++ synthetic 132 and byte-domain readback included |
 | Normal source-paired native transition | PASS; 16 cross-build exchanges |
@@ -138,7 +138,8 @@ make build/tests_sanitized
 ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 ./build/tests_sanitized
 ```
 
-`check_repository.py` refuses the retained Linux and Windows runtimes for changed
+At the initial capability-source checkpoint, `check_repository.py` refused the
+retained Linux and Windows runtimes for changed
 `godot/native_extension/cyber_demo_bridge.hpp` (the parent Lab branch) and
 `native/src/material_rules.cpp` (this cutover). Both require a source-matched
 rebuild; the new header must enter the retained runtime source inventory. This
@@ -173,6 +174,40 @@ observations are advisory, not a tick-only metric or a gameplay speed claim.
 All timed checksums and World results match the qualified controls. No timing
 threshold was created, relaxed or used as a correctness gate. See the
 [raw timing observations](materials-native-capabilities-v1/timing.json).
+
+## Stack reconciliation — 2026-11-11
+
+The completed capability source/guard tree was published as
+`9cb21c93cb89de61b7f32664279bd8dbc77a5c3c`, retaining `b432d52` in ancestry.
+This branch then merged the explicit Lab completion source
+`9eb90272cb2261e429c965dfbd21c6adc862a021`. The merge preserves the native contact
+inspector, process owner, package/publisher tools and each dated audit. The
+`lab.py` merge retains process-owner custody plus the capability header/generator
+custody entries; the architecture conflict keeps both scopes in their own
+sections. No other branch was changed by this reconciliation.
+
+All `native/` files, `Makefile`, canonical catalogue/lock, generator and native
+proof/benchmark inputs remain byte-identical to the capability implementation
+source `b432d52d0d9acaa22f93eeb8d1fad48c64b4c087`. The recorded 192-test native
+and sanitizer suites and independent cross-build proofs therefore still name
+the same native inputs; they were not rerun or relabelled as a new campaign.
+The combined authoring implementation was exercised by a fresh full catalogue
+discovery run because `lab.py` and process ownership changed: **228 tests passed
+in 305.080 seconds, exit 0, no skips**. This includes the four actual process-owner
+fixtures and compiled native candidate effects/World/persistence cases. The
+command was `python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py' -v`.
+
+Fresh compatibility, documentation, historical M11 and CI-provider policy checks
+pass after reconciliation. Retrieval observes 31/32 frozen canonical hits at k
+(MRR 0.7474), 163/164 challenge hits (MRR 0.8797), and all 10/10 Lab questions
+at rank 1. The current repository checker
+again refuses the retained artifacts with four source-rebuild errors: Linux
+and Windows for `cyber_demo_bridge.hpp` and `material_rules.cpp`. This is a fresh
+observation on the merged source, separate from the initial failure above.
+The merged source imported no runtime binaries or provenance updates. The #562
+publisher is admitted only for its own branch; its artifacts cannot qualify the
+changed native capability consumer in #563. This Draft still requires its own
+source-matched runtime and platform qualification.
 
 ## Remaining release boundary
 

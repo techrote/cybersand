@@ -21,6 +21,8 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 | Can edited candidates change real movement or products, with a clean reference and quantity/persistence checks? | [Compiled candidate World comparison](../operations/materials-lab-authoring.md#compare-an-edited-candidate-in-a-real-native-world) |
 | How do I save an explicit compiled-World recipe and author retained-state or Metal charge effects? | [Source-bound World recipes](../operations/materials-lab-authoring.md#compare-an-edited-candidate-in-a-real-native-world), [endpoint effects v2](../operations/materials-lab-authoring.md#reaction-authoring-and-deterministic-diagnostics) |
 | What was actually executed on Linux, Windows or graphically? | [Dated qualification](../audits/2026-11-11-materials-lab-v1.md); graphical evidence is separate from Windows/human acceptance |
+| How do source/target cells, masks and source-core windows affect a real native contact? | [Native contact inspection](../operations/materials-lab-authoring.md#inspect-an-actual-native-contact); supplied rolls do not establish dispatch or sleeping state |
+| How can I launch the Lab on Windows with its authoring tools included? | [Windows evaluation package](../operations/materials-lab-authoring.md#windows-launch), [completion and runtime qualification](../audits/2026-11-11-materials-lab-completion.md) |
 
 [Focused Lab questions](retrieval-questions-materials-lab.json) are additive;
 the frozen evaluation and existing historical fixtures retain their original scope.
