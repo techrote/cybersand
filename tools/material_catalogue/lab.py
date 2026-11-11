@@ -10,19 +10,30 @@ The JSON file protocol is also used by the desktop Materials Lab.
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
+from contextvars import ContextVar
 import copy
 import hashlib
 import json
 import os
 from pathlib import Path
 import shutil
+import signal
 import subprocess
 import sys
 import tempfile
+import threading
+import time
 from typing import Any
 
 import compatibility
 import compiler
+
+# The CLI and lazily loaded backends must share one cancellation context.
+# Without this alias, `world_candidate` importing lab would create a second
+# module when this file is running as __main__.
+if __name__ == "__main__":
+    sys.modules["lab"] = sys.modules[__name__]
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -31,6 +42,8 @@ EXPORT_SCHEMA = "cybersand.material-lab.export"
 SCHEMA_VERSION = 1
 MAX_JSON_BYTES = 1024 * 1024
 MAX_REACTIONS = 56
+MAX_PROCESS_OUTPUT_BYTES = 1024 * 1024
+_CANCEL_FILE: ContextVar[Path | None] = ContextVar("material_lab_cancel_file", default=None)
 PRESET_FIELDS = (
     "schema_id", "schema_version", "source_catalogue_sha256", "template_id",
     "target_id", "name", "descriptor", "capabilities", "appearance", "reactions",
@@ -39,7 +52,7 @@ REACTION_FIELDS = (
     "slot", "rule_id", "first", "second", "first_product", "second_product",
     "probability", "match", "effects",
 )
-SOURCE_FILES = (
+SOURCE_FILES = tuple(dict.fromkeys((
     "materials/catalogue/catalogue.json",
     "materials/catalogue/compatibility-lock.json",
     "native/include/cybersand/material.hpp",
@@ -50,11 +63,31 @@ SOURCE_FILES = (
     "tools/material_catalogue/compatibility.py",
     "tools/material_catalogue/lab.py",
     "tools/material_catalogue/lab_native_probe.cpp",
-)
+    *compatibility.SOURCE_ROLES,
+)))
 
 
 class LabError(ValueError):
     """Actionable authoring refusal; production source is never changed."""
+
+
+class LabCancelled(LabError):
+    """The caller revoked this operation before it could publish a result."""
+
+
+@contextmanager
+def _cancellation_scope(path: Path | None):
+    token = _CANCEL_FILE.set(Path(path).resolve() if path is not None else None)
+    try:
+        yield
+    finally:
+        _CANCEL_FILE.reset(token)
+
+
+def _check_cancelled() -> None:
+    path = _CANCEL_FILE.get()
+    if path is not None and path.exists():
+        raise LabCancelled("/cancel: operation cancelled; no tested status was recorded")
 
 
 def fail(pointer: str, message: str) -> None:
@@ -270,10 +303,23 @@ def expand_candidate(candidate: Any) -> tuple[dict, dict, list[dict]]:
             fail(at + "/effects/version", "only explicit endpoint-effects version 1 is supported")
         _effect(effects["first"], at + "/effects/first")
         _effect(effects["second"], at + "/effects/second")
+        rule_changed = False
         for key in ("first", "second", "first_product", "second_product", "probability", "match"):
             if edited[key] != original[key]:
                 changes.append({"path": at + "/" + key, "before": original[key], "after": edited[key], "boundary": "isolated native resolver fixture"})
                 original[key] = edited[key]
+                rule_changed = True
+        if rule_changed:
+            # Slot/key retain legacy lineage, but their prose is not evidence
+            # for edited products. Generate an exact candidate-only statement.
+            first_name = native["materials"][original["first_product"]]["name"]
+            second_name = native["materials"][original["second_product"]]["name"]
+            orientation = ("source/target positions" if original["match"] == 2 else "first/second material roles")
+            original["accounting"] = (
+                f"candidate effects v1: replace_with_defaults at both endpoints; {orientation} "
+                f"produce {first_name} ({original['first_product']}) and {second_name} ({original['second_product']}); "
+                "World quantity accounting and conservation have not been qualified for this edit"
+            )
     if synthetic:
         source["scope"] = "isolated-synthetic"
         native["identity"]["allocated_slots"] = 133
@@ -300,8 +346,10 @@ def expand_candidate(candidate: Any) -> tuple[dict, dict, list[dict]]:
 
 
 def validate_candidate(candidate: Any) -> dict:
+    _check_cancelled()
     normalized, catalogue, changes = expand_candidate(candidate)
     protected = compatibility.check()
+    _check_cancelled()
     return {
         "ok": True, "state": "validated_candidate", "candidate": normalized,
         "digest": digest(normalized), "compiled_catalogue_sha256": digest(catalogue),
@@ -333,6 +381,7 @@ def export_candidate(candidate: Any, path: Path) -> dict:
     result = validate_candidate(candidate)
     envelope = {"schema_id": EXPORT_SCHEMA, "schema_version": SCHEMA_VERSION,
                 "digest": result["digest"], "candidate": result["candidate"]}
+    _check_cancelled()
     _atomic_json(Path(path), envelope)
     result["path"] = str(Path(path).resolve())
     return result
@@ -366,13 +415,89 @@ def _toolchain(cxx: str | None = None) -> tuple[str, bool]:
     fail("/compiler", "No C++20 compiler was found. Install g++/clang++, or launch Godot from a Visual Studio x64 Developer Command Prompt with cl.exe available. CYBERSAND_LAB_CXX may select a compiler executable.")
 
 
-def _run(command: list[str], directory: Path, timeout: int) -> subprocess.CompletedProcess:
+def _terminate_process_tree(process: subprocess.Popen) -> None:
+    """Kill compiler drivers and their children, not just the driver PID."""
+    if os.name == "nt":
+        if process.poll() is None:
+            try:
+                subprocess.run(["taskkill", "/PID", str(process.pid), "/T", "/F"],
+                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                               timeout=1.0, check=False)
+            except (OSError, subprocess.SubprocessError):
+                process.kill()
+            if process.poll() is None:
+                process.kill()
+    else:
+        try:
+            os.killpg(process.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
     try:
-        result = subprocess.run(command, cwd=directory, text=True, encoding="utf-8", errors="replace",
-                                capture_output=True, timeout=timeout, shell=False)
-    except subprocess.TimeoutExpired as error:
-        raise LabError(f"/compile_test: bounded process exceeded {timeout} seconds; no tested status was recorded") from error
-    if result.returncode:
+        process.wait(timeout=0.5)
+    except subprocess.TimeoutExpired:
+        process.kill()
+
+
+def _run(command: list[str], directory: Path, timeout: int | float, *, check: bool = True) -> subprocess.CompletedProcess:
+    """Execute a bounded child with cancellation and bounded stdout/stderr.
+
+    Readers prevent pipe deadlocks while retaining at most one MiB per stream.
+    A process group contains compiler subprocesses on POSIX; Windows uses the
+    native process-tree termination command. No shell interprets the argv.
+    """
+    _check_cancelled()
+    streams = [bytearray(), bytearray()]
+    overflow = threading.Event()
+    options = ({"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP} if os.name == "nt"
+               else {"start_new_session": True})
+    process = subprocess.Popen(command, cwd=directory, stdin=subprocess.DEVNULL,
+                               stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                               shell=False, **options)
+
+    def capture(pipe, retained: bytearray) -> None:
+        try:
+            while chunk := pipe.read(16384):
+                remaining = MAX_PROCESS_OUTPUT_BYTES - len(retained)
+                retained.extend(chunk[:remaining])
+                if len(chunk) > remaining:
+                    overflow.set()
+                    break
+        finally:
+            pipe.close()
+
+    readers = [threading.Thread(target=capture, args=(pipe, retained), daemon=True)
+               for pipe, retained in zip((process.stdout, process.stderr), streams)]
+    for reader in readers:
+        reader.start()
+    deadline = time.monotonic() + timeout
+    try:
+        while process.poll() is None:
+            _check_cancelled()
+            if overflow.is_set():
+                fail("/compile_test", f"process output exceeded the {MAX_PROCESS_OUTPUT_BYTES}-byte per-stream limit; no tested status was recorded")
+            if time.monotonic() >= deadline:
+                fail("/compile_test", f"bounded process exceeded {timeout:g} seconds; no tested status was recorded")
+            time.sleep(0.025)
+        # Normal compiler/probe completion must also close its output handles.
+        # A detached descendant may otherwise keep a pipe reader alive forever.
+        for reader in readers:
+            reader.join(timeout=0.1)
+        if any(reader.is_alive() for reader in readers):
+            _terminate_process_tree(process)
+            for reader in readers:
+                reader.join(timeout=0.1)
+            fail("/compile_test", "process returned before its child output streams closed; no tested status was recorded")
+        _check_cancelled()
+        if overflow.is_set():
+            fail("/compile_test", f"process output exceeded the {MAX_PROCESS_OUTPUT_BYTES}-byte per-stream limit; no tested status was recorded")
+    except BaseException:
+        _terminate_process_tree(process)
+        for reader in readers:
+            reader.join(timeout=0.1)
+        raise
+    result = subprocess.CompletedProcess(command, process.returncode,
+        streams[0].decode("utf-8", errors="replace"), streams[1].decode("utf-8", errors="replace"))
+    if check and result.returncode:
         detail = (result.stderr + "\n" + result.stdout).strip()[-8000:]
         fail("/compile_test", f"process returned {result.returncode}: {detail}")
     return result
@@ -380,7 +505,7 @@ def _run(command: list[str], directory: Path, timeout: int) -> subprocess.Comple
 
 def _source_identity() -> dict:
     files = {name: hashlib.sha256((ROOT / name).read_bytes().replace(b"\r\n", b"\n")).hexdigest() for name in SOURCE_FILES}
-    result = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "HEAD"], capture_output=True, text=True, timeout=10)
+    result = _run(["git", "-C", str(ROOT), "rev-parse", "HEAD"], ROOT, 10, check=False)
     return {"git_head": result.stdout.strip() if result.returncode == 0 else "unavailable",
             "lf_sha256": files, "digest": digest(files),
             "qualification": "The file digest binds this executed source, including uncommitted implementation changes; git_head alone does not."}
@@ -388,6 +513,10 @@ def _source_identity() -> dict:
 
 def compile_test(candidate: Any, *, output_dir: Path | None = None, diagnostic: dict | None = None,
                  sanitize: bool = False, cxx: str | None = None) -> dict:
+    # Custody starts before either catalogue expansion or compatibility check.
+    # Otherwise a change between validation and the first snapshot can be
+    # misreported as stable, admitted source throughout compilation.
+    identity_before = _source_identity()
     result = validate_candidate(candidate)
     normalized, catalogue, _changes = expand_candidate(result["candidate"])
     cxx, msvc = _toolchain(cxx)
@@ -402,7 +531,6 @@ def compile_test(candidate: Any, *, output_dir: Path | None = None, diagnostic: 
     integer(diagnostic["roll"], 0, 255, "/diagnostic/roll")
     if sanitize and msvc:
         fail("/sanitize", "the bounded ASan/UBSan probe uses g++ or clang++; MSVC compilation remains supported without this flag")
-    identity_before = _source_identity()
     destination = Path(output_dir).resolve() if output_dir is not None else None
     if destination is not None:
         if destination.is_relative_to(ROOT.resolve()):
@@ -438,13 +566,16 @@ def compile_test(candidate: Any, *, output_dir: Path | None = None, diagnostic: 
             raise LabError(f"/compile_test: native probe did not return valid JSON: {error}") from error
         if not observed.get("ok") or observed.get("runtime_active") is not False:
             fail("/compile_test", "native probe did not acknowledge candidate-only successful execution")
-        identity_after = _source_identity()
-        if identity_before["digest"] != identity_after["digest"]:
-            fail("/compile_test", "source inputs changed during compilation/execution; rerun against a stable source before recording tested status")
-        version = subprocess.run([cxx] if msvc else [cxx, "--version"], cwd=staging,
-                                 text=True, encoding="utf-8", errors="replace", capture_output=True, timeout=10)
+        version = _run([cxx] if msvc else [cxx, "--version"], staging, 10, check=False)
         version_text = (version.stdout + "\n" + version.stderr).strip().splitlines()
         outputs = {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(generated.iterdir())}
+        # Keep the emitted PASS tied to the same admitted protected consumers.
+        # This also verifies every compatibility prerequisite at publication.
+        compatibility.check()
+        identity_after = _source_identity()
+        if identity_before["digest"] != identity_after["digest"]:
+            fail("/compile_test", "source inputs changed during validation/compilation/execution; rerun against a stable source before recording tested status")
+        _check_cancelled()
         receipt = {"schema_id": "cybersand.material-lab.native-receipt", "schema_version": 1,
                    "candidate_digest": result["digest"], "compiled_catalogue_sha256": digest(catalogue),
                    "source_identity": identity_before, "compiler": Path(cxx).name,
@@ -467,17 +598,21 @@ def compile_test(candidate: Any, *, output_dir: Path | None = None, diagnostic: 
                     "digest": result["digest"], "candidate": normalized}))
                 # rename is atomic on the same parent filesystem and never
                 # overwrites a non-empty prior build directory.
+                _check_cancelled()
                 os.rename(publication, destination)
             finally:
                 if publication.exists():
                     shutil.rmtree(publication)
             result["output_dir"] = str(destination)
+    if destination is None:
+        _check_cancelled()
     result.update(state="compiled_tested", receipt=receipt,
                   boundary="Generated descriptors and sparse rules were compiled and exercised by native C++ functions. World movement, sleeping, state mutation and quantity accounting were not executed for this candidate. It is not runtime-active.")
     return result
 
 
 def request(value: Any) -> dict:
+    _check_cancelled()
     if type(value) is not dict or type(value.get("op")) is not str:
         fail("/op", "expected a Materials Lab operation")
     op = value["op"]
@@ -485,11 +620,12 @@ def request(value: Any) -> dict:
         "create": ({"op", "template_id"}, {"synthetic"}),
         "validate": ({"op", "candidate"}, set()),
         "compile_test": ({"op", "candidate"}, {"output_dir", "diagnostic", "sanitize", "cxx"}),
+        "compile_world_test": ({"op", "candidate"}, {"scenario", "output_dir", "sanitize", "cxx"}),
         "import": ({"op", "path"}, set()),
         "export": ({"op", "candidate", "path"}, set()),
     }
     if op not in allowed:
-        fail("/op", "expected create, validate, compile_test, import or export")
+        fail("/op", "expected create, validate, compile_test, compile_world_test, import or export")
     required, optional = allowed[op]
     if not required <= value.keys() or value.keys() - required - optional:
         fail("/", f"invalid request fields for {op}; required={sorted(required)}, optional={sorted(optional)}")
@@ -508,24 +644,76 @@ def request(value: Any) -> dict:
     if "cxx" in value and (type(value["cxx"]) is not str or not value["cxx"].strip()):
         fail("/cxx", "expected one non-empty compiler executable name or path; omit cxx to use the environment/default selection")
     boolean(value.get("sanitize", False), "/sanitize")
+    if op == "compile_world_test":
+        import world_candidate
+        return world_candidate.compile_world_test(value["candidate"], scenario=value.get("scenario"),
+            output_dir=Path(value["output_dir"]) if "output_dir" in value else None,
+            sanitize=value.get("sanitize", False), cxx=value.get("cxx"))
     return compile_test(value["candidate"], output_dir=Path(value["output_dir"]) if "output_dir" in value else None,
                         diagnostic=value.get("diagnostic"), sanitize=value.get("sanitize", False), cxx=value.get("cxx"))
+
+
+def _protocol_paths(value: Any, request_path: Path, response_path: Path | None,
+                    cancel_path: Path | None) -> None:
+    """Refuse overlapping protocol artifacts before any operation can write."""
+    request_path = request_path.resolve()
+    response_path = response_path.resolve() if response_path is not None else None
+    cancel_path = cancel_path.resolve() if cancel_path is not None else None
+    protected = {request_path}
+    if response_path is not None:
+        if response_path == request_path:
+            fail("/response", "response path must not overwrite the request")
+        if response_path.is_relative_to(ROOT.resolve()):
+            fail("/response", "response must be outside the source repository")
+        protected.add(response_path)
+    if type(value) is dict:
+        if value.get("op") in ("import", "export") and type(value.get("path")) is str and value["path"]:
+            preset_path = Path(value["path"]).resolve()
+            if response_path == preset_path:
+                fail("/response", "response path must not overwrite the imported or exported preset")
+            if value["op"] == "export" and preset_path == request_path:
+                fail("/path", "export path must not overwrite the request")
+            protected.add(preset_path)
+        if value.get("op") in ("compile_test", "compile_world_test") and type(value.get("output_dir")) is str and value["output_dir"]:
+            output_dir = Path(value["output_dir"]).resolve()
+            if response_path is not None and response_path.is_relative_to(output_dir):
+                fail("/response", "response path must be outside the compiled output directory")
+            if cancel_path is not None and cancel_path.is_relative_to(output_dir):
+                fail("/cancel_file", "cancellation marker must be outside the compiled output directory")
+    if cancel_path in protected:
+        fail("/cancel_file", "cancellation marker must not alias a request, response or preset")
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--request", required=True, type=Path)
     parser.add_argument("--response", type=Path)
+    parser.add_argument("--cancel-file", type=Path,
+                        help="external cancellation marker; its existence revokes the pending operation")
     args = parser.parse_args(argv)
+    value = None
+    safe_response = False
     try:
-        result = request(read_json(args.request))
+        # First check protects the request even if its JSON cannot be parsed.
+        _protocol_paths(value, args.request, args.response, args.cancel_file)
+        safe_response = True
+        value = read_json(args.request)
+        safe_response = False
+        _protocol_paths(value, args.request, args.response, args.cancel_file)
+        safe_response = True
+        with _cancellation_scope(args.cancel_file):
+            result = request(value)
+    except LabCancelled as error:
+        result = {"ok": False, "state": "draft", "runtime_active": False,
+                  "cancelled": True, "errors": [str(error)]}
     except (LabError, compiler.CatalogueError, compatibility.CompatibilityError, OSError, UnicodeError,
             ValueError, TypeError, KeyError, RecursionError, subprocess.SubprocessError) as error:
         result = {"ok": False, "state": "draft", "runtime_active": False, "errors": [str(error)]}
     if args.response is not None:
         try:
-            if args.response.resolve() == args.request.resolve():
-                fail("/response", "response path must not overwrite the request")
+            if not safe_response:
+                print(canonical(result).decode(), end="")
+                return 2
             _atomic_json(args.response, result)
         except (LabError, OSError) as error:
             print(canonical({"ok": False, "state": "draft", "errors": [str(error)]}).decode(), end="")

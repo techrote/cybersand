@@ -91,6 +91,56 @@ func check_construction_provenance() -> void:
 	expect(experiment.case_json() == saved, "Rejected import preserves the deterministic construction-bound case")
 	experiment.close()
 
+func check_incremental_reference() -> void:
+	var experiment := SourceDriftLab.new()
+	var fixture: Dictionary = Lab.definition_for_pair(23,3,29,48)
+	expect(experiment.start(fixture,4,"cellular_yield_v1"),"Incremental comparison prepares an actual native owner")
+	if not experiment.active(): return
+	var configuration: Dictionary = experiment.configuration()
+	expect(configuration.seed == 29 and configuration.duration_ticks == 48 and configuration.workers == 4
+		and configuration.water_family_request == "cellular_yield_v1" and configuration.pair == {"first":23,"second":3},
+		"Prepared configuration exposes the actual stored execution request and recognized pair")
+	configuration.pair.first = 2
+	expect(experiment.configuration().pair.first == 23,"Configuration readback cannot mutate the retained pair")
+	expect(experiment.step(17),"Source owner advances to a partial comparison boundary")
+	var retained: Dictionary = semantic(experiment.readback())
+	var begun: Dictionary = experiment.begin_reference()
+	expect(begun.ok and begun.status == "running" and begun.completed_tick == 0 and begun.target_tick == 17,
+		"Beginning comparison only constructs the reference and does not replay the window")
+	var progress: Dictionary = experiment.advance_reference(3)
+	expect(progress.ok and progress.status == "running" and progress.completed_tick == 3,
+		"One reference advance consumes only its explicit tick budget")
+	expect(semantic(experiment.readback()) == retained,"Reference replay preserves the source owner exactly")
+	expect(not experiment.advance_reference(65).ok and experiment.reference_progress().completed_tick == 3,
+		"Invalid reference budget preserves the live comparison")
+	experiment.cancel_reference()
+	expect(not experiment.reference_running() and experiment.reference_progress().status == "cancelled"
+		and semantic(experiment.readback()) == retained,"Cancelling the reference releases it without changing the source run")
+	expect(experiment.begin_reference().ok,"Cancelled comparison can restart")
+	while experiment.reference_running(): progress = experiment.advance_reference(4)
+	expect(progress.ok and progress.equal and progress.status == "complete" and progress.completed_tick == 17,
+		"Incremental replay compares native content and quantity at the exact partial source tick")
+	expect(semantic(experiment.readback()) == retained,"Completed comparison leaves source state unchanged")
+	expect(experiment.begin_reference().ok and experiment.advance_reference(2).ok,"A second partial replay starts")
+	expect(experiment.step(1) and not experiment.reference_running()
+		and experiment.reference_progress().status == "cancelled","Advancing the source invalidates its in-flight comparison")
+	retained = semantic(experiment.readback())
+	expect(experiment.begin_reference().ok and experiment.advance_reference(1).ok,"Source-bound replay starts before identity drift")
+	experiment.drift_field = "native_sha256"
+	var failed: Dictionary = experiment.advance_reference(64)
+	expect(not failed.ok and str(failed.error).contains("changed since") and not experiment.reference_running(),
+		"Source drift during yielded replay prevents a successful comparison receipt")
+	expect(semantic(experiment.readback()) == retained,"Failed replay retains original native state")
+	experiment.drift_field = ""
+	var custom: Dictionary = fixture.duplicate(true)
+	custom.presentation.title = "Custom imported fixture"
+	expect(experiment.start(custom,4,"cellular_yield_v1") and experiment.configuration().pair.is_empty(),
+		"A modified complete definition is never guessed to be the generated pair")
+	expect(experiment.begin_reference().ok,"Zero-tick replay can be requested")
+	var zero: Dictionary = experiment.advance_reference(1)
+	expect(zero.ok and zero.equal and zero.completed_tick == 0,"Zero-tick comparison completes without advancing either native owner")
+	experiment.close()
+
 func run() -> void:
 	if not ClassDB.class_exists(&"CyberNativeCellWorld") or not ClassDB.class_exists(&"CyberDemoBridge"):
 		expect(false,"Current native extension is required; no mocked acceptance.")
@@ -191,5 +241,6 @@ func run() -> void:
 		expect(restored_cy.policy_hash == applied.policy_hash,"Runtime family round trip has native policy-hash acknowledgment")
 		runtime.close()
 	check_construction_provenance()
+	check_incremental_reference()
 	print("MATERIAL_LAB_EXPERIMENT: %d assertions; %d failures" % [assertions,failures])
 	quit(1 if failures else 0)

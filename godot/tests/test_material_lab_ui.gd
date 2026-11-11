@@ -150,7 +150,7 @@ func run() -> void:
 		finish()
 		return
 	panel._python.text = "python" if OS.get_name() == "Windows" else "python3"
-	expect(panel._tabs.get_tab_count() == 4,"Inspect, Candidate, Reactions and Native test are mounted")
+	expect(panel._tabs.get_tab_count() == 5,"Inspect, Candidate, Reactions, Native test and Candidate test are mounted")
 	if not panel.catalogue.native_available:
 		expect(false,"Matching rebuilt native inspector is required: " + str(panel.catalogue.error))
 		finish()
@@ -262,6 +262,29 @@ func run() -> void:
 		finish()
 		return
 	expect(not panel._fields.viscosity_index.editable,"Water descriptor viscosity is not falsely exposed as effective control")
+	panel._reaction_picker.select(1)
+	panel._reaction_picker.item_selected.emit(1)
+	var retained_rule: Dictionary = panel._selected_reaction().duplicate(true)
+	press("Compile candidate reaction")
+	panel._reaction_picker.select(0)
+	panel._reaction_picker.item_selected.emit(0)
+	if not await wait_for(func() -> bool: return not panel.service.busy,"selected reaction compilation"):
+		finish()
+		return
+	expect(panel.last_backend_result.get("ok",false),"Selected sparse rule is compiled by the actual backend")
+	if not panel.last_backend_result.get("ok",false):
+		finish()
+		return
+	expect(panel._selected_reaction().slot == retained_rule.slot,
+		"Successful compilation restores its requested sparse rule even if the user browsed another slot while it ran")
+	var retained_diagnostic: Dictionary = panel.last_backend_result.receipt.observed.diagnostic
+	expect(int(retained_diagnostic.source) == int(panel._selected_reaction().first)
+		and int(retained_diagnostic.target) == int(panel._selected_reaction().second),
+		"Compiled diagnostic and visible selected reaction fields refer to the same positional pair")
+	panel._reaction_picker.select(0)
+	panel._reaction_picker.item_selected.emit(0)
+	expect(panel._reaction_report.text.begins_with("Candidate rule (not active)")
+		and not panel._reaction_report.text.contains("COMPILED CANDIDATE"),"Selecting another rule retires the previous rule's displayed result")
 	search_select(23)
 	if not await authoring("Duplicate selected"):
 		finish()
@@ -322,14 +345,49 @@ func run() -> void:
 		"Native completed-step and product counts are visible without reading raw JSON")
 	expect(panel._preview.texture != null,"Real native material preview reaches mounted TextureRect")
 	press("Repeat / compare reference")
+	expect(panel.experiment.reference_running() and panel.experiment.reference_progress().completed_tick == 0,
+		"Mounted comparison starts a fresh native owner without synchronously replaying all ticks")
+	await process_frame
+	expect(panel.experiment.reference_running() and panel.experiment.reference_progress().completed_tick < 120,
+		"Reference comparison yields to the real Godot frame loop")
+	press("Pause")
+	expect(not panel.experiment.reference_running() and panel.experiment.readback().native.content_hash == readback.native.content_hash,
+		"Pause cancels the in-flight replay and preserves source native content")
+	press("Repeat / compare reference")
+	if not await wait_for(func() -> bool: return not panel.experiment.reference_running(),"incremental native reference",45000):
+		finish()
+		return
 	var comparison: Dictionary = JSON.parse_string(panel._experiment_report.text)
 	expect(comparison.ok and comparison.equal,"Fresh native comparison runs through mounted control")
 	var case_path: String = output_directory.path_join("salt-water-test.json")
 	await selected_file("Save test case…",case_path)
 	expect(FileAccess.file_exists(case_path),"Native test case is saved with execution/source contract")
+	panel._seed.value = 29
+	panel._steps.value = 600
+	panel._workers.select(panel._workers.get_item_index(1))
+	panel._family.select(2)
+	search_select(2)
+	panel._experiment_partner.select(panel._experiment_partner.get_item_index(1))
+	panel._experiment_partner.item_selected.emit(panel._experiment_partner.selected)
+	expect(panel._partner.get_selected_id() == 1 and panel._steps.value == 600,
+		"Native test exposes a synchronized partner selector and the complete admitted 600-tick range")
 	await selected_file("Import test case…",case_path)
 	expect(panel.experiment.readback().completed_tick == 0 and panel.experiment.readback().workers == 4,
 		"Saved native case restores a fresh source-matched run and worker count")
+	expect(panel._seed.value == 2 and panel._steps.value == 120 and panel._workers.get_selected_id() == 4
+		and panel._family.selected == 0,"Import replaces stale seed, duration, workers and Water policy controls with the prepared configuration")
+	expect(panel.selected_id == 23 and panel._partner.get_selected_id() == 3 and panel._experiment_partner.get_selected_id() == 3,
+		"Import of an exact generated fixture restores its recognized material pair")
+	expect(panel._experiment_summary.text.contains("salt-water") and panel._experiment_summary.text.contains("seed 2"),
+		"Prepared-run summary identifies the stored fixture and seed independently of prospective controls")
+	panel._steps.value = 600
+	press("Prepare selected + partner")
+	var long_case_path: String = output_directory.path_join("salt-water-600-test.json")
+	await selected_file("Save test case…",long_case_path)
+	panel._steps.value = 1
+	await selected_file("Import test case…",long_case_path)
+	expect(panel._steps.value == 600 and panel.experiment.readback().duration_ticks == 600,
+		"Imported maximum-duration fixture is represented exactly without SpinBox clamping")
 	panel._family.select(2)
 	press("Prepare selected + partner")
 	var actual_policy: Dictionary = panel.experiment.readback().applied_policy

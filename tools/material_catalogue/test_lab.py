@@ -4,17 +4,23 @@
 from __future__ import annotations
 
 import copy
+from contextlib import redirect_stdout
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
+import threading
+import time
 import unittest
 from unittest import mock
 
 import compiler
+import compatibility
 import lab
 
 
@@ -195,6 +201,20 @@ class LabTests(unittest.TestCase):
         _, full, _ = lab.expand_candidate(candidate)
         self.assertTrue(full["native"]["capabilities"][2]["pair_participant"])
 
+    def test_edited_products_do_not_retain_incorrect_legacy_accounting(self):
+        candidate = lab.create_candidate(23)
+        rule = candidate["reactions"][0]
+        rule.update(first_product=0, second_product=0)
+        _, full, _ = lab.expand_candidate(candidate)
+        compiled = full["native"]["interactions"]["pairs"][rule["slot"]]
+        self.assertEqual(compiled["id"], rule["rule_id"])
+        self.assertIn("empty (0) and empty (0)", compiled["accounting"])
+        self.assertNotIn("with brine", compiled["accounting"])
+        self.assertIn("have not been qualified", compiled["accounting"])
+        rule["match"] = 2
+        _, symmetric, _ = lab.expand_candidate(candidate)
+        self.assertIn("source/target positions", symmetric["native"]["interactions"]["pairs"][rule["slot"]]["accounting"])
+
     def test_deterministic_normalization_and_export_import_round_trip(self):
         candidate = lab.create_candidate(3)
         candidate["name"] = "Zero-threshold quench"
@@ -281,6 +301,126 @@ class LabTests(unittest.TestCase):
         self.assertFalse(result["runtime_active"])
         self.assertEqual(result["state"], "draft")
         self.assertIn("reserved invalid", result["errors"][0])
+
+    def test_cli_response_cannot_overwrite_import_or_export_preset(self):
+        preset = self.directory / "preset.json"
+        source = self.directory / "request.json"
+        candidate = lab.create_candidate(23)
+        lab.export_candidate(candidate, preset)
+        original = preset.read_bytes()
+        for op in ("import", "export"):
+            request = {"op": op, "path": str(preset)}
+            if op == "export":
+                request["candidate"] = candidate
+            source.write_bytes(lab.canonical(request))
+            with self.subTest(op=op), redirect_stdout(io.StringIO()) as output:
+                code = lab.main(["--request", str(source), "--response", str(preset)])
+                self.assertEqual(code, 2)
+                self.assertIn("must not overwrite", json.loads(output.getvalue())["errors"][0])
+                self.assertEqual(preset.read_bytes(), original)
+
+    def test_cli_bundle_response_alias_is_refused_before_compilation(self):
+        source = self.directory / "request.json"
+        destination = self.directory / "bundle"
+        source.write_bytes(lab.canonical({"op": "compile_test", "candidate": lab.create_candidate(2),
+                                         "output_dir": str(destination)}))
+        with mock.patch.object(lab, "compile_test") as compile_candidate, redirect_stdout(io.StringIO()) as output:
+            code = lab.main(["--request", str(source), "--response", str(destination / "preset.json")])
+        self.assertEqual(code, 2)
+        self.assertIn("outside the compiled output directory", output.getvalue())
+        compile_candidate.assert_not_called()
+        self.assertFalse(destination.exists())
+
+    @unittest.skipUnless(os.name == "posix", "POSIX symlink protocol alias fixture")
+    def test_cli_response_symlink_alias_preserves_preset(self):
+        preset = self.directory / "preset.json"
+        lab.export_candidate(lab.create_candidate(2), preset)
+        original = preset.read_bytes()
+        alias = self.directory / "response.json"
+        alias.symlink_to(preset)
+        source = self.directory / "request.json"
+        source.write_bytes(lab.canonical({"op": "import", "path": str(preset)}))
+        with redirect_stdout(io.StringIO()):
+            self.assertEqual(lab.main(["--request", str(source), "--response", str(alias)]), 2)
+        self.assertTrue(alias.is_symlink())
+        self.assertEqual(preset.read_bytes(), original)
+
+    def test_cli_cancellation_preserves_export_and_reports_draft(self):
+        source, response = self.directory / "request.json", self.directory / "response.json"
+        preset, cancel = self.directory / "preset.json", self.directory / "cancel"
+        preset.write_text("retain this previous file")
+        source.write_bytes(lab.canonical({"op": "export", "candidate": lab.create_candidate(2), "path": str(preset)}))
+        cancel.touch()
+        code = lab.main(["--request", str(source), "--response", str(response), "--cancel-file", str(cancel)])
+        self.assertEqual(code, 1)
+        result = json.loads(response.read_text())
+        self.assertTrue(result["cancelled"])
+        self.assertEqual(result["state"], "draft")
+        self.assertFalse(result["runtime_active"])
+        self.assertEqual(preset.read_text(), "retain this previous file")
+
+    def test_cli_lazy_world_backend_shares_cancellation_module(self):
+        source, response = self.directory / "request.json", self.directory / "response.json"
+        cancel = self.directory / "cancel"
+        source.write_bytes(lab.canonical({"op": "compile_world_test", "candidate": lab.create_candidate(2)}))
+        script = lab.ROOT / "tools/material_catalogue/lab.py"
+        # Exercise the actual __main__ CLI/module boundary. The tiny backend
+        # only requests cancellation; native World qualification lives in its
+        # own compiled tests, not in this protocol regression.
+        launcher = f"""import runpy,sys,types
+from pathlib import Path
+sys.path.insert(0, {str(script.parent)!r})
+backend=types.ModuleType('world_candidate')
+def execute(candidate, **kwargs):
+    import lab
+    Path({str(cancel)!r}).touch()
+    lab._check_cancelled()
+    return {{'ok':True,'state':'compiled_tested'}}
+backend.compile_world_test=execute
+sys.modules['world_candidate']=backend
+sys.argv=[{str(script)!r},'--request',{str(source)!r},'--response',{str(response)!r},'--cancel-file',{str(cancel)!r}]
+runpy.run_path({str(script)!r},run_name='__main__')
+"""
+        process = subprocess.run([sys.executable, "-c", launcher], capture_output=True, text=True, timeout=10)
+        self.assertEqual(process.returncode, 1, process.stderr)
+        result = json.loads(response.read_text())
+        self.assertTrue(result["cancelled"])
+        self.assertFalse(result["runtime_active"])
+
+    def test_process_output_limit_is_enforced_for_a_real_child(self):
+        command = [sys.executable, "-c", "import sys;sys.stdout.buffer.write(b'x' * (2 * 1024 * 1024));sys.stdout.flush()"]
+        with self.assertRaisesRegex(lab.LabError, "output exceeded"):
+            lab._run(command, self.directory, 5)
+        # A failed child does not poison subsequent bounded process capture.
+        result = lab._run([sys.executable, "-c", "print('after overflow')"], self.directory, 5)
+        self.assertEqual(result.stdout.strip(), "after overflow")
+
+    @unittest.skipUnless(os.name == "posix", "Real POSIX process-tree cleanup; Windows taskkill requires Windows qualification")
+    def test_timeout_and_cancel_kill_real_child_descendants(self):
+        for cancel_operation in (False, True):
+            with self.subTest(cancel=cancel_operation):
+                marker = self.directory / ("orphan-cancel" if cancel_operation else "orphan-timeout")
+                ready = marker.with_suffix(".ready")
+                child = "import time;from pathlib import Path;time.sleep(0.6);Path(" + repr(str(marker)) + ").write_text('orphan survived')"
+                parent = ("import subprocess,sys,time;from pathlib import Path;"
+                          "subprocess.Popen([sys.executable,'-c'," + repr(child) + "]);"
+                          "Path(" + repr(str(ready)) + ").write_text('started');time.sleep(20)")
+                cancel = marker.with_suffix(".cancel")
+                timer = threading.Timer(0.2, cancel.touch) if cancel_operation else None
+                if timer is not None:
+                    timer.start()
+                try:
+                    with lab._cancellation_scope(cancel if cancel_operation else None):
+                        error = lab.LabCancelled if cancel_operation else lab.LabError
+                        with self.assertRaisesRegex(error, "cancelled" if cancel_operation else "exceeded"):
+                            lab._run([sys.executable, "-c", parent], self.directory, 5 if cancel_operation else 0.2)
+                finally:
+                    if timer is not None:
+                        timer.cancel()
+                        timer.join()
+                self.assertTrue(ready.exists(), "The parent must actually spawn a descendant before cancellation")
+                time.sleep(0.65)
+                self.assertFalse(marker.exists(), "A compiler descendant survived the bounded operation")
 
     def test_explicit_compiler_validates_one_executable_and_overrides_environment(self):
         candidate = lab.create_candidate(2)
@@ -369,6 +509,65 @@ class LabTests(unittest.TestCase):
         actual = result["receipt"]["observed"]["diagnostic"]
         self.assertEqual(actual["status"], "selected")
         self.assertEqual(actual["rule_slot"], candidate["reactions"][1]["slot"])
+        _, full, _ = lab.expand_candidate(candidate)
+        expected_selected = sum((row["probability"] + 1) * (1 if row["match"] == 0 or row["first"] == row["second"] else 2)
+                                for row in full["native"]["interactions"]["pairs"])
+        self.assertEqual(result["receipt"]["observed"]["comparison"]["candidate_selected"], expected_selected)
+
+    def test_native_comparison_includes_removed_pairs_and_deterministic_examples(self):
+        candidate = lab.create_candidate(3)
+        candidate["reactions"][0]["first"] = 2
+        result = lab.compile_test(candidate, diagnostic={"source": 8, "target": 3, "roll": 0})
+        comparison = result["receipt"]["observed"]["comparison"]
+        self.assertEqual(comparison["different_outcomes"], 1024)
+        self.assertEqual(comparison["introduced_rule_queries"], 512)
+        self.assertEqual(comparison["removed_rule_queries"], 512)
+        pairs = {(row["source"], row["target"]): row for row in comparison["changed_pairs"]}
+        self.assertEqual(set(pairs), {(2, 3), (3, 2), (8, 3), (3, 8)})
+        self.assertFalse(pairs[8, 3]["candidate"]["matched"])
+        self.assertTrue(pairs[8, 3]["baseline"]["selected_at_example_roll"])
+        self.assertEqual(pairs[2, 3]["example_roll"], 0)
+        self.assertEqual(pairs[2, 3]["candidate"]["source_product"], 13)
+        self.assertIn("source_product_descriptor_defaults", pairs[2, 3]["candidate"])
+
+    def test_native_comparison_counts_self_pair_only_once(self):
+        candidate = lab.create_candidate(3)
+        candidate["reactions"][0]["first"] = 3
+        result = lab.compile_test(candidate)
+        comparison = result["receipt"]["observed"]["comparison"]
+        self.assertEqual(comparison["introduced_rule_queries"], 256)
+        self.assertEqual(comparison["removed_rule_queries"], 512)
+        self.assertEqual(comparison["different_outcomes"], 768)
+        self.assertEqual(len(comparison["changed_pairs"]), 3)
+
+    def test_source_change_after_validation_before_toolchain_cannot_be_qualified(self):
+        # Reproduce the former custody gap in copied files. Never alter shared
+        # production source or weaken the actual compatibility qualification.
+        original_root = lab.ROOT
+        copied_root = self.directory / "copied-source"
+        for name in set(lab.SOURCE_FILES) | set(compatibility.SOURCE_ROLES):
+            target = copied_root / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(original_root / name, target)
+        original_toolchain, original_check = lab._toolchain, compatibility.check
+
+        def change_after_validation(cxx=None):
+            selected = original_toolchain(cxx)
+            header = copied_root / "native/include/cybersand/material.hpp"
+            before = '{"water", MaterialState::Liquid, 1\'000,'
+            after = '{"water", MaterialState::Liquid, 9\'000,'
+            self.assertIn(before, header.read_text())
+            header.write_text(header.read_text().replace(before, after))
+            return selected
+
+        destination = self.directory / "must-not-publish-drift"
+        with mock.patch.object(lab, "ROOT", copied_root), \
+             mock.patch.object(lab, "_toolchain", side_effect=change_after_validation), \
+             mock.patch.object(compatibility, "check", side_effect=lambda: original_check(root=copied_root, baseline_repository=original_root)):
+            with self.assertRaises((lab.LabError, compatibility.CompatibilityError)) as error:
+                lab.compile_test(lab.create_candidate(3), output_dir=destination)
+        self.assertTrue("source inputs changed" in str(error.exception) or "source-byte drift" in str(error.exception))
+        self.assertFalse(destination.exists())
 
     def test_source_drift_during_real_compilation_cannot_publish_a_tested_receipt(self):
         candidate = lab.create_candidate(2)

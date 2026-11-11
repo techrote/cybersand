@@ -28,6 +28,11 @@ var _readback: Dictionary = {}
 var _preview: Image
 var _readback_tick: int = -1
 var _construction_identity: Dictionary = {}
+var _prepared_pair: Dictionary = {}
+var _reference: RefCounted
+var _reference_target: int = -1
+var _reference_current: Dictionary = {}
+var _reference_result: Dictionary = {}
 
 static func _valid_material(id: int) -> bool:
 	return id >= 0 and id < Contract.MATERIAL_COUNT and id != 10
@@ -91,6 +96,32 @@ static func resolver_diagnostic(first: int, second: int, roll: int) -> Dictionar
 		result["endpoint_effect"] = "replace_with_defaults (legacy World initialization; same-ID products do not imply preservation)"
 		result["quantity_scope"] = "Resolver products only. Native World performs target then source writes and its own quantity accounting."
 	return result
+
+static func _recognize_pair(checked: Dictionary) -> Dictionary:
+	# Imported MicroScenarios may contain arbitrary supported arrangements. Only
+	# restore the two-material controls when the complete definition is exactly
+	# one of this Lab's generated fixtures, rather than guessing from its title.
+	var definition: Dictionary = checked.definition
+	var first: int = -1
+	var second: int = -1
+	if str(definition.id) == "materials/authoring-pair":
+		for observation: Dictionary in definition.observations:
+			if observation.id == "first-initial": first = int(observation.material)
+			if observation.id == "second-initial": second = int(observation.material)
+	else:
+		first = int({"materials/salt-water":23,"materials/lava-water":8,"materials/sand-water-control":2}.get(str(definition.id),-1))
+		second = 3
+	if not _valid_material(first) or not _valid_material(second): return {}
+	var generated: Dictionary = Contract.validate(definition_for_pair(first,second,int(definition.seed),int(definition.presentation.duration_ticks)))
+	if not generated.get("ok",false) or str(generated.hash) != str(checked.hash): return {}
+	return {"first":first,"second":second}
+
+func configuration() -> Dictionary:
+	if not active(): return {"ok":false,"error":"No native experiment is active."}
+	return {"ok":true,"definition_id":str(_definition.id),"title":str(_definition.presentation.title),
+		"definition_hash":str(_host.summary().definition_hash),"seed":int(_definition.seed),
+		"duration_ticks":int(_definition.presentation.duration_ticks),"workers":int(world.get_worker_threads()),
+		"water_family_request":_water_family,"pair":_prepared_pair.duplicate(true)}
 
 func _current_source_identity() -> Dictionary:
 	var identity: Dictionary = Identity.current()
@@ -170,6 +201,8 @@ func _start_with_identity(definition: Dictionary, workers: int, water_family: St
 		return _refuse("Native applied policy did not acknowledge the validated request; prior experiment preserved.")
 	if not _same_source_identity(identity_before, _current_source_identity()):
 		return _refuse("Source/runtime files changed during native construction; no new experiment was installed. Reopen the matching build and retry.")
+	cancel_reference("Prepared a different native experiment.")
+	_reference_result.clear()
 	world = next_world
 	_bridge = next_bridge
 	_host = next_host
@@ -177,6 +210,7 @@ func _start_with_identity(definition: Dictionary, workers: int, water_family: St
 	_workers = workers
 	_water_family = water_family
 	_construction_identity = identity_before.duplicate(true)
+	_prepared_pair = _recognize_pair(checked)
 	var interest: Array = candidate.interest.region
 	# Rendering/readback stays bounded even for an imported large fixture.
 	_region = Rect2i(int(interest[0]), int(interest[1]), mini(320,int(interest[2])), mini(240,int(interest[3])))
@@ -231,6 +265,9 @@ static func _parse_unique_json(text: String) -> Dictionary:
 func active() -> bool:
 	return _host != null and _host.active()
 
+func completed_tick() -> int:
+	return int(world.get_tick_index()) if active() else 0
+
 func completed() -> bool:
 	return active() and int(world.get_tick_index()) >= int(_definition.presentation.duration_ticks)
 
@@ -240,6 +277,7 @@ func step(count: int = 1) -> bool:
 		return _refuse("One UI step request must contain 1 through 64 native ticks.")
 	if world.has_failed(): return _refuse("Native experiment is quarantined; create a fresh experiment.")
 	var remaining: int = int(_definition.presentation.duration_ticks) - int(world.get_tick_index())
+	if remaining > 0: cancel_reference("The source experiment advanced; repeat from its new completed tick.")
 	for index: int in range(mini(count,remaining)):
 		if not _host.advance(): return _refuse(str(_host.last_error))
 	last_error = ""
@@ -276,8 +314,10 @@ func readback() -> Dictionary:
 	_preview = Image.create_from_data(_region.size.x,_region.size.y,false,Image.FORMAT_RGBA8,pixels)
 	var native: Dictionary = world.water_experiment_observation(Vector2i.ZERO, Vector2i(Contract.SIDE,Contract.SIDE))
 	_readback = {"ok":true,"backend":"native World / existing MicroScenario host",
+		"definition_id":str(_definition.id),"definition_title":str(_definition.presentation.title),
 		"completed_tick":tick,"duration_ticks":int(_definition.presentation.duration_ticks),
 		"completed":completed(),"seed":int(_definition.seed),"workers":int(world.get_worker_threads()),
+		"water_family_request":_water_family,
 		"definition_hash":str(_host.summary().definition_hash),
 		"material_counts":counts,"count_region":[_region.position.x,_region.position.y,_region.size.x,_region.size.y],
 		"native":native,"statistics":_bridge.inspect_statistics(world),
@@ -350,37 +390,88 @@ func start_case_json(text: String) -> bool:
 		return _refuse("Test case belongs to another native artifact or host source. Use its matching build, or explicitly create a new experiment from its definition.")
 	return _start_with_identity(checked.definition,int(value.workers),str(value.water_family),identity)
 
-func repeat_reference() -> Dictionary:
-	# Deliberately synchronous, bounded by the recorded <=600-tick Lab window.
-	# UI callers should run this only on explicit request, not every frame.
+func begin_reference() -> Dictionary:
+	# Construct one exclusive reference owner; the UI advances it a tick per
+	# frame so Pause, Close and progress rendering remain available.
 	if not active(): return {"ok":false,"error":"No native experiment is active."}
 	if not _ensure_source_identity(): return {"ok":false,"error":last_error}
+	var current: Dictionary = readback()
+	if not current.get("ok",false): return current
 	var reference: RefCounted = get_script().new()
 	if not reference._start_with_identity(_definition,_workers,_water_family,_construction_identity):
 		return {"ok":false,"error":reference.last_error}
-	var target: int = int(world.get_tick_index())
-	while int(reference.world.get_tick_index()) < target:
-		if not reference.step(mini(MAX_STEPS,target-int(reference.world.get_tick_index()))):
-			return {"ok":false,"error":reference.last_error}
-	if not _ensure_source_identity(): return {"ok":false,"error":last_error}
-	var current: Dictionary = readback()
-	var repeated: Dictionary = reference.readback()
-	var equality: bool = current.get("ok",false) and repeated.get("ok",false) \
-		and current.native.content_hash == repeated.native.content_hash \
-		and current.native.water_integer == repeated.native.water_integer \
-		and current.material_counts == repeated.material_counts
-	return {"ok":true,"equal":equality,"completed_tick":target,"definition_hash":current.definition_hash,
-		"current_content_hash":current.native.content_hash,"reference_content_hash":repeated.native.content_hash,
-		"current_water_integer":current.native.water_integer,"reference_water_integer":repeated.native.water_integer,
+	cancel_reference("Restarted the reference comparison.")
+	_reference = reference
+	_reference_target = int(current.completed_tick)
+	_reference_current = current
+	_reference_result.clear()
+	return reference_progress()
+
+func reference_running() -> bool:
+	return _reference != null
+
+func reference_progress() -> Dictionary:
+	if not reference_running(): return _reference_result.duplicate(true)
+	return {"ok":true,"status":"running","completed_tick":int(_reference.world.get_tick_index()),
+		"target_tick":_reference_target,"definition_hash":_reference_current.definition_hash,
+		"scope":"Fresh native reference; the source run stays paused at its recorded completed tick."}
+
+func _finish_reference(result: Dictionary) -> Dictionary:
+	if _reference != null: _reference.close()
+	_reference = null
+	_reference_current.clear()
+	_reference_result = result.duplicate(true)
+	return result
+
+func cancel_reference(reason: String = "Reference comparison cancelled.") -> void:
+	if not reference_running(): return
+	_finish_reference({"ok":false,"status":"cancelled","error":reason,
+		"completed_tick":int(_reference.world.get_tick_index()),"target_tick":_reference_target})
+
+func advance_reference(count: int = 1) -> Dictionary:
+	if not reference_running(): return reference_progress()
+	if count < 1 or count > MAX_STEPS:
+		return {"ok":false,"error":"One reference step request must contain 1 through 64 native ticks."}
+	if not active() or int(world.get_tick_index()) != _reference_target:
+		return _finish_reference({"ok":false,"status":"failed","error":"Source experiment changed during reference replay; repeat from the current run."})
+	var remaining: int = _reference_target - int(_reference.world.get_tick_index())
+	if remaining > 0 and not _reference.step(mini(count,remaining)):
+		return _finish_reference({"ok":false,"status":"failed","error":str(_reference.last_error)})
+	if int(_reference.world.get_tick_index()) < _reference_target: return reference_progress()
+	# Observe file custody at both ends of the replay. Rehashing the native
+	# library on every UI frame would turn a cold-path check into hot-path work.
+	if not _ensure_source_identity():
+		return _finish_reference({"ok":false,"status":"failed","error":last_error})
+	var repeated: Dictionary = _reference.readback()
+	if not repeated.get("ok",false): return _finish_reference(repeated)
+	var equality: bool = _reference_current.native.content_hash == repeated.native.content_hash \
+		and _reference_current.native.water_integer == repeated.native.water_integer \
+		and _reference_current.material_counts == repeated.material_counts
+	return _finish_reference({"ok":true,"status":"complete","equal":equality,
+		"completed_tick":_reference_target,"target_tick":_reference_target,"definition_hash":_reference_current.definition_hash,
+		"current_content_hash":_reference_current.native.content_hash,"reference_content_hash":repeated.native.content_hash,
+		"current_water_integer":_reference_current.native.water_integer,"reference_water_integer":repeated.native.water_integer,
 		"scope":"Fresh reconstruction at the same tick, source, complete definition, family request and worker count; no timing counters compared."}
+	)
+
+func repeat_reference() -> Dictionary:
+	# Synchronous compatibility helper for CLI/tests. Mounted UI callers use
+	# begin_reference/advance_reference and never run the whole window at once.
+	var result: Dictionary = begin_reference()
+	if not result.get("ok",false): return result
+	while reference_running(): result = advance_reference(MAX_STEPS)
+	return result
 
 func close() -> void:
+	cancel_reference("Native experiment closed.")
+	_reference_result.clear()
 	if _host != null: _host.clear()
 	_host = null
 	world = null
 	_bridge = null
 	_definition.clear()
 	_construction_identity.clear()
+	_prepared_pair.clear()
 	_readback.clear()
 	_preview = null
 	_readback_tick = -1

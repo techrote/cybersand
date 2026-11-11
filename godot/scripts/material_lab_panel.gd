@@ -5,9 +5,11 @@ signal close_requested
 const Catalogue = preload("res://scripts/material_lab_catalogue.gd")
 const Experiment = preload("res://scripts/material_lab_experiment.gd")
 const Service = preload("res://scripts/material_lab_service.gd")
+const WorldPanel = preload("res://scripts/material_lab_world_panel.gd")
 var catalogue := Catalogue.new()
 var experiment := Experiment.new()
 var service := Service.new()
+var world_panel := WorldPanel.new()
 var selected_id: int = 3
 var candidate: Dictionary = {}
 var candidate_state: String = "No candidate"
@@ -18,6 +20,8 @@ var policy_context: String = "Compiled defaults; active World not observed"
 var _revision: int = 0
 var _job_revision: int = 0
 var _job_op: String = ""
+var _job_reaction_slot: int = -1
+var _job_world_revision: int = -1
 var _loading: bool = false
 var _running: bool = false
 var _file_action: String = ""
@@ -44,6 +48,8 @@ var _reaction_picker := OptionButton.new()
 var _reaction_fields: Dictionary = {}
 var _reaction_report := TextEdit.new()
 var _partner := OptionButton.new()
+var _experiment_partner := OptionButton.new()
+var _experiment_request := Label.new()
 var _roll := SpinBox.new()
 var _seed := SpinBox.new()
 var _steps := SpinBox.new()
@@ -119,7 +125,9 @@ func _build() -> void:
 	var title := _label(header,"MATERIALS LAB")
 	title.add_theme_font_size_override("font_size",21)
 	_button(header,"Reload native catalogue",reload_catalogue)
-	_button(header,"Close",func() -> void: close_requested.emit())
+	_button(header,"Close",func() -> void:
+		_pause_experiment()
+		close_requested.emit())
 	_label(self,"Inspect native behaviour · author isolated candidates · test reproducible material contacts",true)
 	_summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(_summary)
@@ -147,6 +155,11 @@ func _build() -> void:
 	_build_candidate(_tab("Candidate"))
 	_build_reactions(_tab("Reactions"))
 	_build_experiment(_tab("Native test"))
+	_tabs.add_child(world_panel)
+	world_panel.test_requested.connect(_world_job)
+	world_panel.export_requested.connect(func(_scenario: Dictionary) -> void: _open_file("world_bundle",true))
+	world_panel.cancel_requested.connect(func() -> void:
+		if service.busy: service.cancel("Candidate World test cancelled from the Materials Lab."))
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_status.text = "Opening native catalogue…"
 	add_child(_status)
@@ -180,6 +193,9 @@ func _build_candidate(page: VBoxContainer) -> void:
 	_button(actions,"Import preset…",func() -> void: _open_file("import_preset",false))
 	_button(actions,"Validate",func() -> void: _candidate_job("validate"))
 	_button(actions,"Compile + native test",func() -> void: _candidate_job("compile_test"))
+	_button(actions,"Cancel authoring",func() -> void:
+		if service.busy: service.cancel("Authoring cancelled from the Materials Lab.")
+		else: _status.text = "No authoring job is running.")
 	_button(actions,"Export compiled bundle…",func() -> void: _open_file("compile_bundle",true))
 	_button(actions,"Save / export preset…",func() -> void: _open_file("export_preset",true))
 	_candidate_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -253,11 +269,14 @@ func _build_reactions(page: VBoxContainer) -> void:
 	var row := _row(page)
 	_label(row,"Selected material + partner")
 	row.add_child(_partner)
+	_partner.item_selected.connect(func(index: int) -> void: _select_partner(_partner.get_item_id(index)))
 	_spin(row,"Roll",_roll,0,255,0)
 	_button(row,"Inspect native result",inspect_reaction)
 	_label(page,"Candidate sparse rule editor — existing authored slots; conflicting pairs are rejected.",true)
 	page.add_child(_reaction_picker)
-	_reaction_picker.item_selected.connect(func(_index: int) -> void: _refresh_reaction_fields())
+	_reaction_picker.item_selected.connect(func(_index: int) -> void:
+		_refresh_reaction_fields()
+		_show_candidate_rule())
 	row = _row(page)
 	for key: String in ["first","second","first_product","second_product"]:
 		var group := VBoxContainer.new()
@@ -288,8 +307,14 @@ func _build_experiment(page: VBoxContainer) -> void:
 	_experiment_summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	page.add_child(_experiment_summary)
 	var row := _row(page)
+	_label(row,"Partner for new pair")
+	row.add_child(_experiment_partner)
+	_experiment_partner.item_selected.connect(func(index: int) -> void: _select_partner(_experiment_partner.get_item_id(index)))
+	_experiment_request.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	page.add_child(_experiment_request)
+	row = _row(page)
 	_spin(row,"Seed",_seed,0,2147483647,2)
-	_spin(row,"Ticks",_steps,1,512,120)
+	_spin(row,"Ticks",_steps,1,Experiment.MAX_DURATION,120)
 	_label(row,"Workers")
 	_workers.add_item("1",1)
 	_workers.add_item("4",4)
@@ -297,13 +322,20 @@ func _build_experiment(page: VBoxContainer) -> void:
 	_label(row,"Water test policy")
 	for family: String in ["Current default","FreeMass","CellularYield"]: _family.add_item(family)
 	row.add_child(_family)
+	for field: SpinBox in [_seed,_steps]:
+		field.value_changed.connect(func(_value: float) -> void: _refresh_experiment_request())
+	_workers.item_selected.connect(func(_index: int) -> void: _refresh_experiment_request())
+	_family.item_selected.connect(func(_index: int) -> void: _refresh_experiment_request())
 	row = _row(page)
 	_button(row,"Prepare selected + partner",start_experiment)
 	_button(row,"Step",func() -> void: _step_experiment(1))
 	_button(row,"Run bounded window",func() -> void:
+		experiment.cancel_reference("Reference comparison cancelled to resume the source run.")
 		if not experiment.active(): start_experiment()
-		_running = experiment.active() and not experiment.completed())
-	_button(row,"Pause",func() -> void: _running = false)
+		_running = experiment.active() and not experiment.completed()
+		_status.text = "Running the prepared native definition." if _running else "Prepared native window is complete; Prepare creates a fresh run."
+		_refresh_experiment())
+	_button(row,"Pause",_pause_experiment)
 	_button(row,"Inspect test-owner policy",func() -> void:
 		if experiment.active():
 			set_policy_readback(experiment.readback().get("applied_policy",{}),"Isolated native test owner")
@@ -333,11 +365,14 @@ func _build_experiment(page: VBoxContainer) -> void:
 	_text(split,_experiment_report,300)
 
 func reload_catalogue() -> void:
+	var partner_id: int = _partner.get_selected_id() if _partner.selected >= 0 else 23
 	if not catalogue.reload():
 		_status.text = "Native inspection unavailable. Rebuild the matching GDExtension and reopen the Lab. " + catalogue.error
 		return
 	_fill_material_picker(_partner)
-	_partner.select(_partner.get_item_index(23))
+	_fill_material_picker(_experiment_partner)
+	world_panel.set_materials(catalogue.materials)
+	_select_partner(partner_id)
 	for key: String in ["first","second","first_product","second_product"]:
 		_fill_material_picker(_reaction_fields[key])
 	_refresh_list()
@@ -348,6 +383,17 @@ func _fill_material_picker(picker: OptionButton) -> void:
 	picker.clear()
 	for material: Dictionary in catalogue.materials:
 		if material.get("valid",false): picker.add_item("%03d  %s" % [material.id,material.name],int(material.id))
+
+func _select_partner(id: int) -> void:
+	for picker: OptionButton in [_partner,_experiment_partner]:
+		picker.select(picker.get_item_index(id))
+	_refresh_experiment_request()
+
+func _refresh_experiment_request() -> void:
+	var first: String = "%03d" % selected_id
+	if selected_id >= 0 and selected_id < catalogue.materials.size(): first += " " + str(catalogue.materials[selected_id].name)
+	var second: String = _partner.get_item_text(_partner.selected) if _partner.selected >= 0 else "choose partner"
+	_experiment_request.text = "Prepare new pair: %s + %s · seed %d · %d ticks · %d worker(s) · Water %s. Run/Step use the prepared definition below." % [first,second,int(_seed.value),int(_steps.value),_workers.get_selected_id(),Experiment.WATER_FAMILIES[_family.selected]]
 
 func _refresh_list() -> void:
 	_list.clear()
@@ -364,6 +410,7 @@ func set_policy_readback(receipt: Dictionary, context: String) -> void:
 
 func select_material(id: int) -> void:
 	selected_id = id
+	_refresh_experiment_request()
 	var info: Dictionary = catalogue.inspect(id,applied_policy)
 	if not info.get("ok",false):
 		_summary.text = "Material inspection unavailable: " + str(info)
@@ -405,17 +452,22 @@ func _mark_draft() -> void:
 	last_backend_result = {}
 	_candidate_feedback.text = "Draft — this revision has not been validated or tested.\n\nPrevious results apply only to the previous candidate revision. Validate or compile the current edits to obtain a new receipt."
 	_reaction_report.text = "Draft candidate — previous compiled reaction results have been retired. Validate or compile the current revision."
+	world_panel.set_candidate(candidate)
+	world_panel.invalidate("Candidate edited. The previous World comparison does not qualify this revision.")
 	_refresh_candidate_status()
 
 func _refresh_candidate_status() -> void:
+	world_panel.set_candidate(candidate)
 	_candidate_label.text = candidate_state
 	if not candidate_digest.is_empty(): _candidate_label.text += "  ·  digest " + candidate_digest
 	if not candidate.is_empty():
 		_candidate_label.text += "\nTemplate %d → candidate %d / %s. No production activation." % [candidate.template_id,candidate.target_id,candidate.descriptor.name]
 
-func _refresh_candidate() -> void:
+func _refresh_candidate(preferred_slot: int = -1) -> void:
 	_loading = true
 	_candidate_form.visible = not candidate.is_empty()
+	var selected_slot: int = _reaction_picker.get_selected_id() if _reaction_picker.selected >= 0 else -1
+	if preferred_slot >= 0: selected_slot = preferred_slot
 	_reaction_picker.clear()
 	if not candidate.is_empty():
 		_candidate_name.text = candidate.name
@@ -430,7 +482,9 @@ func _refresh_candidate() -> void:
 		_fields.viscosity_index.editable = supported
 		_fields.viscosity_index.tooltip_text = "Candidate descriptor consumed by generic yielding motion." if supported else "This kernel has no supported descriptor-viscosity edit."
 		for rule: Dictionary in candidate.reactions:
-			_reaction_picker.add_item("Slot %d / %s" % [rule.slot,rule.rule_id])
+			_reaction_picker.add_item("Slot %d / %s" % [rule.slot,rule.rule_id],int(rule.slot))
+		var selected_index: int = _reaction_picker.get_item_index(selected_slot)
+		if selected_index >= 0: _reaction_picker.select(selected_index)
 	_reaction_picker.disabled = _reaction_picker.item_count == 0
 	_refresh_candidate_status()
 	_loading = false
@@ -447,12 +501,27 @@ func _candidate_job(op: String) -> void:
 		if not rule.is_empty(): request["diagnostic"] = {"source":rule.first,"target":rule.second,"roll":int(_roll.value)}
 	_start_job(request)
 
+func _world_job(scenario: Dictionary, output_dir: String = "") -> void:
+	if candidate.is_empty() or scenario.is_empty():
+		_status.text = "Duplicate an existing material before testing a candidate in World."
+		return
+	if service.busy:
+		_status.text = "The current authoring job is still running."
+		return
+	var request: Dictionary = {"op":"compile_world_test","candidate":candidate.duplicate(true),"scenario":scenario.duplicate(true)}
+	if not _compiler.text.strip_edges().is_empty(): request.cxx = _compiler.text.strip_edges()
+	if not output_dir.is_empty(): request.output_dir = output_dir
+	world_panel.show_pending()
+	_start_job(request)
+
 func _start_job(request: Dictionary) -> void:
 	if service.busy:
 		_status.text = "The current authoring job is still running."
 		return
 	_job_revision = _revision
 	_job_op = str(request.op)
+	_job_world_revision = world_panel.revision
+	_job_reaction_slot = _reaction_picker.get_selected_id() if request.has("diagnostic") and _reaction_picker.selected >= 0 else -1
 	_status.text = "Authoring: %s…" % _job_op
 	service.request(request,_python.text.strip_edges())
 
@@ -472,6 +541,11 @@ static func _integer_candidate(value: Variant) -> Variant:
 func _backend_completed(result: Dictionary) -> void:
 	if _revision != _job_revision:
 		_status.text = "Completed job refers to an older revision. Current edits remain Draft."
+		if _job_op == "compile_world_test": world_panel.show_failure(_status.text)
+		return
+	if _job_op == "compile_world_test" and _job_world_revision != world_panel.revision:
+		_status.text = "World test completed for an older recipe. Current test settings remain untested."
+		world_panel.show_failure(_status.text)
 		return
 	last_backend_result = result.duplicate(true)
 	if not result.get("ok",false):
@@ -479,6 +553,7 @@ func _backend_completed(result: Dictionary) -> void:
 		candidate_digest = ""
 		_status.text = "\n".join(result.get("errors",["Authoring failed"]))
 		_candidate_feedback.text = _status.text
+		if _job_op == "compile_world_test": world_panel.show_failure(_status.text)
 		_refresh_candidate_status()
 		return
 	if result.has("candidate"): candidate = _integer_candidate(result.candidate)
@@ -486,10 +561,15 @@ func _backend_completed(result: Dictionary) -> void:
 	candidate_digest = str(result.get("digest",""))
 	candidate_state = {"draft":"Draft","validated_candidate":"Validated candidate","compiled_tested":"Compiled/tested — isolated native backend"}.get(str(result.get("state","draft")),str(result.get("state","Draft")))
 	_candidate_feedback.text = _candidate_result_text(result)
-	if result.has("receipt"):
+	var world_result: bool = result.get("receipt",{}).get("schema_id","") == "cybersand.material-lab.world-receipt"
+	if result.has("receipt") and not world_result:
 		_reaction_report.text = "COMPILED CANDIDATE / ISOLATED NATIVE RESOLVER\n\n" + JSON.stringify(result.receipt.get("observed",{}).get("diagnostic",{}),"\t") + "\n\n" + str(result.get("boundary",""))
+		_reaction_report.text += "\n\nCHANGES ACROSS PRODUCTION + CANDIDATE PAIRS\n" + JSON.stringify(result.receipt.get("observed",{}).get("comparison",{}),"\t")
 	_status.text = "%s completed. %s" % [_job_op,candidate_state]
-	_refresh_candidate()
+	_refresh_candidate(_job_reaction_slot if result.has("receipt") else -1)
+	if world_result:
+		world_panel.show_receipt(result.receipt)
+		_tabs.current_tab = 4
 	if _job_op in ["create","import"]: _tabs.current_tab = 1
 
 func _candidate_result_text(result: Dictionary) -> String:
@@ -502,8 +582,13 @@ func _candidate_result_text(result: Dictionary) -> String:
 	if result.has("receipt"):
 		var receipt: Dictionary = result.receipt
 		lines.append("\nNATIVE TEST / %s / %s" % [receipt.get("platform",""),receipt.get("compiler_version","")])
-		lines.append(JSON.stringify(receipt.get("observed",{}),"\t"))
-		lines.append("\nExecutable SHA-256: " + str(receipt.get("native_executable_sha256","")))
+		if receipt.get("schema_id","") == "cybersand.material-lab.world-receipt":
+			lines.append("Actual native World execution. Open Candidate test for stored cells, reference comparison and quantity checks.")
+			lines.append(JSON.stringify(receipt.get("checks",{}),"\t"))
+			lines.append("\nCandidate executable SHA-256: " + str(receipt.get("candidate_build",{}).get("native_executable_sha256","")))
+		else:
+			lines.append(JSON.stringify(receipt.get("observed",{}),"\t"))
+			lines.append("\nExecutable SHA-256: " + str(receipt.get("native_executable_sha256","")))
 	if result.has("output_dir"): lines.append("\nCompiled bundle: " + str(result.output_dir))
 	return "\n".join(lines)
 
@@ -533,7 +618,16 @@ func _edit_reaction(key: String, value: int) -> void:
 	if rule.is_empty(): return
 	rule[key] = value
 	_mark_draft()
+	_show_candidate_rule()
+
+func _show_candidate_rule() -> void:
+	var rule: Dictionary = _selected_reaction()
+	if rule.is_empty(): return
 	_reaction_report.text = "Candidate rule (not active):\n" + JSON.stringify(rule,"\t") + "\nChance: %d / 256 = %.6f%%" % [int(rule.probability)+1,100.0*(int(rule.probability)+1)/256.0]
+
+func _exit_tree() -> void:
+	_running = false
+	experiment.close()
 
 func inspect_reaction() -> void:
 	if _partner.selected >= 0:
@@ -548,7 +642,34 @@ func start_experiment() -> void:
 		return
 	_tabs.current_tab = 3
 	_status.text = "Experiment prepared. Applied Water policy is read back from this isolated native owner."
+	_sync_experiment_controls()
 	_refresh_experiment()
+
+func _sync_experiment_controls() -> void:
+	var configuration: Dictionary = experiment.configuration()
+	if not configuration.get("ok",false): return
+	_seed.value = int(configuration.seed)
+	_steps.value = int(configuration.duration_ticks)
+	_workers.select(_workers.get_item_index(int(configuration.workers)))
+	_family.select(Experiment.WATER_FAMILIES.find(str(configuration.water_family_request)))
+	var pair: Dictionary = configuration.pair
+	if not pair.is_empty():
+		_select_partner(int(pair.second))
+		select_material(int(pair.first))
+		_refresh_list()
+	if policy_context == "Isolated native test owner":
+		set_policy_readback(experiment.readback().get("applied_policy",{}),policy_context)
+	_refresh_experiment_request()
+
+func _pause_experiment() -> void:
+	_running = false
+	if experiment.reference_running():
+		experiment.cancel_reference()
+		_experiment_report.text = JSON.stringify(experiment.reference_progress(),"\t")
+		_status.text = "Reference comparison cancelled; the source run is preserved."
+	elif experiment.active():
+		_status.text = "Native run paused at completed tick %d." % int(experiment.readback().get("completed_tick",0))
+		_refresh_experiment()
 
 func _step_experiment(count: int) -> void:
 	if not experiment.step(count):
@@ -566,27 +687,45 @@ func _refresh_experiment() -> void:
 			if id == 0 or id == 1: continue
 			var label: String = str(catalogue.materials[id].name) if id < catalogue.materials.size() else str(id)
 			counts.append("%s %s" % [label,readback.material_counts[key]])
-		_experiment_summary.text = "Native tick %s / %s · %s worker(s) · %s\n%s" % [readback.completed_tick,readback.duration_ticks,readback.workers,"Completed" if readback.completed else "Prepared / running",", ".join(counts)]
+		_experiment_summary.text = "Prepared: %s · %s\nNative tick %s / %s · seed %s · %s worker(s) · Water %s · %s\n%s" % [readback.definition_title,str(readback.definition_hash).left(16),readback.completed_tick,readback.duration_ticks,readback.seed,readback.workers,readback.water_family_request,"Completed" if readback.completed else ("Running" if _running else "Paused / prepared"),", ".join(counts)]
+	else:
+		_experiment_summary.text = "Native test unavailable: " + str(readback.get("error","No prepared experiment."))
+		_preview.texture = null
 	var image: Image = experiment.preview_image()
 	if image != null and not image.is_empty(): _preview.texture = ImageTexture.create_from_image(image)
 
 func _compare_reference() -> void:
 	_running = false
-	_experiment_report.text = JSON.stringify(experiment.repeat_reference(),"\t")
+	_refresh_experiment()
+	var progress: Dictionary = experiment.begin_reference()
+	_experiment_report.text = JSON.stringify(progress,"\t")
+	_status.text = "Replaying a fresh native reference; Pause cancels the comparison." if progress.get("ok",false) else str(progress.get("error","Reference comparison failed."))
 
 func _process(_delta: float) -> void:
+	if experiment.reference_running():
+		var progress: Dictionary = experiment.advance_reference(1)
+		if not experiment.reference_running() or int(progress.get("completed_tick",0)) % 4 == 0:
+			_experiment_report.text = JSON.stringify(progress,"\t")
+			_status.text = "Reference replay %d / %d ticks; source run paused." % [int(progress.get("completed_tick",0)),int(progress.get("target_tick",0))]
+		if not experiment.reference_running():
+			_status.text = ("Reference matches the recorded native content and Water quantity." if progress.get("equal",false) else "Reference completed with a native difference.") if progress.get("ok",false) else str(progress.get("error","Reference comparison failed."))
+		return
 	if _running:
-		if not experiment.step(1) or experiment.completed(): _running = false
-		var current: Dictionary = experiment.readback()
-		if not _running or int(current.get("completed_tick",0)) % 4 == 0: _refresh_experiment()
+		if not experiment.step(1):
+			_running = false
+			_status.text = "Native experiment stopped: " + experiment.last_error
+		elif experiment.completed():
+			_running = false
+			_status.text = "Prepared native window completed. Readback belongs to the definition shown above."
+		if not _running or experiment.completed_tick() % 4 == 0: _refresh_experiment()
 
 func _open_file(action: String, saving: bool) -> void:
-	if action in ["export_preset","compile_bundle"] and candidate.is_empty():
+	if action in ["export_preset","compile_bundle","world_bundle"] and candidate.is_empty():
 		_status.text = "Create a candidate before saving a preset."
 		return
 	_file_action = action
 	_file.file_mode = FileDialog.FILE_MODE_SAVE_FILE if saving else FileDialog.FILE_MODE_OPEN_FILE
-	if action == "compile_bundle": _file.file_mode = FileDialog.FILE_MODE_OPEN_DIR
+	if action in ["compile_bundle","world_bundle"]: _file.file_mode = FileDialog.FILE_MODE_OPEN_DIR
 	_file.title = action.replace("_"," ").capitalize()
 	DirAccess.make_dir_recursive_absolute("user://materials_lab/presets")
 	_file.current_dir = ProjectSettings.globalize_path("user://materials_lab/presets")
@@ -595,6 +734,8 @@ func _open_file(action: String, saving: bool) -> void:
 
 func _file_selected(path: String) -> void:
 	match _file_action:
+		"world_bundle":
+			_world_job(world_panel.scenario(),path.path_join("material-world-%d-%d" % [candidate.target_id,Time.get_ticks_usec()]))
 		"compile_bundle":
 			var directory: String = path.path_join("material-%d-%d" % [candidate.target_id,Time.get_ticks_usec()])
 			var request: Dictionary = {"op":"compile_test","candidate":candidate.duplicate(true),"output_dir":directory}
@@ -610,6 +751,8 @@ func _file_selected(path: String) -> void:
 				_status.text = "Test case rejected: " + experiment.last_error
 			else:
 				_status.text = "Test case loaded with its native policy and source-bound configuration."
+				_sync_experiment_controls()
+				_tabs.current_tab = 3
 				_refresh_experiment()
 		"export_test":
 			var data: String = experiment.case_json()
