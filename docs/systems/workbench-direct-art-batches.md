@@ -2,7 +2,7 @@
 title: Direct art batches, WB-ART-002 Stage 1
 status: Current
 document-kind: contract
-scope: Unmerged desktop direct drawing candidate, native completion, Stop and authored-start persistence; inference is Planned
+scope: Unmerged desktop direct drawing candidate, native completion, Stop and authored-start persistence; provider collaboration is a separate unmerged candidate
 canonical-for: [workbench-direct-art-batches]
 last-reviewed: 2026-11-10
 related-documents: [../architecture/shared-workbench-authoring-data.md, ../reference/status-and-roadmap.md, ../operations/cybersand-codex-development-handover.md]
@@ -18,8 +18,7 @@ related-documents: [../architecture/shared-workbench-authoring-data.md, ../refer
 #531 is read-only reference; none of its controller/configuration modules is
 imported. Native C++ and physics/material defaults are unchanged. This is a
 small direct-drawing interface in the ordinary desktop Shared Workbench, not
-another World or editor. The [Stage-2 provider candidate](workbench-art-providers.md) now adds one-shot
-inference; persistent context and scanlines remain **Planned**.
+another World or editor. The [Stage-2 provider candidate](workbench-art-providers.md) now adds provider inference, retained conversation and separate scanline mode on this branch. These remain unmerged candidate behavior.
 
 Open **Shared Workbench → Art batches**. The floating, hideable test input
 preserves the canvas layout. Draw/Stop sit beside its title. Enter ordered JSON,

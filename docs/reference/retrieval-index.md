@@ -12,7 +12,7 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 ## Direct native art batches without inference
 
-For #559 Stage 1, shape/pixel JSON, large drawing batches, protection, native acknowledgment, Stop and Save limits, retrieve the [direct art batch contract](../systems/workbench-direct-art-batches.md). For OpenAI/NVIDIA/LM Studio, key entry, raw traffic, output caps and cancellation, retrieve the [Stage-2 provider contract](../systems/workbench-art-providers.md). Persistent context remains Planned.
+For #559 Stage 1, shape/pixel JSON, large drawing batches, protection, native acknowledgment, Stop and Save limits, retrieve the [direct art batch contract](../systems/workbench-direct-art-batches.md). For OpenAI/NVIDIA/LM Studio, key entry, raw traffic, output caps and cancellation, retrieve the [Stage-2 provider contract](../systems/workbench-art-providers.md). Persistent context and scanlines are implemented on the unmerged candidate; hosted qualification and genuine-model art quality remain separate.
 
 
 ## Generated terrain in the playable workbench

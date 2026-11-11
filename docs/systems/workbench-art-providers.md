@@ -278,3 +278,38 @@ were changed. The graphical benchmark accepts `WB_ART_BENCH_WIDTH` and
 `WB_ART_BENCH_HEIGHT`; defaults remain 64×128. Local original replies, native
 readback images, rendered PNGs and hashes are retained under
 `build/local-models-20261111/` (not committed).
+
+
+## Final graphical pipeline qualification - 2026-11-11
+
+The final smoke uses the actual panel Send/Stop signals, asynchronous HTTP, native
+World and post-draw framebuffer. A recorded deterministic local HTTP provider
+returns a substantial polygon/airbrush packet. Two intermediate canvas captures
+show growing native output. Stop retires a partial prefix; after completed
+snapshots drain, native-image and canvas hashes remain unchanged across a
+half-second late-write observation. A protected rectangle lies inside the
+attempted prefix and must produce at least 128 excluded cells.
+
+Without clearing the conversation, follow-ups change to local bounds at world
+(1200,200) and hosted world bounds at (1200,750). The fixture independently checks
+that outgoing requests retain earlier user/assistant turns and native Canvas
+results alongside current bounds. Native readback confirms translated local and
+direct world writes. An intentionally stale hosted reply is entirely skipped and
+must display No pixels applied. Traffic is visible during the initial draw.
+
+Reproduce with `python tools/test_art_final_graphical.py --godot PATH --output build/art-final-graphical`
+in a graphical Windows session, or wrap that command with `xvfb-run -a` on Linux.
+The test isolates settings using APPDATA/XDG_DATA_HOME, records source/runtime
+hashes and preserves full requests, original full/cropped PNGs, native material
+readback, receipts and assertions. It makes no paid calls and does not test art
+quality. The GDExtension workflow runs it separately against its source-built
+Linux native runtime and uploads an artifact; its result is required by the Linux
+aggregate. Manual full Native and GDExtension workflows can run while the PR stays
+Draft. Draft-skipped runs do not qualify this source.
+
+Initial Windows driver attempts remain in local evidence: a type annotation error
+prevented startup; a full-window comparison included independent UI changes,
+corrected to native/canvas identity after snapshot drain. Independent review also
+moved the protected rectangle into the attempted prefix so its assertion is not
+vacuous. No production drawing behavior changed during this final qualification
+checkpoint. Live model trials remain separately dated above.
