@@ -51,7 +51,7 @@ var capturing := false
 var request_area: Rect2i
 var request_guards: Array = []
 var request_materials: Array = []
-const SHAPES := ["rectangle","disc","line","pixels"]
+const SHAPES := ArtPlan.SHAPES
 var tool_checks: Dictionary = {}
 var pixel_limit := SpinBox.new()
 var request_shapes: Array = []
@@ -169,7 +169,8 @@ func mount_tools(actions: HBoxContainer) -> void:
 	var fields_box := VBoxContainer.new()
 	fields_box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	options.add_child(fields_box)
-	var toggles := HBoxContainer.new()
+	var toggles := GridContainer.new()
+	toggles.columns = 4
 	fields_box.add_child(toggles)
 	for shape: String in SHAPES:
 		var toggle := CheckBox.new()
@@ -182,10 +183,10 @@ func mount_tools(actions: HBoxContainer) -> void:
 	pixel_limit.tooltip_text = "Zero leaves the point count unrestricted by this setting."
 	fields_box.add_child(pixel_limit)
 	var hint := Label.new()
-	hint.text = "Line width is in cells. Pixel limit: 0 means no extra limit."
+	hint.text = "Line and polyline widths are in cells. Pixel limit 0 adds no cap."
 	fields_box.add_child(hint)
 	tools_button.text = "Tools…"
-	tools_button.pressed.connect(func() -> void: options.popup_centered(Vector2i(430,110)))
+	tools_button.pressed.connect(func() -> void: options.popup_centered(Vector2i(480,145)))
 	actions.add_child(tools_button)
 
 func enabled_shapes() -> Array:
@@ -252,7 +253,7 @@ func _process(_delta: float) -> void:
 	draw.text = "Draw" if input_mode.selected==0 else "Send"
 	for row: Control in rows: row.visible = input_mode.selected!=0
 	key_button.text = "Key ✓" if not str(keys.get(current_provider,"")).is_empty() else "Key…"
-	help.text = "Turns limits requests per Send. Image attaches a canvas crop. Select a vision model to use it." if input_mode.selected!=0 else "Ordered JSON: rectangle / disc / line / pixels. Use the selected material ID. 0 erases when enabled. Large drawings stream in native-sized chunks."
+	help.text = "Turns limits requests per Send. Image attaches a canvas crop. Select a vision model to use it." if input_mode.selected!=0 else "Ordered JSON: see enabled shapes under Tools. Use the selected material ID. 0 erases when enabled. Large drawings stream in native-sized chunks."
 	if log_draw and not executor.active:
 		provider.log_event("native_result",executor.result)
 		log_draw = false
@@ -662,7 +663,7 @@ func send_next(expected_epoch: int) -> void:
 	if request_scanline:
 		instructions = stencil_guidance.text+" Local area width %d, height %d. Allowed materials %s." % [request_area.size.x,request_area.size.y,str(request_materials)]
 	if not request_scanline:
-		instructions += "\nEnabled shapes: "+JSON.stringify(request_shapes)+". Use only these shapes. Line accepts optional integer width in cells (default 1) with rounded ends."
+		instructions += "\nEnabled shapes: "+JSON.stringify(request_shapes)+". Use only these shapes. Line and polyline accept optional integer width (default 1) with rounded ends. Polyline and filled polygon use points:[[x,y],...]. Airbrush uses x,y,radius, optional density and hardness in [0,1], and an integer seed."
 		if request_pixel_limit > 0:
 			instructions += " Maximum %d points per pixels operation." % request_pixel_limit
 	instructions += "\nSelected drawing material: %d. Use it for drawing. Return [] when finished." % request_material
@@ -795,14 +796,15 @@ func local_operations(operations: Array) -> Array:
 func fit_local_operation(raw: Dictionary,bounds: Rect2i) -> Dictionary:
 	var plan := ArtPlan.new()
 	if not plan.configure([raw],bounds): return {}
-	var op: Dictionary = plan.operations[0]
+	var op: Dictionary = raw.duplicate(true)
+	op.material = int(op.material)
 	if op.material not in request_materials: return {}
 	match op.shape:
-		"pixels":
+		"pixels","polyline","polygon":
 			for pair: Array in op.points:
 				pair[0] += request_area.position.x
 				pair[1] += request_area.position.y
-		"disc":
+		"disc","airbrush":
 			op.x += request_area.position.x
 			op.y += request_area.position.y
 		_:

@@ -75,6 +75,22 @@ func run() -> void:
 	panel.pixel_limit.value = 0
 	panel.draw.pressed.emit()
 	await until(func(): return not art.active and cell(1455,1455)==58 and cell(1456,1455)==58,"zero pixel limit allows the batch")
+	panel.request_area = Rect2i(1500,1500,64,64)
+	panel.request_materials = [0,58]
+	var stroke: Array = panel.local_operations([{"shape":"polyline","width":3,"points":[[3,3],[13,3],[13,13]],"material":58}])
+	art.submit(stroke,panel.request_area,[],panel.request_materials)
+	await until(func(): return not art.active and cell(1508,1504)==58 and cell(1514,1510)==58,"local rounded polyline draws both legs")
+	panel.input.text = '[{"shape":"polygon","points":[[1540,1500],[1550,1500],[1550,1504],[1544,1504],[1544,1510],[1540,1510]]},{"shape":"airbrush","x":1570,"y":1507,"radius":7,"hardness":0.35,"seed":123},{"shape":"airbrush","x":1590,"y":1507,"radius":7,"hardness":0.35,"seed":123}]'
+	panel.draw.pressed.emit()
+	await until(func(): return not art.active and cell(1542,1507)==58 and cell(1590,1507)==58,"filled polygon and airbrush reach native readback")
+	check(cell(1548,1507)==0,"concave polygon preserves its cutout")
+	var same_pattern := true
+	var stipples := 0
+	for dy: int in range(-7,8):
+		for dx: int in range(-7,8):
+			if cell(1570+dx,1507+dy)!=cell(1590+dx,1507+dy): same_pattern = false
+			if cell(1570+dx,1507+dy)==58: stipples += 1
+	check(same_pattern and stipples>1 and stipples<149,"seeded airbrush repeats a partial disc at another position")
 	panel.provider.requested_model = ""
 	for i: int in range(16): panel.conversation.append({"role":"user","content":"turn %d" % i})
 	panel.context_mode.select(0)

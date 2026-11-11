@@ -252,3 +252,11 @@ chunks. Lines accept an optional integer width in cells. Width one preserves
 the original raster. Wider strokes use rounded ends and clip to canvas bounds
 before the worker applies the selected area and protection checks. Scanline
 keeps its own span format.
+
+The Tools picker also enables rounded polylines (ordered `points` and optional
+`width` in cells), filled polygons (three or more `points`, closed automatically),
+and airbrush stamps (`x`, `y`, `radius`, optional `density` and `hardness` from
+0 to 1, and an integer `seed`). Airbrushes stipple real material cells; hardness
+controls edge falloff, and repeating a seed repeats the pattern relative to the
+stamp center. All three use the same native edit batching and protection as the
+existing shapes.

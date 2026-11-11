@@ -1,5 +1,6 @@
 extends RefCounted
 ## Lazy exact geometry; only a native-sized chunk is materialized at a time.
+const SHAPES := ["rectangle","disc","line","pixels","polyline","polygon","airbrush"]
 const Setup = preload("res://scripts/workbench_setup.gd")
 var operations: Array = []
 var index := 0
@@ -10,23 +11,57 @@ var error := ""
 func configure(value: Variant, bounds: Rect2i) -> bool:
 	if not value is Array or value.is_empty(): error = "Use a nonempty JSON array of drawing operations."; return false
 	for raw: Variant in value:
-		if not raw is Dictionary or raw.get("shape") not in ["rectangle","disc","line","pixels"]: error = "Shapes: rectangle, disc, line, pixels."; return false
+		if not raw is Dictionary or raw.get("shape") not in SHAPES: error = "Unknown shape. Choose a shape from Tools."; return false
 		var op: Dictionary = raw.duplicate(true)
 		if not integer(op.get("material")) or int(op.material) not in Setup.MATERIALS: error = "Use a material ID from the workbench paint palette."; return false
 		op.material = int(op.material)
-		var keys: Array = ["x","y","radius"] if op.shape == "disc" else ["x0","y0","x1","y1"]
-		if op.shape == "pixels":
-			if not op.get("points") is Array or op.points.is_empty(): error = "pixels needs points:[[x,y],...]."; return false
+		var keys: Array = ["x","y","radius"] if op.shape in ["disc","airbrush"] else ["x0","y0","x1","y1"]
+		if op.shape in ["pixels","polyline","polygon"]:
+			var minimum := 1
+			if op.shape == "polyline": minimum = 2
+			elif op.shape == "polygon": minimum = 3
+			if not op.get("points") is Array or op.points.size() < minimum:
+				error = "%s needs at least %d points." % [op.shape,minimum]
+				return false
 			for pair: Variant in op.points:
 				if not pair is Array or pair.size()!=2 or not integer(pair[0]) or not integer(pair[1]): error = "Pixel coordinates must be integers."; return false
 				if not inside(pair[0],pair[1],bounds): error = "Pixel outside canvas."; return false
+			if op.shape == "polyline":
+				var segments: Array = []
+				for i: int in range(1,op.points.size()):
+					var start: Array = op.points[i-1]
+					var end: Array = op.points[i]
+					segments.append({"shape":"line","material":op.material,"width":op.get("width",1),
+						"x0":start[0],"y0":start[1],"x1":end[0],"y1":end[1]})
+				if not configure(segments,bounds): return false
+				continue
+			if op.shape == "polygon":
+				var vertices := PackedVector2Array()
+				var box := Rect2i(Vector2i(op.points[0][0],op.points[0][1]),Vector2i.ONE)
+				for pair: Array in op.points:
+					var point := Vector2i(pair[0],pair[1])
+					vertices.append(Vector2(point))
+					box = box.merge(Rect2i(point,Vector2i.ONE))
+				op.vertices = vertices
+				op.polygon_bounds = box
 		else:
 			for key: String in keys:
 				if not integer(op.get(key)): error = "Missing integer: "+key; return false
 				op[key] = int(op[key])
-			if op.shape == "disc":
+			if op.shape in ["disc","airbrush"]:
 				if op.radius < 0 or op.radius > maxi(bounds.size.x,bounds.size.y) or not inside(op.x-op.radius,op.y-op.radius,bounds) or not inside(op.x+op.radius,op.y+op.radius,bounds): error = "Disc outside canvas."; return false
 			elif not inside(op.x0,op.y0,bounds) or not inside(op.x1,op.y1,bounds) or (op.shape == "rectangle" and (op.x1<op.x0 or op.y1<op.y0)): error = "Invalid or outside rectangle/line."; return false
+		if op.shape == "airbrush":
+			for parameter: String in ["density","hardness"]:
+				var value_in: Variant = op.get(parameter,1.0 if parameter == "density" else 0.0)
+				if not (value_in is float or value_in is int) or not is_finite(float(value_in)) or value_in < 0 or value_in > 1:
+					error = "Airbrush %s must be between 0 and 1." % parameter
+					return false
+				op[parameter] = float(value_in)
+			if not integer(op.get("seed",0)):
+				error = "Airbrush seed must be an integer."
+				return false
+			op.seed = int(op.get("seed",0))
 		if op.shape == "line":
 			var stroke_width: Variant = op.get("width",1)
 			if not integer(stroke_width) or stroke_width < 1 or stroke_width > maxi(bounds.size.x,bounds.size.y):
@@ -72,7 +107,10 @@ func next_chunk(capacity: int = 4096) -> Dictionary:
 		match op.shape:
 			"pixels": total = op.points.size()
 			"rectangle": width = op.x1-op.x0+1; total = width*(op.y1-op.y0+1)
-			"disc": width = 2*op.radius+1; total = width*width
+			"disc","airbrush": width = 2*op.radius+1; total = width*width
+			"polygon":
+				width = op.polygon_bounds.size.x
+				total = width*op.polygon_bounds.size.y
 			"line":
 				if op.width == 1:
 					if line.is_empty(): make_line(op)
@@ -107,10 +145,21 @@ func next_chunk(capacity: int = 4096) -> Dictionary:
 					if Vector2(point).distance_squared_to(closest) >= radius_squared:
 						cursor += 1
 						continue
+			elif op.shape == "polygon": point = op.polygon_bounds.position+Vector2i(cursor%width,cursor/width)
 			elif op.shape == "rectangle": point = Vector2i(op.x0+cursor%width,op.y0+cursor/width)
 			else: point = Vector2i(op.x-op.radius+cursor%width,op.y-op.radius+cursor/width)
 			cursor += 1
-			if op.shape == "disc" and point.distance_squared_to(Vector2i(op.x,op.y)) > op.radius*op.radius: continue
+			if op.shape == "polygon" and not Geometry2D.is_point_in_polygon(Vector2(point),op.vertices): continue
+			if op.shape in ["disc","airbrush"]:
+				var distance_squared := point.distance_squared_to(Vector2i(op.x,op.y))
+				if distance_squared > op.radius*op.radius: continue
+				if op.shape == "airbrush":
+					var normalized := sqrt(distance_squared)/maxi(1,op.radius)
+					var falloff := 1.0
+					if normalized > op.hardness:
+						falloff = 1.0-smoothstep(op.hardness,1.0,normalized)
+					var sample := float(hash(Vector3i(point.x-op.x,point.y-op.y,op.seed)) & 0xffffff)/16777216.0
+					if sample >= op.density*falloff: continue
 			points.append(point.x);points.append(point.y)
 		if cursor == total: index+=1;cursor=0;line.clear()
 	if points.is_empty(): return {}
