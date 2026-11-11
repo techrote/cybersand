@@ -3,12 +3,17 @@ title: Canonical material catalogue and interaction authoring — adopted Planne
 document-kind: design
 canonical-for: [material-authoring-v1-programme-proposal]
 status: Planned
-scope: Owner-adopted Planned material-authoring baseline; section 14 records merged shadow tooling and bounded liveness investigation, while production migration and correction remain pending; sections 1–13 preserve dated proposal, review, adoption and integration boundaries
-last-reviewed: 2026-11-04
+scope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries
+last-reviewed: 2026-11-11
 related-documents: [../systems/materials-and-rule-kernels.md, ../systems/intermaterial-interactions.md, ../systems/building-material-catalogue.md, ../systems/themed-construction-materials.md, ../systems/granular-interaction-policy.md, ../systems/flow-transport-and-profiles.md, item-authored-material-programs.md, liquid-state-transition-matrix.md, ../operations/documentation-maintenance.md]
 ---
 
 # Canonical material catalogue and interaction authoring — adopted Planned baseline
+
+**11 November update:** [section 15](#15-materials-lab-v1-implementation-boundary--2026-11-11)
+records new owner authorization and the implemented Materials Lab review
+candidate. Production migration remains Planned. The dated 4 November
+statements below retain their original authorization and evidence scope.
 
 **Owner-adopted Planned baseline; #353-A merged and #354 Phase A investigation admitted — 2026-11-04.**
 Documentation PR #357 merged as accepted main
@@ -673,3 +678,41 @@ runtime rebuild/publication/provenance. Updating expected hashes cannot replace
 that review. Keep #354 open and its Phase A PR draft/unmerged. #353-B migration,
 #355 reaction effects and #358/#347/#370/#373/#201 and Water phase/quantity work
 retain separate ownership; serialize any later shared production writes.
+
+## 15. Materials Lab v1 implementation boundary — 2026-11-11
+
+**New owner authorization; implemented review candidate.** The owner requested
+desktop material inspection, validated source authoring, reusable presets,
+explicit supported reactions and native tests from current accepted main.
+Baseline was `d4b18e7f06839b35c8f6a66195206da0f33c5fa3`; isolated branch
+`codex/materials-lab-v1-20261111` holds the implementation. The
+[Lab runbook](../operations/materials-lab-authoring.md) owns controls and limits;
+the [dated audit](../audits/2026-11-11-materials-lab-v1.md) owns source, tests,
+platform evidence and outstanding gates. This authorization supersedes the
+earlier unstarted #355/#356 restriction for this bounded vertical slice. It
+does not authorize Ready, merge or default promotion.
+
+Native read-only metadata is the inspector's authority. Candidate edits use the
+existing compiler and frozen source guards; generated definitions are exercised
+by an external native descriptor/pair-resolution probe. Existing-material tests
+reuse the MicroScenario host and authoritative World readback. Draft, validated,
+compiled/tested and runtime-active states stay distinct; v1 has no production
+candidate installer. Identity slots, 56 production pairs, protected source,
+quantity and saved-world semantics remain unchanged. Synthetic powder132 is an
+isolated non-hard fixture, with no production allocation or conflict with other
+branches' experimental identities.
+
+Explicit endpoint-effects v1 admits only legacy `replace_with_defaults`.
+`keep_existing`, state setting, new kernels and unsupported reaction slots remain
+rejected. The native probe reports state defaults and positional outcomes;
+candidate World movement and full quantity conservation are not inferred.
+#353-B requires a separate consumer/identity transition. H1 MoltenGlass correction
+already has Draft [#395](https://github.com/techrote/cybersand/pull/395), with
+sleeping-save migration and performance/source gates still open. This work does
+not compete with that owner or change mutual heating/generic yielding rest.
+
+Current Workbench, agent-painting, liquid-equipment and ballistic-solids owners
+were rechecked before edits. The Lab adds a launcher/window seam and copied policy
+receipt; it does not add another Workbench, worker, resolver or native World.
+Existing production build/retained-runtime gates remain requirements for eventual
+integration. Broad #352–356 remain open after this v1 contribution.

@@ -1,0 +1,184 @@
+{
+  "lab-synthetic-powder-v1": {
+    "schema_id": "cybersand.material-lab.native-receipt",
+    "schema_version": 1,
+    "candidate_digest": "c2e7859cf568cd9d138c6444a9f26242cc1538be9b283977e6a24dc59ba5c24c",
+    "compiled_catalogue_sha256": "ff7f410d8b7c836ae52c2d7fcb3aacca0e65349988ec53b3dcfb2a8548f60da7",
+    "source_identity": {
+      "git_head": "9da5dc3c3b8b19371cb37089920152a2bf826169",
+      "lf_sha256": {
+        "materials/catalogue/catalogue.json": "3a5250a07912dc9530172cb2fccecd526606e242209d666cb2da202e1cfc9f14",
+        "materials/catalogue/compatibility-lock.json": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc",
+        "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+        "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+        "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+        "native/src/material_rules.cpp": "3afda824571842e387b0cac70218ee5f1f96005d07aaaafcf95c146c3eee3254",
+        "tools/material_catalogue/compiler.py": "81a0658655574ee5e65ecc144db9750b9128380595d51af70c2b04d0a209a098",
+        "tools/material_catalogue/compatibility.py": "07f48c9b94f542eba78bec5467125ea9f264125b13f636e21f530293e699d556",
+        "tools/material_catalogue/lab.py": "2fba92f29d5b883d0a15dec4e150f61ff75988d70b5693ef8f4ca79e4a7a024c",
+        "tools/material_catalogue/lab_native_probe.cpp": "b3b72249d9e70eb99e0182f761787259f0c8eaaa92c1b0b554d8a21bf8956f3e"
+      },
+      "digest": "95f9e48f77312f511f8f3f5c1af3d229d723480c0c21dfd2c241bb1ef5880c3f",
+      "qualification": "The file digest binds this executed source, including uncommitted implementation changes; git_head alone does not."
+    },
+    "compiler": "c++",
+    "compiler_version": "c++ (Debian 14.2.0-19) 14.2.0",
+    "platform": "linux",
+    "sanitizers": "address,undefined",
+    "sanitizer_runtime_options": {
+      "ASAN_OPTIONS": "detect_leaks=0:strict_string_checks=1",
+      "UBSAN_OPTIONS": "halt_on_error=1"
+    },
+    "native_executable_sha256": "0481373b5e2acf02bf4b25faba86c9090cbfd13cb9fd61c0823edbb6c8cda576",
+    "generated_sha256": {
+      "catalogue.shadow.hpp": "8df9fe0733e185ae7ab46679ea73c303930bb690e9c8cad97d412cb87b0ede2c",
+      "catalogue_shadow.gd": "3363e35d6c93f7182f58aacb8cd50df4ed1fc10a2dddc26439f0089fb17945e8",
+      "inspection.json": "dff36cebb6113fc2e91f7f17aa55e93fa21935997c82e09d47949edafa9fe0f5",
+      "manifest.json": "23c535ae8e9df14b3806917516698107fdba0abe198265bbaa8cd9b7088fde92"
+    },
+    "observed": {
+      "ok": true,
+      "backend": "native_sparse_resolver_and_descriptor_fixture_v1",
+      "runtime_active": false,
+      "world_simulation": false,
+      "production_registry_unchanged": true,
+      "checks": 114809,
+      "candidate_material": {
+        "id": 132,
+        "name": "synthetic-powder",
+        "density": 1337,
+        "kernel": 1,
+        "viscosity_index": 0,
+        "hard_surface": false,
+        "granular_support": true,
+        "visual_state_source": 0,
+        "rgba": [
+          17,
+          91,
+          203,
+          255
+        ]
+      },
+      "comparison": {
+        "candidate_selected": 15400,
+        "baseline_selected": 15400,
+        "different_outcomes": 0,
+        "domain": "all 256 rolls, both orientations of every candidate sparse rule"
+      },
+      "diagnostic": {
+        "source": 2,
+        "target": 3,
+        "roll": 0,
+        "status": "no_matching_rule",
+        "matched": false,
+        "selected": false,
+        "production_selected": false
+      },
+      "limits": [
+        "Resolver selection does not observe World cadence, masks, sleeping or competing mechanisms.",
+        "No candidate movement, state mutation, quantity ledger or production install was executed.",
+        "Legacy endpoint replacement uses World product initialisation, target then source, including applied Water maximum and same-ID reinitialisation."
+      ]
+    }
+  },
+  "lab-zero-threshold-quench-v1": {
+    "schema_id": "cybersand.material-lab.native-receipt",
+    "schema_version": 1,
+    "candidate_digest": "f07db1c1a8f3fe59e5783cdbb8f21eab6bf4f181616008a22de88d991772414f",
+    "compiled_catalogue_sha256": "2ca9f91f30d7047e17493dfa0bd05d7fa5eee5b55c8b46c6304055d3b14d6155",
+    "source_identity": {
+      "git_head": "9da5dc3c3b8b19371cb37089920152a2bf826169",
+      "lf_sha256": {
+        "materials/catalogue/catalogue.json": "3a5250a07912dc9530172cb2fccecd526606e242209d666cb2da202e1cfc9f14",
+        "materials/catalogue/compatibility-lock.json": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc",
+        "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+        "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+        "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+        "native/src/material_rules.cpp": "3afda824571842e387b0cac70218ee5f1f96005d07aaaafcf95c146c3eee3254",
+        "tools/material_catalogue/compiler.py": "81a0658655574ee5e65ecc144db9750b9128380595d51af70c2b04d0a209a098",
+        "tools/material_catalogue/compatibility.py": "07f48c9b94f542eba78bec5467125ea9f264125b13f636e21f530293e699d556",
+        "tools/material_catalogue/lab.py": "2fba92f29d5b883d0a15dec4e150f61ff75988d70b5693ef8f4ca79e4a7a024c",
+        "tools/material_catalogue/lab_native_probe.cpp": "b3b72249d9e70eb99e0182f761787259f0c8eaaa92c1b0b554d8a21bf8956f3e"
+      },
+      "digest": "95f9e48f77312f511f8f3f5c1af3d229d723480c0c21dfd2c241bb1ef5880c3f",
+      "qualification": "The file digest binds this executed source, including uncommitted implementation changes; git_head alone does not."
+    },
+    "compiler": "c++",
+    "compiler_version": "c++ (Debian 14.2.0-19) 14.2.0",
+    "platform": "linux",
+    "sanitizers": "address,undefined",
+    "sanitizer_runtime_options": {
+      "ASAN_OPTIONS": "detect_leaks=0:strict_string_checks=1",
+      "UBSAN_OPTIONS": "halt_on_error=1"
+    },
+    "native_executable_sha256": "053eaa8885ce2214429eeea2b4aed5b779256d0df78b9367fb1f3b00fc9ddb75",
+    "generated_sha256": {
+      "catalogue.shadow.hpp": "6e4cb605e25cf5d8a0748c796f01e2a091f3f19b814dc001b8fe3574c145d822",
+      "catalogue_shadow.gd": "1b69c2b1bd5d10bbd1080dfe5f37c7345859dc323fb07714f5863a97f1241373",
+      "inspection.json": "6b38ec39cb5b2d3d8f828cf0ef14064f5c21f59804f420330b52f3471bedc5ab",
+      "manifest.json": "6904d61f84e766395b08e49b936feb80d0d145b02a83ed067c599e3d7ce39def"
+    },
+    "observed": {
+      "ok": true,
+      "backend": "native_sparse_resolver_and_descriptor_fixture_v1",
+      "runtime_active": false,
+      "world_simulation": false,
+      "production_registry_unchanged": true,
+      "checks": 114807,
+      "candidate_material": {
+        "id": 3,
+        "name": "water",
+        "density": 1000,
+        "kernel": 2,
+        "viscosity_index": 0,
+        "hard_surface": false,
+        "granular_support": false,
+        "visual_state_source": 1,
+        "rgba": [
+          47,
+          127,
+          210,
+          255
+        ]
+      },
+      "comparison": {
+        "candidate_selected": 14890,
+        "baseline_selected": 15400,
+        "different_outcomes": 510,
+        "domain": "all 256 rolls, both orientations of every candidate sparse rule"
+      },
+      "diagnostic": {
+        "source": 8,
+        "target": 3,
+        "roll": 0,
+        "status": "selected",
+        "matched": true,
+        "selected": true,
+        "production_selected": true,
+        "rule_slot": 0,
+        "rule_id": "int.pair.lava-water.quench.v1",
+        "probability_threshold": 0,
+        "successful_rolls_of_256": 1,
+        "source_product": 13,
+        "target_product": 22,
+        "effects_version": 1,
+        "endpoint_effect": "replace_with_defaults",
+        "source_product_descriptor_defaults": {
+          "state_a": 0,
+          "state_b": 0
+        },
+        "target_product_descriptor_defaults": {
+          "state_a": 180,
+          "state_b": 0
+        },
+        "world_writes_executed": false,
+        "water_policy_required_for_product_quantity": false
+      },
+      "limits": [
+        "Resolver selection does not observe World cadence, masks, sleeping or competing mechanisms.",
+        "No candidate movement, state mutation, quantity ledger or production install was executed.",
+        "Legacy endpoint replacement uses World product initialisation, target then source, including applied Water maximum and same-ID reinitialisation."
+      ]
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-11",
+  "scope": "Additive Materials Lab v1 review-candidate questions; frozen and historical questions remain unchanged. Implementation is distinct from production activation and platform acceptance.",
+  "questions": [
+    {
+      "id": "MLAB-01",
+      "query": "How do I open Materials Lab v1 and inspect declared versus effective native material physics?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "The review candidate mounts in the desktop feature launcher and Shared Workbench, or --materials-lab.",
+        "The matching native bridge is required; native facts are not replaced by shadow or fallback metadata.",
+        "Rows distinguish declared/effective values, actual consumer, applicability and editability; Workbench policy is a copied receipt at opening."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-02",
+      "query": "Which Materials Lab candidate properties are editable, and does compiled/tested mean runtime-active?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Density, RGBA, explicit capabilities and visual projection are editable isolated candidates; viscosity is limited to supported yielding templates.",
+        "Kernel, physical state, movement and state defaults remain held to the selected template.",
+        "Draft, validated, compiled/tested and runtime-active are distinct; v1 has no production installer or candidate World."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-03",
+      "query": "How do material presets round-trip and compile the synthetic non-hard powder at ID132?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Version1 envelopes contain a strict candidate, source catalogue hash and deterministic digest; malformed or tampered imports preserve the current candidate.",
+        "The synthetic132 fixture compiles density1337, RGBA17/91/203/255, hardfalse and granulartrue without production ID allocation.",
+        "Compiled bundles use an external fresh directory and source/generated/executable hashes; the frozen compatibility lock is unchanged."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-04",
+      "query": "What does a threshold0 candidate reaction mean, and are keep_existing or state-setting effects supported?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Threshold T means inclusive (T+1)/256;0 succeeds for roll0 and fails for roll1.",
+        "Only explicit version1 replace_with_defaults is admitted; unsupported effects and conflicts are rejected.",
+        "The actual sparse native resolver is tested over256rolls and both orientations; World scheduling or sleep eligibility is not inferred."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-05",
+      "query": "How do Materials Lab native simulation test cases reproduce Salt plus Water with source and worker identity?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "The existing MicroScenario host owns an isolated native World, with source, definition, seed, worker count and Water-family configuration retained.",
+        "The fixture observes768Brine after120ticks; native counts/state/quantities/hashes are authoritative, not images.",
+        "Fresh reference comparison and saved-case reconstruction are supported; one/four workers are tested and source mismatch refuses import."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-06",
+      "query": "Can Materials Lab v1 install authored physics or repair the MoltenGlass H1 scheduling problem?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Production132slots including invalid10,56rules, source identity and saved-world semantics remain unchanged.",
+        "Production activation remains a separately qualified353-B consumer/identity transition.",
+        "H1 already belongs to Draft395; sleeping-save/performance/source gates, mutual heating and generic yielding rest remain separate."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    }
+  ]
+}

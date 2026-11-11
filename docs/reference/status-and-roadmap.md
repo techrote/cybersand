@@ -4,11 +4,29 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-08
+last-reviewed: 2026-11-11
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## Materials Lab v1 — 2026-11-11
+
+**Implemented review candidate; no Ready or merge authority.** The
+[Materials Lab](../operations/materials-lab-authoring.md) mounts in the existing
+desktop launcher/Workbench and provides native effective-property inspection,
+structured candidate editing, strict preset round-trips, compiled native pair
+tests and reproducible existing-material MicroScenarios. The
+[qualification record](../audits/2026-11-11-materials-lab-v1.md) states executed
+platforms and limits. This advances #353/#355/#356 under the owner's new bounded
+implementation authorization; broad #352–356 remain open. Production has its
+unchanged 132 slots, reserved10, 56 pair rules and legacy World authority.
+Synthetic132 is isolated. Candidate compile/test does not install a material.
+#353-B remains a separate consumer/identity transition. H1 is already owned by
+Draft [#395](https://github.com/techrote/cybersand/pull/395); its saved sleeping-state
+migration and source/performance gates are not resolved by the Lab. H2 mutual
+heating and H3 generic yielding rest remain unchanged. Older dated boundaries
+below retain their historical scope.
 
 ## EXPLORE-001 generated playable maps — 2026-11-08
 

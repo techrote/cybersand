@@ -4,11 +4,17 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-08
+last-reviewed: 2026-11-11
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+Materials Lab v1 review candidate: [desktop launch, inspection, authoring and native tests](operations/materials-lab-authoring.md),
+[source/platform qualification](audits/2026-11-11-materials-lab-v1.md).
+The mounted interface consumes native read-only facts, compiles isolated presets
+and reuses MicroScenarios. Production material authority, IDs and saved-world
+semantics remain unchanged; #353-B and the separately owned #395 H1 repair remain open.
 
 Shared authoring: [approved data contract and convergence plan](architecture/shared-workbench-authoring-data.md)
 separates Current generated-start saves from Planned material-only Flatten and
