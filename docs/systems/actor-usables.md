@@ -155,6 +155,29 @@ logical ports `(-2,-1)`, `(-2,+1)`, `(+2,-1)`, `(+2,+1)`.
 | U31 `seed_incubator` | Seed Incubator | Seed + Water → Plant |
 | U32 `firewarden` | Firewarden | nearby Fire → emit Water; twelve successful pulses |
 
+## U33–U45: kinetic shooters and wands (BS-001, 2026-11-11)
+
+**Current experimental source, PR #561 stack:** thirteen kinetic usables are
+appended after U32 (earlier indices keep their meaning). They are tools whose
+operation is `kinetic`; their definitions live in the shared catalogue
+`godot/scripts/kinetic_usables.gd`, which the workbench flyer ports (Q/E/S on a
+piloted flyer, kinetic-lab) use too.
+
+- Shooters (U33–U39): `sand_blaster`, `gravel_shotgun`, `stone_slug`,
+  `water_cannon`, `oil_sprayer`, `lava_spitter`, `acid_mister`. Water goes out
+  as BW-001 ballistic parcels; every other material as BS-001 flying cells.
+- Wands (U40–U45): `blast_glove`, `shovel_gauntlet`, `vortex_lance`,
+  `shockwave_stomp`, `gust_fan`, `geyser_rod`. They apply a kinetic mask
+  (shape × pattern × field) at their reach and launch the cells it covers.
+
+Every shot goes through the native ballistic owners and never paints cells
+directly. **Gap:** F5 articulated actors run only in the plain default world,
+whose frozen legacy identity has no ballistic owners, so in F5 these usables
+currently refuse (`kinetic_disabled`/`kinetic_nothing`, zero changed cells).
+They fire on workbench flyer ports. Evidence: `test_workbench_flyer_ports.gd`
+31/0 and `test_f5_kinetic_usables.gd` 25/0 (refusal), Windows, Godot 4.7,
+2026-11-11.
+
 Ordinary processors have 16 successful batches, a 45-second lifetime and a
 0.35-second cadence; deployment costs 18 actor equipment charge. Firewarden has
 12 successful pulses. Catalysts are sensed within a 7×7 square and are not
