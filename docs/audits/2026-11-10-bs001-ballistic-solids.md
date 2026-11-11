@@ -110,6 +110,31 @@ through Oil). kinetic-lab now has an Oil layer (Gust) and a walled Lava basin
 cells, Pepper 14 Lava; Sand and Oil populations and both native ledgers exact.
 liquid-lab and reservoir-lab pass on the same library. Publication request 3.
 
+## Default-on and F5 kinetic usables — 2026-11-11
+
+Owner decisions on 2026-11-11: ballistic Water and solids on in every
+non-workbench World; the default-demo preparation check keeps its cell-for-cell
+terrain comparisons and drops its two stored physical-hash comparisons (which
+encode which owners are enabled, not terrain); the BS-001 material-source
+transition record was approved.
+
+- Source: PR #561 head after `862da5d1`, runtimes published by
+  `bs001-runtime-publication.yml` request 7. Windows 11, Godot 4.7, local
+  `rebuild_and_test.sh` per test (600 s timeout).
+- Results: 87/88 Godot tests passed across liquid, microscenario, level, LCB,
+  PF, physical actor, usable, native, worker and workbench suites; tests that
+  asserted hash/CYPS formats 2/3 now expect 4.
+  `test_ballistic_default_old_snapshots.gd` loads a format-2 snapshot and an
+  old-World level save into the ballistic starting World cell-for-cell, and
+  checks every in-flight tick advances the presentation revision (the redraw
+  freeze fix). `test_f5_kinetic_usables.gd` spawns an F5 actor holding the
+  panel pick and fires the gravel shotgun and water cannon as native ballistic
+  cells.
+- The one failure, `test_workbench_liquid_edges.gd`, also failed at
+  `60c096a6` (before these changes): with Details open the toolbar outgrew a
+  1080-pixel window and its top row left the screen. Details now scrolls inside
+  a 300-pixel area.
+
 ## Gaps
 
 - Hosted Ready-PR Native/GDExtension gates run only once the PR is Ready.

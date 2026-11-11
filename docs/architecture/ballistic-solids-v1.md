@@ -2,17 +2,29 @@
 title: Ballistic solids (BS-001, experimental)
 status: Current
 document-kind: reference
-scope: Draft-branch BS-001 ballistic_solids_v1 native owner for ballistic solid/powder cells; admission, ownership, landing, body impulse, accounting, identity/persistence, capacity, workbench options and equipment; not on main, no default changed
+scope: Draft-branch BS-001 ballistic_solids_v1 native owner for ballistic solid/powder cells; admission, ownership, landing, body impulse, accounting, identity/persistence, capacity, workbench options and equipment; not on main; on by default outside the workbench since 2026-11-11
 canonical-for: [ballistic-solids-v1]
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 related-documents: [ballistic-water-v1.md, rigid-body-and-cellular-coupling.md, ../systems/workbench-liquid-equipment.md, ../audits/2026-11-10-bs001-ballistic-solids.md]
 ---
 
 # Ballistic solids (BS-001, experimental)
 
 **Status:** implemented on Draft branch `feat/ballistic-solids-20261110`, stacked
-on the #361 equipment branch; **not on main**. Opt-in per World. A World that does
-not enable it keeps its hash, persistence bytes, ledger and behaviour. Evidence:
+on the #361 equipment branch; **not on main**. A World without the owner (the
+workbench with its toggle off, or a diagnostic fixture) keeps its hash,
+persistence bytes, ledger and behaviour.
+
+**Default since 2026-11-11 (owner decision, PR #561):** every non-workbench
+World (the starting World and every prepared liquid setting) is built with
+ballistic Water and ballistic solids enabled at default capacities; the shared
+workbench keeps its explicit toggles. Idle owners change no cell. Those Worlds
+report physical hash and continuation-snapshot (CYPS) format 4 (5 with the
+PF-C2048 gas option) instead of 2/3. Level saves are unchanged and older
+format-2 snapshots still load; the presentation revision advances while
+anything is in flight so it is redrawn.
+
+Evidence:
 the [dated BS-001 record](../audits/2026-11-10-bs001-ballistic-solids.md).
 
 ## Why
@@ -85,7 +97,7 @@ before. Thermal state is not carried in flight (the landing cell keeps its own).
 
 ## Workbench options and equipment
 
-Construction options (shared workbench only): `workbench_ballistic_solids`
+Outside the workbench both owners are always on (see Status). Workbench construction options: `workbench_ballistic_solids`
 (bool, needs `workbench_ballistic`), `workbench_ballistic_capacity` and
 `workbench_solids_capacity` (1–65536; the spray panel's **Drop cap** / **Solid cap**,
 default 4096). Runtime: **Hit force ×** multiplies the droplet gain for both Water
@@ -123,7 +135,7 @@ indefinitely; density exchange then settles it.
 
 ## Limits
 
-- Opt-in and experimental; no default World uses it.
+- Experimental; on by default outside the workbench (see Status), toggled in the workbench.
 - Bounded serial pass; cost grows with live solids (measured in the dated record).
 - Ballistic solids do not collide with each other or with ballistic Water parcels.
 - Structural solids such as Stone land where they stop and do not slump, so

@@ -12,7 +12,11 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Ballistic solids and solids equipment (BS-001) — 2026-11-10
 
-**Draft branch stacked on #361, not on main; no default changed.** An opt-in native
+**Draft branch stacked on #361, not on main.** Since 2026-11-11 the native
+ballistic Water and solids owners are **on by default in every non-workbench
+World** (owner decision; hash/snapshot format 4, level saves unchanged, older
+snapshots load), and 13 kinetic shooters/wands (U33–U45) fire from F5 actors and
+workbench flyer ports. The native
 [ballistic solids owner](../architecture/ballistic-solids-v1.md) lets powder and
 breakable solid cells fly, hit bodies and land (settling on liquid surfaces, then
 sinking), with exact cell accounting, hash/CYPS coverage and 1/4-worker parity.

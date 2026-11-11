@@ -37,6 +37,10 @@ var _fields := {}
 var _position := []
 var _extent := []
 var _details := VBoxContainer.new()
+# Details scrolls inside a capped height so the toolbar rows above it never
+# leave the top of the window (the toolbar grew with the equipment rows).
+var _details_scroll := ScrollContainer.new()
+const DETAILS_MAX_HEIGHT := 300
 var _liquids: CyberLiquidComparisonPanel
 var _detail_label := Label.new()
 var _name := LineEdit.new()
@@ -168,7 +172,12 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	row.add_child(_fire)
 	water_spray.build(host,self,_row,entered_position)
 	equipment.build(host,self,_row,entered_position)
-	add_child(_details)
+	_details_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_details_scroll.custom_minimum_size.y = DETAILS_MAX_HEIGHT
+	_details_scroll.hide()
+	add_child(_details_scroll)
+	_details.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_details_scroll.add_child(_details)
 	_details.visibility_changed.connect(_details_visibility_changed)
 	_details.hide()
 	row = _row(_details)
@@ -195,6 +204,10 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_detail_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_details.add_child(_detail_label)
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	# A long receipt must not grow the toolbar off the top of the window; the
+	# full status stays readable in the tooltip.
+	_status.max_lines_visible = 2
+	_status.mouse_filter = Control.MOUSE_FILTER_PASS
 	add_child(_status)
 	DisplayServer.window_set_title("CyberSand · Development workbench")
 	_processor_label = "%s · %d logical CPUs" % [OS.get_processor_name(),OS.get_processor_count()]
@@ -456,6 +469,7 @@ func _water_identity(context: Dictionary) -> String:
 
 
 func _details_visibility_changed() -> void:
+	_details_scroll.visible = _details.visible
 	if is_instance_valid(host):
 		host.simulation_worker.set_worker_participation_sampling(_details.is_visible_in_tree())
 
@@ -939,6 +953,7 @@ func _process(_delta: float) -> void:
 	_status.text = "%s · cell %s · %s · %s   |   source %d inserted / %d blocked" % [
 		state,cursor,str(applied.get("extent","")),reason,int(source.get("inserted",0)),int(source.get("blocked",0))]
 	_status.text += " · granular %s · active Water %s" % [gcr.get("response","pending"),_water_identity(context)]
+	_status.tooltip_text = _status.text
 	water_spray.refresh(context)
 	equipment.refresh(context)
 	if _details.visible:
