@@ -88,7 +88,7 @@ class Runner:
         self.env["XDG_DATA_HOME"] = str(self.evidence / "userdata")
         self.env["WB_ART_EVIDENCE_DIR"] = str(self.evidence / "art-frames")
 
-    def execute(self, label, command, *, env=None, marker=None, timeout=1800):
+    def execute(self, label, command, *, env=None, marker=None, timeout=1800, validate=None):
         log = self.evidence / f"{label}.log"
         effective_env = dict(self.env, **(env or {}))
         receipt = {"label": label, "command": command}
@@ -104,6 +104,8 @@ class Runner:
                 raise RuntimeError(f"{label} failed; retained log: {log}")
             if marker:
                 receipt["completion"] = completion(text, marker)
+            if validate:
+                receipt["completion"] = validate()
             receipt["status"] = "passed"
             print(f"PASS {label}: {receipt.get('completion', {})}", flush=True)
             return text
@@ -287,6 +289,28 @@ def installed(args):
             combined_authoring(runner, project, "installed-combined")
 
 
+def final_graphical_result(output: Path) -> dict:
+    """Require the retained graphical fixture's own complete native evidence."""
+    log = (output / "godot.log").read_text(encoding="utf-8", errors="replace")
+    if ERRORS.search(log):
+        raise RuntimeError("Final graphical fixture contains a script or resource error")
+    result = json.loads((output / "smoke-result.json").read_text(encoding="utf-8"))
+    checks = result.get("checks")
+    if (not isinstance(checks, list) or not checks
+            or any(not isinstance(row, dict) or row.get("ok") is not True for row in checks)
+            or result.get("failures") != 0
+            or not isinstance(result.get("frames"), int) or result["frames"] < 1
+            or result.get("native_backend") != "CyberNativeCellWorld"):
+        raise RuntimeError("Final graphical fixture lacks successful checks and native completion")
+    frames = ("00-blank", "01-incremental", "02-incremental", "03-stopped", "04-after-stop",
+              "05-local-followup", "06-world-followup", "07-final")
+    for name in [stem+suffix+".png" for stem in frames for suffix in ("", "-canvas")] + ["native-materials.png"]:
+        if not (output / name).read_bytes().startswith(b"\x89PNG\r\n\x1a\n"):
+            raise RuntimeError("Final graphical fixture lacks an original framebuffer: "+name)
+    return {"checks": len(checks), "failures": 0, "frames": result["frames"],
+            "native_backend": result["native_backend"], "provider": "scripted loopback HTTP; no inference"}
+
+
 def regressions(args):
     runner = Runner(args)
     project = args.project.resolve()
@@ -299,6 +323,10 @@ def regressions(args):
     runner.execute("art-http-fixtures-graphical", [sys.executable, str(ROOT / "tools/test_art_provider_transport.py"),
                    "--godot", str(args.godot.resolve()), "--project", str(project),
                    "--output", str(runner.evidence / "http-graphical"), "--graphical"])
+    final_frames = runner.evidence / "art-final-graphical"
+    runner.execute("art-final-graphical-mocked", [sys.executable, str(ROOT / "tools/test_art_final_graphical.py"),
+                   "--godot", str(args.godot.resolve()), "--root", str(ROOT), "--output", str(final_frames)],
+                   validate=lambda: final_graphical_result(final_frames))
     if not args.paint:
         return
     runner.godot(project, "native-edit-ordering", "test_workbench_edit_ordering", "EDIT_ORDER_RESULT")

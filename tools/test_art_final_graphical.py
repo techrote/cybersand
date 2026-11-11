@@ -31,9 +31,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
   raw=json.dumps(packet).encode();self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(raw)));self.end_headers();self.wfile.write(raw)
 s=http.server.ThreadingHTTPServer(('127.0.0.1',0),Handler);threading.Thread(target=s.serve_forever,daemon=True).start()
 env=dict(os.environ,APPDATA=str(a.output.resolve()/'isolated-appdata'),XDG_DATA_HOME=str(a.output.resolve()/'isolated-appdata'),WB_ART_TEST_ENDPOINT=f'http://127.0.0.1:{s.server_port}/v1',WB_ART_EVIDENCE_DIR=str(a.output.resolve()))
+render_args=['--rendering-driver','opengl3_angle'] if os.name=='nt' else ['--display-driver','x11']
 try:
  with (a.output/'godot.log').open('w',encoding='utf8') as log:
-  run=subprocess.run([a.godot,'--path',str(a.root/'godot'),'--rendering-method','gl_compatibility','--position','0,0','--script','res://tests/run_art_final_graphical.gd'],env=env,stdout=log,stderr=subprocess.STDOUT,timeout=240)
+  run=subprocess.run([a.godot,'--path',str(a.root/'godot'),'--rendering-method','gl_compatibility']+render_args+['--position','0,0','--script','res://tests/run_art_final_graphical.gd'],env=env,stdout=log,stderr=subprocess.STDOUT,timeout=240)
 finally:s.shutdown();s.server_close()
 (a.output/'fixture-requests.json').write_text(json.dumps(requests,indent=2))
 assert len(requests)==4,('request count',len(requests))
