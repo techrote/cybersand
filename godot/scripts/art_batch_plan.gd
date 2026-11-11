@@ -95,13 +95,26 @@ func make_line(op: Dictionary) -> void:
 		if twice>=dy: e+=dy; x+=sx
 		if twice<=dx: e+=dx; y+=sy
 
+var pending := PackedInt32Array()
+var pending_material := -1
+
+func exhausted() -> bool:
+	return index >= operations.size() and pending.is_empty()
+
 func next_chunk(capacity: int = 4096) -> Dictionary:
-	var points := PackedInt32Array()
-	var material := -1
+	# Budget candidates, including misses. A thin diagonal can reject nearly
+	# its entire bounding box before it fills one native chunk.
+	var deadline := Time.get_ticks_usec()+2500
+	var visited := 0
+	var points := pending
+	var material := pending_material
 	while index < operations.size() and points.size()/2 < capacity:
 		var op: Dictionary = operations[index]
 		if not points.is_empty() and op.material != material: break
 		material = op.material
+		if op.shape == "airbrush" and op.density == 0.0:
+			index += 1
+			continue
 		var total := 0
 		var width := 0
 		match op.shape:
@@ -132,13 +145,35 @@ func next_chunk(capacity: int = 4096) -> Dictionary:
 				stroke_end += offset
 			radius_squared = pow(op.width*0.5,2)
 		while cursor < total and points.size()/2 < capacity:
+			if (visited & 63) == 0 and visited > 0 and Time.get_ticks_usec() >= deadline:
+				pending = points
+				pending_material = material
+				return {}
+			visited += 1
 			var point: Vector2i
 			if op.shape == "pixels": point = Vector2i(int(op.points[cursor][0]),int(op.points[cursor][1]))
 			elif op.shape == "line":
 				if op.width == 1:
 					point = line[cursor]
 				else:
+					# Limit each row to the segment's conservative radius envelope.
+					if cursor % width == 0:
+						var row_y: int = op.stroke_bounds.position.y + cursor/width
+						var radius: float = op.width*0.5
+						var dy := stroke_end.y-stroke_start.y
+						if dy != 0:
+							var a := clampf((row_y-radius-stroke_start.y)/dy,0,1)
+							var b := clampf((row_y+radius-stroke_start.y)/dy,0,1)
+							var left := minf(lerpf(stroke_start.x,stroke_end.x,a),lerpf(stroke_start.x,stroke_end.x,b))
+							cursor += clampi(floori(left-radius)-op.stroke_bounds.position.x,0,width-1)
 					point = op.stroke_bounds.position+Vector2i(cursor%width,cursor/width)
+					var dy := stroke_end.y-stroke_start.y
+					if dy != 0:
+						var radius: float = op.width*0.5
+						var t := clampf((point.y+radius*signf((stroke_end.x-stroke_start.x)*dy)-stroke_start.y)/dy,0,1)
+						if point.x > ceilf(lerpf(stroke_start.x,stroke_end.x,t)+radius):
+							cursor += width-cursor%width
+							continue
 					var closest := stroke_start
 					if stroke_start != stroke_end:
 						closest = Geometry2D.get_closest_point_to_segment(Vector2(point),stroke_start,stroke_end)
@@ -162,5 +197,7 @@ func next_chunk(capacity: int = 4096) -> Dictionary:
 					if sample >= op.density*falloff: continue
 			points.append(point.x);points.append(point.y)
 		if cursor == total: index+=1;cursor=0;line.clear()
+	pending = PackedInt32Array()
 	if points.is_empty(): return {}
 	return {"points":points,"material":material}
+

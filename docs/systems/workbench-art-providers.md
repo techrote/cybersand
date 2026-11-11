@@ -260,3 +260,5 @@ and airbrush stamps (`x`, `y`, `radius`, optional `density` and `hardness` from
 controls edge falloff, and repeating a seed repeats the pattern relative to the
 stamp center. All three use the same native edit batching and protection as the
 existing shapes.
+
+Desktop rasterization yields between frames even when a sparse shape produces no native chunk yet. Stop discards buffered cells that have not been submitted to the native owner.

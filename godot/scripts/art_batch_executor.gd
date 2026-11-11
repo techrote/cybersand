@@ -17,6 +17,7 @@ var record: Dictionary = {}
 var manual: Array = []
 var delivering_manual := false
 var last_receipt: Dictionary = {}
+var raster_frame := -1
 
 func submit(operations: Variant, scope: Rect2i, protection: Array, allowed: Array = [0,58]) -> Dictionary:
 	poll()
@@ -115,8 +116,14 @@ func poll() -> void:
 			result.status = "partial" if result.checked>0 else "cancelled"
 		return
 	if waiting: return
+	var frame := Engine.get_process_frames()
+	if raster_frame == frame: return
+	raster_frame = frame
 	var chunk: Dictionary = plan.next_chunk(worker.MAX_BRUSH_FOOTPRINT_CELLS)
 	if chunk.is_empty():
+		if not plan.exhausted():
+			result.status = "rasterizing"
+			return
 		result.status = "completed"
 		active = false
 		return

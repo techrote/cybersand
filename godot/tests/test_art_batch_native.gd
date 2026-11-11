@@ -91,6 +91,18 @@ func run() -> void:
 			if cell(1570+dx,1507+dy)!=cell(1590+dx,1507+dy): same_pattern = false
 			if cell(1570+dx,1507+dy)==58: stipples += 1
 	check(same_pattern and stipples>1 and stipples<149,"seeded airbrush repeats a partial disc at another position")
+	var sparse := preload("res://scripts/art_batch_plan.gd").new()
+	check(sparse.configure([{"shape":"polygon","points":[[0,0],[2047,2046],[2047,2047]],"material":58}],Rect2i(0,0,2048,2048)),"sparse diagonal polygon admitted")
+	var slice_start := Time.get_ticks_usec()
+	var first_slice: Dictionary = sparse.next_chunk()
+	var slice_us := Time.get_ticks_usec()-slice_start
+	print("ART_RASTER_SLICE_US ",slice_us)
+	check(first_slice.is_empty() and not sparse.exhausted() and slice_us<100000,"sparse polygon yields before filling a native chunk")
+	submit([{"shape":"polygon","points":[[0,0],[2047,2046],[2047,2047]],"material":58}])
+	await until(func(): return art.result.status=="rasterizing","native executor stays active while raster yields")
+	art.stop()
+	await until(func(): return not art.active,"Stop cancels pending raster work")
+	check(art.result.checked==0,"Stop does not submit buffered raster cells")
 	panel.provider.requested_model = ""
 	for i: int in range(16): panel.conversation.append({"role":"user","content":"turn %d" % i})
 	panel.context_mode.select(0)
@@ -164,7 +176,9 @@ func run() -> void:
 	check(art.result.checked==0 and cell(300,300)==0,"stopped unstarted batch writes nothing")
 	submit([{"shape":"rectangle","x0":300,"y0":300,"x1":700,"y1":700,"material":58}])
 	wb.art_batches.set_process(false)
-	art.poll()
+	await until(func():
+		if not art.waiting: art.poll()
+		return art.waiting,"one native chunk queued")
 	await until(func(): return main.simulation_worker.art_state().receipt_ready,"one native chunk actually executed")
 	art.stop()
 	wb.art_batches.set_process(true)
@@ -185,7 +199,9 @@ func run() -> void:
 	# Replacement invalidates pending art and cannot paint the new World.
 	submit([{"shape":"rectangle","x0":900,"y0":900,"x1":1200,"y1":1200,"material":58}])
 	wb.art_batches.set_process(false)
-	art.poll()
+	await until(func():
+		if not art.waiting: art.poll()
+		return art.waiting,"one native chunk queued")
 	await until(func(): return main.simulation_worker.art_state().receipt_ready,"old native chunk ready before replacement")
 	check(wb.new_canvas(),"replace canvas with pending completion")
 	wb.art_batches.set_process(true)
@@ -214,7 +230,9 @@ func run() -> void:
 	# Manual paint between chunks uses the same ordered recipe and survives reopen.
 	wb.art_batches.set_process(false)
 	submit([{"shape":"rectangle","x0":500,"y0":500,"x1":599,"y1":599,"material":58}])
-	art.poll()
+	await until(func():
+		if not art.waiting: art.poll()
+		return art.waiting,"one native chunk queued")
 	await until(func(): return main.simulation_worker.art_state().receipt_ready,"chunk ready for manual intervention")
 	check(wb.paint(Vector2i(510,510),0),"human erase admitted alongside active batch")
 	wb.art_batches.set_process(true)
