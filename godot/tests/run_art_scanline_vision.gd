@@ -30,6 +30,13 @@ func run() -> void:
 	panel.tokens.value = 4096
 	panel.fields[2].value = 64
 	panel.fields[3].value = 128
+	var serial: int = panel.provider.serial
+	panel.input.text = "Do not apply this cancelled observation."
+	panel.send_prompt()
+	var started_capture: bool = panel.capturing
+	panel.stop.pressed.emit()
+	for frame: int in range(3): await process_frame
+	var capture_stopped: bool = started_capture and not panel.capturing and not panel.provider.active and panel.provider.serial==serial+1
 	panel.input.text = 'Inspect the canvas. Add a short wall with one row at y=12 and one span at x=10, length 4, material 58. Return only a complete JSON array with one row object. Close the outer array.'
 	panel.send_prompt()
 	deadline = Time.get_ticks_msec()+120000
@@ -45,6 +52,6 @@ func run() -> void:
 		await process_frame
 	await process_frame
 	var revised: bool = host.image.get_pixel(10,12).r8 == 0 and host.image.get_pixel(11,12).r8 == 58
-	print("SCANLINE_VISION ",JSON.stringify({"first":first,"revised":revised,"error":panel.input_error,"log":ProjectSettings.globalize_path(panel.provider.log_path)}))
+	print("SCANLINE_VISION ",JSON.stringify({"capture_stopped":capture_stopped,"first":first,"revised":revised,"error":panel.input_error,"log":ProjectSettings.globalize_path(panel.provider.log_path)}))
 	var observed: bool = panel.provider.traffic.count("\"kind\":\"observation\"")==2
-	quit(0 if first and revised and observed else 1)
+	quit(0 if capture_stopped and first and revised and observed else 1)

@@ -176,13 +176,15 @@ are skipped within a run. Native chunk receipts remain in local traffic. Guidanc
 opens the editable instructions for the selected mode.
 
 Scanline takes rows with local y, optional repeat and scale, and spans in
-[x,length,material] order. Omitted spans preserve cells. An explicit zero
+[x,length,material] order or named objects with those fields. Omitted spans preserve cells. An explicit zero
 material erases. The normal executor applies the resulting ordered rectangles. Consecutive
 shapes of the same material share native chunks up to the existing cell
 limit. Material changes preserve the original draw and erase order.
 
 Gap s sets an optional request interval. HTTP 429 with numeric Retry-After
-paces subsequent requests to that endpoint. Traffic supports visible filtering
+paces subsequent requests to that endpoint. OpenAI request, token and project
+token reset durations also pace requests when their bucket reports exhaustion.
+Known billing and spending quota failures require user action. Traffic supports visible filtering
 and full disk export. Unknown cost remains unknown.
 
 On 2026-11-10 the Windows preview passed 113 native checks and 43 checks with
@@ -203,8 +205,7 @@ The workbench restores the last conversation from saved traffic into a
 separate log file on reopen. Full resends historical image bytes when Image
 is enabled and identifies omitted images otherwise. Spend optionally stops
 subsequent requests at a user-priced
-estimate from reported tokens. One response can exceed the ceiling. Provider-
-specific quota-reset headers beyond numeric Retry-After are pending.
+estimate from reported tokens. One response can exceed the ceiling. Rate waits use reported provider timing.
 
 ## Offset-area repair
 
@@ -219,3 +220,21 @@ The NVIDIA model dropdown includes Qwen3 Next Instruct, Qwen2.5 Coder,
 Nemotron Lightning and Nemotron Super VL. The two Nemotron presets disable
 thinking for direct drawing to leave output tokens for the drawing packet.
 These presets do not restrict manual model IDs.
+
+
+### 2026-11-11 scanline qualification
+
+The Windows native session probe, run with the local wb-art-vision model,
+completed twelve 480-cell scanline turns on one canvas in 58.4 seconds. Native
+readback confirmed 5,760 changed cells across twelve chunks. The export kept
+all twelve native receipts and the initial inference cancellation. The first
+attempt exposed a model reply using named span fields, now supported alongside
+the array form. A separate inference continued through injected log I/O failure.
+
+The same probe stopped an admitted large stencil after the first 4,096-cell
+receipt and confirmed that the next row was untouched. It also stopped during
+inference and a pacing wait. The graphical Linux probe stopped during canvas
+capture before dispatch, then drew and revised a stencil with the live local
+vision model. The OpenAI HTTP fixture verified a successful response with zero
+remaining requests and a 62.5-second reset, and verified that a billing quota
+error does not retry. These provider header cases use keyless fixtures.

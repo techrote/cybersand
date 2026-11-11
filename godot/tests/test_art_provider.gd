@@ -45,6 +45,8 @@ func run() -> void:
 	var archived := FileAccess.get_file_as_string(p.log_path)
 	check(archived.count('"kind":"retention_fixture"')==300 and archived.contains('"index":0') and archived.contains('"index":299'),"full traffic retains beginning and end beyond 256 events")
 	if not p.log_path.is_empty(): DirAccess.remove_absolute(p.log_path)
+	check(is_equal_approx(P.quota_reset_seconds(PackedStringArray(["x-ratelimit-remaining-requests: 0","x-ratelimit-reset-requests: 1m2.5s","x-ratelimit-remaining-tokens: 1","x-ratelimit-reset-tokens: 3h"])),62.5),"pace exhausted quota only")
+	check(P.quota_reset_seconds(PackedStringArray(["x-ratelimit-remaining-project-tokens: 0","x-ratelimit-reset-project-tokens: nonsense"]))==0,"ignore malformed quota reset")
 	print("ART_PROVIDER_KEYLESS ",checks," checks, ",failures," failures")
 	p.queue_free()
 	await process_frame

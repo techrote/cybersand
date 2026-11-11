@@ -16,15 +16,27 @@ class Handler(http.server.BaseHTTPRequestHandler):
             assert data["messages"][-1]["role"] == "user"
         model = data["model"]
         if model == "slow": time.sleep(2)
-        if model == "rate":
-            self.send_response(429); self.send_header("Retry-After","2"); self.end_headers()
-            self.wfile.write(b'{"error":{"message":"rate limit; dummy-key-123"}}'); return
+        if model in ("rate","hard-quota"):
+            code = "insufficient_quota" if model == "hard-quota" else "rate_limit_error"
+            raw = json.dumps({"error":{"code":code,"message":"rate limit; dummy-key-123"}}).encode()
+            self.send_response(429)
+            self.send_header("Retry-After","2")
+            self.send_header("Content-Length",str(len(raw)))
+            self.end_headers()
+            self.wfile.write(raw)
+            return
         text = '[{"shape":"rectangle","x0":10,"y0":10,"x1":12,"y1":12,"material":58}]'
         if self.path.endswith("/responses"):
             packet = {"model":"deployment-alias","status":"completed","output":[{"content":[{"type":"output_text","text":text}]}],"usage":{"input_tokens":111,"output_tokens":32}}
         else: packet = {"model":"deployment-alias","choices":[{"message":{"content":text},"finish_reason":"stop"}],"usage":{"prompt_tokens":111,"completion_tokens":32}}
         raw = json.dumps(packet).encode()
-        self.send_response(200); self.send_header("Content-Type","application/json"); self.send_header("Content-Length",str(len(raw))); self.end_headers()
+        self.send_response(200)
+        self.send_header("Content-Type","application/json")
+        self.send_header("Content-Length",str(len(raw)))
+        if model == "reset":
+            self.send_header("x-ratelimit-remaining-requests","0")
+            self.send_header("x-ratelimit-reset-requests","1m2.5s")
+        self.end_headers()
         try: self.wfile.write(raw)
         except (BrokenPipeError,ConnectionResetError): pass
 

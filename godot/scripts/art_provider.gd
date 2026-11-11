@@ -182,6 +182,28 @@ func cancel(reason: String = "Human Stop") -> void:
 	if active: log_event("cancelled",reason)
 	active = false
 
+static func quota_reset_seconds(headers: PackedStringArray) -> float:
+	var values: Dictionary = {}
+	for header: String in headers:
+		var separator := header.find(":")
+		if separator > 0:
+			values[header.left(separator).to_lower()] = header.substr(separator+1).strip_edges()
+	var duration := RegEx.new()
+	duration.compile("([0-9]+(?:[.][0-9]+)?)(ms|s|m|h|d)")
+	var wait := 0.0
+	for bucket: String in ["requests","tokens","project-tokens"]:
+		var remaining: String = values.get("x-ratelimit-remaining-"+bucket,"")
+		if not remaining.is_valid_int() or remaining.to_int() > 0: continue
+		var reset: String = values.get("x-ratelimit-reset-"+bucket,"")
+		var end := 0
+		var seconds := 0.0
+		for part: RegExMatch in duration.search_all(reset):
+			if part.get_start() != end: break
+			end = part.get_end()
+			seconds += part.get_string(1).to_float()*float({"ms":0.001,"s":1,"m":60,"h":3600,"d":86400}[part.get_string(2)])
+		if end == reset.length() and is_finite(seconds): wait = maxf(wait,seconds)
+	return wait
+
 func send(provider: String, endpoint: String, model: String, key: String, prompt: String, instructions: String, tokens: int, seconds: float, png: String = "", context: Array = []) -> String:
 	if active: return "A model request is already active."
 	if model.strip_edges().is_empty(): return "Enter a model ID (discovery is optional)."
@@ -217,6 +239,13 @@ func send(provider: String, endpoint: String, model: String, key: String, prompt
 		var parser := JSON.new()
 		var valid_json := parser.parse(raw)==OK
 		var data: Dictionary = parser.data if valid_json and parser.data is Dictionary else {}
+		if provider == "OpenAI" and (code == 429 or (code >= 200 and code < 300)):
+			var details: Variant = data.get("error",{})
+			var error_code := str(details.get("code","")) if details is Dictionary else ""
+			if error_code in ["insufficient_quota","credit_balance_exhausted","organization_spend_limit_exceeded","project_spend_limit_exceeded"]:
+				retry_after_seconds = 0
+			else:
+				retry_after_seconds = maxf(retry_after_seconds,quota_reset_seconds(headers))
 		usage = data.get("usage",{}) if data.get("usage") is Dictionary else {}
 		returned_model = str(data.get("model","unknown"))
 		log_event("usage",{"requested_model":requested_model,"returned_model":returned_model,"usage":usage,"cost":null})

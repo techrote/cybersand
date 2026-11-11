@@ -636,14 +636,14 @@ func provider_finished(_id: int, text: String, _response: Dictionary, error: Str
 		remaining_turns = 0
 		spend_status = "Provider usage unavailable; spending ceiling cannot be tracked"
 		provider.log_event("run_limit",spend_status)
+	if provider.retry_after_seconds > 0:
+		provider_wait_ms = Time.get_ticks_msec()+int(provider.retry_after_seconds*1000)
+		provider_wait_url = request_url
+		provider.log_event("provider_rate_wait",{"seconds":provider.retry_after_seconds})
 	if not error.is_empty():
-		if provider.retry_after_seconds > 0:
-			provider_wait_ms = Time.get_ticks_msec()+int(provider.retry_after_seconds*1000)
-			provider_wait_url = request_url
-			provider.log_event("provider_rate_wait",{"seconds":provider.retry_after_seconds})
-			if remaining_turns != 0:
-				send_next.call_deferred(ui_epoch)
-				return
+		if provider.retry_after_seconds > 0 and remaining_turns != 0:
+			send_next.call_deferred(ui_epoch)
+			return
 		input_error = error
 		if error.containsn("context_length") or error.containsn("context window"):
 			input_error = "Provider context limit reached. Choose Compacted or None and resend. "+error
@@ -689,7 +689,10 @@ func stencil_operations(rows_data: Array) -> Array:
 		if y < 0 or repeat < 1 or scale < 1: continue
 		var top := int(y)*int(scale)
 		var bottom := (int(y)+int(repeat))*int(scale)-1
-		for span: Variant in row.spans:
+		for raw_span: Variant in row.spans:
+			var span: Variant = raw_span
+			if raw_span is Dictionary:
+				span = [raw_span.get("x"),raw_span.get("length"),raw_span.get("material")]
 			if not span is Array or span.size() != 3: continue
 			if not ArtPlan.integer(span[0]) or not ArtPlan.integer(span[1]) or span[0] < 0 or span[1] < 1: continue
 			var material: Variant = span[2]

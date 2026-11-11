@@ -20,6 +20,12 @@ func run() -> void:
 	await wait_done()
 	check(error.contains("429") and not error.contains("dummy-key-123"),"rate error actionable and credential redacted")
 	check(p.traffic.contains("Retry-After") and not p.traffic.contains("dummy-key-123"),"rate feedback retained without credential")
+	p.send("OpenAI",base,"reset","dummy-key-123","hello","rules",4096,5)
+	await wait_done()
+	check(error.is_empty() and is_equal_approx(p.retry_after_seconds,62.5),"successful response with exhausted quota supplies next-request delay")
+	p.send("OpenAI",base,"hard-quota","dummy-key-123","hello","rules",4096,5)
+	await wait_done()
+	check(error.contains("insufficient_quota") and p.retry_after_seconds==0,"billing quota refuses without auto-retry")
 	var count := completions
 	p.send("LM Studio",base,"slow","","hello","rules",4096,5)
 	p.cancel()
