@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
 canonical-for: [workbench-art-providers]
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 related-documents: [workbench-direct-art-batches.md, ../architecture/shared-workbench-authoring-data.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -19,6 +19,13 @@ No #531 controller, native defaults, prices, catalogs, credit gates or MCP are
 imported. Model prompt and Scanline send the current task, selected conversation
 context, drawing instructions, work area and optional canvas observation. Stored
 traffic remains separate from model context.
+
+The [integrated Draft candidate](../operations/wb-art-paint-integrated-candidate.md)
+preserves this complete interface and adds PAINT alongside it. Native authoring
+uses the repaired stored-material API and shared ordering; the provider protocol,
+model choices, conversation, diagnostics and image-observation controls remain
+owned here. The integrated workflow uses deterministic HTTP/provider fixtures;
+earlier genuine inference evidence below belongs to its original checkpoint.
 
 Open **Art batches**, choose **Model prompt**, provider, editable model ID and base
 URL. Endpoint/model, output allowance and timeout occupy two shared rows. Enter a
@@ -107,7 +114,8 @@ arbitrary secret the user invents; do not put unrelated credentials in prompts.
 
 ## Reproducible qualification and local setup
 
-Stage 2 uses unchanged current-main native libraries, not a fresh C++ rebuild.
+The original Stage-2 checkpoint used unchanged main native libraries. The
+integrated repair requires its newly built source-matched GDExtension.
 Real-native and cloud-adapter fixture tests are separate from genuine inference.
 
 ```powershell
@@ -123,8 +131,9 @@ python tools/test_art_provider_transport.py --godot C:/Godot47/Godot_v4.7-stable
 automatically discovered CI test. Set `WB_ART_TEST_ENDPOINT`, `WB_ART_TEST_MODEL`
 and `WB_ART_EVIDENCE_DIR` as needed. The transport tool supplies synthetic HTTP
 responses and separately runs real native drawing; it tests OpenAI/NVIDIA/local
-wire shapes, aliases, errors, timeout, Stop and replacement. Its Linux
-`--graphical` option also exercises actual UI image capture and retains PNGs.
+wire shapes, aliases, errors, timeout, Stop and replacement. Its
+`--graphical` option exercises actual UI image capture and retains PNGs on Linux
+X11 and Windows ANGLE.
 Only `test_art_provider.gd` is a normal keyless auto-discovered provider test.
 
 Genuine text qualification used LM Studio 0.4.26+4, selected llama.cpp NVIDIA CUDA

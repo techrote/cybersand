@@ -16,6 +16,12 @@ mounted, executable candidate, not accepted main. It retains the original
 canonical geometry implementation and reconciles it with accepted main
 `d4b18e7f06839b35c8f6a66195206da0f33c5fa3`, including merged GEN-007 / #542.
 
+The [integrated Draft candidate](../operations/wb-art-paint-integrated-candidate.md)
+preserves the full current #544 history at `c9b5084e` and combines it with repaired
+#560 agent authoring. Its live source and combined qualification supersede the
+earlier read-only cross-PR comparison below. Human material permissions, geometry,
+selection, previews, bounded execution and persistence remain intact.
+
 The [qualification record](../audits/paint001-2026-11-11/qualification.json) includes
 source hashes, original failures and actual logs. These are native framebuffer
 captures of the [mounted editor](../audits/paint001-2026-11-11/screenshots/paint001-mounted-editor.png),
@@ -85,9 +91,10 @@ policy. It preflights the entire operation before writing. Applying and capture
 advance in slices of at most 4,096 cells, with a 262,144-cell operation limit.
 Existing brush queue admission cannot interleave with these operations.
 
-Native `material_at` supplies material identity. Because it reports body masks as
-Wall, every covered rigid-body cell is refused before capture or editing; admitted
-reads therefore equal stored material IDs. This also works beyond the diagnostic
+Native `stored_material_at` supplies stored material identity in the integrated
+candidate. Every covered rigid-body cell is still explicitly refused before
+capture or editing; stored Empty beneath a body grants no editing permission.
+The source-matched API is required before any write. This also works beyond the diagnostic
 bridge's 1,024-coordinate limit. RG8 colour, Water dithering and ballistic overlays
 are never interpreted as stored IDs.
 

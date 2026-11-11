@@ -10,7 +10,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
-Direct art: [Stage 1 drawing](systems/workbench-direct-art-batches.md) and [Stage 2 provider connection](systems/workbench-art-providers.md), unmerged WB-ART-002 candidates.
+Current Draft: [integrated PAINT + agent Workbench](operations/wb-art-paint-integrated-candidate.md), including standalone generator profiles, native stored-material receipts and one edit ordering boundary. Component contracts: [direct drawing](systems/workbench-direct-art-batches.md), [provider connection/context/scanlines](systems/workbench-art-providers.md), and [full PAINT editor](systems/paint-editor-bounded-shapes.md).
 
 Shared authoring: [approved data contract and convergence plan](architecture/shared-workbench-authoring-data.md)
 separates Current generated-start saves from Planned material-only Flatten and

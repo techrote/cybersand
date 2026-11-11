@@ -12,7 +12,7 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## WB-ART-002 direct drawing — 2026-11-10
 
-**Unmerged Stage-1 candidate:** the [direct art batch contract](../systems/workbench-direct-art-batches.md) owns the fresh-main #559 drawing interface, native-sized streaming, actual completion, protection, Stop and save/reopen. #531 remains reference only. The [Stage-2 provider candidate](../systems/workbench-art-providers.md) adds OpenAI/NVIDIA/local one-shot requests and cancellation. Context/scanline stages remain Planned. Existing Setup format capacity still applies to Save.
+**Unmerged integrated candidate, 2026-11-11:** the [PAINT + agent runbook](../operations/wb-art-paint-integrated-candidate.md) records the preserved current #544/#560 heads, generator packaging repair, stored-material readback and one native edit/receipt boundary. The full multi-material PAINT editor and agent providers, conversation/context, scanlines, multiple turns and diagnostics are implemented together. Existing Setup/generated-start formats and PAINT capacity/recovery rules apply. Keep Draft; combined Windows/Linux qualification and owner acceptance remain distinct from earlier separate-branch passes. #531 remains reference only.
 
 
 ## EXPLORE-001 generated playable maps — 2026-11-08

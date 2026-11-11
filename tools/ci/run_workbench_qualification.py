@@ -26,6 +26,7 @@ import native_candidate_identity
 REOPEN_VARS = (
     "WB_GENERATOR_REOPEN", "WB_GENERATOR_EXPECT_MISSING", "PAINT_REOPEN",
     "PAINT_GENERATED_REOPEN", "CYBERSAND_PAINT_HISTORY_REOPEN", "WB_COMBINED_REOPEN",
+    "CYBERSAND_WORKBENCH_REOPEN",
 )
 ERRORS = re.compile(r"SCRIPT ERROR:|Parse Error:|Failed to load script|Failed loading resource:")
 
@@ -45,6 +46,8 @@ def completion(text: str, marker: str) -> dict:
         match = re.search(r"checks=(\d+)\s+failures=(\d+)", tail)
         if match is None:
             match = re.search(r"(\d+) checks, (\d+) failures", tail)
+        if match is None:
+            match = re.search(r"(\d+) assertions; (\d+) failures", tail)
         if match is None:
             raise RuntimeError(f"Malformed completion marker: {marker} {tail}")
         result = {"checks": int(match[1]), "failures": int(match[2])}
@@ -280,6 +283,8 @@ def regressions(args):
                    "--output", str(runner.evidence / "http-graphical"), "--graphical"])
     if not args.paint:
         return
+    runner.godot(project, "native-edit-ordering", "test_workbench_edit_ordering", "EDIT_ORDER_RESULT")
+    runner.godot(project, "combined-deferred-paint", "test_workbench_deferred_paint", "WB_DEFERRED_PAINT")
     for script, marker in (("shapes", "PAINT_EDITOR_SHAPES"), ("executor", "PAINT_EXECUTOR"), ("recovery", "PAINT_RECOVERY")):
         runner.godot(project, f"paint-{script}", f"test_paint_editor_{script}", marker)
     for workers in (1, 4):
@@ -293,6 +298,11 @@ def regressions(args):
         for phase in ("author", "reopen"):
             runner.godot(project, f"paint-{family}-{phase}", f"test_paint_editor_{family}", marker,
                          graphical=True, env={flag: "1" if phase == "reopen" else "0"})
+    runner.godot(project, "existing-workbench-input", "test_workbench_input", "WORKBENCH_INPUT")
+    runner.godot(project, "existing-worldgen-planes", "test_worldgen_planes", "GEN-005 plane adapter:")
+    for phase in ("author", "reopen"):
+        runner.godot(project, f"existing-canvas-{phase}", "test_workbench_canvas", "WORKBENCH_CANVAS",
+                     env={"CYBERSAND_WORKBENCH_REOPEN": "1" if phase == "reopen" else "0"})
     combined_authoring(runner, project, "source-combined")
 
 

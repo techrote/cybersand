@@ -2,9 +2,9 @@
 title: Direct art batches, WB-ART-002 Stage 1
 status: Current
 document-kind: contract
-scope: Unmerged desktop direct drawing candidate, native completion, Stop and authored-start persistence; inference is Planned
+scope: Unmerged desktop direct drawing candidate, stored-native completion, Stop, shared PAINT ordering and authored-start persistence
 canonical-for: [workbench-direct-art-batches]
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 related-documents: [../architecture/shared-workbench-authoring-data.md, ../reference/status-and-roadmap.md, ../operations/cybersand-codex-development-handover.md]
 ---
 
@@ -16,17 +16,19 @@ related-documents: [../architecture/shared-workbench-authoring-data.md, ../refer
 `codex/agent-art-workbench-v2`, based on main
 `d4b18e7f06839b35c8f6a66195206da0f33c5fa3` (includes #542).
 #531 is read-only reference; none of its controller/configuration modules is
-imported. Native C++ and physics/material defaults are unchanged. This is a
+imported. Physics/material defaults are unchanged. This is a
 small direct-drawing interface in the ordinary desktop Shared Workbench, not
-another World or editor. The [Stage-2 provider candidate](workbench-art-providers.md) now adds one-shot
-inference; persistent context and scanlines remain **Planned**.
+another World. The [provider candidate](workbench-art-providers.md) implements
+context, conversation, scanlines and multiple turns. The
+[integrated Draft candidate](../operations/wb-art-paint-integrated-candidate.md)
+preserves these features beside the complete PAINT editor, with a source-built
+native readback binding and shared mutation/receipt ordering.
 
 ### Repair checkpoint — 2026-11-11
 
 The owner-directed repair branch `codex/wb-art-repair-20261111` preserves #560
 head `e5bf2916` and its implemented context, scanline, multiple-turn, provider and
-diagnostic features. Those features are present in source despite the older
-Stage-2-only description above. The repair adds one native read-only binding,
+diagnostic features. The repair adds one native read-only binding,
 `stored_material_at`, backed by `World::stored_material`; physics, `World::get`,
 material IDs and defaults remain unchanged. It requires a rebuilt source-matched
 GDExtension and refuses before writing if that API is missing.
@@ -50,6 +52,13 @@ traffic event, with pending/admitted/refused human counts. `admitted` means queu
 not native-applied; the original legacy brush admission remains distinct from the
 later PAINT integration's confirmed completion path. The original brush radius
 and ordering are preserved.
+
+In the integrated branch, accepted deferred gestures use PAINT's existing
+planner, native executor and history recorder. The callback runs after recording;
+success, partial writes, planner cancellation, stale source, refusal and World
+replacement each complete the token explicitly. The next agent chunk waits for
+that result. Confirmed agent changes invalidate stale manual Undo/Redo, and a
+PAINT recovery hold also blocks agent drawing.
 
 Focused repair tests: `test_art_stored_material.gd` covers actual native workers
 1/4 and body masks over stored Empty/Wall/Hard Wall, with separately labelled
@@ -125,12 +134,14 @@ Only native-confirmed changed cells enter `Setup.edits`, coalesced into ordered
 horizontal/vertical rectangles. Save while art remains queued/executing asks the
 user to Stop or wait; it cannot serialize unseen pending work as applied. After
 Stop, Save/reopen includes the confirmed prefix and excludes the cancelled tail.
-The shared Setup-v2/generated-start format and existing `MAX_STAMPS`, `MAX_RUNS`
-and byte limits remain unchanged. An excessively fragmented authored start can
+The shared Setup-v2/generated-start format and byte limit remain unchanged.
+The integrated candidate retains PAINT's current `MAX_STAMPS`/`MAX_RUNS`
+capacity corrections. An excessively fragmented authored start can
 therefore draw successfully but fail Save with the existing explicit format
 error. No silent truncation, second save schema or material Flatten is introduced;
 #548 separately owns that successor. Save reconstructs authored start, not evolved
-physics state. Ordinary brush recording semantics outside art remain unchanged.
+physics state. The integrated manual editor uses PAINT's native-confirmed
+recording and recovery rules.
 
 ## Qualification and launch
 
