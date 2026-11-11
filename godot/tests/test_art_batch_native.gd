@@ -263,14 +263,17 @@ func run() -> void:
 		if not art.waiting: art.poll()
 		return art.waiting,"one native chunk queued")
 	await until(func(): return main.simulation_worker.art_state().receipt_ready,"chunk ready for manual intervention")
-	check(wb.paint(Vector2i(510,510),0),"human erase admitted alongside active batch")
+	# The first row is confirmed even when the timed raster flushes a short chunk.
+	check(wb.paint(Vector2i(510,500),0),"human erase admitted alongside active batch")
 	wb.art_batches.set_process(true)
 	await finish()
-	await until(func(): return cell(510,510)==0 and cell(599,599)==58,"human erase ordered between chunks")
+	check(int(art.result.get("human_applied",-1))==1 and int(art.result.get("human_refused",-1))==0
+		and int(art.result.get("human_pending",-1))==0,"human erase reports confirmed application with no refused or pending stroke")
+	await until(func(): return cell(510,500)==0 and cell(599,599)==58,"human erase ordered between chunks")
 	check(wb.save_setup(),"save mixed human and batch edits")
 	check(wb.load_setup(),"reopen mixed human and batch edits")
 	await until(installed,"mixed authored recipe installed")
-	await until(func(): return cell(510,510)==0 and cell(599,599)==58,"mixed recipe reproduces native order")
+	await until(func(): return cell(510,500)==0 and cell(599,599)==58,"mixed recipe reproduces native order")
 	var evidence := OS.get_environment("WB_ART_EVIDENCE_DIR")
 	if evidence.is_empty(): evidence = OS.get_environment("CYBERSAND_TEST_ARTIFACT_DIR")
 	if not evidence.is_empty() and DisplayServer.get_name()!="headless":
