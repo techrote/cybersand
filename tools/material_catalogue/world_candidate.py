@@ -178,15 +178,17 @@ def _build_and_execute(directory: Path, cxx: str, msvc: bool, scenario: dict,
                        material_id: int, sanitize: bool) -> tuple[dict, dict]:
     _check_cancelled()
     executable = directory / ("lab-world-probe.exe" if os.name == "nt" else "lab-world-probe")
-    inputs = [str(directory / PROBE), *(str(directory / path) for path in SIMULATION_SOURCES)]
+    # Use staged-root-relative compiler inputs. Windows MinGW and Python may
+    # disagree on DOS-short-name aliases for absolute temporary paths.
+    inputs = [PROBE, *SIMULATION_SOURCES]
     if msvc:
         command = [cxx, "/nologo", "/std:c++20", "/EHsc", "/W4", "/Od",
-                   "/I" + str(directory / "native/include"), "/I" + str(directory / "generated"),
-                   *inputs, "/Fe:" + str(executable)]
+                   "/I" + "native/include", "/I" + "generated",
+                   *inputs, "/Fe:" + executable.name]
     else:
         command = [cxx, "-std=c++20", "-O0", "-Wall", "-Wextra", "-Werror", "-pthread",
-                   "-I", str(directory / "native/include"), "-I", str(directory / "generated"),
-                   *inputs, "-o", str(executable)]
+                   "-I", "native/include", "-I", "generated",
+                   *inputs, "-o", executable.name]
         if sanitize:
             command += ["-g1", "-fno-omit-frame-pointer", "-fsanitize=address,undefined", "-fno-sanitize-recover=all"]
     lab._run(command, directory, BUILD_TIMEOUT)
@@ -290,6 +292,9 @@ def compile_world_test(candidate: Any, *, scenario: Any = None, output_dir: Path
         baseline = lab.baseline()
         reference_stage = _stage(staging / "reference", inputs, baseline, candidate=False)
         candidate_stage = _stage(staging / "candidate", inputs, catalogue, candidate=True)
+        # Fail before compilation if staged sources are missing or changed.
+        _verify_stage(staging / "reference", reference_stage)
+        _verify_stage(staging / "candidate", candidate_stage)
         reference, reference_build = _build_and_execute(staging / "reference", cxx, msvc, scenario,
                                                        normalized["target_id"], sanitize)
         _verify_stage(staging / "reference", reference_stage)
