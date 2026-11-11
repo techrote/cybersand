@@ -58,6 +58,9 @@ func run() -> void:
 	panel = wb.art_batches
 	# Ignore the human brush outline, which follows the physical mouse independently.
 	host.brush_preview.modulate.a = 0
+	# Integrated PAINT draws a separate hover preview on the same canvas.
+	if wb.get("paint_editor") != null and wb.paint_editor._overlay != null:
+		wb.paint_editor._overlay.modulate.a = 0
 	if not await until(func(): return not wb.applied.is_empty() and not wb.busy(),"native canvas ready"): quit(1);return
 	panel.endpoint.text = OS.get_environment("WB_ART_TEST_ENDPOINT")
 	panel.model.text = "graphical-fixture"
