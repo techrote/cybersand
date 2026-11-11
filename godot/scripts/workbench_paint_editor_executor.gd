@@ -121,9 +121,8 @@ func _protection_error(world: Variant, point: Vector2i) -> String:
 	if not _bounds.has_point(point): return "Operation crosses the native canvas boundary."
 	for guard: Rect2i in _guards:
 		if guard.has_point(point): return "Operation intersects protected source cells."
-	# Native material_at is World::get: masks report Wall. Whole-operation
-	# refusal over masks makes every admitted read exactly stored_material.
-	# It works in 2048 worlds, unlike the 1024-bounded demo inspect_cell API.
+	# Stored identity does not remove body protection: copying and mutation both
+	# refuse the complete operation when a transient body covers any source cell.
 	if int(world.rigid_body_id_at(point.x, point.y)) != 0:
 		return "Move or remove the body before editing or copying its covered cells."
 	return ""
@@ -146,6 +145,8 @@ func step(world: Variant, context: Dictionary) -> Dictionary:
 	if not failure.is_empty(): return _finish(termination, failure, context)
 	if str(world.get_class()) != "CyberNativeCellWorld":
 		return _finish("refused", "PAINT requires the source-matched native runtime.", context)
+	if not world.has_method("stored_material_at") or not world.has_method("rigid_body_id_at"):
+		return _finish("refused", "Native runtime lacks stored-material readback. Install the source-matched Workbench native library and restart.", context)
 	if command.kind == "capture" and not _bounds.encloses(_region):
 		return _finish("refused", "Capture crosses the native canvas boundary.", context)
 	var stop: int = mini(count, (applied if status == "executing" else checked) + SLICE_CELLS)
@@ -164,7 +165,7 @@ func step(world: Variant, context: Dictionary) -> Dictionary:
 					return _finish("refused", "The installed scenario does not allow this painting tool.", context)
 				if material < 0 or material >= 256 or _allowed[material] == 0:
 					return _finish("refused", "Material is not supported by the loaded native runtime.", context)
-			var before: int = int(world.material_at(point.x, point.y))
+			var before: int = int(world.stored_material_at(point.x, point.y))
 			if not _source_allowed.is_empty() and before not in _source_allowed:
 				return _finish("refused", "Source material is protected by this caller's policy.", context)
 			if not _expected.is_empty() and before != _expected[checked]:
@@ -181,14 +182,14 @@ func step(world: Variant, context: Dictionary) -> Dictionary:
 			var point: Vector2i = _point(applied)
 			failure = _protection_error(world, point)
 			if not failure.is_empty(): return _finish("invalidated", failure, context)
-			var before: int = int(world.material_at(point.x, point.y))
+			var before: int = int(world.stored_material_at(point.x, point.y))
 			if before != _before[applied]:
 				return _finish("invalidated", "A source cell changed after preflight.", context)
 			var desired: int = _cells[applied * 3 + 2]
 			if not bool(context.get("erase_allowed" if desired == 0 else "paint_allowed", false)):
 				return _finish("invalidated", "The installed scenario changed its painting permission.", context)
 			if before != desired: world.emit_disc(point.x, point.y, 0, desired)
-			var actual: int = int(world.material_at(point.x, point.y))
+			var actual: int = int(world.stored_material_at(point.x, point.y))
 			_after[applied] = actual
 			applied += 1
 			if actual != before: changed += 1

@@ -18,6 +18,26 @@ VERSION = "4.7.stable.official.5b4e0cb0f"
 RAPIER = "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
 
 
+def stage_generator_profiles(package_root):
+    """Copy archived canonical recipes inside the standalone Godot project.
+
+    Keep examples/worldgen for existing tools and provenance. Both byte-exact
+    copies enter the payload manifest; no second recipe catalogue is authored.
+    """
+    recipes = sorted((package_root / "examples/worldgen").glob("*.json"))
+    required = {"gen007-deepworks.json", "gen007-qualification.json"}
+    if not required.issubset({p.name for p in recipes}):
+        raise ValueError("Standalone package is missing required GEN-007 profiles")
+    destination = package_root / "godot/authoring/worldgen"
+    destination.mkdir(parents=True, exist_ok=True)
+    for recipe in recipes:
+        payload = recipe.read_bytes()
+        if len(payload) > 1024 * 1024 or not isinstance(json.loads(payload), dict):
+            raise ValueError("Invalid or oversized bundled generation profile: " + recipe.name)
+        (destination / recipe.name).write_bytes(payload)
+    return {p.name: native.sha(p) for p in recipes}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--engine", type=Path, required=True, help="official Godot Windows GUI executable")
@@ -57,6 +77,7 @@ def main():
             target = args.output / entry.name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
+    profiles = stage_generator_profiles(args.output)
     for engine in (args.engine, console):
         shutil.copyfile(engine, args.output / engine.name)
     for name in ("LICENSE.txt", "COPYRIGHT.txt"):
@@ -78,7 +99,8 @@ def main():
              for p in sorted(args.output.rglob("*")) if p.is_file()}
     identity = {"schema": 1, "purpose": "owner desktop playtest candidate; not a production release",
                 "source_commit": manifest["source_commit"], "source_tree": manifest["source_tree"],
-                "godot_version": version, "native_sha256": manifest["sha256"], "files_sha256": files}
+                "godot_version": version, "native_sha256": manifest["sha256"],
+                "generator_profiles_sha256": profiles, "files_sha256": files}
     (args.output / "candidate-manifest.json").write_text(json.dumps(identity, indent=2, sort_keys=True)+"\n", encoding="utf-8")
     print(args.output / "Open Workbench.cmd")
 

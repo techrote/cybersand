@@ -59,6 +59,9 @@ public:
     [[nodiscard]] PackedFloat32Array rigid_body_results() const;
 
     [[nodiscard]] std::int64_t material_at(std::int64_t x, std::int64_t y) const;
+    // Authoritative stored identity, without the transient rigid-body overlay.
+    // Editing callers must still check rigid_body_id_at before mutating a cell.
+    [[nodiscard]] std::int64_t stored_material_at(std::int64_t x, std::int64_t y) const;
     [[nodiscard]] std::int64_t rigid_body_id_at(std::int64_t x, std::int64_t y) const;
     [[nodiscard]] bool box_collides(Vector2 origin, Vector2 size) const;
     [[nodiscard]] bool character_box_collides(Vector2 origin, Vector2 size, std::int64_t mode) const;

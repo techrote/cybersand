@@ -1,5 +1,7 @@
 extends HFlowContainer
 
+signal deferred_brush_finished(token: int, receipt: Dictionary)
+
 # One human editor over the existing host and exclusive native worker.
 const Shapes = preload("res://scripts/workbench_paint_editor_shapes.gd")
 const History = preload("res://scripts/workbench_paint_editor_history.gd")
@@ -138,6 +140,7 @@ func invalidate_history(reason: String = "Source changed") -> void:
 func installed() -> void:
 	cancel_preview()
 	if not _operation.is_empty():
+		_finish_deferred(_operation.get("job",{}), {"status":"invalidated","reason":"World replaced before human edit completion."})
 		_retired_operation = int(_operation.operation_id)
 		host.simulation_worker.paint_stop()
 	if _planner != null: _planning_cancelled = true
@@ -170,7 +173,8 @@ func _current() -> Dictionary:
 func _ready_to_author(allow_hold: bool = false) -> bool:
 	if host == null or bench.applied.is_empty(): return false
 	if busy() or not host.pending_microscenario_apply.is_empty() or bench.step_pending \
-			or host.simulation_worker.has_failed() or bool(_current().get("busy",true)):
+			or host.simulation_worker.has_failed() or bool(_current().get("busy",true)) \
+			or bool(_current().get("art_busy",false)) or bool(_current().get("legacy_busy",false)):
 		_say("Wait for the current native operation.")
 		return false
 	if host.water_controlled_run_active() or host._microscenario_execution_locked():
@@ -321,6 +325,17 @@ func paste_at(point: Vector2i) -> bool:
 func commit_cells(cells: PackedInt32Array, label: String = "Paint") -> bool:
 	return _begin_plan({"tool":"Cells","cells":cells.duplicate()},label)
 
+func begin_deferred_brush(point: Vector2i, material: int, brush_radius: int, token: int) -> bool:
+	if material not in host.simulation_worker.paint_materials() or brush_radius < 0 or brush_radius > 24:
+		_say("Deferred human brush has an unsupported material or radius.")
+		return false
+	return _begin_plan({"tool":"Brush","anchor":point,"cursor":point,"stroke":[point],
+		"radius":brush_radius,"material":material,"deferred_art_token":token},"Human brush")
+
+func _finish_deferred(job: Dictionary, receipt: Dictionary) -> void:
+	if job.has("deferred_art_token"):
+		deferred_brush_finished.emit(int(job.deferred_art_token),receipt.duplicate(true))
+
 func _begin_plan(job: Dictionary, label: String) -> bool:
 	if not _ready_to_author(): return false
 	job.setup = bench.applied.duplicate(true)
@@ -431,6 +446,7 @@ func _consume_plan() -> void:
 	_planning_job = {}
 	if _planning_cancelled:
 		_say("Planning cancelled; no cells queued.")
+		_finish_deferred(job,{"status":"cancelled","applied":0,"reason":_message})
 		return
 	if planned is Dictionary and str(job.get("tool","")) == "Fill" \
 			and str(planned.get("unread_edge","")) != "":
@@ -449,9 +465,11 @@ func _consume_plan() -> void:
 		return
 	if not planned is Dictionary or not planned.get("accepted",false):
 		_say(str(planned.get("error","Paint planning failed.")) if planned is Dictionary else "Paint planning failed.")
+		_finish_deferred(job,{"status":"refused","applied":0,"reason":_message})
 		return
 	if _source(_current()) != job.fence or not host.paused or not host.pending_microscenario_apply.is_empty():
 		_say("Native source changed during planning; draw again.")
+		_finish_deferred(job,{"status":"invalidated","applied":0,"reason":_message})
 		return
 	var request := _request("edit",job.fence)
 	request.cells = planned.cells
@@ -459,6 +477,7 @@ func _consume_plan() -> void:
 	var admitted: Dictionary = host.simulation_worker.paint_queue(request)
 	if admitted.get("status","") != "queued":
 		_say(str(admitted.get("reason","Native paint refused.")))
+		_finish_deferred(job,{"status":"refused","applied":0,"reason":_message})
 		return
 	_operation = {"kind":"edit","operation_id":admitted.operation_id,"job":job,"planned":planned}
 	_say(str(job.label)+" queued · awaiting native confirmation…")
@@ -498,6 +517,11 @@ func _receive(receipt: Dictionary) -> void:
 			or int(receipt.get("observed_generation",-1)) != int(receipt.generation):
 		invalidate_history("Old World result retired")
 		_say("Paint result belongs to the previous World; current start is unchanged.")
+		var retired := receipt.duplicate(true)
+		retired.status = "invalidated"
+		retired.reason = _message
+		retired.recorded = false
+		_finish_deferred(operation.get("job",{}),retired)
 		return
 	if str(operation.kind) != "edit":
 		if str(receipt.status) != "completed":
@@ -515,6 +539,10 @@ func _receive(receipt: Dictionary) -> void:
 			_start_planner(job)
 		return
 	_receive_edit(operation,receipt,current)
+	var completed := receipt.duplicate(true)
+	completed.recorded = not _save_hold
+	if _save_hold: completed.reason = _message
+	_finish_deferred(operation.job,completed)
 
 func _receive_edit(operation: Dictionary, receipt: Dictionary, current: Dictionary) -> void:
 	var job: Dictionary = operation.job
@@ -613,6 +641,8 @@ func local_to_cell(position: Vector2) -> Vector2i:
 
 func _exit_tree() -> void:
 	if host != null and is_instance_valid(host) and not _operation.is_empty(): host.simulation_worker.paint_stop()
+	_finish_deferred(_operation.get("job",{}),{"status":"invalidated","reason":"Workbench closed before the human completion receipt was consumed."})
 	if _planner != null:
 		_planner.wait_to_finish()
 		_planner = null
+		_finish_deferred(_planning_job,{"status":"cancelled","applied":0,"reason":"Workbench closed during human stroke planning."})

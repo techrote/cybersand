@@ -29,6 +29,8 @@ The [generated-map contract](../systems/explore001-generated-playable-maps.md)
 owns current formats, capacity and user controls. Accepted main remains distinct
 from a reviewed or runtime-qualified PR.
 
+**Unmerged successor candidate, 2026-11-10:** #559 Stage 1 adds direct batch drawing and worker completion in the existing owner; see the [direct art batch contract](../systems/workbench-direct-art-batches.md). It records confirmed edits in unchanged Setup-v2, without importing #531 runtime admission rules.
+
 ## Common authored document semantics
 
 **Approved requirements for convergence:**

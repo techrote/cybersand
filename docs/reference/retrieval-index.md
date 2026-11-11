@@ -10,6 +10,11 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Direct native art batches without inference
+
+For #559 Stage 1, shape/pixel JSON, large drawing batches, protection, native acknowledgment, Stop and Save limits, retrieve the [direct art batch contract](../systems/workbench-direct-art-batches.md). For OpenAI/NVIDIA/LM Studio, key entry, raw traffic, output caps and cancellation, retrieve the [Stage-2 provider contract](../systems/workbench-art-providers.md). Persistent context remains Planned.
+
+
 ## Generated terrain in the playable workbench
 
 For shared baseline/edits/actors versus live session, Save versus Flatten,

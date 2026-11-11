@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Direct art: [Stage 1 drawing](systems/workbench-direct-art-batches.md) and [Stage 2 provider connection](systems/workbench-art-providers.md), unmerged WB-ART-002 candidates.
+
 Shared authoring: [approved data contract and convergence plan](architecture/shared-workbench-authoring-data.md)
 separates Current generated-start saves from Planned material-only Flatten and
 defines the common desktop/agent/remote foundation. #542 Ready qualification is

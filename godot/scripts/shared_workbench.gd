@@ -13,6 +13,7 @@ var _generated_dialog := preload("res://scripts/workbench_generator_dialog.gd").
 var _generated_active: Dictionary = {}
 var _pending_generated: Dictionary = {}
 var _pending_retain_generated := false
+var art_batches: Window
 var host: Control
 var applied: Dictionary = {}
 var pilot_slot := -1
@@ -125,6 +126,11 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_picker(row,_camera,["Free camera","Follow selected","Overview"],func(i: int) -> void: set_camera(i))
 	_button(row,"−",func() -> void: zoom_by(1))
 	_button(row,"+",func() -> void: zoom_by(-1))
+	art_batches = preload("res://scripts/art_batch_panel.gd").new()
+	art_batches.wb = self
+	add_child(art_batches)
+	art_batches.hide()
+	_button(row,"Art batches",func() -> void: art_batches.popup_centered())
 	_button(row,"Details",func() -> void: _details.visible = not _details.visible)
 	_button(row,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
 	row = _row(self)
@@ -195,6 +201,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	add_child(paint_editor)
 	move_child(paint_editor,2)
 	paint_editor.mount(self)
+	paint_editor.deferred_brush_finished.connect(art_batches.executor.manual_finished)
 	_name.reparent(paint_editor)
 	_name.tooltip_text = "Name of the authored starting map; Save does not capture evolved simulation."
 	save_start_button.reparent(paint_editor)
@@ -295,6 +302,9 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 	if not preserve and not generated_packet.is_empty() \
 			and candidate.edits.size() > Setup.native_rectangle_budget():
 		return refuse("This installed native runtime cannot reopen that detailed generated start; rebuild its GDExtension.")
+	if preserve and art_batches != null and art_batches.executor.active:
+		art_batches.executor.stop("Settings changed; finishing current chunk")
+		return refuse("Finishing the current drawing chunk; retry after its acknowledgment.")
 	if preserve and not generated_packet.is_empty():
 		return refuse("Cannot import generated cells while preserving a live session.")
 	var generation := {}
@@ -327,7 +337,11 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		_saved_view = {"origin":host.camera_origin,"size":host.current_view_size}
 	else:
 		_saved_view.clear()
+	if art_batches != null: art_batches.executor.canvas_changed()
 	_cancel()
+	# Publish the current owner view before preparation captures its settings
+	# revision; the first rendered frame must not invalidate startup construction.
+	host.update_worker_frame_state()
 	var ok: bool = host.workbench_apply(candidate,definitions,runs,Setup.extent_of(candidate),
 		PackedInt32Array(candidate.liquid_policy),candidate.normalize,int(candidate.rule_radius),
 		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation)
@@ -670,6 +684,9 @@ func apply_liquids() -> bool:
 
 func save_setup() -> bool:
 	if paint_editor != null and not paint_editor.save_allowed(): return false
+	if art_batches != null:
+		art_batches.executor.poll()
+		if art_batches.executor.active: return refuse("Drawing still queued or executing; Stop/wait before saving.")
 	if not _editable(): return false
 	var error := (GeneratedMaps.write_named(_name.text,applied,_generated_active)
 		if not _generated_active.is_empty() else Setup.write_named(_name.text,applied))
@@ -696,6 +713,19 @@ func load_setup() -> bool:
 	if result.has("error"): return refuse(result.error)
 	if host.simulation_worker.has_failed(): return host.workbench_restart(result.setup)
 	return apply(result.setup)
+
+func art_authoring_state() -> Dictionary:
+	if paint_editor == null: return {"busy":false,"reason":""}
+	if paint_editor.recovery_required():
+		return {"busy":false,"reason":"Undo the partial human edit or Restore start before agent drawing."}
+	var state: Dictionary = host.simulation_worker.paint_state()
+	return {"busy":paint_editor.busy() or bool(state.get("busy",false)) or bool(state.get("legacy_busy",false)),"reason":""}
+
+func begin_deferred_art_stroke(stroke: Array, token: int) -> bool:
+	return paint_editor != null and paint_editor.begin_deferred_brush(stroke[0],stroke[1],stroke[2],token)
+
+func art_changed_source() -> void:
+	if paint_editor != null: paint_editor.invalidate_history("Agent drawing changed the source")
 
 func _cancel() -> void:
 	if host != null: host.cancel_playable_course_input()
@@ -725,6 +755,9 @@ func step_once() -> bool:
 	return true
 
 func paint(pos: Vector2i, material: int) -> bool:
+	if art_batches != null:
+		var deferred: int = art_batches.executor.defer_manual(pos,material)
+		if deferred != 0: return deferred > 0
 	if busy() or applied.is_empty(): return false
 	if material not in Setup.MATERIALS or not Rect2i(Vector2i.ZERO,Setup.extent_of(applied)).has_point(pos): return false
 	var stamp := [pos.x,pos.y,int(applied.brush),material]
