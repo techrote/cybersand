@@ -136,6 +136,7 @@ class ResultTests(unittest.TestCase):
                 mock.patch.object(subject, "runtime_paths", return_value=(runtime, rapier)),
                 mock.patch.object(subject, "discover_cases", return_value=cases),
                 mock.patch.object(subject, "run_case", side_effect=run_case),
+                mock.patch.object(subject, "tested_inputs", return_value={}),
                 mock.patch.object(subject.scheduling, "ExecutionBudget", return_value=budget),
                 mock.patch.object(subject.subprocess, "check_output", side_effect=["a" * 40, "Godot", "b" * 40]),
                 mock.patch.object(sys, "argv", ["runner", "--godot", "unused", "--output", str(output), "--keep-going"]),
@@ -311,6 +312,7 @@ class ResultTests(unittest.TestCase):
                 mock.patch.object(subject.execution_telemetry, "source_identity", return_value={"commit":"a" * 40, "tree":"b" * 40}),
                 mock.patch.object(subject, "discover_cases", return_value=cases),
                 mock.patch.object(subject, "case_command", side_effect=child_command),
+                mock.patch.object(subject, "tested_inputs", return_value={}),
                 mock.patch.object(subject.subprocess, "check_output", side_effect=["a" * 40, "fixture-godot", "b" * 40]),
                 mock.patch.object(sys, "argv", ["runner", "--godot", "fixture-godot", "--output", str(output), "--keep-going"]),
             ):
@@ -321,6 +323,40 @@ class ResultTests(unittest.TestCase):
         self.assertTrue(result["completed"])
         self.assertEqual([case["name"] for case in result["results"]], ["import", "fails", "runs_after_failure"])
         self.assertEqual([case["status"] for case in result["results"]], ["passed", "failed", "passed"])
+
+    def test_authoring_source_drift_cannot_pass_after_all_cases_succeed(self):
+        relative = "tools/material_catalogue/lab.py"
+        before = {relative: "c" * 64}
+        for after in (before, {relative: "d" * 64}):
+            changed = after != before
+            with self.subTest(changed=changed), tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
+                root = Path(directory)
+                native, rapier = root / "native.so", root / "rapier.so"
+                native.write_bytes(b"native-fixture")
+                rapier.write_bytes(b"rapier-fixture")
+                output = root / "results"
+
+                def run_case(_godot, case, _output, role):
+                    return {"name": case.name, "role": role, "status": "passed"}, False
+
+                with (
+                    mock.patch.object(subject, "ROOT", root),
+                    mock.patch.object(subject, "runtime_paths", return_value=(native, rapier)),
+                    mock.patch.object(subject, "discover_cases", return_value=[fake("authoring", 1)]),
+                    mock.patch.object(subject, "run_case", side_effect=run_case),
+                    mock.patch.object(subject, "tested_inputs", side_effect=[before, after]),
+                    mock.patch.object(subject.subprocess, "check_output", side_effect=["a" * 40, "Godot", "b" * 40]),
+                    mock.patch.object(sys, "argv", ["runner", "--godot", "unused", "--output", str(output)]),
+                ):
+                    status = subject.main()
+                report = json.loads((output / "timings.json").read_text())
+                self.assertEqual(status, int(changed))
+                self.assertEqual(report["identity"]["tested_inputs"], before)
+                self.assertEqual(report["source_drift"], [relative] if changed else [])
+                self.assertEqual(report["completed"], not changed)
+                self.assertEqual(len(report["results"]), 2)
+                if changed:
+                    self.assertIn("source inputs changed", report["error"])
 
 
 class SnapshotTests(unittest.TestCase):
