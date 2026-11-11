@@ -530,3 +530,26 @@ Windows graphical/human acceptance; a separately qualified #353-B authoritative
 consumer and identity transition; and wider explicit state/quantity contracts
 with owner-authoritative per-cell eligibility diagnostics. H1 is excluded.
 Draft status, no auto-merge and the broad open #352–356 issues are retained.
+
+### Hosted aggregate-watchdog correction
+
+The first hosted run of the published checkpoint,
+[Documentation 43106128435](https://github.com/techrote/cybersand/actions/runs/43106128435),
+ended with exit 124 at the generic 300-second operation watchdog while discovering
+and running the full catalogue suite. Its log contains 175 completed-test dots
+and no assertion failure before termination. This is an incomplete hosted run,
+not a pass. The same complete 202-test suite naturally completed locally in 330.304s.
+
+The workflow's one aggregate command now selects the existing
+`native_suite_seconds` allowance (7,200 seconds at scale 1) instead of
+`operation_seconds`. The [owner's execution policy](../operations/ci-execution-and-performance.md#owner-policy-and-acceptance-boundary)
+distinguishes substantial native execution from single-operation deadlines and
+does not treat elapsed time as a correctness threshold. The policy JSON values,
+test inventory/assertions, fixed native tick windows, individual build/probe
+limits, providers, triggers, concurrency and schedules are unchanged. No native
+cache, skipped case or weaker physics check was substituted to obtain a pass.
+
+This correction changes no captured native or graphical input; the 93-file
+digest and linked executable evidence above remain applicable. The original
+hosted failure is retained. Exact-head follow-up results belong to the
+[Draft PR qualification ledger](https://github.com/techrote/cybersand/pull/562).

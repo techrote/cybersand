@@ -53,6 +53,18 @@
     "One UI run found Godot StringName keys in newly authored state_b; canonical JSON normalization now matches actual Python validation.",
     "Initial display attempt could not create local sockets; the final actual X11 server/client ran together and used llvmpipe. Audio fell back to Dummy."
   ],
+  "hosted_initial_attempt": {
+    "assertion_failure_observed": false,
+    "completed_test_dots": 175,
+    "correction": "Select existing native_suite_seconds7200 for aggregate202-test catalogue discovery; retain policy values, all assertions/cases/inner limits/provider/triggers/concurrency/schedules.",
+    "exit_code": 124,
+    "head": "22cb4cd3dc6fc915fe763faff41e413f90d022c8",
+    "job_id": 130809949540,
+    "result": "INCOMPLETE_TIMEOUT",
+    "run_id": 43106128435,
+    "url": "https://github.com/techrote/cybersand/actions/runs/43106128435",
+    "watchdog_seconds": 300
+  },
   "identical_implementation_tree": "622fb32a75dd14344be3090b5417f7aebc6b7ab4",
   "limits": [
     "Windows execution NOT_RUN",
@@ -67,6 +79,9 @@
     "catalogue-effects-v2-final-pre-reconcile.log": "ac7953bf2ab519d6fc9ebf6081ab3516b93a5eace4abb4e7dec0acd67de6c3f8",
     "catalogue-effects-v2-final.log": "2c794f12375a96bf29c8039d8442f00c46fbb1b633f25925913977eb9550cc7c",
     "catalogue-effects-v2-initial.log": "f56c0797055f48128003a10b510497279c4152d530755885a854211e36f4f878",
+    "ci-budget-inventory.log": "5d3fe040482b5f57f9a9a9df541ab95fe821f036a9f6ce91c75992c03c65cbf0",
+    "ci-budget-provider.log": "4e64d073155dc5a1655bf13eb2060b8f9930ba169e749c6ec486ba2248b1618f",
+    "ci-budget-scheduling-tests.log": "78a20f23fa2bd126f37a1e8870a80d4d736483b54c2b8fcc938d88508e76f221",
     "docs-effects-v2-final.log": "7728a92e1ec3ed5df55c479ef59a9fce2e538646e4916589a438a3e6b60289b3",
     "effects-v2-asan-final-pre-reconcile.log": "4735fd0c79cad31e9de54566441e422d6199751395e81fe4c187f27374a5d1ca",
     "effects-v2-asan-final.log": "29021c54d44a1cfe1ff3defe0bf41cde1e4889b7c23c78664f059e5826e74ebd",
