@@ -295,6 +295,7 @@ def regressions(args):
     runner.godot(project, "art-stored-material", "test_art_stored_material", "ART_STORED_RESULT")
     runner.godot(project, "art-deferred-manual", "test_art_deferred_manual", "ART_DEFERRED_MANUAL")
     runner.godot(project, "art-native", "test_art_batch_native", "ART_STAGE1_RESULT")
+    runner.godot(project, "art-native-render", "test_art_batch_native_render", "ART_STAGE1_RESULT", graphical=True)
     runner.execute("art-http-fixtures-graphical", [sys.executable, str(ROOT / "tools/test_art_provider_transport.py"),
                    "--godot", str(args.godot.resolve()), "--project", str(project),
                    "--output", str(runner.evidence / "http-graphical"), "--graphical"])
