@@ -39,6 +39,12 @@ func run() -> void:
 	if not await until(installed,"blank native workbench ready"): quit(1); return
 	art = wb.art_batches.executor
 	var panel = wb.art_batches
+	panel.provider.log_event("fixture","hidden traffic should stay off the UI")
+	check(panel.traffic_dirty and panel.traffic_text.text.is_empty(),"hidden traffic does not rebuild text")
+	panel.traffic_window.show()
+	panel.refresh_traffic()
+	check(panel.traffic_text.text.contains("hidden traffic should stay off the UI"),"opened traffic shows retained content")
+	panel.traffic_window.hide()
 	panel.provider.requested_model = "fixture"
 	panel.provider.usage = {"prompt_tokens":275,"completion_tokens":170}
 	panel.input_error = "Previous provider error"

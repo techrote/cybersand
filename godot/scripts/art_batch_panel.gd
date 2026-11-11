@@ -29,6 +29,8 @@ var key_field := LineEdit.new()
 var key_button := Button.new()
 var traffic_window := Window.new()
 var traffic_text := TextEdit.new()
+var traffic_dirty := false
+var traffic_refresh_after := 0
 var raw_traffic := CheckBox.new()
 var traffic_path := Label.new()
 var settings := ConfigFile.new()
@@ -242,6 +244,7 @@ func _process(_delta: float) -> void:
 	if wb == null: return
 	executor.wb = wb
 	executor.poll()
+	if traffic_dirty and traffic_window.visible and Time.get_ticks_msec() >= traffic_refresh_after: refresh_traffic()
 	if run_deadline_ms > 0 and Time.get_ticks_msec() >= run_deadline_ms:
 		if provider.active or capturing or executor.active or remaining_turns != 0: stop_all("Run time limit reached")
 		run_deadline_ms = 0
@@ -270,6 +273,8 @@ func _process(_delta: float) -> void:
 	elif executor.active or executor.result.status != "idle":
 		var r: Dictionary = executor.result
 		status_text = "%s · %d checked · %d changed · %d protected/outside skipped%s" % [str(r.status).capitalize(),r.checked,r.changed,r.excluded," · "+str(r.reason) if not str(r.reason).is_empty() else ""]
+		if r.status == "completed" and r.checked > 0 and r.checked == r.excluded:
+			status_text = "No pixels applied · all %d outside the current work area or protected" % r.checked
 
 	if input_mode.selected != 0 and not provider.requested_model.is_empty():
 		var u: Dictionary = provider.usage
@@ -292,7 +297,7 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	provider.finished.connect(provider_finished)
 	executor.native_receipt.connect(func(receipt: Dictionary) -> void:
 		if log_draw: provider.log_event("native_receipt",receipt))
-	provider.traffic_changed.connect(refresh_traffic)
+	provider.traffic_changed.connect(func() -> void: traffic_dirty = true)
 	var row := HBoxContainer.new()
 	for name_text: String in ["LM Studio","OpenAI","NVIDIA"]: source.add_item(name_text)
 	source.item_selected.connect(change_provider)
@@ -317,7 +322,7 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	row.add_child(key_button)
 	var traffic_button := Button.new()
 	traffic_button.text = "Traffic…"
-	traffic_button.pressed.connect(func() -> void: refresh_traffic(); traffic_window.popup_centered(Vector2i(900,600)))
+	traffic_button.pressed.connect(func() -> void: traffic_window.popup_centered(Vector2i(900,600)); refresh_traffic())
 	row.add_child(traffic_button)
 	column.add_child(row); rows.append(row)
 	row = HBoxContainer.new()
@@ -666,7 +671,7 @@ func send_next(expected_epoch: int) -> void:
 		instructions += "\nEnabled shapes: "+JSON.stringify(request_shapes)+". Use only these shapes. Line and polyline accept optional integer width (default 1) with rounded ends. Polyline and filled polygon use points:[[x,y],...]. Airbrush uses x,y,radius, optional density and hardness in [0,1], and an integer seed."
 		if request_pixel_limit > 0:
 			instructions += " Maximum %d points per pixels operation." % request_pixel_limit
-	instructions += "\nSelected drawing material: %d. Use it for drawing. Return [] when finished." % request_material
+	instructions += "\nUse only the current work area above, even when previous turns used a different area.\nSelected drawing material: %d. Use it for drawing. Return [] when finished." % request_material
 	var context := model_context()
 	var prompt := task_prompt
 	if not observation.is_empty(): prompt += "\n"+observation
@@ -813,6 +818,9 @@ func fit_local_operation(raw: Dictionary,bounds: Rect2i) -> Dictionary:
 	return op
 
 func refresh_traffic() -> void:
+	if not traffic_window.visible: return
+	traffic_dirty = false
+	traffic_refresh_after = Time.get_ticks_msec()+500
 	var content: String = provider.traffic if raw_traffic.button_pressed else provider.readable
 	var query := traffic_filter.text.strip_edges()
 	if not query.is_empty():
@@ -820,5 +828,6 @@ func refresh_traffic() -> void:
 		for line: String in content.split("\n"):
 			if line.containsn(query): matches.append(line)
 		content = "\n".join(matches)
+	if content.length() > 120000: content = "[Showing latest matching traffic; Save JSONL exports the complete session]\n"+content.right(120000)
 	traffic_text.text = content
 	traffic_path.text = ProjectSettings.globalize_path(provider.log_path)+(" · "+provider.log_warning if not provider.log_warning.is_empty() else "")
