@@ -354,6 +354,8 @@ func stopped_agent_prefix() -> bool:
 		if completed_chunk.readback[index] != [210+index%128,120+index/128,0,58]: exact_receipt=false
 	check(exact_receipt,"completed receipt contains the exact ordered stored Empty-to-Wall prefix")
 	check(art.manual.is_empty(),"accepted deferred human stroke has no orphaned pending entry")
+	check(int(art.result.get("human_applied",-1))==1 and int(art.result.get("human_refused",-1))==0
+		and int(art.result.get("human_pending",-1))==0,"Stop truthfully reports one applied human stroke and no refused or pending strokes")
 	check(await capture(Rect2i(erased_point,Vector2i.ONE))==PackedInt32Array([0]),"accepted human erasure was applied after agent chunk")
 	check(await capture(Rect2i(210,120,1,1))==PackedInt32Array([58]),"completed prefix remains in native World")
 	check(await capture(Rect2i(337,247,1,1))==PackedInt32Array([0]),"unexecuted agent suffix is absent")

@@ -199,7 +199,21 @@ func run() -> void:
 	wb.art_batches.set_process(true)
 	await until(func(): return not art.active,"Stop native acknowledgement")
 	var prefix: int = art.result.checked
-	check(prefix==4096 and art.result.status in ["partial","cancelled"],"Stop preserves at most executing native chunk")
+	# The bounded raster may flush a timed partial chunk before reaching capacity.
+	check(prefix>0 and prefix<=4096 and art.result.status in ["partial","cancelled"],"Stop preserves at most executing native chunk")
+	var stopped_receipt: Dictionary = art.last_receipt
+	var stopped_readback: Array = stopped_receipt.get("readback",[])
+	check(stopped_receipt.get("status")=="completed" and int(stopped_receipt.get("requested",-1))==prefix
+		and int(stopped_receipt.get("checked",-1))==prefix and int(stopped_receipt.get("changed",-1))==prefix
+		and int(stopped_receipt.get("confirmed",-1))==prefix and stopped_readback.size()==prefix
+		and int(stopped_receipt.get("unchanged",-1))==0 and int(stopped_receipt.get("excluded",-1))==0
+		and int(stopped_receipt.get("refused",-1))==0 and int(art.result.changed)==prefix
+		and int(art.result.unchanged)==0 and int(art.result.excluded)==0 and int(art.result.refused)==0,
+		"Stop accounting exactly matches the consumed native receipt")
+	var exact_stop_readback := stopped_readback.size()==prefix
+	for index: int in stopped_readback.size():
+		if stopped_readback[index] != [300+index%401,300+index/401,0,58]: exact_stop_readback=false
+	check(exact_stop_readback,"Stop receipt contains the exact ordered stored Empty-to-Wall prefix")
 	for i: int in range(20): await process_frame
 	check(art.result.checked==prefix and cell(700,700)==0,"no stale painting after Stop")
 	var late: Dictionary = main.simulation_worker.art_queue(PackedInt32Array([700,700]),58,Rect2i(0,0,2048,2048),[],art.epoch)
