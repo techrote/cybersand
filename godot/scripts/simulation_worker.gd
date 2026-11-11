@@ -1737,7 +1737,8 @@ func art_stop() -> Dictionary:
 	_mutex.lock()
 	_art_epoch += 1
 	if not _art_pending.is_empty():
-		_art_result = {"status":"cancelled","readback":[],"changed":0,"checked":0,"excluded":0}
+		_art_result = {"status":"cancelled","readback":[],"requested":_art_pending.points.size()/2,
+			"changed":0,"unchanged":0,"checked":0,"excluded":0,"refused":0,"confirmed":0}
 		_art_pending.clear()
 	var result := {"epoch":_art_epoch,"acknowledged":not _art_inflight}
 	_mutex.unlock()
@@ -1753,7 +1754,9 @@ func art_take_result() -> Dictionary:
 const ART_PALETTE = preload("res://scripts/workbench_setup.gd").MATERIALS
 
 func art_queue(points: PackedInt32Array, material: int, scope: Rect2i, protected: Array, epoch: int, allowed: Array = [0,58]) -> Dictionary:
-	if points.is_empty() or points.size()%2 != 0 or points.size()/2 > MAX_BRUSH_FOOTPRINT_CELLS or material not in ART_PALETTE or material not in allowed: return {"status":"refused","reason":"Invalid native chunk"}
+	if points.is_empty() or points.size()%2 != 0 or points.size()/2 > MAX_BRUSH_FOOTPRINT_CELLS or material not in ART_PALETTE or material not in allowed:
+		return {"status":"refused","reason":"Invalid native chunk","requested":points.size()/2,
+			"changed":0,"unchanged":0,"checked":0,"excluded":0,"refused":points.size()/2,"confirmed":0}
 	_mutex.lock()
 	var reason := ""
 	if epoch != _art_epoch: reason = "Batch stopped or canvas replaced"
@@ -1762,7 +1765,9 @@ func art_queue(points: PackedInt32Array, material: int, scope: Rect2i, protected
 	elif _art_inflight or not _art_pending.is_empty() or not _art_result.is_empty(): reason = "Native chunk busy"
 	if reason.is_empty(): _art_pending = {"points":points.duplicate(),"material":material,"scope":scope,"protected":protected.duplicate(),"epoch":epoch}
 	_mutex.unlock()
-	return {"status":"queued"} if reason.is_empty() else {"status":"refused","reason":reason}
+	return {"status":"queued"} if reason.is_empty() else {"status":"refused","reason":reason,
+		"requested":points.size()/2,"changed":0,"unchanged":0,"checked":0,"excluded":0,
+		"refused":points.size()/2,"confirmed":0}
 
 func _consume_art() -> void:
 	_mutex.lock()
@@ -1775,12 +1780,21 @@ func _consume_art() -> void:
 	_mutex.unlock()
 	var rows: Array = []
 	var changed := 0
+	var unchanged := 0
 	var checked := 0
 	var excluded := 0
+	var refused := 0
+	var confirmed := 0
 	var points: PackedInt32Array = command.points
 	var world_bounds := Rect2i(Vector2i.ZERO,_workbench_extent)
 	var failure := ""
+	# Read only on this exclusive World owner. A stale GDExtension must refuse
+	# before mutation; material_at includes transient bodies and is not a fallback.
+	if not _world.has_method("stored_material_at") or not _world.has_method("rigid_body_id_at"):
+		failure = "Native runtime lacks stored-material readback. Install the source-matched Workbench native library and restart."
+		refused = points.size()/2
 	for i: int in range(0,points.size(),2):
+		if not failure.is_empty(): break
 		checked += 1
 		var x: int = points[i]
 		var y: int = points[i+1]
@@ -1790,20 +1804,30 @@ func _consume_art() -> void:
 		if blocked:
 			excluded += 1
 			continue
-		var before: int = _world.material_at(x,y)
+		# Empty under a body is still protected; never erase through its mask.
+		if int(_world.rigid_body_id_at(x,y)) != 0:
+			excluded += 1
+			continue
+		var before: int = _world.stored_material_at(x,y)
 		if before not in [0,58]:
 			excluded += 1
 			continue
-		_world.emit_disc(x,y,0,int(command.material))
-		var actual: int = _world.material_at(x,y)
+		if before != int(command.material): _world.emit_disc(x,y,0,int(command.material))
+		var actual: int = _world.stored_material_at(x,y)
 		rows.append([x,y,before,actual])
 		if actual != before: changed += 1
 		if actual != int(command.material):
+			refused += 1
 			failure = "Native write did not produce requested material"
 			break
+		confirmed += 1
+		if actual == before: unchanged += 1
 	_mutex.lock()
 	_art_inflight = false
-	_art_result = {"status":"completed" if failure.is_empty() else "partial","reason":failure,"checked":checked,"backend":_world.get_class(),"changed":changed,"excluded":excluded,"readback":rows,"generation":_world_generation,"tick":int(_world.tick_index)}
+	_art_result = {"status":"completed" if failure.is_empty() else ("partial" if confirmed>0 or changed>0 else "refused"),
+		"reason":failure,"requested":points.size()/2,"checked":checked,"backend":_world.get_class(),
+		"changed":changed,"unchanged":unchanged,"excluded":excluded,"refused":refused,"confirmed":confirmed,
+		"readback":rows,"generation":_world_generation,"revision":int(_world.revision),"tick":int(_world.tick_index)}
 	_mutex.unlock()
 
 func queue_emit_cells(

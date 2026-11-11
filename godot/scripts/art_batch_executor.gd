@@ -1,6 +1,7 @@
 extends RefCounted
 
 signal native_receipt(receipt: Dictionary)
+signal manual_receipt(receipt: Dictionary)
 ## Main-thread direct drawing interface shared by the Stage-1 panel and future models.
 const Plan = preload("res://scripts/art_batch_plan.gd")
 var wb: Node
@@ -12,12 +13,13 @@ var epoch := 0
 var area: Rect2i
 var guards: Array = []
 var materials: Array = [0,58]
-var result := {"status":"idle","checked":0,"changed":0,"excluded":0,"reason":""}
+var result := {"status":"idle","checked":0,"changed":0,"unchanged":0,"excluded":0,"refused":0,"human_pending":0,"human_admitted":0,"human_refused":0,"reason":""}
 var record: Dictionary = {}
 var manual: Array = []
 var delivering_manual := false
 var last_receipt: Dictionary = {}
 var raster_frame := -1
+var native_refused := false
 
 func submit(operations: Variant, scope: Rect2i, protection: Array, allowed: Array = [0,58]) -> Dictionary:
 	poll()
@@ -33,10 +35,11 @@ func submit(operations: Variant, scope: Rect2i, protection: Array, allowed: Arra
 	guards = protection.duplicate()
 	epoch = wb.host.simulation_worker.art_state().epoch
 	record = wb.applied
-	result = {"status":"queued","checked":0,"changed":0,"excluded":0,"reason":""}
+	result = {"status":"queued","checked":0,"changed":0,"unchanged":0,"excluded":0,"refused":0,"human_pending":0,"human_admitted":0,"human_refused":0,"reason":""}
 	active = true
 	stopping = false
 	waiting = false
+	native_refused = false
 	return result.duplicate()
 
 func stop(reason: String = "Human Stop") -> void:
@@ -49,14 +52,54 @@ func stop(reason: String = "Human Stop") -> void:
 func canvas_changed() -> void:
 	stop("Canvas replaced")
 	record = {}
+	_refuse_manual("Canvas changed before deferred human strokes could be applied.")
+
+func _refuse_manual(reason: String) -> void:
+	if manual.is_empty(): return
+	var count := manual.size()
 	manual.clear()
+	result.human_pending = 0
+	result.human_refused = int(result.get("human_refused",0)) + count
+	wb.refuse("%d deferred human stroke(s) refused: %s" % [count, reason])
+	manual_receipt.emit({"status":"refused","count":count,"reason":reason})
+
+func _deliver_manual() -> void:
+	# A queued human gesture is not proof of native application. Remove it
+	# only after admission, or after recording an explicit visible refusal.
+	# On this repair branch paint() is the legacy admission API; integration
+	# routes the same gesture through PAINT's native completion boundary.
+	delivering_manual = true
+	while not manual.is_empty():
+		if wb.applied.is_empty():
+			_refuse_manual("No installed canvas.")
+			break
+		var stroke: Array = manual.front()
+		var brush: int = wb.applied.brush
+		wb.applied.brush = stroke[2]
+		var admitted: bool = wb.paint(stroke[0],stroke[1])
+		wb.applied.brush = brush
+		manual.pop_front()
+		result.human_pending = manual.size()
+		var receipt := {"status":"queued" if admitted else "refused","point":stroke[0],"material":stroke[1],"radius":stroke[2],"count":1}
+		if admitted:
+			result.human_admitted = int(result.get("human_admitted",0)) + 1
+		else:
+			result.human_refused = int(result.get("human_refused",0)) + 1
+			receipt.reason = "Worker did not admit the deferred human stroke; retry the stroke."
+			wb.refuse(receipt.reason)
+		manual_receipt.emit(receipt)
+	delivering_manual = false
 
 func defer_manual(point: Vector2i, material: int) -> int:
 	if not active or delivering_manual: return 0
 	if manual.size() >= wb.host.simulation_worker.MAX_PENDING_BRUSH_COMMANDS:
 		wb.refuse("Current drawing chunk is busy; retry this brush stroke.")
+		result.human_refused = int(result.get("human_refused",0)) + 1
+		manual_receipt.emit({"status":"refused","point":point,"material":material,"count":1,"reason":"Deferred human queue is full."})
 		return -1
 	manual.append([point,material,int(wb.applied.brush)])
+	result.human_pending = manual.size()
+	manual_receipt.emit({"status":"deferred","point":point,"material":material,"radius":int(wb.applied.brush),"count":1})
 	return 1
 
 func add_run(x: int,y: int,width: int,material: int) -> void:
@@ -89,11 +132,13 @@ func poll() -> void:
 	var receipt: Dictionary = worker.art_take_result()
 	if not receipt.is_empty() and active:
 		last_receipt = receipt
-		native_receipt.emit(receipt)
 		waiting = false
 		remember(receipt.get("readback",[]))
-		for key: String in ["checked","changed","excluded"]: result[key] += int(receipt.get(key,0))
-		if receipt.get("status") == "partial": stop(str(receipt.get("reason","Native write incomplete")))
+		for key: String in ["checked","changed","unchanged","excluded","refused"]: result[key] = int(result.get(key,0)) + int(receipt.get(key,0))
+		native_receipt.emit(receipt)
+		if receipt.get("status") in ["partial","refused"]:
+			native_refused = receipt.get("status") == "refused"
+			stop(str(receipt.get("reason","Native write incomplete")))
 	if not active: return
 	var state: Dictionary = worker.art_state()
 	if state.executing: result.status = "executing"
@@ -101,19 +146,11 @@ func poll() -> void:
 	if wb.host.simulation_worker.has_failed(): stop("Native simulation failed")
 	if waiting and not state.executing and not state.queued and state.epoch != epoch: waiting = false
 	if not waiting:
-		delivering_manual = true
-		var queued_manual: Array = manual
-		manual = []
-		for stroke: Array in queued_manual:
-			var brush: int = wb.applied.brush
-			wb.applied.brush = stroke[2]
-			wb.paint(stroke[0],stroke[1])
-			wb.applied.brush = brush
-		delivering_manual = false
+		_deliver_manual()
 	if stopping:
 		if not state.executing and not state.queued and not waiting:
 			active = false
-			result.status = "partial" if result.checked>0 else "cancelled"
+			result.status = "refused" if native_refused and result.changed == 0 else ("partial" if result.checked>0 else "cancelled")
 		return
 	if waiting: return
 	var frame := Engine.get_process_frames()

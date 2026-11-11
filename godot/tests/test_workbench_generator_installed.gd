@@ -9,6 +9,7 @@ var wb: Control
 var dialog: ConfirmationDialog
 var checks := 0
 var failures := 0
+var completed := false
 
 func _initialize() -> void:
 	ProjectSettings.set_setting("cybersand/native_worker_threads", 1)
@@ -47,6 +48,9 @@ func exercise() -> void:
 	dialog = wb._generated_dialog
 	dialog.open_new()
 	if not check(dialog._profile.item_count >= 2, "installed dropdown contains real recipes"): return
+	var expected_profiles := OS.get_environment("WB_GENERATOR_PROFILE_COUNT")
+	if not expected_profiles.is_empty():
+		if not check(dialog._profile.item_count == int(expected_profiles), "full Workbench profile count matches package manifest"): return
 	check(dialog._profile.get_item_text(dialog._profile.selected) == "gen007-deepworks", "real Deepworks profile selected")
 	await capture("generator-profiles")
 	var reopening := OS.get_environment("WB_GENERATOR_REOPEN") == "1"
@@ -89,7 +93,8 @@ func exercise() -> void:
 	await capture("generator-reopened" if reopening else "generator-painted-saved")
 	if reopening:
 		check(wb.paint(Vector2i(123,99),58), "continue authoring after complete process restart")
-		await until(func() -> bool: return host.image.get_pixel(123,99).r8 == 58, "continued edit applied natively")
+		if not await until(func() -> bool: return host.image.get_pixel(123,99).r8 == 58, "continued edit applied natively"): return
+	completed = true
 
 func run() -> void:
 	root.size = Vector2i(1280,900)
@@ -100,6 +105,7 @@ func run() -> void:
 	host = current_scene
 	wb = host.shared_workbench
 	await exercise()
+	check(completed, "complete installed generate/install/paint/save or fresh-process reopen flow executed")
 	host.queue_free()
 	await process_frame
 	await process_frame

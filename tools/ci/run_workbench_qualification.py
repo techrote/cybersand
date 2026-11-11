@@ -19,6 +19,10 @@ import sys
 import tarfile
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "tools"))
+from package_explore001_candidate import stage_generator_profiles
+import native_candidate_identity
+
 REOPEN_VARS = (
     "WB_GENERATOR_REOPEN", "WB_GENERATOR_EXPECT_MISSING", "PAINT_REOPEN",
     "PAINT_GENERATED_REOPEN", "CYBERSAND_PAINT_HISTORY_REOPEN",
@@ -31,7 +35,7 @@ def digest(path: Path) -> str:
 
 
 def completion(text: str, marker: str) -> dict:
-    lines = [line.split(marker, 1)[1].strip() for line in text.splitlines() if marker in line]
+    lines = [line[len(marker):].strip() for line in text.splitlines() if line.startswith(marker + " ")]
     if not lines:
         raise RuntimeError(f"Required completion marker is absent: {marker}")
     tail = lines[-1]
@@ -112,6 +116,9 @@ def stage_linux(args):
         raise ValueError("Linux install destination must be a new non-Git directory")
     native = "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
     rapier = "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"
+    commit, tree, source_inputs = native_candidate_identity.source(ROOT)
+    subprocess.run(["git", "diff", "--exit-code", "HEAD", "--", "godot/scripts", "godot/tests", "examples/worldgen"],
+                   cwd=ROOT, check=True)
     payload = subprocess.check_output(["git", "archive", "HEAD", "--", "godot", "examples/worldgen"], cwd=ROOT)
     destination.mkdir(parents=True)
     with tarfile.open(fileobj=io.BytesIO(payload)) as archive:
@@ -122,9 +129,14 @@ def stage_linux(args):
                 continue
             data = archive.extractfile(item).read()
             if item.name in (native, rapier):
+                pointer = data
                 data = (ROOT / item.name).read_bytes()
                 if not data.startswith(b"\x7fELF"):
                     raise ValueError(f"Missing materialized Linux runtime: {item.name}")
+                if item.name == rapier:
+                    match = re.fullmatch(rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n", pointer)
+                    if match is None or hashlib.sha256(data).hexdigest() != match[1].decode() or len(data) != int(match[2]):
+                        raise ValueError("Linux Rapier differs from the committed dependency pin")
             elif data.startswith(b"version https://git-lfs.github.com/spec/v1\n"):
                 match = re.fullmatch(rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n", data)
                 data = (ROOT / item.name).read_bytes()
@@ -133,22 +145,52 @@ def stage_linux(args):
             target = destination / item.name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
-    resources = destination / "godot/authoring/worldgen"
-    resources.mkdir(parents=True, exist_ok=True)
-    for profile in sorted((destination / "examples/worldgen").glob("*.json")):
-        shutil.copyfile(profile, resources / profile.name)
+    profiles = stage_generator_profiles(destination)
     # Retained provenance describes the old committed binary, not this rebuild.
     retained = destination / "godot/addons/cybersand_native/runtime-provenance.linux.json"
     if retained.exists():
         retained.rename(retained.with_name("retained-runtime-provenance.linux.reference.json"))
     identity = {
-        "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
-        "source_tree": subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], cwd=ROOT, text=True).strip(),
+        "source_commit": commit,
+        "source_tree": tree,
+        "source_inputs": source_inputs,
         "native_sha256": digest(destination / native),
+        "generator_profiles_sha256": profiles,
         "files_sha256": {p.relative_to(destination).as_posix(): digest(p) for p in sorted(destination.rglob("*")) if p.is_file()},
     }
     (destination / "qualification-source.json").write_text(json.dumps(identity, indent=2)+"\n", encoding="utf-8")
     print(destination)
+
+
+def verify_package(package: Path) -> dict:
+    windows = (package / "candidate-manifest.json").is_file()
+    filename = "candidate-manifest.json" if windows else "qualification-source.json"
+    manifest = json.loads((package / filename).read_text(encoding="utf-8"))
+    for name, expected in manifest["files_sha256"].items():
+        if digest(package / name) != expected:
+            raise ValueError(f"Packaged file differs from its identity: {name}")
+    if windows:
+        provenance = json.loads((package / "source-built-candidate-provenance.json").read_text(encoding="utf-8"))
+        native = package / native_candidate_identity.NATIVE
+        if (provenance.get("kind") != "source-built-windows-candidate"
+                or provenance.get("source_commit") != manifest["source_commit"]
+                or provenance.get("source_tree") != manifest["source_tree"]
+                or provenance.get("sha256") != digest(native)
+                or provenance.get("sha256") != manifest["native_sha256"]
+                or provenance.get("size") != native.stat().st_size
+                or not native.read_bytes().startswith(b"MZ")):
+            raise ValueError("Windows delivered DLL/provenance does not match the package source identity")
+        if (package / "godot/addons/cybersand_native/runtime-provenance.json").exists():
+            raise ValueError("Windows package still presents retained binary provenance as current")
+    else:
+        native = package / "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
+        if digest(native) != manifest["native_sha256"] or not native.read_bytes().startswith(b"\x7fELF"):
+            raise ValueError("Linux delivered runtime differs from the source-build identity")
+    commit, tree, inputs = native_candidate_identity.source(ROOT)
+    package_inputs = provenance["source_inputs"] if windows else manifest["source_inputs"]
+    if commit != manifest["source_commit"] or tree != manifest["source_tree"] or inputs != package_inputs:
+        raise ValueError("Installed package does not match the executing qualification source")
+    return manifest
 
 
 def installed(args):
@@ -159,11 +201,16 @@ def installed(args):
         raise ValueError("Installed-validation scratch must be a new directory")
     if any((p / ".git").exists() for p in (scratch, *scratch.parents)):
         raise ValueError("Installed validation must run outside every Git worktree")
+    manifest = verify_package(package)
     scratch.mkdir(parents=True)
     inventory = {name: {p.name: digest(p) for p in sorted((package / name).glob("*.json"))}
                  for name in ("examples/worldgen", "godot/authoring/worldgen")}
     if not inventory["examples/worldgen"] or inventory["examples/worldgen"] != inventory["godot/authoring/worldgen"]:
         raise ValueError("Packaged sibling and resource profile inventories must be present and identical")
+    if inventory["examples/worldgen"] != manifest["generator_profiles_sha256"]:
+        raise ValueError("Installed profiles differ from the packaged generator manifest")
+    runner.env["WB_GENERATOR_PROFILE_COUNT"] = str(len(inventory["examples/worldgen"]))
+    runner.env["CYBERSAND_SOURCE_REVISION"] = manifest["source_commit"]
     (runner.evidence / "profile-inventory.json").write_text(json.dumps(inventory, indent=2)+"\n", encoding="utf-8")
     for variant in ("complete", "resource-only", "missing-profiles"):
         target = scratch / variant
@@ -184,9 +231,11 @@ def installed(args):
                    "WB_GENERATOR_SCREENSHOTS": str(frames), "WB_GENERATOR_REQUIRE_GRAPHICS": "1"}
             runner.godot(project, f"installed-{phase}", "test_workbench_generator_installed",
                          "WB_GENERATOR_INSTALLED", graphical=True, env=env)
-            screenshots = [p for p in frames.glob("*.png") if p.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")]
-            if not screenshots:
-                raise RuntimeError(f"Actual graphical {phase} emitted no PNG framebuffer evidence")
+            screenshots = {p.name for p in frames.glob("*.png") if p.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")}
+            required = {"generator-profiles.png", "generator-native-preview.png",
+                        "generator-reopened.png" if phase == "reopen" else "generator-painted-saved.png"}
+            if not required.issubset(screenshots):
+                raise RuntimeError(f"Actual graphical {phase} is missing required framebuffer evidence: {sorted(required-screenshots)}")
 
 
 def regressions(args):
@@ -194,6 +243,8 @@ def regressions(args):
     project = args.project.resolve()
     runner.godot(project, "regression-import")
     runner.godot(project, "art-keyless", "test_art_provider", "ART_PROVIDER_KEYLESS")
+    runner.godot(project, "art-stored-material", "test_art_stored_material", "ART_STORED_RESULT")
+    runner.godot(project, "art-deferred-manual", "test_art_deferred_manual", "ART_DEFERRED_MANUAL")
     runner.godot(project, "art-native", "test_art_batch_native", "ART_STAGE1_RESULT")
     runner.execute("art-http-fixtures", [sys.executable, str(ROOT / "tools/test_art_provider_transport.py"),
                    "--godot", str(args.godot.resolve()), "--output", str(runner.evidence / "http")])
@@ -232,7 +283,17 @@ def main():
             command.add_argument("--project", type=Path, required=True)
             command.add_argument("--paint", action="store_true")
     args = parser.parse_args()
-    args.run(args)
+    outcome = {"mode": args.mode, "status": "running"}
+    try:
+        args.run(args)
+        outcome["status"] = "passed"
+    except Exception as error:
+        outcome.update(status="failed", error=str(error))
+        raise
+    finally:
+        if hasattr(args, "evidence"):
+            args.evidence.mkdir(parents=True, exist_ok=True)
+            (args.evidence / "qualification.json").write_text(json.dumps(outcome, indent=2)+"\n", encoding="utf-8")
 
 
 if __name__ == "__main__":

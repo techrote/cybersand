@@ -21,6 +21,41 @@ small direct-drawing interface in the ordinary desktop Shared Workbench, not
 another World or editor. The [Stage-2 provider candidate](workbench-art-providers.md) now adds one-shot
 inference; persistent context and scanlines remain **Planned**.
 
+### Repair checkpoint — 2026-11-11
+
+The owner-directed repair branch `codex/wb-art-repair-20261111` preserves #560
+head `e5bf2916` and its implemented context, scanline, multiple-turn, provider and
+diagnostic features. Those features are present in source despite the older
+Stage-2-only description above. The repair adds one native read-only binding,
+`stored_material_at`, backed by `World::stored_material`; physics, `World::get`,
+material IDs and defaults remain unchanged. It requires a rebuilt source-matched
+GDExtension and refuses before writing if that API is missing.
+
+The exclusive worker explicitly excludes transient body masks before both paint
+and erase, checks source eligibility against stored IDs, and confirms the actual
+stored ID after each write. Receipts distinguish requested, checked, changed,
+unchanged, excluded, refused and confirmed counts, plus before/after rows and
+generation/revision/tick. Failed writes retain the actual prefix and any unexpected
+actual material change; no requested-material success is inferred from an overlay.
+
+Diagnosis correction: native masked `Wall` is ID 1, whereas UI Hard Wall is 58.
+At the inspected #560 head the existing `[0,58]` source restriction already
+excluded a masked cell indirectly. The review's exact false-success example is
+not claimed reproduced. The repaired API and explicit mask test remove that
+semantic dependency while preserving the human-selected destination palette.
+
+Deferred human strokes are removed only after the replay call returns. A failed
+admission or World replacement produces explicit refusal feedback and a durable
+traffic event, with pending/admitted/refused human counts. `admitted` means queued,
+not native-applied; the original legacy brush admission remains distinct from the
+later PAINT integration's confirmed completion path. The original brush radius
+and ordering are preserved.
+
+Focused repair tests: `test_art_stored_material.gd` covers actual native workers
+1/4 and body masks over stored Empty/Wall/Hard Wall, with separately labelled
+synthetic rejection fixtures; `test_art_deferred_manual.gd` reproduces refused
+replay and replacement; the original mounted art/provider suites remain required.
+
 Open **Shared Workbench → Art batches**. The floating, hideable test input
 preserves the canvas layout. Draw/Stop sit beside its title. Enter ordered JSON,
 select an XYWH work area, optional protected rectangle and enabled materials.

@@ -272,9 +272,11 @@ func _process(_delta: float) -> void:
 		status_text = input_error.left(500)+(" … See Traffic for full details." if input_error.length()>500 else "")
 	elif executor.active or executor.result.status != "idle":
 		var r: Dictionary = executor.result
-		status_text = "%s · %d checked · %d changed · %d protected/outside skipped%s" % [str(r.status).capitalize(),r.checked,r.changed,r.excluded," · "+str(r.reason) if not str(r.reason).is_empty() else ""]
+		status_text = "%s · %d checked · %d changed · %d unchanged · %d protected/outside skipped · %d refused%s" % [str(r.status).capitalize(),r.checked,r.changed,int(r.get("unchanged",0)),r.excluded,int(r.get("refused",0))," · "+str(r.reason) if not str(r.reason).is_empty() else ""]
 		if r.status == "completed" and r.checked > 0 and r.checked == r.excluded:
 			status_text = "No pixels applied · all %d outside the current work area or protected" % r.checked
+		if int(r.get("human_pending",0)) > 0: status_text += " · %d human strokes waiting" % int(r.human_pending)
+		if int(r.get("human_refused",0)) > 0: status_text += " · %d human strokes refused; retry them" % int(r.human_refused)
 
 	if input_mode.selected != 0 and not provider.requested_model.is_empty():
 		var u: Dictionary = provider.usage
@@ -297,6 +299,8 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	provider.finished.connect(provider_finished)
 	executor.native_receipt.connect(func(receipt: Dictionary) -> void:
 		if log_draw: provider.log_event("native_receipt",receipt))
+	executor.manual_receipt.connect(func(receipt: Dictionary) -> void:
+		provider.log_event("deferred_human_stroke",receipt))
 	provider.traffic_changed.connect(func() -> void: traffic_dirty = true)
 	var row := HBoxContainer.new()
 	for name_text: String in ["LM Studio","OpenAI","NVIDIA"]: source.add_item(name_text)
