@@ -453,6 +453,11 @@ public:
 
     [[nodiscard]] String get_last_error() const { return error_; }
 
+    // Compile-time capability handshake: older installed GDExtensions still
+    // support 4096, so authored paint must not report a save as replayable
+    // until this exact native constructor is present.
+    [[nodiscard]] std::int64_t workbench_start_rectangle_capacity() const { return 32768; }
+
     [[nodiscard]] bool build_tuned_world(const Ref<CyberNativeCellWorld>& adapter,
         const PackedInt32Array& rectangles, const PackedInt32Array& profile) {
         error_ = String();
@@ -1016,6 +1021,8 @@ protected:
                              &CyberDemoBridge::liquid_policy_with_inertial_damping);
         ClassDB::bind_method(D_METHOD("liquid_policy_with_pressure_gas", "request", "gas_enabled"),
                              &CyberDemoBridge::liquid_policy_with_pressure_gas);
+        ClassDB::bind_method(D_METHOD("workbench_start_rectangle_capacity"),
+            &CyberDemoBridge::workbench_start_rectangle_capacity);
         ClassDB::bind_method(D_METHOD("prepare_liquid_world", "world", "rectangles", "profile", "policy",
             "water_fills", "liquid_policy", "options"), &CyberDemoBridge::prepare_liquid_world);
         ClassDB::bind_method(D_METHOD("prepare_liquid_level", "world", "payload", "profile", "policy",

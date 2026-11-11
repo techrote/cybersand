@@ -10,17 +10,26 @@ const MATERIALS := [2,14,29,13,19,23,25,26,27,3,58,0,8,16,12,7,9,28]
 const MATERIAL_NAMES := ["Sand","Dust","Rust","Stone","Seed","Salt","Sodium","Gunpowder","Coal","Water","Hard wall","Erase",
 	"Lava","Oil","Acid","Wood","Ice","Metal"]
 const MAX_BODIES := 8
-const MAX_RUNS := 4096
-# Starting paint records. When the brush fills them, the history is compacted
-# into box stamps of its merged rectangles (compact_edits), so the practical
-# bound is the native construction budget of MAX_RUNS rectangles.
-const MAX_STAMPS := 4096
+# Workbench-only construction budget; other MicroScenario starts still
+# enforce 4096. All authored starts retain the 1 MiB saved-file budget.
+const MAX_RUNS := 32768
+const MAX_STAMPS := 32768
 const DIRECTORY := "user://workbench"
 const BYTE_LIMIT := 1024 * 1024
 const DEFAULT_OPTIONS := {"budget":20.0,"mass_multiplier":1.0,"inertia_multiplier":1.0,
 	"thrust_multiplier":1.0,"torque_multiplier":1.0,"boost_multiplier":2.0}
 const ROOT_KEYS := ["version","extent","actors","next_id","selected","edits","response","liquid_policy",
 	"normalize","rule_radius","source","material","brush","fire"]
+
+# Refuse to author an un-reopenable start against an older installed DLL/SO.
+# The bridge object reports only immutable constructor capability, not a World.
+static func native_rectangle_budget() -> int:
+	if not ClassDB.class_exists(&"CyberDemoBridge"): return 4096
+	var bridge: Object = ClassDB.instantiate(&"CyberDemoBridge")
+	if bridge == null or not bridge.has_method(&"workbench_start_rectangle_capacity"):
+		return 4096
+	return clampi(int(bridge.call(&"workbench_start_rectangle_capacity")),4096,MAX_RUNS)
+
 
 static func fresh(policy: PackedInt32Array, extent := Vector2i(2048,2048)) -> Dictionary:
 	return {"version":2,"extent":[extent.x,extent.y],"actors":[],"next_id":1,"selected":0,"edits":[],
@@ -379,8 +388,21 @@ static func _stamp_valid(stamp: Variant, size: Vector2i) -> bool:
 static func stamp_rows(stamp: Array) -> int:
 	return int(stamp[3]) if stamp.size() == 5 else 2*int(stamp[2])+1
 
+static var _extra_stamp_materials: Dictionary = {}
+
 static func _stamp_material(value: Variant) -> bool:
-	return _material(value) or (_integer(value,0,255) and int(value) in STAGED_MATERIALS)
+	if not _integer(value,0,255): return false
+	if _material(value) or int(value) in STAGED_MATERIALS: return true
+	var id := int(value)
+	if not _extra_stamp_materials.has(id):
+		# PAINT uses the loaded native catalogue's validity check. This does not
+		# expand powder sources or change the legacy selected-brush field.
+		if not ClassDB.class_exists(&"CyberDemoBridge"): return false
+		var bridge: Object = ClassDB.instantiate(&"CyberDemoBridge")
+		if not bridge.has_method(&"inspect_interaction"): return false
+		var receipt: Dictionary = bridge.call(&"inspect_interaction",id,id,0)
+		_extra_stamp_materials[id] = bool(receipt.get("ok",false))
+	return bool(_extra_stamp_materials[id])
 
 static func validate(value: Variant, check_starting_paint: bool = true) -> String:
 	if not _keys(value,ROOT_KEYS) or not _integer(value.version,2,2):
@@ -476,7 +498,7 @@ static func rectangles(setup: Dictionary) -> Dictionary:
 			if index >= 0 and int(runs[index+1])+int(runs[index+3]) == y:
 				runs[index+3] = int(runs[index+3])+1
 				continue
-			if runs.size() >= MAX_RUNS*5: return {"error":"Starting terrain exceeds 4096 rectangles."}
+			if runs.size() >= MAX_RUNS*5: return {"error":"Starting terrain exceeds the %d-rectangle construction budget." % MAX_RUNS}
 			open[key] = runs.size()
 			runs.append_array([start,y,x-start,1,mat])
 	return {"runs":runs}

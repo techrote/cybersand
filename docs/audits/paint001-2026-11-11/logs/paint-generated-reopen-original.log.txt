@@ -1,0 +1,26 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ERROR: PAINT_EDITOR_GENERATED_WORKBENCH fresh-process saved provenance and authored history unchanged
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_paint_editor_generated_workbench.gd:33)
+       [1] reopen (res://tests/test_paint_editor_generated_workbench.gd:215)
+       [2] run (res://tests/test_paint_editor_generated_workbench.gd:259)
+       [3] until (res://tests/test_paint_editor_generated_workbench.gd:40)
+ERROR: PAINT_EDITOR_GENERATED_WORKBENCH fresh-process actor placement and selected real flyer preserved
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_paint_editor_generated_workbench.gd:33)
+       [1] reopen (res://tests/test_paint_editor_generated_workbench.gd:235)
+       [2] capture (res://tests/test_paint_editor_generated_workbench.gd:94)
+       [3] until (res://tests/test_paint_editor_generated_workbench.gd:40)
+ERROR: PAINT_EDITOR_GENERATED_WORKBENCH fresh-process solver and response configuration preserved
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_paint_editor_generated_workbench.gd:33)
+       [1] reopen (res://tests/test_paint_editor_generated_workbench.gd:237)
+       [2] capture (res://tests/test_paint_editor_generated_workbench.gd:94)
+       [3] until (res://tests/test_paint_editor_generated_workbench.gd:40)
+PAINT_EDITOR_GENERATED_WORKBENCH {"checks":19,"completed":true,"elapsed_usec":3069370,"failures":["fresh-process saved provenance and authored history unchanged","fresh-process actor placement and selected real flyer preserved","fresh-process solver and response configuration preserved"],"reopen":"1"}

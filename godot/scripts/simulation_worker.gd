@@ -14,6 +14,7 @@ const PreparedTrialBody = preload("res://scripts/prepared_trial_body_session.gd"
 const LiquidHostEvidence = preload("res://scripts/liquid_host_evidence.gd")
 const PhysicalEffects = preload("res://scripts/physical_actor_effects.gd")
 const PhysicalUsables = preload("res://scripts/physical_usable_runtime.gd")
+const PaintEditorExecutor = preload("res://scripts/workbench_paint_editor_executor.gd")
 const SIMULATION_HZ: float = 60.0
 const FIXED_TIMESTEP: float = 1.0 / SIMULATION_HZ
 const TICK_INTERVAL_USEC: int = 16667
@@ -101,6 +102,18 @@ var _physical_usable_cancelled_generations := PackedInt64Array([-1, -1, -1, -1, 
 
 var _pending_emissions: Array[Vector4i] = []
 var _pending_cell_emissions: Array[Dictionary] = []
+# PAINT-001: one bounded operation, one immutable receipt, existing native owner.
+var _paint_epoch: int = 1
+var _paint_sequence: int = 0
+var _paint_pending: Dictionary = {}
+var _paint_result: Dictionary = {}
+var _paint_busy: bool = false
+var _paint_inflight: bool = false
+var _paint_progress: Dictionary = {"status":"idle"}
+var _paint_context: Dictionary = {"generation":-1,"revision":-1,"tick":-1,"paused":false,"extent":Vector2i.ZERO}
+var _paint_materials: PackedInt32Array = PaintEditorExecutor.native_materials()
+var _paint_owner: RefCounted
+
 var _reset_requested: bool = false
 var _reset_spawn: Vector2 = Vector2(150.0, 145.0)
 var _reset_sampled_character_enabled: bool = true
@@ -190,6 +203,7 @@ var _water_explicit_sink: int = 0
 func queue_lab(command: Dictionary) -> void:
 	_mutex.lock()
 	_lab_request_revision += 1
+	_paint_epoch += 1
 	_lab_request = command.duplicate(true)
 	_lab_request["_owner_request_revision"] = _lab_request_revision
 	_pending_physical_effects.clear()
@@ -1062,6 +1076,7 @@ func stop_worker() -> void:
 	_mutex.lock()
 	_running = false
 	_lab_request_revision += 1
+	_paint_epoch += 1
 	_mutex.unlock()
 	_thread.wait_to_finish()
 	_actor_session.set_suspended(true)
@@ -1151,6 +1166,7 @@ func queue_actor_prototype_reset(definitions: Array, spawn_position: Vector2, sa
 		_mutex.unlock()
 		return 0
 	_lab_request_revision += 1
+	_paint_epoch += 1
 	_reset_requested = true
 	_reset_spawn = spawn_position
 	_reset_sampled_character_enabled = sampled_enabled
@@ -1698,6 +1714,9 @@ func queue_emit_disc(
 	var packed_material: int = (material_id & EMISSION_MATERIAL_MASK) | packed_flags
 	var emission_command: Vector4i = Vector4i(world_x, world_y, radius, packed_material)
 	_mutex.lock()
+	if _paint_busy or not _paint_result.is_empty():
+		_mutex.unlock()
+		return false
 	if not _prepared_physical_publication.is_empty() \
 		or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty():
 		_mutex.unlock()
@@ -1734,6 +1753,9 @@ func queue_emit_cells(
 		"packed_material": packed_material,
 	}
 	_mutex.lock()
+	if _paint_busy or not _paint_result.is_empty():
+		_mutex.unlock()
+		return false
 	if not _prepared_physical_publication.is_empty() \
 		or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty():
 		_mutex.unlock()
@@ -1761,6 +1783,112 @@ func queue_emit_cells(
 	return true
 
 
+func paint_materials() -> PackedInt32Array:
+	return _paint_materials.duplicate()
+
+
+func paint_state() -> Dictionary:
+	_mutex.lock()
+	var result: Dictionary = _paint_context.duplicate()
+	result.merge(_paint_progress, true)
+	result.epoch = _paint_epoch
+	result.busy = _paint_busy or not _paint_result.is_empty()
+	result.executing = _paint_inflight or (_paint_busy and _paint_pending.is_empty())
+	result.queued = not _paint_pending.is_empty()
+	result.receipt_ready = not _paint_result.is_empty()
+	result.result_operation_id = int(_paint_result.get("operation_id",0))
+	_mutex.unlock()
+	return result
+
+
+func paint_queue(request: Dictionary) -> Dictionary:
+	var candidate: Dictionary = request.duplicate(false)
+	if candidate.has("rect") and not candidate.has("region"):
+		candidate.region = candidate.rect
+	var reason: String = PaintEditorExecutor.request_error(candidate)
+	if not reason.is_empty(): return {"status":"refused","reason":reason}
+	_mutex.lock()
+	if not _running or _workbench_extent == Vector2i.ZERO: reason = "The native Workbench is not ready."
+	elif _simulation_failed: reason = "The native simulation failed."
+	elif not _paused: reason = "Pause the simulation before authoring."
+	elif _paint_busy or not _paint_result.is_empty(): reason = "Wait for the current paint acknowledgement."
+	elif _reset_requested or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty(): reason = "The canvas is changing."
+	elif not _workbench_refusal.is_empty(): reason = _workbench_refusal
+	elif not _pending_emissions.is_empty() or not _pending_cell_emissions.is_empty(): reason = "Wait for the previous brush command."
+	elif int(candidate.expected_generation) != int(_paint_context.generation) \
+		or int(candidate.expected_revision) != int(_paint_context.revision) \
+		or int(candidate.expected_tick) != int(_paint_context.tick): reason = "The native source changed; retry with the current canvas."
+	if reason.is_empty():
+		_paint_sequence += 1
+		candidate = candidate.duplicate(true)
+		candidate.operation_id = _paint_sequence
+		candidate._epoch = _paint_epoch
+		candidate._settings_revision = _construction_settings_revision
+		_paint_pending = candidate
+		_paint_busy = true
+		_paint_progress = {"status":"queued","operation_id":_paint_sequence,"checked":0,"applied":0}
+	var operation_id: int = _paint_sequence
+	_mutex.unlock()
+	return {"status":"queued","operation_id":operation_id} if reason.is_empty() else {"status":"refused","reason":reason}
+
+
+func paint_take_result() -> Dictionary:
+	_mutex.lock()
+	var result: Dictionary = _paint_result
+	_paint_result = {}
+	_mutex.unlock()
+	return result
+
+
+func paint_stop() -> Dictionary:
+	_mutex.lock()
+	_paint_epoch += 1
+	# The worker retires both pending and active work, preserving a truthful
+	# receipt. An executing finite slice finishes before Stop is acknowledged.
+	var result := {"epoch":_paint_epoch,"acknowledged":not _paint_busy}
+	_mutex.unlock()
+	return result
+
+
+func _consume_paint(local_paused: bool) -> void:
+	# This method runs only on the existing exclusive simulation thread, after
+	# ordinary emissions/ticks. No caller can read or own the mutable World.
+	_mutex.lock()
+	var context := {"epoch":_paint_epoch,"generation":_world_generation,
+		"revision":int(_world.revision),"tick":int(_world.tick_index),
+		"paused":local_paused and _paused,"extent":_workbench_extent,
+		"settings_revision":_construction_settings_revision,"error":"",
+		"paint_allowed":not _micro_active or _scenario_host.allows_tool("paint"),
+		"erase_allowed":not _micro_active or _scenario_host.allows_tool("erase")}
+	if _simulation_failed: context.error = "The native simulation failed."
+	elif _water_lab_active: context.error = "Controlled Water experiments do not admit construction edits."
+	elif _reset_requested or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty(): context.error = "The canvas is changing."
+	elif _workbench_extent == Vector2i.ZERO: context.error = "The Workbench World was replaced."
+	elif not _workbench_refusal.is_empty(): context.error = _workbench_refusal
+	_paint_context = context.duplicate()
+	var candidate: Dictionary = _paint_pending
+	_paint_pending = {}
+	var active: bool = _paint_busy
+	_paint_inflight = active
+	_mutex.unlock()
+	if not active: return
+	if not candidate.is_empty():
+		_paint_owner = PaintEditorExecutor.new()
+		_paint_owner.begin(candidate, _workbench_extent, _paint_materials)
+	var receipt: Dictionary = _paint_owner.step(_world, context)
+	var progress: Dictionary = _paint_owner.progress()
+	_mutex.lock()
+	_paint_inflight = false
+	_paint_progress = progress
+	_paint_context.revision = int(_world.revision)
+	_paint_context.tick = int(_world.tick_index)
+	if not receipt.is_empty():
+		_paint_result = receipt
+		_paint_busy = false
+		_paint_owner = null
+	_mutex.unlock()
+
+
 func queue_paint(
 	world_x: int,
 	world_y: int,
@@ -1780,6 +1908,7 @@ func queue_reset(
 ) -> void:
 	_mutex.lock()
 	_lab_request_revision += 1
+	_paint_epoch += 1
 	_reset_requested = true
 	_reset_spawn = spawn_position
 	_reset_sampled_character_enabled = sampled_character_enabled
@@ -2205,6 +2334,7 @@ func _worker_loop() -> void:
 					_paused = true
 					_mutex.unlock()
 
+		_consume_paint(local_paused)
 		var worker_step_time_ms: float = float(Time.get_ticks_usec() - step_start_usec) / 1000.0
 		_publish_snapshot(
 			worker_step_time_ms,
