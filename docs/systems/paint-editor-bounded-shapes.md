@@ -158,13 +158,71 @@ Save waits for native completion and records the start recipe. It does not snaps
 an evolved simulation. Actors, selected instance, solver settings and generated-map
 identity retain the existing #542 contracts. Flatten / #548 remains separate.
 
-## Executed qualification
+## Exact-source native and desktop qualification — 11 November 2026
+
+The following are the **new PAINT source-matched** execution results, not the
+older retained-library baseline below. The implementation/fixture source was
+`0634a8b67f233802770255815db03b8464cb2e90`. GitHub's commit comparison
+confirms later changes through `303f43cffb6814810932930504e1e77d27b02969`
+affect only three dedicated PAINT CI workflow files; no engine, geometry,
+test, native or persistence source changed.
+
+- **[Linux exact-head run 43100730071](https://github.com/techrote/cybersand/actions/runs/43100730071) — PASS**:
+  source-built GDExtension and Godot 4.7 import; 159 geometry/native-readback
+  checks; 109 native checks each with one and four workers; 21 executor checks;
+  five interrupted-recovery checks; 1,880 authored-start checks and 1,920
+  independent fresh-process reopen checks (including ordinary and GEN-backed
+  **4,500-rectangle** starts); actual X11/OpenGL Workbench author/reopen
+  59/12 and generated Workbench author/reopen 39/19; existing canvas 164.
+  All reported test failures were zero. Linux extension SHA-256:
+  `89ce92a16b671bad287ebf797cc05371cbb934668f110fa52743cbed05addbaa`.
+  [Original retained Actions artifact](https://github.com/techrote/cybersand/actions/runs/43100730071/artifacts/13893045454).
+- **[Windows exact-source run 43102977627](https://github.com/techrote/cybersand/actions/runs/43102977627) — PASS**:
+  pinned LLVM-MinGW cross-build; official pinned Windows Godot 4.7; native DLL
+  and Rapier hash validation; real Windows material/geometry and 1/4-worker
+  tests; high-detail history author/reopen in separate processes; ordinary
+  and generated mounted Workbench author/reopen; existing canvas and
+  generator controls. Same 159, 109+109, 21, 5, 1,880/1,920, 59/12,
+  39/19 counts with zero failures. Windows extension SHA-256:
+  `673afc2ef843fb19c93d04d0c426739a41bd48e7b91ab1b996673c6c7e0b2f24`.
+  [Original retained Actions artifact](https://github.com/techrote/cybersand/actions/runs/43102977627/artifacts/13891948864).
+- Across Linux and Windows, one and four workers, the same eight actual
+  native material readback witnesses match SHA-256
+  `5a11f2271d53ed3634936619fa67d019d2413905708f0b28ccb61b7596ad8154`.
+  The native binaries have different hashes as expected; tested GDScript
+  fingerprints match. This is paused-edit material equivalence, not
+  arbitrary physics replay or Windows user-acceptance proof.
+- **[Full independent Native C++ test-family matrix](https://github.com/techrote/cybersand/actions/runs/43102700577)**:
+  separately dispatched; the provider/policy, worldgen, normal-native and
+  normal-soliding families passed. Its ASan/UBSan, soliding-ASan, TSan and
+  aggregate disposition must be taken from the complete Actions result;
+  do not count an in-progress family as PASS.
+- **[Source-bound integration dry-run](https://github.com/techrote/cybersand/actions/runs/43102977627)**:
+  merging with agent-art #560 reports textual conflicts in
+  `godot/scripts/shared_workbench.gd` and `godot/scripts/simulation_worker.gd`;
+  merging with Materials Lab #562 reports a conflict only in
+  `docs/reference/retrieval-corpus.json`. Both combined runtimes remain
+  unexecuted. Future reconciliation must arbitrate agent and human paint
+  queues/receipts, preserve caller-specific material and source protections,
+  and invalidate stale undo/save state. Merge the Materials Lab and PAINT
+  retrieval entries without losing either. No extra UI redesign is required.
+
+The first Windows [run 43101852644](https://github.com/techrote/cybersand/actions/runs/43101852644)
+stopped because the test log filter omitted the successful `PAINT_RECOVERY`
+marker; it was a *workflow check error*, not a native recovery failure.
+This red evidence remains retained; the corrected exact-source Windows
+rerun above passed. Owner GUI evaluation of this latest native build,
+full cross-branch runtime qualification, Ready promotion and merging remain
+separate authorization/acceptance steps.
+
+## Previous retained-runtime qualification baseline — 11 November 2026
 
 All runtime results below use official Godot **4.7.stable.official.5b4e0cb0f** and
 source-matched retained native libraries. The Linux CyberSand library SHA-256 is
 `46a9c61d3540cfecbe38f9301bd08a7b69efa4865115a7ecb5bea029a5452361`;
 all 87 fingerprinted native source inputs match its manifest. Rapier is 0.35.2.
-No new C++ build or Windows execution is claimed.
+The baseline below predates the source-built Linux and Windows qualifications
+recorded above. It does not itself claim a new build or Windows execution.
 
 | Regression | Actual result |
 | --- | --- |
@@ -245,5 +303,7 @@ The original GDScript regression now genuinely passes. Initial development logs
 are retained for the accidentally selected Godot 4.6 runtime, missing toolbar
 parenting, stale test helper names, capture conversion and JSON integer/float test
 comparisons. They are superseded only by identified corrected runs. Draft-skipped
-hosted native jobs are not passes. Windows, owner-human acceptance and merge
-remain outstanding; this document does not authorize promotion or merging.
+hosted native jobs are not passes. The updated source-matched Windows/Linux
+qualifications are explicitly recorded above; owner-human GUI acceptance,
+combination with the two other Draft branches, and merge remain outstanding.
+This document does not authorize promotion or merging.
