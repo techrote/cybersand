@@ -21,12 +21,17 @@ The live sources inspected before editing were:
 | Source | Exact inspected commit |
 | --- | --- |
 | Accepted main, including #542 | `d4b18e7f06839b35c8f6a66195206da0f33c5fa3` |
-| Agent PR #560 | `e5bf2916ccdbb331690e5f5eef0cdef9cc734089` |
+| Agent PR #560, initial repair baseline | `e5bf2916ccdbb331690e5f5eef0cdef9cc734089` |
+| Agent PR #560, final live reread and preserved merge | `381307eb988dc25f36716d8308d47e210fdd3b4e` |
 | PAINT PR #544 | `c9b5084e0276f0b5036d02db835973f04bb6f51f` |
 
 PAINT advanced beyond the older `7c2f3d55` inspection checkpoint. The current
 head includes its large-Fill and authored-capacity corrections. Those commits,
-editor modules, overlays, tests and evidence are preserved.
+editor modules, overlays, tests and evidence are preserved. During qualification,
+#560 advanced by three documentation, benchmark and graphical-test commits. The
+latest head `381307eb` was incorporated through another ordinary merge. Its
+application and native implementation bytes are unchanged; its graphical
+multi-turn, Stop and protected-area regression is also run on the combined tree.
 
 The [repair branch](https://github.com/techrote/cybersand/tree/codex/wb-art-repair-20261111)
 first isolates generator packaging and native/deferred-stroke repairs on #560.
@@ -155,7 +160,11 @@ saved material digest and continued authoring. Graphical runs require real
 framebuffer PNGs and reject a headless display. Original failing logs are retained.
 
 Loopback provider fixtures test HTTP wire formats, errors, timeout, Stop and image
-payloads without paid calls. A deterministic provider fixture proves control and
+payloads without paid calls. The retained `run_art_final_graphical.gd` also drives
+the actual Send/Stop controls, checks incrementally rendered native results,
+protection, retained conversations, local/world coordinate follow-ups and a
+rejected stale-area response. It runs graphically on both target operating
+systems with a deterministic loopback provider and an isolated settings folder. A deterministic provider fixture proves control and
 editor behavior; it is not genuine local/cloud model inference. Earlier PR #560
 inference evidence remains attributable to its own source/runtime.
 
