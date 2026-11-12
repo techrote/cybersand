@@ -119,6 +119,8 @@ func run() -> void:
 	art.stop()
 	await until(func(): return not art.active,"Stop retires sparse polygon after partial progress")
 	panel.provider.requested_model = ""
+	# Context modes use this exact fixture, independently of any resumed session.
+	panel.conversation.clear()
 	for i: int in range(16): panel.conversation.append({"role":"user","content":"turn %d" % i})
 	panel.context_mode.select(0)
 	check(panel.model_context().size()==16,"Full supplies all text turns")
