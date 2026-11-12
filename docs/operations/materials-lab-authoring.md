@@ -34,6 +34,15 @@ It does not replace native production definitions, the simulation worker, the
 Workbench or World. Production still has 132 slots, including invalid reserved
 ID 10. The synthetic powder at 132 exists only inside an external candidate build.
 
+The five tabs are **Inspect**, **Edit copy**, **Reactions**, **Try originals**
+(unchanged built-in materials) and **Compare edits** (your copy against the
+original). In Inspect, drag the edge between column titles to set widths;
+double-click a divider to restore its width. The table scrolls sideways if it
+gets wider than the window. **Defined value** is the saved definition; **Value
+used** includes engine overrides. Hover any cell to read the whole explanation
+and its technical name. **Show technical details and reaction data** reveals
+the full reference information.
+
 ## Launch and prerequisites
 
 Use a complete checkout of the implementation branch and its history. Git LFS
@@ -54,7 +63,7 @@ godot --path godot -- --materials-lab
 
 Read-only inspection and native experiments require the matching engine library.
 Candidate authoring additionally requires Python 3, Git history and a C++20
-compiler for **Compile + native test**. The Candidate tab accepts Python and
+compiler for **Build + check definition**. The Edit copy tab accepts Python and
 compiler executable paths without shell arguments. A compiler override is also
 available through `CYBERSAND_LAB_CXX`. Source tools must remain next to the
 Godot project; this is a desktop source workflow, not an exported/Web authoring
@@ -93,7 +102,7 @@ retained production DLL as a new candidate. The standalone
 
 For source candidate compilation, start Godot from a configured x64 C++20
 compiler environment; for MSVC use an **x64 Native Tools Command Prompt** with
-Python available. Select `cl` or its full executable path in the Candidate tab.
+Python available. Select `cl` or its full executable path in the Edit copy tab.
 An executable path alone cannot supply MSVC's missing SDK include/library
 environment. The Python default on Windows is `python`.
 
@@ -139,7 +148,7 @@ Examples to check:
 
 When opened from Shared Workbench, the inspector receives a **copied applied
 policy receipt at opening**. Reopen to refresh it. A standalone Lab labels
-compiled defaults as unobserved by a live World. **Inspect test-owner policy**
+compiled defaults as unobserved by a live World. **Show applied Water settings**
 switches the inspector to the isolated experiment's acknowledged native policy.
 The UI never reads a simulation-worker-owned World from the main thread.
 
@@ -185,14 +194,14 @@ compatibility lock without refreshing it. No failure publishes a partial bundle.
 
 ## Save, import, compile and compare
 
-**Save / export preset…** writes a version-1 JSON envelope containing the exact
+**Save material preset…** writes a version-1 JSON envelope containing the exact
 candidate, source catalogue digest and deterministic candidate SHA-256.
 **Import preset…** verifies the envelope, digest, schema, current compatibility
 and source identity before replacing the displayed candidate. Tampered or
 malformed imports preserve the current candidate. The file is reusable with
 the same admitted source; it is not a saved World.
 
-**Compile + native test** generates the complete expanded candidate catalogue,
+**Build + check definition** generates the complete expanded candidate catalogue,
 C++ definitions and Godot metadata in a temporary external build, compiles the
 native probe, executes it and displays a receipt. **Export compiled bundle…**
 performs the same operation and saves to a fresh child directory outside the
@@ -211,10 +220,10 @@ double-counted. It records changed outcomes, deterministic example rolls and pos
 reports the generated product descriptors' initial state bytes. **It does not
 execute World's endpoint/Water-quantity initialization, install a candidate in
 World, simulate candidate movement or establish quantity conservation over time.**
-The separate **Candidate test** backend below supplies that bounded World execution.
+The separate **Compare edits** backend below supplies that bounded World execution.
 
 Authoring runs in a polled child process with **Cancel authoring**, bounded
-output and a five-minute desktop wall limit. **Cancel World test** uses the same
+output and a five-minute desktop wall limit. **Cancel comparison** uses the same
 cancellation marker. The compiler/probe process tree is terminated on timeout or
 cancellation; cancelled/failed jobs cannot qualify a candidate. Closing gives
 cleanup at most two seconds before terminating an unresponsive process. These
@@ -238,7 +247,7 @@ This fixture does not reserve ID 132 against any other experimental branch.
 
 ## Compare an edited candidate in a real native World
 
-The **Candidate test** tab compiles the actual native `World` twice in temporary
+The **Compare edits** tab compiles the actual native `World` twice in temporary
 directories: once from untouched source, once with staged descriptor and
 sparse-rule tables adapted to compiler-generated definitions. Extended endpoint
 effects additionally use a bounded external pair-application adapter. The same
@@ -246,8 +255,8 @@ bounded bay, seed, placement and tick count run in both. Repository source,
 production binaries and the shared running World are not rewritten.
 
 Duplicate **Sand 2**, set density **500** and a distinct base RGBA, then select
-**Candidate test**, **Upper dose**, partner **Water 3**, seed **2**, **120** ticks
-and **4** workers. Press **Compile + compare World**. The candidate penetrates
+**Compare edits**, **Upper dose**, partner **Water 3**, seed **2**, **120** ticks
+and **4** workers. Press **Build + run comparison**. The candidate penetrates
 less deeply than the untouched reference while preserving Water quantity.
 Both images derive from actual stored material/state and compiled RGBA. The
 initial/final selector and stored-coordinate inspector expose material, state A,
@@ -279,7 +288,7 @@ reference share these settings; their hashes are not asserted equal to the
 separate mounted host. Per-cell scheduling eligibility and sleep deadlines remain
 unavailable; aggregate activity and completed native ticks are reported.
 
-**Export World test bundle…** rebuilds/tests into a fresh external child directory
+**Export comparison files…** rebuilds/tests into a fresh external child directory
 and saves the versioned preset, full source-staged reference/candidate fixtures,
 generated definitions and `world-receipt.json`. Executables and saved Worlds are
 excluded. Import `preset.json` to edit it again. The receipt's `scenario` can be
@@ -291,7 +300,7 @@ not establish cross-build saved-world compatibility or production activation.
 workers and executable-source hashes in a versioned, digested JSON case.
 **Import World recipe…** restores the candidate and all visible controls together.
 Import validates the case but never restores a previous successful test claim:
-press **Compile + compare World** for a fresh result. Changed inputs, invalid
+press **Build + run comparison** for a fresh result. Changed inputs, invalid
 IDs, malformed/duplicate fields and digest mismatches are refused. A
 documentation-only Git commit does not invalidate a recipe when all captured
 executable inputs are unchanged. A source mismatch requires explicit candidate
@@ -319,7 +328,7 @@ legacy product initialization. The endpoint selectors also admit a bounded
 Use Ordered or Unordered role-preserving matching for extended effects. Positional
 Symmetric effects, Water retention/state writes, undeclared registers and two
 keep-only endpoints are rejected. The editor aligns a retained endpoint's product
-with its participant. **Test reaction in World** selects the rule's pair and
+with its participant. **Run edited reaction** selects the rule's pair and
 executes the native comparison; the descriptor/resolver-only test explicitly
 refuses extended effects. The production table and World implementation remain
 unchanged. State/epoch/wake details and executed acceptance belong to the dated
@@ -349,7 +358,7 @@ and the probe records 510 changed outcomes over both orientations. This isolates
 the edit from contact scheduling and preserves the production rule.
 
 For an actual authored contact, duplicate **Salt 23** and change both products
-of its Water pair to **Stone**. Run the Candidate test against Water. Native
+of its Water pair to **Stone**. Run the Compare edits against Water. Native
 readback records Stone products, pair events and Water ledger changes instead
 of the reference's Brine products. The rule still uses the existing default
 initialization effect and priority. Changed candidate rules receive generated
@@ -372,7 +381,7 @@ registers, quantity ledger and persistence, and exercise the countdown consumer.
 
 Select existing materials and a partner, then choose **Prepare selected +
 partner**. Set a bounded tick count, seed, one/four workers and the supported
-Water policy. **Step** advances one actual native tick; **Run bounded window**
+Water policy. **Step** advances one actual native tick; **Run set number of steps**
 advances at most one tick per UI frame and stops at the requested endpoint.
 The UI and helper admit 1 through 600 ticks.
 
@@ -385,7 +394,7 @@ selects fixture construction, not a new global/native RNG policy.
 ### Inspect an actual native contact
 
 Left-click the native preview to select a source cell and right-click to select
-a target. **Swap endpoints** tests the opposite source orientation. Set a byte
+a target. **Swap the two cells** tests the opposite source orientation. Set a byte
 roll and press **Inspect contact**; this pauses the exclusive test owner and
 copies both native cells from the same completed tick. Inspection never executes
 a reaction. Stored material, visible material, state A/B, raw stored temperature,
@@ -408,11 +417,11 @@ observed blocker without presenting the supplied roll as World's random stream.
 For a repeatable example, select **Salt 23 + Water 3**, seed 2, 120 ticks and
 four workers. Native readback observes the 384-cell Salt dose reacting with
 Water to produce **768 Brine cells**, with Water remaining in the bay.
-**Repeat / compare reference** reconstructs a
+**Repeat and check result** reconstructs a
 clean owner with the same definition and checks exact final readback. Replay
 advances one tick per UI frame; **Pause** cancels it while preserving the source run.
-**Save test case…** records the definition, source identity, seed, worker count
-and applied Water-family selection in a digested envelope; **Import test case…**
+**Save experiment…** records the definition, source identity, seed, worker count
+and applied Water-family selection in a digested envelope; **Open experiment…**
 restores that configuration and its visible seed/duration/worker/policy controls
 transactionally. Prepared-run identity is shown separately from controls for a
 new pair. Native source or digest mismatches
@@ -449,7 +458,7 @@ separate controls and evidence.
   reports cancellation without a successful receipt.
 - Save/import a World recipe after changing placement, seed and workers; require
   exact restored controls, a validated state and a fresh compile before qualification.
-- Exercise Salt retention and a Metal state-B edit through **Test reaction in World**;
+- Exercise Salt retention and a Metal state-B edit through **Run edited reaction**;
   check native registers/temperature and quantity evidence, not only the preview.
 - Select neighbouring native preview cells with left/right clicks, inspect a
   supplied roll, swap source/target and advance one step; the old contact report

@@ -170,14 +170,14 @@ func run() -> void:
 		finish()
 		return
 	var view: Variant = panel.world_panel
-	expect(panel._tabs.get_tab_title(4) == "Candidate test","World comparison has a readable mounted navigation label")
+	expect(panel._tabs.get_tab_title(4) == "Compare edits","World comparison has a readable mounted navigation label")
 	expect(view._run_button.disabled,"An absent candidate cannot start a World test")
-	press("New powder 132")
+	press("New powder (definition test only)")
 	await wait_job()
 	expect(view._run_button.disabled and view._summary.text.contains("132"),"Synthetic132 remains descriptor-test-only")
 	panel.select_material(2)
 	expect(panel._list.get_selected_items().size() == 1 and int(panel._list.get_item_metadata(panel._list.get_selected_items()[0])) == 2,"Programmatic material selection synchronizes the native browser highlight")
-	press("Duplicate selected")
+	press("Copy selected material")
 	await wait_job()
 	expect(panel.candidate.target_id == 2 and not view._run_button.disabled,"Existing Sand candidate admits World testing")
 	panel._fields.density.value = 500
@@ -189,7 +189,7 @@ func run() -> void:
 	view._workers.item_selected.emit(view._workers.selected)
 	view._ticks.value = 120
 	panel._tabs.current_tab = 4
-	press("Export World test bundle…")
+	press("Export comparison files…")
 	expect(panel._file.file_mode == FileDialog.FILE_MODE_OPEN_DIR,"World export selects an external parent directory")
 	panel._file.hide()
 	panel._file.dir_selected.emit(output_directory)
@@ -256,10 +256,10 @@ func run() -> void:
 	expect(panel.candidate_digest == original_digest and panel.candidate.descriptor.density == 500,"World bundle preset round-trips through strict real import")
 	# A real finished backend response must not qualify settings edited in flight.
 	view._seed.value = 3
-	press("Compile + compare World")
+	press("Build + run comparison")
 	view._seed.value = 4
 	await wait_job()
-	expect(panel._status.text.contains("older recipe") and view.receipt.is_empty(),"Finished native result cannot qualify a different current recipe")
+	expect(panel._status.text.contains("previous setup") and view.receipt.is_empty(),"Finished native result cannot qualify a different current recipe")
 	expect(not view._run_button.disabled,"A discarded old response releases the controls for the next test")
 	expect(panel.candidate_digest == original_digest,"Recipe race does not corrupt the candidate preset")
 	print("MATERIAL_LAB_WORLD_BUNDLE=" + bundle)
@@ -267,7 +267,7 @@ func run() -> void:
 
 func _capture_sources() -> Dictionary:
 	var hashes: Dictionary = {}
-	for path: String in ["scripts/material_lab_screen.gd","scripts/material_lab_panel.gd","scripts/material_lab_world_panel.gd",
+	for path: String in ["scripts/material_lab_screen.gd","scripts/material_lab_property_tree.gd","scripts/material_lab_panel.gd","scripts/material_lab_world_panel.gd",
 		"scripts/material_lab_service.gd","scripts/material_lab_catalogue.gd","scripts/material_lab_experiment.gd","tests/test_material_lab_world.gd"]:
 		hashes[path] = FileAccess.get_sha256("res://" + path)
 	return hashes

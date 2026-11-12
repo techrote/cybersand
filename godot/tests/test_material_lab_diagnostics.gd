@@ -173,9 +173,9 @@ func check_window_layout(panel: Variant) -> void:
 	var former_size: Vector2i = root.size
 	var former_scale_size: Vector2i = root.content_scale_size
 	var former_tab: int = panel._tabs.current_tab
-	var actions: Array = [["Duplicate selected as candidate"],["New powder 132","Save / export preset…"],
-		["Inspect native result","Test reaction in World"],["Prepare selected + partner","Inspect contact","Swap endpoints"],
-		["Compile + compare World","Save World recipe…"]]
+	var actions: Array = [["Make editable copy"],["New powder (definition test only)","Save material preset…"],
+		["Check built-in rule","Run edited reaction"],["Prepare experiment","Inspect contact","Swap the two cells"],
+		["Build + run comparison","Save World recipe…"]]
 	for dimensions: Vector2i in [Vector2i(1000,650),Vector2i(1280,720)]:
 		root.size = dimensions
 		root.content_scale_size = Vector2i(1920,1080)
@@ -235,15 +235,15 @@ func check_mounted_controls() -> void:
 		"Mounted report separates stored facts, supplied resolver result and unknown scheduling gates")
 	expect(signature(panel.experiment) == before,"Mounted inspection performs no simulation step or material write")
 	await capture_contact(panel)
-	find_button(panel,"Swap endpoints").pressed.emit()
+	find_button(panel,"Swap the two cells").pressed.emit()
 	expect(panel.last_contact_report.source.material == 3 and panel.last_contact_report.target.material == 23,
-		"Swap endpoints inspects the opposite actual positional pair")
+		"Swap the two cells inspects the opposite actual positional pair")
 	panel._target_x.get_line_edit().text = "222"
 	panel._target_x.get_line_edit().text_changed.emit("222")
 	expect(panel.last_contact_report.is_empty(),"Unsubmitted coordinate text immediately retires contact evidence")
-	find_button(panel,"Swap endpoints").pressed.emit()
+	find_button(panel,"Swap the two cells").pressed.emit()
 	expect(int(panel._cell_x.value) == 222 and int(panel._target_x.value) == 221,
-		"Swap endpoints commits displayed coordinates before exchanging them")
+		"Swap the two cells commits displayed coordinates before exchanging them")
 	panel._contact_roll.value = 255
 	expect(panel.last_contact_report.is_empty() and panel._experiment_report.text.contains("inputs changed"),
 		"Editing diagnostic inputs retires the previous visible receipt")
@@ -255,7 +255,7 @@ func check_mounted_controls() -> void:
 	expect(panel.last_contact_report.source.material == 23 and panel.last_contact_report.target.material == 3,
 		"Preview-selected values come from native storage, not sampled image colour")
 	expect(signature(panel.experiment) == before,"Preview selection preserves all native state and masks")
-	find_button(panel,"Read stored cell").pressed.emit()
+	find_button(panel,"Read cell values").pressed.emit()
 	var cell: Dictionary = JSON.parse_string(panel._experiment_report.text)
 	expect(cell.ok and cell.material == 23 and cell.has("stored_temperature_raw") and cell.has("scheduler"),
 		"Existing single-cell control is connected to the richer native readback")
@@ -268,7 +268,7 @@ func check_mounted_controls() -> void:
 
 func capture_sources() -> Dictionary:
 	var values: Dictionary = {}
-	for path: String in ["materials_lab.tscn","scripts/material_lab_panel.gd","scripts/material_lab_screen.gd","scripts/material_lab_experiment.gd",
+	for path: String in ["materials_lab.tscn","scripts/material_lab_panel.gd","scripts/material_lab_screen.gd","scripts/material_lab_property_tree.gd","scripts/material_lab_experiment.gd",
 		"tests/test_material_lab_diagnostics.gd","native_extension/material_lab_inspection.inc","native_extension/cyber_demo_bridge.hpp"]:
 		values[path] = FileAccess.get_sha256("res://" + path)
 	return values

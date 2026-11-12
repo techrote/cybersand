@@ -620,3 +620,29 @@ not attestations of a future commit. Request9 requires the complete fresh
 Windows/Linux, graphical, package and exact-publication-child gate campaign.
 No assertion, compiler check, compatibility restriction or native consumer is
 weakened; no authored candidate becomes production-active.
+
+## Local readability follow-up — 2026-11-12
+
+The local follow-up starts at publication `37dfc2cce9dbc2246eab9cb20d2efa7f04aae8a7`
+with unchanged Windows DLL SHA-256
+`1cd3b955fd24fdec58531b6fabd95563f054359c71a35008bff9c142338fb415`.
+Inspect has six draggable column widths and horizontal scrolling. Selection
+preserves widths; double-click restores a column's width. The menu separates
+checking a definition, trying built-in materials, and comparing an edited copy.
+Full technical values remain in hover text and the inspector details panel.
+The capture validators bind the new property-table source.
+
+Actual Windows ANGLE pointer tests pass 21 checks at both 1000x650 and 1280x720.
+A separate interactive launch verified that dragging the Property divider widens
+the actual table column. The local authoring regression passes 217 assertions,
+the World comparison regression passes 204 checks, and graphical contacts and
+compact tab layout pass 187 assertions. The authoring run preceded the final
+wording-only clarification of the match choices and empty-copy message.
+Publisher/package guards pass 8/16 on Linux; the direct Windows guard attempt
+could not create symlink fixtures without the host privilege. The initial
+unbundled compiler PATH and outdated-caption test failures are retained locally
+under `build/lab-wording-*`; the successful runs use bundled tools and the revised
+captions. No native source, compatibility lock, or material behavior changed.
+
+This is a locally tested interface preview using the retained runtime. The
+request9 ZIP, its source identity, and the published Draft remain unchanged.

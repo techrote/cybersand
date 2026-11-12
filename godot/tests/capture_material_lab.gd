@@ -95,8 +95,8 @@ func run() -> void:
 	panel._seed.value = 2
 	panel._steps.value = 120
 	panel._workers.select(panel._workers.get_item_index(4))
-	press("Prepare selected + partner")
-	press("Run bounded window")
+	press("Prepare experiment")
+	press("Run set number of steps")
 	if not await wait_for(func() -> bool: return not panel._running,"graphical native test",45000):
 		finish()
 		return
@@ -104,11 +104,11 @@ func run() -> void:
 	expect(native_receipt.ok and native_receipt.completed_tick == 120,"Graphical native experiment completed")
 	await save_view("05-native-salt-water-result")
 	panel._family.select(2)
-	press("Prepare selected + partner")
+	press("Prepare experiment")
 	var applied_test_policy: Dictionary = panel.experiment.readback().applied_policy
-	press("Inspect test-owner policy")
+	press("Show applied Water settings")
 	search_select(3)
-	expect(panel._summary.text.contains("cellular_yield_v1"),"Graphical inspector shows actual installed test-owner Water CY policy")
+	expect(panel._summary.tooltip_text.contains("cellular_yield_v1"),"Graphical inspector shows actual installed test-owner Water CY policy")
 	await save_view("06-inspector-applied-cy-policy")
 	var manifest: Dictionary = {"schema_version":1,"source_revision":source_revision,
 		"platform":OS.get_name(),"engine":Engine.get_version_info().get("string","unknown"),

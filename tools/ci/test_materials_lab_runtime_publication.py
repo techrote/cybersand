@@ -73,7 +73,7 @@ class PublicationTests(unittest.TestCase):
                         "native_library_sha256": "a" * 64, "image_sha256": engine.runner.sha256(image),
                         "native_source_identity": source, "candidate_digest": "c" * 64, "source_sha256": {}}
             scripts = {"scripts/material_lab_" + leaf + ".gd" for leaf in
-                       ("screen", "panel", "world_panel", "service", "catalogue", "experiment")}
+                       ("screen", "property_tree", "panel", "world_panel", "service", "catalogue", "experiment")}
             scripts.add("tests/" + name + ".gd")
             if name == "test_material_lab_ui": scripts.add("scripts/shared_workbench.gd")
             manifest["source_sha256"] = {p: engine.runner.sha256(engine.ROOT / "godot" / p) for p in scripts}

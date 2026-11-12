@@ -235,7 +235,7 @@ func extended_authoring() -> bool:
 	# backend. Malformed-response cases below corrupt that executed evidence;
 	# they do not substitute a simulated successful native run.
 	search_select(23)
-	if not await authoring("Duplicate selected"): return false
+	if not await authoring("Copy selected material"): return false
 	var unicode_label: String = " " + String.chr(160) + String.chr(12288) + "β 砂🧪 \"trial\" \\ /" + String.chr(160) + " "
 	panel._candidate_name.text = unicode_label
 	panel._candidate_name.text_changed.emit(unicode_label)
@@ -265,7 +265,7 @@ func extended_authoring() -> bool:
 		"Real validator admits the structured non-Water retention candidate")
 	var view: Variant = panel.world_panel
 	expect(view.set_scenario({"first":23,"second":3,"seed":2,"ticks":120,"workers":4}),"Prospective World recipe is set before selected-reaction routing")
-	if not press("Test reaction in World"): return false
+	if not press("Run edited reaction"): return false
 	expect(view.scenario().first == 3 and view.scenario().second == 23 and panel._tabs.current_tab == 4,
 		"Selected-reaction button routes its actual positional pair into the mounted World test")
 	if not await wait_for(func() -> bool: return not panel.service.busy,"actual retained-endpoint World comparison",300000): return false
@@ -313,7 +313,7 @@ func extended_authoring() -> bool:
 	var expected_digest: String = panel.candidate_digest
 	expect(panel.candidate_state == "Validated candidate" and view.receipt.is_empty(),"Saving a recipe is validation, not a new native execution")
 	search_select(2)
-	if not await authoring("Duplicate selected"): return false
+	if not await authoring("Copy selected material"): return false
 	expect(view.set_scenario({"first":2,"second":1,"seed":99,"ticks":600,"workers":1}),"Unrelated candidate and controls are prepared before import")
 	if not await selected_file("Import World recipe…",case_path): return false
 	expect(panel.last_backend_result.get("ok",false) and panel.candidate == expected_candidate and panel.candidate_digest == expected_digest,
@@ -333,7 +333,7 @@ func extended_authoring() -> bool:
 		"Digest-corrupt recipe import preserves the current candidate and controls")
 	expect(panel._status.text.contains("/case/digest"),"Recipe digest refusal identifies the actionable field")
 	search_select(28)
-	if not await authoring("Duplicate selected"): return false
+	if not await authoring("Copy selected material"): return false
 	panel._tabs.current_tab = 2
 	panel._reaction_picker.select(0)
 	panel._reaction_picker.item_selected.emit(0)
@@ -347,7 +347,7 @@ func extended_authoring() -> bool:
 		"Metal structured state control retains identity and sets its declared register")
 	expect(metal.state_b.editable and metal.detail.text.contains("charge countdown"),"State editor names its actual native consumer")
 	if not await authoring("Validate candidate"): return false
-	if not press("Compile candidate reaction"): return false
+	if not press("Build + check reaction"): return false
 	if not await wait_for(func() -> bool: return not panel.service.busy,"descriptor-only backend refusal for extended effect"): return false
 	expect(not panel.last_backend_result.get("ok",true) and panel._status.text.contains("World"),
 		"Extended effects cannot silently fall back to the legacy descriptor/resolver probe")
@@ -528,7 +528,7 @@ func workbench_mount() -> void:
 						open_button.pressed.emit()
 						expect(mounted.applied_policy.policy_hash == main.tower_context.liquid_solver_policy.policy_hash \
 							and mounted.applied_policy.policy_hash != initial_owner.policy_hash,"Reopened inspector receives actual new owner policy hash")
-						expect(mounted._summary.text.contains("cellular_yield_v1"),"Water effective-kernel UI shows owner-selected CY after reopening")
+						expect(mounted._summary.tooltip_text.contains("cellular_yield_v1"),"Water effective-kernel UI shows owner-selected CY after reopening")
 				mounted.experiment.close()
 	main.queue_free()
 	await process_frame
@@ -583,7 +583,7 @@ func run() -> void:
 		if id == 21:
 			expect(panel._inspector_notes.text.contains("1100"),"Slush fallback difference is exposed rather than substituted")
 		if id == 10:
-			press("Duplicate selected as candidate")
+			press("Make editable copy")
 			expect(panel._status.text.contains("reserved") and panel.candidate.is_empty(),"Reserved ID cannot become a candidate")
 	panel._search.text = "molten"
 	panel._search.text_changed.emit("molten")
@@ -594,7 +594,7 @@ func run() -> void:
 		var id: int = int(panel._list.get_item_metadata(index))
 		expect(panel.catalogue.materials[id].state_name == "Powder","Physical-type filter is native state")
 	panel._tabs.current_tab = 1
-	if not await authoring("New powder 132"):
+	if not await authoring("New powder (definition test only)"):
 		finish()
 		return
 	expect(panel.candidate_state == "Draft" and panel.candidate.target_id == 132,"Create uses isolated candidate identity and Draft status")
@@ -630,13 +630,13 @@ func run() -> void:
 		return
 	expect(panel.candidate_state == "Draft" and panel.candidate.descriptor.density == 1439,
 		"Old asynchronous result cannot validate a newer candidate revision")
-	expect(panel._status.text.contains("older revision"),"Stale result is explained to the user")
+	expect(panel._status.text.contains("previous edits"),"Stale result is explained to the user")
 	# Simulate typing without Enter or a focus-exit commit, then immediately
 	# activate Compile. The request must capture the displayed number first.
 	panel._fields.density.get_line_edit().grab_focus()
 	panel._fields.density.get_line_edit().text = "1440"
 	panel._fields.density.get_line_edit().text_changed.emit("1440")
-	if not await authoring("Compile + native test"):
+	if not await authoring("Build + check definition"):
 		finish()
 		return
 	var compiled: Dictionary = panel.last_backend_result
@@ -648,7 +648,7 @@ func run() -> void:
 	expect(PackedInt32Array(compiled.receipt.observed.candidate_material.rgba) == PackedInt32Array([210,90,180,255]),"Appearance bytes reached compiled C++ candidate")
 	expect(panel.candidate_digest != validated_digest,"Edited source has a new deterministic digest")
 	var exported_digest: String = panel.candidate_digest
-	if not await selected_directory("Export compiled bundle…",output_directory):
+	if not await selected_directory("Export built definition…",output_directory):
 		finish()
 		return
 	var bundle: String = str(panel.last_backend_result.get("output_dir","")).replace("\\","/")
@@ -668,7 +668,7 @@ func run() -> void:
 	expect(published_receipt.candidate_digest == exported_digest and published_receipt.observed.production_registry_unchanged,
 		"Published native receipt binds the exported candidate while preserving production identities")
 	var export_path: String = output_directory.path_join("powder-132.json")
-	if not await selected_file("Save / export preset…",export_path):
+	if not await selected_file("Save material preset…",export_path):
 		finish()
 		return
 	expect(FileAccess.file_exists(export_path) and panel.last_backend_result.get("ok",false),"Actual backend exports a versioned preset")
@@ -690,14 +690,14 @@ func run() -> void:
 		"Malformed preset import is actionable and preserves prior candidate data")
 	expect(not panel._status.text.is_empty(),"Validation failure is visible in mounted UI")
 	search_select(3)
-	if not await authoring("Duplicate selected"):
+	if not await authoring("Copy selected material"):
 		finish()
 		return
 	expect(not panel._fields.viscosity_index.editable,"Water descriptor viscosity is not falsely exposed as effective control")
 	panel._reaction_picker.select(1)
 	panel._reaction_picker.item_selected.emit(1)
 	var retained_rule: Dictionary = panel._selected_reaction().duplicate(true)
-	press("Compile candidate reaction")
+	press("Build + check reaction")
 	panel._reaction_picker.select(0)
 	panel._reaction_picker.item_selected.emit(0)
 	if not await wait_for(func() -> bool: return not panel.service.busy,"selected reaction compilation"):
@@ -718,7 +718,7 @@ func run() -> void:
 	expect(panel._reaction_report.text.begins_with("Candidate rule (not active)")
 		and not panel._reaction_report.text.contains("COMPILED CANDIDATE"),"Selecting another rule retires the previous rule's displayed result")
 	search_select(23)
-	if not await authoring("Duplicate selected"):
+	if not await authoring("Copy selected material"):
 		finish()
 		return
 	panel._tabs.current_tab = 2
@@ -728,7 +728,7 @@ func run() -> void:
 	panel._reaction_fields.probability.value = 0
 	panel._roll.value = 1
 	expect(panel._reaction_report.text.contains("1 / 256"),"Threshold zero is shown as 1/256 rather than disabled")
-	press("Compile candidate reaction")
+	press("Build + check reaction")
 	panel._roll.value = 0
 	if not await wait_for(func() -> bool: return not panel.service.busy,"reaction compilation after supplied-roll edit"):
 		finish()
@@ -738,7 +738,7 @@ func run() -> void:
 	expect(panel._reaction_report.text.begins_with("Diagnostic inputs changed") and not panel._reaction_report.text.contains("COMPILED CANDIDATE"),
 		"An in-flight diagnostic cannot restore a receipt for an older supplied roll")
 	panel._roll.value = 1
-	if not await authoring("Compile candidate reaction"):
+	if not await authoring("Build + check reaction"):
 		finish()
 		return
 	var reaction: Dictionary = panel.last_backend_result.receipt.observed.diagnostic
@@ -748,7 +748,7 @@ func run() -> void:
 		"Compiled edited Salt rule succeeds on exactly one of all 256 rolls and fails supplied roll1")
 	expect(reaction.production_selected,"Production Salt rule remains unchanged and selects the same roll")
 	panel._tabs.current_tab = 1
-	if not await selected_directory("Export compiled bundle…",output_directory):
+	if not await selected_directory("Export built definition…",output_directory):
 		finish()
 		return
 	var bundled_reaction: Dictionary = panel.last_backend_result.receipt.observed.diagnostic
@@ -760,13 +760,13 @@ func run() -> void:
 	var reaction_bundle: String = str(panel.last_backend_result.output_dir).replace("\\","/")
 	var reaction_file: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(reaction_bundle.path_join("native-receipt.json")))
 	expect(reaction_file.observed.diagnostic == reaction and reaction_file.observed.diagnostic == bundled_reaction,
-		"Exported receipt and Compile candidate reaction execute exactly the same user-selected diagnostic")
+		"Exported receipt and Build + check reaction execute exactly the same user-selected diagnostic")
 	panel._tabs.current_tab = 2
 	panel._reaction_fields.probability.value = 1
 	expect(panel.candidate_state == "Draft" and panel._reaction_report.text.begins_with("Candidate rule (not active)") \
 		and not panel._reaction_report.text.contains("COMPILED CANDIDATE"),"Editing a compiled rule retires its visible native result")
 	panel._partner.select(panel._partner.get_item_index(3))
-	press("Inspect native result")
+	press("Check built-in rule")
 	var native_reaction: Dictionary = JSON.parse_string(panel._reaction_report.text)
 	expect(native_reaction.selected and native_reaction.probability_numerator == 256,
 		"Native production inspector remains distinct from edited candidate rule")
@@ -774,13 +774,13 @@ func run() -> void:
 	panel._roll.get_line_edit().text_changed.emit("2")
 	expect(panel._reaction_report.text.begins_with("Diagnostic inputs changed") and not panel._reaction_report.text.contains('"selected":'),
 		"Changing the supplied roll retires the preceding production resolver result")
-	press("Inspect native result")
+	press("Check built-in rule")
 	panel._partner.select(panel._partner.get_item_index(2))
 	panel._partner.item_selected.emit(panel._partner.selected)
 	expect(panel._reaction_report.text.begins_with("Diagnostic inputs changed"),
 		"Changing the native partner retires its preceding resolver result")
 	panel._select_partner(3)
-	press("Inspect native result")
+	press("Check built-in rule")
 	panel.select_material(2)
 	expect(panel._reaction_report.text.begins_with("Diagnostic inputs changed"),
 		"Changing the selected source retires its preceding resolver result")
@@ -789,9 +789,9 @@ func run() -> void:
 	panel._seed.value = 2
 	panel._steps.value = 120
 	panel._workers.select(panel._workers.get_item_index(4))
-	press("Prepare selected + partner")
+	press("Prepare experiment")
 	expect(panel.experiment.active(),"Real native MicroScenario is prepared through mounted controls")
-	press("Run bounded window")
+	press("Run set number of steps")
 	if not await wait_for(func() -> bool: return not panel._running,"native bounded window",45000):
 		finish()
 		return
@@ -801,7 +801,7 @@ func run() -> void:
 	expect(panel._experiment_summary.text.contains("120 / 120") and panel._experiment_summary.text.contains("brine 768"),
 		"Native completed-step and product counts are visible without reading raw JSON")
 	expect(panel._preview.texture != null,"Real native material preview reaches mounted TextureRect")
-	press("Repeat / compare reference")
+	press("Repeat and check result")
 	expect(panel.experiment.reference_running() and panel.experiment.reference_progress().completed_tick == 0,
 		"Mounted comparison starts a fresh native owner without synchronously replaying all ticks")
 	await process_frame
@@ -810,14 +810,14 @@ func run() -> void:
 	press("Pause")
 	expect(not panel.experiment.reference_running() and panel.experiment.readback().native.content_hash == readback.native.content_hash,
 		"Pause cancels the in-flight replay and preserves source native content")
-	press("Repeat / compare reference")
+	press("Repeat and check result")
 	if not await wait_for(func() -> bool: return not panel.experiment.reference_running(),"incremental native reference",45000):
 		finish()
 		return
 	var comparison: Dictionary = JSON.parse_string(panel._experiment_report.text)
 	expect(comparison.ok and comparison.equal,"Fresh native comparison runs through mounted control")
 	var case_path: String = output_directory.path_join("salt-water-test.json")
-	await selected_file("Save test case…",case_path)
+	await selected_file("Save experiment…",case_path)
 	expect(FileAccess.file_exists(case_path),"Native test case is saved with execution/source contract")
 	panel._seed.value = 29
 	panel._steps.value = 600
@@ -828,7 +828,7 @@ func run() -> void:
 	panel._experiment_partner.item_selected.emit(panel._experiment_partner.selected)
 	expect(panel._partner.get_selected_id() == 1 and panel._steps.value == 600,
 		"Native test exposes a synchronized partner selector and the complete admitted 600-tick range")
-	await selected_file("Import test case…",case_path)
+	await selected_file("Open experiment…",case_path)
 	expect(panel.experiment.readback().completed_tick == 0 and panel.experiment.readback().workers == 4,
 		"Saved native case restores a fresh source-matched run and worker count")
 	expect(panel._seed.value == 2 and panel._steps.value == 120 and panel._workers.get_selected_id() == 4
@@ -838,21 +838,21 @@ func run() -> void:
 	expect(panel._experiment_summary.text.contains("salt-water") and panel._experiment_summary.text.contains("seed 2"),
 		"Prepared-run summary identifies the stored fixture and seed independently of prospective controls")
 	panel._steps.value = 600
-	press("Prepare selected + partner")
+	press("Prepare experiment")
 	var long_case_path: String = output_directory.path_join("salt-water-600-test.json")
-	await selected_file("Save test case…",long_case_path)
+	await selected_file("Save experiment…",long_case_path)
 	panel._steps.value = 1
-	await selected_file("Import test case…",long_case_path)
+	await selected_file("Open experiment…",long_case_path)
 	expect(panel._steps.value == 600 and panel.experiment.readback().duration_ticks == 600,
 		"Imported maximum-duration fixture is represented exactly without SpinBox clamping")
 	panel._family.select(2)
-	press("Prepare selected + partner")
+	press("Prepare experiment")
 	var actual_policy: Dictionary = panel.experiment.readback().applied_policy
-	press("Inspect test-owner policy")
+	press("Show applied Water settings")
 	search_select(3)
 	expect(panel.applied_policy.policy_hash == actual_policy.policy_hash and panel.policy_context == "Isolated native test owner",
-		"Inspect test-owner policy copies actual native applied policy into the property inspector")
-	expect(panel._summary.text.contains("cellular_yield_v1"),"Inspector shows native-applied test policy rather than compiled Water default")
+		"Show applied Water settings copies actual native applied policy into the property inspector")
+	expect(panel._summary.tooltip_text.contains("cellular_yield_v1"),"Inspector shows native-applied test policy rather than compiled Water default")
 	var receipt_path: String = output_directory.path_join("ui-native-receipt.json")
 	file = FileAccess.open(receipt_path,FileAccess.WRITE)
 	file.store_string(JSON.stringify(compiled,"\t") + "\n")
@@ -865,7 +865,7 @@ func run() -> void:
 
 func _capture_sources() -> Dictionary:
 	var hashes: Dictionary = {}
-	for path: String in ["materials_lab.tscn","addons/cybersand_native/cybersand_native.gdextension","scripts/material_lab_screen.gd","scripts/material_lab_panel.gd","scripts/material_lab_world_panel.gd",
+	for path: String in ["materials_lab.tscn","addons/cybersand_native/cybersand_native.gdextension","scripts/material_lab_screen.gd","scripts/material_lab_property_tree.gd","scripts/material_lab_panel.gd","scripts/material_lab_world_panel.gd",
 		"scripts/material_lab_service.gd","scripts/material_lab_catalogue.gd","scripts/material_lab_experiment.gd","scripts/shared_workbench.gd","tests/test_material_lab_ui.gd"]:
 		hashes[path] = FileAccess.get_sha256("res://" + path)
 	return hashes

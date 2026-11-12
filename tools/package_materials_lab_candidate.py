@@ -31,7 +31,7 @@ CONTACT_READBACK = "contact-readback.json"
 CONTACT_IMAGE = "09-native-contact-inspector.png"
 CONTACT_SOURCES = {
     "materials_lab.tscn", "scripts/material_lab_panel.gd", "scripts/material_lab_experiment.gd",
-    "scripts/material_lab_screen.gd",
+    "scripts/material_lab_screen.gd","scripts/material_lab_property_tree.gd",
     "tests/test_material_lab_diagnostics.gd", "native_extension/material_lab_inspection.inc",
     "native_extension/cyber_demo_bridge.hpp",
 }
