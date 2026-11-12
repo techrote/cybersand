@@ -348,6 +348,8 @@ def regressions(args):
     for workers in (1, 4):
         runner.godot(project, f"paint-native-{workers}", "test_paint_editor_native", "PAINT_EDITOR_NATIVE",
                      env={"PAINT_TEST_WORKERS": str(workers)})
+        runner.godot(project, f"agent-undo-{workers}", "test_art_undo", "ART_UNDO_RESULT",
+                     env={"ART_UNDO_WORKERS": str(workers)})
     for phase in ("author", "reopen"):
         runner.godot(project, f"paint-history-{phase}", "test_paint_editor_history", "PAINT_EDITOR_HISTORY",
                      env={"CYBERSAND_PAINT_HISTORY_REOPEN": "1" if phase == "reopen" else "0"})

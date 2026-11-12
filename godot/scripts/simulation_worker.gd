@@ -1878,6 +1878,10 @@ func _consume_art() -> void:
 	var confirmed := 0
 	var points: PackedInt32Array = command.points
 	var world_bounds := Rect2i(Vector2i.ZERO,_workbench_extent)
+	# The exclusive owner captures the actual source before this chunk writes.
+	# History must not infer a previous revision from the changed-cell count.
+	var before_source := {"generation":_world_generation,"revision":int(_world.revision),
+		"tick":int(_world.tick_index)}
 	if failure.is_empty() and _water_lab_active: failure = "Controlled Water experiments do not admit drawing edits"
 	if failure.is_empty() and _micro_active and not _scenario_host.allows_tool("erase" if int(command.material)==0 else "paint"):
 		failure = "The installed scenario does not allow this drawing tool"
@@ -1926,7 +1930,8 @@ func _consume_art() -> void:
 	_art_result = {"status":"completed" if failure.is_empty() else ("partial" if confirmed>0 or changed>0 else "refused"),
 		"reason":failure,"requested":points.size()/2,"checked":checked,"backend":_world.get_class(),
 		"changed":changed,"unchanged":unchanged,"excluded":excluded,"refused":refused,"confirmed":confirmed,
-		"readback":rows,"generation":_world_generation,"revision":int(_world.revision),"tick":int(_world.tick_index)}
+		"readback":rows,"before_source":before_source,
+		"generation":_world_generation,"revision":int(_world.revision),"tick":int(_world.tick_index)}
 	_mutex.unlock()
 
 func queue_emit_cells(

@@ -10,6 +10,8 @@ var protected_fields: Array[SpinBox] = []
 var protect := CheckBox.new()
 var draw := Button.new()
 var stop := Button.new()
+var undo_button := Button.new()
+var redo_button := Button.new()
 var input_error := ""
 var paint_material := OptionButton.new()
 var request_material := 58
@@ -133,6 +135,21 @@ func _ready() -> void:
 	actions.add_child(input_mode)
 	mount_tools(actions)
 	column.add_child(actions)
+	var history_actions := HBoxContainer.new()
+	for entry: Array in [[undo_button,"Undo","undo"],[redo_button,"Redo","redo"]]:
+		var button: Button = entry[0]
+		button.text = entry[1]
+		button.focus_mode = Control.FOCUS_NONE
+		button.pressed.connect(_history_action.bind(str(entry[2])))
+		history_actions.add_child(button)
+	undo_button.tooltip_text = "Undo the latest paused Workbench edit, including agent drawing. Stop active agent runs first."
+	redo_button.tooltip_text = "Redo the latest undone Workbench edit while the native source remains unchanged."
+	var history_hint := Label.new()
+	history_hint.text = "Shared edit history · manual and agent edits"
+	history_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	history_hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	history_actions.add_child(history_hint)
+	column.add_child(history_actions)
 	mount_provider_controls(column)
 	state.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	column.add_child(state)
@@ -249,9 +266,17 @@ func _process(_delta: float) -> void:
 		if provider.active or capturing or executor.active or remaining_turns != 0: stop_all("Run time limit reached")
 		run_deadline_ms = 0
 	draw.disabled = executor.active
-	stop.disabled = not executor.active and not provider.active and not capturing and remaining_turns == 0
+	var history_replaying: bool = wb.paint_editor != null and wb.paint_editor.history_replaying()
+	stop.disabled = not executor.active and not provider.active and not capturing \
+		and remaining_turns == 0 and not history_replaying
 	if provider.active and wb.host.simulation_worker.art_state().epoch != request_epoch: stop_all("Canvas changed")
-	draw.disabled = executor.active or provider.active or capturing or remaining_turns != 0
+	draw.disabled = executor.active or provider.active or capturing or remaining_turns != 0 \
+		or (wb.paint_editor != null and wb.paint_editor.busy())
+	var history_blocked := not history_block_reason().is_empty() or wb.paint_editor == null
+	undo_button.disabled = history_blocked or not wb.paint_editor.history_available("undo")
+	redo_button.disabled = history_blocked or not wb.paint_editor.history_available("redo")
+	var history_notice: String = str(wb.paint_editor.history_notice) if wb.paint_editor != null else ""
+	undo_button.tooltip_text = "Undo the latest paused Workbench edit, including agent drawing. Stop active agent runs first. " + history_notice
 	tools_button.visible = input_mode.selected != 2
 	draw.text = "Draw" if input_mode.selected==0 else "Send"
 	for row: Control in rows: row.visible = input_mode.selected!=0
@@ -268,6 +293,7 @@ func _process(_delta: float) -> void:
 	elif waiting_until_ms > Time.get_ticks_msec():
 		status_text = "Waiting to send · %.1fs · Stop available" % ((waiting_until_ms-Time.get_ticks_msec())/1000.0)
 	elif capturing: status_text = "Capturing current view · Stop available"
+	elif wb.paint_editor != null and wb.paint_editor.busy(): status_text = wb.message
 	elif not input_error.is_empty():
 		status_text = input_error.left(500)+(" … See Traffic for full details." if input_error.length()>500 else "")
 	elif executor.active or executor.result.status != "idle":
@@ -286,6 +312,7 @@ func _process(_delta: float) -> void:
 	if run_spend_limit > 0: status_text += " · Est. $%.4f / $%.4f" % [run_spend,run_spend_limit]
 	if input_mode.selected != 0 and not spend_status.is_empty(): status_text += " · "+spend_status
 	if not provider.log_warning.is_empty(): status_text += " · "+provider.log_warning
+	if not history_notice.is_empty(): status_text += " · "+history_notice
 	if state.text != status_text: state.text = status_text
 
 func _exit_tree() -> void:
@@ -530,8 +557,51 @@ func stop_all(reason: String = "Human Stop") -> void:
 	ui_epoch += 1; capturing = false
 	provider.cancel(reason)
 	executor.stop(reason)
+	if wb != null and wb.paint_editor != null and wb.paint_editor.history_replaying():
+		wb.paint_editor.cancel()
 	provider_message = reason
 	input_error = reason
+
+# Shared PAINT shortcuts call the same guard as these buttons. A native-idle
+# gap is not permission to undo while a provider or another turn can still write.
+func history_block_reason() -> String:
+	if executor.active or executor.waiting or not executor.manual.is_empty() \
+			or not executor.manual_inflight.is_empty() or provider.active or capturing \
+			or remaining_turns != 0 or waiting_until_ms > Time.get_ticks_msec():
+		return "Stop the active agent run and wait for its confirmed result before Undo or Redo."
+	if log_draw:
+		return "Wait for the confirmed agent result before Undo or Redo."
+	return ""
+
+func _history_action(action: String) -> void:
+	var blocked := history_block_reason()
+	if not blocked.is_empty():
+		input_error = blocked
+		return
+	if wb == null or wb.paint_editor == null:
+		input_error = "The shared editor is not ready."
+		return
+	var admitted: bool = wb.paint_editor.undo() if action == "undo" else wb.paint_editor.redo()
+	input_error = "" if admitted else str(wb.message)
+
+# Append a new human result; never rewrite the model's historical receipts or
+# use model_feedback(), which can schedule another request in an active run.
+func history_edited(receipt: Dictionary) -> void:
+	var recorded := receipt.duplicate(true)
+	provider.log_event("history_result",recorded)
+	var action := str(recorded.get("action","undo"))
+	var status := str(recorded.get("status","unknown"))
+	var label := str(recorded.get("label","Workbench edit"))
+	var epoch := int(wb.host.simulation_worker.art_state().epoch) if wb != null else request_epoch
+	last_result = "Human %s: %s" % [action,JSON.stringify(recorded)]
+	remember_turn("user","Canvas result (world epoch %d): %s" % [epoch,last_result])
+	provider_message = "%s %s · %s · %d native cells confirmed" % [action.capitalize(),label,
+		status,int(recorded.get("applied",0))]
+	if bool(recorded.get("remaining_group",false)):
+		provider_message += " · continuing the same history action"
+	elif not str(recorded.get("reason","")).is_empty():
+		provider_message += " · "+str(recorded.reason)
+	input_error = provider_message
 
 func model_context() -> Array:
 	if context_mode.selected == 3: return []
@@ -578,6 +648,9 @@ func persist_traffic_path() -> void:
 
 func send_prompt() -> void:
 	if executor.active or provider.active or capturing or remaining_turns != 0: return
+	if wb.paint_editor != null and wb.paint_editor.busy():
+		input_error = "Wait for the shared edit to finish before sending another model request."
+		return
 	if wb.busy() or wb.applied.is_empty():
 		input_error = "Canvas is not ready."
 		return

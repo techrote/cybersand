@@ -1,0 +1,471 @@
+{
+  "schema": "cybersand-agent-undo-boundary-review-v1",
+  "recorded_at": "2026-11-12T22:45:36.492437+00:00",
+  "qualification": "passed_local_diagnostic",
+  "scope": "Independent read-only controller review, synthetic synchronous callback reproduction, and actual native over-budget refusal probes. Linux x64 headless diagnostic runtime only; not Windows, graphical or release qualification.",
+  "source_base_commit": "d33c10e41cafcaa809ef410d0760e2c15bd02247",
+  "source_identity_basis": "Uncommitted agent Undo working tree. Final production and focused fixture hashes below were checked by both capacity probes at entry/exit and checked again when retaining this audit. Original pre-fix controller hash was not recorded by the initial callback probe.",
+  "final_source_files_sha256": {
+    "godot/scripts/art_batch_executor.gd": "2c7c7c1605a5cf9f630e6fabad6cb6d34804e0c0a19c9e8e96a7e9535489fc98",
+    "godot/scripts/art_batch_panel.gd": "958516aeb5ef3228735128aba93d0a44247ff25e021891edf5509e7de555fbd1",
+    "godot/scripts/shared_workbench.gd": "8d80dc46056c9dbbd7f16d06c6acace01ace8fa725b066b399f2ec02f07f6bdc",
+    "godot/scripts/simulation_worker.gd": "bac92f82ef3d3dc4fad54c785c148eba3ea1c0ec1e1b9805a65ffea261cc6016",
+    "godot/scripts/workbench_paint_editor_controller.gd": "6022a4379baafae9ecef8c8e309c13271a27a2f271038fcb6350a9db170179e8",
+    "godot/scripts/workbench_paint_editor_executor.gd": "1f118427e505f0a4b7f63e7e10089507f89445c08f9ead5a7f41768935160e7d",
+    "godot/scripts/workbench_paint_editor_history.gd": "f3b19f906668feec3d49aea61448b1d58a90a6ccf8b9bf5b814d13ed4881786e",
+    "godot/scripts/workbench_setup.gd": "6b3341e4733f39622c23a964cb586c65eb358734e1a164e354d327057abe4a86",
+    "godot/tests/test_art_undo.gd": "bc9d9f076c0c8e936682293116f8498e2ea0d47bfb8ef25f032643eab80d49f5"
+  },
+  "runtime": {
+    "os": "Linux",
+    "architecture": "x86_64",
+    "display": "headless",
+    "audio_driver": "Dummy",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "godot_executable_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "godot_archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+    "native_gdextension_sha256": "16ffc0ce8190c2e8ca2e31fc59f10c55148adc6e7f16727dc96c094d8a96696a",
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "native_toolchain": "GCC14.2/binutils2.44 diagnostic build; not pinned hosted release qualification",
+    "native_build_class": "recovered diagnostic build",
+    "native_source_baseline": "a8259c5a789cff1d2652729c1a24508e1fce4ab6",
+    "native_source_input_count": 87,
+    "native_source_inputs_canonical_json_sha256": "7b48dfdc824a603f23a862c906598d5579f6e8bcd0891144879af4024712286b",
+    "native_source_inputs_match_baseline_and_tested_working_tree": true,
+    "restored_runtime_identity_local_path": "build/agent-undo/runtime/restored-runtime-identity.json",
+    "restored_runtime_identity_sha256": "ed78140db2dec4076f8333064f215a270d8bffb207116cdcf6924071fba00acc",
+    "durable_prior_diagnostic_provenance": "docs/audits/wb-art-paint-2026-11-12/local-qualification.json"
+  },
+  "grouped_history_callback": {
+    "defect": "A history_action_finished listener could Stop synchronously on a completed part with remaining_group=true. The cached continuation flag then restarted the next part after cancel had cleared the replay token.",
+    "original_probe_kind": "Actual Godot controller callback flow, synthetic history/Bench and an overridden continuation counter; this probe does not perform native writes.",
+    "original_result": {
+      "continuations_after_cancel": 1,
+      "probe_calls_quit": 1,
+      "wrapper_exit_code_caveat": "The original shell subsequently ran cat, so the tool wrapper status was 0. The explicit forbidden continuation count and probe quit(1) preserve the failure."
+    },
+    "fix": "Recheck the same action/group replay token after synchronous listeners return, and emit a terminal cancelled or invalidated zero-applied outcome when the listener retired that token.",
+    "final_result": {
+      "continuations_after_cancel": 0,
+      "exit_code": 0,
+      "events": [
+        {
+          "action": "undo",
+          "applied": 1,
+          "changed": 1,
+          "label": "Undo agent",
+          "origin": "agent",
+          "reason": "",
+          "recorded": true,
+          "remaining_group": true,
+          "status": "completed"
+        },
+        {
+          "action": "undo",
+          "applied": 0,
+          "changed": 0,
+          "label": "Undo agent",
+          "origin": "agent",
+          "reason": "History stopped at the confirmed part boundary.",
+          "recorded": true,
+          "remaining_group": false,
+          "status": "cancelled"
+        }
+      ],
+      "undo_records_remaining": 1,
+      "redo_records_completed": 1,
+      "replay_token_empty": true
+    },
+    "fixture_adjustments": "Final probe supplies the real-shaped generation/revision/tick fence and a stable _current() stub, then verifies terminal feedback and preserved stacks.",
+    "mounted_native_followup": {
+      "evidence": "docs/audits/wb-art-paint-2026-11-12/agent-undo-local-tests.json",
+      "runs": [
+        {
+          "id": "focused-1-attempt4",
+          "workers": 1,
+          "checks": 260,
+          "failures": [],
+          "exit_code": 0,
+          "original_log": "build/agent-undo/test-evidence/focused-1-attempt4.log",
+          "original_log_sha256": "dc397489c19061d203cf15388ce15f4bc57a343a89ce446ae5c080dcaca50ed6",
+          "large_group": {
+            "cells": 262656,
+            "elapsed_usec": 19630968,
+            "history_segments": 2
+          }
+        },
+        {
+          "id": "focused-4-attempt2",
+          "workers": 4,
+          "checks": 260,
+          "failures": [],
+          "exit_code": 0,
+          "original_log": "build/agent-undo/test-evidence/focused-4-attempt2.log",
+          "original_log_sha256": "083a2d28f81337dccbd71179842939db33c248e19c391833f58653a9c4729024",
+          "large_group": {
+            "cells": 262656,
+            "elapsed_usec": 19546004,
+            "history_segments": 2
+          }
+        }
+      ],
+      "checks": "Actual Art panel Stop from the first remaining_group callback preserves the exact262656-cell native prefix, emits terminal cancelled/applied0/changed0, produces no further writes across10frames, and permits explicit Undo then grouped Redo recovery.",
+      "native_witnesses": {
+        "agent_stop_before": {
+          "region": [
+            50,
+            50,
+            401,
+            401
+          ],
+          "sha256": "5340736973d29d62d7a90a622fef9dc4d85c3d9813b21659d0f5f0bd1531a1b3",
+          "capture_index": 12
+        },
+        "agent_stop_confirmed_prefix": {
+          "region": [
+            50,
+            50,
+            401,
+            401
+          ],
+          "sha256": "f98ef9d71739a2c45888b8dbe5420010d6bc14a414e36fb27a1fea061d09e5c6",
+          "capture_index": 13
+        },
+        "agent_stop_after_undo": {
+          "region": [
+            50,
+            50,
+            401,
+            401
+          ],
+          "sha256": "5340736973d29d62d7a90a622fef9dc4d85c3d9813b21659d0f5f0bd1531a1b3",
+          "capture_index": 14
+        },
+        "agent_stop_after_redo": {
+          "region": [
+            50,
+            50,
+            401,
+            401
+          ],
+          "sha256": "f98ef9d71739a2c45888b8dbe5420010d6bc14a414e36fb27a1fea061d09e5c6",
+          "capture_index": 16
+        },
+        "large_draw_main_tile": {
+          "region": [
+            20,
+            20,
+            512,
+            512
+          ],
+          "sha256": "759c6b182beb91cef9d7a9856d6854cb3f52dfd82698992aa82fb2b4694dcf01",
+          "capture_index": 24
+        },
+        "large_draw_tail_tile": {
+          "region": [
+            20,
+            532,
+            512,
+            1
+          ],
+          "sha256": "780f55a1268c71fccc837223a13ada97dfa54d40d5380e7a566e5e3371870e50",
+          "capture_index": 25
+        },
+        "large_full_undo_main_tile": {
+          "region": [
+            20,
+            20,
+            512,
+            512
+          ],
+          "sha256": "30e14955ebf1352266dc2ff8067e68104607e750abb9d3b36582b8af909fcb58",
+          "capture_index": 28
+        },
+        "large_full_undo_tail_tile": {
+          "region": [
+            20,
+            532,
+            512,
+            1
+          ],
+          "sha256": "e5a00aa9991ac8a5ee3109844d84a55583bd20572ad3ffcd42792f3c36b183ad",
+          "capture_index": 29
+        },
+        "large_group_stop_main_tile": {
+          "region": [
+            20,
+            20,
+            512,
+            512
+          ],
+          "sha256": "759c6b182beb91cef9d7a9856d6854cb3f52dfd82698992aa82fb2b4694dcf01",
+          "capture_index": 32
+        },
+        "large_group_stop_tail_tile": {
+          "region": [
+            20,
+            532,
+            512,
+            1
+          ],
+          "sha256": "e5a00aa9991ac8a5ee3109844d84a55583bd20572ad3ffcd42792f3c36b183ad",
+          "capture_index": 33
+        },
+        "large_group_stop_after_ten_frames_main_tile": {
+          "region": [
+            20,
+            20,
+            512,
+            512
+          ],
+          "sha256": "759c6b182beb91cef9d7a9856d6854cb3f52dfd82698992aa82fb2b4694dcf01",
+          "capture_index": 34
+        },
+        "large_group_stop_after_ten_frames_tail_tile": {
+          "region": [
+            20,
+            532,
+            512,
+            1
+          ],
+          "sha256": "e5a00aa9991ac8a5ee3109844d84a55583bd20572ad3ffcd42792f3c36b183ad",
+          "capture_index": 35
+        },
+        "large_group_recovered_redo_main_tile": {
+          "region": [
+            20,
+            20,
+            512,
+            512
+          ],
+          "sha256": "759c6b182beb91cef9d7a9856d6854cb3f52dfd82698992aa82fb2b4694dcf01",
+          "capture_index": 38
+        },
+        "large_group_recovered_redo_tail_tile": {
+          "region": [
+            20,
+            532,
+            512,
+            1
+          ],
+          "sha256": "780f55a1268c71fccc837223a13ada97dfa54d40d5380e7a566e5e3371870e50",
+          "capture_index": 39
+        }
+      }
+    }
+  },
+  "terminal_and_retired_receipt_review": {
+    "method": "Read-only inspection of controller and worker; separate focused native tests cover planning cancellation and grouped boundary cancellation.",
+    "verified_paths": [
+      "Planner cancellation/refusal, stale source and native admission failure now emit zero-applied terminal history outcomes.",
+      "Changed authored records and old-generation native results report invalidated with recorded=false.",
+      "installed() retains the retired job and operation ID, requests native Stop and clears current ownership. The worker preserves its truthful result slot; _process consumes only the matching owned or retired operation ID; the retired callback reports invalidated without editing the current authored start.",
+      "Source fences, paused requirements, expected-before native validation and original human/agent material ownership remain in their existing executors."
+    ],
+    "retired_world_note": "Retired-World draining was inspected, not independently exercised as a full native World replacement by these scratch probes."
+  },
+  "capacity_refusal": {
+    "fixture": "A real512-square native Workbench and real one-cell agent draw establish the current state. Injected32769 individually valid one-cell authored stamps reproduce that same native state; matching synthetic before/after history recipes deliberately exceed the32768-stamp cap. The cells and Undo planner remain real.",
+    "accepted_scope": "Explicit bounded refusal is the expected result. This fixture does not establish that a genuinely fragmented drawing over capacity is fully undoable, or that any persistence limit has increased.",
+    "verified": "The inverse refuses before native admission; one terminal refused/applied0/changed0 receipt is emitted; native generation/revision/tick and33024 stored materials remain exact; history is retained and the editor settles. Saving the over-budget current recipe refuses and preserves byte-identical prior named-start data, which read_named validates and reconstructs.",
+    "runs": [
+      {
+        "requested_native_workers": 1,
+        "checks": 20,
+        "failures": [],
+        "exit_code": 0,
+        "retained_log": "docs/audits/wb-art-paint-2026-11-12/agent-undo-capacity-final-workers1.log.txt",
+        "log_sha256": "a6a72419b06b2f605b6d1e8d37810728c9bd4aaf90ddf834a01d086c75304b90",
+        "feedback": [
+          {
+            "action": "undo",
+            "applied": 0,
+            "changed": 0,
+            "label": "Undo Agent drawing",
+            "origin": "agent",
+            "reason": "Starting paint capacity exhausted.",
+            "recorded": true,
+            "remaining_group": false,
+            "status": "refused"
+          }
+        ],
+        "native_material_witnesses": [
+          {
+            "region": [
+              20,
+              20,
+              256,
+              129
+            ],
+            "sha256": "2980ae1090060ca790aa0a30ac3da1da16146cc9dab77ea133a9e0a8d2290f80"
+          },
+          {
+            "region": [
+              20,
+              20,
+              256,
+              129
+            ],
+            "sha256": "2980ae1090060ca790aa0a30ac3da1da16146cc9dab77ea133a9e0a8d2290f80"
+          }
+        ],
+        "prior_named_start_sha256": "92358605f4b476815489833eda0987e9a788c57e8819a00a6d5d258d24554e99",
+        "source_identity": {
+          "art_batch_executor.gd": "2c7c7c1605a5cf9f630e6fabad6cb6d34804e0c0a19c9e8e96a7e9535489fc98",
+          "art_batch_panel.gd": "958516aeb5ef3228735128aba93d0a44247ff25e021891edf5509e7de555fbd1",
+          "display": "headless",
+          "godot": "4.7-stable (official)",
+          "native_sha256": "16ffc0ce8190c2e8ca2e31fc59f10c55148adc6e7f16727dc96c094d8a96696a",
+          "os": "Linux",
+          "shared_workbench.gd": "8d80dc46056c9dbbd7f16d06c6acace01ace8fa725b066b399f2ec02f07f6bdc",
+          "simulation_worker.gd": "bac92f82ef3d3dc4fad54c785c148eba3ea1c0ec1e1b9805a65ffea261cc6016",
+          "test_sha256": "bc9d9f076c0c8e936682293116f8498e2ea0d47bfb8ef25f032643eab80d49f5",
+          "workbench_paint_editor_controller.gd": "6022a4379baafae9ecef8c8e309c13271a27a2f271038fcb6350a9db170179e8",
+          "workbench_paint_editor_executor.gd": "1f118427e505f0a4b7f63e7e10089507f89445c08f9ead5a7f41768935160e7d",
+          "workbench_paint_editor_history.gd": "f3b19f906668feec3d49aea61448b1d58a90a6ccf8b9bf5b814d13ed4881786e",
+          "workbench_setup.gd": "6b3341e4733f39622c23a964cb586c65eb358734e1a164e354d327057abe4a86"
+        },
+        "source_and_native_unchanged_during_execution": true
+      },
+      {
+        "requested_native_workers": 4,
+        "checks": 20,
+        "failures": [],
+        "exit_code": 0,
+        "retained_log": "docs/audits/wb-art-paint-2026-11-12/agent-undo-capacity-final-workers4.log.txt",
+        "log_sha256": "508a81b4f8d11916b54a3ac2f93c02a2ff3e7b636be4f16b6c845adfc1dc6292",
+        "feedback": [
+          {
+            "action": "undo",
+            "applied": 0,
+            "changed": 0,
+            "label": "Undo Agent drawing",
+            "origin": "agent",
+            "reason": "Starting paint capacity exhausted.",
+            "recorded": true,
+            "remaining_group": false,
+            "status": "refused"
+          }
+        ],
+        "native_material_witnesses": [
+          {
+            "region": [
+              20,
+              20,
+              256,
+              129
+            ],
+            "sha256": "2980ae1090060ca790aa0a30ac3da1da16146cc9dab77ea133a9e0a8d2290f80"
+          },
+          {
+            "region": [
+              20,
+              20,
+              256,
+              129
+            ],
+            "sha256": "2980ae1090060ca790aa0a30ac3da1da16146cc9dab77ea133a9e0a8d2290f80"
+          }
+        ],
+        "prior_named_start_sha256": "92358605f4b476815489833eda0987e9a788c57e8819a00a6d5d258d24554e99",
+        "source_identity": {
+          "art_batch_executor.gd": "2c7c7c1605a5cf9f630e6fabad6cb6d34804e0c0a19c9e8e96a7e9535489fc98",
+          "art_batch_panel.gd": "958516aeb5ef3228735128aba93d0a44247ff25e021891edf5509e7de555fbd1",
+          "display": "headless",
+          "godot": "4.7-stable (official)",
+          "native_sha256": "16ffc0ce8190c2e8ca2e31fc59f10c55148adc6e7f16727dc96c094d8a96696a",
+          "os": "Linux",
+          "shared_workbench.gd": "8d80dc46056c9dbbd7f16d06c6acace01ace8fa725b066b399f2ec02f07f6bdc",
+          "simulation_worker.gd": "bac92f82ef3d3dc4fad54c785c148eba3ea1c0ec1e1b9805a65ffea261cc6016",
+          "test_sha256": "bc9d9f076c0c8e936682293116f8498e2ea0d47bfb8ef25f032643eab80d49f5",
+          "workbench_paint_editor_controller.gd": "6022a4379baafae9ecef8c8e309c13271a27a2f271038fcb6350a9db170179e8",
+          "workbench_paint_editor_executor.gd": "1f118427e505f0a4b7f63e7e10089507f89445c08f9ead5a7f41768935160e7d",
+          "workbench_paint_editor_history.gd": "f3b19f906668feec3d49aea61448b1d58a90a6ccf8b9bf5b814d13ed4881786e",
+          "workbench_setup.gd": "6b3341e4733f39622c23a964cb586c65eb358734e1a164e354d327057abe4a86"
+        },
+        "source_and_native_unchanged_during_execution": true
+      }
+    ],
+    "initial_harness_failure": {
+      "classification": "test_harness_defect",
+      "checks": 20,
+      "failed_checks": [
+        "failed oversized Save preserves exact prior named file and valid reopened recipe"
+      ],
+      "exit_code": 1,
+      "cause": "The first probe compared the read_named result wrapper directly with the setup dictionary. read_named correctly returns {setup: setup_data}.",
+      "correction": "Compare read_named(label).get(\"setup\",{}) to the valid setup. No production code changed. Exact original probe/log and corrected probe/logs are retained."
+    }
+  },
+  "retained_artifacts": [
+    {
+      "original": "build/agent-undo/group-cancel-review.gd",
+      "retained": "docs/audits/wb-art-paint-2026-11-12/agent-undo-boundary-original.gd.txt",
+      "bytes": 1634,
+      "sha256": "c6cf44e9aa3afeb580d4be7fa507100bb28b2b49aef315b14d2a4d4b4b6ffc04",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "original": "build/agent-undo/group-cancel-review.log",
+      "retained": "docs/audits/wb-art-paint-2026-11-12/agent-undo-boundary-original.log.txt",
+      "bytes": 270,
+      "sha256": "7a0ec8c8f6a71eef03d697f6346d568413fad39f5ef29b47c4b0f56391805c47",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "original": "build/agent-undo/group-cancel-review-final.gd",
+      "retained": "docs/audits/wb-art-paint-2026-11-12/agent-undo-boundary-final.gd.txt",
+      "bytes": 2397,
+      "sha256": "05fad3194b7037abe227590cbd951abe983de8c673dc971beeb989fcb1c1b426",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "original": "build/agent-undo/group-cancel-review-final.log",
+      "retained": "docs/audits/wb-art-paint-2026-11-12/agent-undo-boundary-final.log.txt",
+      "bytes": 683,
+      "sha256": "1828dd87d36363e86e472c331fdd1c5b8a3607c8e5cdc13c7a2549961388e408",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "original": "build/agent-undo/capacity-refusal-review-initial.gd",
+      "retained": "docs/audits/wb-art-paint-2026-11-12/agent-undo-capacity-original-harness-failure.gd.txt",
+      "bytes": 4390,
+      "sha256": "68d2286c7284737b477f3cdb4231ac32d87ec22d59e57b264c416c60b5bde77d",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "original": "build/agent-undo/capacity-refusal-review-workers1.log",
+      "retained": "docs/audits/wb-art-paint-2026-11-12/agent-undo-capacity-original-harness-failure.log.txt",
+      "bytes": 3920,
+      "sha256": "576ee22f1f010a529e9e86125eab0d1d41b48a4190859db913f49daf561e3323",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "original": "build/agent-undo/capacity-refusal-review.gd",
+      "retained": "docs/audits/wb-art-paint-2026-11-12/agent-undo-capacity-final.gd.txt",
+      "bytes": 4406,
+      "sha256": "73716be8ef62bfac09b58996f2d4c76dd5e1c10193f99e77e2bb46c36435a326",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "original": "build/agent-undo/capacity-refusal-review-final-workers1.log",
+      "retained": "docs/audits/wb-art-paint-2026-11-12/agent-undo-capacity-final-workers1.log.txt",
+      "bytes": 3393,
+      "sha256": "a6a72419b06b2f605b6d1e8d37810728c9bd4aaf90ddf834a01d086c75304b90",
+      "exact_original_bytes_preserved": true
+    },
+    {
+      "original": "build/agent-undo/capacity-refusal-review-final-workers4.log",
+      "retained": "docs/audits/wb-art-paint-2026-11-12/agent-undo-capacity-final-workers4.log.txt",
+      "bytes": 3393,
+      "sha256": "508a81b4f8d11916b54a3ac2f93c02a2ff3e7b636be4f16b6c845adfc1dc6292",
+      "exact_original_bytes_preserved": true
+    }
+  ],
+  "limitations": [
+    "Uses the restored GCC14.2/binutils2.44 diagnostic native build recorded in runtime; source-matched pinned hosted release qualification remains separate.",
+    "The capacity probes configure requested native workers1 and4 through the same focused fixture initializer; the corresponding full mounted suite separately asserts actual worker capacity.",
+    "The synthetic over-budget metadata is deliberately injected. This is safety/refusal evidence, not an end-to-end generation of a fragmented32769-stamp agent drawing.",
+    "Neither the synthetic callback count nor the40 capacity-probe checks should be counted as extra assertions of the separately reported full native suite."
+  ]
+}

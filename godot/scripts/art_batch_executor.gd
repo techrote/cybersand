@@ -23,6 +23,7 @@ var native_refused := false
 var pending_chunk: Dictionary = {}
 var manual_inflight: Dictionary = {}
 var manual_sequence := 0
+var batch_sequence := 0
 
 func _human_state() -> Dictionary:
 	return wb.art_authoring_state() if wb.has_method("art_authoring_state") else {"busy":false,"reason":""}
@@ -39,6 +40,7 @@ func submit(operations: Variant, scope: Rect2i, protection: Array, allowed: Arra
 	for op: Dictionary in candidate.operations:
 		if op.material not in allowed: return {"status":"refused","reason":"Enable the requested material first."}
 	materials = allowed.duplicate()
+	batch_sequence += 1
 	plan = candidate
 	area = scope
 	guards = protection.duplicate()
@@ -100,6 +102,7 @@ func manual_finished(token: int, receipt: Dictionary) -> void:
 func _deliver_manual() -> bool:
 	if not manual_inflight.is_empty(): return false
 	if manual.is_empty(): return true
+	_finish_history()
 	if wb.has_method("begin_deferred_art_stroke"):
 		var human := _human_state()
 		if bool(human.busy): return false
@@ -183,6 +186,9 @@ func remember(rows: Array) -> void:
 		length += 1
 	if length>0: add_run(start.x,start.y,length,material)
 
+func _finish_history() -> void:
+	if wb != null and wb.has_method("finish_art_history"): wb.finish_art_history()
+
 func poll() -> void:
 	if wb == null: return
 	var worker: RefCounted = wb.host.simulation_worker
@@ -190,15 +196,20 @@ func poll() -> void:
 	if not receipt.is_empty() and active:
 		last_receipt = receipt
 		waiting = false
-		remember(receipt.get("readback",[]))
-		if int(receipt.get("changed",0)) > 0 and not record.is_empty() and wb.has_method("art_changed_source"):
-			wb.art_changed_source()
+		if not record.is_empty() and wb.has_method("art_record_receipt"):
+			wb.art_record_receipt(self,receipt,batch_sequence)
+		else:
+			remember(receipt.get("readback",[]))
+			if int(receipt.get("changed",0)) > 0 and not record.is_empty() and wb.has_method("art_changed_source"):
+				wb.art_changed_source()
 		for key: String in ["checked","changed","unchanged","excluded","refused"]: result[key] = int(result.get(key,0)) + int(receipt.get(key,0))
 		native_receipt.emit(receipt)
 		if receipt.get("status") in ["partial","refused"]:
 			native_refused = receipt.get("status") == "refused"
 			stop(str(receipt.get("reason","Native write incomplete")))
-	if not active: return
+	if not active:
+		_finish_history()
+		return
 	var state: Dictionary = worker.art_state()
 	if state.executing: result.status = "executing"
 	if state.epoch != epoch: stopping = true
@@ -212,6 +223,7 @@ func poll() -> void:
 		if not state.executing and not state.queued and not waiting:
 			active = false
 			result.status = "refused" if native_refused and result.changed == 0 else ("partial" if result.checked>0 else "cancelled")
+			_finish_history()
 		return
 	if waiting: return
 	var human := _human_state()
@@ -232,6 +244,7 @@ func poll() -> void:
 			return
 		result.status = "completed"
 		active = false
+		_finish_history()
 		return
 	var admitted: Dictionary = worker.art_queue(chunk.points,chunk.material,area,guards,epoch,materials)
 	if admitted.status == "queued":
@@ -247,3 +260,4 @@ func poll() -> void:
 		result.reason = admitted.reason
 		result.refused = int(result.get("refused",0)) + int(admitted.get("refused",chunk.points.size()/2))
 		active = false
+		_finish_history()

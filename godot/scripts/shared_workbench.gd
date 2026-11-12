@@ -214,6 +214,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	move_child(paint_editor,2)
 	paint_editor.mount(self)
 	paint_editor.deferred_brush_finished.connect(art_batches.executor.manual_finished)
+	paint_editor.history_action_finished.connect(art_batches.history_edited)
 	_name.reparent(paint_editor)
 	_name.tooltip_text = "Name of the authored starting map; Save does not capture evolved simulation."
 	save_start_button.reparent(paint_editor)
@@ -756,6 +757,17 @@ func begin_deferred_art_stroke(stroke: Array, token: int) -> bool:
 
 func art_changed_source() -> void:
 	if paint_editor != null: paint_editor.invalidate_history("Agent drawing changed the source")
+
+func art_record_receipt(executor: RefCounted, receipt: Dictionary, submission: int) -> void:
+	if paint_editor != null: paint_editor.before_agent_receipt(receipt,submission)
+	executor.remember(receipt.get("readback",[]))
+	if paint_editor != null: paint_editor.after_agent_receipt(receipt)
+
+func finish_art_history() -> void:
+	if paint_editor != null: paint_editor.finish_agent_history()
+
+func art_history_guard() -> String:
+	return art_batches.history_block_reason() if art_batches != null else ""
 
 # Built-in #361 equipment starts. Each asks the native validator for one of
 # the existing opt-in liquid presets (inertial Water by default) and sets

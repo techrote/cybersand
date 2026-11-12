@@ -12,6 +12,7 @@ const AUTHOR_REGION := Rect2i(32,32,352,272)
 const ACTOR_CLEARANCE := Rect2i(400,336,104,168)
 const LARGE_FILL_REGION := Rect2i(560,64,386,386)
 const FOLLOWUP_PROMPT := "Add a short wall line, then erase one previous wall cell."
+const UNDONE_AGENT_REGION := Rect2i(350,250,3,1)
 class FocusHost extends "res://scripts/main.gd":
 	func _actor_window_has_focus() -> bool: return true
 
@@ -26,7 +27,7 @@ var checks := 0
 var failures: Array[String] = []
 var phases := {"discovery":false,"generation":false,"manual":false,"leases":false,
 	"agent":false,"provider_fixture":false,"late_response":false,"human_after_agent":false,
-	"stop":false,"simulation_equipment":false,"save":false,"reopen":false,"continued_authoring":false}
+	"stop":false,"agent_undo_saved":false,"simulation_equipment":false,"save":false,"reopen":false,"continued_authoring":false}
 var author_complete := false
 var reopen_complete := false
 var profile_count := 0
@@ -65,7 +66,7 @@ func until(predicate: Callable,label: String,limit_ms: int = 60000) -> bool:
 
 func settled() -> bool:
 	var a: Dictionary = worker.art_state()
-	return not editor.busy() and not worker.paint_state().busy and not art.active \
+	return not editor.busy() and not worker.paint_state().busy and not art.active and not panel.log_draw \
 		and not a.queued and not a.executing and not a.receipt_ready and art.manual.is_empty()
 
 func ready() -> bool:
@@ -101,6 +102,20 @@ func screenshot(label: String) -> void:
 	await RenderingServer.frame_post_draw
 	check(root.get_texture().get_image().save_png(directory.path_join(label+".png"))==OK,
 		"actual graphical framebuffer "+label)
+
+func history_control(action: String,label: String) -> bool:
+	panel.popup_centered()
+	await process_frame
+	var button: Button = panel.undo_button if action=="undo" else panel.redo_button
+	if not check(not button.disabled,"Art panel "+action+" control enabled: "+label):
+		panel.hide()
+		return false
+	var completed_before: int = editor.completed_actions
+	button.pressed.emit()
+	var finished := await until(settled,label+" native history completion")
+	panel.hide()
+	return finished and check(editor.completed_actions>completed_before,
+		"Art panel "+action+" produced a confirmed native history operation: "+label)
 
 func local(cell: Vector2i) -> Vector2:
 	var bounds: Rect2 = host.view_content_rect()
@@ -269,6 +284,7 @@ func agent_authoring() -> bool:
 	check(panel.visible and editor.is_visible_in_tree(),"agent panel and full human editor coexist")
 	await screenshot("combined-agent-and-paint")
 	panel.hide()
+	var before := await capture(Rect2i(180,40,25,24))
 	var operations := [{"shape":"rectangle","x0":180,"y0":40,"x1":203,"y1":63,"material":58},
 		{"shape":"pixels","points":[[204,40]],"material":58}]
 	var admission: Dictionary = art.submit(operations,Rect2i(180,40,24,24),[Rect2i(186,44,2,2)],[0,58])
@@ -288,7 +304,12 @@ func agent_authoring() -> bool:
 			if x==4 and y==4: expected=28
 			if observed[y*25+x]!=expected: exact=false
 	check(exact,"native agent result retains human Metal, guard and outside-scope cells")
-	check(not editor.undo() and editor._undo_stack.is_empty(),"agent changes invalidate stale human Undo")
+	if not await history_control("undo","whole direct agent batch"): return false
+	check(await capture(Rect2i(180,40,25,24))==before,
+		"agent Undo restores every native before-material and retains the protected human Metal")
+	if not await history_control("redo","whole direct agent batch"): return false
+	check(await capture(Rect2i(180,40,25,24))==observed,
+		"agent Redo restores the exact bounded native result")
 	phases.agent = true
 	return true
 
@@ -341,7 +362,7 @@ func provider_completion_fixture() -> bool:
 func human_after_agent() -> bool:
 	if not await gesture("Rectangle",Vector2i(80,180),Vector2i(84,184),131): return false
 	check(await capture(Rect2i(80,180,1,1))==PackedInt32Array([131]),"manual full-palette material works after agent turn")
-	if not check(editor.undo(),"new manual edit has valid Undo after agent history invalidation"): return false
+	if not check(editor.undo(),"new manual edit has valid Undo after the agent turn"): return false
 	if not await until(settled,"new manual Undo complete"): return false
 	check(await capture(Rect2i(80,180,1,1))==PackedInt32Array([0]),"new manual Undo restores current source")
 	if not check(editor.redo(),"new manual Redo admitted"): return false
@@ -350,6 +371,7 @@ func human_after_agent() -> bool:
 	return true
 
 func stopped_agent_prefix() -> bool:
+	var before := await capture(Rect2i(210,120,128,128))
 	panel.set_process(false)
 	var admission: Dictionary = art.submit([{"shape":"rectangle","x0":210,"y0":120,"x1":337,"y1":247,"material":58}],
 		Rect2i(210,120,128,128),[],[0,58])
@@ -411,7 +433,34 @@ func stopped_agent_prefix() -> bool:
 	check(exact_grid,"every native cell matches the completed prefix, deferred human disc and untouched suffix")
 	var late: Dictionary = worker.art_queue(PackedInt32Array([337,247]),58,AUTHOR_REGION,[],art.epoch)
 	check(late.status=="refused","old agent epoch remains fenced after Stop")
+	if not await history_control("undo","human stroke after stopped agent prefix"): return false
+	var prefix_only := before.duplicate()
+	for index: int in stopped_prefix: prefix_only[index]=58
+	check(await capture(Rect2i(210,120,128,128))==prefix_only,
+		"first Undo reverses the later human erasure without losing the stopped agent prefix")
+	if not await history_control("undo","confirmed stopped agent prefix"): return false
+	check(await capture(Rect2i(210,120,128,128))==before,
+		"second Undo restores the complete pre-agent native region including its untouched suffix")
+	if not await history_control("redo","confirmed stopped agent prefix"): return false
+	check(await capture(Rect2i(210,120,128,128))==prefix_only,
+		"first Redo restores only the natively confirmed agent prefix")
+	if not await history_control("redo","human stroke after stopped agent prefix"): return false
+	check(await capture(Rect2i(210,120,128,128))==stored,
+		"second Redo exactly restores the agent-prefix and later human ordering")
 	phases.stop = true
+	return true
+
+func undo_before_save() -> bool:
+	var before := await capture(UNDONE_AGENT_REGION)
+	if not check(before==PackedInt32Array([0,0,0]),"persistence Undo fixture begins with exact native Empty cells"): return false
+	var admitted: Dictionary = art.submit([{"shape":"pixels","points":[[350,250],[351,250],[352,250]],"material":58}],
+		UNDONE_AGENT_REGION,[],[0,58])
+	if not check(admitted.status=="queued","agent mark admitted for Undo-before-Save"): return false
+	if not await until(settled,"agent mark confirmed before Undo-before-Save"): return false
+	check(await capture(UNDONE_AGENT_REGION)==PackedInt32Array([58,58,58]),"persistence fixture really changes native cells")
+	if not await history_control("undo","agent mark deliberately left undone before Save"): return false
+	check(await capture(UNDONE_AGENT_REGION)==before,"native agent mark is absent before authored-start Save")
+	phases.agent_undo_saved = true
 	return true
 
 func discover() -> bool:
@@ -506,6 +555,7 @@ func author() -> void:
 	if not await provider_completion_fixture(): return
 	if not await human_after_agent(): return
 	if not await stopped_agent_prefix(): return
+	if not await undo_before_save(): return
 	var actual: PackedInt32Array = await capture(AUTHOR_REGION)
 	var actor_clear: PackedInt32Array = await capture(ACTOR_CLEARANCE)
 	if not check(actual.size()==AUTHOR_REGION.get_area() and actor_clear.size()==ACTOR_CLEARANCE.get_area(),
@@ -536,7 +586,8 @@ func author() -> void:
 		"equipment":saved.setup.get("equipment",{}),
 		"prepared_sha256":prepared_sha256,"native_region":Marshalls.raw_to_base64(PackedByteArray(Array(actual))),
 		"provider_model":panel.model.text,"provider_context":panel.context_mode.selected,
-		"source_identity":source_identity,"stop_prefix":stopped_prefix,"map_side":map_side}
+		"source_identity":source_identity,"stop_prefix":stopped_prefix,"map_side":map_side,
+		"agent_undo_saved":phases.agent_undo_saved}
 	var file := FileAccess.open(EXPECTED_PATH,FileAccess.WRITE)
 	if not check(file!=null,"independent native expectation file opened"): return
 	file.store_string(JSON.stringify(expectation))
@@ -577,6 +628,8 @@ func reopen() -> void:
 	var actual: PackedInt32Array = await capture(AUTHOR_REGION)
 	check(PackedByteArray(Array(actual))==Marshalls.base64_to_raw(expected.native_region),
 		"every human, agent, provider-fixture and stopped-prefix material cell survives restart")
+	check(bool(expected.get("agent_undo_saved",false)) and await capture(UNDONE_AGENT_REGION)==PackedInt32Array([0,0,0]),
+		"agent edit left undone before Save stays absent after complete process exit and reopening")
 	if map_side>=1024:
 		var filled := await capture(LARGE_FILL_REGION)
 		var exact := filled.size()==LARGE_FILL_REGION.get_area()
@@ -612,6 +665,10 @@ func reopen() -> void:
 	if not check(admission.status=="queued","agent authoring continues after reopen"): return
 	if not await until(settled,"new-process agent native completion"): return
 	check(await capture(Rect2i(360,280,1,1))==PackedInt32Array([58]),"new-process agent edit reaches native stored grid")
+	if not await history_control("undo","agent edit in the fresh process"): return
+	check(await capture(Rect2i(360,280,1,1))==PackedInt32Array([0]),"agent Undo continues after reopening")
+	if not await history_control("redo","agent edit in the fresh process"): return
+	check(await capture(Rect2i(360,280,1,1))==PackedInt32Array([58]),"agent Redo continues after reopening")
 	phases.continued_authoring = true
 	await screenshot("combined-reopened-and-continued")
 	reopen_complete = true
@@ -651,7 +708,7 @@ func run() -> void:
 			"all mandatory fresh-process reopen and continued-authoring phases executed")
 	else:
 		for phase: String in ["discovery","generation","manual","leases","agent","provider_fixture",
-			"late_response","human_after_agent","stop","simulation_equipment","save"]:
+			"late_response","human_after_agent","stop","agent_undo_saved","simulation_equipment","save"]:
 			check(bool(phases[phase]),"mandatory combined author phase executed: "+phase)
 		check(author_complete,"complete combined authoring flow reached Save")
 	check(source_identity==identity(),"tested source and native runtime bytes did not change during execution")

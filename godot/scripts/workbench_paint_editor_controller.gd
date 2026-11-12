@@ -1,6 +1,7 @@
 extends HFlowContainer
 
 signal deferred_brush_finished(token: int, receipt: Dictionary)
+signal history_action_finished(receipt: Dictionary)
 
 # One human editor over the existing host and exclusive native worker.
 const Shapes = preload("res://scripts/workbench_paint_editor_shapes.gd")
@@ -42,7 +43,14 @@ var _message := "Drag to paint · paused construction"
 var last_result: Dictionary = {}
 var last_receipt: Dictionary = {}
 var _retired_operation := 0
+var _retired_history_job: Dictionary = {}
 var completed_actions := 0
+var _agent_history: Dictionary = {}
+var _agent_submission := -1
+var _agent_group := 0
+var _next_history_group := 0
+var _history_replay: Dictionary = {}
+var history_notice := ""
 
 func mount(workbench: Control) -> void:
 	bench = workbench
@@ -61,7 +69,7 @@ func mount(workbench: Control) -> void:
 		add_child(button)
 	_copy.tooltip_text = "Ctrl+C · capture exact native materials in the selection"
 	_paste.tooltip_text = "Ctrl+V · drag a multi-material stamp; Empty is included"
-	_undo_button.tooltip_text = "Ctrl+Z · undo paused edits; simulation invalidates history"
+	_undo_button.tooltip_text = "Ctrl+Z · undo manual or agent edits; Stop the agent first; simulation invalidates history"
 	_redo_button.tooltip_text = "Ctrl+Y / Ctrl+Shift+Z"
 	_cancel_button.tooltip_text = "Escape · cancel preview or stop after the current native slice"
 	_status.text = _message
@@ -75,7 +83,21 @@ func mount(workbench: Control) -> void:
 	for id: int in host.simulation_worker.paint_materials(): Setup._stamp_material(id)
 
 func busy() -> bool:
-	return _planner != null or not _operation.is_empty()
+	return _planner != null or not _operation.is_empty() or not _history_replay.is_empty()
+
+func history_replaying() -> bool:
+	return not _history_replay.is_empty() or str(_planning_job.get("history_action","")) != "" \
+		or str(_operation.get("job",{}).get("history_action","")) != ""
+
+func history_available(action: String) -> bool:
+	if action not in ["undo","redo"] or busy() or host == null or not host.paused: return false
+	if bench.has_method("art_history_guard") and not str(bench.art_history_guard()).is_empty(): return false
+	if action == "redo" and _save_hold: return false
+	var stack: Array = _undo_stack if action == "undo" else _redo_stack
+	var state := _current()
+	return not stack.is_empty() and not _history_fence.is_empty() and _source(state) == _history_fence \
+		and not bool(state.get("busy",true)) and not bool(state.get("art_busy",false)) \
+		and not bool(state.get("legacy_busy",false)) and not bool(state.get("transition_busy",false))
 
 func recovery_required() -> bool:
 	return _save_hold
@@ -133,17 +155,108 @@ func _say(message: String) -> void:
 	if bench != null: bench.message = message
 
 func invalidate_history(reason: String = "Source changed") -> void:
-	var had_history := not _undo_stack.is_empty() or not _redo_stack.is_empty()
+	var had_history := not _undo_stack.is_empty() or not _redo_stack.is_empty() or not _agent_history.is_empty()
 	_undo_stack.clear()
 	_redo_stack.clear()
 	_history_fence.clear()
+	_agent_history.clear()
+	_agent_submission = -1
+	_agent_group = 0
+	_history_replay.clear()
+	history_notice = ""
 	if had_history: _say(reason+" · undo history cleared.")
+
+# Called on the main thread around the existing agent's authored-stamp recorder.
+# Native ownership and material policy stay in their original executors.
+func before_agent_receipt(receipt: Dictionary, submission: int) -> void:
+	if int(receipt.get("changed",0)) == 0: return
+	var before: Dictionary = receipt.get("before_source",{})
+	var after := _source(receipt)
+	if not host.paused or before.is_empty() or _source(_current()) != after \
+			or int(before.get("generation",-1)) != int(after.generation) \
+			or int(before.get("tick",-1)) != int(after.tick):
+		invalidate_history("Agent drawing overlapped simulation or a World change")
+		return
+	if not _history_fence.is_empty() and _source(before) != _history_fence:
+		invalidate_history("Another edit changed the source before agent drawing")
+	if submission != _agent_submission:
+		finish_agent_history()
+		_agent_submission = submission
+	# Each retained part fits one existing PAINT request. A single Undo drains
+	# adjacent parts of this group; a human interleave starts another group.
+	if not _agent_history.is_empty() \
+			and _agent_history.rows.size()+receipt.get("readback",[]).size() > MAX_CELLS:
+		_seal_agent_history()
+	if _agent_group == 0:
+		_next_history_group += 1
+		_agent_group = _next_history_group
+	if _agent_history.is_empty():
+		_agent_history = {"rows":{},"before_edits":bench.applied.edits.duplicate(true),
+			"agent_group":_agent_group,"submission":submission}
+
+func after_agent_receipt(receipt: Dictionary) -> void:
+	if int(receipt.get("changed",0)) == 0 or _agent_history.is_empty(): return
+	var width := extent().x
+	for row: Array in receipt.get("readback",[]):
+		if row[2] == row[3]: continue
+		var key := int(row[1])*width+int(row[0])
+		var pair: Vector2i = _agent_history.rows.get(key,Vector2i(int(row[2]),int(row[3])))
+		pair.y = int(row[3])
+		_agent_history.rows[key] = pair
+	_history_fence = _source(receipt)
+
+func _seal_agent_history() -> void:
+	if _agent_history.is_empty(): return
+	var pending := _agent_history
+	_agent_history = {}
+	var ordered: Array = pending.rows.keys()
+	ordered.sort()
+	var cells := PackedInt32Array()
+	var before := PackedInt32Array()
+	var after := PackedInt32Array()
+	cells.resize(ordered.size()*3)
+	before.resize(ordered.size())
+	after.resize(ordered.size())
+	var width := extent().x
+	var count := 0
+	for key: int in ordered:
+		var pair: Vector2i = pending.rows[key]
+		if pair.x == pair.y: continue
+		cells[count*3] = key%width
+		cells[count*3+1] = key/width
+		cells[count*3+2] = pair.y
+		before[count] = pair.x
+		after[count] = pair.y
+		count += 1
+	cells.resize(count*3)
+	before.resize(count)
+	after.resize(count)
+	if cells.is_empty():
+		# A paused paint/erase round trip has no net effect. Its redundant
+		# stamps must not consume Undo or erase an existing Redo branch.
+		bench.applied.edits = pending.before_edits.duplicate(true)
+		return
+	_redo_stack.clear()
+	_undo_stack.append({"label":"Agent drawing","origin":"agent","agent_group":pending.agent_group,
+		"cells":cells,"before":before,"after":after,"before_edits":pending.before_edits,
+		"after_edits":bench.applied.edits.duplicate(true),"recover_only":false})
+	_trim_history()
+
+func finish_agent_history() -> void:
+	if not _agent_history.is_empty():
+		if host.paused and _source(_current()) == _history_fence:
+			_seal_agent_history()
+		else:
+			invalidate_history("Simulation or another edit changed the agent result")
+	_agent_submission = -1
+	_agent_group = 0
 
 func installed() -> void:
 	cancel_preview()
 	if not _operation.is_empty():
 		_finish_deferred(_operation.get("job",{}), {"status":"invalidated","reason":"World replaced before human edit completion."})
 		_retired_operation = int(_operation.operation_id)
+		_retired_history_job = _operation.get("job",{})
 		host.simulation_worker.paint_stop()
 	if _planner != null: _planning_cancelled = true
 	_operation.clear()
@@ -161,6 +274,7 @@ func cancel_preview() -> void:
 
 func cancel() -> void:
 	cancel_preview()
+	_history_replay.clear()
 	if _planner != null: _planning_cancelled = true
 	if host != null and not _operation.is_empty():
 		# A completed capture can already be waiting in the worker's receipt
@@ -177,9 +291,10 @@ func _source(state: Dictionary) -> Dictionary:
 func _current() -> Dictionary:
 	return host.simulation_worker.paint_state() if host != null else {}
 
-func _ready_to_author(allow_hold: bool = false) -> bool:
+func _ready_to_author(allow_hold: bool = false, continuing_history: bool = false) -> bool:
 	if host == null or bench.applied.is_empty(): return false
-	if busy() or not host.pending_microscenario_apply.is_empty() or bench.step_pending \
+	if _planner != null or not _operation.is_empty() or (not continuing_history and not _history_replay.is_empty()) \
+			or not host.pending_microscenario_apply.is_empty() or bench.step_pending \
 			or host.simulation_worker.has_failed() or bool(_current().get("busy",true)) \
 			or bool(_current().get("art_busy",false)) or bool(_current().get("legacy_busy",false)):
 		_say("Wait for the current native operation.")
@@ -345,6 +460,7 @@ func _finish_deferred(job: Dictionary, receipt: Dictionary) -> void:
 
 func _begin_plan(job: Dictionary, label: String) -> bool:
 	if not _ready_to_author(): return false
+	finish_agent_history()
 	job.setup = bench.applied.duplicate(true)
 	job.generated = bench._generated_active.duplicate(true)
 	job.extent = extent()
@@ -359,8 +475,10 @@ func _start_planner(job: Dictionary) -> bool:
 	var error: Error = _planner.start(_plan.bind(job))
 	if error != OK:
 		_planner = null
-		_planning_job.clear()
+		_planning_job = {}
+		_history_replay.clear()
 		_say("Could not start bounded paint planning.")
+		_notify_history(job,{"status":"refused","reason":_message},false)
 		return false
 	_say("Planning "+str(job.label)+"…")
 	return true
@@ -452,8 +570,10 @@ func _consume_plan() -> void:
 	var job := _planning_job
 	_planning_job = {}
 	if _planning_cancelled:
+		_history_replay.clear()
 		_say("Planning cancelled; no cells queued.")
 		_finish_deferred(job,{"status":"cancelled","applied":0,"reason":_message})
+		_notify_history(job,{"status":"cancelled","reason":_message},false)
 		return
 	if planned is Dictionary and str(job.get("tool","")) == "Fill" \
 			and str(planned.get("unread_edge","")) != "":
@@ -471,20 +591,26 @@ func _consume_plan() -> void:
 			_say("Expanding fill capture to %d × %d cells…" % [expanded.size.x,expanded.size.y])
 		return
 	if not planned is Dictionary or not planned.get("accepted",false):
+		_history_replay.clear()
 		_say(str(planned.get("error","Paint planning failed.")) if planned is Dictionary else "Paint planning failed.")
 		_finish_deferred(job,{"status":"refused","applied":0,"reason":_message})
+		_notify_history(job,{"status":"refused","reason":_message},false)
 		return
 	if _source(_current()) != job.fence or not host.paused or not host.pending_microscenario_apply.is_empty():
+		_history_replay.clear()
 		_say("Native source changed during planning; draw again.")
 		_finish_deferred(job,{"status":"invalidated","applied":0,"reason":_message})
+		_notify_history(job,{"status":"invalidated","reason":_message},false)
 		return
 	var request := _request("edit",job.fence)
 	request.cells = planned.cells
 	if job.has("expected_before"): request.expected_before = job.expected_before
 	var admitted: Dictionary = host.simulation_worker.paint_queue(request)
 	if admitted.get("status","") != "queued":
+		_history_replay.clear()
 		_say(str(admitted.get("reason","Native paint refused.")))
 		_finish_deferred(job,{"status":"refused","applied":0,"reason":_message})
+		_notify_history(job,{"status":"refused","reason":_message},false)
 		return
 	_operation = {"kind":"edit","operation_id":admitted.operation_id,"job":job,"planned":planned}
 	_say(str(job.label)+" queued · awaiting native confirmation…")
@@ -500,14 +626,19 @@ func _process(_delta: float) -> void:
 		if not receipt.is_empty(): _receive(receipt)
 		if receipt_id == _retired_operation: _retired_operation = 0
 		state = _current()
-	if not busy() and not _history_fence.is_empty() and _source(state) != _history_fence:
+	# The agent's acknowledged before/after fence is recorded when its owner
+	# consumes the receipt. Do not clear history in the publication/consume gap.
+	if not busy() and not bool(state.get("art_busy",false)) \
+			and not _history_fence.is_empty() and _source(state) != _history_fence:
 		invalidate_history("Simulation or another edit changed the source")
 	if not clipboard.is_empty() and int(clipboard.generation) != int(state.get("generation",-1)):
 		clipboard.clear()
 	_copy.disabled = busy() or not selection.has_area()
 	_paste.disabled = busy() or clipboard.is_empty()
-	_undo_button.disabled = busy() or _undo_stack.is_empty()
-	_redo_button.disabled = busy() or _redo_stack.is_empty() or _save_hold
+	_undo_button.disabled = not history_available("undo")
+	_redo_button.disabled = not history_available("redo")
+	_undo_button.tooltip_text = "Ctrl+Z · "+(str(_undo_stack.back().label) if not _undo_stack.is_empty() else "No recorded edit") \
+		+" · Stop the agent first. "+history_notice
 	_cancel_button.disabled = not busy() and not dragging
 	if not _operation.is_empty():
 		_status.text = "%s · %s · %d / %d cells" % [_operation.get("kind","Paint"),state.get("status","queued"),
@@ -516,6 +647,14 @@ func _process(_delta: float) -> void:
 func _receive(receipt: Dictionary) -> void:
 	last_result = receipt.duplicate(true)
 	last_receipt = last_result
+	if int(receipt.get("operation_id",-1)) == _retired_operation:
+		var retired := receipt.duplicate(true)
+		retired.status = "invalidated"
+		retired.reason = "History result belongs to the previous World; current start is unchanged."
+		retired.recorded = false
+		_notify_history(_retired_history_job,retired,false)
+		_retired_history_job = {}
+		return
 	if _operation.is_empty() or int(receipt.get("operation_id",-1)) != int(_operation.operation_id): return
 	var operation := _operation
 	_operation = {}
@@ -529,6 +668,7 @@ func _receive(receipt: Dictionary) -> void:
 		retired.reason = _message
 		retired.recorded = false
 		_finish_deferred(operation.get("job",{}),retired)
+		_notify_history(operation.get("job",{}),retired,false)
 		return
 	if str(operation.kind) != "edit":
 		if bool(operation.get("cancel_requested",false)):
@@ -558,12 +698,19 @@ func _receive_edit(operation: Dictionary, receipt: Dictionary, current: Dictiona
 	var job: Dictionary = operation.job
 	var applied_count := int(receipt.get("applied",0))
 	if applied_count == 0:
+		_history_replay.clear()
 		_say(str(receipt.get("reason","No cells applied.")))
+		_notify_history(job,receipt,false)
 		return
 	if bench.applied.edits != job.setup.edits:
 		_save_hold = true
 		invalidate_history("Authoring record changed during native editing")
 		_say("Native edit completed against a changed authoring record. Restore start before saving.")
+		var unrecorded := receipt.duplicate(true)
+		unrecorded.status = "invalidated"
+		unrecorded.reason = _message
+		unrecorded.recorded = false
+		_notify_history(job,unrecorded,false)
 		return
 	var complete: bool = str(receipt.status) == "completed" and applied_count*3 == operation.planned.cells.size()
 	var action: String = str(job.get("history_action",""))
@@ -573,6 +720,7 @@ func _receive_edit(operation: Dictionary, receipt: Dictionary, current: Dictiona
 		invalidate_history("Partial recovery was stopped")
 		_say("Recovery stopped part way. Restore start before saving or continuing.")
 		completed_actions += 1
+		_notify_history(job,receipt,false)
 		return
 	var prepared: Dictionary = {"accepted":true,"setup":operation.planned.setup} if complete \
 		else History.prepare(job.setup,receipt.cells,job.generated)
@@ -592,6 +740,7 @@ func _receive_edit(operation: Dictionary, receipt: Dictionary, current: Dictiona
 			_undo_stack.append(record)
 		_history_fence = _source(receipt)
 	else:
+		_history_replay.clear()
 		if not action.is_empty(): invalidate_history("History operation stopped part way")
 		_redo_stack.clear()
 		if bool(receipt.get("recovery_possible",false)) and _source(receipt) == _source(current):
@@ -612,6 +761,32 @@ func _receive_edit(operation: Dictionary, receipt: Dictionary, current: Dictiona
 	else:
 		_say("%s stopped · %d / %d cells confirmed and recorded. Undo reverses this prefix." % [
 			job.label,applied_count,int(receipt.requested_cells)])
+	if not action.is_empty():
+		var stack: Array = _undo_stack if action == "undo" else _redo_stack
+		var group := int(job.history_record.get("agent_group",0))
+		var more: bool = complete and not _save_hold and not _history_replay.is_empty() \
+			and group > 0 and not stack.is_empty() and int(stack.back().get("agent_group",0)) == group
+		_notify_history(job,receipt,more)
+		if more:
+			# Receipt listeners may Stop or replace the World at this boundary.
+			# Never recreate the replay token that their cancellation just retired.
+			if str(_history_replay.get("action","")) != action or int(_history_replay.get("group",0)) != group:
+				var replaced := int(_current().get("generation",-1)) != int(job.fence.generation)
+				_notify_history(job,{"status":"invalidated" if replaced else "cancelled",
+					"reason":"World replaced at the confirmed part boundary." if replaced else "History stopped at the confirmed part boundary.",
+					"recorded":not replaced and not _save_hold},false)
+			elif not _start_reverse(action,true):
+				_history_replay.clear()
+		else:
+			_history_replay.clear()
+
+func _notify_history(job: Dictionary, receipt: Dictionary, more: bool) -> void:
+	if str(job.get("history_action","")) == "": return
+	history_action_finished.emit({"action":str(job.history_action),"status":str(receipt.get("status","refused")),
+		"label":str(job.get("label","History")),"origin":str(job.get("history_record",{}).get("origin","manual")),
+		"applied":int(receipt.get("applied",0)),"changed":int(receipt.get("changed",0)),
+		"reason":str(receipt.get("reason","")),"remaining_group":more,
+		"recorded":bool(receipt.get("recorded",not _save_hold))})
 
 func _trim_history() -> void:
 	var total := 0
@@ -619,6 +794,14 @@ func _trim_history() -> void:
 	while _undo_stack.size() > MAX_HISTORY or total > HISTORY_CELLS:
 		var oldest: Dictionary = _undo_stack.pop_front()
 		total -= oldest.before.size()
+		var group := int(oldest.get("agent_group",0))
+		if group > 0:
+			for record: Dictionary in _undo_stack:
+				if int(record.get("agent_group",0)) != group: continue
+				record.partial_history = true
+				record.label = "Agent drawing (retained tail)"
+				history_notice = "History is limited to 32 parts / 1048576 cells; the oldest part of this agent drawing is no longer undoable."
+				_say(history_notice)
 
 func undo() -> bool:
 	return _reverse("undo")
@@ -627,13 +810,31 @@ func redo() -> bool:
 	return _reverse("redo")
 
 func _reverse(action: String) -> bool:
-	if not _ready_to_author(action == "undo"): return false
+	if bench != null and bench.has_method("art_history_guard"):
+		var reason: String = bench.art_history_guard()
+		if not reason.is_empty():
+			_say(reason)
+			return false
+	finish_agent_history()
+	return _start_reverse(action)
+
+func _start_reverse(action: String, continuing_history: bool = false) -> bool:
+	var stack: Array = _undo_stack if action == "undo" else _redo_stack
+	var record: Dictionary = stack.back() if not stack.is_empty() else {}
+	var notification := {"history_action":action,"history_record":record,
+		"label":action.capitalize()+" "+str(record.get("label","history"))}
+	if not _ready_to_author(action == "undo",continuing_history):
+		if continuing_history: _notify_history(notification,{"status":"refused","reason":_message},false)
+		return false
 	if _history_fence.is_empty() or _source(_current()) != _history_fence:
 		invalidate_history("Native source changed")
+		if continuing_history: _notify_history(notification,{"status":"invalidated","reason":_message},false)
 		return false
-	var stack: Array = _undo_stack if action == "undo" else _redo_stack
-	if stack.is_empty(): return false
-	var record: Dictionary = stack.back()
+	if stack.is_empty():
+		if continuing_history: _notify_history(notification,{"status":"invalidated","reason":"No further recorded history part."},false)
+		return false
+	var group := int(record.get("agent_group",0))
+	_history_replay = {"action":action,"group":group} if group > 0 else {}
 	var target: PackedInt32Array = record.before if action == "undo" else record.after
 	var expected: PackedInt32Array = record.after if action == "undo" else record.before
 	var cells: PackedInt32Array = record.cells.duplicate()

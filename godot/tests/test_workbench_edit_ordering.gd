@@ -12,6 +12,7 @@ const Setup = preload("res://scripts/workbench_setup.gd")
 class SaveHost extends Control:
 	var simulation_worker: RefCounted
 	var pending_microscenario_apply := {}
+	var paused := true
 	func queue_brush_mutation(x: int,y: int,radius: int,material: int) -> bool:
 		return simulation_worker.queue_emit_disc(x,y,radius,material)
 class SaveArtPanel extends Window:

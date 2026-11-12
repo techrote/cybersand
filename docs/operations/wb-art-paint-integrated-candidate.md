@@ -2,7 +2,7 @@
 title: Integrated PAINT and agent Shared Workbench candidate
 status: Current
 document-kind: runbook
-scope: Unmerged Draft candidate, generator packaging repair, native stored-material receipts, ordered human and agent authoring, reproducible qualification and owner acceptance
+scope: Unmerged Draft candidate, generator packaging repair, native stored-material receipts, ordered human and agent authoring with shared Undo/Redo, reproducible qualification and owner acceptance
 canonical-for: [integrated-paint-agent-workbench]
 last-reviewed: 2026-11-12
 related-documents: [../systems/paint-editor-bounded-shapes.md, ../systems/workbench-direct-art-batches.md, ../systems/workbench-art-providers.md, ../systems/explore001-generated-playable-maps.md, ../architecture/shared-workbench-authoring-data.md]
@@ -14,15 +14,99 @@ related-documents: [../systems/paint-editor-bounded-shapes.md, ../systems/workbe
 implementations and their Git ancestry. It does not authorize Ready, merging,
 auto-merge, material-default changes or GEN-008 Flatten.
 
-## Qualified application checkpoint and standalone packaging repair
+## Shared agent and manual Undo/Redo — current implementation
 
-The fully qualified application checkpoint is
+The current local integration adds native-confirmed agent edits to PAINT's
+chronological Undo/Redo timeline. **These new history changes are not yet
+qualified by the previous hosted campaigns or Windows package.** Keep their
+source and results separate from the completed `d33c10e4` checkpoint below.
+
+Both the PAINT controls and the new **Art batches** Undo/Redo buttons act on the
+most recent edit. Adjacent bounded parts of one direct batch or model drawing
+submission form one history action. A human edit between agent chunks closes
+that group and remains a separate entry; Undo cannot skip later human work.
+After Stop, wait for the executor, deferred human edits, native result recording,
+image capture, provider and scheduled turns to settle. Undo then targets the
+confirmed prefix; the cancelled suffix has no history entry. Redo follows the
+same serialized native path.
+
+Native stored before/after materials and generation/revision/tick fences govern
+history. Recorded agent changes advance that fence; no-change agent receipts
+preserve Undo and Redo. Simulation, World replacement and mutations outside this
+recorded timeline still invalidate unsafe history. Undo uses the trusted human
+PAINT path and expected-source preflight; ordinary agent material, source,
+scope and protected-region policies remain unchanged. History completion adds
+a human conversation result and durable traffic event without rewriting old
+model receipts or automatically sending a new model request.
+
+The existing history limits remain **32 parts / 1,048,576 cells**, with at most
+262,144 cells per part. If eviction removes an older part of a drawing, its
+retained tail is visibly labelled and the lost undo coverage is reported.
+Undo/Redo also retains the existing **32,768-stamp / 1 MiB** authored-start
+limits. An agent can stream a highly fragmented result that Save refuses;
+history replay can refuse an intermediate target recipe before that part writes,
+even if the eventual group baseline would fit. Confirmed progress and refusal
+remain explicit. This is bounded construction history, not an unlimited or
+atomic rollback, physics rewind or a new persistence format. Saved starts
+retain the resulting authored layout; the Undo/Redo stacks are session-local.
+
+The [local history regression record](../audits/wb-art-paint-2026-11-12/agent-undo-local-tests.json)
+contains **1,002 passing checks**: 260 focused native history checks, 192 combined
+512² authoring checks and 49 fresh-process reopen checks at each of one and four
+workers. The focused test includes a 262,656-cell drawing on a 1024² World,
+same-batch grouping, Stop during planning and between confirmed history parts,
+no delayed writes, no-op/Redo preservation and exact native material comparisons.
+The [related local regressions](../audits/wb-art-paint-2026-11-12/agent-undo-local-related.json)
+passed 4,707 directly counted checks plus 105 headless HTTP provider checks.
+These are Linux headless diagnostic results with the documented GCC 14.2 /
+binutils 2.44 runtime, not Windows or pinned hosted qualification. Original
+fixture failures remain beside the records; subsequent hosted results must name
+their own exact source and source-built runtime.
+
+## Previous qualified package — d33c10e4, before agent Undo
+
+Source `d33c10e41cafcaa809ef410d0760e2c15bd02247`, tree
+`edac38d80744aa87a516966309c1fc8116848588`, completed the packaging repair and
+its source-matched qualification. It **does not contain the new agent Undo/Redo**.
+
+[Download that previous Windows x64 candidate](https://github.com/techrote/cybersand/actions/runs/43310701318/artifacts/13989111394):
+run **43310701318**, attempt **1**, artifact **13989111394**, **92,904,178 bytes**.
+ZIP SHA-256:
+`04955d872997cf50edfbe1fb7de3ca4d21a6fa5302eb99627dd72ebd8239e7eb`.
+Actions retains it until **2027-02-10**. Independent inspection verified all
+886 manifest-listed payload files, all 87 native source input hashes, both sets
+of 16 generator profiles and the previously missing Rapier lock and patch.
+
+The [dedicated campaign](https://github.com/techrote/cybersand/actions/runs/43310701318)
+passed all three jobs and 7,358 directly counted assertions on each platform,
+plus five package contract tests on each. The Windows process-module receipt
+confirmed that the copied Godot GUI loaded the bundled VC runtime, CyberSand
+extension and Rapier from the same copied installation with manifest-matching
+hashes. The Microsoft runtime was version 14.44.35211.0 with valid Authenticode;
+both licence documents and its redistribution provenance are included.
+[Windows evidence](https://github.com/techrote/cybersand/actions/runs/43310701318/artifacts/13988831813)
+and [Linux evidence](https://github.com/techrote/cybersand/actions/runs/43310701318/artifacts/13988615289)
+retain the native author/reopen digests, receipts, original logs and frames.
+
+The [Native campaign](https://github.com/techrote/cybersand/actions/runs/43310701227)
+passed all eight executing jobs, including all six runtime families and their
+aggregate. The [Godot campaign](https://github.com/techrote/cybersand/actions/runs/43310701720)
+passed all 50 executing jobs, with 298 Linux and 277 applicable Windows headless
+cases. All three campaigns completed on attempt 1. Administrative Ready checks
+and the optional physical-actor stress job were skipped, not passed. These
+results close the earlier standalone packaging defect; retained-runtime
+publication, materialized provenance, the separate Palette gate and owner
+acceptance remain separate merge requirements.
+
+## Earlier application checkpoint and standalone packaging defect — 0025bd94
+
+The earlier qualified application checkpoint is
 `0025bd942850e6e75e77d4beb9c4885d7dc1b2f4`, tree
 `6fff8a8c833eb65f4297d6fd07ef9f5edf336c0d`. A subsequent packaging repair preserves the application implementation. The complete #544 and #560 heads and accepted main
 `d8588716becb0dc42019faf23f721378d8adc84a` remain ancestors. Neither original PR
 has been closed, and no Ready, auto-merge or merge action has been taken.
 
-**HOLD for a replacement standalone package and eventual merge.** Independent
+**Historical package HOLD, resolved by the d33c10e4 replacement above.** Independent
 inspection of the 0025bd94 Windows archive found that Rapier imports
 `VCRUNTIME140.dll`, but the archive omitted it; the hosted machine supplied it.
 The referenced Rapier build lock and cooperative-BVH patch were also omitted.
@@ -36,9 +120,10 @@ file version/hash, signer and build-host provenance. Both referenced Rapier file
 are included. The installed suite runs the executable in each copied installation;
 a separate Windows process-module check requires the actual Godot process to load
 the bundled runtime, native extension and Rapier from that copied installation.
-Publication is gated on those checks and the complete dedicated campaign. Consult
-[PR #564](https://github.com/techrote/cybersand/pull/564) for the replacement build
-identity and download after qualification.
+Publication is gated on those checks and the complete dedicated campaign. They
+passed for the d33c10e4 package above. Consult
+[PR #564](https://github.com/techrote/cybersand/pull/564) for the current source
+and the separate qualification of subsequent history changes.
 
 The package's `candidate-manifest.json` and `source-built-candidate-provenance.json`
 identify its exact source and native inputs; `vc-runtime-provenance.json` identifies
@@ -273,11 +358,15 @@ PAINT's existing planner/native/history path. Every accepted gesture receives
 confirmed completion, a partial native prefix or explicit refusal/cancellation.
 Only after its authored record is settled can the next agent chunk proceed.
 
-Confirmed changed agent cells invalidate manual Undo/Redo, preventing an old Undo
-from overwriting an unrecorded change. A no-op agent receipt does not invalidate
-valid history. A PAINT recovery hold also blocks agent drawing. Queue admission
-is never displayed as native-applied success. Stop retains completed-prefix
-accounting; stale provider replies cannot enter a replacement World.
+In the current history implementation, confirmed agent changes enter the same
+timeline as manual edits and advance its source fence. Outside changes still
+invalidate unsafe history; an agent no-op preserves valid Undo and Redo. One
+history action traverses adjacent retained parts of a submission, and human
+interleaving remains a separate entry. A PAINT recovery hold also blocks agent
+drawing. Queue admission is never displayed as native-applied success. Stop
+retains completed-prefix accounting; stale provider replies cannot enter a
+replacement World. Both panels require the agent/provider run to settle before
+history replay, and no new drawing is admitted while replay owns the edit path.
 
 ## Preserved interfaces and persistence
 
@@ -291,7 +380,8 @@ unchanged by reconciliation.
 The agent panel keeps ordered direct batches, OpenAI Responses, NVIDIA and
 LM Studio, configurable endpoints/models, conversation/context modes, scanlines,
 raw/readable traffic, image observations, multiple turns, revision instructions,
-Human Stop and recoverable errors. Native receipts now include actual stored
+Human Stop and recoverable errors. Its Undo/Redo buttons use the shared editor
+timeline described above. Native receipts include actual stored
 before/after identities and changed/unchanged/excluded/refused counts.
 
 Both interfaces append to the same existing Setup-v2/generated-start document.
@@ -428,7 +518,9 @@ in the [Windows evidence](https://github.com/techrote/cybersand/actions/runs/431
 and [Linux evidence](https://github.com/techrote/cybersand/actions/runs/43129760301/artifacts/13906320847).
 Genuine model inference and independent owner acceptance remain separate. General
 release workflows were Draft-skipped at that checkpoint; they were not successful
-gates. The final-source Native and Godot results above supersede that limitation.
+gates. The later 0025bd94 and d33c10e4 Native and Godot campaigns above exercised
+those gates for their respective sources; they do not qualify the new history
+implementation.
 
 ## Owner acceptance
 
@@ -439,7 +531,10 @@ gates. The final-source Native and Godot results above supersede that limitation
    Select/Copy/Paste, Fill and Undo/Redo.
 4. Open Art batches, choose a small work area and protections, submit direct JSON
    or your configured model, then issue a further instruction. Check native counts
-   and try Stop during a longer batch; continue with manual edits.
+   and try Stop during a longer batch. Wait for retirement, then Undo/Redo its
+   confirmed prefix. Alternate agent and manual edits and verify chronological
+   history from both panels; continue with manual edits. Use a newly qualified
+   package containing this history implementation for these Undo checks.
 5. Run and pause simulation, interact with the supported physical actors and
    existing liquid equipment, then continue authoring while paused.
 6. Save a named start, close Godot completely and relaunch. Load the name and

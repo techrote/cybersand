@@ -2,9 +2,9 @@
 title: Direct art batches, WB-ART-002 Stage 1
 status: Current
 document-kind: contract
-scope: Unmerged desktop direct drawing candidate, stored-native completion, Stop, shared PAINT ordering and authored-start persistence
+scope: Unmerged desktop direct drawing candidate, stored-native completion, Stop, shared PAINT ordering and Undo/Redo, authored-start persistence
 canonical-for: [workbench-direct-art-batches]
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-12
 related-documents: [../architecture/shared-workbench-authoring-data.md, ../reference/status-and-roadmap.md, ../operations/cybersand-codex-development-handover.md]
 ---
 
@@ -23,6 +23,9 @@ context, conversation, scanlines and multiple turns. The
 [integrated Draft candidate](../operations/wb-art-paint-integrated-candidate.md)
 preserves these features beside the complete PAINT editor, with a source-built
 native readback binding and shared mutation/receipt ordering.
+Its current shared Undo/Redo implementation is newer than the qualified
+`d33c10e4` package. Earlier direct-drawing and integration passes do not qualify
+this new history behavior.
 
 ### Repair checkpoint — 2026-11-11
 
@@ -57,8 +60,10 @@ In the integrated branch, accepted deferred gestures use PAINT's existing
 planner, native executor and history recorder. The callback runs after recording;
 success, partial writes, planner cancellation, stale source, refusal and World
 replacement each complete the token explicitly. The next agent chunk waits for
-that result. Confirmed agent changes invalidate stale manual Undo/Redo, and a
-PAINT recovery hold also blocks agent drawing.
+that result. The current integrated history seam records native-confirmed agent
+changes in the same chronological timeline as manual gestures; it advances the
+shared source fence instead of discarding valid manual history. A PAINT recovery
+hold still blocks agent drawing.
 
 Focused repair tests: `test_art_stored_material.gd` covers actual native workers
 1/4 and body masks over stored Empty/Wall/Hard Wall, with separately labelled
@@ -66,7 +71,8 @@ synthetic rejection fixtures; `test_art_deferred_manual.gd` reproduces refused
 replay and replacement; the original mounted art/provider suites remain required.
 
 Open **Shared Workbench → Art batches**. The floating, hideable test input
-preserves the canvas layout. Draw/Stop sit beside its title. Enter ordered JSON,
+preserves the canvas layout. Draw/Stop sit beside its title, with shared Undo and
+Redo controls labelled **Shared edit history · manual and agent edits**. Enter ordered JSON,
 select an XYWH work area, optional protected rectangle and enabled materials.
 Hard Wall is material 58; erase is 0. No credential, source/Git check, pricing,
 mandatory preview or prepare/apply exchange is required to draw.
@@ -109,6 +115,44 @@ claimed a chunk. Completion follows actual receipts for every chunk; failures or
 Stop preserve/report a partial prefix. Unchanged points count as checked, not
 changed. Excluded cells are distinct from failed writes. Readback is bounded to
 one chunk and consumed, not accumulated as an exhaustible receipt store.
+
+## Shared Undo and Redo
+
+The Art batches Undo/Redo buttons and PAINT's buttons and shortcuts operate on
+one chronological history. Only confirmed stored-material changes enter it.
+Adjacent bounded parts of one direct batch or model drawing submission share
+an action: one Undo reverses the retained parts, and Redo reapplies them in
+order. A human edit between chunks closes that group and has its own entry.
+Undo never jumps over later manual work to target an earlier agent action.
+
+Use Stop and wait for batch execution, native receipts, deferred human edits,
+image capture, provider activity and any scheduled follow-up turn to settle.
+An idle native chunk boundary alone does not enable Undo. After retirement,
+Undo can reverse the confirmed applied prefix of a stopped drawing; cancelled
+or unacknowledged suffixes never enter history. The operation uses PAINT's
+bounded native preflight and receipt path. Its trusted human inverse can
+restore the recorded materials without granting ordinary agent submissions
+broader material, source, protected-region or work-area permissions.
+
+History retains at most 32 parts and 1,048,576 edit cells, with at most 262,144
+cells per part. The UI labels a partially retained group **Agent drawing
+(retained tail)** and explains when its older part is no longer undoable.
+No-change agent receipts preserve the existing Redo branch. Simulation, World
+replacement or another mutation outside the recorded timeline still invalidate
+history through its generation/revision/tick fence. History is session-local.
+
+Confirmed history results append a human canvas-result turn and durable
+`history_result` event, with applied counts and continuation/refusal status.
+They do not rewrite earlier model receipts or automatically request another
+model turn. The chosen conversation/context mode still governs future requests.
+
+The existing persistence limits also apply to history replay. Agent streaming
+does not preflight the entire authored recipe, so a highly fragmented result
+can exceed 32,768 stamps or the 1 MiB save envelope. Save then refuses, and
+Undo/Redo can also refuse a target part before writing if its intermediate
+authored recipe exceeds those limits, even when the eventual group baseline
+would be compact. The UI reports the actual confirmed progress and refusal;
+there is no promise of unbounded or atomic rollback for arbitrary agent output.
 
 ## Stop, replacement and ordinary painting
 

@@ -21,6 +21,9 @@ preserves the full current #544 history at `c9b5084e` and combines it with repai
 #560 agent authoring. Its live source and combined qualification supersede the
 earlier read-only cross-PR comparison below. Human material permissions, geometry,
 selection, previews, bounded execution and persistence remain intact.
+The current integration adds agent edits to PAINT's shared Undo/Redo timeline.
+That new implementation still requires its own qualification; the completed
+`d33c10e4` package predates it, as the integrated runbook records.
 
 The [qualification record](../audits/paint001-2026-11-11/qualification.json) includes
 source hashes, original failures and actual logs. These are native framebuffer
@@ -49,6 +52,11 @@ native execution, completion, refusal and partial completion.
 | Undo / redo | Ctrl+Z / Ctrl+Y or Ctrl+Shift+Z |
 | Save named authored start | Ctrl+S or Save start |
 | Cancel preview / stop native operation | Escape or Cancel |
+
+Undo/Redo follows the latest edit in the shared manual/agent timeline. The
+**Art batches** panel exposes the same Undo and Redo actions. Stop an active
+agent run and wait for its native result, deferred human strokes and provider
+activity to settle before using either panel's history controls or shortcuts.
 
 Tool keys apply to paused painting and respect focused text fields. Existing
 playing/actor controls retain their input paths. Pan and zoom use the existing
@@ -143,12 +151,37 @@ edit prefixes still enter the ordinary partial-result recording/recovery path.
 
 ## Undo and authored-start persistence
 
-Only acknowledged edits enter history. One gesture is one history record,
-including all native chunks. Up to 32 records and 1,048,576 retained edit cells
-are kept, with exact native before/after IDs. Undo/redo preflights expected source
-IDs and uses the same native execution path. A simulation tick, another editor's
-revision or World replacement invalidates history. This is paused construction
-undo, not physics rewind or restoration of temperature/velocity state.
+Only native-confirmed edits enter the shared chronological history. A manual
+gesture remains one record, including its native chunks. Agent receipts retain
+the first stored material before a cell changes and its latest stored material
+afterward. A direct batch or one model drawing submission can span bounded
+history parts of at most 262,144 cells; one Undo or Redo traverses adjacent
+retained parts of that submission in order. A human edit between agent chunks
+closes the preceding agent group and remains a separate history entry. Undo
+therefore reaches the most recent edit first and cannot skip later human work
+to reverse an earlier agent drawing.
+
+Up to 32 parts and 1,048,576 retained edit cells are kept. If those limits evict
+an older part of an agent drawing, the surviving entry is labelled **Agent
+drawing (retained tail)** and the UI reports that the older part is no longer
+undoable. A no-change agent receipt preserves existing Undo and Redo. A captured
+part that returns every cell to its original material contributes no history
+record and removes its redundant authored stamps.
+
+Undo/Redo preflights expected stored source IDs and uses PAINT's existing native
+mutation and acknowledgement path. Both interfaces share the generation,
+revision and tick fence. Confirmed agent edits recorded through this seam
+advance the fence instead of invalidating manual history. An outside edit not
+recorded in this timeline, a simulation tick or World replacement still
+invalidates unsafe history. Undo is paused construction editing; it does not
+restore temperature, velocity or evolved physics state. Its trusted human
+inverse does not expand the agent's ordinary material, source or scope policy.
+
+History completion appends a new human canvas result to the agent conversation
+and a durable `history_result` traffic event. It preserves historical model
+receipts and does not automatically issue another model request. The existing
+context-mode rules still govern later requests. Undo/Redo stacks remain
+session-local; saving persists the resulting authored start, not those stacks.
 
 Before native writes, `workbench_paint_editor_history.gd` checks that the complete
 operation can be reconstructed through existing Setup-v2 or GEN-007 start formats.
@@ -167,10 +200,18 @@ generated starts retain their ordered overlays and original generator provenance
 The narrow Setup material check uses compiled native authority for edit stamps,
 without broadening source-emitter policy or changing the format version.
 
-Save waits for every shared mutation slot and unconsumed receipt, including
-agent drawing, ordinary brush commands and World transitions, then records the
-start recipe. It does not snapshot
-an evolved simulation. Actors, selected instance, solver settings and generated-map
+Agent drawing retains its existing streaming admission: it can produce a recipe
+too fragmented for the 32,768-stamp or 1 MiB persistence envelope. Save then
+refuses explicitly. Each part of Undo/Redo also preflights its target authored
+recipe, so a grouped history action can refuse an intermediate recipe before
+that part writes, even if the eventual group baseline would be compact. The UI
+reports confirmed progress or refusal; arbitrary agent output is not promised
+an unlimited or atomic rollback. No persistence limit is relaxed for history.
+
+Save refuses while any shared mutation slot or unconsumed receipt remains,
+including agent drawing, ordinary brush commands and World transitions. Retry
+after they settle to record the start recipe. It does not snapshot an evolved
+simulation. Actors, selected instance, solver settings and generated-map
 identity retain the existing #542 contracts. Flatten / #548 remains separate.
 
 ## Exact-source native and desktop qualification — 11 November 2026
