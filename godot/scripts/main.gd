@@ -2068,6 +2068,15 @@ func workbench_source(origin: Vector2i, material: int, command: String) -> bool:
 		and tower_context.get("scenario_request_serial",-1) == pending_microscenario_apply.serial): return false
 	return simulation_worker.queue_workbench_source(origin,material,command)
 
+# IN-TOOLS #361 liquid equipment. Same admission window as the powder source:
+# a configure may follow the acknowledged install of a pending replacement.
+func workbench_equipment(request: Dictionary) -> bool:
+	if shared_workbench == null: return false
+	if not pending_microscenario_apply.is_empty() and not (str(request.get("command","")) == "configure"
+		and tower_context.get("scenario_request_applied",false)
+		and tower_context.get("scenario_request_serial",-1) == pending_microscenario_apply.serial): return false
+	return simulation_worker.queue_workbench_equipment(request)
+
 func setup_depth_lab_launcher() -> void:
 	var launcher := Button.new()
 	launcher.name = "DepthLabLauncher"
@@ -2114,6 +2123,13 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				KEY_R: shared_workbench.reset_selected()
 				KEY_PERIOD: shared_workbench.step_once()
 				KEY_B: shared_workbench.burst()
+				KEY_V: shared_workbench.equipment.toggle("valve")
+				KEY_G: shared_workbench.equipment.toggle("drain")
+				KEY_H: shared_workbench.equipment.toggle("nozzle")
+				KEY_J: shared_workbench.equipment.nudge_aim(-10.0)
+				KEY_K: shared_workbench.equipment.nudge_aim(10.0)
+				KEY_BRACKETLEFT: shared_workbench.equipment.select_valve(-1)
+				KEY_BRACKETRIGHT: shared_workbench.equipment.select_valve(1)
 				_: return
 			get_viewport().set_input_as_handled()
 		return
