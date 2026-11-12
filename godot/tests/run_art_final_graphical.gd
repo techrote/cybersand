@@ -18,9 +18,15 @@ func check(ok: bool, label: String) -> void:
 	checks.append({"ok":ok,"label":label})
 	print("ART_SMOKE ",label," ",ok)
 func until(test: Callable, label: String, seconds: int = 30) -> bool:
-	var deadline := Time.get_ticks_msec()+seconds*1000
+	var started := Time.get_ticks_msec()
+	var deadline := started+seconds*1000
 	while not test.call() and Time.get_ticks_msec()<deadline: await process_frame
 	var ok: bool = test.call()
+	print("ART_SMOKE_WAIT ",JSON.stringify({"label":label,"ready":ok,
+		"elapsed_ms":Time.get_ticks_msec()-started,"budget_ms":seconds*1000,
+		"provider_active":panel.provider.active,"capturing":panel.capturing,
+		"executor_active":panel.executor.active,"result":panel.executor.result,
+		"pending_feedback":panel.log_draw,"remaining_turns":panel.remaining_turns}))
 	check(ok,label)
 	return ok
 func idle() -> bool:
@@ -119,7 +125,9 @@ func run() -> void:
 	panel.protect.button_pressed = false
 	panel.input.text = "SMOKE_LOCAL follow-up in changed area"
 	panel.draw.pressed.emit()
-	await until(idle,"local follow-up with retained history finishes")
+	# Preserve the full polygon/airbrush workload. Hosted software rendering can
+	# take over 30s; a subsequent Send must follow confirmed native completion.
+	if not await until(idle,"local follow-up with retained history finishes",120): quit(1);return
 	await until(func(): return host.image.get_pixel(1210,210).r8==58,"local geometry translated into new world area")
 	await capture("05-local-followup")
 	check(panel.executor.last_receipt.get("backend")=="CyberNativeCellWorld","actual compiled native World receipts")
@@ -129,12 +137,12 @@ func run() -> void:
 	area(1200,750,512,256)
 	panel.input.text = "SMOKE_WORLD follow-up in changed area"
 	panel.draw.pressed.emit()
-	await until(idle,"world-coordinate follow-up finishes")
+	if not await until(idle,"world-coordinate follow-up finishes",120): quit(1);return
 	await until(func(): return host.image.get_pixel(1210,760).r8==58,"world geometry appears in third area")
 	await capture("06-world-followup")
 	panel.input.text = "SMOKE_STALE intentionally stale geometry"
 	panel.draw.pressed.emit()
-	await until(idle,"stale hosted packet finishes without mutation")
+	if not await until(idle,"stale hosted packet finishes without mutation"): quit(1);return
 	check(panel.executor.result.changed==0 and panel.executor.result.checked==panel.executor.result.excluded,"stale coordinates excluded")
 	await process_frame
 	check(panel.state.text.contains("No pixels applied"),"all-skipped draw has explicit UI feedback")
