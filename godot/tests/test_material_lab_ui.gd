@@ -853,6 +853,39 @@ func run() -> void:
 	expect(panel.applied_policy.policy_hash == actual_policy.policy_hash and panel.policy_context == "Isolated native test owner",
 		"Show applied Water settings copies actual native applied policy into the property inspector")
 	expect(panel._summary.tooltip_text.contains("cellular_yield_v1"),"Inspector shows native-applied test policy rather than compiled Water default")
+	panel._tabs.current_tab = 3
+	var pressure_index: int = -1
+	for index: int in range(panel._family.item_count):
+		if panel._family.get_item_text(index) == "PressureFlow":
+			pressure_index = index
+			break
+	expect(pressure_index >= 0,"Try originals offers PressureFlow in the Water movement model menu")
+	if pressure_index >= 0:
+		panel._family.select(pressure_index)
+		panel._family.item_selected.emit(pressure_index)
+		expect(panel._experiment_request.text.contains("PressureFlow"),"Next experiment displays the selected PressureFlow model")
+		press("Prepare experiment")
+		var pressure: Dictionary = panel.experiment.readback()
+		var water_applied: bool = false
+		for assignment: Dictionary in pressure.applied_policy.assignments:
+			if int(assignment.material) == 3:
+				water_applied = assignment.applied_family == "pressure_flow_v1" and assignment.applied_variant == "reference"
+		expect(water_applied and panel._experiment_summary.text.contains("PressureFlow"),
+			"Prepare experiment installs the native PressureFlow reference solver and displays its name")
+		press("Step")
+		expect(panel.experiment.readback().completed_tick == 1,"Prepared PressureFlow World steps through the mounted control")
+		var pressure_path: String = output_directory.path_join("pressure-flow-test.json")
+		await selected_file("Save experiment…",pressure_path)
+		panel._family.select(0)
+		await selected_file("Open experiment…",pressure_path)
+		var restored_pressure: Dictionary = panel.experiment.readback()
+		expect(panel._family.selected == pressure_index and restored_pressure.completed_tick == 0
+			and restored_pressure.applied_policy.policy_hash == pressure.applied_policy.policy_hash,
+			"Opening a PressureFlow case restores its menu choice and acknowledged native policy")
+		press("Show applied Water settings")
+		search_select(3)
+		expect(panel.applied_policy.policy_hash == pressure.applied_policy.policy_hash
+			and panel._summary.tooltip_text.contains("pressure_flow_v1"),"Inspect receives the actual PressureFlow policy from the isolated World")
 	var receipt_path: String = output_directory.path_join("ui-native-receipt.json")
 	file = FileAccess.open(receipt_path,FileAccess.WRITE)
 	file.store_string(JSON.stringify(compiled,"\t") + "\n")

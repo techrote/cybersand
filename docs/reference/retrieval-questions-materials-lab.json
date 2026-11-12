@@ -69,12 +69,13 @@
     },
     {
       "id": "MLAB-05",
-      "query": "How do Materials Lab native simulation test cases reproduce Salt plus Water with source and worker identity?",
+      "query": "How do I run and reopen a source-bound native Water experiment in Materials Lab, including PressureFlow?",
       "canonical": [
         "operations/materials-lab-authoring.md"
       ],
       "facts": [
         "The existing MicroScenario host owns an isolated native World, with source, definition, seed, worker count and Water-family configuration retained.",
+        "Try originals > Water movement model > PressureFlow > Prepare experiment uses the native PressureFlow reference solver; Show applied Water settings opens the acknowledged settings.",
         "The fixture observes768Brine after120ticks; native counts/state/quantities/hashes are authoritative, not images.",
         "Fresh reference comparison and saved-case reconstruction are supported; one/four workers are tested and source mismatch refuses import."
       ],

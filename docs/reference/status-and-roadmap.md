@@ -47,6 +47,9 @@ The Workbench Lab also uses an independent native desktop window where supported
 with physical-pixel scaling and local input; embedded fallback remains available.
 Its client and frame are admitted within the usable work area; insufficient
 desktop capacity is reported explicitly. Failed request8 remains recorded.
+The local Windows preview exposes the existing native PressureFlow reference
+solver in **Try originals** and restores it from source-matched experiment cases.
+The completion audit records the preview's tested source and runtime identity.
 The owner explicitly
 excluded MoltenGlass H1 from this continuation; it is not a Lab delivery gate.
 Historical liveness evidence and production thermal/rest behavior remain

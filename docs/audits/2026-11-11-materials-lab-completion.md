@@ -646,3 +646,30 @@ captions. No native source, compatibility lock, or material behavior changed.
 
 This is a locally tested interface preview using the retained runtime. The
 request9 ZIP, its source identity, and the published Draft remain unchanged.
+
+## Local PressureFlow follow-up — 2026-11-12
+
+On top of `0bf31bcd22573894d9fb45d54912baceb7ed5845`, the **Try originals**
+Water movement model menu uses the existing native `pressure_flow_v1/reference`
+assignment. Preparation checks the applied native policy hash against the
+native validation receipt. The selected model appears in the prepared-run
+summary, Inspect reads back the active experiment settings, and reopening a
+matching case restores the menu and the solver. Compare edits continues to
+use the built-in solver settings in both compiled Worlds.
+
+Windows Godot `4.7.stable.official.5b4e0cb0f` used DLL SHA-256
+`1cd3b955fd24fdec58531b6fabd95563f054359c71a35008bff9c142338fb415`
+and experiment script SHA-256
+`f3512c6eb4663f629d790795be2f259f6484928d16cb1fbf0f52e0b7ada2c34e`.
+The headless `--path godot --script res://tests/test_material_lab_experiment.gd`
+run passed 141 assertions, including one-worker, 32-tick Water/Wall execution,
+exact repeat and source-bound case reopening. The Windows ANGLE
+`res://tests/test_material_lab_ui.gd` run at 1280×720 passed 246 assertions
+with bundled prerequisites and a 1,200-second watchdog. It prepared and
+stepped a four-worker PressureFlow World, saved and reopened its case, and
+copied the applied settings into Inspect. The local logs and UI receipt are
+under `build/lab-pressure-*`. The Windows preview launcher import check passed.
+
+The native source, compatibility lock and default production assignments are
+unchanged. This is local Windows preview evidence. The request9 ZIP and Draft
+#562 retain publication `37dfc2cce9dbc2246eab9cb20d2efa7f04aae8a7`.

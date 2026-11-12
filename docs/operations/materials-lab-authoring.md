@@ -173,7 +173,7 @@ encodings and rule slots remain fixed.
 | Existing sparse reaction slots owned by the template | Structured partners, products, match mode and inclusive probability threshold are editable; identity, slot and supported endpoint-effect semantics stay fixed |
 | Explicit endpoint effects v2 | Non-Water `keep_existing`, or declared Metal/Combustible `state_b` updates, execute only in isolated compiled Worlds; see the reaction contract below |
 | New arbitrary production IDs, new kernels, unknown fields, Water retention/quantity effects, arbitrary state writes, new pair-rule slots | Unsupported and rejected with a field path and explanation |
-| Existing Water default/FreeMass/CellularYield selection in **Native test** | Applied through existing native admission to the isolated test World, with owner readback; does not reconfigure the shared running Workbench |
+| Water movement model in **Try originals** | Built-in default, FreeMass, CellularYield and PressureFlow use the existing native admission and readback in the isolated test World |
 | Empty 0 and reserved invalid 10 | Inspectable, not candidate templates |
 
 **Draft** means editable, unqualified data. **Validated candidate** means the
@@ -379,11 +379,18 @@ registers, quantity ledger and persistence, and exercise the countdown consumer.
 
 ## Native simulation experiments and reproducible cases
 
-Select existing materials and a partner, then choose **Prepare selected +
-partner**. Set a bounded tick count, seed, one/four workers and the supported
-Water policy. **Step** advances one actual native tick; **Run set number of steps**
-advances at most one tick per UI frame and stops at the requested endpoint.
-The UI and helper admit 1 through 600 ticks.
+In **Try originals**, select a built-in material and a partner. Set the step
+count, seed, simulation threads and **Water movement model**, then click
+**Prepare experiment**. Select **PressureFlow** to test the native PressureFlow
+reference solver. **Show applied Water settings** opens Inspect with the
+settings acknowledged by the prepared World. The saved case includes the Water
+model and restores it when opened with matching source and runtime.
+[PressureFlow reference solver](../architecture/pressure-flow-v1.md)
+
+**Step** advances one native tick. **Run set number of steps** advances at most
+one tick per UI frame and stops at the requested endpoint. The UI and helper
+admit 1 through 600 ticks. **Compare edits** uses the built-in solver settings in
+both of its compiled Worlds.
 
 The experiment reuses `MicroScenarioHost`, its contract and the reference pack.
 It owns a separate native World. Native material counts, stored cells/state,
@@ -449,8 +456,9 @@ separate controls and evidence.
   production resolver. Confirm explicit product-default effects.
 - Run Salt/Water for 120 ticks, read stored material/state, compare a clean
   reference, save/reopen the test and check one/four-worker agreement.
-- Apply CellularYield in the isolated test, inspect acknowledged policy and
-  verify the ordinary Workbench remains its existing owner.
+- In **Try originals**, prepare a Water experiment with CellularYield and then
+  PressureFlow. Inspect the applied settings, step the PressureFlow World,
+  save it and reopen it to verify the selected model and native policy hash.
 - Duplicate Sand, set density500, compare both native Worlds against Water,
   inspect initial/final cells and export/reopen the World bundle. Edit settings
   while a compile runs and verify its older result cannot qualify the new recipe.

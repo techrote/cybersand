@@ -14,7 +14,12 @@ const CASE_SCHEMA: String = "cybersand.material-lab.experiment"
 const CASE_KEYS: Array[String] = ["schema_id","schema_version","definition","definition_hash","workers",
 	"water_family","native_sha256","host_scripts_sha256","lab_script_sha256","digest"]
 const DEFAULT_REGION := Rect2i(168, 56, 148, 200)
-const WATER_FAMILIES: Array[String] = ["default", "freemass_v1", "cellular_yield_v1"]
+const WATER_FAMILIES: Dictionary[String, String] = {
+	"default":"Built-in default",
+	"freemass_v1":"Amount-based flow (FreeMass)",
+	"cellular_yield_v1":"Cell-based flow (CellularYield)",
+	"pressure_flow_v1":"PressureFlow",
+}
 
 var last_error: String = ""
 var world: Variant
@@ -158,7 +163,7 @@ func _start_with_identity(definition: Dictionary, workers: int, water_family: St
 		return _refuse(str(checked.get("error","Invalid MicroScenario definition")))
 	if workers not in [1,4]: return _refuse("Materials Lab supports explicit 1- or 4-worker experiments.")
 	if water_family not in WATER_FAMILIES:
-		return _refuse("Unsupported Water family. Choose current defaults, FreeMass or CellularYield; no envelope is guessed.")
+		return _refuse("Unsupported Water movement model. Choose one of the models listed in Try originals.")
 	var candidate: Dictionary = checked.definition
 	if int(candidate.schema_version) != 2 or candidate.player_enabled or candidate.body_enabled \
 		or candidate.execution.policy != "fixed" or candidate.interest.policy != "fixed":

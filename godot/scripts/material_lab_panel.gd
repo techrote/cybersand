@@ -389,7 +389,10 @@ func _build_experiment(page: VBoxContainer) -> void:
 	_workers.add_item("4",4)
 	row.add_child(_workers)
 	_label(row,"Water movement model")
-	for family: String in ["Built-in default","Amount-based flow (FreeMass)","Cell-based flow (CellularYield)"]: _family.add_item(family)
+	for family: String in Experiment.WATER_FAMILIES:
+		_family.add_item(Experiment.WATER_FAMILIES[family])
+		_family.set_item_metadata(_family.item_count - 1,family)
+	_family.tooltip_text = "Choose how Water moves in the next experiment. Prepare experiment applies the choice."
 	row.add_child(_family)
 	for field: SpinBox in [_seed,_steps]:
 		field.value_changed.connect(func(_value: float) -> void: _refresh_experiment_request())
@@ -481,7 +484,7 @@ func _refresh_experiment_request() -> void:
 	var first: String = "%03d" % selected_id
 	if selected_id >= 0 and selected_id < catalogue.materials.size(): first += " " + str(catalogue.materials[selected_id].name)
 	var second: String = _partner.get_item_text(_partner.selected) if _partner.selected >= 0 else "choose partner"
-	_experiment_request.text = "Prepare new pair: %s + %s · seed %d · %d ticks · %d worker(s) · Water %s. Run/Step use the prepared definition below." % [first,second,int(_seed.value),int(_steps.value),_workers.get_selected_id(),Experiment.WATER_FAMILIES[_family.selected]]
+	_experiment_request.text = "Prepare new pair: %s + %s · seed %d · %d ticks · %d worker(s) · Water %s. Run/Step use the prepared definition below." % [first,second,int(_seed.value),int(_steps.value),_workers.get_selected_id(),_family.get_item_text(_family.selected)]
 
 func _refresh_list() -> void:
 	_list.clear()
@@ -570,6 +573,7 @@ func _property_words(record: Dictionary, key: String, raw: String) -> String:
 		if raw.begins_with("freemass_v1"): return "Water flow (standard)"
 		if raw.begins_with("inertial_cellular_v1"): return "Water flow with momentum"
 		if raw.begins_with("cellular_yield_v1"): return "Cell-based liquid flow"
+		if raw.begins_with("pressure_flow_v1"): return Experiment.WATER_FAMILIES["pressure_flow_v1"]
 	return raw
 
 func duplicate_selected() -> void:
@@ -1011,7 +1015,7 @@ func start_experiment() -> void:
 	_running = false
 	if _partner.selected < 0: return
 	var definition: Dictionary = Experiment.definition_for_pair(selected_id,_partner.get_selected_id(),int(_seed.value),int(_steps.value))
-	if definition.is_empty() or not experiment.start(definition,_workers.get_selected_id(),Experiment.WATER_FAMILIES[_family.selected]):
+	if definition.is_empty() or not experiment.start(definition,_workers.get_selected_id(),str(_family.get_item_metadata(_family.selected))):
 		_status.text = "Could not prepare the experiment: " + experiment.last_error
 		return
 	_tabs.current_tab = 3
@@ -1025,7 +1029,7 @@ func _sync_experiment_controls() -> void:
 	_seed.value = int(configuration.seed)
 	_steps.value = int(configuration.duration_ticks)
 	_workers.select(_workers.get_item_index(int(configuration.workers)))
-	_family.select(Experiment.WATER_FAMILIES.find(str(configuration.water_family_request)))
+	_family.select(Experiment.WATER_FAMILIES.keys().find(str(configuration.water_family_request)))
 	var pair: Dictionary = configuration.pair
 	if not pair.is_empty():
 		_select_partner(int(pair.second))
@@ -1062,7 +1066,8 @@ func _refresh_experiment() -> void:
 			if id == 0 or id == 1: continue
 			var label: String = str(catalogue.materials[id].name) if id < catalogue.materials.size() else str(id)
 			counts.append("%s %s" % [label,readback.material_counts[key]])
-		_experiment_summary.text = "Prepared: %s · %s\nNative tick %s / %s · seed %s · %s worker(s) · Water %s · %s\n%s" % [readback.definition_title,str(readback.definition_hash).left(16),readback.completed_tick,readback.duration_ticks,readback.seed,readback.workers,readback.water_family_request,"Completed" if readback.completed else ("Running" if _running else "Paused / prepared"),", ".join(counts)]
+		var water_model: String = Experiment.WATER_FAMILIES[readback.water_family_request]
+		_experiment_summary.text = "Prepared: %s · %s\nNative tick %s / %s · seed %s · %s worker(s) · Water %s · %s\n%s" % [readback.definition_title,str(readback.definition_hash).left(16),readback.completed_tick,readback.duration_ticks,readback.seed,readback.workers,water_model,"Completed" if readback.completed else ("Running" if _running else "Paused / prepared"),", ".join(counts)]
 	else:
 		_experiment_summary.text = "Native test unavailable: " + str(readback.get("error","No prepared experiment."))
 		_preview.texture = null
