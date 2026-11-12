@@ -391,6 +391,61 @@ Publication request **5** carries these fixes, exact contact-capture source
 custody and the current Git package layout. It requires a fresh complete
 Windows/Linux campaign and relocated package smoke under all existing gates.
 
+## Request 5 delivery and palette preflight correction — 2026-11-12
+
+[Campaign 43137926965](https://github.com/techrote/cybersand/actions/runs/43137926965)
+passes completely from source `bcb3b62d324581f319e029a657db6b97879c9cc4`, tree
+`a2314bbfb35b7e35d05240c66fa25401a7e907e2`. The exact four-path runtime
+publication child is `44645b7a3bc0df8fe57fbd0073152da8965e8f4f`.
+Both platforms pass all seven Lab/Workbench cases: catalogue1348,
+experiment131, contacts180, lifecycle87, mountedUI196, compiledWorld204 and
+Workbench164. Actual Linux X11 and Windows ANGLE captures pass UI203/World209.
+Linux runs all209 catalogue tests; Windows runs209 with206 passes and the three
+unchanged POSIX-only skips. No failure or error is suppressed.
+
+The self-contained relocated Windows package passes import, actual bundled-tool
+authoring, compiled Worlds and ANGLE contact inspection187. Artifact13910367089
+contains the707,255,622-byte evaluation ZIP, SHA-256
+`29c203ad274ec1a231051a4a113502ca7dd3139e837c2be9557f1dc3162c6e63`;
+its outer archive SHA-256 is
+`1ef920c8214e98d06c9eae3b4e277a9e8a7abc11f5d8143e5b40166445636413`.
+Manifest SHA-256 is
+`858b06b57721a90fe7b2ffb9e5f4cce98095ffddf9d57a71663330a8bbf88533`.
+Windows DLL SHA-256 is
+`7aff557ea0f2f87d6380e645ed17f5878ab8a5746cd66cfa33be783728c6e2a2`;
+Linux is `0f257fe66e043cbb77366d99ce77325eacf8481443df4c5e000dcbc9ac075ea9`.
+Independent verification checks all20,773 package files,2,516 tracked source
+blobs,88 native inputs,2,248 ancestor commits,22 compatibility ancestry pins,
+bundled tools/notices and absence of remotes/credential configuration.208 source
+files differ only by authenticated Windows checkout line endings. The three
+intentional runtime/provenance overlays are recorded separately. Original
+package smoke evidence is artifact13910681673, outer SHA-256
+`d93f21e51119f6c83c1f0131806990c8ab6dc3e347092391873a586951cf7ad2`.
+
+Exact publication-child manual gates pass: Documentation/provenance43143420508,
+Native43143423461 (all six families, including TSAN and ASan/UBSan), and
+GDExtension/Godot43143426557 (both source builds and all dispatched shards).
+Palette43143429621 fails before rendering: its strict checkout-custody parser
+rejects the root raw-evidence `**` attribute pattern. Missing shader manifests
+are downstream symptoms; no rendering result is inferred. Original Linux and
+Windows failure artifacts13910761899/13910113178 remain retained.
+
+The correction moves the same evidence attributes into that directory's scoped
+`.gitattributes` using supported `*` syntax and preserves the original later
+Markdown/YAML overrides. The validator is unchanged. Effective attributes for
+all85 retained evidence files and five source/launcher witnesses are identical;
+all85 raw SHA-256 values remain unchanged. Scope-isolation and fail-closed
+regressions pass14/14 normally and14/14 with optimized Python. An optional local
+broader palette-controls attempt lacked NumPy and is not a graphics result.
+Local materialized repository/provenance validation and historical M11 pass
+after fetching the exact runtime publication. Request6 qualifies this corrected
+publication input afresh; request5 remains a verified recoverable package,
+without relabelling its source or execution.
+
+The [independent package proof](materials-lab-completion-20261111/windows-evaluation-20261112/independent-package-proof.json)
+and [attribute equivalence proof](materials-lab-completion-20261111/windows-evaluation-20261112/palette-attributes-equivalence.json)
+retain exact checked identities, commands and qualification boundaries.
+
 Independent Windows 11 execution additionally passes **625 checks**: Workbench
 canvas 164, a fresh-process saved-start reopen 23, liquid edges 70, equipment
 103 at each of one/four workers, and reservoir 81 at each configuration.

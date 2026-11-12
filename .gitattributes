@@ -19,9 +19,6 @@
 # Retained raw campaign reports preserve their original target-host bytes.
 docs/audits/play-auto002-2026-10-28/windows-campaign.json -text whitespace=cr-at-eol
 docs/audits/play-auto002-2026-10-28/linux-campaign.json -text
-# Materials Lab receipts/logs retain exact original host bytes, including
-# diagnostic trailing spaces and CRLF; their recorded SHA-256 values are raw.
-docs/audits/materials-lab-completion-20261111/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol linguist-generated=true
 *.md text eol=lf
 *.yml text eol=lf
 *.yaml text eol=lf
