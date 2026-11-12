@@ -446,6 +446,38 @@ The [independent package proof](materials-lab-completion-20261111/windows-evalua
 and [attribute equivalence proof](materials-lab-completion-20261111/windows-evaluation-20261112/palette-attributes-equivalence.json)
 retain exact checked identities, commands and qualification boundaries.
 
+## Windows AppData alias replay correction — 2026-11-12
+
+Independent local execution of the pristine request5 package with its bundled
+tools passes import, compiled World204 and actual ANGLE contact187. The UI runs
+all196 assertions with one failure: its string-prefix destination assertion
+compares Godot's logical Roaming path against Python's resolved MSIX
+LocalCache/Roaming path. Both name the actual exported directory; export and
+all required bundle-file checks succeed. This is a failed local qualification,
+retained separately from the successful hosted run, not an accepted replay.
+
+The test-only correction proves live directory identity with a fresh256-bit
+nonce written under the requested child, read through the reported path,
+removed through that path and then absent through the requested path. Unrelated
+same-basename directories and copied payload bytes cannot qualify. Relative or
+missing paths and failed writes/removals fail closed. Production source/output
+admission, receipts, processes and simulation code remain unchanged.
+Focused filesystem controls pass10/0. The full mounted UI with bundled Godot,
+Python, C++ and Git and external spaced user data passes205/0 in233.265s;
+the test's before/after SHA-256 is
+`69549d0e373902a3446c4418d53fb80317c9233f55e633ae8d032effe9b21a2c`.
+The [original local replay summary](materials-lab-completion-20261111/windows-evaluation-20261112/local-package-replay-attempt1.json)
+and [corrected UI qualification](materials-lab-completion-20261111/windows-evaluation-20261112/ui-directory-custody-qualified.json)
+retain their own commands, tools, source/runtime identities and actual outcomes.
+The focused alias control uses filesystem `..` resolution; the final package
+still requires a fresh complete local replay under the original MSIX conditions.
+
+Request7 supersedes request6 before publication and requires the complete
+source-bound campaign again. Request6's Linux catalogue/runtime success and
+other partial outputs keep their original identities; neither those outputs
+nor the request5 package are relabelled as request7 execution. No native/Godot
+application behavior, material authority or validation rule was relaxed.
+
 Independent Windows 11 execution additionally passes **625 checks**: Workbench
 canvas 164, a fresh-process saved-start reopen 23, liquid edges 70, equipment
 103 at each of one/four workers, and reservoir 81 at each configuration.

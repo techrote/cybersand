@@ -12,10 +12,12 @@ var output_directory: String = ""
 var capture_directory: String = ""
 var capture_source_hashes: Dictionary = {}
 var capture_manifest: Dictionary = {}
+var directory_custody_only: bool = false
 
 func _initialize() -> void:
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-output="): capture_directory = argument.trim_prefix("--capture-output=")
+		if argument == "--directory-custody-only": directory_custody_only = true
 	run.call_deferred()
 
 func expect(value: bool, message: String) -> void:
@@ -83,6 +85,57 @@ func selected_directory(caption: String, path: String) -> bool:
 	if not await wait_for(func() -> bool: return not panel.service.busy,caption): return false
 	expect(panel.last_backend_result.get("ok",false),"Compiled bundle export uses the executed backend: " + str(panel.last_backend_result.get("errors",[])))
 	return bool(panel.last_backend_result.get("ok",false))
+
+func directory_custody(requested: String, observed: String) -> bool:
+	# MSIX may expose the same AppData directory through logical and physical
+	# paths. A fresh marker plus observed removal proves shared live storage;
+	# equal basenames or copied bundle bytes alone do not establish custody.
+	if not requested.is_absolute_path() or not observed.is_absolute_path(): return false
+	if not DirAccess.dir_exists_absolute(requested) or not DirAccess.dir_exists_absolute(observed): return false
+	var nonce: String = Crypto.new().generate_random_bytes(32).hex_encode()
+	if nonce.length() != 64: return false
+	var marker: String = ".materials-lab-custody-" + nonce
+	var logical: String = requested.path_join(marker)
+	var canonical: String = observed.path_join(marker)
+	if FileAccess.file_exists(logical) or DirAccess.dir_exists_absolute(logical): return false
+	var file := FileAccess.open(logical,FileAccess.WRITE)
+	if file == null: return false
+	file.store_string(nonce)
+	var write_error: Error = file.get_error()
+	file.close()
+	var same: bool = write_error == OK and FileAccess.get_file_as_string(canonical) == nonce if FileAccess.file_exists(canonical) else false
+	if same:
+		same = DirAccess.remove_absolute(canonical) == OK and not FileAccess.file_exists(logical)
+	# Only remove the marker created by this invocation, never a replaced file.
+	if FileAccess.file_exists(logical) and FileAccess.get_file_as_string(logical) == nonce:
+		DirAccess.remove_absolute(logical)
+	return same
+
+func directory_custody_controls() -> void:
+	var base: String = output_directory.path_join("directory-custody-" + Crypto.new().generate_random_bytes(16).hex_encode())
+	var requested: String = base.path_join("logical/export")
+	var unrelated: String = base.path_join("unrelated/export")
+	expect(not DirAccess.dir_exists_absolute(base),"Directory custody controls use a fresh owned fixture")
+	if DirAccess.dir_exists_absolute(base): return
+	expect(DirAccess.make_dir_recursive_absolute(requested) == OK and DirAccess.make_dir_recursive_absolute(unrelated) == OK,
+		"Directory custody fixtures can be created")
+	expect(directory_custody(requested,requested),"Directory custody accepts identical live storage")
+	expect(directory_custody(requested,base.path_join("logical/../logical/export")),"Directory custody accepts an actual filesystem path alias")
+	expect(not directory_custody(requested,unrelated),"Matching directory basenames cannot establish export custody")
+	var payload: String = requested.path_join("identical-bundle-content.json")
+	var file := FileAccess.open(payload,FileAccess.WRITE)
+	if file != null:
+		file.store_string('{"same":"bundle bytes"}\n')
+		file.close()
+	expect(file != null and DirAccess.copy_absolute(payload,unrelated.path_join(payload.get_file())) == OK,
+		"Unrelated directory receives a byte-identical payload")
+	expect(not directory_custody(requested,unrelated),"Copied contents in a same-basename directory cannot establish live storage custody")
+	for directory: String in [requested,unrelated]:
+		var contents: PackedStringArray = DirAccess.get_files_at(directory)
+		expect(not str(contents).contains(".materials-lab-custody-"),"Owned custody markers are removed after positive and negative controls")
+		DirAccess.remove_absolute(directory.path_join("identical-bundle-content.json"))
+		DirAccess.remove_absolute(directory)
+	for directory: String in [base.path_join("logical"),base.path_join("unrelated"),base]: DirAccess.remove_absolute(directory)
 
 func canonical_parity() -> void:
 	var controls: String = ""
@@ -364,6 +417,11 @@ func run() -> void:
 		capture_source_hashes = _capture_sources()
 	output_directory = ProjectSettings.globalize_path("user://materials_lab/ui-acceptance-%d" % Time.get_ticks_usec())
 	expect(DirAccess.make_dir_recursive_absolute(output_directory) == OK,"Acceptance export directory created")
+	directory_custody_controls()
+	if directory_custody_only:
+		print("MATERIAL_LAB_DIRECTORY_CUSTODY: %d assertions; %d failures" % [assertions,failures])
+		quit(1 if failures else 0)
+		return
 	screen = load(SCENE).instantiate()
 	root.add_child(screen)
 	current_scene = screen
@@ -458,7 +516,8 @@ func run() -> void:
 		finish()
 		return
 	var bundle: String = str(panel.last_backend_result.get("output_dir","")).replace("\\","/")
-	expect(not bundle.is_empty() and bundle.begins_with(output_directory.replace("\\","/") + "/"),"Compiled bundle has an explicit external destination")
+	var requested_bundle: String = output_directory.path_join(bundle.get_file())
+	expect(not bundle.is_empty() and directory_custody(requested_bundle,bundle),"Compiled bundle has the requested external directory custody, including actual filesystem aliases")
 	for name: String in ["preset.json","candidate-catalogue.json","native-receipt.json","generated/manifest.json"]:
 		expect(FileAccess.file_exists(bundle.path_join(name)),"Compiled source bundle contains " + name)
 	# Check published bytes against their manifest without loading generated
