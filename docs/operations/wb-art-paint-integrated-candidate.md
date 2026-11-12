@@ -88,9 +88,10 @@ commands also retain an in-flight marker until native execution and source-fence
 publication finish. Reset/replacement/settings fences remain in both interfaces.
 Art completion atomically publishes the current PAINT generation/revision/tick.
 The accepted equipment owner remains on that same worker; its cell writes run
-only before unpaused simulation ticks. Equipment command admission also observes
-the extracted World-transition and reset fences, so replacement cannot silently
-clear an accepted command. No equipment command is exposed to the agent interface.
+only before unpaused simulation ticks. Equipment command admission rejects
+requests during extracted World transitions and pending resets, closing that
+admission gap. Commands associated with the previous World retain #553's existing
+replacement/reset semantics. No equipment command is exposed to the agent interface.
 
 At the controller boundary, agent work waits while PAINT plans, consumes its
 receipt and records history. If transient contention follows rasterization, the
@@ -194,6 +195,67 @@ python tools/ci/run_workbench_qualification.py regressions --godot C:/Godot47/Go
 The integrated PR and its exact-head Actions artifacts are the final qualification
 ledger. A pending, failed or Draft-skipped gate is not a pass. No Ready promotion
 or merge is authorized by this runbook or a successful candidate workflow.
+
+### Qualified application and Windows download
+
+The immutable qualified application commit is
+`0e73e926068a9ed2312303fec05ec8855797df79`, tree
+`6418cd5f00b25a3cb4ddd1eb03e4de54e98a9d9d`.
+[Hosted run 43129760301](https://github.com/techrote/cybersand/actions/runs/43129760301)
+passed all three jobs: Linux build and execution, pinned Windows crossbuild, and
+Windows graphical execution. These results belong to that commit. This final
+handover record and the equipment-policy wording correction change documentation
+only; they do not imply another execution on a later Git commit.
+
+[Download the standalone Windows candidate](https://github.com/techrote/cybersand/actions/runs/43129760301/artifacts/13906272080),
+extract the complete ZIP into a fresh folder and run **Open Workbench.cmd**. Godot
+4.7, the source-built extension, pinned Rapier and all recipes are included. The
+launcher imports the project and opens the Shared Workbench. The archive is
+92,718,300 bytes; its SHA-256 is
+`a2d8f414a737538d7de0d5fa9fa1fd0e42ab53408029804da77ca87bf981502e`.
+It is retained by Actions until 2027-02-10. The pinned workflow is the reproducible
+build and packaging recipe after that retention period.
+
+After download, all 880 manifest-listed payload files were verified, along with
+all 87 native source inputs and the 16 recipes in both packaged directories.
+The actual Windows generator, combined editor and reopened-map screenshots were
+also inspected. Both platforms retained 53 original PNGs.
+
+| Final combined-source coverage | Windows and Linux result, each |
+| --- | --- |
+| Actual discovery / resource-only / missing-both fixtures | 24 / 24 / 6 checks; zero failures |
+| Generator native author / new-process reopen | 22 / 23 checks; zero failures |
+| Combined installed and source author / reopen | 134 / 34 at each of 1 and 4 workers; zero failures |
+| Stored material/body masks / shared ordering | 88 / 94 checks; zero failures |
+| Original deferred strokes / integrated human completion | 14 / 37 checks; zero failures |
+| Original native / rendered agent | 145 / 148 checks; zero failures |
+| Each provider graphical HTTP fixture / final four-request graphical flow | 36 each / 38 checks; zero failures |
+| PAINT shapes / executor / recovery | 159 / 21 / 5 checks; zero failures |
+| Native PAINT | 109 at each of 1 and 4 workers; zero failures |
+| PAINT history author / reopen | 1,880 / 1,920 checks; zero failures |
+| Accepted equipment / reservoir | 103 / 81 at each of 1 and 4 workers; zero failures |
+
+The exact runtime SHA-256 values are:
+
+- Windows DLL: `8449902e411588f5449a5fb8e647269858d272718f03107bda83790dc48c5350`.
+- Linux SO: `1de86fb8950113162be26796806f4e1aa7d17e443d428a7fa9bbf660afdb38ff`.
+
+Windows installed Stop prefixes were 3,072 and 3,776 cells; each saved start
+reopened with its own identical native material digest. Linux recorded 4,096.
+Different time-budgeted prefixes are valid; the checks compare exact receipts,
+stored cells and the corresponding saved/reopened pair, not an assumed ceiling.
+The retained graphical flow completed all four HTTP requests on each platform.
+Its large local follow-up took 36.810 seconds on Linux and 66.303 on Windows before
+the next Send; the fixture retains the full drawing workload and bounded waits.
+Those are hosted software-rendering measurements, not owner hardware promises.
+
+The [machine-readable hosted record](../audits/wb-art-paint-2026-11-11/hosted-qualification-0e73e926.json)
+contains every suite result, runtime and archive identity, provider outcomes,
+Stop/reopen digests and inspected screenshot hashes. Original logs and images are
+in the [Windows evidence](https://github.com/techrote/cybersand/actions/runs/43129760301/artifacts/13906042417)
+and [Linux evidence](https://github.com/techrote/cybersand/actions/runs/43129760301/artifacts/13906320847).
+Genuine model inference and independent owner acceptance remain separate. General
+release workflows stay Draft-skipped; they are not counted as successful gates.
 
 ## Owner acceptance
 

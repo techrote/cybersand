@@ -1,0 +1,823 @@
+{
+  "schema_version": 1,
+  "recorded_date": "2026-11-12",
+  "release_state": "Draft; owner acceptance pending",
+  "qualified_application_commit": "0e73e926068a9ed2312303fec05ec8855797df79",
+  "qualified_source_tree": "6418cd5f00b25a3cb4ddd1eb03e4de54e98a9d9d",
+  "qualification_scope": "All results below ran on the immutable qualified application commit. This handover record and its accompanying runbook correction are documentation-only; they do not relabel execution as occurring on a later Git commit.",
+  "inspected_sources": {
+    "main_initial": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3",
+    "main_reconciled": "d8588716becb0dc42019faf23f721378d8adc84a",
+    "agent_560_initial": "e5bf2916ccdbb331690e5f5eef0cdef9cc734089",
+    "agent_560_latest": "381307eb988dc25f36716d8308d47e210fdd3b4e",
+    "paint_544": "c9b5084e0276f0b5036d02db835973f04bb6f51f"
+  },
+  "workflow": {
+    "id": 43129760301,
+    "url": "https://github.com/techrote/cybersand/actions/runs/43129760301",
+    "conclusion": "success",
+    "jobs": {
+      "linux": 130890673062,
+      "windows_crossbuild": 130890673734,
+      "windows_execution": 130892674545
+    }
+  },
+  "application_documentation_gate": {
+    "run_id": 43129765532,
+    "conclusion": "success",
+    "documents": 130,
+    "canonical_claims": 253,
+    "local_links": 3801,
+    "errors": 0,
+    "warnings": 0
+  },
+  "windows_package_verification": {
+    "status": "passed",
+    "artifact_id": 13906272080,
+    "artifact_url": "https://github.com/techrote/cybersand/actions/runs/43129760301/artifacts/13906272080",
+    "application_commit": "0e73e926068a9ed2312303fec05ec8855797df79",
+    "source_tree": "6418cd5f00b25a3cb4ddd1eb03e4de54e98a9d9d",
+    "zip_sha256": "a2d8f414a737538d7de0d5fa9fa1fd0e42ab53408029804da77ca87bf981502e",
+    "zip_bytes": 92718300,
+    "manifest_sha256": "e7850e53a6b7c2b10aee4b60cb339b160f2149ff145ab1d9cd0f40e326a1627d",
+    "payload_files_verified": 880,
+    "native_inputs_verified": 87,
+    "native_sha256": "8449902e411588f5449a5fb8e647269858d272718f03107bda83790dc48c5350",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "profile_count": 16,
+    "profiles_byte_identical_in_both_directories": true,
+    "bundled_engine_and_launcher_verified": true,
+    "non_git_package": true
+  },
+  "shared_runner_results_on_each_platform": {
+    "installed": [
+      {
+        "label": "complete-import",
+        "status": "passed",
+        "checks": null,
+        "failures": null
+      },
+      {
+        "label": "complete-discovery",
+        "status": "passed",
+        "checks": 24,
+        "failures": 0
+      },
+      {
+        "label": "installed-author",
+        "status": "passed",
+        "checks": 22,
+        "failures": 0
+      },
+      {
+        "label": "installed-reopen",
+        "status": "passed",
+        "checks": 23,
+        "failures": 0
+      },
+      {
+        "label": "installed-combined-workers-1-author",
+        "status": "passed",
+        "checks": 134,
+        "failures": 0
+      },
+      {
+        "label": "installed-combined-workers-1-reopen",
+        "status": "passed",
+        "checks": 34,
+        "failures": 0
+      },
+      {
+        "label": "installed-combined-workers-4-author",
+        "status": "passed",
+        "checks": 134,
+        "failures": 0
+      },
+      {
+        "label": "installed-combined-workers-4-reopen",
+        "status": "passed",
+        "checks": 34,
+        "failures": 0
+      },
+      {
+        "label": "resource-only-import",
+        "status": "passed",
+        "checks": null,
+        "failures": null
+      },
+      {
+        "label": "resource-only-discovery",
+        "status": "passed",
+        "checks": 24,
+        "failures": 0
+      },
+      {
+        "label": "missing-profiles-import",
+        "status": "passed",
+        "checks": null,
+        "failures": null
+      },
+      {
+        "label": "missing-profiles-discovery",
+        "status": "passed",
+        "checks": 6,
+        "failures": 0
+      }
+    ],
+    "regressions": [
+      {
+        "label": "regression-import",
+        "status": "passed",
+        "checks": null,
+        "failures": null
+      },
+      {
+        "label": "art-keyless",
+        "status": "passed",
+        "checks": 54,
+        "failures": 0
+      },
+      {
+        "label": "art-stored-material",
+        "status": "passed",
+        "checks": 88,
+        "failures": 0
+      },
+      {
+        "label": "art-deferred-manual",
+        "status": "passed",
+        "checks": 14,
+        "failures": 0
+      },
+      {
+        "label": "art-native",
+        "status": "passed",
+        "checks": 145,
+        "failures": 0
+      },
+      {
+        "label": "art-native-render",
+        "status": "passed",
+        "checks": 148,
+        "failures": 0
+      },
+      {
+        "label": "art-http-fixtures-graphical",
+        "status": "passed",
+        "checks": null,
+        "failures": null
+      },
+      {
+        "label": "art-final-graphical-mocked",
+        "status": "passed",
+        "checks": 38,
+        "failures": 0
+      },
+      {
+        "label": "native-edit-ordering",
+        "status": "passed",
+        "checks": 94,
+        "failures": 0
+      },
+      {
+        "label": "combined-deferred-paint",
+        "status": "passed",
+        "checks": 37,
+        "failures": []
+      },
+      {
+        "label": "paint-shapes",
+        "status": "passed",
+        "checks": 159,
+        "failures": 0
+      },
+      {
+        "label": "paint-executor",
+        "status": "passed",
+        "checks": 21,
+        "failures": []
+      },
+      {
+        "label": "paint-recovery",
+        "status": "passed",
+        "checks": 5,
+        "failures": []
+      },
+      {
+        "label": "paint-native-1",
+        "status": "passed",
+        "checks": 109,
+        "failures": []
+      },
+      {
+        "label": "paint-native-4",
+        "status": "passed",
+        "checks": 109,
+        "failures": []
+      },
+      {
+        "label": "paint-history-author",
+        "status": "passed",
+        "checks": 1880,
+        "failures": 0
+      },
+      {
+        "label": "paint-history-reopen",
+        "status": "passed",
+        "checks": 1920,
+        "failures": 0
+      },
+      {
+        "label": "paint-workbench-author",
+        "status": "passed",
+        "checks": 59,
+        "failures": []
+      },
+      {
+        "label": "paint-workbench-reopen",
+        "status": "passed",
+        "checks": 12,
+        "failures": []
+      },
+      {
+        "label": "paint-generated_workbench-author",
+        "status": "passed",
+        "checks": 39,
+        "failures": []
+      },
+      {
+        "label": "paint-generated_workbench-reopen",
+        "status": "passed",
+        "checks": 19,
+        "failures": []
+      },
+      {
+        "label": "existing-workbench-input",
+        "status": "passed",
+        "checks": 24,
+        "failures": []
+      },
+      {
+        "label": "existing-liquid_equipment-1",
+        "status": "passed",
+        "checks": 103,
+        "failures": 0
+      },
+      {
+        "label": "existing-reservoir_lab-1",
+        "status": "passed",
+        "checks": 81,
+        "failures": 0
+      },
+      {
+        "label": "existing-liquid_equipment-4",
+        "status": "passed",
+        "checks": 103,
+        "failures": 0
+      },
+      {
+        "label": "existing-reservoir_lab-4",
+        "status": "passed",
+        "checks": 81,
+        "failures": 0
+      },
+      {
+        "label": "existing-worldgen-planes",
+        "status": "passed",
+        "checks": 606,
+        "failures": 0
+      },
+      {
+        "label": "existing-worldgen-workbench",
+        "status": "passed",
+        "checks": 139,
+        "failures": 0
+      },
+      {
+        "label": "existing-canvas-author",
+        "status": "passed",
+        "checks": 164,
+        "failures": 0
+      },
+      {
+        "label": "existing-canvas-reopen",
+        "status": "passed",
+        "checks": 23,
+        "failures": 0
+      },
+      {
+        "label": "source-combined-workers-1-author",
+        "status": "passed",
+        "checks": 134,
+        "failures": 0
+      },
+      {
+        "label": "source-combined-workers-1-reopen",
+        "status": "passed",
+        "checks": 34,
+        "failures": 0
+      },
+      {
+        "label": "source-combined-workers-4-author",
+        "status": "passed",
+        "checks": 134,
+        "failures": 0
+      },
+      {
+        "label": "source-combined-workers-4-reopen",
+        "status": "passed",
+        "checks": 34,
+        "failures": 0
+      }
+    ]
+  },
+  "platforms": {
+    "linux": {
+      "graphical_backend": "Linux X11",
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "native_sha256": "1de86fb8950113162be26796806f4e1aa7d17e443d428a7fa9bbf660afdb38ff",
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "evidence_artifact_id": 13906320847,
+      "evidence_url": "https://github.com/techrote/cybersand/actions/runs/43129760301/artifacts/13906320847",
+      "evidence_zip_sha256": "8a2148cd2561afbfff379d177d24a5f70f72b33bce84bcd21a65040eee39a7d7",
+      "png_count": 53,
+      "profiles": {
+        "count": 16,
+        "manifest_sha256": "2dce153da78bca529cfb48b7a227144eb9259021cd762b41aa34b7f53eb0894e",
+        "canonical_recipe_inventory_sha256": "0944e72ac359fbb0df229a670071f671d8785cd23d15029e65761bab582f2c90",
+        "deepworks": "688e5ee0cddf630109219030821baf38a82ef6f06afe8002fc720bd4c319186b"
+      },
+      "provider_graphical": {
+        "OpenAI": {
+          "checks": 36,
+          "failures": 0,
+          "model": "deployment-alias",
+          "requested_model": "fixture"
+        },
+        "LM Studio": {
+          "checks": 36,
+          "failures": 0,
+          "model": "deployment-alias",
+          "requested_model": "fixture"
+        },
+        "NVIDIA": {
+          "checks": 36,
+          "failures": 0,
+          "model": "deployment-alias",
+          "requested_model": "fixture"
+        }
+      },
+      "http_error_control_failures": 0,
+      "final_graphical_requests": 4,
+      "final_graphical": {
+        "failures": 0,
+        "fixture": "scripted HTTP responses; no genuine provider inference",
+        "frames": 195,
+        "initial_stop_ms": 9185,
+        "max_frame_ms": 669,
+        "native_backend": "CyberNativeCellWorld",
+        "stop_prefix": {
+          "changed": 28544,
+          "checked": 28672,
+          "excluded": 128,
+          "human_admitted": 0,
+          "human_pending": 0,
+          "human_refused": 0,
+          "reason": "Human Stop",
+          "refused": 0,
+          "status": "partial",
+          "unchanged": 0
+        }
+      },
+      "combined_author_reopen": [
+        {
+          "layout": "installed",
+          "workers": 1,
+          "author_checks": 134,
+          "reopen_checks": 34,
+          "actual_stop_prefix": 4096,
+          "matching_author_reopen_material_digest": "52e3a94accff0bc8498412b740f3c4381717dc5c4bec3501194e847b3ae1eaab"
+        },
+        {
+          "layout": "installed",
+          "workers": 4,
+          "author_checks": 134,
+          "reopen_checks": 34,
+          "actual_stop_prefix": 4096,
+          "matching_author_reopen_material_digest": "52e3a94accff0bc8498412b740f3c4381717dc5c4bec3501194e847b3ae1eaab"
+        },
+        {
+          "layout": "regressions",
+          "workers": 1,
+          "author_checks": 134,
+          "reopen_checks": 34,
+          "actual_stop_prefix": 4096,
+          "matching_author_reopen_material_digest": "52e3a94accff0bc8498412b740f3c4381717dc5c4bec3501194e847b3ae1eaab"
+        },
+        {
+          "layout": "regressions",
+          "workers": 4,
+          "author_checks": 134,
+          "reopen_checks": 34,
+          "actual_stop_prefix": 4096,
+          "matching_author_reopen_material_digest": "52e3a94accff0bc8498412b740f3c4381717dc5c4bec3501194e847b3ae1eaab"
+        }
+      ],
+      "observed_fixture_timings": {
+        "installed/installed-combined-workers-1-author.log": [
+          {
+            "ready": true,
+            "startup_ms": 1610,
+            "wait_ms": 971,
+            "budget_ms": 180000,
+            "worker_failed": false
+          }
+        ],
+        "installed/installed-combined-workers-1-reopen.log": [
+          {
+            "ready": true,
+            "startup_ms": 1677,
+            "wait_ms": 1058,
+            "budget_ms": 180000,
+            "worker_failed": false
+          }
+        ],
+        "installed/installed-combined-workers-4-author.log": [
+          {
+            "ready": true,
+            "startup_ms": 1756,
+            "wait_ms": 1134,
+            "budget_ms": 180000,
+            "worker_failed": false
+          }
+        ],
+        "installed/installed-combined-workers-4-reopen.log": [
+          {
+            "ready": true,
+            "startup_ms": 1663,
+            "wait_ms": 1041,
+            "budget_ms": 180000,
+            "worker_failed": false
+          }
+        ],
+        "regressions/art-final-graphical/godot.log": [
+          {
+            "label": "native canvas ready",
+            "ready": true,
+            "elapsed_ms": 1362,
+            "budget_ms": 180000
+          },
+          {
+            "ready": true,
+            "startup_ms": 3270,
+            "wait_ms": 1363,
+            "budget_ms": 180000,
+            "worker_failed": false
+          },
+          {
+            "label": "incremental native changes during active draw",
+            "ready": true,
+            "elapsed_ms": 2889,
+            "budget_ms": 30000
+          },
+          {
+            "label": "second incremental native prefix",
+            "ready": true,
+            "elapsed_ms": 1590,
+            "budget_ms": 30000
+          },
+          {
+            "label": "Stop retires model and native drawing",
+            "ready": true,
+            "elapsed_ms": 253,
+            "budget_ms": 30000
+          },
+          {
+            "label": "local follow-up with retained history finishes",
+            "ready": true,
+            "elapsed_ms": 36810,
+            "budget_ms": 120000
+          },
+          {
+            "label": "local geometry translated into new world area",
+            "ready": true,
+            "elapsed_ms": 0,
+            "budget_ms": 30000
+          },
+          {
+            "label": "world-coordinate follow-up finishes",
+            "ready": true,
+            "elapsed_ms": 21932,
+            "budget_ms": 120000
+          },
+          {
+            "label": "world geometry appears in third area",
+            "ready": true,
+            "elapsed_ms": 0,
+            "budget_ms": 30000
+          },
+          {
+            "label": "stale hosted packet finishes without mutation",
+            "ready": true,
+            "elapsed_ms": 1383,
+            "budget_ms": 30000
+          }
+        ],
+        "regressions/source-combined-workers-1-author.log": [
+          {
+            "ready": true,
+            "startup_ms": 1769,
+            "wait_ms": 1127,
+            "budget_ms": 180000,
+            "worker_failed": false
+          }
+        ],
+        "regressions/source-combined-workers-1-reopen.log": [
+          {
+            "ready": true,
+            "startup_ms": 1759,
+            "wait_ms": 1115,
+            "budget_ms": 180000,
+            "worker_failed": false
+          }
+        ],
+        "regressions/source-combined-workers-4-author.log": [
+          {
+            "ready": true,
+            "startup_ms": 1836,
+            "wait_ms": 1191,
+            "budget_ms": 180000,
+            "worker_failed": false
+          }
+        ],
+        "regressions/source-combined-workers-4-reopen.log": [
+          {
+            "ready": true,
+            "startup_ms": 1889,
+            "wait_ms": 1267,
+            "budget_ms": 180000,
+            "worker_failed": false
+          }
+        ]
+      },
+      "root_visually_inspected_frames": [
+        {
+          "path": "installed/installed-combined-workers-4-author-frames/combined-agent-and-paint.png",
+          "sha256": "6bb913ec2f17846b1c81e3aaeded14d08e30e810671822585bafff7949409244"
+        }
+      ]
+    },
+    "windows": {
+      "graphical_backend": "Windows ANGLE",
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "native_sha256": "8449902e411588f5449a5fb8e647269858d272718f03107bda83790dc48c5350",
+      "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "evidence_artifact_id": 13906042417,
+      "evidence_url": "https://github.com/techrote/cybersand/actions/runs/43129760301/artifacts/13906042417",
+      "evidence_zip_sha256": "f11896c93f7647cf35211717ad238b35e83770d419d06ae63b22b30f93d0b147",
+      "png_count": 53,
+      "profiles": {
+        "count": 16,
+        "manifest_sha256": "b1c0649e01dc64e8ce968947f05feadd513ea055e76c03f505e854f38943cc4f",
+        "canonical_recipe_inventory_sha256": "0944e72ac359fbb0df229a670071f671d8785cd23d15029e65761bab582f2c90",
+        "deepworks": "688e5ee0cddf630109219030821baf38a82ef6f06afe8002fc720bd4c319186b"
+      },
+      "provider_graphical": {
+        "OpenAI": {
+          "checks": 36,
+          "failures": 0,
+          "model": "deployment-alias",
+          "requested_model": "fixture"
+        },
+        "LM Studio": {
+          "checks": 36,
+          "failures": 0,
+          "model": "deployment-alias",
+          "requested_model": "fixture"
+        },
+        "NVIDIA": {
+          "checks": 36,
+          "failures": 0,
+          "model": "deployment-alias",
+          "requested_model": "fixture"
+        }
+      },
+      "http_error_control_failures": 0,
+      "final_graphical_requests": 4,
+      "final_graphical": {
+        "failures": 0,
+        "fixture": "scripted HTTP responses; no genuine provider inference",
+        "frames": 266,
+        "initial_stop_ms": 13333,
+        "max_frame_ms": 1650,
+        "native_backend": "CyberNativeCellWorld",
+        "stop_prefix": {
+          "changed": 21375,
+          "checked": 21503,
+          "excluded": 128,
+          "human_admitted": 0,
+          "human_pending": 0,
+          "human_refused": 0,
+          "reason": "Human Stop",
+          "refused": 0,
+          "status": "partial",
+          "unchanged": 0
+        }
+      },
+      "combined_author_reopen": [
+        {
+          "layout": "installed",
+          "workers": 1,
+          "author_checks": 134,
+          "reopen_checks": 34,
+          "actual_stop_prefix": 3072,
+          "matching_author_reopen_material_digest": "9bd5c111ed903ae9132a4f53bec2e2e9d3342c95b53ec85aeeed71a7dbdb2c4b"
+        },
+        {
+          "layout": "installed",
+          "workers": 4,
+          "author_checks": 134,
+          "reopen_checks": 34,
+          "actual_stop_prefix": 3776,
+          "matching_author_reopen_material_digest": "094b99af5608e9de20fa99a4e4d55d25855d902b2cb759ef957bee4ae5f8d51e"
+        },
+        {
+          "layout": "regressions",
+          "workers": 1,
+          "author_checks": 134,
+          "reopen_checks": 34,
+          "actual_stop_prefix": 3712,
+          "matching_author_reopen_material_digest": "4a027a91a8fe784e5c838b3e558eda1eb9ec7509e81cab9099d8a1a43fbfc5eb"
+        },
+        {
+          "layout": "regressions",
+          "workers": 4,
+          "author_checks": 134,
+          "reopen_checks": 34,
+          "actual_stop_prefix": 3968,
+          "matching_author_reopen_material_digest": "d414b29befd11703fbfdac34bf7a18543f405f0cd6ca1904fe9ff882a8186697"
+        }
+      ],
+      "observed_fixture_timings": {
+        "installed/installed-combined-workers-4-author.log": [
+          {
+            "ready": true,
+            "startup_ms": 43470,
+            "wait_ms": 42616,
+            "budget_ms": 180000,
+            "worker_failed": false
+          }
+        ],
+        "installed/installed-combined-workers-4-reopen.log": [
+          {
+            "ready": true,
+            "startup_ms": 2751,
+            "wait_ms": 1905,
+            "budget_ms": 180000,
+            "worker_failed": false
+          }
+        ],
+        "installed/installed-combined-workers-1-reopen.log": [
+          {
+            "ready": true,
+            "startup_ms": 2658,
+            "wait_ms": 1818,
+            "budget_ms": 180000,
+            "worker_failed": false
+          }
+        ],
+        "installed/installed-combined-workers-1-author.log": [
+          {
+            "ready": true,
+            "startup_ms": 43170,
+            "wait_ms": 42080,
+            "budget_ms": 180000,
+            "worker_failed": false
+          }
+        ],
+        "regressions/source-combined-workers-1-reopen.log": [
+          {
+            "ready": true,
+            "startup_ms": 2729,
+            "wait_ms": 1901,
+            "budget_ms": 180000,
+            "worker_failed": false
+          }
+        ],
+        "regressions/source-combined-workers-4-author.log": [
+          {
+            "ready": true,
+            "startup_ms": 43604,
+            "wait_ms": 42772,
+            "budget_ms": 180000,
+            "worker_failed": false
+          }
+        ],
+        "regressions/source-combined-workers-4-reopen.log": [
+          {
+            "ready": true,
+            "startup_ms": 2735,
+            "wait_ms": 1891,
+            "budget_ms": 180000,
+            "worker_failed": false
+          }
+        ],
+        "regressions/source-combined-workers-1-author.log": [
+          {
+            "ready": true,
+            "startup_ms": 45560,
+            "wait_ms": 44722,
+            "budget_ms": 180000,
+            "worker_failed": false
+          }
+        ],
+        "regressions/art-final-graphical/godot.log": [
+          {
+            "label": "native canvas ready",
+            "ready": true,
+            "elapsed_ms": 41725,
+            "budget_ms": 180000
+          },
+          {
+            "ready": true,
+            "startup_ms": 44264,
+            "wait_ms": 41727,
+            "budget_ms": 180000,
+            "worker_failed": false
+          },
+          {
+            "label": "incremental native changes during active draw",
+            "ready": true,
+            "elapsed_ms": 4111,
+            "budget_ms": 30000
+          },
+          {
+            "label": "second incremental native prefix",
+            "ready": true,
+            "elapsed_ms": 2174,
+            "budget_ms": 30000
+          },
+          {
+            "label": "Stop retires model and native drawing",
+            "ready": true,
+            "elapsed_ms": 89,
+            "budget_ms": 30000
+          },
+          {
+            "label": "local follow-up with retained history finishes",
+            "ready": true,
+            "elapsed_ms": 66303,
+            "budget_ms": 120000
+          },
+          {
+            "label": "local geometry translated into new world area",
+            "ready": true,
+            "elapsed_ms": 0,
+            "budget_ms": 30000
+          },
+          {
+            "label": "world-coordinate follow-up finishes",
+            "ready": true,
+            "elapsed_ms": 41211,
+            "budget_ms": 120000
+          },
+          {
+            "label": "world geometry appears in third area",
+            "ready": true,
+            "elapsed_ms": 0,
+            "budget_ms": 30000
+          },
+          {
+            "label": "stale hosted packet finishes without mutation",
+            "ready": true,
+            "elapsed_ms": 1289,
+            "budget_ms": 30000
+          }
+        ]
+      },
+      "root_visually_inspected_frames": [
+        {
+          "path": "installed/installed-author-frames/generator-profiles.png",
+          "sha256": "0b19fb6faf3416db407f55c0fa8b6740a6f06272731493d62184511b0c1cd265"
+        },
+        {
+          "path": "installed/installed-combined-workers-4-author-frames/combined-agent-and-paint.png",
+          "sha256": "6fddaec31d28b1d4479909fd2c42f37802a456c94ad9bd20d1cd7a003e69bc13"
+        },
+        {
+          "path": "installed/installed-combined-workers-4-reopen-frames/combined-reopened-and-continued.png",
+          "sha256": "d35cee497b2e59e1cf935f220d2082d13e66ce741ab933a26f056c917d8c129a"
+        }
+      ]
+    }
+  },
+  "owner_original_installation_inspected": false,
+  "genuine_model_inference_performed": false,
+  "provider_qualification": "Deterministic loopback HTTP fixtures exercised actual transport, image observations, UI controls and native drawing; no paid cloud or genuine local model inference.",
+  "remaining_gates": [
+    "Independent owner desktop acceptance before Ready or merge",
+    "General Native/GDExtension/palette release workflows remain Draft-skipped; not reported as passes"
+  ],
+  "persistence_scope": "Authored Setup-v2/generated starts reconstruct terrain, both editors’ edits, actors and supported settings; not an evolved simulation checkpoint or GEN-008 Flatten."
+}
