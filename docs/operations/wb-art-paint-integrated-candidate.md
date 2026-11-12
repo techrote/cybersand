@@ -14,12 +14,86 @@ related-documents: [../systems/paint-editor-bounded-shapes.md, ../systems/workbe
 implementations and their Git ancestry. It does not authorize Ready, merging,
 auto-merge, material-default changes or GEN-008 Flatten.
 
+## Qualified agent Undo/Redo candidate — 86d704a2
+
+The agent-history application and Windows evaluation package are qualified at
+source **`86d704a259745621168e8bffb149b4d1aee2354b`**, tree
+`711689ba064744ff2768898f6293d7ea7b4e4d71`. Subsequent evidence-only commits do
+not relabel these executions as runs on another source. Both original feature
+heads and accepted main remain ancestors; the earlier integration and packaging
+repairs are retained.
+
+[Download the Windows x64 package with agent Undo/Redo](https://github.com/techrote/cybersand/actions/runs/43323028548/artifacts/13994755835).
+Build identity: **run 43323028548 / attempt 1 / artifact 13994755835**.
+The ZIP is **92,919,438 bytes**; SHA-256:
+
+```text
+750bd27eff18eac1219faa44807a71a64780d43f846e58a466275db51ce1ee69
+```
+
+Extract the whole archive to a new folder and run **Open Workbench.cmd**.
+Godot 4.7, the source-built native extension, Rapier, the required signed
+Microsoft runtime, licences, source/runtime provenance, all editing modules
+and all 16 procedural profiles are included. Independent archive verification
+checked all **887 manifest-listed payload files**, all **87 native source input
+hashes**, both profile directories and the Rapier build lock/patch. The Windows
+GUI process-module receipt proves that the copied application loaded CyberSand,
+Rapier and the bundled VC runtime from that same copied installation. The
+candidate DLL SHA-256 is
+`5fb30ba80cf8b783eb0bb8ab5542bcba39721c6095090a6cb2db70691f58dabc`.
+
+The [dedicated installed campaign](https://github.com/techrote/cybersand/actions/runs/43323028548)
+passed all three jobs on attempt 1. **Each platform passed 8,114 directly counted
+assertions**: 639 installed-layout, 7,367 regression and 108 graphical HTTP
+provider checks. Five package-contract tests per platform are separate. Imports
+and repeated completion markers do not inflate these totals.
+
+| Coverage on both platforms | Native workers | Checks at each setting |
+| --- | --- | --- |
+| Graphical installed 1024² map, author / fresh-process reopen | 1 and 4 | 216 / 54 |
+| Graphical source-layout 512² map, author / fresh-process reopen | 1 and 4 | 197 / 51 |
+| Headless native agent Undo, including a 262,656-cell group | 1 and 4 | 260 |
+
+The graphical workflows use actual Windows ANGLE and Linux X11. All eight
+complete author/reopen pairs across both platforms matched their
+own native stored-material digests, actor/equipment configuration and applicable
+settings. Agent edits undone before Save stayed absent after reopening; new
+edits remained undoable in the new process. The workflows also exercised a
+147,456-cell Fill, mixed materials, Copy/Paste, manual/agent interleaving,
+confirmed Stop prefixes, simulation, physical equipment and continued editing.
+Each platform retains 57 original PNGs. The OpenAI, NVIDIA and LM Studio tests
+use deterministic loopback HTTP and actual canvas images; live model inference
+is not claimed. See the
+[installed/package audit](../audits/wb-art-paint-2026-11-12/agent-undo-hosted-installed.json)
+for exact receipts, native digests and artifact identities.
+
+The [complete Native campaign](https://github.com/techrote/cybersand/actions/runs/43323028517)
+passed all eight executing jobs: all six runtime families, policy and aggregate
+verification. Normal, ASan/UBSan and TSan each ran the same 192 core cases;
+generator and soliding normal/sanitized families also passed. Existing ASan
+configuration disables leak detection. The
+[Native/documentation audit](../audits/wb-art-paint-2026-11-12/agent-undo-hosted-native.json)
+preserves the original command, source and output hashes.
+
+The [complete Godot campaign](https://github.com/techrote/cybersand/actions/runs/43323028725)
+passed all 50 executing jobs: **299 Linux cases and 278 applicable Windows
+headless cases**, with 43 import preflights counted separately. All 21 rendered
+cases excluded from that Windows headless matrix passed on Linux; the dedicated
+Windows graphical campaign above is separate. The new native Undo test passed
+260 checks on each platform with all 40 material-capture witnesses identical.
+See the [Godot audit](../audits/wb-art-paint-2026-11-12/agent-undo-hosted-godot.json).
+
+**GO for owner evaluation; HOLD for merge.** Retained repository runtime
+publication/materialized provenance, the separate Palette backend gate and
+owner desktop acceptance remain outstanding. Administrative Ready checks,
+optional physical-actor stress and the Draft-skipped published-runtime
+provenance step are not passes. This work does not authorize Ready or merge.
+
 ## Shared agent and manual Undo/Redo — current implementation
 
-The current local integration adds native-confirmed agent edits to PAINT's
-chronological Undo/Redo timeline. **These new history changes are not yet
-qualified by the previous hosted campaigns or Windows package.** Keep their
-source and results separate from the completed `d33c10e4` checkpoint below.
+The current integration adds native-confirmed agent edits to PAINT's
+chronological Undo/Redo timeline. Its exact-source hosted qualification is
+recorded above, separately from the earlier `d33c10e4` checkpoint below.
 
 Both the PAINT controls and the new **Art batches** Undo/Redo buttons act on the
 most recent edit. Adjacent bounded parts of one direct batch or model drawing
