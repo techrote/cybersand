@@ -34,7 +34,7 @@ env=dict(os.environ,APPDATA=str(a.output.resolve()/'isolated-appdata'),XDG_DATA_
 render_args=['--rendering-driver','opengl3_angle'] if os.name=='nt' else ['--display-driver','x11']
 try:
  with (a.output/'godot.log').open('w',encoding='utf8') as log:
-  run=subprocess.run([a.godot,'--path',str(a.root/'godot'),'--rendering-method','gl_compatibility']+render_args+['--position','0,0','--script','res://tests/run_art_final_graphical.gd'],env=env,stdout=log,stderr=subprocess.STDOUT,timeout=240)
+  run=subprocess.run([a.godot,'--audio-driver','Dummy','--path',str(a.root/'godot'),'--rendering-method','gl_compatibility']+render_args+['--position','0,0','--script','res://tests/run_art_final_graphical.gd'],env=env,stdout=log,stderr=subprocess.STDOUT,timeout=600)
 finally:s.shutdown();s.server_close()
 (a.output/'fixture-requests.json').write_text(json.dumps(requests,indent=2))
 assert len(requests)==4,('request count',len(requests))
