@@ -347,6 +347,10 @@ def regressions(args):
             runner.godot(project, f"paint-{family}-{phase}", f"test_paint_editor_{family}", marker,
                          graphical=True, env={flag: "1" if phase == "reopen" else "0"})
     runner.godot(project, "existing-workbench-input", "test_workbench_input", "WORKBENCH_INPUT")
+    for workers in (1, 4):
+        for script, marker in (("liquid_equipment", "LIQUID_EQUIPMENT"), ("reservoir_lab", "RESERVOIR_LAB")):
+            runner.godot(project, f"existing-{script}-{workers}", f"test_workbench_{script}", marker,
+                         env={"LIQUID_EQUIPMENT_WORKERS": str(workers)})
     runner.godot(project, "existing-worldgen-planes", "test_worldgen_planes", "GEN-005 plane adapter:")
     runner.godot(project, "existing-worldgen-workbench", "test_worldgen_workbench", "WORLDGEN_WORKBENCH:")
     for phase in ("author", "reopen"):
