@@ -1,0 +1,70 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+WB_COMBINED_INITIAL_READY {"applied":true,"art":{"epoch":4,"executing":false,"legacy_busy":false,"paint_busy":false,"queued":false,"receipt_ready":false,"transition_busy":false},"budget_ms":180000,"host_error":"","paint":{"art_busy":false,"busy":false,"epoch":3,"erase_allowed":true,"error":"","executing":false,"extent":"(2048, 2048)","generation":2,"legacy_busy":false,"paint_allowed":true,"paused":true,"queued":false,"receipt_ready":false,"result_operation_id":0,"revision":2,"settings_revision":1,"status":"idle","tick":0,"transition_busy":false},"paint_editor_busy":false,"pending_install":false,"ready":true,"startup_ms":1422,"wait_ms":886,"workbench_message":"Brush · sand · radius 8","worker_failed":false}
+WB_COMBINED_LARGE_FILL {"applied":0,"changed":0,"kind":"capture","message":"Fill requires more than 262144 sampled cells. Use a smaller enclosed region.","source":{"applied":0,"art_busy":false,"busy":false,"changed":0,"checked":262144,"epoch":5,"erase_allowed":true,"error":"","executing":false,"extent":"(1024, 1024)","generation":3,"legacy_busy":false,"operation_id":27,"paint_allowed":true,"paused":true,"queued":false,"receipt_ready":false,"requested_cells":262144,"result_operation_id":0,"revision":24188,"settings_revision":3,"slices":64,"status":"completed","tick":0,"transition_busy":false},"status":"completed"}
+ERROR: WB_COMBINED_AUTHORING adaptive Fill confirms all 147456 interior cells
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_workbench_combined_authoring.gd:54)
+       [1] large_adaptive_fill (res://tests/test_workbench_combined_authoring.gd:177)
+       [2] until (res://tests/test_workbench_combined_authoring.gd:60)
+ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: agent
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_workbench_combined_authoring.gd:54)
+       [1] run (res://tests/test_workbench_combined_authoring.gd:594)
+       [2] author (res://tests/test_workbench_combined_authoring.gd:452)
+       [3] large_adaptive_fill (res://tests/test_workbench_combined_authoring.gd:178)
+       [4] until (res://tests/test_workbench_combined_authoring.gd:60)
+ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: provider_fixture
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_workbench_combined_authoring.gd:54)
+       [1] run (res://tests/test_workbench_combined_authoring.gd:594)
+       [2] author (res://tests/test_workbench_combined_authoring.gd:452)
+       [3] large_adaptive_fill (res://tests/test_workbench_combined_authoring.gd:178)
+       [4] until (res://tests/test_workbench_combined_authoring.gd:60)
+ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: late_response
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_workbench_combined_authoring.gd:54)
+       [1] run (res://tests/test_workbench_combined_authoring.gd:594)
+       [2] author (res://tests/test_workbench_combined_authoring.gd:452)
+       [3] large_adaptive_fill (res://tests/test_workbench_combined_authoring.gd:178)
+       [4] until (res://tests/test_workbench_combined_authoring.gd:60)
+ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: human_after_agent
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_workbench_combined_authoring.gd:54)
+       [1] run (res://tests/test_workbench_combined_authoring.gd:594)
+       [2] author (res://tests/test_workbench_combined_authoring.gd:452)
+       [3] large_adaptive_fill (res://tests/test_workbench_combined_authoring.gd:178)
+       [4] until (res://tests/test_workbench_combined_authoring.gd:60)
+ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: stop
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_workbench_combined_authoring.gd:54)
+       [1] run (res://tests/test_workbench_combined_authoring.gd:594)
+       [2] author (res://tests/test_workbench_combined_authoring.gd:452)
+       [3] large_adaptive_fill (res://tests/test_workbench_combined_authoring.gd:178)
+       [4] until (res://tests/test_workbench_combined_authoring.gd:60)
+ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: save
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_workbench_combined_authoring.gd:54)
+       [1] run (res://tests/test_workbench_combined_authoring.gd:594)
+       [2] author (res://tests/test_workbench_combined_authoring.gd:452)
+       [3] large_adaptive_fill (res://tests/test_workbench_combined_authoring.gd:178)
+       [4] until (res://tests/test_workbench_combined_authoring.gd:60)
+ERROR: WB_COMBINED_AUTHORING complete combined authoring flow reached Save
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_workbench_combined_authoring.gd:54)
+       [1] run (res://tests/test_workbench_combined_authoring.gd:595)
+       [2] author (res://tests/test_workbench_combined_authoring.gd:452)
+       [3] large_adaptive_fill (res://tests/test_workbench_combined_authoring.gd:178)
+       [4] until (res://tests/test_workbench_combined_authoring.gd:60)
+WB_COMBINED_EVIDENCE {"author_complete":false,"checks":69,"elapsed_usec":14834214,"failures":["adaptive Fill confirms all 147456 interior cells","mandatory combined author phase executed: agent","mandatory combined author phase executed: provider_fixture","mandatory combined author phase executed: late_response","mandatory combined author phase executed: human_after_agent","mandatory combined author phase executed: stop","mandatory combined author phase executed: save","complete combined authoring flow reached Save"],"map_side":1024,"phases":{"agent":false,"continued_authoring":false,"discovery":true,"generation":true,"human_after_agent":false,"late_response":false,"leases":true,"manual":true,"provider_fixture":false,"reopen":false,"save":false,"stop":false},"prepared_sha256":"","profile_count":16,"provider_qualification":"deterministic completion fixture; separate transport suite; no inference","reopen_complete":false,"source_identity":{"display":"headless","godot":"4.7-stable (official)","native_sha256":"16ffc0ce8190c2e8ca2e31fc59f10c55148adc6e7f16727dc96c094d8a96696a","os":"Linux","scripts/art_batch_executor.gd":"918544af6c2b3d443f807b8ca1e7e88a0d22b1c956962cc3602a4c7bf533fe4d","scripts/art_batch_panel.gd":"3cbf9a652e4611c3d5d827ebd800c320813f0ec32e75427e36e97013869f896c","scripts/art_provider.gd":"5cab1a50a2b38888fbec5183c0facacb23211e682f088c05c7ab802dd2977bdd","scripts/shared_workbench.gd":"4df95c7836606c82d2f83853ddc489cd300b21498730a70ac38e8e0878989f4e","scripts/simulation_worker.gd":"ca762a7a9e2b1f704d7ab8428e72a7636bbc86ffb24a02c56086f5aadd95e752","scripts/workbench_generated_map.gd":"f65a37a99ac40abccc0a3ea3bad1e920051d597ceb46354e857dded9e6465ba5","scripts/workbench_generator_dialog.gd":"4b6d71e1011837a1281d5d485db53ae2eef60572d25ce14a61c55233e8e02288","scripts/workbench_paint_editor_controller.gd":"bb9f29e52978b56aacca74de5c7240b6697c3d480b73eb02e739cc9606ebc40b","scripts/workbench_paint_editor_executor.gd":"1f118427e505f0a4b7f63e7e10089507f89445c08f9ead5a7f41768935160e7d","scripts/workbench_paint_editor_history.gd":"f3b19f906668feec3d49aea61448b1d58a90a6ccf8b9bf5b814d13ed4881786e","scripts/workbench_setup.gd":"6b3341e4733f39622c23a964cb586c65eb358734e1a164e354d327057abe4a86","tests/test_workbench_combined_authoring.gd":"045bef36ff56407b6e0486ef44a7644c8b17a167152391bf8719b2ee395e58d6"},"stop_prefix":0}
+WB_COMBINED_AUTHORING checks=69 failures=8 author_complete=false reopen_complete=false

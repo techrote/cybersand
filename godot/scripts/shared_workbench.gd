@@ -353,7 +353,7 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		_saved_view = {"origin":host.camera_origin,"size":host.current_view_size}
 	else:
 		_saved_view.clear()
-	if art_batches != null: art_batches.executor.canvas_changed()
+	if art_batches != null: art_batches.executor.canvas_changed(false)
 	_cancel()
 	# Publish the current owner view before preparation captures its settings
 	# revision; the first rendered frame must not invalidate startup construction.
@@ -386,6 +386,7 @@ func new_canvas() -> bool:
 	return apply(candidate)
 
 func installed(candidate: Dictionary) -> void:
+	if art_batches != null: art_batches.executor.canvas_changed()
 	_pending_request_serial = 0
 	if not _pending_retain_generated:
 		_generated_active = _pending_generated.duplicate(true)
@@ -701,6 +702,12 @@ func apply_liquids() -> bool:
 	return true
 
 func save_setup() -> bool:
+	# Admission is not completion. Ordinary brush commands and both editors
+	# retain the shared owner boundary until native work/receipts are settled.
+	var edits: Dictionary = host.simulation_worker.paint_state()
+	if bool(edits.get("busy",false)) or bool(edits.get("art_busy",false)) \
+			or bool(edits.get("legacy_busy",false)) or bool(edits.get("transition_busy",false)):
+		return refuse("Wait for all native edits and their completion receipts before saving.")
 	if paint_editor != null and not paint_editor.save_allowed(): return false
 	if art_batches != null:
 		art_batches.executor.poll()
@@ -809,6 +816,8 @@ func step_once() -> bool:
 	return true
 
 func paint(pos: Vector2i, material: int) -> bool:
+	if paint_editor != null and paint_editor.recovery_required():
+		return refuse("Undo the partial paint edit or Restore start before painting.")
 	if art_batches != null:
 		var deferred: int = art_batches.executor.defer_manual(pos,material)
 		if deferred != 0: return deferred > 0

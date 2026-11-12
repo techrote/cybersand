@@ -44,7 +44,12 @@ def main():
     parser.add_argument("--engine-notices", type=Path, required=True)
     parser.add_argument("--native-candidate", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--readme", type=Path,
+                        default=Path("docs/operations/explore001-desktop-playtest.md"),
+                        help="committed repository guide to include as READ-ME.md")
     args = parser.parse_args()
+    if args.readme.is_absolute() or ".." in args.readme.parts or args.readme.suffix != ".md":
+        raise ValueError("Candidate guide must be a repository-relative Markdown path")
     manifest = native.verify(ROOT, args.native_candidate)
     console = args.engine.with_name(args.engine.stem + "_console.exe")
     version = subprocess.check_output([str(console), "--version"], text=True, timeout=30).strip()
@@ -56,7 +61,7 @@ def main():
     # files, local source deltas, credentials or another worktree's DLL.
     names = ["godot", "examples/worldgen", "third_party/godot-runtime.lock.json",
              "third_party/native-toolchain.lock.json", "THIRD_PARTY_NOTICES.md", "LICENSE_STATUS.md",
-             "docs/operations/explore001-desktop-playtest.md"]
+             args.readme.as_posix()]
     payload = subprocess.check_output(["git", "archive", "HEAD", "--", *names], cwd=ROOT, timeout=60)
     args.output.mkdir(parents=True)
     with tarfile.open(fileobj=io.BytesIO(payload)) as archive:
@@ -94,7 +99,9 @@ def main():
         'if errorlevel 1 (pause & exit /b 1)\n'
         f'start "" "%~dp0{args.engine.name}" --path "%~dp0godot" -- --workbench\n',
         encoding="utf-8", newline="\r\n")
-    shutil.copyfile(ROOT / "docs/operations/explore001-desktop-playtest.md", args.output / "READ-ME.md")
+    # The guide follows the same committed source as the application payload;
+    # a working-tree documentation edit must not enter a source-matched package.
+    shutil.copyfile(args.output / args.readme, args.output / "READ-ME.md")
     files = {p.relative_to(args.output).as_posix(): native.sha(p)
              for p in sorted(args.output.rglob("*")) if p.is_file()}
     identity = {"schema": 1, "purpose": "owner desktop playtest candidate; not a production release",

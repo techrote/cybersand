@@ -1,0 +1,9 @@
+{
+  "premise": "isolated source copy; restore old eager record retirement at apply only; all other fixes retained",
+  "files": {
+    "scripts/shared_workbench.gd": "8318c50040e610c6a61537db9ea024323bf6e075d29155aeb4772ae19be0dabd",
+    "scripts/art_batch_executor.gd": "a967028ba0080625d8d246100be052fd0dabed8e34c04476b968cf3994ccd257",
+    "tests/test_workbench_deferred_paint.gd": "70b34520227362699d9b45a6f61ad22b5d7875ea0f9264baf213844c0e5a4026",
+    "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "16ffc0ce8190c2e8ca2e31fc59f10c55148adc6e7f16727dc96c094d8a96696a"
+  }
+}

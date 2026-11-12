@@ -11,12 +11,13 @@ on:
       - 'godot/**'
       - 'native/**'
       - 'examples/worldgen/**'
+  workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: wb-art-paint-${{ github.ref }}
-  cancel-in-progress: true
+  group: wb-art-paint-${{ github.event_name }}-${{ github.event_name == 'push' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
 
 env:
   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
@@ -277,7 +278,9 @@ jobs:
           }
           if ((Get-FileHash (Join-Path $notices 'LICENSE.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80' -or (Get-FileHash (Join-Path $notices 'COPYRIGHT.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d') { throw 'Pinned Godot notices hash mismatch' }
           $engine = Join-Path (Split-Path $env:GODOT_EXE) 'Godot_v4.7-stable_win64.exe'
-          python tools/package_explore001_candidate.py --engine $engine --engine-notices $notices --native-candidate build/wb-art-paint-windows --output build/wb-art-paint-desktop-candidate
+          $guide = 'docs/operations/explore001-desktop-playtest.md'
+          if ($env:GITHUB_REF_NAME -eq 'codex/wb-art-paint-integrated-20261111') { $guide = 'docs/operations/wb-art-paint-integrated-candidate.md' }
+          python tools/package_explore001_candidate.py --engine $engine --engine-notices $notices --native-candidate build/wb-art-paint-windows --output build/wb-art-paint-desktop-candidate --readme $guide
           if ($LASTEXITCODE -ne 0) { throw 'Desktop packaging refused' }
       - name: Exercise the delivered Windows GUI in fresh non-Git installations
         shell: pwsh

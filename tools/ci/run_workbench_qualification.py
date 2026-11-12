@@ -216,12 +216,12 @@ def verify_package(package: Path) -> dict:
     return manifest
 
 
-def combined_authoring(runner, project, label):
+def combined_authoring(runner, project, label, side=512):
     for workers in (1, 4):
         for phase in ("author", "reopen"):
             case = f"{label}-workers-{workers}-{phase}"
             frames = runner.evidence / f"{case}-frames"
-            env = {"WB_COMBINED_WORKERS": str(workers),
+            env = {"WB_COMBINED_WORKERS": str(workers), "WB_COMBINED_SIDE": str(side),
                    "WB_COMBINED_REOPEN": "1" if phase == "reopen" else "0",
                    "WB_COMBINED_SCREENSHOTS": str(frames), "WB_COMBINED_REQUIRE_GRAPHICS": "1",
                    "XDG_DATA_HOME": str(runner.evidence / f"{label}-workers-{workers}-userdata"),
@@ -233,10 +233,12 @@ def combined_authoring(runner, project, label):
                 raise RuntimeError(f"Combined {case} did not complete every required phase")
             if receipt.get("source_identity", {}).get("display") == "headless":
                 raise RuntimeError(f"Combined {case} did not run a graphical display")
+            if receipt.get("map_side") != side:
+                raise RuntimeError(f"Combined {case} did not exercise its required {side}-cell map")
             required = {"combined-generator-profiles.png"}
             if phase == "author":
                 required.update(("combined-generator-preview.png", "combined-agent-and-paint.png",
-                                 "combined-authored-saved.png"))
+                                 "combined-equipment-simulation.png", "combined-authored-saved.png"))
             else:
                 required.add("combined-reopened-and-continued.png")
             screenshots = {p.name for p in frames.glob("*.png") if p.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")}
@@ -288,7 +290,7 @@ def installed(args):
             if not required.issubset(screenshots):
                 raise RuntimeError(f"Actual graphical {phase} is missing required framebuffer evidence: {sorted(required-screenshots)}")
         if args.combined:
-            combined_authoring(runner, project, "installed-combined")
+            combined_authoring(runner, project, "installed-combined-1024", side=1024)
 
 
 def final_graphical_result(output: Path) -> dict:

@@ -10,6 +10,7 @@ const SAVE_NAME := "wb-combined-generated-acceptance"
 const EXPECTED_PATH := "user://wb-combined-native-expectation.json"
 const AUTHOR_REGION := Rect2i(32,32,352,272)
 const ACTOR_CLEARANCE := Rect2i(400,336,104,168)
+const LARGE_FILL_REGION := Rect2i(560,64,386,386)
 const FOLLOWUP_PROMPT := "Add a short wall line, then erase one previous wall cell."
 class FocusHost extends "res://scripts/main.gd":
 	func _actor_window_has_focus() -> bool: return true
@@ -25,12 +26,14 @@ var checks := 0
 var failures: Array[String] = []
 var phases := {"discovery":false,"generation":false,"manual":false,"leases":false,
 	"agent":false,"provider_fixture":false,"late_response":false,"human_after_agent":false,
-	"stop":false,"save":false,"reopen":false,"continued_authoring":false}
+	"stop":false,"simulation_equipment":false,"save":false,"reopen":false,"continued_authoring":false}
 var author_complete := false
 var reopen_complete := false
 var profile_count := 0
+var map_side := 512
 var prepared_sha256 := ""
 var stopped_prefix := 0
+var simulation_evidence: Dictionary = {}
 var source_identity: Dictionary = {}
 var started_usec := 0
 # Separate container invocations may reuse the same namespace-local PID.
@@ -41,6 +44,8 @@ func _initialize() -> void:
 	started_usec = Time.get_ticks_usec()
 	var workers := int(OS.get_environment("WB_COMBINED_WORKERS"))
 	ProjectSettings.set_setting("cybersand/native_worker_threads",workers if workers in [1,4] else 1)
+	var selected_side := OS.get_environment("WB_COMBINED_SIDE")
+	if not selected_side.is_empty(): map_side = int(selected_side)
 	run.call_deferred()
 
 func check(ok: bool,label: String) -> bool:
@@ -79,6 +84,7 @@ func identity() -> Dictionary:
 	for path: String in ["scripts/simulation_worker.gd","scripts/shared_workbench.gd",
 		"scripts/workbench_generator_dialog.gd","scripts/art_batch_executor.gd",
 		"scripts/art_batch_panel.gd","scripts/art_provider.gd",
+		"scripts/workbench_liquid_equipment.gd","scripts/workbench_liquid_equipment_panel.gd",
 		"scripts/workbench_paint_editor_controller.gd","scripts/workbench_paint_editor_executor.gd",
 		"scripts/workbench_paint_editor_history.gd","scripts/workbench_setup.gd",
 		"scripts/workbench_generated_map.gd","tests/test_workbench_combined_authoring.gd"]:
@@ -142,7 +148,44 @@ func capture(region: Rect2i) -> PackedInt32Array:
 func apply_region(bytes: PackedByteArray,region: Rect2i,values: PackedInt32Array) -> void:
 	for y: int in region.size.y:
 		for x: int in region.size.x:
-			bytes[(region.position.y+y)*512+region.position.x+x] = values[y*region.size.x+x]
+			bytes[(region.position.y+y)*map_side+region.position.x+x] = values[y*region.size.x+x]
+
+func complete_native_materials() -> PackedByteArray:
+	# Read the whole installed World before actor masks are added. Tile within
+	# PAINT's existing capture budget instead of raising that product capacity.
+	var bytes := PackedByteArray()
+	bytes.resize(map_side*map_side)
+	for y: int in range(0,map_side,512):
+		for x: int in range(0,map_side,512):
+			var region := Rect2i(x,y,mini(512,map_side-x),mini(512,map_side-y))
+			var values := await capture(region)
+			if not check(values.size()==region.get_area(),"complete native material tile readback"): return PackedByteArray()
+			apply_region(bytes,region,values)
+	return bytes
+
+func large_adaptive_fill() -> bool:
+	if map_side<1024: return true
+	if not await gesture("Rectangle",LARGE_FILL_REGION.position,LARGE_FILL_REGION.end-Vector2i.ONE,0): return false
+	if not await gesture("Outline",LARGE_FILL_REGION.position,LARGE_FILL_REGION.end-Vector2i.ONE,58): return false
+	# No selection: this enclosed 384-square interior exceeds the initial
+	# 256-square capture and must trigger the bounded adaptive Fill path.
+	editor.selection = Rect2i()
+	editor.select_material(2)
+	if not check(editor.fill_at(LARGE_FILL_REGION.get_center()),"large watertight adaptive Fill admitted"): return false
+	if not await until(settled,"large watertight adaptive Fill native completion"): return false
+	print("WB_COMBINED_LARGE_FILL ",JSON.stringify({"status":editor.last_receipt.get("status"),
+		"applied":editor.last_receipt.get("applied"),"changed":editor.last_receipt.get("changed"),
+		"kind":editor.last_receipt.get("kind"),"message":editor._message,"source":worker.paint_state()}))
+	if not check(editor.last_receipt.get("status")=="completed" and int(editor.last_receipt.get("applied",0))==384*384,
+		"adaptive Fill confirms all 147456 interior cells"): return false
+	var values := await capture(LARGE_FILL_REGION)
+	var exact := values.size()==LARGE_FILL_REGION.get_area()
+	for index: int in values.size():
+		var x: int = index%LARGE_FILL_REGION.size.x
+		var y: int = index/LARGE_FILL_REGION.size.x
+		var expected := 58 if x in [0,385] or y in [0,385] else 2
+		if values[index]!=expected: exact=false
+	return check(exact,"every large Fill cell and enclosing boundary has its exact stored material")
 
 func reciprocal_lease_checks() -> bool:
 	# Capture changes no cells, so the test cannot introduce an unrecorded edit.
@@ -387,14 +430,65 @@ func discover() -> bool:
 	phases.discovery = true
 	return true
 
+func equipment_receipt() -> Dictionary:
+	return host.tower_context.get("workbench_equipment",{})
+
+func equipment_current() -> bool:
+	var receipt := equipment_receipt()
+	return bool(receipt.get("configured",false)) and int(receipt.get("serial",-1))==bench.equipment.serial
+
+func exercise_simulation_equipment() -> bool:
+	# Native layout expectations above describe the authored start. Running the
+	# real simulation here must not silently turn Save into a physics snapshot.
+	var edits_before: Array = bench.applied.edits.duplicate(true)
+	var before_tick := int(worker.paint_state().tick)
+	worker.set_worker_participation_sampling(true)
+	bench._position[0].value = 320
+	bench._position[1].value = 80
+	bench.equipment._supply.value = 32
+	bench.equipment._rate.value = 1
+	bench.equipment._speed.value = 2
+	if not check(bench.equipment.place("nozzle"),"existing equipment control places a finite-supply nozzle"): return false
+	if not await until(equipment_current,"native worker acknowledges authored nozzle configuration"): return false
+	if not check(bench.equipment.nudge_aim(10.0),"existing equipment aim control admitted"): return false
+	var expected_angle: float = bench.applied.equipment.nozzle[2]
+	if not await until(func() -> bool: return is_equal_approx(float(equipment_receipt().nozzle.angle),expected_angle),
+		"native nozzle aim receipt matches authored setting"): return false
+	if not check(bench.equipment.toggle("nozzle"),"existing nozzle control starts finite Water emission"): return false
+	if not await until(func() -> bool: return bool(equipment_receipt().nozzle.on),"native owner confirms nozzle on"): return false
+	if not check(bench.toggle_pause() and not host.paused,"combined Workbench enters physical simulation"): return false
+	if not await until(func() -> bool:
+		if host.latest_snapshot==null: return false
+		var participation: Dictionary = host.latest_snapshot.native_worker_participation
+		return int(worker.paint_state().tick)>=before_tick+8 and int(equipment_receipt().nozzle.emitted)>0 \
+			and int(participation.get("workers_observed",0))>0,"native ticks, nozzle effects and worker participation observed"): return false
+	var active: Dictionary = equipment_receipt().duplicate(true)
+	var participation: Dictionary = host.latest_snapshot.native_worker_participation.duplicate(true)
+	if not check(bench.equipment.stop_all(),"existing equipment Stop admitted"): return false
+	if not await until(func() -> bool: return not bool(equipment_receipt().nozzle.on),"native owner confirms equipment Stop"): return false
+	if not check(bench.toggle_pause() and host.paused,"combined Workbench pauses again before Save"): return false
+	if not await until(func() -> bool: return ready() and bool(worker.paint_state().paused),"paused native boundary settled after physical simulation"): return false
+	check(int(active.nozzle.injected_water)>0 and int(active.nozzle.emitted)>0,
+		"equipment feedback confirms actual native Water emission")
+	check(not bench.body_state(1).is_empty(),"same real Rapier actor remains available after simulation")
+	check(bench.applied.edits==edits_before,"physical simulation and equipment do not rewrite authored edit history")
+	check(editor._undo_stack.is_empty(),"simulation invalidates unsafe paused Undo history")
+	simulation_evidence = {"tick_before":before_tick,"tick_after":worker.paint_state().tick,
+		"nozzle_emitted":active.nozzle.emitted,"nozzle_injected_water":active.nozzle.injected_water,
+		"participation":participation,"equipment_config":bench.applied.equipment.duplicate(true)}
+	await screenshot("combined-equipment-simulation")
+	phases.simulation_equipment = true
+	return true
+
 func author() -> void:
 	if not await discover(): return
-	dialog._extent.select(0)
+	dialog._extent.select(0 if map_side==512 else 1)
 	dialog._preview_button.pressed.emit()
 	if not await until(generator_ready,"actual Deepworks native preview",240000): return
 	if not check(dialog._phase=="ready","actual Deepworks native preview accepted"): return
 	var source: Dictionary = dialog._ready_packet.duplicate(true)
-	if not check(source.cells.size()==512*512 and not source.receipt_hashes.is_empty(),"complete native generated source and receipts"): return
+	if not check(source.cells.size()==map_side*map_side and source.extent==Vector2i(map_side,map_side)
+		and not source.receipt_hashes.is_empty(),"complete native generated source and receipts"): return
 	await screenshot("combined-generator-preview")
 	dialog.confirmed.emit()
 	dialog.hide()
@@ -407,6 +501,7 @@ func author() -> void:
 	await process_frame
 	var tick: int = worker.paint_state().tick
 	if not await manual_tools(): return
+	if not await large_adaptive_fill(): return
 	if not await agent_authoring(): return
 	if not await provider_completion_fixture(): return
 	if not await human_after_agent(): return
@@ -418,12 +513,19 @@ func author() -> void:
 	var expected_start: PackedByteArray = source.cells.duplicate()
 	apply_region(expected_start,AUTHOR_REGION,actual)
 	apply_region(expected_start,ACTOR_CLEARANCE,actor_clear)
+	if map_side>=1024:
+		var large_fill: PackedInt32Array = await capture(LARGE_FILL_REGION)
+		if not check(large_fill.size()==LARGE_FILL_REGION.get_area(),"large Fill region captured for persistence expectation"): return
+		apply_region(expected_start,LARGE_FILL_REGION,large_fill)
+	var whole_native := await complete_native_materials()
+	if not check(whole_native==expected_start,"every stored material in the complete generated World matches source plus confirmed edits"): return
 	prepared_sha256 = Store.digest(expected_start)
 	if not check(bench.place("midge",Vector2(448,400)),"real Midge actor placement admitted"): return
 	if not await until(ready,"real actor and retained generated World installed"): return
 	check(bench.select_instance(1) and not bench.body_state(1).is_empty(),"real Rapier actor selected")
 	check(host.paused and int(worker.paint_state().tick)==tick,"save covers paused authored state without simulation evolution")
 	check(Store.digest(bench._generated_active.cells)==source.sha256,"original generated source and provenance remain unchanged")
+	if not await exercise_simulation_equipment(): return
 	bench._name.text = SAVE_NAME
 	if not check(bench.save_setup(),"named generated start saves both confirmed editors"): return
 	var saved: Dictionary = Store.read_named(SAVE_NAME)
@@ -431,9 +533,10 @@ func author() -> void:
 	var expectation := {"author_pid":OS.get_process_id(),"author_instance":process_instance,"generation":saved.generation,"edits":saved.setup.edits,
 		"actors":saved.setup.actors,"selected":saved.setup.selected,"liquid_policy":saved.setup.liquid_policy,
 		"response":saved.setup.response,"rule_radius":saved.setup.rule_radius,"brush":saved.setup.brush,
+		"equipment":saved.setup.get("equipment",{}),
 		"prepared_sha256":prepared_sha256,"native_region":Marshalls.raw_to_base64(PackedByteArray(Array(actual))),
 		"provider_model":panel.model.text,"provider_context":panel.context_mode.selected,
-		"source_identity":source_identity,"stop_prefix":stopped_prefix}
+		"source_identity":source_identity,"stop_prefix":stopped_prefix,"map_side":map_side}
 	var file := FileAccess.open(EXPECTED_PATH,FileAccess.WRITE)
 	if not check(file!=null,"independent native expectation file opened"): return
 	file.store_string(JSON.stringify(expectation))
@@ -452,6 +555,7 @@ func reopen() -> void:
 	file.close()
 	if not check(expected is Dictionary and str(expected.get("author_instance","")).length()==32 \
 		and expected.author_instance!=process_instance,"reopen uses a fresh in-memory application instance"): return
+	if not check(int(expected.get("map_side",512))==map_side,"fresh process uses the qualified map extent"): return
 	var saved: Dictionary = Store.read_named(SAVE_NAME)
 	if not check(saved.get("generated",false),"fresh process reads existing generated-start format"): return
 	check(json_equivalent(saved.generation,expected.generation) and json_equivalent(saved.setup.edits,expected.edits),
@@ -465,6 +569,7 @@ func reopen() -> void:
 	dialog.confirmed.emit()
 	dialog.hide()
 	if not await until(ready,"fresh-process combined start installed"): return
+	if not await until(equipment_current,"fresh-process equipment configuration acknowledged"): return
 	var receipt: Dictionary = host.tower_context.get("liquid_construction_receipt",{})
 	prepared_sha256 = str(receipt.get("generated_prepared_material_sha256",""))
 	check(prepared_sha256==expected.prepared_sha256,"entire reconstructed native stored-material digest matches previous process")
@@ -472,11 +577,25 @@ func reopen() -> void:
 	var actual: PackedInt32Array = await capture(AUTHOR_REGION)
 	check(PackedByteArray(Array(actual))==Marshalls.base64_to_raw(expected.native_region),
 		"every human, agent, provider-fixture and stopped-prefix material cell survives restart")
+	if map_side>=1024:
+		var filled := await capture(LARGE_FILL_REGION)
+		var exact := filled.size()==LARGE_FILL_REGION.get_area()
+		for index: int in filled.size():
+			var x: int = index%LARGE_FILL_REGION.size.x
+			var y: int = index/LARGE_FILL_REGION.size.x
+			if filled[index]!=(58 if x in [0,385] or y in [0,385] else 2): exact=false
+		check(exact,"all large-area Fill materials survive fresh-process reconstruction")
 	check(json_equivalent(bench.applied.actors,expected.actors) and bench.applied.selected==expected.selected
 		and not bench.body_state(1).is_empty(),"actor configuration and selected real Rapier actor survive restart")
 	check(json_equivalent(bench.applied.liquid_policy,expected.liquid_policy) and bench.applied.response==expected.response
 		and bench.applied.rule_radius==expected.rule_radius and bench.applied.brush==expected.brush,
 		"solver, response and brush settings survive restart")
+	var equipment := equipment_receipt()
+	check(json_equivalent(bench.applied.get("equipment",{}),expected.equipment)
+		and json_equivalent(equipment.config,expected.equipment),"authored equipment geometry, supply and tuning survive restart")
+	check(not bool(equipment.nozzle.on) and int(equipment.nozzle.emitted)==0
+		and int(equipment.pipe.stock)==int(expected.equipment.supply)*int(equipment.water_unit),
+		"reopened equipment starts stopped with authored supply, without saved transient effects")
 	check(panel.model.text==expected.provider_model and panel.context_mode.selected==expected.provider_context,
 		"provider model and context settings survive restart")
 	var resumed_prompt := false
@@ -498,6 +617,9 @@ func reopen() -> void:
 	reopen_complete = true
 
 func run() -> void:
+	if not check(map_side in [512,1024],"combined fixture map size is a qualified 512 or 1024"):
+		quit(1)
+		return
 	source_identity = identity()
 	set_meta("cybersand_feature","shared_workbench")
 	host = load("res://main.tscn").instantiate()
@@ -529,7 +651,7 @@ func run() -> void:
 			"all mandatory fresh-process reopen and continued-authoring phases executed")
 	else:
 		for phase: String in ["discovery","generation","manual","leases","agent","provider_fixture",
-			"late_response","human_after_agent","stop","save"]:
+			"late_response","human_after_agent","stop","simulation_equipment","save"]:
 			check(bool(phases[phase]),"mandatory combined author phase executed: "+phase)
 		check(author_complete,"complete combined authoring flow reached Save")
 	check(source_identity==identity(),"tested source and native runtime bytes did not change during execution")
@@ -538,7 +660,8 @@ func run() -> void:
 	await process_frame
 	print("WB_COMBINED_EVIDENCE ",JSON.stringify({"checks":checks,"failures":failures,"phases":phases,
 		"author_complete":author_complete,"reopen_complete":reopen_complete,"profile_count":profile_count,
-		"prepared_sha256":prepared_sha256,"stop_prefix":stopped_prefix,"source_identity":source_identity,
+		"prepared_sha256":prepared_sha256,"stop_prefix":stopped_prefix,"map_side":map_side,"source_identity":source_identity,
+		"simulation_equipment":simulation_evidence,
 		"provider_qualification":"deterministic completion fixture; separate transport suite; no inference",
 		"elapsed_usec":Time.get_ticks_usec()-started_usec}))
 	print("WB_COMBINED_AUTHORING checks=%d failures=%d author_complete=%s reopen_complete=%s" % [

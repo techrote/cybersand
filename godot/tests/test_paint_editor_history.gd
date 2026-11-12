@@ -180,6 +180,25 @@ func controls(base: Dictionary, packet: Dictionary) -> void:
 	print("PAINT_EDITOR_HISTORY_PERF cells=262144 prepare_usec=",elapsed)
 
 
+func refused_overwrite_preserves_files(base: Dictionary, packet: Dictionary) -> void:
+	# The owner may retry Save under an already-used name. A fragmented start
+	# outside the persisted capacity must refuse before touching either format.
+	var fragmented := base.duplicate(true)
+	fragmented.edits = []
+	for index: int in range(Setup.MAX_STAMPS+1):
+		fragmented.edits.append([(index%256)*2,int(index/256)*2,1,1,58])
+	for generated_format: bool in [false,true]:
+		var label: String = LABEL+"-dense-generated" if generated_format else LABEL+"-dense"
+		var path: String = Setup._path(label)
+		var saved_bytes: PackedByteArray = FileAccess.get_file_as_bytes(path)
+		var refusal: String = Store.write_named(label,fragmented,packet) if generated_format \
+			else Setup.write_named(label,fragmented)
+		check(refusal == "Starting paint capacity exhausted.",
+			"over-fragmented named overwrite explicitly refuses / "+label)
+		check(not saved_bytes.is_empty() and FileAccess.get_file_as_bytes(path) == saved_bytes,
+			"refused overwrite preserves every existing saved byte / "+label)
+
+
 func run() -> void:
 	if not check(ClassDB.class_exists(&"CyberNativeCellWorld") and ClassDB.class_exists(&"CyberDemoBridge") \
 			and ClassDB.class_exists(&"CyberWorldGenerator"),"actual native interfaces loaded"):
@@ -234,6 +253,7 @@ func run() -> void:
 				"atomic high-detail authored start save")
 			check(Store.write_named(LABEL+"-dense-generated",dense_gen.setup,packet).is_empty(),
 				"atomic high-detail generated start save")
+			refused_overwrite_preserves_files(base,packet)
 			verify_native(dense_plain.setup)
 			verify_native(dense_gen.setup,packet)
 		var ordinary: Dictionary = History.prepare(base,mixed_cells())

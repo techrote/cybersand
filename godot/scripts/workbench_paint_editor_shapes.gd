@@ -213,12 +213,19 @@ const MAX_FILL_SAMPLE_CELLS: int = 262144
 # actually encountered. The next capture is always complete, within the
 # same finite sample budget; it never writes or scans the whole World.
 static func grow_fill_capture(region: Rect2i, unread_edge: String,
-		extent: Vector2i, cell_limit: int = MAX_FILL_SAMPLE_CELLS) -> Rect2i:
+		extent: Vector2i, cell_limit: int = MAX_FILL_SAMPLE_CELLS,
+		component_bounds: Rect2i = Rect2i()) -> Rect2i:
 	if not _valid_extent(extent) or not region.has_area() or cell_limit < 1 \
 			or region.position.x < 0 or region.position.y < 0 \
-			or region.end.x > extent.x or region.end.y > extent.y \
-			or region.size.x * region.size.y >= cell_limit:
+			or region.end.x > extent.x or region.end.y > extent.y:
 		return Rect2i()
+	if component_bounds.has_area():
+		if not region.encloses(component_bounds): return Rect2i()
+		# Keep every reached cell and its known one-cell boundary. Disconnected
+		# margins cannot complete this component; retaining them would waste the
+		# finite capture budget as successive directions grow past known walls.
+		region = region.intersection(component_bounds.grow(1))
+	if region.size.x * region.size.y >= cell_limit: return Rect2i()
 	var position := region.position
 	var size := region.size
 	var room := 0
@@ -282,6 +289,9 @@ static func fill_connected(
 	var head: int = 0
 	var selected := {}
 	var state := {"clipped": false}
+	var first_unread_edge := ""
+	var component_min := seed_cell
+	var component_max := seed_cell
 	while head < pending.size():
 		var index: int = pending[head]
 		head += 1
@@ -296,12 +306,11 @@ static func fill_connected(
 		elif local_x == sample_size.x - 1 and world_x < extent.x - 1: unread_edge = "right"
 		elif local_y == 0 and world_y > 0: unread_edge = "top"
 		elif local_y == sample_size.y - 1 and world_y < extent.y - 1: unread_edge = "bottom"
-		if not unread_edge.is_empty():
-			var cropped := _refuse("Connected fill reaches an unread capture edge.")
-			cropped["unread_edge"] = unread_edge
-			return cropped
+		if first_unread_edge.is_empty() and not unread_edge.is_empty(): first_unread_edge = unread_edge
 		if not _include(selected, state, extent, world_x, world_y, cell_limit):
 			return _refuse("Connected fill exceeds the %d-cell operation budget." % cell_limit)
+		component_min = component_min.min(Vector2i(world_x,world_y))
+		component_max = component_max.max(Vector2i(world_x,world_y))
 		# Explicit 4-neighbor connectivity; no diagonal leaks or recursive DFS.
 		for direction: int in range(4):
 			var neighbor_x: int = local_x
@@ -322,6 +331,11 @@ static func fill_connected(
 				return _refuse("Connected fill exceeds the %d-cell operation budget; no partial fill." % cell_limit)
 			visited[neighbor_index] = 1
 			pending.append(neighbor_index)
+	if not first_unread_edge.is_empty():
+		var cropped := _refuse("Connected fill reaches an unread capture edge.")
+		cropped["unread_edge"] = first_unread_edge
+		cropped["component_bounds"] = Rect2i(component_min,component_max-component_min+Vector2i.ONE)
+		return cropped
 	var plan: Dictionary = _finish(selected, state, extent)
 	plan["source_material_id"] = source_material_id
 	return plan

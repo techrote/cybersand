@@ -288,6 +288,7 @@ func _run() -> void:
 	).get("accepted", true), "4097-cell multi-material source refuses before grouping")
 
 	_test_operation_budgets()
+	_test_adaptive_fill_bounds()
 
 	# These five accepted plans exercise the existing native owner once each.
 	# A successful queue result by itself is NOT treated as an applied receipt.
@@ -344,6 +345,52 @@ func _run() -> void:
 		"backend": worker._world.get_class(), "planning_usec": planning_usec,
 	}))
 	quit(1 if failures else 0)
+
+
+func _test_adaptive_fill_bounds() -> void:
+	# Exact synthetic source IDs isolate capture growth from native execution.
+	# The combined 1024-square Workbench fixture repeats the first case using
+	# actual native captures, drawing receipts and fresh-process persistence.
+	var extent := Vector2i(1024,1024)
+	for fixture: Dictionary in [
+		{"name":"centred384","interior":Rect2i(561,65,384,384),"seed":Vector2i(753,257)},
+		{"name":"boundary500","interior":Rect2i(1,1,500,500),"seed":Vector2i(30,30)},
+		{"name":"asymmetric640x160","interior":Rect2i(320,200,640,160),"seed":Vector2i(340,220)}]:
+		var seed: Vector2i = fixture.seed
+		var interior: Rect2i = fixture.interior
+		var border: Rect2i = interior.grow(1)
+		var region := Rect2i((seed-Vector2i(128,128)).clamp(Vector2i.ZERO,extent-Vector2i(256,256)),Vector2i(256,256))
+		var plan := {}
+		var captures := 0
+		var maximum_sample := 0
+		var bounded := true
+		for _attempt: int in 16:
+			captures += 1
+			maximum_sample = maxi(maximum_sample,region.get_area())
+			bounded = bounded and Rect2i(Vector2i.ZERO,extent).encloses(region) \
+				and region.has_point(seed) and region.get_area() <= Shapes.MAX_FILL_SAMPLE_CELLS
+			if not bounded: break
+			var sample := PackedInt32Array()
+			sample.resize(region.get_area())
+			for y: int in region.size.y:
+				for x: int in region.size.x:
+					var point := region.position+Vector2i(x,y)
+					if border.has_point(point) and not interior.has_point(point): sample[y*region.size.x+x] = 58
+			plan = Shapes.fill_connected(seed,region.position,region.size,sample,extent,Shapes.MAX_OPERATION_CELLS)
+			if plan.get("accepted",false): break
+			if str(plan.get("unread_edge","")) == "": break
+			var grown: Rect2i = Shapes.grow_fill_capture(region,str(plan.unread_edge),extent,
+				Shapes.MAX_FILL_SAMPLE_CELLS,plan.get("component_bounds",Rect2i()))
+			if not grown.has_area(): break
+			region = grown
+		expect(bounded,"every adaptive capture retains seed, native bounds and budget / "+str(fixture.name))
+		var exact: bool = plan.get("accepted",false) and int(plan.get("count",0)) == interior.get_area()
+		var cells: PackedInt32Array = plan.get("cells",PackedInt32Array())
+		for index: int in range(0,cells.size(),2):
+			exact = exact and interior.has_point(Vector2i(cells[index],cells[index+1]))
+		expect(exact,"adaptive fill reaches the exact closed component without wasted-margin refusal / "+str(fixture.name))
+		print("PAINT_ADAPTIVE_FILL ",JSON.stringify({"fixture":fixture.name,"captures":captures,
+			"maximum_sample":maximum_sample,"cells":plan.get("count",0),"accepted":plan.get("accepted",false)}))
 
 
 func _test_operation_budgets() -> void:

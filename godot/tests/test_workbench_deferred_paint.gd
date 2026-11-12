@@ -57,6 +57,48 @@ func cell(point: Vector2i) -> int:
 	if not check(receipt.status=="completed" and receipt.materials.size()==1,"independent stored native value available"): return -1
 	return int(receipt.materials[0])
 
+func rejected_replacement_prefix() -> bool:
+	var panel: Window = bench.art_batches
+	var art: RefCounted = panel.executor
+	# Hold main-thread receipt consumption, not native execution. This creates
+	# a real applied prefix whose authoring record is not yet acknowledged.
+	panel.set_process(false)
+	var admission: Dictionary = art.submit([{"shape":"pixels","points":[[90,90]],"material":58}],
+		Rect2i(0,0,512,512),[],[0,58])
+	if not check(admission.status=="queued","replacement-failure fixture admits agent prefix"):
+		panel.set_process(true)
+		return false
+	art.poll()
+	if not await until(func() -> bool: return worker.art_state().receipt_ready,"agent prefix reaches native completion before replacement"):
+		panel.set_process(true)
+		return false
+	var generation := int(worker.paint_state().generation)
+	var old_policy: Array = bench.applied.liquid_policy.duplicate()
+	var malformed := Setup.fresh(PackedInt32Array([1]),Vector2i(512,512))
+	check(Setup.validate(malformed).is_empty(),"malformed policy passes authored document shape validation")
+	if not check(bench.apply(malformed),"replacement reaches actual asynchronous native policy validation"):
+		panel.set_process(true)
+		return false
+	if not await until(func() -> bool: return host.pending_microscenario_apply.is_empty(),"native invalid-policy replacement is refused"):
+		panel.set_process(true)
+		return false
+	check(not host.microscenario_error.is_empty() and int(worker.paint_state().generation)==generation
+		and bench.applied.liquid_policy==old_policy,"rejected replacement retains the old native World and authored policy")
+	art.poll()
+	check(not art.active and int(art.last_receipt.get("changed",0))==1,
+		"retained native prefix still produces its truthful Stop receipt")
+	check(bench.applied.edits.any(func(stamp: Array) -> bool: return stamp==[90,90,1,1,58]),
+		"failed replacement retains the confirmed agent prefix in authored history")
+	panel.set_process(true)
+	check(await cell(Vector2i(90,90))==58,"old World actually retains the confirmed agent cell after failed replacement")
+	bench._name.text = "wb-rejected-replacement-prefix"
+	check(bench.save_setup(),"old authored start remains savable after failed replacement")
+	var saved: Dictionary = Setup.read_named(bench._name.text)
+	check(not saved.has("error") and saved.setup.edits.any(func(stamp: Array) -> bool: return stamp==[90,90,1,1,58]),
+		"saved start preserves the agent cell after rejected replacement")
+	DirAccess.remove_absolute(Setup._path(bench._name.text))
+	return true
+
 func exercise() -> void:
 	if not await until(ready,"Workbench ready"): return
 	if not check(bench.apply(Setup.fresh(PackedInt32Array(bench.applied.liquid_policy),Vector2i(512,512))),"blank test start admitted"): return
@@ -111,6 +153,7 @@ func exercise() -> void:
 		"native protection refusal reaches deferred completion callback")
 	bench.applied.source = []
 	check(await cell(Vector2i(71,71))==0,"native refusal preserves covered source cell")
+	if not check(await rejected_replacement_prefix(),"failed-replacement native prefix workflow completed"): return
 
 	# Real tree teardown must terminate an accepted planning token as well.
 	editor.set_process(false)

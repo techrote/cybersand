@@ -59,9 +59,11 @@ func stop(reason: String = "Human Stop") -> void:
 		stopping = true
 		result.reason = reason
 
-func canvas_changed() -> void:
+func canvas_changed(retire_record: bool = true) -> void:
 	stop("Canvas replaced")
-	record = {}
+	# A replacement request can still fail native preparation. Until the new
+	# World is installed, confirmed old-World receipts belong to the live start.
+	if retire_record: record = {}
 	_refuse_manual("Canvas changed before deferred human strokes could be applied.")
 	if not manual_inflight.is_empty():
 		manual_finished(int(manual_inflight.token),{"status":"invalidated","reason":"Canvas changed; the old human operation cannot edit the replacement."})

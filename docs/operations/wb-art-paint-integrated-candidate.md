@@ -14,6 +14,76 @@ related-documents: [../systems/paint-editor-bounded-shapes.md, ../systems/workbe
 implementations and their Git ancestry. It does not authorize Ready, merging,
 auto-merge, material-default changes or GEN-008 Flatten.
 
+## Final hardening and evaluation — 2026-11-12
+
+The final review continues the existing #564 candidate, with #544, #560 and
+accepted main `d8588716` preserved in ancestry. The earlier `0e73e926` package
+and its passing campaign below remain historical evidence; they do not contain
+these additional repairs:
+
+- Save refuses queued/executing ordinary brush, PAINT and agent operations,
+  unconsumed native receipts and an extracted World transition. A refusal leaves
+  the previous named file unchanged and does not consume an agent receipt.
+  Ordinary brush input also respects PAINT's partial-edit recovery hold.
+- Cancel retires a Fill continuation even when its native capture has already
+  completed. Confirmed edit prefixes still follow the existing recovery path.
+- Adaptive Fill retains the observed connected component and its known boundary
+  when expanding a capture. Disconnected margins no longer exhaust the capture
+  budget before a large watertight pocket is enclosed. The 262,144-cell limits,
+  source fences and refusal of incomplete fills remain unchanged.
+- A requested World replacement stops old agent work immediately, but retires
+  its authored record only when the new World is installed. Native preparation
+  refusal therefore leaves the old confirmed prefix available for Save.
+
+The installed qualification now uses a real **1024²** generated map at one and
+four native workers, while source-layout cases retain the smaller **512²**
+map. The larger case includes a **147,456-cell** watertight Fill and complete
+stored-material comparison of the authored baseline. The combined session then
+exercises physical equipment and simulation before Save, exits Godot, reopens
+the authored start in a fresh process and continues editing. Evolved simulation
+state is intentionally not the saved object. Fragmented-save negative cases
+check the exact previous file bytes after refusal.
+
+The existing Native and GDExtension workflows also run on source pushes to this
+integration branch, without changing Draft state or weakening their gates. The
+dedicated installed campaign supports manual reruns and keeps their evidence
+separate. [PR #564](https://github.com/techrote/cybersand/pull/564) records the
+actual final source, completed runs and remaining gates; a configured test is
+not a claimed pass.
+
+[Retained local qualification and original failures](../audits/wb-art-paint-2026-11-12/local-qualification.json)
+record the demonstrated defects, exact source/runtime hashes and focused Linux
+results. The local 1024² author/reopen pair passed 165/39 checks with an identical
+authored native digest. These headless results do not replace hosted graphics,
+Windows, four-worker or complete release-suite evidence.
+
+### Evaluate the delivered package
+
+Extract the complete standalone Windows archive into a fresh folder, then
+double-click **Open Workbench.cmd**. No Git checkout or development-machine
+paths are required. The first launch imports the packaged project. Its
+`candidate-manifest.json` identifies the exact application commit/tree and
+payload hashes; the delivered native DLL has its own candidate provenance.
+This runbook is included as `READ-ME.md`.
+
+- Open **New from generator…**, choose a populated profile and install a map.
+- Pause; use Brush/Eraser, Line, Rectangle/Outline and several native materials.
+- Fill a closed pocket; Select, Copy/Paste, then Undo/Redo.
+- Open **Art batches**, draw inside a bounded area, alternate with human edits,
+  and Stop a longer operation. Confirm that further editing still works.
+- Run and pause simulation; interact with the existing physical equipment.
+- Save a named start, exit Godot completely, launch again and Load that name.
+  Check both editors' authored materials, actor/equipment configuration and
+  settings, then continue editing. Expect the authored start, not a physics
+  checkpoint of the evolved world.
+
+The retained repository runtimes still have four native-source mismatches per
+platform: `cyber_demo_bridge.hpp`, `cyber_native_cell_world.cpp/.hpp` and
+`cyber_prepared_liquid_world.hpp`. The separate source-built evaluation package
+does not promote those tracked binaries or rewrite their historical manifests.
+Tracked-runtime publication and the full materialized-provenance gate remain
+explicit merge requirements, alongside owner desktop acceptance. Keep Draft.
+
 ## Source and ownership
 
 The live sources inspected before editing were:

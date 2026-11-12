@@ -121,7 +121,9 @@ New/Load/Restore discard stale callbacks from the old authored recipe and use th
 existing native replacement transaction. A retained settings/actor transition
 while drawing requests Stop and asks for retry after the current acknowledgment;
 this prevents transferring live cells without their recorded authored prefix.
-Rejected geometry/settings validation does not otherwise interrupt a batch.
+Geometry/settings rejection before replacement admission does not interrupt a
+batch. A later native-preparation rejection retains the old World and its
+confirmed authored prefix after the request-time Stop.
 Human strokes during a chunk are delivered before the next chunk and recorded in
 that same order with their original brush radius. Their pending queue reuses the
 existing worker command capacity; a full queue explicitly refuses further strokes
@@ -129,6 +131,15 @@ until the chunk finishes. Ordinary camera/zoom, physics and paint controls remai
 the existing workbench.
 
 ## Save semantics and existing format boundary
+
+The final integrated candidate fences Save on the common native mutation slot,
+including ordinary brush queues and unconsumed receipts. It refuses without
+altering an existing named file or consuming an unowned agent result. A requested
+replacement stops old work but keeps its authored recording reference until the
+new World is actually installed; rejected native preparation must preserve the
+old confirmed prefix in both the live World and its saved start. The
+[integrated runbook](../operations/wb-art-paint-integrated-candidate.md#final-hardening-and-evaluation--2026-11-12)
+records the demonstrated failure and resulting-source qualification.
 
 Only native-confirmed changed cells enter `Setup.edits`, coalesced into ordered
 horizontal/vertical rectangles. Save while art remains queued/executing asks the

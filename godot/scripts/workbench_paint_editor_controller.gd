@@ -81,8 +81,10 @@ func recovery_required() -> bool:
 	return _save_hold
 
 func save_allowed() -> bool:
-	if busy() or bool(_current().get("busy",false)):
-		_say("Wait for native paint completion before saving.")
+	var state := _current()
+	if busy() or bool(state.get("busy",false)) or bool(state.get("art_busy",false)) \
+			or bool(state.get("legacy_busy",false)) or bool(state.get("transition_busy",false)):
+		_say("Wait for all native edits and their completion receipts before saving.")
 		return false
 	if _save_hold:
 		_say("Partial edit cannot be saved. Undo it or Restore start first.")
@@ -160,7 +162,12 @@ func cancel_preview() -> void:
 func cancel() -> void:
 	cancel_preview()
 	if _planner != null: _planning_cancelled = true
-	if host != null and not _operation.is_empty(): host.simulation_worker.paint_stop()
+	if host != null and not _operation.is_empty():
+		# A completed capture can already be waiting in the worker's receipt
+		# slot. Stop fences future native slices, but that successful read must
+		# not start a new Fill planner after the user cancelled this action.
+		_operation.cancel_requested = true
+		host.simulation_worker.paint_stop()
 	_say("Stopping paint…" if busy() else "Preview cancelled.")
 
 func _source(state: Dictionary) -> Dictionary:
@@ -456,7 +463,7 @@ func _consume_plan() -> void:
 			_say("Native source changed during fill expansion; no paint applied.")
 			return
 		var expanded: Rect2i = Shapes.grow_fill_capture(job.region,
-			str(planned.unread_edge),job.extent,MAX_CELLS)
+			str(planned.unread_edge),job.extent,MAX_CELLS,planned.get("component_bounds",Rect2i()))
 		if not expanded.has_area():
 			_say("Fill requires more than 262144 sampled cells. Use a smaller enclosed region.")
 			return
@@ -524,6 +531,9 @@ func _receive(receipt: Dictionary) -> void:
 		_finish_deferred(operation.get("job",{}),retired)
 		return
 	if str(operation.kind) != "edit":
+		if bool(operation.get("cancel_requested",false)):
+			_say("Capture cancelled; no follow-up paint was queued.")
+			return
 		if str(receipt.status) != "completed":
 			_say(str(receipt.get("reason","Native capture cancelled.")))
 			return

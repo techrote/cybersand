@@ -4,7 +4,7 @@ status: Current
 document-kind: design
 scope: Mounted Draft PAINT-001 candidate on the shared Workbench; bounded native painting and reconstructible authored starts, not evolved simulation checkpoints
 canonical-for: []
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-12
 related-documents: [player-control-playground.md, procedural-world-generation.md, ../operations/github-development-and-release.md]
 ---
 
@@ -132,8 +132,14 @@ is a valid stopping edge. There is no global scan of a 1,024² or 2,048² World.
 The maximum explicit sample is bounded even on a 512² World. Cropped fills
 now automatically extend their native capture toward an unread connected edge,
 repeating within the same 262,144-cell limit and current World revision.
+The planner finishes inspecting each existing sample before extending it. It
+keeps every reached cell and its known one-cell boundary, freeing disconnected
+margins before the next capture so known walls do not waste the growth budget.
 No write occurs until the complete component has been planned. Capture, planning
 and native application are separate, cancellable stages with identity checks.
+Cancellation also retires an already-completed capture's continuation: consuming
+its native receipt cannot launch a Fill planner after Cancel. Confirmed native
+edit prefixes still enter the ordinary partial-result recording/recovery path.
 
 ## Undo and authored-start persistence
 
@@ -161,7 +167,9 @@ generated starts retain their ordered overlays and original generator provenance
 The narrow Setup material check uses compiled native authority for edit stamps,
 without broadening source-emitter policy or changing the format version.
 
-Save waits for native completion and records the start recipe. It does not snapshot
+Save waits for every shared mutation slot and unconsumed receipt, including
+agent drawing, ordinary brush commands and World transitions, then records the
+start recipe. It does not snapshot
 an evolved simulation. Actors, selected instance, solver settings and generated-map
 identity retain the existing #542 contracts. Flatten / #548 remains separate.
 

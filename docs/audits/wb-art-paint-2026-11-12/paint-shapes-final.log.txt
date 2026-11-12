@@ -1,0 +1,8 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+PAINT_ADAPTIVE_FILL {"accepted":true,"captures":5,"cells":147456,"fixture":"centred384","maximum_sample":206082}
+PAINT_ADAPTIVE_FILL {"accepted":true,"captures":3,"cells":250000,"fixture":"boundary500","maximum_sample":257024}
+PAINT_ADAPTIVE_FILL {"accepted":true,"captures":5,"cells":102400,"fixture":"asymmetric640x160","maximum_sample":114210}
+PAINT_EDITOR_SHAPES {"actual_native_readback":true,"backend":"CyberNativeCellWorld","checks":165,"failures":0,"planning_usec":{"bounded_fill_262144":531425,"large_thick_line_2048":141264,"max_rectangle_1024":11736,"max_rectangle_2048":8198,"max_rectangle_512":11505,"mixed_stencil_16384":27711,"normal_line_1024":625,"normal_line_2048":583,"normal_line_512":704}}

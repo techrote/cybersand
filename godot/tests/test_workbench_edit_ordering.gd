@@ -5,6 +5,17 @@ extends SceneTree
 ## in-flight lease fixtures are explicitly controlled states, not timing races.
 const Worker = preload("res://scripts/simulation_worker.gd")
 const Equipment = preload("res://scripts/workbench_liquid_equipment.gd")
+const PaintEditor = preload("res://scripts/workbench_paint_editor_controller.gd")
+const Workbench = preload("res://scripts/shared_workbench.gd")
+const ArtExecutor = preload("res://scripts/art_batch_executor.gd")
+const Setup = preload("res://scripts/workbench_setup.gd")
+class SaveHost extends Control:
+	var simulation_worker: RefCounted
+	var pending_microscenario_apply := {}
+	func queue_brush_mutation(x: int,y: int,radius: int,material: int) -> bool:
+		return simulation_worker.queue_emit_disc(x,y,radius,material)
+class SaveArtPanel extends Window:
+	var executor: RefCounted
 var checks := 0
 var failures := 0
 
@@ -34,6 +45,87 @@ func drain_art(worker: RefCounted) -> Dictionary:
 	worker._consume_art()
 	return worker.art_take_result()
 
+func save_file_case(worker: RefCounted,save_host: Control,save_editor: Control,workers: int) -> bool:
+	# Exercise the public Save method and real atomic file writer. The worker's
+	# controlled extraction boundary removes timing from the regression; every
+	# material mutation and agent receipt still comes from the native World.
+	var bench := Workbench.new()
+	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+	bench.host = save_host
+	bench.paint_editor = save_editor
+	save_editor.bench = bench
+	var panel := SaveArtPanel.new()
+	var executor := ArtExecutor.new()
+	executor.wb = bench
+	panel.executor = executor
+	bench.art_batches = panel
+	bench.applied = Setup.fresh(bridge.default_liquid_policy(),Vector2i(512,512))
+	bench.applied.brush = 2
+	bench._name.text = "edit-order-save-%d" % workers
+	var path: String = Setup._path(bench._name.text)
+	worker._consume_paint(true)
+	check(bench.save_setup(),"public Save seeds a valid named start at the idle boundary")
+	var saved: PackedByteArray = FileAccess.get_file_as_bytes(path)
+	check(bench.paint(Vector2i(102,100),13) and worker._world.stored_material_at(102,100)==0,
+		"ordinary Workbench brush records admission before native execution")
+	check(not bench.save_setup() and FileAccess.get_file_as_bytes(path)==saved,
+		"public Save refuses queued brush edits and preserves the existing file")
+	var discs: Array[Vector4i] = worker._pending_emissions.duplicate()
+	var cells: Array[Dictionary] = []
+	worker._pending_emissions.clear()
+	worker._legacy_edit_inflight = true
+	check(not bench.save_setup() and FileAccess.get_file_as_bytes(path)==saved,
+		"public Save refuses extracted brush edits and preserves the existing file")
+	worker._apply_emissions(discs,cells)
+	worker._consume_paint(true)
+	worker._legacy_edit_inflight = false
+	check(worker._world.stored_material_at(102,100)==13 and bench.save_setup(),
+		"public Save resumes after the same ordinary brush is natively applied")
+	var reopened: Dictionary = Setup.read_named(bench._name.text)
+	check(not reopened.has("error") and reopened.setup.edits.size()==1 and reopened.setup.edits[0]==[102,100,2,13],
+		"saved ordinary brush record reopens without claiming a queued result")
+	saved = FileAccess.get_file_as_bytes(path)
+	check(art_queue(worker,110,110).status=="queued","orphan-receipt Save fixture admits actual native art")
+	worker._consume_art()
+	check(worker._world.stored_material_at(110,110)==58 and worker.art_state().receipt_ready,
+		"orphan-receipt fixture holds an actual applied native result")
+	check(not bench.save_setup() and worker.art_state().receipt_ready and FileAccess.get_file_as_bytes(path)==saved,
+		"public Save preserves an unconsumed agent receipt and the prior saved bytes")
+	executor.record = bench.applied
+	executor.active = true
+	executor.waiting = true
+	executor.stopping = true
+	executor.epoch = worker.art_state().epoch
+	executor.poll()
+	check(not executor.active and not worker.art_state().receipt_ready and int(executor.last_receipt.get("changed",0))==1,
+		"real agent executor consumes the native result and records its confirmed prefix")
+	check(bench.save_setup(),"public Save succeeds after native receipt ownership is settled")
+	reopened = Setup.read_named(bench._name.text)
+	check(not reopened.has("error") and reopened.setup.edits.size()==2 and reopened.setup.edits.back()==[110,110,1,1,58],
+		"reopened start retains both the human brush and confirmed agent cell")
+	save_editor._save_hold = true
+	check(not bench.paint(Vector2i(120,120),13) and worker._pending_emissions.is_empty()
+		and bench.applied.edits.size()==2 and worker._world.stored_material_at(120,120)==0,
+		"ordinary brush cannot bypass the partial-edit recovery hold or invalidate recovery history")
+	save_editor._save_hold = false
+	DirAccess.remove_absolute(path)
+	executor.wb = null
+	save_editor.bench = null
+	bench.art_batches = null
+	panel.free()
+	bench.paint_editor = null
+	bench.host = null
+	# These controls were deliberately never mounted in a SceneTree. Release
+	# their constructor-owned UI fields, including the two RefCounted panels.
+	for owner: Object in [bench._generated_dialog,bench.water_spray,bench.equipment,bench]:
+		for property: Dictionary in owner.get_property_list():
+			if (int(property.usage)&PROPERTY_USAGE_SCRIPT_VARIABLE)==0: continue
+			var value: Variant = owner.get(property.name)
+			if typeof(value)==TYPE_OBJECT and is_instance_valid(value) and value is Node:
+				if value.get_parent()==null: value.free()
+	bench.free()
+	return true
+
 func run_case(workers: int) -> void:
 	var worker := Worker.new()
 	var world: Variant = worker._world
@@ -44,13 +136,22 @@ func run_case(workers: int) -> void:
 	worker._running = true
 	worker._paused = true
 	worker._consume_paint(true)
+	# Run the actual mounted editor's Save admission method against the same
+	# native owner, without a second thread racing these controlled boundaries.
+	var save_host := SaveHost.new()
+	save_host.simulation_worker = worker
+	var save_editor := PaintEditor.new()
+	save_editor.host = save_host
+	check(save_editor.save_allowed(),"Save admits an idle native boundary")
 	var stale_request := paint_request(worker,32,30,3)
 	check(art_queue(worker).status=="queued","art admission owns the shared mutation boundary")
+	check(not save_editor.save_allowed(),"Save refuses an admitted but unexecuted agent chunk")
 	check(worker.paint_queue(paint_request(worker,32,30,3)).status=="refused","PAINT cannot enter a pending art chunk")
 	legacy_blocked(worker,"legacy emissions cannot enter a pending art chunk")
 	var pending: Dictionary = worker._art_pending
 	worker._art_pending = {}
 	worker._art_inflight = true
+	check(not save_editor.save_allowed(),"Save refuses the executing agent lease")
 	check(worker.paint_queue(paint_request(worker,32,30,3)).status=="refused","synthetic executing-art lease excludes PAINT")
 	legacy_blocked(worker,"synthetic executing-art lease excludes legacy commands")
 	worker._art_inflight = false
@@ -59,12 +160,15 @@ func run_case(workers: int) -> void:
 	check(world.stored_material_at(30,30)==58,"first art chunk actually changed stored native material")
 	check(worker.paint_state().revision==world.revision and worker.paint_state().generation==worker._world_generation,
 		"art receipt and PAINT source fence become visible atomically")
+	check(not save_editor.save_allowed(),"Save refuses actual applied agent cells before receipt consumption")
 	check(worker.paint_queue(paint_request(worker,32,30,3)).status=="refused","unconsumed art completion still excludes PAINT")
 	legacy_blocked(worker,"unconsumed art completion still excludes legacy commands")
 	var receipt: Dictionary = worker.art_take_result()
 	check(receipt.changed==1 and receipt.readback==[[30,30,0,58]],"art completion retains exact applied native content")
+	check(save_editor.save_allowed(),"Save admission resumes after agent completion consumption")
 	check(worker.paint_queue(stale_request).status=="refused","pre-art human source fence is invalidated")
 	check(worker.paint_queue(paint_request(worker,32,30,3)).status=="queued","human operation enters after art receipt consumption")
+	check(not save_editor.save_allowed(),"Save refuses admitted human PAINT")
 	var refused: Dictionary = art_queue(worker,34,30)
 	check(refused.status=="refused" and refused.retryable,"agent is told to retry while human PAINT owns the boundary")
 	legacy_blocked(worker,"pending human operation excludes legacy commands")
@@ -74,6 +178,7 @@ func run_case(workers: int) -> void:
 	check(refused.status=="refused" and refused.retryable,"active human operation excludes agent chunks")
 	worker._consume_paint(true)
 	check(worker.paint_state().receipt_ready and world.stored_material_at(32,30)==3,"human operation completes in the same native World")
+	check(not save_editor.save_allowed(),"Save refuses unconsumed human PAINT completion")
 	refused = art_queue(worker,34,30)
 	check(refused.status=="refused" and refused.retryable,"unconsumed human completion still excludes agent chunks")
 	legacy_blocked(worker,"unconsumed human completion still excludes legacy commands")
@@ -84,6 +189,7 @@ func run_case(workers: int) -> void:
 	check(receipt.changed==1 and world.stored_material_at(34,30)==58,"agent resumes without losing its native edit")
 
 	check(worker.queue_emit_disc(70,70,0,13) and worker.queue_emit_cells(PackedInt32Array([71,70]),3),"ordinary legacy drawing still admits when editors are idle")
+	check(not save_editor.save_allowed(),"Save refuses queued ordinary human brush edits")
 	refused = art_queue(worker,36,30)
 	check(refused.status=="refused" and refused.retryable,"pending legacy mutations precede new art")
 	check(worker.paint_queue(paint_request(worker,72,70,2)).status=="refused","pending legacy mutations precede new PAINT")
@@ -96,6 +202,7 @@ func run_case(workers: int) -> void:
 	worker._pending_cell_emissions = []
 	worker._legacy_edit_inflight = true
 	worker._mutex.unlock()
+	check(not save_editor.save_allowed(),"Save refuses extracted ordinary brush edits until native execution")
 	refused = art_queue(worker,36,30)
 	check(refused.status=="refused" and refused.retryable and worker.art_state().legacy_busy,
 		"extracted legacy commands remain visible to agent admission")
@@ -105,6 +212,7 @@ func run_case(workers: int) -> void:
 	worker._consume_paint(true)
 	check(world.stored_material_at(70,70)==13 and world.stored_material_at(71,70)==3,"extracted legacy commands apply in native order")
 	worker._legacy_edit_inflight = false
+	check(save_editor.save_allowed(),"Save admission resumes after ordinary edits and source publication")
 	check(art_queue(worker,36,30).status=="queued","agent may continue after legacy context publication")
 	check(drain_art(worker).changed==1,"post-legacy agent operation is retained")
 
@@ -112,6 +220,7 @@ func run_case(workers: int) -> void:
 	# must not be admitted into the interval where replacement would discard it.
 	var equipment_request := {"command":"configure","serial":1,"config":Equipment.empty_config()}
 	worker._world_change_inflight = true
+	check(not save_editor.save_allowed(),"Save refuses an extracted World transition")
 	check(art_queue(worker,40,30).status=="refused" and worker.paint_queue(paint_request(worker,40,30,3)).status=="refused",
 		"extracted World transition excludes both editors")
 	legacy_blocked(worker,"extracted World transition excludes legacy authoring")
@@ -157,7 +266,13 @@ func run_case(workers: int) -> void:
 	receipt = drain_art(worker)
 	check(receipt.status=="refused" and receipt.checked==0 and world.stored_material_at(46,30)==0,
 		"art execution rechecks native World generation before writing")
+	check(save_file_case(worker,save_host,save_editor,workers),"entire public Save workflow completed")
 	worker._running = false
+	for node: Node in [save_editor._tools,save_editor._status,save_editor._copy,save_editor._paste,
+			save_editor._undo_button,save_editor._redo_button,save_editor._cancel_button]:
+		if node.get_parent()==null: node.free()
+	save_editor.free()
+	save_host.free()
 
 func run() -> void:
 	if not ClassDB.class_exists(&"CyberNativeCellWorld"):

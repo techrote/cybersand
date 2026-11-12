@@ -110,6 +110,24 @@ func author() -> void:
 	await gesture("Outline",Vector2i(100,80),Vector2i(130,110),58)
 	editor.selection=Rect2i()
 	editor.select_material(2)
+	# Cancel after a capture has completed, before its receipt is consumed.
+	# Stop must retire the Fill continuation as well as the native capture;
+	# an already-published successful read must never launch new writes later.
+	editor.set_process(false)
+	check(editor.fill_at(Vector2i(110,90)),"cancellable fill capture accepted")
+	if not await until(func()->bool:return host.simulation_worker.paint_state().receipt_ready,
+			"fill capture completed before Cancel"):
+		editor.set_process(true)
+		return
+	var edits_before_cancel: Array=bench.applied.edits.duplicate(true)
+	var history_before_cancel: int=editor._undo_stack.size()
+	editor.cancel()
+	editor.set_process(true)
+	if not await until(settled,"cancelled fill receipt retires"): return
+	check(await capture(Rect2i(101,81,29,29))==_empty_materials(29*29),
+		"Cancel after capture receipt prevents every later Fill write")
+	check(bench.applied.edits==edits_before_cancel and editor._undo_stack.size()==history_before_cancel,
+		"cancelled Fill retains exact authored history")
 	check(editor.fill_at(Vector2i(110,90)),"bounded fill capture accepted")
 	await until(settled,"bounded fill completes")
 	var filled: PackedInt32Array=await capture(Rect2i(100,80,31,31))
@@ -177,6 +195,12 @@ func author() -> void:
 	check(bench.apply(bench.applied.duplicate(true),false),"authored-start restore remains available")
 	await until(ready,"recovery restore installed")
 	check(not editor.recovery_required(),"complete authored-start replacement releases recovery hold")
+
+func _empty_materials(count: int) -> PackedInt32Array:
+	var values := PackedInt32Array()
+	values.resize(count)
+	values.fill(0)
+	return values
 
 func reopen() -> void:
 	bench._name.text=SAVE_NAME

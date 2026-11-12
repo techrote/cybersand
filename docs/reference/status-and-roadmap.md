@@ -14,6 +14,13 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 **Unmerged integrated candidate, 2026-11-11:** the [PAINT + agent runbook](../operations/wb-art-paint-integrated-candidate.md) records the preserved current #544/#560 heads, generator packaging repair, stored-material readback and one native edit/receipt boundary. The full multi-material PAINT editor and agent providers, conversation/context, scanlines, multiple turns and diagnostics are implemented together. Existing Setup/generated-start formats and PAINT capacity/recovery rules apply. Keep Draft; combined Windows/Linux qualification and owner acceptance remain distinct from earlier separate-branch passes. #531 remains reference only.
 
+**2026-11-12 hardening:** the same candidate closes queued-Save, late Fill-Cancel,
+adaptive large-Fill capture and failed-replacement receipt-retirement defects.
+Installed qualification now exercises 1024² maps and same-session equipment,
+simulation and fresh-process authored-start reconstruction. The runbook and
+#564 distinguish actual resulting-source results from the earlier package;
+retained-runtime publication and owner acceptance remain separate merge gates.
+
 
 ## Workbench liquid equipment (#361) — 2026-11-09
 
