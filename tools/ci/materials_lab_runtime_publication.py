@@ -82,6 +82,9 @@ GRAPHICAL_CASES = {
     "test_material_lab_ui": ("effects-ui-capture-manifest.json", "08-kept-salt-world.png", "effects-ui-world-receipt.json"),
     "test_material_lab_world": ("world-capture-manifest.json", "07-candidate-world-density.png", "world-ui-receipt.json"),
 }
+# Bound capture redraw work on software-rendered CI while native authoring
+# children execute. This only changes these graphical runner invocations.
+GRAPHICAL_MAX_FPS = 15
 WORLD_CHECKS = {"deterministic_repeat", "persistence_checkpoint", "persistence_replay",
                 "quantity_balanced", "worker_1_4_equal"}
 WINDOWS_SKIPS = {
@@ -314,9 +317,15 @@ def verify_capture(directory: Path, platform: str, native_sha256: str) -> dict:
         command = row.get("command", [])
         driver = "opengl3_angle" if platform == "windows" else "opengl3"
         driver_index = command.index("--rendering-driver") if "--rendering-driver" in command else -1
+        fps_index = command.index("--max-fps") if "--max-fps" in command else -1
+        user_args = command.index("--") if "--" in command else len(command)
         engine.require("--headless" not in command and driver_index >= 0 and driver_index + 1 < len(command) and
                        command[driver_index + 1] == driver,
                        "Graphical command does not select the required actual backend")
+        engine.require(command.count("--max-fps") == 1 and 0 <= fps_index < user_args - 1 and
+                       command[fps_index + 1] == str(GRAPHICAL_MAX_FPS) and
+                       not any(argument.startswith("--max-fps=") for argument in command),
+                       "Graphical command does not retain the bounded capture frame rate")
         log = directory / "graphical" / (name + ".log")
         engine.require(row.get("log_sha256") == engine.runner.sha256(log) and
                        len(re.findall(engine.CASE_MARKERS[name], log.read_text(encoding="utf-8"))) == 1,
@@ -371,6 +380,13 @@ def verify_capture(directory: Path, platform: str, native_sha256: str) -> dict:
     return report
 
 
+def graphical_case(name: str, capture: Path, platform: str):
+    driver = "opengl3_angle" if platform == "windows" else "opengl3"
+    return engine.runner.Case(name, ("--max-fps", str(GRAPHICAL_MAX_FPS), "--rendering-driver", driver,
+        "--script", "res://tests/" + name + ".gd", "--", "--capture-output=" + str(capture.resolve())),
+        execution_policy.watchdog_seconds("graphical_case_seconds"), 1.0, True)
+
+
 def graphical(args: argparse.Namespace) -> None:
     require_platform(args.platform)
     manifest = engine.verify_bundle(args.bundle, args.platform, args.source_sha, validated=True)
@@ -393,9 +409,7 @@ def graphical(args: argparse.Namespace) -> None:
     engine.write_json(report_path, report)
     for name in GRAPHICAL_CASES:
         capture = output / name
-        driver = "opengl3_angle" if args.platform == "windows" else "opengl3"
-        case = engine.runner.Case(name, ("--rendering-driver", driver, "--script", "res://tests/" + name + ".gd", "--",
-            "--capture-output=" + str(capture.resolve())), execution_policy.watchdog_seconds("graphical_case_seconds"), 1.0, True)
+        case = graphical_case(name, capture, args.platform)
         result, failed = engine.runner.run_case(str(godot), case, output, "graphical")
         report["results"].append(result)
         if failed:

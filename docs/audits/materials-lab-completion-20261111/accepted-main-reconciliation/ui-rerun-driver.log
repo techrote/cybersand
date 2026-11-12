@@ -1,0 +1,6 @@
+Running test_material_lab_ui, timeout 1200.0s: ['/workspace/scratch/f7237b2aaca9/deps/godot47/Godot_v4.7-stable_linux.x86_64', '--headless', '--path', '/workspace/scratch/f7237b2aaca9/cybersand-reconcile/godot', '--script', 'res://tests/test_material_lab_ui.gd']
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+MATERIAL_LAB_UI: 189 assertions; 0 failures; artifacts=/workspace/scratch/f7237b2aaca9/materials-lab-reconcile-userdata/godot/app_userdata/Cyber Sand Reference Sandbox/materials_lab/ui-acceptance-230424

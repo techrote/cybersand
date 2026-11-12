@@ -4,7 +4,7 @@ status: Current
 document-kind: audit
 scope: Owner-requested continuation of Draft PR 562; additive Lab diagnostics, source-matched runtime publication and automated platform acceptance; human acceptance and production catalogue cutover are separate
 canonical-for: [materials-lab-completion-evidence]
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-12
 related-documents: [2026-11-11-materials-lab-v1.md, ../operations/materials-lab-authoring.md, ../architecture/material-authoring-catalogue-plan.md, ../operations/local-build-and-validation.md]
 ---
 
@@ -128,21 +128,191 @@ retain actual graphics alongside native facts. The
 [core qualification record](materials-lab-completion-20261111/completion-core-qualification.json)
 binds both full core runs to their source inventory and log hashes.
 
-The first new full catalogue run executed206 tests, with205 passing and one
+The first new full catalogue run executed 206 tests, with 205 passing and one
 source-custody refusal: `material_lab_experiment.gd` changed during the native
 pair-product test while the inert-source diagnostic fix was applied. The
 [original failed log](materials-lab-completion-20261111/completion-catalogue-attempt1-suite.log)
 and [attempt record](materials-lab-completion-20261111/completion-catalogue-attempt1-qualification.json)
-remain preserved. A frozen-source rerun follows; this failed attempt is not
-relabeled as passing.
+remain preserved. The [frozen-source rerun](materials-lab-completion-20261111/completion-catalogue-frozen.json)
+passes **206 tests in 313.110 seconds**, with no skips. The complete 94-input
+World authoring inventory has the same before/after digest,
+`7fb1f4f66b1de4be6d12bfb1b04d8857da749543b67c55e36a3718676b6c0e51`.
+Its [original log](materials-lab-completion-20261111/completion-catalogue-frozen.log)
+is retained; the earlier failed attempt is not relabeled as passing.
 
-The publisher's focused guard suites pass **7 + 5 + 30** tests, including
+The publisher's focused guard suites pass **7 + 12 + 30** tests, including
 complete native-suite admission, graphical receipt custody, clean package
-history and branch/dispatch race controls. Pinned actionlint1.7.12 and the
+history and branch/dispatch race controls. Pinned actionlint 1.7.12 and the
 54-workflow scheduling/provider checks pass. Automated mocks in these guard
 suites qualify refusal logic only; they do not replace target-platform execution.
 
-Additional platform qualification is in progress. Resulting source,
-commands, receipts, artifact identities, failed attempts and remaining limits
-will be recorded here and in the PR conversation before handover. Human
-acceptance remains unperformed.
+## Retained platform failures and corrections
+
+[Request 1 / run 43117390171](https://github.com/techrote/cybersand/actions/runs/43117390171)
+built source `9eb90272cb2261e429c965dfbd21c6adc862a021`. The complete Linux
+catalogue suite passed 206 tests in 381.398 seconds, the pinned Windows
+cross-build passed, and all seven Linux native/Godot cases passed. Windows
+packaging guards exposed a fixture that wrote host-native newlines but
+asserted LF bytes. Request 2 makes LF explicit and also proves that a tracked
+CRLF binary fixture retains its actual bytes. The Linux graphical stage failed
+with exit 126 because the existing non-executable display preparation script
+was invoked directly. Its invocation is corrected to `bash`; the shared script
+is unchanged. Neither failed attempt published a runtime.
+
+[Request 2 / run 43118926062](https://github.com/techrote/cybersand/actions/runs/43118926062)
+built source `c594dc30c2eaa9e9c32122725e028d4961afa78d`. Linux again passed its
+206-test inventory (419.039 seconds) and all seven actual native/Godot cases
+(1348/131/116/87/189/201/164 assertions, all zero failures), then reached the
+already identified display-launch failure. Windows executed the entire
+206-test catalogue inventory in 859.366 seconds. Its original result contains
+12 failing subtest records, one error and three explicit POSIX-only skips,
+all failures/errors confined to Godot receipt-root controls. The actual four
+portable process-owner tests, five native extended-effect tests, and native
+World movement/products/persistence/parity tests passed. Separate actual
+Windows timeout and cancellation probes also observed and retired their child
+processes. The later Windows Godot, graphical and package stages were not reached.
+
+The [original Windows receipt](materials-lab-completion-20261111/request2-windows-catalogue-suite.json)
+and [test log](materials-lab-completion-20261111/request2-windows-catalogue-suite.log)
+retain these failures. The validator resolved each child path but compared it
+with an unresolved supplied root. An equivalent `root/existing-directory/..`
+spelling reproduced the false refusal independently on Linux. Resolving the
+root once fixes that inconsistency; the receipt-deletion test also now uses the
+canonical forward-slash path. The exact hosted Windows path spellings were not
+logged, so short-name expansion is not claimed as an observed cause. Eighteen
+focused guards pass, including new equivalent-root admission, changed/missing
+custody rejection and same-byte symlink escape rejection. Discovery now contains
+209 catalogue tests. No skip was added or threshold relaxed.
+
+## Request 3 platform qualification and package correction
+
+Request 3 is source `8e2206d5a664cc86b2ca432e6ad976e5f6d86bff`, tree
+`2d9ab65b3c881b7a06d91c340ce19e0b490d0c0e`, in
+[run 43122038666](https://github.com/techrote/cybersand/actions/runs/43122038666).
+It includes the path and display fixes above and adds actual graphical contact
+execution inside the relocated Windows evaluation package. That fourth package
+case runs the existing native contact test through the bundled ANGLE engine,
+requires natural completion, and binds its original process log, screenshot,
+stored Salt/partial-Water cells, source inventory and native owner readback to
+the original delivered files. Receipt-admission fixtures qualify refusal logic;
+only the actual Windows smoke establishes package acceptance.
+
+The fresh hosted Linux catalogue stage passes **209 tests in 474.823 seconds**,
+with no skips, failures or errors, using recorded GCC 13.3 and Python 3.12.3.
+Its [original receipt](materials-lab-completion-20261111/request3-linux-catalogue-suite.json)
+and [original log](materials-lab-completion-20261111/request3-linux-catalogue-suite.log)
+bind that result to request 3; artifact `13900964469` has archive SHA-256
+`6bf939c26bd3e64282f302c0716e5fbe51518416aa1040e85beb63155f49cc0f`.
+
+The same source's pinned Linux runtime stage also passes. Its seven native/Godot
+cases report **1348 catalogue, 131 experiment, 116 contact, 87 lifecycle,
+189 mounted UI, 201 compiled World and 164 Workbench assertions**, all with zero
+failures. The actual X11/OpenGL mounted UI and World captures pass **196 and
+206 assertions**. Every recorded process completed naturally without a skip.
+The [original validation](materials-lab-completion-20261111/request3-linux/validation.json),
+[graphical record](materials-lab-completion-20261111/request3-linux/graphical.json)
+and [runtime provenance](materials-lab-completion-20261111/request3-linux/runtime-provenance.linux.json)
+are retained alongside their original logs and captures. Artifact `13902367010`
+has archive SHA-256 `712e55c440fddcd04ec3125e280fde5c4eb356d30f1f4f48104780ed9c8d33ab`.
+Its 4,571,160-byte Linux library has SHA-256
+`0f257fe66e043cbb77366d99ce77325eacf8481443df4c5e000dcbc9ac075ea9`;
+all 88 native and 779 build input blobs were independently compared with Git at
+the recorded source. This verification is separate from the original execution.
+
+The [density capture](materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_world/07-candidate-world-density.png)
+and its [native World receipt](materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_world/world-ui-receipt.json)
+show reference Sand density 1600 versus candidate density 500, seed 2 and
+120 steps. Native readback counts **369 reference Sand cells below the reservoir
+versus zero candidate cells**, with **1,644,240 Water quantity units on both
+sides**. Both sides pass repeat, one/four-worker configuration comparison,
+persistence checkpoint/replay and quantity accounting. The configured worker
+count is four; this is not a claim that all four workers participated in every
+phase. The receipt correctly remains `runtime_active: false`.
+
+Windows Server 2022 also passes its complete source-owned catalogue inventory:
+**209 tests run, 206 passed and three existing POSIX-only skips**, in 850.575
+seconds, with no failures or errors. The skips are the response-symlink protocol
+fixture, the POSIX process-tree fixture and the POSIX spaced compiler-symlink
+fixture. The four new portable Job Object/process-owner fixtures actually pass
+on Windows, as do the separately observed timeout/cancellation descendant probes.
+All seven native/Godot cases pass with the same assertion counts above; actual
+Windows ANGLE UI/World captures pass **196/206 assertions**. Their
+[original validation](materials-lab-completion-20261111/request3-windows/validation.json),
+[catalogue receipt](materials-lab-completion-20261111/request3-windows/catalogue-suite.json)
+and [graphical record](materials-lab-completion-20261111/request3-windows/graphical.json)
+retain natural completion and their own source, runtime and log identities.
+Windows runtime artifact `13903143269` has archive SHA-256
+`e14f405657774eafc62d67cd78d0dc8ba601b068614c393244ca50d5885237fd`;
+the DLL SHA-256 is `83fb4488ec3a1fdc5f639d242109b73861083514b9d8e176fd8051c74dfb4611`.
+
+The subsequent Windows package job `130883326148` failed **before package smoke**:
+the selected Python 3.12.10 distribution contains executable symlinks and the
+copier rejected every link. This does not undo the original platform execution,
+but no package or runtime was published and downstream dispatch was skipped.
+The correction materializes executable aliases only when their strictly resolved
+file remains inside the canonical Python installation. Broken, external and
+directory aliases remain refused. Two real filesystem regressions cover accepted
+alias chains and four refusal cases; **14 package guards and seven publisher
+guards pass locally**. No new skip or weakened source check is introduced.
+
+## Accepted-main reconciliation and next delivery
+
+While request 3 ran, accepted main advanced to
+`d8588716becb0dc42019faf23f721378d8adc84a` through the owner's merge of liquid
+equipment PR #553. The Lab now incorporates that accepted worker/equipment
+implementation and capped-Details toolbar fix. The only manual merge conflict
+was adjacent roadmap sections; both are retained. No production native source,
+catalogue identity, immutable compatibility lock or inspection bridge changes
+in this reconciliation. Earlier evidence remains bound to its original source.
+
+Fresh local Linux execution at reconciliation commit
+`a069e7cabda74039f7e3d5bde4074815fbd06ab8` passes project import, Workbench canvas
+164, liquid edges 70, mounted Lab UI 189, equipment 103 checks at each of the
+one/four-worker configurations, and pressure reservoir 81 checks at each
+configuration. All have zero failures. The
+[original reconciliation receipt](materials-lab-completion-20261111/accepted-main-reconciliation/reconciliation-summary.json)
+records the pinned request-3 Linux runtime, its 88 matching native inputs and the
+677-file desktop/test/catalogue inventory unchanged across execution. These are
+headless Linux results. An initial harness run placed user data inside source;
+the Lab correctly refused the response path. Only that UI case was repeated with
+external user data, retaining the original refusal separately. No product or
+test threshold change was needed. Documentation (127 documents / 253 claims),
+historical M11 (18 records / 28 hashes) and Lab retrieval (10/10 rank 1) pass.
+The recoverable public reconciliation is
+`1331e4e01be363f6bf0a60ca591c1afa7fb7b55f`, with the **identical Git tree**
+`d38040cab694ecdfbc56aa07d723212d8be2c0e5` and public parents `8e2206d5…`
+and accepted `d8588716…`. Git metadata differs; original test receipts retain
+the actual local commit and are not relabeled as another execution.
+
+The independently scoped capability branch's first Windows campaign passed its
+catalogue and headless cases but hit the existing UI wait and 60-second native
+World execution limits during graphical tests. Its original failures remain
+separate; they are not a main-Lab platform failure. Main request-3 Windows
+graphics passed but took 600.789 seconds for the UI and 332.666 for the World.
+On hosted Linux, the otherwise identical World case used 2.93 direct Godot CPU
+seconds headless versus 272.5 with software graphics, indicating substantial
+rendering work while native child jobs ran. Windows CPU counters were unavailable,
+so software-renderer contention there remains an inference pending fresh execution.
+
+The next publisher limits **only automated graphical captures to 15 rendered
+frames per second**. Product/global frame-rate settings, rendering backends,
+simulation time scale, fixtures, assertions and all UI/compilation/execution
+watchdogs remain unchanged. Recorded-command checks refuse a missing, altered,
+duplicate or ineffective frame cap; the packaged contact capture uses the same
+cadence. Focused publisher/package/unchanged-base guards pass **8/14/30**.
+
+An actual local X11 graphical World trial passes **206 checks** with that cap,
+in 60.155 seconds and 49.43 direct Godot CPU seconds, completing naturally under
+the unchanged 1200-second graphical watchdog. The
+[comparison record](materials-lab-completion-20261111/graphical-world-maxfps15/comparison.json)
+shows an **identical image SHA-256 and identical candidate/reference final native
+readback** to the original hosted uncapped capture: stored grids/state, quantities,
+120 ticks and comparison results all agree. Repeat, one/four-worker configuration,
+persistence and quantity checks remain true. The hosts differ, so the timing
+comparison is diagnostic evidence, not a controlled performance benchmark.
+
+Request 4 includes accepted-main integration, Python alias materialization and
+bounded graphical capture cadence. A fresh complete campaign must establish its
+own platform, relocated package and downstream results. Final successful artifact
+identities and their limits will be recorded before handover. Human acceptance
+remains unperformed.

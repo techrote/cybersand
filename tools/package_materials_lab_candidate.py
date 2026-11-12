@@ -90,13 +90,26 @@ def copy_portable_tree(source: Path, destination: Path, *, ignore=None) -> None:
 
 
 def copy_python(source: Path, destination: Path) -> None:
+    engine.require(source.is_dir() and not source.is_symlink(), "Python installation must be a real directory")
+    source = source.resolve(strict=True)
     engine.require((source / "python.exe").is_file() and (source / "Lib/json").is_dir() and
                    (source / "LICENSE.txt").is_file(), "A complete licensed Windows Python installation is required")
-    destination.mkdir(parents=True)
+    files = []
     for path in source.iterdir():
-        if path.is_file() and (path.suffix.lower() in {".exe", ".dll"} or path.name == "LICENSE.txt"):
-            engine.require(not path.is_symlink(), "Python executable must be a real file")
-            shutil.copyfile(path, destination / path.name)
+        if path.suffix.lower() not in {".exe", ".dll"} and path.name != "LICENSE.txt":
+            continue
+        # setup-python includes executable aliases. Materialize their bytes,
+        # retaining neither links nor dependencies outside this installation.
+        try:
+            resolved = path.resolve(strict=True)
+        except (OSError, RuntimeError) as error:
+            raise RuntimeError("Python runtime file cannot be resolved: " + str(path)) from error
+        engine.require(resolved.is_file() and resolved.is_relative_to(source),
+                       "Python runtime file must resolve inside the installation: " + str(path))
+        files.append((path.name, resolved))
+    destination.mkdir(parents=True)
+    for name, path in files:
+        shutil.copyfile(path, destination / name)
     for name in ("Lib", "DLLs"):
         copy_portable_tree(source / name, destination / name,
                            ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "site-packages", "test", "tests"))
@@ -239,7 +252,8 @@ def smoke_cases(evidence: Path) -> list:
         engine.runner.Case(name, ("--script", "res://tests/" + name + ".gd"), 1200, 1.0)
         for name in ("test_material_lab_ui", "test_material_lab_world")]
     cases.append(engine.runner.Case(CONTACT_CASE, (
-        "--rendering-driver", "opengl3_angle", "--script", "res://tests/" + CONTACT_CASE + ".gd",
+        "--max-fps", str(publication.GRAPHICAL_MAX_FPS), "--rendering-driver", "opengl3_angle",
+        "--script", "res://tests/" + CONTACT_CASE + ".gd",
         "--", "--capture-output=" + str((evidence / CONTACT_DIRECTORY).resolve())), 1200, 1.0, True))
     return cases
 

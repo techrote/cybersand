@@ -1,0 +1,246 @@
+
+/home/runner/work/_temp/cybersand_native.windows.x86_64.dll:	file format coff-x86-64
+Characteristics 0x2022
+	executable
+	large address aware
+	DLL
+
+Time/Date               Thu Jan  1 00:00:00 1970
+Magic                   020b	(PE32+)
+MajorLinkerVersion      14
+MinorLinkerVersion      0
+SizeOfCode              0000000000325200
+SizeOfInitializedData   00000000000df200
+SizeOfUninitializedData 0000000000000000
+AddressOfEntryPoint     0000000000001300
+BaseOfCode              0000000000001000
+ImageBase               0000000180000000
+SectionAlignment        00001000
+FileAlignment           00000200
+MajorOSystemVersion     6
+MinorOSystemVersion     0
+MajorImageVersion       0
+MinorImageVersion       0
+MajorSubsystemVersion   6
+MinorSubsystemVersion   0
+Win32Version            00000000
+SizeOfImage             00428000
+SizeOfHeaders           00000400
+CheckSum                00000000
+Subsystem               00000002	(Windows GUI)
+DllCharacteristics      00000160
+					HIGH_ENTROPY_VA
+					DYNAMIC_BASE
+					NX_COMPAT
+SizeOfStackReserve      0000000000100000
+SizeOfStackCommit       0000000000001000
+SizeOfHeapReserve       0000000000100000
+SizeOfHeapCommit        0000000000001000
+LoaderFlags             00000000
+NumberOfRvaAndSizes     00000010
+
+The Data Directory
+Entry 0 000000000036b2f8 00000084 Export Directory [.edata (or where ever we found it)]
+Entry 1 000000000036b37c 000000f0 Import Directory [parts of .idata]
+Entry 2 0000000000000000 00000000 Resource Directory [.rsrc]
+Entry 3 00000000003d3000 0000f0f0 Exception Directory [.pdata]
+Entry 4 0000000000000000 00000000 Security Directory
+Entry 5 00000000003e4000 00002624 Base Relocation Directory [.reloc]
+Entry 6 00000000003b7000 0000001c Debug Directory
+Entry 7 0000000000000000 00000000 Description Directory
+Entry 8 0000000000000000 00000000 Special Directory
+Entry 9 000000000036b248 00000028 Thread Storage Directory [.tls]
+Entry a 000000000036b0d0 00000138 Load Configuration Directory
+Entry b 0000000000000000 00000000 Bound Import Directory
+Entry c 000000000036b870 00000400 Import Address Table Directory
+Entry d 0000000000000000 00000000 Delay Import Directory
+Entry e 0000000000000000 00000000 CLR Runtime Header
+Entry f 0000000000000000 00000000 Reserved
+TLS directory:
+  StartAddressOfRawData: 0x000001803e3000
+  EndAddressOfRawData: 0x000001803e3028
+  AddressOfIndex: 0x000001803b8160
+  AddressOfCallBacks: 0x0000018036b240
+  SizeOfZeroFill: 0
+  Characteristics: 4194304
+  Alignment: 8
+
+
+The Import Tables:
+  lookup 0036b470 time 00000000 fwd 00000000 name 0036c344 addr 0036b870
+
+    DLL Name: api-ms-win-crt-runtime-l1-1-0.dll
+    Hint/Ord  Name
+           0  _assert
+           0  __sys_nerr
+           0  _beginthreadex
+           0  _errno
+           0  _execute_onexit_table
+           0  _exit
+           0  _initialize_onexit_table
+           0  _initterm
+           0  _initterm_e
+           0  _register_onexit_function
+           0  abort
+           0  strerror
+           0  strerror_s
+
+  lookup 0036b4e0 time 00000000 fwd 00000000 name 0036c366 addr 0036b8e0
+
+    DLL Name: api-ms-win-crt-math-l1-1-0.dll
+    Hint/Ord  Name
+           0  atan2
+           0  atan2f
+           0  ceil
+           0  ceilf
+           0  cos
+           0  cosf
+           0  floor
+           0  floorf
+           0  fmod
+           0  fmodf
+           0  log
+           0  log10
+           0  pow
+           0  remainder
+           0  round
+           0  roundf
+           0  sin
+           0  sinf
+           0  sqrt
+           0  trunc
+
+  lookup 0036b588 time 00000000 fwd 00000000 name 0036c385 addr 0036b988
+
+    DLL Name: api-ms-win-crt-private-l1-1-0.dll
+    Hint/Ord  Name
+           0  memchr
+           0  memcmp
+           0  memcpy
+           0  memmove
+
+  lookup 0036b5b0 time 00000000 fwd 00000000 name 0036c3a7 addr 0036b9b0
+
+    DLL Name: api-ms-win-crt-string-l1-1-0.dll
+    Hint/Ord  Name
+           0  memset
+           0  strcmp
+           0  strlen
+           0  strnlen
+           0  wcslen
+           0  wcsnlen
+
+  lookup 0036b5e8 time 00000000 fwd 00000000 name 0036c3c8 addr 0036b9e8
+
+    DLL Name: KERNEL32.dll
+    Hint/Ord  Name
+           0  AcquireSRWLockExclusive
+           0  CloseHandle
+           0  DeleteCriticalSection
+           0  EnterCriticalSection
+           0  FlsAlloc
+           0  FlsGetValue
+           0  FlsSetValue
+           0  FormatMessageA
+           0  GetActiveProcessorCount
+           0  GetCurrentThreadId
+           0  GetLastError
+           0  GetModuleHandleW
+           0  GetProcAddress
+           0  GetSystemTimeAsFileTime
+           0  GetThreadId
+           0  InitOnceExecuteOnce
+           0  InitializeCriticalSection
+           0  LeaveCriticalSection
+           0  LocalFree
+           0  MultiByteToWideChar
+           0  QueryPerformanceCounter
+           0  QueryPerformanceFrequency
+           0  RaiseException
+           0  ReleaseSRWLockExclusive
+           0  RtlCaptureContext
+           0  RtlLookupFunctionEntry
+           0  RtlRestoreContext
+           0  RtlUnwindEx
+           0  RtlVirtualUnwind
+           0  Sleep
+           0  SleepConditionVariableSRW
+           0  SwitchToThread
+           0  TryAcquireSRWLockExclusive
+           0  TryEnterCriticalSection
+           0  VirtualProtect
+           0  VirtualQuery
+           0  WaitForSingleObjectEx
+           0  WakeAllConditionVariable
+           0  WakeConditionVariable
+           0  WideCharToMultiByte
+
+  lookup 0036b730 time 00000000 fwd 00000000 name 0036c3d5 addr 0036bb30
+
+    DLL Name: api-ms-win-crt-stdio-l1-1-0.dll
+    Hint/Ord  Name
+           0  __acrt_iob_func
+           0  __stdio_common_vfprintf
+           0  __stdio_common_vfwprintf
+           0  __stdio_common_vsprintf
+           0  _fileno
+           0  _setmode
+           0  fflush
+           0  fputc
+           0  fputwc
+           0  puts
+
+  lookup 0036b788 time 00000000 fwd 00000000 name 0036c3f5 addr 0036bb88
+
+    DLL Name: api-ms-win-crt-heap-l1-1-0.dll
+    Hint/Ord  Name
+           0  _aligned_free
+           0  _aligned_malloc
+           0  calloc
+           0  free
+           0  malloc
+           0  realloc
+
+  lookup 0036b7c0 time 00000000 fwd 00000000 name 0036c414 addr 0036bbc0
+
+    DLL Name: api-ms-win-crt-convert-l1-1-0.dll
+    Hint/Ord  Name
+           0  mbrtowc
+           0  strtof
+           0  strtol
+           0  strtoll
+           0  strtoul
+           0  strtoull
+           0  wcrtomb
+           0  wcstod
+           0  wcstol
+           0  wcstoll
+           0  wcstoul
+           0  wcstoull
+
+  lookup 0036b828 time 00000000 fwd 00000000 name 0036c436 addr 0036bc28
+
+    DLL Name: api-ms-win-crt-locale-l1-1-0.dll
+    Hint/Ord  Name
+           0  ___lc_codepage_func
+           0  ___mb_cur_max_func
+           0  localeconv
+
+  lookup 0036b848 time 00000000 fwd 00000000 name 0036c457 addr 0036bc48
+
+    DLL Name: api-ms-win-crt-environment-l1-1-0.dll
+    Hint/Ord  Name
+           0  getenv
+
+  lookup 0036b858 time 00000000 fwd 00000000 name 0036c47d addr 0036bc58
+
+    DLL Name: api-ms-win-crt-filesystem-l1-1-0.dll
+    Hint/Ord  Name
+           0  _lock_file
+           0  _unlock_file
+
+Export Table:
+ DLL name: .cybersand_native.windows.x86_64.dll.partial.snfo8t
+ Ordinal base: 1
+ Ordinal      RVA  Name
+       1  0xa1570  cybersand_native_library_init

@@ -4,5 +4,5 @@
   "variant": "native-inspection-isolated-authoring",
   "scope": "source-matched-linux-windows-native-and-graphical-lab",
   "intent": "publish-source-matched-runtimes",
-  "request_sequence": 3
+  "request_sequence": 4
 }

@@ -1,0 +1,659 @@
+Running import, timeout 1200.0s: ['/workspace/scratch/f7237b2aaca9/deps/godot47/Godot_v4.7-stable_linux.x86_64', '--headless', '--path', '/workspace/scratch/f7237b2aaca9/cybersand-reconcile/godot', '--editor', '--quit']
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (558 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | RapierAnimatableBody2D[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | RapierArea2D[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | RapierCharacterBody2D[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | RapierDampedSpringJoint2D[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | RapierFixedJoint2D[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | RapierGrooveJoint2D[39m[0m
+[   1% ] [90m[1mupdate_scripts_classes[22m | RapierPhysicalBone2D[39m[0m
+[   1% ] [90m[1mupdate_scripts_classes[22m | RapierPinJoint2D[39m[0m
+[   1% ] [90m[1mupdate_scripts_classes[22m | RapierRigidBody2D[39m[0m
+[   1% ] [90m[1mupdate_scripts_classes[22m | RapierRopeJoint2D[39m[0m
+[   1% ] [90m[1mupdate_scripts_classes[22m | RapierStaticBody2D[39m[0m
+[   1% ] [90m[1mupdate_scripts_classes[22m | Faucet2D[39m[0m
+[   2% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   2% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   2% ] [90m[1mupdate_scripts_classes[22m | Fluid2DRenderer[39m[0m
+[   2% ] [90m[1mupdate_scripts_classes[22m | Fluid2DShaderRenderer[39m[0m
+[   2% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   3% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   3% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   3% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   3% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   3% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   3% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   5% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   5% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   5% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   5% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   5% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   5% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   6% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   6% ] [90m[1mupdate_scripts_classes[22m | CyberDepthCompositor[39m[0m
+[   6% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   6% ] [90m[1mupdate_scripts_classes[22m | CyberDepthLabFixture[39m[0m
+[   6% ] [90m[1mupdate_scripts_classes[22m | CyberDepthLayerRuntime[39m[0m
+[   6% ] [90m[1mupdate_scripts_classes[22m | CyberDepthLayerSurface[39m[0m
+[   7% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   7% ] [90m[1mupdate_scripts_classes[22m | CyberSemanticPlaneRuntime[39m[0m
+[   7% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   7% ] [90m[1mupdate_scripts_classes[22m | CyberDeepworksArchitecture[39m[0m
+[   7% ] [90m[1mupdate_scripts_classes[22m | CyberDeepworksExhibits[39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | CyberDeepworksMap[39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | CyberDeepworksRuntime[39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | CyberActorPrototype[39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | CyberActorPrototypeOverlay[39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | CyberActorPrototypePanel[39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | CyberActorPrototypeSession[39m[0m
+[   9% ] [90m[1mupdate_scripts_classes[22m | CyberActorRigActuation[39m[0m
+[   9% ] [90m[1mupdate_scripts_classes[22m | CyberActorRigCatalog[39m[0m
+[   9% ] [90m[1mupdate_scripts_classes[22m | CyberActorRigEffects[39m[0m
+[   9% ] [90m[1mupdate_scripts_classes[22m | CyberActorRigMotor[39m[0m
+[   9% ] [90m[1mupdate_scripts_classes[22m | CyberBlacksiteNine[39m[0m
+[  10% ] [90m[1mupdate_scripts_classes[22m | CyberBlacksiteNineArt[39m[0m
+[  10% ] [90m[1mupdate_scripts_classes[22m | CyberBlacksiteNineDepths[39m[0m
+[  10% ] [90m[1mupdate_scripts_classes[22m | CyberBlacksiteNineLayout[39m[0m
+[  10% ] [90m[1mupdate_scripts_classes[22m | CyberBlacksiteNineMidworks[39m[0m
+[  10% ] [90m[1mupdate_scripts_classes[22m | CyberBlacksiteNinePresentation[39m[0m
+[  10% ] [90m[1mupdate_scripts_classes[22m | CyberBlacksiteNineSurface[39m[0m
+[  11% ] [90m[1mupdate_scripts_classes[22m | CyberCellWorld[39m[0m
+[  11% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  11% ] [90m[1mupdate_scripts_classes[22m | CyberDemoSaveCodec[39m[0m
+[  11% ] [90m[1mupdate_scripts_classes[22m | CyberDemoWorlds[39m[0m
+[  11% ] [90m[1mupdate_scripts_classes[22m | CyberExperimentTower[39m[0m
+[  11% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  12% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  12% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  12% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  12% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  12% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  13% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  13% ] [90m[1mupdate_scripts_classes[22m | CyberIndustrialUnderswamp[39m[0m
+[  13% ] [90m[1mupdate_scripts_classes[22m | CyberInteractionPolicy[39m[0m
+[  13% ] [90m[1mupdate_scripts_classes[22m | CyberInteractionPolicyProbe[39m[0m
+[  13% ] [90m[1mupdate_scripts_classes[22m | CyberLiquidComparisonPanel[39m[0m
+[  13% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  14% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  14% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  14% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  14% ] [90m[1mupdate_scripts_classes[22m | CyberMaterialAppearanceLut[39m[0m
+[  14% ] [90m[1mupdate_scripts_classes[22m | CyberMaterialLabCatalogue[39m[0m
+[  15% ] [90m[1mupdate_scripts_classes[22m | CyberMaterialLabExperiment[39m[0m
+[  15% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  15% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  15% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  15% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  15% ] [90m[1mupdate_scripts_classes[22m | CyberMicroScenarioCatalogue[39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | CyberMicroScenarioComparison[39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | CyberMicroScenarioContract[39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | CyberMicroScenarioHost[39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | CyberMicroScenarioIdentity[39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | CyberMicroScenarioPanel[39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | CyberMicroScenarioReferencePack[39m[0m
+[  17% ] [90m[1mupdate_scripts_classes[22m | CyberMicroScenarioTelemetry[39m[0m
+[  17% ] [90m[1mupdate_scripts_classes[22m | CyberMicroScenarioWorkbench[39m[0m
+[  17% ] [90m[1mupdate_scripts_classes[22m | CyberMiddleCyberberbia[39m[0m
+[  17% ] [90m[1mupdate_scripts_classes[22m | CyberNeonReliquary[39m[0m
+[  17% ] [90m[1mupdate_scripts_classes[22m | CyberPaletteShader[39m[0m
+[  18% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalActorArena[39m[0m
+[  18% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalActorCatalog[39m[0m
+[  18% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalActorEffects[39m[0m
+[  18% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalActorOverlay[39m[0m
+[  18% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalActorRig[39m[0m
+[  18% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalActorScript[39m[0m
+[  19% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalActorSession[39m[0m
+[  19% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  19% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalFlightController[39m[0m
+[  19% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalFlightCourse[39m[0m
+[  19% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalFlightCourseView[39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalFlightEpisode[39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalFlightObservationAdapter[39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalFlightProfile[39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  21% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalFlightTeacher[39m[0m
+[  21% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalUsableCourse[39m[0m
+[  21% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalUsableEquipment[39m[0m
+[  21% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalUsableLoadouts[39m[0m
+[  21% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalUsableRuntime[39m[0m
+[  22% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicalUsableScript[39m[0m
+[  22% ] [90m[1mupdate_scripts_classes[22m | CyberPhysicsCharacterisation[39m[0m
+[  22% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  22% ] [90m[1mupdate_scripts_classes[22m | CyberPlayableCourseLap[39m[0m
+[  22% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  22% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  23% ] [90m[1mupdate_scripts_classes[22m | CyberPlayerAcrobatController[39m[0m
+[  23% ] [90m[1mupdate_scripts_classes[22m | CyberPlayerActorCatalog[39m[0m
+[  23% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  23% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  23% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  23% ] [90m[1mupdate_scripts_classes[22m | CyberPlayerPlaygroundCourse[39m[0m
+[  24% ] [90m[1mupdate_scripts_classes[22m | CyberPlayerPlaygroundInput[39m[0m
+[  24% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  24% ] [90m[1mupdate_scripts_classes[22m | CyberPlayerPlaygroundRuntime[39m[0m
+[  24% ] [90m[1mupdate_scripts_classes[22m | CyberPlayerRepresentation[39m[0m
+[  24% ] [90m[1mupdate_scripts_classes[22m | CyberPlayerVehicleController[39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  26% ] [90m[1mupdate_scripts_classes[22m | CyberRapierPhysicsBridge[39m[0m
+[  26% ] [90m[1mupdate_scripts_classes[22m | CyberRigidBodyCoupling[39m[0m
+[  26% ] [90m[1mupdate_scripts_classes[22m | CyberSampledCharacter[39m[0m
+[  26% ] [90m[1mupdate_scripts_classes[22m | CyberSewertechAlley[39m[0m
+[  26% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | CyberShowcasePresentation[39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | CyberShowcaseTiles[39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | CyberSimulationSnapshot[39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | CyberSimulationWorker[39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | CyberThunderbowlArena[39m[0m
+[  28% ] [90m[1mupdate_scripts_classes[22m | CyberThunderbowlContract[39m[0m
+[  28% ] [90m[1mupdate_scripts_classes[22m | CyberTickFailureProbe[39m[0m
+[  28% ] [90m[1mupdate_scripts_classes[22m | CyberTowerPanel[39m[0m
+[  28% ] [90m[1mupdate_scripts_classes[22m | CyberTransportProbe[39m[0m
+[  28% ] [90m[1mupdate_scripts_classes[22m | CyberTransportProfiles[39m[0m
+[  28% ] [90m[1mupdate_scripts_classes[22m | CyberTransportProfilePanel[39m[0m
+[  29% ] [90m[1mupdate_scripts_classes[22m | CyberUsableCatalog[39m[0m
+[  29% ] [90m[1mupdate_scripts_classes[22m | CyberUsableOverlay[39m[0m
+[  29% ] [90m[1mupdate_scripts_classes[22m | CyberUsableRuntime[39m[0m
+[  29% ] [90m[1mupdate_scripts_classes[22m | CyberUsableSession[39m[0m
+[  29% ] [90m[1mupdate_scripts_classes[22m | CyberWaterExperimentBlind[39m[0m
+[  30% ] [90m[1mupdate_scripts_classes[22m | CyberWaterExperimentContract[39m[0m
+[  30% ] [90m[1mupdate_scripts_classes[22m | CyberWaterExperimentPanel[39m[0m
+[  30% ] [90m[1mupdate_scripts_classes[22m | CyberWaterExperimentProfiles[39m[0m
+[  30% ] [90m[1mupdate_scripts_classes[22m | CyberWaterFeelScenarios[39m[0m
+[  30% ] [90m[1mupdate_scripts_classes[22m | CyberWaterFeelWebProbe[39m[0m
+[  30% ] [90m[1mupdate_scripts_classes[22m | CyberWaterPresentationModel[39m[0m
+[  31% ] [90m[1mupdate_scripts_classes[22m | CyberWebCapabilities[39m[0m
+[  31% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  31% ] [90m[1mupdate_scripts_classes[22m | CyberWebDemoMenu[39m[0m
+[  31% ] [90m[1mupdate_scripts_classes[22m | CyberWebRapierProbe[39m[0m
+[  31% ] [90m[1mupdate_scripts_classes[22m | CyberWebWorkerProbe[39m[0m
+[  32% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  32% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  32% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  32% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  32% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  32% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | CyberWorkerBenchmark[39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | CyberWorldGenerationPreview[39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  34% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  34% ] [90m[1mupdate_scripts_classes[22m | CyberWorldGenerationWorkbench[39m[0m
+[  34% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  34% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  34% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  35% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  35% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  35% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  35% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  35% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  35% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  37% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  37% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  37% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  37% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  37% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  37% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  39% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  39% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  39% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  39% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  39% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  41% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  41% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  41% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  41% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  41% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  42% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  42% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  42% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  42% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  42% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  42% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  43% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  43% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  43% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  43% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  43% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  45% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  45% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  45% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  45% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  45% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  45% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  46% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  46% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  46% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  46% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  46% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  47% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  47% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  47% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  47% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  47% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  47% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  48% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  48% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  48% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  48% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  48% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  49% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  49% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  49% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  49% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  49% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  49% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  51% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  51% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  51% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  51% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  51% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  53% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  53% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  53% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  53% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  53% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  54% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  54% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  54% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  54% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  54% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  54% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  55% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  55% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  55% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  55% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  55% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  55% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  56% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  56% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  56% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  56% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  56% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  57% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  57% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  57% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  57% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  57% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  57% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  58% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  58% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  58% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  58% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  58% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  59% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  59% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  59% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  59% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  59% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  59% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  60% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  60% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  60% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  60% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  60% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  62% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  62% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  62% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  62% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  62% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  62% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  63% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  63% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  63% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  63% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  63% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  64% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  64% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  64% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  64% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  64% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  64% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  65% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  65% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  65% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  65% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  65% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  67% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  67% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  67% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  67% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  67% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  67% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  68% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  68% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  68% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  68% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  68% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  69% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  69% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  69% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  69% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  69% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  69% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  70% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  70% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  70% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  70% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  70% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  71% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  71% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  71% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  71% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  71% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  71% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  73% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  73% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  73% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  73% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  73% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  74% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  74% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  74% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  74% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  74% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  74% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  77% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  77% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  77% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  77% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  77% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  77% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  78% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  78% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  78% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  78% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  78% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  79% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  79% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  79% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  79% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  79% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  79% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  80% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  80% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  80% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  80% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  80% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  81% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  81% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  81% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  81% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  81% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  81% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  82% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  82% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  82% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  82% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  82% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  83% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  83% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  83% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  83% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  83% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  83% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  84% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  84% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  84% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  84% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  84% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  84% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  85% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  85% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  85% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  85% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  85% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  86% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  86% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  86% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  86% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  86% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  86% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  87% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  87% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  87% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  87% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  87% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  89% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  89% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  89% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  89% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  89% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  89% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  90% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  90% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  90% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  90% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  90% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  91% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  91% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  91% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  91% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  91% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  91% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  92% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  92% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  92% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  92% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  92% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  93% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  93% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  93% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  93% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  93% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  93% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  94% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  94% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  94% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  94% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  94% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  94% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  95% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  95% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  95% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  95% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  95% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  96% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  96% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  96% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  96% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  96% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  96% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  97% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  97% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  97% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  97% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  97% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  98% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  98% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  98% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  98% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  98% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  98% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  99% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  99% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  99% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  99% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1m_update_scan_actions[22m | Started Scanning actions... (4 steps)[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | Fluid2D.svg[39m[0m
+[  20% ] [90m[1m_update_scan_actions[22m | StateManager2D.svg[39m[0m
+[  40% ] [90m[1m_update_scan_actions[22m | logo_square_2d.png[39m[0m
+[  60% ] [90m[1m_update_scan_actions[22m | Radial2D.svg[39m[0m
+[92m[ DONE ][39m [1m_update_scan_actions[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (4 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  20% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  40% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  60% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing pre-reimport operations...[39m[0m
+[   0% ] [90m[1mreimport[22m | Fluid2D.svg[39m[0m
+[  20% ] [90m[1mreimport[22m | StateManager2D.svg[39m[0m
+[  40% ] [90m[1mreimport[22m | logo_square_2d.png[39m[0m
+[  60% ] [90m[1mreimport[22m | Radial2D.svg[39m[0m
+[  80% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (4 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+Running test_workbench_canvas, timeout 3940.0s: ['/workspace/scratch/f7237b2aaca9/deps/godot47/Godot_v4.7-stable_linux.x86_64', '--headless', '--path', '/workspace/scratch/f7237b2aaca9/cybersand-reconcile/godot', '--script', 'res://tests/test_workbench_canvas.gd']
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+WORKBENCH_CANVAS_READBACK {"arrival_bytes":42467328,"bodies":3,"elapsed_ms":28715,"extent":"(2048, 2048)","response":"LA-SELECTIVE","source":{"armed":true,"attempted":0,"blocked":0,"burst_queued":false,"inserted":0,"material":14,"max_stream_ticks":600,"origin":"(1525, 1370)","stream_enabled":false,"stream_ticks":0},"tick_ms":0.49748}
+WORKBENCH_CANVAS 164 checks, 0 failures
+Running test_workbench_liquid_edges, timeout 3940.0s: ['/workspace/scratch/f7237b2aaca9/deps/godot47/Godot_v4.7-stable_linux.x86_64', '--headless', '--path', '/workspace/scratch/f7237b2aaca9/cybersand-reconcile/godot', '--script', 'res://tests/test_workbench_liquid_edges.gd']
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+WORKBENCH_EDGE {"cases":[{"edge":"left","edit":{"clipped_gas_amount":0,"clipped_gas_labels":0,"clipped_inertial_cells":0,"clipped_material_cells":0,"clipped_materials":{},"clipped_pressure_flow_cells":0,"clipped_thermal_cells":0,"clipped_visible_water":0,"clipped_water_overfill":0,"discarded_gas_amount":0,"discarded_in_flight_water":0,"discarded_inertial_cells":0,"discarded_pressure_flow_cells":0,"discarded_water_overfill":0,"halo_normalization_consumed":0,"halo_normalization_produced":0,"normalization_consumed":0,"normalization_produced":0,"preserved_gas_amount":0,"preserved_halo_cells":21,"preserved_halo_materials":{"3":21},"preserved_halo_visible_water":5291,"preserved_in_flight_water":0,"preserved_inertial_cells":0,"preserved_water_overfill":0,"requested":false,"source_policy_sha256":"f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc","target_policy_sha256":"f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc","water_after":88740,"water_before":88740},"outgoing":{"clipped_gas_amount":0,"clipped_gas_labels":0,"clipped_inertial_cells":0,"clipped_material_cells":0,"clipped_materials":{},"clipped_pressure_flow_cells":0,"clipped_thermal_cells":0,"clipped_visible_water":0,"clipped_water_overfill":0,"discarded_gas_amount":0,"discarded_in_flight_water":0,"discarded_inertial_cells":0,"discarded_pressure_flow_cells":83,"discarded_water_overfill":120,"halo_normalization_consumed":0,"halo_normalization_produced":0,"normalization_consumed":0,"normalization_produced":0,"preserved_gas_amount":0,"preserved_halo_cells":21,"preserved_halo_materials":{"3":21},"preserved_halo_visible_water":5291,"preserved_in_flight_water":0,"preserved_inertial_cells":0,"preserved_water_overfill":0,"requested":true,"source_policy_sha256":"f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc","target_policy_sha256":"4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a","water_after":88620,"water_before":88740},"outgoing_source":{"clipped_gas_amount":0,"clipped_gas_labels":0,"clipped_inertial_cells":0,"clipped_material_cells":0,"clipped_materials":{},"clipped_pressure_flow_cells":0,"clipped_thermal_cells":0,"clipped_visible_water":0,"clipped_water_overfill":0,"discarded_gas_amount":0,"discarded_in_flight_water":0,"discarded_inertial_cells":0,"discarded_pressure_flow_cells":0,"discarded_water_overfill":0,"halo_normalization_consumed":0,"halo_normalization_produced":0,"normalization_consumed":0,"normalization_produced":0,"preserved_gas_amount":0,"preserved_halo_cells":21,"preserved_halo_materials":{"3":21},"preserved_halo_visible_water":5291,"preserved_in_flight_water":0,"preserved_inertial_cells":0,"preserved_water_overfill":120,"requested":false,"source_policy_sha256":"f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc","target_policy_sha256":"f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc","water_after":88740,"water_before":88740},"outgoing_status":"Liquid settings applied. Water quantity 88740 → 88620. Kept 21 cells outside the canvas (21 water), including 5291 visible Water units. Discarded 120 pressure overfill units, pressure flow in 83 cells.","side":512,"status":"Placed Midge #1 at (200.0, 200.0) (session 1). Water quantity 88740 → 88740. Kept 21 cells outside the canvas (21 water), including 5291 visible Water units.","switch":{"clipped_gas_amount":0,"clipped_gas_labels":0,"clipped_inertial_cells":0,"clipped_material_cells":0,"clipped_materials":{},"clipped_pressure_flow_cells":0,"clipped_thermal_cells":0,"clipped_visible_water":0,"clipped_water_overfill":0,"discarded_gas_amount":0,"discarded_in_flight_water":0,"discarded_inertial_cells":0,"discarded_pressure_flow_cells":0,"discarded_water_overfill":0,"halo_normalization_consumed":0,"halo_normalization_produced":0,"normalization_consumed":0,"normalization_produced":0,"preserved_gas_amount":0,"preserved_halo_cells":21,"preserved_halo_materials":{"3":21},"preserved_halo_visible_water":5291,"preserved_in_flight_water":0,"preserved_inertial_cells":0,"preserved_water_overfill":0,"requested":true,"source_policy_sha256":"4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a","target_policy_sha256":"f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc","water_after":88740,"water_before":88740},"workers":{"collection_usec":14,"completed_tick":17,"native_tick_ms":0.131536,"phase_jobs":[1,1,1,1],"sampled_usec":2783083,"scope":"maximum distinct task-claiming participants in one phase dispatch of this completed tick; an inline nonempty phase counts the owner as one; not utilization or simultaneous execution","sequence":2,"worker_capacity":4,"workers_observed":1,"world_generation":3}},{"edge":"bottom","edit":{"clipped_gas_amount":0,"clipped_gas_labels":0,"clipped_inertial_cells":0,"clipped_material_cells":0,"clipped_materials":{},"clipped_pressure_flow_cells":0,"clipped_thermal_cells":0,"clipped_visible_water":0,"clipped_water_overfill":0,"discarded_gas_amount":0,"discarded_in_flight_water":0,"discarded_inertial_cells":0,"discarded_pressure_flow_cells":0,"discarded_water_overfill":0,"halo_normalization_consumed":0,"halo_normalization_produced":0,"normalization_consumed":0,"normalization_produced":0,"preserved_gas_amount":0,"preserved_halo_cells":93,"preserved_halo_materials":{"3":53,"14":40},"preserved_halo_visible_water":13443,"preserved_in_flight_water":0,"preserved_inertial_cells":0,"preserved_water_overfill":0,"requested":false,"source_policy_sha256":"f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc","target_policy_sha256":"f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc","water_after":112455,"water_before":112455},"outgoing":{"clipped_gas_amount":0,"clipped_gas_labels":0,"clipped_inertial_cells":0,"clipped_material_cells":0,"clipped_materials":{},"clipped_pressure_flow_cells":0,"clipped_thermal_cells":0,"clipped_visible_water":0,"clipped_water_overfill":0,"discarded_gas_amount":0,"discarded_in_flight_water":0,"discarded_inertial_cells":0,"discarded_pressure_flow_cells":19,"discarded_water_overfill":0,"halo_normalization_consumed":0,"halo_normalization_produced":0,"normalization_consumed":0,"normalization_produced":0,"preserved_gas_amount":0,"preserved_halo_cells":93,"preserved_halo_materials":{"3":53,"14":40},"preserved_halo_visible_water":13444,"preserved_in_flight_water":0,"preserved_inertial_cells":0,"preserved_water_overfill":0,"requested":true,"source_policy_sha256":"f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc","target_policy_sha256":"4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a","water_after":112455,"water_before":112455},"outgoing_source":{"clipped_gas_amount":0,"clipped_gas_labels":0,"clipped_inertial_cells":0,"clipped_material_cells":0,"clipped_materials":{},"clipped_pressure_flow_cells":0,"clipped_thermal_cells":0,"clipped_visible_water":0,"clipped_water_overfill":0,"discarded_gas_amount":0,"discarded_in_flight_water":0,"discarded_inertial_cells":0,"discarded_pressure_flow_cells":0,"discarded_water_overfill":0,"halo_normalization_consumed":0,"halo_normalization_produced":0,"normalization_consumed":0,"normalization_produced":0,"preserved_gas_amount":0,"preserved_halo_cells":93,"preserved_halo_materials":{"3":53,"14":40},"preserved_halo_visible_water":13444,"preserved_in_flight_water":0,"preserved_inertial_cells":0,"preserved_water_overfill":0,"requested":false,"source_policy_sha256":"f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc","target_policy_sha256":"f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc","water_after":112455,"water_before":112455},"outgoing_status":"Liquid settings applied. Water quantity 112455 → 112455. Kept 93 cells outside the canvas (53 water, 40 dust), including 13444 visible Water units. Discarded pressure flow in 19 cells.","side":2048,"status":"Placed Midge #1 at (200.0, 200.0) (session 4). Water quantity 112455 → 112455. Kept 93 cells outside the canvas (53 water, 40 dust), including 13443 visible Water units.","switch":{"clipped_gas_amount":0,"clipped_gas_labels":0,"clipped_inertial_cells":0,"clipped_material_cells":0,"clipped_materials":{},"clipped_pressure_flow_cells":0,"clipped_thermal_cells":0,"clipped_visible_water":0,"clipped_water_overfill":0,"discarded_gas_amount":0,"discarded_in_flight_water":0,"discarded_inertial_cells":0,"discarded_pressure_flow_cells":0,"discarded_water_overfill":0,"halo_normalization_consumed":0,"halo_normalization_produced":0,"normalization_consumed":0,"normalization_produced":0,"preserved_gas_amount":0,"preserved_halo_cells":93,"preserved_halo_materials":{"3":53,"14":40},"preserved_halo_visible_water":13443,"preserved_in_flight_water":0,"preserved_inertial_cells":0,"preserved_water_overfill":0,"requested":true,"source_policy_sha256":"4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a","target_policy_sha256":"f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc","water_after":112455,"water_before":112455},"workers":{"collection_usec":23,"completed_tick":17,"native_tick_ms":0.172447,"phase_jobs":[0,0,1,1],"sampled_usec":6405367,"scope":"maximum distinct task-claiming participants in one phase dispatch of this completed tick; an inline nonempty phase counts the owner as one; not utilization or simultaneous execution","sequence":5,"worker_capacity":4,"workers_observed":1,"world_generation":8}}],"checks":70,"failures":[]}
+Running test_material_lab_ui, timeout 1200.0s: ['/workspace/scratch/f7237b2aaca9/deps/godot47/Godot_v4.7-stable_linux.x86_64', '--headless', '--path', '/workspace/scratch/f7237b2aaca9/cybersand-reconcile/godot', '--script', 'res://tests/test_material_lab_ui.gd']
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ERROR: MATERIAL_LAB_UI: Real authoring operation failed: New powder 132 / { "ok": false, "errors": ["Authoring process failed or returned an invalid response (exit 2). Check the Python executable and compiler installation. {\n  \"errors\": [\n    \"/response: response must be outside the source repository\"\n  ],\n  \"ok\": false,\n  \"runtime_active\": false,\n  \"state\": \"draft\"\n}\n"], "process_exit_code": 2 }
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] expect (res://tests/test_material_lab_ui.gd:25)
+       [1] authoring (res://tests/test_material_lab_ui.gd:67)
+       [2] wait_for (res://tests/test_material_lab_ui.gd:30)
+MATERIAL_LAB_UI: 25 assertions; 1 failures; artifacts=/workspace/scratch/f7237b2aaca9/cybersand-reconcile/build/materials-lab-reconciliation/test_material_lab_ui/user-data/godot/app_userdata/Cyber Sand Reference Sandbox/materials_lab/ui-acceptance-146494
+test_material_lab_ui failed; elapsed=0.637s; exit=1; log=/workspace/scratch/f7237b2aaca9/cybersand-reconcile/build/materials-lab-reconciliation/test_material_lab_ui/test_material_lab_ui.log; snapshot=None
+Running test_workbench_liquid_equipment, timeout 3940.0s: ['/workspace/scratch/f7237b2aaca9/deps/godot47/Godot_v4.7-stable_linux.x86_64', '--headless', '--path', '/workspace/scratch/f7237b2aaca9/cybersand-reconcile/godot', '--script', 'res://tests/test_workbench_liquid_equipment.gd']
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+LIQUID_EQUIPMENT_EVIDENCE {"ballistic":{"body_contacts":54,"deposited":175,"in_flight":0,"terrain_contacts":40},"ballistic_requested":true,"barrel":{"after":"(241.7889, 182.9995)","before":"(242.0, 183.0005)","moved":0.211137846112251},"close":{"basin_cells_at_close":714,"basin_cells_later":722,"closed_cells":32,"displaced_cells":13,"trimmed_water":0},"drain":{"drained_cells":25.0,"masked_skips":0},"frame_interval_ms":{"max":117.561,"mean":7.04274145299145,"p95":7.341,"samples":2340},"leak":{"basin_cells":709,"gate_cells":12,"tank_cells":10072},"main_process_ms":{"max":912.688,"mean":30.057019222554,"p95":72.498,"samples":2341},"native_tick_ms":{"mean":1.33149908819347,"p95":3.198888,"samples":2109},"nozzle":{"cell_emissions":0,"dry_zone_cells":2,"emitted":175,"injected_cells":175.0,"mode":"ballistic parcels","pipe_cells":0.0,"underwater_injections":0},"pipe_full":{"capacity":38760,"pipe_full_events":31,"stock":38760},"preset":"Water: inertial","requested_workers":1,"rule_radius":3,"runtime":{"godot":"4.7-stable (official)","native_sha256":"0f257fe66e043cbb77366d99ce77325eacf8481443df4c5e000dcbc9ac075ea9","os":"Linux"},"start":{"tank_cells":10800,"world_water":2754000},"water_family":"inertial_cellular_v1","water_unit":255,"worker_step_ms":{"max":476.468,"mean":28.2320868989852,"p95":263.429,"samples":2267},"workers_observed_peak":1}
+LIQUID_EQUIPMENT 103 checks, 0 failures
+Running test_workbench_liquid_equipment, timeout 3940.0s: ['/workspace/scratch/f7237b2aaca9/deps/godot47/Godot_v4.7-stable_linux.x86_64', '--headless', '--path', '/workspace/scratch/f7237b2aaca9/cybersand-reconcile/godot', '--script', 'res://tests/test_workbench_liquid_equipment.gd']
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+LIQUID_EQUIPMENT_EVIDENCE {"ballistic":{"body_contacts":54,"deposited":175,"in_flight":0,"terrain_contacts":40},"ballistic_requested":true,"barrel":{"after":"(241.3496, 182.8584)","before":"(242.0, 183.0005)","moved":0.66568797826767},"close":{"basin_cells_at_close":714,"basin_cells_later":723,"closed_cells":32,"displaced_cells":10,"trimmed_water":0},"drain":{"drained_cells":25.0,"masked_skips":0},"frame_interval_ms":{"max":90.46,"mean":7.05902106620807,"p95":7.511,"samples":2326},"leak":{"basin_cells":709,"gate_cells":12,"tank_cells":10072},"main_process_ms":{"max":859.964,"mean":39.9281834980656,"p95":79.75,"samples":2327},"native_tick_ms":{"mean":1.30289055523941,"p95":2.133072,"samples":2109},"nozzle":{"cell_emissions":0,"dry_zone_cells":3,"emitted":175,"injected_cells":175.0,"mode":"ballistic parcels","pipe_cells":0.0,"underwater_injections":0},"pipe_full":{"capacity":38760,"pipe_full_events":31,"stock":38760},"preset":"Water: inertial","requested_workers":4,"rule_radius":3,"runtime":{"godot":"4.7-stable (official)","native_sha256":"0f257fe66e043cbb77366d99ce77325eacf8481443df4c5e000dcbc9ac075ea9","os":"Linux"},"start":{"tank_cells":10800,"world_water":2754000},"water_family":"inertial_cellular_v1","water_unit":255,"worker_step_ms":{"max":450.49,"mean":26.7861478530324,"p95":295.052,"samples":2259},"workers_observed_peak":4}
+LIQUID_EQUIPMENT 103 checks, 0 failures
+Running test_workbench_reservoir_lab, timeout 3940.0s: ['/workspace/scratch/f7237b2aaca9/deps/godot47/Godot_v4.7-stable_linux.x86_64', '--headless', '--path', '/workspace/scratch/f7237b2aaca9/cybersand-reconcile/godot', '--script', 'res://tests/test_workbench_reservoir_lab.gd']
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+RESERVOIR_LAB_EVIDENCE {"a4":{"displaced_on_close":30,"left_after_reopen":2947,"right_after_150":1038,"right_after_reopen":2949,"trimmed_on_close":3525},"around_pool":{"above":0,"c_tank":120,"gap":0,"right_of_a":0},"cascade":{"b1":4759,"b2":4328,"b2_after_low":4959,"b3":1200},"fountain":{"cells_above_surface_box":7},"inlet":{"column_injections":478,"injected_cells":478.0,"pool_cells":4744,"topped_up":0},"inlet_receipt":{"angle":-90.0,"cell_emissions":478,"column_injections":478,"emitted":478,"injected_water":121890,"installed":true,"on":false,"rate":2,"refused":{},"speed":1.0,"topped_up":0},"pool_idle_drift":0,"pool_idle_overfill":[0,0],"quadrant_delta":{"q00":-17239,"q01":-128,"q10":109098,"q11":-225},"requested_workers":1,"runtime":{"godot":"4.7-stable (official)","native_sha256":"0f257fe66e043cbb77366d99ce77325eacf8481443df4c5e000dcbc9ac075ea9","os":"Linux"},"sealed_tank":{"drained_cells_vent_open":1977.13333333333,"drained_cells_vent_shut":2488.16078431373,"tank_cells_after_open":353,"tank_cells_after_shut":2253,"tank_overfill_after_shut":16507},"spray_in_flight":0,"start":{"a_left":5928,"a_right":0,"b1":6968,"b2":3328,"b3":0,"c_tank":4800,"d_pool":4224},"water_family":"pressure_flow_v1/reference","workers_observed_peak":1}
+RESERVOIR_LAB 81 checks, 0 failures
+Running test_workbench_reservoir_lab, timeout 3940.0s: ['/workspace/scratch/f7237b2aaca9/deps/godot47/Godot_v4.7-stable_linux.x86_64', '--headless', '--path', '/workspace/scratch/f7237b2aaca9/cybersand-reconcile/godot', '--script', 'res://tests/test_workbench_reservoir_lab.gd']
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+RESERVOIR_LAB_EVIDENCE {"a4":{"displaced_on_close":30,"left_after_reopen":2946,"right_after_150":1038,"right_after_reopen":2950,"trimmed_on_close":3525},"around_pool":{"above":0,"c_tank":119,"gap":0,"right_of_a":0},"cascade":{"b1":4762,"b2":4327,"b2_after_low":4958,"b3":1197},"fountain":{"cells_above_surface_box":6},"inlet":{"column_injections":480,"injected_cells":480.0,"pool_cells":4749,"topped_up":0},"inlet_receipt":{"angle":-90.0,"cell_emissions":480,"column_injections":480,"emitted":480,"injected_water":122400,"installed":true,"on":false,"rate":2,"refused":{},"speed":1.0,"topped_up":0},"pool_idle_drift":0,"pool_idle_overfill":[0,0],"quadrant_delta":{"q00":-17690,"q01":-145,"q10":108348,"q11":-232},"requested_workers":4,"runtime":{"godot":"4.7-stable (official)","native_sha256":"0f257fe66e043cbb77366d99ce77325eacf8481443df4c5e000dcbc9ac075ea9","os":"Linux"},"sealed_tank":{"drained_cells_vent_open":1977.09411764706,"drained_cells_vent_shut":2482.09411764706,"tank_cells_after_open":364,"tank_cells_after_shut":2268,"tank_overfill_after_shut":18817},"spray_in_flight":0,"start":{"a_left":5928,"a_right":0,"b1":6968,"b2":3328,"b3":0,"c_tank":4800,"d_pool":4224},"water_family":"pressure_flow_v1/reference","workers_observed_peak":4}
+RESERVOIR_LAB 81 checks, 0 failures
+COMBINED_QUALIFICATION: failed 8 processes
