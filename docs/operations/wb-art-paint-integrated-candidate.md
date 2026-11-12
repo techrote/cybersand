@@ -34,6 +34,11 @@ these additional repairs:
 - A requested World replacement stops old agent work immediately, but retires
   its authored record only when the new World is installed. Native preparation
   refusal therefore leaves the old confirmed prefix available for Save.
+- The installation refresh updates PAINT before publishing the final shared
+  acknowledgement. Actor placement/reset and liquid-conversion accounting now
+  remain visible instead of being overwritten by PAINT's brush status. The full
+  Godot campaign exposed this defect; the unchanged pilot and live-liquid
+  fixtures reproduce it and pass after the ordering correction.
 
 The installed qualification now uses a real **1024²** generated map at one and
 four native workers, while source-layout cases retain the smaller **512²**
@@ -56,6 +61,13 @@ record the demonstrated defects, exact source/runtime hashes and focused Linux
 results. The local 1024² author/reopen pair passed 165/39 checks with an identical
 authored native digest. These headless results do not replace hosted graphics,
 Windows, four-worker or complete release-suite evidence.
+
+The subsequent full Godot suite found the installation-status overwrite and an
+obsolete liquid-edge UI fixture. [Acknowledgement regression evidence](../audits/wb-art-paint-2026-11-12/status-acknowledgement-local-results.json)
+retains the unmodified pilot and live-liquid tests after the production fix.
+The liquid-edge fixture now supplies global pointer events, chooses materials
+by native ID and waits for PAINT receipts while comparing exact native brush
+cells. Its original halo, conversion and physical-owner assertions remain.
 
 ### Evaluate the delivered package
 

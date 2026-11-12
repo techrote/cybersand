@@ -1,0 +1,41 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+Waiting for blank workbench installed
+Waiting for roster places first flyer
+PILOT_ACK_DIAGNOSTIC {"message":"Brush · sand · radius 8","model":"scooper","paused":true,"pilot_slot":0,"stage":"placed"}
+ERROR: WORKBENCH_PILOT_UI acknowledged Scooper
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/pilot_ui_monitor_diagnostic.gd:19)
+       [1] test_roster (res://tests/pilot_ui_monitor_diagnostic.gd:95)
+       [2] until (res://tests/pilot_ui_monitor_diagnostic.gd:27)
+Waiting for real painted pixel
+Waiting for nondefault flyer tuning accepted
+Waiting for second flyer placement
+Waiting for stationary reset accepted
+PILOT_ACK_DIAGNOSTIC {"message":"Brush · sand · radius 8","paused":true,"position":"(200.0, 200.0)","saved":"(200.0, 200.0)","stage":"stationary_reset"}
+ERROR: WORKBENCH_PILOT_UI stationary reset confirmed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/pilot_ui_monitor_diagnostic.gd:19)
+       [1] test_roster (res://tests/pilot_ui_monitor_diagnostic.gd:135)
+       [2] until (res://tests/pilot_ui_monitor_diagnostic.gd:27)
+Waiting for playing owner advanced
+Waiting for R resets during play
+PILOT_ACK_DIAGNOSTIC {"expected_selected":1,"message":"Brush · sand · radius 8","paused":false,"position":"(260.0, 180.0066)","saved":"(260.0, 180.0)","selected":1,"stage":"playing_reset"}
+ERROR: WORKBENCH_PILOT_UI reset returned to saved spawn and resumed play
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/pilot_ui_monitor_diagnostic.gd:19)
+       [1] test_roster (res://tests/pilot_ui_monitor_diagnostic.gd:150)
+       [2] until (res://tests/pilot_ui_monitor_diagnostic.gd:27)
+Waiting for switch absent model while flying
+Waiting for move accepted during play
+Waiting for edited handling accepted during play
+Waiting for Defaults accepted during play
+Waiting for remove accepted during play
+Waiting for named start loaded
+Waiting for new blank acknowledged
+WORKBENCH_PILOT_UI {"assertions":179,"failures":["acknowledged Scooper","stationary reset confirmed","reset returned to saved spawn and resumed play"]}

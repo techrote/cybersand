@@ -438,6 +438,13 @@ func installed(candidate: Dictionary) -> void:
 	for i: int in 3:
 		host.world_shader.set_shader_parameter("rigid_body_data_%d" % i,Vector4(-1000,-1000,0,0))
 	host.update_worker_frame_state()
+	if paint_editor != null:
+		paint_editor.installed()
+		paint_editor.select_material(int(applied.material))
+		_material.select(_material.get_item_index(int(applied.material)))
+	# Refreshing PAINT publishes its own tool status. The acknowledged native
+	# installation, actor action and inventory receipt must remain the common
+	# Workbench status after that refresh.
 	var rounded_on_apply: bool = _liquid_action and bool(candidate.normalize)
 	if not _actor_action.is_empty():
 		_reveal_selected()
@@ -454,10 +461,6 @@ func installed(candidate: Dictionary) -> void:
 			"Choose a flyer to pilot, or use Place model to add an independent body.")
 	var receipt: Dictionary = host.tower_context.get("liquid_construction_receipt",{}).get("workbench_conversion",{})
 	message += _inventory_report(receipt,rounded_on_apply)
-	if paint_editor != null:
-		paint_editor.installed()
-		paint_editor.select_material(int(applied.material))
-		_material.select(_material.get_item_index(int(applied.material)))
 
 
 func _material_counts(counts: Dictionary) -> String:
