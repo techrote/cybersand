@@ -4,6 +4,7 @@ extends SceneTree
 ## observes queue and receipt boundaries directly; the extracted-legacy and
 ## in-flight lease fixtures are explicitly controlled states, not timing races.
 const Worker = preload("res://scripts/simulation_worker.gd")
+const Equipment = preload("res://scripts/workbench_liquid_equipment.gd")
 var checks := 0
 var failures := 0
 
@@ -107,11 +108,27 @@ func run_case(workers: int) -> void:
 	check(art_queue(worker,36,30).status=="queued","agent may continue after legacy context publication")
 	check(drain_art(worker).changed==1,"post-legacy agent operation is retained")
 
+	# Controlled extracted-transition and reset states: an equipment command
+	# must not be admitted into the interval where replacement would discard it.
+	var equipment_request := {"command":"configure","serial":1,"config":Equipment.empty_config()}
 	worker._world_change_inflight = true
 	check(art_queue(worker,40,30).status=="refused" and worker.paint_queue(paint_request(worker,40,30,3)).status=="refused",
 		"extracted World transition excludes both editors")
 	legacy_blocked(worker,"extracted World transition excludes legacy authoring")
+	check(not worker.queue_workbench_equipment(equipment_request) and worker._workbench_equipment_commands.is_empty(),
+		"controlled extracted transition refuses equipment without enqueue")
 	worker._world_change_inflight = false
+	worker._reset_requested = true
+	check(not worker.queue_workbench_equipment(equipment_request) and worker._workbench_equipment_commands.is_empty(),
+		"controlled pending reset refuses equipment without enqueue")
+	worker._reset_requested = false
+	check(worker.queue_workbench_equipment(equipment_request) and worker._workbench_equipment_commands.size()==1,
+		"controlled acknowledged-install state admits equipment again")
+	var equipment_revision: int = world.revision
+	worker._consume_workbench_emissions(true,{})
+	var equipment_receipt: Dictionary = worker._workbench_equipment.receipt()
+	check(equipment_receipt.configured and equipment_receipt.serial==1 and world.revision==equipment_revision,
+		"admitted equipment configuration reaches the same owner without paused cell mutation")
 	var paint_epoch: int = worker.paint_state().epoch
 	var art_epoch: int = worker.art_state().epoch
 	check(art_queue(worker,40,30).status=="queued","replacement fixture admits pending art")

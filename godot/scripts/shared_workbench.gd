@@ -39,6 +39,10 @@ var _fields := {}
 var _position := []
 var _extent := []
 var _details := VBoxContainer.new()
+# Details scrolls inside a capped height so the toolbar rows above it never
+# leave the top of the window (the toolbar grew with the equipment rows).
+var _details_scroll := ScrollContainer.new()
+const DETAILS_MAX_HEIGHT := 300
 var _liquids: CyberLiquidComparisonPanel
 var _detail_label := Label.new()
 var _name := LineEdit.new()
@@ -57,6 +61,8 @@ var _processor_label := ""
 # WCX/BW-001 experimental Water spray controls (separate owner script).
 var water_spray := preload("res://scripts/workbench_water_spray_panel.gd").new()
 var paint_editor: Control
+# IN-TOOLS #361 valve / drain / nozzle controls (separate owner script).
+var equipment := preload("res://scripts/workbench_liquid_equipment_panel.gd").new()
 
 func _row(parent: Control) -> HFlowContainer:
 	var row := HFlowContainer.new()
@@ -177,7 +183,13 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 		if not applied.is_empty(): applied.fire = enabled)
 	row.add_child(_fire)
 	water_spray.build(host,self,_row,entered_position)
-	add_child(_details)
+	equipment.build(host,self,_row,entered_position)
+	_details_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_details_scroll.custom_minimum_size.y = DETAILS_MAX_HEIGHT
+	_details_scroll.hide()
+	add_child(_details_scroll)
+	_details.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_details_scroll.add_child(_details)
 	_details.visibility_changed.connect(_details_visibility_changed)
 	_details.hide()
 	row = _row(_details)
@@ -218,6 +230,10 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_detail_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_details.add_child(_detail_label)
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	# A long receipt must not grow the toolbar off the top of the window; the
+	# full status stays readable in the tooltip.
+	_status.max_lines_visible = 2
+	_status.mouse_filter = Control.MOUSE_FILTER_PASS
 	add_child(_status)
 	DisplayServer.window_set_title("CyberSand · Development workbench")
 	_processor_label = "%s · %d logical CPUs" % [OS.get_processor_name(),OS.get_processor_count()]
@@ -417,6 +433,7 @@ func installed(candidate: Dictionary) -> void:
 	select_instance(selected_id(),true)
 	if not applied.source.is_empty():
 		host.workbench_source(Vector2i(applied.source[0],applied.source[1]),int(applied.source[2]),"configure")
+	equipment.installed(applied)
 	for i: int in 3:
 		host.world_shader.set_shader_parameter("rigid_body_data_%d" % i,Vector4(-1000,-1000,0,0))
 	host.update_worker_frame_state()
@@ -497,6 +514,7 @@ func _water_identity(context: Dictionary) -> String:
 
 
 func _details_visibility_changed() -> void:
+	_details_scroll.visible = _details.visible
 	if is_instance_valid(host):
 		host.simulation_worker.set_worker_participation_sampling(_details.is_visible_in_tree())
 
@@ -707,6 +725,8 @@ func load_setup() -> bool:
 	# built-in water evaluation start, "bench-canvas" the whole-engine
 	# benchmark and "stress-canvas" the heavy-activity stress start. A saved
 	# file of the name always wins.
+	if _name.text in Setup.EQUIPMENT_LABELS and not FileAccess.file_exists(Setup._path(_name.text)):
+		return load_equipment_start(_name.text)
 	if _name.text in Setup.BUILTIN_LABELS and not FileAccess.file_exists(Setup._path(_name.text)):
 		if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
 		result = {"setup":Setup.builtin(_name.text,_liquids.bridge.default_liquid_policy())}
@@ -726,6 +746,40 @@ func begin_deferred_art_stroke(stroke: Array, token: int) -> bool:
 
 func art_changed_source() -> void:
 	if paint_editor != null: paint_editor.invalidate_history("Agent drawing changed the source")
+
+# Built-in #361 equipment starts. Each asks the native validator for one of
+# the existing opt-in liquid presets (inertial Water by default) and sets
+# ballistic Water for that World so the nozzle fires real parcels. Either can
+# be refused; the start then keeps the policy it was given and the nozzle
+# injects resting cells instead. Global defaults never change.
+const EQUIPMENT_PRESETS := {Setup.LIQUID_LAB_LABEL:"Water: inertial",Setup.RESERVOIR_LAB_LABEL:"Water: pressure reference"}
+
+func load_liquid_lab(ballistic: bool = true, preset_label: String = "") -> bool:
+	return load_equipment_start(Setup.LIQUID_LAB_LABEL,ballistic,preset_label)
+
+func load_equipment_start(label: String, ballistic: bool = true, preset_label: String = "") -> bool:
+	if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
+	if label not in Setup.EQUIPMENT_LABELS: return refuse("Unknown equipment start.")
+	if not host.simulation_worker.has_failed() and not _editable(): return false
+	if preset_label.is_empty(): preset_label = EQUIPMENT_PRESETS[label]
+	var policy: PackedInt32Array = _liquids.bridge.default_liquid_policy()
+	var note := ""
+	var preset := -1
+	for index: int in CyberLiquidComparisonPanel.PRESETS.size():
+		if CyberLiquidComparisonPanel.PRESETS[index].label == preset_label: preset = index
+	var chosen: Dictionary = _liquids._preset(preset) if preset >= 0 else {"ok":false,"error":"preset missing"}
+	if chosen.get("ok",false): policy = chosen.request
+	else: note = " %s unavailable (%s); using the current policy." % [preset_label,str(chosen.get("error",""))]
+	var candidate := Setup.builtin(label,policy)
+	var checked: Dictionary = _liquids.bridge.validate_liquid_policy(policy)
+	if checked.get("accepted",false):
+		candidate.rule_radius = maxi(int(candidate.rule_radius),int(checked.receipt.get("minimum_rule_radius",2)))
+	host.workbench_water_options["workbench_ballistic"] = ballistic
+	water_spray._ballistic.set_pressed_no_signal(ballistic)
+	if host.simulation_worker.has_failed(): return host.workbench_restart(candidate)
+	if not apply(candidate): return false
+	message = "Loading %s (%s): V valve, [ ] choose valve, G drain, H nozzle, J/K aim." % [label,preset_label] + note
+	return true
 
 func _cancel() -> void:
 	if host != null: host.cancel_playable_course_input()
@@ -960,7 +1014,9 @@ func _process(_delta: float) -> void:
 	_status.text = "%s · cell %s · %s · %s   |   source %d inserted / %d blocked" % [
 		state,cursor,str(applied.get("extent","")),reason,int(source.get("inserted",0)),int(source.get("blocked",0))]
 	_status.text += " · granular %s · active Water %s" % [gcr.get("response","pending"),_water_identity(context)]
+	_status.tooltip_text = _status.text
 	water_spray.refresh(context)
+	equipment.refresh(context)
 	if _details.visible:
 		var selected := body_state(selected_id())
 		var policy: Dictionary = context.get("liquid_solver_policy",{})

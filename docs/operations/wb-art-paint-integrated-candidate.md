@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Unmerged Draft candidate, generator packaging repair, native stored-material receipts, ordered human and agent authoring, reproducible qualification and owner acceptance
 canonical-for: [integrated-paint-agent-workbench]
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-12
 related-documents: [../systems/paint-editor-bounded-shapes.md, ../systems/workbench-direct-art-batches.md, ../systems/workbench-art-providers.md, ../systems/explore001-generated-playable-maps.md, ../architecture/shared-workbench-authoring-data.md]
 ---
 
@@ -20,7 +20,8 @@ The live sources inspected before editing were:
 
 | Source | Exact inspected commit |
 | --- | --- |
-| Accepted main, including #542 | `d4b18e7f06839b35c8f6a66195206da0f33c5fa3` |
+| Accepted main at initial inspection, including #542 | `d4b18e7f06839b35c8f6a66195206da0f33c5fa3` |
+| Accepted main advanced during qualification, including #553 | `d8588716becb0dc42019faf23f721378d8adc84a` |
 | Agent PR #560, initial repair baseline | `e5bf2916ccdbb331690e5f5eef0cdef9cc734089` |
 | Agent PR #560, final live reread and preserved merge | `381307eb988dc25f36716d8308d47e210fdd3b4e` |
 | PAINT PR #544 | `c9b5084e0276f0b5036d02db835973f04bb6f51f` |
@@ -39,7 +40,11 @@ Its published generator checkpoint is `19563be7d206dbe59a3d32dc613f6464ae6c898d`
 the readback checkpoint is `df1649a11e77bfdf95946f5c997a35b74af358bf`.
 The [integration branch](https://github.com/techrote/cybersand/tree/codex/wb-art-paint-integrated-20261111)
 starts from accepted main and incorporates the complete PAINT and repaired agent
-histories. Neither original PR is replaced or closed.
+histories. Accepted main then advanced to `d8588716` through #553. A further
+ordinary merge preserves its liquid-equipment owner, Setup-v2 equipment block,
+reservoir starts, overlays and capped Details panel. The current candidate must
+qualify that combined source; earlier application-test passes remain attributed
+to their earlier checkpoints. Neither original PR is replaced or closed.
 
 ## Generator discovery and standalone installation
 
@@ -82,6 +87,10 @@ command, executing work or an unconsumed native result. Extracted legacy brush
 commands also retain an in-flight marker until native execution and source-fence
 publication finish. Reset/replacement/settings fences remain in both interfaces.
 Art completion atomically publishes the current PAINT generation/revision/tick.
+The accepted equipment owner remains on that same worker; its cell writes run
+only before unpaused simulation ticks. Equipment command admission also observes
+the extracted World-transition and reset fences, so replacement cannot silently
+clear an accepted command. No equipment command is exposed to the agent interface.
 
 At the controller boundary, agent work waits while PAINT plans, consumes its
 receipt and records history. If transient contention follows rasterization, the
@@ -115,8 +124,12 @@ before/after identities and changed/unchanged/excluded/refused counts.
 Both interfaces append to the same existing Setup-v2/generated-start document.
 Save waits for outstanding authoring receipts. Generated terrain, ordered mixed
 materials, actor spawns and supported settings reconstruct through existing
-facilities. This saves the authored start; it does not checkpoint evolved physics
-or provide a new agent save format or Flatten implementation.
+facilities. The optional equipment block accepted in #553 is retained through
+the same Setup-v2 validation and persistence path. Equipment buttons coexist with
+PAINT; paused Paint mode retains its G/V/bracket shortcuts, while the main Select
+body tool makes the equipment shortcuts available. This saves the authored start;
+it does not checkpoint evolved physics or provide a new agent save format or
+Flatten implementation.
 
 ## Qualification and reproducibility
 
@@ -138,7 +151,8 @@ capacity and stored readback. Its Linux SHA-256 is
 `16ffc0ce8190c2e8ca2e31fc59f10c55148adc6e7f16727dc96c094d8a96696a`.
 This local development build uses GCC 14.2/binutils 2.44 with the explicit
 toolchain-drift switch; it is separate from hosted pinned-release qualification.
-Focused results: shared ordering 86/0, stored-material/body-mask 88/0, direct
+Before the subsequent accepted-main equipment merge, focused results were:
+shared ordering 86/0, stored-material/body-mask 88/0, direct
 PAINT executor 21/0, mounted PAINT native 109/0 at each of one and four workers.
 The remaining 15 original affected native/application runs completed 4,653
 checks with zero failures. Combined author/reopen completed 122/32 checks at
