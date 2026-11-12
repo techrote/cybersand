@@ -316,3 +316,93 @@ bounded graphical capture cadence. A fresh complete campaign must establish its
 own platform, relocated package and downstream results. Final successful artifact
 identities and their limits will be recorded before handover. Human acceptance
 remains unperformed.
+
+## Windows evaluation continuation — 2026-11-12
+
+Request 4, source `cd534e9b8d2e98ea75e463b2fcf261f08deead96`, completed the
+[fresh platform campaign](https://github.com/techrote/cybersand/actions/runs/43129518539)
+with successful Linux and Windows catalogue, native/Godot and graphical stages.
+Its Windows DLL is 5,118,976 bytes, SHA-256
+`34b33948dbe252231c1132de4832deb17984ea1c05d1d3c059f98a7ec8195ba9`.
+The package stage then failed before smoke: Git for Windows 2.56 uses `ucrt64`
+and places native helpers in `bin`, while the copier required `mingw64/libexec`.
+No runtime publication or executable package is claimed for this failed campaign.
+The original hosted job log remains attached to that run; the preceding Python
+alias failure and earlier qualification records remain unchanged.
+
+The corrected copier admits exactly one complete `mingw64` or `ucrt64` layout,
+retains its DLLs/helpers and dependency license notices, and excludes installed
+machine configuration. Missing, ambiguous and unlicensed distributions remain
+refused. The isolated launcher/smoke PATH supports both native layouts. Two new
+layout regressions raise package guards to 16; Linux package/publisher/base
+guards pass 16/8/30. The actual official MinGit 2.56.0.4 x64 ZIP, SHA-256
+`e3bf78351fe777fba47ddee5950082f8a98bb0f02604fdc7ba3ee2cb68ffa877`, was
+copied and executed on Windows with only the copied tools and system directories
+on PATH. Its full immutable compatibility check passes with
+`production_cutover: false`. Local Windows symlink privilege was unavailable for
+the existing Python alias fixtures; their WSL results and original hosted
+Windows execution remain separately scoped. No skip or validation relaxation was
+added.
+
+Independent ordinary Windows launch also exposed two usability defects hidden
+by the large graphical fixture viewport: standalone game scaling shrank the
+13-pixel Lab controls at 1280×720, and native/contact or candidate World controls
+extended below compact windows. Pending numeric text could also be committed
+after a compile request, causing an avoidable stale-revision refusal. The
+continuation corrects Lab-specific scaling/overflow and commits visible numeric
+edits before request capture; endpoint/roll changes retire resolver diagnostics.
+These changes retain the existing native consumers and authoring boundaries.
+Fresh resulting-source execution and the relocated package remain required.
+
+Final local Windows authoring regressions on the frozen correction pass:
+mounted authoring UI **196 assertions**, compiled candidate/reference World UI
+**204 checks**, and native contacts plus all-tab compact-window reachability
+**180 assertions**, all with zero failures. The full UI exercises creation,
+duplication, property/reaction edits, validation, native compilation and Worlds,
+preset/recipe persistence and reopening, pending text and stale-result refusals.
+The World test adds raw typed seed/tick recipe saving. Direct ANGLE interaction
+also confirms that typing density1337 and immediately clicking Compile qualifies
+that value on the first attempt. These use the request-4 DLL with unchanged
+native inputs; they do not reattest its manifest to the new source. The
+[UI qualification receipt](materials-lab-completion-20261111/windows-evaluation-20261112/materials-lab-ui-qualification.json)
+records commands, timeouts, tools, actual runtime and preceding failed attempts;
+its final source-file hashes are labelled as inspection, not a captured
+whole-run before/after inventory. The
+[packaging guard receipt](materials-lab-completion-20261111/windows-evaluation-20261112/packaging-guards-qualification.json)
+separately retains the 16/8/30 guarded runs and their before/after input hashes.
+
+Documentation and historical M11 checks pass; the existing frozen retrieval set
+scores 19/32 at rank1 and 31/32 at rank5, while the additive Lab questions score
+11/11 at rank1. Retrieval is lexical routing evidence, not semantic acceptance.
+The first local documentation run lacked the pinned companion workspace files;
+restoring its five exact expected-fact inputs from CI's unchanged
+`6a58311982941b75f46e22109a0829e5acb83c7e` checkpoint passes without changing
+the checker or questions. Current repository validation still refuses the old
+published Windows/Linux manifests pending source-matched publication.
+
+One earlier WSL guard invocation inherited Git location variables and touched
+local repository configuration. The corrected guard harness removes those
+variables from its independent fixtures and passes 16/8/30 with unchanged
+guarded inputs. The real repository's worktree mode and owner identity were
+restored from its pre-existing reflog; refs, staging index and source files were
+verified intact. This harness failure does not count as a passing guard run.
+
+Publication request **5** carries these fixes, exact contact-capture source
+custody and the current Git package layout. It requires a fresh complete
+Windows/Linux campaign and relocated package smoke under all existing gates.
+
+Independent Windows 11 execution additionally passes **625 checks**: Workbench
+canvas 164, a fresh-process saved-start reopen 23, liquid edges 70, equipment
+103 at each of one/four workers, and reservoir 81 at each configuration.
+The [original combined receipt](materials-lab-completion-20261111/windows-evaluation-20261112/combined-qualification.json)
+retains exact commands, watchdogs, timings, tool identities and all 1,076 input
+hashes before/after. All 88 native inputs and the 11 named Workbench/equipment
+owners/tests remained unchanged; five concurrently edited Lab UI/test files
+are explicitly recorded as deltas, so this is equipment integration evidence,
+not a frozen-source Lab execution claim. The
+[independent equipment readbacks](materials-lab-completion-20261111/windows-evaluation-20261112/equipment-native-readbacks.json)
+observe actual worker peaks of one and four and retain Water accounting.
+Default-sandbox import first failed on safe-save permissions; the same import
+passed outside that sandbox. An initial parent-harness cp1252 printing failure
+is retained locally; a fresh UTF-8 edges run completed naturally. Product checks
+and policy watchdogs were unchanged.

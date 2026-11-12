@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-11-11",
+  "reviewed": "2026-11-12",
   "scope": "Additive Materials Lab v1 review-candidate questions; frozen and historical questions remain unchanged. Implementation is distinct from production activation and platform acceptance.",
   "questions": [
     {
@@ -161,6 +161,18 @@
       "sources": [
         "operations/materials-lab-authoring.md"
       ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-11",
+      "query": "How does the Materials Lab stay readable in a small window and use a typed numeric edit when I immediately compile or save?",
+      "canonical": ["operations/materials-lab-authoring.md"],
+      "facts": [
+        "The standalone Lab uses window pixels and restores launcher scaling on close; overflowing tab contents scroll at the Workbench's 1000x650 minimum.",
+        "Actions commit pending numeric input before capturing source candidate and recipe values.",
+        "Endpoint and supplied-roll changes retire the previous resolver diagnostic; late results cannot describe the current selection."
+      ],
+      "sources": ["operations/materials-lab-authoring.md"],
       "revision_sensitive": true
     }
   ]

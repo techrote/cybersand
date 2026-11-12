@@ -125,6 +125,13 @@ func exercise_recipe_controls(view: Variant, valid: Dictionary) -> void:
 	expect(not view.set_scenario(loaded) and view.scenario() == original,"Pending compile cannot be silently retargeted by recipe import")
 	view.show_failure("Completed fixture cleanup")
 	expect(view.show_receipt(valid,valid.candidate_digest),"Native receipt matches the restored recipe")
+	view._seed.get_line_edit().text = str(int(original.seed) + 1)
+	view._seed.get_line_edit().text_changed.emit(view._seed.get_line_edit().text)
+	expect(view.receipt.is_empty() and view._reference_preview.texture == null,
+		"Unsubmitted World seed text immediately retires the displayed native receipt")
+	view.commit_fields()
+	expect(int(view.scenario().seed) == int(original.seed) + 1,"World action commit preserves the displayed pending seed")
+	expect(view.set_scenario(original) and view.show_receipt(valid,valid.candidate_digest),"Original native recipe can be restored after pending text edits")
 
 func run() -> void:
 	if receipt_validation_only:

@@ -61,6 +61,8 @@ func _spin(parent: Node, caption: String, field: SpinBox, low: int, high: int, i
 	field.step = 1
 	field.value = initial
 	field.custom_minimum_size.x = 80
+	field.get_line_edit().text_changed.connect(func(_text: String) -> void: field.set_meta("lab_pending_text",true))
+	field.value_changed.connect(func(_value: float) -> void: field.set_meta("lab_pending_text",false))
 	parent.add_child(field)
 
 func _ensure_built() -> void:
@@ -91,6 +93,7 @@ func _ensure_built() -> void:
 		picker.item_selected.connect(func(_index: int) -> void: _scenario_changed())
 	for field: SpinBox in [_seed,_ticks]:
 		field.value_changed.connect(func(_value: float) -> void: _scenario_changed())
+		field.get_line_edit().text_changed.connect(func(_text: String) -> void: _scenario_changed())
 	var actions := _row()
 	_run_button.text = "Compile + compare World"
 	_run_button.pressed.connect(func() -> void: _request(false))
@@ -257,10 +260,16 @@ func _refresh_controls() -> void:
 
 func _request(export_bundle: bool) -> void:
 	if _pending or not _blocked_reason().is_empty(): return
-	_seed.apply()
-	_ticks.apply()
+	commit_fields()
 	if export_bundle: export_requested.emit(scenario())
 	else: test_requested.emit(scenario())
+
+func commit_fields() -> void:
+	for field: SpinBox in [_seed,_ticks]:
+		if field.get_line_edit().has_focus() or field.get_meta("lab_pending_text",false):
+			field.apply()
+			field.set_meta("lab_pending_text",false)
+			field.get_line_edit().release_focus()
 
 func show_pending() -> void:
 	_ensure_built()

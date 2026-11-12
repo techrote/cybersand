@@ -169,14 +169,49 @@ func preview_click(panel: Variant, point: Vector2i, button: MouseButton) -> void
 	event.position = margin + (Vector2(point - panel.experiment.preview_region().position) + Vector2(0.5,0.5)) * scale
 	panel._preview.gui_input.emit(event)
 
+func check_window_layout(panel: Variant) -> void:
+	var former_size: Vector2i = root.size
+	var former_scale_size: Vector2i = root.content_scale_size
+	var former_tab: int = panel._tabs.current_tab
+	var actions: Array = [["Duplicate selected as candidate"],["New powder 132","Save / export preset…"],
+		["Inspect native result","Test reaction in World"],["Prepare selected + partner","Inspect contact","Swap endpoints"],
+		["Compile + compare World","Save World recipe…"]]
+	for dimensions: Vector2i in [Vector2i(1000,650),Vector2i(1280,720)]:
+		root.size = dimensions
+		root.content_scale_size = Vector2i(1920,1080)
+		for tab: int in range(panel._tabs.get_tab_count()):
+			panel._tabs.current_tab = tab
+			for frame: int in range(3): await process_frame
+			var visible: Rect2 = root.get_visible_rect()
+			expect(visible.size.is_equal_approx(Vector2(dimensions)),"Standalone Lab uses actual window pixels at %s" % dimensions)
+			expect(panel.get_global_rect().end.y <= visible.end.y and panel.get_global_rect().end.x <= visible.end.x,
+				"Tab %d remains inside the %s window instead of growing controls offscreen" % [tab,dimensions])
+			var scroll: ScrollContainer = panel._tabs.get_current_tab_control()
+			for caption: String in actions[tab]:
+				var button: Button = find_button(panel,caption)
+				expect(button != null,"Layout action exists: " + caption)
+				if button == null: continue
+				scroll.ensure_control_visible(button)
+				for frame: int in range(2): await process_frame
+				expect(scroll.get_global_rect().has_point(button.get_global_rect().get_center()),
+					"Action can be brought into the visible tab at %s: %s" % [dimensions,caption])
+			scroll.scroll_vertical = 0
+	root.size = former_size
+	root.content_scale_size = former_scale_size
+	panel._tabs.current_tab = former_tab
+	for frame: int in range(3): await process_frame
+
 func check_mounted_controls() -> void:
 	root.size = Vector2i(1680,1050)
 	root.content_scale_size = Vector2i(1680,1050)
 	if DisplayServer.get_name() != "headless": DisplayServer.window_set_size(Vector2i(1680,1050))
+	var previous_scale_mode: int = root.content_scale_mode
 	var scene: Control = load("res://materials_lab.tscn").instantiate()
 	root.add_child(scene)
 	await process_frame
 	var panel: Variant = scene.find_child("MaterialsLabPanel",true,false)
+	expect(root.content_scale_mode == Window.CONTENT_SCALE_MODE_DISABLED,"Standalone Lab keeps authoring text at its declared pixel size")
+	await check_window_layout(panel)
 	expect(panel.experiment.start(fixture(),1),"Mounted Lab owns the real controlled native fixture")
 	if not panel.experiment.active():
 		scene.queue_free()
@@ -203,6 +238,12 @@ func check_mounted_controls() -> void:
 	find_button(panel,"Swap endpoints").pressed.emit()
 	expect(panel.last_contact_report.source.material == 3 and panel.last_contact_report.target.material == 23,
 		"Swap endpoints inspects the opposite actual positional pair")
+	panel._target_x.get_line_edit().text = "222"
+	panel._target_x.get_line_edit().text_changed.emit("222")
+	expect(panel.last_contact_report.is_empty(),"Unsubmitted coordinate text immediately retires contact evidence")
+	find_button(panel,"Swap endpoints").pressed.emit()
+	expect(int(panel._cell_x.value) == 222 and int(panel._target_x.value) == 221,
+		"Swap endpoints commits displayed coordinates before exchanging them")
 	panel._contact_roll.value = 255
 	expect(panel.last_contact_report.is_empty() and panel._experiment_report.text.contains("inputs changed"),
 		"Editing diagnostic inputs retires the previous visible receipt")
@@ -223,10 +264,11 @@ func check_mounted_controls() -> void:
 	expect(panel.last_contact_report.is_empty(),"Advancing the native owner retires the previous contact snapshot")
 	scene.queue_free()
 	await process_frame
+	expect(root.content_scale_mode == previous_scale_mode,"Leaving standalone Lab restores the game's previous canvas scaling")
 
 func capture_sources() -> Dictionary:
 	var values: Dictionary = {}
-	for path: String in ["materials_lab.tscn","scripts/material_lab_panel.gd","scripts/material_lab_experiment.gd",
+	for path: String in ["materials_lab.tscn","scripts/material_lab_panel.gd","scripts/material_lab_screen.gd","scripts/material_lab_experiment.gd",
 		"tests/test_material_lab_diagnostics.gd","native_extension/material_lab_inspection.inc","native_extension/cyber_demo_bridge.hpp"]:
 		values[path] = FileAccess.get_sha256("res://" + path)
 	return values

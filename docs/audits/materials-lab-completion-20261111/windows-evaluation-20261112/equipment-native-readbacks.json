@@ -1,0 +1,336 @@
+[
+  {
+    "log": "build\\local-windows-evaluation\\test_workbench_liquid_equipment-w1\\test_workbench_liquid_equipment.log",
+    "readback": {
+      "ballistic": {
+        "body_contacts": 54,
+        "deposited": 175,
+        "in_flight": 0,
+        "terrain_contacts": 40
+      },
+      "ballistic_requested": true,
+      "barrel": {
+        "after": "(241.3496, 182.8584)",
+        "before": "(242.0, 183.0005)",
+        "moved": 0.66568797826767
+      },
+      "close": {
+        "basin_cells_at_close": 714,
+        "basin_cells_later": 722,
+        "closed_cells": 32,
+        "displaced_cells": 13,
+        "trimmed_water": 0
+      },
+      "drain": {
+        "drained_cells": 25.0,
+        "masked_skips": 0
+      },
+      "frame_interval_ms": {
+        "max": 127.053,
+        "mean": 7.04518490566038,
+        "p95": 7.458,
+        "samples": 2650
+      },
+      "leak": {
+        "basin_cells": 709,
+        "gate_cells": 12,
+        "tank_cells": 10072
+      },
+      "main_process_ms": {
+        "max": 1289.789,
+        "mean": 20.1763202565071,
+        "p95": 100.993,
+        "samples": 2651
+      },
+      "native_tick_ms": {
+        "mean": 1.56265700179533,
+        "p95": 2.7224,
+        "samples": 2228
+      },
+      "nozzle": {
+        "cell_emissions": 0,
+        "dry_zone_cells": 3,
+        "emitted": 175,
+        "injected_cells": 175.0,
+        "mode": "ballistic parcels",
+        "pipe_cells": 0.0,
+        "underwater_injections": 0
+      },
+      "pipe_full": {
+        "capacity": 38760,
+        "pipe_full_events": 31,
+        "stock": 38760
+      },
+      "preset": "Water: inertial",
+      "requested_workers": 1,
+      "rule_radius": 3,
+      "runtime": {
+        "godot": "4.7-stable (official)",
+        "native_sha256": "34b33948dbe252231c1132de4832deb17984ea1c05d1d3c059f98a7ec8195ba9",
+        "os": "Windows"
+      },
+      "start": {
+        "tank_cells": 10800,
+        "world_water": 2754000
+      },
+      "water_family": "inertial_cellular_v1",
+      "water_unit": 255,
+      "worker_step_ms": {
+        "max": 692.92,
+        "mean": 86.4988440078596,
+        "p95": 692.92,
+        "samples": 2545
+      },
+      "workers_observed_peak": 1
+    }
+  },
+  {
+    "log": "build\\local-windows-evaluation\\test_workbench_liquid_equipment-w4\\test_workbench_liquid_equipment.log",
+    "readback": {
+      "ballistic": {
+        "body_contacts": 54,
+        "deposited": 175,
+        "in_flight": 0,
+        "terrain_contacts": 40
+      },
+      "ballistic_requested": true,
+      "barrel": {
+        "after": "(241.3478, 182.8751)",
+        "before": "(242.0, 183.0005)",
+        "moved": 0.664170205593109
+      },
+      "close": {
+        "basin_cells_at_close": 714,
+        "basin_cells_later": 722,
+        "closed_cells": 32,
+        "displaced_cells": 13,
+        "trimmed_water": 0
+      },
+      "drain": {
+        "drained_cells": 25.0,
+        "masked_skips": 0
+      },
+      "frame_interval_ms": {
+        "max": 125.965,
+        "mean": 7.04620176730487,
+        "p95": 7.522,
+        "samples": 2716
+      },
+      "leak": {
+        "basin_cells": 709,
+        "gate_cells": 12,
+        "tank_cells": 10072
+      },
+      "main_process_ms": {
+        "max": 1347.384,
+        "mean": 16.054532204637,
+        "p95": 100.719,
+        "samples": 2717
+      },
+      "native_tick_ms": {
+        "mean": 1.49222701149425,
+        "p95": 2.6993,
+        "samples": 2262
+      },
+      "nozzle": {
+        "cell_emissions": 0,
+        "dry_zone_cells": 5,
+        "emitted": 175,
+        "injected_cells": 175.0,
+        "mode": "ballistic parcels",
+        "pipe_cells": 0.0,
+        "underwater_injections": 0
+      },
+      "pipe_full": {
+        "capacity": 38760,
+        "pipe_full_events": 31,
+        "stock": 38760
+      },
+      "preset": "Water: inertial",
+      "requested_workers": 4,
+      "rule_radius": 3,
+      "runtime": {
+        "godot": "4.7-stable (official)",
+        "native_sha256": "34b33948dbe252231c1132de4832deb17984ea1c05d1d3c059f98a7ec8195ba9",
+        "os": "Windows"
+      },
+      "start": {
+        "tank_cells": 10800,
+        "world_water": 2754000
+      },
+      "water_family": "inertial_cellular_v1",
+      "water_unit": 255,
+      "worker_step_ms": {
+        "max": 852.843,
+        "mean": 102.37507630368,
+        "p95": 712.937,
+        "samples": 2608
+      },
+      "workers_observed_peak": 4
+    }
+  },
+  {
+    "log": "build\\local-windows-evaluation\\test_workbench_reservoir_lab-w1\\test_workbench_reservoir_lab.log",
+    "readback": {
+      "a4": {
+        "displaced_on_close": 26,
+        "left_after_reopen": 2938,
+        "right_after_150": 1035,
+        "right_after_reopen": 2949,
+        "trimmed_on_close": 4374
+      },
+      "around_pool": {
+        "above": 0,
+        "c_tank": 127,
+        "gap": 0,
+        "right_of_a": 0
+      },
+      "cascade": {
+        "b1": 4755,
+        "b2": 4330,
+        "b2_after_low": 4950,
+        "b3": 1198
+      },
+      "fountain": {
+        "cells_above_surface_box": 7
+      },
+      "inlet": {
+        "column_injections": 480,
+        "injected_cells": 480.0,
+        "pool_cells": 4743,
+        "topped_up": 0
+      },
+      "inlet_receipt": {
+        "angle": -90.0,
+        "cell_emissions": 480,
+        "column_injections": 480,
+        "emitted": 480,
+        "injected_water": 122400,
+        "installed": true,
+        "on": false,
+        "rate": 2,
+        "refused": {},
+        "speed": 1.0,
+        "topped_up": 0
+      },
+      "pool_idle_drift": 0,
+      "pool_idle_overfill": [
+        0,
+        0
+      ],
+      "quadrant_delta": {
+        "q00": -18773,
+        "q01": -36,
+        "q10": 109689,
+        "q11": -72
+      },
+      "requested_workers": 1,
+      "runtime": {
+        "godot": "4.7-stable (official)",
+        "native_sha256": "34b33948dbe252231c1132de4832deb17984ea1c05d1d3c059f98a7ec8195ba9",
+        "os": "Windows"
+      },
+      "sealed_tank": {
+        "drained_cells_vent_open": 1949.70588235294,
+        "drained_cells_vent_shut": 2517.12941176471,
+        "tank_cells_after_open": 350,
+        "tank_cells_after_shut": 2178,
+        "tank_overfill_after_shut": 28662
+      },
+      "spray_in_flight": 0,
+      "start": {
+        "a_left": 5928,
+        "a_right": 0,
+        "b1": 6968,
+        "b2": 3328,
+        "b3": 0,
+        "c_tank": 4800,
+        "d_pool": 4224
+      },
+      "water_family": "pressure_flow_v1/reference",
+      "workers_observed_peak": 1
+    }
+  },
+  {
+    "log": "build\\local-windows-evaluation\\test_workbench_reservoir_lab-w4\\test_workbench_reservoir_lab.log",
+    "readback": {
+      "a4": {
+        "displaced_on_close": 26,
+        "left_after_reopen": 2938,
+        "right_after_150": 1035,
+        "right_after_reopen": 2949,
+        "trimmed_on_close": 4374
+      },
+      "around_pool": {
+        "above": 0,
+        "c_tank": 121,
+        "gap": 0,
+        "right_of_a": 0
+      },
+      "cascade": {
+        "b1": 4754,
+        "b2": 4325,
+        "b2_after_low": 4967,
+        "b3": 1211
+      },
+      "fountain": {
+        "cells_above_surface_box": 6
+      },
+      "inlet": {
+        "column_injections": 478,
+        "injected_cells": 478.0,
+        "pool_cells": 4744,
+        "topped_up": 0
+      },
+      "inlet_receipt": {
+        "angle": -90.0,
+        "cell_emissions": 478,
+        "column_injections": 478,
+        "emitted": 478,
+        "injected_water": 121890,
+        "installed": true,
+        "on": false,
+        "rate": 2,
+        "refused": {},
+        "speed": 1.0,
+        "topped_up": 0
+      },
+      "pool_idle_drift": 0,
+      "pool_idle_overfill": [
+        0,
+        0
+      ],
+      "quadrant_delta": {
+        "q00": -18948,
+        "q01": 573,
+        "q10": 107143,
+        "q11": 239
+      },
+      "requested_workers": 4,
+      "runtime": {
+        "godot": "4.7-stable (official)",
+        "native_sha256": "34b33948dbe252231c1132de4832deb17984ea1c05d1d3c059f98a7ec8195ba9",
+        "os": "Windows"
+      },
+      "sealed_tank": {
+        "drained_cells_vent_open": 1956.10196078431,
+        "drained_cells_vent_shut": 2497.05882352941,
+        "tank_cells_after_open": 367,
+        "tank_cells_after_shut": 2175,
+        "tank_overfill_after_shut": 35227
+      },
+      "spray_in_flight": 0,
+      "start": {
+        "a_left": 5928,
+        "a_right": 0,
+        "b1": 6968,
+        "b2": 3328,
+        "b3": 0,
+        "c_tank": 4800,
+        "d_pool": 4224
+      },
+      "water_family": "pressure_flow_v1/reference",
+      "workers_observed_peak": 4
+    }
+  }
+]

@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation
 canonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-12
 related-documents: [../MATERIAL_LAB.md, material-catalogue-shadow.md, microscenario-reference-pack.md, ../architecture/material-authoring-catalogue-plan.md, ../systems/intermaterial-interactions.md, ../audits/2026-11-11-materials-lab-v1.md]
 ---
 
@@ -50,6 +50,13 @@ compiler executable paths without shell arguments. A compiler override is also
 available through `CYBERSAND_LAB_CXX`. Source tools must remain next to the
 Godot project; this is a desktop source workflow, not an exported/Web authoring
 service. No install operation writes production sources.
+
+The standalone Lab uses window pixels for readable controls instead of shrinking
+the game's 1920×1080 canvas. Tabs scroll when their contents exceed the available
+space, including the 1000×650 Workbench window minimum. Inspection columns keep
+their useful widths and can scroll horizontally. Closing the standalone Lab
+restores the launcher's original scaling. These presentation changes do not alter
+the simulation viewport or the shared Workbench's controls.
 
 ### Windows launch
 
@@ -159,6 +166,8 @@ acknowledgement; Lab v1 never assigns this state to a candidate. An edit revokes
 previous validation. A background response for an older revision cannot qualify
 newer edits. Candidate World results also bind the exact test recipe; changing
 seed, placement, partner, tick count or workers retires the displayed comparison.
+Actions commit pending numeric text before capturing a request, so typing a
+value and immediately pressing Validate, Compile or Save uses the visible edit.
 
 Validation refuses invalid IDs/types, duplicate JSON keys, duplicate slots,
 unknown or conflicting definitions, invalid/inactive reaction sources, malformed
@@ -318,6 +327,9 @@ This resolver-only diagnostic cannot establish whether World scheduled a
 particular contact. The separate native contact inspector below adds observed
 cell masks and core-window facts; actual dispatch, per-cell sleep and competing
 kernel mechanisms remain unobserved.
+Changing a resolver endpoint or supplied roll retires its previous diagnostic.
+A reply for an older diagnostic selection cannot replace the current report;
+its original native compilation receipt remains inspectable.
 
 For a concrete candidate comparison, duplicate Salt and set its Water reaction
 threshold to 0. Roll 0 succeeds; roll 1 fails in the compiled candidate. The

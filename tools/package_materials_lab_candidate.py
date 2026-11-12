@@ -31,6 +31,7 @@ CONTACT_READBACK = "contact-readback.json"
 CONTACT_IMAGE = "09-native-contact-inspector.png"
 CONTACT_SOURCES = {
     "materials_lab.tscn", "scripts/material_lab_panel.gd", "scripts/material_lab_experiment.gd",
+    "scripts/material_lab_screen.gd",
     "tests/test_material_lab_diagnostics.gd", "native_extension/material_lab_inspection.inc",
     "native_extension/cyber_demo_bridge.hpp",
 }
@@ -116,12 +117,25 @@ def copy_python(source: Path, destination: Path) -> None:
 
 
 def copy_git(source: Path, destination: Path) -> None:
-    engine.require((source / "cmd/git.exe").is_file() and (source / "mingw64/bin/git.exe").is_file() and
-                   (source / "LICENSE.txt").is_file(), "A complete licensed Git for Windows installation is required")
+    engine.require(source.is_dir() and not source.is_symlink(), "Git installation must be a real directory")
+    # Git for Windows 2.56 moved x64 from mingw64 to ucrt64 and moved the
+    # libexec helpers into bin. Keep each distribution's real layout intact.
+    prefixes = [name for name in ("mingw64", "ucrt64") if (source / name / "bin/git.exe").is_file()]
+    engine.require(len(prefixes) == 1, "Exactly one supported Git for Windows native layout is required")
+    prefix = prefixes[0]
+    for name in ("cmd/git.exe", "LICENSE.txt"):
+        path = source / name
+        engine.require(path.is_file() and not path.is_symlink(), "Missing real Git distribution file: " + name)
+    directories = ["cmd", prefix + "/bin", prefix + "/share"]
+    engine.require((source / prefix / "share/licenses").is_dir(), "Git dependency license notices are required")
+    if prefix == "mingw64":
+        engine.require((source / prefix / "libexec").is_dir(), "Legacy Git distribution helpers are required")
+    if (source / prefix / "libexec").exists():
+        directories.append(prefix + "/libexec")
     destination.mkdir(parents=True)
     # Built-in Git queries and their distribution helpers/dependencies/notices.
     # Copy no installed etc/ configuration or machine/user shell configuration.
-    for name in ("cmd", "mingw64/bin", "mingw64/libexec", "mingw64/share"):
+    for name in directories:
         (destination / name).parent.mkdir(parents=True, exist_ok=True)
         copy_portable_tree(source / name, destination / name)
     shutil.copyfile(source / "LICENSE.txt", destination / "LICENSE.txt")
@@ -136,7 +150,8 @@ def dependency_environment(package: Path) -> dict[str, str]:
     system = Path(os.environ.get("SystemRoot", r"C:\Windows"))
     result["PATH"] = os.pathsep.join(str(path) for path in (
         package / "dependencies/python", package / "dependencies/git/cmd",
-        package / "dependencies/git/mingw64/bin", package / "dependencies/cxx/bin", system / "System32", system))
+        package / "dependencies/git/ucrt64/bin", package / "dependencies/git/mingw64/bin",
+        package / "dependencies/cxx/bin", system / "System32", system))
     result.update(CYBERSAND_LAB_CXX=str(package / "dependencies/cxx/bin/g++.exe"),
                   PYTHONUTF8="1", PYTHONNOUSERSITE="1")
     return result
@@ -206,7 +221,7 @@ def build(args: argparse.Namespace) -> Path:
             'set "PYTHONHOME="\r\nset "PYTHONPATH="\r\nset "PYTHONNOUSERSITE=1"\r\nset "PYTHONUTF8=1"\r\n'
             + ''.join('set "' + key + '=\"\r\n' for key in sorted(GIT_LOCATION)) +
             'set "GIT_CONFIG_NOSYSTEM=1"\r\nset "GIT_CONFIG_GLOBAL=NUL"\r\n'
-            'set "PATH=%~dp0dependencies\\python;%~dp0dependencies\\git\\cmd;%~dp0dependencies\\git\\mingw64\\bin;%~dp0dependencies\\cxx\\bin;%SystemRoot%\\System32;%SystemRoot%"\r\n'
+            'set "PATH=%~dp0dependencies\\python;%~dp0dependencies\\git\\cmd;%~dp0dependencies\\git\\ucrt64\\bin;%~dp0dependencies\\git\\mingw64\\bin;%~dp0dependencies\\cxx\\bin;%SystemRoot%\\System32;%SystemRoot%"\r\n'
             'set "CYBERSAND_LAB_CXX=%~dp0dependencies\\cxx\\bin\\g++.exe"\r\n'
             f'set "CYBERSAND_SOURCE_REVISION={args.source_sha}"\r\n'
             '"%~dp0Godot_v4.7-stable_win64_console.exe" --headless --path "%~dp0source\\godot" --editor --quit\r\n'

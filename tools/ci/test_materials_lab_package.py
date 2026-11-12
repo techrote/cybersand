@@ -83,6 +83,46 @@ class PackageTests(unittest.TestCase):
         self.assertNotIn("GIT_TEMPLATE_DIR", environment)
         self.assertEqual(environment["PYTHONNOUSERSITE"], "1")
         self.assertIn("dependencies", environment["CYBERSAND_LAB_CXX"])
+        for prefix in ("ucrt64", "mingw64"):
+            self.assertIn(str(Path("evaluation") / "dependencies/git" / prefix / "bin"), environment["PATH"])
+
+    def git_fixture(self, root, prefix):
+        for name in ("cmd/git.exe", "LICENSE.txt", prefix + "/bin/git.exe",
+                     prefix + "/bin/runtime.dll", prefix + "/share/licenses/dependency/COPYING",
+                     "etc/gitconfig", "etc/private-machine-config"):
+            path = root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(("distribution fixture: " + name).encode())
+        if prefix == "mingw64":
+            path = root / prefix / "libexec/git-core/helper.exe"
+            path.parent.mkdir(parents=True)
+            path.write_bytes(b"legacy helper")
+
+    def test_git_packaging_preserves_legacy_and_ucrt_native_helpers_and_notices(self):
+        for prefix in ("mingw64", "ucrt64"):
+            with self.subTest(prefix=prefix), tempfile.TemporaryDirectory() as temporary:
+                root, copied = Path(temporary) / "installed Git", Path(temporary) / "portable Git"
+                self.git_fixture(root, prefix)
+                subject.copy_git(root, copied)
+                for name in ("cmd/git.exe", "LICENSE.txt", prefix + "/bin/git.exe",
+                             prefix + "/bin/runtime.dll", prefix + "/share/licenses/dependency/COPYING"):
+                    self.assertEqual((copied / name).read_bytes(), (root / name).read_bytes())
+                self.assertEqual((copied / prefix / "libexec").exists(), prefix == "mingw64")
+                self.assertFalse((copied / "etc").exists())
+
+    def test_git_packaging_refuses_incomplete_ambiguous_or_unlicensed_distributions(self):
+        for mode in ("cmd", "native", "license", "notices", "legacy_helpers", "ambiguous"):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as temporary:
+                root, copied = Path(temporary) / "installed Git", Path(temporary) / "portable Git"
+                self.git_fixture(root, "mingw64")
+                if mode == "cmd": (root / "cmd/git.exe").unlink()
+                if mode == "native": (root / "mingw64/bin/git.exe").unlink()
+                if mode == "license": (root / "LICENSE.txt").unlink()
+                if mode == "notices": (root / "mingw64/share/licenses").rename(root / "mingw64/share/notices-missing")
+                if mode == "legacy_helpers": (root / "mingw64/libexec").rename(root / "mingw64/removed-helpers")
+                if mode == "ambiguous": self.git_fixture(root, "ucrt64")
+                with self.assertRaises(RuntimeError): subject.copy_git(root, copied)
+                self.assertFalse(copied.exists())
 
     def test_python_packaging_keeps_stdlib_not_installed_packages_or_caches(self):
         with tempfile.TemporaryDirectory() as temporary:

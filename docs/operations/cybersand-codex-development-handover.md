@@ -4,11 +4,21 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-08
+last-reviewed: 2026-11-12
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Materials Lab Windows evaluation — 2026-11-12
+
+[Draft #562](https://github.com/techrote/cybersand/pull/562) carries the
+[bounded authoring workflow and Windows launcher](materials-lab-authoring.md).
+Use the [completion audit](../audits/2026-11-11-materials-lab-completion.md) for
+the actual source/runtime/package campaign result and preserved failures.
+Accepted liquid-equipment main is incorporated; #563 retains separate native
+capability-consumer ownership. Candidates execute only in their admitted
+isolated backends. Keep Draft / Do Not Merge until owner acceptance.
 
 ## Shared workbench review transition — 2026-11-08
 

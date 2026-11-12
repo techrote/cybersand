@@ -22,6 +22,8 @@ var _revision: int = 0
 var _job_revision: int = 0
 var _job_op: String = ""
 var _job_reaction_slot: int = -1
+var _reaction_input_revision: int = 0
+var _job_reaction_input_revision: int = -1
 var _job_world_revision: int = -1
 var _job_candidate: Dictionary = {}
 var _job_candidate_digest: String = ""
@@ -111,6 +113,8 @@ func _spin(parent: Node, text: String, field: SpinBox, low: int, high: int, valu
 	field.step = 1
 	field.value = value
 	field.custom_minimum_size.x = 95
+	field.get_line_edit().text_changed.connect(func(_text: String) -> void: field.set_meta("lab_pending_text",true))
+	field.value_changed.connect(func(_value: float) -> void: field.set_meta("lab_pending_text",false))
 	parent.add_child(field)
 
 func _text(parent: Node, field: TextEdit, min_height: int = 150) -> void:
@@ -124,10 +128,22 @@ func _text(parent: Node, field: TextEdit, min_height: int = 150) -> void:
 
 func _tab(title: String) -> VBoxContainer:
 	var page := VBoxContainer.new()
-	page.name = title
+	page.name = "Content"
 	page.add_theme_constant_override("separation",6)
-	_tabs.add_child(page)
+	_mount_tab(title,page)
 	return page
+
+func _mount_tab(title: String, content: Control) -> void:
+	# Preserve usable controls at ordinary desktop sizes. Large tabs retain
+	# their natural layout and scroll only when their content exceeds the bay.
+	var scroll := ScrollContainer.new()
+	scroll.name = title
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.follow_focus = true
+	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_tabs.add_child(scroll)
+	scroll.add_child(content)
 
 func _build() -> void:
 	var header := _row(self)
@@ -165,7 +181,7 @@ func _build() -> void:
 	_build_reactions(_tab("Reactions"))
 	_build_experiment(_tab("Native test"))
 	world_panel.name = "Candidate test"
-	_tabs.add_child(world_panel)
+	_mount_tab("Candidate test",world_panel)
 	world_panel.test_requested.connect(_world_job)
 	world_panel.export_requested.connect(func(_scenario: Dictionary) -> void: _open_file("world_bundle",true))
 	world_panel.cancel_requested.connect(func() -> void:
@@ -244,6 +260,8 @@ func _build_candidate(page: VBoxContainer) -> void:
 		var field := SpinBox.new()
 		_spin(row,key,field,0,65535 if key == "density" else 255,0)
 		_fields[key] = field
+		field.get_line_edit().text_changed.connect(func(_text: String) -> void:
+			if not _loading and not candidate.is_empty(): _mark_draft())
 		field.value_changed.connect(func(value: float) -> void:
 			if not _loading and not candidate.is_empty():
 				candidate.descriptor[key] = int(value)
@@ -285,6 +303,8 @@ func _build_reactions(page: VBoxContainer) -> void:
 	row.add_child(_partner)
 	_partner.item_selected.connect(func(index: int) -> void: _select_partner(_partner.get_item_id(index)))
 	_spin(row,"Roll",_roll,0,255,0)
+	_roll.value_changed.connect(func(_value: float) -> void: _retire_reaction_diagnostic())
+	_roll.get_line_edit().text_changed.connect(func(_text: String) -> void: _retire_reaction_diagnostic())
 	_button(row,"Inspect native result",inspect_reaction)
 	_label(page,"Candidate sparse rule editor — existing authored slots; conflicting pairs are rejected.",true)
 	page.add_child(_reaction_picker)
@@ -305,6 +325,8 @@ func _build_reactions(page: VBoxContainer) -> void:
 	var threshold := SpinBox.new()
 	_spin(row,"Threshold T",threshold,0,255,0)
 	_reaction_fields["probability"] = threshold
+	threshold.get_line_edit().text_changed.connect(func(_text: String) -> void:
+		if not _loading and not candidate.is_empty(): _mark_draft())
 	threshold.value_changed.connect(func(value: float) -> void: _edit_reaction("probability",int(value)))
 	var match_picker := OptionButton.new()
 	for label: String in ["Ordered","Unordered, role preserving","Symmetric"]: match_picker.add_item(label)
@@ -327,6 +349,8 @@ func _build_reactions(page: VBoxContainer) -> void:
 		var detail := _label(group,"",true)
 		detail.custom_minimum_size.x = 270
 		_effect_fields[endpoint] = {"kind":kind,"state_b":value,"detail":detail}
+		value.get_line_edit().text_changed.connect(func(_text: String) -> void:
+			if not _loading and not candidate.is_empty(): _mark_draft())
 		kind.item_selected.connect(func(index: int) -> void: _edit_effect(endpoint,index))
 		value.value_changed.connect(func(_number: float) -> void: _edit_effect(endpoint,kind.selected))
 	_label(page,"Chance = (T + 1) / 256; T=0 still selects roll 0. Replace uses legacy product defaults. Effects v2 retain a non-Water participant or set its declared Metal charge / Combustible burn countdown. These effects require Test reaction in World and role-preserving matching.",true)
@@ -398,6 +422,7 @@ func _build_experiment(page: VBoxContainer) -> void:
 	row = _row(view)
 	_button(row,"Inspect contact",_inspect_test_contact)
 	_button(row,"Swap endpoints",func() -> void:
+		_commit_contact_fields()
 		var source: Vector2i = Vector2i(int(_cell_x.value),int(_cell_y.value))
 		_cell_x.value = _target_x.value
 		_cell_y.value = _target_y.value
@@ -406,9 +431,8 @@ func _build_experiment(page: VBoxContainer) -> void:
 		_inspect_test_contact())
 	for field: SpinBox in [_cell_x,_cell_y,_target_x,_target_y,_contact_roll]:
 		field.value_changed.connect(func(_value: float) -> void:
-			if not last_contact_report.is_empty():
-				last_contact_report.clear()
-				_experiment_report.text = "Contact inputs changed. Inspect contact to read the current native cells and supplied roll.")
+			_retire_contact_report())
+		field.get_line_edit().text_changed.connect(func(_text: String) -> void: _retire_contact_report())
 	_label(view,"Left-click the preview for source; right-click for target. Inspection pauses this test owner. Native stored values establish facts; the supplied resolver roll does not predict scheduling or an executed reaction.",true)
 	_text(split,_experiment_report,300)
 
@@ -433,6 +457,7 @@ func _fill_material_picker(picker: OptionButton) -> void:
 		if material.get("valid",false): picker.add_item("%03d  %s" % [material.id,material.name],int(material.id))
 
 func _select_partner(id: int) -> void:
+	_retire_reaction_diagnostic()
 	for picker: OptionButton in [_partner,_experiment_partner]:
 		picker.select(picker.get_item_index(id))
 	_refresh_experiment_request()
@@ -457,6 +482,7 @@ func set_policy_readback(receipt: Dictionary, context: String) -> void:
 	if is_node_ready(): select_material(selected_id)
 
 func select_material(id: int) -> void:
+	if selected_id != id: _retire_reaction_diagnostic()
 	selected_id = id
 	_list.deselect_all()
 	for index: int in range(_list.item_count):
@@ -544,6 +570,7 @@ func _refresh_candidate(preferred_slot: int = -1) -> void:
 	_refresh_reaction_fields()
 
 func _candidate_job(op: String) -> void:
+	_commit_candidate_fields()
 	if candidate.is_empty():
 		_status.text = "Duplicate a material or create the isolated powder candidate first."
 		return
@@ -555,6 +582,7 @@ func _candidate_job(op: String) -> void:
 	_start_job(request)
 
 func _world_job(scenario: Dictionary, output_dir: String = "") -> void:
+	_commit_candidate_fields()
 	if candidate.is_empty() or scenario.is_empty():
 		_status.text = "Duplicate an existing material before testing a candidate in World."
 		return
@@ -575,6 +603,7 @@ func _start_job(request: Dictionary) -> void:
 	_job_op = str(request.op)
 	_job_world_revision = world_panel.revision
 	_job_reaction_slot = _reaction_picker.get_selected_id() if request.has("diagnostic") and _reaction_picker.selected >= 0 else -1
+	_job_reaction_input_revision = _reaction_input_revision
 	_job_candidate = {}
 	_job_candidate_digest = ""
 	if request.has("candidate"):
@@ -717,6 +746,10 @@ func _candidate_response_error(result: Dictionary, compiled: bool) -> String:
 	return ""
 
 func _backend_completed(result: Dictionary) -> void:
+	# A pending editor may still contain text which has not lost focus. Admit
+	# it before comparing request revisions, so a reply cannot erase new text.
+	_commit_candidate_fields()
+	world_panel.commit_fields()
 	if _revision != _job_revision:
 		_status.text = "Completed job refers to an older revision. Current edits remain Draft."
 		if _job_op == "compile_world_test": world_panel.show_failure(_status.text)
@@ -769,6 +802,7 @@ func _backend_completed(result: Dictionary) -> void:
 	if result.has("receipt") and not world_result:
 		_reaction_report.text = "COMPILED CANDIDATE / ISOLATED NATIVE RESOLVER\n\n" + JSON.stringify(result.receipt.get("observed",{}).get("diagnostic",{}),"\t") + "\n\n" + str(result.get("boundary",""))
 		_reaction_report.text += "\n\nCHANGES ACROSS PRODUCTION + CANDIDATE PAIRS\n" + JSON.stringify(result.receipt.get("observed",{}).get("comparison",{}),"\t")
+		if _job_reaction_input_revision != _reaction_input_revision: _retire_reaction_diagnostic()
 	_status.text = "%s completed. %s" % [_job_op,candidate_state]
 	_refresh_candidate(_job_reaction_slot if result.has("receipt") else -1)
 	if world_result:
@@ -874,6 +908,8 @@ func _edit_effect(endpoint: String, index: int) -> void:
 	_show_candidate_rule()
 
 func _test_reaction_world() -> void:
+	_commit_candidate_fields()
+	world_panel.commit_fields()
 	var rule: Dictionary = _selected_reaction()
 	if rule.is_empty():
 		_status.text = "Select a candidate reaction first."
@@ -892,15 +928,24 @@ func _show_candidate_rule() -> void:
 	if rule.is_empty(): return
 	_reaction_report.text = "Candidate rule (not active):\n" + JSON.stringify(rule,"\t") + "\nChance: %d / 256 = %.6f%%" % [int(rule.probability)+1,100.0*(int(rule.probability)+1)/256.0]
 
+func _retire_reaction_diagnostic() -> void:
+	_reaction_input_revision += 1
+	if _reaction_report.text.is_empty(): return
+	_show_candidate_rule()
+	_reaction_report.text = "Diagnostic inputs changed. Inspect native result or compile the candidate reaction for a fresh resolver receipt.\n\n" + (_reaction_report.text if not _selected_reaction().is_empty() else "")
+
 func _exit_tree() -> void:
 	_running = false
 	experiment.close()
 
 func inspect_reaction() -> void:
+	_commit_spinbox(_roll)
 	if _partner.selected >= 0:
 		_reaction_report.text = JSON.stringify(Experiment.resolver_diagnostic(selected_id,_partner.get_selected_id(),int(_roll.value)),"\t")
 
 func start_experiment() -> void:
+	_commit_spinbox(_seed)
+	_commit_spinbox(_steps)
 	_running = false
 	if _partner.selected < 0: return
 	var definition: Dictionary = Experiment.definition_for_pair(selected_id,_partner.get_selected_id(),int(_seed.value),int(_steps.value))
@@ -963,6 +1008,8 @@ func _refresh_experiment() -> void:
 	if image != null and not image.is_empty(): _preview.texture = ImageTexture.create_from_image(image)
 
 func _inspect_test_cell() -> void:
+	_commit_spinbox(_cell_x)
+	_commit_spinbox(_cell_y)
 	_running = false
 	experiment.cancel_reference("Reference paused to inspect native cell storage.")
 	_refresh_experiment()
@@ -971,6 +1018,7 @@ func _inspect_test_cell() -> void:
 	_status.text = "Stored native cell read at the paused completed tick." if observation.get("ok",false) else str(observation.get("error","Cell readback refused."))
 
 func _inspect_test_contact() -> void:
+	_commit_contact_fields()
 	_running = false
 	experiment.cancel_reference("Reference paused to inspect native contact facts.")
 	_refresh_experiment()
@@ -978,6 +1026,14 @@ func _inspect_test_contact() -> void:
 		Vector2i(int(_target_x.value),int(_target_y.value)),int(_contact_roll.value))
 	_experiment_report.text = Experiment.contact_report_text(last_contact_report)
 	_status.text = "Contact snapshot read from the paused native owner; no reaction was executed by inspection." if last_contact_report.get("ok",false) else str(last_contact_report.get("error","Contact readback refused."))
+
+func _commit_contact_fields() -> void:
+	for field: SpinBox in [_cell_x,_cell_y,_target_x,_target_y,_contact_roll]: _commit_spinbox(field)
+
+func _retire_contact_report() -> void:
+	if not last_contact_report.is_empty():
+		last_contact_report.clear()
+		_experiment_report.text = "Contact inputs changed. Inspect contact to read the current native cells and supplied roll."
 
 func _pick_experiment_cell(event: InputEvent) -> void:
 	if not event is InputEventMouseButton or not event.pressed or event.button_index not in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]: return
@@ -1024,6 +1080,8 @@ func _process(_delta: float) -> void:
 		if not _running or experiment.completed_tick() % 4 == 0: _refresh_experiment()
 
 func _open_file(action: String, saving: bool) -> void:
+	_commit_candidate_fields()
+	world_panel.commit_fields()
 	if action in ["export_preset","compile_bundle","world_bundle","export_world_case"] and candidate.is_empty():
 		_status.text = "Create a candidate before saving a preset."
 		return
@@ -1038,6 +1096,8 @@ func _open_file(action: String, saving: bool) -> void:
 	_file.popup_centered_ratio(0.7)
 
 func _file_selected(path: String) -> void:
+	_commit_candidate_fields()
+	world_panel.commit_fields()
 	match _file_action:
 		"world_bundle":
 			_world_job(world_panel.scenario(),path.path_join("material-world-%d-%d" % [candidate.target_id,Time.get_ticks_usec()]))
@@ -1073,3 +1133,17 @@ func _file_selected(path: String) -> void:
 			file.store_string(data + "\n")
 			file.close()
 			_status.text = "Saved reproducible test case: " + path
+
+func _commit_candidate_fields() -> void:
+	# Button activation can precede the SpinBox focus-exit callback. Commit
+	# displayed text before copying a candidate or capturing its revision.
+	for field: SpinBox in _fields.values(): _commit_spinbox(field)
+	if _reaction_fields.has("probability"): _commit_spinbox(_reaction_fields.probability)
+	for controls: Dictionary in _effect_fields.values(): _commit_spinbox(controls.state_b)
+	_commit_spinbox(_roll)
+
+func _commit_spinbox(field: SpinBox) -> void:
+	if field.get_line_edit().has_focus() or field.get_meta("lab_pending_text",false):
+		field.apply()
+		field.set_meta("lab_pending_text",false)
+		field.get_line_edit().release_focus()

@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-12
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -39,6 +39,10 @@ ownership, source-matched runtime publication and a self-contained Windows
 authoring package. Actual automated platform results remain source-qualified;
 human acceptance is not inferred. The bounded #353-B hard/granular generated
 consumer is separately reviewed in Draft #563 and is not installed in #562.
+The Windows evaluation continuation repairs the current Git distribution's
+portable layout, readable small-window overflow, pending numeric input and stale
+resolver diagnostics. The completion audit retains each campaign's actual
+source/package result; a failed package stage is not a delivered executable.
 The owner explicitly
 excluded MoltenGlass H1 from this continuation; it is not a Lab delivery gate.
 Historical liveness evidence and production thermal/rest behavior remain

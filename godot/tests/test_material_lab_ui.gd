@@ -240,6 +240,12 @@ func extended_authoring() -> bool:
 		"Rejected parent evidence clears previews/status and releases compile controls")
 	var recipe: Dictionary = {"first":3,"second":23,"seed":73,"ticks":37,"workers":4}
 	expect(view.set_scenario(recipe),"Distinct source-bound recipe can be selected")
+	view._seed.get_line_edit().text = "74"
+	view._seed.get_line_edit().text_changed.emit("74")
+	view._ticks.get_line_edit().text = "38"
+	view._ticks.get_line_edit().text_changed.emit("38")
+	recipe.seed = 74
+	recipe.ticks = 38
 	var case_path: String = output_directory.path_join("retained-salt-world-case.json")
 	if not await selected_file("Save World recipe…",case_path): return false
 	expect(panel.last_backend_result.get("ok",false) and FileAccess.file_exists(case_path),"Mounted save exports a source-bound World recipe through the real service")
@@ -247,6 +253,7 @@ func extended_authoring() -> bool:
 	var saved: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(case_path))
 	expect(saved.schema_id == "cybersand.material-lab.world-case" and str(saved.digest).length() == 64 and not saved.source_identity.lf_sha256.is_empty(),
 		"Recipe stores versioned digests and exact executable source inputs")
+	expect(panel._integer_candidate(saved.scenario) == recipe,"Saving a World recipe commits displayed seed and tick text without requiring Enter")
 	var expected_candidate: Dictionary = panel.candidate.duplicate(true)
 	var expected_digest: String = panel.candidate_digest
 	expect(panel.candidate_state == "Validated candidate" and view.receipt.is_empty(),"Saving a recipe is validation, not a new native execution")
@@ -416,13 +423,25 @@ func run() -> void:
 	# Exercise the actual in-flight result race: old validation may finish, but
 	# it must never qualify newer SpinBox edits.
 	press("Validate")
-	panel._fields.density.value = 1439
+	panel._fields.density.get_line_edit().grab_focus()
+	# SpinBox normalizes its display on the deferred focus-enter callback;
+	# actual typing happens after that focus event, on the next input frame.
+	await process_frame
+	panel._fields.density.get_line_edit().text = "1439"
+	panel._fields.density.get_line_edit().text_changed.emit("1439")
+	expect(panel.candidate_state == "Draft" and panel.candidate_digest.is_empty(),
+		"Unsubmitted numeric text immediately retires the visible candidate qualification")
 	if not await wait_for(func() -> bool: return not panel.service.busy,"stale validation request"):
 		finish()
 		return
 	expect(panel.candidate_state == "Draft" and panel.candidate.descriptor.density == 1439,
 		"Old asynchronous result cannot validate a newer candidate revision")
 	expect(panel._status.text.contains("older revision"),"Stale result is explained to the user")
+	# Simulate typing without Enter or a focus-exit commit, then immediately
+	# activate Compile. The request must capture the displayed number first.
+	panel._fields.density.get_line_edit().grab_focus()
+	panel._fields.density.get_line_edit().text = "1440"
+	panel._fields.density.get_line_edit().text_changed.emit("1440")
 	if not await authoring("Compile + native test"):
 		finish()
 		return
@@ -430,8 +449,8 @@ func run() -> void:
 	expect(panel.candidate_state.begins_with("Compiled/tested"),"Compiled status requires executed C++ receipt")
 	expect(not compiled.runtime_active and compiled.receipt.observed.candidate_material.id == 132,
 		"Actual compiled synthetic descriptor remains separate from runtime activation")
-	expect(compiled.receipt.observed.candidate_material.density == 1439 and not compiled.receipt.observed.candidate_material.hard_surface,
-		"Compiled native readback acknowledges authored density and explicit capabilities")
+	expect(compiled.receipt.observed.candidate_material.density == 1440 and panel.candidate.descriptor.density == 1440 and not compiled.receipt.observed.candidate_material.hard_surface,
+		"Immediate Compile commits the displayed density before capturing request data or revision")
 	expect(PackedInt32Array(compiled.receipt.observed.candidate_material.rgba) == PackedInt32Array([210,90,180,255]),"Appearance bytes reached compiled C++ candidate")
 	expect(panel.candidate_digest != validated_digest,"Edited source has a new deterministic digest")
 	var exported_digest: String = panel.candidate_digest
@@ -464,7 +483,7 @@ func run() -> void:
 	if not await selected_file("Import preset…",export_path):
 		finish()
 		return
-	expect(panel.last_backend_result.get("ok",false) and panel.candidate.descriptor.density == 1439
+	expect(panel.last_backend_result.get("ok",false) and panel.candidate.descriptor.density == 1440
 		and panel.candidate_digest == exported_digest,"Import restores exact source and deterministic digest")
 	var retained_candidate: Dictionary = panel.candidate.duplicate(true)
 	var bad_path: String = output_directory.path_join("malformed-preset.json")
@@ -514,6 +533,16 @@ func run() -> void:
 	panel._reaction_fields.probability.value = 0
 	panel._roll.value = 1
 	expect(panel._reaction_report.text.contains("1 / 256"),"Threshold zero is shown as 1/256 rather than disabled")
+	press("Compile candidate reaction")
+	panel._roll.value = 0
+	if not await wait_for(func() -> bool: return not panel.service.busy,"reaction compilation after supplied-roll edit"):
+		finish()
+		return
+	expect(panel.last_backend_result.get("ok",false) and panel.candidate_state.begins_with("Compiled/tested"),
+		"Changing the supplied diagnostic roll does not discard a source-matched material compilation")
+	expect(panel._reaction_report.text.begins_with("Diagnostic inputs changed") and not panel._reaction_report.text.contains("COMPILED CANDIDATE"),
+		"An in-flight diagnostic cannot restore a receipt for an older supplied roll")
+	panel._roll.value = 1
 	if not await authoring("Compile candidate reaction"):
 		finish()
 		return
@@ -546,6 +575,21 @@ func run() -> void:
 	var native_reaction: Dictionary = JSON.parse_string(panel._reaction_report.text)
 	expect(native_reaction.selected and native_reaction.probability_numerator == 256,
 		"Native production inspector remains distinct from edited candidate rule")
+	panel._roll.get_line_edit().text = "2"
+	panel._roll.get_line_edit().text_changed.emit("2")
+	expect(panel._reaction_report.text.begins_with("Diagnostic inputs changed") and not panel._reaction_report.text.contains('"selected":'),
+		"Changing the supplied roll retires the preceding production resolver result")
+	press("Inspect native result")
+	panel._partner.select(panel._partner.get_item_index(2))
+	panel._partner.item_selected.emit(panel._partner.selected)
+	expect(panel._reaction_report.text.begins_with("Diagnostic inputs changed"),
+		"Changing the native partner retires its preceding resolver result")
+	panel._select_partner(3)
+	press("Inspect native result")
+	panel.select_material(2)
+	expect(panel._reaction_report.text.begins_with("Diagnostic inputs changed"),
+		"Changing the selected source retires its preceding resolver result")
+	panel.select_material(23)
 	panel._tabs.current_tab = 3
 	panel._seed.value = 2
 	panel._steps.value = 120
