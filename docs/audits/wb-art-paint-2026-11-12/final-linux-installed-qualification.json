@@ -1,0 +1,469 @@
+{
+  "source_commit": "0025bd942850e6e75e77d4beb9c4885d7dc1b2f4",
+  "direct_assertions": 7358,
+  "sections": {
+    "installed": {
+      "processes": 12,
+      "direct_assertions": 521,
+      "cases": [
+        {
+          "label": "complete-import",
+          "checks": null
+        },
+        {
+          "label": "complete-discovery",
+          "checks": 24
+        },
+        {
+          "label": "installed-author",
+          "checks": 22
+        },
+        {
+          "label": "installed-reopen",
+          "checks": 23
+        },
+        {
+          "label": "installed-combined-1024-workers-1-author",
+          "checks": 170
+        },
+        {
+          "label": "installed-combined-1024-workers-1-reopen",
+          "checks": 41
+        },
+        {
+          "label": "installed-combined-1024-workers-4-author",
+          "checks": 170
+        },
+        {
+          "label": "installed-combined-1024-workers-4-reopen",
+          "checks": 41
+        },
+        {
+          "label": "resource-only-import",
+          "checks": null
+        },
+        {
+          "label": "resource-only-discovery",
+          "checks": 24
+        },
+        {
+          "label": "missing-profiles-import",
+          "checks": null
+        },
+        {
+          "label": "missing-profiles-discovery",
+          "checks": 6
+        }
+      ]
+    },
+    "regressions": {
+      "processes": 34,
+      "direct_assertions": 6729,
+      "cases": [
+        {
+          "label": "regression-import",
+          "checks": null
+        },
+        {
+          "label": "art-keyless",
+          "checks": 54
+        },
+        {
+          "label": "art-stored-material",
+          "checks": 88
+        },
+        {
+          "label": "art-deferred-manual",
+          "checks": 14
+        },
+        {
+          "label": "art-native",
+          "checks": 145
+        },
+        {
+          "label": "art-native-render",
+          "checks": 148
+        },
+        {
+          "label": "art-http-fixtures-graphical",
+          "checks": null
+        },
+        {
+          "label": "art-final-graphical-mocked",
+          "checks": 38
+        },
+        {
+          "label": "native-edit-ordering",
+          "checks": 144
+        },
+        {
+          "label": "combined-deferred-paint",
+          "checks": 49
+        },
+        {
+          "label": "paint-shapes",
+          "checks": 165
+        },
+        {
+          "label": "paint-executor",
+          "checks": 21
+        },
+        {
+          "label": "paint-recovery",
+          "checks": 5
+        },
+        {
+          "label": "paint-native-1",
+          "checks": 109
+        },
+        {
+          "label": "paint-native-4",
+          "checks": 109
+        },
+        {
+          "label": "paint-history-author",
+          "checks": 1884
+        },
+        {
+          "label": "paint-history-reopen",
+          "checks": 1920
+        },
+        {
+          "label": "paint-workbench-author",
+          "checks": 64
+        },
+        {
+          "label": "paint-workbench-reopen",
+          "checks": 12
+        },
+        {
+          "label": "paint-generated_workbench-author",
+          "checks": 39
+        },
+        {
+          "label": "paint-generated_workbench-reopen",
+          "checks": 19
+        },
+        {
+          "label": "existing-workbench-input",
+          "checks": 24
+        },
+        {
+          "label": "existing-liquid_equipment-1",
+          "checks": 103
+        },
+        {
+          "label": "existing-reservoir_lab-1",
+          "checks": 81
+        },
+        {
+          "label": "existing-liquid_equipment-4",
+          "checks": 103
+        },
+        {
+          "label": "existing-reservoir_lab-4",
+          "checks": 81
+        },
+        {
+          "label": "existing-worldgen-planes",
+          "checks": 606
+        },
+        {
+          "label": "existing-worldgen-workbench",
+          "checks": 139
+        },
+        {
+          "label": "existing-canvas-author",
+          "checks": 164
+        },
+        {
+          "label": "existing-canvas-reopen",
+          "checks": 23
+        },
+        {
+          "label": "source-combined-workers-1-author",
+          "checks": 151
+        },
+        {
+          "label": "source-combined-workers-1-reopen",
+          "checks": 38
+        },
+        {
+          "label": "source-combined-workers-4-author",
+          "checks": 151
+        },
+        {
+          "label": "source-combined-workers-4-reopen",
+          "checks": 38
+        }
+      ]
+    }
+  },
+  "providers": {
+    "OpenAI": {
+      "checks": 36,
+      "failures": 0,
+      "log": "/home/runner/work/cybersand/cybersand/evidence/regressions/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/1794516396-46088-167419844128.jsonl",
+      "model": "deployment-alias",
+      "provider": "OpenAI",
+      "requested_model": "fixture",
+      "usage": {
+        "input_tokens": 111.0,
+        "output_tokens": 32.0
+      }
+    },
+    "NVIDIA": {
+      "checks": 36,
+      "failures": 0,
+      "log": "/home/runner/work/cybersand/cybersand/evidence/regressions/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/1794516406-63327-167403066912.jsonl",
+      "model": "deployment-alias",
+      "provider": "NVIDIA",
+      "requested_model": "fixture",
+      "usage": {
+        "completion_tokens": 32.0,
+        "prompt_tokens": 111.0
+      }
+    },
+    "LM-Studio": {
+      "checks": 36,
+      "failures": 0,
+      "log": "/home/runner/work/cybersand/cybersand/evidence/regressions/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/1794516417-04198-167403066912.jsonl",
+      "model": "deployment-alias",
+      "provider": "LM Studio",
+      "requested_model": "fixture",
+      "usage": {
+        "completion_tokens": 32.0,
+        "prompt_tokens": 111.0
+      }
+    }
+  },
+  "combined": [
+    {
+      "case": "installed-combined-1024-workers-1",
+      "side": 1024,
+      "author_checks": 170,
+      "reopen_checks": 41,
+      "authored_digest": "c7893c3b5a6032b990b38f402edbba9ca2f1a996f6751c28194492f68f4d34b2",
+      "fresh_reopen_digest_matches": true,
+      "stop_prefix": 4096,
+      "author_seconds": 92.530312,
+      "reopen_seconds": 65.464837,
+      "display": "X11",
+      "native_sha256": "1de86fb8950113162be26796806f4e1aa7d17e443d428a7fa9bbf660afdb38ff",
+      "simulation_equipment": {
+        "equipment_config": {
+          "drain": [],
+          "nozzle": [
+            320,
+            80,
+            -125.0,
+            2.0,
+            1
+          ],
+          "pipe_capacity": 20000,
+          "pump": true,
+          "supply": 30,
+          "valves": [],
+          "version": 1
+        },
+        "nozzle_emitted": 7,
+        "nozzle_injected_water": 1785,
+        "participation": {
+          "collection_usec": 19,
+          "completed_tick": 6,
+          "native_tick_ms": 0.656645,
+          "phase_jobs": [
+            5,
+            4,
+            4,
+            3
+          ],
+          "sampled_usec": 92993833,
+          "scope": "maximum distinct task-claiming participants in one phase dispatch of this completed tick; an inline nonempty phase counts the owner as one; not utilization or simultaneous execution",
+          "sequence": 3,
+          "worker_capacity": 1,
+          "workers_observed": 1,
+          "world_generation": 4
+        },
+        "tick_after": 11,
+        "tick_before": 0
+      }
+    },
+    {
+      "case": "installed-combined-1024-workers-4",
+      "side": 1024,
+      "author_checks": 170,
+      "reopen_checks": 41,
+      "authored_digest": "c7893c3b5a6032b990b38f402edbba9ca2f1a996f6751c28194492f68f4d34b2",
+      "fresh_reopen_digest_matches": true,
+      "stop_prefix": 4096,
+      "author_seconds": 91.726813,
+      "reopen_seconds": 65.151612,
+      "display": "X11",
+      "native_sha256": "1de86fb8950113162be26796806f4e1aa7d17e443d428a7fa9bbf660afdb38ff",
+      "simulation_equipment": {
+        "equipment_config": {
+          "drain": [],
+          "nozzle": [
+            320,
+            80,
+            -125.0,
+            2.0,
+            1
+          ],
+          "pipe_capacity": 20000,
+          "pump": true,
+          "supply": 30,
+          "valves": [],
+          "version": 1
+        },
+        "nozzle_emitted": 7,
+        "nozzle_injected_water": 1785,
+        "participation": {
+          "collection_usec": 40,
+          "completed_tick": 5,
+          "native_tick_ms": 0.841546,
+          "phase_jobs": [
+            5,
+            4,
+            4,
+            3
+          ],
+          "sampled_usec": 92182252,
+          "scope": "maximum distinct task-claiming participants in one phase dispatch of this completed tick; an inline nonempty phase counts the owner as one; not utilization or simultaneous execution",
+          "sequence": 3,
+          "worker_capacity": 4,
+          "workers_observed": 3,
+          "world_generation": 4
+        },
+        "tick_after": 11,
+        "tick_before": 0
+      }
+    },
+    {
+      "case": "source-combined-workers-1",
+      "side": 512,
+      "author_checks": 151,
+      "reopen_checks": 38,
+      "authored_digest": "52e3a94accff0bc8498412b740f3c4381717dc5c4bec3501194e847b3ae1eaab",
+      "fresh_reopen_digest_matches": true,
+      "stop_prefix": 4096,
+      "author_seconds": 33.126668,
+      "reopen_seconds": 20.647978,
+      "display": "X11",
+      "native_sha256": "1de86fb8950113162be26796806f4e1aa7d17e443d428a7fa9bbf660afdb38ff",
+      "simulation_equipment": {
+        "equipment_config": {
+          "drain": [],
+          "nozzle": [
+            320,
+            80,
+            -125.0,
+            2.0,
+            1
+          ],
+          "pipe_capacity": 20000,
+          "pump": true,
+          "supply": 30,
+          "valves": [],
+          "version": 1
+        },
+        "nozzle_emitted": 6,
+        "nozzle_injected_water": 1530,
+        "participation": {
+          "collection_usec": 16,
+          "completed_tick": 4,
+          "native_tick_ms": 0.392366,
+          "phase_jobs": [
+            3,
+            3,
+            2,
+            2
+          ],
+          "sampled_usec": 33732611,
+          "scope": "maximum distinct task-claiming participants in one phase dispatch of this completed tick; an inline nonempty phase counts the owner as one; not utilization or simultaneous execution",
+          "sequence": 2,
+          "worker_capacity": 1,
+          "workers_observed": 1,
+          "world_generation": 4
+        },
+        "tick_after": 10,
+        "tick_before": 0
+      }
+    },
+    {
+      "case": "source-combined-workers-4",
+      "side": 512,
+      "author_checks": 151,
+      "reopen_checks": 38,
+      "authored_digest": "52e3a94accff0bc8498412b740f3c4381717dc5c4bec3501194e847b3ae1eaab",
+      "fresh_reopen_digest_matches": true,
+      "stop_prefix": 4096,
+      "author_seconds": 32.198724,
+      "reopen_seconds": 20.235273,
+      "display": "X11",
+      "native_sha256": "1de86fb8950113162be26796806f4e1aa7d17e443d428a7fa9bbf660afdb38ff",
+      "simulation_equipment": {
+        "equipment_config": {
+          "drain": [],
+          "nozzle": [
+            320,
+            80,
+            -125.0,
+            2.0,
+            1
+          ],
+          "pipe_capacity": 20000,
+          "pump": true,
+          "supply": 30,
+          "valves": [],
+          "version": 1
+        },
+        "nozzle_emitted": 7,
+        "nozzle_injected_water": 1785,
+        "participation": {
+          "collection_usec": 33,
+          "completed_tick": 7,
+          "native_tick_ms": 0.464823,
+          "phase_jobs": [
+            3,
+            3,
+            2,
+            2
+          ],
+          "sampled_usec": 32996182,
+          "scope": "maximum distinct task-claiming participants in one phase dispatch of this completed tick; an inline nonempty phase counts the owner as one; not utilization or simultaneous execution",
+          "sequence": 3,
+          "worker_capacity": 4,
+          "workers_observed": 2,
+          "world_generation": 4
+        },
+        "tick_after": 11,
+        "tick_before": 0
+      }
+    }
+  ],
+  "provider_errors": "passed; no numeric assertion count exposed, not added to total",
+  "graphical_stop": {
+    "failures": 0,
+    "fixture": "scripted HTTP responses; no genuine provider inference",
+    "frames": 171,
+    "initial_stop_ms": 7242,
+    "max_frame_ms": 661,
+    "native_backend": "CyberNativeCellWorld",
+    "stop_prefix": {
+      "changed": 28544,
+      "checked": 28672,
+      "excluded": 128,
+      "human_admitted": 0,
+      "human_pending": 0,
+      "human_refused": 0,
+      "reason": "Human Stop",
+      "refused": 0,
+      "status": "partial",
+      "unchanged": 0
+    },
+    "check_count": 38
+  },
+  "png_frames": 57
+}

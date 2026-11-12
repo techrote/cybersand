@@ -8,6 +8,11 @@ on:
       - '.github/workflows/wb-art-paint-qualification.yml'
       - 'tools/ci/run_workbench_qualification.py'
       - 'tools/package_explore001_candidate.py'
+      - 'tools/ci/check_windows_package_modules.ps1'
+      - 'tools/ci/test_workbench_profile_packaging.py'
+      - 'third_party/rapier-bvh-build.lock.json'
+      - 'third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch'
+      - 'tools/ci/stage_windows_vc_runtime.ps1'
       - 'godot/**'
       - 'native/**'
       - 'examples/worldgen/**'
@@ -48,6 +53,7 @@ jobs:
           g++-13 --version | head -1 > evidence/compiler.txt
           sha256sum godot/native_extension/cyber_native_cell_world.cpp godot/scripts/workbench_generator_dialog.gd godot/scripts/shared_workbench.gd godot/scripts/simulation_worker.gd > evidence/changed-inputs.sha256
           python3 tools/ci/check_ci_provider_policy.py > evidence/provider.json
+          python3 tools/ci/test_workbench_profile_packaging.py > evidence/package-contract-tests.log 2>&1
           git lfs install --local
           git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
           echo "$RAPIER_SHA256  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum -c --strict
@@ -270,6 +276,8 @@ jobs:
       - name: Package a source-matched owner desktop candidate
         shell: pwsh
         run: |
+          python tools/ci/test_workbench_profile_packaging.py *> evidence/package-contract-tests.log
+          if ($LASTEXITCODE -ne 0) { throw 'Package integrity contract tests failed' }
           $notices = Join-Path $env:RUNNER_TEMP 'godot-notices'
           New-Item -ItemType Directory -Force $notices | Out-Null
           foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
@@ -277,10 +285,18 @@ jobs:
             if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot notices download failed' }
           }
           if ((Get-FileHash (Join-Path $notices 'LICENSE.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80' -or (Get-FileHash (Join-Path $notices 'COPYRIGHT.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d') { throw 'Pinned Godot notices hash mismatch' }
+          $runtimeLicense = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 -o $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime licence download failed' }
+          curl.exe -fL --retry 3 -o $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft VS redistribution licence download failed' }
+          $vcRuntime = Join-Path $env:RUNNER_TEMP 'cybersand-vc-runtime'
+          ./tools/ci/stage_windows_vc_runtime.ps1 -Output $vcRuntime -License $runtimeLicense -DeveloperLicense $developerLicense
           $engine = Join-Path (Split-Path $env:GODOT_EXE) 'Godot_v4.7-stable_win64.exe'
           $guide = 'docs/operations/explore001-desktop-playtest.md'
           if ($env:GITHUB_REF_NAME -eq 'codex/wb-art-paint-integrated-20261111') { $guide = 'docs/operations/wb-art-paint-integrated-candidate.md' }
-          python tools/package_explore001_candidate.py --engine $engine --engine-notices $notices --native-candidate build/wb-art-paint-windows --output build/wb-art-paint-desktop-candidate --readme $guide
+          python tools/package_explore001_candidate.py --engine $engine --engine-notices $notices --vc-runtime $vcRuntime --native-candidate build/wb-art-paint-windows --output build/wb-art-paint-desktop-candidate --readme $guide
           if ($LASTEXITCODE -ne 0) { throw 'Desktop packaging refused' }
       - name: Exercise the delivered Windows GUI in fresh non-Git installations
         shell: pwsh
@@ -292,6 +308,7 @@ jobs:
           if ($env:GITHUB_REF_NAME -eq 'codex/wb-art-paint-integrated-20261111') { $combined = @('--combined') }
           python tools/ci/run_workbench_qualification.py installed --godot $packagedEngine --package $candidate --scratch $validation --evidence evidence/installed @combined
           if ($LASTEXITCODE -ne 0) { throw 'Installed Windows graphical qualification failed' }
+          ./tools/ci/check_windows_package_modules.ps1 -Package (Join-Path $validation 'complete') -Evidence 'evidence/installed/runtime-modules.json'
       - name: Execute accepted agent regressions and integrated PAINT suites on the same DLL
         if: ${{ !cancelled() && steps.native_runtime.outcome == 'success' && steps.godot_runtime.outcome == 'success' }}
         shell: pwsh

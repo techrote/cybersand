@@ -20,7 +20,7 @@ import tarfile
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools"))
-from package_explore001_candidate import stage_generator_profiles
+from package_explore001_candidate import stage_generator_profiles, verify_vc_runtime
 import native_candidate_identity
 
 REOPEN_VARS = (
@@ -193,6 +193,9 @@ def verify_package(package: Path) -> dict:
         if digest(package / name) != expected:
             raise ValueError(f"Packaged file differs from its identity: {name}")
     if windows:
+        vc_runtime = verify_vc_runtime(package)
+        if vc_runtime["files_sha256"]["vcruntime140.dll"] != manifest.get("vc_runtime_sha256"):
+            raise ValueError("Packaged VC runtime differs from its package identity")
         provenance = json.loads((package / "source-built-candidate-provenance.json").read_text(encoding="utf-8"))
         native = package / native_candidate_identity.NATIVE
         if (provenance.get("kind") != "source-built-windows-candidate"
@@ -264,10 +267,15 @@ def installed(args):
         raise ValueError("Installed profiles differ from the packaged generator manifest")
     runner.env["WB_GENERATOR_PROFILE_COUNT"] = str(len(inventory["examples/worldgen"]))
     runner.env["CYBERSAND_SOURCE_REVISION"] = manifest["source_commit"]
+    packaged_engine_name = args.godot.name if (package / "candidate-manifest.json").is_file() else None
     (runner.evidence / "profile-inventory.json").write_text(json.dumps(inventory, indent=2)+"\n", encoding="utf-8")
     for variant in ("complete", "resource-only", "missing-profiles"):
         target = scratch / variant
         shutil.copytree(package, target, ignore=shutil.ignore_patterns(".git", ".godot"))
+        if packaged_engine_name:
+            # The executable and its app-local DLLs must come from this copied
+            # installation too, not the build directory or the hosted machine.
+            runner.args.godot = target / packaged_engine_name
         if variant != "complete":
             shutil.rmtree(target / "examples/worldgen")
         if variant == "missing-profiles":

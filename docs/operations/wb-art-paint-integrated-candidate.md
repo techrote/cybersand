@@ -14,6 +14,96 @@ related-documents: [../systems/paint-editor-bounded-shapes.md, ../systems/workbe
 implementations and their Git ancestry. It does not authorize Ready, merging,
 auto-merge, material-default changes or GEN-008 Flatten.
 
+## Qualified application checkpoint and standalone packaging repair
+
+The fully qualified application checkpoint is
+`0025bd942850e6e75e77d4beb9c4885d7dc1b2f4`, tree
+`6fff8a8c833eb65f4297d6fd07ef9f5edf336c0d`. A subsequent packaging repair preserves the application implementation. The complete #544 and #560 heads and accepted main
+`d8588716becb0dc42019faf23f721378d8adc84a` remain ancestors. Neither original PR
+has been closed, and no Ready, auto-merge or merge action has been taken.
+
+**HOLD for a replacement standalone package and eventual merge.** Independent
+inspection of the 0025bd94 Windows archive found that Rapier imports
+`VCRUNTIME140.dll`, but the archive omitted it; the hosted machine supplied it.
+The referenced Rapier build lock and cooperative-BVH patch were also omitted.
+Artifact 13984970914 is retained as failure evidence and must not be treated as
+the final standalone candidate. Its ZIP SHA-256 is
+`87503652ced5b83aa106b7377f13e0b4130b776dc7d960d9612601223eca3ffe`.
+
+The targeted repair stages the unmodified, signed x64 Visual Studio 2022 release
+redistributable beside Godot, with Microsoft runtime and redistribution licences,
+file version/hash, signer and build-host provenance. Both referenced Rapier files
+are included. The installed suite runs the executable in each copied installation;
+a separate Windows process-module check requires the actual Godot process to load
+the bundled runtime, native extension and Rapier from that copied installation.
+Publication is gated on those checks and the complete dedicated campaign. Consult
+[PR #564](https://github.com/techrote/cybersand/pull/564) for the replacement build
+identity and download after qualification.
+
+The package's `candidate-manifest.json` and `source-built-candidate-provenance.json`
+identify its exact source and native inputs; `vc-runtime-provenance.json` identifies
+the Microsoft bytes and licences. To reproduce a recorded package, retain that
+runtime stage (the three named payload files plus its provenance) and pass it as
+`--vc-runtime` to the packager, alongside the pinned Godot and source-built native
+inputs. Staging from a newer hosted VS image may deliberately select a newer
+signed release runtime and produces a different recorded runtime hash.
+
+The [0025bd94 dedicated campaign](https://github.com/techrote/cybersand/actions/runs/43301146659)
+passed all three jobs: pinned Windows build, actual Linux X11 execution and
+actual Windows ANGLE execution in fresh standalone layouts. **Each platform
+passed 7,358 directly counted assertions:** 521 installed, 6,729 regression and
+108 provider HTTP assertions. Imports, duplicate completion markers and the
+HTTP wrapper do not inflate that total. HTTP error/cancel/timeout controls also
+passed but expose no numeric assertion count and are not added to it.
+
+| Combined workflow, on each platform | Native workers | Author / fresh-reopen checks |
+| --- | --- | --- |
+| Installed 1024² map, including a 147,456-cell Fill | 1 and 4 | 170 / 41 at each setting |
+| Source-layout 512² map | 1 and 4 | 151 / 38 at each setting |
+
+All eight author/reopen pairs across both platforms reproduced the complete
+authored stored-material digest, actor/equipment configuration and settings,
+then continued editing. Equipment and real simulation were exercised before
+Save. Windows installed Stop prefixes were **3,840** and **3,584** cells;
+Linux recorded **4,096** at each worker setting. Each receipt and saved/reopened
+pair matches its actual prefix; identical time-budget cutoffs across hosts are
+not assumed. Each platform retains **57 original PNGs**, alongside native
+receipts, saved fixtures and source identities. The agent HTTP fixtures use
+OpenAI, NVIDIA and LM Studio transports with deterministic loopback responses,
+including real canvas images. No live-model inference is claimed.
+
+[Windows detailed results](../audits/wb-art-paint-2026-11-12/final-windows-installed-qualification.json)
+and [Linux detailed results](../audits/wb-art-paint-2026-11-12/final-linux-installed-qualification.json)
+retain the exact digests, runtime hashes, phase checks, observed worker samples,
+nozzle emissions and provider counts. Original artifact evidence is available
+for [Windows](https://github.com/techrote/cybersand/actions/runs/43301146659/artifacts/13984337537)
+and [Linux](https://github.com/techrote/cybersand/actions/runs/43301146659/artifacts/13982483474).
+
+The [0025bd94 Native campaign](https://github.com/techrote/cybersand/actions/runs/43301146658)
+passed all six runtime families and the aggregate on this exact source: 192
+cases in each of normal, ASan/UBSan and TSan, plus the generator and soliding
+normal/sanitized families. The eight executing jobs passed; the administrative
+Ready classifier was skipped. Existing ASan settings disable leak detection;
+this is not a LeakSanitizer qualification. The [retained Native record](../audits/wb-art-paint-2026-11-12/final-native-qualification.json)
+keeps case, binary-invocation and assertion measures separate.
+
+The [0025bd94 Godot campaign](https://github.com/techrote/cybersand/actions/runs/43301147487)
+passed all 50 executing jobs without retries: **298/298 Linux cases** across 22
+shards and **277/277 applicable Windows headless cases** across 21 shards.
+All 21 rendered-pixel cases excluded from that Windows headless matrix passed
+on Linux. Dedicated Windows graphical Workbench qualification is a separate
+campaign. The Ready classifier and optional physical-actor stress campaign were
+skipped, not passed. Both platforms passed the unchanged 179-assertion pilot UI
+fixture, the unchanged live-liquid fixture and the repaired 112-check liquid-edge
+fixture at 512²/2048². The [retained Godot record](../audits/wb-art-paint-2026-11-12/final-godot-qualification.json)
+includes exact coverage receipts, source inputs, artifact hashes and exclusions.
+
+The original full Godot attempt on `dc3aaac3` failed and remains preserved. It
+exposed the overwritten acknowledgement and obsolete liquid-edge fixture; one
+Linux shard also failed on a TLS download before running any tests. The final
+campaign executes those cases successfully. Superseded and Draft-skipped runs
+are never substituted for the final-source results.
+
 ## Final hardening and evaluation — 2026-11-12
 
 The final review continues the existing #564 candidate, with #544, #560 and
@@ -278,14 +368,14 @@ The integrated PR and its exact-head Actions artifacts are the final qualificati
 ledger. A pending, failed or Draft-skipped gate is not a pass. No Ready promotion
 or merge is authorized by this runbook or a successful candidate workflow.
 
-### Qualified application and Windows download
+### Previous qualified checkpoint and download — historical 0e73e926
 
 The immutable qualified application commit is
 `0e73e926068a9ed2312303fec05ec8855797df79`, tree
 `6418cd5f00b25a3cb4ddd1eb03e4de54e98a9d9d`.
 [Hosted run 43129760301](https://github.com/techrote/cybersand/actions/runs/43129760301)
 passed all three jobs: Linux build and execution, pinned Windows crossbuild, and
-Windows graphical execution. These results belong to that commit. This final
+Windows graphical execution. These results belong to that commit. That earlier
 handover record and the equipment-policy wording correction change documentation
 only; they do not imply another execution on a later Git commit.
 
@@ -303,7 +393,7 @@ all 87 native source inputs and the 16 recipes in both packaged directories.
 The actual Windows generator, combined editor and reopened-map screenshots were
 also inspected. Both platforms retained 53 original PNGs.
 
-| Final combined-source coverage | Windows and Linux result, each |
+| Previous combined-source coverage | Windows and Linux result, each |
 | --- | --- |
 | Actual discovery / resource-only / missing-both fixtures | 24 / 24 / 6 checks; zero failures |
 | Generator native author / new-process reopen | 22 / 23 checks; zero failures |
@@ -337,7 +427,8 @@ Stop/reopen digests and inspected screenshot hashes. Original logs and images ar
 in the [Windows evidence](https://github.com/techrote/cybersand/actions/runs/43129760301/artifacts/13906042417)
 and [Linux evidence](https://github.com/techrote/cybersand/actions/runs/43129760301/artifacts/13906320847).
 Genuine model inference and independent owner acceptance remain separate. General
-release workflows stay Draft-skipped; they are not counted as successful gates.
+release workflows were Draft-skipped at that checkpoint; they were not successful
+gates. The final-source Native and Godot results above supersede that limitation.
 
 ## Owner acceptance
 
@@ -349,8 +440,11 @@ release workflows stay Draft-skipped; they are not counted as successful gates.
 4. Open Art batches, choose a small work area and protections, submit direct JSON
    or your configured model, then issue a further instruction. Check native counts
    and try Stop during a longer batch; continue with manual edits.
-5. Save a named start, close Godot completely and relaunch. Load the name and
-   confirm terrain, both interfaces' edits, actors and settings; continue drawing.
+5. Run and pause simulation, interact with the supported physical actors and
+   existing liquid equipment, then continue authoring while paused.
+6. Save a named start, close Godot completely and relaunch. Load the name and
+   confirm terrain, both interfaces' edits, actor spawns, equipment configuration
+   and settings; continue drawing. The saved object is the authored start.
 
 Report the candidate commit and package manifest with any failure. Keep the
 candidate Draft until the owner independently accepts this combined application.
