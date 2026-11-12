@@ -187,7 +187,7 @@ def check_applied(value: dict, request: dict, platform: str, rig: str) -> None:
          "applied_construction_setup")
     need(policy["session_generation"] == receipt["session_generation"] == state["world_generation"],
          "applied_world_generation")
-    version = 3 if preset >= 5 else 2
+    version = 4  # every prepared World carries ballistic Water (PR #561)
     need(policy["physical_state_hash_version"] == policy["physical_state_format_version"]
          == receipt["physical_state_hash_version"] == version, "instance_state_version")
     extensions = []
