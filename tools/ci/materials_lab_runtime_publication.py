@@ -364,6 +364,8 @@ def verify_capture(directory: Path, platform: str, native_sha256: str) -> dict:
         expected_scripts = {"scripts/material_lab_" + leaf + ".gd" for leaf in
                             ("screen", "panel", "world_panel", "service", "catalogue", "experiment")}
         expected_scripts.add("tests/" + name + ".gd")
+        if name == "test_material_lab_ui":
+            expected_scripts.add("scripts/shared_workbench.gd")
         engine.require(isinstance(source_map, dict) and expected_scripts.issubset(source_map),
                        "Graphical capture omitted its actual UI source inputs")
         for path, digest in source_map.items():

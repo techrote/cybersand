@@ -75,6 +75,7 @@ class PublicationTests(unittest.TestCase):
             scripts = {"scripts/material_lab_" + leaf + ".gd" for leaf in
                        ("screen", "panel", "world_panel", "service", "catalogue", "experiment")}
             scripts.add("tests/" + name + ".gd")
+            if name == "test_material_lab_ui": scripts.add("scripts/shared_workbench.gd")
             manifest["source_sha256"] = {p: engine.runner.sha256(engine.ROOT / "godot" / p) for p in scripts}
             receipt = {"schema_id": "cybersand.material-lab.world-receipt", "runtime_active": False,
                        "source_identity": source, "candidate_digest": "c" * 64,
@@ -101,7 +102,7 @@ class PublicationTests(unittest.TestCase):
 
     def test_graphical_evidence_requires_native_world_source_backend_and_every_oracle(self):
         modes = ("positive", "headless", "driver", "missing_driver_value", "missing_case", "no_worker_check", "failed_quantity", "source", "image", "omitted_inventory",
-                 "missing_fps", "unbounded_fps", "changed_fps", "duplicate_fps", "user_argument_fps", "alternate_fps")
+                 "missing_fps", "unbounded_fps", "changed_fps", "duplicate_fps", "user_argument_fps", "alternate_fps", "omitted_workbench_source")
         for mode in modes:
             with self.subTest(mode=mode), tempfile.TemporaryDirectory() as temporary:
                 directory = Path(temporary)
@@ -123,6 +124,11 @@ class PublicationTests(unittest.TestCase):
                 if mode == "duplicate_fps": command.extend(("--max-fps", "0"))
                 if mode == "user_argument_fps": command.insert(3, "--")
                 if mode == "alternate_fps": command.append("--max-fps=0")
+                if mode == "omitted_workbench_source":
+                    manifest_path = capture / "effects-ui-capture-manifest.json"
+                    manifest = subject.read_json(manifest_path)
+                    manifest["source_sha256"].pop("scripts/shared_workbench.gd")
+                    engine.write_json(manifest_path, manifest)
                 engine.write_json(path, receipt)
                 self.refresh_map(directory, report)
                 if mode == "image": (capture / "08-kept-salt-world.png").write_bytes(b"different")

@@ -43,6 +43,8 @@ The Windows evaluation continuation repairs the current Git distribution's
 portable layout, readable small-window overflow, pending numeric input and stale
 resolver diagnostics. The completion audit retains each campaign's actual
 source/package result; a failed package stage is not a delivered executable.
+The Workbench Lab also uses an independent native desktop window where supported,
+with physical-pixel scaling and local input; embedded fallback remains available.
 The owner explicitly
 excluded MoltenGlass H1 from this continuation; it is not a Lab delivery gate.
 Historical liveness evidence and production thermal/rest behavior remain

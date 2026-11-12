@@ -13,11 +13,13 @@ var capture_directory: String = ""
 var capture_source_hashes: Dictionary = {}
 var capture_manifest: Dictionary = {}
 var directory_custody_only: bool = false
+var workbench_mount_only: bool = false
 
 func _initialize() -> void:
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-output="): capture_directory = argument.trim_prefix("--capture-output=")
 		if argument == "--directory-custody-only": directory_custody_only = true
+		if argument == "--workbench-mount-only": workbench_mount_only = true
 	run.call_deferred()
 
 func expect(value: bool, message: String) -> void:
@@ -351,10 +353,83 @@ func extended_authoring() -> bool:
 		"Extended effects cannot silently fall back to the legacy descriptor/resolver probe")
 	return true
 
+func workbench_popup_controls(workbench: Variant, main: Control) -> void:
+	var popup: Window = workbench._materials_lab_window
+	var mounted: Variant = workbench._materials_lab_panel
+	var native: bool = not OS.has_feature("web") and DisplayServer.has_feature(DisplayServer.FEATURE_SUBWINDOWS)
+	expect(popup.force_native == native and popup.is_embedded() != native,"Lab uses a native desktop window only when the display supports subwindows")
+	expect(popup.content_scale_mode == Window.CONTENT_SCALE_MODE_DISABLED and popup.handle_input_locally,
+		"Lab owns its pixel scaling and local input without changing the game")
+	expect(root.content_scale_mode == Window.CONTENT_SCALE_MODE_CANVAS_ITEMS and root.content_scale_size == Vector2i(1920,1080),
+		"Opening Lab preserves the stretched game canvas")
+	var bounds: Rect2i = DisplayServer.screen_get_usable_rect(root.current_screen) if native else Rect2i(Vector2i.ZERO,Vector2i(root.get_visible_rect().size))
+	expect(bounds.encloses(Rect2i(popup.position,popup.size)),"Lab initially fits the available desktop or embedded viewport")
+	for dimensions: Vector2i in [Vector2i(1000,650),Vector2i(1280,720)]:
+		popup.size = dimensions
+		for frame: int in range(3): await process_frame
+		var scale: Vector2 = mounted.get_screen_transform().get_scale()
+		if native: expect(scale.is_equal_approx(Vector2.ONE),"Native Lab controls remain physical pixels at %s" % dimensions)
+		expect(Rect2(Vector2.ZERO,Vector2(popup.size)).encloses(mounted.get_global_rect()),"Lab content fits its %s client area" % dimensions)
+		mounted._tabs.current_tab = 3
+		for frame: int in range(2): await process_frame
+		var scroll: ScrollContainer = mounted._tabs.get_current_tab_control()
+		var contact: Button = find_button(mounted,"Inspect contact")
+		scroll.ensure_control_visible(contact)
+		for frame: int in range(2): await process_frame
+		expect(scroll.get_global_rect().has_point(contact.get_global_rect().get_center()),"Native contact action remains reachable at %s" % dimensions)
+		scroll.scroll_vertical = 0
+		print("MATERIAL_LAB_POPUP_GEOMETRY ",JSON.stringify({"display":DisplayServer.get_name(),"native":native,"embedded":popup.is_embedded(),"size":[popup.size.x,popup.size.y],"control_screen_scale":[scale.x,scale.y]}))
+	mounted._tabs.current_tab = 0
+	for frame: int in range(2): await process_frame
+	var paused: bool = main.paused
+	var steps: int = workbench.step_serial
+	var tick: int = int(main.latest_snapshot.tick_index)
+	var edits: Array = workbench.applied.edits.duplicate(true)
+	var camera: int = workbench._camera.selected
+	mounted._search.grab_focus()
+	var typing := InputEventKey.new()
+	typing.pressed = true
+	typing.keycode = KEY_F
+	typing.unicode = "f".unicode_at(0)
+	popup.push_input(typing)
+	expect(mounted._search.text == "f","Lab text receives keyboard input in its own viewport")
+	mounted._search.release_focus()
+	for key: Key in [KEY_P,KEY_PERIOD,KEY_F]:
+		var event := InputEventKey.new()
+		event.pressed = true
+		event.keycode = key
+		popup.push_input(event)
+		event = event.duplicate()
+		event.pressed = false
+		popup.push_input(event)
+	var click := InputEventMouseButton.new()
+	click.button_index = MOUSE_BUTTON_LEFT
+	click.pressed = true
+	click.position = Vector2(popup.size) / 2.0
+	popup.push_input(click)
+	click = click.duplicate()
+	click.pressed = false
+	popup.push_input(click)
+	for frame: int in range(3): await process_frame
+	expect(main.paused == paused and workbench.step_serial == steps and int(main.latest_snapshot.tick_index) == tick,
+		"Lab keys do not pause, resume or tick the underlying native Workbench")
+	expect(workbench.applied.edits == edits and workbench._camera.selected == camera,
+		"Lab clicks and shortcuts do not paint or change the underlying Workbench camera")
+	mounted._search.text = ""
+	mounted._search.text_changed.emit("")
+
 func workbench_mount() -> void:
 	# Main owns its real worker and publishes copied tower_context snapshots.
 	# The Lab test never reaches into simulation_worker or its native World.
 	var former_feature: Variant = get_meta("cybersand_feature") if has_meta("cybersand_feature") else null
+	var former_size: Vector2i = root.size
+	var former_scale_size: Vector2i = root.content_scale_size
+	var former_scale_mode: int = root.content_scale_mode
+	var former_embedding: bool = root.gui_embed_subwindows
+	root.size = Vector2i(1280,720)
+	root.content_scale_size = Vector2i(1920,1080)
+	root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+	root.gui_embed_subwindows = true
 	set_meta("cybersand_feature","shared_workbench")
 	var main: Control = load("res://main.tscn").instantiate()
 	root.add_child(main)
@@ -371,6 +446,7 @@ func workbench_mount() -> void:
 			var mounted: Variant = workbench._materials_lab_panel
 			expect(is_instance_valid(mounted) and workbench._materials_lab_window.visible,"Materials Lab opens inside actual Workbench Window")
 			if is_instance_valid(mounted):
+				await workbench_popup_controls(workbench,main)
 				var initial_owner: Dictionary = main.tower_context.liquid_solver_policy.duplicate(true)
 				expect(mounted.applied_policy == initial_owner,"Workbench mount copies the actual owner-published policy")
 				expect(mounted.policy_context.contains("Workbench owner snapshot"),"Inspector labels snapshot ownership and refresh semantics")
@@ -382,6 +458,15 @@ func workbench_mount() -> void:
 				expect(mounted.applied_policy == initial_owner,"Reopening replaces mutated local inspection copy with fresh owner data")
 				workbench._materials_lab_window.close_requested.emit()
 				expect(not workbench._materials_lab_window.visible,"Closing Lab returns to existing Workbench session")
+				var focus: Control = root.gui_get_focus_owner()
+				if focus != null: focus.release_focus()
+				var former_tick: int = int(main.latest_snapshot.tick_index)
+				var step := InputEventKey.new()
+				step.pressed = true
+				step.keycode = KEY_PERIOD
+				root.push_input(step)
+				if await wait_for(func() -> bool: return installed.call() and int(main.latest_snapshot.tick_index) > former_tick,"Workbench input after closing Lab",60000):
+					expect(int(main.latest_snapshot.tick_index) == former_tick + 1,"Closing Lab restores the existing exact native Step shortcut")
 				var details_button: Button = find_button(workbench,"Details")
 				if not workbench._details.visible and details_button != null: details_button.pressed.emit()
 				var liquids: Variant = workbench._liquids
@@ -406,6 +491,10 @@ func workbench_mount() -> void:
 	main.queue_free()
 	await process_frame
 	await process_frame
+	root.size = former_size
+	root.content_scale_size = former_scale_size
+	root.content_scale_mode = former_scale_mode
+	root.gui_embed_subwindows = former_embedding
 	if former_feature == null: remove_meta("cybersand_feature")
 	else: set_meta("cybersand_feature",former_feature)
 
@@ -417,6 +506,11 @@ func run() -> void:
 		capture_source_hashes = _capture_sources()
 	output_directory = ProjectSettings.globalize_path("user://materials_lab/ui-acceptance-%d" % Time.get_ticks_usec())
 	expect(DirAccess.make_dir_recursive_absolute(output_directory) == OK,"Acceptance export directory created")
+	if workbench_mount_only:
+		await workbench_mount()
+		print("MATERIAL_LAB_WORKBENCH_MOUNT: %d assertions; %d failures" % [assertions,failures])
+		quit(1 if failures else 0)
+		return
 	directory_custody_controls()
 	if directory_custody_only:
 		print("MATERIAL_LAB_DIRECTORY_CUSTODY: %d assertions; %d failures" % [assertions,failures])
@@ -730,7 +824,7 @@ func run() -> void:
 func _capture_sources() -> Dictionary:
 	var hashes: Dictionary = {}
 	for path: String in ["materials_lab.tscn","addons/cybersand_native/cybersand_native.gdextension","scripts/material_lab_screen.gd","scripts/material_lab_panel.gd","scripts/material_lab_world_panel.gd",
-		"scripts/material_lab_service.gd","scripts/material_lab_catalogue.gd","scripts/material_lab_experiment.gd","tests/test_material_lab_ui.gd"]:
+		"scripts/material_lab_service.gd","scripts/material_lab_catalogue.gd","scripts/material_lab_experiment.gd","scripts/shared_workbench.gd","tests/test_material_lab_ui.gd"]:
 		hashes[path] = FileAccess.get_sha256("res://" + path)
 	return hashes
 

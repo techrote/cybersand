@@ -16,6 +16,9 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 [bounded authoring workflow and Windows launcher](materials-lab-authoring.md).
 Use the [completion audit](../audits/2026-11-11-materials-lab-completion.md) for
 the actual source/runtime/package campaign result and preserved failures.
+Request7 is a fully qualified recoverable Windows package; the final continuation
+adds the independently tested native Workbench Lab window and requires its own
+fresh publication campaign.
 Accepted liquid-equipment main is incorporated; #563 retains separate native
 capability-consumer ownership. Candidates execute only in their admitted
 isolated backends. Keep Draft / Do Not Merge until owner acceptance.

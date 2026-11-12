@@ -67,9 +67,15 @@ func open_materials_lab() -> void:
 	_cancel()
 	if not is_instance_valid(_materials_lab_window):
 		_materials_lab_window = Window.new()
+		_materials_lab_window.hide()
 		_materials_lab_window.title = "CyberSand / Materials Lab"
 		_materials_lab_window.min_size = Vector2i(1000,650)
 		_materials_lab_window.transient = true
+		# A desktop Lab owns physical pixels instead of inheriting the game's
+		# stretched canvas. Keep embedded fallback for headless/Web displays.
+		_materials_lab_window.force_native = not OS.has_feature("web") and DisplayServer.has_feature(DisplayServer.FEATURE_SUBWINDOWS)
+		_materials_lab_window.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
+		_materials_lab_window.handle_input_locally = true
 		add_child(_materials_lab_window)
 		var margin := MarginContainer.new()
 		margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)

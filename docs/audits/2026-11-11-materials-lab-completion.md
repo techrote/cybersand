@@ -493,3 +493,71 @@ Default-sandbox import first failed on safe-save permissions; the same import
 passed outside that sandbox. An initial parent-harness cp1252 printing failure
 is retained locally; a fresh UTF-8 edges run completed naturally. Product checks
 and policy watchdogs were unchanged.
+
+## Request7 recovery package and final Workbench window — 2026-11-12
+
+[Campaign43178348103](https://github.com/techrote/cybersand/actions/runs/43178348103)
+passes completely from source `b04232560333e5de69af651c67e2a53a6679d5b4`,
+tree `67f666562aeae9756e7cfa9663af64d035b90356`. The four-path runtime
+publication child is `c6084fa15bb22e69fcf3e101080375a29a30a5b1`, tree
+`4c5b563023bb271dcc81cc0cdcf767749ec9f9e9`. All four exact-child manual gates
+pass: Documentation43184413537, Native43184416960 including TSAN/ASan/UBSan,
+GDExtension43184420969 and palette43184425040. Palette executes all six
+Linux/Windows cohorts and aggregate readback, qualifying the scoped evidence
+attribute correction through actual rendering. The
+[workflow ledger](materials-lab-completion-20261111/windows-evaluation-20261112/request7-manual-gates.json)
+keeps bot-triggered `action_required` PR siblings separate from these executed
+manual gates; approval policy is unchanged.
+
+The preserved Windows package is artifact13927398778; inner ZIP707,297,673 bytes,
+SHA-256 `c50d53778d24aed7cc45e90a11d1b398d557fdb3b99f212ce67f8ea7e73127e2`.
+Outer artifact SHA-256 is
+`a8d3a1294e5adf16f8bb0f543a52f51fbefc73678df234b69ef82718cc49705c`;
+manifest `d3c84f914fa21be784601c6f81fabe507adefadf791e0ecb33a88510fbfbb2f7`.
+Its Windows DLL is
+`636f285beb96ce9ae02ab1df00527647220d538621df785c4a6c4275fbe5703c`.
+Original relocated bundled-tool smoke artifact13927841392 passes UI205,
+World204 and actual ANGLE contact187. Its outer SHA-256 is
+`e696acc160676becd9c25da988f3be27b1b71d77b39f9f730552c61ea5fbbeb1`.
+This is a recoverable source-qualified package, without the following final
+Workbench popup correction. The earlier local default-AppData full UI rerun
+also passed205/0 with both MSIX alias pairs naturally recurring; the executed
+test blob matches published request7 exactly.
+
+Manual1280x720 inspection found that the Workbench's embedded Lab inherited
+the game's1920x1080 canvas scaling. Its13px controls shrank to roughly8px even
+though the standalone Lab was already corrected. On supported desktop displays
+the Lab now owns a native Window with disabled content scaling and local input.
+Headless/Web retains embedded fallback; the game scale, clamped sizing and
+modeless lifecycle are preserved. A new Window must be hidden before setting
+`force_native`; the first ANGLE attempt exposed that lifecycle error and remains
+retained locally, separately from the corrected passing run.
+
+Actual Windows ANGLE focused popup qualification passes26/0 and reports
+`embedded=false` with physical control scale `[1,1]` at1000x650 and1280x720.
+Headless fallback passes24/0. Pause/step/camera keys and Lab clicks leave the
+underlying native tick and authored edits unchanged; after closing, the original
+Step shortcut advances exactly one native tick. Complete mounted authoring UI
+passes217/0 in227.907s with bundled request5 tools and unchanged native DLL
+`7aff557e...c6e2a2`. The
+[original receipt](materials-lab-completion-20261111/windows-evaluation-20261112/ui-workbench-native-popup-final.json)
+binds local base44645 plus its source delta, command and before/after hashes;
+this does not claim execution of the future publication commit. Graphical source
+custody now includes `shared_workbench.gd`; publisher guards refuse its omission
+and pass8/8 outside the Windows temporary-directory sandbox restriction. The
+first sandbox cleanup error is not counted as a passing run.
+
+An independent exact-navigation probe starts with the original `--materials-lab`
+argument and invokes mounted Close, Development workbench, Load liquid-lab and
+Step handlers. It passes13/0 in5.111s: blank2048 request1 and equipment512
+request2 are acknowledged, equipment serial1 is configured, and native tick
+advances0 to1 while remaining paused. The worker is started/alive with no start
+error throughout; ten recorded source hashes remain unchanged. The
+[navigation proof](materials-lab-completion-20261111/windows-evaluation-20261112/navigation-proof.json)
+records the actual local source/runtime identity. No navigation/owner defect was
+reproduced; this headless handler probe does not qualify GUI coordinate hits.
+
+Request8 carries only this bounded popup correction, its regressions/source
+custody and documentation. Its complete fresh platform/package campaign and
+exact-child gates remain required. No material physics, compatibility lock,
+equipment owner, #563 consumer or production candidate installer changes.

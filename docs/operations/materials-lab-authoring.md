@@ -20,6 +20,12 @@ the preceding implementation's evidence. The
 [completion record](../audits/2026-11-11-materials-lab-completion.md) owns the subsequent
 native contact diagnostics, runtime publication and Windows package qualification.
 
+On supported desktop displays, the Workbench opens the Lab in its own native
+window, preserving physical-pixel text and local input while the game retains
+its canvas scaling. Headless/Web displays retain the embedded fallback. Closing
+the Lab returns to the same Workbench session; its owner policy is refreshed
+when reopened.
+
 The Lab uses the accepted [catalogue compiler](material-catalogue-shadow.md).
 It does not replace native production definitions, the simulation worker, the
 Workbench or World. Production still has 132 slots, including invalid reserved
