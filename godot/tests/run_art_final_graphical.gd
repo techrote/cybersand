@@ -50,6 +50,7 @@ func run() -> void:
 	if evidence.is_empty() or OS.get_environment("WB_ART_TEST_ENDPOINT").is_empty(): quit(1);return
 	if DisplayServer.get_name()=="headless": push_error("Graphical smoke requires a framebuffer");quit(1);return
 	DirAccess.make_dir_recursive_absolute(evidence)
+	var startup_started := Time.get_ticks_msec()
 	root.size = Vector2i(1600,1000)
 	change_scene_to_file("res://feature_launcher.tscn");await scene_changed
 	current_scene.launch("shared_workbench");await scene_changed
@@ -61,7 +62,15 @@ func run() -> void:
 	# Integrated PAINT draws a separate hover preview on the same canvas.
 	if wb.get("paint_editor") != null and wb.paint_editor._overlay != null:
 		wb.paint_editor._overlay.modulate.a = 0
-	if not await until(func(): return not wb.applied.is_empty() and not wb.busy(),"native canvas ready"): quit(1);return
+	var initial_wait_started := Time.get_ticks_msec()
+	# Match the accepted provider fixture's cold-start allowance, only for startup.
+	var initial_ready := await until(func(): return not wb.applied.is_empty() and not wb.busy(),"native canvas ready",180)
+	print("ART_SMOKE_INITIAL_READY ",JSON.stringify({"ready":initial_ready,"budget_ms":180000,
+		"wait_ms":Time.get_ticks_msec()-initial_wait_started,"startup_ms":Time.get_ticks_msec()-startup_started,
+		"applied":not wb.applied.is_empty(),"pending_install":not host.pending_microscenario_apply.is_empty(),
+		"worker_failed":host.simulation_worker.has_failed(),"paint":host.simulation_worker.paint_state(),
+		"art":host.simulation_worker.art_state(),"workbench_message":wb.message,"host_error":host.microscenario_error}))
+	if not initial_ready: quit(1);return
 	panel.endpoint.text = OS.get_environment("WB_ART_TEST_ENDPOINT")
 	panel.model.text = "graphical-fixture"
 	panel.image_input.button_pressed = true

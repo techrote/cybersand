@@ -512,7 +512,15 @@ func run() -> void:
 	dialog = bench._generated_dialog
 	var reopening := OS.get_environment("WB_COMBINED_REOPEN")=="1"
 	var graphics_ok := OS.get_environment("WB_COMBINED_REQUIRE_GRAPHICS")!="1" or DisplayServer.get_name()!="headless"
-	if check(graphics_ok,"requested graphical backend is active") and await until(ready,"full native Shared Workbench installed"):
+	var initial_wait_started := Time.get_ticks_msec()
+	# Allow cold graphical/native startup without extending authoring deadlines.
+	var initial_ready := check(graphics_ok,"requested graphical backend is active") and await until(ready,"full native Shared Workbench installed",180000)
+	print("WB_COMBINED_INITIAL_READY ",JSON.stringify({"ready":initial_ready,"budget_ms":180000,
+		"wait_ms":Time.get_ticks_msec()-initial_wait_started,"startup_ms":(Time.get_ticks_usec()-started_usec)/1000,
+		"applied":not bench.applied.is_empty(),"pending_install":not host.pending_microscenario_apply.is_empty(),
+		"paint_editor_busy":editor.busy(),"worker_failed":worker.has_failed(),
+		"paint":worker.paint_state(),"art":worker.art_state(),"workbench_message":bench.message,"host_error":host.microscenario_error}))
+	if initial_ready:
 		check(bench._material.item_count==131 and editor.get_parent()==bench,"complete PAINT palette and toolbar mounted with art panel")
 		if reopening: await reopen()
 		else: await author()
