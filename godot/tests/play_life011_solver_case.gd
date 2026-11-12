@@ -205,9 +205,9 @@ func verify_applied(request: Dictionary, value: Dictionary, label: String) -> vo
 		and int(policy.get("session_generation", -1)) == int(value.identity.world_generation),
 		label + " native session receipt and current publication generation agree")
 	var has_inertial: bool = int(request.preset) >= 5
-	expect(int(policy.get("physical_state_hash_version", -1)) == (3 if has_inertial else 2)
-		and int(policy.get("physical_state_format_version", -1)) == (3 if has_inertial else 2)
-		and int(receipt.get("physical_state_hash_version", -1)) == (3 if has_inertial else 2),
+	expect(int(policy.get("physical_state_hash_version", -1)) == 4
+		and int(policy.get("physical_state_format_version", -1)) == 4
+		and int(receipt.get("physical_state_hash_version", -1)) == 4,
 		label + " actual instance hash/CYPS law identity")
 	if has_inertial:
 		expect(policy.get("family_parameters", {}).get("inertial_cellular_v1", {}).get("readback_source", "") == "applied_world",

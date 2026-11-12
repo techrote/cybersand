@@ -143,7 +143,7 @@ func _current_control() -> void:
 		var extension: Dictionary = {}
 		for value: Dictionary in initial.solver_state_extensions:
 			if value.family==4: extension = value
-		expect(inertial.maximum_rule_radius==3 and inertial.physical_state_hash_version==3
+		expect(inertial.maximum_rule_radius==3 and inertial.physical_state_hash_version==4
 			and extension.get("extension_digest","")==inertial.family_parameters.inertial_cellular_v1.extension_identity,
 			"ordinary native IN instance geometry/version/extension readback agrees")
 		owner.ui.buttons["restart"].pressed.emit()
@@ -154,7 +154,7 @@ func _current_control() -> void:
 			"extension":inertial.family_parameters.inertial_cellular_v1.extension_identity,"native_extension":extension}
 	if expect(apply(0,3),"ordinary Current comparator explicitly admits matched geometry3"):
 		var control: Dictionary = owner.native_world.get_liquid_solver_policy()
-		expect(control.maximum_rule_radius==3 and control.physical_state_hash_version==2
+		expect(control.maximum_rule_radius==3 and control.physical_state_hash_version==4
 			and control.assignments[0].applied_family=="freemass_v1","Current comparator retains its family at explicit geometry3")
 		matched.current_comparator = {"geometry":control.maximum_rule_radius,"physical_hash_version":control.physical_state_hash_version}
 	owner.select_demo("waterworks",false)

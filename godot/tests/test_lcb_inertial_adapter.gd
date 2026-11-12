@@ -97,10 +97,10 @@ func _oracle_parameters() -> void:
 		expect(parameters.damping_numerator == vector.damping_numerator and parameters.damping_denominator == 16
 			and parameters.block_version == 2 and parameters.family_version == 1 and parameters.minimum_rule_radius == 3
 			and parameters.extension_identity == vector.extension_identity and parameters.readback_source == "applied_world", "actual applied parameters and extension match independent oracle")
-		expect(readback.physical_state_hash_version == 3 and readback.physical_state_format_version == 3
-			and readback.maximum_rule_radius == 3 and world.get_physical_state_hash_version() == 3 and world.get_physical_state_format_version() == 3, "actual IN instance uses hash3/CYPS3")
+		expect(readback.physical_state_hash_version == 4 and readback.physical_state_format_version == 4
+			and readback.maximum_rule_radius == 3 and world.get_physical_state_hash_version() == 4 and world.get_physical_state_format_version() == 4, "actual IN instance uses hash4/CYPS4 (ballistic)")
 		var receipt: Dictionary = world.get_liquid_run_receipt({"setup_hash":"standalone-in"})
-		expect(receipt.components.physical_state_hash_version == "3" and receipt.components.inertial_parameter_identity == vector.extension_identity
+		expect(receipt.components.physical_state_hash_version == str(world.get_physical_state_hash_version()) and receipt.components.inertial_parameter_identity == vector.extension_identity
 			and receipt.receipt_hash == _dictionary_identity(receipt.components), "older dictionary identity binds actual instance and IN law without claiming typed host proof")
 		identities[parameters.extension_identity] = true
 		expect(world.simulation_tick(), "each damping value executes an actual native tick")
@@ -269,17 +269,17 @@ func _cyps_continuation() -> void:
 	expect(_build(world, _policy(7), _box()), "CYPS3 running fixture constructs")
 	for tick: int in range(7): expect(world.simulation_tick(), "pre-save motion tick")
 	var saved: PackedByteArray = bridge.export_physical_state(world)
-	expect(not saved.is_empty() and saved.decode_u32(4) == 3, "IN export uses actual CYPS3")
+	expect(not saved.is_empty() and saved.decode_u32(4) == 4, "IN export uses actual CYPS4 (ballistic)")
 	var restored: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
 	expect(bridge.import_physical_state(restored, saved) and restored.get_physical_state_hash() == world.get_physical_state_hash()
-		and restored.get_liquid_solver_policy().maximum_rule_radius == 3 and restored.get_physical_state_format_version() == 3, "CYPS3 restores actual geometry/parameter/slot state into Current adapter")
+		and restored.get_liquid_solver_policy().maximum_rule_radius == 3 and restored.get_physical_state_format_version() == 4, "CYPS3 restores actual geometry/parameter/slot state into Current adapter")
 	for tick: int in range(8):
 		expect(world.simulation_tick() and restored.simulation_tick() and world.get_physical_state_hash() == restored.get_physical_state_hash(), "CYPS3 retained motion continues exactly")
 	var current: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
 	var current_saved: PackedByteArray = bridge.export_physical_state(current)
-	expect(current_saved.decode_u32(4) == 2 and bridge.import_physical_state(restored, current_saved)
-		and restored.get_liquid_solver_policy().maximum_rule_radius == 2 and restored.get_physical_state_hash_version() == 2
-		and restored.get_physical_state_format_version() == 2 and restored.get_physical_state_hash() == current.get_physical_state_hash(), "non-IN CYPS2 restores radius2 rather than inheriting IN radius3")
+	expect(current_saved.decode_u32(4) == 4 and bridge.import_physical_state(restored, current_saved)
+		and restored.get_liquid_solver_policy().maximum_rule_radius == 2 and restored.get_physical_state_hash_version() == 4
+		and restored.get_physical_state_format_version() == 4 and restored.get_physical_state_hash() == current.get_physical_state_hash(), "non-IN CYPS2 restores radius2 rather than inheriting IN radius3")
 
 func _default_preservation() -> void:
 	var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
@@ -299,10 +299,10 @@ func _default_preservation() -> void:
 				ok = bridge.import_level(world, bytes); reference_ok = bridge.import_level(legacy, bytes)
 			5: ok = bridge.build_liquid_policy_world(world, _box(), profile, water_policy, PackedInt32Array(), defaults); reference_ok = bridge.build_liquid_policy_world(legacy, _box(), profile, water_policy, PackedInt32Array(), defaults)
 		expect(ok and reference_ok and world.get_liquid_solver_policy().maximum_rule_radius == 2
-			and world.get_physical_state_hash_version() == 2 and world.get_physical_state_format_version() == 2, "ordinary/default/CYSD constructors restore radius2 and non-IN versions")
+			and world.get_physical_state_hash_version() == 4 and world.get_physical_state_format_version() == 4, "ordinary/default/CYSD constructors restore radius2 and non-IN versions")
 		expect(world.get_physical_state_hash() == legacy.get_physical_state_hash(), "default reconstruction after IN equals original Current constructor")
 		var receipt: Dictionary = world.get_liquid_run_receipt({"setup_hash":"standalone-in"})
-		expect(receipt.components.physical_state_hash_version == "2" and not receipt.components.has("inertial_parameter_identity")
+		expect(receipt.components.physical_state_hash_version == "4" and not receipt.components.has("inertial_parameter_identity")
 			and receipt.receipt_hash == _dictionary_identity(receipt.components), "non-IN older receipt identity retains its exact field stream")
 		var state: Dictionary = world.inspect_inertial_cell(Vector2i(32, 40))
 		expect(state.ok and not state.available and not state.inertial_family, "ordinary Current has no IN sidecar")

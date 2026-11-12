@@ -5,7 +5,7 @@ const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
 const Fleet = Setup.Fleet
 const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
 const ZOOMS := [Vector2i(240,135),Vector2i(480,270),Vector2i(960,540)]
-const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place source"]
+const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place source","Kinetic tool"]
 var _generated_dialog := preload("res://scripts/workbench_generator_dialog.gd").new()
 # These copied bytes are only a reconstructible authored starting baseline.
 # The sole live World remains owned by the existing native simulation worker.
@@ -690,7 +690,8 @@ func load_setup() -> bool:
 # ballistic Water for that World so the nozzle fires real parcels. Either can
 # be refused; the start then keeps the policy it was given and the nozzle
 # injects resting cells instead. Global defaults never change.
-const EQUIPMENT_PRESETS := {Setup.LIQUID_LAB_LABEL:"Water: inertial",Setup.RESERVOIR_LAB_LABEL:"Water: pressure reference"}
+const EQUIPMENT_PRESETS := {Setup.LIQUID_LAB_LABEL:"Water: inertial",Setup.RESERVOIR_LAB_LABEL:"Water: pressure reference",
+	Setup.SOLIDS_LAB_LABEL:"Current defaults",Setup.KINETIC_LAB_LABEL:"Water: inertial"}
 
 func load_liquid_lab(ballistic: bool = true, preset_label: String = "") -> bool:
 	return load_equipment_start(Setup.LIQUID_LAB_LABEL,ballistic,preset_label)
@@ -713,6 +714,11 @@ func load_equipment_start(label: String, ballistic: bool = true, preset_label: S
 	if checked.get("accepted",false):
 		candidate.rule_radius = maxi(int(candidate.rule_radius),int(checked.receipt.get("minimum_rule_radius",2)))
 	host.workbench_water_options["workbench_ballistic"] = ballistic
+	# BS-001: the solids start also needs ballistic solids in its World.
+	if label in Setup.SOLIDS_LABELS:
+		host.workbench_water_options["workbench_ballistic_solids"] = ballistic
+		water_spray._solids.set_pressed_no_signal(ballistic)
+		water_spray.set_hit_force(10.0)
 	water_spray._ballistic.set_pressed_no_signal(ballistic)
 	if host.simulation_worker.has_failed(): return host.workbench_restart(candidate)
 	if not apply(candidate): return false
@@ -886,6 +892,10 @@ func _world_input(event: InputEvent) -> void:
 	if _drag_button == MOUSE_BUTTON_RIGHT or _tool.selected == 0:
 		paint(pos,0 if _drag_button == MOUSE_BUTTON_RIGHT else int(applied.material))
 		return
+	if _tool.selected == 5:
+		# Kinetic tool: applies on press and keeps applying while dragged.
+		equipment.kinetic_at(pos)
+		return
 	_drag_button = 0
 	match _tool.selected:
 		1: place(model_choice(),Vector2(pos))
@@ -895,6 +905,7 @@ func _world_input(event: InputEvent) -> void:
 			_position[1].value = pos.y
 			move_selected()
 		4: place_source(pos)
+		5: equipment.kinetic_at(pos)
 
 func _process(_delta: float) -> void:
 	if host == null: return

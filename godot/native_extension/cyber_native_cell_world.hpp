@@ -154,6 +154,15 @@ public:
     [[nodiscard]] Dictionary get_water_spray() const;
     void water_spray_before_tick();
     [[nodiscard]] String inject_water_parcel(Vector2 position, Vector2 velocity_cells_per_tick, std::int64_t quantity);
+    // BS-001 ballistic solids (serialized owner, between ticks).
+    [[nodiscard]] String inject_solid_parcel(Vector2 position, Vector2 velocity_cells_per_tick, std::int64_t material);
+    [[nodiscard]] String launch_solid_parcel(Vector2i cell, Vector2 position, Vector2 velocity_cells_per_tick);
+    // BW-001: move (part of) one grid Water cell into a parcel; whole-cell families take the whole cell.
+    [[nodiscard]] String launch_water_parcel(Vector2i cell, Vector2 position, Vector2 velocity_cells_per_tick);
+    [[nodiscard]] Dictionary get_ballistic_solids() const;
+    [[nodiscard]] PackedFloat64Array inspect_ballistic_solids(std::int64_t maximum) const;
+    // Native quantity-ledger cell population of one material (grid cells only).
+    [[nodiscard]] std::int64_t get_material_population(std::int64_t material) const;
     [[nodiscard]] PackedFloat64Array inspect_ballistic_parcels(std::int64_t maximum) const;
 
 protected:

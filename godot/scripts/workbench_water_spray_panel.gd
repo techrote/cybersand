@@ -13,6 +13,8 @@ var _requested: Dictionary = {}
 var _had_ballistic := false
 var _ballistic := CheckButton.new()
 var _signed := CheckButton.new()
+var _solids := CheckButton.new()
+var _hit_force := SpinBox.new()
 var _spray := CheckButton.new()
 var _jet := CheckButton.new()
 var _pf_gas := CheckButton.new()
@@ -33,9 +35,17 @@ const SPINS := [
 	["jet_speed", "Jet speed", 0.0, 6.0, 0.1, 3.2],
 	["jet_rate", "Jet rate", 0, 16, 1, 3],
 ]
+# Body push from ballistic Water and ballistic solids: multiplies the native
+# droplet gain (2e-7 impulse per mass x q256 momentum). Runtime setting.
+const BASE_DROPLET_GAIN := 2e-7
 # WCX-FR face release tuning (construction options; apply on rebuild). The
 # workbench defaults shed more than the native ballistic_water_v1 defaults
 # (48 / 192 / 3 / 6): a fuller dam-break wall of spray.
+# BW-001 / BS-001 construction capacities (in-flight slots reserved at build).
+const CAPACITY_SPINS := [
+	["workbench_ballistic_capacity", "Drop cap", 256, 65536, 256, 4096],
+	["workbench_solids_capacity", "Solid cap", 256, 65536, 256, 4096],
+]
 const FACE_SPINS := [
 	["workbench_face_budget", "Face rate", 1, 1024, 1, 320],
 	["workbench_face_speed", "Face speed", 0, 512, 8, 288],
@@ -53,6 +63,9 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	_ballistic.text = "Ballistic Water"
 	_ballistic.tooltip_text = "Construction option: native ballistic_water_v1 parcels. Applies on the next Apply settings / Restore start."
 	_ballistic.toggled.connect(func(on: bool) -> void: _construction("workbench_ballistic", on))
+	_solids.text = "Ballistic solids"
+	_solids.tooltip_text = "Construction option (requires Ballistic Water): ballistic solid/powder cells (BS-001) for launchers and debris. Applies on rebuild."
+	_solids.toggled.connect(func(on: bool) -> void: _construction("workbench_ballistic_solids", on))
 	_signed.text = "IN signed"
 	_signed.tooltip_text = "Construction option: IN-B1 signed-vertical law (requires an Inertial Water assignment). Applies on rebuild."
 	_signed.toggled.connect(func(on: bool) -> void: _construction("workbench_inertial_signed", on))
@@ -77,7 +90,7 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	_fine.text = "Fine cores"
 	_fine.tooltip_text = "Construction option: 32-cell scheduling cores (default 64). Splits the parallel scan's critical path, roughly halving tick cost with dense liquid. A different, equally deterministic update order. Applies on rebuild."
 	_fine.toggled.connect(func(on: bool) -> void: _construction("workbench_fine_cores", on))
-	for toggle: CheckButton in [_ballistic, _signed, _face, _spray, _jet, _pf_gas, _pf_c2048, _fine]:
+	for toggle: CheckButton in [_ballistic, _solids, _signed, _face, _spray, _jet, _pf_gas, _pf_c2048, _fine]:
 		toggle.focus_mode = Control.FOCUS_NONE
 		row.add_child(toggle)
 	for spec: Array in SPINS:
@@ -97,6 +110,33 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 		row.add_child(field)
 		_fields[key] = field
 	row = row_factory.call(parent)
+	var hit := Label.new()
+	hit.text = "Hit force ×"
+	row.add_child(hit)
+	_hit_force.min_value = 0.0
+	_hit_force.max_value = 50.0
+	_hit_force.step = 0.5
+	_hit_force.value = 1.0
+	_hit_force.custom_minimum_size.x = 70
+	_hit_force.tooltip_text = "How hard ballistic Water and solids push bodies (1 = native default)."
+	_hit_force.value_changed.connect(func(value: float) -> void: request({"droplet_gain": BASE_DROPLET_GAIN * value}))
+	row.add_child(_hit_force)
+	for spec: Array in CAPACITY_SPINS:
+		var label := Label.new()
+		label.text = spec[1]
+		row.add_child(label)
+		var field := SpinBox.new()
+		field.min_value = spec[2]
+		field.max_value = spec[3]
+		field.step = spec[4]
+		field.value = spec[5]
+		field.custom_minimum_size.x = 80
+		field.tooltip_text = "Ballistic Water parcels/solids that can exist at once (native maximum 65536). Applies on rebuild."
+		var key: String = spec[0]
+		host.workbench_water_options[key] = int(spec[5])
+		field.value_changed.connect(func(value: float) -> void: host.workbench_water_options[key] = int(value))
+		row.add_child(field)
+		_fields[key] = field
 	for spec: Array in FACE_SPINS:
 		var label := Label.new()
 		label.text = spec[1]
@@ -169,3 +209,9 @@ func refresh(context: Dictionary) -> void:
 		(" · pending " + ",".join(pending)) if not pending.is_empty() else "",
 		(" · refused: " + refusal) if not refusal.is_empty() else ""]
 	_status.text += " · this tick %d launched, %d budget hits" % [int(tick.get("launched", 0)), int(tick.get("budget_hits", 0))]
+
+
+# Sets the body push multiplier and queues it (used by built-in starts).
+func set_hit_force(scale: float) -> void:
+	_hit_force.set_value_no_signal(scale)
+	request({"droplet_gain": BASE_DROPLET_GAIN * scale})

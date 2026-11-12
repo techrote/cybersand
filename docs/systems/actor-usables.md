@@ -155,6 +155,33 @@ logical ports `(-2,-1)`, `(-2,+1)`, `(+2,-1)`, `(+2,+1)`.
 | U31 `seed_incubator` | Seed Incubator | Seed + Water → Plant |
 | U32 `firewarden` | Firewarden | nearby Fire → emit Water; twelve successful pulses |
 
+## U33–U45: kinetic shooters and wands (BS-001, 2026-11-11)
+
+**Current experimental source, PR #561 stack:** thirteen kinetic usables are
+appended after U32 (earlier indices keep their meaning). They are tools whose
+operation is `kinetic`; their definitions live in the shared catalogue
+`godot/scripts/kinetic_usables.gd`, which the workbench flyer ports (Q/E/S on a
+piloted flyer, kinetic-lab) use too.
+
+- Shooters (U33–U39): `sand_blaster`, `gravel_shotgun`, `stone_slug`,
+  `water_cannon`, `oil_sprayer`, `lava_spitter`, `acid_mister`. Water goes out
+  as BW-001 ballistic parcels; every other material as BS-001 ballistic cells.
+- Wands (U40–U45): `blast_glove`, `shovel_gauntlet`, `vortex_lance`,
+  `shockwave_stomp`, `gust_fan`, `geyser_rod`. They apply a kinetic mask
+  (shape × pattern × field) at their reach and launch the cells it covers.
+
+Every shot goes through the native ballistic owners and never paints cells
+directly. Every non-workbench World (the starting World and every prepared liquid
+setting) is built with both ballistic owners enabled; idle owners change no
+cell, so F5 actors and workbench flyer ports both fire them. The workbench keeps
+its explicit Ballistic Water toggle. Consequence: these Worlds report physical
+hash and continuation-snapshot format 4 (5 with the PF-C2048 gas option) instead
+of 2/3; level saves are unchanged, and older format-2 snapshots still load
+(`test_ballistic_default_old_snapshots.gd`).
+Evidence: `test_workbench_flyer_ports.gd` 31/0 and `test_f5_kinetic_usables.gd`
+(shotgun and water cannon fire native ballistic cells), Windows, Godot 4.7,
+2026-11-11.
+
 Ordinary processors have 16 successful batches, a 45-second lifetime and a
 0.35-second cadence; deployment costs 18 actor equipment charge. Firewarden has
 12 successful pulses. Catalysts are sensed within a 7×7 square and are not

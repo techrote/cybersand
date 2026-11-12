@@ -75,6 +75,8 @@ enum class BallisticLaunchOutcome : std::uint8_t {
     Pressurized,
     NonResident,
     InsufficientQuantity,
+    // BS-001: the source cell's material may not fly as a ballistic solid.
+    NotAdmitted,
 };
 
 struct BallisticLaunchResult {

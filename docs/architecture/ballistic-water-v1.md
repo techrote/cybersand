@@ -2,9 +2,9 @@
 title: Ballistic Water and hybrid spray (experimental)
 status: Current
 document-kind: reference
-scope: Experimental-branch BW-001 ballistic_water_v1 parcel owner, IN-B1 signed-vertical inertial law and the WCX workbench impact-spray/jet adapter law; ownership, transfer lifecycle, conservation and momentum accounting, persistence/identity versions, capacity, cost and controls; not on main, no default changed
+scope: Experimental-branch BW-001 ballistic_water_v1 parcel owner, IN-B1 signed-vertical inertial law and the WCX workbench impact-spray/jet adapter law; ownership, transfer lifecycle, conservation and momentum accounting, persistence/identity versions, capacity, cost and controls; not on main; ballistic Water on by default outside the workbench since 2026-11-11 (PR #561)
 canonical-for: [ballistic-water-v1, inertial-b1-signed-vertical, water-impact-spray]
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-11
 related-documents: [inertial-cellular-v1.md, pressure-flow-v1.md, liquid-solver-family-policy.md, rigid-body-and-cellular-coupling.md, ../audits/2026-11-05-wcx-ballistic-water.md]
 ---
 
@@ -16,6 +16,12 @@ not enable it keeps its Current hashes, persistence format, quantity schema,
 run receipt and behaviour. Owner decisions on #362/#20/#45 remain open, and no
 default or production carrier is migrated. Evidence lives in the
 [dated WCX record](../audits/2026-11-05-wcx-ballistic-water.md).
+
+**Update 2026-11-11 (PR #561, stacked):** the ballistic Water owner is now on by
+default in every non-workbench World, together with
+[ballistic solids](ballistic-solids-v1.md);
+see that page's Status for the format-4 consequence. Face release and the
+signed-vertical law stay off by default.
 
 ## Why a separate owner
 

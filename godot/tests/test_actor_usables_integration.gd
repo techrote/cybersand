@@ -48,7 +48,7 @@ func _worker_integration() -> void:
 	var initial: CyberSimulationSnapshot = worker.take_latest_snapshot(0)
 	_expect(initial != null and initial.actor_prototype_reset_applied, "actor reset did not apply")
 	_expect(not initial.actor_usables.is_empty(), "worker did not publish usable session")
-	_expect(int(initial.actor_usables.catalogue_size) == 32, "published catalogue size is wrong")
+	_expect(int(initial.actor_usables.catalogue_size) == 45, "published catalogue size is wrong")
 	_expect(int(initial.actor_usables.equipped[0]) == -1, "fresh actor reset unexpectedly retained equipment")
 
 	_frame(worker,false)
@@ -149,7 +149,7 @@ func _desktop_surface() -> void:
 	root.add_child(desktop)
 	await process_frame
 	_expect(desktop.actor_prototype_panel != null, "actor panel missing")
-	_expect(desktop.actor_prototype_panel.usable_choice.item_count == 33, "F5 equipment picker does not expose None + 32 usables")
+	_expect(desktop.actor_prototype_panel.usable_choice.item_count == 46, "F5 equipment picker does not expose None + 45 usables")
 	_expect(desktop.usable_overlay != null, "usable overlay missing")
 	desktop.paused = true
 	_expect(not desktop.apply_actor_equipment_configuration(0,1.0), "paused desktop accepted equip-only command")

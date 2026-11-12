@@ -237,6 +237,24 @@ World::WorkbenchLiquidTransfer World::inherit_workbench_liquid_state(const World
     }
     if (transfer.preserved_in_flight_water + transfer.discarded_in_flight_water != source.quantity_.water_ballistic)
         throw std::logic_error("Workbench in-flight Water transfer did not close");
+    // BS-001: carry ballistic solids into a solids owner (counted as injected); otherwise report them.
+    for (const auto& origin : source.ballistic_solids_) {
+        if (!config_.ballistic_solids.enabled || ballistic_solids_.size() >= config_.ballistic_solids.capacity) {
+            ++transfer.discarded_in_flight_solids;
+            continue;
+        }
+        auto solid = origin;
+        solid.age = 0;
+        solid.source_body = 0;
+        solid.vx = std::clamp(solid.vx, -config_.ballistic_solids.max_speed_q, config_.ballistic_solids.max_speed_q);
+        solid.vy = std::clamp(solid.vy, -config_.ballistic_solids.max_speed_q, config_.ballistic_solids.max_speed_q);
+        ballistic_solids_.push_back(solid);
+        ++ballistic_solids_ledger_.injected;
+        ballistic_solids_ledger_.maximum_live = std::max<std::uint64_t>(ballistic_solids_ledger_.maximum_live, ballistic_solids_.size());
+        ++transfer.preserved_in_flight_solids;
+    }
+    if (transfer.preserved_in_flight_solids + transfer.discarded_in_flight_solids != source.ballistic_solids_.size())
+        throw std::logic_error("Workbench in-flight solids transfer did not close");
     validate_quantity_ledger(true);
     return transfer;
 }
@@ -2230,6 +2248,25 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
                                  l.deposit_py}) hash_integer(hash, v);
         }
     }
+    if (config_.ballistic_solids.enabled) {
+        // BS-001: every ballistic solid is physical state; counters are not quiescent content.
+        for (const auto byte : ballistic_solids_identity(config_.ballistic_solids)) hash_byte(hash, byte);
+        hash_integer(hash, static_cast<std::uint64_t>(ballistic_solids_.size()));
+        for (const auto& p : ballistic_solids_) {
+            hash_integer(hash, p.x); hash_integer(hash, p.y); hash_integer(hash, p.vx); hash_integer(hash, p.vy);
+            hash_integer(hash, p.material); hash_integer(hash, p.state_a); hash_integer(hash, p.state_b);
+            hash_integer(hash, p.contacts); hash_integer(hash, p.deferrals); hash_integer(hash, p.source_body);
+            hash_integer(hash, p.age);
+        }
+        if (!quiescent) {
+            const auto& l = ballistic_solids_ledger_;
+            for (const auto v : {l.launched, l.injected, l.landed, l.deferred_landings, l.refused_launches,
+                                 l.forced_landings, l.surface_landings, l.terrain_contacts, l.body_contacts,
+                                 l.liquid_contacts, l.boundary_contacts, l.solid_ticks, l.cell_steps, l.maximum_live})
+                hash_integer(hash, v);
+            hash_integer(hash, l.body_px); hash_integer(hash, l.body_py);
+        }
+    }
     hash_integer(hash, static_cast<std::uint8_t>(pressure_ != nullptr));
     if (pressure_ != nullptr) {
         hash_integer(hash, PressureFlowParameters::kVersion);
@@ -2422,7 +2459,8 @@ std::vector<std::uint8_t> World::save_physical_state() const {
         out.put(static_cast<std::uint8_t>((inertial_enabled_ ? 1U : 0U) |
                                           (config_.ballistic_water.enabled ? 2U : 0U) |
                                           (inertial_parameters_.signed_vertical ? 4U : 0U) |
-                                          (physical_state_format_version() == 5U ? 8U : 0U)));
+                                          (physical_state_format_version() == 5U ? 8U : 0U) |
+                                          (config_.ballistic_solids.enabled ? 16U : 0U)));
         if (physical_state_format_version() == 5U) {
             out.put(PressureFlowParameters::kCapacityContractVersion);
             out.put(config_.pressure_gas_compartment_capacity);
@@ -2437,6 +2475,14 @@ std::vector<std::uint8_t> World::save_physical_state() const {
         out.put(static_cast<std::uint8_t>(c.face_release)); out.put(c.face_min_height); out.put(c.face_budget);
         out.put(c.face_speed); out.put(c.face_period); out.put(static_cast<std::uint8_t>(c.film_skim));
         for (const auto byte : ballistic_water_identity(c)) out.put(byte);
+    }
+    if (config_.ballistic_solids.enabled) {
+        const auto& c = config_.ballistic_solids;
+        out.put(BallisticSolidsConfig::kVersion);
+        out.put(c.capacity); out.put(c.gravity_q); out.put(c.max_speed_q); out.put(c.air_drag);
+        out.put(c.restitution); out.put(c.friction); out.put(c.settle_speed_q); out.put(c.maximum_age_ticks);
+        out.put(c.maximum_contacts);
+        for (const auto byte : ballistic_solids_identity(c)) out.put(byte);
     }
     if (inertial_enabled_) {
         out.put(InertialParameters::kVersion);
@@ -2575,6 +2621,19 @@ std::vector<std::uint8_t> World::save_physical_state() const {
                                  l.contact_py, l.body_px, l.body_py, l.clamp_px, l.clamp_py, l.deposit_px,
                                  l.deposit_py}) out.put(v);
     }
+    if (config_.ballistic_solids.enabled) {
+        validate_ballistic_solids_ledger();
+        out.put(static_cast<std::uint32_t>(ballistic_solids_.size()));
+        for (const auto& p : ballistic_solids_) {
+            out.put(p.x); out.put(p.y); out.put(p.vx); out.put(p.vy); out.put(p.material); out.put(p.state_a);
+            out.put(p.state_b); out.put(p.contacts); out.put(p.deferrals); out.put(p.source_body); out.put(p.age);
+        }
+        const auto& l = ballistic_solids_ledger_;
+        for (const auto v : {l.launched, l.injected, l.landed, l.deferred_landings, l.refused_launches,
+                             l.forced_landings, l.surface_landings, l.terrain_contacts, l.body_contacts,
+                             l.liquid_contacts, l.boundary_contacts, l.solid_ticks, l.cell_steps, l.maximum_live}) out.put(v);
+        out.put(l.body_px); out.put(l.body_py);
+    }
     const auto digest = Sha256::of(out.bytes);
     out.bytes.insert(out.bytes.end(), digest.begin(), digest.end());
     return std::move(out.bytes);
@@ -2637,10 +2696,12 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
     std::uint8_t extensions = format == 3U ? 1U : 0U;
     if (format >= 4U) {
         extensions = in.get<std::uint8_t>();
-        if (format == 4U && ((extensions & ~7U) != 0U || (extensions & 6U) == 0U ||
+        if ((extensions & 16U) != 0U && (extensions & 2U) == 0U)
+            refuse_state("ballistic solids require ballistic Water");
+        if (format == 4U && ((extensions & ~23U) != 0U || (extensions & 6U) == 0U ||
             ((extensions & 4U) != 0U && (extensions & 1U) == 0U)))
             refuse_state("unknown CYPS4 extension set");
-        if (format == 5U && ((extensions & ~15U) != 0U || (extensions & 8U) == 0U ||
+        if (format == 5U && ((extensions & ~31U) != 0U || (extensions & 8U) == 0U ||
             ((extensions & 4U) != 0U && (extensions & 1U) == 0U)))
             refuse_state("unknown CYPS5 extension set");
     }
@@ -2679,6 +2740,18 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
         c.film_skim = skim != 0U;
         for (const auto expected : ballistic_water_identity(c))
             if (in.get<std::uint8_t>() != expected) refuse_state("unknown ballistic Water identity");
+    }
+    config.ballistic_solids = {};
+    if ((extensions & 16U) != 0U) {
+        auto& c = config.ballistic_solids;
+        if (in.get<std::uint16_t>() != BallisticSolidsConfig::kVersion) refuse_state("unknown ballistic solids contract");
+        c.enabled = true;
+        c.capacity = in.get<std::uint32_t>(); c.gravity_q = in.get<std::int32_t>(); c.max_speed_q = in.get<std::int32_t>();
+        c.air_drag = in.get<std::int32_t>(); c.restitution = in.get<std::int32_t>(); c.friction = in.get<std::int32_t>();
+        c.settle_speed_q = in.get<std::int32_t>(); c.maximum_age_ticks = in.get<std::uint32_t>();
+        c.maximum_contacts = in.get<std::uint32_t>();
+        for (const auto expected : ballistic_solids_identity(c))
+            if (in.get<std::uint8_t>() != expected) refuse_state("unknown ballistic solids identity");
     }
     if (has_inertial) {
         if (in.get<std::uint16_t>() != InertialParameters::kVersion) refuse_state("unknown IN state contract");
@@ -2957,6 +3030,27 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
         for (auto* v : {&l.launch_px, &l.launch_py, &l.gravity_py, &l.drag_px, &l.drag_py, &l.contact_px,
                                  &l.contact_py, &l.body_px, &l.body_py, &l.clamp_px, &l.clamp_py, &l.deposit_px,
                                  &l.deposit_py}) *v = in.get<std::int64_t>();
+    }
+    if ((extensions & 16U) != 0U) {
+        const auto count = in.get<std::uint32_t>();
+        if (count > w.config_.ballistic_solids.capacity) refuse_state("ballistic solid count exceeds capacity");
+        for (std::uint32_t i = 0; i < count; ++i) {
+            BallisticSolid p;
+            p.x = in.get<std::int64_t>(); p.y = in.get<std::int64_t>();
+            p.vx = in.get<std::int32_t>(); p.vy = in.get<std::int32_t>();
+            p.material = in.get<std::uint16_t>(); p.state_a = in.get<std::uint16_t>(); p.state_b = in.get<std::uint8_t>();
+            p.contacts = in.get<std::uint8_t>(); p.deferrals = in.get<std::uint8_t>();
+            p.source_body = in.get<std::uint16_t>(); p.age = in.get<std::uint32_t>();
+            w.ballistic_solids_.push_back(p);
+        }
+        auto& l = w.ballistic_solids_ledger_;
+        for (auto* v : {&l.launched, &l.injected, &l.landed, &l.deferred_landings, &l.refused_launches,
+                        &l.forced_landings, &l.surface_landings, &l.terrain_contacts, &l.body_contacts,
+                        &l.liquid_contacts, &l.boundary_contacts, &l.solid_ticks, &l.cell_steps, &l.maximum_live})
+            *v = in.get<std::uint64_t>();
+        l.body_px = in.get<std::int64_t>(); l.body_py = in.get<std::int64_t>();
+        try { w.validate_ballistic_solids_ledger(); }
+        catch (const std::exception&) { refuse_state("invalid ballistic solids state"); }
     }
     if (!in.done()) refuse_state("trailing bytes");
     try { w.validate_inertial_ledger(); }

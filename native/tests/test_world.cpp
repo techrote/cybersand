@@ -4063,6 +4063,17 @@ void test_lcb_inertial_storage_capture();
 void test_lcb_inertial_residual_motion();
 void test_lcb_inertial_admission();
 void test_ballistic_water_defaults_unchanged();
+void test_ballistic_solids_admission_and_defaults();
+void test_ballistic_solids_arc_and_landing();
+void test_ballistic_solids_liquid_surface_landing();
+void test_ballistic_solids_body_contact();
+void test_ballistic_solids_persistence_and_parity();
+void test_ballistic_solids_render_overlay();
+void test_ballistic_solids_buried_climb();
+void test_ballistic_solids_launch_in_place();
+void test_ballistic_solids_non_water_liquids();
+void test_ballistic_water_rises_through_oil();
+void test_ballistic_solids_climb_past_body();
 void test_ballistic_water_face_release_dam_break();
 void test_ballistic_water_face_release_pooled_prepass();
 void test_ballistic_water_retained_rebuild_inheritance();
@@ -4336,6 +4347,17 @@ int main(int argc, char** argv) {
         {"BW-001 ballistic Water engulfed parcel column", test_ballistic_water_engulfed_parcel_column},
         {"BW-001 ballistic Water retained rebuild inheritance", test_ballistic_water_retained_rebuild_inheritance},
         {"BW-001 ballistic Water face release dam break", test_ballistic_water_face_release_dam_break},
+        {"BS-001 ballistic solids admission and defaults", test_ballistic_solids_admission_and_defaults},
+        {"BS-001 ballistic solids arc and landing", test_ballistic_solids_arc_and_landing},
+        {"BS-001 ballistic solids liquid surface landing", test_ballistic_solids_liquid_surface_landing},
+        {"BS-001 ballistic solids body contact", test_ballistic_solids_body_contact},
+        {"BS-001 ballistic solids persistence and parity", test_ballistic_solids_persistence_and_parity},
+        {"BS-001 ballistic solids render overlay", test_ballistic_solids_render_overlay},
+        {"BS-001 ballistic solids buried climb", test_ballistic_solids_buried_climb},
+        {"BS-001 ballistic solids launch in place", test_ballistic_solids_launch_in_place},
+        {"BS-001 ballistic solids non-Water liquids", test_ballistic_solids_non_water_liquids},
+        {"BW-001 ballistic Water rises through Oil", test_ballistic_water_rises_through_oil},
+        {"BS-001 ballistic solids climb past a resting body", test_ballistic_solids_climb_past_body},
         {"BW-001 ballistic Water face release pooled pre-pass matches serial", test_ballistic_water_face_release_pooled_prepass},
         {"IN-B1 signed vertical control and identity", test_inertial_signed_vertical_control_and_identity},
         {"IN-B1 signed vertical arc ceiling parity", test_inertial_signed_vertical_arc_ceiling_parity},

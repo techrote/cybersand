@@ -175,7 +175,7 @@ func _restart_identity() -> void:
 	user_import(encoded.text)
 	if not expect(owner.last_save_error.is_empty(),"actual user controls import pressure Water plus IN Brine with explicit radius3"): return
 	var policy: Dictionary = owner.native_world.get_liquid_solver_policy()
-	expect(policy.maximum_rule_radius==3 and policy.physical_state_hash_version==3
+	expect(policy.maximum_rule_radius==3 and policy.physical_state_hash_version==4
 		and policy.family_parameters.inertial_cellular_v1.damping_numerator==7,
 		"actual imported mixed family parameters and instance identity read back natively")
 	owner.ui.close_menu();owner.paused = false
@@ -196,7 +196,7 @@ func _legacy_preservation() -> void:
 	owner.liquid_comparison_clear_import()
 	user_import(encoded.text)
 	var policy: Dictionary = owner.native_world.get_liquid_solver_policy()
-	expect(owner.last_save_error.is_empty() and policy.maximum_rule_radius==2 and policy.physical_state_hash_version==2
+	expect(owner.last_save_error.is_empty() and policy.maximum_rule_radius==2 and policy.physical_state_hash_version==4
 		and owner.native_world.get_applied_liquid_construction_receipt().is_empty()
 		and owner.liquid_level_host_observation_record().is_empty() and owner.microscenario_liquid_setup.is_empty(),
 		"unarmed ordinary import restores Current defaults/radius2 and retires prepared receipt/host identity")

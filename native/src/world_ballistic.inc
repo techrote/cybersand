@@ -150,7 +150,8 @@ World::BallisticCell World::classify_ballistic_cell(std::int64_t x, std::int64_t
 }
 
 BallisticLaunchResult World::admit_ballistic_spawn(std::int64_t spawn_x, std::int64_t spawn_y,
-                                                   std::int32_t vx, std::int32_t vy, bool internal) const noexcept {
+        std::int32_t vx, std::int32_t vy, bool internal,
+        const std::pair<std::int64_t, std::int64_t>* source) const noexcept {
     BallisticLaunchResult result;
     const auto& c = config_.ballistic_water;
     if (!c.enabled) { result.outcome = BallisticLaunchOutcome::Disabled; return result; }
@@ -169,7 +170,8 @@ BallisticLaunchResult World::admit_ballistic_spawn(std::int64_t spawn_x, std::in
     if (chunk == nullptr) { result.outcome = BallisticLaunchOutcome::NonResident; return result; }
     if (transient_obstacle_at(cx, cy) != 0U) { result.outcome = BallisticLaunchOutcome::Masked; return result; }
     const auto material = chunk->cells[address(cx, cy).index].material_value();
-    if (material != Material::Empty && MaterialRules::descriptor(material).state != MaterialState::Gas) {
+    const bool own_source = source != nullptr && source->first == cx && source->second == cy;
+    if (!own_source && material != Material::Empty && MaterialRules::descriptor(material).state != MaterialState::Gas) {
         result.outcome = BallisticLaunchOutcome::InvalidRequest;
         return result;
     }
@@ -187,7 +189,8 @@ BallisticLaunchResult World::launch_ballistic_water(std::int64_t source_x, std::
 BallisticLaunchResult World::launch_ballistic_water_internal(std::int64_t source_x, std::int64_t source_y,
         std::int64_t spawn_x, std::int64_t spawn_y, std::int32_t vx, std::int32_t vy,
         std::uint16_t source_body, std::uint32_t maximum_quantity, bool internal) {
-    auto result = admit_ballistic_spawn(spawn_x, spawn_y, vx, vy, internal);
+    const std::pair<std::int64_t, std::int64_t> source_cell{source_x, source_y};
+    auto result = admit_ballistic_spawn(spawn_x, spawn_y, vx, vy, internal, &source_cell);
     result.live = static_cast<std::uint32_t>(ballistic_parcels_.size());
     if (result.outcome == BallisticLaunchOutcome::CapacityFull) ++ballistic_ledger_.refused_launches;
     if (result.outcome != BallisticLaunchOutcome::Launched) return result;
@@ -332,7 +335,11 @@ bool World::deposit_ballistic_parcel(BallisticParcel& parcel, std::int64_t cx, s
             const auto* chunk = find_chunk(target.chunk);
             if (chunk == nullptr) break;
             const auto material = chunk->cells[target.index].material_value();
-            if (material != Material::Water && material != Material::Empty) break;
+            // A lighter liquid layer (Oil above Water) is passed through: the
+            // parcel reaches the free surface and density exchange settles it.
+            if (material != Material::Water && material != Material::Empty &&
+                MaterialRules::descriptor(material).state != MaterialState::Liquid) break;
+            if (material != Material::Water && material != Material::Empty) continue;
             const auto before = remaining;
             try_cell(cx, ty);
             if (remaining != before) ++l.column_deposits;

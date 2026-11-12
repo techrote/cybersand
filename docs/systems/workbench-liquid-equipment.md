@@ -3,9 +3,9 @@ title: Workbench liquid equipment — valves, drain, nozzle and pump
 status: Current
 document-kind: contract
 scope: IN-TOOLS #361 shared-workbench liquid equipment (Draft PR branch); authored geometry, worker-owned device owner, native quantity accounting, controls, built-in liquid-lab and reservoir-lab starts, lifecycle and limits
-canonical-for: [workbench-liquid-equipment, liquid-lab-apparatus, reservoir-lab-apparatus]
+canonical-for: [workbench-liquid-equipment, liquid-lab-apparatus, reservoir-lab-apparatus, solids-lab-apparatus, kinetic-lab-apparatus, kinetic-tools]
 last-reviewed: 2026-11-09
-related-documents: [../architecture/in-tools-gameplay-admission.md, ../architecture/inertial-cellular-v1.md, ../architecture/ballistic-water-v1.md, actor-usables.md, ../audits/2026-11-09-in-tools-361-workbench-equipment.md]
+related-documents: [../architecture/ballistic-solids-v1.md, ../architecture/in-tools-gameplay-admission.md, ../architecture/inertial-cellular-v1.md, ../architecture/ballistic-water-v1.md, actor-usables.md, ../audits/2026-11-09-in-tools-361-workbench-equipment.md]
 ---
 
 # Workbench liquid equipment — valves, drain, nozzle and pump
@@ -35,13 +35,26 @@ remains the authority and closes by itself.
 | Nozzle | `[x, y, angle°, speed cells/tick, emissions per tick]`, speed 0.5–6, rate 1–8 | Finite directed source. In a World built with ballistic Water and with a dry muzzle it fires native ballistic parcels along the aim (real momentum, #406 owner). Otherwise it injects one whole Water cell at the muzzle **at rest** and the active solver moves it. **Under Water** it tops up a partial cell, or places the new cell on the free surface above (climb ≤ 64 rows, then the lowest open spot within a spread set by nozzle speed): exact volume and a rising level, but no local pressure jet. Speed ≤ 1 spreads over 6 columns; faster spreads less, and from 3 cells/tick it stacks a rising fountain column on the muzzle (owner-requested effect). |
 | Pipe | `supply` (0–20000 cells), `pump` (bool), `pipe_capacity` (1–20000 cells, ≥ supply) | The nozzle draws only from the pipe. With the pump on, drained Water enters the pipe instead of leaving the World, so native Water + pipe is constant: a closed circulation loop. A full pipe stops the drain (`pipe_full`); it never deletes the excess. Without the pump the drain is a sink and the supply is finite. |
 
+### Solids devices (BS-001 branch)
+
+| Device | Authored as | Operation |
+|---|---|---|
+| Launcher | `[x, y, angle°, speed, per tick, material]`, speed 0.5–6, rate 1–8; material Sand, Stone, Dust, Seed, Salt, Gunpowder, Coal or Rust | Fires one cell of its material per shot from the solids stock. In a World with [ballistic solids](../architecture/ballistic-solids-v1.md) each shot is a native ballistic solid; otherwise it places one resting cell at the muzzle. |
+| Collector | `[x, y, width, height, cells per tick]`, ≤ 96 cells, rate 1–32 | Bounded sink for those materials, bottom row first, masked cells skipped, counted per material. |
+| Conveyor | `solid_supply` (0–20000 cells), `conveyor` (bool) | With the conveyor on, collected cells of the launcher's material enter its stock (a full stock stops the collector): grid + ballistic + stock stays constant. |
+| Hopper | a valve in the floor of a powder bin | The ordinary valve; closing pushes caught grains aside like liquid. |
+
+The receipt reports the native grid population of the launcher material
+(`solid_stock.population`), sampled at the same boundary as the ballistic-solid
+roster (`lab_context.ballistic_solids`).
+
 Inertial cellular flow, injected resting cells and ballistic parcels remain
 three distinct mechanisms; the receipt states the nozzle mode explicitly.
 
 ## Ownership, lifetime and commands
 
 - **Authored (persistent):** the optional Setup-v2 root key `equipment`
-  `{version:1, valves, drain, nozzle, supply, pump, pipe_capacity}`, validated strictly by
+  `{version:1, valves, drain, nozzle, supply, pump, pipe_capacity, launcher, collector, solid_supply, conveyor}`, validated strictly by
   [`workbench_liquid_equipment.gd`](../../godot/scripts/workbench_liquid_equipment.gd)
   and [`workbench_setup.gd`](../../godot/scripts/workbench_setup.gd). Unknown
   keys, fractional or out-of-canvas geometry and unbounded rates refuse; nothing
@@ -57,6 +70,7 @@ three distinct mechanisms; the receipt states the nozzle mode explicitly.
   (bounded to 16 queued commands).
 - **Commands:** `configure {serial, config}`, `valve {serial, index, open}` (index −1 = every valve),
   `drain {serial, open}`, `nozzle {serial, on}`, `tune {serial, angle, speed, rate}`,
+  `launcher {serial, on}`, `collector {serial, open}`, `tune_launcher {serial, angle, speed, rate}`,
   `stop {serial}` and read-only `observe {observation, regions}` (≤ 4 labelled
   rectangles ≤ 256 × 256, native `water_experiment_observation`). A configure
   carries a strictly newer serial; every other mutating command must carry the
@@ -106,6 +120,32 @@ horizontal-only moves by coherence, so a 4 × 10 slot in a 4-cell side wall
 leaked only about one cell per tick (measured). The bottom opening shows the
 reported #361 behaviour — a rising cavity/bubble column above the outlet and a
 surface dimple — as vacant-cell displacement, not as a gas-pressure model.
+
+## Kinetic tools (BS-001 branch)
+
+Built on the [kinetic mask core](../architecture/ballistic-solids-v1.md#launch-in-place-and-kinetic-masks):
+every Water or admitted solid cell inside the mask flies. **Kinetic** row:
+preset, **Radius** (2–24), **Power** (0.1–3), **Angle**, **Pulse emitters [T]**,
+**Hold emitters [Y]** (repeat at the preset's period), **Emitter at X/Y** (up to
+eight, authored as `kinetics: [[x, y, preset, radius, strength, angle], …]`) and
+**Load kinetic-lab**. The **Kinetic tool** in the tool picker applies the chosen
+preset at the cursor and keeps applying while dragged. Commands: `kinetic_at`
+(no equipment needed), `kinetic_pulse` and `kinetic_hold` (index −1 = all).
+Receipts count Water and solids flung per emitter and in total, plus refusals.
+
+**kinetic-lab:** a Sand hill with a Blast emitter, a Water pool with a Geyser and
+a Vortex, a Stone pile under two barrels with a Shockwave and a Dust patch with
+a Shaker; inertial Water, ballistic Water and solids enabled.
+
+## Built-in solids-lab (BS-001 branch)
+
+512 × 512, one 480 × 270 view. Loading it enables ballistic Water and ballistic
+solids for that World, keeps Current Water, and sets **Hit force ×** 10: a Sand
+hopper over the collector pit, a Water pool, a stack of three barrels and the
+launcher on the far floor (−150°, 4.5 cells per tick, 3 per tick, Sand) with the
+conveyor on and 200 cells of stock. Keys: **L** launcher, **O** collector, **V**
+hopper valve. The spray panel's **Drop cap** / **Solid cap** raise the in-flight
+limits above 4096 (up to 65,536) on rebuild.
 
 ## Built-in reservoir-lab playground
 

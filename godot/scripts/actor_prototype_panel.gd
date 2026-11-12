@@ -90,7 +90,9 @@ func _ready() -> void:
 	usable_choice.add_item("None — world pointer returns to painting")
 	for definition: Dictionary in UsableCatalog.DEFINITIONS:
 		usable_choice.add_item("%s — %s" % [str(definition.id).to_upper(), str(definition.name)])
-	usable_choice.item_selected.connect(_refresh_usable)
+	usable_choice.item_selected.connect(func(index: int) -> void:
+		usable_touched = true
+		_refresh_usable(index))
 	column.add_child(usable_choice)
 	var usable_power_row := HBoxContainer.new()
 	column.add_child(usable_power_row)
@@ -169,8 +171,13 @@ func restrict_prepared_default(enabled: bool) -> void:
 		status.text="Prepared native default: sampled baseline, barrel or Ripper. F5 restores the authored map and fresh pose; Liquids Apply retains live trial motion. Other actor constructors remain unavailable."
 
 
+# True once the user picks equipment in this panel visit; Apply then spawns
+# the actor holding that pick instead of the rig's default loadout.
+var usable_touched: bool = false
+
 func configure_equipment(usable_index: int, power: float, physical: bool = false) -> void:
 	_equipment_physical = physical
+	usable_touched = false
 	var item_index: int = clampi(usable_index + 1, 0, UsableCatalog.count())
 	usable_choice.select(item_index)
 	usable_power_slider.value = clampf(power, 0.0, 1.0)

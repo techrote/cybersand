@@ -1,0 +1,141 @@
+---
+title: BS-001 ballistic solids and solids equipment — implementation evidence
+status: Current
+document-kind: audit
+scope: Dated evidence for the Draft-branch BS-001 native ballistic-solids owner, raised ballistic capacities and the workbench solids equipment; source/runtime identities, commands, results and gaps
+last-reviewed: 2026-11-10
+related-documents: [../architecture/ballistic-solids-v1.md, ../systems/workbench-liquid-equipment.md, 2026-11-09-in-tools-361-workbench-equipment.md]
+---
+
+# BS-001 ballistic solids — 2026-11-10
+
+## Source and runtime identity
+
+- Branch `feat/ballistic-solids-20261110`, stacked on the #361 equipment branch
+  after it was refreshed onto accepted `main` (which now includes #542). The exact
+  commit is recorded in the PR; local results below used the working tree that
+  became that commit.
+- **Native source changed** (new owner, hooks, adapter calls), so the committed
+  runtimes are stale for this branch until the
+  [BS-001 publisher](../../.github/workflows/bs001-runtime-publication.yml)
+  rebuilds them from exact source on GitHub-hosted Linux and Windows. Local
+  results used locally built libraries:
+  - Windows GDExtension built by the repository toolchain script (LLVM-MinGW
+    20260826, godot-cpp `101ae380`), sha256
+    `6589501cad53ad58049aa3fee37869769c74a450dcbefed6234568b291913540`;
+  - native Makefile test binary built with g++ 13.3 in WSL Ubuntu 24.04.
+- Godot 4.7-stable official.
+
+## Results
+
+| Case | Platform | Result |
+|---|---|---|
+| Native test binary, full suite (`-O1 -g`) | WSL Linux | 199 tests passed, 7 BS-001 cases |
+| Native suite under AddressSanitizer + UBSan | WSL Linux | 198 passed (before the buried-climb case was added; rerun pending on final source) |
+| `test_workbench_solids_lab.gd` | Windows headless, request 4 | 31/0; 4 observed task claimants |
+| same, windowed (ANGLE, NVIDIA) with frame capture | Windows | 31/0 on a second launch; the first launch hit the known pre-existing "Controlled liquid replacement retired before commit" startup flake before any equipment code ran |
+| `test_workbench_liquid_equipment.gd`, `test_workbench_reservoir_lab.gd` on the new library | Windows headless | 103/0 and 81/0 |
+
+BS-001 native cases: admission and defaults (disabled refusals, orphan/invalid
+configuration refused, material admission, capacity, spawn-in-wall refusal);
+arc and landing (Sand rises and lands as the same cell, population conserved every
+tick); liquid-surface landing then sinking below the surface; exact body impulse
+(`delivered == −body_px`); CYPS save mid-flight, exact restored continuation and
+identical 1- and 4-worker hashes; presentation overlay without authority writes;
+buried-solid climb.
+
+## solids-lab observations (Windows, request 4)
+
+- Raised capacities: ballistic Water 16 384 and ballistic solids 8 192 slots were
+  admitted and reported natively.
+- Hopper: opening the floor valve for 240 ticks poured Sand into the collector
+  pit; 1 534 cells were collected and fed the conveyor exactly (stock 200 → 1 734).
+- Launcher: 720 shots in 240 ticks, each a native ballistic solid (`injected` delta
+  equals shots); peak 231 in flight; 264 body contacts; with **Hit force ×** 10
+  the top barrel was knocked about 72 cells. Grid Sand + ballistic + conveyor stock
+  stayed exactly constant (7 400) at every sampled frame.
+- Stop: every device closed and every ballistic solid landed (0 deferred, 0 forced
+  after the buried-climb repair). Restore start reset the devices and kept the
+  authored launcher aim; Save/read-back of the block was identical.
+
+Frame: [launcher arc knocking over the barrel stack](../images/in-tools-361/solids-lab-launcher.png).
+
+## Defects found and repaired
+
+- **Sampling skew:** the device receipt read the Sand population before the tick
+  but the ballistic roster after it. The worker now samples the population at
+  publication.
+- **Buried solids:** a resting solid buried by a moving Sand pile found no free
+  cell within radius 2 and retried indefinitely (≈ 55 700 deferrals, 10 solids).
+  It now climbs through powders and liquids to the first free cell.
+
+## Runtime publication — 2026-11-10
+
+[Publisher run 42901114315](https://github.com/techrote/cybersand/actions/runs/42901114315)
+built source `e890d50d` on GitHub-hosted runners: native BS-001 and BW-001 groups
+passed, then the Linux and Windows libraries were built from exact source and
+solids-lab, liquid-lab, reservoir-lab and the workbench canvas passed on actual
+Linux and Windows. The bot fast-forwarded the branch with `b0ac29e9`:
+Windows sha256 `0a9c14d790910308f37f1d16b648d612a52a5020f29a500c71326a007afe4f7c`,
+Linux sha256 `8080fb48eb52c85ceb3e6f48f3653691ce53a28d1a562354bc643c82d00b89e7`.
+`check_repository` then passed, and the native suite under ASan/UBSan passed
+199/199 on the final source.
+
+## Kinetic mask tools — 2026-11-10
+
+Source change: in-place launch for BW-001 and BS-001 and the
+`launch_water_parcel` binding (native suite 200/200 on WSL Linux, new case
+"launch in place": interior Sand and Water launched with no loss), plus the
+GDScript kinetic mask core, emitters, pointer tool and kinetic-lab.
+
+`test_workbench_kinetic_lab.gd` (Windows, request 4, locally built library
+`611d4ac8…`): 55/0 headless and windowed. Single pulses flung Blast 586 Sand,
+Geyser 153 and Vortex 317 Water cells, Shockwave 377 Stone and Shaker 80 Dust;
+all eleven pointer presets applied; held emitters repeated; an unknown preset was
+refused. Across 74 applications (8 101 solids and 4 407 Water cells flung) grid
++ ballistic solids and the native Water total stayed exactly constant, and every
+cell landed after Stop. solids-lab 31/0, liquid-lab 103/0, reservoir-lab 81/0,
+workbench canvas 164/0 and spray rearm 10/0 pass on the same library.
+Frame: [after the pointer presets](../images/in-tools-361/kinetic-lab-pointer.png).
+Runtime publication for this source is request sequence 2.
+
+## Non-Water liquids — 2026-11-10
+
+Owner report: kinetic tools did nothing to Oil or Lava. Repair: BS-001 admits
+every non-Water liquid as a whole ballistic cell, and a Water parcel engulfed under
+an Oil layer rises through it. Native 202/202 (WSL Linux; new cases for Oil, Lava,
+Acid, Brine and Mercury launch/land with exact populations, and Water rising
+through Oil). kinetic-lab now has an Oil layer (Gust) and a walled Lava basin
+(Pepper): 61/0 on Windows with locally built library `46e7a438…`; Gust flung 107
+cells, Pepper 14 Lava; Sand and Oil populations and both native ledgers exact.
+liquid-lab and reservoir-lab pass on the same library. Publication request 3.
+
+## Default-on and F5 kinetic usables — 2026-11-11
+
+Owner decisions on 2026-11-11: ballistic Water and solids on in every
+non-workbench World; the default-demo preparation check keeps its cell-for-cell
+terrain comparisons and drops its two stored physical-hash comparisons (which
+encode which owners are enabled, not terrain); the BS-001 material-source
+transition record was approved.
+
+- Source: PR #561 head after `862da5d1`, runtimes published by
+  `bs001-runtime-publication.yml` request 7. Windows 11, Godot 4.7, local
+  `rebuild_and_test.sh` per test (600 s timeout).
+- Results: 87/88 Godot tests passed across liquid, microscenario, level, LCB,
+  PF, physical actor, usable, native, worker and workbench suites; tests that
+  asserted hash/CYPS formats 2/3 now expect 4.
+  `test_ballistic_default_old_snapshots.gd` loads a format-2 snapshot and an
+  old-World level save into the ballistic starting World cell-for-cell, and
+  checks every in-flight tick advances the presentation revision (the redraw
+  freeze fix). `test_f5_kinetic_usables.gd` spawns an F5 actor holding the
+  panel pick and fires the gravel shotgun and water cannon as native ballistic
+  cells.
+- The one failure, `test_workbench_liquid_edges.gd`, also failed at
+  `60c096a6` (before these changes): with Details open the toolbar outgrew a
+  1080-pixel window and its top row left the screen. Details now scrolls inside
+  a 300-pixel area.
+
+## Gaps
+
+- Hosted Ready-PR Native/GDExtension gates run only once the PR is Ready.
+- Human feel acceptance is open.

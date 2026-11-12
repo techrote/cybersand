@@ -73,8 +73,8 @@ func run() -> void:
 		quit(1)
 		return
 	expect(desktop.latest_snapshot.actor_prototypes.is_empty(), "physical path has no sampled actor owner")
-	expect(desktop.actor_prototype_panel.usable_choice.item_count == 33,
-		"same F5 picker exposes all 32 choices and None")
+	expect(desktop.actor_prototype_panel.usable_choice.item_count == Catalog.count() + 1,
+		"same F5 picker exposes every catalogue choice and None")
 	var old_view: Dictionary = desktop.physical_actor_observation()
 	var old_item: Dictionary = old_view.equipment.duplicate(true)
 	var old_body: RigidBody2D = desktop.rigid_bodies[int(old_item.body_id) - 1]

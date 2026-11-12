@@ -795,12 +795,17 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 	# Developer-only explicit C2048 opt-in. Omitted means the native C1024 default.
 	if workbench_water_options.get("pressure_gas_compartment_capacity",1024) is int:
 		settings["pressure_gas_compartment_capacity"] = int(workbench_water_options.get("pressure_gas_compartment_capacity",1024))
-	for key: String in ["workbench_ballistic","workbench_inertial_signed","workbench_face_release","workbench_fine_cores"]:
+	for key: String in ["workbench_ballistic","workbench_inertial_signed","workbench_face_release","workbench_fine_cores","workbench_ballistic_solids"]:
 		if workbench_water_options.get(key,false) is bool and workbench_water_options.get(key,false):
 			settings[key] = true
 	if settings.get("workbench_face_release",false) and settings.get("workbench_ballistic",false):
 		for key: String in FACE_TUNING:
 			if workbench_water_options.get(key) is int: settings[key] = workbench_water_options[key]
+	# BS-001 / BW-001 explicit capacities (default 4096 each, at most 65536).
+	if settings.get("workbench_ballistic",false) and workbench_water_options.get("workbench_ballistic_capacity") is int:
+		settings["workbench_ballistic_capacity"] = workbench_water_options.workbench_ballistic_capacity
+	if settings.get("workbench_ballistic_solids",false) and workbench_water_options.get("workbench_solids_capacity") is int:
+		settings["workbench_solids_capacity"] = workbench_water_options.workbench_solids_capacity
 	# Lossy conversion belongs only to an explicit developer policy switch.
 	# Ordinary replacements (including Apply of an unchanged policy) keep
 	# all compatible native inventory and use the normal refusal contract.
@@ -1657,6 +1662,8 @@ var _actor_input_rearm: bool = true
 var _actor_reset_receipt: int = 0
 var _actor_effort: float = 0.7
 var actor_usable_index: int = -1
+# Equipment picked in the F5 panel before Apply (-2: use the rig's default).
+var _actor_spawn_usable: int = -2
 var _actor_usable_requested_index: int = -1
 var _actor_usable_power: float = 0.8
 var _actor_usable_input_epoch: int = -1
@@ -2130,6 +2137,10 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				KEY_K: shared_workbench.equipment.nudge_aim(10.0)
 				KEY_BRACKETLEFT: shared_workbench.equipment.select_valve(-1)
 				KEY_BRACKETRIGHT: shared_workbench.equipment.select_valve(1)
+				KEY_L: shared_workbench.equipment.toggle("launcher")
+				KEY_O: shared_workbench.equipment.toggle("collector")
+				KEY_T: shared_workbench.equipment.pulse_emitters()
+				KEY_Y: shared_workbench.equipment.hold_emitters()
 				_: return
 			get_viewport().set_input_as_handled()
 		return
@@ -3355,7 +3366,9 @@ func physical_actor_definitions(model_id: StringName, producer: StringName, demo
 				origin = authored_origin
 		origin.x = clampf(origin.x, -bounds.position.x + 2.0, 1022.0 - bounds.end.x)
 		origin.y = clampf(origin.y, -bounds.position.y + 2.0, 1022.0 - bounds.end.y)
-		definitions.append({"model": models[index], "producer": producer if index == 0 else &"demo", "position": origin})
+		var row: Dictionary = {"model": models[index], "producer": producer if index == 0 else &"demo", "position": origin}
+		if index == 0 and _actor_spawn_usable >= -1: row.usable_index = _actor_spawn_usable
+		definitions.append(row)
 		next_x = origin.x + bounds.end.x
 	return definitions
 
@@ -3427,9 +3440,9 @@ func _adopt_prepared_physical_candidate() -> void:
 	last_hard_surface_revision = latest_snapshot.hard_surface_revision
 	hard_surface_rebuild_cooldown = 0.0
 	var loadout: Dictionary = PhysicalLoadouts.entry(physical_rig_id)
-	actor_usable_index = int(loadout.get("usable_index",-1))
+	actor_usable_index = int(loadout.get("usable_index",-1)) if _actor_spawn_usable < -1 else _actor_spawn_usable
 	_actor_usable_requested_index = actor_usable_index
-	_actor_usable_power = float(loadout.get("power",0.8))
+	if _actor_spawn_usable < -1: _actor_usable_power = float(loadout.get("power",0.8))
 	_actor_usable_transition_pending = false;_actor_usable_pointer_rearm = true
 	simulation_worker.set_physical_actor_epoch(_physical_epoch)
 	accepted.adopt()
@@ -3464,9 +3477,9 @@ func _activate_articulated_actor_rigs(spawn: Vector2) -> bool:
 	physical_actor_session.input_cancelled.connect(_on_physical_actor_input_cancelled)
 	physical_actor_session.set_suspended(true)
 	var loadout: Dictionary = PhysicalLoadouts.entry(physical_rig_id)
-	actor_usable_index = int(loadout.get("usable_index", -1))
+	actor_usable_index = int(loadout.get("usable_index", -1)) if _actor_spawn_usable < -1 else _actor_spawn_usable
 	_actor_usable_requested_index = actor_usable_index
-	_actor_usable_power = float(loadout.get("power", 0.8))
+	if _actor_spawn_usable < -1: _actor_usable_power = float(loadout.get("power", 0.8))
 	_actor_usable_transition_pending = false
 	_actor_usable_pointer_rearm = true
 	rapier_bridge = physical_actor_session.bridge
@@ -3758,6 +3771,10 @@ func apply_actor_prototype_configuration(model_id: StringName, producer: StringN
 			str(microscenario_definition.get("id", "")) if tower_context.get("micro_active", false) else "")):
 		return false
 	var arm: String = str(model_id).trim_prefix("physical/") if trial else ""
+	_actor_spawn_usable = -2
+	if articulated and actor_prototype_panel.usable_touched and not actor_prototype_panel._flight_selected():
+		_actor_spawn_usable = actor_prototype_panel.selected_usable_index()
+		_actor_usable_power = actor_prototype_panel.usable_power_slider.value
 	var configuration: Dictionary = {
 		"representation":"barrel-rapier" if physical else "sampled",
 		"runtime_recovery_enabled":not physical and model_id == &"",

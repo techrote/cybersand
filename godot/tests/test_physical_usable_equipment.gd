@@ -74,12 +74,12 @@ func run() -> void:
 		var loadout: Dictionary = Loadouts.entry(id)
 		expect(int(loadout.usable_index) >= -1 and int(loadout.usable_index) < Usables.count() \
 			and not str(loadout.reason).is_empty(), "%s has an explicit loadout policy" % id)
-	expect(Usables.count() == 32, "all stable U01-U32 entries remain present")
+	expect(Usables.count() == 45 and Usables.USABLE_IDS[31] == &"firewarden", "all stable U01-U32 entries remain present (plus 13 kinetic)")
 	for id: StringName in [&"rocketjumper", &"lineshank", &"rocketblade", &"hammerhead", &"heavylift"]:
 		expect(Equipment.definition(Catalog.entry(id)).parts.size() == Catalog.entry(id).parts.size(),
 			"%s reuses its authored held body" % id)
 	var malformed: Array = [
-		{"usable_index": 32}, {"usable_index": 1.5}, {"instance_id": ""}, {"equipment_epoch": 0},
+		{"usable_index": 45}, {"usable_index": 1.5}, {"instance_id": ""}, {"equipment_epoch": 0},
 		{"equipment_epoch": 1.2}, {"power": NAN}, {"aim": Vector2(INF, 0)}, {"aim": [true, 0]},
 		{"trigger": 1}, {"drop": "true"}, {"body_id": 1}, {"mount_id": "invented"}, {"force": Vector2.ONE}]
 	var normalized: Dictionary = {"usable_index": 12, "instance_id": "example", "equipment_epoch": 1}

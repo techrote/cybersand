@@ -81,6 +81,15 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("inject_water_parcel", "position", "velocity_cells_per_tick", "quantity"),
                          &CyberNativeCellWorld::inject_water_parcel);
     ClassDB::bind_method(D_METHOD("inspect_ballistic_parcels", "maximum"), &CyberNativeCellWorld::inspect_ballistic_parcels);
+    ClassDB::bind_method(D_METHOD("inject_solid_parcel", "position", "velocity_cells_per_tick", "material"),
+                         &CyberNativeCellWorld::inject_solid_parcel);
+    ClassDB::bind_method(D_METHOD("launch_solid_parcel", "cell", "position", "velocity_cells_per_tick"),
+                         &CyberNativeCellWorld::launch_solid_parcel);
+    ClassDB::bind_method(D_METHOD("get_ballistic_solids"), &CyberNativeCellWorld::get_ballistic_solids);
+    ClassDB::bind_method(D_METHOD("launch_water_parcel", "cell", "position", "velocity_cells_per_tick"),
+                         &CyberNativeCellWorld::launch_water_parcel);
+    ClassDB::bind_method(D_METHOD("inspect_ballistic_solids", "maximum"), &CyberNativeCellWorld::inspect_ballistic_solids);
+    ClassDB::bind_method(D_METHOD("get_material_population", "material"), &CyberNativeCellWorld::get_material_population);
     ClassDB::bind_method(D_METHOD("get_water_experiment_policy"),
                          &CyberNativeCellWorld::get_water_experiment_policy);
     ClassDB::bind_method(D_METHOD("get_liquid_solver_policy"),
@@ -280,6 +289,10 @@ void CyberNativeCellWorld::create_world() {
                 "cybersand/native_active_core_capacity", 1024), 1, 1024));
         config.active_chunk_capacity = 128;
         config.parallel_job_threshold = 2;
+        // Every starting World carries ballistic Water and BS-001 ballistic
+        // solids (see reset_demo_world); idle owners change no cell.
+        config.ballistic_water.enabled = true;
+        config.ballistic_solids.enabled = true;
         world_ = std::make_unique<cybersand::World>(config);
         render_exchange_ = std::make_unique<cybersand::RenderSnapshotExchange>(
             3, 64, static_cast<std::size_t>(kWorldWidth) * kWorldHeight * 2U);
@@ -302,6 +315,13 @@ bool CyberNativeCellWorld::reset_demo_world() {
         // Resetting to FreeMass also retires the PF-only gas-capacity profile.
         config.pressure_gas_compartment_capacity = cybersand::PressureFlowParameters::kCompartmentCapacity;
         config.maximum_rule_radius = kProtectedCurrentRuleRadius;
+        // Every starting World carries ballistic Water and BS-001 ballistic
+        // solids (default capacities); idle owners change no cell.
+        config.ballistic_water = {};
+        config.ballistic_water.enabled = true;
+        config.ballistic_solids = {};
+        config.ballistic_solids.enabled = true;
+        config.inertial_signed_vertical = false;
         if (workbench_) {
             config.maximum_chunk_count = 128;
             config.active_chunk_capacity = 128;
@@ -368,8 +388,13 @@ bool CyberNativeCellWorld::simulation_tick() {
     const auto start = std::chrono::steady_clock::now();
     bool succeeded = false;
     try {
+        // Ballistic Water/solids in flight (or landing this tick) change the
+        // presented image without moving a grid cell; count them as a change
+        // so the render snapshot keeps up instead of freezing them.
+        const bool ballistic_before = world_->ballistic_parcel_count() != 0U || world_->ballistic_solid_count() != 0U;
         last_stats_ = world_->tick();
-        if (last_stats_.moved_cells != 0U || last_stats_.deferred_events != 0U) ++revision_;
+        const bool ballistic_after = world_->ballistic_parcel_count() != 0U || world_->ballistic_solid_count() != 0U;
+        if (last_stats_.moved_cells != 0U || last_stats_.deferred_events != 0U || ballistic_before || ballistic_after) ++revision_;
         succeeded = true;
     } catch (const std::exception& error) {
         ++tick_failure_count_;

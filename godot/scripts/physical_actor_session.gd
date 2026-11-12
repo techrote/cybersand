@@ -33,6 +33,9 @@ var run_id: String = ""
 var _definitions: Array = []
 var _catalogue: Array = []
 var _workbench_ports: Dictionary = {}
+# Workbench flyer port loadout {"q"|"e"|"s": kinetic usable id}; set by the
+# shared workbench from the authored equipment block. Applies to every piloted flyer.
+var workbench_loadout: Dictionary = {}
 var _workbench_emitted_at: Dictionary = {}
 var _rigs: Array = []
 var _scripts: Array = []
@@ -126,7 +129,7 @@ static func valid_definitions(definitions: Array) -> bool:
 		if not workbench and (value.position.x < 0.0 or value.position.y < 0.0 or value.position.x >= 1024.0 or value.position.y >= 1024.0):
 			return false
 		var prepared: Dictionary = Equipment.definition(Fleet.definition(fleet_index)) if workbench and fleet_index >= 0 else Equipment.definition(Catalog.entry(model), Loadouts.entry(model))
-		if prepared.is_empty() or not _integer(value.get("usable_index", Loadouts.entry(model).get("usable_index", -1)), -1, 31):
+		if prepared.is_empty() or not _integer(value.get("usable_index", Loadouts.entry(model).get("usable_index", -1)), -1, CyberUsableCatalog.count() - 1):
 			return false
 		if model in Flight.IDS and int(value.get("usable_index", -1)) != -1:
 			return false
@@ -319,7 +322,7 @@ func pack_workbench_sample() -> Dictionary:
 		var identity: Dictionary = {"actor_slot":slot, "instance_id":_definitions[slot].instance_id,
 			"session":packet.session, "epoch":epoch, "generation":binding.generation, "sequence":binding.sequence,
 			"tick":tick, "first_proxy":packet.bodies[slot].first_proxy, "count":packet.bodies[slot].count}
-		packet.emitters.append_array(WorkbenchEmitter.intents(_rigs[slot], bridge.body_transform(slot), binding, identity))
+		packet.emitters.append_array(WorkbenchEmitter.intents(_rigs[slot], bridge.body_transform(slot), binding, identity, workbench_loadout))
 	return packet
 
 

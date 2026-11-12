@@ -895,6 +895,8 @@ World::World(WorldConfig config)
     transient_obstacles_ = std::make_unique<TransientObstacleState>();
     validate_ballistic_config();
     if (config_.ballistic_water.enabled) ballistic_parcels_.reserve(config_.ballistic_water.capacity);
+    validate_ballistic_solids_config();
+    if (config_.ballistic_solids.enabled) ballistic_solids_.reserve(config_.ballistic_solids.capacity);
     if (config_.ballistic_water.face_release) {
         ballistic_face_chunks_.reserve(config_.maximum_chunk_count);
         ballistic_face_water_.resize(config_.maximum_chunk_count);
@@ -1636,6 +1638,8 @@ RenderPublishResult RenderSnapshotExchange::publish(World& world) {
         }
         // BW-001: in-flight parcels are presentation-only overlays of owned state.
         world.overlay_ballistic_render(slot.patches[patch_index].world_rect,
+            std::span<std::uint8_t>(slot.cells.data() + byte_offset, height * stride), stride, 2U);
+        world.overlay_ballistic_solids_render(slot.patches[patch_index].world_rect,
             std::span<std::uint8_t>(slot.cells.data() + byte_offset, height * stride), stride, 2U);
         byte_offset += height * stride;
     }
@@ -3070,6 +3074,7 @@ void World::clear() {
     granular_arrival_storage_bytes_ = 0;
     reset_quantity_ledger();
     reset_ballistic_water();
+    reset_ballistic_solids();
     active_chunk_scratch_.clear();
     active_core_scratch_.clear();
     pending_explosions_.clear();
@@ -4524,6 +4529,8 @@ void World::begin_tick(TickStats& stats) {
     // BW-001 parcels advance serially at the same boundary: deposits are
     // visible to pressure preparation and simulate from the next tick.
     advance_ballistic_water();
+    // BS-001 ballistic solids advance right after, in slot order.
+    advance_ballistic_solids();
     // Serial, deterministic gas topology and head preparation. It may wake
     // sleeping blocks, so it precedes the active-chunk list for this tick.
     if (pressure_ != nullptr) prepare_pressure_tick();
@@ -5454,6 +5461,7 @@ void World::copy_render_cells(RectI64 region, std::span<std::uint8_t> destinatio
         }
     }
     overlay_ballistic_render(region, destination, stride_bytes, 2U);
+    overlay_ballistic_solids_render(region, destination, stride_bytes, 2U);
 }
 
 void World::copy_material_cells(RectI64 region, std::span<std::uint8_t> destination,
@@ -5502,6 +5510,7 @@ void World::copy_material_cells(RectI64 region, std::span<std::uint8_t> destinat
         }
     }
     overlay_ballistic_render(region, destination, stride_bytes, 1U);
+    overlay_ballistic_solids_render(region, destination, stride_bytes, 1U);
 }
 
 void World::copy_hard_surface_bits(RectI64 region, std::span<std::uint64_t> destination) const {
@@ -5579,5 +5588,6 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::
 #include "world_pressure.inc"
 #include "world_inertial.inc"
 #include "world_ballistic.inc"
+#include "world_ballistic_solids.inc"
 
 }  // namespace cybersand

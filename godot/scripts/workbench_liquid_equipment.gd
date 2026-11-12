@@ -24,6 +24,14 @@ extends RefCounted
 #            or places the cell on the free surface above it (`_surface_cell`):
 #            exact volume, rising level, but no local pressure jet. Slow inlets
 #            spread over the surface; fast ones stack a fountain column.
+#   launcher  - a finite directed solid source (BS-001). With ballistic solids
+#            in the World it fires native ballistic solids of one material from its
+#            stock; otherwise it places one resting cell at the muzzle.
+#   collector - a bounded sink rectangle for powders/solids; collected cells go
+#            to the solids stock by material (exact cell counts).
+#   conveyor  - when enabled, collected cells of the launcher's material feed
+#            its stock: grid + in-flight solids + stock stays constant.
+#   A sand "hopper" is simply a valve in the floor of a powder bin.
 #   pump   - when enabled, drained Water feeds the nozzle's internal pipe
 #            instead of leaving the World: a closed circulation loop in which
 #            native Water + pipe stock stays constant.
@@ -32,6 +40,9 @@ extends RefCounted
 # state, pipe stock, ledgers. Replacing or restoring the World resets them.
 
 const UsableRuntime = preload("res://scripts/usable_runtime.gd")
+const Kinetic = preload("res://scripts/workbench_kinetic_mask.gd")
+const KineticUsables = preload("res://scripts/kinetic_usables.gd")
+const MAX_KINETICS := 8
 const VERSION := 1
 const GATE := 58                 # Hard wall
 const WATER := 3
@@ -47,7 +58,15 @@ const DISPLACE_RADIUS := 4
 const MAX_COLUMN_RISE := 64
 const SURFACE_SPREAD := 6
 const SURFACE_DROP := 32
-const KEYS := ["version","valves","drain","nozzle","supply","pump","pipe_capacity"]
+const KEYS := ["version","valves","drain","nozzle","supply","pump","pipe_capacity",
+	"launcher","collector","solid_supply","conveyor","kinetics","loadout"]
+# Materials the solids devices may fire or collect (powders and Stone). The
+# native owner decides admission again and refuses anything else.
+const SOLIDS := [2,13,14,19,23,26,27,29,8,12,16,20,21,24,32,33,36]
+const MAX_COLLECTOR_CELLS := 96
+const MAX_COLLECTOR_RATE := 32
+const MAX_LAUNCHER_RATE := 8
+const MAX_SOLID_STOCK := 20000
 
 var serial := 0
 var configured := false
@@ -85,6 +104,31 @@ var _pump := false
 var _stock := 0
 var _supplied := 0
 var _pipe_capacity := 0
+# Solids devices.
+var _solids := false              # World constructed with ballistic solids (BS-001)
+var _launcher := Vector2i(-1,-1)
+var _launcher_angle := 0.0
+var _launcher_speed := 0.0
+var _launcher_rate := 0
+var _launcher_material := 0
+var _launcher_on := false
+var _launched := 0
+var _launched_cells := 0          # resting-cell fallback emissions
+var _launcher_refused := {}
+var _collector := Rect2i()
+var _collector_rate := 0
+var _collector_open := false
+var _collected := {}
+var _conveyor := false
+var _solid_stock := 0
+var _solid_supplied := 0
+var _population := -1           # native grid population of the launcher material
+var _populations := {}           # native grid populations of every kinetic solid
+# Kinetic emitters (kinetic mask presets) and the pointer tool.
+var _kinetics: Array[Dictionary] = []
+var _kinetic_serial := 0
+var _kinetic_totals := {"applications":0,"water":0,"solids":0,"refused":{},"truncated":0}
+var _kinetic_last := {}
 var _ticks := 0
 var _active_ticks := 0
 var _last_refusal := ""
@@ -100,7 +144,8 @@ var _observation_serial := 0
 
 
 static func empty_config() -> Dictionary:
-	return {"version":VERSION,"valves":[],"drain":[],"nozzle":[],"supply":0,"pump":false,"pipe_capacity":MAX_PIPE_CELLS}
+	return {"version":VERSION,"valves":[],"drain":[],"nozzle":[],"supply":0,"pump":false,"pipe_capacity":MAX_PIPE_CELLS,
+		"launcher":[],"collector":[],"solid_supply":0,"conveyor":false,"kinetics":[],"loadout":["","",""]}
 
 
 static func _int(value: Variant, low: int, high: int) -> bool:
@@ -163,6 +208,38 @@ static func validate(value: Variant, extent: Vector2i) -> String:
 		return "Pipe capacity must be 1-%d cells and hold the supply." % MAX_PIPE_CELLS
 	if value.nozzle.is_empty() and (value.pump or int(value.supply) != 0):
 		return "Pump and supply need a nozzle."
+	if not value.launcher is Array or not value.collector is Array: return "Invalid solids device geometry."
+	if not value.launcher.is_empty():
+		if value.launcher.size() != 6: return "Launcher needs [x, y, angle, speed, per tick, material]."
+		if not _int(value.launcher[0],2,extent.x-3) or not _int(value.launcher[1],2,extent.y-3):
+			return "Place the launcher at least two cells inside the canvas."
+		if not _num(value.launcher[2],-180.0,180.0) or not _num(value.launcher[3],0.5,6.0):
+			return "Launcher angle must be -180..180 degrees and speed 0.5-6 cells per tick."
+		if not _int(value.launcher[4],1,MAX_LAUNCHER_RATE): return "Launcher rate must be 1-%d per tick." % MAX_LAUNCHER_RATE
+		if not _int(value.launcher[5],0,255) or not int(value.launcher[5]) in SOLIDS: return "Launcher material is not a supported solid."
+	if not value.collector.is_empty():
+		var error := _rect_error(value.collector,"collector",5)
+		if not error.is_empty(): return "Collector needs [x, y, width, height, cells per tick]."
+		var sink := _rect(value.collector)
+		if not canvas.encloses(sink) or sink.get_area() > MAX_COLLECTOR_CELLS:
+			return "The collector must lie inside the canvas and hold at most %d cells." % MAX_COLLECTOR_CELLS
+		if not _int(value.collector[4],1,MAX_COLLECTOR_RATE): return "Collector rate must be 1-%d cells per tick." % MAX_COLLECTOR_RATE
+	if not _int(value.solid_supply,0,MAX_SOLID_STOCK) or not value.conveyor is bool:
+		return "Solid supply must be 0-%d cells and conveyor a true/false switch." % MAX_SOLID_STOCK
+	if value.launcher.is_empty() and (value.conveyor or int(value.solid_supply) != 0):
+		return "Conveyor and solid supply need a launcher."
+	if not value.loadout is Array or value.loadout.size() != 3:
+		return "Loadout needs three port entries (Q, E, S)."
+	for usable: Variant in value.loadout:
+		if not usable is String or (not usable.is_empty() and not KineticUsables.valid(usable)):
+			return "Unknown port usable: " + str(usable)
+	if not value.kinetics is Array or value.kinetics.size() > MAX_KINETICS:
+		return "At most %d kinetic emitters." % MAX_KINETICS
+	for emitter: Variant in value.kinetics:
+		if not emitter is Array or emitter.size() != 6: return "Kinetic emitter needs [x, y, preset, radius, strength, angle]."
+		if not _int(emitter[0],2,extent.x-3) or not _int(emitter[1],2,extent.y-3): return "Place kinetic emitters inside the canvas."
+		var error := Kinetic.valid_request(emitter[2],emitter[3],emitter[4],emitter[5])
+		if not error.is_empty(): return error
 	return ""
 
 
@@ -175,6 +252,15 @@ static func canonical(value: Dictionary) -> Dictionary:
 	result.supply = int(value.supply)
 	result.pump = bool(value.pump)
 	result.pipe_capacity = int(value.pipe_capacity)
+	if not value.launcher.is_empty():
+		result.launcher = [int(value.launcher[0]),int(value.launcher[1]),float(value.launcher[2]),float(value.launcher[3]),
+			int(value.launcher[4]),int(value.launcher[5])]
+	result.collector = Array(PackedInt32Array(value.collector))
+	result.solid_supply = int(value.solid_supply)
+	result.conveyor = bool(value.conveyor)
+	result.loadout = [str(value.loadout[0]),str(value.loadout[1]),str(value.loadout[2])]
+	for emitter: Array in value.kinetics:
+		result.kinetics.append([int(emitter[0]),int(emitter[1]),str(emitter[2]),int(emitter[3]),float(emitter[4]),float(emitter[5])])
 	return result
 
 
@@ -212,6 +298,28 @@ func _reset_runtime() -> void:
 	_stock = 0
 	_supplied = 0
 	_pipe_capacity = 0
+	_solids = false
+	_launcher = Vector2i(-1,-1)
+	_launcher_angle = 0.0
+	_launcher_speed = 0.0
+	_launcher_rate = 0
+	_launcher_material = 0
+	_launcher_on = false
+	_launched = 0
+	_launched_cells = 0
+	_launcher_refused = {}
+	_collector = Rect2i()
+	_collector_rate = 0
+	_collector_open = false
+	_collected = {}
+	_conveyor = false
+	_solid_stock = 0
+	_solid_supplied = 0
+	_population = -1
+	_populations = {}
+	_kinetics = []
+	_kinetic_totals = {"applications":0,"water":0,"solids":0,"refused":{},"truncated":0}
+	_kinetic_last = {}
 	_ticks = 0
 	_active_ticks = 0
 	_last_refusal = ""
@@ -250,6 +358,19 @@ func command(world: Object, request: Dictionary, extent: Vector2i) -> void:
 	if kind == "observe":
 		_observe(world,request,extent)
 		return
+	if kind == "kinetic_at":
+		# The pointer tool: one application at any canvas cell, with or without
+		# authored equipment. Refusals are counted; nothing else changes.
+		var error := Kinetic.valid_request(request.get("preset"),request.get("radius"),request.get("strength"),request.get("angle"))
+		var at: Variant = request.get("at")
+		if error.is_empty() and (not at is Vector2i or not Rect2i(Vector2i.ZERO,extent).has_point(at)): error = "outside the canvas"
+		if error.is_empty() and (world == null or world.has_failed()): error = "World unavailable"
+		if not error.is_empty():
+			_refuse("kinetic_at: " + error)
+			return
+		if _extent == Vector2i.ZERO: _extent = extent
+		_kinetic_apply(world,at,str(request.preset),int(request.radius),float(request.strength),float(request.angle),-1)
+		return
 	if not configured or int(request.get("serial",-1)) != serial:
 		_refuse("%s: stale_configuration" % kind)
 		return
@@ -281,10 +402,45 @@ func command(world: Object, request: Dictionary, extent: Vector2i) -> void:
 				_speed = float(request.speed)
 				_nozzle_rate = int(request.rate)
 				_config.nozzle = [_nozzle.x,_nozzle.y,_angle,_speed,_nozzle_rate]
+		"launcher":
+			if _launcher.x >= 0: _launcher_on = bool(request.get("on",false))
+			else: _refuse("launcher: not installed")
+		"collector":
+			if _collector.has_area(): _collector_open = bool(request.get("open",false))
+			else: _refuse("collector: not installed")
+		"tune_launcher":
+			if _launcher.x < 0:
+				_refuse("tune_launcher: no launcher")
+			elif not _num(request.get("angle"),-180.0,180.0) or not _num(request.get("speed"),0.5,6.0) \
+					or not _int(request.get("rate"),1,MAX_LAUNCHER_RATE):
+				_refuse("tune_launcher: outside admission")
+			else:
+				_launcher_angle = float(request.angle)
+				_launcher_speed = float(request.speed)
+				_launcher_rate = int(request.rate)
+				_config.launcher = [_launcher.x,_launcher.y,_launcher_angle,_launcher_speed,_launcher_rate,_launcher_material]
+		"kinetic_pulse", "kinetic_hold":
+			var index: Variant = request.get("index",-1)
+			if _kinetics.is_empty():
+				_refuse("%s: no kinetic emitters" % kind)
+			elif not _int(index,-1,_kinetics.size()-1):
+				_refuse("%s: no emitter %s" % [kind,str(index)])
+			else:
+				for i: int in _kinetics.size():
+					if int(index) != -1 and i != int(index): continue
+					if kind == "kinetic_hold":
+						_kinetics[i].hold = bool(request.get("on",false))
+						_kinetics[i].timer = 0
+					else:
+						var e: Dictionary = _kinetics[i]
+						_kinetic_apply(world,e.at,e.preset,e.radius,e.strength,e.angle,i)
 		"stop":
+			for emitter: Dictionary in _kinetics: emitter.hold = false
 			for valve: Dictionary in _valves: _set_valve(valve,false)
 			_drain_open = false
 			_nozzle_on = false
+			_launcher_on = false
+			_collector_open = false
 		_:
 			_refuse("unknown command " + kind)
 
@@ -345,6 +501,24 @@ func _configure(world: Object, config: Dictionary, extent: Vector2i, next_serial
 		_angle = float(config.nozzle[2])
 		_speed = float(config.nozzle[3])
 		_nozzle_rate = int(config.nozzle[4])
+	_solids = world.has_method(&"get_ballistic_solids") and world.has_method(&"inject_solid_parcel") \
+		and bool(world.get_ballistic_solids().get("enabled",false))
+	if not config.launcher.is_empty():
+		_launcher = Vector2i(int(config.launcher[0]),int(config.launcher[1]))
+		_launcher_angle = float(config.launcher[2])
+		_launcher_speed = float(config.launcher[3])
+		_launcher_rate = int(config.launcher[4])
+		_launcher_material = int(config.launcher[5])
+	if not config.collector.is_empty():
+		_collector = _rect(config.collector)
+		_collector_rate = int(config.collector[4])
+	_conveyor = bool(config.conveyor)
+	for emitter: Array in config.kinetics:
+		_kinetics.append({"at":Vector2i(int(emitter[0]),int(emitter[1])),"preset":str(emitter[2]),"radius":int(emitter[3]),
+			"strength":float(emitter[4]),"angle":float(emitter[5]),"hold":false,"timer":0,"pulses":0,"water":0,"solids":0})
+	_solid_stock = int(config.solid_supply)
+	_solid_supplied = _solid_stock
+	_sample_population(world)
 	_pump = bool(config.pump)
 	_pipe_capacity = int(config.pipe_capacity) * _unit
 	_stock = int(config.supply) * _unit
@@ -382,8 +556,18 @@ func before_tick(world: Object) -> void:
 		waiting += int(valve.waiting)
 	if _drain_open: _step_drain(world)
 	if _nozzle_on: _step_nozzle(world)
+	if _collector_open: _step_collector(world)
+	if _launcher_on: _step_launcher(world)
+	for i: int in _kinetics.size():
+		var e: Dictionary = _kinetics[i]
+		if not e.hold: continue
+		if int(e.timer) <= 0:
+			_kinetic_apply(world,e.at,e.preset,e.radius,e.strength,e.angle,i)
+			e.timer = int(Kinetic.PRESETS[e.preset].period)
+		e.timer = int(e.timer) - 1
+	_sample_population(world)
 	_last = {"tick":_ticks,"drained":_drained_water-drained_before,"injected":_injected_water-injected_before,"reads":_reads}
-	if _drain_open or _nozzle_on or waiting > 0: _active_ticks += 1
+	if _drain_open or _nozzle_on or _collector_open or _launcher_on or waiting > 0 or _any_hold(): _active_ticks += 1
 
 
 func _step_valve(world: Object, valve: Dictionary) -> void:
@@ -605,6 +789,107 @@ func _place_full(world: Object, cell: Vector2i, column: bool) -> bool:
 	return true
 
 
+# Collector: bottom row first, at most `rate` cells per tick, skipping masked
+# cells. Every removed cell is counted by material; with the conveyor on, cells
+# of the launcher's material enter its stock (the stock never deletes: a full
+# stock stops the collector).
+func _step_collector(world: Object) -> void:
+	var removed := 0
+	for y: int in range(_collector.end.y-1,_collector.position.y-1,-1):
+		for x: int in range(_collector.position.x,_collector.end.x):
+			if removed >= _collector_rate or _reads >= MAX_READS: return
+			var cell := Vector2i(x,y)
+			var material := _material(world,cell)
+			if not material in SOLIDS or _mask(world,cell) != 0: continue
+			var feeds := _conveyor and material == _launcher_material
+			if feeds and _solid_stock >= MAX_SOLID_STOCK: return
+			world.emit_disc(x,y,0,0)
+			if _material(world,cell) != 0: continue
+			removed += 1
+			_collected[material] = int(_collected.get(material,0)) + 1
+			if feeds: _solid_stock += 1
+
+
+# Worker publication samples the population at the same boundary as the
+# ballistic-solid roster, so grid + ballistic + stock is read consistently.
+func refresh_population(world: Object) -> void:
+	if world != null and not world.has_failed() and (configured or _kinetic_totals.applications > 0): _sample_population(world)
+
+
+func _any_hold() -> bool:
+	for e: Dictionary in _kinetics:
+		if e.hold: return true
+	return false
+
+
+func _kinetic_apply(world: Object, at: Vector2i, preset: String, radius: int, strength: float, angle: float, index: int) -> void:
+	_kinetic_serial += 1
+	var planned := Kinetic.plan(world,_extent,at,preset,radius,strength,angle,_kinetic_serial)
+	var result := Kinetic.apply(world,planned)
+	_kinetic_totals.applications += 1
+	_kinetic_totals.water += int(result.water)
+	_kinetic_totals.solids += int(result.solids)
+	if result.truncated: _kinetic_totals.truncated += 1
+	for reason: String in result.refused:
+		_kinetic_totals.refused[reason] = int(_kinetic_totals.refused.get(reason,0)) + int(result.refused[reason])
+	_kinetic_last = {"serial":_kinetic_serial,"emitter":index,"preset":preset,"at":at,"water":result.water,"solids":result.solids,
+		"refused":result.refused.duplicate(),"reads":planned.reads}
+	if index >= 0:
+		var e: Dictionary = _kinetics[index]
+		e.pulses = int(e.pulses) + 1
+		e.water = int(e.water) + int(result.water)
+		e.solids = int(e.solids) + int(result.solids)
+
+
+func _sample_population(world: Object) -> void:
+	if not world.has_method(&"get_material_population"): return
+	if _launcher.x >= 0: _population = int(world.get_material_population(_launcher_material))
+	for material: int in Kinetic.CELLS: _populations[str(material)] = int(world.get_material_population(material))
+
+
+func _step_launcher(world: Object) -> void:
+	var axis := Vector2.RIGHT.rotated(deg_to_rad(_launcher_angle))
+	for _index: int in range(_launcher_rate):
+		if _solid_stock <= 0:
+			_launcher_refused["empty"] = int(_launcher_refused.get("empty",0)) + 1
+			return
+		var muzzle := Vector2(_launcher) + Vector2(0.5,0.5) + axis * 1.5
+		if _solids:
+			var outcome: String = world.inject_solid_parcel(muzzle,axis * _launcher_speed,_launcher_material)
+			if outcome != "launched":
+				_launcher_refused[outcome] = int(_launcher_refused.get(outcome,0)) + 1
+				return
+			_solid_stock -= 1
+			_launched += 1
+			continue
+		var cell := Vector2i(muzzle.floor())
+		if not Rect2i(Vector2i.ONE,_extent-Vector2i(2,2)).has_point(cell) or _material(world,cell) != 0 or _mask(world,cell) != 0:
+			_launcher_refused["muzzle_blocked"] = int(_launcher_refused.get("muzzle_blocked",0)) + 1
+			return
+		world.emit_disc(cell.x,cell.y,0,_launcher_material)
+		if _material(world,cell) != _launcher_material:
+			_launcher_refused["write_refused"] = int(_launcher_refused.get("write_refused",0)) + 1
+			return
+		_solid_stock -= 1
+		_launched += 1
+		_launched_cells += 1
+		return
+
+
+func _kinetic_receipts() -> Array:
+	var out := []
+	for e: Dictionary in _kinetics:
+		out.append({"at":[e.at.x,e.at.y],"preset":e.preset,"radius":e.radius,"strength":e.strength,"angle":e.angle,
+			"hold":e.hold,"pulses":e.pulses,"water":e.water,"solids":e.solids})
+	return out
+
+
+func _string_keys(values: Dictionary) -> Dictionary:
+	var out := {}
+	for key: Variant in values: out[str(key)] = values[key]
+	return out
+
+
 func receipt() -> Dictionary:
 	var counts := {}
 	for material: int in _drained_cells: counts[str(material)] = _drained_cells[material]
@@ -625,5 +910,14 @@ func receipt() -> Dictionary:
 			"emitted":_emitted,"cell_emissions":_cell_emissions,"injected_water":_injected_water,"topped_up":_topped_up,
 			"column_injections":_column_injections,"refused":_nozzle_refused.duplicate()},
 		"pipe":{"pump":_pump,"stock":_stock,"supplied":_supplied,"capacity":_pipe_capacity},
+		"solids_mode":"ballistic solids" if _solids else "cells at rest",
+		"launcher":{"installed":_launcher.x >= 0,"on":_launcher_on,"angle":_launcher_angle,"speed":_launcher_speed,
+			"rate":_launcher_rate,"material":_launcher_material,"launched":_launched,"cell_launches":_launched_cells,
+			"refused":_launcher_refused.duplicate()},
+		"collector":{"installed":_collector.has_area(),"open":_collector_open,"rate":_collector_rate,
+			"collected":_string_keys(_collected)},
+		"solid_stock":{"conveyor":_conveyor,"stock":_solid_stock,"supplied":_solid_supplied,"population":_population},
+		"populations":_populations.duplicate(),
+		"kinetics":_kinetic_receipts(),"kinetic_totals":_kinetic_totals.duplicate(true),"kinetic_last":_kinetic_last.duplicate(true),
 		"last":_last.duplicate(),"last_refusal":_last_refusal,"refused":_refused,
 		"observation_serial":_observation_serial,"observations":_observations.duplicate(true)}

@@ -109,7 +109,7 @@ static func _water_families(controller: Variant, report: Dictionary, definition:
 			if int(entry.material)==3: assignment = entry
 		_check(report,assignment.get("applied_family","")==family and assignment.get("applied_variant","")==variant
 			and actual.policy_hash==validation.receipt.policy_hash and actual.maximum_rule_radius==3
-			and receipt.physical_state_hash_version==(3 if family=="inertial_cellular_v1" else 2),
+			and receipt.physical_state_hash_version==4,
 			"native family/variant/policy/hash-version/radius match common Water arm "+label)
 		var normal: Dictionary = receipt.normalization
 		_check(report,normal.rule=="water-normalize-v1" and normal.water_before==49*255 and normal.water_after==49*255
@@ -204,7 +204,7 @@ static func run(controller: Variant) -> Dictionary:
 		var inertial_extension: Dictionary = {}
 		for extension: Dictionary in receipt.solver_state_extensions:
 			if extension.family == 4: inertial_extension = extension
-		_check(report,receipt.physical_state_hash_version == 3 and receipt.maximum_rule_radius == 3
+		_check(report,receipt.physical_state_hash_version == 4 and receipt.maximum_rule_radius == 3
 			and actual.family_parameters.inertial_cellular_v1.damping_numerator == 7
 			and inertial_extension.get("extension_digest","") == actual.family_parameters.inertial_cellular_v1.extension_identity,
 			"actual IN instance geometry/damping/extension agree "+variant)
@@ -234,6 +234,6 @@ static func run(controller: Variant) -> Dictionary:
 	_check(report,controller.microscenario_apply_definition(definition,"Inspect"),"ordinary Current constructor remains available")
 	_check(report,world.get_applied_liquid_construction_receipt().is_empty()
 		and controller.micro_host.liquid_host_observation().is_empty()
-		and world.get_physical_state_hash_version() == 2 and world.get_liquid_solver_policy().maximum_rule_radius == 2,
+		and world.get_physical_state_hash_version() == 4 and world.get_liquid_solver_policy().maximum_rule_radius == 2,
 		"ordinary Current constructor retires prepared identity and restores protected radius2")
 	return _finish(report)
