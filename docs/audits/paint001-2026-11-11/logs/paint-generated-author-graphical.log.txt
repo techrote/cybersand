@@ -1,0 +1,9 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+PAINT_GENERATED_SOURCE {"authored_stamps":20,"native_receipts":64,"prepared_sha256":"1242e14d217c86835673aa13e9158fcb4605faef1c6fcb1e53b7be28268d868b","recipe_sha256":"b492e6a45f5e2396813c3a48cdc250064cf02ea6a722dddde326126d60cb3fdb","source_sha256":"0acd772d421b04131dac13917883ca15e6a1fdce55cb028b93b5fbf49b7f17b4"}
+PAINT_EDITOR_GENERATED_WORKBENCH {"checks":40,"completed":true,"elapsed_usec":10375014,"failures":[],"reopen":""}

@@ -1,8 +1,11 @@
 {
   "version": 1,
-  "reviewed": "2026-11-11",
+  "reviewed": "2026-11-12",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
+    "operations/wb-art-paint-integrated-candidate.md",
+    "systems/workbench-direct-art-batches.md",
+    "systems/workbench-art-providers.md",
     "MATERIAL_LAB.md",
     "architecture/chunk-tile-and-buffer-model.md",
     "architecture/data-ownership-and-lifetimes.md",
@@ -113,6 +116,7 @@
     "systems/physical-flight-lab.md",
     "operations/deepworks-exhibition.md",
     "systems/player-control-playground.md",
+    "systems/paint-editor-bounded-shapes.md",
     "systems/procedural-typed-spatial-fields.md",
     "reference/procedural-spatial-operators.md",
     "systems/procedural-hierarchical-generation.md",

@@ -1,0 +1,488 @@
+{
+  "schema": "cybersand-agent-undo-local-tests-v1",
+  "recorded_at": "2026-11-12T22:43:46.623394+00:00",
+  "qualification": "passed_local_diagnostic",
+  "qualification_scope": "Local Linux x64 headless functional evidence using the actual mounted Workbench and native stored-material captures. This is not Windows, graphical, installed-package or pinned hosted compiler qualification.",
+  "source_base_commit": "d33c10e41cafcaa809ef410d0760e2c15bd02247",
+  "source_identity_basis": "Uncommitted agent-Undo working tree at test time, identified by the common file hashes below. All six runs checked their loaded source/native identities again before exiting.",
+  "source_files_sha256": {
+    "godot/scripts/art_batch_executor.gd": "2c7c7c1605a5cf9f630e6fabad6cb6d34804e0c0a19c9e8e96a7e9535489fc98",
+    "godot/scripts/art_batch_panel.gd": "958516aeb5ef3228735128aba93d0a44247ff25e021891edf5509e7de555fbd1",
+    "godot/scripts/art_provider.gd": "5cab1a50a2b38888fbec5183c0facacb23211e682f088c05c7ab802dd2977bdd",
+    "godot/scripts/shared_workbench.gd": "8d80dc46056c9dbbd7f16d06c6acace01ace8fa725b066b399f2ec02f07f6bdc",
+    "godot/scripts/simulation_worker.gd": "bac92f82ef3d3dc4fad54c785c148eba3ea1c0ec1e1b9805a65ffea261cc6016",
+    "godot/scripts/workbench_generated_map.gd": "f65a37a99ac40abccc0a3ea3bad1e920051d597ceb46354e857dded9e6465ba5",
+    "godot/scripts/workbench_generator_dialog.gd": "4b6d71e1011837a1281d5d485db53ae2eef60572d25ce14a61c55233e8e02288",
+    "godot/scripts/workbench_liquid_equipment.gd": "27411a621e6fb3faf98a19688aa31c7df8843c60dc4fcb662751162b27ff5ee4",
+    "godot/scripts/workbench_liquid_equipment_panel.gd": "8288c84a55ca2bc6e7fd38472f3641675f89409dac7f34390370e73cf69b1b32",
+    "godot/scripts/workbench_paint_editor_controller.gd": "6022a4379baafae9ecef8c8e309c13271a27a2f271038fcb6350a9db170179e8",
+    "godot/scripts/workbench_paint_editor_executor.gd": "1f118427e505f0a4b7f63e7e10089507f89445c08f9ead5a7f41768935160e7d",
+    "godot/scripts/workbench_paint_editor_history.gd": "f3b19f906668feec3d49aea61448b1d58a90a6ccf8b9bf5b814d13ed4881786e",
+    "godot/scripts/workbench_setup.gd": "6b3341e4733f39622c23a964cb586c65eb358734e1a164e354d327057abe4a86",
+    "godot/tests/test_art_undo.gd": "bc9d9f076c0c8e936682293116f8498e2ea0d47bfb8ef25f032643eab80d49f5",
+    "godot/tests/test_workbench_combined_authoring.gd": "77444a8aecca69a61dc752faabccb1485e5aa6543d76f621bf09dd66433e6c12"
+  },
+  "runtime": {
+    "os": "Linux",
+    "architecture": "x86_64",
+    "display": "headless",
+    "audio_driver": "Dummy",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "godot_executable_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "godot_archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+    "native_gdextension_sha256": "16ffc0ce8190c2e8ca2e31fc59f10c55148adc6e7f16727dc96c094d8a96696a",
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "native_toolchain": "GCC14.2/binutils2.44 diagnostic build; not pinned hosted release qualification",
+    "native_build_class": "recovered diagnostic build",
+    "native_source_baseline": "a8259c5a789cff1d2652729c1a24508e1fce4ab6",
+    "native_source_input_count": 87,
+    "native_source_inputs_canonical_json_sha256": "7b48dfdc824a603f23a862c906598d5579f6e8bcd0891144879af4024712286b",
+    "native_source_inputs_match_baseline_and_tested_working_tree": true,
+    "restored_runtime_identity_local_path": "build/agent-undo/runtime/restored-runtime-identity.json",
+    "restored_runtime_identity_sha256": "ed78140db2dec4076f8333064f215a270d8bffb207116cdcf6924071fba00acc",
+    "durable_prior_diagnostic_provenance": "docs/audits/wb-art-paint-2026-11-12/local-qualification.json"
+  },
+  "totals": {
+    "runs": 6,
+    "checks": 1002,
+    "failures": 0,
+    "passed_runs": 6,
+    "historical_failed_attempts_excluded": 2
+  },
+  "runs": [
+    {
+      "id": "focused-1-attempt4",
+      "suite": "test_art_undo",
+      "phase": "focused",
+      "workers": 1,
+      "checks": 260,
+      "failures": [],
+      "exit_code": 0,
+      "source_identity": "source_files_sha256",
+      "source_and_native_unchanged_during_execution": true,
+      "original_log": "build/agent-undo/test-evidence/focused-1-attempt4.log",
+      "original_log_sha256": "dc397489c19061d203cf15388ce15f4bc57a343a89ce446ae5c080dcaca50ed6",
+      "original_entry_source_manifest": "build/agent-undo/test-evidence/focused-1-attempt4-source.json",
+      "original_entry_source_manifest_sha256": "4ecad175a014f0d53b03b76156d55cb6a03751fd82ae125aafaee44179d45e21",
+      "world_extents": [
+        512,
+        1024
+      ],
+      "all_mandatory_scenarios_completed": true,
+      "native_capture_witness_count": 40,
+      "native_witness_set": "focused_shared_native_witnesses",
+      "large_group": {
+        "cells": 262656,
+        "elapsed_usec": 19630968,
+        "history_segments": 2
+      }
+    },
+    {
+      "id": "focused-4-attempt2",
+      "suite": "test_art_undo",
+      "phase": "focused",
+      "workers": 4,
+      "checks": 260,
+      "failures": [],
+      "exit_code": 0,
+      "source_identity": "source_files_sha256",
+      "source_and_native_unchanged_during_execution": true,
+      "original_log": "build/agent-undo/test-evidence/focused-4-attempt2.log",
+      "original_log_sha256": "083a2d28f81337dccbd71179842939db33c248e19c391833f58653a9c4729024",
+      "original_entry_source_manifest": "build/agent-undo/test-evidence/focused-4-attempt2-source.json",
+      "original_entry_source_manifest_sha256": "4ecad175a014f0d53b03b76156d55cb6a03751fd82ae125aafaee44179d45e21",
+      "world_extents": [
+        512,
+        1024
+      ],
+      "all_mandatory_scenarios_completed": true,
+      "native_capture_witness_count": 40,
+      "native_witness_set": "focused_shared_native_witnesses",
+      "large_group": {
+        "cells": 262656,
+        "elapsed_usec": 19546004,
+        "history_segments": 2
+      }
+    },
+    {
+      "id": "combined-512-1-author-attempt1",
+      "suite": "test_workbench_combined_authoring",
+      "phase": "author",
+      "workers": 1,
+      "checks": 192,
+      "failures": [],
+      "exit_code": 0,
+      "source_identity": "source_files_sha256",
+      "source_and_native_unchanged_during_execution": true,
+      "original_log": "build/agent-undo/test-evidence/combined-512-1-author-attempt1.log",
+      "original_log_sha256": "97a299ba4a0e094bbf93b727cb74a5555de82bd217cc6bcd43338aecc0130db1",
+      "original_entry_source_manifest": "build/agent-undo/test-evidence/combined-512-1-author-attempt1-source.json",
+      "original_entry_source_manifest_sha256": "4ecad175a014f0d53b03b76156d55cb6a03751fd82ae125aafaee44179d45e21",
+      "map_side": 512,
+      "profile_count": 16,
+      "phases": {
+        "agent": true,
+        "agent_undo_saved": true,
+        "continued_authoring": false,
+        "discovery": true,
+        "generation": true,
+        "human_after_agent": true,
+        "late_response": true,
+        "leases": true,
+        "manual": true,
+        "provider_fixture": true,
+        "reopen": false,
+        "save": true,
+        "simulation_equipment": true,
+        "stop": true
+      },
+      "elapsed_usec": 10527957,
+      "whole_native_material_sha256": "52e3a94accff0bc8498412b740f3c4381717dc5c4bec3501194e847b3ae1eaab",
+      "confirmed_agent_stop_prefix_cells": 4096,
+      "simulation_equipment": {
+        "tick_before": 0,
+        "tick_after": 10,
+        "nozzle_emitted": 7,
+        "nozzle_injected_water": 1785,
+        "worker_capacity": 1,
+        "workers_observed": 1
+      }
+    },
+    {
+      "id": "combined-512-1-reopen-attempt1",
+      "suite": "test_workbench_combined_authoring",
+      "phase": "reopen",
+      "workers": 1,
+      "checks": 49,
+      "failures": [],
+      "exit_code": 0,
+      "source_identity": "source_files_sha256",
+      "source_and_native_unchanged_during_execution": true,
+      "original_log": "build/agent-undo/test-evidence/combined-512-1-reopen-attempt1.log",
+      "original_log_sha256": "1bf7afba4ff758e9b2b5d6f2f1c62a10694284abb19a3287c67f82deff98b38f",
+      "original_entry_source_manifest": "build/agent-undo/test-evidence/combined-512-1-reopen-attempt1-source.json",
+      "original_entry_source_manifest_sha256": "4ecad175a014f0d53b03b76156d55cb6a03751fd82ae125aafaee44179d45e21",
+      "map_side": 512,
+      "profile_count": 16,
+      "phases": {
+        "agent": false,
+        "agent_undo_saved": false,
+        "continued_authoring": true,
+        "discovery": true,
+        "generation": false,
+        "human_after_agent": false,
+        "late_response": false,
+        "leases": false,
+        "manual": false,
+        "provider_fixture": false,
+        "reopen": true,
+        "save": false,
+        "simulation_equipment": false,
+        "stop": false
+      },
+      "elapsed_usec": 5015725,
+      "whole_native_material_sha256": "52e3a94accff0bc8498412b740f3c4381717dc5c4bec3501194e847b3ae1eaab",
+      "separate_process_reopen_complete": true,
+      "undone_agent_cells_remain_empty": true,
+      "continued_manual_agent_undo_redo": true
+    },
+    {
+      "id": "combined-512-4-author-attempt1",
+      "suite": "test_workbench_combined_authoring",
+      "phase": "author",
+      "workers": 4,
+      "checks": 192,
+      "failures": [],
+      "exit_code": 0,
+      "source_identity": "source_files_sha256",
+      "source_and_native_unchanged_during_execution": true,
+      "original_log": "build/agent-undo/test-evidence/combined-512-4-author-attempt1.log",
+      "original_log_sha256": "61f4c21628f9d1bb0c11f7d4e011a1f19026c570a0b043e3324a79078ec5998c",
+      "original_entry_source_manifest": "build/agent-undo/test-evidence/combined-512-4-author-attempt1-source.json",
+      "original_entry_source_manifest_sha256": "4ecad175a014f0d53b03b76156d55cb6a03751fd82ae125aafaee44179d45e21",
+      "map_side": 512,
+      "profile_count": 16,
+      "phases": {
+        "agent": true,
+        "agent_undo_saved": true,
+        "continued_authoring": false,
+        "discovery": true,
+        "generation": true,
+        "human_after_agent": true,
+        "late_response": true,
+        "leases": true,
+        "manual": true,
+        "provider_fixture": true,
+        "reopen": false,
+        "save": true,
+        "simulation_equipment": true,
+        "stop": true
+      },
+      "elapsed_usec": 10422692,
+      "whole_native_material_sha256": "52e3a94accff0bc8498412b740f3c4381717dc5c4bec3501194e847b3ae1eaab",
+      "confirmed_agent_stop_prefix_cells": 4096,
+      "simulation_equipment": {
+        "tick_before": 0,
+        "tick_after": 9,
+        "nozzle_emitted": 7,
+        "nozzle_injected_water": 1785,
+        "worker_capacity": 4,
+        "workers_observed": 4
+      }
+    },
+    {
+      "id": "combined-512-4-reopen-attempt1",
+      "suite": "test_workbench_combined_authoring",
+      "phase": "reopen",
+      "workers": 4,
+      "checks": 49,
+      "failures": [],
+      "exit_code": 0,
+      "source_identity": "source_files_sha256",
+      "source_and_native_unchanged_during_execution": true,
+      "original_log": "build/agent-undo/test-evidence/combined-512-4-reopen-attempt1.log",
+      "original_log_sha256": "34057277616a6ef76bad0e6b9dc1661533a213e2e380632a566267f78431f77f",
+      "original_entry_source_manifest": "build/agent-undo/test-evidence/combined-512-4-reopen-attempt1-source.json",
+      "original_entry_source_manifest_sha256": "4ecad175a014f0d53b03b76156d55cb6a03751fd82ae125aafaee44179d45e21",
+      "map_side": 512,
+      "profile_count": 16,
+      "phases": {
+        "agent": false,
+        "agent_undo_saved": false,
+        "continued_authoring": true,
+        "discovery": true,
+        "generation": false,
+        "human_after_agent": false,
+        "late_response": false,
+        "leases": false,
+        "manual": false,
+        "provider_fixture": false,
+        "reopen": true,
+        "save": false,
+        "simulation_equipment": false,
+        "stop": false
+      },
+      "elapsed_usec": 5016294,
+      "whole_native_material_sha256": "52e3a94accff0bc8498412b740f3c4381717dc5c4bec3501194e847b3ae1eaab",
+      "separate_process_reopen_complete": true,
+      "undone_agent_cells_remain_empty": true,
+      "continued_manual_agent_undo_redo": true
+    }
+  ],
+  "whole_world_comparison": {
+    "extent": [
+      512,
+      512
+    ],
+    "material_cells": 262144,
+    "encoding": "SHA-256 of row-major PackedByteArray stored material IDs for the complete World",
+    "sha256": "52e3a94accff0bc8498412b740f3c4381717dc5c4bec3501194e847b3ae1eaab",
+    "matches_author_and_fresh_reopen_at_workers_1_and_4": true,
+    "includes": "Generated source plus confirmed manual, agent, provider-protocol-fixture and stopped-prefix edits; the deliberately undone agent mark remains absent after reopening."
+  },
+  "focused_shared_native_witnesses": {
+    "workers": [
+      1,
+      4
+    ],
+    "encoding": "SHA-256 of native captured row-major PackedInt32Array.to_byte_array material IDs",
+    "all_40_capture_witnesses_identical_between_workers": true,
+    "selected_captures": {
+      "agent_stop_before": {
+        "region": [
+          50,
+          50,
+          401,
+          401
+        ],
+        "sha256": "5340736973d29d62d7a90a622fef9dc4d85c3d9813b21659d0f5f0bd1531a1b3",
+        "capture_index": 12
+      },
+      "agent_stop_confirmed_prefix": {
+        "region": [
+          50,
+          50,
+          401,
+          401
+        ],
+        "sha256": "f98ef9d71739a2c45888b8dbe5420010d6bc14a414e36fb27a1fea061d09e5c6",
+        "capture_index": 13
+      },
+      "agent_stop_after_undo": {
+        "region": [
+          50,
+          50,
+          401,
+          401
+        ],
+        "sha256": "5340736973d29d62d7a90a622fef9dc4d85c3d9813b21659d0f5f0bd1531a1b3",
+        "capture_index": 14
+      },
+      "agent_stop_after_redo": {
+        "region": [
+          50,
+          50,
+          401,
+          401
+        ],
+        "sha256": "f98ef9d71739a2c45888b8dbe5420010d6bc14a414e36fb27a1fea061d09e5c6",
+        "capture_index": 16
+      },
+      "large_draw_main_tile": {
+        "region": [
+          20,
+          20,
+          512,
+          512
+        ],
+        "sha256": "759c6b182beb91cef9d7a9856d6854cb3f52dfd82698992aa82fb2b4694dcf01",
+        "capture_index": 24
+      },
+      "large_draw_tail_tile": {
+        "region": [
+          20,
+          532,
+          512,
+          1
+        ],
+        "sha256": "780f55a1268c71fccc837223a13ada97dfa54d40d5380e7a566e5e3371870e50",
+        "capture_index": 25
+      },
+      "large_full_undo_main_tile": {
+        "region": [
+          20,
+          20,
+          512,
+          512
+        ],
+        "sha256": "30e14955ebf1352266dc2ff8067e68104607e750abb9d3b36582b8af909fcb58",
+        "capture_index": 28
+      },
+      "large_full_undo_tail_tile": {
+        "region": [
+          20,
+          532,
+          512,
+          1
+        ],
+        "sha256": "e5a00aa9991ac8a5ee3109844d84a55583bd20572ad3ffcd42792f3c36b183ad",
+        "capture_index": 29
+      },
+      "large_group_stop_main_tile": {
+        "region": [
+          20,
+          20,
+          512,
+          512
+        ],
+        "sha256": "759c6b182beb91cef9d7a9856d6854cb3f52dfd82698992aa82fb2b4694dcf01",
+        "capture_index": 32
+      },
+      "large_group_stop_tail_tile": {
+        "region": [
+          20,
+          532,
+          512,
+          1
+        ],
+        "sha256": "e5a00aa9991ac8a5ee3109844d84a55583bd20572ad3ffcd42792f3c36b183ad",
+        "capture_index": 33
+      },
+      "large_group_stop_after_ten_frames_main_tile": {
+        "region": [
+          20,
+          20,
+          512,
+          512
+        ],
+        "sha256": "759c6b182beb91cef9d7a9856d6854cb3f52dfd82698992aa82fb2b4694dcf01",
+        "capture_index": 34
+      },
+      "large_group_stop_after_ten_frames_tail_tile": {
+        "region": [
+          20,
+          532,
+          512,
+          1
+        ],
+        "sha256": "e5a00aa9991ac8a5ee3109844d84a55583bd20572ad3ffcd42792f3c36b183ad",
+        "capture_index": 35
+      },
+      "large_group_recovered_redo_main_tile": {
+        "region": [
+          20,
+          20,
+          512,
+          512
+        ],
+        "sha256": "759c6b182beb91cef9d7a9856d6854cb3f52dfd82698992aa82fb2b4694dcf01",
+        "capture_index": 38
+      },
+      "large_group_recovered_redo_tail_tile": {
+        "region": [
+          20,
+          532,
+          512,
+          1
+        ],
+        "sha256": "780f55a1268c71fccc837223a13ada97dfa54d40d5380e7a566e5e3371870e50",
+        "capture_index": 39
+      }
+    },
+    "grouped_stop_interpretation": "After Art Stop in the first remaining_group callback, the main512x512 tile remains Hard wall58 and the final512x1 tail is Empty0. Ten frames later both hashes remain identical. A subsequent Undo and grouped Redo recover the complete operation.",
+    "terminal_feedback_checks": "Cancelled planning reports cancelled/applied0/changed0; grouped boundary Stop reports its confirmed part followed by terminal cancelled/applied0/changed0; no continuation writes occur.",
+    "large_group_elapsed_scope": "Each measurement covers drawing, initial planning cancellation, whole grouped Undo/Redo, grouped-boundary Stop, delayed-write checks and Undo/Redo recovery; it is not an isolated per-operation latency."
+  },
+  "original_harness_failures": [
+    {
+      "id": "focused-1-attempt1",
+      "classification": "test_harness_defect",
+      "cause_kind": "invalid_zero_radius_setup",
+      "original_log": "build/agent-undo/test-evidence/focused-1-attempt1.log",
+      "preserved_log": "docs/audits/wb-art-paint-2026-11-12/agent-undo-local-focused-1-attempt1-original-failure.log.txt",
+      "bytes": 2423,
+      "sha256": "85cd90c574c0521c673887ad3ee43698d0d497b00331fdb36b44d48082db9e4c",
+      "exact_original_bytes_preserved": true,
+      "checks": 6,
+      "failed_checks": [
+        "fresh 512 native start admitted",
+        "all mandatory agent Undo scenarios completed"
+      ],
+      "test_sha256": "45613cbaa9c84253add9f922d2571235e53e04536dacf209fe3285edd85fd61a",
+      "controller_sha256": "ac5b1c6ac733796227f1fdcfb72c1465ae6fc34c9aee763d05487d5312c8d366",
+      "full_actual_source_identity_location": "docs/audits/wb-art-paint-2026-11-12/agent-undo-local-focused-1-attempt1-original-failure.log.txt / ART_UNDO_RESULT.source_identity",
+      "original_entry_source_manifest": "build/agent-undo/test-evidence/focused-1-attempt1-source.json",
+      "original_entry_source_manifest_sha256": "e3f85fb8b8a1eebce47a4d5dda3a05ebd13b118833abfe84a00b33f5654f0a96",
+      "cause": "The harness set persisted Setup.brush=0. Setup validates that field in the range2-24, so fresh-start admission was correctly refused before any feature operation reached native editing.",
+      "correction": "Removed the invalid Setup.brush=0 assignment; the fixture retains the valid Setup default. This was an admission failure, not an erased-footprint mismatch."
+    },
+    {
+      "id": "focused-1-attempt2",
+      "classification": "test_harness_defect",
+      "cause_kind": "radius_two_disc_expectation",
+      "original_log": "build/agent-undo/test-evidence/focused-1-attempt2.log",
+      "preserved_log": "docs/audits/wb-art-paint-2026-11-12/agent-undo-local-focused-1-attempt2-original-failure.log.txt",
+      "bytes": 18903,
+      "sha256": "5802e9032d1987e32561c5a0f1c9998007d6a76a7d5a8580c060160e0aadea53",
+      "exact_original_bytes_preserved": true,
+      "checks": 206,
+      "failed_checks": [
+        "manual erase remains visible after the agent completes",
+        "first Undo removes later agent work without overwriting the human erase"
+      ],
+      "test_sha256": "c0057ce3eafdfc68633a2c39d858a6290ef8ebf355bf896b80d5b22709223cde",
+      "controller_sha256": "ac5b1c6ac733796227f1fdcfb72c1465ae6fc34c9aee763d05487d5312c8d366",
+      "full_actual_source_identity_location": "docs/audits/wb-art-paint-2026-11-12/agent-undo-local-focused-1-attempt2-original-failure.log.txt / ART_UNDO_RESULT.source_identity",
+      "original_entry_source_manifest": "build/agent-undo/test-evidence/focused-1-attempt2-source.json",
+      "original_entry_source_manifest_sha256": "a0ddd0e85363ffabb41a2b3dde613d07f8698ab6586066781895ff7531d4b67f",
+      "cause": "After fixing setup admission, the harness expected one erased cell while the actual Workbench Radius control clamped the requested zero to2. The native result was the radius-two disc, so two interleaving comparisons failed.",
+      "correction": "Set the manual interleave Radius explicitly to2 and compare the complete exact disc footprint through Undo/Redo. This was an incorrect native-grid expectation, not a setup-admission or production editing failure."
+    }
+  ],
+  "limitations": [
+    "The four combined processes use a512-square generated map; focused large-edit cases install a1024-square World.",
+    "Provider-busy guards use controlled states. Combined model turns use a deterministic completion protocol fixture; these six runs do not establish HTTP transport or real model inference quality.",
+    "The native GDExtension matches its recorded native source inputs but was built with GCC14.2/binutils2.44 development-toolchain drift. Final pinned hosted Windows/Linux release qualification is separate.",
+    "Successful raw logs and complete capture lists remain under build/agent-undo/test-evidence; this durable record retains their hashes and compact results, plus exact copies of the two original failure logs."
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "original_source": "dc3aaac3273fc0d2e4e6e6e06b1b154188465ec2",
+  "files_at_original_source": {
+    "godot/scripts/shared_workbench.gd": "2e10cdafef447d59817972231fb928032ba8ea8fbe9dc4704fcb696a278bc1a5",
+    "godot/scripts/workbench_paint_editor_controller.gd": "7ce59ceffe6f7222d2cdaa0ccd0be1ed3c5e8d7e9a5416bb16582eda5510fdd2",
+    "godot/tests/test_workbench_pilot_ui.gd": "ec35b774e9287c322c4c2ef98710f6e209b58a87c782e9ed7c3ed64bb466d1a5",
+    "godot/tests/test_workbench_live_liquid_edit.gd": "111c0a21c90ade403b0dfae9c1e36b563e779f96d052e85e6d59fe2d100c7b1a"
+  },
+  "diagnostic": "Added prints before the three original pilot conjunction assertions only; every physical condition passed and each native acknowledgement had been overwritten by Brush/sand/radius8. The diagnostic script was temporary and removed. Product source remained dc3aaac for this run.",
+  "original_logs": [
+    "monitor-pilot-original-diagnostic.log",
+    "monitor-windows-11-131462728852-original.log",
+    "monitor-job-131462731431-original.log",
+    "monitor-job-131464469252-original.log"
+  ]
+}

@@ -97,10 +97,34 @@ static func native_packet(metadata: Dictionary, cells: PackedByteArray, edits: A
 		"edits":edits.duplicate(true)
 	}
 
+# Construction work is a separate bounded resource from JSON size or
+# number of authored stamps. Use conservative clipped disc bounds, matching
+# the compiled native prepared-world admission without duplicating physics.
+static func edit_work_error(setup: Dictionary) -> String:
+	var size: Vector2i = Setup.extent_of(setup)
+	var limit: int = mini(64*size.x*size.y,32000000)
+	var work := 0
+	for stamp: Array in setup.edits:
+		if stamp.size() == 5:
+			work += int(stamp[2])*int(stamp[3])
+		else:
+			var radius: int = int(stamp[2])
+			var left: int = maxi(0,int(stamp[0])-radius)
+			var top: int = maxi(0,int(stamp[1])-radius)
+			var right: int = mini(size.x,int(stamp[0])+radius+1)
+			var bottom: int = mini(size.y,int(stamp[1])+radius+1)
+			work += (right-left)*(bottom-top)
+		if work > limit:
+			return "Generated starting paint exceeds the bounded native replay budget."
+	return ""
+
+
 static func write_named(label: String, setup: Dictionary, packet: Dictionary) -> String:
 	var path: String = Setup._path(label)
 	if path.is_empty(): return "Invalid generated-map name."
 	var error: String = Setup.validate(setup)
+	if not error.is_empty(): return error
+	error = edit_work_error(setup)
 	if not error.is_empty(): return error
 	var meta := provenance(packet)
 	error = valid_provenance(meta,Setup.extent_of(setup))
@@ -144,6 +168,8 @@ static func read_named(label: String) -> Dictionary:
 		return {"error":"Unsupported generated-map manifest."}
 	var setup: Variant = entry.starting_setup
 	var error: String = Setup.validate(setup)
+	if not error.is_empty(): return {"error":error}
+	error = edit_work_error(setup)
 	if not error.is_empty(): return {"error":error}
 	error = valid_provenance(entry.generation,Setup.extent_of(setup))
 	if not error.is_empty(): return {"error":error}

@@ -55,16 +55,31 @@ excluded MoltenGlass H1 from this continuation; it is not a Lab delivery gate.
 Historical liveness evidence and production thermal/rest behavior remain
 unchanged. Older dated boundaries below retain their historical scope.
 
+## WB-ART-002 direct drawing — 2026-11-10
+
+**Unmerged integrated candidate, 2026-11-11:** the [PAINT + agent runbook](../operations/wb-art-paint-integrated-candidate.md) records the preserved current #544/#560 heads, generator packaging repair, stored-material readback and one native edit/receipt boundary. The full multi-material PAINT editor and agent providers, conversation/context, scanlines, multiple turns and diagnostics are implemented together. Existing Setup/generated-start formats and PAINT capacity/recovery rules apply. Keep Draft; combined Windows/Linux qualification and owner acceptance remain distinct from earlier separate-branch passes. #531 remains reference only.
+
+**2026-11-12 hardening:** the same candidate closes queued-Save, late Fill-Cancel,
+adaptive large-Fill capture, failed-replacement receipt-retirement and overwritten
+native installation acknowledgement defects.
+Installed qualification now exercises 1024² maps and same-session equipment,
+simulation and fresh-process authored-start reconstruction. The runbook and
+#564 distinguish actual resulting-source results from the earlier package;
+retained-runtime publication and owner acceptance remain separate merge gates.
+
+
 ## Workbench liquid equipment (#361) — 2026-11-09
 
-**Accepted main since #553 merged on 2026-11-12; no default changed.** The shared workbench gains an
+**Accepted through #553 at `d8588716`; no default changed.** The shared workbench gains an
 opt-in [valves, drain, pumped nozzle and the liquid-lab / reservoir-lab starts](../systems/workbench-liquid-equipment.md)
 authored in an optional Setup-v2 `equipment` block and run by a worker-owned device
 owner through ordinary booked native edits and the #406 ballistic owner. No native or
 GDExtension source changed. [Dated evidence](../audits/2026-11-09-in-tools-361-workbench-equipment.md)
 records local Windows and WSL Linux 1/4-worker runs across the inertial, pressure,
-whole-cell and Current Water families with exact native ledger closure. Linux, hosted CI, human feel acceptance, physical-actor usable, #542 generated-map
-placement and #531 agent use remain open.
+whole-cell and Current Water families with exact native ledger closure. Those historical runs remain separate from the [integrated PAINT and agent
+candidate](../operations/wb-art-paint-integrated-candidate.md), which preserves
+the accepted equipment code and qualifies the resulting source together. Human
+feel and physical-actor usable acceptance are not implied by automated passes.
 
 ## EXPLORE-001 generated playable maps — 2026-11-08
 

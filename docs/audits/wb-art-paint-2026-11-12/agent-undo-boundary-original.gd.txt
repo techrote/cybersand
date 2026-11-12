@@ -1,0 +1,32 @@
+extends SceneTree
+const Editor = preload("res://scripts/workbench_paint_editor_controller.gd")
+class Probe extends Editor:
+	var continuations := 0
+	func _start_reverse(_action: String, _continuing_history: bool = false) -> bool:
+		continuations += 1
+		return true
+class Bench extends Control:
+	var applied: Dictionary = {}
+	var message := ""
+func _initialize() -> void:
+	var bench := Bench.new()
+	bench.applied = {"edits":[[1,1,1,1,58]]}
+	var editor := Probe.new()
+	editor.bench = bench
+	var cells := PackedInt32Array([1,1,0])
+	var record := {"agent_group":7,"before_edits":[],"after_edits":bench.applied.edits.duplicate(true)}
+	editor._undo_stack = [record.duplicate(true),record]
+	editor._history_replay = {"action":"undo","group":7}
+	editor.history_action_finished.connect(func(receipt: Dictionary) -> void:
+		if receipt.remaining_group: editor.cancel())
+	var job := {"setup":bench.applied.duplicate(true),"label":"Undo agent","generated":{},"history_action":"undo","history_record":record}
+	var operation := {"job":job,"planned":{"cells":cells,"setup":{"edits":[]}}}
+	var receipt := {"status":"completed","applied":1,"changed":1,"cells":cells,"generation":1,"revision":2,"tick":0,"reason":""}
+	editor._receive_edit(operation,receipt,{"generation":1,"revision":2,"tick":0})
+	print("GROUP_CANCEL_REVIEW continuations_after_cancel=",editor.continuations)
+	var failed := editor.continuations != 0
+	for node: Node in [editor._tools,editor._status,editor._copy,editor._paste,editor._undo_button,editor._redo_button,editor._cancel_button]:
+		if node.get_parent()==null: node.free()
+	editor.free()
+	bench.free()
+	quit(1 if failed else 0)

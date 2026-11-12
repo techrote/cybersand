@@ -1,0 +1,149 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ART_CHECK blank native workbench ready true
+ART_CHECK hidden traffic does not rebuild text true
+ART_CHECK opened traffic shows retained content true
+ART_CHECK Direct JSON clears provider status without growing true
+ART_CHECK Direct JSON Draw applies a native pixel true
+ART_CHECK material picker draws Metal through native readback true
+ART_CHECK erase attempt completed true
+ART_CHECK material picker preserves source protection true
+ART_CHECK Tools toggle refuses a disabled line true
+ART_CHECK width four draws four native rows true
+ART_CHECK wide line has rounded ends true
+ART_CHECK pixel limit refuses excess points true
+ART_CHECK zero pixel limit allows the batch true
+ART_CHECK local rounded polyline draws both legs true
+ART_CHECK filled polygon and airbrush reach native readback true
+ART_CHECK concave polygon preserves its cutout true
+ART_CHECK seeded airbrush repeats a partial disc at another position true
+ART_CHECK sparse diagonal polygon admitted true
+ART_RASTER_SLICE_US 2519
+ART_CHECK sparse polygon yields before filling a native chunk true
+ART_CHECK batch admitted as queued true
+ART_CHECK native executor stays active while raster yields true
+ART_CHECK Stop cancels pending raster work true
+ART_CHECK Stop does not submit buffered raster cells true
+ART_CHECK batch admitted as queued true
+ART_CHECK sparse polygon publishes an early native receipt true
+ART_CHECK first sparse pixels reach the display image true
+ART_FIRST_PROGRESS_MS 49
+ART_CHECK sparse polygon makes visible progress before raster completes true
+ART_CHECK Stop retires sparse polygon after partial progress true
+ART_CHECK Full supplies all text turns true
+ART_CHECK Compacted discloses omitted turns true
+ART_CHECK Custom starts with Compacted behavior true
+ART_CHECK None omits context while retaining transcript true
+ART_CHECK scaled scanline reaches native canvas true
+ART_CHECK ordered erase and blank preservation true
+ART_CHECK adjacent same-material scanline spans share a native batch true
+ART_CHECK drawing begins paused true
+ART_CHECK floating panel preserves viewport layout true
+ART_CHECK batch admitted as queued true
+ART_CHECK save refuses unexecuted queued artwork true
+ART_CHECK native batch completes true
+ART_CHECK completion is authoritative true
+ART_CHECK compiled native World receipt true
+ART_CHECK native published pixels true
+ART_CHECK all 10000 rectangle cells and ordered erase exact true
+ART_CHECK line pixel 130 true
+ART_CHECK line pixel 131 true
+ART_CHECK line pixel 132 true
+ART_CHECK line pixel 133 true
+ART_CHECK line pixel 134 true
+ART_CHECK line pixel 135 true
+ART_CHECK line pixel 136 true
+ART_CHECK line pixel 137 true
+ART_CHECK line pixel 138 true
+ART_CHECK line pixel 139 true
+ART_CHECK line pixel 140 true
+ART_CHECK line pixel 141 true
+ART_CHECK line pixel 142 true
+ART_CHECK line pixel 143 true
+ART_CHECK line pixel 144 true
+ART_CHECK line pixel 145 true
+ART_CHECK line pixel 146 true
+ART_CHECK line pixel 147 true
+ART_CHECK line pixel 148 true
+ART_CHECK line pixel 149 true
+ART_CHECK line pixel 150 true
+ART_CHECK line pixel 151 true
+ART_CHECK line pixel 152 true
+ART_CHECK line pixel 153 true
+ART_CHECK line pixel 154 true
+ART_CHECK line pixel 155 true
+ART_CHECK line pixel 156 true
+ART_CHECK line pixel 157 true
+ART_CHECK line pixel 158 true
+ART_CHECK line pixel 159 true
+ART_CHECK line pixel 160 true
+ART_CHECK line pixel 161 true
+ART_CHECK line pixel 162 true
+ART_CHECK line pixel 163 true
+ART_CHECK line pixel 164 true
+ART_CHECK line pixel 165 true
+ART_CHECK line pixel 166 true
+ART_CHECK line pixel 167 true
+ART_CHECK line pixel 168 true
+ART_CHECK line pixel 169 true
+ART_CHECK line pixel 170 true
+ART_CHECK large batch counts span multiple chunks true
+ART_CHECK ordinary human Sand paint true
+ART_CHECK human Sand visible true
+ART_CHECK batch admitted as queued true
+ART_CHECK native batch completes true
+ART_CHECK completion is authoritative true
+ART_CHECK compiled native World receipt true
+ART_CHECK protected batch published true
+ART_CHECK source and rectangle protection executed true
+ART_CHECK batch admitted as queued true
+ART_CHECK Stop retires before queue true
+ART_CHECK stopped unstarted batch writes nothing true
+ART_CHECK batch admitted as queued true
+ART_CHECK one native chunk queued true
+ART_CHECK one native chunk actually executed true
+ART_CHECK Stop native acknowledgement true
+ART_CHECK Stop preserves at most executing native chunk true
+ART_CHECK no stale painting after Stop true
+ART_CHECK late old-epoch submission fenced true
+ART_CHECK save confirmed native artwork / Saved starting setup · art-stage1-regression true
+ART_CHECK load saved artwork true
+ART_CHECK saved recipe installed true
+ART_CHECK saved native artwork reproduced true
+ART_CHECK save excludes unexecuted remainder true
+ART_CHECK batch admitted as queued true
+ART_CHECK one native chunk queued true
+ART_CHECK old native chunk ready before replacement true
+ART_CHECK replace canvas with pending completion true
+ART_CHECK replacement native owner ready true
+ART_CHECK old batch retired true
+ART_CHECK new World excludes old callbacks and recipe true
+ART_CHECK batch admitted as queued true
+ART_CHECK native batch completes true
+ART_CHECK completion is authoritative true
+ART_CHECK compiled native World receipt true
+ART_CHECK disc published true
+ART_CHECK exact disc raster true
+ART_CHECK disabled material refused before native admission true
+ART_CHECK out of canvas rejected without ending future drawing true
+ART_CHECK limited work area accepted true
+ART_CHECK native batch completes true
+ART_CHECK completion is authoritative true
+ART_CHECK compiled native World receipt true
+ART_CHECK scoped cells published true
+ART_CHECK selected area checked on native owner true
+ART_CHECK batch admitted as queued true
+ART_CHECK one native chunk queued true
+ART_CHECK chunk ready for manual intervention true
+ART_CHECK human erase admitted alongside active batch true
+ART_CHECK native batch completes true
+ART_CHECK completion is authoritative true
+ART_CHECK compiled native World receipt true
+ART_CHECK human erase ordered between chunks true
+ART_CHECK save mixed human and batch edits true
+ART_CHECK reopen mixed human and batch edits true
+ART_CHECK mixed authored recipe installed true
+ART_CHECK mixed recipe reproduces native order true
+ART_STAGE1_RESULT {"base":"d4b18e7f06839b35c8f6a66195206da0f33c5fa3","checks":142,"failures":0,"last_chunk_changed":1808,"last_native_backend":"CyberNativeCellWorld","stop_prefix":4096}

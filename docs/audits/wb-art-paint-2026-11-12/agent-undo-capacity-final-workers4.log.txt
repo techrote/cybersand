@@ -1,0 +1,27 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ART_UNDO_CHECK capacity probe mounts actual Workbench true
+ART_UNDO_CHECK fresh 512 native start admitted true
+ART_UNDO_CHECK fresh World clears both histories and starts paused true
+ART_UNDO_CHECK agent batch accepted at shared boundary true
+ART_UNDO_CHECK agent batch completes with authoritative native feedback true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK real agent edit establishes native material witness true
+ART_UNDO_CHECK valid named start saved before synthetic oversized history true
+ART_UNDO_CHECK synthetic oversized inverse reaches real bounded planner true
+ART_UNDO_CHECK oversized inverse explicitly refuses before native writes true
+ART_UNDO_CHECK refused inverse preserves native generation revision and tick true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK all33024 stored materials match before and after refusal true
+ART_UNDO_CHECK refusal preserves original history and leaves shared editor responsive true
+ART_UNDO_CHECK saving oversized current authored recipe clearly refuses true
+ART_UNDO_CHECK failed oversized Save preserves exact prior named file and valid reopened recipe true
+CAPACITY_REFUSAL_FEEDBACK [{"action":"undo","applied":0,"changed":0,"label":"Undo Agent drawing","origin":"agent","reason":"Starting paint capacity exhausted.","recorded":true,"remaining_group":false,"status":"refused"}]
+CAPACITY_REFUSAL_SAVED_SHA256 92358605f4b476815489833eda0987e9a788c57e8819a00a6d5d258d24554e99
+ART_UNDO_CHECK probe removes only its own named fixture true
+ART_UNDO_CHECK production sources and native bytes remain unchanged true
+CAPACITY_REFUSAL_REVIEW {"checks":20,"failures":[],"fixture":"Synthetic over-budget history metadata; actual native drawing, inverse planner, stored capture and named Save.","native_material_witnesses":[{"region":[20,20,256,129],"sha256":"2980ae1090060ca790aa0a30ac3da1da16146cc9dab77ea133a9e0a8d2290f80"},{"region":[20,20,256,129],"sha256":"2980ae1090060ca790aa0a30ac3da1da16146cc9dab77ea133a9e0a8d2290f80"}],"source_identity":{"art_batch_executor.gd":"2c7c7c1605a5cf9f630e6fabad6cb6d34804e0c0a19c9e8e96a7e9535489fc98","art_batch_panel.gd":"958516aeb5ef3228735128aba93d0a44247ff25e021891edf5509e7de555fbd1","display":"headless","godot":"4.7-stable (official)","native_sha256":"16ffc0ce8190c2e8ca2e31fc59f10c55148adc6e7f16727dc96c094d8a96696a","os":"Linux","shared_workbench.gd":"8d80dc46056c9dbbd7f16d06c6acace01ace8fa725b066b399f2ec02f07f6bdc","simulation_worker.gd":"bac92f82ef3d3dc4fad54c785c148eba3ea1c0ec1e1b9805a65ffea261cc6016","test_sha256":"bc9d9f076c0c8e936682293116f8498e2ea0d47bfb8ef25f032643eab80d49f5","workbench_paint_editor_controller.gd":"6022a4379baafae9ecef8c8e309c13271a27a2f271038fcb6350a9db170179e8","workbench_paint_editor_executor.gd":"1f118427e505f0a4b7f63e7e10089507f89445c08f9ead5a7f41768935160e7d","workbench_paint_editor_history.gd":"f3b19f906668feec3d49aea61448b1d58a90a6ccf8b9bf5b814d13ed4881786e","workbench_setup.gd":"6b3341e4733f39622c23a964cb586c65eb358734e1a164e354d327057abe4a86"},"workers":4}

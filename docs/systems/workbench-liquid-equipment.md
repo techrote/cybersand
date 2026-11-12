@@ -2,7 +2,7 @@
 title: Workbench liquid equipment — valves, drain, nozzle and pump
 status: Current
 document-kind: contract
-scope: IN-TOOLS #361 shared-workbench liquid equipment (accepted main); authored geometry, worker-owned device owner, native quantity accounting, controls, built-in liquid-lab and reservoir-lab starts, lifecycle and limits
+scope: IN-TOOLS #361 shared-workbench liquid equipment (accepted through #553); authored geometry, worker-owned device owner, native quantity accounting, controls, built-in liquid-lab and reservoir-lab starts, lifecycle and limits
 canonical-for: [workbench-liquid-equipment, liquid-lab-apparatus, reservoir-lab-apparatus]
 last-reviewed: 2026-11-12
 related-documents: [../architecture/in-tools-gameplay-admission.md, ../architecture/inertial-cellular-v1.md, ../architecture/ballistic-water-v1.md, actor-usables.md, ../audits/2026-11-09-in-tools-361-workbench-equipment.md]
@@ -12,12 +12,15 @@ related-documents: [../architecture/in-tools-gameplay-admission.md, ../architect
 
 ## Status and boundary
 
-**Current on accepted main after [PR #553](https://github.com/techrote/cybersand/pull/553)
-merged on 2026-11-12 at `d8588716becb0dc42019faf23f721378d8adc84a`.** The equipment is opt-in: a starting setup
+**Accepted through #553 at `d8588716` and preserved in the integrated PAINT and
+agent candidate.** The equipment is opt-in: a starting setup
 without an `equipment` block, every Current default, the U10 `liquid_drain`
 usable, the Water family selection and all native laws are unchanged. No
-native C++ or GDExtension source changed, so the committed Windows/Linux
-runtimes remain source-matched. Dated evidence lives in the
+native C++ or GDExtension source changed for #553 itself. The separate
+[integrated candidate](../operations/wb-art-paint-integrated-candidate.md) adds
+stored-material readback and retains PAINT capacity changes, so it requires its
+new source-built runtime; the old committed libraries do not qualify that
+integrated source. Dated equipment evidence lives in the
 [2026-11-09 audit](../audits/2026-11-09-in-tools-361-workbench-equipment.md).
 
 The equipment adds **no solver, law, velocity edit or second equipment
@@ -89,6 +92,11 @@ on it also shows the loop total. Overlay markers: valves orange (shut) / green
 (open), the selected valve thicker, drain blue, nozzle point and aim line.
 Typing `liquid-lab` or `reservoir-lab` in the setup name and **Load start**
 also opens the built-in start while no user file of that name exists.
+
+In the integrated PAINT/agent candidate, paused **Paint** mode keeps PAINT's
+existing shortcut priority: **G** selects Fill, **V** selects Paste, and
+**[** / **]** change brush radius. Select the main **Select body** tool to use
+the equipment shortcuts. The equipment buttons remain available in Paint mode.
 
 ## Built-in liquid-lab apparatus
 

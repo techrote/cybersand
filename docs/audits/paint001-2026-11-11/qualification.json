@@ -1,0 +1,283 @@
+{
+  "format": "cybersand.paint001.qualification.v1",
+  "date": "2026-11-11",
+  "pr": "https://github.com/techrote/cybersand/pull/544",
+  "status": "Draft; Windows and owner acceptance pending",
+  "base_sha": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3",
+  "original_paint_sha": "e4bfd9899286c94c6c5de3a15eae0005ac3a8916",
+  "implementation_commit": "eca5828eacfb13eb8bd876c77a1970fdd87d6631",
+  "implementation_tree": "1ea37a0aa31d980f14f8800f092a9294ab6b19a7",
+  "source_binding": "Tests ran against recorded working-tree hashes before publication. Qualified ordinary graphical and existing integration runs kept all recorded source unchanged. Earlier native/generated records retain their own hashes. The final retained-World recovery guard is additionally exercised by the qualified ordinary run. The published implementation contains the exact final .gd hashes below.",
+  "final_gd_sha256": {
+    "godot/scripts/shared_workbench.gd": "27d34c3bbf384a52f13707f05b27118f85a2071b9dca6a662c470e7c7a76bb9c",
+    "godot/scripts/simulation_worker.gd": "68962945ca4775526399beb4685f0ccf316218f06dfd35b17834ec0d4d42d69f",
+    "godot/scripts/workbench_paint_editor_controller.gd": "6fc4936a5cf9aeca713fa9851504c8885c830f97da1583d490822736a23cea74",
+    "godot/scripts/workbench_paint_editor_executor.gd": "0c4cd32a49433c256a309a663859eb8df9a4ebb5de225ad6eac7e6cc88b5362c",
+    "godot/scripts/workbench_paint_editor_history.gd": "e5687cfe7ed7dd1b397f39f81a6cde35ab372ae9ae952e94449e281bdc458402",
+    "godot/scripts/workbench_paint_editor_overlay.gd": "f3f674f264bac2e2995750c2ee66043f0988ed932146eb00b3c7efcd5cfce1f0",
+    "godot/scripts/workbench_paint_editor_shapes.gd": "4ae5a699ad64a04f3c81c816b592f5baad9565679679ea07ca7acbefca278aab",
+    "godot/scripts/workbench_setup.gd": "d071c87b3412683eb6b9cfdfbbdd517691a346691ac132676a0109e62f7f0e13",
+    "godot/tests/test_paint_editor_executor.gd": "eeee1d2d719c5935de890f15db8f5b9fc545f97f0597b8d0c84b58f7490d97e3",
+    "godot/tests/test_paint_editor_generated_workbench.gd": "03c2dd6e75d5066c180ccc14e81f5b96a8b6795069688df313ff286fe259ee39",
+    "godot/tests/test_paint_editor_history.gd": "3dde0b5fcf71ece7a3242f3ad5d764d11b14cace4a679f2afcef9ef60a57934f",
+    "godot/tests/test_paint_editor_native.gd": "96f33778a135d957e193b34a4761d3bc3c65983bf76a50e765bfbaafaef12d76",
+    "godot/tests/test_paint_editor_recovery.gd": "7b70b5563ed9fcc1036215a4a3e6b5c24a5a4fd84208a691ad23ea3a67b69183",
+    "godot/tests/test_paint_editor_shapes.gd": "432aae73d734247122c984320a6826c3c1737501ac1833c29f873c7e848f09a8",
+    "godot/tests/test_paint_editor_workbench.gd": "6ab36abd3dcbced9bce5a6c668e58eddcab22fae39984b685fcf50b362598f64",
+    "godot/tests/test_workbench_canvas.gd": "1e78cf277e68428b17cfa7bc67db63098dda87b69f15d96dbc7efcc88be7efbd"
+  },
+  "runtime": {
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "native_linux_sha256": "46a9c61d3540cfecbe38f9301bd08a7b69efa4865115a7ecb5bea029a5452361",
+    "native_fingerprinted_inputs_matched": 87,
+    "native_manifest_source_commit": "4713545c2e9eff7c624069478eb18323b5df4b62",
+    "rapier_version": "0.35.2",
+    "rapier_linux_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "graphics": "Xorg dummy display; Mesa25.0.7 llvmpipe OpenGL4.5",
+    "fresh_cpp_build": false,
+    "windows_executed": false
+  },
+  "tests": [
+    {
+      "name": "canonical original",
+      "log": "logs/paint-shapes-original.log.txt",
+      "checks": 119,
+      "failures": 0
+    },
+    {
+      "name": "expanded geometry",
+      "log": "logs/paint-shapes-final.log.txt",
+      "checks": 157,
+      "failures": 0
+    },
+    {
+      "name": "native workers1",
+      "log": "logs/executor-native-source-bound-workers1.log.txt",
+      "checks": 109,
+      "failures": 0
+    },
+    {
+      "name": "native workers4",
+      "log": "logs/executor-native-source-bound-workers4.log.txt",
+      "checks": 109,
+      "failures": 0
+    },
+    {
+      "name": "direct executor",
+      "log": "logs/executor-final.log.txt",
+      "checks": 21,
+      "failures": 0
+    },
+    {
+      "name": "interrupted recovery",
+      "log": "logs/paint-recovery-qualified.log.txt",
+      "checks": 5,
+      "failures": 0
+    },
+    {
+      "name": "ordinary graphical author",
+      "log": "logs/paint-workbench-author-qualified.log.txt",
+      "checks": 59,
+      "failures": 0
+    },
+    {
+      "name": "ordinary graphical fresh reopen",
+      "log": "logs/paint-workbench-reopen-qualified.log.txt",
+      "checks": 12,
+      "failures": 0
+    },
+    {
+      "name": "generated graphical author",
+      "log": "logs/paint-generated-author-graphical.log.txt",
+      "checks": 40,
+      "failures": 0
+    },
+    {
+      "name": "generated graphical fresh reopen",
+      "log": "logs/paint-generated-reopen-graphical.log.txt",
+      "checks": 20,
+      "failures": 0
+    },
+    {
+      "name": "history author",
+      "log": "logs/paint-history-first.log.txt",
+      "checks": 981,
+      "failures": 0
+    },
+    {
+      "name": "history fresh reopen",
+      "log": "logs/paint-history-reopen.log.txt",
+      "checks": 961,
+      "failures": 0
+    },
+    {
+      "name": "existing input",
+      "log": "logs/integration-workbench_input-final.log.txt",
+      "checks": 24,
+      "failures": 0
+    },
+    {
+      "name": "existing worldgen",
+      "log": "logs/integration-worldgen_workbench-final.log.txt",
+      "checks": 139,
+      "failures": 0
+    },
+    {
+      "name": "existing canvas author",
+      "log": "logs/integration-workbench_canvas-final.log.txt",
+      "checks": 164,
+      "failures": 0
+    },
+    {
+      "name": "existing canvas fresh reopen",
+      "log": "logs/integration-workbench_canvas-reopen-final.log.txt",
+      "checks": 23,
+      "failures": 0
+    }
+  ],
+  "native_equivalence": {
+    "scope": "Paused-edit material captures, not physics determinism",
+    "worker_counts": [
+      1,
+      4
+    ],
+    "capture_witnesses": 8,
+    "witness_sha256": "5a11f2271d53ed3634936619fa67d019d2413905708f0b28ccb61b7596ad8154"
+  },
+  "persistence": {
+    "extent": [
+      512,
+      512
+    ],
+    "native_generation_receipts": 64,
+    "authored_stamps": 20,
+    "source_sha256": "0acd772d421b04131dac13917883ca15e6a1fdce55cb028b93b5fbf49b7f17b4",
+    "prepared_material_sha256": "1242e14d217c86835673aa13e9158fcb4605faef1c6fcb1e53b7be28268d868b",
+    "recipe_sha256": "b492e6a45f5e2396813c3a48cdc250064cf02ea6a722dddde326126d60cb3fdb",
+    "scope": "Authored starting materials, actors, selected instance, solver settings and generator provenance; not evolved simulation."
+  },
+  "performance": {
+    "native_65536_cells_seconds_range": [
+      0.521,
+      0.53
+    ],
+    "world_extents": [
+      512,
+      1024,
+      2048
+    ],
+    "native_262144_cells_seconds_range": [
+      2.127,
+      2.135
+    ],
+    "maximum_worker_slice_ms": 18.262,
+    "qualified_graphical_max_frame_gap_ms": {
+      "author": 133.356,
+      "reopen": 138.486
+    },
+    "bounded_fill_planning_ms": 814.87,
+    "limitation": "Software-rendered whole-session measurements, not Windows/GPU or isolated interaction latency."
+  },
+  "gates": {
+    "documentation": "passed",
+    "repository_pointer_aware": "passed",
+    "repository_require_materialized": "failed:16 cross-platform runtime LFS pointers; two Linux runtimes materialized; no other errors",
+    "material_compatibility": "passed",
+    "material_compiler": "passed",
+    "material_unit_tests": 118,
+    "compiled_metadata_parity": "passed:131 IDs/132 slots; not World physics",
+    "historical_m11": "passed:18 records/28 source hashes",
+    "retrieval_frozen": {
+      "hits": 31,
+      "queries": 32,
+      "miss": [
+        "Q19"
+      ]
+    },
+    "retrieval_challenges": {
+      "hits": 163,
+      "queries": 164,
+      "miss": [
+        "LCB03"
+      ]
+    },
+    "hosted_native_gdextension": "Draft-skipped; not passes"
+  },
+  "original_failures": {
+    "executor-import": "Installed4.6 used initially; corrected to pinned4.7",
+    "paint-mounted-first": "Toolbar parenting omitted; mounted integration fixed",
+    "paint-generated-author-original": "New test obsolete choose_paste helper; corrected actual select_tool API",
+    "paint-generated-author-attempt2": "New test invalid packed-array conversion; corrected explicit Array conversion",
+    "paint-generated-reopen-original": "JSON float versus validated integer metadata comparison; common JSON value domain now used",
+    "integration-workbench_canvas-original": "Old test bypassed expanded picker signal; ID14 actual selection preserves Dust expectation",
+    "paint-workbench-author-qualified-display93-refused": "Xorg display93 lock; no assertions executed. Qualified runs used display193",
+    "original_docs": "https://github.com/techrote/cybersand/actions/runs/42501952632 failed unsupported system kind; design correction and unchanged #550 corpus delta integrated"
+  },
+  "remaining": [
+    "Windows graphical and owner acceptance",
+    "Reconcile generic worker/mount seam with concurrent #560 while retaining agent policies",
+    "Disk-backed stamp library and richer fragmented-start encoding; current preflight refuses explicitly"
+  ],
+  "artifact_sha256": {
+    "logs/docs-evidence-final.log.txt": "93e79b75cc61ea2d714cadcc6ea7ac6e29fc31d0cc5b58401e795011fab7afb8",
+    "logs/docs-final.log.txt": "6b3278c164cff693f29831b93f7ac01427bee70315fc2e422fd4181ed2862f72",
+    "logs/executor-final.log.txt": "4ab51060968e060e1d12c8d7ea9a4b18f6c94e03fe1cea1e8ace6e453c6ec239",
+    "logs/executor-import.log.txt": "ec72cd28afb2fad3d8405288bfe06142f4a30b47103bb841916e66d0502da4ea",
+    "logs/executor-native-source-bound-workers1.log.txt": "4535083b3b810f10381d6c36975fbba95e61631fe12f73406b74964ff975df09",
+    "logs/executor-native-source-bound-workers4.log.txt": "bf9ba3142e3e5b186b3533ef96b2bbdb350b2ac30b99e9c38c2f3d455dcdcf66",
+    "logs/integration-workbench_canvas-final.log.txt": "833796cc14a7118739de429a41fdf9a0c04f47f5f1382afe784ebc625959cc65",
+    "logs/integration-workbench_canvas-original.log.txt": "3f3d217b7651de9ebd7571f17272e20ee1814726e5c006474e1d7171e591bbc5",
+    "logs/integration-workbench_canvas-reopen-final.log.txt": "a1221806542218ae260afb093f5305ebf2aa5c860485e77bf733f4f0c44a35ad",
+    "logs/integration-workbench_input-final.log.txt": "2a9ff45b11070e43faaf1b9ab7f140a7128b84a1103a51d9779f5497d169b241",
+    "logs/integration-worldgen_workbench-final.log.txt": "c7dd0c714c241ee093cd9c281531e5f3a36049833ec9fb3d9977c00bfc0b9bc4",
+    "logs/material-compiler.log.txt": "bc00bbaa8af2e9783c6242fdca6a311bfd422d439248b0952bf8c94199f76acc",
+    "logs/material-unit.log.txt": "ecc216f3d77d958b94d72c696cf83c2b2d50156ec8ce2dc3163650c51b5e33fc",
+    "logs/paint-generated-author-attempt2.log.txt": "a7d04887dfaaf63d1a57af9a1efec999d7553ae83a31c34db59a01711b1c6a12",
+    "logs/paint-generated-author-graphical.log.txt": "09b8b992485a6b96c33a6d1753af71311c5eb110e7d672a00bc10be914b27e44",
+    "logs/paint-generated-author-original.log.txt": "5ffd0582156c86a6d1d8ba4c2bfd3adf1c0aae11819a01927c7a535bb1454e81",
+    "logs/paint-generated-reopen-graphical.log.txt": "27c4df8b36308995528e0ee39eb5671fc271cce775faa7d848a78a57183ece98",
+    "logs/paint-generated-reopen-original.log.txt": "802c76c2b20fabe54716fbcf9acb8f81253d1ecdc08c38f0757ad7788090f0af",
+    "logs/paint-history-first.log.txt": "22d91383508b24496e706bbd643d4035716f7e87b0754b7980e31f0e5e054508",
+    "logs/paint-history-reopen.log.txt": "a5669657be90f75af5c84dc9491b91e89f51b4d75e1abf9721a0083e3e3b61bb",
+    "logs/paint-mounted-first.log.txt": "80cdd6599391b4f653699b2b5c50c59be255c42d2a41c4d33c86c7d8e53ab343",
+    "logs/paint-recovery-qualified.log.txt": "b0b0bfcb9659b975ecbbce73c1013f5c0652cc091aa2326cd4276e84a273b660",
+    "logs/paint-shapes-final.log.txt": "594a9ae08545712424b9e7fc775aba7465c328c4ee35a1dc6bec288643611bba",
+    "logs/paint-shapes-original.log.txt": "cf4ee80b23397ee61aea782d867f2b4426d0925bda45b3fe5b2f77b0a079a51e",
+    "logs/paint-workbench-author-qualified-display93-refused.log.txt": "92b2dd725efcc88d3e6f58abc5e8ab451b9199b1420355307069227618245f19",
+    "logs/paint-workbench-author-qualified.log.txt": "5e1b17ee91e87670c277742b6ab47bb167c7998f5dbcf94e4ce3cccd10fecd42",
+    "logs/paint-workbench-reopen-qualified.log.txt": "ae91e114a854605b03d1b74103282bf2f46b3efd86ecda1f3299b7fca2abc3ad",
+    "logs/repository-pointer-aware-final.log.txt": "7a7408b4f39ef6b5fad37d05aada1c3826e1f5b838aa679649613bb70f53d069",
+    "m11-final.json": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+    "repository-final.json": "293244f8712fab0a3dea19fc9367a011b9cbd2801c4f1b8eb49e9a35c906c3a8",
+    "repository-pointer-aware-final.json": "7a7408b4f39ef6b5fad37d05aada1c3826e1f5b838aa679649613bb70f53d069",
+    "retrieval-summary.json": "02247609ae8a2aecee6e67c658b7658d062bd4a8b5faf57d54e7c9efb1d06565",
+    "screenshots/paint001-generated-reopened.png": "bdd7c642bc449cadf24b85e69295c6cc73737ef4e979bd32e556a35389f7c512",
+    "screenshots/paint001-mixed-stamp-preview.png": "47eb66d3a66d11ff5426962a3478b0cbf88cc40e932f2a1074c90c6872ac24d4",
+    "screenshots/paint001-mounted-editor.png": "0659d2226c060e3af2e7530cd06e764daa378995f54ed25ec29796507e13fbd4",
+    "source/gate-source-identities.json": "65e6ec0e01fb8f700b125354bf1cfa1518523e829c2bceaa3bec8efda34922c4",
+    "source/graphical-generated-source.json": "c9fbfa343b1ce0cea219447d297ee6f2a6ea6733b33424ee393f442d65b77d29",
+    "source/integration-final-source-after.json": "bece09fdf79b0d25085d751b4d134dc1e088d8abd6c49eb3fa9244a535646fcd",
+    "source/integration-final-source-before.json": "d800e5088fa1b744eb89ecc1af4a43a3f7d9a8d8937a354b8f75eb07d77a43cd",
+    "source/qualified-source-after.json": "48f60fd344ac743b6630e3274caa55fb524f9c585e720e3f07e0edb84c235f42",
+    "source/qualified-source-before.json": "a91f0c185ddea5fd2108d35164360aefa205a5fb34f36428564a5e18b59f98ac"
+  },
+  "hosted_implementation_commit": {
+    "sha": "eca5828eacfb13eb8bd876c77a1970fdd87d6631",
+    "documentation": {
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/42935192074"
+    },
+    "source_scope_advisory": {
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/42935192046"
+    },
+    "gdextension": {
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/42935192054"
+    },
+    "native_cpp": {
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/42935192017"
+    }
+  }
+}

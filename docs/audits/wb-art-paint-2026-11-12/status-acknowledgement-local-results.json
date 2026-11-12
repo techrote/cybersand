@@ -1,0 +1,36 @@
+{
+  "source_head": "dc3aaac3273fc0d2e4e6e6e06b1b154188465ec2",
+  "local_delta": "shared_workbench.installed restores final actor/native receipt status after PAINT refresh",
+  "files": {
+    "godot/scripts/shared_workbench.gd": "c953ab3a6d52875ed9eed6cd0b96e6b83b4e1d1a9111522edb1f5b4622149255",
+    "godot/scripts/workbench_paint_editor_controller.gd": "7ce59ceffe6f7222d2cdaa0ccd0be1ed3c5e8d7e9a5416bb16582eda5510fdd2",
+    "godot/scripts/art_batch_executor.gd": "a967028ba0080625d8d246100be052fd0dabed8e34c04476b968cf3994ccd257",
+    "godot/tests/test_workbench_pilot_ui.gd": "ec35b774e9287c322c4c2ef98710f6e209b58a87c782e9ed7c3ed64bb466d1a5",
+    "godot/tests/test_workbench_live_liquid_edit.gd": "111c0a21c90ade403b0dfae9c1e36b563e779f96d052e85e6d59fe2d100c7b1a",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "16ffc0ce8190c2e8ca2e31fc59f10c55148adc6e7f16727dc96c094d8a96696a",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+  },
+  "results": [
+    {
+      "test": "test_workbench_pilot_ui",
+      "exit_code": 0,
+      "elapsed_seconds": 13.654986316999839,
+      "log": "/workspace/scratch/e69494fb76fb/cybersand/build/final-reunification/hosted-full-gates/monitor-test_workbench_pilot_ui-ack-ordering-final.log",
+      "failed": false,
+      "summary": [
+        "WORKBENCH_PILOT_UI {\"assertions\":179,\"failures\":[]}"
+      ]
+    },
+    {
+      "test": "test_workbench_live_liquid_edit",
+      "exit_code": 0,
+      "elapsed_seconds": 6.1303442299999915,
+      "log": "/workspace/scratch/e69494fb76fb/cybersand/build/final-reunification/hosted-full-gates/monitor-test_workbench_live_liquid_edit-ack-ordering-final.log",
+      "failed": false,
+      "summary": [
+        "WORKBENCH_LIVE_LIQUID failures=0"
+      ]
+    }
+  ],
+  "source_unchanged_after": true
+}

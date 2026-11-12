@@ -29,13 +29,26 @@ func until(predicate: Callable, why: String) -> bool:
 	return require(false,why)
 
 func click_at(viewport: Viewport, position: Vector2, button: MouseButton = MOUSE_BUTTON_LEFT) -> void:
+	# Feed the actual pointer position as well as GUI events. The full native
+	# material menu can cover its trigger; a stale global mouse position would
+	# make the synthetic release select a menu item instead of opening it.
+	var motion := InputEventMouseMotion.new()
+	motion.position = position
+	motion.global_position = position
+	motion.window_id = viewport.get_window().get_window_id()
+	Input.parse_input_event(motion)
+	Input.flush_buffered_events()
+	await process_frame
 	for down: bool in [true,false]:
 		var event := InputEventMouseButton.new()
 		event.position = position
 		event.global_position = position
+		event.window_id = viewport.get_window().get_window_id()
 		event.button_index = button
 		event.pressed = down
-		viewport.push_input(event,true)
+		event.button_mask = MOUSE_BUTTON_MASK_LEFT if down else 0
+		Input.parse_input_event(event)
+		Input.flush_buffered_events()
 		await process_frame
 
 func click(button: Button) -> void:
@@ -60,15 +73,45 @@ func pick(picker: OptionButton, index: int) -> bool:
 	await process_frame
 	return ok
 
+func capture(region: Rect2i) -> PackedInt32Array:
+	var worker: RefCounted = host.simulation_worker
+	var state: Dictionary = worker.paint_state()
+	var admission: Dictionary = worker.paint_queue({"kind":"capture","region":region,
+		"expected_generation":int(state.generation),"expected_revision":int(state.revision),"expected_tick":int(state.tick)})
+	if not require(admission.status=="queued","native brush sample admitted"): return PackedInt32Array()
+	if not await until(func()->bool: return worker.paint_state().receipt_ready,"native brush sample receipt"): return PackedInt32Array()
+	var result: Dictionary = worker.paint_take_result()
+	if not require(result.status=="completed","native brush sample completed"): return PackedInt32Array()
+	return result.get("materials",PackedInt32Array())
+
 func paint(pos: Vector2i, material: int) -> bool:
-	if not await pick(panel._material,panel.Setup.MATERIALS.find(material)): return false
+	if not await pick(panel._material,panel._material.get_item_index(material)): return false
+	if not require(panel.paint_editor.material_id==material,"native material picker selection"): return false
 	panel._set_view(Vector2(pos)-Vector2(host.current_view_size)*0.5,host.current_view_size)
 	await process_frame
 	var rect: Rect2 = host.view_content_rect()
 	var local: Vector2 = rect.position+(Vector2(pos)+Vector2(.5,.5)-host.camera_origin.floor())*rect.size/Vector2(host.current_view_size)
-	var count: int = panel.applied.edits.size()
+	var radius: int = panel.paint_editor.radius()
+	var region := Rect2i(pos-Vector2i(radius,radius),Vector2i(2*radius+1,2*radius+1))
+	var expected := await capture(region)
+	if not require(expected.size()==region.size.x*region.size.y,"complete pre-brush native sample"): return false
+	var before_edits: Array = panel.applied.edits.duplicate(true)
+	var count: int = panel.paint_editor.completed_actions
 	await click_at(host.world_view.get_viewport(),host.world_view.get_global_transform()*local)
-	return require(panel.applied.edits.size()==count+1 and panel.applied.edits.back()==[pos.x,pos.y,int(panel.applied.brush),material],"real canvas brush at "+str(pos))
+	if not await until(func()->bool: return not panel.paint_editor.busy() and not host.simulation_worker.paint_state().busy,
+		"real canvas brush acknowledged"): return false
+	var completed: Dictionary = panel.paint_editor.last_receipt
+	if not require(panel.paint_editor.completed_actions==count+1 and completed.get("status")=="completed"
+		and panel.applied.edits!=before_edits and not panel.paint_editor.recovery_required(),
+		"real canvas brush recorded at "+str(pos)): return false
+	var cells := 0
+	for y: int in region.size.y:
+		for x: int in region.size.x:
+			if (x-radius)*(x-radius)+(y-radius)*(y-radius)<=radius*radius:
+				expected[y*region.size.x+x] = material
+				cells += 1
+	return require(int(completed.get("applied",0))==cells and await capture(region)==expected,
+		"exact stored native brush disc at "+str(pos))
 
 func active_water() -> String:
 	for entry: Dictionary in host.tower_context.get("liquid_solver_policy",{}).get("assignments",[]):

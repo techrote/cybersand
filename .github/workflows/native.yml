@@ -2,7 +2,8 @@ name: Native C++ validation
 
 on:
   push:
-    branches: [main]
+    # Owner-authorized complete qualification while the integration stays Draft.
+    branches: [main, codex/wb-art-paint-integrated-20261111]
     paths-ignore:
       - '.github/workflows/**'
       - 'docs/**'

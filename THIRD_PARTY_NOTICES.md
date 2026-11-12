@@ -112,3 +112,20 @@ Copyright (c) 2017-present Godot Engine contributors.
 
 The complete license is retained in
 `godot/addons/cybersand_native/LICENSE-godot-cpp.md`.
+
+## Microsoft Visual C++ runtime in Windows evaluation packages
+
+Standalone Windows x64 evaluation packages include unmodified `vcruntime140.dll`
+from the installed Visual Studio 2022 release redistributable directory. Rapier
+requires this DLL. It is placed beside Godot for application-local loading;
+Windows 10/11 provides the Universal C Runtime system components.
+
+The package retains `Microsoft-Visual-C-Runtime-LICENSE.docx`,
+`Microsoft-Visual-Studio-2022-LICENSE.docx` and `vc-runtime-provenance.json`.
+The provenance records the exact redistribution source, file version and hash,
+Microsoft Authenticode signer, and hosted build image. The Microsoft component
+remains subject to its included licence terms; CyberSand does not relicense it.
+The Visual Studio redistribution list and deployment guidance are available at:
+
+- <https://learn.microsoft.com/visualstudio/releases/2022/redistribution>
+- <https://learn.microsoft.com/cpp/windows/redistributing-visual-cpp-files>

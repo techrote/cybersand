@@ -1,0 +1,80 @@
+extends "res://tests/test_art_undo.gd"
+
+# Independent scratch probe. The actual native World, agent drawing, Undo
+# planner, completion callback and Save path are real. Only the oversized
+# authored recipe/history metadata is synthetic, injected to reach a bounded
+# refusal without spending minutes producing an intentionally unsavable map.
+func run() -> void:
+	source_identity = identity()
+	set_meta("cybersand_feature","shared_workbench")
+	host = load("res://main.tscn").instantiate()
+	host.set_script(FocusHost)
+	root.add_child(host)
+	bench = host.shared_workbench
+	worker = host.simulation_worker
+	if bench != null:
+		editor = bench.paint_editor
+		panel = bench.art_batches
+		art = panel.executor
+	if check(bench != null and editor != null,"capacity probe mounts actual Workbench") \
+			and await until(ready,"capacity probe native World ready",180000):
+		await capacity_refusal()
+	host.queue_free()
+	await process_frame
+	await process_frame
+	check(identity()==source_identity,"production sources and native bytes remain unchanged")
+	print("CAPACITY_REFUSAL_REVIEW ",JSON.stringify({"checks":checks,"failures":failures,
+		"workers":workers,"native_material_witnesses":witnesses,"source_identity":source_identity,
+		"fixture":"Synthetic over-budget history metadata; actual native drawing, inverse planner, stored capture and named Save."}))
+	quit(1 if not failures.is_empty() else 0)
+
+func capacity_refusal() -> void:
+	if not await fresh(512): return
+	var region := Rect2i(20,20,256,129)
+	if not await draw([{"shape":"pixels","points":[[20,20]],"material":58}],region): return
+	var expected := await capture(region)
+	if not check(expected.size()==region.get_area() and expected[0]==58,
+			"real agent edit establishes native material witness"): return
+	var valid_setup: Dictionary = bench.applied.duplicate(true)
+	var label := "undo-capacity-review-"+str(OS.get_process_id())
+	bench._name.text = label
+	if not check(bench.save_setup(),"valid named start saved before synthetic oversized history"): return
+	var save_path: String = Setup._path(label)
+	var saved_hash := FileAccess.get_sha256(save_path)
+	var before_edits: Array = []
+	var after_edits: Array = []
+	# Every stamp is a separate valid cell in the captured rectangle. They
+	# replay the existing exact native state; the count alone exceeds capacity.
+	for i: int in range(Setup.MAX_STAMPS+1):
+		var x: int = 20+i%256
+		var y: int = 20+i/256
+		before_edits.append([x,y,1,1,0])
+		after_edits.append([x,y,1,1,58 if i==0 else 0])
+	bench.applied.edits = after_edits.duplicate(true)
+	var record: Dictionary = editor._undo_stack.back()
+	record.before_edits = before_edits
+	record.after_edits = after_edits
+	var native_before: Dictionary = editor._source(worker.paint_state())
+	var events: Array[Dictionary] = []
+	var collect := func(receipt: Dictionary) -> void: events.append(receipt.duplicate(true))
+	editor.history_action_finished.connect(collect)
+	check(editor.undo(),"synthetic oversized inverse reaches real bounded planner")
+	var stopped := await until(settled,"capacity refusal produces terminal feedback")
+	editor.history_action_finished.disconnect(collect)
+	check(stopped and events.size()==1 and events[0].status=="refused" \
+		and events[0].applied==0 and events[0].changed==0 and not events[0].remaining_group \
+		and str(events[0].reason).contains("capacity"),"oversized inverse explicitly refuses before native writes")
+	check(editor._source(worker.paint_state())==native_before,
+		"refused inverse preserves native generation revision and tick")
+	check(await capture(region)==expected,"all33024 stored materials match before and after refusal")
+	check(editor._undo_stack.size()==1 and editor._redo_stack.is_empty() and not editor.busy(),
+		"refusal preserves original history and leaves shared editor responsive")
+	check(not bench.save_setup() and str(bench.message).contains("capacity"),
+		"saving oversized current authored recipe clearly refuses")
+	check(FileAccess.get_sha256(save_path)==saved_hash and Setup.read_named(label).get("setup",{})==valid_setup,
+		"failed oversized Save preserves exact prior named file and valid reopened recipe")
+	print("CAPACITY_REFUSAL_FEEDBACK ",JSON.stringify(events))
+	print("CAPACITY_REFUSAL_SAVED_SHA256 ",saved_hash)
+	bench.applied = valid_setup
+	editor.invalidate_history("Capacity probe complete")
+	check(DirAccess.remove_absolute(save_path)==OK,"probe removes only its own named fixture")

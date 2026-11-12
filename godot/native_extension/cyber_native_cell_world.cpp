@@ -141,6 +141,8 @@ void CyberNativeCellWorld::_bind_methods() {
                          &CyberNativeCellWorld::rigid_body_id_at);
     ClassDB::bind_method(D_METHOD("material_at", "x", "y"),
                          &CyberNativeCellWorld::material_at);
+    ClassDB::bind_method(D_METHOD("stored_material_at", "x", "y"),
+                         &CyberNativeCellWorld::stored_material_at);
     ClassDB::bind_method(D_METHOD("box_collides", "origin", "size"),
                          &CyberNativeCellWorld::box_collides);
     ClassDB::bind_method(D_METHOD("character_box_collides", "origin", "size", "mode"),
@@ -905,6 +907,13 @@ std::int64_t CyberNativeCellWorld::material_at(std::int64_t x, std::int64_t y) c
         return static_cast<std::int64_t>(cybersand::Material::Wall);
     }
     return static_cast<std::int64_t>(world_->get(x, y));
+}
+
+std::int64_t CyberNativeCellWorld::stored_material_at(std::int64_t x, std::int64_t y) const {
+    if (world_ == nullptr || !in_bounds(x, y)) {
+        return static_cast<std::int64_t>(cybersand::Material::Wall);
+    }
+    return static_cast<std::int64_t>(world_->stored_material(x, y));
 }
 
 std::int64_t CyberNativeCellWorld::rigid_body_id_at(std::int64_t x, std::int64_t y) const {

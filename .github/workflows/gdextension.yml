@@ -2,7 +2,8 @@ name: GDExtension build and current Godot regression
 
 on:
   push:
-    branches: [main]
+    # Owner-authorized complete qualification while the integration stays Draft.
+    branches: [main, codex/wb-art-paint-integrated-20261111]
     paths-ignore:
       - '.github/workflows/**'
       - 'docs/**'
@@ -556,6 +557,77 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
+  art-graphical-smoke:
+    name: art workbench graphical smoke
+    needs: [linux-build]
+    if: >-
+      always() && inputs.physical_actor_stress != true &&
+      needs.linux-build.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      LIBGL_ALWAYS_SOFTWARE: "1"
+      LP_NUM_THREADS: "2"
+      GALLIVM_PERF: "nopt"
+    steps:
+      - name: Check out exact source
+        timeout-minutes: 5
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Restore exact Linux runtime
+        timeout-minutes: 5
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: linux-runtime-${{ github.run_id }}
+          path: build/linux-runtime
+
+      - name: Verify and install source-built runtime
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          test "$(cat build/linux-runtime/source-sha.txt)" = "$(git rev-parse HEAD)"
+          (cd build/linux-runtime && sha256sum --check --strict runtime.sha256)
+          cp build/linux-runtime/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/
+          cp build/linux-runtime/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" tools/check_linux_runtime_floor.sh
+
+      - name: Prepare pinned Godot runtime
+        timeout-minutes: 20
+        run: |
+          set -euo pipefail
+          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+
+      - name: Prepare software-rendered display
+        timeout-minutes: 15
+        run: bash tools/ci/prepare_linux_display.sh
+
+      - name: Run native graphical art smoke with scripted provider
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" \
+            python3 tools/test_art_final_graphical.py --godot "$GODOT_BIN" --output build/art-final-graphical
+
+      - name: Retain original graphical smoke evidence
+        if: always()
+        timeout-minutes: 5
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: art-final-graphical-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/art-final-graphical/
+            build/linux-runtime/source-sha.txt
+            build/linux-runtime/runtime.sha256
+          if-no-files-found: error
+          retention-days: 90
+
   linux-regression:
     name: linux regression shard ${{ matrix.shard }}
     needs: [linux-build, execution-plan]
@@ -645,7 +717,7 @@ jobs:
 
   linux-regression-gate:
     name: linux x86_64
-    needs: [ready_scope, execution-plan, linux-regression]
+    needs: [ready_scope, execution-plan, linux-regression, art-graphical-smoke]
     if: >-
       always() && inputs.physical_actor_stress != true &&
       (github.event_name != 'pull_request' ||
@@ -672,6 +744,7 @@ jobs:
         if: always()
         env:
           SHARD_RESULT: ${{ needs.linux-regression.result }}
+          ART_SMOKE_RESULT: ${{ needs.art-graphical-smoke.result }}
         run: |
           python3 tools/ci/verify_linux_godot_shards.py \
             --root build/linux-coverage-input --runtime build/linux-runtime \
@@ -680,6 +753,7 @@ jobs:
             --shard-count "${{ needs.execution-plan.outputs.linux_shard_count }}" \
             --godot-version "$GODOT_VERSION" --output build/linux-coverage.json
           test "$SHARD_RESULT" = "success"
+          test "$ART_SMOKE_RESULT" = "success"
       - name: Retain Linux exact coverage receipt
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

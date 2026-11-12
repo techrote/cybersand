@@ -1,0 +1,13 @@
+{
+  "checked_head": "686d374c0d524c5deff5f94dc593b643625a211e",
+  "source_sha256": {
+    "docs/systems/paint-editor-bounded-shapes.md": "a3a351afcf4ed04bf23833212ed9e563c38c35f6f83380946a70082ecf7e935b",
+    "godot/scripts/workbench_paint_editor_controller.gd": "6fc4936a5cf9aeca713fa9851504c8885c830f97da1583d490822736a23cea74",
+    "godot/scripts/shared_workbench.gd": "27d34c3bbf384a52f13707f05b27118f85a2071b9dca6a662c470e7c7a76bb9c",
+    "godot/scripts/simulation_worker.gd": "68962945ca4775526399beb4685f0ccf316218f06dfd35b17834ec0d4d42d69f",
+    "godot/scripts/workbench_paint_editor_executor.gd": "0c4cd32a49433c256a309a663859eb8df9a4ebb5de225ad6eac7e6cc88b5362c",
+    "tools/docs/retrieval_eval.py": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+    "docs/reference/retrieval-corpus.json": "7f57aa39e1aa23e096e88a25c224d859908485413bf6ebf44b0655cab374609d"
+  },
+  "scope": "Final documentation/repository/retrieval/material gates; integrated working tree with local source changes, not a committed-head runtime qualification."
+}

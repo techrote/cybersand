@@ -18,6 +18,8 @@ and reuses MicroScenarios. Production material authority, IDs and saved-world
 semantics remain unchanged; #353-B remains separate. The owner excluded
 MoltenGlass H1 from this Materials Lab continuation.
 
+Current Draft: [integrated PAINT + agent Workbench](operations/wb-art-paint-integrated-candidate.md), including standalone generator profiles, native stored-material receipts and one edit ordering boundary. Component contracts: [direct drawing](systems/workbench-direct-art-batches.md), [provider connection/context/scanlines](systems/workbench-art-providers.md), and [full PAINT editor](systems/paint-editor-bounded-shapes.md).
+
 Shared authoring: [approved data contract and convergence plan](architecture/shared-workbench-authoring-data.md)
 separates Current generated-start saves from Planned material-only Flatten and
 defines the common desktop/agent/remote foundation. #542 Ready qualification is
