@@ -25,6 +25,9 @@ window, preserving physical-pixel text and local input while the game retains
 its canvas scaling. Headless/Web displays retain the embedded fallback. Closing
 the Lab returns to the same Workbench session; its owner policy is refreshed
 when reopened.
+Native placement fits the client, title bar and borders within the usable
+desktop work area on the owning screen. A desktop too small for the existing
+1000x650 client plus its borders receives an explicit capacity refusal.
 
 The Lab uses the accepted [catalogue compiler](material-catalogue-shadow.md).
 It does not replace native production definitions, the simulation worker, the

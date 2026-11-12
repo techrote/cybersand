@@ -89,7 +89,35 @@ func open_materials_lab() -> void:
 		panel.close_requested.connect(_materials_lab_window.hide)
 		_materials_lab_window.close_requested.connect(_materials_lab_window.hide)
 	_materials_lab_panel.set_policy_readback(host.tower_context.get("liquid_solver_policy",{}),"Workbench owner snapshot at opening; reopen to refresh")
+	if _materials_lab_window.force_native: _materials_lab_window.current_screen = get_window().current_screen
 	_materials_lab_window.popup_centered_clamped(Vector2i(1520,900),0.95)
+	if _materials_lab_window.force_native:
+		var usable: Rect2i = DisplayServer.screen_get_usable_rect(get_window().current_screen)
+		if not _fit_materials_lab_native(usable,Vector2i(1520,900)):
+			_materials_lab_window.hide()
+			refuse("Materials Lab needs its 1000×650 client plus window borders inside the desktop work area (%d×%d)." % [usable.size.x,usable.size.y])
+
+func _fit_materials_lab_native(usable: Rect2i, requested: Vector2i) -> bool:
+	# Godot's centered-clamped popup uses the full monitor. Native decorations
+	# can only be measured after showing; fit their outer rectangle to work area.
+	var popup: Window = _materials_lab_window
+	var before := {"client_position":popup.position,"client_size":popup.size,
+		"outer_position":popup.get_position_with_decorations(),"outer_size":popup.get_size_with_decorations()}
+	var chrome: Vector2i = popup.get_size_with_decorations() - popup.size
+	var available: Vector2i = usable.size - chrome
+	var receipt := {"requested_client_size":requested,"usable_position":usable.position,"usable_size":usable.size,
+		"minimum_client_size":popup.min_size,"chrome":chrome,"before":before,"admitted":false}
+	popup.set_meta("materials_lab_placement",receipt)
+	if available.x < popup.min_size.x or available.y < popup.min_size.y: return false
+	popup.size = requested.min(available).max(popup.min_size)
+	var offset: Vector2i = popup.position - popup.get_position_with_decorations()
+	popup.position = usable.position + (usable.size - popup.get_size_with_decorations()) / 2 + offset
+	receipt["after"] = {"client_position":popup.position,"client_size":popup.size,
+		"outer_position":popup.get_position_with_decorations(),"outer_size":popup.get_size_with_decorations()}
+	receipt.admitted = usable.encloses(Rect2i(popup.position,popup.size)) and usable.encloses(
+		Rect2i(popup.get_position_with_decorations(),popup.get_size_with_decorations()))
+	popup.set_meta("materials_lab_placement",receipt)
+	return receipt.admitted
 
 func _row(parent: Control) -> HFlowContainer:
 	var row := HFlowContainer.new()

@@ -561,3 +561,62 @@ Request8 carries only this bounded popup correction, its regressions/source
 custody and documentation. Its complete fresh platform/package campaign and
 exact-child gates remain required. No material physics, compatibility lock,
 equipment owner, #563 consumer or production candidate installer changes.
+
+## Request8 hosted desktop-fit refusal — 2026-11-12
+
+[Campaign43283807002](https://github.com/techrote/cybersand/actions/runs/43283807002)
+from source `42298e8129b5609b28c330b2fbfe936be45a51ef`, tree
+`a9d65259f25939258e763d5d56a89b44e9d8bbf9`, correctly refuses publication.
+Complete Linux catalogue/runtime/graphics pass: catalogue1348, experiment131,
+contacts180, lifecycle87, mountedUI217, World204, Workbench164; graphicalUI226
+and World209. Windows catalogue209 completes with206 passes and the three
+unchanged POSIX-only skips; all seven headless cases and graphicalWorld209 pass.
+Actual Windows graphicalUI runs226 assertions with exactly one failure:
+the native Lab's initial bounds do not fit the usable desktop. Both later
+explicit1000x650/1280x720 physical-scale/contact checks pass. Package creation,
+runtime publication and final-child gate dispatch are skipped after this failure.
+
+Original Windows artifact13976867296 is retained with outer SHA-256
+`d7beb2ce65eae4634b0ad5732a464e18b267e315efa7e689b8905cbe708754dd`.
+The first capture did not record initial screen/decorated geometry, so exact
+hosted coordinates cannot be reconstructed from it. Pinned Godot's native
+[`popup_centered_clamped`](https://github.com/godotengine/godot/blob/5b4e0cb0f/scene/main/window.cpp#L1957-L1992)
+uses the full monitor rather than its usable work area.
+The strict initial-fit assertion is preserved; the correction must explicitly
+admit client and decorated window bounds within the usable work area and record
+the actual geometry. Request7 remains the fully qualified recovery package.
+
+## Request9 usable-work-area correction — 2026-11-12
+
+The native popup now selects its owning screen, measures visible client/frame
+geometry, clamps the requested client to usable capacity minus actual borders,
+and centers the complete frame in that usable area. The existing1000x650 client
+minimum is preserved. An insufficient work area returns an explicit capacity
+refusal instead of clipping the window or reducing its minimum. Embedded fallback
+and all material/equipment/native ownership remain unchanged.
+
+The strict initial client-bounds assertion remains. Tests additionally require
+the title bar/borders to fit, retain geometry before every assertion, exercise
+a restricted1024x728 area and a500x400 refusal, move the parent near a screen
+edge, and close/reopen the retained native window across screens. Original root
+Windows ANGLE tests pass44/0 on a portrait desktop and44/0 on a landscape desktop.
+Measured borders are16x39; the restricted fixture admits a1008x689 client inside
+the exact1024x728 outer rectangle. The landscape run verifies actual1000x650 and
+1280x720 clients at physical scale `[1,1]`. The portrait run honestly records a
+screen-clamped1184x720 client for the larger request. Headless fallback passes24/0.
+The [geometry/custody record](materials-lab-completion-20261111/windows-evaluation-20261112/workarea-geometry-qualified-summary.json)
+preserves original log hashes, measurements and the separate restricted-child
+startup failure. It explicitly distinguishes the portrait observation from the
+[landscape run's before/after source and tool receipt](materials-lab-completion-20261111/windows-evaluation-20261112/workarea-qualified-landscape.json).
+
+Complete mounted UI authoring passes217/0 in213.101s with bundled tools and
+unchanged inherited AppData. The
+[full execution receipt](materials-lab-completion-20261111/windows-evaluation-20261112/workarea-qualified-full.json)
+records local source8 plus the two named frozen placement deltas, before/after
+hashes, actual native DLL636f285b...5703c, tools, command and watchdog. The
+[headless receipt](materials-lab-completion-20261111/windows-evaluation-20261112/workarea-qualified-headless.json)
+retains its own command and runtime identity. These are local delta qualifications,
+not attestations of a future commit. Request9 requires the complete fresh
+Windows/Linux, graphical, package and exact-publication-child gate campaign.
+No assertion, compiler check, compatibility restriction or native consumer is
+weakened; no authored candidate becomes production-active.

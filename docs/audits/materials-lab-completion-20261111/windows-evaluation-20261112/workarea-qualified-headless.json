@@ -1,0 +1,43 @@
+{
+  "started_utc": "2026-11-12T19:32:26.078185+00:00",
+  "command": [
+    "C:\\khybersand\\build\\Materials-Lab-Windows-request5\\Godot_v4.7-stable_win64_console.exe",
+    "--path",
+    "C:\\khybersand\\.worktrees\\materials-lab-evaluation\\godot",
+    "--audio-driver",
+    "Dummy",
+    "--headless",
+    "--script",
+    "res://tests/test_material_lab_ui.gd",
+    "--",
+    "--workbench-mount-only"
+  ],
+  "source_base": "42298e8129b5609b28c330b2fbfe936be45a51ef",
+  "scope": "Actual local source delta qualification; exact source before/after and runtime recorded separately from future publication",
+  "environment": {
+    "APPDATA": "C:\\Users\\_\\AppData\\Roaming",
+    "LOCALAPPDATA": "C:\\Users\\_\\AppData\\Local",
+    "PATH": "C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\python;C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\git\\cmd;C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\git\\ucrt64\\bin;C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\git\\mingw64\\bin;C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\cxx\\bin;C:\\WINDOWS\\System32;C:\\WINDOWS",
+    "CYBERSAND_LAB_CXX": "C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\cxx\\bin\\g++.exe",
+    "PYTHONUTF8": "1",
+    "PYTHONNOUSERSITE": "1"
+  },
+  "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+  "python_sha256": "4d6f5f81a4bca11191c4c7c6b43632694d0a4ce74e068619d8fdc161d469859a",
+  "compiler_sha256": "eccc5963340f7b57805b3750efc182c25c6d4eddb828c8cee2b0f974a0d943ac",
+  "before_sha256": {
+    "godot/scripts/shared_workbench.gd": "19dc3c50ce3dec8e69dfcfd64757ec030fce29fca2eb63fa1acad4a435d647ed",
+    "godot/tests/test_material_lab_ui.gd": "6a35cddbcfff2cc7b504a838fc5e709e63b80dca8929429d3f37c0a618367522",
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "636f285beb96ce9ae02ab1df00527647220d538621df785c4a6c4275fbe5703c"
+  },
+  "outer_timeout_seconds": 1200,
+  "seconds": 5.403922100085765,
+  "exit_code": 0,
+  "after_sha256": {
+    "godot/scripts/shared_workbench.gd": "19dc3c50ce3dec8e69dfcfd64757ec030fce29fca2eb63fa1acad4a435d647ed",
+    "godot/tests/test_material_lab_ui.gd": "6a35cddbcfff2cc7b504a838fc5e709e63b80dca8929429d3f37c0a618367522",
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "636f285beb96ce9ae02ab1df00527647220d538621df785c4a6c4275fbe5703c"
+  },
+  "log_sha256": "3f842cd63bafe0415b70aacf69efc192fde19ec7c26eae3f6a1417c71bc23974",
+  "status": "passed"
+}

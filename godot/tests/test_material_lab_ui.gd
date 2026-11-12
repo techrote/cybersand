@@ -353,6 +353,19 @@ func extended_authoring() -> bool:
 		"Extended effects cannot silently fall back to the legacy descriptor/resolver probe")
 	return true
 
+func popup_bounds(popup: Window, bounds: Rect2i, native: bool, context: String) -> void:
+	# Retain initial native/client/frame measurements before either assertion.
+	print("MATERIAL_LAB_POPUP_PLACEMENT ",JSON.stringify({"context":context,"display":DisplayServer.get_name(),
+		"screen":popup.current_screen,"parent_screen":root.current_screen,"parent_position":root.position,"parent_size":root.size,
+		"usable_position":bounds.position,"usable_size":bounds.size,"client_position":popup.position,"client_size":popup.size,
+		"outer_position":popup.get_position_with_decorations() if native else popup.position,
+		"outer_size":popup.get_size_with_decorations() if native else popup.size,
+		"placement":popup.get_meta("materials_lab_placement",{})}))
+	expect(bounds.encloses(Rect2i(popup.position,popup.size)),"Lab initially fits the available desktop or embedded viewport: " + context)
+	if native:
+		expect(bounds.encloses(Rect2i(popup.get_position_with_decorations(),popup.get_size_with_decorations())),
+			"Lab native borders and title bar fit the usable work area: " + context)
+
 func workbench_popup_controls(workbench: Variant, main: Control) -> void:
 	var popup: Window = workbench._materials_lab_window
 	var mounted: Variant = workbench._materials_lab_panel
@@ -363,10 +376,39 @@ func workbench_popup_controls(workbench: Variant, main: Control) -> void:
 	expect(root.content_scale_mode == Window.CONTENT_SCALE_MODE_CANVAS_ITEMS and root.content_scale_size == Vector2i(1920,1080),
 		"Opening Lab preserves the stretched game canvas")
 	var bounds: Rect2i = DisplayServer.screen_get_usable_rect(root.current_screen) if native else Rect2i(Vector2i.ZERO,Vector2i(root.get_visible_rect().size))
-	expect(bounds.encloses(Rect2i(popup.position,popup.size)),"Lab initially fits the available desktop or embedded viewport")
-	for dimensions: Vector2i in [Vector2i(1000,650),Vector2i(1280,720)]:
-		popup.size = dimensions
+	popup_bounds(popup,bounds,native,"initial")
+	if native:
+		var original_parent: Vector2i = root.position
+		var identity: int = popup.get_instance_id()
+		var chrome: Vector2i = popup.get_size_with_decorations() - popup.size
+		var restricted_size: Vector2i = Vector2i(1024,728).max(popup.min_size + chrome).min(bounds.size)
+		var restricted := Rect2i(bounds.end - restricted_size,restricted_size)
+		expect(workbench._fit_materials_lab_native(restricted,Vector2i(1520,900)),"Restricted work-area fixture admits minimum client plus measured chrome")
 		for frame: int in range(3): await process_frame
+		popup_bounds(popup,restricted,true,"restricted-workarea-fixture")
+		var admitted := Rect2i(popup.position,popup.size)
+		expect(not workbench._fit_materials_lab_native(Rect2i(bounds.position,Vector2i(500,400)),Vector2i(1520,900)),
+			"Insufficient work area refuses the existing minimum instead of clipping or lowering it")
+		expect(Rect2i(popup.position,popup.size) == admitted,"Capacity refusal preserves the current native geometry")
+		workbench._materials_lab_window.close_requested.emit()
+		expect(not popup.visible,"Capacity/restricted fixture can retire through the real close seam")
+		root.position = bounds.end - Vector2i(64,64)
+		workbench.open_materials_lab()
+		for frame: int in range(3): await process_frame
+		bounds = DisplayServer.screen_get_usable_rect(root.current_screen)
+		expect(popup.visible and popup.get_instance_id() == identity,"Hidden native window reopens successfully after restricted admission/refusal")
+		popup_bounds(popup,bounds,true,"displaced-parent-reopen")
+		root.position = original_parent
+		workbench.open_materials_lab()
+		for frame: int in range(3): await process_frame
+		bounds = DisplayServer.screen_get_usable_rect(root.current_screen)
+		popup_bounds(popup,bounds,true,"restored-parent-reopen")
+	for dimensions: Vector2i in [Vector2i(1000,650),Vector2i(1280,720)]:
+		if native:
+			expect(workbench._fit_materials_lab_native(bounds,dimensions),"Requested native size is admitted within measured work-area capacity")
+		else: popup.size = dimensions
+		for frame: int in range(3): await process_frame
+		if native: popup_bounds(popup,bounds,true,"requested-%s" % dimensions)
 		var scale: Vector2 = mounted.get_screen_transform().get_scale()
 		if native: expect(scale.is_equal_approx(Vector2.ONE),"Native Lab controls remain physical pixels at %s" % dimensions)
 		expect(Rect2(Vector2.ZERO,Vector2(popup.size)).encloses(mounted.get_global_rect()),"Lab content fits its %s client area" % dimensions)
@@ -378,7 +420,7 @@ func workbench_popup_controls(workbench: Variant, main: Control) -> void:
 		for frame: int in range(2): await process_frame
 		expect(scroll.get_global_rect().has_point(contact.get_global_rect().get_center()),"Native contact action remains reachable at %s" % dimensions)
 		scroll.scroll_vertical = 0
-		print("MATERIAL_LAB_POPUP_GEOMETRY ",JSON.stringify({"display":DisplayServer.get_name(),"native":native,"embedded":popup.is_embedded(),"size":[popup.size.x,popup.size.y],"control_screen_scale":[scale.x,scale.y]}))
+		print("MATERIAL_LAB_POPUP_GEOMETRY ",JSON.stringify({"display":DisplayServer.get_name(),"native":native,"embedded":popup.is_embedded(),"requested_size":[dimensions.x,dimensions.y],"size":[popup.size.x,popup.size.y],"control_screen_scale":[scale.x,scale.y]}))
 	mounted._tabs.current_tab = 0
 	for frame: int in range(2): await process_frame
 	var paused: bool = main.paused
