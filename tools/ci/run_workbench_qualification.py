@@ -86,6 +86,7 @@ class Runner:
         for name in REOPEN_VARS:
             self.env.pop(name, None)
         self.env["XDG_DATA_HOME"] = str(self.evidence / "userdata")
+        self.env["APPDATA"] = str(self.evidence / "userdata")
         self.env["WB_ART_EVIDENCE_DIR"] = str(self.evidence / "art-frames")
 
     def execute(self, label, command, *, env=None, marker=None, timeout=1800, validate=None):
@@ -223,7 +224,8 @@ def combined_authoring(runner, project, label):
             env = {"WB_COMBINED_WORKERS": str(workers),
                    "WB_COMBINED_REOPEN": "1" if phase == "reopen" else "0",
                    "WB_COMBINED_SCREENSHOTS": str(frames), "WB_COMBINED_REQUIRE_GRAPHICS": "1",
-                   "XDG_DATA_HOME": str(runner.evidence / f"{label}-workers-{workers}-userdata")}
+                   "XDG_DATA_HOME": str(runner.evidence / f"{label}-workers-{workers}-userdata"),
+                   "APPDATA": str(runner.evidence / f"{label}-workers-{workers}-userdata")}
             text = runner.godot(project, case, "test_workbench_combined_authoring",
                                 "WB_COMBINED_AUTHORING", graphical=True, env=env)
             receipt = completion(text, "WB_COMBINED_EVIDENCE")
@@ -346,6 +348,7 @@ def regressions(args):
                          graphical=True, env={flag: "1" if phase == "reopen" else "0"})
     runner.godot(project, "existing-workbench-input", "test_workbench_input", "WORKBENCH_INPUT")
     runner.godot(project, "existing-worldgen-planes", "test_worldgen_planes", "GEN-005 plane adapter:")
+    runner.godot(project, "existing-worldgen-workbench", "test_worldgen_workbench", "WORLDGEN_WORKBENCH:")
     for phase in ("author", "reopen"):
         runner.godot(project, f"existing-canvas-{phase}", "test_workbench_canvas", "WORKBENCH_CANVAS",
                      env={"CYBERSAND_WORKBENCH_REOPEN": "1" if phase == "reopen" else "0"})
