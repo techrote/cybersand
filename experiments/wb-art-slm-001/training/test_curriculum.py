@@ -68,6 +68,30 @@ class CurriculumTests(unittest.TestCase):
             self.assertEqual(len({data[i]["group_id"] for i in first}), expected_groups)
         self.assertEqual(set(data[i]["theme"] for i in epoch_indices(data, 731, 0, "keyword-replay-v1")[:12]), set(THEMES))
 
+    def test_v5_original_index_handoff(self):
+        # v5 is a fresh TRAIN-only candidate and must refuse an absent manifest.
+        with self.assertRaisesRegex(ValueError, "explicit manifest"):
+            epoch_indices(rows(), 731, 0, "failure-contrast-v5")
+        corpus = Path(__file__).resolve().parents[1] / "corpus"
+        source, manifest = corpus / "train.jsonl", corpus / "failure_contrast_replay_v5.json"
+        if not source.is_file() or not manifest.is_file():
+            self.skipTest("Private admitted corpus / independently owned v5 manifest not materialized")
+        raw = source.read_bytes()
+        self.assertEqual(hashlib.sha256(raw).hexdigest(), "972826e1af15a6babaff6e68e4c57d790c0c060a2befe050b4156c5f8ee05f66")
+        data = [json.loads(line) for line in raw.splitlines()]
+        order = epoch_indices(data, 731, 0, "failure-contrast-v5", manifest)
+        self.assertEqual(len(order), 1152)
+        first = [data[i] for i in order[:400]]
+        self.assertEqual(len({r["native_case_id"] for r in first}), 376)
+        self.assertEqual(len({r["group_id"] for r in first}), 72)
+        self.assertEqual(Counter(r["theme"] for r in first if r["prompt"] == r["theme"]),
+                         {t: 3 for t in THEMES})
+        for invalid_seed in (730, 732):
+            with self.assertRaisesRegex(ValueError, "seed 731"):
+                epoch_indices(data, invalid_seed, 0, "failure-contrast-v5", manifest)
+        with self.assertRaisesRegex(ValueError, "epoch zero"):
+            epoch_indices(data, 731, 1, "failure-contrast-v5", manifest)
+
     def test_refuse_final_missing_or_duplicate_keywords(self):
         data = rows()
         for bad in (
