@@ -43,6 +43,7 @@ def make_pairs(width=96, height=96, seeds=(17, 73)):
             "note": "Reference programs, not model predictions. Native success remains unclaimed.",
             "parent_compiler_sha256": v11.BASE_COMPILER_SHA256,
             "candidate_compiler_version": v11.COMPILER_VERSION,
+            "required_native_history_mode": "each",
             "aliases": aliases, "cases": cases}
 
 

@@ -175,3 +175,61 @@ existing pinned replay harness, verify all global gates, compare native material
 readbacks and inspect both image sets before acceptance. The pairing is for
 deterministic *reference* programs, not new model predictions. For model
 predictions, separately preserve the original raw completion-to-ID alias map.
+
+
+### Original native coral occupancy — independently quantified (13 November, second Controls checkpoint)
+
+The first Controls checkpoint introduced the non-default v1.1 spread algorithm but
+did not execute it natively. To replace a qualitative claim with a reproducible
+**measured baseline**, this checkpoint recovered the 29,081,943-byte preserved
+`wb_art_slm_001_native_and_model_evidence.zip` from the owner Library; verified
+the bundle SHA-256 `d2f8b16f081b7c371afd2eadf1468bc6941cb2a7a83ee349a11d667257f9cfa9`;
+extracted original `native/teacher-evidence.zip`, digest
+`2381736839bfca8ad6b4563a1c77698140438ef39ee8f0a6529f23cae4f1f62b`;
+and examined 16 original v1 coral native World material readbacks: variants
+0–7 at seeds 17 and 73. The new
+[`audit_coral_native.py`](audit_coral_native.py) checks the exact parent
+archive, all 15 native global gates, source/library pins, actual engine summary,
+operation hashes, native crop and PNG hashes, acknowledged cells and changed-cell
+counts. It reads real stored material ID 58 rather than rendering an approximate
+Python pattern. It refuses tampered archives and only writes a new report.
+
+**Observed result:** all **six** single-layer center/offset/split reference cases
+(variants 0, 1, 2, each at two seeds) have **zero Hard Wall cells in the top
+third** of their 96×96 World crop. Including the four intentional border layouts
+and the companion motif cases, the mean share of all material-58 cells situated
+in that top third is **0.104738** across all 16 cases. Border examples
+intentionally occupy the top edge; their higher upper-field fractions are
+preserved rather than excluded post hoc.
+The auditable case-by-case counts and artifact identities are in
+[`coral_native_v1_baseline.json`](coral_native_v1_baseline.json).
+The full per-case readback hashes, vertical coverage and operation hashes are
+reproducible from the exact archived evidence using the auditor.
+
+To reproduce with the owner's separately saved archive, in a private directory:
+
+```sh
+unzip -p /private/wb_art_slm_001_native_and_model_evidence.zip \
+  native/teacher-evidence.zip > /private/teacher-evidence.zip
+python3 experiments/wb-art-slm-001/controls/audit_coral_native.py \
+  --teacher-zip /private/teacher-evidence.zip \
+  --out /private/new-coral-native-v1-report.json
+WB_ART_SLM_TEACHER_ARCHIVE=/private/teacher-evidence.zip \
+  python3 -m unittest discover -s experiments/wb-art-slm-001/controls \
+  -p 'test_audit_coral_native.py' -v
+```
+
+**Executed locally:** the three focused tests passed against the recovered
+actual archive, including the forged-evidence refusal. The auditor and test
+files were also syntax-compiled. This is a *new native evidence analysis* of
+original v1, **not a new native execution** of v1.1, current main or Windows.
+
+The paired native fixture now explicitly records
+`"required_native_history_mode": "each"`. Use
+`--history each` when executing the 32 paired cases: the native runner's
+default `per-theme` probes Undo/Redo/save/reopen for only the first coral
+case, which would fail to independently qualify the v1.1 half of each pair.
+Run fresh identically seeded Worlds with the same compatible native build;
+verify receipts and image/readback equality where expected, inspect v1.1
+gallery outputs, and retain all failures. Until that happens, the baseline
+documents an actual defect, **not an established v1.1 improvement**.

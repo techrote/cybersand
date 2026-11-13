@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "measurement": "actual original native stored-material readbacks; NOT v1.1 execution",
+  "date": "2026-11-13",
+  "runtime_source": "90719c72b9fcf90593fb7878354051ad601b47fd",
+  "native_sha256": "3a8b0b2cd04f09054426842f978e2421aad4016aae03dec91ed527ff50b953cd",
+  "original_evidence_bundle": "wb_art_slm_001_native_and_model_evidence.zip",
+  "original_bundle_sha256": "d2f8b16f081b7c371afd2eadf1468bc6941cb2a7a83ee349a11d667257f9cfa9",
+  "embedded_teacher_evidence_sha256": "2381736839bfca8ad6b4563a1c77698140438ef39ee8f0a6529f23cae4f1f62b",
+  "auditor_sha256": "fc36beaa48d1103be09f9b516243e077effef11ff6b0873a12548e14eed45b0b",
+  "full_regenerated_result_sha256": "46031af866ed2fd9805fa8c331eeab0aad524a2364c17b39502db0c0a54d259f",
+  "verified_native_packets": 3,
+  "global_gates_required_each": 15,
+  "reference_variants": 8,
+  "seeds": [
+    17,
+    73
+  ],
+  "coral_cases": 16,
+  "metric": "fraction of material-58 cells in upper 32 rows of a 96x96 native material readback divided by all material-58 cells in that readback",
+  "mean_top_fraction_all_16": 0.104738,
+  "single_layer_center_offset_split_top_empty": 6,
+  "single_layer_center_offset_split_total": 6,
+  "original_per_case_top_middle_bottom_material_58": [
+    [
+      "coral-v0-m0-s17",
+      0,
+      140,
+      902
+    ],
+    [
+      "coral-v0-m0-s73",
+      0,
+      4,
+      1036
+    ],
+    [
+      "coral-v1-m0-s17",
+      0,
+      485,
+      241
+    ],
+    [
+      "coral-v1-m0-s73",
+      0,
+      201,
+      531
+    ],
+    [
+      "coral-v2-m0-s17",
+      0,
+      0,
+      760
+    ],
+    [
+      "coral-v2-m0-s73",
+      0,
+      0,
+      726
+    ],
+    [
+      "coral-v3-m0-s17",
+      470,
+      104,
+      597
+    ],
+    [
+      "coral-v3-m0-s73",
+      478,
+      117,
+      580
+    ],
+    [
+      "coral-v4-m0-s17",
+      17,
+      207,
+      920
+    ],
+    [
+      "coral-v4-m0-s73",
+      17,
+      92,
+      1063
+    ],
+    [
+      "coral-v5-m0-s17",
+      17,
+      543,
+      272
+    ],
+    [
+      "coral-v5-m0-s73",
+      17,
+      283,
+      556
+    ],
+    [
+      "coral-v6-m0-s17",
+      17,
+      70,
+      784
+    ],
+    [
+      "coral-v6-m0-s73",
+      17,
+      88,
+      759
+    ],
+    [
+      "coral-v7-m0-s17",
+      475,
+      166,
+      612
+    ],
+    [
+      "coral-v7-m0-s73",
+      486,
+      200,
+      594
+    ]
+  ],
+  "test_command": "WB_ART_SLM_TEACHER_ARCHIVE=/private/teacher-evidence.zip python3 -m unittest -v test_audit_coral_native",
+  "local_tests": "3/3 PASS, Python 3, actual preserved native archive; not new engine execution",
+  "candidate_native_executed": false,
+  "new_current_main_native_or_windows_qualified": false,
+  "next": "Run the paired v1/v1.1 manifest with --history each on one identical native source/runtime and fresh Worlds, inspect all 16 pairs; do not promote default until native and visual review."
+}

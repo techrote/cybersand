@@ -12,6 +12,7 @@ class PairManifestTests(unittest.TestCase):
         doc = pairs.make_pairs()
         self.assertEqual(len(doc["cases"]), 32)
         self.assertEqual(len(doc["aliases"]), 16)
+        self.assertEqual(doc["required_native_history_mode"], "each")
         self.assertEqual(len({c["id"] for c in doc["cases"]}), 32)
         for case in doc["cases"]:
             self.assertLessEqual(len(case["id"]), 38)
