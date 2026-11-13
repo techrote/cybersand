@@ -114,6 +114,7 @@ jobs:
             exit 1
           fi
       - name: Qualify source camera coordinates and actual display-pixel scrolling
+        id: camera_source
         if: env.CAMERA_QUALIFICATION == 'true'
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
@@ -125,6 +126,18 @@ jobs:
           xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
             python3 tools/ci/run_workbench_qualification.py camera --godot "$GODOT_BIN" \
             --project godot --evidence evidence/camera-source
+      - name: Retain source camera results before longer Linux regressions
+        if: ${{ always() && env.CAMERA_QUALIFICATION == 'true' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-pixel-camera-linux-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/camera-source/*.log
+            evidence/camera-source/*.json
+            evidence/camera-source/frames/
+            evidence/camera-source/*-frames/
+          if-no-files-found: warn
+          retention-days: 90
       - name: Validate installed profiles and real X11 generate, install, paint, save and reopen
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
@@ -148,7 +161,9 @@ jobs:
       - name: Execute accepted agent regressions and integrated PAINT suites
         # Keep independent regression evidence when installed validation fails.
         # A prior failure still fails this job and prevents candidate publication.
-        if: ${{ !cancelled() && steps.native_runtime.outcome == 'success' && steps.godot_runtime.outcome == 'success' }}
+        # Camera iterations already collect all independent graphical cases;
+        # run the long authoring campaign once that source gate succeeds.
+        if: ${{ !cancelled() && steps.native_runtime.outcome == 'success' && steps.godot_runtime.outcome == 'success' && (env.CAMERA_QUALIFICATION != 'true' || steps.camera_source.outcome == 'success') }}
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
           LP_NUM_THREADS: '2'
@@ -294,11 +309,24 @@ jobs:
           if (((Get-Content evidence/godot-version.txt) -join ' ') -notmatch '4.7.stable.official.5b4e0cb0f') { throw 'Godot version mismatch' }
           'GODOT_EXE=' + $exe | Out-File -Append -FilePath $env:GITHUB_ENV
       - name: Qualify source camera coordinates and actual Windows ANGLE scrolling
+        id: camera_source
         if: env.CAMERA_QUALIFICATION == 'true'
         shell: pwsh
         run: |
           python tools/ci/run_workbench_qualification.py camera --godot $env:GODOT_EXE --project godot --evidence evidence/camera-source
           if ($LASTEXITCODE -ne 0) { throw 'Native-resolution camera qualification failed' }
+      - name: Retain source camera results before longer Windows regressions
+        if: ${{ always() && env.CAMERA_QUALIFICATION == 'true' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-pixel-camera-windows-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/camera-source/*.log
+            evidence/camera-source/*.json
+            evidence/camera-source/frames/
+            evidence/camera-source/*-frames/
+          if-no-files-found: warn
+          retention-days: 90
       - name: Package a source-matched owner desktop candidate
         shell: pwsh
         run: |
@@ -343,7 +371,7 @@ jobs:
             if ($LASTEXITCODE -ne 0) { throw 'Installed native-resolution camera qualification failed' }
           }
       - name: Execute accepted agent regressions and integrated PAINT suites on the same DLL
-        if: ${{ !cancelled() && steps.native_runtime.outcome == 'success' && steps.godot_runtime.outcome == 'success' }}
+        if: ${{ !cancelled() && steps.native_runtime.outcome == 'success' && steps.godot_runtime.outcome == 'success' && (env.CAMERA_QUALIFICATION != 'true' || steps.camera_source.outcome == 'success') }}
         shell: pwsh
         run: |
           $paint = @()

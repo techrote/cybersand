@@ -28,6 +28,7 @@ owns their sampling semantics.
 | `Main.world_cell_from_local_point(local)` | Integer cell sampled at the pointer's physical pixel centre; `(-1,-1)` outside valid content/world |
 | `PixelCamera.presentation_origin` | Converts through content size/offset and `get_screen_transform`; returns a presentation value without mutating camera state |
 | `PixelCamera.screen_to_world` / `screen_to_cell` | Subtract exact screen translation, then multiply the shared reciprocal; the cell form samples a physical pixel centre |
+| `PixelCamera.content_contains_screen_sample` | Uses the shader's half-open physical content bounds, avoiding inverse-transform roundoff at fitted edges |
 | `PixelCamera.origin_for_anchor` | Solves continuous origin for an unchanged world anchor after a view-size change |
 | `native_pixel_mapping_enabled` shader uniform | Main enables the physical map for its axis-aligned canvas; defaults off for standalone callers |
 | `content_screen_origin`, `content_screen_size` | Fitted content rectangle in physical screen coordinates, used to reconstruct the fragment's sample centre |

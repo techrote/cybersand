@@ -84,6 +84,9 @@ runs actual framebuffer scrolling, production glow/vapour fixtures and the
 existing material, water, vapour-history and crossfade preservation cases. It
 requires completion markers and retains source hashes, logs and frames.
 Headless parsing cannot satisfy either graphical fixture.
+Native-mapped partial Water and the actual PAINT fill raster are also checked
+at fractional camera positions. Independent cases continue after a failure to
+retain their diagnostics; the overall camera/package gate still fails.
 
 The existing
 [Workbench workflow](../../.github/workflows/wb-art-paint-qualification.yml)

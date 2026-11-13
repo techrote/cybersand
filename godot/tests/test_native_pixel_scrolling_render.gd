@@ -9,6 +9,23 @@ const Context = preload("res://tests/palette_qualification_context.gd")
 const WORLD := Vector2i(512,256)
 const VIEW := Vector2i(32,24)
 const COLOUR_TOLERANCE: float = 1.0/255.0 + 0.000001
+
+class PaintFillFixture extends "res://scripts/workbench_paint_editor_overlay.gd":
+	var fixture_camera := Vector2.ZERO
+	var fixture_content := Rect2()
+	var fixture_region := Rect2i(65,62,5,6)
+	var rendered_rect := Rect2()
+
+	func _draw() -> void:
+		# Exercise the actual PAINT clipping/point/filled-region implementation;
+		# only the editor/session prerequisites and outline are isolated here.
+		_content = fixture_content
+		_camera = fixture_camera
+		_scale = Vector2(2.5,2.5)
+		_extent = Vector2i(512,256)
+		rendered_rect = _screen_region(fixture_region)
+		_draw_region(fixture_region,Color.WHITE,Color.TRANSPARENT)
+
 var checks: int = 0
 var failures: Array[String] = []
 var measurements: Array[Dictionary] = []
@@ -21,6 +38,8 @@ var world_texture: ImageTexture
 var reference: Image
 var capture_folder: String
 var pacing: Dictionary = {}
+var overlay_measurements: Array[Dictionary] = []
+var water_measurements: Array[Dictionary] = []
 
 const CURRENT_COORDINATES: String = "\tvec2 continuous_world_pixel = camera_origin_px + fitted_uv * view_size_px;\n\tif (native_pixel_mapping_enabled) {\n\t\tvec2 sample_position = floor(content_screen_origin + raw_fitted_uv * content_screen_size) + vec2(0.5);\n\t\t// Clip in the same physical space as picking. UV roundoff at a fitted\n\t\t// half-pixel edge must not drop the first column or leak the last row.\n\t\tinside_view = all(greaterThanEqual(sample_position, content_screen_origin))\n\t\t\t&& all(lessThan(sample_position, content_screen_origin + content_screen_size));\n\t\tcontinuous_world_pixel = (sample_position - world_zero_screen) * world_units_per_screen_pixel;\n\t}\n\tvec2 world_pixel = floor(continuous_world_pixel);\n\tvec2 cell_fraction = fract(continuous_world_pixel);"
 const LEGACY_COORDINATES: String = "\tvec2 continuous_view_pixel = fitted_uv * view_size_px;\n\tvec2 view_pixel = floor(continuous_view_pixel);\n\tvec2 world_pixel = camera_origin_px + view_pixel;\n\tvec2 cell_fraction = fract(camera_origin_px + continuous_view_pixel);"
@@ -95,15 +114,20 @@ func configure_sample_mapping(target: ShaderMaterial, origin: Vector2, view: Vec
 
 
 func render_frame(origin: Vector2, view: Vector2i, output: Vector2i,
-		fitted: Rect2 = Rect2(0,0,1,1), native_sampling: bool = true) -> Image:
+		fitted: Rect2 = Rect2(0,0,1,1), native_sampling: bool = true,
+		physical_content: Rect2 = Rect2()) -> Image:
 	var resized: bool = viewport.size != output
 	viewport.size = output
 	surface.size = Vector2(output)
 	material.set_shader_parameter("view_size_px",Vector2(view))
 	material.set_shader_parameter("view_rect_uv",Vector4(fitted.position.x,fitted.position.y,fitted.size.x,fitted.size.y))
+	# Like Main, supply the original physical content rectangle independently
+	# of normalized UVs. A UV round trip can move a half-pixel boundary by one
+	# float ULP, changing which physical samples the half-open clip includes.
+	var content: Rect2 = physical_content if physical_content.size != Vector2.ZERO \
+		else Rect2(Vector2.ZERO,Vector2(output))
 	var uniform_start: int = Time.get_ticks_usec()
-	configure_sample_mapping(material,origin,view,
-		Rect2(fitted.position*Vector2(output),fitted.size*Vector2(output)),native_sampling)
+	configure_sample_mapping(material,origin,view,content,native_sampling)
 	var uniform_elapsed: int = Time.get_ticks_usec()-uniform_start
 	var frame_start: int = Time.get_ticks_usec()
 	await RenderingServer.frame_post_draw
@@ -224,11 +248,14 @@ func letterbox_case() -> void:
 	var letterbox_colour: Color = all_bars.get_pixel(0,0)
 	check(colour_equal(all_bars.get_pixel(output.x-1,output.y-1),letterbox_colour),
 		"independent outside-view colour reference is uniform")
-	var image: Image = await render_frame(origin,VIEW,output,uv)
+	var image: Image = await render_frame(origin,VIEW,output,uv,true,area)
+	check(material.get_shader_parameter("content_screen_origin") == area.position
+		and material.get_shader_parameter("content_screen_size") == area.size,
+		"letterbox physical uniforms retain the exact authoritative fitted rectangle")
 	compare_cell_oracle(image,origin,VIEW,area,"odd-sized viewport and fractional fitted rectangle",letterbox_colour)
 	var shifted_origin: Vector2 = Camera.presentation_origin(Vector2(60.25,60.75)+Vector2(1,1)/(area.size/Vector2(VIEW)),
 		VIEW,area,Transform2D.IDENTITY)
-	var shifted: Image = await render_frame(shifted_origin,VIEW,output,uv)
+	var shifted: Image = await render_frame(shifted_origin,VIEW,output,uv,true,area)
 	# Restrict translation to the fitted content; fixed letterboxing itself
 	# correctly does not move with the World.
 	var cropped: Image = image.get_region(Rect2i(8,9,156,92))
@@ -259,6 +286,145 @@ func realistic_fractional_zoom_case() -> void:
 	compare_translation(next,returned,Vector2i(-1,0),"240-cell realistic 2.5x reverse pan")
 	save_capture(first,"native-pixel-scrolling-realistic-2_5-before")
 	save_capture(next,"native-pixel-scrolling-realistic-2_5-after")
+
+
+func bind_fixture_texture(pixels: Texture2D) -> void:
+	surface.texture = pixels
+	material.set_shader_parameter("current_world_texture",pixels)
+	material.set_shader_parameter("previous_world_texture",pixels)
+
+
+func check_partial_water_coverage(baseline: Image, image: Image, target: Vector2i,
+		origin: Vector2, zoom: float, mode: int) -> void:
+	# The registered condition64 mask covers the lower half in mode1 and the
+	# right half in mode2 when the right neighbour is full. Derive the expected
+	# coverage from forward screen geometry, independently of shader sampling.
+	var world_zero: Vector2 = -(origin*zoom).round()
+	var cell := Rect2(Vector2(target)*zoom+world_zero,Vector2(zoom,zoom))
+	var visible := 0
+	var covered := 0
+	var bad := 0
+	for y: int in range(image.get_height()):
+		for x: int in range(image.get_width()):
+			var sample := Vector2(x+0.5,y+0.5)
+			if not cell.has_point(sample): continue
+			visible += 1
+			var before: Color = baseline.get_pixel(x,y)
+			var after: Color = image.get_pixel(x,y)
+			var changed: bool = (absf(before.r-after.r)+absf(before.g-after.g)
+				+absf(before.b-after.b)+absf(before.a-after.a)) > 0.02
+			if changed: covered += 1
+			var expected: bool = sample.y >= cell.get_center().y if mode == 1 \
+				else sample.x >= cell.get_center().x
+			if changed != expected: bad += 1
+	var label := "native partial Water mode=%d zoom=%s" % [mode,zoom]
+	check(covered > 0 and covered < visible,label+" has nonzero partial coverage against empty baseline")
+	check(bad == 0,label+" keeps its registered half-cell orientation; mismatches="+str(bad))
+	if zoom == 4.0:
+		check(visible == 16 and covered == 8,label+" retains exactly eight of sixteen target samples")
+	water_measurements.append({"label":label,"material_id":3,"condition_byte":64,
+		"fuller_right_neighbour_condition":255,"native_pixel_mapping":true,
+		"target_cell":[target.x,target.y],"cell_screen_rect":[cell.position.x,cell.position.y,cell.size.x,cell.size.y],
+		"visible_target_pixels":visible,"covered_target_pixels":covered,"mask_mismatches":bad})
+
+
+func partial_water_native_mapping_case() -> void:
+	# The established Water fixture uses standalone/default camera mapping.
+	# Exercise the same real partial-cell material through physical sampling,
+	# where fractional zoom can put a cell or its coverage edge on a pixel centre.
+	var target := Vector2i(65,64)
+	var empty := Image.create_empty(WORLD.x,WORLD.y,false,Image.FORMAT_RG8)
+	var water: Image = empty.duplicate()
+	water.set_pixelv(target,Color(3.0/255.0,64.0/255.0,0,1))
+	water.set_pixelv(target+Vector2i.RIGHT,Color(3.0/255.0,1,0,1))
+	var empty_texture := ImageTexture.create_from_image(empty)
+	var water_texture := ImageTexture.create_from_image(water)
+	var original_mode: float = material.get_shader_parameter("water_presentation_mode")
+	for zoom: float in [4.0,2.5]:
+		var output := Vector2i(Vector2(VIEW)*zoom)
+		var origin := Vector2(60,60)
+		var shifted := origin+Vector2(1.0/zoom,0)
+		for mode: int in [1,2]:
+			material.set_shader_parameter("water_presentation_mode",float(mode))
+			bind_fixture_texture(empty_texture)
+			var baseline: Image = await render_frame(origin,VIEW,output)
+			bind_fixture_texture(water_texture)
+			var first: Image = await render_frame(origin,VIEW,output)
+			check(bool(material.get_shader_parameter("native_pixel_mapping_enabled")),
+				"partial Water fixture uses actual native physical mapping")
+			check_partial_water_coverage(baseline,first,target,origin,zoom,mode)
+			var next: Image = await render_frame(shifted,VIEW,output)
+			var label := "native partial Water mode=%d zoom=%s" % [mode,zoom]
+			compare_translation(first,next,Vector2i(1,0),label+" one-display-pixel pan")
+			var returned: Image = await render_frame(origin,VIEW,output)
+			compare_translation(next,returned,Vector2i(-1,0),label+" reverse pan")
+			check(first.get_data() != next.get_data(),label+" visibly moves its partial mask")
+			var capture_label := "native-pixel-scrolling-water-mode-%d-zoom-%s" % [mode,str(zoom).replace(".","_")]
+			save_capture(first,capture_label+"-before")
+			save_capture(next,capture_label+"-after")
+	bind_fixture_texture(world_texture)
+	material.set_shader_parameter("water_presentation_mode",original_mode)
+
+
+func compare_paint_fill_oracle(image: Image, world_zero: Vector2, region: Rect2i, label: String) -> void:
+	# This forward physical rectangle keeps the exact phase rather than
+	# recovering it from the inverse camera used by the production overlay.
+	var expected_rect := Rect2(Vector2(region.position)*2.5+world_zero,Vector2(region.size)*2.5)
+	var bad := 0
+	var filled := 0
+	var first_bad := Vector2i(-1,-1)
+	for y: int in range(image.get_height()):
+		for x: int in range(image.get_width()):
+			var expected: bool = expected_rect.has_point(Vector2(x+0.5,y+0.5))
+			if expected: filled += 1
+			if not colour_equal(image.get_pixel(x,y),Color.WHITE if expected else Color.BLACK):
+				bad += 1
+				if first_bad.x < 0: first_bad = Vector2i(x,y)
+	check(filled > 100 and bad == 0,label+" actual PAINT fill covers exact cell samples; mismatches="
+		+str(bad)+" first="+str(first_bad))
+	overlay_measurements.append({"label":label,"expected_rect":[expected_rect.position.x,
+		expected_rect.position.y,expected_rect.size.x,expected_rect.size.y],
+		"expected_filled_pixels":filled,"mismatches":bad,"first_mismatch":[first_bad.x,first_bad.y]})
+
+
+func paint_fill_fractional_boundary_case() -> void:
+	# At these two phases, (65 - inverse_camera) * 2.5 lies just above then
+	# below the exact half-pixel edge. Qualify actual raster coverage before
+	# treating that CPU float difference as a visible overlay defect.
+	var target := SubViewport.new()
+	target.size = Vector2i(80,60)
+	target.disable_3d = true
+	target.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	root.add_child(target)
+	var background := ColorRect.new()
+	background.color = Color.BLACK
+	background.size = Vector2(target.size)
+	target.add_child(background)
+	var overlay := PaintFillFixture.new()
+	overlay.fixture_content = Rect2(Vector2.ZERO,Vector2(target.size))
+	target.add_child(overlay)
+	var frames: Array[Image] = []
+	for requested_x: float in [62.8,63.2]:
+		var requested := Vector2(requested_x,60)
+		overlay.fixture_camera = Camera.presentation_origin(requested,VIEW,overlay.fixture_content)
+		overlay.queue_redraw()
+		await RenderingServer.frame_post_draw
+		await RenderingServer.frame_post_draw
+		var image: Image = target.get_texture().get_image()
+		image.convert(Image.FORMAT_RGBA8)
+		frames.append(image)
+		var exact_phase := -(requested*2.5).round()
+		compare_paint_fill_oracle(image,exact_phase,overlay.fixture_region,
+			"2.5x PAINT inverse camera "+str(overlay.fixture_camera.x))
+		overlay_measurements.back()["actual_rect"] = [overlay.rendered_rect.position.x,
+			overlay.rendered_rect.position.y,overlay.rendered_rect.size.x,overlay.rendered_rect.size.y]
+		overlay_measurements.back()["presented_origin"] = [overlay.fixture_camera.x,overlay.fixture_camera.y]
+	compare_translation(frames[0],frames[1],Vector2i(1,0),"2.5x actual PAINT fill one-pixel pan")
+	check(frames[0].get_data() != frames[1].get_data(),"PAINT fill negative control detects retained frame")
+	save_capture(frames[0],"native-pixel-scrolling-paint-fill-before")
+	save_capture(frames[1],"native-pixel-scrolling-paint-fill-after")
+	target.queue_free()
+	await process_frame
 
 
 func legacy_control_and_diagnostic() -> void:
@@ -413,11 +579,16 @@ func run() -> void:
 	await magnification_cases()
 	await letterbox_case()
 	await realistic_fractional_zoom_case()
+	await partial_water_native_mapping_case()
+	await paint_fill_fractional_boundary_case()
 	await legacy_control_and_diagnostic()
 	await comparative_pacing()
 	var result := {"schema":"native-pixel-scrolling-render-v1","checks":checks,"failures":failures,
 		"context":Context.identity(get_script().resource_path,shader),
 		"transform_sha256":FileAccess.get_sha256("res://scripts/pixel_camera_transform.gd"),
+		"paint_overlay_sha256":FileAccess.get_sha256("res://scripts/workbench_paint_editor_overlay.gd"),
+		"paint_overlay_measurements":overlay_measurements,
+		"water_measurements":water_measurements,
 		"captures":captures,"frame_measurements":measurements,"comparative_pacing":pacing,
 		"timing_scope":"uniform submission and frame wait including test synchronization; not a throughput benchmark"}
 	if not capture_folder.is_empty():

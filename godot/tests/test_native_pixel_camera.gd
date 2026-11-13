@@ -157,6 +157,35 @@ func physical_sample_mapping() -> void:
 		Transform2D.IDENTITY,maximum)
 	check(one_bound.origin.x == roundf(one_bound.origin.x) and one_bound.origin.y == fitted.position.y,
 		"clamping one axis preserves the other axis's physical pixel phase")
+	physical_sample_bounds()
+
+
+func physical_sample_bounds() -> void:
+	var content := Rect2(2.8,2.8,160,96)
+	var screen := Transform2D(Vector2(1.25,0),Vector2(0,1.25),Vector2(17,17))
+	var first := Vector2(20.5,20.5)
+	var end := Vector2(220.5,140.5)
+	check(screen*content.position == first,
+		"fractional fitted edge lands exactly on an included physical sample")
+	var rounding_fit := Rect2(52.3333435,0,325.333313,183)
+	var rounding_screen := Transform2D(Vector2(1.5,0),Vector2(0,1.5),Vector2(251,17))
+	var rounding_sample := Vector2(329.5,30.5)
+	check(not rounding_fit.has_point(rounding_screen.affine_inverse()*rounding_sample)
+		and Camera.content_contains_screen_sample(rounding_sample,rounding_fit,rounding_screen),
+		"1.5x inverse-local clipping is a discriminating rounding-error control")
+	check(Camera.content_contains_screen_sample(first,content,screen),
+		"physical clipping includes the exact left/top sample without inverse rounding")
+	check(Camera.content_contains_screen_sample(Vector2(first.x,80.5),content,screen)
+		and Camera.content_contains_screen_sample(Vector2(80.5,first.y),content,screen),
+		"physical clipping includes each exact near edge independently")
+	check(not Camera.content_contains_screen_sample(Vector2(end.x,80.5),content,screen)
+		and not Camera.content_contains_screen_sample(Vector2(80.5,end.y),content,screen),
+		"physical clipping excludes exact right/bottom samples under half-open bounds")
+	check(Camera.content_contains_screen_sample(end-Vector2.ONE,content,screen),
+		"physical clipping retains the final interior pixel on both axes")
+	check(not Camera.content_contains_screen_sample(first-Vector2(1,0),content,screen)
+		and not Camera.content_contains_screen_sample(first-Vector2(0,1),content,screen),
+		"physical clipping rejects samples in the adjacent letterbox pixels")
 
 
 func until(predicate: Callable, label: String, limit_ms: int = 30000) -> bool:
@@ -259,6 +288,7 @@ func mounted() -> void:
 	bench._world_input(wheel)
 	check(near(host.camera_origin,original_camera,0.0003),"wheel in/out has no accumulating camera drift")
 	hover_without_motion()
+	mounted_sample_bounds()
 
 	bench._set_view(Vector2(24.75,20.75),Vector2i(240,135))
 	await process_frame
@@ -401,6 +431,51 @@ func hover_without_motion() -> void:
 	bench._set_view(saved_origin,saved_view)
 	check(host.simulation_worker.paint_state().revision == native_before.revision,
 		"hover, toolbar zoom and cancelled preview do not mutate native cells")
+
+
+func mounted_sample_bounds() -> void:
+	# This ordinary aspect fit is a real inverse-rounding counterexample:
+	# local x=52.3333435 maps to physical x=329.5, but the inverse returns
+	# x=52.333328 and formerly discarded the visible first content column.
+	var saved_origin: Vector2 = host.camera_origin
+	var saved_view: Vector2i = host.current_view_size
+	var saved_size: Vector2 = host.world_view.size
+	var saved_scale: Vector2 = host.world_view.scale
+	var saved_position: Vector2 = host.world_view.position
+	host.current_view_size = Vector2i(240,135)
+	host.camera_origin = Vector2(63.137,60.137)
+	host.world_view.size = Vector2(430,183)
+	host.world_view.scale = Vector2(1.5,1.5)
+	# Remove the native window's desktop translation from the fixture setup;
+	# the tested screen transform itself remains the actual CanvasItem API.
+	host.world_view.global_position += Vector2(251,17)-host.world_view.get_screen_transform().origin
+	var content: Rect2 = host.view_content_rect()
+	var screen: Transform2D = host.world_view.get_screen_transform()
+	var pointer := Vector2(52.5,9)
+	var sample: Vector2 = (screen*pointer).floor()+Vector2(0.5,0.5)
+	check(near(screen.origin,Vector2(251,17),0.00001) and sample.x == 329.5,
+		"mounted fractional-scale fixture reaches the registered physical edge")
+	check(content.has_point(pointer) and not content.has_point(screen.affine_inverse()*sample),
+		"mounted first-column sample discriminates the previous inverse clipping")
+	var mapping: Transform2D = host.presentation_camera_screen_transform()
+	var expected: Vector2i = Camera.screen_to_cell(screen*pointer,mapping)
+	check(expected.x >= 0 and host.world_cell_from_local_point(pointer) == expected,
+		"Main picks the rendered first column at a fractional display scale")
+	check(editor.local_to_cell(pointer) == expected,
+		"PAINT shares Main's included fractional fitted-edge sample")
+	var pixel_corner := Vector2(content.position.x-0.05,pointer.y)
+	check(not content.has_point(pixel_corner)
+		and host.world_cell_from_local_point(pixel_corner) == expected,
+		"a pointer just outside the mathematical fit still picks its visible physical pixel")
+	check(host.world_cell_from_local_point(Vector2(content.end.x-0.01,pointer.y)) == Vector2i(-1,-1),
+		"Main rejects an inside pointer whose pixel centre equals the half-open right edge")
+	check(host.world_cell_from_local_point(Vector2(pointer.x,content.end.y-0.01)) == Vector2i(-1,-1),
+		"Main rejects an inside pointer whose pixel centre equals the half-open bottom edge")
+	host.current_view_size = saved_view
+	host.camera_origin = saved_origin
+	host.world_view.scale = saved_scale
+	host.world_view.position = saved_position
+	host.world_view.size = saved_size
 
 
 func follow_same_frame() -> void:

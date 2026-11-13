@@ -1938,7 +1938,6 @@ func _exit_tree() -> void:
 
 func _process(delta: float) -> void:
 	if shared_workbench == null:
-		tower_panel.refresh(tower_active,tower_floor,tower_context)
 		_refresh_microscenario_controls()
 	frame_time_ms = delta * 1000.0
 	maximum_frame_time_ms = maxf(maximum_frame_time_ms, frame_time_ms)
@@ -1964,6 +1963,8 @@ func _process(delta: float) -> void:
 		rapier_bridge.last_hard_surface_build_time_ms()
 	)
 	update_camera(delta)
+	if shared_workbench == null:
+		tower_panel.refresh(tower_active,tower_floor,tower_context)
 	update_brush_preview()
 	handle_painting()
 	_present_playable_course_targets()
@@ -4255,10 +4256,10 @@ func world_position_from_local_point(local: Vector2) -> Vector2:
 
 func world_cell_from_local_point(local: Vector2) -> Vector2i:
 	var content := view_content_rect()
-	if not local.is_finite() or not content.has_point(local): return Vector2i(-1, -1)
+	if not local.is_finite(): return Vector2i(-1, -1)
 	var screen := _world_view_screen_transform()
 	var sample_position := (screen * local).floor() + Vector2(0.5, 0.5)
-	if not content.has_point(screen.affine_inverse() * sample_position): return Vector2i(-1, -1)
+	if not PixelCamera.content_contains_screen_sample(sample_position, content, screen): return Vector2i(-1, -1)
 	var cell := Vector2i(PixelCamera.screen_to_world(sample_position, presentation_camera_screen_transform()).floor())
 	return cell if Rect2i(Vector2i.ZERO, world_extent).has_point(cell) else Vector2i(-1, -1)
 

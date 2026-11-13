@@ -12,7 +12,8 @@ related-documents: [../operations/native-pixel-scrolling.md, ../systems/material
 
 **Draft / HOLD; [PR #566](https://github.com/techrote/cybersand/pull/566).**
 The first hosted campaign exposed fractional-zoom and fitted-edge defects;
-the revised physical sample map is undergoing graphical qualification. There
+the second confirms the pan repairs and identifies an inaccurate fitted-area
+test input. The corrected physical sample map is undergoing qualification. There
 is no qualified Windows delivery or owner acceptance at this checkpoint.
 
 ## Source and integration identity
@@ -24,7 +25,8 @@ is no qualified Windows delivery or owner acceptance at this checkpoint.
 | Stacked #564 base | `e63a7d4f7cea90a5900c91a917dbf10dee699aa7` |
 | Accepted main inspected | `e0fb05b8e0500641f0f25c62c5fb7e721da02d6a`; merge of #562 |
 | Initial implementation identity | `a1a896bb45753c820e1d6109df57de4e65be33af`, tree `f8aad8b10cd39d3cf65a7dd0fb8e1349217b08b0` |
-| Current implementation identity | The commit containing this checkpoint adds physical sample reconstruction, exact letterbox clipping and stationary-pointer refresh |
+| Physical sample shader source | `1755b2195e4d38c6030ae287ac2eb8e070da62ef`, tree `90373b770b5bb112a38b3322e5de6f5e70b85545` |
+| Current implementation identity | The commit containing this checkpoint adds exact physical picking bounds, Tower label alignment and authoritative fitted-area/PAINT/Water graphical checks |
 | Main/#564 compatibility | Initial camera + main + latest #564 merges without production conflicts; headless successes and Materials Lab shader-guard refusal are recorded below |
 
 The source tree is isolated from both upstream branches and preserves #564's
@@ -126,8 +128,8 @@ or access control was changed. This failure is not a graphical test pass.
 | Gate | Initial checkpoint disposition |
 | --- | --- |
 | Source diagnosis and focused implementation review | Recorded above; independent resulting-diff review still required |
-| Headless coordinate and actual native editing fixture | Initial source 725 checks passed on Linux/Windows hosted; revised local source 1,359 checks, 0 failures, including physical sample ties, follow and stationary hover |
-| Actual framebuffer slow-pan/zoom/resize and old-path negative control | Initial Linux source: 97 checks, 13 failures confined to fractional zoom/fitted edges; revised hosted execution pending |
+| Headless coordinate and actual native editing fixture | Current local source: 1,373 checks, 0 failures, including physical sample ties, follow, stationary hover and actual fractional-scale Main/PAINT edge picking |
+| Actual framebuffer slow-pan/zoom/resize and old-path negative control | Second Linux source: 107 checks, 2 fitted-area fixture failures; all pan cases pass, including realistic 2.5x. Corrected full campaign pending |
 | Actual production glow/vapour alignment and guard coverage | Hosted graphical execution pending |
 | Source-built Linux and Windows campaigns | Initial pinned native builds passed; camera graphics failed and package stages were correctly skipped |
 | Copied-installation camera and integrated authoring campaigns | Pending |
@@ -142,8 +144,12 @@ or access control was changed. This failure is not a graphical test pass.
 `tools/ci/run_workbench_qualification.py camera` requires each completion marker,
 preserves original errors and hashes the actual executed source. Both graphical
 cases also run explicitly on Windows ANGLE; Windows headless exclusion is not
-counted as graphical coverage. The existing Workbench workflow retains full
-manual/agent, generation, cancellation, native and persistence regressions.
+counted as graphical coverage. After import, the runner collects every
+independent coordinate, framebuffer, effects and material-preservation case;
+any failure still fails the source gate and prevents packaging. Source graphics
+logs/frames upload before the longer authoring campaign. A passing camera source
+gate remains a prerequisite for the full manual/agent, generation, cancellation,
+native and persistence regressions. Other Workbench branch behavior is unchanged.
 
 ## First hosted campaign and regression-driven corrections
 
@@ -174,6 +180,43 @@ Initial logs and source-matched PNGs are retained in the run's evidence
 artifacts; local copies are under `build/native-pixel-scrolling/initial-ci`.
 These failures are retained as negative evidence, not retrospectively
 relabeled as qualification.
+
+## Second campaign and exact physical edge coverage
+
+[Run 43344561560](https://github.com/techrote/cybersand/actions/runs/43344561560)
+executes `1755b219`. Its pinned native builds succeeded. On both Linux GL and
+Windows ANGLE the coordinate fixture passed 1,359 checks and the framebuffer
+fixture completed 107 checks with only two failures, both from the odd fitted
+rectangle's input setup. All integer and fractional pan cases passed, including
+the realistic 600x320, 2.5x counterexample. No extra pixels leaked into the
+letterbox.
+
+The fixture incorrectly reconstructed physical content from normalized UVs:
+in float32, `(7.5 / 117) * 117` becomes `7.500000476837158`. It sent that edge to
+the shader while its independent oracle expected 7.5, so the new half-open rule
+correctly excluded 160 pixel centres on the shifted top boundary. Production
+Main already sends the original physical rectangle. The fixture now does the
+same, asserts the uploaded origin/size exactly, and retains its strict interior
+and outside-pixel oracles. The shader was not relaxed. The old runner stopped at
+this failure, so effects and preservation cases were not executed in that run.
+Both platforms completed all 36 accepted-regression invocations successfully,
+including combined author/reopen at one and four workers. Package/installed
+stages remained correctly blocked by the failed source camera gate.
+
+Independent Godot review also reproduced a CPU-only edge discrepancy at a
+1.5x display transform: a physical left edge/sample of 329.5 became
+52.3333282471 after inversion, just outside the local fitted edge
+52.3333435059. Picking now clips directly against the same physical half-open
+rectangle as the shader. Pixel centres govern coverage even when a mouse pixel's
+corner lies slightly outside the mathematical fit. Fourteen added helper and
+mounted Main/PAINT assertions raise the local coordinate suite to 1,373/0.
+Tower labels now receive the displayed origin after camera update.
+
+The graphical fixture additionally renders the real PAINT fill geometry at a
+2.5x half-pixel boundary and partial Water in coverage/oriented modes at 4x and
+2.5x. The Water case verifies exact translated pixels and independent partial
+coverage, including eight covered samples out of sixteen at 4x. These new
+assertions are parsed locally; actual GL/ANGLE outcomes remain pending.
 
 ## Isolated compatibility with accepted Materials Lab
 

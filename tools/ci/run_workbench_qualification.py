@@ -428,11 +428,23 @@ def camera(args):
                     "executed_source_sha256": source_files}, indent=2)+"\n",
         encoding="utf-8")
     runner.godot(project, "camera-import")
-    runner.godot(project, "camera-coordinates", "test_native_pixel_camera", "NATIVE_PIXEL_CAMERA_RESULT")
-    runner.godot(project, "camera-framebuffer", "test_native_pixel_scrolling_render",
-                 "NATIVE_PIXEL_SCROLLING_RESULT", graphical=True)
-    runner.godot(project, "camera-effects", "test_native_camera_effects_render",
-                 "NATIVE_CAMERA_EFFECTS_RESULT", graphical=True)
+    failed_cases = []
+
+    def qualify(label, script, marker, *, graphical=False, env=None):
+        # Each fixture is an independent process. Preserve every original
+        # failure, but still collect the other rendering/preservation oracles.
+        # Any failed case keeps the overall camera and packaging gates closed.
+        try:
+            runner.godot(project, label, script, marker, graphical=graphical, env=env)
+        except Exception as error:
+            failed_cases.append(label)
+            print(f"FAIL {label}: {error}", flush=True)
+
+    qualify("camera-coordinates", "test_native_pixel_camera", "NATIVE_PIXEL_CAMERA_RESULT")
+    qualify("camera-framebuffer", "test_native_pixel_scrolling_render",
+            "NATIVE_PIXEL_SCROLLING_RESULT", graphical=True)
+    qualify("camera-effects", "test_native_camera_effects_render",
+            "NATIVE_CAMERA_EFFECTS_RESULT", graphical=True)
     # These existing independent oracles protect material shading, partial
     # Water, history lifetime and ANGLE crossfade while coordinates change.
     for script, marker in (
@@ -441,10 +453,12 @@ def camera(args):
             ("material_vapour_pipeline", "MATERIAL_VAPOUR_PIPELINE:"),
             ("palette_crossfade", "PALETTE_CROSSFADE_RENDER_RESULT")):
         frames = runner.evidence / (script + "-frames")
-        runner.godot(project, "preserve-"+script, "test_"+script+"_render", marker,
-                     graphical=True, env={"CYBERSAND_PRESENTATION_EVIDENCE": str(frames),
-                                          "CYBERSAND_SHADER_CAPTURE": str(frames),
-                                          "CYBERSAND_PALETTE_CROSSFADE_OUTPUT": str(frames)})
+        qualify("preserve-"+script, "test_"+script+"_render", marker,
+                graphical=True, env={"CYBERSAND_PRESENTATION_EVIDENCE": str(frames),
+                                     "CYBERSAND_SHADER_CAPTURE": str(frames),
+                                     "CYBERSAND_PALETTE_CROSSFADE_OUTPUT": str(frames)})
+    if failed_cases:
+        raise RuntimeError("Camera qualification failed: " + ", ".join(failed_cases))
 
 
 def main():

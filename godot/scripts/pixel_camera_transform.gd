@@ -62,6 +62,17 @@ static func screen_to_cell(point: Vector2, mapping: Transform2D) -> Vector2i:
 	return Vector2i(screen_to_world(point.floor() + Vector2(0.5, 0.5), mapping).floor())
 
 
+static func content_contains_screen_sample(sample_position: Vector2, content: Rect2,
+		screen_transform: Transform2D) -> bool:
+	if is_axis_aligned(screen_transform):
+		# Match the shader's half-open physical bounds. Inverting a fractional
+		# canvas scale first can round an included edge sample just outside.
+		var physical_content := Rect2(screen_transform * content.position,
+			Vector2(screen_transform.x.x, screen_transform.y.y) * content.size)
+		return physical_content.has_point(sample_position)
+	return content.has_point(screen_transform.affine_inverse() * sample_position)
+
+
 static func local_to_world(local: Vector2, origin: Vector2, view_size: Vector2i,
 		content: Rect2) -> Vector2:
 	if not _valid_view(view_size, content): return Vector2.INF
