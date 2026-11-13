@@ -329,7 +329,7 @@ veins/ribs routing errors retained.
 `eos_terminated` token-position field (36/36), so the new guard intentionally
 cannot retroactively certify their terminal token position. Their original
 22/24 and 12/12 first-pass acceptance values remain *historical declarations*,
-not a fresh decoder/EOS result. The new model-free regression methods in
+not a fresh decoder/EOS result. The new model-free regression methods (including malformed non-object evidence) in
 `test_evaluation_guard.py` cover altered raw completion, forged EOS, changed
 motif flags, mismatched Art operation counts, changed sample IDs, swapped
 reference targets and token-cap overflow. Three isolated synthetic checks
