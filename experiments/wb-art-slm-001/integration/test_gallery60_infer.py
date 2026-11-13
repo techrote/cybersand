@@ -45,10 +45,10 @@ class FrozenRequestTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             p = Path(d) / 'frozen.json'
             lf = json.dumps(data, indent=2).encode()
-            p.write_bytes(lf.replace(b'\\n', b'\\r\\n'))
+            p.write_bytes(lf.replace(b'\n', b'\r\n'))
             old = mod.FROZEN_GALLERY_GIT_BLOB
             try:
-                mod.FROZEN_GALLERY_GIT_BLOB = hashlib.sha1(b'blob ' + str(len(lf)).encode() + b'\\0' + lf).hexdigest()
+                mod.FROZEN_GALLERY_GIT_BLOB = hashlib.sha1(b'blob ' + str(len(lf)).encode() + b'\0' + lf).hexdigest()
                 doc, _ = mod.frozen_cohort(p)
                 self.assertEqual(len(doc['requests']), 60)
             finally:
