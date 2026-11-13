@@ -502,18 +502,22 @@ func percentile(values: Array[int], fraction: float) -> int:
 
 
 func measure_pacing(variant: ShaderMaterial, legacy: bool) -> Dictionary:
+	var extended := OS.get_environment("CYBERSAND_CAMERA_PACING_EXTENDED") == "1"
+	var warmup_frames := 32 if extended else 12
+	var requested_frames := 240 if extended else 60
+	var budget_usec := 60000000 if extended else 3000000
 	surface.material = variant
 	variant.set_shader_parameter("view_size_px",Vector2(128,96))
 	variant.set_shader_parameter("view_rect_uv",Vector4(0,0,1,1))
 	# Warm both variants before measuring. Shader compilation, resource setup,
 	# screenshot readback and the previous image-comparison loops are excluded.
-	for frame: int in range(12):
+	for frame: int in range(warmup_frames):
 		configure_sample_mapping(variant,Vector2(59,60),Vector2i(128,96),Rect2(0,0,1280,960),not legacy)
 		await RenderingServer.frame_post_draw
 	var frames_usec: Array[int] = []
 	var uniforms_usec: Array[int] = []
 	var start: int = Time.get_ticks_usec()
-	for frame: int in range(60):
+	for frame: int in range(requested_frames):
 		var requested := Vector2(59+float(frame)*0.1,60)
 		var presented: Vector2 = requested.floor() if legacy else Camera.presentation_origin(requested,
 			Vector2i(128,96),Rect2(0,0,1280,960),Transform2D.IDENTITY)
@@ -522,13 +526,14 @@ func measure_pacing(variant: ShaderMaterial, legacy: bool) -> Dictionary:
 		uniforms_usec.append(Time.get_ticks_usec()-frame_start)
 		await RenderingServer.frame_post_draw
 		frames_usec.append(Time.get_ticks_usec()-frame_start)
-		if Time.get_ticks_usec()-start >= 3000000: break
+		if Time.get_ticks_usec()-start >= budget_usec: break
 	var elapsed: int = Time.get_ticks_usec()-start
 	check(not frames_usec.is_empty() and elapsed > 0,"actual rendered pacing samples " + ("legacy" if legacy else "native"))
 	return {"label":"same-source legacy-coordinate control" if legacy else "native-display-pixel camera",
-		"frame_count":frames_usec.size(),"requested_frames":60,"budget_limited":frames_usec.size()<60,
-		"warmup_frames":12,"measurement_budget_usec":3000000,"elapsed_usec":elapsed,
+		"frame_count":frames_usec.size(),"requested_frames":requested_frames,"budget_limited":frames_usec.size()<requested_frames,
+		"warmup_frames":warmup_frames,"measurement_budget_usec":budget_usec,"elapsed_usec":elapsed,
 		"frame_median_usec":percentile(frames_usec,0.5),"frame_p95_usec":percentile(frames_usec,0.95),
+		"frame_p99_usec":percentile(frames_usec,0.99),"frame_max_usec":percentile(frames_usec,1.0),
 		"uniform_median_usec":percentile(uniforms_usec,0.5),"uniform_p95_usec":percentile(uniforms_usec,0.95),
 		"observed_frames_per_second":float(frames_usec.size())*1000000.0/float(maxi(elapsed,1)),
 		"frame_samples_usec":frames_usec,"uniform_samples_usec":uniforms_usec,
@@ -553,6 +558,13 @@ func comparative_pacing() -> void:
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	var legacy: Dictionary = await measure_pacing(legacy_material,true)
 	var current: Dictionary = await measure_pacing(material,false)
+	var abba: Array[Dictionary] = []
+	if OS.get_environment("CYBERSAND_CAMERA_PACING_EXTENDED") == "1":
+		# Same frozen world, coverage, shader, output and workload as the original
+		# short comparison. Reversed repeat order separates arm cost from drift.
+		abba.append_array([legacy,current])
+		abba.append(await measure_pacing(material,false))
+		abba.append(await measure_pacing(legacy_material,true))
 	DisplayServer.window_set_vsync_mode(old_vsync)
 	surface.material = material
 	pacing = {"schema":"native-pixel-scrolling-pacing-v1","advisory":true,
@@ -564,6 +576,19 @@ func comparative_pacing() -> void:
 		"p95_frame_ratio":float(current.frame_p95_usec)/float(maxi(int(legacy.frame_p95_usec),1)),
 		"control_source_sha256":legacy_shader.code.sha256_text(),"production_shader_sha256":shader.code.sha256_text(),
 		"control_replacement_from":CURRENT_COORDINATES,"control_replacement_to":LEGACY_COORDINATES}
+	if not abba.is_empty():
+		pacing.extended_order = ["legacy","native","native","legacy"]
+		pacing.extended_abba = abba
+		var legacy_frames: Array[int] = []
+		var native_frames: Array[int] = []
+		for index: int in range(4):
+			if index in [0,3]: legacy_frames.append_array(abba[index].frame_samples_usec)
+			else: native_frames.append_array(abba[index].frame_samples_usec)
+		pacing.extended_summary = {}
+		for key: String in ["legacy","native"]:
+			var values: Array[int] = legacy_frames if key == "legacy" else native_frames
+			pacing.extended_summary[key] = {"count":values.size(),"median_usec":percentile(values,0.5),
+				"p95_usec":percentile(values,0.95),"p99_usec":percentile(values,0.99),"max_usec":percentile(values,1.0)}
 
 
 func run() -> void:

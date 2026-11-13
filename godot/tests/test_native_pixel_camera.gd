@@ -9,12 +9,18 @@ const Setup = preload("res://scripts/workbench_setup.gd")
 class FocusHost extends "res://scripts/main.gd":
 	func _actor_window_has_focus() -> bool: return true
 
+class FollowFrameProbe extends Node:
+	var observe: Callable
+	func _process(_delta: float) -> void: observe.call()
+
 var checks: int = 0
 var failures: Array[String] = []
 var host: Control
 var bench: Control
 var editor: Control
 var native_receipts: Array[Dictionary] = []
+var moving_follow_receipts: Array[Dictionary] = []
+var moving_follow_invalid := false
 
 
 func _initialize() -> void:
@@ -207,12 +213,13 @@ func local(cell: Vector2i) -> Vector2:
 		host.current_view_size,host.view_content_rect())
 
 
-func gesture(tool: String, first: Vector2i, last: Vector2i, material_id: int = 58) -> void:
+func gesture(tool: String, first: Vector2i, last: Vector2i, material_id: int = 58,
+		button: int = MOUSE_BUTTON_LEFT) -> void:
 	editor.select_tool(tool)
 	editor.select_material(material_id)
 	bench._tool.select(0)
 	var press := InputEventMouseButton.new()
-	press.button_index = MOUSE_BUTTON_LEFT
+	press.button_index = button
 	press.pressed = true
 	press.position = local(first)
 	bench._world_input(press)
@@ -221,7 +228,7 @@ func gesture(tool: String, first: Vector2i, last: Vector2i, material_id: int = 5
 	move.relative = move.position - press.position
 	bench._world_input(move)
 	var release := InputEventMouseButton.new()
-	release.button_index = MOUSE_BUTTON_LEFT
+	release.button_index = button
 	release.position = local(last)
 	bench._world_input(release)
 	await until(ready, tool + " completes at fractional camera")
@@ -328,6 +335,20 @@ func mounted() -> void:
 	check(pasted.size() == 9 and pasted.count(58) == 9,"clipboard gesture lands at displayed target")
 	await gesture("Brush",Vector2i(75,75),Vector2i(75,75),131)
 	check(await capture(Rect2i(75,75,1,1)) == PackedInt32Array([131]),"Brush native target matches displayed cell")
+	# These distinct input paths previously had only integer-camera coverage.
+	# Check the entire surrounding region, including untouched cells, through
+	# native readback rather than comparing the preview with its own mapping.
+	await gesture("Line",Vector2i(63,100),Vector2i(69,106),77)
+	var line_region := Rect2i(62,99,9,9)
+	var expected_line := PackedInt32Array()
+	for y: int in range(9):
+		for x: int in range(9): expected_line.append(77 if x == y and x >= 1 and x <= 7 else 0)
+	check(await capture(line_region) == expected_line,
+		"fractional-camera Line writes exact diagonal cells across chunk64 and leaves neighbours untouched")
+	await gesture("Brush",Vector2i(66,103),Vector2i(66,103),77,MOUSE_BUTTON_RIGHT)
+	expected_line[4*9+4] = 0
+	check(await capture(line_region) == expected_line,
+		"fractional-camera right-button erase clears only its displayed native cell")
 	await gesture("Outline",Vector2i(110,90),Vector2i(116,96))
 	editor.selection = Rect2i()
 	await gesture("Fill",Vector2i(113,93),Vector2i(113,93),2)
@@ -364,6 +385,7 @@ func mounted() -> void:
 	bench._set_view(Vector2(1000,1000),Vector2i(240,135))
 	check(host.camera_origin == Vector2(272,377),"camera clamps to far World edge without changing view size")
 	await follow_same_frame()
+	await follow_moving_actor()
 
 
 func hover_without_motion() -> void:
@@ -512,6 +534,64 @@ func follow_same_frame() -> void:
 	host.set_process(true)
 
 
+func observe_moving_follow(first_step: int) -> void:
+	if moving_follow_receipts.size() >= 12 or moving_follow_invalid: return
+	var step: int = host.rapier_bridge.manual_step_count()
+	if step <= first_step or (not moving_follow_receipts.is_empty()
+			and step == int(moving_follow_receipts[-1].physics_step)): return
+	var state: Dictionary = bench.body_state(1)
+	if not check(not state.is_empty(),"moving follow retains the selected actual Rapier actor"):
+		moving_follow_invalid = true
+		return
+	var position: Vector2 = state.position
+	var desired: Vector2 = host.clamped_camera_origin(position-Vector2(host.current_view_size)*0.5)
+	var presented: Vector2 = host.presentation_camera_origin()
+	var terrain: Vector2 = host.world_shader.get_shader_parameter("camera_origin_px")
+	var label := "moving follow physics step " + str(step)
+	check(near(host.camera_origin,desired),label+" camera follows the current physics pose")
+	check(near(terrain,presented),label+" terrain contains this frame's presented origin")
+	for overlay: Control in [host.physical_actor_overlay,host.actor_prototype_overlay,host.usable_overlay]:
+		check(near(overlay._origin,presented),label+" overlay shares the terrain origin: "+overlay.get_class())
+	moving_follow_receipts.append({"physics_step":step,"position":[position.x,position.y],
+		"camera_origin":[host.camera_origin.x,host.camera_origin.y],
+		"presented_origin":[presented.x,presented.y],"terrain_origin":[terrain.x,terrain.y]})
+
+
+func follow_moving_actor() -> void:
+	# The earlier paused/manual-callback check isolates ordering. This phase
+	# leaves both production callbacks enabled and lets the real Rapier barrel
+	# fall under gravity. A late observer records completed presentation after
+	# Main and its children, once per distinct actual physics step.
+	var state: Dictionary = bench.body_state(1)
+	if not check(host.paused and not state.is_empty(),"moving follow begins with the paused installed actor"): return
+	var initial_position: Vector2 = state.position
+	var first_step: int = host.rapier_bridge.manual_step_count()
+	bench._camera.select(1)
+	var probe := FollowFrameProbe.new()
+	probe.process_priority = 100
+	probe.observe = observe_moving_follow.bind(first_step)
+	root.add_child(probe)
+	if not check(bench.toggle_pause() and not host.paused,"moving follow starts through ordinary Workbench Play"):
+		probe.queue_free()
+		return
+	await until(func() -> bool: return moving_follow_invalid or moving_follow_receipts.size() >= 12,
+		"moving follow records twelve distinct actual physics steps",30000)
+	probe.set_process(false)
+	probe.queue_free()
+	check(bench.toggle_pause() and host.paused,"moving follow returns through ordinary Workbench Pause")
+	await until(func() -> bool: return bool(host.simulation_worker.paint_state().paused),
+		"moving follow native owner acknowledges Pause")
+	check(moving_follow_receipts.size() == 12,"all twelve moving-follow presentation samples completed")
+	if not moving_follow_receipts.is_empty():
+		var last_position := Vector2(moving_follow_receipts[-1].position[0],moving_follow_receipts[-1].position[1])
+		check(last_position.y-initial_position.y > 0.1,"followed Rapier actor actually moves under gravity")
+		var changes := 0
+		for index: int in range(1,moving_follow_receipts.size()):
+			if moving_follow_receipts[index].position != moving_follow_receipts[index-1].position: changes += 1
+		check(changes >= 8,"moving follow observes changing poses across multiple presentation frames")
+	bench._camera.select(0)
+
+
 func run() -> void:
 	transforms()
 	await mounted()
@@ -533,7 +613,7 @@ func run() -> void:
 		"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"transform_sha256":FileAccess.get_sha256("res://scripts/pixel_camera_transform.gd"),
 		"source_hashes":source_hashes,"native_runtime_sha256":FileAccess.get_sha256(native_path),
-		"native_receipts":native_receipts}
+		"native_receipts":native_receipts,"moving_follow_receipts":moving_follow_receipts}
 	var folder := OS.get_environment("CYBERSAND_TEST_ARTIFACT_DIR")
 	if not folder.is_empty() and DirAccess.make_dir_recursive_absolute(folder) == OK:
 		var receipt := FileAccess.open(folder.path_join("native-pixel-camera.json"),FileAccess.WRITE)
