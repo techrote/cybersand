@@ -1,6 +1,6 @@
 {
   "experiment": "WB-ART-SLM-001",
-  "status": "Latest 19 role-owned files imported serially; 78 executed model-free tests pass; real-model/current-source native/Windows HOLD",
+  "status": "Fourth Integration intake complete: 17 role-owned paths; independent latest suites 22 PASS/1 archive SKIP; Controls 10/11 PASS with diagnostic assertion mismatch. Main smoke RED; native/current-source Windows/model HOLD",
   "updated_on": "2026-11-13",
   "owner": "five role workers after bootstrap handoff",
   "branch": "codex/wb-art-slm-001",
@@ -49,7 +49,7 @@
     }
   },
   "production_promotion": "HOLD; one Draft #567, no Ready, merge, native/Windows promotion",
-  "next_checkpoint": "Independent Evaluation bridge review; source-compatible #565 Windows graphical runtime; authentic step-400 adapter plus native Godot Windows/Linux Art, Stop, chronological Undo/Redo, save/reopen, blind visual score. Model gains unmeasured; Draft/HOLD.",
+  "next_checkpoint": "Controls role-owned assertion correction for refused altered native crop; rerun exact-head full offline CI. Independent Evaluation bridge review and qualified current-source #565 Windows/Linux authentic model/native/persistence remain required.",
   "pull_request": "https://github.com/techrote/cybersand/pull/567",
   "model_native_cases_passed": 68,
   "combined_gallery_images": 260,
@@ -86,7 +86,7 @@
     "dependency_board": "experiments/wb-art-slm-001/integration/DEPENDENCIES.json",
     "tests_executed": 78,
     "tests_passed": 78,
-    "tests_platform": "Exact source 385bb41f, Ubuntu 24.04, Python 3.12 GitHub hosted Actions 43376391448; 78 model-free methods pass, 4 archive-dependent skip. No actual model/native/Windows.",
+    "tests_platform": "Previous exact-source 385bb41f 78 PASS/4 SKIP (historical). New 4e45dc68 run 43383988875 latest-role independent job 22 PASS/1 archive SKIP, but combined workflow FAIL on one Controls diagnostic assertion; other original smoke steps suppressed. No native/model/Windows.",
     "limits": "Actual step-400 model not loaded in this integration test; no current-main native/Godot or Windows execution, screenshots, or independent review",
     "provider_protocol": "Loopback 127.0.0.1:8127/v1/chat/completions single text-only LM Studio-mode request; authentic inference not run in hosted qualification.",
     "material_and_ownership": "Focus and allowed materials/tools captured from host; seed and budgets in bridge launch; existing Godot native Art executor retains receipts, protection, Stop/history/persistence",
@@ -108,7 +108,16 @@
     "stop_lifecycle": "On client EOF/Stop, local child is terminated and no late batch returned; Linux actual-handler/fake-subprocess tested; Windows process-tree, active pretrained adapter and real Godot Stop untested.",
     "host_scope": "Captured Workbench authoritative host fields are parsed from appended scope suffix, overriding editable Guidance decoys; source/receipt restrictions still apply.",
     "tests_discovered": 82,
-    "tests_skipped": 4
+    "tests_skipped": 4,
+    "current_head_tests_not_all_pass": true,
+    "latest_independent_job": {
+      "source": "4e45dc68114669bd9a93063bd9d35fe692268879",
+      "run": "43383988875",
+      "passed": 22,
+      "skipped": 1,
+      "conclusion": "SUCCESS separate job; full workflow FAILURE",
+      "controls_failure": "test_material_readback_tampering_refused expected 'readback'; actual fail-closed 'stored native crop disagrees with receipt chain'"
+    }
   },
   "artifact_recovery": {
     "verification": "Four named owner Library archives materialized and byte-size/SHA256 compared with ARTIFACTS.json on 2026-11-13; all four match",
@@ -245,6 +254,22 @@
       "review": "Independent Integration-authored bridge assembly review still PENDING. Eval stimulus audit is a separate evaluation-owned measurement, not that review.",
       "upstream": "main 63f8b1ba, #564 6319ab1d and #565 d66499ec unchanged; #565 Windows deadline gate still HOLD",
       "remaining": "Qualify authentic adapter/current-source native/Windows and human theme recognition; no production promotion."
+    },
+    "fourth_2026_11_13_0712": {
+      "source_before": "5b32671cd283fdb8159f4cb67267fd65742fc6ef",
+      "changed_paths": 17,
+      "heads": {
+        "controls": "ed09d214b971e38aa78992b0aef0530a2aade349",
+        "corpus": "9f67881fbfbdf05883e646943319d9a9f014f640",
+        "training": "c53f8ef052b7f20a9cf7e4de7d2b50530bfa11f1",
+        "evaluation": "f18ddcf72e4ce8f6e3a897df25818d84620ec439"
+      },
+      "ci": "43383988875: 22/22 latest-role methods PASS, 1 SKIP in independent job; combined failed Controls expected error substring, all other CI not complete",
+      "checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-0712.md",
+      "model_gain_measured": false,
+      "new_native_execution": false,
+      "windows_accepted": false,
+      "frozen_adapter_sha256": "02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2"
     }
   }
 }
