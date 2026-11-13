@@ -22,3 +22,71 @@ See `training/curriculum_exposure_audit.json` for the deterministic original-vs-
 **Next owned milestone:** first harden the shared durable lease and whole-process deadline/resume cleanup; restore and verify the exact pinned base/runtime on one authorized host; then execute **one**, and only one, fresh 400-step `keyword-replay-v1` candidate against the same train and 24-development/twelve-keyword benchmarks. Reconcile strict raw success, theme/primary motif, ordered geometry, coral numeric validity, no regression, throughput/RSS and independently replayable native fixture IDs. Do not use the untouched final set for feedback. For a family comparison, first establish matched fine-tuning budgets for Sprocket-500M root Instruct and SmolLM2-135M, not zero-shot vs tuned scores.
 
 The latest #564/#565 remain independently owned Draft upstream work; no native successor was imported or downgraded here. No NeuroRunner files, material laws, physics defaults, native harnesses, PR states or other schedules were changed.
+
+---
+
+## Continuation: enforced local training lease and whole-process deadline
+
+**Published source head:** pending immutable commit from this checkpoint write; preceding
+implementation/documents commit a2269b5933cb1075545e0125aef91ff8e7e56d01.
+**Integrator consumed training predecessor:** 729343a22e300128d77bb3cfd4475411fef36f15.
+**Integrator branch observed:** 1fe52bbda9c656a38e9617326d23fbf7fb2f6730.
+Only training-owned files changed. #567 and shared state/registry were untouched.
+
+### Implemented and exercised
+
+1. Added job_guard.py: the parent owns the same OS FileLock as direct train_lora
+   launches; durable role lease records PID/child, random token, heartbeat,
+   fingerprint and state. The supervised child verifies real parent/token/output
+   before bypassing its redundant lock. This retains direct-trainer lock safety.
+2. Complete input/candidate fingerprints cover absolute train/dev/admission/
+   corpus-manifest/compiler bytes, exact local model snapshot and verified
+   download_receipt.json, model ID/revision, source/trainer/template files,
+   pinned numerical Python/package platform and resume inventory. Duplicate
+   attempts on an unchanged fingerprint are refused across output directories.
+   Base model checksum mismatches and source-tree output paths fail closed.
+3. A supervised child has a maximum 3,300-second whole-process interval, with
+   configurable 300-second default soft-stop/save margin. POSIX sends SIGTERM
+   to the separate process group then SIGKILL if necessary; Windows control
+   break/terminate is implemented but untested. The wrapper verifies the
+   published checkpoint's entire inventory and separates completed target
+   steps from a valid but incomplete resumed checkpoint.
+4. train_lora.py now uses a shared helper for guarded/unguarded locking; its
+   existing first-pass model scoring, true supervised EOS, checkpoint contents,
+   and historical shuffled-v1 default are unchanged.
+5. Offline subprocess qualification: 10/10 unittest methods PASS, Linux
+   Python 3.13.5, real FileLock and fake worker (no model weights). Cases include
+   successful complete checkpoint/lease, duplicate attempt rejection, graceful
+   SIGTERM with checkpoint, force-kill of SIGTERM-ignoring child, direct-job lock
+   overlap rejection, corrupt base-file refusal, forged token rejection,
+   model identity mismatch, duplicate flags/relative paths and invalid margins.
+
+**Exact committed blobs:** job_guard.py
+0c65fb6614e8436a6afcc80fc09008a09ac3d5aa; test_job_guard.py
+ae856841741619fefe106d61967650920d28d754; train_lora.py
+cdbbd9f02081fd5646ef13ca3ca4e549e2b95b58; training README
+967d0ee3f1d78c4a951642bbf677550ecec6ef7a.
+The full test command was
+python -m unittest -v test_job_guard.py (plus Python source compilation).
+Tests run in a separate temporary local directory with synthetic model and
+checkpoint files; they do **not** demonstrate real LoRA training, official-model
+loads, Windows Ctrl+Break, production/native Art or adapter accuracy.
+
+### Next dependency-ready work
+
+Recover the pinned LFM2.5 base and exact CPU Transformers/PEFT runtime on an
+authorized reachable machine, **inspect the one designated private run parent
+and existing role lease first**, and launch at most one *new* 400-step
+keyword-replay-v1 run using the guarded entrypoint. Do not relaunch the
+original frozen shuffled-v1 step-400 candidate. Verify fully hashed resume,
+throughput, RSS, and raw dev/keyword predictions; independently export accepted
+unrepaired programs to native replay. One remaining guard follow-on: bring
+standalone heavy evaluate_model.py under the same process deadline/role lease;
+until then explicitly serialize it and do not claim it is covered by the
+training supervisor.
+
+Neither the frozen scoreboard (22/24, 19/24, 13/24), exact 25→26 resume proof,
+word failures nor the final holdout were changed. No new training, inference,
+native World, GPU, Windows or graphical campaign was executed in this
+continuation. The original step-400 adapter and all four user archives remain
+preserved. **No measured model-quality gain is claimed.**
