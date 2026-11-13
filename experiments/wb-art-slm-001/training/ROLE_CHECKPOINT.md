@@ -487,3 +487,52 @@ Require the full exact-head [WB-ART-SLM offline workflow](https://github.com/tec
 **Model-run preparation and remaining real blocker.** The four original user-saved archives were actually materialized in a private working directory, their sizes and SHA-256 matched the pinned `ARTIFACTS.json` identities, and adapter/resume and native/model evidence contents were inspected (frozen LFM2.5-350M step400, official base revision `9921cd4d82c0e3986887aa4b376f9446729ef8a3`). The present environment lacks the **pinned base-model snapshot** and `transformers` / `peft` runtime; no active private training run-parent/lease can be inspected here. No model training or inference was started, and no model-quality improvement is claimed. Corpus owns `failure_contrast_replay_v5.json` at `6195f180`, but the currently published Training `curriculum.py` advertises only `shuffled-v1` and `keyword-replay-v1`; a verified v5 original-index consumer must be made available before representing a training run as v5. This is a concrete execution blocker, not a reason to add generic safety infrastructure.
 
 **Next priority:** Integration imports the one-line correction and validates the 17-job/14-eval suites; Training secures the permitted pinned base/runtime and intact private lease, consumes v5 manifest without touching Corpus owner files, then trains one new separately identified, full-resume-capable 400-step candidate. Retain the original 24 DEV and 12 keywords for raw first-pass scoring and hand all accepted/rejected cases to the actual native gallery owner. **Draft/HOLD**; no changes to Integration, #564/#565, NeuroRunner, model weights, production defaults or schedules.
+
+---
+
+## 13 November 2026 — v5 model-execution handoff after real combined CI
+
+**Owner:** Training; only training/ files changed in this role. Shared combined
+branch #567 remained Integration-owned. Existing baseline LFM350 step400
+adapter SHA-256 `02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2`
+remains frozen.
+
+**Exact CI diagnosis:** [43414042136](https://github.com/techrote/cybersand/actions/runs/43414042136)
+after Integration imported the missing-time fix: Windows bridge synthetic and
+independent-role jobs PASS; Ubuntu Training 16/17 PASS, one soft Stop descendant
+test FAIL. The synthetic child wrote after 1.3 seconds while soft Stop was
+scheduled at approximately 2 seconds; that failed test cannot establish a
+post-Stop surviving child. The test now schedules that sentinel after Stop
+(3 seconds for soft-stop, retains 1.3 seconds for normal-parent-exit) and
+adds a deliberately unfenced negative supervisor control with unconditional
+process-group cleanup after observation. No actual engine/native claim.
+
+**Implemented:**
+- `curriculum.py`: new `failure-contrast-v5` original-admitted-source-index
+  policy, exact 400 index and selected-ID hashes, 376 original native traces,
+  72 groups and 3 literal anchors each theme. Requires separately owned
+  immutable v5 manifest and pinned seed 731/epoch zero.
+- `train_lora.py`: explicit `--v5-manifest`, preflight and sampler integration,
+  independently fingerprinted manifest bound to exact checkpoint and resume.
+- `job_guard.py`: includes v5 manifest bytes in durable pre/post fingerprint.
+- `test_curriculum.py`: refusal and private-archive-dependent v5 preflight
+  definition; no fake corpus acceptance.
+- `test_job_guard.py`: corrected soft Stop survivor timing and negative control.
+- `run_v5_windows.ps1`: one candidate, Windows owner-CPU launch path using
+  original corpus, pinned base revision and existing training lease.
+
+**Qualification boundary:** GitHub exact new source was published; complete
+exact-source tests are NOT YET PASS-verified. No PowerShell or new optimizer
+execution performed in this runtime. Private archive original TRAIN SHA and
+source-index ID digests were actually independently checked by Integration.
+Model runtime still lacks pinned model base and Transformers/PEFT; no authorized
+private training lease has been inspected. No neural improvement, native
+gallery/Windows human acceptance, merge, default/production change, extra
+task or paid compute.
+
+**Handoff:** Integration imports exact Training-owned deltas; rerun complete
+Ubuntu job guard/curriculum/evaluation offline suite to distinguish test timing
+correction from a real process-group bug. Then Training on an authorized owner
+host executes the one new `lfm350-v5-contrast-400` adapter and returns raw
+DEV24+words12 first-pass metrics and checkpoint hash. Evaluation receives only
+the fixed 60-prompt cohort and genuinely rendered native pairs.
