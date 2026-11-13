@@ -1,0 +1,19 @@
+# SMOL agent-painter lane — Greebles / Pipework / Architecture
+
+**Owner:** CyberSand SMOL worker. **Ledger:** [issue #568](https://github.com/techrote/cybersand/issues/568). **Status:** experimental, one dedicated Draft/HOLD PR; no production promotion.
+
+This lane starts from shared foundation [PR #569](https://github.com/techrote/cybersand/pull/569) at `2a565df45efc568eb96a2166e0b77f299e289625`. It uses the exact `HuggingFaceTB/SmolLM2-135M-Instruct@12fd25f77366fa6b3b4b768ec3050bf629380bac` model (upstream chat template and EOS) and the shared `portable-cpu-fp32-v1` trainer. No legacy 12-theme #567 data or checkpoint is substituted.
+
+## First bounded pilot
+
+The opt-in file `pilot-request.json` is the *only* push-trigger for [agent-painter-smol.yml](../../../.github/workflows/agent-painter-smol.yml). The workflow validates the exact request, then calls the shared `agent-painter-train.yml`, with `steps=16`, one ordinary `ubuntu-24.04` CPU VM, a 45-minute total job bound and real AdamW updates. It uses the positively native-admitted **TRAIN** material from original source `633920373a3d406a2ede61ce4137c324f76be23b`, run [43506373969](https://github.com/techrote/cybersand/actions/runs/43506373969) (12 TRAIN, 12 DEVELOPMENT, six unopened FINAL; groups disjoint). The wrapper owns installation, model-hash checks, completion-only labels, bounded work, safe atomic checkpoints, source/data identity and failure-artifact upload. It also captures a **single raw 128-token first-pass probe** without retries, repair or native-success claims.
+
+The triggering full source SHA becomes the experiment's unique artifact name. Inspect running and queued jobs before altering requests; do not retrigger the same training merely because a schedule wakes. The shared proof wrapper permits only 1–16 steps and writes a checkpoint after *every* step, so checkpoint artifact growth is significant. Do not silently increase this common limit; a future larger campaign uses a distinct versioned lane-owned wrapper with a controlled checkpoint interval. Do not launch a second active training job until the first has a materially distinct, independently identified purpose.
+
+**Current acceptance:** this is a bounded supervised optimization/data-custody pilot. Successful CI is **not** evidence of valid first-pass JSON, recognizable art or native painting. After retrieving and inspecting the results, evaluate an untuned parent and tuned checkpoint on the unchanged DEVELOPMENT cohort and keep every raw failure. The benchmark must distinguish prompts, structural groups, seed variants and actual acknowledged native paintings. Preserve the reserved FINAL partition; do not read its targets or images. Ask the shepherd to coordinate common evaluation/corpus changes rather than editing shared contracts from this lane.
+
+## Next experiment design
+
+If the pilot is valid but weak, inspect raw EOS failure rates, program geometry, per-family coverage and overfitting. Extend the properly native-admitted TRAIN structural families without recycling DEVELOPMENT/FINAL structures. Native Art execution, original PNGs, readback and worker-primary visual assessment are separate from compiler-only output. Freeze a useful `vN` immutably before comparing **fresh-from-parent** and **continued-from-a-copy-of-vN** with the same *new* TRAIN recipe and new-stage budget, each on a distinct standard Actions VM and its own output lease. The original vN remains untouched; the paired continued branch resets its new-stage optimizer rather than pretending to be full-state resume.
+
+The common schema/compiler/native acceptance contracts and the other model workers' files are outside this lane's write ownership. All branches and PRs remain Draft/HOLD pending owner acceptance; never merge or change the default provider.
