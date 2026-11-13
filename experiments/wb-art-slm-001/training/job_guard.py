@@ -93,9 +93,15 @@ def build_fingerprint(argv: list[str], worker: Path) -> tuple[str, dict]:
     downloaded = json.loads(receipt.read_text(encoding="utf-8"))
     if downloaded.get("model_id") != opts["--model-id"] or downloaded.get("resolved_revision") != opts["--revision"]:
         raise ValueError("Pinned model receipt identity differs from training arguments")
+    if not isinstance(downloaded.get("files"), dict):
+        raise ValueError("Pinned model receipt has no file inventory")
+    observed_model = {name.removeprefix("model/") for name in files
+                      if name.startswith("model/") and name != "model/download_receipt"}
+    if set(downloaded["files"]) != observed_model:
+        raise ValueError("Pinned model snapshot and download receipt inventories differ")
     for filename, entry in files.items():
         if filename.startswith("model/") and filename != "model/download_receipt":
-            if downloaded.get("files", {}).get(filename.removeprefix("model/"), {}).get("sha256") != entry["sha256"]:
+            if downloaded["files"].get(filename.removeprefix("model/"), {}).get("sha256") != entry["sha256"]:
                 raise ValueError("Pinned model file checksum differs from download receipt: " + filename)
     root = worker.parent
     for p in (worker, root / "job_guard.py", root / "curriculum.py", root / "system_prompt.txt"):
@@ -105,7 +111,14 @@ def build_fingerprint(argv: list[str], worker: Path) -> tuple[str, dict]:
         resume = Path(str(opts["--resume"])).resolve(strict=True)
         if not (resume / "inventory.json").is_file():
             raise ValueError("Resume inventory missing")
-        files["resume/inventory.json"] = {"path": str(resume), "sha256": digest(resume / "inventory.json")}
+        # Validate *every* full-resume payload before launching a model worker.
+        # An inventory hash alone cannot establish optimizer/RNG tensor custody.
+        from train_lora import verify_checkpoint
+        verify_checkpoint(resume)
+        for saved in sorted(resume.rglob("*")):
+            if saved.is_file():
+                files["resume/" + str(saved.relative_to(resume))] = {
+                    "path": str(saved), "sha256": digest(saved)}
     packages = {}
     for name in ("torch", "transformers", "peft", "accelerate", "numpy", "safetensors", "filelock"):
         try:
@@ -197,6 +210,19 @@ def run(args, worker_args: list[str]) -> dict:
     parent.mkdir(parents=True, exist_ok=True)
     # Same lock protects the trainer's native direct entrypoint and this wrapper.
     with FileLock(str(parent / LOCK_NAME), timeout=0):
+        # The OS lock vanishes if a supervisor crashes, but its child may
+        # survive. Never replace an unfinished durable lease on that basis.
+        # An operator must inspect/stop orphaned workers and reconcile the
+        # retained ledger before another local candidate may be launched.
+        previous_lease_path = parent / LEASE_NAME
+        if previous_lease_path.exists():
+            try:
+                previous_lease = json.loads(previous_lease_path.read_text(encoding="utf-8"))
+            except (OSError, ValueError) as exc:
+                raise ValueError("Unparseable durable role lease; manual recovery required") from exc
+            terminal = {"completed", "failed", "incomplete", "stopped_early", "deadline_killed"}
+            if not isinstance(previous_lease, dict) or previous_lease.get("state") not in terminal:
+                raise FileExistsError("Unfinished durable role lease; inspect possible orphaned model worker")
         if is_evaluation:
             from evaluation_guard import evaluation_fingerprint
             fingerprint, inventory = evaluation_fingerprint(worker_args, worker)
@@ -288,15 +314,24 @@ def run(args, worker_args: list[str]) -> dict:
                 completed_steps = None
         else:
             completed_steps = None
+        # A valid checkpoint cannot qualify a candidate whose inputs changed
+        # while its optimizer was running, even if the child exited cleanly.
+        custody_error = None
+        try:
+            final_fingerprint, _ = build_fingerprint(worker_args, worker)
+            if final_fingerprint != fingerprint:
+                custody_error = "Training input/source fingerprint changed during execution"
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            custody_error = "Training custody recheck failed: " + repr(exc)
         target_steps = int(str(opts.get("--steps", 25)))
-        status = ("deadline_killed" if hard_killed else "failed" if error or return_code != 0
+        status = ("deadline_killed" if hard_killed else "failed" if error or custody_error or return_code != 0
                   else "completed" if checkpoint and completed_steps == target_steps
                   else "stopped_early" if checkpoint else "incomplete")
         result = {"fingerprint": fingerprint, "status": status, "return_code": return_code,
                   "whole_process_seconds": time.monotonic() - started, "soft_stop_sent": soft_stopped,
                   "hard_kill_sent": hard_killed, "target_steps": target_steps,
                   "observed_steps": completed_steps, "verified_checkpoint": checkpoint,
-                  "error": error, "ended_at_unix": time.time()}
+                  "error": error or custody_error, "ended_at_unix": time.time()}
         atomic_json(output / RESULT_NAME, result)
         lease.update({"state": status, "heartbeat_unix": time.time(), "ended_at_unix": time.time(), "result_path": str(output / RESULT_NAME)})
         atomic_json(parent / LEASE_NAME, lease)
