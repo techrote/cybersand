@@ -1,0 +1,81 @@
+name: Agent painter SMOL independently bounded pilot
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths:
+      - experiments/agent_painter/lanes/smol/pilot-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-smol-pilot-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  request:
+    name: Validate owner-authorized frozen pilot request
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    outputs:
+      steps: ${{ steps.contract.outputs.steps }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Validate source, model, native admission, limits and request uniqueness
+        id: contract
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+          SOURCE_REF: ${{ github.ref }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          from pathlib import Path
+
+          path = Path("experiments/agent_painter/lanes/smol/pilot-request.json")
+          request = json.loads(path.read_text(encoding="utf-8"))
+          expected = {
+              "schema": "cybersand.agent-painter.smol-pilot-request/1",
+              "experiment": "smol-pilot-001",
+              "model": "HuggingFaceTB/SmolLM2-135M-Instruct",
+              "model_revision": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
+              "qualified_parent": "2a565df45efc568eb96a2166e0b77f299e289625",
+              "native_source": "633920373a3d406a2ede61ce4137c324f76be23b",
+              "corpus_run_id": "43506373969",
+              "corpus_artifact": "agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b",
+              "corpus_manifest_sha256": "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc",
+              "steps": 16,
+              "inference_proof": True,
+              "train_split": "TRAIN",
+              "final_targets_forbidden": True,
+              "runner_processes": 1,
+              "keep_draft": True,
+          }
+          if request != expected:
+              raise SystemExit("SMOL pilot request does not match the reviewed immutable contract")
+          if os.environ["SOURCE_REF"] != "refs/heads/codex/agent-painter-smol-568":
+              raise SystemExit("wrong SMOL lane source branch")
+          if not re.fullmatch("[0-9a-f]{40}", os.environ["SOURCE_SHA"]):
+              raise SystemExit("source commit must be immutable full SHA")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as stream:
+              stream.write("steps=16\n")
+          print("Validated SMOL pilot request at", os.environ["SOURCE_SHA"])
+          PY
+
+  train:
+    name: One real hosted CPU trainer, checkpoint and raw inference proof
+    needs: request
+    uses: ./.github/workflows/agent-painter-train.yml
+    with:
+      source-sha: ${{ github.sha }}
+      profile: smol
+      corpus-artifact: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+      corpus-run-id: '43506373969'
+      output-artifact: agent-painter-smol-pilot-${{ github.sha }}
+      steps: ${{ fromJSON(needs.request.outputs.steps) }}
+      inference-proof: true
