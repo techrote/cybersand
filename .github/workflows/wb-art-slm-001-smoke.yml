@@ -33,6 +33,7 @@ jobs:
         run: |
           python -m unittest discover -s experiments/wb-art-slm-001/controls -p 'test_pattern_compiler*.py' -v
           python -m unittest discover -s experiments/wb-art-slm-001/controls -p 'test_make_v11_native_pairs.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/controls -p 'test_audit_v11_native_pairs.py' -v
       - name: Install only the pinned file-lock guard dependency (no model stack)
         run: python -m pip install --disable-pip-version-check --no-deps filelock==4.2.4
       - name: Train-only curriculum guards and guarded subprocess lease (no weights or training)
@@ -40,8 +41,11 @@ jobs:
           python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_curriculum.py' -v
           python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_curriculum.py' -v
           python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_job_guard.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_evaluation_guard.py' -v
       - name: Additional owned-role synthetic guards (archive-dependent suites may skip)
         run: |
           python -m unittest discover -s experiments/wb-art-slm-001/controls -p 'test_audit_coral_native.py' -v
           python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_balanced_replay.py' -v
           python -m unittest discover -s experiments/wb-art-slm-001/evaluation -p 'test_blind_native_review.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_modifier_replay.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/evaluation -p 'test_audit_blind_stimulus.py' -v
