@@ -52,7 +52,8 @@ class PixelAuditTests(unittest.TestCase):
     def test_identical_pairs_not_independent_requests(self):
         result=self.run_audit()
         self.assertEqual(result['cards'],3)
-        self.assertEqual(result['original_request_count_unchanged'],36)
+        self.assertTrue(result['original_request_denominator_not_established_by_stimulus'])
+        self.assertEqual(result['admitted_display_cards'],3)
         self.assertEqual(result['distinct_near_stimulus_clusters'],2)
         self.assertEqual(result['near_duplicate_clusters'],[['q001','q002']])
         self.assertEqual(result['cross_request_near_pairs'][0]['exact_png_pair'],True)
