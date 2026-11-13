@@ -65,15 +65,38 @@ jobs:
           test "$(git -C "$RUNNER_TEMP/camera-accepted-main" rev-parse HEAD)" = "$CAMERA_BASELINE_SHA"
           python "$RUNNER_TEMP/camera-accepted-main/tools/ci/native_candidate_identity.py" "$GITHUB_WORKSPACE/build/native-pixel-integrated-baseline-windows"
           python - <<'PYCODE'
-          import os, pathlib, shutil, sys
+          import hashlib, json, os, pathlib, shutil, subprocess
           base = pathlib.Path(os.environ["RUNNER_TEMP"])
           candidate = base / "camera-candidate"
-          sys.path.insert(0, str(candidate / "tools/ci"))
-          import native_pixel_integrated_qualification as profile
           bundle = pathlib.Path("build/native-pixel-integrated-windows")
-          profile.engine.verify_bundle(bundle, "windows", os.environ["SOURCE_SHA"], validated=False)
-          shutil.copyfile(bundle / "cybersand_native.windows.x86_64.dll", candidate / "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll")
-          shutil.copyfile(pathlib.Path("build/native-pixel-integrated-baseline-windows/cybersand_native.windows.x86_64.dll"), base / "camera-accepted-main/godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll")
+          dll = bundle / "cybersand_native.windows.x86_64.dll"
+          manifest = json.loads((bundle / "runtime-provenance.json").read_text(encoding="utf-8"))
+          source = os.environ["SOURCE_SHA"]
+          tree = subprocess.check_output(["git", "-C", str(candidate), "rev-parse", "HEAD^{tree}"], text=True).strip()
+          expected = {"schema_version": 1, "source_commit": source, "build_commit": source,
+                      "source_tree": tree, "platform": "windows", "status": "built-not-executed",
+                      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/43509386141",
+                      "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"}
+          for field, value in expected.items():
+              if manifest.get(field) != value:
+                  raise RuntimeError(f"Original candidate provenance mismatch: {field}")
+          if manifest.get("workflow_attempt") != "1" or manifest.get("build_attempt") != "1":
+              raise RuntimeError("Original candidate artifact attempt mismatch")
+          if hashlib.sha256(dll.read_bytes()).hexdigest() != manifest["sha256"] or dll.stat().st_size != manifest["size"]:
+              raise RuntimeError("Original candidate DLL differs from its source-bound build receipt")
+          for section in ("source_inputs", "build_inputs"):
+              entries = manifest.get(section)
+              if not isinstance(entries, dict) or not entries:
+                  raise RuntimeError(f"Original candidate missing {section} custody")
+              for relative, digest in entries.items():
+                  actual = hashlib.sha256(subprocess.check_output(
+                      ["git", "-C", str(candidate), "show", f"{source}:{relative}"])).hexdigest()
+                  if actual != digest:
+                      raise RuntimeError(f"Original candidate {section} mismatch: {relative}")
+          print("CANDIDATE_ORIGINAL_BINARY_CUSTODY_PASS", source, manifest["sha256"], flush=True)
+          shutil.copyfile(dll, candidate / "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll")
+          shutil.copyfile(pathlib.Path("build/native-pixel-integrated-baseline-windows/cybersand_native.windows.x86_64.dll"),
+                          base / "camera-accepted-main/godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll")
           PYCODE
           git lfs install --local
           git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
