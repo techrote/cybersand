@@ -312,3 +312,21 @@ consistent one-cell receipts and captures. Synthetic tests are contracts,
 source-matched CI. A local two-position byte-order/crop reconstruction smoke
 passed; complete Python/CI/native qualification is still pending. The unchanged
 v1.1 compiler identity and adapter remain unpromoted.
+
+
+### Receipt diagnostic and four-phase native history custody — 13 November 2026, 08:12 UTC
+
+The 06:12 test-execution status above is retained as a historical checkpoint.
+[Current Controls checkpoint](CHECKPOINT_2026-11-13-0812.md) records the later
+exact-source result: the crop-tamper test was corrected to assert the actual
+fail-closed `stored native crop disagrees with receipt chain` diagnostic; all
+**11 original synthetic auditor tests passed** locally.
+
+The post-run auditor additionally checks all four ordered full-World native
+capture witnesses emitted by the frozen `--history each` replay protocol:
+draw material hash, empty Undo hash, restored Redo hash, identical save/reopen
+hash. Each witness must carry the native backend, completed status and
+512×512 region. The complete suite now has **13/13 passing synthetic contract
+tests** on source-identical Python 3.13.5, including forged Undo and missing
+reopen captures. The v1/v1.1 paired native run is still **not executed** and
+no native, Windows or visual improvement is claimed.
