@@ -1,0 +1,376 @@
+name: GEN006 opt-in native streaming vertical slice
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'native/tests/gen006_streaming_slice.cpp'
+      - 'native/tests/gen006_restore_coordinate_binding_negative.cpp'
+      - 'tools/experiments/gen006_cross_process_restart.py'
+      - 'tools/experiments/gen006_persistent_controller.py'
+      - 'tools/experiments/gen006_surface_owner_containment.py'
+      - 'tools/experiments/gen006_durable_edit_ack.py'
+      - 'docs/audits/2026-11-07-gen006-streaming-vertical-slice.md'
+      - 'godot/tests/gen006_streaming_slice_demo.gd'
+      - 'godot/tests/gen006_streaming_slice_demo.tscn'
+      - '.github/workflows/gen006-streaming-slice.yml'
+      - 'native/src/**'
+      - 'native/include/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gen006-slice-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  GEN006_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  native-stream-linux:
+    name: Actual native / Ubuntu 24.04
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Record provenance and CI provider policy
+        shell: python
+        run: |
+          import json, os, pathlib, platform, subprocess, sys
+          out=pathlib.Path("build/gen006-streaming-slice")
+          out.mkdir(parents=True,exist_ok=True)
+          def git(*args): return subprocess.check_output(["git",*args], text=True).strip()
+          record={"sha":git("rev-parse","HEAD"),"tree":git("rev-parse","HEAD^{tree}"),
+                  "github_sha":os.environ["GITHUB_SHA"],"os":platform.platform(),
+                  "python":sys.version,
+                  "world_cpp_blob":git("hash-object","native/src/world.cpp"),
+                  "world_hpp_blob":git("hash-object","native/include/cybersand/world.hpp"),
+                  "slice_blob":git("hash-object","native/tests/gen006_streaming_slice.cpp"),
+                  "binding_regression_blob":git("hash-object","native/tests/gen006_restore_coordinate_binding_negative.cpp"),
+                  "expected_pr_head":os.environ["GEN006_EXPECTED_HEAD"],
+                  "restart_fixture_blob":git("hash-object","tools/experiments/gen006_cross_process_restart.py"),
+                  "persistent_fixture_blob":git("hash-object","tools/experiments/gen006_persistent_controller.py"),
+                  "containment_fixture_blob":git("hash-object","tools/experiments/gen006_surface_owner_containment.py"),
+                  "durable_edit_fixture_blob":git("hash-object","tools/experiments/gen006_durable_edit_ack.py"),
+                  "godot_demo_blob":git("hash-object","godot/tests/gen006_streaming_slice_demo.gd"),
+                  "godot_scene_blob":git("hash-object","godot/tests/gen006_streaming_slice_demo.tscn"),
+                  "scope":"experimental sharded native Worlds; no single-World selective eviction, Rapier, Godot or cross-shard physics"}
+          assert record["sha"]==record["expected_pr_head"]
+          (out/"source.json").write_text(json.dumps(record,indent=2)+"\n")
+          subprocess.run([sys.executable,"tools/ci/check_ci_provider_policy.py"],check=True,timeout=120)
+      - name: Build and execute on Ubuntu
+        if: runner.os == 'Linux'
+        shell: bash
+        timeout-minutes: 30
+        run: |
+          set -euo pipefail
+          g++-13 --version | head -n 1 | tee build/gen006-streaming-slice/compiler.txt
+          g++-13 -std=c++20 -O0 -g0 -pthread -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/src/world_generation.cpp native/src/generation_fields.cpp \
+            native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp \
+            native/src/generation_grammar.cpp native/src/generation_planes.cpp \
+            native/tests/gen006_streaming_slice.cpp \
+            -o build/gen006-streaming-slice/streaming-slice \
+            > build/gen006-streaming-slice/compile.log 2>&1 || { cat build/gen006-streaming-slice/compile.log; exit 1; }
+          build/gen006-streaming-slice/streaming-slice --self-test build/gen006-streaming-slice/one 1 \
+            | tee build/gen006-streaming-slice/one.log
+          build/gen006-streaming-slice/streaming-slice --self-test build/gen006-streaming-slice/four 4 \
+            | tee build/gen006-streaming-slice/four.log
+          grep -q 'GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=1' build/gen006-streaming-slice/one.log
+          grep -q 'GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=4' build/gen006-streaming-slice/four.log
+          grep -q 'GEN006_NATIVE_CHUNK_IDENTITY_PASS configured_workers=1' build/gen006-streaming-slice/one.log
+          grep -q 'GEN006_NATIVE_CHUNK_IDENTITY_PASS configured_workers=4' build/gen006-streaming-slice/four.log
+          python3 tools/experiments/gen006_cross_process_restart.py \
+            --exe build/gen006-streaming-slice/streaming-slice \
+            --root build/gen006-streaming-slice/process-one \
+            --logs build/gen006-streaming-slice/restart-one --workers 1 \
+            | tee build/gen006-streaming-slice/restart-one.log
+          python3 tools/experiments/gen006_cross_process_restart.py \
+            --exe build/gen006-streaming-slice/streaming-slice \
+            --root build/gen006-streaming-slice/process-four \
+            --logs build/gen006-streaming-slice/restart-four --workers 4 \
+            | tee build/gen006-streaming-slice/restart-four.log
+          grep -q 'GEN006_CROSS_PROCESS_RESTART_PASS configured_workers=1' build/gen006-streaming-slice/restart-one.log
+          grep -q 'GEN006_CROSS_PROCESS_RESTART_PASS configured_workers=4' build/gen006-streaming-slice/restart-four.log
+          python3 tools/experiments/gen006_persistent_controller.py \
+            --exe build/gen006-streaming-slice/streaming-slice \
+            --root build/gen006-streaming-slice/persistent-world-one \
+            --ipc build/gen006-streaming-slice/persistent-ipc-one --workers 1 \
+            | tee build/gen006-streaming-slice/persistent-one.log
+          python3 tools/experiments/gen006_persistent_controller.py \
+            --exe build/gen006-streaming-slice/streaming-slice \
+            --root build/gen006-streaming-slice/persistent-world-four \
+            --ipc build/gen006-streaming-slice/persistent-ipc-four --workers 4 \
+            | tee build/gen006-streaming-slice/persistent-four.log
+          grep -q 'GEN006_PERSISTENT_CONTROLLER_PASS configured_workers=1' build/gen006-streaming-slice/persistent-one.log
+          grep -q 'GEN006_PERSISTENT_CONTROLLER_PASS configured_workers=4' build/gen006-streaming-slice/persistent-four.log
+          python3 tools/experiments/gen006_surface_owner_containment.py \
+            --exe build/gen006-streaming-slice/streaming-slice \
+            --root build/gen006-streaming-slice/containment-world-one \
+            --logs build/gen006-streaming-slice/containment-logs-one --workers 1 \
+            | tee build/gen006-streaming-slice/containment-one.log
+          python3 tools/experiments/gen006_surface_owner_containment.py \
+            --exe build/gen006-streaming-slice/streaming-slice \
+            --root build/gen006-streaming-slice/containment-world-four \
+            --logs build/gen006-streaming-slice/containment-logs-four --workers 4 \
+            | tee build/gen006-streaming-slice/containment-four.log
+          grep -q 'GEN006_SURFACE_OWNER_CONTAINMENT_PASS configured_workers=1' build/gen006-streaming-slice/containment-one.log
+          grep -q 'GEN006_SURFACE_OWNER_CONTAINMENT_PASS configured_workers=4' build/gen006-streaming-slice/containment-four.log
+          python3 tools/experiments/gen006_durable_edit_ack.py \
+            --exe build/gen006-streaming-slice/streaming-slice \
+            --root build/gen006-streaming-slice/ack-world-one \
+            --logs build/gen006-streaming-slice/ack-logs-one --workers 1 \
+            | tee build/gen006-streaming-slice/ack-one.log
+          python3 tools/experiments/gen006_durable_edit_ack.py \
+            --exe build/gen006-streaming-slice/streaming-slice \
+            --root build/gen006-streaming-slice/ack-world-four \
+            --logs build/gen006-streaming-slice/ack-logs-four --workers 4 \
+            | tee build/gen006-streaming-slice/ack-four.log
+          grep -q 'GEN006_EDIT_CRASH_RESTART_PASS configured_workers=1' build/gen006-streaming-slice/ack-one.log
+          grep -q 'GEN006_EDIT_CRASH_RESTART_PASS configured_workers=4' build/gen006-streaming-slice/ack-four.log
+          g++-13 -std=c++20 -O0 -g0 -pthread -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/src/world_generation.cpp native/src/generation_fields.cpp \
+            native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp \
+            native/src/generation_grammar.cpp native/src/generation_planes.cpp \
+            native/tests/gen006_restore_coordinate_binding_negative.cpp \
+            -o build/gen006-streaming-slice/coordinate-regression \
+            > build/gen006-streaming-slice/coordinate-compile.log 2>&1 || { cat build/gen006-streaming-slice/coordinate-compile.log; exit 1; }
+          build/gen006-streaming-slice/coordinate-regression build/gen006-streaming-slice/binding-one 1 \
+            | tee build/gen006-streaming-slice/binding-one.log
+          build/gen006-streaming-slice/coordinate-regression build/gen006-streaming-slice/binding-four 4 \
+            | tee build/gen006-streaming-slice/binding-four.log
+          grep -q 'GEN006_RESTORE_COORDINATE_BINDING_PASS configured_workers=1' build/gen006-streaming-slice/binding-one.log
+          grep -q 'GEN006_RESTORE_COORDINATE_BINDING_PASS configured_workers=4' build/gen006-streaming-slice/binding-four.log
+      - name: Execute opt-in Godot 4.7 native-RGBA demo (headless smoke only)
+        shell: bash
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          dir=build/gen006-streaming-slice
+          curl -fsSL --retry 3 --retry-delay 3 \
+            'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7' \
+            -o "$dir/godot-4.7-linux.zip"
+          echo '0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  '"$dir/godot-4.7-linux.zip" | sha256sum --check --strict
+          mkdir -p "$dir/godot-bin" "$dir/godot-mini/tests"
+          unzip -q "$dir/godot-4.7-linux.zip" -d "$dir/godot-bin"
+          godot_bin="$(find "$dir/godot-bin" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$godot_bin"
+          chmod +x "$godot_bin"
+          "$godot_bin" --version | tee "$dir/godot-version.txt"
+          cp godot/tests/gen006_streaming_slice_demo.gd "$dir/godot-mini/tests/"
+          cp godot/tests/gen006_streaming_slice_demo.tscn "$dir/godot-mini/tests/"
+          printf 'config_version=5\n[application]\nconfig/name="GEN006 Opt-in Native Viewer"\nrun/main_scene="res://tests/gen006_streaming_slice_demo.tscn"\n' > "$dir/godot-mini/project.godot"
+          GEN006_SLICE_EXECUTABLE="$PWD/$dir/streaming-slice" \
+          GEN006_SLICE_ROOT="$PWD/$dir/godot-save" \
+          GEN006_SLICE_VERIFY=1 \
+            "$godot_bin" --headless --path "$dir/godot-mini" \
+              --quit-after 180 res://tests/gen006_streaming_slice_demo.tscn \
+            2>&1 | tee "$dir/godot-smoke.log"
+          grep -q 'GEN006_GODOT_NATIVE_FRAME_PASS' "$dir/godot-smoke.log"
+          test -s "$dir/godot-save/gen006-current.rgba"
+          test "$(wc -c < "$dir/godot-save/gen006-current.rgba")" = 16384
+      - name: Preserve original native evidence and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-slice-ubuntu-24.04-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/gen006-streaming-slice/source.json
+            build/gen006-streaming-slice/compiler.txt
+            build/gen006-streaming-slice/compile.log
+            build/gen006-streaming-slice/one.log
+            build/gen006-streaming-slice/four.log
+            build/gen006-streaming-slice/restart-one.log
+            build/gen006-streaming-slice/restart-four.log
+            build/gen006-streaming-slice/restart-one/
+            build/gen006-streaming-slice/restart-four/
+            build/gen006-streaming-slice/persistent-one.log
+            build/gen006-streaming-slice/persistent-four.log
+            build/gen006-streaming-slice/containment-one.log
+            build/gen006-streaming-slice/containment-four.log
+            build/gen006-streaming-slice/containment-logs-one/
+            build/gen006-streaming-slice/containment-logs-four/
+            build/gen006-streaming-slice/ack-one.log
+            build/gen006-streaming-slice/ack-four.log
+            build/gen006-streaming-slice/ack-logs-one/
+            build/gen006-streaming-slice/ack-logs-four/
+            build/gen006-streaming-slice/persistent-ipc-one/
+            build/gen006-streaming-slice/persistent-ipc-four/
+            build/gen006-streaming-slice/coordinate-compile.log
+            build/gen006-streaming-slice/binding-one.log
+            build/gen006-streaming-slice/binding-four.log
+            build/gen006-streaming-slice/godot-smoke.log
+            build/gen006-streaming-slice/godot-version.txt
+          if-no-files-found: warn
+          retention-days: 45
+  native-stream-windows:
+    name: Actual native / Windows Server 2022
+    runs-on: windows-2022
+    timeout-minutes: 40
+    steps:
+      - name: Preserve LF source identity
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: |
+          git config --global core.autocrlf false
+          if errorlevel 1 exit /b 1
+          git config --global core.eol lf
+          if errorlevel 1 exit /b 1
+      - name: Checkout exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Record provenance and CI provider policy
+        shell: python
+        run: |
+          import json, os, pathlib, platform, subprocess, sys
+          out=pathlib.Path("build/gen006-streaming-slice")
+          out.mkdir(parents=True,exist_ok=True)
+          def git(*args): return subprocess.check_output(["git",*args], text=True).strip()
+          record={"sha":git("rev-parse","HEAD"),"tree":git("rev-parse","HEAD^{tree}"),
+                  "github_sha":os.environ["GITHUB_SHA"],"os":platform.platform(),
+                  "python":sys.version,
+                  "world_cpp_blob":git("hash-object","native/src/world.cpp"),
+                  "world_hpp_blob":git("hash-object","native/include/cybersand/world.hpp"),
+                  "slice_blob":git("hash-object","native/tests/gen006_streaming_slice.cpp"),
+                  "binding_regression_blob":git("hash-object","native/tests/gen006_restore_coordinate_binding_negative.cpp"),
+                  "expected_pr_head":os.environ["GEN006_EXPECTED_HEAD"],
+                  "restart_fixture_blob":git("hash-object","tools/experiments/gen006_cross_process_restart.py"),
+                  "persistent_fixture_blob":git("hash-object","tools/experiments/gen006_persistent_controller.py"),
+                  "containment_fixture_blob":git("hash-object","tools/experiments/gen006_surface_owner_containment.py"),
+                  "durable_edit_fixture_blob":git("hash-object","tools/experiments/gen006_durable_edit_ack.py"),
+                  "godot_demo_blob":git("hash-object","godot/tests/gen006_streaming_slice_demo.gd"),
+                  "godot_scene_blob":git("hash-object","godot/tests/gen006_streaming_slice_demo.tscn"),
+                  "scope":"experimental sharded native Worlds; no single-World selective eviction, Rapier, Godot or cross-shard physics"}
+          assert record["sha"]==record["expected_pr_head"]
+          (out/"source.json").write_text(json.dumps(record,indent=2)+"\n")
+          subprocess.run([sys.executable,"tools/ci/check_ci_provider_policy.py"],check=True,timeout=120)
+      - name: Build and execute on Windows (MSVC environment, LLVM Clang)
+        if: runner.os == 'Windows'
+        shell: cmd
+        timeout-minutes: 30
+        run: |
+          for /f "tokens=*" %%i in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath') do set "GEN006_VSROOT=%%i"
+          if not defined GEN006_VSROOT exit /b 1
+          call "%GEN006_VSROOT%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          set "GEN006_CXX=%ProgramFiles%\LLVM\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" set "GEN006_CXX=%GEN006_VSROOT%\VC\Tools\Llvm\x64\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" exit /b 1
+          "%GEN006_CXX%" --version > build\gen006-streaming-slice\compiler.txt 2>&1
+          if errorlevel 1 exit /b 1
+          "%GEN006_CXX%" -std=c++20 -O0 -I native/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/world_generation.cpp native/src/generation_fields.cpp native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp native/src/generation_grammar.cpp native/src/generation_planes.cpp native/tests/gen006_streaming_slice.cpp -o build\gen006-streaming-slice\streaming-slice.exe > build\gen006-streaming-slice\compile.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\compile.log & exit /b 1)
+          build\gen006-streaming-slice\streaming-slice.exe --self-test build\gen006-streaming-slice\one 1 > build\gen006-streaming-slice\one.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\one.log & exit /b 1)
+          build\gen006-streaming-slice\streaming-slice.exe --self-test build\gen006-streaming-slice\four 4 > build\gen006-streaming-slice\four.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\four.log & exit /b 1)
+          type build\gen006-streaming-slice\one.log
+          type build\gen006-streaming-slice\four.log
+          findstr /C:"GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=1" build\gen006-streaming-slice\one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_NATIVE_SHARDED_STREAM_PASS configured_workers=4" build\gen006-streaming-slice\four.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_NATIVE_CHUNK_IDENTITY_PASS configured_workers=1" build\gen006-streaming-slice\one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_NATIVE_CHUNK_IDENTITY_PASS configured_workers=4" build\gen006-streaming-slice\four.log
+          if errorlevel 1 exit /b 1
+          python tools/experiments/gen006_cross_process_restart.py --exe build\gen006-streaming-slice\streaming-slice.exe --root build\gen006-streaming-slice\process-one --logs build\gen006-streaming-slice\restart-one --workers 1 > build\gen006-streaming-slice\restart-one.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\restart-one.log & exit /b 1)
+          python tools/experiments/gen006_cross_process_restart.py --exe build\gen006-streaming-slice\streaming-slice.exe --root build\gen006-streaming-slice\process-four --logs build\gen006-streaming-slice\restart-four --workers 4 > build\gen006-streaming-slice\restart-four.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\restart-four.log & exit /b 1)
+          type build\gen006-streaming-slice\restart-one.log
+          type build\gen006-streaming-slice\restart-four.log
+          findstr /C:"GEN006_CROSS_PROCESS_RESTART_PASS configured_workers=1" build\gen006-streaming-slice\restart-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_CROSS_PROCESS_RESTART_PASS configured_workers=4" build\gen006-streaming-slice\restart-four.log
+          if errorlevel 1 exit /b 1
+          python tools/experiments/gen006_persistent_controller.py --exe build\gen006-streaming-slice\streaming-slice.exe --root build\gen006-streaming-slice\persistent-world-one --ipc build\gen006-streaming-slice\persistent-ipc-one --workers 1 > build\gen006-streaming-slice\persistent-one.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\persistent-one.log & exit /b 1)
+          python tools/experiments/gen006_persistent_controller.py --exe build\gen006-streaming-slice\streaming-slice.exe --root build\gen006-streaming-slice\persistent-world-four --ipc build\gen006-streaming-slice\persistent-ipc-four --workers 4 > build\gen006-streaming-slice\persistent-four.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\persistent-four.log & exit /b 1)
+          type build\gen006-streaming-slice\persistent-one.log
+          type build\gen006-streaming-slice\persistent-four.log
+          findstr /C:"GEN006_PERSISTENT_CONTROLLER_PASS configured_workers=1" build\gen006-streaming-slice\persistent-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_PERSISTENT_CONTROLLER_PASS configured_workers=4" build\gen006-streaming-slice\persistent-four.log
+          if errorlevel 1 exit /b 1
+          python tools/experiments/gen006_surface_owner_containment.py --exe build\gen006-streaming-slice\streaming-slice.exe --root build\gen006-streaming-slice\containment-world-one --logs build\gen006-streaming-slice\containment-logs-one --workers 1 > build\gen006-streaming-slice\containment-one.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\containment-one.log & exit /b 1)
+          python tools/experiments/gen006_surface_owner_containment.py --exe build\gen006-streaming-slice\streaming-slice.exe --root build\gen006-streaming-slice\containment-world-four --logs build\gen006-streaming-slice\containment-logs-four --workers 4 > build\gen006-streaming-slice\containment-four.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\containment-four.log & exit /b 1)
+          type build\gen006-streaming-slice\containment-one.log
+          type build\gen006-streaming-slice\containment-four.log
+          findstr /C:"GEN006_SURFACE_OWNER_CONTAINMENT_PASS configured_workers=1" build\gen006-streaming-slice\containment-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_SURFACE_OWNER_CONTAINMENT_PASS configured_workers=4" build\gen006-streaming-slice\containment-four.log
+          if errorlevel 1 exit /b 1
+          python tools/experiments/gen006_durable_edit_ack.py --exe build\gen006-streaming-slice\streaming-slice.exe --root build\gen006-streaming-slice\ack-world-one --logs build\gen006-streaming-slice\ack-logs-one --workers 1 > build\gen006-streaming-slice\ack-one.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\ack-one.log & exit /b 1)
+          python tools/experiments/gen006_durable_edit_ack.py --exe build\gen006-streaming-slice\streaming-slice.exe --root build\gen006-streaming-slice\ack-world-four --logs build\gen006-streaming-slice\ack-logs-four --workers 4 > build\gen006-streaming-slice\ack-four.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\ack-four.log & exit /b 1)
+          type build\gen006-streaming-slice\ack-one.log
+          type build\gen006-streaming-slice\ack-four.log
+          findstr /C:"GEN006_EDIT_CRASH_RESTART_PASS configured_workers=1" build\gen006-streaming-slice\ack-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_EDIT_CRASH_RESTART_PASS configured_workers=4" build\gen006-streaming-slice\ack-four.log
+          if errorlevel 1 exit /b 1
+          "%GEN006_CXX%" -std=c++20 -O0 -I native/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/world_generation.cpp native/src/generation_fields.cpp native/src/generation_typed_fields.cpp native/src/generation_spatial.cpp native/src/generation_grammar.cpp native/src/generation_planes.cpp native/tests/gen006_restore_coordinate_binding_negative.cpp -o build\gen006-streaming-slice\coordinate-regression.exe > build\gen006-streaming-slice\coordinate-compile.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\coordinate-compile.log & exit /b 1)
+          build\gen006-streaming-slice\coordinate-regression.exe build\gen006-streaming-slice\binding-one 1 > build\gen006-streaming-slice\binding-one.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\binding-one.log & exit /b 1)
+          build\gen006-streaming-slice\coordinate-regression.exe build\gen006-streaming-slice\binding-four 4 > build\gen006-streaming-slice\binding-four.log 2>&1
+          if errorlevel 1 (type build\gen006-streaming-slice\binding-four.log & exit /b 1)
+          type build\gen006-streaming-slice\binding-one.log
+          type build\gen006-streaming-slice\binding-four.log
+          findstr /C:"GEN006_RESTORE_COORDINATE_BINDING_PASS configured_workers=1" build\gen006-streaming-slice\binding-one.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_RESTORE_COORDINATE_BINDING_PASS configured_workers=4" build\gen006-streaming-slice\binding-four.log
+          if errorlevel 1 exit /b 1
+      - name: Preserve original native evidence and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-slice-windows-2022-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/gen006-streaming-slice/source.json
+            build/gen006-streaming-slice/compiler.txt
+            build/gen006-streaming-slice/compile.log
+            build/gen006-streaming-slice/one.log
+            build/gen006-streaming-slice/four.log
+            build/gen006-streaming-slice/restart-one.log
+            build/gen006-streaming-slice/restart-four.log
+            build/gen006-streaming-slice/restart-one/
+            build/gen006-streaming-slice/restart-four/
+            build/gen006-streaming-slice/persistent-one.log
+            build/gen006-streaming-slice/persistent-four.log
+            build/gen006-streaming-slice/containment-one.log
+            build/gen006-streaming-slice/containment-four.log
+            build/gen006-streaming-slice/containment-logs-one/
+            build/gen006-streaming-slice/containment-logs-four/
+            build/gen006-streaming-slice/ack-one.log
+            build/gen006-streaming-slice/ack-four.log
+            build/gen006-streaming-slice/ack-logs-one/
+            build/gen006-streaming-slice/ack-logs-four/
+            build/gen006-streaming-slice/persistent-ipc-one/
+            build/gen006-streaming-slice/persistent-ipc-four/
+            build/gen006-streaming-slice/coordinate-compile.log
+            build/gen006-streaming-slice/binding-one.log
+            build/gen006-streaming-slice/binding-four.log
+          if-no-files-found: warn
+          retention-days: 45
