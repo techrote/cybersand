@@ -105,7 +105,7 @@ class EvaluationGuardTests(unittest.TestCase):
                     rows = ({'id': key, 'prompt': 'roots', 'theme': 'roots',
                              'group_id': 'test:roots', 'seed': 17,
                              'completion': json.dumps(reference)} for key in ('one', 'two'))
-                    self.inputs[name].write_text(''.join(json.dumps(row) + '\\n' for row in rows))
+                    self.inputs[name].write_text(''.join(json.dumps(row) + '\n' for row in rows))
                 else:
                     self.inputs[name].write_text(name)
         self.adapter = self.root / "adapter"
