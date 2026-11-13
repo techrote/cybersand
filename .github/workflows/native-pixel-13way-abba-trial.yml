@@ -1,0 +1,145 @@
+name: Native-pixel 13-way Windows ABBA trial
+on:
+  push:
+    branches: [ci/native-pixel-13way-abba-20261113]
+    paths: [.github/workflows/native-pixel-13way-abba-trial.yml, tools/ci/aggregate_native_pixel_parallel_abba.py]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: native-pixel-abba-trial-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  SOURCE_SHA: 78a277f2f91e0623be654f2472ae795b0adc8f5e
+  CAMERA_BASELINE_SHA: ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742
+  GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+  PYTHONUTF8: '1'
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  CYBERSAND_CI_WATCHDOG_SCALE: '1'
+defaults:
+  run:
+    shell: bash
+jobs:
+  windows-abba:
+    name: 'Windows ABBA ${{ matrix.case }}'
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/ci/native-pixel-13way-abba-20261113'
+    runs-on: windows-2022
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 13
+      matrix:
+        case: [stationary_512_palette, slow_pan_512_palette, dense_1024_pan_large, mixed_1024_effects, mixed_1024_zoom_effects, active_512_w1, active_512_w4, active_2048_w1, active_2048_w4, stationary_2048_palette, manual_2048, agent_2048, actor_follow_1024]
+    steps:
+      - name: Checkout trial
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Download original candidate
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          run-id: 43509386141
+          github-token: ${{ github.token }}
+          name: native-pixel-integrated-build-windows-43509386141-1
+          path: build/native-pixel-integrated-windows
+      - name: Download original accepted-main control
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          run-id: 43509386141
+          github-token: ${{ github.token }}
+          name: native-pixel-baseline-windows-43509386141-1
+          path: build/native-pixel-integrated-baseline-windows
+      - name: Verify original source binaries and prepare both runtimes
+        run: |
+          set -euo pipefail
+          GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach "$RUNNER_TEMP/camera-accepted-main" "$CAMERA_BASELINE_SHA"
+          GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach "$RUNNER_TEMP/camera-candidate" "$SOURCE_SHA"
+          test "$(git -C "$RUNNER_TEMP/camera-candidate" rev-parse HEAD)" = "$SOURCE_SHA"
+          test "$(git -C "$RUNNER_TEMP/camera-accepted-main" rev-parse HEAD)" = "$CAMERA_BASELINE_SHA"
+          python "$RUNNER_TEMP/camera-accepted-main/tools/ci/native_candidate_identity.py" "$GITHUB_WORKSPACE/build/native-pixel-integrated-baseline-windows"
+          python - <<'PYCODE'
+          import os, pathlib, shutil, sys
+          base = pathlib.Path(os.environ["RUNNER_TEMP"])
+          candidate = base / "camera-candidate"
+          sys.path.insert(0, str(candidate / "tools/ci"))
+          import native_pixel_integrated_qualification as profile
+          bundle = pathlib.Path("build/native-pixel-integrated-windows")
+          profile.engine.verify_bundle(bundle, "windows", os.environ["SOURCE_SHA"], validated=False)
+          shutil.copyfile(bundle / "cybersand_native.windows.x86_64.dll", candidate / "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll")
+          shutil.copyfile(pathlib.Path("build/native-pixel-integrated-baseline-windows/cybersand_native.windows.x86_64.dll"), base / "camera-accepted-main/godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll")
+          PYCODE
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          echo 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' | sha256sum --check --strict
+          for subject in camera-accepted-main camera-candidate; do
+            cp godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll "$RUNNER_TEMP/$subject/godot/addons/godot-rapier2d/bin/"
+          done
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          python - <<'PYCODE'
+          import os, pathlib, sys
+          sys.path.insert(0, 'tools/ci')
+          from run_windows_godot_regressions import prepare_godot
+          prepare_godot(pathlib.Path(os.environ["RUNNER_TEMP"]) / "godot-windows.zip")
+          PYCODE
+      - name: Execute one complete original ABBA scenario
+        run: |
+          set -euo pipefail
+          args=(--baseline-repo "$RUNNER_TEMP/camera-accepted-main" --candidate-repo "$RUNNER_TEMP/camera-candidate" --godot "$RUNNER_TEMP/godot-windows/Godot_v4.7-stable_win64_console.exe" --rendering-driver opengl3_angle --cases '${{ matrix.case }}' --samples 180 --warmup 32 --rounds 1 --order ABBA --output 'build/native-pixel-parallel-windows/${{ matrix.case }}')
+          if [[ '${{ matrix.case }}' != stationary_512_palette ]]; then
+            args+=(--skip-shader-abba)
+          fi
+          python "$RUNNER_TEMP/camera-candidate/tools/ci/run_integrated_camera_performance.py" "${args[@]}"
+      - name: Preserve complete scenario evidence including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: 'parallel-native-pixel-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.case }}'
+          path: 'build/native-pixel-parallel-windows/${{ matrix.case }}/'
+          if-no-files-found: warn
+          retention-days: 90
+
+  aggregate:
+    name: Verify all thirteen cases against the original 72-minute serial campaign
+    needs: windows-abba
+    if: always() && github.repository == 'techrote/cybersand'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout aggregate validator
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Collect all 13 original scenario receipts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: 'parallel-native-pixel-${{ github.run_id }}-${{ github.run_attempt }}-*'
+          path: build/parallel-native-pixel-shards
+          merge-multiple: false
+      - name: Collect source-matched serial reference
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          run-id: 43509386141
+          github-token: ${{ github.token }}
+          name: native-pixel-performance-windows-43509386141-1
+          path: build/original-serial-native-pixel
+      - name: Validate evidence and generate A/B comparison
+        run: |
+          set -euo pipefail
+          python3 tools/ci/aggregate_native_pixel_parallel_abba.py --shards build/parallel-native-pixel-shards --serial build/original-serial-native-pixel/report.json --output build/parallel-native-pixel-comparison/comparison.json --summary build/parallel-native-pixel-comparison/summary.md
+          cat build/parallel-native-pixel-comparison/summary.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain combined comparison
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: 'parallel-native-pixel-comparison-${{ github.run_id }}-${{ github.run_attempt }}'
+          path: build/parallel-native-pixel-comparison/
+          if-no-files-found: warn
+          retention-days: 90
