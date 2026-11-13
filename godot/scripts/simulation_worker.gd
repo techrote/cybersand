@@ -123,6 +123,16 @@ var _art_inflight := false
 # flags keep their mutation ordering visible until the owner publishes context.
 var _legacy_edit_inflight := false
 var _world_change_inflight := false
+# GEN-008-FLAT-001: a single owned immutable material readback, retained until
+# the main authoring owner adopts or cancels it. Simulation continues normally;
+# only construction/edit admission is fenced. Never expose the mutable World.
+const MATERIAL_CAPTURE_MAX_BYTES := 2048*2048*2
+const MATERIAL_CAPTURE_TIMEOUT_USEC := 15000000
+var _material_capture_sequence := 0
+var _material_capture_request: Dictionary = {}
+var _material_capture_result: Dictionary = {}
+var _material_capture_inflight := false
+var _authoring_generation := 1
 var _reset_requested: bool = false
 var _reset_spawn: Vector2 = Vector2(150.0, 145.0)
 var _reset_sampled_character_enabled: bool = true
@@ -1753,6 +1763,114 @@ func _art_holds_slot_locked() -> bool:
 func _legacy_edits_pending_locked() -> bool:
 	return _legacy_edit_inflight or not _pending_emissions.is_empty() or not _pending_cell_emissions.is_empty()
 
+func _material_capture_holds_slot_locked() -> bool:
+	return _material_capture_inflight or not _material_capture_request.is_empty() or not _material_capture_result.is_empty()
+
+# These checks deliberately do not compare tick/revision: ordinary simulation
+# after the capture boundary is not part of this authored material baseline.
+func _material_capture_error_locked(request: Dictionary) -> String:
+	if not _running: return "Native owner stopped during material capture."
+	if _simulation_failed: return "Native owner failed during material capture."
+	if Time.get_ticks_usec() > int(request.deadline): return "Material capture timed out; previous authoring history is retained."
+	if int(request.generation) != _world_generation or int(request.owner_revision) != _lab_request_revision \
+			or int(request.authoring_generation) != _authoring_generation:
+		return "The session or World changed during material capture."
+	if _world_change_inflight or _reset_requested or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty():
+		return "The native canvas is changing."
+	if _workbench_extent != request.extent: return "The native canvas extent changed."
+	return ""
+
+func material_capture_request(expected_generation: int, capacity_bytes: int = MATERIAL_CAPTURE_MAX_BYTES) -> Dictionary:
+	_mutex.lock()
+	var reason := ""
+	if not _running or _workbench_extent == Vector2i.ZERO: reason = "The native Workbench is not ready."
+	elif _simulation_failed: reason = "The native owner failed."
+	elif expected_generation != _world_generation: reason = "Stale session/World generation; retry with the current canvas."
+	elif _material_capture_holds_slot_locked(): reason = "A material capture is already pending."
+	elif _paint_holds_slot_locked() or _art_holds_slot_locked() or _legacy_edits_pending_locked():
+		reason = "Wait for pending paint/agent edits and their native completion receipts."
+	elif _world_change_inflight or _reset_requested or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty():
+		reason = "Wait for the native canvas transaction."
+	elif not _workbench_refusal.is_empty(): reason = _workbench_refusal
+	elif capacity_bytes < _workbench_extent.x*_workbench_extent.y*2 or capacity_bytes > MATERIAL_CAPTURE_MAX_BYTES:
+		reason = "Insufficient or unsupported material staging capacity (maximum 8 MiB)."
+	if reason.is_empty():
+		_material_capture_sequence += 1
+		_material_capture_request = {"token":_material_capture_sequence,"generation":_world_generation,
+			"owner_revision":_lab_request_revision,"authoring_generation":_authoring_generation,
+			"extent":_workbench_extent,"deadline":Time.get_ticks_usec()+MATERIAL_CAPTURE_TIMEOUT_USEC}
+	var token := _material_capture_sequence
+	_mutex.unlock()
+	return {"ok":true,"token":token} if reason.is_empty() else {"ok":false,"reason":reason}
+
+func material_capture_poll(token: int) -> Dictionary:
+	_mutex.lock()
+	var result := {}
+	if _material_capture_request.is_empty() or token != int(_material_capture_request.token):
+		result = {"ok":false,"error":"Material capture was cancelled or superseded."}
+	else:
+		var error := _material_capture_error_locked(_material_capture_request)
+		if not error.is_empty(): result = {"ok":false,"error":error}
+		elif not _material_capture_result.is_empty(): result = _material_capture_result.duplicate(false)
+	_mutex.unlock()
+	return result
+
+# The caller performs its already-staged authoring dictionary swap immediately
+# after this acknowledgement, in the same main-thread turn (no await/yield).
+# No failure-prone work or native mutation belongs after the acknowledgement.
+func material_capture_finish(token: int, commit: bool = false) -> Dictionary:
+	_mutex.lock()
+	var reason := ""
+	if _material_capture_request.is_empty() or token != int(_material_capture_request.token):
+		reason = "Material capture token is stale."
+	else:
+		if commit:
+			reason = _material_capture_error_locked(_material_capture_request)
+			if reason.is_empty() and not bool(_material_capture_result.get("ok",false)):
+				reason = "No complete validated native capture is available."
+			if reason.is_empty():
+				_authoring_generation += 1
+				_paint_epoch += 1
+				_invalidate_art_locked("Authoring history flattened")
+		_material_capture_request = {}
+		_material_capture_result = {}
+	var generation := _authoring_generation
+	_mutex.unlock()
+	return {"ok":reason.is_empty(),"reason":reason,"authoring_generation":generation}
+
+func material_capture_cancel(token: int) -> void:
+	material_capture_finish(token,false)
+
+func _consume_material_capture() -> void:
+	_mutex.lock()
+	if _material_capture_request.is_empty() or not _material_capture_result.is_empty():
+		_mutex.unlock()
+		return
+	var request := _material_capture_request.duplicate(false)
+	_material_capture_inflight = true
+	var error := _material_capture_error_locked(request)
+	_mutex.unlock()
+	var result := {"ok":false,"error":error}
+	if error.is_empty():
+		var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge") if ClassDB.class_exists(&"CyberDemoBridge") else null
+		if bridge == null or not bridge.has_method(&"capture_material_baseline"):
+			result.error = "Native runtime lacks material baseline capture; rebuild the source-matched extension."
+		else:
+			var boundary_usec := Time.get_ticks_usec()
+			result = bridge.capture_material_baseline(_world)
+			result.native_boundary_usec = Time.get_ticks_usec()-boundary_usec
+			result.request_token = int(request.token)
+			result.generation = int(request.generation)
+			result.authoring_generation = int(request.authoring_generation)
+	_mutex.lock()
+	_material_capture_inflight = false
+	# A timeout/cancel/replacement may arrive while the bounded copy runs. Its
+	# late completion cannot revive a retired token or publish into a new start.
+	if not _material_capture_request.is_empty() and int(_material_capture_request.token) == int(request.token):
+		error = _material_capture_error_locked(request)
+		_material_capture_result = result if error.is_empty() else {"ok":false,"error":error}
+	_mutex.unlock()
+
 func _invalidate_art_locked(reason: String) -> void:
 	_art_epoch += 1
 	if not _art_pending.is_empty():
@@ -1777,7 +1895,7 @@ func queue_emit_disc(
 	var packed_material: int = (material_id & EMISSION_MATERIAL_MASK) | packed_flags
 	var emission_command: Vector4i = Vector4i(world_x, world_y, radius, packed_material)
 	_mutex.lock()
-	if _paint_holds_slot_locked() or _art_holds_slot_locked():
+	if _paint_holds_slot_locked() or _art_holds_slot_locked() or _material_capture_holds_slot_locked():
 		_mutex.unlock()
 		return false
 	if _workbench_extent != Vector2i.ZERO and (_world_change_inflight or _reset_requested or not _lab_request.is_empty()):
@@ -1806,7 +1924,8 @@ func queue_emit_disc(
 func art_state() -> Dictionary:
 	_mutex.lock()
 	var result := {"epoch":_art_epoch,"executing":_art_inflight,"queued":not _art_pending.is_empty(),"receipt_ready":not _art_result.is_empty(),
-		"paint_busy":_paint_holds_slot_locked(),"legacy_busy":_legacy_edits_pending_locked(),"transition_busy":_world_change_inflight}
+		"paint_busy":_paint_holds_slot_locked(),"legacy_busy":_legacy_edits_pending_locked(),"transition_busy":_world_change_inflight,
+		"flatten_busy":_material_capture_holds_slot_locked()}
 	_mutex.unlock()
 	return result
 
@@ -1834,6 +1953,7 @@ func art_queue(points: PackedInt32Array, material: int, scope: Rect2i, protected
 	var reason := ""
 	var retryable := false
 	if epoch != _art_epoch: reason = "Batch stopped or canvas replaced"
+	elif _material_capture_holds_slot_locked(): reason = "Wait for material capture and baseline adoption."
 	elif _world_change_inflight or _reset_requested or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty() or _workbench_extent == Vector2i.ZERO: reason = "Canvas changing"
 	elif _simulation_failed: reason = "Native simulation failed"
 	elif not _workbench_refusal.is_empty(): reason = _workbench_refusal
@@ -1881,7 +2001,7 @@ func _consume_art() -> void:
 	# The exclusive owner captures the actual source before this chunk writes.
 	# History must not infer a previous revision from the changed-cell count.
 	var before_source := {"generation":_world_generation,"revision":int(_world.revision),
-		"tick":int(_world.tick_index)}
+		"tick":int(_world.tick_index),"authoring_generation":_authoring_generation}
 	if failure.is_empty() and _water_lab_active: failure = "Controlled Water experiments do not admit drawing edits"
 	if failure.is_empty() and _micro_active and not _scenario_host.allows_tool("erase" if int(command.material)==0 else "paint"):
 		failure = "The installed scenario does not allow this drawing tool"
@@ -1931,7 +2051,8 @@ func _consume_art() -> void:
 		"reason":failure,"requested":points.size()/2,"checked":checked,"backend":_world.get_class(),
 		"changed":changed,"unchanged":unchanged,"excluded":excluded,"refused":refused,"confirmed":confirmed,
 		"readback":rows,"before_source":before_source,
-		"generation":_world_generation,"revision":int(_world.revision),"tick":int(_world.tick_index)}
+		"generation":_world_generation,"revision":int(_world.revision),"tick":int(_world.tick_index),
+		"authoring_generation":_authoring_generation}
 	_mutex.unlock()
 
 func queue_emit_cells(
@@ -1950,7 +2071,7 @@ func queue_emit_cells(
 		"packed_material": packed_material,
 	}
 	_mutex.lock()
-	if _paint_holds_slot_locked() or _art_holds_slot_locked():
+	if _paint_holds_slot_locked() or _art_holds_slot_locked() or _material_capture_holds_slot_locked():
 		_mutex.unlock()
 		return false
 	if _workbench_extent != Vector2i.ZERO and (_world_change_inflight or _reset_requested or not _lab_request.is_empty()):
@@ -2000,6 +2121,8 @@ func paint_state() -> Dictionary:
 	result.art_busy = _art_holds_slot_locked()
 	result.legacy_busy = _legacy_edits_pending_locked()
 	result.transition_busy = _world_change_inflight
+	result.flatten_busy = _material_capture_holds_slot_locked()
+	result.authoring_generation = _authoring_generation
 	_mutex.unlock()
 	return result
 
@@ -2013,12 +2136,15 @@ func paint_queue(request: Dictionary) -> Dictionary:
 	_mutex.lock()
 	if not _running or _workbench_extent == Vector2i.ZERO: reason = "The native Workbench is not ready."
 	elif _simulation_failed: reason = "The native simulation failed."
+	elif _material_capture_holds_slot_locked(): reason = "Wait for material capture and baseline adoption."
 	elif not _paused: reason = "Pause the simulation before authoring."
 	elif _paint_holds_slot_locked(): reason = "Wait for the current paint acknowledgement."
 	elif _art_holds_slot_locked(): reason = "Wait for the agent drawing acknowledgement."
 	elif _world_change_inflight or _reset_requested or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty(): reason = "The canvas is changing."
 	elif not _workbench_refusal.is_empty(): reason = _workbench_refusal
 	elif _legacy_edits_pending_locked(): reason = "Wait for the previous brush command."
+	elif int(candidate.get("expected_authoring_generation",1)) != _authoring_generation:
+		reason = "The authored baseline changed; discard this old paint request."
 	elif int(candidate.expected_generation) != int(_paint_context.generation) \
 		or int(candidate.expected_revision) != int(_paint_context.revision) \
 		or int(candidate.expected_tick) != int(_paint_context.tick): reason = "The native source changed; retry with the current canvas."
@@ -2060,6 +2186,7 @@ func _consume_paint(local_paused: bool) -> void:
 	_mutex.lock()
 	var context := {"epoch":_paint_epoch,"generation":_world_generation,
 		"revision":int(_world.revision),"tick":int(_world.tick_index),
+		"authoring_generation":_authoring_generation,
 		"paused":local_paused and _paused,"extent":_workbench_extent,
 		"settings_revision":_construction_settings_revision,"error":"",
 		"paint_allowed":not _micro_active or _scenario_host.allows_tool("paint"),
@@ -2551,6 +2678,7 @@ func _worker_loop() -> void:
 		_legacy_edit_inflight = false
 		_world_change_inflight = false
 		_mutex.unlock()
+		_consume_material_capture()
 		var worker_step_time_ms: float = float(Time.get_ticks_usec() - step_start_usec) / 1000.0
 		_publish_snapshot(
 			worker_step_time_ms,

@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -39,7 +39,12 @@ For the current combined Draft, standalone generator repairs, native stored-mate
 For shared baseline/edits/actors versus live session, Save versus Flatten,
 desktop/agent/remote convergence and the required combined regression, retrieve
 the [authoring data contract](../architecture/shared-workbench-authoring-data.md).
-It distinguishes Approved direction and Planned successors from current source.
+It distinguishes the current GEN-008 candidate from historical proposals. For
+the uint16 little-endian container, unchanged live World, authoring-generation
+fence, failure atomicity and legacy readers, use its
+[Flatten and storage section](../architecture/shared-workbench-authoring-data.md#flatten-and-storage-compatibility).
+The [qualification runbook](../operations/gen008-flatten-qualification.md) covers
+actual platform evidence and the manual Save/exit/reopen workflow.
 
 For GEN-007 preview/install, global coordinates, material receipts, authored-start
 save/reopen and capacity limits, retrieve the

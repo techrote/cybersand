@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
@@ -23,9 +23,10 @@ MoltenGlass H1 from this Materials Lab continuation.
 Current Draft: [integrated PAINT + agent Workbench](operations/wb-art-paint-integrated-candidate.md), including standalone generator profiles, native stored-material receipts and one edit ordering boundary. Component contracts: [direct drawing](systems/workbench-direct-art-batches.md), [provider connection/context/scanlines](systems/workbench-art-providers.md), and [full PAINT editor](systems/paint-editor-bounded-shapes.md).
 
 Shared authoring: [approved data contract and convergence plan](architecture/shared-workbench-authoring-data.md)
-separates Current generated-start saves from Planned material-only Flatten and
-defines the common desktop/agent/remote foundation. #542 Ready qualification is
-owner-authorized; no merge or #548 implementation is authorized.
+defines the common desktop/agent/remote foundation and the GEN-008 candidate
+material-only Flatten contract: two bytes per cell, unchanged live World, explicit
+Save. The [qualification and Owner workflow](operations/gen008-flatten-qualification.md)
+keeps implementation evidence and human acceptance separate. Keep #548 Draft/HOLD.
 
 EXPLORE-001 review candidate: [generated-map contract](systems/explore001-generated-playable-maps.md),
 [Windows candidate/playtest](operations/explore001-desktop-playtest.md), and

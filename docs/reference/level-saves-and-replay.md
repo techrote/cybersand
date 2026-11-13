@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
 canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-13
 related-documents: [interfaces-and-message-contracts.md, ../architecture/pressure-flow-v1.md, ../architecture/determinism-and-boundary-transfers.md, validation-evidence.md]
 ---
 
@@ -216,3 +216,17 @@ through the worker and a prepared Rapier session. The file omits evolved
 physics state. CYSD1 and solver checkpoints keep their existing interfaces.
 The [workbench controls and schema scope](../systems/player-control-playground.md#development-workbench-on-desktop)
 describe the stored fields and explicit refusal behavior.
+
+
+## Workbench material-only Flatten
+
+The GEN-008 candidate adds an independent authored-start representation described
+in the [shared authoring contract](../architecture/shared-workbench-authoring-data.md#flatten-and-storage-compatibility).
+Flatten captures complete stored material IDs as uint16 little-endian bytes on
+the exclusive owner, changes only authoring baseline/history, and leaves the
+installed native World and Rapier state untouched. It does not use CYSD1 export
+or clear transient obstacles. Save is separate and never captures subsequent
+unrecorded simulation changes. Fresh-process Load constructs ordinary initial
+material/actor state from this standalone plane plus acknowledged edits; it is
+not a full physical-state checkpoint. Existing Setup-v2, generated-start-v1,
+CYSD1 and CYPS2 readers retain their own formats and validation semantics.

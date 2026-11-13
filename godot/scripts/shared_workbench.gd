@@ -2,6 +2,7 @@ extends VBoxContainer
 
 const Setup = preload("res://scripts/workbench_setup.gd")
 const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
+const MaterialBaseline = preload("res://scripts/workbench_material_baseline.gd")
 const PaintEditor = preload("res://scripts/workbench_paint_editor_controller.gd")
 const Fleet = Setup.Fleet
 const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
@@ -15,6 +16,12 @@ var _materials_lab_panel: Control
 var _generated_active: Dictionary = {}
 var _pending_generated: Dictionary = {}
 var _pending_retain_generated := false
+var _material_baseline: Dictionary = {}
+var _pending_material_baseline: Dictionary = {}
+var _flatten_request: Dictionary = {}
+var _flatten_status: Dictionary = {"status":"idle"}
+var _flatten_button: Button
+var _flatten_confirmation := ConfirmationDialog.new()
 var art_batches: Window
 var host: Control
 var applied: Dictionary = {}
@@ -278,6 +285,13 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_name.tooltip_text = "Name of the authored starting map; Save does not capture evolved simulation."
 	save_start_button.reparent(paint_editor)
 	load_start_button.reparent(paint_editor)
+	_flatten_button = _button(paint_editor,"Flatten / Bake History…",_flatten_pressed)
+	_flatten_button.tooltip_text = "Make the current stored materials the new baseline and discard earlier construction/Undo history. The live World keeps running. Save remains separate."
+	_flatten_confirmation.title = "Flatten / Bake History"
+	_flatten_confirmation.dialog_text = "Make the current material layout the new authored baseline?\nEarlier construction and Undo/Redo history will be discarded.\nThe live simulation and actors continue unchanged. This does not Save."
+	_flatten_confirmation.ok_button_text = "Flatten history"
+	_flatten_confirmation.confirmed.connect(func() -> void: request_flatten())
+	add_child(_flatten_confirmation)
 	_material.clear()
 	for material_id: int in host.simulation_worker.paint_materials():
 		_material.add_item("%s · %d" % [host.material_name(material_id).capitalize(),material_id],material_id)
@@ -352,18 +366,126 @@ func refuse(reason: String) -> bool:
 
 func busy() -> bool:
 	return not host.pending_microscenario_apply.is_empty() or step_pending or host.simulation_worker.has_failed() \
-		or (paint_editor != null and paint_editor.busy())
+		or is_flatten_pending() or (paint_editor != null and paint_editor.busy())
 
 func _editable() -> bool:
 	if busy() or applied.is_empty():
 		return refuse("Wait for the current owner transaction.")
 	return true
 
+func _flatten_pressed() -> void:
+	if is_flatten_pending():
+		cancel_flatten()
+		return
+	_flatten_confirmation.popup_centered(Vector2i(550,190))
+
+func is_flatten_pending() -> bool:
+	return not _flatten_request.is_empty()
+
+func get_flatten_status() -> Dictionary:
+	return _flatten_status.duplicate(true)
+
+func _refuse_flatten(reason: String) -> Dictionary:
+	refuse(reason)
+	_flatten_status = {"status":"failed","reason":reason}
+	return {"ok":false,"reason":reason}
+
+func request_flatten(capacity_bytes: int = 2048*2048*2) -> Dictionary:
+	if host == null or applied.is_empty(): return _refuse_flatten("No native Workbench is installed.")
+	if is_flatten_pending(): return {"ok":false,"reason":"Flatten is already preparing."}
+	if busy(): return _refuse_flatten("Wait for the current owner/paint transaction before Flatten.")
+	if paint_editor != null and (paint_editor.dragging or paint_editor.recovery_required()):
+		return _refuse_flatten("Finish the paint gesture, or Undo the partial edit, before Flatten.")
+	if art_batches != null:
+		var executor: RefCounted = art_batches.executor
+		if executor.active or executor.waiting or not executor.manual.is_empty() or not executor.manual_inflight.is_empty():
+			return _refuse_flatten("Agent drawing is queued or executing. Stop/wait for its native acknowledgement, then retry Flatten.")
+	var state: Dictionary = host.simulation_worker.paint_state()
+	if bool(state.get("busy",false)) or bool(state.get("art_busy",false)) or bool(state.get("legacy_busy",false)) \
+			or bool(state.get("transition_busy",false)):
+		return _refuse_flatten("Wait for all native edits and their completion receipts before Flatten.")
+	var requested_usec := Time.get_ticks_usec()
+	var admitted: Dictionary = host.simulation_worker.material_capture_request(int(state.get("generation",-1)),capacity_bytes)
+	if not admitted.get("ok",false): return _refuse_flatten(str(admitted.get("reason","Native material capture refused.")))
+	_flatten_request = {"token":int(admitted.token),"generation":int(state.generation),
+		"extent":Setup.extent_of(applied),"edits":applied.edits.duplicate(true),"started_usec":requested_usec}
+	_flatten_status = {"status":"pending","token":int(admitted.token),"reason":"Capturing native stored materials…"}
+	if _flatten_button != null: _flatten_button.text = "Cancel Flatten"
+	message = "Flatten · capturing native stored materials; previous history retained until validation completes…"
+	return admitted
+
+func cancel_flatten(reason: String = "Flatten cancelled; previous authoring history retained.") -> void:
+	if not is_flatten_pending(): return
+	if host != null and is_instance_valid(host) and host.simulation_worker != null:
+		host.simulation_worker.material_capture_cancel(int(_flatten_request.token))
+	_flatten_request = {}
+	_flatten_status = {"status":"failed","reason":reason}
+	if _flatten_button != null: _flatten_button.text = "Flatten / Bake History…"
+	message = reason
+
+func _poll_flatten() -> void:
+	if not is_flatten_pending(): return
+	var poll_usec := Time.get_ticks_usec()
+	var captured: Dictionary = host.simulation_worker.material_capture_poll(int(_flatten_request.token))
+	var transfer_usec := Time.get_ticks_usec()-poll_usec
+	if captured.is_empty(): return
+	if not captured.get("ok",false):
+		cancel_flatten("Flatten failed · "+str(captured.get("error","Incomplete native material capture.")))
+		return
+	if int(captured.get("request_token",-1)) != int(_flatten_request.token) \
+			or int(captured.get("generation",-1)) != int(_flatten_request.generation) \
+			or Setup.extent_of(applied) != _flatten_request.extent or applied.edits != _flatten_request.edits:
+		cancel_flatten("Flatten refused · stale native capture or changed authored history.")
+		return
+	var stage_usec := Time.get_ticks_usec()
+	var staged := MaterialBaseline.stage(captured,_flatten_request.extent)
+	if staged.has("error"):
+		cancel_flatten("Flatten refused · "+str(staged.error))
+		return
+	var candidate := applied.duplicate(true)
+	candidate.edits = []
+	var error := Setup.validate(candidate)
+	if not error.is_empty():
+		cancel_flatten("Flatten refused · "+error)
+		return
+	stage_usec = Time.get_ticks_usec()-stage_usec
+	var adoption_usec := Time.get_ticks_usec()
+	var finished: Dictionary = host.simulation_worker.material_capture_finish(int(_flatten_request.token),true)
+	if not finished.get("ok",false):
+		cancel_flatten("Flatten refused · "+str(finished.get("reason","Native owner changed.")))
+		return
+	# The complete validated plane already exists. Only authoring references and
+	# history change here; no prepared World, actor API, pause or simulation call.
+	_material_baseline = staged.baseline
+	_generated_active = {}
+	applied = candidate
+	if paint_editor != null: paint_editor.flattened()
+	if art_batches != null:
+		art_batches.stop_all("History flattened; pending model responses retired")
+		art_batches.executor.canvas_changed()
+	_flatten_status = {"status":"complete","reason":"","sha256":_material_baseline.sha256,
+		"byte_count":_material_baseline.cells.size(),"extent":_material_baseline.extent,
+		"generation":int(captured.generation),"native_generation":captured.get("native_generation",-1),
+		"revision":captured.get("revision",-1),"tick":captured.get("tick",-1),
+		"authoring_generation":finished.authoring_generation,"capture_usec":captured.get("capture_usec",0),
+		"copy_usec":captured.get("copy_usec",0),"native_boundary_usec":captured.get("native_boundary_usec",0),
+		# transfer_usec is only the worker-result handoff; native_boundary_usec
+		# includes the complete GDScript/native call and owned buffer creation.
+		"transfer_usec":transfer_usec,"stage_usec":stage_usec,"adoption_usec":Time.get_ticks_usec()-adoption_usec,
+		"total_usec":Time.get_ticks_usec()-int(_flatten_request.started_usec)}
+	_flatten_request = {}
+	if _flatten_button != null: _flatten_button.text = "Flatten / Bake History…"
+	message = "Flattened %s · %d bytes (2/cell). Earlier history discarded; live World unchanged. Save start when ready." % [
+		str(_material_baseline.extent),_material_baseline.cells.size()]
+
+func _exit_tree() -> void:
+	cancel_flatten("Flatten cancelled during shutdown; no baseline was adopted.")
+
 # On edits, build other actors at their actual positions while leaving the
 # saved spawn recipe intact. A deliberate restore/load uses saved spawns.
 func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		convert_liquid_inventory: bool = false, resume_play: bool = false,
-		generated_packet: Dictionary = {}) -> bool:
+		generated_packet: Dictionary = {}, material_baseline: Dictionary = {}) -> bool:
 	if busy(): return refuse("Wait for the current owner transaction.")
 	if preserve and paint_editor != null and paint_editor.recovery_required():
 		return refuse("Undo the partial paint edit or Restore start before retaining the live World.")
@@ -383,7 +505,14 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		return refuse("Finishing the current drawing chunk; retry after its acknowledgment.")
 	if preserve and not generated_packet.is_empty():
 		return refuse("Cannot import generated cells while preserving a live session.")
+	if not material_baseline.is_empty() and (preserve or not generated_packet.is_empty()):
+		return refuse("A standalone material baseline requires a fresh authored-start construction.")
 	var generation := {}
+	var material_packet := {}
+	if not material_baseline.is_empty():
+		error = MaterialBaseline.validate_document(candidate,material_baseline)
+		if not error.is_empty(): return refuse(error)
+		material_packet = MaterialBaseline.native_packet(material_baseline,candidate.edits)
 	if not generated_packet.is_empty():
 		var meta := GeneratedMaps.provenance(generated_packet)
 		error = GeneratedMaps.valid_provenance(meta,Setup.extent_of(candidate))
@@ -393,7 +522,7 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 			return refuse("Generated material bytes changed after preview.")
 		generation = GeneratedMaps.native_packet(meta,generated_packet.cells,candidate.edits)
 	var runs := []
-	if not preserve and generation.is_empty():
+	if not preserve and generation.is_empty() and material_packet.is_empty():
 		var recipe := Setup.rectangles(candidate)
 		if recipe.has("error"): return refuse(recipe.error)
 		runs = recipe.runs
@@ -420,9 +549,10 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 	host.update_worker_frame_state()
 	var ok: bool = host.workbench_apply(candidate,definitions,runs,Setup.extent_of(candidate),
 		PackedInt32Array(candidate.liquid_policy),candidate.normalize,int(candidate.rule_radius),
-		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation)
+		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation,material_packet)
 	if not ok: return refuse(host.microscenario_error)
 	_pending_generated = generated_packet.duplicate(true)
+	_pending_material_baseline = material_baseline.duplicate(false)
 	_pending_retain_generated = preserve
 	_pending_request_serial = int(host.pending_microscenario_apply.serial)
 	return true
@@ -450,7 +580,9 @@ func installed(candidate: Dictionary) -> void:
 	_pending_request_serial = 0
 	if not _pending_retain_generated:
 		_generated_active = _pending_generated.duplicate(true)
+		_material_baseline = _pending_material_baseline.duplicate(false)
 	_pending_generated.clear()
+	_pending_material_baseline.clear()
 	_pending_retain_generated = false
 	applied = candidate.duplicate(true)
 	var roster_choice := _model.selected
@@ -709,6 +841,8 @@ func move_selected() -> bool:
 
 func reset_selected() -> bool:
 	if host.simulation_worker.has_failed():
+		if not _generated_active.is_empty() or not _material_baseline.is_empty():
+			return refuse("Native owner failed. Restart the application and load the saved authored start.")
 		return host.workbench_restart(applied)
 	if selected_id() == 0: return refuse("Choose a flyer under Pilot or select an instance to reset.")
 	return _change_actor(applied,selected_id(),"Reset")
@@ -716,10 +850,10 @@ func reset_selected() -> bool:
 func restore_start() -> bool:
 	if applied.is_empty(): return refuse("No starting setup is installed.")
 	if host.simulation_worker.has_failed():
-		if not _generated_active.is_empty():
-			return refuse("Native owner failed. Restart the application and load the saved generated start.")
+		if not _generated_active.is_empty() or not _material_baseline.is_empty():
+			return refuse("Native owner failed. Restart the application and load the saved authored start.")
 		return host.workbench_restart(applied)
-	return apply(applied,false,0,false,false,_generated_active)
+	return apply(applied,false,0,false,false,_generated_active,_material_baseline)
 
 func apply_settings() -> bool:
 	if not _editable(): return false
@@ -776,15 +910,21 @@ func save_setup() -> bool:
 		art_batches.executor.poll()
 		if art_batches.executor.active: return refuse("Drawing still queued or executing; Stop/wait before saving.")
 	if not _editable(): return false
-	var error := (GeneratedMaps.write_named(_name.text,applied,_generated_active)
+	var error := MaterialBaseline.write_named(_name.text,applied,_material_baseline) if not _material_baseline.is_empty() else (
+		GeneratedMaps.write_named(_name.text,applied,_generated_active)
 		if not _generated_active.is_empty() else Setup.write_named(_name.text,applied))
 	if not error.is_empty(): return refuse(error)
-	message = ("Saved generated starting map · " if not _generated_active.is_empty()
+	message = ("Saved flattened material start · " if not _material_baseline.is_empty() else "Saved generated starting map · " if not _generated_active.is_empty()
 		else "Saved starting setup · ") + _name.text
 	return true
 
 func load_setup() -> bool:
 	if not host.simulation_worker.has_failed() and not _editable(): return false
+	var flattened := MaterialBaseline.read_named(_name.text)
+	if flattened.has("error"): return refuse(flattened.error)
+	if flattened.get("flattened",false):
+		if host.simulation_worker.has_failed(): return refuse("Restart the application before loading into a fresh native owner.")
+		return apply(flattened.setup,false,0,false,false,{},flattened.baseline)
 	var generated := GeneratedMaps.read_named(_name.text)
 	if generated.has("error"): return refuse(generated.error)
 	if generated.get("generated",false):
@@ -805,6 +945,7 @@ func load_setup() -> bool:
 	return apply(result.setup)
 
 func art_authoring_state() -> Dictionary:
+	if is_flatten_pending(): return {"busy":true,"reason":"Wait for Flatten material capture and baseline adoption."}
 	if paint_editor == null: return {"busy":false,"reason":""}
 	if paint_editor.recovery_required():
 		return {"busy":false,"reason":"Undo the partial human edit or Restore start before agent drawing."}
@@ -899,9 +1040,10 @@ func paint(pos: Vector2i, material: int) -> bool:
 	if material not in Setup.MATERIALS or not Rect2i(Vector2i.ZERO,Setup.extent_of(applied)).has_point(pos): return false
 	var stamp := [pos.x,pos.y,int(applied.brush),material]
 	var new_stamp: bool = applied.edits.is_empty() or applied.edits.back() != stamp
-	if new_stamp and not _generated_active.is_empty() and applied.edits.size() >= Setup.MAX_STAMPS:
-		return refuse("Generated-map starting edit budget exhausted; save and consolidate in a later format.")
-	if new_stamp and _generated_active.is_empty() and applied.edits.size() >= Setup.MAX_STAMPS:
+	var has_baseline := not _generated_active.is_empty() or not _material_baseline.is_empty()
+	if new_stamp and has_baseline and applied.edits.size() >= Setup.MAX_STAMPS:
+		return refuse("Starting edit budget exhausted; Flatten again to consolidate the current materials.")
+	if new_stamp and not has_baseline and applied.edits.size() >= Setup.MAX_STAMPS:
 		# Compact the recorded history into the same cells' merged rectangles.
 		var compacted := Setup.compact_edits(applied)
 		if compacted.has("error"): return refuse(compacted.error)
@@ -912,7 +1054,7 @@ func paint(pos: Vector2i, material: int) -> bool:
 	# the maximum possible row count would exceed the reconstruction budget.
 	var runs := 2*int(applied.brush)+1
 	for old: Array in applied.edits: runs += Setup.stamp_rows(old)
-	if _generated_active.is_empty() and new_stamp and runs > Setup.MAX_RUNS:
+	if not has_baseline and new_stamp and runs > Setup.MAX_RUNS:
 		applied.edits.append(stamp)
 		var recipe := Setup.rectangles(applied)
 		applied.edits.pop_back()
@@ -1052,6 +1194,7 @@ func _world_input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 	if host == null: return
+	_poll_flatten()
 	if paint_editor != null and host.brush_preview != null: host.brush_preview.hide()
 	if step_pending:
 		if host.simulation_worker.has_failed() or not str(host.tower_context.get("workbench_refusal","")).is_empty():
@@ -1063,6 +1206,7 @@ func _process(_delta: float) -> void:
 	if _pending_request_serial > 0 and host.pending_microscenario_apply.is_empty():
 		_pending_request_serial = 0
 		_pending_generated.clear()
+		_pending_material_baseline.clear()
 		_pending_retain_generated = false
 		_actor_action = ""
 		_liquid_action = false

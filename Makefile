@@ -44,6 +44,20 @@ $(BUILD_DIR)/libcybersand.so: $(CORE_SOURCES) $(CORE_HEADERS) | $(BUILD_DIR)
 $(BUILD_DIR)/tests_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) $(TEST_SOURCES) $(TEST_HEADERS) | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) $(TEST_SOURCES) -o $@
 
+.PHONY: material-baseline-test material-baseline-sanitize
+
+$(BUILD_DIR)/test_material_baseline: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_material_baseline.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(SIMULATION_SOURCES) native/tests/test_material_baseline.cpp -o $@
+
+$(BUILD_DIR)/test_material_baseline_sanitized: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_material_baseline.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(SIMULATION_SOURCES) native/tests/test_material_baseline.cpp -o $@
+
+material-baseline-test: $(BUILD_DIR)/test_material_baseline
+	./$(BUILD_DIR)/test_material_baseline
+
+material-baseline-sanitize: $(BUILD_DIR)/test_material_baseline_sanitized
+	ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} ./$(BUILD_DIR)/test_material_baseline_sanitized
+
 .PHONY: physics-characterisation-test physics-characterisation-sanitize
 
 $(BUILD_DIR)/physics_characterisation: $(PHYSICS_CHARACTERISATION_SOURCES) $(CORE_HEADERS) | $(BUILD_DIR)
@@ -159,7 +173,7 @@ soliding-sanitize: $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/t
 	./$(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized
 	./$(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized
 
-test: c-header-check $(BUILD_DIR)/tests soliding-test worldgen-test
+test: c-header-check $(BUILD_DIR)/tests soliding-test worldgen-test material-baseline-test
 	./$(BUILD_DIR)/tests
 
 .PHONY: worldgen-test worldgen-sanitize worldgen-demo
@@ -250,6 +264,7 @@ thread-sanitize: $(BUILD_DIR)/tests_tsan
 	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/tests_tsan
 
 clean:
+	rm -f $(BUILD_DIR)/test_material_baseline $(BUILD_DIR)/test_material_baseline_sanitized
 	rm -f $(BUILD_DIR)/settled_discovery $(BUILD_DIR)/stage3_cost $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/test_settled_discovery_sanitized $(BUILD_DIR)/test_settled_regions_sanitized $(BUILD_DIR)/test_settled_world_discovery_sanitized $(BUILD_DIR)/test_stage3b_runtime_storage_sanitized $(BUILD_DIR)/test_stage3b_bounded_spatial_index_sanitized $(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized $(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery $(BUILD_DIR)/test_stage3b_runtime_storage $(BUILD_DIR)/test_stage3b_bounded_spatial_index $(BUILD_DIR)/test_stage3b_sparse_mutation_witness $(BUILD_DIR)/test_stage3b_sparse_activity_deadline $(BUILD_DIR)/tests $(BUILD_DIR)/tests_sanitized $(BUILD_DIR)/tests_tsan $(BUILD_DIR)/benchmark $(BUILD_DIR)/libcybersand.so
 	rm -rf $(BUILD_DIR)/worldgen-objects
 

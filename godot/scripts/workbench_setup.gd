@@ -11,7 +11,8 @@ const MATERIAL_NAMES := ["Sand","Dust","Rust","Stone","Seed","Salt","Sodium","Gu
 	"Lava","Oil","Acid","Wood","Ice","Metal"]
 const MAX_BODIES := 8
 # Workbench-only construction budget; other MicroScenario starts still
-# enforce 4096. All authored starts retain the 1 MiB saved-file budget.
+# enforce 4096. Ordinary/generated JSON manifests retain the 1 MiB budget;
+# GEN-008 standalone baselines use a separately bounded raw material payload.
 const MAX_RUNS := 32768
 const MAX_STAMPS := 32768
 const DIRECTORY := "user://workbench"
