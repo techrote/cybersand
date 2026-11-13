@@ -12,7 +12,7 @@ import argparse
 from importlib.util import module_from_spec, spec_from_file_location
 import json
 import os
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import re
 import sys
 
@@ -80,23 +80,28 @@ def verify_storage_faults(directory: Path, platform: str) -> dict:
     engine.require(report.get("schema") == "gen008-flatten-storage-faults-v1" and
                    report.get("status") == "passed" and report.get("completed") is True and
                    report.get("platform") == platform, "Storage-fault execution is incomplete or on the wrong OS")
-    expected = ["locked-target"] if platform == "windows" else ["partial-write", "process-termination"]
+    expected = ["locked-target", "locked-source"] if platform == "windows" else ["partial-write", "process-termination"]
     rows = report.get("cases", [])
     engine.require(isinstance(rows, list) and [row.get("kind") for row in rows] == expected,
                    "Storage-fault coverage is incomplete")
     for row in rows:
         kind = row["kind"]
+        engine.require(row.get("operation") == ("production-native-replacement" if kind == "locked-source"
+                                                 else "production-baseline-writer"),
+                       "Storage fault did not exercise the required production operation")
         engine.require(re.fullmatch(r"[0-9a-f]{64}", str(row.get("prior_sha256", ""))) is not None and
                        row.get("prior_sha256") == row.get("after_sha256") and row.get("retry_ok") is True and
                        re.fullmatch(r"[0-9a-f]{64}", str(row.get("retry_sha256", ""))) is not None and
                        row.get("retry_sha256") != row.get("prior_sha256") and row.get("attempted_plane_bytes") == 524288,
                        "Failed Save did not preserve the original named start and permit a real retry")
         logs = directory / "storage-faults"
+        phases = {}
         for phase in ("prepare", "recover"):
             text = (logs / f"{kind}-{phase}.log").read_text(encoding="utf-8")
             engine.require(len(re.findall(r"(?m)^FLATTEN_STORAGE_RESULT ", text)) == 1,
                            "Storage-fault setup/recovery receipt is missing or ambiguous")
             receipt = wb.completion(text, "FLATTEN_STORAGE_RESULT")
+            phases[phase] = receipt
             expected_hash = row["prior_sha256"] if phase == "prepare" else row["retry_sha256"]
             engine.require(receipt.get("phase") == phase and receipt.get("error") == "" and
                            receipt.get("after_sha256") == expected_hash,
@@ -109,6 +114,8 @@ def verify_storage_faults(directory: Path, platform: str) -> dict:
                            "FLATTEN_STORAGE_RESULT " not in refusal_log,
                            "Process-fault case did not die during a real partial temporary-file write")
         else:
+            engine.require(len(re.findall(r"(?m)^FLATTEN_STORAGE_RESULT ", refusal_log)) == 1,
+                           "Storage-fault refusal receipt is missing or ambiguous")
             receipt = wb.completion(refusal_log, "FLATTEN_STORAGE_RESULT")
             engine.require(row.get("exit_code") == 0 and row.get("explicit_refusal") is True and
                            row.get("partial_temporary_bytes") == [] and bool(receipt.get("error")) and
@@ -118,6 +125,50 @@ def verify_storage_faults(directory: Path, platform: str) -> dict:
             if kind == "partial-write":
                 engine.require(row.get("file_size_limit_bytes") == 65536,
                                "Partial-write fixture omitted the actual OS storage-capacity bound")
+            if kind == "locked-source":
+                source_hash = row.get("source_sha256_before")
+                engine.require(re.fullmatch(r"[0-9a-f]{64}", str(source_hash)) is not None and
+                               source_hash == row.get("source_sha256_after") == row.get("retry_sha256") and
+                               source_hash != row.get("prior_sha256") and
+                               type(row.get("source_size_bytes")) is int and
+                               524288+52 < row["source_size_bytes"] <= 524288+52+1024*1024 and
+                               row.get("target_unlocked") is True and
+                               row.get("locked_source_desired_access") == 0 and
+                               row.get("locked_source_share_mode") == 3 and
+                               row.get("retry_used_same_source") is True and
+                               row.get("source_exists_after_retry") is False,
+                               "Locked-source failure did not preserve both files and retry the same complete source")
+                prepared, recovered = phases["prepare"], phases["recover"]
+                source, target = prepared.get("source_path", ""), prepared.get("path", "")
+                engine.require(isinstance(source,str) and isinstance(target,str) and source != target and
+                               PureWindowsPath(source).is_absolute() and PureWindowsPath(target).is_absolute() and
+                               PureWindowsPath(source).parent == PureWindowsPath(target).parent and
+                               all(item.get("source_path") == source and item.get("path") == target and
+                                   item.get("operation") == "production-native-replacement" and
+                                   item.get("native_api") == "CyberDemoBridge.replace_material_baseline_file"
+                                   for item in (prepared,receipt,recovered)),
+                               "Locked-source original child logs do not identify the same production native replacement")
+                engine.require(prepared.get("source_sha256_after") == source_hash and
+                               prepared.get("source_exists_after") is True and
+                               receipt.get("source_sha256_before") == receipt.get("source_sha256_after") == source_hash and
+                               receipt.get("source_exists_after") is True and
+                               recovered.get("source_sha256_before") == recovered.get("after_sha256") == source_hash and
+                               recovered.get("source_sha256_after") == "" and
+                               recovered.get("source_exists_after") is False and
+                               recovered.get("retry_used_same_source") is True,
+                               "Locked-source original bytes or same-source retry disagree with the summary")
+                retained = {"locked-source-bytes/"+name: digest for name,digest in (
+                    ("target-before.bin",row["prior_sha256"]),
+                    ("target-after-refusal.bin",row["prior_sha256"]),
+                    ("source-before.bin",source_hash),
+                    ("source-after-refusal.bin",source_hash),
+                    ("target-after-retry.bin",source_hash))}
+                engine.require(row.get("retained_files_sha256") == retained and
+                               all((logs/name).is_file() and not (logs/name).is_symlink() and
+                                   engine.runner.sha256(logs/name) == digest for name,digest in retained.items()) and
+                               all((logs/"locked-source-bytes"/name).stat().st_size == row["source_size_bytes"]
+                                   for name in ("source-before.bin","source-after-refusal.bin","target-after-retry.bin")),
+                               "Locked-source original file bytes are missing, changed or differ from the reported retry")
     return {"status": "passed", "report_sha256": engine.runner.sha256(directory / "storage-faults.json")}
 
 

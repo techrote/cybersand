@@ -106,9 +106,14 @@ history regression provides real legacy fresh-process compatibility evidence.
 Real operating-system storage faults complement malformed-file fixtures. Linux
 limits a child process to a 64 KiB file and exercises both a handled partial write
 and termination by `SIGXFSZ` during preparation. Windows holds the prior named file
-open without replacement sharing and checks explicit atomic-replacement refusal.
-The old named file must remain byte-identical and readable, and an ordinary retry
-must publish the new complete baseline. Original child logs and
+open without replacement sharing and checks explicit writer refusal. A second
+Windows case locks only a complete, closed temporary source, leaving the old named
+destination unlocked. The production native replacement must refuse while both
+files remain byte-identical; releasing the source lock and retrying the exact same
+file must publish its complete bytes and consume the source. This catches a
+delete-before-move implementation that would lose the unlocked destination.
+The writer uses a native atomic replacement because Godot's Windows rename can
+delete an existing destination before its move fails. Original child logs and
 `storage-faults.json` accompany each platform's evidence.
 
 ## Reproduce focused tests

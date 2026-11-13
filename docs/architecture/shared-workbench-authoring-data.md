@@ -196,9 +196,15 @@ container size is **9 MiB + 52 bytes**.
 Read validates version, exact keys, dimensions, lengths, complete checksum,
 current supported material IDs and the Setup metadata before preparation.
 Unknown/truncated/corrupt encodings and excessive capacity are refused.
-Write prevalidates, writes/flushes one unique temporary file, checks its complete
-length and atomically renames the whole file over the named start. Failure removes
-only that temporary file and preserves the prior valid save. Save does not sample
+Write prevalidates, writes/flushes one unique temporary file and checks its complete
+length. The native baseline-file replacement validates absolute same-directory
+paths, then uses POSIX `rename` or Windows `MoveFileExW` with replacement enabled
+and no copy/delete fallback. It never deletes the destination before replacement.
+This provides atomic file-name replacement for the tested process/I/O failures;
+filesystem and hardware power-loss durability are not part of this contract.
+Godot 4.7's general Windows directory rename is unsuitable here because it removes
+an existing target first. Failure removes only the new temporary file and preserves
+the prior valid save. Save does not sample
 live cells. The two existing **Setup-v2 and generated-start-v1 readers remain
 operational**; CYSD1 and CYPS2 are unchanged.
 

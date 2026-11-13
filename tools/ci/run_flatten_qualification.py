@@ -14,6 +14,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import threading
@@ -33,8 +34,9 @@ def storage_faults(args, env):
     report = {"schema": "gen008-flatten-storage-faults-v1", "platform": "windows" if sys.platform == "win32" else "linux",
               "status": "running", "completed": False, "cases": []}
 
-    def run(phase, label, before_exec=None, terminated=False):
-        process = subprocess.run(command, env=dict(environment, FLATTEN_STORAGE_PHASE=phase),
+    def run(phase, label, before_exec=None, terminated=False, kind=""):
+        process = subprocess.run(command, env=dict(environment, FLATTEN_STORAGE_PHASE=phase,
+                                                   FLATTEN_STORAGE_KIND=kind),
                                  cwd=directory, text=True, encoding="utf-8", errors="replace",
                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=90,
                                  preexec_fn=before_exec)
@@ -54,12 +56,17 @@ def storage_faults(args, env):
         return hashlib.sha256(path.read_bytes()).hexdigest()
 
     try:
-        cases = ["locked-target"] if sys.platform == "win32" else ["partial-write", "process-termination"]
+        cases = ["locked-target", "locked-source"] if sys.platform == "win32" else ["partial-write", "process-termination"]
         for kind in cases:
-            prepared = run("prepare", kind + "-prepare")
+            prepared = run("prepare", kind + "-prepare", kind=kind)
             target = Path(prepared["path"])
             prior = sha(target)
             old_temporaries = set(target.parent.glob(target.name + ".*.tmp"))
+            source = None
+            source_before = None
+            source_after = None
+            source_size = None
+            retained = {}
             if sys.platform == "win32":
                 from ctypes import wintypes
                 create = ctypes.windll.kernel32.CreateFileW
@@ -69,11 +76,27 @@ def storage_faults(args, env):
                 close = ctypes.windll.kernel32.CloseHandle
                 close.argtypes = [wintypes.HANDLE]
                 close.restype = wintypes.BOOL
-                handle = create(str(target), 0x80000000, 1, None, 3, 0x80, None)
+                locked_path, access, share = target, 0x80000000, 1
+                if kind == "locked-source":
+                    source = Path(prepared["source_path"])
+                    if source == target or source.parent != target.parent:
+                        raise RuntimeError("Atomic source fixture must be a separate closed sibling file")
+                    source_before, source_size = sha(source), source.stat().st_size
+                    if source_before != prepared["source_sha256_after"] or source_before == prior or source_size <= 524288:
+                        raise RuntimeError("Locked source is not a complete different canonical baseline")
+                    snapshots = directory / "locked-source-bytes"
+                    snapshots.mkdir(exist_ok=True)
+                    for origin, name in ((target, "target-before.bin"), (source, "source-before.bin")):
+                        shutil.copyfile(origin, snapshots / name)
+                        retained["locked-source-bytes/"+name] = sha(snapshots / name)
+                    # Do not lock the old destination. A delete-then-move helper
+                    # would delete it and then fail on this source DELETE fence.
+                    locked_path, access, share = source, 0, 3  # READ|WRITE, no DELETE sharing.
+                handle = create(str(locked_path), access, share, None, 3, 0x80, None)
                 if handle == wintypes.HANDLE(-1).value:
-                    raise RuntimeError("Could not lock the existing valid Windows named start")
+                    raise RuntimeError("Could not establish the actual Windows replacement lock: " + kind)
                 try:
-                    refused = run("refusal", kind + "-refusal")
+                    refused = run("refusal", kind + "-refusal", kind=kind)
                 finally:
                     close(handle)
             else:
@@ -84,7 +107,7 @@ def storage_faults(args, env):
                     resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
                     signal.signal(signal.SIGXFSZ, signal.SIG_DFL if kind == "process-termination" else signal.SIG_IGN)
                 refused = run("process_fault" if kind == "process-termination" else "refusal",
-                              kind + "-refusal", limit, kind == "process-termination")
+                              kind + "-refusal", limit, kind == "process-termination", kind=kind)
             after = sha(target)
             if prior != after or prior != prepared["after_sha256"]:
                 raise RuntimeError("A failed same-target save changed the previous valid named file")
@@ -94,13 +117,31 @@ def storage_faults(args, env):
                 raise RuntimeError("Process-fault fixture lacks a genuinely partial 64 KiB temporary write")
             if kind != "process-termination" and new_temporaries:
                 raise RuntimeError("Recoverable write refusal leaked its temporary file")
-            recovered = run("recover", kind + "-recover")
+            if source is not None:
+                source_after = sha(source)
+                if source_after != source_before or source.stat().st_size != source_size:
+                    raise RuntimeError("Failed native replacement changed the complete locked source")
+                for origin, name in ((target, "target-after-refusal.bin"), (source, "source-after-refusal.bin")):
+                    shutil.copyfile(origin, snapshots / name)
+                    retained["locked-source-bytes/"+name] = sha(snapshots / name)
+            recovered = run("recover", kind + "-recover", kind=kind)
             row = {"kind": kind, "prior_sha256": prior, "after_sha256": after,
                    "exit_code": refused["exit_code"], "explicit_refusal": bool(refused.get("error")),
                    "attempted_plane_bytes": 524288, "partial_temporary_bytes": sizes,
                    "retry_ok": recovered["exit_code"] == 0 and recovered["after_sha256"] != prior,
-                   "retry_sha256": recovered["after_sha256"]}
-            if kind != "locked-target": row["file_size_limit_bytes"] = 65536
+                   "retry_sha256": recovered["after_sha256"],
+                   "operation": "production-native-replacement" if source is not None else "production-baseline-writer"}
+            if source is not None:
+                if recovered["after_sha256"] != source_before or not recovered.get("retry_used_same_source") or source.exists():
+                    raise RuntimeError("Unlocked native retry did not consume and publish the exact same complete source")
+                shutil.copyfile(target, snapshots / "target-after-retry.bin")
+                retained["locked-source-bytes/target-after-retry.bin"] = sha(snapshots / "target-after-retry.bin")
+                row.update(source_sha256_before=source_before, source_sha256_after=source_after,
+                           source_size_bytes=source_size, target_unlocked=True,
+                           locked_source_desired_access=0, locked_source_share_mode=3,
+                           retry_used_same_source=True, source_exists_after_retry=False,
+                           retained_files_sha256=retained)
+            if sys.platform != "win32": row["file_size_limit_bytes"] = 65536
             if kind == "process-termination": row["signal"] = int(signal.SIGXFSZ)
             report["cases"].append(row)
         report.update(status="passed", completed=True)

@@ -22,6 +22,7 @@ GODOT_VERSION = "4.7.stable.official.5b4e0cb0f"
 SOURCES = [
     "godot/native_extension/cyber_native_cell_world.cpp",
     "godot/native_extension/cyber_world_generator.cpp",
+    "godot/native_extension/material_baseline_file.cpp",
     "godot/native_extension/register_types.cpp",
     "native/src/world.cpp", "native/src/render_snapshot.cpp", "native/src/settled_world_discovery.cpp",
     "native/src/world_generation.cpp",

@@ -129,23 +129,48 @@ class FlattenReceiptAdmission(unittest.TestCase):
             self.records.append(record)
         self.save_records()
 
-    def storage_fixture(self):
+    def storage_fixture(self, platform="linux"):
         directory = self.directory / "storage-faults"
-        directory.mkdir()
-        report = {"schema": "gen008-flatten-storage-faults-v1", "platform": "linux",
+        directory.mkdir(exist_ok=True)
+        report = {"schema": "gen008-flatten-storage-faults-v1", "platform": platform,
                   "status": "passed", "completed": True, "cases": []}
-        for kind in ("partial-write", "process-termination"):
-            row = {"kind": kind, "prior_sha256": "1"*64, "after_sha256": "1"*64, "retry_ok": True,
-                   "retry_sha256": "2"*64, "attempted_plane_bytes": 524288, "file_size_limit_bytes": 65536,
+        cases = ("locked-target","locked-source") if platform=="windows" else ("partial-write","process-termination")
+        for kind in cases:
+            prior, replacement = "1"*64, "2"*64
+            retained = {}
+            if kind == "locked-source":
+                snapshots = directory / "locked-source-bytes"
+                snapshots.mkdir(exist_ok=True)
+                for name, content in (("target-before.bin",b"o"), ("target-after-refusal.bin",b"o"),
+                                      ("source-before.bin",b"n"), ("source-after-refusal.bin",b"n"),
+                                      ("target-after-retry.bin",b"n")):
+                    (snapshots/name).write_bytes(content*525312)
+                    retained["locked-source-bytes/"+name] = subject.engine.runner.sha256(snapshots/name)
+                prior=retained["locked-source-bytes/target-before.bin"]
+                replacement=retained["locked-source-bytes/source-before.bin"]
+            row = {"kind": kind, "prior_sha256": prior, "after_sha256": prior, "retry_ok": True,
+                   "retry_sha256": replacement, "attempted_plane_bytes": 524288,
                    "exit_code": -25 if kind == "process-termination" else 0,
-                   "explicit_refusal": kind == "partial-write",
-                   "partial_temporary_bytes": [65536] if kind == "process-termination" else []}
+                   "explicit_refusal": kind != "process-termination",
+                   "partial_temporary_bytes": [65536] if kind == "process-termination" else [],
+                   "operation": "production-native-replacement" if kind=="locked-source" else "production-baseline-writer"}
+            if platform == "linux": row["file_size_limit_bytes"] = 65536
             if kind == "process-termination": row["signal"] = 25
+            if kind == "locked-source":
+                row.update(source_sha256_before=replacement,source_sha256_after=replacement,source_size_bytes=525312,
+                           target_unlocked=True,locked_source_desired_access=0,locked_source_share_mode=3,
+                           retry_used_same_source=True,source_exists_after_retry=False,retained_files_sha256=retained)
             report["cases"].append(row)
             for phase in ("prepare", "recover", "refusal"):
                 receipt = {"checks": 3, "failures": [], "phase": phase,
                            "error": "injected storage fault" if phase == "refusal" else "",
-                           "prior_sha256": "1"*64, "after_sha256": "2"*64 if phase == "recover" else "1"*64}
+                           "prior_sha256": prior, "after_sha256": replacement if phase == "recover" else prior}
+                if kind == "locked-source":
+                    receipt.update(path="C:/fixture/setup-old.json",source_path="C:/fixture/setup-old.json.0123456789abcdef.tmp",
+                                   operation=row["operation"],native_api="CyberDemoBridge.replace_material_baseline_file",
+                                   source_sha256_before="" if phase=="prepare" else replacement,
+                                   source_sha256_after="" if phase=="recover" else replacement,
+                                   source_exists_after=phase!="recover",retry_used_same_source=phase=="recover")
                 text = ("FLATTEN_STORAGE_WRITING {}\n" if phase == "refusal" and kind == "process-termination"
                         else "FLATTEN_STORAGE_RESULT "+json.dumps(receipt)+"\n")
                 (directory / f"{kind}-{phase}.log").write_text(text, encoding="utf-8")
@@ -254,6 +279,32 @@ class FlattenReceiptAdmission(unittest.TestCase):
                 self.write("storage-faults.json", altered)
                 self.storage_summary()
                 with self.assertRaises(RuntimeError): self.verify()
+
+    def test_windows_source_lock_requires_original_bytes_and_same_source_retry(self):
+        self.storage_fixture("windows")
+        self.assertEqual(subject.verify_storage_faults(self.directory,"windows")["status"],"passed")
+        for mutation in ("missing-source-case","source-changed","target-locked","delete-sharing",
+                         "different-retry","source-not-consumed","different-path","log-source-changed","retained-bytes"):
+            with self.subTest(mutation=mutation):
+                self.storage_fixture("windows")
+                report=json.loads((self.directory/"storage-faults.json").read_text())
+                row=report["cases"][1]
+                if mutation=="missing-source-case": report["cases"].pop()
+                if mutation=="source-changed": row["source_sha256_after"]="3"*64
+                if mutation=="target-locked": row["target_unlocked"]=False
+                if mutation=="delete-sharing": row["locked_source_share_mode"]=7
+                if mutation=="different-retry": row["retry_used_same_source"]=False
+                if mutation=="source-not-consumed": row["source_exists_after_retry"]=True
+                if mutation in ("different-path","log-source-changed"):
+                    log=self.directory/"storage-faults/locked-source-recover.log"
+                    receipt=json.loads(log.read_text().split("FLATTEN_STORAGE_RESULT ")[1])
+                    receipt["source_path" if mutation=="different-path" else "source_sha256_before"] = (
+                        "C:/fixture/different.tmp" if mutation=="different-path" else "3"*64)
+                    log.write_text("FLATTEN_STORAGE_RESULT "+json.dumps(receipt)+"\n")
+                if mutation=="retained-bytes":
+                    (self.directory/"storage-faults/locked-source-bytes/target-after-refusal.bin").write_bytes(b"lost old save")
+                self.write("storage-faults.json",report)
+                with self.assertRaises(RuntimeError): subject.verify_storage_faults(self.directory,"windows")
 
 
 if __name__ == "__main__":

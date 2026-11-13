@@ -154,6 +154,50 @@ hashing, the complete GDScript/native call boundary, and the main-thread
 worker-result handoff. The last measurement alone is not cross-language capture
 cost. Full-plane scans stay bounded; no borrowed World buffer is exposed.
 
+### Windows replacement correction after the first campaign
+
+The first hosted campaign started at source
+`99c4b482e4ada19838f24539640ee9e901ad3e17`, tree
+`e6c92ca26d525082b3b10b4e70683c6acb44cf37`, run `43516454193`. Its native
+ASan/UBSan and 231-test Linux catalogue results passed, but it is preliminary
+evidence rather than final acceptance.
+
+Review of the pinned [Godot 4.7 Windows implementation](https://github.com/godotengine/godot/blob/4.7-stable/drivers/windows/dir_access_windows.cpp)
+found that ordinary `DirAccess.rename` removes an existing destination before
+attempting the move. The first baseline writer had reused that operation, leaving
+a Windows failure window. A locked destination cannot expose this gap because its
+deletion is refused immediately. The stronger control locks the completed source
+temporary against moving while leaving the existing destination unlocked.
+
+The baseline writer now uses a narrow native same-directory replacement primitive:
+Windows `MoveFileExW` with replacement/write-through and no copy fallback, POSIX
+`rename`, and no pre-deletion. The normal writer remains responsible for complete
+staging, byte-count/integrity validation and temporary cleanup. The regression
+requires both source and previous destination to survive a refused replacement,
+then verifies successful replacement after the lock is released. Unicode paths,
+missing-source refusal and successful overwrites are also checked. Legacy formats
+and their existing writers are outside this scoped correction.
+
+The final Linux/Windows campaign must rebuild and execute the corrected source;
+the first campaign's build or execution results cannot qualify this change.
+
+The local corrected extension is 4,493,160 bytes with SHA-256
+`b4f0a70d92bb4626ac1e582cc2438a0ec24934d18b4dbb05b1892f025aa69deb`.
+It passes **102/102** native-backed format/atomic-save checks, including an actual
+Unicode user-data directory and paths longer than 260 characters. The focused mounted 512² Workbench passes **193**
+authoring checks and **42** checks in a separate fresh reopen process; real Linux
+partial-write and process-termination faults preserve the previous named save.
+This is local diagnostic evidence with the same explicitly recorded compiler
+drift, not a substitute for the successor hosted campaign.
+
+Publisher admission now passes **13** guards, including nine adversarial
+locked-source receipt mutations. The Windows runner retains the actual complete
+source and old destination before/refusal bytes and the successful retry's bytes;
+publication independently hashes those files against the original child logs.
+The native helper is listed in all three existing extension build source lists
+(Linux, Windows and Web); the Web edit only preserves link compatibility and
+does not claim additional Web qualification.
+
 ## Hosted acceptance and remaining authority
 
 The dedicated qualification workflow reuses the accepted MAT-AUTH/Workbench

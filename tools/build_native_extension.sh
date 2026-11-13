@@ -98,6 +98,7 @@ command=(
     -I"$godot_cpp_root/gdextension"
     "$project_root/godot/native_extension/cyber_native_cell_world.cpp"
     "$project_root/godot/native_extension/cyber_world_generator.cpp"
+    "$project_root/godot/native_extension/material_baseline_file.cpp"
     "$project_root/godot/native_extension/register_types.cpp"
     "$project_root/native/src/world.cpp"
     "$project_root/native/src/world_generation.cpp"

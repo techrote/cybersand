@@ -120,6 +120,9 @@ static func write_named(label: String, setup: Dictionary, baseline: Dictionary) 
 	if path.is_empty(): return "Use 1–48 letters, digits, underscores or hyphens for the setup name."
 	var error := validate_document(setup,baseline)
 	if not error.is_empty(): return error
+	var replacement_bridge: Object = ClassDB.instantiate(&"CyberDemoBridge")
+	if replacement_bridge == null or not replacement_bridge.has_method(&"replace_material_baseline_file"):
+		return "This native runtime cannot atomically save material baselines; rebuild the GDExtension."
 	var manifest := JSON.stringify(_manifest(setup,baseline)).to_utf8_buffer()
 	var checksum := _body_digest(manifest,baseline.cells)
 	if checksum.size() != 32: return "Could not checksum the complete material baseline."
@@ -144,10 +147,17 @@ static func write_named(label: String, setup: Dictionary, baseline: Dictionary) 
 	var state := file.get_error()
 	var complete: bool = file.get_position() == HEADER_SIZE+manifest.size()+baseline.cells.size()
 	file.close()
-	if state == OK and complete: state = DirAccess.rename_absolute(temporary,target)
 	if state != OK or not complete:
 		DirAccess.remove_absolute(temporary)
 		return "Could not atomically replace the material baseline; previous named start is unchanged."
+	# Godot's Windows rename removes an existing target before moving the source.
+	# The narrow native primitive performs one same-directory atomic replacement
+	# and never deletes the previous save when moving the completed source fails.
+	var replaced: Dictionary = replacement_bridge.call(&"replace_material_baseline_file",temporary,target)
+	if not replaced.get("ok",false):
+		DirAccess.remove_absolute(temporary)
+		return "Could not atomically replace the material baseline; previous named start is unchanged: " \
+			+str(replaced.get("error","native replacement failed"))
 	return ""
 
 

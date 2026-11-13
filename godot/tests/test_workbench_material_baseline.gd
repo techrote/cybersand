@@ -192,6 +192,76 @@ func corrupt_files(fixture: Dictionary) -> void:
 	DirAccess.remove_absolute(Setup._path(damaged))
 
 
+func atomic_replacement(fixture: Dictionary) -> void:
+	var target := ProjectSettings.globalize_path(Setup._path(LABEL))
+	var previous := FileAccess.get_sha256(target)
+	var missing := target+".missing.tmp"
+	DirAccess.remove_absolute(missing)
+	var result: Dictionary = bridge.call(&"replace_material_baseline_file",missing,target)
+	check(not result.get("ok",false) and not str(result.get("error","")).is_empty()
+		and FileAccess.get_sha256(target)==previous,
+		"missing staged source refuses without deleting the existing named start")
+	result = bridge.call(&"replace_material_baseline_file","relative-staging.tmp",target)
+	check(not result.get("ok",false) and FileAccess.get_sha256(target)==previous,
+		"relative staging path refuses without changing the valid save")
+	result = bridge.call(&"replace_material_baseline_file",target,target)
+	check(not result.get("ok",false) and FileAccess.get_sha256(target)==previous,
+		"source and target alias refuse without changing the valid save")
+	var directory_source := target+".directory.tmp"
+	if not check(DirAccess.make_dir_recursive_absolute(directory_source)==OK,"create directory-source refusal fixture"): return
+	result = bridge.call(&"replace_material_baseline_file",directory_source,target)
+	check(not result.get("ok",false) and DirAccess.dir_exists_absolute(directory_source)
+		and FileAccess.get_sha256(target)==previous,"directory source refuses without deleting a valid target")
+	DirAccess.remove_absolute(directory_source)
+	# Save through the actual writer must replace an existing complete container.
+	var next_setup: Dictionary = fixture.setup.duplicate(true)
+	next_setup.edits.append([129,1,1,1,131])
+	var error: String = store.write_named(LABEL,next_setup,fixture.baseline)
+	var loaded: Dictionary = store.read_named(LABEL) if error.is_empty() else {}
+	check(error.is_empty() and loaded.get("flattened",false) and loaded.get("setup",{})==next_setup
+		and FileAccess.get_sha256(target)!=previous,"actual writer atomically overwrites an existing valid named start")
+	error = store.write_named(LABEL,fixture.setup,fixture.baseline)
+	check(error.is_empty() and file_bytes(LABEL)==fixture.bytes,"successful overwrite restores exact original container bytes")
+	# Windows uses UTF-16 paths in the native primitive; these names also exercise
+	# non-ASCII user-directory components without widening authored label syntax.
+	var directory := ProjectSettings.globalize_path(Setup.DIRECTORY).path_join("gen008-Å水-atomic")
+	for part: String in ["long-a-"+"a".repeat(80),"long-b-"+"b".repeat(80),"long-c-"+"c".repeat(80)]:
+		directory = directory.path_join(part)
+	check(directory.length()>260,"replacement fixture exceeds legacy Windows path length")
+	if not check(DirAccess.make_dir_recursive_absolute(directory)==OK,"create Unicode replacement directory"): return
+	var source := directory.path_join("étape-水.tmp")
+	var unicode_target := directory.path_join("保存.json")
+	var cells: PackedByteArray = fixture.baseline.cells.duplicate()
+	cells.encode_u16(0,58)
+	var metadata: Dictionary = JSON.parse_string(fixture.bytes.slice(52,52+int(fixture.bytes.decode_u32(12))).get_string_from_utf8())
+	metadata.sha256 = Generated.digest(cells)
+	var replacement := retag(fixture.bytes,metadata,cells)
+	var output := FileAccess.open(source,FileAccess.WRITE)
+	if not check(output!=null,"create complete Unicode staged file"): return
+	output.store_buffer(replacement); output.close()
+	result = bridge.call(&"replace_material_baseline_file",source,target)
+	check(not result.get("ok",false) and FileAccess.get_sha256(target)==previous
+		and FileAccess.get_file_as_bytes(source)==replacement,"different-directory replacement refuses and preserves both files")
+	output = FileAccess.open(unicode_target,FileAccess.WRITE)
+	if not check(output!=null,"create existing Unicode target"): return
+	output.store_buffer(fixture.bytes); output.close()
+	result = bridge.call(&"replace_material_baseline_file",source,unicode_target)
+	check(result.get("ok",false) and not FileAccess.file_exists(source)
+		and FileAccess.get_file_as_bytes(unicode_target)==replacement,
+		"Unicode same-directory atomic replacement consumes the complete source and replaces existing target exactly")
+	var first_target := directory.path_join("première-保存.json")
+	DirAccess.remove_absolute(first_target)
+	result = bridge.call(&"replace_material_baseline_file",unicode_target,first_target)
+	check(result.get("ok",false) and not FileAccess.file_exists(unicode_target)
+		and FileAccess.get_file_as_bytes(first_target)==replacement,"native atomic first publication creates exact new target")
+	DirAccess.remove_absolute(source)
+	DirAccess.remove_absolute(unicode_target)
+	DirAccess.remove_absolute(first_target)
+	for index: int in 4:
+		DirAccess.remove_absolute(directory)
+		directory = directory.get_base_dir()
+
+
 func legacy_compatibility(fixture: Dictionary) -> void:
 	var label := LABEL+"-legacy"
 	check(Setup.write_named(label,fixture.setup).is_empty(),"unchanged legacy Setup-v2 writer works")
@@ -249,9 +319,14 @@ func run() -> void:
 		print("WORKBENCH_MATERIAL_BASELINE checks=%d failures=%d" % [checks, failures])
 		quit(1)
 		return
+	if not check(bridge.has_method(&"replace_material_baseline_file"),"source-matched native atomic replacement is available"):
+		print("WORKBENCH_MATERIAL_BASELINE checks=%d failures=%d" % [checks, failures])
+		quit(1)
+		return
 	capture_refusals()
 	var fixture := roundtrip_and_history()
 	if not fixture.is_empty():
+		atomic_replacement(fixture)
 		corrupt_files(fixture)
 		legacy_compatibility(fixture)
 	scale()

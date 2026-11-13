@@ -2,6 +2,7 @@
 
 #include "cyber_native_cell_world.hpp"
 #include "cyber_observation_values.hpp"
+#include "material_baseline_file.hpp"
 #include "cybersand/demo_snapshot.hpp"
 #include "cybersand/interaction_rules.hpp"
 #include "cybersand/material_rules.hpp"
@@ -462,6 +463,17 @@ public:
     // support 4096, so authored paint must not report a save as replayable
     // until this exact native constructor is present.
     [[nodiscard]] std::int64_t workbench_start_rectangle_capacity() const { return 32768; }
+
+    [[nodiscard]] Dictionary replace_material_baseline_file(const String& temporary, const String& target) const {
+        Dictionary out;
+        out["ok"] = false;
+        try {
+            const auto error = material_baseline_file::replace(temporary, target);
+            out["error"] = error;
+            out["ok"] = error.is_empty();
+        } catch (const std::exception& error) { out["error"] = String(error.what()); }
+        return out;
+    }
 
     // Bounded value validation shared by staging, persistence and fresh prepared
     // reconstruction. No World access and no per-cell GDScript crossing.
@@ -1078,6 +1090,8 @@ protected:
                              &CyberDemoBridge::liquid_policy_with_pressure_gas);
         ClassDB::bind_method(D_METHOD("workbench_start_rectangle_capacity"),
             &CyberDemoBridge::workbench_start_rectangle_capacity);
+        ClassDB::bind_method(D_METHOD("replace_material_baseline_file", "temporary", "target"),
+            &CyberDemoBridge::replace_material_baseline_file);
         ClassDB::bind_method(D_METHOD("validate_material_baseline", "cells", "extent"),
             &CyberDemoBridge::validate_material_baseline);
         ClassDB::bind_method(D_METHOD("capture_material_baseline", "world"),
