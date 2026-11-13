@@ -5,11 +5,15 @@ from http.server import ThreadingHTTPServer
 import http.client
 import json
 from pathlib import Path
+import socket
+import sys
 import tempfile
 import threading
+import time
 import unittest
 
-from local_art_bridge import BridgeRefusal, MODEL_ALIAS, checked_art_result, make_handler, parse_workbench_request
+from local_art_bridge import (BridgeRefusal, MODEL_ALIAS, _peer_disconnected, _run_owned_inference,
+                              checked_art_result, make_handler, parse_workbench_request)
 
 SYSTEM = ('Return ONLY a JSON array. Coordinates are LOCAL: top-left is (0,0), never add a world offset. '
           'XYWH=[0,0,96,96]. Allowed materials=[58]. Use compact rectangles, discs and lines. '
@@ -89,6 +93,64 @@ class ContractTests(unittest.TestCase):
             src.write_text("[]")
             with self.assertRaises(BridgeRefusal):
                 checked_art_result(folder, req, "compiler")
+
+
+    def test_peer_disconnection_detected_without_consuming_request_bytes(self):
+        client, server = socket.socketpair()
+        try:
+            self.assertFalse(_peer_disconnected(server))
+            client.sendall(b"X")
+            self.assertFalse(_peer_disconnected(server))
+            self.assertEqual(server.recv(1), b"X")  # MSG_PEEK did not consume.
+            client.close()
+            for _ in range(30):
+                if _peer_disconnected(server):
+                    break
+                time.sleep(0.01)
+            self.assertTrue(_peer_disconnected(server))
+        finally:
+            client.close()
+            server.close()
+
+    def test_cancel_stops_inference_subprocess_and_preserves_no_art_result(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            started, finished = root / "started", root / "finished"
+            script = ("import pathlib,sys,time;"
+                      "pathlib.Path(sys.argv[1]).write_text('started');"
+                      "time.sleep(15);"
+                      "pathlib.Path(sys.argv[2]).write_text('finished')")
+            command = [sys.executable, "-c", script, str(started), str(finished)]
+            stop = threading.Event()
+            outcome = []
+            def run():
+                with (root / "process.log").open("wb") as log:
+                    try:
+                        outcome.append(_run_owned_inference(command, log, 8.0,
+                                                            cancellation_probe=stop.is_set))
+                    except BridgeRefusal as exc:
+                        outcome.append(str(exc))
+            worker = threading.Thread(target=run, daemon=True)
+            worker.start()
+            for _ in range(100):
+                if started.exists():
+                    break
+                time.sleep(0.02)
+            self.assertTrue(started.exists(), "child never started")
+            stop.set()
+            worker.join(4)
+            self.assertFalse(worker.is_alive(), "canceled local inference still owns the job")
+            self.assertEqual(len(outcome), 1)
+            self.assertIn("canceled", outcome[0])
+            self.assertFalse(finished.exists(), "stale child published after cancellation")
+
+    def test_inference_whole_process_deadline(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with (Path(tmp) / "process.log").open("wb") as log:
+                with self.assertRaisesRegex(BridgeRefusal, "deadline exceeded"):
+                    _run_owned_inference([sys.executable, "-c", "import time;time.sleep(10)"],
+                                         log, 0.2)
+
 
     def test_http_end_to_end_and_refusal(self):
         hits = []
