@@ -1,6 +1,6 @@
 {
   "schema": "agent-painter-qualification-v1",
-  "sequence": 5,
+  "sequence": 6,
   "accepted_base": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742",
   "historical_donor": "bac120981fdd9aecaab0dc8368c421fa390cc269",
   "families": [

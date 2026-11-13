@@ -26,6 +26,9 @@ on:
       corpus-run-id:
         type: string
         default: ''
+      resume-run-id:
+        type: string
+        default: ''
   workflow_dispatch:
     inputs:
       source-sha:
@@ -50,7 +53,7 @@ on:
         type: number
         default: 2
       resume-artifact:
-        description: Optional exact checkpoint artifact from corpus-run-id
+        description: Optional exact checkpoint artifact from resume-run-id or the corpus run
         type: string
         default: ''
       resume-checkpoint:
@@ -61,6 +64,10 @@ on:
         description: Actions run containing the admitted corpus (required for manual dispatch)
         type: string
         required: true
+      resume-run-id:
+        description: Checkpoint artifact run; defaults to corpus-run-id or the current run
+        type: string
+        default: ''
 
 permissions:
   contents: read
@@ -88,6 +95,10 @@ jobs:
       REQUEST_RESUME: ${{ inputs.resume-artifact }}
       REQUEST_CHECKPOINT: ${{ inputs.resume-checkpoint }}
       REQUEST_PROFILE: ${{ inputs.profile }}
+      REQUEST_REPOSITORY: ${{ github.repository }}
+      REQUEST_CORPUS_ARTIFACT: ${{ inputs.corpus-artifact }}
+      REQUEST_CORPUS_RUN_ID: ${{ inputs.corpus-run-id || github.run_id }}
+      REQUEST_RESUME_RUN_ID: ${{ inputs.resume-run-id || inputs.corpus-run-id || github.run_id }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -103,7 +114,33 @@ jobs:
           test "$REQUEST_STEPS" -le 16
           [[ "$REQUEST_CHECKPOINT" =~ ^checkpoint-[0-9]{6}$ ]]
           [[ "$REQUEST_PROFILE" =~ ^(smol|void|sprocket|lfm25_vl)$ ]]
+          [[ "$REQUEST_CORPUS_RUN_ID" =~ ^[1-9][0-9]*$ ]]
+          [[ "$REQUEST_RESUME_RUN_ID" =~ ^[1-9][0-9]*$ ]]
           mkdir -p evidence/training-environment
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          resume = None
+          if os.environ["REQUEST_RESUME"]:
+              resume = {
+                  "artifact": os.environ["REQUEST_RESUME"],
+                  "run_id": os.environ["REQUEST_RESUME_RUN_ID"],
+                  "checkpoint": os.environ["REQUEST_CHECKPOINT"],
+              }
+          origins = {
+              "schema_version": 1,
+              "repository": os.environ["REQUEST_REPOSITORY"],
+              "source_sha": os.environ["REQUEST_SOURCE_SHA"],
+              "corpus": {
+                  "artifact": os.environ["REQUEST_CORPUS_ARTIFACT"],
+                  "run_id": os.environ["REQUEST_CORPUS_RUN_ID"],
+              },
+              "resume": resume,
+          }
+          Path("evidence/training-environment/artifact-origins.json").write_text(
+              json.dumps(origins, indent=2) + "\n", encoding="utf-8")
+          PY
           git rev-parse HEAD > evidence/training-environment/source.txt
           python3 --version > evidence/training-environment/python.txt
           lscpu > evidence/training-environment/cpu.txt
@@ -119,7 +156,7 @@ jobs:
         with:
           name: ${{ inputs.resume-artifact }}
           path: evidence/previous-training
-          run-id: ${{ inputs.corpus-run-id || github.run_id }}
+          run-id: ${{ inputs.resume-run-id || inputs.corpus-run-id || github.run_id }}
           github-token: ${{ github.token }}
       - name: Establish pinned CPU environment on this hosted runner
         run: |

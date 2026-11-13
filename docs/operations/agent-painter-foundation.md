@@ -127,6 +127,10 @@ reusable `workflow_call` and manually dispatched entry point. It installs its
 own exact CPU Python dependency set, downloads a public source-pinned model on
 the runner, and consumes the admitted artifact. Inputs freeze source SHA,
 corpus artifact/run, output name, bounded step target and optional checkpoint.
+`resume-run-id` selects a checkpoint from a different run than `corpus-run-id`;
+when omitted it falls back to the corpus run, then the current run. Thus a worker
+can retain a frozen corpus from run A while continuing a checkpoint from run B.
+The environment receipt records both resolved artifact origins.
 Ordinary pushes do not launch training. No owner Windows machine, worker-local
 filesystem, model secret or GPU is required.
 

@@ -52,7 +52,18 @@ it after native admission succeeds; ordinary PR updates do not train.
 | `steps` | Total global optimizer target, including resumed steps; foundation wrapper accepts 1–16 |
 | `resume-artifact` | Optional previous training artifact; never modify it |
 | `resume-checkpoint` | Directory such as `checkpoint-000001` inside that artifact |
-| `corpus-run-id` | Artifact source run; defaults to the current run for reusable calls |
+| `corpus-run-id` | Native-corpus artifact source run; defaults to the current run for reusable calls |
+| `resume-run-id` | Checkpoint artifact source run; defaults to `corpus-run-id`, then the current run |
+
+The corpus and checkpoint may come from different workflow runs. If run A owns
+the frozen native corpus and run B produces a checkpoint from it, a later run C
+sets `corpus-run-id=A`, `resume-run-id=B`, and the corresponding artifact names.
+It continues from B without moving or republishing A's corpus. Omitting
+`resume-run-id` preserves the same-run fallback: use `corpus-run-id` when supplied,
+otherwise the current run. Both resolved run IDs must be positive decimal strings.
+`training-environment/artifact-origins.json` records the repository, resolved
+artifact names/run IDs and checkpoint directory; `resume` is null for a fresh job.
+The existing source/model/data/numerical-recipe checks still govern continuation.
 
 The ordinary `ubuntu-24.04` job is bounded to 45 minutes, with one CPU thread,
 a 15-minute model-download timeout, a 20-minute optimizer budget and bounded
