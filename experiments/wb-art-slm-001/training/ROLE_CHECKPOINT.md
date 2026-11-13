@@ -174,3 +174,33 @@ guarded evaluator for a fixed 24-development and twelve-word comparison and
 export only strict unmodified accepted predictions with all failures retained.
 Sprocket root Instruct and Smol135 need matched training budgets before any
 family ranking. Do not use the final 192 cases for this repair loop.
+
+
+### Final evidence-custody correction to this continuation
+
+The separate evaluator's `completed` receipt was strengthened again to bind
+`run_config.json` to the exact official `model_id` / 40-character revision,
+root-vs-chat profile/subfolder, compiler/admission/development SHA-256, actual
+adapter safetensors SHA-256, token cap and declared greedy/no-repair decoding.
+The model/adapter/corpus also receive the independent full pre/post fingerprint
+check described above. The offline fake evaluator now publishes these identity
+fields and retains dedicated receipt-mismatch/adapter-tamper regressions.
+The development-hash parentheses typo introduced during this tightening was
+caught in local Python parsing and corrected on the published branch before
+handoff (commit `855a7fadb1ef84292bfb1c52a47063fdf2854db1`).
+
+The latest **isolated local helper implementation** was compiled and **7/7
+synthetic helper checks passed** on Python 3.13.5, including both the tightened
+valid receipt and rejected inconsistent receipts. This does not substitute for
+the combined **20-method exact-source** process-test execution, which has not
+yet been run. The previous file blob references above remain historical:
+updated `evaluation_guard.py` is
+`61a0984a2086bf1ab1400897bb440c559644fbd9`, and updated
+`test_evaluation_guard.py` is
+`b91e4f69c6c0016aea67dd5bee1d07e87e9c4245`.
+README was revised to describe the random, parent/PID-bound token without
+mischaracterizing it as a signature.
+
+**Training branch pre-final-checkpoint head:** `06d61926d28615ab63725c683e8db1dfb8c1a2fc`.
+Only Training files changed. No heavyweight job was launched, and the
+combined owner-facing PR remains Draft/HOLD without modification.
