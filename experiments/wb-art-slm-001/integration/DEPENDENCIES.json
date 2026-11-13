@@ -1,7 +1,7 @@
 {
   "experiment": "WB-ART-SLM-001",
   "date": "2026-11-13",
-  "status": "Ninth checkpoint: exact unchanged Training v5 candidate sampler, manifest-fingerprinted trainer/lease, corrected Stop test and bounded Windows CPU launcher imported. Code-source CI at 835beaff GREEN (all 3 jobs); real new adapter/inference/native gallery still NOT RUN. Draft/HOLD.",
+  "status": "Eleventh integration: Training-owned Windows completion crash fix imported (exact train_lora.py and four telemetry regressions); exact-head offline smoke 43430670027 SUCCESS. Pinned base+transformers/peft missing locally, so NO new LoRA/native-gallery gain. Upstream #565 independently TECHNICAL GO/owner HOLD with qualified Windows evaluation; #567 still Draft/HOLD.",
   "source": {
     "main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
     "main_preserves": [
@@ -9,13 +9,15 @@
       "#563"
     ],
     "upstream_workbench_564": "00017c65da096c61585f026476ae1e62e1aea256",
-    "upstream_combined_565": "fd1d66b18ac80f564f7078b8a0a902297895672f",
-    "upstream_565_status": "Draft/HOLD at fd1d66b1. Run 43409155368 SUCCESS was staged publisher validation only; actual Linux, Windows, package and publication jobs SKIPPED. No source-qualified released Windows runtime.",
+    "upstream_combined_565": "266d43a33e9eefc3e93a9dce1aaab6e5267492b8",
+    "upstream_565_status": "Technical GO: source fd1d66b18ac80f564f7078b8a0a902297895672f qualified in runtime 266d43a33e9eefc3e93a9dce1aaab6e5267492b8; separate owner merge HOLD. Windows evaluation publicly published; not a source-qualified #567 neural Art runtime.",
     "historical_linux_pilot": "90719c72b9fcf90593fb7878354051ad601b47fd",
     "pilot_is_not_current_or_windows": true,
     "role_branches_seed": "01f2cfcea66839066431b6d241f186be00cecf27",
-    "upstream_565_workflow_url": "https://github.com/techrote/cybersand/actions/runs/43409155368",
-    "upstream_565_windows_failure_artifact": "14008457869; original 26-file Windows job artifact; not a qualified Windows runtime"
+    "upstream_565_workflow_url": "https://github.com/techrote/cybersand/actions/runs/43409148541",
+    "upstream_565_windows_failure_artifact": "14008457869; original 26-file Windows job artifact; not a qualified Windows runtime",
+    "upstream_565_windows_release": "https://github.com/techrote/cybersand/releases/tag/eval-mat-workbench-20261113-266d43a33e9e",
+    "upstream_565_windows_zip_sha256": "29e444ac801c884b066bae8866cf4dff02b5bc4ccafea2aec97bf2ceef10dd0c"
   },
   "contracts": {
     "schema": "urn:cybersand:wb-art-slm-001:program:1",
@@ -101,7 +103,7 @@
   "workers": {
     "integration": {
       "branch": "codex/wb-art-slm-001",
-      "next": "Consume actual trained v5 candidate + Evaluation's paired new native gallery first; source-compatible Windows/Workbench acceptance separate."
+      "next": "Consume actual trained v5 artifact and measured DEV24/literal12 raw outputs. Execute 60 frozen requests at seeds 17/73 and native matched gallery; #565 technical GO is separate platform evidence, #567 neural acceptance unqualified."
     },
     "controls": {
       "branch": "codex/wb-art-slm-controls",
@@ -120,7 +122,7 @@
     "training": {
       "branch": "codex/wb-art-slm-training",
       "observed_head": "6109b9acba91e59a88671069ea8d848d23cb73e9",
-      "next": "Repair soft-stop synthetic sentinel to occur after cancellation, verify negative control; wire v5, inspect private lease and pin base; run 400-step new candidate, score DEV24+words12.",
+      "next": "On authorized host, verify private run-parent lease; download exact official LFM2.5-350M base revision and pinned deps, then execute one v5 400-step LoRA candidate. Windows resource import defect now imported+CI PASS; no candidate produced on Integration host.",
       "imported_commit": "f98b6c11f83bfdc3fd9e9cdc3bbf3f5fd389bdd0",
       "continuation_imported_commit": "1fcff712cae69ab0f8edfa0019b69063a43e243c"
     },
@@ -531,5 +533,25 @@
       },
       "production": "Draft/HOLD"
     }
+  },
+  "latest_execution": {
+    "integration_commit": "455cf801e02790303658a6946d8f8593b88d8e96",
+    "source_import": {
+      "training_branch": "cb859d38896de10513e54dd1131a20dc4acecdc8",
+      "train_lora_blob": "4be30198215d102d9cc4dae1fc7209c696e2eb84",
+      "test_peak_rss_blob": "1a88b68fa9801004fd4db788c6c0f21a781de062"
+    },
+    "ci_run": "https://github.com/techrote/cybersand/actions/runs/43430670027",
+    "ci_result": "SUCCESS",
+    "artifacts_verified_local": [
+      "wb_art_slm_001_lfm350_adapter_step400.zip",
+      "wb_art_slm_001_lfm350_resume_step400.zip",
+      "wb_art_slm_001_executed_corpus.zip",
+      "wb_art_slm_001_native_and_model_evidence.zip"
+    ],
+    "missing_actual_training_input": "official pinned LFM2.5-350M base-model snapshot and Transformers/PEFT runtime; private training lease cannot be inspected on Integration host",
+    "new_adapter": false,
+    "new_native_gallery": false,
+    "windows_current_source_neural_test": false
   }
 }

@@ -1,6 +1,6 @@
 {
   "experiment": "WB-ART-SLM-001",
-  "status": "Tenth checkpoint: direct 60-prompt one-load inference/native replay-case generator added; raw model/native output not yet generated because pinned base/deps not accessible; Training Windows post-training 'resource' import bug identified and handed to Training owner. Draft/HOLD.",
+  "status": "11th Integration checkpoint: Training-owned Windows v5 completion bug fixed and exact-head offline smoke green; original archives re-recovered+hash/CRC checked. #565 technical GO & Windows package published; #567 neural opt-in remains Draft/HOLD. No new adapter or native gallery.",
   "updated_on": "2026-11-13",
   "owner": "five role workers after bootstrap handoff",
   "branch": "codex/wb-art-slm-001",
@@ -49,7 +49,7 @@
     }
   },
   "production_promotion": "HOLD; one Draft #567, no Ready, merge, native/Windows promotion",
-  "next_checkpoint": "Training fixes its Windows 'resource' completion crash and executes the one authorized v5 400-step candidate on pinned local base; generate DEV24/word12 raw first pass, then use integration/gallery60_infer.py for both frozen/candidate 60-prompt two-seed real-native packet comparison. No model/native gain yet.",
+  "next_checkpoint": "Training (sole heavy-job owner) downloads exact pinned official base/deps on authorized CPU host and checks private lease, runs one fresh v5 400-step candidate. Integration/Evaluation then strict score frozen DEV24+12 words and render 60-prompt two-seed native comparison. #565 Windows exists but is NOT #567 qualification.",
   "pull_request": "https://github.com/techrote/cybersand/pull/567",
   "model_native_cases_passed": 68,
   "combined_gallery_images": 260,
@@ -78,7 +78,7 @@
   ],
   "worker_branches_seeded_from": "01f2cfcea66839066431b6d241f186be00cecf27",
   "bootstrap_report_review": "Independent consistency review complete; 98% gate identified as native request yield, not schema validity.",
-  "integration_checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-1200.md",
+  "integration_checkpoint": "imported 455cf801e02790303658a6946d8f8593b88d8e96",
   "artifact_recovery": {
     "verification": "Four named owner Library archives materialized and byte-size/SHA256 compared with ARTIFACTS.json on 2026-11-13; all four match",
     "artifacts_verified": 4,
@@ -87,11 +87,12 @@
   },
   "upstream_snapshot": {
     "main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
-    "pr564_head": "6319ab1d94d85d01c9cdb44d973a92d224bfa9aa",
-    "pr565_head": "d66499ec3409fb657875fca7dbd0f234cf28ca49",
-    "pr565_status": "Draft/HOLD; 43358127824 final failure 2026-11-13 04:00 UTC: Windows original MATERIAL_LAB_UI real shared Workbench installation deadline (at 15FPS), after Linux source suite passed. No release/published Windows runtime.",
+    "pr564_head": "00017c65da096c61585f026476ae1e62e1aea256",
+    "pr565_head": "266d43a33e9eefc3e93a9dce1aaab6e5267492b8",
+    "pr565_status": "Technical GO: source fd1d66b18ac80f564f7078b8a0a902297895672f qualified in runtime 266d43a33e9eefc3e93a9dce1aaab6e5267492b8; separate owner merge HOLD. Windows evaluation publicly published; not a source-qualified #567 neural Art runtime.",
     "neural_provider_in_main": false,
-    "pr565_run": "https://github.com/techrote/cybersand/actions/runs/43358127824"
+    "pr565_run": "https://github.com/techrote/cybersand/actions/runs/43409148541",
+    "windows_release": "https://github.com/techrote/cybersand/releases/tag/eval-mat-workbench-20261113-266d43a33e9e"
   },
   "integration_role_import": {
     "imported_file_count": 21,
@@ -355,5 +356,14 @@
     "evaluation_next": "Evaluation owner: use pre-frozen 60 prompts + two seeds to create matched real native baseline/candidate gallery and blind assessment",
     "integration_next": "Consume actual candidate/gallery, review Windows pre-attachment process escape and qualify source-compatible #565 native Workbench separately",
     "production": "Draft/HOLD"
+  },
+  "latest_exec_11": {
+    "import_commit": "455cf801e02790303658a6946d8f8593b88d8e96",
+    "ci": "43430670027 SUCCESS",
+    "new_model": false,
+    "native_gallery": false,
+    "external_missing": "official pinned base model/Transformers/PEFT on authorized host",
+    "upstream_windows_technical_go": true,
+    "upstream_merge_hold": true
   }
 }
