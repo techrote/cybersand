@@ -267,6 +267,27 @@ class PairGateTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "native invariant emitted after pattern case"):
             self.audit()
 
+    def test_ordered_invariant_prefix_does_not_change_case_chain(self):
+        path = self.root / "native-receipts.jsonl"
+        events = [json.loads(line) for line in path.read_text().splitlines()]
+        prefix = [{"case": "invariant-protection", "receipt": {"status": "completed"}},
+                  {"case": "invariant-stop", "capture": {"status": "completed"}}]
+        path.write_text("".join(json.dumps(e) + "\n" for e in prefix + events))
+        self.verified["native_receipts_sha256"] = audit.digest(path.read_bytes())
+        save(self.root / "verified-admission-receipts.json", self.verified)
+        self.assertEqual(self.audit()["native_cases"], 32)
+
+    def test_reversed_native_invariant_prefix_rejected_after_rehash(self):
+        path = self.root / "native-receipts.jsonl"
+        events = [json.loads(line) for line in path.read_text().splitlines()]
+        prefix = [{"case": "invariant-stop", "capture": {"status": "completed"}},
+                  {"case": "invariant-protection", "receipt": {"status": "completed"}}]
+        path.write_text("".join(json.dumps(e) + "\n" for e in prefix + events))
+        self.verified["native_receipts_sha256"] = audit.digest(path.read_bytes())
+        save(self.root / "verified-admission-receipts.json", self.verified)
+        with self.assertRaisesRegex(ValueError, "native invariant order reversed"):
+            self.audit()
+
     def test_forged_zero_changed_receipt_rejected_after_rehash(self):
         path = self.root / "native-receipts.jsonl"
         events = [json.loads(line) for line in path.read_text().splitlines()]
