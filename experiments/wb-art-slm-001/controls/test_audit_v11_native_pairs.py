@@ -204,6 +204,36 @@ class PairGateTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "missing or extra native history captures"):
             self.audit()
 
+    def test_history_capture_before_draw_receipt_rejected_after_rehash(self):
+        path = self.root / "native-receipts.jsonl"
+        events = [json.loads(line) for line in path.read_text().splitlines()]
+        cid = self.manifest["cases"][0]["id"]
+        receipt_i = next(i for i, e in enumerate(events)
+                         if e.get("case") == cid and "receipt" in e)
+        receipt = events.pop(receipt_i)
+        capture_i = next(i for i, e in enumerate(events)
+                         if e.get("case") == cid and "capture" in e)
+        events.insert(capture_i + 1, receipt)
+        path.write_text("".join(json.dumps(e) + "\n" for e in events))
+        self.verified["native_receipts_sha256"] = audit.digest(path.read_bytes())
+        save(self.root / "verified-admission-receipts.json", self.verified)
+        with self.assertRaisesRegex(ValueError, "history capture before native draw receipts"):
+            self.audit()
+
+    def test_draw_receipt_after_history_capture_rejected_after_rehash(self):
+        path = self.root / "native-receipts.jsonl"
+        events = [json.loads(line) for line in path.read_text().splitlines()]
+        cid = self.manifest["cases"][0]["id"]
+        extra = next(e for e in events if e.get("case") == cid and "receipt" in e)
+        capture_i = next(i for i, e in enumerate(events)
+                         if e.get("case") == cid and "capture" in e)
+        events.insert(capture_i + 1, json.loads(json.dumps(extra)))
+        path.write_text("".join(json.dumps(e) + "\n" for e in events))
+        self.verified["native_receipts_sha256"] = audit.digest(path.read_bytes())
+        save(self.root / "verified-admission-receipts.json", self.verified)
+        with self.assertRaisesRegex(ValueError, "draw receipt after native history capture"):
+            self.audit()
+
     def test_forged_zero_changed_receipt_rejected_after_rehash(self):
         path = self.root / "native-receipts.jsonl"
         events = [json.loads(line) for line in path.read_text().splitlines()]
