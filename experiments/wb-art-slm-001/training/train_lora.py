@@ -21,6 +21,8 @@ import signal
 import sys
 import time
 
+from curriculum import POLICIES, epoch_indices
+
 TARGET_SUFFIXES = ["q_proj", "k_proj", "v_proj", "o_proj", "in_proj", "out_proj", "w1", "w2", "w3", "gate_proj", "up_proj", "down_proj"]
 STOP_REQUESTED = False
 
@@ -333,6 +335,7 @@ def main():
     parser.add_argument("--dropout", type=float, default=0.05)
     parser.add_argument("--learning-rate", type=float, default=0.0005)
     parser.add_argument("--seed", type=int, default=731)
+    parser.add_argument("--curriculum", choices=POLICIES, default="shuffled-v1", help="Versioned train-only sampler; new policies require a fresh candidate checkpoint")
     parser.add_argument("--threads", type=int, default=3)
     parser.add_argument("--device", default="auto")
     parser.add_argument("--eval-count", type=int, default=24)
@@ -369,6 +372,13 @@ def main():
     with lock:
         if args.resume:
             verify_checkpoint(args.resume)
+            receipt = json.loads((Path(args.resume) / "receipt.json").read_text(encoding="utf-8"))
+            previous_curriculum = receipt["config"].get("curriculum", "shuffled-v1")
+            if args.curriculum != previous_curriculum:
+                raise ValueError(
+                    f"Resume curriculum mismatch before loading the model: "
+                    f"{previous_curriculum} != {args.curriculum}"
+                )
         write_json(output / "job.json", {"pid": os.getpid(), "started_at_unix": time.time(), "device": str(device), "state": "running"})
         train_rows, dev_rows = read_rows(args.train, "train"), read_rows(args.dev, "dev")
         admission = validate_admission(args.admission, {"train": args.train, "dev": args.dev}, {"train": train_rows, "dev": dev_rows}, args.compiler, args.corpus_manifest)
@@ -378,10 +388,16 @@ def main():
         tokenizer = AutoTokenizer.from_pretrained(args.model, local_files_only=True, trust_remote_code=args.trust_remote_code)
         if tokenizer.pad_token_id is None:
             tokenizer.pad_token = tokenizer.eos_token
+        # Validate a changed curriculum before allocating base model memory.
+        epoch_indices(train_rows, args.seed, 0, args.curriculum)
         encoded = encode_corpus(tokenizer, train_rows, system, args.max_length)
         encode_corpus(tokenizer, dev_rows, system, args.max_length)
         packages = {p: importlib.metadata.version(p) for p in ["torch", "transformers", "peft", "accelerate", "numpy", "safetensors"]}
         config = vars(args).copy()
+        # New sampler experiments pin both the replay schedule and trainer code.
+        # Historical shuffled-v1 checkpoints predate these explicit fields.
+        config["sampler_sha256"] = sha256_file(Path(__file__).with_name("curriculum.py")) if args.curriculum != "shuffled-v1" else None
+        config["trainer_sha256"] = sha256_file(__file__) if args.curriculum != "shuffled-v1" else None
         model_files = {str(p.relative_to(args.model)): sha256_file(p) for p in sorted(Path(args.model).rglob("*")) if p.is_file() and p.suffix in (".safetensors", ".json", ".jinja", ".py") and ".cache" not in p.parts and p.name != "download_receipt.json"}
         download_receipt_path = Path(args.model) / "download_receipt.json"
         if not download_receipt_path.is_file():
@@ -434,8 +450,10 @@ def main():
         step, cursor, history = 0, 0, []
         if args.resume:
             state = torch.load(Path(args.resume) / "training_state.pt", map_location="cpu", weights_only=False)
-            for key in ["model_id", "revision", "train_sha256", "dev_sha256", "admission_sha256", "system_sha256", "chat_template_sha256", "model_files", "compiler_sha256", "rank", "alpha", "dropout", "learning_rate", "accumulation", "seed", "packages", "dtype", "resolved_device", "cuda_devices", "threads", "gradient_checkpointing", "deterministic_algorithms", "tf32"]:
-                if config[key] != state["config"][key]:
+            for key in ["model_id", "revision", "train_sha256", "dev_sha256", "admission_sha256", "system_sha256", "chat_template_sha256", "model_files", "compiler_sha256", "rank", "alpha", "dropout", "learning_rate", "accumulation", "seed", "packages", "dtype", "resolved_device", "cuda_devices", "threads", "gradient_checkpointing", "deterministic_algorithms", "tf32", "curriculum", "sampler_sha256", "trainer_sha256"]:
+                # Historical shuffled-v1 receipts predate the explicit field.
+                previous = state["config"].get(key, "shuffled-v1" if key == "curriculum" else None)
+                if config[key] != previous:
                     raise ValueError(f"Resume identity mismatch: {key}")
             if state["frozen_base_sha256"] != frozen_hash:
                 raise ValueError("Frozen base bytes differ on resume")
@@ -469,8 +487,7 @@ def main():
             for _ in range(args.accumulation):
                 epoch = cursor // len(encoded)
                 if epoch_number != epoch:
-                    epoch_order = list(range(len(encoded)))
-                    random.Random(args.seed + epoch).shuffle(epoch_order)
+                    epoch_order = epoch_indices(train_rows, args.seed, epoch, args.curriculum)
                     epoch_number = epoch
                 item = encoded[epoch_order[cursor % len(encoded)]]
                 inputs = torch.tensor([item["input_ids"]], dtype=torch.long, device=device)
