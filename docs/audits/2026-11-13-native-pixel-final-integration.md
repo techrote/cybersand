@@ -278,3 +278,95 @@ geometry, physical scales, per-frame view sequences, fixture recipes and
 initial native material planes. These are apparatus preconditions, not timing
 or graphical performance claims; the exact final head still requires the full
 hosted ABBA runs.
+
+## Final presentation-fixture acknowledgement
+
+The full Godot campaign at `aa2d1c0aa49dd20cb8bb5ce0e003b1901a4f6f06`,
+[43501208280](https://github.com/techrote/cybersand/actions/runs/43501208280),
+completed all 54 jobs: 40 passed, 12 failed and two expected optional/scope
+jobs were skipped. The failures were the five PLAY UI007 rig wrappers on each
+platform and their two coverage aggregates. Every other case shard and both
+native builds passed, including the preceding actor, Blacksite and camera
+repairs. The Windows shard-zero synchronous watchdog proof was skipped after
+its case failure and was not claimed as executed.
+
+The original shared fixture reproduces 59 assertions with two failures for
+each rig. A callback-stage diagnostic distinguishes this from a product
+alignment failure: at the end of Main callback 79, target, actor and presented
+origins all equal `(103.1111145,175.6049347)`. Deferred Container layout then
+moves the WorldView's global Y from 229 to 213 before callback 80. A coroutine
+resuming on `SceneTree.process_frame` sees that new layout but the prior Main
+publication; a fresh origin calculation is then `(103.1111145,172.4444427)`.
+Godot emits that signal before ordinary node processing. The original fixture
+also wrongly equated the overview's requested `(128,128)` origin with its
+snapped presented origin `(123.2592621,131.5555573)` in the intentionally small
+64×64 headless root.
+
+The shared fixture now captures coordinate values after the ordinary
+Main callback and waits, within its existing watchdog, for a later callback
+that has presented the currently observed layout. Readiness does not depend
+on the layer-agreement assertion becoming true. The exact original target
+comparison is retained and strengthened with same-callback actor and terrain
+agreement. Overview checks requested authored framing separately from the
+presented origin and explicitly preserves actor epoch, World generation and
+session. No manual physics or camera callback, extra World, production change,
+floating-point comparison tolerance or retry is introduced.
+
+Graphical execution then exposes two independent input-fixture preconditions.
+The Return button's `(20,689,154,31)` rectangle fits inside its 680×740 popup.
+The failing visibility assertion is caused by an earlier popup lifecycle:
+popup focus exits, root focus enters, and the popup's queued hide runs after
+the fixture reopens it. Native root focus was already true in the retained
+negative trace. The fixture now acknowledges native root focus and completes
+a rendered-frame barrier before reopening, draining that earlier lifecycle.
+It does not lengthen a timeout or change the application's popup behavior.
+
+The original direct popup-viewport press/release also reaches the button's
+GUI-input callback without establishing hover, so it cannot activate the
+button. Godot's embedded-viewport mouse-over path requires routing through
+the root/embedder. The corrected fixture sends ordinary motion, left press
+with its button mask and release through that root at the popup-transformed
+button center. It asserts actual hover, both GUI events and exactly one real
+button signal, then retains the original launcher-navigation, Main-destruction,
+native-worker join and Rapier-session retirement checks. The direct-popup
+negative and root-routed positive are retained. Neither graphical branch
+emits a synthetic button signal. These behaviors match pinned Godot's
+[Popup focus lifecycle](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/scene/gui/popup.cpp)
+and [BaseButton event contract](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/scene/gui/base_button.cpp).
+
+The five original wrappers remain headless cases. Five small `_render`
+entry points inherit those exact rig cases, explicitly refuse headless
+execution and are discovered graphically by the unchanged complete Linux
+regression runner. The original Windows regression runner explicitly excludes
+graphical cases; the private integrated-camera campaign therefore also
+executes these five cases on both platforms and their installed applications.
+Its original nine camera/preservation cases retain their separate results.
+Graphical captures use the per-process artifact directory when no dedicated
+UI007 path is supplied. The existing overlay-pixel model remains a separate,
+unchanged oracle. This closes the coverage gap that had left real popup input
+unexecuted in the full suite.
+
+All five original wrappers pass 61 assertions each in fresh pinned headless
+execution, retaining the adversarial 64×64 root. The five new graphical entry
+points pass 71 assertions each with no failures; all ten original screenshot
+hashes are verified. The unchanged overlay model passes 40 checks. The shared
+fixture SHA-256 is `3224ae8d3b31e307d95ea3f9bfd0b3aa560c398dca0b3ad6e80ea9b075feb1bf`.
+An explicit headless launch of a graphical wrapper refuses before Main runs.
+An initial overlay-only invocation also correctly refuses a composite local
+source label; its corrected invocation records the exact unchanged `aa2d1c0a`
+commit, while the separate local manifest identifies the shared-fixture delta.
+Neither refusal is treated as a passing graphical run.
+
+The private campaign independently re-reads each original UI007 receipt and
+both PNG hashes, checks all 71 assertions and actual input/owner outcomes,
+and binds them to source, engine, Rapier and native runtime custody. Sixteen
+admission guards pass, including deliberate wrong-source, headless, incomplete
+input, stale-presentation, altered-capture and relabeled-result negatives.
+The original nine camera results remain unchanged and separately required.
+The subsequent complete final-head campaign and published delivery are
+recorded in the PR delivery ledger. The follow-up changes only this shared fixture, its graphical entry
+points, the private qualification admission and this evidence document;
+application, native, shader, recorder and performance-apparatus bytes remain
+identical to the measured `aa2d1c0a` product. Any performance evidence retained
+from that source keeps its actual commit and runtime identities; it is not
+relabeled as execution of a later commit.

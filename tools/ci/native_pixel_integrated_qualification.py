@@ -9,10 +9,12 @@ from __future__ import annotations
 import argparse
 from importlib.util import module_from_spec, spec_from_file_location
 import json
+import math
 import os
 from pathlib import Path
 import re
 import shutil
+import struct
 import subprocess
 import sys
 import tempfile
@@ -27,6 +29,11 @@ DISPATCH_WORKFLOWS = ("documentation.yml", "native.yml", "gdextension.yml", "pal
 CAMERA_LABELS = ["camera-import", "camera-coordinates", "camera-recording", "camera-framebuffer", "camera-effects",
                  "preserve-material_presentation", "preserve-water_presentation",
                  "preserve-material_vapour_pipeline", "preserve-palette_crossfade"]
+PLAY_UI007_RIGS = ("acrobat", "arcadelander", "jetbarrel", "stuntbuggy", "trialsbike")
+PLAY_UI007_LABELS = ["play-ui007-" + rig for rig in PLAY_UI007_RIGS]
+# All five original graphical receipts from the repaired shared fixture have
+# this count. Preserve their assertions field instead of manufacturing checks.
+PLAY_UI007_ASSERTIONS = 71
 
 
 def private_module(name: str, path: Path):
@@ -88,10 +95,161 @@ def camera_files(directory: Path) -> dict:
             for p in sorted((directory / name).rglob("*")) if p.is_file()}
 
 
+def play_ui007_command(godot: str, project: str, rig: str, platform: str) -> list[str]:
+    command = [godot, "--audio-driver", "Dummy", "--rendering-method", "gl_compatibility"]
+    command += (["--rendering-driver", "opengl3_angle"] if platform == "windows" else ["--display-driver", "x11"])
+    return command + ["--path", project, "--script", f"res://tests/test_play_ui007_{rig}_render.gd"]
+
+
+def play_ui007_completion(log: Path, frames: Path, source: str, rig: str, platform: str) -> dict:
+    """Re-read the original receipt and actual PNGs; never invent a checks count."""
+    import run_workbench_qualification as wb
+    text = log.read_text(encoding="utf-8", errors="replace")
+    marker = "PLAY_UI007_RESULT "
+    rows = [json.loads(line[len(marker):]) for line in text.splitlines() if line.startswith(marker)]
+    engine.require(not wb.ERRORS.search(text) and len(rows) == 1, "Missing or failing PLAY_UI007 raw receipt")
+    result = rows[0]
+    engine.require(isinstance(result, dict) and result.get("schema") == "play-ui007-v1" and
+                   result.get("source_revision") == source and result.get("rig") == rig and
+                   str(result.get("display_server", "")).lower() == ("windows" if platform == "windows" else "x11") and
+                   result.get("physics_engine") == "Rapier2D", "PLAY_UI007 source or graphical runtime differs")
+    engine.require(type(result.get("assertions")) is int and result["assertions"] == PLAY_UI007_ASSERTIONS and
+                   type(result.get("failures")) is int and result["failures"] == 0 and
+                   all(result.get(key) is True for key in ("real_host", "automatic_callbacks", "worker_joined",
+                                                         "session_retired", "graphical_capture_executed")) and
+                   all(type(result.get(key)) is int and result[key] == 0 for key in ("manual_physics_calls", "retries")),
+                   "PLAY_UI007 original assertions or real-owner teardown failed")
+    row = result.get("row", {})
+    engine.require(row.get("rig") == rig and row.get("completed") is True and
+                   row.get("return_button_navigation") is True and
+                   row.get("return_activation") == "actual_root_viewport_mouse_motion_press_release",
+                   "PLAY_UI007 did not navigate through actual graphical Return input")
+    focus, pointer = row.get("return_native_focus", {}), row.get("return_input", {})
+    engine.require(focus.get("acknowledged") is True and focus.get("after_rendered_frame") is True and
+                   pointer.get("hover_after_motion") is True and type(pointer.get("pressed_signals")) is int and
+                   pointer["pressed_signals"] == 1,
+                   "PLAY_UI007 native focus, hover or actual Button signal is missing")
+    events = pointer.get("gui_events", [])
+    engine.require(isinstance(events, list) and all(isinstance(item, dict) for item in events),
+                   "PLAY_UI007 GUI event inventory is malformed")
+    buttons = [item for item in events if item.get("kind") == "button"]
+    motions = [item for item in events if item.get("kind") == "motion"]
+    engine.require(bool(motions) and len(buttons) == 2 and
+                   all(item.get("button_index") == 1 for item in buttons) and
+                   buttons[0].get("pressed") is True and buttons[0].get("button_mask") == 1 and
+                   buttons[1].get("pressed") is False and buttons[1].get("button_mask") == 0,
+                   "PLAY_UI007 real GUI motion/press/release is incomplete")
+    size = pointer.get("button_size", [])
+    engine.require(isinstance(size, list) and len(size) == 2 and
+                   all(type(value) in (int, float) and math.isfinite(value) and value > 0 for value in size),
+                   "PLAY_UI007 button geometry is invalid")
+    for event in [*motions, *buttons]:
+        position = event.get("position", [])
+        engine.require(isinstance(position, list) and len(position) == 2 and
+                       all(type(value) in (int, float) and math.isfinite(value) and 0 <= value < size[axis]
+                           for axis, value in enumerate(position)), "PLAY_UI007 GUI event missed the actual button")
+    for camera in ("follow", "overview"):
+        frame = row.get(camera + "_presentation", {})
+        engine.require(frame.get("current_layout_acknowledged") is True and
+                       frame.get("exact_published_layers_agree") is True and
+                       type(frame.get("after_callback_exclusive")) is int and
+                       type(frame.get("published_callback")) is int and
+                       frame["published_callback"] > frame["after_callback_exclusive"] and
+                       frame.get("presented_origin") is not None and
+                       all(frame.get(key) == frame["presented_origin"]
+                           for key in ("target_origin", "actor_origin", "terrain_origin")),
+                       "PLAY_UI007 same-callback presentation is incomplete")
+    captures = row.get("graphical_captures", [])
+    engine.require(isinstance(captures, list) and [item.get("camera") for item in captures] == ["follow", "overview"],
+                   "PLAY_UI007 needs both original graphical captures")
+    for capture in captures:
+        name = rig + "-" + capture["camera"] + ".png"
+        path = frames / name
+        # Resolve the expected retained file, never an absolute path from the
+        # original machine. The raw path remains in the unmodified receipt.
+        engine.require(str(capture.get("path", "")).replace("\\", "/").rsplit("/", 1)[-1] == name and
+                       path.is_file() and engine.runner.sha256(path) == capture.get("sha256"),
+                       "PLAY_UI007 original capture is missing or changed")
+        header = path.read_bytes()[:24]
+        engine.require(len(header) == 24 and header[:16] == b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR" and
+                       struct.unpack(">II", header[16:24]) == (capture.get("width"), capture.get("height")) and
+                       capture.get("width", 0) > 0 and capture.get("height", 0) > 0 and
+                       capture.get("actor_parts", 0) > 0 and capture.get("identity", {}).get("rig") == rig,
+                       "PLAY_UI007 capture dimensions or actual actor identity differ")
+    return result
+
+
+def play_ui007_runtime_files(godot: Path, project: Path, platform: str) -> dict:
+    runtime = Path(engine.RUNTIMES[platform]).relative_to("godot")
+    rapier = Path("addons/godot-rapier2d/bin") / ("libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+              if platform == "windows" else "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so")
+    engines = [godot]
+    if platform == "windows":
+        engine.require(godot.name.endswith("_console.exe"), "Expected the pinned Windows console launcher")
+        engines.append(godot.with_name(godot.name.removesuffix("_console.exe") + ".exe"))
+    return {"engine_files_sha256": {path.name: engine.runner.sha256(path) for path in engines},
+            "runtime_files_sha256": {path.as_posix(): engine.runner.sha256(project / path) for path in (runtime, rapier)}}
+
+
+def verify_play_ui007(evidence: Path, platform: str, source: str, camera_identity: dict, native_sha: str | None = None) -> None:
+    identity = profile.read_json(evidence / "source-identity.json")
+    engine.require(identity.get("schema") == "native-pixel-play-ui007-graphical-v1" and
+                   identity.get("platform") == platform and identity.get("camera_source_identity") == camera_identity and
+                   camera_identity.get("source_commit") == source,
+                   "PLAY_UI007 source custody differs from the camera qualification")
+    engine_name = str(camera_identity.get("godot", "")).replace("\\", "/").rsplit("/", 1)[-1]
+    engine.require(identity.get("engine_files_sha256", {}).get(engine_name) == camera_identity.get("godot_sha256"),
+                   "PLAY_UI007 engine custody differs from the camera qualification")
+    if native_sha is not None:
+        runtime = Path(engine.RUNTIMES[platform]).relative_to("godot").as_posix()
+        engine.require(identity.get("runtime_files_sha256", {}).get(runtime) == native_sha,
+                       "PLAY_UI007 native runtime differs from the qualified candidate")
+    records = profile.verify_results(evidence / "results.json", PLAY_UI007_LABELS)
+    for rig, record in zip(PLAY_UI007_RIGS, records):
+        engine.require(record.get("command") == play_ui007_command(camera_identity["godot"], camera_identity["project"], rig, platform),
+                       "PLAY_UI007 graphical wrapper command changed")
+        raw = play_ui007_completion(evidence / (record["label"] + ".log"), evidence / "frames" / rig, source, rig, platform)
+        engine.require(record.get("completion") == raw, "PLAY_UI007 result differs from its original raw receipt")
+
+
+def play_ui007_cases(godot: Path, project: Path, evidence: Path, camera_identity: dict) -> None:
+    import run_workbench_qualification as wb
+    platform = "windows" if sys.platform == "win32" else "linux"
+    engine.require(not evidence.exists(), "Do not overwrite earlier PLAY_UI007 evidence")
+    runner = wb.Runner(argparse.Namespace(godot=godot, evidence=evidence))
+    source = camera_identity["source_commit"]
+    runner.env["CYBERSAND_SOURCE_REVISION"] = source
+    engine.require(all(engine.runner.sha256(project / path) == digest
+                       for path, digest in camera_identity["executed_source_sha256"].items()),
+                   "PLAY_UI007 project source changed after the camera qualification")
+    identity = {"schema": "native-pixel-play-ui007-graphical-v1", "platform": platform,
+                "camera_source_identity": camera_identity, **play_ui007_runtime_files(godot, project, platform)}
+    engine.write_json(runner.evidence / "source-identity.json", identity)
+    failed = []
+    for rig, label in zip(PLAY_UI007_RIGS, PLAY_UI007_LABELS):
+        frames = runner.evidence / "frames" / rig
+        try:
+            runner.execute(label, play_ui007_command(str(godot.resolve()), str(project.resolve()), rig, platform),
+                           env={"CYBERSAND_PLAY_UI007_CAPTURE_DIR": str(frames)},
+                           validate=lambda: play_ui007_completion(runner.evidence / (label + ".log"), frames, source, rig, platform))
+        except Exception as error:
+            failed.append(label)
+            print(f"FAIL {label}: {error}", flush=True)
+    engine.require(play_ui007_runtime_files(godot, project, platform) ==
+                   {key: identity[key] for key in ("engine_files_sha256", "runtime_files_sha256")},
+                   "PLAY_UI007 engine or runtime changed during execution")
+    engine.require(all(engine.runner.sha256(project / path) == digest
+                       for path, digest in camera_identity["executed_source_sha256"].items()),
+                   "PLAY_UI007 project source changed during execution")
+    engine.require(not failed, "PLAY_UI007 graphical qualification failed: " + ", ".join(failed))
+    verify_play_ui007(runner.evidence, platform, source, camera_identity)
+
+
 def camera_cases(godot: Path, project: Path, evidence: Path) -> None:
     import run_workbench_qualification as wb
     wb.camera(argparse.Namespace(godot=godot, project=project, evidence=evidence))
     profile.verify_results(evidence / "results.json", CAMERA_LABELS)
+    play_ui007_cases(godot, project, evidence / "play-ui007", profile.read_json(evidence / "source-identity.json"))
 
 
 def camera(args) -> None:
@@ -136,9 +294,13 @@ def verify_bundle(directory: Path, platform: str, source: str) -> dict:
                    report.get("completed") is True and report.get("files_sha256") == camera_files(directory),
                    "Camera evidence is incomplete or changed")
     profile.verify_results(directory / "camera-source/results.json", CAMERA_LABELS)
+    verify_play_ui007(directory / "camera-source/play-ui007", platform, source,
+                      profile.read_json(directory / "camera-source/source-identity.json"), manifest["sha256"])
     profile.verify_results(directory / "camera-override/results.json", ["recording-explicit-override"])
     if platform == "linux":
         profile.verify_results(directory / "camera-installed/results.json", CAMERA_LABELS)
+        verify_play_ui007(directory / "camera-installed/play-ui007", platform, source,
+                          profile.read_json(directory / "camera-installed/source-identity.json"), manifest["sha256"])
     return manifest
 
 

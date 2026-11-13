@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
 """Source-lease, branch isolation and Windows ZIP portability regression guards."""
 import argparse
+import copy
 import hashlib
 import json
 import os
 from pathlib import Path
 import subprocess
+import struct
 import sys
 import tempfile
 import unittest
 from unittest.mock import patch
 import zipfile
+import zlib
 
 import native_pixel_integrated_qualification as subject
 
@@ -147,6 +150,108 @@ class QualificationTests(unittest.TestCase):
     def test_windows_invalid_names_and_collisions_are_refused(self):
         for names in (("NUL.txt",), ("file:stream",), ("ending. ",), ("same.txt", "SAME.txt"), ("../outside",), ("/absolute",)):
             with self.subTest(names=names), self.assertRaises(RuntimeError): subject.validate_archive_names(list(names), 220)
+
+    def ui007_receipt(self, directory, rig="acrobat"):
+        def chunk(kind, data):
+            return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data))
+        png = (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", 1, 1, 8, 6, 0, 0, 0)) +
+               chunk(b"IDAT", zlib.compress(b"\x00\xff\xff\xff\xff")) + chunk(b"IEND", b""))
+        frames = directory / "frames" / rig
+        frames.mkdir(parents=True, exist_ok=True)
+        captures = []
+        for camera in ("follow", "overview"):
+            path = frames / (rig + "-" + camera + ".png")
+            path.write_bytes(png)
+            captures.append({"camera": camera, "path": str(path), "sha256": hashlib.sha256(png).hexdigest(),
+                             "width": 1, "height": 1, "actor_parts": 1, "identity": {"rig": rig}})
+        frame = {"current_layout_acknowledged": True, "exact_published_layers_agree": True,
+                 "after_callback_exclusive": 3, "published_callback": 4,
+                 **{key: [2.0, 3.0] for key in ("presented_origin", "target_origin", "actor_origin", "terrain_origin")}}
+        row = {"rig": rig, "completed": True, "return_button_navigation": True,
+               "return_activation": "actual_root_viewport_mouse_motion_press_release",
+               "return_native_focus": {"acknowledged": True, "after_rendered_frame": True},
+               "return_input": {"hover_after_motion": True, "pressed_signals": 1, "button_size": [100, 30],
+                                "gui_events": [{"kind": "motion", "position": [50, 15], "button_mask": 0},
+                                               {"kind": "button", "position": [50, 15], "button_mask": 1, "button_index": 1, "pressed": True},
+                                               {"kind": "button", "position": [50, 15], "button_mask": 0, "button_index": 1, "pressed": False}]},
+               "follow_presentation": copy.deepcopy(frame), "overview_presentation": copy.deepcopy(frame),
+               "graphical_captures": captures}
+        return {"schema": "play-ui007-v1", "source_revision": self.SOURCE, "rig": rig,
+                "display_server": "X11", "physics_engine": "Rapier2D", "assertions": 71, "failures": 0,
+                "manual_physics_calls": 0, "retries": 0, "row": row,
+                **{key: True for key in ("real_host", "automatic_callbacks", "worker_joined", "session_retired", "graphical_capture_executed")}}
+
+    def read_ui007(self, directory, result, rig="acrobat"):
+        log = directory / ("play-ui007-" + rig + ".log")
+        log.write_text("PLAY_UI007_RESULT " + json.dumps(result) + "\n", encoding="utf-8")
+        return subject.play_ui007_completion(log, directory / "frames" / rig, self.SOURCE, rig, "linux")
+
+    def test_ui007_keeps_original_assertions_and_both_actual_capture_hashes(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            result = self.ui007_receipt(directory)
+            self.assertEqual(self.read_ui007(directory, result), result)
+            self.assertNotIn("checks", result)
+            capture = directory / "frames/acrobat/acrobat-overview.png"
+            capture.write_bytes(capture.read_bytes() + b"changed")
+            with self.assertRaisesRegex(RuntimeError, "missing or changed"):
+                self.read_ui007(directory, result)
+
+    def test_ui007_refuses_headless_short_receipts_and_missing_owner_teardown(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            original = self.ui007_receipt(directory)
+            for key, value in (("display_server", "headless"), ("source_revision", "3" * 40),
+                               ("assertions", 1), ("assertions", True), ("failures", 1),
+                               ("worker_joined", False), ("session_retired", False), ("manual_physics_calls", 1)):
+                with self.subTest(key=key, value=value), self.assertRaises(RuntimeError):
+                    self.read_ui007(directory, original | {key: value})
+
+    def test_ui007_refuses_signal_only_navigation_missing_input_and_stale_layout(self):
+        mutations = (
+            lambda row: row.update(return_button_navigation=False),
+            lambda row: row.update(return_activation="actual_button_pressed_signal; headless_window_hit_testing_unqualified"),
+            lambda row: row["return_native_focus"].update(acknowledged=False),
+            lambda row: row["return_input"].update(hover_after_motion=False),
+            lambda row: row["return_input"].update(pressed_signals=0),
+            lambda row: row["return_input"]["gui_events"].pop(),
+            lambda row: row["return_input"]["gui_events"][1].update(button_mask=0),
+            lambda row: row["return_input"]["gui_events"][1].update(position=[100, 15]),
+            lambda row: row["follow_presentation"].update(published_callback=3),
+            lambda row: row["overview_presentation"].update(actor_origin=[4, 5]),
+            lambda row: row["graphical_captures"].pop(),
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            original = self.ui007_receipt(directory)
+            for index, mutate in enumerate(mutations):
+                result = copy.deepcopy(original)
+                mutate(result["row"])
+                with self.subTest(index=index), self.assertRaises(RuntimeError): self.read_ui007(directory, result)
+
+    def test_ui007_bundle_reduction_refuses_relabelled_completion_or_runtime(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            camera = {"source_commit": self.SOURCE, "godot": "/engine/Godot", "project": "/source/godot", "godot_sha256": "4" * 64}
+            native = Path(subject.engine.RUNTIMES["linux"]).relative_to("godot").as_posix()
+            identity = {"schema": "native-pixel-play-ui007-graphical-v1", "platform": "linux", "camera_source_identity": camera,
+                        "engine_files_sha256": {"Godot": "4" * 64}, "runtime_files_sha256": {native: "5" * 64}}
+            (directory / "source-identity.json").write_text(json.dumps(identity))
+            records = []
+            for rig, label in zip(subject.PLAY_UI007_RIGS, subject.PLAY_UI007_LABELS):
+                raw = self.ui007_receipt(directory, rig)
+                self.read_ui007(directory, raw, rig)
+                records.append({"label": label, "command": subject.play_ui007_command(camera["godot"], camera["project"], rig, "linux"),
+                                "status": "passed", "exit_code": 0, "completion": raw})
+            path = directory / "results.json"
+            path.write_text(json.dumps(records))
+            subject.verify_play_ui007(directory, "linux", self.SOURCE, camera, "5" * 64)
+            with self.assertRaisesRegex(RuntimeError, "native runtime differs"):
+                subject.verify_play_ui007(directory, "linux", self.SOURCE, camera, "6" * 64)
+            records[0]["completion"]["assertions"] = 999
+            path.write_text(json.dumps(records))
+            with self.assertRaisesRegex(RuntimeError, "original raw receipt"):
+                subject.verify_play_ui007(directory, "linux", self.SOURCE, camera, "5" * 64)
 
 
 if __name__ == "__main__":
