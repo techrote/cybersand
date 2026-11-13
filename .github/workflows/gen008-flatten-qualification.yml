@@ -404,10 +404,39 @@ jobs:
           git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
           echo "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" | sha256sum --check --strict
 
-      - name: Execute all required GEN-008 Flatten + accepted MAT-AUTH/Workbench cases on Windows
+      - name: Exercise Windows storage fences and measured engine before retained suites
+        timeout-minutes: 15
         run: |
           set -euo pipefail
           curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          python - <<'PYCODE'
+          import os, pathlib, shutil, subprocess, sys
+          sys.path.insert(0, 'tools/ci')
+          import gen008_flatten_runtime_publication as profile
+          bundle = pathlib.Path('build/gen008-flatten-windows')
+          profile.engine.verify_bundle(bundle, 'windows', os.environ['GITHUB_SHA'], validated=False)
+          runtime = profile.engine.ROOT / profile.engine.RUNTIMES['windows']
+          shutil.copyfile(bundle / runtime.name, runtime)
+          godot, _ = profile.engine.windows.prepare_godot(pathlib.Path(os.environ['RUNNER_TEMP']) / 'godot-windows.zip')
+          subprocess.run([sys.executable, 'tools/ci/run_flatten_qualification.py',
+              '--godot', str(godot), '--project', 'godot',
+              '--evidence', 'build/gen008-flatten-platform-preflight', '--cases', '512x1'], check=True)
+          PYCODE
+
+      - name: Retain original bounded Windows platform diagnostic
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen008-flatten-windows-platform-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen008-flatten-platform-preflight/
+          if-no-files-found: ignore
+          retention-days: 90
+
+      # The early diagnostic does not replace any source/platform/package gate.
+      # The complete twelve-record Flatten inventory remains mandatory below.
+      - name: Execute all required GEN-008 Flatten + accepted MAT-AUTH/Workbench cases on Windows
+        run: |
+          set -euo pipefail
           python tools/ci/gen008_flatten_runtime_publication.py catalogue-tests --platform windows --source-sha "$GITHUB_SHA" --bundle build/gen008-flatten-windows
           python tools/ci/gen008_flatten_runtime_publication.py test --platform windows --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-windows.zip" --bundle build/gen008-flatten-windows
           python tools/ci/gen008_flatten_runtime_publication.py graphical --platform windows --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-windows.zip" --bundle build/gen008-flatten-windows

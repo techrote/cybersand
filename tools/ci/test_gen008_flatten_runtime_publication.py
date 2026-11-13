@@ -14,6 +14,7 @@ from unittest.mock import patch
 
 import gen008_flatten_runtime_publication as subject
 import mat_workbench_runtime_publication as original
+import run_flatten_qualification as runner
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import package_gen008_flatten_candidate as package
@@ -88,17 +89,33 @@ class PublicationIdentity(unittest.TestCase):
         self.assertIn("workbench.smoke(package", inspect.getsource(package.smoke))
         self.assertIn("verify_flatten_cases", inspect.getsource(package.smoke))
 
+    def test_windows_measurement_selects_only_the_pinned_sibling_engine(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory=Path(temporary)
+            console=directory/"Godot_v4.7-stable_win64_console.exe"
+            engine=directory/"Godot_v4.7-stable_win64.exe"
+            console.write_bytes(b"wrapper fixture")
+            with self.assertRaises(ValueError): runner.direct_engine(console,"win32")
+            engine.write_bytes(b"engine fixture")
+            self.assertEqual(runner.direct_engine(console,"win32"),engine)
+            self.assertEqual(runner.direct_engine(engine,"win32"),engine)
+            self.assertEqual(runner.direct_engine(console,"linux"),console)
+
 
 class FlattenReceiptAdmission(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.directory = Path(self.temporary.name)
         self.native = "d"*64
+        self.engine_sha = "e"*64
+        self.executable = "/fixture/Godot_v4.7-stable_linux.x86_64"
         self.records = []
         self.storage_fixture()
         for index, label in enumerate(subject.flatten_labels()[:-2]):
             record = {"label": label, "status": "passed", "exit_code": 0,
-                      "sampled_peak_rss_bytes": 1024, "os_peak_rss_bytes": 2048}
+                      "sampled_peak_rss_bytes": 1024, "os_peak_rss_bytes": 2048,
+                      "engine_executable":self.executable,"engine_executable_sha256":self.engine_sha,
+                      "measurement_target":"godot-engine-process","command":[self.executable],"pid":100+index}
             if index < 2:
                 self.log(label, "import succeeded\n" if index == 0 else "WORKBENCH_MATERIAL_BASELINE checks=90 failures=0\n")
             else:
@@ -119,7 +136,8 @@ class FlattenReceiptAdmission(unittest.TestCase):
                              for i, name in enumerate(labels)]
                 record["completion"] = {"checks": 100, "failures": [], "completed": True, "phase": phase,
                     "side": side, "workers": workers, "canonical_bytes": side*side*2, "source_identity": identity,
-                    "phases": phases, "native_material_witnesses": witnesses, "process_instance": f"{index:032x}"}
+                    "phases": phases, "native_material_witnesses": witnesses, "process_instance": f"{index:032x}",
+                    "pid":record["pid"]}
                 self.log(label, "FLATTEN_RESULT "+json.dumps(record["completion"])+"\n")
                 frames = self.directory / (label+"-frames")
                 frames.mkdir()
@@ -157,7 +175,9 @@ class FlattenReceiptAdmission(unittest.TestCase):
                                    "unconfirmed_legacy_recipe")})
             else: receipt.update(reconstructed_plane_sha256="c"*64,continued_authoring=True)
             self.records.append({"label":label,"status":"passed","exit_code":0,"sampled_peak_rss_bytes":1024,
-                                 "os_peak_rss_bytes":2048,"completion":receipt})
+                                 "os_peak_rss_bytes":2048,"completion":receipt,"pid":pid,
+                                 "engine_executable":self.executable,"engine_executable_sha256":self.engine_sha,
+                                 "measurement_target":"godot-engine-process","command":[self.executable]})
             self.log(label,"FLATTEN_OWNER_FAILURE_RESULT "+json.dumps(receipt)+"\n")
 
     def storage_fixture(self, platform="linux"):
@@ -188,8 +208,16 @@ class FlattenReceiptAdmission(unittest.TestCase):
             if platform == "linux": row["file_size_limit_bytes"] = 65536
             if kind == "process-termination": row["signal"] = 25
             if kind == "locked-source":
+                probes={"schema":"gen008-windows-source-lock-probes-v1","pid":123,
+                        "held_source_desired_access":0x80000000,"held_source_share_mode":3}
+                for name,path,opened,error in (("source","C:/fixture/setup-old.json.0123456789abcdef.tmp",False,32),
+                                               ("target","C:/fixture/setup-old.json",True,0)):
+                    probes[name]={"path":path,"desired_access":0x10000,"share_mode":7,"creation_disposition":3,
+                                  "flags_and_attributes":0x80,"opened":opened,"win32_error":error}
+                (directory/"locked-source-probes.json").write_text(json.dumps(probes),encoding="utf-8")
                 row.update(source_sha256_before=replacement,source_sha256_after=replacement,source_size_bytes=525312,
-                           target_unlocked=True,locked_source_desired_access=0,locked_source_share_mode=3,
+                           target_unlocked=True,locked_source_desired_access=0x80000000,locked_source_share_mode=3,
+                           delete_access_probes=probes,
                            retry_used_same_source=True,source_exists_after_retry=False,retained_files_sha256=retained)
             report["cases"].append(row)
             for phase in ("prepare", "recover", "refusal"):
@@ -230,7 +258,7 @@ class FlattenReceiptAdmission(unittest.TestCase):
         self.save_records()
 
     def verify(self):
-        return subject.verify_flatten_cases(self.directory, "linux", self.native, subject.engine.ROOT / "godot")
+        return subject.verify_flatten_cases(self.directory, "linux", self.native, subject.engine.ROOT / "godot",self.engine_sha)
 
     def test_complete_registered_receipt_fixture_is_admitted(self):
         self.assertEqual(len(self.verify()), 12)
@@ -314,8 +342,9 @@ class FlattenReceiptAdmission(unittest.TestCase):
     def test_windows_source_lock_requires_original_bytes_and_same_source_retry(self):
         self.storage_fixture("windows")
         self.assertEqual(subject.verify_storage_faults(self.directory,"windows")["status"],"passed")
-        for mutation in ("missing-source-case","source-changed","target-locked","delete-sharing",
-                         "different-retry","source-not-consumed","different-path","log-source-changed","retained-bytes"):
+        for mutation in ("missing-source-case","source-changed","target-locked","delete-sharing","metadata-access",
+                         "different-retry","source-not-consumed","different-path","log-source-changed","retained-bytes",
+                         "probe-missing","probe-source-open","probe-source-error","probe-target-denied","probe-mutating","probe-original"):
             with self.subTest(mutation=mutation):
                 self.storage_fixture("windows")
                 report=json.loads((self.directory/"storage-faults.json").read_text())
@@ -324,6 +353,7 @@ class FlattenReceiptAdmission(unittest.TestCase):
                 if mutation=="source-changed": row["source_sha256_after"]="3"*64
                 if mutation=="target-locked": row["target_unlocked"]=False
                 if mutation=="delete-sharing": row["locked_source_share_mode"]=7
+                if mutation=="metadata-access": row["locked_source_desired_access"]=0
                 if mutation=="different-retry": row["retry_used_same_source"]=False
                 if mutation=="source-not-consumed": row["source_exists_after_retry"]=True
                 if mutation in ("different-path","log-source-changed"):
@@ -334,8 +364,50 @@ class FlattenReceiptAdmission(unittest.TestCase):
                     log.write_text("FLATTEN_STORAGE_RESULT "+json.dumps(receipt)+"\n")
                 if mutation=="retained-bytes":
                     (self.directory/"storage-faults/locked-source-bytes/target-after-refusal.bin").write_bytes(b"lost old save")
+                if mutation.startswith("probe-"):
+                    probes=row["delete_access_probes"]
+                    if mutation=="probe-missing": probes.pop("source")
+                    if mutation=="probe-source-open": probes["source"]["opened"]=True
+                    if mutation=="probe-source-error": probes["source"]["win32_error"]=5
+                    if mutation=="probe-target-denied": probes["target"]["opened"]=False
+                    if mutation=="probe-mutating": probes["source"]["flags_and_attributes"]=0x04000000
+                    original=copy.deepcopy(probes)
+                    if mutation=="probe-original": original["source"]["win32_error"]=0
+                    (self.directory/"storage-faults/locked-source-probes.json").write_text(json.dumps(original),encoding="utf-8")
                 self.write("storage-faults.json",report)
                 with self.assertRaises(RuntimeError): subject.verify_storage_faults(self.directory,"windows")
+
+    def test_windows_memory_must_measure_engine_and_match_native_process_pid(self):
+        self.storage_fixture("windows")
+        executable="C:/fixture/Godot_v4.7-stable_win64.exe"
+        for record in self.records:
+            record.update(engine_executable=executable,command=[executable])
+            if "completion" in record:
+                record["completion"]["source_identity"].update(os="Windows",display="Windows")
+        original=copy.deepcopy(self.records)
+        for mutation in ("none","wrapper","engine-bytes","measurement-target","missing-pid","native-pid","owner-pid"):
+            with self.subTest(mutation=mutation):
+                self.records=copy.deepcopy(original)
+                record=self.records[2]
+                if mutation=="wrapper":
+                    record.update(engine_executable=executable.replace(".exe","_console.exe"),
+                                  command=[executable.replace(".exe","_console.exe")])
+                if mutation=="engine-bytes": record["engine_executable_sha256"]="f"*64
+                if mutation=="measurement-target": record["measurement_target"]="console-wrapper"
+                if mutation=="missing-pid": record.pop("pid")
+                if mutation=="native-pid": record["completion"]["pid"]+=1
+                if mutation=="owner-pid": self.records[-1]["completion"]["pid"]+=1
+                for record in self.records:
+                    if "completion" in record:
+                        marker="FLATTEN_OWNER_FAILURE_RESULT" if record["label"].startswith("owner-failure-") else "FLATTEN_RESULT"
+                        self.log(record["label"],marker+" "+json.dumps(record["completion"])+"\n")
+                self.save_records()
+                if mutation=="none":
+                    self.assertEqual(len(subject.verify_flatten_cases(self.directory,"windows",self.native,
+                        subject.engine.ROOT/"godot",self.engine_sha)),12)
+                else:
+                    with self.assertRaises(RuntimeError): subject.verify_flatten_cases(self.directory,"windows",self.native,
+                        subject.engine.ROOT/"godot",self.engine_sha)
 
     def test_native_owner_recovery_cannot_be_missing_fake_or_reopen_different_data(self):
         original_records=copy.deepcopy(self.records)

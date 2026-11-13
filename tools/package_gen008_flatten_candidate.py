@@ -97,7 +97,8 @@ def smoke(package: Path, evidence: Path) -> dict:
                 engine.write_json(output / "qualification.json", {
                     "status": "passed", "cases": [list(case) for case in publication.CASES], "graphical": True,
                     "storage_faults": storage_faults})
-                publication.verify_flatten_cases(output, "windows", identity["native_sha256"], candidate / "source/godot")
+                publication.verify_flatten_cases(output, "windows", identity["native_sha256"], candidate / "source/godot",
+                                                 identity["files_sha256"]["Godot_v4.7-stable_win64.exe"])
             finally:
                 os.environ.clear()
                 os.environ.update(old_environment)

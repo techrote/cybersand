@@ -69,11 +69,12 @@ def storage_faults(args, env):
             retained = {}
             if sys.platform == "win32":
                 from ctypes import wintypes
-                create = ctypes.windll.kernel32.CreateFileW
+                kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+                create = kernel.CreateFileW
                 create.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD, ctypes.c_void_p,
                                    wintypes.DWORD, wintypes.DWORD, wintypes.HANDLE]
                 create.restype = wintypes.HANDLE
-                close = ctypes.windll.kernel32.CloseHandle
+                close = kernel.CloseHandle
                 close.argtypes = [wintypes.HANDLE]
                 close.restype = wintypes.BOOL
                 locked_path, access, share = target, 0x80000000, 1
@@ -91,11 +92,34 @@ def storage_faults(args, env):
                         retained["locked-source-bytes/"+name] = sha(snapshots / name)
                     # Do not lock the old destination. A delete-then-move helper
                     # would delete it and then fail on this source DELETE fence.
-                    locked_path, access, share = source, 0, 3  # READ|WRITE, no DELETE sharing.
+                    # A metadata-only access=0 handle does not participate in
+                    # Windows read/write/delete sharing. Hold actual READ access.
+                    locked_path, access, share = source, 0x80000000, 3
                 handle = create(str(locked_path), access, share, None, 3, 0x80, None)
                 if handle == wintypes.HANDLE(-1).value:
                     raise RuntimeError("Could not establish the actual Windows replacement lock: " + kind)
                 try:
+                    if source is not None:
+                        def delete_probe(path):
+                            # OPEN_EXISTING + DELETE access only queries whether
+                            # rename/delete access can be acquired. No deletion
+                            # disposition or DELETE_ON_CLOSE flag is requested.
+                            ctypes.set_last_error(0)
+                            probe = create(str(path), 0x10000, 7, None, 3, 0x80, None)
+                            opened = probe != wintypes.HANDLE(-1).value
+                            error = 0 if opened else ctypes.get_last_error()
+                            if opened and not close(probe):
+                                raise RuntimeError("Could not close the nonmutating Windows DELETE-access probe")
+                            return {"path": str(path), "desired_access": 0x10000, "share_mode": 7,
+                                    "creation_disposition": 3, "flags_and_attributes": 0x80,
+                                    "opened": opened, "win32_error": error}
+
+                        probes = {"schema": "gen008-windows-source-lock-probes-v1", "pid": os.getpid(),
+                                  "held_source_desired_access": access, "held_source_share_mode": share,
+                                  "source": delete_probe(source), "target": delete_probe(target)}
+                        (directory / "locked-source-probes.json").write_text(json.dumps(probes, indent=2)+"\n", encoding="utf-8")
+                        if probes["source"]["opened"] or probes["source"]["win32_error"] != 32 or not probes["target"]["opened"]:
+                            raise RuntimeError("Windows source DELETE access must be denied while the old destination remains unlocked")
                     refused = run("refusal", kind + "-refusal", kind=kind)
                 finally:
                     close(handle)
@@ -138,7 +162,8 @@ def storage_faults(args, env):
                 retained["locked-source-bytes/target-after-retry.bin"] = sha(snapshots / "target-after-retry.bin")
                 row.update(source_sha256_before=source_before, source_sha256_after=source_after,
                            source_size_bytes=source_size, target_unlocked=True,
-                           locked_source_desired_access=0, locked_source_share_mode=3,
+                           locked_source_desired_access=0x80000000, locked_source_share_mode=3,
+                           delete_access_probes=probes,
                            retry_used_same_source=True, source_exists_after_retry=False,
                            retained_files_sha256=retained)
             if sys.platform != "win32": row["file_size_limit_bytes"] = 65536
@@ -190,10 +215,19 @@ class ProcessMemory:
 
 
 class MeasuredRunner(Runner):
+    def __init__(self, args):
+        super().__init__(args)
+        self.engine = direct_engine(args.godot, sys.platform)
+        self.engine_sha256 = hashlib.sha256(self.engine.read_bytes()).hexdigest()
+
     def execute(self, label, command, *, env=None, marker=None, timeout=1800, validate=None):
+        requested_executable = command[0]
+        command = [str(self.engine), *command[1:]]
         log = self.evidence / f"{label}.log"
         effective_env = dict(self.env, **(env or {}))
-        receipt = {"label": label, "command": command, "memory_sample_interval_ms": 20,
+        receipt = {"label": label, "command": command, "requested_executable": requested_executable,
+                   "engine_executable": str(self.engine), "engine_executable_sha256": self.engine_sha256,
+                   "measurement_target": "godot-engine-process", "memory_sample_interval_ms": 20,
                    "memory_semantics": "process RSS/working set; phase peaks are sampled, OS peak is process lifetime"}
         self.results.append(receipt)
         started = time.monotonic()
@@ -260,6 +294,9 @@ class MeasuredRunner(Runner):
                 raise RuntimeError(f"{label} failed; retained original log: {log}")
             if marker:
                 receipt["completion"] = completion(text, marker)
+                if marker in ("FLATTEN_RESULT", "FLATTEN_OWNER_FAILURE_RESULT") and (
+                        type(receipt["completion"].get("pid")) is not int or receipt["completion"]["pid"] != process.pid):
+                    raise RuntimeError("Native Godot receipt PID differs from the measured engine process")
             if validate:
                 receipt["completion"] = validate()
             if sampled_peak <= 0:
@@ -277,6 +314,16 @@ class MeasuredRunner(Runner):
                 process.wait(timeout=10)
             receipt["elapsed_seconds"] = time.monotonic() - started
             (self.evidence / "results.json").write_text(json.dumps(self.results, indent=2)+"\n", encoding="utf-8")
+
+
+def direct_engine(executable: Path, platform: str) -> Path:
+    """Measure the pinned engine itself, not Windows' small console launcher."""
+    executable = executable.resolve()
+    if platform == "win32" and executable.name.lower().endswith("_console.exe"):
+        executable = executable.with_name(executable.name[:-len("_console.exe")] + ".exe")
+    if not executable.is_file():
+        raise ValueError("The requested Godot engine executable is missing: " + str(executable))
+    return executable
 
 
 def flatten(args):
@@ -354,6 +401,8 @@ def flatten(args):
               or any(owner_author[field]!=result.get(field) for field in
                      ("expected_plane_sha256","saved_baseline_sha256","saved_file_sha256"))):
             raise RuntimeError("Native owner recovery did not reopen exact saved data in a new source-matched process")
+    if hashlib.sha256(runner.engine.read_bytes()).hexdigest() != runner.engine_sha256:
+        raise RuntimeError("Measured Godot engine bytes changed during qualification")
     path = args.evidence.resolve() / "storage-faults.json"
     return {"status": "passed", "report_sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
 

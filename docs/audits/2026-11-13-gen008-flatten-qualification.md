@@ -192,7 +192,7 @@ partial-write and process-termination faults preserve the previous named save.
 This is local diagnostic evidence with the same explicitly recorded compiler
 drift, not a substitute for the successor hosted campaign.
 
-Publisher admission now passes **13** guards, including nine adversarial
+The initial atomic-replacement publisher admission passed **13** guards, including nine adversarial
 locked-source receipt mutations. The Windows runner retains the actual complete
 source and old destination before/refusal bytes and the successful retry's bytes;
 publication independently hashes those files against the original child logs.
@@ -257,7 +257,8 @@ cells, saved reconstruction and fresh-process native cells each contain 524,288
 bytes with SHA-256
 `c3c3539252b1fc959405f6d4421fea004808158b20abfa99b7e933c2e07e4fb7`.
 Manual/agent edits and two Undo/two Redo operations continued after Load. Measured
-Save was 15.499 ms; fresh-process Load was 1,202.785 ms on this local fixture.
+Save was 15.499 ms; the Load transaction within a fresh process was 1,202.785 ms
+on this local fixture. That transaction timing excludes Godot startup.
 
 The superseding original logs are `owner-failure-final-local/author.log`
 (SHA-256 `76c22eee07be9cb24d29bc3b51c786b67df630eac476d6eb18db67a6867f62d0`)
@@ -270,6 +271,58 @@ Both receipts bind `shared_workbench.gd` to
 This is local diagnostic evidence with the recorded compiler drift. Final
 acceptance still requires a successor source-bound graphical Linux/Windows
 campaign that includes this correction and the new evidence.
+
+### Windows qualification defects found in original artifacts
+
+The original Windows execution from run `43520857816` failed the locked-source
+control. The fixture opened the completed temporary source with desired access
+zero and read/write sharing. Native replacement then succeeded, consumed the
+source and replaced the old destination. This control had not established the
+sharing denial it claimed, so its failure is retained and cannot qualify source-lock
+failure atomicity. The native replacement helper is unchanged by this correction.
+
+Microsoft's [MS-FSA sharing-access algorithm](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-fsa/8c0e3f4f-0729-49f4-a14d-7f7add593819)
+includes an existing open in these sharing checks only when its granted access
+includes data read/execute, data write/append or delete. The corrected fixture
+holds `GENERIC_READ` with read/write sharing and no delete sharing. Before calling
+the production helper, nonmutating `OPEN_EXISTING` probes require source `DELETE`
+access to fail with Windows error **32**, while the old destination allows that
+access. These probes request neither deletion nor delete-on-close. Original probe
+receipts are retained and verified with the unchanged requirements for exact
+source/destination byte preservation, same-source retry and source consumption
+only after successful replacement.
+
+The same original-artifact review rejected the approximately **4.86 MiB** Windows
+memory observations: the sampler followed Godot's console launcher rather than
+the engine process that owned the World. Those observations are not valid engine
+RSS/working-set evidence. `MeasuredRunner` now invokes the sibling
+`Godot_v4.7-stable_win64.exe` directly from the same pinned archive, retains the
+requested and actual executable paths, and records the actual executable SHA-256.
+Native-backed normal/recovery receipts must report the measured PID. Publication
+also binds the engine hash to the pinned validation record; delivered-copy checks
+bind it to the package's own engine inventory. No source instrumentation or
+product simulation behavior is changed by this measurement correction.
+
+The next candidate before these fixture corrections was source
+`b55b0418400100d9317acc57f24e0e63b3f80cf9`, tree
+`46dc0ba711d30ccd648cdd317b16310e5b29d4ca`, run `43524245266`. Its original native
+contract and ASan/UBSan execution passed with leak detection enabled. Its complete
+Linux catalogue passed **231/231 tests**, with no skips, failures or errors, in
+478.429 seconds. All 92 native source inputs and 852 build inputs matched the
+frozen Git blobs. The native artifact SHA-256 is
+`23b43d562b63c9913af9ba641c1350cde73da606f915228abd2599c7f194756c`;
+the catalogue artifact SHA-256 is
+`5ece5274b89233bff5c67d7cbe0e98ba3bc16224bc7a5c1869fc13dab7c1f52d`.
+These remain source-specific successes. Its Linux runtime execution was still
+pending at this documentation checkpoint, and its inherited Windows fixture
+defects prevent this campaign from establishing final acceptance.
+
+Publication request sequence **4** requires a successor full campaign. Windows
+first runs a separate bounded 512² diagnostic, retaining its original artifact,
+to expose platform storage/memory failures before the longer retained suites.
+The complete twelve-record Flatten source and delivered-copy gates remain
+unchanged in scope. A diagnostic success cannot replace the full matrix, and no
+corrected Windows pass is claimed at this checkpoint.
 
 ## Hosted acceptance and remaining authority
 

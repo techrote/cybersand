@@ -4,5 +4,5 @@
   "variant": "uint16le-stored-materials-same-live-world",
   "scope": "source-matched-linux-windows-flatten-save-fresh-reopen-and-retained-regressions",
   "intent": "publish-source-matched-runtimes",
-  "request_sequence": 3
+  "request_sequence": 4
 }

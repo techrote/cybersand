@@ -134,7 +134,7 @@ def verify_storage_faults(directory: Path, platform: str) -> dict:
                                type(row.get("source_size_bytes")) is int and
                                524288+52 < row["source_size_bytes"] <= 524288+52+1024*1024 and
                                row.get("target_unlocked") is True and
-                               row.get("locked_source_desired_access") == 0 and
+                               row.get("locked_source_desired_access") == 0x80000000 and
                                row.get("locked_source_share_mode") == 3 and
                                row.get("retry_used_same_source") is True and
                                row.get("source_exists_after_retry") is False,
@@ -149,6 +149,22 @@ def verify_storage_faults(directory: Path, platform: str) -> dict:
                                    item.get("native_api") == "CyberDemoBridge.replace_material_baseline_file"
                                    for item in (prepared,receipt,recovered)),
                                "Locked-source original child logs do not identify the same production native replacement")
+                probes = row.get("delete_access_probes", {})
+                engine.require(isinstance(probes,dict) and
+                               probes == workbench.lab.read_json(logs / "locked-source-probes.json") and
+                               probes.get("schema") == "gen008-windows-source-lock-probes-v1" and
+                               type(probes.get("pid")) is int and probes["pid"] > 0 and
+                               probes.get("held_source_desired_access") == 0x80000000 and
+                               probes.get("held_source_share_mode") == 3,
+                               "Locked-source original access probes are missing or do not hold a real READ handle")
+                for name,path,opened,error in (("source",source,False,32),("target",target,True,0)):
+                    probe = probes.get(name,{})
+                    engine.require(isinstance(probe,dict) and
+                                   PureWindowsPath(str(probe.get("path",""))) == PureWindowsPath(path) and
+                                   probe.get("desired_access") == 0x10000 and probe.get("share_mode") == 7 and
+                                   probe.get("creation_disposition") == 3 and probe.get("flags_and_attributes") == 0x80 and
+                                   probe.get("opened") is opened and probe.get("win32_error") == error,
+                                   "Windows nonmutating DELETE-access probes do not prove a locked source and unlocked target")
                 engine.require(prepared.get("source_sha256_after") == source_hash and
                                prepared.get("source_exists_after") is True and
                                receipt.get("source_sha256_before") == receipt.get("source_sha256_after") == source_hash and
@@ -174,7 +190,7 @@ def verify_storage_faults(directory: Path, platform: str) -> dict:
 
 
 def verify_flatten_cases(directory: Path, platform: str, native_sha: str,
-                         project: Path) -> list[dict]:
+                         project: Path, engine_sha: str) -> list[dict]:
     import run_workbench_qualification as wb
     records = workbench.verify_results(directory / "results.json", flatten_labels())
     summary = workbench.lab.read_json(directory / "qualification.json")
@@ -182,10 +198,22 @@ def verify_flatten_cases(directory: Path, platform: str, native_sha: str,
                                "storage_faults": verify_storage_faults(directory,platform)},
                    "Flatten qualification matrix is partial, failed or headless")
     expected_os = "Windows" if platform == "windows" else "Linux"
+    engine.require(re.fullmatch(r"[0-9a-f]{64}",str(engine_sha)) is not None,
+                   "Pinned Godot engine identity is missing")
     for entry in records:
         engine.require(type(entry.get("sampled_peak_rss_bytes")) is int and entry["sampled_peak_rss_bytes"] > 0
                        and type(entry.get("os_peak_rss_bytes")) is int and entry["os_peak_rss_bytes"] > 0,
                        "Original process memory evidence is missing")
+        executable = entry.get("engine_executable", "")
+        command = entry.get("command", [])
+        path = PureWindowsPath(executable) if platform == "windows" else Path(executable)
+        engine.require(isinstance(executable,str) and path.is_absolute() and
+                       path.name == ("Godot_v4.7-stable_win64.exe" if platform == "windows" else "Godot_v4.7-stable_linux.x86_64") and
+                       isinstance(command,list) and command and command[0] == executable and
+                       entry.get("measurement_target") == "godot-engine-process" and
+                       entry.get("engine_executable_sha256") == engine_sha and
+                       type(entry.get("pid")) is int and entry["pid"] > 0,
+                       "Process memory must measure the exact pinned Godot engine, not its console wrapper")
     format_log = (directory / "standalone-format-adversarial.log").read_text(encoding="utf-8")
     engine.require(len(re.findall(r"(?m)^WORKBENCH_MATERIAL_BASELINE ", format_log)) == 1,
                    "Material format completion is missing or ambiguous")
@@ -203,7 +231,8 @@ def verify_flatten_cases(directory: Path, platform: str, native_sha: str,
         receipt = wb.completion(text, "FLATTEN_RESULT")
         engine.require(receipt == entry.get("completion") and receipt.get("completed") is True and
                        receipt.get("phase") == phase and receipt.get("side") == side and
-                       receipt.get("workers") == workers and receipt.get("canonical_bytes") == 2*side*side,
+                       receipt.get("workers") == workers and receipt.get("canonical_bytes") == 2*side*side and
+                       type(receipt.get("pid")) is int and receipt["pid"] == entry["pid"],
                        "Flatten result differs from its original complete process receipt")
         identity = receipt.get("source_identity", {})
         engine.require(identity.get("os") == expected_os and identity.get("display", "").lower() in
@@ -255,7 +284,8 @@ def verify_flatten_cases(directory: Path, platform: str, native_sha: str,
             pairs[(side, workers)] = receipt
         else:
             previous = pairs[(side, workers)]
-            engine.require(previous["process_instance"] != instance and previous["source_identity"] == identity,
+            engine.require(previous["process_instance"] != instance and previous["pid"] != receipt["pid"] and
+                           previous["source_identity"] == identity,
                            "Reopen did not use a new process with identical source/runtime bytes")
     verify_owner_failure_cases(directory,records[normal_end:],platform,native_sha,project)
     return records
@@ -284,7 +314,7 @@ def verify_owner_failure_cases(directory: Path, records: list[dict], platform: s
                            for path in (*SOURCE_PATHS,OWNER_FAILURE_SCRIPT)),
                        "Native owner recovery did not use the exact graphical source/runtime and fixture")
         engine.require(re.fullmatch(r"[0-9a-f]{32}",str(receipt.get("process_instance",""))) is not None and
-                       type(receipt.get("pid")) is int and receipt["pid"] > 0,
+                       type(receipt.get("pid")) is int and receipt["pid"] > 0 and receipt["pid"] == entry.get("pid"),
                        "Native owner recovery omitted its original process identity")
         for field in ("expected_plane_sha256","saved_plane_sha256","saved_baseline_sha256","saved_file_sha256"):
             engine.require(re.fullmatch(r"[0-9a-f]{64}",str(receipt.get(field,""))) is not None,
@@ -352,7 +382,8 @@ def verify_flatten(directory: Path, platform: str, source: str, native_sha: str)
                    report.get("status") == "passed" and report.get("completed") is True,
                    "Flatten execution identity is incomplete or different")
     engine.require(report.get("files_sha256") == evidence_files(directory), "Flatten evidence changed")
-    verify_flatten_cases(directory / "flatten", platform, native_sha, engine.ROOT / "godot")
+    engine_sha = workbench.lab.read_json(directory / "validation.json")["godot"]["runtime_sha256"]
+    verify_flatten_cases(directory / "flatten", platform, native_sha, engine.ROOT / "godot", engine_sha)
     return report
 
 
@@ -392,7 +423,8 @@ def flatten(args: argparse.Namespace) -> None:
                                          evidence=output, package=None, headless=False, cases=CASES))
         summary["status"] = "passed"
         engine.write_json(output / "qualification.json", summary)
-        verify_flatten_cases(output, args.platform, manifest["sha256"], engine.ROOT / "godot")
+        engine_sha = workbench.lab.read_json(args.bundle / "validation.json")["godot"]["runtime_sha256"]
+        verify_flatten_cases(output, args.platform, manifest["sha256"], engine.ROOT / "godot", engine_sha)
         engine.require(engine.input_ledgers(args.source_sha) == {key: manifest[key] for key in ("source_inputs", "build_inputs")},
                        "Build/test source changed during Flatten qualification")
         engine.require(engine.runtime_identity(engine.ROOT / engine.RUNTIMES[args.platform], args.platform)["sha256"] == manifest["sha256"],

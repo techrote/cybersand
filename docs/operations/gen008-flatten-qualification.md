@@ -102,6 +102,13 @@ integrated Workbench publisher, pinned Godot 4.7, godot-cpp, Linux compiler,
 LLVM-MinGW Windows cross-build and Rapier. Original catalogue, Lab, integrated
 Workbench, graphical and offline-package gates remain in place.
 
+Windows first runs a separate, bounded 512² platform diagnostic with the same
+pinned engine and candidate native library. Its original artifact checks the
+storage-denial fixtures, actual engine memory measurement and owner-fault
+Save/reopen path before the longer retained suites. This diagnostic does not
+replace any final gate: the complete twelve-record Flatten inventory, accepted
+regression families and delivered-copy smoke remain mandatory afterward.
+
 The added native contract covers complete stored IDs, masked/fractional Water,
 nonmutation of tick/thermal/physics state, actual simulation-derived material
 transformation, output ownership, invalid dimensions/IDs/length/capacity, owner
@@ -148,13 +155,20 @@ limits a child process to a 64 KiB file and exercises both a handled partial wri
 and termination by `SIGXFSZ` during preparation. Windows holds the prior named file
 open without replacement sharing and checks explicit writer refusal. A second
 Windows case locks only a complete, closed temporary source, leaving the old named
-destination unlocked. The production native replacement must refuse while both
-files remain byte-identical; releasing the source lock and retrying the exact same
-file must publish its complete bytes and consume the source. This catches a
-delete-before-move implementation that would lose the unlocked destination.
+destination unlocked. It holds actual `GENERIC_READ` access with read/write sharing
+and no delete sharing. Nonmutating `OPEN_EXISTING` probes must show source `DELETE`
+access refused with Windows error 32 and destination `DELETE` access allowed;
+neither probe requests deletion or delete-on-close. A metadata-only zero-access
+handle does not establish the required sharing denial. The production native
+replacement must refuse while both files remain byte-identical; releasing the
+source lock and retrying the exact same file must publish its complete bytes and
+consume the source. This catches a delete-before-move implementation that would
+lose the unlocked destination.
 The writer uses a native atomic replacement because Godot's Windows rename can
 delete an existing destination before its move fails. Original child logs and
-`storage-faults.json` accompany each platform's evidence.
+`storage-faults.json` accompany each platform's evidence. Windows also retains
+`storage-faults/locked-source-probes.json`; the publisher verifies the original
+probe facts, all retained file bytes and the same-source retry.
 
 ## Reproduce focused tests
 
@@ -184,20 +198,30 @@ python tools/ci/run_flatten_qualification.py --godot C:/Godot_v4.7-stable_win64_
 A focused iteration may use `--cases 512x1`. The final workflow retains the complete
 case matrix and accepted regression families. Headless/local diagnostic results
 must be labelled separately from pinned hosted Windows/Linux graphical execution.
+When given the Windows console launcher path, the measured Flatten runner invokes
+its sibling engine executable from the same pinned archive directly. The original
+requested path, actual engine path/SHA-256 and measured PID remain in the result.
 
 ## Performance evidence and limits
 
 The native contract reports raw copying and validation time. The Workbench reports
 native copying/capture, the complete GDScript/native call (`native_boundary_usec`),
 worker-result polling/handoff (`transfer_usec`), staging, adoption, Save and
-fresh-process Load durations. The polling measurement alone is not the complete
+Load-transaction durations within a fresh process. `load_usec` excludes Godot
+startup. The runner also retains the complete reopen process wall time, which
+includes startup, readback, continued authoring and Restore and therefore is not
+a pure Load duration. The polling measurement alone is not the complete
 cross-language transfer cost; native boundary time includes native-owned buffer
 creation and the returned value conversion.
 The qualification runner samples the real Godot process resident memory or Windows
 working set every 20 ms, recording per-phase sampled peaks and the OS lifetime
-peak separately. A phase peak is resident memory for the entire process at that
-phase, not an estimate of incremental baseline allocation. Very short peaks can
-fall between samples; the process lifetime peak bounds that measurement separately.
+peak separately. It binds the measured executable SHA-256 to the pinned engine
+and the native-backed fixture's reported PID to the measured process PID. The
+approximately 4.86 MiB Windows values from the earlier console-launcher measurement
+are invalid engine-memory evidence and must not be reported as Workbench memory.
+A phase peak is resident memory for the entire process at that phase, not an
+estimate of incremental baseline allocation. Very short peaks can fall between
+samples; the process lifetime peak bounds that measurement separately.
 
 The fixture records the longest frame interval around Flatten as a responsiveness
 observation. Software-rendered hosted times describe those hosts, not owner hardware.
