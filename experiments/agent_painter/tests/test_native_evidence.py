@@ -51,7 +51,9 @@ class PackagingEntrypointTests(unittest.TestCase):
                     "--output", str(output), "--source-sha", "a" * 40]
             script = ("import runpy,sys; " + f"sys.path.insert(0, {str(BASE)!r}); " +
                       f"sys.argv={argv!r}; runpy.run_path(sys.argv[0], run_name='__main__')")
-            result = subprocess.run([sys.executable, "-I", "-c", script], cwd=root,
+            # Ignore inherited PYTHONPATH, but retain normally installed user
+            # packages: hosted contracts install Pillow in the runner user site.
+            result = subprocess.run([sys.executable, "-E", "-c", script], cwd=root,
                                     capture_output=True, text=True, timeout=15)
             self.assertNotEqual(result.returncode, 0, "Empty evidence must never publish")
             self.assertNotIn("ModuleNotFoundError", result.stderr)
