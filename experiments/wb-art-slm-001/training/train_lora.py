@@ -254,7 +254,7 @@ def evaluate(model, tokenizer, rows, system, device, max_new_tokens, limit, outp
             result = model.generate(**inputs, do_sample=False, max_new_tokens=max_new_tokens, pad_token_id=tokenizer.pad_token_id, eos_token_id=tokenizer.eos_token_id, use_cache=True)
         tokens = result[0, inputs["input_ids"].shape[-1]:].tolist()
         text = decode_generation(tokenizer, tokens)
-        record = {"id": row["id"], "theme": row["theme"], "group_id": row["group_id"], "prompt": row["prompt"], "completion": text, "expected_completion": row["completion"], "seed": int(row.get("seed", 0)), "output_tokens": len(tokens), "elapsed_seconds": time.monotonic() - t0, "eos_emitted": tokenizer.eos_token_id in tokens, "json_valid": False, "program_valid": False, "exact_target": False}
+        record = {"id": row["id"], "theme": row["theme"], "group_id": row["group_id"], "prompt": row["prompt"], "completion": text, "expected_completion": row["completion"], "seed": int(row.get("seed", 0)), "output_tokens": len(tokens), "elapsed_seconds": time.monotonic() - t0, "eos_emitted": tokenizer.eos_token_id in tokens, "eos_terminated": bool(tokens) and tokens[-1] == tokenizer.eos_token_id, "json_valid": False, "program_valid": False, "exact_target": False}
         try:
             value = strict_json(text)
             record["json_valid"] = True
@@ -271,7 +271,7 @@ def evaluate(model, tokenizer, rows, system, device, max_new_tokens, limit, outp
                 record["motif_layout_exact"] = [(l["motif"], l["layout"]) for l in value["layers"]] == [(l["motif"], l["layout"]) for l in expected["layers"]]
         except Exception as exc:
             record["error"] = f"{type(exc).__name__}: {str(exc)[:240]}"
-        record["first_pass_accepted"] = record["program_valid"] and bool(tokens) and tokens[-1] == tokenizer.eos_token_id
+        record["first_pass_accepted"] = record["program_valid"] and record["eos_terminated"]
         if record["program_valid"] and not record["first_pass_accepted"]:
             record["error"] = "Unterminated generation: stopping EOS not emitted"
         outputs.append(record)
