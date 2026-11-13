@@ -157,15 +157,31 @@ def main():
     checkpoint = verify_checkpoint(args.checkpoint)
     config = checkpoint["config"]
     selected = profile("sprocket", require_supported=True)
-    if (config.get("profile") != "sprocket" or config.get("source_sha") != TRAINING_SOURCE or
-            config.get("model") != selected or config.get("native_source_sha") != NATIVE_SOURCE or
-            config.get("corpus_manifest_sha256") != CORPUS_SHA or
-            config.get("system") != SYSTEM or
-            config.get("compiler_sha256") != sha256_file(ROOT / "compiler.py") or
-            config.get("trainer_sha256") != sha256_file(ROOT / "training" / "train.py") or
-            config.get("adapter_contract") != adapter_identity(selected) or
-            checkpoint.get("global_step") != 16):
-        raise ValueError("checkpoint identity differs from frozen SPROCKET 16-step pilot")
+    # A standalone DEV evaluator was introduced AFTER the immutable step16
+    # checkpoint. The shared adapter_identity() fingerprints every lane .py file,
+    # including DEV-only instruments, so exclude EXACTLY this evaluator from
+    # the training checkpoint contract and strictly retain every original hash.
+    current_identity = adapter_identity(selected)
+    original_files = dict(current_identity["source_files"])
+    if original_files.pop("lanes/sprocket/development.py", None) != sha256_file(__file__):
+        raise ValueError("Sprocket DEV evaluator source identity missing")
+    original_training_adapter = {**current_identity, "source_files": original_files}
+    checks = {
+        "profile": config.get("profile") == "sprocket",
+        "trainer_source": config.get("source_sha") == TRAINING_SOURCE,
+        "model": config.get("model") == selected,
+        "native_source": config.get("native_source_sha") == NATIVE_SOURCE,
+        "corpus_manifest": config.get("corpus_manifest_sha256") == CORPUS_SHA,
+        "system": config.get("system") == SYSTEM,
+        "compiler": config.get("compiler_sha256") == sha256_file(ROOT / "compiler.py"),
+        "trainer": config.get("trainer_sha256") == sha256_file(ROOT / "training" / "train.py"),
+        "original_training_adapter": config.get("adapter_contract") == original_training_adapter,
+        "checkpoint_step": checkpoint.get("global_step") == 16,
+    }
+    failures = [name for name, valid in checks.items() if not valid]
+    if failures:
+        raise ValueError("checkpoint identity differs from frozen SPROCKET 16-step pilot: "
+                         + ", ".join(failures))
     groups = development_groups(args.corpus)
     numerics, runtime = configure_cpu(1)
     if numerics != config["numerics"]:

@@ -14,5 +14,6 @@
   ],
   "development_only": true,
   "final_targets_forbidden": true,
-  "pilot_run_id": "43521436003"
+  "pilot_run_id": "43521436003",
+  "evaluation_attempt": 2
 }

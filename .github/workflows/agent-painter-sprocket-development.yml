@@ -52,6 +52,7 @@ jobs:
               "arms": ["untuned", "step16"],
               "development_only": True,
               "final_targets_forbidden": True,
+              "evaluation_attempt": 2,
           }
           if (os.environ["SOURCE_REF"] != "refs/heads/codex/agent-painter-sprocket-568" or
                   not re.fullmatch("[a-f0-9]{40}", os.environ["SOURCE_SHA"]) or
