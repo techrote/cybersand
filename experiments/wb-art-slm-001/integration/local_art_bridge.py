@@ -8,6 +8,7 @@ choose focus, material, seed or budgets. A rejected proposal returns no batch.
 from __future__ import annotations
 
 import argparse
+import ctypes
 import hashlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
@@ -140,6 +141,89 @@ def _peer_disconnected(peer: socket.socket) -> bool:
         return True
 
 
+class _WindowsOwnedProcessJob:
+    """Own every descendant through a Win32 kill-on-close Job Object.
+
+    Attach immediately after Popen. If Windows denies assignment, refuse the
+    inference rather than operating with unbounded direct-child-only cleanup.
+    Assignment is not atomic with process creation: the pre-assignment spawn
+    race remains a separate Windows acceptance limitation.
+    """
+
+    def __init__(self, process: subprocess.Popen) -> None:
+        from ctypes import wintypes
+
+        if os.name != "nt":
+            raise RuntimeError("Windows process jobs are Windows-only")
+
+        class BasicLimit(ctypes.Structure):
+            _fields_ = [
+                ("PerProcessUserTimeLimit", ctypes.c_int64),
+                ("PerJobUserTimeLimit", ctypes.c_int64),
+                ("LimitFlags", wintypes.DWORD),
+                ("MinimumWorkingSetSize", ctypes.c_size_t),
+                ("MaximumWorkingSetSize", ctypes.c_size_t),
+                ("ActiveProcessLimit", wintypes.DWORD),
+                ("Affinity", ctypes.c_size_t),
+                ("PriorityClass", wintypes.DWORD),
+                ("SchedulingClass", wintypes.DWORD),
+            ]
+
+        class IoCounters(ctypes.Structure):
+            _fields_ = [(n, ctypes.c_uint64) for n in
+                        ("ReadOperationCount", "WriteOperationCount", "OtherOperationCount",
+                         "ReadTransferCount", "WriteTransferCount", "OtherTransferCount")]
+
+        class ExtendedLimits(ctypes.Structure):
+            _fields_ = [
+                ("BasicLimitInformation", BasicLimit),
+                ("IoInfo", IoCounters),
+                ("ProcessMemoryLimit", ctypes.c_size_t),
+                ("JobMemoryLimit", ctypes.c_size_t),
+                ("PeakProcessMemoryUsed", ctypes.c_size_t),
+                ("PeakJobMemoryUsed", ctypes.c_size_t),
+            ]
+
+        api = ctypes.WinDLL("kernel32", use_last_error=True)
+        api.CreateJobObjectW.argtypes = [ctypes.c_void_p, wintypes.LPCWSTR]
+        api.CreateJobObjectW.restype = wintypes.HANDLE
+        api.SetInformationJobObject.argtypes = [wintypes.HANDLE, ctypes.c_int,
+                                                ctypes.c_void_p, wintypes.DWORD]
+        api.SetInformationJobObject.restype = wintypes.BOOL
+        api.AssignProcessToJobObject.argtypes = [wintypes.HANDLE, wintypes.HANDLE]
+        api.AssignProcessToJobObject.restype = wintypes.BOOL
+        api.TerminateJobObject.argtypes = [wintypes.HANDLE, wintypes.UINT]
+        api.TerminateJobObject.restype = wintypes.BOOL
+        api.CloseHandle.argtypes = [wintypes.HANDLE]
+        api.CloseHandle.restype = wintypes.BOOL
+
+        handle = api.CreateJobObjectW(None, None)
+        if not handle:
+            raise OSError(ctypes.get_last_error(), "CreateJobObjectW failed")
+        try:
+            limits = ExtendedLimits()
+            limits.BasicLimitInformation.LimitFlags = 0x00002000  # KILL_ON_JOB_CLOSE
+            if not api.SetInformationJobObject(handle, 9, ctypes.byref(limits),
+                                               ctypes.sizeof(limits)):
+                raise OSError(ctypes.get_last_error(), "SetInformationJobObject failed")
+            if not api.AssignProcessToJobObject(handle, int(process._handle)):
+                raise OSError(ctypes.get_last_error(), "AssignProcessToJobObject failed")
+        except BaseException:
+            api.CloseHandle(handle)
+            raise
+        self._api = api
+        self._handle = handle
+
+    def close(self) -> None:
+        if self._handle:
+            handle, self._handle = self._handle, None
+            try:
+                self._api.TerminateJobObject(handle, 1)
+            finally:
+                # KILL_ON_JOB_CLOSE also fences descendants after parent exit.
+                self._api.CloseHandle(handle)
+
+
 def _stop_owned_process(process: subprocess.Popen) -> None:
     """Stop the owned process; on POSIX, fence its entire original session group.
 
@@ -192,15 +276,22 @@ def _run_owned_inference(command: list[str], log, deadline_seconds: float,
     """One bounded subprocess. Stop/disconnect/deadline never returns geometry.
 
     No shell, retry, detached worker or background completion. POSIX inference
-    owns a new session so a timed-out child cannot leave group workers behind.
-    Windows terminates the spawned inference process; child-tree cleanup on
-    Windows requires separate qualification if future inference adds children.
+    owns a new session. On Windows, a kill-on-close Job Object owns descendants
+    across Stop, deadlines, errors, and successful direct-parent exit. Assignment
+    occurs immediately after spawn; the pre-assignment race is not yet qualified.
     """
     process = subprocess.Popen(
         command, stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT,
         start_new_session=(os.name != "nt"))
-    deadline = time.monotonic() + deadline_seconds
+    windows_job = None
     try:
+        if os.name == "nt":
+            try:
+                windows_job = _WindowsOwnedProcessJob(process)
+            except BaseException as exc:
+                _stop_owned_process(process)
+                raise BridgeRefusal("Windows owned process-tree admission failed; no Art output") from exc
+        deadline = time.monotonic() + deadline_seconds
         while True:
             if (client_socket is not None and _peer_disconnected(client_socket)) or (
                     cancellation_probe is not None and cancellation_probe()):
@@ -212,8 +303,16 @@ def _run_owned_inference(command: list[str], log, deadline_seconds: float,
                 raise BridgeRefusal("local inference deadline exceeded; no Art batch returned")
             time.sleep(min(0.1, max(0, deadline - time.monotonic())))
     except BaseException:
-        _stop_owned_process(process)
+        if os.name != "nt" or windows_job is None:
+            _stop_owned_process(process)
         raise
+    finally:
+        if windows_job is not None:
+            windows_job.close()
+            try:
+                process.wait(timeout=3)
+            except subprocess.TimeoutExpired:
+                _stop_owned_process(process)
 
 
 def run_inference(config: argparse.Namespace, request: dict,
