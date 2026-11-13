@@ -43,6 +43,11 @@ def analyze(pairs_path: Path, native: Path, *, source_sha: str, native_sha: str)
     pairs = read(pairs_path)
     require(pairs.get("required_native_history_mode") == "each", "all cases need history each")
     require(pairs.get("purpose") == "not-yet-executed-v1-v11-coral-native-pair", "wrong paired fixture")
+    require(pairs.get("parent_compiler_sha256") ==
+            "a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb",
+            "historical v1 compiler identity changed")
+    require(pairs.get("candidate_compiler_version") == "wb-art-slm-001/1.1.0-coral-spread",
+            "unqualified candidate compiler identity")
     cases = pairs.get("cases")
     aliases = pairs.get("aliases")
     require(isinstance(cases, list) and len(cases) == 32, "expected exactly 32 cases")
@@ -87,6 +92,9 @@ def analyze(pairs_path: Path, native: Path, *, source_sha: str, native_sha: str)
                 "fixture ID exceeds Workbench save budget")
         require(expected.get("width") == expected.get("height") == 96 and expected.get("theme") == "coral",
                 "unexpected dimensions or theme in frozen pair")
+        match = re.fullmatch(r"c1[01]-coral-v([0-7])-s(17|73)", case_id)
+        require(match is not None and expected.get("seed") == int(match.group(2)),
+                "native case seed differs from ID")
         ops = expected["operations"]
         require(isinstance(ops, list) and ops and all(op.get("material") == 58 for op in ops),
                 "unexpected material or empty operation plan")
@@ -139,6 +147,10 @@ def analyze(pairs_path: Path, native: Path, *, source_sha: str, native_sha: str)
         require(alias["c10"]["compiler_version"] == "wb-art-slm-001/1.0.0" and
                 alias["c11"]["compiler_version"] == pairs.get("candidate_compiler_version"),
                 "compiler version identities differ")
+        require(by_id[before]["program_sha256"] == by_id[after]["program_sha256"] and
+                by_id[before]["seed"] == by_id[after]["seed"], "paired program/seed differs")
+        require(by_id[before]["operations_sha256"] != by_id[after]["operations_sha256"],
+                "candidate generated no geometry difference")
         b, a = metrics[before], metrics[after]
         comparisons.append({"original_id": parent_id, "v1_case_id": before, "v11_case_id": after,
                             "v1_top_fraction": b["top_fraction"], "v11_top_fraction": a["top_fraction"],
