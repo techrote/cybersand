@@ -60,21 +60,27 @@ def development(directory):
     return sorted(rows, key=lambda x: (x["family"], x["id"])), manifest
 
 
-def evaluate_case(model, tokenizer, selected, compiler, row, arm, limit, folder):
+def evaluate_case(model, tokenizer, selected, compiler, row, arm, limit, folder, cached=None):
     import torch
     prompt_ids = encode_prompt(tokenizer, row["prompt"], SYSTEM, selected)
     if len(prompt_ids) + limit > selected["max_sequence_tokens"]:
         raise ValueError("untruncated prompt + generation would exceed VOID context")
-    inputs = torch.tensor([prompt_ids], dtype=torch.long)
-    begin = time.monotonic()
-    with model.disable_adapter() if arm == "base" else nullcontext():
-        with torch.inference_mode():
-            ids = model.generate(
-                input_ids=inputs, attention_mask=torch.ones_like(inputs),
-                max_new_tokens=limit, do_sample=False, use_cache=True,
-                eos_token_id=tokenizer.eos_token_id,
-                pad_token_id=tokenizer.pad_token_id)[0, len(prompt_ids):].tolist()
-    elapsed = time.monotonic() - begin
+    if cached is None:
+        inputs = torch.tensor([prompt_ids], dtype=torch.long)
+        begin = time.monotonic()
+        with model.disable_adapter() if arm == "base" else nullcontext():
+            with torch.inference_mode():
+                ids = model.generate(
+                    input_ids=inputs, attention_mask=torch.ones_like(inputs),
+                    max_new_tokens=limit, do_sample=False, use_cache=True,
+                    eos_token_id=tokenizer.eos_token_id,
+                    pad_token_id=tokenizer.pad_token_id)[0, len(prompt_ids):].tolist()
+        elapsed = time.monotonic() - begin
+    else:
+        # One actual language request yields one immutable first pass; only host
+        # seeds/focus/material are varied during independently checked compile.
+        ids = list(cached)
+        elapsed = 0.0
     verdict = strict_completion(tokenizer, ids, compiler.validate_program)
     accepted = bool(verdict["first_pass_accepted"])
     compiled = None
@@ -101,6 +107,8 @@ def evaluate_case(model, tokenizer, selected, compiler, row, arm, limit, folder)
         "json_valid": verdict["json_valid"], "program_valid": verdict["program_valid"],
         "compiler_accepted": accepted, "prompt_tokens": len(prompt_ids),
         "generated_tokens": len(ids), "generation_seconds": elapsed,
+        "actual_model_generation": cached is None,
+        "reused_first_pass_for_host_seed": cached is not None,
         "completion_sha256": sha256_file(folder / "completion.txt"),
         "operations_sha256": compiled["operations_sha256"] if accepted else None,
         "decoding": "single greedy first pass; no retries or repair",
@@ -110,7 +118,25 @@ def evaluate_case(model, tokenizer, selected, compiler, row, arm, limit, folder)
     print(json.dumps({"case": row["id"], "arm": arm, "accepted": accepted,
                       "eos": verdict["eos_terminated"], "tokens": len(ids),
                       "seconds": round(elapsed, 3)}), flush=True)
-    return receipt
+    return receipt, ids
+
+
+def verify_development_pairs(rows):
+    """Keep six structural language requests and both native host-seed views."""
+    groups = {}
+    for row in rows:
+        key = row["group"]
+        if key not in groups:
+            groups[key] = {"prompt": row["prompt"], "family": row["family"], "seeds": set()}
+        record = groups[key]
+        if (record["prompt"] != row["prompt"] or record["family"] != row["family"]
+                or row["seed"] in record["seeds"]):
+            raise ValueError("structural group changes its language request or repeats a seed")
+        record["seeds"].add(row["seed"])
+    if (len(rows) != 12 or len(groups) != 6
+            or any(record["seeds"] != {104729, 130363} for record in groups.values())):
+        raise ValueError("frozen DEVELOPMENT requires six requests with two host-seed views")
+    return len(groups)
 
 
 def main():
@@ -131,6 +157,7 @@ def main():
             or cfg["system"] != SYSTEM):
         raise ValueError("exact source/model/framing checkpoint mismatch")
     rows, admission = development(args.corpus)
+    request_count = verify_development_pairs(rows)
     if cfg["corpus_manifest_sha256"] != sha256_file(args.corpus / "admitted-corpus.json"):
         raise ValueError("DEVELOPMENT manifest differs from training corpus")
     numeric, runtime = configure_cpu(1)
@@ -153,20 +180,31 @@ def main():
         "max_new_tokens": args.max_new_tokens, "native_execution": False,
         "visual_quality_claim": False})
     results = []
+    first_passes = {}
     for row in rows:
         for arm in ("base", "adapter"):
-            results.append(evaluate_case(model, tokenizer, selected, compiler, row, arm,
-                                         args.max_new_tokens, args.output / arm / row["id"]))
+            key = (arm, row["group"], row["prompt"])
+            cached = first_passes.get(key)
+            receipt, ids = evaluate_case(
+                model, tokenizer, selected, compiler, row, arm, args.max_new_tokens,
+                args.output / arm / row["id"], cached=cached)
+            if cached is None:
+                first_passes[key] = tuple(ids)
+            results.append(receipt)
             write_json(args.output / "partial-summary.json", {
                 "attempts": len(results), "expected": 2 * len(rows),
+                "actual_model_generations": len(first_passes),
                 "accepted": sum(x["first_pass_accepted"] for x in results),
                 "native_execution": False})
-    summary = {"cases": len(rows), "arms": {}, "native_execution": False,
-               "visual_quality_claim": False, "complete": True}
+    summary = {"cases": len(rows), "distinct_language_requests": request_count,
+               "host_seed_views_per_arm": len(rows), "arms": {},
+               "native_execution": False, "visual_quality_claim": False, "complete": True}
     for arm in ("base", "adapter"):
         subset = [r for r in results if r["arm"] == arm]
         summary["arms"][arm] = {
             "requests": len(subset),
+            "actual_model_generations": sum(r["actual_model_generation"] for r in subset),
+            "reused_first_pass_views": sum(r["reused_first_pass_for_host_seed"] for r in subset),
             "first_pass_accepted": sum(r["first_pass_accepted"] for r in subset),
             "eos_terminated": sum(r["eos_terminated"] for r in subset),
             "json_valid": sum(r["json_valid"] for r in subset),
