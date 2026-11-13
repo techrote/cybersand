@@ -241,7 +241,7 @@ class PairGateTests(unittest.TestCase):
         block1 = [e for e in events if e.get("case") == first]
         block2 = [e for e in events if e.get("case") == second]
         rest = [e for e in events if e.get("case") not in (first, second)]
-        path.write_text("".join(json.dumps(e) + "\\n" for e in block2 + block1 + rest))
+        path.write_text("".join(json.dumps(e) + "\n" for e in block2 + block1 + rest))
         self.verified["native_receipts_sha256"] = audit.digest(path.read_bytes())
         save(self.root / "verified-admission-receipts.json", self.verified)
         with self.assertRaisesRegex(ValueError, "out of requested execution order"):
@@ -251,7 +251,7 @@ class PairGateTests(unittest.TestCase):
         path = self.root / "native-receipts.jsonl"
         events = [json.loads(line) for line in path.read_text().splitlines()]
         events.insert(0, {"case": "unregistered-case", "receipt": {"status": "completed"}})
-        path.write_text("".join(json.dumps(e) + "\\n" for e in events))
+        path.write_text("".join(json.dumps(e) + "\n" for e in events))
         self.verified["native_receipts_sha256"] = audit.digest(path.read_bytes())
         save(self.root / "verified-admission-receipts.json", self.verified)
         with self.assertRaisesRegex(ValueError, "unregistered native receipt case"):
@@ -261,7 +261,7 @@ class PairGateTests(unittest.TestCase):
         path = self.root / "native-receipts.jsonl"
         events = [json.loads(line) for line in path.read_text().splitlines()]
         events.append({"case": "invariant-stop", "capture": {"status": "completed"}})
-        path.write_text("".join(json.dumps(e) + "\\n" for e in events))
+        path.write_text("".join(json.dumps(e) + "\n" for e in events))
         self.verified["native_receipts_sha256"] = audit.digest(path.read_bytes())
         save(self.root / "verified-admission-receipts.json", self.verified)
         with self.assertRaisesRegex(ValueError, "native invariant emitted after pattern case"):
