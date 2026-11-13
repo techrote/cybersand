@@ -176,6 +176,25 @@ class JobGuardTests(unittest.TestCase):
             run(resume_args, resume_cmd)
         self.assertFalse((self.parent/'resumed').exists())
 
+    def test_unfinished_durable_lease_refuses_overlap_after_lock_release(self):
+        args, cmd = self.setup_run()
+        self.parent.mkdir()
+        lease = {'state': 'running', 'supervisor_pid': 1234567, 'child_pid': 7654321,
+                 'output': str(self.parent/'orphaned'), 'token': 'other'}
+        (self.parent/LEASE_NAME).write_text(json.dumps(lease))
+        with self.assertRaisesRegex(FileExistsError, 'Unfinished durable role lease'):
+            run(args, cmd)
+        self.assertFalse((self.parent/'candidate-one').exists())
+        self.assertEqual(json.loads((self.parent/LEASE_NAME).read_text()), lease)
+
+    def test_corrupt_durable_lease_requires_manual_recovery(self):
+        args, cmd = self.setup_run()
+        self.parent.mkdir()
+        (self.parent/LEASE_NAME).write_text('{bad json')
+        with self.assertRaisesRegex(ValueError, 'Unparseable durable role lease'):
+            run(args, cmd)
+        self.assertFalse((self.parent/'candidate-one').exists())
+
     def test_supervisor_token_cannot_bypass_wrong_lease(self):
         args,cmd=self.setup_run()
         self.parent.mkdir()
