@@ -1,0 +1,421 @@
+{
+  "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
+  "correctness": "all query checksums and World outputs match qualified source controls",
+  "flags": "-O2 -pthread; no LTO",
+  "medians_ns": {
+    "query": {
+      "candidate": 102496911.0,
+      "reference": 114535516.5
+    },
+    "world_process": {
+      "candidate": 151120397.5,
+      "reference": 160678187.0
+    }
+  },
+  "observations": [
+    {
+      "block": 0,
+      "build": "reference",
+      "checksum": 23242193,
+      "kind": "query",
+      "nanoseconds": 106761476,
+      "query_calls": 100000000
+    },
+    {
+      "block": 0,
+      "build": "candidate",
+      "checksum": 23242193,
+      "kind": "query",
+      "nanoseconds": 94237419,
+      "query_calls": 100000000
+    },
+    {
+      "block": 0,
+      "build": "candidate",
+      "checksum": 23242193,
+      "kind": "query",
+      "nanoseconds": 101158106,
+      "query_calls": 100000000
+    },
+    {
+      "block": 0,
+      "build": "reference",
+      "checksum": 23242193,
+      "kind": "query",
+      "nanoseconds": 113192565,
+      "query_calls": 100000000
+    },
+    {
+      "block": 1,
+      "build": "reference",
+      "checksum": 23242193,
+      "kind": "query",
+      "nanoseconds": 111897661,
+      "query_calls": 100000000
+    },
+    {
+      "block": 1,
+      "build": "candidate",
+      "checksum": 23242193,
+      "kind": "query",
+      "nanoseconds": 97727267,
+      "query_calls": 100000000
+    },
+    {
+      "block": 1,
+      "build": "candidate",
+      "checksum": 23242193,
+      "kind": "query",
+      "nanoseconds": 123505530,
+      "query_calls": 100000000
+    },
+    {
+      "block": 1,
+      "build": "reference",
+      "checksum": 23242193,
+      "kind": "query",
+      "nanoseconds": 120713941,
+      "query_calls": 100000000
+    },
+    {
+      "block": 2,
+      "build": "reference",
+      "checksum": 23242193,
+      "kind": "query",
+      "nanoseconds": 115878468,
+      "query_calls": 100000000
+    },
+    {
+      "block": 2,
+      "build": "candidate",
+      "checksum": 23242193,
+      "kind": "query",
+      "nanoseconds": 105527180,
+      "query_calls": 100000000
+    },
+    {
+      "block": 2,
+      "build": "candidate",
+      "checksum": 23242193,
+      "kind": "query",
+      "nanoseconds": 93566102,
+      "query_calls": 100000000
+    },
+    {
+      "block": 2,
+      "build": "reference",
+      "checksum": 23242193,
+      "kind": "query",
+      "nanoseconds": 117534790,
+      "query_calls": 100000000
+    },
+    {
+      "block": 3,
+      "build": "reference",
+      "checksum": 23242193,
+      "kind": "query",
+      "nanoseconds": 109265928,
+      "query_calls": 100000000
+    },
+    {
+      "block": 3,
+      "build": "candidate",
+      "checksum": 23242193,
+      "kind": "query",
+      "nanoseconds": 103835716,
+      "query_calls": 100000000
+    },
+    {
+      "block": 3,
+      "build": "candidate",
+      "checksum": 23242193,
+      "kind": "query",
+      "nanoseconds": 113216155,
+      "query_calls": 100000000
+    },
+    {
+      "block": 3,
+      "build": "reference",
+      "checksum": 23242193,
+      "kind": "query",
+      "nanoseconds": 120789027,
+      "query_calls": 100000000
+    },
+    {
+      "build": "reference",
+      "family": 1,
+      "kind": "world_process",
+      "nanoseconds": 169446514,
+      "observed_workers": 1,
+      "workers": 1
+    },
+    {
+      "build": "candidate",
+      "family": 1,
+      "kind": "world_process",
+      "nanoseconds": 160072550,
+      "observed_workers": 1,
+      "workers": 1
+    },
+    {
+      "build": "candidate",
+      "family": 1,
+      "kind": "world_process",
+      "nanoseconds": 185139260,
+      "observed_workers": 1,
+      "workers": 1
+    },
+    {
+      "build": "reference",
+      "family": 1,
+      "kind": "world_process",
+      "nanoseconds": 170650880,
+      "observed_workers": 1,
+      "workers": 1
+    },
+    {
+      "build": "reference",
+      "family": 1,
+      "kind": "world_process",
+      "nanoseconds": 123327993,
+      "observed_workers": 4,
+      "workers": 4
+    },
+    {
+      "build": "candidate",
+      "family": 1,
+      "kind": "world_process",
+      "nanoseconds": 129673360,
+      "observed_workers": 4,
+      "workers": 4
+    },
+    {
+      "build": "candidate",
+      "family": 1,
+      "kind": "world_process",
+      "nanoseconds": 124473775,
+      "observed_workers": 4,
+      "workers": 4
+    },
+    {
+      "build": "reference",
+      "family": 1,
+      "kind": "world_process",
+      "nanoseconds": 152959310,
+      "observed_workers": 4,
+      "workers": 4
+    },
+    {
+      "build": "reference",
+      "family": 2,
+      "kind": "world_process",
+      "nanoseconds": 167879776,
+      "observed_workers": 1,
+      "workers": 1
+    },
+    {
+      "build": "candidate",
+      "family": 2,
+      "kind": "world_process",
+      "nanoseconds": 141826113,
+      "observed_workers": 1,
+      "workers": 1
+    },
+    {
+      "build": "candidate",
+      "family": 2,
+      "kind": "world_process",
+      "nanoseconds": 145347188,
+      "observed_workers": 1,
+      "workers": 1
+    },
+    {
+      "build": "reference",
+      "family": 2,
+      "kind": "world_process",
+      "nanoseconds": 201850966,
+      "observed_workers": 1,
+      "workers": 1
+    },
+    {
+      "build": "reference",
+      "family": 2,
+      "kind": "world_process",
+      "nanoseconds": 113152950,
+      "observed_workers": 4,
+      "workers": 4
+    },
+    {
+      "build": "candidate",
+      "family": 2,
+      "kind": "world_process",
+      "nanoseconds": 124369496,
+      "observed_workers": 4,
+      "workers": 4
+    },
+    {
+      "build": "candidate",
+      "family": 2,
+      "kind": "world_process",
+      "nanoseconds": 117070998,
+      "observed_workers": 4,
+      "workers": 4
+    },
+    {
+      "build": "reference",
+      "family": 2,
+      "kind": "world_process",
+      "nanoseconds": 108042977,
+      "observed_workers": 4,
+      "workers": 4
+    },
+    {
+      "build": "reference",
+      "family": 3,
+      "kind": "world_process",
+      "nanoseconds": 307972295,
+      "observed_workers": 1,
+      "workers": 1
+    },
+    {
+      "build": "candidate",
+      "family": 3,
+      "kind": "world_process",
+      "nanoseconds": 351862135,
+      "observed_workers": 1,
+      "workers": 1
+    },
+    {
+      "build": "candidate",
+      "family": 3,
+      "kind": "world_process",
+      "nanoseconds": 315034761,
+      "observed_workers": 1,
+      "workers": 1
+    },
+    {
+      "build": "reference",
+      "family": 3,
+      "kind": "world_process",
+      "nanoseconds": 281029316,
+      "observed_workers": 1,
+      "workers": 1
+    },
+    {
+      "build": "reference",
+      "family": 3,
+      "kind": "world_process",
+      "nanoseconds": 217482338,
+      "observed_workers": 4,
+      "workers": 4
+    },
+    {
+      "build": "candidate",
+      "family": 3,
+      "kind": "world_process",
+      "nanoseconds": 217993038,
+      "observed_workers": 4,
+      "workers": 4
+    },
+    {
+      "build": "candidate",
+      "family": 3,
+      "kind": "world_process",
+      "nanoseconds": 240842959,
+      "observed_workers": 4,
+      "workers": 4
+    },
+    {
+      "build": "reference",
+      "family": 3,
+      "kind": "world_process",
+      "nanoseconds": 265060521,
+      "observed_workers": 4,
+      "workers": 4
+    },
+    {
+      "build": "reference",
+      "family": 4,
+      "kind": "world_process",
+      "nanoseconds": 134171207,
+      "observed_workers": 1,
+      "workers": 1
+    },
+    {
+      "build": "candidate",
+      "family": 4,
+      "kind": "world_process",
+      "nanoseconds": 156893607,
+      "observed_workers": 1,
+      "workers": 1
+    },
+    {
+      "build": "candidate",
+      "family": 4,
+      "kind": "world_process",
+      "nanoseconds": 190968746,
+      "observed_workers": 1,
+      "workers": 1
+    },
+    {
+      "build": "reference",
+      "family": 4,
+      "kind": "world_process",
+      "nanoseconds": 153476598,
+      "observed_workers": 1,
+      "workers": 1
+    },
+    {
+      "build": "reference",
+      "family": 4,
+      "kind": "world_process",
+      "nanoseconds": 109808959,
+      "observed_workers": 4,
+      "workers": 4
+    },
+    {
+      "build": "candidate",
+      "family": 4,
+      "kind": "world_process",
+      "nanoseconds": 129099748,
+      "observed_workers": 4,
+      "workers": 4
+    },
+    {
+      "build": "candidate",
+      "family": 4,
+      "kind": "world_process",
+      "nanoseconds": 136274545,
+      "observed_workers": 4,
+      "workers": 4
+    },
+    {
+      "build": "reference",
+      "family": 4,
+      "kind": "world_process",
+      "nanoseconds": 142350066,
+      "observed_workers": 4,
+      "workers": 4
+    }
+  ],
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "qualification_receipt_sha256": "f4df0e63a568e2c67bbd63e7a189e38dc49f85c82eb5af3e479832d6826c4ca4",
+  "query_scope": "100 million combined hard/granular calls per process; permuted complete byte domain",
+  "schema_id": "cybersand.material-capability-transition.advisory-timing",
+  "schema_version": 1,
+  "shared_host": true,
+  "sizes": {
+    "candidate": {
+      "query_executable_bytes": 51856,
+      "size_output": "   text\t   data\t    bss\t    dec\t    hex\tfilename\n  27302\t  10960\t  65824\t 104086\t  19696\tbuild/capability-transition/normal-first/candidate/capability-benchmark\n 669594\t  14040\t  66864\t 750498\t  b73a2\tbuild/capability-transition/normal-first/candidate/world\n",
+      "world_executable_bytes": 786760
+    },
+    "reference": {
+      "query_executable_bytes": 51688,
+      "size_output": "   text\t   data\t    bss\t    dec\t    hex\tfilename\n  27254\t  10960\t  65824\t 104038\t  19666\tbuild/capability-transition/normal-first/reference/capability-benchmark\n 669530\t  14040\t  66864\t 750434\t  b7362\tbuild/capability-transition/normal-first/reference/world\n",
+      "world_executable_bytes": 786584
+    }
+  },
+  "timing_is_advisory": true,
+  "world_scope": "512x256 all-material chamber fixture; construction + 48 native ticks + checkpoint IO + stored-state readback"
+}

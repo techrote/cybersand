@@ -10,7 +10,7 @@ related-documents: [../MATERIAL_LAB.md, material-catalogue-shadow.md, microscena
 
 # Materials Lab v1
 
-**Current implementation in [Draft PR #562](https://github.com/techrote/cybersand/pull/562);
+**Current implementation merged in [PR #562](https://github.com/techrote/cybersand/pull/562);
 production activation remains unimplemented.** The desktop **Materials Lab** opens from the feature launcher,
 the ordinary Shared Workbench's **Materials Lab…** button, or `--materials-lab`.
 It combines native material inspection, structured candidate editing, compiled
@@ -488,10 +488,9 @@ Commands and outcomes are retained in the
 [audit](../audits/2026-11-11-materials-lab-v1.md).
 
 The bounded #353-B hard/granular capability consumer is isolated in
-[Draft #563](https://github.com/techrote/cybersand/pull/563), stacked on the Lab
-Draft. Its generated maps, independent source-matched equivalence campaign and
-authenticated compatibility transition do not install authored candidates or
-alter the Lab branch's production consumers. Wider endpoint and quantity semantics require additional native
+[PR #563](https://github.com/techrote/cybersand/pull/563). Its generated maps feed
+the native hard-surface and granular-support predicates. The Lab continues to
+execute authored candidates in isolated tests. Wider endpoint and quantity semantics require additional native
 contracts. The owner explicitly excluded MoltenGlass H1 from this continuation;
 it is not a Materials Lab delivery dependency. Historical liveness evidence is
 preserved. No production thermal law, native identity or saved-World semantics

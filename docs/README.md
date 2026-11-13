@@ -50,9 +50,12 @@ unchanged. The [dated audit](audits/2026-11-06-coupling-lockstep-feasibility.md)
 records the evidence and the opt-in packing re-measurement.
 
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
+The separate [native capability consumer candidate](audits/2026-11-11-material-native-capability-cutover.md)
+in Draft #563 generates hard/granular queries while preserving existing values,
+source-qualified policy/save identity and the immutable lock.
 The [#353-A shadow compiler](operations/material-catalogue-shadow.md) merged in
 [#371](https://github.com/techrote/cybersand/pull/371), accepted main `7ef4856e`;
-legacy native/fallback definitions remain production authority. The
+on accepted main, legacy native/fallback definitions remain production authority. The
 [#354 Phase A investigation](operations/material-liveness-investigation.md)
 demonstrates lost isolated MoltenGlass cooling, distinguishes existing mutual
 heating and preserves documented generic yielding rest. Only tests, tooling and

@@ -1,5 +1,6 @@
 #include "cybersand/material_rules.hpp"
 #include "cybersand/interaction_rules.hpp"
+#include "cybersand/material_capabilities.hpp"
 
 #include <algorithm>
 #include <array>
@@ -86,35 +87,11 @@ bool MaterialRules::is_free_leveling_liquid(Material material) noexcept {
 }
 
 bool MaterialRules::is_hard_surface(Material material) noexcept {
-    const auto material_id = static_cast<std::uint8_t>(material);
-    if (material_id >= static_cast<std::uint8_t>(Material::LimestoneBlock) &&
-        material_id <= static_cast<std::uint8_t>(kLastMaterial)) {
-        return true;
-    }
-    switch (material) {
-        case Material::Wall:
-        case Material::Cloner:
-        case Material::Wood:
-        case Material::Ice:
-        case Material::Metal:
-        case Material::Concrete:
-        case Material::Glass:
-            return true;
-        default:
-            return false;
-    }
+    return material_capability_catalogue::hard_surface(static_cast<std::uint8_t>(material));
 }
 
 bool MaterialRules::supports_granular_load(Material material) noexcept {
-    // Explicit capability shared by player sampling and the pair policy. Seed
-    // is included while it remains a grain; germinated Plant is not a powder.
-    switch (material) {
-        case Material::Sand: case Material::Stone: case Material::Dust:
-        case Material::Seed: case Material::Salt: case Material::Sodium:
-        case Material::Gunpowder: case Material::Coal: case Material::Rust:
-            return true;
-        default: return false;
-    }
+    return material_capability_catalogue::granular_support(static_cast<std::uint8_t>(material));
 }
 
 bool MaterialRules::has_pair_reactions(Material material) noexcept {

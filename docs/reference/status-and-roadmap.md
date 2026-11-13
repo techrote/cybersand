@@ -12,7 +12,14 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Materials Lab v1 — 2026-11-11
 
-**Implemented review candidate; no Ready or merge authority.** The
+Separate [PR #563](https://github.com/techrote/cybersand/pull/563) replaces the
+two native hard/granular predicates with canonical generated capability maps.
+The [source and native proof](../audits/2026-11-11-material-native-capability-cutover.md)
+preserve all values, IDs and policy/save identities; the frozen lock remains
+unchanged. This is one bounded #353-B consumer, not the wider catalogue cutover
+or #384's display-name route. Runtime publication and platform gates are separate.
+
+**Merged in #562 on 2026-11-13.** The
 [Materials Lab](../operations/materials-lab-authoring.md) mounts in the existing
 desktop launcher/Workbench and provides native effective-property inspection,
 structured candidate editing, strict preset round-trips, compiled native pair
@@ -38,7 +45,7 @@ adds copied native contact/mask/core-window diagnostics, Windows process lifetim
 ownership, source-matched runtime publication and a self-contained Windows
 authoring package. Actual automated platform results remain source-qualified;
 human acceptance is not inferred. The bounded #353-B hard/granular generated
-consumer is separately reviewed in Draft #563 and is not installed in #562.
+consumer is reviewed separately in #563.
 The Windows evaluation continuation repairs the current Git distribution's
 portable layout, readable small-window overflow, pending numeric input and stale
 resolver diagnostics. The completion audit retains each campaign's actual
@@ -47,9 +54,10 @@ The Workbench Lab also uses an independent native desktop window where supported
 with physical-pixel scaling and local input; embedded fallback remains available.
 Its client and frame are admitted within the usable work area; insufficient
 desktop capacity is reported explicitly. Failed request8 remains recorded.
-The local Windows preview exposes the existing native PressureFlow reference
+The final Windows evaluation exposes the existing native PressureFlow reference
 solver in **Try originals** and restores it from source-matched experiment cases.
-The completion audit records the preview's tested source and runtime identity.
+The [merge and package evidence](https://github.com/techrote/cybersand/pull/562)
+records the tested source and runtime identity.
 The owner explicitly
 excluded MoltenGlass H1 from this continuation; it is not a Lab delivery gate.
 Historical liveness evidence and production thermal/rest behavior remain
