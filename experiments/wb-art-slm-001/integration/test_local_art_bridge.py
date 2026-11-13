@@ -152,6 +152,64 @@ class ContractTests(unittest.TestCase):
                                          log, 0.2)
 
 
+    def test_http_stop_releases_owned_inference_without_late_batch(self):
+        # Exercise the real handler -> socket EOF -> Popen termination path. The
+        # fake child does not load any model or produce an Art batch.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            child = root / "fake_infer.py"
+            child.write_text(
+                "import pathlib,sys,time\\n"
+                "prompt=sys.argv[sys.argv.index('--prompt')+1]\\n"
+                "output=pathlib.Path(sys.argv[sys.argv.index('--output')+1])\\n"
+                "root=output.parents[1]\\n"
+                "(root/('started-'+prompt)).write_text('started')\\n"
+                "if prompt=='roots': time.sleep(15)\\n"
+                "raise SystemExit(21)\\n", encoding="utf-8")
+            cfg = argparse.Namespace(
+                infer=child, model_dir=root, adapter_dir=root, compiler=child,
+                evidence_dir=root, seed=73, threads=1, device="cpu",
+                max_shapes=2048, max_estimated_cells=131072,
+                deadline_seconds=4, compiler_sha256="compiler", adapter_sha256="adapter")
+            server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(cfg))
+            server.daemon_threads = True
+            thread = threading.Thread(target=server.serve_forever, daemon=True)
+            thread.start()
+            try:
+                body = json.dumps(packet("roots"))
+                stopped = http.client.HTTPConnection("127.0.0.1", server.server_port, timeout=4)
+                stopped.request("POST", "/v1/chat/completions", body=body,
+                                headers={"Content-Type": "application/json"})
+                for _ in range(100):
+                    if (root / "started-roots").exists():
+                        break
+                    time.sleep(0.02)
+                self.assertTrue((root / "started-roots").exists())
+                stopped.close()  # Mirrors Godot HTTPRequest.cancel_request().
+                status = 429
+                for _ in range(40):
+                    conn = http.client.HTTPConnection("127.0.0.1", server.server_port, timeout=4)
+                    try:
+                        conn.request("POST", "/v1/chat/completions",
+                                     body=json.dumps(packet("crystals")),
+                                     headers={"Content-Type": "application/json"})
+                        response = conn.getresponse()
+                        status = response.status
+                        response.read()
+                    finally:
+                        conn.close()
+                    if status != 429:
+                        break
+                    time.sleep(0.05)
+                self.assertEqual(status, 422, "canceled request retained the model lock")
+                self.assertTrue((root / "started-crystals").exists())
+                self.assertFalse(list(root.rglob("art_batch.json")),
+                                 "canceled process or failed next call emitted Art geometry")
+            finally:
+                server.shutdown()
+                server.server_close()
+                thread.join(3)
+
     def test_http_end_to_end_and_refusal(self):
         hits = []
         def runner(_config, request):
