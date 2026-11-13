@@ -134,6 +134,23 @@ def verified_evaluation(output: Path, argv: list[str]) -> dict | None:
             return None
         if config["suite"] != opts.get("--suite", "dev") or config["training_executed"] is not False:
             return None
+        receipt_path = Path(str(opts["--model"])) / "download_receipt.json"
+        if not receipt_path.is_file():
+            receipt_path = Path(str(opts["--model"])).parent / "download_receipt.json"
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        expected = {
+            "model_id": receipt["model_id"], "revision": receipt["resolved_revision"],
+            "model_profile": receipt.get("profile"), "model_subfolder": receipt.get("subfolder"),
+            "compiler_sha256": digest(Path(str(opts["--compiler"]))),
+            "dev_sha256": digest(Path(str(opts["--dev"])),
+            "admission_sha256": digest(Path(str(opts["--admission"]))),
+            "adapter_sha256": (digest(Path(str(opts["--adapter"])) / "adapter_model.safetensors")
+                               if "--adapter" in opts else None),
+            "max_new_tokens": int(str(opts.get("--max-new-tokens", "256"))),
+            "decoding": "greedy, unconstrained, no repair",
+        }
+        if any(config.get(key) != value for key, value in expected.items()):
+            return None
         if metrics["count"] != len(records) or len({r["id"] for r in records}) != len(records):
             return None
         target = int(str(opts.get("--eval-count", "24")))
