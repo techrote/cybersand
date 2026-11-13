@@ -342,3 +342,34 @@ The next candidate still requires one authorized pinned local base/runtime,
 inspection of the designated private role lease and one new keyword-replay
 training attempt. No new model, GPU, native/Windows runtime, provider-default
 change or promotion is implied by this offline verification.
+
+
+## Training custody and orphan-lease hardening — 13 November 2026
+
+The local training supervisor now checks the **complete pinned base-model file
+inventory**, not just the files still present on disk. A missing official model
+file is rejected before model loading. A full-resume attempt independently
+verifies **every checkpoint artifact** against `inventory.json` before launch,
+and binds each resume artifact's SHA-256 into the supervised run fingerprint.
+After child exit, the training guard fingerprints its model, corpus, resume and
+source inputs again. A changed or missing input marks the run **failed** even
+when an otherwise internally valid checkpoint reached the target step; original
+checkpoints and raw evidence remain in place for diagnosis, never credited as
+an unchanged first-pass model candidate.
+
+The shared lease also refuses a new attempt if an earlier role lease is
+unfinished, missing a known terminal state, or unreadable. The OS file lock by
+itself cannot prove an optimizer child died after a supervisor crash. **Do not
+simply delete or reset an unfinished lease:** inspect the recorded parent and
+child processes, confirm all descendants are stopped, and preserve the prior
+run's evidence before a manual recovery. This applies to both training and
+heavy evaluation. Terminal attempts retain the existing fingerprint ledger
+and duplicate-attempt protection.
+
+Five additional offline regression methods were added to
+`test_job_guard.py` (15 Training and 14 Evaluation tests are now discoverable,
+29 total); the two mutation modes independently test post-run base and corpus
+drift. **Exact-source execution of the expanded 29-method suite is still
+pending.** Source publication and test definitions alone do not establish
+PASS. No new optimizer step, fresh neural prediction, native replay, GPU or
+Windows acceptance was performed for this hardening.
