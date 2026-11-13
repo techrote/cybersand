@@ -273,3 +273,59 @@ against the frozen 400-step model and v2 ordering; preserve the shared lease
 and do not call any curriculum change a model gain before measured results.
 Draft #567 remains HOLD; #564/#565 and current-main capability provenance
 remain external.
+
+
+## Fourth corpus checkpoint — admitted-source v3 replay indices
+
+**13 November 2026. Corpus-owned, source-only repair.** The v3 reordered
+training file is NOT directly an admitted Training input: changing line order
+changes the original train.jsonl SHA-256, which the existing Training
+validate_admission() correctly requires to match admission.json. Feeding
+modifier_train.jsonl to the current trainer as its train source therefore
+fails that gate. The trainer's shuffled-v1 policy would separately destroy
+early v3 coverage; keyword-replay-v1 is not the same v3 sampler.
+
+New v3_source_plan.py resolves 400 replay draws to zero-based indices of the
+original, unchanged admitted train.jsonl. It validates both source and
+reordered files, full JSON row equality (including targets and native receipts),
+index namespaces, exact pinned order/index/replay digests, 376 distinct native
+traces, all 72 structural groups, 3 literal draws per theme and the modifier
+and phrasing exposure tables. Source/ordered index confusion, same-ID modified
+targets, stale digests, invalid indexes and semantic/native-theme substitutions
+fail closed. The CLI first runs the original operation/receipt-bound
+build_curriculum.load_and_verify against the source archive and checks the
+exact canonical v3 manifest. It writes an inspectable index plan outside Git.
+It never changes the admitted source, builds new positives or launches training.
+
+Reproduce from the original verified executed-corpus extraction:
+
+    python experiments/wb-art-slm-001/corpus/build_modifier_replay.py \
+      --corpus-dir /absolute/path/corpus \
+      --out /absolute/path/outside/git/v3
+    python experiments/wb-art-slm-001/corpus/v3_source_plan.py \
+      --corpus-dir /absolute/path/corpus \
+      --candidate-dir /absolute/path/outside/git/v3 \
+      --out /absolute/path/outside/git/v3-original-source-plan.json
+
+Training must use the ORIGINAL train.jsonl and explicitly consume the plan's
+source indices, in order, with a new named non-shuffled sampler, persistent
+sample cursor and full checkpoint/resume fingerprint. Its 400 draws are NOT
+400 optimizer steps unless effective gradient accumulation equals one.
+The existing frozen step-400 candidate, DEVELOPMENT/keyword results and
+final-assessment data are unchanged.
+
+**Qualification:** Python 3.13.5 local synthetic tests: 7 PASS, 0 FAIL;
+one archive-dependent end-to-end test SKIP. The original executed-corpus ZIP
+could not be mounted in this session's container, so no new actual archive
+end-to-end digest or native qualification is claimed. Previously verified
+archive/source identities and the v3 manifest are preserved unchanged.
+No training, current-main native, Windows, GPU, GUI, aesthetic or FINAL
+assessment was performed.
+
+**Next:** Integration may import the exact corpus-owned files onto Draft #567.
+Training should implement and qualify a separately versioned sampler on the
+original admitted source, pinning first-400 source index SHA-256
+09e6c4bc2898beec649ca48ae42f3cc9b9067789974a87013464633eb5a41162.
+A separately named bounded run may then compare against frozen results using
+DEVELOPMENT only, once Training has its private lease and authorized model
+runtime. Draft/HOLD remains.
