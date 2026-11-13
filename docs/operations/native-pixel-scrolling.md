@@ -107,6 +107,11 @@ Mounted root-window cases additionally exercise 960×720, 1280×960 and
 1920×1080 geometry, using an independent renderer transform for phase, picking
 and stationary-hover checks. The scrolling fixture renders actual stretched
 root windows and retains the previous transform as a negative control.
+The existing matrices include 1x, 2x, 2.5x, 4x and 8x motion. At 1x, an actual
+rendered sequence accumulates fractional requests, holds or advances physical
+pixels, reverses both axes and returns to the original image. A mounted 1x
+root-window case separately checks the measured physical basis, framebuffer
+cells and real integer/fractional GUI input.
 Native-mapped partial Water and the actual PAINT fill raster are also checked
 at fractional camera positions. Independent cases continue after a failure to
 retain their diagnostics; the overall camera/package gate still fails.

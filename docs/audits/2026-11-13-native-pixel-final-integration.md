@@ -411,3 +411,51 @@ closure, dependency version, application code or performance apparatus is
 changed. The repaired source must complete its own full qualification and
 actual .NET-extracted package execution; the preceding source successes keep
 their original commit identities and are not relabeled as those new results.
+
+## Explicit one-pixel-per-cell motion coverage
+
+A final comparison with the mission's requested zoom matrix finds a coverage
+gap at the archive-repaired source
+`90838045d6fe8085646f2318f9753b8c3a92af29`. The existing coordinate and graphical
+matrices exercise 2x, 2.5x, 4x and 8x motion. Their 1x shader reference and the
+2048-square 1x performance case are stationary; neither establishes 1x slow
+panning. The separate Palette camera offsets use their retained fallback
+mapping. This is missing explicit coverage, not a demonstrated product defect.
+
+The two existing camera fixtures now append 1x without removing or reordering
+their prior cases. The graphical fixture also renders sixteen forward and
+sixteen reverse fractional requests, 32 frames total, using exact binary
+increments. Its independent expected
+pixel phase is derived from the unsnapped request, and its unchanged per-cell
+and translated-frame oracles inspect actual GPU images. The sequence retains
+26 stationary phases, advances `(2,1)` physical pixels, reverses `(-2,-1)` and
+returns to its original frame byte-for-byte. Request accumulation never uses
+the rounded presentation as its next input.
+
+A third mounted Main/root-window case uses a 960x720 Window, its actual 0.5
+root stretch, a 240x160 logical WorldView and a 120x80-cell view. The measured
+physical basis is exactly `(1,1)`. Actual images and input picking have zero
+mismatches over 9,600 content pixels before and after a one-pixel pan; all eight
+new real integer/fractional GUI inputs agree with the captured cell. The former
+screen helper remains a negative control, with 7,972 framebuffer and 9,600
+picking mismatches in this new setting. Existing capture names are preserved;
+the new setting has its own `-zoom-1` names.
+
+Pinned local Godot 4.7 execution passes 1,687 coordinate/native-edit/follow
+checks and 339 graphical checks, preserving the earlier 1,531 and 191. The
+graphical receipt contains 31 captures, 116 frame observations, nine mounted
+root records and 24 real GUI events. The CPU fixture SHA-256 is
+`8d2a0313c7997bef59bbaa51750696db4e04c413b91bc1a04bb9b5c3185ee3a1`;
+the graphical fixture SHA-256 is
+`1c03370749a6b7ac9ced67bb6d9ad107dc5837f709b00e72636be7a6e1c141e8`.
+These are unpublished test-only delta results against the identified parent,
+not relabeled original `90838045` execution.
+
+The existing source and installed camera labels automatically exercise the
+expanded fixtures on both platforms. All original image tolerances, reference
+and translation oracles, shader fixture setup and timing function bodies are
+unchanged. The application benchmark and its runner also remain byte-identical;
+the broader historical graphical fixture now includes the additional correctness
+cases and therefore has a new source hash. The published follow-up must complete
+its own full platform/performance/package campaign. No application, camera,
+recorder, shader, native, physics or authoring implementation is modified.

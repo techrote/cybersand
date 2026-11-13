@@ -54,6 +54,7 @@ var overlay_measurements: Array[Dictionary] = []
 var water_measurements: Array[Dictionary] = []
 var root_window_measurements: Array[Dictionary] = []
 var root_window_gui_inputs: Array[Dictionary] = []
+var unit_scale_fractional_requests: Array[Dictionary] = []
 
 const CURRENT_COORDINATES: String = "\tvec2 continuous_world_pixel = camera_origin_px + fitted_uv * view_size_px;\n\tif (native_pixel_mapping_enabled) {\n\t\tvec2 sample_position = floor(content_screen_origin + raw_fitted_uv * content_screen_size) + vec2(0.5);\n\t\t// Clip in the same physical space as picking. UV roundoff at a fitted\n\t\t// half-pixel edge must not drop the first column or leak the last row.\n\t\tinside_view = all(greaterThanEqual(sample_position, content_screen_origin))\n\t\t\t&& all(lessThan(sample_position, content_screen_origin + content_screen_size));\n\t\tcontinuous_world_pixel = (sample_position - world_zero_screen) * world_units_per_screen_pixel;\n\t}\n\tvec2 world_pixel = floor(continuous_world_pixel);\n\tvec2 cell_fraction = fract(continuous_world_pixel);"
 const LEGACY_COORDINATES: String = "\tvec2 continuous_view_pixel = fitted_uv * view_size_px;\n\tvec2 view_pixel = floor(continuous_view_pixel);\n\tvec2 world_pixel = camera_origin_px + view_pixel;\n\tvec2 cell_fraction = fract(camera_origin_px + continuous_view_pixel);"
@@ -226,7 +227,7 @@ func save_capture(image: Image, label: String) -> void:
 
 
 func magnification_cases() -> void:
-	for zoom: float in [2.0,4.0,8.0,2.5]:
+	for zoom: float in [2.0,4.0,8.0,2.5,1.0]:
 		var output := Vector2i(Vector2(VIEW)*zoom)
 		var area := Rect2(Vector2.ZERO,Vector2(output))
 		var requested := Vector2(59.0,60.0)
@@ -248,6 +249,49 @@ func magnification_cases() -> void:
 		presented = Vector2(WORLD-VIEW)
 		var edge: Image = await render_frame(presented,VIEW,output)
 		compare_cell_oracle(edge,presented,VIEW,area,"zoom="+str(zoom)+" far world edges")
+
+
+func unit_scale_fractional_sequence() -> void:
+	# At one physical pixel per cell, fractional requests must accumulate even
+	# when a frame holds its pixel phase. Use binary-exact increments so the
+	# reverse path can prove that presentation rounding never becomes input.
+	var output := VIEW
+	var area := Rect2(Vector2.ZERO,Vector2(output))
+	var initial := Vector2(59.125,60.25)
+	var requested := initial
+	var world_zero := (area.position-requested).round()
+	var presented: Vector2 = Camera.presentation_origin(requested,VIEW,area,Transform2D.IDENTITY)
+	var previous: Image = await render_frame(presented,VIEW,output)
+	var first: Image = previous
+	compare_cell_oracle(previous,requested,VIEW,area,"1x fractional sequence initial")
+	save_capture(first,"native-pixel-scrolling-1x-fractional-initial")
+	var holds := 0
+	var forward := Vector2i.ZERO
+	var reverse := Vector2i.ZERO
+	for direction: int in [1,-1]:
+		for index: int in range(16):
+			requested += Vector2(0.125,0.0625)*direction
+			var next_zero := (area.position-requested).round()
+			var delta := Vector2i(world_zero-next_zero)
+			presented = Camera.presentation_origin(requested,VIEW,area,Transform2D.IDENTITY)
+			var current: Image = await render_frame(presented,VIEW,output)
+			var label := "1x fractional direction=%d frame=%d" % [direction,index]
+			check(absi(delta.x)<=1 and absi(delta.y)<=1,label+" advances by at most one physical pixel")
+			compare_cell_oracle(current,requested,VIEW,area,label)
+			compare_translation(previous,current,delta,label)
+			if delta == Vector2i.ZERO: holds += 1
+			if direction == 1: forward += delta
+			else: reverse += delta
+			unit_scale_fractional_requests.append({"direction":direction,"frame":index,
+				"requested_origin":[requested.x,requested.y],"presented_origin":[presented.x,presented.y],
+				"expected_world_zero":[next_zero.x,next_zero.y],"physical_pixel_delta":[delta.x,delta.y]})
+			world_zero = next_zero
+			previous = current
+		save_capture(previous,"native-pixel-scrolling-1x-fractional-"+("forward" if direction==1 else "reverse"))
+	check(holds>0,"1x fractional requests retain identical frames until the pixel phase advances")
+	check(forward==Vector2i(2,1) and reverse==Vector2i(-2,-1),"1x fractional requests advance and reverse both axes")
+	check(requested==initial,"1x fractional request accumulator returns exactly without rounded feedback")
+	compare_translation(first,previous,Vector2i.ZERO,"1x fractional sequence returns to its original framebuffer")
 
 
 func letterbox_case() -> void:
@@ -682,7 +726,8 @@ func root_window_framebuffer_cases() -> void:
 	var negative_picks := 0
 	for settings: Dictionary in [
 		{"window":Vector2i(960,720),"logical_size":Vector2(480,320),"zoom":2.0,"scale":0.5},
-		{"window":Vector2i(1280,960),"logical_size":Vector2(450,300),"zoom":2.5,"scale":2.0/3.0}]:
+		{"window":Vector2i(1280,960),"logical_size":Vector2(450,300),"zoom":2.5,"scale":2.0/3.0},
+		{"window":Vector2i(960,720),"logical_size":Vector2(240,160),"zoom":1.0,"scale":0.5,"label_suffix":"-zoom-1"}]:
 		root.size = settings.window
 		host.world_view.size = settings.logical_size
 		await process_frame
@@ -701,8 +746,12 @@ func root_window_framebuffer_cases() -> void:
 			var record := root_window_observations(first,host,requested)
 			record.former_screen_helper = former
 			record.requested_origin = [requested.x,requested.y]
+			var label := "root-%dx%d%s-%s" % [settings.window.x,settings.window.y,
+				settings.get("label_suffix",""),"former" if former else "corrected"]
+			record.label = label
 			root_window_measurements.append(record)
-			var label := "root-%dx%d-%s" % [settings.window.x,settings.window.y,"former" if former else "corrected"]
+			check(Vector2(record.physical_pixels_per_cell[0],record.physical_pixels_per_cell[1])
+				==Vector2.ONE*float(settings.zoom),"root-window actual dimensions establish physical magnification "+label)
 			check(int(record.compared_pixels)>1000,"root-window oracle observes actual material pixels "+label)
 			if former:
 				negative_pixels += int(record.pixel_mismatches)
@@ -719,6 +768,7 @@ func root_window_framebuffer_cases() -> void:
 				var moved_record := root_window_observations(next,host,moved)
 				moved_record.former_screen_helper = false
 				moved_record.requested_origin = [moved.x,moved.y]
+				moved_record.label = label+"-pan"
 				root_window_measurements.append(moved_record)
 				check(int(moved_record.pixel_mismatches)==0 and int(moved_record.picking_mismatches)==0,
 					"root-window one-physical-pixel pan preserves material/picking agreement "+label+" "+str(moved_record))
@@ -861,6 +911,7 @@ func run() -> void:
 	check(overlay_measurements.size() == 2,"both fractional-boundary PAINT fill cases completed")
 	await legacy_control_and_diagnostic()
 	await root_window_framebuffer_cases()
+	await unit_scale_fractional_sequence()
 	await comparative_pacing()
 	var result := {"schema":"native-pixel-scrolling-render-v1","checks":checks,"failures":failures,
 		"context":Context.identity(get_script().resource_path,shader),
@@ -870,6 +921,7 @@ func run() -> void:
 		"water_measurements":water_measurements,
 		"root_window_measurements":root_window_measurements,
 		"root_window_gui_inputs":root_window_gui_inputs,
+		"unit_scale_fractional_requests":unit_scale_fractional_requests,
 		"captures":captures,"frame_measurements":measurements,"comparative_pacing":pacing,
 		"timing_scope":"uniform submission and frame wait including test synchronization; not a throughput benchmark"}
 	if not capture_folder.is_empty():

@@ -68,7 +68,7 @@ func transforms() -> void:
 	# Canvas scale and screen position are independent of world magnification.
 	# The non-integral content origin also covers fitted/odd-width viewports.
 	for dpi: float in [1.0, 1.25, 1.5, 2.0]:
-		for zoom: float in [2.0, 2.5, 4.0, 8.0]:
+		for zoom: float in [2.0, 2.5, 4.0, 8.0, 1.0]:
 			var view := Vector2i(241, 137)
 			var content := Rect2(Vector2(17.25, 21.5), Vector2(view) * zoom)
 			var screen := Transform2D(Vector2(dpi, 0), Vector2(0, dpi), Vector2(31, 47))
