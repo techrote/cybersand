@@ -176,7 +176,7 @@ No step-400 bootstrap files are overwritten.
 For this CPU study the example skips in-process final evaluation to preserve
 checkpoint headroom. The separate heavy evaluator is now **fail-closed behind the
 same supervisor**: direct `evaluate_model.py` execution refuses to load a model.
-It shares the training run-parent lock, signed-to-parent child lease, duplicate
+It shares the training run-parent lock, parent/PID-bound random-token lease, duplicate
 fingerprint denial and 3,300-second maximum process deadline. The supervisor
 hashes all base files, adapter files, receipt, compiler, dev/admission/manifest,
 source, template and runtime both before and after evaluation. Missing/truncated
