@@ -11,11 +11,18 @@ related-documents: [../audits/2026-11-12-mat-auth-workbench-integration.md, ../o
 # CyberSand Materials Lab + Workbench evaluation
 
 **PENDING — this file is a release preparation, not a successful qualification claim.**
-The d66499ec request4 Windows attempt failed the inherited graphical Materials
-Lab test while installing its shared Workbench. Its original evidence remains
-preserved. A repaired source, fresh successful Windows/Linux campaign, tested
-standalone package and exact publication-child gates must replace every pending
-identity before these notes can be published.
+Request 5 source `11b809a579ecade05baaeded59461ab8fc3f6c39` passed its complete
+Linux and Windows source campaigns in
+[run 43402768596](https://github.com/techrote/cybersand/actions/runs/43402768596).
+While that campaign was running, #564 added stricter
+pointer and brush-anchor test assertions at `00017c65da096c61585f026476ae1e62e1aea256`.
+The request-5 original receipts remain historical.
+The current request 6 source `fd1d66b18ac80f564f7078b8a0a902297895672f` incorporates
+that normal merge; its fresh
+[run 43409148541](https://github.com/techrote/cybersand/actions/runs/43409148541)
+is still pending. A successful current Windows/Linux campaign, tested standalone
+package and exact publication-child gates must replace every pending identity
+before these notes can be published. No request-5 result qualifies request 6.
 
 ## Build identity and evidence
 
@@ -25,7 +32,7 @@ identity before these notes can be published.
 | Source tree | PENDING |
 | Runtime publication child and release tag target | PENDING |
 | Accepted main, including #562 and #563 | `63f8b1ba6559906fe85f3ad0269aa296e4141d67` |
-| Included latest #564 Workbench | `6319ab1d94d85d01c9cdb44d973a92d224bfa9aa` |
+| Included latest #564 Workbench | `00017c65da096c61585f026476ae1e62e1aea256` |
 | Included reviewed native capability transition | `b432d52d0d9acaa22f93eeb8d1fad48c64b4c087` |
 | Complete publisher and packaged execution | PENDING |
 | Exact-child Documentation / Native / Godot / Palette gates | PENDING |
@@ -117,12 +124,24 @@ Materials Lab directly.
 
 PENDING: add the actual replacement campaign, complete original platform/package
 assertions and final four gate URLs after their original evidence is verified.
-Earlier Windows failures stay recorded in the integration audit. The previous
-same-host diagnostic established that the mounted combined capture at 5 FPS
-starved native compiler work on the software renderer; the private combined
-capture now uses 1 FPS without changing application defaults, native work,
-assertions or deadlines. The later request4 inherited UI installation failure is
-a distinct preserved result; its repair must be documented from actual evidence.
+Earlier Windows failures stay recorded in the integration audit. One same-host
+diagnostic established that the mounted combined capture at 5 FPS starved native
+compiler work on the software renderer; that private combined capture now uses
+1 FPS. Application frame-rate defaults, native work and its assertions remain
+unchanged.
+
+The later request-4 failure occurred in the original Lab's initial Workbench
+installation wait. Separate unchanged-source controls observed a 43–45 second
+installation delay across two process frames, with most of that time in a cold
+ANGLE frame and a palette shader cache appearing when it returned. Lowering this
+Lab capture's frame rate did not shorten that stall. Request 5 aligned only the
+initial Main acknowledgement with the existing 600-second cold-start policy;
+request 6 retains that correction and the original Lab capture's 15 FPS. This
+does not improve startup latency or establish ordinary-desktop performance.
+Dedicated Lab graphical and package cases retain their explicit 1200-second
+outer allowance; the source-derived generic headless UI allowance is 3940
+seconds. Native compile/execute/service limits remain 180/60/300 seconds, and
+the fixed tick counts and experiment windows remain unchanged.
 
 The bundle preserves `source/LICENSE_STATUS.md`, `source/THIRD_PARTY_NOTICES.md`,
 Godot notices and the bundled dependencies' own licenses. It does not introduce

@@ -2,7 +2,7 @@
   "schema": "cybersand-mat-workbench-evaluation-release-v1",
   "repository": "techrote/cybersand",
   "accepted_main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
-  "workbench_head": "6319ab1d94d85d01c9cdb44d973a92d224bfa9aa",
+  "workbench_head": "00017c65da096c61585f026476ae1e62e1aea256",
   "capability_transition": "b432d52d0d9acaa22f93eeb8d1fad48c64b4c087",
   "source_commit": null,
   "source_tree": null,

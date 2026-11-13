@@ -32,7 +32,7 @@ APPARATUS = {WORKFLOW, REQUEST, NOTES, "tools/ci/mat_workbench_evaluation_releas
 PUBLISH_WORKFLOW = "mat-workbench-runtime-publication.yml"
 GATES = ("documentation.yml", "native.yml", "gdextension.yml", "palette-shader-qualification.yml")
 ACCEPTED_MAIN = "63f8b1ba6559906fe85f3ad0269aa296e4141d67"
-WORKBENCH_HEAD = "6319ab1d94d85d01c9cdb44d973a92d224bfa9aa"
+WORKBENCH_HEAD = "00017c65da096c61585f026476ae1e62e1aea256"
 CAPABILITY_TRANSITION = "b432d52d0d9acaa22f93eeb8d1fad48c64b4c087"
 # A replacement candidate must finish qualification before these reviewed pins
 # and the request can be filled together. d664 is a preserved failed attempt.
