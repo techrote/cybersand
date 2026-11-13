@@ -1,0 +1,464 @@
+{
+  "schema_version": 1,
+  "name": "wb-art-slm-001-gallery-development-v1",
+  "status": "frozen development-only comparison prompts before new adapter inference",
+  "source_branch": "codex/wb-art-slm-corpus",
+  "source_manifest": "failure_contrast_replay_v5.json",
+  "source_compiler_sha256": "a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb",
+  "source_train_sha256": "972826e1af15a6babaff6e68e4c57d790c0c060a2befe050b4156c5f8ee05f66",
+  "source_archive_sha256": "2d2de250731eeea825339e89f752ab8ebc65f3a929daa2c692120d985566948a",
+  "split": "development-only; no training, no FINAL use",
+  "request_count": 60,
+  "seed_pair": [
+    17,
+    73
+  ],
+  "native_runtime_scope": "historical 90719c72 only if exact source/binary matched; current-source acceptance separate",
+  "host_context": {
+    "width": 96,
+    "height": 96,
+    "material": 58,
+    "allowed_materials": [
+      58
+    ],
+    "seed_owned_by": "host",
+    "focus_owned_by": "host"
+  },
+  "variants": [
+    "literal",
+    "paraphrase",
+    "modifier",
+    "composition",
+    "contrast"
+  ],
+  "caveats": [
+    "12 exact-word literal anchors intentionally overlap admitted TRAIN prompts and are sanity checks, not unseen-language generalization.",
+    "The 48 other prompts do not match the corpus generator's Create/Make prompt forms or one-word anchors; archived byte-level prompt collision is not separately checked in this run.",
+    "A positive rendered seed is not an independent natural-language request.",
+    "Classification target is the primary expected_theme; contrast wording contains distractor themes.",
+    "Evaluation must make an ID/theme/prompt-blind stimulus and preserve answer key separately.",
+    "Failed first-pass raw completions remain failed and cannot be repaired or replaced."
+  ],
+  "requests": [
+    {
+      "id": "g01-roots-literal",
+      "theme": "roots",
+      "kind": "literal",
+      "prompt": "roots",
+      "expected_theme": "roots"
+    },
+    {
+      "id": "g01-roots-paraphrase",
+      "theme": "roots",
+      "kind": "paraphrase",
+      "prompt": "A mass of underground roots that fork and taper as they spread through soil.",
+      "expected_theme": "roots"
+    },
+    {
+      "id": "g01-roots-modifier",
+      "theme": "roots",
+      "kind": "modifier",
+      "prompt": "Dense, thick roots with many branching tendrils and clear gaps between them.",
+      "expected_theme": "roots"
+    },
+    {
+      "id": "g01-roots-composition",
+      "theme": "roots",
+      "kind": "composition",
+      "prompt": "Build two interlaced root systems: large primary branches and finer root hairs.",
+      "expected_theme": "roots"
+    },
+    {
+      "id": "g01-roots-contrast",
+      "theme": "roots",
+      "kind": "contrast",
+      "prompt": "Plant roots with irregular natural forks, not straight electronic circuitry.",
+      "expected_theme": "roots"
+    },
+    {
+      "id": "g02-coral-literal",
+      "theme": "coral",
+      "kind": "literal",
+      "prompt": "coral",
+      "expected_theme": "coral"
+    },
+    {
+      "id": "g02-coral-paraphrase",
+      "theme": "coral",
+      "kind": "paraphrase",
+      "prompt": "A reef of organic fan-shaped coral colonies distributed across the whole area.",
+      "expected_theme": "coral"
+    },
+    {
+      "id": "g02-coral-modifier",
+      "theme": "coral",
+      "kind": "modifier",
+      "prompt": "Open, twisted coral fans framing a large clear central pool.",
+      "expected_theme": "coral"
+    },
+    {
+      "id": "g02-coral-composition",
+      "theme": "coral",
+      "kind": "composition",
+      "prompt": "Build broad coral fans with a second layer of delicate coral offshoots.",
+      "expected_theme": "coral"
+    },
+    {
+      "id": "g02-coral-contrast",
+      "theme": "coral",
+      "kind": "contrast",
+      "prompt": "Living branching coral rather than faceted crystal clusters.",
+      "expected_theme": "coral"
+    },
+    {
+      "id": "g03-veins-literal",
+      "theme": "veins",
+      "kind": "literal",
+      "prompt": "veins",
+      "expected_theme": "veins"
+    },
+    {
+      "id": "g03-veins-paraphrase",
+      "theme": "veins",
+      "kind": "paraphrase",
+      "prompt": "A biological web of veins branching into many small capillaries.",
+      "expected_theme": "veins"
+    },
+    {
+      "id": "g03-veins-modifier",
+      "theme": "veins",
+      "kind": "modifier",
+      "prompt": "Thin, dense veins weaving into an interconnected organic network.",
+      "expected_theme": "veins"
+    },
+    {
+      "id": "g03-veins-composition",
+      "theme": "veins",
+      "kind": "composition",
+      "prompt": "One central vein splitting into a second layer of branching capillaries.",
+      "expected_theme": "veins"
+    },
+    {
+      "id": "g03-veins-contrast",
+      "theme": "veins",
+      "kind": "contrast",
+      "prompt": "Irregular anatomical veins, not ninety-degree printed circuit traces.",
+      "expected_theme": "veins"
+    },
+    {
+      "id": "g04-mycelium-literal",
+      "theme": "mycelium",
+      "kind": "literal",
+      "prompt": "mycelium",
+      "expected_theme": "mycelium"
+    },
+    {
+      "id": "g04-mycelium-paraphrase",
+      "theme": "mycelium",
+      "kind": "paraphrase",
+      "prompt": "Fine fungal filaments spreading through an underground substrate.",
+      "expected_theme": "mycelium"
+    },
+    {
+      "id": "g04-mycelium-modifier",
+      "theme": "mycelium",
+      "kind": "modifier",
+      "prompt": "Sparse, thin mycelium threads with generous dark breathing space.",
+      "expected_theme": "mycelium"
+    },
+    {
+      "id": "g04-mycelium-composition",
+      "theme": "mycelium",
+      "kind": "composition",
+      "prompt": "A fungal network with broad searching strands and very fine secondary hyphae.",
+      "expected_theme": "mycelium"
+    },
+    {
+      "id": "g04-mycelium-contrast",
+      "theme": "mycelium",
+      "kind": "contrast",
+      "prompt": "Wandering fungus threads, not an orderly grid of electrical wires.",
+      "expected_theme": "mycelium"
+    },
+    {
+      "id": "g05-strata-literal",
+      "theme": "strata",
+      "kind": "literal",
+      "prompt": "strata",
+      "expected_theme": "strata"
+    },
+    {
+      "id": "g05-strata-paraphrase",
+      "theme": "strata",
+      "kind": "paraphrase",
+      "prompt": "Sedimentary rock layers cut by a few visible geological faults.",
+      "expected_theme": "strata"
+    },
+    {
+      "id": "g05-strata-modifier",
+      "theme": "strata",
+      "kind": "modifier",
+      "prompt": "Thick, offset strata with strongly separated horizontal bands.",
+      "expected_theme": "strata"
+    },
+    {
+      "id": "g05-strata-composition",
+      "theme": "strata",
+      "kind": "composition",
+      "prompt": "Combine broad sediment beds and a finer layer of fractured rock seams.",
+      "expected_theme": "strata"
+    },
+    {
+      "id": "g05-strata-contrast",
+      "theme": "strata",
+      "kind": "contrast",
+      "prompt": "Horizontal geological strata, not curved wind-sculpted sand dunes.",
+      "expected_theme": "strata"
+    },
+    {
+      "id": "g06-dunes-literal",
+      "theme": "dunes",
+      "kind": "literal",
+      "prompt": "dunes",
+      "expected_theme": "dunes"
+    },
+    {
+      "id": "g06-dunes-paraphrase",
+      "theme": "dunes",
+      "kind": "paraphrase",
+      "prompt": "Rolling wind-carved sand ridges with irregular crests and valleys.",
+      "expected_theme": "dunes"
+    },
+    {
+      "id": "g06-dunes-modifier",
+      "theme": "dunes",
+      "kind": "modifier",
+      "prompt": "Sparse dunes with broad open troughs between ridgelines.",
+      "expected_theme": "dunes"
+    },
+    {
+      "id": "g06-dunes-composition",
+      "theme": "dunes",
+      "kind": "composition",
+      "prompt": "Layer several large dune crests with thin wind-ripple accents.",
+      "expected_theme": "dunes"
+    },
+    {
+      "id": "g06-dunes-contrast",
+      "theme": "dunes",
+      "kind": "contrast",
+      "prompt": "Flowing sand dunes, not perfectly flat sedimentary rock strata.",
+      "expected_theme": "dunes"
+    },
+    {
+      "id": "g07-crystals-literal",
+      "theme": "crystals",
+      "kind": "literal",
+      "prompt": "crystals",
+      "expected_theme": "crystals"
+    },
+    {
+      "id": "g07-crystals-paraphrase",
+      "theme": "crystals",
+      "kind": "paraphrase",
+      "prompt": "Clusters of sharp angular mineral prisms with distinct facets.",
+      "expected_theme": "crystals"
+    },
+    {
+      "id": "g07-crystals-modifier",
+      "theme": "crystals",
+      "kind": "modifier",
+      "prompt": "Dense crystals of varying sizes with bold faceted outlines.",
+      "expected_theme": "crystals"
+    },
+    {
+      "id": "g07-crystals-composition",
+      "theme": "crystals",
+      "kind": "composition",
+      "prompt": "Combine a central crystal formation with smaller detached fragments.",
+      "expected_theme": "crystals"
+    },
+    {
+      "id": "g07-crystals-contrast",
+      "theme": "crystals",
+      "kind": "contrast",
+      "prompt": "Hard angular crystal shards, not soft organic coral fans.",
+      "expected_theme": "crystals"
+    },
+    {
+      "id": "g08-honeycomb-literal",
+      "theme": "honeycomb",
+      "kind": "literal",
+      "prompt": "honeycomb",
+      "expected_theme": "honeycomb"
+    },
+    {
+      "id": "g08-honeycomb-paraphrase",
+      "theme": "honeycomb",
+      "kind": "paraphrase",
+      "prompt": "An uneven but interconnected field of wax-like hexagonal cells.",
+      "expected_theme": "honeycomb"
+    },
+    {
+      "id": "g08-honeycomb-modifier",
+      "theme": "honeycomb",
+      "kind": "modifier",
+      "prompt": "Open honeycomb rings with a clear empty center.",
+      "expected_theme": "honeycomb"
+    },
+    {
+      "id": "g08-honeycomb-composition",
+      "theme": "honeycomb",
+      "kind": "composition",
+      "prompt": "Pack large connected honeycomb cells beside a finer outer cell layer.",
+      "expected_theme": "honeycomb"
+    },
+    {
+      "id": "g08-honeycomb-contrast",
+      "theme": "honeycomb",
+      "kind": "contrast",
+      "prompt": "Regular honeycomb cavities, not the wandering corridors of a maze.",
+      "expected_theme": "honeycomb"
+    },
+    {
+      "id": "g09-labyrinth-literal",
+      "theme": "labyrinth",
+      "kind": "literal",
+      "prompt": "labyrinth",
+      "expected_theme": "labyrinth"
+    },
+    {
+      "id": "g09-labyrinth-paraphrase",
+      "theme": "labyrinth",
+      "kind": "paraphrase",
+      "prompt": "A tortuous maze of narrow passageways and dead ends.",
+      "expected_theme": "labyrinth"
+    },
+    {
+      "id": "g09-labyrinth-modifier",
+      "theme": "labyrinth",
+      "kind": "modifier",
+      "prompt": "Dense labyrinth walls with occasional spacious chambers.",
+      "expected_theme": "labyrinth"
+    },
+    {
+      "id": "g09-labyrinth-composition",
+      "theme": "labyrinth",
+      "kind": "composition",
+      "prompt": "A maze with two nested corridor systems and a central open courtyard.",
+      "expected_theme": "labyrinth"
+    },
+    {
+      "id": "g09-labyrinth-contrast",
+      "theme": "labyrinth",
+      "kind": "contrast",
+      "prompt": "Walkable maze corridors, not repeating closed honeycomb cells.",
+      "expected_theme": "labyrinth"
+    },
+    {
+      "id": "g10-ruins-literal",
+      "theme": "ruins",
+      "kind": "literal",
+      "prompt": "ruins",
+      "expected_theme": "ruins"
+    },
+    {
+      "id": "g10-ruins-paraphrase",
+      "theme": "ruins",
+      "kind": "paraphrase",
+      "prompt": "Fragments of a collapsed stone city with broken walls and fallen blocks.",
+      "expected_theme": "ruins"
+    },
+    {
+      "id": "g10-ruins-modifier",
+      "theme": "ruins",
+      "kind": "modifier",
+      "prompt": "Sparse ruins made of thick masonry blocks separated by gaps.",
+      "expected_theme": "ruins"
+    },
+    {
+      "id": "g10-ruins-composition",
+      "theme": "ruins",
+      "kind": "composition",
+      "prompt": "Combine tall broken architectural remnants with low scattered rubble.",
+      "expected_theme": "ruins"
+    },
+    {
+      "id": "g10-ruins-contrast",
+      "theme": "ruins",
+      "kind": "contrast",
+      "prompt": "Collapsed building remains, not repeated curved skeletal ribs.",
+      "expected_theme": "ruins"
+    },
+    {
+      "id": "g11-circuitry-literal",
+      "theme": "circuitry",
+      "kind": "literal",
+      "prompt": "circuitry",
+      "expected_theme": "circuitry"
+    },
+    {
+      "id": "g11-circuitry-paraphrase",
+      "theme": "circuitry",
+      "kind": "paraphrase",
+      "prompt": "A printed circuit board of right-angled traces and branching junctions.",
+      "expected_theme": "circuitry"
+    },
+    {
+      "id": "g11-circuitry-modifier",
+      "theme": "circuitry",
+      "kind": "modifier",
+      "prompt": "Thin, dense circuitry with clean orthogonal routes and small open areas.",
+      "expected_theme": "circuitry"
+    },
+    {
+      "id": "g11-circuitry-composition",
+      "theme": "circuitry",
+      "kind": "composition",
+      "prompt": "Layer broad power traces beneath fine right-angle signal connections.",
+      "expected_theme": "circuitry"
+    },
+    {
+      "id": "g11-circuitry-contrast",
+      "theme": "circuitry",
+      "kind": "contrast",
+      "prompt": "Machine circuitry with squared routes, not branching biological veins.",
+      "expected_theme": "circuitry"
+    },
+    {
+      "id": "g12-ribs-literal",
+      "theme": "ribs",
+      "kind": "literal",
+      "prompt": "ribs",
+      "expected_theme": "ribs"
+    },
+    {
+      "id": "g12-ribs-paraphrase",
+      "theme": "ribs",
+      "kind": "paraphrase",
+      "prompt": "Repeated curved skeletal rib arches spreading from a central spine.",
+      "expected_theme": "ribs"
+    },
+    {
+      "id": "g12-ribs-modifier",
+      "theme": "ribs",
+      "kind": "modifier",
+      "prompt": "Thick, symmetric ribs with dark intervals between each arch.",
+      "expected_theme": "ribs"
+    },
+    {
+      "id": "g12-ribs-composition",
+      "theme": "ribs",
+      "kind": "composition",
+      "prompt": "Build a central backbone and a second layer of evenly spaced curved ribs.",
+      "expected_theme": "ribs"
+    },
+    {
+      "id": "g12-ribs-contrast",
+      "theme": "ribs",
+      "kind": "contrast",
+      "prompt": "An anatomical rib cage, not piles of collapsed stone ruins.",
+      "expected_theme": "ribs"
+    }
+  ]
+}
