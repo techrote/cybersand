@@ -41,6 +41,8 @@ def main():
         raise ValueError("VOID campaign native corpus/source differs from frozen admission")
     if args.output.exists():
         raise ValueError("VOID campaign refuses to overwrite existing evidence")
+    # Shared trainer always reads resume; this stage is explicitly fresh, not an exact resume.
+    args.resume = None
     args.profile = "void"
     args.steps = 120
     args.max_seconds = 1800

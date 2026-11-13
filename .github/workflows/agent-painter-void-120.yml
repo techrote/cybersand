@@ -51,7 +51,7 @@ jobs:
             "development_distinct_requests":6,"development_host_seed_views":12,
             "baseline":"untuned-pinned-parent","trainer_per_vm":1,"max_active_training_jobs":2,
             "stage":"fresh-from-parent-not-an-exact-resume","sealed_final_opened":False,
-            "native_execution_claim":False,"request_sequence":1}
+            "native_execution_claim":False,"request_sequence":2}
           if req != expected:
               raise SystemExit("frozen one-shot campaign request mismatch")
           PY
