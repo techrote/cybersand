@@ -47,6 +47,10 @@ _verify_lab_bundle = lab.verify_materials_bundle
 # Engine.get_version_info().string uses the display spelling; --version has
 # engine.GODOT_VERSION. The original publisher also authenticates archive bytes.
 GODOT_DISPLAY_VERSION = "4.7-stable (official)"
+# Windows diagnostic 43342275664: two software-rendered windows capped at 15 FPS
+# starved the first compile past 180s; at 5 FPS both compiled in 25s each.
+# Bound this combined capture only; inherited Lab captures retain 15 FPS.
+COMBINED_GRAPHICAL_MAX_FPS = 5
 
 
 def __getattr__(name):
@@ -54,7 +58,7 @@ def __getattr__(name):
 
 
 def regression_labels() -> list[str]:
-    labels = ["regression-import", "art-keyless", "art-stored-material", "art-deferred-manual", "art-native",
+    labels = ["regression-import", "art-keyless", "art-panel-ui", "art-stored-material", "art-deferred-manual", "art-native",
               "art-native-render", "art-http-fixtures-graphical", "art-final-graphical-mocked",
               "native-edit-ordering", "combined-deferred-paint", "paint-shapes", "paint-executor", "paint-recovery"]
     labels += [f"{name}-{workers}" for workers in (1, 4) for name in ("paint-native", "agent-undo")]
@@ -103,7 +107,7 @@ def combined_lab_workbench(runner, project: Path) -> None:
                 for phase in ("author", "reopen"):
                     label = f"mat-workbench-workers-{workers}-{phase}"
                     runner.godot(project, label, "test_material_lab_workbench_integration", "MAT_WB_INTEGRATION",
-                                 graphical=True, max_fps=lab.GRAPHICAL_MAX_FPS, env={"ART_UNDO_WORKERS": str(workers),
+                                 graphical=True, max_fps=COMBINED_GRAPHICAL_MAX_FPS, env={"ART_UNDO_WORKERS": str(workers),
                                  "MAT_WB_REOPEN": "1" if phase == "reopen" else "0",
                                  "MAT_WB_SCREENSHOTS": str(runner.evidence / (label + "-frames")),
                                  "XDG_DATA_HOME": str(userdata), "APPDATA": str(userdata)})

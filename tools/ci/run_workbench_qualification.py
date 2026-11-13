@@ -332,6 +332,7 @@ def regressions(args):
     project = args.project.resolve()
     runner.godot(project, "regression-import")
     runner.godot(project, "art-keyless", "test_art_provider", "ART_PROVIDER_KEYLESS")
+    runner.godot(project, "art-panel-ui", "test_art_panel_ui", "ART_PANEL_UI")
     runner.godot(project, "art-stored-material", "test_art_stored_material", "ART_STORED_RESULT")
     runner.godot(project, "art-deferred-manual", "test_art_deferred_manual", "ART_DEFERRED_MANUAL")
     runner.godot(project, "art-native", "test_art_batch_native", "ART_STAGE1_RESULT")
