@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     outputs:
-      pilot-run: ${{ steps.contract.outputs.pilot_run }}
+      pilot_run: ${{ steps.contract.outputs.pilot_run }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -103,7 +103,7 @@ jobs:
         with:
           name: agent-painter-lfm25-vl-pilot-a8284c90050499cc1bf5c33dd0992741891c146b
           path: evidence/candidate
-          run-id: ${{ needs.request.outputs.pilot-run }}
+          run-id: ${{ needs.request.outputs.pilot_run }}
           github-token: ${{ github.token }}
       - name: Provision pinned CPU inference environment
         run: |
