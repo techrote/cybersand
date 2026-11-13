@@ -2,6 +2,7 @@
 # No paid API, external task, Git writes, old adapter overwrite or hidden retries.
 # Example:
 #   & .\run_v5_windows.ps1 -CorpusZip 'C:\Downloads\wb_art_slm_001_executed_corpus.zip' -Python 'C:\wb-art-slm-private\venv\Scripts\python.exe'
+# Run from integrated Draft #567 (it contains the independently owned Corpus v5 manifest).
 # For a true checkpoint continuation, specify -Resume <exact checkpoint> and NEW -CandidateName.
 [CmdletBinding()]
 param(
@@ -74,7 +75,7 @@ $runParent = Join-Path $root 'runs'
 New-Item -ItemType Directory -Path $runParent -Force | Out-Null
 $output = Join-Path $runParent $CandidateName
 if (Test-Path $output) { throw "Output already exists: $output; choose a new -CandidateName, never overwrite a candidate." }
-$args = @(
+$trainerArgs = @(
   (Join-Path $trainingDir 'job_guard.py'),
   '--run-parent', $runParent,
   '--wall-seconds', '3300',
@@ -100,11 +101,11 @@ $args = @(
 )
 if ($Resume) {
   $resolvedResume = (Resolve-Path $Resume).Path
-  $args += @('--resume', $resolvedResume)
+  $trainerArgs += @('--resume', $resolvedResume)
 }
 Write-Host "Starting ONE fresh/resumed bounded CPU candidate: $output"
 Write-Host "Trainer: $trainingDir; pinned corpus ZIP SHA: $zipHash; v5 manifest: $v5Full"
-& $Python @args
+& $Python @trainerArgs
 $exitCode = $LASTEXITCODE
 $result = Join-Path $output 'guard_result.json'
 if (Test-Path $result) { Get-Content -Raw $result }
