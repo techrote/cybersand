@@ -49,3 +49,8 @@ jobs:
           python -m unittest discover -s experiments/wb-art-slm-001/evaluation -p 'test_blind_native_review.py' -v
           python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_modifier_replay.py' -v
           python -m unittest discover -s experiments/wb-art-slm-001/evaluation -p 'test_audit_blind_stimulus.py' -v
+      - name: Latest role contracts and actual frozen gallery pixel audit (no model/native)
+        run: |
+          python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_v3_source_plan.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_export_native_cases.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/evaluation -p 'test_measure_native_stimulus_pixels.py' -v
