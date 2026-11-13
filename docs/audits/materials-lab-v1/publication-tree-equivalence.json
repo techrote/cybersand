@@ -1,0 +1,47 @@
+{
+  "schema": "cybersand.material-lab.publication-tree-equivalence",
+  "version": 1,
+  "reason": "Terminal Git push was unauthenticated; the authorized GitHub Git Data connector published the same blob/tree content with its own commit metadata.",
+  "commits": [
+    {
+      "local": "80592c2dcc31644f4c150d749e26d9474f2123a5",
+      "remote": "4cd03b583958279a54dfae8cbe3ce354498d452a",
+      "tree": "dd911f3f3c32718b26addb56bde9a7ae35682aae"
+    },
+    {
+      "local": "9da5dc3c3b8b19371cb37089920152a2bf826169",
+      "remote": "fbdc3aceb6fd52312624c72cba21d4a3600aa353",
+      "tree": "b30bc48b9b43aac4d33f0d74ec877fc477180846"
+    },
+    {
+      "local": "391cfd4dd1981852eb3bf71217582c22556b7028",
+      "remote": "a321fb3d6400fc3695b1332126f265864cf2338c",
+      "tree": "ba9f74e4dc766202d86eabc301504022ba7daf6d"
+    },
+    {
+      "local": "dc2d74625c9e73781a64e93514297edbefc445a9",
+      "remote": "a440f01ea56c07ddfc583263f9ffabc1298c35ca",
+      "tree": "fbea9eced2d26f5d1f1474ff9516b005d834bbed"
+    },
+    {
+      "local": "dec5f4bb2d1ef5c32be8e1f497d18e3b6d28bf9a",
+      "remote": "87c7893fc5e722a71123a1a70768c6e5218a869f",
+      "tree": "ba3e3d9a084057d6739b9ac2b8b52806a7c18d34"
+    },
+    {
+      "local": "35cdcd9fa86eec3fa1f2ab132e28c3e5d90a3d1c",
+      "remote": "6df43c999e5dcf64651f156316afa5f2cd5aab24",
+      "tree": "fe288e4ce40db2d8abdd4829915982c4921492b9"
+    },
+    {
+      "local": "65a9ea05d750441cd567280bf27a9fbf92624566",
+      "remote": "6cc0b3213d9ac27ce0c1ef09161fb51a74aa7648",
+      "tree": "622fb32a75dd14344be3090b5417f7aebc6b7ab4"
+    },
+    {
+      "local": "95024c3d74ba67fb529ed2bd913bd0642383934e",
+      "remote": "22cb4cd3dc6fc915fe763faff41e413f90d022c8",
+      "tree": "239defb83dfa0592bd59b07ac87a02df7d5c4308"
+    }
+  ]
+}

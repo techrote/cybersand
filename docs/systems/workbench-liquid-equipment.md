@@ -2,9 +2,9 @@
 title: Workbench liquid equipment — valves, drain, nozzle and pump
 status: Current
 document-kind: contract
-scope: IN-TOOLS #361 shared-workbench liquid equipment (Draft PR branch); authored geometry, worker-owned device owner, native quantity accounting, controls, built-in liquid-lab and reservoir-lab starts, lifecycle and limits
+scope: IN-TOOLS #361 shared-workbench liquid equipment (accepted main); authored geometry, worker-owned device owner, native quantity accounting, controls, built-in liquid-lab and reservoir-lab starts, lifecycle and limits
 canonical-for: [workbench-liquid-equipment, liquid-lab-apparatus, reservoir-lab-apparatus]
-last-reviewed: 2026-11-09
+last-reviewed: 2026-11-12
 related-documents: [../architecture/in-tools-gameplay-admission.md, ../architecture/inertial-cellular-v1.md, ../architecture/ballistic-water-v1.md, actor-usables.md, ../audits/2026-11-09-in-tools-361-workbench-equipment.md]
 ---
 
@@ -12,8 +12,8 @@ related-documents: [../architecture/in-tools-gameplay-admission.md, ../architect
 
 ## Status and boundary
 
-**Current on the #361 Draft PR branch `feat/in-tools-361-workbench-equipment-20261109`,
-not on accepted main until merged.** The equipment is opt-in: a starting setup
+**Current on accepted main after [PR #553](https://github.com/techrote/cybersand/pull/553)
+merged on 2026-11-12 at `d8588716becb0dc42019faf23f721378d8adc84a`.** The equipment is opt-in: a starting setup
 without an `equipment` block, every Current default, the U10 `liquid_drain`
 usable, the Water family selection and all native laws are unchanged. No
 native C++ or GDExtension source changed, so the committed Windows/Linux

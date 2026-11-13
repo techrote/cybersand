@@ -109,6 +109,35 @@ class SourceDriftTests(unittest.TestCase):
                 self.assertEqual({name for name in before if before[name] != after[name]}, {relative})
                 path.write_bytes(original)
 
+    def test_both_platforms_retain_authoring_inputs_and_detect_mutation(self):
+        files = {
+            "tools/material_catalogue/lab.py": b"candidate_compiler = 1\n",
+            "tools/material_catalogue/lab_native_probe.cpp": b"int main() { return 0; }\n",
+            "materials/catalogue/catalogue.json": b'{"registry_size": 132}\n',
+            "materials/catalogue/fixtures/powder.json": b'{"target_id": 132}\n',
+        }
+        self.track_inputs({**files, "unrelated.txt": b"outside source scope\n"})
+        (self.root / "tools/material_catalogue/untracked.log").write_bytes(b"not source")
+        for runner in (subject, subject.runner):
+            with self.subTest(platform=runner.__name__):
+                before = runner.tested_inputs(self.root)
+                self.assertEqual(before, {path: digest(data) for path, data in files.items()})
+                for relative, original in files.items():
+                    with self.subTest(path=relative):
+                        path = self.root / relative
+                        path.write_bytes(original + b"changed\n")
+                        after = runner.tested_inputs(self.root)
+                        self.assertEqual({name for name in before if before[name] != after[name]}, {relative})
+                        path.write_bytes(original)
+
+    def test_missing_tracked_authoring_input_cannot_disappear_from_inventory(self):
+        relative = "tools/material_catalogue/lab.py"
+        self.track_inputs({relative: b"source\n"})
+        (self.root / relative).unlink()
+        for runner in (subject, subject.runner):
+            with self.subTest(platform=runner.__name__), self.assertRaises(FileNotFoundError):
+                runner.tested_inputs(self.root)
+
 
 class RetainedRuntimeTests(unittest.TestCase):
     def setUp(self):

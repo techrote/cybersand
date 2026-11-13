@@ -1,0 +1,330 @@
+{
+  "candidate": {
+    "appearance": {
+      "visual_state_source": 1
+    },
+    "capabilities": {
+      "granular_support": false,
+      "hard_surface": false
+    },
+    "descriptor": {
+      "accepts_density_exchange": true,
+      "current_rule_available": true,
+      "density": 1000,
+      "density_motion": 1,
+      "id": 3,
+      "initial_state_a": 255,
+      "initial_state_b": 0,
+      "kernel": 2,
+      "lateral_flow": 1,
+      "maximum_write_radius": 1,
+      "movable": true,
+      "name": "water",
+      "rgba": [
+        47,
+        127,
+        210,
+        255
+      ],
+      "state": 3,
+      "valid": true,
+      "viscosity_index": 0
+    },
+    "name": "Zero-threshold quench — candidate",
+    "reactions": [
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "replace_with_defaults"
+          },
+          "version": 1
+        },
+        "first": 8,
+        "first_product": 13,
+        "match": 1,
+        "probability": 0,
+        "rule_id": "int.pair.lava-water.quench.v1",
+        "second": 3,
+        "second_product": 22,
+        "slot": 0
+      },
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "replace_with_defaults"
+          },
+          "version": 1
+        },
+        "first": 6,
+        "first_product": 4,
+        "match": 1,
+        "probability": 255,
+        "rule_id": "int.pair.fire-water.extinguish.v1",
+        "second": 3,
+        "second_product": 22,
+        "slot": 1
+      },
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "replace_with_defaults"
+          },
+          "version": 1
+        },
+        "first": 3,
+        "first_product": 24,
+        "match": 1,
+        "probability": 255,
+        "rule_id": "int.pair.water-salt.dissolve.v1",
+        "second": 23,
+        "second_product": 24,
+        "slot": 2
+      },
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "replace_with_defaults"
+          },
+          "version": 1
+        },
+        "first": 3,
+        "first_product": 22,
+        "match": 1,
+        "probability": 255,
+        "rule_id": "int.pair.water-sodium.react.v1",
+        "second": 25,
+        "second_product": 6,
+        "slot": 3
+      },
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "replace_with_defaults"
+          },
+          "version": 1
+        },
+        "first": 3,
+        "first_product": 3,
+        "match": 1,
+        "probability": 255,
+        "rule_id": "int.pair.water-toxic-sludge.purify.v1",
+        "second": 32,
+        "second_product": 3,
+        "slot": 5
+      },
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "replace_with_defaults"
+          },
+          "version": 1
+        },
+        "first": 3,
+        "first_product": 22,
+        "match": 1,
+        "probability": 255,
+        "rule_id": "int.pair.water-molten-glass.quench.v1",
+        "second": 36,
+        "second_product": 35,
+        "slot": 7
+      },
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "replace_with_defaults"
+          },
+          "version": 1
+        },
+        "first": 3,
+        "first_product": 3,
+        "match": 1,
+        "probability": 6,
+        "rule_id": "int.pair.water-chalk.soften.v1",
+        "second": 99,
+        "second_product": 20,
+        "slot": 16
+      },
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "replace_with_defaults"
+          },
+          "version": 1
+        },
+        "first": 3,
+        "first_product": 3,
+        "match": 1,
+        "probability": 24,
+        "rule_id": "int.pair.water-adobe.erode.v1",
+        "second": 102,
+        "second_product": 20,
+        "slot": 19
+      },
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "replace_with_defaults"
+          },
+          "version": 1
+        },
+        "first": 3,
+        "first_product": 3,
+        "match": 1,
+        "probability": 10,
+        "rule_id": "int.pair.water-raw-clay.slake.v1",
+        "second": 103,
+        "second_product": 20,
+        "slot": 23
+      },
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "replace_with_defaults"
+          },
+          "version": 1
+        },
+        "first": 3,
+        "first_product": 24,
+        "match": 1,
+        "probability": 48,
+        "rule_id": "int.pair.water-rock-salt.dissolve.v1",
+        "second": 106,
+        "second_product": 23,
+        "slot": 29
+      },
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "replace_with_defaults"
+          },
+          "version": 1
+        },
+        "first": 3,
+        "first_product": 3,
+        "match": 1,
+        "probability": 16,
+        "rule_id": "int.pair.water-gypsum.soak.v1",
+        "second": 107,
+        "second_product": 20,
+        "slot": 30
+      },
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "replace_with_defaults"
+          },
+          "version": 1
+        },
+        "first": 3,
+        "first_product": 22,
+        "match": 1,
+        "probability": 128,
+        "rule_id": "int.pair.water-quicklime.slake.v1",
+        "second": 108,
+        "second_product": 30,
+        "slot": 32
+      },
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "replace_with_defaults"
+          },
+          "version": 1
+        },
+        "first": 3,
+        "first_product": 3,
+        "match": 1,
+        "probability": 6,
+        "rule_id": "int.pair.water-rammed-earth.erode.v1",
+        "second": 109,
+        "second_product": 2,
+        "slot": 33
+      },
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "replace_with_defaults"
+          },
+          "version": 1
+        },
+        "first": 3,
+        "first_product": 3,
+        "match": 1,
+        "probability": 3,
+        "rule_id": "int.pair.water-bare-iron.rust.v1",
+        "second": 117,
+        "second_product": 65,
+        "slot": 40
+      },
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "replace_with_defaults"
+          },
+          "version": 1
+        },
+        "first": 3,
+        "first_product": 3,
+        "match": 1,
+        "probability": 48,
+        "rule_id": "int.pair.water-sugar-glass.dissolve.v1",
+        "second": 124,
+        "second_product": 20,
+        "slot": 47
+      }
+    ],
+    "schema_id": "cybersand.material-lab.preset",
+    "schema_version": 1,
+    "source_catalogue_sha256": "491eb2248049014956b8a4fcc1e63e36c5e2ca6824b9d3c366ce94b1fd5d147f",
+    "target_id": 3,
+    "template_id": 3
+  },
+  "digest": "f07db1c1a8f3fe59e5783cdbb8f21eab6bf4f181616008a22de88d991772414f",
+  "schema_id": "cybersand.material-lab.export",
+  "schema_version": 1
+}

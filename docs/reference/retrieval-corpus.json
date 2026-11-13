@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-11-04",
+  "reviewed": "2026-11-11",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -128,6 +128,7 @@
     "operations/atlas-agent-runner.md",
     "operations/ci-execution-and-performance.md",
     "operations/material-catalogue-shadow.md",
+    "operations/materials-lab-authoring.md",
     "operations/material-liveness-investigation.md"
   ],
   "navigation": [

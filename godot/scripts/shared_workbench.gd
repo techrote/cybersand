@@ -7,6 +7,8 @@ const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA �
 const ZOOMS := [Vector2i(240,135),Vector2i(480,270),Vector2i(960,540)]
 const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place source"]
 var _generated_dialog := preload("res://scripts/workbench_generator_dialog.gd").new()
+var _materials_lab_window: Window
+var _materials_lab_panel: Control
 # These copied bytes are only a reconstructible authored starting baseline.
 # The sole live World remains owned by the existing native simulation worker.
 var _generated_active: Dictionary = {}
@@ -60,6 +62,62 @@ var _processor_label := ""
 var water_spray := preload("res://scripts/workbench_water_spray_panel.gd").new()
 # IN-TOOLS #361 valve / drain / nozzle controls (separate owner script).
 var equipment := preload("res://scripts/workbench_liquid_equipment_panel.gd").new()
+
+func open_materials_lab() -> void:
+	_cancel()
+	if not is_instance_valid(_materials_lab_window):
+		_materials_lab_window = Window.new()
+		_materials_lab_window.hide()
+		_materials_lab_window.title = "CyberSand / Materials Lab"
+		_materials_lab_window.min_size = Vector2i(1000,650)
+		_materials_lab_window.transient = true
+		# A desktop Lab owns physical pixels instead of inheriting the game's
+		# stretched canvas. Keep embedded fallback for headless/Web displays.
+		_materials_lab_window.force_native = not OS.has_feature("web") and DisplayServer.has_feature(DisplayServer.FEATURE_SUBWINDOWS)
+		_materials_lab_window.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
+		_materials_lab_window.handle_input_locally = true
+		add_child(_materials_lab_window)
+		var margin := MarginContainer.new()
+		margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		for side: String in ["left","right","top","bottom"]:
+			margin.add_theme_constant_override("margin_" + side,10)
+		_materials_lab_window.add_child(margin)
+		var panel := preload("res://scripts/material_lab_panel.gd").new()
+		_materials_lab_panel = panel
+		panel.name = "MaterialsLabPanel"
+		margin.add_child(panel)
+		panel.close_requested.connect(_materials_lab_window.hide)
+		_materials_lab_window.close_requested.connect(_materials_lab_window.hide)
+	_materials_lab_panel.set_policy_readback(host.tower_context.get("liquid_solver_policy",{}),"Workbench owner snapshot at opening; reopen to refresh")
+	if _materials_lab_window.force_native: _materials_lab_window.current_screen = get_window().current_screen
+	_materials_lab_window.popup_centered_clamped(Vector2i(1520,900),0.95)
+	if _materials_lab_window.force_native:
+		var usable: Rect2i = DisplayServer.screen_get_usable_rect(get_window().current_screen)
+		if not _fit_materials_lab_native(usable,Vector2i(1520,900)):
+			_materials_lab_window.hide()
+			refuse("Materials Lab needs its 1000×650 client plus window borders inside the desktop work area (%d×%d)." % [usable.size.x,usable.size.y])
+
+func _fit_materials_lab_native(usable: Rect2i, requested: Vector2i) -> bool:
+	# Godot's centered-clamped popup uses the full monitor. Native decorations
+	# can only be measured after showing; fit their outer rectangle to work area.
+	var popup: Window = _materials_lab_window
+	var before := {"client_position":popup.position,"client_size":popup.size,
+		"outer_position":popup.get_position_with_decorations(),"outer_size":popup.get_size_with_decorations()}
+	var chrome: Vector2i = popup.get_size_with_decorations() - popup.size
+	var available: Vector2i = usable.size - chrome
+	var receipt := {"requested_client_size":requested,"usable_position":usable.position,"usable_size":usable.size,
+		"minimum_client_size":popup.min_size,"chrome":chrome,"before":before,"admitted":false}
+	popup.set_meta("materials_lab_placement",receipt)
+	if available.x < popup.min_size.x or available.y < popup.min_size.y: return false
+	popup.size = requested.min(available).max(popup.min_size)
+	var offset: Vector2i = popup.position - popup.get_position_with_decorations()
+	popup.position = usable.position + (usable.size - popup.get_size_with_decorations()) / 2 + offset
+	receipt["after"] = {"client_position":popup.position,"client_size":popup.size,
+		"outer_position":popup.get_position_with_decorations(),"outer_size":popup.get_size_with_decorations()}
+	receipt.admitted = usable.encloses(Rect2i(popup.position,popup.size)) and usable.encloses(
+		Rect2i(popup.get_position_with_decorations(),popup.get_size_with_decorations()))
+	popup.set_meta("materials_lab_placement",receipt)
+	return receipt.admitted
 
 func _row(parent: Control) -> HFlowContainer:
 	var row := HFlowContainer.new()
@@ -126,6 +184,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Restore start",restore_start)
 	_button(row,"New blank",new_canvas)
 	_button(row,"New from generator…",func() -> void: _generated_dialog.open_new())
+	_button(row,"Materials Lab…",open_materials_lab)
 	_picker(row,_camera,["Free camera","Follow selected","Overview"],func(i: int) -> void: set_camera(i))
 	_button(row,"−",func() -> void: zoom_by(1))
 	_button(row,"+",func() -> void: zoom_by(-1))

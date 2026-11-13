@@ -4,11 +4,28 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-08
+last-reviewed: 2026-11-11
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
+
+## Materials Lab v1 review candidate — 2026-11-11
+
+| Question | Canonical route |
+|---|---|
+| How do I open the real Materials Lab and inspect declared versus effective native physics? | [Desktop launch and native inspection](../operations/materials-lab-authoring.md#browse-and-inspect-actual-behaviour) |
+| Which properties and reaction effects can I edit, and does compiled mean runtime-active? | [Candidate boundaries and states](../operations/materials-lab-authoring.md#supported-candidate-edits-and-state-transitions) |
+| How do presets round-trip, synthetic powder132 compile, and threshold0 reactions behave? | [Preset compilation](../operations/materials-lab-authoring.md#save-import-compile-and-compare), [reaction diagnostics](../operations/materials-lab-authoring.md#reaction-authoring-and-deterministic-diagnostics) |
+| How do I test materials in an actual native owner and reproduce the same configuration? | [Native experiments](../operations/materials-lab-authoring.md#native-simulation-experiments-and-reproducible-cases) |
+| Can edited candidates change real movement or products, with a clean reference and quantity/persistence checks? | [Compiled candidate World comparison](../operations/materials-lab-authoring.md#compare-an-edited-candidate-in-a-real-native-world) |
+| How do I save an explicit compiled-World recipe and author retained-state or Metal charge effects? | [Source-bound World recipes](../operations/materials-lab-authoring.md#compare-an-edited-candidate-in-a-real-native-world), [endpoint effects v2](../operations/materials-lab-authoring.md#reaction-authoring-and-deterministic-diagnostics) |
+| What was actually executed on Linux, Windows or graphically? | [Dated qualification](../audits/2026-11-11-materials-lab-v1.md); graphical evidence is separate from Windows/human acceptance |
+| How do source/target cells, masks and source-core windows affect a real native contact? | [Native contact inspection](../operations/materials-lab-authoring.md#inspect-an-actual-native-contact); supplied rolls do not establish dispatch or sleeping state |
+| How can I launch the Lab on Windows with its authoring tools included? | [Windows evaluation package](../operations/materials-lab-authoring.md#windows-launch), [completion and runtime qualification](../audits/2026-11-11-materials-lab-completion.md) |
+
+[Focused Lab questions](retrieval-questions-materials-lab.json) are additive;
+the frozen evaluation and existing historical fixtures retain their original scope.
 
 ## Generated terrain in the playable workbench
 

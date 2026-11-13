@@ -1,0 +1,83 @@
+{
+  "candidate": {
+    "appearance": {
+      "visual_state_source": 0
+    },
+    "capabilities": {
+      "granular_support": true,
+      "hard_surface": false
+    },
+    "descriptor": {
+      "accepts_density_exchange": true,
+      "current_rule_available": true,
+      "density": 2160,
+      "density_motion": 1,
+      "id": 23,
+      "initial_state_a": 0,
+      "initial_state_b": 0,
+      "kernel": 1,
+      "lateral_flow": 0,
+      "maximum_write_radius": 1,
+      "movable": true,
+      "name": "salt",
+      "rgba": [
+        236,
+        232,
+        218,
+        255
+      ],
+      "state": 2,
+      "valid": true,
+      "viscosity_index": 0
+    },
+    "name": "Retained Salt candidate",
+    "reactions": [
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "keep_existing"
+          },
+          "version": 2
+        },
+        "first": 3,
+        "first_product": 24,
+        "match": 1,
+        "probability": 255,
+        "rule_id": "int.pair.water-salt.dissolve.v1",
+        "second": 23,
+        "second_product": 23,
+        "slot": 2
+      },
+      {
+        "effects": {
+          "first": {
+            "kind": "replace_with_defaults"
+          },
+          "second": {
+            "kind": "replace_with_defaults"
+          },
+          "version": 1
+        },
+        "first": 23,
+        "first_product": 24,
+        "match": 1,
+        "probability": 64,
+        "rule_id": "int.pair.salt-packed-snow.thaw.v1",
+        "second": 105,
+        "second_product": 21,
+        "slot": 27
+      }
+    ],
+    "schema_id": "cybersand.material-lab.preset",
+    "schema_version": 1,
+    "source_catalogue_sha256": "491eb2248049014956b8a4fcc1e63e36c5e2ca6824b9d3c366ce94b1fd5d147f",
+    "target_id": 23,
+    "template_id": 23
+  },
+  "digest": "44e76a447145eab4b667a5d3ac37bee48efdd49433fc4c9201843e3ec454f104",
+  "schema_id": "cybersand.material-lab.export",
+  "schema_version": 1
+}

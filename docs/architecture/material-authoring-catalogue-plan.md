@@ -3,12 +3,17 @@ title: Canonical material catalogue and interaction authoring — adopted Planne
 document-kind: design
 canonical-for: [material-authoring-v1-programme-proposal]
 status: Planned
-scope: Owner-adopted Planned material-authoring baseline; section 14 records merged shadow tooling and bounded liveness investigation, while production migration and correction remain pending; sections 1–13 preserve dated proposal, review, adoption and integration boundaries
-last-reviewed: 2026-11-04
+scope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries
+last-reviewed: 2026-11-11
 related-documents: [../systems/materials-and-rule-kernels.md, ../systems/intermaterial-interactions.md, ../systems/building-material-catalogue.md, ../systems/themed-construction-materials.md, ../systems/granular-interaction-policy.md, ../systems/flow-transport-and-profiles.md, item-authored-material-programs.md, liquid-state-transition-matrix.md, ../operations/documentation-maintenance.md]
 ---
 
 # Canonical material catalogue and interaction authoring — adopted Planned baseline
+
+**11 November update:** [section 15](#15-materials-lab-v1-implementation-boundary--2026-11-11)
+records new owner authorization and the implemented Materials Lab review
+candidate. Production migration remains Planned. The dated 4 November
+statements below retain their original authorization and evidence scope.
 
 **Owner-adopted Planned baseline; #353-A merged and #354 Phase A investigation admitted — 2026-11-04.**
 Documentation PR #357 merged as accepted main
@@ -673,3 +678,64 @@ runtime rebuild/publication/provenance. Updating expected hashes cannot replace
 that review. Keep #354 open and its Phase A PR draft/unmerged. #353-B migration,
 #355 reaction effects and #358/#347/#370/#373/#201 and Water phase/quantity work
 retain separate ownership; serialize any later shared production writes.
+
+## 15. Materials Lab v1 implementation boundary — 2026-11-11
+
+**New owner authorization; implemented review candidate.** The owner requested
+desktop material inspection, validated source authoring, reusable presets,
+explicit supported reactions and native tests from current accepted main.
+Baseline was `d4b18e7f06839b35c8f6a66195206da0f33c5fa3`; isolated branch
+`codex/materials-lab-v1-20261111` holds the implementation. The
+[Lab runbook](../operations/materials-lab-authoring.md) owns controls and limits;
+the [dated audit](../audits/2026-11-11-materials-lab-v1.md) owns source, tests,
+platform evidence and outstanding gates. This authorization supersedes the
+earlier unstarted #355/#356 restriction for this bounded vertical slice. It
+does not authorize Ready, merge or default promotion.
+
+Native read-only metadata is the inspector's authority. Candidate edits use the
+existing compiler and frozen source guards; generated definitions are exercised
+by an external native descriptor/pair-resolution probe and a bounded compiled
+World comparison. The latter copies native source externally, adapts its
+descriptor/pair tables and compares against a separately compiled untouched
+reference. The review continuation adds a bounded external pair-application
+adapter for explicit endpoint effects v2 and source-bound World recipe round-trips.
+Existing-material tests
+reuse the MicroScenario host and authoritative World readback. Draft, validated,
+compiled/tested and runtime-active states stay distinct; v1 has no production
+candidate installer. Identity slots, 56 production pairs, protected source,
+quantity and saved-world semantics remain unchanged. Synthetic powder132 is an
+isolated non-hard fixture, with no production allocation or conflict with other
+branches' experimental identities.
+
+Explicit endpoint-effects v1 retains legacy `replace_with_defaults`. The isolated
+World backend additionally admits effects v2 non-Water `keep_existing` and declared
+Metal/Combustible `state_b` updates with role-preserving matching. Water state/
+quantity effects, arbitrary registers, positional symmetric extended effects,
+new kernels and unsupported reaction slots remain rejected. The descriptor-only
+probe refuses extended effects rather than claiming it applied them. The native
+probe reports state defaults and positional outcomes;
+the separate World backend executes candidate movement, contacts, quantities,
+fresh repeats, one/four workers and same-build persistence. Those results qualify
+their exact default-policy fixture, not every authored material or host. Synthetic132,
+capability and visual-projection edits remain excluded from World execution.
+Production and cross-build saved-world compatibility are not inferred.
+#353-B requires a separate consumer/identity transition. On the 11 November
+review continuation the owner explicitly excluded MoltenGlass H1; it is not a
+Materials Lab delivery dependency. Historical investigation evidence remains
+unchanged, as do production thermal behavior and generic yielding rest.
+
+Current Workbench, agent-painting, liquid-equipment and ballistic-solids owners
+were rechecked before edits. The Lab adds a launcher/window seam and copied policy
+receipt; it does not add another Workbench, worker, resolver or native World.
+Existing production build/retained-runtime gates remain requirements for eventual
+integration. Broad #352–356 remain open after this v1 contribution.
+
+The owner-requested completion continuation adds a cold, copied native contact
+snapshot on the exclusive MicroScenario owner. Masks, stored/visible identities
+and source-core windows are observed; sleeping, deadlines and actual dispatch
+remain unknown. Its Windows process owner and branch-scoped runtime/package
+publisher close executable delivery work without changing the Draft acceptance
+policy. The [completion audit](../audits/2026-11-11-materials-lab-completion.md)
+records actual execution. The separately stacked [Draft #563](https://github.com/techrote/cybersand/pull/563)
+owns only the generated native hard/granular predicates and independently
+qualified compatibility transition; #384 retains display-name ownership.
