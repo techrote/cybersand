@@ -1,6 +1,6 @@
 {
   "experiment": "WB-ART-SLM-001",
-  "status": "Sixth Integration intake published: all four role deltas imported in 15 exact-source paths; offline CI green including frozen historical blind scorer; genuine adapter/native/Windows/human recognition HOLD",
+  "status": "Seventh Integration intake: four role-head deltas integrated; Windows synthetic Job process-tree gate SUCCESS; full CI RED from two Training-owned missing-time import test errors; authentic adapter/native/desktop HOLD",
   "updated_on": "2026-11-13",
   "owner": "five role workers after bootstrap handoff",
   "branch": "codex/wb-art-slm-001",
@@ -49,7 +49,7 @@
     }
   },
   "production_promotion": "HOLD; one Draft #567, no Ready, merge, native/Windows promotion",
-  "next_checkpoint": "Finish independent Integration bridge scope/Windows Stop review; obtain qualified current-source upstream #565 runtime; test genuine step-400 adapter through Workbench/Art and native protection, interleaving, shared Undo/Redo, persistence. Training alone may launch one bounded new model candidate after private durable lease check.",
+  "next_checkpoint": "Consume Training-owned verified test import fix, rerun exact-head combined CI, independently review Win32 process ownership, and qualify genuine model-to-native Art with source-compatible upstream runtime",
   "pull_request": "https://github.com/techrote/cybersand/pull/567",
   "model_native_cases_passed": 68,
   "combined_gallery_images": 260,
@@ -78,54 +78,7 @@
   ],
   "worker_branches_seeded_from": "01f2cfcea66839066431b6d241f186be00cecf27",
   "bootstrap_report_review": "Independent consistency review complete; 98% gate identified as native request yield, not schema validity.",
-  "integration_checkpoint": {
-    "milestone": "strict local Chat Completions bridge to unchanged Workbench Art LM Studio content-JSON provider; additive opt-in only",
-    "route": "experiments/wb-art-slm-001/integration/local_art_bridge.py",
-    "usage": "experiments/wb-art-slm-001/integration/README.md",
-    "tests": "experiments/wb-art-slm-001/integration/test_local_art_bridge.py",
-    "dependency_board": "experiments/wb-art-slm-001/integration/DEPENDENCIES.json",
-    "tests_executed": 43,
-    "tests_passed": 43,
-    "tests_platform": "Exact-source 578324fa Ubuntu 24.04 Python 3.12 independent CI 43 PASS/2 private archive SKIP, actual bridge module synthetic descendant probe PASS; offline-smoke still fails Controls diagnostic mismatch; no trained model/native/Windows",
-    "limits": "Actual step-400 model not loaded in this integration test; no current-main native/Godot or Windows execution, screenshots, or independent review",
-    "provider_protocol": "Loopback 127.0.0.1:8127/v1/chat/completions single text-only LM Studio-mode request; authentic inference not run in hosted qualification.",
-    "material_and_ownership": "Focus and allowed materials/tools captured from host; seed and budgets in bridge launch; existing Godot native Art executor retains receipts, protection, Stop/history/persistence",
-    "model_identity": "LiquidAI/LFM2.5-350M@9921cd4d82c0e3986887aa4b376f9446729ef8a3; step 400 adapter SHA256 02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2",
-    "next": "Independent Stop/HTTP/Guidance contract code review; compatible #565 Windows+Linux qualified source; authentic model generation -> native receipts, Stop, shared Undo/Redo, save/reopen and human visual recognition.",
-    "offline_ci": {
-      "source": "385bb41f3f17f49881a23958c7a1ec1e7f03fdbc",
-      "runs": [
-        "43376391448 SUCCESS",
-        "43376383942 SUCCESS"
-      ],
-      "discovered": 82,
-      "executed_pass": 78,
-      "skipped": 4,
-      "scope": "Four new owned test groups plus previous tests, no actual pretrained model, training, native Godot, Windows, graphical acceptance."
-    },
-    "receipt_binding": "Exact prompt, host seed, model/adapter identity, false native_execution receipt, compiler, materials/focus/tools, terminated EOS and operations SHA; all hosted mock HTTP protocol tests passed",
-    "remaining": "Independent security/source contract review, tested model loaded with authentic private adapter, source-compatible #565, current-source Windows/Linux native World, Stop/history/persistence and owner acceptance",
-    "stop_lifecycle": "POSIX group TERM then unconditional group KILL after short grace even if direct parent already exited; independent exact-bridge fake descendant probe PASS. Windows child-tree/native Stop and real model remain unqualified.",
-    "host_scope": "Captured Workbench authoritative host fields are parsed from appended scope suffix, overriding editable Guidance decoys; source/receipt restrictions still apply.",
-    "tests_discovered": 45,
-    "tests_skipped": 2,
-    "current_head_tests_not_all_pass": true,
-    "latest_independent_job": {
-      "source": "578324faefdad3c3fca4c78ce936d5d11daac9a0",
-      "run": "43391302345",
-      "passed": 43,
-      "skipped": 2,
-      "conclusion": "SUCCESS independent job; full workflow FAIL Controls",
-      "stop_probe": {
-        "bridge_git_blob": "dba93212c8b68240f20a2a5082333c9a7dc65c41",
-        "ready_seen": true,
-        "cancel_refusal": true,
-        "late_descendant_write": false,
-        "stop_descendant_invariant_passed": true,
-        "kind": "POSIX model-free SIGTERM-ignoring descendant; native untested"
-      }
-    }
-  },
+  "integration_checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-1020.md",
   "artifact_recovery": {
     "verification": "Four named owner Library archives materialized and byte-size/SHA256 compared with ARTIFACTS.json on 2026-11-13; all four match",
     "artifacts_verified": 4,
@@ -326,6 +279,31 @@
     },
     "latest_green_ci": "43398456790 at c954fcf8710902a6e3f362ba537a52fbddd05b75",
     "historical_ai_blind_review": "29/34 recognized conditional on native admission (29/36 original); single key-blind AI review only, not human or final assessment",
-    "no_new_model_or_native_claim": true
+    "no_new_model_or_native_claim": true,
+    "seventh_2026_11_13_1020": {
+      "imported_role_heads": {
+        "controls": "8fca415bb5b73200c5e4da7a64aea03d6b0b6d7b",
+        "corpus": "6195f180d66dbfe3a8dd52eed4ae1dfe0bc13d79",
+        "training": "0aee867ef5f3a09184980d84eb7c40472a5cfad7",
+        "evaluation": "481eaaac5f62985dd24bde36b91a75d208162854"
+      },
+      "role_import_commits": [
+        "f2f26440dc8ccc470425247aaead5411d293da58",
+        "42ef102637689192ec35eac34921889ed5fe8398",
+        "6f3614dfb14cbe80d65bcc916db5b07639a19097",
+        "e10a4f5f34da748a0c1a7fcf84a7487e9682c3e1"
+      ],
+      "windows_job_implementation": "6a0e6a4a4ccd5807e83377d27edadca07b9bcd62",
+      "windows_source": "af4d9c88d0002473ce73c04a8a69ebb1e335f7b6",
+      "windows_ci_id": 43408236500,
+      "windows_job": "success: 3/3 owned Job cases and 9/9 bridge cases, synthetic only",
+      "full_ci": "failure: Training-owned missing import time in two 17-method job_guard tests",
+      "training_lease": "private/uninspected; no model run launched",
+      "upstream_565": "11b809a579ecade05baaeded59461ab8fc3f6c39",
+      "qualified_windows_native": false,
+      "authentic_adapter_run": false,
+      "retrained_model": false,
+      "production": "Draft/HOLD"
+    }
   }
 }
