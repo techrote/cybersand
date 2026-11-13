@@ -10,7 +10,6 @@ import argparse
 import base64
 from collections import defaultdict
 import hashlib
-import html
 import json
 from pathlib import Path
 import random
@@ -172,10 +171,20 @@ def score(key_path: Path, response_path: Path):
         return {'scope': key['scope'], 'state': 'INCOMPLETE',
                 'rated': sum(bool(x['label']) for x in rows), 'required': len(rows), 'go_no_go': 'HOLD'}
     groups, themes, cohorts = defaultdict(list), defaultdict(list), defaultdict(list)
-    quality, variety = [], []
+    quality, variety, confusion, semantic_failures = [], [], [], []
     for item in key['items']:
         review = by_id[item['id']]
         good = int(review['label'] == item['theme'])
+        if not good:
+            confusion.append({'prediction_id': item.get('prediction_id', item['id']),
+                              'expected': item['theme'], 'recognized': review['label'],
+                              'group_id': item['group_id']})
+        if item.get('symbolic_theme_correct') is False or item.get('symbolic_motif_correct') is False:
+            semantic_failures.append({'prediction_id': item.get('prediction_id', item['id']),
+                                      'expected': item['theme'],
+                                      'theme_field_correct': item.get('symbolic_theme_correct'),
+                                      'primary_motif_correct': item.get('symbolic_motif_correct'),
+                                      'native_admitted': True})
         groups[item['group_id']].append(good)
         themes[item['theme']].append(good)
         cohorts[item['cohort']].append(good)
@@ -205,6 +214,8 @@ def score(key_path: Path, response_path: Path):
                 'macro_pct': round(100 * statistics.mean(statistics.mean(v) for v in end_to_end_groups.values()), 3)},
             'by_theme': {t: {'correct': sum(v), 'n': len(v)} for t, v in sorted(themes.items())},
             'by_cohort': {t: {'correct': sum(v), 'n': len(v)} for t, v in sorted(cohorts.items())},
+            'blind_theme_confusions': confusion, 'symbolic_failures_despite_native_pass': semantic_failures,
+            'raw_first_pass_failures': key['excluded'],
             'subjective_quality_1to5': {'ratings': len(quality), 'mean': round(statistics.mean(quality), 3) if quality else None},
             'subjective_variety_1to5': {'ratings': len(variety), 'mean': round(statistics.mean(variety), 3) if variety else None},
             'threshold_80_pct': 'PROVISIONAL_RATER_ONLY', 'go_no_go': 'HOLD'}
