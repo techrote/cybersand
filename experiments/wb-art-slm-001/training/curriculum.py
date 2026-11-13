@@ -7,17 +7,73 @@ be resumed from an old shuffled-v1 optimizer checkpoint.
 """
 from __future__ import annotations
 
+import hashlib
+import json
 import random
+from collections import Counter
+from pathlib import Path
 
 THEMES = (
     "roots", "coral", "veins", "mycelium", "strata", "dunes",
     "crystals", "honeycomb", "labyrinth", "ruins", "circuitry", "ribs",
 )
-POLICIES = ("shuffled-v1", "keyword-replay-v1")
+POLICIES = ("shuffled-v1", "keyword-replay-v1", "failure-contrast-v5")
 REPLAY_INTERVAL = 16
 
 
-def epoch_indices(rows, seed: int, epoch: int, policy: str = "shuffled-v1") -> list[int]:
+V5_INDEX_SHA256 = "dafbfcbdbb81ce23b3218e0e33d8ca6fb1f49c0f4fea5feba64cda3d638c11fa"
+V5_IDS_SHA256 = "74e7cf0441b678e9e10e40f50ded01d52675e55f5be5ee9776a7985831fb610a"
+V5_TRAIN_SHA256 = "972826e1af15a6babaff6e68e4c57d790c0c060a2befe050b4156c5f8ee05f66"
+
+
+def _digest_lines(values) -> str:
+    return hashlib.sha256(("\n".join(map(str, values)) + "\n").encode("utf-8")).hexdigest()
+
+
+def _failure_contrast_v5(rows, seed: int, epoch: int, manifest_path: str | Path | None) -> list[int]:
+    """Strict TRAIN-only original-index replay. Requires external Corpus-owned v5 manifest.
+
+    Does not mutate admitted TRAIN rows or inspect DEV/FINAL. Index/ID fingerprints
+    and role-owned manifest must match the exact frozen candidate before training.
+    """
+    if seed != 731 or epoch != 0 or len(rows) != 1152 or manifest_path is None:
+        raise ValueError("v5 requires original 1152 TRAIN rows, seed 731, epoch zero and explicit manifest")
+    manifest = json.loads(Path(manifest_path).read_text(encoding="utf-8"))
+    pins = {
+        "schema_version": 1, "name": "failure-contrast-replay-v5",
+        "draws": 400, "source_indices_space": "original admitted corpus/train.jsonl",
+        "source_train_sha256": V5_TRAIN_SHA256,
+        "source_indices_sha256": V5_INDEX_SHA256,
+        "ordered_ids_sha256": V5_IDS_SHA256,
+        "structural_groups": 72, "unique_native_traces": 376,
+    }
+    if any(manifest.get(k) != v for k, v in pins.items()):
+        raise ValueError("v5 manifest has changed identity or original TRAIN source")
+    if any(row.get("split") != "train" for row in rows):
+        raise ValueError("v5 requires admitted TRAIN only")
+    if len({row.get("id") for row in rows}) != len(rows):
+        raise ValueError("v5 original TRAIN row IDs are not unique")
+    idx = manifest.get("source_indices")
+    if (not isinstance(idx, list) or len(idx) != 400
+            or any(type(i) is not int or i < 0 or i >= len(rows) for i in idx)
+            or _digest_lines(idx) != V5_INDEX_SHA256):
+        raise ValueError("v5 index sequence or checksum differs")
+    selected = [rows[i] for i in idx]
+    if _digest_lines([r["id"] for r in selected]) != V5_IDS_SHA256:
+        raise ValueError("v5 selected raw TRAIN IDs differ")
+    if (len({r["native_case_id"] for r in selected}) != 376
+            or len({r["group_id"] for r in selected}) != 72
+            or Counter(r["theme"] for r in selected if r["prompt"] == r["theme"])
+            != {theme: 3 for theme in THEMES}):
+        raise ValueError("v5 native-trace/group/literal exposure contract differs")
+    remaining = [i for i in range(len(rows)) if i not in set(idx)]
+    full = idx + remaining[:len(rows) - len(idx)]
+    if len(full) != len(rows):
+        raise ValueError("v5 full epoch length changed")
+    return full
+
+
+def epoch_indices(rows, seed: int, epoch: int, policy: str = "shuffled-v1", v5_manifest: str | Path | None = None) -> list[int]:
     """Return an epoch of *sample indices*; never copy or change corpus rows.
 
     For keyword-replay-v1, all 12 admitted literal-word rows appear in the
@@ -36,6 +92,8 @@ def epoch_indices(rows, seed: int, epoch: int, policy: str = "shuffled-v1") -> l
         raise ValueError("Seed and nonnegative epoch must be integers")
     if not rows:
         raise ValueError("Training corpus is empty")
+    if policy == "failure-contrast-v5":
+        return _failure_contrast_v5(rows, seed, epoch, v5_manifest)
     order = list(range(len(rows)))
     rng = random.Random(seed + epoch)
     if policy == "shuffled-v1":
