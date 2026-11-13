@@ -39,8 +39,9 @@ The historical #567 TRAIN/DEV/FINAL corpus and adapter are not consumed or edite
 ## Actions entry point
 
 `.github/workflows/agent-painter-train.yml` supports `workflow_call` and explicit
-`workflow_dispatch`. No push or schedule automatically starts training. The
-foundation qualification workflow calls it after native admission succeeds.
+`workflow_dispatch`. This reusable workflow has no push or schedule trigger.
+An explicit qualification-request push or manual qualification dispatch invokes
+it after native admission succeeds; ordinary PR updates do not train.
 
 | Input | Meaning |
 | --- | --- |
@@ -113,9 +114,11 @@ declared `atol=1e-6`, `rtol=1e-5`, reporting maximum absolute differences and
 whether they were also bitwise identical. This is evidence for the executed
 continuation, not a general promise of bitwise equality across CPU hardware.
 
-SIGINT/SIGTERM stops at an optimizer boundary and preserves a completed checkpoint.
-An unfinished target is reported as stopped and returns nonzero. The Actions
-outer process timeout enforces a hard bound even if model work stalls.
+SIGINT/SIGTERM requests a stop at the next optimizer boundary. If the job has
+completed at least one new update, it preserves a checkpoint; a job stopped
+before its first new update fails without claiming training. An unfinished
+target returns nonzero. The Actions outer process timeout enforces a hard bound
+even if model work stalls.
 
 ## Strict inference and the opt-in bridge
 

@@ -48,14 +48,16 @@ plating, ribs and fasteners. Panel sizes, densities, borders and deliberate
 negative space are parameters. Host-seeded detail placement creates bounded
 variation without switching structural split membership.
 
-Pipework uses explicit orthogonal graphs. Declared edges, endpoints, junctions,
-fittings and loops are checked before compilation. The native readback verifier
+Pipework uses explicit orthogonal node/edge graphs. Endpoints and junctions are
+derived from node degrees; the declared loop count and uniform diameter are
+checked before compilation. Optional fitted collars are generated along the
+edges. The native readback verifier
 checks physical connected components, centerline coverage, cross-section diameter
 and enclosed loops. Undeclared crossings and overlapping ambiguous segments are
 refused; pipes of different diameter need a separately versioned transition
 contract, rather than silently receiving inconsistent width.
 
-Architecture uses axis-aligned walls, floors, platforms, supports and explicit
+Architecture uses axis-aligned walls, floors, platforms, supports, stairs and explicit
 openings, with declared room/route geometry. Its optional traversal requirement
 means a continuous route with the requested square cell clearance in the actual
 material field. This proves geometric clearance only: gravity, climbing, jumping,
@@ -70,7 +72,7 @@ The model cannot supply its own seed, focus, permission list or execution budget
 ## Pilot, split custody and owner gallery
 
 The pilot contains **15 whole structural groups**, five per family, with fixed
-host seeds 17 and 73: **30 native cases**. Per family, two groups are TRAIN, two
+host seeds 104729 and 130363: **30 native cases**. Per family, two groups are TRAIN, two
 are DEVELOPMENT, and one is FINAL. This gives 12 TRAIN, 12 DEVELOPMENT and six
 FINAL cases. Seeds are replay variants, not independent structures.
 
