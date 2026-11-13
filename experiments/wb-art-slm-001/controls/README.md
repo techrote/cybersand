@@ -330,3 +330,19 @@ hash. Each witness must carry the native backend, completed status and
 tests** on source-identical Python 3.13.5, including forged Undo and missing
 reopen captures. The v1/v1.1 paired native run is still **not executed** and
 no native, Windows or visual improvement is claimed.
+
+
+### Draw/history chronology gate — 13 November 2026, next Controls checkpoint
+
+The [ordered-receipt checkpoint](CHECKPOINT_2026-11-13-0912.md) strengthens the
+synthetic native evidence auditor further. In the frozen replay harness,
+completed draw receipts precede the full-World draw capture and subsequent
+Undo, Redo and save/reopen captures. The auditor now rejects any history
+capture preceding the first draw receipt, and any additional draw receipt
+after the first history capture—even if the attacker recomputes JSONL hashes.
+Two new adversarial tests cover both reorderings. **15 methods are defined**;
+the previous 13/13 passing source is qualified separately. The two new tests
+have only isolated ordering smoke verification, not an exact-source combined
+CI run or actual native replay. The opt-in v1.1 compiler and historical v1
+program/operation hashes remain unchanged; native and Windows acceptance stay
+HOLD.
