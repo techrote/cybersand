@@ -141,25 +141,49 @@ def _peer_disconnected(peer: socket.socket) -> bool:
 
 
 def _stop_owned_process(process: subprocess.Popen) -> None:
-    """Stop only this locally owned inference child/process group."""
-    if process.poll() is not None:
-        return
-    try:
-        if os.name == "nt":
-            process.terminate()
-        else:
-            os.killpg(process.pid, signal.SIGTERM)
-        process.wait(timeout=2)
-    except (subprocess.TimeoutExpired, OSError, ProcessLookupError):
+    """Stop the owned process; on POSIX, fence its entire original session group.
+
+    Reaping the direct child is not sufficient: it can exit on SIGTERM while a
+    descendant ignores that signal. Always escalate against the original
+    process group even when the direct child has already exited. The session is
+    created by _run_owned_inference; never signal the caller's own group.
+    Windows only stops the direct child until a separately qualified owned
+    process-tree strategy exists.
+    """
+    if os.name == "nt":
         if process.poll() is None:
-            if os.name != "nt":
-                try:
-                    os.killpg(process.pid, signal.SIGKILL)
-                except ProcessLookupError:
-                    pass
-            else:
+            try:
+                process.terminate()
+                process.wait(timeout=2)
+            except subprocess.TimeoutExpired:
                 process.kill()
-            process.wait(timeout=3)
+                process.wait(timeout=3)
+            except ProcessLookupError:
+                pass
+        return
+
+    try:
+        os.killpg(process.pid, signal.SIGTERM)
+    except ProcessLookupError:
+        pass
+    try:
+        process.wait(timeout=0.4)
+    except subprocess.TimeoutExpired:
+        pass
+    # Allow bounded cooperative cleanup, then kill the *group*, regardless
+    # of whether the direct process is already reaped. Descendants may still
+    # be alive and emitting late output after their parent has terminated.
+    time.sleep(0.15)
+    try:
+        os.killpg(process.pid, signal.SIGKILL)
+    except ProcessLookupError:
+        pass
+    try:
+        process.wait(timeout=2)
+    except subprocess.TimeoutExpired:
+        # An unexpected direct-child non-exit must not hold the HTTP lock.
+        process.kill()
+        process.wait(timeout=3)
 
 
 def _run_owned_inference(command: list[str], log, deadline_seconds: float,
