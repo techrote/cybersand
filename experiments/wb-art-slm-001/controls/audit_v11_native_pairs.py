@@ -46,6 +46,13 @@ def replay_native_rows(native: Path, cases: dict, summary: dict) -> dict:
     """
     receipts = {case_id: [] for case_id in cases}
     captures = {case_id: [] for case_id in cases}
+    # The pinned harness runs protection, Stop, then each requested pattern
+    # sequentially. Per-case readbacks alone cannot detect reordered case
+    # blocks or a late invariant inserted after pattern execution began.
+    order = {case_id: i for i, case_id in enumerate(cases)}
+    invariant_order = {"invariant-protection": 0, "invariant-stop": 1}
+    last_case = -1
+    last_invariant = -1
     with (native / "native-receipts.jsonl").open(encoding="utf-8") as handle:
         for line_no, line in enumerate(handle, 1):
             require(bool(line.strip()), f"blank native receipt at line {line_no}")
@@ -55,8 +62,22 @@ def replay_native_rows(native: Path, cases: dict, summary: dict) -> dict:
                 raise ValueError(f"invalid native JSONL at line {line_no}") from exc
             require(isinstance(event, dict), "native receipt event must be an object")
             cid = event.get("case")
+            require(type(cid) is str, f"invalid native case ID at line {line_no}")
+            require(("receipt" in event) != ("capture" in event),
+                    f"{cid}: ambiguous native event")
             if cid not in cases:
-                continue  # Unrelated mandatory Stop/protection invariant events.
+                require(cid in invariant_order,
+                        f"{cid}: unregistered native receipt case")
+                require(last_case == -1,
+                        f"{cid}: native invariant emitted after pattern case")
+                require(invariant_order[cid] >= last_invariant,
+                        f"{cid}: native invariant order reversed")
+                last_invariant = invariant_order[cid]
+                continue
+            case_index = order[cid]
+            require(case_index >= last_case,
+                    f"{cid}: native case events out of requested execution order")
+            last_case = case_index
             require(("receipt" in event) != ("capture" in event),
                     f"{cid}: ambiguous native event")
             if "receipt" in event:
