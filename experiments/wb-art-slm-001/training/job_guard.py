@@ -131,7 +131,9 @@ def trainer_lock(output: Path):
         except (OSError, ValueError) as exc:
             raise ValueError("Supervisor lease is unavailable") from exc
         if (lease.get("token") != token or lease.get("supervisor_pid") != os.getppid()
-                or lease.get("output") != str(output) or lease.get("state") not in ("starting", "running", "stopping")):
+                or lease.get("output") != str(output)
+                or lease.get("child_pid") not in (None, os.getpid())
+                or lease.get("state") not in ("starting", "running", "stopping")):
             raise ValueError("Supervisor lease identity does not match the training process")
         return contextlib.nullcontext()
     return FileLock(str(output.parent / LOCK_NAME), timeout=0)
@@ -254,12 +256,23 @@ def run(args, worker_args: list[str]) -> dict:
         if is_evaluation:
             from evaluation_guard import verified_evaluation
             evidence = verified_evaluation(output, worker_args)
-            status = ("deadline_killed" if hard_killed else "failed" if error or return_code != 0
+            # A model/adapter/compiler changed during inference is not the
+            # preflight-fingerprinted candidate, even if JSON counts happen to fit.
+            custody_error = None
+            try:
+                final_fingerprint, _ = evaluation_fingerprint(worker_args, worker)
+                if final_fingerprint != fingerprint:
+                    custody_error = "Evaluation input/source fingerprint changed during execution"
+            except (OSError, ValueError, KeyError, TypeError) as exc:
+                custody_error = "Evaluation custody recheck failed: " + repr(exc)
+            if custody_error:
+                evidence = None
+            status = ("deadline_killed" if hard_killed else "failed" if error or custody_error or return_code != 0
                       else "completed" if evidence else "incomplete")
             result = {"kind": "evaluation", "fingerprint": fingerprint, "status": status,
                       "return_code": return_code, "whole_process_seconds": time.monotonic() - started,
                       "soft_stop_sent": soft_stopped, "hard_kill_sent": hard_killed,
-                      "evidence": evidence, "error": error, "ended_at_unix": time.time()}
+                      "evidence": evidence, "error": error or custody_error, "ended_at_unix": time.time()}
             atomic_json(output / RESULT_NAME, result)
             lease.update({"state": status, "heartbeat_unix": time.time(),
                           "ended_at_unix": time.time(), "result_path": str(output / RESULT_NAME)})
