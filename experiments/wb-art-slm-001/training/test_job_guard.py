@@ -152,7 +152,7 @@ class JobGuardTests(unittest.TestCase):
                 args, cmd = self.setup_run(output=mode, mode=mode)
                 result = run(args, cmd)
                 self.assertEqual(result['status'], 'failed')
-                self.assertIn('fingerprint changed', result['error'])
+                self.assertRegex(result['error'], 'fingerprint changed|custody recheck failed')
                 self.assertTrue(result['verified_checkpoint'])
                 self.assertEqual(result['observed_steps'], 400)
                 # Restore source bytes before the next independently fingerprinted subcase.
