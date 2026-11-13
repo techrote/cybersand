@@ -40,7 +40,7 @@ class RegionOverlay extends Control:
 		var font: Font = ThemeDB.fallback_font
 		for item: Dictionary in regions:
 			var r: Array = item.region
-			var top: Vector2 = content.position + (Vector2(r[0],r[1]) - host.camera_origin) * scale
+			var top: Vector2 = content.position + (Vector2(r[0],r[1]) - host.presentation_camera_origin()) * scale
 			var rect := Rect2(top, Vector2(r[2],r[3]) * scale)
 			if not rect.intersects(content): continue
 			draw_rect(rect.intersection(content), Color(0.7,0.82,1.0,0.35), false, 1.0)

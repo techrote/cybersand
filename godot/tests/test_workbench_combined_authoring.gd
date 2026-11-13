@@ -119,7 +119,7 @@ func history_control(action: String,label: String) -> bool:
 
 func local(cell: Vector2i) -> Vector2:
 	var bounds: Rect2 = host.view_content_rect()
-	return bounds.position+(Vector2(cell)+Vector2(0.5,0.5)-Vector2(host.camera_origin.floor())) \
+	return bounds.position+(Vector2(cell)+Vector2(0.5,0.5)-Vector2(host.presentation_camera_origin())) \
 		* bounds.size/Vector2(host.current_view_size)
 
 func gesture(tool: String,from: Vector2i,to: Vector2i,material: int = 58,

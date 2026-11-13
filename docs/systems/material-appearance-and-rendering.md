@@ -1,10 +1,10 @@
 ---
 title: Material appearance and rendering
 document-kind: contract
-canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost]
+canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost, native-resolution-camera-presentation]
 status: Current
 scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-13
 related-documents: [material-visual-pattern-library.md, ../reference/material-effects-register.md, themed-construction-materials.md, materials-and-rule-kernels.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/item-authored-material-programs.md]
 ---
 
@@ -21,6 +21,81 @@ This page owns appearance and cost semantics at the
 The [render bridge](../architecture/rendering-and-gameplay-bridges.md) owns payload
 lifetimes; the [evidence ledger](../reference/validation-evidence.md) distinguishes
 headless checks, browser observations, and absent representative GPU profiling.
+
+## Native-resolution pixel scrolling
+
+**Current camera-branch candidate; not merged.** The main material image is a
+nearest-sampled CanvasItem drawn at final viewport resolution. The old host
+floored `camera_origin` before sending it to the shader; the fragment separately
+floored view coordinates before adding that origin. Together those two floors
+restricted a slow pan to whole enlarged cells. Native upload coordinates and
+simulation resolution were not the cause.
+
+[CyberPixelCameraTransform](../../godot/scripts/pixel_camera_transform.gd)
+keeps the requested camera in floating-point world units. Its
+`presentation_origin` converts the world's screen translation through the
+actual CanvasItem screen transform, rounds that translation to final physical
+pixels, then converts it back. It includes content/letterbox offsets and the
+window/canvas scale. Rounding changes only presentation, not stored camera
+state. Map bounds take precedence at the outer edges.
+
+[Main](../../godot/scripts/main.gd) supplies the resulting
+`presentation_camera_origin()` to terrain, previews, actors, usables, course
+markers and scene backdrops. Workbench follow is resolved in Main before
+picking and publishing the frame's shader/overlay state. Camera-only Workbench
+view changes do not enqueue a second native frame-state update; its active
+simulation region remains the authored canvas.
+
+The [material fragment](../../godot/shaders/material_palette.gdshader) computes
+`floor(presentation_origin + fitted_uv * view_size)` and samples the centre of
+that world cell. It uses the same integer world coordinate for material grain
+and the continuous coordinate's fraction for existing subcell effects. Adding
+the offset before choosing a cell permits a one-screen-pixel step at 2x, 4x or
+other magnifications without bilinear material sampling, physics interpolation
+or an enlarged simulation. A static fractional zoom can distribute a cell
+across differing integer pixel widths; a shared integer screen translation
+preserves that raster phase during panning.
+
+### Picking and zoom at fractional camera positions
+
+The [private interface](../reference/interfaces-and-message-contracts.md#camera-presentation-and-picking)
+separates continuous world points from selected integer cells. Cell picking
+uses the physical pixel centre under the pointer and floors the complete
+inverse-mapped world point. It does not floor the camera and local terms
+separately. PAINT, selection, Fill, clipboard placement and Art focus therefore
+share the displayed sample. Agent image observations describe the actual
+rounded pixel crop with fractional world bounds.
+
+Wheel zoom preserves a continuous world anchor under the cursor; toolbar zoom
+uses the content centre. The snapped display origin is never fed back into
+that calculation, so opposite zoom changes do not accumulate rounding drift.
+Away from clamped bounds, a single displayed origin differs by at most half a
+physical pixel per axis from the continuous translation; two zoom levels can
+therefore differ by at most one pixel from their rounding phases. No added
+camera easing or extra frame of input buffering is introduced by this path.
+
+### Glow and vapour during fractional scrolling
+
+The main world texture remains full-world data. Only the existing small effect
+passes use SubViewports. Glow emission stays on a fixed two-world-cell source
+grid; the final [glow composite](../../godot/shaders/glow_composite.gdshader)
+uses `source_uv_offset` and `source_uv_scale` to align it with the displayed
+camera. Five guard texels per side cover the four-texel halo and its filter
+footprint, and a far-edge texel covers fractional movement. Odd view dimensions
+do not stretch the coarse source grid.
+
+Vapour history remains aligned to integer world cells and its copied history
+origin; one extra cell on the right/bottom covers the fractional view. Palette
+lookup uses the actual history dimensions. These intentional buffer-grid floors
+do not quantize the final camera. Exact buffer dimensions belong in the
+[configuration reference](../reference/configuration-reference.md#camera-effect-buffer-capacities).
+No additional native synchronization or per-cell physics state is required.
+
+The [acceptance runbook](../operations/native-pixel-scrolling.md) owns controls
+and reproducible commands. The
+[dated audit](../audits/2026-11-13-native-pixel-scrolling.md) separates inspected
+source, actual framebuffer/throughput evidence, physical Windows scaling and
+owner acceptance; source inspection alone does not establish those outcomes.
 
 ## Current visual projection
 

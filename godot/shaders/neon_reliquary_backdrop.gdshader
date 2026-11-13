@@ -46,7 +46,9 @@ vec3 skyline(vec3 colour, vec2 p, float spacing, float horizon,
 }
 
 void fragment() {
-	vec2 world_pixel = camera_origin_px + floor(UV * view_size_px);
+	// Select a world cell after applying the continuous camera, matching the
+	// terrain's sharp final-resolution boundary and its Empty-space mask.
+	vec2 world_pixel = floor(camera_origin_px + UV * view_size_px);
 	vec2 sample_uv = (world_pixel + vec2(0.5)) / vec2(1024.0);
 	float current_id = floor(texture(current_world_texture, sample_uv).r * 255.0 + 0.5);
 	float previous_id = floor(texture(previous_world_texture, sample_uv).r * 255.0 + 0.5);

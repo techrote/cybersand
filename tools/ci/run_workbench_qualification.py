@@ -371,13 +371,39 @@ def regressions(args):
     combined_authoring(runner, project, "source-combined")
 
 
+def camera(args):
+    """Prove display-pixel motion on the actual source or installed project."""
+    runner = Runner(args)
+    project = args.project.resolve()
+    commit, tree, _ = native_candidate_identity.source(ROOT)
+    runner.env["CYBERSAND_SOURCE_REVISION"] = commit
+    runner.env["CYBERSAND_TEST_ARTIFACT_DIR"] = str(runner.evidence / "frames")
+    source_files = {"project.godot": digest(project / "project.godot")}
+    for directory in ("scripts", "shaders", "tests"):
+        source_files.update({p.relative_to(project).as_posix(): digest(p)
+                             for p in sorted((project / directory).rglob("*"))
+                             if p.is_file() and p.suffix in (".gd", ".gdshader")})
+    (runner.evidence / "source-identity.json").write_text(
+        json.dumps({"source_commit": commit, "source_tree": tree,
+                    "project": str(project), "godot": str(args.godot.resolve()),
+                    "godot_sha256": digest(args.godot.resolve()),
+                    "executed_source_sha256": source_files}, indent=2)+"\n",
+        encoding="utf-8")
+    runner.godot(project, "camera-import")
+    runner.godot(project, "camera-coordinates", "test_native_pixel_camera", "NATIVE_PIXEL_CAMERA_RESULT")
+    runner.godot(project, "camera-framebuffer", "test_native_pixel_scrolling_render",
+                 "NATIVE_PIXEL_SCROLLING_RESULT", graphical=True)
+    runner.godot(project, "camera-effects", "test_native_camera_effects_render",
+                 "NATIVE_CAMERA_EFFECTS_RESULT", graphical=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="mode", required=True)
     stage = sub.add_parser("stage-linux")
     stage.add_argument("--output", type=Path, required=True)
     stage.set_defaults(run=stage_linux)
-    for name, function in (("installed", installed), ("regressions", regressions)):
+    for name, function in (("installed", installed), ("regressions", regressions), ("camera", camera)):
         command = sub.add_parser(name)
         command.add_argument("--godot", type=Path, required=True)
         command.add_argument("--evidence", type=Path, required=True)
@@ -388,7 +414,8 @@ def main():
             command.add_argument("--combined", action="store_true")
         else:
             command.add_argument("--project", type=Path, required=True)
-            command.add_argument("--paint", action="store_true")
+            if name == "regressions":
+                command.add_argument("--paint", action="store_true")
     args = parser.parse_args()
     outcome = {"mode": args.mode, "status": "running"}
     try:

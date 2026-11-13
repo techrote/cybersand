@@ -1,0 +1,214 @@
+extends SceneTree
+
+# Actual source/composite/history owners from Main, without starting a native
+# World or physics session. Headless transforms cannot establish these pixels.
+const Context = preload("res://tests/palette_qualification_context.gd")
+const VIEW := Vector2i(48, 27)
+const OUTPUT := VIEW * 4
+const WORLD := Vector2i(128, 96)
+const TOLERANCE := 2.0 / 255.0
+
+class QuietMain extends "res://scripts/main.gd":
+	func _ready() -> void: pass
+	func _process(_delta: float) -> void: pass
+	func _physics_process(_delta: float) -> void: pass
+	func _notification(_what: int) -> void: pass
+	func _exit_tree() -> void: pass
+
+var checks := 0
+var failures: Array[String] = []
+var records: Array[Dictionary] = []
+var viewport: SubViewport
+var host: Control
+var artifact_dir := ""
+
+
+func _initialize() -> void:
+	_run.call_deferred()
+
+
+func _check(ok: bool, message: String) -> void:
+	checks += 1
+	if not ok:
+		failures.append(message)
+		push_error("NATIVE_CAMERA_EFFECTS: " + message)
+
+
+func _blank() -> Image:
+	var result := Image.create_empty(WORLD.x, WORLD.y, false, Image.FORMAT_RG8)
+	result.fill(Color(0, 0, 0, 1))
+	return result
+
+
+func _capture() -> Image:
+	await RenderingServer.frame_post_draw
+	await RenderingServer.frame_post_draw
+	var result := viewport.get_texture().get_image()
+	result.convert(Image.FORMAT_RGBA8)
+	return result
+
+
+func _retain(pixels: Image, label: String) -> void:
+	if artifact_dir.is_empty(): return
+	_check(pixels.save_png(artifact_dir.path_join(label + ".png")) == OK,
+		"retain " + label)
+
+
+func _colour_error(a: Color, b: Color) -> float:
+	return maxf(absf(a.r - b.r), maxf(absf(a.g - b.g), absf(a.b - b.b)))
+
+
+func _shift_error(before: Image, after: Image, shift: Vector2i) -> float:
+	var error := 0.0
+	for y: int in range(8, OUTPUT.y - 8):
+		for x: int in range(8, OUTPUT.x - 8):
+			error = maxf(error, _colour_error(after.get_pixel(x, y),
+				before.get_pixel(x + shift.x, y + shift.y)))
+	return error
+
+
+func _mount() -> void:
+	viewport = SubViewport.new()
+	viewport.size = OUTPUT
+	viewport.disable_3d = true
+	viewport.use_hdr_2d = true
+	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	root.add_child(viewport)
+	host = load("res://main.tscn").instantiate()
+	host.set_script(QuietMain)
+	for body: RigidBody2D in host.get_node("RigidBodies").get_children():
+		body.freeze = true
+	viewport.add_child(host)
+	# Keep the real scene's onready references, then isolate the canvas.
+	host.world_view.reparent(host)
+	host.get_node("Layout").hide()
+	host.world_view.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	host.world_view.custom_minimum_size = Vector2.ZERO
+	host.world_view.position = Vector2.ZERO
+	host.world_view.size = Vector2(OUTPUT)
+	host.world_view.material = null
+	host.world_view.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	host.current_view_size = VIEW
+	host.world_extent = WORLD
+	host.character_position = Vector2(-1000, -1000)
+	host.cadence_lod_enabled = false
+	host.render_channels = 2
+	host.image = _blank()
+	host.texture = ImageTexture.create_from_image(host.image)
+	host.previous_texture = ImageTexture.create_from_image(host.image)
+	host.world_shader = ShaderMaterial.new()
+	host.world_shader.shader = CyberPaletteShader.for_current_renderer(
+		load("res://shaders/material_palette.gdshader"))
+	Context.emit(get_script().resource_path, host.world_shader.shader)
+	host.material_appearance_lut = CyberMaterialAppearanceLut.create_texture()
+	host.material_appearance_program = CyberMaterialAppearanceLut.create_program_texture()
+	host.setup_glow_pipeline()
+	host.glow_source_shader.set_shader_parameter("presentation_time_override", 0.0)
+	for shader: ShaderMaterial in host.vapour_trail_shaders:
+		shader.set_shader_parameter("presentation_time_override", 0.0)
+		shader.set_shader_parameter("rise_px_per_second", 0.0)
+
+
+func _glow() -> void:
+	# A static, neutral emission row avoids animation or material appearance
+	# changing the independent translation oracle. The production emission and
+	# composite shaders remain unchanged and use the production viewport owner.
+	var program := Image.create_empty(4, 256, false, Image.FORMAT_RGBAH)
+	program.set_pixel(1, 58, Color(0, 1, 1, 1))
+	program.set_pixel(2, 58, Color(1, 1, 2, 2))
+	program.set_pixel(3, 58, Color(0.3, 0.6, 1.0, 0))
+	host.glow_source_shader.set_shader_parameter("material_program_lut",
+		ImageTexture.create_from_image(program))
+	var world := _blank()
+	world.set_pixel(50, 36, Color(58.0 / 255.0, 1, 0, 1))
+	host.texture.update(world)
+	for direction: Vector2i in [Vector2i.RIGHT, Vector2i.DOWN, Vector2i.ONE, Vector2i.LEFT]:
+		host.camera_origin = Vector2(31.5, 24.25)
+		host.update_glow_parameters(host.view_content_rect())
+		var before: Image = await _capture()
+		var baseline := before
+		var maximum := 0.0
+		for step: int in range(1, 13):
+			host.camera_origin = Vector2(31.5, 24.25) + Vector2(direction) * float(step) / 4.0
+			host.update_glow_parameters(host.view_content_rect())
+			var after: Image = await _capture()
+			var error := _shift_error(before, after, direction)
+			maximum = maxf(maximum, error)
+			_check(error <= TOLERANCE,
+				"glow moved by one display pixel %s step %d (error %.6f)" % [direction, step, error])
+			before = after
+		records.append({"kind":"glow", "direction":[direction.x, direction.y],
+			"steps":12, "maximum_pixel_error":maximum})
+		_check(_shift_error(baseline, baseline, direction) > TOLERANCE,
+			"glow negative control detects a retained/stepped frame " + str(direction))
+		if direction == Vector2i.RIGHT:
+			_retain(baseline, "glow-before")
+			_retain(before, "glow-after-12-pixels")
+	_check(host.glow_viewport.size == Vector2i(91, 56),
+		"odd-height view retains bounded half-resolution grid and halo guards")
+
+
+func _vapour() -> void:
+	host.set_glow_enabled(false)
+	host.camera_origin = Vector2(32.25, 24.25)
+	host.world_view.texture = host.texture
+	host.world_view.material = host.world_shader
+	host.world_shader.set_shader_parameter("current_world_texture", host.texture)
+	host.world_shader.set_shader_parameter("previous_world_texture", host.previous_texture)
+	host.world_shader.set_shader_parameter("material_lut", host.material_appearance_lut)
+	host.world_shader.set_shader_parameter("material_program_lut", host.material_appearance_program)
+	host.world_shader.set_shader_parameter("presentation_time_override", 0.0)
+	host.world_shader.set_shader_parameter("growth_decor", 0.0)
+	var gas := _blank()
+	gas.fill_rect(Rect2i(80, 24, 1, 28), Color(float(CyberCellWorld.STEAM) / 255.0, 1, 0, 1))
+	gas.fill_rect(Rect2i(32, 51, 49, 1), Color(float(CyberCellWorld.STEAM) / 255.0, 1, 0, 1))
+	host.texture.update(gas)
+	host.reset_vapour_trail()
+	host.update_shader_parameters()
+	await _capture()
+	host.texture.update(_blank())
+	await process_frame
+	host.vapour_trail_usec = Time.get_ticks_usec() - 20000
+	host.update_shader_parameters()
+	var remembered: Image = await _capture()
+	_check(host.vapour_trail_viewports[0].size == VIEW + Vector2i.ONE
+		and host.vapour_trail_viewports[1].size == VIEW + Vector2i.ONE,
+		"both vapour generations include partial edge cells")
+	_check(host.world_shader.get_shader_parameter("vapour_trail_size_px") == Vector2(VIEW + Vector2i.ONE),
+		"palette knows the actual guarded history extent")
+	# The legacy extent drops precisely these partially visible cells. Prove
+	# that the positive uses the guard, not some unrelated scene brightness.
+	host.world_shader.set_shader_parameter("vapour_trail_size_px", Vector2(VIEW))
+	var wrong_extent: Image = await _capture()
+	for point: Vector2i in [Vector2i(OUTPUT.x - 1, OUTPUT.y / 2),
+			Vector2i(OUTPUT.x / 2, OUTPUT.y - 1), OUTPUT - Vector2i.ONE]:
+		_check(_colour_error(remembered.get_pixelv(point), wrong_extent.get_pixelv(point)) > 0.08,
+			"vapour guard supplies the partial edge cell " + str(point))
+	host.world_shader.set_shader_parameter("vapour_trail_size_px", Vector2(VIEW + Vector2i.ONE))
+	host.camera_origin += Vector2(0.25, 0.25)
+	host.world_shader.set_shader_parameter("camera_origin_px", host.presentation_camera_origin())
+	var shifted: Image = await _capture()
+	var error := _shift_error(remembered, shifted, Vector2i.ONE)
+	_check(error <= TOLERANCE, "fixed vapour history follows one display-pixel translation")
+	records.append({"kind":"vapour", "partial_edges":3, "maximum_pixel_error":error})
+	_retain(remembered, "vapour-guarded")
+	_retain(wrong_extent, "vapour-missing-guard-negative-control")
+
+
+func _run() -> void:
+	if DisplayServer.get_name() == "headless":
+		print("NATIVE_CAMERA_EFFECTS_RESULT " + JSON.stringify({"checks":0,"failures":[],"skipped":"graphical display required"}))
+		quit(0)
+		return
+	artifact_dir = OS.get_environment("CYBERSAND_TEST_ARTIFACT_DIR")
+	if not artifact_dir.is_empty():
+		artifact_dir = artifact_dir.path_join("camera-effects")
+		DirAccess.make_dir_recursive_absolute(artifact_dir)
+	_mount()
+	await _glow()
+	await _vapour()
+	viewport.queue_free()
+	await process_frame
+	print("NATIVE_CAMERA_EFFECTS_RESULT " + JSON.stringify({"checks":checks,
+		"failures":failures,"records":records}))
+	quit(0 if failures.is_empty() else 1)

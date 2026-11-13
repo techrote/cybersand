@@ -4,11 +4,18 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-08
+last-reviewed: 2026-11-13
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+Native-resolution camera candidate: [controls and Windows acceptance](operations/native-pixel-scrolling.md),
+[presentation and sampling contract](systems/material-appearance-and-rendering.md#native-resolution-pixel-scrolling),
+[private coordinate interfaces](reference/interfaces-and-message-contracts.md#camera-presentation-and-picking)
+and [source/platform evidence](audits/2026-11-13-native-pixel-scrolling.md).
+The candidate is stacked on #564 and remains Draft; old Workbench artifacts do
+not qualify the new camera source.
 
 Current Draft: [integrated PAINT + agent Workbench](operations/wb-art-paint-integrated-candidate.md), including standalone generator profiles, native stored-material receipts and one edit ordering boundary. Component contracts: [direct drawing](systems/workbench-direct-art-batches.md), [provider connection/context/scanlines](systems/workbench-art-providers.md), and [full PAINT editor](systems/paint-editor-bounded-shapes.md).
 

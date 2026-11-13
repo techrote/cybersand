@@ -4,11 +4,21 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-08
+last-reviewed: 2026-11-13
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Native-resolution camera continuation — 2026-11-13
+
+The camera branch is isolated and stacked on #564 at `e63a7d4f`; inspected main
+`e0fb05b8` already contains #562. Start with the
+[camera runbook](native-pixel-scrolling.md) and
+[exact-source audit](../audits/2026-11-13-native-pixel-scrolling.md). Preserve
+shared Undo/Redo and Art panel features, complete scoped Windows/Linux graphics
+and editing qualification, and keep the PR Draft until owner acceptance. Native
+sources and retained-runtime identity are not changed by camera presentation.
 
 ## WB-ART-002 Stage 1 — 2026-11-10
 

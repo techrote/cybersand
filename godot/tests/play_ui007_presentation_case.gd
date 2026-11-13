@@ -176,7 +176,7 @@ func test_sequence(rig: StringName) -> bool:
 		"target overlay cannot intercept controls or cover the actual actor layer")
 	expect(not desktop.physical_actor_overlay._parts.is_empty(), "actual Rapier actor parts remain presented")
 	pure_presentation_controls(rig)
-	expect(overlay._origin == desktop.camera_origin.floor() and overlay._view_size == Vector2(desktop.current_view_size)
+	expect(overlay._origin == desktop.presentation_camera_origin() and overlay._view_size == Vector2(desktop.current_view_size)
 		and overlay.position == desktop.view_content_rect().position and overlay.size == desktop.view_content_rect().size,
 		"follow camera target and actor content transforms agree")
 	await capture_graphical(rig, "follow")

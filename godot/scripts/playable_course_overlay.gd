@@ -23,7 +23,7 @@ func present_course(identity: Dictionary, origin: Vector2, view_size: Vector2i, 
 	targets = points
 	target_index = completed
 	accent = Course.COLORS[Course.PRESETS.find(rig)]
-	_origin = origin.floor()
+	_origin = origin
 	_view_size = Vector2(view_size)
 	position = content.position
 	size = content.size

@@ -22,7 +22,8 @@ float air(vec2 point) {
 }
 
 void fragment() {
-	vec2 p = camera_origin_px + floor(UV * view_size_px);
+	// The grade and occupancy mask share the terrain's continuous transform.
+	vec2 p = floor(camera_origin_px + UV * view_size_px);
 	float id = material_at(p);
 	if (id < 0.5 && snapshot_blend < 0.999) {
 		id = floor(texture(previous_world_texture, (p + vec2(0.5)) / vec2(1024.0)).r * 255.0 + 0.5);

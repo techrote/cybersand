@@ -70,7 +70,9 @@ vec3 subterranean(vec2 p) {
 }
 
 void fragment() {
-	vec2 world_pixel = camera_origin_px + floor(UV * view_size_px);
+	// Match the terrain's final-resolution cell selection, including its
+	// fractional presentation camera, so the Empty mask never slips an edge.
+	vec2 world_pixel = floor(camera_origin_px + UV * view_size_px);
 	vec2 sample_uv = (world_pixel + vec2(0.5)) / vec2(1024.0);
 	float current_id = floor(texture(current_world_texture, sample_uv).r * 255.0 + 0.5);
 	float previous_id = floor(texture(previous_world_texture, sample_uv).r * 255.0 + 0.5);

@@ -6,10 +6,37 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-13
 ---
 
 # Interfaces and message contracts
+
+## Camera presentation and picking
+
+**Current camera-branch candidate.** These are private Godot presentation APIs,
+not a native ABI or snapshot-layout change. The
+[rendering contract](../systems/material-appearance-and-rendering.md#native-resolution-pixel-scrolling)
+owns their sampling semantics.
+
+| Value or method | Coordinate meaning |
+| --- | --- |
+| `Main.camera_origin: Vector2` | Continuous requested world origin; retains drag and zoom remainder |
+| `Main.presentation_camera_origin(): Vector2` | Bounds-clamped displayed origin after rounding the complete screen translation |
+| `Main.world_position_from_local_point(local)` | Continuous world point under a local point, using the displayed origin |
+| `Main.world_cell_from_local_point(local)` | Integer cell sampled at the pointer's physical pixel centre; `(-1,-1)` outside valid content/world |
+| `PixelCamera.presentation_origin` | Converts through content size/offset and `get_screen_transform`; returns a presentation value without mutating camera state |
+| `PixelCamera.origin_for_anchor` | Solves continuous origin for an unchanged world anchor after a view-size change |
+| `camera_origin_px` shader uniform | Fractional world origin for final display sampling; the name does not imply an integer input |
+
+PAINT, selection and Art focus retain integer inclusive cell bounds. Agent
+observation metadata instead describes actual framebuffer crop edges using
+fractional world bounds. Simulation interest regions and native mutations keep
+their existing integer units; an integer history-buffer origin is not a
+replacement camera position. Sources:
+[transform helper](../../godot/scripts/pixel_camera_transform.gd),
+[Main](../../godot/scripts/main.gd),
+[Workbench](../../godot/scripts/shared_workbench.gd) and
+[agent observations](../../godot/scripts/art_batch_panel.gd).
 
 The new bounded desktop [trial-body continuation](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 keeps the eleven-float body ABI unchanged. Main sends only copied values:

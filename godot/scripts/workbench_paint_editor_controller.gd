@@ -315,9 +315,7 @@ func _ready_to_author(allow_hold: bool = false, continuing_history: bool = false
 	return true
 
 func _pixel(event: InputEventMouse) -> Vector2i:
-	var pixel: Vector2i = host.view_pixel_from_local_point(event.position)
-	if pixel.x < 0: return Vector2i(-1,-1)
-	return pixel+Vector2i(host.camera_origin.floor())
+	return host.world_cell_from_local_point(event.position)
 
 func world_input(event: InputEvent) -> bool:
 	if not paint_mode_active() or not event is InputEventMouse: return false
@@ -849,8 +847,7 @@ func _start_reverse(action: String, continuing_history: bool = false) -> bool:
 	return _start_planner(job)
 
 func local_to_cell(position: Vector2) -> Vector2i:
-	var pixel: Vector2i = host.view_pixel_from_local_point(position)
-	return pixel+Vector2i(host.camera_origin.floor()) if pixel.x >= 0 else Vector2i(-1,-1)
+	return host.world_cell_from_local_point(position)
 
 func _exit_tree() -> void:
 	if host != null and is_instance_valid(host) and not _operation.is_empty(): host.simulation_worker.paint_stop()

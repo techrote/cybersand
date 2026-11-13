@@ -230,7 +230,10 @@ func refresh() -> void:
 	shader.set_shader_parameter("current_world_texture", host.texture)
 	shader.set_shader_parameter("previous_world_texture", host.previous_texture)
 	shader.set_shader_parameter("view_size_px", Vector2(host.current_view_size))
-	shader.set_shader_parameter("camera_origin_px", host.camera_origin.floor())
+	# Main resolves camera translation at display-pixel granularity. Reuse that
+	# exact origin for both backdrop and grade; standalone hosts stay continuous.
+	var origin: Vector2 = host.presentation_camera_origin() if host.has_method("presentation_camera_origin") else Vector2(host.camera_origin)
+	shader.set_shader_parameter("camera_origin_px", origin)
 	shader.set_shader_parameter("snapshot_blend", host.world_shader.get_shader_parameter("snapshot_blend"))
 	shader.set_shader_parameter("player_origin_px", host.world_shader.get_shader_parameter("player_origin_px"))
 	shader.set_shader_parameter("player_size_px", CyberSampledCharacter.BODY_SIZE)

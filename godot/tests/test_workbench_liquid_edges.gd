@@ -90,7 +90,7 @@ func paint(pos: Vector2i, material: int) -> bool:
 	panel._set_view(Vector2(pos)-Vector2(host.current_view_size)*0.5,host.current_view_size)
 	await process_frame
 	var rect: Rect2 = host.view_content_rect()
-	var local: Vector2 = rect.position+(Vector2(pos)+Vector2(.5,.5)-host.camera_origin.floor())*rect.size/Vector2(host.current_view_size)
+	var local: Vector2 = rect.position+(Vector2(pos)+Vector2(.5,.5)-host.presentation_camera_origin())*rect.size/Vector2(host.current_view_size)
 	var radius: int = panel.paint_editor.radius()
 	var region := Rect2i(pos-Vector2i(radius,radius),Vector2i(2*radius+1,2*radius+1))
 	var expected := await capture(region)
