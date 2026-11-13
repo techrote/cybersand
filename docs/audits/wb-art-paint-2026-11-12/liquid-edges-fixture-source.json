@@ -1,0 +1,20 @@
+{
+  "base_sha": "dc3aaac3273fc0d2e4e6e6e06b1b154188465ec2",
+  "working_tree_source": true,
+  "display": "headless",
+  "source_sha256": {
+    "godot/scripts/shared_workbench.gd": "c953ab3a6d52875ed9eed6cd0b96e6b83b4e1d1a9111522edb1f5b4622149255",
+    "godot/scripts/workbench_paint_editor_controller.gd": "7ce59ceffe6f7222d2cdaa0ccd0be1ed3c5e8d7e9a5416bb16582eda5510fdd2",
+    "godot/scripts/workbench_paint_editor_shapes.gd": "82c90552d04d975908f8a7ba14afc78ddb0152faf57684c1957b3f058c9e8e16",
+    "godot/tests/test_workbench_liquid_edges.gd": "e515e69a47afbfbcd185aa11e4aba8fdf19169ac698f9444faf98a10ba8ac7f4",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "16ffc0ce8190c2e8ca2e31fc59f10c55148adc6e7f16727dc96c094d8a96696a",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+  },
+  "checks": 112,
+  "failures": [],
+  "case_extents": [
+    512,
+    2048
+  ],
+  "log": "repaired-headless.log"
+}

@@ -10,6 +10,8 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For the combined #562 Materials Lab / #564 Workbench candidate, original source ancestry, shared history preservation, standalone evaluation and #563 merge-order boundaries, read the [combined qualification record](../audits/2026-11-12-mat-auth-workbench-integration.md).
+
 ## Materials Lab v1 review candidate — 2026-11-11
 
 | Question | Canonical route |
@@ -26,6 +28,11 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 [Focused Lab questions](retrieval-questions-materials-lab.json) are additive;
 the frozen evaluation and existing historical fixtures retain their original scope.
+
+## Direct native art batches without inference
+
+For the current combined Draft, standalone generator repairs, native stored-material authority, PAINT/agent ordering, preserved feature sets and acceptance, retrieve the [integration runbook](../operations/wb-art-paint-integrated-candidate.md). For #559 geometry, protection, acknowledgements, Stop and Save limits, retrieve the [direct art contract](../systems/workbench-direct-art-batches.md). For OpenAI/NVIDIA/LM Studio, conversation/context, scanlines, image observations, traffic, caps and cancellation, retrieve the [provider contract](../systems/workbench-art-providers.md).
+
 
 ## Generated terrain in the playable workbench
 

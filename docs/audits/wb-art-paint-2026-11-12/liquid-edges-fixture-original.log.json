@@ -1,0 +1,20 @@
+{
+  "encoding": "utf-8",
+  "raw_sha256": "253cf44249b5404b2fb8f329ee57469365166ef6648aea44d9690d155d6cda32",
+  "raw_size_bytes": 748,
+  "original_log_lines": [
+    "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\n",
+    "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n",
+    "\n",
+    "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\n",
+    "ERROR: WORKBENCH_EDGE real toolbar popup open / Brush · water · radius 12 / \n",
+    "   at: push_error (core/variant/variant_utility.cpp:1023)\n",
+    "   GDScript backtrace (most recent call first):\n",
+    "       [0] require (res://tests/test_workbench_liquid_edges.gd:19)\n",
+    "       [1] pick (res://tests/test_workbench_liquid_edges.gd:52)\n",
+    "       [2] click (res://tests/test_workbench_liquid_edges.gd:42)\n",
+    "       [3] click_at (res://tests/test_workbench_liquid_edges.gd:39)\n",
+    "WORKBENCH_EDGE {\"cases\":[],\"checks\":2,\"failures\":[\"real toolbar popup open\"]}\n"
+  ],
+  "note": "Original bytes retained as escaped UTF-8 lines to satisfy repository whitespace validation; concatenate lines to reconstruct the exact log."
+}

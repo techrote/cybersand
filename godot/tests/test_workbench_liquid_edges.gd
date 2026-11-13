@@ -29,17 +29,68 @@ func until(predicate: Callable, why: String) -> bool:
 	return require(false,why)
 
 func click_at(viewport: Viewport, position: Vector2, button: MouseButton = MOUSE_BUTTON_LEFT) -> void:
+	# Feed the actual pointer position as well as GUI events. The full native
+	# material menu can cover its trigger; a stale global mouse position would
+	# make the synthetic release select a menu item instead of opening it.
+	var motion := InputEventMouseMotion.new()
+	motion.position = position
+	motion.global_position = position
+	motion.window_id = viewport.get_window().get_window_id()
+	Input.parse_input_event(motion)
+	Input.flush_buffered_events()
+	await process_frame
 	for down: bool in [true,false]:
 		var event := InputEventMouseButton.new()
 		event.position = position
 		event.global_position = position
+		event.window_id = viewport.get_window().get_window_id()
 		event.button_index = button
 		event.pressed = down
-		viewport.push_input(event,true)
+		event.button_mask = MOUSE_BUTTON_MASK_LEFT if down else 0
+		Input.parse_input_event(event)
+		Input.flush_buffered_events()
 		await process_frame
 
 func click(button: Button) -> void:
 	await click_at(button.get_viewport(),button.get_global_rect().get_center())
+
+# Canvas space is live: a native preflight sample can yield across frames in
+# which the Workbench layout or the display's aspect-fit rectangle changes.
+# Never reuse a screen coordinate calculated before that asynchronous sample.
+func world_click_point(pos: Vector2i) -> Vector2:
+	var content: Rect2 = host.view_content_rect()
+	var local: Vector2 = content.position+(Vector2(pos)+Vector2(0.5,0.5)-host.camera_origin.floor())*content.size/Vector2(host.current_view_size)
+	return host.world_view.get_global_transform()*local
+
+func click_world_cell(pos: Vector2i) -> bool:
+	var viewport: Viewport = host.world_view.get_viewport()
+	var motion := InputEventMouseMotion.new()
+	motion.position = world_click_point(pos)
+	motion.global_position = motion.position
+	motion.window_id = viewport.get_window().get_window_id()
+	Input.parse_input_event(motion)
+	Input.flush_buffered_events()
+	await process_frame
+	for down: bool in [true,false]:
+		# Recalculate after each awaited frame, immediately before dispatch.
+		var point: Vector2 = world_click_point(pos)
+		var local: Vector2 = host.world_view.get_global_transform().affine_inverse()*point
+		var mapped: Vector2i = host.view_pixel_from_local_point(local)
+		if mapped.x >= 0: mapped += Vector2i(host.camera_origin.floor())
+		if not require(mapped==pos,"live window-to-world brush target "+str(pos)+" mapped "+str(mapped)): return false
+		var event := InputEventMouseButton.new()
+		event.position = point
+		event.global_position = point
+		event.window_id = viewport.get_window().get_window_id()
+		event.button_index = MOUSE_BUTTON_LEFT
+		event.pressed = down
+		event.button_mask = MOUSE_BUTTON_MASK_LEFT if down else 0
+		Input.parse_input_event(event)
+		Input.flush_buffered_events()
+		await process_frame
+		if down and not require(panel.paint_editor.dragging and panel.paint_editor.anchor==pos,
+			"native brush press reached the exact intended world cell "+str(pos)): return false
+	return true
 
 func button_named(label: String) -> Button:
 	for child: Node in panel.find_children("*","Button",true,false):
@@ -60,15 +111,59 @@ func pick(picker: OptionButton, index: int) -> bool:
 	await process_frame
 	return ok
 
+func capture(region: Rect2i) -> PackedInt32Array:
+	var worker: RefCounted = host.simulation_worker
+	var state: Dictionary = worker.paint_state()
+	var admission: Dictionary = worker.paint_queue({"kind":"capture","region":region,
+		"expected_generation":int(state.generation),"expected_revision":int(state.revision),"expected_tick":int(state.tick)})
+	if not require(admission.status=="queued","native brush sample admitted"): return PackedInt32Array()
+	if not await until(func()->bool: return worker.paint_state().receipt_ready,"native brush sample receipt"): return PackedInt32Array()
+	var result: Dictionary = worker.paint_take_result()
+	if not require(result.status=="completed","native brush sample completed"): return PackedInt32Array()
+	return result.get("materials",PackedInt32Array())
+
 func paint(pos: Vector2i, material: int) -> bool:
-	if not await pick(panel._material,panel.Setup.MATERIALS.find(material)): return false
+	if not await pick(panel._material,panel._material.get_item_index(material)): return false
+	if not require(panel.paint_editor.material_id==material,"native material picker selection"): return false
 	panel._set_view(Vector2(pos)-Vector2(host.current_view_size)*0.5,host.current_view_size)
 	await process_frame
-	var rect: Rect2 = host.view_content_rect()
-	var local: Vector2 = rect.position+(Vector2(pos)+Vector2(.5,.5)-host.camera_origin.floor())*rect.size/Vector2(host.current_view_size)
-	var count: int = panel.applied.edits.size()
-	await click_at(host.world_view.get_viewport(),host.world_view.get_global_transform()*local)
-	return require(panel.applied.edits.size()==count+1 and panel.applied.edits.back()==[pos.x,pos.y,int(panel.applied.brush),material],"real canvas brush at "+str(pos))
+	var radius: int = panel.paint_editor.radius()
+	var region := Rect2i(pos-Vector2i(radius,radius),Vector2i(2*radius+1,2*radius+1))
+	var expected := await capture(region)
+	if not require(expected.size()==region.size.x*region.size.y,"complete pre-brush native sample"): return false
+	var before_edits: Array = panel.applied.edits.duplicate(true)
+	var count: int = panel.paint_editor.completed_actions
+	if not await click_world_cell(pos): return false
+	if not await until(func()->bool: return not panel.paint_editor.busy() and not host.simulation_worker.paint_state().busy,
+		"real canvas brush acknowledged"): return false
+	var completed: Dictionary = panel.paint_editor.last_receipt
+	if not require(panel.paint_editor.completed_actions==count+1 and completed.get("status")=="completed"
+		and panel.applied.edits!=before_edits and not panel.paint_editor.recovery_required(),
+		"real canvas brush recorded at "+str(pos)): return false
+	var cells := 0
+	for y: int in region.size.y:
+		for x: int in region.size.x:
+			if (x-radius)*(x-radius)+(y-radius)*(y-radius)<=radius*radius:
+				expected[y*region.size.x+x] = material
+				cells += 1
+	var actual: PackedInt32Array = await capture(region)
+	var exact: bool = int(completed.get("applied",0))==cells and actual==expected
+	if not exact:
+		var examples: Array[Dictionary] = []
+		var mismatches := 0
+		for i: int in mini(expected.size(),actual.size()):
+			if expected[i] != actual[i]:
+				mismatches += 1
+				if examples.size() < 12:
+					examples.append({"cell":pos+Vector2i(i%region.size.x-radius,int(i/region.size.x)-radius),
+						"expected":expected[i],"actual":actual[i]})
+		print("WORKBENCH_EDGE_BRUSH_DIAGNOSTIC ",JSON.stringify({"side":panel.applied.get("extent",[]),
+			"target":pos,"view_origin":host.camera_origin,"view_size":host.current_view_size,
+			"content_rect":host.view_content_rect(),"world_view_size":host.world_view.size,
+			"expected_cells":cells,"reported_applied":completed.get("applied",0),
+			"expected_samples":expected.size(),"actual_samples":actual.size(),
+			"mismatch_count":mismatches,"examples":examples}))
+	return require(exact,"exact stored native brush disc at "+str(pos))
 
 func active_water() -> String:
 	for entry: Dictionary in host.tower_context.get("liquid_solver_policy",{}).get("assignments",[]):

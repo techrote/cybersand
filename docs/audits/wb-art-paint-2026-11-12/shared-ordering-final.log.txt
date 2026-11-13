@@ -1,0 +1,149 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+EDIT_ORDER_CHECK combined native runtime is loaded true
+EDIT_ORDER_CHECK actual native worker count 1 true
+EDIT_ORDER_CHECK Save admits an idle native boundary true
+EDIT_ORDER_CHECK art admission owns the shared mutation boundary true
+EDIT_ORDER_CHECK Save refuses an admitted but unexecuted agent chunk true
+EDIT_ORDER_CHECK PAINT cannot enter a pending art chunk true
+EDIT_ORDER_CHECK legacy emissions cannot enter a pending art chunk true
+EDIT_ORDER_CHECK Save refuses the executing agent lease true
+EDIT_ORDER_CHECK synthetic executing-art lease excludes PAINT true
+EDIT_ORDER_CHECK synthetic executing-art lease excludes legacy commands true
+EDIT_ORDER_CHECK first art chunk actually changed stored native material true
+EDIT_ORDER_CHECK art receipt and PAINT source fence become visible atomically true
+EDIT_ORDER_CHECK Save refuses actual applied agent cells before receipt consumption true
+EDIT_ORDER_CHECK unconsumed art completion still excludes PAINT true
+EDIT_ORDER_CHECK unconsumed art completion still excludes legacy commands true
+EDIT_ORDER_CHECK art completion retains exact applied native content true
+EDIT_ORDER_CHECK Save admission resumes after agent completion consumption true
+EDIT_ORDER_CHECK pre-art human source fence is invalidated true
+EDIT_ORDER_CHECK human operation enters after art receipt consumption true
+EDIT_ORDER_CHECK Save refuses admitted human PAINT true
+EDIT_ORDER_CHECK agent is told to retry while human PAINT owns the boundary true
+EDIT_ORDER_CHECK pending human operation excludes legacy commands true
+EDIT_ORDER_CHECK human preflight retains the boundary between finite slices true
+EDIT_ORDER_CHECK active human operation excludes agent chunks true
+EDIT_ORDER_CHECK human operation completes in the same native World true
+EDIT_ORDER_CHECK Save refuses unconsumed human PAINT completion true
+EDIT_ORDER_CHECK unconsumed human completion still excludes agent chunks true
+EDIT_ORDER_CHECK unconsumed human completion still excludes legacy commands true
+EDIT_ORDER_CHECK human completion exposes confirmed Water material true
+EDIT_ORDER_CHECK agent resumes after human completion consumption true
+EDIT_ORDER_CHECK agent resumes without losing its native edit true
+EDIT_ORDER_CHECK ordinary legacy drawing still admits when editors are idle true
+EDIT_ORDER_CHECK Save refuses queued ordinary human brush edits true
+EDIT_ORDER_CHECK pending legacy mutations precede new art true
+EDIT_ORDER_CHECK pending legacy mutations precede new PAINT true
+EDIT_ORDER_CHECK Save refuses extracted ordinary brush edits until native execution true
+EDIT_ORDER_CHECK extracted legacy commands remain visible to agent admission true
+EDIT_ORDER_CHECK extracted legacy commands remain visible to human admission true
+EDIT_ORDER_CHECK extracted legacy commands apply in native order true
+EDIT_ORDER_CHECK Save admission resumes after ordinary edits and source publication true
+EDIT_ORDER_CHECK agent may continue after legacy context publication true
+EDIT_ORDER_CHECK post-legacy agent operation is retained true
+EDIT_ORDER_CHECK Save refuses an extracted World transition true
+EDIT_ORDER_CHECK extracted World transition excludes both editors true
+EDIT_ORDER_CHECK extracted World transition excludes legacy authoring true
+EDIT_ORDER_CHECK controlled extracted transition refuses equipment without enqueue true
+EDIT_ORDER_CHECK controlled pending reset refuses equipment without enqueue true
+EDIT_ORDER_CHECK controlled acknowledged-install state admits equipment again true
+EDIT_ORDER_CHECK admitted equipment configuration reaches the same owner without paused cell mutation true
+EDIT_ORDER_CHECK replacement fixture admits pending art true
+EDIT_ORDER_CHECK World command explicitly cancels admitted but unstarted art true
+EDIT_ORDER_CHECK World commands retain both editor epoch fences true
+EDIT_ORDER_CHECK reset fixture admits pending human paint true
+EDIT_ORDER_CHECK reset cancels human paint and advances the art fence without changing stored cells true
+EDIT_ORDER_CHECK settings-fence fixture admits art true
+EDIT_ORDER_CHECK art execution rechecks construction settings before writing true
+EDIT_ORDER_CHECK generation-fence fixture admits art true
+EDIT_ORDER_CHECK art execution rechecks native World generation before writing true
+EDIT_ORDER_CHECK public Save seeds a valid named start at the idle boundary true
+EDIT_ORDER_CHECK ordinary Workbench brush records admission before native execution true
+EDIT_ORDER_CHECK public Save refuses queued brush edits and preserves the existing file true
+EDIT_ORDER_CHECK public Save refuses extracted brush edits and preserves the existing file true
+EDIT_ORDER_CHECK public Save resumes after the same ordinary brush is natively applied true
+EDIT_ORDER_CHECK saved ordinary brush record reopens without claiming a queued result true
+EDIT_ORDER_CHECK orphan-receipt Save fixture admits actual native art true
+EDIT_ORDER_CHECK orphan-receipt fixture holds an actual applied native result true
+EDIT_ORDER_CHECK public Save preserves an unconsumed agent receipt and the prior saved bytes true
+EDIT_ORDER_CHECK real agent executor consumes the native result and records its confirmed prefix true
+EDIT_ORDER_CHECK public Save succeeds after native receipt ownership is settled true
+EDIT_ORDER_CHECK reopened start retains both the human brush and confirmed agent cell true
+EDIT_ORDER_CHECK ordinary brush cannot bypass the partial-edit recovery hold or invalidate recovery history true
+EDIT_ORDER_CHECK entire public Save workflow completed true
+EDIT_ORDER_CHECK combined native runtime is loaded true
+EDIT_ORDER_CHECK actual native worker count 4 true
+EDIT_ORDER_CHECK Save admits an idle native boundary true
+EDIT_ORDER_CHECK art admission owns the shared mutation boundary true
+EDIT_ORDER_CHECK Save refuses an admitted but unexecuted agent chunk true
+EDIT_ORDER_CHECK PAINT cannot enter a pending art chunk true
+EDIT_ORDER_CHECK legacy emissions cannot enter a pending art chunk true
+EDIT_ORDER_CHECK Save refuses the executing agent lease true
+EDIT_ORDER_CHECK synthetic executing-art lease excludes PAINT true
+EDIT_ORDER_CHECK synthetic executing-art lease excludes legacy commands true
+EDIT_ORDER_CHECK first art chunk actually changed stored native material true
+EDIT_ORDER_CHECK art receipt and PAINT source fence become visible atomically true
+EDIT_ORDER_CHECK Save refuses actual applied agent cells before receipt consumption true
+EDIT_ORDER_CHECK unconsumed art completion still excludes PAINT true
+EDIT_ORDER_CHECK unconsumed art completion still excludes legacy commands true
+EDIT_ORDER_CHECK art completion retains exact applied native content true
+EDIT_ORDER_CHECK Save admission resumes after agent completion consumption true
+EDIT_ORDER_CHECK pre-art human source fence is invalidated true
+EDIT_ORDER_CHECK human operation enters after art receipt consumption true
+EDIT_ORDER_CHECK Save refuses admitted human PAINT true
+EDIT_ORDER_CHECK agent is told to retry while human PAINT owns the boundary true
+EDIT_ORDER_CHECK pending human operation excludes legacy commands true
+EDIT_ORDER_CHECK human preflight retains the boundary between finite slices true
+EDIT_ORDER_CHECK active human operation excludes agent chunks true
+EDIT_ORDER_CHECK human operation completes in the same native World true
+EDIT_ORDER_CHECK Save refuses unconsumed human PAINT completion true
+EDIT_ORDER_CHECK unconsumed human completion still excludes agent chunks true
+EDIT_ORDER_CHECK unconsumed human completion still excludes legacy commands true
+EDIT_ORDER_CHECK human completion exposes confirmed Water material true
+EDIT_ORDER_CHECK agent resumes after human completion consumption true
+EDIT_ORDER_CHECK agent resumes without losing its native edit true
+EDIT_ORDER_CHECK ordinary legacy drawing still admits when editors are idle true
+EDIT_ORDER_CHECK Save refuses queued ordinary human brush edits true
+EDIT_ORDER_CHECK pending legacy mutations precede new art true
+EDIT_ORDER_CHECK pending legacy mutations precede new PAINT true
+EDIT_ORDER_CHECK Save refuses extracted ordinary brush edits until native execution true
+EDIT_ORDER_CHECK extracted legacy commands remain visible to agent admission true
+EDIT_ORDER_CHECK extracted legacy commands remain visible to human admission true
+EDIT_ORDER_CHECK extracted legacy commands apply in native order true
+EDIT_ORDER_CHECK Save admission resumes after ordinary edits and source publication true
+EDIT_ORDER_CHECK agent may continue after legacy context publication true
+EDIT_ORDER_CHECK post-legacy agent operation is retained true
+EDIT_ORDER_CHECK Save refuses an extracted World transition true
+EDIT_ORDER_CHECK extracted World transition excludes both editors true
+EDIT_ORDER_CHECK extracted World transition excludes legacy authoring true
+EDIT_ORDER_CHECK controlled extracted transition refuses equipment without enqueue true
+EDIT_ORDER_CHECK controlled pending reset refuses equipment without enqueue true
+EDIT_ORDER_CHECK controlled acknowledged-install state admits equipment again true
+EDIT_ORDER_CHECK admitted equipment configuration reaches the same owner without paused cell mutation true
+EDIT_ORDER_CHECK replacement fixture admits pending art true
+EDIT_ORDER_CHECK World command explicitly cancels admitted but unstarted art true
+EDIT_ORDER_CHECK World commands retain both editor epoch fences true
+EDIT_ORDER_CHECK reset fixture admits pending human paint true
+EDIT_ORDER_CHECK reset cancels human paint and advances the art fence without changing stored cells true
+EDIT_ORDER_CHECK settings-fence fixture admits art true
+EDIT_ORDER_CHECK art execution rechecks construction settings before writing true
+EDIT_ORDER_CHECK generation-fence fixture admits art true
+EDIT_ORDER_CHECK art execution rechecks native World generation before writing true
+EDIT_ORDER_CHECK public Save seeds a valid named start at the idle boundary true
+EDIT_ORDER_CHECK ordinary Workbench brush records admission before native execution true
+EDIT_ORDER_CHECK public Save refuses queued brush edits and preserves the existing file true
+EDIT_ORDER_CHECK public Save refuses extracted brush edits and preserves the existing file true
+EDIT_ORDER_CHECK public Save resumes after the same ordinary brush is natively applied true
+EDIT_ORDER_CHECK saved ordinary brush record reopens without claiming a queued result true
+EDIT_ORDER_CHECK orphan-receipt Save fixture admits actual native art true
+EDIT_ORDER_CHECK orphan-receipt fixture holds an actual applied native result true
+EDIT_ORDER_CHECK public Save preserves an unconsumed agent receipt and the prior saved bytes true
+EDIT_ORDER_CHECK real agent executor consumes the native result and records its confirmed prefix true
+EDIT_ORDER_CHECK public Save succeeds after native receipt ownership is settled true
+EDIT_ORDER_CHECK reopened start retains both the human brush and confirmed agent cell true
+EDIT_ORDER_CHECK ordinary brush cannot bypass the partial-edit recovery hold or invalidate recovery history true
+EDIT_ORDER_CHECK entire public Save workflow completed true
+EDIT_ORDER_RESULT {"checks":144,"controlled_lease_fixtures":true,"failures":0,"native_backend":"CyberNativeCellWorld","native_workers":[1,4]}

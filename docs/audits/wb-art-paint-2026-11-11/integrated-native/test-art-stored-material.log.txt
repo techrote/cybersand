@@ -1,0 +1,93 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ART_STORED_CHECK source-built native stored_material_at API is loaded true
+ART_STORED_CHECK native fixture configured for 1 workers true
+ART_STORED_CHECK actual native worker count is 1 true
+ART_STORED_CHECK native transient body overlays effective Wall at (20, 20) true
+ART_STORED_CHECK native transient body overlays effective Wall at (21, 20) true
+ART_STORED_CHECK native transient body overlays effective Wall at (22, 20) true
+ART_STORED_CHECK stored Empty / Hard wall / Wall remain distinguishable below a body true
+ART_STORED_CHECK stored query retains existing out-of-bounds Wall convention true
+ART_STORED_CHECK native nonempty write under a body is refused true
+ART_STORED_CHECK native erase exposes the stored/effective readback distinction true
+ART_STORED_CHECK native owner admits bounded command as queued true
+ART_STORED_CHECK native owner publishes a consumed receipt true
+ART_STORED_CHECK completed receipt comes from the actual native World true
+ART_STORED_CHECK paint exact changed/unchanged/excluded/refused accounting true
+ART_STORED_CHECK paint receipt contains actual before/after stored material IDs true
+ART_STORED_CHECK confirmed receipt revision excludes the unchanged no-op true
+ART_STORED_CHECK agent paint preserves every masked source identity true
+ART_STORED_CHECK occupied and human-protected cells were not written true
+ART_STORED_CHECK native owner admits bounded command as queued true
+ART_STORED_CHECK native owner publishes a consumed receipt true
+ART_STORED_CHECK erase exact changed/unchanged/excluded/refused accounting true
+ART_STORED_CHECK erase receipt contains stored identity rather than body overlay true
+ART_STORED_CHECK agent erase preserves masked Empty, Hard wall and Wall true
+ART_STORED_CHECK native owner admits bounded command as queued true
+ART_STORED_CHECK native owner publishes a consumed receipt true
+ART_STORED_CHECK human-enabled Metal destination remains available to agent drawing true
+ART_STORED_CHECK native owner admits bounded command as queued true
+ART_STORED_CHECK native owner publishes a consumed receipt true
+ART_STORED_CHECK enabling a destination never weakens protected source policy true
+ART_STORED_CHECK disabled destination is explicitly refused before native writes true
+ART_STORED_CHECK unsupported destination is refused without changing the palette true
+ART_STORED_CHECK queue admission does not claim application true
+ART_STORED_CHECK unconsumed receipt keeps its exclusive slot and is not overwritten true
+ART_STORED_CHECK retained receipt reports only the actually applied command true
+ART_STORED_CHECK Stop fixture admits an unstarted native chunk true
+ART_STORED_CHECK Stop retains truthful zero-write cancellation accounting true
+ART_STORED_CHECK late old-epoch submission remains fenced true
+ART_STORED_CHECK source-built native stored_material_at API is loaded true
+ART_STORED_CHECK native fixture configured for 4 workers true
+ART_STORED_CHECK actual native worker count is 4 true
+ART_STORED_CHECK native transient body overlays effective Wall at (20, 20) true
+ART_STORED_CHECK native transient body overlays effective Wall at (21, 20) true
+ART_STORED_CHECK native transient body overlays effective Wall at (22, 20) true
+ART_STORED_CHECK stored Empty / Hard wall / Wall remain distinguishable below a body true
+ART_STORED_CHECK stored query retains existing out-of-bounds Wall convention true
+ART_STORED_CHECK native nonempty write under a body is refused true
+ART_STORED_CHECK native erase exposes the stored/effective readback distinction true
+ART_STORED_CHECK native owner admits bounded command as queued true
+ART_STORED_CHECK native owner publishes a consumed receipt true
+ART_STORED_CHECK completed receipt comes from the actual native World true
+ART_STORED_CHECK paint exact changed/unchanged/excluded/refused accounting true
+ART_STORED_CHECK paint receipt contains actual before/after stored material IDs true
+ART_STORED_CHECK confirmed receipt revision excludes the unchanged no-op true
+ART_STORED_CHECK agent paint preserves every masked source identity true
+ART_STORED_CHECK occupied and human-protected cells were not written true
+ART_STORED_CHECK native owner admits bounded command as queued true
+ART_STORED_CHECK native owner publishes a consumed receipt true
+ART_STORED_CHECK erase exact changed/unchanged/excluded/refused accounting true
+ART_STORED_CHECK erase receipt contains stored identity rather than body overlay true
+ART_STORED_CHECK agent erase preserves masked Empty, Hard wall and Wall true
+ART_STORED_CHECK native owner admits bounded command as queued true
+ART_STORED_CHECK native owner publishes a consumed receipt true
+ART_STORED_CHECK human-enabled Metal destination remains available to agent drawing true
+ART_STORED_CHECK native owner admits bounded command as queued true
+ART_STORED_CHECK native owner publishes a consumed receipt true
+ART_STORED_CHECK enabling a destination never weakens protected source policy true
+ART_STORED_CHECK disabled destination is explicitly refused before native writes true
+ART_STORED_CHECK unsupported destination is refused without changing the palette true
+ART_STORED_CHECK queue admission does not claim application true
+ART_STORED_CHECK unconsumed receipt keeps its exclusive slot and is not overwritten true
+ART_STORED_CHECK retained receipt reports only the actually applied command true
+ART_STORED_CHECK Stop fixture admits an unstarted native chunk true
+ART_STORED_CHECK Stop retains truthful zero-write cancellation accounting true
+ART_STORED_CHECK late old-epoch submission remains fenced true
+ART_STORED_CHECK one and four native workers produce identical stored material receipts true
+ART_STORED_CHECK native owner admits bounded command as queued true
+ART_STORED_CHECK native owner publishes a consumed receipt true
+ART_STORED_CHECK synthetic stale runtime refuses every cell with actionable feedback before writing true
+ART_STORED_CHECK native owner admits bounded command as queued true
+ART_STORED_CHECK native owner publishes a consumed receipt true
+ART_STORED_CHECK synthetic rejection reports the exact completed prefix and leaves the suffix unattempted true
+ART_STORED_CHECK synthetic rejection preserves actual failed-write readback true
+ART_STORED_CHECK native owner admits bounded command as queued true
+ART_STORED_CHECK native owner publishes a consumed receipt true
+ART_STORED_CHECK synthetic first-write refusal is not reported as successful completion true
+ART_STORED_CHECK native owner admits bounded command as queued true
+ART_STORED_CHECK native owner publishes a consumed receipt true
+ART_STORED_CHECK synthetic wrong-material mutation remains visible in history rather than claiming requested success true
+ART_STORED_RESULT {"checks":88,"failures":0,"native_backend":"CyberNativeCellWorld","native_workers":[1,4],"synthetic_failure_fixtures":4}

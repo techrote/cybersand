@@ -9,6 +9,8 @@ const Palette = preload("res://scripts/material_appearance_lut.gd")
 const PREVIEW_CELLS_PER_FRAME := 8192
 const PLANE_CELLS_PER_TURN := 2048
 const PROFILE_MAX_BYTES := 1024 * 1024
+const PACKAGED_PROFILES := "res://authoring/worldgen"
+const CHECKOUT_PROFILES := "res://../examples/worldgen"
 
 var _workbench: Control
 var _profile := OptionButton.new()
@@ -40,6 +42,45 @@ var _ready_packet: Dictionary = {}
 var _saved_generation: Dictionary = {}
 var _saved_setup: Dictionary = {}
 var _saved_recipe: Dictionary = {}
+var _profile_error := ""
+
+func _reload_profiles() -> void:
+	_profile.clear()
+	var seen := {}
+	# Packages carry canonical recipes inside the project. Source checkouts
+	# use examples/worldgen. Neither path depends on the launch cwd.
+	for directory: String in [PACKAGED_PROFILES, ProjectSettings.globalize_path(CHECKOUT_PROFILES)]:
+		if not DirAccess.dir_exists_absolute(directory): continue
+		var names := DirAccess.get_files_at(directory)
+		names.sort()
+		for filename: String in names:
+			if not filename.ends_with(".json") or seen.has(filename): continue
+			var path := directory.path_join(filename)
+			var file := FileAccess.open(path, FileAccess.READ)
+			if file == null: continue
+			seen[filename] = true
+			_profile.add_item(filename.trim_suffix(".json"))
+			_profile.set_item_metadata(_profile.item_count - 1, path)
+	_profile_error = ""
+	if _profile.item_count == 0:
+		_profile_error = "No readable GEN-007 profiles found. Reinstall the complete Workbench package with godot/authoring/worldgen, or use Choose profile file… Searched: %s; %s" % [ProjectSettings.globalize_path(PACKAGED_PROFILES), ProjectSettings.globalize_path(CHECKOUT_PROFILES)]
+	else:
+		for i: int in _profile.item_count:
+			if _profile.get_item_text(i) == "gen007-deepworks":
+				_profile.select(i)
+				break
+	_preview_button.disabled = _profile.item_count == 0
+
+func _select_profile_file(path: String) -> void:
+	_saved_recipe.clear()
+	_saved_generation.clear()
+	_saved_setup.clear()
+	_profile.add_item(path.get_file())
+	_profile.set_item_metadata(_profile.item_count - 1, path)
+	_profile.select(_profile.item_count - 1)
+	_profile_error = ""
+	_preview_button.disabled = false
+	_invalidate()
 
 func _field(row: HBoxContainer, text: String, field: Control) -> void:
 	var label := Label.new()
@@ -86,18 +127,7 @@ func mount(workbench: Control) -> void:
 	_preview_button.text = "Generate preview"
 	row.add_child(_preview_button)
 	_preview_button.pressed.connect(_start)
-	var directory: String = ProjectSettings.globalize_path("res://../examples/worldgen")
-	var names := DirAccess.get_files_at(directory)
-	names.sort()
-	for filename: String in names:
-		if not filename.ends_with(".json"): continue
-		_profile.add_item(filename.trim_suffix(".json"))
-		_profile.set_item_metadata(_profile.item_count - 1, directory.path_join(filename))
-	if _profile.item_count > 0:
-		for i: int in _profile.item_count:
-			if _profile.get_item_text(i) == "gen007-deepworks":
-				_profile.select(i)
-				break
+	_reload_profiles()
 	row = _row(root)
 	for setting: Array in [["Seed", _seed, 0, 2147483647, 19301],
 			["World X", _x, -1000000, 1000000, 0],
@@ -123,16 +153,9 @@ func mount(workbench: Control) -> void:
 	_browse.access = FileDialog.ACCESS_FILESYSTEM
 	_browse.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	_browse.add_filter("*.json", "GEN-007 recipe JSON")
-	_browse.file_selected.connect(func(path: String) -> void:
-		_saved_recipe.clear()
-		_saved_generation.clear()
-		_saved_setup.clear()
-		_profile.add_item(path.get_file())
-		_profile.set_item_metadata(_profile.item_count - 1, path)
-		_profile.select(_profile.item_count - 1)
-		_invalidate())
+	_browse.file_selected.connect(_select_profile_file)
 	add_child(_browse)
-	_status.text = "Select a recipe, seed and finite region. No installed World is changed until confirmation."
+	_status.text = _profile_error if not _profile_error.is_empty() else "Select a recipe, seed and finite region. No installed World is changed until confirmation."
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	root.add_child(_status)
 	_composition.text = "Native material composition will appear after complete generation."
@@ -218,7 +241,8 @@ func _invalidate() -> void:
 	_stop()
 	_preview.texture = null
 	_composition.text = "No accepted material proposal."
-	_status.text = "Generate a complete native preview before replacing the current map."
+	_status.text = _profile_error if not _profile_error.is_empty() and _saved_recipe.is_empty() else "Generate a complete native preview before replacing the current map."
+	_preview_button.disabled = _profile.selected < 0 and _saved_recipe.is_empty()
 
 func _fail(reason: String) -> void:
 	_stop()
@@ -234,19 +258,19 @@ func _start() -> void:
 		_recipe = _saved_recipe.duplicate(true)
 	else:
 		if _profile.selected < 0:
-			_fail("Choose a JSON generation profile.")
+			_fail(_profile_error if not _profile_error.is_empty() else "Choose a JSON generation profile with Choose profile file…")
 			return
 		var path := str(_profile.get_item_metadata(_profile.selected))
 		var file := FileAccess.open(path, FileAccess.READ)
 		if file == null:
-			_fail("Cannot open the selected generation profile.")
+			_fail("Cannot read profile %s (error %d). Reinstall the complete package or use Choose profile file…" % [path, FileAccess.get_open_error()])
 			return
 		if file.get_length() > PROFILE_MAX_BYTES:
 			_fail("Generator recipe exceeds the bounded 1 MiB profile limit.")
 			return
 		var parse := JSON.new()
 		if parse.parse(file.get_as_text()) != OK or not parse.data is Dictionary:
-			_fail("Invalid generation recipe JSON.")
+			_fail("Invalid generation recipe JSON in %s. Choose a valid GEN-007 profile." % path)
 			return
 		_recipe = parse.data
 		_recipe["seed"] = int(_seed.value)

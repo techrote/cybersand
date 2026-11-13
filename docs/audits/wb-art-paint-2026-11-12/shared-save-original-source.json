@@ -1,0 +1,10 @@
+{
+  "baseline_git_source": "a8259c5a789cff1d2652729c1a24508e1fce4ab6",
+  "files": {
+    "godot/scripts/workbench_paint_editor_controller.gd": "a577a25a5014ebe3532ec6232556bb8b72e61bd3b8a3bb2571ab6ee770d8df04",
+    "godot/scripts/shared_workbench.gd": "d0e34972dc88f20d10ed1bd73b634367318603ccce822dcd75e907b269e625d1"
+  },
+  "test_sha256": "f08a0429e0fcdea481d26037ce9db8be850a89f406e18ed921013d2b9ebd6a00",
+  "exit_code": 1,
+  "expected_failure": true
+}

@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 # Real mounted Control tree, asynchronous Python authoring service, compiled C++
 # candidate probe and existing native MicroScenario World. No UI/backend mocks.
 const SCENE: String = "res://materials_lab.tscn"
@@ -479,7 +481,10 @@ func workbench_mount() -> void:
 	var installed: Callable = func() -> bool:
 		return workbench != null and not workbench.applied.is_empty() and not workbench.busy() \
 			and main.pending_microscenario_apply.is_empty() and not main.tower_context.get("liquid_solver_policy",{}).is_empty()
-	if await wait_for(installed,"real shared Workbench installation",60000):
+	# The first rendered Main can compile its cold ANGLE palette before the
+	# owner acknowledgement reaches this fixture. Use the registered startup
+	# allowance; subsequent native operations keep their existing deadlines.
+	if await wait_for(installed,"real shared Workbench installation",Watchdogs.milliseconds("main_ack_seconds")):
 		var open_button: Button = find_button(workbench,"Materials Lab…")
 		expect(open_button != null,"Existing shared Workbench has a mounted Materials Lab button")
 		if open_button != null:
@@ -899,7 +904,8 @@ func run() -> void:
 func _capture_sources() -> Dictionary:
 	var hashes: Dictionary = {}
 	for path: String in ["materials_lab.tscn","addons/cybersand_native/cybersand_native.gdextension","scripts/material_lab_screen.gd","scripts/material_lab_property_tree.gd","scripts/material_lab_panel.gd","scripts/material_lab_world_panel.gd",
-		"scripts/material_lab_service.gd","scripts/material_lab_catalogue.gd","scripts/material_lab_experiment.gd","scripts/shared_workbench.gd","tests/test_material_lab_ui.gd"]:
+		"scripts/material_lab_service.gd","scripts/material_lab_catalogue.gd","scripts/material_lab_experiment.gd","scripts/shared_workbench.gd","tests/test_material_lab_ui.gd",
+		"tests/support/ci_execution_policy.gd","tests/support/ci_execution_policy.json"]:
 		hashes[path] = FileAccess.get_sha256("res://" + path)
 	return hashes
 

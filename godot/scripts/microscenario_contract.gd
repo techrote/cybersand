@@ -9,6 +9,8 @@ const WORKBENCH_ID := "workbench/blank"
 const WORKBENCH_MAX_SIDE := 2048
 const MATERIAL_COUNT: int = 132
 const MAX_RECORDS: int = 4096
+# Bound for the interactive Workbench only, never controlled scenarios.
+const WORKBENCH_MAX_RECORDS: int = 32768
 const MAX_EVENTS: int = 24
 const MAX_OBSERVATIONS: int = 24
 const MAX_TICK: int = 3600
@@ -105,7 +107,8 @@ static func validate(value: Variant) -> Dictionary:
 	var transport: Dictionary = CyberTransportProfiles.resolve(value.transport_profile)
 	if not transport.get("ok", false): return _error("Transport profile rejected")
 
-	var rectangles: Variant = _records(value.rectangles, 5, 8 * extent.x * extent.y,extent)
+	var rectangles: Variant = _records(value.rectangles, 5, 8 * extent.x * extent.y,extent,
+		WORKBENCH_MAX_RECORDS if workbench else MAX_RECORDS)
 	var fills: Variant = _records(value.partial_water_fills, 6, extent.x * extent.y,extent)
 	if rectangles == null or fills == null:
 		return _error("Invalid setup rectangle/fill or setup capacity exceeded")
@@ -232,8 +235,9 @@ static func _presentation(value: Variant) -> Variant:
 		"duration_ticks":int(value.duration_ticks), "baseline":str(value.baseline),
 		"profile":str(value.profile), "regions":regions}
 
-static func _records(value: Variant, stride: int, area_limit: int, extent: Vector2i) -> Variant:
-	if not value is Array or value.size() % stride != 0 or value.size() / stride > MAX_RECORDS:
+static func _records(value: Variant, stride: int, area_limit: int, extent: Vector2i,
+		record_limit: int = MAX_RECORDS) -> Variant:
+	if not value is Array or value.size() % stride != 0 or value.size() / stride > record_limit:
 		return null
 	var result: Array[int] = []
 	var area: int = 0

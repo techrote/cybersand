@@ -39,7 +39,10 @@ func mouse_click(button: Button) -> void:
 
 func button_named(label: String) -> Button:
 	for candidate: Node in ui.find_children("*","Button",true,false):
-		if candidate.text == label: return candidate
+		# Popups may contain the same action label. Only target the visible
+		# shared toolbar in this viewport, never an unopened child Window.
+		if candidate.get_viewport() == ui.get_viewport() and candidate.is_visible_in_tree() \
+				and candidate.text == label: return candidate
 	return null
 
 func pick(picker: OptionButton, index: int) -> void:

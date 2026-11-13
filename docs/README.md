@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.
+
 Materials Lab v1 review candidate: [desktop launch, inspection, authoring and native tests](operations/materials-lab-authoring.md),
 [initial qualification](audits/2026-11-11-materials-lab-v1.md), and
 [completion/runtime/Windows package evidence](audits/2026-11-11-materials-lab-completion.md).
@@ -17,6 +19,8 @@ The mounted interface consumes native read-only facts, compiles isolated presets
 and reuses MicroScenarios. Production material authority, IDs and saved-world
 semantics remain unchanged; #353-B remains separate. The owner excluded
 MoltenGlass H1 from this Materials Lab continuation.
+
+Current Draft: [integrated PAINT + agent Workbench](operations/wb-art-paint-integrated-candidate.md), including standalone generator profiles, native stored-material receipts and one edit ordering boundary. Component contracts: [direct drawing](systems/workbench-direct-art-batches.md), [provider connection/context/scanlines](systems/workbench-art-providers.md), and [full PAINT editor](systems/paint-editor-bounded-shapes.md).
 
 Shared authoring: [approved data contract and convergence plan](architecture/shared-workbench-authoring-data.md)
 separates Current generated-start saves from Planned material-only Flatten and

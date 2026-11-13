@@ -1,0 +1,547 @@
+{
+  "schema": 1,
+  "purpose": "Terminal source-matched installed Workbench and agent Undo/Redo acceptance; dedicated campaign only.",
+  "status": "passed",
+  "source_commit": "86d704a259745621168e8bffb149b4d1aee2354b",
+  "source_tree": "711689ba064744ff2768898f6293d7ea7b4e4d71",
+  "workflow": {
+    "run_id": 43323028548,
+    "run_number": 14,
+    "attempt": 1,
+    "url": "https://github.com/techrote/cybersand/actions/runs/43323028548",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 131548323506,
+        "name": "Linux source-built installed generator and authoring qualification",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 131548323712,
+        "name": "Pinned LLVM-MinGW x86_64 source-matched DLL",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 131550612474,
+        "name": "Windows graphical installed generator and authoring qualification",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "skipped_jobs": []
+  },
+  "counting_rule": "Sum each process completion marker once; add three distinct provider HTTP check totals. Imports, wrapper success, duplicate markers, PNGs and native witness counts are not extra assertions. Five Python package tests per platform are separate.",
+  "platforms": {
+    "linux": {
+      "status": "passed",
+      "evidence_artifact": {
+        "id": 13993965342,
+        "name": "wb-art-paint-linux-43323028548-1",
+        "download_url": "https://github.com/techrote/cybersand/actions/runs/43323028548/artifacts/13993965342",
+        "bytes": 14893733,
+        "sha256": "6400c3dbe95082fc87666f43f41b3a32765e1eb9c8861096bed1f875c4a7ad25",
+        "expires_at": "2027-02-10T22:46:46Z"
+      },
+      "directly_counted_assertions": 8114,
+      "installed_assertions": 639,
+      "regression_assertions": 7367,
+      "provider_http_assertions": 108,
+      "separate_package_contract_tests": 5,
+      "installed_processes": 12,
+      "regression_processes": 36,
+      "png_count": 57,
+      "providers": {
+        "OpenAI": {
+          "checks": 36,
+          "failures": 0,
+          "provider": "OpenAI",
+          "model": "deployment-alias",
+          "requested_model": "fixture"
+        },
+        "NVIDIA": {
+          "checks": 36,
+          "failures": 0,
+          "provider": "NVIDIA",
+          "model": "deployment-alias",
+          "requested_model": "fixture"
+        },
+        "LM-Studio": {
+          "checks": 36,
+          "failures": 0,
+          "provider": "LM Studio",
+          "model": "deployment-alias",
+          "requested_model": "fixture"
+        }
+      },
+      "http_failure_controls": "Rate error, exhausted quota delay, billing refusal, cancellation and timeout passed; no numeric assertion total added.",
+      "agent_undo": [
+        {
+          "marker": "ART_UNDO_RESULT",
+          "workers": 1,
+          "checks": 260,
+          "failures": [],
+          "measurements": [
+            {
+              "cells": 262656,
+              "elapsed_usec": 20449808,
+              "history_segments": 2
+            }
+          ],
+          "native_material_witness_count": 40,
+          "native_material_witnesses_sha256": "0c28108df095a747ec3ef851f3f2ae93da7bbd1c46ff68de46bc2e55025738e0",
+          "native_sha256": "1de86fb8950113162be26796806f4e1aa7d17e443d428a7fa9bbf660afdb38ff",
+          "tested_script_hashes_match_source": true,
+          "provider_boundary_fixture": "controlled states; no HTTP request"
+        },
+        {
+          "marker": "ART_UNDO_RESULT",
+          "workers": 4,
+          "checks": 260,
+          "failures": [],
+          "measurements": [
+            {
+              "cells": 262656,
+              "elapsed_usec": 20433227,
+              "history_segments": 2
+            }
+          ],
+          "native_material_witness_count": 40,
+          "native_material_witnesses_sha256": "0c28108df095a747ec3ef851f3f2ae93da7bbd1c46ff68de46bc2e55025738e0",
+          "native_sha256": "1de86fb8950113162be26796806f4e1aa7d17e443d428a7fa9bbf660afdb38ff",
+          "tested_script_hashes_match_source": true,
+          "provider_boundary_fixture": "controlled states; no HTTP request"
+        }
+      ],
+      "author_reopen": [
+        {
+          "case": "installed-combined-1024-workers-1",
+          "side": 1024,
+          "workers": 1,
+          "author_checks": 216,
+          "reopen_checks": 54,
+          "authored_digest": "c7893c3b5a6032b990b38f402edbba9ca2f1a996f6751c28194492f68f4d34b2",
+          "reopened_digest": "c7893c3b5a6032b990b38f402edbba9ca2f1a996f6751c28194492f68f4d34b2",
+          "fresh_reopen_digest_matches": true,
+          "agent_edit_saved_undone": true,
+          "continue_editing_with_agent_undo_redo": true,
+          "native_region_bytes": 95744,
+          "native_region_sha256": "a305a70d9357b87a6c30601ed0dd2edd5cf977cbf7291687d84ae78fd76f25d8",
+          "stop_prefix": 4096,
+          "display": "X11",
+          "native_sha256": "1de86fb8950113162be26796806f4e1aa7d17e443d428a7fa9bbf660afdb38ff",
+          "simulation_equipment": {
+            "tick_before": 0,
+            "tick_after": 13,
+            "nozzle_emitted": 7,
+            "nozzle_injected_water": 1785,
+            "worker_capacity": 1,
+            "workers_observed": 1
+          },
+          "source_script_hashes_match_commit": true
+        },
+        {
+          "case": "installed-combined-1024-workers-4",
+          "side": 1024,
+          "workers": 4,
+          "author_checks": 216,
+          "reopen_checks": 54,
+          "authored_digest": "c7893c3b5a6032b990b38f402edbba9ca2f1a996f6751c28194492f68f4d34b2",
+          "reopened_digest": "c7893c3b5a6032b990b38f402edbba9ca2f1a996f6751c28194492f68f4d34b2",
+          "fresh_reopen_digest_matches": true,
+          "agent_edit_saved_undone": true,
+          "continue_editing_with_agent_undo_redo": true,
+          "native_region_bytes": 95744,
+          "native_region_sha256": "a305a70d9357b87a6c30601ed0dd2edd5cf977cbf7291687d84ae78fd76f25d8",
+          "stop_prefix": 4096,
+          "display": "X11",
+          "native_sha256": "1de86fb8950113162be26796806f4e1aa7d17e443d428a7fa9bbf660afdb38ff",
+          "simulation_equipment": {
+            "tick_before": 0,
+            "tick_after": 13,
+            "nozzle_emitted": 6,
+            "nozzle_injected_water": 1530,
+            "worker_capacity": 4,
+            "workers_observed": 3
+          },
+          "source_script_hashes_match_commit": true
+        },
+        {
+          "case": "source-combined-workers-1",
+          "side": 512,
+          "workers": 1,
+          "author_checks": 197,
+          "reopen_checks": 51,
+          "authored_digest": "52e3a94accff0bc8498412b740f3c4381717dc5c4bec3501194e847b3ae1eaab",
+          "reopened_digest": "52e3a94accff0bc8498412b740f3c4381717dc5c4bec3501194e847b3ae1eaab",
+          "fresh_reopen_digest_matches": true,
+          "agent_edit_saved_undone": true,
+          "continue_editing_with_agent_undo_redo": true,
+          "native_region_bytes": 95744,
+          "native_region_sha256": "a305a70d9357b87a6c30601ed0dd2edd5cf977cbf7291687d84ae78fd76f25d8",
+          "stop_prefix": 4096,
+          "display": "X11",
+          "native_sha256": "1de86fb8950113162be26796806f4e1aa7d17e443d428a7fa9bbf660afdb38ff",
+          "simulation_equipment": {
+            "tick_before": 0,
+            "tick_after": 11,
+            "nozzle_emitted": 6,
+            "nozzle_injected_water": 1530,
+            "worker_capacity": 1,
+            "workers_observed": 1
+          },
+          "source_script_hashes_match_commit": true
+        },
+        {
+          "case": "source-combined-workers-4",
+          "side": 512,
+          "workers": 4,
+          "author_checks": 197,
+          "reopen_checks": 51,
+          "authored_digest": "52e3a94accff0bc8498412b740f3c4381717dc5c4bec3501194e847b3ae1eaab",
+          "reopened_digest": "52e3a94accff0bc8498412b740f3c4381717dc5c4bec3501194e847b3ae1eaab",
+          "fresh_reopen_digest_matches": true,
+          "agent_edit_saved_undone": true,
+          "continue_editing_with_agent_undo_redo": true,
+          "native_region_bytes": 95744,
+          "native_region_sha256": "a305a70d9357b87a6c30601ed0dd2edd5cf977cbf7291687d84ae78fd76f25d8",
+          "stop_prefix": 4096,
+          "display": "X11",
+          "native_sha256": "1de86fb8950113162be26796806f4e1aa7d17e443d428a7fa9bbf660afdb38ff",
+          "simulation_equipment": {
+            "tick_before": 0,
+            "tick_after": 13,
+            "nozzle_emitted": 7,
+            "nozzle_injected_water": 1785,
+            "worker_capacity": 4,
+            "workers_observed": 3
+          },
+          "source_script_hashes_match_commit": true
+        }
+      ],
+      "local_summary_sha256": "6fa283a9fd643682b9e78db0a7d6bdae1f943a33a853f8e81bbba3a7a7cc5d16"
+    },
+    "windows": {
+      "status": "passed",
+      "evidence_artifact": {
+        "id": 13992619305,
+        "name": "wb-art-paint-windows-43323028548-1",
+        "download_url": "https://github.com/techrote/cybersand/actions/runs/43323028548/artifacts/13992619305",
+        "bytes": 14925738,
+        "sha256": "fe6d11cb998b3876deda72152719a66319865b4b2af2ea52f0864691af005a5c",
+        "expires_at": "2027-02-10T22:46:46Z"
+      },
+      "directly_counted_assertions": 8114,
+      "installed_assertions": 639,
+      "regression_assertions": 7367,
+      "provider_http_assertions": 108,
+      "separate_package_contract_tests": 5,
+      "installed_processes": 12,
+      "regression_processes": 36,
+      "png_count": 57,
+      "providers": {
+        "OpenAI": {
+          "checks": 36,
+          "failures": 0,
+          "provider": "OpenAI",
+          "model": "deployment-alias",
+          "requested_model": "fixture"
+        },
+        "NVIDIA": {
+          "checks": 36,
+          "failures": 0,
+          "provider": "NVIDIA",
+          "model": "deployment-alias",
+          "requested_model": "fixture"
+        },
+        "LM-Studio": {
+          "checks": 36,
+          "failures": 0,
+          "provider": "LM Studio",
+          "model": "deployment-alias",
+          "requested_model": "fixture"
+        }
+      },
+      "http_failure_controls": "Rate error, exhausted quota delay, billing refusal, cancellation and timeout passed; no numeric assertion total added.",
+      "agent_undo": [
+        {
+          "marker": "ART_UNDO_RESULT",
+          "workers": 1,
+          "checks": 260,
+          "failures": [],
+          "measurements": [
+            {
+              "cells": 262656,
+              "elapsed_usec": 20482943,
+              "history_segments": 2
+            }
+          ],
+          "native_material_witness_count": 40,
+          "native_material_witnesses_sha256": "0c28108df095a747ec3ef851f3f2ae93da7bbd1c46ff68de46bc2e55025738e0",
+          "native_sha256": "5fb30ba80cf8b783eb0bb8ab5542bcba39721c6095090a6cb2db70691f58dabc",
+          "tested_script_hashes_match_source": true,
+          "provider_boundary_fixture": "controlled states; no HTTP request"
+        },
+        {
+          "marker": "ART_UNDO_RESULT",
+          "workers": 4,
+          "checks": 260,
+          "failures": [],
+          "measurements": [
+            {
+              "cells": 262656,
+              "elapsed_usec": 20471015,
+              "history_segments": 2
+            }
+          ],
+          "native_material_witness_count": 40,
+          "native_material_witnesses_sha256": "0c28108df095a747ec3ef851f3f2ae93da7bbd1c46ff68de46bc2e55025738e0",
+          "native_sha256": "5fb30ba80cf8b783eb0bb8ab5542bcba39721c6095090a6cb2db70691f58dabc",
+          "tested_script_hashes_match_source": true,
+          "provider_boundary_fixture": "controlled states; no HTTP request"
+        }
+      ],
+      "author_reopen": [
+        {
+          "case": "installed-combined-1024-workers-1",
+          "side": 1024,
+          "workers": 1,
+          "author_checks": 216,
+          "reopen_checks": 54,
+          "authored_digest": "30933445ad6830dfb748f526f0aa173b58b914e6b6559db503a146b7d5ccd4fd",
+          "reopened_digest": "30933445ad6830dfb748f526f0aa173b58b914e6b6559db503a146b7d5ccd4fd",
+          "fresh_reopen_digest_matches": true,
+          "agent_edit_saved_undone": true,
+          "continue_editing_with_agent_undo_redo": true,
+          "native_region_bytes": 95744,
+          "native_region_sha256": "840d799ccd38831b9b3ce5322ba1cce75a45063d0a90e6e9a2f2605f5d2bd856",
+          "stop_prefix": 2944,
+          "display": "Windows",
+          "native_sha256": "5fb30ba80cf8b783eb0bb8ab5542bcba39721c6095090a6cb2db70691f58dabc",
+          "simulation_equipment": {
+            "tick_before": 0,
+            "tick_after": 16,
+            "nozzle_emitted": 7,
+            "nozzle_injected_water": 1785,
+            "worker_capacity": 1,
+            "workers_observed": 1
+          },
+          "source_script_hashes_match_commit": true
+        },
+        {
+          "case": "installed-combined-1024-workers-4",
+          "side": 1024,
+          "workers": 4,
+          "author_checks": 216,
+          "reopen_checks": 54,
+          "authored_digest": "c7893c3b5a6032b990b38f402edbba9ca2f1a996f6751c28194492f68f4d34b2",
+          "reopened_digest": "c7893c3b5a6032b990b38f402edbba9ca2f1a996f6751c28194492f68f4d34b2",
+          "fresh_reopen_digest_matches": true,
+          "agent_edit_saved_undone": true,
+          "continue_editing_with_agent_undo_redo": true,
+          "native_region_bytes": 95744,
+          "native_region_sha256": "a305a70d9357b87a6c30601ed0dd2edd5cf977cbf7291687d84ae78fd76f25d8",
+          "stop_prefix": 4096,
+          "display": "Windows",
+          "native_sha256": "5fb30ba80cf8b783eb0bb8ab5542bcba39721c6095090a6cb2db70691f58dabc",
+          "simulation_equipment": {
+            "tick_before": 0,
+            "tick_after": 15,
+            "nozzle_emitted": 6,
+            "nozzle_injected_water": 1530,
+            "worker_capacity": 4,
+            "workers_observed": 4
+          },
+          "source_script_hashes_match_commit": true
+        },
+        {
+          "case": "source-combined-workers-1",
+          "side": 512,
+          "workers": 1,
+          "author_checks": 197,
+          "reopen_checks": 51,
+          "authored_digest": "f6f2bb5760aff427db8eb09de4c04c15275c6084aa5bcfeca15f16d01a50443a",
+          "reopened_digest": "f6f2bb5760aff427db8eb09de4c04c15275c6084aa5bcfeca15f16d01a50443a",
+          "fresh_reopen_digest_matches": true,
+          "agent_edit_saved_undone": true,
+          "continue_editing_with_agent_undo_redo": true,
+          "native_region_bytes": 95744,
+          "native_region_sha256": "0972ef050bbe403670e266004fc802152c0620fb6c607f69cfba5803e14c8ffc",
+          "stop_prefix": 2304,
+          "display": "Windows",
+          "native_sha256": "5fb30ba80cf8b783eb0bb8ab5542bcba39721c6095090a6cb2db70691f58dabc",
+          "simulation_equipment": {
+            "tick_before": 0,
+            "tick_after": 12,
+            "nozzle_emitted": 5,
+            "nozzle_injected_water": 1275,
+            "worker_capacity": 1,
+            "workers_observed": 1
+          },
+          "source_script_hashes_match_commit": true
+        },
+        {
+          "case": "source-combined-workers-4",
+          "side": 512,
+          "workers": 4,
+          "author_checks": 197,
+          "reopen_checks": 51,
+          "authored_digest": "7d9c7ea6e153d304cca40caae8d7658b66f56c148a14cf46488bf9b54aaec24d",
+          "reopened_digest": "7d9c7ea6e153d304cca40caae8d7658b66f56c148a14cf46488bf9b54aaec24d",
+          "fresh_reopen_digest_matches": true,
+          "agent_edit_saved_undone": true,
+          "continue_editing_with_agent_undo_redo": true,
+          "native_region_bytes": 95744,
+          "native_region_sha256": "dff013a590b461965e769445e80c2cd14d57f79dd4f8be71be18e7f4bae50b2b",
+          "stop_prefix": 3520,
+          "display": "Windows",
+          "native_sha256": "5fb30ba80cf8b783eb0bb8ab5542bcba39721c6095090a6cb2db70691f58dabc",
+          "simulation_equipment": {
+            "tick_before": 0,
+            "tick_after": 17,
+            "nozzle_emitted": 6,
+            "nozzle_injected_water": 1530,
+            "worker_capacity": 4,
+            "workers_observed": 4
+          },
+          "source_script_hashes_match_commit": true
+        }
+      ],
+      "local_summary_sha256": "82256ab631503de451be0313340c216909f24bf4a5384a238896b18463f63260"
+    }
+  },
+  "windows_package": {
+    "artifact": {
+      "id": 13994755835,
+      "name": "wb-art-paint-windows-desktop-86d704a259745621168e8bffb149b4d1aee2354b",
+      "download_url": "https://github.com/techrote/cybersand/actions/runs/43323028548/artifacts/13994755835",
+      "bytes": 92919438,
+      "sha256": "750bd27eff18eac1219faa44807a71a64780d43f846e58a466275db51ce1ee69",
+      "expires_at": "2027-02-10T22:46:46Z"
+    },
+    "source_commit": "86d704a259745621168e8bffb149b4d1aee2354b",
+    "source_tree": "711689ba064744ff2768898f6293d7ea7b4e4d71",
+    "payload_files": 888,
+    "verified_manifest_payload_files": 887,
+    "candidate_manifest_sha256": "7a06e7c7a6b3e8fb98730927193df82122ed9e94e710e7d5c560281544500d61",
+    "native_source_inputs_verified_against_source_commit": 87,
+    "native_sha256": "5fb30ba80cf8b783eb0bb8ab5542bcba39721c6095090a6cb2db70691f58dabc",
+    "native_bytes": 5100544,
+    "profiles_verified_in_each_directory": 16,
+    "profile_directories": [
+      "examples/worldgen",
+      "godot/authoring/worldgen"
+    ],
+    "rapier_lock_and_patch_verified_against_git": [
+      "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
+      "godot/third_party/rapier2d.lock.json",
+      "third_party/rapier-bvh-build.lock.json"
+    ],
+    "launcher": "Open Workbench.cmd",
+    "vc_runtime": {
+      "file": "vcruntime140.dll",
+      "file_version": "14.44.35211.0",
+      "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+      "authenticode_status": "Valid",
+      "runner": {
+        "image_os": "win22",
+        "image_version": "20261101.353.1",
+        "runner_os": "Windows",
+        "runner_arch": "X64",
+        "workflow_run": "43323028548",
+        "workflow_attempt": "1",
+        "source_commit": "86d704a259745621168e8bffb149b4d1aee2354b"
+      },
+      "license_file_hashes": {
+        "vcruntime140.dll": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+        "Microsoft-Visual-C-Runtime-LICENSE.docx": "f1e3d56ceb2ad68aae0711b910375009e651ac5530fa0760f0dea6e81e54fae1",
+        "Microsoft-Visual-Studio-2022-LICENSE.docx": "9c0cd52b20db9d081854c75bd1b50c75514b8f8cb09c8cad15e89d90b97b5bf3"
+      },
+      "raw_provenance_sha256": "30e25cdc643276a55524d7cd7f5ccce26c31349eb98395256ad73dc0e9abff8b"
+    },
+    "actual_copied_gui_module_proof": {
+      "status": "passed",
+      "pid": 7916,
+      "package": "D:\\a\\_temp\\wb-art-paint-installed\\complete",
+      "source_commit": "86d704a259745621168e8bffb149b4d1aee2354b",
+      "source_tree": "711689ba064744ff2768898f6293d7ea7b4e4d71",
+      "elapsed_seconds": 0.894,
+      "enumeration_error_count": 0,
+      "cleanup": {
+        "terminated_owned_process": true,
+        "exit_code": -1,
+        "environment_restored": true,
+        "error": null
+      },
+      "executable": {
+        "relative_path": "Godot_v4.7-stable_win64.exe",
+        "observed_path": "D:\\a\\_temp\\wb-art-paint-installed\\complete\\Godot_v4.7-stable_win64.exe",
+        "observed_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "status": "verified"
+      },
+      "modules": [
+        {
+          "relative_path": "vcruntime140.dll",
+          "observed_path": "D:\\a\\_temp\\wb-art-paint-installed\\complete\\VCRUNTIME140.dll",
+          "observed_sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+          "status": "verified"
+        },
+        {
+          "relative_path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "observed_path": "D:\\a\\_temp\\wb-art-paint-installed\\complete\\godot\\addons\\cybersand_native\\bin\\cybersand_native.windows.x86_64.dll",
+          "observed_sha256": "5fb30ba80cf8b783eb0bb8ab5542bcba39721c6095090a6cb2db70691f58dabc",
+          "status": "verified"
+        },
+        {
+          "relative_path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+          "observed_path": "D:\\a\\_temp\\wb-art-paint-installed\\complete\\godot\\addons\\godot-rapier2d\\bin\\libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+          "observed_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+          "status": "verified"
+        }
+      ],
+      "raw_receipt_sha256": "1c562e1d515cc09345a91bda49b67552bc7ed220300e49985136d027f8a119af"
+    },
+    "root_independent_package_verification": {
+      "receipt": "build/agent-undo/hosted-dedicated/root-package-verification.json",
+      "sha256": "abb1500628f3ceb0bf92e28b8560d79c4bedb94a00124e91a148b4449d76c9ae"
+    }
+  },
+  "visually_inspected_frames": [
+    {
+      "evidence_path": "windows-evidence/installed/installed-combined-1024-workers-1-author-frames/combined-agent-and-paint.png",
+      "sha256": "6f76dd3184334a3c157d9d6e07e18bb6b52ef3bf3520d436be2195312ead6c8b",
+      "observed": "Windows Art panel visibly exposes shared Undo/Redo beside the manual PAINT interface on the generated map; controls and shared-history label are legible."
+    },
+    {
+      "evidence_path": "windows-evidence/installed/installed-combined-1024-workers-4-reopen-frames/combined-reopened-and-continued.png",
+      "sha256": "bbb4e06a3b9bc6ea7276738a23f37447d2a77cdf1b7e0b7cc1f79d89b73f5cf6",
+      "observed": "Windows fresh-reopen scene shows continued manual and agent authoring; status reports a completed native-confirmed agent Redo."
+    },
+    {
+      "evidence_path": "linux-evidence/installed/installed-combined-1024-workers-1-author-frames/combined-agent-and-paint.png",
+      "sha256": "4a495bd10c111444e7dd3922ee62d42b26eef225fb2701bc450226dc800f8cc1",
+      "observed": "Linux X11 Art panel visibly exposes shared Undo/Redo with the complete manual editor."
+    }
+  ],
+  "retained_raw_evidence": "build/agent-undo/hosted-dedicated",
+  "original_job_logs": [
+    {
+      "file": "linux-installed-131548323506.log",
+      "sha256": "786a43d057e6ab73c557ace3bebda54fe97ec1d229ca1889efc0a9a7b3c59ab2"
+    },
+    {
+      "file": "windows-installed-131550612474.log",
+      "sha256": "58ad3bcb8f1446005d15057f5d9bfefea32c330a936545474e48a61063276a0f"
+    },
+    {
+      "file": "windows-native-build-131548323712.log",
+      "sha256": "5896b88aae2d212342c2a3b4bc1d1d141860d4bfa35d4f24fb410bc133913dff"
+    }
+  ],
+  "limitations": [
+    "All provider transport and multi-turn acceptance uses deterministic loopback HTTP or explicit controlled completion/provider-state fixtures; no live model inference is claimed.",
+    "Agent Undo/Redo is bounded paused construction history, not simulation rewind. Existing authored-start size and stamp limits remain; fragmented target recipes may clearly refuse replay before a part writes.",
+    "Full Native and Godot campaigns and remaining owner/release gates are recorded separately. This dedicated pass does not authorize Ready, merge or auto-merge."
+  ]
+}

@@ -4,7 +4,7 @@ status: Approved design
 document-kind: contract
 scope: Common authored baseline, edits, live-session separation and incremental workbench integration; successor requirements are not implementation claims
 canonical-for: [shared-workbench-authoring-data, workbench-convergence-plan]
-last-reviewed: 2026-11-08
+last-reviewed: 2026-11-11
 related-documents: [../systems/explore001-generated-playable-maps.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, data-ownership-and-lifetimes.md, ../operations/github-development-and-release.md]
 ---
 
@@ -28,6 +28,16 @@ simulation state. Source: `godot/scripts/workbench_generated_map.gd`,
 The [generated-map contract](../systems/explore001-generated-playable-maps.md)
 owns current formats, capacity and user controls. Accepted main remains distinct
 from a reviewed or runtime-qualified PR.
+
+**Unmerged successor candidate, 2026-11-10:** #559 Stage 1 adds direct batch drawing and worker completion in the existing owner; see the [direct art batch contract](../systems/workbench-direct-art-batches.md). It records confirmed edits in unchanged Setup-v2, without importing #531 runtime admission rules.
+
+**Integrated candidate, 2026-11-11:** the
+[PAINT + agent runbook](../operations/wb-art-paint-integrated-candidate.md) identifies
+the current heads and their history-preserving reconciliation. It implements
+native stored-material readback, reciprocal mutation/result exclusion, deferred
+human completion and shared authored-history ordering. It retains both original
+interfaces and uses the existing Setup/generated-start formats. It remains Draft;
+its combined source-built acceptance is separate from either PR's earlier results.
 
 ## Common authored document semantics
 

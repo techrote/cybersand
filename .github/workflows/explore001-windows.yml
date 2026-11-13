@@ -12,6 +12,7 @@ on:
       - 'godot/scripts/microscenario_host.gd'
       - 'godot/tests/test_explore001_generated_workbench.gd'
       - 'tools/package_explore001_candidate.py'
+      - 'tools/ci/stage_windows_vc_runtime.ps1'
       - 'tools/ci/native_candidate_identity.py'
   workflow_dispatch:
 permissions:
@@ -209,8 +210,16 @@ jobs:
             if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot notices download failed' }
           }
           if ((Get-FileHash (Join-Path $notices 'LICENSE.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80' -or (Get-FileHash (Join-Path $notices 'COPYRIGHT.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d') { throw 'Pinned Godot notices hash mismatch' }
+          $runtimeLicense = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 -o $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime licence download failed' }
+          curl.exe -fL --retry 3 -o $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft VS redistribution licence download failed' }
+          $vcRuntime = Join-Path $env:RUNNER_TEMP 'cybersand-vc-runtime'
+          ./tools/ci/stage_windows_vc_runtime.ps1 -Output $vcRuntime -License $runtimeLicense -DeveloperLicense $developerLicense
           $engine = Join-Path (Split-Path $env:GODOT_EXE) 'Godot_v4.7-stable_win64.exe'
-          python tools/package_explore001_candidate.py --engine $engine --engine-notices $notices --native-candidate build/explore001-windows --output build/explore001-desktop-candidate
+          python tools/package_explore001_candidate.py --engine $engine --engine-notices $notices --vc-runtime $vcRuntime --native-candidate build/explore001-windows --output build/explore001-desktop-candidate
           if ($LASTEXITCODE -ne 0) { throw 'Desktop packaging refused' }
           $manifest = 'build/explore001-desktop-candidate/candidate-manifest.json'
           Get-FileHash $manifest -Algorithm SHA256 | Format-List | Out-File evidence/candidate-manifest-sha256.txt

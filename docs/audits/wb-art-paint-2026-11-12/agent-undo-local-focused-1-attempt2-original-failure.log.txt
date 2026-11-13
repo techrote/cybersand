@@ -1,0 +1,225 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ART_UNDO_CHECK shared Workbench and PAINT history mounted true
+ART_UNDO_CHECK agent-aware shared history API exists true
+ART_UNDO_CHECK actual native worker capacity matches requested fixture true
+ART_UNDO_CHECK fresh 512 native start admitted true
+ART_UNDO_CHECK fresh World clears both histories and starts paused true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK agent batch accepted at shared boundary true
+ART_UNDO_CHECK agent batch completes with authoritative native feedback true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK multiple agent commands preserve exact ordered overlap true
+ART_UNDO_CHECK multiple native chunks form one ordinary agent Undo step true
+ART_UNDO_CHECK undo is available at the paused native boundary true
+ART_UNDO_CHECK undo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued undo before native acknowledgement true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK agent Undo restores first before-materials and the original authored record true
+ART_UNDO_CHECK redo is available at the paused native boundary true
+ART_UNDO_CHECK redo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued redo before native acknowledgement true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK agent Redo restores final materials after repeated writes true
+ART_UNDO_CHECK agent batch accepted at shared boundary true
+ART_UNDO_CHECK agent batch completes with authoritative native feedback true
+ART_UNDO_CHECK unchanged agent receipt adds no history step true
+ART_UNDO_CHECK undo is available at the paused native boundary true
+ART_UNDO_CHECK undo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued undo before native acknowledgement true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK native no-op preserves the preceding agent Undo true
+ART_UNDO_CHECK agent batch accepted at shared boundary true
+ART_UNDO_CHECK agent batch completes with authoritative native feedback true
+ART_UNDO_CHECK no-op agent batch preserves valid Redo true
+ART_UNDO_CHECK redo is available at the paused native boundary true
+ART_UNDO_CHECK redo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued redo before native acknowledgement true
+ART_UNDO_CHECK agent batch accepted at shared boundary true
+ART_UNDO_CHECK agent batch completes with authoritative native feedback true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK net-zero ordered batch adds no empty history record true
+ART_UNDO_CHECK undo is available at the paused native boundary true
+ART_UNDO_CHECK undo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued undo before native acknowledgement true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK net-zero batch advances the fence without invalidating earlier Undo true
+ART_UNDO_CHECK fresh 512 native start admitted true
+ART_UNDO_CHECK fresh World clears both histories and starts paused true
+ART_UNDO_CHECK agent batch accepted at shared boundary true
+ART_UNDO_CHECK agent batch completes with authoritative native feedback true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK human-enabled agent Metal destination reaches native cells true
+ART_UNDO_CHECK undo is available at the paused native boundary true
+ART_UNDO_CHECK undo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued undo before native acknowledgement true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK trusted agent inverse may restore its own Metal to Empty true
+ART_UNDO_CHECK redo is available at the paused native boundary true
+ART_UNDO_CHECK redo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued redo before native acknowledgement true
+ART_UNDO_CHECK agent batch accepted at shared boundary true
+ART_UNDO_CHECK agent batch completes with authoritative native feedback true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK ordinary agent erase still cannot acquire the trusted inverse's material permission true
+ART_UNDO_CHECK undo is available at the paused native boundary true
+ART_UNDO_CHECK undo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued undo before native acknowledgement true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK excluded attempt preserves the previous legitimate agent Undo true
+ART_UNDO_CHECK fresh 512 native start admitted true
+ART_UNDO_CHECK fresh World clears both histories and starts paused true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK large Stop fixture admitted true
+ART_UNDO_CHECK Undo cannot race an active agent operation true
+ART_UNDO_CHECK Undo cannot steal an unconsumed agent receipt true
+ART_UNDO_CHECK Stop history derives from the exact consumed native prefix true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK native Stop prefix and untouched suffix independently match true
+ART_UNDO_CHECK undo is available at the paused native boundary true
+ART_UNDO_CHECK undo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued undo before native acknowledgement true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK Undo reverses the complete stopped prefix true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK no delayed agent writes return after Undo true
+ART_UNDO_CHECK retired agent epoch cannot reapply undone work true
+ART_UNDO_CHECK redo is available at the paused native boundary true
+ART_UNDO_CHECK redo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued redo before native acknowledgement true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK Redo restores only the confirmed Stop prefix true
+ART_UNDO_CHECK agent batch accepted at shared boundary true
+ART_UNDO_CHECK agent batch completes with authoritative native feedback true
+ART_UNDO_CHECK fresh 512 native start admitted true
+ART_UNDO_CHECK fresh World clears both histories and starts paused true
+ART_UNDO_CHECK interleaved agent batch admitted true
+ART_UNDO_CHECK human erase accepted between agent chunks true
+ART_UNDO_CHECK native first segment precedes one confirmed human stroke and a later segment true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK manual erase remains visible after the agent completes false
+ERROR: ART_UNDO manual erase remains visible after the agent completes
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_art_undo.gd:34)
+       [1] interleaved_manual_history (res://tests/test_art_undo.gd:265)
+       [2] capture (res://tests/test_art_undo.gd:95)
+       [3] until (res://tests/test_art_undo.gd:40)
+ART_UNDO_CHECK undo is available at the paused native boundary true
+ART_UNDO_CHECK undo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued undo before native acknowledgement true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK first Undo removes later agent work without overwriting the human erase false
+ERROR: ART_UNDO first Undo removes later agent work without overwriting the human erase
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_art_undo.gd:34)
+       [1] interleaved_manual_history (res://tests/test_art_undo.gd:268)
+       [2] capture (res://tests/test_art_undo.gd:95)
+       [3] until (res://tests/test_art_undo.gd:40)
+ART_UNDO_CHECK undo is available at the paused native boundary true
+ART_UNDO_CHECK undo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued undo before native acknowledgement true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK second Undo reverses only the intervening human stroke true
+ART_UNDO_CHECK undo is available at the paused native boundary true
+ART_UNDO_CHECK undo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued undo before native acknowledgement true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK third Undo reverses the earlier agent segment true
+ART_UNDO_CHECK redo is available at the paused native boundary true
+ART_UNDO_CHECK redo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued redo before native acknowledgement true
+ART_UNDO_CHECK redo is available at the paused native boundary true
+ART_UNDO_CHECK redo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued redo before native acknowledgement true
+ART_UNDO_CHECK redo is available at the paused native boundary true
+ART_UNDO_CHECK redo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued redo before native acknowledgement true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK chronological Redo exactly restores agent-human-agent ordering true
+ART_UNDO_CHECK fresh 512 native start admitted true
+ART_UNDO_CHECK fresh World clears both histories and starts paused true
+ART_UNDO_CHECK agent batch accepted at shared boundary true
+ART_UNDO_CHECK agent batch completes with authoritative native feedback true
+ART_UNDO_CHECK Undo refuses an in-flight provider turn true
+ART_UNDO_CHECK Undo refuses a scheduled follow-up turn true
+ART_UNDO_CHECK Undo refuses pending provider image capture true
+ART_UNDO_CHECK provider boundary refusal preserves history for recovery true
+ART_UNDO_CHECK real outside mutation admitted at idle boundary true
+ART_UNDO_CHECK genuine outside mutation invalidates agent Undo true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK refused stale Undo preserves the outside material true
+ART_UNDO_CHECK fresh 512 native start admitted true
+ART_UNDO_CHECK fresh World clears both histories and starts paused true
+ART_UNDO_CHECK agent batch accepted at shared boundary true
+ART_UNDO_CHECK agent batch completes with authoritative native feedback true
+ART_UNDO_CHECK simulation starts after agent edit true
+ART_UNDO_CHECK simulation pauses again true
+ART_UNDO_CHECK simulation invalidates unsafe agent history true
+ART_UNDO_CHECK agent batch accepted at shared boundary true
+ART_UNDO_CHECK agent batch completes with authoritative native feedback true
+ART_UNDO_CHECK fresh 512 native start admitted true
+ART_UNDO_CHECK fresh World clears both histories and starts paused true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK World replacement retires old agent history without touching the replacement true
+ART_UNDO_CHECK fresh 1024 native start admitted true
+ART_UNDO_CHECK fresh World clears both histories and starts paused true
+ART_UNDO_CHECK agent batch accepted at shared boundary true
+ART_UNDO_CHECK agent batch completes with authoritative native feedback true
+ART_UNDO_CHECK large agent drawing keeps bounded history segments without reducing drawing capacity true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK complete tile for large native history comparison true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK complete tile for large native history comparison true
+ART_UNDO_CHECK every cell of the larger-than-PAINT agent batch is stored true
+ART_UNDO_CHECK undo is available at the paused native boundary true
+ART_UNDO_CHECK undo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued undo before native acknowledgement true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK complete tile for large native history comparison true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK complete tile for large native history comparison true
+ART_UNDO_CHECK one Undo drains every contiguous bounded segment and restores the authored baseline true
+ART_UNDO_CHECK redo is available at the paused native boundary true
+ART_UNDO_CHECK redo admitted through the shared PAINT owner true
+ART_UNDO_CHECK Save refuses queued redo before native acknowledgement true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK complete tile for large native history comparison true
+ART_UNDO_CHECK independent stored capture admitted true
+ART_UNDO_CHECK stored capture owns a real native receipt true
+ART_UNDO_CHECK complete tile for large native history comparison true
+ART_UNDO_CHECK one Redo restores the complete large grouped operation true
+ART_UNDO_CHECK all mandatory agent Undo scenarios completed true
+ART_UNDO_CHECK tested scripts and native bytes remained unchanged true
+ART_UNDO_RESULT {"checks":206,"failures":["manual erase remains visible after the agent completes","first Undo removes later agent work without overwriting the human erase"],"measurements":[{"cells":262656,"elapsed_usec":9447192,"history_segments":2}],"native_material_witnesses":[{"region":[20,20,128,96],"sha256":"89aff1346c08d21b569034d5e7a87b6653a60a296a1fcf8dc452abed594470ef"},{"region":[20,20,128,96],"sha256":"53ccc85c5341f3da8f62e38bc27e8e11caaf1fde30289d9b93be5bcfee316268"},{"region":[20,20,128,96],"sha256":"89aff1346c08d21b569034d5e7a87b6653a60a296a1fcf8dc452abed594470ef"},{"region":[20,20,128,96],"sha256":"53ccc85c5341f3da8f62e38bc27e8e11caaf1fde30289d9b93be5bcfee316268"},{"region":[20,20,128,96],"sha256":"89aff1346c08d21b569034d5e7a87b6653a60a296a1fcf8dc452abed594470ef"},{"region":[250,250,1,1],"sha256":"df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"},{"region":[20,20,128,96],"sha256":"89aff1346c08d21b569034d5e7a87b6653a60a296a1fcf8dc452abed594470ef"},{"region":[60,60,2,1],"sha256":"17e29c48e71601d203e91c44a410e01d871d1faee01c7f2eafd7c6b009cc2773"},{"region":[60,60,2,1],"sha256":"af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"},{"region":[60,60,2,1],"sha256":"17e29c48e71601d203e91c44a410e01d871d1faee01c7f2eafd7c6b009cc2773"},{"region":[60,60,2,1],"sha256":"af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"},{"region":[50,50,401,401],"sha256":"5340736973d29d62d7a90a622fef9dc4d85c3d9813b21659d0f5f0bd1531a1b3"},{"region":[50,50,401,401],"sha256":"f98ef9d71739a2c45888b8dbe5420010d6bc14a414e36fb27a1fea061d09e5c6"},{"region":[50,50,401,401],"sha256":"5340736973d29d62d7a90a622fef9dc4d85c3d9813b21659d0f5f0bd1531a1b3"},{"region":[50,50,401,401],"sha256":"5340736973d29d62d7a90a622fef9dc4d85c3d9813b21659d0f5f0bd1531a1b3"},{"region":[50,50,401,401],"sha256":"f98ef9d71739a2c45888b8dbe5420010d6bc14a414e36fb27a1fea061d09e5c6"},{"region":[20,20,128,128],"sha256":"5e12ce84524396dcd794b2e13a4f97e41307ca43ac0c18333320db0852ba205a"},{"region":[20,20,128,128],"sha256":"57383fd52ade5c377b137a936401302bb8b773f3481ae82efb23a8ee9252afc2"},{"region":[20,20,128,128],"sha256":"c6662f60ca1a28c1a2c1b18eabe366bd7a460e172986bd3406c84e4f698aa205"},{"region":[20,20,128,128],"sha256":"de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"},{"region":[20,20,128,128],"sha256":"5e12ce84524396dcd794b2e13a4f97e41307ca43ac0c18333320db0852ba205a"},{"region":[80,80,1,1],"sha256":"26b25d457597a7b0463f9620f666dd10aa2c4373a505967c7c8d70922a2d6ece"},{"region":[90,90,2,1],"sha256":"af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"},{"region":[20,20,512,512],"sha256":"759c6b182beb91cef9d7a9856d6854cb3f52dfd82698992aa82fb2b4694dcf01"},{"region":[20,532,512,1],"sha256":"780f55a1268c71fccc837223a13ada97dfa54d40d5380e7a566e5e3371870e50"},{"region":[20,20,512,512],"sha256":"30e14955ebf1352266dc2ff8067e68104607e750abb9d3b36582b8af909fcb58"},{"region":[20,532,512,1],"sha256":"e5a00aa9991ac8a5ee3109844d84a55583bd20572ad3ffcd42792f3c36b183ad"},{"region":[20,20,512,512],"sha256":"759c6b182beb91cef9d7a9856d6854cb3f52dfd82698992aa82fb2b4694dcf01"},{"region":[20,532,512,1],"sha256":"780f55a1268c71fccc837223a13ada97dfa54d40d5380e7a566e5e3371870e50"}],"provider_boundary_fixture":"controlled states; no HTTP request","source_identity":{"art_batch_executor.gd":"2c7c7c1605a5cf9f630e6fabad6cb6d34804e0c0a19c9e8e96a7e9535489fc98","art_batch_panel.gd":"958516aeb5ef3228735128aba93d0a44247ff25e021891edf5509e7de555fbd1","display":"headless","godot":"4.7-stable (official)","native_sha256":"16ffc0ce8190c2e8ca2e31fc59f10c55148adc6e7f16727dc96c094d8a96696a","os":"Linux","shared_workbench.gd":"8d80dc46056c9dbbd7f16d06c6acace01ace8fa725b066b399f2ec02f07f6bdc","simulation_worker.gd":"bac92f82ef3d3dc4fad54c785c148eba3ea1c0ec1e1b9805a65ffea261cc6016","test_sha256":"c0057ce3eafdfc68633a2c39d858a6290ef8ebf355bf896b80d5b22709223cde","workbench_paint_editor_controller.gd":"ac5b1c6ac733796227f1fdcfb72c1465ae6fc34c9aee763d05487d5312c8d366","workbench_paint_editor_executor.gd":"1f118427e505f0a4b7f63e7e10089507f89445c08f9ead5a7f41768935160e7d"},"workers":1}

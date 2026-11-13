@@ -23,6 +23,19 @@ Accepted liquid-equipment main is incorporated; #563 retains separate native
 capability-consumer ownership. Candidates execute only in their admitted
 isolated backends. Keep Draft / Do Not Merge until owner acceptance.
 
+## WB-ART-002 Stage 1 — 2026-11-10
+
+**2026-11-11 integrated Draft successor:** read the
+[PAINT + agent candidate runbook](wb-art-paint-integrated-candidate.md) before
+continuing either editor. It records the exact preserved #544/#560 heads,
+generator-first repair checkpoints, native stored-material correction, shared
+edit ordering and source-built qualification. The owner authorized integration
+but explicitly requires Draft; do not mark Ready, merge or auto-merge. Original
+PRs remain available. Earlier Stage-1 ownership below is historical context.
+
+Owner-authorized fresh branch `codex/agent-art-workbench-v2` starts from main `d4b18e7f06839b35c8f6a66195206da0f33c5fa3`. Read the [direct art batch contract](../systems/workbench-direct-art-batches.md). This lane owns the new art modules/tests and narrow shared-workbench/worker completion seams; #531 is reference only. Preserve #543 ordinary-editor and #548 Flatten ownership. Stage 2 now adds the [provider connection candidate](../systems/workbench-art-providers.md), genuine local tests and traffic inspection. No cloud inference without owner credentials; no merge or Ready promotion.
+
+
 ## Shared workbench review transition — 2026-11-08
 
 Owner-authorized #542 Ready qualification follows the

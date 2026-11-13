@@ -1,0 +1,261 @@
+name: PAINT-001 Windows source-built native and authored-start regression
+on:
+  push:
+    branches: [feat/paint001-shape-planner-20261108]
+    paths:
+      - '.github/workflows/paint001-windows.yml'
+      - 'godot/native_extension/**'
+      - 'native/**'
+      - 'godot/scripts/workbench_*.gd'
+      - 'godot/scripts/shared_workbench.gd'
+      - 'godot/scripts/microscenario_contract.gd'
+      - 'godot/tests/test_paint_editor_*.gd'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: paint001-win-${{ github.run_id }}
+  cancel-in-progress: false
+env:
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  RAPIER_WINDOWS_SHA256: b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7
+jobs:
+  cross-build:
+    name: Pinned LLVM-MinGW x86_64 source-matched DLL
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Record source and stage toolchains
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          git rev-parse HEAD > evidence/source-commit.txt
+          git rev-parse HEAD^{tree} > evidence/source-tree.txt
+          python3 tools/ci/check_ci_provider_policy.py > evidence/provider.json
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt > evidence/scons.log 2>&1
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir -p "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 600 git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT" > evidence/godot-cpp-fetch.log 2>&1
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          timeout 1200 curl -fL --retry 3 -o "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL" > evidence/llvm-mingw-download.log 2>&1
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; fi
+      - name: Build the pinned Windows godot-cpp library and CyberSand GDExtension
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
+        run: |
+          set -euo pipefail
+          if ! timeout 3600 bash tools/build_pinned_godot_cpp.sh windows > evidence/build-godot-cpp.log 2>&1; then
+            tail -120 evidence/build-godot-cpp.log
+            exit 1
+          fi
+          if ! timeout 3600 bash tools/build_native_extension_windows.sh > evidence/build-dll.log 2>&1; then
+            tail -160 evidence/build-dll.log
+            exit 1
+          fi
+          test -s "$CYBERSAND_NATIVE_OUTPUT"
+          file "$CYBERSAND_NATIVE_OUTPUT" > evidence/pe-file.txt
+          sha256sum "$CYBERSAND_NATIVE_OUTPUT" > evidence/native-dll.sha256
+          mkdir -p build/paint001-windows
+          cp "$CYBERSAND_NATIVE_OUTPUT" build/paint001-windows/
+          cp evidence/source-commit.txt build/paint001-windows/
+          cp evidence/native-dll.sha256 build/paint001-windows/
+          python3 tools/ci/native_candidate_identity.py build/paint001-windows --create
+      - name: Preserve Windows DLL for exact-head hosted process
+        if: success()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: paint001-win-runtime-${{ github.run_id }}
+          path: build/paint001-windows/
+          if-no-files-found: error
+          retention-days: 90
+      - name: Retain original build/toolchain errors and source identity
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: paint001-win-crossbuild-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
+  windows-execution:
+    name: Windows actual native authoring, high-detail starts and fresh-process reopen
+    needs: cross-build
+    runs-on: windows-2022
+    timeout-minutes: 180
+    steps:
+      - name: Checkout same exact production/test source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Download source-built candidate DLL from this run
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: paint001-win-runtime-${{ github.run_id }}
+          path: build/paint001-windows
+      - name: Install exact-source extension and pinned Rapier
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force evidence | Out-Null
+          git rev-parse HEAD | Set-Content evidence/source-commit.txt
+          $expected = Get-Content build/paint001-windows/source-commit.txt
+          if ((git rev-parse HEAD).Trim() -ne $expected.Trim()) { throw 'Source head differs from produced DLL' }
+          python tools/ci/native_candidate_identity.py build/paint001-windows
+          if ($LASTEXITCODE -ne 0) { throw 'Candidate provenance refused' }
+          $dll = 'build/paint001-windows/cybersand_native.windows.x86_64.dll'
+          if (!(Test-Path $dll)) { throw 'Candidate DLL is absent' }
+          $dest = 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll'
+          Copy-Item $dll $dest -Force
+          $sha = (Get-FileHash $dll -Algorithm SHA256).Hash.ToLowerInvariant()
+          $sha | Set-Content evidence/native-dll-sha256.txt
+          if (!(Select-String -Path 'build/paint001-windows/native-dll.sha256' -Pattern $sha -SimpleMatch)) { throw 'Candidate DLL hash mismatch' }
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          $rapier = 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+          if ((Get-FileHash $rapier -Algorithm SHA256).Hash.ToLowerInvariant() -ne $env:RAPIER_WINDOWS_SHA256) { throw 'Pinned Rapier DLL mismatch' }
+      - name: Fetch and authenticate official pinned Godot Windows 4.7
+        shell: pwsh
+        run: |
+          $url = 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          $zip = Join-Path $env:RUNNER_TEMP 'godot-win47.zip'
+          curl.exe -fL --retry 3 -o $zip $url
+          if ($LASTEXITCODE -ne 0) { throw 'Godot download failed' }
+          $expected = '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9'
+          if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne $expected) { throw 'Pinned Godot SHA512 mismatch' }
+          $output = Join-Path $env:RUNNER_TEMP 'godot-win47'
+          Expand-Archive -Path $zip -DestinationPath $output
+          $exe = Join-Path $output 'Godot_v4.7-stable_win64_console.exe'
+          if (!(Test-Path $exe)) { throw 'Pinned Godot console executable absent' }
+          (& $exe --version) | Set-Content evidence/godot-version.txt
+          if (((Get-Content evidence/godot-version.txt) -join ' ') -notmatch '4.7.stable.official.5b4e0cb0f') { throw 'Godot version mismatch' }
+          'GODOT_EXE=' + $exe | Out-File -Append -FilePath $env:GITHUB_ENV
+      - name: Import and parse exact-head GDScript in real Windows Godot
+        shell: pwsh
+        run: |
+          & $env:GODOT_EXE --headless --path godot --editor --quit *> evidence/import.log
+          if ($LASTEXITCODE -ne 0) {
+            Get-Content evidence/import.log -Tail 150
+            throw 'Windows Godot import refused'
+          }
+      - name: Execute native material and authored-start regression on exact DLL
+        shell: pwsh
+        run: |
+          function Invoke-Paint([string]$script, [string]$label) {
+            $stdout = "evidence/$label.stdout.log"
+            $stderr = "evidence/$label.stderr.log"
+            $args = @('--headless','--path','godot','--script',"res://tests/$script.gd")
+            $child = Start-Process -FilePath $env:GODOT_EXE -ArgumentList $args -PassThru -NoNewWindow -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+            try {
+              if (!$child.WaitForExit(1800000)) {
+                Stop-Process -Id $child.Id -Force -ErrorAction SilentlyContinue
+                Get-Content $stdout -Tail 160 -ErrorAction SilentlyContinue
+                Get-Content $stderr -Tail 160 -ErrorAction SilentlyContinue
+                throw "PAINT $label exceeded 1800 seconds"
+              }
+              $child.Refresh()
+              if ($child.ExitCode -ne 0) {
+                Get-Content $stdout -Tail 160 -ErrorAction SilentlyContinue
+                Get-Content $stderr -Tail 160 -ErrorAction SilentlyContinue
+                throw "PAINT $label exited $($child.ExitCode)"
+              }
+              if (Select-String -Path $stdout,$stderr -Pattern 'SCRIPT ERROR:|Parse Error:|Failed to load script' -ErrorAction SilentlyContinue) {
+                throw "PAINT $label emitted a script/load failure"
+              }
+              if ($script.StartsWith('test_paint_editor_')) {
+                $lines = Select-String -Path $stdout,$stderr -Pattern 'PAINT_EDITOR_(SHAPES|NATIVE|EXECUTOR|HISTORY|WORKBENCH|GENERATED_WORKBENCH)|PAINT_EXECUTOR|PAINT_RECOVERY' -ErrorAction SilentlyContinue
+                if (!$lines) { throw "PAINT $label exited zero without paint completion evidence" }
+              }
+              Write-Host "Windows PAINT $label completed"
+            } finally {
+              if (!$child.HasExited) { Stop-Process -Id $child.Id -Force -ErrorAction SilentlyContinue }
+            }
+          }
+          Invoke-Paint 'test_paint_editor_shapes' 'geometry'
+          foreach ($n in @(1,4)) {
+            $env:PAINT_TEST_WORKERS = "$n"
+            Invoke-Paint 'test_paint_editor_native' "native-workers-$n"
+          }
+          Remove-Item Env:PAINT_TEST_WORKERS -ErrorAction SilentlyContinue
+          Invoke-Paint 'test_paint_editor_executor' 'executor'
+          Invoke-Paint 'test_paint_editor_recovery' 'recovery'
+          Remove-Item Env:CYBERSAND_PAINT_HISTORY_REOPEN -ErrorAction SilentlyContinue
+          Invoke-Paint 'test_paint_editor_history' 'history-author'
+          $env:CYBERSAND_PAINT_HISTORY_REOPEN = '1'
+          Invoke-Paint 'test_paint_editor_history' 'history-reopen'
+          Remove-Item Env:CYBERSAND_PAINT_HISTORY_REOPEN -ErrorAction SilentlyContinue
+          Remove-Item Env:PAINT_REOPEN -ErrorAction SilentlyContinue
+          Invoke-Paint 'test_paint_editor_workbench' 'workbench-author'
+          $env:PAINT_REOPEN = '1'
+          Invoke-Paint 'test_paint_editor_workbench' 'workbench-reopen'
+          Remove-Item Env:PAINT_REOPEN -ErrorAction SilentlyContinue
+          Remove-Item Env:PAINT_GENERATED_REOPEN -ErrorAction SilentlyContinue
+          Invoke-Paint 'test_paint_editor_generated_workbench' 'generated-author'
+          $env:PAINT_GENERATED_REOPEN = '1'
+          Invoke-Paint 'test_paint_editor_generated_workbench' 'generated-reopen'
+          Remove-Item Env:PAINT_GENERATED_REOPEN -ErrorAction SilentlyContinue
+          Invoke-Paint 'test_workbench_canvas' 'existing-canvas'
+          Invoke-Paint 'test_worldgen_workbench' 'existing-generator'
+      - name: Preserve Windows native and persistence evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: paint001-windows-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
+  integration-dryrun:
+    name: Read-only merge-tree analysis of PAINT versus agent-art and Materials Lab
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Fetch accepted main and live draft branch ancestry
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Identify source-bound integration conflicts without modifying refs
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          git rev-parse HEAD > evidence/paint-head.txt
+          git rev-parse origin/main > evidence/main-head.txt
+          git fetch --no-tags origin 'refs/heads/codex/agent-art-workbench-v2:refs/remotes/origin/codex/agent-art-workbench-v2'
+          git fetch --no-tags origin 'refs/heads/codex/materials-lab-v1-20261111:refs/remotes/origin/codex/materials-lab-v1-20261111'
+          for name in agent-art materials-lab; do
+            if test "$name" = agent-art; then ref='origin/codex/agent-art-workbench-v2'; else ref='origin/codex/materials-lab-v1-20261111'; fi
+            git rev-parse "$ref" > "evidence/$name-head.txt"
+            git merge-base HEAD "$ref" > "evidence/$name-base.txt"
+            set +e
+            git merge-tree --write-tree HEAD "$ref" > "evidence/$name-merge-tree.txt" 2>&1
+            status=$?
+            set -e
+            printf '%s\n' "$status" > "evidence/$name-merge-exit.txt"
+            echo "$name dry-run merge exit $status; conflicted paths:"
+            grep '^CONFLICT' "evidence/$name-merge-tree.txt" | head -60 || true
+            if test "$status" -gt 1; then echo "$name merge-tree tooling failed"; exit "$status"; fi
+          done
+      - name: Preserve exact-head merge diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: paint001-integration-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
