@@ -1,0 +1,40 @@
+{
+  "schema": "cybersand-mat-workbench-evaluation-release-v1",
+  "repository": "techrote/cybersand",
+  "accepted_main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
+  "workbench_head": "00017c65da096c61585f026476ae1e62e1aea256",
+  "capability_transition": "b432d52d0d9acaa22f93eeb8d1fad48c64b4c087",
+  "source_commit": "fd1d66b18ac80f564f7078b8a0a902297895672f",
+  "source_tree": "ab10a4880d81d0875f4a4b120df40f2adcb572d9",
+  "publisher_run_id": 43409148541,
+  "publisher_attempt": 1,
+  "request_sequence": 6,
+  "windows_native_sha256": "83b656c2638fe31c9a8ab3700c4f8c353db56e996d37a276ddfa205e81c87c54",
+  "linux_native_sha256": "44c906356a98c84b09c01f6e83bcae2391a4c0e39c5c632431a4a3f4cc1578e9",
+  "publication_commit": "266d43a33e9eefc3e93a9dce1aaab6e5267492b8",
+  "evaluation_artifact_id": 14034308666,
+  "artifact_outer_sha256": "37cec79cf55c0c6519cf316316d775205f6dd994078aea4e39499427256b577f",
+  "archive_sha256": "29e444ac801c884b066bae8866cf4dff02b5bc4ccafea2aec97bf2ceef10dd0c",
+  "archive_name": "CyberSand-MAT-Workbench-Windows-fd1d66b18ac8.zip",
+  "acceptance_sha256": "346977a83fc1021a67116fdc00ebfd20f1404f439e48d5fe5b25017899d6b566",
+  "gate_runs": {
+    "documentation.yml": {
+      "run_id": 43422869229,
+      "attempt": 1
+    },
+    "native.yml": {
+      "run_id": 43422872133,
+      "attempt": 1
+    },
+    "gdextension.yml": {
+      "run_id": 43422875891,
+      "attempt": 1
+    },
+    "palette-shader-qualification.yml": {
+      "run_id": 43422879668,
+      "attempt": 1
+    }
+  },
+  "tag": "eval-mat-workbench-20261113-266d43a33e9e",
+  "release_name": "CyberSand Materials Lab + Workbench evaluation \u2014 2026-11-13"
+}
