@@ -254,3 +254,43 @@ The inference CLI verifies the exact base files, model revision, adapter contrac
 Actual run metrics, checkpoint checksums, baseline/adapter predictions, native cases and training receipts are retained outside git and delivered as separate artifacts. Repository reports should summarize those receipts rather than manufacture a successful run. The initial task teaches a small pattern-program language; it does not establish object drawing, arbitrary tool use, unseen motif synthesis or production readiness. Training/dev/final groups separate theme/motif/layout arrangements, while primitives are shared. Use the sequestered final split once a candidate and its selection rules are frozen.
 
 Run the small guard suite with `python -m unittest discover -s . -p 'test_*.py'`. It addresses the concrete failure modes of unqualified data, held-out split access, family leakage, ordered evaluation bias and repaired/nonstandard JSON acceptance. The real tokenizer preflight and actual checkpoint continuation provide the training-specific verification.
+
+
+## Strict native replay export and original-ID aliases — 13 November 2026
+
+`export_native_cases.py` now bounds every exported `case.id` to **38 safe
+ASCII characters**, because the frozen native replay harness prefixes
+`slm-pilot-` and the Workbench save-name limit is 48. Short safe IDs remain
+readable. Long/unsafe original prediction IDs receive a deterministic
+SHA-256-derived alias; `case_id_aliases` maps every replay ID back to its
+unaltered original prediction ID, original candidate name and seed.
+Collisions and duplicate original IDs fail closed.
+
+Only rows with explicit first-pass acceptance, valid JSON/program and an
+emitted EOS are eligible. Their original completion bytes and symbolic
+program are not repaired. Both requested host seeds must compile before
+either is added for a request; rejected or unterminated requests remain in
+`excluded_predictions` and the request-level `counts` denominator. Existing
+output files are never overwritten. This changes **fixture export only**;
+native Art remains the drawing authority.
+
+**Executed qualification:** `python -m unittest -v test_export_native_cases.py`
+passed 9/9 model-free tests on local Python, covering long Unicode IDs,
+38-character custody, original-ID aliases, EOS rejection, malformed coral-like
+JSON, duplicate IDs/seeds, immutable completions and two-seed atomicity.
+Recovered the exact saved `wb_art_slm_001_native_and_model_evidence.zip`
+with verified archive SHA-256 `d2f8b16f081b7c371afd2eadf1468bc6941cb2a7a83ee349a11d667257f9cfa9`.
+Re-exported its actual 24 development and 12 keyword prediction records
+against the **archived original compiled reports**, not a newly executed
+compiler. The measured export is 22/24 development, 12/12 keyword strict
+requests, 68/68 uniquely bounded native IDs, 22 deterministic aliases and
+68/68 operation digests/raw completions exactly matching archived model-native
+cases. The two malformed coral development requests remain rejected.
+See `native_export_frozen_audit.json` for exact inner-archive and evidence hashes.
+
+This audit is an **offline replay-fixture transformation check**. It cannot
+claim a new raw-model gain, independent compiler execution, native runtime
+qualification, current-main/Windows acceptance or visual recognition.
+Next, run the current exact-source combined 20-method train/eval supervisor
+suite and, when an authorized pinned compute host is available, perform the
+one guarded balanced-keyword training candidate and fresh native replay.
