@@ -1,6 +1,6 @@
 {
   "experiment": "WB-ART-SLM-001",
-  "status": "bootstrap-implemented-and-frozen",
+  "status": "bootstrap-frozen-opt-in-integration-bridge-implemented-unqualified",
   "updated_on": "2026-11-13",
   "owner": "five role workers after bootstrap handoff",
   "branch": "codex/wb-art-slm-001",
@@ -49,13 +49,13 @@
     }
   },
   "production_promotion": "HOLD; combined Draft only, no Ready or merge",
-  "next_checkpoint": "One separately named training-only curriculum candidate with early literal-word coverage; independent native replay and matched Sprocket/Smol adaptation; current-main provider/Windows qualification.",
+  "next_checkpoint": "Review strict opt-in provider bridge independently; await and consume #565 source-compatible accepted-#563 successor; perform native/Godot/Windows tests with real step-400 model before model preset/launcher qualification. Training independently owns any improved curriculum run.",
   "pull_request": "https://github.com/techrote/cybersand/pull/567",
   "model_native_cases_passed": 68,
   "combined_gallery_images": 260,
   "artifacts_manifest": "ARTIFACTS.json",
   "artifacts_saved": true,
-  "training_owner_active": false,
+  "training_owner_active": "not observable from shared repository; no new training launched and Training must verify private lease",
   "baselines": {
     "matched_dev_requests": 12,
     "lfm350_unadapted_accepted": 0,
@@ -77,5 +77,33 @@
     "keyword veins selects orthogonal geometry instead of network"
   ],
   "worker_branches_seeded_from": "01f2cfcea66839066431b6d241f186be00cecf27",
-  "bootstrap_report_review": "Independent consistency review complete; 98% gate identified as native request yield, not schema validity."
+  "bootstrap_report_review": "Independent consistency review complete; 98% gate identified as native request yield, not schema validity.",
+  "integration_checkpoint": {
+    "milestone": "strict local Chat Completions bridge to unchanged Workbench Art LM Studio content-JSON provider; additive opt-in only",
+    "route": "experiments/wb-art-slm-001/integration/local_art_bridge.py",
+    "usage": "experiments/wb-art-slm-001/integration/README.md",
+    "tests": "experiments/wb-art-slm-001/integration/test_local_art_bridge.py",
+    "dependency_board": "experiments/wb-art-slm-001/integration/DEPENDENCIES.json",
+    "tests_executed": 4,
+    "tests_passed": 4,
+    "tests_platform": "Linux container, Python 3.13.5, standard library, mock local inference runner and actual loopback HTTP",
+    "limits": "Actual step-400 model not loaded in this integration test; no current-main native/Godot or Windows execution, screenshots, or independent review",
+    "provider_protocol": "127.0.0.1:8127/v1/chat/completions; LM Studio mode; exactly one text-only completion; no fallback, repair or automatic continuation",
+    "material_and_ownership": "Focus and allowed materials/tools captured from host; seed and budgets in bridge launch; existing Godot native Art executor retains receipts, protection, Stop/history/persistence",
+    "model_identity": "LiquidAI/LFM2.5-350M@9921cd4d82c0e3986887aa4b376f9446729ef8a3; step 400 adapter SHA256 02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2",
+    "next": "Independent Controls/Evaluation review; source-compatible upstream #565 successor, current-source Windows/Linux live model/native end-to-end, packaging/owner acceptance"
+  },
+  "artifact_recovery": {
+    "verification": "Four named owner Library archives materialized and byte-size/SHA256 compared with ARTIFACTS.json on 2026-11-13; all four match",
+    "artifacts_verified": 4,
+    "training_and_evaluation_binary_storage": "outside ordinary git; saved owner Library archives remain source",
+    "correction": "Repository file manifest alone is not proof of recovery; files were actually recovered and hashed"
+  },
+  "upstream_snapshot": {
+    "main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
+    "pr564_head": "6319ab1d94d85d01c9cdb44d973a92d224bfa9aa",
+    "pr565_head": "4e41501a56b25de5defdaedbd990b34b13a41c13",
+    "pr565_status": "Draft/HOLD, current-source Windows combined-native comparison failure; separate diagnostic run 43355051094 underway; no successful complete successor yet",
+    "neural_provider_in_main": false
+  }
 }
