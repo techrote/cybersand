@@ -29,7 +29,24 @@ and the production HOLD remain explicit in the report.
 | Native replay and independent receipt verification | [Evaluation](evaluation/README.md) |
 | Reviewed plan and five hourly role contracts | [Plan](PLAN.md), [workers](AUTOMATIONS.json) |
 | Saved adapter, checkpoint, corpus and evidence identities | [Artifacts](ARTIFACTS.json) |
+| Opt-in real-adapter / existing Art provider route and protocol tests | [Local bridge and launch instructions](integration/README.md), [source](integration/local_art_bridge.py) |
+| Exact integration dependency board and source pins | [Dependencies](integration/DEPENDENCIES.json) |
 | Current durable handoff | [Integration state](integration-state.json) |
+
+## Opt-in local model-to-Art route
+
+The additive [loopback bridge](integration/README.md) now exposes the pinned step-400
+LFM adapter through the existing LM Studio-mode Chat Completions Art provider as
+**content JSON**, rather than changing the current provider or model API. It
+strictly checks a complete admitted program, compiled Art batch and host-captured
+focus/material/tool permissions, returning no operations for a failed proposal.
+The bridge protocol passed **4/4 focused tests** with mock model output and a real
+local HTTP exchange. This is not a fresh actual-model, native World, graphical
+or Windows qualification; **Draft/HOLD** remains. A compatible #564/#565 native
+Workbench successor and independent integration review are prerequisites for a
+qualified user-facing package. The four recorded adapter/resume/corpus/evidence
+archives were recovered from the owner's saved files and their bytes and SHA-256
+verified on 13 November 2026, not merely listed in the manifest.
 
 ## Make a seeded reference pattern
 
