@@ -155,3 +155,23 @@ geometry metric as an artistic recognition score. Pair v1 and v1.1 in fresh
 identically seeded native Worlds, with case IDs at most 38 characters (for
 example `c10-coral-s17` / `c11-coral-s17`), and retain original-prediction
 aliases if matching any model examples.
+
+### Matched native replay handoff
+
+A bounded fixture builder is included so Evaluation can compare the same
+**eight coral structural templates at two identical seeds** under v1 and v1.1
+without guessing saved-start names. It produces **32 uniquely named cases
+and 16 reference-ID alias pairs**:
+
+```sh
+python3 experiments/wb-art-slm-001/controls/make_v11_native_pairs.py \
+  --out /private/new-coral-pairs.json
+```
+
+The file embeds each exact program hash and canonical operation hash, refuses an
+existing output path and records short IDs satisfying the frozen native harness'
+38-character requirement. It is **not a native receipt**; pass it to the
+existing pinned replay harness, verify all global gates, compare native material
+readbacks and inspect both image sets before acceptance. The pairing is for
+deterministic *reference* programs, not new model predictions. For model
+predictions, separately preserve the original raw completion-to-ID alias map.
