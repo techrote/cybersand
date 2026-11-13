@@ -238,3 +238,9 @@ Repository status and model/runtime compatibility are time-sensitive. Workers mu
 
 - [S1 — Official Sprocket-500M model card and separate Instruct/Chat exports](https://huggingface.co/kandivault/sprocket-500m)
 - [M1 — Official SmolLM2-135M-Instruct model card](https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct)
+
+## Integrated continuation — 13 November 2026, 06:07 UTC
+
+Four newer role checkpoints are now serially imported on the same Draft #567: Controls' 32-case v1/v1.1 native-pair auditor; Corpus' opt-in v3 modifier-balanced replay (m6/m7 from 0/0 to 60/52 first-400 exposures, no model retraining); Training's shared training/evaluation guarded lease with exact raw-evidence checks; and Evaluation's image-byte redundancy audit (33 distinct two-seed pairs among 34 blinded cards, q004/q007 duplicate). They add 19 role-owned files. Original v1 compiler, original step-400 adapter, accepted main and deterministic one-word routing remain unchanged.
+
+The expanded opt-in offline [GitHub Actions smoke](https://github.com/techrote/cybersand/actions/runs/43376391448) passed on the exact assembled source `385bb41f3f17f49881a23958c7a1ec1e7f03fdbc`: **78 executed model-free tests PASS** out of 82 collected, **4 archive-dependent SKIP**. The native-pair auditor's tests use synthetic receipts, not a newly run native World. No actual tuned-model inference, current-source Linux/Windows Art, human visual evaluation or #565 Windows GUI qualification was completed. Independent review of Integration's HTTP bridge is still outstanding; Draft/HOLD remains. Exact import commits, role heads, raw artifact hashes and next actions are in [the dependency board](integration/DEPENDENCIES.json).

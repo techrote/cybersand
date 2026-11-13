@@ -1,7 +1,7 @@
 {
   "experiment": "WB-ART-SLM-001",
   "date": "2026-11-13",
-  "status": "four later independent role checkpoints integrated, model-free loopback Stop tested; upstream/current native and Windows HOLD",
+  "status": "Third source intake complete: four latest role heads exact-blob integrated, 78/78 executed offline model-free tests passed; current-source native, independent review and Windows HOLD",
   "source": {
     "main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
     "main_preserves": [
@@ -62,7 +62,7 @@
     "tests": "experiments/wb-art-slm-001/integration/test_local_art_bridge.py",
     "runbook": "experiments/wb-art-slm-001/integration/README.md",
     "protocol": "loopback LM Studio /v1/chat/completions; content JSON operations; one-turn text-only",
-    "validation": "Exact-head GitHub-hosted Ubuntu 24.04 / Python 3.12 (runs 43370584693 and 43370593006, both SUCCESS at 0fc6f9cedeb5b147fe86cb61446354f38db16d8a): 52 model-free Python test methods PASS, including 9 Integration HTTP/client Stop, stale-result refusal and Guidance host-field precedence, 18 compiler, 1 native alias, 2 basic Corpus synthetic, 4 Training curriculum, 10 Training guarded-process, 2 Controls audit synthetic, 3 Corpus balance synthetic, 3 Evaluation blind-review tests. Private archive-specific classes/methods SKIPPED. Source compilation PASS. No actual weights/native/Godot/Windows executed.",
+    "validation": "Exact-head GitHub-hosted Ubuntu 24.04/Python 3.12 run 43376391448 SUCCESS at 385bb41f3f17f49881a23958c7a1ec1e7f03fdbc: 82 discovered model-free Python methods, 78 executed PASS, 4 archived-corpus/native suites SKIPPED. Includes 9 bridge HTTP, 18 compiler, 1 pair manifest, 7 native-pair audit synthetics, 10 train guard, 10 eval guard, 3 corpus modifier synthetics, 6 PNG-stimulus tests, and earlier synthetics. No actual adapter/World/Windows.",
     "no_actual_model_loaded_this_run": true,
     "no_native_execution_this_run": true,
     "no_windows_execution_this_run": true,
@@ -71,13 +71,13 @@
     "receipt_binding": "Exact prompt, host seed, pinned adapter hash, LFM model identity, native_execution=false, compiler hash, focus size, material, EOS, Art operation hash and allowed tool/material",
     "receipt_hardening_commit": "d2f6a3266e6f522a6a5f8e8a3d9afc3cf315efab",
     "adverse_regressions_commit": "ddbc2b9b3ba8e4ab0423c50b21dd7fb85333e6bb",
-    "exact_head_ci": "0fc6f9cedeb5b147fe86cb61446354f38db16d8a",
+    "exact_head_ci": "385bb41f3f17f49881a23958c7a1ec1e7f03fdbc",
     "offline_ci_workflow": ".github/workflows/wb-art-slm-001-smoke.yml",
     "offline_ci_urls": [
-      "https://github.com/techrote/cybersand/actions/runs/43370584693",
-      "https://github.com/techrote/cybersand/actions/runs/43370593006"
+      "https://github.com/techrote/cybersand/actions/runs/43376391448",
+      "https://github.com/techrote/cybersand/actions/runs/43376383942"
     ],
-    "offline_ci_scope": "No binary assets, private corpus, neural inference, training, native Godot, Windows, visual or human acceptance; external review pending.",
+    "offline_ci_scope": "82 collected, 78 PASS, 4 archived dataset suites SKIP; no training, actual neural inference, native Godot, Windows or blinded human score. Workflow has all four new worker-owned test files.",
     "stop_cancellation": "With HTTP request fully read, socket EOF from Workbench Stop/disconnect terminates owned local inference (POSIX process group, Windows child), releases one-job lock, and returns zero geometry; deadline also terminates. Exact handler-to-fake-child socket Stop and next-request test PASS on hosted Linux. No real model/Windows process tree/Godot Stop tested.",
     "stop_cancellation_commit": "4e5aed803320bc3629b01f83a48b6c8729c8213d",
     "stop_tests_commit": "0fc6f9cedeb5b147fe86cb61446354f38db16d8a",
@@ -94,33 +94,33 @@
   "workers": {
     "integration": {
       "branch": "codex/wb-art-slm-001",
-      "next": "Obtain independent review of latest HTTP cancellation, Guidance scope parsing, receipt/cell batch contract; on source-compatible qualified #565 successor run authentic local LFM adapter with real Godot and native Windows/Linux Stop, Undo/Redo and save/reopen, inspect images."
+      "next": "Resolve upstream current-source #565 Windows GUI HOLD with source owners; obtain independent bridge review, then real-model native Windows/Linux operation/Stop/history/save-reopen/visual qualification; keep deterministic baseline."
     },
     "controls": {
       "branch": "codex/wb-art-slm-controls",
-      "observed_head": "a75f90956f18dedd5f7c8641cc126ba2d2040718",
-      "next": "Run 32 v1/v1.1 paired native coral fixtures with history=each on a compatible published runtime; report readback/upper occupancy and individual receipt gates.",
+      "observed_head": "f218939e016d039e3b0ce5c86b4b33151bcb2117",
+      "next": "Qualify 32 source-matched v1/v1.1 native paired receipts with history=each and actual material readback; independently inspect all 16 visual pairs before proposing opt-in v1.1.",
       "imported_commit": "ad77b9fbaf02a0c81414ba2e2e7f5732b61a5a7d",
       "continuation_imported_commit": "6d3cab90ed5849adece993b3f1c2e6c92a36e2ff"
     },
     "corpus": {
       "branch": "codex/wb-art-slm-corpus",
-      "observed_head": "9f9a462fca152f092e7d2a6af0e1a4291ec080ef",
-      "next": "Handoff pinned v2 balanced replay manifest to Training; quantify unique trace/group/phrasing exposure under the exact proposed sampler before any model claim.",
+      "observed_head": "d7e85d640e18e2c560a082384c8d7c8416fd713f",
+      "next": "Deliver pinned v3 TRAIN source-index vs ordered-index contract to Training; require matching 400-draw exposure and native-custody archive, not model gains.",
       "imported_commit": "36d63deb0eb13174e670ec0c46381a1a50390655",
       "continuation_imported_commit": "d15bf4c76cda06a773f4ab25a3cba5ef336634d2"
     },
     "training": {
       "branch": "codex/wb-art-slm-training",
-      "observed_head": "4da1233017057b36295c7a7bda48e0d2fb992c30",
-      "next": "Inspect private run-parent lease and frozen base/runtime availability; only then one new named bounded curriculum model job with full resume, never redo baseline.",
+      "observed_head": "c594d154b141ba5c450199311c4a790402eb7c02",
+      "next": "Inspect private run-parent lease and frozen official base/runtime; then at most one newly named bounded v3 candidate training job; use shared supervised evaluator on the same 24 DEV requests, not FINAL.",
       "imported_commit": "f98b6c11f83bfdc3fd9e9cdc3bbf3f5fd389bdd0",
       "continuation_imported_commit": "1fcff712cae69ab0f8edfa0019b69063a43e243c"
     },
     "evaluation": {
       "branch": "codex/wb-art-slm-evaluation",
-      "observed_head": "8a533c5762e58727b344714d0c1828d6f24fa1c5",
-      "next": "Independently adversarial-review bridge socket cancellation/late result, HTTP host contract and output gates; then coordinate actual blind native review without opening answer key.",
+      "observed_head": "5f7cc52cb6a734268ff66ef1de856952482eb8a8",
+      "next": "Independently review Integration bridge socket cancellation, Guidance host-field precedence and receipt/batch authorization; then score frozen blind images without accessing final holdout.",
       "imported_commit": "0bdc089793c2c69a0680dfd0c8278bca45f6ac6f",
       "continuation_imported_commit": "4bd334afcdc8ef06ce87feb37353b6d3e49bcc6a"
     }
@@ -205,6 +205,72 @@
       "CI": "50 executed applicable model-free methods PASS; archived-native/corpus suites not executed on hosted runner",
       "exact_head_smoke": "0fc6f9cedeb5b147fe86cb61446354f38db16d8a",
       "exact_head_results": "Two successful hosted workflow runs 43370584693/43370593006; 52 executed model-free methods; archive-dependant cases explicitly skipped."
+    },
+    "hourly_2026_11_13_0607": {
+      "parent": "b26bdb2d7fb556dee1ae40104b5cd4425ff7f20e",
+      "roles": [
+        {
+          "role": "controls",
+          "source_head": "f218939e016d039e3b0ce5c86b4b33151bcb2117",
+          "integration_commit": "e9b1e23b80bd862c9f468fe68e5dc8b56f5c8157",
+          "files": 4,
+          "summary": "Full 32-case v1/v1.1 native pair audit, 7 synthetic contract tests; no new source-compatible native execution"
+        },
+        {
+          "role": "corpus",
+          "source_head": "d7e85d640e18e2c560a082384c8d7c8416fd713f",
+          "integration_commit": "a96b083ec74e01c9f26d7985542cf837d4667d57",
+          "files": 4,
+          "summary": "Opt-in v3 TRAIN-only modifier exposure, m6/m7 0 -> 60/52 in first 400, 3 synthetic tests and 1 archive-dependent skip"
+        },
+        {
+          "role": "training",
+          "source_head": "c594d154b141ba5c450199311c4a790402eb7c02",
+          "integration_commit": "fe16ceef2031afd121f21e11c4427a1e532d3671",
+          "files": 6,
+          "summary": "Shared train/eval lease, raw-evidence guardian and pre/post fingerprints; 10 new model-free evaluator tests"
+        },
+        {
+          "role": "evaluation",
+          "source_head": "5f7cc52cb6a734268ff66ef1de856952482eb8a8",
+          "integration_commit": "eb518320523330c0c67aaa0408c2a02ff6622ffd",
+          "files": 5,
+          "summary": "Blind historical native PNG stimulus audit: 34 cards, 68 images, 33 distinct seed pairs, q004/q007 exact repeat; 6 tests"
+        }
+      ],
+      "changed_paths": 19,
+      "mode": "four serial commits, only role-owned source blob SHAs, unchanged pre-import shared blobs verified for all 7 edited paths",
+      "workflow_commit": "385bb41f3f17f49881a23958c7a1ec1e7f03fdbc",
+      "tests": {
+        "run": "43376391448",
+        "url": "https://github.com/techrote/cybersand/actions/runs/43376391448",
+        "platform": "Ubuntu 24.04 Python 3.12",
+        "discovered": 82,
+        "passed": 78,
+        "skipped": 4,
+        "conclusion": "SUCCESS",
+        "scope": "model-free",
+        "native": false,
+        "windows": false,
+        "model": false
+      },
+      "measured": {
+        "v3_modifier_m6": 60,
+        "v3_modifier_m7": 52,
+        "v2_modifier_m6": 0,
+        "v2_modifier_m7": 0,
+        "blind_stimulus_cards": 34,
+        "blind_images": 68,
+        "unique_seed_pairs": 33,
+        "duplicate_cards": [
+          "q004",
+          "q007"
+        ],
+        "model_gain": false
+      },
+      "review": "Independent Integration-authored bridge assembly review still PENDING. Eval stimulus audit is a separate evaluation-owned measurement, not that review.",
+      "upstream": "main 63f8b1ba, #564 6319ab1d and #565 d66499ec unchanged; #565 Windows deadline gate still HOLD",
+      "remaining": "Qualify authentic adapter/current-source native/Windows and human theme recognition; no production promotion."
     }
   }
 }
