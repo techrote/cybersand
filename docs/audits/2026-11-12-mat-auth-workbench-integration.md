@@ -26,7 +26,8 @@ is part of this work.
 | Materials Lab application and request 10 | `8540ee06f9ce0e4c6a00a6c61dce194c40fb7e04` |
 | Latest Lab runtime publication | `2e86f4f38078130799820e414836e21f0c0f3e70` |
 | Initial Workbench with shared agent Undo/Redo | `b9270611bde82f3d44e4f7f496c6dbd03aa5801e` |
-| Latest incorporated Workbench UI and fixture repair | `6319ab1d94d85d01c9cdb44d973a92d224bfa9aa` |
+| Incorporated Workbench UI and pilot fixture repair | `6319ab1d94d85d01c9cdb44d973a92d224bfa9aa` |
+| Latest Workbench live-coordinate fixture repair | `00017c65da096c61585f026476ae1e62e1aea256` |
 | Initial two-parent integration | `4f37f836fa57189a1c5b0ab1582dbb39d6488c7f` |
 | Initial combined source tree | `1a91ceebf18bb13c34225c3cd0bb573f288e51fe` |
 | First frozen combined execution source | `90719c72b9fcf90593fb7878354051ad601b47fd` |
@@ -289,6 +290,59 @@ Windows/Linux execution, standalone package verification, runtime publication
 and actual complete final gates pass. PR #565 supplies exact terminal
 source/run/artifact/checksum results. No earlier pass or diagnostic is relabelled
 as qualification of this replacement.
+
+### Request 6: retain the latest Workbench native brush fixture
+
+At 10:18 UTC on 2026-11-13, live-head review detected a new ordinary child on
+#564: `00017c65da096c61585f026476ae1e62e1aea256`, tree
+`5f717230a08ac9190ac31e502c1f3e8940d8b2ad`. Its only changed file is
+`godot/tests/test_workbench_liquid_edges.gd` (57 additions, five deletions).
+It recalculates a brush's live screen position after asynchronous native sampling
+and each awaited input frame, asserts the inverse world-cell mapping and actual
+brush anchor, and records exact mismatch diagnostics. The original native disc,
+applied-cell count and equality assertions remain; no tolerance or watchdog is
+relaxed. Product, native, shared Undo/Redo, material authority, physics defaults,
+worker ownership and save-format files are unchanged.
+
+The preceding #564 [Godot run 43340738386](https://github.com/techrote/cybersand/actions/runs/43340738386)
+had failed the original exact brush assertion at `(64, 60)` in its Windows shard.
+The original trace did not directly prove the proposed stale-coordinate cause.
+The new upstream fixture is therefore retained as an upstream repair and still
+requires current-source execution; it is not presumed qualified from that patch.
+
+Normal merge `4178f3f1be6b2bd2881a782093836b8794006951`, tree
+`7b08fea95945413f2fc235953bb0cf8b31520848`, preserves both ordered parents:
+the request-5 source `11b809a579ecade05baaeded59461ab8fc3f6c39` and the new
+#564 head. The merge is mechanical and changes only that fixture. Its old SHA256
+was `e515e69a47afbfbcd185aa11e4aba8fdf19169ac698f9444faf98a10ba8ac7f4`;
+the new SHA256 is `fabc1570b995792ac4967a1df03b7b084fee4118af97610b6d0b029f53c22fe2`.
+It belongs to the canonical build/test input inventory. Counts remain 89 native
+and 841 build/test inputs, but the changed hash and latest-head ancestry require
+a new frozen source, request 6, fresh runtimes and complete qualification.
+
+Request 5 remains attributed only to source `11b809a5`, tree
+`465d872fe361de6caec0bfa0202711c179912f3f`, and
+[run 43402768596](https://github.com/techrote/cybersand/actions/runs/43402768596).
+Its complete Linux campaign succeeded. The [original Linux artifact 14028705393](https://github.com/techrote/cybersand/actions/runs/43402768596/artifacts/14028705393)
+is SHA256 `6669ad16330207f603fb693baae869731c447384515cf98d09361b768a15aaa0`;
+its native ELF is `44c906356a98c84b09c01f6e83bcae2391a4c0e39c5c632431a4a3f4cc1578e9`.
+The separately verified fresh Windows build is
+`ae48809d27adf2b3ceb66b1d36fa8608a88fe0b3fe7e8879ae9bb44707a124ad`.
+Windows execution was still running at this checkpoint; PR #565 retains its
+eventual terminal result under request 5. Those results cannot qualify request 6.
+
+Request 5's initial cold Main policy alignment is retained. Generic source
+headless/full Godot discovery assigns the policy-consuming Lab UI fixture the
+existing 3940-second complex-case allowance. Explicit Lab graphical cases and
+packaged smoke retain 1200-second process limits. Native 180/60/300-second
+compile/execute/service limits, original Lab 15 FPS captures, combined 1 FPS
+captures, installed-state predicates and physics experiments remain unchanged.
+
+Request 6 remains **IN PROGRESS / HOLD** until its actual Windows/Linux,
+standalone package, four-path runtime publication and complete exact-child
+Documentation, Native, Godot and Palette gates pass. PR #565 records its exact
+source, original artifacts and final disposition. No Ready promotion or main
+merge is performed by this reconciliation.
 
 ## Merge sequence and follow-on boundary
 
