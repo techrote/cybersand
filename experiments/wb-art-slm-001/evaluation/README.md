@@ -218,3 +218,34 @@ The historical model-output review has 34 cards/68 native material-display PNGs.
 ## First blinded AI visual recognition of the frozen native gallery
 
 The [13 November AI review checkpoint](ASSISTANT_BLIND_REVIEW_CHECKPOINT_2026-11-13.md) preserves a byte-identified qID-only response [frozen before the answer key was opened](assistant_blind_review_frozen_labels_2026-11-13.json), its [canonical-scorer-compatible response](assistant_blind_review_responses_2026-11-13.json), and explicit recognition errors. One AI reviewer classified **29/34 (85.29%)** admitted native material-image pairs correctly, or **29/36 (80.56%)** with both original malformed requests retained as failures. Admitted structural-group macro accuracy is **20/23 (86.96%)**; the same-group dunes/strata confusion accounts for four wrong labels and the known veins/circuitry motif failure for the fifth. Exact duplicates remain separate **original request** records but are not independent visual templates. This is **not human/owner acceptance, a new trained model, Windows imagery, current-main native execution or release GO**. Use `blind_native_review.py score` with the saved answer key and response to reproduce; production remains HOLD.
+
+
+## Cross-theme native-gallery collision audit (development only, 13 November 2026)
+
+The [cross-theme auditor](audit_cross_theme_collisions.py) and its
+[adversarial controls](test_audit_cross_theme_collisions.py) join three pinned
+historical real sources: the original native model-gallery answer key, the frozen
+AI-blind-review responses and the native-image foreground pixel measurements.
+See the [checkpoint](CROSS_THEME_COLLISION_CHECKPOINT_2026-11-13.md) and
+[recorded source-matched result](cross_theme_collision_audit_2026-11-13.json).
+
+The new diagnostic establishes that q003 (veins) and q032 (circuitry) have
+aligned-seed foreground Jaccard 0.879377/0.967470 despite distinct intended
+themes; the blind AI reviewer called both circuitry, and the frozen veins
+program already had an incorrect primary motif. q004/q007 (ribs) and
+q020/q029 (labyrinth) are separate same-theme repetitions. These are
+exploratory morphology results, **not** a blind human-recognition claim.
+
+From the repository root, after retrieving the original files:
+
+    python -m unittest discover -s experiments/wb-art-slm-001/evaluation -p 'test_audit_cross_theme_collisions.py' -v
+    python experiments/wb-art-slm-001/evaluation/audit_cross_theme_collisions.py \
+      --key experiments/wb-art-slm-001/evaluation/blind_model_review_answer_key.json \
+      --responses experiments/wb-art-slm-001/evaluation/assistant_blind_review_responses_2026-11-13.json \
+      --pixels experiments/wb-art-slm-001/evaluation/pixel_stimulus_morphology_audit.json \
+      --output /tmp/wb-art-cross-theme-collisions.json
+
+The CLI independently checks the exact historical source SHA-256 identities
+before producing any diagnosis. No output from this audit may be counted as
+new model inference, fresh native execution, current-main/Windows qualification,
+retrained gain or human acceptance.
