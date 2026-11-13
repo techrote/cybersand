@@ -27,7 +27,7 @@ V5_TRAIN_SHA256 = "972826e1af15a6babaff6e68e4c57d790c0c060a2befe050b4156c5f8ee05
 
 
 def _digest_lines(values) -> str:
-    return hashlib.sha256(("\\n".join(map(str, values)) + "\\n").encode("utf-8")).hexdigest()
+    return hashlib.sha256(("\n".join(map(str, values)) + "\n").encode("utf-8")).hexdigest()
 
 
 def _failure_contrast_v5(rows, seed: int, epoch: int, manifest_path: str | Path | None) -> list[int]:
