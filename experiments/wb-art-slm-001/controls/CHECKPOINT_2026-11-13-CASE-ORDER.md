@@ -15,7 +15,7 @@ Re-read the pinned `evaluation/native_replay.gd` execution contract. It explicit
 `controls/audit_v11_native_pairs.py` now checks the original JSONL stream before per-case reconstruction. It:
 
 - accepts only actual requested case IDs or the two registered native invariant case IDs (`invariant-protection`, `invariant-stop`);
-- refuses missing/non-string or ambiguous event IDs and payload types;
+- refuses missing/non-string case IDs and ambiguous receipt/capture event envelopes;
 - requires the invariant events to precede all pattern events and occur in protection-then-Stop order, when present;
 - requires pattern case indices to be non-decreasing in frozen input order, rejecting a complete block moved before an earlier case;
 - preserves the previously enforced within-case draw, Undo, Redo, save/reopen chronology, raw material readbacks, hashes and all fifteen global native gates.
