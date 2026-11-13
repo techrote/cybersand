@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/techrote/cybersand/agent-painter/program-v2",
+  "title": "CyberSand agent-painter program v2",
+  "description": "A proposed drawing on a 96-unit design grid. The host supplies seed, focus, authorized material and budgets. compiler.validate_program is also mandatory: it enforces strict integer representation, graph topology, geometry bounds and cross-field constraints that JSON Schema alone cannot express.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "family", "components", "requirements", "variation"],
+  "properties": {
+    "version": {"const": 2},
+    "family": {"enum": ["greebles", "pipework", "architecture"]},
+    "variation": {"type": "integer", "minimum": 0, "maximum": 2},
+    "components": {"type": "array", "minItems": 1, "maxItems": 12},
+    "requirements": {"type": "object"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"family": {"const": "greebles"}}},
+      "then": {"properties": {
+        "components": {"items": {"$ref": "#/$defs/panel"}},
+        "requirements": {
+          "type": "object", "additionalProperties": false,
+          "required": ["negative_space_min_percent"],
+          "properties": {"negative_space_min_percent": {"type": "integer", "minimum": 20, "maximum": 90}}
+        }
+      }}
+    },
+    {
+      "if": {"properties": {"family": {"const": "pipework"}}},
+      "then": {"properties": {
+        "components": {"maxItems": 1, "items": {"$ref": "#/$defs/pipe_network"}},
+        "requirements": {
+          "type": "object", "additionalProperties": false,
+          "required": ["connected", "cycles"],
+          "properties": {"connected": {"const": true}, "cycles": {"type": "integer", "minimum": 0, "maximum": 4}}
+        }
+      }}
+    },
+    {
+      "if": {"properties": {"family": {"const": "architecture"}}},
+      "then": {"properties": {
+        "components": {"items": {"oneOf": [{"$ref": "#/$defs/room"}, {"$ref": "#/$defs/solid"}, {"$ref": "#/$defs/stairs"}]}},
+        "requirements": {
+          "type": "object", "additionalProperties": false,
+          "required": ["route", "clearance", "region"],
+          "properties": {
+            "route": {"type": "array", "items": {"$ref": "#/$defs/point"}, "oneOf": [{"maxItems": 0}, {"minItems": 2, "maxItems": 2}]},
+            "clearance": {"enum": [3, 5, 7, 9]},
+            "region": {"$ref": "#/$defs/box"}
+          }
+        }
+      }}
+    }
+  ],
+  "$defs": {
+    "point": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "integer", "minimum": 0, "maximum": 95}},
+    "box": {
+      "type": "array", "minItems": 4, "maxItems": 4,
+      "prefixItems": [
+        {"type": "integer", "minimum": 0, "maximum": 95}, {"type": "integer", "minimum": 0, "maximum": 95},
+        {"type": "integer", "minimum": 1, "maximum": 96}, {"type": "integer", "minimum": 1, "maximum": 96}
+      ], "items": false
+    },
+    "panel": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "box", "detail", "density", "border", "fasteners"],
+      "properties": {
+        "kind": {"const": "panel"}, "box": {"$ref": "#/$defs/box"},
+        "detail": {"enum": ["vent", "grille", "inset", "plates", "ribs"]},
+        "density": {"type": "integer", "minimum": 1, "maximum": 4},
+        "border": {"enum": [1, 2]}, "fasteners": {"type": "boolean"}
+      }
+    },
+    "pipe_network": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "nodes", "edges", "diameter", "fittings"],
+      "properties": {
+        "kind": {"const": "pipe_network"},
+        "nodes": {"type": "array", "minItems": 2, "maxItems": 32, "uniqueItems": true, "items": {"$ref": "#/$defs/point"}},
+        "edges": {"type": "array", "minItems": 1, "maxItems": 40, "uniqueItems": true,
+          "items": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "integer", "minimum": 0, "maximum": 31}}},
+        "diameter": {"enum": [3, 5, 7, 9]}, "fittings": {"type": "boolean"}
+      }
+    },
+    "opening": {
+      "type": "object", "additionalProperties": false,
+      "required": ["side", "offset", "size"],
+      "properties": {"side": {"enum": ["left", "right", "top", "bottom"]},
+        "offset": {"type": "integer", "minimum": 1, "maximum": 94},
+        "size": {"type": "integer", "minimum": 3, "maximum": 94}}
+    },
+    "room": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "box", "thickness", "openings"],
+      "properties": {"kind": {"const": "room"}, "box": {"$ref": "#/$defs/box"},
+        "thickness": {"type": "integer", "minimum": 1, "maximum": 4},
+        "openings": {"type": "array", "maxItems": 6, "items": {"$ref": "#/$defs/opening"}}}
+    },
+    "solid": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "box"],
+      "properties": {"kind": {"enum": ["wall", "floor", "platform", "support"]}, "box": {"$ref": "#/$defs/box"}}
+    },
+    "stairs": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "box", "steps", "rise"],
+      "properties": {"kind": {"const": "stairs"}, "box": {"$ref": "#/$defs/box"},
+        "steps": {"type": "integer", "minimum": 2, "maximum": 8}, "rise": {"enum": ["left", "right"]}}
+    }
+  }
+}

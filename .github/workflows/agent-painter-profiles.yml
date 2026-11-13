@@ -1,0 +1,66 @@
+name: Agent painter remaining model preflights
+on:
+  push:
+    branches: [codex/agent-painter-foundation-568]
+    paths: ['experiments/agent_painter/preflight-request.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-profiles-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  request:
+    name: Validate bounded model preflight request
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      profiles: ${{ steps.request.outputs.profiles }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check exact source, immutable native origin and model contracts
+        id: request
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python3 experiments/agent_painter/training/preflight.py request --source-sha "$GITHUB_SHA" --output evidence/request.json
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          request = json.loads(Path("evidence/request.json").read_text())
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write("profiles=" + json.dumps(request["request"]["profiles"]) + "\n")
+          PY
+          python3 -m pip install 'Pillow==13.0.0'
+          python3 -m unittest discover -s experiments/agent_painter/tests -p 'test_*.py' -v 2>&1 | tee evidence/contracts.log
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-painter-profile-request-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          retention-days: 90
+          if-no-files-found: error
+
+  qualify:
+    name: ${{ matrix.profile }} real CPU preflight
+    needs: request
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        profile: ${{ fromJSON(needs.request.outputs.profiles) }}
+    permissions:
+      contents: write
+      actions: read
+    uses: ./.github/workflows/agent-painter-profile-preflight.yml
+    with:
+      source-sha: ${{ github.sha }}
+      profile: ${{ matrix.profile }}

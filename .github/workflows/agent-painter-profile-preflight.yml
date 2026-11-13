@@ -1,0 +1,120 @@
+name: Agent painter single model optimizer and fresh VM continuation
+on:
+  workflow_call:
+    inputs:
+      source-sha:
+        type: string
+        required: true
+      profile:
+        type: string
+        required: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  fresh:
+    name: ${{ inputs.profile }} actual updates 1 and 2
+    uses: ./.github/workflows/agent-painter-train.yml
+    with:
+      source-sha: ${{ inputs.source-sha }}
+      profile: ${{ inputs.profile }}
+      corpus-run-id: '43506373969'
+      corpus-artifact: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+      output-artifact: agent-painter-preflight-${{ inputs.profile }}-fresh-${{ github.run_id }}-${{ github.run_attempt }}
+      steps: 2
+      inference-proof: true
+
+  resume:
+    name: ${{ inputs.profile }} continuation on a separate fresh VM
+    needs: fresh
+    uses: ./.github/workflows/agent-painter-train.yml
+    with:
+      source-sha: ${{ inputs.source-sha }}
+      profile: ${{ inputs.profile }}
+      corpus-run-id: '43506373969'
+      corpus-artifact: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+      output-artifact: agent-painter-preflight-${{ inputs.profile }}-resume-${{ github.run_id }}-${{ github.run_attempt }}
+      steps: 2
+      resume-artifact: agent-painter-preflight-${{ inputs.profile }}-fresh-${{ github.run_id }}-${{ github.run_attempt }}
+      resume-run-id: ${{ github.run_id }}
+      resume-checkpoint: checkpoint-000001
+
+  evidence:
+    name: ${{ inputs.profile }} complete state comparison and durable evidence
+    needs: [fresh, resume]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: write
+      actions: read
+    env:
+      REQUEST_PROFILE: ${{ inputs.profile }}
+      REQUEST_SOURCE_SHA: ${{ inputs.source-sha }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ inputs.source-sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/native
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-preflight-${{ inputs.profile }}-fresh-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/fresh
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-preflight-${{ inputs.profile }}-resume-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/resume
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-preflight-${{ inputs.profile }}-fresh-${{ github.run_id }}-${{ github.run_attempt }}-environment
+          path: evidence/fresh/environment
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-preflight-${{ inputs.profile }}-resume-${{ github.run_id }}-${{ github.run_attempt }}-environment
+          path: evidence/resume/environment
+      - name: Compare complete real checkpoints with unchanged numerical tolerances
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/verification
+          test "$(git rev-parse HEAD)" = "$REQUEST_SOURCE_SHA"
+          python3 -m venv "$RUNNER_TEMP/painter-verify"
+          "$RUNNER_TEMP/painter-verify/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/painter-verify/bin/python" -m pip install 'safetensors==0.8.0' 'numpy==2.5.4'
+          "$RUNNER_TEMP/painter-verify/bin/python" -m unittest discover -s experiments/agent_painter/tests -p 'test_training.py' -v 2>&1 | tee evidence/verification/training-contracts.log
+          "$RUNNER_TEMP/painter-verify/bin/python" experiments/agent_painter/training/compare_resume.py \
+            --fresh evidence/fresh/checkpoint-000002 --resumed evidence/resume/checkpoint-000002 \
+            --output evidence/verification/resume-comparison.json
+          "$RUNNER_TEMP/painter-verify/bin/python" experiments/agent_painter/training/preflight.py package \
+            --directory evidence --output release --source-sha "$REQUEST_SOURCE_SHA" --profile "$REQUEST_PROFILE"
+      - name: Publish immutable model preflight receipts and checkpoints
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="agent-painter-preflight-${REQUEST_PROFILE}-${REQUEST_SOURCE_SHA:0:12}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          cat > "$RUNNER_TEMP/model-preflight-release.md" <<'NOTES'
+          Bounded CPU model preflight for issue #568. One actual pinned model per GitHub-hosted VM: two fresh optimizer updates, atomic checkpoint readback, checkpoint1-to2 continuation on a separate fresh VM, unchanged numerical comparison, and one raw 128-token inference call. The original admitted native corpus retains source633920373a3d406a2ede61ce4137c324f76be23b; this release does not claim a new native rebuild.
+
+          MANIFEST.json and SHA256SUMS.txt bind the source, exact model, native corpus origin and complete evidence archives. A successful infrastructure preflight does not assert useful painter quality or valid generated art. Raw first-pass outputs and refusals are retained. No full campaign, merge or default promotion. Draft/HOLD.
+          NOTES
+          gh release create "$tag" release/* --target "$REQUEST_SOURCE_SHA" --prerelease \
+            --title "Agent painter $REQUEST_PROFILE CPU preflight (${REQUEST_SOURCE_SHA:0:12})" \
+            --notes-file "$RUNNER_TEMP/model-preflight-release.md"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-painter-preflight-${{ inputs.profile }}-verification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/verification/
+            release/MANIFEST.json
+            release/SHA256SUMS.txt
+          if-no-files-found: warn
+          retention-days: 90

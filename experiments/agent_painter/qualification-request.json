@@ -1,0 +1,19 @@
+{
+  "schema": "agent-painter-qualification-v1",
+  "sequence": 6,
+  "accepted_base": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742",
+  "historical_donor": "bac120981fdd9aecaab0dc8368c421fa390cc269",
+  "families": [
+    "greebles",
+    "pipework",
+    "architecture"
+  ],
+  "native_cases": 30,
+  "training_profile": "smol",
+  "optimizer_steps": 2,
+  "resume_from_step": 1,
+  "resume_target_step": 2,
+  "schedules": false,
+  "full_training": false,
+  "publish_research_evidence": true
+}

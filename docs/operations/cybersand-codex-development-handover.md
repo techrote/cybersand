@@ -10,6 +10,10 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Agent-painter foundation — 2026-11-13
+
+Owner-authorized implementation on current accepted #564/#565 main follows the [foundation handoff](agent-painter-foundation.md). Consume its qualified source/corpus/runner interfaces and issue #568 checkpoint before starting a model lane. The frozen #567 donor is read-only. No schedules, full model campaigns or merge are authorized by this foundation task.
+
 ## Materials Lab Windows evaluation — 2026-11-12
 
 [Draft #562](https://github.com/techrote/cybersand/pull/562) carries the

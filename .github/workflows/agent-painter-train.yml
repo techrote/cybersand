@@ -1,0 +1,235 @@
+name: Agent painter bounded CPU training entry point
+on:
+  workflow_call:
+    inputs:
+      source-sha:
+        type: string
+        required: true
+      corpus-artifact:
+        type: string
+        required: true
+      output-artifact:
+        type: string
+        required: true
+      profile:
+        type: string
+        default: smol
+      steps:
+        type: number
+        default: 2
+      inference-proof:
+        type: boolean
+        default: false
+      resume-artifact:
+        type: string
+        default: ''
+      resume-checkpoint:
+        type: string
+        default: checkpoint-000001
+      corpus-run-id:
+        type: string
+        default: ''
+      resume-run-id:
+        type: string
+        default: ''
+  workflow_dispatch:
+    inputs:
+      source-sha:
+        description: Exact 40-character source commit
+        type: string
+        required: true
+      corpus-artifact:
+        description: Qualified native artifact with corpus/admitted-corpus.json
+        type: string
+        required: true
+      output-artifact:
+        description: Unique new experiment artifact name
+        type: string
+        required: true
+      profile:
+        description: Exact reviewed model lane; model-specific loader and framing are mandatory
+        type: choice
+        options: [smol, void, sprocket, lfm25_vl]
+        default: smol
+      steps:
+        description: Total global optimizer target (1..16 for this foundation entry point)
+        type: number
+        default: 2
+      inference-proof:
+        description: Save one bounded raw inference after the real optimizer proof
+        type: boolean
+        default: false
+      resume-artifact:
+        description: Optional exact checkpoint artifact from resume-run-id or the corpus run
+        type: string
+        default: ''
+      resume-checkpoint:
+        description: Checkpoint directory within the supplied artifact
+        type: string
+        default: checkpoint-000001
+      corpus-run-id:
+        description: Actions run containing the admitted corpus (required for manual dispatch)
+        type: string
+        required: true
+      resume-run-id:
+        description: Checkpoint artifact run; defaults to corpus-run-id or the current run
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  train:
+    name: CPU optimizer and atomic checkpoint readback
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    concurrency:
+      group: agent-painter-${{ inputs.profile }}-${{ inputs.output-artifact }}
+      cancel-in-progress: false
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: 'default'
+      MKL_CBWR: 'COMPATIBLE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+      REQUEST_SOURCE_SHA: ${{ inputs.source-sha }}
+      REQUEST_STEPS: ${{ inputs.steps }}
+      REQUEST_RESUME: ${{ inputs.resume-artifact }}
+      REQUEST_CHECKPOINT: ${{ inputs.resume-checkpoint }}
+      REQUEST_PROFILE: ${{ inputs.profile }}
+      REQUEST_REPOSITORY: ${{ github.repository }}
+      REQUEST_CORPUS_ARTIFACT: ${{ inputs.corpus-artifact }}
+      REQUEST_CORPUS_RUN_ID: ${{ inputs.corpus-run-id || github.run_id }}
+      REQUEST_RESUME_RUN_ID: ${{ inputs.resume-run-id || inputs.corpus-run-id || github.run_id }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ inputs.source-sha }}
+          persist-credentials: false
+      - name: Validate immutable source and bounded training request
+        run: |
+          set -euo pipefail
+          [[ "$REQUEST_SOURCE_SHA" =~ ^[a-f0-9]{40}$ ]]
+          test "$(git rev-parse HEAD)" = "$REQUEST_SOURCE_SHA"
+          [[ "$REQUEST_STEPS" =~ ^[0-9]+$ ]]
+          test "$REQUEST_STEPS" -ge 1
+          test "$REQUEST_STEPS" -le 16
+          [[ "$REQUEST_CHECKPOINT" =~ ^checkpoint-[0-9]{6}$ ]]
+          [[ "$REQUEST_PROFILE" =~ ^(smol|void|sprocket|lfm25_vl)$ ]]
+          [[ "$REQUEST_CORPUS_RUN_ID" =~ ^[1-9][0-9]*$ ]]
+          [[ "$REQUEST_RESUME_RUN_ID" =~ ^[1-9][0-9]*$ ]]
+          mkdir -p evidence/training-environment
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          resume = None
+          if os.environ["REQUEST_RESUME"]:
+              resume = {
+                  "artifact": os.environ["REQUEST_RESUME"],
+                  "run_id": os.environ["REQUEST_RESUME_RUN_ID"],
+                  "checkpoint": os.environ["REQUEST_CHECKPOINT"],
+              }
+          origins = {
+              "schema_version": 1,
+              "repository": os.environ["REQUEST_REPOSITORY"],
+              "source_sha": os.environ["REQUEST_SOURCE_SHA"],
+              "corpus": {
+                  "artifact": os.environ["REQUEST_CORPUS_ARTIFACT"],
+                  "run_id": os.environ["REQUEST_CORPUS_RUN_ID"],
+              },
+              "resume": resume,
+          }
+          Path("evidence/training-environment/artifact-origins.json").write_text(
+              json.dumps(origins, indent=2) + "\n", encoding="utf-8")
+          PY
+          git rev-parse HEAD > evidence/training-environment/source.txt
+          python3 --version > evidence/training-environment/python.txt
+          lscpu > evidence/training-environment/cpu.txt
+          df -h > evidence/training-environment/disk-before.txt
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: ${{ inputs.corpus-artifact }}
+          path: evidence/native
+          run-id: ${{ inputs.corpus-run-id || github.run_id }}
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: inputs.resume-artifact != ''
+        with:
+          name: ${{ inputs.resume-artifact }}
+          path: evidence/previous-training
+          run-id: ${{ inputs.resume-run-id || inputs.corpus-run-id || github.run_id }}
+          github-token: ${{ github.token }}
+      - name: Establish pinned CPU environment on this hosted runner
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/painter-training"
+          "$RUNNER_TEMP/painter-training/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/painter-training/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          if test "$REQUEST_PROFILE" = lfm25_vl; then
+            "$RUNNER_TEMP/painter-training/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torchvision==0.29.2+cpu'
+            "$RUNNER_TEMP/painter-training/bin/python" -m pip install -r experiments/agent_painter/training/requirements-lfm25_vl.lock
+          fi
+          "$RUNNER_TEMP/painter-training/bin/python" -m pip check
+          "$RUNNER_TEMP/painter-training/bin/python" -m pip freeze --all > evidence/training-environment/pip-freeze.txt
+          sha256sum experiments/agent_painter/training/requirements.lock > evidence/training-environment/requirements.sha256
+          if test "$REQUEST_PROFILE" = lfm25_vl; then sha256sum experiments/agent_painter/training/requirements-lfm25_vl.lock >> evidence/training-environment/requirements.sha256; fi
+      - name: Download exact public model and validate complete TRAIN custody
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/painter-training/bin/python" experiments/agent_painter/training/download_model.py --profile "$REQUEST_PROFILE" --output "$RUNNER_TEMP/painter-model"
+          cp "$RUNNER_TEMP/painter-model/download_receipt.json" evidence/training-environment/model-download.json
+      - name: Verify model-specific framing, complete TRAIN budgets and frozen target guards
+        if: inputs.profile != 'smol'
+        run: |
+          set -euo pipefail
+          if test "$REQUEST_PROFILE" = void; then
+            VOID_META_TESTS=1 VOID_TRAIN_CORPUS=evidence/native/corpus \
+              "$RUNNER_TEMP/painter-training/bin/python" -m unittest discover \
+              -s experiments/agent_painter/lanes/void -p 'test_*.py' -v 2>&1 | tee evidence/training-environment/lane-contracts.log
+          elif test "$REQUEST_PROFILE" = sprocket; then
+            "$RUNNER_TEMP/painter-training/bin/python" experiments/agent_painter/lanes/sprocket/test_adapter.py \
+              --model "$RUNNER_TEMP/painter-model" --corpus evidence/native/corpus --meta -v \
+              2>&1 | tee evidence/training-environment/lane-contracts.log
+          elif test "$REQUEST_PROFILE" = lfm25_vl; then
+            LFM25_SNAPSHOT="$RUNNER_TEMP/painter-model" PAINTER_CORPUS=evidence/native/corpus \
+              "$RUNNER_TEMP/painter-training/bin/python" experiments/agent_painter/lanes/lfm25_vl/test_adapter.py \
+              2>&1 | tee evidence/training-environment/lane-contracts.log
+          fi
+      - name: Execute real optimizer steps or full-state continuation
+        run: |
+          set -euo pipefail
+          resumed=()
+          if test -n "$REQUEST_RESUME"; then resumed=(--resume "evidence/previous-training/$REQUEST_CHECKPOINT"); fi
+          timeout --signal=TERM --kill-after=30s 1260s "$RUNNER_TEMP/painter-training/bin/python" experiments/agent_painter/training/train.py \
+            --profile "$REQUEST_PROFILE" --model "$RUNNER_TEMP/painter-model" \
+            --corpus evidence/native/corpus --output evidence/training \
+            --steps "$REQUEST_STEPS" --max-seconds 1200 --threads 1 --checkpoint-every 1 "${resumed[@]}"
+      - name: Exercise the same model-specific inference framing and strict output handling
+        if: inputs.inference-proof
+        run: |
+          set -euo pipefail
+          checkpoint=$(printf 'checkpoint-%06d' "$REQUEST_STEPS")
+          timeout --signal=TERM --kill-after=30s 300s "$RUNNER_TEMP/painter-training/bin/python" experiments/agent_painter/training/infer.py \
+            --model "$RUNNER_TEMP/painter-model" --checkpoint "evidence/training/$checkpoint" \
+            --prompt 'Draw a bounded greeble panel with an inset and fasteners.' \
+            --output evidence/training/inference --seed 104729 --max-new-tokens 128 --threads 1
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: ${{ inputs.output-artifact }}
+          path: evidence/training/
+          if-no-files-found: warn
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: ${{ inputs.output-artifact }}-environment
+          path: evidence/training-environment/
+          if-no-files-found: warn
+          retention-days: 90

@@ -10,6 +10,8 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For Greebles/Pipework/Architecture programs, native admission and split custody, the original PNG gallery, hosted CPU optimizer/resume proof and four model-worker interfaces, retrieve the [agent-painter foundation](../operations/agent-painter-foundation.md).
+
 For the combined #562 Materials Lab / #564 Workbench candidate, original source ancestry, shared history preservation, standalone evaluation and #563 merge-order boundaries, read the [combined qualification record](../audits/2026-11-12-mat-auth-workbench-integration.md).
 
 ## Materials Lab v1 review candidate — 2026-11-11
