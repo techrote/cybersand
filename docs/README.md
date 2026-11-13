@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.
+
 Materials Lab v1 review candidate: [desktop launch, inspection, authoring and native tests](operations/materials-lab-authoring.md),
 [initial qualification](audits/2026-11-11-materials-lab-v1.md), and
 [completion/runtime/Windows package evidence](audits/2026-11-11-materials-lab-completion.md).

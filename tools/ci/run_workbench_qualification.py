@@ -117,8 +117,12 @@ class Runner:
         finally:
             (self.evidence / "results.json").write_text(json.dumps(self.results, indent=2)+"\n", encoding="utf-8")
 
-    def godot(self, project, label, script=None, marker=None, *, graphical=False, env=None):
+    def godot(self, project, label, script=None, marker=None, *, graphical=False, env=None, max_fps=None):
         command = [str(self.args.godot.resolve()), "--audio-driver", "Dummy"]
+        if max_fps is not None:
+            if not isinstance(max_fps, int) or max_fps < 1:
+                raise ValueError("Graphical frame bound must be a positive integer")
+            command += ["--max-fps", str(max_fps)]
         if graphical:
             command += ["--rendering-method", "gl_compatibility"]
             if sys.platform == "win32":
