@@ -222,6 +222,18 @@ class EvaluationGuardTests(unittest.TestCase):
         path.write_text(json.dumps(original))
         self.assertIsNotNone(verified_evaluation(path.parent, argv))
 
+    def test_nonobject_raw_record_is_rejected_not_a_supervisor_crash(self):
+        args, argv = self.setup_run()
+        self.assertEqual(run(args, argv)["status"], "completed")
+        path = self.parent / "eval-one" / "predictions.json"
+        original = json.loads(path.read_text())
+        altered = json.loads(json.dumps(original))
+        altered["records"][0] = "not a record"
+        path.write_text(json.dumps(altered))
+        self.assertIsNone(verified_evaluation(path.parent, argv))
+        path.write_text(json.dumps(original))
+        self.assertIsNotNone(verified_evaluation(path.parent, argv))
+
     def test_duplicate_evaluation_fingerprint_not_relaunched(self):
         args, argv = self.setup_run()
         run(args, argv)
