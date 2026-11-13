@@ -280,7 +280,7 @@ step-400 candidate or score archived replay as fresh model quality.
   and unmodified ID/prompt/group/seed/expected completion; summaries alone
   cannot approve a fabricated candidate.
 - `test_evaluation_guard.py` now supplies synthetically generated valid raw
-  completions and source-matched compiler geometry; three new adverse methods
+  completions and source-matched compiler geometry; four new adverse methods
   cover raw/tokens, compiler receipts, and identity/target tampering.
 - `archived_raw_program_audit.json` is a small retained results manifest, not
   a new model candidate. No shared source/plan/registry, other roles, production
@@ -313,7 +313,7 @@ acceptance. Critically, all 36 historical records omit terminal EOS *position*,
 so the new guard must not retroactively mark terminal EOS independently proven.
 Their historical first-pass flags remain as originally recorded. Three isolated
 synthetic raw-helper unittest methods ran locally and passed (including ten
-negative tampering controls); no exact-source combined 23-method supervised
+negative tampering controls); no exact-source combined 24-method supervised
 train/eval suite was executed in this runtime, nor current-main/Windows/GPU.
 
 ### Dependencies and next owned action
