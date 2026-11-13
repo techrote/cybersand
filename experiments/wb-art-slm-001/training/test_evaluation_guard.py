@@ -43,13 +43,17 @@ compiler = importlib.util.module_from_spec(spec)
 sys.modules[spec.name] = compiler
 spec.loader.exec_module(compiler)
 operations = compiler.compile_program(program, 96, 96, seed=17)
-records = [{'id':name,'theme':'roots','completion':json.dumps(program),
-            'expected_completion':json.dumps(reference),'program':program,
-            'compiled_operations':len(operations),'seed':17,'output_tokens':24,'eos_emitted':True,
+dev_rows = [json.loads(line) for line in pathlib.Path(a.dev).read_text().splitlines() if line.strip()]
+dev_rows.sort(key=lambda row: hashlib.sha256(row['id'].encode()).hexdigest())
+records = [{'id':row['id'],'theme':row['theme'],'group_id':row['group_id'],
+            'prompt':row['prompt'],'completion':json.dumps(program),
+            'expected_completion':row['completion'],'program':program,
+            'compiled_operations':len(operations),'seed':row['seed'],
+            'output_tokens':24,'eos_emitted':True,
             'eos_terminated':True,'json_valid':True,'program_valid':True,
             'first_pass_accepted':True,'theme_field_correct':True,
             'primary_motif_correct':True,'motif_layout_exact':True,
-            'exact_target':False} for name in ('one','two')]
+            'exact_target':False} for row in dev_rows]
 metrics = {'count':len(records),'json_valid':2,'program_valid':2,'first_pass_accepted':2,
            'theme_field_correct':2,'primary_motif_correct':2,'motif_layout_exact':2,
            'exact_target':0}
@@ -94,7 +98,16 @@ class EvaluationGuardTests(unittest.TestCase):
                 shutil.copy2(Path(__file__).resolve().parents[1] / "controls" / "pattern_compiler.py",
                              self.inputs[name])
             else:
-                self.inputs[name].write_text('{"id":"one"}\n{"id":"two"}\n' if name == "dev" else name)
+                if name == "dev":
+                    reference = {'version': 1, 'theme': 'roots', 'layers': [
+                        {'motif': 'branch', 'density': 0.6, 'scale': 0.5,
+                         'width': 0.3, 'angle': 0, 'layout': 'center'}]}
+                    rows = ({'id': key, 'prompt': 'roots', 'theme': 'roots',
+                             'group_id': 'test:roots', 'seed': 17,
+                             'completion': json.dumps(reference)} for key in ('one', 'two'))
+                    self.inputs[name].write_text(''.join(json.dumps(row) + '\\n' for row in rows))
+                else:
+                    self.inputs[name].write_text(name)
         self.adapter = self.root / "adapter"
         self.adapter.mkdir()
         (self.adapter / "adapter_model.safetensors").write_bytes(b"LoRA")
@@ -188,6 +201,25 @@ class EvaluationGuardTests(unittest.TestCase):
                 path.write_text(json.dumps(altered))
                 self.assertIsNone(verified_evaluation(path.parent, argv))
         path.write_text(json.dumps(baseline))
+        self.assertIsNotNone(verified_evaluation(path.parent, argv))
+
+    def test_balanced_source_identity_and_denominator_are_not_just_counts(self):
+        args, argv = self.setup_run()
+        self.assertEqual(run(args, argv)["status"], "completed")
+        path = self.parent / "eval-one" / "predictions.json"
+        original = json.loads(path.read_text())
+        for mutation in ({"id": "phantom-easy"},
+                         {"prompt": "other-theme"},
+                         {"theme": "coral"},
+                         {"group_id": "unauthorized-group"},
+                         {"seed": 73},
+                         {"expected_completion": "{}"}):
+            with self.subTest(mutation=mutation):
+                altered = json.loads(json.dumps(original))
+                altered["records"][0].update(mutation)
+                path.write_text(json.dumps(altered))
+                self.assertIsNone(verified_evaluation(path.parent, argv))
+        path.write_text(json.dumps(original))
         self.assertIsNotNone(verified_evaluation(path.parent, argv))
 
     def test_duplicate_evaluation_fingerprint_not_relaunched(self):
