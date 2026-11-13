@@ -1,7 +1,7 @@
 {
   "experiment": "WB-ART-SLM-001",
   "date": "2026-11-13",
-  "status": "Fifth intake: 14 role-owned paths, bounded POSIX child-group Stop repair; independent exact-source 43 PASS/2 archive SKIP; Controls diagnostic assertion still fails full smoke; model/native/Windows HOLD",
+  "status": "Sixth role intake: 15 exact-source paths, formerly RED Controls gate now green, archived TRAIN/DEV and blind AI-scoring guards in exact-head CI; native/Windows/model-accuracy HOLD",
   "source": {
     "main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
     "main_preserves": [
@@ -327,6 +327,75 @@
       "model_training": false,
       "current_native": false,
       "windows": false
+    },
+    "sixth_2026_11_13_0906": {
+      "previous_shared_head": "a6d5a015bcabfa1601624988b7a4600111b968f8",
+      "roles": {
+        "controls": {
+          "source_head": "b7e9db37c7019c862f4ec8f24b8e20ed947075a0",
+          "import_commit": "da60f19aacd434b8e28a97d858396280a90a541e",
+          "paths": 4,
+          "qualification": "13/13 role-local synthetics; full exact-head CI green"
+        },
+        "corpus": {
+          "source_head": "4ccfbd33ca2dd4635fd54ae3d2a0632b356821b0",
+          "import_commit": "923a6f76ba9e13f7fbe0a1a23a8fbb6ca42ad0c4",
+          "paths": 3,
+          "qualification": "4/4 role-local with saved corpus; archive-dependent hosted methods skipped"
+        },
+        "training": {
+          "source_head": "253608f6a02cde620cce16287c98d1d590355763",
+          "import_commit": "b8990924c2c443f074c669b89920ca721408afa4",
+          "paths": 4,
+          "qualification": "new training job guards included in successful model-free hosted CI; no model job"
+        },
+        "evaluation": {
+          "source_head": "9c0a63c579340599137caac7afde6733e0345ecf",
+          "import_commit": "eed46f4198b131404a30bea5e07f8bb1457f5e6c",
+          "paths": 4,
+          "qualification": "one key-blind AI review of historical native 34 cards; not human acceptance"
+        }
+      },
+      "import_policy": "exact Git blobs from role heads; shared existing files compared with previous source heads; four independent expected-head non-force Git-tree commits; only role-owned paths",
+      "dedicated_ci_commit": "c954fcf8710902a6e3f362ba537a52fbddd05b75",
+      "completed_model_free_runs": [
+        {
+          "id": 43398250411,
+          "sha": "eed46f4198b131404a30bea5e07f8bb1457f5e6c",
+          "conclusion": "success"
+        },
+        {
+          "id": 43398257670,
+          "sha": "eed46f4198b131404a30bea5e07f8bb1457f5e6c",
+          "conclusion": "success"
+        },
+        {
+          "id": 43398447468,
+          "sha": "c954fcf8710902a6e3f362ba537a52fbddd05b75",
+          "conclusion": "success",
+          "scope": "includes sealed split tests (private archive skips) and canonical AI blind-scoring"
+        },
+        {
+          "id": 43398456790,
+          "sha": "c954fcf8710902a6e3f362ba537a52fbddd05b75",
+          "conclusion": "success",
+          "scope": "same exact-source CI"
+        }
+      ],
+      "ai_blind_review": {
+        "historical_source": "90719c72b9fcf90593fb7878354051ad601b47fd",
+        "admitted_correct": 29,
+        "admitted_total": 34,
+        "original_total": 36,
+        "structural_groups_correct": 20,
+        "structural_groups_total": 23,
+        "reviewer": "one key-blind AI assistant",
+        "human_acceptance": false,
+        "blind_quality_rating": false,
+        "model_gain": false
+      },
+      "checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-0906.md",
+      "remaining": "authentic step-400 inference through source-compatible #565 successor; Windows owned process-tree Stop; native source/history/persistence; human blind recognition"
     }
   }
 }
