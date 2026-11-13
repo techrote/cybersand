@@ -13,9 +13,11 @@ related-documents: [../operations/native-pixel-scrolling.md, ../systems/material
 **Draft / HOLD; [PR #566](https://github.com/techrote/cybersand/pull/566).**
 The complete source-camera gate passes on actual Linux OpenGL and Windows
 ANGLE, including exact display-pixel pans, fractional zoom, fitted edges,
-PAINT, partial Water, glow/vapour and legacy material preservation. The
-source-matched installed campaign and Windows delivery are still running at
-this checkpoint. Owner acceptance remains pending; no merge is authorized.
+PAINT, partial Water, glow/vapour and legacy material preservation. Both
+platforms also pass the installed campaign and all 36 authoring regressions.
+The source-matched Windows evaluation archive is published and its downloaded
+ZIP checksum is verified. Owner desktop/DPI and hardware-pacing acceptance
+remain pending; no merge is authorized.
 
 ## Source and integration identity
 
@@ -24,13 +26,14 @@ this checkpoint. Owner acceptance remains pending; no merge is authorized.
 | Repository | `techrote/cybersand` |
 | Isolated branch | `codex/native-pixel-scrolling-20261113` |
 | Stacked #564 base | `e63a7d4f7cea90a5900c91a917dbf10dee699aa7` |
-| Accepted main inspected | `e0fb05b8e0500641f0f25c62c5fb7e721da02d6a`; merge of #562 |
+| Accepted main initially inspected | `e0fb05b8e0500641f0f25c62c5fb7e721da02d6a`; merge of #562 |
+| Main advanced during qualification | `63f8b1ba6559906fe85f3ad0269aa296e4141d67`; merge of #563 native hard/granular capability consumer; separately inspected without changing this stacked base |
 | Initial implementation identity | `a1a896bb45753c820e1d6109df57de4e65be33af`, tree `f8aad8b10cd39d3cf65a7dd0fb8e1349217b08b0` |
 | Physical sample shader source | `1755b2195e4d38c6030ae287ac2eb8e070da62ef`, tree `90373b770b5bb112a38b3322e5de6f5e70b85545` |
 | Production camera source | `7758c34fa4dcc48462d934761f2a84938907ff81`, tree `38e981252433670a14a2ec935556c7ea9f0ce77b`; physical picking bounds and Tower label alignment |
 | Qualified application/test source | `a8f2735796b5814c95edba857a0a8fa62250be42`, tree `8307a2155bce8665a082e7e01b0e0390dcf4d1e2`; production camera/shader bytes remain identical to the recorded sources |
-| This registration checkpoint | Audit and per-file compatibility registration only; no application, test-fixture, native or packaging source changes |
-| Main/#564 compatibility | Initial camera + main + latest #564 merges without production conflicts; headless successes and Materials Lab shader-guard refusal are recorded below |
+| Later registration/evidence checkpoints | Compatibility registration and audit only; no application, test-fixture, native or packaging source changes after the qualified application/test source |
+| Main/#564 compatibility | Final #562-main + latest #564 + registered camera source passes 3,755 runtime checks; newer #563-main compatibility is separately scoped below |
 
 The source tree is isolated from both upstream branches and preserves #564's
 manual/agent history, selection-to-Focus mapping and conversation features.
@@ -67,6 +70,19 @@ also ran in a child `_process` after Main had published this frame's terrain
 parameters, allowing frame-order disagreement with later overlays or picking.
 Native texture upload coordinates and simulation cell resolution did not need
 to change. Existing follow easing is retained; additional easing is not the fix.
+
+The integer native view rectangle controls simulation scheduling, not texture
+cropping. `RenderSnapshotExchange::publish` in `native/src/world.cpp` scans
+all dirty world chunks without a camera/interest filter; the adapter's
+`take_render_snapshot` copies the whole extent on initial/full refresh and
+returns world-coordinate patches thereafter. `simulation_worker.gd` retains
+those patches until upload acknowledgement. Main blits them into its full-world
+image and acknowledges a successful texture upload. The partially visible
+right/bottom cell is therefore resident at the same snapshot cadence, including
+across a chunk edge. Workbench schedules the whole canvas; the default other
+camera margins cover partial edges. The explicit zero-margin selected-region
+execution policy is unchanged and does not promise that every partial edge
+cell is actively ticking.
 
 ## Implemented design and source mapping
 
@@ -142,12 +158,12 @@ or access control was changed. This failure is not a graphical test pass.
 | Actual framebuffer slow-pan/zoom/resize and old-path negative control | Fourth source on both backends: 150 checks, 0 failures; all four partial-Water and two actual PAINT cases complete |
 | Actual production glow/vapour alignment and guard coverage | Fourth source on both backends: 66 checks, 0 failures; all 48 glow translations exact and negative controls have a robust byte margin |
 | Legacy material, Water, production vapour and crossfade preservation | Fourth source: all four cases positively pass on actual GL and ANGLE, including 26 vapour and 1,274 crossfade assertions per platform |
-| Source-built Linux and Windows native runtimes | Fourth pinned native builds passed; installed and accepted-regression campaign continues |
-| Copied-installation camera and integrated authoring campaigns | Pending |
-| Source-matched Windows package and checksum | Pending successful source/installed campaign |
+| Source-built Linux and Windows native runtimes | Fourth pinned native builds pass; complete hosted run 43349229410 succeeds |
+| Copied-installation camera and integrated authoring campaigns | Both platforms pass installed and camera stages, followed by all 36 accepted-regression invocations |
+| Source-matched Windows package and checksum | Published artifact 14004714151; downloaded ZIP SHA-256 verified, exact identity below |
 | Retained-repository runtime provenance | HOLD inherited from #564; a newly built candidate does not publish or reattest the committed runtimes |
 | Separate Palette backend gate | Remains independent of the scoped camera framebuffer cases |
-| Representative hardware frame pacing and physical Windows scaling | Not established by initial source checks |
+| Representative hardware frame pacing and physical Windows scaling | Not established by software-renderer qualification |
 | Owner camera-feel acceptance | Pending; no merge authorized |
 
 `test_native_pixel_camera.gd`, `test_native_pixel_scrolling_render.gd` and
@@ -227,7 +243,8 @@ The graphical fixture additionally renders the real PAINT fill geometry at a
 2.5x half-pixel boundary and partial Water in coverage/oriented modes at 4x and
 2.5x. The Water case verifies exact translated pixels and independent partial
 coverage, including eight covered samples out of sixteen at 4x. These new
-assertions are parsed locally; actual GL/ANGLE outcomes remain pending.
+assertions were parsed locally at that checkpoint; actual GL/ANGLE outcomes
+were pending then and are resolved by the fourth campaign below.
 
 ## Third campaign: preservation evidence and fixture completion
 
@@ -255,7 +272,8 @@ on floating-point subtraction roundoff at that threshold. The repaired test
 raises only its custom emission intensity from 2 to 16, retaining the same
 positive and negative threshold. Each receipt now records the actual control
 error and fixture intensity. Canonical material data is restored before timing.
-The original failures remain retained; a complete rerun is required.
+The original failures remain retained. A complete rerun was required and is
+recorded in the fourth campaign below.
 
 All four independent legacy preservation cases pass on both actual backends:
 material presentation (including all 132 slots), partial Water, production
@@ -320,6 +338,13 @@ The palette comparison uses a 1280x960 output, 128x96-cell view, frozen
 with no per-frame readback. Its control replaces only the former coordinate
 block in the otherwise identical shader. Native/legacy median ratios are
 1.035 on Linux and 0.981 on Windows; p95 ratios are 1.077 and 0.985.
+The independent installed Linux repetition records 42 legacy and 39 native
+samples: median 72.517/77.063 ms and p95 73.428/82.005 ms, respectively
+(+6.27% median, +11.68% p95). Both independent source and installed
+observations are retained.
+The installed Windows repetition records 23 legacy and 24 native samples:
+median 133.001/130.137 ms and p95 135.315/133.357 ms, respectively
+(-2.15% median, -1.45% p95).
 
 The production-effects A/B/A comparison uses 960x540, a 240x135-cell view,
 eight warm-up frames and at most 30 frames/one second per arm. B changes only
@@ -333,10 +358,93 @@ vapour are identical. Canonical material data is restored before measurement.
 
 The effects median differences are comparable to repeated-A drift (+1.09%
 Linux, -1.31% Windows). At these small sample counts, p95 is the maximum.
-These short software-renderer observations bound this fixture's overhead;
+These short software-renderer observations describe this fixture's observed overhead;
 they do not establish statistical equivalence, representative hardware frame
 rates, full-game throughput or measured input latency. Owner hardware pacing
 and physical Windows 125/150/200% scaling remain acceptance work.
+The installed Linux effects repetition has 18 frames per cohort and medians
+57.964/57.466/57.864 ms, or +0.78% for the mean guarded median against its
+same-run former-grid control. Raw source/installed samples remain separate.
+The installed Windows effects repetition has 10 frames per cohort and medians
+107.780/106.388/107.682 ms, or +1.26% for the mean guarded median.
+
+## Source-matched installed delivery
+
+Hosted [run 43349229410](https://github.com/techrote/cybersand/actions/runs/43349229410)
+finishes **successfully** at 02:48:47 UTC on 13 November 2026, after starting
+at 02:02:12 UTC (46 minutes 35 seconds). Its pinned Windows cross-build,
+Linux source/installed job and Windows source/installed job all succeed.
+
+The Windows owner package is
+[`native-pixel-scrolling-windows-desktop-a8f2735796b5814c95edba857a0a8fa62250be42`](https://github.com/techrote/cybersand/actions/runs/43349229410/artifacts/14004714151).
+It is 92,934,939 bytes; downloaded ZIP SHA-256:
+`736513f7b290d14c6adeff755913496e620eb066d85c0fd31af223604af80a01`.
+The actual application/test source is `a8f2735796b5814c95edba857a0a8fa62250be42`,
+tree `8307a2155bce8665a082e7e01b0e0390dcf4d1e2`. All 889 selected archive
+source entries and all native build inputs remain identical through the later
+registration/evidence commits; the package retains its actual a8f273 source
+identity. The changed transition registry and audit are outside its application
+archive selection. This is the stacked #564 camera candidate, separately from
+the local current-main compatibility builds below.
+
+Extract the complete archive into a fresh writable directory and run
+**Open Workbench.cmd**. The launcher imports the included project with the
+bundled Godot 4.7 console executable, then opens the Workbench with the bundled
+GUI executable. Paths are quoted and anchored to that directory. Hosted
+Windows graphics/module tests explicitly use ANGLE; the ordinary launcher
+leaves the compatibility-driver choice to Godot. The archive includes the
+camera runbook; this complete audit and hosted evidence remain separately linked.
+
+Independent delivery inspection verifies all 893 manifested payload files,
+plus the manifest itself as the only unlisted 894th file. Every ZIP member
+matches the extracted payload. All 551 source/installed/packaged project
+hashes match the a8f273 Git blobs, as do all 87 native build-input hashes.
+GUI/console, VC runtime, native and Rapier executables are x64 PE. The actual
+copied GUI's module inventory contains bundled application modules and Windows
+system modules, with no build-folder DLL dependency. Its native DLL hash
+matches the package provenance and the pinned source-built DLL. The README
+matches the selected committed guide, and launcher/source-revision paths are
+correct. There are no script, parse or resource errors in the retained source,
+installed-camera, installed-authoring or accepted-regression logs.
+
+The Linux full-evidence artifact is `wb-art-paint-linux-43349229410-1`,
+artifact `14004531821`, ZIP SHA-256
+`27fb71351da26d7adcda185561fbfb1179afa1f8d4b1087a16f3ff898693ab3d`.
+Its source and copied-installation camera stages each pass all eight
+invocations, including import. The installed discovery/generation/paint/reopen
+stage passes 12/12 cases; the 1024x1024 integrated author/reopen case completes
+216/54 checks at each of one and four workers. All 36 accepted-regression
+invocations pass. All 551 copied project-source hashes match both the source
+receipt and the a8f273 Git blobs.
+
+The Windows full-evidence artifact is `wb-art-paint-windows-43349229410-1`,
+artifact `14004878757`, ZIP SHA-256
+`7c42ab9322d84a31bc570a0d878bf979b0d6cda08c455182964a75e9ffd240c9`.
+Its independent receipts confirm the same complete
+matrix: source camera 8/8, installed authoring/discovery 12/12, installed
+camera 8/8 and accepted regressions 36/36, with zero failures. Installed
+1024x1024 author/reopen again completes 216/54 checks with each of one and
+four workers. All 551 installed project-source hashes match the original
+source receipt and a8f273 Git blobs. The installed camera rerun retains the
+1,373/150/66 check counts and all four positive material-preservation cases.
+The native DLL remains
+`c59ef6341e653151c389133cde051d5913051ab05c903207a0bc772968a2d6fb`.
+
+| Hosted stage | Linux | Windows |
+| --- | --- | --- |
+| Source camera, including import | 8/8 | 8/8 |
+| Fresh installed profiles, generation, paint and persistence | 12/12 | 12/12 |
+| Installed camera, including import | 8/8 | 8/8 |
+| Accepted authoring/agent/PAINT/worldgen regressions | 36/36 | 36/36 |
+| Source/installed project hash equality | 551/551 | 551/551 |
+
+The complete transfer and stage summaries are retained under
+`build/native-pixel-scrolling/fourth-ci`. Source and installed receipts and
+timing samples remain distinct. The ordinary reproducible entry point is
+`python tools/ci/run_workbench_qualification.py camera --godot <Godot-4.7> --project godot --evidence <output>`;
+it requires a real graphical display for the framebuffer/effects cases. The
+workflow runs that command on both the checkout and copied installation,
+with its existing per-process watchdog and 180-minute platform job limit.
 
 ## Protected palette source transition for review
 
@@ -387,12 +495,108 @@ combined author/reopen campaigns at 512x512 and 1024x1024 with one/four workers
 exercise the large Fill path. Documentation and historical M11 checks passed.
 
 The standalone Lab UI and mounted Lab validation correctly refused the changed
-protected palette shader. That is a real integration blocker: it requires a
+protected palette shader. That was a real integration blocker: it required a
 reviewed per-file source transition, with final shader hash, reachable source
 commit and preservation evidence. The immutable compatibility lock, catalogue
 identity and existing transitions are not reset or weakened. The final shader
 registration is now proposed above after complete graphical preservation
-evidence; the resulting-source Lab rerun remains pending at this checkpoint.
+evidence. Registration commit
+`cfd54aadbeec27846795220542727fa816ab6fac` changes only this audit and the
+per-file transition registry. On the stacked branch, the ordinary guard and
+compiler pass, all 118 material-catalogue unit tests pass (11.093 seconds),
+and [Documentation/provenance run 43351009157](https://github.com/techrote/cybersand/actions/runs/43351009157)
+passes in Draft scope. Native/GDExtension and the separate full Palette jobs
+remain Draft-skipped; skipped runtime/provenance gates are not passes.
+
+The resulting isolated #562-main compatibility source is
+`c150c14587235777d9413056ff61bb03ce56eae3`, tree
+`1e276de490838ff21bcdb36bd0d9743162632765`. All 88 native inputs still match
+the recorded #565 runtime. With fresh external userdata, all 13 invocations
+(including import) pass and every positive completion/failure count is checked:
+
+| Resulting-source case | Completed checks/assertions |
+| --- | --- |
+| Camera transforms and native editing | 1,373 |
+| Art UI | 62 |
+| Native Materials Lab catalogue | 1,348 |
+| Standalone Lab, including actual compile/compare | 226 |
+| Mounted Lab author / reopen, one worker | 97 / 35 |
+| Mounted Lab author / reopen, four workers | 97 / 35 |
+| Combined 512x512 author / reopen, one worker | 192 / 49 |
+| Combined 512x512 author / reopen, four workers | 192 / 49 |
+| Total | **3,755; zero failures** |
+
+This resolves the earlier shader-guard integration failure on the actual
+resulting source. Logs and source/runtime identity are retained in the isolated
+checkout under `build/camera-main-compat/final-reviewed-transition`. These
+Linux headless results do not claim Windows execution or the newer #563 native
+runtime. The initially inspected main and the newly advanced main are kept
+separate in this record.
+
+The resulting #562-main source also passes all 209 material-catalogue unit
+tests (290.328 seconds), the normal 27-source/31-transition guard, compiler
+check, documentation (132 documents, 258 claims), M11 and whitespace checks.
+Actual Lab Validate/compare compiles its harness with local GCC 14.2.0; the
+reused GDExtension remains the separately identified hosted GCC 13.3 build.
+The full repository publication gate still reports the four inherited #564
+bridge-input mismatches for each retained platform runtime. Two additional
+local identity errors reflect the deliberately materialized test extension
+rather than the retained LFS binary. Neither the historical runtime pins nor
+their provenance are rewritten to suppress those errors. The consolidated
+receipt is `final-reviewed-transition/compatibility-final-summary.json`.
+
+## Main advance during qualification
+
+Main advanced to `63f8b1ba6559906fe85f3ad0269aa296e4141d67` by merging #563
+while the installed camera campaign was running. A second isolated checkout
+preserves that main, latest #564 and camera-registration ancestry; it changes
+no upstream branch or the already tested application/package source. Native
+and Godot production files merge automatically. The protected shader entry
+and new capability transition are both retained; normal guard, generated
+catalogue and native-capability header checks pass.
+
+The new main's published runtime does not match the combined Workbench source:
+four #564 bridge inputs differ. It is not reused for resulting-source runtime
+claims. The second resulting source is local commit
+`29e9eea2b6f4f1c530a1248114111f78bddb2b29`, tree
+`057ea95249b29b2f929b111e2fe55c81a48903db`. A fresh isolated source-matched
+Linux development extension builds in 65.1 seconds and qualifies all 89
+native inputs. Its SHA-256 is
+`13285c2ea063be57a363c00134d9680ab5bd8118e7eb9e4cea2fbbf338680c33`.
+The explicitly permitted development-toolchain override uses GCC 14.2.0 and
+GNU ld 2.44, with clean pinned godot-cpp
+`101ae38034304346a46ea9ea84ae156d3e860496` and cached archive
+`007a8e0048aca9b1680390e12f7fa0c34e1ee96ae6baf512526cad55910e486a`.
+Godot 4.7 and Rapier hashes match the verified identities above.
+
+Camera tests pass 1,373 assertions. Seven standalone Lab cases pass catalogue
+1,348, diagnostics 180, experiment 141, service 87, readability 21, UI 226
+and World candidate/reference comparison 204: **3,580 headless assertions,
+zero failures** in total. All 124 adversarial controls, generated header,
+compiler, material guard, native metadata parity, documentation, M11 and
+provider-policy checks pass. All 840 tracked project sources, 89 native
+inputs and the built runtime remain unchanged across execution.
+
+The initial adversarial invocation omitted its tool-local Python import path
+and ran no tests. The initial local runtime harness also placed XDG userdata
+inside the checkout, so Lab output-safety guards correctly refused UI/World
+publication. Those failed setup attempts remain retained. Correcting only
+the harness import path and using external userdata admits the successful
+cases above; no production/test source or safety guard changed.
+
+The complete receipt is retained in the second checkout at
+`build/main563-compat/qualification-summary.json`. A verified 11,761-byte
+`combined-source.bundle` in the same directory preserves both local merges
+and additive documentation resolutions, requiring the three upstream heads
+listed above; bundle SHA-256
+`9f9a29566ba5a6bc71bb6846e3b706f7860f7b653df4f05498f8206ff4589b44`.
+
+This is local Linux headless compatibility with a development compiler, not
+current-main-combined Windows/graphics qualification or retained runtime
+publication. The published Linux and Windows manifests still correctly
+reject their four #564 bridge-input mismatches each. A future integrated
+release needs matching retained runtimes and its normal platform gates.
+The already-qualified hosted camera source keeps its original scope.
 
 ## Documentation and unchanged contracts
 
@@ -410,5 +614,6 @@ historical provenance record still identifies `web-demo-m11` at `e2892c54`.
 Native ownership/lifetimes, snapshot wire formats, physics invariants, existing
 ADRs, material compatibility locks and historical runtime records are unchanged.
 The retained runtime/provenance gates and separate Palette gate remain distinct
-from the scoped camera campaign. Final qualification must append exact source,
-commands, elapsed time, runtime hashes, workflow results and any limitations.
+from the scoped camera campaign. The exact-source records above and linked
+hosted artifacts retain commands, elapsed times, runtime hashes, original
+failures, workflow results and the remaining acceptance limits.
