@@ -1,0 +1,39 @@
+name: WB-ART-SLM-001 offline protocol and compiler smoke
+
+on:
+  push:
+    branches: ["codex/wb-art-slm-001"]
+    paths:
+      - "experiments/wb-art-slm-001/**"
+      - ".github/workflows/wb-art-slm-001-smoke.yml"
+  pull_request:
+    paths:
+      - "experiments/wb-art-slm-001/**"
+      - ".github/workflows/wb-art-slm-001-smoke.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  offline-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Static compilation of all experiment Python
+        run: python -m compileall -q experiments/wb-art-slm-001
+      - name: Real loopback HTTP bridge protocol and adversarial receipts (no model)
+        run: python -m unittest discover -s experiments/wb-art-slm-001/integration -p 'test_local_art_bridge.py' -v
+      - name: Pinned v1 compiler and opt-in v1.1 coral / alias controls
+        run: |
+          python -m unittest discover -s experiments/wb-art-slm-001/controls -p 'test_pattern_compiler*.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/controls -p 'test_make_v11_native_pairs.py' -v
+      - name: Train-only curriculum guards (no weights or training)
+        run: |
+          python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_curriculum.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_curriculum.py' -v
