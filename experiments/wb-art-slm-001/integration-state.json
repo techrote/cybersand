@@ -36,9 +36,17 @@
     "final_assessment_run": false
   },
   "schedules": {
-    "state": "five existing hourly workers; restore bootstrap-owned pauses only after this source is published",
+    "state": "All five existing hourly workers enabled; prompts and unchanged cadences verified after restoration of bootstrap-owned pauses.",
     "restore_policy": "Preserve later user pauses and all unrelated tasks; verified final state lives in AUTOMATIONS.json",
-    "no_new_tasks": true
+    "no_new_tasks": true,
+    "handoff_verified_at": "2026-11-13T02:59:45.749501+00:00",
+    "next_runs": {
+      "integration": "2026-11-13T03:02:00+00:00",
+      "controls": "2026-11-13T03:12:00+00:00",
+      "corpus": "2026-11-13T03:22:00+00:00",
+      "training": "2026-11-13T03:32:00+00:00",
+      "evaluation": "2026-11-13T03:42:00+00:00"
+    }
   },
   "production_promotion": "HOLD; combined Draft only, no Ready or merge",
   "next_checkpoint": "One separately named training-only curriculum candidate with early literal-word coverage; independent native replay and matched Sprocket/Smol adaptation; current-main provider/Windows qualification.",
@@ -67,5 +75,7 @@
     "two malformed coral numeric JSON completions on development requests",
     "keyword ribs selects correct geometry but theme ruins",
     "keyword veins selects orthogonal geometry instead of network"
-  ]
+  ],
+  "worker_branches_seeded_from": "01f2cfcea66839066431b6d241f186be00cecf27",
+  "bootstrap_report_review": "Independent consistency review complete; 98% gate identified as native request yield, not schema validity."
 }
