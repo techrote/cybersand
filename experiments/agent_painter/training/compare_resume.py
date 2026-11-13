@@ -28,9 +28,18 @@ def tensors_close(left, right, atol=1e-6, rtol=1e-5):
                 return torch.allclose(a, b, atol=atol, rtol=rtol, equal_nan=False)
             return torch.equal(a, b)
         if isinstance(a, dict):
-            return isinstance(b, dict) and a.keys() == b.keys() and all(visit(a[k], b[k]) for k in a)
+            if not isinstance(b, dict):
+                return False
+            # Evaluate every comparable child before reducing the booleans.
+            # A generator passed to all() hid later, larger tensor differences
+            # after the first failed tolerance check.
+            children = [visit(a[k], b[k]) for k in a if k in b]
+            return a.keys() == b.keys() and all(children)
         if isinstance(a, (list, tuple)):
-            return type(a) is type(b) and len(a) == len(b) and all(visit(x, y) for x, y in zip(a, b))
+            if type(a) is not type(b):
+                return False
+            children = [visit(x, y) for x, y in zip(a, b)]
+            return len(a) == len(b) and all(children)
         return a == b
 
     return visit(left, right), max(differences, default=0.0)

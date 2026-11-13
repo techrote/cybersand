@@ -21,6 +21,7 @@ import time
 
 from common import (ROOT, canonical, digest_json, encode_row, load_training_corpus,
                     profile, read_json, sha256_file, verify_checkpoint, verify_file, write_json)
+from numerics import configure_cpu
 
 STOP = False
 SYSTEM = "Return only one valid CyberSand painter program JSON object. Follow the requested structure. Do not set host seeds, material permissions or focus."
@@ -107,7 +108,7 @@ def state_for(optimizer, scheduler, step, cursor, config, frozen_sha, history):
             "torch_rng": torch.get_rng_state(), "config": config, "frozen_base_sha256": frozen_sha, "history": history}
 
 
-def save_checkpoint(output, model, tokenizer, state):
+def save_checkpoint(output, model, tokenizer, state, numerical_runtime):
     import torch
     from peft import get_peft_model_state_dict
     from safetensors.torch import load_file
@@ -122,6 +123,7 @@ def save_checkpoint(output, model, tokenizer, state):
     torch.save(state, temporary / "training_state.pt")
     receipt = {key: state[key] for key in ("global_step", "sample_cursor", "config", "frozen_base_sha256", "history")}
     receipt["training_state_format"] = "torch.load(weights_only=True); tensors and primitive state only"
+    receipt["numerical_runtime"] = numerical_runtime
     write_json(temporary / "receipt.json", receipt)
     inventory = {path.relative_to(temporary).as_posix(): {"sha256": sha256_file(path), "bytes": path.stat().st_size}
                  for path in sorted(temporary.rglob("*")) if path.is_file()}
@@ -151,10 +153,7 @@ def sampler(rows, seed):
 
 
 def train(args):
-    import torch
-    from peft import LoraConfig, PeftModel, get_peft_model
-
-    if not 1 <= args.steps <= 10000 or not 60 <= args.max_seconds <= 18000 or not 1 <= args.threads <= 4:
+    if not 1 <= args.steps <= 10000 or not 60 <= args.max_seconds <= 18000 or args.threads != 1:
         raise ValueError("steps/deadline/CPU thread budget out of bounds")
     if not 1 <= args.checkpoint_every <= args.steps:
         raise ValueError("checkpoint interval out of bounds")
@@ -162,9 +161,9 @@ def train(args):
     if not 1 <= args.max_length <= selected["max_sequence_tokens"]:
         raise ValueError("sequence budget exceeds model-specific allowance")
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
-    torch.set_num_threads(args.threads)
-    torch.set_num_interop_threads(1)
-    torch.use_deterministic_algorithms(True)
+    numerics, numerical_runtime = configure_cpu(args.threads)
+    import torch
+    from peft import LoraConfig, PeftModel, get_peft_model
     random.seed(args.seed)
     torch.manual_seed(args.seed)
     rows, admission = load_training_corpus(args.corpus)
@@ -183,6 +182,7 @@ def train(args):
               "train_sha256": admission["split_files"]["TRAIN"]["sha256"],
               "compiler_sha256": admission["compiler_sha256"],
               "trainer_sha256": sha256_file(__file__), "contract_sha256": sha256_file(Path(__file__).with_name("common.py")),
+              "numerics": numerics,
               "packages": packages, "python": platform.python_version(), "device": "cpu", "dtype": "float32",
               "threads": args.threads, "seed": args.seed, "max_length": args.max_length,
               "rank": 8, "alpha": 16, "dropout": 0.05, "learning_rate": 0.0005,
@@ -228,6 +228,7 @@ def train(args):
         resumed = {"from_step": step, "sample_cursor": cursor, "inventory_sha256": sha256_file(args.resume / "inventory.json"),
                    "restored_all_state_exactly": True}
     write_json(args.output / "preflight.json", {"config": config, "train_rows": len(rows),
+               "numerical_runtime": numerical_runtime,
                "max_sequence_tokens": max(len(item["input_ids"]) for item in encoded),
                "trainable_parameters": sum(p.numel() for p in trainable),
                "all_parameters": sum(p.numel() for p in model.parameters()), "resume": resumed,
@@ -264,12 +265,12 @@ def train(args):
         with (args.output / "progress.jsonl").open("a", encoding="utf-8") as stream:
             stream.write(canonical(event) + "\n")
         if step % args.checkpoint_every == 0:
-            checkpoint = save_checkpoint(args.output, model, tokenizer, state_for(optimizer, scheduler, step, cursor, config, frozen_before, history))
+            checkpoint = save_checkpoint(args.output, model, tokenizer, state_for(optimizer, scheduler, step, cursor, config, frozen_before, history), numerical_runtime)
             last_saved = step
     if step == starting_step:
         raise ValueError("no optimizer step completed; not a training proof")
     if step != last_saved:
-        checkpoint = save_checkpoint(args.output, model, tokenizer, state_for(optimizer, scheduler, step, cursor, config, frozen_before, history))
+        checkpoint = save_checkpoint(args.output, model, tokenizer, state_for(optimizer, scheduler, step, cursor, config, frozen_before, history), numerical_runtime)
     frozen_after = fingerprint(model, False)
     adapter_after = fingerprint(model, True)
     if frozen_after != frozen_before or adapter_after == adapter_before:
@@ -292,6 +293,7 @@ def train(args):
                "checkpoint_bytes": sum(path.stat().st_size for path in checkpoint.rglob("*") if path.is_file()),
                "checkpoint_inventory_sha256": sha256_file(checkpoint / "inventory.json"),
                "resume": resumed, "config": config, "native_execution": False, "model_quality_claim": False,
+               "numerical_runtime": numerical_runtime,
                "runner": {"os": platform.platform(), "machine": platform.machine(), "cpu_count": os.cpu_count(),
                           "github_run_id": os.environ.get("GITHUB_RUN_ID"), "github_run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT")}}
     write_json(args.output / "summary.json", summary)
@@ -309,7 +311,7 @@ def main():
     parser.add_argument("--steps", type=int, default=2, help="total global step target including resumed steps")
     parser.add_argument("--max-seconds", type=int, default=1200)
     parser.add_argument("--max-length", type=int, default=2048)
-    parser.add_argument("--threads", type=int, default=4)
+    parser.add_argument("--threads", type=int, default=1, help="portable-cpu-fp32-v1 requires one thread")
     parser.add_argument("--seed", type=int, default=568)
     parser.add_argument("--checkpoint-every", type=int, default=1)
     args = parser.parse_args()

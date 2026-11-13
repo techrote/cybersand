@@ -75,8 +75,12 @@ jobs:
       group: agent-painter-${{ inputs.profile }}-${{ inputs.output-artifact }}
       cancel-in-progress: false
     env:
-      OMP_NUM_THREADS: '4'
-      MKL_NUM_THREADS: '4'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: 'default'
+      MKL_CBWR: 'COMPATIBLE'
       TOKENIZERS_PARALLELISM: 'false'
       HF_HUB_DISABLE_XET: '1'
       REQUEST_SOURCE_SHA: ${{ inputs.source-sha }}
@@ -139,7 +143,7 @@ jobs:
           timeout --signal=TERM --kill-after=30s 1260s "$RUNNER_TEMP/painter-training/bin/python" experiments/agent_painter/training/train.py \
             --profile "$REQUEST_PROFILE" --model "$RUNNER_TEMP/painter-model" \
             --corpus evidence/native/corpus --output evidence/training \
-            --steps "$REQUEST_STEPS" --max-seconds 1200 --threads 4 --checkpoint-every 1 "${resumed[@]}"
+            --steps "$REQUEST_STEPS" --max-seconds 1200 --threads 1 --checkpoint-every 1 "${resumed[@]}"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:

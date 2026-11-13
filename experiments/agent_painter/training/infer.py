@@ -9,6 +9,7 @@ import time
 from common import (ROOT, canonical, compiler_module, profile, sha256_file, strict_completion,
                     strict_json, verify_checkpoint, write_json)
 from train import load_base
+from numerics import configure_cpu
 
 
 def main():
@@ -22,11 +23,11 @@ def main():
     parser.add_argument("--height", type=int, default=96)
     parser.add_argument("--material", type=int, default=58)
     parser.add_argument("--max-new-tokens", type=int, default=1024)
-    parser.add_argument("--threads", type=int, default=4)
+    parser.add_argument("--threads", type=int, default=1, help="must match the checkpoint's portable CPU math profile")
     args = parser.parse_args()
     if not 0 <= args.seed <= 2**32 - 1 or not 96 <= args.width <= 512 or not 96 <= args.height <= 512:
         parser.error("host seed/focus exceeds compiler bounds")
-    if not 1 <= args.threads <= 4 or not 1 <= args.max_new_tokens <= 2048 or not 1 <= len(args.prompt.encode()) <= 4096:
+    if args.threads != 1 or not 1 <= args.max_new_tokens <= 2048 or not 1 <= len(args.prompt.encode()) <= 4096:
         parser.error("bounded prompt/token/CPU contract refused")
     if args.output.exists():
         raise ValueError("refusing to overwrite inference evidence")
@@ -36,11 +37,11 @@ def main():
     compiler_path = ROOT / "compiler.py"
     if config["compiler_sha256"] != sha256_file(compiler_path) or config["model"] != selected:
         raise ValueError("adapter/compiler/model identity mismatch")
+    numerics, numerical_runtime = configure_cpu(args.threads)
+    if config.get("numerics") != numerics:
+        raise ValueError("inference numerical recipe differs from checkpoint")
     import torch
     from peft import PeftModel
-    torch.set_num_threads(args.threads)
-    torch.set_num_interop_threads(1)
-    torch.use_deterministic_algorithms(True)
     started = time.monotonic()
     base, tokenizer = load_base(args.model, selected)
     model = PeftModel.from_pretrained(base, args.checkpoint / "adapter", is_trainable=False, local_files_only=True)
@@ -84,6 +85,7 @@ def main():
                "operations_sha256": compiled["operations_sha256"] if accepted else None,
                "input_tokens": len(ids), "output_tokens": len(generated),
                "seconds": time.monotonic() - started, "decoding": "greedy first pass; no repair/retry/fallback",
+               "numerics": numerics, "numerical_runtime": numerical_runtime,
                "native_execution": False, "visual_quality_claim": False}
     write_json(args.output / "receipt.json", receipt)
     print(canonical(receipt), flush=True)

@@ -138,6 +138,16 @@ sample cursor, RNG and scheduler identity; floating tensors use declared
 bitwise equality. The base model must remain unchanged. This tiny proof is
 not a useful painter, a quality comparison, or a four-model training campaign.
 
+The hosted recipe fixes generic ATen CPU dispatch and oneMKL's `COMPATIBLE`
+branch before PyTorch loads, uses one fixed CPU thread with dynamic threading
+disabled, and disables oneDNN while retaining full FP32 precision. Effective
+math settings, their implementation hash and PyTorch build identity are bound
+to checkpoints; physical host identity is recorded separately. This addresses
+observed differences between hosted CPU platforms without relaxing the tensor
+tolerances. The comparator scans all tensors, including after a failed element.
+See the [training handoff](../../experiments/agent_painter/training/README.md)
+for settings and primary numerical-reproducibility references.
+
 Every failure retains original logs. Successful runs publish source-bound,
 checksummed research assets through an immutable prerelease tag; ordinary
 Actions copies retain 90 days. Never overwrite a frozen checkpoint or release.

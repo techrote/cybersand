@@ -149,12 +149,13 @@ jobs:
         with:
           name: agent-painter-contracts-${{ github.sha }}
           path: evidence/verification/contracts
-      - name: Compare real resumed weights and full optimizer state
+      - name: Verify pinned CPU contracts and compare real resumed weights
         run: |
           set -euo pipefail
           python3 -m venv "$RUNNER_TEMP/painter-verify"
           "$RUNNER_TEMP/painter-verify/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
           "$RUNNER_TEMP/painter-verify/bin/python" -m pip install 'safetensors==0.8.0' 'numpy==2.5.4' 'Pillow==13.0.0'
+          "$RUNNER_TEMP/painter-verify/bin/python" -m unittest discover -s experiments/agent_painter/tests -p 'test_training.py' -v 2>&1 | tee evidence/verification/pinned-training-contracts.log
           "$RUNNER_TEMP/painter-verify/bin/python" experiments/agent_painter/training/compare_resume.py --fresh evidence/training-fresh/checkpoint-000002 --resumed evidence/training-resume/checkpoint-000002 --output evidence/verification/resume-comparison.json
           "$RUNNER_TEMP/painter-verify/bin/python" experiments/agent_painter/qualification.py package --directory evidence --output release --source-sha "$GITHUB_SHA"
       - name: Publish bounded research evidence (not a production release)
@@ -179,5 +180,6 @@ jobs:
             release/MANIFEST.json
             release/SHA256SUMS.txt
             evidence/verification/resume-comparison.json
+            evidence/verification/pinned-training-contracts.log
           if-no-files-found: warn
           retention-days: 90

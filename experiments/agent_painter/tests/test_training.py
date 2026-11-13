@@ -1,9 +1,12 @@
-"""Model-free refusal tests. These tests are not optimizer or native evidence."""
+"""Refusal and tensor-comparison tests; never optimizer or native evidence."""
 from __future__ import annotations
 
 import copy
+import importlib.util
 import json
+import os
 from pathlib import Path
+import subprocess
 import sys
 import struct
 import tempfile
@@ -13,6 +16,100 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "training"))
 from common import (canonical, compiler_module, digest_json, encode_row, load_training_corpus, profile,
                     relative_file, sha256_file, strict_completion, strict_json,
                     verify_checkpoint, write_json)
+from numerics import ENVIRONMENT
+
+
+class NumericalEnvironmentGuards(unittest.TestCase):
+    def run_clean(self, script, changes=None):
+        environment = {key: value for key, value in os.environ.items() if key not in ENVIRONMENT}
+        environment.update(changes or {})
+        return subprocess.run([sys.executable, "-c", script],
+                              cwd=Path(__file__).resolve().parents[1] / "training",
+                              env=environment, capture_output=True, text=True, timeout=30)
+
+    def test_conflicting_environment_refused_before_torch_import(self):
+        result = self.run_clean("""
+import sys
+from numerics import prepare_environment
+try:
+    prepare_environment()
+except ValueError as error:
+    assert 'OMP_NUM_THREADS' in str(error)
+    assert 'torch' not in sys.modules
+else:
+    raise AssertionError('conflicting threads were accepted')
+""", {"OMP_NUM_THREADS": "4"})
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_multiple_threads_refused_before_torch_import(self):
+        result = self.run_clean("""
+import sys
+from numerics import prepare_environment
+try:
+    prepare_environment(4)
+except ValueError:
+    assert 'torch' not in sys.modules
+else:
+    raise AssertionError('nonportable thread recipe was accepted')
+""")
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    @unittest.skipUnless(importlib.util.find_spec("torch"), "requires the pinned CPU PyTorch environment")
+    def test_actual_backend_profile_and_late_initialization_refusal(self):
+        result = self.run_clean("""
+import json
+from numerics import configure_cpu
+recipe, runtime = configure_cpu()
+assert recipe['profile'] == 'portable-cpu-fp32-v1'
+assert recipe['effective']['aten_cpu_capability'] == 'DEFAULT'
+assert recipe['effective']['mkldnn_enabled'] is False
+assert recipe['effective']['float32_matmul_precision'] == 'highest'
+assert recipe['effective']['intraop_threads'] == recipe['effective']['interop_threads'] == 1
+assert len(recipe['torch_build_sha256']) == len(recipe['numerics_sha256']) == 64
+assert runtime['torch_build'] and runtime['identity']['machine']
+json.dumps((recipe, runtime), allow_nan=False)
+try:
+    configure_cpu()
+except RuntimeError as error:
+    assert 'before importing Torch' in str(error)
+else:
+    raise AssertionError('late backend initialization was accepted')
+""")
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+
+@unittest.skipUnless(importlib.util.find_spec("torch"), "requires the pinned CPU PyTorch environment")
+class ResumeTensorComparison(unittest.TestCase):
+    def test_later_larger_differences_are_reported_after_an_earlier_failure(self):
+        import torch
+        from compare_resume import tensors_close
+
+        # This uses actual tensors and a nested optimizer-like state. The first
+        # failure must not hide the larger error in the final dictionary/list.
+        first = {"state": [{"moment": torch.tensor([0.0])},
+                           {"moment": torch.tensor([1.0])}]}
+        second = {"state": [{"moment": torch.tensor([0.125])},
+                            {"moment": torch.tensor([1.75])}]}
+        passed, maximum = tensors_close(first, second)
+        self.assertFalse(passed)
+        self.assertEqual(maximum, 0.75)
+
+    def test_structure_failure_does_not_hide_later_comparable_tensor(self):
+        import torch
+        from compare_resume import tensors_close
+
+        first = {"missing": 1, "state": [torch.tensor([0.0]), torch.tensor([1.0])]}
+        second = {"state": [torch.tensor([0.25]), torch.tensor([1.5]), torch.tensor([2.0])]}
+        passed, maximum = tensors_close(first, second)
+        self.assertFalse(passed)
+        self.assertEqual(maximum, 0.5)
+
+    def test_existing_numerical_threshold_is_preserved(self):
+        import torch
+        from compare_resume import tensors_close
+
+        self.assertTrue(tensors_close(torch.tensor([0.0]), torch.tensor([0.5e-6]))[0])
+        self.assertFalse(tensors_close(torch.tensor([0.0]), torch.tensor([2e-6]))[0])
 
 
 class TinyTokenizer:

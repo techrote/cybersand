@@ -54,7 +54,7 @@ it after native admission succeeds; ordinary PR updates do not train.
 | `resume-checkpoint` | Directory such as `checkpoint-000001` inside that artifact |
 | `corpus-run-id` | Artifact source run; defaults to the current run for reusable calls |
 
-The ordinary `ubuntu-24.04` job is bounded to 45 minutes, with four CPU threads,
+The ordinary `ubuntu-24.04` job is bounded to 45 minutes, with one CPU thread,
 a 15-minute model-download timeout, a 20-minute optimizer budget and bounded
 SIGTERM/SIGKILL cleanup. Artifact names distinguish independent experiments;
 one failed lane cannot cancel another. Uploads run after failures as well as
@@ -113,6 +113,23 @@ base-byte identity. It compares adapter/optimizer floating-point tensors with
 declared `atol=1e-6`, `rtol=1e-5`, reporting maximum absolute differences and
 whether they were also bitwise identical. This is evidence for the executed
 continuation, not a general promise of bitwise equality across CPU hardware.
+
+The hosted proof fixes its CPU math choices before importing PyTorch:
+`ATEN_CPU_CAPABILITY=default`, `MKL_CBWR=COMPATIBLE`, fixed one-thread MKL/OpenMP,
+and disabled dynamic threading. The trainer disables oneDNN, requests highest
+FP32 matmul precision, and records the effective numerical profile, its source
+hash and the PyTorch build identity in checkpoint configuration. Conflicting
+settings or late initialization are refused. Physical CPU identity stays in the
+runner environment receipts, outside the configuration that must match across
+different hosts. A faster numerical profile requires separate qualification and
+cannot silently resume checkpoints from this recipe.
+
+These choices follow Intel's [compatible-CPU CNR guidance](https://www.intel.com/content/www/us/en/docs/onemkl/developer-reference-c/2026-2/getting-started-with-conditional-numerical.html)
+and [fixed-thread requirements](https://www.intel.com/content/www/us/en/docs/onemkl/developer-reference-c/2026-2/reproducibility-conditions.html).
+PyTorch's [numerical accuracy guidance](https://docs.pytorch.org/docs/2.15/notes/numerical_accuracy.html)
+still requires measuring actual continuation differences. The original
+`atol=1e-6`, `rtol=1e-5` gates remain unchanged; the comparator visits every tensor
+even after a failure so its reported maximum is complete.
 
 SIGINT/SIGTERM requests a stop at the next optimizer boundary. If the job has
 completed at least one new update, it preserves a checkpoint; a job stopped
