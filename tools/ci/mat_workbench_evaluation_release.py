@@ -368,8 +368,11 @@ def package_assets(outer: Path, destination: Path, request: dict, notes: bytes) 
             with archive.open(name) as source, (destination / name).open("xb") as target:
                 shutil.copyfileobj(source, target, length=1024 * 1024)
     inner, checksum = (destination / name for name in names)
+    record = (request["archive_sha256"] + "  " + inner.name).encode("ascii")
+    # The Windows producer's Path.write_text uses CRLF; retain its exact bytes.
+    # Admit only one correct record with the producer's LF or CRLF terminator.
     require(digest(inner) == request["archive_sha256"] and
-            checksum.read_bytes() == (request["archive_sha256"] + "  " + inner.name + "\n").encode("ascii"),
+            checksum.read_bytes() in (record + b"\n", record + b"\r\n"),
             "Original evaluation ZIP or checksum differs from independent review")
     with zipfile.ZipFile(inner) as archive:
         files = [entry for entry in archive.infolist() if not entry.is_dir()]
