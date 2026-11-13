@@ -18,7 +18,10 @@ from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from compiler import compile_program, rasterize_operations, verify_structure
-from runtime import canonical, digest, GODOT_VERSION
+if __package__:
+    from .runtime import canonical, digest, GODOT_VERSION
+else:
+    from runtime import canonical, digest, GODOT_VERSION
 
 WORLD_SIDE = 512
 FOREGROUND = bytes((232, 226, 205))

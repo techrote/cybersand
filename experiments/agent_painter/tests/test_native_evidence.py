@@ -5,6 +5,7 @@ import copy
 import importlib.util
 import json
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -36,6 +37,27 @@ def fixture():
          "readback": [[2, 2, 58, 58], [3, 2, 58, 0]]},
     ]
     return operations, receipts
+
+
+class PackagingEntrypointTests(unittest.TestCase):
+    def test_packaging_reaches_evidence_validation_in_a_fresh_interpreter(self):
+        # The production packager imports native.verify as a package. Running
+        # this in the test process would hide a broken import behind its native
+        # sys.path entry and cached runtime module.
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            output = root / "release"
+            argv = [str(BASE / "qualification.py"), "package", "--directory", str(root),
+                    "--output", str(output), "--source-sha", "a" * 40]
+            script = ("import runpy,sys; " + f"sys.path.insert(0, {str(BASE)!r}); " +
+                      f"sys.argv={argv!r}; runpy.run_path(sys.argv[0], run_name='__main__')")
+            result = subprocess.run([sys.executable, "-I", "-c", script], cwd=root,
+                                    capture_output=True, text=True, timeout=15)
+            self.assertNotEqual(result.returncode, 0, "Empty evidence must never publish")
+            self.assertNotIn("ModuleNotFoundError", result.stderr)
+            self.assertIn("FileNotFoundError", result.stderr)
+            self.assertIn("native-summary.json", result.stderr)
+            self.assertFalse(output.exists())
 
 
 class ReceiptIntegrityTests(unittest.TestCase):
