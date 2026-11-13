@@ -180,21 +180,26 @@ def run(args, worker_args: list[str]) -> dict:
         raise ValueError("Whole-process deadline must be 3..3300 seconds, strictly below an hour")
     if args.save_margin_seconds < 1 or args.save_margin_seconds >= args.wall_seconds:
         raise ValueError("Invalid graceful-save margin")
+    worker = args.worker_script.resolve(strict=True)
+    is_evaluation = worker.name == "evaluate_model.py"
     opts = options(worker_args)
-    if "--max-seconds" in opts and int(str(opts["--max-seconds"])) > args.wall_seconds - args.save_margin_seconds:
+    if not is_evaluation and "--max-seconds" in opts and int(str(opts["--max-seconds"])) > args.wall_seconds - args.save_margin_seconds:
         raise ValueError("Trainer optimizer timeout must fit before the graceful-save margin")
     if opts.get("--preflight-only"):
         raise ValueError("Preflight is not a training job; run train_lora.py --preflight-only directly")
     output = Path(str(opts.get("--output", ""))).resolve()
     if output.parent != parent or output == parent:
         raise ValueError("Output must be a direct child directory of the shared run parent")
-    worker = args.worker_script.resolve(strict=True)
     if not worker.is_file():
         raise ValueError("Worker script missing")
     parent.mkdir(parents=True, exist_ok=True)
     # Same lock protects the trainer's native direct entrypoint and this wrapper.
     with FileLock(str(parent / LOCK_NAME), timeout=0):
-        fingerprint, inventory = build_fingerprint(worker_args, worker)
+        if is_evaluation:
+            from evaluation_guard import evaluation_fingerprint
+            fingerprint, inventory = evaluation_fingerprint(worker_args, worker)
+        else:
+            fingerprint, inventory = build_fingerprint(worker_args, worker)
         for entry in parent.glob("*/" + START_NAME):
             previous = json.loads(entry.read_text(encoding="utf-8"))
             if previous.get("fingerprint") == fingerprint:
@@ -205,11 +210,13 @@ def run(args, worker_args: list[str]) -> dict:
         started = time.monotonic()
         start_unix = time.time()
         token = uuid.uuid4().hex
-        claim = {"version": 1, "fingerprint": fingerprint, "inputs": inventory,
+        claim = {"version": 1, "kind": "evaluation" if is_evaluation else "training",
+                 "fingerprint": fingerprint, "inputs": inventory,
                  "started_at_unix": start_unix, "wall_seconds": args.wall_seconds,
                  "save_margin_seconds": args.save_margin_seconds, "output": str(output)}
         atomic_json(output / START_NAME, claim)
-        lease = {"version": 1, "token": token, "fingerprint": fingerprint,
+        lease = {"version": 1, "kind": "evaluation" if is_evaluation else "training",
+                 "token": token, "fingerprint": fingerprint,
                  "supervisor_pid": os.getpid(), "child_pid": None, "output": str(output),
                  "started_at_unix": start_unix, "heartbeat_unix": start_unix, "state": "starting"}
         atomic_json(parent / LEASE_NAME, lease)
@@ -244,6 +251,20 @@ def run(args, worker_args: list[str]) -> dict:
                 notify_child(proc, force=True)
                 proc.wait(timeout=3)
             return_code = proc.returncode if proc is not None else None
+        if is_evaluation:
+            from evaluation_guard import verified_evaluation
+            evidence = verified_evaluation(output, worker_args)
+            status = ("deadline_killed" if hard_killed else "failed" if error or return_code != 0
+                      else "completed" if evidence else "incomplete")
+            result = {"kind": "evaluation", "fingerprint": fingerprint, "status": status,
+                      "return_code": return_code, "whole_process_seconds": time.monotonic() - started,
+                      "soft_stop_sent": soft_stopped, "hard_kill_sent": hard_killed,
+                      "evidence": evidence, "error": error, "ended_at_unix": time.time()}
+            atomic_json(output / RESULT_NAME, result)
+            lease.update({"state": status, "heartbeat_unix": time.time(),
+                          "ended_at_unix": time.time(), "result_path": str(output / RESULT_NAME)})
+            atomic_json(parent / LEASE_NAME, lease)
+            return result
         checkpoint = validated_checkpoint(output)
         summary_path = output / "summary.json"
         if summary_path.is_file():
