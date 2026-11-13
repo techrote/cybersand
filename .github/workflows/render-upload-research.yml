@@ -1,7 +1,11 @@
 name: RENDER-UPLOAD-001 source-bound publication research
 
-# Owner-authorized isolated Draft experiment. General Draft suppression, camera
-# ownership, production defaults and retained runtime publication stay unchanged.
+# Owner-authorized isolated Draft experiment; no production/default/runtime changes.
+# Workflow-only compiler-provisioning recovery of original run 43526839423:
+# cb09cc5ff2d697c82019b35c2f8b1d15fc739e97 retains the full six-job matrix.
+# Its other five groups keep their original executed source and artifacts; they
+# are not relabelled as final-head passes. This follow-up runs Windows dense only.
+# Admission below refuses any source delta beyond this workflow file.
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -31,72 +35,6 @@ defaults:
     shell: bash
 
 jobs:
-  linux:
-    name: Linux OpenGL / ${{ matrix.group }} / correctness and paired ABBA
-    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'research/render-upload-001') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/research/render-upload-001'))
-    runs-on: ubuntu-24.04
-    timeout-minutes: 90
-    strategy:
-      fail-fast: false
-      max-parallel: 3
-      matrix:
-        include:
-          - group: sparse
-            cases: sparse_512_w1,sparse_1024_w1,sparse_2048_w1,repeated_2048_w1,regions_2048_w1
-          - group: dense-authoring
-            cases: dense_2048_w1,full_2048_w1,coverage_2048_w1,manual_2048_w1,burst_2048_w1
-          - group: active
-            cases: active_512_w1,active_512_w4,active_2048_w1,active_2048_w4,dormant_2048_w1
-    env:
-      LIBGL_ALWAYS_SOFTWARE: '1'
-      LP_NUM_THREADS: '2'
-      GALLIVM_PERF: nopt
-      RESEARCH_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-      RESEARCH_GROUP: ${{ matrix.group }}
-      RESEARCH_CASES: ${{ matrix.cases }}
-    steps:
-      - name: Check out the exact research head without unrelated LFS platforms
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          ref: ${{ env.RESEARCH_SOURCE_SHA }}
-          fetch-depth: 0
-          lfs: false
-      - name: Materialize retained Linux native and Rapier runtimes
-        run: |
-          set -euo pipefail
-          test "$(git rev-parse HEAD)" = "$RESEARCH_SOURCE_SHA"
-          git lfs install --local
-          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
-          python3 tools/ci/check_ci_provider_policy.py
-          python3 -m unittest discover -s tools/render_upload -p 'test_*.py'
-      - name: Authenticate pinned Godot and prepare the software OpenGL display
-        run: |
-          set -euo pipefail
-          curl --fail --location --retry 3 --connect-timeout 30 --max-time 600 --output "$RUNNER_TEMP/render-upload-godot-linux.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
-          echo '0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  '"$RUNNER_TEMP/render-upload-godot-linux.zip" | sha256sum --check --strict
-          mkdir "$RUNNER_TEMP/render-upload-godot-linux"
-          unzip -tq "$RUNNER_TEMP/render-upload-godot-linux.zip"
-          unzip -q "$RUNNER_TEMP/render-upload-godot-linux.zip" -d "$RUNNER_TEMP/render-upload-godot-linux"
-          chmod +x "$RUNNER_TEMP/render-upload-godot-linux/Godot_v4.7-stable_linux.x86_64"
-          bash tools/ci/prepare_linux_display.sh
-      - name: Qualify mounted candidate integration before expensive timing
-        if: matrix.group == 'dense-authoring'
-        run: |
-          set -euo pipefail
-          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' python3 tools/render_upload/run_regressions.py --godot "$RUNNER_TEMP/render-upload-godot-linux/Godot_v4.7-stable_linux.x86_64" --rendering-driver opengl3 --source-sha "$RESEARCH_SOURCE_SHA" --output "build/render-upload-linux-$RESEARCH_GROUP/integration" --cache-root "$RUNNER_TEMP/render-upload-integration-userdata"
-      - name: Execute source-matched correctness and sequential same-host ABBA twice
-        run: |
-          set -euo pipefail
-          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' python3 tools/render_upload/run_campaign.py --godot "$RUNNER_TEMP/render-upload-godot-linux/Godot_v4.7-stable_linux.x86_64" --source-sha "$RESEARCH_SOURCE_SHA" --output "build/render-upload-linux-$RESEARCH_GROUP" --cache-root "$RUNNER_TEMP/render-upload-userdata" --cases "$RESEARCH_CASES" --frames 240 --warmup 30 --rounds 2
-      - name: Retain raw observations, identities and original failures
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: render-upload-linux-${{ matrix.group }}-${{ github.run_id }}-${{ github.run_attempt }}
-          path: build/render-upload-linux-${{ matrix.group }}/
-          if-no-files-found: warn
-          retention-days: 90
-
   windows:
     name: Windows ANGLE / ${{ matrix.group }} / correctness and paired ABBA
     if: github.repository == 'techrote/cybersand' && ((github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'research/render-upload-001') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/research/render-upload-001'))
@@ -107,13 +45,12 @@ jobs:
       max-parallel: 3
       matrix:
         include:
-          - group: sparse
-            cases: sparse_512_w1,sparse_1024_w1,sparse_2048_w1,repeated_2048_w1,regions_2048_w1
           - group: dense-authoring
             cases: dense_2048_w1,full_2048_w1,coverage_2048_w1,manual_2048_w1,burst_2048_w1
-          - group: active
-            cases: active_512_w1,active_512_w4,active_2048_w1,active_2048_w4,dormant_2048_w1
     env:
+      # Same supported Materials Lab compiler admission as accepted gdextension
+      # and mat-workbench-runtime-publication workflows; no warning suppression.
+      CYBERSAND_LAB_CXX: 'C:\mingw64\bin\g++.exe'
       RESEARCH_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
       RESEARCH_GROUP: ${{ matrix.group }}
       RESEARCH_CASES: ${{ matrix.cases }}
@@ -128,6 +65,45 @@ jobs:
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
+      - name: Authenticate workflow-only recovery and the supported Lab compiler
+        run: |
+          set -euo pipefail
+          python - <<'PYCODE'
+          import hashlib, json, os, pathlib, subprocess
+          original = 'cb09cc5ff2d697c82019b35c2f8b1d15fc739e97'
+          workflow = '.github/workflows/render-upload-research.yml'
+          folder = pathlib.Path('build') / ('render-upload-windows-' + os.environ['RESEARCH_GROUP']) / 'provisioning'
+          folder.mkdir(parents=True, exist_ok=True)
+          receipt = {'schema': 'render-upload-workflow-only-recovery-v1', 'original_source': original,
+                     'original_run_id': 43526839423, 'scope': 'Windows dense-authoring only',
+                     'inherited_evidence': 'Other five groups retain their original source/artifacts; no final-head execution claimed',
+                     'ok': False}
+          try:
+              head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+              receipt['executed_source'] = head
+              if head != os.environ['RESEARCH_SOURCE_SHA']:
+                  raise RuntimeError('Checkout differs from the requested exact research head')
+              subprocess.run(['git', 'merge-base', '--is-ancestor', original, head], check=True)
+              changed = subprocess.check_output(['git', 'diff', '--name-only', original, head], text=True).splitlines()
+              receipt['changed_paths'] = changed
+              if changed != [workflow]:
+                  raise RuntimeError('Workflow-only recovery cannot admit changed rendering, harness, native or other source')
+              compiler = pathlib.Path(os.environ['CYBERSAND_LAB_CXX'])
+              if not compiler.is_file():
+                  raise RuntimeError('Supported Materials Lab compiler is unavailable: ' + str(compiler))
+              version = subprocess.check_output([str(compiler), '--version'], text=True, timeout=30)
+              receipt['compiler'] = {'path': str(compiler), 'version': version.strip(),
+                                     'sha256': hashlib.sha256(compiler.read_bytes()).hexdigest(),
+                                     'size': compiler.stat().st_size,
+                                     'role': 'Isolated Materials Lab native comparator only; retained application DLL unchanged'}
+              receipt['ok'] = True
+          except BaseException as error:
+              receipt['failure'] = type(error).__name__ + ': ' + str(error)
+              raise
+          finally:
+              (folder / 'recovery.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+              print(json.dumps(receipt, sort_keys=True))
+          PYCODE
       - name: Materialize retained Windows native and Rapier runtimes
         run: |
           set -euo pipefail
