@@ -177,3 +177,28 @@ API version string formats literally and refused the otherwise passing packet.
 That failed reader result is retained. The corrected reader checks the exact
 expected strings separately, and its successor passed all 15 global gates and
 126,421 independent assertions for the same unchanged 32-case execution packet.
+
+
+## Audit of repeated blind visual stimuli (development only)
+
+The independent [PNG stimulus auditor](audit_blind_stimulus.py) and its
+[six regression tests](test_audit_blind_stimulus.py) parse actual embedded native
+PNG bytes from the frozen blind HTML, verify the exact source identity and
+two host seeds, and count byte-identical two-image pairs. Use the separate
+answer-key mode **only after** a reviewer has frozen their responses.
+
+The [dated checkpoint](STIMULUS_AUDIT_CHECKPOINT_2026-11-13.md) records a real
+duplicate: q004 and q007 are two distinct original development requests but
+the **same native image pair at both seeds**, from the same structural group.
+The 34 displayed request cards therefore contain 33 distinct exact image pairs
+and 66 distinct PNG bytes, not 34 independent visual examples. Preserve the
+36 original first-pass requests, 34 native-admitted requests and 68/68
+native seed-replay outcomes as separate denominators. No visual theme score,
+new native execution or new model inference was obtained in this audit.
+
+Offline reproduction with a frozen self-contained HTML file:
+
+    python3 evaluation/audit_blind_stimulus.py \
+      --html /private/review/blind_model_review.html \
+      --expected-html-sha256 5f554c67c928d6f940126d07c529df89694a42d6cdeb7a65c7b9c4413f354877
+    python3 evaluation/test_audit_blind_stimulus.py

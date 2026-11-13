@@ -1,0 +1,18 @@
+{
+  "scope": "historical Linux headless native display PNGs; no model/native/recognition rerun",
+  "html_sha256": "5f554c67c928d6f940126d07c529df89694a42d6cdeb7a65c7b9c4413f354877",
+  "review_token": "0f07aa1f7cab425b8b11f274f2f7724d4bab06550292ea547c7d010f12911a70",
+  "review_cards": 34,
+  "images_in_cards": 68,
+  "distinct_image_sha256": 66,
+  "distinct_exact_image_pairs": 33,
+  "duplicate_image_pair_cards": [
+    [
+      "q004",
+      "q007"
+    ]
+  ],
+  "extra_duplicate_card_exposures": 1,
+  "interpretation": "Duplicate images reduce distinct visual stimuli, not first-pass model request denominators",
+  "key_checked": false
+}
