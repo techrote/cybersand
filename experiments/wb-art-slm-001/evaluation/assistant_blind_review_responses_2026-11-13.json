@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "review_token": "0f07aa1f7cab425b8b11f274f2f7724d4bab06550292ea547c7d010f12911a70",
+  "reviewer_type": "AI visual review, not an owner/human acceptance",
+  "stimulus_sha256": "5f554c67c928d6f940126d07c529df89694a42d6cdeb7a65c7b9c4413f354877",
+  "method": "Visual inspection of all three qID-only contact sheets before accessing the sealed key; two host seeds classified once per request; uncertain instances marked unsure",
+  "rows": [
+    {
+      "id": "q001",
+      "label": "ribs",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q002",
+      "label": "labyrinth",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q003",
+      "label": "circuitry",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q004",
+      "label": "ribs",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q005",
+      "label": "strata",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q006",
+      "label": "ruins",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q007",
+      "label": "ribs",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q008",
+      "label": "honeycomb",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q009",
+      "label": "dunes",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q010",
+      "label": "roots",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q011",
+      "label": "dunes",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q012",
+      "label": "crystals",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q013",
+      "label": "ribs",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q014",
+      "label": "honeycomb",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q015",
+      "label": "mycelium",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q016",
+      "label": "roots",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q017",
+      "label": "coral",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q018",
+      "label": "mycelium",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q019",
+      "label": "ruins",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q020",
+      "label": "labyrinth",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q021",
+      "label": "honeycomb",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q022",
+      "label": "veins",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q023",
+      "label": "crystals",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q024",
+      "label": "strata",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q025",
+      "label": "roots",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q026",
+      "label": "crystals",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q027",
+      "label": "mycelium",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q028",
+      "label": "circuitry",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q029",
+      "label": "labyrinth",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q030",
+      "label": "ruins",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q031",
+      "label": "veins",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q032",
+      "label": "circuitry",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q033",
+      "label": "circuitry",
+      "quality": "",
+      "variety": ""
+    },
+    {
+      "id": "q034",
+      "label": "dunes",
+      "quality": "",
+      "variety": ""
+    }
+  ],
+  "frozen_original_response_sha256": "746c6b71b775f7be03c09a998dbf56dcbf5c06817f28c9a5a98c800359d73357"
+}

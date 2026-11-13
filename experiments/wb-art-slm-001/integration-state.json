@@ -1,0 +1,369 @@
+{
+  "experiment": "WB-ART-SLM-001",
+  "status": "11th Integration checkpoint: Training-owned Windows v5 completion bug fixed and exact-head offline smoke green; original archives re-recovered+hash/CRC checked. #565 technical GO & Windows package published; #567 neural opt-in remains Draft/HOLD. No new adapter or native gallery.",
+  "updated_on": "2026-11-13",
+  "owner": "five role workers after bootstrap handoff",
+  "branch": "codex/wb-art-slm-001",
+  "native_qualification": "Pinned Linux headless native-material pilot only",
+  "native_source": "90719c72b9fcf90593fb7878354051ad601b47fd",
+  "native_sha256": "3a8b0b2cd04f09054426842f978e2421aad4016aae03dec91ed527ff50b953cd",
+  "compiler_sha256": "a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb",
+  "corpus_manifest_sha256": "cace38cc2541947f1278d3af8c951c15c5a16eec002ba7262805cab8975d692f",
+  "native_cases_passed": 864,
+  "teacher_gallery_images": 192,
+  "training": {
+    "state": "completed-frozen-candidate",
+    "model": "LiquidAI/LFM2.5-350M",
+    "revision": "9921cd4d82c0e3986887aa4b376f9446729ef8a3",
+    "train_examples": 1152,
+    "dev_examples": 192,
+    "final_examples": 192,
+    "do_not_launch_duplicate": true,
+    "global_step": 400,
+    "adapter_sha256": "02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2",
+    "trainable_parameters": 5996544,
+    "exact_resume_verified": true,
+    "dev_requests": 24,
+    "dev_first_pass_accepted": 22,
+    "dev_primary_motif_correct": 22,
+    "dev_exact_motif_layout": 19,
+    "dev_exact_reference_program": 13,
+    "keyword_requests": 12,
+    "keyword_first_pass_accepted": 12,
+    "keyword_primary_motif_correct": 11,
+    "keyword_theme_correct": 11,
+    "keyword_joint_theme_motif": 10,
+    "final_assessment_run": false
+  },
+  "schedules": {
+    "state": "All five existing hourly workers enabled; prompts and unchanged cadences verified after restoration of bootstrap-owned pauses.",
+    "restore_policy": "Preserve later user pauses and all unrelated tasks; verified final state lives in AUTOMATIONS.json",
+    "no_new_tasks": true,
+    "handoff_verified_at": "2026-11-13T02:59:45.749501+00:00",
+    "next_runs": {
+      "integration": "2026-11-13T03:02:00+00:00",
+      "controls": "2026-11-13T03:12:00+00:00",
+      "corpus": "2026-11-13T03:22:00+00:00",
+      "training": "2026-11-13T03:32:00+00:00",
+      "evaluation": "2026-11-13T03:42:00+00:00"
+    }
+  },
+  "production_promotion": "HOLD; one Draft #567, no Ready, merge, native/Windows promotion",
+  "next_checkpoint": "Training (sole heavy-job owner) downloads exact pinned official base/deps on authorized CPU host and checks private lease, runs one fresh v5 400-step candidate. Integration/Evaluation then strict score frozen DEV24+12 words and render 60-prompt two-seed native comparison. #565 Windows exists but is NOT #567 qualification.",
+  "pull_request": "https://github.com/techrote/cybersand/pull/567",
+  "model_native_cases_passed": 68,
+  "combined_gallery_images": 260,
+  "artifacts_manifest": "ARTIFACTS.json",
+  "artifacts_saved": true,
+  "training_owner_active": "Shared Git does not expose private run-parent state; no claim a model job is absent. Training publishes guarded lease/whole-process deadline code but must inspect private lease first.",
+  "baselines": {
+    "matched_dev_requests": 12,
+    "lfm350_unadapted_accepted": 0,
+    "smol135_instruct_unadapted_accepted": 0,
+    "sprocket500_root_instruct_unadapted_accepted": 0,
+    "lfm350_step400_accepted": 11,
+    "not_equal_finetuning_comparison": true
+  },
+  "native_model_denominators": {
+    "requests": 36,
+    "accepted_predictions": 34,
+    "native_seed_replays": 68,
+    "passed_replays": 68,
+    "joint_label_primary_motif_correct_requests": 32
+  },
+  "known_model_failures": [
+    "two malformed coral numeric JSON completions on development requests",
+    "keyword ribs selects correct geometry but theme ruins",
+    "keyword veins selects orthogonal geometry instead of network"
+  ],
+  "worker_branches_seeded_from": "01f2cfcea66839066431b6d241f186be00cecf27",
+  "bootstrap_report_review": "Independent consistency review complete; 98% gate identified as native request yield, not schema validity.",
+  "integration_checkpoint": "imported 455cf801e02790303658a6946d8f8593b88d8e96",
+  "artifact_recovery": {
+    "verification": "Four named owner Library archives materialized and byte-size/SHA256 compared with ARTIFACTS.json on 2026-11-13; all four match",
+    "artifacts_verified": 4,
+    "training_and_evaluation_binary_storage": "outside ordinary git; saved owner Library archives remain source",
+    "correction": "Repository file manifest alone is not proof of recovery; files were actually recovered and hashed"
+  },
+  "upstream_snapshot": {
+    "main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
+    "pr564_head": "00017c65da096c61585f026476ae1e62e1aea256",
+    "pr565_head": "266d43a33e9eefc3e93a9dce1aaab6e5267492b8",
+    "pr565_status": "Technical GO: source fd1d66b18ac80f564f7078b8a0a902297895672f qualified in runtime 266d43a33e9eefc3e93a9dce1aaab6e5267492b8; separate owner merge HOLD. Windows evaluation publicly published; not a source-qualified #567 neural Art runtime.",
+    "neural_provider_in_main": false,
+    "pr565_run": "https://github.com/techrote/cybersand/actions/runs/43409148541",
+    "windows_release": "https://github.com/techrote/cybersand/releases/tag/eval-mat-workbench-20261113-266d43a33e9e"
+  },
+  "integration_role_import": {
+    "imported_file_count": 21,
+    "commits": [
+      "ad77b9fbaf02a0c81414ba2e2e7f5732b61a5a7d",
+      "36d63deb0eb13174e670ec0c46381a1a50390655",
+      "f98b6c11f83bfdc3fd9e9cdc3bbf3f5fd389bdd0",
+      "0bdc089793c2c69a0680dfd0c8278bca45f6ac6f"
+    ],
+    "source_branches": {
+      "controls": "ed2720e33e3b1695b130d3af54d4c0b928ec4a63",
+      "corpus": "791dc710c099064c67ed8102366dd797d0d1b7da",
+      "training": "729343a22e300128d77bb3cfd4475411fef36f15",
+      "evaluation": "07f7e191ec4c98a447de9616018961ada959754e"
+    },
+    "comparison": "exact 21 role-file paths, 4 fast-forward commits; no changed physics/default/canonical schema source",
+    "model_changes": "none; frozen step-400 model retained",
+    "qualified_improvement": "no measured new-model or current-source native improvement",
+    "role_reports": "Controls 1.1 smoke and six additional tests but pending full/native; Corpus 4 tests with actual archive; Training 5 tests with actual archive; Evaluation 9 replay audits with historical native packet. Not re-executed on combined branch.",
+    "continuation": {
+      "parent": "1fe52bbda9c656a38e9617326d23fbf7fb2f6730",
+      "serial_roles": [
+        {
+          "role": "controls",
+          "source_head": "a75f90956f18dedd5f7c8641cc126ba2d2040718",
+          "integration_commit": "6d3cab90ed5849adece993b3f1c2e6c92a36e2ff",
+          "changed_paths": 7,
+          "scope": "archived native coral baseline receipt audit and paired --history each"
+        },
+        {
+          "role": "corpus",
+          "source_head": "9f9a462fca152f092e7d2a6af0e1a4291ec080ef",
+          "integration_commit": "d15bf4c76cda06a773f4ab25a3cba5ef336634d2",
+          "changed_paths": 4,
+          "scope": "balanced v2 theme/phrasing candidate, actual training order only"
+        },
+        {
+          "role": "training",
+          "source_head": "4da1233017057b36295c7a7bda48e0d2fb992c30",
+          "integration_commit": "1fcff712cae69ab0f8edfa0019b69063a43e243c",
+          "changed_paths": 5,
+          "scope": "durable file lock and process-wide training supervisor; no training"
+        },
+        {
+          "role": "evaluation",
+          "source_head": "8a533c5762e58727b344714d0c1828d6f24fa1c5",
+          "integration_commit": "4bd334afcdc8ef06ce87feb37353b6d3e49bcc6a",
+          "changed_paths": 6,
+          "scope": "34-card/68-image blinded historical native review stimulus and sealed scoring"
+        }
+      ],
+      "diff_qualification": "GitHub compare prior shared head to 373f00712: 8 commits/25 modified paths, all under experiment or its dedicated smoke workflow. Every role path is exact-source blob SHA with expected-head fast-forward; no other source modified.",
+      "modeled_gain": "none measured; frozen 400-step model unchanged",
+      "CI": "50 executed applicable model-free methods PASS; archived-native/corpus suites not executed on hosted runner",
+      "exact_head_smoke": "0fc6f9cedeb5b147fe86cb61446354f38db16d8a",
+      "exact_head_results": "Two successful hosted workflow runs 43370584693/43370593006; 52 executed model-free methods; archive-dependant cases explicitly skipped."
+    },
+    "latest_2026_11_13_0607": {
+      "parent": "b26bdb2d7fb556dee1ae40104b5cd4425ff7f20e",
+      "roles": [
+        {
+          "role": "controls",
+          "source_head": "f218939e016d039e3b0ce5c86b4b33151bcb2117",
+          "integration_commit": "e9b1e23b80bd862c9f468fe68e5dc8b56f5c8157",
+          "files": 4,
+          "summary": "Full 32-case v1/v1.1 native pair audit, 7 synthetic contract tests; no new source-compatible native execution"
+        },
+        {
+          "role": "corpus",
+          "source_head": "d7e85d640e18e2c560a082384c8d7c8416fd713f",
+          "integration_commit": "a96b083ec74e01c9f26d7985542cf837d4667d57",
+          "files": 4,
+          "summary": "Opt-in v3 TRAIN-only modifier exposure, m6/m7 0 -> 60/52 in first 400, 3 synthetic tests and 1 archive-dependent skip"
+        },
+        {
+          "role": "training",
+          "source_head": "c594d154b141ba5c450199311c4a790402eb7c02",
+          "integration_commit": "fe16ceef2031afd121f21e11c4427a1e532d3671",
+          "files": 6,
+          "summary": "Shared train/eval lease, raw-evidence guardian and pre/post fingerprints; 10 new model-free evaluator tests"
+        },
+        {
+          "role": "evaluation",
+          "source_head": "5f7cc52cb6a734268ff66ef1de856952482eb8a8",
+          "integration_commit": "eb518320523330c0c67aaa0408c2a02ff6622ffd",
+          "files": 5,
+          "summary": "Blind historical native PNG stimulus audit: 34 cards, 68 images, 33 distinct seed pairs, q004/q007 exact repeat; 6 tests"
+        }
+      ],
+      "changed_paths": 19,
+      "mode": "four serial commits, only role-owned source blob SHAs, unchanged pre-import shared blobs verified for all 7 edited paths",
+      "workflow_commit": "385bb41f3f17f49881a23958c7a1ec1e7f03fdbc",
+      "tests": {
+        "run": "43376391448",
+        "url": "https://github.com/techrote/cybersand/actions/runs/43376391448",
+        "platform": "Ubuntu 24.04 Python 3.12",
+        "discovered": 82,
+        "passed": 78,
+        "skipped": 4,
+        "conclusion": "SUCCESS",
+        "scope": "model-free",
+        "native": false,
+        "windows": false,
+        "model": false
+      },
+      "measured": {
+        "v3_modifier_m6": 60,
+        "v3_modifier_m7": 52,
+        "v2_modifier_m6": 0,
+        "v2_modifier_m7": 0,
+        "blind_stimulus_cards": 34,
+        "blind_images": 68,
+        "unique_seed_pairs": 33,
+        "duplicate_cards": [
+          "q004",
+          "q007"
+        ],
+        "model_gain": false
+      },
+      "review": "Independent Integration-authored bridge assembly review still PENDING. Eval stimulus audit is a separate evaluation-owned measurement, not that review.",
+      "upstream": "main 63f8b1ba, #564 6319ab1d and #565 d66499ec unchanged; #565 Windows deadline gate still HOLD",
+      "remaining": "Qualify authentic adapter/current-source native/Windows and human theme recognition; no production promotion."
+    },
+    "fourth_2026_11_13_0712": {
+      "source_before": "5b32671cd283fdb8159f4cb67267fd65742fc6ef",
+      "changed_paths": 17,
+      "heads": {
+        "controls": "ed09d214b971e38aa78992b0aef0530a2aade349",
+        "corpus": "9f67881fbfbdf05883e646943319d9a9f014f640",
+        "training": "c53f8ef052b7f20a9cf7e4de7d2b50530bfa11f1",
+        "evaluation": "f18ddcf72e4ce8f6e3a897df25818d84620ec439"
+      },
+      "ci": "43383988875: 22/22 latest-role methods PASS, 1 SKIP in independent job; combined failed Controls expected error substring, all other CI not complete",
+      "checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-0712.md",
+      "model_gain_measured": false,
+      "new_native_execution": false,
+      "windows_accepted": false,
+      "frozen_adapter_sha256": "02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2"
+    },
+    "fifth_2026_11_13_0814": {
+      "parent": "87cf3b087ee76f1f575266f8110956849b46ad5b",
+      "roles": [
+        {
+          "role": "corpus",
+          "source_head": "6bd1b5667c4ffae05b0219408d34f616930426d8",
+          "integration_commit": "45a147aea6023efc6953f3d45da7bf5f32ad2011",
+          "files": 4,
+          "scope": "TRAIN-only coral m0 composed failure-witness overlay, synthetic and archived guard"
+        },
+        {
+          "role": "training",
+          "source_head": "e36fbd72b22ab9cf76ad2a03f8f3d827a28872ff",
+          "integration_commit": "53c42c42e5df96e2442444a853ca586c27ce15c4",
+          "files": 6,
+          "scope": "raw evaluation receipt/lease strengthening and model-free regression"
+        },
+        {
+          "role": "evaluation",
+          "source_head": "9c26275f70262907e143374cbb468930cf74eb32",
+          "integration_commit": "d1970e584ce9da090969ced3060f4d13a6526c5d",
+          "files": 4,
+          "scope": "independent POSIX bridge process-group descendant review and full-module audit"
+        }
+      ],
+      "controls_source_head": "ed09d214b971e38aa78992b0aef0530a2aade349",
+      "controls_not_imported": true,
+      "bridge_fix_commit": "dc97b11cb261d9cbceebdf5d4c6f1d616af60313",
+      "bridge_git_blob": "dba93212c8b68240f20a2a5082333c9a7dc65c41",
+      "ci_head": "578324faefdad3c3fca4c78ce936d5d11daac9a0",
+      "ci_url": "https://github.com/techrote/cybersand/actions/runs/43391302345",
+      "independent_passed": 43,
+      "independent_skipped": 2,
+      "full_workflow_green": false,
+      "model_gain_measured": false,
+      "new_native_execution": false,
+      "windows_accepted": false
+    },
+    "latest_intake": "2026-11-13T09:06Z",
+    "latest_checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-0906.md",
+    "latest_imported_heads": {
+      "controls": "b7e9db37c7019c862f4ec8f24b8e20ed947075a0",
+      "corpus": "4ccfbd33ca2dd4635fd54ae3d2a0632b356821b0",
+      "training": "253608f6a02cde620cce16287c98d1d590355763",
+      "evaluation": "9c0a63c579340599137caac7afde6733e0345ecf"
+    },
+    "latest_green_ci": "43398456790 at c954fcf8710902a6e3f362ba537a52fbddd05b75",
+    "historical_ai_blind_review": "29/34 recognized conditional on native admission (29/36 original); single key-blind AI review only, not human or final assessment",
+    "no_new_model_or_native_claim": true,
+    "seventh_2026_11_13_1020": {
+      "imported_role_heads": {
+        "controls": "8fca415bb5b73200c5e4da7a64aea03d6b0b6d7b",
+        "corpus": "6195f180d66dbfe3a8dd52eed4ae1dfe0bc13d79",
+        "training": "0aee867ef5f3a09184980d84eb7c40472a5cfad7",
+        "evaluation": "481eaaac5f62985dd24bde36b91a75d208162854"
+      },
+      "role_import_commits": [
+        "f2f26440dc8ccc470425247aaead5411d293da58",
+        "42ef102637689192ec35eac34921889ed5fe8398",
+        "6f3614dfb14cbe80d65bcc916db5b07639a19097",
+        "e10a4f5f34da748a0c1a7fcf84a7487e9682c3e1"
+      ],
+      "windows_job_implementation": "6a0e6a4a4ccd5807e83377d27edadca07b9bcd62",
+      "windows_source": "af4d9c88d0002473ce73c04a8a69ebb1e335f7b6",
+      "windows_ci_id": 43408236500,
+      "windows_job": "success: 3/3 owned Job cases and 9/9 bridge cases, synthetic only",
+      "full_ci": "failure: Training-owned missing import time in two 17-method job_guard tests",
+      "training_lease": "private/uninspected; no model run launched",
+      "upstream_565": "11b809a579ecade05baaeded59461ab8fc3f6c39",
+      "qualified_windows_native": false,
+      "authentic_adapter_run": false,
+      "retrained_model": false,
+      "production": "Draft/HOLD"
+    }
+  },
+  "integration_eighth_2026_11_13_1110": {
+    "import_commits": [
+      "767b754ccb7df3aafc2b63383e9fa1eb106c4c7d",
+      "849098454384322ec4001b3f042905c5245e155c",
+      "cf9fd267ca3bf646443e2264db18f75fef132cc6"
+    ],
+    "real_archive_v5_preflight": {
+      "original_archive_sha256": "2d2de250731eeea825339e89f752ab8ebc65f3a929daa2c692120d985566948a",
+      "train_sha256": "972826e1af15a6babaff6e68e4c57d790c0c060a2befe050b4156c5f8ee05f66",
+      "draws": 400,
+      "distinct_native_traces": 376,
+      "distinct_structural_groups": 72,
+      "literal_per_theme": 3,
+      "theme_exposure_range": [
+        33,
+        34
+      ],
+      "final_parsed": false
+    },
+    "fixed_gallery_requests": 60,
+    "actual_new_model_responses": 0,
+    "actual_new_native_images": 0,
+    "exact_head_ci": "43414042136 at cf9fd267: 2 passing jobs, overall failure Training timing-suspect Stop descendant test 16/17",
+    "frozen_adapter_untouched": true,
+    "training_lease": "private; unavailable for integration inspection",
+    "upstream_565": "fd1d66b18ac80f564f7078b8a0a902297895672f, staged validation only; actual publication skipped"
+  },
+  "integration_ninth_2026_11_13_1134": {
+    "checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-1134.md",
+    "qualified_code_head": "835beaff60b4b475ffa055ba23fbff45179857e1",
+    "qualified_run": "https://github.com/techrote/cybersand/actions/runs/43417806400",
+    "result": "SUCCESS: offline-smoke, role-intake-independent and windows-process-tree jobs",
+    "training_source_head": "b57bdd3df91f3acd7c6159278ebc2434c4af9445",
+    "new_owned_files": 6,
+    "source_files": {
+      "training/curriculum.py": "ce75c47a158d7562a8bf1e486244eb94c90a459a",
+      "training/train_lora.py": "71007e4579897d96905fadd962ea4afab888755d",
+      "training/job_guard.py": "08be99549cd3f2e50dbeba325fcace91fb044447",
+      "training/test_curriculum.py": "94fc7a28c53ea8f3916c11ebeb596d6facd43cc5",
+      "training/test_job_guard.py": "636298df277b0292fc8fe19b6acde0ac37bb429e",
+      "training/run_v5_windows.ps1": "65da61aaaaa7329f551d9c891e207c6c137d21c3"
+    },
+    "actual_new_optimizer_runs": 0,
+    "actual_new_native_gallery_images": 0,
+    "raw_dev_and_word_gain": false,
+    "train_next": "Training owner: inspect private lease and run one v5 contrast 400-step adapter on authorized pinned local CPU, return raw DEV24/words12 evidence and adapter SHA",
+    "evaluation_next": "Evaluation owner: use pre-frozen 60 prompts + two seeds to create matched real native baseline/candidate gallery and blind assessment",
+    "integration_next": "Consume actual candidate/gallery, review Windows pre-attachment process escape and qualify source-compatible #565 native Workbench separately",
+    "production": "Draft/HOLD"
+  },
+  "latest_exec_11": {
+    "import_commit": "455cf801e02790303658a6946d8f8593b88d8e96",
+    "ci": "43430670027 SUCCESS",
+    "new_model": false,
+    "native_gallery": false,
+    "external_missing": "official pinned base model/Transformers/PEFT on authorized host",
+    "upstream_windows_technical_go": true,
+    "upstream_merge_hold": true
+  }
+}

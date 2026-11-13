@@ -1,0 +1,49 @@
+{
+  "repository": "techrote/cybersand",
+  "revision": "6a58311982941b75f46e22109a0829e5acb83c7e",
+  "authority": "Pinned companion ref in .github/workflows/documentation.yml and release-hashes.yml; source-checkpoint-and-recovery.md identifies separate workspace branch in same repository",
+  "recovered_utc": "2026-11-13T02:28:00.372239+00:00",
+  "files": [
+    {
+      "path": "SOURCE-PROVENANCE.json",
+      "destination": "/workspace/scratch/7d765b879ceb/SOURCE-PROVENANCE.json",
+      "git_blob_sha1": "adff5ae451643ceb588c68982a302870608aee1d",
+      "sha256": "49b86e67fa7b753f7e0904923a66192aed0348c280a46ef6750c0392e193f30d",
+      "bytes": 74804,
+      "source_url": "https://github.com/techrote/cybersand/blob/6a58311982941b75f46e22109a0829e5acb83c7e/SOURCE-PROVENANCE.json"
+    },
+    {
+      "path": "docs/WEB_THREADING.md",
+      "destination": "/workspace/scratch/7d765b879ceb/docs/WEB_THREADING.md",
+      "git_blob_sha1": "eb76043548866134b7185d8deca2b887cd327845",
+      "sha256": "85b13f5d943ad6017fa4fa264bf8f9a54c9d49f80e40697a770d0524a3b9cd34",
+      "bytes": 540,
+      "source_url": "https://github.com/techrote/cybersand/blob/6a58311982941b75f46e22109a0829e5acb83c7e/docs/WEB_THREADING.md"
+    },
+    {
+      "path": "tools/dev.py",
+      "destination": "/workspace/scratch/7d765b879ceb/tools/dev.py",
+      "git_blob_sha1": "f58c1f2088ec800a2fda813ac31b481b4989efb6",
+      "sha256": "e9aaee35d135012f24b030acccb25d76f0e38893c58ff019138880f73f50f8ea",
+      "bytes": 10390,
+      "source_url": "https://github.com/techrote/cybersand/blob/6a58311982941b75f46e22109a0829e5acb83c7e/tools/dev.py"
+    },
+    {
+      "path": "docs/LOCAL_DEVELOPMENT.md",
+      "destination": "/workspace/scratch/7d765b879ceb/docs/LOCAL_DEVELOPMENT.md",
+      "git_blob_sha1": "99c72227fd2c35c528df0ccdf0687b3a8dba2798",
+      "sha256": "fafc00052588507c63380fbe312b875345699a5a145a4135ea81de461d0ab95d",
+      "bytes": 6224,
+      "source_url": "https://github.com/techrote/cybersand/blob/6a58311982941b75f46e22109a0829e5acb83c7e/docs/LOCAL_DEVELOPMENT.md"
+    },
+    {
+      "path": "validation/browser-results.json",
+      "destination": "/workspace/scratch/7d765b879ceb/validation/browser-results.json",
+      "git_blob_sha1": "2f9311a6a69b9e1462bb62962a774e3829c1efdb",
+      "sha256": "de154dd896b78384069be360c0f9424efa2ade182e6729eca6a242fcf9839839",
+      "bytes": 5978,
+      "source_url": "https://github.com/techrote/cybersand/blob/6a58311982941b75f46e22109a0829e5acb83c7e/validation/browser-results.json"
+    }
+  ],
+  "claim": "Exact authenticated pinned companion files only; no placeholder or edited historical fixture"
+}

@@ -1,0 +1,122 @@
+name: WB-ART-SLM-001 offline protocol and compiler smoke
+
+on:
+  push:
+    branches: ["codex/wb-art-slm-001"]
+    paths:
+      - "experiments/wb-art-slm-001/**"
+      - ".github/workflows/wb-art-slm-001-smoke.yml"
+  pull_request:
+    paths:
+      - "experiments/wb-art-slm-001/**"
+      - ".github/workflows/wb-art-slm-001-smoke.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  offline-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Static compilation of all experiment Python
+        run: python -m compileall -q experiments/wb-art-slm-001
+      - name: Real loopback HTTP bridge protocol and adversarial receipts (no model)
+        run: python -m unittest discover -s experiments/wb-art-slm-001/integration -p 'test_local_art_bridge.py' -v
+      - name: Pinned v1 compiler and opt-in v1.1 coral / alias controls
+        run: |
+          python -m unittest discover -s experiments/wb-art-slm-001/controls -p 'test_pattern_compiler*.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/controls -p 'test_make_v11_native_pairs.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/controls -p 'test_audit_v11_native_pairs.py' -v
+      - name: Install only the pinned file-lock guard dependency (no model stack)
+        run: python -m pip install --disable-pip-version-check --no-deps filelock==4.2.4
+      - name: Linux/macOS telemetry semantics for v5 training completion (no model)
+        run: python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_peak_rss.py' -v
+      - name: Train-only curriculum guards and guarded subprocess lease (no weights or training)
+        run: |
+          python -m unittest discover -s experiments/wb-art-slm-001/integration -p 'test_gallery60_infer.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_curriculum.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_curriculum.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_job_guard.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_evaluation_guard.py' -v
+      - name: Additional owned-role synthetic guards (archive-dependent suites may skip)
+        run: |
+          python -m unittest discover -s experiments/wb-art-slm-001/controls -p 'test_audit_coral_native.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_balanced_replay.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/evaluation -p 'test_blind_native_review.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_modifier_replay.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/evaluation -p 'test_audit_blind_stimulus.py' -v
+
+  role-intake-independent:
+    # Independent of the Controls suite; any failed role must still fail the
+    # full workflow, but must not suppress qualification of other roles.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Corpus v3 TRAIN-source index mapping (offline)
+        run: python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_v3_source_plan.py' -v
+      - name: Sealed TRAIN/DEV split and receipt-custody guards (archive tests may skip)
+        run: python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_audit_split_custody.py' -v
+      - name: Native-admitted v5 failure-contrast TRAIN replay (private archive tests skip)
+        run: python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_failure_contrast_replay.py' -v
+      - name: Training frozen export aliases and raw identity gates (offline)
+        run: python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_export_native_cases.py' -v
+      - name: Independent historical gallery display-pixel audit (offline)
+        run: python -m unittest discover -s experiments/wb-art-slm-001/evaluation -p 'test_measure_native_stimulus_pixels.py' -v
+      - name: Frozen native-gallery cross-theme collision auditor (not human acceptance)
+        run: python -m unittest discover -s experiments/wb-art-slm-001/evaluation -p 'test_audit_cross_theme_collisions.py' -v
+      - name: Source-bound historical AI blind gallery scoring (not human acceptance)
+        run: |
+          sha256sum -c <<'SHA256'
+          1bcac225ca5d5674a042a750e3d6dae680c1ae6f26c4019569176f20d5ee90bf  experiments/wb-art-slm-001/evaluation/blind_model_review_answer_key.json
+          f0f688049cf077c25905049917272b6f06ad6db3ea5f770f5c2a7fa8191a0ed5  experiments/wb-art-slm-001/evaluation/assistant_blind_review_responses_2026-11-13.json
+          SHA256
+          python experiments/wb-art-slm-001/evaluation/blind_native_review.py score \
+            --key experiments/wb-art-slm-001/evaluation/blind_model_review_answer_key.json \
+            --responses experiments/wb-art-slm-001/evaluation/assistant_blind_review_responses_2026-11-13.json \
+            > /tmp/wb-art-slm-frozen-blind-review.json
+          python -c "import json; d=json.load(open('/tmp/wb-art-slm-frozen-blind-review.json')); assert d['conditional_native_image_recognition']['matched']==29 and d['conditional_native_image_recognition']['admitted_requests']==34 and d['end_to_end_all_original_requests']['requests']==36 and d['structural_group_macro_accuracy']['groups']==23 and d['go_no_go']=='HOLD' and d['one_rater_not_human_acceptance'] is True, d"
+      - name: TRAIN-only coral failure witness overlay (no private archive in CI)
+        run: python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_failure_witness_overlay.py' -v
+      - name: Install pinned file-lock guard for the independent offline job
+        run: python -m pip install --disable-pip-version-check --no-deps filelock==4.2.4
+      - name: Guarded evaluation raw-evidence and malformed-receipt tests (no model)
+        run: python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_evaluation_guard.py' -v
+      - name: Independent POSIX Stop descendant control and exact bridge execution
+        run: |
+          python -m unittest discover -s experiments/wb-art-slm-001/evaluation -p 'test_audit_bridge_stop_descendants.py' -v
+          python experiments/wb-art-slm-001/evaluation/audit_bridge_stop_descendants.py \
+            --bridge experiments/wb-art-slm-001/integration/local_art_bridge.py \
+            --out /tmp/wb-art-slm-stop-descendants.json
+          python -c "import json; p=json.load(open('/tmp/wb-art-slm-stop-descendants.json')); assert p['ready_seen'] and p['cancel_refusal'] and not p['late_descendant_write'] and p['stop_descendant_invariant_passed'], p"
+
+  windows-process-tree:
+    # Qualifies local inference subprocess ownership only. No model download,
+    # GPU, native World, packaged application, or Windows desktop is exercised.
+    runs-on: windows-2025
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Windows v5 trainer completed-job RSS regression (no model)
+        run: python experiments/wb-art-slm-001/training/test_peak_rss.py PeakRssTests.test_windows_has_null_peak_without_importing_resource -v
+      - name: Windows bridge process-tree and fail-closed Job Object controls
+        run: python -m unittest discover -s experiments/wb-art-slm-001/integration -p 'test_windows_job.py' -v
+      - name: Windows loopback transport, Stop and receipt rejection (no model)
+        run: python -m unittest discover -s experiments/wb-art-slm-001/integration -p 'test_local_art_bridge.py' -v

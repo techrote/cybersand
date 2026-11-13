@@ -1,0 +1,14 @@
+{
+  "cases": 864,
+  "gallery_images": 192,
+  "engine_checks": 14288,
+  "independent_checks": 4572506,
+  "all_global_gates": true,
+  "changed_cells": 1170966,
+  "acknowledged_cells": 1518630,
+  "history_and_reopen_cases": 12,
+  "outside_focus_violations": 0,
+  "unexpected_material_cells": 0,
+  "unique_readbacks": 864,
+  "gallery_unique_readbacks": 192
+}

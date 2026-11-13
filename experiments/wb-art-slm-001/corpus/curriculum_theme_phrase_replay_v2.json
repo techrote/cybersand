@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "name": "theme-phrase-replay-v2",
+  "status": "opt-in candidate; no model training or native re-execution",
+  "train_sha256": "972826e1af15a6babaff6e68e4c57d790c0c060a2befe050b4156c5f8ee05f66",
+  "dev_custody_sha256": "e8d9f0c1ab39eb28d760fac5fdc42cbbd770dc5505954d15050d214ffd062267",
+  "final_custody_sha256": "54f1cb53e228953d08b2d5a0f43eeea7f81757bf0f3832e2b22e897203a9696c",
+  "compiler_sha256": "a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb",
+  "native_source": "90719c72b9fcf90593fb7878354051ad601b47fd",
+  "source_v1_order_sha256": "8b0781624039e5b401d88f8440934bb6b8b14c8935181387678493e3fbb3351a",
+  "balanced_order_sha256": "8c4e1be31766926173eb8427a380b204cd14a0397d978700e5cb8223dc000915",
+  "balanced_jsonl_sha256": "f6a2a03d6ed16c35dadd370bd070f1181cd9d0fc3c3450db69af8874c42b73da",
+  "replay_400_ids_sha256": "66d68b348562d61b42dc9b07aa0d0ab69f782fda5595437bce467dabbcb2cdb7",
+  "replay_400_indices_sha256": "1e6492b13613622679850b22dfe85bec348d856eb29b5d2b5dedd8256db733ec",
+  "records_in_balanced_order": 1152,
+  "replay_draws": 400,
+  "replay_unique_native_traces": 376,
+  "replay_groups": 72,
+  "literal_exposures_per_theme": 3,
+  "replay_displaced_draws": 24,
+  "first_400_theme_counts": {
+    "circuitry": 33,
+    "coral": 34,
+    "crystals": 33,
+    "dunes": 33,
+    "honeycomb": 33,
+    "labyrinth": 33,
+    "mycelium": 34,
+    "ribs": 34,
+    "roots": 33,
+    "ruins": 33,
+    "strata": 33,
+    "veins": 34
+  },
+  "first_400_phrasing_counts": {
+    "p0": 200,
+    "p1": 200
+  },
+  "first_400_per_theme_phrasing": {
+    "coral": {
+      "p0": 17,
+      "p1": 17
+    },
+    "veins": {
+      "p0": 17,
+      "p1": 17
+    },
+    "ribs": {
+      "p0": 17,
+      "p1": 17
+    },
+    "mycelium": {
+      "p0": 17,
+      "p1": 17
+    },
+    "roots": {
+      "p0": 16,
+      "p1": 17
+    },
+    "strata": {
+      "p0": 16,
+      "p1": 17
+    },
+    "dunes": {
+      "p0": 16,
+      "p1": 17
+    },
+    "crystals": {
+      "p0": 16,
+      "p1": 17
+    },
+    "honeycomb": {
+      "p0": 17,
+      "p1": 16
+    },
+    "labyrinth": {
+      "p0": 17,
+      "p1": 16
+    },
+    "ruins": {
+      "p0": 17,
+      "p1": 16
+    },
+    "circuitry": {
+      "p0": 17,
+      "p1": 16
+    }
+  },
+  "accumulation_assumption": "400 draws correspond to 400 optimizer steps only with accumulation=1",
+  "native_evidence": "Original 576 train traces only; no new native run or model gain"
+}

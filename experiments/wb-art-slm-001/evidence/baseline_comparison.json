@@ -1,0 +1,33 @@
+{
+  "base_commit": "cdc1c2a3fd1e6bcea182b6ed99a6b6ecd14932a7",
+  "baseline_docs_errors": [
+    "Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json",
+    "Q04: missing expected-fact source ../../docs/WEB_THREADING.md",
+    "Q28: missing expected-fact source ../../tools/dev.py",
+    "Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md",
+    "Q29: missing expected-fact source ../../tools/dev.py",
+    "Q30: missing expected-fact source ../../validation/browser-results.json"
+  ],
+  "same_missing_paths_as_initial": true,
+  "baseline_retrieval": {
+    "questions": 32,
+    "canonical_hit_at_1": 19,
+    "canonical_hit_at_k": 31,
+    "mrr_at_k": 0.7474,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "assembled_retrieval": {
+    "questions": 32,
+    "canonical_hit_at_1": 19,
+    "canonical_hit_at_k": 31,
+    "mrr_at_k": 0.7474,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "baseline_misses": [
+    "Q19"
+  ],
+  "assembled_misses": [
+    "Q19"
+  ],
+  "rank_changes": []
+}

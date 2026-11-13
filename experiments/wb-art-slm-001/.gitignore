@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+runs/
+models/
+*.safetensors
+*.pt
+*.zip
+corpus/candidates.jsonl
+corpus/train.jsonl
+corpus/dev.jsonl
+corpus/final.jsonl
+corpus/native_cases.json
+corpus/gallery_cases.json
+corpus/pilot_cases.json
+gallery/images/
+gallery/index.html

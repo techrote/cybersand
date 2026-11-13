@@ -1,0 +1,99 @@
+{
+  "matched_ids": [
+    "circuitry-v2-m2-s175-p0",
+    "coral-v6-m6-s323-p1",
+    "crystals-v1-m1-s138-p1",
+    "dunes-v7-m1-s138-p1",
+    "honeycomb-v6-m2-s175-p1",
+    "labyrinth-v3-m6-s323-p0",
+    "mycelium-v5-m0-s17-p1",
+    "ribs-v7-m4-s249-p0",
+    "roots-v1-m6-s323-p1",
+    "ruins-v5-m3-s212-p1",
+    "strata-v2-m0-s17-p1",
+    "veins-v3-m5-s286-p1"
+  ],
+  "matched_request_count": 12,
+  "matched_group_count": 12,
+  "conditions": "Official per-model templates; same system prompt, same 12 requests, greedy unconstrained generation, 256 new-token cap, CPU FP32, 3 threads. These are unadapted protocol baselines except the explicitly labelled 400-step LFM adapter, not a comparison of equally fine-tuned models.",
+  "summary": {
+    "lfm350_unadapted_24": {
+      "n": 24,
+      "json_valid": 0,
+      "program_valid": 0,
+      "first_pass_accepted": 0,
+      "theme_field_correct": 0,
+      "primary_motif_correct": 0,
+      "motif_layout_exact": 0,
+      "exact_target": 0,
+      "joint_theme_and_primary_motif": 0,
+      "output_tokens": 4792,
+      "generation_seconds": 317.8806122910064
+    },
+    "lfm350_adapter_400_24": {
+      "n": 24,
+      "json_valid": 22,
+      "program_valid": 22,
+      "first_pass_accepted": 22,
+      "theme_field_correct": 22,
+      "primary_motif_correct": 22,
+      "motif_layout_exact": 19,
+      "exact_target": 13,
+      "joint_theme_and_primary_motif": 22,
+      "output_tokens": 1567,
+      "generation_seconds": 118.67752044600275
+    },
+    "smol135_instruct_unadapted_12": {
+      "n": 12,
+      "json_valid": 0,
+      "program_valid": 0,
+      "first_pass_accepted": 0,
+      "theme_field_correct": 0,
+      "primary_motif_correct": 0,
+      "motif_layout_exact": 0,
+      "exact_target": 0,
+      "joint_theme_and_primary_motif": 0,
+      "output_tokens": 3072,
+      "generation_seconds": 112.67642695599352
+    },
+    "sprocket500_instruct_unadapted_12": {
+      "n": 12,
+      "json_valid": 0,
+      "program_valid": 0,
+      "first_pass_accepted": 0,
+      "theme_field_correct": 0,
+      "primary_motif_correct": 0,
+      "motif_layout_exact": 0,
+      "exact_target": 0,
+      "joint_theme_and_primary_motif": 0,
+      "output_tokens": 2194,
+      "generation_seconds": 248.97836436398939
+    },
+    "lfm350_unadapted_matched12": {
+      "n": 12,
+      "json_valid": 0,
+      "program_valid": 0,
+      "first_pass_accepted": 0,
+      "theme_field_correct": 0,
+      "primary_motif_correct": 0,
+      "motif_layout_exact": 0,
+      "exact_target": 0,
+      "joint_theme_and_primary_motif": 0,
+      "output_tokens": 2594,
+      "generation_seconds": 170.64027979499951
+    },
+    "lfm350_adapter_400_matched12": {
+      "n": 12,
+      "json_valid": 11,
+      "program_valid": 11,
+      "first_pass_accepted": 11,
+      "theme_field_correct": 11,
+      "primary_motif_correct": 11,
+      "motif_layout_exact": 10,
+      "exact_target": 7,
+      "joint_theme_and_primary_motif": 11,
+      "output_tokens": 800,
+      "generation_seconds": 61.114901600005396
+    }
+  }
+}

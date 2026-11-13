@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-13",
+  "scope": "Additive WB-ART-SLM-001 bootstrap questions; frozen and historical question sets are unchanged.",
+  "questions": [
+    {
+      "id": "WB-ART-SLM-01",
+      "query": "Where are the small-model themed pattern compiler, executed training corpus, adapter and native gallery?",
+      "canonical": ["research/themed-pattern-controller.md"],
+      "facts": [
+        "The implementation is under experiments/wb-art-slm-001; the bootstrap report owns actual model and native results.",
+        "The model emits bounded motif-layer JSON, the host compiler owns seed/focus/material expansion, and native Art owns cell writes.",
+        "LFM2.5-350M is the first CPU candidate; LFM3, Sprocket and SmolLM profiles retain distinct identities and execution status."
+      ],
+      "sources": ["research/themed-pattern-controller.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "WB-ART-SLM-02",
+      "query": "Does the 192-image themed native pattern gallery qualify Windows, current main or human aesthetic recognition?",
+      "canonical": ["research/themed-pattern-controller.md"],
+      "facts": [
+        "No: the teacher gallery qualifies a pinned Linux headless native-material pilot at exact source90719, not current main or Windows.",
+        "Native stored-cell receipt reconstruction and source/protection/Stop checks are separate from graphical screenshots and human acceptance.",
+        "The visual review is provisional, and native reference images do not establish trained-model competence."
+      ],
+      "sources": ["research/themed-pattern-controller.md"],
+      "revision_sensitive": true
+    }
+  ]
+}

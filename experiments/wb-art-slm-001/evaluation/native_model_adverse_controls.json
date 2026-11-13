@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "controls": [
+    {
+      "name": "genuine frozen model/native fixture independently reconciles",
+      "passed": true
+    },
+    {
+      "name": "ID-only alias creation preserves all raw programs, operations and exclusions",
+      "passed": true
+    },
+    {
+      "name": "reject changed exported source manifest",
+      "passed": true
+    },
+    {
+      "name": "reject altered original request completion",
+      "passed": true
+    },
+    {
+      "name": "reject EOS missing on accepted request",
+      "passed": true
+    },
+    {
+      "name": "reject false theme match flag",
+      "passed": true
+    },
+    {
+      "name": "reject wrong mapped geometry digest",
+      "passed": true
+    },
+    {
+      "name": "reject duplicate mapped native case",
+      "passed": true
+    },
+    {
+      "name": "reject revoked independent Stop gate",
+      "passed": true
+    }
+  ],
+  "original_evidence_mutated": false,
+  "native_engine_executed": false,
+  "actual_pinned_native_packet_consulted": true
+}

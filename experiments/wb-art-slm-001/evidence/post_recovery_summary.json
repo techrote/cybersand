@@ -1,0 +1,206 @@
+{
+  "created_utc": "2026-11-13T02:28:32.830383+00:00",
+  "repo": "/workspace/scratch/7d765b879ceb/cybersand",
+  "before": {
+    "head": "cdc1c2a3fd1e6bcea182b6ed99a6b6ecd14932a7",
+    "files": {
+      "docs/README.md": "708af24dd48555a4e35fb29d8758e0eb432a76d9270dac27d5652001c6f4ac14",
+      "docs/reference/retrieval-corpus.json": "62cade826ddc54b0d8e43982667b216d092e22b10882feec7bbe4b1dea9fc24a",
+      "docs/reference/retrieval-index.md": "d37f1019fa5b7d502535901a1bf13f37f10486c158978a8d80cb74fb2eb2bf9b",
+      "docs/reference/retrieval-questions-wb-art-slm.json": "d2bdaeccf476f41056fa124f19ea2f06a8d44978a5ff62b69d008fa0a1d6f85b",
+      "docs/research/themed-pattern-controller.md": "3bab4cdc912f73c7a79304e2b3f2afe4b5609c5f959902577b913abfe68c40b5",
+      "experiments/wb-art-slm-001/.gitattributes": "59ef0417a13dca4c9c4da6520d24ac65b7d1d2b6f2531abce9376323d5e3ec0d",
+      "experiments/wb-art-slm-001/.gitignore": "e187d307ea4881d21d72503f75e0e61a638993aa37f07a143184350033d07d39",
+      "experiments/wb-art-slm-001/BOOTSTRAP_REPORT.md": "b1b75a96e20cc25d86afe92731fc728e489bf424d6f3f394aab866e36d901518",
+      "experiments/wb-art-slm-001/PLAN.md": "4034e7a2b1478299435d0ed177fab274011f64e39dba46d74c83c7aa273a4103",
+      "experiments/wb-art-slm-001/README.md": "c954f21c46330ce8fc982811aeb13b80884d749a2217e88899d959f244fcdda6",
+      "experiments/wb-art-slm-001/controls/README.md": "6bf72d1318c155f9d6efaf60c8b81670a72cfa9452f212e9e35dce1fd56f91af",
+      "experiments/wb-art-slm-001/controls/pattern_compiler.py": "a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb",
+      "experiments/wb-art-slm-001/controls/pattern_program.schema.json": "88356d5bd9a17f3d4f16e27992185e7791fc14a78fc9cd0462a199fa070d81d1",
+      "experiments/wb-art-slm-001/controls/test_pattern_compiler.py": "fcf4bae6cc2765107ed07e455cb33de3ea57bcb77140a5e7fbab1a8cb31a1b3a",
+      "experiments/wb-art-slm-001/corpus/README.md": "f3a504f185f84f42b8dc8ba353f693bd7b1e3d48853891ee003f254ba5ac1d3e",
+      "experiments/wb-art-slm-001/corpus/admission.json": "23ee2b1d19a476fddafb448e67e3401b5a6c4ff8f593bb1f7803c644ba327e83",
+      "experiments/wb-art-slm-001/corpus/build_corpus.py": "9f8acdc731edf8288ead6df7efae7202eace9b1da5ab1d568fa709131309ec0a",
+      "experiments/wb-art-slm-001/corpus/manifest.json": "cace38cc2541947f1278d3af8c951c15c5a16eec002ba7262805cab8975d692f",
+      "experiments/wb-art-slm-001/corpus/pilot_visual_review.json": "81ee8a64d12f3b060f7631883550bf01e8f2bd4c041d69921428151b412a667b",
+      "experiments/wb-art-slm-001/corpus/test_corpus.py": "571e3fc6107827e4e543f1e0f4523e183517cb9553e5b569494906db04d72ec1",
+      "experiments/wb-art-slm-001/corpus/visual_review.json": "0f09109c70e8f7d93992e85f5019092bcf8c739459df4bf52fa08776dbab1af8",
+      "experiments/wb-art-slm-001/evaluation/README.md": "4407d318f2add919d332c8b900848195558c5eb2231268396af907c2ede7c68a",
+      "experiments/wb-art-slm-001/evaluation/merge_native_packets.py": "ea935c33cc6745574f3860d3df04306dffd41b008a6067a1c2628d394ba6fd01",
+      "experiments/wb-art-slm-001/evaluation/native_replay.gd": "50b6ebe0ce0d9425415bba3d2ab9d6a70c5c454344591c35abc1f7f1f27f3c9c",
+      "experiments/wb-art-slm-001/evaluation/run_native_replay.py": "b601e50ab7c1db5b63bc2006198f2a14b3688441165aa0becd7ca0513ba5a124",
+      "experiments/wb-art-slm-001/evaluation/test_native_replay.py": "de75913adc926911a6b43abce33bc4465095ed2fe4277d53ec42fb5644e42fbf",
+      "experiments/wb-art-slm-001/evaluation/verify_native_replay.py": "565f0237cd781812dda0d2f8dc086c7164cc7d0e4b66f7a3167281669ea25900",
+      "experiments/wb-art-slm-001/evidence/lfm_untuned_summary.json": "7e384b6655cd5206cc7d26238bf18342b8b11cfbe047f0ea4acbaf54a82bb031",
+      "experiments/wb-art-slm-001/evidence/native-evidence-archive.json": "87d025384fcdce0080c8e33fab7ba8180d3cd35fe86d45076759c163d381b2d5",
+      "experiments/wb-art-slm-001/evidence/native_full_campaign_summary.json": "dbbfc467279826fc4be70de9a25175fade94778f82bf75e63ab67d3baccf4563",
+      "experiments/wb-art-slm-001/evidence/native_repeatability_receipt.json": "e8114ad2d04397132f1024b1b57e8dcb81a0aa6130533eb79963e69daa8514e7",
+      "experiments/wb-art-slm-001/evidence/native_runtime_recovery_inventory.json": "cbc7b45e418d7b32efffd45fda30be10bca7f0e8e93acbc43e2a018ee7cdf56f",
+      "experiments/wb-art-slm-001/evidence/resume_verification.json": "1fb1509f135e48e7ad01e9cb2b8845da067f85a9ea97be3e22dbb7d3a4d73e3a",
+      "experiments/wb-art-slm-001/gallery/README.md": "e8cd917478b2d86bd6305563a163486d338ec3eb1f28c719e220cc848ecc140e",
+      "experiments/wb-art-slm-001/gallery/build_gallery.py": "81a4a32f5f7d9034dcb4e896109c0459909782c5d18cf339382cf5750c53b773",
+      "experiments/wb-art-slm-001/gallery/manifest.json": "42c350d7854ebdbf4bd02eaeb02b58ea169ef6de98a12d8f2524a78547ed7770",
+      "experiments/wb-art-slm-001/gallery/native_atlas.html": "ab27d06b980d82cbfd1e49cf63919589eaa928afbcc7bf5db5318157d76a368c",
+      "experiments/wb-art-slm-001/gallery/native_reference_12.png": "139bf5c6ca8374bf6a0ca88f2bbfcc5de9dbbf429a011198dc251961cce3747f",
+      "experiments/wb-art-slm-001/integration-state.json": "bbbb091a8b7484d26ab2eb830ce65c44908eae8fbb388837e849111a046cabd6",
+      "experiments/wb-art-slm-001/source-manifest.json": "71c18ab19261723580be0c5221517a75497a14ff12dd9a2f33eaf055947fe1db",
+      "experiments/wb-art-slm-001/training/README.md": "853ace4db93027f85055641409c3a0e0d42e7a1bf9e75d4d3e7cc2735b0ccac2",
+      "experiments/wb-art-slm-001/training/baseline_keyword.py": "41dbbd034259ed605e93b0d3b4588ab761a9bee6c7d5958225e54276bcf7cdc7",
+      "experiments/wb-art-slm-001/training/download_model.py": "7422b1ca1649e6f646335d4b1e8df4b4596d79fafb3d005c68e78226dfc8937c",
+      "experiments/wb-art-slm-001/training/evaluate_model.py": "2f48b8872305c0119e4e5404f94e2374814546c11eaa6718d3eb6676e1a05206",
+      "experiments/wb-art-slm-001/training/export_native_cases.py": "49b984940fd40eb31bc773b88f9aee9074126d9c2c53d2eb4184f84dee50ff83",
+      "experiments/wb-art-slm-001/training/infer.py": "6672536f01cebda66b7014071dd1c7e0a404a4595cca6eca358288a96d65f53d",
+      "experiments/wb-art-slm-001/training/model_profiles.json": "a64e8204d8cc7dee66f83a014f1e1b231ff88c7416c8d09680c756c7e2f03619",
+      "experiments/wb-art-slm-001/training/requirements.lock": "7ad33dd66bda847f76844699abdde1397d7a9d254bbb28a76e2843512d39cf12",
+      "experiments/wb-art-slm-001/training/system_prompt.txt": "a1ba86802ae7c8a406e476b6b9cf572733efe75dc78b13cfe084644f6349919f",
+      "experiments/wb-art-slm-001/training/test_training_guards.py": "c7e7dc12250dd8a906adf7dd13871ab3897340a6fcd3f6fb489ae64bd560e696",
+      "experiments/wb-art-slm-001/training/train_lora.py": "144bdb9fdb407d24a1f3300aab7d418940c4fd8cd52361fc8bd9d01b18420210",
+      "experiments/wb-art-slm-001/training/verify_resume.py": "b8e660e3dcec409e831a4b27c91037f7a9a3e9ecd7181ad1db40fb4b831446b3"
+    }
+  },
+  "after": {
+    "head": "cdc1c2a3fd1e6bcea182b6ed99a6b6ecd14932a7",
+    "files": {
+      "docs/README.md": "708af24dd48555a4e35fb29d8758e0eb432a76d9270dac27d5652001c6f4ac14",
+      "docs/reference/retrieval-corpus.json": "62cade826ddc54b0d8e43982667b216d092e22b10882feec7bbe4b1dea9fc24a",
+      "docs/reference/retrieval-index.md": "d37f1019fa5b7d502535901a1bf13f37f10486c158978a8d80cb74fb2eb2bf9b",
+      "docs/reference/retrieval-questions-wb-art-slm.json": "d2bdaeccf476f41056fa124f19ea2f06a8d44978a5ff62b69d008fa0a1d6f85b",
+      "docs/research/themed-pattern-controller.md": "3bab4cdc912f73c7a79304e2b3f2afe4b5609c5f959902577b913abfe68c40b5",
+      "experiments/wb-art-slm-001/.gitattributes": "59ef0417a13dca4c9c4da6520d24ac65b7d1d2b6f2531abce9376323d5e3ec0d",
+      "experiments/wb-art-slm-001/.gitignore": "e187d307ea4881d21d72503f75e0e61a638993aa37f07a143184350033d07d39",
+      "experiments/wb-art-slm-001/BOOTSTRAP_REPORT.md": "b1b75a96e20cc25d86afe92731fc728e489bf424d6f3f394aab866e36d901518",
+      "experiments/wb-art-slm-001/PLAN.md": "4034e7a2b1478299435d0ed177fab274011f64e39dba46d74c83c7aa273a4103",
+      "experiments/wb-art-slm-001/README.md": "c954f21c46330ce8fc982811aeb13b80884d749a2217e88899d959f244fcdda6",
+      "experiments/wb-art-slm-001/controls/README.md": "6bf72d1318c155f9d6efaf60c8b81670a72cfa9452f212e9e35dce1fd56f91af",
+      "experiments/wb-art-slm-001/controls/pattern_compiler.py": "a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb",
+      "experiments/wb-art-slm-001/controls/pattern_program.schema.json": "88356d5bd9a17f3d4f16e27992185e7791fc14a78fc9cd0462a199fa070d81d1",
+      "experiments/wb-art-slm-001/controls/test_pattern_compiler.py": "fcf4bae6cc2765107ed07e455cb33de3ea57bcb77140a5e7fbab1a8cb31a1b3a",
+      "experiments/wb-art-slm-001/corpus/README.md": "f3a504f185f84f42b8dc8ba353f693bd7b1e3d48853891ee003f254ba5ac1d3e",
+      "experiments/wb-art-slm-001/corpus/admission.json": "23ee2b1d19a476fddafb448e67e3401b5a6c4ff8f593bb1f7803c644ba327e83",
+      "experiments/wb-art-slm-001/corpus/build_corpus.py": "9f8acdc731edf8288ead6df7efae7202eace9b1da5ab1d568fa709131309ec0a",
+      "experiments/wb-art-slm-001/corpus/manifest.json": "cace38cc2541947f1278d3af8c951c15c5a16eec002ba7262805cab8975d692f",
+      "experiments/wb-art-slm-001/corpus/pilot_visual_review.json": "81ee8a64d12f3b060f7631883550bf01e8f2bd4c041d69921428151b412a667b",
+      "experiments/wb-art-slm-001/corpus/test_corpus.py": "571e3fc6107827e4e543f1e0f4523e183517cb9553e5b569494906db04d72ec1",
+      "experiments/wb-art-slm-001/corpus/visual_review.json": "0f09109c70e8f7d93992e85f5019092bcf8c739459df4bf52fa08776dbab1af8",
+      "experiments/wb-art-slm-001/evaluation/README.md": "4407d318f2add919d332c8b900848195558c5eb2231268396af907c2ede7c68a",
+      "experiments/wb-art-slm-001/evaluation/merge_native_packets.py": "ea935c33cc6745574f3860d3df04306dffd41b008a6067a1c2628d394ba6fd01",
+      "experiments/wb-art-slm-001/evaluation/native_replay.gd": "50b6ebe0ce0d9425415bba3d2ab9d6a70c5c454344591c35abc1f7f1f27f3c9c",
+      "experiments/wb-art-slm-001/evaluation/run_native_replay.py": "b601e50ab7c1db5b63bc2006198f2a14b3688441165aa0becd7ca0513ba5a124",
+      "experiments/wb-art-slm-001/evaluation/test_native_replay.py": "de75913adc926911a6b43abce33bc4465095ed2fe4277d53ec42fb5644e42fbf",
+      "experiments/wb-art-slm-001/evaluation/verify_native_replay.py": "565f0237cd781812dda0d2f8dc086c7164cc7d0e4b66f7a3167281669ea25900",
+      "experiments/wb-art-slm-001/evidence/lfm_untuned_summary.json": "7e384b6655cd5206cc7d26238bf18342b8b11cfbe047f0ea4acbaf54a82bb031",
+      "experiments/wb-art-slm-001/evidence/native-evidence-archive.json": "87d025384fcdce0080c8e33fab7ba8180d3cd35fe86d45076759c163d381b2d5",
+      "experiments/wb-art-slm-001/evidence/native_full_campaign_summary.json": "dbbfc467279826fc4be70de9a25175fade94778f82bf75e63ab67d3baccf4563",
+      "experiments/wb-art-slm-001/evidence/native_repeatability_receipt.json": "e8114ad2d04397132f1024b1b57e8dcb81a0aa6130533eb79963e69daa8514e7",
+      "experiments/wb-art-slm-001/evidence/native_runtime_recovery_inventory.json": "cbc7b45e418d7b32efffd45fda30be10bca7f0e8e93acbc43e2a018ee7cdf56f",
+      "experiments/wb-art-slm-001/evidence/resume_verification.json": "1fb1509f135e48e7ad01e9cb2b8845da067f85a9ea97be3e22dbb7d3a4d73e3a",
+      "experiments/wb-art-slm-001/gallery/README.md": "e8cd917478b2d86bd6305563a163486d338ec3eb1f28c719e220cc848ecc140e",
+      "experiments/wb-art-slm-001/gallery/build_gallery.py": "81a4a32f5f7d9034dcb4e896109c0459909782c5d18cf339382cf5750c53b773",
+      "experiments/wb-art-slm-001/gallery/manifest.json": "42c350d7854ebdbf4bd02eaeb02b58ea169ef6de98a12d8f2524a78547ed7770",
+      "experiments/wb-art-slm-001/gallery/native_atlas.html": "ab27d06b980d82cbfd1e49cf63919589eaa928afbcc7bf5db5318157d76a368c",
+      "experiments/wb-art-slm-001/gallery/native_reference_12.png": "139bf5c6ca8374bf6a0ca88f2bbfcc5de9dbbf429a011198dc251961cce3747f",
+      "experiments/wb-art-slm-001/integration-state.json": "bbbb091a8b7484d26ab2eb830ce65c44908eae8fbb388837e849111a046cabd6",
+      "experiments/wb-art-slm-001/source-manifest.json": "71c18ab19261723580be0c5221517a75497a14ff12dd9a2f33eaf055947fe1db",
+      "experiments/wb-art-slm-001/training/README.md": "853ace4db93027f85055641409c3a0e0d42e7a1bf9e75d4d3e7cc2735b0ccac2",
+      "experiments/wb-art-slm-001/training/baseline_keyword.py": "41dbbd034259ed605e93b0d3b4588ab761a9bee6c7d5958225e54276bcf7cdc7",
+      "experiments/wb-art-slm-001/training/download_model.py": "7422b1ca1649e6f646335d4b1e8df4b4596d79fafb3d005c68e78226dfc8937c",
+      "experiments/wb-art-slm-001/training/evaluate_model.py": "2f48b8872305c0119e4e5404f94e2374814546c11eaa6718d3eb6676e1a05206",
+      "experiments/wb-art-slm-001/training/export_native_cases.py": "49b984940fd40eb31bc773b88f9aee9074126d9c2c53d2eb4184f84dee50ff83",
+      "experiments/wb-art-slm-001/training/infer.py": "6672536f01cebda66b7014071dd1c7e0a404a4595cca6eca358288a96d65f53d",
+      "experiments/wb-art-slm-001/training/model_profiles.json": "a64e8204d8cc7dee66f83a014f1e1b231ff88c7416c8d09680c756c7e2f03619",
+      "experiments/wb-art-slm-001/training/requirements.lock": "7ad33dd66bda847f76844699abdde1397d7a9d254bbb28a76e2843512d39cf12",
+      "experiments/wb-art-slm-001/training/system_prompt.txt": "a1ba86802ae7c8a406e476b6b9cf572733efe75dc78b13cfe084644f6349919f",
+      "experiments/wb-art-slm-001/training/test_training_guards.py": "c7e7dc12250dd8a906adf7dd13871ab3897340a6fcd3f6fb489ae64bd560e696",
+      "experiments/wb-art-slm-001/training/train_lora.py": "144bdb9fdb407d24a1f3300aab7d418940c4fd8cd52361fc8bd9d01b18420210",
+      "experiments/wb-art-slm-001/training/verify_resume.py": "b8e660e3dcec409e831a4b27c91037f7a9a3e9ecd7181ad1db40fb4b831446b3"
+    }
+  },
+  "changed_during_validation": [],
+  "results": [
+    {
+      "name": "check_docs",
+      "command": [
+        "python",
+        "tools/ci/check_docs.py",
+        "--json",
+        "/workspace/scratch/7d765b879ceb/bootstrap_validation/post_check_docs.json"
+      ],
+      "exit_code": 0,
+      "seconds": 0.576
+    },
+    {
+      "name": "check_repository",
+      "command": [
+        "python",
+        "tools/ci/check_repository.py",
+        "--json",
+        "/workspace/scratch/7d765b879ceb/bootstrap_validation/post_check_repository.json"
+      ],
+      "exit_code": 0,
+      "seconds": 0.618
+    },
+    {
+      "name": "check_m11_consistency",
+      "command": [
+        "python",
+        "tools/ci/check_m11_consistency.py",
+        "--json",
+        "/workspace/scratch/7d765b879ceb/bootstrap_validation/post_check_m11_consistency.json"
+      ],
+      "exit_code": 0,
+      "seconds": 0.118
+    },
+    {
+      "name": "retrieval_default",
+      "command": [
+        "python",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "/workspace/scratch/7d765b879ceb/bootstrap_validation/post_retrieval_default.json"
+      ],
+      "exit_code": 0,
+      "seconds": 0.321
+    },
+    {
+      "name": "retrieval_wb_art_slm",
+      "command": [
+        "python",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions-wb-art-slm.json",
+        "--output",
+        "/workspace/scratch/7d765b879ceb/bootstrap_validation/post_retrieval_wb_art_slm.json"
+      ],
+      "exit_code": 0,
+      "seconds": 0.241
+    },
+    {
+      "name": "git_diff_check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.007
+    },
+    {
+      "name": "training_guards",
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "experiments/wb-art-slm-001/training",
+        "-p",
+        "test_training_guards.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "seconds": 0.065
+    }
+  ],
+  "all_commands_passed": true,
+  "companion_recovery_manifest_sha256": "d8e03e42e3f96641838d1500eadf92b73f10fd0e0b6bca555a80332f9b340b94"
+}

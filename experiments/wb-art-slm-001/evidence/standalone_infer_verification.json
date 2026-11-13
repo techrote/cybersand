@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "checks": {
+    "fresh_cli_accepted": true,
+    "same_program_as_frozen_keyword_case": true,
+    "same_operations_as_frozen_native_case": true,
+    "correct_primary_motif": true,
+    "correct_theme_field": true,
+    "matching_adapter": true
+  },
+  "native_case_id": "lfm_keywords_native-keyword-roots-s73",
+  "standalone_receipt": "training_runtime/inference_smoke/roots_seed73/receipt.json",
+  "standalone_receipt_sha256": "fc8b49ad65b39e1620c64ee903054dd1e21269a45c5e3a35a53bbe10c57ec6ad",
+  "note": "Standalone infer.py generated this batch in a fresh process; native execution is independently recorded by the native harness."
+}

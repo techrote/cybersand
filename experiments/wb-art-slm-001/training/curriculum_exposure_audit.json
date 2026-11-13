@@ -1,0 +1,53 @@
+{
+  "experiment": "WB-ART-SLM-001",
+  "date": "2026-11-13",
+  "kind": "offline_sampler_exposure_audit",
+  "train_sha256": "972826e1af15a6babaff6e68e4c57d790c0c060a2befe050b4156c5f8ee05f66",
+  "input_rows": 1152,
+  "seed": 731,
+  "epoch": 0,
+  "sample_window": 400,
+  "policy_results": {
+    "shuffled-v1": {
+      "sample_ids_sha256": "3dd1a010bc79b096391ebdbe89d148f1692460c9160b5105b0715b6b5764a169",
+      "unique_example_ids": 400,
+      "literal_word_samples": 6,
+      "literal_word_coverage": 6,
+      "literal_word_samples_by_theme": {
+        "circuitry": 1,
+        "labyrinth": 1,
+        "mycelium": 1,
+        "roots": 1,
+        "ruins": 1,
+        "strata": 1
+      },
+      "per_theme_min": 24,
+      "per_theme_max": 39,
+      "distinct_structural_groups": 72
+    },
+    "keyword-replay-v1": {
+      "sample_ids_sha256": "bc84ee5be7f7a4d02d49153b01eb1d6f2a29d59bc5b4b44e887a4d64cc39e617",
+      "unique_example_ids": 376,
+      "literal_word_samples": 36,
+      "literal_word_coverage": 12,
+      "literal_word_samples_by_theme": {
+        "circuitry": 3,
+        "coral": 3,
+        "crystals": 3,
+        "dunes": 3,
+        "honeycomb": 3,
+        "labyrinth": 3,
+        "mycelium": 3,
+        "ribs": 3,
+        "roots": 3,
+        "ruins": 3,
+        "strata": 3,
+        "veins": 3
+      },
+      "per_theme_min": 27,
+      "per_theme_max": 41,
+      "distinct_structural_groups": 70
+    }
+  },
+  "interpretation": "Sampler exposure changes only. No model training, first-pass model prediction, native replay, or visual quality improvement was executed or claimed."
+}

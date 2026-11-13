@@ -1,0 +1,60 @@
+{
+  "experiment": "WB-ART-SLM-001",
+  "default_bootstrap": "lfm2_5_350m",
+  "profiles": {
+    "lfm2_5_350m": {
+      "model_id": "LiquidAI/LFM2.5-350M",
+      "revision": "9921cd4d82c0e3986887aa4b376f9446729ef8a3",
+      "subfolder": "",
+      "role": "First actual CPU bootstrap adapter",
+      "trust_remote_code": false,
+      "recommended_device": "cpu",
+      "source": "https://huggingface.co/LiquidAI/LFM2.5-350M/tree/9921cd4d82c0e3986887aa4b376f9446729ef8a3"
+    },
+    "lfm3_1_7b": {
+      "model_id": "LiquidAI/LFM3-1.7B",
+      "revision": "1da06bec6a819da10b54c67e5c90972b46d81871",
+      "subfolder": "",
+      "role": "Primary planned GPU candidate; no bootstrap training claim",
+      "trust_remote_code": true,
+      "recommended_device": "cuda",
+      "source": "https://huggingface.co/LiquidAI/LFM3-1.7B/tree/1da06bec6a819da10b54c67e5c90972b46d81871"
+    },
+    "sprocket_500m_instruct": {
+      "model_id": "kandivault/sprocket-500m",
+      "revision": "eb157d4ddddc4619e661d4a2426bb2dd000fc668",
+      "subfolder": "",
+      "role": "Independent root Instruct challenger, not the chat checkpoint",
+      "trust_remote_code": false,
+      "recommended_device": "cpu",
+      "source": "https://huggingface.co/kandivault/sprocket-500m/tree/eb157d4ddddc4619e661d4a2426bb2dd000fc668"
+    },
+    "sprocket_500m_chat": {
+      "model_id": "kandivault/sprocket-500m",
+      "revision": "eb157d4ddddc4619e661d4a2426bb2dd000fc668",
+      "subfolder": "chat",
+      "role": "Separate chat checkpoint; never alias to root Instruct weights",
+      "trust_remote_code": false,
+      "recommended_device": "cpu",
+      "source": "https://huggingface.co/kandivault/sprocket-500m/tree/eb157d4ddddc4619e661d4a2426bb2dd000fc668/chat"
+    },
+    "smollm2_135m_instruct": {
+      "model_id": "HuggingFaceTB/SmolLM2-135M-Instruct",
+      "revision": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
+      "subfolder": "",
+      "role": "Tiny independent reference",
+      "trust_remote_code": false,
+      "recommended_device": "cpu",
+      "source": "https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct/tree/12fd25f77366fa6b3b4b768ec3050bf629380bac"
+    },
+    "smollm2_360m_instruct": {
+      "model_id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+      "revision": "a10cc1512eabd3dde888204e902eca88bddb4951",
+      "subfolder": "",
+      "role": "Optional size-matched independent reference",
+      "trust_remote_code": false,
+      "recommended_device": "cpu",
+      "source": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M-Instruct/tree/a10cc1512eabd3dde888204e902eca88bddb4951"
+    }
+  }
+}

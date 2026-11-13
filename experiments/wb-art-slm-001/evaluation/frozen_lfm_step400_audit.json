@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "qualification": "Existing pinned Linux headless material pilot; audit does not execute Godot or assess recognition",
+  "source_sha256": {
+    "original_native_manifest": "d41c3844de1e74474d874fb8c1cc8857db1140a64f94aa3cbbe8f147cd0cca0a",
+    "aliased_native_manifest": "266aa3b6e8e6e8b94bb4c11d39e94dca60021f1ab967e04fdc9b3ffff23068ad",
+    "alias_map": "49d0a58726919f807327836f9b9cdee6471cc4aed65d35765f8296b233dc0567",
+    "independent_native_receipts": "63c4d319583d40f404d3e2289cb3941963efe8d8cdce45240a6bba1444315b4b",
+    "development-predictions.json": "485bac2bebfbde7712f52726da55a64df8ed3e122452e8260aafa388424c3498",
+    "keyword-predictions.json": "72f3d9449b8a4642c2791fad31294ff188bc770e30fd6b833fbbe690b90399ea"
+  },
+  "native_runtime": {
+    "source_commit": "90719c72b9fcf90593fb7878354051ad601b47fd",
+    "native_sha256": "3a8b0b2cd04f09054426842f978e2421aad4016aae03dec91ed527ff50b953cd",
+    "godot_version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "native_global_gates": 15,
+  "alias_pre_run_manifest_recovered": false,
+  "request_count": 36,
+  "first_pass_accepted": 34,
+  "native_request_yield": 34,
+  "native_seed_replays": 68,
+  "native_seed_replays_passed": 68,
+  "symbolic_theme_primary_joint": 32,
+  "seed_set": [
+    17,
+    73
+  ],
+  "cohorts": {
+    "development-predictions": {
+      "original_requests": 24,
+      "structural_groups": 12,
+      "first_pass_accepted": 22,
+      "native_request_yield": 22,
+      "symbolic_theme_primary_joint": 22
+    },
+    "keyword-predictions": {
+      "original_requests": 12,
+      "structural_groups": 12,
+      "first_pass_accepted": 12,
+      "native_request_yield": 12,
+      "symbolic_theme_primary_joint": 10
+    }
+  },
+  "failures": [
+    {
+      "prediction_id": "coral-v6-m6-s323-p1",
+      "cohort": "development-predictions",
+      "theme": "coral",
+      "failure": "first-pass-invalid"
+    },
+    {
+      "prediction_id": "coral-v6-m0-s17-p0",
+      "cohort": "development-predictions",
+      "theme": "coral",
+      "failure": "first-pass-invalid"
+    },
+    {
+      "prediction_id": "keyword-ribs",
+      "cohort": "keyword-predictions",
+      "theme": "ribs",
+      "failure": "symbolic-theme-or-motif"
+    },
+    {
+      "prediction_id": "keyword-veins",
+      "cohort": "keyword-predictions",
+      "theme": "veins",
+      "failure": "symbolic-theme-or-motif"
+    }
+  ],
+  "geometry_only_variety": {
+    "pairs": 34,
+    "mean_seed_jaccard": 0.384754,
+    "by_theme": {
+      "circuitry": {
+        "requests": 3,
+        "median_seed_jaccard": 0.317695,
+        "median_occupancy": 0.1199
+      },
+      "coral": {
+        "requests": 1,
+        "median_seed_jaccard": 0.335471,
+        "median_occupancy": 0.112956
+      },
+      "crystals": {
+        "requests": 3,
+        "median_seed_jaccard": 0.090728,
+        "median_occupancy": 0.05957
+      },
+      "dunes": {
+        "requests": 3,
+        "median_seed_jaccard": 0.848412,
+        "median_occupancy": 0.287597
+      },
+      "honeycomb": {
+        "requests": 3,
+        "median_seed_jaccard": 0.762059,
+        "median_occupancy": 0.259061
+      },
+      "labyrinth": {
+        "requests": 3,
+        "median_seed_jaccard": 0.65985,
+        "median_occupancy": 0.128961
+      },
+      "mycelium": {
+        "requests": 3,
+        "median_seed_jaccard": 0.109207,
+        "median_occupancy": 0.111599
+      },
+      "ribs": {
+        "requests": 3,
+        "median_seed_jaccard": 0.721232,
+        "median_occupancy": 0.306424
+      },
+      "roots": {
+        "requests": 3,
+        "median_seed_jaccard": 0.091781,
+        "median_occupancy": 0.037435
+      },
+      "ruins": {
+        "requests": 3,
+        "median_seed_jaccard": 0.495,
+        "median_occupancy": 0.113553
+      },
+      "strata": {
+        "requests": 3,
+        "median_seed_jaccard": 0.102447,
+        "median_occupancy": 0.181478
+      },
+      "veins": {
+        "requests": 3,
+        "median_seed_jaccard": 0.10375,
+        "median_occupancy": 0.051974
+      }
+    },
+    "interpretation": "Exact material-ID overlap across two host seeds; lower overlap means different geometry, not higher aesthetic quality"
+  },
+  "acceptance_targets": {
+    "raw_schema_pct": 95,
+    "positive_request_native_yield_pct": 98,
+    "recognition_pct": 80,
+    "zero_host_violations": true
+  },
+  "go_no_go": "HOLD",
+  "recognition_assessed": false,
+  "final_split_used": false,
+  "new_native_execution": false
+}
