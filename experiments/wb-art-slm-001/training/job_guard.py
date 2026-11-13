@@ -26,7 +26,7 @@ LOCK_NAME = "wb-art-slm-training.lock"
 LEASE_NAME = "wb-art-slm-training.role-lease.json"
 START_NAME = "guard_start.json"
 RESULT_NAME = "guard_result.json"
-INPUT_FILES = ("--train", "--dev", "--admission", "--corpus-manifest", "--compiler", "--system-file")
+INPUT_FILES = ("--train", "--dev", "--admission", "--corpus-manifest", "--compiler", "--system-file", "--v5-manifest")
 
 
 def digest(path: Path) -> str:
