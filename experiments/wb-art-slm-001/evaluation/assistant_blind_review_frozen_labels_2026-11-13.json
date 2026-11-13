@@ -5,141 +5,39 @@
   "stimulus_sha256": "5f554c67c928d6f940126d07c529df89694a42d6cdeb7a65c7b9c4413f354877",
   "method": "Visual inspection of all three qID-only contact sheets before accessing the sealed key; two host seeds classified once per request; uncertain instances marked unsure",
   "rows": [
-    {
-      "id": "q001",
-      "label": "ribs"
-    },
-    {
-      "id": "q002",
-      "label": "labyrinth"
-    },
-    {
-      "id": "q003",
-      "label": "circuitry"
-    },
-    {
-      "id": "q004",
-      "label": "ribs"
-    },
-    {
-      "id": "q005",
-      "label": "strata"
-    },
-    {
-      "id": "q006",
-      "label": "ruins"
-    },
-    {
-      "id": "q007",
-      "label": "ribs"
-    },
-    {
-      "id": "q008",
-      "label": "honeycomb"
-    },
-    {
-      "id": "q009",
-      "label": "dunes"
-    },
-    {
-      "id": "q010",
-      "label": "roots"
-    },
-    {
-      "id": "q011",
-      "label": "dunes"
-    },
-    {
-      "id": "q012",
-      "label": "crystals"
-    },
-    {
-      "id": "q013",
-      "label": "ribs"
-    },
-    {
-      "id": "q014",
-      "label": "honeycomb"
-    },
-    {
-      "id": "q015",
-      "label": "mycelium"
-    },
-    {
-      "id": "q016",
-      "label": "roots"
-    },
-    {
-      "id": "q017",
-      "label": "coral"
-    },
-    {
-      "id": "q018",
-      "label": "mycelium"
-    },
-    {
-      "id": "q019",
-      "label": "ruins"
-    },
-    {
-      "id": "q020",
-      "label": "labyrinth"
-    },
-    {
-      "id": "q021",
-      "label": "honeycomb"
-    },
-    {
-      "id": "q022",
-      "label": "veins"
-    },
-    {
-      "id": "q023",
-      "label": "crystals"
-    },
-    {
-      "id": "q024",
-      "label": "strata"
-    },
-    {
-      "id": "q025",
-      "label": "roots"
-    },
-    {
-      "id": "q026",
-      "label": "crystals"
-    },
-    {
-      "id": "q027",
-      "label": "mycelium"
-    },
-    {
-      "id": "q028",
-      "label": "circuitry"
-    },
-    {
-      "id": "q029",
-      "label": "labyrinth"
-    },
-    {
-      "id": "q030",
-      "label": "ruins"
-    },
-    {
-      "id": "q031",
-      "label": "veins"
-    },
-    {
-      "id": "q032",
-      "label": "circuitry"
-    },
-    {
-      "id": "q033",
-      "label": "circuitry"
-    },
-    {
-      "id": "q034",
-      "label": "dunes"
-    }
+    {"id":"q001","label":"ribs"},
+    {"id":"q002","label":"labyrinth"},
+    {"id":"q003","label":"circuitry"},
+    {"id":"q004","label":"ribs"},
+    {"id":"q005","label":"strata"},
+    {"id":"q006","label":"ruins"},
+    {"id":"q007","label":"ribs"},
+    {"id":"q008","label":"honeycomb"},
+    {"id":"q009","label":"dunes"},
+    {"id":"q010","label":"roots"},
+    {"id":"q011","label":"dunes"},
+    {"id":"q012","label":"crystals"},
+    {"id":"q013","label":"ribs"},
+    {"id":"q014","label":"honeycomb"},
+    {"id":"q015","label":"mycelium"},
+    {"id":"q016","label":"roots"},
+    {"id":"q017","label":"coral"},
+    {"id":"q018","label":"mycelium"},
+    {"id":"q019","label":"ruins"},
+    {"id":"q020","label":"labyrinth"},
+    {"id":"q021","label":"honeycomb"},
+    {"id":"q022","label":"veins"},
+    {"id":"q023","label":"crystals"},
+    {"id":"q024","label":"strata"},
+    {"id":"q025","label":"roots"},
+    {"id":"q026","label":"crystals"},
+    {"id":"q027","label":"mycelium"},
+    {"id":"q028","label":"circuitry"},
+    {"id":"q029","label":"labyrinth"},
+    {"id":"q030","label":"ruins"},
+    {"id":"q031","label":"veins"},
+    {"id":"q032","label":"circuitry"},
+    {"id":"q033","label":"circuitry"},
+    {"id":"q034","label":"dunes"}
   ]
 }
