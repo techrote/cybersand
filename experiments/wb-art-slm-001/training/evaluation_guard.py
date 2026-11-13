@@ -121,6 +121,8 @@ def raw_record_consistent(record: dict, max_new_tokens: int, compiler) -> bool:
     """
     from train_lora import strict_json
 
+    if type(record) is not dict:
+        return False
     flags = ("json_valid", "program_valid", "first_pass_accepted",
              "theme_field_correct", "primary_motif_correct",
              "motif_layout_exact", "exact_target", "eos_emitted",
@@ -157,7 +159,8 @@ def raw_record_consistent(record: dict, max_new_tokens: int, compiler) -> bool:
         try:
             compiler.validate_program(value)
             compiled = compiler.compile_program(value, 96, 96, seed=record["seed"])
-        except (ValueError, TypeError, KeyError, IndexError, OverflowError):
+        except Exception:
+            # Invalid or unexpectedly failing compiler paths are never admitted.
             pass
     compiled_ok = compiled is not None
     if compiled_ok != record["program_valid"]:
@@ -208,7 +211,8 @@ def verified_evaluation(output: Path, argv: list[str]) -> dict | None:
         records = predictions["records"]
         opts = options(argv)
         if (summary["config"] != config or predictions["summary"] != metrics
-                or not isinstance(records, list) or not records):
+                or not isinstance(records, list) or not records
+                or any(type(record) is not dict for record in records)):
             return None
         if config["suite"] != opts.get("--suite", "dev") or config["training_executed"] is not False:
             return None
