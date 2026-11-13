@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "source": "experiments/wb-art-slm-001/evidence/model_request_outcomes.json",
+  "model": "LiquidAI/LFM2.5-350M",
+  "checkpoint_step": 400,
+  "scope": "Frozen DEVELOPMENT and literal training sanity; not final and not native success for malformed requests",
+  "development_failures": [
+    {
+      "prediction_id": "coral-v6-m6-s323-p1",
+      "failure": "strict_json_malformed_number",
+      "raw_sha256": "2f1714a540ace4485fdac5da3441092d13e826ff9081c8e8c7b5d471cdadb06c",
+      "native_executed": false,
+      "repair_target": "teach valid decimal serialization using already native-admitted TRAIN composition examples; held-out split remains development"
+    },
+    {
+      "prediction_id": "coral-v6-m0-s17-p0",
+      "failure": "strict_json_malformed_number",
+      "raw_sha256": "8e33d846708187e1788e469ad37fa1284e7e7aa3591eb495fd2b97fe861b1e88",
+      "native_executed": false,
+      "repair_target": "same failure family; no positive admission or retry credit"
+    }
+  ],
+  "training_word_sanity_failures": [
+    {
+      "prediction_id": "keyword-veins",
+      "failure": "primary_motif_mismatch",
+      "raw_sha256": "b53fd1cf484ff6df3ccf8ecd60e9d947392c11e8b107d5a5e825edb15761d640",
+      "predicted_theme": "veins",
+      "predicted_primary_motif": "orthogonal",
+      "expected_primary_motif": "network",
+      "native_execution_is_not_semantic_credit": true
+    },
+    {
+      "prediction_id": "keyword-ribs",
+      "failure": "theme_label_mismatch",
+      "raw_sha256": "5a32f1502a7769043b928d76f2a3cfd1fbc891c1e62e013c1e6c9960845b25ef",
+      "predicted_theme": "ruins",
+      "predicted_primary_motif": "ribs",
+      "expected_theme": "ribs",
+      "native_execution_is_not_semantic_credit": true
+    }
+  ],
+  "policy": {
+    "raw_model_output_remains_in_source_evidence": true,
+    "no_repair_as_first_pass_success": true,
+    "not_training_examples": true,
+    "final_examples_used": false,
+    "recovery_conversations_synthesized": false
+  }
+}
