@@ -44,7 +44,11 @@ def save(steps):
     (ckpt/'inventory.json').write_text(json.dumps(files))
     (root/'latest_checkpoint.json').write_text(json.dumps({'path':str(ckpt),'global_step':steps}))
     (root/'summary.json').write_text(json.dumps({'global_step':steps,'status':'training_executed'}))
-if a.mode == 'complete':
+if a.mode in ('complete', 'tamper-model', 'tamper-train'):
+    if a.mode == 'tamper-model':
+        (pathlib.Path(a.model)/'weights.safetensors').write_bytes(b'modified after guard preflight')
+    if a.mode == 'tamper-train':
+        pathlib.Path(a.train).write_text('modified after guard preflight')
     save(int(a.steps))
 else:
     while not stop:
@@ -134,6 +138,43 @@ class JobGuardTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'checksum differs'):
             run(args,cmd)
         self.assertFalse((self.parent/'candidate-one').exists())
+
+    def test_model_receipt_inventory_must_be_complete(self):
+        args, cmd = self.setup_run()
+        (self.model/'weights.safetensors').unlink()
+        with self.assertRaisesRegex(ValueError, 'inventories differ'):
+            run(args, cmd)
+        self.assertFalse((self.parent/'candidate-one').exists())
+
+    def test_completed_worker_cannot_launder_modified_model_or_corpus(self):
+        for mode, named in (('tamper-model', 'weights.safetensors'), ('tamper-train', 'train.txt')):
+            with self.subTest(mode=mode):
+                args, cmd = self.setup_run(output=mode, mode=mode)
+                result = run(args, cmd)
+                self.assertEqual(result['status'], 'failed')
+                self.assertIn('fingerprint changed', result['error'])
+                self.assertTrue(result['verified_checkpoint'])
+                self.assertEqual(result['observed_steps'], 400)
+                # Restore source bytes before the next independently fingerprinted subcase.
+                if mode == 'tamper-model':
+                    (self.model/named).write_bytes(b'known-model-bytes')
+                else:
+                    self.inputs['train'].write_text('train-exact')
+
+    def test_resume_payloads_verified_before_worker_and_bound_to_fingerprint(self):
+        args, cmd = self.setup_run()
+        first = run(args, cmd)
+        self.assertEqual(first['status'], 'completed')
+        checkpoint = Path(first['verified_checkpoint'])
+        resume_args, resume_cmd = self.setup_run(output='resumed')
+        resume_cmd += ['--resume', str(checkpoint)]
+        fingerprint, inventory = build_fingerprint(resume_cmd, self.worker)
+        self.assertTrue(fingerprint)
+        self.assertIn('resume/training_state.pt', inventory['files'])
+        (checkpoint/'training_state.pt').write_bytes(b'damaged optimizer state')
+        with self.assertRaisesRegex(ValueError, 'Checkpoint custody mismatch'):
+            run(resume_args, resume_cmd)
+        self.assertFalse((self.parent/'resumed').exists())
 
     def test_supervisor_token_cannot_bypass_wrong_lease(self):
         args,cmd=self.setup_run()
