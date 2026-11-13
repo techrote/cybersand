@@ -47,6 +47,80 @@ python verify_resume.py --uninterrupted /path/to/first/checkpoint-000026 --resum
 
 This compares adapter tensors, optimizer/scheduler/scaler, RNG states, cursor, step, loss and gradient norm. Exact continuation is only claimed if the executed comparison passes in that pinned runtime; it is not a cross-hardware guarantee.
 
+## Opt-in balanced keyword replay — 13 November 2026
+
+The frozen CPU FP32 step-400 LFM adapter and its exact 25→26 resume proof are
+preserved. A **new**, non-default sampler `--curriculum keyword-replay-v1` is
+implemented in `curriculum.py`, with a separate input-bound exposure audit in
+`curriculum_exposure_audit.json`. It changes **training sample order only**,
+not the target programs, train/dev/final split, compiler, host seed or Art
+execution. The original `shuffled-v1` permutation remains the default and is
+checked against the bootstrap's exact sampling algorithm.
+
+The new schedule presents one admitted literal-word row for each of the twelve
+themes in its first twelve examples, then replays one word every sixteen
+subsequent samples while filling the other positions from a deterministic
+epoch-specific shuffle of nonkeyword **train** rows. Its epoch length is
+unchanged (1,152 samples); replay deliberately displaces some unique samples.
+It rejects missing/duplicate keyword rows and any dev/final split contamination.
+The global sample cursor and seed/epoch reconstruct the exact order on resume.
+
+On the **actual admitted 1,152-row corpus** (SHA-256
+`972826e1af15a6babaff6e68e4c57d790c0c060a2befe050b4156c5f8ee05f66`),
+with seed 731 and the first 400 samples:
+
+| Measure | Frozen shuffled-v1 | New keyword-replay-v1 |
+| --- | ---: | ---: |
+| Literal-word themes encountered | 6/12 | 12/12 |
+| Literal-word samples | 6 | 36 (3 per theme) |
+| Distinct example IDs | 400 | 376 |
+| Structural training groups represented | 72 | 70 |
+| Minimum/maximum requests per theme | 24–39 | 27–41 |
+
+This is an **executed sampler/corpus audit**, not new LoRA adaptation, a
+model-family ranking, native execution or evidence of greater recognition.
+The tradeoff (24 fewer distinct examples and two fewer training groups within
+400 samples) must be monitored against the fixed development benchmark.
+
+Only a genuinely fresh private output directory may use the new policy. It
+pins the policy, sampler-source SHA-256, trainer-source SHA-256 and existing
+corpus/model/template/compiler identities in full checkpoints. Attempting to
+resume the original `shuffled-v1` checkpoint with the new policy is rejected.
+To run the **next authorized local** CPU study with the exact accepted
+model/corpus inputs already restored, add:
+
+```bash
+--curriculum keyword-replay-v1 --steps 400 --skip-baseline \
+--max-seconds 1950 --checkpoint-every 25
+```
+
+to the existing `train_lora.py` invocation; supply an unused private
+`--output` directory, observe its shared parent lock and external
+whole-process deadline, and save full checkpoints outside Git. **No such
+training job was launched at this checkpoint**: this runtime has the archived
+step-400 adapter, full resume state and admitted corpus, but not the pinned
+frozen base model or the bootstrap's Transformers/PEFT runtime. Do not
+automatically retry unchanged inputs hourly.
+
+Before treating the candidate as an improvement, compare both programs on the
+**same fixed 24 development IDs** and all twelve literal words with identical
+prompt/template/compiler/greedy decoding, token cap, seed and output budgets.
+Report raw JSON, first-pass EOS acceptance, theme, primary motif, ordered
+motif/layout, full-program target, native replay and blind visual recognition
+separately. In particular examine prior `veins`→orthogonal,
+`ribs`→ruins and the two malformed coral decimal responses. The untouched
+final assessment is not a repair set. Fair Sprocket/SmolLM2 comparisons will
+also require matched fine-tuning budgets; their zero-shot baselines are not
+equal-training comparisons.
+
+The five curriculum unit tests cover legacy-order equivalence, balanced
+replays, deterministic cursor restoration, exact corpus exposure and failure
+of invalid split/keyword inputs. Run
+`python -m unittest -v test_curriculum.py` from `training/`, alongside the
+existing training guards. A future model run must still respect a
+whole-process budget with saving/evaluation margin and a single shared
+role lease.
+
 ## Separate baselines and development evaluation
 
 `baseline_keyword.py` declares its simple behavior: one literal theme word selects the fixed centered reference recipe; modifier/layout language is ignored. It separately records the twelve exact-word compiler sanity cases. It never impersonates model output.
