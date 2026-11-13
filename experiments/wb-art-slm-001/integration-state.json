@@ -1,6 +1,6 @@
 {
   "experiment": "WB-ART-SLM-001",
-  "status": "Seventh Integration intake: four role-head deltas integrated; Windows synthetic Job process-tree gate SUCCESS; full CI RED from two Training-owned missing-time import test errors; authentic adapter/native/desktop HOLD",
+  "status": "Eighth critical-path intake: v5 source-index and frozen gallery60 available; original archived TRAIN v5 data preflight PASS; corrected Training NameError but exact-head smoke RED on timing-suspect soft-stop test, 16/17 Training; new LoRA/gallery/native qualification HOLD",
   "updated_on": "2026-11-13",
   "owner": "five role workers after bootstrap handoff",
   "branch": "codex/wb-art-slm-001",
@@ -49,7 +49,7 @@
     }
   },
   "production_promotion": "HOLD; one Draft #567, no Ready, merge, native/Windows promotion",
-  "next_checkpoint": "Consume Training-owned verified test import fix, rerun exact-head combined CI, independently review Win32 process ownership, and qualify genuine model-to-native Art with source-compatible upstream runtime",
+  "next_checkpoint": "Training repairs timing-valid Stop descendant control, then actually trains v5 (lease/pinned base); Evaluation renders frozen 60-prompt baseline-vs-new native gallery; Integration later accepts source-compatible Workbench without merging unrelated PR.",
   "pull_request": "https://github.com/techrote/cybersand/pull/567",
   "model_native_cases_passed": 68,
   "combined_gallery_images": 260,
@@ -78,7 +78,7 @@
   ],
   "worker_branches_seeded_from": "01f2cfcea66839066431b6d241f186be00cecf27",
   "bootstrap_report_review": "Independent consistency review complete; 98% gate identified as native request yield, not schema validity.",
-  "integration_checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-1020.md",
+  "integration_checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-1110.md",
   "artifact_recovery": {
     "verification": "Four named owner Library archives materialized and byte-size/SHA256 compared with ARTIFACTS.json on 2026-11-13; all four match",
     "artifacts_verified": 4,
@@ -305,5 +305,32 @@
       "retrained_model": false,
       "production": "Draft/HOLD"
     }
+  },
+  "integration_eighth_2026_11_13_1110": {
+    "import_commits": [
+      "767b754ccb7df3aafc2b63383e9fa1eb106c4c7d",
+      "849098454384322ec4001b3f042905c5245e155c",
+      "cf9fd267ca3bf646443e2264db18f75fef132cc6"
+    ],
+    "real_archive_v5_preflight": {
+      "original_archive_sha256": "2d2de250731eeea825339e89f752ab8ebc65f3a929daa2c692120d985566948a",
+      "train_sha256": "972826e1af15a6babaff6e68e4c57d790c0c060a2befe050b4156c5f8ee05f66",
+      "draws": 400,
+      "distinct_native_traces": 376,
+      "distinct_structural_groups": 72,
+      "literal_per_theme": 3,
+      "theme_exposure_range": [
+        33,
+        34
+      ],
+      "final_parsed": false
+    },
+    "fixed_gallery_requests": 60,
+    "actual_new_model_responses": 0,
+    "actual_new_native_images": 0,
+    "exact_head_ci": "43414042136 at cf9fd267: 2 passing jobs, overall failure Training timing-suspect Stop descendant test 16/17",
+    "frozen_adapter_untouched": true,
+    "training_lease": "private; unavailable for integration inspection",
+    "upstream_565": "fd1d66b18ac80f564f7078b8a0a902297895672f, staged validation only; actual publication skipped"
   }
 }
