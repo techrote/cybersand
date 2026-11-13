@@ -36,6 +36,8 @@ jobs:
           python -m unittest discover -s experiments/wb-art-slm-001/controls -p 'test_audit_v11_native_pairs.py' -v
       - name: Install only the pinned file-lock guard dependency (no model stack)
         run: python -m pip install --disable-pip-version-check --no-deps filelock==4.2.4
+      - name: Linux/macOS telemetry semantics for v5 training completion (no model)
+        run: python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_peak_rss.py' -v
       - name: Train-only curriculum guards and guarded subprocess lease (no weights or training)
         run: |
           python -m unittest discover -s experiments/wb-art-slm-001/integration -p 'test_gallery60_infer.py' -v
@@ -113,7 +115,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Windows v5 trainer completed-job RSS regression (no model)
-        run: python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_peak_rss.py' -v
+        run: python experiments/wb-art-slm-001/training/test_peak_rss.py PeakRssTests.test_windows_has_null_peak_without_importing_resource -v
       - name: Windows bridge process-tree and fail-closed Job Object controls
         run: python -m unittest discover -s experiments/wb-art-slm-001/integration -p 'test_windows_job.py' -v
       - name: Windows loopback transport, Stop and receipt rejection (no model)
