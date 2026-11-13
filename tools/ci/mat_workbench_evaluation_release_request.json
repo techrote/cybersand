@@ -1,0 +1,28 @@
+{
+  "schema": "cybersand-mat-workbench-evaluation-release-v1",
+  "repository": "techrote/cybersand",
+  "accepted_main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
+  "workbench_head": "6319ab1d94d85d01c9cdb44d973a92d224bfa9aa",
+  "capability_transition": "b432d52d0d9acaa22f93eeb8d1fad48c64b4c087",
+  "source_commit": null,
+  "source_tree": null,
+  "publisher_run_id": null,
+  "publisher_attempt": null,
+  "request_sequence": null,
+  "windows_native_sha256": null,
+  "linux_native_sha256": null,
+  "publication_commit": null,
+  "evaluation_artifact_id": null,
+  "artifact_outer_sha256": null,
+  "archive_sha256": null,
+  "archive_name": null,
+  "acceptance_sha256": null,
+  "gate_runs": {
+    "documentation.yml": {"run_id": null, "attempt": null},
+    "native.yml": {"run_id": null, "attempt": null},
+    "gdextension.yml": {"run_id": null, "attempt": null},
+    "palette-shader-qualification.yml": {"run_id": null, "attempt": null}
+  },
+  "tag": null,
+  "release_name": "CyberSand Materials Lab + Workbench evaluation — 2026-11-13"
+}

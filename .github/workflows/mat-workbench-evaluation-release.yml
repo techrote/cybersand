@@ -1,0 +1,54 @@
+name: Publish qualified MAT-AUTH + Workbench evaluation prerelease
+
+# This separate temporary branch never changes the qualified integration head.
+# Every source/run/asset pin must be filled from completed independent evidence.
+on:
+  push:
+    branches: [codex/mat-workbench-evaluation-release-20261113]
+    paths:
+      - '.github/workflows/mat-workbench-evaluation-release.yml'
+      - 'tools/ci/mat_workbench_evaluation_release.py'
+      - 'tools/ci/mat_workbench_evaluation_release_request.json'
+      - 'docs/releases/mat-workbench-evaluation-20261113.md'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: mat-workbench-evaluation-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Publish the verified original Windows evaluation
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/codex/mat-workbench-evaluation-release-20261113'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - name: Check out exact release apparatus and complete source ancestry
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Check hosted provider policy
+        run: python3 tools/ci/check_ci_provider_policy.py
+      - name: Verify source, completed gates and original package before publishing
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PYTHONUTF8: '1'
+          CYBERSAND_CI_WATCHDOG_SCALE: '1'
+        run: python3 tools/ci/mat_workbench_evaluation_release.py --publish
+      - name: Retain original publication admission and remote asset readback
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mat-workbench-evaluation-release-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/mat-workbench-evaluation-release/
+          if-no-files-found: error
+          retention-days: 90
