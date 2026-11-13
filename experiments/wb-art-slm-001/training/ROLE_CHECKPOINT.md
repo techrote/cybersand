@@ -355,7 +355,7 @@ owner-branch, NeuroRunner, runtime or schedule changes were made.
 3. After training child exit, all model/data/source/resume inputs are independently
    fingerprinted again. A clean-exit checkpoint from mutated input is retained
    for audit but marked `failed`, never accepted as a reproducible candidate.
-4. A missing, invalid, or nonterminal durable role lease blocks a new job even
+4. An existing unreadable, invalid, or nonterminal durable role lease blocks a new job even
    if the kernel file lock is released. This prevents a supervisor crash from
    silently authorizing a second worker while the first child survives. The
    same lease is shared with heavy evaluation; manual orphan reconciliation is
