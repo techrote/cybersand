@@ -214,19 +214,20 @@ and summary SHA-256 hashes and explicit `native_execution=false` and
 `visual_acceptance=false`. Failed and partial attempts remain in the
 duplicate-attempt ledger rather than being retried at each hourly check.
 
-**Observed guard qualification:** ten mocked-worker offline tests passed on
-Linux Python 3.13.5; they exercised real subprocesses, lease handshake,
-existing-file-lock refusal, duplicate-attempt refusal, modified-model
-refusal, deterministic fingerprints, graceful SIGTERM saved inventory,
-and force-kill when SIGTERM was ignored. No actual LoRA training, GPU,
-official-model restore, native World or Windows verification was performed.
-The pre-existing training-only guard passed ten offline model-free Linux
-subprocess tests. The added evaluation guard has nine dedicated synthetic
-regressions (completion, denial, corrupted outputs, cross-role lock, duplicate
-attempt, custody mutation and timeout); execution on the published combined
-source is pending the next offline test gate. Run
-`python -m unittest -v test_job_guard.py test_evaluation_guard.py` locally
-before using either supervisor.
+**Qualification:** The preceding training-only supervisor passed **10/10**
+offline Linux/Python 3.13.5 subprocess tests, including real lease handshakes,
+cross-process locking, duplicate refusal and soft/hard deadlines. The new
+evaluation guard adds **10 dedicated synthetic test methods** for complete
+receipts, raw/summary mismatch, partial evidence, changed adapter bytes,
+post-run custody drift, cross-role lock, duplicate attempts, unleased CLI
+refusal and deadline termination. Seven isolated helper checks were
+successfully run on a locally recreated helper (not the complete published
+supervisor); the combined 20-test exact-source subprocess suite still requires
+execution. Run
+`python -m unittest -v test_job_guard.py test_evaluation_guard.py` from this
+directory before authorizing real training or evaluation. No LoRA optimizer,
+real base-model evaluation, GPU, native World, Windows or human visual pass is
+claimed from these mock tests.
 Real Windows process-group stopping and large-model checkpoint-save timing
 remain unqualified.
 
