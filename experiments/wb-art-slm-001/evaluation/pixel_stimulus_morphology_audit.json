@@ -1,0 +1,312 @@
+{
+  "scope": "frozen LFM step-400 model-output native material-display PNGs; exploratory, blind, Linux pilot only",
+  "html_sha256": "5f554c67c928d6f940126d07c529df89694a42d6cdeb7a65c7b9c4413f354877",
+  "labels_opened": false,
+  "cards": 34,
+  "displayed_native_images": 68,
+  "host_seeds": [
+    17,
+    73
+  ],
+  "density_fraction": {
+    "min": 0.012695,
+    "median": 0.11556,
+    "max": 0.365017
+  },
+  "within_request_seed_jaccard": {
+    "min": 0.044733,
+    "median": 0.320558,
+    "mean": 0.384754,
+    "max": 0.854305,
+    "below_0_2": 14,
+    "at_least_0_8": 4
+  },
+  "exploratory_near_duplicate_rule": "Aligned-seed foreground-cell Jaccard >=0.85 for BOTH seeds",
+  "cross_request_near_pairs": [
+    {
+      "cards": [
+        "q003",
+        "q032"
+      ],
+      "seed_17_jaccard": 0.879377,
+      "seed_73_jaccard": 0.96747,
+      "exact_png_pair": false
+    },
+    {
+      "cards": [
+        "q004",
+        "q007"
+      ],
+      "seed_17_jaccard": 1.0,
+      "seed_73_jaccard": 1.0,
+      "exact_png_pair": true
+    },
+    {
+      "cards": [
+        "q020",
+        "q029"
+      ],
+      "seed_17_jaccard": 0.995165,
+      "seed_73_jaccard": 0.990787,
+      "exact_png_pair": false
+    }
+  ],
+  "near_duplicate_clusters": [
+    [
+      "q003",
+      "q032"
+    ],
+    [
+      "q004",
+      "q007"
+    ],
+    [
+      "q020",
+      "q029"
+    ]
+  ],
+  "distinct_near_stimulus_clusters": 31,
+  "original_request_count_unchanged": 36,
+  "native_admitted_request_count_unchanged": 34,
+  "interpretation": "Pixel morphology similarity is not blind human theme recognition, aesthetics, model semantic correctness or distinct structural templates",
+  "per_card_blind_metrics": [
+    {
+      "id": "q001",
+      "seed_17_cells": 2274,
+      "seed_73_cells": 2246,
+      "seed_pair_jaccard": 0.818913,
+      "seed_pair_changed_cell_fraction": 0.048828
+    },
+    {
+      "id": "q002",
+      "seed_17_cells": 902,
+      "seed_73_cells": 899,
+      "seed_pair_jaccard": 0.575678,
+      "seed_pair_changed_cell_fraction": 0.052626
+    },
+    {
+      "id": "q003",
+      "seed_17_cells": 678,
+      "seed_73_cells": 803,
+      "seed_pair_jaccard": 0.284475,
+      "seed_pair_changed_cell_fraction": 0.089518
+    },
+    {
+      "id": "q004",
+      "seed_17_cells": 2875,
+      "seed_73_cells": 2824,
+      "seed_pair_jaccard": 0.721232,
+      "seed_pair_changed_cell_fraction": 0.100152
+    },
+    {
+      "id": "q005",
+      "seed_17_cells": 1675,
+      "seed_73_cells": 1704,
+      "seed_pair_jaccard": 0.102447,
+      "seed_pair_changed_cell_fraction": 0.298503
+    },
+    {
+      "id": "q006",
+      "seed_17_cells": 1080,
+      "seed_73_cells": 1013,
+      "seed_pair_jaccard": 0.495,
+      "seed_pair_changed_cell_fraction": 0.076714
+    },
+    {
+      "id": "q007",
+      "seed_17_cells": 2875,
+      "seed_73_cells": 2824,
+      "seed_pair_jaccard": 0.721232,
+      "seed_pair_changed_cell_fraction": 0.100152
+    },
+    {
+      "id": "q008",
+      "seed_17_cells": 2321,
+      "seed_73_cells": 2454,
+      "seed_pair_jaccard": 0.845054,
+      "seed_pair_changed_cell_fraction": 0.043511
+    },
+    {
+      "id": "q009",
+      "seed_17_cells": 1013,
+      "seed_73_cells": 999,
+      "seed_pair_jaccard": 0.077665,
+      "seed_pair_changed_cell_fraction": 0.186849
+    },
+    {
+      "id": "q010",
+      "seed_17_cells": 383,
+      "seed_73_cells": 326,
+      "seed_pair_jaccard": 0.090769,
+      "seed_pair_changed_cell_fraction": 0.064128
+    },
+    {
+      "id": "q011",
+      "seed_17_cells": 1670,
+      "seed_73_cells": 1696,
+      "seed_pair_jaccard": 0.11753,
+      "seed_pair_changed_cell_fraction": 0.288411
+    },
+    {
+      "id": "q012",
+      "seed_17_cells": 1085,
+      "seed_73_cells": 822,
+      "seed_pair_jaccard": 0.092837,
+      "seed_pair_changed_cell_fraction": 0.171766
+    },
+    {
+      "id": "q013",
+      "seed_17_cells": 1453,
+      "seed_73_cells": 1467,
+      "seed_pair_jaccard": 0.591281,
+      "seed_pair_changed_cell_fraction": 0.08138
+    },
+    {
+      "id": "q014",
+      "seed_17_cells": 3175,
+      "seed_73_cells": 3364,
+      "seed_pair_jaccard": 0.762059,
+      "seed_pair_changed_cell_fraction": 0.095812
+    },
+    {
+      "id": "q015",
+      "seed_17_cells": 654,
+      "seed_73_cells": 506,
+      "seed_pair_jaccard": 0.08209,
+      "seed_pair_changed_cell_fraction": 0.106771
+    },
+    {
+      "id": "q016",
+      "seed_17_cells": 161,
+      "seed_73_cells": 117,
+      "seed_pair_jaccard": 0.134694,
+      "seed_pair_changed_cell_fraction": 0.023003
+    },
+    {
+      "id": "q017",
+      "seed_17_cells": 1042,
+      "seed_73_cells": 1040,
+      "seed_pair_jaccard": 0.335471,
+      "seed_pair_changed_cell_fraction": 0.112413
+    },
+    {
+      "id": "q018",
+      "seed_17_cells": 1219,
+      "seed_73_cells": 1052,
+      "seed_pair_jaccard": 0.113781,
+      "seed_pair_changed_cell_fraction": 0.196072
+    },
+    {
+      "id": "q019",
+      "seed_17_cells": 1168,
+      "seed_73_cells": 1081,
+      "seed_pair_jaccard": 0.446302,
+      "seed_pair_changed_cell_fraction": 0.093424
+    },
+    {
+      "id": "q020",
+      "seed_17_cells": 1241,
+      "seed_73_cells": 1194,
+      "seed_pair_jaccard": 0.65985,
+      "seed_pair_changed_cell_fraction": 0.054145
+    },
+    {
+      "id": "q021",
+      "seed_17_cells": 629,
+      "seed_73_cells": 725,
+      "seed_pair_jaccard": 0.669544,
+      "seed_pair_changed_cell_fraction": 0.02908
+    },
+    {
+      "id": "q022",
+      "seed_17_cells": 500,
+      "seed_73_cells": 458,
+      "seed_pair_jaccard": 0.057395,
+      "seed_pair_changed_cell_fraction": 0.092665
+    },
+    {
+      "id": "q023",
+      "seed_17_cells": 639,
+      "seed_73_cells": 455,
+      "seed_pair_jaccard": 0.090728,
+      "seed_pair_changed_cell_fraction": 0.098958
+    },
+    {
+      "id": "q024",
+      "seed_17_cells": 2723,
+      "seed_73_cells": 2691,
+      "seed_pair_jaccard": 0.848412,
+      "seed_pair_changed_cell_fraction": 0.048177
+    },
+    {
+      "id": "q025",
+      "seed_17_cells": 433,
+      "seed_73_cells": 364,
+      "seed_pair_jaccard": 0.091781,
+      "seed_pair_changed_cell_fraction": 0.07194
+    },
+    {
+      "id": "q026",
+      "seed_17_cells": 459,
+      "seed_73_cells": 265,
+      "seed_pair_jaccard": 0.044733,
+      "seed_pair_changed_cell_fraction": 0.071832
+    },
+    {
+      "id": "q027",
+      "seed_17_cells": 1260,
+      "seed_73_cells": 1005,
+      "seed_pair_jaccard": 0.109207,
+      "seed_pair_changed_cell_fraction": 0.197374
+    },
+    {
+      "id": "q028",
+      "seed_17_cells": 1132,
+      "seed_73_cells": 1078,
+      "seed_pair_jaccard": 0.306147,
+      "seed_pair_changed_cell_fraction": 0.127387
+    },
+    {
+      "id": "q029",
+      "seed_17_cells": 1235,
+      "seed_73_cells": 1183,
+      "seed_pair_jaccard": 0.662999,
+      "seed_pair_changed_cell_fraction": 0.053168
+    },
+    {
+      "id": "q030",
+      "seed_17_cells": 995,
+      "seed_73_cells": 946,
+      "seed_pair_jaccard": 0.533175,
+      "seed_pair_changed_cell_fraction": 0.064128
+    },
+    {
+      "id": "q031",
+      "seed_17_cells": 449,
+      "seed_73_cells": 434,
+      "seed_pair_jaccard": 0.10375,
+      "seed_pair_changed_cell_fraction": 0.077799
+    },
+    {
+      "id": "q032",
+      "seed_17_cells": 771,
+      "seed_73_cells": 830,
+      "seed_pair_jaccard": 0.317695,
+      "seed_pair_changed_cell_fraction": 0.089952
+    },
+    {
+      "id": "q033",
+      "seed_17_cells": 1532,
+      "seed_73_cells": 1316,
+      "seed_pair_jaccard": 0.32342,
+      "seed_pair_changed_cell_fraction": 0.157986
+    },
+    {
+      "id": "q034",
+      "seed_17_cells": 2610,
+      "seed_73_cells": 2710,
+      "seed_pair_jaccard": 0.854305,
+      "seed_pair_changed_cell_fraction": 0.045356
+    }
+  ]
+}
