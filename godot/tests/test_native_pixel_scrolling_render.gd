@@ -9,6 +9,7 @@ const Context = preload("res://tests/palette_qualification_context.gd")
 const WORLD := Vector2i(512,256)
 const VIEW := Vector2i(32,24)
 const COLOUR_TOLERANCE: float = 1.0/255.0 + 0.000001
+const FIXTURE_WATER_MODE: float = 0.0
 
 class PaintFillFixture extends "res://scripts/workbench_paint_editor_overlay.gd":
 	var fixture_camera := Vector2.ZERO
@@ -76,6 +77,7 @@ func create_fixture() -> void:
 	material.set_shader_parameter("view_rect_uv",Vector4(0,0,1,1))
 	material.set_shader_parameter("player_origin_px",Vector2(-1000,-1000))
 	material.set_shader_parameter("condition_projection_enabled",1.0)
+	material.set_shader_parameter("water_presentation_mode",FIXTURE_WATER_MODE)
 	material.set_shader_parameter("snapshot_blend",1.0)
 	material.set_shader_parameter("presentation_time_override",3.0)
 	material.set_shader_parameter("structured_detail",0.0)
@@ -339,7 +341,6 @@ func partial_water_native_mapping_case() -> void:
 	water.set_pixelv(target+Vector2i.RIGHT,Color(3.0/255.0,1,0,1))
 	var empty_texture := ImageTexture.create_from_image(empty)
 	var water_texture := ImageTexture.create_from_image(water)
-	var original_mode: float = material.get_shader_parameter("water_presentation_mode")
 	for zoom: float in [4.0,2.5]:
 		var output := Vector2i(Vector2(VIEW)*zoom)
 		var origin := Vector2(60,60)
@@ -363,7 +364,9 @@ func partial_water_native_mapping_case() -> void:
 			save_capture(first,capture_label+"-before")
 			save_capture(next,capture_label+"-after")
 	bind_fixture_texture(world_texture)
-	material.set_shader_parameter("water_presentation_mode",original_mode)
+	# Restore the explicitly registered fixture input; an unset shader default
+	# is not a material override and get_shader_parameter() can return null.
+	material.set_shader_parameter("water_presentation_mode",FIXTURE_WATER_MODE)
 
 
 func compare_paint_fill_oracle(image: Image, world_zero: Vector2, region: Rect2i, label: String) -> void:
@@ -580,7 +583,9 @@ func run() -> void:
 	await letterbox_case()
 	await realistic_fractional_zoom_case()
 	await partial_water_native_mapping_case()
+	check(water_measurements.size() == 4,"all four native-mapped partial Water cases completed")
 	await paint_fill_fractional_boundary_case()
+	check(overlay_measurements.size() == 2,"both fractional-boundary PAINT fill cases completed")
 	await legacy_control_and_diagnostic()
 	await comparative_pacing()
 	var result := {"schema":"native-pixel-scrolling-render-v1","checks":checks,"failures":failures,

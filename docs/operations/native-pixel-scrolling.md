@@ -50,9 +50,11 @@ Workbench artifact is not a qualified camera package.
    glow/vapour edges moving separately from their materials.
 4. Place the pointer over a distinctive interior cell and wheel in and out
    repeatedly. The continuous world anchor should return without accumulating
-   drift. Display rounding can move the visible anchor by up to one physical
-   pixel between zoom levels. World-edge clamping can deliberately move it
-   farther when the requested view would leave the map.
+   drift. Display rounding can shift the point previously under the pointer
+   by up to 1.5 physical pixels per axis for a 2x zoom-in. The continuous
+   anchor itself is preserved; zooming in and back out returns to the same
+   camera position within floating-point precision. World-edge clamping can
+   deliberately move the anchor farther when the view would leave the map.
 5. With the camera left between whole-cell positions, paint and erase a single
    cell; draw a line and rectangle; fill a bounded area; Select, Copy and Paste
    mixed materials; then Undo and Redo. Each operation and preview must target

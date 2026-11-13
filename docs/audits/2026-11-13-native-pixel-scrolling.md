@@ -11,9 +11,9 @@ related-documents: [../operations/native-pixel-scrolling.md, ../systems/material
 # Native-resolution pixel scrolling — 13 November 2026
 
 **Draft / HOLD; [PR #566](https://github.com/techrote/cybersand/pull/566).**
-The first hosted campaign exposed fractional-zoom and fitted-edge defects;
-the second confirms the pan repairs and identifies an inaccurate fitted-area
-test input. The corrected physical sample map is undergoing qualification. There
+The corrected physical sample map now has actual GL/ANGLE pan, letterbox,
+PAINT and legacy material-preservation evidence. Two additional fixture
+defects from the third campaign are corrected for the next run. There
 is no qualified Windows delivery or owner acceptance at this checkpoint.
 
 ## Source and integration identity
@@ -26,7 +26,8 @@ is no qualified Windows delivery or owner acceptance at this checkpoint.
 | Accepted main inspected | `e0fb05b8e0500641f0f25c62c5fb7e721da02d6a`; merge of #562 |
 | Initial implementation identity | `a1a896bb45753c820e1d6109df57de4e65be33af`, tree `f8aad8b10cd39d3cf65a7dd0fb8e1349217b08b0` |
 | Physical sample shader source | `1755b2195e4d38c6030ae287ac2eb8e070da62ef`, tree `90373b770b5bb112a38b3322e5de6f5e70b85545` |
-| Current implementation identity | The commit containing this checkpoint adds exact physical picking bounds, Tower label alignment and authoritative fitted-area/PAINT/Water graphical checks |
+| Production camera source | `7758c34fa4dcc48462d934761f2a84938907ff81`, tree `38e981252433670a14a2ec935556c7ea9f0ce77b`; physical picking bounds and Tower label alignment |
+| Current implementation identity | This checkpoint changes only test fixtures and documentation; production camera/shader bytes remain identical to the recorded sources |
 | Main/#564 compatibility | Initial camera + main + latest #564 merges without production conflicts; headless successes and Materials Lab shader-guard refusal are recorded below |
 
 The source tree is isolated from both upstream branches and preserves #564's
@@ -77,8 +78,10 @@ The camera state remains floating point. Only the final screen translation is
 rounded, including the content offset and CanvasItem screen transform. The
 rounded presentation is not written back into camera state. Zoom solves the
 continuous world anchor before and after the change, avoiding cumulative drift;
-the two displayed positions can differ by at most one physical pixel per axis
-from their rounding phases away from clamped world bounds.
+that continuous anchor's displayed positions can differ by at most one
+physical pixel per axis away from clamped world bounds. The world point
+previously under the pointer can move by at most
+`0.5 * (1 + new_scale / old_scale)` new pixels, or 1.5 per axis for a 2x zoom-in.
 
 Picking and fragments subtract the same exact world-zero screen translation
 from the physical pixel centre, then multiply the same precomputed reciprocal
@@ -128,9 +131,10 @@ or access control was changed. This failure is not a graphical test pass.
 | Gate | Initial checkpoint disposition |
 | --- | --- |
 | Source diagnosis and focused implementation review | Recorded above; independent resulting-diff review still required |
-| Headless coordinate and actual native editing fixture | Current local source: 1,373 checks, 0 failures, including physical sample ties, follow, stationary hover and actual fractional-scale Main/PAINT edge picking |
-| Actual framebuffer slow-pan/zoom/resize and old-path negative control | Second Linux source: 107 checks, 2 fitted-area fixture failures; all pan cases pass, including realistic 2.5x. Corrected full campaign pending |
-| Actual production glow/vapour alignment and guard coverage | Hosted graphical execution pending |
+| Headless coordinate and actual native editing fixture | Third hosted source on both platforms: 1,373 checks, 0 failures, including physical sample ties, follow, stationary hover and fractional-scale Main/PAINT edge picking |
+| Actual framebuffer slow-pan/zoom/resize and old-path negative control | Third source: 114 completed checks without failed assertions on both backends, but correctly rejected for an aborted additional Water case; repaired complete fixture pending |
+| Actual production glow/vapour alignment and guard coverage | Third source: 66/0 Linux, 66/3 Windows; actual translations exact, but weak axial negative-control signal requires a stronger fixture on both backends |
+| Legacy material, Water, production vapour and crossfade preservation | Third source: all four cases positively pass on actual GL and ANGLE, including 26 vapour and 1,274 crossfade assertions per platform |
 | Source-built Linux and Windows campaigns | Initial pinned native builds passed; camera graphics failed and package stages were correctly skipped |
 | Copied-installation camera and integrated authoring campaigns | Pending |
 | Source-matched Windows package and checksum | Pending successful source/installed campaign |
@@ -217,6 +221,42 @@ The graphical fixture additionally renders the real PAINT fill geometry at a
 2.5x. The Water case verifies exact translated pixels and independent partial
 coverage, including eight covered samples out of sixteen at 4x. These new
 assertions are parsed locally; actual GL/ANGLE outcomes remain pending.
+
+## Third campaign: preservation evidence and fixture completion
+
+[Run 43347587610](https://github.com/techrote/cybersand/actions/runs/43347587610)
+executes `7758c34f`. Both pinned native builds succeeded. All 551 executed
+project-source hashes in each camera receipt match that source. Both platforms
+pass 1,373 coordinate checks. Pan, exact letterbox coverage, the realistic
+2.5x case and actual PAINT fill complete without assertion failures. The two
+PAINT masks each cover exactly 195 expected pixels with zero mismatches; the
+inverse-camera geometry's tiny half-pixel roundoff causes no raster defect on
+either tested backend, so no additional overlay refactor was made.
+
+The runner correctly rejects the framebuffer case despite its 114 completed
+checks because the additional Water function logs a script error: an unset
+shader override returns Nil, which cannot be assigned to its float variable.
+The repaired fixture explicitly sets/restores its typed baseline Water mode
+and requires all four Water and two PAINT records before completion. Its exact
+pixel, orientation and partial-coverage oracles are unchanged.
+
+The effects fixture records exact positive glow/vapour translations. However,
+its custom neutral glow is too faint for robust retained-frame detection:
+axial shifts differ by only 2/255, equal to the allowed translation tolerance.
+Windows therefore fails three negative controls; Linux's nominal passes sit
+on floating-point subtraction roundoff at that threshold. The repaired test
+raises only its custom emission intensity from 2 to 16, retaining the same
+positive and negative threshold. Each receipt now records the actual control
+error and fixture intensity. Canonical material data is restored before timing.
+The original failures remain retained; a complete rerun is required.
+
+All four independent legacy preservation cases pass on both actual backends:
+material presentation (including all 132 slots), partial Water, production
+vapour history (26 assertions), and bounded crossfade (1,274 assertions with
+the full material/condition/blend matrix). The early uploads retain these
+receipts even though the overall source camera gate fails and downstream
+packaging/authoring stages are correctly skipped. The shader source remains
+`b8e5542dae2c36fd6fbef0170a7b537bce5c853fc10920174cefe13dbec78d4f`.
 
 ## Isolated compatibility with accepted Materials Lab
 

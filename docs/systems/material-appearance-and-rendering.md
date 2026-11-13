@@ -81,8 +81,11 @@ Wheel zoom preserves a continuous world anchor under the cursor; toolbar zoom
 uses the content centre. The snapped display origin is never fed back into
 that calculation, so opposite zoom changes do not accumulate rounding drift.
 Away from clamped bounds, a single displayed origin differs by at most half a
-physical pixel per axis from the continuous translation; two zoom levels can
-therefore differ by at most one pixel from their rounding phases. No added
+physical pixel per axis from the continuous translation. The preserved
+continuous anchor's displayed positions can differ by at most one pixel.
+The world point previously displayed under the pointer has a bound of
+`0.5 * (1 + new_scale / old_scale)` pixels at the new scale, or 1.5 pixels
+per axis for a 2x zoom-in, matching the coordinate regression. No added
 camera easing or extra frame of input buffering is introduced by this path.
 
 ### Glow and vapour during fractional scrolling

@@ -7,6 +7,7 @@ const VIEW := Vector2i(48, 27)
 const OUTPUT := VIEW * 4
 const WORLD := Vector2i(128, 96)
 const TOLERANCE := 2.0 / 255.0
+const GLOW_FIXTURE_EMISSION_INTENSITY := 16.0
 
 class QuietMain extends "res://scripts/main.gd":
 	var freeze_glow_layout_for_timing := false
@@ -118,9 +119,13 @@ func _glow() -> void:
 	# A static, neutral emission row avoids animation or material appearance
 	# changing the independent translation oracle. The production emission and
 	# composite shaders remain unchanged and use the production viewport owner.
+	# Keep the test signal strong enough that retaining a frame differs by more
+	# than the unchanged 2/255 translation tolerance in each tested direction.
+	# Intensity 2 produced only 2/255 axial gradients on ANGLE: that negative
+	# control correctly failed and was not sufficient qualification evidence.
 	var program := Image.create_empty(4, 256, false, Image.FORMAT_RGBAH)
 	program.set_pixel(1, 58, Color(0, 1, 1, 1))
-	program.set_pixel(2, 58, Color(1, 1, 2, 2))
+	program.set_pixel(2, 58, Color(1, 1, GLOW_FIXTURE_EMISSION_INTENSITY, GLOW_FIXTURE_EMISSION_INTENSITY))
 	program.set_pixel(3, 58, Color(0.3, 0.6, 1.0, 0))
 	host.glow_source_shader.set_shader_parameter("material_program_lut",
 		ImageTexture.create_from_image(program))
@@ -142,10 +147,15 @@ func _glow() -> void:
 			_check(error <= TOLERANCE,
 				"glow moved by one display pixel %s step %d (error %.6f)" % [direction, step, error])
 			before = after
+		var negative_error := _shift_error(baseline, baseline, direction)
 		records.append({"kind":"glow", "direction":[direction.x, direction.y],
-			"steps":12, "maximum_pixel_error":maximum})
-		_check(_shift_error(baseline, baseline, direction) > TOLERANCE,
-			"glow negative control detects a retained/stepped frame " + str(direction))
+			"steps":12, "maximum_pixel_error":maximum,
+			"negative_control_pixel_error":negative_error,
+			"translation_tolerance":TOLERANCE,
+			"fixture_emission_intensity":GLOW_FIXTURE_EMISSION_INTENSITY})
+		_check(negative_error > TOLERANCE,
+			"glow negative control detects a retained/stepped frame %s (error %.6f; tolerance %.6f)"
+			% [direction, negative_error, TOLERANCE])
 		if direction == Vector2i.RIGHT:
 			_retain(baseline, "glow-before")
 			_retain(before, "glow-after-12-pixels")
