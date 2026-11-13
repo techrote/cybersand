@@ -36,6 +36,96 @@ def require(condition, reason):
         raise ValueError(reason)
 
 
+
+def replay_native_rows(native: Path, cases: dict, summary: dict) -> dict:
+    """Reconstruct real 512-square native Worlds from original receipt rows.
+
+    A success-shaped verifier JSON is not sufficient evidence of executed
+    native work. Readback must form a coherent zero-tick cell transition chain
+    and match the independently captured World and stored material crop.
+    """
+    receipts = {case_id: [] for case_id in cases}
+    captures = {case_id: [] for case_id in cases}
+    with (native / "native-receipts.jsonl").open(encoding="utf-8") as handle:
+        for line_no, line in enumerate(handle, 1):
+            require(bool(line.strip()), f"blank native receipt at line {line_no}")
+            try:
+                event = json.loads(line)
+            except json.JSONDecodeError as exc:
+                raise ValueError(f"invalid native JSONL at line {line_no}") from exc
+            require(isinstance(event, dict), "native receipt event must be an object")
+            cid = event.get("case")
+            if cid not in cases:
+                continue  # Unrelated mandatory Stop/protection invariant events.
+            require(("receipt" in event) != ("capture" in event),
+                    f"{cid}: ambiguous native event")
+            if "receipt" in event:
+                receipts[cid].append(event["receipt"])
+            else:
+                captures[cid].append(event["capture"])
+    chains = {}
+    for cid, expected in cases.items():
+        require(bool(receipts[cid]), f"{cid}: missing raw native draw receipt")
+        world = bytearray(512 * 512 * 4)
+        checked = changed = unchanged = 0
+        for index, receipt in enumerate(receipts[cid]):
+            require(isinstance(receipt, dict) and
+                    receipt.get("backend") == "CyberNativeCellWorld" and
+                    receipt.get("status") == "completed" and
+                    receipt.get("tick") == 0 and
+                    isinstance(receipt.get("before_source"), dict) and
+                    receipt["before_source"].get("tick") == 0,
+                    f"{cid}: invalid native backend, epoch or completion at receipt {index}")
+            rows = receipt.get("readback")
+            require(isinstance(rows, list) and bool(rows) and
+                    receipt.get("checked") == receipt.get("confirmed") == len(rows) and
+                    receipt.get("excluded") == receipt.get("refused") == 0,
+                    f"{cid}: missing, partial or excluded native readback")
+            delta = 0
+            for row in rows:
+                require(isinstance(row, list) and len(row) == 4 and
+                        all(type(n) is int for n in row),
+                        f"{cid}: malformed native cell row")
+                x, y, before, after = row
+                require(0 <= x < expected["width"] and
+                        0 <= y < expected["height"] and before in (0, 58) and
+                        after in (0, 58), f"{cid}: unauthorized native cell")
+                position = (y * 512 + x) * 4
+                require(struct.unpack_from("<i", world, position)[0] == before,
+                        f"{cid}: discontinuous native before-state")
+                struct.pack_into("<i", world, position, after)
+                delta += before != after
+            require(receipt.get("changed") == delta,
+                    f"{cid}: native changed count differs from rows")
+            checked += len(rows)
+            changed += delta
+            unchanged += len(rows) - delta
+        engine = summary[cid]
+        terminal = engine.get("terminal", {})
+        require(checked > 0 and changed > 0 and
+                terminal.get("checked") == checked and
+                terminal.get("changed") == changed and
+                terminal.get("unchanged") == unchanged,
+                f"{cid}: engine terminal counters differ from raw native receipts")
+        whole_sha = digest(world)
+        require(engine.get("whole_world_i32le_sha256") == whole_sha,
+                f"{cid}: complete native World hash differs from receipt chain")
+        require(bool(captures[cid]) and isinstance(captures[cid][0], dict) and
+                captures[cid][0].get("materials_i32le_sha256") == whole_sha,
+                f"{cid}: independent native World capture differs")
+        crop = b"".join(world[y * 512 * 4:(y * 512 + expected["width"]) * 4]
+                        for y in range(expected["height"]))
+        require(engine.get("raw_materials") == f"{cid}.materials.i32le" and
+                (native / engine["raw_materials"]).read_bytes() == crop,
+                f"{cid}: stored native crop disagrees with receipt chain")
+        require(crop.count(b"\x3a\x00\x00\x00") ==
+                engine.get("filled_cells"), f"{cid}: filled-cell count differs")
+        chains[cid] = {"native_receipts": len(receipts[cid]),
+                       "checked_cells": checked, "changed_cells": changed,
+                       "whole_world_sha256": whole_sha}
+    return chains
+
+
 def analyze(pairs_path: Path, native: Path, *, source_sha: str, native_sha: str):
     """Return per-case spatial metrics only after exact native receipt admission."""
     require(re.fullmatch(r"[0-9a-f]{40}", source_sha), "source SHA must be pinned")
@@ -86,6 +176,7 @@ def analyze(pairs_path: Path, native: Path, *, source_sha: str, native_sha: str)
     receipts = {c["id"]: c for c in verified.get("cases", [])}
     require(len(actual) == len(receipts) == 32 and set(actual) == set(receipts) == set(by_id),
             "engine/verifier/native case identifiers differ")
+    raw_chains = replay_native_rows(native, by_id, actual)
     metrics = {}
     for case_id, expected in by_id.items():
         require(re.fullmatch(r"c1[01]-coral-v[0-7]-s(?:17|73)", case_id) and len(case_id) <= 38,
@@ -131,7 +222,8 @@ def analyze(pairs_path: Path, native: Path, *, source_sha: str, native_sha: str)
                 "native filled-cell count disagrees")
         metrics[case_id] = {"top_middle_bottom_cells": thirds,
                             "filled_cells": filled, "top_fraction": round(thirds[0] / filled, 6),
-                            "readback_sha256": digest(values), "image_sha256": digest(image)}
+                            "readback_sha256": digest(values), "image_sha256": digest(image),
+                            "raw_native_chain": raw_chains[case_id]}
     comparisons = []
     for parent_id, alias in sorted(aliases.items()):
         match = re.fullmatch(r"reference-coral-v([0-7])-s(17|73)", parent_id)
@@ -163,7 +255,8 @@ def analyze(pairs_path: Path, native: Path, *, source_sha: str, native_sha: str)
             "cases": metrics, "comparisons": comparisons,
             "mean_v1_top_fraction": round(sum(c["v1_top_fraction"] for c in comparisons)/16, 6),
             "mean_v11_top_fraction": round(sum(c["v11_top_fraction"] for c in comparisons)/16, 6),
-            "native_cases": 32, "native_pairs": 16, "human_accepted": False, "windows_qualified": False}
+            "native_cases": 32, "native_pairs": 16, "raw_native_chains_replayed": 32,
+            "human_accepted": False, "windows_qualified": False}
 
 
 def main():
