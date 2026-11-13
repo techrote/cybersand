@@ -372,6 +372,13 @@ def main():
     with lock:
         if args.resume:
             verify_checkpoint(args.resume)
+            receipt = json.loads((Path(args.resume) / "receipt.json").read_text(encoding="utf-8"))
+            previous_curriculum = receipt["config"].get("curriculum", "shuffled-v1")
+            if args.curriculum != previous_curriculum:
+                raise ValueError(
+                    f"Resume curriculum mismatch before loading the model: "
+                    f"{previous_curriculum} != {args.curriculum}"
+                )
         write_json(output / "job.json", {"pid": os.getpid(), "started_at_unix": time.time(), "device": str(device), "state": "running"})
         train_rows, dev_rows = read_rows(args.train, "train"), read_rows(args.dev, "dev")
         admission = validate_admission(args.admission, {"train": args.train, "dev": args.dev}, {"train": train_rows, "dev": dev_rows}, args.compiler, args.corpus_manifest)
