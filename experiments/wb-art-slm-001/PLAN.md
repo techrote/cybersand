@@ -12,6 +12,8 @@ integration_branch: codex/wb-art-slm-001
 
 # CyberSand themed pattern controller
 
+**Fourth implementation intake (13 November 2026):** all 17 changed files from the four stable role branches are integrated with original file blobs. The independent Corpus v3 source-index, Training short-ID native export and Evaluation pixel-morphology suites passed 22 executed offline tests (one private-archive skip) in [workflow 43383988875](https://github.com/techrote/cybersand/actions/runs/43383988875), but the *overall* smoke workflow failed: Controls' new raw native-chain auditor correctly refused a tampered crop and its test expected a different error word. Exact current source is **not all-green**; the Controls owner must correct its own assertion and rerun. See [fourth intake checkpoint](integration/CHECKPOINT_2026-11-13-0712.md). Frozen model/native evidence and all production/current-source/Windows/human HOLD boundaries remain unchanged.
+
 **Implementation snapshot, 13 November 2026:** frozen Linux headless bootstrap and real step-400 LoRA are recorded in BOOTSTRAP_REPORT/ARTIFACTS. The shared Draft branch now also contains four updated role-owned checkpoints and a socket-cancellable, opt-in LM Studio content-JSON bridge; the two latest hosted exact-head workflows each passed 52 **model-free** Python test methods. See [Integration dependency board](integration/DEPENDENCIES.json) and [bridge runbook](integration/README.md). The source-compatible #565 Windows gate, authentic LoRA→Workbench native receipts, independent bridge review and blinded human theme recognition remain HOLD. Original curriculum/acceptance targets below remain unchanged; this checkpoint does not establish new model gains.
 
 ## Purpose and contents
