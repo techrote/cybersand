@@ -32,6 +32,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/evaluate
+          python3 experiments/agent_painter/lanes/lfm25_vl/test-evaluation
           python3 - <<'PY'
           import json
           import os
@@ -40,7 +41,7 @@ jobs:
           req = json.loads(Path("experiments/agent_painter/lanes/lfm25_vl/evaluation-request.json").read_text())
           expected = {
               "schema": "cybersand.agent-painter.lfm25-vl-development-eval/1",
-              "experiment": "lfm25-vl-pilot-001-development-001",
+              "experiment": "lfm25-vl-pilot-001-development-002",
               "pilot_run_id": "43521497210",
               "training_source_sha": "a8284c90050499cc1bf5c33dd0992741891c146b",
               "training_artifact": "agent-painter-lfm25-vl-pilot-a8284c90050499cc1bf5c33dd0992741891c146b",
@@ -135,7 +136,9 @@ jobs:
             --model "$RUNNER_TEMP/painter-model" --corpus evidence/native/corpus \
             --variant "$ARM" "${checkpoint[@]}" --output "evidence/evaluation/$ARM" \
             --manifest-sha256 2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc \
-            --max-new-tokens 384
+            --max-new-tokens 384 \
+            --expected-training-source-sha a8284c90050499cc1bf5c33dd0992741891c146b \
+            --expected-global-step 16
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
