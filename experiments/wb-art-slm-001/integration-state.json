@@ -1,6 +1,6 @@
 {
   "experiment": "WB-ART-SLM-001",
-  "status": "Eighth critical-path intake: v5 source-index and frozen gallery60 available; original archived TRAIN v5 data preflight PASS; corrected Training NameError but exact-head smoke RED on timing-suspect soft-stop test, 16/17 Training; new LoRA/gallery/native qualification HOLD",
+  "status": "Ninth checkpoint: exact unchanged Training v5 candidate sampler, manifest-fingerprinted trainer/lease, corrected Stop test and bounded Windows CPU launcher imported. Code-source CI at 835beaff GREEN (all 3 jobs); real new adapter/inference/native gallery still NOT RUN. Draft/HOLD.",
   "updated_on": "2026-11-13",
   "owner": "five role workers after bootstrap handoff",
   "branch": "codex/wb-art-slm-001",
@@ -49,7 +49,7 @@
     }
   },
   "production_promotion": "HOLD; one Draft #567, no Ready, merge, native/Windows promotion",
-  "next_checkpoint": "Training repairs timing-valid Stop descendant control, then actually trains v5 (lease/pinned base); Evaluation renders frozen 60-prompt baseline-vs-new native gallery; Integration later accepts source-compatible Workbench without merging unrelated PR.",
+  "next_checkpoint": "Training locally executes single authorized pinned LFM350 v5 400-step candidate and scores untouched 24 DEV/12 literal requests; Evaluation then renders same-prompt/same-seed frozen 60-request native gallery. Current-source #565/Windows and owner aesthetic acceptance remain separate.",
   "pull_request": "https://github.com/techrote/cybersand/pull/567",
   "model_native_cases_passed": 68,
   "combined_gallery_images": 260,
@@ -332,5 +332,28 @@
     "frozen_adapter_untouched": true,
     "training_lease": "private; unavailable for integration inspection",
     "upstream_565": "fd1d66b18ac80f564f7078b8a0a902297895672f, staged validation only; actual publication skipped"
+  },
+  "integration_ninth_2026_11_13_1134": {
+    "checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-1134.md",
+    "qualified_code_head": "835beaff60b4b475ffa055ba23fbff45179857e1",
+    "qualified_run": "https://github.com/techrote/cybersand/actions/runs/43417806400",
+    "result": "SUCCESS: offline-smoke, role-intake-independent and windows-process-tree jobs",
+    "training_source_head": "b57bdd3df91f3acd7c6159278ebc2434c4af9445",
+    "new_owned_files": 6,
+    "source_files": {
+      "training/curriculum.py": "ce75c47a158d7562a8bf1e486244eb94c90a459a",
+      "training/train_lora.py": "71007e4579897d96905fadd962ea4afab888755d",
+      "training/job_guard.py": "08be99549cd3f2e50dbeba325fcace91fb044447",
+      "training/test_curriculum.py": "94fc7a28c53ea8f3916c11ebeb596d6facd43cc5",
+      "training/test_job_guard.py": "636298df277b0292fc8fe19b6acde0ac37bb429e",
+      "training/run_v5_windows.ps1": "65da61aaaaa7329f551d9c891e207c6c137d21c3"
+    },
+    "actual_new_optimizer_runs": 0,
+    "actual_new_native_gallery_images": 0,
+    "raw_dev_and_word_gain": false,
+    "train_next": "Training owner: inspect private lease and run one v5 contrast 400-step adapter on authorized pinned local CPU, return raw DEV24/words12 evidence and adapter SHA",
+    "evaluation_next": "Evaluation owner: use pre-frozen 60 prompts + two seeds to create matched real native baseline/candidate gallery and blind assessment",
+    "integration_next": "Consume actual candidate/gallery, review Windows pre-attachment process escape and qualify source-compatible #565 native Workbench separately",
+    "production": "Draft/HOLD"
   }
 }
