@@ -107,3 +107,71 @@ large central void preservation, density direction, host budgets, material
 authority and malformed/unhashable/non-finite/huge numeric values. Those checks
 are compiler tests. Native replay, readback, Save/Undo/Stop and actual renders
 are separate qualification evidence produced by the experiment's native harness.
+
+## Opt-in coral spread candidate — compiler 1.1 (13 November 2026)
+
+`pattern_compiler_v11.py` is a **separately identified, non-default candidate**
+addressing an observed visual defect: v1 coral/fan colonies all originate from
+roughly the lowest 28% of the field, crowding the bottom and leaving the upper
+field empty. The candidate distributes fan-colony origins on an aspect-aware
+row/column grid across the admitted field. Narrow border regions use a
+proportionate grid while the original border clipping retains the empty center.
+All other motif generation, source permissions, seed/focus/material ownership,
+budget bounds and native authorization remain delegated to frozen v1.
+
+The wrapper first hashes its sibling `pattern_compiler.py` and refuses a
+different source than the **admitted v1 SHA-256**
+`a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb`.
+It loads that source in a **private module**, not the shared Python module, and
+only replaces the `fan` generator. It retains v1 seeded substreams for every
+motif; non-fan geometry is required to be exactly identical. Compiler reports
+carry `wb-art-slm-001/1.1.0-coral-spread` plus the parent source hash.
+
+From repository root:
+
+```sh
+python3 experiments/wb-art-slm-001/controls/pattern_compiler_v11.py \
+  --theme coral --variant 0 --width 96 --height 96 --seed 17 --report
+python3 -m unittest discover -s experiments/wb-art-slm-001/controls \
+  -p 'test_pattern_compiler*.py' -v
+```
+
+**Qualification status: candidate only.** The six added regression methods
+check the frozen source, non-fan parity, upper/lower origin coverage, 80
+variant/size/seed combinations, local bounds and budgets, border holes, exact
+split reflection and repeatability across processes. Local syntax compilation
+passed, and an isolated fan-algorithm smoke on a 96×96 region produced source
+stem Y positions 18, 22, 50, 54 and 85; this is **not** full compiler or
+native execution. The full regressions require the exact v1 source checkout,
+and actual current-source native before/after replay, readback, Undo/Redo and
+save/reopen remain pending. No new native receipt or human acceptance is claimed.
+
+The step-400 LFM adapter and Integration's opt-in content-JSON bridge pin the
+**original** compiler file digest. They must continue using v1 until an
+explicitly versioned adapter/receipt contract and new qualified native
+gallery admit v1.1. Do not change an admitted corpus geometry hash, silently
+repoint the provider alias, rewrite old native evidence or treat a Python
+geometry metric as an artistic recognition score. Pair v1 and v1.1 in fresh
+identically seeded native Worlds, with case IDs at most 38 characters (for
+example `c10-coral-s17` / `c11-coral-s17`), and retain original-prediction
+aliases if matching any model examples.
+
+### Matched native replay handoff
+
+A bounded fixture builder is included so Evaluation can compare the same
+**eight coral structural templates at two identical seeds** under v1 and v1.1
+without guessing saved-start names. It produces **32 uniquely named cases
+and 16 reference-ID alias pairs**:
+
+```sh
+python3 experiments/wb-art-slm-001/controls/make_v11_native_pairs.py \
+  --out /private/new-coral-pairs.json
+```
+
+The file embeds each exact program hash and canonical operation hash, refuses an
+existing output path and records short IDs satisfying the frozen native harness'
+38-character requirement. It is **not a native receipt**; pass it to the
+existing pinned replay harness, verify all global gates, compare native material
+readbacks and inspect both image sets before acceptance. The pairing is for
+deterministic *reference* programs, not new model predictions. For model
+predictions, separately preserve the original raw completion-to-ID alias map.
