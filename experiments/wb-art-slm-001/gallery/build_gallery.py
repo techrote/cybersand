@@ -28,7 +28,7 @@ select,button{background:#18232d;color:#ece7d3;border:1px solid #52616c;border-r
 figure{margin:0;border:1px solid #32404a;background:#111c25;overflow:hidden}figure a{display:block;background:#0d161c}
 img{display:block;width:100%;height:auto;aspect-ratio:1;image-rendering:pixelated}figcaption{padding:13px}
 .name{display:flex;justify-content:space-between;gap:10px;font-weight:650}.badge{font:10px ui-monospace,monospace;color:#79d6b8;text-transform:uppercase;align-self:center}
-.detail{font:12px/1.6 ui-monospace,monospace;color:#9db1be;margin:8px 0}.prompt{font-size:13px;color:#d6d5c9;min-height:38px}
+.detail{font:12px/1.6 ui-monospace,monospace;color:#9db1be;margin:8px 0}.prompt{font-size:13px;color:#d6d5c9;min-height:38px}.issue{font-size:12px;color:#ffc58d;border-left:2px solid #d68f51;padding-left:7px;margin:8px 0}
 details{font-size:12px;color:#aebdc7}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.4 ui-monospace,monospace}
 a{color:#84d4bc}footer{font-size:13px;border-top:1px solid #374048;margin-top:30px;color:#9fb2bf}
 :focus-visible{outline:3px solid #8aebc3;outline-offset:3px}
@@ -50,7 +50,7 @@ for(const field of fields){const el=document.getElementById(field);const values=
 document.getElementById('reset').onclick=()=>{for(const f of fields)document.getElementById(f).value='';render();};
 function add(parent,tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;parent.appendChild(e);return e;}
 function render(){const rows=atlas.items.filter(r=>fields.every(f=>!document.getElementById(f).value||String(r[f])===document.getElementById(f).value));const grid=document.getElementById('grid');grid.replaceChildren();document.getElementById('count').textContent=`${rows.length} of ${atlas.items.length} native images · ${atlas.runtime.source_commit.slice(0,12)} · Godot ${atlas.runtime.godot_version}`;
-for(const r of rows){const f=add(grid,'figure');const a=add(f,'a');a.href=r.png;const img=add(a,'img');img.src=r.png;img.width=r.width;img.height=r.height;img.loading='lazy';img.alt=`${r.kind}: requested ${r.theme}, ${r.layout}, seed ${r.seed}`;const cap=add(f,'figcaption');const name=add(cap,'div',undefined,'name');add(name,'span',(r.model?'Requested ':'')+r.theme);add(name,'span',r.kind,'badge');add(cap,'div',`${r.layout} · seed ${r.seed}\n${r.operation_count} shapes · ${r.filled_cells} cells`,'detail');if(r.predicted_theme!==r.theme)add(cap,'div',`Model theme field: ${r.predicted_theme}`,'detail');add(cap,'div',r.prompt||r.id,'prompt');const details=add(cap,'details');add(details,'summary','Program and provenance');add(details,'pre',JSON.stringify({id:r.id,program:r.program,image_sha256:r.image_sha256,readback_sha256:r.readback_sha256,receipt:r.receipt},null,2));}}
+for(const r of rows){const f=add(grid,'figure');const a=add(f,'a');a.href=r.png;const img=add(a,'img');img.src=r.png;img.width=r.width;img.height=r.height;img.loading='lazy';img.alt=`${r.kind}: requested ${r.theme}, ${r.layout}, seed ${r.seed}`;const cap=add(f,'figcaption');const name=add(cap,'div',undefined,'name');add(name,'span',(r.model?'Requested ':'')+r.theme);add(name,'span',r.kind,'badge');add(cap,'div',`${r.layout} · seed ${r.seed}\n${r.operation_count} shapes · ${r.filled_cells} cells`,'detail');if(r.predicted_theme!==r.theme)add(cap,'div',`Theme-label mismatch: ${r.predicted_theme}`,'issue');if(r.assessment?.primary_motif_correct===false)add(cap,'div','Primary motif differs from the requested family','issue');else if(r.assessment?.motif_layout_exact===false)add(cap,'div','Layout or companion motif differs from the request','issue');add(cap,'div',r.prompt||r.id,'prompt');const details=add(cap,'details');add(details,'summary','Program and provenance');add(details,'pre',JSON.stringify({id:r.id,prediction_id:r.prediction_id,program:r.program,assessment:r.assessment,image_sha256:r.image_sha256,readback_sha256:r.readback_sha256,receipt:r.receipt},null,2));}}
 render();
 </script></body></html>'''
 
@@ -67,6 +67,12 @@ def build(config_path: Path, output: Path) -> dict:
         document = json.loads(Path(batch["cases"]).read_text())
         cases = {c["id"]: c for c in document["cases"]}
         receipt_document = json.loads(Path(batch["receipts"]).read_text())
+        scores = {}
+        for assessment_path in batch.get("assessments", []):
+            for record in json.loads(Path(assessment_path).read_text())["records"]:
+                if record["id"] in scores:
+                    raise ValueError("duplicate assessment ID")
+                scores[record["id"]] = record
         if receipt_document.get("passed") is not True:
             raise ValueError("failed native batch cannot become a qualified gallery")
         if runtime and runtime != receipt_document["runtime"]:
@@ -92,8 +98,16 @@ def build(config_path: Path, output: Path) -> dict:
                 raise ValueError("unsafe gallery ID")
             filename = key + ".png"
             shutil.copyfile(path, images / filename)
+            assessment = scores.get(case.get("prediction_id"))
+            if batch.get("model") and assessment is None:
+                raise ValueError("model gallery needs the original prediction assessment")
+            if assessment is not None and json.loads(assessment["completion"]) != case["program"]:
+                raise ValueError("model assessment differs from native program")
+            assessment_fields = ("first_pass_accepted", "theme_field_correct", "primary_motif_correct", "motif_layout_exact", "exact_target")
             items.append({"id": case["id"], "theme": case["theme"],
                           "predicted_theme": case["program"]["theme"],
+                          "prediction_id": case.get("prediction_id"),
+                          "assessment": {k: assessment.get(k) for k in assessment_fields} if assessment else None,
                           "kind": batch["kind"], "model": batch.get("model"),
                           "layout": case["program"]["layers"][0]["layout"],
                           "seed": case["seed"], "width": case["width"],

@@ -1,0 +1,19 @@
+{
+  "source_commit": "b9b1e0bc00d363bca196be5b5d7c39fa29631327",
+  "model_id": "LiquidAI/LFM2.5-350M",
+  "revision": "9921cd4d82c0e3986887aa4b376f9446729ef8a3",
+  "global_step": 400,
+  "sample_cursor": 400,
+  "adapter_sha256": "02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2",
+  "frozen_base_sha256": "d8527196ab2c860ce3701a2fe4e2946c6b0b649925b727e16658ca5196aff626",
+  "artifacts": {
+    "wb_art_slm_001_lfm350_adapter_step400.zip": {
+      "sha256": "9b53d642ec48c0f7b65835f267a5b38d9183641b12476befc563e216fa3c11a6",
+      "bytes": 23413182
+    },
+    "wb_art_slm_001_lfm350_resume_step400.zip": {
+      "sha256": "8eb8d81251d9ac2d757284822591f377c79d7727a4be2666600d163bae7ed0e6",
+      "bytes": 67591650
+    }
+  }
+}

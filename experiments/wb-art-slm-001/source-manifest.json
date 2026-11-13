@@ -8,6 +8,9 @@
     "training/infer.py": "6672536f01cebda66b7014071dd1c7e0a404a4595cca6eca358288a96d65f53d",
     "evaluation/native_replay.gd": "50b6ebe0ce0d9425415bba3d2ab9d6a70c5c454344591c35abc1f7f1f27f3c9c",
     "evaluation/run_native_replay.py": "b601e50ab7c1db5b63bc2006198f2a14b3688441165aa0becd7ca0513ba5a124",
-    "evaluation/verify_native_replay.py": "565f0237cd781812dda0d2f8dc086c7164cc7d0e4b66f7a3167281669ea25900"
+    "evaluation/verify_native_replay.py": "565f0237cd781812dda0d2f8dc086c7164cc7d0e4b66f7a3167281669ea25900",
+    "gallery/build_gallery.py": "2cef061dc3cd19dadc694bf36f0377c4d01f88d6746b838e204cd24410d48d3f",
+    "training/model_profiles.json": "a64e8204d8cc7dee66f83a014f1e1b231ff88c7416c8d09680c756c7e2f03619",
+    "controls/pattern_program.schema.json": "88356d5bd9a17f3d4f16e27992185e7791fc14a78fc9cd0462a199fa070d81d1"
   }
 }

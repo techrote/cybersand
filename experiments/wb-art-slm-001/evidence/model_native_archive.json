@@ -1,0 +1,14 @@
+{
+  "path": "/workspace/scratch/7d765b879ceb/model-native-qualification-evidence.zip",
+  "bytes": 1532882,
+  "sha256": "48c6b8d536c74de3191f39564c0e304cfa4216d022d09ff035586ccd2b997a4f",
+  "evidence_files": 335,
+  "native_cases": 68,
+  "original_requests": 36,
+  "accepted_predictions": 34,
+  "rejected_predictions": 2,
+  "includes_failed_identifier_attempt": true,
+  "includes_adapter_weights": false,
+  "adapter_weights_sha256": "02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2",
+  "teacher_evidence_unchanged": true
+}

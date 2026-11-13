@@ -1,9 +1,9 @@
 # WB-ART-SLM-001 bootstrap evidence
 
 Date: 13 November 2026. This checkpoint implements the bounded compiler, an
-executed corpus, a qualified native teacher gallery and the actual local training
-pipeline. **The bounded adapter run is in progress at this source checkpoint.**
-No completed-adapter or production qualification is inferred from that state.
+executed corpus, an actual 400-step LoRA adapter, exact resume evidence and a
+260-image native reference/model gallery. **The bootstrap is complete; production
+promotion remains HOLD.** Source is in [Draft PR #567](https://github.com/techrote/cybersand/pull/567).
 
 ## Implemented controller
 
@@ -124,39 +124,168 @@ the native execution did not fail.
 
 ## Actual model run and comparison
 
-The executed first candidate is **LiquidAI/LFM2.5-350M**, pinned at
-`9921cd4d82c0e3986887aa4b376f9446729ef8a3`. CPU FP32 preflight loaded
-354,483,968 base parameters and generated a simple JSON response. No reachable
-GPU was established. The actual run uses 5,996,544 LoRA parameters, rank 16,
-alpha 32, dropout 0.05, completion-only supervision and three CPU threads.
+The executed candidate is **LiquidAI/LFM2.5-350M**, pinned at
+`9921cd4d82c0e3986887aa4b376f9446729ef8a3`. The run loaded 354,483,968 frozen
+base parameters and trained 5,996,544 LoRA parameters through **400 updates**.
+It used CPU FP32, three threads, rank 16, alpha 32, dropout 0.05, learning rate
+0.0005 and completion-only supervision. No paid compute or reachable GPU was
+used. Torch 2.15.0+cpu, Transformers 5.22.2, PEFT 0.21.2 and Accelerate 1.15.0
+are recorded in the checkpoint.
 
-The untuned baseline completed 24 fixed, balanced development requests, two per
-theme, using greedy unconstrained decoding and no repair. It produced **0/24
-strict JSON programs**, with 4,792 output tokens in 317.88 seconds. This is a
-measurement of this prompt/schema/backend, not a general model capability claim.
-The literal-keyword reference is a separate declared baseline, not a replacement
-for failed model output.
+The run consumed 400 shuffled training examples, 124,078 input tokens and
+27,447 supervised target tokens. Cumulative training-step time was 1,132.69
+seconds; the final continuation process including its evaluation took 1,253.90
+seconds. That process resumed at step 26, so its wall time is not the complete
+bootstrap duration. Final peak RSS was 4,100,440 KiB, approximately **3.91 GiB**.
+The complete frozen-base digest was unchanged.
 
-The first training segment completed 26 steps and preserved a step 25 full
-checkpoint. The fresh-process 25→26 continuation matched the uninterrupted result
-exactly for adapter and optimizer tensors, scheduler/scaler, Python/NumPy/Torch
-RNG, sample cursor, loss and gradient norm. Frozen base bytes remained unchanged.
-Peak RSS was approximately 3.64 GiB. The bounded continuation toward 400 steps is
-running at roughly 2.6–2.9 seconds per example on three CPU threads; its quality
-results are still pending.
+The fresh-process 25→26 continuation matched the uninterrupted result exactly
+for adapter and optimizer tensors, scheduler/scaler, Python/NumPy/Torch RNG,
+sample cursor, loss and gradient norm. This proves the tested continuation in
+the pinned runtime; it does not promise cross-hardware bitwise equality. The
+full step-400 resume archive includes optimizer, RNG and cursor state, rather
+than adapter weights alone.
 
-The lineup includes separately pinned Sprocket-500M root Instruct and Chat,
-SmolLM2-135M-Instruct, optional SmolLM2-360M-Instruct, and the larger LFM3-1.7B
-accelerator candidate. Profiles and downloads are distinguished from executed
-comparisons; an LFM adapter cannot establish a family ranking against untuned
-Sprocket or SmolLM. See [training](training/README.md) for actual commands.
+Raw final adapter SHA-256:
+`02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2`.
 
-## Continuing work
+### Measured quality
 
-The next checkpoint records the actual adapter, exact resume evidence, matched
-development/keyword predictions and native replays of accepted model output.
-The five hourly workers consume the implemented source and artifacts, preserving
-user pauses and one Training owner. They should improve measured failures,
-qualify the current-main/Windows seam and compare model adaptation under matched
-budgets. They must not turn native teacher success into a model or production
-acceptance claim, restart unchanged training, or rewrite earlier failed evidence.
+Every result below uses greedy unconstrained generation, strict JSON, the
+compiler schema and completion termination. No repair or reference fallback
+receives model credit. Development selection was fixed by SHA-256 ID within
+each theme, round-robin across themes; 24 requests cover two per theme. This is
+a small development sample, not the untouched final assessment.
+
+| Measurement | Untuned LFM, 24 development requests | Step-400 LFM, same 24 | Step-400 LFM, 12 literal words |
+| --- | ---: | ---: | ---: |
+| Strict accepted program | 0/24 | **22/24** | **12/12** |
+| Correct declared theme | 0/24 | 22/24 | 11/12 |
+| Correct primary motif | 0/24 | 22/24 | 11/12 |
+| Correct theme and primary motif together | 0/24 | 22/24 | **10/12** |
+| Exact ordered motif/layout structure | 0/24 | 19/24 | 11/12 |
+| Exact full reference program | 0/24 | 13/24 | 8/12 |
+
+The two development failures are coral responses with invalid leading-zero
+numeric literals (`0595931`, `031`, `05959`). Their full raw completions remain
+in the evidence and were never executed. On literal words, `veins` declares the
+right word but chooses `orthogonal` geometry; `ribs` chooses rib geometry but
+incorrectly labels the program `ruins`. Native execution does not make these
+semantic mistakes correct.
+
+The literal words are a training-vocabulary sanity check, not unseen test
+prompts. Only six of the twelve literal rows occurred in the first 400 shuffled
+examples. The `ribs` row occurs at step 648 and `veins` at step 1,075; longer
+training requests for both themes were seen. This supports a curriculum
+hypothesis, not a causal conclusion. A new candidate should guarantee early
+exposure to all twelve existing training rows. It must not add held-out coral
+split/composition targets to training. Constrained decoding is a separately
+reported experiment and does not solve semantic routing by itself.
+
+The trained development run generated 1,567 tokens in 118.68 seconds, about
+4.95 seconds per request on this CPU. The untuned run generated 4,792 tokens in
+317.88 seconds. These are generation timings with different response lengths,
+not controlled throughput or complete Workbench interaction latency. A fresh
+standalone `infer.py` call for `roots`, seed 73, generated 49 tokens and 31 Art
+operations; its program and operations exactly match the frozen native case.
+
+### Sprocket and other tiny-model baselines
+
+| Candidate | State | Same fixed 12 development IDs: accepted |
+| --- | --- | ---: |
+| LFM2.5-350M | Unadapted baseline executed | 0/12 |
+| LFM2.5-350M + this LoRA | 400 updates executed | **11/12** |
+| SmolLM2-135M-Instruct | Unadapted baseline executed | 0/12 |
+| Sprocket-500M root Instruct | Unadapted baseline executed | 0/12 |
+| Sprocket-500M `chat/` checkpoint | Separate pinned profile; not executed | — |
+| SmolLM2-360M-Instruct | Optional pinned profile; not executed | — |
+| LFM3-1.7B | Pinned larger accelerator candidate; not executed | — |
+
+The matched subset contains one request per theme. Official model-specific
+chat templates, the same system prompt, greedy unconstrained decoding, a
+256-new-token cap and CPU FP32 were used. This is a custom-protocol baseline
+comparison with one adapted model, **not a ranking of equally fine-tuned model
+families**. Sprocket root Instruct and its Chat subfolder remain separate
+identities. The workers should compare adaptation under matched example/token
+and compute budgets before choosing a winner. The exact pins are in
+[model_profiles.json](training/model_profiles.json).
+
+## Native replay of model output
+
+| Cohort | Original requests | Accepted programs | Two-seed native passes |
+| --- | ---: | ---: | ---: |
+| Development sample | 24 | 22 | 44/44 |
+| Literal-word sanity | 12 | 12 | 24/24 |
+| Total | 36 | 34 | **68/68** |
+
+Each raw model completion is bound to its program, independently recompiled
+operation list, adapter identity, host seed and native receipt. This chain
+passed 408 additional checks. The model packet passed 1,398 engine assertions,
+329,761 independent native receipt/readback checks and all 15 global gates.
+Zero out-of-focus changes and zero unexpected material IDs were observed.
+Twelve theme representatives passed exact Undo/Redo/save/reopen.
+
+All 34 accepted programs have different outputs at seeds 17 and 73. There are
+66 distinct readbacks across the 68 cases; cross-request overlaps are retained.
+The model-native result is 34/36 accepted-and-executed original requests, not
+68 independent successful requests. Only 32/36 also match both the expected
+symbolic theme label and primary motif. The final 192 examples remain untouched
+by model evaluation.
+
+The first native attempt is retained as failed: its long evidence IDs exceeded
+the Workbench saved-name length limit after adding `slm-pilot-`. The retry uses
+aliases of at most 38 characters with an original-ID map. It changes no model
+completion, program, compiler operation or runtime source. The first draw's
+readback and PNG exactly match between attempts.
+
+The assistant inspected all 68 model images, and the atlas now contains all
+192 teacher images plus these 68 replays. Wrong labels and motifs are flagged.
+The same coral crowding, narrow-border compression and sparse canvas use remain
+quality work. This is provisional inspection, not blind human acceptance.
+The image bytes and embedded atlas data were checked; JavaScript syntax passed.
+An optional browser rendering probe was blocked by the environment's IPC socket
+restriction, so interactive browser execution is not claimed.
+
+## Reusable artifacts and worker handoff
+
+[ARTIFACTS.json](ARTIFACTS.json) records the exact filenames, byte sizes, hashes
+and extraction roles for four saved archives: inference adapter, full resume
+checkpoint, executed corpus, and native/model evaluation evidence. The evidence
+archive includes the original native runtime artifact so expiring CI downloads
+are not the only recovery route. Base-model weights are fetched by the pinned
+training downloader; they are not duplicated into the adapter ZIP.
+
+The [training README](training/README.md) gives download, inference, evaluation
+and resume commands. The delivered CLI converts text to a strict pattern program
+and an Art batch. Actual Workbench execution has been demonstrated by the native
+harness. A live UI provider binding on current main is still a Controls and
+Integration task; the default application provider has not been replaced.
+
+The NeuroRunner ideas carried into this separate experiment are bounded
+completion-only LoRA, typed controller output, a controlled curriculum,
+immutable candidate identity, full-state resume, independent evidence and
+explicit promotion gates. Its frozen NCR experiments, flags and heldouts remain
+unchanged.
+
+The five workers have concrete follow-ups:
+
+| Worker | First useful work |
+| --- | --- |
+| Integration | Maintain one combined Draft #567; consume role checkpoints and qualify the current-main seam while preserving accepted capability changes. |
+| Controls | Improve weak morphology and bind the strict compiler to the current Workbench provider with host focus/protection/Stop authority intact. |
+| Corpus | Add only justified admitted training variation; ensure all twelve literal rows get early exposure and retain structural split boundaries. |
+| Training | Run one bounded curriculum candidate, retain the frozen step-400 reference, then adapt Sprocket/Smol under matched budgets. |
+| Evaluation | Replay exact new outputs, keep request denominators and semantic failures, and qualify current-main/Windows plus human recognition separately. |
+
+Only one Training owner may use the shared backend. Each worker reads current
+state, uses a durable lease, saves a checkpoint before its whole-process deadline,
+and stops on unchanged evidence. Later user pauses and unrelated tasks are
+preserved. The registry records the existing hourly offsets and final state.
+
+**Promotion remains HOLD.** The 22/24 development acceptance rate is 91.7%, below
+the plan's 95% first-pass target, and the small sample cannot establish a stable
+population rate. The 98% native request-yield target, current-main and Windows compatibility,
+UI provider binding, final-set assessment and blind/human thematic acceptance
+remain open. Windows qualification should use the owner's confirmed executable
+`C:\Godot_v4.7-stable_win64_console.exe`. No Ready transition or merge is requested
+by this bootstrap.

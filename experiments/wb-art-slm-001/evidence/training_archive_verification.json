@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "checks": "Every inventoried uncompressed member size/SHA-256 verified through ZIP CRC-checked reads",
+  "archives": [
+    {
+      "archive": "wb_art_slm_001_lfm350_adapter_step400.zip",
+      "verified_files": 8,
+      "passed": true
+    },
+    {
+      "archive": "wb_art_slm_001_lfm350_resume_step400.zip",
+      "verified_files": 10,
+      "passed": true
+    }
+  ]
+}

@@ -11,17 +11,24 @@ controller already supports these twelve literal words, plus density, stroke,
 twist, symmetry, an open center and companion layers. Learning is evaluated on
 paraphrases and combinations, rather than being credited for a dictionary lookup.
 
+The completed bootstrap includes a genuine **400-step LFM2.5-350M LoRA**,
+1,536 admitted corpus records and a **260-image native atlas**. The adapter
+accepted 22/24 sampled development requests; all 34 accepted development and
+keyword programs passed native replay at two seeds. Detailed semantic failures
+and the production HOLD remain explicit in the report.
+
 ## Start here
 
 | Deliverable | Location |
 | --- | --- |
 | Actual results, limits and source identities | [Bootstrap report](BOOTSTRAP_REPORT.md) |
-| Native images and interactive local atlas | [Gallery](gallery/README.md), `gallery/index.html` |
+| Native images and interactive local atlas | [Gallery](gallery/README.md), [self-contained atlas](gallery/native_atlas.html) |
 | Bounded compiler and strict schema | [Controls](controls/README.md) |
 | Corpus generation and native admission | [Corpus](corpus/README.md) |
 | Training, inference, model lineup and resume | [Training](training/README.md) |
 | Native replay and independent receipt verification | [Evaluation](evaluation/README.md) |
 | Reviewed plan and five hourly role contracts | [Plan](PLAN.md), [workers](AUTOMATIONS.json) |
+| Saved adapter, checkpoint, corpus and evidence identities | [Artifacts](ARTIFACTS.json) |
 | Current durable handoff | [Integration state](integration-state.json) |
 
 ## Make a seeded reference pattern

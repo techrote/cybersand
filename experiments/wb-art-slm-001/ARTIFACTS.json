@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "experiment": "WB-ART-SLM-001",
+  "saved_on": "2026-11-13",
+  "status": "all four artifacts saved and locally verified",
+  "source_branch": "codex/wb-art-slm-001",
+  "source_pull_request": "https://github.com/techrote/cybersand/pull/567",
+  "executed_source_commit": "b9b1e0bc00d363bca196be5b5d7c39fa29631327",
+  "model_id": "LiquidAI/LFM2.5-350M",
+  "model_revision": "9921cd4d82c0e3986887aa4b376f9446729ef8a3",
+  "raw_adapter_sha256": "02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2",
+  "artifacts": [
+    {
+      "filename": "wb_art_slm_001_lfm350_adapter_step400.zip",
+      "role": "inference adapter",
+      "bytes": 23413182,
+      "sha256": "9b53d642ec48c0f7b65835f267a5b38d9183641b12476befc563e216fa3c11a6",
+      "recovery": "Saved user artifact; resolve this exact filename through the file service, then verify bytes and SHA-256 before use.",
+      "usage": "Extract adapter/; supply the pinned LFM2.5-350M base to training/infer.py."
+    },
+    {
+      "filename": "wb_art_slm_001_lfm350_resume_step400.zip",
+      "role": "full training continuation",
+      "bytes": 67591650,
+      "sha256": "8eb8d81251d9ac2d757284822591f377c79d7727a4be2666600d163bae7ed0e6",
+      "recovery": "Saved user artifact; resolve this exact filename through the file service, then verify bytes and SHA-256 before use.",
+      "usage": "Extract checkpoint-000400/; resume only with matching admitted corpus, source, dependencies and settings."
+    },
+    {
+      "filename": "wb_art_slm_001_executed_corpus.zip",
+      "role": "admitted corpus",
+      "bytes": 2311486,
+      "sha256": "2d2de250731eeea825339e89f752ab8ebc65f3a929daa2c692120d985566948a",
+      "recovery": "Saved user artifact; resolve this exact filename through the file service, then verify bytes and SHA-256 before use.",
+      "usage": "Extract corpus/ into the experiment corpus directory; preserve split files and admission hashes."
+    },
+    {
+      "filename": "wb_art_slm_001_native_and_model_evidence.zip",
+      "role": "native runtime and evaluation evidence",
+      "bytes": 29081943,
+      "sha256": "d2f8b16f081b7c371afd2eadf1468bc6941cb2a7a83ee349a11d667257f9cfa9",
+      "recovery": "Saved user artifact; resolve this exact filename through the file service, then verify bytes and SHA-256 before use.",
+      "usage": "Extract outer archive, then preserve separate teacher/model nested ZIPs and published native runtime; see READ_ME.txt."
+    }
+  ],
+  "no_retrain_for_recovery": true,
+  "privacy": "File-service identifiers are held in the owner conversation; public source records portable filenames and content hashes."
+}

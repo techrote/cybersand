@@ -1,0 +1,1056 @@
+{
+  "schema_version": 1,
+  "provenance_and_native_execution_passed": true,
+  "runtime": {
+    "source_commit": "90719c72b9fcf90593fb7878354051ad601b47fd",
+    "native_sha256": "3a8b0b2cd04f09054426842f978e2421aad4016aae03dec91ed527ff50b953cd",
+    "godot_version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "model": {
+    "id": "LiquidAI/LFM2.5-350M",
+    "revision": "9921cd4d82c0e3986887aa4b376f9446729ef8a3",
+    "checkpoint_step": 400,
+    "adapter_sha256": "02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2",
+    "experiment_source_commit": "b9b1e0bc00d363bca196be5b5d7c39fa29631327"
+  },
+  "denominators": {
+    "original_requests": 36,
+    "accepted_predictions": 34,
+    "rejected_predictions": 2,
+    "host_seed_replays_per_accepted_prediction": 2,
+    "native_cases": 68,
+    "native_cases_passed": 68
+  },
+  "cohorts": {
+    "development": {
+      "original_requests": 24,
+      "accepted_predictions": 22,
+      "rejected_predictions": 2,
+      "native_cases": 44,
+      "native_cases_passed": 44,
+      "accepted_predictions_with_both_seed_replays_passed": 22,
+      "symbolic_label_and_primary_motif_matches": 22,
+      "symbolic_semantic_failures_among_accepted": 0
+    },
+    "training_keyword_sanity": {
+      "original_requests": 12,
+      "accepted_predictions": 12,
+      "rejected_predictions": 0,
+      "native_cases": 24,
+      "native_cases_passed": 24,
+      "accepted_predictions_with_both_seed_replays_passed": 12,
+      "symbolic_label_and_primary_motif_matches": 10,
+      "symbolic_semantic_failures_among_accepted": 2
+    }
+  },
+  "native_checks": {
+    "engine_assertions": 1398,
+    "independent_reducer_checks": 329761,
+    "global_gates": {
+      "engine_passed": true,
+      "process_completed": true,
+      "runtime_unchanged": true,
+      "harness_unchanged": true,
+      "input_unchanged": true,
+      "input_digest_matches": true,
+      "native_artifact_matches": true,
+      "harness_digest_matches": true,
+      "runtime_pins_match": true,
+      "complete_manifest": true,
+      "all_engine_assertions_passed": true,
+      "mandatory_invariant_assertions_present": true,
+      "protection_native_readback_exact": true,
+      "stop_native_readback_exact": true,
+      "representative_history_and_reopen": true
+    },
+    "outside_focus_violations": 0,
+    "unexpected_material_cells": 0,
+    "acknowledged_cells": 109478,
+    "changed_cells": 87202,
+    "history_and_reopen_representatives": 12,
+    "unique_native_readbacks": 66,
+    "prediction_to_compiler_checks": 408,
+    "both_seed_variants_distinct_for_predictions": 34
+  },
+  "request_outcomes": [
+    {
+      "prediction_id": "circuitry-v2-m2-s175-p0",
+      "cohort": "development",
+      "prompt": "Create dense circuitry, as a mirrored pair.",
+      "requested_theme": "circuitry",
+      "predicted_theme": "circuitry",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.82,\"layout\":\"split\",\"motif\":\"orthogonal\",\"scale\":0.59,\"width\":0.2}],\"theme\":\"circuitry\",\"version\":1}",
+      "raw_completion_sha256": "b9ddbc6130fddf4105bbf8e8763e7f3fb9a5633a39716f0c1369ec34bbc0e9dd",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m000-circuitry-s17",
+        "m001-circuitry-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "coral-v6-m6-s323-p1",
+      "cohort": "development",
+      "prompt": "Make fan-shaped coral growth with bilateral symmetry in two panels, with fewer elements, with fine strokes. Include a fine secondary motif along the border.",
+      "requested_theme": "coral",
+      "predicted_theme": null,
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.27,\"layout\":\"split\",\"motif\":\"fan\",\"scale\":0595931,\"width\":0.03},{\"angle\":0,\"density\":0.095,\"layout\":\"border\",\"motif\":\"branch\",\"scale\":031,\"width\":0.08}],\"theme\":\"coral\",\"version\":1}",
+      "raw_completion_sha256": "2f1714a540ace4485fdac5da3441092d13e826ff9081c8e8c7b5d471cdadb06c",
+      "first_pass_accepted": false,
+      "rejection_reason": "JSONDecodeError: Expecting ',' delimiter: line 1 column 78 (char 77)",
+      "symbolic_theme_label_match": null,
+      "symbolic_primary_motif_match": null,
+      "symbolic_label_and_primary_motif_match": false,
+      "native_case_count": 0,
+      "native_cases": [],
+      "host_seeds": [],
+      "native_success_for_accepted_program": false,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [
+        "strict_generation_rejected"
+      ],
+      "seed_variants_have_distinct_readbacks": null
+    },
+    {
+      "prediction_id": "crystals-v1-m1-s138-p1",
+      "cohort": "development",
+      "prompt": "Make clusters of crystal facets leaving more space to the right and below, with fewer elements.",
+      "requested_theme": "crystals",
+      "predicted_theme": "crystals",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.27,\"layout\":\"offset\",\"motif\":\"facets\",\"scale\":0.62,\"width\":0.095}],\"theme\":\"crystals\",\"version\":1}",
+      "raw_completion_sha256": "437d3822b5127fc6e45ed5946bd06d937188a211f4d6f7b08db4634c25e1d2cd",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m002-crystals-s17",
+        "m003-crystals-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "dunes-v7-m1-s138-p1",
+      "cohort": "development",
+      "prompt": "Make wind-swept dune ridges in border strips with a central void, with fewer elements. Include a fine secondary motif along the border.",
+      "requested_theme": "dunes",
+      "predicted_theme": "dunes",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.27,\"layout\":\"border\",\"motif\":\"ridges\",\"scale\":0.62,\"width\":0.5},{\"angle\":0,\"density\":0.095,\"layout\":\"border\",\"motif\":\"bands\",\"scale\":0.31,\"width\":0.08}],\"theme\":\"dunes\",\"version\":1}",
+      "raw_completion_sha256": "54546a00f513fcf30e2eda9f6756b46099f68dfb2e2c6d4e7812b4a4cf8306eb",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m004-dunes-s17",
+        "m005-dunes-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "honeycomb-v6-m2-s175-p1",
+      "cohort": "development",
+      "prompt": "Make hexagonal honeycomb cells with bilateral symmetry in two panels, with many closely packed elements. Include a fine secondary motif along the border.",
+      "requested_theme": "honeycomb",
+      "predicted_theme": "honeycomb",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.82,\"layout\":\"split\",\"motif\":\"cells\",\"scale\":0.56,\"width\":0.2},{\"angle\":0,\"density\":0.287,\"layout\":\"border\",\"motif\":\"ribs\",\"scale\":0.31,\"width\":0.08}],\"theme\":\"honeycomb\",\"version\":1}",
+      "raw_completion_sha256": "588d6fb88ba105f74b1be4500279e7c094f9489225cee9aa08fba4f05dcbf833",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m006-honeycomb-s17",
+        "m007-honeycomb-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "labyrinth-v3-m6-s323-p0",
+      "cohort": "development",
+      "prompt": "Create sparse thin labyrinth, around an open center.",
+      "requested_theme": "labyrinth",
+      "predicted_theme": "labyrinth",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.27,\"layout\":\"border\",\"motif\":\"maze\",\"scale\":0.56,\"width\":0.03}],\"theme\":\"labyrinth\",\"version\":1}",
+      "raw_completion_sha256": "601d5f0629eff24bf42036e1eb9eb82219c735706c7c995fb626c4d86a0df8b4",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m008-labyrinth-s17",
+        "m009-labyrinth-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "mycelium-v5-m0-s17-p1",
+      "cohort": "development",
+      "prompt": "Make wandering fungal threads leaving more space to the right and below. Include a fine secondary motif along the border.",
+      "requested_theme": "mycelium",
+      "predicted_theme": "mycelium",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.65,\"layout\":\"offset\",\"motif\":\"threads\",\"scale\":0.58,\"width\":0.05},{\"angle\":0,\"density\":0.227,\"layout\":\"border\",\"motif\":\"network\",\"scale\":0.31,\"width\":0.08}],\"theme\":\"mycelium\",\"version\":1}",
+      "raw_completion_sha256": "de285f457e89db4fed7ede1376a676c7e0fde4ff1fea8e261d9488a69cf505dd",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m010-mycelium-s17",
+        "m011-mycelium-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "ribs-v7-m4-s249-p0",
+      "cohort": "development",
+      "prompt": "Create thick ribs, around an open center; add its complementary detail layer.",
+      "requested_theme": "ribs",
+      "predicted_theme": "ribs",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.58,\"layout\":\"border\",\"motif\":\"ribs\",\"scale\":0.56,\"width\":0.9},{\"angle\":0,\"density\":0.227,\"layout\":\"border\",\"motif\":\"bands\",\"scale\":0.31,\"width\":0.08}],\"theme\":\"ribs\",\"version\":1}",
+      "raw_completion_sha256": "85aa160fbe5f88e0398866aefa8cf26c8b0051962dfb938158bd8683dd931116",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m012-ribs-s17",
+        "m013-ribs-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "roots-v1-m6-s323-p1",
+      "cohort": "development",
+      "prompt": "Make branching root systems leaving more space to the right and below, with fewer elements, with fine strokes.",
+      "requested_theme": "roots",
+      "predicted_theme": "roots",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.27,\"layout\":\"offset\",\"motif\":\"branch\",\"scale\":0.63,\"width\":0.03}],\"theme\":\"roots\",\"version\":1}",
+      "raw_completion_sha256": "950370ed17edbc35f3b1758dbb31f0d3d975eb0fabd66975e95a5cdbd8f2d49e",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m014-roots-s17",
+        "m015-roots-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "ruins-v5-m3-s212-p1",
+      "cohort": "development",
+      "prompt": "Make broken architectural ruins leaving more space to the right and below, with fine strokes. Include a fine secondary motif along the border.",
+      "requested_theme": "ruins",
+      "predicted_theme": "ruins",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.56,\"layout\":\"offset\",\"motif\":\"blocks\",\"scale\":0.55,\"width\":0.03},{\"angle\":0,\"density\":0.196,\"layout\":\"center\",\"motif\":\"ribs\",\"scale\":0.31,\"width\":0.08}],\"theme\":\"ruins\",\"version\":1}",
+      "raw_completion_sha256": "7c61ae47b18a29cdf2faa562b6a248a36b6dfee736c7b9c423c782fbd439f25f",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m016-ruins-s17",
+        "m017-ruins-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "strata-v2-m0-s17-p1",
+      "cohort": "development",
+      "prompt": "Make faulted geological layers with bilateral symmetry in two panels.",
+      "requested_theme": "strata",
+      "predicted_theme": "strata",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.58,\"layout\":\"split\",\"motif\":\"bands\",\"scale\":0.55,\"width\":0.42}],\"theme\":\"strata\",\"version\":1}",
+      "raw_completion_sha256": "579737b4d5394bfc7e03d86af49c9d6b0c13b9f88e51815dd7ec1fee4bf99bee",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m018-strata-s17",
+        "m019-strata-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "veins-v3-m5-s286-p1",
+      "cohort": "development",
+      "prompt": "Make connected vein networks in border strips with a central void, tilted by twenty-two degrees.",
+      "requested_theme": "veins",
+      "predicted_theme": "veins",
+      "raw_completion": "{\"layers\":[{\"angle\":22,\"density\":0.55,\"layout\":\"border\",\"motif\":\"network\",\"scale\":0.56,\"width\":0.5}],\"theme\":\"veins\",\"version\":1}",
+      "raw_completion_sha256": "6b41edb9d5e281add6ea88a96d0d3b3491e3a71880a2e98c5e3dc8c462218904",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m020-veins-s17",
+        "m021-veins-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "circuitry-v2-m0-s17-p0",
+      "cohort": "development",
+      "prompt": "Create circuitry, as a mirrored pair.",
+      "requested_theme": "circuitry",
+      "predicted_theme": "circuitry",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.56,\"layout\":\"split\",\"motif\":\"orthogonal\",\"scale\":0.59,\"width\":0.2}],\"theme\":\"circuitry\",\"version\":1}",
+      "raw_completion_sha256": "3407fa44d772e97de406717cb1d9357ad5d85f08583e8977d803cd12e12df8f0",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m022-circuitry-s17",
+        "m023-circuitry-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "coral-v6-m0-s17-p0",
+      "cohort": "development",
+      "prompt": "Create coral, as a mirrored pair; add its complementary detail layer.",
+      "requested_theme": "coral",
+      "predicted_theme": null,
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.62,\"layout\":\"split\",\"motif\":\"fan\",\"scale\":05959,\"width\":0.56}],\"theme\":\"coral\",\"version\":1}",
+      "raw_completion_sha256": "8e33d846708187e1788e469ad37fa1284e7e7aa3591eb495fd2b97fe861b1e88",
+      "first_pass_accepted": false,
+      "rejection_reason": "JSONDecodeError: Expecting ',' delimiter: line 1 column 78 (char 77)",
+      "symbolic_theme_label_match": null,
+      "symbolic_primary_motif_match": null,
+      "symbolic_label_and_primary_motif_match": false,
+      "native_case_count": 0,
+      "native_cases": [],
+      "host_seeds": [],
+      "native_success_for_accepted_program": false,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [
+        "strict_generation_rejected"
+      ],
+      "seed_variants_have_distinct_readbacks": null
+    },
+    {
+      "prediction_id": "crystals-v1-m3-s212-p0",
+      "cohort": "development",
+      "prompt": "Create thin crystals, offset toward the upper left.",
+      "requested_theme": "crystals",
+      "predicted_theme": "crystals",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.49,\"layout\":\"offset\",\"motif\":\"facets\",\"scale\":0.62,\"width\":0.03}],\"theme\":\"crystals\",\"version\":1}",
+      "raw_completion_sha256": "f68c960205b5ad6d7f9e28d4693fe792d06572ce0c805daff0f10c68dc808d5c",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m024-crystals-s17",
+        "m025-crystals-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "dunes-v7-m5-s286-p0",
+      "cohort": "development",
+      "prompt": "Create twisted dunes, around an open center; add its complementary detail layer.",
+      "requested_theme": "dunes",
+      "predicted_theme": "dunes",
+      "raw_completion": "{\"layers\":[{\"angle\":22,\"density\":0.45,\"layout\":\"border\",\"motif\":\"ridges\",\"scale\":0.62,\"width\":0.5},{\"angle\":-22,\"density\":0.158,\"layout\":\"border\",\"motif\":\"bands\",\"scale\":0.31,\"width\":0.08}],\"theme\":\"dunes\",\"version\":1}",
+      "raw_completion_sha256": "685aea161baa6f7593f876de8fde0f39e5456fced49b83886037900f9b2c1ebf",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m026-dunes-s17",
+        "m027-dunes-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "honeycomb-v6-m4-s249-p0",
+      "cohort": "development",
+      "prompt": "Create thick honeycomb, as a mirrored pair; add its complementary detail layer.",
+      "requested_theme": "honeycomb",
+      "predicted_theme": "honeycomb",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.63,\"layout\":\"split\",\"motif\":\"cells\",\"scale\":0.56,\"width\":0.9},{\"angle\":0,\"density\":0.22,\"layout\":\"border\",\"motif\":\"ribs\",\"scale\":0.31,\"width\":0.08}],\"theme\":\"honeycomb\",\"version\":1}",
+      "raw_completion_sha256": "dec00573267dc5b891992aefd8e277aeeea58bbf0bf5ae3ae9309056bfdd4450",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m028-honeycomb-s17",
+        "m029-honeycomb-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "labyrinth-v3-m6-s323-p1",
+      "cohort": "development",
+      "prompt": "Make a winding maze in border strips with a central void, with fewer elements, with fine strokes.",
+      "requested_theme": "labyrinth",
+      "predicted_theme": "labyrinth",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.27,\"layout\":\"border\",\"motif\":\"maze\",\"scale\":0.31,\"width\":0.08}],\"theme\":\"labyrinth\",\"version\":1}",
+      "raw_completion_sha256": "c9173f2e4a71829917a4dac15f65e9ee35ddc43d65d02ff79b0fcd5db352b2bb",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m030-labyrinth-s17",
+        "m031-labyrinth-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "mycelium-v5-m6-s323-p0",
+      "cohort": "development",
+      "prompt": "Create sparse thin mycelium, offset toward the upper left; add its complementary detail layer.",
+      "requested_theme": "mycelium",
+      "predicted_theme": "mycelium",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.27,\"layout\":\"offset\",\"motif\":\"threads\",\"scale\":0.58,\"width\":0.03},{\"angle\":0,\"density\":0.095,\"layout\":\"center\",\"motif\":\"network\",\"scale\":0.31,\"width\":0.08}],\"theme\":\"mycelium\",\"version\":1}",
+      "raw_completion_sha256": "84584b7c3b7abe6e6f953f7ff93e9c8d43e0ad3a0a33c81f6f1c12da69cc44a0",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m032-mycelium-s17",
+        "m033-mycelium-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "ribs-v7-m3-s212-p0",
+      "cohort": "development",
+      "prompt": "Create thin ribs, around an open center; add its complementary detail layer.",
+      "requested_theme": "ribs",
+      "predicted_theme": "ribs",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.58,\"layout\":\"border\",\"motif\":\"ribs\",\"scale\":0.56,\"width\":0.03},{\"angle\":0,\"density\":0.227,\"layout\":\"border\",\"motif\":\"bands\",\"scale\":0.31,\"width\":0.08}],\"theme\":\"ribs\",\"version\":1}",
+      "raw_completion_sha256": "7b150626cd41d03f361595b0fb291fb844b0370775992ec64e4e84f09644db00",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m034-ribs-s17",
+        "m035-ribs-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "roots-v1-m4-s249-p1",
+      "cohort": "development",
+      "prompt": "Make branching root systems leaving more space to the right and below, with heavy strokes.",
+      "requested_theme": "roots",
+      "predicted_theme": "roots",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.57,\"layout\":\"offset\",\"motif\":\"branch\",\"scale\":0.63,\"width\":0.9}],\"theme\":\"roots\",\"version\":1}",
+      "raw_completion_sha256": "665e45c85afbf3be49c7f950d3fced81264c9ff9ecf82268eea5a566dea70fbc",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m036-roots-s17",
+        "m037-roots-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "ruins-v5-m1-s138-p0",
+      "cohort": "development",
+      "prompt": "Create sparse ruins, offset toward the upper left; add its complementary detail layer.",
+      "requested_theme": "ruins",
+      "predicted_theme": "ruins",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.27,\"layout\":\"offset\",\"motif\":\"blocks\",\"scale\":0.55,\"width\":0.55},{\"angle\":0,\"density\":0.095,\"layout\":\"center\",\"motif\":\"ribs\",\"scale\":0.31,\"width\":0.08}],\"theme\":\"ruins\",\"version\":1}",
+      "raw_completion_sha256": "6c5daf7d4acfe69675f569116f8b7a32d17a27425c6a45436fe8b05de2bad33f",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m038-ruins-s17",
+        "m039-ruins-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "strata-v2-m3-s212-p0",
+      "cohort": "development",
+      "prompt": "Create thin strata, as a mirrored pair.",
+      "requested_theme": "strata",
+      "predicted_theme": "strata",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.58,\"layout\":\"split\",\"motif\":\"bands\",\"scale\":0.31,\"width\":0.03}],\"theme\":\"strata\",\"version\":1}",
+      "raw_completion_sha256": "4ae16f0ad27b521bf6dd7c38f2032c8211665bb86a17f91582dea496ff34ab2c",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m040-strata-s17",
+        "m041-strata-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "veins-v3-m4-s249-p1",
+      "cohort": "development",
+      "prompt": "Make connected vein networks in border strips with a central void, with heavy strokes.",
+      "requested_theme": "veins",
+      "predicted_theme": "veins",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.55,\"layout\":\"border\",\"motif\":\"network\",\"scale\":0.56,\"width\":0.9}],\"theme\":\"veins\",\"version\":1}",
+      "raw_completion_sha256": "6b619cd5fba7f340954cd96a19405e82d1c98ff1ac2eb72f69597b572131979d",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m042-veins-s17",
+        "m043-veins-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "keyword-circuitry",
+      "cohort": "training_keyword_sanity",
+      "prompt": "circuitry",
+      "requested_theme": "circuitry",
+      "predicted_theme": "circuitry",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.56,\"layout\":\"center\",\"motif\":\"orthogonal\",\"scale\":0.59,\"width\":0.2}],\"theme\":\"circuitry\",\"version\":1}",
+      "raw_completion_sha256": "04b2ac412588c9a0a7a3422cd419fb58e3fabe8f525cf8c60d83bdf98d7d9945",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m044-circuitry-s17",
+        "m045-circuitry-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "keyword-coral",
+      "cohort": "training_keyword_sanity",
+      "prompt": "coral",
+      "requested_theme": "coral",
+      "predicted_theme": "coral",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.62,\"layout\":\"center\",\"motif\":\"fan\",\"scale\":0.59,\"width\":0.56}],\"theme\":\"coral\",\"version\":1}",
+      "raw_completion_sha256": "15281eb926c074728226b261d312bb78c51028e8e39f627fb755ef6626bbf2a5",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m046-coral-s17",
+        "m047-coral-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "keyword-crystals",
+      "cohort": "training_keyword_sanity",
+      "prompt": "crystals",
+      "requested_theme": "crystals",
+      "predicted_theme": "crystals",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.49,\"layout\":\"center\",\"motif\":\"facets\",\"scale\":0.62,\"width\":0.095}],\"theme\":\"crystals\",\"version\":1}",
+      "raw_completion_sha256": "aab9f1ed187ad20715e7cf133c0ee2da0d43d7cc1c90b96025d735199148d301",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m048-crystals-s17",
+        "m049-crystals-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "keyword-dunes",
+      "cohort": "training_keyword_sanity",
+      "prompt": "dunes",
+      "requested_theme": "dunes",
+      "predicted_theme": "dunes",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.45,\"layout\":\"center\",\"motif\":\"ridges\",\"scale\":0.62,\"width\":0.5}],\"theme\":\"dunes\",\"version\":1}",
+      "raw_completion_sha256": "4bb565c92ffeac19b6e4d6fcbe5233300cf7ff41bd6bf4ff18322af454ac43e1",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m050-dunes-s17",
+        "m051-dunes-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "keyword-honeycomb",
+      "cohort": "training_keyword_sanity",
+      "prompt": "honeycomb",
+      "requested_theme": "honeycomb",
+      "predicted_theme": "honeycomb",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.63,\"layout\":\"center\",\"motif\":\"cells\",\"scale\":0.56,\"width\":0.2}],\"theme\":\"honeycomb\",\"version\":1}",
+      "raw_completion_sha256": "96416529f28ca56c28b062b3f9fd0f326acd98a60ae7f80035a5e3650bff3890",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m052-honeycomb-s17",
+        "m053-honeycomb-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "keyword-labyrinth",
+      "cohort": "training_keyword_sanity",
+      "prompt": "labyrinth",
+      "requested_theme": "labyrinth",
+      "predicted_theme": "labyrinth",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.62,\"layout\":\"center\",\"motif\":\"maze\",\"scale\":0.56,\"width\":0.15}],\"theme\":\"labyrinth\",\"version\":1}",
+      "raw_completion_sha256": "43f7ec00d57576909753d3eb096ef28f86f83cc620cb33b21460c1e3ff8deb0b",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m054-labyrinth-s17",
+        "m055-labyrinth-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "keyword-mycelium",
+      "cohort": "training_keyword_sanity",
+      "prompt": "mycelium",
+      "requested_theme": "mycelium",
+      "predicted_theme": "mycelium",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.65,\"layout\":\"center\",\"motif\":\"threads\",\"scale\":0.58,\"width\":0.05}],\"theme\":\"mycelium\",\"version\":1}",
+      "raw_completion_sha256": "c2f3d632502a3f14d989236f59222677af5710569802d3439787e45b91623e3a",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m056-mycelium-s17",
+        "m057-mycelium-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "keyword-ribs",
+      "cohort": "training_keyword_sanity",
+      "prompt": "ribs",
+      "requested_theme": "ribs",
+      "predicted_theme": "ruins",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.58,\"layout\":\"center\",\"motif\":\"ribs\",\"scale\":0.62,\"width\":0.42}],\"theme\":\"ruins\",\"version\":1}",
+      "raw_completion_sha256": "5a32f1502a7769043b928d76f2a3cfd1fbc891c1e62e013c1e6c9960845b25ef",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": false,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": false,
+      "native_case_count": 2,
+      "native_cases": [
+        "m058-ribs-s17",
+        "m059-ribs-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [
+        "theme_label_mismatch"
+      ],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "keyword-roots",
+      "cohort": "training_keyword_sanity",
+      "prompt": "roots",
+      "requested_theme": "roots",
+      "predicted_theme": "roots",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.57,\"layout\":\"center\",\"motif\":\"branch\",\"scale\":0.63,\"width\":0.58}],\"theme\":\"roots\",\"version\":1}",
+      "raw_completion_sha256": "f2b9b706a69936a38aa8cbd6298b6ed829edb24417c0fb32558ce089d1ef821e",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m060-roots-s17",
+        "m061-roots-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "keyword-ruins",
+      "cohort": "training_keyword_sanity",
+      "prompt": "ruins",
+      "requested_theme": "ruins",
+      "predicted_theme": "ruins",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.56,\"layout\":\"center\",\"motif\":\"blocks\",\"scale\":0.55,\"width\":0.55}],\"theme\":\"ruins\",\"version\":1}",
+      "raw_completion_sha256": "ceba1560f559bd88242e02e6183f3b7472a39f047d1536177dfdc49276157206",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m062-ruins-s17",
+        "m063-ruins-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "keyword-strata",
+      "cohort": "training_keyword_sanity",
+      "prompt": "strata",
+      "requested_theme": "strata",
+      "predicted_theme": "strata",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.58,\"layout\":\"center\",\"motif\":\"bands\",\"scale\":0.55,\"width\":0.42}],\"theme\":\"strata\",\"version\":1}",
+      "raw_completion_sha256": "4c585a5f94b2a177ab62b4fcc8f0e7cff057ecb19d552261150dde3b5dc3e5f0",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": true,
+      "symbolic_label_and_primary_motif_match": true,
+      "native_case_count": 2,
+      "native_cases": [
+        "m064-strata-s17",
+        "m065-strata-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [],
+      "seed_variants_have_distinct_readbacks": true
+    },
+    {
+      "prediction_id": "keyword-veins",
+      "cohort": "training_keyword_sanity",
+      "prompt": "veins",
+      "requested_theme": "veins",
+      "predicted_theme": "veins",
+      "raw_completion": "{\"layers\":[{\"angle\":0,\"density\":0.55,\"layout\":\"center\",\"motif\":\"orthogonal\",\"scale\":0.59,\"width\":0.2}],\"theme\":\"veins\",\"version\":1}",
+      "raw_completion_sha256": "b53fd1cf484ff6df3ccf8ecd60e9d947392c11e8b107d5a5e825edb15761d640",
+      "first_pass_accepted": true,
+      "rejection_reason": null,
+      "symbolic_theme_label_match": true,
+      "symbolic_primary_motif_match": false,
+      "symbolic_label_and_primary_motif_match": false,
+      "native_case_count": 2,
+      "native_cases": [
+        "m066-veins-s17",
+        "m067-veins-s73"
+      ],
+      "host_seeds": [
+        17,
+        73
+      ],
+      "native_success_for_accepted_program": true,
+      "visual_theme_assessment": "Not performed by this native reducer; retain separate atlas review.",
+      "failure_categories": [
+        "primary_motif_mismatch"
+      ],
+      "seed_variants_have_distinct_readbacks": true
+    }
+  ],
+  "source_receipts": {
+    "verified_native_receipts_sha256": "63c4d319583d40f404d3e2289cb3941963efe8d8cdce45240a6bba1444315b4b",
+    "raw_prediction_to_operations_sha256": "587402fe4b92f9b7e215f3b0851119df7e4279171cb936c84af2507ea0fc9d76",
+    "export_binding_verification_sha256": "0f64ed56f8fa63ca790a9e028cdeb6a0e7a235c6b5626bb8d124e49f9a1d111a"
+  },
+  "retained_failed_attempt": {
+    "path": "/workspace/scratch/7d765b879ceb/native_model_lfm400",
+    "cause": "Evidence case ID plus slm-pilot- prefix exceeded the Workbench 48-character saved-name limit. Native geometry remained unchanged; short aliases preserve original IDs.",
+    "model_output_repaired": false
+  },
+  "scope": "Accepted programs were natively executable. This does not erase rejected generations or symbolic/visual semantic failures."
+}

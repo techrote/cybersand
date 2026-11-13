@@ -7,12 +7,38 @@ seed filters without a server or network. Click an image to obtain its original
 
 ![Twelve reference words, actual native material readback](native_reference_12.png)
 
-The initial atlas contains **192 reference renders**: twelve themes × eight
+The completed bootstrap atlas contains **260 images**: 192 reference renders and 68 model replays. The reference section covers twelve themes × eight
 structural templates × two seeds. They were selected from the **864/864 passing
 native teacher cases**. All 192 native readbacks differ, and the repeated
 32-case pilot reproduced its operation hashes, raw material bytes and PNGs
 exactly. Those numbers measure execution and reproducibility; image uniqueness
 does not establish artistic merit.
+
+## Actual trained model section
+
+![Twelve exact model requests, including semantic errors](native_model_keywords_12.png)
+
+The frozen 400-step LFM2.5-350M adapter produced 22/24 accepted development programs
+and 12/12 accepted literal-word programs. Every accepted program was replayed at
+host seeds 17 and 73: **68/68 native cases passed**. These are 34 accepted requests,
+not 68 independent language requests. The two invalid coral JSON completions were
+never repaired or executed. `veins` uses an incorrect orthogonal motif; `ribs`
+uses rib geometry but declares the wrong theme label. Both errors are visible
+and remain failures of the requested semantic contract.
+
+All 34 programs produced different readbacks between the two seeds. There are
+66 distinct readbacks across 68 cases; cross-request overlap is retained. The
+assistant inspected all 68 images in two complete contact sheets. This is
+provisional visual inspection, not a blind recognition or human aesthetic score.
+See [model_visual_review.json](model_visual_review.json).
+
+The independent model packet passed 1,398 engine assertions, 329,761 native
+receipt checks and 408 raw-completion-to-compiler binding checks. Twelve theme
+representatives passed exact Undo/Redo/save/reopen. Its first attempt is retained
+as failed because long evidence IDs exceeded the 48-character saved-start name
+limit. The retry uses short aliases, preserves the original ID mapping, and does
+not change or repair any model program. Frozen harness case IDs must be at most
+38 characters because the save name adds `slm-pilot-`.
 
 ## What "qualified" means here
 
@@ -34,8 +60,7 @@ Windows, graphical framebuffer or human aesthetic acceptance.
 The images show native material IDs through a fixed dark/ivory display palette,
 using Godot `Image`. The source PNGs are preserved unchanged. Contact sheets use
 nearest-neighbor enlargement only; no generated illustration substitutes for a
-native result. Any later model-generated section must be labeled separately
-and retain all rejected requests in its reported success denominator.
+native result. The model section is labeled separately and flags wrong theme labels, primary motifs and requested layouts. Its request denominators retain the two rejected coral responses, which have no native image.
 
 ## Visual review and known weaknesses
 
@@ -62,7 +87,7 @@ python experiments/wb-art-slm-001/gallery/build_gallery.py \
 
 The configuration contains a `batches` array. Each item names `kind`, `cases`
 (the exact native input JSON), `artifacts` (native output directory), `receipts`
-(globally verified receipt JSON), and optional `select` case IDs and `model`.
+(globally verified receipt JSON), and optional `select` case IDs and `model`. Model batches also supply `assessments`, a list of original prediction JSON files. Each case carries `prediction_id`; the builder verifies that the original completion equals the replayed program before displaying its semantic assessment.
 The builder emits the multi-file atlas, the self-contained atlas and a manifest.
 The source repository keeps the self-contained atlas, compact manifest and
 contact sheet; the evidence archive preserves original files and raw native

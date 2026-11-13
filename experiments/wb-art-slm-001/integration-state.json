@@ -1,8 +1,8 @@
 {
   "experiment": "WB-ART-SLM-001",
-  "status": "bootstrap-in-progress",
+  "status": "bootstrap-implemented-and-frozen",
   "updated_on": "2026-11-13",
-  "owner": "current user-authorized bootstrap session",
+  "owner": "five role workers after bootstrap handoff",
   "branch": "codex/wb-art-slm-001",
   "native_qualification": "Pinned Linux headless native-material pilot only",
   "native_source": "90719c72b9fcf90593fb7878354051ad601b47fd",
@@ -12,18 +12,60 @@
   "native_cases_passed": 864,
   "teacher_gallery_images": 192,
   "training": {
-    "state": "running",
+    "state": "completed-frozen-candidate",
     "model": "LiquidAI/LFM2.5-350M",
     "revision": "9921cd4d82c0e3986887aa4b376f9446729ef8a3",
     "train_examples": 1152,
     "dev_examples": 192,
     "final_examples": 192,
-    "do_not_launch_duplicate": true
+    "do_not_launch_duplicate": true,
+    "global_step": 400,
+    "adapter_sha256": "02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2",
+    "trainable_parameters": 5996544,
+    "exact_resume_verified": true,
+    "dev_requests": 24,
+    "dev_first_pass_accepted": 22,
+    "dev_primary_motif_correct": 22,
+    "dev_exact_motif_layout": 19,
+    "dev_exact_reference_program": 13,
+    "keyword_requests": 12,
+    "keyword_first_pass_accepted": 12,
+    "keyword_primary_motif_correct": 11,
+    "keyword_theme_correct": 11,
+    "keyword_joint_theme_motif": 10,
+    "final_assessment_run": false
   },
   "schedules": {
-    "state": "five experiment workers temporarily paused during bootstrap",
-    "restore_policy": "Restore only bootstrap-owned pauses; preserve any later user pauses and all unrelated tasks"
+    "state": "five existing hourly workers; restore bootstrap-owned pauses only after this source is published",
+    "restore_policy": "Preserve later user pauses and all unrelated tasks; verified final state lives in AUTOMATIONS.json",
+    "no_new_tasks": true
   },
   "production_promotion": "HOLD; combined Draft only, no Ready or merge",
-  "next_checkpoint": "Completed adapter, verified resume, strict development/keyword comparison, actual model-output native replays, durable artifacts and role-specific handoffs"
+  "next_checkpoint": "One separately named training-only curriculum candidate with early literal-word coverage; independent native replay and matched Sprocket/Smol adaptation; current-main provider/Windows qualification.",
+  "pull_request": "https://github.com/techrote/cybersand/pull/567",
+  "model_native_cases_passed": 68,
+  "combined_gallery_images": 260,
+  "artifacts_manifest": "ARTIFACTS.json",
+  "artifacts_saved": true,
+  "training_owner_active": false,
+  "baselines": {
+    "matched_dev_requests": 12,
+    "lfm350_unadapted_accepted": 0,
+    "smol135_instruct_unadapted_accepted": 0,
+    "sprocket500_root_instruct_unadapted_accepted": 0,
+    "lfm350_step400_accepted": 11,
+    "not_equal_finetuning_comparison": true
+  },
+  "native_model_denominators": {
+    "requests": 36,
+    "accepted_predictions": 34,
+    "native_seed_replays": 68,
+    "passed_replays": 68,
+    "joint_label_primary_motif_correct_requests": 32
+  },
+  "known_model_failures": [
+    "two malformed coral numeric JSON completions on development requests",
+    "keyword ribs selects correct geometry but theme ruins",
+    "keyword veins selects orthogonal geometry instead of network"
+  ]
 }

@@ -1,0 +1,41 @@
+{
+  "main_run_samples": 400,
+  "corpus_examples": 1152,
+  "exact_word_examples_seen": [
+    "strata",
+    "mycelium",
+    "labyrinth",
+    "circuitry",
+    "roots",
+    "ruins"
+  ],
+  "per_theme_seen": {
+    "circuitry": 33,
+    "coral": 33,
+    "crystals": 33,
+    "dunes": 31,
+    "honeycomb": 38,
+    "labyrinth": 24,
+    "mycelium": 29,
+    "ribs": 38,
+    "roots": 29,
+    "ruins": 39,
+    "strata": 36,
+    "veins": 37
+  },
+  "note": "This is exposure analysis of the already-completed fixed sampler, not an additional training run.",
+  "exact_word_first_epoch_positions": {
+    "circuitry": 241,
+    "coral": 818,
+    "crystals": 1076,
+    "dunes": 1094,
+    "honeycomb": 409,
+    "labyrinth": 231,
+    "mycelium": 221,
+    "ribs": 648,
+    "roots": 284,
+    "ruins": 328,
+    "strata": 176,
+    "veins": 1075
+  }
+}
