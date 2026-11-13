@@ -34,6 +34,7 @@ def local_file(directory: Path, relative: object) -> Path:
 
 def verify(root: Path, *, cases: list, source: str, tree: str, runtime: dict,
            run_id: str, attempt: str, shard_count: int, godot_version: str,
+           tested_inputs: dict[str, str],
            readback_output: Path | None = None) -> dict:
     paths = sorted(root.rglob("timings.json"))
     require(len(paths) == shard_count, "Original Linux shard count mismatch")
@@ -50,10 +51,12 @@ def verify(root: Path, *, cases: list, source: str, tree: str, runtime: dict,
         seen.add(index)
         for key, expected in {"source_sha": source, "source_tree": tree, "shard_count": shard_count,
                 "run_id": run_id, "run_attempt": attempt, "godot_version": godot_version,
+                "tested_inputs": tested_inputs,
                 "execution_policy": execution_policy.identity(), **runtime}.items():
             require(identity.get(key) == expected, f"Linux {key} identity mismatch")
         require(report.get("status") == "passed" and report.get("completed") is True,
                 "Linux shard did not complete successfully")
+        require(report.get("source_drift") == [], "Linux source inputs changed during execution")
         assigned = plans[index]
         require(report.get("assigned_cases") == [case.name for case in assigned],
                 "Linux source-derived assignment changed")
@@ -89,6 +92,7 @@ def verify(root: Path, *, cases: list, source: str, tree: str, runtime: dict,
     return {"schema": "linux-godot-coverage-v1", "status": "passed", "source_sha": source,
         "source_tree": tree, "run_id": run_id, "run_attempt": attempt, "shard_count": shard_count,
         "case_count": len(observed), "cases": observed, "originals": originals,
+        "source_inputs_verified": len(tested_inputs),
         "execution_policy": execution_policy.identity()}
 
 
@@ -118,6 +122,7 @@ def main() -> int:
             runtime[key] = {"path": relative + filename, "sha256": digest(args.runtime / filename)}
         result = verify(args.root, cases=runner.discover_cases(), source=args.source_sha, tree=git("rev-parse", "HEAD^{tree}"),
             runtime=runtime, run_id=args.run_id, attempt=args.attempt, shard_count=args.shard_count, godot_version=args.godot_version,
+            tested_inputs=runner.tested_inputs(execution_policy.ROOT),
             readback_output=args.output.parent / "linux-play-readback")
     except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
         result["error"] = f"{type(error).__name__}: {error}"

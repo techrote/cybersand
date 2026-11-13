@@ -20,6 +20,19 @@ shared Undo/Redo and Art panel features, complete scoped Windows/Linux graphics
 and editing qualification, and keep the PR Draft until owner acceptance. Native
 sources and retained-runtime identity are not changed by camera presentation.
 
+## Materials Lab Windows evaluation — 2026-11-12
+
+[Draft #562](https://github.com/techrote/cybersand/pull/562) carries the
+[bounded authoring workflow and Windows launcher](materials-lab-authoring.md).
+Use the [completion audit](../audits/2026-11-11-materials-lab-completion.md) for
+the actual source/runtime/package campaign result and preserved failures.
+Request7 is a fully qualified recoverable Windows package. Request8's strict
+hosted desktop-fit check refused publication; its successor fits the native
+window frame within the usable work area and requires a fresh campaign.
+Accepted liquid-equipment main is incorporated; #563 retains separate native
+capability-consumer ownership. Candidates execute only in their admitted
+isolated backends. Keep Draft / Do Not Merge until owner acceptance.
+
 ## WB-ART-002 Stage 1 — 2026-11-10
 
 **2026-11-11 integrated Draft successor:** read the

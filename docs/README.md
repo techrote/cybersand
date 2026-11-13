@@ -17,6 +17,16 @@ and [source/platform evidence](audits/2026-11-13-native-pixel-scrolling.md).
 The candidate is stacked on #564 and remains Draft; old Workbench artifacts do
 not qualify the new camera source.
 
+Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.
+
+Materials Lab v1 review candidate: [desktop launch, inspection, authoring and native tests](operations/materials-lab-authoring.md),
+[initial qualification](audits/2026-11-11-materials-lab-v1.md), and
+[completion/runtime/Windows package evidence](audits/2026-11-11-materials-lab-completion.md).
+The mounted interface consumes native read-only facts, compiles isolated presets
+and reuses MicroScenarios. Production material authority, IDs and saved-world
+semantics remain unchanged; #353-B remains separate. The owner excluded
+MoltenGlass H1 from this Materials Lab continuation.
+
 Current Draft: [integrated PAINT + agent Workbench](operations/wb-art-paint-integrated-candidate.md), including standalone generator profiles, native stored-material receipts and one edit ordering boundary. Component contracts: [direct drawing](systems/workbench-direct-art-batches.md), [provider connection/context/scanlines](systems/workbench-art-providers.md), and [full PAINT editor](systems/paint-editor-bounded-shapes.md).
 
 Shared authoring: [approved data contract and convergence plan](architecture/shared-workbench-authoring-data.md)
@@ -47,9 +57,12 @@ unchanged. The [dated audit](audits/2026-11-06-coupling-lockstep-feasibility.md)
 records the evidence and the opt-in packing re-measurement.
 
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
+The separate [native capability consumer candidate](audits/2026-11-11-material-native-capability-cutover.md)
+in Draft #563 generates hard/granular queries while preserving existing values,
+source-qualified policy/save identity and the immutable lock.
 The [#353-A shadow compiler](operations/material-catalogue-shadow.md) merged in
 [#371](https://github.com/techrote/cybersand/pull/371), accepted main `7ef4856e`;
-legacy native/fallback definitions remain production authority. The
+on accepted main, legacy native/fallback definitions remain production authority. The
 [#354 Phase A investigation](operations/material-liveness-investigation.md)
 demonstrates lost isolated MoltenGlass cooling, distinguishes existing mutual
 heating and preserves documented generic yielding rest. Only tests, tooling and

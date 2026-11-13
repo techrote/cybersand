@@ -1,0 +1,32 @@
+{
+  "command": [
+    "C:\\khybersand\\build\\Materials-Lab-Windows-request5\\Godot_v4.7-stable_win64_console.exe",
+    "--headless",
+    "--path",
+    "C:\\khybersand\\.worktrees\\materials-lab-evaluation\\godot",
+    "--script",
+    "res://tests/test_material_lab_ui.gd"
+  ],
+  "environment": {
+    "APPDATA": "C:\\Users\\_\\AppData\\Roaming",
+    "LOCALAPPDATA": "C:\\Users\\_\\AppData\\Local",
+    "PATH": "C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\python;C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\git\\cmd;C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\git\\ucrt64\\bin;C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\git\\mingw64\\bin;C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\cxx\\bin;C:\\WINDOWS\\System32;C:\\WINDOWS",
+    "CYBERSAND_LAB_CXX": "C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\cxx\\bin\\g++.exe",
+    "PYTHONUTF8": "1",
+    "PYTHONNOUSERSITE": "1"
+  },
+  "outer_timeout_seconds": 1200,
+  "seconds": 227.90741880005226,
+  "exit_code": 0,
+  "source_before_sha256": {
+    "godot/scripts/shared_workbench.gd": "0a814639b8095fe21a0d6cacf8a1c224ef3c0e0f69ad5414fa181b9b609c743d",
+    "godot/tests/test_material_lab_ui.gd": "3887246830b7d3771eaf9a3199a7284ffd812d8357e7fe73273e4e1c505a07e6"
+  },
+  "source_after_sha256": {
+    "godot/scripts/shared_workbench.gd": "0a814639b8095fe21a0d6cacf8a1c224ef3c0e0f69ad5414fa181b9b609c743d",
+    "godot/tests/test_material_lab_ui.gd": "3887246830b7d3771eaf9a3199a7284ffd812d8357e7fe73273e4e1c505a07e6"
+  },
+  "runtime_sha256": "7aff557ea0f2f87d6380e645ed17f5878ab8a5746cd66cfa33be783728c6e2a2",
+  "original_log_sha256": "5ef41b96b560d6a268c84417fa47de2fceca9161f1393ba6a720ed96d149105b",
+  "scope": "Full mounted UI, including stretched-parent Workbench popup fallback/input isolation. Actual native desktop popup separately qualified by the ANGLE focused log."
+}

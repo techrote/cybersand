@@ -6,6 +6,9 @@ func _ready() -> void:
 	# Keep existing direct-launch arguments compatible with the desktop wrapper.
 	var first_launch: bool = not get_tree().has_meta("cybersand_launch_args_consumed")
 	get_tree().set_meta("cybersand_launch_args_consumed", true)
+	if first_launch and "--materials-lab" in OS.get_cmdline_user_args():
+		launch.call_deferred("materials_lab")
+		return
 	if first_launch and "--workbench" in OS.get_cmdline_user_args():
 		launch.call_deferred("shared_workbench")
 		return
@@ -46,6 +49,7 @@ func _ready() -> void:
 	_label(column, "CYBERSAND / PLAY & EXPERIMENT", 30)
 	_label(column, "Choose a feature. F2 returns here; returning closes the current session. Showcase maps start paused. F5 selects 46 articulated Rapier actors or sampled references in the sandbox and showcase maps.", 18)
 	_button(column, "Development workbench — blank canvas, flyer fleet, materials and solver controls", "shared_workbench")
+	_button(column, "Materials Lab — native inspector, candidate authoring and reproducible tests", "materials_lab")
 	_button(column, "Play session — shared desktop course, five mechanical players and solver choices", "play_session")
 	_button(column, "Player playground — stunt buggy, trials bike, acrobat, spacecraft, material swarms and jet barrel", "player_playground")
 	_button(column, "Deepworks — 1024 × 1024 multilayer material exhibition", "deepworks")
@@ -82,7 +86,8 @@ func _button(parent: Node, text: String, destination: String) -> void:
 
 func launch(destination: String) -> void:
 	var scene: String = "res://main.tscn"
-	if destination == "flight_lab": scene = "res://flight_lab.tscn"
+	if destination == "materials_lab": scene = "res://materials_lab.tscn"
+	elif destination == "flight_lab": scene = "res://flight_lab.tscn"
 	elif destination == "thunderbowl": scene = "res://examples/thunderbowl/thunderbowl.tscn"
 	elif destination in ["physical_actors", "physical_usables"]: scene = "res://examples/thunderbowl/physical_thunderbowl.tscn"
 	elif destination == "worldgen": scene = "res://worldgen_workbench.tscn"

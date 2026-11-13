@@ -417,6 +417,9 @@ jobs:
       GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
       GODOT_SILENCE_ROOT_WARNING: '1'
       PYTHONUTF8: '1'
+      # Use the runner's installed MinGW toolchain; an ordinary Bash job does
+      # not initialize the MSVC INCLUDE/LIB environment required by cl.exe.
+      CYBERSAND_LAB_CXX: 'C:\mingw64\bin\g++.exe'
     steps:
       - name: Check out exact tested source
         timeout-minutes: 5
@@ -424,6 +427,8 @@ jobs:
         with:
           ref: ${{ github.sha }}
           lfs: false
+          # Material authoring validates the immutable compatibility ancestry.
+          fetch-depth: 0
 
       - name: Select Python 3.12
         timeout-minutes: 5
@@ -642,6 +647,9 @@ jobs:
       - name: Check out exact source
         timeout-minutes: 5
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          # Material authoring validates the immutable compatibility ancestry.
+          fetch-depth: 0
 
       - name: Restore exact Linux runtime
         timeout-minutes: 5

@@ -1,0 +1,8 @@
+{
+  "schema": "mat-workbench-runtime-publish-request-v1",
+  "family": "materials-lab-and-integrated-workbench",
+  "variant": "shared-manual-agent-history-and-isolated-material-authoring",
+  "scope": "source-matched-linux-windows-lab-workbench-and-combined-authoring",
+  "intent": "publish-source-matched-runtimes",
+  "request_sequence": 6
+}

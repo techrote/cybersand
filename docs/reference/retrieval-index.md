@@ -23,6 +23,25 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 The [camera retrieval questions](retrieval-questions-native-pixel-scrolling.json)
 are additive; frozen historical question sets are unchanged.
 
+For the combined #562 Materials Lab / #564 Workbench candidate, original source ancestry, shared history preservation, standalone evaluation and #563 merge-order boundaries, read the [combined qualification record](../audits/2026-11-12-mat-auth-workbench-integration.md).
+
+## Materials Lab v1 review candidate — 2026-11-11
+
+| Question | Canonical route |
+|---|---|
+| How do I open the real Materials Lab and inspect declared versus effective native physics? | [Desktop launch and native inspection](../operations/materials-lab-authoring.md#browse-and-inspect-actual-behaviour) |
+| Which properties and reaction effects can I edit, and does compiled mean runtime-active? | [Candidate boundaries and states](../operations/materials-lab-authoring.md#supported-candidate-edits-and-state-transitions) |
+| How do presets round-trip, synthetic powder132 compile, and threshold0 reactions behave? | [Preset compilation](../operations/materials-lab-authoring.md#save-import-compile-and-compare), [reaction diagnostics](../operations/materials-lab-authoring.md#reaction-authoring-and-deterministic-diagnostics) |
+| How do I test materials in an actual native owner and reproduce the same configuration? | [Native experiments](../operations/materials-lab-authoring.md#native-simulation-experiments-and-reproducible-cases) |
+| Can edited candidates change real movement or products, with a clean reference and quantity/persistence checks? | [Compiled candidate World comparison](../operations/materials-lab-authoring.md#compare-an-edited-candidate-in-a-real-native-world) |
+| How do I save an explicit compiled-World recipe and author retained-state or Metal charge effects? | [Source-bound World recipes](../operations/materials-lab-authoring.md#compare-an-edited-candidate-in-a-real-native-world), [endpoint effects v2](../operations/materials-lab-authoring.md#reaction-authoring-and-deterministic-diagnostics) |
+| What was actually executed on Linux, Windows or graphically? | [Dated qualification](../audits/2026-11-11-materials-lab-v1.md); graphical evidence is separate from Windows/human acceptance |
+| How do source/target cells, masks and source-core windows affect a real native contact? | [Native contact inspection](../operations/materials-lab-authoring.md#inspect-an-actual-native-contact); supplied rolls do not establish dispatch or sleeping state |
+| How can I launch the Lab on Windows with its authoring tools included? | [Windows evaluation package](../operations/materials-lab-authoring.md#windows-launch), [completion and runtime qualification](../audits/2026-11-11-materials-lab-completion.md) |
+
+[Focused Lab questions](retrieval-questions-materials-lab.json) are additive;
+the frozen evaluation and existing historical fixtures retain their original scope.
+
 ## Direct native art batches without inference
 
 For the current combined Draft, standalone generator repairs, native stored-material authority, PAINT/agent ordering, preserved feature sets and acceptance, retrieve the [integration runbook](../operations/wb-art-paint-integrated-candidate.md). For #559 geometry, protection, acknowledgements, Stop and Save limits, retrieve the [direct art contract](../systems/workbench-direct-art-batches.md). For OpenAI/NVIDIA/LM Studio, conversation/context, scanlines, image observations, traffic, caps and cancellation, retrieve the [provider contract](../systems/workbench-art-providers.md).

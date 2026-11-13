@@ -4,11 +4,20 @@ document-kind: runbook
 canonical-for: [material-lab-controls, manual-material-recipes]
 status: Current
 scope: Desktop and Web manual controls, repeatable interaction observations, construction recipes, and finite-demo limits
-last-reviewed: 2026-10-18
+last-reviewed: 2026-11-11
 related-documents: [systems/materials-and-rule-kernels.md, systems/themed-construction-materials.md, systems/water-design.md, reference/configuration-reference.md, reference/level-saves-and-replay.md, operations/microscenarios-programme.md]
 ---
 
 # 1024² material lab
+
+The separate **Materials Lab v1** desktop review candidate adds native browsing,
+effective-property inspection, structured source candidates, compiled candidate
+versus untouched-reference Worlds, explicit isolated endpoint effects, source-bound
+World recipes and bounded existing-material native experiments.
+See its [launch and authoring guide](operations/materials-lab-authoring.md)
+and [dated qualification](audits/2026-11-11-materials-lab-v1.md). It opens from the
+feature launcher or Shared Workbench; it does not make shadow definitions active
+in production or replace this historical manual-observation route.
 
 **Current:** CyberSand exposes 79 paintable materials in a finite 1024×1024 native
 world. Desktop and Web have different controllers and controls. This page is a

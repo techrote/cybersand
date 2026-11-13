@@ -133,6 +133,7 @@
     "operations/atlas-agent-runner.md",
     "operations/ci-execution-and-performance.md",
     "operations/material-catalogue-shadow.md",
+    "operations/materials-lab-authoring.md",
     "operations/material-liveness-investigation.md"
   ],
   "navigation": [

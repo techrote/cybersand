@@ -20,6 +20,8 @@ class LinuxCoverageTests(unittest.TestCase):
         self.options = {"cases": self.cases, "source": "a" * 40, "tree": "b" * 40,
             "runtime": {"cybersand_runtime": {"path": "native.so", "sha256": "c" * 64},
                         "rapier_runtime": {"path": "rapier.so", "sha256": "d" * 64}},
+            "tested_inputs": {"tools/material_catalogue/lab.py": "e" * 64,
+                              "materials/catalogue/catalogue.json": "f" * 64},
             "run_id": "123", "attempt": "1", "shard_count": 2, "godot_version": "4.7.control"}
         self.reports = []
         shards, _ = runner.build_shard_plan(self.cases, 2)
@@ -29,8 +31,10 @@ class LinuxCoverageTests(unittest.TestCase):
             identity = {"source_sha": self.options["source"], "source_tree": self.options["tree"],
                 "execution_policy": execution_policy.identity(), "shard_index": index,
                 "shard_count": 2, "run_id": "123", "run_attempt": "1",
+                "tested_inputs": self.options["tested_inputs"],
                 "godot_version": "4.7.control", **self.options["runtime"]}
             report = {"identity": identity, "status": "passed", "completed": True,
+                "source_drift": [],
                 "assigned_cases": [case.name for case in cases], "results": []}
             for offset, case in enumerate([runner.Case("import", ("--editor", "--quit"), 1200, 1), *cases]):
                 log = directory / (case.name + ".log")
@@ -55,6 +59,22 @@ class LinuxCoverageTests(unittest.TestCase):
 
     def test_complete_source_matched_originals_pass(self):
         self.assertEqual(self.verify()["case_count"], 2)
+        self.assertEqual(self.verify()["source_inputs_verified"], 2)
+
+    def test_missing_or_changed_authoring_inventory_is_rejected(self):
+        for value in (None, {}, {"tools/material_catalogue/lab.py": "0" * 64,
+                               "materials/catalogue/catalogue.json": "f" * 64}):
+            with self.subTest(value=value):
+                self.change(lambda report: report["identity"].update(tested_inputs=value))
+                with self.assertRaisesRegex(ValueError, "tested_inputs identity"):
+                    self.verify()
+
+    def test_missing_or_changed_terminal_custody_is_rejected(self):
+        for value in (None, ["tools/material_catalogue/lab.py"]):
+            with self.subTest(value=value):
+                self.change(lambda report: report.update(source_drift=value))
+                with self.assertRaisesRegex(ValueError, "source inputs changed"):
+                    self.verify()
 
     def test_missing_or_duplicate_shard_fails(self):
         self.change(lambda report: report["identity"].update(shard_index=0), index=1)

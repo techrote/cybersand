@@ -1,0 +1,38 @@
+{
+  "command": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tools/material_catalogue",
+    "-p",
+    "test_*.py",
+    "-v"
+  ],
+  "returncode": 1,
+  "seconds": 326.346,
+  "source_lf_sha256": {
+    "tools/material_catalogue/test_reaction_effects.py": "67a218618f56d90e8c08b5ed8f6a7d7e40c36b39f501ec98bea3ac8c5a4569e7",
+    "tools/material_catalogue/test_compatibility.py": "2392574819b89be795b9aae841486199c33e83ffa519b139d903323ff71480a4",
+    "tools/material_catalogue/compiler.py": "81a0658655574ee5e65ecc144db9750b9128380595d51af70c2b04d0a209a098",
+    "tools/material_catalogue/world_case.py": "4150d948277370fd1ad2ec51eb1a7f09428f4c9048c2998ac1b404cd17e2a9a3",
+    "tools/material_catalogue/reaction_effects.py": "6ad898ee23cda7ba82c7dcbc32094ca5d57dfd63bbf0f9965882a4e351483d29",
+    "tools/material_catalogue/check_gdscript_shadow.py": "c5ab2b10300fdf6a6be5673e433df81c3349eea6587b34de9b4b18b11bb3743e",
+    "tools/material_catalogue/check_native_parity.py": "2b85883db43858aed7e535b441dd66c82efd532b83a38ae3becca3d0f3dee967",
+    "tools/material_catalogue/process_owner.py": "69d118e55582c6e8d639abf272835758a11e82861dbf7e91bef3406b1abfb22a",
+    "tools/material_catalogue/lab.py": "7dfd3664612a877e7a85fdc1ad836f7963011d16204dcfa0dc599a4611ffd88f",
+    "tools/material_catalogue/test_world_candidate.py": "c81a89546b7a2ed6f934740c2179262323d5fc322a2216c592dad500ad3b0831",
+    "tools/material_catalogue/world_candidate.py": "8b1b2f68bb0a299dc83f6e06c71dd36209b9b4742eb6eb086a888ff3d28747a1",
+    "tools/material_catalogue/test_process_owner.py": "4aadec8099c05e646c1597db1146eb71c219859531c9393c5c94fd26b289ef72",
+    "tools/material_catalogue/test_lab.py": "aeadd2e7cf65ae7c0e3a830d2fbe1f4c746fc3a3344f1a701a8c453c49d870b2",
+    "tools/material_catalogue/compatibility.py": "07f48c9b94f542eba78bec5467125ea9f264125b13f636e21f530293e699d556",
+    "tools/material_catalogue/test_compiler.py": "41b211a0946638bba2b7db671b50a93335bf0c3904ed550d7ccdd9e709ae89bd",
+    "tools/material_catalogue/test_world_case.py": "052c31771ba6812f4b50772e936f52828137c740436568e93170078fd114cb1a",
+    "tools/material_catalogue/test_gdscript_shadow.py": "649f82105c8c122cedb698894d39fa7e16db8f0dc3e186c27d8d34961d4b326a",
+    "tools/material_catalogue/test_parity_tools.py": "6f7f3c9bca38e751b519dc62e3c8f466a8925015a6d497a45cf8a21c4c86dbe7"
+  },
+  "log_sha256": "9729cf98eecd12934ce4e2e9cb3989a77cdaf02efd21abbb3ecf42bc2bd94bcb",
+  "tooling_python_sources_unchanged": true,
+  "source_inventory_scope": "Python tooling only; actual World custody additionally detected concurrent material_lab_experiment.gd change and refused the affected test."
+}

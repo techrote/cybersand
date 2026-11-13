@@ -5,6 +5,7 @@
 #include "cybersand/demo_snapshot.hpp"
 #include "cybersand/interaction_rules.hpp"
 #include "cybersand/material_rules.hpp"
+#include "cybersand/material_appearance.hpp"
 #include <bit>
 #include <algorithm>
 #include <godot_cpp/classes/ref.hpp>
@@ -133,6 +134,8 @@ class CyberDemoBridge final : public RefCounted {
     }
 
 public:
+#include "material_lab_inspection.inc"
+
     // The API reports the loader's library path, which can differ from an
     // editor shadow copy. Observe current bytes at that path; this alone does
     // not identify mapped bytes. The caller supplies no path/digest. Hash only
@@ -996,8 +999,10 @@ protected:
     static void _bind_methods() {
         ClassDB::bind_method(D_METHOD("loaded_native_runtime_values"), &CyberDemoBridge::loaded_native_runtime_values);
         ClassDB::bind_method(D_METHOD("inspect_cell", "world", "point"), &CyberDemoBridge::inspect_cell);
+        ClassDB::bind_method(D_METHOD("inspect_material_lab_cell", "world", "point"), &CyberDemoBridge::inspect_material_lab_cell);
         ClassDB::bind_method(D_METHOD("inspect_statistics", "world"), &CyberDemoBridge::inspect_statistics);
         ClassDB::bind_method(D_METHOD("inspect_interaction_profile"), &CyberDemoBridge::inspect_interaction_profile);
+        ClassDB::bind_method(D_METHOD("inspect_material_catalogue"), &CyberDemoBridge::inspect_material_catalogue);
         ClassDB::bind_method(D_METHOD("inspect_interaction", "source_id", "target_id", "probability_roll"),
                              &CyberDemoBridge::inspect_interaction);
         ClassDB::bind_method(D_METHOD("export_level", "world"), &CyberDemoBridge::export_level);

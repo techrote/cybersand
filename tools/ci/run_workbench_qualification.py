@@ -155,8 +155,12 @@ class Runner:
         finally:
             (self.evidence / "results.json").write_text(json.dumps(self.results, indent=2)+"\n", encoding="utf-8")
 
-    def godot(self, project, label, script=None, marker=None, *, graphical=False, env=None):
+    def godot(self, project, label, script=None, marker=None, *, graphical=False, env=None, max_fps=None):
         command = [str(self.args.godot.resolve()), "--audio-driver", "Dummy"]
+        if max_fps is not None:
+            if not isinstance(max_fps, int) or max_fps < 1:
+                raise ValueError("Graphical frame bound must be a positive integer")
+            command += ["--max-fps", str(max_fps)]
         if graphical:
             command += ["--rendering-method", "gl_compatibility"]
             if sys.platform == "win32":
@@ -366,6 +370,7 @@ def regressions(args):
     project = args.project.resolve()
     runner.godot(project, "regression-import")
     runner.godot(project, "art-keyless", "test_art_provider", "ART_PROVIDER_KEYLESS")
+    runner.godot(project, "art-panel-ui", "test_art_panel_ui", "ART_PANEL_UI")
     runner.godot(project, "art-stored-material", "test_art_stored_material", "ART_STORED_RESULT")
     runner.godot(project, "art-deferred-manual", "test_art_deferred_manual", "ART_DEFERRED_MANUAL")
     runner.godot(project, "art-native", "test_art_batch_native", "ART_STAGE1_RESULT")

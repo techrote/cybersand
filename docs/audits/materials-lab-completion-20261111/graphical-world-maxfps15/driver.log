@@ -1,0 +1,11 @@
+Running test_material_lab_world, timeout 1200.0s: ['/workspace/scratch/f7237b2aaca9/deps/godot47/Godot_v4.7-stable_linux.x86_64', '--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--display-driver', 'x11', '--path', '/workspace/scratch/f7237b2aaca9/cybersand-reconcile/godot', '--max-fps', '15', '--rendering-driver', 'opengl3', '--script', 'res://tests/test_material_lab_world.gd', '--', '--capture-output=/workspace/scratch/f7237b2aaca9/cybersand-reconcile/build/materials-lab-reconciliation/graphical-world-maxfps15/capture']
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+MATERIAL_LAB_WORLD_BUNDLE=/workspace/scratch/f7237b2aaca9/materials-lab-reconcile-graphical-userdata/godot/app_userdata/Cyber Sand Reference Sandbox/materials_lab/world-ui-615765/material-world-2-1235367
+Materials Lab World UI: 206 checks, 0 failures
+MAXFPS15_GRAPHICAL_RESULT {"status": "passed", "seconds": 60.155, "resources": {"scope": "direct_process_only", "available": true, "cpu_seconds": 49.43, "peak_rss_bytes": 317210624}, "natural_completion": true, "input_inventory_unchanged": true}

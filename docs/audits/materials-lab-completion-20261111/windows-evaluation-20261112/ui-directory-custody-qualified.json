@@ -1,0 +1,32 @@
+{
+  "command": [
+    "C:\\khybersand\\build\\Materials-Lab-Windows-request5\\Godot_v4.7-stable_win64_console.exe",
+    "--headless",
+    "--path",
+    "C:\\khybersand\\.worktrees\\materials-lab-evaluation\\godot",
+    "--script",
+    "res://tests/test_material_lab_ui.gd"
+  ],
+  "working_directory": "C:\\khybersand\\.worktrees\\materials-lab-evaluation",
+  "environment": {
+    "APPDATA": "C:\\Users\\_\\AppData\\Local\\Temp\\CyberSand Materials Lab directory custody full UI",
+    "PATH": "C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\python;C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\git\\cmd;C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\git\\ucrt64\\bin;C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\git\\mingw64\\bin;C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\cxx\\bin;C:\\WINDOWS\\System32;C:\\WINDOWS",
+    "CYBERSAND_LAB_CXX": "C:\\khybersand\\build\\Materials-Lab-Windows-request5\\dependencies\\cxx\\bin\\g++.exe",
+    "PYTHONUTF8": "1",
+    "PYTHONNOUSERSITE": "1"
+  },
+  "outer_timeout_seconds": 1200,
+  "seconds": 233.2649468999589,
+  "exit_code": 0,
+  "test_script_before_sha256": "69549d0e373902a3446c4418d53fb80317c9233f55e633ae8d032effe9b21a2c",
+  "test_script_after_sha256": "69549d0e373902a3446c4418d53fb80317c9233f55e633ae8d032effe9b21a2c",
+  "runtime_sha256": "7aff557ea0f2f87d6380e645ed17f5878ab8a5746cd66cfa33be783728c6e2a2",
+  "bundled_prerequisite_hashes": {
+    "godot": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "python": "4d6f5f81a4bca11191c4c7c6b43632694d0a4ce74e068619d8fdc161d469859a",
+    "cxx": "eccc5963340f7b57805b3750efc182c25c6d4eddb828c8cee2b0f974a0d943ac",
+    "git": "20d0dde30a65afb6e5810a883700a94dcd77fbf3b44b32868d45bf7c9b30137c"
+  },
+  "original_log_sha256": "4f603766c754610df783af6a32ab973094594d60644af99259ddd270133b584e",
+  "scope": "Current worktree UI test with package5 bundled engine/prerequisites and external spaced user data; not a modified or reattested package."
+}

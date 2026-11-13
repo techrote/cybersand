@@ -1,0 +1,242 @@
+{
+  "candidate_digest": "bab79d8460f9970d011641c9ee2f01df0107b597a33e855d3f71aa740d308135",
+  "compiled_catalogue_sha256": "516e9061fda053d74d74afc624a403fefbb623e9bd34509885f3e8223db0385b",
+  "compiler": "c++",
+  "compiler_version": "c++ (Debian 14.2.0-19) 14.2.0",
+  "generated_sha256": {
+    "catalogue.shadow.hpp": "cb92c48f98abc6fa23f48aee229005e80ba64d4c1158ae398f7a65c0248b19c7",
+    "catalogue_shadow.gd": "80aacaea5e4f88ad42eae486e5885090acef11507f2c45e4f4c922d54f5de7cc",
+    "inspection.json": "242759fb9f345e0091985a4ffc53a6d8597bf2733e072903e6805ab977613c64",
+    "manifest.json": "668d04fd38f531b93c48c78ad674c452e0b4ba3a461f004367efaaa3f34c0049"
+  },
+  "native_executable_sha256": "139f9182283b948f5aec294ba167d27a3f76a9dcc3beb90a0352bc4dd3d8b7aa",
+  "observed": {
+    "backend": "native_sparse_resolver_and_descriptor_fixture_v1",
+    "candidate_material": {
+      "density": 1000,
+      "granular_support": false,
+      "hard_surface": false,
+      "id": 3,
+      "kernel": 2,
+      "name": "water",
+      "rgba": [
+        47,
+        127,
+        210,
+        255
+      ],
+      "viscosity_index": 0,
+      "visual_state_source": 1
+    },
+    "checks": 114811,
+    "comparison": {
+      "baseline_selected": 15400,
+      "candidate_selected": 15400,
+      "changed_pairs": [
+        {
+          "baseline": {
+            "matched": false,
+            "selected_at_example_roll": false
+          },
+          "candidate": {
+            "matched": true,
+            "probability_threshold": 255,
+            "rule_id": "int.pair.lava-water.quench.v1",
+            "rule_slot": 0,
+            "selected_at_example_roll": true,
+            "source_product": 13,
+            "source_product_descriptor_defaults": {
+              "state_a": 0,
+              "state_b": 0
+            },
+            "successful_rolls_of_256": 256,
+            "target_product": 22,
+            "target_product_descriptor_defaults": {
+              "state_a": 180,
+              "state_b": 0
+            }
+          },
+          "different_rolls": 256,
+          "example_roll": 0,
+          "source": 2,
+          "target": 3
+        },
+        {
+          "baseline": {
+            "matched": false,
+            "selected_at_example_roll": false
+          },
+          "candidate": {
+            "matched": true,
+            "probability_threshold": 255,
+            "rule_id": "int.pair.lava-water.quench.v1",
+            "rule_slot": 0,
+            "selected_at_example_roll": true,
+            "source_product": 22,
+            "source_product_descriptor_defaults": {
+              "state_a": 180,
+              "state_b": 0
+            },
+            "successful_rolls_of_256": 256,
+            "target_product": 13,
+            "target_product_descriptor_defaults": {
+              "state_a": 0,
+              "state_b": 0
+            }
+          },
+          "different_rolls": 256,
+          "example_roll": 0,
+          "source": 3,
+          "target": 2
+        },
+        {
+          "baseline": {
+            "matched": true,
+            "probability_threshold": 255,
+            "rule_id": "int.pair.lava-water.quench.v1",
+            "rule_slot": 0,
+            "selected_at_example_roll": true,
+            "source_product": 22,
+            "source_product_descriptor_defaults": {
+              "state_a": 180,
+              "state_b": 0
+            },
+            "successful_rolls_of_256": 256,
+            "target_product": 13,
+            "target_product_descriptor_defaults": {
+              "state_a": 0,
+              "state_b": 0
+            }
+          },
+          "candidate": {
+            "matched": false,
+            "selected_at_example_roll": false
+          },
+          "different_rolls": 256,
+          "example_roll": 0,
+          "source": 3,
+          "target": 8
+        },
+        {
+          "baseline": {
+            "matched": true,
+            "probability_threshold": 255,
+            "rule_id": "int.pair.lava-water.quench.v1",
+            "rule_slot": 0,
+            "selected_at_example_roll": true,
+            "source_product": 13,
+            "source_product_descriptor_defaults": {
+              "state_a": 0,
+              "state_b": 0
+            },
+            "successful_rolls_of_256": 256,
+            "target_product": 22,
+            "target_product_descriptor_defaults": {
+              "state_a": 180,
+              "state_b": 0
+            }
+          },
+          "candidate": {
+            "matched": false,
+            "selected_at_example_roll": false
+          },
+          "different_rolls": 256,
+          "example_roll": 0,
+          "source": 8,
+          "target": 3
+        }
+      ],
+      "different_outcomes": 1024,
+      "domain": "all 256 rolls for each unique directed pair in the union of baseline and candidate sparse rules",
+      "introduced_rule_queries": 512,
+      "probability_changed_outcomes": 0,
+      "products_changed_outcomes": 0,
+      "queried_directed_pairs": 114,
+      "removed_rule_queries": 512
+    },
+    "diagnostic": {
+      "effects_version": 1,
+      "endpoint_effect": "replace_with_defaults",
+      "matched": true,
+      "probability_threshold": 255,
+      "production_selected": false,
+      "roll": 0,
+      "rule_id": "int.pair.lava-water.quench.v1",
+      "rule_slot": 0,
+      "selected": true,
+      "source": 2,
+      "source_product": 13,
+      "source_product_descriptor_defaults": {
+        "state_a": 0,
+        "state_b": 0
+      },
+      "status": "selected",
+      "successful_rolls_of_256": 256,
+      "target": 3,
+      "target_product": 22,
+      "target_product_descriptor_defaults": {
+        "state_a": 180,
+        "state_b": 0
+      },
+      "water_policy_required_for_product_quantity": false,
+      "world_writes_executed": false
+    },
+    "limits": [
+      "Resolver selection does not observe World cadence, masks, sleeping or competing mechanisms.",
+      "No candidate movement, state mutation, quantity ledger or production install was executed.",
+      "Legacy endpoint replacement uses World product initialisation, target then source, including applied Water maximum and same-ID reinitialisation."
+    ],
+    "ok": true,
+    "production_registry_unchanged": true,
+    "runtime_active": false,
+    "world_simulation": false
+  },
+  "platform": "linux",
+  "sanitizer_runtime_options": {
+    "ASAN_OPTIONS": "detect_leaks=0:strict_string_checks=1",
+    "UBSAN_OPTIONS": "halt_on_error=1"
+  },
+  "sanitizers": "address,undefined",
+  "schema_id": "cybersand.material-lab.native-receipt",
+  "schema_version": 1,
+  "source_identity": {
+    "digest": "e4eedde02d6fbe507c3b5a57d32b840b6130dd4f2ef72ec8a7750bfe4256e67c",
+    "git_head": "6df43c999e5dcf64651f156316afa5f2cd5aab24",
+    "lf_sha256": {
+      "docs/reference/liquid-policy-wire-vectors.json": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+      "docs/reference/liquid-run-receipt-vectors.json": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+      "docs/reference/liquid-solver-capability-matrix.json": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+      "docs/reference/water-normalization-vectors.json": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+      "godot/scripts/cell_world.gd": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+      "godot/scripts/interaction_policy.gd": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+      "godot/scripts/material_appearance_lut.gd": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+      "godot/scripts/transport_profiles.gd": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+      "godot/shaders/material_palette.gdshader": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+      "materials/catalogue/catalogue.json": "3a5250a07912dc9530172cb2fccecd526606e242209d666cb2da202e1cfc9f14",
+      "materials/catalogue/compatibility-lock.json": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc",
+      "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+      "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+      "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+      "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+      "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+      "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+      "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+      "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+      "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+      "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+      "native/src/material_rules.cpp": "3afda824571842e387b0cac70218ee5f1f96005d07aaaafcf95c146c3eee3254",
+      "native/src/world.cpp": "36f928740f554cde7542bc16e8ef897317ea51f3897af665ff6bb7f9e1ca812b",
+      "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+      "native/src/world_pressure.inc": "899ada71b89d30ba063e047bdd5b02346948008f1b7c0bec9fa0f2272e4d86ec",
+      "native/src/world_quantity.inc": "d9e6835d092193e4976c728d90121c6dee4b421337e056b5fc3c74975491af6e",
+      "tools/lcb/derive_capability_matrix.py": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+      "tools/lcb/native_policy_artifacts.py": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+      "tools/lcb/policy_contract.py": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+      "tools/material_catalogue/compatibility.py": "07f48c9b94f542eba78bec5467125ea9f264125b13f636e21f530293e699d556",
+      "tools/material_catalogue/compiler.py": "81a0658655574ee5e65ecc144db9750b9128380595d51af70c2b04d0a209a098",
+      "tools/material_catalogue/lab.py": "ced0c0ff64cef235e8d656b4723e2e623a352f63cfb24ebc787be85e83ec720b",
+      "tools/material_catalogue/lab_native_probe.cpp": "4f79fb94fcf2f491c936d45f732c1c2aab5d82bfcba336e13533f7b7f8db0e1a"
+    },
+    "qualification": "The file digest binds this executed source, including uncommitted implementation changes; git_head alone does not."
+  }
+}

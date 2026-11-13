@@ -1,0 +1,7 @@
+# Retained receipts/logs preserve exact original host bytes and raw hashes.
+# A basename rule also covers nested evidence without a recursive path glob.
+* -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol linguist-generated=true
+# Preserve the root's later explicit documentation format rules.
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf

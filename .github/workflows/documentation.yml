@@ -78,7 +78,8 @@ jobs:
         run: |
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/compatibility.py --check
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/compiler.py --check
-          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py'
+          # Aggregate suite compiles and executes multiple independent native Worlds.
+          timeout "$(python3 tools/ci/execution_policy.py seconds native_suite_seconds)" python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py'
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/check_native_parity.py --output build/material-catalogue/native-parity.json
       - name: Check LCB scenario definitions and registry are source-derived
         run: |

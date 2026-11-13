@@ -1,0 +1,590 @@
+{
+  "created_utc": "2026-11-12T19:35:00.046158+00:00",
+  "scope": "Independent compact read of original root-owned local geometry logs. Local source8 plus the two frozen placement deltas; this is not a published-source or package attestation.",
+  "source_base": "42298e8129b5609b28c330b2fbfe936be45a51ef",
+  "frozen_source_sha256_inspected_now": {
+    "godot/scripts/shared_workbench.gd": "19dc3c50ce3dec8e69dfcfd64757ec030fce29fca2eb63fa1acad4a435d647ed",
+    "godot/tests/test_material_lab_ui.gd": "6a35cddbcfff2cc7b504a838fc5e709e63b80dca8929429d3f37c0a618367522"
+  },
+  "runs": [
+    {
+      "label": "Windows ANGLE portrait desktop",
+      "original_log": "C:\\khybersand\\.worktrees\\materials-lab-evaluation\\build\\request8-delivery\\workbench-lab-workarea-root-angle.log",
+      "original_log_sha256": "e8d40eee4e7cc22d6f80b92090a1d916f0e588c34104f499d5a3eb401e7f7c7b",
+      "marker": {
+        "assertions": 44,
+        "failures": 0
+      },
+      "placement_before_assertions": [
+        {
+          "client_position": "(8, 427)",
+          "client_size": "(1184, 900)",
+          "context": "initial",
+          "display": "Windows",
+          "outer_position": "(0, 396)",
+          "outer_size": "(1200, 939)",
+          "parent_position": "(0, 505)",
+          "parent_screen": 1,
+          "parent_size": "(1280, 720)",
+          "placement": {
+            "admitted": true,
+            "after": {
+              "client_position": "(8, 427)",
+              "client_size": "(1184, 900)",
+              "outer_position": "(0, 396)",
+              "outer_size": "(1200, 939)"
+            },
+            "before": {
+              "client_position": "(30, 510)",
+              "client_size": "(1140, 900)",
+              "outer_position": "(22, 479)",
+              "outer_size": "(1156, 939)"
+            },
+            "chrome": "(16, 39)",
+            "minimum_client_size": "(1000, 650)",
+            "requested_client_size": "(1520, 900)",
+            "usable_position": "(0, 0)",
+            "usable_size": "(1200, 1731)"
+          },
+          "screen": 1,
+          "usable_position": "(0, 0)",
+          "usable_size": "(1200, 1731)"
+        },
+        {
+          "client_position": "(184, 1034)",
+          "client_size": "(1008, 689)",
+          "context": "restricted-workarea-fixture",
+          "display": "Windows",
+          "outer_position": "(176, 1003)",
+          "outer_size": "(1024, 728)",
+          "parent_position": "(0, 505)",
+          "parent_screen": 1,
+          "parent_size": "(1280, 720)",
+          "placement": {
+            "admitted": true,
+            "after": {
+              "client_position": "(184, 1034)",
+              "client_size": "(1008, 689)",
+              "outer_position": "(176, 1003)",
+              "outer_size": "(1024, 728)"
+            },
+            "before": {
+              "client_position": "(8, 427)",
+              "client_size": "(1184, 900)",
+              "outer_position": "(0, 396)",
+              "outer_size": "(1200, 939)"
+            },
+            "chrome": "(16, 39)",
+            "minimum_client_size": "(1000, 650)",
+            "requested_client_size": "(1520, 900)",
+            "usable_position": "(176, 1003)",
+            "usable_size": "(1024, 728)"
+          },
+          "screen": 1,
+          "usable_position": "(176, 1003)",
+          "usable_size": "(1024, 728)"
+        },
+        {
+          "client_position": "(1720, 847)",
+          "client_size": "(1520, 900)",
+          "context": "displaced-parent-reopen",
+          "display": "Windows",
+          "outer_position": "(1712, 816)",
+          "outer_size": "(1536, 939)",
+          "parent_position": "(1136, 1667)",
+          "parent_screen": 0,
+          "parent_size": "(1280, 720)",
+          "placement": {
+            "admitted": true,
+            "after": {
+              "client_position": "(1720, 847)",
+              "client_size": "(1520, 900)",
+              "outer_position": "(1712, 816)",
+              "outer_size": "(1536, 939)"
+            },
+            "before": {
+              "client_position": "(1720, 836)",
+              "client_size": "(1520, 900)",
+              "outer_position": "(1712, 805)",
+              "outer_size": "(1536, 939)"
+            },
+            "chrome": "(16, 39)",
+            "minimum_client_size": "(1000, 650)",
+            "requested_client_size": "(1520, 900)",
+            "usable_position": "(1200, 566)",
+            "usable_size": "(2560, 1440)"
+          },
+          "screen": 0,
+          "usable_position": "(1200, 566)",
+          "usable_size": "(2560, 1440)"
+        },
+        {
+          "client_position": "(8, 427)",
+          "client_size": "(1184, 900)",
+          "context": "restored-parent-reopen",
+          "display": "Windows",
+          "outer_position": "(0, 396)",
+          "outer_size": "(1200, 939)",
+          "parent_position": "(0, 505)",
+          "parent_screen": 1,
+          "parent_size": "(1280, 720)",
+          "placement": {
+            "admitted": true,
+            "after": {
+              "client_position": "(8, 427)",
+              "client_size": "(1184, 900)",
+              "outer_position": "(0, 396)",
+              "outer_size": "(1200, 939)"
+            },
+            "before": {
+              "client_position": "(30, 510)",
+              "client_size": "(1140, 900)",
+              "outer_position": "(22, 479)",
+              "outer_size": "(1156, 939)"
+            },
+            "chrome": "(16, 39)",
+            "minimum_client_size": "(1000, 650)",
+            "requested_client_size": "(1520, 900)",
+            "usable_position": "(0, 0)",
+            "usable_size": "(1200, 1731)"
+          },
+          "screen": 1,
+          "usable_position": "(0, 0)",
+          "usable_size": "(1200, 1731)"
+        },
+        {
+          "client_position": "(100, 552)",
+          "client_size": "(1000, 650)",
+          "context": "requested-(1000, 650)",
+          "display": "Windows",
+          "outer_position": "(92, 521)",
+          "outer_size": "(1016, 689)",
+          "parent_position": "(0, 505)",
+          "parent_screen": 1,
+          "parent_size": "(1280, 720)",
+          "placement": {
+            "admitted": true,
+            "after": {
+              "client_position": "(100, 552)",
+              "client_size": "(1000, 650)",
+              "outer_position": "(92, 521)",
+              "outer_size": "(1016, 689)"
+            },
+            "before": {
+              "client_position": "(8, 427)",
+              "client_size": "(1184, 900)",
+              "outer_position": "(0, 396)",
+              "outer_size": "(1200, 939)"
+            },
+            "chrome": "(16, 39)",
+            "minimum_client_size": "(1000, 650)",
+            "requested_client_size": "(1000, 650)",
+            "usable_position": "(0, 0)",
+            "usable_size": "(1200, 1731)"
+          },
+          "screen": 1,
+          "usable_position": "(0, 0)",
+          "usable_size": "(1200, 1731)"
+        },
+        {
+          "client_position": "(8, 517)",
+          "client_size": "(1184, 720)",
+          "context": "requested-(1280, 720)",
+          "display": "Windows",
+          "outer_position": "(0, 486)",
+          "outer_size": "(1200, 759)",
+          "parent_position": "(0, 505)",
+          "parent_screen": 1,
+          "parent_size": "(1280, 720)",
+          "placement": {
+            "admitted": true,
+            "after": {
+              "client_position": "(8, 517)",
+              "client_size": "(1184, 720)",
+              "outer_position": "(0, 486)",
+              "outer_size": "(1200, 759)"
+            },
+            "before": {
+              "client_position": "(100, 552)",
+              "client_size": "(1000, 650)",
+              "outer_position": "(92, 521)",
+              "outer_size": "(1016, 689)"
+            },
+            "chrome": "(16, 39)",
+            "minimum_client_size": "(1000, 650)",
+            "requested_client_size": "(1280, 720)",
+            "usable_position": "(0, 0)",
+            "usable_size": "(1200, 1731)"
+          },
+          "screen": 1,
+          "usable_position": "(0, 0)",
+          "usable_size": "(1200, 1731)"
+        }
+      ],
+      "physical_pixel_geometry": [
+        {
+          "control_screen_scale": [
+            1.0,
+            1.0
+          ],
+          "display": "Windows",
+          "embedded": false,
+          "native": true,
+          "requested_size": [
+            1000,
+            650
+          ],
+          "size": [
+            1000,
+            650
+          ]
+        },
+        {
+          "control_screen_scale": [
+            1.0,
+            1.0
+          ],
+          "display": "Windows",
+          "embedded": false,
+          "native": true,
+          "requested_size": [
+            1280,
+            720
+          ],
+          "size": [
+            1184,
+            720
+          ]
+        }
+      ],
+      "identity_limit": "Original retained log and root-reported natural exit0; no separate in-run before/after hash receipt for this first portrait run. Frozen source bytes above are a later inspection. Landscape has complete original execution custody."
+    },
+    {
+      "label": "Windows ANGLE landscape desktop",
+      "original_log": "C:\\khybersand\\.worktrees\\materials-lab-evaluation\\build\\request8-delivery\\workarea-qualified-landscape.log",
+      "original_log_sha256": "1d9e519f93cebd42eb16979d3bb05e37fb91f83e13b0493aabec9f56455db5ec",
+      "marker": {
+        "assertions": 44,
+        "failures": 0
+      },
+      "placement_before_assertions": [
+        {
+          "client_position": "(1720, 847)",
+          "client_size": "(1520, 900)",
+          "context": "initial",
+          "display": "Windows",
+          "outer_position": "(1712, 816)",
+          "outer_size": "(1536, 939)",
+          "parent_position": "(1300, 700)",
+          "parent_screen": 0,
+          "parent_size": "(1280, 720)",
+          "placement": {
+            "admitted": true,
+            "after": {
+              "client_position": "(1720, 847)",
+              "client_size": "(1520, 900)",
+              "outer_position": "(1712, 816)",
+              "outer_size": "(1536, 939)"
+            },
+            "before": {
+              "client_position": "(1720, 836)",
+              "client_size": "(1520, 900)",
+              "outer_position": "(1712, 805)",
+              "outer_size": "(1536, 939)"
+            },
+            "chrome": "(16, 39)",
+            "minimum_client_size": "(1000, 650)",
+            "requested_client_size": "(1520, 900)",
+            "usable_position": "(1200, 566)",
+            "usable_size": "(2560, 1440)"
+          },
+          "screen": 0,
+          "usable_position": "(1200, 566)",
+          "usable_size": "(2560, 1440)"
+        },
+        {
+          "client_position": "(2744, 1309)",
+          "client_size": "(1008, 689)",
+          "context": "restricted-workarea-fixture",
+          "display": "Windows",
+          "outer_position": "(2736, 1278)",
+          "outer_size": "(1024, 728)",
+          "parent_position": "(1300, 700)",
+          "parent_screen": 0,
+          "parent_size": "(1280, 720)",
+          "placement": {
+            "admitted": true,
+            "after": {
+              "client_position": "(2744, 1309)",
+              "client_size": "(1008, 689)",
+              "outer_position": "(2736, 1278)",
+              "outer_size": "(1024, 728)"
+            },
+            "before": {
+              "client_position": "(1720, 847)",
+              "client_size": "(1520, 900)",
+              "outer_position": "(1712, 816)",
+              "outer_size": "(1536, 939)"
+            },
+            "chrome": "(16, 39)",
+            "minimum_client_size": "(1000, 650)",
+            "requested_client_size": "(1520, 900)",
+            "usable_position": "(2736, 1278)",
+            "usable_size": "(1024, 728)"
+          },
+          "screen": 0,
+          "usable_position": "(2736, 1278)",
+          "usable_size": "(1024, 728)"
+        },
+        {
+          "client_position": "(1720, 847)",
+          "client_size": "(1520, 900)",
+          "context": "displaced-parent-reopen",
+          "display": "Windows",
+          "outer_position": "(1712, 816)",
+          "outer_size": "(1536, 939)",
+          "parent_position": "(3696, 1942)",
+          "parent_screen": 0,
+          "parent_size": "(1280, 720)",
+          "placement": {
+            "admitted": true,
+            "after": {
+              "client_position": "(1720, 847)",
+              "client_size": "(1520, 900)",
+              "outer_position": "(1712, 816)",
+              "outer_size": "(1536, 939)"
+            },
+            "before": {
+              "client_position": "(1720, 836)",
+              "client_size": "(1520, 900)",
+              "outer_position": "(1712, 805)",
+              "outer_size": "(1536, 939)"
+            },
+            "chrome": "(16, 39)",
+            "minimum_client_size": "(1000, 650)",
+            "requested_client_size": "(1520, 900)",
+            "usable_position": "(1200, 566)",
+            "usable_size": "(2560, 1440)"
+          },
+          "screen": 0,
+          "usable_position": "(1200, 566)",
+          "usable_size": "(2560, 1440)"
+        },
+        {
+          "client_position": "(1720, 847)",
+          "client_size": "(1520, 900)",
+          "context": "restored-parent-reopen",
+          "display": "Windows",
+          "outer_position": "(1712, 816)",
+          "outer_size": "(1536, 939)",
+          "parent_position": "(1300, 700)",
+          "parent_screen": 0,
+          "parent_size": "(1280, 720)",
+          "placement": {
+            "admitted": true,
+            "after": {
+              "client_position": "(1720, 847)",
+              "client_size": "(1520, 900)",
+              "outer_position": "(1712, 816)",
+              "outer_size": "(1536, 939)"
+            },
+            "before": {
+              "client_position": "(1720, 836)",
+              "client_size": "(1520, 900)",
+              "outer_position": "(1712, 805)",
+              "outer_size": "(1536, 939)"
+            },
+            "chrome": "(16, 39)",
+            "minimum_client_size": "(1000, 650)",
+            "requested_client_size": "(1520, 900)",
+            "usable_position": "(1200, 566)",
+            "usable_size": "(2560, 1440)"
+          },
+          "screen": 0,
+          "usable_position": "(1200, 566)",
+          "usable_size": "(2560, 1440)"
+        },
+        {
+          "client_position": "(1980, 972)",
+          "client_size": "(1000, 650)",
+          "context": "requested-(1000, 650)",
+          "display": "Windows",
+          "outer_position": "(1972, 941)",
+          "outer_size": "(1016, 689)",
+          "parent_position": "(1300, 700)",
+          "parent_screen": 0,
+          "parent_size": "(1280, 720)",
+          "placement": {
+            "admitted": true,
+            "after": {
+              "client_position": "(1980, 972)",
+              "client_size": "(1000, 650)",
+              "outer_position": "(1972, 941)",
+              "outer_size": "(1016, 689)"
+            },
+            "before": {
+              "client_position": "(1720, 847)",
+              "client_size": "(1520, 900)",
+              "outer_position": "(1712, 816)",
+              "outer_size": "(1536, 939)"
+            },
+            "chrome": "(16, 39)",
+            "minimum_client_size": "(1000, 650)",
+            "requested_client_size": "(1000, 650)",
+            "usable_position": "(1200, 566)",
+            "usable_size": "(2560, 1440)"
+          },
+          "screen": 0,
+          "usable_position": "(1200, 566)",
+          "usable_size": "(2560, 1440)"
+        },
+        {
+          "client_position": "(1840, 937)",
+          "client_size": "(1280, 720)",
+          "context": "requested-(1280, 720)",
+          "display": "Windows",
+          "outer_position": "(1832, 906)",
+          "outer_size": "(1296, 759)",
+          "parent_position": "(1300, 700)",
+          "parent_screen": 0,
+          "parent_size": "(1280, 720)",
+          "placement": {
+            "admitted": true,
+            "after": {
+              "client_position": "(1840, 937)",
+              "client_size": "(1280, 720)",
+              "outer_position": "(1832, 906)",
+              "outer_size": "(1296, 759)"
+            },
+            "before": {
+              "client_position": "(1980, 972)",
+              "client_size": "(1000, 650)",
+              "outer_position": "(1972, 941)",
+              "outer_size": "(1016, 689)"
+            },
+            "chrome": "(16, 39)",
+            "minimum_client_size": "(1000, 650)",
+            "requested_client_size": "(1280, 720)",
+            "usable_position": "(1200, 566)",
+            "usable_size": "(2560, 1440)"
+          },
+          "screen": 0,
+          "usable_position": "(1200, 566)",
+          "usable_size": "(2560, 1440)"
+        }
+      ],
+      "physical_pixel_geometry": [
+        {
+          "control_screen_scale": [
+            1.0,
+            1.0
+          ],
+          "display": "Windows",
+          "embedded": false,
+          "native": true,
+          "requested_size": [
+            1000,
+            650
+          ],
+          "size": [
+            1000,
+            650
+          ]
+        },
+        {
+          "control_screen_scale": [
+            1.0,
+            1.0
+          ],
+          "display": "Windows",
+          "embedded": false,
+          "native": true,
+          "requested_size": [
+            1280,
+            720
+          ],
+          "size": [
+            1280,
+            720
+          ]
+        }
+      ],
+      "original_execution_receipt": "C:\\khybersand\\.worktrees\\materials-lab-evaluation\\build\\request8-delivery\\workarea-qualified-landscape.json",
+      "original_execution_receipt_sha256": "76c2093d66ca303e1aeea424305c3abd41dfb711c13b368c48809d978dbfee86",
+      "command": [
+        "C:\\khybersand\\build\\Materials-Lab-Windows-request5\\Godot_v4.7-stable_win64_console.exe",
+        "--path",
+        "C:\\khybersand\\.worktrees\\materials-lab-evaluation\\godot",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--rendering-driver",
+        "opengl3_angle",
+        "--resolution",
+        "1280x720",
+        "--position",
+        "1300,700",
+        "--max-fps",
+        "15",
+        "--script",
+        "res://tests/test_material_lab_ui.gd",
+        "--",
+        "--workbench-mount-only"
+      ],
+      "source_before_sha256": {
+        "godot/scripts/shared_workbench.gd": "19dc3c50ce3dec8e69dfcfd64757ec030fce29fca2eb63fa1acad4a435d647ed",
+        "godot/tests/test_material_lab_ui.gd": "6a35cddbcfff2cc7b504a838fc5e709e63b80dca8929429d3f37c0a618367522",
+        "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "636f285beb96ce9ae02ab1df00527647220d538621df785c4a6c4275fbe5703c"
+      },
+      "source_after_sha256": {
+        "godot/scripts/shared_workbench.gd": "19dc3c50ce3dec8e69dfcfd64757ec030fce29fca2eb63fa1acad4a435d647ed",
+        "godot/tests/test_material_lab_ui.gd": "6a35cddbcfff2cc7b504a838fc5e709e63b80dca8929429d3f37c0a618367522",
+        "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "636f285beb96ce9ae02ab1df00527647220d538621df785c4a6c4275fbe5703c"
+      },
+      "runtime_sha256": "636f285beb96ce9ae02ab1df00527647220d538621df785c4a6c4275fbe5703c",
+      "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "compiler_sha256": "eccc5963340f7b57805b3750efc182c25c6d4eddb828c8cee2b0f974a0d943ac",
+      "python_sha256": "4d6f5f81a4bca11191c4c7c6b43632694d0a4ce74e068619d8fdc161d469859a",
+      "started_utc": "2026-11-12T19:32:26.078177+00:00",
+      "seconds": 7.7842872000765055,
+      "exit_code": 0,
+      "outer_timeout_seconds": 1200
+    }
+  ],
+  "retained_separate_failures": [
+    {
+      "original_log": "C:\\khybersand\\.worktrees\\materials-lab-evaluation\\build\\request8-delivery\\workbench-lab-workarea-angle-1.log",
+      "original_log_sha256": "b5004d66c6cd1dcc8cb405d7cc72c90bb8866eeb2c101644e99b628d7bba79f1",
+      "scope": "Earlier restricted child launch failed before the mounted test ran in native initialization. No assertion marker; not counted as successful UI qualification or a source-level failure."
+    },
+    {
+      "original_log": "C:\\khybersand\\.worktrees\\materials-lab-evaluation\\build\\request8-delivery\\request8-windows\\graphical\\test_material_lab_ui.log",
+      "original_log_sha256": "987c67363cbbea80f8a046326c5701e661a7207e917f6da6667f3fa93ee2eec3",
+      "scope": "Original published source8 hosted Windows initial usable-bounds assertion failure that motivated this delta; retained unchanged.",
+      "markers": [
+        "MATERIAL_LAB_UI: 226 assertions; 1 failures; artifacts=C:/Users/runneradmin/AppData/Roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/materials_lab/ui-acceptance-3597652"
+      ]
+    }
+  ],
+  "headless_fallback": {
+    "assertions": 24,
+    "failures": 0,
+    "receipt": "C:\\khybersand\\.worktrees\\materials-lab-evaluation\\build\\request8-delivery\\workarea-qualified-headless.json",
+    "receipt_sha256": "c2a28b10dec7c94439e788c26117393e81919f21db1db49d7e9b5209d5d5dbff",
+    "original_log": "C:\\khybersand\\.worktrees\\materials-lab-evaluation\\build\\request8-delivery\\workarea-qualified-headless.log",
+    "original_log_sha256": "3f842cd63bafe0415b70aacf69efc192fde19ec7c26eae3f6a1417c71bc23974",
+    "seconds": 5.403922100085765,
+    "exit_code": 0,
+    "before_sha256": {
+      "godot/scripts/shared_workbench.gd": "19dc3c50ce3dec8e69dfcfd64757ec030fce29fca2eb63fa1acad4a435d647ed",
+      "godot/tests/test_material_lab_ui.gd": "6a35cddbcfff2cc7b504a838fc5e709e63b80dca8929429d3f37c0a618367522",
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "636f285beb96ce9ae02ab1df00527647220d538621df785c4a6c4275fbe5703c"
+    },
+    "after_sha256": {
+      "godot/scripts/shared_workbench.gd": "19dc3c50ce3dec8e69dfcfd64757ec030fce29fca2eb63fa1acad4a435d647ed",
+      "godot/tests/test_material_lab_ui.gd": "6a35cddbcfff2cc7b504a838fc5e709e63b80dca8929429d3f37c0a618367522",
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "636f285beb96ce9ae02ab1df00527647220d538621df785c4a6c4275fbe5703c"
+    }
+  }
+}
