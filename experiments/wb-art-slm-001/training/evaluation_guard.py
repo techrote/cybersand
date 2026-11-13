@@ -231,16 +231,36 @@ def verified_evaluation(output: Path, argv: list[str]) -> dict | None:
             return None
         if metrics["count"] != len(records) or len({r["id"] for r in records}) != len(records):
             return None
-        target = int(str(opts.get("--eval-count", "24")))
-        if config["suite"] == "dev":
-            dev_rows = sum(1 for line in Path(str(opts["--dev"])).read_text(encoding="utf-8").splitlines() if line.strip())
-            target = min(target, dev_rows)
-        else:
-            target = min(target, 12)
-        if len(records) != target:
-            return None
         from infer import load_compiler
+        from train_lora import balanced_rows
+
         compiler = load_compiler(Path(str(opts["--compiler"])))
+        if config["suite"] == "dev":
+            dev_rows = [json.loads(line) for line in
+                        Path(str(opts["--dev"])).read_text(encoding="utf-8").splitlines()
+                        if line.strip()]
+            expected_rows = balanced_rows(dev_rows, int(str(opts.get("--eval-count", "24"))))
+        else:
+            keyword_rows = [
+                {"id": "keyword-" + theme, "prompt": theme, "theme": theme,
+                 "group_id": "keyword-sanity:" + theme, "seed": 17,
+                 "completion": json.dumps(compiler.make_program(theme),
+                                          sort_keys=True, separators=(",", ":"))}
+                for theme in compiler.THEMES
+            ]
+            expected_rows = balanced_rows(keyword_rows, int(str(opts.get("--eval-count", "24"))))
+        if len(records) != len(expected_rows):
+            return None
+        # No substitution of easier IDs or targets while retaining the same
+        # denominator: bind the exact fixed balanced selection and all prompts.
+        row_fields = (("id", "id"), ("prompt", "prompt"), ("theme", "theme"),
+                      ("group_id", "group_id"), ("expected_completion", "completion"))
+        for record, expected_row in zip(records, expected_rows):
+            if any(record.get(output_key) != expected_row.get(source_key)
+                   for output_key, source_key in row_fields):
+                return None
+            if type(record.get("seed")) is not int or record["seed"] != int(expected_row.get("seed", 0)):
+                return None
         if not all(raw_record_consistent(record, int(str(opts.get("--max-new-tokens", "256"))), compiler)
                    for record in records):
             return None
