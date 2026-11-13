@@ -336,6 +336,7 @@ def main():
     parser.add_argument("--learning-rate", type=float, default=0.0005)
     parser.add_argument("--seed", type=int, default=731)
     parser.add_argument("--curriculum", choices=POLICIES, default="shuffled-v1", help="Versioned train-only sampler; new policies require a fresh candidate checkpoint")
+    parser.add_argument("--v5-manifest", help="Absolute Corpus-owned failure_contrast_replay_v5.json; mandatory only for failure-contrast-v5")
     parser.add_argument("--threads", type=int, default=3)
     parser.add_argument("--device", default="auto")
     parser.add_argument("--eval-count", type=int, default=24)
@@ -347,6 +348,8 @@ def main():
     args = parser.parse_args()
     if args.steps < 1 or args.accumulation < 1 or args.threads < 1:
         parser.error("steps, accumulation and threads must be positive")
+    if (args.curriculum == "failure-contrast-v5") != bool(args.v5_manifest):
+        parser.error("--v5-manifest is required exactly for failure-contrast-v5")
 
     os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
     os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
@@ -389,7 +392,7 @@ def main():
         if tokenizer.pad_token_id is None:
             tokenizer.pad_token = tokenizer.eos_token
         # Validate a changed curriculum before allocating base model memory.
-        epoch_indices(train_rows, args.seed, 0, args.curriculum)
+        epoch_indices(train_rows, args.seed, 0, args.curriculum, args.v5_manifest)
         encoded = encode_corpus(tokenizer, train_rows, system, args.max_length)
         encode_corpus(tokenizer, dev_rows, system, args.max_length)
         packages = {p: importlib.metadata.version(p) for p in ["torch", "transformers", "peft", "accelerate", "numpy", "safetensors"]}
@@ -397,6 +400,7 @@ def main():
         # New sampler experiments pin both the replay schedule and trainer code.
         # Historical shuffled-v1 checkpoints predate these explicit fields.
         config["sampler_sha256"] = sha256_file(Path(__file__).with_name("curriculum.py")) if args.curriculum != "shuffled-v1" else None
+        config["v5_manifest_sha256"] = sha256_file(args.v5_manifest) if args.v5_manifest else None
         config["trainer_sha256"] = sha256_file(__file__) if args.curriculum != "shuffled-v1" else None
         model_files = {str(p.relative_to(args.model)): sha256_file(p) for p in sorted(Path(args.model).rglob("*")) if p.is_file() and p.suffix in (".safetensors", ".json", ".jinja", ".py") and ".cache" not in p.parts and p.name != "download_receipt.json"}
         download_receipt_path = Path(args.model) / "download_receipt.json"
@@ -450,7 +454,7 @@ def main():
         step, cursor, history = 0, 0, []
         if args.resume:
             state = torch.load(Path(args.resume) / "training_state.pt", map_location="cpu", weights_only=False)
-            for key in ["model_id", "revision", "train_sha256", "dev_sha256", "admission_sha256", "system_sha256", "chat_template_sha256", "model_files", "compiler_sha256", "rank", "alpha", "dropout", "learning_rate", "accumulation", "seed", "packages", "dtype", "resolved_device", "cuda_devices", "threads", "gradient_checkpointing", "deterministic_algorithms", "tf32", "curriculum", "sampler_sha256", "trainer_sha256"]:
+            for key in ["model_id", "revision", "train_sha256", "dev_sha256", "admission_sha256", "system_sha256", "chat_template_sha256", "model_files", "compiler_sha256", "rank", "alpha", "dropout", "learning_rate", "accumulation", "seed", "packages", "dtype", "resolved_device", "cuda_devices", "threads", "gradient_checkpointing", "deterministic_algorithms", "tf32", "curriculum", "sampler_sha256", "trainer_sha256", "v5_manifest_sha256"]:
                 # Historical shuffled-v1 receipts predate the explicit field.
                 previous = state["config"].get(key, "shuffled-v1" if key == "curriculum" else None)
                 if config[key] != previous:
@@ -487,7 +491,7 @@ def main():
             for _ in range(args.accumulation):
                 epoch = cursor // len(encoded)
                 if epoch_number != epoch:
-                    epoch_order = epoch_indices(train_rows, args.seed, epoch, args.curriculum)
+                    epoch_order = epoch_indices(train_rows, args.seed, epoch, args.curriculum, args.v5_manifest)
                     epoch_number = epoch
                 item = encoded[epoch_order[cursor % len(encoded)]]
                 inputs = torch.tensor([item["input_ids"]], dtype=torch.long, device=device)
