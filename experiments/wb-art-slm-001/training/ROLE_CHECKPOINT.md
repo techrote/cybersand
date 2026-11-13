@@ -1,3 +1,14 @@
+## 2026-11-13 12:29 UTC — Windows completion-crash fix (newest checkpoint)
+
+**Training source:** `21ef98cbe6920c4bef01df2520fef532737a1521` (`train_lora.py` blob `4be30198215d102d9cc4dae1fc7209c696e2eb84`). **Regression source:** `91b39250c06364b8165744e6fef12efa8d844787` (`test_peak_rss.py` blob `1a88b68fa9801004fd4db788c6c0f21a781de062`). These commits only touch `training/` and should be imported into shared Draft #567 by Integration. Neither default behavior nor checkpoint format changes.
+
+**Critical repair:** Removed unconditional `import resource` after final checkpoint and used best-effort `peak_rss_kib()`. On native Windows it returns `None`, serialized as JSON `null`; Linux/BSD `ru_maxrss` is KiB and macOS bytes are converted to KiB. A failed/unavailable telemetry probe can no longer turn successful LoRA training into a post-checkpoint import crash.
+
+**Qualification boundary:** Four focused regression methods (including simulated Windows with a forbidden `resource` import, unavailable POSIX module, Linux KiB and macOS bytes) passed using an isolated copy of the exact new helper on Linux/Python 3.13.5; py_compile passed. GitHub source/blob readback confirms replacement. This is NOT full exact-source repository CI or native-Windows execution. Integration must import and run the relevant exact-head CI.
+
+**Training availability:** The local operator cache has no pinned `LiquidAI/LFM2.5-350M` revision `9921cd4d82c0e3986887aa4b376f9446729ef8a3` (offline Hugging Face lookup returns `LocalEntryNotFoundError`), and `transformers` plus `peft` are absent. Available `torch` alone cannot train. The verified corpus ZIP SHA-256 is `2d2de250731eeea825339e89f752ab8ebc65f3a929daa2c692120d985566948a`. No CPU/GPU training, new LoRA candidate, fresh raw DEVELOPMENT predictions, native gallery, or Windows qualification is claimed. The standalone owner Windows handoff already exists in `training/run_v5_windows.ps1`. Do not start with older, unfixed source; install the exact pinned Python 3.12 environment and download official pinned model snapshot on the authorized host. Existing model and lease remain untouched.
+
+---
 # WB-ART-SLM-001 — Training role checkpoint (2026-11-13)
 
 **Owned branch:** `codex/wb-art-slm-training`  
