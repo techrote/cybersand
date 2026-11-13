@@ -24,7 +24,7 @@ def fixture(root):
                                  ("c11", "wb-art-slm-001/1.1.0-coral-spread")):
                 cid = f"{tag}-coral-v{variant}-s{seed}"
                 operations = [{"shape": "line", "material": 58, "width": 1,
-                               "x0": 1, "y0": 1, "x1": 2, "y1": 2}]
+                               "x0": 1, "y0": 1, "x1": 2, "y1": 2 if tag == "c10" else 3}]
                 ophash = audit.digest(json.dumps(operations, sort_keys=True,
                                                 separators=(",", ":")).encode())
                 cases.append({"id": cid, "theme": "coral", "width": 96, "height": 96,
@@ -53,6 +53,7 @@ def fixture(root):
     manifest = {"purpose": "not-yet-executed-v1-v11-coral-native-pair",
                 "required_native_history_mode": "each",
                 "candidate_compiler_version": "wb-art-slm-001/1.1.0-coral-spread",
+                "parent_compiler_sha256": "a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb",
                 "cases": cases, "aliases": aliases}
     save(root / "pairs.json", manifest)
     save(root / "input-cases.json", {"cases": cases})
