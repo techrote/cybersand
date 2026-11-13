@@ -60,8 +60,17 @@ def replay_native_rows(native: Path, cases: dict, summary: dict) -> dict:
             require(("receipt" in event) != ("capture" in event),
                     f"{cid}: ambiguous native event")
             if "receipt" in event:
+                # Draw receipts must precede the first draw-state capture. Once
+                # any history witness exists, subsequent drawing would be
+                # outside that captured state (and outside its Undo contract).
+                require(not captures[cid],
+                        f"{cid}: draw receipt after native history capture")
                 receipts[cid].append(event["receipt"])
             else:
+                # A history capture without any applied draw receipt is not
+                # evidence of the recorded draw -> Undo -> Redo -> reopen.
+                require(bool(receipts[cid]),
+                        f"{cid}: history capture before native draw receipts")
                 captures[cid].append(event["capture"])
     chains = {}
     for cid, expected in cases.items():
