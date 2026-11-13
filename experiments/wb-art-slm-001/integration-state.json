@@ -91,7 +91,17 @@
     "provider_protocol": "127.0.0.1:8127/v1/chat/completions; LM Studio mode; exactly one text-only completion; no fallback, repair or automatic continuation",
     "material_and_ownership": "Focus and allowed materials/tools captured from host; seed and budgets in bridge launch; existing Godot native Art executor retains receipts, protection, Stop/history/persistence",
     "model_identity": "LiquidAI/LFM2.5-350M@9921cd4d82c0e3986887aa4b376f9446729ef8a3; step 400 adapter SHA256 02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2",
-    "next": "Independent review of bridge, retain pinned compiler v1; evaluate combined role tests, consume independently qualified #565 successor, real adapter native Windows/Linux then owner launch approval."
+    "next": "Independent review of bridge, retain pinned compiler v1; evaluate combined role tests, consume independently qualified #565 successor, real adapter native Windows/Linux then owner launch approval.",
+    "offline_ci": {
+      "source": "95ed04dcada3beb0b79f9b289c4a630d0b581261",
+      "runs": [
+        "43364062901 SUCCESS",
+        "43364068843 SUCCESS"
+      ],
+      "scope": "Python 3.12 Ubuntu, four bridge methods (including five forged receipts), 18 compiler methods, one alias test, 2 Corpus synthetics and 4 Training synthetic methods; archive-based suites skipped; no training/model/native/Windows"
+    },
+    "receipt_binding": "Exact prompt, host seed, model/adapter identity, false native_execution receipt, compiler, materials/focus/tools, terminated EOS and operations SHA; all hosted mock HTTP protocol tests passed",
+    "remaining": "Independent security/source contract review, tested model loaded with authentic private adapter, source-compatible #565, current-source Windows/Linux native World, Stop/history/persistence and owner acceptance"
   },
   "artifact_recovery": {
     "verification": "Four named owner Library archives materialized and byte-size/SHA256 compared with ARTIFACTS.json on 2026-11-13; all four match",

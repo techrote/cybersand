@@ -74,11 +74,17 @@ the **exact request prompt, pinned host seed, adapter hash, LFM base model ident
 and `native_execution=false`**, in addition to its existing compiler,
 focus, material, permitted shapes, EOS and compiled-batch SHA checks. This
 rejects a stale or mis-associated inference folder without exposing its
-operations to the Art provider. The focused test fixture includes five forged
-receipt variants. The change passed 11/11 **static code-contract checks**;
-the updated Python unit tests are awaiting independent execution/review. The
-previous four method/HTTP test pass preceded these new checks and is not
-represented as a fresh rerun.
+operations to the Art provider. The focused test fixture includes five forged receipt variants. Both
+exact-head offline CI runs ([run 43364062901](https://github.com/techrote/cybersand/actions/runs/43364062901),
+[run 43364068843](https://github.com/techrote/cybersand/actions/runs/43364068843))
+passed on commit `95ed04dcada3beb0b79f9b289c4a630d0b581261`:
+**4/4 bridge HTTP/refusal test methods**, **18/18 compiler v1/v1.1 tests**,
+**1/1 native alias-pair builder test**, **2/2 synthetic Corpus tests** and
+**4/4 applicable Training sampler tests**; Python source compilation passed.
+Both private-archive-dependent suites were explicitly **skipped** on hosted
+CI because the materialized admitted corpus is not in Git. No model weights,
+real native simulation or Windows were involved. Independent code review is
+still required.
 
 **Upstream qualification blocker:** #565 Request 4 at source
 `d66499ec3409fb657875fca7dbd0f234cf28ca49`

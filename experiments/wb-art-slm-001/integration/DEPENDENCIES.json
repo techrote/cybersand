@@ -62,15 +62,22 @@
     "tests": "experiments/wb-art-slm-001/integration/test_local_art_bridge.py",
     "runbook": "experiments/wb-art-slm-001/integration/README.md",
     "protocol": "loopback LM Studio /v1/chat/completions; content JSON operations; one-turn text-only",
-    "validation": "Original 4 Python methods passed prior to hardening; new five-field forged-receipt regression added but not re-executed; 11/11 static source checks passed on updated blobs",
+    "validation": "GitHub-hosted Ubuntu 24.04 Python 3.12 offline exact-head run 43364062901 and 43364068843 SUCCESS at source 95ed04dcada3beb0b79f9b289c4a630d0b581261: 4 bridge methods incl five forged receipt cases, 18 v1/v1.1 compiler methods, 1 aliases, 2 synthetic corpus, 4 applicable Training sampler; two private-archive dependent suites skipped; Python compileall success. No real native/Windows/model execution.",
     "no_actual_model_loaded_this_run": true,
     "no_native_execution_this_run": true,
     "no_windows_execution_this_run": true,
     "independent_review": "pending (evaluation reviewed historical native packet, not yet bridge implementation)",
-    "new_protocol_tests_after_import": "five new injected forgery subtests authored; no Python runner executed for modified bridge in integration session; independent execution required",
+    "new_protocol_tests_after_import": "Five forged-receipt adverse subcases included in one bridge method; all four test methods PASS in both actual GitHub Actions runs 43364062901/43364068843.",
     "receipt_binding": "Exact prompt, host seed, pinned adapter hash, LFM model identity, native_execution=false, compiler hash, focus size, material, EOS, Art operation hash and allowed tool/material",
     "receipt_hardening_commit": "d2f6a3266e6f522a6a5f8e8a3d9afc3cf315efab",
-    "adverse_regressions_commit": "ddbc2b9b3ba8e4ab0423c50b21dd7fb85333e6bb"
+    "adverse_regressions_commit": "ddbc2b9b3ba8e4ab0423c50b21dd7fb85333e6bb",
+    "exact_head_ci": "95ed04dcada3beb0b79f9b289c4a630d0b581261",
+    "offline_ci_workflow": ".github/workflows/wb-art-slm-001-smoke.yml",
+    "offline_ci_urls": [
+      "https://github.com/techrote/cybersand/actions/runs/43364062901",
+      "https://github.com/techrote/cybersand/actions/runs/43364068843"
+    ],
+    "offline_ci_scope": "No binary assets, private corpus, neural inference, training, native Godot, Windows, visual or human acceptance; external review pending."
   },
   "training_lease": {
     "published_active": false,
