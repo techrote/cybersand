@@ -302,7 +302,14 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
    'source_commit': '7a2bab58bfb193b3f10e55bf63cdeec2a17f549f',
    'record': 'docs/audits/2026-11-07-native-copy292-mat-auth-transition.md',
    'issue': 292,
-   'pr': 538})
+   'pr': 538},
+  {'path': 'godot/shaders/material_palette.gdshader',
+   'from_lf_sha256': 'f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1',
+   'to_lf_sha256': 'b8e5542dae2c36fd6fbef0170a7b537bce5c853fc10920174cefe13dbec78d4f',
+   'source_commit': '1755b2195e4d38c6030ae287ac2eb8e070da62ef',
+   'record': 'docs/audits/2026-11-13-native-pixel-scrolling.md',
+   'issue': 353,
+   'pr': 566})
 
 class CompatibilityError(ValueError):
     """An actionable source or baseline mismatch; never repairs the source."""
