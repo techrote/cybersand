@@ -124,6 +124,55 @@ class QualificationTests(unittest.TestCase):
                 for name in stored.namelist(): self.assertEqual(stored.read(name), (source / name).read_bytes())
                 self.assertTrue(all(item.extract_version == 20 and item.compress_type == 8 for item in stored.infolist()))
 
+    def test_archive_roundtrip_keeps_detached_git_usable_with_retained_ancestor(self):
+        lab = subject.packager().lab
+        with tempfile.TemporaryDirectory(prefix="detached Git ZIP ") as temporary:
+            root = Path(temporary)
+            original = root / "original source"
+            original.mkdir()
+
+            def git(directory, *arguments):
+                return subprocess.run(["git", "-C", str(directory), *arguments], check=True,
+                                      capture_output=True, env=lab.clean_git_environment()).stdout
+
+            git(original, "init")
+            retained = b"retained compatibility payload\n"
+            (original / "retained.txt").write_bytes(retained)
+            git(original, "add", "retained.txt")
+            git(original, "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid",
+                "commit", "-m", "retained baseline")
+            baseline = git(original, "rev-parse", "HEAD").decode().strip()
+            (original / "retained.txt").write_bytes(b"current payload\n")
+            git(original, "add", "retained.txt")
+            git(original, "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid",
+                "commit", "-m", "current source")
+            head = git(original, "rev-parse", "HEAD").decode().strip()
+            package = root / "delivery"
+            source = package / "source"
+            lab.clean_source_repository(original, head, source)
+            self.assertEqual((source / ".git/HEAD").read_text().strip(), head)
+            self.assertTrue((source / ".git/refs").is_dir())
+            self.assertFalse(any(path.is_file() for path in (source / ".git/refs").rglob("*")))
+            (package / "empty cache/nested").mkdir(parents=True)
+            original_files = lab.file_map(package)
+            archive = root / "delivery.zip"
+            subject.write_archive(package, archive, max_path=220)
+            extracted = root / "extracted delivery"
+            with zipfile.ZipFile(archive) as stored:
+                empty = stored.getinfo("empty cache/nested/")
+                self.assertTrue(empty.is_dir())
+                self.assertEqual((empty.file_size, empty.compress_type, empty.extract_version), (0, zipfile.ZIP_STORED, 20))
+                stored.extractall(extracted)
+            delivered = extracted / "source"
+            self.assertTrue((delivered / ".git/refs").is_dir())
+            self.assertTrue((extracted / "empty cache/nested").is_dir())
+            self.assertEqual(lab.file_map(extracted), original_files)
+            self.assertEqual(git(delivered, "show", baseline + ":retained.txt"), retained)
+            self.assertEqual(git(delivered, "rev-parse", "HEAD").decode().strip(), head)
+            self.assertEqual(git(delivered, "rev-parse", "--is-shallow-repository").strip(), b"false")
+            self.assertEqual(git(delivered, "merge-base", "--is-ancestor", baseline, head), b"")
+            self.assertEqual(git(delivered, "remote"), b"")
+
     def test_original_long_qualification_cache_path_is_refused_for_outer_archive(self):
         original = "qualification/workbench/regressions/art-final-graphical/isolated-appdata/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/" + "4" * 64 + "/" + "f" * 40 + ".cache"
         self.assertEqual(len(original), 263)
@@ -148,8 +197,11 @@ class QualificationTests(unittest.TestCase):
                 self.assertEqual(original.read(path.relative_to(raw).as_posix()), path.read_bytes())
 
     def test_windows_invalid_names_and_collisions_are_refused(self):
-        for names in (("NUL.txt",), ("file:stream",), ("ending. ",), ("same.txt", "SAME.txt"), ("../outside",), ("/absolute",)):
+        for names in (("NUL.txt",), ("file:stream",), ("ending. ",), ("same.txt", "SAME.txt"), ("../outside",), ("/absolute",),
+                      ("empty/", "EMPTY"), ("extra//",), ("parent/../",), ("/absolute/",), ("NUL/",)):
             with self.subTest(names=names), self.assertRaises(RuntimeError): subject.validate_archive_names(list(names), 220)
+        with self.assertRaisesRegex(RuntimeError, "exceeds Windows extraction budget"):
+            subject.validate_archive_names(["d" * 220 + "/"], 220)
 
     def ui007_receipt(self, directory, rig="acrobat"):
         def chunk(kind, data):

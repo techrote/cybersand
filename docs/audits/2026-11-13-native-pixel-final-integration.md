@@ -370,3 +370,44 @@ application, native, shader, recorder and performance-apparatus bytes remain
 identical to the measured `aa2d1c0a` product. Any performance evidence retained
 from that source keeps its actual commit and runtime identities; it is not
 relabeled as execution of a later commit.
+
+## Extracted-package Git directory preservation
+
+The next integrated campaign at
+`78a277f2f91e0623be654f2472ae795b0adc8f5e`,
+[43509386141](https://github.com/techrote/cybersand/actions/runs/43509386141),
+passes the Linux and Windows source applications and both full performance
+campaigns. The separately dispatched Documentation, Native, Godot and required
+Palette gates also pass on that exact source. Its Windows package nevertheless
+fails before installed application cases: bundled Python cannot authenticate
+the retained compatibility ancestry through bundled Git. The failed delivery
+is not published or accepted.
+
+Built-in .NET extraction had successfully hashed all 21,013 extracted files;
+the Windows Shell ZIP handler had opened the archive and copied both launchers
+and README with exact bytes. Those file checks did not detect missing empty
+directories. The private `write_archive` implementation enumerated only files,
+omitting the clean detached repository's empty `source/.git/refs` directory.
+Git requires that directory to recognize its repository, even when all retained
+objects and `packed-refs` are present. Consequently `git show` exited 128; the
+compatibility wrapper's generic history error did not itself prove a missing
+commit. The baseline and all compatibility-transition commits remain ancestors
+of the exact source.
+
+A discriminating local reproduction uses the actual clean-source packager and
+the frozen private ZIP writer. The clean detached repository can read its
+retained baseline before archiving. After the file-only ZIP round trip, the
+same command fails with `not a git repository`. Creating only the missing
+empty `.git/refs` directory immediately restores the same baseline blob, with
+every file byte unchanged. The original #565 archive explicitly included that
+directory; extracting only its files reproduces the same failure.
+
+The narrow repair preserves directory entries in the private ZIP, including
+empty directories, while retaining conventional Deflate, the Windows name and
+path checks, symlink refusal and exact file-hash inventories. A real detached
+Git repository round-trip regression must preserve the source commit, retained
+ancestor/blob and empty reference directories. No compatibility check, history
+closure, dependency version, application code or performance apparatus is
+changed. The repaired source must complete its own full qualification and
+actual .NET-extracted package execution; the preceding source successes keep
+their original commit identities and are not relabeled as those new results.

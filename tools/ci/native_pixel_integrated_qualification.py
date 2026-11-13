@@ -315,11 +315,12 @@ def packager():
 
 
 def validate_archive_names(names: list[str], max_path: int | None) -> None:
-    engine.require(bool(names), "Archive has no files")
-    engine.require(len(set(n.casefold() for n in names)) == len(names), "Archive has Windows path collisions")
-    for name in names:
+    engine.require(bool(names), "Archive has no entries")
+    paths = [name.removesuffix("/") for name in names]
+    engine.require(len(set(path.casefold() for path in paths)) == len(names), "Archive has Windows path collisions")
+    for name, path in zip(names, paths):
         engine.require(max_path is None or len(name) <= max_path, "Archive path exceeds Windows extraction budget: " + name)
-        for part in name.split("/"):
+        for part in path.split("/"):
             engine.require(bool(part) and part not in {".", ".."} and not re.search(r'[<>:"\\|?*\x00-\x1f]', part) and not part.endswith((" ", ".")) and
                            not re.match(r"^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\.|$)", part, re.I),
                            "Archive has a Windows-incompatible path: " + name)
@@ -329,8 +330,10 @@ def write_archive(directory: Path, archive: Path, *, max_path: int | None = None
     engine.require(not archive.exists(), "Do not overwrite an archive")
     entries = sorted(directory.rglob("*"))
     engine.require(not any(p.is_symlink() for p in entries), "Archive contains a symlink")
-    paths = [p for p in entries if p.is_file()]
-    names = [p.relative_to(directory).as_posix() for p in paths]
+    # Nonempty parents are recreated by their children. Empty directories need
+    # explicit ZIP entries: a detached Git checkout still requires .git/refs.
+    paths = [p for p in entries if p.is_file() or (p.is_dir() and not any(p.iterdir()))]
+    names = [p.relative_to(directory).as_posix() + ("/" if p.is_dir() else "") for p in paths]
     validate_archive_names(names, max_path)
     archive.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=6, allowZip64=False) as output:
@@ -339,7 +342,7 @@ def write_archive(directory: Path, archive: Path, *, max_path: int | None = None
     with zipfile.ZipFile(archive) as output:
         engine.require(output.testzip() is None and output.namelist() == names, "Created archive failed integrity verification")
     return {"sha256": engine.runner.sha256(archive), "bytes": archive.stat().st_size, "members": len(names),
-            "maximum_relative_path": max(map(len, names)), "compression": "Deflate; no ZIP64"}
+            "maximum_relative_path": max(map(len, names)), "compression": "Deflate files; stored directory entries; no ZIP64"}
 
 
 def package(args) -> None:
