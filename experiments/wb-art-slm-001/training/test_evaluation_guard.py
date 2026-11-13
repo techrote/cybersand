@@ -34,8 +34,16 @@ if a.device == 'hang':
 if a.device == 'early':
     (out/'predictions.json').write_text(json.dumps({'records':[{'id':'one'}]}))
     raise SystemExit(0)
-records = [{'id':name,'json_valid':True,'program_valid':True,'first_pass_accepted':True,
-            'theme_field_correct':True,'primary_motif_correct':True,'motif_layout_exact':True,
+program = {'version':1,'theme':'roots','layers':[
+    {'motif':'branch','density':0.5,'scale':0.5,'width':0.3,'angle':0,'layout':'center'}]}
+reference = {'version':1,'theme':'roots','layers':[
+    {'motif':'branch','density':0.6,'scale':0.5,'width':0.3,'angle':0,'layout':'center'}]}
+records = [{'id':name,'theme':'roots','completion':json.dumps(program),
+            'expected_completion':json.dumps(reference),'program':program,
+            'compiled_operations':3,'output_tokens':24,'eos_emitted':True,
+            'eos_terminated':True,'json_valid':True,'program_valid':True,
+            'first_pass_accepted':True,'theme_field_correct':True,
+            'primary_motif_correct':True,'motif_layout_exact':True,
             'exact_target':False} for name in ('one','two')]
 metrics = {'count':len(records),'json_valid':2,'program_valid':2,'first_pass_accepted':2,
            'theme_field_correct':2,'primary_motif_correct':2,'motif_layout_exact':2,
@@ -134,6 +142,28 @@ class EvaluationGuardTests(unittest.TestCase):
         self.assertEqual(result["status"], "failed")
         self.assertIn("fingerprint changed", result["error"])
         self.assertIsNone(result["evidence"])
+
+    def test_raw_completion_eos_and_semantic_flag_tampering_refused(self):
+        args, argv = self.setup_run()
+        result = run(args, argv)
+        self.assertEqual(result["status"], "completed")
+        path = self.parent / "eval-one" / "predictions.json"
+        authentic = json.loads(path.read_text())
+        alterations = (
+            {"completion": '{"value":0595931}'},  # malformed coral-style decimal
+            {"eos_terminated": False},           # EOS did not end the generation
+            {"primary_motif_correct": False},   # claimed score disagrees with raw
+            {"program": {"version": 1}},       # compiled program differs from raw
+            {"output_tokens": 300},             # exceeds pinned token cap
+        )
+        for alteration in alterations:
+            with self.subTest(alteration=alteration):
+                modified = json.loads(json.dumps(authentic))
+                modified["records"][0].update(alteration)
+                path.write_text(json.dumps(modified))
+                self.assertIsNone(verified_evaluation(path.parent, argv))
+        path.write_text(json.dumps(authentic))
+        self.assertIsNotNone(verified_evaluation(path.parent, argv))
 
     def test_duplicate_evaluation_fingerprint_not_relaunched(self):
         args, argv = self.setup_run()
