@@ -10,6 +10,15 @@ uniform vec2 view_size_px = vec2(320.0, 180.0);
 // by main.gd for pointer-to-world mapping.
 uniform vec4 view_rect_uv = vec4(0.0, 0.0, 1.0, 1.0);
 uniform vec2 camera_origin_px = vec2(0.0);
+// Main supplies the exact physical-pixel phase and reciprocal used for picking.
+// Reconstruct the sample centre before converting to world coordinates: adding
+// camera + UV * view can round opposite ways at fractional-zoom cell boundaries.
+// Standalone shader users retain the continuous-camera fallback by default.
+uniform bool native_pixel_mapping_enabled = false;
+uniform vec2 content_screen_origin = vec2(0.0);
+uniform vec2 content_screen_size = vec2(1.0);
+uniform vec2 world_zero_screen = vec2(0.0);
+uniform vec2 world_units_per_screen_pixel = vec2(1.0);
 uniform vec2 player_origin_px = vec2(150.0, 145.0);
 uniform vec2 player_size_px = vec2(8.0, 14.0);
 uniform vec4 player_colour : source_color = vec4(0.12, 1.0, 0.88, 1.0);
@@ -2733,16 +2742,24 @@ void fragment() {
 	vec2 view_max = view_rect_uv.xy + view_rect_uv.zw;
 	bool inside_view = UV.x >= view_min.x && UV.y >= view_min.y
 		&& UV.x < view_max.x && UV.y < view_max.y;
+	vec2 raw_fitted_uv = (UV - view_min) / max(view_rect_uv.zw, vec2(0.000001));
 	vec2 fitted_uv = clamp(
-		(UV - view_min) / max(view_rect_uv.zw, vec2(0.000001)),
+		raw_fitted_uv,
 		vec2(0.0),
 		vec2(0.999999)
 	);
-	// Resolve the continuous camera at the final canvas raster before selecting
-	// a cell. Flooring the view first makes enlarged cells jump by their full
-	// width; adding a fractional camera afterwards also makes material grain
-	// camera-relative. Integer world samples keep every finish world-anchored.
+	// Select cells at the final raster. Retaining the exact snapped screen phase
+	// makes a one-pixel pan use identical arithmetic at the translated sample,
+	// even where fractional zoom places that sample on a world-cell boundary.
 	vec2 continuous_world_pixel = camera_origin_px + fitted_uv * view_size_px;
+	if (native_pixel_mapping_enabled) {
+		vec2 sample_position = floor(content_screen_origin + raw_fitted_uv * content_screen_size) + vec2(0.5);
+		// Clip in the same physical space as picking. UV roundoff at a fitted
+		// half-pixel edge must not drop the first column or leak the last row.
+		inside_view = all(greaterThanEqual(sample_position, content_screen_origin))
+			&& all(lessThan(sample_position, content_screen_origin + content_screen_size));
+		continuous_world_pixel = (sample_position - world_zero_screen) * world_units_per_screen_pixel;
+	}
 	vec2 world_pixel = floor(continuous_world_pixel);
 	vec2 cell_fraction = fract(continuous_world_pixel);
 	vec2 world_uv = (world_pixel + vec2(0.5)) / world_size_px;

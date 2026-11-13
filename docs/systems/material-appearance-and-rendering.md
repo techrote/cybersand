@@ -33,11 +33,11 @@ simulation resolution were not the cause.
 
 [CyberPixelCameraTransform](../../godot/scripts/pixel_camera_transform.gd)
 keeps the requested camera in floating-point world units. Its
-`presentation_origin` converts the world's screen translation through the
-actual CanvasItem screen transform, rounds that translation to final physical
-pixels, then converts it back. It includes content/letterbox offsets and the
-window/canvas scale. Rounding changes only presentation, not stored camera
-state. Map bounds take precedence at the outer edges.
+`presentation_screen_transform` retains the world's exact rounded screen
+translation and the physical pixels per world cell. It includes the actual
+CanvasItem screen transform, content/letterbox offsets and window/canvas
+scale. Rounding changes only presentation, not stored camera state. Map bounds
+take precedence on each clamped axis; the other axis retains its integer phase.
 
 [Main](../../godot/scripts/main.gd) supplies the resulting
 `presentation_camera_origin()` to terrain, previews, actors, usables, course
@@ -46,15 +46,23 @@ picking and publishing the frame's shader/overlay state. Camera-only Workbench
 view changes do not enqueue a second native frame-state update; its active
 simulation region remains the authored canvas.
 
-The [material fragment](../../godot/shaders/material_palette.gdshader) computes
-`floor(presentation_origin + fitted_uv * view_size)` and samples the centre of
-that world cell. It uses the same integer world coordinate for material grain
-and the continuous coordinate's fraction for existing subcell effects. Adding
-the offset before choosing a cell permits a one-screen-pixel step at 2x, 4x or
-other magnifications without bilinear material sampling, physics interpolation
-or an enlarged simulation. A static fractional zoom can distribute a cell
-across differing integer pixel widths; a shared integer screen translation
-preserves that raster phase during panning.
+The [material fragment](../../godot/shaders/material_palette.gdshader)
+reconstructs the physical pixel centre from the fitted content rectangle, then
+computes `(sample_position - world_zero_screen) * world_units_per_screen_pixel`.
+It floors that complete world point and samples the source cell's centre.
+Picking uses the same exact screen translation, reciprocal scale and operation
+order. Recovering the translation from an inverse camera float, or adding that
+float to scaled UVs, can produce inconsistent floors at fractional-zoom cell
+boundaries. The physical map avoids that cancellation without a rounding epsilon.
+
+The same integer world coordinate anchors material grain; the continuous
+coordinate's fraction supports existing subcell effects. This permits a
+one-screen-pixel step at 2x, 4x or other magnifications without bilinear material
+sampling, physics interpolation or an enlarged simulation. A static fractional
+zoom can distribute a cell across differing integer pixel widths; the shared
+integer screen translation preserves that raster phase during panning. The
+native map is enabled by Main for its axis-aligned canvas. Standalone shader
+fixtures retain their existing camera-plus-UV convention unless they enable it.
 
 ### Picking and zoom at fractional camera positions
 
@@ -63,8 +71,11 @@ separates continuous world points from selected integer cells. Cell picking
 uses the physical pixel centre under the pointer and floors the complete
 inverse-mapped world point. It does not floor the camera and local terms
 separately. PAINT, selection, Fill, clipboard placement and Art focus therefore
-share the displayed sample. Agent image observations describe the actual
-rounded pixel crop with fractional world bounds.
+share the displayed sample. Idle PAINT hover retains the pointer's physical
+position and refreshes against camera/layout changes, including toolbar zoom
+without another mouse event. Active drag anchors remain world coordinates.
+Agent image observations describe the actual rounded pixel crop with
+fractional world bounds.
 
 Wheel zoom preserves a continuous world anchor under the cursor; toolbar zoom
 uses the content centre. The snapped display origin is never fed back into
@@ -343,7 +354,8 @@ desktop HUD reports both the configured publication target and a measured effect
 publication rate when samples are available. Overload and Web terrain backlog can
 reduce actual progress.
 
-HDR 2D output supports one half-logical-resolution glow SubViewport. Its
+HDR 2D output supports one glow SubViewport on a fixed two-world-cell grid,
+including the camera guard border described above. Its
 sixteen-cell source (a 2×2 maximum plus twelve surrounding samples) and
 thirteen-tap near/far additive composite derive
 emission from the existing presentation inputs. This is a visual halo, not an
@@ -358,8 +370,9 @@ other controls are in [Material Lab](../MATERIAL_LAB.md).
 The retained m9 description records a source change from nine to thirteen
 glow-source samples and from one to thirteen composite samples, plus four
 neighbor reads in the ordinary palette. A transition can evaluate relief for
-both old and new materials. At the desktop default 320×180 logical view the
-glow source is 160×90. These are algorithmic sample counts, not measured GPU
+both old and new materials. At the historical desktop default 320×180 logical
+view the old glow source was 160×90; the camera candidate uses 171×101 to cover
+fractional movement and the halo. These are algorithmic sample counts, not measured GPU
 milliseconds. The m9 record supplied no representative target-GPU timing.
 
 **Planned:** actual texture subregion writes; target-GPU comparisons with glow

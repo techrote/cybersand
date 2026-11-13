@@ -234,6 +234,8 @@ func refresh() -> void:
 	# exact origin for both backdrop and grade; standalone hosts stay continuous.
 	var origin: Vector2 = host.presentation_camera_origin() if host.has_method("presentation_camera_origin") else Vector2(host.camera_origin)
 	shader.set_shader_parameter("camera_origin_px", origin)
+	if host.has_method("configure_pixel_camera"):
+		host.configure_pixel_camera(shader)
 	shader.set_shader_parameter("snapshot_blend", host.world_shader.get_shader_parameter("snapshot_blend"))
 	shader.set_shader_parameter("player_origin_px", host.world_shader.get_shader_parameter("player_origin_px"))
 	shader.set_shader_parameter("player_size_px", CyberSampledCharacter.BODY_SIZE)
@@ -244,6 +246,8 @@ func refresh() -> void:
 	for parameter: String in ["current_world_texture", "previous_world_texture", "view_size_px",
 		"camera_origin_px", "snapshot_blend", "player_origin_px", "player_size_px"]:
 		grade_shader.set_shader_parameter(parameter, shader.get_shader_parameter(parameter))
+	if host.has_method("configure_pixel_camera"):
+		host.configure_pixel_camera(grade_shader)
 
 func _description(index: int) -> String:
 	return ["Collapsed viaduct, buried intake bunker and the western maintenance well.",

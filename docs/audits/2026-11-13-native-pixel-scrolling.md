@@ -10,10 +10,10 @@ related-documents: [../operations/native-pixel-scrolling.md, ../systems/material
 
 # Native-resolution pixel scrolling — 13 November 2026
 
-**Draft / HOLD.** This initial checkpoint records the implementation and its
-qualification plan. It does not claim a completed camera runtime campaign,
-delivered Windows build, human acceptance or merge authority. Resulting-source
-execution must be recorded before changing those dispositions.
+**Draft / HOLD; [PR #566](https://github.com/techrote/cybersand/pull/566).**
+The first hosted campaign exposed fractional-zoom and fitted-edge defects;
+the revised physical sample map is undergoing graphical qualification. There
+is no qualified Windows delivery or owner acceptance at this checkpoint.
 
 ## Source and integration identity
 
@@ -23,8 +23,9 @@ execution must be recorded before changing those dispositions.
 | Isolated branch | `codex/native-pixel-scrolling-20261113` |
 | Stacked #564 base | `e63a7d4f7cea90a5900c91a917dbf10dee699aa7` |
 | Accepted main inspected | `e0fb05b8e0500641f0f25c62c5fb7e721da02d6a`; merge of #562 |
-| Initial implementation identity | Working-tree camera/rendering delta from the stacked base; the commit containing this record is the recoverable checkpoint |
-| Main/#564 compatibility | Separate resulting-source merge/reconciliation check remains to be recorded |
+| Initial implementation identity | `a1a896bb45753c820e1d6109df57de4e65be33af`, tree `f8aad8b10cd39d3cf65a7dd0fb8e1349217b08b0` |
+| Current implementation identity | The commit containing this checkpoint adds physical sample reconstruction, exact letterbox clipping and stationary-pointer refresh |
+| Main/#564 compatibility | Initial camera + main + latest #564 merges without production conflicts; headless successes and Materials Lab shader-guard refusal are recorded below |
 
 The source tree is isolated from both upstream branches and preserves #564's
 manual/agent history, selection-to-Focus mapping and conversation features.
@@ -66,7 +67,7 @@ to change. Existing follow easing is retained; additional easing is not the fix.
 | `godot/scripts/shared_workbench.gd` | Pointer-centred continuous zoom, drag remainder preservation, parent-ordered follow, no duplicate worker publication per view change |
 | `godot/scripts/workbench_paint_editor_controller.gd` and overlay | Cell picking and preview alignment for manual editing at fractional origins |
 | `godot/scripts/art_batch_panel.gd` | Fractional world mapping of the actual pixel crop supplied to agent observations |
-| `godot/shaders/material_palette.gdshader` | Add fractional presentation origin before flooring the world sample; nearest source-cell centres and world-anchored appearance |
+| `godot/shaders/material_palette.gdshader` | Reconstruct the physical sample, subtract the exact screen phase, multiply the shared reciprocal, then floor; nearest source-cell centres and world-anchored appearance |
 | Blacksite/Neon presentation shaders and overlay scripts | Use the same displayed origin without reintroducing camera floors |
 | `godot/shaders/glow_composite.gdshader` | Reproject a world-aligned coarse glow source at final display resolution |
 
@@ -77,9 +78,12 @@ continuous world anchor before and after the change, avoiding cumulative drift;
 the two displayed positions can differ by at most one physical pixel per axis
 from their rounding phases away from clamped world bounds.
 
-Picking maps the physical pointer pixel's centre through the inverse transform
-before flooring the complete world coordinate. This addresses the same cell
-sample as the material fragment, including fractional magnification. Agent
+Picking and fragments subtract the same exact world-zero screen translation
+from the physical pixel centre, then multiply the same precomputed reciprocal
+scale. The exact screen phase is retained, never reconstructed from an inverse
+camera float. This avoids cancellation at fractional-zoom cell ties. Native
+fragment clipping also uses physical half-open content bounds; UV-space
+comparisons can disagree at fractional fitted edges. Agent
 capture metadata describes actual rounded crop edges with fractional world
 coordinates. Native editing coordinates remain integers.
 
@@ -122,10 +126,10 @@ or access control was changed. This failure is not a graphical test pass.
 | Gate | Initial checkpoint disposition |
 | --- | --- |
 | Source diagnosis and focused implementation review | Recorded above; independent resulting-diff review still required |
-| Headless coordinate and actual native editing fixture | Resulting-source execution to be recorded |
-| Actual framebuffer slow-pan/zoom/resize and old-path negative control | Hosted graphical execution pending |
+| Headless coordinate and actual native editing fixture | Initial source 725 checks passed on Linux/Windows hosted; revised local source 1,359 checks, 0 failures, including physical sample ties, follow and stationary hover |
+| Actual framebuffer slow-pan/zoom/resize and old-path negative control | Initial Linux source: 97 checks, 13 failures confined to fractional zoom/fitted edges; revised hosted execution pending |
 | Actual production glow/vapour alignment and guard coverage | Hosted graphical execution pending |
-| Source-built Linux and Windows campaigns | Pending |
+| Source-built Linux and Windows campaigns | Initial pinned native builds passed; camera graphics failed and package stages were correctly skipped |
 | Copied-installation camera and integrated authoring campaigns | Pending |
 | Source-matched Windows package and checksum | Pending successful source/installed campaign |
 | Retained-repository runtime provenance | HOLD inherited from #564; a newly built candidate does not publish or reattest the committed runtimes |
@@ -140,6 +144,66 @@ preserves original errors and hashes the actual executed source. Both graphical
 cases also run explicitly on Windows ANGLE; Windows headless exclusion is not
 counted as graphical coverage. The existing Workbench workflow retains full
 manual/agent, generation, cancellation, native and persistence regressions.
+
+## First hosted campaign and regression-driven corrections
+
+[Run 43341584935](https://github.com/techrote/cybersand/actions/runs/43341584935)
+executes the initial `a1a896bb` source. Both pinned native builds passed.
+The Linux camera-coordinate fixture passed all 725 checks. The graphical
+scrolling fixture completed 97 checks with 13 failures: integer 2x/4x/8x
+scrolling passed, but fractional 2.5x and odd fitted-view checks failed.
+The source camera gate stopped, so effects and installed/package stages were
+not counted as passes. The independent Linux accepted agent, PAINT, Undo and
+combined author/reopen regressions completed successfully.
+
+The retained captures distinguish two faults. Adding an inverse camera float
+to scaled UVs can round translated samples to opposite sides of a cell edge.
+For a 240-cell view over 600 pixels, camera origins near 63.2 and 63.6 could
+choose different world cells for pixel 349 and its translated pixel 348. The
+revised implementation retains screen translations -158 and -159 and uses
+identical subtract-then-multiply arithmetic for both samples. A realistic
+600x320 framebuffer case now asserts that exact translation and its reverse.
+
+Separately, a fitted rectangle `(6.5, 7.5, 160, 96)` in a 173x117 output lost
+its leftmost content column and included its exclusive bottom edge through
+UV comparison roundoff. The revised fragment reconstructs the physical sample
+from **unclamped** fitted UVs before testing half-open screen bounds. The
+oracle now checks letterbox pixels as well as all interior samples.
+
+Initial logs and source-matched PNGs are retained in the run's evidence
+artifacts; local copies are under `build/native-pixel-scrolling/initial-ci`.
+These failures are retained as negative evidence, not retrospectively
+relabeled as qualification.
+
+## Isolated compatibility with accepted Materials Lab
+
+The initial camera source was merged locally with accepted main
+`e0fb05b8e0500641f0f25c62c5fb7e721da02d6a` and latest #564
+`6319ab1d94d85d01c9cdb44d973a92d224bfa9aa`. Production sources merged without
+conflicts; six documentation conflicts were reconciled retaining both feature
+sets. The latest #564 changes only its pilot UI fixture. Local merge
+`5208acebbbcdd3fe82388840b3c89d241720d1a6` was followed by
+`a8f0bae7e018e63916e2544525e7afbde94fffed`, which adds only the unchanged
+#565 Lab integration fixture for execution.
+
+All 88 native input hashes match the pinned #565 build at
+`90719c72b9fcf90593fb7878354051ad601b47fd` from hosted run 43334477644.
+The reused native extension SHA-256 is
+`3a8b0b2cd04f09054426842f978e2421aad4016aae03dec91ed527ff50b953cd`;
+Godot and Rapier identities match the table above. This is separate Linux
+headless compatibility evidence, not a Windows build from the merged source.
+
+The camera fixture (725), Art UI (62), native Lab catalogue (1,348), and full
+combined author/reopen campaigns at 512x512 and 1024x1024 with one/four workers
+(1,008) passed: **3,143 completed checks/assertions**. The larger campaigns
+exercise the large Fill path. Documentation and historical M11 checks passed.
+
+The standalone Lab UI and mounted Lab validation correctly refused the changed
+protected palette shader. That is a real integration blocker: it requires a
+reviewed per-file source transition, with final shader hash, reachable source
+commit and preservation evidence. The immutable compatibility lock, catalogue
+identity and existing transitions are not reset or weakened. The final shader
+registration and resulting-source Lab rerun remain pending.
 
 ## Documentation and unchanged contracts
 

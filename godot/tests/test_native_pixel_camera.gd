@@ -106,6 +106,57 @@ func transforms() -> void:
 		Camera.presentation_origin(repeat,Vector2i(320,180),area,Transform2D.IDENTITY)
 		repeat -= Vector2(0.03125,-0.0625)
 	check(repeat == Vector2(100.125,200.375), "1000 pan/reverse pairs do not feed snapped output back into camera")
+	physical_sample_mapping()
+
+
+func physical_sample_mapping() -> void:
+	var view := Vector2i(240,128)
+	var content := Rect2(0,0,600,320)
+	var first: Transform2D = Camera.presentation_screen_transform(Vector2(63.137,60.137),view,content)
+	var next: Transform2D = Camera.presentation_screen_transform(Vector2(63.537,60.137),view,content)
+	check(first.origin == Vector2(-158,-150) and next.origin == Vector2(-159,-150),
+		"2.5x mapping retains exact integer physical phase before inverse camera rounding")
+	check(first.x == Vector2(2.5,0) and first.y == Vector2(0,2.5),
+		"physical mapping retains exact pixels-per-world-cell basis")
+	check(Camera.world_units_per_screen_pixel(first) == Vector2(0.4,0.4),
+		"CPU and shader share one precomputed world-per-display-pixel reciprocal")
+	check(Camera.screen_to_cell(Vector2(349,100),first) == Vector2i(203,100)
+		and Camera.screen_to_cell(Vector2(348,100),next) == Vector2i(203,100),
+		"adversarial pixel349 to348 tie addresses world203 identically")
+	for x: int in range(1,600):
+		var old_point := Vector2(x+0.5,100.5)
+		var new_point := old_point-Vector2(1,0)
+		check(Camera.screen_to_world(old_point,first) == Camera.screen_to_world(new_point,next),
+			"realistic 2.5x translated rays retain identical float bits at column "+str(x))
+	check(Camera.screen_to_cell(Vector2(349.01,100.01),first)
+		== Camera.screen_to_cell(Vector2(349.99,100.99),first),
+		"all pointer positions inside one physical pixel address its one fragment sample")
+	for dpi: float in [1.0,1.25,1.5,2.0]:
+		var screen := Transform2D(Vector2(dpi,0),Vector2(0,dpi),Vector2(93,57))
+		var fitted := Rect2(13.7,9.7,600,320)
+		var requested := Vector2(61.137,63.137)
+		var mapping: Transform2D = Camera.presentation_screen_transform(requested,view,fitted,screen)
+		var shifted: Transform2D = Camera.presentation_screen_transform(
+			requested+Vector2(1.0/(2.5*dpi),0),view,fitted,screen)
+		check(mapping.origin == mapping.origin.round() and shifted.origin == mapping.origin-Vector2(1,0),
+			"fitted display scaling keeps exact physical phase "+str(dpi))
+		var point := Vector2(389.5,198.5)
+		check(Camera.screen_to_world(point,mapping) == Camera.screen_to_world(point-Vector2(1,0),shifted),
+			"display scaling preserves translated sample identity "+str(dpi))
+	var fitted := Rect2(13.7,9.7,600,320)
+	var maximum := Vector2(272.1,128.1)
+	var at_start: Transform2D = Camera.presentation_screen_transform(Vector2.ZERO,view,fitted,
+		Transform2D.IDENTITY,maximum)
+	var at_end: Transform2D = Camera.presentation_screen_transform(maximum,view,fitted,
+		Transform2D.IDENTITY,maximum)
+	check(near(Camera.screen_to_world(fitted.position,at_start),Vector2.ZERO,0.00003),
+		"outer left/top bound wins over fractional fitted-edge rounding")
+	check(near(Camera.screen_to_world(fitted.position,at_end),maximum,0.00003),
+		"outer right/bottom bound wins over fractional fitted-edge rounding")
+	var one_bound: Transform2D = Camera.presentation_screen_transform(Vector2(60,0),view,fitted,
+		Transform2D.IDENTITY,maximum)
+	check(one_bound.origin.x == roundf(one_bound.origin.x) and one_bound.origin.y == fitted.position.y,
+		"clamping one axis preserves the other axis's physical pixel phase")
 
 
 func until(predicate: Callable, label: String, limit_ms: int = 30000) -> bool:
@@ -207,6 +258,7 @@ func mounted() -> void:
 	wheel.button_index = MOUSE_BUTTON_WHEEL_DOWN
 	bench._world_input(wheel)
 	check(near(host.camera_origin,original_camera,0.0003),"wheel in/out has no accumulating camera drift")
+	hover_without_motion()
 
 	bench._set_view(Vector2(24.75,20.75),Vector2i(240,135))
 	await process_frame
@@ -281,6 +333,108 @@ func mounted() -> void:
 	check(host.camera_origin == Vector2.ZERO,"negative camera clamps to World origin")
 	bench._set_view(Vector2(1000,1000),Vector2i(240,135))
 	check(host.camera_origin == Vector2(272,377),"camera clamps to far World edge without changing view size")
+	await follow_same_frame()
+
+
+func hover_without_motion() -> void:
+	# Keep the actual screen pointer fixed while toolbar navigation and layout
+	# move the image underneath it. Refresh through the controller's ordinary
+	# process callback, without synthesizing a second MouseMotion event.
+	var saved_origin: Vector2 = host.camera_origin
+	var saved_view: Vector2i = host.current_view_size
+	var saved_zoom: int = bench._zoom
+	var saved_size: Vector2 = host.world_view.size
+	var saved_scale: Vector2 = host.world_view.scale
+	var saved_position: Vector2 = host.world_view.position
+	var native_before: Dictionary = host.simulation_worker.paint_state()
+	var area: Rect2 = host.view_content_rect()
+	editor.select_tool("Rectangle")
+	var hover := InputEventMouseMotion.new()
+	hover.position = area.position + area.size*Vector2(0.73,0.31)
+	bench._world_input(hover)
+	var screen_point: Vector2 = host.world_view.get_screen_transform()*hover.position
+	var old_cursor: Vector2i = editor.cursor
+	bench.zoom_by(-1)
+	editor._process(0.0)
+	var remapped: Vector2 = host.world_view.get_screen_transform().affine_inverse()*screen_point
+	check(editor.cursor == host.world_cell_from_local_point(remapped) and editor.cursor != old_cursor,
+		"stationary hover follows toolbar zoom without a mouse event")
+	check(editor._pointer_screen == screen_point,"toolbar zoom preserves pointer screen position")
+
+	host.world_view.scale = saved_scale*Vector2(1.25,0.9)
+	host.world_view.position = saved_position+Vector2(21,13)
+	host.world_view.size = saved_size-Vector2(37,19)
+	editor._process(0.0)
+	remapped = host.world_view.get_screen_transform().affine_inverse()*screen_point
+	check(editor.cursor == host.world_cell_from_local_point(remapped) and editor.cursor.x >= 0,
+		"stationary hover follows changed viewport transform and fitted size")
+	check(editor._pointer_screen == screen_point,"layout changes do not reinterpret stored pointer as local coordinates")
+	host.world_view.scale = saved_scale
+	host.world_view.position = saved_position
+	host.world_view.size = saved_size
+	editor._process(0.0)
+	check(editor.cursor == host.world_cell_from_local_point(hover.position),
+		"restored layout returns hover to the same screen sample")
+
+	var press := InputEventMouseButton.new()
+	press.button_index = MOUSE_BUTTON_LEFT
+	press.pressed = true
+	press.position = hover.position
+	bench._world_input(press)
+	var drag_anchor: Vector2i = editor.anchor
+	var drag_cursor: Vector2i = editor.cursor
+	check(editor.dragging,"active rectangle preview admitted for hover isolation")
+	bench._set_view(host.camera_origin+Vector2(0.25,0.5),host.current_view_size)
+	editor._process(0.0)
+	check(editor.anchor == drag_anchor and editor.cursor == drag_cursor,
+		"stationary refresh cannot retarget an active drag anchor or endpoint")
+	host.world_view.mouse_exited.emit()
+	check(editor.dragging and editor.anchor == drag_anchor and editor.cursor == drag_cursor,
+		"mouse exit preserves active drag geometry")
+	editor.cancel_preview()
+	host.world_view.mouse_exited.emit()
+	check(editor.cursor == Vector2i(-1,-1) and not editor._pointer_screen.is_finite(),
+		"mouse exit clears idle hover preview")
+	editor._process(0.0)
+	check(editor.cursor == Vector2i(-1,-1),"later frames cannot resurrect an exited pointer")
+	bench._zoom = saved_zoom
+	bench._set_view(saved_origin,saved_view)
+	check(host.simulation_worker.paint_state().revision == native_before.revision,
+		"hover, toolbar zoom and cancelled preview do not mutate native cells")
+
+
+func follow_same_frame() -> void:
+	# A paused real Rapier actor supplies the followed pose. Invoke one parent
+	# presentation callback explicitly, with the child callback disabled: this
+	# discriminates the previous order that moved the camera only afterward.
+	var follow_setup: Dictionary = Setup.fresh(PackedInt32Array(bench.applied.liquid_policy),Vector2i(512,512))
+	follow_setup.actors = [Setup.instance(Setup.BARREL,1,Vector2(300.75,260.5))]
+	follow_setup.next_id = 2
+	follow_setup.selected = 1
+	if not check(bench.apply(follow_setup),"paused follow actor admitted"): return
+	if not await until(ready,"paused follow actor installed"): return
+	var state: Dictionary = bench.body_state(1)
+	if not check(not state.is_empty(),"real selected actor supplies follow pose"): return
+	host.set_process(false)
+	bench.set_process(false)
+	bench._set_view(Vector2(10.25,10.25),Vector2i(240,135))
+	bench._camera.select(1)
+	var old_origin: Vector2 = host.camera_origin
+	host._process(1.0/60.0)
+	var desired: Vector2 = host.clamped_camera_origin(Vector2(state.position)-Vector2(host.current_view_size)*0.5)
+	check(near(host.camera_origin,desired) and not near(host.camera_origin,old_origin),
+		"parent frame resolves selected-body follow before child processing")
+	var presented: Vector2 = host.presentation_camera_origin()
+	check(near(host.world_shader.get_shader_parameter("camera_origin_px"),presented),
+		"terrain uniform contains this frame's followed camera")
+	for overlay: Control in [host.physical_actor_overlay,host.actor_prototype_overlay,host.usable_overlay]:
+		check(near(overlay._origin,presented),"overlay shares same-frame followed origin: "+overlay.get_class())
+	bench._process(1.0/60.0)
+	check(near(host.camera_origin,desired) and near(host.world_shader.get_shader_parameter("camera_origin_px"),
+		host.presentation_camera_origin()),"child processing cannot move camera behind published terrain")
+	bench._camera.select(0)
+	bench.set_process(true)
+	host.set_process(true)
 
 
 func run() -> void:

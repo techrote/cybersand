@@ -56,6 +56,9 @@ def verify_lfs_payload(name: str, data: bytes, pins: dict) -> None:
 
 
 def completion(text: str, marker: str) -> dict:
+    if marker in ("MATERIAL_PRESENTATION_RENDER:", "WATER_PRESENTATION_RENDER:",
+                  "MATERIAL_VAPOUR_PIPELINE:", "PALETTE_CROSSFADE_RENDER_RESULT"):
+        return presentation_completion(text, marker)
     lines = [line[len(marker):].strip() for line in text.splitlines() if line.startswith(marker + " ")]
     if not lines:
         raise RuntimeError(f"Required completion marker is absent: {marker}")
@@ -73,6 +76,41 @@ def completion(text: str, marker: str) -> dict:
         result = {"checks": int(match[1]), "failures": int(match[2])}
     if not isinstance(result.get("checks"), int) or result["checks"] < 1 or result.get("failures") not in (0, []):
         raise RuntimeError(f"Incomplete or failing checks: {marker} {tail}")
+    return result
+
+
+def presentation_completion(text: str, marker: str) -> dict:
+    """Accept original graphical receipts without inventing assertion counts."""
+    contexts = [json.loads(line.partition(" ")[2]) for line in text.splitlines()
+                if line.startswith("PALETTE_QUALIFICATION_CONTEXT ")]
+    if not contexts or any(row.get("display_server") in (None, "", "headless")
+                           or not row.get("backend") for row in contexts):
+        raise RuntimeError(f"{marker} lacks an actual graphical runtime context")
+    lines = [line for line in text.splitlines() if line.startswith(marker + " ")]
+    if len(lines) != 1:
+        raise RuntimeError(f"{marker} needs exactly one complete graphical receipt")
+    line = lines[0]
+    if marker == "PALETTE_CROSSFADE_RENDER_RESULT":
+        result = json.loads(line[len(marker):].strip())
+        if (type(result.get("assertions")) is not int or result["assertions"] < 1
+                or result.get("failures") != 0 or result.get("material_slots") != 132
+                or result.get("conditions") != [0, 128, 255] or result.get("blends") != [0, 0.5, 1]):
+            raise RuntimeError("Incomplete or failing material crossfade receipt")
+    elif marker == "MATERIAL_VAPOUR_PIPELINE:":
+        found = re.fullmatch(r"MATERIAL_VAPOUR_PIPELINE: actual pixels, (\d+) assertions, 0 failures", line)
+        if found is None or int(found[1]) < 1:
+            raise RuntimeError("Incomplete or failing production vapour history receipt")
+        result = {"assertions": int(found[1]), "failures": 0}
+    else:
+        expected = ("MATERIAL_PRESENTATION_RENDER: actual pixels passed (time override, still scenery, anchoring, "
+                    "crossfade endpoints, conditions, all 132 ID slots, invalid bounds, growth blockers, "
+                    "vapour footprint, half-resolution single-cell fireworks)"
+                    if marker == "MATERIAL_PRESENTATION_RENDER:" else
+                    "WATER_PRESENTATION_RENDER: actual pixels coverage=2/4 at 2x, 8/16 at 4x; oriented right edge passed")
+        if line != expected:
+            raise RuntimeError(f"Missing positive graphical completion: {marker}")
+        result = {"positive_completion": line, "assertion_count_reported": False}
+    result["runtime_contexts"] = contexts
     return result
 
 
@@ -395,6 +433,18 @@ def camera(args):
                  "NATIVE_PIXEL_SCROLLING_RESULT", graphical=True)
     runner.godot(project, "camera-effects", "test_native_camera_effects_render",
                  "NATIVE_CAMERA_EFFECTS_RESULT", graphical=True)
+    # These existing independent oracles protect material shading, partial
+    # Water, history lifetime and ANGLE crossfade while coordinates change.
+    for script, marker in (
+            ("material_presentation", "MATERIAL_PRESENTATION_RENDER:"),
+            ("water_presentation", "WATER_PRESENTATION_RENDER:"),
+            ("material_vapour_pipeline", "MATERIAL_VAPOUR_PIPELINE:"),
+            ("palette_crossfade", "PALETTE_CROSSFADE_RENDER_RESULT")):
+        frames = runner.evidence / (script + "-frames")
+        runner.godot(project, "preserve-"+script, "test_"+script+"_render", marker,
+                     graphical=True, env={"CYBERSAND_PRESENTATION_EVIDENCE": str(frames),
+                                          "CYBERSAND_SHADER_CAPTURE": str(frames),
+                                          "CYBERSAND_PALETTE_CROSSFADE_OUTPUT": str(frames)})
 
 
 def main():

@@ -4219,21 +4219,47 @@ func clamped_camera_origin(candidate: Vector2) -> Vector2:
 
 
 func presentation_camera_origin() -> Vector2:
-	# Bounds win at the world's outer edge, so rounding cannot reveal a gap.
-	var screen_transform := world_view.get_screen_transform() if world_view.is_inside_tree() else Transform2D.IDENTITY
-	return clamped_camera_origin(PixelCamera.presentation_origin(camera_origin,
-		current_view_size, view_content_rect(), screen_transform))
+	var content := view_content_rect()
+	if content.size.x <= 0.0 or content.size.y <= 0.0: return clamped_camera_origin(camera_origin)
+	return PixelCamera.screen_to_world(_world_view_screen_transform() * content.position,
+		presentation_camera_screen_transform())
+
+
+func _world_view_screen_transform() -> Transform2D:
+	return world_view.get_screen_transform() if world_view.is_inside_tree() else Transform2D.IDENTITY
+
+
+func presentation_camera_screen_transform() -> Transform2D:
+	return PixelCamera.presentation_screen_transform(camera_origin, current_view_size,
+		view_content_rect(), _world_view_screen_transform(),
+		Vector2(maxi(0, world_extent.x-current_view_size.x), maxi(0, world_extent.y-current_view_size.y)))
+
+
+func configure_pixel_camera(material: ShaderMaterial) -> void:
+	var content := view_content_rect()
+	var screen := _world_view_screen_transform()
+	var mapping := presentation_camera_screen_transform()
+	var enabled := content.size.x > 0.0 and content.size.y > 0.0 and PixelCamera.is_axis_aligned(mapping)
+	material.set_shader_parameter("native_pixel_mapping_enabled", enabled)
+	if not enabled: return
+	material.set_shader_parameter("content_screen_origin", screen * content.position)
+	material.set_shader_parameter("content_screen_size", Vector2(screen.x.x, screen.y.y) * content.size)
+	material.set_shader_parameter("world_zero_screen", mapping.origin)
+	material.set_shader_parameter("world_units_per_screen_pixel", PixelCamera.world_units_per_screen_pixel(mapping))
 
 
 func world_position_from_local_point(local: Vector2) -> Vector2:
-	return PixelCamera.local_to_world(local, presentation_camera_origin(), current_view_size, view_content_rect())
+	return PixelCamera.screen_to_world(_world_view_screen_transform() * local,
+		presentation_camera_screen_transform())
 
 
 func world_cell_from_local_point(local: Vector2) -> Vector2i:
 	var content := view_content_rect()
 	if not local.is_finite() or not content.has_point(local): return Vector2i(-1, -1)
-	var sample_point := PixelCamera.local_pixel_center(local, world_view.get_screen_transform())
-	var cell := PixelCamera.local_to_cell(sample_point, presentation_camera_origin(), current_view_size, content)
+	var screen := _world_view_screen_transform()
+	var sample_position := (screen * local).floor() + Vector2(0.5, 0.5)
+	if not content.has_point(screen.affine_inverse() * sample_position): return Vector2i(-1, -1)
+	var cell := Vector2i(PixelCamera.screen_to_world(sample_position, presentation_camera_screen_transform()).floor())
 	return cell if Rect2i(Vector2i.ZERO, world_extent).has_point(cell) else Vector2i(-1, -1)
 
 
@@ -4700,6 +4726,7 @@ func update_shader_parameters() -> void:
 		"camera_origin_px",
 		presentation_camera_origin()
 	)
+	configure_pixel_camera(world_shader)
 	var sampled_player_visible: bool = (
 		not player_uses_barrel()
 		and (latest_snapshot == null or latest_snapshot.actor_prototypes.is_empty())

@@ -80,7 +80,8 @@ python tools/ci/run_workbench_qualification.py camera --godot /path/to/Godot_v4.
 On Windows, use the console executable with the same command arguments. On
 Linux, the command needs an X11 display; hosted execution supplies Xvfb. The
 runner imports the project, executes coordinate/native editing assertions, then
-runs actual framebuffer scrolling and production glow/vapour fixtures. It
+runs actual framebuffer scrolling, production glow/vapour fixtures and the
+existing material, water, vapour-history and crossfade preservation cases. It
 requires completion markers and retains source hashes, logs and frames.
 Headless parsing cannot satisfy either graphical fixture.
 

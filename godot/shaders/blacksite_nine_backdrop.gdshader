@@ -8,6 +8,11 @@ uniform sampler2D current_world_texture : filter_nearest, repeat_disable;
 uniform sampler2D previous_world_texture : filter_nearest, repeat_disable;
 uniform vec2 view_size_px = vec2(960.0);
 uniform vec2 camera_origin_px = vec2(32.0);
+uniform bool native_pixel_mapping_enabled = false;
+uniform vec2 content_screen_origin = vec2(0.0);
+uniform vec2 content_screen_size = vec2(1.0);
+uniform vec2 world_zero_screen = vec2(0.0);
+uniform vec2 world_units_per_screen_pixel = vec2(1.0);
 uniform vec2 player_origin_px = vec2(-1000.0);
 uniform vec2 player_size_px = vec2(8.0, 14.0);
 uniform float snapshot_blend = 1.0;
@@ -70,9 +75,14 @@ vec3 subterranean(vec2 p) {
 }
 
 void fragment() {
-	// Match the terrain's final-resolution cell selection, including its
-	// fractional presentation camera, so the Empty mask never slips an edge.
-	vec2 world_pixel = floor(camera_origin_px + UV * view_size_px);
+	// Match the terrain's exact physical sample and phase, including boundary
+	// ties at fractional zoom, so the Empty mask never slips a material edge.
+	vec2 continuous_world_pixel = camera_origin_px + UV * view_size_px;
+	if (native_pixel_mapping_enabled) {
+		vec2 sample_position = floor(content_screen_origin + UV * content_screen_size) + vec2(0.5);
+		continuous_world_pixel = (sample_position - world_zero_screen) * world_units_per_screen_pixel;
+	}
+	vec2 world_pixel = floor(continuous_world_pixel);
 	vec2 sample_uv = (world_pixel + vec2(0.5)) / vec2(1024.0);
 	float current_id = floor(texture(current_world_texture, sample_uv).r * 255.0 + 0.5);
 	float previous_id = floor(texture(previous_world_texture, sample_uv).r * 255.0 + 0.5);

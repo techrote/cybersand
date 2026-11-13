@@ -220,6 +220,8 @@ func refresh() -> void:
 	# The backdrop's occupancy mask must use the terrain's presentation origin.
 	var origin: Vector2 = host.presentation_camera_origin() if host.has_method("presentation_camera_origin") else Vector2(host.camera_origin)
 	shader.set_shader_parameter("camera_origin_px", origin)
+	if host.has_method("configure_pixel_camera"):
+		host.configure_pixel_camera(shader)
 	shader.set_shader_parameter("district_index", tile_index)
 	shader.set_shader_parameter("snapshot_blend",
 		host.world_shader.get_shader_parameter("snapshot_blend"))

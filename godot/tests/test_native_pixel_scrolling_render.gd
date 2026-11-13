@@ -6,7 +6,7 @@ extends SceneTree
 ## qualification, not a pass or a claimed screenshot.
 const Camera = preload("res://scripts/pixel_camera_transform.gd")
 const Context = preload("res://tests/palette_qualification_context.gd")
-const WORLD := Vector2i(256,256)
+const WORLD := Vector2i(512,256)
 const VIEW := Vector2i(32,24)
 const COLOUR_TOLERANCE: float = 1.0/255.0 + 0.000001
 var checks: int = 0
@@ -22,7 +22,7 @@ var reference: Image
 var capture_folder: String
 var pacing: Dictionary = {}
 
-const CURRENT_COORDINATES: String = "\tvec2 continuous_world_pixel = camera_origin_px + fitted_uv * view_size_px;\n\tvec2 world_pixel = floor(continuous_world_pixel);\n\tvec2 cell_fraction = fract(continuous_world_pixel);"
+const CURRENT_COORDINATES: String = "\tvec2 continuous_world_pixel = camera_origin_px + fitted_uv * view_size_px;\n\tif (native_pixel_mapping_enabled) {\n\t\tvec2 sample_position = floor(content_screen_origin + raw_fitted_uv * content_screen_size) + vec2(0.5);\n\t\t// Clip in the same physical space as picking. UV roundoff at a fitted\n\t\t// half-pixel edge must not drop the first column or leak the last row.\n\t\tinside_view = all(greaterThanEqual(sample_position, content_screen_origin))\n\t\t\t&& all(lessThan(sample_position, content_screen_origin + content_screen_size));\n\t\tcontinuous_world_pixel = (sample_position - world_zero_screen) * world_units_per_screen_pixel;\n\t}\n\tvec2 world_pixel = floor(continuous_world_pixel);\n\tvec2 cell_fraction = fract(continuous_world_pixel);"
 const LEGACY_COORDINATES: String = "\tvec2 continuous_view_pixel = fitted_uv * view_size_px;\n\tvec2 view_pixel = floor(continuous_view_pixel);\n\tvec2 world_pixel = camera_origin_px + view_pixel;\n\tvec2 cell_fraction = fract(camera_origin_px + continuous_view_pixel);"
 
 
@@ -81,15 +81,29 @@ func create_fixture() -> void:
 	viewport.add_child(surface)
 
 
+func configure_sample_mapping(target: ShaderMaterial, origin: Vector2, view: Vector2i,
+		content: Rect2, native_sampling: bool = true) -> void:
+	target.set_shader_parameter("camera_origin_px",origin)
+	target.set_shader_parameter("native_pixel_mapping_enabled",native_sampling)
+	if not native_sampling: return
+	var mapping: Transform2D = Camera.presentation_screen_transform(origin,view,content,
+		Transform2D.IDENTITY,Vector2(WORLD-view))
+	target.set_shader_parameter("content_screen_origin",content.position)
+	target.set_shader_parameter("content_screen_size",content.size)
+	target.set_shader_parameter("world_zero_screen",mapping.origin)
+	target.set_shader_parameter("world_units_per_screen_pixel",Camera.world_units_per_screen_pixel(mapping))
+
+
 func render_frame(origin: Vector2, view: Vector2i, output: Vector2i,
-		fitted: Rect2 = Rect2(0,0,1,1)) -> Image:
+		fitted: Rect2 = Rect2(0,0,1,1), native_sampling: bool = true) -> Image:
 	var resized: bool = viewport.size != output
 	viewport.size = output
 	surface.size = Vector2(output)
 	material.set_shader_parameter("view_size_px",Vector2(view))
 	material.set_shader_parameter("view_rect_uv",Vector4(fitted.position.x,fitted.position.y,fitted.size.x,fitted.size.y))
 	var uniform_start: int = Time.get_ticks_usec()
-	material.set_shader_parameter("camera_origin_px",origin)
+	configure_sample_mapping(material,origin,view,
+		Rect2(fitted.position*Vector2(output),fitted.size*Vector2(output)),native_sampling)
 	var uniform_elapsed: int = Time.get_ticks_usec()-uniform_start
 	var frame_start: int = Time.get_ticks_usec()
 	await RenderingServer.frame_post_draw
@@ -101,7 +115,7 @@ func render_frame(origin: Vector2, view: Vector2i, output: Vector2i,
 	image.convert(Image.FORMAT_RGBA8)
 	measurements.append({"output":[output.x,output.y],"view":[view.x,view.y],
 		"origin":[origin.x,origin.y],"uniform_update_usec":uniform_elapsed,
-		"render_wait_usec":frame_elapsed,"resized":resized})
+		"render_wait_usec":frame_elapsed,"resized":resized,"native_pixel_mapping":native_sampling})
 	return image
 
 
@@ -125,15 +139,31 @@ func compare_translation(previous: Image, current: Image, pixel_delta: Vector2i,
 
 
 func compare_cell_oracle(image: Image, origin: Vector2, view: Vector2i,
-		content: Rect2, label: String) -> void:
+		content: Rect2, label: String, letterbox_colour: Color = Color(0,0,0,-1)) -> void:
+	# Derive the physical cell lattice independently from the production helper.
+	# Camera inversion followed by a second float addition loses exact integer
+	# ties at realistic fractional zoom, so the oracle retains the screen phase.
+	var pixels_per_cell: Vector2 = content.size/Vector2(view)
+	var world_zero: Vector2 = (content.position-origin*pixels_per_cell).round()
+	world_zero = world_zero.clamp(content.position-Vector2(WORLD-view)*pixels_per_cell,content.position)
+	var reciprocal: Vector2 = Vector2.ONE/pixels_per_cell
 	var bad := 0
 	var first_bad := Vector2i(-1,-1)
 	var compared := 0
+	var outside_compared := 0
+	var outside_bad := 0
+	var first_outside_bad := Vector2i(-1,-1)
 	for y: int in range(image.get_height()):
 		for x: int in range(image.get_width()):
 			var centre := Vector2(x+0.5,y+0.5)
-			if not content.has_point(centre): continue
-			var world: Vector2 = origin+(centre-content.position)*Vector2(view)/content.size
+			if not content.has_point(centre):
+				if letterbox_colour.a >= 0:
+					outside_compared += 1
+					if not colour_equal(image.get_pixel(x,y),letterbox_colour):
+						outside_bad += 1
+						if first_outside_bad.x < 0: first_outside_bad = Vector2i(x,y)
+				continue
+			var world: Vector2 = (centre-world_zero)*reciprocal
 			var cell := Vector2i(world.floor())
 			if cell.x < 0 or cell.y < 0 or cell.x >= WORLD.x or cell.y >= WORLD.y: continue
 			compared += 1
@@ -142,6 +172,10 @@ func compare_cell_oracle(image: Image, origin: Vector2, view: Vector2i,
 				if first_bad.x < 0: first_bad = Vector2i(x,y)
 	check(compared > 100 and bad == 0,
 		label+" sharp nearest-cell pixels; mismatches="+str(bad)+" first="+str(first_bad))
+	if letterbox_colour.a >= 0:
+		check(outside_compared > 100 and outside_bad == 0,
+			label+" half-open content boundary has no letterbox bleed; mismatches="
+			+str(outside_bad)+" first="+str(first_outside_bad))
 
 
 func save_capture(image: Image, label: String) -> void:
@@ -182,8 +216,16 @@ func letterbox_case() -> void:
 	var area := Rect2(6.5,7.5,160,96)
 	var uv := Rect2(area.position/Vector2(output),area.size/Vector2(output))
 	var origin: Vector2 = Camera.presentation_origin(Vector2(60.25,60.75),VIEW,area,Transform2D.IDENTITY)
+	# A deliberately offscreen content rectangle gives an independent all-bar
+	# render through the established fallback path, with no boundary ambiguity.
+	# Every fixture material is an opaque relief solid, so Empty's contact shade
+	# is constant across the outside pixels regardless of sampled world cell.
+	var all_bars: Image = await render_frame(origin,VIEW,output,Rect2(2,2,1,1),false)
+	var letterbox_colour: Color = all_bars.get_pixel(0,0)
+	check(colour_equal(all_bars.get_pixel(output.x-1,output.y-1),letterbox_colour),
+		"independent outside-view colour reference is uniform")
 	var image: Image = await render_frame(origin,VIEW,output,uv)
-	compare_cell_oracle(image,origin,VIEW,area,"odd-sized viewport and fractional fitted rectangle")
+	compare_cell_oracle(image,origin,VIEW,area,"odd-sized viewport and fractional fitted rectangle",letterbox_colour)
 	var shifted_origin: Vector2 = Camera.presentation_origin(Vector2(60.25,60.75)+Vector2(1,1)/(area.size/Vector2(VIEW)),
 		VIEW,area,Transform2D.IDENTITY)
 	var shifted: Image = await render_frame(shifted_origin,VIEW,output,uv)
@@ -192,8 +234,31 @@ func letterbox_case() -> void:
 	var cropped: Image = image.get_region(Rect2i(8,9,156,92))
 	var cropped_shifted: Image = shifted.get_region(Rect2i(8,9,156,92))
 	compare_translation(cropped,cropped_shifted,Vector2i(1,1),"fitted-view diagonal pan")
-	compare_cell_oracle(shifted,shifted_origin,VIEW,area,"fitted-view shifted nearest cells")
+	compare_cell_oracle(shifted,shifted_origin,VIEW,area,"fitted-view shifted nearest cells",letterbox_colour)
 	save_capture(shifted,"native-pixel-scrolling-letterbox")
+
+
+func realistic_fractional_zoom_case() -> void:
+	# Realistic Workbench width, not only a tiny texture: float32 UV products
+	# can cross an integer-cell tie differently after a one-pixel translation.
+	# In particular, old x=349 and next x=348 both address world x=203 here.
+	var view := Vector2i(240,128)
+	var output := Vector2i(600,320)
+	var area := Rect2(Vector2.ZERO,Vector2(output))
+	var requested := Vector2(63.137,60.137)
+	var first_origin: Vector2 = Camera.presentation_origin(requested,view,area,Transform2D.IDENTITY)
+	var next_origin: Vector2 = Camera.presentation_origin(requested+Vector2(0.4,0),view,area,Transform2D.IDENTITY)
+	check(absf(first_origin.x-63.2) < 0.0001 and absf(next_origin.x-63.6) < 0.0001,
+		"realistic 2.5x fixture reaches the adversarial fractional phases")
+	var first: Image = await render_frame(first_origin,view,output)
+	var next: Image = await render_frame(next_origin,view,output)
+	compare_cell_oracle(first,first_origin,view,area,"240-cell realistic 2.5x origin63.2")
+	compare_cell_oracle(next,next_origin,view,area,"240-cell realistic 2.5x origin63.6")
+	compare_translation(first,next,Vector2i(1,0),"240-cell realistic 2.5x one-display-pixel pan")
+	var returned: Image = await render_frame(first_origin,view,output)
+	compare_translation(next,returned,Vector2i(-1,0),"240-cell realistic 2.5x reverse pan")
+	save_capture(first,"native-pixel-scrolling-realistic-2_5-before")
+	save_capture(next,"native-pixel-scrolling-realistic-2_5-after")
 
 
 func legacy_control_and_diagnostic() -> void:
@@ -206,7 +271,7 @@ func legacy_control_and_diagnostic() -> void:
 		# With an integer origin the old floor(view)+origin and current
 		# floor(view+origin) formula are mathematically identical. Passing the
 		# original whole-cell camera here recreates the actual former pipeline.
-		old_frames.append(await render_frame(requested.floor(),VIEW,output))
+		old_frames.append(await render_frame(requested.floor(),VIEW,output,Rect2(0,0,1,1),false))
 		var presented: Vector2 = Camera.presentation_origin(requested,VIEW,area,Transform2D.IDENTITY)
 		new_frames.append(await render_frame(presented,VIEW,output))
 		if index > 0:
@@ -274,7 +339,7 @@ func measure_pacing(variant: ShaderMaterial, legacy: bool) -> Dictionary:
 	# Warm both variants before measuring. Shader compilation, resource setup,
 	# screenshot readback and the previous image-comparison loops are excluded.
 	for frame: int in range(12):
-		variant.set_shader_parameter("camera_origin_px",Vector2(59,60))
+		configure_sample_mapping(variant,Vector2(59,60),Vector2i(128,96),Rect2(0,0,1280,960),not legacy)
 		await RenderingServer.frame_post_draw
 	var frames_usec: Array[int] = []
 	var uniforms_usec: Array[int] = []
@@ -284,7 +349,7 @@ func measure_pacing(variant: ShaderMaterial, legacy: bool) -> Dictionary:
 		var presented: Vector2 = requested.floor() if legacy else Camera.presentation_origin(requested,
 			Vector2i(128,96),Rect2(0,0,1280,960),Transform2D.IDENTITY)
 		var frame_start: int = Time.get_ticks_usec()
-		variant.set_shader_parameter("camera_origin_px",presented)
+		configure_sample_mapping(variant,presented,Vector2i(128,96),Rect2(0,0,1280,960),not legacy)
 		uniforms_usec.append(Time.get_ticks_usec()-frame_start)
 		await RenderingServer.frame_post_draw
 		frames_usec.append(Time.get_ticks_usec()-frame_start)
@@ -347,6 +412,7 @@ func run() -> void:
 	check(reference.get_size() == WORLD,"one-display-pixel-per-cell reference rendered")
 	await magnification_cases()
 	await letterbox_case()
+	await realistic_fractional_zoom_case()
 	await legacy_control_and_diagnostic()
 	await comparative_pacing()
 	var result := {"schema":"native-pixel-scrolling-render-v1","checks":checks,"failures":failures,

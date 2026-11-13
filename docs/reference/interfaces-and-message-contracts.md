@@ -22,11 +22,17 @@ owns their sampling semantics.
 | --- | --- |
 | `Main.camera_origin: Vector2` | Continuous requested world origin; retains drag and zoom remainder |
 | `Main.presentation_camera_origin(): Vector2` | Bounds-clamped displayed origin after rounding the complete screen translation |
+| `Main.presentation_camera_screen_transform(): Transform2D` | Exact world-to-physical-screen basis and rounded translation, with world-bound precedence on clamped axes |
+| `Main.configure_pixel_camera(material)` | Supplies the physical sample map to the palette and scene masks without a native call |
 | `Main.world_position_from_local_point(local)` | Continuous world point under a local point, using the displayed origin |
 | `Main.world_cell_from_local_point(local)` | Integer cell sampled at the pointer's physical pixel centre; `(-1,-1)` outside valid content/world |
 | `PixelCamera.presentation_origin` | Converts through content size/offset and `get_screen_transform`; returns a presentation value without mutating camera state |
+| `PixelCamera.screen_to_world` / `screen_to_cell` | Subtract exact screen translation, then multiply the shared reciprocal; the cell form samples a physical pixel centre |
 | `PixelCamera.origin_for_anchor` | Solves continuous origin for an unchanged world anchor after a view-size change |
-| `camera_origin_px` shader uniform | Fractional world origin for final display sampling; the name does not imply an integer input |
+| `native_pixel_mapping_enabled` shader uniform | Main enables the physical map for its axis-aligned canvas; defaults off for standalone callers |
+| `content_screen_origin`, `content_screen_size` | Fitted content rectangle in physical screen coordinates, used to reconstruct the fragment's sample centre |
+| `world_zero_screen`, `world_units_per_screen_pixel` | Original rounded translation and shared reciprocal scale; never reconstructed from the inverse camera float |
+| `camera_origin_px` shader uniform | Fractional world origin for the standalone/fallback sampling convention; the name does not imply an integer input |
 
 PAINT, selection and Art focus retain integer inclusive cell bounds. Agent
 observation metadata instead describes actual framebuffer crop edges using
