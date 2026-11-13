@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Guard executable custody and distinguish native work from repeated publications."""
 from pathlib import Path
+import copy
 import tempfile
 import unittest
 
@@ -77,6 +78,38 @@ class NativeTickObservationTests(unittest.TestCase):
         data = self.data([8])
         data["publications"][0]["world_generation"] = 4
         with self.assertRaisesRegex(ValueError, "World generation"): subject.completed_native_ticks(data)
+
+
+class PhysicalGeometryTests(unittest.TestCase):
+    def data(self):
+        return {"actual_window": [960,720], "world_extent": [512,512], "worker_capacity": 1,
+                "native_backend": "native-phased", "view_content_rect": [0,0,1880,710],
+                "actual_pixel_scale": [2.5,2.5], "physical_view_transform": [.5,0,0,.5,10,267],
+                "root_final_transform": [.5,0,0,.5,0,90], "root_content_scale_size": [1920,1080],
+                "root_content_scale_mode": 1, "root_content_scale_aspect": 1, "root_embed_subwindows": True,
+                "root_framebuffer_size": [960,540], "physical_content_rect": [10,267,940,355],
+                "frames": [{"view": [376,142], "physical_pixel_scale": [2.5,2.5], "camera": [64,64]},
+                           {"view": [376,142], "physical_pixel_scale": [2.5,2.5], "camera": [64.1,64]}]}
+
+    def test_controlled_physical_geometry_matches_despite_intended_camera_difference(self):
+        data, prior = self.data(), self.data()
+        prior["frames"][1]["camera"] = [64,64]
+        subject.verify_geometry_parity(data, prior)
+
+    def test_changed_window_raster_or_physical_zoom_is_refused(self):
+        for key, value in (("actual_window", [1280,960]), ("root_framebuffer_size", [1280,720]),
+                           ("actual_pixel_scale", [1.25,1.25]), ("physical_view_transform", [1,0,0,1,20,354])):
+            with self.subTest(key=key):
+                data, prior = self.data(), self.data()
+                data[key] = value
+                with self.assertRaisesRegex(ValueError, key): subject.verify_geometry_parity(data, prior)
+
+    def test_zoom_sequence_mismatch_is_refused_even_with_matching_final_view(self):
+        data = self.data()
+        prior = copy.deepcopy(data)
+        data["frames"][0]["view"] = [300,113]
+        with self.assertRaisesRegex(ValueError, "per-frame.*view"):
+            subject.verify_geometry_parity(data, prior)
 
 
 if __name__ == "__main__":

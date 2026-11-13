@@ -328,12 +328,12 @@ func refresh_pointer() -> void:
 	# Keep the pointer in screen space so stationary hover previews also follow
 	# toolbar zoom, camera follow, window stretch and layout changes. No input
 	# is synthesized and active stroke/selection anchors remain untouched.
-	var local: Vector2 = host.world_view.get_screen_transform().affine_inverse() * _pointer_screen
+	var local: Vector2 = host._world_view_screen_transform().affine_inverse() * _pointer_screen
 	cursor = host.world_cell_from_local_point(local)
 
 func world_input(event: InputEvent) -> bool:
 	if not paint_mode_active() or not event is InputEventMouse: return false
-	_pointer_screen = host.world_view.get_screen_transform() * event.position
+	_pointer_screen = host._world_view_pointer_screen_position(event.position, host._world_view_screen_transform())
 	if event is InputEventMouseButton and event.button_index not in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]:
 		if event.pressed: cancel_preview()
 		return false

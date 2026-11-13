@@ -20,6 +20,8 @@ var bench: Control
 var editor: Control
 var native_receipts: Array[Dictionary] = []
 var moving_follow_receipts: Array[Dictionary] = []
+var root_stretch_receipts: Array[Dictionary] = []
+var mounted_bounds_receipt: Dictionary = {}
 var moving_follow_invalid := false
 
 
@@ -37,6 +39,29 @@ func check(ok: bool, label: String) -> bool:
 
 func near(a: Vector2, b: Vector2, tolerance: float = 0.0002) -> bool:
 	return (a - b).abs().x <= tolerance and (a - b).abs().y <= tolerance
+
+
+func renderer_screen_transform() -> Transform2D:
+	# Independent renderer-side oracle: the viewport's final root stretch is
+	# outside the CanvasItem's global-with-canvas transform. Do not call Main's
+	# helper or CanvasItem.get_screen_transform(), which omitted this stretch.
+	return host.world_view.get_viewport().get_final_transform() \
+		* host.world_view.get_global_transform_with_canvas()
+
+
+func rendered_interior_cell(screen_point: Vector2) -> Vector2i:
+	# These mounted cases keep the camera away from World clamps. Derive the
+	# actual fragment sample directly from the renderer's content rectangle,
+	# requested camera and physical basis, independently of Main/PixelCamera.
+	var screen := renderer_screen_transform()
+	var content: Rect2 = host.view_content_rect()
+	var physical_size := content.size * Vector2(screen.x.x,screen.y.y)
+	var physical_content := Rect2(screen*content.position,physical_size)
+	var sample := screen_point.floor()+Vector2(0.5,0.5)
+	if not physical_content.has_point(sample): return Vector2i(-1,-1)
+	var pixels_per_cell := physical_size/Vector2(host.current_view_size)
+	var phase: Vector2 = (physical_content.position-host.camera_origin*pixels_per_cell).round()
+	return Vector2i(((sample-phase)*(Vector2.ONE/pixels_per_cell)).floor())
 
 
 func transforms() -> void:
@@ -286,7 +311,7 @@ func mounted() -> void:
 	check(near(Camera.local_to_world(anchor_local,host.camera_origin,host.current_view_size,host.view_content_rect()),
 		anchor_before,0.0003),"wheel preserves continuous world anchor immediately")
 	var pixels_per_cell: Vector2 = host.view_content_rect().size/Vector2(host.current_view_size)
-	var screen: Transform2D = host.world_view.get_screen_transform()
+	var screen: Transform2D = renderer_screen_transform()
 	pixels_per_cell *= Vector2(screen.x.length(),screen.y.length())
 	check(((host.world_position_from_local_point(anchor_local)-presented_before)*pixels_per_cell).abs().x <= 1.51
 		and ((host.world_position_from_local_point(anchor_local)-presented_before)*pixels_per_cell).abs().y <= 1.51,
@@ -295,7 +320,7 @@ func mounted() -> void:
 	bench._world_input(wheel)
 	check(near(host.camera_origin,original_camera,0.0003),"wheel in/out has no accumulating camera drift")
 	hover_without_motion()
-	mounted_sample_bounds()
+	await mounted_sample_bounds()
 
 	bench._set_view(Vector2(24.75,20.75),Vector2i(240,135))
 	await process_frame
@@ -304,7 +329,7 @@ func mounted() -> void:
 	# Test the actual physical pixel addressed by the mouse, including the
 	# shader's centre-of-pixel sampling convention at a fractional zoom.
 	area = host.view_content_rect()
-	screen = host.world_view.get_screen_transform()
+	screen = renderer_screen_transform()
 	for index: int in range(32):
 		var pointer: Vector2 = area.position + Vector2(17.13+index*2.371,24.77+index*1.117)
 		var pixel_centre: Vector2 = screen.affine_inverse()*((screen*pointer).floor()+Vector2(0.5,0.5))
@@ -361,7 +386,7 @@ func mounted() -> void:
 	var pre_pan: Vector2 = host.camera_origin
 	var shown_pre_pan: Vector2 = host.presentation_camera_origin()
 	area = host.view_content_rect()
-	screen = host.world_view.get_screen_transform()
+	screen = renderer_screen_transform()
 	var press := InputEventMouseButton.new()
 	press.button_index = MOUSE_BUTTON_MIDDLE
 	press.pressed = true
@@ -384,6 +409,7 @@ func mounted() -> void:
 	check(host.camera_origin == Vector2.ZERO,"negative camera clamps to World origin")
 	bench._set_view(Vector2(1000,1000),Vector2i(240,135))
 	check(host.camera_origin == Vector2(272,377),"camera clamps to far World edge without changing view size")
+	await root_canvas_stretch()
 	await follow_same_frame()
 	await follow_moving_actor()
 
@@ -404,11 +430,11 @@ func hover_without_motion() -> void:
 	var hover := InputEventMouseMotion.new()
 	hover.position = area.position + area.size*Vector2(0.73,0.31)
 	bench._world_input(hover)
-	var screen_point: Vector2 = host.world_view.get_screen_transform()*hover.position
+	var screen_point: Vector2 = renderer_screen_transform()*hover.position
 	var old_cursor: Vector2i = editor.cursor
 	bench.zoom_by(-1)
 	editor._process(0.0)
-	var remapped: Vector2 = host.world_view.get_screen_transform().affine_inverse()*screen_point
+	var remapped: Vector2 = renderer_screen_transform().affine_inverse()*screen_point
 	check(editor.cursor == host.world_cell_from_local_point(remapped) and editor.cursor != old_cursor,
 		"stationary hover follows toolbar zoom without a mouse event")
 	check(editor._pointer_screen == screen_point,"toolbar zoom preserves pointer screen position")
@@ -417,7 +443,7 @@ func hover_without_motion() -> void:
 	host.world_view.position = saved_position+Vector2(21,13)
 	host.world_view.size = saved_size-Vector2(37,19)
 	editor._process(0.0)
-	remapped = host.world_view.get_screen_transform().affine_inverse()*screen_point
+	remapped = renderer_screen_transform().affine_inverse()*screen_point
 	check(editor.cursor == host.world_cell_from_local_point(remapped) and editor.cursor.x >= 0,
 		"stationary hover follows changed viewport transform and fitted size")
 	check(editor._pointer_screen == screen_point,"layout changes do not reinterpret stored pointer as local coordinates")
@@ -459,22 +485,34 @@ func mounted_sample_bounds() -> void:
 	# This ordinary aspect fit is a real inverse-rounding counterexample:
 	# local x=52.3333435 maps to physical x=329.5, but the inverse returns
 	# x=52.333328 and formerly discarded the visible first content column.
+	# Preserve that exact float32 fixture at unit root stretch: a fractional
+	# Control position can otherwise round its anchor-derived width. Actual
+	# nonunit root stretch is exercised separately by root_canvas_stretch().
+	var saved_window: Vector2i = root.size
 	var saved_origin: Vector2 = host.camera_origin
 	var saved_view: Vector2i = host.current_view_size
 	var saved_size: Vector2 = host.world_view.size
 	var saved_scale: Vector2 = host.world_view.scale
 	var saved_position: Vector2 = host.world_view.position
+	root.size = Vector2i(1920,1080)
+	await process_frame
+	await process_frame
+	check(root.get_final_transform().is_equal_approx(Transform2D.IDENTITY),
+		"registered inverse-clipping fixture has an actual unit root transform")
 	host.current_view_size = Vector2i(240,135)
 	host.camera_origin = Vector2(63.137,60.137)
-	host.world_view.size = Vector2(430,183)
 	host.world_view.scale = Vector2(1.5,1.5)
-	# Remove the native window's desktop translation from the fixture setup;
-	# the tested screen transform itself remains the actual CanvasItem API.
-	host.world_view.global_position += Vector2(251,17)-host.world_view.get_screen_transform().origin
+	host.world_view.global_position = Vector2(251,17)
+	host.world_view.size = Vector2(430,183)
 	var content: Rect2 = host.view_content_rect()
-	var screen: Transform2D = host.world_view.get_screen_transform()
+	var screen: Transform2D = renderer_screen_transform()
 	var pointer := Vector2(52.5,9)
 	var sample: Vector2 = (screen*pointer).floor()+Vector2(0.5,0.5)
+	var inverse_sample: Vector2 = screen.affine_inverse()*sample
+	mounted_bounds_receipt = {"physical_basis":[screen.x.x,screen.y.y],
+		"physical_origin":[screen.origin.x,screen.origin.y],
+		"content":[content.position.x,content.position.y,content.size.x,content.size.y],
+		"sample":[sample.x,sample.y],"inverse_sample":[inverse_sample.x,inverse_sample.y]}
 	check(near(screen.origin,Vector2(251,17),0.00001) and sample.x == 329.5,
 		"mounted fractional-scale fixture reaches the registered physical edge")
 	check(content.has_point(pointer) and not content.has_point(screen.affine_inverse()*sample),
@@ -498,6 +536,110 @@ func mounted_sample_bounds() -> void:
 	host.world_view.scale = saved_scale
 	host.world_view.position = saved_position
 	host.world_view.size = saved_size
+	root.size = saved_window
+	await process_frame
+	await process_frame
+
+
+func root_canvas_stretch() -> void:
+	# Resize the actual project Window; scaling a child Control alone misses
+	# canvas_items root stretch. Keep the configured 1920x1080 logical canvas
+	# and use its renderer transform as an independent physical-pixel oracle.
+	var saved_window: Vector2i = root.size
+	var saved_origin: Vector2 = host.camera_origin
+	var saved_view: Vector2i = host.current_view_size
+	var native_before: Dictionary = host.simulation_worker.paint_state()
+	var windows: Array[Vector2i] = [Vector2i(960,720),Vector2i(1280,960),Vector2i(1920,1080)]
+	check(root.content_scale_size == Vector2i(1920,1080)
+		and root.content_scale_mode == Window.CONTENT_SCALE_MODE_CANVAS_ITEMS,
+		"mounted root uses the actual default 1920x1080 canvas_items configuration")
+	var shared_content := Rect2()
+	for index: int in range(windows.size()):
+		root.size = windows[index]
+		await process_frame
+		await process_frame
+		bench._set_view(Vector2(24.137,20.137),Vector2i(240,135))
+		await process_frame
+		await process_frame
+		var label := "actual root window " + str(windows[index])
+		var final: Transform2D = root.get_final_transform()
+		var expected_scale := float(windows[index].x)/1920.0
+		check(near(final.x,Vector2(expected_scale,0)) and near(final.y,Vector2(0,expected_scale))
+			and near(final.origin,Vector2(0,(windows[index].y-1080.0*expected_scale)*0.5)),
+			label+" applies physical stretch and aspect-preserving margins")
+		var screen := renderer_screen_transform()
+		var content: Rect2 = host.view_content_rect()
+		var physical_size := content.size*Vector2(screen.x.x,screen.y.y)
+		var physical_content := Rect2(screen*content.position,physical_size)
+		shared_content = physical_content if index == 0 else shared_content.intersection(physical_content)
+		var physical_basis := physical_size/Vector2(host.current_view_size)
+		var phase: Vector2 = (physical_content.position-host.camera_origin*physical_basis).round()
+		var mapping: Transform2D = host.presentation_camera_screen_transform()
+		check(near(mapping.x,Vector2(physical_basis.x,0)) and near(mapping.y,Vector2(0,physical_basis.y)),
+			label+" camera basis includes the actual root stretch exactly once")
+		check(near(mapping.origin,phase) and mapping.origin == mapping.origin.round(),
+			label+" camera translation snaps to physical framebuffer pixels")
+		check(near(host.world_shader.get_shader_parameter("world_zero_screen"),phase)
+			and near(host.world_shader.get_shader_parameter("content_screen_origin"),physical_content.position)
+			and near(host.world_shader.get_shader_parameter("content_screen_size"),physical_size),
+			label+" actual terrain uniforms use the renderer's physical content and phase")
+		var legacy_screen: Transform2D = host.world_view.get_screen_transform()
+		var legacy_mapping: Transform2D = Camera.presentation_screen_transform(host.camera_origin,
+			host.current_view_size,content,legacy_screen,Vector2(host.world_extent-host.current_view_size))
+		var legacy_mismatches := 0
+		for sample_index: int in range(8):
+			var pointer: Vector2 = content.position+content.size*Vector2(0.17+sample_index*0.071,0.23+sample_index*0.053)
+			var physical: Vector2 = screen*pointer
+			var expected := rendered_interior_cell(physical)
+			check(expected.x >= 0 and host.world_cell_from_local_point(pointer) == expected,
+				label+" Main picks the independent physical fragment sample "+str(sample_index))
+			check(editor.local_to_cell(pointer) == expected,
+				label+" PAINT picks the independent physical fragment sample "+str(sample_index))
+			if Camera.screen_to_cell(physical,legacy_mapping) != expected: legacy_mismatches += 1
+		if expected_scale != 1.0:
+			check(not near(legacy_mapping.x,mapping.x) and legacy_mismatches > 0,
+				label+" explicit previous screen helper is a discriminating negative control")
+		else:
+			check(near(legacy_mapping.x,mapping.x) and legacy_mismatches == 0,
+				label+" unit root stretch retains the previously correct mapping")
+		root_stretch_receipts.append({"window":[root.size.x,root.size.y],
+			"root_scale":[final.x.x,final.y.y],"root_offset":[final.origin.x,final.origin.y],
+			"physical_content":[physical_content.position.x,physical_content.position.y,physical_size.x,physical_size.y],
+			"physical_basis":[physical_basis.x,physical_basis.y],"world_zero":[mapping.origin.x,mapping.origin.y],
+			"legacy_sample_mismatches":legacy_mismatches,"sample_count":8})
+
+	# Deliver one real mouse-motion event, then leave the physical pointer in
+	# place while the root changes size. Subsequent updates use only the
+	# controller's normal process callback, without another pointer event.
+	check(shared_content.has_area(),"all root sizes retain a shared interior physical hover sample")
+	var fixed_point := shared_content.get_center()+Vector2(0.17,0.23)
+	editor.select_tool("Rectangle")
+	var hover := InputEventMouseMotion.new()
+	hover.position = renderer_screen_transform().affine_inverse()*fixed_point
+	bench._world_input(hover)
+	check(near(editor._pointer_screen,fixed_point) and editor.cursor == rendered_interior_cell(fixed_point),
+		"root-resize hover stores the actual physical pointer and addressed cell")
+	var previous_cursor: Vector2i = editor.cursor
+	for dimensions: Vector2i in windows:
+		root.size = dimensions
+		await process_frame
+		await process_frame
+		editor._process(0.0)
+		var expected := rendered_interior_cell(fixed_point)
+		check(expected.x >= 0 and editor.cursor == expected and editor.cursor != previous_cursor,
+			"stationary physical hover follows actual root resize to "+str(dimensions))
+		check(near(editor._pointer_screen,fixed_point),
+			"root resize preserves physical pointer without synthesizing motion "+str(dimensions))
+		previous_cursor = editor.cursor
+		root_stretch_receipts.append({"hover_window":[dimensions.x,dimensions.y],
+			"stationary_physical_pointer":[fixed_point.x,fixed_point.y],"cursor":[editor.cursor.x,editor.cursor.y]})
+	host.world_view.mouse_exited.emit()
+	root.size = saved_window
+	await process_frame
+	await process_frame
+	bench._set_view(saved_origin,saved_view)
+	check(host.simulation_worker.paint_state().revision == native_before.revision,
+		"actual root resize and stationary hover do not mutate native cells")
 
 
 func follow_same_frame() -> void:
@@ -613,7 +755,8 @@ func run() -> void:
 		"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"transform_sha256":FileAccess.get_sha256("res://scripts/pixel_camera_transform.gd"),
 		"source_hashes":source_hashes,"native_runtime_sha256":FileAccess.get_sha256(native_path),
-		"native_receipts":native_receipts,"moving_follow_receipts":moving_follow_receipts}
+		"native_receipts":native_receipts,"moving_follow_receipts":moving_follow_receipts,
+		"root_stretch_receipts":root_stretch_receipts,"mounted_bounds_receipt":mounted_bounds_receipt}
 	var folder := OS.get_environment("CYBERSAND_TEST_ARTIFACT_DIR")
 	if not folder.is_empty() and DirAccess.make_dir_recursive_absolute(folder) == OK:
 		var receipt := FileAccess.open(folder.path_join("native-pixel-camera.json"),FileAccess.WRITE)

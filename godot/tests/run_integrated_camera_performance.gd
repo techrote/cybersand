@@ -153,9 +153,9 @@ func set_camera(frame: int) -> void:
 	if mode == "slow_pan": offset = Vector2(float(frame%300)*0.1,0)
 	elif mode == "pan": offset = Vector2(30*sin(float(frame)*0.025),18*sin(float(frame)*0.018))
 	if mode == "zoom":
-		# Exercise the application's ordinary cursor-anchor zoom path.
-		if frame%30 == 0: bench.zoom_by(1 if (frame/30)%2 == 0 else -1,
-			host.view_content_rect().get_center())
+		# The accepted and integrated Workbench both expose this one-argument
+		# centre zoom. Cursor-anchored overloads are camera-specific APIs.
+		if frame%30 == 0: bench.zoom_by(1 if (frame/30)%2 == 0 else -1)
 	else: bench._set_view(base_origin+offset,base_view)
 
 func local(cell: Vector2i) -> Vector2:
@@ -234,6 +234,7 @@ func observe_publication(frame: int) -> void:
 			"submitted_texture_bytes":int(config.side)*int(config.side)*host.render_channels})
 
 func frame_record(frame: int, elapsed_usec: int) -> Dictionary:
+	var scale := physical_pixel_scale()
 	var row := {"frame":frame,"frame_ms":float(elapsed_usec)/1000.0,
 		"main_process_ms":float(host.measured_main_usec)/1000.0,
 		"shader_update_ms":float(host.measured_shader_usec)/1000.0,
@@ -246,6 +247,7 @@ func frame_record(frame: int, elapsed_usec: int) -> Dictionary:
 		"render_video_memory_bytes":int(Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED)),
 		"draw_calls":int(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)),
 		"camera":[host.camera_origin.x,host.camera_origin.y],"view":[host.current_view_size.x,host.current_view_size.y],
+		"physical_pixel_scale":[scale.x,scale.y],
 		"tick":host.latest_snapshot.tick_index if host.latest_snapshot != null else -1,
 		"action_active":not pending_action.is_empty()}
 	if RenderingServer.has_method("viewport_get_measured_render_time_cpu"):
@@ -253,6 +255,29 @@ func frame_record(frame: int, elapsed_usec: int) -> Dictionary:
 			row.viewport_render_cpu_ms = RenderingServer.viewport_get_measured_render_time_cpu(root.get_viewport_rid())
 			row.viewport_render_gpu_ms = RenderingServer.viewport_get_measured_render_time_gpu(root.get_viewport_rid())
 	return row
+
+func physical_view_transform() -> Transform2D:
+	# CanvasItem.get_screen_transform() can omit root stretch when subwindows
+	# are embedded. Use the actual viewport raster composition for BOTH source
+	# subjects, including accepted main which has no camera transform helper.
+	return host.world_view.get_viewport_transform()*host.world_view.get_global_transform()
+
+func physical_pixel_scale() -> Vector2:
+	var transform := physical_view_transform()
+	return host.view_content_rect().size*Vector2(transform.x.length(),transform.y.length())/Vector2(host.current_view_size)
+
+func transform_values(value: Transform2D) -> Array:
+	return [value.x.x,value.x.y,value.y.x,value.y.y,value.origin.x,value.origin.y]
+
+func observed_camera_motion() -> Dictionary:
+	var maximum := 0.0
+	var distinct_views: Dictionary = {}
+	if not frames.is_empty():
+		var first := Vector2(float(frames[0].camera[0]),float(frames[0].camera[1]))
+		for row: Dictionary in frames:
+			maximum=maxf(maximum,first.distance_to(Vector2(float(row.camera[0]),float(row.camera[1]))))
+			distinct_views[str(row.view)] = true
+	return {"maximum_camera_displacement_cells":maximum,"distinct_view_sizes":distinct_views.size()}
 
 func describe(values: Array[Dictionary], key: String) -> Dictionary:
 	var numbers: Array[float] = []
@@ -280,9 +305,11 @@ func finish() -> void:
 		"context":Context.identity(get_script().resource_path,host.world_shader.shader if host != null else null),
 		"frames":frames,"publications":publications,"uploads":uploads,"actions":actions,
 		"measurement_start":{"tick":measurement_start_tick,"world_generation":measurement_world_generation},
+		"camera_motion":observed_camera_motion(),
 		"worker_participation":participation,
 		"scope":"Real mounted Workbench; rendered-frame waits include test scheduling; Main timers include nested work; native tick summary deduplicates observed completed ticks after measurement start, not every native tick. Raw publications can repeat the last tick's values while paused/fenced. GPU timer zero means unavailable, not zero GPU cost. RSS/CPU observation is external. No inference requests.",
-		"measurement_gaps":["No reliable allocation-rate counter","No hardware GPU utilization","Root render timer excludes separate effect viewports; shader timer is CPU submission, not fragment execution"]}
+		"measurement_gaps":["No reliable allocation-rate counter","No hardware GPU utilization","Root render timer excludes separate effect viewports; shader timer is CPU submission, not fragment execution",
+			"Godot TIME_PROCESS and TIME_PHYSICS_PROCESS are roughly one-second maximum gauges, not per-frame CPU samples"]}
 	if host != null:
 		result.world_extent = [host.world_extent.x,host.world_extent.y]
 		result.worker_capacity = host.latest_snapshot.scheduler_thread_capacity_hint if host.latest_snapshot != null else 0
@@ -290,9 +317,20 @@ func finish() -> void:
 		result.view_content_rect = [host.view_content_rect().position.x,host.view_content_rect().position.y,
 			host.view_content_rect().size.x,host.view_content_rect().size.y]
 		result.actual_window = [root.size.x,root.size.y]
-		var screen: Transform2D = host.world_view.get_screen_transform()
-		result.actual_pixel_scale = [host.view_content_rect().size.x*screen.x.length()/host.current_view_size.x,
-			host.view_content_rect().size.y*screen.y.length()/host.current_view_size.y]
+		var screen := physical_view_transform()
+		var scale := physical_pixel_scale()
+		result.actual_pixel_scale = [scale.x,scale.y]
+		result.physical_view_transform = transform_values(screen)
+		result.canvas_item_screen_transform = transform_values(host.world_view.get_screen_transform())
+		result.root_final_transform = transform_values(root.get_final_transform())
+		result.root_content_scale_size = [root.content_scale_size.x,root.content_scale_size.y]
+		result.root_content_scale_mode = root.content_scale_mode
+		result.root_content_scale_aspect = root.content_scale_aspect
+		result.root_embed_subwindows = root.is_embedding_subwindows()
+		result.root_framebuffer_size = [root.get_texture().get_width(),root.get_texture().get_height()]
+		var physical_content: Rect2 = screen*host.view_content_rect()
+		result.physical_content_rect = [physical_content.position.x,physical_content.position.y,
+			physical_content.size.x,physical_content.size.y]
 	if not frames.is_empty():
 		result.summary = {}
 		for key: String in ["frame_ms","main_process_ms","shader_update_ms","snapshot_consume_ms",
@@ -365,7 +403,7 @@ func run() -> void:
 	if config.has("zoom"):
 		await process_frame
 		await process_frame
-		var screen: Transform2D = host.world_view.get_screen_transform()
+		var screen := physical_view_transform()
 		var available: Vector2 = host.world_view.size*Vector2(screen.x.length(),screen.y.length())
 		base_view = Vector2i((available/float(config.zoom)).floor()).max(Vector2i.ONE)
 		base_view = base_view.min(Vector2i(int(config.side),int(config.side)))
@@ -410,4 +448,10 @@ func run() -> void:
 		for position: Vector2 in actor_positions:
 			if position.distance_to(actor_positions[0]) > 1.0: moved=true
 		require(moved,"follow workload contains a moving physical actor")
+	var motion := observed_camera_motion()
+	if config.camera in ["slow_pan","pan","follow"]:
+		require(float(motion.maximum_camera_displacement_cells)>0.01,
+			"requested camera workload actually moves inside the World bounds")
+	if config.camera == "zoom":
+		require(int(motion.distinct_view_sizes)>1,"zoom workload contains distinct actual view sizes")
 	await finish()

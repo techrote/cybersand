@@ -20,8 +20,11 @@ The final integration preserves the original camera branch and accepted main
 `ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742` through normal merge
 `b1e2e9b1ce0a93d9eda54cbc35d04257eba9dfa7`. Accepted #565 includes Materials
 Lab, native capability consumption, PAINT, agent authoring and chronological
-shared Undo/Redo. The camera, palette and recording implementation is unchanged
-by that reconciliation. The [final integration record](../audits/2026-11-13-native-pixel-final-integration.md)
+shared Undo/Redo. The palette and recording implementation is unchanged by that
+reconciliation. Final qualification adds a narrow correction for the actual
+root Window's framebuffer stretch and stationary pointer tracking; the camera's
+continuous state and pixel-sampling design are preserved. The
+[final integration record](../audits/2026-11-13-native-pixel-final-integration.md)
 separates the resulting-source campaign from the earlier stacked qualification.
 The camera branch does not modify either upstream branch. The
 [dated qualification ledger](../audits/2026-11-13-native-pixel-scrolling.md)
@@ -100,6 +103,10 @@ scrolling, production glow/vapour fixtures and the
 existing material, water, vapour-history and crossfade preservation cases. It
 requires completion markers and retains source hashes, logs and frames.
 Headless parsing cannot satisfy either graphical fixture.
+Mounted root-window cases additionally exercise 960×720, 1280×960 and
+1920×1080 geometry, using an independent renderer transform for phase, picking
+and stationary-hover checks. The scrolling fixture renders actual stretched
+root windows and retains the previous transform as a negative control.
 Native-mapped partial Water and the actual PAINT fill raster are also checked
 at fractional camera positions. Independent cases continue after a failure to
 retain their diagnostics; the overall camera/package gate still fails.

@@ -463,11 +463,11 @@ func _keyboard_guard(controller: Control, p, web: bool) -> void:
 
 
 func _mouse_at(controller: Control, point: Vector2i, pressed: bool) -> void:
-	var content: Rect2 = controller.view_content_rect()
-	var local: Vector2 = content.position + (Vector2(point) + Vector2(0.5,0.5)
-		- controller.camera_origin) / Vector2(controller.current_view_size) * content.size
-	var position: Vector2 = controller.get_viewport().get_screen_transform() \
-		* controller.world_view.get_global_transform_with_canvas() * local
+	# Address the visible physical fragment containing the presented cell
+	# centre, then pass that window-space position through Godot's real input
+	# path. The requested continuous origin is not the presented pixel phase.
+	var mapping: Transform2D = controller.presentation_camera_screen_transform()
+	var position: Vector2 = (mapping*(Vector2(point)+Vector2(0.5,0.5))).floor()+Vector2(0.5,0.5)
 	var motion := InputEventMouseMotion.new()
 	motion.position = position
 	motion.global_position = position
@@ -480,6 +480,8 @@ func _mouse_at(controller: Control, point: Vector2i, pressed: bool) -> void:
 	button.pressed = pressed
 	Input.parse_input_event(button)
 	Input.flush_buffered_events()
+	expect(controller.world_cell_from_local_point(controller.world_view.get_local_mouse_position()) == point,
+		"Blacksite pointer fixture did not address the exact visible seam cell through real input")
 
 
 func _paint(controller: Control, web: bool) -> void:
@@ -490,8 +492,20 @@ func _paint(controller: Control, web: bool) -> void:
 func _pointer_guard(controller: Control, p, web: bool) -> void:
 	var owner: String = "Web" if web else "desktop"
 	p.frame_view(0)
+	# The 960-square overview has fewer than one physical pixel per cell and
+	# cannot expose every individual cell to a one-cell erase. Inspect the
+	# same native seam at a magnification where its cell is actually visible;
+	# this changes presentation only and retains the same held/release gates.
+	controller.current_view_size = Vector2i(160,160)
+	controller.camera_origin = Vector2(SEAM_POINT)-Vector2(80,80)
 	controller.set_brush_size(1)
 	await process_frame
+	var screen: Transform2D = controller.get_viewport().get_final_transform() \
+		* controller.world_view.get_global_transform_with_canvas()
+	var physical_scale: Vector2 = controller.view_content_rect().size/Vector2(controller.current_view_size) \
+		* Vector2(screen.x.length(),screen.y.length())
+	expect(physical_scale.x >= 1.5 and physical_scale.y >= 1.5,
+		owner + " seam pointer fixture does not expose an individually selectable native cell")
 	var edited: PackedByteArray = _cells(controller, web)
 	p.show_map()
 	expect(p.map_popup.visible and p.input_blocked(), owner + " map popup did not block painting")
@@ -518,6 +532,10 @@ func _pointer_guard(controller: Control, p, web: bool) -> void:
 		and _material(controller, web, SEAM_POINT + Vector2i(3,0)) == EDIT_MATERIAL
 		and controller.paused and _tick(controller, web) == 0,
 		owner + " positive erase changed neighboring seam marks or simulation time")
+	evidence.append({"owner":owner,"map_pointer_guard":"open + closed-held + fresh gesture",
+		"exact_native_target":[SEAM_POINT.x,SEAM_POINT.y],"view_size":[160,160],
+		"physical_pixels_per_cell":[physical_scale.x,physical_scale.y],
+		"native_seam_erased":_material(controller,web,SEAM_POINT) == 0})
 
 
 func _check_left(controller: Control, p, owner: String, original_minimum: Vector2) -> void:

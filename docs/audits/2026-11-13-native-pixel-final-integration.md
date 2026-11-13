@@ -35,9 +35,13 @@ new sections/routes are retained, with the newest review date. Product code
 merges without a conflict. No competing design or default is selected.
 
 Independent byte comparison confirms that every path changed by only one
-parent retains that parent's exact bytes. `main.gd`, `gameplay_recorder.gd`,
-`pixel_camera_transform.gd` and `material_palette.gdshader` exactly match the
-qualified camera parent. The shader's LF SHA-256 remains
+parent retains that parent's exact bytes in the normal merge. At that merge,
+`main.gd`, `gameplay_recorder.gd`, `pixel_camera_transform.gd` and
+`material_palette.gdshader` exactly match the qualified camera parent. Final
+qualification subsequently found a root-window stretch defect and repairs only
+Main's renderer-transform composition and its pointer consumer, as recorded
+below. The camera math, palette shader and recording implementation remain
+unchanged. The shader's LF SHA-256 remains
 `b8e5542dae2c36fd6fbef0170a7b537bce5c853fc10920174cefe13dbec78d4f`.
 The Materials Lab native-window functions match accepted main; the combined
 Workbench retains the camera callbacks plus the accepted Lab toolbar entry.
@@ -94,10 +98,11 @@ delta; it is not hosted Windows or graphical qualification.
 
 ## Controlled performance questions
 
-Subject A is accepted main `ac0d9fb9`; subject B is the unoptimised integration
-product at `b1e2e9b1`, executed from the frozen qualification head that also
-contains the test apparatus. The receipts record that actual head and its
-unchanged product-source manifest. Compare each source with its own native build, identical
+Subject A is accepted main `ac0d9fb9`; subject B is the unoptimised integration,
+including any required correctness repair, executed from the frozen qualification
+head that also contains the test apparatus. The receipts record that actual head
+and its product-source manifest. The initial normal merge is `b1e2e9b1`; it is
+not substituted for the later executed source. Compare each source with its own native build, identical
 Godot/Rapier/settings/seed, an identical externally staged harness and fresh
 userdata. Use paired ABBA order, warmups, raw frame samples and per-arm source
 identities. Keep Windows and Linux/software results separate.
@@ -164,3 +169,112 @@ native law, simulation default or snapshot ownership changed in these repairs.
 The corrected campaign must execute from its new exact source. Its final status,
 all downstream gates and the published package identity belong in the PR delivery
 ledger; none is inferred from this local apparatus verification.
+
+## Resulting-application defects found during final qualification
+
+The full Godot campaign on `f67417fb52ea838637e19698b954cc6272996179`
+exposed an obsolete assertion in `test_actor_prototype_integration.gd` on both
+Linux and Windows. It supplied a fractional origin to the actor overlay but
+expected that origin to be floored. The qualified overlay contract preserves
+the supplied presentation origin. The original failure was reproduced locally
+with pinned Godot 4.7 (157 checks, one failure); the corrected assertion checks
+the exact supplied fractional origin (157 checks, zero failures). No actor
+implementation was changed to satisfy the old expectation.
+
+Investigation of the application's physical performance geometry also exposed
+a product defect. With this project's embedded-subwindow setting, Godot 4.7's
+`CanvasItem.get_screen_transform()` omits the root Window's final stretch. In
+an actual 960×720 window, `canvas_items` applies a 0.5 viewport basis and a
+90-pixel vertical offset, while the old query returns a unit basis. Snapping
+that logical transform does not ensure integer framebuffer translation. Pure
+transform tests and direct SubViewport fixtures had not exercised this mounted
+root-window condition.
+
+Main now composes `get_viewport_transform() * get_global_transform()`, matching
+the renderer's final viewport/canvas/item composition exactly once. The PAINT
+controller captures and refreshes its stationary physical pointer through the
+same mapping. Continuous camera state, the shared pixel-sampling math, palette
+shader, recorder edge handling, native World and immutable publication ownership
+are unchanged. The mounted tests use an independently composed renderer oracle,
+and the graphical fixture compares actual resized-window framebuffer pixels
+with the old transform as a discriminating negative control. Final execution
+and exact fixture counts are recorded in the PR delivery ledger.
+
+Pinned local Godot 4.7 execution of the extended mounted fixture passes 1,531
+checks in 6.63 seconds, preserving the previous 1,457 checks, six native
+readbacks and twelve moving-follow samples. The registered float32 clipping
+counterexample temporarily uses a unit root to preserve its exact physical
+1.5x basis, `(251,17)` origin and half-pixel boundary; separate real root-window
+tests exercise 960×720, 1280×960 and 1920×1080. The old helper disagrees with all
+eight sampled cells at each nonunit root scale and none at unit scale. Local
+headless evidence does not substitute for the subsequent framebuffer and
+hosted platform campaigns.
+
+Actual `root.push_input(event, false)` delivery then exposed a separate numeric
+edge case in Godot's float32 viewport and Control inverses. At a 1280×960 root,
+physical `(49,180)` arrives at the Control as approximately
+`(36.49999237,42.99998474)` and reprojects to `(48.99999619,179.99998474)`.
+Flooring that value selects the previous pixel and world cell `(72,71)` instead
+of the displayed `(73,71)`. A visible first-column sample was also rejected as
+letterbox. The original event, local coordinate, reprojection and wrong cell
+are retained; this is not inferred solely from a synthetic matrix inverse.
+
+The input-only repair restores an integer physical coordinate when its
+reconstruction differs by at most `2 * FLT_EPSILON * magnitude`, with
+`FLT_EPSILON = 1.1920928955078125e-7` and per-axis magnitude equal to the maximum
+of the physical coordinate, transform origin (absolute values) and one. At
+magnitude 1920 this is approximately 0.000458 physical pixels. The narrow band
+is applied immediately before discrete pointer sampling and PAINT's stationary
+pointer storage. Continuous zoom anchors and shader sample arithmetic are
+unchanged. The framebuffer regression retains actual GUI-dispatched integer
+corners and fractional controls 0.01 and 0.99 pixels away from the boundaries;
+it does not substitute general nearest-integer rounding for pixel containment.
+
+Local pinned Godot 4.7 OpenGL/llvmpipe execution passes all 191 graphical
+checks. At 960×720 it compares 38,400 content pixels per frame, and at
+1280×960 it compares 60,000, before and after a one-pixel pan: corrected
+framebuffer and picking mismatches are zero. The old helper retains 8,262 and
+16,677 framebuffer mismatches as negative controls. All sixteen actual GUI
+events pass, including the originally wrong integer corner and fractional
+positions on either side. Original 150 graphical checks remain present; no
+pixel tolerance or excluded region was expanded to obtain this result.
+
+The complete Godot campaign also exposed the Blacksite Nine test's minified
+overview assumption on both platforms and both desktop/Web controllers. It
+injected the mathematical centre of cell `(352,444)` when the overview showed
+only 0.3299 or 0.6476 physical pixels per cell. The actual displayed samples
+addressed `(353,444)` and `(352,443)` respectively. The map's held/released
+input guards worked; the test waited for an unaddressed cell to erase. The
+fixture now uses an inspectable view around the same seam and explicitly
+checks the real picked cell before its positive erase. All held/release,
+native-neighbour and paused-tick assertions remain. This repairs the fixture's
+precondition without changing gameplay, minification or map ownership.
+The repaired Blacksite fixture passes 261 assertions with zero failures,
+including all original 251 and ten visible-target preconditions, at 1.9792
+and 3.8854 physical pixels per cell. Fresh local runs after the numeric repair
+also pass the actor fixture (157/0) and mounted camera fixture (1,531/0).
+
+The benchmark now derives the physical viewport basis independently for both
+subjects. It records actual window/content geometry and verifies that requested
+pan, zoom and follow paths really move. Earlier `f67417fb` performance output
+retains its original source and apparatus identity but is superseded: fitting
+from the old logical transform could clamp a small world to the full width and
+suppress the requested horizontal motion. Those measurements cannot qualify
+the corrected physical-camera comparison.
+
+That superseded Windows performance job also stopped on the accepted-main
+zoom case: the external harness called the newer two-argument `zoom_by`
+interface, while accepted main accepts one argument. The runner correctly
+rejected the script errors even though the GDScript completion marker was
+optimistic. The repair uses the shared one-argument centre-zoom interface and
+smoke-exercises every workload against both sources before the next campaign.
+The original log and artifact `14072691846` remain inspectable; completed arms
+from that failed, older-geometry experiment are not promoted to final results.
+All thirteen workloads subsequently pass short, pinned-engine headless runs
+against each subject (26 processes), including manual/agent edits, active
+2048-square worlds with one/four workers, actual pan/zoom/follow motion and
+the shared zoom interface. Independent comparison verifies equal root/window
+geometry, physical scales, per-frame view sequences, fixture recipes and
+initial native material planes. These are apparatus preconditions, not timing
+or graphical performance claims; the exact final head still requires the full
+hosted ABBA runs.

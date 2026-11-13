@@ -76,6 +76,30 @@ def verify_engine_context(context: dict, expected: dict) -> None:
         raise ValueError("Executed engine path/hash differs from the verified runtime")
 
 
+def same_geometry(left, right) -> bool:
+    if isinstance(left, list) and isinstance(right, list):
+        return len(left) == len(right) and all(same_geometry(a, b) for a, b in zip(left, right))
+    if isinstance(left, (float, int)) and isinstance(right, (float, int)):
+        return math.isclose(left, right, rel_tol=1e-7, abs_tol=0.0001)
+    return left == right
+
+
+def verify_geometry_parity(data: dict, prior: dict) -> None:
+    # Frame/view sequences are controlled; the intentional camera presentation
+    # difference and asynchronous actor/native motion are not equated here.
+    for key in ("actual_window", "world_extent", "worker_capacity", "native_backend",
+                "view_content_rect", "actual_pixel_scale", "physical_view_transform",
+                "root_final_transform", "root_content_scale_size", "root_content_scale_mode",
+                "root_content_scale_aspect", "root_embed_subwindows", "root_framebuffer_size",
+                "physical_content_rect"):
+        if not same_geometry(data[key], prior[key]):
+            raise ValueError(f"Actual workload geometry differs between repetitions/subjects: {key}")
+    for key in ("view", "physical_pixel_scale"):
+        if not same_geometry([frame[key] for frame in data["frames"]],
+                             [frame[key] for frame in prior["frames"]]):
+            raise ValueError(f"Actual per-frame workload geometry differs between subjects: {key}")
+
+
 def write(path: Path, value) -> None:
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
@@ -362,7 +386,9 @@ def main() -> int:
               "limits": ["Software-renderer cohorts do not establish target-PC GPU performance",
                          "Active workloads retain identical starts, but asynchronous simulation can progress by different tick counts",
                          "p99 estimates from bounded cohorts are descriptive, not high-confidence tail guarantees",
-                         "Main/shader timers overlap; do not add them", "RSS sampling includes startup and World replacement"]}
+                         "Main/shader timers overlap; do not add them", "RSS sampling includes startup and World replacement",
+                         "Godot process/physics monitors are roughly one-second maximum gauges, not independent per-frame CPU timings",
+                         "The case matrix spans effects on/off but does not isolate total effects cost with a single-variable toggle pair"]}
     write(output / "report.json", report)
     try:
         if not args.skip_import:
@@ -399,6 +425,8 @@ def main() -> int:
                         raise ValueError(f"Initial authored fixture changed between subjects: {folder}")
                     if prior and data["initial_material_plane_sha256"] != prior[0]["data"]["initial_material_plane_sha256"]:
                         raise ValueError(f"Initial copied native material plane differs between subjects: {folder}")
+                    if prior:
+                        verify_geometry_parity(data, prior[0]["data"])
                     run = {"case": config["id"], "subject": subject, "round": round_index, "phase": phase,
                            "source_commit": identities[subject]["commit"], "folder": str(folder.relative_to(output)),
                            "data": data, "process": process}

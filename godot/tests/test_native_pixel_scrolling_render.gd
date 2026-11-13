@@ -27,6 +27,17 @@ class PaintFillFixture extends "res://scripts/workbench_paint_editor_overlay.gd"
 		rendered_rect = _screen_region(fixture_region)
 		_draw_region(fixture_region,Color.WHITE,Color.TRANSPARENT)
 
+class RootWindowCameraHost extends "res://scripts/main.gd":
+	var former_screen_helper := false
+	func _ready() -> void: pass
+	func _process(_delta: float) -> void: pass
+	func _physics_process(_delta: float) -> void: pass
+	func _notification(_what: int) -> void: pass
+	func _exit_tree() -> void: pass
+	func _world_view_screen_transform() -> Transform2D:
+		if former_screen_helper: return world_view.get_screen_transform()
+		return super._world_view_screen_transform()
+
 var checks: int = 0
 var failures: Array[String] = []
 var measurements: Array[Dictionary] = []
@@ -41,6 +52,8 @@ var capture_folder: String
 var pacing: Dictionary = {}
 var overlay_measurements: Array[Dictionary] = []
 var water_measurements: Array[Dictionary] = []
+var root_window_measurements: Array[Dictionary] = []
+var root_window_gui_inputs: Array[Dictionary] = []
 
 const CURRENT_COORDINATES: String = "\tvec2 continuous_world_pixel = camera_origin_px + fitted_uv * view_size_px;\n\tif (native_pixel_mapping_enabled) {\n\t\tvec2 sample_position = floor(content_screen_origin + raw_fitted_uv * content_screen_size) + vec2(0.5);\n\t\t// Clip in the same physical space as picking. UV roundoff at a fitted\n\t\t// half-pixel edge must not drop the first column or leak the last row.\n\t\tinside_view = all(greaterThanEqual(sample_position, content_screen_origin))\n\t\t\t&& all(lessThan(sample_position, content_screen_origin + content_screen_size));\n\t\tcontinuous_world_pixel = (sample_position - world_zero_screen) * world_units_per_screen_pixel;\n\t}\n\tvec2 world_pixel = floor(continuous_world_pixel);\n\tvec2 cell_fraction = fract(continuous_world_pixel);"
 const LEGACY_COORDINATES: String = "\tvec2 continuous_view_pixel = fitted_uv * view_size_px;\n\tvec2 view_pixel = floor(continuous_view_pixel);\n\tvec2 world_pixel = camera_origin_px + view_pixel;\n\tvec2 cell_fraction = fract(camera_origin_px + continuous_view_pixel);"
@@ -501,6 +514,241 @@ func percentile(values: Array[int], fraction: float) -> int:
 	return sorted[clampi(ceili(fraction*sorted.size())-1,0,sorted.size()-1)] if not sorted.is_empty() else 0
 
 
+func transform_values(value: Transform2D) -> Array:
+	return [value.x.x,value.x.y,value.y.x,value.y.y,value.origin.x,value.origin.y]
+
+
+func configure_root_window_host(host: Control, requested: Vector2) -> void:
+	host.camera_origin = requested
+	var area: Rect2 = host.view_content_rect()
+	var size: Vector2 = host.world_view.size
+	host.world_shader.set_shader_parameter("view_size_px",Vector2(host.current_view_size))
+	host.world_shader.set_shader_parameter("view_rect_uv",Vector4(area.position.x/size.x,
+		area.position.y/size.y,area.size.x/size.x,area.size.y/size.y))
+	host.world_shader.set_shader_parameter("camera_origin_px",host.presentation_camera_origin())
+	# The production owner supplies all physical mapping uniforms.
+	host.configure_pixel_camera(host.world_shader)
+
+
+func root_window_observations(image: Image, host: Control, requested: Vector2) -> Dictionary:
+	# Independently compose the actual viewport raster transform. CanvasItem's
+	# popup/screen helper is deliberately not used to derive expected pixels.
+	var render_transform: Transform2D = root.get_final_transform() \
+		* host.world_view.get_global_transform_with_canvas()
+	var physical_content: Rect2 = render_transform*host.view_content_rect()
+	# Match the renderer's float32 basis composition without deriving a size
+	# by subtracting transformed rectangle endpoints (which loses one ULP).
+	var logical_scale: Vector2 = host.view_content_rect().size/Vector2(host.current_view_size)
+	var scale := Vector2(render_transform.x.x*logical_scale.x,render_transform.y.y*logical_scale.y)
+	var reciprocal := Vector2.ONE/scale
+	var world_zero: Vector2 = (physical_content.position-requested*scale).round()
+	# KEEP attaches the smaller viewport texture inside the native window.
+	# Its readback excludes those integer letterbox margins.
+	var attachment_origin := (Vector2(root.size)-Vector2(image.get_size()))/2.0
+	var viewport_inverse: Transform2D = root.get_final_transform().affine_inverse()
+	var control_inverse: Transform2D = host.world_view.get_global_transform_with_canvas().affine_inverse()
+	var combined_inverse: Transform2D = render_transform.affine_inverse()
+	var pixel_bad := 0
+	var pick_bad := 0
+	var compared := 0
+	var first_pixel_bad := Vector2i(-1,-1)
+	var first_pick_bad := Vector2i(-1,-1)
+	var first_pick_details: Dictionary = {}
+	var combined_inverse_pick_bad := 0
+	for y: int in range(image.get_height()):
+		for x: int in range(image.get_width()):
+			var physical_pixel := Vector2(x,y)+attachment_origin
+			var centre := physical_pixel+Vector2(0.5,0.5)
+			if not physical_content.has_point(centre): continue
+			var cell := Vector2i(((centre-world_zero)*reciprocal).floor())
+			if not Rect2i(Vector2i.ZERO,WORLD).has_point(cell): continue
+			compared += 1
+			if not colour_equal(image.get_pixel(x,y),reference.get_pixelv(cell)):
+				pixel_bad += 1
+				if first_pixel_bad.x < 0: first_pixel_bad = Vector2i(x,y)
+			# Input reports a pixel coordinate; Main must choose that pixel's
+			# centre before picking, including the real root stretch.
+			# Godot first localizes the OS event into the viewport, then into
+			# the Control. Inverting the composed render transform instead has
+			# different float32 cancellation at integer physical mouse positions.
+			var local_pointer: Vector2 = control_inverse*(viewport_inverse*physical_pixel)
+			var picked: Vector2i = host.world_cell_from_local_point(local_pointer)
+			if picked != cell:
+				pick_bad += 1
+				if first_pick_bad.x < 0:
+					first_pick_bad = Vector2i(x,y)
+					first_pick_details = {"physical_pointer":str(physical_pixel),"local_pointer":str(local_pointer),
+						"reprojected_pointer":str(render_transform*local_pointer),"picked":str(picked),"expected":str(cell)}
+			if host.world_cell_from_local_point(combined_inverse*physical_pixel) != cell:
+				combined_inverse_pick_bad += 1
+	return {"compared_pixels":compared,"pixel_mismatches":pixel_bad,"picking_mismatches":pick_bad,
+		"first_pixel_mismatch":[first_pixel_bad.x,first_pixel_bad.y],
+		"first_picking_mismatch":[first_pick_bad.x,first_pick_bad.y],
+		"first_picking_details":first_pick_details,"combined_inverse_diagnostic_picking_mismatches":combined_inverse_pick_bad,
+		"input_localization":"Pinned Godot Viewport final inverse, then Control global-with-canvas inverse; integer OS pixel positions retained",
+		"actual_window":[root.size.x,root.size.y],"framebuffer_size":[image.get_width(),image.get_height()],
+		"framebuffer_attachment_origin":[attachment_origin.x,attachment_origin.y],
+		"physical_content":[physical_content.position.x,physical_content.position.y,physical_content.size.x,physical_content.size.y],
+		"physical_pixels_per_cell":[scale.x,scale.y],"expected_world_zero":[world_zero.x,world_zero.y],
+		"root_final_transform":transform_values(root.get_final_transform()),
+		"canvas_item_screen_transform":transform_values(host.world_view.get_screen_transform()),
+		"actual_view_render_transform":transform_values(render_transform),
+		"production_mapping":transform_values(host.presentation_camera_screen_transform())}
+
+
+func root_window_gui_input_cases(host: Control, image: Image, requested: Vector2, label: String) -> void:
+	# Exercise the engine's real OS-to-viewport-to-Control localization, not
+	# only its equivalent matrix formula. Fractional negatives must retain
+	# their own containing pixel when the integer round-trip is repaired.
+	var render_transform: Transform2D = root.get_final_transform()*host.world_view.get_global_transform_with_canvas()
+	var content: Rect2 = render_transform*host.view_content_rect()
+	var local_scale: Vector2 = host.view_content_rect().size/Vector2(host.current_view_size)
+	var scale := Vector2(render_transform.x.x*local_scale.x,render_transform.y.y*local_scale.y)
+	var reciprocal := Vector2.ONE/scale
+	var world_zero := (content.position-requested*scale).round()
+	var attachment := (Vector2(root.size)-Vector2(image.get_size()))/2.0
+	var first := content.position.ceil()
+	var fractional_base := first+Vector2(24,28)
+	var points: Array[Vector2] = [first,fractional_base,first+Vector2(29,33),first+Vector2(34,38),
+		first+Vector2(39,43),fractional_base+Vector2(-0.01,-0.01),
+		fractional_base+Vector2(0.01,0.01),fractional_base+Vector2(0.99,0.99)]
+	var pending := {"physical":Vector2.ZERO}
+	var received: Array[Dictionary] = []
+	var callback := func(event: InputEvent) -> void:
+		if not event is InputEventMouseMotion: return
+		var physical: Vector2 = pending.physical
+		var sample := physical.floor()+Vector2(0.5,0.5)
+		var expected := Vector2i(((sample-world_zero)*reciprocal).floor())
+		var picked: Vector2i = host.world_cell_from_local_point(event.position)
+		var reprojection: Vector2 = render_transform*event.position
+		var stabilized: Vector2 = host._world_view_pointer_screen_position(event.position,render_transform)
+		var pixel := Vector2i(physical.floor()-attachment)
+		var record := {"label":label,"physical_pointer":[physical.x,physical.y],
+			"event_local":[event.position.x,event.position.y],"reprojected_physical":[reprojection.x,reprojection.y],
+			"stabilized_physical":[stabilized.x,stabilized.y],
+			"picked_cell":[picked.x,picked.y],"expected_cell":[expected.x,expected.y],
+			"framebuffer_pixel":[pixel.x,pixel.y],"matches":picked==expected,
+			"framebuffer_matches_expected":colour_equal(image.get_pixelv(pixel),reference.get_pixelv(expected))}
+		received.append(record)
+	var old_filter: Control.MouseFilter = host.world_view.mouse_filter
+	host.world_view.mouse_filter = Control.MOUSE_FILTER_STOP
+	host.world_view.gui_input.connect(callback)
+	for point: Vector2 in points:
+		pending.physical = point
+		var event := InputEventMouseMotion.new()
+		event.position = point
+		event.global_position = point
+		root.push_input(event,false)
+		await process_frame
+	host.world_view.gui_input.disconnect(callback)
+	host.world_view.mouse_filter = old_filter
+	check(received.size()==points.size(),"actual root GUI delivers every integer/fractional pointer "+label)
+	for record: Dictionary in received:
+		check(bool(record.matches) and bool(record.framebuffer_matches_expected),
+			"actual root GUI pointer matches framebuffer cell "+str(record))
+	root_window_gui_inputs.append_array(received)
+
+
+func root_window_framebuffer_cases() -> void:
+	var original := {"size":root.size,"content_size":root.content_scale_size,
+		"mode":root.content_scale_mode,"aspect":root.content_scale_aspect,
+		"factor":root.content_scale_factor,"embed":root.is_embedding_subwindows(),
+		"canvas":root.canvas_transform,"global_canvas":root.global_canvas_transform,
+		"hdr":root.use_hdr_2d}
+	root.set_embedding_subwindows(true)
+	root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+	root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP
+	root.content_scale_factor = 1.0
+	root.content_scale_size = Vector2i(1920,1080)
+	root.canvas_transform = Transform2D.IDENTITY
+	root.global_canvas_transform = Transform2D.IDENTITY
+	root.use_hdr_2d = false
+	var host: Control = load("res://main.tscn").instantiate()
+	host.set_script(RootWindowCameraHost)
+	for body: RigidBody2D in host.get_node("RigidBodies").get_children(): body.freeze = true
+	root.add_child(host)
+	host.world_view.reparent(host)
+	host.get_node("Layout").hide()
+	host.world_view.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	host.world_view.custom_minimum_size = Vector2.ZERO
+	host.world_view.position = Vector2(37,47)
+	host.world_view.texture = world_texture
+	host.world_view.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	host.world_shader = material.duplicate() as ShaderMaterial
+	host.world_view.material = host.world_shader
+	host.current_view_size = Vector2i(120,80)
+	host.world_extent = WORLD
+	var negative_pixels := 0
+	var negative_picks := 0
+	for settings: Dictionary in [
+		{"window":Vector2i(960,720),"logical_size":Vector2(480,320),"zoom":2.0,"scale":0.5},
+		{"window":Vector2i(1280,960),"logical_size":Vector2(450,300),"zoom":2.5,"scale":2.0/3.0}]:
+		root.size = settings.window
+		host.world_view.size = settings.logical_size
+		await process_frame
+		await process_frame
+		check(root.size == settings.window and root.is_embedding_subwindows()
+			and absf(root.get_final_transform().x.x-float(settings.scale)) < 0.00001,
+			"actual embedded root window applies nonunit canvas stretch "+str(settings.window))
+		var requested := Vector2(63.0,60.137)
+		for former: bool in [true,false]:
+			host.former_screen_helper = former
+			configure_root_window_host(host,requested)
+			await RenderingServer.frame_post_draw
+			await RenderingServer.frame_post_draw
+			var first: Image = root.get_texture().get_image()
+			first.convert(Image.FORMAT_RGBA8)
+			var record := root_window_observations(first,host,requested)
+			record.former_screen_helper = former
+			record.requested_origin = [requested.x,requested.y]
+			root_window_measurements.append(record)
+			var label := "root-%dx%d-%s" % [settings.window.x,settings.window.y,"former" if former else "corrected"]
+			check(int(record.compared_pixels)>1000,"root-window oracle observes actual material pixels "+label)
+			if former:
+				negative_pixels += int(record.pixel_mismatches)
+				negative_picks += int(record.picking_mismatches)
+			else:
+				check(int(record.pixel_mismatches)==0,"root-window physical cell/framebuffer oracle "+label+" "+str(record))
+				check(int(record.picking_mismatches)==0,"root-window pointer selects the actual framebuffer cell "+label+" "+str(record))
+				await root_window_gui_input_cases(host,first,requested,label)
+				var moved := requested+Vector2(1.0/float(settings.zoom),0)
+				configure_root_window_host(host,moved)
+				await RenderingServer.frame_post_draw
+				var next: Image = root.get_texture().get_image()
+				next.convert(Image.FORMAT_RGBA8)
+				var moved_record := root_window_observations(next,host,moved)
+				moved_record.former_screen_helper = false
+				moved_record.requested_origin = [moved.x,moved.y]
+				root_window_measurements.append(moved_record)
+				check(int(moved_record.pixel_mismatches)==0 and int(moved_record.picking_mismatches)==0,
+					"root-window one-physical-pixel pan preserves material/picking agreement "+label+" "+str(moved_record))
+				var content: Array = record.physical_content
+				var offset: Array = record.framebuffer_attachment_origin
+				var crop := Rect2i(Vector2i(ceili(float(content[0])-float(offset[0]))+2,
+					ceili(float(content[1])-float(offset[1]))+2),Vector2i(floori(float(content[2]))-4,floori(float(content[3]))-4))
+				compare_translation(first.get_region(crop),next.get_region(crop),Vector2i(1,0),label+" one-display-pixel translated framebuffer")
+				save_capture(next,"native-pixel-scrolling-"+label+"-pan")
+			save_capture(first,"native-pixel-scrolling-"+label)
+	check(negative_pixels>100,"old root screen helper fails the independent framebuffer oracle; mismatches="+str(negative_pixels))
+	check(negative_picks>100,"old root screen helper fails actual pixel-centre picking; mismatches="+str(negative_picks))
+	host.queue_free()
+	await process_frame
+	root.content_scale_mode = original.mode
+	root.content_scale_aspect = original.aspect
+	root.content_scale_factor = original.factor
+	root.content_scale_size = original.content_size
+	root.canvas_transform = original.canvas
+	root.global_canvas_transform = original.global_canvas
+	root.use_hdr_2d = original.hdr
+	root.set_embedding_subwindows(original.embed)
+	root.size = original.size
+	await process_frame
+	await RenderingServer.frame_post_draw
+	check(root.size == original.size and root.content_scale_size == original.content_size
+		and root.content_scale_mode == original.mode and root.content_scale_aspect == original.aspect,
+		"root window settings restored before historical shader pacing")
+
+
 func measure_pacing(variant: ShaderMaterial, legacy: bool) -> Dictionary:
 	var extended := OS.get_environment("CYBERSAND_CAMERA_PACING_EXTENDED") == "1"
 	var warmup_frames := 32 if extended else 12
@@ -612,6 +860,7 @@ func run() -> void:
 	await paint_fill_fractional_boundary_case()
 	check(overlay_measurements.size() == 2,"both fractional-boundary PAINT fill cases completed")
 	await legacy_control_and_diagnostic()
+	await root_window_framebuffer_cases()
 	await comparative_pacing()
 	var result := {"schema":"native-pixel-scrolling-render-v1","checks":checks,"failures":failures,
 		"context":Context.identity(get_script().resource_path,shader),
@@ -619,6 +868,8 @@ func run() -> void:
 		"paint_overlay_sha256":FileAccess.get_sha256("res://scripts/workbench_paint_editor_overlay.gd"),
 		"paint_overlay_measurements":overlay_measurements,
 		"water_measurements":water_measurements,
+		"root_window_measurements":root_window_measurements,
+		"root_window_gui_inputs":root_window_gui_inputs,
 		"captures":captures,"frame_measurements":measurements,"comparative_pacing":pacing,
 		"timing_scope":"uniform submission and frame wait including test synchronization; not a throughput benchmark"}
 	if not capture_folder.is_empty():

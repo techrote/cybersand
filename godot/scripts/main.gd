@@ -4236,7 +4236,12 @@ func presentation_camera_origin() -> Vector2:
 
 
 func _world_view_screen_transform() -> Transform2D:
-	return world_view.get_screen_transform() if world_view.is_inside_tree() else Transform2D.IDENTITY
+	if not world_view.is_inside_tree(): return Transform2D.IDENTITY
+	# CanvasItem.get_screen_transform() omits the Window's final stretch when
+	# embedded subwindows are enabled. Compose the renderer's viewport/canvas
+	# transform with this item's global transform exactly once so translation
+	# and picking address framebuffer pixels, including canvas_items stretch.
+	return world_view.get_viewport_transform() * world_view.get_global_transform()
 
 
 func presentation_camera_screen_transform() -> Transform2D:
@@ -4263,11 +4268,27 @@ func world_position_from_local_point(local: Vector2) -> Vector2:
 		presentation_camera_screen_transform())
 
 
+func _world_view_pointer_screen_position(local: Vector2, screen: Transform2D) -> Vector2:
+	var physical := screen * local
+	# Godot localizes native mouse coordinates through float32 viewport and
+	# Control inverses. Reprojection can put an integer pixel boundary a few
+	# ULPs below itself, selecting the previous pixel (or the letterbox).
+	# Restore only this float32 roundoff band; ordinary fractional positions
+	# still address their containing pixel. Continuous zoom anchors do not use
+	# this input-only reconstruction, and the shader's sample math is unchanged.
+	var integer := physical.round()
+	var magnitude := physical.abs().max(screen.origin.abs()).max(Vector2.ONE)
+	var roundoff := magnitude * (2.0 * 1.1920928955078125e-7)
+	if absf(physical.x - integer.x) <= roundoff.x: physical.x = integer.x
+	if absf(physical.y - integer.y) <= roundoff.y: physical.y = integer.y
+	return physical
+
+
 func world_cell_from_local_point(local: Vector2) -> Vector2i:
 	var content := view_content_rect()
 	if not local.is_finite(): return Vector2i(-1, -1)
 	var screen := _world_view_screen_transform()
-	var sample_position := (screen * local).floor() + Vector2(0.5, 0.5)
+	var sample_position := _world_view_pointer_screen_position(local, screen).floor() + Vector2(0.5, 0.5)
 	if not PixelCamera.content_contains_screen_sample(sample_position, content, screen): return Vector2i(-1, -1)
 	var cell := Vector2i(PixelCamera.screen_to_world(sample_position, presentation_camera_screen_transform()).floor())
 	return cell if Rect2i(Vector2i.ZERO, world_extent).has_point(cell) else Vector2i(-1, -1)
