@@ -119,3 +119,34 @@ The latest 13 November exact-head hosted run passed **9 Integration methods** co
 Before qualifying this route for user-facing launch: integrate over a source-compatible #564/#565 successor preserving accepted #563; replay raw step-400 predictions, compare operation hashes and native receipts at two seeds, exercise Stop/stale epoch/focus, shared Undo/Redo and save/reopen on current Windows and Linux; obtain independent code/contract review; package an opt-in launcher/preset and inspect real Workbench images. Any compiler/schema change invalidates the adapter's exact hash contract until explicitly requalified.
 
 **Draft / HOLD.** No provider default, source-owner branch, production model alias, physics or material law was changed.
+
+## Seventh integration checkpoint — Windows process-tree control and source-bound CI (13 November 2026)
+
+After four exact Git-blob imports (Controls chronological draw/history custody, Corpus
+v5 source-index TRAIN contrasts, Training POSIX descendant fencing, Evaluation
+cross-theme collision audit), the opt-in bridge now uses a Win32 kill-on-close
+Job Object when launching inference on Windows. Failure to assign the child to
+the job refuses Art output rather than proceeding unguarded. The job is closed
+on successful parent exit as well as Stop, deadline or exception, so an owned
+child cannot continue writing a delayed inference artifact after completion.
+This is confined to `integration/local_art_bridge.py` and a new synthetic
+`integration/test_windows_job.py` fixture; the v1 compiler, adapter, native
+Art authority and production provider remain unchanged.
+
+On exact source `af4d9c88d0002473ce73c04a8a69ebb1e335f7b6`, the Windows
+`windows-process-tree` job in [43408236500](https://github.com/techrote/cybersand/actions/runs/43408236500)
+**succeeded: 3 new Windows Job Object methods and 9 existing HTTP bridge methods**.
+This qualifies a synthetic Windows subprocess ownership/control path only, not
+real LFM inference, Windows desktop Art, or a native World. Job attachment is
+immediately after Popen rather than atomically before process execution; that
+race remains for independent review. No new model-quality claim is made.
+
+The same workflow's combined Ubuntu offline smoke is **RED**: two newly imported
+Training-owned `test_job_guard.py` cases raise `NameError: time is not defined`
+before evaluating POSIX descendant invariants; the independent role job is green.
+The Training worker owns the missing import and the exact-source rerun.
+Do not mask this failure, treat Draft-skipped checks as passes, or promote #567.
+See the [seventh checkpoint](CHECKPOINT_2026-11-13-1020.md), and refresh the
+full CI status after an owner-authored Training repair. Upstream #565 advanced
+to `11b809a5` but still requires complete source-matched Windows/Linux and
+owner graphical qualification; do not substitute the historical native pilot.
