@@ -1,6 +1,6 @@
 {
   "experiment": "WB-ART-SLM-001",
-  "status": "Ninth checkpoint: exact unchanged Training v5 candidate sampler, manifest-fingerprinted trainer/lease, corrected Stop test and bounded Windows CPU launcher imported. Code-source CI at 835beaff GREEN (all 3 jobs); real new adapter/inference/native gallery still NOT RUN. Draft/HOLD.",
+  "status": "Tenth checkpoint: direct 60-prompt one-load inference/native replay-case generator added; raw model/native output not yet generated because pinned base/deps not accessible; Training Windows post-training 'resource' import bug identified and handed to Training owner. Draft/HOLD.",
   "updated_on": "2026-11-13",
   "owner": "five role workers after bootstrap handoff",
   "branch": "codex/wb-art-slm-001",
@@ -49,7 +49,7 @@
     }
   },
   "production_promotion": "HOLD; one Draft #567, no Ready, merge, native/Windows promotion",
-  "next_checkpoint": "Training locally executes single authorized pinned LFM350 v5 400-step candidate and scores untouched 24 DEV/12 literal requests; Evaluation then renders same-prompt/same-seed frozen 60-request native gallery. Current-source #565/Windows and owner aesthetic acceptance remain separate.",
+  "next_checkpoint": "Training fixes its Windows 'resource' completion crash and executes the one authorized v5 400-step candidate on pinned local base; generate DEV24/word12 raw first pass, then use integration/gallery60_infer.py for both frozen/candidate 60-prompt two-seed real-native packet comparison. No model/native gain yet.",
   "pull_request": "https://github.com/techrote/cybersand/pull/567",
   "model_native_cases_passed": 68,
   "combined_gallery_images": 260,
@@ -78,7 +78,7 @@
   ],
   "worker_branches_seeded_from": "01f2cfcea66839066431b6d241f186be00cecf27",
   "bootstrap_report_review": "Independent consistency review complete; 98% gate identified as native request yield, not schema validity.",
-  "integration_checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-1110.md",
+  "integration_checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-1200.md",
   "artifact_recovery": {
     "verification": "Four named owner Library archives materialized and byte-size/SHA256 compared with ARTIFACTS.json on 2026-11-13; all four match",
     "artifacts_verified": 4,

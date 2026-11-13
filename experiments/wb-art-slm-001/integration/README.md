@@ -150,3 +150,22 @@ See the [seventh checkpoint](CHECKPOINT_2026-11-13-1020.md), and refresh the
 full CI status after an owner-authored Training repair. Upstream #565 advanced
 to `11b809a5` but still requires complete source-matched Windows/Linux and
 owner graphical qualification; do not substitute the historical native pilot.
+
+
+## Twelve-theme candidate gallery execution (Training and Evaluation only)
+
+`gallery60_infer.py` is a **single-model-load, 60-request** strict generation route: it reuses the existing `train_lora.py` greedy decoder, official chat template, pinned adapter/model/compiler contract, and immutable Evaluation [60-prompt cohort](../evaluation/gallery60_development_frozen.json). It captures every unmodified response and EOS status and exports the two original host seeds (17 and 73) per accepted request as `native_cases.json`. Rejections remain in the 60-request denominator with zero native cases; there is no keyword fallback or automatic repair. It emits **no images and makes no native/quality claim**. Never use the reserved FINAL set.
+
+From the repository root on the **Training-owned, authorized local** pinned Python 3.12/torch/Transformers/PEFT machine, after one new v5 adapter exists outside Git:
+
+```powershell
+$experiment = ".\\experiments\\wb-art-slm-001"
+$base = "C:\\wb-art-slm-private\\models\\lfm350"
+$old = "C:\\wb-art-slm-private\\adapter"
+$new = "C:\\wb-art-slm-private\\runs\\lfm350-v5-contrast-400\\checkpoint-000400\\adapter"
+python "$experiment\\integration\\gallery60_infer.py" --preflight-only --prefix original
+python "$experiment\\integration\\gallery60_infer.py" --model-dir $base --adapter-dir $old --prefix original --output "C:\\wb-art-slm-private\\gallery60-original"
+python "$experiment\\integration\\gallery60_infer.py" --model-dir $base --adapter-dir $new --prefix contrast5 --output "C:\\wb-art-slm-private\\gallery60-v5"
+```
+
+The output directories must be new and outside Git; each includes `predictions.jsonl`, individual raw completions, `identity.json`, `summary.json` and `native_cases.json`. Pass each nonempty `native_cases.json` separately to the existing `evaluation/run_native_replay.py` on the **exact 90719c72 historical Linux runtime** and official pinned Godot, or adapt/qualify a current-source runner independently. The native runner validates exact native/Rapier/tool provenance and writes material readbacks/PNGs/receipts; Evaluation must subsequently build the *real* side-by-side gallery and conduct blind assessment. An emitted case manifest is never a native success receipt. Native source and Windows remains a separate HOLD.

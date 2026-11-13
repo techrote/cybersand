@@ -512,6 +512,24 @@
       "evaluation_next": "Evaluation owner: use pre-frozen 60 prompts + two seeds to create matched real native baseline/candidate gallery and blind assessment",
       "integration_next": "Consume actual candidate/gallery, review Windows pre-attachment process escape and qualify source-compatible #565 native Workbench separately",
       "production": "Draft/HOLD"
+    },
+    "tenth_2026_11_13_1200": {
+      "previous_shared_head": "0cc75f44991a6faf7cd0b389d65e87b20e148ed0",
+      "integration_implementation": "integration/gallery60_infer.py (one loaded pinned model per 60-request immutable development cohort, greedy EOS, raw receipts, two-seed native replay cases, original prediction aliases)",
+      "native_execution_claim": false,
+      "actual_new_training": false,
+      "actual_new_model_inference": false,
+      "gallery60_cohort_blob": "0d15d6b51387f01ca4a981c1a33896cfc531ff63",
+      "original_step400_adapter_unchanged": true,
+      "preflight": "5/5 local focused manifest checks PASS; one test needing role-owned modules skipped in isolated container; exact-head CI pending",
+      "training_blocker": "Pinned official LFM2.5-350M snapshot and Transformers/PEFT absent on execution host; Training's run_v5_windows.ps1 requires authorized owner CPU machine. train_lora.py also imports Unix-only resource unconditionally after optimizer; Training worker explicitly retuned to fix platform completion path before Windows execution.",
+      "downstream": "Training alone executes v5 adapter and raw 24 DEV/12 literal; then use this integration helper for each baseline/candidate 60-request set, Evaluation runs actual pinned native source-matched replay and blind review. No synthetic native images.",
+      "upstream_heads": {
+        "main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
+        "pr564": "00017c65da096c61585f026476ae1e62e1aea256",
+        "pr565": "fd1d66b18ac80f564f7078b8a0a902297895672f"
+      },
+      "production": "Draft/HOLD"
     }
   }
 }
