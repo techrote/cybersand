@@ -113,6 +113,71 @@ def evaluation_fingerprint(argv: list[str], worker: Path) -> tuple[str, dict]:
     return hashlib.sha256(canonical(payload).encode("utf-8")).hexdigest(), payload
 
 
+
+def raw_record_consistent(record: dict, max_new_tokens: int) -> bool:
+    """Independently check saved raw text and EOS/semantic claims, never repair it.
+
+    Compiler execution and actual native mutation are still separate gates.
+    """
+    from train_lora import strict_json
+
+    flags = ("json_valid", "program_valid", "first_pass_accepted",
+             "theme_field_correct", "primary_motif_correct",
+             "motif_layout_exact", "exact_target", "eos_emitted",
+             "eos_terminated")
+    if any(type(record.get(flag, False)) is not bool for flag in flags):
+        return False
+    if (not isinstance(record.get("completion"), str)
+            or not isinstance(record.get("expected_completion"), str)
+            or type(record.get("output_tokens")) is not int
+            or not 0 <= record["output_tokens"] <= max_new_tokens
+            or record["eos_terminated"] and not record["eos_emitted"]
+            or record["eos_terminated"] and record["output_tokens"] == 0):
+        return False
+    try:
+        value = strict_json(record["completion"])
+        parsed = True
+    except (ValueError, TypeError):
+        value, parsed = None, False
+    if record["json_valid"] != parsed:
+        return False
+    try:
+        expected = strict_json(record["expected_completion"])
+    except (ValueError, TypeError):
+        return False
+    if record["exact_target"] != (parsed and value == expected):
+        return False
+    theme_matches = parsed and isinstance(value, dict) and value.get("theme") == record.get("theme")
+    if record.get("theme_field_correct", False) != theme_matches:
+        return False
+    valid = record["program_valid"]
+    if valid:
+        if (not parsed or not isinstance(value, dict)
+                or record.get("program") != value
+                or type(record.get("compiled_operations")) is not int
+                or record["compiled_operations"] <= 0):
+            return False
+        try:
+            predicted_layers, target_layers = value["layers"], expected["layers"]
+            motif_matches = predicted_layers[0]["motif"] == target_layers[0]["motif"]
+            structure_matches = (
+                [(layer["motif"], layer["layout"]) for layer in predicted_layers]
+                == [(layer["motif"], layer["layout"]) for layer in target_layers]
+            )
+        except (KeyError, TypeError, IndexError):
+            return False
+    else:
+        if "program" in record or "compiled_operations" in record:
+            return False
+        motif_matches = structure_matches = False
+    if (record.get("primary_motif_correct", False) != motif_matches
+            or record.get("motif_layout_exact", False) != structure_matches):
+        return False
+    return record["first_pass_accepted"] == (
+        valid and record["eos_terminated"] and record["output_tokens"] > 0
+    )
+
+
 def verified_evaluation(output: Path, argv: list[str]) -> dict | None:
     """Distinguish complete strict raw evaluation from partial untrusted output.
 
@@ -160,6 +225,8 @@ def verified_evaluation(output: Path, argv: list[str]) -> dict | None:
         else:
             target = min(target, 12)
         if len(records) != target:
+            return None
+        if not all(raw_record_consistent(record, int(str(opts.get("--max-new-tokens", "256")))) for record in records):
             return None
         for key in ("json_valid", "program_valid", "first_pass_accepted", "theme_field_correct",
                     "primary_motif_correct", "motif_layout_exact", "exact_target"):
