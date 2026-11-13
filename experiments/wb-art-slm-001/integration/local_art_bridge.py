@@ -88,13 +88,24 @@ def parse_workbench_request(packet: object, alias: str) -> dict:
             "enabled": frozenset(tools)}
 
 
-def checked_art_result(output: Path, request: dict, expected_compiler_sha256: str) -> tuple[str, dict]:
+def checked_art_result(output: Path, request: dict, expected_compiler_sha256: str,
+                       *, expected_seed: int | None = None,
+                       expected_adapter_sha256: str | None = None) -> tuple[str, dict]:
     receipt = json.loads((output / "receipt.json").read_text(encoding="utf-8"))
     if receipt.get("accepted") is not True or receipt.get("eos_emitted") is not True:
         raise BridgeRefusal("model completion rejected or unterminated")
+    if receipt.get("prompt") != request["prompt"]:
+        raise BridgeRefusal("inference receipt belongs to a different prompt")
     for field in ("width", "height", "material"):
         if receipt.get(field) != request[field]:
             raise BridgeRefusal("inference receipt differs from captured host " + field)
+    if expected_seed is not None and receipt.get("seed") != expected_seed:
+        raise BridgeRefusal("inference receipt differs from pinned host seed")
+    if expected_adapter_sha256 is not None and (
+            receipt.get("adapter_sha256") != expected_adapter_sha256
+            or receipt.get("model_id") != "LiquidAI/LFM2.5-350M"
+            or receipt.get("native_execution") is not False):
+        raise BridgeRefusal("inference receipt/model or adapter identity mismatch")
     if receipt.get("compiler_sha256") != expected_compiler_sha256:
         raise BridgeRefusal("inference/compiler source mismatch")
     if receipt.get("art_batch_sha256") != digest(output / "art_batch.json"):
@@ -130,7 +141,9 @@ def run_inference(config: argparse.Namespace, request: dict) -> tuple[str, dict]
             raise BridgeRefusal("local inference deadline exceeded; no Art batch returned") from exc
     if result.returncode:
         raise BridgeRefusal("inference rejected or failed (exit %d); original output in %s" % (result.returncode, folder))
-    return checked_art_result(output, request, config.compiler_sha256)
+    return checked_art_result(output, request, config.compiler_sha256,
+                              expected_seed=config.seed,
+                              expected_adapter_sha256=config.adapter_sha256)
 
 
 def make_handler(config: argparse.Namespace, runner=run_inference):
