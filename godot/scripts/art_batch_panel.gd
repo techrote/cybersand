@@ -1,5 +1,5 @@
 extends Window
-## Compact direct drawing and one-shot provider interface; no provider/Git preflight.
+## Compact direct/model drawing over the shared native editor; no provider/Git preflight.
 const Executor = preload("res://scripts/art_batch_executor.gd")
 var executor := Executor.new()
 var wb: Node
@@ -99,26 +99,34 @@ var stencil_prompt := ""
 const STENCIL_INSTRUCTIONS := "Return a JSON array of rows. Each row is {y, repeat, scale, spans}. y is the local row index. repeat and scale default to 1. Each span is [x,length,material]. Scale multiplies x, y, length and repeat. Use the selected drawing material ID. Material 0 erases when enabled. Omitted spans preserve existing cells. Use local coordinates inside the stated area. Return [] when finished."
 
 
-var help := Label.new()
+const ConversationEditor = preload("res://scripts/art_conversation_editor.gd")
+var conversation_editor := ConversationEditor.new()
+var conversation_button := Button.new()
+var selection_editor: Control
+var protected_row := HBoxContainer.new()
+var conversation_error := ""
+var model_controls: Array[Control] = []
 
 func _ready() -> void:
 	title = "Art workbench"
-	size = Vector2i(790,550)
-	min_size = Vector2i(560,380)
+	size = Vector2i(640,400)
+	min_size = Vector2i(520,320)
 	transient = true
 	exclusive = false
 	close_requested.connect(hide)
+	visibility_changed.connect(_selection_visibility_changed)
+	var dense := Theme.new()
+	dense.default_font_size = 14
+	for type_name: String in ["HBoxContainer","VBoxContainer"]:
+		dense.set_constant("separation",type_name,2)
+	theme = dense
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	for side: String in ["left","top","right","bottom"]: margin.add_theme_constant_override("margin_"+side,10)
+	for side: String in ["left","top","right","bottom"]: margin.add_theme_constant_override("margin_"+side,4)
 	add_child(margin)
 	var column := VBoxContainer.new()
 	margin.add_child(column)
 	var actions := HBoxContainer.new()
-	var caption := Label.new()
-	caption.text = "Art workbench"
-	caption.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	actions.add_child(caption)
 	draw.text = "Draw"
 	draw.pressed.connect(func() -> void:
 		if input_mode.selected==0: submit_text()
@@ -134,50 +142,127 @@ func _ready() -> void:
 	input_mode.item_selected.connect(change_mode)
 	actions.add_child(input_mode)
 	mount_tools(actions)
-	column.add_child(actions)
-	var history_actions := HBoxContainer.new()
 	for entry: Array in [[undo_button,"Undo","undo"],[redo_button,"Redo","redo"]]:
 		var button: Button = entry[0]
 		button.text = entry[1]
 		button.focus_mode = Control.FOCUS_NONE
 		button.pressed.connect(_history_action.bind(str(entry[2])))
-		history_actions.add_child(button)
+		actions.add_child(button)
 	undo_button.tooltip_text = "Undo the latest paused Workbench edit, including agent drawing. Stop active agent runs first."
 	redo_button.tooltip_text = "Redo the latest undone Workbench edit while the native source remains unchanged."
-	var history_hint := Label.new()
-	history_hint.text = "Shared edit history · manual and agent edits"
-	history_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	history_hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	history_actions.add_child(history_hint)
-	column.add_child(history_actions)
+	column.add_child(actions)
 	mount_provider_controls(column)
 	state.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	column.add_child(state)
+	state.max_lines_visible = 2
+	state.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	var row := HBoxContainer.new()
+	var focus_label := Label.new()
+	focus_label.text = "Focus"
+	focus_label.tooltip_text = "Select a rectangle on the canvas to set X/Y/W/H while this panel is open. Applies to subsequent requests only."
+	row.add_child(focus_label)
 	add_rectangle(row,fields,[0,0,2048,2048])
+	column.add_child(row)
+	row = HBoxContainer.new()
 	for i: int in ArtPlan.Setup.MATERIALS.size():
 		var id: int = ArtPlan.Setup.MATERIALS[i]
 		if id != 0: paint_material.add_item("%s (%d)" % [ArtPlan.Setup.MATERIAL_NAMES[i],id],id)
 	paint_material.select(paint_material.get_item_index(58))
+	paint_material.fit_to_longest_item = false
+	paint_material.clip_text = true
+	paint_material.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	paint_material.tooltip_text = "Material available for art drawing. Erase is controlled separately."
 	erase.text = "Erase"
 	erase.button_pressed = true
 	row.add_child(paint_material)
 	row.add_child(erase)
-	column.add_child(row)
-	row = HBoxContainer.new()
 	protect.text = "Protect"
+	protect.tooltip_text = "Exclude this protected rectangle from agent drawing."
+	protect.toggled.connect(func(on: bool) -> void: protected_row.visible = on)
 	row.add_child(protect)
-	add_rectangle(row,protected_fields,[0,0,4,4])
 	column.add_child(row)
+	add_rectangle(protected_row,protected_fields,[0,0,4,4])
+	column.add_child(protected_row)
+	protected_row.hide()
 	input.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	input.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	input.text = prompt_text
+	input.custom_minimum_size.y = 64
 	column.add_child(input)
+	column.add_child(state)
 
-	help.text = "JSON operations: rectangle / disc / line / pixels. World coordinates; material 58 = Hard Wall, 0 = erase. Large batches stream in native-sized chunks. Protected cells are skipped."
-	help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	column.add_child(help)
+	# Help lives in tooltips/Guidance rather than permanently consuming canvas space.
+	input_mode.tooltip_text = "Direct JSON, model prompts or scanlines; use Guidance for drawing instructions."
+	add_child(conversation_editor)
+	conversation_editor.hide()
+	conversation_editor.confirmed.connect(_apply_conversation_edits)
+
+func _bind_selection() -> void:
+	if wb == null or wb.paint_editor == null or selection_editor == wb.paint_editor: return
+	if is_instance_valid(selection_editor) and selection_editor.selection_changed.is_connected(focus_selection):
+		selection_editor.selection_changed.disconnect(focus_selection)
+	selection_editor = wb.paint_editor
+	selection_editor.selection_changed.connect(focus_selection)
+
+func _selection_visibility_changed() -> void:
+	_bind_selection()
+	# Opening/revealing the panel must not overwrite manually entered bounds with
+	# an old selection (image capture temporarily hides and restores this Window).
+
+func focus_selection(region: Rect2i) -> void:
+	if not visible or fields.size() != 4 or wb == null or wb.applied.is_empty(): return
+	var bounds := Rect2i(Vector2i.ZERO,ArtPlan.Setup.extent_of(wb.applied))
+	region = region.abs().intersection(bounds)
+	if not region.has_area(): return
+	var values := [region.position.x,region.position.y,region.size.x,region.size.y]
+	for i: int in range(4): fields[i].set_value_no_signal(values[i])
+	# Do not change request_area, request_guards or the executor's captured scope.
+
+func _open_conversation() -> void:
+	conversation_error = ""
+	conversation_editor.open_history(conversation)
+	_update_conversation_guard()
+
+func _conversation_block_reason() -> String:
+	var blocked := history_block_reason()
+	if not blocked.is_empty(): return "Stop the agent and wait for its confirmed result before applying history edits."
+	if wb != null and (wb.busy() or (wb.paint_editor != null and wb.paint_editor.busy())):
+		return "Wait for the current Workbench operation before applying history edits."
+	if conversation != conversation_editor.baseline:
+		return "Conversation changed while this editor was open. Reopen it to edit the latest history."
+	return ""
+
+func _update_conversation_guard() -> void:
+	if conversation_editor.visible:
+		var blocked := _conversation_block_reason()
+		conversation_editor.get_ok_button().disabled = not blocked.is_empty()
+		conversation_editor.notice.text = blocked if not blocked.is_empty() else (conversation_error if not conversation_error.is_empty() else ConversationEditor.HELP)
+
+func _apply_conversation_edits() -> void:
+	conversation_editor.flush_message()
+	conversation_error = ""
+	var blocked := _conversation_block_reason()
+	if not blocked.is_empty():
+		conversation_editor.notice.text = blocked
+		return
+	var clean: Variant = Provider.checked_conversation(conversation_editor.draft)
+	if clean == null:
+		conversation_error = "Invalid conversation. Only user/assistant text and retained image references are supported."
+		_update_conversation_guard()
+		return
+	for entry: Dictionary in clean: entry.content = provider.redact(entry.content)
+	if clean == conversation:
+		conversation_editor.hide()
+		return
+	# One append-only snapshot: never truncate original requests, replies or native receipts.
+	if not provider.log_event("conversation_edited",{"turns":clean,"last_result":last_result}):
+		conversation_error = "Could not save conversation edits; live history is unchanged. "+provider.log_warning
+		_update_conversation_guard()
+		return
+	conversation = clean
+	last_image = "" # The next request must not rely on an image removed from context.
+	persist_traffic_path()
+	conversation_editor.hide()
+	input_error = "Conversation updated for future requests; no canvas edits were executed."
 
 func mount_tools(actions: HBoxContainer) -> void:
 	var options := Window.new()
@@ -259,8 +344,10 @@ func submit_text() -> void:
 
 func _process(_delta: float) -> void:
 	if wb == null: return
+	_bind_selection()
 	executor.wb = wb
 	executor.poll()
+	_update_conversation_guard()
 	if traffic_dirty and traffic_window.visible and Time.get_ticks_msec() >= traffic_refresh_after: refresh_traffic()
 	if run_deadline_ms > 0 and Time.get_ticks_msec() >= run_deadline_ms:
 		if provider.active or capturing or executor.active or remaining_turns != 0: stop_all("Run time limit reached")
@@ -280,8 +367,9 @@ func _process(_delta: float) -> void:
 	tools_button.visible = input_mode.selected != 2
 	draw.text = "Draw" if input_mode.selected==0 else "Send"
 	for row: Control in rows: row.visible = input_mode.selected!=0
+	for control: Control in model_controls: control.visible = input_mode.selected!=0
 	key_button.text = "Key ✓" if not str(keys.get(current_provider,"")).is_empty() else "Key…"
-	help.text = "Turns limits requests per Send. Image attaches a canvas crop. Select a vision model to use it." if input_mode.selected!=0 else "Ordered JSON: see enabled shapes under Tools. Use the selected material ID. 0 erases when enabled. Large drawings stream in native-sized chunks."
+	input_mode.tooltip_text = "Turns limits requests per Send. Image attaches a canvas crop. Select a vision model to use it." if input_mode.selected!=0 else "Ordered JSON: see enabled shapes under Tools. Use the selected material ID. 0 erases when enabled. Large drawings stream in native-sized chunks."
 	if log_draw and not executor.active:
 		provider.log_event("native_result",executor.result)
 		log_draw = false
@@ -313,7 +401,9 @@ func _process(_delta: float) -> void:
 	if input_mode.selected != 0 and not spend_status.is_empty(): status_text += " · "+spend_status
 	if not provider.log_warning.is_empty(): status_text += " · "+provider.log_warning
 	if not history_notice.is_empty(): status_text += " · "+history_notice
-	if state.text != status_text: state.text = status_text
+	if state.text != status_text:
+		state.text = status_text
+		state.tooltip_text = status_text
 
 func _exit_tree() -> void:
 	if wb != null: stop_all("Workbench closed")
@@ -321,9 +411,7 @@ func _exit_tree() -> void:
 func mount_provider_controls(column: VBoxContainer) -> void:
 	settings.load("user://art-provider.cfg")
 	conversation = provider.resume_traffic(settings.get_value("session","traffic_path",""))
-	for entry: Dictionary in conversation:
-		var content: String = entry.get("content","")
-		if content.begins_with("Canvas result ("): last_result = content
+	last_result = provider.resumed_last_result
 	add_child(provider)
 	provider.finished.connect(provider_finished)
 	executor.native_receipt.connect(func(receipt: Dictionary) -> void:
@@ -364,11 +452,11 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	row.add_child(endpoint)
 	tokens.prefix = "Toks"
 	tokens.min_value = 1; tokens.max_value = 262144; tokens.value = 8192
-	tokens.custom_minimum_size.x = 130
+	tokens.custom_minimum_size.x = 100
 	row.add_child(tokens)
 	seconds.prefix = "Secs"
 	seconds.min_value = 1; seconds.max_value = 3600; seconds.value = 180
-	seconds.custom_minimum_size.x = 110
+	seconds.custom_minimum_size.x = 85
 	row.add_child(seconds)
 	image_input.text = "Image"
 	image_input.tooltip_text = "Send the rendered current canvas view; use a vision-capable model."
@@ -393,20 +481,20 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	minimum_interval.max_value = 3600
 	minimum_interval.step = 0.1
 	minimum_interval.tooltip_text = "Minimum seconds between model requests. Zero disables local pacing."
-	row.add_child(minimum_interval)
 	run_seconds.prefix = "Run s"
 	run_seconds.custom_minimum_size.x = 100
 	run_seconds.max_value = 86400
 	run_seconds.tooltip_text = "Maximum seconds for this run. Zero disables the limit."
-	row.add_child(run_seconds)
 	var spending := Window.new()
-	spending.title = "Estimated spending"
+	spending.title = "Run limits and estimated spending"
 	add_child(spending)
 	spending.hide()
 	spending.close_requested.connect(spending.hide)
 	var spending_fields := VBoxContainer.new()
 	spending.add_child(spending_fields)
 	spending_fields.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	spending_fields.add_child(minimum_interval)
+	spending_fields.add_child(run_seconds)
 	var spending_help := Label.new()
 	spending_help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	spending_help.text = "Enter your own rates. A zero ceiling disables spending control. The estimate uses reported tokens after each response and can exceed the ceiling by one request."
@@ -420,20 +508,14 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	input_price.prefix = "Input USD / 1M"
 	output_price.prefix = "Output USD / 1M"
 	var spending_button := Button.new()
-	spending_button.text = "Spend…"
-	spending_button.pressed.connect(func() -> void: spending.popup_centered(Vector2i(400,220)))
+	spending_button.text = "Limits…"
+	spending_button.tooltip_text = "Request pacing, run duration and estimated spending. Zero disables each limit."
+	spending_button.pressed.connect(func() -> void: spending.popup_centered(Vector2i(400,280)))
 	row.add_child(spending_button)
-	var clear := Button.new()
-	clear.text = "Clear conversation"
-	clear.pressed.connect(func() -> void:
-		stop_all("Conversation cleared")
-		conversation.clear()
-		log_draw = false
-		last_result = ""
-		last_image = ""
-		provider.log_event("conversation_cleared",{})
-		persist_traffic_path())
-	row.add_child(clear)
+	conversation_button.text = "Conversation…"
+	conversation_button.tooltip_text = "View, edit or remove conversation messages used as future model context. Raw traffic and native receipts are retained."
+	conversation_button.pressed.connect(_open_conversation)
+	row.add_child(conversation_button)
 	var guidance_window := Window.new()
 	guidance_window.title = "Drawing guidance"
 	add_child(guidance_window)
@@ -441,6 +523,9 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	guidance_window.close_requested.connect(guidance_window.hide)
 	guidance_window.add_child(guidance)
 	guidance.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	guidance.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+	guidance.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	guidance_window.min_size = Vector2i(360,220)
 	guidance.text = settings.get_value("session","guidance",Provider.INSTRUCTIONS)
 	var stencil_window := Window.new()
 	stencil_window.title = "Scanline guidance"
@@ -449,6 +534,9 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	stencil_window.close_requested.connect(stencil_window.hide)
 	stencil_window.add_child(stencil_guidance)
 	stencil_guidance.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	stencil_guidance.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+	stencil_guidance.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	stencil_window.min_size = Vector2i(360,220)
 	stencil_guidance.text = settings.get_value("session","scanline_guidance",STENCIL_INSTRUCTIONS)
 	var edit_guidance := Button.new()
 	edit_guidance.text = "Guidance…"
@@ -456,8 +544,8 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 		var window := stencil_window if input_mode.selected == 2 else guidance_window
 		window.popup_centered(Vector2i(700,400)))
 	row.add_child(edit_guidance)
+	model_controls.assign([context_mode,turn_limit,spending_button,edit_guidance])
 	column.add_child(row)
-	rows.append(row)
 	key_field.secret = true
 	key_field.placeholder_text = "Paste API key; never saved in profiles or traffic"
 	key_field.custom_minimum_size.x = 500
@@ -659,7 +747,7 @@ func send_prompt() -> void:
 	spend_status = ""
 	run_spend_limit = spend_limit.value
 	if run_spend_limit > 0 and (input_price.value <= 0 and output_price.value <= 0):
-		input_error = "Set a token rate in Spend, or set the spending ceiling to zero."
+		input_error = "Set a token rate in Limits, or set the spending ceiling to zero."
 		return
 	task_prompt = input.text
 	run_mode = input_mode.selected
