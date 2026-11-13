@@ -4,11 +4,16 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+WB-ART-SLM-001: [small-model themed pattern controller](research/themed-pattern-controller.md),
+[implemented bootstrap and native gallery](../experiments/wb-art-slm-001/README.md).
+The source-matched Linux material-readback pilot is separate from current-main,
+Windows and human artistic acceptance; the model run report owns measured claims.
 
 Materials Lab v1 review candidate: [desktop launch, inspection, authoring and native tests](operations/materials-lab-authoring.md),
 [initial qualification](audits/2026-11-11-materials-lab-v1.md), and

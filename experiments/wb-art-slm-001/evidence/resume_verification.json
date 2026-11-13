@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "checks": {
+    "optimizer": true,
+    "scheduler": true,
+    "scaler": true,
+    "global_step": true,
+    "sample_cursor": true,
+    "python_rng": true,
+    "numpy_rng": true,
+    "torch_rng": true,
+    "cuda_rng": true,
+    "frozen_base_sha256": true,
+    "adapter_tensors": true,
+    "last_loss": true,
+    "last_gradient_norm": true
+  },
+  "uninterrupted_checkpoint": "/workspace/scratch/7d765b879ceb/training_runtime/runs/lfm_stage1/checkpoint-000026",
+  "resumed_checkpoint": "/workspace/scratch/7d765b879ceb/training_runtime/runs/lfm_resume_check/checkpoint-000026",
+  "global_step": 26,
+  "uninterrupted_adapter_sha256": "9cc5ca8d8effe67639cd1242aa7bf0b06dd909d443f681bd13ee6746d7a998a1",
+  "resumed_adapter_sha256": "9cc5ca8d8effe67639cd1242aa7bf0b06dd909d443f681bd13ee6746d7a998a1",
+  "scope": "Exact equality for this tested checkpoint continuation in the pinned runtime; not a cross-hardware guarantee"
+}

@@ -1,0 +1,72 @@
+# WB-ART-SLM-001: actual local training
+
+This directory implements a bounded completion-only LoRA trainer, strict model inference, declared baselines and checkpoint verification. It is a new experiment; it neither reuses nor promotes adapters from earlier NeuroRunner lanes.
+
+## Model lineup
+
+`model_profiles.json` fixes full official revisions and separates Sprocket Instruct from its `chat/` checkpoint. The first CPU bootstrap uses **LiquidAI/LFM2.5-350M**. LFM3-1.7B remains a separate planned GPU candidate, not an alias for the executed model. SmolLM2-135M-Instruct is the smallest independent reference, with 360M optional. A profile is executable configuration, not evidence that the model has been trained or evaluated; only run receipts establish that.
+
+The primary sources are the exact revision URLs in the profiles. Base-model licenses are downloaded and copied beside each adapter. No model weights, optimizer states or environment directories belong in git.
+
+## Environment and model download
+
+The tested bootstrap runtime is Python 3.12, CPU PyTorch, Transformers and PEFT. `requirements.lock` records the exact installed environment. For CPU installation, install the recorded `torch` build using the official CPU wheel index, then install the remaining locked packages from PyPI; do not accidentally install CUDA wheels on a CPU worker. Example with `uv`:
+
+```bash
+uv venv /path/to/private/runtime/venv
+uv pip install --python /path/to/private/runtime/venv/bin/python --index-url https://download.pytorch.org/whl/cpu torch==2.15.0+cpu
+uv pip install --python /path/to/private/runtime/venv/bin/python -r requirements.lock --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-best-match
+/path/to/private/runtime/venv/bin/python download_model.py --profile lfm2_5_350m --output /path/to/private/models/lfm350
+```
+
+The downloader resolves the pinned commit, selects the exact root/subfolder variant, downloads trainable safetensors plus tokenizer/config/license files, and writes checksums. LFM3 custom architecture code is only executed when the operator explicitly supplies `--trust-remote-code` against the locally pinned snapshot. The bootstrap uses no such custom-code switch.
+
+## Corpus admission and token handling
+
+Only admitted `train.jsonl` and `dev.jsonl` are accepted. Every row must have the correct split, native qualification, successful receipt, matching operation hash, no outside-focus violations, positive acknowledgement and explicit visual-review admission. The trainer verifies exact split-file hashes, admission/manifest/compiler identity and disjoint structural group IDs. `final.jsonl` is not read by the trainer.
+
+`system_prompt.txt` defines a compact schema without providing the reference theme-to-motif mapping. Both untuned and adapted models receive that identical system prompt and their official pinned chat template, with `enable_thinking=False`. The trainer checks full prompt/completion token boundaries, masks the prompt, preserves completion EOS even when PAD equals EOS, rejects oversized examples, and never truncates a target. There is one unpadded sequence per microbatch; `--accumulation` controls the effective optimizer batch.
+
+## Bounded training and resume
+
+Run from this directory, substituting private absolute model/run paths:
+
+```bash
+python train_lora.py --train ../corpus/train.jsonl --dev ../corpus/dev.jsonl --admission ../corpus/admission.json --corpus-manifest ../corpus/manifest.json --compiler ../controls/pattern_compiler.py --model /path/to/private/models/lfm350 --model-id LiquidAI/LFM2.5-350M --revision 9921cd4d82c0e3986887aa4b376f9446729ef8a3 --output /path/to/private/runs/lfm-stage1 --steps 26 --checkpoint-every 25 --eval-count 24 --max-seconds 1800 --threads 3
+```
+
+`--steps` is the total global target including resumed steps. `--max-seconds` bounds optimizer work with a checkpoint margin; baseline/final evaluation and model loading are separate measured costs, so an external hourly worker must reserve time for them. SIGTERM requests a clean stop after the current optimizer step. A shared file lock serializes model training in a common run-parent directory. CPU uses FP32; CUDA checks native BF16 support and otherwise uses FP16 with a saved scaler. Actual linear module names are inspected before constructing LoRA. Only LoRA-owned parameters may be trainable, and all frozen base bytes are hashed before and after training.
+
+Each checkpoint contains the adapter, tokenizer, inference contract, base-model license, optimizer, scheduler, scaler, all RNG states, deterministic sampler cursor, global step, loss history and checksummed inventory. Resume verifies the inventory **before** loading state and rejects changed data, model, template, training settings, numerical runtime or a non-increasing step target. Checkpoints are atomically published and never overwritten.
+
+To test exact continuation, let the initial process run uninterrupted through step 26 while saving step 25, then start a fresh process with `--resume .../checkpoint-000025 --steps 26 --output /different/private/run --skip-baseline --skip-final-eval`. Compare its step-26 checkpoint with the uninterrupted one:
+
+```bash
+python verify_resume.py --uninterrupted /path/to/first/checkpoint-000026 --resumed /path/to/replay/checkpoint-000026 --output /path/to/private/resume-verification.json
+```
+
+This compares adapter tensors, optimizer/scheduler/scaler, RNG states, cursor, step, loss and gradient norm. Exact continuation is only claimed if the executed comparison passes in that pinned runtime; it is not a cross-hardware guarantee.
+
+## Separate baselines and development evaluation
+
+`baseline_keyword.py` declares its simple behavior: one literal theme word selects the fixed centered reference recipe; modifier/layout language is ignored. It separately records the twelve exact-word compiler sanity cases. It never impersonates model output.
+
+The untuned base and LoRA use the same deterministic balanced development IDs, greedy unconstrained decoding, and token limit. Reports separate JSON validity, compiler validity, complete first-pass acceptance with EOS, theme-field correctness, primary motif correctness, exact motif/layout sequence and exact reference program. Theme-field correctness alone says nothing about visual theme quality. A prediction becomes a native replay candidate only after strict JSON validation, schema/budget checks and EOS. No grammar constraint, substring extraction, JSON repair or keyword fallback is applied.
+
+`evaluate_model.py` runs an independent pinned base without creating or training an adapter. Supply `--adapter` to evaluate a saved adapter. Its default `--suite dev` uses the same balanced development selection; `--suite keywords` separately checks the twelve exact theme words and labels them as training-word sanity cases, never as a held-out test. SmolLM and Sprocket baseline processes should run sequentially after unloading the previous model so the small worker's memory is bounded.
+
+`export_native_cases.py` converts accepted model output into replay cases with prompt, raw completion, program and operation hashes. Native replay, focus/source protection, history/readback, storage and visual review remain the native harness's responsibility; the trainer never claims these checks merely because JSON compiled.
+
+## Strict inference
+
+```bash
+python infer.py --model /path/to/private/models/lfm350 --adapter /path/to/checkpoint/adapter --prompt roots --seed 73 --width 96 --height 96 --output /path/to/new/inference-result
+```
+
+The inference CLI verifies the exact base files, model revision, adapter contract, template and compiler hash. It loads the trained adapter, applies the same system prompt, emits the raw completion and receipt, and writes `program.json`, `compile_report.json` and `art_batch.json` only if the output passes. The host seed controls deterministic geometry variation. This CLI saves a plan; it does not mutate CyberSand. Existing native executor validation and user authorization still govern execution.
+
+## Evidence and limitations
+
+Actual run metrics, checkpoint checksums, baseline/adapter predictions, native cases and training receipts are retained outside git and delivered as separate artifacts. Repository reports should summarize those receipts rather than manufacture a successful run. The initial task teaches a small pattern-program language; it does not establish object drawing, arbitrary tool use, unseen motif synthesis or production readiness. Training/dev/final groups separate theme/motif/layout arrangements, while primitives are shared. Use the sequestered final split once a candidate and its selection rules are frozen.
+
+Run the small guard suite with `python -m unittest discover -s . -p 'test_*.py'`. It addresses the concrete failure modes of unqualified data, held-out split access, family leakage, ordered evaluation bias and repaired/nonstandard JSON acceptance. The real tokenizer preflight and actual checkpoint continuation provide the training-specific verification.

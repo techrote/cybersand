@@ -4,11 +4,19 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
+
+## Small-model themed pattern controller — 2026-11-13
+
+For the twelve-word compiler, executed corpus, fine-tuned adapter, Sprocket/SmolLM
+lineup and native gallery, retrieve the [pattern controller](../research/themed-pattern-controller.md).
+It distinguishes source-matched native readback from current-main, Windows,
+graphical and human acceptance. [Two additive questions](retrieval-questions-wb-art-slm.json)
+keep the frozen and historical question sets unchanged.
 
 ## Materials Lab v1 review candidate — 2026-11-11
 

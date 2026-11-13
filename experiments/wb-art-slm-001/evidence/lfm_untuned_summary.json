@@ -1,0 +1,30 @@
+{
+  "count": 24,
+  "json_valid": 0,
+  "program_valid": 0,
+  "first_pass_accepted": 0,
+  "theme_field_correct": 0,
+  "primary_motif_correct": 0,
+  "motif_layout_exact": 0,
+  "exact_target": 0,
+  "output_tokens": 4792,
+  "seconds": 317.8806122910064,
+  "theme_counts": {
+    "circuitry": 2,
+    "coral": 2,
+    "crystals": 2,
+    "dunes": 2,
+    "honeycomb": 2,
+    "labyrinth": 2,
+    "mycelium": 2,
+    "ribs": 2,
+    "roots": 2,
+    "ruins": 2,
+    "strata": 2,
+    "veins": 2
+  },
+  "selection": "sha256-id within theme, sorted-theme round robin",
+  "native_execution": "NOT EXECUTED BY TRAINER",
+  "visual_theme_assessment": "NOT PERFORMED BY TRAINER; theme field and motif checks are symbolic only",
+  "decoding": "greedy, unconstrained, no repair"
+}

@@ -1,0 +1,844 @@
+{
+  "corpus_version": "wb-art-slm-001/bootstrap-v1",
+  "compiler_version": "wb-art-slm-001/1.0.0",
+  "compiler_sha256": "a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb",
+  "state": "native-replay-pending",
+  "record_count": 1536,
+  "distinct_native_cases": 864,
+  "gallery_count": 192,
+  "pilot_count": 32,
+  "split_counts": {
+    "train": 1152,
+    "dev": 192,
+    "final": 192
+  },
+  "group_counts": {
+    "train": 72,
+    "dev": 12,
+    "final": 12
+  },
+  "theme_counts": {
+    "roots": 128,
+    "coral": 128,
+    "veins": 128,
+    "mycelium": 128,
+    "strata": 128,
+    "dunes": 128,
+    "crystals": 128,
+    "honeycomb": 128,
+    "labyrinth": 128,
+    "ruins": 128,
+    "circuitry": 128,
+    "ribs": 128
+  },
+  "groups": [
+    {
+      "group_id": "roots:65c3508590ad548a",
+      "theme": "roots",
+      "signature": "{\"structure\":[[\"branch\",\"center\"]],\"theme\":\"roots\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "roots:cc5123912c3b947a",
+      "theme": "roots",
+      "signature": "{\"structure\":[[\"branch\",\"offset\"]],\"theme\":\"roots\"}",
+      "split": "dev"
+    },
+    {
+      "group_id": "roots:daf9fd6060b9150c",
+      "theme": "roots",
+      "signature": "{\"structure\":[[\"branch\",\"split\"]],\"theme\":\"roots\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "roots:7844fd2b195eb32b",
+      "theme": "roots",
+      "signature": "{\"structure\":[[\"branch\",\"border\"]],\"theme\":\"roots\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "roots:9018c32ec7055b7d",
+      "theme": "roots",
+      "signature": "{\"structure\":[[\"branch\",\"center\"],[\"network\",\"border\"]],\"theme\":\"roots\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "roots:db50f36ae441dad3",
+      "theme": "roots",
+      "signature": "{\"structure\":[[\"branch\",\"offset\"],[\"network\",\"border\"]],\"theme\":\"roots\"}",
+      "split": "final"
+    },
+    {
+      "group_id": "roots:cb4c57f6e9c55ec9",
+      "theme": "roots",
+      "signature": "{\"structure\":[[\"branch\",\"split\"],[\"network\",\"border\"]],\"theme\":\"roots\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "roots:8650784c5451c02e",
+      "theme": "roots",
+      "signature": "{\"structure\":[[\"branch\",\"border\"],[\"network\",\"border\"]],\"theme\":\"roots\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "coral:8bafff477de7c062",
+      "theme": "coral",
+      "signature": "{\"structure\":[[\"fan\",\"center\"]],\"theme\":\"coral\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "coral:0cfe56f6e5ea68e8",
+      "theme": "coral",
+      "signature": "{\"structure\":[[\"fan\",\"offset\"]],\"theme\":\"coral\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "coral:6748a8805352df1c",
+      "theme": "coral",
+      "signature": "{\"structure\":[[\"fan\",\"split\"]],\"theme\":\"coral\"}",
+      "split": "final"
+    },
+    {
+      "group_id": "coral:1b1aab92b4b75e31",
+      "theme": "coral",
+      "signature": "{\"structure\":[[\"fan\",\"border\"]],\"theme\":\"coral\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "coral:ae6fc686add066a0",
+      "theme": "coral",
+      "signature": "{\"structure\":[[\"fan\",\"center\"],[\"branch\",\"border\"]],\"theme\":\"coral\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "coral:3a0e121cc75806d9",
+      "theme": "coral",
+      "signature": "{\"structure\":[[\"fan\",\"offset\"],[\"branch\",\"border\"]],\"theme\":\"coral\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "coral:e600d2c10e6efe7b",
+      "theme": "coral",
+      "signature": "{\"structure\":[[\"fan\",\"split\"],[\"branch\",\"border\"]],\"theme\":\"coral\"}",
+      "split": "dev"
+    },
+    {
+      "group_id": "coral:f9bb2c3f5021d540",
+      "theme": "coral",
+      "signature": "{\"structure\":[[\"fan\",\"border\"],[\"branch\",\"border\"]],\"theme\":\"coral\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "veins:2b272f1e2e9a0ae6",
+      "theme": "veins",
+      "signature": "{\"structure\":[[\"network\",\"center\"]],\"theme\":\"veins\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "veins:2a21728e3c4eff08",
+      "theme": "veins",
+      "signature": "{\"structure\":[[\"network\",\"offset\"]],\"theme\":\"veins\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "veins:10b5482f79483baf",
+      "theme": "veins",
+      "signature": "{\"structure\":[[\"network\",\"split\"]],\"theme\":\"veins\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "veins:a704c3b1c4ce3ef8",
+      "theme": "veins",
+      "signature": "{\"structure\":[[\"network\",\"border\"]],\"theme\":\"veins\"}",
+      "split": "dev"
+    },
+    {
+      "group_id": "veins:938b5c10e269be4f",
+      "theme": "veins",
+      "signature": "{\"structure\":[[\"network\",\"center\"],[\"threads\",\"border\"]],\"theme\":\"veins\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "veins:d755a55ac5d07866",
+      "theme": "veins",
+      "signature": "{\"structure\":[[\"network\",\"offset\"],[\"threads\",\"border\"]],\"theme\":\"veins\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "veins:e74c6dcb0d0ad9df",
+      "theme": "veins",
+      "signature": "{\"structure\":[[\"network\",\"split\"],[\"threads\",\"border\"]],\"theme\":\"veins\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "veins:7be845d38595b030",
+      "theme": "veins",
+      "signature": "{\"structure\":[[\"network\",\"border\"],[\"threads\",\"border\"]],\"theme\":\"veins\"}",
+      "split": "final"
+    },
+    {
+      "group_id": "mycelium:98f53b3778aab4de",
+      "theme": "mycelium",
+      "signature": "{\"structure\":[[\"threads\",\"center\"]],\"theme\":\"mycelium\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "mycelium:624b64ccb7f12ad8",
+      "theme": "mycelium",
+      "signature": "{\"structure\":[[\"threads\",\"offset\"]],\"theme\":\"mycelium\"}",
+      "split": "final"
+    },
+    {
+      "group_id": "mycelium:e6fce1bdcab0c0b1",
+      "theme": "mycelium",
+      "signature": "{\"structure\":[[\"threads\",\"split\"]],\"theme\":\"mycelium\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "mycelium:9355819bc6eef1c0",
+      "theme": "mycelium",
+      "signature": "{\"structure\":[[\"threads\",\"border\"]],\"theme\":\"mycelium\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "mycelium:947ad0cd5fee575b",
+      "theme": "mycelium",
+      "signature": "{\"structure\":[[\"threads\",\"center\"],[\"network\",\"border\"]],\"theme\":\"mycelium\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "mycelium:a2f288e5879719be",
+      "theme": "mycelium",
+      "signature": "{\"structure\":[[\"threads\",\"offset\"],[\"network\",\"border\"]],\"theme\":\"mycelium\"}",
+      "split": "dev"
+    },
+    {
+      "group_id": "mycelium:e060bc849efba9d5",
+      "theme": "mycelium",
+      "signature": "{\"structure\":[[\"threads\",\"split\"],[\"network\",\"border\"]],\"theme\":\"mycelium\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "mycelium:95caef926efcb2fd",
+      "theme": "mycelium",
+      "signature": "{\"structure\":[[\"threads\",\"border\"],[\"network\",\"border\"]],\"theme\":\"mycelium\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "strata:090f255254107cb3",
+      "theme": "strata",
+      "signature": "{\"structure\":[[\"bands\",\"center\"]],\"theme\":\"strata\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "strata:fcac1ee9b4b8968b",
+      "theme": "strata",
+      "signature": "{\"structure\":[[\"bands\",\"offset\"]],\"theme\":\"strata\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "strata:26f1daa65b95ef3d",
+      "theme": "strata",
+      "signature": "{\"structure\":[[\"bands\",\"split\"]],\"theme\":\"strata\"}",
+      "split": "dev"
+    },
+    {
+      "group_id": "strata:45a24624fa9ed810",
+      "theme": "strata",
+      "signature": "{\"structure\":[[\"bands\",\"border\"]],\"theme\":\"strata\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "strata:bb6e698746b3caf9",
+      "theme": "strata",
+      "signature": "{\"structure\":[[\"bands\",\"center\"],[\"facets\",\"border\"]],\"theme\":\"strata\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "strata:0b4c399bdba36b88",
+      "theme": "strata",
+      "signature": "{\"structure\":[[\"bands\",\"offset\"],[\"facets\",\"border\"]],\"theme\":\"strata\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "strata:b708eeaf7796a00a",
+      "theme": "strata",
+      "signature": "{\"structure\":[[\"bands\",\"split\"],[\"facets\",\"border\"]],\"theme\":\"strata\"}",
+      "split": "final"
+    },
+    {
+      "group_id": "strata:c732f68fd241bc44",
+      "theme": "strata",
+      "signature": "{\"structure\":[[\"bands\",\"border\"],[\"facets\",\"border\"]],\"theme\":\"strata\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "dunes:73fad8bc830b03fe",
+      "theme": "dunes",
+      "signature": "{\"structure\":[[\"ridges\",\"center\"]],\"theme\":\"dunes\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "dunes:f1a0f4e5f0b89f61",
+      "theme": "dunes",
+      "signature": "{\"structure\":[[\"ridges\",\"offset\"]],\"theme\":\"dunes\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "dunes:ab574281c58a4042",
+      "theme": "dunes",
+      "signature": "{\"structure\":[[\"ridges\",\"split\"]],\"theme\":\"dunes\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "dunes:8a66efc70eb00da7",
+      "theme": "dunes",
+      "signature": "{\"structure\":[[\"ridges\",\"border\"]],\"theme\":\"dunes\"}",
+      "split": "final"
+    },
+    {
+      "group_id": "dunes:d4d920fa40a0c0f7",
+      "theme": "dunes",
+      "signature": "{\"structure\":[[\"ridges\",\"center\"],[\"bands\",\"border\"]],\"theme\":\"dunes\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "dunes:ae0f3e5855c426e9",
+      "theme": "dunes",
+      "signature": "{\"structure\":[[\"ridges\",\"offset\"],[\"bands\",\"border\"]],\"theme\":\"dunes\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "dunes:e9acc837f7f1556a",
+      "theme": "dunes",
+      "signature": "{\"structure\":[[\"ridges\",\"split\"],[\"bands\",\"border\"]],\"theme\":\"dunes\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "dunes:b8e9dd85c3790d44",
+      "theme": "dunes",
+      "signature": "{\"structure\":[[\"ridges\",\"border\"],[\"bands\",\"border\"]],\"theme\":\"dunes\"}",
+      "split": "dev"
+    },
+    {
+      "group_id": "crystals:9d5ce1095165042e",
+      "theme": "crystals",
+      "signature": "{\"structure\":[[\"facets\",\"center\"]],\"theme\":\"crystals\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "crystals:f11037d4347f48bb",
+      "theme": "crystals",
+      "signature": "{\"structure\":[[\"facets\",\"offset\"]],\"theme\":\"crystals\"}",
+      "split": "dev"
+    },
+    {
+      "group_id": "crystals:30c8799cc96d0016",
+      "theme": "crystals",
+      "signature": "{\"structure\":[[\"facets\",\"split\"]],\"theme\":\"crystals\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "crystals:9455cae5bc0f377e",
+      "theme": "crystals",
+      "signature": "{\"structure\":[[\"facets\",\"border\"]],\"theme\":\"crystals\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "crystals:291ae86a37186061",
+      "theme": "crystals",
+      "signature": "{\"structure\":[[\"facets\",\"center\"],[\"ridges\",\"border\"]],\"theme\":\"crystals\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "crystals:0765a99ff0e97503",
+      "theme": "crystals",
+      "signature": "{\"structure\":[[\"facets\",\"offset\"],[\"ridges\",\"border\"]],\"theme\":\"crystals\"}",
+      "split": "final"
+    },
+    {
+      "group_id": "crystals:55253fd31e0e8654",
+      "theme": "crystals",
+      "signature": "{\"structure\":[[\"facets\",\"split\"],[\"ridges\",\"border\"]],\"theme\":\"crystals\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "crystals:b98eac29b839ccef",
+      "theme": "crystals",
+      "signature": "{\"structure\":[[\"facets\",\"border\"],[\"ridges\",\"border\"]],\"theme\":\"crystals\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "honeycomb:542e51381a268daf",
+      "theme": "honeycomb",
+      "signature": "{\"structure\":[[\"cells\",\"center\"]],\"theme\":\"honeycomb\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "honeycomb:46167e512a6e2a0c",
+      "theme": "honeycomb",
+      "signature": "{\"structure\":[[\"cells\",\"offset\"]],\"theme\":\"honeycomb\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "honeycomb:4edef5482559f51c",
+      "theme": "honeycomb",
+      "signature": "{\"structure\":[[\"cells\",\"split\"]],\"theme\":\"honeycomb\"}",
+      "split": "final"
+    },
+    {
+      "group_id": "honeycomb:fe8be07347df4113",
+      "theme": "honeycomb",
+      "signature": "{\"structure\":[[\"cells\",\"border\"]],\"theme\":\"honeycomb\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "honeycomb:197cce0aef64837e",
+      "theme": "honeycomb",
+      "signature": "{\"structure\":[[\"cells\",\"center\"],[\"ribs\",\"border\"]],\"theme\":\"honeycomb\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "honeycomb:aa361200b16be814",
+      "theme": "honeycomb",
+      "signature": "{\"structure\":[[\"cells\",\"offset\"],[\"ribs\",\"border\"]],\"theme\":\"honeycomb\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "honeycomb:9f6232352e960542",
+      "theme": "honeycomb",
+      "signature": "{\"structure\":[[\"cells\",\"split\"],[\"ribs\",\"border\"]],\"theme\":\"honeycomb\"}",
+      "split": "dev"
+    },
+    {
+      "group_id": "honeycomb:ac3100657af35440",
+      "theme": "honeycomb",
+      "signature": "{\"structure\":[[\"cells\",\"border\"],[\"ribs\",\"border\"]],\"theme\":\"honeycomb\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "labyrinth:163432d978c501e5",
+      "theme": "labyrinth",
+      "signature": "{\"structure\":[[\"maze\",\"center\"]],\"theme\":\"labyrinth\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "labyrinth:222457ab903954a4",
+      "theme": "labyrinth",
+      "signature": "{\"structure\":[[\"maze\",\"offset\"]],\"theme\":\"labyrinth\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "labyrinth:cf83d4de1f1a9705",
+      "theme": "labyrinth",
+      "signature": "{\"structure\":[[\"maze\",\"split\"]],\"theme\":\"labyrinth\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "labyrinth:88f3cdfae561888f",
+      "theme": "labyrinth",
+      "signature": "{\"structure\":[[\"maze\",\"border\"]],\"theme\":\"labyrinth\"}",
+      "split": "dev"
+    },
+    {
+      "group_id": "labyrinth:a7f926ef26e5dd0c",
+      "theme": "labyrinth",
+      "signature": "{\"structure\":[[\"maze\",\"center\"],[\"blocks\",\"border\"]],\"theme\":\"labyrinth\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "labyrinth:5c29ae3f822f9a82",
+      "theme": "labyrinth",
+      "signature": "{\"structure\":[[\"maze\",\"offset\"],[\"blocks\",\"border\"]],\"theme\":\"labyrinth\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "labyrinth:53820485501e9998",
+      "theme": "labyrinth",
+      "signature": "{\"structure\":[[\"maze\",\"split\"],[\"blocks\",\"border\"]],\"theme\":\"labyrinth\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "labyrinth:601575bb181c82d1",
+      "theme": "labyrinth",
+      "signature": "{\"structure\":[[\"maze\",\"border\"],[\"blocks\",\"border\"]],\"theme\":\"labyrinth\"}",
+      "split": "final"
+    },
+    {
+      "group_id": "ruins:fc1bf91e657bd0cf",
+      "theme": "ruins",
+      "signature": "{\"structure\":[[\"blocks\",\"center\"]],\"theme\":\"ruins\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "ruins:cad67804e5aab8f4",
+      "theme": "ruins",
+      "signature": "{\"structure\":[[\"blocks\",\"offset\"]],\"theme\":\"ruins\"}",
+      "split": "final"
+    },
+    {
+      "group_id": "ruins:02c81bd2f0bb7656",
+      "theme": "ruins",
+      "signature": "{\"structure\":[[\"blocks\",\"split\"]],\"theme\":\"ruins\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "ruins:79686b0709af8f73",
+      "theme": "ruins",
+      "signature": "{\"structure\":[[\"blocks\",\"border\"]],\"theme\":\"ruins\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "ruins:63d9143dd46817e7",
+      "theme": "ruins",
+      "signature": "{\"structure\":[[\"blocks\",\"center\"],[\"ribs\",\"border\"]],\"theme\":\"ruins\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "ruins:4ba7308b2e04a434",
+      "theme": "ruins",
+      "signature": "{\"structure\":[[\"blocks\",\"offset\"],[\"ribs\",\"border\"]],\"theme\":\"ruins\"}",
+      "split": "dev"
+    },
+    {
+      "group_id": "ruins:eef9254bfc970fd0",
+      "theme": "ruins",
+      "signature": "{\"structure\":[[\"blocks\",\"split\"],[\"ribs\",\"border\"]],\"theme\":\"ruins\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "ruins:6e356346ab3eb324",
+      "theme": "ruins",
+      "signature": "{\"structure\":[[\"blocks\",\"border\"],[\"ribs\",\"border\"]],\"theme\":\"ruins\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "circuitry:8e77cade735e8860",
+      "theme": "circuitry",
+      "signature": "{\"structure\":[[\"orthogonal\",\"center\"]],\"theme\":\"circuitry\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "circuitry:a2b3a81c7ad17f9c",
+      "theme": "circuitry",
+      "signature": "{\"structure\":[[\"orthogonal\",\"offset\"]],\"theme\":\"circuitry\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "circuitry:9495e7f89b85afe6",
+      "theme": "circuitry",
+      "signature": "{\"structure\":[[\"orthogonal\",\"split\"]],\"theme\":\"circuitry\"}",
+      "split": "dev"
+    },
+    {
+      "group_id": "circuitry:6447a9ef5ed3985f",
+      "theme": "circuitry",
+      "signature": "{\"structure\":[[\"orthogonal\",\"border\"]],\"theme\":\"circuitry\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "circuitry:f0b66deb7fa5f86c",
+      "theme": "circuitry",
+      "signature": "{\"structure\":[[\"orthogonal\",\"center\"],[\"blocks\",\"border\"]],\"theme\":\"circuitry\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "circuitry:3e89815ce4bf8507",
+      "theme": "circuitry",
+      "signature": "{\"structure\":[[\"orthogonal\",\"offset\"],[\"blocks\",\"border\"]],\"theme\":\"circuitry\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "circuitry:b08f0d5fe65d3ca8",
+      "theme": "circuitry",
+      "signature": "{\"structure\":[[\"orthogonal\",\"split\"],[\"blocks\",\"border\"]],\"theme\":\"circuitry\"}",
+      "split": "final"
+    },
+    {
+      "group_id": "circuitry:d757d3b2bc74e259",
+      "theme": "circuitry",
+      "signature": "{\"structure\":[[\"orthogonal\",\"border\"],[\"blocks\",\"border\"]],\"theme\":\"circuitry\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "ribs:b044f9a99d2eb61b",
+      "theme": "ribs",
+      "signature": "{\"structure\":[[\"ribs\",\"center\"]],\"theme\":\"ribs\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "ribs:4f2e94d7dfddf6a5",
+      "theme": "ribs",
+      "signature": "{\"structure\":[[\"ribs\",\"offset\"]],\"theme\":\"ribs\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "ribs:aa504159a2a1b6b1",
+      "theme": "ribs",
+      "signature": "{\"structure\":[[\"ribs\",\"split\"]],\"theme\":\"ribs\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "ribs:61df179379353561",
+      "theme": "ribs",
+      "signature": "{\"structure\":[[\"ribs\",\"border\"]],\"theme\":\"ribs\"}",
+      "split": "final"
+    },
+    {
+      "group_id": "ribs:60547f80a3c70bae",
+      "theme": "ribs",
+      "signature": "{\"structure\":[[\"ribs\",\"center\"],[\"bands\",\"border\"]],\"theme\":\"ribs\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "ribs:7d0e79aa2ca06321",
+      "theme": "ribs",
+      "signature": "{\"structure\":[[\"ribs\",\"offset\"],[\"bands\",\"border\"]],\"theme\":\"ribs\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "ribs:c26f2a84bc35210d",
+      "theme": "ribs",
+      "signature": "{\"structure\":[[\"ribs\",\"split\"],[\"bands\",\"border\"]],\"theme\":\"ribs\"}",
+      "split": "train"
+    },
+    {
+      "group_id": "ribs:cf98e3883e9fb071",
+      "theme": "ribs",
+      "signature": "{\"structure\":[[\"ribs\",\"border\"],[\"bands\",\"border\"]],\"theme\":\"ribs\"}",
+      "split": "dev"
+    }
+  ],
+  "records_sha256": "c7f5d05d5195dc43615f1824c41fbf17e97a086ce875cb8f67b4f2cd92390cfa",
+  "cases_sha256": "747b0cb15116c30bce8c7d95494709b0c7e5489afe86d3d45a0a04dc4c83f004",
+  "gallery_case_ids": [
+    "roots-v0-m0-s17",
+    "roots-v0-m0-s73",
+    "roots-v1-m0-s17",
+    "roots-v1-m0-s73",
+    "roots-v2-m0-s17",
+    "roots-v2-m0-s73",
+    "roots-v3-m0-s17",
+    "roots-v3-m0-s73",
+    "roots-v4-m0-s17",
+    "roots-v4-m0-s73",
+    "roots-v5-m0-s17",
+    "roots-v5-m0-s73",
+    "roots-v6-m0-s17",
+    "roots-v6-m0-s73",
+    "roots-v7-m0-s17",
+    "roots-v7-m0-s73",
+    "coral-v0-m0-s17",
+    "coral-v0-m0-s73",
+    "coral-v1-m0-s17",
+    "coral-v1-m0-s73",
+    "coral-v2-m0-s17",
+    "coral-v2-m0-s73",
+    "coral-v3-m0-s17",
+    "coral-v3-m0-s73",
+    "coral-v4-m0-s17",
+    "coral-v4-m0-s73",
+    "coral-v5-m0-s17",
+    "coral-v5-m0-s73",
+    "coral-v6-m0-s17",
+    "coral-v6-m0-s73",
+    "coral-v7-m0-s17",
+    "coral-v7-m0-s73",
+    "veins-v0-m0-s17",
+    "veins-v0-m0-s73",
+    "veins-v1-m0-s17",
+    "veins-v1-m0-s73",
+    "veins-v2-m0-s17",
+    "veins-v2-m0-s73",
+    "veins-v3-m0-s17",
+    "veins-v3-m0-s73",
+    "veins-v4-m0-s17",
+    "veins-v4-m0-s73",
+    "veins-v5-m0-s17",
+    "veins-v5-m0-s73",
+    "veins-v6-m0-s17",
+    "veins-v6-m0-s73",
+    "veins-v7-m0-s17",
+    "veins-v7-m0-s73",
+    "mycelium-v0-m0-s17",
+    "mycelium-v0-m0-s73",
+    "mycelium-v1-m0-s17",
+    "mycelium-v1-m0-s73",
+    "mycelium-v2-m0-s17",
+    "mycelium-v2-m0-s73",
+    "mycelium-v3-m0-s17",
+    "mycelium-v3-m0-s73",
+    "mycelium-v4-m0-s17",
+    "mycelium-v4-m0-s73",
+    "mycelium-v5-m0-s17",
+    "mycelium-v5-m0-s73",
+    "mycelium-v6-m0-s17",
+    "mycelium-v6-m0-s73",
+    "mycelium-v7-m0-s17",
+    "mycelium-v7-m0-s73",
+    "strata-v0-m0-s17",
+    "strata-v0-m0-s73",
+    "strata-v1-m0-s17",
+    "strata-v1-m0-s73",
+    "strata-v2-m0-s17",
+    "strata-v2-m0-s73",
+    "strata-v3-m0-s17",
+    "strata-v3-m0-s73",
+    "strata-v4-m0-s17",
+    "strata-v4-m0-s73",
+    "strata-v5-m0-s17",
+    "strata-v5-m0-s73",
+    "strata-v6-m0-s17",
+    "strata-v6-m0-s73",
+    "strata-v7-m0-s17",
+    "strata-v7-m0-s73",
+    "dunes-v0-m0-s17",
+    "dunes-v0-m0-s73",
+    "dunes-v1-m0-s17",
+    "dunes-v1-m0-s73",
+    "dunes-v2-m0-s17",
+    "dunes-v2-m0-s73",
+    "dunes-v3-m0-s17",
+    "dunes-v3-m0-s73",
+    "dunes-v4-m0-s17",
+    "dunes-v4-m0-s73",
+    "dunes-v5-m0-s17",
+    "dunes-v5-m0-s73",
+    "dunes-v6-m0-s17",
+    "dunes-v6-m0-s73",
+    "dunes-v7-m0-s17",
+    "dunes-v7-m0-s73",
+    "crystals-v0-m0-s17",
+    "crystals-v0-m0-s73",
+    "crystals-v1-m0-s17",
+    "crystals-v1-m0-s73",
+    "crystals-v2-m0-s17",
+    "crystals-v2-m0-s73",
+    "crystals-v3-m0-s17",
+    "crystals-v3-m0-s73",
+    "crystals-v4-m0-s17",
+    "crystals-v4-m0-s73",
+    "crystals-v5-m0-s17",
+    "crystals-v5-m0-s73",
+    "crystals-v6-m0-s17",
+    "crystals-v6-m0-s73",
+    "crystals-v7-m0-s17",
+    "crystals-v7-m0-s73",
+    "honeycomb-v0-m0-s17",
+    "honeycomb-v0-m0-s73",
+    "honeycomb-v1-m0-s17",
+    "honeycomb-v1-m0-s73",
+    "honeycomb-v2-m0-s17",
+    "honeycomb-v2-m0-s73",
+    "honeycomb-v3-m0-s17",
+    "honeycomb-v3-m0-s73",
+    "honeycomb-v4-m0-s17",
+    "honeycomb-v4-m0-s73",
+    "honeycomb-v5-m0-s17",
+    "honeycomb-v5-m0-s73",
+    "honeycomb-v6-m0-s17",
+    "honeycomb-v6-m0-s73",
+    "honeycomb-v7-m0-s17",
+    "honeycomb-v7-m0-s73",
+    "labyrinth-v0-m0-s17",
+    "labyrinth-v0-m0-s73",
+    "labyrinth-v1-m0-s17",
+    "labyrinth-v1-m0-s73",
+    "labyrinth-v2-m0-s17",
+    "labyrinth-v2-m0-s73",
+    "labyrinth-v3-m0-s17",
+    "labyrinth-v3-m0-s73",
+    "labyrinth-v4-m0-s17",
+    "labyrinth-v4-m0-s73",
+    "labyrinth-v5-m0-s17",
+    "labyrinth-v5-m0-s73",
+    "labyrinth-v6-m0-s17",
+    "labyrinth-v6-m0-s73",
+    "labyrinth-v7-m0-s17",
+    "labyrinth-v7-m0-s73",
+    "ruins-v0-m0-s17",
+    "ruins-v0-m0-s73",
+    "ruins-v1-m0-s17",
+    "ruins-v1-m0-s73",
+    "ruins-v2-m0-s17",
+    "ruins-v2-m0-s73",
+    "ruins-v3-m0-s17",
+    "ruins-v3-m0-s73",
+    "ruins-v4-m0-s17",
+    "ruins-v4-m0-s73",
+    "ruins-v5-m0-s17",
+    "ruins-v5-m0-s73",
+    "ruins-v6-m0-s17",
+    "ruins-v6-m0-s73",
+    "ruins-v7-m0-s17",
+    "ruins-v7-m0-s73",
+    "circuitry-v0-m0-s17",
+    "circuitry-v0-m0-s73",
+    "circuitry-v1-m0-s17",
+    "circuitry-v1-m0-s73",
+    "circuitry-v2-m0-s17",
+    "circuitry-v2-m0-s73",
+    "circuitry-v3-m0-s17",
+    "circuitry-v3-m0-s73",
+    "circuitry-v4-m0-s17",
+    "circuitry-v4-m0-s73",
+    "circuitry-v5-m0-s17",
+    "circuitry-v5-m0-s73",
+    "circuitry-v6-m0-s17",
+    "circuitry-v6-m0-s73",
+    "circuitry-v7-m0-s17",
+    "circuitry-v7-m0-s73",
+    "ribs-v0-m0-s17",
+    "ribs-v0-m0-s73",
+    "ribs-v1-m0-s17",
+    "ribs-v1-m0-s73",
+    "ribs-v2-m0-s17",
+    "ribs-v2-m0-s73",
+    "ribs-v3-m0-s17",
+    "ribs-v3-m0-s73",
+    "ribs-v4-m0-s17",
+    "ribs-v4-m0-s73",
+    "ribs-v5-m0-s17",
+    "ribs-v5-m0-s73",
+    "ribs-v6-m0-s17",
+    "ribs-v6-m0-s73",
+    "ribs-v7-m0-s17",
+    "ribs-v7-m0-s73"
+  ],
+  "pilot_case_ids": [
+    "roots-v0-m0-s17",
+    "roots-v0-m0-s73",
+    "roots-v0-m1-s138",
+    "roots-v4-m0-s17",
+    "roots-v4-m0-s73",
+    "roots-v4-m1-s138",
+    "coral-v0-m0-s17",
+    "coral-v0-m0-s73",
+    "coral-v0-m1-s138",
+    "coral-v4-m0-s17",
+    "coral-v4-m0-s73",
+    "coral-v4-m1-s138",
+    "strata-v0-m0-s17",
+    "strata-v0-m0-s73",
+    "strata-v0-m1-s138",
+    "strata-v4-m0-s17",
+    "strata-v4-m0-s73",
+    "strata-v4-m1-s138",
+    "labyrinth-v0-m0-s17",
+    "labyrinth-v0-m0-s73",
+    "labyrinth-v0-m1-s138",
+    "labyrinth-v4-m0-s17",
+    "labyrinth-v4-m0-s73",
+    "labyrinth-v4-m1-s138",
+    "veins-v0-m0-s17",
+    "mycelium-v0-m0-s17",
+    "dunes-v0-m0-s17",
+    "crystals-v0-m0-s17",
+    "honeycomb-v0-m0-s17",
+    "ruins-v0-m0-s17",
+    "circuitry-v0-m0-s17",
+    "ribs-v0-m0-s17"
+  ],
+  "split_claim": "Disjoint theme/motif/layout structural groups and exact programs; all compiler primitives shared. Seeds are replay variation, not additional independent templates.",
+  "positive_admission": "Only successful native receipts plus explicit visual-review admission create train/dev files. Final is sequestered from training and development."
+}

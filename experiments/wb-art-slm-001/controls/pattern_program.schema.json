@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cybersand:wb-art-slm-001:program:1",
+  "title": "CyberSand bounded pattern program version 1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "theme", "layers"],
+  "properties": {
+    "version": {"const": 1, "type": "integer"},
+    "theme": {"enum": ["roots", "coral", "veins", "mycelium", "strata", "dunes", "crystals", "honeycomb", "labyrinth", "ruins", "circuitry", "ribs"]},
+    "layers": {
+      "type": "array", "minItems": 1, "maxItems": 4,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["motif", "density", "scale", "width", "angle", "layout"],
+        "properties": {
+          "motif": {"enum": ["branch", "fan", "network", "threads", "bands", "ridges", "facets", "cells", "maze", "blocks", "orthogonal", "ribs"]},
+          "density": {"type": "number", "minimum": 0, "maximum": 1},
+          "scale": {"type": "number", "minimum": 0, "maximum": 1},
+          "width": {"type": "number", "minimum": 0, "maximum": 1},
+          "angle": {"type": "number", "minimum": -180, "maximum": 180},
+          "layout": {"enum": ["center", "offset", "split", "border"]}
+        }
+      }
+    }
+  }
+}

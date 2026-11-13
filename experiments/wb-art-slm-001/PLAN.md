@@ -2,9 +2,9 @@
 experiment: WB-ART-SLM-001
 title: CyberSand themed pattern controller
 date: 2026-11-13
-status: Planned
-implementation_status: No implementation or training run claimed by this plan
-evaluation_status: Proposed targets; no new measured results
+status: Current
+implementation_status: Bootstrap implementation underway; see README and BOOTSTRAP_REPORT for measured state
+evaluation_status: Proposed acceptance targets remain distinct from pinned Linux pilot results
 primary_repository: techrote/cybersand
 reference_repository: techrote/neurounner
 integration_branch: codex/wb-art-slm-001
@@ -16,7 +16,7 @@ integration_branch: codex/wb-art-slm-001
 
 Build a small local language model that turns a modest vocabulary into varied, recognizable CyberSand structures. The first useful experience is selecting an area, entering a word such as `roots`, `strata` or `labyrinth`, and receiving a randomized pattern that consistently belongs to that family. Modifiers such as `sparse`, `dense`, `open` and `twisted` should make predictable changes. Specific object drawing is outside the initial objective.
 
-Five hourly workers will develop the control contract, create executed training examples, prepare and run bounded fine-tuning, independently evaluate results, and integrate the work. They are development roles, not five simultaneous training jobs. This document is the reviewed implementation plan; every performance figure below is either an attributed historical observation or an explicitly proposed target.
+Five hourly workers will develop the control contract, create executed training examples, prepare and run bounded fine-tuning, independently evaluate results, and integrate the work. They are development roles, not five simultaneous training jobs. This document is the reviewed implementation plan. The owner subsequently requested the compiler, corpus, adapter and native gallery to be implemented before handing work to the schedules. The bootstrap report records measured results; targets below remain targets.
 
 Contents:
 
@@ -49,7 +49,7 @@ NeuroRunner main was inspected at `40543403f05de7ecacdca84ad7d651e5c5997cea`. It
 
 Borrow those methods without importing the experimental NCA architecture, custom tokenizers, population-scale training, or historical scientific gate machinery. The NCR-001 frozen lanes and their `train_authorized=false` state remain untouched. The older Scheduswarm dispatcher is not being restarted or reconfigured. This is a fresh CyberSand experiment with new source, data, model and evaluation identities. [N4]
 
-Proposed home: `experiments/wb-art-slm-001/` in `techrote/cybersand`. The initial integration branch contains the plan and coordination files. Production integration should be limited to the existing agent-art/local-model seam where a concrete capability is missing. NeuroRunner remains a read-only reference.
+Implementation home: `experiments/wb-art-slm-001/` in `techrote/cybersand`. The integration branch contains the plan, coordination files and bootstrap implementation. Production integration should be limited to the existing agent-art/local-model seam where a concrete capability is missing. NeuroRunner remains a read-only reference.
 
 The CyberSand dependency must be checked afresh. At 01:37 London time on 13 November, main is `63f8b1ba6559906fe85f3ad0269aa296e4141d67`, including both #562 and the newly merged #563. Agent-art #564 remains Draft at `6319ab1d94d85d01c9cdb44d973a92d224bfa9aa`; combined #565 is Draft at `88ba76f023e933b52d15f272263077e091bc9656`, containing #562 and that #564 head but predating #563. Its current qualification is still running, so this plan claims no complete qualification of that head. The plan branch starts from current main and must retain its newer capability consumer. Consume a compatible upstream combined successor when available; do not redo #565's integration, take ownership of its #563 join, or adopt unrelated camera work. An earlier pinned #565 runtime may support a separately identified pilot in its own worktree, without being represented as current-main qualification. Preserve shared manual/agent history. [C1][C2][C5]
 
@@ -121,7 +121,7 @@ Curriculum order: exact keywords and simple programs; modifiers and spatial cons
 
 ## Model and training
 
-Primary candidate: **LiquidAI/LFM3-1.7B**, a text model of approximately 1.73B parameters. Challenger: **LiquidAI/LFM2.5-350M** once the primary pipeline works, or as a documented switch if LFM3 encounters a reproducible compatibility or latency blocker. This is one bounded comparison, not an architecture sweep. Resolve and pin exact weight, tokenizer and chat-template revisions, check their licenses and training/runtime support, and record those identities before execution. Neither model is qualified for this task merely by appearing in this plan. [L1][L2]
+Initial executed candidate: **LiquidAI/LFM2.5-350M**, selected after this environment demonstrated usable CPU FP32 inference but no reachable GPU. **LiquidAI/LFM3-1.7B** remains the larger candidate for a separately measured accelerator run. The owner also requested **Sprocket** and similar tiny models: add root Instruct weights from **kandivault/sprocket-500m**, **HuggingFaceTB/SmolLM2-135M-Instruct** as the tiny reference, and an optional **SmolLM2-360M-Instruct** profile. Sprocket root Instruct and its separate Chat subfolder are distinct candidates. Pin each model/tokenizer/template and license; execute comparisons sequentially on the same corpus/compiler. Profiles are not measured results, and larger sweeps require a concrete observed question. [L1][L2][S1][M1]
 
 Use concise JSON supervision and the identical prompt/template path at training and inference. LFM3 thinking behavior must be tested rather than assumed disabled: request `enable_thinking=false`, constrain decoding to the admitted JSON grammar where supported, impose output-token and wall-time limits, and reject reasoning-only, truncated or mixed reasoning/program responses. Record raw unconstrained behavior separately. Do not use a cleanup parser to conceal that the model failed its output contract.
 
@@ -131,9 +131,9 @@ Proposed local recipe: sequence length 1,024, batch size one, accumulation eight
 
 The first physical smoke can begin on a small executed four-theme pilot before the twelve-theme corpus is complete: at most 25 optimizer steps, followed by a fresh-process checkpoint restore and continuation. Save adapter weights, optimizer/scaler state, scheduler state if used, Python/Torch/CUDA RNG state, sampler/sample cursor, global step, corpus manifest and complete environment identities. Compare interrupted versus uninterrupted continuation within documented numeric tolerances. Confirm finite loss, meaningful adapter gradients, unchanged frozen base weights, and useful generated output after reload. A declining loss alone is not an acceptance result.
 
-Allow one admitted training process on one reachable authorized accelerator. Its lease covers GPU-heavy evaluation as well, with a heartbeat and recorded job/process identity. The first real candidate has a maximum 60-minute training-process budget with time reserved for a clean checkpoint; checkpoints and deadlines prevent an hourly wake-up from restarting it. Extend only after measured throughput, memory and development results justify a recorded next experiment. Avoid an unbounded hyperparameter search. No paid cloud services or hosted GitHub Actions training are authorized by this plan; Actions are for focused build/test work under the repository's existing policy.
+Allow one admitted training process on one reachable authorized local compute resource, CPU or accelerator. Its lease covers GPU-heavy evaluation as well, with a heartbeat and recorded job/process identity. The first real candidate has a maximum 60-minute training-process budget with time reserved for a clean checkpoint; checkpoints and deadlines prevent an hourly wake-up from restarting it. Extend only after measured throughput, memory and development results justify a recorded next experiment. Avoid an unbounded hyperparameter search. No paid cloud services or hosted GitHub Actions training are authorized by this plan; Actions are for focused build/test work under the repository's existing policy.
 
-No reachable GPU has been established in the current task environment. The trainer's first deliverable, if that remains true, is an executable Windows/WSL2 handoff with dependency pins, exact input manifests, resume support and measured preflight checks. State the missing connection once and continue useful offline work. Do not invent a successful CPU fallback or imply that scheduling makes the Titan remotely accessible. Any Godot launcher must accept an explicit path; the user's confirmed console default is `C:\Godot_v4.7-stable_win64_console.exe`. Publish concrete commands only after their scripts exist and are verified.
+No reachable GPU was established in the bootstrap environment. The owner’s implementation request was followed by an actual CPU preflight: LFM2.5-350M loaded and generated successfully, enabling a bounded FP32 LoRA run. This measured CPU path supersedes the initial GPU-only handoff assumption. Keep a Windows/WSL2 accelerator handoff with exact dependency/input identities and resume support; do not imply the user's Titan is remotely connected. Record measured CPU training separately from any future GPU run. Any Godot launcher must accept an explicit path; the user's confirmed console default is `C:\Godot_v4.7-stable_win64_console.exe`. Publish concrete commands only after their scripts exist and are verified.
 
 Deployment starts with the validated training/runtime format. GGUF conversion, adapter merging or quantization creates a new candidate identity requiring the same relevant tool, language and visual checks. Do not assume quality parity after quantization.
 
@@ -233,3 +233,6 @@ The resulting plan gives every worker a substantive output, keeps history and na
 - [L3 — Official LFM3 supervised fine-tuning cookbook](https://github.com/Liquid4All/cookbook/blob/main/finetuning/notebooks/lfm3_sft_with_trl.ipynb)
 
 Repository status and model/runtime compatibility are time-sensitive. Workers must verify current sources and record exact identities rather than treating this dated review as a permanent runtime pin.
+
+- [S1 — Official Sprocket-500M model card and separate Instruct/Chat exports](https://huggingface.co/kandivault/sprocket-500m)
+- [M1 — Official SmolLM2-135M-Instruct model card](https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct)

@@ -1,0 +1,9 @@
+{
+  "path": "/workspace/scratch/7d765b879ceb/native-qualification-evidence.zip",
+  "bytes": 9604784,
+  "sha256": "2381736839bfca8ad6b4563a1c77698140438ef39ee8f0a6529f23cae4f1f62b",
+  "evidence_files": 3675,
+  "contains_runtime_binary": false,
+  "companion_runtime_archive": "native-artifact.zip",
+  "contains_exact_executed_harnesses": true
+}

@@ -1,0 +1,29 @@
+{
+  "experiment": "WB-ART-SLM-001",
+  "status": "bootstrap-in-progress",
+  "updated_on": "2026-11-13",
+  "owner": "current user-authorized bootstrap session",
+  "branch": "codex/wb-art-slm-001",
+  "native_qualification": "Pinned Linux headless native-material pilot only",
+  "native_source": "90719c72b9fcf90593fb7878354051ad601b47fd",
+  "native_sha256": "3a8b0b2cd04f09054426842f978e2421aad4016aae03dec91ed527ff50b953cd",
+  "compiler_sha256": "a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb",
+  "corpus_manifest_sha256": "cace38cc2541947f1278d3af8c951c15c5a16eec002ba7262805cab8975d692f",
+  "native_cases_passed": 864,
+  "teacher_gallery_images": 192,
+  "training": {
+    "state": "running",
+    "model": "LiquidAI/LFM2.5-350M",
+    "revision": "9921cd4d82c0e3986887aa4b376f9446729ef8a3",
+    "train_examples": 1152,
+    "dev_examples": 192,
+    "final_examples": 192,
+    "do_not_launch_duplicate": true
+  },
+  "schedules": {
+    "state": "five experiment workers temporarily paused during bootstrap",
+    "restore_policy": "Restore only bootstrap-owned pauses; preserve any later user pauses and all unrelated tasks"
+  },
+  "production_promotion": "HOLD; combined Draft only, no Ready or merge",
+  "next_checkpoint": "Completed adapter, verified resume, strict development/keyword comparison, actual model-output native replays, durable artifacts and role-specific handoffs"
+}
