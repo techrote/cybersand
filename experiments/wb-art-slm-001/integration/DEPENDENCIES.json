@@ -1,20 +1,20 @@
 {
   "experiment": "WB-ART-SLM-001",
   "date": "2026-11-13",
-  "status": "Sixth role intake: 15 exact-source paths, formerly RED Controls gate now green, archived TRAIN/DEV and blind AI-scoring guards in exact-head CI; native/Windows/model-accuracy HOLD",
+  "status": "Eighth critical-path intake: Training import time fix; Corpus v5 indices and frozen Evaluation gallery60 imported; real archived TRAIN v5 index verification PASS; 16/17 Training CI with one invalid-timing suspect under owner repair; new model/native gallery HOLD",
   "source": {
     "main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
     "main_preserves": [
       "#562",
       "#563"
     ],
-    "upstream_workbench_564": "6319ab1d94d85d01c9cdb44d973a92d224bfa9aa",
-    "upstream_combined_565": "d66499ec3409fb657875fca7dbd0f234cf28ca49",
-    "upstream_565_status": "Draft/HOLD at d66499ec3409fb657875fca7dbd0f234cf28ca49: full source-matched Linux passed, request-4 Windows MATERIAL_LAB_UI graphical Workbench comparison deadline failed; no qualified successor/Windows package (workflow 43358127824).",
+    "upstream_workbench_564": "00017c65da096c61585f026476ae1e62e1aea256",
+    "upstream_combined_565": "fd1d66b18ac80f564f7078b8a0a902297895672f",
+    "upstream_565_status": "Draft/HOLD at fd1d66b1. Run 43409155368 SUCCESS was staged publisher validation only; actual Linux, Windows, package and publication jobs SKIPPED. No source-qualified released Windows runtime.",
     "historical_linux_pilot": "90719c72b9fcf90593fb7878354051ad601b47fd",
     "pilot_is_not_current_or_windows": true,
     "role_branches_seed": "01f2cfcea66839066431b6d241f186be00cecf27",
-    "upstream_565_workflow_url": "https://github.com/techrote/cybersand/actions/runs/43358127824",
+    "upstream_565_workflow_url": "https://github.com/techrote/cybersand/actions/runs/43409155368",
     "upstream_565_windows_failure_artifact": "14008457869; original 26-file Windows job artifact; not a qualified Windows runtime"
   },
   "contracts": {
@@ -71,12 +71,12 @@
     "receipt_binding": "Exact prompt, host seed, pinned adapter hash, LFM model identity, native_execution=false, compiler hash, focus size, material, EOS, Art operation hash and allowed tool/material",
     "receipt_hardening_commit": "d2f6a3266e6f522a6a5f8e8a3d9afc3cf315efab",
     "adverse_regressions_commit": "ddbc2b9b3ba8e4ab0423c50b21dd7fb85333e6bb",
-    "exact_head_ci": "578324faefdad3c3fca4c78ce936d5d11daac9a0",
+    "exact_head_ci": "cf9fd267ca3bf646443e2264db18f75fef132cc6",
     "offline_ci_workflow": ".github/workflows/wb-art-slm-001-smoke.yml",
     "offline_ci_urls": [
-      "https://github.com/techrote/cybersand/actions/runs/43391302345"
+      "https://github.com/techrote/cybersand/actions/runs/43414042136"
     ],
-    "offline_ci_scope": "Historical 78 PASS is from prior head; new source has Controls diagnostic-only test failure and independently qualified additional suites. Do not claim current all-pass.",
+    "offline_ci_scope": "Exact head cf9fd267 workflow 43414042136: Windows synthetic Job tests PASS, independent role suite PASS; offline-smoke FAIL in Training-owned soft-stop descendant synthetic, 16/17 PASS after missing time import correction. Child sleeps 1.3s but soft Stop starts ~2s, so sentinel may predate Stop; owner must fix test synchronization and check against defective process fence.",
     "stop_cancellation": "POSIX: after TERM, send KILL to owned process group EVEN when direct parent already reaped; actual bridge module + independent synthetic same-group descendant test PASS on hosted Ubuntu at 578324fa. No real model, Windows process-tree, native epoch/Stop or save/reopen acceptance.",
     "stop_cancellation_commit": "dc97b11cb261d9cbceebdf5d4c6f1d616af60313",
     "stop_tests_commit": "0fc6f9cedeb5b147fe86cb61446354f38db16d8a",
@@ -101,33 +101,33 @@
   "workers": {
     "integration": {
       "branch": "codex/wb-art-slm-001",
-      "next": "Controls source-owner fixes its diagnostic substring and full CI goes green; then compatible #565 runtime + authentic adapter-to-native Windows/Linux/Stop/Undo/save acceptance. Do not adopt pilot."
+      "next": "Consume actual trained v5 candidate + Evaluation's paired new native gallery first; source-compatible Windows/Workbench acceptance separate."
     },
     "controls": {
       "branch": "codex/wb-art-slm-controls",
-      "observed_head": "ed09d214b971e38aa78992b0aef0530a2aade349",
-      "next": "Repair 'readback' vs 'stored native crop disagrees with receipt chain' assertion without weakening refusal, independently qualify and hand exact role head.",
+      "observed_head": "29f040f5edb9435b277c18c5cc80a5979849c2af",
+      "next": "Direct 32-case pinned native v1/v1.1 coral geometry + visual before/after; avoid noncritical receipt audit churn.",
       "imported_commit": "ad77b9fbaf02a0c81414ba2e2e7f5732b61a5a7d",
       "continuation_imported_commit": "6d3cab90ed5849adece993b3f1c2e6c92a36e2ff"
     },
     "corpus": {
       "branch": "codex/wb-art-slm-corpus",
-      "observed_head": "6bd1b5667c4ffae05b0219408d34f616930426d8",
-      "next": "Verify original admitted TRAIN positions of v4 coral m0 overlay with recovered archive and relay to Training as opt-in, not final-set feedback.",
+      "observed_head": "82b6785f20c74d3236ab56a0a238fe390297df0d",
+      "next": "Training consumes imported v5_training_indices.py; no v6 unless new model output demonstrates specific data failure.",
       "imported_commit": "36d63deb0eb13174e670ec0c46381a1a50390655",
       "continuation_imported_commit": "d15bf4c76cda06a773f4ab25a3cba5ef336634d2"
     },
     "training": {
       "branch": "codex/wb-art-slm-training",
-      "observed_head": "e36fbd72b22ab9cf76ad2a03f8f3d827a28872ff",
-      "next": "Inspect private run-parent/lease and pinned model/corpus before any one authorized bounded new candidate; preserve untouched final.",
+      "observed_head": "6109b9acba91e59a88671069ea8d848d23cb73e9",
+      "next": "Repair soft-stop synthetic sentinel to occur after cancellation, verify negative control; wire v5, inspect private lease and pin base; run 400-step new candidate, score DEV24+words12.",
       "imported_commit": "f98b6c11f83bfdc3fd9e9cdc3bbf3f5fd389bdd0",
       "continuation_imported_commit": "1fcff712cae69ab0f8edfa0019b69063a43e243c"
     },
     "evaluation": {
       "branch": "codex/wb-art-slm-evaluation",
-      "observed_head": "9c26275f70262907e143374cbb468930cf74eb32",
-      "next": "Independently review post-fix host-scope/preflight/Windows-child-tree caveats; then native visual and stopped-prefix testing when upstream qualifies.",
+      "observed_head": "5e454aa36ab2d87f312811b11f21c3763f020a8a",
+      "next": "Use imported immutable gallery60 cohort for genuine new adapter raw->native paired gallery, blind recognition and visual preference.",
       "imported_commit": "0bdc089793c2c69a0680dfd0c8278bca45f6ac6f",
       "continuation_imported_commit": "4bd334afcdc8ef06ce87feb37353b6d3e49bcc6a"
     }
@@ -463,6 +463,31 @@
       "checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-1020.md",
       "next_integration_action": "Consume tested Training import fix, rerun all source-bound offline gates, then source-compatible model -> native Art and Windows acceptance",
       "model_accuracy_gain": false,
+      "production": "Draft/HOLD"
+    },
+    "eighth_2026_11_13_1110": {
+      "checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-1110.md",
+      "imported_exact_role_blobs": {
+        "training_time_test_fix": {
+          "head": "6109b9acba91e59a88671069ea8d848d23cb73e9",
+          "commit": "767b754ccb7df3aafc2b63383e9fa1eb106c4c7d",
+          "blob": "c9f88caf568e70463f7b097b83452ff2bc18fe34"
+        },
+        "corpus_v5_indices": {
+          "head": "82b6785f20c74d3236ab56a0a238fe390297df0d",
+          "commit": "849098454384322ec4001b3f042905c5245e155c",
+          "blob": "9676c207d16f3ff1e0e8731b9b3f99adacd8c300"
+        },
+        "evaluation_frozen_gallery60": {
+          "head": "5e454aa36ab2d87f312811b11f21c3763f020a8a",
+          "commit": "cf9fd267ca3bf646443e2264db18f75fef132cc6",
+          "blob": "0d15d6b51387f01ca4a981c1a33896cfc531ff63"
+        }
+      },
+      "original_archive_direct_preflight": "ZIP 2311486 bytes SHA 2d2de250...; train.jsonl SHA 972826e1..., 1152 records; v5 first 400 IDs digest 74e7cf04..., 376 native traces/72 structural groups; exact 3 literal per theme, 33-34 theme exposures; TRAIN only, no FINAL.",
+      "CI": "43414042136 at cf9fd267 failure: Windows synthetic PASS and independent PASS, Training 16/17; soft-stop synthetic marker can be written BEFORE delayed Stop and needs correction/true negative control.",
+      "new_adapter_trained": false,
+      "new_native_images": 0,
       "production": "Draft/HOLD"
     }
   }
