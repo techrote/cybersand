@@ -204,3 +204,56 @@ mischaracterizing it as a signature.
 **Training branch pre-final-checkpoint head:** `06d61926d28615ab63725c683e8db1dfb8c1a2fc`.
 Only Training files changed. No heavyweight job was launched, and the
 combined owner-facing PR remains Draft/HOLD without modification.
+
+
+---
+
+## Continuation: native model-prediction export, immutable aliases and archived replay audit
+
+**Observed source before work:** main `63f8b1ba6559906fe85f3ad0269aa296e4141d67`;
+Integration `codex/wb-art-slm-001` `5b32671cd283fdb8159f4cb67267fd65742fc6ef`
+(one Draft #567, HOLD); Training `c594d154b141ba5c450199311c4a790402eb7c02`.
+The #564/#565 owner branches remained independently Draft at their recorded
+heads `6319ab1d` / `d66499ec`; no source or qualification was imported.
+
+**Owned implementation:** `export_native_cases.py` now produces bounded,
+unique safe native replay case IDs (<=38 chars), preserving readable legacy IDs
+where possible and using deterministic SHA-256 aliases otherwise. It publishes
+an exact `case_id_aliases` mapping to each unmodified original prediction ID,
+full candidate ID and seed. Duplicate source IDs or host seeds are rejected;
+each request's full two-seed compile succeeds or it is entirely excluded.
+Exporter requires explicit raw first-pass acceptance, JSON/program validity
+and EOS; it never repairs completions or writes over existing fixtures.
+Request/case denominators and excluded raw IDs are explicit.
+
+**Evidence:** 9/9 Python model-free tests passed locally; exact test and
+exporter Git blobs `6e03d5a0cf23771585dd990c1d989f466e3352dd` /
+`a61070c1953c4931c20d8c69f86aad53c4b734e6`.
+Recovered the recorded saved native/model evidence ZIP and verified
+SHA-256 `d2f8b16f081b7c371afd2eadf1468bc6941cb2a7a83ee349a11d667257f9cfa9`.
+Its nested model-evidence ZIP is
+`48c6b8d536c74de3191f39564c0e304cfa4216d022d09ff035586ccd2b997a4f`.
+Using the archived compiled reports as fixed lookup receipts, the original
+24 dev + 12 keyword *actual model predictions* yielded 22/24 + 12/12
+strict eligible requests, **68 distinct <=38-char replay IDs, 22 aliased,
+68/68 archived operations SHA-256 and exact raw completion matches**.
+The two coral numerical failures remain in the 36-request denominator.
+Audit custody, hashes and limits: `native_export_frozen_audit.json`.
+
+**Qualification limits:** Model-free unit tests and an archived-output lookup,
+not actual fresh compiler execution or native World replay. No new LoRA steps,
+base-model inference, accelerator, current-main/Windows runtime or human blind
+image judgment were executed. Frozen 400-step model metrics and 25→26 resume
+proof remain unchanged. Only Training-owned paths were changed; no combined
+PR update, production default or other role's files were touched.
+
+**Handoff:** Integration can import the four training-owned files
+(`export_native_cases.py`, `test_export_native_cases.py`,
+`native_export_frozen_audit.json`, `README.md`) plus this checkpoint
+by exact blob identity into the existing Draft #567. Model-free CI should
+execute `test_export_native_cases.py` alongside the combined 20 supervised
+train/eval methods. Independently rerun the emitted 68-case fixture through
+a compatible qualified current-source native Workbench before claiming new
+engine acceptance. A fresh balanced-replay model is still blocked on an
+authorized local pinned model/runtime/role lease; do not restart the frozen
+step-400 candidate or score archived replay as fresh model quality.
