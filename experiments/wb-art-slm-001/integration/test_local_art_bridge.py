@@ -54,12 +54,30 @@ class ContractTests(unittest.TestCase):
             src = folder / "art_batch.json"
             src.write_text(json.dumps(ops))
             digest = hashlib.sha256(src.read_bytes()).hexdigest()
-            receipt = {"accepted": True, "eos_emitted": True, "width": 96, "height": 96,
+            receipt = {"accepted": True, "eos_emitted": True, "prompt": "roots",
+                       "seed": 73, "adapter_sha256": "adapter",
+                       "model_id": "LiquidAI/LFM2.5-350M", "native_execution": False,
+                       "width": 96, "height": 96,
                        "material": 58, "compiler_sha256": "compiler", "art_batch_sha256": digest}
             (folder / "receipt.json").write_text(json.dumps(receipt))
             req = parse_workbench_request(packet(), MODEL_ALIAS)
             content, _ = checked_art_result(folder, req, "compiler")
             self.assertEqual(json.loads(content), ops)
+            full_content, _ = checked_art_result(folder, req, "compiler",
+                                                  expected_seed=73, expected_adapter_sha256="adapter")
+            self.assertEqual(json.loads(full_content), ops)
+            for key, forged in [("prompt", "different prompt"), ("seed", 74),
+                                ("adapter_sha256", "other"), ("model_id", "other"),
+                                ("native_execution", True)]:
+                with self.subTest(forged_field=key):
+                    valid = receipt[key]
+                    receipt[key] = forged
+                    (folder / "receipt.json").write_text(json.dumps(receipt))
+                    with self.assertRaises(BridgeRefusal):
+                        checked_art_result(folder, req, "compiler",
+                                           expected_seed=73, expected_adapter_sha256="adapter")
+                    receipt[key] = valid
+                    (folder / "receipt.json").write_text(json.dumps(receipt))
             with self.assertRaises(BridgeRefusal):
                 checked_art_result(folder, dict(req, enabled=frozenset({"disc"})), "compiler")
             receipt["eos_emitted"] = False
