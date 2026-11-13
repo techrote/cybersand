@@ -401,3 +401,46 @@ process-group probe passed both cases; **the new exact-source regression suite
 has not yet run on this branch**. Training now defines 17 synthetic test methods
 and Evaluation 14 (31 combined). Do not label those 31 methods PASS solely from
 publication. The pinned step-400 adapter and all raw model metrics are unchanged.
+
+
+---
+
+## V5 failure-contrast candidate (13 November 2026)
+
+The separate candidate `failure-contrast-v5` now consumes the frozen Corpus
+`failure_contrast_replay_v5.json` **by original admitted TRAIN row index**.
+The caller must provide its absolute path with `--v5-manifest`; an absent,
+changed or non-TRAIN manifest fails before optimizer work. The exact 400 indices
+are pinned by index and selected-ID SHA-256; 376 native trace IDs, 72 structural
+groups and 3 literal anchors per theme are checked. The original
+`shuffled-v1` and `keyword-replay-v1` policies remain unchanged.
+
+The local Windows owner-CPU launcher is
+[`run_v5_windows.ps1`](run_v5_windows.ps1), to be run from a checkout of the
+combined #567 branch containing Corpus's separately owned v5 manifest. Example:
+
+```powershell
+& .\run_v5_windows.ps1 `
+  -CorpusZip "C:\Downloads\wb_art_slm_001_executed_corpus.zip" `
+  -Python "C:\wb-art-slm-private\venv\Scripts\python.exe" `
+  -DownloadPinnedBase
+```
+
+The launcher checks the immutable corpus ZIP and TRAIN SHA-256, restores
+private archive contents, optionally downloads the officially pinned 350M base,
+and calls the existing durable-lease `job_guard.py` for ONE fresh 400-step
+candidate. It refuses an existing output; for a genuine resume specify
+`-Resume` with a full checkpoint and a NEW `-CandidateName`. Do not
+automatically repeat partial runs or delete an unfinished lease.
+
+**Execution status:** The original saved corpus was independently verified
+against the real v5 indices in Integration's private scratch; the base-model
+snapshot, Transformers/PEFT environment and true lease are not reachable from
+the current Integration/Training tool runtime. Consequently **no new LoRA
+optimizer step, adapted prediction or new native image is claimed**. This
+script has not been run on the owner's Windows PC and its PowerShell execution
+is not yet qualified. Exact-source combined offline CI must qualify the
+modified Trainer/Curriculum/Job Guard after Integration imports the Training
+owner blobs. Once the adapter exists, compare unchanged 24 DEVELOPMENT and
+12 literal responses against the frozen step400 baseline, then hand the raw
+predictions to Evaluation's frozen 60-prompt native gallery.
