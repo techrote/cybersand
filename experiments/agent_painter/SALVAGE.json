@@ -1,0 +1,172 @@
+{
+  "schema": "agent-painter-salvage-v1",
+  "accepted_base": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742",
+  "historical_pr": "https://github.com/techrote/cybersand/pull/567",
+  "historical_preservation": "Read-only donor. No cherry-pick/merge of obsolete engine source, no mutation or relabeling of old model/compiler/corpus/splits/evidence.",
+  "historical_archive_recovered": {
+    "filename": "wb_art_slm_001_executed_corpus.zip",
+    "bytes": 2311486,
+    "sha256": "2d2de250731eeea825339e89f752ab8ebc65f3a929daa2c692120d985566948a",
+    "zip_integrity": "passed",
+    "rows_reused": 0,
+    "role": "verified preserved historical reference only; new hosted training consumes only new native-admitted TRAIN"
+  },
+  "historical_model": {
+    "model_id": "LiquidAI/LFM2.5-350M",
+    "revision": "9921cd4d82c0e3986887aa4b376f9446729ef8a3",
+    "step": 400,
+    "adapter_sha256": "02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2",
+    "compiler_v1_sha256": "a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb",
+    "state": "historical unchanged; not a new painter lane"
+  },
+  "components": [
+    {
+      "repository": "techrote/cybersand",
+      "source_revision": "bac120981fdd9aecaab0dc8368c421fa390cc269",
+      "source_path": "experiments/wb-art-slm-001/controls/pattern_compiler.py",
+      "source_sha256": "a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb",
+      "destinations": [
+        "experiments/agent_painter/compiler.py",
+        "experiments/agent_painter/program.schema.json"
+      ],
+      "adaptation": "Adapt strict JSON/type refusal, canonical program and operation hashes, deterministic host seed and bounded expansion; new compositional panels, explicit pipe graphs and side-elevation structures replace the old twelve motifs."
+    },
+    {
+      "repository": "techrote/cybersand",
+      "source_revision": "bac120981fdd9aecaab0dc8368c421fa390cc269",
+      "source_path": "experiments/wb-art-slm-001/corpus/build_corpus.py",
+      "source_sha256": "9f8acdc731edf8288ead6df7efae7202eace9b1da5ab1d568fa709131309ec0a",
+      "destinations": [
+        "experiments/agent_painter/corpus.py",
+        "experiments/agent_painter/recipes.py"
+      ],
+      "adaptation": "Adapt proposal/admission separation and split custody; entirely new semantic recipes and IDs, with no old rows or labels imported."
+    },
+    {
+      "repository": "techrote/cybersand",
+      "source_revision": "bac120981fdd9aecaab0dc8368c421fa390cc269",
+      "source_path": "experiments/wb-art-slm-001/evaluation/run_native_replay.py",
+      "source_sha256": "b601e50ab7c1db5b63bc2006198f2a14b3688441165aa0becd7ca0513ba5a124",
+      "destinations": [
+        "experiments/agent_painter/native/run.py",
+        "experiments/agent_painter/native/runtime.py"
+      ],
+      "adaptation": "Adapt subprocess deadlines and source/runtime custody, replacing historical runtime pin with source-build/current Workbench verification."
+    },
+    {
+      "repository": "techrote/cybersand",
+      "source_revision": "bac120981fdd9aecaab0dc8368c421fa390cc269",
+      "source_path": "experiments/wb-art-slm-001/evaluation/native_replay.gd",
+      "source_sha256": "50b6ebe0ce0d9425415bba3d2ab9d6a70c5c454344591c35abc1f7f1f27f3c9c",
+      "destinations": [
+        "godot/tests/run_agent_painter_foundation.gd"
+      ],
+      "adaptation": "Adapt mounted Art execution and original material PNG capture; use current shared manual/agent history, native stored-material acknowledgements and current persistence APIs."
+    },
+    {
+      "repository": "techrote/cybersand",
+      "source_revision": "bac120981fdd9aecaab0dc8368c421fa390cc269",
+      "source_path": "experiments/wb-art-slm-001/evaluation/verify_native_replay.py",
+      "source_sha256": "565f0237cd781812dda0d2f8dc086c7164cc7d0e4b66f7a3167281669ea25900",
+      "destinations": [
+        "experiments/agent_painter/native/verify.py",
+        "experiments/agent_painter/tests/test_native_evidence.py"
+      ],
+      "adaptation": "Adapt independent receipt-prefix and PNG/readback verification; add exact new-program recompilation and family topology checks."
+    },
+    {
+      "repository": "techrote/cybersand",
+      "source_revision": "bac120981fdd9aecaab0dc8368c421fa390cc269",
+      "source_path": "experiments/wb-art-slm-001/training/train_lora.py",
+      "source_sha256": "bebc81fd4db46f5d99ecdae18ac73b6180ca24e3caba5bc54a242152b7c76d36",
+      "destinations": [
+        "experiments/agent_painter/training/train.py",
+        "experiments/agent_painter/training/common.py"
+      ],
+      "adaptation": "Adapt completion-only labels, supervised EOS, frozen-base fingerprint, atomic full-state checkpoints and independent readback; implement new Smol native-admitted TRAIN proof, not historical LFM continuation."
+    },
+    {
+      "repository": "techrote/cybersand",
+      "source_revision": "bac120981fdd9aecaab0dc8368c421fa390cc269",
+      "source_path": "experiments/wb-art-slm-001/training/verify_resume.py",
+      "source_sha256": "b8e660e3dcec409e831a4b27c91037f7a9a3e9ecd7181ad1db40fb4b831446b3",
+      "destinations": [
+        "experiments/agent_painter/training/compare_resume.py"
+      ],
+      "adaptation": "Adapt full adapter/optimizer/scheduler/RNG/cursor comparison; explicit FP32 tolerances and bitwise report for separate hosted CPUs."
+    },
+    {
+      "repository": "techrote/cybersand",
+      "source_revision": "bac120981fdd9aecaab0dc8368c421fa390cc269",
+      "source_path": "experiments/wb-art-slm-001/training/download_model.py",
+      "source_sha256": "7422b1ca1649e6f646335d4b1e8df4b4596d79fafb3d005c68e78226dfc8937c",
+      "destinations": [
+        "experiments/agent_painter/training/download_model.py",
+        "experiments/agent_painter/training/model_profiles.json"
+      ],
+      "adaptation": "Adapt pinned public snapshots and byte receipts; safetensors-only, no remote code, model-specific fail-closed profiles."
+    },
+    {
+      "repository": "techrote/cybersand",
+      "source_revision": "bac120981fdd9aecaab0dc8368c421fa390cc269",
+      "source_path": "experiments/wb-art-slm-001/training/infer.py",
+      "source_sha256": "6672536f01cebda66b7014071dd1c7e0a404a4595cca6eca358288a96d65f53d",
+      "destinations": [
+        "experiments/agent_painter/training/infer.py"
+      ],
+      "adaptation": "Adapt raw first-pass JSON/EOS and model/compiler/context receipt chain; new schema v2 independently compiled and no neural fallback."
+    },
+    {
+      "repository": "techrote/cybersand",
+      "source_revision": "bac120981fdd9aecaab0dc8368c421fa390cc269",
+      "source_path": "experiments/wb-art-slm-001/training/requirements.lock",
+      "source_sha256": "7ad33dd66bda847f76844699abdde1397d7a9d254bbb28a76e2843512d39cf12",
+      "destinations": [
+        "experiments/agent_painter/training/requirements.lock"
+      ],
+      "adaptation": "Retain the donor exact CPU environment package versions for the hosted proof; each run preserves resolved installed versions."
+    },
+    {
+      "repository": "techrote/cybersand",
+      "source_revision": "bac120981fdd9aecaab0dc8368c421fa390cc269",
+      "source_path": "experiments/wb-art-slm-001/gallery/build_gallery.py",
+      "source_sha256": "2cef061dc3cd19dadc694bf36f0377c4d01f88d6746b838e204cd24410d48d3f",
+      "destinations": [
+        "experiments/agent_painter/gallery.py"
+      ],
+      "adaptation": "Adapt original-byte embedding and provenance display; 24 new TRAIN/DEVELOPMENT native images side by side, FINAL excluded."
+    },
+    {
+      "repository": "techrote/cybersand",
+      "source_revision": "bac120981fdd9aecaab0dc8368c421fa390cc269",
+      "source_path": "experiments/wb-art-slm-001/integration/local_art_bridge.py",
+      "source_sha256": "01d85faababebf8393fe063c26ae8a89ef604b03ae665db628bc9f348b3457ed",
+      "destinations": [
+        "experiments/agent_painter/bridge.py",
+        "experiments/agent_painter/process.py"
+      ],
+      "adaptation": "Reuse captured-host-last-field parsing and signal-resistant descendant Stop correction; new schema/raw recompile, bounded loopback, Windows spawning refused before unsupported process ownership."
+    },
+    {
+      "repository": "techrote/neurounner",
+      "source_revision": "40543403f05de7ecacdca84ad7d651e5c5997cea",
+      "source_path": "scripts/train_001.py",
+      "source_sha256": "b4632352e43972ecb18dc1efbc5946377fc8073ee3baafa0dc97abfe7c3abe6d",
+      "destinations": [
+        "experiments/agent_painter/training/train.py"
+      ],
+      "adaptation": "Adapt proven hosted CPU Smol LoRA, completion framing and full-state resume pattern with new admitted data and identities."
+    },
+    {
+      "repository": "techrote/neurounner",
+      "source_revision": "40543403f05de7ecacdca84ad7d651e5c5997cea",
+      "source_path": ".github/workflows/train-001.yml",
+      "source_sha256": "462019e1a5b8203ff5f6c41d3df63ed630a1d749837064f403a47abc15e540a0",
+      "destinations": [
+        ".github/workflows/agent-painter-train.yml",
+        ".github/workflows/agent-painter-qualification.yml"
+      ],
+      "adaptation": "Adapt independent GitHub-hosted runner provisioning, public pinned model download, artifact handoff and fresh-VM checkpoint continuation; explicit small request, not scheduled/full training."
+    }
+  ]
+}

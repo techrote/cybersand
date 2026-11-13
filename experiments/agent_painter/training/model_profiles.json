@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "smol": {
+      "model_id": "HuggingFaceTB/SmolLM2-135M-Instruct",
+      "revision": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
+      "subfolder": "",
+      "status": "implemented-proof-results-in-issue-568",
+      "loader": "AutoModelForCausalLM",
+      "model_type": "llama",
+      "architecture": "LlamaForCausalLM",
+      "tokenizer": "upstream-chat-template",
+      "trust_remote_code": false,
+      "license": "apache-2.0",
+      "max_sequence_tokens": 2048,
+      "lora_targets": ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+      "required_hashes": {
+        "model.safetensors": "5af571cbf074e6d21a03528d2330792e532ca608f24ac70a143f6b369968ab8c",
+        "config.json": "8eb740e8bbe4cff95ea7b4588d17a2432deb16e8075bc5828ff7ba9be94d982a",
+        "tokenizer.json": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
+        "tokenizer_config.json": "4ec77d44f62efeb38d7e044a1db318f6a939438425312dfa333b8382dbad98df"
+      },
+      "pin_source": "techrote/neurounner@40543403f05de7ecacdca84ad7d651e5c5997cea:experiments/ncr-001/source-pins.json"
+    },
+    "void": {
+      "model_id": "dotlabs/void.1",
+      "revision": "9c2be5087772867d45961abd11f6b35110617563",
+      "subfolder": "",
+      "status": "model-worker-preflight-required",
+      "loader": null,
+      "model_type": "qwen3",
+      "tokenizer": "reviewed-custom-ByteTokenizer-required-no-chat-template",
+      "trust_remote_code": false,
+      "license": "verify-upstream-license-before-training",
+      "max_sequence_tokens": 2048,
+      "vocabulary_size": 259,
+      "lora_targets": null,
+      "blockers": ["Review exact custom tokenizer code and byte framing", "Verify supervised EOS and full byte budget without truncation", "Qualify language-side LoRA targets and one CPU optimizer step"],
+      "pin_source": "techrote/neurounner@40543403f05de7ecacdca84ad7d651e5c5997cea:experiments/ncr-001/source-pins.json"
+    },
+    "sprocket": {
+      "model_id": "kandivault/sprocket-500m",
+      "revision": "eb157d4ddddc4619e661d4a2426bb2dd000fc668",
+      "subfolder": "",
+      "status": "model-worker-preflight-required",
+      "loader": null,
+      "model_type": "llama",
+      "tokenizer": "root-instruct-framing-requires-qualification",
+      "trust_remote_code": false,
+      "license": "apache-2.0",
+      "max_sequence_tokens": 2048,
+      "lora_targets": null,
+      "blockers": ["Qualify root Instruct framing; chat/ is a separate checkpoint", "Qualify strict EOS, CPU LoRA targets and one optimizer step"],
+      "pin_source": "CyberSand issue #568 and frozen PR #567 training/model_profiles.json"
+    },
+    "lfm25_vl": {
+      "model_id": "LiquidAI/LFM2.5-VL-450M",
+      "revision": "fc6221ca597f3315e4f82fc2df606783267b34ba",
+      "subfolder": "",
+      "status": "model-worker-preflight-required",
+      "loader": null,
+      "model_type": "lfm2_vl",
+      "architecture": "Lfm2VlForConditionalGeneration",
+      "tokenizer": "official-processor-text-only-preflight-required",
+      "trust_remote_code": false,
+      "license": "lfm1.0",
+      "max_sequence_tokens": 2048,
+      "lora_targets": null,
+      "blockers": ["Review exact LICENSE and processor framing", "Use the actual multimodal checkpoint, with frozen vision encoder", "Qualify language-side LoRA module whitelist, CPU optimizer and checkpoint readback"],
+      "pin_source": "https://huggingface.co/api/models/LiquidAI/LFM2.5-VL-450M (resolved 2026-11-13)"
+    }
+  }
+}

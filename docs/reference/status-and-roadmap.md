@@ -10,6 +10,10 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Agent-painter shared foundation — 2026-11-13
+
+The [opt-in three-family foundation](../operations/agent-painter-foundation.md) starts from accepted merged #564/#565 main. It adds new semantic teachers, native admission and a bounded hosted Smol optimizer/resume proof; actual run/source receipts live in issue #568. Full model training, Codespaces benchmarking and default promotion remain separate. Historical #567, physics and native Art authority are unchanged; keep the new PR Draft/HOLD.
+
 ## Materials Lab v1 — 2026-11-11
 
 Separate [PR #563](https://github.com/techrote/cybersand/pull/563) replaces the

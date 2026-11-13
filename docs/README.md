@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Agent-painter shared foundation: [three-family compiler, native pilot and hosted CPU handoff](operations/agent-painter-foundation.md). Issue #568 owns source-qualified results; #567 remains an unchanged historical donor.
+
 Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.
 
 Materials Lab v1 review candidate: [desktop launch, inspection, authoring and native tests](operations/materials-lab-authoring.md),

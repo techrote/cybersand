@@ -1,0 +1,183 @@
+name: Agent painter foundation native and CPU qualification
+on:
+  push:
+    branches: [codex/agent-painter-foundation-568]
+    paths: ['experiments/agent_painter/qualification-request.json']
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'experiments/agent_painter/**'
+      - 'godot/tests/run_agent_painter_foundation.gd'
+      - '.github/workflows/agent-painter-*.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-foundation-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  contracts:
+    name: Compiler, split custody and evidence refusal tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: workspace/source
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          path: workspace/source
+      - name: Validate explicit bounded request and independent contracts
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python3 experiments/agent_painter/qualification.py request --source-sha "$GITHUB_SHA" --output evidence/request.json
+          python3 -m pip install 'Pillow==13.0.0' 'PyYAML==6.0.3' 'jsonschema==4.26.0'
+          python3 -m unittest discover -s experiments/agent_painter/tests -p 'test_*.py' -v 2>&1 | tee evidence/contracts.log
+          python3 tools/ci/check_ci_provider_policy.py > evidence/provider.json
+          python3 tools/ci/check_ci_scheduling_policy.py --output evidence/workflows.json
+          python3 tools/ci/check_docs.py > evidence/docs.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-painter-contracts-${{ github.sha }}
+          path: workspace/source/evidence/
+          if-no-files-found: error
+          retention-days: 90
+
+  native:
+    name: Rebuild native World and admit 30 real three-family paintings
+    needs: contracts
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Build current native source and execute mounted Art plus retained regressions
+        run: bash experiments/agent_painter/ci_native.sh
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-painter-native-${{ github.sha }}
+          path: evidence/native/
+          if-no-files-found: warn
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-painter-build-${{ github.sha }}
+          path: |
+            evidence/build/
+            evidence/native-build.json
+            evidence/regressions/
+          if-no-files-found: error
+          retention-days: 90
+
+  train-fresh:
+    name: Real Smol optimizer updates 1 and 2
+    needs: native
+    uses: ./.github/workflows/agent-painter-train.yml
+    with:
+      source-sha: ${{ github.sha }}
+      corpus-artifact: agent-painter-native-${{ github.sha }}
+      output-artifact: agent-painter-training-fresh-${{ github.sha }}
+      steps: 2
+
+  train-resume:
+    name: Fresh hosted VM checkpoint 1 to 2 continuation
+    needs: train-fresh
+    uses: ./.github/workflows/agent-painter-train.yml
+    with:
+      source-sha: ${{ github.sha }}
+      corpus-artifact: agent-painter-native-${{ github.sha }}
+      output-artifact: agent-painter-training-resume-${{ github.sha }}
+      steps: 2
+      resume-artifact: agent-painter-training-fresh-${{ github.sha }}
+      resume-checkpoint: checkpoint-000001
+
+  evidence:
+    name: Verify continuation and preserve immutable research assets
+    needs: [contracts, native, train-fresh, train-resume]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-${{ github.sha }}
+          path: evidence/native
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-training-fresh-${{ github.sha }}
+          path: evidence/training-fresh
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-training-resume-${{ github.sha }}
+          path: evidence/training-resume
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-training-fresh-${{ github.sha }}-environment
+          path: evidence/training-fresh/environment
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-training-resume-${{ github.sha }}-environment
+          path: evidence/training-resume/environment
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-build-${{ github.sha }}
+          path: evidence/verification/native-build
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-contracts-${{ github.sha }}
+          path: evidence/verification/contracts
+      - name: Compare real resumed weights and full optimizer state
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/painter-verify"
+          "$RUNNER_TEMP/painter-verify/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/painter-verify/bin/python" -m pip install 'safetensors==0.8.0' 'numpy==2.5.4' 'Pillow==13.0.0'
+          "$RUNNER_TEMP/painter-verify/bin/python" experiments/agent_painter/training/compare_resume.py --fresh evidence/training-fresh/checkpoint-000002 --resumed evidence/training-resume/checkpoint-000002 --output evidence/verification/resume-comparison.json
+          "$RUNNER_TEMP/painter-verify/bin/python" experiments/agent_painter/qualification.py package --directory evidence --output release --source-sha "$GITHUB_SHA"
+      - name: Publish bounded research evidence (not a production release)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="agent-painter-foundation-568-${GITHUB_SHA:0:12}"
+          cat > "$RUNNER_TEMP/painter-release.md" <<'NOTES'
+          Three-family synthetic teacher/native pilot and real CPU optimizer/checkpoint proof for issue #568. This is shared infrastructure evidence; no useful trained painter, full model campaign, Windows release, human visual acceptance or merge is claimed.
+
+          The native archive contains the side-by-side gallery/index.html, original PNGs, independent native readback/receipt verification and structural-group-safe corpus. FINAL is separate and excluded from the visible gallery and training. Training archives contain genuine SmolLM2-135M-Instruct optimizer/checkpoint receipts and frozen base provenance. MANIFEST.json and SHA256SUMS.txt bind the assets to this exact source.
+
+          Draft/HOLD. Historical PR #567 and schedules are unchanged.
+          NOTES
+          gh release create "$tag" release/* --target "$GITHUB_SHA" --prerelease --title "Agent-painter foundation #568 (${GITHUB_SHA:0:12})" --notes-file "$RUNNER_TEMP/painter-release.md"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-painter-release-manifest-${{ github.sha }}
+          path: |
+            release/MANIFEST.json
+            release/SHA256SUMS.txt
+            evidence/verification/resume-comparison.json
+          if-no-files-found: warn
+          retention-days: 90
