@@ -66,8 +66,8 @@
     ]
   ],
   "distinct_near_stimulus_clusters": 31,
-  "original_request_count_unchanged": 36,
-  "native_admitted_request_count_unchanged": 34,
+  "admitted_display_cards": 34,
+  "original_request_denominator_not_established_by_stimulus": true,
   "interpretation": "Pixel morphology similarity is not blind human theme recognition, aesthetics, model semantic correctness or distinct structural templates",
   "per_card_blind_metrics": [
     {
