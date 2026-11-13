@@ -17,7 +17,7 @@ from filelock import FileLock, Timeout
 from job_guard import LEASE_NAME, LOCK_NAME, build_fingerprint, options, run, trainer_lock
 
 FAKE_WORKER = r'''
-import argparse, hashlib, json, os, pathlib, signal, time
+import argparse, hashlib, json, os, pathlib, signal, subprocess, sys, time
 p = argparse.ArgumentParser()
 for k in ('output','model','train','dev','admission','corpus-manifest','compiler','model-id','revision','steps','mode'):
     p.add_argument('--'+k, required=True)
@@ -32,6 +32,25 @@ def signal_stop(*args):
     global stop
     if a.mode != 'ignore': stop = True
 signal.signal(signal.SIGTERM, signal_stop)
+if a.mode in ('orphan-descendant', 'stop-descendant'):
+    # The child installs SIGTERM-ignore and reports readiness before the
+    # fake trainer exits or receives Stop. Its delayed write detects leakage.
+    ready = root/'descendant_ready'
+    late = root/'descendant_late_write'
+    child_code = ("import pathlib,signal,sys,time; "
+                  "signal.signal(signal.SIGTERM, signal.SIG_IGN); "
+                  "pathlib.Path(sys.argv[1]).write_text('ready'); "
+                  "time.sleep(1.3); "
+                  "pathlib.Path(sys.argv[2]).write_text('late')")
+    subprocess.Popen([sys.executable, '-c', child_code, str(ready), str(late)],
+                     stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                     stderr=subprocess.DEVNULL)
+    for _ in range(150):
+        if ready.is_file():
+            break
+        time.sleep(.01)
+    if not ready.is_file():
+        raise RuntimeError('Synthetic descendant failed to become ready')
 # Mimic the trainer owning a valid full checkpoint, without model loading.
 def save(steps):
     ckpt = root / ('checkpoint-%06d' % steps)
@@ -44,7 +63,7 @@ def save(steps):
     (ckpt/'inventory.json').write_text(json.dumps(files))
     (root/'latest_checkpoint.json').write_text(json.dumps({'path':str(ckpt),'global_step':steps}))
     (root/'summary.json').write_text(json.dumps({'global_step':steps,'status':'training_executed'}))
-if a.mode in ('complete', 'tamper-model', 'tamper-train'):
+if a.mode in ('complete', 'tamper-model', 'tamper-train', 'orphan-descendant'):
     if a.mode == 'tamper-model':
         (pathlib.Path(a.model)/'weights.safetensors').write_bytes(b'modified after guard preflight')
     if a.mode == 'tamper-train':
@@ -123,6 +142,27 @@ class JobGuardTests(unittest.TestCase):
         self.assertEqual(result['status'],'deadline_killed')
         self.assertTrue(result['hard_kill_sent'])
         self.assertLess(result['whole_process_seconds'],4)
+
+    @unittest.skipIf(os.name == 'nt', 'POSIX process groups, not Windows trees')
+    def test_clean_parent_exit_reaps_term_resistant_descendant(self):
+        args, cmd = self.setup_run(mode='orphan-descendant')
+        result = run(args, cmd)
+        self.assertEqual(result['status'], 'completed')
+        self.assertTrue((self.parent/'candidate-one'/'descendant_ready').is_file())
+        time.sleep(1.5)
+        self.assertFalse((self.parent/'candidate-one'/'descendant_late_write').exists(),
+                         'Orphan from completed trainer wrote after lease became terminal')
+
+    @unittest.skipIf(os.name == 'nt', 'POSIX process groups, not Windows trees')
+    def test_soft_stop_reaps_term_resistant_descendant(self):
+        args, cmd = self.setup_run(mode='stop-descendant', wall=4, margin=2)
+        result = run(args, cmd)
+        self.assertEqual(result['status'], 'stopped_early')
+        self.assertTrue(result['soft_stop_sent'])
+        self.assertTrue((self.parent/'candidate-one'/'descendant_ready').is_file())
+        time.sleep(1.5)
+        self.assertFalse((self.parent/'candidate-one'/'descendant_late_write').exists(),
+                         'Orphan from interrupted trainer wrote after lease became terminal')
 
     def test_existing_direct_trainer_lock_blocks_supervisor(self):
         args,cmd=self.setup_run()
