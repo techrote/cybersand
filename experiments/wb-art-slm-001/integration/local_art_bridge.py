@@ -42,11 +42,13 @@ def digest(path: Path) -> str:
 
 
 def _json_field(instructions: str, key: str):
-    match = re.search(r"(?:^|[.\s])" + re.escape(key) + r"\s*[:=]\s*(\[[^\]]*\])", instructions)
-    if not match:
+    # Workbench appends captured host fields AFTER editable Guidance. A first
+    # match can be a user's misleading example; the last is host-owned scope.
+    matches = list(re.finditer(r"(?:^|[.\s])" + re.escape(key) + r"\s*[:=]\s*(\[[^\]]*\])", instructions))
+    if not matches:
         raise BridgeRefusal("missing captured host field: " + key)
     try:
-        return json.loads(match.group(1))
+        return json.loads(matches[-1].group(1))
     except json.JSONDecodeError as exc:
         raise BridgeRefusal("invalid captured host field: " + key) from exc
 
@@ -75,10 +77,10 @@ def parse_workbench_request(packet: object, alias: str) -> dict:
         raise BridgeRefusal("unsupported local focus size or origin")
     allowed = _json_field(instructions, "Allowed materials")
     tools = _json_field(instructions, "Enabled shapes")
-    selected = re.search(r"Selected drawing material:\s*(\d+)", instructions)
+    selected = list(re.finditer(r"Selected drawing material:\s*(\d+)", instructions))
     if not selected:
         raise BridgeRefusal("missing host-selected material")
-    material = int(selected.group(1))
+    material = int(selected[-1].group(1))
     if (type(allowed) is not list or any(type(x) is not int for x in allowed)
             or material not in (0, 58) or material not in allowed or not set(allowed) <= {0, 58}):
         raise BridgeRefusal("unverified material permission")
