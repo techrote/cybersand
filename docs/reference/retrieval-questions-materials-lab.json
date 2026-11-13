@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-11-11",
+  "reviewed": "2026-11-12",
   "scope": "Additive Materials Lab v1 review-candidate questions; frozen and historical questions remain unchanged. Implementation is distinct from production activation and platform acceptance.",
   "questions": [
     {
@@ -69,12 +69,13 @@
     },
     {
       "id": "MLAB-05",
-      "query": "How do Materials Lab native simulation test cases reproduce Salt plus Water with source and worker identity?",
+      "query": "How do I run and reopen a source-bound native Water experiment in Materials Lab, including PressureFlow?",
       "canonical": [
         "operations/materials-lab-authoring.md"
       ],
       "facts": [
         "The existing MicroScenario host owns an isolated native World, with source, definition, seed, worker count and Water-family configuration retained.",
+        "Try originals > Water movement model > PressureFlow > Prepare experiment uses the native PressureFlow reference solver; Show applied Water settings opens the acknowledged settings.",
         "The fixture observes768Brine after120ticks; native counts/state/quantities/hashes are authoritative, not images.",
         "Fresh reference comparison and saved-case reconstruction are supported; one/four workers are tested and source mismatch refuses import."
       ],
@@ -161,6 +162,18 @@
       "sources": [
         "operations/materials-lab-authoring.md"
       ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-11",
+      "query": "How does the Materials Lab stay readable in a small window and use a typed numeric edit when I immediately compile or save?",
+      "canonical": ["operations/materials-lab-authoring.md"],
+      "facts": [
+        "The standalone Lab uses window pixels and restores launcher scaling on close; overflowing tab contents scroll at the Workbench's 1000x650 minimum.",
+        "Actions commit pending numeric input before capturing source candidate and recipe values.",
+        "Endpoint and supplied-roll changes retire the previous resolver diagnostic; late results cannot describe the current selection."
+      ],
+      "sources": ["operations/materials-lab-authoring.md"],
       "revision_sensitive": true
     }
   ]

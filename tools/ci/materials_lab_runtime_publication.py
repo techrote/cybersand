@@ -84,6 +84,9 @@ GRAPHICAL_CASES = {
     "test_material_lab_ui": ("effects-ui-capture-manifest.json", "08-kept-salt-world.png", "effects-ui-world-receipt.json"),
     "test_material_lab_world": ("world-capture-manifest.json", "07-candidate-world-density.png", "world-ui-receipt.json"),
 }
+# Bound capture redraw work on software-rendered CI while native authoring
+# children execute. This only changes these graphical runner invocations.
+GRAPHICAL_MAX_FPS = 15
 WORLD_CHECKS = {"deterministic_repeat", "persistence_checkpoint", "persistence_replay",
                 "quantity_balanced", "worker_1_4_equal"}
 WINDOWS_SKIPS = {
@@ -367,9 +370,15 @@ def verify_capture(directory: Path, platform: str, native_sha256: str) -> dict:
         command = row.get("command", [])
         driver = "opengl3_angle" if platform == "windows" else "opengl3"
         driver_index = command.index("--rendering-driver") if "--rendering-driver" in command else -1
+        fps_index = command.index("--max-fps") if "--max-fps" in command else -1
+        user_args = command.index("--") if "--" in command else len(command)
         engine.require("--headless" not in command and driver_index >= 0 and driver_index + 1 < len(command) and
                        command[driver_index + 1] == driver,
                        "Graphical command does not select the required actual backend")
+        engine.require(command.count("--max-fps") == 1 and 0 <= fps_index < user_args - 1 and
+                       command[fps_index + 1] == str(GRAPHICAL_MAX_FPS) and
+                       not any(argument.startswith("--max-fps=") for argument in command),
+                       "Graphical command does not retain the bounded capture frame rate")
         log = directory / "graphical" / (name + ".log")
         engine.require(row.get("log_sha256") == engine.runner.sha256(log) and
                        len(re.findall(engine.CASE_MARKERS[name], log.read_text(encoding="utf-8"))) == 1,
@@ -406,8 +415,10 @@ def verify_capture(directory: Path, platform: str, native_sha256: str) -> dict:
                            "Native graphical receipt failed or omitted qualification: " + side)
         source_map = manifest.get("source_sha256", {})
         expected_scripts = {"scripts/material_lab_" + leaf + ".gd" for leaf in
-                            ("screen", "panel", "world_panel", "service", "catalogue", "experiment")}
+                            ("screen", "property_tree", "panel", "world_panel", "service", "catalogue", "experiment")}
         expected_scripts.add("tests/" + name + ".gd")
+        if name == "test_material_lab_ui":
+            expected_scripts.add("scripts/shared_workbench.gd")
         engine.require(isinstance(source_map, dict) and expected_scripts.issubset(source_map),
                        "Graphical capture omitted its actual UI source inputs")
         for path, digest in source_map.items():
@@ -422,6 +433,13 @@ def verify_capture(directory: Path, platform: str, native_sha256: str) -> dict:
         engine.require(not path.is_absolute() and ".." not in path.parts and
                        engine.runner.sha256(directory / path) == digest, "Graphical artifact changed: " + relative)
     return report
+
+
+def graphical_case(name: str, capture: Path, platform: str):
+    driver = "opengl3_angle" if platform == "windows" else "opengl3"
+    return engine.runner.Case(name, ("--max-fps", str(GRAPHICAL_MAX_FPS), "--rendering-driver", driver,
+        "--script", "res://tests/" + name + ".gd", "--", "--capture-output=" + str(capture.resolve())),
+        execution_policy.watchdog_seconds("graphical_case_seconds"), 1.0, True)
 
 
 def graphical(args: argparse.Namespace) -> None:
@@ -446,9 +464,7 @@ def graphical(args: argparse.Namespace) -> None:
     engine.write_json(report_path, report)
     for name in GRAPHICAL_CASES:
         capture = output / name
-        driver = "opengl3_angle" if args.platform == "windows" else "opengl3"
-        case = engine.runner.Case(name, ("--rendering-driver", driver, "--script", "res://tests/" + name + ".gd", "--",
-            "--capture-output=" + str(capture.resolve())), execution_policy.watchdog_seconds("graphical_case_seconds"), 1.0, True)
+        case = graphical_case(name, capture, args.platform)
         result, failed = engine.runner.run_case(str(godot), case, output, "graphical")
         report["results"].append(result)
         if failed:

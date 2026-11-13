@@ -1,7 +1,7 @@
 name: 'Material capability source-matched native runtime publication'
 
-# Existing publisher reused only for the separate capability Draft branch.
-# The parent Materials Lab branch keeps its own profile and publication lease.
+# Existing publisher scoped to the capability branch after the Lab merge.
+# Historical Lab builds retain their own source and publication identities.
 # Runtime/manifests are deliberately absent
 # from this filter, and existing ready-for-review acceptance gates are unchanged.
 # Complete catalogue/native authoring, real target-OS Lab cases, graphical
@@ -53,7 +53,7 @@ defaults:
 jobs:
   publisher-guards:
     name: validate staged publisher without building runtimes
-    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/codex/materials-native-capabilities-20261111') || (github.event_name == 'pull_request' && github.head_ref == 'codex/materials-native-capabilities-20261111' && github.base_ref == 'codex/materials-lab-v1-20261111'))
+    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/codex/materials-native-capabilities-20261111') || (github.event_name == 'pull_request' && github.head_ref == 'codex/materials-native-capabilities-20261111' && github.base_ref == 'main'))
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:

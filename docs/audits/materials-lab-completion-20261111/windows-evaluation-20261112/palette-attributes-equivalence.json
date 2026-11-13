@@ -1,0 +1,677 @@
+{
+  "status": "PASS",
+  "source_commit": "bcb3b62d324581f319e029a657db6b97879c9cc4",
+  "retained_evidence_files": 85,
+  "raw_bytes_unchanged": true,
+  "all_effective_attributes_unchanged": true,
+  "witness_paths": [
+    ".gitattributes",
+    "build_windows_msvc.bat",
+    "docs/audits/materials-lab-completion-20261111/08-kept-salt-world.png",
+    "docs/audits/materials-lab-completion-20261111/09-native-contact-inspector.png",
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/combined-qualification.json",
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/driver.log",
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/import.log",
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/native-runtime-custody.json",
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/performance.jsonl",
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/reconciliation-summary.json",
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/retrieval-materials-lab.json",
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/ui-rerun-driver.log",
+    "docs/audits/materials-lab-completion-20261111/completion-catalogue-attempt1-qualification.json",
+    "docs/audits/materials-lab-completion-20261111/completion-catalogue-attempt1-suite.log",
+    "docs/audits/materials-lab-completion-20261111/completion-catalogue-frozen.json",
+    "docs/audits/materials-lab-completion-20261111/completion-catalogue-frozen.log",
+    "docs/audits/materials-lab-completion-20261111/completion-contact-graphical.log",
+    "docs/audits/materials-lab-completion-20261111/completion-core-native.log",
+    "docs/audits/materials-lab-completion-20261111/completion-core-qualification.json",
+    "docs/audits/materials-lab-completion-20261111/completion-core-sanitized.log",
+    "docs/audits/materials-lab-completion-20261111/completion-ui-graphical.log",
+    "docs/audits/materials-lab-completion-20261111/contact-capture-manifest.json",
+    "docs/audits/materials-lab-completion-20261111/contact-readback.json",
+    "docs/audits/materials-lab-completion-20261111/diagnostics-native-final.log",
+    "docs/audits/materials-lab-completion-20261111/effects-ui-capture-manifest.json",
+    "docs/audits/materials-lab-completion-20261111/effects-ui-world-receipt.json",
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/capture/07-candidate-world-density.png",
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/capture/world-capture-manifest.json",
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/capture/world-ui-receipt.json",
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/comparison.json",
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/driver.log",
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/performance.jsonl",
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/qualification.json",
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/test_material_lab_world.log",
+    "docs/audits/materials-lab-completion-20261111/request2-windows-catalogue-suite.json",
+    "docs/audits/materials-lab-completion-20261111/request2-windows-catalogue-suite.log",
+    "docs/audits/materials-lab-completion-20261111/request3-linux-catalogue-suite.json",
+    "docs/audits/materials-lab-completion-20261111/request3-linux-catalogue-suite.log",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical.json",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/performance.jsonl",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_ui.log",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_ui/08-kept-salt-world.png",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_ui/effects-ui-capture-manifest.json",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_ui/effects-ui-world-receipt.json",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_world.log",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_world/07-candidate-world-density.png",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_world/world-capture-manifest.json",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_world/world-ui-receipt.json",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/import.log",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/runtime-provenance.linux.json",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_catalogue.log",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_diagnostics.log",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_experiment.log",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_service.log",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_ui.log",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_world.log",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_workbench_canvas.log",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/validation.json",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/catalogue-suite.json",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/catalogue-suite.log",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/evidence-verification.json",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical.json",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/performance.jsonl",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_ui.log",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_ui/08-kept-salt-world.png",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_ui/effects-ui-capture-manifest.json",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_ui/effects-ui-world-receipt.json",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_world.log",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_world/07-candidate-world-density.png",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_world/world-capture-manifest.json",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_world/world-ui-receipt.json",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/import.log",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/performance.jsonl",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/runtime-provenance.json",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_catalogue.log",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_diagnostics.log",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_experiment.log",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_service.log",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_ui.log",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_world.log",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_workbench_canvas.log",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/validation.json",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/windows-imports.txt",
+    "docs/audits/materials-lab-completion-20261111/windows-evaluation-20261112/combined-qualification.json",
+    "docs/audits/materials-lab-completion-20261111/windows-evaluation-20261112/equipment-native-readbacks.json",
+    "docs/audits/materials-lab-completion-20261111/windows-evaluation-20261112/materials-lab-ui-qualification.json",
+    "docs/audits/materials-lab-completion-20261111/windows-evaluation-20261112/packaging-guards-qualification.json",
+    "godot/shaders/material_palette.gdshader",
+    "tools/launch_desktop.ps1",
+    "tools/play/palette_checkout_custody.py"
+  ],
+  "before_sha256": "3f7f7156c2d07e36b7469a961e4c5cf223a3ed6eb5bc53e7486660f3b35ab284",
+  "after_sha256": {
+    ".gitattributes": "05c9fbe5f823c51aec0ae542d0c7641a117fb0b95cd1d7fb511fffe9f8cbdbaa",
+    "build_windows_msvc.bat": "3243533524aea916df9daf6247376d5acb9b31ddb621a669fd8f10bf282047dc",
+    "docs/audits/materials-lab-completion-20261111/08-kept-salt-world.png": "d4c8f93a92c7f4ca04f0f62cd793fdc483a91a1badd966f8d5864c8dab8f8288",
+    "docs/audits/materials-lab-completion-20261111/09-native-contact-inspector.png": "7b484a11af154222149356f0d1e94a5df9c1123333b2024ba868661667072b24",
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/combined-qualification.json": "1ffb99abb2b0144659d61d35b1763d61896ae56386fcdaee4e0bf2e02cec697a",
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/driver.log": "be667c152d5861c4f1c82121c78e3d48bfce833d70cb42c5bd19ed5168226049",
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/import.log": "665145e1c80017b6f77fc32ec0bbc7b3609d7ae4a9264c8e676ce36309763f72",
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/native-runtime-custody.json": "547c817e2011ab21c57d43da86613f0c6a994b4c41aba536d7af242c47bbd014",
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/performance.jsonl": "ec2198b154cb6931ede4ddca965f9e57e9a2d0489f10f9862d2b79d2a4a337c8",
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/reconciliation-summary.json": "5bd0d48a0312896115a355928bcfb071d3132a2d1f20f22dfd218e0796e8cf02",
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/retrieval-materials-lab.json": "76f43ddabcdb081d06e1630d523a7940fb0f2255683e667140c93b916a81acbb",
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/ui-rerun-driver.log": "391fab31aaae3883b76979664ad24a38937e37915bf8afa4e2fced4ca415c786",
+    "docs/audits/materials-lab-completion-20261111/completion-catalogue-attempt1-qualification.json": "83e72e4889587440917cfd1b77400201cad2b0f51178dbf62f85503b1a18fef1",
+    "docs/audits/materials-lab-completion-20261111/completion-catalogue-attempt1-suite.log": "9729cf98eecd12934ce4e2e9cb3989a77cdaf02efd21abbb3ecf42bc2bd94bcb",
+    "docs/audits/materials-lab-completion-20261111/completion-catalogue-frozen.json": "ec1e918c7a022dca98ac978fc749b683681a7a0ae27a6d65306306616fee99bd",
+    "docs/audits/materials-lab-completion-20261111/completion-catalogue-frozen.log": "3ab7995a1ecc93aafd9ebdbdd548f1b57f5f0d914971361e9789829c59d1e6a9",
+    "docs/audits/materials-lab-completion-20261111/completion-contact-graphical.log": "7205665e54dc0876a7d70fdb925e4489e94cccea3559f509731367f06a4039e7",
+    "docs/audits/materials-lab-completion-20261111/completion-core-native.log": "76cf58d2293b72269c1fa5d3f796fa18b5ccd5e7862231732356831eca0d9b75",
+    "docs/audits/materials-lab-completion-20261111/completion-core-qualification.json": "817efd147621354c22a259de3ee47941b23f9f26dd7d7a5801ed1e6d04768aaf",
+    "docs/audits/materials-lab-completion-20261111/completion-core-sanitized.log": "3724141dd2ff26149b6ff5a898aafc1b68235a95dfd862c660b6a23253f6d9a9",
+    "docs/audits/materials-lab-completion-20261111/completion-ui-graphical.log": "c5fb398efc8ff7a638762811aa0c99ea236c828803a1562f5e3c058a088e8cfd",
+    "docs/audits/materials-lab-completion-20261111/contact-capture-manifest.json": "9cef707eff23161bbfa54b343b155ffa70661cf1b88ec3d72be4436064b6806a",
+    "docs/audits/materials-lab-completion-20261111/contact-readback.json": "84bbb95031bfa6140767e7af7097ba3796e484d754e3e0ae9338bde0fc5f7fdb",
+    "docs/audits/materials-lab-completion-20261111/diagnostics-native-final.log": "ae00247069415b0e0022c80dbe0f5added84193b5ffe6d6bdfed2f58b15a3de1",
+    "docs/audits/materials-lab-completion-20261111/effects-ui-capture-manifest.json": "f6bad0fd3f36e5187386a384324c5651dca1f200f023d0e5fb5754f462a10a59",
+    "docs/audits/materials-lab-completion-20261111/effects-ui-world-receipt.json": "98899fe7e7fcbb5f8cb9ac1603e22d3163900a52a6c80eadff405eb0fb0e892b",
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/capture/07-candidate-world-density.png": "fcd47877b015a92b062c2b972cc42d93abdad2c4f467ddc2afdc88d9347b41b7",
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/capture/world-capture-manifest.json": "c214fb10186da201d62818bf8f2cd4420264155c04145417b57b0ce5f9bdeb59",
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/capture/world-ui-receipt.json": "8964cb20180e56a10249361b2aa2b56f635362fabc34756c78a5e9e3a728a32d",
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/comparison.json": "0e6fd815970f4e6ed79a065d33ec1250bcec461f7289daf1c00b5a3199589924",
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/driver.log": "deb8d4806e41451ea471b49dc6336c3c016d899d56daa8464208e7328e5d5880",
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/performance.jsonl": "9b86149bd1cf0a330c96ded2bc745e12f94de1da123200035891f13eb16afb4f",
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/qualification.json": "9ea5891fe10b9197a7e0dae8dfefac399fcf009065f305aa289abe5be6609f11",
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/test_material_lab_world.log": "011dd28ae4c94fea2f7522e0626e7e03f2fd0c92d6166d86554c0fe8086abf08",
+    "docs/audits/materials-lab-completion-20261111/request2-windows-catalogue-suite.json": "453c5ed1647f21090cb69afd98b043a407ba20805ab7095ee34d766b092f76b9",
+    "docs/audits/materials-lab-completion-20261111/request2-windows-catalogue-suite.log": "c592f282c2c817487b7cdd6a13f20f7e76e264ed9ecc3f1ddb0dae17acbb4f46",
+    "docs/audits/materials-lab-completion-20261111/request3-linux-catalogue-suite.json": "db327368a3b61a4f1fb3be4f5872c1f8af287c2805109eaaae5a5143830ad37a",
+    "docs/audits/materials-lab-completion-20261111/request3-linux-catalogue-suite.log": "029b7ab7ecdf53da12f20f3fc345ca5c512e0f0e3df7eb4911008c53615ded86",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical.json": "9e9099e7b1f3dc64ed16a7b8c3dd9014f862b5cebb0af0b56107d1bb18477c26",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/performance.jsonl": "6d72fde40686468dbe8ccb62af2c971d14830b45b295b6fae3abc0b4ffe6b2b0",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_ui.log": "346d0a9caf353f62672bd6b966bbdacd4d976bd76682889859324ef8c87f555d",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_ui/08-kept-salt-world.png": "d4c8f93a92c7f4ca04f0f62cd793fdc483a91a1badd966f8d5864c8dab8f8288",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_ui/effects-ui-capture-manifest.json": "8c5853bec7c09ca007ae8216f421ee456706133e355a451cc9f56c9dc908ae8e",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_ui/effects-ui-world-receipt.json": "553551ff854340a893dacd55dd8c0c76054509ed89a8f518c2aab44ac9dfa05f",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_world.log": "35b4d3f3f37f95fe01b744eebbc56dcdf871baf851a7e39aaaaef27bdee43644",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_world/07-candidate-world-density.png": "fcd47877b015a92b062c2b972cc42d93abdad2c4f467ddc2afdc88d9347b41b7",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_world/world-capture-manifest.json": "32e63a90990852b85f6b14fba0acb036f04251dd3408663567d40b1bd909fdee",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_world/world-ui-receipt.json": "a563a59aa4bef609fff35f32dbbb61b932c3f847020bc19e0359b9f63f1cf405",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/import.log": "bb2f9c32fbab6973dd2f3c58fd2732e7bc051b6714c0ffa8c4be3e8ab5947ff6",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/runtime-provenance.linux.json": "c18661fb089bc23dea865c4355467a24c724ead578d9e6c26b6e3b2c30b7fd47",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_catalogue.log": "5b03bd10d0bbf55bc97582c92cfd4a3d848f6a2434d42bcfe5b47b83e958535e",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_diagnostics.log": "ae00247069415b0e0022c80dbe0f5added84193b5ffe6d6bdfed2f58b15a3de1",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_experiment.log": "e7a8fdafca107dd2d5e7fd278d8444f4c5835e1ad23b986bc706f1fc4f943bc4",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_service.log": "d5cadae6ac8892c39cad7c717855c1dc27373216e4ae380308cd6e53b244b4d5",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_ui.log": "4e96c6e26daff30b728d26e68b35f357269ea9d517f4dd033bf9840048eab4df",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_world.log": "896744a845c4704d64334b6b379da8200275f0dada90e4d9c62b7b3c5d19afa3",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_workbench_canvas.log": "9d71bf2036c83f6f156641fcefc66d26cd63a942882d4ee7f566686865d0f396",
+    "docs/audits/materials-lab-completion-20261111/request3-linux/validation.json": "417ae7089bd2d659b22bc5057f141842e5f3ca129dfe1a2643120aa6125f6f96",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/catalogue-suite.json": "46486ded9cd9a9d8ec816c06ddc448f7f56105615cacb0536f760f960221d434",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/catalogue-suite.log": "61dac64efaf6fd3b44c28308cc411094e1f79d4abf37ee157278b7b691b0ac64",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/evidence-verification.json": "a717c257e83749f9ecc208a4c84a237347c8cee4233cadaebc6d23e57fc57c03",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical.json": "883589e4d9b0d1238d74a7170362f26642307184cfb3f6fcdf62d7987234cf82",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/performance.jsonl": "15d2ee7923055d41340c9323cc9b2e30f930ae9180d841f6cb91ea7b677c7e59",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_ui.log": "22ce7f374e4a1a9db698a476582e9232b351171e2fda6665ff396dee3d61b2cf",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_ui/08-kept-salt-world.png": "c47b45a10080d1b411123d90ef48b47fd34d30d327259b68912055b22a359da9",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_ui/effects-ui-capture-manifest.json": "1dcfb0d960b47c42b082af94f0f60f8e66c39c52c3ace91c08a0aef0c19564da",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_ui/effects-ui-world-receipt.json": "f2122ce05785f17e6f5383c7d4ec9cfa7b3915df24688d6e4559e5c7ae170364",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_world.log": "a6ecc13eec2ace2afb13b9cb4ebbe065b780a6c3888afa40ed47b0e2423f05f1",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_world/07-candidate-world-density.png": "f9098954a61db2256c82d3288e1d112a8e59ef78cbcd32ab1ce75aaf2b335f0e",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_world/world-capture-manifest.json": "4517e34c06333bebafd70fd48268946c00d4e5b3b59f14933b4a574cf8d79d9d",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_world/world-ui-receipt.json": "45eb50d6ebdac638e5c7c9ac3a47a035dfdf3598b4c2a0e13dbb9776b73c830b",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/import.log": "d81a21c30e8d35aaf4ef0647da1af61edacb92f60f1d7401b30a658bdd64057c",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/performance.jsonl": "fa2af041db1c961f659595da7e058d43afaa4579158b021d0997f9a85c9cc254",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/runtime-provenance.json": "f000fb9ff442b7eccec06e53a959de6c403b9486da675b65514b5327562acf92",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_catalogue.log": "95e40220dac8dae464e6da3ba5992be11ba18095e8896a7d8cbd8a34e9646186",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_diagnostics.log": "98e4328066d548061585a916fdd3bb26dfe574183e1db3ae4623d6c2a7feb271",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_experiment.log": "f066aac1dc4b3b68b4946d3108178b5740736563476388cb0a80b01d82ffcd12",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_service.log": "5e2d19752d300554eb63bbd76a500bd6024111046fa2119ba8283d2babfb9e22",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_ui.log": "ec7f48c68fac37125ce8148c3cf3e344a885078caf6e5ec5460064621001dc53",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_world.log": "6086e97106ed2e98699657e2476c56542cef2266917c3abe98cd286f5cd065c5",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_workbench_canvas.log": "7eec7928472a10ee1288412f4dc2545f2e20139783c2faa179a6c73636f424aa",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/validation.json": "0ab1b28815325044da208037850751efb4c1f01914cb10b1fb1bd3cea9ab09cf",
+    "docs/audits/materials-lab-completion-20261111/request3-windows/windows-imports.txt": "bc566ee1538d6a8303e6be6558d2697145d9653be86e55583a44452b80488a2b",
+    "docs/audits/materials-lab-completion-20261111/windows-evaluation-20261112/combined-qualification.json": "7a7c78d83d38f60ac1a425540b8f2ac1286c39b8894c076c99b671d3f067756b",
+    "docs/audits/materials-lab-completion-20261111/windows-evaluation-20261112/equipment-native-readbacks.json": "3a82fe63b897c969bf38ddadecd34e98825781f3e2974cf6d46227b103d3e76d",
+    "docs/audits/materials-lab-completion-20261111/windows-evaluation-20261112/materials-lab-ui-qualification.json": "01cbd649f9f276491b205d7fef0fa88b12bb97869c633f8233f2201cf1e67cc6",
+    "docs/audits/materials-lab-completion-20261111/windows-evaluation-20261112/packaging-guards-qualification.json": "5a6370515822241c7ff5e23e71becadde3815e76f25cff479bdf5ab3bcf50987",
+    "godot/shaders/material_palette.gdshader": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+    "tools/launch_desktop.ps1": "396f63f54b23e38b6b2b87d0dfb5fb887e96adca0950b11ad946c1b73357b570",
+    "tools/play/palette_checkout_custody.py": "746ee6811f48f85e61431e52b7e888fa007bd17fca52f54a0949cbc2d607229d"
+  },
+  "effective_attributes": {
+    ".gitattributes": {
+      "text": "auto"
+    },
+    "build_windows_msvc.bat": {
+      "text": "set",
+      "eol": "crlf"
+    },
+    "docs/audits/materials-lab-completion-20261111/08-kept-salt-world.png": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/09-native-contact-inspector.png": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/combined-qualification.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/driver.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/import.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/native-runtime-custody.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/performance.jsonl": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/reconciliation-summary.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/retrieval-materials-lab.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/accepted-main-reconciliation/ui-rerun-driver.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/completion-catalogue-attempt1-qualification.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/completion-catalogue-attempt1-suite.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/completion-catalogue-frozen.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/completion-catalogue-frozen.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/completion-contact-graphical.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/completion-core-native.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/completion-core-qualification.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/completion-core-sanitized.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/completion-ui-graphical.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/contact-capture-manifest.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/contact-readback.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/diagnostics-native-final.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/effects-ui-capture-manifest.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/effects-ui-world-receipt.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/capture/07-candidate-world-density.png": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/capture/world-capture-manifest.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/capture/world-ui-receipt.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/comparison.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/driver.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/performance.jsonl": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/qualification.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/graphical-world-maxfps15/test_material_lab_world.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request2-windows-catalogue-suite.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request2-windows-catalogue-suite.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux-catalogue-suite.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux-catalogue-suite.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/performance.jsonl": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_ui.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_ui/08-kept-salt-world.png": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_ui/effects-ui-capture-manifest.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_ui/effects-ui-world-receipt.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_world.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_world/07-candidate-world-density.png": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_world/world-capture-manifest.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/graphical/test_material_lab_world/world-ui-receipt.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/import.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/runtime-provenance.linux.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_catalogue.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_diagnostics.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_experiment.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_service.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_ui.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_material_lab_world.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/test_workbench_canvas.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-linux/validation.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/catalogue-suite.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/catalogue-suite.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/evidence-verification.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/performance.jsonl": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_ui.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_ui/08-kept-salt-world.png": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_ui/effects-ui-capture-manifest.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_ui/effects-ui-world-receipt.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_world.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_world/07-candidate-world-density.png": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_world/world-capture-manifest.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/graphical/test_material_lab_world/world-ui-receipt.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/import.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/performance.jsonl": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/runtime-provenance.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_catalogue.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_diagnostics.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_experiment.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_service.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_ui.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_material_lab_world.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/test_workbench_canvas.log": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/validation.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/request3-windows/windows-imports.txt": {
+      "text": "unset",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/windows-evaluation-20261112/combined-qualification.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/windows-evaluation-20261112/equipment-native-readbacks.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/windows-evaluation-20261112/materials-lab-ui-qualification.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "docs/audits/materials-lab-completion-20261111/windows-evaluation-20261112/packaging-guards-qualification.json": {
+      "text": "unset",
+      "eol": "lf",
+      "whitespace": "-blank-at-eol,-blank-at-eof,cr-at-eol",
+      "linguist-generated": "true"
+    },
+    "godot/shaders/material_palette.gdshader": {
+      "text": "set",
+      "eol": "lf"
+    },
+    "tools/launch_desktop.ps1": {
+      "text": "set",
+      "eol": "crlf"
+    },
+    "tools/play/palette_checkout_custody.py": {
+      "text": "set",
+      "eol": "lf"
+    }
+  },
+  "scoped_attributes_sha256": "d568b321b6b287441e231ae367130d8debb0b8f9927b9d782c74c4041746e387",
+  "qualification": "Git check-attr --all with global attributes disabled; original raw historical evidence unchanged. Parser execution guards run separately."
+}

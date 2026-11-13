@@ -61,6 +61,8 @@ func _spin(parent: Node, caption: String, field: SpinBox, low: int, high: int, i
 	field.step = 1
 	field.value = initial
 	field.custom_minimum_size.x = 80
+	field.get_line_edit().text_changed.connect(func(_text: String) -> void: field.set_meta("lab_pending_text",true))
+	field.value_changed.connect(func(_value: float) -> void: field.set_meta("lab_pending_text",false))
 	parent.add_child(field)
 
 func _ensure_built() -> void:
@@ -72,18 +74,18 @@ func _ensure_built() -> void:
 	size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(_summary)
-	_label(self,"Compiles two external Worlds: unchanged reference and your candidate. No material is installed in the running application.",true)
+	_label(self,"Compare your edited copy with the unchanged material in two separate simulations. The ordinary game is not changed.",true)
 	var setup := _row()
 	_label(setup,"Candidate")
-	_placement.add_item("Upper dose",0)
-	_placement.add_item("Lower partner",1)
+	_placement.add_item("Start above the other material",0)
+	_placement.add_item("Start below the other material",1)
 	setup.add_child(_placement)
 	_label(setup,"Other material")
 	_partner.custom_minimum_size.x = 150
 	setup.add_child(_partner)
 	_spin(setup,"Seed",_seed,0,2147483647,2)
-	_spin(setup,"Ticks",_ticks,1,600,120)
-	_label(setup,"Workers")
+	_spin(setup,"Steps",_ticks,1,600,120)
+	_label(setup,"Simulation threads")
 	_workers.add_item("1",1)
 	_workers.add_item("4",4)
 	setup.add_child(_workers)
@@ -91,14 +93,15 @@ func _ensure_built() -> void:
 		picker.item_selected.connect(func(_index: int) -> void: _scenario_changed())
 	for field: SpinBox in [_seed,_ticks]:
 		field.value_changed.connect(func(_value: float) -> void: _scenario_changed())
+		field.get_line_edit().text_changed.connect(func(_text: String) -> void: _scenario_changed())
 	var actions := _row()
-	_run_button.text = "Compile + compare World"
+	_run_button.text = "Build + run comparison"
 	_run_button.pressed.connect(func() -> void: _request(false))
 	actions.add_child(_run_button)
-	_export_button.text = "Export World test bundle…"
+	_export_button.text = "Export comparison files…"
 	_export_button.pressed.connect(func() -> void: _request(true))
 	actions.add_child(_export_button)
-	_cancel_button.text = "Cancel World test"
+	_cancel_button.text = "Cancel comparison"
 	_cancel_button.pressed.connect(func() -> void: cancel_requested.emit())
 	actions.add_child(_cancel_button)
 	_label(actions,"View")
@@ -107,7 +110,7 @@ func _ensure_built() -> void:
 	_stage.select(0)
 	_stage.item_selected.connect(func(_index: int) -> void: _refresh_view())
 	actions.add_child(_stage)
-	_label(self,"World tests refuse capability and visual-state projection edits. Restore the template values or use the descriptor test. Preview uses native stored material/state and compiled base RGBA; it is not a shader screenshot.",true)
+	_label(self,"This test supports edits to existing material numbers. Hard-surface, grain-support and stored-value colouring changes only support the definition check. The pictures show simulated cell data using base colours, without game lighting.",true)
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(_status)
 	var previews := HBoxContainer.new()
@@ -118,7 +121,7 @@ func _ensure_built() -> void:
 		var column := VBoxContainer.new()
 		column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		previews.add_child(column)
-		_label(column,"Reference · unchanged native source" if side == 0 else "Candidate · isolated compiled source")
+		_label(column,"Original material — unchanged" if side == 0 else "Your edited copy")
 		var preview: TextureRect = _reference_preview if side == 0 else _candidate_preview
 		preview.custom_minimum_size = Vector2(150,184)
 		preview.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -127,11 +130,11 @@ func _ensure_built() -> void:
 		preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		preview.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		preview.mouse_filter = Control.MOUSE_FILTER_STOP
-		preview.tooltip_text = "Click a cell to compare authoritative stored material, state bytes and temperature."
+		preview.tooltip_text = "Click a cell to compare its actual material, stored values and temperature on both sides."
 		preview.gui_input.connect(_preview_input.bind(preview))
 		column.add_child(preview)
 	var cells := _row()
-	_spin(cells,"Stored cell X",_cell_x,176,307,240)
+	_spin(cells,"Cell X",_cell_x,176,307,240)
 	_spin(cells,"Y",_cell_y,64,247,112)
 	for field: SpinBox in [_cell_x,_cell_y]:
 		field.value_changed.connect(func(_value: float) -> void:
@@ -145,7 +148,7 @@ func _ensure_built() -> void:
 	_report.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	add_child(_report)
 	_loading = false
-	_status.text = "Duplicate a supported material, then compile a bounded comparison."
+	_status.text = "Make a copy in Edit copy, choose another material here, then Build + run comparison."
 	_refresh_controls()
 
 func set_materials(native_materials: Array) -> void:
@@ -175,7 +178,7 @@ func set_candidate(candidate: Dictionary) -> void:
 	_ensure_built()
 	if candidate == _candidate: return
 	_candidate = candidate.duplicate(true)
-	invalidate("Candidate changed. Compile again to qualify these edits.")
+	invalidate("Candidate changed. Run again to test these edits.")
 
 func scenario() -> Dictionary:
 	_ensure_built()
@@ -230,14 +233,14 @@ func invalidate(reason: String) -> void:
 	_reference_preview.texture = null
 	_candidate_preview.texture = null
 	_report.text = ""
-	_cell_report.text = "Stored cell comparison is available after a successful native test."
+	_cell_report.text = "Run a comparison to inspect the same cell in the original and edited versions."
 	_status.text = reason
 	_refresh_controls()
 
 func _blocked_reason() -> String:
 	if _candidate.is_empty(): return "Duplicate an existing material in the Candidate tab first."
 	var id: int = int(_candidate.get("target_id",-1))
-	if id == 132: return "Synthetic 132 is a descriptor-only fixture. This World backend retains the 132 production slots; use Compile + native test in the Candidate tab."
+	if id == 132: return "Synthetic 132 is a descriptor-only fixture. This World backend retains the 132 production slots; use Build + check definition in the Candidate tab."
 	if id < 1 or id > 131 or id == 10: return "Choose a valid existing candidate identity; Empty and reserved ID 10 cannot be candidate templates."
 	if _partner.selected < 0: return "Native material choices are unavailable. Reload the native catalogue."
 	return ""
@@ -257,10 +260,16 @@ func _refresh_controls() -> void:
 
 func _request(export_bundle: bool) -> void:
 	if _pending or not _blocked_reason().is_empty(): return
-	_seed.apply()
-	_ticks.apply()
+	commit_fields()
 	if export_bundle: export_requested.emit(scenario())
 	else: test_requested.emit(scenario())
+
+func commit_fields() -> void:
+	for field: SpinBox in [_seed,_ticks]:
+		if field.get_line_edit().has_focus() or field.get_meta("lab_pending_text",false):
+			field.apply()
+			field.set_meta("lab_pending_text",false)
+			field.get_line_edit().release_focus()
 
 func show_pending() -> void:
 	_ensure_built()
@@ -268,10 +277,10 @@ func show_pending() -> void:
 	_decoded.clear()
 	_reference_preview.texture = null
 	_candidate_preview.texture = null
-	_report.text = "Building reference and candidate, then running bounded native repeats, 1/4-worker comparisons, quantity checks and same-build persistence."
-	_cell_report.text = "Waiting for native stored-cell readback."
+	_report.text = "Building the original and edited versions. Then checking repeatability, one/four simulation threads, material amounts, and saving/reopening the results."
+	_cell_report.text = "Waiting for the simulated cell values."
 	_pending = true
-	_status.text = "Compiling and testing both Worlds… Cancel remains available."
+	_status.text = "Building and running both simulations… You can cancel while this runs."
 	_refresh_controls()
 
 func show_failure(message: String) -> void:
@@ -425,7 +434,7 @@ func show_receipt(world_receipt: Dictionary, expected_digest: String = "") -> bo
 	receipt = world_receipt.duplicate(true)
 	_decoded = staged
 	last_error = ""
-	_status.text = "Compiled native World comparison complete. Preview and cell inspection use stored native readback; the running application is unchanged."
+	_status.text = "Comparison complete. The pictures and cell values come from the simulations; the ordinary game is unchanged."
 	_loading = true
 	_cell_x.min_value = expected_rect.position.x
 	_cell_x.max_value = expected_rect.end.x - 1
@@ -462,10 +471,10 @@ func _format_report(stage: String) -> String:
 	var lines: PackedStringArray = []
 	var unchanged: Variant = receipt.get("checks",{}).get("source_unchanged",false)
 	var source_digest: String = str(receipt.get("source_identity",{}).get("digest","unavailable")).left(16)
-	lines.append("Source custody %s · source %s · runtime-active false" % ["PASS" if unchanged == true else "unavailable",source_digest])
+	lines.append("Test source unchanged: %s · source ID %s · ordinary game unchanged" % ["PASS" if unchanged == true else "unavailable",source_digest])
 	var reference_descriptor: Dictionary = receipt.reference.get("descriptor_readback",{})
 	var candidate_descriptor: Dictionary = receipt.candidate.get("descriptor_readback",{})
-	lines.append("Compiled native descriptor · density %s / %s · viscosity %s / %s (reference / candidate)" % [reference_descriptor.get("density","?"),candidate_descriptor.get("density","?"),reference_descriptor.get("viscosity_index","?"),candidate_descriptor.get("viscosity_index","?")])
+	lines.append("Values actually tested: density %s / %s; sideways-flow resistance %s / %s (original / edited)" % [reference_descriptor.get("density","?"),candidate_descriptor.get("density","?"),reference_descriptor.get("viscosity_index","?"),candidate_descriptor.get("viscosity_index","?")])
 	lines.append("%s readback · completed ticks %s / %s · active chunks %s / %s (reference / candidate)" % [stage.capitalize(),reference.get("completed_ticks","?"),authored.get("completed_ticks","?"),reference.get("active_chunks","?"),authored.get("active_chunks","?")])
 	lines.append("Water quantity %s / %s · quantity ledger balanced %s / %s" % [reference.get("water_quantity","?"),authored.get("water_quantity","?"),reference.get("quantity_ledger",{}).get("balanced","?"),authored.get("quantity_ledger",{}).get("balanced","?")])
 	for side: String in ["reference","candidate"]:
@@ -489,7 +498,7 @@ func _format_report(stage: String) -> String:
 
 func inspect_cell(position: Vector2i) -> Dictionary:
 	if receipt.is_empty():
-		_cell_report.text = "Compile a native World comparison before inspecting stored cells."
+		_cell_report.text = "Run a comparison first, then click a cell to inspect it."
 		return {"ok":false,"error":"No compiled World receipt"}
 	var stage: String = _stage_name()
 	var rect: Rect2i = _decoded.reference[stage].rect

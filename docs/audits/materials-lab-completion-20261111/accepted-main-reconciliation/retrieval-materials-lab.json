@@ -1,0 +1,1309 @@
+{
+  "created_utc": "2026-11-12T00:31:34.020767+00:00",
+  "corpus_root": "/workspace/scratch/f7237b2aaca9/cybersand-reconcile",
+  "method": {
+    "name": "heading-chunk BM25 lexical development baseline",
+    "k": 5,
+    "maximum_body_words": 420,
+    "overlap_words": 0,
+    "k1": 1.2,
+    "b": 0.75,
+    "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+    "query_expansion": false,
+    "stemming": false,
+    "reranker": false,
+    "embeddings": false,
+    "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+  },
+  "fixture_sha256": "4c410bc3f8e63cb964c22b008f8a929681ce4f9d0c6a407b857d82f42deefece",
+  "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+  "corpus_manifest_sha256": "4dbfa0cfc167a7dbc2182738ca761e8d291fc140632a4012562f82fd05b8c4a4",
+  "corpus": [
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "e0ce169ba2538df93df15fd5f589698bfcc19405af7628e10e6b44aa68d10a7f",
+      "bytes": 13377
+    },
+    {
+      "path": "docs/architecture/ballistic-water-v1.md",
+      "sha256": "7d719e73cd4b37b133c653bbec7f664cefaed94e28e6cfcab7ffa8d0fd74849f",
+      "bytes": 13025
+    },
+    {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "sha256": "2e1ed6542e984366519dd782687980f0c8445052ef11b8afef06877972730d81",
+      "bytes": 8752
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "97c0dfe83f6495eba9a1cbe5dd3b6f6d273987756c13041dae7ef6df0c40628b",
+      "bytes": 38828
+    },
+    {
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "sha256": "4a85c1007a438d86f52d7b51a6c59b5aee0c85d6e900857e14fdfb07ec65aea8",
+      "bytes": 11309
+    },
+    {
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "sha256": "bc403bddd45e3abb14baf91b98cc3a03e007dce712314270d47d6e9e2bbd6082",
+      "bytes": 30392
+    },
+    {
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72",
+      "bytes": 5204
+    },
+    {
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "sha256": "35babd6fcd79d74fb4b895af5b7bf835403435f1ba6f65c96907dab7621da337",
+      "bytes": 22243
+    },
+    {
+      "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "sha256": "231b1dec6ee5993a6c399d235c669534a90c44f292fbe19576113f9ab1f1566c",
+      "bytes": 82558
+    },
+    {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "2f47a361564cf4a9f9ab4acd59f7968776a7c5b3ba3c3bea6b53bbf86bd24f6b",
+      "bytes": 65640
+    },
+    {
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "sha256": "d0b9f71b86dffdd2755703029209f5f5e2ce1ef93afe5b56f3d58f4553f83fd3",
+      "bytes": 26899
+    },
+    {
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "sha256": "c1521f1e786db9206009f9b2bd9c075fc68fa0580fddf07ddccd86ca6560168c",
+      "bytes": 61395
+    },
+    {
+      "path": "docs/architecture/module-boundaries.md",
+      "sha256": "50d887de70b5cc49f7e2a0504ce3e08415c9900b4b437e036345a0181aebd3c6",
+      "bytes": 9775
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "4fb7c0c48e043786ba0bab144d9fbb0cf1bee1facac60303357bac907dd1e730",
+      "bytes": 5948
+    },
+    {
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "sha256": "cf0046c5ccce66ee0c1f0cc150f1a873d9a03ef50016770f28f5700f89476b57",
+      "bytes": 32330
+    },
+    {
+      "path": "docs/architecture/pressure-optimization.md",
+      "sha256": "ad0b728477160ba8b52737ca6204d55d36be70dfe04e9380bcd93f7b1a56adfc",
+      "bytes": 20378
+    },
+    {
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "sha256": "8dd55cf5b315f460b844fa66307296f4f77eb8f5e29fc2ba5ad9d1f2df60c377",
+      "bytes": 6556
+    },
+    {
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "sha256": "0efb1084fd68eba7c69e31e9271be717153de3693d1b17cb4e0036028563c439",
+      "bytes": 8923
+    },
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "eeb3bdee911991e0529f9f9b10f6d444a6e0a3f906680f8643a70e96e5a075a0",
+      "bytes": 15352
+    },
+    {
+      "path": "docs/architecture/shared-workbench-authoring-data.md",
+      "sha256": "94d8edb2d39c7c9aa8d18a8582f0e74560e68f821a3404897fe11d8e47869127",
+      "bytes": 10002
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "sha256": "6ba24bc92a50394cda463b78436da8a702306a395f90b0107bc6cb87e14c803b",
+      "bytes": 23683
+    },
+    {
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "sha256": "10832029af506bd5b593cfc8cb4eadc39ce6097674c66eb220ea745cdb191f80",
+      "bytes": 19320
+    },
+    {
+      "path": "docs/decisions/ADR-001-native-simulation-core.md",
+      "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+      "bytes": 3490
+    },
+    {
+      "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+      "bytes": 3876
+    },
+    {
+      "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+      "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+      "bytes": 4207
+    },
+    {
+      "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+      "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+      "bytes": 5074
+    },
+    {
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "sha256": "ca741af1d41237c2c6cc70c80e5f098bf10b4cca3098183168a1f386aa0ab9bc",
+      "bytes": 4594
+    },
+    {
+      "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+      "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+      "bytes": 3351
+    },
+    {
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "sha256": "4176beaad08fca041922b87f8f8451a5a3b7b4831946d117119eeb21c7e466e9",
+      "bytes": 4438
+    },
+    {
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "sha256": "f57b275187490cdc12c28456f9417a6eb4a73d2daf4a97ba9e6950e07568efe5",
+      "bytes": 6062
+    },
+    {
+      "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "sha256": "cf30e85c27ee2a63785ceac700c766b14f1227e761398d42d60c301d3d3c85ac",
+      "bytes": 5903
+    },
+    {
+      "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "sha256": "7c3e320ab521c0dbfffc5f8831507f948c6614775dc294ca6f77aa5c742b7000",
+      "bytes": 2879
+    },
+    {
+      "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "sha256": "79b0d6bb92c5bc624f3d24b76b51837d2bf81ee22b277d88f8e5d0675b828c00",
+      "bytes": 4669
+    },
+    {
+      "path": "docs/decisions/ADR-013-canonical-semantic-generation.md",
+      "sha256": "208ba8ca556dda6d5d52f867986d379c9bb8a2a2dbcc5e0c1a515ee7b61fc07a",
+      "bytes": 4168
+    },
+    {
+      "path": "docs/decisions/ADR-014-semantic-plane-admission.md",
+      "sha256": "f43cf3261ead2dfe86e895c3b73c5df7a173c48997a2989f5a254502184857a4",
+      "bytes": 2636
+    },
+    {
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+      "bytes": 8984
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "sha256": "b5ddf2a279d68287130b4a3d96674336818cfe11da4c0c2c3230762b36f0c58d",
+      "bytes": 54792
+    },
+    {
+      "path": "docs/operations/atlas-agent-runner.md",
+      "sha256": "a1ed093f8e55ead40a267f0669ec7892e13a550389ad051ec3497c23432c8343",
+      "bytes": 19010
+    },
+    {
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "sha256": "f94c5f0241a0ed0bfa022e448a0a973977681f4310238132c2982d18e5c76d97",
+      "bytes": 13714
+    },
+    {
+      "path": "docs/operations/cell-layout-experiment.md",
+      "sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+      "bytes": 26101
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "sha256": "67402f42648e34c95c98afa59dc03de57a7dd56d087e9e8d680540c73e4051d1",
+      "bytes": 13537
+    },
+    {
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "sha256": "6510df0048c1696de614b396cd91c2e1c3ada2f53dfdc97a7735d6408e5956c2",
+      "bytes": 12906
+    },
+    {
+      "path": "docs/operations/current-and-historical-validation.md",
+      "sha256": "37d75f33ea23ef837d0661df3ce81324ba07941181cd506ebd1d502e81317b0c",
+      "bytes": 7539
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "39d73446a0ffdc05589948b344f9b1a9493c40c73946ffd97a5b6a0dfb654925",
+      "bytes": 119351
+    },
+    {
+      "path": "docs/operations/deepworks-exhibition.md",
+      "sha256": "5f646c5eed80101d8bdc36be38985ee34898ed145ed28f2aa01d3ae1bbb3ffc7",
+      "bytes": 17395
+    },
+    {
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+      "bytes": 14706
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068",
+      "bytes": 6809
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "sha256": "71a70c087f71062db5d417562ae4e3cad3c50e26233c63dee264d0555c377865",
+      "bytes": 14079
+    },
+    {
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "sha256": "25924e5ef1d7ab96eab8255404d5cc0611c2ed492748fd7d78c43fea90fbeb56",
+      "bytes": 3762
+    },
+    {
+      "path": "docs/operations/gameplay-recording.md",
+      "sha256": "4af142f26f132ca52d7d28e56719f97827b2934f7601559df30140366872fa06",
+      "bytes": 12266
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "sha256": "cf6a4e6581d354bce92672d8c5aa4601ebde1d1538b30bb53b99f70895bbf9c7",
+      "bytes": 18051
+    },
+    {
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "sha256": "e8e92b94b6484a504ccb885bf5952a06bff56e6c437d5081a52881d57dc0b9d4",
+      "bytes": 36321
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "sha256": "aebe1afadaea2858edfbd9d88391eec77f4f992b83bc484170bab9820378ecbc",
+      "bytes": 25219
+    },
+    {
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "sha256": "1cba76d2f57befebe84f1c8aa5fc3ed227f134b8144da0636c508f8ec8027259",
+      "bytes": 23019
+    },
+    {
+      "path": "docs/operations/liquid-characterization.md",
+      "sha256": "d18df9a9ed150165d6f51fff5469f77ce531374a4c7673a020955a194a826147",
+      "bytes": 4710
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "a49c1061af08fdfceb023c372536b1b3dbd9284365a2c641fdd16f51e0e50d4d",
+      "bytes": 113647
+    },
+    {
+      "path": "docs/operations/material-catalogue-shadow.md",
+      "sha256": "5688c3f13ac5e4ca122088255a1c1204d0702a0548841c4457bd02bd6c90e0c9",
+      "bytes": 18911
+    },
+    {
+      "path": "docs/operations/material-liveness-investigation.md",
+      "sha256": "58a260b2f86fa0fc3f47804bbffac83275e77b618bb79fb4cd372bea6b13c0a1",
+      "bytes": 13039
+    },
+    {
+      "path": "docs/operations/materials-lab-authoring.md",
+      "sha256": "0f2edef007d7963321af156808723dab2603940299b0dd8f3ffa05db89c5e348",
+      "bytes": 29774
+    },
+    {
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "sha256": "b366797634e5aaf632873395b78d53f582750a5226a335ea96c471c0d60df456",
+      "bytes": 17952
+    },
+    {
+      "path": "docs/operations/microscenarios-programme.md",
+      "sha256": "c8c713f43a8ccb4bcd7f5428456c70abcab9564bb221ed35563eb82dbda881ae",
+      "bytes": 29208
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+      "bytes": 20649
+    },
+    {
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "sha256": "db57bf8976427464069e8dab42a05b78e5876a3be31feaa90a1ba9e1ba5e84ca",
+      "bytes": 14168
+    },
+    {
+      "path": "docs/operations/physical-actor-programme.md",
+      "sha256": "383b894b238bfd883e786f6f2f2cf10423e4c9c960e44fd64efbed4b348aab10",
+      "bytes": 15666
+    },
+    {
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "sha256": "c306e1e0539835caefa668c72f5a118f2d34f0fb0235305ce7462aaca75d3a0d",
+      "bytes": 22957
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "sha256": "cec934e26ddc204d538ad2cfb79b9a670b9c62a0d3464b13695de0894ca634f3",
+      "bytes": 22281
+    },
+    {
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "sha256": "67b59b8c82feb2ddf269a60fb418f36a92990f169f8856ce8ea72b4e7c09c784",
+      "bytes": 9578
+    },
+    {
+      "path": "docs/operations/procedural-qualification.md",
+      "sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "bytes": 21341
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "sha256": "2f218b3b07dee019d2432eb8a677380c244ff027611754bb7ad8c126a1990588",
+      "bytes": 11287
+    },
+    {
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "sha256": "9ed786d3217f87a1ec6641b9744b8b196009da59cf8d56f673b6537a8efb98e7",
+      "bytes": 6574
+    },
+    {
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "bytes": 10897
+    },
+    {
+      "path": "docs/operations/soliding-macro-fracture-fixture.md",
+      "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "bytes": 8314
+    },
+    {
+      "path": "docs/operations/soliding-measurement.md",
+      "sha256": "029b9fc75960e23e00737fd4a8ef5de4d93a9b68b53173a31b144890246f7127",
+      "bytes": 16631
+    },
+    {
+      "path": "docs/operations/soliding-programme.md",
+      "sha256": "dc5630e2b4c41dd8f83ca3df9013a831a08f5cc8ee94250f546a3a408bb6a74b",
+      "bytes": 10536
+    },
+    {
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+      "bytes": 25036
+    },
+    {
+      "path": "docs/operations/soliding-stage3b-production-plan.md",
+      "sha256": "a2c8b0df12e69eaddb5e36200fdac89d978d43ce5190242022cf83a6bef43919",
+      "bytes": 22377
+    },
+    {
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "sha256": "9b140c00a949cd9d3a3753c0c5f079cf188d7f23c55018a87161c3650fc3b431",
+      "bytes": 27552
+    },
+    {
+      "path": "docs/operations/state-precision-experiment.md",
+      "sha256": "5ec8493d0aea4114c3049380cd6eae3be4d34a0dfc4ca8bfbebc67df3e800c0a",
+      "bytes": 10075
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "sha256": "4ca126819d5ae73123dfe68bc410a2c69ae83f63c6085e3a3f279e7e717d4dab",
+      "bytes": 32428
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+      "bytes": 5027
+    },
+    {
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "sha256": "6591cef26939419b7421ad5ddd25c7164ce08869f76b181aef6a8223c3e6e3d9",
+      "bytes": 15503
+    },
+    {
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "sha256": "d8f703b16bf61620571828f117dc7fcaee950b5dd0d051f6f7488b792970399d",
+      "bytes": 39009
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+      "bytes": 6183
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "sha256": "b02673d822ecac6745bbd13c5fff5e5aaa9464b13c20997dfb745c3e14e29c78",
+      "bytes": 89807
+    },
+    {
+      "path": "docs/reference/glossary.md",
+      "sha256": "123cb43131703c15362ff8f85ef5e343844db526c3107d90937e7c8288debdde",
+      "bytes": 6071
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "728fcca4db909fb9bab59c39ba3bfb39159e14f8d45d2d718b52901638945fb8",
+      "bytes": 97426
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "sha256": "2d0be5f8556cd995462d7c744ea3daad2d10bf91eac6da6d6cfea6b9bb8a117b",
+      "bytes": 46825
+    },
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "sha256": "e8a563e99afc73c5660f08bc28731be49af45ec033857e5793a4d3be6e95f16c",
+      "bytes": 14109
+    },
+    {
+      "path": "docs/reference/material-effects-register.md",
+      "sha256": "21f4071dd5d558ad5e85f7b7f273dc56bc3f8a30d33141faed77faac0e0bc00b",
+      "bytes": 12618
+    },
+    {
+      "path": "docs/reference/procedural-spatial-operators.md",
+      "sha256": "2aa8a05ab1566fae6b5cf9a187954a3d16bb6b95b999aa15f89d24e1c31e1037",
+      "bytes": 11102
+    },
+    {
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "e7f274ce92dbfcbb3ed264571d675b9c3cc18a07cec89f2ee467ec5a0039e0ec",
+      "bytes": 20428
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "0e1765ad33f07ceaa317ce922b202e92c21408a044a279c5c91b9bbae47b5351",
+      "bytes": 144549
+    },
+    {
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "2cd6260a09dbd2f891d951ffc7b491b63fdf2fa353a64bc21e476cbbfc657cce",
+      "bytes": 77127
+    },
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+      "bytes": 16290
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+      "bytes": 20849
+    },
+    {
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "sha256": "239d4fc9ca44d86a0971659305c61decec2dcd7c14b5a3d17a0f79844fa61791",
+      "bytes": 7166
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "sha256": "7015ad1a820b6f5ab9153f816bed23e2c178d832a1f94f1464a6c897e555b44a",
+      "bytes": 12979
+    },
+    {
+      "path": "docs/systems/actor-control-prototypes.md",
+      "sha256": "8138d39e7323c4fdfa22b93eb8718a7dddaa3f1ac972f01c8deedde1b961495f",
+      "bytes": 18075
+    },
+    {
+      "path": "docs/systems/actor-rigs.md",
+      "sha256": "3d8894b3be355871c4b1086e91c9ca53445ca447354996587c7adac5b4945f6c",
+      "bytes": 25275
+    },
+    {
+      "path": "docs/systems/actor-usables.md",
+      "sha256": "5d8b808400fa16719ff978c5b661a439670080961043f0c45eced329186356cc",
+      "bytes": 16427
+    },
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "bytes": 13193
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "sha256": "9f31c71e5608871265a0cabd8dcbba43040294ccdd9c67180b2844c5c10af446",
+      "bytes": 12257
+    },
+    {
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "sha256": "084f899b71880beea46496bd47fa39a85e74a2fc43c556a93f33195a8f60bad5",
+      "bytes": 10967
+    },
+    {
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "sha256": "fd452353ab27a31c73cbffa72afeecf447af16d05cd7b211dcc2db03761d2e4c",
+      "bytes": 7881
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "sha256": "c9aef9a878d100bcf61a4d8c01e752487b3056a6e16a6763fcf8c159fe4a5503",
+      "bytes": 21430
+    },
+    {
+      "path": "docs/systems/granular-interaction-policy.md",
+      "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+      "bytes": 12363
+    },
+    {
+      "path": "docs/systems/intermaterial-interactions.md",
+      "sha256": "7438daa1478dd70b7ed1d7769ffdc36c750acc4521c42c81037bb8d86bcfcfad",
+      "bytes": 11701
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "sha256": "6e1f9612e46f72fdc97080132ff789c50d9570e56ca49c76f389ba691e834e6f",
+      "bytes": 18581
+    },
+    {
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "sha256": "ec9f21593de8f92af9499ba217993330378782abddf1e3481f1a8e9943206b8a",
+      "bytes": 23049
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "sha256": "2140d649728829bf1b5163eb0686ab8eadd6493be7512ad5e25e21359a5c2e24",
+      "bytes": 14476
+    },
+    {
+      "path": "docs/systems/physical-actor-rigs.md",
+      "sha256": "e9dc3d9719cb5e592d3882a644a1d996535b9393c99b830573dbb89ba8588767",
+      "bytes": 17777
+    },
+    {
+      "path": "docs/systems/physical-flight-lab.md",
+      "sha256": "aef00ef8bef9327a46491c20b00ce093273ac16305adce440655ac019f4b9874",
+      "bytes": 17283
+    },
+    {
+      "path": "docs/systems/physical-free-flight.md",
+      "sha256": "da8dc262e3bba975e04f9fc2706ce0cf82aeb4afb17a899a04570146eb2c33b3",
+      "bytes": 21218
+    },
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "sha256": "2d2c0eea6d986ee6d78222fc66088047242613d9cb30943dc0e3b688872b210f",
+      "bytes": 62162
+    },
+    {
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+      "bytes": 6898
+    },
+    {
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "sha256": "9b0d490b8d0e1f94e600d355f3574782f520edb6e0f64a2cb99d8cd044cbf6ba",
+      "bytes": 22273
+    },
+    {
+      "path": "docs/systems/procedural-hierarchical-generation.md",
+      "sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "bytes": 20322
+    },
+    {
+      "path": "docs/systems/procedural-semantic-planes.md",
+      "sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "bytes": 12923
+    },
+    {
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "sha256": "5062c1899617444cc02a2d9d0a743ab5507bda4f776e2583f200eec275f373eb",
+      "bytes": 23376
+    },
+    {
+      "path": "docs/systems/procedural-world-generation.md",
+      "sha256": "c3ba36a03a706d64b1a1fe697526a931814d4ca0a3980bddb73a45d3d9ca216e",
+      "bytes": 27978
+    },
+    {
+      "path": "docs/systems/settled-region-discovery.md",
+      "sha256": "1bb29704ecd99425abadfbd2dd58d753bb12bbbdb00679f70562e8821778c1ba",
+      "bytes": 22753
+    },
+    {
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "sha256": "a147e13269dac95dd5b4d57c329686c2761acec4c64209c6a49c2e2d8ba2019c",
+      "bytes": 6117
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "bytes": 9963
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "sha256": "71c2487a64b566b0a708a79278e47ce2303778c014a3e94a7fe922b24a0f9107",
+      "bytes": 41184
+    },
+    {
+      "path": "docs/systems/water-design.md",
+      "sha256": "a4407b765d29a36a0b26be7cec74a065076cd299792172b96ffc11fcf12e8b9b",
+      "bytes": 20422
+    },
+    {
+      "path": "docs/systems/workbench-liquid-equipment.md",
+      "sha256": "7c5be1fc5128006434320059572311cd3c40a95fc3073daa9f5e94f32f4c2d39",
+      "bytes": 10523
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "sha256": "de44534954f0d38639f220cab5a56135fec0a0589777be21460543400885953b",
+      "bytes": 12516
+    }
+  ],
+  "document_count": 127,
+  "chunk_count": 1700,
+  "summary": {
+    "questions": 10,
+    "canonical_hit_at_1": 10,
+    "canonical_hit_at_k": 10,
+    "mrr_at_k": 1.0,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "results": [
+    {
+      "id": "MLAB-01",
+      "query": "How do I open Materials Lab v1 and inspect declared versus effective native material physics?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "The review candidate mounts in the desktop feature launcher and Shared Workbench, or --materials-lab.",
+        "The matching native bridge is required; native facts are not replaced by shadow or fallback metadata.",
+        "Rows distinguish declared/effective values, actual consumer, applicability and editability; Workbench policy is a copied receipt at opening."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 22.724631,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Browse and inspect actual behaviour",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Browse and inspect actual behaviour\nSearch by exact stable ID, name, physical state, kernel, semantic family or reaction partner. Filters include physical states and explicit hard/granular capabilities. These categories organize the browser; neither appearance labels nor semantic family membership confer inherited physics. Every important property row separates **declared value → effective value → actual consumer → applicability → editability**. The native cold-path bridge reads original descriptor values, capability predicates, density-exchange eligibility, visual-state projection and compiled solver defaults. The model also consumes the existing native interaction profile. Missing native support fails explicitly. It never substitutes shadow catalogue values for native facts. Examples to check: - **Water:** the specialised Water family determines motion. Descriptor viscosity is not a Lab edit. CellularYield Water's versioned policy viscosity is a separate consumer; it is not the descriptor viscosity byte. - **Sand:** powder movement, density and explicit hard/granular capabilities are separate facts. A powder name never implies hard terrain. - **Slush:** native density is 1080; the separately identified GDScript fallback has density 1100. Neither value is silently substituted for the other. - **MoltenGlass:** yielding movement and specialised thermal behaviour are shown separately, including the actual consumers and the admitted descriptor fields. - **Lava, Acid and Oil:** an ignored descriptor viscosity is labelled ineffective for the specialised kernel, and the candidate control is disabled. When opened from Shared Workbench, the inspector receives a **copied applied policy receipt at opening**. Reopen to refresh it. A standalone Lab labels compiled defaults as unobserved by a live World. **Inspect test-owner policy** switches the inspector to the isolated experiment's acknowledged native policy. The UI never reads a simulation-worker-owned World from the main thread. Sources: [native inspection](../../godot/native_extension/material_lab_inspection.inc), [catalogue model](../../godot/scripts/material_lab_catalogue.gd), [panel](../../godot/scripts/material_lab_panel.gd) and the minimal [Workbench mount](../../godot/scripts/shared_workbench.gd)."
+        },
+        {
+          "rank": 2,
+          "score": 22.445173,
+          "path": "MATERIAL_LAB.md",
+          "title": "1024² material lab",
+          "heading": "1024² material lab",
+          "part": 1,
+          "text": "Document: 1024² material lab\nPath: MATERIAL_LAB.md\ndocument-kind: runbook\nstatus: Current\nscope: Desktop and Web manual controls, repeatable interaction observations, construction recipes, and finite-demo limits\ncanonical-for: [material-lab-controls, manual-material-recipes]\nlast-reviewed: 2026-11-11\nSection: 1024² material lab\nThe separate **Materials Lab v1** desktop review candidate adds native browsing, effective-property inspection, structured source candidates, compiled candidate versus untouched-reference Worlds, explicit isolated endpoint effects, source-bound World recipes and bounded existing-material native experiments. See its [launch and authoring guide](operations/materials-lab-authoring.md) and [dated qualification](audits/2026-11-11-materials-lab-v1.md). It opens from the feature launcher or Shared Workbench; it does not make shadow definitions active in production or replace this historical manual-observation route. **Current:** CyberSand exposes 79 paintable materials in a finite 1024×1024 native world. Desktop and Web have different controllers and controls. This page is a manual observation runbook, not proof that every pairing or visual has passed acceptance. Source/runtime identity and dated checks are in the [checkpoint](operations/source-checkpoint-and-recovery.md) and [evidence ledger](reference/validation-evidence.md). Open the desktop project through the [local workflow](operations/local-build-and-validation.md). For Web, use the built HTTP preview described in the [Web guide](operations/web-threading.md). Native C++ supplies current cellular behavior; the desktop fallback is a narrower, different implementation. Physics Pit requires the [Rapier capability checks](operations/rapier-2d-migration-runbook.md)."
+        },
+        {
+          "rank": 3,
+          "score": 22.374914,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 8. Materials Lab authoring workflow",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-11\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 8. Materials Lab authoring workflow\nThe initial browser/inspector belongs in the current Materials Laboratory and coordinates with the existing TEST-UX owner, not a new gameplay host or general editor framework. | User action | Required v1 experience | |---|---| | Find material | Category and multi-tag filter; search ID/key/name/phase/kernel/capabilities/partners | | Inspect exact physics | Declared vs effective density, movement, flow, hard/granular flags, state, radius and selected kernel | | Inspect interactions | Stable matched rule, orientation, threshold and exact chance, endpoint effect, actually observed failure reasons and owning execution stage | | Inspect appearance | Base RGBA, variation, shader flair/recipe, visual state source, emission and fallback status | | Tweak a parameter | Apply only if an actual owner accepts it; otherwise warn compile/rebuild required; no fake live sliders | | Add a material | Copy a supported preset → new stable ID/key → explicit capabilities/appearance → optional rules → validate/generate → rebuilt preview | | Reject candidate | Clear field/path/reason; previous World/profile and canonical source remain unchanged | | Export/import | Deterministic, versioned profile/manifest with source/runtime/solver identity and compatibility decision | No dynamic runtime material creation is implied: v1 can add source-level materials using generated tables. A safe editor can later be an authoring front end for those manifests; broad runtime GUID registries and hot reload remain **Deferred**."
+        },
+        {
+          "rank": 4,
+          "score": 18.885562,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Manual evaluation checklist",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Manual evaluation checklist\n- Open from the launcher and Shared Workbench; inspect Water, Sand, Slush, MoltenGlass and reserved 10. Confirm native/fallback/shadow distinctions and the origin of the copied solver policy. - Search for `23`, `powder`, `MoltenGlass` and a reaction partner; check physical and capability filters without implying semantic inheritance. - Create powder 132, change density/colour, validate and compile. Confirm no Runtime-active label and no production 132 in the browser. - Export/reimport the preset, then export a compiled bundle and import its `preset.json`. Tamper with a field/digest; require an actionable refusal and preservation of the current candidate. - Duplicate Salt, set threshold 0 and compare rolls 0/1 in the candidate and production resolver. Confirm explicit product-default effects. - Run Salt/Water for 120 ticks, read stored material/state, compare a clean reference, save/reopen the test and check one/four-worker agreement. - Apply CellularYield in the isolated test, inspect acknowledged policy and verify the ordinary Workbench remains its existing owner. - Duplicate Sand, set density500, compare both native Worlds against Water, inspect initial/final cells and export/reopen the World bundle. Edit settings while a compile runs and verify its older result cannot qualify the new recipe. - Cancel a compile and a reference replay; confirm the Lab stays usable and reports cancellation without a successful receipt. - Save/import a World recipe after changing placement, seed and workers; require exact restored controls, a validated state and a fresh compile before qualification. - Exercise Salt retention and a Metal state-B edit through **Test reaction in World**; check native registers/temperature and quantity evidence, not only the preview. - Select neighbouring native preview cells with left/right clicks, inspect a supplied roll, swap source/target and advance one step; the old contact report must retire and unobserved scheduling facts must remain labelled."
+        },
+        {
+          "rank": 5,
+          "score": 18.537125,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 5. Interaction effects and effective parameters > Effective parameter contract",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-11\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 5. Interaction effects and effective parameters > Effective parameter contract\n`MaterialDefinition.viscosity_index` is a **declared** value; effective motion depends on kernel and any allowed construction-time profiles. Every proposed editable parameter needs: - stable key; declared and effective values; units and validated limits; - owning source/preset/override and identity/version of the applied policy; - **actual consuming kernel/helper** and supported platform/solver; - status `effective`, `unused_by_selected_kernel`, `unsupported`, `planned` or `source_edit_required`; - change class: appearance preview, compile/rebuild, or validated restart-time policy; - revalidation tags, state/quantity impact and save/physical-hash implications. In v1, **do not** present Lava/Acid/Oil descriptor viscosity as an effective freely editable native slider while their specialised paths bypass that value. An inspector can truthfully display the descriptor and an applicability warning. Similarly, do not infer real-world density units from `density`: it is a gameplay comparison value."
+        }
+      ]
+    },
+    {
+      "id": "MLAB-02",
+      "query": "Which Materials Lab candidate properties are editable, and does compiled/tested mean runtime-active?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Density, RGBA, explicit capabilities and visual projection are editable isolated candidates; viscosity is limited to supported yielding templates.",
+        "Kernel, physical state, movement and state defaults remain held to the selected template.",
+        "Draft, validated, compiled/tested and runtime-active are distinct; existing-ID candidates execute in an external compiled World, with no production installer."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 28.568069,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Supported candidate edits and state transitions",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Supported candidate edits and state transitions\nSelect a valid, nonempty material and **Duplicate selected**, or choose **New powder 132**. The original template selects the existing kernel and state contract. The candidate label is not a production rename. Existing IDs, enum encodings and rule slots remain fixed. | Property | Lab v1 boundary | |---|---| | Density; base RGBA | Editable candidate fields; consumed by the descriptor probe and isolated compiled World | | Explicit hard/granular capability; visual-state projection | Editable and exercised by the descriptor probe; edits are rejected by the World backend because it retains the native capability/projection consumers | | Descriptor viscosity | Editable only for generic YieldingLiquid, Cement and MoltenGlass templates; ineffective specialised-kernel edits are rejected | | Physical state, kernel, movement flags, density-motion mode, exchange permission, lateral-flow descriptor, initial state bytes and write radius | Held to the selected template; choose another template for a different admitted mechanism | | Existing sparse reaction slots owned by the template | Structured partners, products, match mode and inclusive probability threshold are editable; identity, slot and supported endpoint-effect semantics stay fixed | | Explicit endpoint effects v2 | Non-Water `keep_existing`, or declared Metal/Combustible `state_b` updates, execute only in isolated compiled Worlds; see the reaction contract below | | New arbitrary production IDs, new kernels, unknown fields, Water retention/quantity effects, arbitrary state writes, new pair-rule slots | Unsupported and rejected with a field path and explanation | | Existing Water default/FreeMass/CellularYield selection in **Native test** | Applied through existing native admission to the isolated test World, with owner readback; does not reconfigure the shared running Workbench | | Empty 0 and reserved invalid 10 | Inspectable, not candidate templates | **Draft** means editable, unqualified data. **Validated candidate** means the strict schema and immutable compatibility check passed. **Compiled/tested** means that exact candidate compiled and ran in the stated native probe. **Runtime-active** requires an authoritative production installation and engine acknowledgement; Lab v1 never assigns this state to a candidate. An edit revokes previous validation. A background response for an older revision cannot qualify newer edits. Candidate World results also bind the exact test recipe; changing seed, placement, partner, tick count or workers retires the displayed comparison. Validation refuses invalid IDs/types, duplicate JSON keys, duplicate slots, unknown or conflicting definitions, invalid/inactive reaction sources, malformed presets, unsupported state/effects and source drift. It uses the frozen compatibility lock without refreshing it. No failure publishes a partial bundle."
+        },
+        {
+          "rank": 2,
+          "score": 18.566236,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 15. Materials Lab v1 implementation boundary — 2026-11-11",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-11\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 15. Materials Lab v1 implementation boundary — 2026-11-11\n**New owner authorization; implemented review candidate.** The owner requested desktop material inspection, validated source authoring, reusable presets, explicit supported reactions and native tests from current accepted main. Baseline was `d4b18e7f06839b35c8f6a66195206da0f33c5fa3`; isolated branch `codex/materials-lab-v1-20261111` holds the implementation. The [Lab runbook](../operations/materials-lab-authoring.md) owns controls and limits; the [dated audit](../audits/2026-11-11-materials-lab-v1.md) owns source, tests, platform evidence and outstanding gates. This authorization supersedes the earlier unstarted #355/#356 restriction for this bounded vertical slice. It does not authorize Ready, merge or default promotion. Native read-only metadata is the inspector's authority. Candidate edits use the existing compiler and frozen source guards; generated definitions are exercised by an external native descriptor/pair-resolution probe and a bounded compiled World comparison. The latter copies native source externally, adapts its descriptor/pair tables and compares against a separately compiled untouched reference. The review continuation adds a bounded external pair-application adapter for explicit endpoint effects v2 and source-bound World recipe round-trips. Existing-material tests reuse the MicroScenario host and authoritative World readback. Draft, validated, compiled/tested and runtime-active states stay distinct; v1 has no production candidate installer. Identity slots, 56 production pairs, protected source, quantity and saved-world semantics remain unchanged. Synthetic powder132 is an isolated non-hard fixture, with no production allocation or conflict with other branches' experimental identities. Explicit endpoint-effects v1 retains legacy `replace_with_defaults`. The isolated World backend additionally admits effects v2 non-Water `keep_existing` and declared Metal/Combustible `state_b` updates with role-preserving matching. Water state/ quantity effects, arbitrary registers, positional symmetric extended effects, new kernels and unsupported reaction slots remain rejected. The descriptor-only probe refuses extended effects rather than claiming it applied them. The native probe reports state defaults and positional outcomes; the separate World backend executes candidate movement, contacts, quantities, fresh repeats, one/four workers and same-build persistence. Those results qualify their exact default-policy fixture, not every authored material or host. Synthetic132, capability and visual-projection edits remain excluded from World execution. Production and cross-build saved-world compatibility are not inferred. #353-B requires a separate consumer/identity transition. On the 11 November review continuation the owner explicitly excluded MoltenGlass H1; it is not a Materials Lab delivery dependency. Historical investigation evidence remains unchanged, as do production thermal behavior and generic yielding rest. Current Workbench, agent-painting, liquid-equipment and ballistic-solids owners were rechecked before edits. The Lab adds a launcher/window seam and copied policy receipt; it does not add another Workbench, worker, resolver or native World. Existing production build/retained-runtime gates remain requirements for eventual integration. Broad #352–356 remain open after this v1 contribution. The owner-requested completion continuation adds a cold, copied native contact snapshot on the exclusive MicroScenario owner. Masks, stored/visible identities and"
+        },
+        {
+          "rank": 3,
+          "score": 18.343414,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1\n**Current implementation in [Draft PR #562](https://github.com/techrote/cybersand/pull/562); production activation remains unimplemented.** The desktop **Materials Lab** opens from the feature launcher, the ordinary Shared Workbench's **Materials Lab…** button, or `--materials-lab`. It combines native material inspection, structured candidate editing, compiled candidate tests, a compiled candidate/reference World comparison and an isolated native MicroScenario. The [dated qualification record](../audits/2026-11-11-materials-lab-v1.md) distinguishes the preceding implementation's evidence. The [completion record](../audits/2026-11-11-materials-lab-completion.md) owns the subsequent native contact diagnostics, runtime publication and Windows package qualification. The Lab uses the accepted [catalogue compiler](material-catalogue-shadow.md). It does not replace native production definitions, the simulation worker, the Workbench or World. Production still has 132 slots, including invalid reserved ID 10. The synthetic powder at 132 exists only inside an external candidate build."
+        },
+        {
+          "rank": 4,
+          "score": 17.680943,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Manual evaluation checklist",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Manual evaluation checklist\n- Open from the launcher and Shared Workbench; inspect Water, Sand, Slush, MoltenGlass and reserved 10. Confirm native/fallback/shadow distinctions and the origin of the copied solver policy. - Search for `23`, `powder`, `MoltenGlass` and a reaction partner; check physical and capability filters without implying semantic inheritance. - Create powder 132, change density/colour, validate and compile. Confirm no Runtime-active label and no production 132 in the browser. - Export/reimport the preset, then export a compiled bundle and import its `preset.json`. Tamper with a field/digest; require an actionable refusal and preservation of the current candidate. - Duplicate Salt, set threshold 0 and compare rolls 0/1 in the candidate and production resolver. Confirm explicit product-default effects. - Run Salt/Water for 120 ticks, read stored material/state, compare a clean reference, save/reopen the test and check one/four-worker agreement. - Apply CellularYield in the isolated test, inspect acknowledged policy and verify the ordinary Workbench remains its existing owner. - Duplicate Sand, set density500, compare both native Worlds against Water, inspect initial/final cells and export/reopen the World bundle. Edit settings while a compile runs and verify its older result cannot qualify the new recipe. - Cancel a compile and a reference replay; confirm the Lab stays usable and reports cancellation without a successful receipt. - Save/import a World recipe after changing placement, seed and workers; require exact restored controls, a validated state and a fresh compile before qualification. - Exercise Salt retention and a Metal state-B edit through **Test reaction in World**; check native registers/temperature and quantity evidence, not only the preview. - Select neighbouring native preview cells with left/right clicks, inspect a supplied roll, swap source/target and advance one step; the old contact report must retire and unobserved scheduling facts must remain labelled."
+        },
+        {
+          "rank": 5,
+          "score": 16.683715,
+          "path": "MATERIAL_LAB.md",
+          "title": "1024² material lab",
+          "heading": "1024² material lab",
+          "part": 1,
+          "text": "Document: 1024² material lab\nPath: MATERIAL_LAB.md\ndocument-kind: runbook\nstatus: Current\nscope: Desktop and Web manual controls, repeatable interaction observations, construction recipes, and finite-demo limits\ncanonical-for: [material-lab-controls, manual-material-recipes]\nlast-reviewed: 2026-11-11\nSection: 1024² material lab\nThe separate **Materials Lab v1** desktop review candidate adds native browsing, effective-property inspection, structured source candidates, compiled candidate versus untouched-reference Worlds, explicit isolated endpoint effects, source-bound World recipes and bounded existing-material native experiments. See its [launch and authoring guide](operations/materials-lab-authoring.md) and [dated qualification](audits/2026-11-11-materials-lab-v1.md). It opens from the feature launcher or Shared Workbench; it does not make shadow definitions active in production or replace this historical manual-observation route. **Current:** CyberSand exposes 79 paintable materials in a finite 1024×1024 native world. Desktop and Web have different controllers and controls. This page is a manual observation runbook, not proof that every pairing or visual has passed acceptance. Source/runtime identity and dated checks are in the [checkpoint](operations/source-checkpoint-and-recovery.md) and [evidence ledger](reference/validation-evidence.md). Open the desktop project through the [local workflow](operations/local-build-and-validation.md). For Web, use the built HTTP preview described in the [Web guide](operations/web-threading.md). Native C++ supplies current cellular behavior; the desktop fallback is a narrower, different implementation. Physics Pit requires the [Rapier capability checks](operations/rapier-2d-migration-runbook.md)."
+        }
+      ]
+    },
+    {
+      "id": "MLAB-03",
+      "query": "How do material presets round-trip and compile the synthetic non-hard powder at ID132?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Version1 envelopes contain a strict candidate, source catalogue hash and deterministic digest; malformed or tampered imports preserve the current candidate.",
+        "The synthetic132 fixture compiles density1337, RGBA17/91/203/255, hardfalse and granulartrue without production ID allocation.",
+        "Compiled bundles use an external fresh directory and source/generated/executable hashes; the frozen compatibility lock is unchanged."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 28.07129,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Save, import, compile and compare > Reusable powder example",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Save, import, compile and compare > Reusable powder example\nImport [lab-synthetic-powder-v1.json](../../materials/catalogue/fixtures/lab-synthetic-powder-v1.json), or create the powder, label it **Azure non-hard powder — isolated132**, and set density **1337**, RGBA **17, 91, 203, 255**, hard surface **false**, granular support **true**. Compile it. The native readback must report candidate 132, these exact values, a powder template and no production activation. Export and reimport: the digest remains `c2e7859cf568cd9d138c6444a9f26242cc1538be9b283977e6a24dc59ba5c24c`. This fixture does not reserve ID 132 against any other experimental branch."
+        },
+        {
+          "rank": 2,
+          "score": 24.265442,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Minimum #353 slice: compile metadata alongside unchanged runtime authority",
+          "part": 2,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-11\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Minimum #353 slice: compile metadata alongside unchanged runtime authority\noutputs, source/schema/compiler identities and actionable drift diagnostics. Do not rewrite unchanged output files and thereby force unnecessary rebuilds. - Compile-time fixed arrays/bitsets and initialization-time policy validation; no tick-time JSON, strings, family search, maps, allocation, per-cell objects or added state. Keep the existing partner-bitset fast rejection and bounded sparse resolver. Treat host-side authoring source maps separately from native hot-path metadata. No performance benefit is claimed without measurement. IDs 0–131 and invalid10 stay unchanged. Draft #358 has experimental claims on 132–137; these are **not production Current reservations or accepted materials**. Record those branch-qualified claims so a source author does not reuse them accidentally. The ID132 non-hard-powder test in the original issues is valid only inside an explicitly isolated synthetic registry, with no generated production output, save, receipt or experiment export. It must not overwrite #358's experimental StoneWall132 identity. New production ID allocation still requires an explicit integration decision."
+        },
+        {
+          "rank": 3,
+          "score": 23.730194,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > Synthetic powder ID132 and paired-material experiment isolation",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Merged MAT-AUTH-001 353-A shadow tooling and source guards; legacy production authority persists, with consumer migration and production liveness corrections separately gated\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-11\nSection: Material catalogue shadow compiler and compatibility guards > Synthetic powder ID132 and paired-material experiment isolation\nCurrent production IDs0–131 remain fixed, with invalid10 unusable. The isolated future powder at ID132 explicitly declares `hard_surface=false` and `granular_support=true`; no numeric range can grant hardness in the candidate map. Its test namespace cannot publish to the committed candidate directory or export a production/save/receipt identity. Draft #358's StoneWall132, SaltWall133, CoalWall134, DryBinder135, ActivatedBinder136 and BinderCrust137 are recorded as **branch-qualified experimental claims**, not accepted production reservations. A synthetic fixture does not rename, consume or integrate those identities. Their production allocation remains a separate integration decision. The source-level range predicate in production remains unchanged in #353-A. The candidate's explicit capability map fixes inheritance for the synthetic registry; production source guards prevent silently appending an ID through the old range. Switching the production predicate is a #353-B consumer change, requiring its own parity/identity review and applicable integration gates."
+        },
+        {
+          "rank": 4,
+          "score": 18.069588,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 4. Canonical source model and compiler",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-11\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 4. Canonical source model and compiler\n**Proposed authoring tree** (final names/schema require #352 review): ```text materials/ schema/material-v1.schema.json registry/identities.json definitions/{legacy,reactive,construction,building}/*.json behaviours/presets.json interactions/{families,pairs,specialized}.json appearances/{recipes,overrides}.json browse/{categories,tags}.json tools/materials/compile_catalogue.py tools/materials/test_catalogue.py ``` Prefer simple JSON plus a deterministic Python-stdlib compiler in v1, because the current repo already maintains portable Python CI tools. Using several author-friendly source files is acceptable **only if** they compile to one validated immutable effective catalogue. The canonical source should contain identity, type, constraints, owned parameters, family memberships, aliases and status. Free-form comments in JSON may be replaced with dedicated `description` fields or adjacent documentation. **Illustrative proposed material record** (not executable today): ```json { \"schema_version\": 1, \"key\": \"cybersand:wood\", \"id\": 7, \"display\": {\"name\": \"Wood\", \"category\": \"Organics/Wood\", \"tags\": [\"timber\"]}, \"physical\": {\"phase\": \"Solid\", \"density_rank\": 720, \"hard_surface\": true, \"granular_support\": false}, \"behaviour\": {\"preset\": \"legacy.wood.v1\"}, \"appearance\": {\"rgba8\": [116, 78, 48, 255], \"recipe\": \"timber.v1\"} } ``` **Generated outputs** should include `material.hpp` descriptors/identity, explicit native capability lookup, compact sparse interaction table/partner sets, stable GDScript IDs and names, picker/browse metadata, RGBA and flair arrays, condition projection and versioned source-derived catalogue manifest. Keep expensive shader algorithms and native kernel implementations hand-coded initially; generate their *metadata*, not a new universal interpreter. **Hard validator gates:** - Stable, non-reused byte IDs; slot 10 remains invalid; `Gas` is a label alias for Smoke=4, not another material ID; reserve/unallocated slots fail cleanly. - Unique keys, names and aliases; valid family references, endpoint/product IDs, kernel enum, radius, state width/meaning, type ranges and support matrix. - Family overlap, duplicate pair, conflicting ordered/unordered matches, cross-rule precedence, invalid supersession, invalid probability representations, uninitiable pair-only definitions and unsupported optional-state contracts fail with understandable source location. - Generate a baseline exact-value oracle from the pinned Current source before replacing hand-authored tables. `--check` regenerates without modifying the tree and fails on drift. Generated files are deterministic, diffable and compatible with repository documentation policies. - Current 132-slot catalogue, all 56 rule identities/indexes/roll cases and 19 specialised mechanisms are identical after the migration. Synthetic new non-hard powder at ID 132 is a compiler-only fixture—not a shipped byte-ID addition—to prove future IDs are not auto-collision-hard. **Intentionally not implemented in v1:** a runtime DSL, hot-loop schema evaluation, user scripts, dynamic pack ID reassignment, or a per-cell behaviour object."
+        },
+        {
+          "rank": 5,
+          "score": 13.531766,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Manual evaluation checklist",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Manual evaluation checklist\n- Open from the launcher and Shared Workbench; inspect Water, Sand, Slush, MoltenGlass and reserved 10. Confirm native/fallback/shadow distinctions and the origin of the copied solver policy. - Search for `23`, `powder`, `MoltenGlass` and a reaction partner; check physical and capability filters without implying semantic inheritance. - Create powder 132, change density/colour, validate and compile. Confirm no Runtime-active label and no production 132 in the browser. - Export/reimport the preset, then export a compiled bundle and import its `preset.json`. Tamper with a field/digest; require an actionable refusal and preservation of the current candidate. - Duplicate Salt, set threshold 0 and compare rolls 0/1 in the candidate and production resolver. Confirm explicit product-default effects. - Run Salt/Water for 120 ticks, read stored material/state, compare a clean reference, save/reopen the test and check one/four-worker agreement. - Apply CellularYield in the isolated test, inspect acknowledged policy and verify the ordinary Workbench remains its existing owner. - Duplicate Sand, set density500, compare both native Worlds against Water, inspect initial/final cells and export/reopen the World bundle. Edit settings while a compile runs and verify its older result cannot qualify the new recipe. - Cancel a compile and a reference replay; confirm the Lab stays usable and reports cancellation without a successful receipt. - Save/import a World recipe after changing placement, seed and workers; require exact restored controls, a validated state and a fresh compile before qualification. - Exercise Salt retention and a Metal state-B edit through **Test reaction in World**; check native registers/temperature and quantity evidence, not only the preview. - Select neighbouring native preview cells with left/right clicks, inspect a supplied roll, swap source/target and advance one step; the old contact report must retire and unobserved scheduling facts must remain labelled."
+        }
+      ]
+    },
+    {
+      "id": "MLAB-04",
+      "query": "What does a threshold0 candidate reaction mean, and are keep_existing or state-setting effects supported?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Threshold T means inclusive (T+1)/256;0 succeeds for roll0 and fails for roll1.",
+        "Effects v1 retain replacement defaults; isolated World effects v2 admit non-Water keep_existing and declared Metal/Combustible state_b updates. Unsupported state/quantity contracts and conflicts are rejected.",
+        "The actual sparse native resolver is tested over256rolls and both orientations; World scheduling or sleep eligibility is not inferred."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 18.787576,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Supported candidate edits and state transitions",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Supported candidate edits and state transitions\nSelect a valid, nonempty material and **Duplicate selected**, or choose **New powder 132**. The original template selects the existing kernel and state contract. The candidate label is not a production rename. Existing IDs, enum encodings and rule slots remain fixed. | Property | Lab v1 boundary | |---|---| | Density; base RGBA | Editable candidate fields; consumed by the descriptor probe and isolated compiled World | | Explicit hard/granular capability; visual-state projection | Editable and exercised by the descriptor probe; edits are rejected by the World backend because it retains the native capability/projection consumers | | Descriptor viscosity | Editable only for generic YieldingLiquid, Cement and MoltenGlass templates; ineffective specialised-kernel edits are rejected | | Physical state, kernel, movement flags, density-motion mode, exchange permission, lateral-flow descriptor, initial state bytes and write radius | Held to the selected template; choose another template for a different admitted mechanism | | Existing sparse reaction slots owned by the template | Structured partners, products, match mode and inclusive probability threshold are editable; identity, slot and supported endpoint-effect semantics stay fixed | | Explicit endpoint effects v2 | Non-Water `keep_existing`, or declared Metal/Combustible `state_b` updates, execute only in isolated compiled Worlds; see the reaction contract below | | New arbitrary production IDs, new kernels, unknown fields, Water retention/quantity effects, arbitrary state writes, new pair-rule slots | Unsupported and rejected with a field path and explanation | | Existing Water default/FreeMass/CellularYield selection in **Native test** | Applied through existing native admission to the isolated test World, with owner readback; does not reconfigure the shared running Workbench | | Empty 0 and reserved invalid 10 | Inspectable, not candidate templates | **Draft** means editable, unqualified data. **Validated candidate** means the strict schema and immutable compatibility check passed. **Compiled/tested** means that exact candidate compiled and ran in the stated native probe. **Runtime-active** requires an authoritative production installation and engine acknowledgement; Lab v1 never assigns this state to a candidate. An edit revokes previous validation. A background response for an older revision cannot qualify newer edits. Candidate World results also bind the exact test recipe; changing seed, placement, partner, tick count or workers retires the displayed comparison. Validation refuses invalid IDs/types, duplicate JSON keys, duplicate slots, unknown or conflicting definitions, invalid/inactive reaction sources, malformed presets, unsupported state/effects and source drift. It uses the frozen compatibility lock without refreshing it. No failure publishes a partial bundle."
+        },
+        {
+          "rank": 2,
+          "score": 17.466101,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Legacy endpoints and scheduling must remain executable contracts",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-11\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Legacy endpoints and scheduling must remain executable contracts\nFor #355, section 5's `replace_with_defaults` is only shorthand for the actual legacy World path, **not** a generic reset of every field. Freeze: - Four-tick contact cadence, neighbour/random-stream order, one shared roll, `roll <= threshold` and target-then-source writes; threshold0 means 1/256, while a disabled rule is a distinct future declaration. - Water product quantity from the active World policy maximum, other products' descriptor-initialized state and the existing pressure/IN state retirement. Same-ID products do not automatically preserve quantity or solver state. - Existing optional temperature retention, body-mask/refusal behavior, no-op epoch/dirty semantics and gross produced/consumed plus pair-event accounting. A selected event can be recorded even when the write returns unchanged. - Existing specialized thermal, Acid, ignition, electrical and lifecycle paths remain hand-coded; their catalogue records describe them without replacing execution. #160/#162 retain ownership of their unmerged quantity correction. New `keep_existing`, `set_state` or quantity-aware effects require explicit field, sidecar, temperature, event, mutation and quantity-ledger contracts plus separate owner admission before use in production. Their design or synthetic tests do not authorize applying them to legacy same-material products. For #354, static metadata describes a kernel's obligations, not whether a cell is due, masked, active or waiting now. Preserve inert `RuleKernel::None` reaction targets: 26 of the 41 pair participants use that kernel and can be acted on by an active partner. A compiler must not reject or activate them merely for being inert. Reproduce MoltenGlass quiet-block cooling and yielding-liquid failed-roll retry hypotheses against fixed source before proposing any scheduler repair. Mutual MoltenGlass heating and desired viscous rest are separate gameplay-law decisions. Section 6's `KernelOutcome` is illustrative; first prefer the smallest repair using existing coalesced activity wakes. No blanket always-awake policy."
+        },
+        {
+          "rank": 3,
+          "score": 17.359546,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Reaction authoring and deterministic diagnostics",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Reaction authoring and deterministic diagnostics\nDuplicate Salt or Water to expose its existing sparse reaction slots. The Reactions tab edits both partners, both products, ordered/unordered/symmetric matching and threshold. Slot order remains priority order. Endpoint effects are explicit version 1 **replace_with_defaults** at both endpoints, retaining legacy product initialization. The endpoint selectors also admit a bounded **effects version 2** in the isolated compiled World: | Effect | Executed semantics and admission | |---|---| | `replace_with_defaults` | Existing product initialization, including same-identity products | | `keep_existing` | Preserve a non-Water participant's material, state A, state B and temperature; its product must equal its input identity | | `set_state` with `state_b` | Preserve material, state A and temperature; set B to an integer 0–255 only for the native Metal charge or Combustible burn countdown | Use Ordered or Unordered role-preserving matching for extended effects. Positional Symmetric effects, Water retention/state writes, undeclared registers and two keep-only endpoints are rejected. The editor aligns a retained endpoint's product with its participant. **Test reaction in World** selects the rule's pair and executes the native comparison; the descriptor/resolver-only test explicitly refuses extended effects. The production table and World implementation remain unchanged. State/epoch/wake details and executed acceptance belong to the dated audit and the [isolated adapter](../../tools/material_catalogue/reaction_effects.py). Arbitrary conservation claims are not inferred from product names; inspect the reported defaults and native experiment quantities. Historical probability is inclusive: threshold **T means (T + 1) / 256**. Threshold 0 is a 1/256 chance. The native diagnostic distinguishes no matching rule, failed supplied roll and selected reaction. It reports endpoint products, priority and state/quantity implications where the native API provides them. This resolver-only diagnostic cannot establish whether World scheduled a particular contact. The separate native contact inspector below adds observed cell masks and core-window facts; actual dispatch, per-cell sleep and competing kernel mechanisms remain unobserved. For a concrete candidate comparison, duplicate Salt and set its Water reaction threshold to 0. Roll 0 succeeds; roll 1 fails in the compiled candidate. The unchanged production Water/Salt rule still succeeds on roll 1. Alternatively import [lab-zero-threshold-quench-v1.json](../../materials/catalogue/fixtures/lab-zero-threshold-quench-v1.json): the Lava/Water quench has one successful roll per orientation rather than 256, and the probe records 510 changed outcomes over both orientations. This isolates the edit from contact scheduling and preserves the production rule. For an actual authored contact, duplicate **Salt 23** and change both products of its Water pair to **Stone**. Run the Candidate test against Water. Native readback records Stone products, pair events and Water ledger changes instead of the reference's Brine products. The rule still uses the existing default initialization effect and"
+        },
+        {
+          "rank": 4,
+          "score": 16.840959,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Reaction authoring and deterministic diagnostics",
+          "part": 2,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Reaction authoring and deterministic diagnostics\npriority. Changed candidate rules receive generated product/accounting descriptions, so legacy prose cannot describe different products. The [Salt-to-Stone World preset](../../materials/catalogue/fixtures/lab-salt-stone-world-v1.json) contains this exact candidate for import and repetition. For retained state, import the [retained-Salt preset](../../materials/catalogue/fixtures/lab-salt-retain-world-v2.json), or duplicate Salt, keep Water's replacement with Brine and select **Keep existing** for the Salt endpoint. Salt acts as a retained participant instead of being replaced with a fresh product. For state-setting, import the [Metal charge preset](../../materials/catalogue/fixtures/lab-metal-charge-world-v2.json), or duplicate Metal and select **Set state B** on its Metal endpoint, for example 73, while retaining an admitted replacement on the other endpoint. Native endpoint fixtures seed non-default state and temperature, inspect the actual registers, quantity ledger and persistence, and exercise the countdown consumer."
+        },
+        {
+          "rank": 5,
+          "score": 14.884852,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 15. Materials Lab v1 implementation boundary — 2026-11-11",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-11\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 15. Materials Lab v1 implementation boundary — 2026-11-11\n**New owner authorization; implemented review candidate.** The owner requested desktop material inspection, validated source authoring, reusable presets, explicit supported reactions and native tests from current accepted main. Baseline was `d4b18e7f06839b35c8f6a66195206da0f33c5fa3`; isolated branch `codex/materials-lab-v1-20261111` holds the implementation. The [Lab runbook](../operations/materials-lab-authoring.md) owns controls and limits; the [dated audit](../audits/2026-11-11-materials-lab-v1.md) owns source, tests, platform evidence and outstanding gates. This authorization supersedes the earlier unstarted #355/#356 restriction for this bounded vertical slice. It does not authorize Ready, merge or default promotion. Native read-only metadata is the inspector's authority. Candidate edits use the existing compiler and frozen source guards; generated definitions are exercised by an external native descriptor/pair-resolution probe and a bounded compiled World comparison. The latter copies native source externally, adapts its descriptor/pair tables and compares against a separately compiled untouched reference. The review continuation adds a bounded external pair-application adapter for explicit endpoint effects v2 and source-bound World recipe round-trips. Existing-material tests reuse the MicroScenario host and authoritative World readback. Draft, validated, compiled/tested and runtime-active states stay distinct; v1 has no production candidate installer. Identity slots, 56 production pairs, protected source, quantity and saved-world semantics remain unchanged. Synthetic powder132 is an isolated non-hard fixture, with no production allocation or conflict with other branches' experimental identities. Explicit endpoint-effects v1 retains legacy `replace_with_defaults`. The isolated World backend additionally admits effects v2 non-Water `keep_existing` and declared Metal/Combustible `state_b` updates with role-preserving matching. Water state/ quantity effects, arbitrary registers, positional symmetric extended effects, new kernels and unsupported reaction slots remain rejected. The descriptor-only probe refuses extended effects rather than claiming it applied them. The native probe reports state defaults and positional outcomes; the separate World backend executes candidate movement, contacts, quantities, fresh repeats, one/four workers and same-build persistence. Those results qualify their exact default-policy fixture, not every authored material or host. Synthetic132, capability and visual-projection edits remain excluded from World execution. Production and cross-build saved-world compatibility are not inferred. #353-B requires a separate consumer/identity transition. On the 11 November review continuation the owner explicitly excluded MoltenGlass H1; it is not a Materials Lab delivery dependency. Historical investigation evidence remains unchanged, as do production thermal behavior and generic yielding rest. Current Workbench, agent-painting, liquid-equipment and ballistic-solids owners were rechecked before edits. The Lab adds a launcher/window seam and copied policy receipt; it does not add another Workbench, worker, resolver or native World. Existing production build/retained-runtime gates remain requirements for eventual integration. Broad #352–356 remain open after this v1 contribution. The owner-requested completion continuation adds a cold, copied native contact snapshot on the exclusive MicroScenario owner. Masks, stored/visible identities and"
+        }
+      ]
+    },
+    {
+      "id": "MLAB-05",
+      "query": "How do Materials Lab native simulation test cases reproduce Salt plus Water with source and worker identity?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "The existing MicroScenario host owns an isolated native World, with source, definition, seed, worker count and Water-family configuration retained.",
+        "The fixture observes768Brine after120ticks; native counts/state/quantities/hashes are authoritative, not images.",
+        "Fresh reference comparison and saved-case reconstruction are supported; one/four workers are tested and source mismatch refuses import."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 23.528567,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Native simulation experiments and reproducible cases > Inspect an actual native contact",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Native simulation experiments and reproducible cases > Inspect an actual native contact\nLeft-click the native preview to select a source cell and right-click to select a target. **Swap endpoints** tests the opposite source orientation. Set a byte roll and press **Inspect contact**; this pauses the exclusive test owner and copies both native cells from the same completed tick. Inspection never executes a reaction. Stored material, visible material, state A/B, raw stored temperature, body-mask identity, compiled kernel and pair capability remain separate facts. The report combines the real sparse resolver with observed neighbour distance, mask and selected source-core window facts. It also shows the preceding completed tick's applied window; that value is unobserved before the first tick. A target outside the selected core range is not automatically excluded, because contacts can reach the source core's write halo. A selected supplied roll cannot prove next-tick execution: per-cell sleeping, future wake deadlines, cell epochs, actual task dispatch, random bytes and competing neighbours remain explicitly unobserved. Editing coordinates/roll or advancing the owner retires the report. For a deterministic probability example, inspect adjacent native **Steam/Ice** cells with rolls **32** and **33**. The compiled threshold32 rule selects the reaction on32 and rejects33. The separate eligibility section explains any observed blocker without presenting the supplied roll as World's random stream. For a repeatable example, select **Salt 23 + Water 3**, seed 2, 120 ticks and four workers. Native readback observes the 384-cell Salt dose reacting with Water to produce **768 Brine cells**, with Water remaining in the bay. **Repeat / compare reference** reconstructs a clean owner with the same definition and checks exact final readback. Replay advances one tick per UI frame; **Pause** cancels it while preserving the source run. **Save test case…** records the definition, source identity, seed, worker count and applied Water-family selection in a digested envelope; **Import test case…** restores that configuration and its visible seed/duration/worker/policy controls transactionally. Prepared-run identity is shown separately from controls for a new pair. Native source or digest mismatches are refused. This is reproducible fixture reconstruction, not arbitrary World continuation or a save-format migration. Source: [experiment helper](../../godot/scripts/material_lab_experiment.gd). The previous [1024² manual laboratory](../MATERIAL_LAB.md) and the existing [MicroScenario reference pack](microscenario-reference-pack.md) retain their separate controls and evidence."
+        },
+        {
+          "rank": 2,
+          "score": 19.843605,
+          "path": "operations/microscenario-reference-pack.md",
+          "title": "MS-001 reference MicroScenario pack",
+          "heading": "MS-001 reference MicroScenario pack > Materials Laboratory worlds",
+          "part": 1,
+          "text": "Document: MS-001 reference MicroScenario pack\nPath: operations/microscenario-reference-pack.md\ndocument-kind: runbook\nstatus: Current\nscope: Exploratory Materials Laboratory, Flood-Control Puzzle and Simulation Stress Test definitions on the shared host, with fresh-reset A/B, world-state objectives and bounded telemetry\ncanonical-for: [microscenario-reference-pack, materials-laboratory-readiness, flood-control-scenario, simulation-stress-test, microscenario-workbench-controls]\nlast-reviewed: 2026-11-11\nSection: MS-001 reference MicroScenario pack > Materials Laboratory worlds\n| Catalogue ID | Complete definition and purpose | |---|---| | `materials/contact-lab` | Three sealed bays: Salt/Water dissolution, Lava/Water quenching, and a non-reacting Sand/Water transport control; 240-tick horizon; ordinary paint/erase for exploration | | `materials/salt-water` | Generated single-bay Salt/Water fixture, 384 Salt cells, existing shelf release at tick 12, 120-tick observations | | `materials/salt-water-dose-small` | Same controlled apparatus with 192 Salt cells; an explicit complete-definition A/B example, not a tuning verdict | | `materials/lava-water` | Generated Lava/Water contact with the existing Stone/Steam conversion; 120-tick observations | | `materials/sand-water-control` | Generated Sand/Water non-interaction control; transport may move materials, but no INT conversion rule is expected | | `materials/fire-gunpowder` | Existing Fire/Gunpowder combustion path; bounded material-count observations | | `materials/acid-metal` | Existing Acid/Metal corrosion path; Rust observations without changing corrosion policy | | `materials/spark-metal` | Existing Spark/base-Metal electrical interaction; declared cell-state/material observations | | `materials/cement-water` | Existing Cement cure under Water/air context; Concrete observations over a 240-tick horizon | All are recipe version 1, maturity `exploratory`, against the named current source/contact identity retained in each capture, Baseline transport and declared Water semantics. The original MS-001 fixtures retain their historical recipe identity; the INT-000 additions add no material-rule tuning. The declared seed moves the initial dose within its bay deterministically. It does not introduce a global RNG or an INT-000 profile. Ordinary setup rectangles provide reproducible material doses; finite existing erase events remove shelves. There is no generic pump, heater, fan, igniter, arbitrary-material recurring emitter or new reaction. `interaction_fixture(pair, seed, dose)` returns independent complete data. The retained `godot/tests/fixtures/ms001-salt-water-v1.json` is one generated definition, not a second implementation. Paste it into **Definition JSON**, or pass exactly that file to the CLI: ```text godot --headless --path godot --script res://tests/run_microscenario.gd -- --definition=/absolute/ms001-salt-water-v1.json --ticks=120 --workers=1 --mode=Benchmark --source-sha=<exact-checkout-40-hex-sha> --output=observation.json ``` The CLI refuses player/body-enabled definitions rather than silently omitting owners. Supplied fixtures disable those owners in both GUI and headless modes. A source SHA supplied by the caller is labelled as such; actual available script and native artifact hashes are retained separately. Missing exported source bytes remain unavailable rather than borrowing an old build identity."
+        },
+        {
+          "rank": 3,
+          "score": 19.421961,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Manual evaluation checklist",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Manual evaluation checklist\n- Open from the launcher and Shared Workbench; inspect Water, Sand, Slush, MoltenGlass and reserved 10. Confirm native/fallback/shadow distinctions and the origin of the copied solver policy. - Search for `23`, `powder`, `MoltenGlass` and a reaction partner; check physical and capability filters without implying semantic inheritance. - Create powder 132, change density/colour, validate and compile. Confirm no Runtime-active label and no production 132 in the browser. - Export/reimport the preset, then export a compiled bundle and import its `preset.json`. Tamper with a field/digest; require an actionable refusal and preservation of the current candidate. - Duplicate Salt, set threshold 0 and compare rolls 0/1 in the candidate and production resolver. Confirm explicit product-default effects. - Run Salt/Water for 120 ticks, read stored material/state, compare a clean reference, save/reopen the test and check one/four-worker agreement. - Apply CellularYield in the isolated test, inspect acknowledged policy and verify the ordinary Workbench remains its existing owner. - Duplicate Sand, set density500, compare both native Worlds against Water, inspect initial/final cells and export/reopen the World bundle. Edit settings while a compile runs and verify its older result cannot qualify the new recipe. - Cancel a compile and a reference replay; confirm the Lab stays usable and reports cancellation without a successful receipt. - Save/import a World recipe after changing placement, seed and workers; require exact restored controls, a validated state and a fresh compile before qualification. - Exercise Salt retention and a Metal state-B edit through **Test reaction in World**; check native registers/temperature and quantity evidence, not only the preview. - Select neighbouring native preview cells with left/right clicks, inspect a supplied roll, swap source/target and advance one step; the old contact report must retire and unobserved scheduling facts must remain labelled."
+        },
+        {
+          "rank": 4,
+          "score": 18.862261,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Reaction authoring and deterministic diagnostics",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Reaction authoring and deterministic diagnostics\nDuplicate Salt or Water to expose its existing sparse reaction slots. The Reactions tab edits both partners, both products, ordered/unordered/symmetric matching and threshold. Slot order remains priority order. Endpoint effects are explicit version 1 **replace_with_defaults** at both endpoints, retaining legacy product initialization. The endpoint selectors also admit a bounded **effects version 2** in the isolated compiled World: | Effect | Executed semantics and admission | |---|---| | `replace_with_defaults` | Existing product initialization, including same-identity products | | `keep_existing` | Preserve a non-Water participant's material, state A, state B and temperature; its product must equal its input identity | | `set_state` with `state_b` | Preserve material, state A and temperature; set B to an integer 0–255 only for the native Metal charge or Combustible burn countdown | Use Ordered or Unordered role-preserving matching for extended effects. Positional Symmetric effects, Water retention/state writes, undeclared registers and two keep-only endpoints are rejected. The editor aligns a retained endpoint's product with its participant. **Test reaction in World** selects the rule's pair and executes the native comparison; the descriptor/resolver-only test explicitly refuses extended effects. The production table and World implementation remain unchanged. State/epoch/wake details and executed acceptance belong to the dated audit and the [isolated adapter](../../tools/material_catalogue/reaction_effects.py). Arbitrary conservation claims are not inferred from product names; inspect the reported defaults and native experiment quantities. Historical probability is inclusive: threshold **T means (T + 1) / 256**. Threshold 0 is a 1/256 chance. The native diagnostic distinguishes no matching rule, failed supplied roll and selected reaction. It reports endpoint products, priority and state/quantity implications where the native API provides them. This resolver-only diagnostic cannot establish whether World scheduled a particular contact. The separate native contact inspector below adds observed cell masks and core-window facts; actual dispatch, per-cell sleep and competing kernel mechanisms remain unobserved. For a concrete candidate comparison, duplicate Salt and set its Water reaction threshold to 0. Roll 0 succeeds; roll 1 fails in the compiled candidate. The unchanged production Water/Salt rule still succeeds on roll 1. Alternatively import [lab-zero-threshold-quench-v1.json](../../materials/catalogue/fixtures/lab-zero-threshold-quench-v1.json): the Lava/Water quench has one successful roll per orientation rather than 256, and the probe records 510 changed outcomes over both orientations. This isolates the edit from contact scheduling and preserves the production rule. For an actual authored contact, duplicate **Salt 23** and change both products of its Water pair to **Stone**. Run the Candidate test against Water. Native readback records Stone products, pair events and Water ledger changes instead of the reference's Brine products. The rule still uses the existing default initialization effect and"
+        },
+        {
+          "rank": 5,
+          "score": 17.668308,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Reaction authoring and deterministic diagnostics",
+          "part": 2,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Reaction authoring and deterministic diagnostics\npriority. Changed candidate rules receive generated product/accounting descriptions, so legacy prose cannot describe different products. The [Salt-to-Stone World preset](../../materials/catalogue/fixtures/lab-salt-stone-world-v1.json) contains this exact candidate for import and repetition. For retained state, import the [retained-Salt preset](../../materials/catalogue/fixtures/lab-salt-retain-world-v2.json), or duplicate Salt, keep Water's replacement with Brine and select **Keep existing** for the Salt endpoint. Salt acts as a retained participant instead of being replaced with a fresh product. For state-setting, import the [Metal charge preset](../../materials/catalogue/fixtures/lab-metal-charge-world-v2.json), or duplicate Metal and select **Set state B** on its Metal endpoint, for example 73, while retaining an admitted replacement on the other endpoint. Native endpoint fixtures seed non-default state and temperature, inspect the actual registers, quantity ledger and persistence, and exercise the countdown consumer."
+        }
+      ]
+    },
+    {
+      "id": "MLAB-06",
+      "query": "Can Materials Lab v1 install authored physics, and which production compatibility gates remain separate?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Production132slots including invalid10,56rules, source identity and saved-world semantics remain unchanged.",
+        "Production activation remains a separately qualified353-B consumer/identity transition.",
+        "The owner excluded MoltenGlass H1 from this continuation; it is not a Materials Lab delivery dependency."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 23.102934,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Qualification and remaining gates",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Qualification and remaining gates\nFocused executable regressions are `test_material_lab_catalogue.gd`, `test_material_lab_experiment.gd`, `test_material_lab_ui.gd`, `test_material_lab_service.gd`, `test_material_lab_world.gd`, `test_material_lab_diagnostics.gd`, `tools/material_catalogue/test_lab.py`, `test_world_candidate.py`, `test_world_case.py`, `test_reaction_effects.py` and `test_process_owner.py`. The UI regression mounts the actual scene and executes Python, C++ and the native World. The graphical capture script is `godot/tests/capture_material_lab.gd`; the full mounted UI test also accepts `-- --capture-output=<absolute-directory>` to retain its executed effects-v2 World view, native receipt and source/library/display manifest. Commands and outcomes are retained in the [audit](../audits/2026-11-11-materials-lab-v1.md). The bounded #353-B hard/granular capability consumer is isolated in [Draft #563](https://github.com/techrote/cybersand/pull/563), stacked on the Lab Draft. Its generated maps, independent source-matched equivalence campaign and authenticated compatibility transition do not install authored candidates or alter the Lab branch's production consumers. Wider endpoint and quantity semantics require additional native contracts. The owner explicitly excluded MoltenGlass H1 from this continuation; it is not a Materials Lab delivery dependency. Historical liveness evidence is preserved. No production thermal law, native identity or saved-World semantics change in this Lab implementation."
+        },
+        {
+          "rank": 2,
+          "score": 19.852387,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 15. Materials Lab v1 implementation boundary — 2026-11-11",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-11\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 15. Materials Lab v1 implementation boundary — 2026-11-11\n**New owner authorization; implemented review candidate.** The owner requested desktop material inspection, validated source authoring, reusable presets, explicit supported reactions and native tests from current accepted main. Baseline was `d4b18e7f06839b35c8f6a66195206da0f33c5fa3`; isolated branch `codex/materials-lab-v1-20261111` holds the implementation. The [Lab runbook](../operations/materials-lab-authoring.md) owns controls and limits; the [dated audit](../audits/2026-11-11-materials-lab-v1.md) owns source, tests, platform evidence and outstanding gates. This authorization supersedes the earlier unstarted #355/#356 restriction for this bounded vertical slice. It does not authorize Ready, merge or default promotion. Native read-only metadata is the inspector's authority. Candidate edits use the existing compiler and frozen source guards; generated definitions are exercised by an external native descriptor/pair-resolution probe and a bounded compiled World comparison. The latter copies native source externally, adapts its descriptor/pair tables and compares against a separately compiled untouched reference. The review continuation adds a bounded external pair-application adapter for explicit endpoint effects v2 and source-bound World recipe round-trips. Existing-material tests reuse the MicroScenario host and authoritative World readback. Draft, validated, compiled/tested and runtime-active states stay distinct; v1 has no production candidate installer. Identity slots, 56 production pairs, protected source, quantity and saved-world semantics remain unchanged. Synthetic powder132 is an isolated non-hard fixture, with no production allocation or conflict with other branches' experimental identities. Explicit endpoint-effects v1 retains legacy `replace_with_defaults`. The isolated World backend additionally admits effects v2 non-Water `keep_existing` and declared Metal/Combustible `state_b` updates with role-preserving matching. Water state/ quantity effects, arbitrary registers, positional symmetric extended effects, new kernels and unsupported reaction slots remain rejected. The descriptor-only probe refuses extended effects rather than claiming it applied them. The native probe reports state defaults and positional outcomes; the separate World backend executes candidate movement, contacts, quantities, fresh repeats, one/four workers and same-build persistence. Those results qualify their exact default-policy fixture, not every authored material or host. Synthetic132, capability and visual-projection edits remain excluded from World execution. Production and cross-build saved-world compatibility are not inferred. #353-B requires a separate consumer/identity transition. On the 11 November review continuation the owner explicitly excluded MoltenGlass H1; it is not a Materials Lab delivery dependency. Historical investigation evidence remains unchanged, as do production thermal behavior and generic yielding rest. Current Workbench, agent-painting, liquid-equipment and ballistic-solids owners were rechecked before edits. The Lab adds a launcher/window seam and copied policy receipt; it does not add another Workbench, worker, resolver or native World. Existing production build/retained-runtime gates remain requirements for eventual integration. Broad #352–356 remain open after this v1 contribution. The owner-requested completion continuation adds a cold, copied native contact snapshot on the exclusive MicroScenario owner. Masks, stored/visible identities and"
+        },
+        {
+          "rank": 3,
+          "score": 19.523701,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > Contents",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-11\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > Contents\n1. [Authority and preserved substrate](#1-authority-and-preserved-substrate) — what already exists, and what the programme may not overwrite. 2. [Source findings and fault hypotheses](#2-source-findings-and-fault-hypotheses) — exact observations, ownership and required reproductions. 3. [Orthogonal material classification](#3-orthogonal-material-classification) — browsing, physics, semantics and presentation stay independent. 4. [Canonical source model and compiler](#4-canonical-source-model-and-compiler) — source layout, generated outputs and hard validation. 5. [Interaction effects and effective parameters](#5-interaction-effects-and-effective-parameters) — explicit endpoint semantics, threshold representation and real kernel consumers. 6. [Scheduling and liveness qualification](#6-scheduling-and-liveness-qualification) — bounded wake obligations and gameplay-decision gates. 7. [Identity, compatibility and resource budgets](#7-identity-compatibility-and-resource-budgets) — do not change saves, cells, runtime authority or replay claims accidentally. 8. [Materials Lab authoring workflow](#8-materials-lab-authoring-workflow) — usable editing without fake live sliders or fallback claims. 9. [Issue dependency and acceptance plan](#9-issue-dependency-and-acceptance-plan) — finite steps, qualification, rollback and write-set separation. 10. [Decisions held for explicit disposition](#10-decisions-held-for-explicit-disposition) — questions to resolve with evidence rather than guesswork. 11. [Current-main review and implementation admission](#11-current-main-review-and-implementation-admission--2026-11-03) — corrected compatibility boundary, minimum compiler slice and owner decisions. 12. [Owner adoption and shadow-compiler handover](#12-owner-adoption-and-shadow-compiler-handover--2026-11-04) — documentation-only approval, separate implementation assignment and preserved compatibility gates. 13. [Bounded compatibility tooling and adopted-main reconciliation](#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04) — implemented shadow foundation, source-preserving integration and separate consumer-migration gates. 14. [Material liveness Phase A and production admission](#14-material-liveness-phase-a-and-production-admission--2026-11-04) — merged foundation, three distinct findings and separately pending scheduler implementation."
+        },
+        {
+          "rank": 4,
+          "score": 18.065987,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Save, import, compile and compare",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Save, import, compile and compare\n**Save / export preset…** writes a version-1 JSON envelope containing the exact candidate, source catalogue digest and deterministic candidate SHA-256. **Import preset…** verifies the envelope, digest, schema, current compatibility and source identity before replacing the displayed candidate. Tampered or malformed imports preserve the current candidate. The file is reusable with the same admitted source; it is not a saved World. **Compile + native test** generates the complete expanded candidate catalogue, C++ definitions and Godot metadata in a temporary external build, compiles the native probe, executes it and displays a receipt. **Export compiled bundle…** performs the same operation and saves to a fresh child directory outside the repository. The bundle contains the preset, generated files and source-bound receipt for review. Import the bundle's `preset.json` to reopen its candidate; the temporary executable is deliberately not exported. It records the compiler/version and hashes of native source inputs, generated files and the probe executable; native source identity is checked before and after compilation. The probe consumes the generated descriptor/capability/appearance values and uses the actual native sparse pair resolver over all 256 byte rolls and every unique directed pair in the union of production and candidate rules. Removed pairs remain in the comparison; self-pairs and opposite ordered rules are not double-counted. It records changed outcomes, deterministic example rolls and positional products. It reports the generated product descriptors' initial state bytes. **It does not execute World's endpoint/Water-quantity initialization, install a candidate in World, simulate candidate movement or establish quantity conservation over time.** The separate **Candidate test** backend below supplies that bounded World execution. Authoring runs in a polled child process with **Cancel authoring**, bounded output and a five-minute desktop wall limit. **Cancel World test** uses the same cancellation marker. The compiler/probe process tree is terminated on timeout or cancellation; cancelled/failed jobs cannot qualify a candidate. Closing gives cleanup at most two seconds before terminating an unresponsive process. These process controls use a private Windows Job Object established before the child executes, or a POSIX process group. Descendants are retired even if their driver already exited or redirected its streams. Four actual descendant-lifetime fixtures run on both platforms; their platform-qualified results belong to the completion record. CLI request/response paths cannot overwrite a preset or a compiled bundle through response-path aliasing."
+        },
+        {
+          "rank": 5,
+          "score": 18.045458,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Launch and prerequisites",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Launch and prerequisites\nUse a complete checkout of the implementation branch and its history. Git LFS and the ordinary [desktop dependencies](local-build-and-validation.md) remain required. Godot is pinned to **4.7.stable.official.5b4e0cb0f** and godot-cpp to `101ae38034304346a46ea9ea84ae156d3e860496`. Rebuild the matching GDExtension: an older retained production binary predates the new read-only inspector methods. An older library causes an explicit rebuild message, not a metadata fallback. Use a freshly qualified branch runtime only when its provenance matches the checkout's native inputs; the completion publisher provides that explicit path. ```sh # Use the existing pinned build environment; see the local-build guide for setup. tools/build_pinned_godot_cpp.sh linux tools/build_native_extension.sh godot --path godot -- --materials-lab ``` Read-only inspection and native experiments require the matching engine library. Candidate authoring additionally requires Python 3, Git history and a C++20 compiler for **Compile + native test**. The Candidate tab accepts Python and compiler executable paths without shell arguments. A compiler override is also available through `CYBERSAND_LAB_CXX`. Source tools must remain next to the Godot project; this is a desktop source workflow, not an exported/Web authoring service. No install operation writes production sources."
+        }
+      ]
+    },
+    {
+      "id": "MLAB-07",
+      "query": "How can I compare an edited material in a compiled native World against untouched source and inspect actual cells and quantities?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Candidate test compiles the native World twice: untouched reference and externally adapted generated tables, with matching recipe and default solver configuration.",
+        "Density500 Sand and authored Salt/Water products have actual stored-cell outcomes; repeat, one/four workers, same-build persistence and quantity checks accompany the receipt.",
+        "Synthetic132 and changed hard/granular or visual-state capabilities are refused by this World backend. Production activation and cross-build saves remain unqualified."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 24.942721,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Compare an edited candidate in a real native World",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Compare an edited candidate in a real native World\nThe **Candidate test** tab compiles the actual native `World` twice in temporary directories: once from untouched source, once with staged descriptor and sparse-rule tables adapted to compiler-generated definitions. Extended endpoint effects additionally use a bounded external pair-application adapter. The same bounded bay, seed, placement and tick count run in both. Repository source, production binaries and the shared running World are not rewritten. Duplicate **Sand 2**, set density **500** and a distinct base RGBA, then select **Candidate test**, **Upper dose**, partner **Water 3**, seed **2**, **120** ticks and **4** workers. Press **Compile + compare World**. The candidate penetrates less deeply than the untouched reference while preserving Water quantity. Both images derive from actual stored material/state and compiled RGBA. The initial/final selector and stored-coordinate inspector expose material, state A, state B and temperature; the counts and ledger provide evidence beyond images. No palette-shader parity is claimed by this readback preview. The reusable [low-density Sand preset](../../materials/catalogue/fixtures/lab-low-density-sand-world-v1.json) contains the exact density/RGBA candidate exercised by native acceptance. Supported World edits are existing-ID density, base RGBA, consumed descriptor viscosity and admitted sparse-pair/effects edits. Synthetic132, capability changes and visual-state projection changes are refused with actionable paths; their descriptor compilation remains available. Kernels, identity and state contracts stay held to the chosen template. The test uses native default solver settings; it does not inherit the Workbench's applied solver configuration. Each build checks fresh deterministic repetition, one/four-worker equality, same-build persistence continuation and the full native quantity ledger. Receipts retain actual worker participation, full native source/staged/generated hashes, compiler identity, exact scenario, stored grids, initial/final state and products. Persistence compares canonical physical state, cells, registers, temperature and quantities; the historical state hash is retained separately because restoration normalizes inactive quiet counters. Fresh repeats and worker comparisons retain the exact historical-hash check as well. A one-tick regression covers this distinction. The native probe reuses the Lab's bay geometry and `demo::construct`; it is not an exact replay of the mounted `MicroScenarioHost`. Its receipt records raw native default transport, capacities and interest rectangle. Candidate and reference share these settings; their hashes are not asserted equal to the separate mounted host. Per-cell scheduling eligibility and sleep deadlines remain unavailable; aggregate activity and completed native ticks are reported. **Export World test bundle…** rebuilds/tests into a fresh external child directory and saves the versioned preset, full source-staged reference/candidate fixtures, generated definitions and `world-receipt.json`. Executables and saved Worlds are excluded. Import `preset.json` to edit it again. The receipt's `scenario` can be passed unchanged to `compile_world_test` through the existing JSON request CLI for reproduction. These test results qualify the"
+        },
+        {
+          "rank": 2,
+          "score": 22.114219,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Manual evaluation checklist",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Manual evaluation checklist\n- Open from the launcher and Shared Workbench; inspect Water, Sand, Slush, MoltenGlass and reserved 10. Confirm native/fallback/shadow distinctions and the origin of the copied solver policy. - Search for `23`, `powder`, `MoltenGlass` and a reaction partner; check physical and capability filters without implying semantic inheritance. - Create powder 132, change density/colour, validate and compile. Confirm no Runtime-active label and no production 132 in the browser. - Export/reimport the preset, then export a compiled bundle and import its `preset.json`. Tamper with a field/digest; require an actionable refusal and preservation of the current candidate. - Duplicate Salt, set threshold 0 and compare rolls 0/1 in the candidate and production resolver. Confirm explicit product-default effects. - Run Salt/Water for 120 ticks, read stored material/state, compare a clean reference, save/reopen the test and check one/four-worker agreement. - Apply CellularYield in the isolated test, inspect acknowledged policy and verify the ordinary Workbench remains its existing owner. - Duplicate Sand, set density500, compare both native Worlds against Water, inspect initial/final cells and export/reopen the World bundle. Edit settings while a compile runs and verify its older result cannot qualify the new recipe. - Cancel a compile and a reference replay; confirm the Lab stays usable and reports cancellation without a successful receipt. - Save/import a World recipe after changing placement, seed and workers; require exact restored controls, a validated state and a fresh compile before qualification. - Exercise Salt retention and a Metal state-B edit through **Test reaction in World**; check native registers/temperature and quantity evidence, not only the preview. - Select neighbouring native preview cells with left/right clicks, inspect a supplied roll, swap source/target and advance one step; the old contact report must retire and unobserved scheduling facts must remain labelled."
+        },
+        {
+          "rank": 3,
+          "score": 21.171943,
+          "path": "operations/microscenario-reference-pack.md",
+          "title": "MS-001 reference MicroScenario pack",
+          "heading": "MS-001 reference MicroScenario pack > Inspection, control and fresh-reset A/B > Apparatus A/B and authored material tests",
+          "part": 1,
+          "text": "Document: MS-001 reference MicroScenario pack\nPath: operations/microscenario-reference-pack.md\ndocument-kind: runbook\nstatus: Current\nscope: Exploratory Materials Laboratory, Flood-Control Puzzle and Simulation Stress Test definitions on the shared host, with fresh-reset A/B, world-state objectives and bounded telemetry\ncanonical-for: [microscenario-reference-pack, materials-laboratory-readiness, flood-control-scenario, simulation-stress-test, microscenario-workbench-controls]\nlast-reviewed: 2026-11-11\nSection: MS-001 reference MicroScenario pack > Inspection, control and fresh-reset A/B > Apparatus A/B and authored material tests\nGenerated apparatus definitions belong to the fresh-reset A/B workflow above: store both complete validated definitions, compare at the same completed tick, and load each through the acknowledged owner reset. The live worker's material physics is unchanged. Inspect temperature through existing stored-cell probes; masked temperature and per-cell sleeping state are not invented. Scheduler work, native tick time, host observation time and whole-frame cost retain their separate telemetry meanings below. For changes to material density or reaction products themselves, the separate [Materials Lab candidate test](materials-lab-authoring.md#compare-an-edited-candidate-in-a-real-native-world) compiles generated material definitions into an external native World and compares them with untouched source. Its finite bay reuses this pack's geometry, with its own explicitly recorded configuration. It does not mutate the live worker, replace the shared host, or establish hash parity with an apparatus A/B capture. Choose the corresponding workflow and retain its source/definition/worker receipt."
+        },
+        {
+          "rank": 4,
+          "score": 20.759084,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 7. Identity, compatibility and resource budgets",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-11\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 7. Identity, compatibility and resource budgets\n**Hard invariants:** existing byte IDs, reserved 10, material products, default C64/E8 Cell/storage contract, `state_a/state_b` meaning, full-physical state hash/version, current save/level formats, generic World ownership, native/Godot worker separation, source-matched runtime publication, LCB policy compatibility and non-kinetic interaction ownership. Avoid conflating four independent identities: - **Material registry identity:** stable authored content keys and numeric ID table. - **Compiled catalogue/effective policy identity:** exact schema, resolved parameters, families, interactions, generator version. - **Source/runtime/artifact identity:** commit, build/dependencies, native library bytes and platform. - **World state identity:** actual active material cells, state, auxiliary solver state, schedule, mutable quantities. The current transport schema v1 has 81 material entries and six pair settings for every old 81×81 slot; extension must be schema-versioned rather than silently changing that profile's serialized shape. Later material defaults need explicit acknowledgement in the inspector. The initial generator is **build-time**. A later approved immutable per-World tuning overlay can be admitted at a validate → reconstruct same setup → atomic owner swap boundary; a malformed policy leaves the previous World untouched. Never mutate the global compiled descriptor table during worker execution. Current GDScript fallback uses only a subset of native behaviours: generated IDs do not establish native-fallback chemistry parity. No unmeasured compile-time or runtime performance claims. Benchmark generated lookup and table size against Current; maintain bounded hot-path cost."
+        },
+        {
+          "rank": 5,
+          "score": 19.042207,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Native simulation experiments and reproducible cases > Inspect an actual native contact",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Native simulation experiments and reproducible cases > Inspect an actual native contact\nLeft-click the native preview to select a source cell and right-click to select a target. **Swap endpoints** tests the opposite source orientation. Set a byte roll and press **Inspect contact**; this pauses the exclusive test owner and copies both native cells from the same completed tick. Inspection never executes a reaction. Stored material, visible material, state A/B, raw stored temperature, body-mask identity, compiled kernel and pair capability remain separate facts. The report combines the real sparse resolver with observed neighbour distance, mask and selected source-core window facts. It also shows the preceding completed tick's applied window; that value is unobserved before the first tick. A target outside the selected core range is not automatically excluded, because contacts can reach the source core's write halo. A selected supplied roll cannot prove next-tick execution: per-cell sleeping, future wake deadlines, cell epochs, actual task dispatch, random bytes and competing neighbours remain explicitly unobserved. Editing coordinates/roll or advancing the owner retires the report. For a deterministic probability example, inspect adjacent native **Steam/Ice** cells with rolls **32** and **33**. The compiled threshold32 rule selects the reaction on32 and rejects33. The separate eligibility section explains any observed blocker without presenting the supplied roll as World's random stream. For a repeatable example, select **Salt 23 + Water 3**, seed 2, 120 ticks and four workers. Native readback observes the 384-cell Salt dose reacting with Water to produce **768 Brine cells**, with Water remaining in the bay. **Repeat / compare reference** reconstructs a clean owner with the same definition and checks exact final readback. Replay advances one tick per UI frame; **Pause** cancels it while preserving the source run. **Save test case…** records the definition, source identity, seed, worker count and applied Water-family selection in a digested envelope; **Import test case…** restores that configuration and its visible seed/duration/worker/policy controls transactionally. Prepared-run identity is shown separately from controls for a new pair. Native source or digest mismatches are refused. This is reproducible fixture reconstruction, not arbitrary World continuation or a save-format migration. Source: [experiment helper](../../godot/scripts/material_lab_experiment.gd). The previous [1024² manual laboratory](../MATERIAL_LAB.md) and the existing [MicroScenario reference pack](microscenario-reference-pack.md) retain their separate controls and evidence."
+        }
+      ]
+    },
+    {
+      "id": "MLAB-08",
+      "query": "How do I save and import a source-bound candidate World recipe with the same material, partner, seed, ticks and workers?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Save World recipe writes a strict versioned case containing the candidate, scenario and native-input source hashes with deterministic digests.",
+        "Import restores the candidate and visible controls as Validated candidate, clears prior test evidence and requires a fresh compiled World run.",
+        "Executable source changes, malformed fields and tampered digests refuse import; Git metadata-only changes do not invalidate identical inputs."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 31.349573,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Compare an edited candidate in a real native World",
+          "part": 2,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Compare an edited candidate in a real native World\nstated fixture only; they do not establish cross-build saved-world compatibility or production activation. **Save World recipe…** stores the candidate, placement/partner, seed, ticks, workers and executable-source hashes in a versioned, digested JSON case. **Import World recipe…** restores the candidate and all visible controls together. Import validates the case but never restores a previous successful test claim: press **Compile + compare World** for a fresh result. Changed inputs, invalid IDs, malformed/duplicate fields and digest mismatches are refused. A documentation-only Git commit does not invalidate a recipe when all captured executable inputs are unchanged. A source mismatch requires explicit candidate reconciliation; it is not silently treated as the same experiment. Sources: [World compiler backend](../../tools/material_catalogue/world_candidate.py), [native probe](../../tools/material_catalogue/lab_world_probe.cpp), [comparison view](../../godot/scripts/material_lab_world_panel.gd)."
+        },
+        {
+          "rank": 2,
+          "score": 25.638095,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Manual evaluation checklist",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Manual evaluation checklist\n- Open from the launcher and Shared Workbench; inspect Water, Sand, Slush, MoltenGlass and reserved 10. Confirm native/fallback/shadow distinctions and the origin of the copied solver policy. - Search for `23`, `powder`, `MoltenGlass` and a reaction partner; check physical and capability filters without implying semantic inheritance. - Create powder 132, change density/colour, validate and compile. Confirm no Runtime-active label and no production 132 in the browser. - Export/reimport the preset, then export a compiled bundle and import its `preset.json`. Tamper with a field/digest; require an actionable refusal and preservation of the current candidate. - Duplicate Salt, set threshold 0 and compare rolls 0/1 in the candidate and production resolver. Confirm explicit product-default effects. - Run Salt/Water for 120 ticks, read stored material/state, compare a clean reference, save/reopen the test and check one/four-worker agreement. - Apply CellularYield in the isolated test, inspect acknowledged policy and verify the ordinary Workbench remains its existing owner. - Duplicate Sand, set density500, compare both native Worlds against Water, inspect initial/final cells and export/reopen the World bundle. Edit settings while a compile runs and verify its older result cannot qualify the new recipe. - Cancel a compile and a reference replay; confirm the Lab stays usable and reports cancellation without a successful receipt. - Save/import a World recipe after changing placement, seed and workers; require exact restored controls, a validated state and a fresh compile before qualification. - Exercise Salt retention and a Metal state-B edit through **Test reaction in World**; check native registers/temperature and quantity evidence, not only the preview. - Select neighbouring native preview cells with left/right clicks, inspect a supplied roll, swap source/target and advance one step; the old contact report must retire and unobserved scheduling facts must remain labelled."
+        },
+        {
+          "rank": 3,
+          "score": 23.58369,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Native simulation experiments and reproducible cases",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Native simulation experiments and reproducible cases\nSelect existing materials and a partner, then choose **Prepare selected + partner**. Set a bounded tick count, seed, one/four workers and the supported Water policy. **Step** advances one actual native tick; **Run bounded window** advances at most one tick per UI frame and stops at the requested endpoint. The UI and helper admit 1 through 600 ticks. The experiment reuses `MicroScenarioHost`, its contract and the reference pack. It owns a separate native World. Native material counts, stored cells/state, Water quantity, content/state hashes, applied policy and aggregate statistics are the evidence. The image is an illustrative view of that same World. Seed selects fixture construction, not a new global/native RNG policy."
+        },
+        {
+          "rank": 4,
+          "score": 19.963336,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Compare an edited candidate in a real native World",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Compare an edited candidate in a real native World\nThe **Candidate test** tab compiles the actual native `World` twice in temporary directories: once from untouched source, once with staged descriptor and sparse-rule tables adapted to compiler-generated definitions. Extended endpoint effects additionally use a bounded external pair-application adapter. The same bounded bay, seed, placement and tick count run in both. Repository source, production binaries and the shared running World are not rewritten. Duplicate **Sand 2**, set density **500** and a distinct base RGBA, then select **Candidate test**, **Upper dose**, partner **Water 3**, seed **2**, **120** ticks and **4** workers. Press **Compile + compare World**. The candidate penetrates less deeply than the untouched reference while preserving Water quantity. Both images derive from actual stored material/state and compiled RGBA. The initial/final selector and stored-coordinate inspector expose material, state A, state B and temperature; the counts and ledger provide evidence beyond images. No palette-shader parity is claimed by this readback preview. The reusable [low-density Sand preset](../../materials/catalogue/fixtures/lab-low-density-sand-world-v1.json) contains the exact density/RGBA candidate exercised by native acceptance. Supported World edits are existing-ID density, base RGBA, consumed descriptor viscosity and admitted sparse-pair/effects edits. Synthetic132, capability changes and visual-state projection changes are refused with actionable paths; their descriptor compilation remains available. Kernels, identity and state contracts stay held to the chosen template. The test uses native default solver settings; it does not inherit the Workbench's applied solver configuration. Each build checks fresh deterministic repetition, one/four-worker equality, same-build persistence continuation and the full native quantity ledger. Receipts retain actual worker participation, full native source/staged/generated hashes, compiler identity, exact scenario, stored grids, initial/final state and products. Persistence compares canonical physical state, cells, registers, temperature and quantities; the historical state hash is retained separately because restoration normalizes inactive quiet counters. Fresh repeats and worker comparisons retain the exact historical-hash check as well. A one-tick regression covers this distinction. The native probe reuses the Lab's bay geometry and `demo::construct`; it is not an exact replay of the mounted `MicroScenarioHost`. Its receipt records raw native default transport, capacities and interest rectangle. Candidate and reference share these settings; their hashes are not asserted equal to the separate mounted host. Per-cell scheduling eligibility and sleep deadlines remain unavailable; aggregate activity and completed native ticks are reported. **Export World test bundle…** rebuilds/tests into a fresh external child directory and saves the versioned preset, full source-staged reference/candidate fixtures, generated definitions and `world-receipt.json`. Executables and saved Worlds are excluded. Import `preset.json` to edit it again. The receipt's `scenario` can be passed unchanged to `compile_world_test` through the existing JSON request CLI for reproduction. These test results qualify the"
+        },
+        {
+          "rank": 5,
+          "score": 19.778109,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Native simulation experiments and reproducible cases > Inspect an actual native contact",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Native simulation experiments and reproducible cases > Inspect an actual native contact\nLeft-click the native preview to select a source cell and right-click to select a target. **Swap endpoints** tests the opposite source orientation. Set a byte roll and press **Inspect contact**; this pauses the exclusive test owner and copies both native cells from the same completed tick. Inspection never executes a reaction. Stored material, visible material, state A/B, raw stored temperature, body-mask identity, compiled kernel and pair capability remain separate facts. The report combines the real sparse resolver with observed neighbour distance, mask and selected source-core window facts. It also shows the preceding completed tick's applied window; that value is unobserved before the first tick. A target outside the selected core range is not automatically excluded, because contacts can reach the source core's write halo. A selected supplied roll cannot prove next-tick execution: per-cell sleeping, future wake deadlines, cell epochs, actual task dispatch, random bytes and competing neighbours remain explicitly unobserved. Editing coordinates/roll or advancing the owner retires the report. For a deterministic probability example, inspect adjacent native **Steam/Ice** cells with rolls **32** and **33**. The compiled threshold32 rule selects the reaction on32 and rejects33. The separate eligibility section explains any observed blocker without presenting the supplied roll as World's random stream. For a repeatable example, select **Salt 23 + Water 3**, seed 2, 120 ticks and four workers. Native readback observes the 384-cell Salt dose reacting with Water to produce **768 Brine cells**, with Water remaining in the bay. **Repeat / compare reference** reconstructs a clean owner with the same definition and checks exact final readback. Replay advances one tick per UI frame; **Pause** cancels it while preserving the source run. **Save test case…** records the definition, source identity, seed, worker count and applied Water-family selection in a digested envelope; **Import test case…** restores that configuration and its visible seed/duration/worker/policy controls transactionally. Prepared-run identity is shown separately from controls for a new pair. Native source or digest mismatches are refused. This is reproducible fixture reconstruction, not arbitrary World continuation or a save-format migration. Source: [experiment helper](../../godot/scripts/material_lab_experiment.gd). The previous [1024² manual laboratory](../MATERIAL_LAB.md) and the existing [MicroScenario reference pack](microscenario-reference-pack.md) retain their separate controls and evidence."
+        }
+      ]
+    },
+    {
+      "id": "MLAB-09",
+      "query": "How does native contact inspection distinguish masks and source-core window exclusion from a supplied reaction probability roll?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Left and right preview clicks select source and target; inspection pauses the exclusive owner and copies actual stored/visible IDs, state, temperature and masks at one completed tick.",
+        "The report distinguishes neighbour, source-core and mask facts from the compiled resolver result at a supplied byte roll; target-core halo access is not incorrectly excluded.",
+        "Per-cell sleeping, future deadlines, epochs, task dispatch and actual random bytes remain unobserved; inspection never executes a reaction and step/input changes retire it."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 32.628253,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Native simulation experiments and reproducible cases > Inspect an actual native contact",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Native simulation experiments and reproducible cases > Inspect an actual native contact\nLeft-click the native preview to select a source cell and right-click to select a target. **Swap endpoints** tests the opposite source orientation. Set a byte roll and press **Inspect contact**; this pauses the exclusive test owner and copies both native cells from the same completed tick. Inspection never executes a reaction. Stored material, visible material, state A/B, raw stored temperature, body-mask identity, compiled kernel and pair capability remain separate facts. The report combines the real sparse resolver with observed neighbour distance, mask and selected source-core window facts. It also shows the preceding completed tick's applied window; that value is unobserved before the first tick. A target outside the selected core range is not automatically excluded, because contacts can reach the source core's write halo. A selected supplied roll cannot prove next-tick execution: per-cell sleeping, future wake deadlines, cell epochs, actual task dispatch, random bytes and competing neighbours remain explicitly unobserved. Editing coordinates/roll or advancing the owner retires the report. For a deterministic probability example, inspect adjacent native **Steam/Ice** cells with rolls **32** and **33**. The compiled threshold32 rule selects the reaction on32 and rejects33. The separate eligibility section explains any observed blocker without presenting the supplied roll as World's random stream. For a repeatable example, select **Salt 23 + Water 3**, seed 2, 120 ticks and four workers. Native readback observes the 384-cell Salt dose reacting with Water to produce **768 Brine cells**, with Water remaining in the bay. **Repeat / compare reference** reconstructs a clean owner with the same definition and checks exact final readback. Replay advances one tick per UI frame; **Pause** cancels it while preserving the source run. **Save test case…** records the definition, source identity, seed, worker count and applied Water-family selection in a digested envelope; **Import test case…** restores that configuration and its visible seed/duration/worker/policy controls transactionally. Prepared-run identity is shown separately from controls for a new pair. Native source or digest mismatches are refused. This is reproducible fixture reconstruction, not arbitrary World continuation or a save-format migration. Source: [experiment helper](../../godot/scripts/material_lab_experiment.gd). The previous [1024² manual laboratory](../MATERIAL_LAB.md) and the existing [MicroScenario reference pack](microscenario-reference-pack.md) retain their separate controls and evidence."
+        },
+        {
+          "rank": 2,
+          "score": 30.550187,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Reaction authoring and deterministic diagnostics",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Reaction authoring and deterministic diagnostics\nDuplicate Salt or Water to expose its existing sparse reaction slots. The Reactions tab edits both partners, both products, ordered/unordered/symmetric matching and threshold. Slot order remains priority order. Endpoint effects are explicit version 1 **replace_with_defaults** at both endpoints, retaining legacy product initialization. The endpoint selectors also admit a bounded **effects version 2** in the isolated compiled World: | Effect | Executed semantics and admission | |---|---| | `replace_with_defaults` | Existing product initialization, including same-identity products | | `keep_existing` | Preserve a non-Water participant's material, state A, state B and temperature; its product must equal its input identity | | `set_state` with `state_b` | Preserve material, state A and temperature; set B to an integer 0–255 only for the native Metal charge or Combustible burn countdown | Use Ordered or Unordered role-preserving matching for extended effects. Positional Symmetric effects, Water retention/state writes, undeclared registers and two keep-only endpoints are rejected. The editor aligns a retained endpoint's product with its participant. **Test reaction in World** selects the rule's pair and executes the native comparison; the descriptor/resolver-only test explicitly refuses extended effects. The production table and World implementation remain unchanged. State/epoch/wake details and executed acceptance belong to the dated audit and the [isolated adapter](../../tools/material_catalogue/reaction_effects.py). Arbitrary conservation claims are not inferred from product names; inspect the reported defaults and native experiment quantities. Historical probability is inclusive: threshold **T means (T + 1) / 256**. Threshold 0 is a 1/256 chance. The native diagnostic distinguishes no matching rule, failed supplied roll and selected reaction. It reports endpoint products, priority and state/quantity implications where the native API provides them. This resolver-only diagnostic cannot establish whether World scheduled a particular contact. The separate native contact inspector below adds observed cell masks and core-window facts; actual dispatch, per-cell sleep and competing kernel mechanisms remain unobserved. For a concrete candidate comparison, duplicate Salt and set its Water reaction threshold to 0. Roll 0 succeeds; roll 1 fails in the compiled candidate. The unchanged production Water/Salt rule still succeeds on roll 1. Alternatively import [lab-zero-threshold-quench-v1.json](../../materials/catalogue/fixtures/lab-zero-threshold-quench-v1.json): the Lava/Water quench has one successful roll per orientation rather than 256, and the probe records 510 changed outcomes over both orientations. This isolates the edit from contact scheduling and preserves the production rule. For an actual authored contact, duplicate **Salt 23** and change both products of its Water pair to **Stone**. Run the Candidate test against Water. Native readback records Stone products, pair events and Water ledger changes instead of the reference's Brine products. The rule still uses the existing default initialization effect and"
+        },
+        {
+          "rank": 3,
+          "score": 23.692515,
+          "path": "systems/materials-and-rule-kernels.md",
+          "title": "Materials and rule kernels",
+          "heading": "Materials and rule kernels > Kernel execution and cadence > How do persistent reactions survive sleep?",
+          "part": 1,
+          "text": "Document: Materials and rule kernels\nPath: systems/materials-and-rule-kernels.md\ndocument-kind: contract\nstatus: Current\nscope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries\ncanonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]\nlast-reviewed: 2026-11-04\nSection: Materials and rule kernels > Kernel execution and cadence > How do persistent reactions survive sleep?\n**Current, MAT-001 / #158:** after ordinary source admission and kernel execution, World checks an unchanged source for a possible compact-pair reaction, or Ice for hot/Water neighbors. A registered pair schedules its next four-tick contact lane. Ice schedules its next four-tick melting lane when heat is present, otherwise its sixteen-tick freezing sample when Water is present. All use the original stable coordinate phases. Products, probabilities, neighbor order and random streams are unchanged; the repair preserves opportunities that quiet-block sleep used to lose. A failed probability roll or an Ice sample that misses the eligible neighbor retains another opportunity. A successful neighbor-only write also rechecks the unchanged source, which matters when another contact remains across a block/core boundary. Eligibility respects body masks. Removing a mask wakes the affected resident block so its newly visible contacts can be reconsidered. This does not force a reaction on every contact or prescribe a universal completion time. The [activity contract](activity-dirty-regions-and-waking.md) owns bounded deadline, pause/re-entry and render-dirty semantics. The [MAT-001 evidence](../audits/2026-10-18-mat001-material-reaction-progress.md) records the reproduced starvation, retained controls and platform limits."
+        },
+        {
+          "rank": 4,
+          "score": 19.066274,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 5. Interaction effects and effective parameters > Endpoint effect language",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-11\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 5. Interaction effects and effective parameters > Endpoint effect language\nToday, a selected pair writes both products using their new material's initial state. This includes same-identity outputs; it is not implicit preservation. The proposed authoring effect model must therefore distinguish: | Proposed effect | Explicit semantics | Default compatibility | |---|---|---| | `replace_with_defaults` | Replace material identity/state with descriptor-initialised product; retire incompatible optional solver state | Maps **all existing** pair rules to this effect initially | | `keep_existing` | Preserve selected participant's identity and allowed state/quantity (with defined epoch/mutation semantics) | **Not** automatically selected for same-material outputs | | `set_state` | Narrow, validated update to declared state register | Synthetic tests first; never write undeclared register bits | | Named quantity-aware effect | Explicit product, consumed/produced quantity and permitted carry/overshoot | **Existing #160/#162 owns its source branch and acceptance**, not this programme | | `disabled` | No rule selected by author intent | Distinct from old threshold 0, which still succeeds on 1 of 256 rolls | Keep the Current probability rule `roll <= stored_threshold`, so the probability of a single eligible opportunity is `(threshold+1)/256`. Preserve the shared roll and first-selected-contact scheduling/order in the compatibility profile. A new inspector can display `matched`, `roll_failed`, `not_due`, `source_inactive`, `masked`, or `conflict` **only if the relevant layer actually observes that reason**. Resolver-only code cannot claim World-level facts it has not checked."
+        },
+        {
+          "rank": 5,
+          "score": 18.727599,
+          "path": "systems/activity-dirty-regions-and-waking.md",
+          "title": "Activity, dirty regions, and waking",
+          "heading": "Activity, dirty regions, and waking > What wakes a region?",
+          "part": 1,
+          "text": "Document: Activity, dirty regions, and waking\nPath: systems/activity-dirty-regions-and-waking.md\ndocument-kind: contract\nstatus: Current\nscope: Native activity and dirty-state lifecycle; separate fallback behavior and future wake requirements\ncanonical-for: [cell-activity-sleep-wake, simulation-render-dirty-state]\nlast-reviewed: 2026-11-04\nSection: Activity, dirty regions, and waking > What wakes a region?\nDirect `set`/`write_cell` operations mark their cells dirty and active. `wake_cell_neighborhood` wakes resident nonempty neighbors when the changed coordinate lies at an activity-block edge or corner. Movement marks both source and destination. The phased `merge_job_effects` path additionally wakes through the corners of touched block bounds, so its wake can be broader than one direct cell write. Explosion edits and transient-obstacle changes use explicit wake paths. A mask insertion or removal explicitly wakes its own resident block without a render write, then applies the ordinary boundary-neighbor wake. The neighbor helper alone excludes the center block because ordinary material writes already wake it. Mask changes must not depend on a neighboring material write to resume contact. The current body-coupling path rebuilds masks, so it can wake touched interior body blocks even for stationary bodies; this is confined to that existing footprint. Settled Water can become inactive; render dithering does not wake it. **Current:** a denied slow Mercury pair records the earliest due tick in its source block. The existing `begin_tick` metadata pass wakes due included blocks and clears their deadline. Sleeping blocks therefore progress without a periodic cell scan. Excluded deadlines remain pending; re-entry evaluates only the current modulo lane, with no missed-move catch-up. Clear/replacement discards these deadlines and failed-world quarantine prevents their processing. The [versioned pair policy](granular-interaction-policy.md) owns rate and endpoint rules. **Current, MAT-001 / #158:** `World::schedule_pending_reaction_wake` uses that same earliest block deadline for an eligible compact-pair contact or an Ice thermal contact. It runs after an admitted kernel when the source itself was not written in the current epoch, including successful neighbor-only work. Eligibility uses the existing pair resolver and mask-aware neighbors, independent of the current probability roll. The deadline is strictly in the future, so a missed sample can receive another scheduled opportunity. Waiting does not alter cell content, movement counts or render dirtiness; an inert contact acquires no new deadline. The deadline is shared by all work in a block. Removing one partner does not cancel a deadline that may belong to another source or a transport lane; one already scheduled wake can retire normally after re-evaluation. Interest exclusion, re-entry, clear and failed-world handling use the existing lifecycle above. The [dated regression record](../audits/2026-10-18-mat001-material-reaction-progress.md) scopes the executed evidence. Other specialized kernels retain their own waiting behavior; this is not a guarantee for every future material rule. **Current:** newly included cores wake their resident blocks once, including sleeping blocks. Existing overlap and unchanged/equivalent regions stay asleep. The [pause/resume contract and backend distinction](world-storage-and-interest-region.md#interest-filtering-and-re-entry) own retained state, coalescing, custom geometry, bounded work and"
+        }
+      ]
+    },
+    {
+      "id": "MLAB-10",
+      "query": "How do I open the Windows Materials Lab evaluation package without installing Python Git and a compiler, and what proves it was tested?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Extract the complete evaluation ZIP to a writable directory and run Open-Materials-Lab.cmd; keep source and dependencies together.",
+        "The branch-scoped publisher requires actual Windows native authoring and graphical receipts, then executes the copied package environment before delivery.",
+        "The manifest binds the native DLL and all package files; automated platform execution does not claim human acceptance or runtime activation of authored physics."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 36.59222,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Launch and prerequisites > Windows launch",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Launch and prerequisites > Windows launch\nThe branch-scoped **Materials Lab source-matched native runtime publication** workflow builds a Windows evaluation ZIP after actual Windows execution. Its **Open-Materials-Lab.cmd** launcher uses the included Godot, Python, Git history and C++ compiler. Extract the entire ZIP to a writable directory and keep its `source` and `dependencies` directories together. First launch imports the project, then opens the Lab with the qualified ANGLE renderer. It does not need a separately configured compiler environment. The bundle's manifest binds all files and the native DLL; `qualification` retains the original automated receipts and graphical captures. A package is delivered only after its copied environment also executes the native authoring tests. See the completion record for the actual run/artifact identity; workflow presence alone is not a passed run. For an ordinary source checkout instead of the evaluation package: Use the existing **GDExtension build and current Godot regression** workflow's source-built Windows candidate for the exact branch commit, or the pinned cross-build paths `tools/build_pinned_godot_cpp.sh windows` and `tools/build_native_extension_windows.sh`. Its downloaded candidate manifest must identify the same native input files as the checkout. Do not relabel the retained production DLL as a new candidate. The standalone `build_windows_msvc.bat` does not build this Godot extension. For source candidate compilation, start Godot from a configured x64 C++20 compiler environment; for MSVC use an **x64 Native Tools Command Prompt** with Python available. Select `cl` or its full executable path in the Candidate tab. An executable path alone cannot supply MSVC's missing SDK include/library environment. The Python default on Windows is `python`. From **PowerShell inside the cloned repository**, resolve the checkout before launching. PowerShell requires `&` before a quoted executable path: ```powershell $labCheckout = git rev-parse --show-toplevel & \"C:\\Tools\\Godot\\Godot_v4.7-stable_win64.exe\" --path \"$labCheckout\\godot\" -- --materials-lab ``` The exact Windows execution status belongs to the dated qualification record. Linux screenshots and a successful cross-build are not Windows graphical or human acceptance."
+        },
+        {
+          "rank": 2,
+          "score": 24.437866,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1 > Launch and prerequisites",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1 > Launch and prerequisites\nUse a complete checkout of the implementation branch and its history. Git LFS and the ordinary [desktop dependencies](local-build-and-validation.md) remain required. Godot is pinned to **4.7.stable.official.5b4e0cb0f** and godot-cpp to `101ae38034304346a46ea9ea84ae156d3e860496`. Rebuild the matching GDExtension: an older retained production binary predates the new read-only inspector methods. An older library causes an explicit rebuild message, not a metadata fallback. Use a freshly qualified branch runtime only when its provenance matches the checkout's native inputs; the completion publisher provides that explicit path. ```sh # Use the existing pinned build environment; see the local-build guide for setup. tools/build_pinned_godot_cpp.sh linux tools/build_native_extension.sh godot --path godot -- --materials-lab ``` Read-only inspection and native experiments require the matching engine library. Candidate authoring additionally requires Python 3, Git history and a C++20 compiler for **Compile + native test**. The Candidate tab accepts Python and compiler executable paths without shell arguments. A compiler override is also available through `CYBERSAND_LAB_CXX`. Source tools must remain next to the Godot project; this is a desktop source workflow, not an exported/Web authoring service. No install operation writes production sources."
+        },
+        {
+          "rank": 3,
+          "score": 18.168508,
+          "path": "operations/materials-lab-authoring.md",
+          "title": "Materials Lab v1 inspection, candidate authoring and native tests",
+          "heading": "Materials Lab v1",
+          "part": 1,
+          "text": "Document: Materials Lab v1 inspection, candidate authoring and native tests\nPath: operations/materials-lab-authoring.md\ndocument-kind: runbook\nstatus: Current\nscope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation\ncanonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]\nlast-reviewed: 2026-11-11\nSection: Materials Lab v1\n**Current implementation in [Draft PR #562](https://github.com/techrote/cybersand/pull/562); production activation remains unimplemented.** The desktop **Materials Lab** opens from the feature launcher, the ordinary Shared Workbench's **Materials Lab…** button, or `--materials-lab`. It combines native material inspection, structured candidate editing, compiled candidate tests, a compiled candidate/reference World comparison and an isolated native MicroScenario. The [dated qualification record](../audits/2026-11-11-materials-lab-v1.md) distinguishes the preceding implementation's evidence. The [completion record](../audits/2026-11-11-materials-lab-completion.md) owns the subsequent native contact diagnostics, runtime publication and Windows package qualification. The Lab uses the accepted [catalogue compiler](material-catalogue-shadow.md). It does not replace native production definitions, the simulation worker, the Workbench or World. Production still has 132 slots, including invalid reserved ID 10. The synthetic powder at 132 exists only inside an external candidate build."
+        },
+        {
+          "rank": 4,
+          "score": 16.486332,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 4. Canonical source model and compiler",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-11\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 4. Canonical source model and compiler\n**Proposed authoring tree** (final names/schema require #352 review): ```text materials/ schema/material-v1.schema.json registry/identities.json definitions/{legacy,reactive,construction,building}/*.json behaviours/presets.json interactions/{families,pairs,specialized}.json appearances/{recipes,overrides}.json browse/{categories,tags}.json tools/materials/compile_catalogue.py tools/materials/test_catalogue.py ``` Prefer simple JSON plus a deterministic Python-stdlib compiler in v1, because the current repo already maintains portable Python CI tools. Using several author-friendly source files is acceptable **only if** they compile to one validated immutable effective catalogue. The canonical source should contain identity, type, constraints, owned parameters, family memberships, aliases and status. Free-form comments in JSON may be replaced with dedicated `description` fields or adjacent documentation. **Illustrative proposed material record** (not executable today): ```json { \"schema_version\": 1, \"key\": \"cybersand:wood\", \"id\": 7, \"display\": {\"name\": \"Wood\", \"category\": \"Organics/Wood\", \"tags\": [\"timber\"]}, \"physical\": {\"phase\": \"Solid\", \"density_rank\": 720, \"hard_surface\": true, \"granular_support\": false}, \"behaviour\": {\"preset\": \"legacy.wood.v1\"}, \"appearance\": {\"rgba8\": [116, 78, 48, 255], \"recipe\": \"timber.v1\"} } ``` **Generated outputs** should include `material.hpp` descriptors/identity, explicit native capability lookup, compact sparse interaction table/partner sets, stable GDScript IDs and names, picker/browse metadata, RGBA and flair arrays, condition projection and versioned source-derived catalogue manifest. Keep expensive shader algorithms and native kernel implementations hand-coded initially; generate their *metadata*, not a new universal interpreter. **Hard validator gates:** - Stable, non-reused byte IDs; slot 10 remains invalid; `Gas` is a label alias for Smoke=4, not another material ID; reserve/unallocated slots fail cleanly. - Unique keys, names and aliases; valid family references, endpoint/product IDs, kernel enum, radius, state width/meaning, type ranges and support matrix. - Family overlap, duplicate pair, conflicting ordered/unordered matches, cross-rule precedence, invalid supersession, invalid probability representations, uninitiable pair-only definitions and unsupported optional-state contracts fail with understandable source location. - Generate a baseline exact-value oracle from the pinned Current source before replacing hand-authored tables. `--check` regenerates without modifying the tree and fails on drift. Generated files are deterministic, diffable and compatible with repository documentation policies. - Current 132-slot catalogue, all 56 rule identities/indexes/roll cases and 19 specialised mechanisms are identical after the migration. Synthetic new non-hard powder at ID 132 is a compiler-only fixture—not a shipped byte-ID addition—to prove future IDs are not auto-collision-hard. **Intentionally not implemented in v1:** a runtime DSL, hot-loop schema evaluation, user scripts, dynamic pack ID reassignment, or a per-cell behaviour object."
+        },
+        {
+          "rank": 5,
+          "score": 16.422834,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 15. Materials Lab v1 implementation boundary — 2026-11-11",
+          "part": 2,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-11\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 15. Materials Lab v1 implementation boundary — 2026-11-11\nsource-core windows are observed; sleeping, deadlines and actual dispatch remain unknown. Its Windows process owner and branch-scoped runtime/package publisher close executable delivery work without changing the Draft acceptance policy. The [completion audit](../audits/2026-11-11-materials-lab-completion.md) records actual execution. The separately stacked [Draft #563](https://github.com/techrote/cybersand/pull/563) owns only the generated native hard/granular predicates and independently qualified compatibility transition; #384 retains display-name ownership."
+        }
+      ]
+    }
+  ]
+}

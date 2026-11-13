@@ -139,8 +139,9 @@ class PublicationTests(unittest.TestCase):
                         "native_library_sha256": "a" * 64, "image_sha256": engine.runner.sha256(image),
                         "native_source_identity": source, "candidate_digest": "c" * 64, "source_sha256": {}}
             scripts = {"scripts/material_lab_" + leaf + ".gd" for leaf in
-                       ("screen", "panel", "world_panel", "service", "catalogue", "experiment")}
+                       ("screen", "property_tree", "panel", "world_panel", "service", "catalogue", "experiment")}
             scripts.add("tests/" + name + ".gd")
+            if name == "test_material_lab_ui": scripts.add("scripts/shared_workbench.gd")
             manifest["source_sha256"] = {p: engine.runner.sha256(engine.ROOT / "godot" / p) for p in scripts}
             receipt = {"schema_id": "cybersand.material-lab.world-receipt", "runtime_active": False,
                        "source_identity": source, "candidate_digest": "c" * 64,
@@ -155,7 +156,7 @@ class PublicationTests(unittest.TestCase):
             report["results"].append({"name": name, "status": "passed", "returncode": 0,
                 "natural_completion": True, "requires_display": True, "skip_messages": [],
                 "diagnostic_error": False, "launch_error": None, "log_sha256": engine.runner.sha256(log),
-                "command": ["godot", "--rendering-driver", "opengl3_angle", "--script", name]})
+                "command": ["godot", "--rendering-driver", "opengl3_angle", "--max-fps", "15", "--script", name]})
         self.refresh_map(directory, report)
         return report, source
 
@@ -166,7 +167,8 @@ class PublicationTests(unittest.TestCase):
         engine.write_json(directory / "graphical.json", report)
 
     def test_graphical_evidence_requires_native_world_source_backend_and_every_oracle(self):
-        modes = ("positive", "headless", "driver", "missing_driver_value", "missing_case", "no_worker_check", "failed_quantity", "source", "image", "omitted_inventory")
+        modes = ("positive", "headless", "driver", "missing_driver_value", "missing_case", "no_worker_check", "failed_quantity", "source", "image", "omitted_inventory",
+                 "missing_fps", "unbounded_fps", "changed_fps", "duplicate_fps", "user_argument_fps", "alternate_fps", "omitted_workbench_source")
         for mode in modes:
             with self.subTest(mode=mode), tempfile.TemporaryDirectory() as temporary:
                 directory = Path(temporary)
@@ -181,6 +183,18 @@ class PublicationTests(unittest.TestCase):
                 if mode == "no_worker_check": receipt["candidate"]["checks"].pop("worker_1_4_equal")
                 if mode == "failed_quantity": receipt["candidate"]["checks"]["quantity_balanced"] = False
                 if mode == "source": source = {"digest": "3" * 64, "lf_sha256": {}}
+                command = report["results"][0]["command"]
+                if mode == "missing_fps": del command[3:5]
+                if mode == "unbounded_fps": command[4] = "0"
+                if mode == "changed_fps": command[4] = "60"
+                if mode == "duplicate_fps": command.extend(("--max-fps", "0"))
+                if mode == "user_argument_fps": command.insert(3, "--")
+                if mode == "alternate_fps": command.append("--max-fps=0")
+                if mode == "omitted_workbench_source":
+                    manifest_path = capture / "effects-ui-capture-manifest.json"
+                    manifest = subject.read_json(manifest_path)
+                    manifest["source_sha256"].pop("scripts/shared_workbench.gd")
+                    engine.write_json(manifest_path, manifest)
                 engine.write_json(path, receipt)
                 self.refresh_map(directory, report)
                 if mode == "image": (capture / "08-kept-salt-world.png").write_bytes(b"different")
@@ -191,6 +205,23 @@ class PublicationTests(unittest.TestCase):
                     if mode == "positive": subject.verify_capture(directory, "windows", "a" * 64)
                     else:
                         with self.assertRaises(RuntimeError): subject.verify_capture(directory, "windows", "a" * 64)
+
+    def test_capture_commands_bound_only_graphical_redraws_without_changing_budgets(self):
+        for platform, driver, system in (("windows", "opengl3_angle", "win32"), ("linux", "opengl3", "linux")):
+            with self.subTest(platform=platform), tempfile.TemporaryDirectory() as temporary:
+                capture = Path(temporary) / "capture"
+                case = subject.graphical_case("test_material_lab_world", capture, platform)
+                command = engine.runner.case_command("qualified-godot", case, system)
+                self.assertTrue(case.requires_display)
+                self.assertNotIn("--headless", command)
+                self.assertEqual(command.count("--max-fps"), 1)
+                self.assertEqual(command[command.index("--max-fps") + 1], "15")
+                self.assertLess(command.index("--max-fps"), command.index("--"))
+                self.assertEqual(command[command.index("--rendering-driver") + 1], driver)
+                self.assertEqual(case.timeout, subject.execution_policy.watchdog_seconds("graphical_case_seconds"))
+                self.assertIn("--capture-output=" + str(capture.resolve()), command)
+                self.assertFalse(capture.exists())
+        self.assertEqual(engine.CASE_TIMEOUTS, {})
 
     def test_profile_permissions_and_trigger_scope_are_bounded(self):
         workflow = (engine.ROOT / engine.WORKFLOW).read_text()

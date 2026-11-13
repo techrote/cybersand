@@ -1,0 +1,117 @@
+{
+  "source": "a069e7cabda74039f7e3d5bde4074815fbd06ab8",
+  "source_tree": "d38040cab694ecdfbc56aa07d723212d8be2c0e5",
+  "runtime_sha256": "0f257fe66e043cbb77366d99ce77325eacf8481443df4c5e000dcbc9ac075ea9",
+  "built_source": "8e2206d5a664cc86b2ca432e6ad976e5f6d86bff",
+  "built_workflow_run": "https://github.com/techrote/cybersand/actions/runs/43122038666",
+  "native_input_count": 88,
+  "all_native_inputs_match": true,
+  "local_merge_tree": "d38040cab694ecdfbc56aa07d723212d8be2c0e5",
+  "scope": "Local Linux Godot 4.7 headless combined-source integration; no Windows or graphical acceptance claim",
+  "required_results": [
+    {
+      "case": "import",
+      "workers": null,
+      "seconds": 4.59,
+      "status": "passed",
+      "log": "import.log",
+      "log_sha256": "665145e1c80017b6f77fc32ec0bbc7b3609d7ae4a9264c8e676ce36309763f72",
+      "marker": ""
+    },
+    {
+      "case": "test_workbench_canvas",
+      "workers": null,
+      "seconds": 29.107,
+      "status": "passed",
+      "log": "test_workbench_canvas/test_workbench_canvas.log",
+      "log_sha256": "14466406cd54ef1d86085c2946d702df0be1e896172ae2f337a24f6fc16fdeb4",
+      "marker": "WORKBENCH_CANVAS 164 checks, 0 failures"
+    },
+    {
+      "case": "test_workbench_liquid_edges",
+      "workers": null,
+      "seconds": 10.775,
+      "status": "passed",
+      "log": "test_workbench_liquid_edges/test_workbench_liquid_edges.log",
+      "log_sha256": "39c2745d46354f36b60a276d43807a1dc6fab074f22becd444cafb982f498e74",
+      "marker": "WORKBENCH_EDGE 70 checks, 0 failures"
+    },
+    {
+      "case": "test_workbench_liquid_equipment",
+      "workers": "1",
+      "seconds": 18.218,
+      "status": "passed",
+      "log": "test_workbench_liquid_equipment-w1/test_workbench_liquid_equipment.log",
+      "log_sha256": "d08a068ed83bd40b4ca43396b6f35a017409df760a7972e3b11ed0744fa880f0",
+      "marker": "LIQUID_EQUIPMENT 103 checks, 0 failures"
+    },
+    {
+      "case": "test_workbench_liquid_equipment",
+      "workers": "4",
+      "seconds": 18.024,
+      "status": "passed",
+      "log": "test_workbench_liquid_equipment-w4/test_workbench_liquid_equipment.log",
+      "log_sha256": "2847d0df53837ac11ab483f97a372b9962d65f3715c132f1800821abca455262",
+      "marker": "LIQUID_EQUIPMENT 103 checks, 0 failures"
+    },
+    {
+      "case": "test_workbench_reservoir_lab",
+      "workers": "1",
+      "seconds": 44.308,
+      "status": "passed",
+      "log": "test_workbench_reservoir_lab-w1/test_workbench_reservoir_lab.log",
+      "log_sha256": "25011a24d9be3a9bd35d84b828dbed6c9a5e9ec7a735dd3b316cd07c073824ab",
+      "marker": "RESERVOIR_LAB 81 checks, 0 failures"
+    },
+    {
+      "case": "test_workbench_reservoir_lab",
+      "workers": "4",
+      "seconds": 44.155,
+      "status": "passed",
+      "log": "test_workbench_reservoir_lab-w4/test_workbench_reservoir_lab.log",
+      "log_sha256": "f0596400c110b4c58025445762d5169fe741e7cdf8b0a9b66873e37cb77448ab",
+      "marker": "RESERVOIR_LAB 81 checks, 0 failures"
+    },
+    {
+      "case": "test_material_lab_ui",
+      "seconds": 50.545,
+      "status": "passed",
+      "log": "test_material_lab_ui-external-userdata/test_material_lab_ui.log",
+      "log_sha256": "54238d84285e9763d1c267225090e4ab844df49ab2f9e1832c16e262fd3ad5a8",
+      "marker": "MATERIAL_LAB_UI: 189 assertions; 0 failures; artifacts=/workspace/scratch/f7237b2aaca9/materials-lab-reconcile-userdata/godot/app_userdata/Cyber Sand Reference Sandbox/materials_lab/ui-acceptance-230424"
+    }
+  ],
+  "all_required_passed": true,
+  "source_inventory_count": 677,
+  "source_inventory_unchanged": true,
+  "original_attempt": {
+    "status": "failed",
+    "receipt": "combined-qualification.json",
+    "explanation": "Harness placed XDG_DATA_HOME inside checkout; Lab correctly refused response inside source. Original failed UI log retained unchanged. Repeated only the UI case with external user data; actual189assertionspassed."
+  },
+  "docs": {
+    "documents": 127,
+    "canonical_claims": 253,
+    "errors": 0,
+    "warnings": 0
+  },
+  "historical_m11": {
+    "records": 18,
+    "hashes": 28,
+    "status": "passed"
+  },
+  "lab_retrieval": {
+    "canonical_rank1": 10,
+    "questions": 10
+  },
+  "unchanged_owner_files": [
+    "godot/scripts/main.gd",
+    "godot/scripts/simulation_worker.gd",
+    "godot/scripts/workbench_setup.gd",
+    "godot/scripts/physical_actor_overlay.gd",
+    "godot/scripts/workbench_liquid_equipment.gd",
+    "godot/scripts/workbench_liquid_equipment_panel.gd",
+    "godot/tests/test_workbench_liquid_equipment.gd",
+    "godot/tests/test_workbench_reservoir_lab.gd"
+  ]
+}

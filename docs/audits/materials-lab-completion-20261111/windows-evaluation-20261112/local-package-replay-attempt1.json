@@ -1,0 +1,88 @@
+{
+  "schema": "materials-lab-local-package-replay-v1",
+  "source_commit": "bcb3b62d324581f319e029a657db6b97879c9cc4",
+  "package_manifest_sha256": "858b06b57721a90fe7b2ffb9e5f4cce98095ffddf9d57a71663330a8bbf88533",
+  "status": "failed",
+  "completed": false,
+  "original_receipt_sha256": "477957c47c4aac74b5d0259d0d559e166589c91d6f169aecaaa906ef6025986a",
+  "results": [
+    {
+      "name": "import",
+      "status": "passed",
+      "returncode": 0,
+      "natural_completion": true,
+      "seconds": 9.119,
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Temp\\CyberSand Materials Lab mg9qeh24\\evaluation\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\AppData\\Local\\Temp\\CyberSand Materials Lab mg9qeh24\\evaluation\\source\\godot",
+        "--editor",
+        "--quit"
+      ],
+      "log_sha256": "5b6d980128333b5379f2c8bdfdf90fff02ab0adcc12f833e71fc68a16ea5a225",
+      "timeout_seconds": 1200
+    },
+    {
+      "name": "test_material_lab_ui",
+      "status": "failed",
+      "returncode": 1,
+      "natural_completion": true,
+      "seconds": 205.533,
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Temp\\CyberSand Materials Lab mg9qeh24\\evaluation\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\AppData\\Local\\Temp\\CyberSand Materials Lab mg9qeh24\\evaluation\\source\\godot",
+        "--script",
+        "res://tests/test_material_lab_ui.gd"
+      ],
+      "log_sha256": "b19498b1e7ade372d628ff6c481821ce087255bd0f2b81d32d14603e9c9273c6",
+      "timeout_seconds": 1200
+    },
+    {
+      "name": "test_material_lab_world",
+      "status": "passed",
+      "returncode": 0,
+      "natural_completion": true,
+      "seconds": 114.535,
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Temp\\CyberSand Materials Lab mg9qeh24\\evaluation\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\AppData\\Local\\Temp\\CyberSand Materials Lab mg9qeh24\\evaluation\\source\\godot",
+        "--script",
+        "res://tests/test_material_lab_world.gd"
+      ],
+      "log_sha256": "dff62ce7a95a74a6d8fa3a0b340bb73708b3334cfca2a60d2d180355a2a66470",
+      "timeout_seconds": 1200
+    },
+    {
+      "name": "test_material_lab_diagnostics",
+      "status": "passed",
+      "returncode": 0,
+      "natural_completion": true,
+      "seconds": 8.99,
+      "command": [
+        "C:\\Users\\_\\AppData\\Local\\Temp\\CyberSand Materials Lab mg9qeh24\\evaluation\\Godot_v4.7-stable_win64_console.exe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "C:\\Users\\_\\AppData\\Local\\Temp\\CyberSand Materials Lab mg9qeh24\\evaluation\\source\\godot",
+        "--max-fps",
+        "15",
+        "--rendering-driver",
+        "opengl3_angle",
+        "--script",
+        "res://tests/test_material_lab_diagnostics.gd",
+        "--",
+        "--capture-output=C:\\khybersand\\build\\Materials-Lab-Windows-request5-local-check\\graphical-contact"
+      ],
+      "log_sha256": "33a0c9a7a5eb00379e2d2bbf871018c15b18adbd1b67bc6ee6d15e019e70ceec",
+      "timeout_seconds": 1200
+    }
+  ],
+  "failure_scope": "One UI assertion compared logical Roaming and physical MSIX LocalCache/Roaming path prefixes. Export succeeded; import, compiled World and actual ANGLE contact passed. Original failure is retained; a fresh patched replay is required."
+}

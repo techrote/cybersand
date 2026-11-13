@@ -220,25 +220,31 @@ func run() -> void:
 	expect(selected.probability_numerator == int(selected.probability_threshold)+1 and selected.probability_denominator == 256,"Probability keeps historical threshold-plus-one semantics")
 	expect(selected.world_eligibility.begins_with("unobserved"),"Pair resolver never claims World eligibility")
 	expect(not Lab.resolver_diagnostic(10,3,0).ok and not Lab.resolver_diagnostic(23,3,256).ok,"Invalid native resolver inputs rejected")
-	var runtime := Lab.new()
 	var water_fixture: Dictionary = Lab.definition_for_pair(3,1,2,32)
-	expect(runtime.start(water_fixture,1,"cellular_yield_v1"),"Supported Water CY runtime test construction: " + runtime.last_error)
-	if runtime.active():
+	for family: String in ["cellular_yield_v1","pressure_flow_v1"]:
+		var runtime := Lab.new()
+		expect(runtime.start(water_fixture,1,family),"Construct native test for %s: %s" % [family,runtime.last_error])
+		if not runtime.active(): continue
 		var applied: Dictionary = runtime.readback().applied_policy
 		var water_found: bool = false
 		for assignment: Dictionary in applied.assignments:
 			if int(assignment.material) == 3:
-				water_found = assignment.applied_family == "cellular_yield_v1" and assignment.requested_family == "cellular_yield_v1"
-		expect(water_found and int(applied.session_generation) >= 0,"Native owner acknowledges actually installed Water CY family")
+				water_found = assignment.applied_family == family and assignment.requested_family == family \
+					and assignment.applied_variant == "reference"
+		expect(water_found and int(applied.session_generation) >= 0,"Native owner acknowledges the %s reference solver" % family)
 		expect(applied.admission == "qualified_candidate","Non-default test policy is labeled candidate")
-		expect(advance_to_end(runtime),"Actual CY test World advances")
-		var cy: Dictionary = runtime.readback()
-		expect(cy.completed and cy.completed_tick == 32,"CY simulation completes bounded window")
+		var initial: Dictionary = runtime.readback()
+		expect(advance_to_end(runtime),"Actual %s test World advances" % family)
+		var final: Dictionary = runtime.readback()
+		expect(final.completed and final.completed_tick == 32,"Simulation completes bounded window for %s" % family)
+		expect(int(final.native.water_integer) > 0 and final.native.content_hash != initial.native.content_hash,
+			"Native Water remains present and the fixture changes during the run for %s" % family)
 		expect(runtime.repeat_reference().equal,"Applied runtime family survives exact test reproduction")
-		var saved_cy: String = runtime.case_json()
-		expect(runtime.start_case_json(saved_cy),"Saved case restores native CY policy, not default policy")
-		var restored_cy: Dictionary = runtime.readback().applied_policy
-		expect(restored_cy.policy_hash == applied.policy_hash,"Runtime family round trip has native policy-hash acknowledgment")
+		var saved_case: String = runtime.case_json()
+		expect(runtime.start_case_json(saved_case),"Saved case restores %s" % family)
+		var reopened: Dictionary = runtime.readback()
+		expect(reopened.completed_tick == 0 and reopened.water_family_request == family \
+			and reopened.applied_policy.policy_hash == applied.policy_hash,"Reopened case retains the acknowledged solver")
 		runtime.close()
 	check_construction_provenance()
 	check_incremental_reference()

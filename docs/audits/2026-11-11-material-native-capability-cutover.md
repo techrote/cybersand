@@ -257,3 +257,18 @@ It does not close the wider #353 programme. Full descriptor/appearance generatio
 runtime effects remain separate scopes. Hosted exact-head native/platform gates,
 source-matched retained runtime publication and owner acceptance remain required
 before integration. No Ready promotion, merge or auto-merge is performed here.
+
+## Main reconciliation and request 2 — 2026-11-13
+
+Owner acceptance authorizes integration after fresh qualification. The branch
+joins main `e0fb05b8e0500641f0f25c62c5fb7e721da02d6a`, the accepted Materials
+Lab release, while retaining authenticated source
+`b432d52d0d9acaa22f93eeb8d1fad48c64b4c087` in its ancestry. The new campaign
+uses the capability profile and the same strict source lease. It includes the
+released Lab controls and native PressureFlow regression.
+
+[Request 1](https://github.com/techrote/cybersand/actions/runs/43123100407)
+passed Linux. Windows graphical qualification exceeded its retained-endpoint
+UI deadline and the separate compiled World case's 60-second compile deadline.
+Publication and packaging were skipped. Request 2 uses the reconciled source
+and retains the original checks and deadlines.

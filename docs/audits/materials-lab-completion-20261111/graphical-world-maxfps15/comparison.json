@@ -1,0 +1,32 @@
+{
+  "scope": "One actual local max-fps15 graphical fixture versus retained hosted uncapped observation. Different hosts and native-probe compiler versions: diagnostic, not controlled performance benchmark or Windows acceptance.",
+  "source": "a069e7cabda74039f7e3d5bde4074815fbd06ab8",
+  "baseline_source": "8e2206d5a664cc86b2ca432e6ad976e5f6d86bff",
+  "same_world_test_and_lab_source_bytes": true,
+  "same_native_runtime_sha256": "0f257fe66e043cbb77366d99ce77325eacf8481443df4c5e000dcbc9ac075ea9",
+  "max_fps": 15,
+  "existing_watchdog_seconds": 1200.0,
+  "baseline": {
+    "seconds": 104.392,
+    "direct_process_cpu_seconds": 272.5
+  },
+  "experiment": {
+    "seconds": 60.155,
+    "direct_process_cpu_seconds": 49.43,
+    "checks": 206,
+    "failures": 0,
+    "natural_completion": true
+  },
+  "image_sha256": "fcd47877b015a92b062c2b972cc42d93abdad2c4f467ddc2afdc88d9347b41b7",
+  "image_identical": true,
+  "reference_complete_final_native_readback_identical": true,
+  "candidate_complete_final_native_readback_identical": true,
+  "both_all_native_checks": true,
+  "source_digest": "7fb1f4f66b1de4be6d12bfb1b04d8857da749543b67c55e36a3718676b6c0e51",
+  "runtime_active": false,
+  "source_inventory_unchanged": true,
+  "qualification_sha256": "9ea5891fe10b9197a7e0dae8dfefac399fcf009065f305aa289abe5be6609f11",
+  "original_log_sha256": "011dd28ae4c94fea2f7522e0626e7e03f2fd0c92d6166d86554c0fe8086abf08",
+  "world_receipt_sha256": "8964cb20180e56a10249361b2aa2b56f635362fabc34756c78a5e9e3a728a32d",
+  "baseline_report_sha256": "9e9099e7b1f3dc64ed16a7b8c3dd9014f862b5cebb0af0b56107d1bb18477c26"
+}

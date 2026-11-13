@@ -17,11 +17,13 @@ var candidate_state: String = "No candidate"
 var candidate_digest: String = ""
 var last_backend_result: Dictionary = {}
 var applied_policy: Dictionary = {}
-var policy_context: String = "Compiled defaults; active World not observed"
+var policy_context: String = "Showing built-in settings; no running game has been inspected"
 var _revision: int = 0
 var _job_revision: int = 0
 var _job_op: String = ""
 var _job_reaction_slot: int = -1
+var _reaction_input_revision: int = 0
+var _job_reaction_input_revision: int = -1
 var _job_world_revision: int = -1
 var _job_candidate: Dictionary = {}
 var _job_candidate_digest: String = ""
@@ -34,7 +36,7 @@ var _list := ItemList.new()
 var _summary := Label.new()
 var _status := Label.new()
 var _tabs := TabContainer.new()
-var _property_tree := Tree.new()
+var _property_tree := preload("res://scripts/material_lab_property_tree.gd").new()
 var _inspector_notes := TextEdit.new()
 var _candidate_form := VBoxContainer.new()
 var _candidate_feedback := TextEdit.new()
@@ -111,6 +113,8 @@ func _spin(parent: Node, text: String, field: SpinBox, low: int, high: int, valu
 	field.step = 1
 	field.value = value
 	field.custom_minimum_size.x = 95
+	field.get_line_edit().text_changed.connect(func(_text: String) -> void: field.set_meta("lab_pending_text",true))
+	field.value_changed.connect(func(_value: float) -> void: field.set_meta("lab_pending_text",false))
 	parent.add_child(field)
 
 func _text(parent: Node, field: TextEdit, min_height: int = 150) -> void:
@@ -122,22 +126,35 @@ func _text(parent: Node, field: TextEdit, min_height: int = 150) -> void:
 	field.custom_minimum_size.y = min_height
 	parent.add_child(field)
 
-func _tab(title: String) -> VBoxContainer:
+func _tab(title: String, display_title: String = "") -> VBoxContainer:
 	var page := VBoxContainer.new()
-	page.name = title
+	page.name = "Content"
 	page.add_theme_constant_override("separation",6)
-	_tabs.add_child(page)
+	_mount_tab(title,page)
+	if not display_title.is_empty(): _tabs.set_tab_title(_tabs.get_tab_count()-1,display_title)
 	return page
+
+func _mount_tab(title: String, content: Control) -> void:
+	# Preserve usable controls at ordinary desktop sizes. Large tabs retain
+	# their natural layout and scroll only when their content exceeds the bay.
+	var scroll := ScrollContainer.new()
+	scroll.name = title
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.follow_focus = true
+	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_tabs.add_child(scroll)
+	scroll.add_child(content)
 
 func _build() -> void:
 	var header := _row(self)
 	var title := _label(header,"MATERIALS LAB")
 	title.add_theme_font_size_override("font_size",21)
-	_button(header,"Reload native catalogue",reload_catalogue)
+	_button(header,"Reload materials",reload_catalogue)
 	_button(header,"Close",func() -> void:
 		_pause_experiment()
 		close_requested.emit())
-	_label(self,"Inspect native behaviour · author isolated candidates · test reproducible material contacts",true)
+	_label(self,"Explore a material, edit a copy, then test it. Your experiments do not change the ordinary game.",true)
 	_summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(_summary)
 	var split := HSplitContainer.new()
@@ -147,7 +164,7 @@ func _build() -> void:
 	var browser := VBoxContainer.new()
 	browser.custom_minimum_size.x = 220
 	split.add_child(browser)
-	_search.placeholder_text = "Name, ID, kernel, family, partner…"
+	_search.placeholder_text = "Find a material by name or number…"
 	_search.text_changed.connect(func(_value: String) -> void: _refresh_list())
 	browser.add_child(_search)
 	for filter: String in Catalogue.FILTERS: _filter.add_item(filter)
@@ -156,16 +173,17 @@ func _build() -> void:
 	_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_list.item_selected.connect(func(index: int) -> void: select_material(int(_list.get_item_metadata(index))))
 	browser.add_child(_list)
-	_label(browser,"ID 10 is reserved and invalid.\nCategories do not confer physics or reactions.",true)
+	_label(browser,"Material 10 is unused. Groups help you browse; they do not change how materials behave.",true)
 	_tabs.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	split.add_child(_tabs)
 	_build_inspector(_tab("Inspect"))
-	_build_candidate(_tab("Candidate"))
+	_build_candidate(_tab("Candidate", "Edit copy"))
 	_build_reactions(_tab("Reactions"))
-	_build_experiment(_tab("Native test"))
+	_build_experiment(_tab("Native test", "Try originals"))
 	world_panel.name = "Candidate test"
-	_tabs.add_child(world_panel)
+	_mount_tab("Candidate test",world_panel)
+	_tabs.set_tab_title(4,"Compare edits")
 	world_panel.test_requested.connect(_world_job)
 	world_panel.export_requested.connect(func(_scenario: Dictionary) -> void: _open_file("world_bundle",true))
 	world_panel.cancel_requested.connect(func() -> void:
@@ -185,36 +203,48 @@ func _build() -> void:
 
 func _build_inspector(page: VBoxContainer) -> void:
 	var actions := _row(page)
-	_button(actions,"Duplicate selected as candidate",duplicate_selected)
-	_button(actions,"New synthetic powder 132",create_synthetic)
-	_button(actions,"Test selected material",start_experiment)
+	_button(actions,"Make editable copy",duplicate_selected)
+	_button(actions,"Try this material",start_experiment)
 	_property_tree.columns = 6
 	_property_tree.column_titles_visible = true
 	_property_tree.hide_root = true
 	_property_tree.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_property_tree.custom_minimum_size.y = 240
-	var headings := ["Property","Declared","Effective","Actual consumer","Applicability","Editability"]
+	var headings := ["Property","Defined value","Value used","What uses it","What it means","Can I change it?"]
 	for index: int in range(headings.size()):
 		_property_tree.set_column_title(index,headings[index])
 		_property_tree.set_column_custom_minimum_width(index,[120,90,125,210,160,130][index])
 	page.add_child(_property_tree)
+	_label(page,"Defined value is the saved definition. Value used includes engine overrides. Drag a column divider to resize; hover a cell for its full technical value.",true)
+	var details := CheckButton.new()
+	details.text = "Show technical details and reaction data"
+	page.add_child(details)
 	_text(page,_inspector_notes,165)
+	_inspector_notes.hide()
+	details.toggled.connect(func(shown: bool) -> void: _inspector_notes.visible = shown)
 
 func _build_candidate(page: VBoxContainer) -> void:
 	var actions := _row(page)
-	_button(actions,"Duplicate selected",duplicate_selected)
-	_button(actions,"New powder 132",create_synthetic)
+	_button(actions,"Copy selected material",duplicate_selected)
+	_button(actions,"New powder (definition test only)",create_synthetic)
 	_button(actions,"Import preset…",func() -> void: _open_file("import_preset",false))
 	_button(actions,"Validate",func() -> void: _candidate_job("validate"))
-	_button(actions,"Compile + native test",func() -> void: _candidate_job("compile_test"))
-	_button(actions,"Cancel authoring",func() -> void:
+	_button(actions,"Build + check definition",func() -> void: _candidate_job("compile_test"))
+	_button(actions,"Cancel build",func() -> void:
 		if service.busy: service.cancel("Authoring cancelled from the Materials Lab.")
 		else: _status.text = "No authoring job is running.")
-	_button(actions,"Export compiled bundle…",func() -> void: _open_file("compile_bundle",true))
-	_button(actions,"Save / export preset…",func() -> void: _open_file("export_preset",true))
+	_button(actions,"Export built definition…",func() -> void: _open_file("compile_bundle",true))
+	_button(actions,"Save material preset…",func() -> void: _open_file("export_preset",true))
 	_candidate_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	page.add_child(_candidate_label)
 	var environment := _row(page)
+	var tools := CheckButton.new()
+	tools.text = "Choose build tools…"
+	tools.tooltip_text = "The launcher supplies these tools automatically. Open only to choose a different Python or C++ compiler."
+	page.add_child(tools)
+	page.move_child(tools,page.get_child_count()-2)
+	environment.hide()
+	tools.toggled.connect(func(shown: bool) -> void: environment.visible = shown)
 	_label(environment,"Python")
 	_python.text = "python" if OS.get_name() == "Windows" else "python3"
 	_python.custom_minimum_size.x = 180
@@ -233,7 +263,7 @@ func _build_candidate(page: VBoxContainer) -> void:
 	split.add_child(scroll)
 	_candidate_form.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(_candidate_form)
-	_label(_candidate_form,"Candidate label (identity stays fixed)")
+	_label(_candidate_form,"Name for your copy (material number stays the same)")
 	_candidate_form.add_child(_candidate_name)
 	_candidate_name.text_changed.connect(func(value: String) -> void:
 		if not _loading and not candidate.is_empty():
@@ -242,13 +272,15 @@ func _build_candidate(page: VBoxContainer) -> void:
 	for key: String in ["density","viscosity_index"]:
 		var row := _row(_candidate_form)
 		var field := SpinBox.new()
-		_spin(row,key,field,0,65535 if key == "density" else 255,0)
+		_spin(row,"Density (larger = heavier)" if key == "density" else "Resistance to sideways flow",field,0,65535 if key == "density" else 255,0)
 		_fields[key] = field
+		field.get_line_edit().text_changed.connect(func(_text: String) -> void:
+			if not _loading and not candidate.is_empty(): _mark_draft())
 		field.value_changed.connect(func(value: float) -> void:
 			if not _loading and not candidate.is_empty():
 				candidate.descriptor[key] = int(value)
 				_mark_draft())
-	_label(_candidate_form,"Base RGBA (compiled descriptor colour)")
+	_label(_candidate_form,"Base colour and transparency")
 	_colour.custom_minimum_size = Vector2(140,30)
 	_colour.edit_alpha = true
 	_candidate_form.add_child(_colour)
@@ -256,8 +288,8 @@ func _build_candidate(page: VBoxContainer) -> void:
 		if not _loading and not candidate.is_empty():
 			candidate.descriptor.rgba = [value.r8,value.g8,value.b8,value.a8]
 			_mark_draft())
-	_hard.text = "Hard surface capability"
-	_granular.text = "Granular support capability"
+	_hard.text = "Hard surface (definition test only)"
+	_granular.text = "Supports loose grains (definition test only)"
 	_candidate_form.add_child(_hard)
 	_candidate_form.add_child(_granular)
 	_hard.toggled.connect(func(value: bool) -> void:
@@ -268,25 +300,27 @@ func _build_candidate(page: VBoxContainer) -> void:
 		if not _loading and not candidate.is_empty():
 			candidate.capabilities.granular_support = value
 			_mark_draft())
-	_label(_candidate_form,"Visual state projection")
+	_label(_candidate_form,"Stored value used for colouring (definition test only)")
 	for label: String in ["Zero","State A","State B"]: _visual.add_item(label)
 	_candidate_form.add_child(_visual)
 	_visual.item_selected.connect(func(index: int) -> void:
 		if not _loading and not candidate.is_empty():
 			candidate.appearance.visual_state_source = index
 			_mark_draft())
-	_label(_candidate_form,"Choose a native template for its supported kernel and state contract. Identity, kernel, state defaults and write radius stay fixed. Candidates need a separately reviewed production consumer before affecting the game.",true)
+	_label(_candidate_form,"Start by copying a material. You can change supported properties, but its material number and movement rules stay fixed. Build + check definition checks your settings; Compare edits shows their effect in a simulation. New powder 132 can only use the definition check.",true)
 	_text(split,_candidate_feedback,260)
 
 func _build_reactions(page: VBoxContainer) -> void:
-	_label(page,"Native resolver diagnostic — supplied byte roll; World scheduling, masks and sleep are not observed here.",true)
+	_label(page,"Check a reaction rule: choose two built-in materials and a test roll. This predicts which rule matches; use a simulation to see whether the materials actually react.",true)
 	var row := _row(page)
-	_label(row,"Selected material + partner")
+	_label(row,"Other material")
 	row.add_child(_partner)
 	_partner.item_selected.connect(func(index: int) -> void: _select_partner(_partner.get_item_id(index)))
 	_spin(row,"Roll",_roll,0,255,0)
-	_button(row,"Inspect native result",inspect_reaction)
-	_label(page,"Candidate sparse rule editor — existing authored slots; conflicting pairs are rejected.",true)
+	_roll.value_changed.connect(func(_value: float) -> void: _retire_reaction_diagnostic())
+	_roll.get_line_edit().text_changed.connect(func(_text: String) -> void: _retire_reaction_diagnostic())
+	_button(row,"Check built-in rule",inspect_reaction)
+	_label(page,"Edit your copy’s reactions below. Copy a reactive material, such as Salt, to begin. You can change its existing rules; conflicting rules are refused.",true)
 	page.add_child(_reaction_picker)
 	_reaction_picker.item_selected.connect(func(_index: int) -> void:
 		_refresh_reaction_fields()
@@ -295,7 +329,7 @@ func _build_reactions(page: VBoxContainer) -> void:
 	for key: String in ["first","second","first_product","second_product"]:
 		var group := VBoxContainer.new()
 		row.add_child(group)
-		_label(group,key.replace("_"," ").capitalize())
+		_label(group,{"first":"Material 1","second":"Material 2","first_product":"Material 1 becomes","second_product":"Material 2 becomes"}[key])
 		var picker := OptionButton.new()
 		picker.custom_minimum_size.x = 165
 		group.add_child(picker)
@@ -303,76 +337,84 @@ func _build_reactions(page: VBoxContainer) -> void:
 		picker.item_selected.connect(func(index: int) -> void: _edit_reaction(key,picker.get_item_id(index)))
 	row = _row(page)
 	var threshold := SpinBox.new()
-	_spin(row,"Threshold T",threshold,0,255,0)
+	_spin(row,"Chance setting (0–255)",threshold,0,255,0)
 	_reaction_fields["probability"] = threshold
+	threshold.get_line_edit().text_changed.connect(func(_text: String) -> void:
+		if not _loading and not candidate.is_empty(): _mark_draft())
 	threshold.value_changed.connect(func(value: float) -> void: _edit_reaction("probability",int(value)))
 	var match_picker := OptionButton.new()
-	for label: String in ["Ordered","Unordered, role preserving","Symmetric"]: match_picker.add_item(label)
+	for label: String in ["Only material 1 can start","Either can start; products follow materials","Either can start; products follow positions"]: match_picker.add_item(label)
+	match_picker.tooltip_text = "Who may start the reaction, and which cell gets each product. Products can follow the original material or stay tied to the starting and neighbouring cell positions."
 	row.add_child(match_picker)
 	_reaction_fields["match"] = match_picker
 	match_picker.item_selected.connect(func(index: int) -> void: _edit_reaction("match",index))
 	_button(row,"Validate candidate",func() -> void: _candidate_job("validate"))
-	_button(row,"Compile candidate reaction",func() -> void: _candidate_job("compile_test"))
-	_button(row,"Test reaction in World",_test_reaction_world)
+	_button(row,"Build + check reaction",func() -> void: _candidate_job("compile_test"))
+	_button(row,"Run edited reaction",_test_reaction_world)
 	row = _row(page)
 	for endpoint: String in ["first","second"]:
 		var group := VBoxContainer.new()
 		row.add_child(group)
-		_label(group,endpoint.capitalize() + " endpoint effect")
+		_label(group,"What happens to material " + ("1" if endpoint == "first" else "2"))
 		var kind := OptionButton.new()
-		for caption: String in ["Replace with defaults","Keep existing","Set state B"]: kind.add_item(caption)
+		for caption: String in ["Replace with a new product","Keep the original cell","Set charge / burn timer"]: kind.add_item(caption)
 		group.add_child(kind)
 		var value := SpinBox.new()
 		_spin(group,"State B",value,0,255,0)
 		var detail := _label(group,"",true)
 		detail.custom_minimum_size.x = 270
 		_effect_fields[endpoint] = {"kind":kind,"state_b":value,"detail":detail}
+		value.get_line_edit().text_changed.connect(func(_text: String) -> void:
+			if not _loading and not candidate.is_empty(): _mark_draft())
 		kind.item_selected.connect(func(index: int) -> void: _edit_effect(endpoint,index))
 		value.value_changed.connect(func(_number: float) -> void: _edit_effect(endpoint,kind.selected))
-	_label(page,"Chance = (T + 1) / 256; T=0 still selects roll 0. Replace uses legacy product defaults. Effects v2 retain a non-Water participant or set its declared Metal charge / Combustible burn countdown. These effects require Test reaction in World and role-preserving matching.",true)
+	_label(page,"Chance = (T + 1) / 256; T=0 still selects roll 0. Replace uses legacy product defaults. Effects v2 retain a non-Water participant or set its declared Metal charge / Combustible burn countdown. These effects require Run edited reaction and role-preserving matching.",true)
 	_text(page,_reaction_report,220)
 
 func _build_experiment(page: VBoxContainer) -> void:
-	_label(page,"Existing materials run in an isolated native MicroScenario. Candidate-only IDs and edits are never installed in this World.",true)
+	_label(page,"Try the unchanged built-in materials in a separate simulation. Edits made to your copy are not used here; use Compare edits for those.",true)
 	_experiment_summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	page.add_child(_experiment_summary)
 	var row := _row(page)
-	_label(row,"Partner for new pair")
+	_label(row,"Other material")
 	row.add_child(_experiment_partner)
 	_experiment_partner.item_selected.connect(func(index: int) -> void: _select_partner(_experiment_partner.get_item_id(index)))
 	_experiment_request.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	page.add_child(_experiment_request)
 	row = _row(page)
 	_spin(row,"Seed",_seed,0,2147483647,2)
-	_spin(row,"Ticks",_steps,1,Experiment.MAX_DURATION,120)
-	_label(row,"Workers")
+	_spin(row,"Steps",_steps,1,Experiment.MAX_DURATION,120)
+	_label(row,"Simulation threads")
 	_workers.add_item("1",1)
 	_workers.add_item("4",4)
 	row.add_child(_workers)
-	_label(row,"Water test policy")
-	for family: String in ["Current default","FreeMass","CellularYield"]: _family.add_item(family)
+	_label(row,"Water movement model")
+	for family: String in Experiment.WATER_FAMILIES:
+		_family.add_item(Experiment.WATER_FAMILIES[family])
+		_family.set_item_metadata(_family.item_count - 1,family)
+	_family.tooltip_text = "Choose how Water moves in the next experiment. Prepare experiment applies the choice."
 	row.add_child(_family)
 	for field: SpinBox in [_seed,_steps]:
 		field.value_changed.connect(func(_value: float) -> void: _refresh_experiment_request())
 	_workers.item_selected.connect(func(_index: int) -> void: _refresh_experiment_request())
 	_family.item_selected.connect(func(_index: int) -> void: _refresh_experiment_request())
 	row = _row(page)
-	_button(row,"Prepare selected + partner",start_experiment)
+	_button(row,"Prepare experiment",start_experiment)
 	_button(row,"Step",func() -> void: _step_experiment(1))
-	_button(row,"Run bounded window",func() -> void:
+	_button(row,"Run set number of steps",func() -> void:
 		experiment.cancel_reference("Reference comparison cancelled to resume the source run.")
 		if not experiment.active(): start_experiment()
 		_running = experiment.active() and not experiment.completed()
 		_status.text = "Running the prepared native definition." if _running else "Prepared native window is complete; Prepare creates a fresh run."
 		_refresh_experiment())
 	_button(row,"Pause",_pause_experiment)
-	_button(row,"Inspect test-owner policy",func() -> void:
+	_button(row,"Show applied Water settings",func() -> void:
 		if experiment.active():
 			set_policy_readback(experiment.readback().get("applied_policy",{}),"Isolated native test owner")
 			_tabs.current_tab = 0)
-	_button(row,"Repeat / compare reference",_compare_reference)
-	_button(row,"Save test case…",func() -> void: _open_file("export_test",true))
-	_button(row,"Import test case…",func() -> void: _open_file("import_test",false))
+	_button(row,"Repeat and check result",_compare_reference)
+	_button(row,"Save experiment…",func() -> void: _open_file("export_test",true))
+	_button(row,"Open experiment…",func() -> void: _open_file("import_test",false))
 	var split := HSplitContainer.new()
 	split.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	page.add_child(split)
@@ -390,14 +432,15 @@ func _build_experiment(page: VBoxContainer) -> void:
 	row = _row(view)
 	_spin(row,"Source X",_cell_x,0,1023,242)
 	_spin(row,"Y",_cell_y,0,1023,238)
-	_button(row,"Read stored cell",_inspect_test_cell)
+	_button(row,"Read cell values",_inspect_test_cell)
 	row = _row(view)
 	_spin(row,"Target X",_target_x,0,1023,243)
 	_spin(row,"Y",_target_y,0,1023,238)
 	_spin(row,"Supplied roll",_contact_roll,0,255,0)
 	row = _row(view)
 	_button(row,"Inspect contact",_inspect_test_contact)
-	_button(row,"Swap endpoints",func() -> void:
+	_button(row,"Swap the two cells",func() -> void:
+		_commit_contact_fields()
 		var source: Vector2i = Vector2i(int(_cell_x.value),int(_cell_y.value))
 		_cell_x.value = _target_x.value
 		_cell_y.value = _target_y.value
@@ -406,10 +449,9 @@ func _build_experiment(page: VBoxContainer) -> void:
 		_inspect_test_contact())
 	for field: SpinBox in [_cell_x,_cell_y,_target_x,_target_y,_contact_roll]:
 		field.value_changed.connect(func(_value: float) -> void:
-			if not last_contact_report.is_empty():
-				last_contact_report.clear()
-				_experiment_report.text = "Contact inputs changed. Inspect contact to read the current native cells and supplied roll.")
-	_label(view,"Left-click the preview for source; right-click for target. Inspection pauses this test owner. Native stored values establish facts; the supplied resolver roll does not predict scheduling or an executed reaction.",true)
+			_retire_contact_report())
+		field.get_line_edit().text_changed.connect(func(_text: String) -> void: _retire_contact_report())
+	_label(view,"Left-click a cell, then right-click its neighbour. Inspect contact pauses the simulation and shows their actual values and possible reaction. The test roll checks a rule; it does not prove the simulation has executed it.",true)
 	_text(split,_experiment_report,300)
 
 func reload_catalogue() -> void:
@@ -425,7 +467,7 @@ func reload_catalogue() -> void:
 		_fill_material_picker(_reaction_fields[key])
 	_refresh_list()
 	select_material(selected_id)
-	_status.text = "Native catalogue loaded. Production material identities and physics are read-only."
+	_status.text = "Built-in materials loaded. Make an editable copy to experiment; the ordinary game stays unchanged."
 
 func _fill_material_picker(picker: OptionButton) -> void:
 	picker.clear()
@@ -433,6 +475,7 @@ func _fill_material_picker(picker: OptionButton) -> void:
 		if material.get("valid",false): picker.add_item("%03d  %s" % [material.id,material.name],int(material.id))
 
 func _select_partner(id: int) -> void:
+	_retire_reaction_diagnostic()
 	for picker: OptionButton in [_partner,_experiment_partner]:
 		picker.select(picker.get_item_index(id))
 	_refresh_experiment_request()
@@ -441,7 +484,7 @@ func _refresh_experiment_request() -> void:
 	var first: String = "%03d" % selected_id
 	if selected_id >= 0 and selected_id < catalogue.materials.size(): first += " " + str(catalogue.materials[selected_id].name)
 	var second: String = _partner.get_item_text(_partner.selected) if _partner.selected >= 0 else "choose partner"
-	_experiment_request.text = "Prepare new pair: %s + %s · seed %d · %d ticks · %d worker(s) · Water %s. Run/Step use the prepared definition below." % [first,second,int(_seed.value),int(_steps.value),_workers.get_selected_id(),Experiment.WATER_FAMILIES[_family.selected]]
+	_experiment_request.text = "Prepare new pair: %s + %s · seed %d · %d ticks · %d worker(s) · Water %s. Run/Step use the prepared definition below." % [first,second,int(_seed.value),int(_steps.value),_workers.get_selected_id(),_family.get_item_text(_family.selected)]
 
 func _refresh_list() -> void:
 	_list.clear()
@@ -453,10 +496,11 @@ func _refresh_list() -> void:
 
 func set_policy_readback(receipt: Dictionary, context: String) -> void:
 	applied_policy = receipt.duplicate(true)
-	policy_context = context if not receipt.is_empty() else "Compiled defaults; active World not observed"
+	policy_context = context if not receipt.is_empty() else "Showing built-in settings; no running game has been inspected"
 	if is_node_ready(): select_material(selected_id)
 
 func select_material(id: int) -> void:
+	if selected_id != id: _retire_reaction_diagnostic()
 	selected_id = id
 	_list.deselect_all()
 	for index: int in range(_list.item_count):
@@ -468,9 +512,9 @@ func select_material(id: int) -> void:
 	if not info.get("ok",false):
 		_summary.text = "Material inspection unavailable: " + str(info)
 		return
-	_summary.text = "%03d / %s   ·   %s   ·   %s" % [id,info.name,info.get("origin","native"),info.get("solver",{}).get("label","")]
-	_summary.text += "\n" + policy_context
-	if not applied_policy.is_empty(): _summary.text += " · policy " + str(applied_policy.get("policy_hash","unavailable")).left(16)
+	_summary.text = "%03d / %s · built-in material" % [id,info.name]
+	_summary.tooltip_text = policy_context + "\n" + JSON.stringify(info.get("solver",{}))
+	_summary.text += "\n" + ("Movement settings copied from the Workbench; reopen to refresh." if policy_context.begins_with("Workbench") else ("Showing settings from this separate experiment." if not applied_policy.is_empty() else "Showing built-in movement settings; no running game has been inspected."))
 	_property_tree.clear()
 	var root := _property_tree.create_item()
 	for record: Dictionary in info.get("rows",[]):
@@ -478,8 +522,9 @@ func select_material(id: int) -> void:
 		var keys := ["property","declared","effective","consumer","applicability","editability"]
 		for column: int in range(keys.size()):
 			var value: String = str(record.get(keys[column],"—"))
-			item.set_text(column,value)
-			item.set_tooltip_text(column,value)
+			var explanation: String = _property_words(record,keys[column],value)
+			item.set_text(column,explanation)
+			item.set_tooltip_text(column,explanation + ("\n\nTechnical: " + value if explanation != value else ""))
 	var notes: Array[String] = []
 	for note: Variant in info.get("notes",[]): notes.append(str(note))
 	notes.append("Capabilities: " + str(info.get("capabilities",{})))
@@ -488,6 +533,48 @@ func select_material(id: int) -> void:
 	notes.append("Sparse reaction partners: " + str(info.get("partners",[])))
 	for rule: Dictionary in info.get("reactions",[]): notes.append(JSON.stringify(rule))
 	_inspector_notes.text = "\n\n".join(notes)
+
+func _property_words(record: Dictionary, key: String, raw: String) -> String:
+	var property: String = str(record.property)
+	var descriptions := {
+		"Stable material ID":["Material number","Saving and identifying cells","The number used in saves and reactions. It cannot be reassigned."],
+		"Physical type":["Material type","Grouping movement rules","A broad group such as solid, liquid or gas; it does not determine every behaviour."],
+		"Movement kernel":["How it moves","Movement simulation","The movement rules this material uses. Choose a different starting material to change them."],
+		"Density":["Density","Deciding which material moves through another","Larger values mean heavier in density comparisons. This is a game value, not a promise that every heavier cell will sink."],
+		"Movable":["Can move","Movement simulation","Whether movement is allowed. Space, neighbours and the movement rules still matter."],
+		"Density motion":["Density movement direction","Moving through neighbouring materials","Which direction density-based swaps can happen; this does not force a cell to move."],
+		"Accepts density exchange":["Allows density swaps","Moving through neighbouring materials","Whether another material may swap places with this one. Both cells must meet the movement rules."],
+		"Hard surface":["Hard surface","Terrain collision checks","Whether the engine treats this as hard terrain. Being labelled Solid is not enough."],
+		"Granular support":["Supports loose grains","Supporting sand and other grains","Whether this material can support a pile of loose grains."],
+		"Lateral flow":["Sideways flow","Liquid movement","How liquid spreads sideways. Applied Water settings can override the saved definition."],
+		"Initial state A":["Starting stored value A","Creating cells and reaction products","An internal value whose meaning depends on the material. Water uses it for amount; inspect a cell to see its current value."],
+		"Initial state B":["Starting stored value B","Creating cells and reaction products","A second stored value, used for things such as charge or burn timers. It is not freely editable."],
+		"Kernel write radius":["Neighbour reach","Limiting how far a step may change cells","The movement rule's reach in cells. The selected liquid model may require a larger area."],
+		"Visual state projection":["Stored value used for colouring","Drawing cells","Which stored value contributes to the cell's appearance. This does not change its physics."],
+		"Thermal / lifecycle":["Heating, cooling and lifetime","Material-specific simulation rules","These behaviours are built into each material. There are no general melting-point or lifetime controls here."],
+		"Base RGBA8":["Base colour and transparency","Drawing cells","Compares the engine's base colour with the game's display colour. Appearance only."],
+		"Procedural flair":["Surface appearance","Drawing cells","Extra visual styling, such as patterns or glow. It does not assign physical behaviour."]}
+	if descriptions.has(property):
+		var words: Array = descriptions[property]
+		if key == "property": return words[0]
+		if key == "consumer": return words[1]
+		if key == "applicability": return words[2]
+	if property.contains("Viscosity") or property.contains("viscosity"):
+		if key == "property": return "Resistance to sideways flow"
+		if key == "consumer": return "Liquid movement"
+		if key == "applicability": return "Only affects movement rules that read this value. Some Water models use their own settings instead."
+	if key == "editability":
+		if property in ["Hard surface","Granular support","Visual state projection"] and record.get("editable_in_candidate",false): return "Definition checks only"
+		return "Yes, in Edit copy; test limits still apply" if record.get("editable_in_candidate",false) else "Fixed here — choose another starting material or use its own settings"
+	if key in ["declared","effective"]:
+		if raw == "true": return "Yes"
+		if raw == "false": return "No"
+		if raw == "native predicate": return "Engine rule"
+		if raw.begins_with("freemass_v1"): return "Water flow (standard)"
+		if raw.begins_with("inertial_cellular_v1"): return "Water flow with momentum"
+		if raw.begins_with("cellular_yield_v1"): return "Cell-based liquid flow"
+		if raw.begins_with("pressure_flow_v1"): return Experiment.WATER_FAMILIES["pressure_flow_v1"]
+	return raw
 
 func duplicate_selected() -> void:
 	if selected_id == 10:
@@ -511,7 +598,12 @@ func _mark_draft() -> void:
 
 func _refresh_candidate_status() -> void:
 	world_panel.set_candidate(candidate)
-	_candidate_label.text = candidate_state
+	var labels := {
+		"No candidate":"No editable copy yet. Copy the selected material or open a saved preset.",
+		"Compiled/tested — isolated native backend":"Definition built and checked — test only",
+		"Compiled/tested — isolated native World":"Simulation completed — test only",
+		"Validated candidate":"Settings checked — ready to build"}
+	_candidate_label.text = labels.get(candidate_state,candidate_state)
 	if not candidate_digest.is_empty(): _candidate_label.text += "  ·  digest " + candidate_digest
 	if not candidate.is_empty():
 		_candidate_label.text += "\nTemplate %d → candidate %d / %s. No production activation." % [candidate.template_id,candidate.target_id,candidate.descriptor.name]
@@ -544,6 +636,7 @@ func _refresh_candidate(preferred_slot: int = -1) -> void:
 	_refresh_reaction_fields()
 
 func _candidate_job(op: String) -> void:
+	_commit_candidate_fields()
 	if candidate.is_empty():
 		_status.text = "Duplicate a material or create the isolated powder candidate first."
 		return
@@ -555,6 +648,7 @@ func _candidate_job(op: String) -> void:
 	_start_job(request)
 
 func _world_job(scenario: Dictionary, output_dir: String = "") -> void:
+	_commit_candidate_fields()
 	if candidate.is_empty() or scenario.is_empty():
 		_status.text = "Duplicate an existing material before testing a candidate in World."
 		return
@@ -575,6 +669,7 @@ func _start_job(request: Dictionary) -> void:
 	_job_op = str(request.op)
 	_job_world_revision = world_panel.revision
 	_job_reaction_slot = _reaction_picker.get_selected_id() if request.has("diagnostic") and _reaction_picker.selected >= 0 else -1
+	_job_reaction_input_revision = _reaction_input_revision
 	_job_candidate = {}
 	_job_candidate_digest = ""
 	if request.has("candidate"):
@@ -717,12 +812,16 @@ func _candidate_response_error(result: Dictionary, compiled: bool) -> String:
 	return ""
 
 func _backend_completed(result: Dictionary) -> void:
+	# A pending editor may still contain text which has not lost focus. Admit
+	# it before comparing request revisions, so a reply cannot erase new text.
+	_commit_candidate_fields()
+	world_panel.commit_fields()
 	if _revision != _job_revision:
-		_status.text = "Completed job refers to an older revision. Current edits remain Draft."
+		_status.text = "That build used your previous edits. Build again to check the current copy."
 		if _job_op == "compile_world_test": world_panel.show_failure(_status.text)
 		return
 	if _job_op in ["compile_world_test","import_world_case","export_world_case"] and _job_world_revision != world_panel.revision:
-		_status.text = "World operation completed for an older recipe. Current test settings remain untested."
+		_status.text = "That result used your previous setup. Run the test again to check the current settings."
 		world_panel.show_failure(_status.text)
 		return
 	last_backend_result = result.duplicate(true)
@@ -769,6 +868,7 @@ func _backend_completed(result: Dictionary) -> void:
 	if result.has("receipt") and not world_result:
 		_reaction_report.text = "COMPILED CANDIDATE / ISOLATED NATIVE RESOLVER\n\n" + JSON.stringify(result.receipt.get("observed",{}).get("diagnostic",{}),"\t") + "\n\n" + str(result.get("boundary",""))
 		_reaction_report.text += "\n\nCHANGES ACROSS PRODUCTION + CANDIDATE PAIRS\n" + JSON.stringify(result.receipt.get("observed",{}).get("comparison",{}),"\t")
+		if _job_reaction_input_revision != _reaction_input_revision: _retire_reaction_diagnostic()
 	_status.text = "%s completed. %s" % [_job_op,candidate_state]
 	_refresh_candidate(_job_reaction_slot if result.has("receipt") else -1)
 	if world_result:
@@ -874,6 +974,8 @@ func _edit_effect(endpoint: String, index: int) -> void:
 	_show_candidate_rule()
 
 func _test_reaction_world() -> void:
+	_commit_candidate_fields()
+	world_panel.commit_fields()
 	var rule: Dictionary = _selected_reaction()
 	if rule.is_empty():
 		_status.text = "Select a candidate reaction first."
@@ -892,23 +994,32 @@ func _show_candidate_rule() -> void:
 	if rule.is_empty(): return
 	_reaction_report.text = "Candidate rule (not active):\n" + JSON.stringify(rule,"\t") + "\nChance: %d / 256 = %.6f%%" % [int(rule.probability)+1,100.0*(int(rule.probability)+1)/256.0]
 
+func _retire_reaction_diagnostic() -> void:
+	_reaction_input_revision += 1
+	if _reaction_report.text.is_empty(): return
+	_show_candidate_rule()
+	_reaction_report.text = "Diagnostic inputs changed. Check built-in rule or compile the candidate reaction for a fresh resolver receipt.\n\n" + (_reaction_report.text if not _selected_reaction().is_empty() else "")
+
 func _exit_tree() -> void:
 	_running = false
 	experiment.close()
 
 func inspect_reaction() -> void:
+	_commit_spinbox(_roll)
 	if _partner.selected >= 0:
 		_reaction_report.text = JSON.stringify(Experiment.resolver_diagnostic(selected_id,_partner.get_selected_id(),int(_roll.value)),"\t")
 
 func start_experiment() -> void:
+	_commit_spinbox(_seed)
+	_commit_spinbox(_steps)
 	_running = false
 	if _partner.selected < 0: return
 	var definition: Dictionary = Experiment.definition_for_pair(selected_id,_partner.get_selected_id(),int(_seed.value),int(_steps.value))
-	if definition.is_empty() or not experiment.start(definition,_workers.get_selected_id(),Experiment.WATER_FAMILIES[_family.selected]):
-		_status.text = "Native experiment rejected: " + experiment.last_error
+	if definition.is_empty() or not experiment.start(definition,_workers.get_selected_id(),str(_family.get_item_metadata(_family.selected))):
+		_status.text = "Could not prepare the experiment: " + experiment.last_error
 		return
 	_tabs.current_tab = 3
-	_status.text = "Experiment prepared. Applied Water policy is read back from this isolated native owner."
+	_status.text = "Experiment ready. The Water settings shown are the ones this test actually uses."
 	_sync_experiment_controls()
 	_refresh_experiment()
 
@@ -918,7 +1029,7 @@ func _sync_experiment_controls() -> void:
 	_seed.value = int(configuration.seed)
 	_steps.value = int(configuration.duration_ticks)
 	_workers.select(_workers.get_item_index(int(configuration.workers)))
-	_family.select(Experiment.WATER_FAMILIES.find(str(configuration.water_family_request)))
+	_family.select(Experiment.WATER_FAMILIES.keys().find(str(configuration.water_family_request)))
 	var pair: Dictionary = configuration.pair
 	if not pair.is_empty():
 		_select_partner(int(pair.second))
@@ -955,7 +1066,8 @@ func _refresh_experiment() -> void:
 			if id == 0 or id == 1: continue
 			var label: String = str(catalogue.materials[id].name) if id < catalogue.materials.size() else str(id)
 			counts.append("%s %s" % [label,readback.material_counts[key]])
-		_experiment_summary.text = "Prepared: %s · %s\nNative tick %s / %s · seed %s · %s worker(s) · Water %s · %s\n%s" % [readback.definition_title,str(readback.definition_hash).left(16),readback.completed_tick,readback.duration_ticks,readback.seed,readback.workers,readback.water_family_request,"Completed" if readback.completed else ("Running" if _running else "Paused / prepared"),", ".join(counts)]
+		var water_model: String = Experiment.WATER_FAMILIES[readback.water_family_request]
+		_experiment_summary.text = "Prepared: %s · %s\nNative tick %s / %s · seed %s · %s worker(s) · Water %s · %s\n%s" % [readback.definition_title,str(readback.definition_hash).left(16),readback.completed_tick,readback.duration_ticks,readback.seed,readback.workers,water_model,"Completed" if readback.completed else ("Running" if _running else "Paused / prepared"),", ".join(counts)]
 	else:
 		_experiment_summary.text = "Native test unavailable: " + str(readback.get("error","No prepared experiment."))
 		_preview.texture = null
@@ -963,21 +1075,32 @@ func _refresh_experiment() -> void:
 	if image != null and not image.is_empty(): _preview.texture = ImageTexture.create_from_image(image)
 
 func _inspect_test_cell() -> void:
+	_commit_spinbox(_cell_x)
+	_commit_spinbox(_cell_y)
 	_running = false
 	experiment.cancel_reference("Reference paused to inspect native cell storage.")
 	_refresh_experiment()
 	var observation: Dictionary = experiment.inspect_cell(Vector2i(int(_cell_x.value),int(_cell_y.value)))
 	_experiment_report.text = JSON.stringify(observation,"\t")
-	_status.text = "Stored native cell read at the paused completed tick." if observation.get("ok",false) else str(observation.get("error","Cell readback refused."))
+	_status.text = "Showing the selected cell’s actual values with the experiment paused." if observation.get("ok",false) else str(observation.get("error","Cell readback refused."))
 
 func _inspect_test_contact() -> void:
+	_commit_contact_fields()
 	_running = false
 	experiment.cancel_reference("Reference paused to inspect native contact facts.")
 	_refresh_experiment()
 	last_contact_report = experiment.inspect_contact(Vector2i(int(_cell_x.value),int(_cell_y.value)),
 		Vector2i(int(_target_x.value),int(_target_y.value)),int(_contact_roll.value))
 	_experiment_report.text = Experiment.contact_report_text(last_contact_report)
-	_status.text = "Contact snapshot read from the paused native owner; no reaction was executed by inspection." if last_contact_report.get("ok",false) else str(last_contact_report.get("error","Contact readback refused."))
+	_status.text = "Showing the two paused cells. Inspecting them does not run a reaction." if last_contact_report.get("ok",false) else str(last_contact_report.get("error","Contact readback refused."))
+
+func _commit_contact_fields() -> void:
+	for field: SpinBox in [_cell_x,_cell_y,_target_x,_target_y,_contact_roll]: _commit_spinbox(field)
+
+func _retire_contact_report() -> void:
+	if not last_contact_report.is_empty():
+		last_contact_report.clear()
+		_experiment_report.text = "Contact inputs changed. Inspect contact to read the current native cells and supplied roll."
 
 func _pick_experiment_cell(event: InputEvent) -> void:
 	if not event is InputEventMouseButton or not event.pressed or event.button_index not in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]: return
@@ -1024,6 +1147,8 @@ func _process(_delta: float) -> void:
 		if not _running or experiment.completed_tick() % 4 == 0: _refresh_experiment()
 
 func _open_file(action: String, saving: bool) -> void:
+	_commit_candidate_fields()
+	world_panel.commit_fields()
 	if action in ["export_preset","compile_bundle","world_bundle","export_world_case"] and candidate.is_empty():
 		_status.text = "Create a candidate before saving a preset."
 		return
@@ -1038,6 +1163,8 @@ func _open_file(action: String, saving: bool) -> void:
 	_file.popup_centered_ratio(0.7)
 
 func _file_selected(path: String) -> void:
+	_commit_candidate_fields()
+	world_panel.commit_fields()
 	match _file_action:
 		"world_bundle":
 			_world_job(world_panel.scenario(),path.path_join("material-world-%d-%d" % [candidate.target_id,Time.get_ticks_usec()]))
@@ -1073,3 +1200,17 @@ func _file_selected(path: String) -> void:
 			file.store_string(data + "\n")
 			file.close()
 			_status.text = "Saved reproducible test case: " + path
+
+func _commit_candidate_fields() -> void:
+	# Button activation can precede the SpinBox focus-exit callback. Commit
+	# displayed text before copying a candidate or capturing its revision.
+	for field: SpinBox in _fields.values(): _commit_spinbox(field)
+	if _reaction_fields.has("probability"): _commit_spinbox(_reaction_fields.probability)
+	for controls: Dictionary in _effect_fields.values(): _commit_spinbox(controls.state_b)
+	_commit_spinbox(_roll)
+
+func _commit_spinbox(field: SpinBox) -> void:
+	if field.get_line_edit().has_focus() or field.get_meta("lab_pending_text",false):
+		field.apply()
+		field.set_meta("lab_pending_text",false)
+		field.get_line_edit().release_focus()

@@ -83,6 +83,46 @@ class PackageTests(unittest.TestCase):
         self.assertNotIn("GIT_TEMPLATE_DIR", environment)
         self.assertEqual(environment["PYTHONNOUSERSITE"], "1")
         self.assertIn("dependencies", environment["CYBERSAND_LAB_CXX"])
+        for prefix in ("ucrt64", "mingw64"):
+            self.assertIn(str(Path("evaluation") / "dependencies/git" / prefix / "bin"), environment["PATH"])
+
+    def git_fixture(self, root, prefix):
+        for name in ("cmd/git.exe", "LICENSE.txt", prefix + "/bin/git.exe",
+                     prefix + "/bin/runtime.dll", prefix + "/share/licenses/dependency/COPYING",
+                     "etc/gitconfig", "etc/private-machine-config"):
+            path = root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(("distribution fixture: " + name).encode())
+        if prefix == "mingw64":
+            path = root / prefix / "libexec/git-core/helper.exe"
+            path.parent.mkdir(parents=True)
+            path.write_bytes(b"legacy helper")
+
+    def test_git_packaging_preserves_legacy_and_ucrt_native_helpers_and_notices(self):
+        for prefix in ("mingw64", "ucrt64"):
+            with self.subTest(prefix=prefix), tempfile.TemporaryDirectory() as temporary:
+                root, copied = Path(temporary) / "installed Git", Path(temporary) / "portable Git"
+                self.git_fixture(root, prefix)
+                subject.copy_git(root, copied)
+                for name in ("cmd/git.exe", "LICENSE.txt", prefix + "/bin/git.exe",
+                             prefix + "/bin/runtime.dll", prefix + "/share/licenses/dependency/COPYING"):
+                    self.assertEqual((copied / name).read_bytes(), (root / name).read_bytes())
+                self.assertEqual((copied / prefix / "libexec").exists(), prefix == "mingw64")
+                self.assertFalse((copied / "etc").exists())
+
+    def test_git_packaging_refuses_incomplete_ambiguous_or_unlicensed_distributions(self):
+        for mode in ("cmd", "native", "license", "notices", "legacy_helpers", "ambiguous"):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as temporary:
+                root, copied = Path(temporary) / "installed Git", Path(temporary) / "portable Git"
+                self.git_fixture(root, "mingw64")
+                if mode == "cmd": (root / "cmd/git.exe").unlink()
+                if mode == "native": (root / "mingw64/bin/git.exe").unlink()
+                if mode == "license": (root / "LICENSE.txt").unlink()
+                if mode == "notices": (root / "mingw64/share/licenses").rename(root / "mingw64/share/notices-missing")
+                if mode == "legacy_helpers": (root / "mingw64/libexec").rename(root / "mingw64/removed-helpers")
+                if mode == "ambiguous": self.git_fixture(root, "ucrt64")
+                with self.assertRaises(RuntimeError): subject.copy_git(root, copied)
+                self.assertFalse(copied.exists())
 
     def test_python_packaging_keeps_stdlib_not_installed_packages_or_caches(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -98,6 +138,46 @@ class PackageTests(unittest.TestCase):
             self.assertTrue((out / "DLLs/_hashlib.pyd").is_file())
             self.assertFalse((out / "Lib/site-packages").exists())
             self.assertFalse((out / "Lib/json/__pycache__").exists())
+
+    def python_fixture(self, directory):
+        root = directory / "python"
+        for name in ("python.exe", "python312.dll", "LICENSE.txt", "Lib/json/__init__.py", "DLLs/_hashlib.pyd"):
+            path = root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(("fixture: " + name).encode())
+        return root
+
+    def test_python_packaging_materializes_internal_executable_aliases(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            root = self.python_fixture(directory)
+            (root / "python3.exe").symlink_to("python.exe")
+            (root / "python3.12.exe").symlink_to("python3.exe")
+            destination = directory / "portable python"
+            subject.copy_python(root, destination)
+            for name in ("python.exe", "python3.exe", "python3.12.exe"):
+                self.assertFalse((destination / name).is_symlink())
+                self.assertEqual(subject.sha(destination / name), subject.sha(root / "python.exe"))
+            self.assertFalse(any(path.is_symlink() for path in destination.rglob("*")))
+
+    def test_python_packaging_refuses_external_broken_and_directory_aliases(self):
+        for mode in ("external", "broken", "directory", "stdlib_directory"):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as temporary:
+                directory = Path(temporary)
+                root = self.python_fixture(directory)
+                if mode == "external":
+                    external = directory / "external.exe"
+                    external.write_bytes(b"not part of the Python installation")
+                    (root / "python3.exe").symlink_to(external)
+                elif mode == "broken":
+                    (root / "python3.exe").symlink_to("absent.exe")
+                elif mode == "directory":
+                    (root / "python3.exe").symlink_to("Lib", target_is_directory=True)
+                else:
+                    (root / "Lib").rename(root / "stdlib")
+                    (root / "Lib").symlink_to("stdlib", target_is_directory=True)
+                with self.assertRaisesRegex(RuntimeError, "Python runtime file|real dependency directory"):
+                    subject.copy_python(root, directory / "rejected")
 
     def fixture(self, root):
         runtime = root / "source" / subject.engine.RUNTIMES["windows"]
@@ -200,8 +280,13 @@ class PackageTests(unittest.TestCase):
             self.assertEqual([case.name for case in cases],
                              ["import", "test_material_lab_ui", "test_material_lab_world", subject.CONTACT_CASE])
             self.assertEqual([case.requires_display for case in cases], [False, False, False, True])
+            for case in cases[:-1]:
+                self.assertNotIn("--max-fps", subject.engine.runner.case_command("bundled-console.exe", case, "win32"))
             command = subject.engine.runner.case_command("bundled-console.exe", cases[-1], "win32")
             self.assertNotIn("--headless", command)
+            self.assertEqual(command.count("--max-fps"), 1)
+            self.assertEqual(command[command.index("--max-fps") + 1], "15")
+            self.assertLess(command.index("--max-fps"), command.index("--"))
             self.assertEqual(command[command.index("--rendering-driver") + 1], "opengl3_angle")
             self.assertIn("--capture-output=" + str((evidence / subject.CONTACT_DIRECTORY).resolve()), command)
             self.assertFalse((evidence / subject.CONTACT_DIRECTORY).exists())
@@ -216,7 +301,8 @@ class PackageTests(unittest.TestCase):
             self.assertIn("not an executed reaction", admitted["scope"])
 
     def test_graphical_contact_refuses_headless_or_incomplete_process_and_marker(self):
-        for mode in ("headless_command", "display_flag", "early_exit", "skip", "wrong_executable", "missing_marker", "duplicate_marker", "log_drift"):
+        for mode in ("headless_command", "display_flag", "early_exit", "skip", "wrong_executable", "missing_marker", "duplicate_marker", "log_drift",
+                     "missing_fps", "unbounded_fps", "duplicate_fps", "user_argument_fps"):
             with self.subTest(mode=mode), tempfile.TemporaryDirectory() as temporary:
                 package, evidence, _, identity, result, _, _, _ = self.contact_fixture(Path(temporary))
                 log = evidence / (subject.CONTACT_CASE + ".log")
@@ -225,6 +311,12 @@ class PackageTests(unittest.TestCase):
                 if mode == "early_exit": result["natural_completion"] = False
                 if mode == "skip": result["skip_messages"] = ["SKIP fixture"]
                 if mode == "wrong_executable": result["command"][0] = "host-installed-godot.exe"
+                if mode in ("missing_fps", "unbounded_fps", "user_argument_fps"):
+                    index = result["command"].index("--max-fps")
+                    if mode == "missing_fps": del result["command"][index:index + 2]
+                    if mode == "unbounded_fps": result["command"][index + 1] = "0"
+                    if mode == "user_argument_fps": result["command"].insert(index, "--")
+                if mode == "duplicate_fps": result["command"].extend(("--max-fps", "0"))
                 if mode == "missing_marker": log.write_bytes(b"clean exit without assertions\n")
                 if mode == "duplicate_marker": log.write_bytes(log.read_bytes() * 2)
                 if mode == "log_drift": log.write_bytes(log.read_bytes() + b"changed\n")

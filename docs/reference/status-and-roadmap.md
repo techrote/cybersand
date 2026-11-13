@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-12
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -12,14 +12,14 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Materials Lab v1 — 2026-11-11
 
-Separate [Draft #563](https://github.com/techrote/cybersand/pull/563) replaces the
+Separate [PR #563](https://github.com/techrote/cybersand/pull/563) replaces the
 two native hard/granular predicates with canonical generated capability maps.
 The [source and native proof](../audits/2026-11-11-material-native-capability-cutover.md)
 preserve all values, IDs and policy/save identities; the frozen lock remains
 unchanged. This is one bounded #353-B consumer, not the wider catalogue cutover
 or #384's display-name route. Runtime publication and platform gates are separate.
 
-**Implemented review candidate; no Ready or merge authority.** The
+**Merged in #562 on 2026-11-13.** The
 [Materials Lab](../operations/materials-lab-authoring.md) mounts in the existing
 desktop launcher/Workbench and provides native effective-property inspection,
 structured candidate editing, strict preset round-trips, compiled native pair
@@ -45,11 +45,34 @@ adds copied native contact/mask/core-window diagnostics, Windows process lifetim
 ownership, source-matched runtime publication and a self-contained Windows
 authoring package. Actual automated platform results remain source-qualified;
 human acceptance is not inferred. The bounded #353-B hard/granular generated
-consumer is separately reviewed in Draft #563 and is not installed in #562.
+consumer is reviewed separately in #563.
+The Windows evaluation continuation repairs the current Git distribution's
+portable layout, readable small-window overflow, pending numeric input and stale
+resolver diagnostics. The completion audit retains each campaign's actual
+source/package result; a failed package stage is not a delivered executable.
+The Workbench Lab also uses an independent native desktop window where supported,
+with physical-pixel scaling and local input; embedded fallback remains available.
+Its client and frame are admitted within the usable work area; insufficient
+desktop capacity is reported explicitly. Failed request8 remains recorded.
+The final Windows evaluation exposes the existing native PressureFlow reference
+solver in **Try originals** and restores it from source-matched experiment cases.
+The [merge and package evidence](https://github.com/techrote/cybersand/pull/562)
+records the tested source and runtime identity.
 The owner explicitly
 excluded MoltenGlass H1 from this continuation; it is not a Lab delivery gate.
 Historical liveness evidence and production thermal/rest behavior remain
 unchanged. Older dated boundaries below retain their historical scope.
+
+## Workbench liquid equipment (#361) — 2026-11-09
+
+**Accepted main since #553 merged on 2026-11-12; no default changed.** The shared workbench gains an
+opt-in [valves, drain, pumped nozzle and the liquid-lab / reservoir-lab starts](../systems/workbench-liquid-equipment.md)
+authored in an optional Setup-v2 `equipment` block and run by a worker-owned device
+owner through ordinary booked native edits and the #406 ballistic owner. No native or
+GDExtension source changed. [Dated evidence](../audits/2026-11-09-in-tools-361-workbench-equipment.md)
+records local Windows and WSL Linux 1/4-worker runs across the inertial, pressure,
+whole-cell and Current Water families with exact native ledger closure. Linux, hosted CI, human feel acceptance, physical-actor usable, #542 generated-map
+placement and #531 agent use remain open.
 
 ## EXPLORE-001 generated playable maps — 2026-11-08
 

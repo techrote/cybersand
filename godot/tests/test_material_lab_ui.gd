@@ -12,10 +12,14 @@ var output_directory: String = ""
 var capture_directory: String = ""
 var capture_source_hashes: Dictionary = {}
 var capture_manifest: Dictionary = {}
+var directory_custody_only: bool = false
+var workbench_mount_only: bool = false
 
 func _initialize() -> void:
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-output="): capture_directory = argument.trim_prefix("--capture-output=")
+		if argument == "--directory-custody-only": directory_custody_only = true
+		if argument == "--workbench-mount-only": workbench_mount_only = true
 	run.call_deferred()
 
 func expect(value: bool, message: String) -> void:
@@ -83,6 +87,57 @@ func selected_directory(caption: String, path: String) -> bool:
 	if not await wait_for(func() -> bool: return not panel.service.busy,caption): return false
 	expect(panel.last_backend_result.get("ok",false),"Compiled bundle export uses the executed backend: " + str(panel.last_backend_result.get("errors",[])))
 	return bool(panel.last_backend_result.get("ok",false))
+
+func directory_custody(requested: String, observed: String) -> bool:
+	# MSIX may expose the same AppData directory through logical and physical
+	# paths. A fresh marker plus observed removal proves shared live storage;
+	# equal basenames or copied bundle bytes alone do not establish custody.
+	if not requested.is_absolute_path() or not observed.is_absolute_path(): return false
+	if not DirAccess.dir_exists_absolute(requested) or not DirAccess.dir_exists_absolute(observed): return false
+	var nonce: String = Crypto.new().generate_random_bytes(32).hex_encode()
+	if nonce.length() != 64: return false
+	var marker: String = ".materials-lab-custody-" + nonce
+	var logical: String = requested.path_join(marker)
+	var canonical: String = observed.path_join(marker)
+	if FileAccess.file_exists(logical) or DirAccess.dir_exists_absolute(logical): return false
+	var file := FileAccess.open(logical,FileAccess.WRITE)
+	if file == null: return false
+	file.store_string(nonce)
+	var write_error: Error = file.get_error()
+	file.close()
+	var same: bool = write_error == OK and FileAccess.get_file_as_string(canonical) == nonce if FileAccess.file_exists(canonical) else false
+	if same:
+		same = DirAccess.remove_absolute(canonical) == OK and not FileAccess.file_exists(logical)
+	# Only remove the marker created by this invocation, never a replaced file.
+	if FileAccess.file_exists(logical) and FileAccess.get_file_as_string(logical) == nonce:
+		DirAccess.remove_absolute(logical)
+	return same
+
+func directory_custody_controls() -> void:
+	var base: String = output_directory.path_join("directory-custody-" + Crypto.new().generate_random_bytes(16).hex_encode())
+	var requested: String = base.path_join("logical/export")
+	var unrelated: String = base.path_join("unrelated/export")
+	expect(not DirAccess.dir_exists_absolute(base),"Directory custody controls use a fresh owned fixture")
+	if DirAccess.dir_exists_absolute(base): return
+	expect(DirAccess.make_dir_recursive_absolute(requested) == OK and DirAccess.make_dir_recursive_absolute(unrelated) == OK,
+		"Directory custody fixtures can be created")
+	expect(directory_custody(requested,requested),"Directory custody accepts identical live storage")
+	expect(directory_custody(requested,base.path_join("logical/../logical/export")),"Directory custody accepts an actual filesystem path alias")
+	expect(not directory_custody(requested,unrelated),"Matching directory basenames cannot establish export custody")
+	var payload: String = requested.path_join("identical-bundle-content.json")
+	var file := FileAccess.open(payload,FileAccess.WRITE)
+	if file != null:
+		file.store_string('{"same":"bundle bytes"}\n')
+		file.close()
+	expect(file != null and DirAccess.copy_absolute(payload,unrelated.path_join(payload.get_file())) == OK,
+		"Unrelated directory receives a byte-identical payload")
+	expect(not directory_custody(requested,unrelated),"Copied contents in a same-basename directory cannot establish live storage custody")
+	for directory: String in [requested,unrelated]:
+		var contents: PackedStringArray = DirAccess.get_files_at(directory)
+		expect(not str(contents).contains(".materials-lab-custody-"),"Owned custody markers are removed after positive and negative controls")
+		DirAccess.remove_absolute(directory.path_join("identical-bundle-content.json"))
+		DirAccess.remove_absolute(directory)
+	for directory: String in [base.path_join("logical"),base.path_join("unrelated"),base]: DirAccess.remove_absolute(directory)
 
 func canonical_parity() -> void:
 	var controls: String = ""
@@ -180,7 +235,7 @@ func extended_authoring() -> bool:
 	# backend. Malformed-response cases below corrupt that executed evidence;
 	# they do not substitute a simulated successful native run.
 	search_select(23)
-	if not await authoring("Duplicate selected"): return false
+	if not await authoring("Copy selected material"): return false
 	var unicode_label: String = " " + String.chr(160) + String.chr(12288) + "β 砂🧪 \"trial\" \\ /" + String.chr(160) + " "
 	panel._candidate_name.text = unicode_label
 	panel._candidate_name.text_changed.emit(unicode_label)
@@ -210,7 +265,7 @@ func extended_authoring() -> bool:
 		"Real validator admits the structured non-Water retention candidate")
 	var view: Variant = panel.world_panel
 	expect(view.set_scenario({"first":23,"second":3,"seed":2,"ticks":120,"workers":4}),"Prospective World recipe is set before selected-reaction routing")
-	if not press("Test reaction in World"): return false
+	if not press("Run edited reaction"): return false
 	expect(view.scenario().first == 3 and view.scenario().second == 23 and panel._tabs.current_tab == 4,
 		"Selected-reaction button routes its actual positional pair into the mounted World test")
 	if not await wait_for(func() -> bool: return not panel.service.busy,"actual retained-endpoint World comparison",300000): return false
@@ -240,6 +295,12 @@ func extended_authoring() -> bool:
 		"Rejected parent evidence clears previews/status and releases compile controls")
 	var recipe: Dictionary = {"first":3,"second":23,"seed":73,"ticks":37,"workers":4}
 	expect(view.set_scenario(recipe),"Distinct source-bound recipe can be selected")
+	view._seed.get_line_edit().text = "74"
+	view._seed.get_line_edit().text_changed.emit("74")
+	view._ticks.get_line_edit().text = "38"
+	view._ticks.get_line_edit().text_changed.emit("38")
+	recipe.seed = 74
+	recipe.ticks = 38
 	var case_path: String = output_directory.path_join("retained-salt-world-case.json")
 	if not await selected_file("Save World recipe…",case_path): return false
 	expect(panel.last_backend_result.get("ok",false) and FileAccess.file_exists(case_path),"Mounted save exports a source-bound World recipe through the real service")
@@ -247,11 +308,12 @@ func extended_authoring() -> bool:
 	var saved: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(case_path))
 	expect(saved.schema_id == "cybersand.material-lab.world-case" and str(saved.digest).length() == 64 and not saved.source_identity.lf_sha256.is_empty(),
 		"Recipe stores versioned digests and exact executable source inputs")
+	expect(panel._integer_candidate(saved.scenario) == recipe,"Saving a World recipe commits displayed seed and tick text without requiring Enter")
 	var expected_candidate: Dictionary = panel.candidate.duplicate(true)
 	var expected_digest: String = panel.candidate_digest
 	expect(panel.candidate_state == "Validated candidate" and view.receipt.is_empty(),"Saving a recipe is validation, not a new native execution")
 	search_select(2)
-	if not await authoring("Duplicate selected"): return false
+	if not await authoring("Copy selected material"): return false
 	expect(view.set_scenario({"first":2,"second":1,"seed":99,"ticks":600,"workers":1}),"Unrelated candidate and controls are prepared before import")
 	if not await selected_file("Import World recipe…",case_path): return false
 	expect(panel.last_backend_result.get("ok",false) and panel.candidate == expected_candidate and panel.candidate_digest == expected_digest,
@@ -271,7 +333,7 @@ func extended_authoring() -> bool:
 		"Digest-corrupt recipe import preserves the current candidate and controls")
 	expect(panel._status.text.contains("/case/digest"),"Recipe digest refusal identifies the actionable field")
 	search_select(28)
-	if not await authoring("Duplicate selected"): return false
+	if not await authoring("Copy selected material"): return false
 	panel._tabs.current_tab = 2
 	panel._reaction_picker.select(0)
 	panel._reaction_picker.item_selected.emit(0)
@@ -285,16 +347,131 @@ func extended_authoring() -> bool:
 		"Metal structured state control retains identity and sets its declared register")
 	expect(metal.state_b.editable and metal.detail.text.contains("charge countdown"),"State editor names its actual native consumer")
 	if not await authoring("Validate candidate"): return false
-	if not press("Compile candidate reaction"): return false
+	if not press("Build + check reaction"): return false
 	if not await wait_for(func() -> bool: return not panel.service.busy,"descriptor-only backend refusal for extended effect"): return false
 	expect(not panel.last_backend_result.get("ok",true) and panel._status.text.contains("World"),
 		"Extended effects cannot silently fall back to the legacy descriptor/resolver probe")
 	return true
 
+func popup_bounds(popup: Window, bounds: Rect2i, native: bool, context: String) -> void:
+	# Retain initial native/client/frame measurements before either assertion.
+	print("MATERIAL_LAB_POPUP_PLACEMENT ",JSON.stringify({"context":context,"display":DisplayServer.get_name(),
+		"screen":popup.current_screen,"parent_screen":root.current_screen,"parent_position":root.position,"parent_size":root.size,
+		"usable_position":bounds.position,"usable_size":bounds.size,"client_position":popup.position,"client_size":popup.size,
+		"outer_position":popup.get_position_with_decorations() if native else popup.position,
+		"outer_size":popup.get_size_with_decorations() if native else popup.size,
+		"placement":popup.get_meta("materials_lab_placement",{})}))
+	expect(bounds.encloses(Rect2i(popup.position,popup.size)),"Lab initially fits the available desktop or embedded viewport: " + context)
+	if native:
+		expect(bounds.encloses(Rect2i(popup.get_position_with_decorations(),popup.get_size_with_decorations())),
+			"Lab native borders and title bar fit the usable work area: " + context)
+
+func workbench_popup_controls(workbench: Variant, main: Control) -> void:
+	var popup: Window = workbench._materials_lab_window
+	var mounted: Variant = workbench._materials_lab_panel
+	var native: bool = not OS.has_feature("web") and DisplayServer.has_feature(DisplayServer.FEATURE_SUBWINDOWS)
+	expect(popup.force_native == native and popup.is_embedded() != native,"Lab uses a native desktop window only when the display supports subwindows")
+	expect(popup.content_scale_mode == Window.CONTENT_SCALE_MODE_DISABLED and popup.handle_input_locally,
+		"Lab owns its pixel scaling and local input without changing the game")
+	expect(root.content_scale_mode == Window.CONTENT_SCALE_MODE_CANVAS_ITEMS and root.content_scale_size == Vector2i(1920,1080),
+		"Opening Lab preserves the stretched game canvas")
+	var bounds: Rect2i = DisplayServer.screen_get_usable_rect(root.current_screen) if native else Rect2i(Vector2i.ZERO,Vector2i(root.get_visible_rect().size))
+	popup_bounds(popup,bounds,native,"initial")
+	if native:
+		var original_parent: Vector2i = root.position
+		var identity: int = popup.get_instance_id()
+		var chrome: Vector2i = popup.get_size_with_decorations() - popup.size
+		var restricted_size: Vector2i = Vector2i(1024,728).max(popup.min_size + chrome).min(bounds.size)
+		var restricted := Rect2i(bounds.end - restricted_size,restricted_size)
+		expect(workbench._fit_materials_lab_native(restricted,Vector2i(1520,900)),"Restricted work-area fixture admits minimum client plus measured chrome")
+		for frame: int in range(3): await process_frame
+		popup_bounds(popup,restricted,true,"restricted-workarea-fixture")
+		var admitted := Rect2i(popup.position,popup.size)
+		expect(not workbench._fit_materials_lab_native(Rect2i(bounds.position,Vector2i(500,400)),Vector2i(1520,900)),
+			"Insufficient work area refuses the existing minimum instead of clipping or lowering it")
+		expect(Rect2i(popup.position,popup.size) == admitted,"Capacity refusal preserves the current native geometry")
+		workbench._materials_lab_window.close_requested.emit()
+		expect(not popup.visible,"Capacity/restricted fixture can retire through the real close seam")
+		root.position = bounds.end - Vector2i(64,64)
+		workbench.open_materials_lab()
+		for frame: int in range(3): await process_frame
+		bounds = DisplayServer.screen_get_usable_rect(root.current_screen)
+		expect(popup.visible and popup.get_instance_id() == identity,"Hidden native window reopens successfully after restricted admission/refusal")
+		popup_bounds(popup,bounds,true,"displaced-parent-reopen")
+		root.position = original_parent
+		workbench.open_materials_lab()
+		for frame: int in range(3): await process_frame
+		bounds = DisplayServer.screen_get_usable_rect(root.current_screen)
+		popup_bounds(popup,bounds,true,"restored-parent-reopen")
+	for dimensions: Vector2i in [Vector2i(1000,650),Vector2i(1280,720)]:
+		if native:
+			expect(workbench._fit_materials_lab_native(bounds,dimensions),"Requested native size is admitted within measured work-area capacity")
+		else: popup.size = dimensions
+		for frame: int in range(3): await process_frame
+		if native: popup_bounds(popup,bounds,true,"requested-%s" % dimensions)
+		var scale: Vector2 = mounted.get_screen_transform().get_scale()
+		if native: expect(scale.is_equal_approx(Vector2.ONE),"Native Lab controls remain physical pixels at %s" % dimensions)
+		expect(Rect2(Vector2.ZERO,Vector2(popup.size)).encloses(mounted.get_global_rect()),"Lab content fits its %s client area" % dimensions)
+		mounted._tabs.current_tab = 3
+		for frame: int in range(2): await process_frame
+		var scroll: ScrollContainer = mounted._tabs.get_current_tab_control()
+		var contact: Button = find_button(mounted,"Inspect contact")
+		scroll.ensure_control_visible(contact)
+		for frame: int in range(2): await process_frame
+		expect(scroll.get_global_rect().has_point(contact.get_global_rect().get_center()),"Native contact action remains reachable at %s" % dimensions)
+		scroll.scroll_vertical = 0
+		print("MATERIAL_LAB_POPUP_GEOMETRY ",JSON.stringify({"display":DisplayServer.get_name(),"native":native,"embedded":popup.is_embedded(),"requested_size":[dimensions.x,dimensions.y],"size":[popup.size.x,popup.size.y],"control_screen_scale":[scale.x,scale.y]}))
+	mounted._tabs.current_tab = 0
+	for frame: int in range(2): await process_frame
+	var paused: bool = main.paused
+	var steps: int = workbench.step_serial
+	var tick: int = int(main.latest_snapshot.tick_index)
+	var edits: Array = workbench.applied.edits.duplicate(true)
+	var camera: int = workbench._camera.selected
+	mounted._search.grab_focus()
+	var typing := InputEventKey.new()
+	typing.pressed = true
+	typing.keycode = KEY_F
+	typing.unicode = "f".unicode_at(0)
+	popup.push_input(typing)
+	expect(mounted._search.text == "f","Lab text receives keyboard input in its own viewport")
+	mounted._search.release_focus()
+	for key: Key in [KEY_P,KEY_PERIOD,KEY_F]:
+		var event := InputEventKey.new()
+		event.pressed = true
+		event.keycode = key
+		popup.push_input(event)
+		event = event.duplicate()
+		event.pressed = false
+		popup.push_input(event)
+	var click := InputEventMouseButton.new()
+	click.button_index = MOUSE_BUTTON_LEFT
+	click.pressed = true
+	click.position = Vector2(popup.size) / 2.0
+	popup.push_input(click)
+	click = click.duplicate()
+	click.pressed = false
+	popup.push_input(click)
+	for frame: int in range(3): await process_frame
+	expect(main.paused == paused and workbench.step_serial == steps and int(main.latest_snapshot.tick_index) == tick,
+		"Lab keys do not pause, resume or tick the underlying native Workbench")
+	expect(workbench.applied.edits == edits and workbench._camera.selected == camera,
+		"Lab clicks and shortcuts do not paint or change the underlying Workbench camera")
+	mounted._search.text = ""
+	mounted._search.text_changed.emit("")
+
 func workbench_mount() -> void:
 	# Main owns its real worker and publishes copied tower_context snapshots.
 	# The Lab test never reaches into simulation_worker or its native World.
 	var former_feature: Variant = get_meta("cybersand_feature") if has_meta("cybersand_feature") else null
+	var former_size: Vector2i = root.size
+	var former_scale_size: Vector2i = root.content_scale_size
+	var former_scale_mode: int = root.content_scale_mode
+	var former_embedding: bool = root.gui_embed_subwindows
+	root.size = Vector2i(1280,720)
+	root.content_scale_size = Vector2i(1920,1080)
+	root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+	root.gui_embed_subwindows = true
 	set_meta("cybersand_feature","shared_workbench")
 	var main: Control = load("res://main.tscn").instantiate()
 	root.add_child(main)
@@ -311,6 +488,7 @@ func workbench_mount() -> void:
 			var mounted: Variant = workbench._materials_lab_panel
 			expect(is_instance_valid(mounted) and workbench._materials_lab_window.visible,"Materials Lab opens inside actual Workbench Window")
 			if is_instance_valid(mounted):
+				await workbench_popup_controls(workbench,main)
 				var initial_owner: Dictionary = main.tower_context.liquid_solver_policy.duplicate(true)
 				expect(mounted.applied_policy == initial_owner,"Workbench mount copies the actual owner-published policy")
 				expect(mounted.policy_context.contains("Workbench owner snapshot"),"Inspector labels snapshot ownership and refresh semantics")
@@ -322,6 +500,15 @@ func workbench_mount() -> void:
 				expect(mounted.applied_policy == initial_owner,"Reopening replaces mutated local inspection copy with fresh owner data")
 				workbench._materials_lab_window.close_requested.emit()
 				expect(not workbench._materials_lab_window.visible,"Closing Lab returns to existing Workbench session")
+				var focus: Control = root.gui_get_focus_owner()
+				if focus != null: focus.release_focus()
+				var former_tick: int = int(main.latest_snapshot.tick_index)
+				var step := InputEventKey.new()
+				step.pressed = true
+				step.keycode = KEY_PERIOD
+				root.push_input(step)
+				if await wait_for(func() -> bool: return installed.call() and int(main.latest_snapshot.tick_index) > former_tick,"Workbench input after closing Lab",60000):
+					expect(int(main.latest_snapshot.tick_index) == former_tick + 1,"Closing Lab restores the existing exact native Step shortcut")
 				var details_button: Button = find_button(workbench,"Details")
 				if not workbench._details.visible and details_button != null: details_button.pressed.emit()
 				var liquids: Variant = workbench._liquids
@@ -341,11 +528,15 @@ func workbench_mount() -> void:
 						open_button.pressed.emit()
 						expect(mounted.applied_policy.policy_hash == main.tower_context.liquid_solver_policy.policy_hash \
 							and mounted.applied_policy.policy_hash != initial_owner.policy_hash,"Reopened inspector receives actual new owner policy hash")
-						expect(mounted._summary.text.contains("cellular_yield_v1"),"Water effective-kernel UI shows owner-selected CY after reopening")
+						expect(mounted._summary.tooltip_text.contains("cellular_yield_v1"),"Water effective-kernel UI shows owner-selected CY after reopening")
 				mounted.experiment.close()
 	main.queue_free()
 	await process_frame
 	await process_frame
+	root.size = former_size
+	root.content_scale_size = former_scale_size
+	root.content_scale_mode = former_scale_mode
+	root.gui_embed_subwindows = former_embedding
 	if former_feature == null: remove_meta("cybersand_feature")
 	else: set_meta("cybersand_feature",former_feature)
 
@@ -357,6 +548,16 @@ func run() -> void:
 		capture_source_hashes = _capture_sources()
 	output_directory = ProjectSettings.globalize_path("user://materials_lab/ui-acceptance-%d" % Time.get_ticks_usec())
 	expect(DirAccess.make_dir_recursive_absolute(output_directory) == OK,"Acceptance export directory created")
+	if workbench_mount_only:
+		await workbench_mount()
+		print("MATERIAL_LAB_WORKBENCH_MOUNT: %d assertions; %d failures" % [assertions,failures])
+		quit(1 if failures else 0)
+		return
+	directory_custody_controls()
+	if directory_custody_only:
+		print("MATERIAL_LAB_DIRECTORY_CUSTODY: %d assertions; %d failures" % [assertions,failures])
+		quit(1 if failures else 0)
+		return
 	screen = load(SCENE).instantiate()
 	root.add_child(screen)
 	current_scene = screen
@@ -382,7 +583,7 @@ func run() -> void:
 		if id == 21:
 			expect(panel._inspector_notes.text.contains("1100"),"Slush fallback difference is exposed rather than substituted")
 		if id == 10:
-			press("Duplicate selected as candidate")
+			press("Make editable copy")
 			expect(panel._status.text.contains("reserved") and panel.candidate.is_empty(),"Reserved ID cannot become a candidate")
 	panel._search.text = "molten"
 	panel._search.text_changed.emit("molten")
@@ -393,7 +594,7 @@ func run() -> void:
 		var id: int = int(panel._list.get_item_metadata(index))
 		expect(panel.catalogue.materials[id].state_name == "Powder","Physical-type filter is native state")
 	panel._tabs.current_tab = 1
-	if not await authoring("New powder 132"):
+	if not await authoring("New powder (definition test only)"):
 		finish()
 		return
 	expect(panel.candidate_state == "Draft" and panel.candidate.target_id == 132,"Create uses isolated candidate identity and Draft status")
@@ -416,30 +617,43 @@ func run() -> void:
 	# Exercise the actual in-flight result race: old validation may finish, but
 	# it must never qualify newer SpinBox edits.
 	press("Validate")
-	panel._fields.density.value = 1439
+	panel._fields.density.get_line_edit().grab_focus()
+	# SpinBox normalizes its display on the deferred focus-enter callback;
+	# actual typing happens after that focus event, on the next input frame.
+	await process_frame
+	panel._fields.density.get_line_edit().text = "1439"
+	panel._fields.density.get_line_edit().text_changed.emit("1439")
+	expect(panel.candidate_state == "Draft" and panel.candidate_digest.is_empty(),
+		"Unsubmitted numeric text immediately retires the visible candidate qualification")
 	if not await wait_for(func() -> bool: return not panel.service.busy,"stale validation request"):
 		finish()
 		return
 	expect(panel.candidate_state == "Draft" and panel.candidate.descriptor.density == 1439,
 		"Old asynchronous result cannot validate a newer candidate revision")
-	expect(panel._status.text.contains("older revision"),"Stale result is explained to the user")
-	if not await authoring("Compile + native test"):
+	expect(panel._status.text.contains("previous edits"),"Stale result is explained to the user")
+	# Simulate typing without Enter or a focus-exit commit, then immediately
+	# activate Compile. The request must capture the displayed number first.
+	panel._fields.density.get_line_edit().grab_focus()
+	panel._fields.density.get_line_edit().text = "1440"
+	panel._fields.density.get_line_edit().text_changed.emit("1440")
+	if not await authoring("Build + check definition"):
 		finish()
 		return
 	var compiled: Dictionary = panel.last_backend_result
 	expect(panel.candidate_state.begins_with("Compiled/tested"),"Compiled status requires executed C++ receipt")
 	expect(not compiled.runtime_active and compiled.receipt.observed.candidate_material.id == 132,
 		"Actual compiled synthetic descriptor remains separate from runtime activation")
-	expect(compiled.receipt.observed.candidate_material.density == 1439 and not compiled.receipt.observed.candidate_material.hard_surface,
-		"Compiled native readback acknowledges authored density and explicit capabilities")
+	expect(compiled.receipt.observed.candidate_material.density == 1440 and panel.candidate.descriptor.density == 1440 and not compiled.receipt.observed.candidate_material.hard_surface,
+		"Immediate Compile commits the displayed density before capturing request data or revision")
 	expect(PackedInt32Array(compiled.receipt.observed.candidate_material.rgba) == PackedInt32Array([210,90,180,255]),"Appearance bytes reached compiled C++ candidate")
 	expect(panel.candidate_digest != validated_digest,"Edited source has a new deterministic digest")
 	var exported_digest: String = panel.candidate_digest
-	if not await selected_directory("Export compiled bundle…",output_directory):
+	if not await selected_directory("Export built definition…",output_directory):
 		finish()
 		return
 	var bundle: String = str(panel.last_backend_result.get("output_dir","")).replace("\\","/")
-	expect(not bundle.is_empty() and bundle.begins_with(output_directory.replace("\\","/") + "/"),"Compiled bundle has an explicit external destination")
+	var requested_bundle: String = output_directory.path_join(bundle.get_file())
+	expect(not bundle.is_empty() and directory_custody(requested_bundle,bundle),"Compiled bundle has the requested external directory custody, including actual filesystem aliases")
 	for name: String in ["preset.json","candidate-catalogue.json","native-receipt.json","generated/manifest.json"]:
 		expect(FileAccess.file_exists(bundle.path_join(name)),"Compiled source bundle contains " + name)
 	# Check published bytes against their manifest without loading generated
@@ -454,7 +668,7 @@ func run() -> void:
 	expect(published_receipt.candidate_digest == exported_digest and published_receipt.observed.production_registry_unchanged,
 		"Published native receipt binds the exported candidate while preserving production identities")
 	var export_path: String = output_directory.path_join("powder-132.json")
-	if not await selected_file("Save / export preset…",export_path):
+	if not await selected_file("Save material preset…",export_path):
 		finish()
 		return
 	expect(FileAccess.file_exists(export_path) and panel.last_backend_result.get("ok",false),"Actual backend exports a versioned preset")
@@ -464,7 +678,7 @@ func run() -> void:
 	if not await selected_file("Import preset…",export_path):
 		finish()
 		return
-	expect(panel.last_backend_result.get("ok",false) and panel.candidate.descriptor.density == 1439
+	expect(panel.last_backend_result.get("ok",false) and panel.candidate.descriptor.density == 1440
 		and panel.candidate_digest == exported_digest,"Import restores exact source and deterministic digest")
 	var retained_candidate: Dictionary = panel.candidate.duplicate(true)
 	var bad_path: String = output_directory.path_join("malformed-preset.json")
@@ -476,14 +690,14 @@ func run() -> void:
 		"Malformed preset import is actionable and preserves prior candidate data")
 	expect(not panel._status.text.is_empty(),"Validation failure is visible in mounted UI")
 	search_select(3)
-	if not await authoring("Duplicate selected"):
+	if not await authoring("Copy selected material"):
 		finish()
 		return
 	expect(not panel._fields.viscosity_index.editable,"Water descriptor viscosity is not falsely exposed as effective control")
 	panel._reaction_picker.select(1)
 	panel._reaction_picker.item_selected.emit(1)
 	var retained_rule: Dictionary = panel._selected_reaction().duplicate(true)
-	press("Compile candidate reaction")
+	press("Build + check reaction")
 	panel._reaction_picker.select(0)
 	panel._reaction_picker.item_selected.emit(0)
 	if not await wait_for(func() -> bool: return not panel.service.busy,"selected reaction compilation"):
@@ -504,7 +718,7 @@ func run() -> void:
 	expect(panel._reaction_report.text.begins_with("Candidate rule (not active)")
 		and not panel._reaction_report.text.contains("COMPILED CANDIDATE"),"Selecting another rule retires the previous rule's displayed result")
 	search_select(23)
-	if not await authoring("Duplicate selected"):
+	if not await authoring("Copy selected material"):
 		finish()
 		return
 	panel._tabs.current_tab = 2
@@ -514,7 +728,17 @@ func run() -> void:
 	panel._reaction_fields.probability.value = 0
 	panel._roll.value = 1
 	expect(panel._reaction_report.text.contains("1 / 256"),"Threshold zero is shown as 1/256 rather than disabled")
-	if not await authoring("Compile candidate reaction"):
+	press("Build + check reaction")
+	panel._roll.value = 0
+	if not await wait_for(func() -> bool: return not panel.service.busy,"reaction compilation after supplied-roll edit"):
+		finish()
+		return
+	expect(panel.last_backend_result.get("ok",false) and panel.candidate_state.begins_with("Compiled/tested"),
+		"Changing the supplied diagnostic roll does not discard a source-matched material compilation")
+	expect(panel._reaction_report.text.begins_with("Diagnostic inputs changed") and not panel._reaction_report.text.contains("COMPILED CANDIDATE"),
+		"An in-flight diagnostic cannot restore a receipt for an older supplied roll")
+	panel._roll.value = 1
+	if not await authoring("Build + check reaction"):
 		finish()
 		return
 	var reaction: Dictionary = panel.last_backend_result.receipt.observed.diagnostic
@@ -524,7 +748,7 @@ func run() -> void:
 		"Compiled edited Salt rule succeeds on exactly one of all 256 rolls and fails supplied roll1")
 	expect(reaction.production_selected,"Production Salt rule remains unchanged and selects the same roll")
 	panel._tabs.current_tab = 1
-	if not await selected_directory("Export compiled bundle…",output_directory):
+	if not await selected_directory("Export built definition…",output_directory):
 		finish()
 		return
 	var bundled_reaction: Dictionary = panel.last_backend_result.receipt.observed.diagnostic
@@ -536,23 +760,38 @@ func run() -> void:
 	var reaction_bundle: String = str(panel.last_backend_result.output_dir).replace("\\","/")
 	var reaction_file: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(reaction_bundle.path_join("native-receipt.json")))
 	expect(reaction_file.observed.diagnostic == reaction and reaction_file.observed.diagnostic == bundled_reaction,
-		"Exported receipt and Compile candidate reaction execute exactly the same user-selected diagnostic")
+		"Exported receipt and Build + check reaction execute exactly the same user-selected diagnostic")
 	panel._tabs.current_tab = 2
 	panel._reaction_fields.probability.value = 1
 	expect(panel.candidate_state == "Draft" and panel._reaction_report.text.begins_with("Candidate rule (not active)") \
 		and not panel._reaction_report.text.contains("COMPILED CANDIDATE"),"Editing a compiled rule retires its visible native result")
 	panel._partner.select(panel._partner.get_item_index(3))
-	press("Inspect native result")
+	press("Check built-in rule")
 	var native_reaction: Dictionary = JSON.parse_string(panel._reaction_report.text)
 	expect(native_reaction.selected and native_reaction.probability_numerator == 256,
 		"Native production inspector remains distinct from edited candidate rule")
+	panel._roll.get_line_edit().text = "2"
+	panel._roll.get_line_edit().text_changed.emit("2")
+	expect(panel._reaction_report.text.begins_with("Diagnostic inputs changed") and not panel._reaction_report.text.contains('"selected":'),
+		"Changing the supplied roll retires the preceding production resolver result")
+	press("Check built-in rule")
+	panel._partner.select(panel._partner.get_item_index(2))
+	panel._partner.item_selected.emit(panel._partner.selected)
+	expect(panel._reaction_report.text.begins_with("Diagnostic inputs changed"),
+		"Changing the native partner retires its preceding resolver result")
+	panel._select_partner(3)
+	press("Check built-in rule")
+	panel.select_material(2)
+	expect(panel._reaction_report.text.begins_with("Diagnostic inputs changed"),
+		"Changing the selected source retires its preceding resolver result")
+	panel.select_material(23)
 	panel._tabs.current_tab = 3
 	panel._seed.value = 2
 	panel._steps.value = 120
 	panel._workers.select(panel._workers.get_item_index(4))
-	press("Prepare selected + partner")
+	press("Prepare experiment")
 	expect(panel.experiment.active(),"Real native MicroScenario is prepared through mounted controls")
-	press("Run bounded window")
+	press("Run set number of steps")
 	if not await wait_for(func() -> bool: return not panel._running,"native bounded window",45000):
 		finish()
 		return
@@ -562,7 +801,7 @@ func run() -> void:
 	expect(panel._experiment_summary.text.contains("120 / 120") and panel._experiment_summary.text.contains("brine 768"),
 		"Native completed-step and product counts are visible without reading raw JSON")
 	expect(panel._preview.texture != null,"Real native material preview reaches mounted TextureRect")
-	press("Repeat / compare reference")
+	press("Repeat and check result")
 	expect(panel.experiment.reference_running() and panel.experiment.reference_progress().completed_tick == 0,
 		"Mounted comparison starts a fresh native owner without synchronously replaying all ticks")
 	await process_frame
@@ -571,14 +810,14 @@ func run() -> void:
 	press("Pause")
 	expect(not panel.experiment.reference_running() and panel.experiment.readback().native.content_hash == readback.native.content_hash,
 		"Pause cancels the in-flight replay and preserves source native content")
-	press("Repeat / compare reference")
+	press("Repeat and check result")
 	if not await wait_for(func() -> bool: return not panel.experiment.reference_running(),"incremental native reference",45000):
 		finish()
 		return
 	var comparison: Dictionary = JSON.parse_string(panel._experiment_report.text)
 	expect(comparison.ok and comparison.equal,"Fresh native comparison runs through mounted control")
 	var case_path: String = output_directory.path_join("salt-water-test.json")
-	await selected_file("Save test case…",case_path)
+	await selected_file("Save experiment…",case_path)
 	expect(FileAccess.file_exists(case_path),"Native test case is saved with execution/source contract")
 	panel._seed.value = 29
 	panel._steps.value = 600
@@ -589,7 +828,7 @@ func run() -> void:
 	panel._experiment_partner.item_selected.emit(panel._experiment_partner.selected)
 	expect(panel._partner.get_selected_id() == 1 and panel._steps.value == 600,
 		"Native test exposes a synchronized partner selector and the complete admitted 600-tick range")
-	await selected_file("Import test case…",case_path)
+	await selected_file("Open experiment…",case_path)
 	expect(panel.experiment.readback().completed_tick == 0 and panel.experiment.readback().workers == 4,
 		"Saved native case restores a fresh source-matched run and worker count")
 	expect(panel._seed.value == 2 and panel._steps.value == 120 and panel._workers.get_selected_id() == 4
@@ -599,21 +838,54 @@ func run() -> void:
 	expect(panel._experiment_summary.text.contains("salt-water") and panel._experiment_summary.text.contains("seed 2"),
 		"Prepared-run summary identifies the stored fixture and seed independently of prospective controls")
 	panel._steps.value = 600
-	press("Prepare selected + partner")
+	press("Prepare experiment")
 	var long_case_path: String = output_directory.path_join("salt-water-600-test.json")
-	await selected_file("Save test case…",long_case_path)
+	await selected_file("Save experiment…",long_case_path)
 	panel._steps.value = 1
-	await selected_file("Import test case…",long_case_path)
+	await selected_file("Open experiment…",long_case_path)
 	expect(panel._steps.value == 600 and panel.experiment.readback().duration_ticks == 600,
 		"Imported maximum-duration fixture is represented exactly without SpinBox clamping")
 	panel._family.select(2)
-	press("Prepare selected + partner")
+	press("Prepare experiment")
 	var actual_policy: Dictionary = panel.experiment.readback().applied_policy
-	press("Inspect test-owner policy")
+	press("Show applied Water settings")
 	search_select(3)
 	expect(panel.applied_policy.policy_hash == actual_policy.policy_hash and panel.policy_context == "Isolated native test owner",
-		"Inspect test-owner policy copies actual native applied policy into the property inspector")
-	expect(panel._summary.text.contains("cellular_yield_v1"),"Inspector shows native-applied test policy rather than compiled Water default")
+		"Show applied Water settings copies actual native applied policy into the property inspector")
+	expect(panel._summary.tooltip_text.contains("cellular_yield_v1"),"Inspector shows native-applied test policy rather than compiled Water default")
+	panel._tabs.current_tab = 3
+	var pressure_index: int = -1
+	for index: int in range(panel._family.item_count):
+		if panel._family.get_item_text(index) == "PressureFlow":
+			pressure_index = index
+			break
+	expect(pressure_index >= 0,"Try originals offers PressureFlow in the Water movement model menu")
+	if pressure_index >= 0:
+		panel._family.select(pressure_index)
+		panel._family.item_selected.emit(pressure_index)
+		expect(panel._experiment_request.text.contains("PressureFlow"),"Next experiment displays the selected PressureFlow model")
+		press("Prepare experiment")
+		var pressure: Dictionary = panel.experiment.readback()
+		var water_applied: bool = false
+		for assignment: Dictionary in pressure.applied_policy.assignments:
+			if int(assignment.material) == 3:
+				water_applied = assignment.applied_family == "pressure_flow_v1" and assignment.applied_variant == "reference"
+		expect(water_applied and panel._experiment_summary.text.contains("PressureFlow"),
+			"Prepare experiment installs the native PressureFlow reference solver and displays its name")
+		press("Step")
+		expect(panel.experiment.readback().completed_tick == 1,"Prepared PressureFlow World steps through the mounted control")
+		var pressure_path: String = output_directory.path_join("pressure-flow-test.json")
+		await selected_file("Save experiment…",pressure_path)
+		panel._family.select(0)
+		await selected_file("Open experiment…",pressure_path)
+		var restored_pressure: Dictionary = panel.experiment.readback()
+		expect(panel._family.selected == pressure_index and restored_pressure.completed_tick == 0
+			and restored_pressure.applied_policy.policy_hash == pressure.applied_policy.policy_hash,
+			"Opening a PressureFlow case restores its menu choice and acknowledged native policy")
+		press("Show applied Water settings")
+		search_select(3)
+		expect(panel.applied_policy.policy_hash == pressure.applied_policy.policy_hash
+			and panel._summary.tooltip_text.contains("pressure_flow_v1"),"Inspect receives the actual PressureFlow policy from the isolated World")
 	var receipt_path: String = output_directory.path_join("ui-native-receipt.json")
 	file = FileAccess.open(receipt_path,FileAccess.WRITE)
 	file.store_string(JSON.stringify(compiled,"\t") + "\n")
@@ -626,8 +898,8 @@ func run() -> void:
 
 func _capture_sources() -> Dictionary:
 	var hashes: Dictionary = {}
-	for path: String in ["materials_lab.tscn","addons/cybersand_native/cybersand_native.gdextension","scripts/material_lab_screen.gd","scripts/material_lab_panel.gd","scripts/material_lab_world_panel.gd",
-		"scripts/material_lab_service.gd","scripts/material_lab_catalogue.gd","scripts/material_lab_experiment.gd","tests/test_material_lab_ui.gd"]:
+	for path: String in ["materials_lab.tscn","addons/cybersand_native/cybersand_native.gdextension","scripts/material_lab_screen.gd","scripts/material_lab_property_tree.gd","scripts/material_lab_panel.gd","scripts/material_lab_world_panel.gd",
+		"scripts/material_lab_service.gd","scripts/material_lab_catalogue.gd","scripts/material_lab_experiment.gd","scripts/shared_workbench.gd","tests/test_material_lab_ui.gd"]:
 		hashes[path] = FileAccess.get_sha256("res://" + path)
 	return hashes
 

@@ -151,6 +151,10 @@ var _workbench_last_emitter_sample := -1
 var _workbench_emitter_receipts: Array = []
 var _workbench_source_commands: Array = []
 var _workbench_source := preload("res://scripts/workbench_powder_source.gd").new()
+# IN-TOOLS #361 valve / drain / nozzle devices. Commands are copied and bounded;
+# the device owner itself runs only on this worker against its native World.
+var _workbench_equipment_commands: Array = []
+var _workbench_equipment := preload("res://scripts/workbench_liquid_equipment.gd").new()
 # WCX/BW-001 experimental Water spray: requested settings are applied by the
 # exclusive owner at the next tick boundary; the native receipt is published.
 var _water_spray_requests: Array = []
@@ -347,6 +351,10 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 		_workbench_source_commands.clear()
 		_workbench_emitter_receipts.clear()
 		_workbench_source.reset()
+		# A replaced World starts with every device closed and unconfigured;
+		# commands queued for the previous World are discarded here.
+		_workbench_equipment_commands.clear()
+		_workbench_equipment.reset()
 		_workbench_result = {}
 		_workbench_consumed_sample = {}
 		_workbench_display = {}
@@ -1262,6 +1270,18 @@ func queue_workbench_source(origin: Vector2i, material: int, command: String) ->
 	_mutex.unlock()
 	return ok
 
+# Liquid equipment commands: configure (authored geometry), valve/drain/nozzle
+# open-close, tune and stop. Bounded queue; the device owner checks the
+# configuration serial so a command for an older World/configuration refuses.
+func queue_workbench_equipment(request: Dictionary) -> bool:
+	_mutex.lock()
+	var ok := _workbench_extent != Vector2i.ZERO and _prepared_physical_publication.is_empty() \
+		and _lab_request.is_empty() and _workbench_equipment_commands.size() < 16 \
+		and str(request.get("command","")) in ["configure","valve","drain","nozzle","tune","stop","observe"]
+	if ok: _workbench_equipment_commands.append(request.duplicate(true))
+	_mutex.unlock()
+	return ok
+
 # A body entering unsimulated space stops the session. The arriving pose is
 # retained for inspection and a prepared reposition/reset starts a new epoch.
 static func _workbench_sample_inside(states: PackedFloat64Array, extent: Vector2i) -> bool:
@@ -1303,12 +1323,16 @@ func _consume_workbench_emissions(paused: bool, sample: Dictionary) -> void:
 	for request: Dictionary in _workbench_source_commands:
 		_workbench_source.command(request)
 	_workbench_source_commands.clear()
+	for request: Dictionary in _workbench_equipment_commands:
+		_workbench_equipment.command(_world,request,_workbench_extent)
+	_workbench_equipment_commands.clear()
 	if _world.has_method(&"set_water_spray"):
 		for request: Dictionary in _water_spray_requests:
 			_water_spray_receipt = _world.set_water_spray(request)
 		_water_spray_requests.clear()
 	if not paused:
 		_workbench_source.before_tick(_world,sample)
+		_workbench_equipment.before_tick(_world)
 		if _world.has_method(&"water_spray_before_tick"): _world.water_spray_before_tick()
 		if not _paused and not _workbench_emitters.is_empty():
 			var serial := int(sample.states[10]) if not sample.states.is_empty() else -1
@@ -2529,6 +2553,7 @@ func _publish_snapshot(
 		snapshot.lab_context["workbench_completed_sample"] = _workbench_completed_sample
 		snapshot.lab_context["workbench_refusal"] = _workbench_refusal
 		snapshot.lab_context["workbench_source"] = _workbench_source.receipt()
+		snapshot.lab_context["workbench_equipment"] = _workbench_equipment.receipt()
 		_mutex.lock()
 		snapshot.lab_context["workbench_emitters"] = _workbench_emitter_receipts.duplicate(true)
 		_mutex.unlock()
