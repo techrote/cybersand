@@ -51,7 +51,7 @@ Borrow those methods without importing the experimental NCA architecture, custom
 
 Proposed home: `experiments/wb-art-slm-001/` in `techrote/cybersand`. The initial integration branch contains the plan and coordination files. Production integration should be limited to the existing agent-art/local-model seam where a concrete capability is missing. NeuroRunner remains a read-only reference.
 
-The CyberSand dependency must be checked afresh. At this review, MAT-AUTH #562 is merged; agent-art #564 and the combined #565 candidate are active workstreams. Current #565 qualification is still running, so this plan claims no complete qualification of that head. Consume the latest accepted main or an explicitly identified, suitable combined candidate; do not redo #565's integration or adopt unrelated camera work. Preserve its shared manual/agent history. A harness may use a separately checked-out, pinned native runtime rather than copying its implementation. [C1][C2]
+The CyberSand dependency must be checked afresh. At 01:37 London time on 13 November, main is `63f8b1ba6559906fe85f3ad0269aa296e4141d67`, including both #562 and the newly merged #563. Agent-art #564 remains Draft at `6319ab1d94d85d01c9cdb44d973a92d224bfa9aa`; combined #565 is Draft at `88ba76f023e933b52d15f272263077e091bc9656`, containing #562 and that #564 head but predating #563. Its current qualification is still running, so this plan claims no complete qualification of that head. The plan branch starts from current main and must retain its newer capability consumer. Consume a compatible upstream combined successor when available; do not redo #565's integration, take ownership of its #563 join, or adopt unrelated camera work. An earlier pinned #565 runtime may support a separately identified pilot in its own worktree, without being represented as current-main qualification. Preserve shared manual/agent history. [C1][C2][C5]
 
 Before any native dataset run, record full source SHA, tree SHA, runtime/build hash, tool-schema hash, material map, compiler version and relevant qualification evidence. A later upstream change requires a contract diff and affected regressions. A newer branch head is not automatically qualified because an older build passed.
 
@@ -227,6 +227,7 @@ The resulting plan gives every worker a substantive output, keeps history and na
 - [C2 — Combined MAT-AUTH/Workbench PR #565](https://github.com/techrote/cybersand/pull/565)
 - [C3 — Source-bound native drawing, protection, history and persistence contract](https://github.com/techrote/cybersand/blob/6319ab1d94d85d01c9cdb44d973a92d224bfa9aa/docs/systems/workbench-direct-art-batches.md)
 - [C4 — Source-bound local providers and prior LFM art trials](https://github.com/techrote/cybersand/blob/6319ab1d94d85d01c9cdb44d973a92d224bfa9aa/docs/systems/workbench-art-providers.md)
+- [C5 — Main with merged native capability consumer #563](https://github.com/techrote/cybersand/commit/63f8b1ba6559906fe85f3ad0269aa296e4141d67)
 - [L1 — Official LFM3-1.7B model card](https://huggingface.co/LiquidAI/LFM3-1.7B)
 - [L2 — Official LFM2.5-350M model card](https://huggingface.co/LiquidAI/LFM2.5-350M)
 - [L3 — Official LFM3 supervised fine-tuning cookbook](https://github.com/Liquid4All/cookbook/blob/main/finetuning/notebooks/lfm3_sft_with_trl.ipynb)
