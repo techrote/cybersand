@@ -346,3 +346,21 @@ have only isolated ordering smoke verification, not an exact-source combined
 CI run or actual native replay. The opt-in v1.1 compiler and historical v1
 program/operation hashes remain unchanged; native and Windows acceptance stay
 HOLD.
+
+
+### Complete native-case stream order — 13 November 2026
+
+[Controls case-order checkpoint](CHECKPOINT_2026-11-13-CASE-ORDER.md) adds a
+further admission invariant drawn directly from the frozen replay harness:
+mandatory protection and Stop events precede the pattern cases, which execute
+one-by-one in manifest order. The auditor refuses an unregistered case,
+an invariant emitted after the first pattern case, a reversed invariant
+prefix, or a later pattern-case block moved before an earlier one. Previously
+admitted per-case history and raw material checks remain unchanged.
+
+Five added synthetic test methods include positive invariant-prefix coverage;
+**20 methods are defined** overall. Seven isolated order-logic smoke checks
+passed, but the new complete source suite, true v1/v1.1 native execution and
+visual/Windows assessment still require independent qualification. The
+11-test error-diagnostic repair is already accepted by Integration's later
+green model-free CI; it must not be reintroduced.
