@@ -101,3 +101,7 @@ bootstrap artifact bundle, with exact hashes in the report. Base model weights
 are obtained from their pinned official repositories; they are not redistributed
 in ordinary Git. The compiler and corpus are independently usable if the model
 does not yet meet the proposed acceptance gates.
+
+## Integrated checkpoint — 13 November 2026
+
+[Draft #567](https://github.com/techrote/cybersand/pull/567) now contains all four updated role-source checkpoints and an opt-in local LFM2.5-350M → existing Workbench LM Studio content-JSON bridge, including fail-closed receipt validation, socket Stop cancellation and appended host-scope precedence. The [source and dependency board](integration/DEPENDENCIES.json) identifies each imported role commit and exact latest hosted smoke evidence (52 model-free applicable tests, two successful workflows). The original 400-step adapter is unchanged. Current-source compatible #565 Windows/graphical and authentic model→native/owner visual acceptance remain **HOLD**; native Linux pilot is historical, not a replacement runtime.

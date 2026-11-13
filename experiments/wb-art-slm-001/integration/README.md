@@ -55,7 +55,7 @@ In **Art** set:
 | Tools | All five compiled types: rectangle, line, polyline, polygon and disc |
 | Toks / Seconds | Toks at least 256 (8192 is fine); Seconds at least 165 (180 recommended) |
 
-The model never receives the seed, world origin, materials or cost budget as editable schema fields. The bridge uses one model load per request; performance has not been characterized on Windows. Run one inference at a time, use the Workbench Stop button to cancel its HTTP request, and inspect traffic/native receipts to distinguish a **completed model inference** from a **confirmed canvas edit**. Stop does not promise that a local CPU inference already executing in the subprocess has terminated immediately; it prevents a stale response from being painted by the current Workbench epoch/request fence.
+The model never receives the seed, world origin, materials or cost budget as editable schema fields. The bridge uses one model load per request; performance has not been characterized on Windows. Run one inference at a time, use the Workbench Stop button to cancel its HTTP request, and inspect traffic/native receipts to distinguish a **completed model inference** from a **confirmed canvas edit**. The local bridge now polls the Workbench TCP socket during inference: Stop/disconnect terminates its owned child process (POSIX process group), frees the single-job lock and discards a late response. This is Linux fixture-verified with an actual HTTP connection and fake subprocess, **not** Windows child-tree, loaded-model, Godot or native Stop qualification; the Workbench epoch/request fence remains authoritative.
 
 ## Integrated role checkpoints and receipt safety (13 November 2026)
 
@@ -97,6 +97,15 @@ there is **no verified compatible Windows runtime** to adopt yet. The
 upstream owner must resolve and qualify that gate. This experiment does
 not alter #565 or treat its partial success as current-main approval.
 
+
+## Subsequent integration checkpoint — 13 November 2026
+
+Four further **owner-scope-only** role commits were imported serially with exact source blobs: Controls `a75f90956f18` (7 paths, real archived coral baseline readback audit and explicit paired history mode); Corpus `9f9a462fca15` (4 paths, balanced v2 theme/phrasing exposure alternative); Training `4da123301705` (5 paths, durable lease and strict process-wide checkpoint-aware job guard); Evaluation `8a533c5762e5` (6 paths, a sealed-answer-key 34-card/68-image historical native blind-review fixture). All 22 owned paths are kept separate from this Integration-owned bridge code and from existing native/art source; no model retraining or new native qualification was performed. The original v1 compiler, development/final splits and step-400 adapter remain frozen.
+
+The bridge now checks client TCP disconnect while its local inference child runs, terminates the child on Stop or deadline and never sends a late geometry batch. An ordinary aborted connection no longer raises a response-header write error. Because Workbench appends its captured local-coordinate XYWH/material/tool fields **after** editable Guidance, the bridge uses the last occurrence of each scope field; synthetic spoofed Guidance examples cannot override the actual appended scope. These were tested in the full real loopback HTTP/fake-child handler, not against a loaded LoRA or native world. POSIX group termination was exercised; **Windows process-tree cleanup is unqualified**.
+
+At exact source `0fc6f9cedeb5b147fe86cb61446354f38db16d8a`, the [first hosted workflow](https://github.com/techrote/cybersand/actions/runs/43370584693) and [second hosted workflow](https://github.com/techrote/cybersand/actions/runs/43370593006) both succeeded: 52 exercised model-free unit methods across the five roles, Python compilation PASS, and expected missing-private-archive cases SKIPPED. This is **neither** authentic step-400 model inference **nor** current-source Godot/native Windows/Linux or graphical acceptance. Independent Evaluation review of Integration's Stop/host-scope edits is still pending. The [dependency board](DEPENDENCIES.json) pins exact role commits and next actions; preserve the upstream #565 Windows HOLD.
+
 ## Regressions and acceptance boundary
 
 Without downloading a model:
@@ -105,7 +114,7 @@ Without downloading a model:
 python -m unittest discover -s experiments/wb-art-slm-001/integration -p 'test_*.py' -v
 ```
 
-The 13 November local test run passed **4 test methods** covering capture, malformed/unsafe/unsupported refusals, receipt/hash/EOS/tool gates, an actual loopback Chat Completions HTTP response and failure without mutation. The HTTP response used a **fake fixed runner**; it was **not** a new trained-model evaluation, native replay, Windows acceptance or visual result. Existing 400-step model/native evidence remains pinned separately in [Bootstrap report](../BOOTSTRAP_REPORT.md).
+The latest 13 November exact-head hosted run passed **9 Integration methods** covering captured host scope and adversarial Guidance examples, forged receipts, rejected/unsafe/unsupported requests, complete EOS/hash/tool gates, an actual loopback Chat Completions exchange and an actual HTTP disconnect that terminated a fake inference child and released the service lock. The HTTP response used a **fake fixed runner**; it was **not** a new trained-model evaluation, native replay, Windows acceptance or visual result. Existing 400-step model/native evidence remains pinned separately in [Bootstrap report](../BOOTSTRAP_REPORT.md).
 
 Before qualifying this route for user-facing launch: integrate over a source-compatible #564/#565 successor preserving accepted #563; replay raw step-400 predictions, compare operation hashes and native receipts at two seeds, exercise Stop/stale epoch/focus, shared Undo/Redo and save/reopen on current Windows and Linux; obtain independent code/contract review; package an opt-in launcher/preset and inspect real Workbench images. Any compiler/schema change invalidates the adapter's exact hash contract until explicitly requalified.
 

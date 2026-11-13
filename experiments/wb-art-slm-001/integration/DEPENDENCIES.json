@@ -1,7 +1,7 @@
 {
   "experiment": "WB-ART-SLM-001",
   "date": "2026-11-13",
-  "status": "four updated role checkpoints imported in exact files; bridge owns cancel/deadline; model-free hosted CI green; source-compatible native/Windows HOLD",
+  "status": "four later independent role checkpoints integrated, model-free loopback Stop tested; upstream/current native and Windows HOLD",
   "source": {
     "main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
     "main_preserves": [
@@ -62,25 +62,26 @@
     "tests": "experiments/wb-art-slm-001/integration/test_local_art_bridge.py",
     "runbook": "experiments/wb-art-slm-001/integration/README.md",
     "protocol": "loopback LM Studio /v1/chat/completions; content JSON operations; one-turn text-only",
-    "validation": "GitHub-hosted Ubuntu Python 3.12 exact-head success runs 43370081617 and 43370087593 on 373f00712d7a3647138a7638e6fddbcb16fd7603: 7 bridge tests incl actual subprocess Stop/deadline, socket EOF and fake HTTP; 18 compiler, 1 native alias, 2 corpus synthetic, 4 Training curriculum, 10 guarded-process, 2 controls archive-free, 3 Corpus balance, 3 Evaluation blind-review tests passed (50 executed methods); archive-required cases skipped. No authentic model/native/Windows.",
+    "validation": "Exact-head GitHub-hosted Ubuntu 24.04 / Python 3.12 (runs 43370584693 and 43370593006, both SUCCESS at 0fc6f9cedeb5b147fe86cb61446354f38db16d8a): 52 model-free Python test methods PASS, including 9 Integration HTTP/client Stop, stale-result refusal and Guidance host-field precedence, 18 compiler, 1 native alias, 2 basic Corpus synthetic, 4 Training curriculum, 10 Training guarded-process, 2 Controls audit synthetic, 3 Corpus balance synthetic, 3 Evaluation blind-review tests. Private archive-specific classes/methods SKIPPED. Source compilation PASS. No actual weights/native/Godot/Windows executed.",
     "no_actual_model_loaded_this_run": true,
     "no_native_execution_this_run": true,
     "no_windows_execution_this_run": true,
-    "independent_review": "pending: this Integration-authored Stop/client socket assembly specifically needs independent Evaluation adversarial review and actual Godot cancellation test.",
+    "independent_review": "PENDING: Evaluation independent security/provider review of latest Integration-written host scope and child lifecycle; CI is not that review.",
     "new_protocol_tests_after_import": "Five forged-receipt adverse subcases included in one bridge method; all four test methods PASS in both actual GitHub Actions runs 43364062901/43364068843.",
     "receipt_binding": "Exact prompt, host seed, pinned adapter hash, LFM model identity, native_execution=false, compiler hash, focus size, material, EOS, Art operation hash and allowed tool/material",
     "receipt_hardening_commit": "d2f6a3266e6f522a6a5f8e8a3d9afc3cf315efab",
     "adverse_regressions_commit": "ddbc2b9b3ba8e4ab0423c50b21dd7fb85333e6bb",
-    "exact_head_ci": "373f00712d7a3647138a7638e6fddbcb16fd7603",
+    "exact_head_ci": "0fc6f9cedeb5b147fe86cb61446354f38db16d8a",
     "offline_ci_workflow": ".github/workflows/wb-art-slm-001-smoke.yml",
     "offline_ci_urls": [
-      "https://github.com/techrote/cybersand/actions/runs/43370081617",
-      "https://github.com/techrote/cybersand/actions/runs/43370087593"
+      "https://github.com/techrote/cybersand/actions/runs/43370584693",
+      "https://github.com/techrote/cybersand/actions/runs/43370593006"
     ],
     "offline_ci_scope": "No binary assets, private corpus, neural inference, training, native Godot, Windows, visual or human acceptance; external review pending.",
-    "stop_cancellation": "Opt-in bridge now monitors HTTP socket while local inference is running; client Stop/disconnect or whole-process deadline terminates its owned subprocess and never releases a late batch; single-job lock freed. POSIX process-group termination exercised via synthetic child; Windows termination unqualified.",
+    "stop_cancellation": "With HTTP request fully read, socket EOF from Workbench Stop/disconnect terminates owned local inference (POSIX process group, Windows child), releases one-job lock, and returns zero geometry; deadline also terminates. Exact handler-to-fake-child socket Stop and next-request test PASS on hosted Linux. No real model/Windows process tree/Godot Stop tested.",
     "stop_cancellation_commit": "4e5aed803320bc3629b01f83a48b6c8729c8213d",
-    "stop_tests_commit": "d168f7c21f20c4591f5309e84260687a5c9f8ca9"
+    "stop_tests_commit": "0fc6f9cedeb5b147fe86cb61446354f38db16d8a",
+    "scope_precedence": "Workbench appends native host XYWH, allowed material, enabled shapes and selected material after editable Guidance. Bridge reads the LAST matching field to reject earlier Guidance examples spoofing host scope; adverse synthetic request test passes."
   },
   "training_lease": {
     "published_active": false,
@@ -93,7 +94,7 @@
   "workers": {
     "integration": {
       "branch": "codex/wb-art-slm-001",
-      "next": "Obtain independent bridge/Stop review; adopt only source-compatible qualified #565 successor preserving main #563, test one actual LFM adapter request plus native Stop/history/save/reopen on Windows and Linux; HOLD until then."
+      "next": "Obtain independent review of latest HTTP cancellation, Guidance scope parsing, receipt/cell batch contract; on source-compatible qualified #565 successor run authentic local LFM adapter with real Godot and native Windows/Linux Stop, Undo/Redo and save/reopen, inspect images."
     },
     "controls": {
       "branch": "codex/wb-art-slm-controls",
@@ -132,7 +133,7 @@
     "final_assessment_untouched": true,
     "deterministic_one_word_baseline_retained": true
   },
-  "promotion": "Draft #567 HOLD; 50 executed model-free methods are not authentic model/current-main/native/Windows qualification. No Ready/merge/default promotion.",
+  "promotion": "Draft/HOLD. 52 passing model-free Python methods and archived Linux headless pilot are NOT current-main/source-compatible Windows/real-model/native/graphical acceptance. No merge/default change.",
   "integration_import": {
     "checkpoint_parent": "fc7d8b9114d3b19c8e3037dc9ceabd242f955904",
     "controls": {
@@ -201,7 +202,9 @@
       ],
       "diff_qualification": "GitHub compare prior shared head to 373f00712: 8 commits/25 modified paths, all under experiment or its dedicated smoke workflow. Every role path is exact-source blob SHA with expected-head fast-forward; no other source modified.",
       "modeled_gain": "none measured; frozen 400-step model unchanged",
-      "CI": "50 executed applicable model-free methods PASS; archived-native/corpus suites not executed on hosted runner"
+      "CI": "50 executed applicable model-free methods PASS; archived-native/corpus suites not executed on hosted runner",
+      "exact_head_smoke": "0fc6f9cedeb5b147fe86cb61446354f38db16d8a",
+      "exact_head_results": "Two successful hosted workflow runs 43370584693/43370593006; 52 executed model-free methods; archive-dependant cases explicitly skipped."
     }
   }
 }

@@ -3,7 +3,7 @@ experiment: WB-ART-SLM-001
 title: CyberSand themed pattern controller
 date: 2026-11-13
 status: Current
-implementation_status: Bootstrap implementation underway; see README and BOOTSTRAP_REPORT for measured state
+implementation_status: Bootstrap executed; later role source integrated with opt-in provider bridge; current native and Windows HOLD
 evaluation_status: Proposed acceptance targets remain distinct from pinned Linux pilot results
 primary_repository: techrote/cybersand
 reference_repository: techrote/neurounner
@@ -11,6 +11,8 @@ integration_branch: codex/wb-art-slm-001
 ---
 
 # CyberSand themed pattern controller
+
+**Implementation snapshot, 13 November 2026:** frozen Linux headless bootstrap and real step-400 LoRA are recorded in BOOTSTRAP_REPORT/ARTIFACTS. The shared Draft branch now also contains four updated role-owned checkpoints and a socket-cancellable, opt-in LM Studio content-JSON bridge; the two latest hosted exact-head workflows each passed 52 **model-free** Python test methods. See [Integration dependency board](integration/DEPENDENCIES.json) and [bridge runbook](integration/README.md). The source-compatible #565 Windows gate, authentic LoRA→Workbench native receipts, independent bridge review and blinded human theme recognition remain HOLD. Original curriculum/acceptance targets below remain unchanged; this checkpoint does not establish new model gains.
 
 ## Purpose and contents
 
