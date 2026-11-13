@@ -234,6 +234,39 @@ class PairGateTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "draw receipt after native history capture"):
             self.audit()
 
+    def test_reordered_complete_case_blocks_rejected_after_rehash(self):
+        path = self.root / "native-receipts.jsonl"
+        events = [json.loads(line) for line in path.read_text().splitlines()]
+        first, second = (c["id"] for c in self.manifest["cases"][:2])
+        block1 = [e for e in events if e.get("case") == first]
+        block2 = [e for e in events if e.get("case") == second]
+        rest = [e for e in events if e.get("case") not in (first, second)]
+        path.write_text("".join(json.dumps(e) + "\\n" for e in block2 + block1 + rest))
+        self.verified["native_receipts_sha256"] = audit.digest(path.read_bytes())
+        save(self.root / "verified-admission-receipts.json", self.verified)
+        with self.assertRaisesRegex(ValueError, "out of requested execution order"):
+            self.audit()
+
+    def test_unknown_case_receipt_rejected_after_rehash(self):
+        path = self.root / "native-receipts.jsonl"
+        events = [json.loads(line) for line in path.read_text().splitlines()]
+        events.insert(0, {"case": "unregistered-case", "receipt": {"status": "completed"}})
+        path.write_text("".join(json.dumps(e) + "\\n" for e in events))
+        self.verified["native_receipts_sha256"] = audit.digest(path.read_bytes())
+        save(self.root / "verified-admission-receipts.json", self.verified)
+        with self.assertRaisesRegex(ValueError, "unregistered native receipt case"):
+            self.audit()
+
+    def test_late_native_invariant_rejected_after_rehash(self):
+        path = self.root / "native-receipts.jsonl"
+        events = [json.loads(line) for line in path.read_text().splitlines()]
+        events.append({"case": "invariant-stop", "capture": {"status": "completed"}})
+        path.write_text("".join(json.dumps(e) + "\\n" for e in events))
+        self.verified["native_receipts_sha256"] = audit.digest(path.read_bytes())
+        save(self.root / "verified-admission-receipts.json", self.verified)
+        with self.assertRaisesRegex(ValueError, "native invariant emitted after pattern case"):
+            self.audit()
+
     def test_forged_zero_changed_receipt_rejected_after_rehash(self):
         path = self.root / "native-receipts.jsonl"
         events = [json.loads(line) for line in path.read_text().splitlines()]
