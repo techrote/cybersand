@@ -68,3 +68,14 @@ jobs:
         run: python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_export_native_cases.py' -v
       - name: Independent historical gallery display-pixel audit (offline)
         run: python -m unittest discover -s experiments/wb-art-slm-001/evaluation -p 'test_measure_native_stimulus_pixels.py' -v
+      - name: TRAIN-only coral failure witness overlay (no private archive in CI)
+        run: python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_failure_witness_overlay.py' -v
+      - name: Guarded evaluation raw-evidence and malformed-receipt tests (no model)
+        run: python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_evaluation_guard.py' -v
+      - name: Independent POSIX Stop descendant control and exact bridge execution
+        run: |
+          python -m unittest discover -s experiments/wb-art-slm-001/evaluation -p 'test_audit_bridge_stop_descendants.py' -v
+          python experiments/wb-art-slm-001/evaluation/audit_bridge_stop_descendants.py \
+            --bridge experiments/wb-art-slm-001/integration/local_art_bridge.py \
+            --out /tmp/wb-art-slm-stop-descendants.json
+          python -c "import json; p=json.load(open('/tmp/wb-art-slm-stop-descendants.json')); assert p['ready_seen'] and p['cancel_refusal'] and not p['late_descendant_write'] and p['stop_descendant_invariant_passed'], p"
