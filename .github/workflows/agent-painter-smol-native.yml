@@ -1,0 +1,289 @@
+name: Smol painter bounded DEVELOPMENT comparison
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths: ['experiments/agent_painter/lanes/smol/run-request.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-smol-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  contracts:
+    name: Validate bounded Smol request and frozen contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: workspace/source
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: workspace/source
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify explicit request, lane and common contracts
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          mkdir -p evidence
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          request = json.loads(Path('experiments/agent_painter/lanes/smol/run-request.json').read_text())
+          expected = {
+              'schema': 'agent-painter-smol-iteration-v1',
+              'predecessor_evaluation_run': 43521489545,
+              'predecessor_evaluation_source': '0458b19c781ce92b9c6be032ddd3afabecddd405',
+              'shared_source': '2a565df45efc568eb96a2166e0b77f299e289625',
+              'corpus_source': '633920373a3d406a2ede61ce4137c324f76be23b',
+              'corpus_run_id': 43506373969,
+              'corpus_artifact': 'agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b',
+              'profile': 'smol', 'candidate_steps': 120, 'checkpoint_every': 40,
+              'training_seconds': 1200, 'evaluation_seconds': 1200, 'generation_tokens': 1024,
+              'development_views': 12, 'development_groups': 6,
+              'maximum_model_vms': 2, 'model_processes_per_vm': 1,
+              'final_access': False, 'publish_research_evidence': True,
+          }
+          assert type(request.get('sequence')) is int and request['sequence'] >= 1
+          assert {k: v for k, v in request.items() if k != 'sequence'} == expected
+          Path('evidence/request.json').write_text(json.dumps(request, indent=2) + '\n')
+          PY
+          python3 -m pip install 'Pillow==13.0.0' 'PyYAML==6.0.3' 'jsonschema==4.26.0'
+          python3 -m unittest discover -s experiments/agent_painter/tests -p 'test_*.py' -v 2>&1 | tee evidence/common-contracts.log
+          python3 -m unittest discover -s experiments/agent_painter/lanes/smol/tests -p 'test_*.py' -v 2>&1 | tee evidence/smol-contracts.log
+          python3 -m unittest discover -s experiments/agent_painter/lanes/smol -p 'test_*.py' -v 2>&1 | tee evidence/retained-pilot-contracts.log
+          python3 tools/ci/check_ci_provider_policy.py > evidence/provider.json
+          python3 tools/ci/check_ci_scheduling_policy.py --output evidence/workflows.json
+          python3 tools/ci/check_docs.py > evidence/docs.json
+      - name: Preserve predecessor evaluation and keep two-model-VM ceiling
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, time, urllib.request
+          from pathlib import Path
+          request = json.loads(Path('experiments/agent_painter/lanes/smol/run-request.json').read_text())
+          url = f"https://api.github.com/repos/techrote/cybersand/actions/runs/{request['predecessor_evaluation_run']}"
+          deadline = time.monotonic() + 600
+          while True:
+              query = urllib.request.Request(url, headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Accept': 'application/vnd.github+json'})
+              with urllib.request.urlopen(query, timeout=30) as response:
+                  run = json.load(response)
+              assert run['head_sha'] == request['predecessor_evaluation_source']
+              assert run['head_branch'] == 'codex/agent-painter-smol-568'
+              receipt = {key: run[key] for key in ('id', 'head_sha', 'head_branch', 'status', 'conclusion', 'html_url')}
+              Path('evidence/predecessor-evaluation.json').write_text(json.dumps(receipt, indent=2) + '\n')
+              if run['status'] == 'completed':
+                  print(json.dumps(receipt))
+                  break
+              if time.monotonic() >= deadline:
+                  raise SystemExit('Predecessor remains active; refuse additional model VMs')
+              time.sleep(15)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: smol-contracts-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: workspace/source/evidence/
+          if-no-files-found: error
+          retention-days: 90
+
+  models:
+    name: ${{ matrix.arm }} on independent CPU VM
+    needs: contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      # The recurring worker may use the other model slot for its retained
+      # source-d8 continuation. These arms still receive distinct fresh VMs.
+      max-parallel: 1
+      matrix:
+        arm: [baseline, candidate]
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: 'default'
+      MKL_CBWR: 'COMPATIBLE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+      REQUEST_ARM: ${{ matrix.arm }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Record source, separate hosted VM and input custody
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_ACTIONS" = true
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          mkdir -p "evidence/$REQUEST_ARM/environment"
+          python3 - <<'PY'
+          import json, os, platform, subprocess
+          from pathlib import Path
+          arm = os.environ['REQUEST_ARM']
+          request = json.loads(Path('experiments/agent_painter/lanes/smol/run-request.json').read_text())
+          receipt = {
+              'schema_version': 1, 'lane': 'smol', 'arm': arm,
+              'repository': os.environ['GITHUB_REPOSITORY'],
+              'source_sha': os.environ['GITHUB_SHA'],
+              'source_tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'run_id': int(os.environ['GITHUB_RUN_ID']), 'run_attempt': int(os.environ['GITHUB_RUN_ATTEMPT']),
+              'job_id': os.environ['GITHUB_JOB'], 'runner_name': os.environ['RUNNER_NAME'],
+              'hostname': platform.node(), 'runner_environment': os.environ['RUNNER_ENVIRONMENT'],
+              'os': os.environ['RUNNER_OS'], 'arch': os.environ['RUNNER_ARCH'],
+              'corpus': {'source_sha': request['corpus_source'], 'run_id': request['corpus_run_id'], 'artifact': request['corpus_artifact']},
+              'model': {'model_id': 'HuggingFaceTB/SmolLM2-135M-Instruct', 'revision': '12fd25f77366fa6b3b4b768ec3050bf629380bac'},
+              'request': request,
+          }
+          Path(f'evidence/{arm}/environment/run-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          PY
+          lscpu > "evidence/$REQUEST_ARM/environment/cpu.txt"
+          python3 --version > "evidence/$REQUEST_ARM/environment/python.txt"
+          df -h > "evidence/$REQUEST_ARM/environment/disk-before.txt"
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          path: evidence/original-native
+          run-id: 43506373969
+          github-token: ${{ github.token }}
+      - name: Establish pinned CPU environment on this hosted VM
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/smol-training"
+          "$RUNNER_TEMP/smol-training/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/smol-training/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/smol-training/bin/python" -m pip check
+          "$RUNNER_TEMP/smol-training/bin/python" -m pip freeze --all > "evidence/$REQUEST_ARM/environment/pip-freeze.txt"
+          sha256sum experiments/agent_painter/training/requirements.lock > "evidence/$REQUEST_ARM/environment/requirements.sha256"
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/smol-training/bin/python" experiments/agent_painter/training/download_model.py --profile smol --output "$RUNNER_TEMP/smol-model"
+          cp "$RUNNER_TEMP/smol-model/download_receipt.json" "evidence/$REQUEST_ARM/environment/model-download.json"
+      - name: Candidate real optimizer steps with atomic checkpoint readback
+        if: matrix.arm == 'candidate'
+        run: |
+          set -euo pipefail
+          status=0
+          timeout --signal=TERM --kill-after=30s 1260s "$RUNNER_TEMP/smol-training/bin/python" experiments/agent_painter/lanes/smol/train.py \
+            --source-sha "$GITHUB_SHA" --model "$RUNNER_TEMP/smol-model" \
+            --corpus evidence/original-native/corpus --output evidence/candidate/training \
+            --steps 120 --checkpoint-every 40 --max-seconds 1200 || status=$?
+          # Shared trainer exit2 preserves a real partial checkpoint at its deadline.
+          # Its actual step count remains visible; a crash/timeout is still failure.
+          if test "$status" -ne 0 && test "$status" -ne 2; then exit "$status"; fi
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          summary = json.loads(Path('evidence/candidate/training/summary.json').read_text())
+          assert summary['actual_training'] is True and summary['global_step'] > 0
+          assert summary['checkpoint_readback_exact'] is True
+          assert summary['status'] in ('completed', 'stopped-checkpoint-saved')
+          PY
+      - name: Frozen raw first-pass DEVELOPMENT evaluation
+        run: |
+          set -euo pipefail
+          candidate=()
+          if test "$REQUEST_ARM" = candidate; then
+            checkpoint=$(python3 -c 'import json; print(json.load(open("evidence/candidate/training/summary.json"))["checkpoint"])')
+            candidate=(--checkpoint "evidence/candidate/training/$checkpoint")
+          fi
+          timeout --signal=TERM --kill-after=30s 1260s "$RUNNER_TEMP/smol-training/bin/python" experiments/agent_painter/lanes/smol/evaluate_native.py \
+            --source-sha "$GITHUB_SHA" --arm "$REQUEST_ARM" --model "$RUNNER_TEMP/smol-model" \
+            --corpus evidence/original-native/corpus --output "evidence/$REQUEST_ARM/evaluation" \
+            --max-new-tokens 1024 --max-seconds 1200 "${candidate[@]}"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: smol-${{ matrix.arm }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/${{ matrix.arm }}/
+          if-no-files-found: error
+          retention-days: 90
+
+  native:
+    name: Current-source native replay and immutable evidence
+    needs: [contracts, models]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: smol-baseline-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/baseline
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: smol-candidate-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/candidate
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: smol-contracts-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/build/contracts
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          path: evidence/original-native
+          run-id: 43506373969
+          github-token: ${{ github.token }}
+      - name: Rebuild unchanged native authority and verify actual raw model drawings
+        run: bash experiments/agent_painter/lanes/smol/ci_native.sh
+      - name: Verify checkpoint bytes and package transparent research evidence
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/smol-native/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/smol-native/bin/python" -m pip install 'safetensors==0.8.0' 'numpy==2.5.4'
+          "$RUNNER_TEMP/smol-native/bin/python" -m unittest discover -s experiments/agent_painter/tests -p 'test_training.py' -v 2>&1 | tee evidence/build/pinned-training-contracts.log
+          "$RUNNER_TEMP/smol-native/bin/python" -m unittest discover -s experiments/agent_painter/lanes/smol/tests -p 'test_*.py' -v 2>&1 | tee evidence/build/pinned-lane-contracts.log
+          "$RUNNER_TEMP/smol-native/bin/python" experiments/agent_painter/lanes/smol/package.py --directory evidence --output release --source-sha "$GITHUB_SHA"
+      - name: Publish first Smol DEVELOPMENT iteration without quality promotion
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="agent-painter-smol-${GITHUB_SHA:0:12}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          cat > "$RUNNER_TEMP/smol-release.md" <<'NOTES'
+          Bounded SMOL worker iteration for CyberSand issue #568, on independent baseline and candidate GitHub-hosted CPU VMs. Candidate real optimizer steps, atomic checkpoints and original raw first-pass DEVELOPMENT outputs are retained. Six structural requests produce twelve host-seed views per arm. FINAL is excluded.
+
+          The native archive contains the side-by-side gallery/index.html, original PNGs only for accepted model outputs, actual native receipts/readback, strict refusals for all rejected views, and exact source/runtime custody. A safety-only native pass can coexist with zero accepted model drawings. Read MANIFEST.json and model-native-summary.json for actual counts; workflow success does not certify useful painter quality.
+
+          The training corpus retains its original source633 identity. Native replay is rebuilt at this iteration's exact source. Checkpoints and release assets are immutable; SHA256SUMS.txt binds their bytes. Independent Draft/HOLD lane; no merge or default promotion.
+          NOTES
+          gh release create "$tag" release/* --target "$GITHUB_SHA" --prerelease --title "Smol painter DEVELOPMENT (${GITHUB_SHA:0:12})" --notes-file "$RUNNER_TEMP/smol-release.md"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: smol-native-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/smol-native/
+          if-no-files-found: warn
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: smol-build-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/build/
+            evidence/native-build.json
+            evidence/regressions/
+            release/MANIFEST.json
+            release/SHA256SUMS.txt
+          if-no-files-found: warn
+          retention-days: 90
