@@ -44,13 +44,14 @@ identical to the previously published historical Linux headless native-material
 | Duplicated card pair | **q004 and q007** |
 | Extra exposure of the same two-seed pattern | **1** |
 
-Separate GitHub answer-key metadata identifies q004 and q007 as
-ribs-v7-m3-s212-p0 and ribs-v7-m4-s249-p0, two different development
-prediction IDs within the same ribs:cf98e3883e9fb071 structural group.
-Their paired native PNG hashes match exactly at seeds 17 and 73. Other
-two-seed pairs differ in exact PNG bytes. This is a concrete visual-diversity
-limitation; it is neither a material-write failure nor a measured aesthetic
-score. The committed [audit JSON](stimulus_redundancy_audit.json) deliberately
+Separate sealed answer-key metadata confirms that q004 and q007
+are two different original development prediction IDs belonging to the
+**same structural group**. Theme names, original prediction IDs and group IDs
+are deliberately withheld from this human-facing note until the rater freezes
+a blind response; opening the original answer key would reveal them. Their
+paired native PNG hashes match exactly at seeds 17 and 73. Other two-seed
+pairs differ in exact PNG bytes. This is a concrete visual-diversity limitation;
+it is neither a material-write failure nor a measured aesthetic score. The committed [audit JSON](stimulus_redundancy_audit.json) deliberately
 states key_checked=false: it is the independently executed HTML-only check.
 The optional full answer-key-to-PNG binding was tested synthetically but
 was **not run against the original full key**; separate key metadata inspection
