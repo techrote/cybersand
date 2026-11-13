@@ -57,6 +57,40 @@ In **Art** set:
 
 The model never receives the seed, world origin, materials or cost budget as editable schema fields. The bridge uses one model load per request; performance has not been characterized on Windows. Run one inference at a time, use the Workbench Stop button to cancel its HTTP request, and inspect traffic/native receipts to distinguish a **completed model inference** from a **confirmed canvas edit**. Stop does not promise that a local CPU inference already executing in the subprocess has terminated immediately; it prevents a stale response from being painted by the current Workbench epoch/request fence.
 
+## Integrated role checkpoints and receipt safety (13 November 2026)
+
+Draft #567 now carries the **four role-owned source checkpoints**, imported by four
+separate fast-forward commits without modifying their original branches:
+Controls `ed2720e33e3b` (opt-in coral 1.1 and native pairing);
+Corpus `791dc710c099` (verified replay-order candidate);
+Training `729343a22e30` (optional keyword sampler, no new training);
+Evaluation `07f7e191ec4c` (native packet auditor and <=38-character aliases).
+These are **additional code and evidence-handling tools**, not measured new model
+accuracy and not current-source native acceptance. The v1 compiler and step-400
+adapter identities remain frozen; v1.1 must not silently replace them.
+
+The bridge now checks each successful subprocess's inference receipt against
+the **exact request prompt, pinned host seed, adapter hash, LFM base model identity
+and `native_execution=false`**, in addition to its existing compiler,
+focus, material, permitted shapes, EOS and compiled-batch SHA checks. This
+rejects a stale or mis-associated inference folder without exposing its
+operations to the Art provider. The focused test fixture includes five forged
+receipt variants. The change passed 11/11 **static code-contract checks**;
+the updated Python unit tests are awaiting independent execution/review. The
+previous four method/HTTP test pass preceded these new checks and is not
+represented as a fresh rerun.
+
+**Upstream qualification blocker:** #565 Request 4 at source
+`d66499ec3409fb657875fca7dbd0f234cf28ca49`
+([workflow 43358127824](https://github.com/techrote/cybersand/actions/runs/43358127824))
+completed with **Windows failure** on 13 November 2026 at 04:00 UTC:
+the original graphical `MATERIAL_LAB_UI` shared Workbench installation case
+exceeded its internal deadline at 15 FPS (211 assertions, one failure).
+The source-matched Linux job passed. Packaging/publishing was skipped;
+there is **no verified compatible Windows runtime** to adopt yet. The
+upstream owner must resolve and qualify that gate. This experiment does
+not alter #565 or treat its partial success as current-main approval.
+
 ## Regressions and acceptance boundary
 
 Without downloading a model:
