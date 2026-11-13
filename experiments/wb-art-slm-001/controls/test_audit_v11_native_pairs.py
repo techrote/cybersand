@@ -120,7 +120,7 @@ class PairGateTests(unittest.TestCase):
     def test_material_readback_tampering_refused(self):
         cid = self.manifest["cases"][0]["id"]
         (self.root / (cid + ".materials.i32le")).write_bytes(b"tampered")
-        with self.assertRaisesRegex(ValueError, "readback"):
+        with self.assertRaisesRegex(ValueError, "stored native crop disagrees with receipt chain"):
             self.audit()
 
     def test_input_mutation_refused_even_with_passing_receipts(self):
