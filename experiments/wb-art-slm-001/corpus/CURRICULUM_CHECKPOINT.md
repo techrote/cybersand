@@ -329,3 +329,76 @@ original admitted source, pinning first-400 source index SHA-256
 A separately named bounded run may then compare against frozen results using
 DEVELOPMENT only, once Training has its private lease and authorized model
 runtime. Draft/HOLD remains.
+
+
+## Fifth corpus checkpoint — recovered m0 coral composition witness
+
+**13 November 2026, corpus role only.** This checkpoint addresses a concrete
+blind spot found by replaying the pinned v3 order against the owner's original
+executed-corpus archive. The archive was re-materialized at 2,311,486 bytes,
+SHA-256 `2d2de250731eeea825339e89f752ab8ebc65f3a929daa2c692120d985566948a`.
+TRAIN, DEV and FINAL byte hashes matched admission; final prompt/output contents
+were not used. Existing native operation hashes and globally admitted TRAIN
+receipts were checked; no fresh native World was executed.
+
+### Observed development-directed gap
+
+The original frozen DEVELOPMENT failures include malformed JSON numeric literals
+for coral modifier m6 **and m0** compositions. V3 addressed m6/m7 modifier
+exposure, but its first 400 draws still exposed **zero m0 two-layer coral
+compositions**. There are valid m0 coral compositions in the original TRAIN
+split, including the source-admitted `coral-v4-m0-s17-p1` fan + border branch
+program. No held-out development completion was imported as a positive.
+
+`failure_witness_overlay.py` creates an **optional v4 400-draw diagnostic** from
+the unchanged v3 replay. It replaces the source-admitted single-layer
+`coral-v3-m0-s17-p1` at zero-based draw 372 with the existing native-admitted
+two-layer `coral-v4-m0-s17-p1`. Original row completions, programs, native
+operations and receipts remain byte-for-byte unchanged. It emits **original
+train.jsonl source indices**, not the reordered `modifier_train.jsonl` indices.
+
+| First 400 source-admitted draws | v3 | Optional v4 |
+| --- | ---: | ---: |
+| Coral m0 composed witnesses | 0 | **1** |
+| Coral m6 composed witnesses | 2 | **2** |
+| Distinct native traces | 376 | 376 |
+| Structural groups | 72 | 72 |
+| Exact-word examples per theme | 3 | 3 |
+| Theme, modifier and prompt-form counts | Pinned | **Unchanged** |
+
+Exact record and source-operation SHA-256 pairs, source-case IDs and index-space
+fingerprints are retained in `coral_m0_composed_witness_v4.json`. Immutable v3
+replay IDs SHA-256:
+`4691ed900ba5ad0bcbb54243da990f5f07f4a7564511124e119f4934eb97f148`.
+V4 replay IDs SHA-256:
+`189f44a7e02dd78bb4c86e4c26ee8c0b0b9c70f3fa53793b0eec74240c83b53e`.
+Original TRAIN-source index plan SHA-256:
+`34fdfe8c3e98baad3e0508c4cf7af9254ebe8639fd0004c8e9cfab7b85e5e2af`.
+
+To reproduce, extract the archived `corpus/` folder outside ordinary Git:
+
+```bash
+python experiments/wb-art-slm-001/corpus/failure_witness_overlay.py \
+  --corpus-dir /path/to/extracted/corpus \
+  --out /path/outside/git/witness-v4
+WB_ART_SLM_CORPUS_DIR=/path/to/extracted/corpus \
+  python -m unittest discover -s experiments/wb-art-slm-001/corpus \
+  -p 'test_failure_witness_overlay.py'
+```
+
+**Qualification:** Four fail-closed unit tests passed locally. An independent
+local reconstruction exactly matched the checked-in v3 ordered and replay ID
+hashes, and the real archived TRAIN records were individually checked against
+their recorded native input operations and passing receipt fields. Its v4
+overlay and generated manifest matched the hashes above. The exact
+archive-dependent repository test has not yet been executed with the complete
+checked-in v3 Python modules in this session; do not present this as a five-test
+PASS or as new native qualification. No training, final-set evaluation,
+current-main/Windows native execution, or visual recognition review took place.
+
+**Training handoff:** Integration may import this corpus-owned three-file
+addition. Training may compare v3 and optional v4 under the same bounded
+original-source sampler policy, with raw DEVELOPMENT outcomes and no final
+feedback. The added witness addresses a data-exposure gap; it demonstrates
+**zero model-score improvement until a controlled model evaluation is run**.
+Draft PR #567 remains HOLD, and the frozen step-400 adapter is unchanged.
