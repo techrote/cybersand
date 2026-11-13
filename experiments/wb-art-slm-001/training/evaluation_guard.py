@@ -142,7 +142,7 @@ def verified_evaluation(output: Path, argv: list[str]) -> dict | None:
             "model_id": receipt["model_id"], "revision": receipt["resolved_revision"],
             "model_profile": receipt.get("profile"), "model_subfolder": receipt.get("subfolder"),
             "compiler_sha256": digest(Path(str(opts["--compiler"]))),
-            "dev_sha256": digest(Path(str(opts["--dev"])),
+            "dev_sha256": digest(Path(str(opts["--dev"]))),
             "admission_sha256": digest(Path(str(opts["--admission"]))),
             "adapter_sha256": (digest(Path(str(opts["--adapter"])) / "adapter_model.safetensors")
                                if "--adapter" in opts else None),
