@@ -121,6 +121,75 @@ existing training guards. A future model run must still respect a
 whole-process budget with saving/evaluation margin and a single shared
 role lease.
 
+
+## Whole-process supervisor and durable role lease — 13 November 2026
+
+For the **next** authorized model-training run, use **job_guard.py** instead of
+launching a direct unbounded training process. This is a local supervisor, **not**
+a GitHub Actions model-training workflow. It holds the same nonblocking OS
+wb-art-slm-training.lock as direct trainer invocations, plus a durable
+wb-art-slm-training.role-lease.json containing supervisor/child process IDs,
+a role token and heartbeat. The child can bypass its own lock only when its
+real parent and token match that active role lease. All candidate outputs
+must be direct children of **one designated private run parent**
+outside the source tree; do not evade the lease by choosing another parent.
+
+The supervisor fingerprints complete trainer arguments (excluding the
+private output path), exact train/dev/admission/manifest/compiler bytes,
+model snapshot bytes and pinned download receipt, template/source code,
+numerical package environment and resume inventory if supplied. It refuses
+altered base bytes, mismatched official model identity, duplicated arguments,
+non-absolute private paths and **any unchanged previously attempted
+fingerprint**, including after a crash. A new output name is not a retrain
+authorization. A resumed run requires a valid different checkpoint identity;
+changing inputs/fingerprints by itself does not authorize unrequested training.
+
+Example **only after the original pinned base/runtime are genuinely available**
+on one authorized local machine; every path below is private and absolute:
+
+    python job_guard.py --run-parent /private/wb-runs \
+      --wall-seconds 3300 --save-margin-seconds 300 -- \
+      --train /private/corpus/train.jsonl \
+      --dev /private/corpus/dev.jsonl \
+      --admission /private/corpus/admission.json \
+      --corpus-manifest /private/corpus/manifest.json \
+      --compiler /source/experiments/wb-art-slm-001/controls/pattern_compiler.py \
+      --model /private/models/lfm350 \
+      --model-id LiquidAI/LFM2.5-350M \
+      --revision 9921cd4d82c0e3986887aa4b376f9446729ef8a3 \
+      --output /private/wb-runs/lfm-keyword-replay-400 \
+      --curriculum keyword-replay-v1 --steps 400 \
+      --checkpoint-every 25 --max-seconds 1950 \
+      --skip-baseline --skip-final-eval --threads 3
+
+The whole child process, including model load, optimizer, checkpoint and any
+in-process evaluation, receives at most **3,300 seconds**. At 3,000 seconds,
+the parent sends graceful SIGTERM (Windows console break where supported);
+at the hard deadline it terminates the child process group. A clean checkpoint
+is *attempted*, not guaranteed if a step or filesystem hangs.
+The parent validates the saved checkpoint inventory and reports completed,
+stopped_early, deadline_killed or failed honestly. An early-stop checkpoint
+cannot be counted as a completed 400-step candidate. The wrapper writes private
+guard_start.json and guard_result.json evidence beside the model output.
+No step-400 bootstrap files are overwritten.
+
+For this CPU study the example skips in-process final evaluation to preserve
+checkpoint headroom. Use the **existing separate evaluator** for 24 fixed
+development requests and twelve exact words after a new complete checkpoint
+is verified, with the one-heavy-job lock enforced operationally. The supervisor
+does **not yet** impose a separate process-wide deadline on evaluate_model.py;
+do not launch competing heavyweight evaluation during a training lease.
+
+**Observed guard qualification:** ten mocked-worker offline tests passed on
+Linux Python 3.13.5; they exercised real subprocesses, lease handshake,
+existing-file-lock refusal, duplicate-attempt refusal, modified-model
+refusal, deterministic fingerprints, graceful SIGTERM saved inventory,
+and force-kill when SIGTERM was ignored. No actual LoRA training, GPU,
+official-model restore, native World or Windows verification was performed.
+Run python -m unittest -v test_job_guard.py locally before using it.
+Real Windows process-group stopping and large-model checkpoint-save timing
+remain unqualified.
+
 ## Separate baselines and development evaluation
 
 `baseline_keyword.py` declares its simple behavior: one literal theme word selects the fixed centered reference recipe; modifier/layout language is ignored. It separately records the twelve exact-word compiler sanity cases. It never impersonates model output.

@@ -355,7 +355,7 @@ def main():
     import peft
     from peft import LoraConfig, PeftModel, get_peft_model
     from transformers import AutoModelForCausalLM, AutoTokenizer
-    from filelock import FileLock
+    from job_guard import trainer_lock
 
     torch.set_num_threads(args.threads)
     torch.set_num_interop_threads(1)
@@ -368,7 +368,7 @@ def main():
     device, dtype = choose_device_dtype(args.device)
     output = Path(args.output)
     output.mkdir(parents=True, exist_ok=True)
-    lock = FileLock(str(output.parent / "wb-art-slm-training.lock"), timeout=0)
+    lock = trainer_lock(output)
     with lock:
         if args.resume:
             verify_checkpoint(args.resume)
