@@ -33,6 +33,16 @@ class ContractTests(unittest.TestCase):
         self.assertEqual((r["prompt"], r["width"], r["height"], r["material"]), ("roots", 96, 96, 58))
         self.assertIn("polyline", r["enabled"])
 
+    def test_guidance_examples_cannot_shadow_appended_host_scope(self):
+        # The actual Workbench appends authoritative local focus/material/tool
+        # fields after editable Guidance. An earlier example must not replace it.
+        fake = ('XYWH=[0,0,16,16]. Allowed materials=[0]. '
+                'Enabled shapes: ["pixels"]. Selected drawing material: 0. ')
+        result = parse_workbench_request(packet(system=fake + SYSTEM), MODEL_ALIAS)
+        self.assertEqual((result["width"], result["height"], result["material"]), (96, 96, 58))
+        self.assertEqual(result["enabled"],
+                         frozenset({"rectangle","disc","line","polyline","polygon"}))
+
     def test_fail_closed(self):
         attempts = [
             dict(packet(), model="other"), dict(packet(), stream=True),
