@@ -59,6 +59,8 @@ jobs:
               f.write("training_run_id=43520836201\n")
               f.write("training_sha=d8e2a7759c361f3e50660e301b9ad5a0208685c4\n")
           PY
+      - name: Refuse DEVELOPMENT tampering and sealed-FINAL access without model downloads
+        run: python3 -m unittest discover -s experiments/agent_painter/lanes/smol -p 'test_evaluate.py' -v
 
   compare:
     name: Strict unchanged DEVELOPMENT base-versus-trained proposals (no native writes)
