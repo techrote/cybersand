@@ -14,6 +14,9 @@ import json
 import os
 from pathlib import Path
 import re
+import select
+import signal
+import socket
 import subprocess
 import sys
 import tempfile
@@ -121,7 +124,74 @@ def checked_art_result(output: Path, request: dict, expected_compiler_sha256: st
     return json.dumps(data, separators=(",", ":"), allow_nan=False), receipt
 
 
-def run_inference(config: argparse.Namespace, request: dict) -> tuple[str, dict]:
+def _peer_disconnected(peer: socket.socket) -> bool:
+    """Check for a canceled HTTP client without consuming a byte of input.
+
+    The full HTTP request body has already been read by the handler. A closed
+    Workbench HTTPRequest signals EOF; an unexpected pipelined byte is NOT EOF.
+    Socket select works with TCP sockets on Windows and POSIX.
+    """
+    try:
+        ready, _, _ = select.select([peer], [], [], 0)
+        return bool(ready) and peer.recv(1, socket.MSG_PEEK) == b""
+    except (OSError, ValueError):
+        return True
+
+
+def _stop_owned_process(process: subprocess.Popen) -> None:
+    """Stop only this locally owned inference child/process group."""
+    if process.poll() is not None:
+        return
+    try:
+        if os.name == "nt":
+            process.terminate()
+        else:
+            os.killpg(process.pid, signal.SIGTERM)
+        process.wait(timeout=2)
+    except (subprocess.TimeoutExpired, OSError, ProcessLookupError):
+        if process.poll() is None:
+            if os.name != "nt":
+                try:
+                    os.killpg(process.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+            else:
+                process.kill()
+            process.wait(timeout=3)
+
+
+def _run_owned_inference(command: list[str], log, deadline_seconds: float,
+                         *, client_socket: socket.socket | None = None,
+                         cancellation_probe=None) -> int:
+    """One bounded subprocess. Stop/disconnect/deadline never returns geometry.
+
+    No shell, retry, detached worker or background completion. POSIX inference
+    owns a new session so a timed-out child cannot leave group workers behind.
+    Windows terminates the spawned inference process; child-tree cleanup on
+    Windows requires separate qualification if future inference adds children.
+    """
+    process = subprocess.Popen(
+        command, stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT,
+        start_new_session=(os.name != "nt"))
+    deadline = time.monotonic() + deadline_seconds
+    try:
+        while True:
+            if (client_socket is not None and _peer_disconnected(client_socket)) or (
+                    cancellation_probe is not None and cancellation_probe()):
+                raise BridgeRefusal("Workbench disconnected or canceled; inference stopped without Art output")
+            status = process.poll()
+            if status is not None:
+                return status
+            if time.monotonic() >= deadline:
+                raise BridgeRefusal("local inference deadline exceeded; no Art batch returned")
+            time.sleep(min(0.1, max(0, deadline - time.monotonic())))
+    except BaseException:
+        _stop_owned_process(process)
+        raise
+
+
+def run_inference(config: argparse.Namespace, request: dict,
+                  *, client_socket: socket.socket | None = None) -> tuple[str, dict]:
     folder = Path(tempfile.mkdtemp(prefix="request-", dir=config.evidence_dir))
     output = folder / "inference"
     command = [sys.executable, str(config.infer), "--model", str(config.model_dir),
@@ -132,15 +202,15 @@ def run_inference(config: argparse.Namespace, request: dict) -> tuple[str, dict]
                "--max-estimated-cells", str(config.max_estimated_cells),
                "--threads", str(config.threads), "--device", config.device,
                "--output", str(output)]
-    # Do not use a shell. A timed-out model cannot subsequently publish a batch.
+    # The HTTP Stop/disconnect can terminate the child instead of occupying the
+    # single-job lock until the full deadline. Never return a late Art payload.
     with (folder / "process.log").open("wb") as log:
-        try:
-            result = subprocess.run(command, stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT,
-                                    timeout=config.deadline_seconds, check=False)
-        except subprocess.TimeoutExpired as exc:
-            raise BridgeRefusal("local inference deadline exceeded; no Art batch returned") from exc
-    if result.returncode:
-        raise BridgeRefusal("inference rejected or failed (exit %d); original output in %s" % (result.returncode, folder))
+        returncode = _run_owned_inference(command, log, config.deadline_seconds,
+                                          client_socket=client_socket)
+    if returncode:
+        raise BridgeRefusal("inference rejected or failed (exit %d); original output in %s" % (returncode, folder))
+    if client_socket is not None and _peer_disconnected(client_socket):
+        raise BridgeRefusal("Workbench disconnected after inference; Art output discarded")
     return checked_art_result(output, request, config.compiler_sha256,
                               expected_seed=config.seed,
                               expected_adapter_sha256=config.adapter_sha256)
@@ -187,7 +257,12 @@ def make_handler(config: argparse.Namespace, runner=run_inference):
                     self.send_json(429, {"error": {"message": "one local model inference at a time"}})
                     return
                 try:
-                    content, receipt = runner(config, request)
+                    if runner is run_inference:
+                        content, receipt = runner(config, request, client_socket=self.connection)
+                    else:
+                        content, receipt = runner(config, request)
+                    if _peer_disconnected(self.connection):
+                        raise BridgeRefusal("Workbench stopped before HTTP response; Art output discarded")
                 finally:
                     single_job.release()
                 self.send_json(200, {"id": "wb-art-slm-001", "object": "chat.completion",
