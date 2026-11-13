@@ -33,7 +33,13 @@ jobs:
         run: |
           python -m unittest discover -s experiments/wb-art-slm-001/controls -p 'test_pattern_compiler*.py' -v
           python -m unittest discover -s experiments/wb-art-slm-001/controls -p 'test_make_v11_native_pairs.py' -v
-      - name: Train-only curriculum guards (no weights or training)
+      - name: Train-only curriculum guards and guarded subprocess lease (no weights or training)
         run: |
           python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_curriculum.py' -v
           python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_curriculum.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_job_guard.py' -v
+      - name: Additional owned-role synthetic guards (archive-dependent suites may skip)
+        run: |
+          python -m unittest discover -s experiments/wb-art-slm-001/controls -p 'test_audit_coral_native.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_balanced_replay.py' -v
+          python -m unittest discover -s experiments/wb-art-slm-001/evaluation -p 'test_blind_native_review.py' -v
