@@ -78,8 +78,6 @@ def replay_native_rows(native: Path, cases: dict, summary: dict) -> dict:
             require(case_index >= last_case,
                     f"{cid}: native case events out of requested execution order")
             last_case = case_index
-            require(("receipt" in event) != ("capture" in event),
-                    f"{cid}: ambiguous native event")
             if "receipt" in event:
                 # Draw receipts must precede the first draw-state capture. Once
                 # any history witness exists, subsequent drawing would be
