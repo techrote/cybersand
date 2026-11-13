@@ -1,0 +1,238 @@
+{
+  "scope": "historical-linux-headless-native-model-material-images, frozen-development-only",
+  "reviewer": "one AI reviewer; NOT human/owner acceptance",
+  "candidate": "LFM350-step400",
+  "original_requests": 36,
+  "first_pass_admitted": 34,
+  "first_pass_rejected": 2,
+  "historical_seed_replays_conditional_on_admission": 68,
+  "ai_correct_admitted": 29,
+  "ai_total_admitted": 34,
+  "ai_correct_all_original": 29,
+  "ai_total_original": 36,
+  "group_macro_admitted": 0.869565,
+  "per_theme": {
+    "circuitry": {
+      "correct_requests": 3,
+      "admitted_requests": 3,
+      "admitted_groups": 2,
+      "group_macro": 1
+    },
+    "coral": {
+      "correct_requests": 1,
+      "admitted_requests": 1,
+      "admitted_groups": 1,
+      "group_macro": 1
+    },
+    "crystals": {
+      "correct_requests": 3,
+      "admitted_requests": 3,
+      "admitted_groups": 2,
+      "group_macro": 1
+    },
+    "dunes": {
+      "correct_requests": 1,
+      "admitted_requests": 3,
+      "admitted_groups": 2,
+      "group_macro": 0.5
+    },
+    "honeycomb": {
+      "correct_requests": 3,
+      "admitted_requests": 3,
+      "admitted_groups": 2,
+      "group_macro": 1
+    },
+    "labyrinth": {
+      "correct_requests": 3,
+      "admitted_requests": 3,
+      "admitted_groups": 2,
+      "group_macro": 1
+    },
+    "mycelium": {
+      "correct_requests": 3,
+      "admitted_requests": 3,
+      "admitted_groups": 2,
+      "group_macro": 1
+    },
+    "ribs": {
+      "correct_requests": 3,
+      "admitted_requests": 3,
+      "admitted_groups": 2,
+      "group_macro": 1
+    },
+    "roots": {
+      "correct_requests": 3,
+      "admitted_requests": 3,
+      "admitted_groups": 2,
+      "group_macro": 1
+    },
+    "ruins": {
+      "correct_requests": 3,
+      "admitted_requests": 3,
+      "admitted_groups": 2,
+      "group_macro": 1
+    },
+    "strata": {
+      "correct_requests": 1,
+      "admitted_requests": 3,
+      "admitted_groups": 2,
+      "group_macro": 0.5
+    },
+    "veins": {
+      "correct_requests": 2,
+      "admitted_requests": 3,
+      "admitted_groups": 2,
+      "group_macro": 0.5
+    }
+  },
+  "incorrect_ai_labels": [
+    {
+      "id": "q001",
+      "expected": "dunes",
+      "ai_classified": "ribs",
+      "structural_group": "dunes:b8e9dd85c3790d44",
+      "symbolic_theme_correct": true,
+      "symbolic_primary_motif_correct": true
+    },
+    {
+      "id": "q003",
+      "expected": "veins",
+      "ai_classified": "circuitry",
+      "structural_group": "keyword-sanity:veins",
+      "symbolic_theme_correct": true,
+      "symbolic_primary_motif_correct": false
+    },
+    {
+      "id": "q009",
+      "expected": "strata",
+      "ai_classified": "dunes",
+      "structural_group": "strata:26f1daa65b95ef3d",
+      "symbolic_theme_correct": true,
+      "symbolic_primary_motif_correct": true
+    },
+    {
+      "id": "q011",
+      "expected": "strata",
+      "ai_classified": "dunes",
+      "structural_group": "strata:26f1daa65b95ef3d",
+      "symbolic_theme_correct": true,
+      "symbolic_primary_motif_correct": true
+    },
+    {
+      "id": "q024",
+      "expected": "dunes",
+      "ai_classified": "strata",
+      "structural_group": "dunes:b8e9dd85c3790d44",
+      "symbolic_theme_correct": true,
+      "symbolic_primary_motif_correct": true
+    }
+  ],
+  "exploratory_near_pairs": [
+    {
+      "cards": [
+        "q003",
+        "q032"
+      ],
+      "themes": [
+        "veins",
+        "circuitry"
+      ],
+      "same_structural_group": false,
+      "cross_theme": true,
+      "seed_jaccard": [
+        0.879377,
+        0.96747
+      ],
+      "ai_labels": [
+        "circuitry",
+        "circuitry"
+      ],
+      "symbolic_primary_motif_correct": [
+        false,
+        true
+      ],
+      "exact_png_pair": false
+    },
+    {
+      "cards": [
+        "q004",
+        "q007"
+      ],
+      "themes": [
+        "ribs",
+        "ribs"
+      ],
+      "same_structural_group": true,
+      "cross_theme": false,
+      "seed_jaccard": [
+        1,
+        1
+      ],
+      "ai_labels": [
+        "ribs",
+        "ribs"
+      ],
+      "symbolic_primary_motif_correct": [
+        true,
+        true
+      ],
+      "exact_png_pair": true
+    },
+    {
+      "cards": [
+        "q020",
+        "q029"
+      ],
+      "themes": [
+        "labyrinth",
+        "labyrinth"
+      ],
+      "same_structural_group": true,
+      "cross_theme": false,
+      "seed_jaccard": [
+        0.995165,
+        0.990787
+      ],
+      "ai_labels": [
+        "labyrinth",
+        "labyrinth"
+      ],
+      "symbolic_primary_motif_correct": [
+        true,
+        true
+      ],
+      "exact_png_pair": false
+    }
+  ],
+  "cross_theme_near_collisions": [
+    {
+      "cards": [
+        "q003",
+        "q032"
+      ],
+      "themes": [
+        "veins",
+        "circuitry"
+      ],
+      "same_structural_group": false,
+      "cross_theme": true,
+      "seed_jaccard": [
+        0.879377,
+        0.96747
+      ],
+      "ai_labels": [
+        "circuitry",
+        "circuitry"
+      ],
+      "symbolic_primary_motif_correct": [
+        false,
+        true
+      ],
+      "exact_png_pair": false
+    }
+  ],
+  "same_theme_near_pairs": 2,
+  "cross_theme_diagnosis": "veins keyword output visually collides with circuitry; veins primary motif already recorded incorrect",
+  "limits": "Only 34 admitted development/keyword requests and one AI reviewer; near threshold exploratory; no retraining or human, current-native, Windows or final assessment result",
+  "decision": "HOLD"
+}
