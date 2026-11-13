@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "name": "modifier-stratified-replay-v3",
+  "status": "TRAIN-only opt-in; no native re-execution, new positives or model gain",
+  "train_sha256": "972826e1af15a6babaff6e68e4c57d790c0c060a2befe050b4156c5f8ee05f66",
+  "dev_custody_sha256": "e8d9f0c1ab39eb28d760fac5fdc42cbbd770dc5505954d15050d214ffd062267",
+  "final_custody_sha256": "54f1cb53e228953d08b2d5a0f43eeea7f81757bf0f3832e2b22e897203a9696c",
+  "compiler_sha256": "a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb",
+  "native_source": "90719c72b9fcf90593fb7878354051ad601b47fd",
+  "v2_reference_order_sha256": "8c4e1be31766926173eb8427a380b204cd14a0397d978700e5cb8223dc000915",
+  "ordered_ids_sha256": "f14c5731f645cd9bf33802d66a1ff0cf11bf5275e2fe1a4df2ed5833c6833841",
+  "ordered_jsonl_sha256": "b530cba46b01f8e9df47ba11d77070b113d150a29a1b3353cdef7a364878d45d",
+  "replay_400_ids_sha256": "4691ed900ba5ad0bcbb54243da990f5f07f4a7564511124e119f4934eb97f148",
+  "replay_400_source_indices_sha256": "09e6c4bc2898beec649ca48ae42f3cc9b9067789974a87013464633eb5a41162",
+  "replay_400_ordered_indices_sha256": "6d58d30dc7d58de980a5ecf03b5a621cae154200cc31522984c94d3e1eee82ec",
+  "replay_400_displacements_sha256": "44f6a46927535a4100ddec69202461b896b05de39b85516865d0d6fffd8aef2a",
+  "source_indices_refer_to": "original admitted train.jsonl",
+  "ordered_indices_refer_to": "modifier_train.jsonl written by this generator",
+  "records": 1152,
+  "replay_draws": 400,
+  "replay_unique_native_traces": 376,
+  "replay_structural_groups": 72,
+  "replay_displaced_draws": 24,
+  "literal_draws_per_theme": 3,
+  "modifier_counts": {
+    "0": 48,
+    "1": 48,
+    "2": 48,
+    "3": 48,
+    "4": 48,
+    "5": 48,
+    "6": 60,
+    "7": 52
+  },
+  "per_theme_modifier_counts": {
+    "coral": {
+      "0": 4,
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4,
+      "5": 4,
+      "6": 5,
+      "7": 5
+    },
+    "veins": {
+      "0": 4,
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4,
+      "5": 4,
+      "6": 5,
+      "7": 5
+    },
+    "ribs": {
+      "0": 4,
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4,
+      "5": 4,
+      "6": 5,
+      "7": 5
+    },
+    "mycelium": {
+      "0": 4,
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4,
+      "5": 4,
+      "6": 5,
+      "7": 5
+    },
+    "roots": {
+      "0": 4,
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4,
+      "5": 4,
+      "6": 5,
+      "7": 4
+    },
+    "strata": {
+      "0": 4,
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4,
+      "5": 4,
+      "6": 5,
+      "7": 4
+    },
+    "dunes": {
+      "0": 4,
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4,
+      "5": 4,
+      "6": 5,
+      "7": 4
+    },
+    "crystals": {
+      "0": 4,
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4,
+      "5": 4,
+      "6": 5,
+      "7": 4
+    },
+    "honeycomb": {
+      "0": 4,
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4,
+      "5": 4,
+      "6": 5,
+      "7": 4
+    },
+    "labyrinth": {
+      "0": 4,
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4,
+      "5": 4,
+      "6": 5,
+      "7": 4
+    },
+    "ruins": {
+      "0": 4,
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4,
+      "5": 4,
+      "6": 5,
+      "7": 4
+    },
+    "circuitry": {
+      "0": 4,
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4,
+      "5": 4,
+      "6": 5,
+      "7": 4
+    }
+  },
+  "phrasing_counts": {
+    "p0": 200,
+    "p1": 200
+  },
+  "first_400_m6_m7_exposures": 112,
+  "accumulation_assumption": "400 draws equals 400 optimizer steps only with accumulation=1",
+  "native_evidence": "unchanged bootstrap Linux native receipts only; not current main/Windows"
+}

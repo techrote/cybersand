@@ -190,3 +190,86 @@ only when gradient accumulation is 1; otherwise translate the sample cursor.
 visual review, material-law change, final-set evaluation or production promotion.
 The pilot receipts remain at the distinct frozen Linux native source; #564/#565
 remain external source owners. Draft/HOLD stays unchanged.
+
+## Third corpus checkpoint — modifier blind spot repaired, opt-in v3
+
+**13 November 2026, corpus role only.** The complete original executed-corpus
+archive was recovered again from the owner's saved Library. Its 2,311,486 bytes
+match SHA-256 `2d2de250731eeea825339e89f752ab8ebc65f3a929daa2c692120d985566948a`.
+The pinned v1 and v2 full orders were independently reconstructed from archived
+TRAIN rows and match their checked-in order SHA-256 values. Archived split
+bytes, original program/geometry hashes, and original native-receipt evidence
+were preserved. This is not fresh native execution or current-source qualification.
+
+### Measured curriculum defect
+
+The original v1 and v2 orders advance **modifier first** through all six
+structural groups. In their first 400 draws, **modifier m6 and m7 are absent**
+for all twelve themes. The v2 24-word replay also never exposes these two
+families. This is particularly serious for the retained DEVELOPMENT coral
+malformed-decimal failure at `coral-v6-m6-s323-p1`: a correction candidate
+with zero m6 exposure is a weak test of the hypothesized remedy.
+
+| Source-admitted first-400 draws | v2 replay | Proposed v3 |
+| --- | ---: | ---: |
+| Modifier m6 exposures | **0** | **60** |
+| Modifier m7 exposures | **0** | **52** |
+| All eight modifiers present for each theme | 0 / 12 | **12 / 12** |
+| Distinct native traces | 376 | **376** |
+| Structural groups represented | 72 / 72 | **72 / 72** |
+| Exact-word draws | 36 | **36** |
+| First-400 prompt form balance | 200 / 200 | **200 / 200** |
+| Themes represented | 12, 33–34 draws | **12, 33–34 draws** |
+
+The new `build_modifier_replay.py` generates an opt-in **v3 TRAIN-only**
+ordering of all 1,152 original records. It introduces no new program, geometry,
+native receipt or label. A fair-per-theme eight-modifier rotation replaces
+modifier-blind early ordering. For its separate 400-draw comparison diagnostic,
+the 24 deliberate word replays displace **same-theme, same-modifier m0**
+source-admitted rows only; each theme has exactly three literal-word draws and
+each modifier's coverage stays unchanged by replay. Four controlled prompt-form
+swaps per theme retain 16–17 of each phrasing in the prefix.
+
+**Identity/consumption safety:** The generator pins v2's order SHA, refuses
+contradictory row/modifier identities, and calls the original native-custody
+loader. The resulting immutable
+`curriculum_modifier_replay_v3.json` records the archived split/compile/source
+identities, exact 1,152-row JSONL and ordered-ID SHA-256, both 400-draw replay
+index hashes, and the explicit source indexing contract. The two index files
+are **not interchangeable**: source indices refer to archived
+`train.jsonl`; ordered indices refer to generated
+`modifier_train.jsonl`. Do not apply source indices to the reordered file
+or shuffle away the pinned curriculum.
+
+Exact newly measured candidate SHA-256 identities:
+- v3 full ordered row IDs: `f14c5731f645cd9bf33802d66a1ff0cf11bf5275e2fe1a4df2ed5833c6833841`
+- v3 ordered JSONL: `b530cba46b01f8e9df47ba11d77070b113d150a29a1b3353cdef7a364878d45d`
+- v3 400 replay row IDs: `4691ed900ba5ad0bcbb54243da990f5f07f4a7564511124e119f4934eb97f148`
+
+Reproduce with the original archive extracted outside Git:
+
+```bash
+python experiments/wb-art-slm-001/corpus/build_modifier_replay.py \
+  --corpus-dir /absolute/path/to/extracted/corpus \
+  --out /absolute/path/outside/git/modifier-replay-v3
+WB_ART_SLM_CORPUS_DIR=/absolute/path/to/extracted/corpus \
+  python -m unittest discover -s experiments/wb-art-slm-001/corpus \
+  -p 'test_modifier_replay.py'
+```
+
+Local Python 3.13.5 reproduction on the saved original corpus passed the
+four new tests (including archive-index/manifest identity and explicit
+tampering), **using a locally reconstructed v1/v2 import shim** whose v1/v2
+full-order digests matched the checked-in values. The exact published
+repository import/test suite and any hosted CI run have not yet been
+executed for v3; they remain next qualification steps. No model was trained,
+no DEV predictions were altered, FINAL outputs were untouched, and no
+Windows, live Godot, new native replay or visual approval is claimed.
+
+**Handoff:** Integration may import the three v3 source/manifest/test files
+and this checkpoint after exact-head review. Training alone may opt into a
+separately named, equal-draw/step, fully resumable DEVELOPMENT-only comparison
+against the frozen 400-step model and v2 ordering; preserve the shared lease
+and do not call any curriculum change a model gain before measured results.
+Draft #567 remains HOLD; #564/#565 and current-main capability provenance
+remain external.
