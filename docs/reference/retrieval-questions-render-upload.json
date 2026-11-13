@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-13",
+  "purpose": "Separate RENDER-UPLOAD-001 development questions. Existing Q17 retains its wording and canonical homes; its expected facts now distinguish the full-image default from the isolated opt-in experiment and logical bytes from physical GPU traffic.",
+  "questions": [
+    {
+      "id": "UPLOAD-001",
+      "query": "How do I enable the partial material texture publication experiment, and does it change the camera or default renderer?",
+      "canonical": ["systems/material-appearance-and-rendering.md"],
+      "facts": [
+        "The private desktop --render-upload=drawable switch or harness render_upload_strategy_override selects the isolated Draft/HOLD experiment; ordinary ImageTexture publication remains default.",
+        "The experiment is camera-independent, leaves production material shaders and native World authority unchanged, and requires separate source/backend-qualified performance acceptance."
+      ],
+      "sources": ["../godot/scripts/main.gd", "../godot/scripts/render_upload_experiment.gd"]
+    },
+    {
+      "id": "UPLOAD-002",
+      "query": "Why is applying only the newest dirty rectangle unsafe when GPU material textures alternate between previous and current snapshots?",
+      "canonical": ["architecture/rendering-and-gameplay-bridges.md"],
+      "facts": [
+        "A reused target can be two or more publications old. Both slot journals are marked for each accepted patch, and all regions missing from the selected target are reconstructed from the complete latest CPU Image before swapping.",
+        "The peer remains the preceding accepted image. Serial gaps are supported through existing retained patches; stale identities are refused, and World generation changes require explicit complete refreshes."
+      ],
+      "sources": ["../godot/scripts/render_upload_experiment.gd", "../godot/scripts/simulation_worker.gd"]
+    },
+    {
+      "id": "UPLOAD-003",
+      "query": "Does a shorter texture submission call or fewer logical staging bytes establish real GPU bandwidth savings, and what memory does DrawableTexture2D cost?",
+      "canonical": ["systems/material-appearance-and-rendering.md"],
+      "facts": [
+        "No. Source staging bytes and RGBA destination write area are logical counts, and CPU elapsed extraction/source-creation/blit-submission times do not measure completed GPU transfer or physical PCIe traffic.",
+        "Two RGBA8 drawable targets require eight logical bytes per cell, versus four for two RG8 textures or two for two R8 textures, before backend and staging overhead."
+      ],
+      "sources": ["../godot/scripts/render_upload_experiment.gd", "../godot/shaders/render_upload_copy.gdshader"]
+    },
+    {
+      "id": "UPLOAD-004",
+      "query": "What happens when the opt-in drawable material publisher refuses a publication or loses valid version continuity?",
+      "canonical": ["architecture/rendering-and-gameplay-bridges.md"],
+      "facts": [
+        "Application-side preflight refusal preserves the accepted GPU pair and identities, withholds the render ACK and asks the worker for a complete refresh.",
+        "Main keeps the valid display until a fresh full image arrives, then exceptionally reads the last accepted current texture to construct ordinary previous/current ImageTextures and disables the experiment for that Main instance.",
+        "Godot blit_rect returns no per-blit completion error; a startup byte canary and rendered platform qualification are distinct from successful enqueue."
+      ],
+      "sources": ["../godot/scripts/main.gd::_recover_full_render_publication", "../godot/scripts/render_upload_experiment.gd"]
+    }
+  ]
+}

@@ -3,8 +3,8 @@ title: Material appearance and rendering
 document-kind: contract
 canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost]
 status: Current
-scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation
-last-reviewed: 2026-10-19
+scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, full-image publication and the isolated opt-in GPU upload experiment
+last-reviewed: 2026-11-13
 related-documents: [material-visual-pattern-library.md, ../reference/material-effects-register.md, themed-construction-materials.md, materials-and-rule-kernels.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/item-authored-material-programs.md]
 ---
 
@@ -13,8 +13,11 @@ related-documents: [material-visual-pattern-library.md, ../reference/material-ef
 **Current:** native material identity and one derived condition byte form an
 immutable RG8 presentation stream. GPU shaders create variation, animation,
 relief, and emission without changing physics. CPU patch copies are dirty-region
-proportional, but each changed GPU texture update still uploads the full 1024²
-RG8 image. True GPU subregion writes are **Planned**.
+proportional, but the default changed GPU publication still submits the complete
+World image through `ImageTexture.update`. At 1024² RG8 its logical source
+payload is 2 MiB; this is not a measured physical GPU transfer. The isolated
+[RENDER-UPLOAD-001 experiment](#opt-in-material-publication-experiment)
+does not change that production default.
 
 This page owns appearance and cost semantics at the
 [secured checkpoint](../operations/source-checkpoint-and-recovery.md).
@@ -247,10 +250,59 @@ and requests a full refresh after rejection. Pthreads do not create a mutable
 render read path.
 
 [main.gd](../../godot/scripts/main.gd) validates patches and updates a persistent
-CPU Image, then calls `ImageTexture.update(image)`. At 1024² RG8 this uploads
-2,097,152 bytes for each changed publication, even for a small dirty patch.
+CPU Image, then calls `ImageTexture.update(image)` in the default path. At 1024²
+RG8 this submits 2,097,152 logical image bytes for each changed publication,
+even for a small dirty patch.
 Patch count/copied KiB therefore measures bridge work, not GPU upload traffic.
 No second mutable world image is introduced by shader neighbor sampling.
+
+## Opt-in material publication experiment
+
+**Current on the isolated research branch, Draft/HOLD:**
+[RENDER-UPLOAD-001 / #577](https://github.com/techrote/cybersand/issues/577)
+investigates the pre-existing full-image submission path independently of #566's
+camera work. The private desktop argument `--render-upload=drawable` selects
+[render_upload_experiment.gd](../../godot/scripts/render_upload_experiment.gd)
+through Main; absent that argument, `ImageTexture` remains the default.
+`render_upload_strategy_override` is the harness-only equivalent. This is not a
+production promotion or a claim of target-GPU improvement. Exact source, runs,
+original failures and decisions belong to the
+[investigation audit](../audits/2026-11-13-render-upload-investigation.md).
+
+The pinned Godot **4.7.stable.official.5b4e0cb0f** exposes an experimental
+[`DrawableTexture2D` public API](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/doc/classes/DrawableTexture2D.xml).
+The prototype uploads small R8/RG8 source textures, then draws their exact bytes
+into rectangular regions of two persistent linear RGBA8 targets using the
+[copy-only shader](../../godot/shaders/render_upload_copy.gdshader). It remains a
+`Texture2D` binding; the material palette, emission and vapour shaders are
+unchanged. It is a GPU-side region copy after a staging upload, not a rectangular
+overload of `ImageTexture.update`.
+
+Two per-target dirty-tile journals preserve complete previous/current snapshots.
+Every accepted CPU patch marks both journals. Before reusing a target, the helper
+copies **all regions that target has missed** from the latest complete CPU Image.
+The [bridge contract](../architecture/rendering-and-gameplay-bridges.md#experimental-two-texture-publication-and-recovery)
+owns identity, validation, ACK and fallback semantics. The prototype coalesces
+64-cell tile runs. If those runs cover at least half the image area or produce
+more than 64 rectangles, it uses a full-image staging blit. These thresholds are
+experimental controls, not measured universal break-even points.
+
+| Measurement or resource | Meaning and limit |
+| --- | --- |
+| `logical_staging_bytes` | R8/RG8 source-image bytes passed to texture creation; not physical PCIe traffic |
+| `destination_write_bytes` | Four bytes per target pixel in the chosen blit rectangles; a logical write-area count |
+| Extraction / source creation / blit submission times | Separate CPU elapsed intervals; asynchronous call duration is not completed GPU transfer time |
+| Two RGBA8 targets | Eight logical bytes per World cell, versus four for two RG8 textures or two for two R8 textures; excludes backend allocation overhead |
+| Engine video/static counters and external process memory | Distinct observations; unavailable driver telemetry must not be reported as zero physical resource use |
+
+A tiny startup readback canary checks normalized RG8-to-RGBA8 copying. Headless,
+unsupported initialization or a failed canary falls back to full publication
+with an explicit `render_upload_status` reason. `DrawableTexture2D.blit_rect`
+returns no completion/error result; ordinary publications rely on prevalidated
+inputs and qualified backend behavior and do not perform a full GPU readback.
+Correctness, real frame-time benefit, dense/full-refresh cost, memory and backend
+support remain separate acceptance gates. No camera transform, native authority,
+material identity or production rendering default changes.
 
 ## Temporal smoothing and glow
 
@@ -287,7 +339,7 @@ both old and new materials. At the desktop default 320×180 logical view the
 glow source is 160×90. These are algorithmic sample counts, not measured GPU
 milliseconds. The m9 record supplied no representative target-GPU timing.
 
-**Planned:** actual texture subregion writes; target-GPU comparisons with glow
+**Planned:** production adoption of a qualified partial-publication strategy; target-GPU comparisons with glow
 on/off and mixed-flair scenes; quality/accessibility controls as needed; and
 artist-authored assets or an appearance graph compiled into bounded programs.
 Current profiles are authored in GDScript. No general graph editor, serialized
