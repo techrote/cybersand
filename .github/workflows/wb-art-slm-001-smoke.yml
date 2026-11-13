@@ -64,10 +64,23 @@ jobs:
           python-version: "3.12"
       - name: Corpus v3 TRAIN-source index mapping (offline)
         run: python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_v3_source_plan.py' -v
+      - name: Sealed TRAIN/DEV split and receipt-custody guards (archive tests may skip)
+        run: python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_audit_split_custody.py' -v
       - name: Training frozen export aliases and raw identity gates (offline)
         run: python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_export_native_cases.py' -v
       - name: Independent historical gallery display-pixel audit (offline)
         run: python -m unittest discover -s experiments/wb-art-slm-001/evaluation -p 'test_measure_native_stimulus_pixels.py' -v
+      - name: Source-bound historical AI blind gallery scoring (not human acceptance)
+        run: |
+          sha256sum -c <<'SHA256'
+          1bcac225ca5d5674a042a750e3d6dae680c1ae6f26c4019569176f20d5ee90bf  experiments/wb-art-slm-001/evaluation/blind_model_review_answer_key.json
+          f0f688049cf077c25905049917272b6f06ad6db3ea5f770f5c2a7fa8191a0ed5  experiments/wb-art-slm-001/evaluation/assistant_blind_review_responses_2026-11-13.json
+          SHA256
+          python experiments/wb-art-slm-001/evaluation/blind_native_review.py score \
+            --key experiments/wb-art-slm-001/evaluation/blind_model_review_answer_key.json \
+            --responses experiments/wb-art-slm-001/evaluation/assistant_blind_review_responses_2026-11-13.json \
+            > /tmp/wb-art-slm-frozen-blind-review.json
+          python -c "import json; d=json.load(open('/tmp/wb-art-slm-frozen-blind-review.json')); assert d['conditional_native_image_recognition']['matched']==29 and d['conditional_native_image_recognition']['admitted_requests']==34 and d['end_to_end_all_original_requests']['requests']==36 and d['structural_group_macro_accuracy']['groups']==23 and d['go_no_go']=='HOLD' and d['one_rater_not_human_acceptance'] is True, d"
       - name: TRAIN-only coral failure witness overlay (no private archive in CI)
         run: python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_failure_witness_overlay.py' -v
       - name: Install pinned file-lock guard for the independent offline job
