@@ -1,0 +1,110 @@
+{
+  "experiment": "WB-ART-SLM-001",
+  "date": "2026-11-13",
+  "status": "integration loopback provider bridge implemented; protocol tested only; production HOLD",
+  "source": {
+    "main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
+    "main_preserves": [
+      "#562",
+      "#563"
+    ],
+    "upstream_workbench_564": "6319ab1d94d85d01c9cdb44d973a92d224bfa9aa",
+    "upstream_combined_565": "4e41501a56b25de5defdaedbd990b34b13a41c13",
+    "upstream_565_status": "Draft/HOLD after Windows combined-case native comparison failure; diagnostic 43355051094, not full qualification",
+    "historical_linux_pilot": "90719c72b9fcf90593fb7878354051ad601b47fd",
+    "pilot_is_not_current_or_windows": true,
+    "role_branches_seed": "01f2cfcea66839066431b6d241f186be00cecf27"
+  },
+  "contracts": {
+    "schema": "urn:cybersand:wb-art-slm-001:program:1",
+    "schema_sha256": "88356d5bd9a17f3d4f16e27992185e7791fc14a78fc9cd0462a199fa070d81d1",
+    "compiler_sha256": "a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb",
+    "corpus_manifest_sha256": "cace38cc2541947f1278d3af8c951c15c5a16eec002ba7262805cab8975d692f",
+    "source_manifest": "experiments/wb-art-slm-001/source-manifest.json",
+    "model": "LiquidAI/LFM2.5-350M",
+    "model_revision": "9921cd4d82c0e3986887aa4b376f9446729ef8a3",
+    "adapter_raw_sha256": "02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2",
+    "host_material_ids": [
+      0,
+      58
+    ],
+    "host_seed_not_in_model": true
+  },
+  "recoverability": {
+    "verified_by": "files.materialize and local sha256sum, 2026-11-13",
+    "saved_archives": [
+      [
+        "wb_art_slm_001_lfm350_adapter_step400.zip",
+        23413182,
+        "9b53d642ec48c0f7b65835f267a5b38d9183641b12476befc563e216fa3c11a6"
+      ],
+      [
+        "wb_art_slm_001_lfm350_resume_step400.zip",
+        67591650,
+        "8eb8d81251d9ac2d757284822591f377c79d7727a4be2666600d163bae7ed0e6"
+      ],
+      [
+        "wb_art_slm_001_executed_corpus.zip",
+        2311486,
+        "2d2de250731eeea825339e89f752ab8ebc65f3a929daa2c692120d985566948a"
+      ],
+      [
+        "wb_art_slm_001_native_and_model_evidence.zip",
+        29081943,
+        "d2f8b16f081b7c371afd2eadf1468bc6941cb2a7a83ee349a11d667257f9cfa9"
+      ]
+    ]
+  },
+  "integration_bridge": {
+    "path": "experiments/wb-art-slm-001/integration/local_art_bridge.py",
+    "tests": "experiments/wb-art-slm-001/integration/test_local_art_bridge.py",
+    "runbook": "experiments/wb-art-slm-001/integration/README.md",
+    "protocol": "loopback LM Studio /v1/chat/completions; content JSON operations; one-turn text-only",
+    "validation": "4 unittest methods passed locally including mock HTTP round-trip, malformed/unallowed guards and receipt hash/EOS check",
+    "no_actual_model_loaded_this_run": true,
+    "no_native_execution_this_run": true,
+    "no_windows_execution_this_run": true,
+    "independent_review": "pending Evaluation worker"
+  },
+  "training_lease": {
+    "published_active": false,
+    "role_branch": "codex/wb-art-slm-training",
+    "private_run_parent_lock": "not inspectable from repository; training owner must verify before any job",
+    "duplicate_step400_forbidden": true
+  },
+  "workers": {
+    "integration": {
+      "branch": "codex/wb-art-slm-001",
+      "next": "Receive review of bridge, then consume upstream source-compatible #565 successor; build and verify an exact-head current-main opt-in provider candidate on Windows and Linux."
+    },
+    "controls": {
+      "branch": "codex/wb-art-slm-controls",
+      "observed_head": "01f2cfcea66839066431b6d241f186be00cecf27",
+      "next": "Review new integration bridge against local operations/Art provider semantics; report any unsafe shape/panel focus/Stop mismatch and tested fixes on owned controls branch."
+    },
+    "corpus": {
+      "branch": "codex/wb-art-slm-corpus",
+      "observed_head": "01f2cfcea66839066431b6d241f186be00cecf27",
+      "next": "Inspect visual quality/failure groups, admit only exactly native-replayed and visually inspected corrections; preserve final split and raw failed cases."
+    },
+    "training": {
+      "branch": "codex/wb-art-slm-training",
+      "observed_head": "01f2cfcea66839066431b6d241f186be00cecf27",
+      "next": "Check private active lease/checkpoint; when free, create one new bounded curriculum candidate with all twelve keyword rows early and complete resumability."
+    },
+    "evaluation": {
+      "branch": "codex/wb-art-slm-evaluation",
+      "observed_head": "01f2cfcea66839066431b6d241f186be00cecf27",
+      "next": "Independently review integration bridge and perform protocol adversarial regressions, then prepare matched raw/native replay after compatible upstream publication."
+    }
+  },
+  "baseline": {
+    "dev_acceptance": "22/24 first pass",
+    "keyword_acceptance": "12/12 first pass; 10/12 label+motif",
+    "original_requests_native_pass": "34/36",
+    "native_two_seed_replays": "68/68 of 34 accepted original requests",
+    "final_assessment_untouched": true,
+    "deterministic_one_word_baseline_retained": true
+  },
+  "promotion": "Draft #567 HOLD; no Ready/merge/default change; independent review, current-source Windows/Linux native and human acceptance pending"
+}
