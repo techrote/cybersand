@@ -29,8 +29,19 @@ def main():
     parser.add_argument("--device", default="auto")
     parser.add_argument("--trust-remote-code", action="store_true")
     args = parser.parse_args()
-    if args.output.exists():
-        raise FileExistsError("Evaluation output already exists")
+    # Fail closed: heavy evaluation must share the trainer's durable role lease,
+    # run-parent lock and bounded whole-process supervisor.
+    if not os.environ.get("WB_ART_SLM_SUPERVISOR_TOKEN"):
+        raise RuntimeError("Use job_guard.py --worker-script evaluate_model.py; direct evaluation is not guarded")
+    from job_guard import trainer_lock
+    with trainer_lock(args.output):
+        return run_evaluation(args)
+
+
+def run_evaluation(args):
+    # job_guard creates guard_start.json before the supervised child starts.
+    if not args.output.is_dir() or {p.name for p in args.output.iterdir()} != {"guard_start.json"}:
+        raise FileExistsError("Supervised evaluation output must contain only guard_start.json")
     rows = read_rows(args.dev, "dev")
     validate_admission(args.admission, {"dev": args.dev}, {"dev": rows}, args.compiler, args.corpus_manifest)
     system = Path(__file__).with_name("system_prompt.txt").read_text().strip()

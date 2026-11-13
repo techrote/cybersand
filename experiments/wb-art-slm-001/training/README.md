@@ -174,19 +174,60 @@ guard_start.json and guard_result.json evidence beside the model output.
 No step-400 bootstrap files are overwritten.
 
 For this CPU study the example skips in-process final evaluation to preserve
-checkpoint headroom. Use the **existing separate evaluator** for 24 fixed
-development requests and twelve exact words after a new complete checkpoint
-is verified, with the one-heavy-job lock enforced operationally. The supervisor
-does **not yet** impose a separate process-wide deadline on evaluate_model.py;
-do not launch competing heavyweight evaluation during a training lease.
+checkpoint headroom. The separate heavy evaluator is now **fail-closed behind the
+same supervisor**: direct `evaluate_model.py` execution refuses to load a model.
+It shares the training run-parent lock, parent/PID-bound random-token lease, duplicate
+fingerprint denial and 3,300-second maximum process deadline. The supervisor
+hashes all base files, adapter files, receipt, compiler, dev/admission/manifest,
+source, template and runtime both before and after evaluation. Missing/truncated
+raw predictions, mismatched counts, changed input bytes or partial output are
+not scored as completed. A deadline stop preserves any raw partial records but
+never converts them into accepted predictions. This does **not** qualify model
+quality, native replay or a real Windows process-tree termination.
 
-**Observed guard qualification:** ten mocked-worker offline tests passed on
-Linux Python 3.13.5; they exercised real subprocesses, lease handshake,
-existing-file-lock refusal, duplicate-attempt refusal, modified-model
-refusal, deterministic fingerprints, graceful SIGTERM saved inventory,
-and force-kill when SIGTERM was ignored. No actual LoRA training, GPU,
-official-model restore, native World or Windows verification was performed.
-Run python -m unittest -v test_job_guard.py locally before using it.
+Use an **unused** output child of the same designated private run parent for
+each authorized suite. The following command is illustrative and requires the
+actual pinned model, adapter, admitted corpus and runtime to be present:
+
+```bash
+python job_guard.py --run-parent /private/wb-runs \
+  --wall-seconds 3300 --save-margin-seconds 300 \
+  --worker-script ./evaluate_model.py -- \
+  --model /private/models/lfm350 \
+  --adapter /private/wb-runs/lfm-keyword-replay-400/checkpoint-000400/adapter \
+  --dev /private/corpus/dev.jsonl \
+  --admission /private/corpus/admission.json \
+  --corpus-manifest /private/corpus/manifest.json \
+  --compiler /source/experiments/wb-art-slm-001/controls/pattern_compiler.py \
+  --output /private/wb-runs/lfm-replay-dev24 \
+  --suite dev --eval-count 24 --max-new-tokens 256 --threads 3
+```
+
+Run `--suite keywords` in a different output directory after inspecting the
+first result; all twelve words are training-word diagnostics, not final holdout.
+All listed data/model/output paths must be absolute. Only Training may launch
+this heavy evaluation, and **only one shared parent** may be used. The guard
+writes `guard_start.json`, `guard_result.json` and a durable
+`wb-art-slm-training.role-lease.json`; successful raw evidence includes the
+observed request count, strictly counted first-pass acceptances, prediction
+and summary SHA-256 hashes and explicit `native_execution=false` and
+`visual_acceptance=false`. Failed and partial attempts remain in the
+duplicate-attempt ledger rather than being retried at each hourly check.
+
+**Qualification:** The preceding training-only supervisor passed **10/10**
+offline Linux/Python 3.13.5 subprocess tests, including real lease handshakes,
+cross-process locking, duplicate refusal and soft/hard deadlines. The new
+evaluation guard adds **10 dedicated synthetic test methods** for complete
+receipts, raw/summary mismatch, partial evidence, changed adapter bytes,
+post-run custody drift, cross-role lock, duplicate attempts, unleased CLI
+refusal and deadline termination. Seven isolated helper checks were
+successfully run on a locally recreated helper (not the complete published
+supervisor); the combined 20-test exact-source subprocess suite still requires
+execution. Run
+`python -m unittest -v test_job_guard.py test_evaluation_guard.py` from this
+directory before authorizing real training or evaluation. No LoRA optimizer,
+real base-model evaluation, GPU, native World, Windows or human visual pass is
+claimed from these mock tests.
 Real Windows process-group stopping and large-model checkpoint-save timing
 remain unqualified.
 
