@@ -40,6 +40,20 @@ class FrozenRequestTests(unittest.TestCase):
         self.assertEqual(len(data['requests']), 60)
         self.assertEqual(len(digest), 64)
 
+    def test_windows_crlf_checkout_keeps_exact_git_identity(self):
+        data = synthetic_cohort()
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / 'frozen.json'
+            lf = json.dumps(data, indent=2).encode()
+            p.write_bytes(lf.replace(b'\\n', b'\\r\\n'))
+            old = mod.FROZEN_GALLERY_GIT_BLOB
+            try:
+                mod.FROZEN_GALLERY_GIT_BLOB = hashlib.sha1(b'blob ' + str(len(lf)).encode() + b'\\0' + lf).hexdigest()
+                doc, _ = mod.frozen_cohort(p)
+                self.assertEqual(len(doc['requests']), 60)
+            finally:
+                mod.FROZEN_GALLERY_GIT_BLOB = old
+
     def test_duplicate_request_refused(self):
         data = synthetic_cohort()
         data['requests'][1]['id'] = data['requests'][0]['id']

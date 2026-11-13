@@ -37,7 +37,9 @@ def sha(path: Path) -> str:
 
 
 def frozen_cohort(path: Path) -> tuple[dict, str]:
-    raw = path.read_bytes()
+    # Git may check out text files as CRLF on Windows. Verify the exact committed
+    # LF-normalized blob; do not permit changes to the parsed frozen requests.
+    raw = path.read_bytes().replace(b'\r\n', b'\n')
     git_blob = hashlib.sha1(b'blob ' + str(len(raw)).encode() + b'\0' + raw).hexdigest()
     if git_blob != FROZEN_GALLERY_GIT_BLOB:
         raise ValueError('Refusing changed 60-request DEVELOPMENT cohort Git blob: ' + git_blob)
