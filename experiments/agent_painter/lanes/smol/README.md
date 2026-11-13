@@ -31,6 +31,16 @@ separately. The original training/native source is never relabelled. The native
 workflow uses the same authoritative assignment collection for future direct
 publication. Read the actual run and release receipts for completion status.
 
+The hosted repair at `e02bfb5d30972d8a1a84f30af7d485f13bb55fc7`,
+[run 43527715072](https://github.com/techrote/cybersand/actions/runs/43527715072),
+passed all evidence/package checks, then GitHub refused release creation with
+HTTP 403, `Resource not accessible by integration`. The subsequent explicit
+publication request uses Actions artifact delivery with read-only repository
+permissions. `smol-release-*` contains the complete verified bundle;
+`smol-gallery-*` is a small owner-inspection download with the standalone HTML
+and native ZIP. `PUBLICATION.json` records the earlier permission failure and
+the 90-day retention period. No public release is claimed for this iteration.
+
 This lane consumes the shared foundation at
 `2a565df45efc568eb96a2166e0b77f299e289625`, the original native-admitted corpus at
 `633920373a3d406a2ede61ce4137c324f76be23b`, and the exact public

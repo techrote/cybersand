@@ -31,8 +31,8 @@ RUNTIME_PATH = "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_
 RECOVERY_REQUEST = {
     "schema_version": 1, "kind": "smol-publication-recovery",
     "producer_source": "fef6654ecd0828f765af1a13d2d10469013a3ea6",
-    "producer_run_id": 43522896533, "producer_run_attempt": 1, "sequence": 1,
-    "reason": "duplicate-generic-hostname",
+    "producer_run_id": 43522896533, "producer_run_attempt": 1, "sequence": 2,
+    "reason": "release-api-forbidden", "delivery": "github-actions-artifact",
 }
 SEALED_CASE_PREFIXES = ("greebles-staggered_cassettes-", "pipework-double_loop_bridge-",
                         "architecture-three_bay_arcade-")
