@@ -1,6 +1,6 @@
 {
   "experiment": "WB-ART-SLM-001",
-  "status": "Fifth intake: 14 independent role-owned files plus Integration POSIX Stop-descendant repair; exact-source independent CI 43 PASS/2 archive SKIP; Controls unchanged diagnostic expectation remains RED; model/native/Windows HOLD",
+  "status": "Sixth Integration intake published: all four role deltas imported in 15 exact-source paths; offline CI green including frozen historical blind scorer; genuine adapter/native/Windows/human recognition HOLD",
   "updated_on": "2026-11-13",
   "owner": "five role workers after bootstrap handoff",
   "branch": "codex/wb-art-slm-001",
@@ -49,7 +49,7 @@
     }
   },
   "production_promotion": "HOLD; one Draft #567, no Ready, merge, native/Windows promotion",
-  "next_checkpoint": "Controls must repair only its own error-substring assertion, then rerun full exact-head smoke. Integration bridge same-process-group late-child Stop repaired and independently verified; Windows owned process-tree/native Stop and host-scope independent review remain HOLD.",
+  "next_checkpoint": "Finish independent Integration bridge scope/Windows Stop review; obtain qualified current-source upstream #565 runtime; test genuine step-400 adapter through Workbench/Art and native protection, interleaving, shared Undo/Redo, persistence. Training alone may launch one bounded new model candidate after private durable lease check.",
   "pull_request": "https://github.com/techrote/cybersand/pull/567",
   "model_native_cases_passed": 68,
   "combined_gallery_images": 260,
@@ -315,6 +315,17 @@
       "model_gain_measured": false,
       "new_native_execution": false,
       "windows_accepted": false
-    }
+    },
+    "latest_intake": "2026-11-13T09:06Z",
+    "latest_checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-0906.md",
+    "latest_imported_heads": {
+      "controls": "b7e9db37c7019c862f4ec8f24b8e20ed947075a0",
+      "corpus": "4ccfbd33ca2dd4635fd54ae3d2a0632b356821b0",
+      "training": "253608f6a02cde620cce16287c98d1d590355763",
+      "evaluation": "9c0a63c579340599137caac7afde6733e0345ecf"
+    },
+    "latest_green_ci": "43398456790 at c954fcf8710902a6e3f362ba537a52fbddd05b75",
+    "historical_ai_blind_review": "29/34 recognized conditional on native admission (29/36 original); single key-blind AI review only, not human or final assessment",
+    "no_new_model_or_native_claim": true
   }
 }
