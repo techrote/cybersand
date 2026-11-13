@@ -6,6 +6,12 @@ Art planner and executor, the shared PAINT history owner, and the compiled
 `CyberNativeCellWorld`. It never substitutes a Python rasterizer for native
 execution.
 
+## Current independent gate — Windows Job lifetime and next-model gallery
+
+- [Source-pinned Windows Job attachment/refusal diagnostic](audit_windows_job_boundary.py) and [dated qualification/claim-boundary checkpoint](WINDOWS_JOB_BOUNDARY_AND_GALLERY_CHECKPOINT_2026-11-13.md): hosted Windows post-attachment tests passed, but pre-attachment descendant escape and refusal cleanup are not yet independently qualified. Diagnostic Windows execution remains pending.
+- [Frozen 60-request new-candidate development gallery cohort](gallery60_development_frozen.json): twelve themes × five request forms, two pinned host seeds, immutable request IDs, unchanged step-400 baseline. This is a **prompt cohort, not a model-generated native gallery**; it contains no new prediction or rating.
+- Training owns heavy candidate inference and must deliver untouched raw outputs/receipts; Evaluation owns native rerun and blinded thematic/variety assessment. Preserve untouched FINAL, first-pass denominators, current-source/native/desktop HOLD and the single Draft PR.
+
 ## Independent blinded model-image review (development only)
 
 The [custody-checked 34-pair native review](blind_model_review.html) hides expected
