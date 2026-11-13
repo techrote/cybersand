@@ -4,7 +4,6 @@ on:
     branches:
       - codex/wb-art-repair-20261111
       - codex/wb-art-paint-integrated-20261111
-      - codex/native-pixel-scrolling-20261113
     paths:
       - '.github/workflows/wb-art-paint-qualification.yml'
       - 'tools/ci/run_workbench_qualification.py'

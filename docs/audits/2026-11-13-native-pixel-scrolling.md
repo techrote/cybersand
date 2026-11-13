@@ -10,6 +10,20 @@ related-documents: [../operations/native-pixel-scrolling.md, ../systems/material
 
 # Native-resolution pixel scrolling — 13 November 2026
 
+## Subsequent integration and exact-head readback
+
+The [final integration record](2026-11-13-native-pixel-final-integration.md)
+continues this historical stacked-source audit after accepted #565 main.
+Readback on 13 November confirms that [run 43412357782](https://github.com/techrote/cybersand/actions/runs/43412357782)
+completed successfully at `b52dd6c9fac5739bde9829b72b55f09ef89455d6`, with
+all three source-built Linux/Windows and installed camera jobs executed. The
+earlier pending statements below retain their original checkpoint scope.
+That run does not qualify the later merged application. Documentation run
+43412365539 passed its executed steps but explicitly skipped retained-runtime
+provenance; the final integrated campaign must execute that gate.
+
+## Original corrected-camera checkpoint
+
 **Draft / HOLD; [PR #566](https://github.com/techrote/cybersand/pull/566).**
 The [recorder-edge correction](#recorder-edge-review-follow-up) is qualified at
 application/test source `005124c5cd9a`: all three jobs in

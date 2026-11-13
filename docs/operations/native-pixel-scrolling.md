@@ -16,10 +16,13 @@ in final framebuffer-pixel increments. At 4 display pixels per cell, one
 display-pixel movement no longer waits for a whole 4-pixel cell jump. Material
 cells retain nearest-neighbour edges and their existing native state.
 
-This branch is stacked on Integrated Workbench #564 at
-`e63a7d4f7cea90a5900c91a917dbf10dee699aa7`, including its shared manual/agent
-Undo/Redo and Art panel features. Main was initially inspected at
-`e0fb05b8e0500641f0f25c62c5fb7e721da02d6a`, where #562 Materials Lab has merged.
+The final integration preserves the original camera branch and accepted main
+`ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742` through normal merge
+`b1e2e9b1ce0a93d9eda54cbc35d04257eba9dfa7`. Accepted #565 includes Materials
+Lab, native capability consumption, PAINT, agent authoring and chronological
+shared Undo/Redo. The camera, palette and recording implementation is unchanged
+by that reconciliation. The [final integration record](../audits/2026-11-13-native-pixel-final-integration.md)
+separates the resulting-source campaign from the earlier stacked qualification.
 The camera branch does not modify either upstream branch. The
 [dated qualification ledger](../audits/2026-11-13-native-pixel-scrolling.md)
 owns the actual tested source, runtime/package identities, compatibility result
@@ -27,9 +30,12 @@ and remaining gates. Earlier Workbench packages do not contain this camera fix.
 
 ## Open the Windows candidate
 
-Download the [qualified Windows evaluation archive](https://github.com/techrote/cybersand/actions/runs/43403189531/artifacts/14029270531)
-for application source **`005124c5cd9a`**: 92,938,556 bytes from successful
-run 43403189531. It includes the fractional-camera recording correction.
+The earlier [qualified Windows evaluation archive](https://github.com/techrote/cybersand/actions/runs/43403189531/artifacts/14029270531)
+is for application source **`005124c5cd9a`**: 92,938,556 bytes from successful
+run 43403189531. It includes the fractional-camera recording correction, but
+predates accepted #565. The current combined download and exact qualification
+are published in the [PR #566 delivery ledger](https://github.com/techrote/cybersand/pull/566).
+Do not treat the earlier archive as the final combined application.
 Extract the complete archive into a new writable folder, then double-click
 **Open Workbench.cmd**. Keep the bundled files together. The launcher imports
 the included project and opens the Workbench using its bundled Godot 4.7 and
@@ -102,12 +108,17 @@ right/bottom cells, fixed-session bounds and actual-world
 clamping. The camera campaign has nine invocations including import; older
 eight-invocation results retain their original source scope in the audit.
 
-The existing
-[Workbench workflow](../../.github/workflows/wb-art-paint-qualification.yml)
-recognizes the exact camera branch, rebuilds Linux and Windows native runtimes,
-runs both source and copied-installation camera campaigns, and retains the
-integrated PAINT/agent authoring regressions. Core Draft-suppressed gates and
-the separate Palette qualification gate keep their existing meanings.
+The [integrated camera workflow](../../.github/workflows/native-pixel-integrated-qualification.yml)
+is the camera branch's source-built qualification entry point. It rebuilds Linux
+and Windows native runtimes, preserves complete Materials Lab and Workbench
+coverage, runs source/installed camera cases, and packages the standalone
+combined application. It also executes the recorder's separate CLI override
+mode. Admission dispatches the unchanged full Documentation, Native, Godot and
+Palette workflows on the exact branch head while the PR remains Draft. A
+dispatch receipt proves only that execution was requested; inspect the actual
+resulting jobs. Performance uses independent same-host ABBA jobs and cannot
+withhold an otherwise valid Windows package solely because research apparatus
+fails. The final technical decision still records every failure or missing gate.
 
 ## Scope and limitations
 

@@ -16,7 +16,9 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 [camera presentation contract](../systems/material-appearance-and-rendering.md#native-resolution-pixel-scrolling)
 keeps continuous camera state, samples the nearest world cell after final-pixel
 translation and aligns picking, overlays, cursor zoom and small effect buffers.
-The branch stacks on #564; accepted main with #562 was inspected separately.
+The branch incorporates accepted #565 main `ac0d9fb9` through normal merge
+`b1e2e9b1`; its [final integration record](../audits/2026-11-13-native-pixel-final-integration.md)
+distinguishes the combined-source campaign from earlier stacked results.
 It changes no native physics, material or save contract. The
 [runbook](../operations/native-pixel-scrolling.md) and
 [audit](../audits/2026-11-13-native-pixel-scrolling.md) distinguish implementation,

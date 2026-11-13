@@ -12,10 +12,11 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## Native-resolution camera continuation — 2026-11-13
 
-The camera branch is isolated and stacked on #564 at `e63a7d4f`; inspected main
-`e0fb05b8` already contains #562. Start with the
+The camera branch retains its original history and now incorporates accepted
+#565 main `ac0d9fb9` through normal merge `b1e2e9b1`. Start with the
 [camera runbook](native-pixel-scrolling.md) and
-[exact-source audit](../audits/2026-11-13-native-pixel-scrolling.md). Preserve
+[original source audit](../audits/2026-11-13-native-pixel-scrolling.md) and
+[final integration record](../audits/2026-11-13-native-pixel-final-integration.md). Preserve
 shared Undo/Redo and Art panel features, complete scoped Windows/Linux graphics
 and editing qualification, and keep the PR Draft until owner acceptance. Native
 sources and retained-runtime identity are not changed by camera presentation.

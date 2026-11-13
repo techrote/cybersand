@@ -14,8 +14,9 @@ Native-resolution camera candidate: [controls and Windows acceptance](operations
 [presentation and sampling contract](systems/material-appearance-and-rendering.md#native-resolution-pixel-scrolling),
 [private coordinate interfaces](reference/interfaces-and-message-contracts.md#camera-presentation-and-picking)
 and [source/platform evidence](audits/2026-11-13-native-pixel-scrolling.md).
-The candidate is stacked on #564 and remains Draft; old Workbench artifacts do
-not qualify the new camera source.
+The candidate now incorporates accepted #565 through a normal merge and remains
+Draft; the [final integration record](audits/2026-11-13-native-pixel-final-integration.md)
+separates its resulting-source qualification from earlier camera/Workbench artifacts.
 
 Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.
 

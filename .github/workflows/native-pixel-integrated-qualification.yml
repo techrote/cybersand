@@ -1,0 +1,627 @@
+name: Native-pixel integrated application and Windows evaluation
+
+# Read-only qualification of PR #566 on accepted #565 main. No runtime
+# publication, ref updates, merge, Ready transition or changes to older branches.
+on:
+  push:
+    branches: [codex/native-pixel-scrolling-20261113]
+    paths:
+      - '.github/workflows/native-pixel-integrated-qualification.yml'
+      - 'tools/ci/native_pixel_integrated_qualification.py'
+      - 'tools/ci/test_native_pixel_integrated_qualification.py'
+      - 'tools/ci/check_windows_evaluation_zip.ps1'
+      - 'tools/ci/run_integrated_camera_performance.py'
+      - 'tools/ci/run_workbench_qualification.py'
+      - 'tools/package_*candidate.py'
+      - 'godot/**'
+      - 'native/**'
+      - 'materials/**'
+      - 'tools/material_catalogue/**'
+      - 'examples/worldgen/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: native-pixel-integrated-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+  LIBGL_ALWAYS_SOFTWARE: '1'
+  LP_NUM_THREADS: '2'
+  GALLIVM_PERF: nopt
+  CYBERSAND_CI_WATCHDOG_SCALE: '1'
+  CYBERSAND_LAB_CXX: /usr/bin/g++-13
+  CAMERA_BASELINE_SHA: ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  admission:
+    name: admit exact merged source and read-only qualification profile
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/native-pixel-scrolling-20261113'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      armed: ${{ steps.gate.outputs.armed }}
+    steps:
+      - name: Check out exact source with authenticated compatibility ancestry
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Check native custody, branch lease, package guards and provider policy
+        id: gate
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_native_pixel_integrated_qualification.py
+          python3 tools/ci/test_mat_workbench_runtime_publication.py
+          python3 tools/ci/test_materials_lab_package.py
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/native_pixel_integrated_qualification.py check-source --source-sha "$GITHUB_SHA"
+          echo 'armed=true' >> "$GITHUB_OUTPUT"
+
+  dispatch-existing-gates:
+    name: request unchanged full gates on the exact Draft source
+    needs: admission
+    if: needs.admission.outputs.armed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - name: Check out the exact merged qualification source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Dispatch original Docs, Native, Godot and full Palette under the live branch lease
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 tools/ci/native_pixel_integrated_qualification.py dispatch-existing --source-sha "$GITHUB_SHA" --output build/native-pixel-existing-gates.json
+      - name: Retain dispatch receipt without claiming downstream completion
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-pixel-existing-gates-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/native-pixel-existing-gates.json
+          if-no-files-found: error
+          retention-days: 90
+
+  catalogue-linux:
+    name: complete source-bound integrated camera, MAT-AUTH and Workbench catalogue suite on Linux
+    needs: admission
+    if: needs.admission.outputs.armed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    outputs:
+      artifact_attempt: ${{ steps.artifact.outputs.attempt }}
+    steps:
+      - name: Check out exact source and retained compatibility ancestry
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Execute every discovered catalogue test with the real native compiler
+        run: |
+          set -euo pipefail
+          python3 tools/ci/native_pixel_integrated_qualification.py check-source --source-sha "$GITHUB_SHA"
+          python3 tools/ci/native_pixel_integrated_qualification.py catalogue-tests --platform linux --source-sha "$GITHUB_SHA" --bundle build/native-pixel-integrated-catalogue-linux
+      - name: Record artifact attempt
+        if: always()
+        id: artifact
+        run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+      - name: Retain complete original catalogue evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-pixel-integrated-catalogue-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/native-pixel-integrated-catalogue-linux/
+          if-no-files-found: error
+          retention-days: 90
+
+  linux:
+    needs: [admission, catalogue-linux]
+    name: build and execute the Linux integrated camera, MAT-AUTH and Workbench runtime
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/native-pixel-scrolling-20261113' && needs.admission.outputs.armed == 'true'
+    runs-on: ubuntu-24.04
+    # Complete native build, import and seven unshortened current-policy cases.
+    timeout-minutes: 360
+    outputs:
+      artifact_attempt: ${{ steps.artifact.outputs.attempt }}
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+
+      - name: Validate qualification guards and unchanged source
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_native_pixel_integrated_qualification.py
+          python3 tools/ci/test_materials_lab_runtime_publication.py
+          python3 tools/ci/test_materials_lab_package.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/native_pixel_integrated_qualification.py check-source --source-sha "$GITHUB_SHA"
+
+      - name: Fetch pinned Linux Rapier only
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+
+      - name: Prepare pinned SCons and godot-cpp
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Build exact Linux runtime and record canonical inputs
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          timeout 35m tools/build_pinned_godot_cpp.sh linux
+          timeout 20m tools/build_native_extension.sh
+          {
+            echo 'Build host: GitHub-hosted Ubuntu 24.04; Linux x86_64 target'
+            echo "godot-cpp=$GODOT_CPP_COMMIT; SCons=4.10.1"
+            g++-13 --version | head -n 1
+            ld --version | head -n 1
+            sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.linux.template_debug.x86_64.a"
+          } > "$RUNNER_TEMP/toolchain.txt"
+          python3 tools/ci/native_pixel_integrated_qualification.py record --platform linux --source-sha "$GITHUB_SHA" --runtime "$CYBERSAND_NATIVE_OUTPUT" --toolchain "$RUNNER_TEMP/toolchain.txt" --bundle build/native-pixel-integrated-linux
+          GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach "$RUNNER_TEMP/camera-accepted-main" "$CAMERA_BASELINE_SHA"
+          CYBERSAND_NATIVE_OUTPUT="$RUNNER_TEMP/camera-accepted-main/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so" timeout 20m "$RUNNER_TEMP/camera-accepted-main/tools/build_native_extension.sh" > build/native-pixel-integrated-linux/performance-baseline-build.log 2>&1
+          cp godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so "$RUNNER_TEMP/camera-accepted-main/godot/addons/godot-rapier2d/bin/"
+          python3 - <<'PYCODE'
+          import json, os, pathlib, sys
+          sys.path.insert(0, 'tools/ci')
+          import native_candidate_identity as identity
+          root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'camera-accepted-main'
+          source, tree, inputs = identity.source(root)
+          assert source == os.environ['CAMERA_BASELINE_SHA']
+          binary = root / 'godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'
+          record = dict(source_commit=source, source_tree=tree, source_inputs=inputs, native_sha256=identity.sha(binary),
+                        native_bytes=binary.stat().st_size, toolchain=pathlib.Path(os.environ['RUNNER_TEMP'], 'toolchain.txt').read_text())
+          pathlib.Path('build/native-pixel-integrated-linux/performance-baseline-build.json').write_text(json.dumps(record, indent=2)+'\n')
+          PYCODE
+          mkdir -p build/native-pixel-integrated-linux/performance-baseline
+          cp "$RUNNER_TEMP/camera-accepted-main/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so" build/native-pixel-integrated-linux/performance-baseline/
+
+      - name: Restore same-source Linux catalogue qualification
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: native-pixel-integrated-catalogue-linux-${{ github.run_id }}-${{ needs.catalogue-linux.outputs.artifact_attempt }}
+          path: build/native-pixel-integrated-linux
+
+      - name: Execute all required integrated camera, MAT-AUTH and Workbench cases on Linux
+        run: |
+          set -euo pipefail
+          timeout 10m curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 --output "$RUNNER_TEMP/godot-linux.zip" "$GODOT_URL"
+          python3 tools/ci/native_pixel_integrated_qualification.py test --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/native-pixel-integrated-linux
+          bash tools/ci/prepare_linux_display.sh
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' python3 tools/ci/native_pixel_integrated_qualification.py graphical --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/native-pixel-integrated-linux
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' python3 tools/ci/native_pixel_integrated_qualification.py workbench --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/native-pixel-integrated-linux
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' python3 tools/ci/native_pixel_integrated_qualification.py camera --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/native-pixel-integrated-linux
+          python3 tools/ci/native_pixel_integrated_qualification.py verify --platform linux --source-sha "$GITHUB_SHA" --bundle build/native-pixel-integrated-linux
+
+      - name: Record artifact attempt
+        if: always()
+        id: artifact
+        run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+
+      - name: Retain Linux runtime and execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-pixel-integrated-runtime-attempt-${{ github.run_attempt }}-linux-${{ github.run_id }}
+          path: build/native-pixel-integrated-linux/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows-build:
+    needs: admission
+    name: cross-build the Windows integrated camera, MAT-AUTH and Workbench runtime
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/native-pixel-scrolling-20261113' && needs.admission.outputs.armed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    outputs:
+      artifact_attempt: ${{ steps.artifact.outputs.attempt }}
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+
+      - name: Validate qualification guards and unchanged source
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_native_pixel_integrated_qualification.py
+          python3 tools/ci/test_materials_lab_runtime_publication.py
+          python3 tools/ci/test_materials_lab_package.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/native_pixel_integrated_qualification.py check-source --source-sha "$GITHUB_SHA"
+
+      - name: Prepare pinned SCons and godot-cpp
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Prepare exact LLVM-MinGW
+        run: |
+          set -euo pipefail
+          timeout 10m curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          test -x "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++"
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then
+            ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          fi
+
+      - name: Build exact Windows runtime and record canonical inputs
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
+        run: |
+          set -euo pipefail
+          timeout 35m tools/build_pinned_godot_cpp.sh windows
+          timeout 20m tools/build_native_extension_windows.sh
+          mkdir -p build/native-pixel-integrated-windows
+          "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > build/native-pixel-integrated-windows/windows-imports.txt
+          {
+            echo 'Build host: GitHub-hosted Ubuntu 24.04; Windows x86_64 target'
+            echo "godot-cpp=$GODOT_CPP_COMMIT; SCons=4.10.1"
+            echo "LLVM-MinGW=20260826 UCRT; archive SHA-256=$LLVM_MINGW_SHA256"
+            "$WINDOWS_CXX" --version | head -n 1
+            "$LLVM_MINGW_ROOT/bin/ld.lld" --version
+            sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.windows.template_debug.x86_64.a"
+          } > "$RUNNER_TEMP/toolchain.txt"
+          python3 tools/ci/native_pixel_integrated_qualification.py record --platform windows --source-sha "$GITHUB_SHA" --runtime "$CYBERSAND_NATIVE_OUTPUT" --toolchain "$RUNNER_TEMP/toolchain.txt" --bundle build/native-pixel-integrated-windows
+          GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach "$RUNNER_TEMP/camera-accepted-main" "$CAMERA_BASELINE_SHA"
+          mkdir -p build/native-pixel-integrated-baseline-windows
+          CYBERSAND_NATIVE_OUTPUT="$GITHUB_WORKSPACE/build/native-pixel-integrated-baseline-windows/cybersand_native.windows.x86_64.dll" timeout 20m "$RUNNER_TEMP/camera-accepted-main/tools/build_native_extension_windows.sh" > build/native-pixel-integrated-baseline-windows/build.log 2>&1
+          python3 "$RUNNER_TEMP/camera-accepted-main/tools/ci/native_candidate_identity.py" "$GITHUB_WORKSPACE/build/native-pixel-integrated-baseline-windows" --create
+          cp "$RUNNER_TEMP/toolchain.txt" build/native-pixel-integrated-baseline-windows/toolchain.txt
+      - name: Retain separately built accepted-main Windows performance control
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-pixel-baseline-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/native-pixel-integrated-baseline-windows/
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Record artifact attempt
+        if: always()
+        id: artifact
+        run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+
+      - name: Retain Windows build for actual Windows execution
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-pixel-integrated-build-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/native-pixel-integrated-windows/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows-execution:
+    name: execute Windows integrated camera, MAT-AUTH and Workbench cases
+    needs: windows-build
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/native-pixel-scrolling-20261113'
+    runs-on: windows-2022
+    timeout-minutes: 360
+    env:
+      CYBERSAND_LAB_CXX: 'C:\mingw64\bin\g++.exe'
+      GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+    outputs:
+      artifact_attempt: ${{ steps.artifact.outputs.attempt }}
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Validate qualification guards and unchanged source
+        run: |
+          set -euo pipefail
+          python tools/ci/test_native_pixel_integrated_qualification.py
+          python tools/ci/test_materials_lab_runtime_publication.py
+          python tools/ci/test_materials_lab_package.py
+          python tools/ci/native_pixel_integrated_qualification.py check-source --source-sha "$GITHUB_SHA"
+
+      - name: Restore exact Windows build
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: native-pixel-integrated-build-windows-${{ github.run_id }}-${{ needs.windows-build.outputs.artifact_attempt }}
+          path: build/native-pixel-integrated-windows
+
+      - name: Fetch pinned Windows Rapier only
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          echo "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" | sha256sum --check --strict
+
+      - name: Execute all required integrated camera, MAT-AUTH and Workbench cases on Windows
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          python tools/ci/native_pixel_integrated_qualification.py catalogue-tests --platform windows --source-sha "$GITHUB_SHA" --bundle build/native-pixel-integrated-windows
+          python tools/ci/native_pixel_integrated_qualification.py test --platform windows --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-windows.zip" --bundle build/native-pixel-integrated-windows
+          python tools/ci/native_pixel_integrated_qualification.py graphical --platform windows --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-windows.zip" --bundle build/native-pixel-integrated-windows
+          python tools/ci/native_pixel_integrated_qualification.py workbench --platform windows --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-windows.zip" --bundle build/native-pixel-integrated-windows
+          python tools/ci/native_pixel_integrated_qualification.py camera --platform windows --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-windows.zip" --bundle build/native-pixel-integrated-windows
+          python tools/ci/native_pixel_integrated_qualification.py verify --platform windows --source-sha "$GITHUB_SHA" --bundle build/native-pixel-integrated-windows
+
+      - name: Record artifact attempt
+        if: always()
+        id: artifact
+        run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+
+      - name: Retain Windows runtime and execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-pixel-integrated-runtime-attempt-${{ github.run_attempt }}-windows-${{ github.run_id }}
+          path: build/native-pixel-integrated-windows/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows-package:
+    name: package and execute a self-contained Windows integrated camera, MAT-AUTH and Workbench
+    needs: windows-execution
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/native-pixel-scrolling-20261113'
+    runs-on: windows-2022
+    timeout-minutes: 150
+    env:
+      CYBERSAND_LAB_CXX: 'C:\mingw64\bin\g++.exe'
+      GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+    steps:
+      - name: Check out exact source and complete retained ancestry
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Select the qualified Python series
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore the actual Windows-qualified runtime and evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: native-pixel-integrated-runtime-attempt-${{ needs.windows-execution.outputs.artifact_attempt }}-windows-${{ github.run_id }}
+          path: build/native-pixel-integrated-windows
+      - name: Fetch pinned runtime and immutable Godot notices
+        run: |
+          set -euo pipefail
+          python tools/ci/native_pixel_integrated_qualification.py check-source --source-sha "$GITHUB_SHA"
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          mkdir -p "$RUNNER_TEMP/godot-notices"
+          for notice in LICENSE.txt COPYRIGHT.txt; do
+            curl --fail --location --retry 3 --connect-timeout 20 --max-time 300 --output "$RUNNER_TEMP/godot-notices/$notice" "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$notice"
+          done
+      - name: Stage the signed app-local Microsoft runtime and licences
+        shell: pwsh
+        run: |
+          $notices = Join-Path $env:RUNNER_TEMP 'godot-notices'
+          $runtimeLicense = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 -o $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime licence download failed' }
+          curl.exe -fL --retry 3 -o $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft VS redistribution licence download failed' }
+          ./tools/ci/stage_windows_vc_runtime.ps1 -Output (Join-Path $env:RUNNER_TEMP 'native-pixel-integrated-vc-runtime') -License $runtimeLicense -DeveloperLicense $developerLicense
+
+      - name: Build a clean offline source/history/toolchain evaluation package
+        run: |
+          set -euo pipefail
+          python tools/ci/test_materials_lab_package.py
+          python tools/ci/native_pixel_integrated_qualification.py package --operation build --source-sha "$GITHUB_SHA" --bundle build/native-pixel-integrated-windows --godot-archive "$RUNNER_TEMP/godot-windows.zip" --engine-notices "$RUNNER_TEMP/godot-notices" --vc-runtime "$RUNNER_TEMP/native-pixel-integrated-vc-runtime" --output "$RUNNER_TEMP/native-pixel-integrated-evaluation"
+      - name: Create conventional Windows ZIP and checksum
+        run: |
+          set -euo pipefail
+          python tools/ci/native_pixel_integrated_qualification.py archive --output "$RUNNER_TEMP/native-pixel-integrated-evaluation" --archive "build/native-pixel-integrated-evaluation/CyberSand-566-Windows-${GITHUB_SHA:0:12}.zip"
+      - name: Verify Microsoft ZIP extraction and the actual Windows Shell handler
+        shell: powershell
+        run: |
+          $archive = Get-ChildItem 'build/native-pixel-integrated-evaluation/*.zip'
+          if (@($archive).Count -ne 1) { throw 'Expected exactly one delivered Windows archive' }
+          ./tools/ci/check_windows_evaluation_zip.ps1 -Archive $archive.FullName -Destination 'C:\cs566' -Evidence 'build/native-pixel-integrated-package-execution/windows-zip.json'
+      - name: Execute the exact built-in-extracted package with bundled authoring prerequisites
+        run: |
+          set -euo pipefail
+          python tools/ci/native_pixel_integrated_qualification.py package --operation smoke --output C:/cs566 --evidence build/native-pixel-integrated-package-execution
+          python tools/ci/native_pixel_integrated_qualification.py package --operation verify --output C:/cs566
+          python tools/ci/native_pixel_integrated_qualification.py package --operation verify --output "$RUNNER_TEMP/native-pixel-integrated-evaluation"
+      - name: Retain successful easy-launch Windows evaluation ZIP
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-pixel-integrated-windows-evaluation-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/native-pixel-integrated-evaluation/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 90
+      - name: Retain original package execution evidence including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-pixel-integrated-package-execution-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/native-pixel-integrated-package-execution/
+          if-no-files-found: ignore
+          retention-days: 90
+
+
+  performance-linux:
+    name: controlled accepted-main versus integrated performance on Linux
+    needs: linux
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    steps:
+      - name: Check out exact integrated subject
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Restore independently built source-bound Linux subjects
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: native-pixel-integrated-runtime-attempt-${{ needs.linux.outputs.artifact_attempt }}-linux-${{ github.run_id }}
+          path: build/native-pixel-integrated-linux
+      - name: Authenticate both native builds and prepare accepted-main source
+        run: |
+          set -euo pipefail
+          python3 tools/ci/native_pixel_integrated_qualification.py verify --source-sha "$GITHUB_SHA" --platform linux --bundle build/native-pixel-integrated-linux
+          GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach "$RUNNER_TEMP/camera-accepted-main" "$CAMERA_BASELINE_SHA"
+          python3 - <<'PYCODE'
+          import json, os, pathlib, shutil, sys
+          sys.path.insert(0, 'tools/ci')
+          import native_candidate_identity as identity
+          root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'camera-accepted-main'
+          source, tree, inputs = identity.source(root)
+          bundle = pathlib.Path('build/native-pixel-integrated-linux')
+          receipt = json.loads((bundle / 'performance-baseline-build.json').read_text())
+          binary = bundle / 'performance-baseline/libcybersand_native.linux.x86_64.so'
+          assert source == receipt['source_commit'] == os.environ['CAMERA_BASELINE_SHA']
+          assert tree == receipt['source_tree'] and inputs == receipt['source_inputs']
+          assert identity.sha(binary) == receipt['native_sha256'] and binary.stat().st_size == receipt['native_bytes']
+          shutil.copyfile(binary, root / 'godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so')
+          shutil.copyfile(bundle / 'libcybersand_native.linux.x86_64.so', pathlib.Path('godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'))
+          PYCODE
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          cp godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so "$RUNNER_TEMP/camera-accepted-main/godot/addons/godot-rapier2d/bin/"
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-linux.zip" "$GODOT_URL"
+          echo '0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  '"$RUNNER_TEMP/godot-linux.zip" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/godot-linux"
+          unzip -q "$RUNNER_TEMP/godot-linux.zip" -d "$RUNNER_TEMP/godot-linux"
+          chmod +x "$RUNNER_TEMP/godot-linux/Godot_v4.7-stable_linux.x86_64"
+          bash tools/ci/prepare_linux_display.sh
+      - name: Run thirteen paired ABBA workloads without concurrent benchmark processes
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' python3 tools/ci/run_integrated_camera_performance.py --baseline-repo "$RUNNER_TEMP/camera-accepted-main" --candidate-repo "$GITHUB_WORKSPACE" --godot "$RUNNER_TEMP/godot-linux/Godot_v4.7-stable_linux.x86_64" --output build/native-pixel-performance-linux
+      - name: Retain original performance results including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-pixel-performance-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/native-pixel-performance-linux/
+          if-no-files-found: warn
+          retention-days: 90
+
+  performance-windows:
+    name: controlled accepted-main versus integrated performance on Windows
+    needs: windows-build
+    runs-on: windows-2022
+    timeout-minutes: 150
+    steps:
+      - name: Check out exact integrated subject
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore candidate native build
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: native-pixel-integrated-build-windows-${{ github.run_id }}-${{ needs.windows-build.outputs.artifact_attempt }}
+          path: build/native-pixel-integrated-windows
+      - name: Restore independently built accepted-main runtime
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: native-pixel-baseline-windows-${{ github.run_id }}-${{ needs.windows-build.outputs.artifact_attempt }}
+          path: build/native-pixel-integrated-baseline-windows
+      - name: Authenticate both native builds and prepare accepted-main source
+        run: |
+          set -euo pipefail
+          GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach "$RUNNER_TEMP/camera-accepted-main" "$CAMERA_BASELINE_SHA"
+          python "$RUNNER_TEMP/camera-accepted-main/tools/ci/native_candidate_identity.py" "$GITHUB_WORKSPACE/build/native-pixel-integrated-baseline-windows"
+          python - <<'PYCODE'
+          import os, pathlib, shutil, sys
+          sys.path.insert(0, 'tools/ci')
+          import native_pixel_integrated_qualification as profile
+          bundle = pathlib.Path('build/native-pixel-integrated-windows')
+          profile.engine.verify_bundle(bundle, 'windows', os.environ['GITHUB_SHA'], validated=False)
+          shutil.copyfile(bundle / 'cybersand_native.windows.x86_64.dll', pathlib.Path('godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll'))
+          PYCODE
+          cp build/native-pixel-integrated-baseline-windows/cybersand_native.windows.x86_64.dll "$RUNNER_TEMP/camera-accepted-main/godot/addons/cybersand_native/bin/"
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          cp godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll "$RUNNER_TEMP/camera-accepted-main/godot/addons/godot-rapier2d/bin/"
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          python - <<'PYCODE'
+          import os, pathlib, sys
+          sys.path.insert(0, 'tools/ci')
+          from run_windows_godot_regressions import prepare_godot
+          prepare_godot(pathlib.Path(os.environ['RUNNER_TEMP']) / 'godot-windows.zip')
+          PYCODE
+      - name: Run thirteen paired Windows ANGLE ABBA workloads
+        run: |
+          set -euo pipefail
+          python tools/ci/run_integrated_camera_performance.py --baseline-repo "$RUNNER_TEMP/camera-accepted-main" --candidate-repo "$GITHUB_WORKSPACE" --godot "$RUNNER_TEMP/godot-windows/Godot_v4.7-stable_win64_console.exe" --rendering-driver opengl3_angle --output build/native-pixel-performance-windows
+      - name: Retain original performance results including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-pixel-performance-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/native-pixel-performance-windows/
+          if-no-files-found: warn
+          retention-days: 90
