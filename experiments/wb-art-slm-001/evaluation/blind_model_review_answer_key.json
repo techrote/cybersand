@@ -1,0 +1,748 @@
+{
+  "schema_version": 1,
+  "review_token": "0f07aa1f7cab425b8b11f274f2f7724d4bab06550292ea547c7d010f12911a70",
+  "candidate": "LFM350-step400",
+  "scope": "historical-linux-headless-dev-plus-keywords; not withheld-final",
+  "source_sha256": {
+    "verified-admission-receipts.json": "63c4d319583d40f404d3e2289cb3941963efe8d8cdce45240a6bba1444315b4b",
+    "input-cases.json": "266aa3b6e8e6e8b94bb4c11d39e94dca60021f1ab967e04fdc9b3ffff23068ad",
+    "model-gallery-index.json": "c737092c5106792ec4408eca4c41081109eb83ff7b6ed9835c3574d7ee8c8bbd",
+    "model-provenance/development-predictions.json": "485bac2bebfbde7712f52726da55a64df8ed3e122452e8260aafa388424c3498",
+    "model-provenance/keyword-predictions.json": "72f3d9449b8a4642c2791fad31294ff188bc770e30fd6b833fbbe690b90399ea",
+    "model-provenance/case-id-mapping.json": "49d0a58726919f807327836f9b9cdee6471cc4aed65d35765f8296b233dc0567"
+  },
+  "original_requests": 36,
+  "first_pass_rejected": 2,
+  "native_admitted_requests": 34,
+  "model_adapted": true,
+  "excluded": [
+    {
+      "prediction_id": "coral-v6-m6-s323-p1",
+      "group_id": "coral:e600d2c10e6efe7b",
+      "theme": "coral",
+      "failure": "first-pass-invalid"
+    },
+    {
+      "prediction_id": "coral-v6-m0-s17-p0",
+      "group_id": "coral:e600d2c10e6efe7b",
+      "theme": "coral",
+      "failure": "first-pass-invalid"
+    }
+  ],
+  "items": [
+    {
+      "id": "q001",
+      "prediction_id": "dunes-v7-m5-s286-p0",
+      "group_id": "dunes:b8e9dd85c3790d44",
+      "cohort": "development",
+      "theme": "dunes",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "873a46d81eb5d00eb3d9d817ab855ca2b39d57be819baa7ff15fe76fd53c32d4",
+        "754dd1c2a40756b228923c5f55ad6cb092b026ce23ab4e5637b47874ddde7366"
+      ],
+      "readback_sha256": [
+        "25f8557a2911fed265eb6457c3f1dfcc50f6f3506decfdc6dab6a864308cdd17",
+        "f332e8d699658d46b466f276d3e1e121078c6aa037639d94691a68bc056b5e22"
+      ]
+    },
+    {
+      "id": "q002",
+      "prediction_id": "keyword-labyrinth",
+      "group_id": "keyword-sanity:labyrinth",
+      "cohort": "keyword",
+      "theme": "labyrinth",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "2c7d6175ddb8dde1ad09fc446854354485b4732f537ef5bf320e3470e0e9b14b",
+        "726aae5f42c0ae1632f53d271538886a99d2339e78b1fccb78cdd08bb5ec4a54"
+      ],
+      "readback_sha256": [
+        "33dfac6a90724ebb0b56625f773cf2b36be04829e01a6704508864a713cb26a7",
+        "a79a83b14a87a2ce01fdb93fc26958fac5e1cdc9e1d7a42b6a6a7c55ce294e62"
+      ]
+    },
+    {
+      "id": "q003",
+      "prediction_id": "keyword-veins",
+      "group_id": "keyword-sanity:veins",
+      "cohort": "keyword",
+      "theme": "veins",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": false,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "d51b8508b41044f5f1d902ec9a8cd53abb084176c14f99adc5db616d487d35df",
+        "7db5c0a0b53a10f8a207793ddec45b40be38f0655d29ea28a818d05901f8bd5e"
+      ],
+      "readback_sha256": [
+        "62b7379a15769a147fb3a89a6cbee6e0217b1ca52b21a97b6996ed5d07d10e0a",
+        "a31a70dca3a3fc9d93e93b365d65becfe6683a8b34160a1c21f3fea0a267c2a0"
+      ]
+    },
+    {
+      "id": "q004",
+      "prediction_id": "ribs-v7-m3-s212-p0",
+      "group_id": "ribs:cf98e3883e9fb071",
+      "cohort": "development",
+      "theme": "ribs",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "7520f633e35f11b88a2040385b93019aed5b06c71ad93dfb1945234a5f720080",
+        "4c62cba499df3f9138dd59a50b72a154b08246c3584716d2df4774951ea25c3d"
+      ],
+      "readback_sha256": [
+        "16108468bf09e9a51db8a17bdece96347c0fa6287cb22ac0dd4fe212604c5851",
+        "572452c2823ef275a25b897af7d3879b2832cc1c08ba4e469a0de3ce66ff65f3"
+      ]
+    },
+    {
+      "id": "q005",
+      "prediction_id": "keyword-strata",
+      "group_id": "keyword-sanity:strata",
+      "cohort": "keyword",
+      "theme": "strata",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "3f8247dda7b46405d54c53a7eb71317e45cc5f717c1c77aa55f07b03690ffcf5",
+        "9bd3a5c88fa4e78e628f1f74b8b2755b0a29da5bf4ba4a4b83cf3d0811f2b1b5"
+      ],
+      "readback_sha256": [
+        "5f93fdd5361097e2c4afd8493f14510827bca1c774df6004b1478ed928ebcf9e",
+        "cc438ba2e8151d86f467b8d0c31c672fefb50a5edfc4d0f143dc41acaba8dd81"
+      ]
+    },
+    {
+      "id": "q006",
+      "prediction_id": "ruins-v5-m1-s138-p0",
+      "group_id": "ruins:4ba7308b2e04a434",
+      "cohort": "development",
+      "theme": "ruins",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "aca1e716efb470386ca398473658695d12fda8f62a17cbe28b2a25c2331a38ae",
+        "f2a4bf2d0af7086a88f28956b3b2537410f77578108e50bafae90e4cff10c457"
+      ],
+      "readback_sha256": [
+        "b081c52ccb0fda28ae9fc8bd35f47783f3597d19c06d3a9cd2a31f12e2fdfbb0",
+        "31de7e7b42c3bd32c32a547b44b2ad6a1e1f907b6d726864ac420600db77c12d"
+      ]
+    },
+    {
+      "id": "q007",
+      "prediction_id": "ribs-v7-m4-s249-p0",
+      "group_id": "ribs:cf98e3883e9fb071",
+      "cohort": "development",
+      "theme": "ribs",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "7520f633e35f11b88a2040385b93019aed5b06c71ad93dfb1945234a5f720080",
+        "4c62cba499df3f9138dd59a50b72a154b08246c3584716d2df4774951ea25c3d"
+      ],
+      "readback_sha256": [
+        "16108468bf09e9a51db8a17bdece96347c0fa6287cb22ac0dd4fe212604c5851",
+        "572452c2823ef275a25b897af7d3879b2832cc1c08ba4e469a0de3ce66ff65f3"
+      ]
+    },
+    {
+      "id": "q008",
+      "prediction_id": "honeycomb-v6-m2-s175-p1",
+      "group_id": "honeycomb:9f6232352e960542",
+      "cohort": "development",
+      "theme": "honeycomb",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "f971bec5ef35c293be948fb175b1ffe0ed6f2eae541961ca5b3984d3df22d6dc",
+        "b736e4301985b329a0747c3387f6fe367cd657f631d32d75ffedc93082ba91e1"
+      ],
+      "readback_sha256": [
+        "06d5a3bda59b5b8612d9bcf317dacc3fc108957513c5296bffc5aa15faa7e161",
+        "0401b7fa1a830a267e7a692d22e2a608916b40ea2b137ecba58b77f3a3448da9"
+      ]
+    },
+    {
+      "id": "q009",
+      "prediction_id": "strata-v2-m3-s212-p0",
+      "group_id": "strata:26f1daa65b95ef3d",
+      "cohort": "development",
+      "theme": "strata",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "01a07c019aa5d17f6aed075f9eca5f7364b30398e101d08191e25c9ea0019c83",
+        "37c44fd4357c5b36a975d45bab9f7ed7a68b2a032f41241f55a0cc83f96304c5"
+      ],
+      "readback_sha256": [
+        "eadf8f7f60c476c4c918d6efb8f73196bdedf2719b7bf2373fe5ee812238a3e2",
+        "0b3373f3f5f50b95f21d9aacd9e22ccc06b441dffb7bd857f87d873db6d53d84"
+      ]
+    },
+    {
+      "id": "q010",
+      "prediction_id": "roots-v1-m4-s249-p1",
+      "group_id": "roots:cc5123912c3b947a",
+      "cohort": "development",
+      "theme": "roots",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "d673b5896acef5122b89ae4f7e9e1423cde3295d58cc1d062a38e115180c14e6",
+        "4905a5d99793c66f7193b343425f533bc74ae390732cac12248e0f3d93148b72"
+      ],
+      "readback_sha256": [
+        "6bf944824dbe8dcb9ea5a5ff5f0745c660fb52293ce04a2eeb1a89ea7a5e5786",
+        "b4431970391835d09c4038d88da062098c35a55bdf8a6e721af04f40eb6fa20d"
+      ]
+    },
+    {
+      "id": "q011",
+      "prediction_id": "strata-v2-m0-s17-p1",
+      "group_id": "strata:26f1daa65b95ef3d",
+      "cohort": "development",
+      "theme": "strata",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "6ec18792af9060ec6e4b6c291e5e3fbf4d3a3845af265bcd3dfa7c2e4d5a3044",
+        "9fec5fbb9bade308ccc60467f5fd205446e61d2345765e72a84ac34767413cc0"
+      ],
+      "readback_sha256": [
+        "52a78b36617c6ac74ec251f9a40ff2f5f78e7b8ef6ef3ed29816928822061c54",
+        "34385aa7261eb343a5fef216f39f4b1d086e99c2f38a8208fbed5ea165436bd6"
+      ]
+    },
+    {
+      "id": "q012",
+      "prediction_id": "keyword-crystals",
+      "group_id": "keyword-sanity:crystals",
+      "cohort": "keyword",
+      "theme": "crystals",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "b1369bb717120c6f09c5efb780162f84457f9f94a767a3e8f5bc077a8d98627d",
+        "65b4afbddc8ac90796656ad633b7c054e7613f52eacab9459081b2d7c3aeb4ee"
+      ],
+      "readback_sha256": [
+        "35f34a79a6eb8a5e61ba7f5ffbabc8d3d8d3ccadd20bab711b01d93c67f72034",
+        "286a0532b2d1d6d6dd0275a6337e597427f0db6fe8a8f3eeceec68fda4646c04"
+      ]
+    },
+    {
+      "id": "q013",
+      "prediction_id": "keyword-ribs",
+      "group_id": "keyword-sanity:ribs",
+      "cohort": "keyword",
+      "theme": "ribs",
+      "symbolic_theme_correct": false,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "b44a0b56d0bb9008dfa882217605d21e36c253e151085f1e657c0c4ea844b8e2",
+        "7aa5acd068ebc7c10343848b44efae01cc2c35c62de62a3a11b51c544ea407fc"
+      ],
+      "readback_sha256": [
+        "cb07da00133e6ddc786b712e78db80b6302da1aa572f87a5ff2b1766563071a2",
+        "a036087ddf250fc85f33d16c8e48be14fb4a548a8b8c82b638b428b6683a2c6e"
+      ]
+    },
+    {
+      "id": "q014",
+      "prediction_id": "honeycomb-v6-m4-s249-p0",
+      "group_id": "honeycomb:9f6232352e960542",
+      "cohort": "development",
+      "theme": "honeycomb",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "6a793d425455bdc3e94c16ce734ca8a98729b3bfc44251eacdc4101e07b4b562",
+        "c18d5b46e96cfadf3701ead7126f74058eaada1ab434b5fd6b0764d8a385437d"
+      ],
+      "readback_sha256": [
+        "c61835715efcf7777e9c6c91fb3727b6c6d4e02cd3671f16eca4a0b8da2dc62e",
+        "f63618e28f24484c7b86b0d95fbd25d31ec3f3f45b6629372a062dc2fd3aa60a"
+      ]
+    },
+    {
+      "id": "q015",
+      "prediction_id": "mycelium-v5-m6-s323-p0",
+      "group_id": "mycelium:a2f288e5879719be",
+      "cohort": "development",
+      "theme": "mycelium",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "44a63803b65926bfe95cef09477fadfe9111c898fb76a99cbea14ed340de2b46",
+        "926694467eb393fcae8630371442cb8aba6866399e78e46ed3e4ad6254863347"
+      ],
+      "readback_sha256": [
+        "9321461530c87d0665cfc93e1444918ad48b7483f92d8efce0eab56287ecec81",
+        "341eb6d4725c1bd6e185f63e01876faae9b128fc1edcdcacc0200ba2a99f0af9"
+      ]
+    },
+    {
+      "id": "q016",
+      "prediction_id": "roots-v1-m6-s323-p1",
+      "group_id": "roots:cc5123912c3b947a",
+      "cohort": "development",
+      "theme": "roots",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "ff09c264572dd24eedc5fa244eda0a71a1436fcc48467c286de720ce6d1e6f08",
+        "a6a6421e3e08e4980450b11b683a1f21e7b122e1328a4c924fc539f356662d2e"
+      ],
+      "readback_sha256": [
+        "a2681734784281b79ead2e2af88e3675bfdee5de95c86832cf3d842e15c474bd",
+        "f63250d9a424076bd2555d7994e7483a66b0f1943ebe1a9c564c2295504b9682"
+      ]
+    },
+    {
+      "id": "q017",
+      "prediction_id": "keyword-coral",
+      "group_id": "keyword-sanity:coral",
+      "cohort": "keyword",
+      "theme": "coral",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "50b24c1d0902469321209e255be53d440fe56487298342ffae6954ad4c43cd9e",
+        "e90d6dd7ec715a38cb61fab094959eb8055c49af7bff6f33510e027c5572401e"
+      ],
+      "readback_sha256": [
+        "4f6851ee5d01cb1a09138f78338cbc8d082d96b2c8f0500db485a271ba320d97",
+        "55666bca191c57da3a7495a9e5a1c2852d2109b363a9ea5e51b9c6628e317950"
+      ]
+    },
+    {
+      "id": "q018",
+      "prediction_id": "mycelium-v5-m0-s17-p1",
+      "group_id": "mycelium:a2f288e5879719be",
+      "cohort": "development",
+      "theme": "mycelium",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "8695d0f075bce7e92c841d82d4aae68f128685369c6d60f2a3b079eb42a0c948",
+        "6de7d7caf9afd3394b43299e4026d1eb7cdc0246b82f8eea0cf668515f15af80"
+      ],
+      "readback_sha256": [
+        "e7ff3ff602b6d9688bcc1fc3fb15bc867c57c78d74970bbd8d9b31d339d561f8",
+        "da247c0db518e0d49db1996bf85d8fd425dd9ebdaad60c3ce3e5654c88b10f55"
+      ]
+    },
+    {
+      "id": "q019",
+      "prediction_id": "keyword-ruins",
+      "group_id": "keyword-sanity:ruins",
+      "cohort": "keyword",
+      "theme": "ruins",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "973c5a047a2741c169724cf1a2a99650d613b9fe1978a1d2c7babc5076593e01",
+        "f4c4f07e84a5f74a22df1ff6c4a2329bb81711353b87372c73bd45d19858cb44"
+      ],
+      "readback_sha256": [
+        "6e023c6c14867f3c9d774fbf201e33c4cf0aedd66e6de6b672254f77c1390b23",
+        "0495a98d871e14bd96855f054dfa2bf4377f89c027119e900d22256e5898bf78"
+      ]
+    },
+    {
+      "id": "q020",
+      "prediction_id": "labyrinth-v3-m6-s323-p1",
+      "group_id": "labyrinth:88f3cdfae561888f",
+      "cohort": "development",
+      "theme": "labyrinth",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "80c820036a3b4e12d2357d23a5ce2511df87a013223358b7e215785e72db1175",
+        "01e62ee1ccb0e7aa6f9cb9c3c6bbc6ef393fe040cd40e96aa044cfd32560be50"
+      ],
+      "readback_sha256": [
+        "2edfa49462267cde00939e8f46aab7f24d94822fb40b99d76092e8e71bd86bf2",
+        "31757a8642b1bb1e38141c6261cd6a870c1a023e6675bf06187158a2e407ad6f"
+      ]
+    },
+    {
+      "id": "q021",
+      "prediction_id": "keyword-honeycomb",
+      "group_id": "keyword-sanity:honeycomb",
+      "cohort": "keyword",
+      "theme": "honeycomb",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "b58dbfd46620b902ab115e0bd6a04bb19a95283cf85197352c88602e4854cb86",
+        "4b8b0021aa57cc8e9a6b1704c04aabecab608eb81e249d06d843a06a6cde3df2"
+      ],
+      "readback_sha256": [
+        "1ff1bd864fd4f51f46c3406f4d184af2f6190220b1fbfa4264ab1af47ac3f747",
+        "880dc09719eb8168840d277a73fbd51bc9ed3974ed115b14bd8c5a6845c7e73e"
+      ]
+    },
+    {
+      "id": "q022",
+      "prediction_id": "veins-v3-m4-s249-p1",
+      "group_id": "veins:a704c3b1c4ce3ef8",
+      "cohort": "development",
+      "theme": "veins",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "7833f2db4b1d529ef6d41214bfd870696142c31f452f5be6cb4f96bd953c63ad",
+        "e5296aaf0f9333e0dba0350e741bf6d10875c0b1f8c8c900c4f1ddea03368bf8"
+      ],
+      "readback_sha256": [
+        "cbb44f331a771469d8f8c8c015dcc155d1ae08c0ef1d364ddc04b7f86b55d09c",
+        "2fef739c8c95667947d6a42474373d39c1725cd78d66a9db989c8319700f5de6"
+      ]
+    },
+    {
+      "id": "q023",
+      "prediction_id": "crystals-v1-m3-s212-p0",
+      "group_id": "crystals:f11037d4347f48bb",
+      "cohort": "development",
+      "theme": "crystals",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "998686c2e46c7a3af149bd3e2d58cd1e0230fadae99dcce447cb6f8033efeab6",
+        "f569004ce050b77d82f83f1fa0a6f2ee4f00c71ef8c8afada2ae58be3697c31f"
+      ],
+      "readback_sha256": [
+        "c3c000a1ed056fde1aeccb2d84a0667f740cc476b8cc85da4a677dd8aaf5029b",
+        "d0d482bbe3bf32ddb69b784bccddb04ad45af043fd98552c18de8669c6998727"
+      ]
+    },
+    {
+      "id": "q024",
+      "prediction_id": "dunes-v7-m1-s138-p1",
+      "group_id": "dunes:b8e9dd85c3790d44",
+      "cohort": "development",
+      "theme": "dunes",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "c606f3c5b59a6f569117727e93a3f138b80e87a8359f793708fcb5489b4c5b12",
+        "e631ada0878c1a4aab5e06f2587358b3f30c892188cec61a41da41e037687906"
+      ],
+      "readback_sha256": [
+        "ec2e5268b9bc2f1caa0398a71a9147ca123b78f984a3c81ed26664a78c6fce8f",
+        "3500676eceb5e704968bedf122235e84d0fde3f57210ab50731778da05f5c8cb"
+      ]
+    },
+    {
+      "id": "q025",
+      "prediction_id": "keyword-roots",
+      "group_id": "keyword-sanity:roots",
+      "cohort": "keyword",
+      "theme": "roots",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "7959f58a0564d82bdc3b1f8cd224eae6c355176afc9429752f4c009329af2295",
+        "4f18d30dfba5576b14fb3d3d8a627e881d2b9249adf6fdc64c815725a8f6c42d"
+      ],
+      "readback_sha256": [
+        "8faa9088748b3c11b8b50c1e3ec11b980004fca7f3f050f9d39f3a5ca7cde55c",
+        "c6e0140a4c28c139a77ca365ac33ab4fad70e48b8fba01846c0ed801bb1782e3"
+      ]
+    },
+    {
+      "id": "q026",
+      "prediction_id": "crystals-v1-m1-s138-p1",
+      "group_id": "crystals:f11037d4347f48bb",
+      "cohort": "development",
+      "theme": "crystals",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "dd1795eff62f7d9fa782c91f35a06d812287b3ca72bc7b7cb4c291771af15c08",
+        "4a5513b6f546133c37dda6fdf8c3b392ee7a0ee581d189250f37edc6ff450297"
+      ],
+      "readback_sha256": [
+        "75f58ebb656042e189cb58f4fa108dc6d2dbbab88574d15bc7e7602d037bc946",
+        "b1ed97d2374ffe61a884d0193c12fb59f35daea96ac20318bc4ba7fe36f00d65"
+      ]
+    },
+    {
+      "id": "q027",
+      "prediction_id": "keyword-mycelium",
+      "group_id": "keyword-sanity:mycelium",
+      "cohort": "keyword",
+      "theme": "mycelium",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "2f5cf254b6d2d4b2daf43546431a676501d59bed519c3fc854709923a3094af4",
+        "95d25b456d245706319cea592127e9940e4ac2e84b5fe66ae72dda45a01dacbe"
+      ],
+      "readback_sha256": [
+        "7242370f6b0d9c6e9365e0d76545466f2a0e4966e287ca0f4945e6a360f720c4",
+        "8843f76c951de4b7c0b91b9a950f9306b4227644fe86ee72ffe3d13cdd274a33"
+      ]
+    },
+    {
+      "id": "q028",
+      "prediction_id": "circuitry-v2-m0-s17-p0",
+      "group_id": "circuitry:9495e7f89b85afe6",
+      "cohort": "development",
+      "theme": "circuitry",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "cdf11560ee169caf21868e58ca405e12543a5571059870faecd1064c4cf06a38",
+        "7f0dacfe00665badfd61386a84960d97819a2ac79874abc3bf4e4410139be9d8"
+      ],
+      "readback_sha256": [
+        "58a055c918afadec9c8772b0786b88721a318b7fe3540b612b051bd52337f2a7",
+        "3487c575057e4b1bf419f06f5c80977f7879efda573f4c9013c3ad96a108d534"
+      ]
+    },
+    {
+      "id": "q029",
+      "prediction_id": "labyrinth-v3-m6-s323-p0",
+      "group_id": "labyrinth:88f3cdfae561888f",
+      "cohort": "development",
+      "theme": "labyrinth",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "26d9eb69c3d823019a251da893bc387cc2a956e9ade4a5f63441a8569fcc6c25",
+        "0d62547330727cf3b50421ac94b70cb6dd0c56c8cb7d9ba74357ed84f77dfcaf"
+      ],
+      "readback_sha256": [
+        "73b4cde8a50b8c41cf44666895a1cb2c587147fec8c4e58ea710a4d71720d80f",
+        "772ddeff7bb2de7e436ce13f4f39c1af16cd83ba3f08f5f65cc768241f7e1011"
+      ]
+    },
+    {
+      "id": "q030",
+      "prediction_id": "ruins-v5-m3-s212-p1",
+      "group_id": "ruins:4ba7308b2e04a434",
+      "cohort": "development",
+      "theme": "ruins",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "3b2bfe0eefb8d8e0be051e6ff43fea5a8e8dcbd24896455b06e5a178df1961e2",
+        "d85290c75adbf52cfe164f557496e958463424f2dccf20aa821e951a64b406cc"
+      ],
+      "readback_sha256": [
+        "fd53db1ed468894b4a8dd80c4edcbab2690bc8d132336aacff40da231f5d1812",
+        "bcd14d694838dffdb0016412cd0db20113c9dd36deb12a98e1d007ac89df8034"
+      ]
+    },
+    {
+      "id": "q031",
+      "prediction_id": "veins-v3-m5-s286-p1",
+      "group_id": "veins:a704c3b1c4ce3ef8",
+      "cohort": "development",
+      "theme": "veins",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "f8620d3e16574d75a368a45d3832367dbb8f2cc2d69d6da5f97ad9a6b30585c7",
+        "3af606046b891e6237edf245ff3b4f22ab48e6dd197805a23026dbc933a7277b"
+      ],
+      "readback_sha256": [
+        "35d4528e963bb9ebb3ed35ad69fe1714f244bca9608de2e509f16a77f740c027",
+        "259e1f748f714ef9aa9ed40ff0251d4c71b28395ae0bec2ef408cce723485388"
+      ]
+    },
+    {
+      "id": "q032",
+      "prediction_id": "keyword-circuitry",
+      "group_id": "keyword-sanity:circuitry",
+      "cohort": "keyword",
+      "theme": "circuitry",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "dcc67c129af4e20071c001e071b816364e66398e5eaa168c7c15f1c0c5b551db",
+        "aa35d3e6c2e3d0a7b6cf0fac8d35d3ab2f48b604c29d7f6fb33f905abcaed45a"
+      ],
+      "readback_sha256": [
+        "97053557affca7fe6cf7493cc1be0f6afda2d1a7a2783b365b72153665bd30e1",
+        "816c37ac841c7b65b81259d8ab41119cd59af0dfff3c492fa4271d73c3e9d35f"
+      ]
+    },
+    {
+      "id": "q033",
+      "prediction_id": "circuitry-v2-m2-s175-p0",
+      "group_id": "circuitry:9495e7f89b85afe6",
+      "cohort": "development",
+      "theme": "circuitry",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "5b80cce43fcfeaccda026910da42b4015556ad0f9e71f21d26ae046df8f4bb76",
+        "7aae7df537fc155d987ba5a42f8fbd7a0b444b8e6857aaf3fb76bccc6926455b"
+      ],
+      "readback_sha256": [
+        "abd9a4286c294e3e5745b05bf7b8801df556cdcb6befd46bb9172b4cfc1143b6",
+        "7a510a77c996b508662b29f8b6423b90694b914fcb8aca4641cada38f2ad9e34"
+      ]
+    },
+    {
+      "id": "q034",
+      "prediction_id": "keyword-dunes",
+      "group_id": "keyword-sanity:dunes",
+      "cohort": "keyword",
+      "theme": "dunes",
+      "symbolic_theme_correct": true,
+      "symbolic_motif_correct": true,
+      "seeds": [
+        17,
+        73
+      ],
+      "png_sha256": [
+        "9ca63a1ed02d00350121fca15b6a7fd8ee2b3885c856c1008be973d2914a2781",
+        "3621271eec65b53c4662f9976acc02740f9804193e87d6a32b3cc41f7ce34b11"
+      ],
+      "readback_sha256": [
+        "07d342bc113f7209bbf6d11cc2d285e890b1d57d2a37f3617dc7e58968885bdd",
+        "c18001e49b8bd7ebc256eaf0aa6d412c49457f79b74a6bb1b88f44558628a1f1"
+      ]
+    }
+  ]
+}
