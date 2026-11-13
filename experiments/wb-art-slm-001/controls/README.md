@@ -364,3 +364,19 @@ passed, but the new complete source suite, true v1/v1.1 native execution and
 visual/Windows assessment still require independent qualification. The
 11-test error-diagnostic repair is already accepted by Integration's later
 green model-free CI; it must not be reintroduced.
+
+### Rooted coral v1.2 (experimental; compiler-only preview)
+
+[New 13 November checkpoint](CHECKPOINT_2026-11-13-ROOTED-CORAL-V12.md) records an executed visual design comparison. The earlier v1.1 spread distributes coral colonies vertically but may fragment continuous reef silhouettes. The separate **non-default** `pattern_compiler_v12.py` preserves its original fan-colony strokes and adds a bounded, same-region spanning/rooting skeleton. Frozen v1 corpus and source, existing v1.1 source, training adapter and Workbench provider defaults are unchanged.
+
+Locally executed source-identical v1.2 code/tests passed **6/6 Python 3.13.5 compiler regressions**. A new `make_v12_native_triplets.py` generated **48 immutable-input native cases** (v1/v1.1/v1.2 × eight coral variants × two seeds), SHA-256 `a24eb4ce7e9ddf6949afe3a46d2778e1e216b00d5f5726fca12c73bd7a332a4e`. On an appropriate source-compatible native checkout, run:
+
+```sh
+cd experiments/wb-art-slm-001/controls
+python -m unittest test_pattern_compiler_v12 -v
+python make_v12_native_triplets.py --out /private/new/native-coral-48.json --aliases-out /private/new/coral-48-aliases.json
+# From the parent experiment root (as appropriate to the exact runner):
+python ../evaluation/run_native_replay.py --runtime /private/pinned-native-checkout --godot /private/pinned-Godot-4.7 --cases /private/new/native-coral-48.json --output /private/new/coral-48-world --workers 1 --history each --timeout 2400
+```
+
+The output is a **replay input**, not a native receipt or rendered World. Only the original v1 material captures have actually been recovered and verified in this checkpoint. v1.1/v1.2 side-by-side compiler previews are approximate and must not be substituted for genuine native tests, blinded quality review or current-main/Windows qualification. Native v1.1/v1.2 and trained-model performance remain HOLD.
