@@ -20,8 +20,14 @@ The [current Windows evaluation archive](https://github.com/techrote/cybersand/a
 is independently downloaded and verified, including source, package contents
 and actual loaded modules. The earlier `a8f2735796b5` campaigns and package
 remain historical evidence below; that archive predates the recorder fix.
+The later [Workbench fixture reconciliation](#workbench-fixture-reconciliation-after-qualification)
+adopts #564's two test updates with passing focused headless results and
+unchanged production bytes; it retains its own qualification scope.
 Owner desktop/DPI, representative GPU pacing and resulting-main integration
 acceptance remain pending; no merge is authorized.
+The later [Workbench fixture reconciliation](#workbench-fixture-reconciliation-after-qualification)
+preserves production/native inputs but requires its own resulting-source
+qualification; those new results are pending.
 
 ## Source and integration identity
 
@@ -38,7 +44,8 @@ acceptance remain pending; no merge is authorized.
 | Previously qualified application/test source | `a8f2735796b5814c95edba857a0a8fa62250be42`, tree `8307a2155bce8665a082e7e01b0e0390dcf4d1e2`; production camera/shader bytes were identical to the recorded sources |
 | Registration/evidence-only checkpoints through reviewed head | `cfd54aadbeec27846795220542727fa816ab6fac` and `0158e2dfb538fc3de8e1bfda91bcc387341b4c13`; no application, test-fixture, native or packaging changes between the qualified source and that reviewed head |
 | Recorder-edge correction | `005124c5cd9a972d622051876891a28aef42e7f7`, tree `526602161eb6bd6e1cf5baa96b435f2a5e34108d`; refreshed local and hosted source results below |
-| Main/#564 compatibility | Final #562-main + latest #564 + registered camera source passes 3,755 runtime checks; newer #563-main compatibility is separately scoped below |
+| Later #564 fixture reconciliation | Incoming `00017c65da096c61585f026476ae1e62e1aea256`, including `6319ab1d94d85d01c9cdb44d973a92d224bfa9aa`; two test fixtures change, resulting-source qualification pending |
+| Historical main/#564 compatibility | Final #562-main + #564 at `6319ab1d` + registered camera source passes 3,755 runtime checks; newer #563-main compatibility is separately scoped below |
 
 The source tree is isolated from both upstream branches and preserves #564's
 manual/agent history, selection-to-Focus mapping and conversation features.
@@ -915,11 +922,12 @@ original log and package distinction summarized here.
 ### Reporting and integration scope
 
 The qualified application, test and archive source remains `005124c5`.
-The subsequent reporting update changes only this audit and the camera
+The reporting checkpoint `dcd71b3cb32079d2a90cab8d714bb4d88f76e548`
+changes only this audit and the camera
 runbook, including the current download and explicit 125%/150%/200%
 physical-DPI checklist in the online guide.
-All 551 executed Godot project sources and all 87 native inputs remain
-unchanged. The runbook is itself a packaged source input and is also copied
+At that reporting checkpoint all 551 executed Godot project sources and all
+87 native inputs remain unchanged. The runbook is itself a packaged source input and is also copied
 to `READ-ME.md`; both archive copies retain their qualified `005124c5` bytes,
 SHA-256 `3d015ae38fe0c39802c1296a79c705e866dd6fb0e49ea1600220cc91dd97f1a8`.
 Their later documentation wording is not relabelled as part of that archive,
@@ -938,3 +946,67 @@ main/native/graphical/Palette gates, physical Windows display scaling,
 representative hardware pacing and owner acceptance remain separate. Preserve
 the reviewed shader transition's reachable ancestry when reconciling the
 stack; this follow-up neither changes that transition nor authorizes a merge.
+
+## Workbench fixture reconciliation after qualification
+
+**Current reconciliation; both focused local fixtures pass.** After the
+`005124c5` campaign and `dcd71b3cb32079d2a90cab8d714bb4d88f76e548`
+reporting checkpoint, #564 advanced to
+`00017c65da096c61585f026476ae1e62e1aea256`. The camera branch also lacked its
+preceding `6319ab1d94d85d01c9cdb44d973a92d224bfa9aa` fixture correction.
+The incoming changes affect only two tests:
+
+- `test_workbench_pilot_ui.gd` restricts button lookup to visible controls in
+  the Workbench's viewport, avoiding an identically labelled control in an
+  unopened child window.
+- `test_workbench_liquid_edges.gd` recomputes the intended cell's pointer after
+  asynchronous readback and every awaited input frame, checks the mapped world
+  cell immediately before dispatch, and checks the admitted brush anchor.
+  Exact stored native brush-disc assertions remain; bounded diagnostics make
+  a mismatch inspectable.
+
+The mechanical merge of `dcd71b3c` with `00017c65` preserves those upstream
+checks while resolving the overlapping liquid-edge coordinate calculation
+with `presentation_camera_origin()` and `world_cell_from_local_point()`.
+The fixture therefore follows the displayed fractional camera and the same
+cell-picking contract as the application. No production script, shader,
+native source or physics behavior changes in this reconciliation.
+
+Production and all 87 native inputs remain identical to qualified `005124c5`.
+An explicit comparison of the 551 Godot source hashes finds exactly the two
+fixture changes listed above; the other 549 match.
+The reconciled tree nevertheless contains two different test fixtures and the
+later guide wording. The existing Windows archive remains a verified `005124c5`
+candidate, with its original tests and bundled guide; its 551-source identity
+receipt and complete campaign are not relabelled as qualification of the new
+merge.
+
+The exact staged reconciliation passed both focused fixtures using pinned
+Godot `4.7.stable.official.5b4e0cb0f`, the source-identical Linux native/Rapier
+libraries recorded above, separate fresh external XDG directories and a
+300-second watchdog per invocation:
+
+| Fixture | Result | Elapsed | Executed fixture SHA-256 |
+| --- | --- | --- | --- |
+| `test_workbench_liquid_edges.gd` | 130 checks, zero failures; both 512/left and 2048/bottom cases complete | 15.565 s | `929936b9a766ea5e57e6e7b5b8ac3b153fe8070c05cd8ebc2016cc6909d04122` |
+| `test_workbench_pilot_ui.gd` | 179 assertions, zero failures | 16.175 s | `9b27a0c007964c4a1f29f95332c50481de0d2f0227536107f649cc96d172d50c` |
+
+Both commands use `--headless --audio-driver Dummy --path godot --script
+res://tests/<fixture>`. Each exits zero, emits exactly one positive typed
+completion receipt and passes a strict script/resource-error scan. The edge
+fixture retains the exact brush-disc and admitted-anchor assertions, actual
+native transport and both directions of solver/halo transfer. Reverified
+source hashes remain stable across execution; all 87 native inputs match the
+retained runtime. Commands, environment, source/runtime identities, patch,
+logs and receipts are under
+`build/recorder-edge-qualification/reconcile-564/`. This is headless native/input
+evidence, not a fresh graphical or Windows execution of those two fixtures.
+
+Publishing the reconciliation triggers the existing three-job camera campaign.
+That campaign imports, hashes and packages these two fixtures but does not
+execute them; their direct evidence is the focused execution above. The normal
+all-fixture GDExtension workflow would execute them and remains Draft-skipped.
+No workflow, test selection or provider routing is changed for this merge.
+Any fresh hosted campaign must identify its actual source before new claims
+are made. The #564/#566 acceptance and resulting-main integration HOLD remain
+unchanged.
