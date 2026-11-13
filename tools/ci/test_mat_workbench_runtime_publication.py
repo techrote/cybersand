@@ -22,7 +22,7 @@ class IntegrationPublication(unittest.TestCase):
     def test_isolated_owner_and_unchanged_four_path_lease_engine(self):
         self.assertIsNot(subject.lab, original)
         self.assertIsNot(subject.engine, original.engine)
-        self.assertEqual(original.engine.BRANCH, "codex/materials-lab-v1-20261111")
+        self.assertEqual(original.engine.BRANCH, "codex/materials-native-capabilities-20261111")
         self.assertEqual(subject.engine.BRANCH, "codex/mat-auth-workbench-integration-20261112")
         for name in ("context", "check_source", "check_index", "require_publication_request", "input_ledgers", "stage"):
             self.assertEqual(inspect.getsource(getattr(subject.engine, name)), inspect.getsource(getattr(original.engine, name)))

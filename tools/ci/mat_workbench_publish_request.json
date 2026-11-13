@@ -4,5 +4,5 @@
   "variant": "shared-manual-agent-history-and-isolated-material-authoring",
   "scope": "source-matched-linux-windows-lab-workbench-and-combined-authoring",
   "intent": "publish-source-matched-runtimes",
-  "request_sequence": 2
+  "request_sequence": 3
 }

@@ -2,10 +2,10 @@
 title: Materials Lab and shared Workbench integration qualification
 status: Current
 document-kind: audit
-scope: Separate integration of PR 562 Materials Lab and PR 564 Workbench; source-matched Windows/Linux qualification and standalone evaluation; PR 563 remains a separate consumer transition
+scope: Separate integration of PR 562 Materials Lab and PR 564 Workbench onto accepted main including PR 563; source-matched Windows/Linux qualification and standalone evaluation
 canonical-for: [mat-auth-workbench-integration-evidence]
 last-reviewed: 2026-11-13
-related-documents: [2026-11-11-materials-lab-completion.md, ../operations/materials-lab-authoring.md, ../operations/wb-art-paint-integrated-candidate.md, ../architecture/shared-workbench-authoring-data.md, ../operations/current-and-historical-validation.md]
+related-documents: [2026-11-11-materials-lab-completion.md, 2026-11-11-material-native-capability-cutover.md, ../operations/materials-lab-authoring.md, ../operations/wb-art-paint-integrated-candidate.md, ../architecture/shared-workbench-authoring-data.md, ../operations/current-and-historical-validation.md]
 ---
 
 # Materials Lab and shared Workbench integration
@@ -30,7 +30,10 @@ is part of this work.
 | Initial two-parent integration | `4f37f836fa57189a1c5b0ab1582dbb39d6488c7f` |
 | Initial combined source tree | `1a91ceebf18bb13c34225c3cd0bb573f288e51fe` |
 | First frozen combined execution source | `90719c72b9fcf90593fb7878354051ad601b47fd` |
+| Second frozen combined execution source | `88ba76f023e933b52d15f272263077e091bc9656` |
 | Separately published capability follow-on #563 | `ecdf08cca10e96ce558d5d044896c709149b9198` |
+| Current accepted main, #563 merged by separate action | `63f8b1ba6559906fe85f3ad0269aa296e4141d67` |
+| Preserved authenticated capability transition ancestor | `b432d52d0d9acaa22f93eeb8d1fad48c64b4c087` |
 
 The initial merge resolves six documentation overlaps by retaining both feature
 contracts. The product merge keeps the Materials Lab mount and native inspection
@@ -39,10 +42,11 @@ shared chronological Undo/Redo, persistence and equipment paths. The subsequent
 ordinary merge retains the Lab publisher child in ancestry; its earlier binaries
 do not qualify the combined native extension.
 
-All 27 protected material-authority source roles, canonical catalogue and frozen
-compatibility lock are byte-identical to accepted main. No protected-source
-transition or refreshed compatibility hash is needed for the combined bridge.
-The native extension itself has changed and requires fresh Windows/Linux builds.
+Compared with current accepted main, all 27 protected material-authority source
+roles, canonical catalogue and frozen compatibility lock are byte-identical.
+The accepted #563 consumer and its authenticated transition ancestry are retained
+without rebaselining any compatibility hash. The combined native extension still
+requires fresh Windows/Linux builds; neither earlier feature runtime qualifies it.
 
 ## Combined execution and delivery contract
 
@@ -105,7 +109,24 @@ visible-viewport pilot-test repair. The existing new panel test joins the
 explicit Workbench campaign; full Godot discovery also includes it. These are
 preserved upstream feature changes, not newly designed integration features.
 
-At this replacement-source checkpoint, qualification is **IN PROGRESS / HOLD**.
+Request 2, [run 43345030561](https://github.com/techrote/cybersand/actions/runs/43345030561),
+froze source `88ba76f023e933b52d15f272263077e091bc9656`. Its complete Linux
+catalogue passed 209 tests with no skips or failures; fresh Windows cross-build
+and initial source Documentation passed. Independent readback matched 88 native
+and 834 build inputs. At 2026-11-13 01:34:01 UTC, a separate action merged #563
+into main while platform execution was running. Request 2 therefore cannot
+qualify the resulting accepted-main/Workbench source; its original evidence is
+retained under its own identity.
+
+Request 3 incorporates accepted main `63f8b1ba` through a normal two-parent
+merge. Product source merges cleanly. The sole integration guard repair updates
+the expected independently owned Lab publisher branch to the accepted capability
+publisher branch. The private integration branch lease and four-path publication
+boundary are unchanged. The inherited verifier now requires all 231 discovered
+catalogue cases, including the 22 accepted capability controls. The original
+37 Workbench stages, all combined/installed fixtures and deadlines remain intact.
+
+At this accepted-main replacement checkpoint, qualification is **IN PROGRESS / HOLD**.
 Fresh uninstrumented Windows/Linux execution, standalone package verification,
 runtime publication and actual complete final gates are required. PR #565 will
 supply exact terminal source/run/artifact/checksum results. No earlier pass or
@@ -113,26 +134,26 @@ diagnostic is relabelled as qualification of the replacement source.
 
 ## Merge sequence and follow-on boundary
 
-The requested sequence remains **#562 accepted → reconciled #564 → separately
-qualified #563**. Main accepted #562 separately at `e0fb05b8`; its tree exactly
-matches the included Lab publication. All four full main push gates passed on
-that merge. This integration incorporates its ancestry without changing either
-original feature branch. PR #565 is the integration/evaluation vehicle for the
-reconciled Workbench; original PAINT #544 and agent #560 must not be merged
-independently from this preserved history.
+The initially requested sequence was **#562 → #564 → #563**. Separate owner
+actions accepted #562 at `e0fb05b8` and then #563 at `63f8b1ba` before this
+integration completed. This task performed neither main merge and does not
+rewrite them. The current safe continuation is to retain both accepted merges
+and qualify the reconciled Workbench on top. PR #565 remains the separate
+integration/evaluation vehicle; original PAINT #544 and agent #560 must not be
+merged independently from this preserved history.
 
 The old #563 source `ba20acbd` failed Windows graphical publication in
 [run 43123100407](https://github.com/techrote/cybersand/actions/runs/43123100407).
 Its replacement source `c55a0724` normally merged accepted main and completed
 its own platform/package publication in [run 43336935041](https://github.com/techrote/cybersand/actions/runs/43336935041),
-producing `ecdf08cc`. Its final full gates and readiness are tracked separately;
-that source still does not contain the integrated Workbench. Its old failure is
-historical, not an unresolved result on the replacement source. After accepting
-the reconciled Workbench, retain the authenticated
-`b432d52d0d9acaa22f93eeb8d1fad48c64b4c087` ancestor and independent B-only
-request, reconcile the resulting source and earn fresh source-matched evidence.
-Do not squash away that custody or reuse either earlier runtime as qualification
-of the later native combination.
+producing `ecdf08cc`. All four exact-head full manual gates passed (Documentation
+43342379587, Native 43342384177, Godot 43342388943, Palette 43342393818), as did
+the 120-case Water apparatus campaign 43342445933. Its old failure is historical.
+Those results qualify the accepted Lab/capability tree and remain distinct from
+the new combined qualification. The integration retains the authenticated
+`b432d52d0d9acaa22f93eeb8d1fad48c64b4c087` ancestor, exact generated consumer,
+per-file route pins and independent B-only request. Do not squash away that
+custody or reuse either earlier runtime as qualification of the later combination.
 
 ## Owner acceptance procedure
 
