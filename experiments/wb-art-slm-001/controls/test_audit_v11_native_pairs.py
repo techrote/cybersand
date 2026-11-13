@@ -41,14 +41,17 @@ def fixture(root):
                 full = bytearray(512 * 512 * 4)
                 struct.pack_into("<i", full, ((10 if tag == "c11" else 80) * 512 + 5) * 4, 58)
                 whole_sha = audit.digest(full)
-                events.extend((
-                    {"case": cid, "receipt": {"backend": "CyberNativeCellWorld",
-                        "status": "completed", "tick": 0, "before_source": {"tick": 0},
-                        "readback": [[5, 10 if tag == "c11" else 80, 0, 58]],
-                        "confirmed": 1, "checked": 1, "changed": 1,
-                        "excluded": 0, "refused": 0}},
-                    {"case": cid, "capture": {"materials_i32le_sha256": whole_sha}},
-                ))
+                events.append({"case": cid, "receipt": {"backend": "CyberNativeCellWorld",
+                    "status": "completed", "tick": 0, "before_source": {"tick": 0},
+                    "readback": [[5, 10 if tag == "c11" else 80, 0, 58]],
+                    "confirmed": 1, "checked": 1, "changed": 1,
+                    "excluded": 0, "refused": 0}})
+                for capture_sha in (whole_sha, audit.digest(bytes(512 * 512 * 4)),
+                                    whole_sha, whole_sha):
+                    events.append({"case": cid, "capture": {
+                        "backend": "CyberNativeCellWorld", "status": "completed",
+                        "region_xywh": [0, 0, 512, 512],
+                        "materials_i32le_sha256": capture_sha}})
                 engine.append({"id": cid, "passed": True,
                                "terminal": {"status": "completed", "checked": 1,
                                             "changed": 1, "unchanged": 0},
@@ -110,6 +113,8 @@ class PairGateTests(unittest.TestCase):
         self.assertEqual(result["mean_v11_top_fraction"], 1)
         self.assertFalse(result["human_accepted"])
         self.assertFalse(result["windows_qualified"])
+        self.assertTrue(all(c["raw_native_chain"]["history_captures"] == 4
+                            for c in result["cases"].values()))
 
     def test_all_cases_require_real_history_receipt(self):
         self.verified["cases"][0]["history_and_reopen_checked"] = False
@@ -173,6 +178,30 @@ class PairGateTests(unittest.TestCase):
             (self.root / "native-summary.json").read_bytes())
         save(self.root / "verified-admission-receipts.json", self.verified)
         with self.assertRaisesRegex(ValueError, "complete native World hash"):
+            self.audit()
+
+    def test_forged_undo_capture_rejected_after_rehash(self):
+        path = self.root / "native-receipts.jsonl"
+        events = [json.loads(line) for line in path.read_text().splitlines()]
+        cid = self.manifest["cases"][0]["id"]
+        undo = [e for e in events if e.get("case") == cid and "capture" in e][1]
+        undo["capture"]["materials_i32le_sha256"] = "0" * 64
+        path.write_text("".join(json.dumps(e) + "\n" for e in events))
+        self.verified["native_receipts_sha256"] = audit.digest(path.read_bytes())
+        save(self.root / "verified-admission-receipts.json", self.verified)
+        with self.assertRaisesRegex(ValueError, "undo native history capture differs"):
+            self.audit()
+
+    def test_missing_reopen_capture_rejected_after_rehash(self):
+        path = self.root / "native-receipts.jsonl"
+        events = [json.loads(line) for line in path.read_text().splitlines()]
+        cid = self.manifest["cases"][0]["id"]
+        i = [i for i, e in enumerate(events) if e.get("case") == cid and "capture" in e][-1]
+        del events[i]
+        path.write_text("".join(json.dumps(e) + "\n" for e in events))
+        self.verified["native_receipts_sha256"] = audit.digest(path.read_bytes())
+        save(self.root / "verified-admission-receipts.json", self.verified)
+        with self.assertRaisesRegex(ValueError, "missing or extra native history captures"):
             self.audit()
 
     def test_forged_zero_changed_receipt_rejected_after_rehash(self):

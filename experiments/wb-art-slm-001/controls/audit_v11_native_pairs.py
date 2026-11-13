@@ -110,9 +110,21 @@ def replay_native_rows(native: Path, cases: dict, summary: dict) -> dict:
         whole_sha = digest(world)
         require(engine.get("whole_world_i32le_sha256") == whole_sha,
                 f"{cid}: complete native World hash differs from receipt chain")
-        require(bool(captures[cid]) and isinstance(captures[cid][0], dict) and
-                captures[cid][0].get("materials_i32le_sha256") == whole_sha,
-                f"{cid}: independent native World capture differs")
+        # In --history each mode the frozen native harness captures the World
+        # after draw, Undo, Redo and save/reopen, in that exact order. A boolean
+        # summary flag is not proof that the later World states were checked.
+        stages = ("draw", "undo", "redo", "save/reopen")
+        expected_hashes = (whole_sha, digest(bytes(512 * 512 * 4)),
+                           whole_sha, whole_sha)
+        require(len(captures[cid]) == len(stages),
+                f"{cid}: missing or extra native history captures")
+        for stage, capture, expected_sha in zip(stages, captures[cid], expected_hashes):
+            require(isinstance(capture, dict) and
+                    capture.get("backend") == "CyberNativeCellWorld" and
+                    capture.get("status") == "completed" and
+                    capture.get("region_xywh") == [0, 0, 512, 512] and
+                    capture.get("materials_i32le_sha256") == expected_sha,
+                    f"{cid}: {stage} native history capture differs")
         crop = b"".join(world[y * 512 * 4:(y * 512 + expected["width"]) * 4]
                         for y in range(expected["height"]))
         require(engine.get("raw_materials") == f"{cid}.materials.i32le" and
@@ -121,6 +133,7 @@ def replay_native_rows(native: Path, cases: dict, summary: dict) -> dict:
         require(crop.count(b"\x3a\x00\x00\x00") ==
                 engine.get("filled_cells"), f"{cid}: filled-cell count differs")
         chains[cid] = {"native_receipts": len(receipts[cid]),
+                       "history_captures": len(captures[cid]),
                        "checked_cells": checked, "changed_cells": changed,
                        "whole_world_sha256": whole_sha}
     return chains
