@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "date_utc": "2026-11-13",
+  "scope": "offline frozen-model native fixture re-export; no new model inference, compiler execution or native World",
+  "branch": "codex/wb-art-slm-training",
+  "source": "saved Library artifact recovered and SHA-256 verified",
+  "archives": {
+    "outer_filename": "wb_art_slm_001_native_and_model_evidence.zip",
+    "outer_sha256": "d2f8b16f081b7c371afd2eadf1468bc6941cb2a7a83ee349a11d667257f9cfa9",
+    "nested_filename": "native/model-evidence.zip",
+    "nested_sha256": "48c6b8d536c74de3191f39564c0e304cfa4216d022d09ff035586ccd2b997a4f"
+  },
+  "samples": {
+    "development_predictions_sha256": "485bac2bebfbde7712f52726da55a64df8ed3e122452e8260aafa388424c3498",
+    "keyword_predictions_sha256": "72f3d9449b8a4642c2791fad31294ff188bc770e30fd6b833fbbe690b90399ea",
+    "archived_native_cases_sha256": "d41c3844de1e74474d874fb8c1cc8857db1140a64f94aa3cbbe8f147cd0cca0a"
+  },
+  "replay": {
+    "max_case_id_length": 38,
+    "save_prefix": "slm-pilot-",
+    "development": {
+      "raw": 24,
+      "first_pass": 22,
+      "exported_requests": 22,
+      "excluded": 2,
+      "cases": 44,
+      "aliases": 22
+    },
+    "keywords": {
+      "raw": 12,
+      "first_pass": 12,
+      "exported_requests": 12,
+      "excluded": 0,
+      "cases": 24,
+      "aliases": 0
+    },
+    "total_cases": 68,
+    "unique_case_ids": 68,
+    "matched_archived_operations_sha256": 68,
+    "matched_archived_raw_completions": 68
+  },
+  "tests": {
+    "model_free_unit_tests": 9,
+    "passed": 9,
+    "compiler": "archived-output lookup stub, not independent compiler execution"
+  },
+  "caveats": [
+    "Rejected coral responses remain in denominator",
+    "Archived replay reference, not current-source execution",
+    "No new training, accelerator, native runtime, Windows or graphical acceptance"
+  ]
+}
