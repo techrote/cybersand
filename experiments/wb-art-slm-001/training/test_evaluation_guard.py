@@ -40,6 +40,8 @@ metrics = {'count':len(records),'json_valid':2,'program_valid':2,'first_pass_acc
            'exact_target':0}
 config = {'suite':a.suite or 'dev','training_executed':False}
 if a.device == 'mismatch': metrics['first_pass_accepted'] = 9
+if a.device == 'tamper':
+    (pathlib.Path(a.adapter)/'adapter_model.safetensors').write_bytes(b'mutated during evaluation')
 (out/'run_config.json').write_text(json.dumps(config))
 (out/'predictions.json').write_text(json.dumps({'records':records,'summary':metrics}))
 (out/'summary.json').write_text(json.dumps({'config':config,'metrics':metrics}))
@@ -115,6 +117,13 @@ class EvaluationGuardTests(unittest.TestCase):
         result = run(args, argv)
         self.assertEqual(result["status"], "incomplete")
         self.assertIsNone(verified_evaluation(self.parent / "eval-one", argv))
+
+    def test_midflight_adapter_mutation_is_not_a_completed_candidate(self):
+        args, argv = self.setup_run(device="tamper")
+        result = run(args, argv)
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("fingerprint changed", result["error"])
+        self.assertIsNone(result["evidence"])
 
     def test_duplicate_evaluation_fingerprint_not_relaunched(self):
         args, argv = self.setup_run()
