@@ -62,12 +62,15 @@
     "tests": "experiments/wb-art-slm-001/integration/test_local_art_bridge.py",
     "runbook": "experiments/wb-art-slm-001/integration/README.md",
     "protocol": "loopback LM Studio /v1/chat/completions; content JSON operations; one-turn text-only",
-    "validation": "4 unittest methods passed locally including mock HTTP round-trip, malformed/unallowed guards and receipt hash/EOS check",
+    "validation": "Original 4 Python methods passed prior to hardening; new five-field forged-receipt regression added but not re-executed; 11/11 static source checks passed on updated blobs",
     "no_actual_model_loaded_this_run": true,
     "no_native_execution_this_run": true,
     "no_windows_execution_this_run": true,
     "independent_review": "pending (evaluation reviewed historical native packet, not yet bridge implementation)",
-    "new_protocol_tests_after_import": "none; original four integration tests unchanged, and imported role-source tests are role-reported only"
+    "new_protocol_tests_after_import": "five new injected forgery subtests authored; no Python runner executed for modified bridge in integration session; independent execution required",
+    "receipt_binding": "Exact prompt, host seed, pinned adapter hash, LFM model identity, native_execution=false, compiler hash, focus size, material, EOS, Art operation hash and allowed tool/material",
+    "receipt_hardening_commit": "d2f6a3266e6f522a6a5f8e8a3d9afc3cf315efab",
+    "adverse_regressions_commit": "ddbc2b9b3ba8e4ab0423c50b21dd7fb85333e6bb"
   },
   "training_lease": {
     "published_active": false,
@@ -79,7 +82,7 @@
   "workers": {
     "integration": {
       "branch": "codex/wb-art-slm-001",
-      "next": "Review merged role files/compatibility; strengthen bridge source-contract test; await qualified accepted-#563 successor before current-source native/Windows/owner acceptance; no upstream edits."
+      "next": "Have Evaluation independently run and review hardened bridge protocol against actual compatible Art panel; stage opt-in launch only after source-compatible #565 passes Windows/Lab gate."
     },
     "controls": {
       "branch": "codex/wb-art-slm-controls",
@@ -147,6 +150,7 @@
     },
     "integration_post_import": "0bdc089793c2c69a0680dfd0c8278bca45f6ac6f",
     "topology": "four serial fast-forward commits on shared branch; exact role-owned blobs copied without edits; 21 file changes, no main/native/physics source changes",
-    "validation": "GitHub compare fc7d8b91...0bdc0897 ahead 4, files match exactly 5+5+6+5 and no other paths"
+    "validation": "GitHub compare fc7d8b91...0bdc0897 ahead 4, files match exactly 5+5+6+5 and no other paths",
+    "integration_final_docs_checkpoint": "2eb48b7911c3248e9b37214712258ca86bdbf6cc"
   }
 }
