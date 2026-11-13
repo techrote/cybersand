@@ -5,6 +5,7 @@
 #include "cybersand/demo_snapshot.hpp"
 #include "cybersand/interaction_rules.hpp"
 #include "cybersand/material_rules.hpp"
+#include "cybersand/material_appearance.hpp"
 #include <bit>
 #include <algorithm>
 #include <godot_cpp/classes/ref.hpp>
@@ -133,6 +134,8 @@ class CyberDemoBridge final : public RefCounted {
     }
 
 public:
+#include "material_lab_inspection.inc"
+
     // The API reports the loader's library path, which can differ from an
     // editor shadow copy. Observe current bytes at that path; this alone does
     // not identify mapped bytes. The caller supplies no path/digest. Hash only
@@ -452,6 +455,11 @@ public:
     }
 
     [[nodiscard]] String get_last_error() const { return error_; }
+
+    // Compile-time capability handshake: older installed GDExtensions still
+    // support 4096, so authored paint must not report a save as replayable
+    // until this exact native constructor is present.
+    [[nodiscard]] std::int64_t workbench_start_rectangle_capacity() const { return 32768; }
 
     [[nodiscard]] bool build_tuned_world(const Ref<CyberNativeCellWorld>& adapter,
         const PackedInt32Array& rectangles, const PackedInt32Array& profile) {
@@ -991,8 +999,10 @@ protected:
     static void _bind_methods() {
         ClassDB::bind_method(D_METHOD("loaded_native_runtime_values"), &CyberDemoBridge::loaded_native_runtime_values);
         ClassDB::bind_method(D_METHOD("inspect_cell", "world", "point"), &CyberDemoBridge::inspect_cell);
+        ClassDB::bind_method(D_METHOD("inspect_material_lab_cell", "world", "point"), &CyberDemoBridge::inspect_material_lab_cell);
         ClassDB::bind_method(D_METHOD("inspect_statistics", "world"), &CyberDemoBridge::inspect_statistics);
         ClassDB::bind_method(D_METHOD("inspect_interaction_profile"), &CyberDemoBridge::inspect_interaction_profile);
+        ClassDB::bind_method(D_METHOD("inspect_material_catalogue"), &CyberDemoBridge::inspect_material_catalogue);
         ClassDB::bind_method(D_METHOD("inspect_interaction", "source_id", "target_id", "probability_roll"),
                              &CyberDemoBridge::inspect_interaction);
         ClassDB::bind_method(D_METHOD("export_level", "world"), &CyberDemoBridge::export_level);
@@ -1016,6 +1026,8 @@ protected:
                              &CyberDemoBridge::liquid_policy_with_inertial_damping);
         ClassDB::bind_method(D_METHOD("liquid_policy_with_pressure_gas", "request", "gas_enabled"),
                              &CyberDemoBridge::liquid_policy_with_pressure_gas);
+        ClassDB::bind_method(D_METHOD("workbench_start_rectangle_capacity"),
+            &CyberDemoBridge::workbench_start_rectangle_capacity);
         ClassDB::bind_method(D_METHOD("prepare_liquid_world", "world", "rectangles", "profile", "policy",
             "water_fills", "liquid_policy", "options"), &CyberDemoBridge::prepare_liquid_world);
         ClassDB::bind_method(D_METHOD("prepare_liquid_level", "world", "payload", "profile", "policy",

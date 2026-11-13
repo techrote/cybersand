@@ -1,0 +1,449 @@
+{
+	"assertions": 13,
+	"command_user_args": [
+		"--materials-lab",
+		"--probe-output=C:\\khybersand\\.worktrees\\materials-lab-evaluation\\build\\local-windows-evaluation\\exact-navigation-v2\\navigation-proof.json"
+	],
+	"failures": [],
+	"godot": "4.7-stable (official)",
+	"native_sha256": "7aff557ea0f2f87d6380e645ed17f5878ab8a5746cd66cfa33be783728c6e2a2",
+	"platform": "Windows",
+	"schema": "materials-lab-exact-navigation-probe-v1",
+	"scope": "Actual mounted button handlers and native owner lifecycle in a headless process; no graphical coordinate-hit claim",
+	"source_hashes_after": {
+		"scripts/feature_launcher.gd": "438ac6aa34baabe1d88f310d8dbaabc887b505ccac5178cb0082431efa0e8c05",
+		"scripts/feature_navigation.gd": "fb8357f636d918762852fa804df55275046c2d38f47bd52888a6d77cda68694c",
+		"scripts/main.gd": "35d33ef5bc92e1d5dd7b5bc717c545846bca82c24e0200e9e8579f0e6168b642",
+		"scripts/material_lab_panel.gd": "ba726666baecd1ead06822671716155524c213ca0b8e8d5c87d08e3cb7f91c26",
+		"scripts/material_lab_screen.gd": "87fcc9c66dd57b765b2809a66d10e58051455449fe0d5a0408ca2acaac99e646",
+		"scripts/shared_workbench.gd": "902357ebd9023b71df6749936915372e8a269d7ff1a5e6d51bde97e0a58771f5",
+		"scripts/simulation_worker.gd": "a8eb4c6df9ff47fde7f0ff5e53130ea3ae332b383004ae36006ca3bdbe6e7699",
+		"scripts/workbench_liquid_equipment.gd": "27411a621e6fb3faf98a19688aa31c7df8843c60dc4fcb662751162b27ff5ee4",
+		"scripts/workbench_liquid_equipment_panel.gd": "8288c84a55ca2bc6e7fd38472f3641675f89409dac7f34390370e73cf69b1b32",
+		"scripts/workbench_setup.gd": "3278df6687ae5dc5a1184d522abd921511274ce7a946e3d2d722b77ab7b02e00"
+	},
+	"source_hashes_before": {
+		"scripts/feature_launcher.gd": "438ac6aa34baabe1d88f310d8dbaabc887b505ccac5178cb0082431efa0e8c05",
+		"scripts/feature_navigation.gd": "fb8357f636d918762852fa804df55275046c2d38f47bd52888a6d77cda68694c",
+		"scripts/main.gd": "35d33ef5bc92e1d5dd7b5bc717c545846bca82c24e0200e9e8579f0e6168b642",
+		"scripts/material_lab_panel.gd": "ba726666baecd1ead06822671716155524c213ca0b8e8d5c87d08e3cb7f91c26",
+		"scripts/material_lab_screen.gd": "87fcc9c66dd57b765b2809a66d10e58051455449fe0d5a0408ca2acaac99e646",
+		"scripts/shared_workbench.gd": "902357ebd9023b71df6749936915372e8a269d7ff1a5e6d51bde97e0a58771f5",
+		"scripts/simulation_worker.gd": "a8eb4c6df9ff47fde7f0ff5e53130ea3ae332b383004ae36006ca3bdbe6e7699",
+		"scripts/workbench_liquid_equipment.gd": "27411a621e6fb3faf98a19688aa31c7df8843c60dc4fcb662751162b27ff5ee4",
+		"scripts/workbench_liquid_equipment_panel.gd": "8288c84a55ca2bc6e7fd38472f3641675f89409dac7f34390370e73cf69b1b32",
+		"scripts/workbench_setup.gd": "3278df6687ae5dc5a1184d522abd921511274ce7a946e3d2d722b77ab7b02e00"
+	},
+	"source_hashes_unchanged": true,
+	"states": [
+		{
+			"current_scene": "res://materials_lab.tscn",
+			"elapsed_ms": 580,
+			"feature": "materials_lab",
+			"launch_args_consumed": true,
+			"phase": "standalone-lab"
+		},
+		{
+			"current_scene": "res://feature_launcher.tscn",
+			"elapsed_ms": 607,
+			"feature": "materials_lab",
+			"launch_args_consumed": true,
+			"phase": "closed-to-launcher"
+		},
+		{
+			"applied_extent": [
+				2048,
+				2048
+			],
+			"backend": "native-phased",
+			"current_scene": "res://main.tscn",
+			"elapsed_ms": 3081,
+			"equipment": {
+				"active_ticks": 0,
+				"config": {},
+				"configured": false,
+				"drain": {
+					"drained_cells": {},
+					"drained_water": 0,
+					"installed": false,
+					"masked_skips": 0,
+					"open": false,
+					"pipe_full": 0,
+					"rate": 0
+				},
+				"last": {},
+				"last_refusal": "",
+				"nozzle": {
+					"angle": 0.0,
+					"cell_emissions": 0,
+					"column_injections": 0,
+					"emitted": 0,
+					"injected_water": 0,
+					"installed": false,
+					"on": false,
+					"rate": 0,
+					"refused": {},
+					"speed": 0.0,
+					"topped_up": 0
+				},
+				"nozzle_mode": "cells at rest",
+				"observation_serial": 0,
+				"observations": {},
+				"pipe": {
+					"capacity": 0,
+					"pump": false,
+					"stock": 0,
+					"supplied": 0
+				},
+				"refused": 0,
+				"serial": 0,
+				"ticks": 0,
+				"valves": [],
+				"version": 1,
+				"water_unit": 0,
+				"whole_cell_water": false
+			},
+			"feature": "shared_workbench",
+			"launch_args_consumed": true,
+			"microscenario_error": "",
+			"owner_failed": false,
+			"owner_request_applied": true,
+			"owner_request_serial": 1,
+			"panel_message": "Choose a flyer to pilot, or use Place model to add an independent body.",
+			"panel_status": "Paused · cell (-1, -1) · [2048, 2048] · Choose a flyer to pilot, or use Place model to add an independent body.   |   source 0 inserted / 0 blocked · granular LA-SELECTIVE · active Water freemass/reference",
+			"paused": true,
+			"pending": false,
+			"pending_hash": "",
+			"pending_physical_candidate": false,
+			"pending_serial": -1,
+			"phase": "blank-installed",
+			"snapshot_failed": false,
+			"snapshot_serial": 21,
+			"step_pending": false,
+			"step_serial": 0,
+			"thread_alive": true,
+			"thread_started": true,
+			"tick": 0,
+			"worker_start_error": 0
+		},
+		{
+			"applied_extent": [
+				2048,
+				2048
+			],
+			"backend": "native-phased",
+			"current_scene": "res://main.tscn",
+			"elapsed_ms": 3222,
+			"equipment": {
+				"active_ticks": 0,
+				"config": {},
+				"configured": false,
+				"drain": {
+					"drained_cells": {},
+					"drained_water": 0,
+					"installed": false,
+					"masked_skips": 0,
+					"open": false,
+					"pipe_full": 0,
+					"rate": 0
+				},
+				"last": {},
+				"last_refusal": "",
+				"nozzle": {
+					"angle": 0.0,
+					"cell_emissions": 0,
+					"column_injections": 0,
+					"emitted": 0,
+					"injected_water": 0,
+					"installed": false,
+					"on": false,
+					"rate": 0,
+					"refused": {},
+					"speed": 0.0,
+					"topped_up": 0
+				},
+				"nozzle_mode": "cells at rest",
+				"observation_serial": 0,
+				"observations": {},
+				"pipe": {
+					"capacity": 0,
+					"pump": false,
+					"stock": 0,
+					"supplied": 0
+				},
+				"refused": 0,
+				"serial": 0,
+				"ticks": 0,
+				"valves": [],
+				"version": 1,
+				"water_unit": 0,
+				"whole_cell_water": false
+			},
+			"feature": "shared_workbench",
+			"launch_args_consumed": true,
+			"microscenario_error": "",
+			"owner_failed": false,
+			"owner_request_applied": true,
+			"owner_request_serial": 1,
+			"panel_message": "Loading liquid-lab (Water: inertial): V valve, [ ] choose valve, G drain, H nozzle, J/K aim.",
+			"panel_status": "Paused · cell (-1, -1) · [2048, 2048] · Choose a flyer to pilot, or use Place model to add an independent body.   |   source 0 inserted / 0 blocked · granular LA-SELECTIVE · active Water freemass/reference",
+			"paused": true,
+			"pending": true,
+			"pending_hash": "35c4389ac3acecc9911c5cecf4002bfd8eb3925174b02ec7cf38b8308796ebb4",
+			"pending_physical_candidate": true,
+			"pending_serial": 2,
+			"phase": "equipment-load-requested",
+			"snapshot_failed": false,
+			"snapshot_serial": 21,
+			"step_pending": false,
+			"step_serial": 0,
+			"thread_alive": true,
+			"thread_started": true,
+			"tick": 0,
+			"worker_start_error": 0
+		},
+		{
+			"applied_extent": [
+				512,
+				512
+			],
+			"backend": "native-phased",
+			"current_scene": "res://main.tscn",
+			"elapsed_ms": 4835,
+			"equipment": {
+				"active_ticks": 0,
+				"config": {
+					"drain": [
+						96,
+						258,
+						16,
+						6,
+						16
+					],
+					"nozzle": [
+						420,
+						246,
+						-141.0,
+						5.5,
+						2
+					],
+					"pipe_capacity": 20000,
+					"pump": true,
+					"supply": 150,
+					"valves": [
+						[
+							56,
+							220,
+							8,
+							4
+						]
+					],
+					"version": 1
+				},
+				"configured": true,
+				"drain": {
+					"drained_cells": {},
+					"drained_water": 0,
+					"installed": true,
+					"masked_skips": 0,
+					"open": false,
+					"pipe_full": 0,
+					"rate": 16
+				},
+				"last": {},
+				"last_refusal": "",
+				"nozzle": {
+					"angle": -141.0,
+					"cell_emissions": 0,
+					"column_injections": 0,
+					"emitted": 0,
+					"injected_water": 0,
+					"installed": true,
+					"on": false,
+					"rate": 2,
+					"refused": {},
+					"speed": 5.5,
+					"topped_up": 0
+				},
+				"nozzle_mode": "ballistic parcels",
+				"observation_serial": 0,
+				"observations": {},
+				"pipe": {
+					"capacity": 5100000,
+					"pump": true,
+					"stock": 38250,
+					"supplied": 38250
+				},
+				"refused": 0,
+				"serial": 1,
+				"ticks": 0,
+				"valves": [
+					{
+						"closed_cells": 0,
+						"displaced_cells": 0,
+						"open": false,
+						"opened_cells": 0,
+						"rect": [
+							56,
+							220,
+							8,
+							4
+						],
+						"state": "closed",
+						"trimmed_water": 0,
+						"waiting": 0
+					}
+				],
+				"version": 1,
+				"water_unit": 255,
+				"whole_cell_water": true
+			},
+			"feature": "shared_workbench",
+			"launch_args_consumed": true,
+			"microscenario_error": "",
+			"owner_failed": false,
+			"owner_request_applied": true,
+			"owner_request_serial": 2,
+			"panel_message": "Choose a flyer to pilot, or use Place model to add an independent body.",
+			"panel_status": "Preparing · cell (-1, -1) · [2048, 2048] · Loading liquid-lab (Water: inertial): V valve, [ ] choose valve, G drain, H nozzle, J/K aim.   |   source 0 inserted / 0 blocked · granular LA-SELECTIVE · active Water freemass/reference",
+			"paused": true,
+			"pending": false,
+			"pending_hash": "",
+			"pending_physical_candidate": false,
+			"pending_serial": -1,
+			"phase": "equipment-installed",
+			"snapshot_failed": false,
+			"snapshot_serial": 33,
+			"step_pending": false,
+			"step_serial": 0,
+			"thread_alive": true,
+			"thread_started": true,
+			"tick": 0,
+			"worker_start_error": 0
+		},
+		{
+			"applied_extent": [
+				512,
+				512
+			],
+			"backend": "native-phased",
+			"current_scene": "res://main.tscn",
+			"elapsed_ms": 4869,
+			"equipment": {
+				"active_ticks": 0,
+				"config": {
+					"drain": [
+						96,
+						258,
+						16,
+						6,
+						16
+					],
+					"nozzle": [
+						420,
+						246,
+						-141.0,
+						5.5,
+						2
+					],
+					"pipe_capacity": 20000,
+					"pump": true,
+					"supply": 150,
+					"valves": [
+						[
+							56,
+							220,
+							8,
+							4
+						]
+					],
+					"version": 1
+				},
+				"configured": true,
+				"drain": {
+					"drained_cells": {},
+					"drained_water": 0,
+					"installed": true,
+					"masked_skips": 0,
+					"open": false,
+					"pipe_full": 0,
+					"rate": 16
+				},
+				"last": {
+					"drained": 0,
+					"injected": 0,
+					"reads": 32,
+					"tick": 1
+				},
+				"last_refusal": "",
+				"nozzle": {
+					"angle": -141.0,
+					"cell_emissions": 0,
+					"column_injections": 0,
+					"emitted": 0,
+					"injected_water": 0,
+					"installed": true,
+					"on": false,
+					"rate": 2,
+					"refused": {},
+					"speed": 5.5,
+					"topped_up": 0
+				},
+				"nozzle_mode": "ballistic parcels",
+				"observation_serial": 0,
+				"observations": {},
+				"pipe": {
+					"capacity": 5100000,
+					"pump": true,
+					"stock": 38250,
+					"supplied": 38250
+				},
+				"refused": 0,
+				"serial": 1,
+				"ticks": 1,
+				"valves": [
+					{
+						"closed_cells": 0,
+						"displaced_cells": 0,
+						"open": false,
+						"opened_cells": 0,
+						"rect": [
+							56,
+							220,
+							8,
+							4
+						],
+						"state": "closed",
+						"trimmed_water": 0,
+						"waiting": 0
+					}
+				],
+				"version": 1,
+				"water_unit": 255,
+				"whole_cell_water": true
+			},
+			"feature": "shared_workbench",
+			"launch_args_consumed": true,
+			"microscenario_error": "",
+			"owner_failed": false,
+			"owner_request_applied": true,
+			"owner_request_serial": 2,
+			"panel_message": "Choose a flyer to pilot, or use Place model to add an independent body.",
+			"panel_status": "Preparing · cell (-1, -1) · [2048, 2048] · Loading liquid-lab (Water: inertial): V valve, [ ] choose valve, G drain, H nozzle, J/K aim.   |   source 0 inserted / 0 blocked · granular LA-SELECTIVE · active Water freemass/reference",
+			"paused": true,
+			"pending": false,
+			"pending_hash": "",
+			"pending_physical_candidate": false,
+			"pending_serial": -1,
+			"phase": "single-step-completed",
+			"snapshot_failed": false,
+			"snapshot_serial": 36,
+			"step_pending": false,
+			"step_serial": 1,
+			"thread_alive": true,
+			"thread_started": true,
+			"tick": 1,
+			"worker_start_error": 0
+		}
+	]
+}

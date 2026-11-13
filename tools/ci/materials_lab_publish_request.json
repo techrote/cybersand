@@ -1,0 +1,8 @@
+{
+  "schema": "materials-lab-runtime-publish-request-v1",
+  "family": "materials-native-capabilities-v1",
+  "variant": "unchanged-hard-granular-consumer",
+  "scope": "source-matched-linux-windows-capabilities-and-graphical-lab",
+  "intent": "publish-source-matched-runtimes",
+  "request_sequence": 2
+}

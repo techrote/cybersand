@@ -1,0 +1,20 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+Waiting for blank workbench installed
+Waiting for roster places first flyer
+Waiting for real painted pixel
+Waiting for nondefault flyer tuning accepted
+Waiting for second flyer placement
+Waiting for stationary reset accepted
+Waiting for playing owner advanced
+Waiting for R resets during play
+Waiting for switch absent model while flying
+Waiting for move accepted during play
+Waiting for edited handling accepted during play
+Waiting for Defaults accepted during play
+Waiting for remove accepted during play
+Waiting for named start loaded
+Waiting for new blank acknowledged
+WORKBENCH_PILOT_UI {"assertions":179,"failures":[]}

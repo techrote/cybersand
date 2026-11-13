@@ -1,0 +1,317 @@
+{
+  "accepted_main": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3",
+  "date": "2026-11-11",
+  "documentation": {
+    "docs-effects-v2-final": {
+      "errors": [],
+      "status": "passed",
+      "warnings": []
+    },
+    "m11-effects-v2-final": {
+      "errors": [],
+      "status": "passed"
+    },
+    "repository-effects-v2-final": {
+      "errors": [
+        "Windows x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: godot/native_extension/cyber_demo_bridge.hpp",
+        "Linux x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: godot/native_extension/cyber_demo_bridge.hpp"
+      ],
+      "status": "failed"
+    },
+    "retrieval-challenges-effects-v2-final": {
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+      "canonical_hit_at_1": 131,
+      "canonical_hit_at_k": 163,
+      "mrr_at_k": 0.8797,
+      "questions": 164
+    },
+    "retrieval-effects-v2-final": {
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+      "canonical_hit_at_1": 18,
+      "canonical_hit_at_k": 31,
+      "mrr_at_k": 0.7318,
+      "questions": 32
+    },
+    "retrieval-lab-effects-v2-final": {
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+      "canonical_hit_at_1": 7,
+      "canonical_hit_at_k": 8,
+      "mrr_at_k": 0.9167,
+      "questions": 8
+    }
+  },
+  "execution_source": {
+    "digest": "0edbf83c98bc5771f341372b9b67f14a0e626592be9954409ab1930db6ff0ae3",
+    "file_count": 93,
+    "qualification": "Tests ran against captured working-file bytes; informational Git HEAD alone is not executable source custody."
+  },
+  "failure_history": [
+    "Initial full discovery correctly refused changed source and found the pre-correction Metal focused-fixture threshold mismatch.",
+    "Duplicate test class initially hid three cases; removed before the final202-test discovery.",
+    "Endpoint test geometry originally allowed specialised Acid corrosion before the selected pair lane; fixture coordinates now select the intended contact on tick1.",
+    "Forty ticks did not bring the primary dose into contact; those test recipes now run120 ticks. No production thresholds changed.",
+    "One UI run found Godot StringName keys in newly authored state_b; canonical JSON normalization now matches actual Python validation.",
+    "Initial display attempt could not create local sockets; the final actual X11 server/client ran together and used llvmpipe. Audio fell back to Dummy."
+  ],
+  "hosted_initial_attempt": {
+    "assertion_failure_observed": false,
+    "completed_test_dots": 175,
+    "correction": "Select existing native_suite_seconds7200 for aggregate202-test catalogue discovery; retain policy values, all assertions/cases/inner limits/provider/triggers/concurrency/schedules.",
+    "exit_code": 124,
+    "head": "22cb4cd3dc6fc915fe763faff41e413f90d022c8",
+    "job_id": 130809949540,
+    "result": "INCOMPLETE_TIMEOUT",
+    "run_id": 43106128435,
+    "url": "https://github.com/techrote/cybersand/actions/runs/43106128435",
+    "watchdog_seconds": 300
+  },
+  "identical_implementation_tree": "622fb32a75dd14344be3090b5417f7aebc6b7ab4",
+  "limits": [
+    "Windows execution NOT_RUN",
+    "Human acceptance NOT_RUN",
+    "LeakSanitizer not claimed",
+    "Production runtime publication and source-matched retained provenance remain gates",
+    "No production activation, cross-build saved-world compatibility or new production material identity",
+    "MoltenGlass H1 explicitly excluded by owner"
+  ],
+  "local_implementation": "65a9ea05d750441cd567280bf27a9fbf92624566",
+  "local_logs_sha256": {
+    "catalogue-effects-v2-final-pre-reconcile.log": "ac7953bf2ab519d6fc9ebf6081ab3516b93a5eace4abb4e7dec0acd67de6c3f8",
+    "catalogue-effects-v2-final.log": "2c794f12375a96bf29c8039d8442f00c46fbb1b633f25925913977eb9550cc7c",
+    "catalogue-effects-v2-initial.log": "f56c0797055f48128003a10b510497279c4152d530755885a854211e36f4f878",
+    "ci-budget-inventory.log": "5d3fe040482b5f57f9a9a9df541ab95fe821f036a9f6ce91c75992c03c65cbf0",
+    "ci-budget-provider.log": "4e64d073155dc5a1655bf13eb2060b8f9930ba169e749c6ec486ba2248b1618f",
+    "ci-budget-scheduling-tests.log": "78a20f23fa2bd126f37a1e8870a80d4d736483b54c2b8fcc938d88508e76f221",
+    "docs-effects-v2-final.log": "7728a92e1ec3ed5df55c479ef59a9fce2e538646e4916589a438a3e6b60289b3",
+    "effects-v2-asan-final-pre-reconcile.log": "4735fd0c79cad31e9de54566441e422d6199751395e81fe4c187f27374a5d1ca",
+    "effects-v2-asan-final.log": "29021c54d44a1cfe1ff3defe0bf41cde1e4889b7c23c78664f059e5826e74ebd",
+    "effects-v2-asan-initial.log": "00d0191e8ae2c08f578d4cbb3cf6898469f70d269be230de2a3109258e5268d3",
+    "independent-response-binding-final.log": "91893b025a14ea1742569252f1f8be7a90b1b303c3d9cfd17b2eac2b1fc435b1",
+    "m11-effects-v2-final.log": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+    "repository-effects-v2-final.log": "158d72ff6916e9b1b84cba58edc8dcf49ab287c4548fb8901b21d197f5234b35",
+    "retrieval-challenges-effects-v2-final.log": "6688a483bdd965941ef468aa39c75b7cb3b220968cc0f446f58c3da37c881835",
+    "retrieval-effects-v2-final.log": "9997d67485b50b74b841ac6ef350baa65a1d337469fbcadbfd179b330eee6f9e",
+    "retrieval-lab-effects-v2-final.log": "0659ef08ad08774c8eacb40003d9ad9007bc64dd51f275390ac7a63759778e65",
+    "ui-v2-binding-native-final.log": "1061c28f7884fafeb74d9b6eeb90fa1759f1e96c7e973f28a5eff6031a4c59b0",
+    "ui-v2-graphical-final.log": "15b64a9b82748dea27069f4d8b27c86835b036556bbd84acf41b5583e819f75f",
+    "ui-v2-receipt-binding-final.log": "5001a0df5f02e968ac4457c03d2a3c063a84795fea44fb555de0b59361aabae0",
+    "ui-v2-reconciled-native-final.log": "553b00176cfa368fe8d6e28bab26b4afe1476dac0a8645bc4108ac757d68e1f4",
+    "ui-v2-service.log": "d5cadae6ac8892c39cad7c717855c1dc27373216e4ae380308cd6e53b244b4d5",
+    "world-case-review-v2-final.log": "1b59aac389bc80ed582f0b96ac6af6aba8ebb33c2984741ba0f563c04e8801bf",
+    "world-reconciled-admission.log": "8c921f731441b6953f92cbb5f140b315f552e437a58c77980cd65e95c75e1fe1"
+  },
+  "observations": {
+    "metal_contract": {
+      "backend": "native_world_endpoint_contract_v2",
+      "boundary": "Named isolated endpoint fixtures; primary bay separately exercises the authored pair configuration",
+      "case_count": 2,
+      "cases": [
+        {
+          "future_pair_events": 1,
+          "later_moved_cells": 0,
+          "layout": 0,
+          "name": "metal_sets_declared_charge_register",
+          "no_value_change": false,
+          "pair_events": 1,
+          "retained_material": 28,
+          "same_build_persistence": true,
+          "slot": 9,
+          "source_role": "first",
+          "state_a": 173,
+          "state_b": 73,
+          "state_b_after_four_ticks": 71,
+          "temperature": 371,
+          "ticks_to_reaction": 1,
+          "water_consumed": 0,
+          "water_produced": 0,
+          "zero_visited_ticks": 0
+        },
+        {
+          "future_pair_events": 1,
+          "later_moved_cells": 0,
+          "layout": 1,
+          "name": "metal_sets_declared_charge_register",
+          "no_value_change": false,
+          "pair_events": 1,
+          "retained_material": 28,
+          "same_build_persistence": true,
+          "slot": 9,
+          "source_role": "first",
+          "state_a": 173,
+          "state_b": 73,
+          "state_b_after_four_ticks": 71,
+          "temperature": 371,
+          "ticks_to_reaction": 1,
+          "water_consumed": 0,
+          "water_produced": 0,
+          "zero_visited_ticks": 0
+        }
+      ],
+      "status": "passed"
+    },
+    "salt_contract": {
+      "backend": "native_world_endpoint_contract_v2",
+      "boundary": "Named isolated endpoint fixtures; primary bay separately exercises the authored pair configuration",
+      "case_count": 2,
+      "cases": [
+        {
+          "future_pair_events": 1,
+          "later_moved_cells": 0,
+          "layout": 0,
+          "name": "salt_retains_registers_and_temperature",
+          "no_value_change": false,
+          "pair_events": 1,
+          "retained_material": 23,
+          "same_build_persistence": true,
+          "slot": 2,
+          "source_role": "second",
+          "state_a": 173,
+          "state_b": 91,
+          "state_b_after_four_ticks": 91,
+          "temperature": 371,
+          "ticks_to_reaction": 2,
+          "water_consumed": 83,
+          "water_produced": 0,
+          "zero_visited_ticks": 0
+        },
+        {
+          "future_pair_events": 1,
+          "later_moved_cells": 0,
+          "layout": 1,
+          "name": "salt_retains_registers_and_temperature",
+          "no_value_change": false,
+          "pair_events": 1,
+          "retained_material": 23,
+          "same_build_persistence": true,
+          "slot": 2,
+          "source_role": "first",
+          "state_a": 173,
+          "state_b": 91,
+          "state_b_after_four_ticks": 91,
+          "temperature": 371,
+          "ticks_to_reaction": 2,
+          "water_consumed": 83,
+          "water_produced": 0,
+          "zero_visited_ticks": 0
+        }
+      ],
+      "status": "passed"
+    },
+    "ui_salt_cells": {
+      "final_candidate": 6448.0,
+      "final_reference": 6381.0,
+      "initial_candidate": 6448.0,
+      "initial_reference": 6448.0
+    }
+  },
+  "platform": {
+    "compiler": "GCC 14.2.0 (Debian 14.2.0-19)",
+    "display": "X11",
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "native_library_sha256": "5c0b84f8719c7c5165849d8f1993a0375db58c8a1fbdcfff4ffc730b6e458269",
+    "os": "Linux",
+    "python": "3.12.14",
+    "renderer": "llvmpipe (LLVM 19.1.7, 256 bits)",
+    "viewport": [
+      1680,
+      1050
+    ]
+  },
+  "previous_lab_head": "55c25abf93328cc4d47f1a50941ee418c04d949a",
+  "published_implementation": "6cc0b3213d9ac27ce0c1ef09161fb51a74aa7648",
+  "recipe_roundtrip": {
+    "candidate_digest": "6bd22ab6f2372d6c10ec888bb63dcbcc2a81d554bb6484b71b2bb3b5234e6f8e",
+    "digest": "90dbf16934ec763253c3e72ce986d731bd8f9762ac067e7d42ae3bb2edff514f",
+    "imported_state": "validated_candidate",
+    "native_execution_on_import": false,
+    "runtime_active": false,
+    "scenario": {
+      "first": 3,
+      "second": 23,
+      "seed": 73,
+      "ticks": 37,
+      "workers": 4
+    },
+    "schema": "cybersand.material-lab.world-case"
+  },
+  "reconciled_commits": [
+    "6524e21156aea239f78773ced67768c2fb84d322",
+    "7df2aff59642b61e45da58743dbeaf71bc00aba7",
+    "ac218279cc6e43119d4be5cbeefa2607ac77ba4f"
+  ],
+  "reconciled_concurrent_head": "ac218279cc6e43119d4be5cbeefa2607ac77ba4f",
+  "schema_id": "cybersand.material-lab.effects-v2-qualification",
+  "schema_version": 1,
+  "tests": [
+    {
+      "command": "python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py' -v",
+      "includes": "5 actual effects-v2 World cases, 4 legacy candidate/reference World cases, descriptor native probes and strict invalid-input/custody regressions",
+      "result": "PASS",
+      "seconds": 330.304,
+      "tests": 202
+    },
+    {
+      "assertions": 189,
+      "command": "Godot --headless --path godot --script res://tests/test_material_lab_ui.gd",
+      "native_execution": true,
+      "result": "PASS"
+    },
+    {
+      "assertions": 196,
+      "command": "Godot --path godot --rendering-method gl_compatibility --display-driver x11 --script res://tests/test_material_lab_ui.gd -- --capture-output=<external-directory>",
+      "native_execution": true,
+      "result": "PASS"
+    },
+    {
+      "checks": 87,
+      "command": "Godot --headless --path godot --script res://tests/test_material_lab_service.gd",
+      "result": "PASS",
+      "scope": "Real process/protocol lifecycle; not native material acceptance"
+    },
+    {
+      "checks": 145,
+      "command": "Godot --headless --path godot --script res://tests/test_material_lab_world.gd -- --receipt-validation-only",
+      "result": "PASS",
+      "scope": "Retained actual receipt parser/control adversaries; no fresh native execution"
+    },
+    {
+      "checks": 23,
+      "command": "Independent mounted parent response-consumer reproduction",
+      "result": "PASS",
+      "scope": "Retained native receipt positive control and definition/digest/readback adversaries; no fresh native execution"
+    },
+    {
+      "command": "world_candidate.compile_world_test(import_candidate(preset), scenario=<receipt scenario>, sanitize=True)",
+      "environment": {
+        "ASAN_OPTIONS": "detect_leaks=0:strict_string_checks=1",
+        "UBSAN_OPTIONS": "halt_on_error=1"
+      },
+      "presets": [
+        "lab-salt-retain-world-v2.json",
+        "lab-metal-charge-world-v2.json"
+      ],
+      "result": "PASS",
+      "sanitizers": [
+        "address",
+        "undefined"
+      ],
+      "seconds": [
+        71.561,
+        72.124
+      ]
+    },
+    {
+      "command": "compiler.py --check; compatibility.py --check; check_native_parity.py",
+      "production_cutover": false,
+      "result": "PASS"
+    },
+    {
+      "command": "check_repository.py",
+      "errors": [
+        "Retained Windows runtime requires rebuild for cyber_demo_bridge.hpp",
+        "Retained Linux runtime requires rebuild for cyber_demo_bridge.hpp"
+      ],
+      "result": "BLOCKED"
+    }
+  ]
+}

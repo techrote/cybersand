@@ -4,11 +4,50 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-11
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
+
+For the combined #562 Materials Lab / #564 Workbench candidate, original source ancestry, shared history preservation, standalone evaluation and #563 merge-order boundaries, read the [combined qualification record](../audits/2026-11-12-mat-auth-workbench-integration.md).
+
+## Materials Lab v1 review candidate — 2026-11-11
+
+| Question | Canonical route |
+|---|---|
+| How do I open the real Materials Lab and inspect declared versus effective native physics? | [Desktop launch and native inspection](../operations/materials-lab-authoring.md#browse-and-inspect-actual-behaviour) |
+| Which properties and reaction effects can I edit, and does compiled mean runtime-active? | [Candidate boundaries and states](../operations/materials-lab-authoring.md#supported-candidate-edits-and-state-transitions) |
+| How do presets round-trip, synthetic powder132 compile, and threshold0 reactions behave? | [Preset compilation](../operations/materials-lab-authoring.md#save-import-compile-and-compare), [reaction diagnostics](../operations/materials-lab-authoring.md#reaction-authoring-and-deterministic-diagnostics) |
+| How do I test materials in an actual native owner and reproduce the same configuration? | [Native experiments](../operations/materials-lab-authoring.md#native-simulation-experiments-and-reproducible-cases) |
+| Can edited candidates change real movement or products, with a clean reference and quantity/persistence checks? | [Compiled candidate World comparison](../operations/materials-lab-authoring.md#compare-an-edited-candidate-in-a-real-native-world) |
+| How do I save an explicit compiled-World recipe and author retained-state or Metal charge effects? | [Source-bound World recipes](../operations/materials-lab-authoring.md#compare-an-edited-candidate-in-a-real-native-world), [endpoint effects v2](../operations/materials-lab-authoring.md#reaction-authoring-and-deterministic-diagnostics) |
+| What was actually executed on Linux, Windows or graphically? | [Dated qualification](../audits/2026-11-11-materials-lab-v1.md); graphical evidence is separate from Windows/human acceptance |
+| How do source/target cells, masks and source-core windows affect a real native contact? | [Native contact inspection](../operations/materials-lab-authoring.md#inspect-an-actual-native-contact); supplied rolls do not establish dispatch or sleeping state |
+| How can I launch the Lab on Windows with its authoring tools included? | [Windows evaluation package](../operations/materials-lab-authoring.md#windows-launch), [completion and runtime qualification](../audits/2026-11-11-materials-lab-completion.md) |
+
+[Focused Lab questions](retrieval-questions-materials-lab.json) are additive;
+the frozen evaluation and existing historical fixtures retain their original scope.
+
+## Direct native art batches without inference
+
+For the current combined Draft, standalone generator repairs, native stored-material authority, PAINT/agent ordering, preserved feature sets and acceptance, retrieve the [integration runbook](../operations/wb-art-paint-integrated-candidate.md). For #559 geometry, protection, acknowledgements, Stop and Save limits, retrieve the [direct art contract](../systems/workbench-direct-art-batches.md). For OpenAI/NVIDIA/LM Studio, conversation/context, scanlines, image observations, traffic, caps and cancellation, retrieve the [provider contract](../systems/workbench-art-providers.md).
+
+
+## Generated terrain in the playable workbench
+
+For shared baseline/edits/actors versus live session, Save versus Flatten,
+desktop/agent/remote convergence and the required combined regression, retrieve
+the [authoring data contract](../architecture/shared-workbench-authoring-data.md).
+It distinguishes Approved direction and Planned successors from current source.
+
+For GEN-007 preview/install, global coordinates, material receipts, authored-start
+save/reopen and capacity limits, retrieve the
+[generated-map contract](../systems/explore001-generated-playable-maps.md).
+For the Windows bundle launcher and manual acceptance procedure, retrieve the
+[candidate playtest guide](../operations/explore001-desktop-playtest.md).
+The dated [QA findings](../audits/2026-11-08-explore001-integration-qa.md) are
+historical evidence, separately scoped from accepted-main availability.
 
 ## Branch reconciliation and design choices
 
@@ -190,6 +229,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Sampled-player gravity, terminal speed, effective mass, jetpack and step/knee/clamber tuning | [Player/environment tuning](../systems/player-environment-profiles-and-traversal.md); use [granular policy](../systems/granular-interaction-policy.md) for REM-003/PCHAR sampled-player response boundaries and [Water design](../systems/water-design.md) for the separate liquid semantic owner |
 | Which Runner, Skimmer and Crawler actions remain compatible with either player or policy input? | [SetA actor controls](../systems/actor-control-prototypes.md), [SetA limits](configuration-reference.md#actor-control-prototype-values) |
 | Which rigs belong to SetB/F/Y/U/V, how do aim/effort/trim/reel work, and are the model personas factual? | [Actor rigs and shared input](../systems/actor-rigs.md), [rig limits](configuration-reference.md#actor-rig-values); SetV is explicitly fictional interface design |
+| How do the workbench valve, drain and pumped nozzle move Water, and how is their quantity accounted? | [Workbench liquid equipment](../systems/workbench-liquid-equipment.md), [inertial reference](../architecture/inertial-cellular-v1.md), [ballistic Water](../architecture/ballistic-water-v1.md) |
 | Which actor tools, ballistic payloads and material processors exist, how do they activate, and what are their budgets? | [Actor usables](../systems/actor-usables.md), [usable limits](configuration-reference.md#actor-usable-values), [recording](../operations/gameplay-recording.md) |
 | How can Thunderbowl spawn battle/training actors with fly by wire, direct metal, oracle, lemming, emergent/local swarm, NCA or smart-link control? | [Thunderbowl control reference](../systems/thunderbowl-control-reference.md), [arena limits](configuration-reference.md#thunderbowl-values) |
 | How do stale rig actions, a quick tap or expired charged leap appear in policy observations and recordings? | [Admission and consumed edges](../systems/actor-rigs.md#identity-freshness-and-consumed-edges), [v2 observations](../systems/actor-rigs.md#what-does-the-version-2-observation-contain), [recording](../operations/gameplay-recording.md) |

@@ -89,13 +89,37 @@ class CheckoutCustodyTests(unittest.TestCase):
 
     def test_current_authenticated_attributes_cover_both_real_launchers(self):
         root = Path(__file__).resolve().parents[2]
-        attrs = {'.gitattributes': (root / '.gitattributes').read_bytes()}
+        evidence = 'docs/audits/materials-lab-completion-20261111/.gitattributes'
+        # The actual source archive authenticates every scoped attributes file,
+        # including evidence directories outside the shader execution inputs.
+        attrs = {name: (root / name).read_bytes() for name in ('.gitattributes', evidence)}
         for path in ('build_windows_msvc.bat', 'tools/launch_desktop.ps1'):
             data = (root / path).read_bytes().replace(b'\r\n', b'\n')
             self.assertIn(digest(data.replace(b'\n', b'\r\n')),
                           checkout.allowed_checkout_digests(path, data, attrs))
         self.assertEqual(checkout.allowed_checkout_digests('godot/example.gd', self.canonical, attrs),
                          {digest(self.canonical)})
+
+    def test_unknown_scoped_evidence_attributes_do_not_poison_source_custody(self):
+        attrs = self.attributes | {'docs/evidence/.gitattributes':
+            b'* -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol linguist-generated=true\n'}
+        for source in ('tools/launch.ps1', 'godot/nested/capture.ps1'):
+            with self.subTest(source=source):
+                self.assertEqual(self.forms(source, attrs=attrs),
+                                 {digest(self.canonical), digest(self.crlf)})
+        for source in ('godot/shader.gdshader', 'native/world.cpp',
+                       'tools/play/readback.py', 'docs/evidence-other/report.json'):
+            with self.subTest(source=source):
+                self.assertEqual(self.forms(source, attrs=attrs), {digest(self.canonical)})
+
+    def test_unknown_attributes_still_fail_closed_inside_their_actual_scope(self):
+        attrs = self.attributes | {'docs/evidence/.gitattributes':
+            b'* -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol linguist-generated=true\n'}
+        # Scoping the evidence configuration must not turn unsupported relevant
+        # metadata into a normalization permission for a future source input.
+        for source in ('docs/evidence/report.log', 'docs/evidence/deep/report.json'):
+            with self.subTest(source=source), self.assertRaises(ValueError):
+                self.forms(source, attrs=attrs)
 
 
 if __name__ == '__main__':

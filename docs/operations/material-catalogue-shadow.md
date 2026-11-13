@@ -4,11 +4,30 @@ status: Current
 document-kind: guide
 scope: Merged MAT-AUTH-001 353-A shadow tooling and source guards; legacy production authority persists, with consumer migration and production liveness corrections separately gated
 canonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-11
 related-documents: [../architecture/material-authoring-catalogue-plan.md, ../systems/materials-and-rule-kernels.md, ../systems/intermaterial-interactions.md, ../architecture/liquid-solver-family-policy.md, documentation-maintenance.md]
 ---
 
 # Material catalogue shadow compiler and compatibility guards
+
+**Separate native capability candidate — [Draft #563](https://github.com/techrote/cybersand/pull/563):**
+the [bounded native cutover](../audits/2026-11-11-material-native-capability-cutover.md)
+generates only the hard/granular capability maps used by `MaterialRules`.
+It preserves every existing result, both digest-bearing headers, policy/save
+identity and the frozen lock. `native_capabilities.py --check` verifies its
+separate native output; the code-pinned generated route authenticates the
+canonical source, validator, generator and header at the reviewed source commit.
+The original shadow output directory remains unconsumed. Descriptor/reaction
+authority and the independent #384 display-name migration are unchanged.
+The candidate still requires its own runtime publication and platform gates.
+
+**11 November review candidate:** the [Materials Lab v1](materials-lab-authoring.md)
+adds an actual desktop authoring consumer of this compiler. It validates and
+round-trips presets, compiles generated candidates into an external native probe,
+and mounts native inspection plus existing-material MicroScenarios. Generated
+definitions remain unconsumed by production World and fallback; the immutable
+lock and production IDs are unchanged. The [new authorization and boundary](../architecture/material-authoring-catalogue-plan.md#15-materials-lab-v1-implementation-boundary--2026-11-11)
+supersede unstarted #355/#356 statements only for this bounded candidate workflow.
 
 The [adopted-main integration record](../audits/2026-11-04-mat-auth371-integration.md)
 records the escaping correction, independent review and resulting-head gate

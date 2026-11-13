@@ -1,0 +1,44 @@
+{
+  "candidate": {
+    "appearance": {
+      "visual_state_source": 0
+    },
+    "capabilities": {
+      "granular_support": true,
+      "hard_surface": false
+    },
+    "descriptor": {
+      "accepts_density_exchange": true,
+      "current_rule_available": true,
+      "density": 500,
+      "density_motion": 1,
+      "id": 2,
+      "initial_state_a": 0,
+      "initial_state_b": 0,
+      "kernel": 1,
+      "lateral_flow": 0,
+      "maximum_write_radius": 1,
+      "movable": true,
+      "name": "sand",
+      "rgba": [
+        17,
+        91,
+        203,
+        255
+      ],
+      "state": 2,
+      "valid": true,
+      "viscosity_index": 0
+    },
+    "name": "Sand candidate",
+    "reactions": [],
+    "schema_id": "cybersand.material-lab.preset",
+    "schema_version": 1,
+    "source_catalogue_sha256": "491eb2248049014956b8a4fcc1e63e36c5e2ca6824b9d3c366ce94b1fd5d147f",
+    "target_id": 2,
+    "template_id": 2
+  },
+  "digest": "42d1220b338a715290bcc6c1ac3b9b8bc577332568e476dba221812ae94e12c0",
+  "schema_id": "cybersand.material-lab.export",
+  "schema_version": 1
+}

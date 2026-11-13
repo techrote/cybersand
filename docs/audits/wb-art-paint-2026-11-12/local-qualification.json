@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "date_utc": "2026-11-12T20:08:15.836257+00:00",
+  "baseline_commit": "a8259c5a789cff1d2652729c1a24508e1fce4ab6",
+  "qualification_scope": "Local Linux headless development evidence; final exact-commit hosted Windows/Linux and full release workflows remain separate.",
+  "source_files": {
+    ".github/workflows/gdextension.yml": "a88f9038e164d851bf8cfe01f11f1e817bb1e1523d2b717ba91243d32839f9aa",
+    ".github/workflows/native.yml": "7cfb1aed6ae2b810e77812444340f6a8844cb480c05a8f218d45ddee76e18379",
+    ".github/workflows/wb-art-paint-qualification.yml": "85e42d37c6c834ab3af9c19dfb10dc5b0fd61d34cbdfafe6587b0f531a1ea14e",
+    "godot/scripts/art_batch_executor.gd": "a967028ba0080625d8d246100be052fd0dabed8e34c04476b968cf3994ccd257",
+    "godot/scripts/shared_workbench.gd": "2e10cdafef447d59817972231fb928032ba8ea8fbe9dc4704fcb696a278bc1a5",
+    "godot/scripts/workbench_paint_editor_controller.gd": "7ce59ceffe6f7222d2cdaa0ccd0be1ed3c5e8d7e9a5416bb16582eda5510fdd2",
+    "godot/scripts/workbench_paint_editor_shapes.gd": "82c90552d04d975908f8a7ba14afc78ddb0152faf57684c1957b3f058c9e8e16",
+    "godot/tests/test_paint_editor_history.gd": "cf2f7147d072389e0c38305ce00d4a842b041d67005ce6513212c23ab5c995d1",
+    "godot/tests/test_paint_editor_shapes.gd": "12e819867dfca038dd1f46597f5a6a899495174f3d2d7f03f6f12a6d4a760b03",
+    "godot/tests/test_paint_editor_workbench.gd": "2b85aa7a582afe7f455ec9501ce6e72f2bf847d7d98a26001633aa9650b2c3bc",
+    "godot/tests/test_workbench_combined_authoring.gd": "db3694bc6988d34cc0bcbb98dc528df2d00ed37b082f8865102735f84e4005a1",
+    "godot/tests/test_workbench_deferred_paint.gd": "70b34520227362699d9b45a6f61ad22b5d7875ea0f9264baf213844c0e5a4026",
+    "godot/tests/test_workbench_edit_ordering.gd": "6e785041651dc1bf6ad11cd876aeabeb1e012a2b1fda8a0461c9f013f9763152",
+    "tools/ci/run_workbench_qualification.py": "fdc6b26b65301b2032681ecdfce1a26e688be0c5b69b2c8c5a8f9890bf3f1f26",
+    "tools/package_explore001_candidate.py": "2b31e78ab35c68e8546ecaeaf190344b72287fae480204a1a8bf9617b9c284c0"
+  },
+  "native_library_sha256": "16ffc0ce8190c2e8ca2e31fc59f10c55148adc6e7f16727dc96c094d8a96696a",
+  "native_source_unchanged_from_baseline": true,
+  "toolchain": "GCC14.2/binutils2.44, explicit development drift; hosted pinned builds are release evidence",
+  "godot": "4.7.stable.official.5b4e0cb0f",
+  "local_results": {
+    "shared_ordering_workers_1_and_4": {
+      "checks": 144,
+      "failures": 0
+    },
+    "failed_replacement_deferred_human": {
+      "checks": 49,
+      "failures": 0
+    },
+    "paint_shapes": {
+      "checks": 165,
+      "failures": 0
+    },
+    "paint_mounted_author": {
+      "checks": 64,
+      "failures": 0
+    },
+    "paint_mounted_reopen": {
+      "checks": 12,
+      "failures": 0
+    },
+    "paint_recovery": {
+      "checks": 5,
+      "failures": 0
+    },
+    "fragmented_history_author": {
+      "checks": 1884,
+      "failures": 0
+    },
+    "fragmented_history_reopen": {
+      "checks": 1920,
+      "failures": 0
+    },
+    "combined_1024_author_worker1": {
+      "checks": 165,
+      "failures": 0,
+      "seconds": 24.811
+    },
+    "combined_1024_fresh_reopen_worker1": {
+      "checks": 39,
+      "failures": 0,
+      "seconds": 9.147
+    }
+  },
+  "retained_failures": {
+    "late_fill_cancel": "2 assertion failures on original code: native cells and authored history changed after Cancel",
+    "shared_save": "Original public Save wrote queued/extracted strokes and consumed an unowned actual receipt; 26 assertions failed including cascades",
+    "failed_replacement": "Original eager record retirement lost native-confirmed prefix from authored and saved start; exactly2 assertions failed",
+    "large_fill": "384\u00b2 watertight interior fits product cap but original directional capture exhausted budget",
+    "concurrent_source_change": "Behavior completed, source stability guard failed; not counted as a pass"
+  },
+  "remaining_release_gate": "Tracked runtime source manifests predate four integration native inputs on each OS; evaluation candidate provenance does not publish tracked runtime.",
+  "evidence": {
+    "combined-1024-author-final.log.txt": "d600d13a0a321555ce1ad824edeb0fbe7c88f1348577ec2a36a9b8e56b14f201",
+    "combined-1024-reopen-final.log.txt": "274f44b8356beaa423cdb48858781a516e3b180771359d57b7933d265335c42b",
+    "combined-concurrent-source-change.log.txt": "5c92d87fc66d6d9eac0dfbcfb19c5bd9516481702ecca2ddc04a4ba0436503a7",
+    "combined-large-fill-original-failure.log.txt": "c5124f78205549ce7477288b929efef15d36fd0739398357252701128d076044",
+    "historical-m11.json": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+    "late-fill-cancel-original-failure.log.txt": "e15bb7a65d399aa2709738201a41efe62f9d63a9afe1890b251d9306f218994e",
+    "late-fill-cancel-original-source.json": "70dffa30f5f92d3112c7ad1bd7936ec957f0868f606a37649190c58eda1fb677",
+    "paint-history-author-final.log.txt": "545eb5ab4f4f65653536d97920612c13e83855c1e2bd37a3bdf46287a3f9c54f",
+    "paint-history-reopen-final.log.txt": "7b2fb0c74026660c6b02a07be7a9f940687b73cfedd12c238a435bae2358b255",
+    "paint-mounted-author-final.log.txt": "c22516a87bb13f6a63b8cfc5af161f0a9bdc016b8881315677646eeb4d0bfcdb",
+    "paint-mounted-reopen-final.log.txt": "72fbd80d6e55b13fce34b60a338f459de93a4291a0bc4a76b98d1c91660dc833",
+    "paint-recovery-final.log.txt": "b0b0bfcb9659b975ecbbce73c1013f5c0652cc091aa2326cd4276e84a273b660",
+    "paint-shapes-final.log.txt": "a2023e9b50c212e2d8d8a32d24179435a5961864f6e7d09bb6910e27d77a8a5e",
+    "paint-shapes-source.json": "52cda356ae18a7d3b592b3ef3162f72df6a1bf45b0597ebcd04d75707c6a2ddc",
+    "replacement-final-source.json": "2779222eee06566b3fdec758a5bd9b76ef9b06e3619b3dc2de6d4c6b59141e73",
+    "replacement-final.log.txt": "d25d6c6fac821d95e390031d18bff1f3f373f3da1c96e0fbd6ea1eee6932d49e",
+    "replacement-original-failure.log.txt": "c1724af0773cc00fa2e837e8b416c6d7c9fa532716e18011237cfd588a4bc2fe",
+    "replacement-original-source.json": "913ad9c0b17668647da847f1440217412218f3b0fe6504d4d438158b30ca1b71",
+    "repository-retained-runtime-failure.json": "350080de92f284d8d789be06d78f387cf88677a0552943ab26f1dd8c0f00b73c",
+    "shared-ordering-final-source.json": "3578840c6b76343c02f86ce46321beb8c8020b2cddda6853f8c0bd22df2b519e",
+    "shared-ordering-final.log.txt": "b1a004d022cad1baed8c46955f79c18ebd31548177c4a02ef33f34eb17c33238",
+    "shared-save-original-failure.log.txt": "87afdc7da67d2d8ac404d13078fa49e89f393def8f66042584e0fcc6e434f5f1",
+    "shared-save-original-source.json": "bdecf7013c2d075f7f8bafa05cdf06fda957c1cab17139b7f0e7198c339d2229"
+  },
+  "local_combined_digest": "c7893c3b5a6032b990b38f402edbba9ca2f1a996f6751c28194492f68f4d34b2",
+  "local_combined_scope": "Real generation,147456-cell adaptive Fill, full stored native authored baseline, PAINT/agent alternation, Stop4096 confirmed prefix, finite nozzle7 emissions/1785 Water cells,9 native simulation ticks, Save, fresh-process authored reopen, continued editing. Headless Linux only; graphical Windows/Linux and4workers are hosted gates.",
+  "reproduction": {
+    "common": "Godot4.7 --headless --path godot --script res://tests/NAME.gd with separate XDG_DATA_HOME per pair",
+    "ordering": "test_workbench_edit_ordering.gd runs native workers1/4",
+    "replacement": "test_workbench_deferred_paint.gd",
+    "paint": "test_paint_editor_shapes.gd; test_paint_editor_workbench.gd then PAINT_REOPEN=1; test_paint_editor_recovery.gd",
+    "history": "test_paint_editor_history.gd then CYBERSAND_PAINT_HISTORY_REOPEN=1",
+    "combined": "WB_COMBINED_SIDE=1024 WB_COMBINED_WORKERS=1 test_workbench_combined_authoring.gd then WB_COMBINED_REOPEN=1 with same isolated userdata",
+    "hosted": "Existing wb-art-paint-qualification.yml, native.yml and gdextension.yml on the integration branch push"
+  }
+}

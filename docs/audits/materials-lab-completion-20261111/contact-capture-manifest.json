@@ -1,0 +1,38 @@
+{
+	"assertions": 123,
+	"display": "X11",
+	"engine": {
+		"build": "official",
+		"hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+		"hex": 263936,
+		"major": 4,
+		"minor": 7,
+		"patch": 0,
+		"status": "stable",
+		"string": "4.7-stable (official)",
+		"timestamp": 0
+	},
+	"failures": 0,
+	"image_sha256": "7b484a11af154222149356f0d1e94a5df9c1123333b2024ba868661667072b24",
+	"native_library_path": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+	"native_library_sha256": "22f39a70915f4eb00636b0d85a6cd640f22dd70884965b4e8acbb026d5d0ba1c",
+	"platform": "Linux",
+	"readback_sha256": "84bbb95031bfa6140767e7af7097ba3796e484d754e3e0ae9338bde0fc5f7fdb",
+	"renderer": "llvmpipe (LLVM 19.1.7, 256 bits)",
+	"rendering_method": "gl_compatibility",
+	"schema_id": "cybersand.material-lab.contact-capture",
+	"schema_version": 1,
+	"scope": "Actual mounted contact controls and native owner readback on the stated platform; no human acceptance or executed-reaction claim from supplied resolver roll.",
+	"source_sha256": {
+		"materials_lab.tscn": "67f4d63cdf6aa0aff3717d802dd051ab34eef7e0757b18eba1ca15183c89d5d4",
+		"native_extension/cyber_demo_bridge.hpp": "8b3db71df12a1330575b8e466279e4142286aece47cb0f4dfa919c6b1075abf3",
+		"native_extension/material_lab_inspection.inc": "f02556482a21a8bf989be500a4f41e77144baf152b8fc9cb018db60fbdde67b4",
+		"scripts/material_lab_experiment.gd": "39107638d1c05829d34283a0d4e26ebfbb3d9f091b4ef4a34099bb89e3c51c59",
+		"scripts/material_lab_panel.gd": "31a14e4f89a987391b096830175e75f13caaab221ad89f4e00ccea77b9e0c741",
+		"tests/test_material_lab_diagnostics.gd": "8c457b41ab35f995b279a2c8e662b6fad11860ac8d3dc6910f8dffd36dd205a9"
+	},
+	"viewport": [
+		1680,
+		1050
+	]
+}

@@ -1,0 +1,25 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ART_UNDO_CHECK shared Workbench and PAINT history mounted true
+ART_UNDO_CHECK agent-aware shared history API exists true
+ART_UNDO_CHECK actual native worker capacity matches requested fixture true
+ART_UNDO_CHECK fresh 512 native start admitted false
+ERROR: ART_UNDO fresh 512 native start admitted
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_art_undo.gd:34)
+       [1] fresh (res://tests/test_art_undo.gd:72)
+       [2] grouped_overlap_and_noops (res://tests/test_art_undo.gd:137)
+       [3] run (res://tests/test_art_undo.gd:351)
+       [4] until (res://tests/test_art_undo.gd:40)
+ART_UNDO_CHECK all mandatory agent Undo scenarios completed false
+ERROR: ART_UNDO all mandatory agent Undo scenarios completed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_art_undo.gd:34)
+       [1] run (res://tests/test_art_undo.gd:357)
+       [2] until (res://tests/test_art_undo.gd:40)
+ART_UNDO_CHECK tested scripts and native bytes remained unchanged true
+ART_UNDO_RESULT {"checks":6,"failures":["fresh 512 native start admitted","all mandatory agent Undo scenarios completed"],"measurements":[],"native_material_witnesses":[],"provider_boundary_fixture":"controlled states; no HTTP request","source_identity":{"art_batch_executor.gd":"2c7c7c1605a5cf9f630e6fabad6cb6d34804e0c0a19c9e8e96a7e9535489fc98","art_batch_panel.gd":"0a25ffe97f15dc78d476301ea5de41aed463a87556cb14d7d985d07c1a0d87c2","display":"headless","godot":"4.7-stable (official)","native_sha256":"16ffc0ce8190c2e8ca2e31fc59f10c55148adc6e7f16727dc96c094d8a96696a","os":"Linux","shared_workbench.gd":"8d80dc46056c9dbbd7f16d06c6acace01ace8fa725b066b399f2ec02f07f6bdc","simulation_worker.gd":"bac92f82ef3d3dc4fad54c785c148eba3ea1c0ec1e1b9805a65ffea261cc6016","test_sha256":"45613cbaa9c84253add9f922d2571235e53e04536dacf209fe3285edd85fd61a","workbench_paint_editor_controller.gd":"ac5b1c6ac733796227f1fdcfb72c1465ae6fc34c9aee763d05487d5312c8d366","workbench_paint_editor_executor.gd":"1f118427e505f0a4b7f63e7e10089507f89445c08f9ead5a7f41768935160e7d"},"workers":1}

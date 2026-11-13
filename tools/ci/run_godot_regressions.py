@@ -25,6 +25,18 @@ import godot_scheduling as scheduling
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_UNKNOWN_WEIGHT_SECONDS = scheduling.UNKNOWN_SECONDS
+# The Lab invokes this source-level compiler outside the Godot process. Retain
+# its exact working-tree inputs in addition to the existing Git/runtime identity.
+INPUT_SCOPES = ("tools/material_catalogue", "materials/catalogue")
+
+
+def tested_inputs(root: Path, *, timeout: float | None = None) -> dict[str, str]:
+    allowance = execution_policy.watchdog_seconds("operation_seconds") if timeout is None else timeout
+    paths = subprocess.check_output(
+        ["git", "ls-files", "-z", "--", *INPUT_SCOPES], cwd=root, timeout=allowance,
+    ).decode("utf-8").split("\0")
+    return {relative: hashlib.sha256((root / relative).read_bytes()).hexdigest()
+            for relative in sorted(paths) if relative}
 
 # Approximate weights from the 2026-09-19 Linux CI run. They are scheduling hints,
 # not pass/fail thresholds. Unknown tests deliberately receive a conservative
@@ -817,6 +829,7 @@ def execute(args, timing: dict, budget: scheduling.ExecutionBudget) -> int:
         },
         "shard_count": args.shard_count,
         "shard_index": args.shard_index,
+        "tested_inputs": tested_inputs(ROOT, timeout=metadata_remaining()),
     }
     metadata_remaining()
     write_json(args.output / "identity.json", identity)
@@ -876,6 +889,14 @@ def execute(args, timing: dict, budget: scheduling.ExecutionBudget) -> int:
         mark_incomplete(timing, [], reason="aggregate_terminal_reserve_exhausted")
         write_json(args.output / "timings.json", timing)
         return 1
+
+    after = tested_inputs(ROOT)
+    timing["source_drift"] = sorted(
+        relative for relative in identity["tested_inputs"].keys() | after.keys()
+        if identity["tested_inputs"].get(relative) != after.get(relative)
+    )
+    if timing["source_drift"]:
+        raise RuntimeError("Material authoring source inputs changed during regression execution")
 
     timing["status"] = "failed" if suite_failed else "passed"
     timing["completed"] = True

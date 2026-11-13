@@ -1,0 +1,168 @@
+{
+  "schema": "wb-art-paint-full-godot-final-audit-v1",
+  "run_id": 43301147487,
+  "run_url": "https://github.com/techrote/cybersand/actions/runs/43301147487",
+  "source_sha": "0025bd942850e6e75e77d4beb9c4885d7dc1b2f4",
+  "source_tree": "6fff8a8c833eb65f4297d6fd07ef9f5edf336c0d",
+  "attempt": 1,
+  "status": "completed",
+  "conclusion": "success",
+  "completed_at": "2026-11-12T20:50:53Z",
+  "jobs": {
+    "total": 52,
+    "passed": 50,
+    "failed": 0,
+    "skipped": [
+      {
+        "id": 131472358848,
+        "name": "ready validation scope",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 131472422957,
+        "name": "physical-actor-stress",
+        "conclusion": "skipped"
+      }
+    ]
+  },
+  "skipped_job_reasons": {
+    "ready validation scope": "Only applies to a pull-request ready_for_review event; this qualification was a push without Ready promotion.",
+    "physical-actor-stress": "Separate optional workflow_dispatch stress campaign was not requested for this full-regression run."
+  },
+  "windows": {
+    "applicable_cases": 277,
+    "unique_cases": 277,
+    "shards": 21,
+    "raw_logs_verified": 298,
+    "source_inputs_verified": 945,
+    "scope": "Actual Windows headless tests, profiles and scene startup. Rendered-pixel fixtures are explicitly outside this matrix; they are not Windows passes.",
+    "rendered_pixel_cases_excluded": [
+      "test_art_batch_native_render",
+      "test_blacksite_nine_render",
+      "test_deepworks_render",
+      "test_depth_dimensions_render",
+      "test_depth_surface_render",
+      "test_explore001_dialog_native_render",
+      "test_explore001_dialog_native_saved_render",
+      "test_explore001_dialog_native_small_render",
+      "test_explore001_dialog_render",
+      "test_explore001_dialog_saved_render",
+      "test_explore001_dialog_small_render",
+      "test_gen007_qualification_render",
+      "test_gen007_workbench_render",
+      "test_material_presentation_render",
+      "test_material_vapour_pipeline_render",
+      "test_palette_crossfade_render",
+      "test_physical_flight_gameplay_render",
+      "test_play_ui007_overlay_render",
+      "test_semantic_depth_render",
+      "test_showcase_backdrop_render",
+      "test_water_presentation_render"
+    ],
+    "receipt": "windows-coverage-43301147487/windows-coverage.json",
+    "artifact": {
+      "id": 13983650707,
+      "name": "windows-coverage-43301147487",
+      "size": 84003,
+      "sha256": "sha256:aebc559ef83e04842583a3b833c9206d23731dbd9e9561648d71e53d0f310c10",
+      "expires_at": "2026-12-12T20:48:58Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43301147487/artifacts/13983650707"
+    }
+  },
+  "linux": {
+    "cases": 298,
+    "unique_cases": 298,
+    "shards": 22,
+    "rendered_pixel_cases": 21,
+    "contains_every_windows_case": true,
+    "contains_every_windows_render_exclusion": true,
+    "scope": "Complete Linux headless and rendered-pixel suite; aggregate verifies actual commands, natural completion, exact runtime/source identity, original logs and no skipped checks.",
+    "receipt": "linux-coverage-43301147487-1/linux-coverage.json",
+    "artifact": {
+      "id": 13983336300,
+      "name": "linux-coverage-43301147487-1",
+      "size": 82496,
+      "sha256": "sha256:5d6180c4963bb752f017c10e9eb77be2f309a29eff256459c543870c2cfdde89",
+      "expires_at": "2027-02-10T20:31:29Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43301147487/artifacts/13983336300"
+    }
+  },
+  "critical_workbench_results": [
+    {
+      "platform": "Windows",
+      "fixture": "WORKBENCH_EDGE",
+      "checks": 112,
+      "failures": [],
+      "job_id": 131476456120,
+      "log": "job-131476456120.log",
+      "extents": [
+        512,
+        2048
+      ]
+    },
+    {
+      "platform": "Windows",
+      "fixture": "WORKBENCH_PILOT_UI",
+      "checks": 179,
+      "failures": [],
+      "job_id": 131476457074,
+      "log": "job-131476457074.log"
+    },
+    {
+      "platform": "Windows",
+      "fixture": "WORKBENCH_LIVE_LIQUID",
+      "failures": 0,
+      "job_id": 131476458976,
+      "log": "job-131476458976.log"
+    },
+    {
+      "platform": "Linux",
+      "fixture": "WORKBENCH_EDGE",
+      "checks": 112,
+      "failures": [],
+      "job_id": 131478057937,
+      "log": "job-131478057937.log",
+      "extents": [
+        512,
+        2048
+      ]
+    },
+    {
+      "platform": "Linux",
+      "fixture": "WORKBENCH_LIVE_LIQUID",
+      "failures": 0,
+      "job_id": 131478058067,
+      "log": "job-131478058067.log"
+    },
+    {
+      "platform": "Linux",
+      "fixture": "WORKBENCH_PILOT_UI",
+      "checks": 179,
+      "failures": [],
+      "job_id": 131478060333,
+      "log": "job-131478060333.log"
+    }
+  ],
+  "graphical_agent_smoke": {
+    "platform": "Linux",
+    "result": "GRAPHICAL_SMOKE 0 requests 4",
+    "exit_code": 0,
+    "scripted_http_requests": 4,
+    "job_id": 131478057177,
+    "log": "job-131478057177.log",
+    "artifact_url": "https://github.com/techrote/cybersand/actions/runs/43301147487/artifacts/13980924847"
+  },
+  "prior_tls_failure": {
+    "previous_run": 43297709393,
+    "previous_job": 131464469055,
+    "error": "curl exit 35 / SSL_ERROR_SYSCALL before Godot installation, so no tests executed",
+    "final_job": 131478057999,
+    "final_result": "success",
+    "final_assigned_cases": 16,
+    "final_log": "job-131478057999.log"
+  },
+  "retries_in_final_run": 0,
+  "all_completed_job_logs_retained": 50,
+  "terminal_metadata": "godot-43301147487-terminal.json",
+  "qualification_boundary": "Source-matched full Godot campaign. Dedicated installed-layout Windows/Linux campaign, evaluation packaging, native sanitizer campaign and retained-runtime publication gate have separate evidence."
+}

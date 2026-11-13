@@ -1,0 +1,1208 @@
+{
+  "schema": "cybersand-agent-undo-hosted-native-v1",
+  "recorded_at": "2026-11-12T23:19:35.686064+00:00",
+  "status": "passed_native_campaign_with_explicit_documentation_gate_skip",
+  "source_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+  "source_tree": "711689ba064744ff2768898f6293d7ea7b4e4d71",
+  "repository": "techrote/cybersand",
+  "pull_request": 564,
+  "scope": "Complete source-matched hosted Linux Native campaign and PR Documentation run. No runtime or test was rerun during this audit; original artifacts, command receipts and stored logs were inspected and hash-verified.",
+  "native_run": {
+    "id": 43323028517,
+    "url": "https://github.com/techrote/cybersand/actions/runs/43323028517",
+    "attempt": 1,
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "started_at": "2026-11-12T22:46:46Z",
+    "completed_metadata_updated_at": "2026-11-12T23:05:26Z",
+    "jobs_succeeded": 8,
+    "jobs_skipped": 1,
+    "jobs_failed": 0,
+    "jobs_cancelled": 0,
+    "jobs": [
+      {
+        "id": 131548323404,
+        "name": "Native evidence and provider policy",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 131548325601,
+        "name": "ready validation scope",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 131548523182,
+        "name": "Native family / soliding-asan",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 131548523268,
+        "name": "Native family / worldgen",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 131548523298,
+        "name": "Native family / native-normal",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 131548523400,
+        "name": "Native family / soliding-normal",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 131548523442,
+        "name": "Native family / asan-ubsan",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 131548523519,
+        "name": "Native family / tsan",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 131557562052,
+        "name": "native",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "administrative_skip": "ready validation scope applies only to a ready_for_review PR event; this complete runtime campaign was triggered by push.",
+    "compiler_and_build_tools": [
+      "gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "GNU ld (GNU Binutils for Ubuntu) 2.42",
+      "GNU Make 4.3"
+    ],
+    "aggregate": {
+      "status": "passed",
+      "policy_result": "success",
+      "matrix_result": "success",
+      "expected_suites": [
+        "asan-ubsan",
+        "native-normal",
+        "soliding-asan",
+        "soliding-normal",
+        "tsan",
+        "worldgen"
+      ],
+      "received_suites": [
+        "asan-ubsan",
+        "native-normal",
+        "soliding-asan",
+        "soliding-normal",
+        "tsan",
+        "worldgen"
+      ],
+      "outcomes": {
+        "asan-ubsan": "success",
+        "native-normal": "success",
+        "soliding-asan": "success",
+        "soliding-normal": "success",
+        "tsan": "success",
+        "worldgen": "success"
+      },
+      "errors": [],
+      "expected_native_case_count": 192,
+      "evidence": {
+        "path": "build/agent-undo/hosted-native/native-qualification-43323028517-1/aggregate.json",
+        "bytes": 80919,
+        "sha256": "40fc3616c64a9bdf729fac1e78654839dd621ff8e021250b8cc26759151ad561"
+      }
+    },
+    "all_original_family_receipt_log_command_and_scientific_hashes_verified_again_after_download": true,
+    "all_13_aggregate_source_fingerprints_match_explicit_committed_source": true,
+    "source_fingerprints": {
+      "tools/ci/run_timed_command.py": "f9d8d2979335c7a59e2b3d47e8956e1c157f8c7d74bf74b57bb9cfd1c56663da",
+      "tools/ci/execution_policy.py": "7bf7c89f51b8edc6c14e9b600a843c6b56f4806c902b09058912a32c881b63d6",
+      "Makefile": "6e8f4356f939854f993e71bfa079ae264890e747899e5d3c4c70c2d4e4b056ad",
+      "tools/ci/native_execution_policy.py": "16c2c5f3b8920c0ece202cdaf9bb674dfcc03a4f72934af84885ed7bc7d7f7b1",
+      "tools/ci/run_native_family.sh": "5a3cbcf58659d4ac91da3334e4e2ad68788b669b445bcb240c3134e3c6327b1b",
+      "tools/ci/test_native_watchdogs.py": "45905d6838d8c0b61edb8bd466288110bde8c633e688910f304c28e7e33abdad",
+      "tools/physics/test_characterisation_cli.py": "513db5608e722bcd03823744a33f4f81554eb31aedecbde8a3a452e45296e720",
+      "native/tests/test_world.cpp": "17719612e2ba29dc14d8964db54fdd0d4700909a9a1c81c8af6c4df1ef648933",
+      "tools/ci/verify_native_shards.py": "7cfdf6bccf0fbd17786b38acc8ebc45e23d57493e53fc0fc16263b9ce942c2c3",
+      "tools/ci/test_native_shards.py": "bd28a9d1a680c43d3ec5ff2d11c7f61146f3161f88f3c151c7f989ceb4190f75",
+      "godot/tests/support/ci_execution_policy.json": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+      ".github/workflows/native.yml": "7cfb1aed6ae2b810e77812444340f6a8844cb480c05a8f218d45ddee76e18379",
+      "tools/ci/check_worldgen_build_inventory.py": "8fd36bde8b0268e0d41bfdc79e27eedd29f6977ff343fa1b36afc6597e1135c4"
+    },
+    "families": [
+      {
+        "suite": "asan-ubsan",
+        "job_id": 131548523442,
+        "url": "https://github.com/techrote/cybersand/actions/runs/43323028517/job/131548523442",
+        "conclusion": "success",
+        "source_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+        "source_tree": "711689ba064744ff2768898f6293d7ea7b4e4d71",
+        "source_delta_paths": [],
+        "native_case_passes": 192,
+        "sanitizer_failure_markers": [],
+        "original_exit_codes": {
+          "family": 0,
+          "log_capture": 0
+        },
+        "receipt": {
+          "path": "build/agent-undo/hosted-native/native-shard-asan-ubsan-43323028517-1/native-parallel/asan-ubsan/receipt.json",
+          "bytes": 3434,
+          "sha256": "52adb90ae6dcbcf74027383de6f255d669f2f885b2ad1de577993e6eb704caef"
+        },
+        "log": {
+          "path": "build/agent-undo/hosted-native/native-shard-asan-ubsan-43323028517-1/native-parallel/asan-ubsan/run.log",
+          "bytes": 39727,
+          "sha256": "d13a74a8c276a13da231d0b7e376b7961f8a5692a57adae573082dbaabd97c98"
+        },
+        "commands": [
+          {
+            "label": "asan-ubsan-build-tests-sanitized",
+            "command": [
+              "make",
+              "build/tests_sanitized"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 256.916,
+            "receipt_sha256": "2a1f9b814c6807ff1558e3d793fc6ee695f45b8ded5d7c77ac6b8a615b0b4ec7"
+          },
+          {
+            "label": "asan-ubsan-tests-sanitized",
+            "command": [
+              "env",
+              "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+              "UBSAN_OPTIONS=halt_on_error=1",
+              "./build/tests_sanitized"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 494.593,
+            "receipt_sha256": "9c18032c18a457a01c731d575e9d86b46891aa9887556a6faa9fdf2c84f0d713"
+          },
+          {
+            "label": "native-family-asan-ubsan",
+            "command": [
+              "bash",
+              "tools/ci/run_native_family.sh",
+              "asan-ubsan",
+              "build/native-parallel/asan-ubsan"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 752.933,
+            "receipt_sha256": "f16b236e65eac9c8cb2a283df530f658c705707eeafd3050ce6b738c1fa98174"
+          }
+        ]
+      },
+      {
+        "suite": "native-normal",
+        "job_id": 131548523298,
+        "url": "https://github.com/techrote/cybersand/actions/runs/43323028517/job/131548523298",
+        "conclusion": "success",
+        "source_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+        "source_tree": "711689ba064744ff2768898f6293d7ea7b4e4d71",
+        "source_delta_paths": [],
+        "native_case_passes": 192,
+        "sanitizer_failure_markers": [],
+        "original_exit_codes": {
+          "family": 0,
+          "log_capture": 0
+        },
+        "receipt": {
+          "path": "build/agent-undo/hosted-native/native-shard-native-normal-43323028517-1/native-parallel/native-normal/receipt.json",
+          "bytes": 5239,
+          "sha256": "657f859f13fbd413692af841d3766796ec790134597560487ee57eabe4d5537f"
+        },
+        "log": {
+          "path": "build/agent-undo/hosted-native/native-shard-native-normal-43323028517-1/native-parallel/native-normal/run.log",
+          "bytes": 33272,
+          "sha256": "0d7b59c4dc944c4a9876092d1db15c4dd59e3dcda1cc3494e40d9b8407927239"
+        },
+        "commands": [
+          {
+            "label": "native-normal-benchmark",
+            "command": [
+              "./build/benchmark"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 1.021,
+            "receipt_sha256": "badc0e33ae7b427283396221c3bb375241f33d8deb55452409250fe62ed05b0d"
+          },
+          {
+            "label": "native-normal-build-benchmark",
+            "command": [
+              "make",
+              "build/benchmark"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 14.791,
+            "receipt_sha256": "b9c934c6070457b7d649e7e83c7d47e7f6a214f5ba18e25e104c589a495a2b84"
+          },
+          {
+            "label": "native-normal-build-tests",
+            "command": [
+              "make",
+              "build/tests"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 35.951,
+            "receipt_sha256": "1bb980048a8294ac542ecd3b43152c65cc0161930d266ca81ad8d20fcbb270e9"
+          },
+          {
+            "label": "native-normal-c-header-check",
+            "command": [
+              "make",
+              "c-header-check"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 0.135,
+            "receipt_sha256": "6d01b030bc436190b4ac87950fcb6054130d09b734e31642cefe883804fee30a"
+          },
+          {
+            "label": "native-normal-shared",
+            "command": [
+              "make",
+              "shared"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 19.427,
+            "receipt_sha256": "55c9a6b3813207a49ea789a283f5e82e87ec4e5f792642acd96998023df160ee"
+          },
+          {
+            "label": "native-normal-tests",
+            "command": [
+              "./build/tests"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 319.293,
+            "receipt_sha256": "0ffb930fc60a17efd25699682314290e4c9c6eea0e2e4dc9e4b3e16ee65f1da1"
+          },
+          {
+            "label": "native-family-native-normal",
+            "command": [
+              "bash",
+              "tools/ci/run_native_family.sh",
+              "native-normal",
+              "build/native-parallel/native-normal"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 393.951,
+            "receipt_sha256": "d0d1daf065354357f17da2b99115ecf3602522bd11b0523a0a9da9a5b9bb9d5d"
+          }
+        ]
+      },
+      {
+        "suite": "soliding-asan",
+        "job_id": 131548523182,
+        "url": "https://github.com/techrote/cybersand/actions/runs/43323028517/job/131548523182",
+        "conclusion": "success",
+        "source_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+        "source_tree": "711689ba064744ff2768898f6293d7ea7b4e4d71",
+        "source_delta_paths": [],
+        "native_case_passes": null,
+        "sanitizer_failure_markers": [],
+        "original_exit_codes": {
+          "family": 0,
+          "log_capture": 0
+        },
+        "receipt": {
+          "path": "build/agent-undo/hosted-native/native-shard-soliding-asan-43323028517-1/native-parallel/soliding-asan/receipt.json",
+          "bytes": 3977,
+          "sha256": "ea8c64f22bea134f71452cffaa9f7aa414b781dba891b5d0af0cc6c3a1e1a26f"
+        },
+        "log": {
+          "path": "build/agent-undo/hosted-native/native-shard-soliding-asan-43323028517-1/native-parallel/soliding-asan/run.log",
+          "bytes": 32170,
+          "sha256": "86ef5ed6a475205f4d56caa4464e7cdeac8ca98a4b1d32c6fe7ee5b3944a0b7c"
+        },
+        "commands": [
+          {
+            "label": "soliding-asan-build-settled-regions-sanitized",
+            "command": [
+              "/usr/bin/time",
+              "-v",
+              "make",
+              "build/test_settled_regions_sanitized"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 509.527,
+            "receipt_sha256": "2ad43b7fb1a5c05e6323470e359037cc70d522c0343386987607a39531203297"
+          },
+          {
+            "label": "soliding-asan-build-soliding-sanitized",
+            "command": [
+              "make",
+              "build/test_soliding_lifecycle_sanitized",
+              "build/test_settled_discovery_sanitized",
+              "build/test_settled_regions_sanitized",
+              "build/test_settled_world_discovery_sanitized",
+              "build/test_stage3b_runtime_storage_sanitized",
+              "build/test_stage3b_bounded_spatial_index_sanitized",
+              "build/test_stage3b_sparse_mutation_witness_sanitized",
+              "build/test_stage3b_sparse_activity_deadline_sanitized"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 544.198,
+            "receipt_sha256": "1b0bffd8cc12ab307324041ec53d42f75650cc3bb7e4f7072e7a85d8d72eddd6"
+          },
+          {
+            "label": "soliding-asan-soliding-sanitize",
+            "command": [
+              "env",
+              "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+              "UBSAN_OPTIONS=halt_on_error=1",
+              "make",
+              "soliding-sanitize"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 1.632,
+            "receipt_sha256": "5249e66ba65fcfe3c703da2e27fa0f31c61b113150f3ebb699a20a3249d7ebec"
+          },
+          {
+            "label": "native-family-soliding-asan",
+            "command": [
+              "bash",
+              "tools/ci/run_native_family.sh",
+              "soliding-asan",
+              "build/native-parallel/soliding-asan"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 1057.177,
+            "receipt_sha256": "a4b9cf9a22de1de1bb40c46d3e79c5df229816327747e32e75199ced229a366a"
+          }
+        ]
+      },
+      {
+        "suite": "soliding-normal",
+        "job_id": 131548523400,
+        "url": "https://github.com/techrote/cybersand/actions/runs/43323028517/job/131548523400",
+        "conclusion": "success",
+        "source_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+        "source_tree": "711689ba064744ff2768898f6293d7ea7b4e4d71",
+        "source_delta_paths": [],
+        "native_case_passes": null,
+        "sanitizer_failure_markers": [],
+        "original_exit_codes": {
+          "family": 0,
+          "log_capture": 0
+        },
+        "receipt": {
+          "path": "build/agent-undo/hosted-native/native-shard-soliding-normal-43323028517-1/native-parallel/soliding-normal/receipt.json",
+          "bytes": 4831,
+          "sha256": "b610a2fffc7659fb98318600644f1a85b0eb61156078ed6a037a0254e7e342e7"
+        },
+        "log": {
+          "path": "build/agent-undo/hosted-native/native-shard-soliding-normal-43323028517-1/native-parallel/soliding-normal/run.log",
+          "bytes": 22926,
+          "sha256": "dd9cc3a20442275299ae074a1a9b8aea866d1053136fece9703a0c56e495cc95"
+        },
+        "commands": [
+          {
+            "label": "soliding-normal-soliding-benchmark-smoke",
+            "command": [
+              "make",
+              "soliding-benchmark-smoke"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 1.146,
+            "receipt_sha256": "19107cc5c383c4a960432e21a79e32666bf64be034d21269173ff81444bb3d9f"
+          },
+          {
+            "label": "soliding-normal-soliding-stage3-cost-smoke",
+            "command": [
+              "make",
+              "soliding-stage3-cost-smoke"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 22.027,
+            "receipt_sha256": "df02ed55ca5e838400ef7edbde38e0e18083bbb323e71e3422d2bf6ec5b8f237"
+          },
+          {
+            "label": "soliding-normal-soliding-stage3b-validation-apparatus-test",
+            "command": [
+              "make",
+              "soliding-stage3b-validation-apparatus-test"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 0.485,
+            "receipt_sha256": "77a65886ecb33fca1992fdbbad030bf489e615296f46c9db613213bb5b423bf7"
+          },
+          {
+            "label": "soliding-normal-soliding-test",
+            "command": [
+              "make",
+              "soliding-test"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 119.868,
+            "receipt_sha256": "1710728b9dde7ff708d88a717578d5332eb5cd03d9c955e254eb00f20e0bb9f3"
+          },
+          {
+            "label": "native-family-soliding-normal",
+            "command": [
+              "bash",
+              "tools/ci/run_native_family.sh",
+              "soliding-normal",
+              "build/native-parallel/soliding-normal"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 144.882,
+            "receipt_sha256": "3797599ea363aeed55c8ccd3f1f2ac6525ef85ecbaffea03f88663ba9f61fe38"
+          }
+        ]
+      },
+      {
+        "suite": "tsan",
+        "job_id": 131548523519,
+        "url": "https://github.com/techrote/cybersand/actions/runs/43323028517/job/131548523519",
+        "conclusion": "success",
+        "source_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+        "source_tree": "711689ba064744ff2768898f6293d7ea7b4e4d71",
+        "source_delta_paths": [],
+        "native_case_passes": 192,
+        "sanitizer_failure_markers": [],
+        "original_exit_codes": {
+          "family": 0,
+          "log_capture": 0
+        },
+        "receipt": {
+          "path": "build/agent-undo/hosted-native/native-shard-tsan-43323028517-1/native-parallel/tsan/receipt.json",
+          "bytes": 3398,
+          "sha256": "325bd9cc17ca19cdd2b326de067f423d2acadedfd30b15c23e177402d6fbb169"
+        },
+        "log": {
+          "path": "build/agent-undo/hosted-native/native-shard-tsan-43323028517-1/native-parallel/tsan/run.log",
+          "bytes": 28156,
+          "sha256": "d84b80f0ffdc0375ca339e82e4b10c57a31c814b53eb1eec850c118124ab8d65"
+        },
+        "commands": [
+          {
+            "label": "tsan-build-tests-tsan",
+            "command": [
+              "make",
+              "build/tests_tsan"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 73.112,
+            "receipt_sha256": "fb42d8596791f44f390851ea5ed7ae3cab63b720da99072f059743ae34d6e2fa"
+          },
+          {
+            "label": "tsan-tests-tsan",
+            "command": [
+              "env",
+              "TSAN_OPTIONS=halt_on_error=1",
+              "./build/tests_tsan"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 612.763,
+            "receipt_sha256": "886d712d8f78eee225b042168e5379a761dcdcb7fb8058324820cf9f4b41b323"
+          },
+          {
+            "label": "native-family-tsan",
+            "command": [
+              "bash",
+              "tools/ci/run_native_family.sh",
+              "tsan",
+              "build/native-parallel/tsan"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 686.803,
+            "receipt_sha256": "35dbff6d812bef85a6adefde5e06523ac36ed52637b361a7aa1b1c86dcd7d705"
+          }
+        ]
+      },
+      {
+        "suite": "worldgen",
+        "job_id": 131548523268,
+        "url": "https://github.com/techrote/cybersand/actions/runs/43323028517/job/131548523268",
+        "conclusion": "success",
+        "source_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+        "source_tree": "711689ba064744ff2768898f6293d7ea7b4e4d71",
+        "source_delta_paths": [],
+        "native_case_passes": null,
+        "sanitizer_failure_markers": [],
+        "original_exit_codes": {
+          "family": 0,
+          "log_capture": 0
+        },
+        "receipt": {
+          "path": "build/agent-undo/hosted-native/native-shard-worldgen-43323028517-1/native-parallel/worldgen/receipt.json",
+          "bytes": 58984,
+          "sha256": "fdd6ab133b3a9853accdca3f613023e115fc13cdc7fc83e185a7001c4cfec7b4"
+        },
+        "log": {
+          "path": "build/agent-undo/hosted-native/native-shard-worldgen-43323028517-1/native-parallel/worldgen/run.log",
+          "bytes": 39130,
+          "sha256": "e6e45f4b5e3bf28e2c3e6f16653b53946e787e89c7ef86f8a93a2b7a722f5d0a"
+        },
+        "commands": [
+          {
+            "label": "worldgen-physics-characterisation-sanitize",
+            "command": [
+              "env",
+              "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+              "UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1",
+              "make",
+              "physics-characterisation-sanitize"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 129.471,
+            "receipt_sha256": "feaf41ef83ccbe05c09229748958bec370b83c62d0caf340fa534753df23057a"
+          },
+          {
+            "label": "worldgen-worldgen-sanitize",
+            "command": [
+              "env",
+              "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+              "UBSAN_OPTIONS=halt_on_error=1",
+              "/usr/bin/time",
+              "-v",
+              "make",
+              "-j2",
+              "worldgen-sanitize"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 360.609,
+            "receipt_sha256": "0895c9f4dfa9cc47a21e002c58930b9e537a7b40d56be98eeeee0fb6372738fa"
+          },
+          {
+            "label": "worldgen-worldgen-test",
+            "command": [
+              "/usr/bin/time",
+              "-v",
+              "make",
+              "-j2",
+              "worldgen-test"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 128.676,
+            "receipt_sha256": "cccea50b591bbfb001726d229e24ff2d2d2c7fabd013e26f3e98bfaec3947290"
+          },
+          {
+            "label": "native-family-worldgen",
+            "command": [
+              "bash",
+              "tools/ci/run_native_family.sh",
+              "worldgen",
+              "build/native-parallel/worldgen"
+            ],
+            "status": "passed",
+            "returncode": 0,
+            "natural_completion": true,
+            "timed_out": false,
+            "elapsed_seconds": 620.158,
+            "receipt_sha256": "a262a4592af1afc8912117d3ff1e915cb9c3c024875d390ebc1d82322b22a22e"
+          }
+        ]
+      }
+    ],
+    "core_native_cases": {
+      "unique_registered_cases": 192,
+      "normal": 192,
+      "asan_ubsan": 192,
+      "tsan": 192,
+      "executions": 576,
+      "observed_order_matches_source_registry_in_all_three_variants": true
+    },
+    "generator_and_soliding_binary_runs": {
+      "worldgen-test": [
+        "test_world_generation",
+        "test_world_generation_install",
+        "test_generation_fields",
+        "test_generation_modifiers",
+        "test_generation_typed",
+        "test_generation_typed_integration",
+        "test_generation_spatial",
+        "test_generation_grammar",
+        "test_generation_planes"
+      ],
+      "worldgen-sanitize": [
+        "test_world_generation_sanitized",
+        "test_world_generation_install_sanitized",
+        "test_generation_fields_sanitized",
+        "test_generation_modifiers_sanitized",
+        "test_generation_typed_sanitized",
+        "test_generation_typed_integration_sanitized",
+        "test_generation_spatial_sanitized",
+        "test_generation_grammar_sanitized",
+        "test_generation_planes_sanitized"
+      ],
+      "soliding-test": [
+        "test_soliding_lifecycle",
+        "test_settled_discovery",
+        "test_settled_regions",
+        "test_settled_world_discovery",
+        "test_stage3b_runtime_storage",
+        "test_stage3b_bounded_spatial_index",
+        "test_stage3b_sparse_mutation_witness",
+        "test_stage3b_sparse_activity_deadline"
+      ],
+      "soliding-sanitize": [
+        "test_soliding_lifecycle_sanitized",
+        "test_settled_discovery_sanitized",
+        "test_settled_regions_sanitized",
+        "test_settled_world_discovery_sanitized",
+        "test_stage3b_runtime_storage_sanitized",
+        "test_stage3b_bounded_spatial_index_sanitized",
+        "test_stage3b_sparse_mutation_witness_sanitized",
+        "test_stage3b_sparse_activity_deadline_sanitized"
+      ]
+    },
+    "generator_explicit_assertion_counts": {
+      "worldgen-test": {
+        "typed_fields": 14162,
+        "semantic_grammar": 208576,
+        "semantic_planes": 774842,
+        "explicitly_counted_assertions": 997580
+      },
+      "worldgen-sanitize": {
+        "typed_fields": 14162,
+        "semantic_grammar": 208576,
+        "semantic_planes": 774842,
+        "explicitly_counted_assertions": 997580
+      }
+    },
+    "generator_count_scope": "997,580 explicit assertions per variant are emitted by the typed-field, grammar and semantic-plane binaries. Six additional generator binaries per variant passed without numeric assertion totals; no invented total is assigned to them.",
+    "physics_cli": {
+      "status": "passed",
+      "test_groups": 3,
+      "planned_invocations": 154,
+      "checked_invocations": 154,
+      "complete_invocation_inventory": true,
+      "failures": 0,
+      "errors": 0,
+      "dispatch_workers": 8,
+      "executable_sha256": "c0257d07cab39f4810a11976decfc33172e4400c8d4087ed0e2ed4f5379de806",
+      "evidence": {
+        "path": "build/agent-undo/hosted-native/native-shard-worldgen-43323028517-1/physics-cli-validation/sanitized/results.json",
+        "bytes": 113591,
+        "sha256": "36708e390d0685de136b8d6d8e103be30c672fbd243e6aed8bf5c40bd093b21a"
+      }
+    },
+    "soliding_count_scope": "Eight distinct contract executables passed in normal and ASan+UBSan builds. Each lifecycle executable reports 384 complete transitions, 12 prepare/ack/commit guard refusals and 8 finalize guards; these are not relabelled as assertion totals. The normal family also completed three benchmark/apparatus/cost commands.",
+    "sanitizer_configuration": {
+      "address_undefined": "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1; UBSAN_OPTIONS=halt_on_error=1 (physics CLI also print_stacktrace=1)",
+      "thread": "TSAN_OPTIONS=halt_on_error=1",
+      "leak_detection_enabled": false,
+      "recorded_sanitizer_failure_markers": []
+    },
+    "policy_control_unittest_cases": 84,
+    "policy_controls": [
+      {
+        "command": "native-budget-plan",
+        "status": "passed",
+        "unittest_cases": 0,
+        "receipt": {
+          "path": "build/agent-undo/hosted-native/native-policy/budget-command/receipt.json",
+          "bytes": 2194,
+          "sha256": "c669986e7f7370d1588da9d4b4a440c134ee9b8bd06d09ed601cf0e3ef2b03a1"
+        },
+        "log": {
+          "path": "build/agent-undo/hosted-native/native-policy/budget-command/command.log",
+          "bytes": 399,
+          "sha256": "8dd96c779ac7f9565eb511fed7fd65e545fa1a19ccdf2d92617bb46e54d3bf97"
+        }
+      },
+      {
+        "command": "check_ci_provider_policy",
+        "status": "passed",
+        "unittest_cases": 0,
+        "receipt": {
+          "path": "build/agent-undo/hosted-native/native-policy/check_ci_provider_policy/receipt.json",
+          "bytes": 2132,
+          "sha256": "53dde2c37c190ac8f6b34d99f7f0cb04913c6b879b8f0ccf1dd1fe19b10d0da9"
+        },
+        "log": {
+          "path": "build/agent-undo/hosted-native/native-policy/check_ci_provider_policy/command.log",
+          "bytes": 280,
+          "sha256": "4e64d073155dc5a1655bf13eb2060b8f9930ba169e749c6ec486ba2248b1618f"
+        }
+      },
+      {
+        "command": "test_ci_provider_policy",
+        "status": "passed",
+        "unittest_cases": 6,
+        "receipt": {
+          "path": "build/agent-undo/hosted-native/native-policy/test_ci_provider_policy/receipt.json",
+          "bytes": 2129,
+          "sha256": "379439d0248466c2ec9bb4a0526b3f0149f1ff44c6220c2c57738ae105568d50"
+        },
+        "log": {
+          "path": "build/agent-undo/hosted-native/native-policy/test_ci_provider_policy/command.log",
+          "bytes": 104,
+          "sha256": "65378dcad145da2497120819bebfc3c46534dce9714ce064b3d809a56654aca2"
+        }
+      },
+      {
+        "command": "test_native_shards",
+        "status": "passed",
+        "unittest_cases": 45,
+        "receipt": {
+          "path": "build/agent-undo/hosted-native/native-policy/test_native_shards/receipt.json",
+          "bytes": 2120,
+          "sha256": "137f62722a8b963d1e13fe91cd19343c4815f1694c1f887c55359557fba31d70"
+        },
+        "log": {
+          "path": "build/agent-undo/hosted-native/native-policy/test_native_shards/command.log",
+          "bytes": 144,
+          "sha256": "b9c22ed695664e7e24e980ad20e83ed2ac6bec9c2188a3cdd2981c1e3abb025f"
+        }
+      },
+      {
+        "command": "test_native_watchdogs",
+        "status": "passed",
+        "unittest_cases": 21,
+        "receipt": {
+          "path": "build/agent-undo/hosted-native/native-policy/test_native_watchdogs/receipt.json",
+          "bytes": 2115,
+          "sha256": "83e47ac9e303f46cd085af7138d497f56514f02ef4f844971c597907402e1d72"
+        },
+        "log": {
+          "path": "build/agent-undo/hosted-native/native-policy/test_native_watchdogs/command.log",
+          "bytes": 120,
+          "sha256": "c3196d7013079d3647d3424e28f28f44dc1f56b7b45ce7b65b72d30b4c19f392"
+        }
+      },
+      {
+        "command": "test_worldgen_build_inventory",
+        "status": "passed",
+        "unittest_cases": 12,
+        "receipt": {
+          "path": "build/agent-undo/hosted-native/native-policy/test_worldgen_build_inventory/receipt.json",
+          "bytes": 2143,
+          "sha256": "f356b218f83620e38e78a1952e9f31c090526a61acc803b152791f26cfab1a67"
+        },
+        "log": {
+          "path": "build/agent-undo/hosted-native/native-policy/test_worldgen_build_inventory/command.log",
+          "bytes": 111,
+          "sha256": "e4bbd35f38b1cc5d55598fecf7a8592342297f7b94566f0123ad86fa4d645cef"
+        }
+      }
+    ]
+  },
+  "documentation_run": {
+    "id": 43323037611,
+    "url": "https://github.com/techrote/cybersand/actions/runs/43323037611",
+    "attempt": 1,
+    "event": "pull_request",
+    "head_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+    "status": "completed",
+    "conclusion": "success",
+    "job_id": 131548354302,
+    "actual_checkout_sha": "e5786c3ea20afd271e200a08107b2f17ca1ee274",
+    "actual_checkout_tree": "711689ba064744ff2768898f6293d7ea7b4e4d71",
+    "tree_equals_integrated_source": true,
+    "merge_parents": [
+      "d8588716becb0dc42019faf23f721378d8adc84a",
+      "86d704a259745621168e8bffb149b4d1aee2354b"
+    ],
+    "companion_workspace_sha": "6a58311982941b75f46e22109a0829e5acb83c7e",
+    "unittest_cases": 318,
+    "unittest_groups": [
+      {
+        "name": "CI provider policy",
+        "cases": 6
+      },
+      {
+        "name": "CI scheduling policy",
+        "cases": 10
+      },
+      {
+        "name": "CI run metrics",
+        "cases": 7
+      },
+      {
+        "name": "LCB policy contract",
+        "cases": 15
+      },
+      {
+        "name": "material catalogue",
+        "cases": 118
+      },
+      {
+        "name": "LCB registry",
+        "cases": 81
+      },
+      {
+        "name": "inertial contract",
+        "cases": 24
+      },
+      {
+        "name": "validation failure contracts",
+        "cases": 17
+      },
+      {
+        "name": "soliding evidence integrity",
+        "cases": 16
+      },
+      {
+        "name": "coupled-lockstep evidence reducer",
+        "cases": 24
+      }
+    ],
+    "executed_checks": [
+      "Active CI provider policy",
+      "Pinned actionlint and scheduling inventory",
+      "Source-derived LCB capabilities, policies, receipts, scenarios and registry",
+      "Material catalogue compatibility, compilation and native parity",
+      "Current documentation",
+      "Retained M11 consistency",
+      "Validation/evidence contracts",
+      "Retrieval evaluation",
+      "Git LFS fsck and whitespace"
+    ],
+    "skipped_steps": [
+      {
+        "name": "Validate dependency pins and published runtime provenance",
+        "status": "completed",
+        "conclusion": "skipped",
+        "number": 15
+      }
+    ],
+    "unexecuted_release_gate": {
+      "name": "Validate dependency pins and published runtime provenance",
+      "command": "python3 tools/ci/check_repository.py --require-materialized",
+      "reason": "The PR is Draft; documentation.yml admits this step only for non-PR events or a non-Draft PR. It is not counted as a pass."
+    },
+    "retrieval_evaluations": [
+      {
+        "fixture": "challenges",
+        "summary": {
+          "questions": 164,
+          "canonical_hit_at_1": 128,
+          "canonical_hit_at_k": 162,
+          "mrr_at_k": 0.8671,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        },
+        "evidence": {
+          "path": "build/agent-undo/hosted-native/retrieval-43323037611/challenges.json",
+          "bytes": 2690997,
+          "sha256": "c5d868e7731e31ac94b5a8878250ebd34ecb4bbbb3b361141f896654aeb674c5"
+        }
+      },
+      {
+        "fixture": "frozen",
+        "summary": {
+          "questions": 32,
+          "canonical_hit_at_1": 19,
+          "canonical_hit_at_k": 31,
+          "mrr_at_k": 0.7474,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        },
+        "evidence": {
+          "path": "build/agent-undo/hosted-native/retrieval-43323037611/frozen.json",
+          "bytes": 422477,
+          "sha256": "6f9fb22281bdd5ea7c504fff3f5636c887ed86728d633c60188c364679b1528f"
+        }
+      }
+    ],
+    "log": {
+      "path": "build/agent-undo/hosted-native/docs-consistency-131548354302.log",
+      "bytes": 213400,
+      "sha256": "2905e1b76ef258750ef7f68ebc3a14b04313ccdc81a0c67a901b8d255ee3c092"
+    },
+    "merge_identity_evidence": {
+      "path": "build/agent-undo/hosted-native/docs-merge-commit.json",
+      "bytes": 2845,
+      "sha256": "ccf5bfa53b0ce0d5fe81d70d714d1efd11ac3f9bfcb69128b76a39a940ddc739"
+    }
+  },
+  "draft_skipped_duplicate_native_pr_run": {
+    "id": 43323037555,
+    "url": "https://github.com/techrote/cybersand/actions/runs/43323037555",
+    "conclusion": "skipped",
+    "counted_as_pass": false,
+    "explanation": "The source-matched push run above executed the complete Native matrix while PR #564 remained Draft."
+  },
+  "downloaded_artifacts": [
+    {
+      "id": 13993505191,
+      "name": "native-qualification-43323028517-1",
+      "run_id": 43323028517,
+      "head_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+      "api_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13993505191",
+      "expired": false,
+      "expires_at": "2027-02-10T22:46:46Z",
+      "path": "build/agent-undo/hosted-native/native-qualification-43323028517-1.zip",
+      "bytes": 11512,
+      "sha256": "cf758ca448f12cfabfa0268c3c3fd601c474ccca049b1d59ce953990c805cb7f",
+      "matches_github_digest": true
+    },
+    {
+      "id": 13992785432,
+      "name": "native-shard-asan-ubsan-43323028517-1",
+      "run_id": 43323028517,
+      "head_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+      "api_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13992785432",
+      "expired": false,
+      "expires_at": "2027-02-10T22:46:46Z",
+      "path": "build/agent-undo/hosted-native/native-shard-asan-ubsan-43323028517-1.zip",
+      "bytes": 31640,
+      "sha256": "47e6d2ccfd3197106a08b425ec0b348086a18c3648e80498e50597d8eaf73949",
+      "matches_github_digest": true
+    },
+    {
+      "id": 13992606479,
+      "name": "native-shard-soliding-asan-43323028517-1",
+      "run_id": 43323028517,
+      "head_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+      "api_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13992606479",
+      "expired": false,
+      "expires_at": "2027-02-10T22:46:46Z",
+      "path": "build/agent-undo/hosted-native/native-shard-soliding-asan-43323028517-1.zip",
+      "bytes": 21554,
+      "sha256": "770325ea524ad70bbd9cba1f95a604856f16850469c921b93f5c7d746494a3d6",
+      "matches_github_digest": true
+    },
+    {
+      "id": 13992490880,
+      "name": "native-shard-native-normal-43323028517-1",
+      "run_id": 43323028517,
+      "head_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+      "api_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13992490880",
+      "expired": false,
+      "expires_at": "2027-02-10T22:46:46Z",
+      "path": "build/agent-undo/hosted-native/native-shard-native-normal-43323028517-1.zip",
+      "bytes": 45521,
+      "sha256": "7682ca9fe39287248252aaafc5f1a008dff3ec9ac95a3edfdb4525cf94362eee",
+      "matches_github_digest": true
+    },
+    {
+      "id": 13992266983,
+      "name": "native-shard-worldgen-43323028517-1",
+      "run_id": 43323028517,
+      "head_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+      "api_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13992266983",
+      "expired": false,
+      "expires_at": "2027-02-10T22:46:46Z",
+      "path": "build/agent-undo/hosted-native/native-shard-worldgen-43323028517-1.zip",
+      "bytes": 145797,
+      "sha256": "3c0398eabe2579fa36add825851f8d3ba412fba8a869c622b0b175c019600dcb",
+      "matches_github_digest": true
+    },
+    {
+      "id": 13992203039,
+      "name": "execution-performance-native-43323028517-1",
+      "run_id": 43323028517,
+      "head_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+      "api_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13992203039",
+      "expired": false,
+      "expires_at": "2027-02-10T22:46:46Z",
+      "path": "build/agent-undo/hosted-native/execution-performance-native-43323028517-1.zip",
+      "bytes": 70513,
+      "sha256": "a6ceb42b97c664d689fd84605a20f8f5b6a9a9a0ca65f574319f7755fdd71399",
+      "matches_github_digest": true
+    },
+    {
+      "id": 13992162111,
+      "name": "native-shard-tsan-43323028517-1",
+      "run_id": 43323028517,
+      "head_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+      "api_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13992162111",
+      "expired": false,
+      "expires_at": "2027-02-10T22:46:46Z",
+      "path": "build/agent-undo/hosted-native/native-shard-tsan-43323028517-1.zip",
+      "bytes": 30079,
+      "sha256": "c46f46dc3db3df70b0aa0abdf56938fd31e4fc936014387fc2a8da5ceed0f27b",
+      "matches_github_digest": true
+    },
+    {
+      "id": 13992011139,
+      "name": "native-shard-soliding-normal-43323028517-1",
+      "run_id": 43323028517,
+      "head_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+      "api_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13992011139",
+      "expired": false,
+      "expires_at": "2027-02-10T22:46:46Z",
+      "path": "build/agent-undo/hosted-native/native-shard-soliding-normal-43323028517-1.zip",
+      "bytes": 84013,
+      "sha256": "d27ac9df37278011055ab805cdca2622846bdf40143fa02a33cdb16867247382",
+      "matches_github_digest": true
+    },
+    {
+      "id": 13991377358,
+      "name": "native-policy-43323028517-1",
+      "run_id": 43323028517,
+      "head_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+      "api_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13991377358",
+      "expired": false,
+      "expires_at": "2027-02-10T22:46:46Z",
+      "path": "build/agent-undo/hosted-native/native-policy-43323028517-1.zip",
+      "bytes": 18518,
+      "sha256": "79246aa83c343adc7081b851f1af76ee47538efb457de68e15f4902c5862d78e",
+      "matches_github_digest": true
+    },
+    {
+      "id": 13992005951,
+      "name": "retrieval-43323037611",
+      "run_id": 43323037611,
+      "head_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+      "api_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13992005951",
+      "expired": false,
+      "expires_at": "2026-12-12T22:49:00Z",
+      "path": "build/agent-undo/hosted-native/retrieval-43323037611.zip",
+      "bytes": 1457246,
+      "sha256": "91bd1177282435bd989ec753ed8d3a78cb9f73d35d59b61752e2b86c04c6bee1",
+      "matches_github_digest": true
+    },
+    {
+      "id": 13990897952,
+      "name": "ci-workflow-inventory-43323037611-1",
+      "run_id": 43323037611,
+      "head_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+      "api_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13990897952",
+      "expired": false,
+      "expires_at": "2027-02-10T22:46:50Z",
+      "path": "build/agent-undo/hosted-native/ci-workflow-inventory-43323037611-1.zip",
+      "bytes": 12688,
+      "sha256": "2997ebf266755b88aaffc8793f3dce517810e0723faf996bb9fe8e7c77d44ce1",
+      "matches_github_digest": true
+    },
+    {
+      "id": 13990254157,
+      "name": "material-catalogue-parity-43323037611-1",
+      "run_id": 43323037611,
+      "head_sha": "86d704a259745621168e8bffb149b4d1aee2354b",
+      "api_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13990254157",
+      "expired": false,
+      "expires_at": "2027-02-10T22:46:50Z",
+      "path": "build/agent-undo/hosted-native/material-catalogue-parity-43323037611-1.zip",
+      "bytes": 6620,
+      "sha256": "09157c16f62115ec55811a8ea3ce197caff4daa6b3bc59d99a72e4c3f09045a0",
+      "matches_github_digest": true
+    }
+  ],
+  "retained_full_job_logs": [
+    {
+      "path": "build/agent-undo/hosted-native/native-job-131548323404.log",
+      "bytes": 21619,
+      "sha256": "97cfd5851ace49d3de034899a6811db7d26810188c0ccf59c0239d55484f9901"
+    },
+    {
+      "path": "build/agent-undo/hosted-native/native-job-131548523182.log",
+      "bytes": 66700,
+      "sha256": "a734bb31bcb0ad3141e1ce7f70429a2bc4cd24d7d5b4cd6a68970ef680d76435"
+    },
+    {
+      "path": "build/agent-undo/hosted-native/native-job-131548523268.log",
+      "bytes": 164687,
+      "sha256": "0d0fb5c849e5c9adf55a6943b7a93b8695ad4a246dda0bfe46133fafd6e1397b"
+    },
+    {
+      "path": "build/agent-undo/hosted-native/native-job-131548523298.log",
+      "bytes": 74076,
+      "sha256": "c15a455dda35d1c5acc10257b00b066d5de1d2d508147cd5a860d1837982d248"
+    },
+    {
+      "path": "build/agent-undo/hosted-native/native-job-131548523400.log",
+      "bytes": 55240,
+      "sha256": "d66aecddd57813ef4bce160d02638fa8c55f45ef6fe09681bca395723d7099df"
+    },
+    {
+      "path": "build/agent-undo/hosted-native/native-job-131548523442.log",
+      "bytes": 78154,
+      "sha256": "05ef94ed7299b596b41d057274e2ea13a687ef62b4bfe27fbcaee9b1a6fe3147"
+    },
+    {
+      "path": "build/agent-undo/hosted-native/native-job-131548523519.log",
+      "bytes": 66852,
+      "sha256": "f77a66cda0d4f6045e4678d78e39de0ce72f8d8f8874a32671cb8933b6c33915"
+    },
+    {
+      "path": "build/agent-undo/hosted-native/native-job-131557562052.log",
+      "bytes": 153982,
+      "sha256": "c74beb2cb8c59d204c73897ee724fac805b9d743b731936e02221684e08ed88f"
+    },
+    {
+      "path": "build/agent-undo/hosted-native/docs-consistency-131548354302.log",
+      "bytes": 213400,
+      "sha256": "2905e1b76ef258750ef7f68ebc3a14b04313ccdc81a0c67a901b8d255ee3c092"
+    }
+  ],
+  "raw_evidence_directory": "build/agent-undo/hosted-native",
+  "remaining_scope_limits": [
+    "The Documentation dependency pins and published-runtime provenance gate remains explicitly unexecuted in this Draft PR run.",
+    "Windows, graphical Godot, installed-package and standalone distribution qualification are recorded separately by their owners; this Native campaign does not substitute for them.",
+    "ASan runs deliberately disable leak detection; this evidence does not establish LeakSanitizer coverage.",
+    "Repeated normal/sanitizer variants are reported as repeated case executions, not additional distinct tests; Python cases, native cases, generator assertions and process invocations retain their own units."
+  ]
+}

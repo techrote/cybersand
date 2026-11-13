@@ -1,0 +1,133 @@
+{
+  "scope": "independent retained evidence verification; no new execution",
+  "source": "8e2206d5a664cc86b2ca432e6ad976e5f6d86bff",
+  "run": 43122038666,
+  "artifact": 13903143269,
+  "archive_sha256": "e14f405657774eafc62d67cd78d0dc8ba601b068614c393244ca50d5885237fd",
+  "runtime_sha256": "83fb4488ec3a1fdc5f639d242109b73861083514b9d8e176fd8051c74dfb4611",
+  "runtime_bytes": 5118976,
+  "native_inputs": 88,
+  "build_inputs": 779,
+  "catalogue_run": 209,
+  "catalogue_passed": 206,
+  "catalogue_skips": {
+    "test_lab.LabTests.test_cli_response_symlink_alias_preserves_preset": "POSIX symlink protocol alias fixture",
+    "test_lab.LabTests.test_explicit_compiler_path_with_spaces_executes_native_candidate": "The actual spaced-path compiler symlink fixture uses POSIX symlinks; Windows compiler commands require a Windows qualification host",
+    "test_lab.LabTests.test_timeout_and_cancel_kill_real_child_descendants": "Real POSIX process-tree cleanup; Windows taskkill requires Windows qualification"
+  },
+  "headless_cases": [
+    "import",
+    "test_material_lab_catalogue",
+    "test_material_lab_experiment",
+    "test_material_lab_diagnostics",
+    "test_material_lab_service",
+    "test_material_lab_ui",
+    "test_material_lab_world",
+    "test_workbench_canvas"
+  ],
+  "graphical_cases": [
+    "test_material_lab_ui",
+    "test_material_lab_world"
+  ],
+  "all_original_hashes_verified": true,
+  "package": "failed during Python alias staging before smoke; not published",
+  "catalogue_elapsed_seconds": 850.575,
+  "headless_markers": {
+    "test_material_lab_catalogue": {
+      "marker": [
+        "MATERIAL_LAB_CATALOGUE: 1348 assertions, 0 failures; actual compiled native descriptor and resolver readback"
+      ],
+      "seconds": 1.233
+    },
+    "test_material_lab_experiment": {
+      "marker": [
+        "MATERIAL_LAB_EXPERIMENT: 131 assertions; 0 failures"
+      ],
+      "seconds": 17.683
+    },
+    "test_material_lab_diagnostics": {
+      "marker": [
+        "MATERIAL_LAB_DIAGNOSTICS: 116 assertions; 0 failures"
+      ],
+      "seconds": 4.285
+    },
+    "test_material_lab_service": {
+      "marker": [
+        "Materials Lab process lifecycle: 87 checks, 0 failures"
+      ],
+      "seconds": 3.717
+    },
+    "test_material_lab_ui": {
+      "marker": [
+        "MATERIAL_LAB_UI: 189 assertions; 0 failures; artifacts=C:/Users/runneradmin/AppData/Roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/materials_lab/ui-acceptance-213978"
+      ],
+      "seconds": 150.426
+    },
+    "test_material_lab_world": {
+      "marker": [
+        "Materials Lab World UI: 201 checks, 0 failures"
+      ],
+      "seconds": 120.687
+    },
+    "test_workbench_canvas": {
+      "marker": [
+        "WORKBENCH_CANVAS 164 checks, 0 failures"
+      ],
+      "seconds": 50.846
+    }
+  },
+  "graphical_markers": {
+    "test_material_lab_ui": {
+      "marker": [
+        "MATERIAL_LAB_UI: 196 assertions; 0 failures; artifacts=C:/Users/runneradmin/AppData/Roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/materials_lab/ui-acceptance-3694375"
+      ],
+      "seconds": 600.789
+    },
+    "test_material_lab_world": {
+      "marker": [
+        "Materials Lab World UI: 206 checks, 0 failures"
+      ],
+      "seconds": 332.666
+    }
+  },
+  "original_sha256": {
+    "runtime-provenance.json": "f000fb9ff442b7eccec06e53a959de6c403b9486da675b65514b5327562acf92",
+    "catalogue-suite.json": "46486ded9cd9a9d8ec816c06ddc448f7f56105615cacb0536f760f960221d434",
+    "catalogue-suite-result.json": "e3fce1a634af991b8ee12a4dcd545ec65df88adb5edee59f30ef5d1c02f0b7f9",
+    "catalogue-suite.log": "61dac64efaf6fd3b44c28308cc411094e1f79d4abf37ee157278b7b691b0ac64",
+    "validation.json": "0ab1b28815325044da208037850751efb4c1f01914cb10b1fb1bd3cea9ab09cf",
+    "graphical.json": "883589e4d9b0d1238d74a7170362f26642307184cfb3f6fcdf62d7987234cf82",
+    "graphical/performance.jsonl": "15d2ee7923055d41340c9323cc9b2e30f930ae9180d841f6cb91ea7b677c7e59",
+    "graphical/test_material_lab_ui.log": "22ce7f374e4a1a9db698a476582e9232b351171e2fda6665ff396dee3d61b2cf",
+    "graphical/test_material_lab_ui/08-kept-salt-world.png": "c47b45a10080d1b411123d90ef48b47fd34d30d327259b68912055b22a359da9",
+    "graphical/test_material_lab_ui/effects-ui-capture-manifest.json": "1dcfb0d960b47c42b082af94f0f60f8e66c39c52c3ace91c08a0aef0c19564da",
+    "graphical/test_material_lab_ui/effects-ui-world-receipt.json": "f2122ce05785f17e6f5383c7d4ec9cfa7b3915df24688d6e4559e5c7ae170364",
+    "graphical/test_material_lab_world.log": "a6ecc13eec2ace2afb13b9cb4ebbe065b780a6c3888afa40ed47b0e2423f05f1",
+    "graphical/test_material_lab_world/07-candidate-world-density.png": "f9098954a61db2256c82d3288e1d112a8e59ef78cbcd32ab1ce75aaf2b335f0e",
+    "graphical/test_material_lab_world/world-capture-manifest.json": "4517e34c06333bebafd70fd48268946c00d4e5b3b59f14933b4a574cf8d79d9d",
+    "graphical/test_material_lab_world/world-ui-receipt.json": "45eb50d6ebdac638e5c7c9ac3a47a035dfdf3598b4c2a0e13dbb9776b73c830b",
+    "../windows-execution-130868087278.log": "b5023b3989b2e20380d590c7aad9bbdf23cb2c462512050ad513663d54741bc1",
+    "../windows-package-failure-130883326148.log": "784558e56aa00b0e1f46f189f4730ad27a5490fef5043127a465eb041d5f5eb0"
+  },
+  "descendant_cleanup": {
+    "cases": [
+      {
+        "child_exited": true,
+        "mode": "timeout",
+        "observed_child_pid": 6672,
+        "observed_live": true,
+        "refused": true
+      },
+      {
+        "child_exited": true,
+        "mode": "cancel",
+        "observed_child_pid": 1188,
+        "observed_live": true,
+        "refused": true
+      }
+    ],
+    "platform": "win32",
+    "status": "passed"
+  },
+  "graphical_backend": "Windows Server 2022 / Godot4.7 official / OpenGL ES3 ANGLE2.1.1 on Microsoft Basic Render Driver D3D11"
+}

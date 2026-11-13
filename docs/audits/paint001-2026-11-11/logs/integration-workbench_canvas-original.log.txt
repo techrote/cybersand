@@ -1,0 +1,13 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ERROR: WORKBENCH_CANVAS: selection and source reproduced
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_workbench_canvas.gd:21)
+       [1] inspect (res://tests/test_workbench_canvas.gd:322)
+       [2] author (res://tests/test_workbench_canvas.gd:101)
+       [3] until (res://tests/test_workbench_canvas.gd:28)
+WORKBENCH_CANVAS_READBACK {"arrival_bytes":42467328,"bodies":3,"elapsed_ms":40856,"extent":"(2048, 2048)","response":"LA-SELECTIVE","source":{"armed":true,"attempted":0,"blocked":0,"burst_queued":false,"inserted":0,"material":2,"max_stream_ticks":600,"origin":"(1525, 1370)","stream_enabled":false,"stream_ticks":0},"tick_ms":1.250669}
+WORKBENCH_CANVAS 164 checks, 1 failures

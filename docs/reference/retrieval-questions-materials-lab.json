@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-12",
+  "scope": "Additive Materials Lab v1 review-candidate questions; frozen and historical questions remain unchanged. Implementation is distinct from production activation and platform acceptance.",
+  "questions": [
+    {
+      "id": "MLAB-01",
+      "query": "How do I open Materials Lab v1 and inspect declared versus effective native material physics?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "The review candidate mounts in the desktop feature launcher and Shared Workbench, or --materials-lab.",
+        "The matching native bridge is required; native facts are not replaced by shadow or fallback metadata.",
+        "Rows distinguish declared/effective values, actual consumer, applicability and editability; Workbench policy is a copied receipt at opening."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-02",
+      "query": "Which Materials Lab candidate properties are editable, and does compiled/tested mean runtime-active?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Density, RGBA, explicit capabilities and visual projection are editable isolated candidates; viscosity is limited to supported yielding templates.",
+        "Kernel, physical state, movement and state defaults remain held to the selected template.",
+        "Draft, validated, compiled/tested and runtime-active are distinct; existing-ID candidates execute in an external compiled World, with no production installer."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-03",
+      "query": "How do material presets round-trip and compile the synthetic non-hard powder at ID132?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Version1 envelopes contain a strict candidate, source catalogue hash and deterministic digest; malformed or tampered imports preserve the current candidate.",
+        "The synthetic132 fixture compiles density1337, RGBA17/91/203/255, hardfalse and granulartrue without production ID allocation.",
+        "Compiled bundles use an external fresh directory and source/generated/executable hashes; the frozen compatibility lock is unchanged."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-04",
+      "query": "What does a threshold0 candidate reaction mean, and are keep_existing or state-setting effects supported?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Threshold T means inclusive (T+1)/256;0 succeeds for roll0 and fails for roll1.",
+        "Effects v1 retain replacement defaults; isolated World effects v2 admit non-Water keep_existing and declared Metal/Combustible state_b updates. Unsupported state/quantity contracts and conflicts are rejected.",
+        "The actual sparse native resolver is tested over256rolls and both orientations; World scheduling or sleep eligibility is not inferred."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-05",
+      "query": "How do I run and reopen a source-bound native Water experiment in Materials Lab, including PressureFlow?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "The existing MicroScenario host owns an isolated native World, with source, definition, seed, worker count and Water-family configuration retained.",
+        "Try originals > Water movement model > PressureFlow > Prepare experiment uses the native PressureFlow reference solver; Show applied Water settings opens the acknowledged settings.",
+        "The fixture observes768Brine after120ticks; native counts/state/quantities/hashes are authoritative, not images.",
+        "Fresh reference comparison and saved-case reconstruction are supported; one/four workers are tested and source mismatch refuses import."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-06",
+      "query": "Can Materials Lab v1 install authored physics, and which production compatibility gates remain separate?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Production132slots including invalid10,56rules, source identity and saved-world semantics remain unchanged.",
+        "Production activation remains a separately qualified353-B consumer/identity transition.",
+        "The owner excluded MoltenGlass H1 from this continuation; it is not a Materials Lab delivery dependency."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-07",
+      "query": "How can I compare an edited material in a compiled native World against untouched source and inspect actual cells and quantities?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Candidate test compiles the native World twice: untouched reference and externally adapted generated tables, with matching recipe and default solver configuration.",
+        "Density500 Sand and authored Salt/Water products have actual stored-cell outcomes; repeat, one/four workers, same-build persistence and quantity checks accompany the receipt.",
+        "Synthetic132 and changed hard/granular or visual-state capabilities are refused by this World backend. Production activation and cross-build saves remain unqualified."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-08",
+      "query": "How do I save and import a source-bound candidate World recipe with the same material, partner, seed, ticks and workers?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Save World recipe writes a strict versioned case containing the candidate, scenario and native-input source hashes with deterministic digests.",
+        "Import restores the candidate and visible controls as Validated candidate, clears prior test evidence and requires a fresh compiled World run.",
+        "Executable source changes, malformed fields and tampered digests refuse import; Git metadata-only changes do not invalidate identical inputs."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-09",
+      "query": "How does native contact inspection distinguish masks and source-core window exclusion from a supplied reaction probability roll?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Left and right preview clicks select source and target; inspection pauses the exclusive owner and copies actual stored/visible IDs, state, temperature and masks at one completed tick.",
+        "The report distinguishes neighbour, source-core and mask facts from the compiled resolver result at a supplied byte roll; target-core halo access is not incorrectly excluded.",
+        "Per-cell sleeping, future deadlines, epochs, task dispatch and actual random bytes remain unobserved; inspection never executes a reaction and step/input changes retire it."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-10",
+      "query": "How do I open the Windows Materials Lab evaluation package without installing Python Git and a compiler, and what proves it was tested?",
+      "canonical": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "facts": [
+        "Extract the complete evaluation ZIP to a writable directory and run Open-Materials-Lab.cmd; keep source and dependencies together.",
+        "The branch-scoped publisher requires actual Windows native authoring and graphical receipts, then executes the copied package environment before delivery.",
+        "The manifest binds the native DLL and all package files; automated platform execution does not claim human acceptance or runtime activation of authored physics."
+      ],
+      "sources": [
+        "operations/materials-lab-authoring.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MLAB-11",
+      "query": "How does the Materials Lab stay readable in a small window and use a typed numeric edit when I immediately compile or save?",
+      "canonical": ["operations/materials-lab-authoring.md"],
+      "facts": [
+        "The standalone Lab uses window pixels and restores launcher scaling on close; overflowing tab contents scroll at the Workbench's 1000x650 minimum.",
+        "Actions commit pending numeric input before capturing source candidate and recipe values.",
+        "Endpoint and supplied-roll changes retire the previous resolver diagnostic; late results cannot describe the current selection."
+      ],
+      "sources": ["operations/materials-lab-authoring.md"],
+      "revision_sensitive": true
+    }
+  ]
+}

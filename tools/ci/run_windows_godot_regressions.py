@@ -30,7 +30,9 @@ GODOT_SHA512 = (
 )
 INPUT_SCOPES = (
     "godot", "native/include", "native/src", "tools/ci/run_godot_regressions.py",
+    "tools/material_catalogue", "materials/catalogue",
     "tools/ci/run_windows_godot_regressions.py", "tools/ci/godot_timeout_diagnostics.py",
+    "tools/ci/native_candidate_identity.py",
     "tools/ci/godot_process_monitor.py", "tools/ci/physical_progress_watchdog.py",
     "tools/ci/execution_policy.py", "tools/ci/execution_telemetry.py",
     "tools/ci/godot_scheduling.py", "tools/ci/godot_scheduling_profile.json",
@@ -90,12 +92,18 @@ def native_input_paths(root: Path) -> set[str]:
     }
 
 
-def verify_retained_runtime(root: Path, *, rapier_build: Path | None = None) -> dict:
+def verify_retained_runtime(root: Path, *, rapier_build: Path | None = None,
+                            native_candidate: Path | None = None) -> dict:
     """Reject stale native inputs, unmaterialized LFS pointers and changed bytes."""
-    manifest_bytes = (root / PROVENANCE).read_bytes()
-    if manifest_bytes != git(root, "show", "HEAD:" + PROVENANCE):
-        raise RuntimeError("Runtime provenance differs from the tested Git commit")
-    manifest = json.loads(manifest_bytes)
+    if native_candidate is None:
+        manifest_bytes = (root / PROVENANCE).read_bytes()
+        if manifest_bytes != git(root, "show", "HEAD:" + PROVENANCE):
+            raise RuntimeError("Runtime provenance differs from the tested Git commit")
+        manifest = json.loads(manifest_bytes)
+    else:
+        import native_candidate_identity as identity
+        manifest = identity.verify(root, native_candidate)
+        manifest_bytes = (native_candidate / identity.NAME).read_bytes()
     if manifest.get("schema_version") != 1 or manifest.get("artifact") != NATIVE:
         raise RuntimeError("Unexpected Windows runtime provenance schema or artifact")
     expected_paths = native_input_paths(root)
@@ -132,6 +140,8 @@ def verify_retained_runtime(root: Path, *, rapier_build: Path | None = None) -> 
         digest = hashlib.sha256(data).hexdigest()
         expected_hash = candidate["artifacts"][path.name] if candidate and relative == RAPIER else match[1].decode()
         expected_size = len(data) if candidate and relative == RAPIER else int(match[2])
+        if native_candidate is not None and relative == NATIVE:
+            expected_hash, expected_size = manifest["sha256"], manifest["size"]
         if not data.startswith(b"MZ") or digest != expected_hash or len(data) != expected_size:
             raise RuntimeError("Materialized Windows runtime differs from committed LFS bytes: " + relative)
         identities[relative] = {"path": relative, "sha256": digest, "size": len(data)}
@@ -142,7 +152,8 @@ def verify_retained_runtime(root: Path, *, rapier_build: Path | None = None) -> 
     return {
         "runtime_source_commit": manifest["source_commit"],
         "runtime_build_commit": manifest["build_commit"],
-        "runtime_provenance": {"path": PROVENANCE, "sha256": runner.sha256(root / PROVENANCE)},
+        "runtime_provenance": {"path": PROVENANCE if native_candidate is None else "source-built-candidate-provenance.json",
+                               "sha256": hashlib.sha256(manifest_bytes).hexdigest()},
         "native_source_inputs": manifest["source_inputs"],
         "cybersand_runtime": identities[NATIVE],
         "rapier_runtime": identities[RAPIER],
@@ -265,6 +276,8 @@ def main() -> int:
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--shard-count", type=int, default=1)
     parser.add_argument("--shard-index", type=int, default=0)
+    parser.add_argument("--native-candidate", type=Path,
+                        help="same-run source-built candidate directory; retained provenance stays unchanged")
     parser.add_argument("--execution-seconds", type=float,
                         help="Aggregate runner envelope, separate from every full case watchdog")
     args = parser.parse_args()
@@ -292,9 +305,11 @@ def main() -> int:
             if source != args.expected_source_sha:
                 raise RuntimeError("Windows checkout differs from the workflow's tested Git commit")
             report.update({"source_commit": source, "source_tree": git(ROOT, "rev-parse", "HEAD^{tree}").decode().strip()})
-            report.update(verify_retained_runtime(ROOT))
-            (output / "runtime-provenance.json").write_bytes((ROOT / PROVENANCE).read_bytes())
-            git(ROOT, "diff", "--exit-code", "HEAD", "--", *INPUT_SCOPES, ":!godot/.godot")
+            report.update(verify_retained_runtime(ROOT, native_candidate=args.native_candidate))
+            raw_provenance = ROOT / PROVENANCE if args.native_candidate is None else args.native_candidate / "candidate-provenance.json"
+            (output / "runtime-provenance.json").write_bytes(raw_provenance.read_bytes())
+            exclusions = [":!" + NATIVE] if args.native_candidate is not None else []
+            git(ROOT, "diff", "--exit-code", "HEAD", "--", *INPUT_SCOPES, ":!godot/.godot", *exclusions)
             report["tested_inputs"] = tested_inputs(ROOT)
             godot, report["godot_identity"] = prepare_godot(args.godot_archive.resolve())
             report["godot_version"] = report["godot_identity"]["version"]

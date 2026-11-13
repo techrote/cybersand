@@ -1,0 +1,8 @@
+{
+  "schema": "explore001-runtime-publish-request-v1",
+  "family": "gen007_playable_workbench",
+  "variant": "source-matched-prepared-play-plane",
+  "scope": "explore001-exact-source-native-godot-rapier-linux-windows",
+  "intent": "publish-source-matched-runtimes",
+  "request_sequence": 1
+}

@@ -1,0 +1,425 @@
+{
+  "source_commit": "dc3aaac3273fc0d2e4e6e6e06b1b154188465ec2",
+  "run_id": 43297709393,
+  "url": "https://github.com/techrote/cybersand/actions/runs/43297709393",
+  "result": "failed",
+  "note": "Original full-suite attempt retained. The subsequent source fixes PAINT overwriting native acknowledgements and adapts the liquid-edge fixture to actual pointer state, material IDs and asynchronous native receipts. A Linux shard also failed before tests on TLS download; neither failures nor skips count as passes.",
+  "jobs": [
+    {
+      "id": 131460331237,
+      "name": "complete execution budgets",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131460331237",
+      "started": "2026-11-12T20:11:01Z",
+      "completed": "2026-11-12T20:11:52Z"
+    },
+    {
+      "id": 131460331650,
+      "name": "linux build x86_64",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131460331650",
+      "started": "2026-11-12T20:11:01Z",
+      "completed": "2026-11-12T20:17:57Z"
+    },
+    {
+      "id": 131460331747,
+      "name": "windows x86_64",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131460331747",
+      "started": "2026-11-12T20:11:01Z",
+      "completed": "2026-11-12T20:15:01Z"
+    },
+    {
+      "id": 131460391881,
+      "name": "ready validation scope",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131460391881",
+      "started": "2026-11-12T20:11:04Z",
+      "completed": "2026-11-12T20:10:58Z"
+    },
+    {
+      "id": 131460427429,
+      "name": "physical-actor-stress",
+      "conclusion": "skipped",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131460427429",
+      "started": "2026-11-12T20:11:08Z",
+      "completed": "2026-11-12T20:10:58Z"
+    },
+    {
+      "id": 131462728555,
+      "name": "windows headless regression shard 8",
+      "conclusion": "failure",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728555",
+      "started": "2026-11-12T20:17:03Z",
+      "completed": "2026-11-12T20:20:28Z"
+    },
+    {
+      "id": 131462728589,
+      "name": "windows headless regression shard 12",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728589",
+      "started": "2026-11-12T20:18:36Z",
+      "completed": "2026-11-12T20:22:12Z"
+    },
+    {
+      "id": 131462728624,
+      "name": "windows headless regression shard 1",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728624",
+      "started": "2026-11-12T20:15:04Z",
+      "completed": "2026-11-12T20:17:00Z"
+    },
+    {
+      "id": 131462728645,
+      "name": "windows headless regression shard 6",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728645",
+      "started": "2026-11-12T20:15:05Z",
+      "completed": "2026-11-12T20:17:47Z"
+    },
+    {
+      "id": 131462728687,
+      "name": "windows headless regression shard 10",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728687",
+      "started": "2026-11-12T20:17:49Z",
+      "completed": "2026-11-12T20:21:08Z"
+    },
+    {
+      "id": 131462728709,
+      "name": "windows headless regression shard 3",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728709",
+      "started": "2026-11-12T20:15:04Z",
+      "completed": "2026-11-12T20:18:34Z"
+    },
+    {
+      "id": 131462728720,
+      "name": "windows headless regression shard 9",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728720",
+      "started": "2026-11-12T20:17:38Z",
+      "completed": "2026-11-12T20:20:38Z"
+    },
+    {
+      "id": 131462728724,
+      "name": "windows headless regression shard 2",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728724",
+      "started": "2026-11-12T20:15:04Z",
+      "completed": "2026-11-12T20:18:43Z"
+    },
+    {
+      "id": 131462728735,
+      "name": "windows headless regression shard 15",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728735",
+      "started": "2026-11-12T20:19:30Z",
+      "completed": "2026-11-12T20:21:25Z"
+    },
+    {
+      "id": 131462728738,
+      "name": "windows headless regression shard 16",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728738",
+      "started": "2026-11-12T20:20:31Z",
+      "completed": "2026-11-12T20:23:47Z"
+    },
+    {
+      "id": 131462728774,
+      "name": "windows headless regression shard 14",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728774",
+      "started": "2026-11-12T20:19:03Z",
+      "completed": "2026-11-12T20:22:00Z"
+    },
+    {
+      "id": 131462728787,
+      "name": "windows headless regression shard 7",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728787",
+      "started": "2026-11-12T20:15:04Z",
+      "completed": "2026-11-12T20:19:28Z"
+    },
+    {
+      "id": 131462728797,
+      "name": "windows headless regression shard 13",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728797",
+      "started": "2026-11-12T20:18:45Z",
+      "completed": "2026-11-12T20:20:41Z"
+    },
+    {
+      "id": 131462728812,
+      "name": "windows headless regression shard 4",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728812",
+      "started": "2026-11-12T20:15:04Z",
+      "completed": "2026-11-12T20:18:08Z"
+    },
+    {
+      "id": 131462728847,
+      "name": "windows headless regression shard 5",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728847",
+      "started": "2026-11-12T20:15:04Z",
+      "completed": "2026-11-12T20:17:35Z"
+    },
+    {
+      "id": 131462728852,
+      "name": "windows headless regression shard 11",
+      "conclusion": "failure",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728852",
+      "started": "2026-11-12T20:18:10Z",
+      "completed": "2026-11-12T20:21:46Z"
+    },
+    {
+      "id": 131462728942,
+      "name": "windows headless regression shard 17",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728942",
+      "started": "2026-11-12T20:20:42Z",
+      "completed": "2026-11-12T20:23:44Z"
+    },
+    {
+      "id": 131462728988,
+      "name": "windows headless regression shard 0",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462728988",
+      "started": "2026-11-12T20:15:04Z",
+      "completed": "2026-11-12T20:19:00Z"
+    },
+    {
+      "id": 131462731246,
+      "name": "windows headless regression shard 19",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462731246",
+      "started": "2026-11-12T20:21:10Z",
+      "completed": "2026-11-12T20:24:57Z"
+    },
+    {
+      "id": 131462731431,
+      "name": "windows headless regression shard 18",
+      "conclusion": "failure",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462731431",
+      "started": "2026-11-12T20:20:44Z",
+      "completed": "2026-11-12T20:23:20Z"
+    },
+    {
+      "id": 131462732191,
+      "name": "windows headless regression shard 20",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131462732191",
+      "started": "2026-11-12T20:21:27Z",
+      "completed": "2026-11-12T20:24:17Z"
+    },
+    {
+      "id": 131464468497,
+      "name": "art workbench graphical smoke",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464468497",
+      "started": "2026-11-12T20:18:00Z",
+      "completed": "2026-11-12T20:19:52Z"
+    },
+    {
+      "id": 131464468946,
+      "name": "linux regression shard 1",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464468946",
+      "started": "2026-11-12T20:18:01Z",
+      "completed": "2026-11-12T20:20:46Z"
+    },
+    {
+      "id": 131464469046,
+      "name": "linux regression shard 17",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464469046",
+      "started": "2026-11-12T20:22:18Z",
+      "completed": "2026-11-12T20:25:01Z"
+    },
+    {
+      "id": 131464469053,
+      "name": "linux regression shard 4",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464469053",
+      "started": "2026-11-12T20:18:00Z",
+      "completed": "2026-11-12T20:20:29Z"
+    },
+    {
+      "id": 131464469055,
+      "name": "linux regression shard 11",
+      "conclusion": "failure",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464469055",
+      "started": "2026-11-12T20:20:31Z",
+      "completed": "2026-11-12T20:20:41Z"
+    },
+    {
+      "id": 131464469063,
+      "name": "linux regression shard 5",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464469063",
+      "started": "2026-11-12T20:18:01Z",
+      "completed": "2026-11-12T20:20:10Z"
+    },
+    {
+      "id": 131464469066,
+      "name": "linux regression shard 6",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464469066",
+      "started": "2026-11-12T20:18:01Z",
+      "completed": "2026-11-12T20:20:26Z"
+    },
+    {
+      "id": 131464469070,
+      "name": "linux regression shard 2",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464469070",
+      "started": "2026-11-12T20:18:01Z",
+      "completed": "2026-11-12T20:20:34Z"
+    },
+    {
+      "id": 131464469091,
+      "name": "linux regression shard 10",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464469091",
+      "started": "2026-11-12T20:20:29Z",
+      "completed": "2026-11-12T20:23:10Z"
+    },
+    {
+      "id": 131464469095,
+      "name": "linux regression shard 12",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464469095",
+      "started": "2026-11-12T20:20:37Z",
+      "completed": "2026-11-12T20:23:38Z"
+    },
+    {
+      "id": 131464469106,
+      "name": "linux regression shard 0",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464469106",
+      "started": "2026-11-12T20:18:01Z",
+      "completed": "2026-11-12T20:20:49Z"
+    },
+    {
+      "id": 131464469111,
+      "name": "linux regression shard 14",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464469111",
+      "started": "2026-11-12T20:20:48Z",
+      "completed": "2026-11-12T20:23:10Z"
+    },
+    {
+      "id": 131464469119,
+      "name": "linux regression shard 13",
+      "conclusion": "failure",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464469119",
+      "started": "2026-11-12T20:20:44Z",
+      "completed": "2026-11-12T20:23:04Z"
+    },
+    {
+      "id": 131464469124,
+      "name": "linux regression shard 3",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464469124",
+      "started": "2026-11-12T20:18:01Z",
+      "completed": "2026-11-12T20:21:12Z"
+    },
+    {
+      "id": 131464469130,
+      "name": "linux regression shard 9",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464469130",
+      "started": "2026-11-12T20:20:28Z",
+      "completed": "2026-11-12T20:22:14Z"
+    },
+    {
+      "id": 131464469148,
+      "name": "linux regression shard 7",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464469148",
+      "started": "2026-11-12T20:18:00Z",
+      "completed": "2026-11-12T20:20:27Z"
+    },
+    {
+      "id": 131464469156,
+      "name": "linux regression shard 16",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464469156",
+      "started": "2026-11-12T20:21:14Z",
+      "completed": "2026-11-12T20:24:02Z"
+    },
+    {
+      "id": 131464469171,
+      "name": "linux regression shard 8",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464469171",
+      "started": "2026-11-12T20:20:13Z",
+      "completed": "2026-11-12T20:22:31Z"
+    },
+    {
+      "id": 131464469252,
+      "name": "linux regression shard 15",
+      "conclusion": "failure",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464469252",
+      "started": "2026-11-12T20:20:51Z",
+      "completed": "2026-11-12T20:23:23Z"
+    },
+    {
+      "id": 131464471339,
+      "name": "linux regression shard 18",
+      "conclusion": "failure",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464471339",
+      "started": "2026-11-12T20:22:34Z",
+      "completed": "2026-11-12T20:25:29Z"
+    },
+    {
+      "id": 131464471500,
+      "name": "linux regression shard 19",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464471500",
+      "started": "2026-11-12T20:23:07Z",
+      "completed": "2026-11-12T20:25:08Z"
+    },
+    {
+      "id": 131464471541,
+      "name": "linux regression shard 21",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464471541",
+      "started": "2026-11-12T20:23:12Z",
+      "completed": "2026-11-12T20:25:02Z"
+    },
+    {
+      "id": 131464471684,
+      "name": "linux regression shard 20",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131464471684",
+      "started": "2026-11-12T20:23:12Z",
+      "completed": "2026-11-12T20:26:44Z"
+    },
+    {
+      "id": 131468562327,
+      "name": "windows sharded execution coverage",
+      "conclusion": "failure",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131468562327",
+      "started": "2026-11-12T20:25:00Z",
+      "completed": "2026-11-12T20:25:17Z"
+    },
+    {
+      "id": 131469609741,
+      "name": "retained execution and physical timing history",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131469609741",
+      "started": "2026-11-12T20:26:47Z",
+      "completed": "2026-11-12T20:27:43Z"
+    },
+    {
+      "id": 131469609786,
+      "name": "linux x86_64",
+      "conclusion": "failure",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43297709393/job/131469609786",
+      "started": "2026-11-12T20:26:46Z",
+      "completed": "2026-11-12T20:26:59Z"
+    }
+  ]
+}

@@ -341,7 +341,9 @@ class SourceContractTests(unittest.TestCase):
         self.native = native; self.provenance = provenance
         files = {"native/src/world.cpp": b"frozen\n", "godot/tests/test_one.gd": b"extends Node\n",
                  "godot/tests/test_two.gd": b"extends Node\n",
-                 ".gitattributes": b"* text=auto\n*.gd text eol=lf\n*.ps1 text eol=crlf\n*.dll filter=lfs -text\n",
+                 "tools/material_catalogue/lab.py": b"candidate_compiler = 1\n",
+                 "materials/catalogue/catalogue.json": b'{"registry_size": 132}\n',
+                 ".gitattributes": b"* text=auto\n*.gd text eol=lf\n*.py text eol=lf\n*.json text eol=lf\n*.ps1 text eol=crlf\n*.dll filter=lfs -text\n",
                  "godot/notes.txt": b"first\nsecond\n", "godot/control.ps1": b"Write-Output 1\n",
                  "godot/raw.bin": b"\0first\nsecond\n"}
         for path, hashchar, size in ((native, "d", 1234), (rapier, "1", 2345)):
@@ -362,7 +364,7 @@ class SourceContractTests(unittest.TestCase):
             build_shard_plan=mock.Mock(return_value=([[records[0]], [records[1]]], [5.0, 5.0])),
             case_dict=lambda c: case(c.name))
         self.windows = types.SimpleNamespace(
-            git=git, INPUT_SCOPES=("godot", "native"), PROVENANCE=provenance,
+            git=git, INPUT_SCOPES=actual_windows.INPUT_SCOPES, PROVENANCE=provenance,
             NATIVE=native, RAPIER=rapier, RAPIER_SHA256="1" * 64,
             GODOT_VERSION="4.7.fixture", GODOT_SHA512="2" * 128,
             RAPIER_IMPORT_DESCRIPTORS=actual_windows.RAPIER_IMPORT_DESCRIPTORS,
@@ -384,6 +386,36 @@ class SourceContractTests(unittest.TestCase):
         self.assertEqual(expected["tested_input_sha256"][self.native], ["d" * 64])
         self.assertEqual(expected["execution_policy"], execution_policy.identity())
         self.runner.discover_cases.assert_called_once_with(self.root)
+
+    def test_authoring_inputs_derive_from_exact_source_and_dirty_edits_fail(self):
+        import subprocess
+        expected = self.contract()
+        for relative in ("tools/material_catalogue/lab.py", "materials/catalogue/catalogue.json"):
+            with self.subTest(path=relative):
+                path = self.root / relative
+                original = path.read_bytes()
+                self.assertIn(relative, expected["tested_input_paths"])
+                self.assertEqual(expected["tested_input_sha256"][relative], [digest(original)])
+                path.write_bytes(original + b"changed\n")
+                with self.assertRaises(subprocess.CalledProcessError):
+                    self.contract()
+                path.write_bytes(original)
+
+    def test_source_built_candidate_has_independent_runtime_identity(self):
+        from unittest import mock
+        import native_candidate_identity as identity
+        directory = self.root / "candidate"
+        directory.mkdir()
+        binary = directory / Path(self.native).name
+        binary.write_bytes(b"MZsource-built-fixture")
+        with mock.patch.object(identity, "NATIVE", self.native):
+            candidate = identity.create(self.root, directory)
+            expected = subject.source_contract(self.root, self.sha, 2, directory)
+            self.assertEqual(expected["cybersand_runtime"]["sha256"], digest(binary.read_bytes()))
+            self.assertEqual(expected["runtime_source_commit"], self.sha)
+            self.assertEqual(expected["tested_input_sha256"][self.native], [candidate["sha256"]])
+            binary.write_bytes(b"MZdifferent")
+            with self.assertRaises(ValueError): subject.source_contract(self.root, self.sha, 2, directory)
 
     def test_source_hashes_respect_declared_checkout_bytes(self):
         hashes = self.contract()["tested_input_sha256"]

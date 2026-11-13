@@ -1,0 +1,12 @@
+{
+  "head": "a8259c5a789cff1d2652729c1a24508e1fce4ab6",
+  "local_delta": "PAINT Save lease guard, completed-capture cancellation latch, bounded fill margin reclamation; native source unchanged",
+  "files": {
+    "godot/scripts/workbench_paint_editor_controller.gd": "7ce59ceffe6f7222d2cdaa0ccd0be1ed3c5e8d7e9a5416bb16582eda5510fdd2",
+    "godot/scripts/workbench_paint_editor_shapes.gd": "82c90552d04d975908f8a7ba14afc78ddb0152faf57684c1957b3f058c9e8e16",
+    "godot/tests/test_paint_editor_shapes.gd": "12e819867dfca038dd1f46597f5a6a899495174f3d2d7f03f6f12a6d4a760b03",
+    "godot/tests/test_paint_editor_workbench.gd": "2b85aa7a582afe7f455ec9501ce6e72f2bf847d7d98a26001633aa9650b2c3bc",
+    "godot/tests/test_paint_editor_history.gd": "cf2f7147d072389e0c38305ce00d4a842b041d67005ce6513212c23ab5c995d1",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "16ffc0ce8190c2e8ca2e31fc59f10c55148adc6e7f16727dc96c094d8a96696a"
+  }
+}

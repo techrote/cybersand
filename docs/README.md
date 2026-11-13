@@ -4,17 +4,42 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-11
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.
+
+Materials Lab v1 review candidate: [desktop launch, inspection, authoring and native tests](operations/materials-lab-authoring.md),
+[initial qualification](audits/2026-11-11-materials-lab-v1.md), and
+[completion/runtime/Windows package evidence](audits/2026-11-11-materials-lab-completion.md).
+The mounted interface consumes native read-only facts, compiles isolated presets
+and reuses MicroScenarios. Production material authority, IDs and saved-world
+semantics remain unchanged; #353-B remains separate. The owner excluded
+MoltenGlass H1 from this Materials Lab continuation.
+
+Current Draft: [integrated PAINT + agent Workbench](operations/wb-art-paint-integrated-candidate.md), including standalone generator profiles, native stored-material receipts and one edit ordering boundary. Component contracts: [direct drawing](systems/workbench-direct-art-batches.md), [provider connection/context/scanlines](systems/workbench-art-providers.md), and [full PAINT editor](systems/paint-editor-bounded-shapes.md).
+
+Shared authoring: [approved data contract and convergence plan](architecture/shared-workbench-authoring-data.md)
+separates Current generated-start saves from Planned material-only Flatten and
+defines the common desktop/agent/remote foundation. #542 Ready qualification is
+owner-authorized; no merge or #548 implementation is authorized.
+
+EXPLORE-001 review candidate: [generated-map contract](systems/explore001-generated-playable-maps.md),
+[Windows candidate/playtest](operations/explore001-desktop-playtest.md), and
+[independent integration QA](audits/2026-11-08-explore001-integration-qa.md).
+Candidate execution does not satisfy retained runtime publication or human acceptance.
 
 IN-TOOLS #361: [renewed current-main admission](architecture/in-tools-gameplay-admission.md)
 and [six Planned/NOT_RUN fixture concepts](operations/in-tools-fixtures-and-playtest.md).
 The [2026-11-07 source authority audit](audits/2026-11-07-in-tools-361-source-authority-renewal.md)
 keeps the immutable #404 A01 witness separate from the new source and runtime gates.
 Ordinary U10 `liquid_drain` is Current; new exact-metered commands are not.
+The #361 Draft branch adds [workbench liquid equipment](systems/workbench-liquid-equipment.md)
+(valves, drain, pumped nozzle and the built-in liquid-lab and reservoir-lab starts) with
+[dated Windows evidence](audits/2026-11-09-in-tools-361-workbench-equipment.md).
 
 
 Coupled determinism: [desktop lockstep feasibility](architecture/determinism-and-boundary-transfers.md#coupled-desktop-determinism--2026-11-06)
@@ -25,9 +50,12 @@ unchanged. The [dated audit](audits/2026-11-06-coupling-lockstep-feasibility.md)
 records the evidence and the opt-in packing re-measurement.
 
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
+The separate [native capability consumer candidate](audits/2026-11-11-material-native-capability-cutover.md)
+in Draft #563 generates hard/granular queries while preserving existing values,
+source-qualified policy/save identity and the immutable lock.
 The [#353-A shadow compiler](operations/material-catalogue-shadow.md) merged in
 [#371](https://github.com/techrote/cybersand/pull/371), accepted main `7ef4856e`;
-legacy native/fallback definitions remain production authority. The
+on accepted main, legacy native/fallback definitions remain production authority. The
 [#354 Phase A investigation](operations/material-liveness-investigation.md)
 demonstrates lost isolated MoltenGlass cooling, distinguishes existing mutual
 heating and preserves documented generic yielding rest. Only tests, tooling and

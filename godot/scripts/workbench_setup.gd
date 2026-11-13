@@ -10,17 +10,26 @@ const MATERIALS := [2,14,29,13,19,23,25,26,27,3,58,0,8,16,12,7,9,28]
 const MATERIAL_NAMES := ["Sand","Dust","Rust","Stone","Seed","Salt","Sodium","Gunpowder","Coal","Water","Hard wall","Erase",
 	"Lava","Oil","Acid","Wood","Ice","Metal"]
 const MAX_BODIES := 8
-const MAX_RUNS := 4096
-# Starting paint records. When the brush fills them, the history is compacted
-# into box stamps of its merged rectangles (compact_edits), so the practical
-# bound is the native construction budget of MAX_RUNS rectangles.
-const MAX_STAMPS := 4096
+# Workbench-only construction budget; other MicroScenario starts still
+# enforce 4096. All authored starts retain the 1 MiB saved-file budget.
+const MAX_RUNS := 32768
+const MAX_STAMPS := 32768
 const DIRECTORY := "user://workbench"
 const BYTE_LIMIT := 1024 * 1024
 const DEFAULT_OPTIONS := {"budget":20.0,"mass_multiplier":1.0,"inertia_multiplier":1.0,
 	"thrust_multiplier":1.0,"torque_multiplier":1.0,"boost_multiplier":2.0}
 const ROOT_KEYS := ["version","extent","actors","next_id","selected","edits","response","liquid_policy",
 	"normalize","rule_radius","source","material","brush","fire"]
+
+# Refuse to author an un-reopenable start against an older installed DLL/SO.
+# The bridge object reports only immutable constructor capability, not a World.
+static func native_rectangle_budget() -> int:
+	if not ClassDB.class_exists(&"CyberDemoBridge"): return 4096
+	var bridge: Object = ClassDB.instantiate(&"CyberDemoBridge")
+	if bridge == null or not bridge.has_method(&"workbench_start_rectangle_capacity"):
+		return 4096
+	return clampi(int(bridge.call(&"workbench_start_rectangle_capacity")),4096,MAX_RUNS)
+
 
 static func fresh(policy: PackedInt32Array, extent := Vector2i(2048,2048)) -> Dictionary:
 	return {"version":2,"extent":[extent.x,extent.y],"actors":[],"next_id":1,"selected":0,"edits":[],
@@ -45,6 +54,15 @@ const GUNPOWDER := 26
 const COAL := 27
 const STRESS_LABEL := "stress-canvas"
 const BUILTIN_LABELS := [DEFAULT_LABEL,BENCH_LABEL,STRESS_LABEL]
+# IN-TOOLS #361 integrated leak / drain / nozzle apparatus. Kept apart from
+# BUILTIN_LABELS so terrain-only fixture exporters keep their exact inputs.
+const LIQUID_LAB_LABEL := "liquid-lab"
+const RESERVOIR_LAB_LABEL := "reservoir-lab"
+const EQUIPMENT_LABELS := [LIQUID_LAB_LABEL,RESERVOIR_LAB_LABEL]
+const Equipment = preload("res://scripts/workbench_liquid_equipment.gd")
+# Optional root key. Absent = no equipment; a setup without it keeps exactly
+# the Setup-v2 bytes and older builds refuse (never silently drop) one with it.
+const EQUIPMENT_KEY := "equipment"
 const SMOKE := 4
 const FIRE := 6
 const PLANT := 11
@@ -312,7 +330,85 @@ static func builtin(label: String, policy: PackedInt32Array) -> Dictionary:
 	if label == DEFAULT_LABEL: return water_evaluation(policy)
 	if label == BENCH_LABEL: return engine_benchmark(policy)
 	if label == STRESS_LABEL: return stress_canvas(policy)
+	if label == LIQUID_LAB_LABEL: return liquid_lab(policy)
+	if label == RESERVOIR_LAB_LABEL: return reservoir_lab(policy)
 	return {}
+
+# Built-in "liquid-lab" equipment apparatus (#361; used only while no user file
+# of that name exists). Left to right in one 480 x 270 view: an elevated
+# reservoir with a closed 8 x 4 bottom valve in its floor; a catch basin under
+# and beside it with a bottom drain by its lip and a ledge carrying a barrel; a
+# nozzle on the dry floor beyond the lip aimed back up over the ledge. The pump
+# pipes drained Water to the nozzle, so the loop circulates a fixed quantity.
+# The workbench requests inertial Water (radius 3) and ballistic Water for
+# this start; the native validator decides, and refusals keep the policy given.
+# A bottom valve is used because inertial Water gates horizontal-only moves by
+# coherence: a side slot in a 4-cell wall leaks only about one cell per tick.
+const LIQUID_LAB_VALVE := [56,220,8,4]
+const LIQUID_LAB_DRAIN := [96,258,16,6,16]
+const LIQUID_LAB_NOZZLE := [420,246,-141.0,5.5,2]
+static func liquid_lab(policy: PackedInt32Array) -> Dictionary:
+	var data := fresh(policy,Vector2i(512,512))
+	var e: Array = data.edits
+	_box(e,Vector2i(16,130),Vector2i(136,220),WATER)            # reservoir contents
+	_box(e,Vector2i(0,264),Vector2i(512,272),WALL)              # floor
+	_box(e,Vector2i(0,20),Vector2i(4,264),WALL)                 # left boundary
+	_box(e,Vector2i(476,20),Vector2i(480,264),WALL)             # right boundary
+	_box(e,Vector2i(12,110),Vector2i(16,224),WALL)              # reservoir left wall
+	_box(e,Vector2i(12,220),Vector2i(140,224),WALL)             # reservoir floor incl. the closed valve gate
+	_box(e,Vector2i(136,110),Vector2i(140,220),WALL)            # reservoir right wall
+	_box(e,Vector2i(4,150),Vector2i(12,156),WALL)               # bracket to the left boundary
+	_box(e,Vector2i(330,226),Vector2i(334,264),WALL)            # basin lip beside the drain
+	_box(e,Vector2i(222,190),Vector2i(262,194),WALL)            # ledge under the barrel
+	data.actors = [instance(BARREL,1,Vector2(242,180))]
+	data.next_id = 2
+	data.material = WATER
+	data.rule_radius = 3
+	data[EQUIPMENT_KEY] = {"version":Equipment.VERSION,"valves":[LIQUID_LAB_VALVE.duplicate()],
+		"drain":LIQUID_LAB_DRAIN.duplicate(),"nozzle":LIQUID_LAB_NOZZLE.duplicate(),"supply":150,"pump":true,
+		"pipe_capacity":Equipment.MAX_PIPE_CELLS}
+	return data
+
+# Built-in "reservoir-lab" (#361; used only while no user file of that name
+# exists): a manually operated playground of connected reservoirs for the
+# pressure Water family (the workbench requests "Water: pressure reference").
+# Left to right in one 480 x 270 view:
+#   A  two tanks sharing a wall with valve 1 at its foot (connected vessels);
+#   B  three bins sharing walls, each shared wall with a low and a high valve
+#      (valves 2-5): low valves equalize, high valves only spill above them;
+#   C  an elevated sealed tank with an air pocket, a vent valve in its lid
+#      (valve 6) and the drain in its floor: draining with the vent shut can
+#      hold Water up under a vacuum, opening the vent lets air in;
+#   D  a pool with the nozzle submerged near its floor; the pump pipes the
+#      tank's drained Water into it, so the pool level rises.
+const RESERVOIR_LAB_VALVES := [[56,244,4,16],[176,246,4,14],[176,150,4,14],[232,246,4,14],[232,180,4,14],[330,146,6,4]]
+const RESERVOIR_LAB_DRAIN := [320,234,16,6,8]
+const RESERVOIR_LAB_NOZZLE := [420,256,-90.0,1.0,2]
+static func reservoir_lab(policy: PackedInt32Array) -> Dictionary:
+	var data := fresh(policy,Vector2i(512,512))
+	var e: Array = data.edits
+	_box(e,Vector2i(4,150),Vector2i(56,264),WATER)              # A: full left tank
+	_box(e,Vector2i(124,130),Vector2i(176,264),WATER)           # B: full bin 1
+	_box(e,Vector2i(180,200),Vector2i(232,264),WATER)           # B: half bin 2
+	_box(e,Vector2i(304,160),Vector2i(364,240),WATER)           # C: sealed tank below its air pocket
+	_box(e,Vector2i(380,220),Vector2i(476,264),WATER)           # D: pool
+	_box(e,Vector2i(0,264),Vector2i(512,272),WALL)              # floor
+	_box(e,Vector2i(0,20),Vector2i(4,264),WALL)                 # left boundary
+	_box(e,Vector2i(476,20),Vector2i(480,264),WALL)             # right boundary
+	_box(e,Vector2i(56,100),Vector2i(60,264),WALL)              # A: shared wall incl. valve 1
+	_box(e,Vector2i(112,100),Vector2i(116,264),WALL)            # A: right tank wall
+	for x: int in [120,176,232,288]:                            # B: bin walls incl. valves 2-5
+		_box(e,Vector2i(x,110),Vector2i(x+4,264),WALL)
+	_box(e,Vector2i(300,146),Vector2i(368,150),WALL)            # C: lid incl. vent valve 6
+	_box(e,Vector2i(300,146),Vector2i(304,244),WALL)            # C: walls and floor
+	_box(e,Vector2i(364,146),Vector2i(368,244),WALL)
+	_box(e,Vector2i(300,240),Vector2i(368,244),WALL)
+	_box(e,Vector2i(376,196),Vector2i(380,264),WALL)            # D: pool wall
+	data.material = WATER
+	data[EQUIPMENT_KEY] = {"version":Equipment.VERSION,"valves":RESERVOIR_LAB_VALVES.duplicate(true),
+		"drain":RESERVOIR_LAB_DRAIN.duplicate(),"nozzle":RESERVOIR_LAB_NOZZLE.duplicate(),"supply":0,"pump":true,
+		"pipe_capacity":Equipment.MAX_PIPE_CELLS}
+	return data
 
 static func instance(model: String, id: int, pos: Vector2) -> Dictionary:
 	var index := Fleet.index_for_id(model)
@@ -379,11 +475,25 @@ static func _stamp_valid(stamp: Variant, size: Vector2i) -> bool:
 static func stamp_rows(stamp: Array) -> int:
 	return int(stamp[3]) if stamp.size() == 5 else 2*int(stamp[2])+1
 
+static var _extra_stamp_materials: Dictionary = {}
+
 static func _stamp_material(value: Variant) -> bool:
-	return _material(value) or (_integer(value,0,255) and int(value) in STAGED_MATERIALS)
+	if not _integer(value,0,255): return false
+	if _material(value) or int(value) in STAGED_MATERIALS: return true
+	var id := int(value)
+	if not _extra_stamp_materials.has(id):
+		# PAINT uses the loaded native catalogue's validity check. This does not
+		# expand powder sources or change the legacy selected-brush field.
+		if not ClassDB.class_exists(&"CyberDemoBridge"): return false
+		var bridge: Object = ClassDB.instantiate(&"CyberDemoBridge")
+		if not bridge.has_method(&"inspect_interaction"): return false
+		var receipt: Dictionary = bridge.call(&"inspect_interaction",id,id,0)
+		_extra_stamp_materials[id] = bool(receipt.get("ok",false))
+	return bool(_extra_stamp_materials[id])
 
 static func validate(value: Variant, check_starting_paint: bool = true) -> String:
-	if not _keys(value,ROOT_KEYS) or not _integer(value.version,2,2):
+	if not value is Dictionary or not _keys(value,ROOT_KEYS + ([EQUIPMENT_KEY] if value.has(EQUIPMENT_KEY) else [])) \
+			or not _integer(value.version,2,2):
 		return "Unsupported starting setup format."
 	if not value.extent is Array or value.extent.size() != 2:
 		return "Invalid canvas extent."
@@ -416,6 +526,9 @@ static func validate(value: Variant, check_starting_paint: bool = true) -> Strin
 		return "Invalid liquid policy envelope."
 	for word: Variant in value.liquid_policy:
 		if not _integer(word,-2147483648,2147483647): return "Invalid liquid policy word."
+	if value.has(EQUIPMENT_KEY):
+		var equipment_error := Equipment.validate(value[EQUIPMENT_KEY],size)
+		if not equipment_error.is_empty(): return "Liquid equipment: " + equipment_error
 	return ""
 
 static func physical_definitions(setup: Dictionary) -> Array:
@@ -476,7 +589,7 @@ static func rectangles(setup: Dictionary) -> Dictionary:
 			if index >= 0 and int(runs[index+1])+int(runs[index+3]) == y:
 				runs[index+3] = int(runs[index+3])+1
 				continue
-			if runs.size() >= MAX_RUNS*5: return {"error":"Starting terrain exceeds 4096 rectangles."}
+			if runs.size() >= MAX_RUNS*5: return {"error":"Starting terrain exceeds the %d-rectangle construction budget." % MAX_RUNS}
 			open[key] = runs.size()
 			runs.append_array([start,y,x-start,1,mat])
 	return {"runs":runs}
@@ -553,4 +666,6 @@ static func read_named(label: String) -> Dictionary:
 		setup_data.edits[i] = Array(PackedInt32Array(setup_data.edits[i]))
 	for a: Dictionary in setup_data.actors:
 		a.id = int(a.id)
+	if setup_data.has(EQUIPMENT_KEY):
+		setup_data[EQUIPMENT_KEY] = Equipment.canonical(setup_data[EQUIPMENT_KEY])
 	return {"setup":setup_data}

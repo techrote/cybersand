@@ -1,10 +1,21 @@
 extends VBoxContainer
 
 const Setup = preload("res://scripts/workbench_setup.gd")
+const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
+const PaintEditor = preload("res://scripts/workbench_paint_editor_controller.gd")
 const Fleet = Setup.Fleet
 const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
 const ZOOMS := [Vector2i(240,135),Vector2i(480,270),Vector2i(960,540)]
 const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place source"]
+var _generated_dialog := preload("res://scripts/workbench_generator_dialog.gd").new()
+var _materials_lab_window: Window
+var _materials_lab_panel: Control
+# These copied bytes are only a reconstructible authored starting baseline.
+# The sole live World remains owned by the existing native simulation worker.
+var _generated_active: Dictionary = {}
+var _pending_generated: Dictionary = {}
+var _pending_retain_generated := false
+var art_batches: Window
 var host: Control
 var applied: Dictionary = {}
 var pilot_slot := -1
@@ -30,6 +41,10 @@ var _fields := {}
 var _position := []
 var _extent := []
 var _details := VBoxContainer.new()
+# Details scrolls inside a capped height so the toolbar rows above it never
+# leave the top of the window (the toolbar grew with the equipment rows).
+var _details_scroll := ScrollContainer.new()
+const DETAILS_MAX_HEIGHT := 300
 var _liquids: CyberLiquidComparisonPanel
 var _detail_label := Label.new()
 var _name := LineEdit.new()
@@ -47,6 +62,65 @@ var _runtime_label := ""
 var _processor_label := ""
 # WCX/BW-001 experimental Water spray controls (separate owner script).
 var water_spray := preload("res://scripts/workbench_water_spray_panel.gd").new()
+var paint_editor: Control
+# IN-TOOLS #361 valve / drain / nozzle controls (separate owner script).
+var equipment := preload("res://scripts/workbench_liquid_equipment_panel.gd").new()
+
+func open_materials_lab() -> void:
+	_cancel()
+	if not is_instance_valid(_materials_lab_window):
+		_materials_lab_window = Window.new()
+		_materials_lab_window.hide()
+		_materials_lab_window.title = "CyberSand / Materials Lab"
+		_materials_lab_window.min_size = Vector2i(1000,650)
+		_materials_lab_window.transient = true
+		# A desktop Lab owns physical pixels instead of inheriting the game's
+		# stretched canvas. Keep embedded fallback for headless/Web displays.
+		_materials_lab_window.force_native = not OS.has_feature("web") and DisplayServer.has_feature(DisplayServer.FEATURE_SUBWINDOWS)
+		_materials_lab_window.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
+		_materials_lab_window.handle_input_locally = true
+		add_child(_materials_lab_window)
+		var margin := MarginContainer.new()
+		margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		for side: String in ["left","right","top","bottom"]:
+			margin.add_theme_constant_override("margin_" + side,10)
+		_materials_lab_window.add_child(margin)
+		var panel := preload("res://scripts/material_lab_panel.gd").new()
+		_materials_lab_panel = panel
+		panel.name = "MaterialsLabPanel"
+		margin.add_child(panel)
+		panel.close_requested.connect(_materials_lab_window.hide)
+		_materials_lab_window.close_requested.connect(_materials_lab_window.hide)
+	_materials_lab_panel.set_policy_readback(host.tower_context.get("liquid_solver_policy",{}),"Workbench owner snapshot at opening; reopen to refresh")
+	if _materials_lab_window.force_native: _materials_lab_window.current_screen = get_window().current_screen
+	_materials_lab_window.popup_centered_clamped(Vector2i(1520,900),0.95)
+	if _materials_lab_window.force_native:
+		var usable: Rect2i = DisplayServer.screen_get_usable_rect(get_window().current_screen)
+		if not _fit_materials_lab_native(usable,Vector2i(1520,900)):
+			_materials_lab_window.hide()
+			refuse("Materials Lab needs its 1000×650 client plus window borders inside the desktop work area (%d×%d)." % [usable.size.x,usable.size.y])
+
+func _fit_materials_lab_native(usable: Rect2i, requested: Vector2i) -> bool:
+	# Godot's centered-clamped popup uses the full monitor. Native decorations
+	# can only be measured after showing; fit their outer rectangle to work area.
+	var popup: Window = _materials_lab_window
+	var before := {"client_position":popup.position,"client_size":popup.size,
+		"outer_position":popup.get_position_with_decorations(),"outer_size":popup.get_size_with_decorations()}
+	var chrome: Vector2i = popup.get_size_with_decorations() - popup.size
+	var available: Vector2i = usable.size - chrome
+	var receipt := {"requested_client_size":requested,"usable_position":usable.position,"usable_size":usable.size,
+		"minimum_client_size":popup.min_size,"chrome":chrome,"before":before,"admitted":false}
+	popup.set_meta("materials_lab_placement",receipt)
+	if available.x < popup.min_size.x or available.y < popup.min_size.y: return false
+	popup.size = requested.min(available).max(popup.min_size)
+	var offset: Vector2i = popup.position - popup.get_position_with_decorations()
+	popup.position = usable.position + (usable.size - popup.get_size_with_decorations()) / 2 + offset
+	receipt["after"] = {"client_position":popup.position,"client_size":popup.size,
+		"outer_position":popup.get_position_with_decorations(),"outer_size":popup.get_size_with_decorations()}
+	receipt.admitted = usable.encloses(Rect2i(popup.position,popup.size)) and usable.encloses(
+		Rect2i(popup.get_position_with_decorations(),popup.get_size_with_decorations()))
+	popup.set_meta("materials_lab_placement",receipt)
+	return receipt.admitted
 
 func _row(parent: Control) -> HFlowContainer:
 	var row := HFlowContainer.new()
@@ -112,9 +186,16 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Reset selected [R]",reset_selected)
 	_button(row,"Restore start",restore_start)
 	_button(row,"New blank",new_canvas)
+	_button(row,"New from generator…",func() -> void: _generated_dialog.open_new())
+	_button(row,"Materials Lab…",open_materials_lab)
 	_picker(row,_camera,["Free camera","Follow selected","Overview"],func(i: int) -> void: set_camera(i))
 	_button(row,"−",func() -> void: zoom_by(1))
 	_button(row,"+",func() -> void: zoom_by(-1))
+	art_batches = preload("res://scripts/art_batch_panel.gd").new()
+	art_batches.wb = self
+	add_child(art_batches)
+	art_batches.hide()
+	_button(row,"Art batches",func() -> void: art_batches.popup_centered())
 	_button(row,"Details",func() -> void: _details.visible = not _details.visible)
 	_button(row,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
 	row = _row(self)
@@ -131,10 +212,14 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Replace with model",replace_selected)
 	_button(row,"Remove",remove_selected)
 	_picker(row,_material,Setup.MATERIAL_NAMES,func(i: int) -> void:
-		if not applied.is_empty(): applied.material = Setup.MATERIALS[i])
-	_spin(row,"Brush",_brush,2,24,1,8)
+		if paint_editor != null:
+			var id: int = _material.get_item_id(i)
+			paint_editor.select_material(id)
+			if not applied.is_empty() and id in Setup.MATERIALS: applied.material = id
+		elif not applied.is_empty(): applied.material = Setup.MATERIALS[i])
+	_spin(row,"Radius",_brush,2,24,1,8)
 	_brush.value_changed.connect(func(value: float) -> void:
-		if not applied.is_empty(): applied.brush = int(value))
+		if not applied.is_empty(): applied.brush = maxi(2,int(value)))
 	_button(row,"Source at X/Y",func() -> void: place_source(Vector2i(entered_position())))
 	_button(row,"Burst [B]",burst)
 	_stream.text = "Stream ≤600 ticks"
@@ -157,7 +242,13 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 		if not applied.is_empty(): applied.fire = enabled)
 	row.add_child(_fire)
 	water_spray.build(host,self,_row,entered_position)
-	add_child(_details)
+	equipment.build(host,self,_row,entered_position)
+	_details_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_details_scroll.custom_minimum_size.y = DETAILS_MAX_HEIGHT
+	_details_scroll.hide()
+	add_child(_details_scroll)
+	_details.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_details_scroll.add_child(_details)
 	_details.visibility_changed.connect(_details_visibility_changed)
 	_details.hide()
 	row = _row(_details)
@@ -173,8 +264,25 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_name.custom_minimum_size.x = 150
 	_name.focus_entered.connect(_cancel)
 	row.add_child(_name)
-	_button(row,"Save named start",save_setup)
-	_button(row,"Load start",load_setup)
+	var save_start_button := _button(row,"Save start [Ctrl+S]",save_setup)
+	var load_start_button := _button(row,"Load start",load_setup)
+	add_child(_generated_dialog)
+	_generated_dialog.mount(self)
+	paint_editor = PaintEditor.new()
+	add_child(paint_editor)
+	move_child(paint_editor,2)
+	paint_editor.mount(self)
+	paint_editor.deferred_brush_finished.connect(art_batches.executor.manual_finished)
+	paint_editor.history_action_finished.connect(art_batches.history_edited)
+	_name.reparent(paint_editor)
+	_name.tooltip_text = "Name of the authored starting map; Save does not capture evolved simulation."
+	save_start_button.reparent(paint_editor)
+	load_start_button.reparent(paint_editor)
+	_material.clear()
+	for material_id: int in host.simulation_worker.paint_materials():
+		_material.add_item("%s · %d" % [host.material_name(material_id).capitalize(),material_id],material_id)
+	_brush.min_value = 0
+	_brush.tooltip_text = "Radius in cells. Zero paints one cell; [ and ] adjust width."
 	_liquids = host.playable_session_panel.policy_editor
 	_liquids.reparent(_details)
 	_liquids.use_one_shot_normalization()
@@ -182,6 +290,10 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_detail_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_details.add_child(_detail_label)
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	# A long receipt must not grow the toolbar off the top of the window; the
+	# full status stays readable in the tooltip.
+	_status.max_lines_visible = 2
+	_status.mouse_filter = Control.MOUSE_FILTER_PASS
 	add_child(_status)
 	DisplayServer.window_set_title("CyberSand · Development workbench")
 	_processor_label = "%s · %d logical CPUs" % [OS.get_processor_name(),OS.get_processor_count()]
@@ -239,7 +351,8 @@ func refuse(reason: String) -> bool:
 	return false
 
 func busy() -> bool:
-	return not host.pending_microscenario_apply.is_empty() or step_pending or host.simulation_worker.has_failed()
+	return not host.pending_microscenario_apply.is_empty() or step_pending or host.simulation_worker.has_failed() \
+		or (paint_editor != null and paint_editor.busy())
 
 func _editable() -> bool:
 	if busy() or applied.is_empty():
@@ -249,8 +362,11 @@ func _editable() -> bool:
 # On edits, build other actors at their actual positions while leaving the
 # saved spawn recipe intact. A deliberate restore/load uses saved spawns.
 func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
-		convert_liquid_inventory: bool = false, resume_play: bool = false) -> bool:
+		convert_liquid_inventory: bool = false, resume_play: bool = false,
+		generated_packet: Dictionary = {}) -> bool:
 	if busy(): return refuse("Wait for the current owner transaction.")
+	if preserve and paint_editor != null and paint_editor.recovery_required():
+		return refuse("Undo the partial paint edit or Restore start before retaining the live World.")
 	if preserve:
 		if applied.is_empty(): return refuse("No installed session to retain.")
 		# A retained request can change ownership/settings, never substitute a
@@ -259,11 +375,30 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		candidate.edits = applied.edits
 	var error := Setup.validate(candidate,not preserve)
 	if not error.is_empty(): return refuse(error)
+	if not preserve and not generated_packet.is_empty() \
+			and candidate.edits.size() > Setup.native_rectangle_budget():
+		return refuse("This installed native runtime cannot reopen that detailed generated start; rebuild its GDExtension.")
+	if preserve and art_batches != null and art_batches.executor.active:
+		art_batches.executor.stop("Settings changed; finishing current chunk")
+		return refuse("Finishing the current drawing chunk; retry after its acknowledgment.")
+	if preserve and not generated_packet.is_empty():
+		return refuse("Cannot import generated cells while preserving a live session.")
+	var generation := {}
+	if not generated_packet.is_empty():
+		var meta := GeneratedMaps.provenance(generated_packet)
+		error = GeneratedMaps.valid_provenance(meta,Setup.extent_of(candidate))
+		if not error.is_empty(): return refuse(error)
+		if not generated_packet.get("cells") is PackedByteArray or \
+				GeneratedMaps.digest(generated_packet.cells) != meta.sha256:
+			return refuse("Generated material bytes changed after preview.")
+		generation = GeneratedMaps.native_packet(meta,generated_packet.cells,candidate.edits)
 	var runs := []
-	if not preserve:
+	if not preserve and generation.is_empty():
 		var recipe := Setup.rectangles(candidate)
 		if recipe.has("error"): return refuse(recipe.error)
 		runs = recipe.runs
+		if runs.size() / 5 > Setup.native_rectangle_budget():
+			return refuse("This installed native runtime cannot reopen that detailed authored start; rebuild its GDExtension.")
 	# Retained authoring transfers the current native cells. Stamp replay and
 	# its rectangle limit apply only when constructing an authored start.
 	var definitions := Setup.physical_definitions(candidate)
@@ -278,11 +413,28 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		_saved_view = {"origin":host.camera_origin,"size":host.current_view_size}
 	else:
 		_saved_view.clear()
+	if art_batches != null: art_batches.executor.canvas_changed(false)
 	_cancel()
+	# Publish the current owner view before preparation captures its settings
+	# revision; the first rendered frame must not invalidate startup construction.
+	host.update_worker_frame_state()
 	var ok: bool = host.workbench_apply(candidate,definitions,runs,Setup.extent_of(candidate),
-		PackedInt32Array(candidate.liquid_policy),candidate.normalize,int(candidate.rule_radius),str(candidate.response),preserve,convert_liquid_inventory,resume_play)
+		PackedInt32Array(candidate.liquid_policy),candidate.normalize,int(candidate.rule_radius),
+		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation)
 	if not ok: return refuse(host.microscenario_error)
+	_pending_generated = generated_packet.duplicate(true)
+	_pending_retain_generated = preserve
 	_pending_request_serial = int(host.pending_microscenario_apply.serial)
+	return true
+
+func install_generated_start(candidate: Dictionary, packet: Dictionary) -> bool:
+	if busy(): return refuse("Wait for the current native-owner transaction.")
+	if packet.is_empty() or not _generated_dialog.attests(packet):
+		return refuse("Generated map is not the current verified native preview; regenerate first.")
+	# Explicit dialog confirmation is the only replacement path. No partial
+	# native writes occur before the owner's acknowledged prepared commit.
+	if not apply(candidate,false,0,false,false,packet): return false
+	message = "Installing verified GEN-007 terrain…"
 	return true
 
 func new_canvas() -> bool:
@@ -294,7 +446,12 @@ func new_canvas() -> bool:
 	return apply(candidate)
 
 func installed(candidate: Dictionary) -> void:
+	if art_batches != null: art_batches.executor.canvas_changed()
 	_pending_request_serial = 0
+	if not _pending_retain_generated:
+		_generated_active = _pending_generated.duplicate(true)
+	_pending_generated.clear()
+	_pending_retain_generated = false
 	applied = candidate.duplicate(true)
 	var roster_choice := _model.selected
 	_model.clear()
@@ -323,7 +480,7 @@ func installed(candidate: Dictionary) -> void:
 	_extent[0].value = size.x
 	_extent[1].value = size.y
 	for axis: int in 2: _position[axis].max_value = size[axis]-1
-	_material.select(Setup.MATERIALS.find(int(applied.material)))
+	if paint_editor == null: _material.select(Setup.MATERIALS.find(int(applied.material)))
 	_brush.set_value_no_signal(applied.brush)
 	_requested_response = applied.response
 	_response.select(Setup.RESPONSES.find(_requested_response))
@@ -337,9 +494,17 @@ func installed(candidate: Dictionary) -> void:
 	select_instance(selected_id(),true)
 	if not applied.source.is_empty():
 		host.workbench_source(Vector2i(applied.source[0],applied.source[1]),int(applied.source[2]),"configure")
+	equipment.installed(applied)
 	for i: int in 3:
 		host.world_shader.set_shader_parameter("rigid_body_data_%d" % i,Vector4(-1000,-1000,0,0))
 	host.update_worker_frame_state()
+	if paint_editor != null:
+		paint_editor.installed()
+		paint_editor.select_material(int(applied.material))
+		_material.select(_material.get_item_index(int(applied.material)))
+	# Refreshing PAINT publishes its own tool status. The acknowledged native
+	# installation, actor action and inventory receipt must remain the common
+	# Workbench status after that refresh.
 	var rounded_on_apply: bool = _liquid_action and bool(candidate.normalize)
 	if not _actor_action.is_empty():
 		_reveal_selected()
@@ -351,7 +516,9 @@ func installed(candidate: Dictionary) -> void:
 		_liquid_action = false
 		message = "Liquid settings applied."
 	else:
-		message = "Choose a flyer to pilot, or use Place model to add an independent body."
+		message = ("Generated native terrain installed. Place a flyer to explore; save the authored start when ready."
+			if not _generated_active.is_empty() else
+			"Choose a flyer to pilot, or use Place model to add an independent body.")
 	var receipt: Dictionary = host.tower_context.get("liquid_construction_receipt",{}).get("workbench_conversion",{})
 	message += _inventory_report(receipt,rounded_on_apply)
 
@@ -411,6 +578,7 @@ func _water_identity(context: Dictionary) -> String:
 
 
 func _details_visibility_changed() -> void:
+	_details_scroll.visible = _details.visible
 	if is_instance_valid(host):
 		host.simulation_worker.set_worker_participation_sampling(_details.is_visible_in_tree())
 
@@ -547,8 +715,11 @@ func reset_selected() -> bool:
 
 func restore_start() -> bool:
 	if applied.is_empty(): return refuse("No starting setup is installed.")
-	if host.simulation_worker.has_failed(): return host.workbench_restart(applied)
-	return apply(applied)
+	if host.simulation_worker.has_failed():
+		if not _generated_active.is_empty():
+			return refuse("Native owner failed. Restart the application and load the saved generated start.")
+		return host.workbench_restart(applied)
+	return apply(applied,false,0,false,false,_generated_active)
 
 func apply_settings() -> bool:
 	if not _editable(): return false
@@ -594,19 +765,38 @@ func apply_liquids() -> bool:
 	return true
 
 func save_setup() -> bool:
+	# Admission is not completion. Ordinary brush commands and both editors
+	# retain the shared owner boundary until native work/receipts are settled.
+	var edits: Dictionary = host.simulation_worker.paint_state()
+	if bool(edits.get("busy",false)) or bool(edits.get("art_busy",false)) \
+			or bool(edits.get("legacy_busy",false)) or bool(edits.get("transition_busy",false)):
+		return refuse("Wait for all native edits and their completion receipts before saving.")
+	if paint_editor != null and not paint_editor.save_allowed(): return false
+	if art_batches != null:
+		art_batches.executor.poll()
+		if art_batches.executor.active: return refuse("Drawing still queued or executing; Stop/wait before saving.")
 	if not _editable(): return false
-	var error := Setup.write_named(_name.text,applied)
+	var error := (GeneratedMaps.write_named(_name.text,applied,_generated_active)
+		if not _generated_active.is_empty() else Setup.write_named(_name.text,applied))
 	if not error.is_empty(): return refuse(error)
-	message = "Saved starting setup · " + _name.text
+	message = ("Saved generated starting map · " if not _generated_active.is_empty()
+		else "Saved starting setup · ") + _name.text
 	return true
 
 func load_setup() -> bool:
 	if not host.simulation_worker.has_failed() and not _editable(): return false
+	var generated := GeneratedMaps.read_named(_name.text)
+	if generated.has("error"): return refuse(generated.error)
+	if generated.get("generated",false):
+		_generated_dialog.open_saved(generated.setup,generated.generation)
+		return true
 	var result := Setup.read_named(_name.text)
 	# Until the owner saves their own file of the name, "my-canvas" opens the
 	# built-in water evaluation start, "bench-canvas" the whole-engine
 	# benchmark and "stress-canvas" the heavy-activity stress start. A saved
 	# file of the name always wins.
+	if _name.text in Setup.EQUIPMENT_LABELS and not FileAccess.file_exists(Setup._path(_name.text)):
+		return load_equipment_start(_name.text)
 	if _name.text in Setup.BUILTIN_LABELS and not FileAccess.file_exists(Setup._path(_name.text)):
 		if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
 		result = {"setup":Setup.builtin(_name.text,_liquids.bridge.default_liquid_policy())}
@@ -614,10 +804,69 @@ func load_setup() -> bool:
 	if host.simulation_worker.has_failed(): return host.workbench_restart(result.setup)
 	return apply(result.setup)
 
+func art_authoring_state() -> Dictionary:
+	if paint_editor == null: return {"busy":false,"reason":""}
+	if paint_editor.recovery_required():
+		return {"busy":false,"reason":"Undo the partial human edit or Restore start before agent drawing."}
+	var state: Dictionary = host.simulation_worker.paint_state()
+	return {"busy":paint_editor.busy() or bool(state.get("busy",false)) or bool(state.get("legacy_busy",false)),"reason":""}
+
+func begin_deferred_art_stroke(stroke: Array, token: int) -> bool:
+	return paint_editor != null and paint_editor.begin_deferred_brush(stroke[0],stroke[1],stroke[2],token)
+
+func art_changed_source() -> void:
+	if paint_editor != null: paint_editor.invalidate_history("Agent drawing changed the source")
+
+func art_record_receipt(executor: RefCounted, receipt: Dictionary, submission: int) -> void:
+	if paint_editor != null: paint_editor.before_agent_receipt(receipt,submission)
+	executor.remember(receipt.get("readback",[]))
+	if paint_editor != null: paint_editor.after_agent_receipt(receipt)
+
+func finish_art_history() -> void:
+	if paint_editor != null: paint_editor.finish_agent_history()
+
+func art_history_guard() -> String:
+	return art_batches.history_block_reason() if art_batches != null else ""
+
+# Built-in #361 equipment starts. Each asks the native validator for one of
+# the existing opt-in liquid presets (inertial Water by default) and sets
+# ballistic Water for that World so the nozzle fires real parcels. Either can
+# be refused; the start then keeps the policy it was given and the nozzle
+# injects resting cells instead. Global defaults never change.
+const EQUIPMENT_PRESETS := {Setup.LIQUID_LAB_LABEL:"Water: inertial",Setup.RESERVOIR_LAB_LABEL:"Water: pressure reference"}
+
+func load_liquid_lab(ballistic: bool = true, preset_label: String = "") -> bool:
+	return load_equipment_start(Setup.LIQUID_LAB_LABEL,ballistic,preset_label)
+
+func load_equipment_start(label: String, ballistic: bool = true, preset_label: String = "") -> bool:
+	if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
+	if label not in Setup.EQUIPMENT_LABELS: return refuse("Unknown equipment start.")
+	if not host.simulation_worker.has_failed() and not _editable(): return false
+	if preset_label.is_empty(): preset_label = EQUIPMENT_PRESETS[label]
+	var policy: PackedInt32Array = _liquids.bridge.default_liquid_policy()
+	var note := ""
+	var preset := -1
+	for index: int in CyberLiquidComparisonPanel.PRESETS.size():
+		if CyberLiquidComparisonPanel.PRESETS[index].label == preset_label: preset = index
+	var chosen: Dictionary = _liquids._preset(preset) if preset >= 0 else {"ok":false,"error":"preset missing"}
+	if chosen.get("ok",false): policy = chosen.request
+	else: note = " %s unavailable (%s); using the current policy." % [preset_label,str(chosen.get("error",""))]
+	var candidate := Setup.builtin(label,policy)
+	var checked: Dictionary = _liquids.bridge.validate_liquid_policy(policy)
+	if checked.get("accepted",false):
+		candidate.rule_radius = maxi(int(candidate.rule_radius),int(checked.receipt.get("minimum_rule_radius",2)))
+	host.workbench_water_options["workbench_ballistic"] = ballistic
+	water_spray._ballistic.set_pressed_no_signal(ballistic)
+	if host.simulation_worker.has_failed(): return host.workbench_restart(candidate)
+	if not apply(candidate): return false
+	message = "Loading %s (%s): V valve, [ ] choose valve, G drain, H nozzle, J/K aim." % [label,preset_label] + note
+	return true
+
 func _cancel() -> void:
 	if host != null: host.cancel_playable_course_input()
 
 func cancel_stroke() -> void:
+	if paint_editor != null: paint_editor.cancel_preview()
 	_drag_button = 0
 	_pan = false
 	_last_cell = Vector2i(-1,-1)
@@ -641,11 +890,18 @@ func step_once() -> bool:
 	return true
 
 func paint(pos: Vector2i, material: int) -> bool:
+	if paint_editor != null and paint_editor.recovery_required():
+		return refuse("Undo the partial paint edit or Restore start before painting.")
+	if art_batches != null:
+		var deferred: int = art_batches.executor.defer_manual(pos,material)
+		if deferred != 0: return deferred > 0
 	if busy() or applied.is_empty(): return false
 	if material not in Setup.MATERIALS or not Rect2i(Vector2i.ZERO,Setup.extent_of(applied)).has_point(pos): return false
 	var stamp := [pos.x,pos.y,int(applied.brush),material]
 	var new_stamp: bool = applied.edits.is_empty() or applied.edits.back() != stamp
-	if new_stamp and applied.edits.size() >= Setup.MAX_STAMPS:
+	if new_stamp and not _generated_active.is_empty() and applied.edits.size() >= Setup.MAX_STAMPS:
+		return refuse("Generated-map starting edit budget exhausted; save and consolidate in a later format.")
+	if new_stamp and _generated_active.is_empty() and applied.edits.size() >= Setup.MAX_STAMPS:
 		# Compact the recorded history into the same cells' merged rectangles.
 		var compacted := Setup.compact_edits(applied)
 		if compacted.has("error"): return refuse(compacted.error)
@@ -656,7 +912,7 @@ func paint(pos: Vector2i, material: int) -> bool:
 	# the maximum possible row count would exceed the reconstruction budget.
 	var runs := 2*int(applied.brush)+1
 	for old: Array in applied.edits: runs += Setup.stamp_rows(old)
-	if new_stamp and runs > Setup.MAX_RUNS:
+	if _generated_active.is_empty() and new_stamp and runs > Setup.MAX_RUNS:
 		applied.edits.append(stamp)
 		var recipe := Setup.rectangles(applied)
 		applied.edits.pop_back()
@@ -667,11 +923,12 @@ func paint(pos: Vector2i, material: int) -> bool:
 
 func place_source(pos: Vector2i) -> bool:
 	if applied.is_empty() or busy(): return refuse("Wait for the session.")
+	var selected_material: int = paint_editor.material_id if paint_editor != null else int(applied.material)
 	var next := applied.duplicate(true)
-	next.source = [pos.x,pos.y,int(applied.material)]
+	next.source = [pos.x,pos.y,selected_material]
 	var error := Setup.validate(next)
 	if not error.is_empty(): return refuse(error)
-	if not host.workbench_source(pos,int(applied.material),"configure"): return refuse("Worker refused source.")
+	if not host.workbench_source(pos,selected_material,"configure"): return refuse("Worker refused source.")
 	applied.source = next.source
 	_stream.set_pressed_no_signal(false)
 	return true
@@ -715,6 +972,9 @@ func zoom_by(direction: int) -> void:
 	_set_view(centre-Vector2(ZOOMS[_zoom])*0.5,ZOOMS[_zoom])
 
 func _input(event: InputEvent) -> void:
+	if paint_editor != null and paint_editor.key_input(event):
+		get_viewport().set_input_as_handled()
+		return
 	if host == null or applied.is_empty() or busy(): return
 	var focus := get_viewport().gui_get_focus_owner()
 	if focus is LineEdit or focus is TextEdit: return
@@ -752,6 +1012,7 @@ func _pick(pos: Vector2i) -> void:
 	select_instance(0)
 
 func _world_input(event: InputEvent) -> void:
+	if not applied.is_empty() and paint_editor != null and paint_editor.world_input(event): return
 	if applied.is_empty() or busy(): return
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_MIDDLE:
@@ -791,6 +1052,7 @@ func _world_input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 	if host == null: return
+	if paint_editor != null and host.brush_preview != null: host.brush_preview.hide()
 	if step_pending:
 		if host.simulation_worker.has_failed() or not str(host.tower_context.get("workbench_refusal","")).is_empty():
 			step_requested = false
@@ -800,6 +1062,8 @@ func _process(_delta: float) -> void:
 			step_pending = false
 	if _pending_request_serial > 0 and host.pending_microscenario_apply.is_empty():
 		_pending_request_serial = 0
+		_pending_generated.clear()
+		_pending_retain_generated = false
 		_actor_action = ""
 		_liquid_action = false
 		_saved_view.clear()
@@ -833,7 +1097,9 @@ func _process(_delta: float) -> void:
 	_status.text = "%s · cell %s · %s · %s   |   source %d inserted / %d blocked" % [
 		state,cursor,str(applied.get("extent","")),reason,int(source.get("inserted",0)),int(source.get("blocked",0))]
 	_status.text += " · granular %s · active Water %s" % [gcr.get("response","pending"),_water_identity(context)]
+	_status.tooltip_text = _status.text
 	water_spray.refresh(context)
+	equipment.refresh(context)
 	if _details.visible:
 		var selected := body_state(selected_id())
 		var policy: Dictionary = context.get("liquid_solver_policy",{})

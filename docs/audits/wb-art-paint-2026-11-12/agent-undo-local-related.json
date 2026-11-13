@@ -1,0 +1,767 @@
+{
+  "scope": "Local Linux headless diagnostic, actual native runtime; not pinned hosted release qualification",
+  "parent_commit": "d33c10e41cafcaa809ef410d0760e2c15bd02247",
+  "status": "passed",
+  "source_identity": {
+    "art_batch_executor": "2c7c7c1605a5cf9f630e6fabad6cb6d34804e0c0a19c9e8e96a7e9535489fc98",
+    "art_batch_panel": "958516aeb5ef3228735128aba93d0a44247ff25e021891edf5509e7de555fbd1",
+    "shared_workbench": "8d80dc46056c9dbbd7f16d06c6acace01ace8fa725b066b399f2ec02f07f6bdc",
+    "simulation_worker": "bac92f82ef3d3dc4fad54c785c148eba3ea1c0ec1e1b9805a65ffea261cc6016",
+    "workbench_paint_editor_controller": "6022a4379baafae9ecef8c8e309c13271a27a2f271038fcb6350a9db170179e8"
+  },
+  "counted_checks": 4707,
+  "http_transport": "OpenAI, NVIDIA, LM Studio loopback fixtures and error/cancel/timeout controls passed; wrapper emits no count",
+  "results": [
+    {
+      "label": "art-keyless",
+      "command": [
+        "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/e69494fb76fb/cybersand/godot",
+        "--script",
+        "res://tests/test_art_provider.gd"
+      ],
+      "exit_code": 0,
+      "completion": {
+        "checks": 54,
+        "failures": 0
+      },
+      "status": "passed"
+    },
+    {
+      "label": "art-stored-material",
+      "command": [
+        "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/e69494fb76fb/cybersand/godot",
+        "--script",
+        "res://tests/test_art_stored_material.gd"
+      ],
+      "exit_code": 0,
+      "completion": {
+        "checks": 88,
+        "failures": 0,
+        "native_backend": "CyberNativeCellWorld",
+        "native_workers": [
+          1,
+          4
+        ],
+        "synthetic_failure_fixtures": 4
+      },
+      "status": "passed"
+    },
+    {
+      "label": "art-deferred-manual",
+      "command": [
+        "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/e69494fb76fb/cybersand/godot",
+        "--script",
+        "res://tests/test_art_deferred_manual.gd"
+      ],
+      "exit_code": 0,
+      "completion": {
+        "checks": 14,
+        "failures": 0
+      },
+      "status": "passed"
+    },
+    {
+      "label": "art-native",
+      "command": [
+        "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/e69494fb76fb/cybersand/godot",
+        "--script",
+        "res://tests/test_art_batch_native.gd"
+      ],
+      "exit_code": 0,
+      "completion": {
+        "base": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3",
+        "checks": 145,
+        "failures": 0,
+        "last_chunk_changed": 1808,
+        "last_native_backend": "CyberNativeCellWorld",
+        "stop_prefix": 4096
+      },
+      "status": "passed"
+    },
+    {
+      "label": "native-edit-ordering",
+      "command": [
+        "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/e69494fb76fb/cybersand/godot",
+        "--script",
+        "res://tests/test_workbench_edit_ordering.gd"
+      ],
+      "exit_code": 0,
+      "completion": {
+        "checks": 144,
+        "controlled_lease_fixtures": true,
+        "failures": 0,
+        "native_backend": "CyberNativeCellWorld",
+        "native_workers": [
+          1,
+          4
+        ]
+      },
+      "status": "passed"
+    },
+    {
+      "label": "combined-deferred-paint",
+      "command": [
+        "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/e69494fb76fb/cybersand/godot",
+        "--script",
+        "res://tests/test_workbench_deferred_paint.gd"
+      ],
+      "exit_code": 0,
+      "completion": {
+        "checks": 49,
+        "completed": true,
+        "failures": [],
+        "outcomes": [
+          {
+            "receipt": {
+              "after": [
+                58
+              ],
+              "applied": 1,
+              "backend": "CyberNativeCellWorld",
+              "before": [
+                0
+              ],
+              "cells": [
+                40,
+                40,
+                58
+              ],
+              "changed": 1,
+              "checked": 1,
+              "elapsed_usec": 16748,
+              "generation": 3,
+              "kind": "edit",
+              "maximum_slice_usec": 44,
+              "observed_generation": 3,
+              "operation_id": 1,
+              "reason": "",
+              "recorded": true,
+              "recovery_possible": true,
+              "requested_cells": 1,
+              "revision": 4,
+              "slices": 2,
+              "status": "completed",
+              "termination": "completed",
+              "tick": 0
+            },
+            "recorded_edits": [
+              [
+                40,
+                40,
+                1,
+                1,
+                58
+              ]
+            ],
+            "token": 1,
+            "undo_count": 1
+          },
+          {
+            "receipt": {
+              "applied": 0,
+              "reason": "Both line endpoints must lie within the canvas.",
+              "status": "refused"
+            },
+            "recorded_edits": [
+              [
+                40,
+                40,
+                1,
+                1,
+                58
+              ]
+            ],
+            "token": 2,
+            "undo_count": 1
+          },
+          {
+            "receipt": {
+              "applied": 0,
+              "reason": "Planning cancelled; no cells queued.",
+              "status": "cancelled"
+            },
+            "recorded_edits": [
+              [
+                40,
+                40,
+                1,
+                1,
+                58
+              ]
+            ],
+            "token": 3,
+            "undo_count": 1
+          },
+          {
+            "receipt": {
+              "applied": 0,
+              "reason": "Native source changed during planning; draw again.",
+              "status": "invalidated"
+            },
+            "recorded_edits": [
+              [
+                40,
+                40,
+                1,
+                1,
+                58
+              ]
+            ],
+            "token": 4,
+            "undo_count": 1
+          },
+          {
+            "receipt": {
+              "after": [],
+              "applied": 0,
+              "backend": "CyberNativeCellWorld",
+              "before": [],
+              "cells": [],
+              "changed": 0,
+              "checked": 0,
+              "elapsed_usec": 25,
+              "generation": 3,
+              "kind": "edit",
+              "maximum_slice_usec": 23,
+              "observed_generation": 3,
+              "operation_id": 5,
+              "reason": "Operation intersects protected source cells.",
+              "recorded": true,
+              "recovery_possible": true,
+              "requested_cells": 1,
+              "revision": 5,
+              "slices": 1,
+              "status": "refused",
+              "termination": "refused",
+              "tick": 0
+            },
+            "recorded_edits": [
+              [
+                40,
+                40,
+                1,
+                1,
+                58
+              ]
+            ],
+            "token": 5,
+            "undo_count": 0
+          },
+          {
+            "receipt": {
+              "applied": 0,
+              "reason": "Workbench closed during human stroke planning.",
+              "status": "cancelled"
+            },
+            "recorded_edits": [
+              [
+                40,
+                40,
+                1,
+                1,
+                58
+              ],
+              [
+                90,
+                90,
+                1,
+                1,
+                58
+              ]
+            ],
+            "token": 6,
+            "undo_count": 1
+          }
+        ]
+      },
+      "status": "passed"
+    },
+    {
+      "label": "paint-shapes",
+      "command": [
+        "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/e69494fb76fb/cybersand/godot",
+        "--script",
+        "res://tests/test_paint_editor_shapes.gd"
+      ],
+      "exit_code": 0,
+      "completion": {
+        "actual_native_readback": true,
+        "backend": "CyberNativeCellWorld",
+        "checks": 165,
+        "failures": 0,
+        "planning_usec": {
+          "bounded_fill_262144": 467893,
+          "large_thick_line_2048": 103160,
+          "max_rectangle_1024": 6151,
+          "max_rectangle_2048": 6639,
+          "max_rectangle_512": 6072,
+          "mixed_stencil_16384": 26442,
+          "normal_line_1024": 636,
+          "normal_line_2048": 566,
+          "normal_line_512": 484
+        }
+      },
+      "status": "passed"
+    },
+    {
+      "label": "paint-executor",
+      "command": [
+        "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/e69494fb76fb/cybersand/godot",
+        "--script",
+        "res://tests/test_paint_editor_executor.gd"
+      ],
+      "exit_code": 0,
+      "completion": {
+        "checks": 21,
+        "failures": []
+      },
+      "status": "passed"
+    },
+    {
+      "label": "paint-recovery",
+      "command": [
+        "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/e69494fb76fb/cybersand/godot",
+        "--script",
+        "res://tests/test_paint_editor_recovery.gd"
+      ],
+      "exit_code": 0,
+      "completion": {
+        "checks": 5,
+        "failures": []
+      },
+      "status": "passed"
+    },
+    {
+      "label": "paint-native-1",
+      "command": [
+        "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/e69494fb76fb/cybersand/godot",
+        "--script",
+        "res://tests/test_paint_editor_native.gd"
+      ],
+      "exit_code": 0,
+      "completion": {
+        "checks": 109,
+        "failures": [],
+        "measurements": [
+          {
+            "cells": 65536,
+            "elapsed_usec": 521958,
+            "extent": 512,
+            "maximum_slice_usec": 6808,
+            "slices": 32
+          },
+          {
+            "cells": 65536,
+            "elapsed_usec": 522733,
+            "extent": 1024,
+            "maximum_slice_usec": 6021,
+            "slices": 32
+          },
+          {
+            "cells": 65536,
+            "elapsed_usec": 521561,
+            "extent": 2048,
+            "maximum_slice_usec": 5688,
+            "slices": 32
+          },
+          {
+            "cells": 262144,
+            "elapsed_usec": 2122392,
+            "extent": 512,
+            "maximum_slice_usec": 10860,
+            "slices": 128
+          }
+        ],
+        "native_material_witnesses": [
+          {
+            "region": [
+              40,
+              40,
+              3,
+              3
+            ],
+            "sha256": "00aabbd38cdf9752c3e38db96f32defeee66108c481957a45419d864d31f0523"
+          },
+          {
+            "region": [
+              41,
+              40,
+              3,
+              3
+            ],
+            "sha256": "00aabbd38cdf9752c3e38db96f32defeee66108c481957a45419d864d31f0523"
+          },
+          {
+            "region": [
+              100,
+              100,
+              2,
+              1
+            ],
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+          },
+          {
+            "region": [
+              510,
+              510,
+              2,
+              2
+            ],
+            "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+          },
+          {
+            "region": [
+              120,
+              120,
+              128,
+              128
+            ],
+            "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+          },
+          {
+            "region": [
+              256,
+              256,
+              256,
+              256
+            ],
+            "sha256": "7ed74863c3516148177f129fb4468313a149b8d47ef42bff96c00524691f3cbd"
+          },
+          {
+            "region": [
+              768,
+              768,
+              256,
+              256
+            ],
+            "sha256": "7ed74863c3516148177f129fb4468313a149b8d47ef42bff96c00524691f3cbd"
+          },
+          {
+            "region": [
+              1792,
+              1792,
+              256,
+              256
+            ],
+            "sha256": "7ed74863c3516148177f129fb4468313a149b8d47ef42bff96c00524691f3cbd"
+          }
+        ],
+        "source_identity": {
+          "main.gd": "35d33ef5bc92e1d5dd7b5bc717c545846bca82c24e0200e9e8579f0e6168b642",
+          "native_linux": "16ffc0ce8190c2e8ca2e31fc59f10c55148adc6e7f16727dc96c094d8a96696a",
+          "shared_workbench.gd": "8d80dc46056c9dbbd7f16d06c6acace01ace8fa725b066b399f2ec02f07f6bdc",
+          "simulation_worker.gd": "bac92f82ef3d3dc4fad54c785c148eba3ea1c0ec1e1b9805a65ffea261cc6016",
+          "test_paint_editor_native.gd": "96f33778a135d957e193b34a4761d3bc3c65983bf76a50e765bfbaafaef12d76",
+          "workbench_paint_editor_controller.gd": "6022a4379baafae9ecef8c8e309c13271a27a2f271038fcb6350a9db170179e8",
+          "workbench_paint_editor_executor.gd": "1f118427e505f0a4b7f63e7e10089507f89445c08f9ead5a7f41768935160e7d",
+          "workbench_paint_editor_history.gd": "f3b19f906668feec3d49aea61448b1d58a90a6ccf8b9bf5b814d13ed4881786e",
+          "workbench_paint_editor_overlay.gd": "f3f674f264bac2e2995750c2ee66043f0988ed932146eb00b3c7efcd5cfce1f0",
+          "workbench_paint_editor_shapes.gd": "82c90552d04d975908f8a7ba14afc78ddb0152faf57684c1957b3f058c9e8e16",
+          "workbench_setup.gd": "6b3341e4733f39622c23a964cb586c65eb358734e1a164e354d327057abe4a86"
+        },
+        "witness_sha256": "5a11f2271d53ed3634936619fa67d019d2413905708f0b28ccb61b7596ad8154",
+        "workers": 1
+      },
+      "status": "passed"
+    },
+    {
+      "label": "paint-native-4",
+      "command": [
+        "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/e69494fb76fb/cybersand/godot",
+        "--script",
+        "res://tests/test_paint_editor_native.gd"
+      ],
+      "exit_code": 0,
+      "completion": {
+        "checks": 109,
+        "failures": [],
+        "measurements": [
+          {
+            "cells": 65536,
+            "elapsed_usec": 522003,
+            "extent": 512,
+            "maximum_slice_usec": 5388,
+            "slices": 32
+          },
+          {
+            "cells": 65536,
+            "elapsed_usec": 521691,
+            "extent": 1024,
+            "maximum_slice_usec": 6158,
+            "slices": 32
+          },
+          {
+            "cells": 65536,
+            "elapsed_usec": 522190,
+            "extent": 2048,
+            "maximum_slice_usec": 6258,
+            "slices": 32
+          },
+          {
+            "cells": 262144,
+            "elapsed_usec": 2122959,
+            "extent": 512,
+            "maximum_slice_usec": 7418,
+            "slices": 128
+          }
+        ],
+        "native_material_witnesses": [
+          {
+            "region": [
+              40,
+              40,
+              3,
+              3
+            ],
+            "sha256": "00aabbd38cdf9752c3e38db96f32defeee66108c481957a45419d864d31f0523"
+          },
+          {
+            "region": [
+              41,
+              40,
+              3,
+              3
+            ],
+            "sha256": "00aabbd38cdf9752c3e38db96f32defeee66108c481957a45419d864d31f0523"
+          },
+          {
+            "region": [
+              100,
+              100,
+              2,
+              1
+            ],
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+          },
+          {
+            "region": [
+              510,
+              510,
+              2,
+              2
+            ],
+            "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+          },
+          {
+            "region": [
+              120,
+              120,
+              128,
+              128
+            ],
+            "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+          },
+          {
+            "region": [
+              256,
+              256,
+              256,
+              256
+            ],
+            "sha256": "7ed74863c3516148177f129fb4468313a149b8d47ef42bff96c00524691f3cbd"
+          },
+          {
+            "region": [
+              768,
+              768,
+              256,
+              256
+            ],
+            "sha256": "7ed74863c3516148177f129fb4468313a149b8d47ef42bff96c00524691f3cbd"
+          },
+          {
+            "region": [
+              1792,
+              1792,
+              256,
+              256
+            ],
+            "sha256": "7ed74863c3516148177f129fb4468313a149b8d47ef42bff96c00524691f3cbd"
+          }
+        ],
+        "source_identity": {
+          "main.gd": "35d33ef5bc92e1d5dd7b5bc717c545846bca82c24e0200e9e8579f0e6168b642",
+          "native_linux": "16ffc0ce8190c2e8ca2e31fc59f10c55148adc6e7f16727dc96c094d8a96696a",
+          "shared_workbench.gd": "8d80dc46056c9dbbd7f16d06c6acace01ace8fa725b066b399f2ec02f07f6bdc",
+          "simulation_worker.gd": "bac92f82ef3d3dc4fad54c785c148eba3ea1c0ec1e1b9805a65ffea261cc6016",
+          "test_paint_editor_native.gd": "96f33778a135d957e193b34a4761d3bc3c65983bf76a50e765bfbaafaef12d76",
+          "workbench_paint_editor_controller.gd": "6022a4379baafae9ecef8c8e309c13271a27a2f271038fcb6350a9db170179e8",
+          "workbench_paint_editor_executor.gd": "1f118427e505f0a4b7f63e7e10089507f89445c08f9ead5a7f41768935160e7d",
+          "workbench_paint_editor_history.gd": "f3b19f906668feec3d49aea61448b1d58a90a6ccf8b9bf5b814d13ed4881786e",
+          "workbench_paint_editor_overlay.gd": "f3f674f264bac2e2995750c2ee66043f0988ed932146eb00b3c7efcd5cfce1f0",
+          "workbench_paint_editor_shapes.gd": "82c90552d04d975908f8a7ba14afc78ddb0152faf57684c1957b3f058c9e8e16",
+          "workbench_setup.gd": "6b3341e4733f39622c23a964cb586c65eb358734e1a164e354d327057abe4a86"
+        },
+        "witness_sha256": "5a11f2271d53ed3634936619fa67d019d2413905708f0b28ccb61b7596ad8154",
+        "workers": 4
+      },
+      "status": "passed"
+    },
+    {
+      "label": "paint-history-author",
+      "command": [
+        "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/e69494fb76fb/cybersand/godot",
+        "--script",
+        "res://tests/test_paint_editor_history.gd"
+      ],
+      "exit_code": 0,
+      "completion": {
+        "checks": 1884,
+        "failures": 0
+      },
+      "status": "passed"
+    },
+    {
+      "label": "paint-history-reopen",
+      "command": [
+        "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/e69494fb76fb/cybersand/godot",
+        "--script",
+        "res://tests/test_paint_editor_history.gd"
+      ],
+      "exit_code": 0,
+      "completion": {
+        "checks": 1920,
+        "failures": 0
+      },
+      "status": "passed"
+    },
+    {
+      "label": "art-http-fixtures",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/e69494fb76fb/cybersand/tools/test_art_provider_transport.py",
+        "--godot",
+        "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--project",
+        "/workspace/scratch/e69494fb76fb/cybersand/godot",
+        "--output",
+        "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/related-regressions-final/http"
+      ],
+      "exit_code": 0,
+      "status": "passed"
+    }
+  ],
+  "original_failure": {
+    "case": "native-edit-ordering",
+    "cause": "SaveHost test double omitted the paused property required by shared history; real host has this property",
+    "fixed_file": "godot/tests/test_workbench_edit_ordering.gd",
+    "original_log": "agent-undo-local-ordering-original.log.txt",
+    "sha256": "a690afdd3b74cf0ba54352c833f17a1a2affe2a26fbfca1a1b85e8b69def8321"
+  },
+  "http_results": [
+    {
+      "provider": "LM-Studio",
+      "sha256": "e9a1216b3b7af304861197a44f948c272e72dbbdbe610e5c3424b625704c8e98",
+      "completion": {
+        "checks": 35,
+        "failures": 0,
+        "log": "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/related-regressions-final/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/1794523273-50374-167302403643.jsonl",
+        "model": "",
+        "provider": "LM Studio",
+        "requested_model": "fixture",
+        "usage": {}
+      }
+    },
+    {
+      "provider": "NVIDIA",
+      "sha256": "8c2a52f683219d234c62e96eba1319bde2e46e26e2250c7956af32d28a744bc2",
+      "completion": {
+        "checks": 35,
+        "failures": 0,
+        "log": "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/related-regressions-final/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/1794523270-43307-167302403643.jsonl",
+        "model": "",
+        "provider": "NVIDIA",
+        "requested_model": "fixture",
+        "usage": {}
+      }
+    },
+    {
+      "provider": "OpenAI",
+      "sha256": "42f7d5469582581730e37ad3ec97f09a2a114d7edfb86d5fe23391c88f237673",
+      "completion": {
+        "checks": 35,
+        "failures": 0,
+        "log": "/workspace/scratch/e69494fb76fb/cybersand/build/agent-undo/related-regressions-final/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/1794523267-16923-167302403643.jsonl",
+        "model": "",
+        "provider": "OpenAI",
+        "requested_model": "fixture",
+        "usage": {}
+      }
+    },
+    {
+      "provider": "failures",
+      "sha256": "f4ebeb2a60cee221bb8a99c2a02090daf8ebc7cc53dcc8a5f30cb574fb22ec43",
+      "completion": {
+        "terminal": "ART_PROVIDER_HTTP failures=0",
+        "counted_checks": 0
+      }
+    }
+  ],
+  "http_checks": 105,
+  "total_counted_checks": 4812
+}

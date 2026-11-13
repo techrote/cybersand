@@ -1,0 +1,152 @@
+{
+  "schema_id": "cybersand.material-lab.local-windows-ui-qualification",
+  "schema_version": 1,
+  "recorded_utc": "2026-11-12T01:53:36.890601+00:00",
+  "platform": "Microsoft Windows NT10.0.26300.0 x86_64",
+  "source_base": "cd534e9b8d2e98ea75e463b2fcf261f08deead96",
+  "source_files_final_inspection": {
+    "godot/scripts/material_lab_panel.gd": "ba726666baecd1ead06822671716155524c213ca0b8e8d5c87d08e3cb7f91c26",
+    "godot/scripts/material_lab_screen.gd": "87fcc9c66dd57b765b2809a66d10e58051455449fe0d5a0408ca2acaac99e646",
+    "godot/scripts/material_lab_world_panel.gd": "fc788fb634ecc9b9fc6ae3ff3465433448bd85187f2d16407a419b2e47d54749",
+    "godot/tests/test_material_lab_ui.gd": "a12365a413b2db23ce3067be8545e9ba7f6b3675d8c76a8cd3cff56e1ac349b4",
+    "godot/tests/test_material_lab_world.gd": "94e34856a8c5695a791c4835ca0d54a221c865a4db3c28875236288cedc580ee",
+    "godot/tests/test_material_lab_diagnostics.gd": "ecc129754e8976d9b0b38f6b180286c65a2085145619611969b3450d4eb3f7c8"
+  },
+  "source_hash_scope": "Final file inspection after execution; a complete before/after six-file manifest was not captured. No whole-run six-file hash claim is made.",
+  "tools": {
+    "godot": {
+      "path": "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+      "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "bytes": 198152,
+      "version": "4.7.stable.official.5b4e0cb0f"
+    },
+    "compiler": {
+      "path": "C:/Users/_/.codex/cm009-native-tools/w64devkit/bin/g++.exe",
+      "sha256": "671ca52a98e6f0c44411f72ad1be386f03c193f83970f7dbd235f4b974e728d2",
+      "bytes": 2384016,
+      "version": "g++.exe (GCC)16.2.0"
+    },
+    "python": {
+      "path": "C:/Users/_/AppData/Local/Programs/Python/Python313/python.exe",
+      "sha256": "31fe10b4ed82a2f960af0ef9931f46a4b84ff286f8b6ffd9dee098cf4f10f17f",
+      "bytes": 105696,
+      "version": "3.13.16"
+    }
+  },
+  "executed_runtime": {
+    "path": "C:/khybersand/.worktrees/materials-lab-evaluation/build/request4-windows/cybersand_native.windows.x86_64.dll",
+    "sha256": "34b33948dbe252231c1132de4832deb17984ea1c05d1d3c059f98a7ec8195ba9",
+    "bytes": 5118976,
+    "build_request": 4,
+    "build_commit": "cd534e9b8d2e98ea75e463b2fcf261f08deead96",
+    "note": "These preserved bytes were installed for all3 runs. Root restored the retained intake DLL afterward; current installed bytes are not the executed artifact."
+  },
+  "timeouts": {
+    "outer_process_watchdog_seconds": null,
+    "note": "No outer process watchdog applied to these local commands; source-enforced waits and per-operation bounds retained.",
+    "desktop_authoring_job_ms": 300000,
+    "cancellation_grace_ms": 2000,
+    "world_compile_seconds": 180,
+    "world_execute_seconds": 60
+  },
+  "runs": [
+    {
+      "name": "mounted_ui",
+      "command": "& C:/Godot47/Godot_v4.7-stable_win64_console.exe --headless --path godot --script res://tests/test_material_lab_ui.gd",
+      "working_directory": "C:/khybersand/.worktrees/materials-lab-evaluation",
+      "environment": {
+        "CYBERSAND_LAB_CXX": "C:/Users/_/.codex/cm009-native-tools/w64devkit/bin/g++.exe",
+        "PYTHONUTF8": "1",
+        "APPDATA_PowerShell_expression": "Join-Path $env:TEMP 'CyberSand-MaterialsLab-UI-Qualified-20261112'"
+      },
+      "execution": "Outside restricted Windows sandbox",
+      "result": "PASS",
+      "exit_code": 0,
+      "assertions": 196,
+      "failures": 0,
+      "per_wait_deadline_ms": 110000,
+      "original_log": {
+        "path": "C:/khybersand/.worktrees/materials-lab-evaluation/build/local-windows-evaluation/test_material_lab_ui-qualified-20261112.log",
+        "sha256": "9c44088f67b7ac00e1a8a20b48afdb7801c4bcee99b7e3bafe1034bbd661dd30",
+        "bytes": 439
+      }
+    },
+    {
+      "name": "compiled_world_ui",
+      "command": "& C:/Godot47/Godot_v4.7-stable_win64_console.exe --headless --path godot --script res://tests/test_material_lab_world.gd",
+      "working_directory": "C:/khybersand/.worktrees/materials-lab-evaluation",
+      "environment": {
+        "CYBERSAND_LAB_CXX": "C:/Users/_/.codex/cm009-native-tools/w64devkit/bin/g++.exe",
+        "PYTHONUTF8": "1",
+        "APPDATA_PowerShell_expression": "Join-Path $env:TEMP 'CyberSand-MaterialsLab-World-Final-20261112'"
+      },
+      "execution": "Outside restricted Windows sandbox",
+      "result": "PASS",
+      "exit_code": 0,
+      "checks": 204,
+      "failures": 0,
+      "per_wait_deadline_ms": 300000,
+      "original_log": {
+        "path": "C:/khybersand/.worktrees/materials-lab-evaluation/build/local-windows-evaluation/test_material_lab_world-final-20261112.log",
+        "sha256": "b1d78ccaec7793a76d758b1c9d9c724b0928f7391e893cf7ae64b6ab02bedabd",
+        "bytes": 477
+      }
+    },
+    {
+      "name": "native_contacts_and_layout",
+      "command": "& C:/Godot47/Godot_v4.7-stable_win64_console.exe --headless --path godot --script res://tests/test_material_lab_diagnostics.gd",
+      "working_directory": "C:/khybersand/.worktrees/materials-lab-evaluation",
+      "environment": {},
+      "execution": "Outside restricted Windows sandbox",
+      "result": "PASS",
+      "exit_code": 0,
+      "assertions": 180,
+      "failures": 0,
+      "per_wait_deadline_ms": null,
+      "original_log": {
+        "path": "C:/khybersand/.worktrees/materials-lab-evaluation/build/local-windows-evaluation/test_material_lab_diagnostics-final-20261112.log",
+        "sha256": "44d3f7a14d80223d310c984eb7701f6269fb98a8e698bf34c1d1ccf914a3e5b5",
+        "bytes": 279
+      }
+    }
+  ],
+  "scope": "Actual local headless native/UI automation: authoring, compiled Worlds, persistence/reopening, pending numeric edits, stale result retirement, native contacts and all5 tabs at1000x650/1280x720. This record does not attest graphical manual acceptance, Linux execution, hosted request5 completion or production candidate installation.",
+  "preceding_unaccepted_attempts": [
+    {
+      "result": "REFUSED",
+      "reason": "User data inside source repository; response custody correctly refused it.",
+      "original_log": {
+        "path": "C:/khybersand/.worktrees/materials-lab-evaluation/build/local-windows-evaluation/test_material_lab_ui-20261112.log",
+        "sha256": "0d9caaddfc3ef956025d0a7fde085d443bc073780d6a050adba7e36d0e4d7b3c",
+        "bytes": 1171
+      }
+    },
+    {
+      "result": "INCOMPLETE",
+      "reason": "Same invalid user-data location prevented creation; test process subsequently stopped.",
+      "original_log": {
+        "path": "C:/khybersand/.worktrees/materials-lab-evaluation/build/local-windows-evaluation/test_material_lab_world-20261112.log",
+        "sha256": "764877e8d1f91da9014d4dd008a7d2f71c63a73341230c87e71ed0bdb7342680",
+        "bytes": 924
+      }
+    },
+    {
+      "result": "FAILED_TEST_EXPECTATION",
+      "reason": "Two new-test expectations: density changed to1440; parsed JSON numeric types required normalization.",
+      "original_log": {
+        "path": "C:/khybersand/.worktrees/materials-lab-evaluation/build/local-windows-evaluation/test_material_lab_ui-20261112-external-userdata.log",
+        "sha256": "4f71f11a1b4286c5e65d62c822f505c31713f49ad20f64fbab16cff52f41ca2c",
+        "bytes": 1341
+      }
+    },
+    {
+      "result": "FAILED_TEST_SETUP",
+      "reason": "Two new-test issues: typing assigned in deferred focus-enter frame; JSON numeric comparison without normalization.",
+      "original_log": {
+        "path": "C:/khybersand/.worktrees/materials-lab-evaluation/build/local-windows-evaluation/test_material_lab_ui-final-20261112.log",
+        "sha256": "2bff78947e180d71f8ed8a4c9642d87d4d02c0454d1ca5c79a1b76d20281af92",
+        "bytes": 1293
+      }
+    }
+  ]
+}

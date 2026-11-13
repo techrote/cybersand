@@ -1,0 +1,65 @@
+{
+  "schema": "materials-lab-focused-package-guards-v1",
+  "host": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "executable": "/usr/bin/python3",
+  "source_head": "cd534e9b8d2e98ea75e463b2fcf261f08deead96",
+  "invocation": "wsl -d Ubuntu-24.04 --cd /mnt/c/khybersand/.worktrees/materials-lab-evaluation -- env GIT_DIR=/mnt/c/khybersand/.git/worktrees/materials-lab-evaluation GIT_COMMON_DIR=/mnt/c/khybersand/.git python3 build/final-packaging-guards/run_guards.py",
+  "before_sha256": {
+    "tools/package_materials_lab_candidate.py": "d749291b5c8d02a5972da7060140f1baef3478983d8bf5745a1cb92bbe98c31c",
+    "tools/ci/materials_lab_runtime_publication.py": "a89cd61c8def19649e31094b12cf3d85d26f9506c9c20e4ec0364c6b2aa0fb24",
+    "tools/ci/test_materials_lab_package.py": "49bd19f2b3857849c689ec6d0ba85def6fcb6178556f933a1d11f8ebf68ad873",
+    "tools/ci/test_materials_lab_runtime_publication.py": "ae5655199546a65702b65d5ff99aba36b4f01304f3237285dd0409bcdf7fa37c",
+    "tools/ci/test_lcb001_shared_contract_runtime_publication.py": "440d7d10cd56ac11437788d807b7fb5c4dceaa7994640f7dff9fde1b6ffe8d1f"
+  },
+  "results": [
+    {
+      "command": [
+        "/usr/bin/python3",
+        "tools/ci/test_materials_lab_package.py"
+      ],
+      "timeout_seconds": 300,
+      "returncode": 0,
+      "log": "build/final-packaging-guards/test_materials_lab_package.log",
+      "git_location_override": {
+        "GIT_DIR": "/mnt/c/khybersand/.git/worktrees/materials-lab-evaluation",
+        "GIT_COMMON_DIR": "/mnt/c/khybersand/.git"
+      },
+      "log_sha256": "628333660bf05e31f56eccf9437f214f2ab283104d4e6e11ec12556cfa914e1a"
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "tools/ci/test_materials_lab_runtime_publication.py"
+      ],
+      "timeout_seconds": 300,
+      "returncode": 0,
+      "log": "build/final-packaging-guards/test_materials_lab_runtime_publication.log",
+      "git_location_override": {
+        "GIT_DIR": "/mnt/c/khybersand/.git/worktrees/materials-lab-evaluation",
+        "GIT_COMMON_DIR": "/mnt/c/khybersand/.git"
+      },
+      "log_sha256": "ce229aae3451777527119663ba4278e35c7e0605f2e1a86bf400dc342b922623"
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "tools/ci/test_lcb001_shared_contract_runtime_publication.py"
+      ],
+      "timeout_seconds": 300,
+      "returncode": 0,
+      "log": "build/final-packaging-guards/test_lcb001_shared_contract_runtime_publication.log",
+      "git_location_override": {},
+      "log_sha256": "7ef3eb38f611793686eb3c99e4e969c3bb580efc6a50f0fbf15a1dd0528f304c"
+    }
+  ],
+  "after_sha256": {
+    "tools/package_materials_lab_candidate.py": "d749291b5c8d02a5972da7060140f1baef3478983d8bf5745a1cb92bbe98c31c",
+    "tools/ci/materials_lab_runtime_publication.py": "a89cd61c8def19649e31094b12cf3d85d26f9506c9c20e4ec0364c6b2aa0fb24",
+    "tools/ci/test_materials_lab_package.py": "49bd19f2b3857849c689ec6d0ba85def6fcb6178556f933a1d11f8ebf68ad873",
+    "tools/ci/test_materials_lab_runtime_publication.py": "ae5655199546a65702b65d5ff99aba36b4f01304f3237285dd0409bcdf7fa37c",
+    "tools/ci/test_lcb001_shared_contract_runtime_publication.py": "440d7d10cd56ac11437788d807b7fb5c4dceaa7994640f7dff9fde1b6ffe8d1f"
+  },
+  "inputs_unchanged": true,
+  "status": "passed"
+}

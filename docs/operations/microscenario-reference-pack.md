@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Exploratory Materials Laboratory, Flood-Control Puzzle and Simulation Stress Test definitions on the shared host, with fresh-reset A/B, world-state objectives and bounded telemetry
 canonical-for: [microscenario-reference-pack, materials-laboratory-readiness, flood-control-scenario, simulation-stress-test, microscenario-workbench-controls]
-last-reviewed: 2026-09-25
+last-reviewed: 2026-11-11
 related-documents: [microscenarios.md, microscenarios-programme.md, experiment-tower.md, ../reference/status-and-roadmap.md, ../audits/2026-09-19-issue-28-ms001.md]
 ---
 
@@ -232,6 +232,24 @@ manifest containing the full interaction catalogue, rolling kinetic/contact
 baseline, source/sink ledger, coverage summary and explicit coverage gaps. The
 compare command reports both observation differences and stable-ID rule/layer/pass
 field changes; it never fabricates outcomes for untested pairs.
+
+### Apparatus A/B and authored material tests
+
+Generated apparatus definitions belong to the fresh-reset A/B workflow above:
+store both complete validated definitions, compare at the same completed tick,
+and load each through the acknowledged owner reset. The live worker's material
+physics is unchanged. Inspect temperature through existing stored-cell probes;
+masked temperature and per-cell sleeping state are not invented. Scheduler work,
+native tick time, host observation time and whole-frame cost retain their separate
+telemetry meanings below.
+
+For changes to material density or reaction products themselves, the separate
+[Materials Lab candidate test](materials-lab-authoring.md#compare-an-edited-candidate-in-a-real-native-world)
+compiles generated material definitions into an external native World and compares
+them with untouched source. Its finite bay reuses this pack's geometry, with its
+own explicitly recorded configuration. It does not mutate the live worker, replace
+the shared host, or establish hash parity with an apparatus A/B capture. Choose
+the corresponding workflow and retain its source/definition/worker receipt.
 
 ## Accounting, telemetry and anomaly triage
 

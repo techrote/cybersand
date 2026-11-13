@@ -1,0 +1,19 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+SCRIPT ERROR: Invalid type in 'PackedByteArray' constructor. Cannot convert argument 1 from PackedInt32Array to Array.
+          at: author (res://tests/test_paint_editor_generated_workbench.gd:189)
+          GDScript backtrace (most recent call first):
+              [0] author (res://tests/test_paint_editor_generated_workbench.gd:189)
+              [1] capture (res://tests/test_paint_editor_generated_workbench.gd:94)
+              [2] until (res://tests/test_paint_editor_generated_workbench.gd:40)
+ERROR: PAINT_EDITOR_GENERATED_WORKBENCH complete generated authoring/reopening workflow actually executed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_paint_editor_generated_workbench.gd:33)
+       [1] run (res://tests/test_paint_editor_generated_workbench.gd:261)
+       [2] author (res://tests/test_paint_editor_generated_workbench.gd:189)
+       [3] capture (res://tests/test_paint_editor_generated_workbench.gd:94)
+       [4] until (res://tests/test_paint_editor_generated_workbench.gd:40)
+PAINT_EDITOR_GENERATED_WORKBENCH {"checks":38,"completed":false,"elapsed_usec":4011901,"failures":["complete generated authoring/reopening workflow actually executed"],"reopen":""}

@@ -754,7 +754,8 @@ func apply_playable_session(selection: Dictionary, policy: PackedInt32Array,
 # acknowledgement, World stepping and Rapier adoption remain the shared owners'.
 func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, extent: Vector2i,
 		policy: PackedInt32Array, normalize_water: bool, radius: int, response: String,
-		preserve_cells: bool = false, convert_liquid_inventory: bool = false, resume_play: bool = false) -> bool:
+		preserve_cells: bool = false, convert_liquid_inventory: bool = false, resume_play: bool = false,
+		generated_packet: Dictionary = {}) -> bool:
 	if shared_workbench == null: return false
 	if not pending_microscenario_apply.is_empty():
 		microscenario_error = "Wait for the pending workbench installation."
@@ -779,11 +780,18 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 		"workbench_actors":actors}
 	# Saved normalization belongs to the starting recipe. A retained flyer
 	# edit must not round live Water because an earlier recipe used it.
+	if not generated_packet.is_empty() and (preserve_cells or not rectangles.is_empty()):
+		microscenario_error = "Generated terrain requires an empty fresh construction recipe."
+		return false
 	var normalize_now := normalize_water and (not preserve_cells or convert_liquid_inventory)
 	var settings := {"intent":"exploratory","normalization":"water-normalize-v1" if normalize_now else "",
 		"maximum_rule_radius":radius,"workbench_response":response,"workbench_retain_cells":preserve_cells,
 		"workbench_sample":{"session":_microscenario_request_serial+1,"epoch":_physical_epoch+1,
 			"states":PackedFloat64Array(),"geometry":PackedFloat64Array(),"bodies":[],"emitters":[]}}
+	# The copied native proposal belongs to preparation only; it is not a
+	# second World, and never enters the saved v2 starting-setup schema.
+	if not generated_packet.is_empty():
+		settings["workbench_generated"] = generated_packet
 	# Developer-only explicit C2048 opt-in. Omitted means the native C1024 default.
 	if workbench_water_options.get("pressure_gas_compartment_capacity",1024) is int:
 		settings["pressure_gas_compartment_capacity"] = int(workbench_water_options.get("pressure_gas_compartment_capacity",1024))
@@ -2060,6 +2068,15 @@ func workbench_source(origin: Vector2i, material: int, command: String) -> bool:
 		and tower_context.get("scenario_request_serial",-1) == pending_microscenario_apply.serial): return false
 	return simulation_worker.queue_workbench_source(origin,material,command)
 
+# IN-TOOLS #361 liquid equipment. Same admission window as the powder source:
+# a configure may follow the acknowledged install of a pending replacement.
+func workbench_equipment(request: Dictionary) -> bool:
+	if shared_workbench == null: return false
+	if not pending_microscenario_apply.is_empty() and not (str(request.get("command","")) == "configure"
+		and tower_context.get("scenario_request_applied",false)
+		and tower_context.get("scenario_request_serial",-1) == pending_microscenario_apply.serial): return false
+	return simulation_worker.queue_workbench_equipment(request)
+
 func setup_depth_lab_launcher() -> void:
 	var launcher := Button.new()
 	launcher.name = "DepthLabLauncher"
@@ -2106,6 +2123,13 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				KEY_R: shared_workbench.reset_selected()
 				KEY_PERIOD: shared_workbench.step_once()
 				KEY_B: shared_workbench.burst()
+				KEY_V: shared_workbench.equipment.toggle("valve")
+				KEY_G: shared_workbench.equipment.toggle("drain")
+				KEY_H: shared_workbench.equipment.toggle("nozzle")
+				KEY_J: shared_workbench.equipment.nudge_aim(-10.0)
+				KEY_K: shared_workbench.equipment.nudge_aim(10.0)
+				KEY_BRACKETLEFT: shared_workbench.equipment.select_valve(-1)
+				KEY_BRACKETRIGHT: shared_workbench.equipment.select_valve(1)
 				_: return
 			get_viewport().set_input_as_handled()
 		return

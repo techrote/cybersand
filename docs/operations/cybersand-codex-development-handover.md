@@ -4,11 +4,47 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-12
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Materials Lab Windows evaluation — 2026-11-12
+
+[Draft #562](https://github.com/techrote/cybersand/pull/562) carries the
+[bounded authoring workflow and Windows launcher](materials-lab-authoring.md).
+Use the [completion audit](../audits/2026-11-11-materials-lab-completion.md) for
+the actual source/runtime/package campaign result and preserved failures.
+Request7 is a fully qualified recoverable Windows package. Request8's strict
+hosted desktop-fit check refused publication; its successor fits the native
+window frame within the usable work area and requires a fresh campaign.
+Accepted liquid-equipment main is incorporated; #563 retains separate native
+capability-consumer ownership. Candidates execute only in their admitted
+isolated backends. Keep Draft / Do Not Merge until owner acceptance.
+
+## WB-ART-002 Stage 1 — 2026-11-10
+
+**2026-11-11 integrated Draft successor:** read the
+[PAINT + agent candidate runbook](wb-art-paint-integrated-candidate.md) before
+continuing either editor. It records the exact preserved #544/#560 heads,
+generator-first repair checkpoints, native stored-material correction, shared
+edit ordering and source-built qualification. The owner authorized integration
+but explicitly requires Draft; do not mark Ready, merge or auto-merge. Original
+PRs remain available. Earlier Stage-1 ownership below is historical context.
+
+Owner-authorized fresh branch `codex/agent-art-workbench-v2` starts from main `d4b18e7f06839b35c8f6a66195206da0f33c5fa3`. Read the [direct art batch contract](../systems/workbench-direct-art-batches.md). This lane owns the new art modules/tests and narrow shared-workbench/worker completion seams; #531 is reference only. Preserve #543 ordinary-editor and #548 Flatten ownership. Stage 2 now adds the [provider connection candidate](../systems/workbench-art-providers.md), genuine local tests and traffic inspection. No cloud inference without owner credentials; no merge or Ready promotion.
+
+
+## Shared workbench review transition — 2026-11-08
+
+Owner-authorized #542 Ready qualification follows the
+[shared authoring data contract and convergence plan](../architecture/shared-workbench-authoring-data.md).
+Record the resulting source and actual non-Draft gates in the PR ledger; retain
+the `9319e689` runtime/package evidence as its own checkpoint. Converge the
+painting/agent/remote successors incrementally, preserving source ownership and
+qualifying the joins. #548 is design-only here. No merge, release or paid API
+trial is authorized by this transition.
 
 ## Coupling lockstep feasibility — 2026-11-06
 

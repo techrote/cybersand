@@ -1,0 +1,23 @@
+{
+  "encoding": "utf-8",
+  "raw_sha256": "4675f42b6a1cb40f3f52e56decb7f53084aa0cd237f9f956e64ec54d5a2b9795",
+  "raw_size_bytes": 1365,
+  "original_log_lines": [
+    "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\n",
+    "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n",
+    "\n",
+    "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\n",
+    "WORKBENCH_EDGE_PICK {\"disabled\":false,\"index\":10,\"panel\":\"[P: (20.0, 16.0), S: (1880.0, 330.0)]\",\"rect\":\"[P: (835.0, 76.0), S: (202.0, 26.0)]\",\"root\":\"(1920, 1080)\",\"text\":\"Sand · 2\",\"viewport\":\"[P: (0.0, 0.0), S: (1920.0, 1080.0)]\",\"visible\":true}\n",
+    "WORKBENCH_EDGE_EVENT {\"down\":true,\"material\":\"Sand · 2\",\"mouse\":\"(0.0, 0.0)\",\"popup_position\":\"(835, 0)\",\"popup_size\":\"(210, 1080)\",\"popup_visible\":true,\"position\":\"(936.0, 89.0)\"}\n",
+    "WORKBENCH_EDGE_EVENT {\"down\":false,\"material\":\"Water · 3\",\"mouse\":\"(0.0, 0.0)\",\"popup_position\":\"(835, 0)\",\"popup_size\":\"(210, 1080)\",\"popup_visible\":false,\"position\":\"(936.0, 89.0)\"}\n",
+    "ERROR: WORKBENCH_EDGE real toolbar popup open / Brush · water · radius 12 / \n",
+    "   at: push_error (core/variant/variant_utility.cpp:1023)\n",
+    "   GDScript backtrace (most recent call first):\n",
+    "       [0] require (res://tests/test_workbench_liquid_edges.gd:19)\n",
+    "       [1] pick (res://tests/test_workbench_liquid_edges.gd:61)\n",
+    "       [2] click (res://tests/test_workbench_liquid_edges.gd:50)\n",
+    "       [3] click_at (res://tests/test_workbench_liquid_edges.gd:47)\n",
+    "WORKBENCH_EDGE {\"cases\":[],\"checks\":2,\"failures\":[\"real toolbar popup open\"]}\n"
+  ],
+  "note": "Original bytes retained as escaped UTF-8 lines to satisfy repository whitespace validation; concatenate lines to reconstruct the exact log."
+}
