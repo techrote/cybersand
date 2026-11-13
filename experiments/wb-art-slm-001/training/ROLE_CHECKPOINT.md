@@ -257,3 +257,74 @@ a compatible qualified current-source native Workbench before claiming new
 engine acceptance. A fresh balanced-replay model is still blocked on an
 authorized local pinned model/runtime/role lease; do not restart the frozen
 step-400 candidate or score archived replay as fresh model quality.
+
+---
+
+## Continuation: independent raw program, fixed-cohort and terminal-EOS custody (13 Nov)
+
+**Training source before this milestone:** `c53f8ef052b7f20a9cf7e4de7d2b50530bfa11f1`.  
+**Main observed:** `63f8b1ba6559906fe85f3ad0269aa296e4141d67` including #563.  
+**Integration observed:** `87cf3b087ee76f1f575266f8110956849b46ad5b`, combined Draft #567 HOLD.  
+**Upstream source ownership:** #564 and #565 remain distinct Draft branches; no native successor was incorporated in Training.
+
+### Owned code completed
+
+- `train_lora.py` now records actual last-token `eos_terminated`,
+  separately from `eos_emitted`; first-pass model acceptance consumes the
+  last-token value, with no raw repairs.
+- `evaluation_guard.py` rechecks raw strict JSON, per-record boolean and
+  terminal-state consistency, actual compiler-valid programs/Art operation
+  counts under the pinned compiler at recorded 96×96 seed, and independently
+  recomputed reference theme, primary motif, ordered motif/layout and full
+  program scores. It verifies exact fixed balanced dev/keyword request order
+  and unmodified ID/prompt/group/seed/expected completion; summaries alone
+  cannot approve a fabricated candidate.
+- `test_evaluation_guard.py` now supplies synthetically generated valid raw
+  completions and source-matched compiler geometry; four new adverse methods
+  cover raw/tokens, compiler receipts, and identity/target tampering.
+- `archived_raw_program_audit.json` is a small retained results manifest, not
+  a new model candidate. No shared source/plan/registry, other roles, production
+  defaults, frozen adapter, base model or native physics source changed.
+
+### Executed archived-model qualification
+
+Recovered all four original user-Library archives by exact filename and
+independently checked their original byte counts, all whole-file SHA-256
+hashes in `ARTIFACTS.json` and ZIP CRC integrity (zero errors).
+The historical source compiler in the nested model evidence archive exactly
+matched SHA-256 `a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb`.
+
+In a local Python 3 offline replay, the actual archived 24 development and
+12 one-word raw model responses were parsed with duplicate/nonfinite refusal,
+recompiled from their original unmodified text, compared to the admitted
+reference cohort/order and re-scored for declared theme, primary motif,
+ordered motif/layout and exact target. **36/36 input identities matched,
+36/36 model record/metric sets matched, zero discrepancies**. Recomputed
+development: 22/24 JSON-valid/compiler-valid, 22 correct themes/motifs,
+19 exact ordered structures and 13 full targets. Keywords: 12/12 compiled,
+11 correct themes, 11 correct motifs and 8 full targets.
+The two invalid coral decimals, veins orthogonal motif and ribs mislabel remain
+failures. Source archives/individual prediction hashes are recorded in
+`archived_raw_program_audit.json`.
+
+This is a **new independent audit of archived actual predictions**, not
+new model inference, optimizer work, native World replay or human thematic
+acceptance. Critically, all 36 historical records omit terminal EOS *position*,
+so the new guard must not retroactively mark terminal EOS independently proven.
+Their historical first-pass flags remain as originally recorded. Three isolated
+synthetic raw-helper unittest methods ran locally and passed (including ten
+negative tampering controls); no exact-source combined 24-method supervised
+train/eval suite was executed in this runtime, nor current-main/Windows/GPU.
+
+### Dependencies and next owned action
+
+The Integration worker may consume only Training-owned changes by exact
+file blob identity. Its first obligation is to run the full exact-source
+offline suite, including the newly strengthened raw guard, before describing
+it as validated; the existing GitHub offline smoke can do this without model
+weights or hosted training. After that, restore the pinned base/runtime on one
+authorized host, inspect the private run-parent lease, and execute only one
+new keyword-replay 400-step candidate against the frozen 24 development IDs
+and twelve words. Preserve untouched final assessment and all failed raw
+requests. Compare Sprocket-500M root Instruct and Smol135 only under matched
+fine-tuning budgets. No Ready/merge or native/Windows promotion.

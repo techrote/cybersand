@@ -294,3 +294,51 @@ qualification, current-main/Windows acceptance or visual recognition.
 Next, run the current exact-source combined 20-method train/eval supervisor
 suite and, when an authorized pinned compute host is available, perform the
 one guarded balanced-keyword training candidate and fresh native replay.
+
+## Independent raw evaluation custody — 13 November 2026
+
+A new, **Training-only opt-in** evidence guard now checks more than reported
+summary counts. The model evaluator records whether EOS was **last** in the
+generated token sequence (distinct from whether EOS appeared anywhere).
+Its supervised completion receipt is refused when the raw JSON, duplicate
+fields, terminal-EOS assertion, compiler acceptance, generated Art operation
+count or theme/primary motif/ordered layout/full-target flags disagree.
+
+The evaluator separately recompiles **the unmodified raw program** with the
+exact pinned pattern compiler at 96×96 and the recorded seed. It recomputes
+the fixed balanced development or twelve-keyword selection from the pinned
+development input/compiler, and binds each prediction to the exact ordered
+ID, prompt, structural group, theme, expected completion and seed. Failing
+raw requests remain in the denominator; no repair, reference substitution or
+native-success credit is permitted. Source/template/compiler/model/adapter
+fingerprints and the shared training/evaluation role lease remain enforced.
+
+The preserved [archived raw-program audit](archived_raw_program_audit.json)
+was executed on newly recovered, whole-file-SHA-verified bootstrap archives,
+not on synthetic substitute predictions. The archived 24 development and
+12 exact-word raw completions were independently strictly parsed and
+compiled using archived compiler SHA-256
+`a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb`,
+with exact reference ID ordering and independent motif/layout scoring.
+All **36/36 source identities and 36/36 sets of saved raw/compiled/semantic
+claims agreed**. This reproduces 22/24 development and 12/12 keyword
+strictly compiled programs, with both malformed coral numbers and the
+veins/ribs routing errors retained.
+
+**Qualification boundary:** historical outputs lack the newly recorded
+`eos_terminated` token-position field (36/36), so the new guard intentionally
+cannot retroactively certify their terminal token position. Their original
+22/24 and 12/12 first-pass acceptance values remain *historical declarations*,
+not a fresh decoder/EOS result. The new model-free regression methods (including malformed non-object evidence) in
+`test_evaluation_guard.py` cover altered raw completion, forged EOS, changed
+motif flags, mismatched Art operation counts, changed sample IDs, swapped
+reference targets and token-cap overflow. Three isolated synthetic checks
+of the raw helper passed locally; the **full combined exact-repository
+subprocess suite has not been run** on this new branch head. An integration
+intake must run it independently before qualifying the change.
+
+The frozen 400-step LFM adapter and exact 25→26 resume proof are untouched.
+The next candidate still requires one authorized pinned local base/runtime,
+inspection of the designated private role lease and one new keyword-replay
+training attempt. No new model, GPU, native/Windows runtime, provider-default
+change or promotion is implied by this offline verification.

@@ -18,7 +18,7 @@ from evaluation_guard import evaluation_fingerprint, verified_evaluation
 from job_guard import LEASE_NAME, LOCK_NAME, run
 
 FAKE_EVALUATOR = r'''
-import argparse, hashlib, json, pathlib, signal, time
+import argparse, hashlib, importlib.util, json, pathlib, signal, sys, time
 from job_guard import trainer_lock
 p = argparse.ArgumentParser()
 for key in ('model', 'dev', 'admission', 'corpus-manifest', 'compiler', 'output', 'adapter', 'eval-count', 'suite', 'device'):
@@ -34,9 +34,26 @@ if a.device == 'hang':
 if a.device == 'early':
     (out/'predictions.json').write_text(json.dumps({'records':[{'id':'one'}]}))
     raise SystemExit(0)
-records = [{'id':name,'json_valid':True,'program_valid':True,'first_pass_accepted':True,
-            'theme_field_correct':True,'primary_motif_correct':True,'motif_layout_exact':True,
-            'exact_target':False} for name in ('one','two')]
+program = {'version':1,'theme':'roots','layers':[
+    {'motif':'branch','density':0.5,'scale':0.5,'width':0.3,'angle':0,'layout':'center'}]}
+reference = {'version':1,'theme':'roots','layers':[
+    {'motif':'branch','density':0.6,'scale':0.5,'width':0.3,'angle':0,'layout':'center'}]}
+spec = importlib.util.spec_from_file_location('frozen_compiler_for_test', a.compiler)
+compiler = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = compiler
+spec.loader.exec_module(compiler)
+operations = compiler.compile_program(program, 96, 96, seed=17)
+dev_rows = [json.loads(line) for line in pathlib.Path(a.dev).read_text().splitlines() if line.strip()]
+dev_rows.sort(key=lambda row: hashlib.sha256(row['id'].encode()).hexdigest())
+records = [{'id':row['id'],'theme':row['theme'],'group_id':row['group_id'],
+            'prompt':row['prompt'],'completion':json.dumps(program),
+            'expected_completion':row['completion'],'program':program,
+            'compiled_operations':len(operations),'seed':row['seed'],
+            'output_tokens':24,'eos_emitted':True,
+            'eos_terminated':True,'json_valid':True,'program_valid':True,
+            'first_pass_accepted':True,'theme_field_correct':True,
+            'primary_motif_correct':True,'motif_layout_exact':True,
+            'exact_target':False} for row in dev_rows]
 metrics = {'count':len(records),'json_valid':2,'program_valid':2,'first_pass_accepted':2,
            'theme_field_correct':2,'primary_motif_correct':2,'motif_layout_exact':2,
            'exact_target':0}
@@ -76,14 +93,27 @@ class EvaluationGuardTests(unittest.TestCase):
         (self.model / "download_receipt.json").write_text(json.dumps(receipt))
         self.inputs = {}
         for name in ("dev", "admission", "corpus-manifest", "compiler"):
-            self.inputs[name] = self.root / (name + ".txt")
-            self.inputs[name].write_text('{"id":"one"}\n{"id":"two"}\n' if name == "dev" else name)
+            self.inputs[name] = self.root / (name + (".py" if name == "compiler" else ".txt"))
+            if name == "compiler":
+                shutil.copy2(Path(__file__).resolve().parents[1] / "controls" / "pattern_compiler.py",
+                             self.inputs[name])
+            else:
+                if name == "dev":
+                    reference = {'version': 1, 'theme': 'roots', 'layers': [
+                        {'motif': 'branch', 'density': 0.6, 'scale': 0.5,
+                         'width': 0.3, 'angle': 0, 'layout': 'center'}]}
+                    rows = ({'id': key, 'prompt': 'roots', 'theme': 'roots',
+                             'group_id': 'test:roots', 'seed': 17,
+                             'completion': json.dumps(reference)} for key in ('one', 'two'))
+                    self.inputs[name].write_text(''.join(json.dumps(row) + '\n' for row in rows))
+                else:
+                    self.inputs[name].write_text(name)
         self.adapter = self.root / "adapter"
         self.adapter.mkdir()
         (self.adapter / "adapter_model.safetensors").write_bytes(b"LoRA")
         (self.adapter / "adapter_config.json").write_text("{}")
         contract = {"model_id": "test/frozen", "revision": self.revision,
-                    "compiler_sha256": hashlib.sha256(b"compiler").hexdigest(),
+                    "compiler_sha256": hashlib.sha256(self.inputs["compiler"].read_bytes()).hexdigest(),
                     "model_files": {k:hashlib.sha256(v).hexdigest() for k,v in self.model_files.items()}}
         (self.adapter / "inference_contract.json").write_text(json.dumps(contract))
         self.worker = self.root / "evaluate_model.py"
@@ -134,6 +164,75 @@ class EvaluationGuardTests(unittest.TestCase):
         self.assertEqual(result["status"], "failed")
         self.assertIn("fingerprint changed", result["error"])
         self.assertIsNone(result["evidence"])
+
+    def test_raw_completion_eos_and_semantic_flag_tampering_refused(self):
+        args, argv = self.setup_run()
+        result = run(args, argv)
+        self.assertEqual(result["status"], "completed")
+        path = self.parent / "eval-one" / "predictions.json"
+        authentic = json.loads(path.read_text())
+        alterations = (
+            {"completion": '{"value":0595931}'},  # malformed coral-style decimal
+            {"eos_terminated": False},           # EOS did not end the generation
+            {"primary_motif_correct": False},   # claimed score disagrees with raw
+            {"program": {"version": 1}},       # compiled program differs from raw
+            {"output_tokens": 300},             # exceeds pinned token cap
+        )
+        for alteration in alterations:
+            with self.subTest(alteration=alteration):
+                modified = json.loads(json.dumps(authentic))
+                modified["records"][0].update(alteration)
+                path.write_text(json.dumps(modified))
+                self.assertIsNone(verified_evaluation(path.parent, argv))
+        path.write_text(json.dumps(authentic))
+        self.assertIsNotNone(verified_evaluation(path.parent, argv))
+
+    def test_raw_claim_of_compiler_acceptance_is_independently_replayed(self):
+        args, argv = self.setup_run()
+        self.assertEqual(run(args, argv)["status"], "completed")
+        path = self.parent / "eval-one" / "predictions.json"
+        baseline = json.loads(path.read_text())
+        for change in ({"compiled_operations": 99999},
+                       {"seed": "17"},
+                       {"program_valid": False}):
+            with self.subTest(change=change):
+                altered = json.loads(json.dumps(baseline))
+                altered["records"][0].update(change)
+                path.write_text(json.dumps(altered))
+                self.assertIsNone(verified_evaluation(path.parent, argv))
+        path.write_text(json.dumps(baseline))
+        self.assertIsNotNone(verified_evaluation(path.parent, argv))
+
+    def test_balanced_source_identity_and_denominator_are_not_just_counts(self):
+        args, argv = self.setup_run()
+        self.assertEqual(run(args, argv)["status"], "completed")
+        path = self.parent / "eval-one" / "predictions.json"
+        original = json.loads(path.read_text())
+        for mutation in ({"id": "phantom-easy"},
+                         {"prompt": "other-theme"},
+                         {"theme": "coral"},
+                         {"group_id": "unauthorized-group"},
+                         {"seed": 73},
+                         {"expected_completion": "{}"}):
+            with self.subTest(mutation=mutation):
+                altered = json.loads(json.dumps(original))
+                altered["records"][0].update(mutation)
+                path.write_text(json.dumps(altered))
+                self.assertIsNone(verified_evaluation(path.parent, argv))
+        path.write_text(json.dumps(original))
+        self.assertIsNotNone(verified_evaluation(path.parent, argv))
+
+    def test_nonobject_raw_record_is_rejected_not_a_supervisor_crash(self):
+        args, argv = self.setup_run()
+        self.assertEqual(run(args, argv)["status"], "completed")
+        path = self.parent / "eval-one" / "predictions.json"
+        original = json.loads(path.read_text())
+        altered = json.loads(json.dumps(original))
+        altered["records"][0] = "not a record"
+        path.write_text(json.dumps(altered))
+        self.assertIsNone(verified_evaluation(path.parent, argv))
+        path.write_text(json.dumps(original))
+        self.assertIsNotNone(verified_evaluation(path.parent, argv))
 
     def test_duplicate_evaluation_fingerprint_not_relaunched(self):
         args, argv = self.setup_run()

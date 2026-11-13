@@ -113,6 +113,87 @@ def evaluation_fingerprint(argv: list[str], worker: Path) -> tuple[str, dict]:
     return hashlib.sha256(canonical(payload).encode("utf-8")).hexdigest(), payload
 
 
+
+def raw_record_consistent(record: dict, max_new_tokens: int, compiler) -> bool:
+    """Independently check saved raw text and EOS/semantic claims, never repair it.
+
+    Compiler execution and actual native mutation are still separate gates.
+    """
+    from train_lora import strict_json
+
+    if type(record) is not dict:
+        return False
+    flags = ("json_valid", "program_valid", "first_pass_accepted",
+             "theme_field_correct", "primary_motif_correct",
+             "motif_layout_exact", "exact_target", "eos_emitted",
+             "eos_terminated")
+    if any(type(record.get(flag, False)) is not bool for flag in flags):
+        return False
+    if (not isinstance(record.get("completion"), str)
+            or not isinstance(record.get("expected_completion"), str)
+            or type(record.get("output_tokens")) is not int
+            or not 0 <= record["output_tokens"] <= max_new_tokens
+            or record["eos_terminated"] and not record["eos_emitted"]
+            or record["eos_terminated"] and record["output_tokens"] == 0):
+        return False
+    try:
+        value = strict_json(record["completion"])
+        parsed = True
+    except (ValueError, TypeError):
+        value, parsed = None, False
+    if record["json_valid"] != parsed:
+        return False
+    try:
+        expected = strict_json(record["expected_completion"])
+    except (ValueError, TypeError):
+        return False
+    if record["exact_target"] != (parsed and value == expected):
+        return False
+    theme_matches = parsed and isinstance(value, dict) and value.get("theme") == record.get("theme")
+    if record.get("theme_field_correct", False) != theme_matches:
+        return False
+    # A reported compiler pass is not proof: rerun the exact pinned compiler
+    # on unmodified raw JSON and the saved host seed, with no repair path.
+    compiled = None
+    if parsed and type(record.get("seed")) is int:
+        try:
+            compiler.validate_program(value)
+            compiled = compiler.compile_program(value, 96, 96, seed=record["seed"])
+        except Exception:
+            # Invalid or unexpectedly failing compiler paths are never admitted.
+            pass
+    compiled_ok = compiled is not None
+    if compiled_ok != record["program_valid"]:
+        return False
+    valid = record["program_valid"]
+    if valid:
+        if (not parsed or not isinstance(value, dict)
+                or record.get("program") != value
+                or type(record.get("compiled_operations")) is not int
+                or record["compiled_operations"] <= 0
+                or record["compiled_operations"] != len(compiled)):
+            return False
+        try:
+            predicted_layers, target_layers = value["layers"], expected["layers"]
+            motif_matches = predicted_layers[0]["motif"] == target_layers[0]["motif"]
+            structure_matches = (
+                [(layer["motif"], layer["layout"]) for layer in predicted_layers]
+                == [(layer["motif"], layer["layout"]) for layer in target_layers]
+            )
+        except (KeyError, TypeError, IndexError):
+            return False
+    else:
+        if "program" in record or "compiled_operations" in record:
+            return False
+        motif_matches = structure_matches = False
+    if (record.get("primary_motif_correct", False) != motif_matches
+            or record.get("motif_layout_exact", False) != structure_matches):
+        return False
+    return record["first_pass_accepted"] == (
+        valid and record["eos_terminated"] and record["output_tokens"] > 0
+    )
+
+
 def verified_evaluation(output: Path, argv: list[str]) -> dict | None:
     """Distinguish complete strict raw evaluation from partial untrusted output.
 
@@ -130,7 +211,8 @@ def verified_evaluation(output: Path, argv: list[str]) -> dict | None:
         records = predictions["records"]
         opts = options(argv)
         if (summary["config"] != config or predictions["summary"] != metrics
-                or not isinstance(records, list) or not records):
+                or not isinstance(records, list) or not records
+                or any(type(record) is not dict for record in records)):
             return None
         if config["suite"] != opts.get("--suite", "dev") or config["training_executed"] is not False:
             return None
@@ -153,13 +235,38 @@ def verified_evaluation(output: Path, argv: list[str]) -> dict | None:
             return None
         if metrics["count"] != len(records) or len({r["id"] for r in records}) != len(records):
             return None
-        target = int(str(opts.get("--eval-count", "24")))
+        from infer import load_compiler
+        from train_lora import balanced_rows
+
+        compiler = load_compiler(Path(str(opts["--compiler"])))
         if config["suite"] == "dev":
-            dev_rows = sum(1 for line in Path(str(opts["--dev"])).read_text(encoding="utf-8").splitlines() if line.strip())
-            target = min(target, dev_rows)
+            dev_rows = [json.loads(line) for line in
+                        Path(str(opts["--dev"])).read_text(encoding="utf-8").splitlines()
+                        if line.strip()]
+            expected_rows = balanced_rows(dev_rows, int(str(opts.get("--eval-count", "24"))))
         else:
-            target = min(target, 12)
-        if len(records) != target:
+            keyword_rows = [
+                {"id": "keyword-" + theme, "prompt": theme, "theme": theme,
+                 "group_id": "keyword-sanity:" + theme, "seed": 17,
+                 "completion": json.dumps(compiler.make_program(theme),
+                                          sort_keys=True, separators=(",", ":"))}
+                for theme in compiler.THEMES
+            ]
+            expected_rows = balanced_rows(keyword_rows, int(str(opts.get("--eval-count", "24"))))
+        if len(records) != len(expected_rows):
+            return None
+        # No substitution of easier IDs or targets while retaining the same
+        # denominator: bind the exact fixed balanced selection and all prompts.
+        row_fields = (("id", "id"), ("prompt", "prompt"), ("theme", "theme"),
+                      ("group_id", "group_id"), ("expected_completion", "completion"))
+        for record, expected_row in zip(records, expected_rows):
+            if any(record.get(output_key) != expected_row.get(source_key)
+                   for output_key, source_key in row_fields):
+                return None
+            if type(record.get("seed")) is not int or record["seed"] != int(expected_row.get("seed", 0)):
+                return None
+        if not all(raw_record_consistent(record, int(str(opts.get("--max-new-tokens", "256"))), compiler)
+                   for record in records):
             return None
         for key in ("json_valid", "program_valid", "first_pass_accepted", "theme_field_correct",
                     "primary_motif_correct", "motif_layout_exact", "exact_target"):
