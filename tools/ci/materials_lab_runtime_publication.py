@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Source-bound Materials Lab desktop qualification and four-path publication.
+"""Source-bound capability-consumer qualification through the existing Lab publisher.
 
 The established publisher owns build, manifest and branch-lease admission.
-This profile adds the real catalogue suite and graphical authoring evidence;
+This B-only profile retains the full catalogue suite and graphical authoring evidence;
 neither an old runtime nor a parser-only receipt can satisfy publication.
 """
 from __future__ import annotations
@@ -20,6 +20,7 @@ import tempfile
 import threading
 import time
 import urllib.request
+import unittest
 
 import execution_policy
 
@@ -30,17 +31,17 @@ _spec = spec_from_file_location(
 engine = module_from_spec(_spec)
 _spec.loader.exec_module(engine)
 _former_workflow, _former_request = engine.WORKFLOW, engine.REQUEST
-engine.BRANCH = "codex/materials-lab-v1-20261111"
+engine.BRANCH = "codex/materials-native-capabilities-20261111"
 engine.WORKFLOW = ".github/workflows/materials-lab-runtime-publication.yml"
 engine.REQUEST = "tools/ci/materials_lab_publish_request.json"
-engine.EVIDENCE = "docs/audits/2026-11-11-materials-lab-completion.md"
+engine.EVIDENCE = "docs/audits/2026-11-11-material-native-capability-cutover.md"
 engine.PRESSURE_CASE = "godot/tests/test_material_lab_catalogue.gd"
 engine.BUNDLE_PREFIX = "materials-lab-runtime-attempt-" + os.environ.get("GITHUB_RUN_ATTEMPT", "1")
 engine.REQUEST_VALUE = {
     "schema": "materials-lab-runtime-publish-request-v1",
-    "family": "materials-lab-v1",
-    "variant": "native-inspection-isolated-authoring",
-    "scope": "source-matched-linux-windows-native-and-graphical-lab",
+    "family": "materials-native-capabilities-v1",
+    "variant": "unchanged-hard-granular-consumer",
+    "scope": "source-matched-linux-windows-capabilities-and-graphical-lab",
     "intent": "publish-source-matched-runtimes",
 }
 engine.CASE_MARKERS = {
@@ -56,7 +57,8 @@ engine.CASE_TIMEOUTS = {}
 engine.EXECUTION_SCOPE = (
     "actual target-OS import, compiled material catalogue/resolver, native Materials Lab "
     "experiments, process lifecycle, mounted authoring/effects/preset/World-recipe UI, "
-    "source-matched candidate/reference World and shared Workbench controls. The Lab "
+    "source-matched candidate/reference World and shared Workbench controls, with the "
+    "reviewed generated hard/granular consumer compiled into both target runtimes. The Lab "
     "profile additionally requires complete catalogue-suite and graphical UI receipts. "
     "Full ordinary Native/Godot coverage and human acceptance remain separate"
 )
@@ -100,6 +102,36 @@ PROCESS_OWNER_CASES = {
         "test_success_retires_redirected_descendants_after_driver_exit",
     )
 }
+# These are the extra source-admission/native-generation controls owned by this
+# separate Draft. An apparently complete parent-Lab receipt is insufficient.
+CAPABILITY_CASES = {
+    "test_native_capabilities.NativeCapabilitiesTests." + name for name in (
+        "test_current_output_is_deterministic_and_readonly_check_preserves_mtime",
+        "test_actual_cpp_has_all_byte_capabilities_and_no_synthetic_hard_inheritance",
+        "test_synthetic_cannot_write_production_output",
+        "test_external_source_cannot_replace_the_production_consumer",
+        "test_bad_capability_type_and_reserved_bits_refuse_without_publishing",
+        "test_duplicate_ids_and_unknown_capabilities_are_rejected",
+        "test_missing_or_poisoned_header_check_never_rewrites",
+        "test_source_and_output_alias_is_rejected",
+        "test_symlink_output_is_rejected",
+    )
+} | {
+    "test_native_capability_guard.NativeCapabilityGuardTests." + name for name in (
+        "test_current_route_is_authenticated_without_identity_transition",
+        "test_changed_header_is_refused",
+        "test_coherent_authored_and_generated_change_cannot_rebaseline",
+        "test_changed_generator_is_refused_even_when_output_is_unchanged",
+        "test_changed_header_and_forged_pin_does_not_authenticate_against_git",
+        "test_missing_or_extra_inventory_entries_are_refused",
+        "test_missing_generated_file_is_refused",
+        "test_unregistered_include_and_namespace_consumers_are_refused",
+        "test_unregistered_godot_consumer_is_refused",
+        "test_unrelated_native_transition_cannot_authenticate_route",
+        "test_missing_code_pinned_route_is_refused",
+        "test_invalid_route_versions_types_and_record_paths_are_refused",
+    )
+} | {"test_gdscript_shadow.GodotReceiptGuards.test_scoped_native_cutover_claim_must_match_authenticated_guard"}
 
 SUITE_SCRIPT = r'''
 import json, pathlib, sys, unittest
@@ -145,14 +177,35 @@ def verify_context(record: dict, source: str) -> None:
                    0 < int(attempt) <= current_attempt, "Invalid qualification attempt")
 
 
+def discovered_suite_inventory() -> list[str]:
+    """Read the whole source-owned inventory without executing test bodies."""
+    directory = str(engine.ROOT / "tools/material_catalogue")
+    if directory not in sys.path:
+        sys.path.insert(0, directory)
+    suite = unittest.TestLoader().discover(directory, "test_*.py")
+
+    def names(item):
+        if isinstance(item, unittest.TestSuite):
+            return [name for child in item for name in names(child)]
+        return [item.id()]
+
+    inventory = names(suite)
+    engine.require(len(inventory) >= 231 and len(set(inventory)) == len(inventory) and
+                   (PROCESS_OWNER_CASES | CAPABILITY_CASES).issubset(inventory),
+                   "Capability publication source lacks its complete registered catalogue inventory")
+    return inventory
+
+
 def verify_suite_record(record: dict, platform: str) -> None:
     inventory = record.get("inventory", [])
-    engine.require(isinstance(inventory, list) and len(inventory) >= 206 and
+    expected_inventory = discovered_suite_inventory()
+    engine.require(isinstance(inventory, list) and len(inventory) >= 231 and
                    all(isinstance(name, str) for name in inventory) and
                    len(set(inventory)) == len(inventory) and
+                   set(inventory) == set(expected_inventory) and
+                   type(record.get("tests_run")) is int and
                    record.get("tests_run") == len(inventory),
-                   "Catalogue suite did not complete its entire unique discovered inventory")
-    engine.require(PROCESS_OWNER_CASES.issubset(inventory), "Actual descendant lifetime cases are missing")
+                   "Catalogue suite did not complete its exact source-owned discovered inventory")
     for key in ("failures", "errors", "expected_failures", "unexpected_successes"):
         engine.require(record.get(key) == [], "Nonpassing catalogue suite: " + key)
     allowed = WINDOWS_SKIPS if platform == "windows" else {}

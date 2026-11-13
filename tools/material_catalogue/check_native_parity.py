@@ -297,7 +297,7 @@ def check(root: Path = ROOT, *, source: Path | None = None, candidate: Path | No
               "coverage_records": len(original["interactions"]["coverage"]),
               "tuning_passes": len(original["interactions"]["tuning_passes"])}
     return {"schema_id": "cybersand.material-catalogue.native-parity", "schema_version": 1,
-            "status": "PASS", "scope": "353-A shadow metadata; no production cutover",
+            "status": "PASS", "scope": "Native parity for shadow metadata and authenticated constant consumers; no World execution",
             "source_commit": compatibility.BASELINE, "protected_sources": protected,
             "source_locks": lock["source_locks"], "tool_sources": tool_sources, "inputs": inputs,
             "compiler_version": version, "commands": commands,
@@ -307,7 +307,7 @@ def check(root: Path = ROOT, *, source: Path | None = None, candidate: Path | No
             "measured_tool_costs": measurements,
             "cost_qualification": "One local standalone metadata compile/probe run; not a simulation or performance benchmark. Timings vary by host and load.",
             "world_executed": False, "physics_qualification": False, "godot_executed": False,
-            "production_cutover": False}
+            "production_cutover": protected["production_cutover"]}
 
 
 def _report_output(path: Path, root: Path, *, source: Path | None = None,
@@ -339,6 +339,7 @@ def _report_output(path: Path, root: Path, *, source: Path | None = None,
                 Path("tools/material_catalogue/compatibility.py"),
                 Path("tools/material_catalogue/compiler.py"),
                 *map(Path, compatibility.SOURCE_ROLES),
+                *map(Path, compatibility.NATIVE_CAPABILITY_INPUTS),
             ))
             protected.update((repository / CANDIDATE).with_name(name).resolve() for name in (
                 "catalogue_shadow.gd", "inspection.json", "manifest.json"))

@@ -1,8 +1,8 @@
 {
   "schema": "materials-lab-runtime-publish-request-v1",
-  "family": "materials-lab-v1",
-  "variant": "native-inspection-isolated-authoring",
-  "scope": "source-matched-linux-windows-native-and-graphical-lab",
+  "family": "materials-native-capabilities-v1",
+  "variant": "unchanged-hard-granular-consumer",
+  "scope": "source-matched-linux-windows-capabilities-and-graphical-lab",
   "intent": "publish-source-matched-runtimes",
-  "request_sequence": 10
+  "request_sequence": 2
 }

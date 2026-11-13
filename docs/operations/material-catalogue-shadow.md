@@ -10,6 +10,17 @@ related-documents: [../architecture/material-authoring-catalogue-plan.md, ../sys
 
 # Material catalogue shadow compiler and compatibility guards
 
+**Separate native capability candidate — [Draft #563](https://github.com/techrote/cybersand/pull/563):**
+the [bounded native cutover](../audits/2026-11-11-material-native-capability-cutover.md)
+generates only the hard/granular capability maps used by `MaterialRules`.
+It preserves every existing result, both digest-bearing headers, policy/save
+identity and the frozen lock. `native_capabilities.py --check` verifies its
+separate native output; the code-pinned generated route authenticates the
+canonical source, validator, generator and header at the reviewed source commit.
+The original shadow output directory remains unconsumed. Descriptor/reaction
+authority and the independent #384 display-name migration are unchanged.
+The candidate still requires its own runtime publication and platform gates.
+
 **11 November review candidate:** the [Materials Lab v1](materials-lab-authoring.md)
 adds an actual desktop authoring consumer of this compiler. It validates and
 round-trips presets, compiles generated candidates into an external native probe,
