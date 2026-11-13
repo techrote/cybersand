@@ -219,8 +219,8 @@ def measure(html: Path, expected_sha256: str) -> dict:
         'cross_request_near_pairs': near,
         'near_duplicate_clusters': repeated,
         'distinct_near_stimulus_clusters': len(groups),
-        'original_request_count_unchanged': 36,
-        'native_admitted_request_count_unchanged': len(keys),
+        'admitted_display_cards': len(keys),
+        'original_request_denominator_not_established_by_stimulus': True,
         'interpretation': 'Pixel morphology similarity is not blind human theme recognition, aesthetics, model semantic correctness or distinct structural templates',
         'per_card_blind_metrics': per_card,
     }
