@@ -1,0 +1,48 @@
+{
+  "experiment": "WB-ART-SLM-001",
+  "verified_on": "2026-11-13",
+  "type": "independent-archived-raw-program-compiler-audit",
+  "scope": "Archived raw completions independently parsed, original development and keyword request order/identities reproduced, exact pinned compiler re-executed at recorded seed and 96x96, semantic flags recomputed. No new LLM inference, no native World, no Windows, no human recognition. Pre-existing EOS end-token positions are not in these records.",
+  "sources": {
+    "artifact_bundle_sha256": "d2f8b16f081b7c371afd2eadf1468bc6941cb2a7a83ee349a11d667257f9cfa9",
+    "corpus_bundle_sha256": "2d2de250731eeea825339e89f752ab8ebc65f3a929daa2c692120d985566948a",
+    "compiler_sha256": "a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb",
+    "development_predictions_sha256": "485bac2bebfbde7712f52726da55a64df8ed3e122452e8260aafa388424c3498",
+    "keyword_predictions_sha256": "72f3d9449b8a4642c2791fad31294ff188bc770e30fd6b833fbbe690b90399ea",
+    "development_corpus_sha256": "e8d9f0c1ab39eb28d760fac5fdc42cbbd770dc5505954d15050d214ffd062267"
+  },
+  "cohorts": {
+    "fixed_development": {
+      "requests": 24,
+      "source_id_matches": 24,
+      "raw_json_valid": 22,
+      "compiler_valid": 22,
+      "declared_first_pass_accepted": 22,
+      "theme_correct": 22,
+      "primary_motif_correct": 22,
+      "ordered_motif_layout_correct": 19,
+      "exact_reference_program": 13,
+      "metric_and_raw_mismatches": 0,
+      "missing_saved_terminal_eos_flag": 24
+    },
+    "twelve_exact_words": {
+      "requests": 12,
+      "source_id_matches": 12,
+      "raw_json_valid": 12,
+      "compiler_valid": 12,
+      "declared_first_pass_accepted": 12,
+      "theme_correct": 11,
+      "primary_motif_correct": 11,
+      "ordered_motif_layout_correct": 11,
+      "exact_reference_program": 8,
+      "metric_and_raw_mismatches": 0,
+      "missing_saved_terminal_eos_flag": 12
+    }
+  },
+  "historical_failures_retained": [
+    "2 malformed coral development JSON decimals",
+    "veins keyword selects orthogonal instead of network",
+    "ribs keyword labels correct geometry as ruins"
+  ],
+  "policy": "Do not mark old records newly verified by the fresh terminal-EOS guard, do not repair invalid replies, and do not credit native replay or model quality from offline consistency alone."
+}
