@@ -387,6 +387,10 @@ def main():
         encode_corpus(tokenizer, dev_rows, system, args.max_length)
         packages = {p: importlib.metadata.version(p) for p in ["torch", "transformers", "peft", "accelerate", "numpy", "safetensors"]}
         config = vars(args).copy()
+        # New sampler experiments pin both the replay schedule and trainer code.
+        # Historical shuffled-v1 checkpoints predate these explicit fields.
+        config["sampler_sha256"] = sha256_file(Path(__file__).with_name("curriculum.py")) if args.curriculum != "shuffled-v1" else None
+        config["trainer_sha256"] = sha256_file(__file__) if args.curriculum != "shuffled-v1" else None
         model_files = {str(p.relative_to(args.model)): sha256_file(p) for p in sorted(Path(args.model).rglob("*")) if p.is_file() and p.suffix in (".safetensors", ".json", ".jinja", ".py") and ".cache" not in p.parts and p.name != "download_receipt.json"}
         download_receipt_path = Path(args.model) / "download_receipt.json"
         if not download_receipt_path.is_file():
@@ -439,7 +443,7 @@ def main():
         step, cursor, history = 0, 0, []
         if args.resume:
             state = torch.load(Path(args.resume) / "training_state.pt", map_location="cpu", weights_only=False)
-            for key in ["model_id", "revision", "train_sha256", "dev_sha256", "admission_sha256", "system_sha256", "chat_template_sha256", "model_files", "compiler_sha256", "rank", "alpha", "dropout", "learning_rate", "accumulation", "seed", "packages", "dtype", "resolved_device", "cuda_devices", "threads", "gradient_checkpointing", "deterministic_algorithms", "tf32", "curriculum"]:
+            for key in ["model_id", "revision", "train_sha256", "dev_sha256", "admission_sha256", "system_sha256", "chat_template_sha256", "model_files", "compiler_sha256", "rank", "alpha", "dropout", "learning_rate", "accumulation", "seed", "packages", "dtype", "resolved_device", "cuda_devices", "threads", "gradient_checkpointing", "deterministic_algorithms", "tf32", "curriculum", "sampler_sha256", "trainer_sha256"]:
                 # Historical shuffled-v1 receipts predate the explicit field.
                 previous = state["config"].get(key, "shuffled-v1" if key == "curriculum" else None)
                 if config[key] != previous:
