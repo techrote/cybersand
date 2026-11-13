@@ -122,7 +122,9 @@ jobs:
               with archive.open(INNER) as stream:
                   inner_sha256 = hashlib.file_digest(stream, 'sha256').hexdigest()
               sidecar = archive.read(INNER + '.sha256')
-              assert sidecar == (inner_sha256 + '  ' + INNER + '\n').encode('ascii')
+              expected_sidecar = (inner_sha256 + '  ' + INNER).encode('ascii')
+              assert sidecar in (expected_sidecar + b'\n', expected_sidecar + b'\r\n')
+              sidecar_newline = 'CRLF' if sidecar.endswith(b'\r\n') else 'LF'
               inner_size = archive.getinfo(INNER).file_size
 
           parts = []
@@ -148,7 +150,8 @@ jobs:
                     'source_tree': SOURCE_TREE, 'publication_commit': PUBLICATION,
                     'original_outer_size': OUTER_SIZE, 'original_outer_sha256': OUTER_SHA256,
                     'inner_name': INNER, 'inner_size': inner_size, 'inner_sha256': inner_sha256,
-                    'sidecar_sha256': hashlib.sha256(sidecar).hexdigest(), 'parts': parts,
+                    'sidecar_sha256': hashlib.sha256(sidecar).hexdigest(),
+                    'sidecar_newline': sidecar_newline, 'parts': parts,
                     'transport_commit': os.environ['GITHUB_SHA'],
                     'transport_run_id': os.environ['GITHUB_RUN_ID'],
                     'transport_attempt': os.environ['GITHUB_RUN_ATTEMPT']}
