@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import signal
 import shutil
 from pathlib import Path
 import tempfile
@@ -38,10 +39,12 @@ if a.mode in ('orphan-descendant', 'stop-descendant'):
     # fake trainer exits or receives Stop. Its delayed write detects leakage.
     ready = root/'descendant_ready'
     late = root/'descendant_late_write'
+    # Soft Stop is at wall 4 - save margin 2 seconds. A 1.3s write
+    # could PRECEDE Stop; postpone the soft-stop fixture write beyond it.
     child_code = ("import pathlib,signal,sys,time; "
                   "signal.signal(signal.SIGTERM, signal.SIG_IGN); "
                   "pathlib.Path(sys.argv[1]).write_text('ready'); "
-                  "time.sleep(1.3); "
+                  f"time.sleep({3.0 if a.mode == 'stop-descendant' else 1.3}); "
                   "pathlib.Path(sys.argv[2]).write_text('late')")
     subprocess.Popen([sys.executable, '-c', child_code, str(ready), str(late)],
                      stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
@@ -164,6 +167,30 @@ class JobGuardTests(unittest.TestCase):
         time.sleep(1.5)
         self.assertFalse((self.parent/'candidate-one'/'descendant_late_write').exists(),
                          'Orphan from interrupted trainer wrote after lease became terminal')
+
+    @unittest.skipIf(os.name == 'nt', 'POSIX process groups, not Windows trees')
+    def test_soft_stop_negative_control_exposes_unfenced_descendant(self):
+        # A deliberately defective supervisor that DOES NOT fence its process
+        # group must allow the post-Stop marker to appear. This validates the
+        # repaired timing fixture instead of only testing a passing control.
+        args, cmd = self.setup_run(mode='stop-descendant', wall=4, margin=2)
+        pgid = None
+        try:
+            with mock.patch('job_guard.fence_owned_process_group', lambda proc: None):
+                result = run(args, cmd)
+            lease = json.loads((self.parent / LEASE_NAME).read_text())
+            pgid = lease['child_pid']
+            self.assertEqual(result['status'], 'stopped_early')
+            self.assertTrue((self.parent / 'candidate-one' / 'descendant_ready').exists())
+            time.sleep(1.5)
+            self.assertTrue((self.parent / 'candidate-one' / 'descendant_late_write').exists(),
+                            'Negative control must observe the survivor when group fencing is disabled')
+        finally:
+            if pgid is not None:
+                try:
+                    os.killpg(pgid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
 
     def test_existing_direct_trainer_lock_blocks_supervisor(self):
         args,cmd=self.setup_run()
