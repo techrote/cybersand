@@ -373,3 +373,31 @@ drift. **Exact-source execution of the expanded 29-method suite is still
 pending.** Source publication and test definitions alone do not establish
 PASS. No new optimizer step, fresh neural prediction, native replay, GPU or
 Windows acceptance was performed for this hardening.
+
+
+## POSIX process-lifetime fencing for Training — 13 November 2026
+
+The supervised optimizer/evaluator starts its worker in a new POSIX session,
+but the original supervisor only watched its immediate child PID. A completed
+child or a parent that exits promptly on SIGTERM does **not** prove that another
+same-session process has terminated. A signal-resistant descendant could
+otherwise perform a late write after `guard_result.json` and the shared lease
+reported a terminal job, allowing the next candidate to begin.
+
+The supervisor now sends POSIX process-group signals without short-circuiting
+on `Popen.poll()`, and performs a final bounded TERM-to-KILL sweep against its
+**owned** process group before writing terminal status and releasing the lease.
+This applies after success, graceful Stop, hard deadline or a worker exception.
+No material/physics/native Art behavior or model defaults change. A process
+that deliberately creates a *different* session and Windows descendant
+process trees are **not** covered by this qualification; those require
+separate platform-specific ownership and testing.
+
+`test_job_guard.py` adds two Linux-only synthetic subprocess regressions:
+a normal parent exit with a SIGTERM-resistant descendant and a soft Stop where
+the child survives its parent. Both wait beyond the descendant's delayed-write
+deadline and refuse any late output. The focused behavioral-equivalent Linux
+process-group probe passed both cases; **the new exact-source regression suite
+has not yet run on this branch**. Training now defines 17 synthetic test methods
+and Evaluation 14 (31 combined). Do not label those 31 methods PASS solely from
+publication. The pinned step-400 adapter and all raw model metrics are unchanged.

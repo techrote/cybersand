@@ -153,9 +153,9 @@ def trainer_lock(output: Path):
 
 
 def notify_child(proc: subprocess.Popen, force: bool) -> None:
-    if proc.poll() is not None:
-        return
     if os.name == "nt":
+        if proc.poll() is not None:
+            return
         if force:
             proc.kill()
         else:
@@ -164,10 +164,34 @@ def notify_child(proc: subprocess.Popen, force: bool) -> None:
             except OSError:
                 proc.terminate()
     else:
+        # A finished direct child can still have live descendants in its
+        # dedicated session. Do not use poll() to skip the group signal.
         try:
             os.killpg(proc.pid, signal.SIGKILL if force else signal.SIGTERM)
         except ProcessLookupError:
             pass
+
+
+def fence_owned_process_group(proc: subprocess.Popen) -> None:
+    """Revoke surviving POSIX descendants before releasing the durable lease.
+
+    Popen.poll()/wait() only cover the direct child, not another process in its
+    newly created session. In particular, a parent may exit on SIGTERM while a
+    descendant ignores it and continues changing files after a reported Stop.
+    This is a final, bounded TERM-to-KILL sweep even if the parent has exited.
+    Windows descendant-tree cleanup is *not* established by this POSIX guard.
+    """
+    if os.name == "nt":
+        return
+    try:
+        os.killpg(proc.pid, signal.SIGTERM)
+    except ProcessLookupError:
+        pass
+    time.sleep(0.15)
+    try:
+        os.killpg(proc.pid, signal.SIGKILL)
+    except ProcessLookupError:
+        pass
 
 
 def validated_checkpoint(output: Path) -> str | None:
@@ -279,6 +303,13 @@ def run(args, worker_args: list[str]) -> dict:
                 notify_child(proc, force=True)
                 proc.wait(timeout=3)
             return_code = proc.returncode if proc is not None else None
+        finally:
+            # Do not mark a job terminal (and permit another run) while a
+            # same-session descendant can still outlive its direct parent.
+            # This fence also runs after a clean parent exit or interrupted
+            # supervisor, not only after a whole-process timeout.
+            if proc is not None:
+                fence_owned_process_group(proc)
         if is_evaluation:
             from evaluation_guard import verified_evaluation
             evidence = verified_evaluation(output, worker_args)
