@@ -95,8 +95,9 @@ def profile(name, require_supported=False):
     selected = profiles[name]
     if not COMMIT.fullmatch(selected.get("revision", "")) or selected.get("subfolder") != "":
         raise ValueError("model requires an exact official root checkpoint")
-    if require_supported and (name != "smol" or selected["loader"] != "AutoModelForCausalLM"):
-        raise ValueError(f"{name}: model-worker preflight required; no generic loader fallback")
+    if require_supported:
+        from lane_adapters import validate_profile
+        validate_profile(name, selected)
     return selected
 
 
@@ -229,10 +230,12 @@ def strict_completion(tokenizer, generated_ids, validator=None):
     eos = tokenizer.eos_token_id
     terminated = bool(tokens) and tokens[-1] == eos and eos not in tokens[:-1]
     content = tokens[:-1] if terminated else tokens
-    text = tokenizer.decode(content, skip_special_tokens=False)
-    result = {"raw_text": text, "token_ids": tokens, "eos_terminated": terminated,
+    result = {"raw_text": "", "token_ids": tokens, "text_decoded": False, "eos_terminated": terminated,
               "json_valid": False, "program_valid": False, "first_pass_accepted": False}
     try:
+        text = tokenizer.decode(content, skip_special_tokens=False)
+        result["raw_text"] = text
+        result["text_decoded"] = True
         value = strict_json(text)
         result["json_valid"] = True
         if validator is not None:

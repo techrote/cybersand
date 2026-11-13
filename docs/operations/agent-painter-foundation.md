@@ -161,12 +161,17 @@ Actions copies retain 90 days. Never overwrite a frozen checkpoint or release.
 | Lane | Consume now | Implement or qualify in its independent Draft PR |
 | --- | --- | --- |
 | SmolLM2-135M-Instruct | Exact pin `12fd25f77366fa6b3b4b768ec3050bf629380bac`, admitted TRAIN, CPU optimizer/resume/inference implementation | Useful bounded training, frozen raw DEVELOPMENT baseline/candidate comparison, native replay of original model output |
-| void.1 | Exact pin `9c2be5087772867d45961abd11f6b35110617563`, shared semantic samples/compiler/native contracts | Review custom 259-symbol byte tokenizer/code/license, explicit non-chat framing, 2048-byte-style budget, EOS and LoRA/CPU step; no truncation or invented chat template |
-| Sprocket-500M root Instruct | Exact pin `eb157d4ddddc4619e661d4a2426bb2dd000fc668`, same shared inputs | Qualify root Instruct framing/EOS, LoRA module targets, real CPU preflight/resume; `chat/` is a different checkpoint |
-| LFM2.5-VL-450M | Exact official pin `fc6221ca597f3315e4f82fc2df606783267b34ba`, same semantic contracts | Review license/processor, correct `Lfm2VlForConditionalGeneration` loader, language-only LoRA and frozen vision encoder, actual text-only CPU optimizer/resume; later image conditioning is separate |
+| void.1 | Exact pin `9c2be5087772867d45961abd11f6b35110617563`, reviewed strict byte tokenizer, explicit non-chat framing/EOS258, Qwen3 projection whitelist and model-specific hosted receipts | Useful bounded byte-model training and first-pass native evaluation; retain the 2048-token budget without truncation |
+| Sprocket-500M root Instruct | Exact pin `eb157d4ddddc4619e661d4a2426bb2dd000fc668`, root Jinja/EOS5, 182-module whitelist and model-specific hosted receipts | Useful bounded Instruct training and native evaluation; `chat/` remains a different checkpoint |
+| LFM2.5-VL-450M | Exact official pin `fc6221ca597f3315e4f82fc2df606783267b34ba`, reviewed license/official processor, actual multimodal class, 92 exact language-side LoRA paths and hosted receipts | Text-only Art training with frozen vision encoder/connector; later image conditioning is separate |
 
-Profiles for the latter three lanes are deliberately preflight-required. The
-Smol loader refuses them instead of substituting a superficially similar model.
+Each profile now has a distinct reviewed loader and framing contract. Their
+source-pinned two-update/checkpoint/fresh-VM proofs use
+[agent-painter-profiles.yml](../../.github/workflows/agent-painter-profiles.yml)
+and retain the native corpus identity from qualified source
+`633920373a3d406a2ede61ce4137c324f76be23b` separately from newer trainer source.
+Code presence does not establish a passed preflight: issue #568 records the
+executed run, model receipt, checkpoint comparison and remaining blockers.
 The full proposed 60-request/five-formulation candidate benchmark is future
 evaluation work; this pilot freezes teachers and structural partitions before
 candidate training, without falsely labeling 24 teacher images as 60 model trials.
@@ -178,6 +183,10 @@ or parent exit. The donor's Windows process attachment race is not imported;
 Windows inference spawning fails before starting a process. This does not
 change the native application's existing Windows Stop or provider behavior.
 
-No schedules, full-scale four-model training, optional 2B judge/authority
-experiments, Codespaces benchmarking, default-provider change or merge is part
-of this foundation qualification.
+The 2026-11-13 owner follow-up separately authorizes four model schedules plus
+shepherd and reviewer. Smol starts from its qualified source; the other model
+schedules are enabled only after actual hosted preflight. One worker may manage
+two independent Actions VMs, one model process per VM, with unique experiment
+leases. The owner did not request two models sharing one runner. Full-scale
+training, optional 2B judge/authority experiments, Codespaces benchmarking,
+default-provider change and merge remain outside the bounded preflight.

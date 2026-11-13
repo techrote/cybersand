@@ -12,7 +12,7 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Agent-painter shared foundation — 2026-11-13
 
-The [opt-in three-family foundation](../operations/agent-painter-foundation.md) starts from accepted merged #564/#565 main. It adds new semantic teachers, native admission and a bounded hosted Smol optimizer/resume proof; actual run/source receipts live in issue #568. Full model training, Codespaces benchmarking and default promotion remain separate. Historical #567, physics and native Art authority are unchanged; keep the new PR Draft/HOLD.
+The [opt-in three-family foundation](../operations/agent-painter-foundation.md) starts from accepted merged #564/#565 main. It adds new semantic teachers, native admission and bounded hosted optimizer/resume machinery, including distinct VOID, root Sprocket and actual LFM2.5-VL adapters alongside the qualified Smol proof; actual run/source receipts live in issue #568. The owner has authorized four model workers after applicable preflight plus shepherd/reviewer, with up to two separate Actions VMs per worker. Full model training, Codespaces benchmarking and default promotion remain separate. Historical #567, physics and native Art authority are unchanged; keep the new PR Draft/HOLD.
 
 ## Materials Lab v1 — 2026-11-11
 

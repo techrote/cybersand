@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One raw Smol proposal, strict EOS/JSON, host-owned compilation; no native writes."""
+"""One raw model proposal, strict EOS/JSON, host-owned compilation; no native writes."""
 from __future__ import annotations
 
 import argparse
@@ -10,6 +10,7 @@ from common import (ROOT, canonical, compiler_module, profile, sha256_file, stri
                     strict_json, verify_checkpoint, write_json)
 from train import load_base
 from numerics import configure_cpu
+from lane_adapters import adapter_identity, encode_prompt
 
 
 def main():
@@ -37,6 +38,8 @@ def main():
     compiler_path = ROOT / "compiler.py"
     if config["compiler_sha256"] != sha256_file(compiler_path) or config["model"] != selected:
         raise ValueError("adapter/compiler/model identity mismatch")
+    if config.get("adapter_contract") != adapter_identity(selected):
+        raise ValueError("model adapter/framing implementation differs from checkpoint")
     numerics, numerical_runtime = configure_cpu(args.threads)
     if config.get("numerics") != numerics:
         raise ValueError("inference numerical recipe differs from checkpoint")
@@ -46,9 +49,7 @@ def main():
     base, tokenizer = load_base(args.model, selected)
     model = PeftModel.from_pretrained(base, args.checkpoint / "adapter", is_trainable=False, local_files_only=True)
     model.eval()
-    messages = [{"role": "system", "content": config["system"]}, {"role": "user", "content": args.prompt}]
-    prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-    ids = tokenizer.encode(prompt, add_special_tokens=False)
+    ids = encode_prompt(tokenizer, args.prompt, config["system"], selected)
     if len(ids) + args.max_new_tokens > selected["max_sequence_tokens"]:
         raise ValueError("prompt plus generation budget exceeds lane context; no truncation")
     inputs = torch.tensor([ids], dtype=torch.long)

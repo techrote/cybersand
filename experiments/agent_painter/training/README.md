@@ -19,14 +19,17 @@ Only executed workflow artifacts establish that the proof passed.
   TRAIN file hash, original native PNG/readback/receipt hashes, exact recompilation,
   actual native receipt binding and independent stored-cell structural checks.
   It does not read `final.jsonl` or any FINAL target/evidence file.
-- `model_profiles.json`: exact upstream revisions for all four future lanes.
-  `smol` has an implemented loader. `void`, root `sprocket`, and `lfm25_vl`
-  deliberately refuse execution until their own worker adds and qualifies the
-  model-specific loader/tokenizer/LoRA preflight. There is no generic fallback,
+- `model_profiles.json`: exact upstream revisions for all four lanes.
+  `lane_adapters.py` permits only the reviewed loader/framing implementation for
+  each model. The three new profiles must exactly match their lane-owned
+  `profile.json`; implementation/framing hashes bind checkpoint continuation.
+  Only executed hosted receipts establish qualification. There is no generic fallback,
   assumed chat template, `chat/` substitution or implicit remote-code execution.
 - `requirements.lock`: the exact successful #567 CPU stack, carried unchanged.
   Every Actions VM creates its own environment, installs CPU PyTorch and the
   pinned package set, executes `pip check`, and records `pip freeze`.
+  LFM additionally installs CPU `torchvision==0.29.2+cpu` and `Pillow==13.0.0`
+  from `requirements-lfm25_vl.lock`, preserving the actual official processor.
 - `download_model.py`: public, ungated full-revision root download, safetensors
   only, upstream license/architecture checks and exact expected weight/config/
   tokenizer hashes. Hugging Face receives no credential; remote code is disabled.
@@ -48,8 +51,9 @@ it after native admission succeeds; ordinary PR updates do not train.
 | `source-sha` | Exact 40-character source commit checked out and verified |
 | `corpus-artifact` | Artifact containing `corpus/admitted-corpus.json` |
 | `output-artifact` | Unique experiment output name; also separates job concurrency |
-| `profile` | `smol` by default; other lane IDs fail closed until their branch implements model-specific preflight |
+| `profile` | `smol`, `void`, `sprocket`, or `lfm25_vl`; exact reviewed loader/framing and projection whitelist required |
 | `steps` | Total global optimizer target, including resumed steps; foundation wrapper accepts 1–16 |
+| `inference-proof` | Optional one raw 128-token first pass after training; preserves invalid outputs and makes no quality claim |
 | `resume-artifact` | Optional previous training artifact; never modify it |
 | `resume-checkpoint` | Directory such as `checkpoint-000001` inside that artifact |
 | `corpus-run-id` | Native-corpus artifact source run; defaults to the current run for reusable calls |
@@ -71,6 +75,27 @@ SIGTERM/SIGKILL cleanup. Artifact names distinguish independent experiments;
 one failed lane cannot cancel another. Uploads run after failures as well as
 success. Actions artifacts are retained for 90 days; the qualification workflow
 publishes the proof's immutable research assets separately.
+
+The model-specific preflight entry point is
+`.github/workflows/agent-painter-profiles.yml`. An explicit change to
+`../preflight-request.json` on the foundation branch (or manual dispatch) starts
+only the requested two-update proofs, independently per model. Each invokes the
+same training workflow on a fresh VM, then a second VM restores checkpoint1 and
+performs update2. A separate evidence job compares complete states and publishes
+immutable model-specific prereleases. Failures retain artifacts and do not cancel
+peer models. The qualified native corpus remains from
+`633920373a3d406a2ede61ce4137c324f76be23b`, run `43506373969`; trainer source is
+recorded separately. These model-only preflights do not claim a native rebuild.
+Artifacts bind the workflow attempt as well as its run. Retry an entire preflight
+with **re-run all jobs** or a new explicit request; re-running only a failed
+continuation cannot reuse an earlier attempt's fresh artifact under a new name.
+
+The owner's 2026-11-13 clarification authorizes one scheduled model worker to
+orchestrate up to **two independent Actions runner VMs** for justified experiments,
+with one model process per VM and unique experiment leases/artifacts. It does not
+request simultaneous models on one VM or same-runner thread-count sweeps. Reuse
+this workflow rather than cloning environment setup and custody logic. A cadence
+tick is not itself a reason to start another training job.
 
 To reproduce the scripts in an already prepared runner environment:
 
@@ -172,12 +197,12 @@ acknowledgements, Undo/Redo and persistence authority.
 
 ## Future model worker handoff
 
-| Lane | Implement/qualify next |
+| Lane | Implemented shared preflight; next model work |
 | --- | --- |
-| VOID | Review the pinned ByteTokenizer code and byte framing, verify 2,048-byte/token budget and EOS, then qualify actual LoRA targets, CPU updates and full-state resume |
+| VOID | Reviewed strict 259-symbol byte tokenizer, explicit `cybersand-void-task-v1` framing, EOS258 and native Qwen3; improve training/visual quality after consuming hosted receipts |
 | SMOL | Consume the proven loader/native TRAIN contract; create its independent Draft PR, improve new three-family data, train a bounded candidate and preserve first-pass DEVELOPMENT outputs |
-| SPROCKET | Consume **root Instruct** at the pinned revision; qualify its actual framing/EOS and module whitelist before enabling its profile; `chat/` remains a different checkpoint |
-| LFM2.5-VL | Review its pinned `lfm1.0` license and official processor, qualify the actual multimodal loader with frozen vision encoder and explicit language-side LoRA; text-only Art comes first |
+| SPROCKET | Exact **root Instruct** Jinja, EOS5 and 182 language projection modules; improve bounded candidates and raw native evaluation; `chat/` remains separate |
+| LFM2.5-VL | Actual `Lfm2VlForConditionalGeneration` and official processor, EOS7, 92 exact language projection paths with frozen vision/connector; text-only Art first, image conditioning later |
 
 New model workers own model-specific code and independent run names. Shared schema,
 compiler, split/admission and receipt changes require an intentional shared
@@ -186,5 +211,8 @@ must use copies and separate output paths. This foundation implements exact full
 optimizer-state resume; the later fresh-versus-warm-weight comparison must reset
 both optimizers as specified in issue #568 and remain separately labeled.
 
-LFM3 shadow judging, d1 authority A/B, full model campaigns, Codespaces performance
-sweeps and schedules remain outside this foundation proof.
+The owner has separately authorized four model schedules, a shepherd and reviewer
+in issue #568. Smol consumes its already qualified source; other workers begin
+only after their hosted preflight passes. LFM3 shadow judging, d1 authority A/B,
+full model campaigns and Codespaces performance sweeps remain outside these
+bounded infrastructure proofs.

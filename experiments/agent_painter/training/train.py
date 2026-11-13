@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Bounded genuine CPU LoRA optimization on newly native-admitted TRAIN rows.
 
-The initial proof supports SmolLM2-135M-Instruct only. Other frozen lane profiles
-are explicit preflight handoffs; this code never substitutes a generic loader.
+Each reviewed lane owns its loader, framing and trainable-module boundary;
+this code never substitutes a generic loader for an unsupported model.
 Checkpoint mechanics adapt frozen PR #567 and NeuroRunner TRAIN-001; inputs and
 outputs have new identities and never alter the historical model or data.
 """
@@ -22,6 +22,7 @@ import time
 from common import (ROOT, canonical, digest_json, encode_row, load_training_corpus,
                     profile, read_json, sha256_file, verify_checkpoint, verify_file, write_json)
 from numerics import configure_cpu
+from lane_adapters import adapter_for, adapter_identity
 
 STOP = False
 SYSTEM = "Return only one valid CyberSand painter program JSON object. Follow the requested structure. Do not set host seeds, material permissions or focus."
@@ -81,9 +82,12 @@ def verify_model(directory, selected):
 
 
 def load_base(directory, selected):
+    verify_model(directory, selected)
+    adapter = adapter_for(selected)
+    if adapter:
+        return adapter.load_base(directory, selected)
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
-    verify_model(directory, selected)
     tokenizer = AutoTokenizer.from_pretrained(directory, local_files_only=True, trust_remote_code=False)
     if not tokenizer.chat_template or type(tokenizer.eos_token_id) is not int:
         raise ValueError("Smol lane requires its upstream chat template and actual EOS")
@@ -172,9 +176,11 @@ def train(args):
     write_json(args.output / "lease.json", {"pid": os.getpid(), "source_sha": source_sha(), "started_unix": time.time(), "profile": args.profile})
     started = time.monotonic()
     base, tokenizer = load_base(args.model, selected)
-    encoded = [encode_row(tokenizer, row, SYSTEM, args.max_length) for row in rows]
+    adapter = adapter_for(selected)
+    encoder = adapter.encode_row if adapter else encode_row
+    encoded = [encoder(tokenizer, row, SYSTEM, args.max_length) for row in rows]
     order = sampler(rows, args.seed)
-    packages = {name: importlib.metadata.version(name) for name in PACKAGES}
+    packages = {name: importlib.metadata.version(name) for name in (*PACKAGES, *selected.get("additional_packages", []))}
     config = {"schema_version": 1, "profile": args.profile, "model": selected,
               "model_files": read_json(args.model / "download_receipt.json")["files"],
               "source_sha": source_sha(), "native_source_sha": admission["source_sha"],
@@ -187,7 +193,8 @@ def train(args):
               "threads": args.threads, "seed": args.seed, "max_length": args.max_length,
               "rank": 8, "alpha": 16, "dropout": 0.05, "learning_rate": 0.0005,
               "system": SYSTEM, "system_sha256": digest_json(SYSTEM),
-              "chat_template_sha256": digest_json(tokenizer.chat_template),
+              "chat_template_sha256": digest_json(getattr(tokenizer, "chat_template", None)),
+              "adapter_contract": adapter_identity(selected),
               "sample_order": [rows[index]["id"] for index in order],
               "native_execution_by_trainer": False, "final_targets_opened": False}
     state = None
@@ -205,9 +212,14 @@ def train(args):
     else:
         model = get_peft_model(base, LoraConfig(task_type="CAUSAL_LM", r=config["rank"], lora_alpha=config["alpha"],
                                                lora_dropout=config["dropout"], bias="none", target_modules=selected["lora_targets"]))
+    if adapter:
+        # PEFT loading may alter module training flags. Restore the reviewed
+        # language/vision boundary before validating it or taking a state hash.
+        adapter.set_training_mode(model)
     trainable = [parameter for parameter in model.parameters() if parameter.requires_grad]
     if not trainable or any("lora_" not in name for name, parameter in model.named_parameters() if parameter.requires_grad):
         raise ValueError("only declared LoRA parameters may train")
+    model_contract = adapter.validate_trainable(model, selected) if adapter else {"lane": "smol", "only_lora_trainable": True}
     optimizer = torch.optim.AdamW(trainable, lr=config["learning_rate"], betas=(0.9, 0.95), weight_decay=0.01)
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lambda _step: 1.0)
     frozen_before = fingerprint(model, False)
@@ -228,6 +240,7 @@ def train(args):
         resumed = {"from_step": step, "sample_cursor": cursor, "inventory_sha256": sha256_file(args.resume / "inventory.json"),
                    "restored_all_state_exactly": True}
     write_json(args.output / "preflight.json", {"config": config, "train_rows": len(rows),
+               "model_contract": model_contract,
                "numerical_runtime": numerical_runtime,
                "max_sequence_tokens": max(len(item["input_ids"]) for item in encoded),
                "trainable_parameters": sum(p.numel() for p in trainable),
@@ -237,7 +250,8 @@ def train(args):
     training_started = time.monotonic()
     starting_step = step
     last_saved = -1
-    model.train()
+    if not adapter:
+        model.train()
     while step < args.steps and not STOP and time.monotonic() - started < args.max_seconds - 30:
         item = encoded[order[cursor % len(order)]]
         step_start = time.monotonic()
@@ -293,6 +307,7 @@ def train(args):
                "checkpoint_bytes": sum(path.stat().st_size for path in checkpoint.rglob("*") if path.is_file()),
                "checkpoint_inventory_sha256": sha256_file(checkpoint / "inventory.json"),
                "resume": resumed, "config": config, "native_execution": False, "model_quality_claim": False,
+               "model_contract": model_contract,
                "numerical_runtime": numerical_runtime,
                "runner": {"os": platform.platform(), "machine": platform.machine(), "cpu_count": os.cpu_count(),
                           "github_run_id": os.environ.get("GITHUB_RUN_ID"), "github_run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT")}}

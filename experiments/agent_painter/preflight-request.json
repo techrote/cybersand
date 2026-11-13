@@ -1,0 +1,15 @@
+{
+  "schema": "agent-painter-model-preflight-v1",
+  "sequence": 1,
+  "profiles": ["void", "sprocket", "lfm25_vl"],
+  "native_source_sha": "633920373a3d406a2ede61ce4137c324f76be23b",
+  "corpus_run_id": "43506373969",
+  "corpus_artifact": "agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b",
+  "corpus_manifest_sha256": "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc",
+  "optimizer_steps": 2,
+  "resume_from_step": 1,
+  "resume_target_step": 2,
+  "max_inference_tokens": 128,
+  "full_training": false,
+  "publish_research_evidence": true
+}

@@ -204,13 +204,56 @@ class TrainingGuards(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "no truncation"):
             encode_row(TinyTokenizer(), row, "system", 8)
 
-    def test_all_four_pins_are_full_and_unsupported_lanes_fail_closed(self):
+    def test_all_four_pins_require_their_exact_reviewed_adapter(self):
+        from lane_adapters import adapter_identity, validate_profile
         for name in ("smol", "void", "sprocket", "lfm25_vl"):
-            self.assertEqual(len(profile(name)["revision"]), 40)
-            self.assertEqual(profile(name)["subfolder"], "")
-        for name in ("void", "sprocket", "lfm25_vl"):
-            with self.assertRaisesRegex(ValueError, "preflight required"):
-                profile(name, require_supported=True)
+            selected = profile(name, require_supported=True)
+            self.assertEqual(len(selected["revision"]), 40)
+            self.assertEqual(selected["subfolder"], "")
+            self.assertEqual(adapter_identity(selected)["lane"], name)
+            for field, value in (("loader", "arbitrary.Model"), ("trust_remote_code", True),
+                                 ("architecture", "SubstituteModel")):
+                changed = copy.deepcopy(selected)
+                changed[field] = value
+                with self.assertRaises(ValueError):
+                    validate_profile(name, changed)
+        with self.assertRaises(ValueError):
+            profile("../unreviewed", require_supported=True)
+        changed = copy.deepcopy(profile("smol"))
+        changed["required_hashes"]["../payload.py"] = "a" * 64
+        with self.assertRaises(ValueError):
+            validate_profile("smol", changed)
+
+    def test_model_adapter_import_does_not_initialize_torch(self):
+        script = """
+import sys
+from common import profile
+from lane_adapters import adapter_for
+for name in ('smol', 'void', 'sprocket', 'lfm25_vl'):
+    adapter_for(profile(name, require_supported=True))
+assert 'torch' not in sys.modules
+assert 'transformers' not in sys.modules
+assert 'peft' not in sys.modules
+"""
+        result = subprocess.run([sys.executable, "-c", script],
+                                cwd=Path(__file__).resolve().parents[1] / "training",
+                                capture_output=True, text=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_invalid_utf8_retains_tokens_without_replacement_or_crash(self):
+        class ByteDecoder:
+            eos_token_id = 258
+
+            def decode(self, ids, skip_special_tokens=False):
+                return bytes(ids).decode("utf-8", errors="strict")
+
+        ids = [255, 258]
+        result = strict_completion(ByteDecoder(), ids, lambda value: None)
+        self.assertFalse(result["first_pass_accepted"])
+        self.assertFalse(result["text_decoded"])
+        self.assertEqual(result["token_ids"], ids)
+        self.assertEqual(result["raw_text"], "")
+        self.assertIn("decode", result["failure"])
 
     def test_train_loader_never_opens_final_targets(self):
         compiler, row, manifest = self.fixture()

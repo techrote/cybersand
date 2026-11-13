@@ -27,4 +27,6 @@ python3 -m unittest discover -s experiments/agent_painter/tests -p 'test_*.py' -
 Changing `qualification-request.json` explicitly requests a new bounded native
 build, pilot gallery, CPU proof and fresh-runner checkpoint continuation.
 Ordinary PR updates run only the fast contracts. All publication is versioned
-research evidence. Keep this PR **Draft/HOLD**; no schedules or merge.
+research evidence. Keep this PR **Draft/HOLD**; no merge. The owner separately
+authorized model-worker schedules after applicable hosted preflight; see issue
+#568 and the model-specific runner handoff.

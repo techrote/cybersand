@@ -17,6 +17,9 @@ on:
       steps:
         type: number
         default: 2
+      inference-proof:
+        type: boolean
+        default: false
       resume-artifact:
         type: string
         default: ''
@@ -44,7 +47,7 @@ on:
         type: string
         required: true
       profile:
-        description: Model lane; non-Smol lanes refuse until model-specific preflight is implemented
+        description: Exact reviewed model lane; model-specific loader and framing are mandatory
         type: choice
         options: [smol, void, sprocket, lfm25_vl]
         default: smol
@@ -52,6 +55,10 @@ on:
         description: Total global optimizer target (1..16 for this foundation entry point)
         type: number
         default: 2
+      inference-proof:
+        description: Save one bounded raw inference after the real optimizer proof
+        type: boolean
+        default: false
       resume-artifact:
         description: Optional exact checkpoint artifact from resume-run-id or the corpus run
         type: string
@@ -164,14 +171,36 @@ jobs:
           python3 -m venv "$RUNNER_TEMP/painter-training"
           "$RUNNER_TEMP/painter-training/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
           "$RUNNER_TEMP/painter-training/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          if test "$REQUEST_PROFILE" = lfm25_vl; then
+            "$RUNNER_TEMP/painter-training/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torchvision==0.29.2+cpu'
+            "$RUNNER_TEMP/painter-training/bin/python" -m pip install -r experiments/agent_painter/training/requirements-lfm25_vl.lock
+          fi
           "$RUNNER_TEMP/painter-training/bin/python" -m pip check
           "$RUNNER_TEMP/painter-training/bin/python" -m pip freeze --all > evidence/training-environment/pip-freeze.txt
           sha256sum experiments/agent_painter/training/requirements.lock > evidence/training-environment/requirements.sha256
+          if test "$REQUEST_PROFILE" = lfm25_vl; then sha256sum experiments/agent_painter/training/requirements-lfm25_vl.lock >> evidence/training-environment/requirements.sha256; fi
       - name: Download exact public model and validate complete TRAIN custody
         run: |
           set -euo pipefail
           timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/painter-training/bin/python" experiments/agent_painter/training/download_model.py --profile "$REQUEST_PROFILE" --output "$RUNNER_TEMP/painter-model"
           cp "$RUNNER_TEMP/painter-model/download_receipt.json" evidence/training-environment/model-download.json
+      - name: Verify model-specific framing, complete TRAIN budgets and frozen target guards
+        if: inputs.profile != 'smol'
+        run: |
+          set -euo pipefail
+          if test "$REQUEST_PROFILE" = void; then
+            VOID_META_TESTS=1 VOID_TRAIN_CORPUS=evidence/native/corpus \
+              "$RUNNER_TEMP/painter-training/bin/python" -m unittest discover \
+              -s experiments/agent_painter/lanes/void -p 'test_*.py' -v 2>&1 | tee evidence/training-environment/lane-contracts.log
+          elif test "$REQUEST_PROFILE" = sprocket; then
+            "$RUNNER_TEMP/painter-training/bin/python" experiments/agent_painter/lanes/sprocket/test_adapter.py \
+              --model "$RUNNER_TEMP/painter-model" --corpus evidence/native/corpus --meta -v \
+              2>&1 | tee evidence/training-environment/lane-contracts.log
+          elif test "$REQUEST_PROFILE" = lfm25_vl; then
+            LFM25_SNAPSHOT="$RUNNER_TEMP/painter-model" PAINTER_CORPUS=evidence/native/corpus \
+              "$RUNNER_TEMP/painter-training/bin/python" experiments/agent_painter/lanes/lfm25_vl/test_adapter.py \
+              2>&1 | tee evidence/training-environment/lane-contracts.log
+          fi
       - name: Execute real optimizer steps or full-state continuation
         run: |
           set -euo pipefail
@@ -181,6 +210,15 @@ jobs:
             --profile "$REQUEST_PROFILE" --model "$RUNNER_TEMP/painter-model" \
             --corpus evidence/native/corpus --output evidence/training \
             --steps "$REQUEST_STEPS" --max-seconds 1200 --threads 1 --checkpoint-every 1 "${resumed[@]}"
+      - name: Exercise the same model-specific inference framing and strict output handling
+        if: inputs.inference-proof
+        run: |
+          set -euo pipefail
+          checkpoint=$(printf 'checkpoint-%06d' "$REQUEST_STEPS")
+          timeout --signal=TERM --kill-after=30s 300s "$RUNNER_TEMP/painter-training/bin/python" experiments/agent_painter/training/infer.py \
+            --model "$RUNNER_TEMP/painter-model" --checkpoint "evidence/training/$checkpoint" \
+            --prompt 'Draw a bounded greeble panel with an inset and fasteners.' \
+            --output evidence/training/inference --seed 104729 --max-new-tokens 128 --threads 1
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
