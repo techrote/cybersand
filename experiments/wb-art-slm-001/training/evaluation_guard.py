@@ -114,7 +114,7 @@ def evaluation_fingerprint(argv: list[str], worker: Path) -> tuple[str, dict]:
 
 
 
-def raw_record_consistent(record: dict, max_new_tokens: int) -> bool:
+def raw_record_consistent(record: dict, max_new_tokens: int, compiler) -> bool:
     """Independently check saved raw text and EOS/semantic claims, never repair it.
 
     Compiler execution and actual native mutation are still separate gates.
@@ -150,12 +150,25 @@ def raw_record_consistent(record: dict, max_new_tokens: int) -> bool:
     theme_matches = parsed and isinstance(value, dict) and value.get("theme") == record.get("theme")
     if record.get("theme_field_correct", False) != theme_matches:
         return False
+    # A reported compiler pass is not proof: rerun the exact pinned compiler
+    # on unmodified raw JSON and the saved host seed, with no repair path.
+    compiled = None
+    if parsed and type(record.get("seed")) is int:
+        try:
+            compiler.validate_program(value)
+            compiled = compiler.compile_program(value, 96, 96, seed=record["seed"])
+        except (ValueError, TypeError, KeyError, IndexError, OverflowError):
+            pass
+    compiled_ok = compiled is not None
+    if compiled_ok != record["program_valid"]:
+        return False
     valid = record["program_valid"]
     if valid:
         if (not parsed or not isinstance(value, dict)
                 or record.get("program") != value
                 or type(record.get("compiled_operations")) is not int
-                or record["compiled_operations"] <= 0):
+                or record["compiled_operations"] <= 0
+                or record["compiled_operations"] != len(compiled)):
             return False
         try:
             predicted_layers, target_layers = value["layers"], expected["layers"]
@@ -226,7 +239,10 @@ def verified_evaluation(output: Path, argv: list[str]) -> dict | None:
             target = min(target, 12)
         if len(records) != target:
             return None
-        if not all(raw_record_consistent(record, int(str(opts.get("--max-new-tokens", "256")))) for record in records):
+        from infer import load_compiler
+        compiler = load_compiler(Path(str(opts["--compiler"])))
+        if not all(raw_record_consistent(record, int(str(opts.get("--max-new-tokens", "256"))), compiler)
+                   for record in records):
             return None
         for key in ("json_valid", "program_valid", "first_pass_accepted", "theme_field_correct",
                     "primary_motif_correct", "motif_layout_exact", "exact_target"):
