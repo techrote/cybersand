@@ -18,7 +18,7 @@ cells retain nearest-neighbour edges and their existing native state.
 
 This branch is stacked on Integrated Workbench #564 at
 `e63a7d4f7cea90a5900c91a917dbf10dee699aa7`, including its shared manual/agent
-Undo/Redo and Art panel features. Main was inspected at
+Undo/Redo and Art panel features. Main was initially inspected at
 `e0fb05b8e0500641f0f25c62c5fb7e721da02d6a`, where #562 Materials Lab has merged.
 The camera branch does not modify either upstream branch. The
 [dated qualification ledger](../audits/2026-11-13-native-pixel-scrolling.md)
@@ -27,11 +27,17 @@ and remaining gates. Earlier Workbench packages do not contain this camera fix.
 
 ## Open the Windows candidate
 
-Use the **native-pixel-scrolling-windows-desktop** artifact from the qualified
-run identified in the ledger. Extract the complete archive into a new writable
-folder, then double-click **Open Workbench.cmd**. Keep the bundled files
-together. The launcher imports the included project and opens the Workbench
-using its bundled Godot 4.7 and source-built native extension.
+Download the [qualified Windows evaluation archive](https://github.com/techrote/cybersand/actions/runs/43403189531/artifacts/14029270531)
+for application source **`005124c5cd9a`**: 92,938,556 bytes from successful
+run 43403189531. It includes the fractional-camera recording correction.
+Extract the complete archive into a new writable folder, then double-click
+**Open Workbench.cmd**. Keep the bundled files together. The launcher imports
+the included project and opens the Workbench using its bundled Godot 4.7 and
+source-built native extension. The
+[dated ledger](../audits/2026-11-13-native-pixel-scrolling.md#refreshed-windows-installed-qualification-and-evaluation-build)
+records the verified ZIP checksum, full source/installation qualification and
+remaining physical acceptance gates. The earlier `a8f27357` camera archive
+predates this recording correction.
 
 An archive is deliverable only after the workflow has successfully tested the
 same source and the copied Windows installation. A pending workflow or an older
@@ -62,8 +68,9 @@ Workbench artifact is not a qualified camera package.
    to check that Focus X/Y/W/H still matches the inclusive selected cells.
 6. Try **Follow selected** with a moving actor, then return to Free camera.
    Resize the window and repeat slow panning at the Windows display scale you
-   use. Save, close and reopen an authored setup to confirm its contents remain
-   correct. Record the candidate SHA, display scale, window size and any defect.
+   use, and at **125%, 150% and 200%** where practical. Save, close and reopen
+   an authored setup to confirm its contents remain correct. Record the
+   candidate SHA, display scale, window size and any defect.
 
 The existing camera modes, middle-button pan, wheel and **−/+** controls remain.
 Wheel zoom uses the pointer position; the toolbar zoom buttons use the view

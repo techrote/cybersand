@@ -11,18 +11,17 @@ related-documents: [../operations/native-pixel-scrolling.md, ../systems/material
 # Native-resolution pixel scrolling — 13 November 2026
 
 **Draft / HOLD; [PR #566](https://github.com/techrote/cybersand/pull/566).**
-The historical application/test source `a8f2735796b5` passed the complete
-source-camera gate on actual Linux OpenGL and Windows ANGLE, including exact
-display-pixel pans, fractional zoom, fitted edges,
-PAINT, partial Water, glow/vapour and legacy material preservation. Both
-platforms also passed its installed campaign and all 36 authoring regressions.
-That source-matched Windows evaluation archive is published and its downloaded
-ZIP checksum is verified. The [recorder-edge follow-up](#recorder-edge-review-follow-up)
-changes application and test source beyond that baseline; its fresh-source
-Linux headless regressions pass, while refreshed hosted qualification is
-pending. The historical archive does not contain this correction. Owner
-desktop/DPI and hardware-pacing acceptance remain pending; no merge is
-authorized.
+The [recorder-edge correction](#recorder-edge-review-follow-up) is qualified at
+application/test source `005124c5cd9a`: all three jobs in
+[run 43403189531](https://github.com/techrote/cybersand/actions/runs/43403189531)
+pass. Linux OpenGL and Windows ANGLE each pass source and installed camera
+campaigns, installed authoring validation and all 36 accepted regressions.
+The [current Windows evaluation archive](https://github.com/techrote/cybersand/actions/runs/43403189531/artifacts/14029270531)
+is independently downloaded and verified, including source, package contents
+and actual loaded modules. The earlier `a8f2735796b5` campaigns and package
+remain historical evidence below; that archive predates the recorder fix.
+Owner desktop/DPI, representative GPU pacing and resulting-main integration
+acceptance remain pending; no merge is authorized.
 
 ## Source and integration identity
 
@@ -38,6 +37,7 @@ authorized.
 | Production camera source | `7758c34fa4dcc48462d934761f2a84938907ff81`, tree `38e981252433670a14a2ec935556c7ea9f0ce77b`; physical picking bounds and Tower label alignment |
 | Previously qualified application/test source | `a8f2735796b5814c95edba857a0a8fa62250be42`, tree `8307a2155bce8665a082e7e01b0e0390dcf4d1e2`; production camera/shader bytes were identical to the recorded sources |
 | Registration/evidence-only checkpoints through reviewed head | `cfd54aadbeec27846795220542727fa816ab6fac` and `0158e2dfb538fc3de8e1bfda91bcc387341b4c13`; no application, test-fixture, native or packaging changes between the qualified source and that reviewed head |
+| Recorder-edge correction | `005124c5cd9a972d622051876891a28aef42e7f7`, tree `526602161eb6bd6e1cf5baa96b435f2a5e34108d`; refreshed local and hosted source results below |
 | Main/#564 compatibility | Final #562-main + latest #564 + registered camera source passes 3,755 runtime checks; newer #563-main compatibility is separately scoped below |
 
 The source tree is isolated from both upstream branches and preserves #564's
@@ -375,6 +375,10 @@ The installed Windows effects repetition has 10 frames per cohort and medians
 
 ## Source-matched installed delivery
 
+**Historical `a8f2735796b5` delivery.** The current recorder-corrected archive
+is recorded under [refreshed Windows delivery](#refreshed-windows-installed-qualification-and-evaluation-build).
+The original package identity and outcomes below remain unchanged.
+
 Hosted [run 43349229410](https://github.com/techrote/cybersand/actions/runs/43349229410)
 finishes **successfully** at 02:48:47 UTC on 13 November 2026, after starting
 at 02:02:12 UTC (46 minutes 35 seconds). Its pinned Windows cross-build,
@@ -386,9 +390,9 @@ It is 92,934,939 bytes; downloaded ZIP SHA-256:
 `736513f7b290d14c6adeff755913496e620eb066d85c0fd31af223604af80a01`.
 The actual application/test source is `a8f2735796b5814c95edba857a0a8fa62250be42`,
 tree `8307a2155bce8665a082e7e01b0e0390dcf4d1e2`. All 889 selected archive
-source entries and all native build inputs remain identical through the later
-registration/evidence commits; the package retains its actual a8f273 source
-identity. The changed transition registry and audit are outside its application
+source entries and all native build inputs remained identical through the
+registration/evidence checkpoints ending at `0158e2dfb538`; the package retains
+its actual a8f273 source identity. The changed transition registry and audit are outside its application
 archive selection. This is the stacked #564 camera candidate, separately from
 the local current-main compatibility builds below.
 
@@ -724,12 +728,210 @@ published-provenance/LFS differences. Those runtime-identity failures remain
 separate from the passing documentation checks; no retained runtime was
 published by this local qualification.
 
-**Refreshed hosted qualification is pending for this follow-up.** The earlier
-`a8f2735796b5` graphical passes, artifacts and performance observations above
-remain historical evidence for that source. They do not qualify the modified
-application or recorder fixture. The local headless results do not substitute
-for fresh Linux/Windows graphics, installed-source qualification or a new
-source-matched Windows evaluation archive.
+### Hosted source qualification at the corrected application commit
+
+The correction is published as
+`005124c5cd9a972d622051876891a28aef42e7f7`, tree
+`526602161eb6bd6e1cf5baa96b435f2a5e34108d`. Its four executed application/test/
+runner hashes match the local table above. Fresh
+[run 43403189531](https://github.com/techrote/cybersand/actions/runs/43403189531)
+builds the native runtimes and has completed the source camera stages on Linux
+OpenGL3/llvmpipe and Windows ANGLE/Microsoft Basic Render Driver. Each source
+stage passes **all nine invocations**, including import:
+
+| Source case | Linux | Windows |
+| --- | --- | --- |
+| Coordinates and native editing | 1,373 checks, 0 failures | 1,373 checks, 0 failures |
+| Actual recorder and fractional edge cells | 165 checks, 0 failures | 165 checks, 0 failures |
+| Actual framebuffer scrolling | 150 checks, 0 failures | 150 checks, 0 failures |
+| Glow and vapour alignment | 66 checks, 0 failures | 66 checks, 0 failures |
+| Material and partial-Water preservation | Positive completion | Positive completion |
+| Vapour history | 26 assertions | 26 assertions |
+| Crossfade preservation | 1,274 assertions | 1,274 assertions |
+
+Independent extraction verifies all **551 executed project-source hashes**
+against committed `005124c5` blobs on each platform, plus all 18 retained
+framebuffer PNG hashes per platform. The Linux PNG comparison also confirms
+that legacy quarter-cell requests repeat their previous image until a
+four-display-pixel jump, while every corrected quarter-cell step translates
+by exactly one display pixel. The retained realistic 2.5x pair agrees across
+all 191,680 one-pixel-translated overlap pixels; the glow pair agrees across
+19,440 overlap pixels after its expected 12-pixel translation. These are
+comparisons of retained render outputs, not additional application runs.
+
+| Downloaded source evidence | Actual ZIP identity |
+| --- | --- |
+| [Linux source artifact 14026497674](https://github.com/techrote/cybersand/actions/runs/43403189531/artifacts/14026497674) | 1,027,818 bytes; SHA-256 `c5ee484061f6e14f4b7e8d422f5696e7604271abb889890ad7b48824c3b70471` |
+| [Windows source artifact 14027170227](https://github.com/techrote/cybersand/actions/runs/43403189531/artifacts/14027170227) | 930,814 bytes; SHA-256 `6e126813fd567e92ac72a8f4d387d6522a876d1be647e665d93e7dd34c18dfed` |
+
+The fresh Windows native DLL SHA-256 is
+`ae3f9b02aa64efdf68a8f68e8251b058de2c06753ea62ef191ac99ddbd58a9ef`.
+The independently checked source receipts are retained below
+`build/recorder-edge-qualification/hosted/`, including
+`windows-source-independent-verification.json` and
+`linux-review/source-independent-review.json`.
+
+The source-stage timing remains advisory software-renderer evidence:
+
+| Source renderer | Legacy/native frames | Palette median change | Palette p95 change | Guarded effects/control median change |
+| --- | --- | --- | --- | --- |
+| Linux OpenGL3 / llvmpipe LLVM 20.1.2 | 30 / 30 | +3.84% | −0.91% | +0.40%; 13 frames per phase |
+| Windows ANGLE / Microsoft Basic Render Driver | 23 / 24 | −2.65% | −0.38% | +0.28%; 10 frames per phase |
+
+The palette observations stop at their three-second budget, and each effects
+phase at one second. The guarded-effects figure compares the mean of the
+before/after guarded medians with the old-grid control. Those short,
+software-rendered samples do not establish representative GPU throughput,
+physical-display pacing or a statistically significant change.
+
+[Documentation run 43403197887](https://github.com/techrote/cybersand/actions/runs/43403197887)
+passes at the same application commit: 131 documents/255 canonical claims,
+the 27-source compatibility guard, 118 material-catalogue unit tests and M11
+integrity. Retained runtime-provenance steps are Draft-skipped by policy;
+this documentation result is not the separate full runtime/Palette gate.
+
+### Refreshed Linux installed qualification
+
+Linux [job 131810928363](https://github.com/techrote/cybersand/actions/runs/43403189531/job/131810928363)
+completes successfully at `005124c5`. The downloaded
+[`wb-art-paint-linux-43403189531-1`](https://github.com/techrote/cybersand/actions/runs/43403189531/artifacts/14027293360)
+artifact is 18,510,808 bytes, SHA-256
+`3a549ee7cc6a34894048b32318c05fa5ef5458b963f81b2abf9d8e8dbb4bae03`.
+Independent inspection verifies the complete campaign:
+
+| Linux stage | Result |
+| --- | --- |
+| Source camera, including import | 9/9 |
+| Installed authoring/profile discovery/persistence | 12/12 |
+| Copied-installation camera, including import | 9/9 |
+| Accepted authoring regressions | 36/36 |
+
+The installed camera repeats all 1,373 coordinate, 165 recorder, 150
+framebuffer and 66 effects checks, plus the material/Water/vapour/crossfade
+preservation positives. Its 551 executed source hashes match the source
+campaign and committed `005124c5` blobs. All 18 installed framebuffer PNG
+hashes and the independently repeated image-translation comparisons pass.
+Sixteen packaged profile copies match their committed sources, ten runtime
+receipts agree on native SHA-256
+`1de86fb8950113162be26796806f4e1aa7d17e443d428a7fa9bbf660afdb38ff`,
+and 110 inspected logs contain no script/resource errors. The installed
+1024² author/reopen cases pass 216/54 checks at both one and four workers;
+source combined-authoring cases pass 197/51 at both worker counts.
+
+The broader source/installation preservation-image comparison finds 51 of
+54 PNGs byte-identical. The three original Water preservation fixtures do not
+freeze shader `TIME`, so their animated colours differ between processes.
+Their independently compared target-cell coverage masks agree exactly:
+2/4 pixels at 2x, 8/16 at 4x, and the oriented right-hand pair. Both fixture
+completion receipts pass. This expected colour variation leaves the fixture's
+exact coverage contract satisfied.
+
+The installed llvmpipe repetition records 31 legacy and 30 native palette
+frames: medians 98,406 and 101,716 microseconds, p95 104,210 and 113,171
+microseconds, or **+3.36% median / +8.60% p95**. Its effects medians are
+79,798 microseconds guarded-before, 79,315 control and 79,806 guarded-after,
+with 13 budget-limited samples per phase; the mean guarded/control change is
+**+0.61%**. These differ from the source repetition's +3.84% / −0.91% palette
+results and retain the same software-renderer and bounded-sample limits.
+
+The consolidated independent receipt is
+`build/recorder-edge-qualification/hosted/linux-review/linux-independent-qualification.json`.
+It preserves artifact custody, source/installed identities, checks, native
+runtime/compiler/ABI evidence, original logs and the Water observation above.
+
+### Refreshed Windows installed qualification and evaluation build
+
+All three jobs in run 43403189531 complete successfully. The campaign starts
+at 09:39:51 UTC on 13 November and finishes at 10:27:37 UTC, including the
+pinned LLVM-MinGW native build, Linux qualification above and Windows
+[job 131813968159](https://github.com/techrote/cybersand/actions/runs/43403189531/job/131813968159).
+The complete Windows evidence artifact
+[`wb-art-paint-windows-43403189531-1`](https://github.com/techrote/cybersand/actions/runs/43403189531/artifacts/14029305405)
+is independently downloaded: 17,846,981 bytes, SHA-256
+`f6c43c07072ba3cb84f54eeb282585a407d90cd3b3202930df3870d664a90a94`.
+
+| Windows stage | Result |
+| --- | --- |
+| Source camera, including import | 9/9 |
+| Installed authoring/profile discovery/persistence | 12/12 |
+| Copied-installation camera, including import | 9/9 |
+| Accepted authoring regressions | 36/36 |
+
+Both camera executions pass 1,373 coordinate/native-editing, 165 recorder,
+150 framebuffer and 66 effects checks, plus every material/Water/vapour/
+crossfade preservation case. All 551 source/installed project hashes match
+committed `005124c5` blobs; all 18 framebuffer capture hashes per execution
+match the extracted PNGs. Inspection of 103 logs finds no script/resource
+errors. This is actual hosted Windows ANGLE execution with the fresh native
+DLL identified above.
+
+The installed Windows palette repetition uses 23 legacy and 24 native frames:
+**−3.56% median / −2.69% p95**, versus the source repetition's −2.65% / −0.38%.
+Its effects medians are 110,268 microseconds guarded-before, 108,124 control
+and 112,751 guarded-after, from 10/10/9 budget-limited samples, respectively.
+The mean guarded/control change is **+3.13%**, with a repeated guarded-median
+ratio of 1.02252. These small software-renderer cohorts keep the limitations
+above; neither the favourable palette ratios nor the effects ratio establishes
+performance on representative hardware.
+
+The owner evaluation is
+[`native-pixel-scrolling-windows-desktop-005124c5cd9a972d622051876891a28aef42e7f7`](https://github.com/techrote/cybersand/actions/runs/43403189531/artifacts/14029270531),
+artifact **14029270531**, **92,938,556 bytes**. Its actual downloaded ZIP
+SHA-256 is
+`ce74eb7fc4adf35292c4ab86fae75efe647e50157e609de96a10abd641f75cd9`.
+Extract the complete archive and launch **Open Workbench.cmd**. The archive
+retains the exact qualified application source `005124c5`; it is the refreshed
+recorder-corrected candidate, still stacked on unmerged #564.
+
+Independent verification covers all **893 manifested payload files plus the
+manifest itself: 894 archive members**. The manifest's SHA-256 is
+`3d17e72dd3b37155325169b9625d811f66afbbc78e1f4f5a325c9199c2a82ce9`.
+The packager selects 889 Git source inputs and intentionally excludes 23,
+yielding 866 emitted paths. Mapping the delivered repository files and aliases
+checks 882 entries: **762 match raw Git blobs, 119 match exact Windows
+`git archive` CRLF exports, and one is the pinned materialized Rapier LFS
+object**. The CRLF cases were reproduced with the Windows Git export policy;
+they are line-ending transformations, with no semantic resource changes.
+The newly built CyberSand DLL is verified separately against all 87 native
+inputs and the same-run build. Runtime binaries are compared as exact bytes,
+without text normalization.
+
+All 16 packaged generator-profile copies and the generated launcher match
+their expected sources. Both the GUI and console Godot executables match the
+official SHA-512-pinned Windows archive. The actual loaded-module inventory
+contains four package modules and 59 Windows system modules, with no other
+paths. The GUI executable, VC runtime, CyberSand DLL and Rapier DLL all match
+their package hashes; the VC runtime signature receipt is valid. The package
+therefore has separate content, source-build and actual loaded-module evidence.
+It does not refresh the repository's retained-runtime provenance manifests.
+
+The full independent receipts are
+`build/recorder-edge-qualification/hosted/windows-package-independent-verification.json`,
+`windows-results-independent-verification.json` and
+`windows-final-detail-summary.json` in the same directory. They retain every
+source mapping, runtime/manifest/module hash, exact result, sample count,
+original log and package distinction summarized here.
+
+### Reporting and integration scope
+
+The qualified application, test and archive source remains `005124c5`.
+The subsequent reporting update changes only this audit and the camera
+runbook, including the current download and explicit 125%/150%/200%
+physical-DPI checklist in the online guide.
+All 551 executed Godot project sources and all 87 native inputs remain
+unchanged. The runbook is itself a packaged source input and is also copied
+to `READ-ME.md`; both archive copies retain their qualified `005124c5` bytes,
+SHA-256 `3d015ae38fe0c39802c1296a79c705e866dd6fb0e49ea1600220cc91dd97f1a8`.
+Their later documentation wording is not relabelled as part of that archive,
+and the broader 889-input package selection is not claimed byte-identical to
+the subsequent reporting tree. The earlier `a8f2735796b5` installed passes,
+artifacts and performance observations retain their original historical scope.
+
+The application qualification inspected main at
+`63f8b1ba6559906fe85f3ad0269aa296e4141d67` and open Draft #564 at
+`6319ab1d94d85d01c9cdb44d973a92d224bfa9aa`; #566 was Draft and unmerged at
+`005124c5cd9a972d622051876891a28aef42e7f7`.
+The source campaign does not qualify the eventual combined main integration.
 
 The correction leaves the integration HOLD intact. #564 acceptance, resulting
 main/native/graphical/Palette gates, physical Windows display scaling,
