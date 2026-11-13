@@ -6,6 +6,8 @@ import json
 import os
 from pathlib import Path
 import shutil
+import subprocess
+import sys
 import tempfile
 import textwrap
 import types
@@ -159,6 +161,17 @@ class EvaluationGuardTests(unittest.TestCase):
         self.assertEqual(result["status"], "deadline_killed")
         self.assertTrue(result["hard_kill_sent"])
         self.assertLess(result["whole_process_seconds"], 4)
+
+    def test_direct_evaluator_refuses_without_leased_supervisor(self):
+        script = Path(__file__).with_name("evaluate_model.py")
+        args, argv = self.setup_run()
+        proc = subprocess.run([sys.executable, str(script), *argv],
+                              capture_output=True, text=True, timeout=10,
+                              env={k: v for k, v in os.environ.items()
+                                   if k != "WB_ART_SLM_SUPERVISOR_TOKEN"})
+        self.assertNotEqual(proc.returncode, 0)
+        self.assertIn("direct evaluation is not guarded", proc.stderr)
+        self.assertFalse((self.parent / "eval-one").exists())
 
     def test_missing_output_or_unexpected_flag_rejected(self):
         args, argv = self.setup_run()
