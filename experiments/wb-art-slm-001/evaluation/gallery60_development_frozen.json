@@ -1,0 +1,414 @@
+{
+  "schema": "wb-art-slm-001/development-gallery-60/1",
+  "state": "FROZEN_BEFORE_NEW_MODEL_PREDICTIONS",
+  "context": "Independent developmental theme/geometry contrast cohort; not corpus FINAL or model training",
+  "model_comparisons": {
+    "baseline": "LiquidAI/LFM2.5-350M frozen original step400 adapter SHA256 02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2",
+    "candidate": "separately named retrained v5/new candidate, identity to be filled only from verified receipt"
+  },
+  "host_context": {
+    "focus_width": 96,
+    "focus_height": 96,
+    "material_id": 58,
+    "seeds": [
+      17,
+      73
+    ],
+    "seed_counted_as_language_request": false,
+    "decoding": "use identical original frozen training/infer.py decoding limits, system prompt, model interface and compiler for paired models",
+    "raw_failures": "retained as failures with zero native images; no repair, retries or keyword fallback",
+    "native_replay_id_limit": 38
+  },
+  "request_count": 60,
+  "themes": [
+    "roots",
+    "coral",
+    "veins",
+    "mycelium",
+    "strata",
+    "dunes",
+    "crystals",
+    "honeycomb",
+    "labyrinth",
+    "ruins",
+    "circuitry",
+    "ribs"
+  ],
+  "variants": [
+    "literal",
+    "paraphrase",
+    "modifier",
+    "composition",
+    "contrast"
+  ],
+  "assessment": {
+    "request_denominator": 60,
+    "native_images_at_most_per_model": 120,
+    "per_theme_first_pass_target": "at least 4/5 recognition in an independently completed genuinely blind review",
+    "original_24_dev_and_12_keywords": "separate existing frozen scoring cohort; this cohort does not replace it",
+    "final_set": "never opened for this experimental comparison",
+    "human_acceptance": "not established by this prompt manifest or AI-only review"
+  },
+  "requests": [
+    {
+      "id": "g1-01-1",
+      "theme": "roots",
+      "variant": "literal",
+      "prompt": "roots"
+    },
+    {
+      "id": "g1-01-2",
+      "theme": "roots",
+      "variant": "paraphrase",
+      "prompt": "branching roots spreading through soil"
+    },
+    {
+      "id": "g1-01-3",
+      "theme": "roots",
+      "variant": "modifier",
+      "prompt": "sparse twisted roots with an open center"
+    },
+    {
+      "id": "g1-01-4",
+      "theme": "roots",
+      "variant": "composition",
+      "prompt": "thick central roots with smaller branching rootlets"
+    },
+    {
+      "id": "g1-01-5",
+      "theme": "roots",
+      "variant": "contrast",
+      "prompt": "organic roots rather than electronic circuitry"
+    },
+    {
+      "id": "g1-02-1",
+      "theme": "coral",
+      "variant": "literal",
+      "prompt": "coral"
+    },
+    {
+      "id": "g1-02-2",
+      "theme": "coral",
+      "variant": "paraphrase",
+      "prompt": "reef-like fan-shaped coral colonies"
+    },
+    {
+      "id": "g1-02-3",
+      "theme": "coral",
+      "variant": "modifier",
+      "prompt": "coral with a wide spread and an open center"
+    },
+    {
+      "id": "g1-02-4",
+      "theme": "coral",
+      "variant": "composition",
+      "prompt": "several coral fans and clusters distributed across the canvas"
+    },
+    {
+      "id": "g1-02-5",
+      "theme": "coral",
+      "variant": "contrast",
+      "prompt": "branching coral colonies rather than tree roots"
+    },
+    {
+      "id": "g1-03-1",
+      "theme": "veins",
+      "variant": "literal",
+      "prompt": "veins"
+    },
+    {
+      "id": "g1-03-2",
+      "theme": "veins",
+      "variant": "paraphrase",
+      "prompt": "thin biological veins branching organically"
+    },
+    {
+      "id": "g1-03-3",
+      "theme": "veins",
+      "variant": "modifier",
+      "prompt": "sparse twisting veins with an open center"
+    },
+    {
+      "id": "g1-03-4",
+      "theme": "veins",
+      "variant": "composition",
+      "prompt": "one large vein feeding a network of finer branching vessels"
+    },
+    {
+      "id": "g1-03-5",
+      "theme": "veins",
+      "variant": "contrast",
+      "prompt": "soft irregular organic veins rather than angular circuitry"
+    },
+    {
+      "id": "g1-04-1",
+      "theme": "mycelium",
+      "variant": "literal",
+      "prompt": "mycelium"
+    },
+    {
+      "id": "g1-04-2",
+      "theme": "mycelium",
+      "variant": "paraphrase",
+      "prompt": "fungal threads spreading through a network"
+    },
+    {
+      "id": "g1-04-3",
+      "theme": "mycelium",
+      "variant": "modifier",
+      "prompt": "dense twisted mycelium with an open center"
+    },
+    {
+      "id": "g1-04-4",
+      "theme": "mycelium",
+      "variant": "composition",
+      "prompt": "fine mycelium filaments connecting several branching hubs"
+    },
+    {
+      "id": "g1-04-5",
+      "theme": "mycelium",
+      "variant": "contrast",
+      "prompt": "webs of mycelium rather than thick plant roots"
+    },
+    {
+      "id": "g1-05-1",
+      "theme": "strata",
+      "variant": "literal",
+      "prompt": "strata"
+    },
+    {
+      "id": "g1-05-2",
+      "theme": "strata",
+      "variant": "paraphrase",
+      "prompt": "stacked horizontal geological sediment layers"
+    },
+    {
+      "id": "g1-05-3",
+      "theme": "strata",
+      "variant": "modifier",
+      "prompt": "sparse thick strata with open gaps"
+    },
+    {
+      "id": "g1-05-4",
+      "theme": "strata",
+      "variant": "composition",
+      "prompt": "alternating thick and narrow horizontal sediment bands"
+    },
+    {
+      "id": "g1-05-5",
+      "theme": "strata",
+      "variant": "contrast",
+      "prompt": "flat geological strata rather than rolling sand dunes"
+    },
+    {
+      "id": "g1-06-1",
+      "theme": "dunes",
+      "variant": "literal",
+      "prompt": "dunes"
+    },
+    {
+      "id": "g1-06-2",
+      "theme": "dunes",
+      "variant": "paraphrase",
+      "prompt": "rolling wind-shaped hills of sand"
+    },
+    {
+      "id": "g1-06-3",
+      "theme": "dunes",
+      "variant": "modifier",
+      "prompt": "widely spaced dunes with broad open gaps"
+    },
+    {
+      "id": "g1-06-4",
+      "theme": "dunes",
+      "variant": "composition",
+      "prompt": "overlapping sweeping dunes and curved sand ridges"
+    },
+    {
+      "id": "g1-06-5",
+      "theme": "dunes",
+      "variant": "contrast",
+      "prompt": "curved sand dunes rather than flat sediment strata"
+    },
+    {
+      "id": "g1-07-1",
+      "theme": "crystals",
+      "variant": "literal",
+      "prompt": "crystals"
+    },
+    {
+      "id": "g1-07-2",
+      "theme": "crystals",
+      "variant": "paraphrase",
+      "prompt": "angular clusters of faceted crystals"
+    },
+    {
+      "id": "g1-07-3",
+      "theme": "crystals",
+      "variant": "modifier",
+      "prompt": "sparse large crystals with an open center"
+    },
+    {
+      "id": "g1-07-4",
+      "theme": "crystals",
+      "variant": "composition",
+      "prompt": "tall crystal spires surrounded by small faceted clusters"
+    },
+    {
+      "id": "g1-07-5",
+      "theme": "crystals",
+      "variant": "contrast",
+      "prompt": "sharp crystals rather than a honeycomb cell lattice"
+    },
+    {
+      "id": "g1-08-1",
+      "theme": "honeycomb",
+      "variant": "literal",
+      "prompt": "honeycomb"
+    },
+    {
+      "id": "g1-08-2",
+      "theme": "honeycomb",
+      "variant": "paraphrase",
+      "prompt": "linked hexagonal cells in an ordered lattice"
+    },
+    {
+      "id": "g1-08-3",
+      "theme": "honeycomb",
+      "variant": "modifier",
+      "prompt": "dense honeycomb with an open center"
+    },
+    {
+      "id": "g1-08-4",
+      "theme": "honeycomb",
+      "variant": "composition",
+      "prompt": "several patches of honeycomb cells in different sizes"
+    },
+    {
+      "id": "g1-08-5",
+      "theme": "honeycomb",
+      "variant": "contrast",
+      "prompt": "regular honeycomb cells rather than pointy crystals"
+    },
+    {
+      "id": "g1-09-1",
+      "theme": "labyrinth",
+      "variant": "literal",
+      "prompt": "labyrinth"
+    },
+    {
+      "id": "g1-09-2",
+      "theme": "labyrinth",
+      "variant": "paraphrase",
+      "prompt": "a winding maze filled with branching passages"
+    },
+    {
+      "id": "g1-09-3",
+      "theme": "labyrinth",
+      "variant": "modifier",
+      "prompt": "sparse labyrinth with a large open center"
+    },
+    {
+      "id": "g1-09-4",
+      "theme": "labyrinth",
+      "variant": "composition",
+      "prompt": "connected maze corridors with loops and dead ends"
+    },
+    {
+      "id": "g1-09-5",
+      "theme": "labyrinth",
+      "variant": "contrast",
+      "prompt": "a labyrinth of passages rather than broken city ruins"
+    },
+    {
+      "id": "g1-10-1",
+      "theme": "ruins",
+      "variant": "literal",
+      "prompt": "ruins"
+    },
+    {
+      "id": "g1-10-2",
+      "theme": "ruins",
+      "variant": "paraphrase",
+      "prompt": "broken masonry and remains of buildings"
+    },
+    {
+      "id": "g1-10-3",
+      "theme": "ruins",
+      "variant": "modifier",
+      "prompt": "sparse ruins with separated blocks and gaps"
+    },
+    {
+      "id": "g1-10-4",
+      "theme": "ruins",
+      "variant": "composition",
+      "prompt": "collapsed columns, scattered blocks and fragments of walls"
+    },
+    {
+      "id": "g1-10-5",
+      "theme": "ruins",
+      "variant": "contrast",
+      "prompt": "architectural ruins rather than curved skeletal ribs"
+    },
+    {
+      "id": "g1-11-1",
+      "theme": "circuitry",
+      "variant": "literal",
+      "prompt": "circuitry"
+    },
+    {
+      "id": "g1-11-2",
+      "theme": "circuitry",
+      "variant": "paraphrase",
+      "prompt": "angular electronic traces joined at right angles"
+    },
+    {
+      "id": "g1-11-3",
+      "theme": "circuitry",
+      "variant": "modifier",
+      "prompt": "sparse circuitry with a large open center"
+    },
+    {
+      "id": "g1-11-4",
+      "theme": "circuitry",
+      "variant": "composition",
+      "prompt": "orthogonal circuit traces connecting several square hubs"
+    },
+    {
+      "id": "g1-11-5",
+      "theme": "circuitry",
+      "variant": "contrast",
+      "prompt": "hard right-angled circuitry rather than organic veins"
+    },
+    {
+      "id": "g1-12-1",
+      "theme": "ribs",
+      "variant": "literal",
+      "prompt": "ribs"
+    },
+    {
+      "id": "g1-12-2",
+      "theme": "ribs",
+      "variant": "paraphrase",
+      "prompt": "arching skeletal ribs arranged in a repeated row"
+    },
+    {
+      "id": "g1-12-3",
+      "theme": "ribs",
+      "variant": "modifier",
+      "prompt": "sparse curved ribs with wide gaps"
+    },
+    {
+      "id": "g1-12-4",
+      "theme": "ribs",
+      "variant": "composition",
+      "prompt": "parallel rib arches extending from a central spine"
+    },
+    {
+      "id": "g1-12-5",
+      "theme": "ribs",
+      "variant": "contrast",
+      "prompt": "animal rib bones rather than rectangular architectural ruins"
+    }
+  ]
+}
