@@ -1,0 +1,58 @@
+{
+  "compiler_sha256": "a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb",
+  "dev_custody_sha256": "e8d9f0c1ab39eb28d760fac5fdc42cbbd770dc5505954d15050d214ffd062267",
+  "distinct_native_traces": 576,
+  "final_custody_sha256": "54f1cb53e228953d08b2d5a0f43eeea7f81757bf0f3832e2b22e897203a9696c",
+  "first_12_ids": [
+    "coral-v0-m0-s17-p0",
+    "veins-v0-m0-s17-p0",
+    "ribs-v0-m0-s17-p0",
+    "mycelium-v0-m0-s17-p0",
+    "roots-v0-m0-s17-p0",
+    "strata-v0-m0-s17-p0",
+    "dunes-v0-m0-s17-p0",
+    "crystals-v0-m0-s17-p0",
+    "honeycomb-v0-m0-s17-p0",
+    "labyrinth-v0-m0-s17-p0",
+    "ruins-v0-m0-s17-p0",
+    "circuitry-v0-m0-s17-p0"
+  ],
+  "first_400": {
+    "coral_compositions": 18,
+    "distinct_structure_groups": 72,
+    "phrasing_counts": {
+      "p0": 200,
+      "p1": 200
+    },
+    "theme_counts": {
+      "circuitry": 33,
+      "coral": 34,
+      "crystals": 33,
+      "dunes": 33,
+      "honeycomb": 33,
+      "labyrinth": 33,
+      "mycelium": 34,
+      "ribs": 34,
+      "roots": 33,
+      "ruins": 33,
+      "strata": 33,
+      "veins": 34
+    },
+    "unique_traces": 400
+  },
+  "first_576_distinct_traces": 576,
+  "name": "literal-replay-v1",
+  "native_source": "90719c72b9fcf90593fb7878354051ad601b47fd",
+  "observed_failure_target": [
+    "coral malformed numeric literals (dev, never training)",
+    "veins orthogonal primary motif on literal word",
+    "ribs mislabeled as ruins on literal word"
+  ],
+  "order_sha256": "8b0781624039e5b401d88f8440934bb6b8b14c8935181387678493e3fbb3351a",
+  "ordered_train_sha256": "ce9022b06303d90a3faf0533f75f7771ffe9f337271967d8f10101664c542ec5",
+  "qualification": "Only the unchanged original native receipts. Candidate model gains NOT measured.",
+  "records": 1152,
+  "schema_version": 1,
+  "scope": "TRAIN ONLY; reorder existing native-admitted positives; no new native replay or model test",
+  "train_sha256": "972826e1af15a6babaff6e68e4c57d790c0c060a2befe050b4156c5f8ee05f66"
+}
