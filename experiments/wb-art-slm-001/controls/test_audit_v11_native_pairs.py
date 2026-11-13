@@ -16,7 +16,7 @@ def save(path, obj):
 
 
 def fixture(root):
-    cases, aliases, engine, receipts = [], {}, [], []
+    cases, aliases, engine, receipts, events = [], {}, [], [], []
     for variant in range(8):
         for seed in (17, 73):
             pair = {}
@@ -38,7 +38,22 @@ def fixture(root):
                 binary = struct.pack("<9216i", *cell)
                 (root / (cid + ".materials.i32le")).write_bytes(binary)
                 (root / (cid + ".png")).write_bytes(b"synthetic-test-PNG")
-                engine.append({"id": cid, "passed": True, "terminal": {"status": "completed"},
+                full = bytearray(512 * 512 * 4)
+                struct.pack_into("<i", full, ((10 if tag == "c11" else 80) * 512 + 5) * 4, 58)
+                whole_sha = audit.digest(full)
+                events.extend((
+                    {"case": cid, "receipt": {"backend": "CyberNativeCellWorld",
+                        "status": "completed", "tick": 0, "before_source": {"tick": 0},
+                        "readback": [[5, 10 if tag == "c11" else 80, 0, 58]],
+                        "confirmed": 1, "checked": 1, "changed": 1,
+                        "excluded": 0, "refused": 0}},
+                    {"case": cid, "capture": {"materials_i32le_sha256": whole_sha}},
+                ))
+                engine.append({"id": cid, "passed": True,
+                               "terminal": {"status": "completed", "checked": 1,
+                                            "changed": 1, "unchanged": 0},
+                               "raw_materials": cid + ".materials.i32le",
+                               "whole_world_i32le_sha256": whole_sha,
                                "history_and_reopen_checked": True, "operations_sha256": ophash,
                                "program_sha256": "f" * 64, "filled_cells": 1,
                                "crop_i32le_sha256": audit.digest(binary)})
@@ -61,7 +76,8 @@ def fixture(root):
         "normalized_manifest_sha256": audit.digest((root / "input-cases.json").read_bytes())})
     save(root / "process-result.json", {"exit_code": 0, "timed_out": False,
         "input_unchanged": True, "harness_unchanged": True, "runtime_unchanged": True})
-    (root / "native-receipts.jsonl").write_text("test-double-only\n")
+    (root / "native-receipts.jsonl").write_text(
+        "".join(json.dumps(event) + "\n" for event in events))
     save(root / "native-summary.json", {"passed": True, "cases_completed": 32,
         "cases_requested": 32, "cases": engine})
     verified = {"passed": True, "failures": [], "runtime": {"source_commit": SOURCE,
@@ -128,6 +144,45 @@ class PairGateTests(unittest.TestCase):
         self.verified["cases"][0]["raw_materials"] = "../" + self.verified["cases"][0]["raw_materials"]
         save(self.root / "verified-admission-receipts.json", self.verified)
         with self.assertRaisesRegex(ValueError, "canonical local basename"):
+            self.audit()
+
+
+    def test_forged_verifier_without_native_receipts_rejected(self):
+        path = self.root / "native-receipts.jsonl"
+        path.write_text('{"case":"invariant-stop","receipt":{"status":"completed"}}\n')
+        self.verified["native_receipts_sha256"] = audit.digest(path.read_bytes())
+        save(self.root / "verified-admission-receipts.json", self.verified)
+        with self.assertRaisesRegex(ValueError, "missing raw native draw receipt"):
+            self.audit()
+
+    def test_discontinuous_before_row_rejected_after_rehash(self):
+        path = self.root / "native-receipts.jsonl"
+        events = [json.loads(line) for line in path.read_text().splitlines()]
+        next(e for e in events if "receipt" in e)["receipt"]["readback"][0][2] = 58
+        path.write_text("".join(json.dumps(e) + "\n" for e in events))
+        self.verified["native_receipts_sha256"] = audit.digest(path.read_bytes())
+        save(self.root / "verified-admission-receipts.json", self.verified)
+        with self.assertRaisesRegex(ValueError, "discontinuous native before-state"):
+            self.audit()
+
+    def test_forged_engine_world_hash_rejected_after_rehash(self):
+        engine = json.loads((self.root / "native-summary.json").read_text())
+        engine["cases"][0]["whole_world_i32le_sha256"] = "0" * 64
+        save(self.root / "native-summary.json", engine)
+        self.verified["engine_summary_sha256"] = audit.digest(
+            (self.root / "native-summary.json").read_bytes())
+        save(self.root / "verified-admission-receipts.json", self.verified)
+        with self.assertRaisesRegex(ValueError, "complete native World hash"):
+            self.audit()
+
+    def test_forged_zero_changed_receipt_rejected_after_rehash(self):
+        path = self.root / "native-receipts.jsonl"
+        events = [json.loads(line) for line in path.read_text().splitlines()]
+        next(e for e in events if "receipt" in e)["receipt"]["changed"] = 0
+        path.write_text("".join(json.dumps(e) + "\n" for e in events))
+        self.verified["native_receipts_sha256"] = audit.digest(path.read_bytes())
+        save(self.root / "verified-admission-receipts.json", self.verified)
+        with self.assertRaisesRegex(ValueError, "native changed count"):
             self.audit()
 
 
