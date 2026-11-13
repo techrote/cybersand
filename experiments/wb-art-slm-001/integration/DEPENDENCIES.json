@@ -1,7 +1,7 @@
 {
   "experiment": "WB-ART-SLM-001",
   "date": "2026-11-13",
-  "status": "Third source intake complete: four latest role heads exact-blob integrated, 78/78 executed offline model-free tests passed; current-source native, independent review and Windows HOLD",
+  "status": "Fourth intake: 17 role-owned paths imported; new independent suites 22 PASS/1 archive SKIP, Controls 10/11 PASS with diagnostic-string assertion mismatch; real model/native/Windows HOLD",
   "source": {
     "main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
     "main_preserves": [
@@ -62,7 +62,7 @@
     "tests": "experiments/wb-art-slm-001/integration/test_local_art_bridge.py",
     "runbook": "experiments/wb-art-slm-001/integration/README.md",
     "protocol": "loopback LM Studio /v1/chat/completions; content JSON operations; one-turn text-only",
-    "validation": "Exact-head GitHub-hosted Ubuntu 24.04/Python 3.12 run 43376391448 SUCCESS at 385bb41f3f17f49881a23958c7a1ec1e7f03fdbc: 82 discovered model-free Python methods, 78 executed PASS, 4 archived-corpus/native suites SKIPPED. Includes 9 bridge HTTP, 18 compiler, 1 pair manifest, 7 native-pair audit synthetics, 10 train guard, 10 eval guard, 3 corpus modifier synthetics, 6 PNG-stimulus tests, and earlier synthetics. No actual adapter/World/Windows.",
+    "validation": "Previous exact-source 385bb41f: 78 PASS/4 private archive SKIP. New import 4e45dc68 workflow 43383988875: independent latest-role job 22 PASS/1 archive SKIP; main smoke fails 1 of 11 Controls audit methods because expected 'readback' but actual refusal 'stored native crop disagrees with receipt chain'. This is NOT a passing full workflow, no actual model/native/Windows.",
     "no_actual_model_loaded_this_run": true,
     "no_native_execution_this_run": true,
     "no_windows_execution_this_run": true,
@@ -71,13 +71,13 @@
     "receipt_binding": "Exact prompt, host seed, pinned adapter hash, LFM model identity, native_execution=false, compiler hash, focus size, material, EOS, Art operation hash and allowed tool/material",
     "receipt_hardening_commit": "d2f6a3266e6f522a6a5f8e8a3d9afc3cf315efab",
     "adverse_regressions_commit": "ddbc2b9b3ba8e4ab0423c50b21dd7fb85333e6bb",
-    "exact_head_ci": "385bb41f3f17f49881a23958c7a1ec1e7f03fdbc",
+    "exact_head_ci": "4e45dc68114669bd9a93063bd9d35fe692268879",
     "offline_ci_workflow": ".github/workflows/wb-art-slm-001-smoke.yml",
     "offline_ci_urls": [
-      "https://github.com/techrote/cybersand/actions/runs/43376391448",
-      "https://github.com/techrote/cybersand/actions/runs/43376383942"
+      "https://github.com/techrote/cybersand/actions/runs/43383988875",
+      "https://github.com/techrote/cybersand/actions/runs/43383850451"
     ],
-    "offline_ci_scope": "82 collected, 78 PASS, 4 archived dataset suites SKIP; no training, actual neural inference, native Godot, Windows or blinded human score. Workflow has all four new worker-owned test files.",
+    "offline_ci_scope": "Historical 78 PASS is from prior head; new source has Controls diagnostic-only test failure and independently qualified additional suites. Do not claim current all-pass.",
     "stop_cancellation": "With HTTP request fully read, socket EOF from Workbench Stop/disconnect terminates owned local inference (POSIX process group, Windows child), releases one-job lock, and returns zero geometry; deadline also terminates. Exact handler-to-fake-child socket Stop and next-request test PASS on hosted Linux. No real model/Windows process tree/Godot Stop tested.",
     "stop_cancellation_commit": "4e5aed803320bc3629b01f83a48b6c8729c8213d",
     "stop_tests_commit": "0fc6f9cedeb5b147fe86cb61446354f38db16d8a",
@@ -94,33 +94,33 @@
   "workers": {
     "integration": {
       "branch": "codex/wb-art-slm-001",
-      "next": "Resolve upstream current-source #565 Windows GUI HOLD with source owners; obtain independent bridge review, then real-model native Windows/Linux operation/Stop/history/save-reopen/visual qualification; keep deterministic baseline."
+      "next": "Controls owned failure repair -> green exact-head CI -> review source-compatible #565 successor and real adapter/native Windows/Linux; preserve deterministic baseline."
     },
     "controls": {
       "branch": "codex/wb-art-slm-controls",
-      "observed_head": "f218939e016d039e3b0ce5c86b4b33151bcb2117",
-      "next": "Qualify 32 source-matched v1/v1.1 native paired receipts with history=each and actual material readback; independently inspect all 16 visual pairs before proposing opt-in v1.1.",
+      "observed_head": "ed09d214b971e38aa78992b0aef0530a2aade349",
+      "next": "Repair role-owned unit-test diagnostic expectation: tampered native crop is correctly rejected as 'stored native crop disagrees with receipt chain', but test expects 'readback'. Preserve refusal and rerun all 11 then source-compatible 32-pair native qualification.",
       "imported_commit": "ad77b9fbaf02a0c81414ba2e2e7f5732b61a5a7d",
       "continuation_imported_commit": "6d3cab90ed5849adece993b3f1c2e6c92a36e2ff"
     },
     "corpus": {
       "branch": "codex/wb-art-slm-corpus",
-      "observed_head": "d7e85d640e18e2c560a082384c8d7c8416fd713f",
-      "next": "Deliver pinned v3 TRAIN source-index vs ordered-index contract to Training; require matching 400-draw exposure and native-custody archive, not model gains.",
+      "observed_head": "9f67881fbfbdf05883e646943319d9a9f014f640",
+      "next": "Validate v3 source-index plan against recovered admitted archive and hand exact original TRAIN indices to Training; do not substitute modified ordered JSONL as admitted TRAIN.",
       "imported_commit": "36d63deb0eb13174e670ec0c46381a1a50390655",
       "continuation_imported_commit": "d15bf4c76cda06a773f4ab25a3cba5ef336634d2"
     },
     "training": {
       "branch": "codex/wb-art-slm-training",
-      "observed_head": "c594d154b141ba5c450199311c4a790402eb7c02",
-      "next": "Inspect private run-parent lease and frozen official base/runtime; then at most one newly named bounded v3 candidate training job; use shared supervised evaluator on the same 24 DEV requests, not FINAL.",
+      "observed_head": "c53f8ef052b7f20a9cf7e4de7d2b50530bfa11f1",
+      "next": "Verify saved evidence and private lease before launching anything; exported original 34 accepted predictions = 68 short-ID cases and raw completions. Only Training may execute bounded new candidate and same DEV comparison.",
       "imported_commit": "f98b6c11f83bfdc3fd9e9cdc3bbf3f5fd389bdd0",
       "continuation_imported_commit": "1fcff712cae69ab0f8edfa0019b69063a43e243c"
     },
     "evaluation": {
       "branch": "codex/wb-art-slm-evaluation",
-      "observed_head": "5f7cc52cb6a734268ff66ef1de856952482eb8a8",
-      "next": "Independently review Integration bridge socket cancellation, Guidance host-field precedence and receipt/batch authorization; then score frozen blind images without accessing final holdout.",
+      "observed_head": "f18ddcf72e4ce8f6e3a897df25818d84620ec439",
+      "next": "Independent Review Integration bridge Stop/scope/receipt; account for 3 blind near-duplicate pairs in visual scorer; later source-compatible native/Windows evidence.",
       "imported_commit": "0bdc089793c2c69a0680dfd0c8278bca45f6ac6f",
       "continuation_imported_commit": "4bd334afcdc8ef06ce87feb37353b6d3e49bcc6a"
     }
@@ -271,6 +271,30 @@
       "review": "Independent Integration-authored bridge assembly review still PENDING. Eval stimulus audit is a separate evaluation-owned measurement, not that review.",
       "upstream": "main 63f8b1ba, #564 6319ab1d and #565 d66499ec unchanged; #565 Windows deadline gate still HOLD",
       "remaining": "Qualify authentic adapter/current-source native/Windows and human theme recognition; no production promotion."
+    },
+    "hourly_2026_11_13_0712": {
+      "previous_shared_head": "5b32671cd283fdb8159f4cb67267fd65742fc6ef",
+      "role_branch_heads": {
+        "controls": "ed09d214b971e38aa78992b0aef0530a2aade349",
+        "corpus": "9f67881fbfbdf05883e646943319d9a9f014f640",
+        "training": "c53f8ef052b7f20a9cf7e4de7d2b50530bfa11f1",
+        "evaluation": "f18ddcf72e4ce8f6e3a897df25818d84620ec439"
+      },
+      "imported_paths": {
+        "controls": 4,
+        "corpus": 3,
+        "training": 5,
+        "evaluation": 5
+      },
+      "mechanism": "Serial exact-role-byte GitHub Contents commits; each existing shared blob checked against previous imported owner role SHA; no cross-role edit",
+      "first_ci": "43383850451 FAILURE Controls diagnostic wording assertion 1/11; raw tamper refused",
+      "independent_ci": "43383988875 latest intake job SUCCESS: Corpus 7 PASS+1 private archive SKIP; Training 9 PASS; Evaluation 6 PASS; combined smoke FAIL same Controls assertion",
+      "checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-0712.md",
+      "actual_neural_accuracy_improvement": false,
+      "current_source_native": false,
+      "windows_graphical": false,
+      "baseline_model_unchanged": true,
+      "production": "Draft/HOLD"
     }
   }
 }
