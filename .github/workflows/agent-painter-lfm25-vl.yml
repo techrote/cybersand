@@ -1,0 +1,86 @@
+name: Agent painter LFM2.5-VL independent bounded pilot
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - experiments/agent_painter/lanes/lfm25_vl/pilot-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-lfm25-vl-pilot-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  request:
+    name: Validate source-pinned LFM painter pilot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    outputs:
+      steps: ${{ steps.contract.outputs.steps }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Enforce immutable, owner-authorized model, native and training contract
+        id: contract
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+          SOURCE_REF: ${{ github.ref }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          from pathlib import Path
+
+          path = Path("experiments/agent_painter/lanes/lfm25_vl/pilot-request.json")
+          request = json.loads(path.read_text(encoding="utf-8"))
+          expected = {
+              "schema": "cybersand.agent-painter.lfm25-vl-pilot-request/1",
+              "experiment": "lfm25-vl-pilot-001",
+              "model": "LiquidAI/LFM2.5-VL-450M",
+              "model_revision": "fc6221ca597f3315e4f82fc2df606783267b34ba",
+              "qualified_parent": "2a565df45efc568eb96a2166e0b77f299e289625",
+              "native_source": "633920373a3d406a2ede61ce4137c324f76be23b",
+              "corpus_run_id": "43506373969",
+              "corpus_artifact": "agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b",
+              "corpus_manifest_sha256": "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc",
+              "steps": 16,
+              "inference_proof": True,
+              "train_split": "TRAIN",
+              "final_targets_forbidden": True,
+              "model_class": "Lfm2VlForConditionalGeneration",
+              "processor_class": "Lfm2VlProcessor",
+              "vision_and_projector_frozen": True,
+              "text_only_stage": True,
+              "upstream_license": "LFM Open License v1.0",
+              "runner_processes": 1,
+              "keep_draft": True,
+          }
+          if request != expected:
+              raise SystemExit("LFM2.5-VL pilot request differs from reviewed immutable contract")
+          if os.environ["SOURCE_REF"] != "refs/heads/codex/agent-painter-lfm25-vl-568":
+              raise SystemExit("wrong LFM lane branch")
+          if not re.fullmatch(r"[a-f0-9]{40}", os.environ["SOURCE_SHA"]):
+              raise SystemExit("source commit must be a full SHA")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as stream:
+              stream.write("steps=16\n")
+          print("Validated LFM2.5-VL text-to-Art pilot at", os.environ["SOURCE_SHA"])
+          PY
+
+  train:
+    name: Real hosted CPU training, complete checkpoint and raw first pass
+    needs: request
+    uses: ./.github/workflows/agent-painter-train.yml
+    with:
+      source-sha: ${{ github.sha }}
+      profile: lfm25_vl
+      corpus-artifact: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+      corpus-run-id: '43506373969'
+      output-artifact: agent-painter-lfm25-vl-pilot-${{ github.sha }}
+      steps: ${{ fromJSON(needs.request.outputs.steps) }}
+      inference-proof: true
