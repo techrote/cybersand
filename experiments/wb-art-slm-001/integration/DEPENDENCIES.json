@@ -396,6 +396,74 @@
       },
       "checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-0906.md",
       "remaining": "authentic step-400 inference through source-compatible #565 successor; Windows owned process-tree Stop; native source/history/persistence; human blind recognition"
+    },
+    "seventh_2026_11_13_1020": {
+      "shared_before": "8e7d3638afb9dad39287c07355c1849acee6dc88",
+      "import_policy": "four individually parented non-force commits; old shared Git blob equals previous owner head blob; no role owner branch changed",
+      "roles": {
+        "controls": {
+          "source_head": "8fca415bb5b73200c5e4da7a64aea03d6b0b6d7b",
+          "import_commit": "f2f26440dc8ccc470425247aaead5411d293da58",
+          "paths": 4,
+          "work": "chronological native draw-before-history receipt admission",
+          "next": "32-case current-source v1/v1.1 native source/visual pairing"
+        },
+        "corpus": {
+          "source_head": "6195f180d66dbfe3a8dd52eed4ae1dfe0bc13d79",
+          "import_commit": "42ef102637689192ec35eac34921889ed5fe8398",
+          "paths": 4,
+          "work": "native-admitted TRAIN-only failure-contrast replay v5",
+          "next": "retain original TRAIN index/FINAL seal; support one matched Training run"
+        },
+        "training": {
+          "source_head": "0aee867ef5f3a09184980d84eb7c40472a5cfad7",
+          "import_commit": "6f3614dfb14cbe80d65bcc916db5b07639a19097",
+          "paths": 4,
+          "work": "POSIX descendant-fencing job_guard",
+          "next": "fix two NameError cases in own test_job_guard.py, execute 17/17 and publish exact source; then inspect lease before one run"
+        },
+        "evaluation": {
+          "source_head": "481eaaac5f62985dd24bde36b91a75d208162854",
+          "import_commit": "e10a4f5f34da748a0c1a7fcf84a7487e9682c3e1",
+          "paths": 5,
+          "work": "cross-theme native pixel collision audit q003 veins vs q032 circuitry",
+          "next": "independently inspect Win32 Job post-launch attachment, Stop and contract; human blind recognition separately"
+        }
+      },
+      "windows_bridge": {
+        "implementation": "6a0e6a4a4ccd5807e83377d27edadca07b9bcd62",
+        "test_added": "e7b5f28a92fae5f2d58372fc024750ed5f23523b",
+        "workflow": "af4d9c88d0002473ce73c04a8a69ebb1e335f7b6",
+        "window_ci_run": 43408236500,
+        "job": "windows-process-tree",
+        "conclusion": "success",
+        "new_windows_tests_passed": 3,
+        "existing_bridge_tests_passed": 9,
+        "scope": "Win32 synthetic subprocess Job Object lifetime; native, model, desktop not qualified",
+        "remaining_race": "Attach Job after Popen, not atomically at creation; independent review pending"
+      },
+      "ci": {
+        "run": 43408236500,
+        "full_conclusion": "failure",
+        "independent_job": "success",
+        "windows_job": "success",
+        "offline_smoke": "failure",
+        "reason": "Two Training test_job_guard NameError time.sleep without import time",
+        "role_owner_fix_pending": true
+      },
+      "training_lease": "cannot inspect private run-parent/lease from Git; no training started by Integration",
+      "upstream": {
+        "main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
+        "workbench_564": "6319ab1d94d85d01c9cdb44d973a92d224bfa9aa",
+        "combined_565": "11b809a579ecade05baaeded59461ab8fc3f6c39",
+        "qualified_current_source_windows": false
+      },
+      "original_adapter_sha256": "02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2",
+      "original_compiler_sha256": "a259392c25643109cefbfc360e491a72731e4082e58b0ae8337c5c9a8023aadb",
+      "checkpoint": "experiments/wb-art-slm-001/integration/CHECKPOINT_2026-11-13-1020.md",
+      "next_integration_action": "Consume tested Training import fix, rerun all source-bound offline gates, then source-compatible model -> native Art and Windows acceptance",
+      "model_accuracy_gain": false,
+      "production": "Draft/HOLD"
     }
   }
 }
