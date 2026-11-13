@@ -18,7 +18,7 @@ from evaluation_guard import evaluation_fingerprint, verified_evaluation
 from job_guard import LEASE_NAME, LOCK_NAME, run
 
 FAKE_EVALUATOR = r'''
-import argparse, json, pathlib, signal, time
+import argparse, hashlib, json, pathlib, signal, time
 from job_guard import trainer_lock
 p = argparse.ArgumentParser()
 for key in ('model', 'dev', 'admission', 'corpus-manifest', 'compiler', 'output', 'adapter', 'eval-count', 'suite', 'device'):
@@ -40,7 +40,15 @@ records = [{'id':name,'json_valid':True,'program_valid':True,'first_pass_accepte
 metrics = {'count':len(records),'json_valid':2,'program_valid':2,'first_pass_accepted':2,
            'theme_field_correct':2,'primary_motif_correct':2,'motif_layout_exact':2,
            'exact_target':0}
-config = {'suite':a.suite or 'dev','training_executed':False}
+def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
+receipt = json.loads((pathlib.Path(a.model)/'download_receipt.json').read_text())
+config = {'suite':a.suite or 'dev','training_executed':False,
+          'model_id':receipt['model_id'],'revision':receipt['resolved_revision'],
+          'model_profile':receipt.get('profile'),'model_subfolder':receipt.get('subfolder'),
+          'compiler_sha256':sha(pathlib.Path(a.compiler)),
+          'dev_sha256':sha(pathlib.Path(a.dev)),'admission_sha256':sha(pathlib.Path(a.admission)),
+          'adapter_sha256':sha(pathlib.Path(a.adapter)/'adapter_model.safetensors'),
+          'max_new_tokens':256,'decoding':'greedy, unconstrained, no repair'}
 if a.device == 'mismatch': metrics['first_pass_accepted'] = 9
 if a.device == 'tamper':
     (pathlib.Path(a.adapter)/'adapter_model.safetensors').write_bytes(b'mutated during evaluation')
