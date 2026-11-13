@@ -392,3 +392,69 @@ private run-parent/lease, restore the exact pinned base and original numerical
 environment, then execute at most one new 400-step balanced-keyword candidate.
 No duplicate old training, paid/hosted training, defaults, unrelated merges,
 Ready, or release promotion.
+
+
+---
+
+## Continuation: POSIX descendant process-lifetime fencing (13 November 2026)
+
+**Source checked before edits:** accepted main
+`63f8b1ba6559906fe85f3ad0269aa296e4141d67` (includes #563);
+Training-owned parent `253608f6a02cde620cce16287c98d1d590355763`;
+Integration Draft #567 `8e7d3638afb9dad39287c07355c1849acee6dc88` (its
+offline-smoke and independent role-intake jobs were both green at review);
+#564 `6319ab1d` and #565 `d66499ec` remain distinct Draft source
+owners. The new Training changes are NOT in that combined CI run.
+
+**Concrete defect:** `job_guard.notify_child` skipped all process signals
+when `proc.poll()` found the direct child exited, and `run` marked its
+lease terminal after reaping only that child. A child-spawning training or
+evaluation wrapper can exit while another member of its dedicated POSIX
+process group continues running, including after Stop. This is a
+process-lifetime/duplicate-job risk, not evidence of a native World write.
+The same *class* of process-lifetime defect was independently found and
+repaired in Integration's HTTP bridge, but the Training supervisor is
+separately owned and needed its own correction.
+
+**Owned implementation:**
+- `job_guard.py`: removed direct-parent `poll()` gating of POSIX
+  process-group signals; the Windows direct-child branch is unchanged.
+  Introduced `fence_owned_process_group`: TERM, bounded 150-ms grace,
+  then unconditional KILL to the known isolated process group. Invoked
+  in `run`'s `finally` after parent success, soft Stop, hard deadline
+  or worker exception, before publishing terminal result/lease.
+- `test_job_guard.py`: a controlled fake worker spawns a same-session,
+  SIGTERM-resistant descendant which reports readiness and attempts a
+  deliberately delayed file write. Two Linux-only tests assert no late
+  write after (1) a clean parent exit and (2) soft Stop. The tests use
+  temporary private paths and no model/optimizer/native input.
+- `README.md`: recorded scope, limitations and exact test boundary.
+  No shared files, production behavior, physics, model weights,
+  corpus/FINAL split, Training sampler or other role files changed.
+
+**GitHub source publication:**
+- implementation `c47b0329ab0409ca0e623c0e30729fb0a662ac64`
+  (`job_guard.py` blob `67e9f1c38eb7845f4dc089d7ae34f38038a842c6`);
+- new regression fixtures `bd413c3a286c6c1b568932c3747d50c61b709da8`
+  (`test_job_guard.py` blob `b9a058b2bc6cee8ad8f9827854e5662a19f2361b`).
+
+**Executed validation:** a local, synthetic Linux/Python process-group
+reproduction of the same TERM/grace/KILL mechanics passed both normal-exit
+and SIGTERM-parent-exit cases, with `late_write=False`. Its temporary
+script was *behavior-equivalent*, not the exact repository supervisor.
+GitHub readback verified both published source blob identities and new
+test definitions. The branch-local 17 Training + 14 Evaluation methods
+are **defined but have not been executed on exact source**; do not
+relabel the earlier combined CI green run as this change's qualification.
+No new neural prediction, optimizer step, model score, native replay,
+Windows process-tree qualification, graphical or human acceptance exists.
+Descendants that escape the owned POSIX session require a separate solution.
+
+**Next:** Integration may import the changed Training-owned files by
+exact blob and run full offline CI, including the 31-method train/eval
+supervisor suite. Independently verify Windows process-tree termination
+before promising reliable Windows Stop. Once a pinned model environment
+and the private run-parent lease can actually be inspected, run at most
+one separately identified balanced-keyword candidate, preserving all
+frozen original raw failures and benchmark denominators. Draft #567
+remains HOLD; no Ready, merge or production default changes.
