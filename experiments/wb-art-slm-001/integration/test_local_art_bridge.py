@@ -159,13 +159,13 @@ class ContractTests(unittest.TestCase):
             root = Path(tmp)
             child = root / "fake_infer.py"
             child.write_text(
-                "import pathlib,sys,time\\n"
-                "prompt=sys.argv[sys.argv.index('--prompt')+1]\\n"
-                "output=pathlib.Path(sys.argv[sys.argv.index('--output')+1])\\n"
-                "root=output.parents[1]\\n"
-                "(root/('started-'+prompt)).write_text('started')\\n"
-                "if prompt=='roots': time.sleep(15)\\n"
-                "raise SystemExit(21)\\n", encoding="utf-8")
+                "import pathlib,sys,time\n"
+                "prompt=sys.argv[sys.argv.index('--prompt')+1]\n"
+                "output=pathlib.Path(sys.argv[sys.argv.index('--output')+1])\n"
+                "root=output.parents[1]\n"
+                "(root/('started-'+prompt)).write_text('started')\n"
+                "if prompt=='roots': time.sleep(15)\n"
+                "raise SystemExit(21)\n", encoding="utf-8")
             cfg = argparse.Namespace(
                 infer=child, model_dir=root, adapter_dir=root, compiler=child,
                 evidence_dir=root, seed=73, threads=1, device="cpu",
