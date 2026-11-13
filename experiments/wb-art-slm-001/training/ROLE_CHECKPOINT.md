@@ -328,3 +328,67 @@ new keyword-replay 400-step candidate against the frozen 24 development IDs
 and twelve words. Preserve untouched final assessment and all failed raw
 requests. Compare Sprocket-500M root Instruct and Smol135 only under matched
 fine-tuning budgets. No Ready/merge or native/Windows promotion.
+
+
+---
+
+## Continuation: fail-closed full-resume, model inventory, post-run custody and orphan lease (13 Nov)
+
+**Read before edit:** accepted main `63f8b1ba6559906fe85f3ad0269aa296e4141d67`
+(including #563), Integration branch `a6d5a015bcabfa1601624988b7a4600111b968f8`
+with single Draft/HOLD #567, and independently owned Draft #564/#565 heads
+`6319ab1d94d85d01c9cdb44d973a92d224bfa9aa` /
+`d66499ec3409fb657875fca7dbd0f234cf28ca49`.
+Training branch started at `e36fbd72b22ab9cf76ad2a03f8f3d827a28872ff`,
+which was already imported by Integration's fifth intake. No shared-source,
+owner-branch, NeuroRunner, runtime or schedule changes were made.
+
+### Implemented on Training branch only
+
+1. `job_guard.build_fingerprint` now refuses an official base-model snapshot
+   missing any file recorded in its receipt; prior validation only checked
+   files still present. Existing hash mismatch refusal is preserved.
+2. A `--resume` attempt now invokes the existing full `verify_checkpoint`
+   inventory/size/SHA-256 validation **before launching the worker**, and
+   fingerprints every optimizer/RNG/adapter/receipt byte, not only the manifest.
+   Frozen original 25→26 and step-400 archives remain untouched.
+3. After training child exit, all model/data/source/resume inputs are independently
+   fingerprinted again. A clean-exit checkpoint from mutated input is retained
+   for audit but marked `failed`, never accepted as a reproducible candidate.
+4. A missing, invalid, or nonterminal durable role lease blocks a new job even
+   if the kernel file lock is released. This prevents a supervisor crash from
+   silently authorizing a second worker while the first child survives. The
+   same lease is shared with heavy evaluation; manual orphan reconciliation is
+   required, not automatic deletion.
+5. `test_job_guard.py` gained five additional methods: missing model file,
+   post-run model/corpus mutation (two subcases), mutated full-resume payload,
+   active orphaned lease, and corrupt lease. Published suite now declares
+   **15 Training + 14 Evaluation = 29 model-free methods**, not a PASS count.
+
+**Published implementation commits:** `6116e3af05e8a612da81be96da6030a053c02225`,
+`d036e1e13c4e0aad9751d2dd15402cdc94c42db7`,
+`8183bb43477383e9dbd1776294385342a65f743d`,
+`9f1e16fd5ba4a9dca51d68e18031c208774c70cc`,
+`c74382ab39bdd7827661484f8dd49cfe0ae21dd9`.
+Exact implementation/test Git blobs before this checkpoint:
+`job_guard.py` `a7aa3dcdba0c5292fd37250803c6fbe673639c9b` and
+`test_job_guard.py` `6061e956cfb9cfa9cc9793e7d65d73c9c844bc9a`.
+
+**Qualification:** GitHub readback confirmed published file blobs and test
+method discovery. The expanded suite has not been executed on exact source
+in this worker's environment; no local clone, pinned base/runtime or private
+role lease was available. Do **not** claim 29 PASS, no model-quality improvement
+is established, and Windows/natively mounted Art/current #565 remain HOLD.
+The historical 400-step scores (22/24 strict development, 19/24 ordered
+motif/layout, 13/24 full targets; exact words 12/12 strict with ribs/veins
+semantic errors) remain unchanged. The two coral malformed decimals remain
+raw failures, and final assessment remains sequestered.
+
+**Next:** Integration may import these exact two code/test blobs plus Training
+documentation on the existing Draft #567 and execute
+`python -m unittest -v test_job_guard.py test_evaluation_guard.py` in the
+policy-compliant offline-smoke environment. Training must inspect the real
+private run-parent/lease, restore the exact pinned base and original numerical
+environment, then execute at most one new 400-step balanced-keyword candidate.
+No duplicate old training, paid/hosted training, defaults, unrelated merges,
+Ready, or release promotion.
