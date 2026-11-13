@@ -2,6 +2,7 @@ extends HFlowContainer
 
 signal deferred_brush_finished(token: int, receipt: Dictionary)
 signal history_action_finished(receipt: Dictionary)
+signal selection_changed(region: Rect2i)
 
 # One human editor over the existing host and exclusive native worker.
 const Shapes = preload("res://scripts/workbench_paint_editor_shapes.gd")
@@ -356,6 +357,7 @@ func world_input(event: InputEvent) -> bool:
 	stroke.clear()
 	if job.tool == "Select":
 		selection = Rect2i(anchor.min(cursor),anchor.max(cursor)-anchor.min(cursor)+Vector2i.ONE)
+		selection_changed.emit(selection)
 		_say("Selected %d × %d · Ctrl+C captures native materials." % [selection.size.x,selection.size.y])
 	elif job.tool == "Paste": paste_at(cursor)
 	else: _begin_plan(job,str(job.tool))

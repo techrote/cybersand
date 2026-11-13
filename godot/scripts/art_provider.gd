@@ -11,6 +11,7 @@ var readable := ""
 var log_path := ""
 var log_warning := ""
 var last_request_offset := -1
+var resumed_last_result := ""
 var usage: Dictionary = {}
 var retry_after_seconds := 0.0
 var requested_model := ""
@@ -101,8 +102,24 @@ func new_log_path() -> String:
 	if DirAccess.make_dir_recursive_absolute(folder) != OK: return ""
 	return folder+"/"+str(Time.get_unix_time_from_system()).replace(".","-")+"-"+str(get_instance_id())+".jsonl"
 
+static func checked_conversation(value: Variant) -> Variant:
+	if not value is Array: return null
+	var turns: Array = []
+	for raw: Variant in value:
+		if not raw is Dictionary or raw.get("role") not in ["user","assistant"] or not raw.get("content") is String:
+			return null
+		var turn := {"role":raw.role,"content":raw.content}
+		if raw.has("image_offset"):
+			var offset: Variant = raw.image_offset
+			if not (offset is int or offset is float) or not is_finite(float(offset)) or offset < 0 or float(offset) != floor(float(offset)):
+				return null
+			turn.image_offset = int(offset)
+		turns.append(turn)
+	return turns
+
 func resume_traffic(previous: String) -> Array:
 	var turns: Array = []
+	resumed_last_result = ""
 	if not previous.begins_with("user://art-traffic/") or previous.get_base_dir() != "user://art-traffic":
 		return turns
 	var file := FileAccess.open(previous,FileAccess.READ)
@@ -114,14 +131,23 @@ func resume_traffic(previous: String) -> Array:
 	log_path = destination
 	while file.get_position() < file.get_length():
 		var line := file.get_line()
-		if not line.contains('"kind":"conversation"') and not line.contains('"kind":"conversation_cleared"'): continue
+		if not line.contains('"kind":"conversation'): continue
 		var parsed: Variant = JSON.parse_string(line)
 		if not parsed is Dictionary: continue
-		if parsed.get("kind") == "conversation_cleared": turns.clear()
+		if parsed.get("kind") == "conversation_cleared":
+			turns.clear()
+			resumed_last_result = ""
+		elif parsed.get("kind") == "conversation_edited" and parsed.get("data") is Dictionary:
+			var edited: Variant = checked_conversation(parsed.data.get("turns"))
+			if edited != null and parsed.data.get("last_result") is String:
+				turns = edited
+				resumed_last_result = parsed.data.last_result
 		elif parsed.get("kind") == "conversation" and parsed.get("data") is Dictionary:
-			var turn: Dictionary = parsed.data
-			if turn.has("image_offset"): turn.image_offset = int(turn.image_offset)
-			turns.append(turn)
+			var restored: Variant = checked_conversation([parsed.data])
+			if restored != null:
+				turns.append(restored[0])
+				if str(restored[0].content).begins_with("Canvas result ("):
+					resumed_last_result = restored[0].content
 	traffic = "[Earlier conversation traffic retained in the export]\n"
 	readable = traffic
 	return turns
@@ -141,7 +167,8 @@ func historical_image(offset: int) -> String:
 		if block.get("type") == "image_url": return str(block.image_url.url)
 	return ""
 
-func log_event(kind: String, data: Variant) -> void:
+func log_event(kind: String, data: Variant) -> bool:
+	var stored := false
 	var line := redact(JSON.stringify({"utc":Time.get_datetime_string_from_system(true),"ms":Time.get_ticks_msec(),"request":serial,"kind":kind,"data":data}))
 	traffic += line+"\n"
 	readable += "\n"+Time.get_datetime_string_from_system(true)+" #"+str(serial)+" "+kind+"\n"
@@ -169,11 +196,14 @@ func log_event(kind: String, data: Variant) -> void:
 			file.seek_end()
 			var offset := file.get_position()
 			file.store_line(line)
+			if kind == "conversation_edited": file.flush()
+			stored = file.get_error() == OK
 			if kind == "request" and file.get_error() == OK: last_request_offset = offset
 			if file.get_error()!=OK: log_warning = "Traffic disk write failed; drawing continues."
 		else: log_warning = "Cannot write traffic log; live traffic remains available."
 	else: log_warning = "Cannot create traffic directory; drawing continues."
 	traffic_changed.emit()
+	return stored
 
 func cancel(reason: String = "Human Stop") -> void:
 	serial += 1
