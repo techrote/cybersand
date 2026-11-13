@@ -210,6 +210,19 @@ def run(args, worker_args: list[str]) -> dict:
     parent.mkdir(parents=True, exist_ok=True)
     # Same lock protects the trainer's native direct entrypoint and this wrapper.
     with FileLock(str(parent / LOCK_NAME), timeout=0):
+        # The OS lock vanishes if a supervisor crashes, but its child may
+        # survive. Never replace an unfinished durable lease on that basis.
+        # An operator must inspect/stop orphaned workers and reconcile the
+        # retained ledger before another local candidate may be launched.
+        previous_lease_path = parent / LEASE_NAME
+        if previous_lease_path.exists():
+            try:
+                previous_lease = json.loads(previous_lease_path.read_text(encoding="utf-8"))
+            except (OSError, ValueError) as exc:
+                raise ValueError("Unparseable durable role lease; manual recovery required") from exc
+            terminal = {"completed", "failed", "incomplete", "stopped_early", "deadline_killed"}
+            if not isinstance(previous_lease, dict) or previous_lease.get("state") not in terminal:
+                raise FileExistsError("Unfinished durable role lease; inspect possible orphaned model worker")
         if is_evaluation:
             from evaluation_guard import evaluation_fingerprint
             fingerprint, inventory = evaluation_fingerprint(worker_args, worker)
