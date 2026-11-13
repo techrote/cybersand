@@ -289,3 +289,26 @@ the complete run passed is made.
 **HOLD:** No new v1.1 native paired run, per-case readback, Windows qualification
 or reviewed visual improvement has been established. Step-400 inference and
 the existing opt-in bridge remain pinned to admitted v1 geometry.
+
+
+### Raw native receipt-chain verification — 13 November 2026
+
+The 32-case pair auditor now replays every original native before/after cell
+receipt against a fresh 512×512 byte-valued World, rather than accepting a
+positive independent-verifier JSON without checking the raw event chain. It
+requires complete zero-tick CyberNativeCellWorld receipts, an internally
+continuous material transition, exact native changed/checked/unchanged
+counters, captured full-World SHA-256, and an exact stored 96×96 material crop.
+A forged passing-looking verifier/summary with missing or contradictory raw
+rows is refused. This *does not replace* the independent verifier's protection,
+Stop, PNG or history gates and is not cryptographic attestation of a native run.
+
+Four additional synthetic adversarial regression methods now cover absent raw
+receipts, falsified before-state, falsified whole-World hash and falsified
+changed-cell count, even when the corresponding recorded file digest is
+recomputed. The previous positive synthetic fixture now contains complete,
+consistent one-cell receipts and captures. Synthetic tests are contracts,
+**not actual Godot World evidence**. The new code has not yet run through
+source-matched CI. A local two-position byte-order/crop reconstruction smoke
+passed; complete Python/CI/native qualification is still pending. The unchanged
+v1.1 compiler identity and adapter remain unpromoted.
