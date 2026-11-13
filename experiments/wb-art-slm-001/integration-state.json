@@ -1,6 +1,6 @@
 {
   "experiment": "WB-ART-SLM-001",
-  "status": "bootstrap-frozen-opt-in-integration-bridge-implemented-unqualified",
+  "status": "four-role-source-integration-published; opt-in-bridge-protocol-only; upstream-windows-HOLD",
   "updated_on": "2026-11-13",
   "owner": "five role workers after bootstrap handoff",
   "branch": "codex/wb-art-slm-001",
@@ -48,14 +48,14 @@
       "evaluation": "2026-11-13T03:42:00+00:00"
     }
   },
-  "production_promotion": "HOLD; combined Draft only, no Ready or merge",
-  "next_checkpoint": "Review strict opt-in provider bridge independently; await and consume #565 source-compatible accepted-#563 successor; perform native/Godot/Windows tests with real step-400 model before model preset/launcher qualification. Training independently owns any improved curriculum run.",
+  "production_promotion": "HOLD; one Draft #567, no Ready, merge, native/Windows promotion",
+  "next_checkpoint": "Review/test combined role code including bridge; #565 request-4 43358127824 failed original Windows MATERIAL_LAB_UI graphical Workbench installation deadline at 15 FPS, with Linux passing; wait for independently qualified source-compatible successor, then real-model Windows/Linux native path. No new training or model gains in this integration run.",
   "pull_request": "https://github.com/techrote/cybersand/pull/567",
   "model_native_cases_passed": 68,
   "combined_gallery_images": 260,
   "artifacts_manifest": "ARTIFACTS.json",
   "artifacts_saved": true,
-  "training_owner_active": "not observable from shared repository; no new training launched and Training must verify private lease",
+  "training_owner_active": "not inspectable in shared repository; Training reported no new model job on role checkpoint and must harden lock/deadline before one new job",
   "baselines": {
     "matched_dev_requests": 12,
     "lfm350_unadapted_accepted": 0,
@@ -91,7 +91,7 @@
     "provider_protocol": "127.0.0.1:8127/v1/chat/completions; LM Studio mode; exactly one text-only completion; no fallback, repair or automatic continuation",
     "material_and_ownership": "Focus and allowed materials/tools captured from host; seed and budgets in bridge launch; existing Godot native Art executor retains receipts, protection, Stop/history/persistence",
     "model_identity": "LiquidAI/LFM2.5-350M@9921cd4d82c0e3986887aa4b376f9446729ef8a3; step 400 adapter SHA256 02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2",
-    "next": "Independent Controls/Evaluation review; source-compatible upstream #565 successor, current-source Windows/Linux live model/native end-to-end, packaging/owner acceptance"
+    "next": "Independent review of bridge, retain pinned compiler v1; evaluate combined role tests, consume independently qualified #565 successor, real adapter native Windows/Linux then owner launch approval."
   },
   "artifact_recovery": {
     "verification": "Four named owner Library archives materialized and byte-size/SHA256 compared with ARTIFACTS.json on 2026-11-13; all four match",
@@ -102,8 +102,28 @@
   "upstream_snapshot": {
     "main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
     "pr564_head": "6319ab1d94d85d01c9cdb44d973a92d224bfa9aa",
-    "pr565_head": "4e41501a56b25de5defdaedbd990b34b13a41c13",
-    "pr565_status": "Draft/HOLD, current-source Windows combined-native comparison failure; separate diagnostic run 43355051094 underway; no successful complete successor yet",
-    "neural_provider_in_main": false
+    "pr565_head": "d66499ec3409fb657875fca7dbd0f234cf28ca49",
+    "pr565_status": "Draft/HOLD; 43358127824 final failure 2026-11-13 04:00 UTC: Windows original MATERIAL_LAB_UI real shared Workbench installation deadline (at 15FPS), after Linux source suite passed. No release/published Windows runtime.",
+    "neural_provider_in_main": false,
+    "pr565_run": "https://github.com/techrote/cybersand/actions/runs/43358127824"
+  },
+  "integration_role_import": {
+    "imported_file_count": 21,
+    "commits": [
+      "ad77b9fbaf02a0c81414ba2e2e7f5732b61a5a7d",
+      "36d63deb0eb13174e670ec0c46381a1a50390655",
+      "f98b6c11f83bfdc3fd9e9cdc3bbf3f5fd389bdd0",
+      "0bdc089793c2c69a0680dfd0c8278bca45f6ac6f"
+    ],
+    "source_branches": {
+      "controls": "ed2720e33e3b1695b130d3af54d4c0b928ec4a63",
+      "corpus": "791dc710c099064c67ed8102366dd797d0d1b7da",
+      "training": "729343a22e300128d77bb3cfd4475411fef36f15",
+      "evaluation": "07f7e191ec4c98a447de9616018961ada959754e"
+    },
+    "comparison": "exact 21 role-file paths, 4 fast-forward commits; no changed physics/default/canonical schema source",
+    "model_changes": "none; frozen step-400 model retained",
+    "qualified_improvement": "no measured new-model or current-source native improvement",
+    "role_reports": "Controls 1.1 smoke and six additional tests but pending full/native; Corpus 4 tests with actual archive; Training 5 tests with actual archive; Evaluation 9 replay audits with historical native packet. Not re-executed on combined branch."
   }
 }
