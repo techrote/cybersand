@@ -182,6 +182,108 @@ publication request sequence. Original Lab captures remain at 15 FPS; product
 frame rates, all application/native source, physics defaults, worker ownership,
 save formats, assertions, native work and deadlines remain unchanged.
 
+### Retained request 4 installation failure
+
+Request 4, [run 43358127824](https://github.com/techrote/cybersand/actions/runs/43358127824),
+froze source `d66499ec3409fb657875fca7dbd0f234cf28ca49`, tree
+`016a2c058eaa8e21f8e039da5cae49753ddaeb0e`. Linux passed its complete 231-case
+catalogue, seven Lab headless and two graphical cases, all 37 Workbench stages,
+all four mounted author/reopen cases and all 12 installed-layout stages.
+Independent original-file readback verified 89 native/841 build inputs, all
+349 retained files and 67 PNG hashes; 22 original frames were inspected.
+[Original Linux artifact 14009115922](https://github.com/techrote/cybersand/actions/runs/43358127824/artifacts/14009115922)
+has SHA256 `85f82227b8a44806a31e53b5fa4ef02253c672c2055daffe89f1cdcdebde161e`.
+
+Windows passed its fresh cross-build, complete catalogue with the same three
+registered POSIX-only exclusions, and original Lab headless cases. The original
+graphical UI then failed the unchanged 60-second **real shared Workbench
+installation** predicate: 211 assertions, one failure. Its process exited
+naturally after 346.295 seconds, below the unchanged 1200-second outer limit.
+The retained-Salt comparison and its native source/quantity/qualification
+receipts had already completed. The subsequent original World graphical case
+passed 209 checks; the earlier headless original UI passed 226 assertions.
+None of the 37 Workbench or new combined Windows cases ran in this attempt.
+Packaging, runtime publication and final-gate dispatch correctly stopped.
+[Original Windows artifact 14008457869](https://github.com/techrote/cybersand/actions/runs/43358127824/artifacts/14008457869)
+has SHA256 `01a7909c9a25fdeac0106e06362f5ba177e18c7b2984760824eb02b280d92033`.
+Its fresh DLL has SHA256
+`cc87121b6b77a75a4b58f70c0f74562c0f40bcf4e322f78b12ce3c944176b35d`.
+
+This failure precedes the new combined fixture and is distinct from the earlier
+300-second compiler/comparison failures. The same original graphical UI passed
+253 assertions in request 3 at 15 FPS, and application/native/fixture source
+is byte-identical between requests 3 and 4. The failure artifact contains no
+installation-state or CPU samples, so it does not establish which component of
+the owner-published installation predicate remained false.
+
+The separate [Windows diagnostic 43398818566](https://github.com/techrote/cybersand/actions/runs/43398818566)
+retains exact `d66499ec` source and the original DLL. Its five controls are the
+unchanged full UI at 15 FPS, an external observed full UI at 15/4 FPS, the
+unchanged full UI at 4 FPS, and the original World UI at 4 FPS. The observer
+delegates every original wait and reads only already copied owner state and
+cached Lab progress. Generation-aware process/host sampling stays outside
+source custody. A 1 FPS cap is unsuitable for this original UI: it advances
+120 native ticks through rendered frames inside an unchanged 45-second wait.
+The separate combined fixture does not use that frame-driven experiment loop.
+Diagnostic controls are not release qualification and cannot substitute for a
+fresh successful complete Windows/Linux/package campaign.
+
+### Request 5: use the registered cold Main acknowledgement policy
+
+The completed unobserved 15 FPS control passed all 253 assertions in 327.750
+seconds. Both observed controls also passed 253 assertions, while their initial
+Workbench waits spanned only **two process frames**: 43.412 seconds at 15 FPS
+and 44.892 seconds at 4 FPS. During those intervals Godot used about 1.025/1.023
+CPU cores and total host load averaged 27.4/27.9 percent. The native owner
+continued publishing; Main consumed copied snapshot 45 then 2520 at 15 FPS,
+and 43 then 2619 at 4 FPS, accepted request serial 1 and cleared its pending
+installation without refusal or error. No sampled owned process survived.
+
+The original userdata retains cold CanvasShader/EGL cache writes. Its
+748,248-byte palette program appears at the end of each long first frame and
+contains the actual World/material-program/vapour/glow paths. The existing
+`palette_shader_selector.gd` documents ANGLE's D3DCompile cold cost. Together,
+the phase/state/CPU/cache evidence supports cold first-frame shader compilation;
+it does not show the earlier multi-core compiler starvation. Reducing the
+original Lab capture to 4 FPS did not shorten this stall and is not adopted.
+The uninstrumented request-4 failure has no original stack/phase samples, so
+its exact internal subphase remains unrecorded rather than being reconstructed
+as an observed fact.
+
+| Completed diagnostic control | Original artifact | SHA256 |
+| --- | --- | --- |
+| Unobserved UI, 15 FPS | [14024691673](https://github.com/techrote/cybersand/actions/runs/43398818566/artifacts/14024691673) | `16084aa8906fe2994a5887a79f92c714dc4968bc5099bd5677fc8fc412f7323e` |
+| Observed UI, 15 FPS | [14024029459](https://github.com/techrote/cybersand/actions/runs/43398818566/artifacts/14024029459) | `a771dd4cfca497a8aeaa6d21653a22311893d411c10adf6e254c0c2cc68be034` |
+| Observed UI, 4 FPS | [14024498800](https://github.com/techrote/cybersand/actions/runs/43398818566/artifacts/14024498800) | `20e8effc418dfbad1e9328b6b250be2b96fb9e2f57689427578dda061121caa1` |
+
+The [existing owner-approved execution policy](../operations/ci-execution-and-performance.md#owner-policy-and-acceptance-boundary)
+assigns **600 seconds** to cold Main acknowledgement and separates it from
+warmed gameplay responsiveness and scientific sampling. Actual Workbench
+failure-recovery, feature-launcher, physical-flight and palette-Main fixtures
+already use this policy. The Lab's initial Main installation had retained a
+legacy hardcoded 60-second value.
+
+Request 5 changes only that initial fixture wait to
+`Watchdogs.milliseconds("main_ack_seconds")`, importing the existing stateless
+helper and binding both policy files in the capture's source map. The policy
+itself is unchanged: JSON SHA256
+`9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc`;
+helper SHA256 `b4a72d161ed40b87732bb1adb2e9cb865617728938238326a7b439b352ce94f7`.
+The full installation predicate and all assertions remain intact. Both 120-tick
+45-second experiment checks, subsequent 60-second Step/policy waits, native
+180/60/300-second compile/execute/service limits and 1200-second graphical
+process watchdog remain unchanged. Original Lab captures retain 15 FPS and the
+separate combined capture retains 1 FPS. No application, shader, native physics,
+worker ownership, material ID or save-format change is made. This repairs a
+startup-watchdog inconsistency; it does not claim improved cold-start latency.
+
+The diagnostic's unobserved 4 FPS UI and World controls also completed
+successfully under their original limits. The completed five-control run retains
+[aggregate artifact 14026175409](https://github.com/techrote/cybersand/actions/runs/43398818566/artifacts/14026175409),
+SHA256 `dc845a744dc2e758ced365913698a61e08fd5f6f5e4076125ad27ad63a17791b`.
+Its terminal originals and the fresh request-5 qualification are recorded
+separately in PR #565. No diagnostic pass qualifies the replacement.
+
 The replacement remains **IN PROGRESS / HOLD** until fresh uninstrumented
 Windows/Linux execution, standalone package verification, runtime publication
 and actual complete final gates pass. PR #565 supplies exact terminal
