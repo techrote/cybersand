@@ -58,6 +58,24 @@ def sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def engine_identity(launcher: Path) -> dict:
+    launcher = launcher.resolve(strict=True)
+    runtime = launcher
+    if launcher.name.lower().endswith("_console.exe"):
+        # The official Windows console binary launches the sibling engine.
+        # OS.get_executable_path() and process counters identify that engine.
+        runtime = launcher.with_name(launcher.name[:-len("_console.exe")] + ".exe").resolve(strict=True)
+    return {kind: {"path": str(path), "sha256": sha(path), "size": path.stat().st_size}
+            for kind, path in (("launcher", launcher), ("runtime", runtime))}
+
+
+def verify_engine_context(context: dict, expected: dict) -> None:
+    actual_path = Path(context["engine_path"]).resolve(strict=True)
+    runtime = expected["runtime"]
+    if actual_path != Path(runtime["path"]) or context["engine_sha256"] != runtime["sha256"]:
+        raise ValueError("Executed engine path/hash differs from the verified runtime")
+
+
 def write(path: Path, value) -> None:
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
@@ -228,6 +246,25 @@ def env_for(folder: Path) -> dict:
     return env
 
 
+def completed_native_ticks(data: dict) -> list[dict]:
+    # A publication can repeat the last native tick's timing while paused or
+    # sample-fenced. Each phase keeps one installed World and captures its
+    # start tick; neither repeated nor premeasurement ticks are fresh work.
+    start = data["measurement_start"]
+    seen = set()
+    completed = []
+    for observation in data["publications"]:
+        generation, tick = observation["world_generation"], observation["tick"]
+        if generation != start["world_generation"]:
+            raise ValueError("Measured phase replaced its installed World generation")
+        key = (generation, tick)
+        if tick <= max(0, start["tick"]) or key in seen:
+            continue
+        seen.add(key)
+        completed.append(observation)
+    return completed
+
+
 def reduce_runs(runs: list[dict]) -> list[dict]:
     comparisons = []
     for name in dict.fromkeys(run["case"] for run in runs):
@@ -236,29 +273,38 @@ def reduce_runs(runs: list[dict]) -> list[dict]:
         for subject in ("A", "B"):
             arms = [run for run in selected if run["subject"] == subject]
             frame_values = [frame["frame_ms"] for arm in arms for frame in arm["data"]["frames"]]
+            observed_ticks = [completed_native_ticks(arm["data"]) for arm in arms]
+            publications = [x for arm in arms for x in arm["data"]["publications"]]
             record = {"frames_ms": summary(frame_values),
                       "repeat_medians_ms": [arm["data"]["summary"]["frame_ms"]["p50"] for arm in arms],
                       "repeat_p95_ms": [arm["data"]["summary"]["frame_ms"]["p95"] for arm in arms],
                       "peak_process_rss_bytes": max((arm["process"].get("peak_rss_bytes") or 0 for arm in arms), default=0),
                       "source_commit": arms[0]["source_commit"] if arms else None,
-                      "native_tick_ms": summary([x["native_tick_ms"] for arm in arms for x in arm["data"]["publications"]]),
+                      "native_tick_ms": summary([x["native_tick_ms"] for ticks in observed_ticks for x in ticks]),
+                      "native_tick_scope": "One observation per distinct completed tick after each phase's measurement start; intermediate native ticks can be missed by the presenter",
+                      "publication_last_native_tick_ms": summary([x["native_tick_ms"] for x in publications]),
+                      "publication_observations": len(publications),
                       "upload_ms": summary([x["upload_ms"] for arm in arms for x in arm["data"]["uploads"]]),
                       "uploaded_texture_bytes": sum(x["submitted_texture_bytes"] for arm in arms for x in arm["data"]["uploads"]),
                       "copied_patch_bytes": sum(x["patch_bytes"] for arm in arms for x in arm["data"]["uploads"]),
                       "authoring_receipt_ms": summary([x["receipt_latency_ms"] for arm in arms for x in arm["data"]["actions"]]),
                       "authoring_presentation_ms": summary([x["presentation_latency_ms"] for arm in arms for x in arm["data"]["actions"]])}
+            record["publication_timings_ms"] = {
+                metric: summary([x[metric] for x in publications]) for metric in
+                ("worker_step_ms", "snapshot_copy_ms", "render_exchange_ms",
+                 "hard_surface_packet_ms", "snapshot_publication_ms")}
             for metric in ("main_process_ms", "shader_update_ms", "snapshot_consume_ms", "worker_frame_state_ms", "godot_process_ms"):
                 record[metric] = summary([x[metric] for arm in arms for x in arm["data"]["frames"]])
             record["tick_progress"] = [arm["data"].get("tick_progress") for arm in arms]
             record["motion_windows"] = []
-            for arm in arms:
-                snapshots = arm["data"]["publications"]
+            for arm, snapshots in zip(arms, observed_ticks):
                 width = max(1, len(snapshots)//4)
                 record["motion_windows"].append({"phase": arm["phase"],
-                    "early_moves": summary([x["moves"] for x in snapshots[:width]]),
-                    "late_moves": summary([x["moves"] for x in snapshots[-width:]]),
-                    "observed_moving_publications": sum(x["moves"] > 0 for x in snapshots),
-                    "total_observed_publications": len(snapshots)})
+                    "early_tick_moves": summary([x["moves"] for x in snapshots[:width]]),
+                    "late_tick_moves": summary([x["moves"] for x in snapshots[-width:]]),
+                    "observed_moving_ticks": sum(x["moves"] > 0 for x in snapshots),
+                    "total_observed_ticks": len(snapshots),
+                    "total_observed_publications": len(arm["data"]["publications"])})
             record["worst_frames"] = sorted(
                 ({**frame, "phase": arm["phase"]} for arm in arms for frame in arm["data"]["frames"]),
                 key=lambda x: x["frame_ms"], reverse=True)[:5]
@@ -299,6 +345,7 @@ def main() -> int:
     version = subprocess.check_output([str(godot), "--version"], text=True, timeout=30).strip()
     if not version.startswith("4.7.stable"):
         raise ValueError(f"Pinned Godot 4.7 required, found {version}")
+    engine = engine_identity(godot)
     requested = args.cases.split(",")
     cases = [item for item in CASES if args.cases == "all" or item["id"] in requested]
     if not cases or (args.cases != "all" and set(requested) != {item["id"] for item in cases}):
@@ -308,7 +355,7 @@ def main() -> int:
     shutil.copyfile(args.harness.resolve(), harness)
     report = {"schema": "integrated-camera-abba-v1", "complete": False,
               "subjects": identities, "host": execution_telemetry.host_identity(),
-              "engine": {"version": version, "sha256": sha(godot)},
+              "engine": {"version": version, **engine},
               "apparatus": {"runner_sha256": sha(Path(__file__)), "harness_sha256": sha(harness)},
               "order": args.order, "rounds": args.rounds, "samples_per_phase": args.samples,
               "warmup_per_phase": args.warmup, "cases": cases, "runs": [],
@@ -342,8 +389,7 @@ def main() -> int:
                     data = json.loads((folder / "runtime.json").read_text(encoding="utf-8"))
                     if not data.get("ok") or data.get("smoke_only") or len(data.get("frames", [])) != args.samples:
                         raise ValueError(f"Incomplete runtime receipt: {folder}")
-                    if data["context"]["engine_sha256"] != report["engine"]["sha256"]:
-                        raise ValueError(f"Executed engine hash mismatch: {folder}")
+                    verify_engine_context(data["context"], engine)
                     if data["context"]["process_id"] != process["announced_engine_pid"]:
                         raise ValueError(f"Actual Godot PID mismatch: {folder}")
                     if data["context"]["fixture_sha256"] != report["apparatus"]["harness_sha256"]:
@@ -376,14 +422,15 @@ def main() -> int:
             pacing = data.get("comparative_pacing", {})
             if data.get("failures") or len(pacing.get("extended_abba", [])) != 4:
                 raise ValueError("Historical shader ABBA did not complete all four controlled cohorts")
-            if data["context"]["engine_sha256"] != report["engine"]["sha256"]:
-                raise ValueError("Historical shader ABBA executed a different engine")
+            verify_engine_context(data["context"], engine)
             report["historical_shader_abba"] = {"data": pacing, "process": process,
                                                 "scope": "Same-process frozen palette coordinate-only control, separate from exact application A/B"}
             write(output / "report.json", report)
         for subject, root in roots.items():
             if identity(root) != identities[subject]:
                 raise ValueError(f"Application/runtime changed during measurement: {subject}")
+        if engine_identity(godot) != engine:
+            raise ValueError("Launcher or engine changed during measurement")
         report["complete"] = True
         write(output / "report.json", report)
         print(f"INTEGRATED_CAMERA_ABBA_PASS cases={len(cases)} phases={len(report['runs'])}", flush=True)

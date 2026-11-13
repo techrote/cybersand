@@ -75,6 +75,35 @@ class QualificationTests(unittest.TestCase):
                 with self.assertRaises(SystemExit) as result: subject.main()
                 self.assertEqual(result.exception.code, 2)
 
+    def test_dispatch_creates_nested_receipt_before_network_and_preserves_it(self):
+        class Acknowledgement:
+            status = 204
+            def __enter__(self): return self
+            def __exit__(self, *_): return False
+
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "absent" / "build" / "dispatch.json"
+            args = argparse.Namespace(source_sha=self.SOURCE, output=output)
+            calls = []
+            def send(request, timeout):
+                # The original failure happened here before any network call.
+                # Each request must already have a durable previous-state receipt.
+                receipt = json.loads(output.read_text())
+                self.assertEqual(receipt["status"], "requesting")
+                self.assertEqual(len(receipt["requests"]), len(calls))
+                self.assertEqual(json.loads(request.data), {"ref": subject.BRANCH})
+                calls.append(request.full_url)
+                return Acknowledgement()
+            with patch.dict(os.environ, {"GITHUB_TOKEN": "fixture-token"}), patch.object(subject, "check_source"), patch.object(subject, "context", return_value={"source_commit": self.SOURCE}), patch.object(subject.urllib.request, "urlopen", side_effect=send):
+                result = subject.dispatch_existing(args)
+                self.assertEqual(len(calls), len(subject.DISPATCH_WORKFLOWS))
+                self.assertTrue(result["completed"])
+                self.assertEqual(json.loads(output.read_text()), result)
+                original = output.read_bytes()
+                with self.assertRaisesRegex(RuntimeError, "overwrite"): subject.dispatch_existing(args)
+                self.assertEqual(output.read_bytes(), original)
+                self.assertEqual(len(calls), len(subject.DISPATCH_WORKFLOWS))
+
     def test_archive_roundtrip_preserves_hidden_history_and_original_bytes(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

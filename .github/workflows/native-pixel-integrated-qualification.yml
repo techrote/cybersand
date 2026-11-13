@@ -11,6 +11,7 @@ on:
       - 'tools/ci/test_native_pixel_integrated_qualification.py'
       - 'tools/ci/check_windows_evaluation_zip.ps1'
       - 'tools/ci/run_integrated_camera_performance.py'
+      - 'tools/ci/test_integrated_camera_performance.py'
       - 'tools/ci/run_workbench_qualification.py'
       - 'tools/package_*candidate.py'
       - 'godot/**'
@@ -63,6 +64,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/test_native_pixel_integrated_qualification.py
+          python3 tools/ci/test_integrated_camera_performance.py
           python3 tools/ci/test_mat_workbench_runtime_publication.py
           python3 tools/ci/test_materials_lab_package.py
           python3 tools/ci/check_ci_provider_policy.py
@@ -375,6 +377,7 @@ jobs:
         run: |
           set -euo pipefail
           python tools/ci/test_native_pixel_integrated_qualification.py
+          python tools/ci/test_integrated_camera_performance.py
           python tools/ci/test_materials_lab_runtime_publication.py
           python tools/ci/test_materials_lab_package.py
           python tools/ci/native_pixel_integrated_qualification.py check-source --source-sha "$GITHUB_SHA"

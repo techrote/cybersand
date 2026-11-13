@@ -43,7 +43,7 @@ engine.EVIDENCE = "docs/audits/2026-11-13-native-pixel-final-integration.md"
 engine.BUILD_EXACT |= {
     WORKFLOW, engine.EVIDENCE, "docs/audits/2026-11-13-native-pixel-scrolling.md", "tools/ci/native_pixel_integrated_qualification.py",
     "tools/ci/test_native_pixel_integrated_qualification.py", "tools/ci/check_windows_evaluation_zip.ps1",
-    "tools/ci/run_integrated_camera_performance.py",
+    "tools/ci/run_integrated_camera_performance.py", "tools/ci/test_integrated_camera_performance.py",
 }
 
 
@@ -195,7 +195,14 @@ def package(args) -> None:
         shutil.rmtree(raw)
         evidence_identity["files_sha256"] = evidence_files
         engine.write_json(output / "qualification-index.json", evidence_identity)
-        with (output / "README.txt").open("a", encoding="utf-8") as stream:
+        readme = output / "README.txt"
+        original = readme.read_text(encoding="utf-8")
+        evidence_reference = "Original platform evidence: qualification/."
+        engine.require(original.count(evidence_reference) == 1, "Combined package evidence guidance changed")
+        original = original.replace(evidence_reference,
+            "Original platform evidence: qualification.zip (file hashes: qualification-index.json).")
+        with readme.open("w", encoding="utf-8") as stream:
+            stream.write(original)
             stream.write("\nIntegrated native-pixel camera evaluation (#566, accepted #565 main).\n"
                          "Extract to a short writable path such as C:\\CyberSand566.\n"
                          "Original qualification bytes are in qualification.zip; qualification-index.json records their hashes.\n"
@@ -249,6 +256,7 @@ def dispatch_existing(args) -> dict:
     engine.require(not args.output.exists(), "Do not overwrite a dispatch receipt")
     report = context(args.source_sha) | {"schema": "native-pixel-full-gates-dispatch-v1", "status": "requesting",
                                         "completed": False, "requests": []}
+    args.output.parent.mkdir(parents=True, exist_ok=True)
     engine.write_json(args.output, report)
     for workflow in DISPATCH_WORKFLOWS:
         check_source(args.source_sha)

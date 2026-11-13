@@ -95,7 +95,9 @@ delta; it is not hosted Windows or graphical qualification.
 ## Controlled performance questions
 
 Subject A is accepted main `ac0d9fb9`; subject B is the unoptimised integration
-`b1e2e9b1`. Compare each exact source with its own native build, identical
+product at `b1e2e9b1`, executed from the frozen qualification head that also
+contains the test apparatus. The receipts record that actual head and its
+unchanged product-source manifest. Compare each source with its own native build, identical
 Godot/Rapier/settings/seed, an identical externally staged harness and fresh
 userdata. Use paired ABBA order, warmups, raw frame samples and per-arm source
 identities. Keep Windows and Linux/software results separate.
@@ -140,3 +142,25 @@ Shell.Application ZIP-handler access are separate required checks; neither is
 claimed until executed. The delivered application must be tested from its
 actual extracted package. Physical owner DPI, graphics hardware and perceived
 frame pacing remain owner acceptance, even after hosted qualification passes.
+
+## Qualification apparatus repairs
+
+The first integrated campaign, [43491723524](https://github.com/techrote/cybersand/actions/runs/43491723524)
+at `0c56c9b6bdefe753a1acc9627291f0df44b03638`, passed source admission but its
+full-gate dispatch step failed before any request: the receipt's parent directory
+did not exist. The narrow repair creates that directory before writing; a
+regression reproduces the original failure and verifies all four dispatch receipts
+and refusal to overwrite prior evidence. The failed campaign remains historical.
+
+Independent review also found that Windows' console launcher and its actual Godot
+engine have different hashes. The performance runner now records both executable
+paths and hashes, verifies the actual engine reported by the running process, and
+rechecks both at completion. Native timing now counts distinct completed ticks
+after each phase's start, while retaining repeated publication observations
+separately. Eight focused guards and real paused/active Godot 4.7 smoke runs pass;
+these checks do not establish graphical performance. No product camera, shader,
+native law, simulation default or snapshot ownership changed in these repairs.
+
+The corrected campaign must execute from its new exact source. Its final status,
+all downstream gates and the published package identity belong in the PR delivery
+ledger; none is inferred from this local apparatus verification.

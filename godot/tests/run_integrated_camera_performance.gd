@@ -56,6 +56,8 @@ var pending_action: Dictionary = {}
 var next_action := 0
 var uploaded_serial := -1
 var publication_serial := -1
+var measurement_start_tick := -1
+var measurement_world_generation := -1
 var participation_sequence := -1
 var started_usec := 0
 var fixture_hash := ""
@@ -211,6 +213,7 @@ func observe_publication(frame: int) -> void:
 	if snapshot.serial != publication_serial:
 		publication_serial = snapshot.serial
 		publications.append({"frame":frame,"serial":snapshot.serial,"tick":snapshot.tick_index,
+			"world_generation":snapshot.render_world_generation,
 			"native_tick_ms":snapshot.simulation_time_ms,"worker_step_ms":snapshot.worker_step_time_ms,
 			"snapshot_copy_ms":snapshot.snapshot_copy_time_ms,"render_exchange_ms":snapshot.render_exchange_time_ms,
 			"hard_surface_packet_ms":snapshot.hard_surface_packet_time_ms,
@@ -256,15 +259,29 @@ func describe(values: Array[Dictionary], key: String) -> Dictionary:
 	for value: Dictionary in values: numbers.append(float(value[key]))
 	return Stats.statistics(numbers)
 
+func completed_native_ticks() -> Array[Dictionary]:
+	var seen: Dictionary = {}
+	var completed: Array[Dictionary] = []
+	for observation: Dictionary in publications:
+		if not require(int(observation.world_generation) == measurement_world_generation,
+			"measured phase retains its installed World generation"): continue
+		var tick := int(observation.tick)
+		if tick <= maxi(0,measurement_start_tick) or seen.has(tick): continue
+		seen[tick] = true
+		completed.append(observation)
+	return completed
+
 func finish() -> void:
+	var native_ticks := completed_native_ticks()
 	var result := {"schema":"integrated-camera-performance-v1","ok":failures.is_empty(),
 		"failures":failures,"config":config,"fixture_sha256":fixture_hash,"smoke_only":smoke_only,
 		"initial_material_plane_sha256":initial_material_plane_sha256,
 		"elapsed_ms":float(Time.get_ticks_usec()-started_usec)/1000.0,"setup_ms":float(setup_usec)/1000.0,
 		"context":Context.identity(get_script().resource_path,host.world_shader.shader if host != null else null),
 		"frames":frames,"publications":publications,"uploads":uploads,"actions":actions,
+		"measurement_start":{"tick":measurement_start_tick,"world_generation":measurement_world_generation},
 		"worker_participation":participation,
-		"scope":"Real mounted Workbench; rendered-frame waits include test scheduling; Main timers include nested work; native publication values are existing owner observations, not every native tick. GPU timer zero means unavailable, not zero GPU cost. RSS/CPU observation is external. No inference requests.",
+		"scope":"Real mounted Workbench; rendered-frame waits include test scheduling; Main timers include nested work; native tick summary deduplicates observed completed ticks after measurement start, not every native tick. Raw publications can repeat the last tick's values while paused/fenced. GPU timer zero means unavailable, not zero GPU cost. RSS/CPU observation is external. No inference requests.",
 		"measurement_gaps":["No reliable allocation-rate counter","No hardware GPU utilization","Root render timer excludes separate effect viewports; shader timer is CPU submission, not fragment execution"]}
 	if host != null:
 		result.world_extent = [host.world_extent.x,host.world_extent.y]
@@ -282,7 +299,8 @@ func finish() -> void:
 			"worker_frame_state_ms","godot_process_ms","godot_physics_ms","godot_static_memory_bytes"]:
 			result.summary[key] = describe(frames,key)
 		result.summary.upload_ms = describe(uploads,"upload_ms")
-		result.summary.native_tick_ms = describe(publications,"native_tick_ms")
+		result.summary.native_tick_ms = describe(native_ticks,"native_tick_ms")
+		result.summary.publication_last_native_tick_ms = describe(publications,"native_tick_ms")
 		result.summary.action_receipt_ms = describe(actions,"receipt_latency_ms")
 		result.summary.action_presentation_ms = describe(actions,"presentation_latency_ms")
 		result.tick_progress = int(frames.back().tick)-int(frames.front().tick)
@@ -364,6 +382,8 @@ func run() -> void:
 	setup_usec = Time.get_ticks_usec()-started_usec
 	uploaded_serial = host.last_uploaded_render_snapshot_serial
 	publication_serial = host.latest_snapshot.serial
+	measurement_start_tick = host.latest_snapshot.tick_index
+	measurement_world_generation = host.latest_snapshot.render_world_generation
 	var sample_count: int = int(config.get("samples",180))
 	var previous := Time.get_ticks_usec()
 	for index: int in range(sample_count):
