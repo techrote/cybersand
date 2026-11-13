@@ -38,7 +38,7 @@ def verify(package: Path) -> dict:
     engine.require(identity.get("flatten_scope") == SCOPE,
                    "Standalone evaluation lacks its Flatten source/acceptance identity")
     source = package / "source"
-    for path in publication.SOURCE_PATHS:
+    for path in (*publication.SOURCE_PATHS,publication.OWNER_FAILURE_SCRIPT):
         engine.require((source / "godot" / path).is_file(), "Delivered Flatten source is missing: " + path)
     report = package / "qualification/flatten.json"
     engine.require(report.is_file() and identity.get("flatten_qualification_sha256") == engine.runner.sha256(report),

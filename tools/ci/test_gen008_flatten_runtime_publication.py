@@ -96,7 +96,7 @@ class FlattenReceiptAdmission(unittest.TestCase):
         self.native = "d"*64
         self.records = []
         self.storage_fixture()
-        for index, label in enumerate(subject.flatten_labels()):
+        for index, label in enumerate(subject.flatten_labels()[:-2]):
             record = {"label": label, "status": "passed", "exit_code": 0,
                       "sampled_peak_rss_bytes": 1024, "os_peak_rss_bytes": 2048}
             if index < 2:
@@ -127,7 +127,38 @@ class FlattenReceiptAdmission(unittest.TestCase):
                              if phase == "author" else ["flatten-reopened-and-continued.png"]):
                     (frames / name).write_bytes(b"\x89PNG\r\n\x1a\nfixture")
             self.records.append(record)
+        self.owner_failure_fixture()
         self.save_records()
+
+    def owner_failure_fixture(self):
+        identity={"native_sha256":self.native,"os":"Linux","display":"X11",
+                  "godot":subject.workbench.GODOT_DISPLAY_VERSION}
+        identity.update({path:subject.engine.runner.sha256(subject.engine.ROOT/"godot"/path)
+                         for path in (*subject.SOURCE_PATHS,subject.OWNER_FAILURE_SCRIPT)})
+        failure={"simulation_failed":True,"tick_failure_count":1,"failed_tick_index":13,
+                 "last_tick_error":"active scheduling-core capacity exhausted"}
+        owner={"host_instance":100,"worker_instance":-200,"generation":7,"authoring_generation":2,
+               "paint_epoch":5,"agent_epoch":6,"tick":12,"revision":20,"failure_snapshot":failure,"has_failed":True,
+               "baseline_sha256":"b"*64,"baseline_bytes":524288,"setup_sha256":"8"*64,"history_sha256":"9"*64,
+               "undo_entries":3,"redo_entries":0,"physical":{"session":300,"bodies":[[400,500]]}}
+        for phase,pid in (("author",1001),("reopen",1002)):
+            label="owner-failure-"+phase
+            receipt={"schema":"gen008-flatten-owner-failure-v1","phase":phase,"completed":True,
+                     "checks":50,"failures":[],"process_instance":f"{pid:032x}","pid":pid,"source_identity":identity,
+                     "expected_plane_sha256":"c"*64,"saved_plane_sha256":"c"*64,"saved_baseline_sha256":"b"*64,"saved_file_sha256":"d"*64,
+                     "side":512,"canonical_bytes":524288,
+                     "failure_count":1,"failure_reason":failure["last_tick_error"]}
+            if phase=="author":
+                receipt.update(pre_fault_native_plane_sha256="c"*64,failure_snapshot=failure,
+                               owner_before_save=owner,owner_after_save=copy.deepcopy(owner),owner_preserved=True,
+                               history_entries_before_fault=3,fence_checks={name:True for name in (
+                                   "prepared_transaction","native_capture_lease","pending_flatten","pending_manual_edit",
+                                   "pending_agent_edit","pending_step","failed_flatten","failed_reset","failed_restore",
+                                   "unconfirmed_legacy_recipe")})
+            else: receipt.update(reconstructed_plane_sha256="c"*64,continued_authoring=True)
+            self.records.append({"label":label,"status":"passed","exit_code":0,"sampled_peak_rss_bytes":1024,
+                                 "os_peak_rss_bytes":2048,"completion":receipt})
+            self.log(label,"FLATTEN_OWNER_FAILURE_RESULT "+json.dumps(receipt)+"\n")
 
     def storage_fixture(self, platform="linux"):
         directory = self.directory / "storage-faults"
@@ -202,7 +233,7 @@ class FlattenReceiptAdmission(unittest.TestCase):
         return subject.verify_flatten_cases(self.directory, "linux", self.native, subject.engine.ROOT / "godot")
 
     def test_complete_registered_receipt_fixture_is_admitted(self):
-        self.assertEqual(len(self.verify()), 10)
+        self.assertEqual(len(self.verify()), 12)
 
     def test_partial_reordered_failed_or_missing_original_log_refuses(self):
         original_records = copy.deepcopy(self.records)
@@ -305,6 +336,45 @@ class FlattenReceiptAdmission(unittest.TestCase):
                     (self.directory/"storage-faults/locked-source-bytes/target-after-refusal.bin").write_bytes(b"lost old save")
                 self.write("storage-faults.json",report)
                 with self.assertRaises(RuntimeError): subject.verify_storage_faults(self.directory,"windows")
+
+    def test_native_owner_recovery_cannot_be_missing_fake_or_reopen_different_data(self):
+        original_records=copy.deepcopy(self.records)
+        for mutation in ("missing","wrong-fixture","wrong-source","plane","pre-fault-plane","fake-failure",
+                         "wrong-capacity","different-capacity","owner-changed","same-process","same-pid","no-editing",
+                         "weakened-fence","unconfirmed-recipe","missing-body","zero-body","epoch-zero","history-lost","saved-plane"):
+            with self.subTest(mutation=mutation):
+                self.records=copy.deepcopy(original_records)
+                author,reopen=self.records[-2]["completion"],self.records[-1]["completion"]
+                if mutation=="missing": self.records.pop()
+                if mutation=="wrong-fixture": author["source_identity"][subject.OWNER_FAILURE_SCRIPT]="f"*64
+                if mutation=="wrong-source": reopen["source_identity"][subject.SOURCE_PATHS[0]]="f"*64
+                if mutation=="plane": reopen["reconstructed_plane_sha256"]="e"*64
+                if mutation=="pre-fault-plane": author["pre_fault_native_plane_sha256"]="e"*64
+                if mutation=="fake-failure": author["failure_snapshot"]={"simulation_failed":True}
+                if mutation=="wrong-capacity": author["failure_reason"]="synthetic worker flag"
+                if mutation=="different-capacity":
+                    author["failure_reason"]=reopen["failure_reason"]="pressure component capacity exhausted"
+                    author["failure_snapshot"]["last_tick_error"]=author["failure_reason"]
+                    for key in ("owner_before_save","owner_after_save"):
+                        author[key]["failure_snapshot"]["last_tick_error"]=author["failure_reason"]
+                if mutation=="owner-changed": author["owner_after_save"]["generation"]+=1
+                if mutation=="same-process": reopen["process_instance"]=author["process_instance"]
+                if mutation=="same-pid": reopen["pid"]=author["pid"]
+                if mutation=="no-editing": reopen["continued_authoring"]=False
+                if mutation=="weakened-fence": author["fence_checks"]["native_capture_lease"]=False
+                if mutation=="unconfirmed-recipe": author["fence_checks"]["unconfirmed_legacy_recipe"]=False
+                if mutation in ("missing-body","zero-body","epoch-zero","history-lost"):
+                    for key in ("owner_before_save","owner_after_save"):
+                        if mutation=="missing-body": author[key]["physical"]["bodies"]=[]
+                        if mutation=="zero-body": author[key]["physical"]["bodies"]=[[400,0]]
+                        if mutation=="epoch-zero": author[key]["paint_epoch"]=0
+                        if mutation=="history-lost": author[key]["undo_entries"]=0
+                if mutation=="saved-plane": author["saved_plane_sha256"]="e"*64
+                for record in self.records:
+                    if record["label"].startswith("owner-failure-"):
+                        self.log(record["label"],"FLATTEN_OWNER_FAILURE_RESULT "+json.dumps(record["completion"])+"\n")
+                self.save_records()
+                with self.assertRaises(RuntimeError): self.verify()
 
 
 if __name__ == "__main__":

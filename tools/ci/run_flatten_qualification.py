@@ -290,6 +290,7 @@ def flatten(args):
         manifest = None
     runner = MeasuredRunner(args)
     runner.env.pop("FLATTEN_REOPEN", None)
+    runner.env.pop("FLATTEN_OWNER_FAILURE_REOPEN", None)
     if manifest:
         runner.env["CYBERSAND_SOURCE_REVISION"] = manifest["source_commit"]
     project = args.project.resolve()
@@ -327,6 +328,32 @@ def flatten(args):
             elif (author["process_instance"] == result["process_instance"]
                   or author["source_identity"] != result["source_identity"]):
                 raise RuntimeError("Reopen was not a new process with identical source/runtime bytes")
+    # Genuine native quarantine is separate from ordinary capture cancellation.
+    # Both source and delivered-copy runs must rescue already acknowledged data
+    # and then reopen it in another process without touching the failed World.
+    owner_data = runner.evidence / "owner-failure-userdata"
+    owner_author = None
+    for phase in ("author", "reopen"):
+        label = "owner-failure-"+phase
+        text = runner.godot(project,label,"test_workbench_flatten_owner_failure","FLATTEN_OWNER_FAILURE_RESULT",
+                            graphical=not args.headless,max_fps=60,env={
+                                "FLATTEN_OWNER_FAILURE_REOPEN":"1" if phase=="reopen" else "0",
+                                "FLATTEN_REQUIRE_GRAPHICS":"0" if args.headless else "1",
+                                "FLATTEN_REOPEN":"0","FLATTEN_SIDE":"512","FLATTEN_WORKERS":"1",
+                                "XDG_DATA_HOME":str(owner_data),"APPDATA":str(owner_data)})
+        result = completion(text,"FLATTEN_OWNER_FAILURE_RESULT")
+        if (result.get("schema") != "gen008-flatten-owner-failure-v1" or
+                result.get("completed") is not True or result.get("phase") != phase):
+            raise RuntimeError("Native owner recovery fixture did not complete: "+label)
+        if not args.headless and result.get("source_identity",{}).get("display","").lower()=="headless":
+            raise RuntimeError("Native owner recovery must use the requested graphical target OS")
+        if phase=="author": owner_author=result
+        elif (owner_author["process_instance"]==result["process_instance"] or owner_author["pid"]==result["pid"]
+              or owner_author["source_identity"]!=result["source_identity"]
+              or owner_author["expected_plane_sha256"]!=result.get("reconstructed_plane_sha256")
+              or any(owner_author[field]!=result.get(field) for field in
+                     ("expected_plane_sha256","saved_baseline_sha256","saved_file_sha256"))):
+            raise RuntimeError("Native owner recovery did not reopen exact saved data in a new source-matched process")
     path = args.evidence.resolve() / "storage-faults.json"
     return {"status": "passed", "report_sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
 

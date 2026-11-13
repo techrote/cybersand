@@ -114,8 +114,10 @@ Independent integration review found that failed-owner **Reset / R** still
 carried only the Setup-v2 recipe through the old recovery envelope. After
 Flatten that would lose the baseline. Reset now refuses this unsupported
 recipe-only recovery path for generated/material starts, as Restore already
-does; the original authored state remains intact. Native owner failure still
-requires application restart and loading a saved authored start.
+does; the original authored state remains intact. A later review found that Save
+still inherited the general failed-owner refusal, leaving an unsaved retained
+baseline without that recovery route. The correction and its separate required
+native-fault/fresh-process gate are recorded below.
 
 The first complete fresh-process oracle found a real integration defect:
 `microscenario_host.gd` forwarded generated terrain but omitted the standalone
@@ -198,6 +200,77 @@ The native helper is listed in all three existing extension build source lists
 (Linux, Windows and Web); the Web edit only preserves link compatibility and
 does not claim additional Web qualification.
 
+### Settled authored Save after native owner quarantine
+
+The second campaign ran source
+`529c5df85193363f7e67d5153590157da15dc908`, tree
+`f3326887dd24f374a3173585b15f678a18b5e5b6`, run `43520857816`. Its original
+native contract and ASan/UBSan artifacts passed with the target's default leak
+detection enabled. The original Linux catalogue reports **231/231 tests**, no
+skips, failures or errors, in 474.226 seconds. Source/tree identities and artifact
+digests were read back independently. The native artifact SHA-256 is
+`6cdfafa587f54b08da5540fe40c708397156d1f617e2df85c69c744f91e97031`;
+the Linux catalogue artifact SHA-256 is
+`bb7bcb7e9a9e343b57ffc6ae50c4a0ecdf430ac5b18ed656df3920db585482ff`.
+These results remain evidence for that exact source and its atomic replacement
+helper. The campaign is preliminary for final acceptance because it predates the
+following Save admission correction.
+
+The previous `save_setup` entry used the ordinary editing `busy()` gate, which
+includes native-owner failure. That correctly prevented editing but also refused
+writing an otherwise settled retained authored document. The correction introduces
+Save-specific admission. It retains pending prepared/step/Flatten guards, worker
+edit/receipt slots, agent/manual queues and the PAINT editor's partial-history Save
+hold. It repeats these checks after polling agent completions. Only the failed-owner
+condition is excluded; general editing admission remains unchanged.
+
+The final admission rule additionally refuses any four-field legacy disc recipe
+after owner failure. These intended brush instructions lack individual native
+acknowledgement; their execution cannot be established from a quarantined owner.
+This is a conservative refusal even when an older instruction may have executed.
+The complete authored document and valid saves are preserved. Healthy Save and
+legacy readers are unchanged; retained material baselines with acknowledged
+five-field PAINT/Art overlays remain eligible under the other Save fences.
+
+The existing format writers persist retained authored data without reading the
+failed native World. A successful Save leaves the owner quarantined and directs
+the user to completely exit, restart and Load. Flatten and unsafe recipe-only
+Reset/Restore refuse with the same recovery guidance. This allows an acknowledged
+flattened baseline that was never saved before the fault to be retained without
+claiming recovery of runtime physics or unacknowledged edits.
+
+The required new gate causes an actual native capacity failure after Flatten and
+acknowledged edits. It must prove that Save leaves the failed owner untouched,
+then terminate that process and reopen the saved start in a fresh process for a
+complete native material-plane comparison and continued authoring. The two
+processes join the source, runtime and delivered-package qualification inventory;
+synthetic fault/receipt checks cannot substitute for them.
+
+The final focused local pair passed **53 author checks and 44 fresh-process
+checks** using official Godot 4.7, Linux headless execution and the corrected
+extension `b4f0a70d92bb4626ac1e582cc2438a0ec24934d18b4dbb05b1892f025aa69deb`.
+The real owner recorded exactly one scheduling-core capacity failure on attempted
+tick one. Save preserved that owner's instance, generation, Rapier session and
+three history entries. All ten admission/failure controls passed, including the
+unconfirmed legacy recipe refusal. Pre-fault native cells, independently expected
+cells, saved reconstruction and fresh-process native cells each contain 524,288
+bytes with SHA-256
+`c3c3539252b1fc959405f6d4421fea004808158b20abfa99b7e933c2e07e4fb7`.
+Manual/agent edits and two Undo/two Redo operations continued after Load. Measured
+Save was 15.499 ms; fresh-process Load was 1,202.785 ms on this local fixture.
+
+The superseding original logs are `owner-failure-final-local/author.log`
+(SHA-256 `76c22eee07be9cb24d29bc3b51c786b67df630eac476d6eb18db67a6867f62d0`)
+and `owner-failure-final-local/reopen.log`
+(`f78bff39bd5b8b7f21ed6ab0e2517bfa606406adb0d9871127664dd43a9d8ac2`).
+Both receipts bind `shared_workbench.gd` to
+`1dc55ceca214483cf52f8adf0a6a2e470cd676e2db8776391edeca800c586c37` and
+`test_workbench_flatten_owner_failure.gd` to
+`eee94613fedb853ce5a99ed680cd09823258595b9d90022d5c9d1baf32b56d50`.
+This is local diagnostic evidence with the recorded compiler drift. Final
+acceptance still requires a successor source-bound graphical Linux/Windows
+campaign that includes this correction and the new evidence.
+
 ## Hosted acceptance and remaining authority
 
 The dedicated qualification workflow reuses the accepted MAT-AUTH/Workbench
@@ -205,7 +278,9 @@ publisher, complete source/installed regressions and package custody checks.
 Both actual target OS runs must pass the complete native-backed Flatten matrix
 at 512², 1024², 2048² and a separate four-worker case; all required phases,
 checksums, native array witnesses, fresh-process identities, graphical images,
-performance and process-memory records are independently read back. An exact
+performance and process-memory records are independently read back. The additional
+genuine native-fault Save/reopen pair is mandatory on both platforms and in the
+delivered-copy smoke. An exact
 four-path, leased runtime/provenance publication precedes the final independent
 Documentation, Native, GDExtension/Godot and relevant Palette gates.
 

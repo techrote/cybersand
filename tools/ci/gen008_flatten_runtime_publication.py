@@ -44,6 +44,7 @@ engine.BUILD_EXACT = (set(engine.BUILD_EXACT) - {_previous_workflow, _previous_r
 }
 _verify_workbench_bundle = workbench.verify_materials_bundle
 CASES = ((512, 1), (1024, 1), (2048, 1), (512, 4))
+OWNER_FAILURE_SCRIPT = "tests/test_workbench_flatten_owner_failure.gd"
 SOURCE_PATHS = (
     "scripts/main.gd", "scripts/shared_workbench.gd", "scripts/simulation_worker.gd",
     "scripts/microscenario_host.gd",
@@ -62,7 +63,7 @@ def __getattr__(name):
 def flatten_labels() -> list[str]:
     return ["flatten-import", "standalone-format-adversarial", *[
         f"side-{side}-workers-{workers}-{phase}" for side, workers in CASES
-        for phase in ("author", "reopen")]]
+        for phase in ("author", "reopen")], "owner-failure-author", "owner-failure-reopen"]
 
 
 def evidence_files(directory: Path) -> dict[str, str]:
@@ -190,7 +191,8 @@ def verify_flatten_cases(directory: Path, platform: str, native_sha: str,
                    "Material format completion is missing or ambiguous")
     wb.completion(format_log, "WORKBENCH_MATERIAL_BASELINE")
     pairs = {}
-    for entry in records[2:]:
+    normal_end = 2+2*len(CASES)
+    for entry in records[2:normal_end]:
         label = entry["label"]
         match = re.fullmatch(r"side-(512|1024|2048)-workers-(1|4)-(author|reopen)", label)
         engine.require(match is not None, "Unregistered Flatten execution")
@@ -255,7 +257,91 @@ def verify_flatten_cases(directory: Path, platform: str, native_sha: str,
             previous = pairs[(side, workers)]
             engine.require(previous["process_instance"] != instance and previous["source_identity"] == identity,
                            "Reopen did not use a new process with identical source/runtime bytes")
+    verify_owner_failure_cases(directory,records[normal_end:],platform,native_sha,project)
     return records
+
+
+def verify_owner_failure_cases(directory: Path, records: list[dict], platform: str,
+                               native_sha: str, project: Path) -> None:
+    import run_workbench_qualification as wb
+    engine.require([entry.get("label") for entry in records] == ["owner-failure-author","owner-failure-reopen"],
+                   "Native owner recovery requires both original processes after the complete normal matrix")
+    author = None
+    for entry,phase in zip(records,("author","reopen")):
+        text = (directory/(entry["label"]+".log")).read_text(encoding="utf-8")
+        engine.require(len(re.findall(r"(?m)^FLATTEN_OWNER_FAILURE_RESULT ",text)) == 1,
+                       "Native owner recovery completion is missing or ambiguous")
+        receipt = wb.completion(text,"FLATTEN_OWNER_FAILURE_RESULT")
+        engine.require(receipt == entry.get("completion") and receipt.get("schema") == "gen008-flatten-owner-failure-v1"
+                       and receipt.get("completed") is True and receipt.get("phase") == phase,
+                       "Native owner recovery receipt differs from its original complete process")
+        identity = receipt.get("source_identity",{})
+        engine.require(identity.get("os") == ("Windows" if platform=="windows" else "Linux") and
+                       identity.get("display","").lower() == ("windows" if platform=="windows" else "x11") and
+                       identity.get("godot") == workbench.GODOT_DISPLAY_VERSION and
+                       identity.get("native_sha256") == native_sha and
+                       all(identity.get(path) == engine.runner.sha256(project/path)
+                           for path in (*SOURCE_PATHS,OWNER_FAILURE_SCRIPT)),
+                       "Native owner recovery did not use the exact graphical source/runtime and fixture")
+        engine.require(re.fullmatch(r"[0-9a-f]{32}",str(receipt.get("process_instance",""))) is not None and
+                       type(receipt.get("pid")) is int and receipt["pid"] > 0,
+                       "Native owner recovery omitted its original process identity")
+        for field in ("expected_plane_sha256","saved_plane_sha256","saved_baseline_sha256","saved_file_sha256"):
+            engine.require(re.fullmatch(r"[0-9a-f]{64}",str(receipt.get(field,""))) is not None,
+                           "Native owner recovery omitted a complete saved-plane identity: "+field)
+        engine.require(type(receipt.get("failure_count")) in (int,float) and receipt["failure_count"] == 1 and
+                       receipt.get("failure_reason") == "active scheduling-core capacity exhausted",
+                       "Native owner recovery did not retain the genuine native capacity failure")
+        engine.require(receipt["saved_plane_sha256"] == receipt["expected_plane_sha256"] and
+                       receipt.get("side") == 512 and receipt.get("canonical_bytes") == 524288,
+                       "Native owner recovery omitted its exact complete decoded authored plane")
+        if phase=="author":
+            failure = receipt.get("failure_snapshot",{})
+            before,after = receipt.get("owner_before_save",{}),receipt.get("owner_after_save",{})
+            engine.require(failure.get("simulation_failed") is True and type(failure.get("tick_failure_count")) is int and
+                           failure["tick_failure_count"] == 1 and
+                           type(failure.get("failed_tick_index")) is int and failure["failed_tick_index"] >= 1 and
+                           failure.get("last_tick_error") == receipt["failure_reason"],
+                           "Native owner recovery contains only a synthetic failure flag, not a native failure snapshot")
+            engine.require(receipt.get("owner_preserved") is True and isinstance(before,dict) and before and before==after,
+                           "Saving acknowledged data changed or replaced the quarantined native owner/history")
+            integers=("host_instance","worker_instance","generation","authoring_generation","paint_epoch","agent_epoch",
+                      "tick","revision","baseline_bytes","undo_entries","redo_entries")
+            engine.require(all(type(before.get(field)) is int for field in integers) and
+                           before["host_instance"] != 0 and before["worker_instance"] != 0 and
+                           before["generation"] > 0 and before["authoring_generation"] >= 2 and
+                           before["paint_epoch"] > 0 and before["agent_epoch"] > 0 and
+                           before["tick"] >= 0 and failure["failed_tick_index"] > before["tick"] and
+                           before["undo_entries"] >= 0 and before["redo_entries"] >= 0 and
+                           before.get("has_failed") is True and before.get("failure_snapshot") == failure and
+                           before["baseline_bytes"] == 524288 and before.get("baseline_sha256") == receipt["saved_baseline_sha256"] and
+                           all(re.fullmatch(r"[0-9a-f]{64}",str(before.get(field,""))) is not None
+                               for field in ("setup_sha256","history_sha256")) and
+                           isinstance(before.get("physical"),dict) and {"session","bodies"}.issubset(before["physical"]) and
+                           type(before["physical"].get("session")) is int and before["physical"]["session"] != 0 and
+                           isinstance(before["physical"].get("bodies"),list) and before["physical"]["bodies"] and
+                           all(isinstance(body,list) and len(body)==2 and
+                               all(type(value) is int and value != 0 for value in body) for body in before["physical"]["bodies"]) and
+                           type(receipt.get("history_entries_before_fault")) is int and
+                           before["undo_entries"] == receipt["history_entries_before_fault"] >= 3,
+                           "Native owner recovery lacks unchanged native/physical identity and acknowledged-history evidence")
+            required_fences={"prepared_transaction","native_capture_lease","pending_flatten","pending_manual_edit",
+                             "pending_agent_edit","pending_step","failed_flatten","failed_reset","failed_restore",
+                             "unconfirmed_legacy_recipe"}
+            engine.require(all(receipt.get("fence_checks",{}).get(name) is True for name in required_fences),
+                           "Native owner recovery weakened a pending-edit/capture/transaction or failed-owner fence")
+            engine.require(receipt.get("pre_fault_native_plane_sha256") == receipt["expected_plane_sha256"],
+                           "Native pre-fault stored cells differ from the independent authored expectation")
+            author=receipt
+        else:
+            engine.require(receipt.get("continued_authoring") is True and
+                           receipt.get("reconstructed_plane_sha256") == author["expected_plane_sha256"] and
+                           all(receipt.get(field) == author[field] for field in
+                               ("expected_plane_sha256","saved_plane_sha256","saved_baseline_sha256","saved_file_sha256","failure_count","failure_reason")),
+                           "Fresh recovery did not reconstruct the exact saved material plane and continue authoring")
+            engine.require(receipt["process_instance"] != author["process_instance"] and receipt["pid"] != author["pid"] and
+                           identity == author["source_identity"],
+                           "Native owner recovery reused a process or changed its tested source/runtime")
 
 
 def verify_flatten(directory: Path, platform: str, source: str, native_sha: str) -> dict:

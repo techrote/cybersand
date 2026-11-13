@@ -393,6 +393,8 @@ func _refuse_flatten(reason: String) -> Dictionary:
 func request_flatten(capacity_bytes: int = 2048*2048*2) -> Dictionary:
 	if host == null or applied.is_empty(): return _refuse_flatten("No native Workbench is installed.")
 	if is_flatten_pending(): return {"ok":false,"reason":"Flatten is already preparing."}
+	if host.simulation_worker.has_failed():
+		return _refuse_flatten("Native owner failed. Save the settled authored start, then restart the application and Load it.")
 	if busy(): return _refuse_flatten("Wait for the current owner/paint transaction before Flatten.")
 	if paint_editor != null and (paint_editor.dragging or paint_editor.recovery_required()):
 		return _refuse_flatten("Finish the paint gesture, or Undo the partial edit, before Flatten.")
@@ -842,7 +844,7 @@ func move_selected() -> bool:
 func reset_selected() -> bool:
 	if host.simulation_worker.has_failed():
 		if not _generated_active.is_empty() or not _material_baseline.is_empty():
-			return refuse("Native owner failed. Restart the application and load the saved authored start.")
+			return refuse("Native owner failed. Save the settled authored start, then restart the application and Load it.")
 		return host.workbench_restart(applied)
 	if selected_id() == 0: return refuse("Choose a flyer under Pilot or select an instance to reset.")
 	return _change_actor(applied,selected_id(),"Reset")
@@ -851,7 +853,7 @@ func restore_start() -> bool:
 	if applied.is_empty(): return refuse("No starting setup is installed.")
 	if host.simulation_worker.has_failed():
 		if not _generated_active.is_empty() or not _material_baseline.is_empty():
-			return refuse("Native owner failed. Restart the application and load the saved authored start.")
+			return refuse("Native owner failed. Save the settled authored start, then restart the application and Load it.")
 		return host.workbench_restart(applied)
 	return apply(applied,false,0,false,false,_generated_active,_material_baseline)
 
@@ -898,24 +900,47 @@ func apply_liquids() -> bool:
 	message = "Preparing liquid settings…"
 	return true
 
-func save_setup() -> bool:
+func _save_block_reason() -> String:
+	if host == null or host.simulation_worker == null or applied.is_empty():
+		return "No acknowledged authored start is available to save."
+	if not host.pending_microscenario_apply.is_empty() or step_pending or is_flatten_pending():
+		return "Wait for the current owner transaction before saving."
 	# Admission is not completion. Ordinary brush commands and both editors
 	# retain the shared owner boundary until native work/receipts are settled.
 	var edits: Dictionary = host.simulation_worker.paint_state()
 	if bool(edits.get("busy",false)) or bool(edits.get("art_busy",false)) \
-			or bool(edits.get("legacy_busy",false)) or bool(edits.get("transition_busy",false)):
-		return refuse("Wait for all native edits and their completion receipts before saving.")
+			or bool(edits.get("legacy_busy",false)) or bool(edits.get("transition_busy",false)) \
+			or bool(edits.get("flatten_busy",false)):
+		return "Wait for all native edits and their completion receipts before saving."
+	if host.simulation_worker.has_failed():
+		for stamp: Array in applied.edits:
+			if stamp.size()==4:
+				return "Legacy brush execution cannot be confirmed after native failure. Save refused; existing authoring history is retained."
+	return ""
+
+func save_setup() -> bool:
+	var blocked := _save_block_reason()
+	if not blocked.is_empty(): return refuse(blocked)
 	if paint_editor != null and not paint_editor.save_allowed(): return false
 	if art_batches != null:
 		art_batches.executor.poll()
-		if art_batches.executor.active: return refuse("Drawing still queued or executing; Stop/wait before saving.")
-	if not _editable(): return false
+		var executor: RefCounted = art_batches.executor
+		if executor.active or executor.waiting or not executor.manual.is_empty() or not executor.manual_inflight.is_empty():
+			return refuse("Drawing still queued or executing; Stop/wait before saving.")
+	# Polling can settle a receipt or admit deferred work. Recheck every edit
+	# fence, but do not reject a settled authored document merely because its
+	# live native owner is quarantined. This Save never reads that World.
+	blocked = _save_block_reason()
+	if not blocked.is_empty(): return refuse(blocked)
+	if paint_editor != null and not paint_editor.save_allowed(): return false
 	var error := MaterialBaseline.write_named(_name.text,applied,_material_baseline) if not _material_baseline.is_empty() else (
 		GeneratedMaps.write_named(_name.text,applied,_generated_active)
 		if not _generated_active.is_empty() else Setup.write_named(_name.text,applied))
 	if not error.is_empty(): return refuse(error)
 	message = ("Saved flattened material start · " if not _material_baseline.is_empty() else "Saved generated starting map · " if not _generated_active.is_empty()
 		else "Saved starting setup · ") + _name.text
+	if host.simulation_worker.has_failed():
+		message += ". Native owner remains failed; restart the application and Load this start. Failed runtime state was not captured."
 	return true
 
 func load_setup() -> bool:

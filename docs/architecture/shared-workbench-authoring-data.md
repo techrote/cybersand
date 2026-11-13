@@ -151,9 +151,41 @@ not retire unrelated history or cancel a pending model request.
 
 No Undo Flatten, previous-World rollback or special simulated-world capture mode
 exists. Ordinary subsequent Undo/Redo and explicit Restore retain their existing
-bounded semantics. A native owner that has already failed cannot be captured;
-restart and Load a previously saved start. Process death before explicit Save
-cannot change an existing named file.
+bounded semantics. Process death before explicit Save cannot change an existing
+named file.
+
+### Recovery after a native owner fault
+
+A failed native owner cannot be captured or edited. Its already acknowledged
+authored document remains independent of the quarantined live World. Explicit
+**Save start** may persist that retained document, including an unsaved flattened
+baseline and subsequent acknowledged edits, once all edit and replacement work
+has settled. Save does not read current native cells, attempt another Flatten,
+reset the World, clear the fault or create a simulation checkpoint.
+
+This recovery route bypasses only the general failed-owner admission refusal.
+Queued/executing edits, unconsumed native completion receipts, agent/manual
+queues, prepared replacements, pending Flatten and a partial-edit Save hold
+still refuse Save. The editor and worker fences are checked again after polling
+agent completions, so polling cannot admit new work through an earlier check.
+A refusal does not discard the retained baseline/history or change valid saves.
+
+After native failure, Save also conservatively refuses **any four-field legacy
+disc recipe** in `applied.edits`. Those intended brush instructions have no
+individual native acknowledgement, so their execution cannot be confirmed from
+the failed owner. The refusal preserves the complete authored document. A retained
+flattened baseline with acknowledged five-field PAINT/Art overlays remains eligible
+once the other guards settle. This restriction applies only after owner failure;
+healthy Save behavior and the Setup-v2/generated-start-v1 readers are unchanged.
+
+After a successful Save, completely exit the application, restart and **Load
+start** into a fresh native owner. Load reconstructs the saved material baseline,
+acknowledged overlays and supported actor/configuration state with normal initial
+physics. Runtime changes since Flatten remain outside that authored document.
+Failed-owner **Reset / R** and **Restore start** remain refused for generated or
+flattened starts because their legacy recipe-only recovery route cannot preserve
+those baselines; the refusal directs the user to Save, restart and Load. Recovery
+does not promise to turn unacknowledged or partial work into a saved edit.
 
 ### Standalone material-baseline v1 container
 
@@ -257,5 +289,10 @@ No combined pass is inferred from individually green branches.
 
 #548 additionally requires full per-cell stored-ID comparison, unchanged live
 World/tick/actor/transient state, stale-authoring refusal, corruption/capacity/failure
-controls and fresh-process standalone-baseline persistence. Human GUI acceptance is separate from hosted
-graphics. No new numeric performance target is asserted by this contract.
+controls and fresh-process standalone-baseline persistence. A real native capacity
+failure must quarantine the owner after Flatten and acknowledged edits; explicit
+Save must preserve the settled authored document without capturing or restarting
+that failed World. After the author process exits, a fresh process must reconstruct
+every expected stored material and continue editing. Synthetic receipt failures
+alone do not establish this recovery path. Human GUI acceptance is separate from
+hosted graphics. No new numeric performance target is asserted by this contract.

@@ -69,6 +69,31 @@ Materials Lab authoring tools; its separate launcher remains available.
 Report the evaluation source SHA, ZIP SHA-256, saved name and exact steps for any
 failure. Automated graphical frames do not substitute for this owner interaction.
 
+## Recovering after a native owner fault
+
+If the native simulation reports a fault, keep the application open and explicitly
+**Save named start**. A settled authored document can be saved even when its
+flattened baseline has not previously been written to disk. The saved content is
+the retained baseline, acknowledged edits and supported actor/configuration data.
+Save does not capture the failed World or include simulation changes since Flatten.
+The success message confirms that the native owner remains failed.
+
+Pending edits, unconsumed completion receipts, partial edits, prepared replacements
+and pending Flatten still block Save. Follow the stated refusal; the recovery path
+does not bypass those guards. A failed Save preserves the prior valid named file.
+
+Save also refuses after owner failure if the document contains any four-field
+legacy disc instruction: its native execution has no individual acknowledgement.
+The refusal retains all authored data. A flattened baseline with acknowledged
+PAINT/Art edits can use the recovery route when the remaining guards are settled.
+Healthy Save and the existing legacy readers retain their original behavior.
+
+After Save succeeds, completely exit, restart and Load the saved name. The new
+process reconstructs an ordinary authored start with normal initial physics.
+Flatten and editing remain unavailable on the failed owner. Reset / R and Restore
+start also refuse their unsafe recipe-only recovery path for generated or flattened
+starts, with guidance to Save, restart and Load.
+
 ## Source-backed qualification
 
 The dedicated `gen008-flatten-qualification.yml` workflow is limited to the feature
@@ -102,6 +127,21 @@ framebuffers are retained with native material hashes and application/runtime in
 hashes. The format regression separately covers truncated, corrupt, unsupported,
 oversized and failed-write cases, plus legacy format routing; the retained native
 history regression provides real legacy fresh-process compatibility evidence.
+
+Two additional processes exercise a genuine native capacity failure after Flatten
+and acknowledged edits, rather than setting a test failure flag or injecting a
+synthetic completion. The fault must quarantine the real owner. Flatten and unsafe
+Reset/Restore must refuse; explicit Save must preserve the quarantined owner and
+its existing authored data without capturing, restarting or resetting that World.
+The author process then terminates. A new process loads the saved start, checks
+every reconstructed stored material against the independent pre-fault authored
+plane, then continues painting and Undo/Redo. Pending edits, partial history,
+transitions and captures retain their Save fences. The fault fixture also requires
+explicit refusal for an unconfirmed four-field legacy disc recipe, with no new
+file or loss of authored data.
+The registered source and delivered-copy inventory therefore contains twelve
+required records: import, format validation, eight ordinary author/reopen runs and
+the two owner-failure recovery runs.
 
 Real operating-system storage faults complement malformed-file fixtures. Linux
 limits a child process to a 64 KiB file and exercises both a handled partial write
