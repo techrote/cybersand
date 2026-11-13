@@ -96,3 +96,97 @@ literal-word sanity separately. Evaluation should independently inspect raw
 malformed/semantic failures and native-replay any newly admitted model output.
 Integration can consume this role branch only after checking the exact head
 and source/compiler pins. Production remains Draft/HOLD.
+
+
+## Second corpus checkpoint — theme/phrasing balance and genuine replay
+
+**13 November 2026, after the archived source was re-materialized.** This is
+additive on the corpus role branch; v1 ordering and the frozen step-400 model
+remain unchanged. The original saved archive SHA-256
+`2d2de250731eeea825339e89f752ab8ebc65f3a929daa2c692120d985566948a`
+was reverified, along with all three admitted split hashes and the grouped
+manifest digest. Development and final files were **hash-checked only**; no
+final outputs or evaluator thresholds were accessed.
+
+### Measured bug: global phrasing balance hid theme-level imbalance
+
+The checked-in v1 candidate was globally 200/200 p0/p1 at 400 rows but
+**coral/ribs were 33 p0 to 1 p1**, while **veins/mycelium were 1 p0 to
+33 p1**. This is deterministic parity coupling of the twelve-theme round-robin,
+not a model error. Other themes had the same ~32/1 imbalance. It is a concrete
+training-data presentation defect: the first 400 samples presented essentially
+one of the two original prompt forms for each theme.
+
+Independently replaying Training's currently published
+`keyword-replay-v1` sampler against the exact admitted train corpus
+(seed 731, epoch 0, 400 **sample draws**, accumulation 1) gave **36 literal-word
+draws, 322 distinct native traces, 70/72 groups, theme exposure 27–41, and
+216/184 p0/p1**. Its 376 unique row indices should not be mislabeled
+376 distinct native traces. These are sampling measurements, not training
+results, and Training continues to own its sampler.
+
+### Implemented new corpus-only v2 candidate
+
+`build_balanced_replay.py` is a deterministic, opt-in alternative. It imports
+the **original archived** admitted train data through the v1 loader and
+rechecks its source/native bindings, then changes only ordering/selection.
+It produces a 1,152-row exact-once balanced corpus, plus a separate
+**400-draw diagnostic** that repeats each of the 12 literal words twice
+after the initial 12. This is not a full-epoch training policy.
+
+| Actual first-400 exposure | v1 ordering | Training keyword-replay-v1 | Corpus v2 replay diagnostic |
+| --- | ---: | ---: | ---: |
+| Literal-word draws | 12 | 36 | **36 (3 per theme)** |
+| Distinct native traces | 400 | 322 | **376** |
+| Structural groups | 72 / 72 | 70 / 72 | **72 / 72** |
+| Theme balance | 33–34 | 27–41 | **33–34** |
+| Global prompt phrasing p0/p1 | 200 / 200 | 216 / 184 | **200 / 200** |
+| Per-theme phrasing | as skewed as 33/1 | variable | **16–17 per form** |
+
+Twenty-four deliberately duplicated draws replace 24 otherwise distinct
+source-admitted examples within the comparison window. They are **not new
+positives, new independent structures or new native executions**. This
+exposure comparison does not establish model accuracy, visual recognition
+or production readiness.
+
+The companion immutable
+`curriculum_theme_phrase_replay_v2.json` pins the exact train/dev/final
+custody digests and compiler, and the source v1, balanced order, balanced JSONL,
+400-draw IDs and original row-index digests. A corpus regression suite
+`test_balanced_replay.py` checks parity, trace/group coverage, word replay,
+input refusal and exact archive-manifest regeneration; missing archive data
+causes an explicit SKIP, not a fictitious native PASS.
+
+Independent local prototype validation on the recovered archive passed
+source split/manifest digest checks and exact balanced/replay hashes:
+
+- Balanced order SHA-256:
+  `8c4e1be31766926173eb8427a380b204cd14a0397d978700e5cb8223dc000915`
+- Balanced JSONL SHA-256:
+  `f6a2a03d6ed16c35dadd370bd070f1181cd9d0fc3c3450db69af8874c42b73da`
+- Replay first-400 row-index SHA-256:
+  `1e6492b13613622679850b22dfe85bec348d856eb29b5d2b5dedd8256db733ec`
+
+Reproduce from the archived corpus extracted outside Git:
+
+```bash
+python experiments/wb-art-slm-001/corpus/build_balanced_replay.py \
+  --corpus-dir /absolute/path/to/extracted/corpus \
+  --out /absolute/path/outside/git/balanced-replay
+WB_ART_SLM_CORPUS_DIR=/absolute/path/to/extracted/corpus \
+  python -m unittest discover -s experiments/wb-art-slm-001/corpus \
+  -p 'test_balanced_replay.py'
+```
+
+**Training handoff:** Neither the v1 ordered file nor this v2 first-400 replay
+file automatically affects the existing trainer. Training may adopt a **new,
+separately versioned sampler** only after checking this manifest's source
+identities and ensuring an equal-draw, equal-optimizer-step comparison with
+full checkpoint/resume. Do not rewrite an existing checkpoint policy or
+implicitly increase a 400-step budget. The 400-draw design applies directly
+only when gradient accumulation is 1; otherwise translate the sample cursor.
+
+**Qualification:** no new training, current-main or Windows native execution,
+visual review, material-law change, final-set evaluation or production promotion.
+The pilot receipts remain at the distinct frozen Linux native source; #564/#565
+remain external source owners. Draft/HOLD stays unchanged.
