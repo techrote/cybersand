@@ -6,6 +6,20 @@ Art planner and executor, the shared PAINT history owner, and the compiled
 `CyberNativeCellWorld`. It never substitutes a Python rasterizer for native
 execution.
 
+## Independent blinded model-image review (development only)
+
+The [custody-checked 34-pair native review](blind_model_review.html) hides expected
+themes and prompts, presents both actual host seeds per admitted request, and
+exports local responses. The separate [answer key](blind_model_review_answer_key.json)
+must not be opened by the reviewer before they freeze their answers. Use
+[`blind_native_review.py`](blind_native_review.py) to regenerate and score; run
+[`test_blind_native_review.py`](test_blind_native_review.py) to check the
+source-bound fixture and scoring adversaries. The
+[dated checkpoint](BLIND_REVIEW_CHECKPOINT_2026-11-13.md) retains exact native and
+code hashes, rejections and limits. The two malformed coral requests have no
+images and remain failures in the **36 original-request** denominator. Correct
+symbolic labels and native passes are not equivalent to blind theme recognition.
+
 ## Qualification scope
 
 The bootstrap is a **pinned Linux headless native-material pilot**, using:
