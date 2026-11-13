@@ -1,6 +1,6 @@
 {
   "experiment": "WB-ART-SLM-001",
-  "status": "Fourth Integration intake complete: 17 role-owned paths; independent latest suites 22 PASS/1 archive SKIP; Controls 10/11 PASS with diagnostic assertion mismatch. Main smoke RED; native/current-source Windows/model HOLD",
+  "status": "Fifth intake: 14 independent role-owned files plus Integration POSIX Stop-descendant repair; exact-source independent CI 43 PASS/2 archive SKIP; Controls unchanged diagnostic expectation remains RED; model/native/Windows HOLD",
   "updated_on": "2026-11-13",
   "owner": "five role workers after bootstrap handoff",
   "branch": "codex/wb-art-slm-001",
@@ -49,7 +49,7 @@
     }
   },
   "production_promotion": "HOLD; one Draft #567, no Ready, merge, native/Windows promotion",
-  "next_checkpoint": "Controls role-owned assertion correction for refused altered native crop; rerun exact-head full offline CI. Independent Evaluation bridge review and qualified current-source #565 Windows/Linux authentic model/native/persistence remain required.",
+  "next_checkpoint": "Controls must repair only its own error-substring assertion, then rerun full exact-head smoke. Integration bridge same-process-group late-child Stop repaired and independently verified; Windows owned process-tree/native Stop and host-scope independent review remain HOLD.",
   "pull_request": "https://github.com/techrote/cybersand/pull/567",
   "model_native_cases_passed": 68,
   "combined_gallery_images": 260,
@@ -84,9 +84,9 @@
     "usage": "experiments/wb-art-slm-001/integration/README.md",
     "tests": "experiments/wb-art-slm-001/integration/test_local_art_bridge.py",
     "dependency_board": "experiments/wb-art-slm-001/integration/DEPENDENCIES.json",
-    "tests_executed": 78,
-    "tests_passed": 78,
-    "tests_platform": "Previous exact-source 385bb41f 78 PASS/4 SKIP (historical). New 4e45dc68 run 43383988875 latest-role independent job 22 PASS/1 archive SKIP, but combined workflow FAIL on one Controls diagnostic assertion; other original smoke steps suppressed. No native/model/Windows.",
+    "tests_executed": 43,
+    "tests_passed": 43,
+    "tests_platform": "Exact-source 578324fa Ubuntu 24.04 Python 3.12 independent CI 43 PASS/2 private archive SKIP, actual bridge module synthetic descendant probe PASS; offline-smoke still fails Controls diagnostic mismatch; no trained model/native/Windows",
     "limits": "Actual step-400 model not loaded in this integration test; no current-main native/Godot or Windows execution, screenshots, or independent review",
     "provider_protocol": "Loopback 127.0.0.1:8127/v1/chat/completions single text-only LM Studio-mode request; authentic inference not run in hosted qualification.",
     "material_and_ownership": "Focus and allowed materials/tools captured from host; seed and budgets in bridge launch; existing Godot native Art executor retains receipts, protection, Stop/history/persistence",
@@ -105,18 +105,25 @@
     },
     "receipt_binding": "Exact prompt, host seed, model/adapter identity, false native_execution receipt, compiler, materials/focus/tools, terminated EOS and operations SHA; all hosted mock HTTP protocol tests passed",
     "remaining": "Independent security/source contract review, tested model loaded with authentic private adapter, source-compatible #565, current-source Windows/Linux native World, Stop/history/persistence and owner acceptance",
-    "stop_lifecycle": "On client EOF/Stop, local child is terminated and no late batch returned; Linux actual-handler/fake-subprocess tested; Windows process-tree, active pretrained adapter and real Godot Stop untested.",
+    "stop_lifecycle": "POSIX group TERM then unconditional group KILL after short grace even if direct parent already exited; independent exact-bridge fake descendant probe PASS. Windows child-tree/native Stop and real model remain unqualified.",
     "host_scope": "Captured Workbench authoritative host fields are parsed from appended scope suffix, overriding editable Guidance decoys; source/receipt restrictions still apply.",
-    "tests_discovered": 82,
-    "tests_skipped": 4,
+    "tests_discovered": 45,
+    "tests_skipped": 2,
     "current_head_tests_not_all_pass": true,
     "latest_independent_job": {
-      "source": "4e45dc68114669bd9a93063bd9d35fe692268879",
-      "run": "43383988875",
-      "passed": 22,
-      "skipped": 1,
-      "conclusion": "SUCCESS separate job; full workflow FAILURE",
-      "controls_failure": "test_material_readback_tampering_refused expected 'readback'; actual fail-closed 'stored native crop disagrees with receipt chain'"
+      "source": "578324faefdad3c3fca4c78ce936d5d11daac9a0",
+      "run": "43391302345",
+      "passed": 43,
+      "skipped": 2,
+      "conclusion": "SUCCESS independent job; full workflow FAIL Controls",
+      "stop_probe": {
+        "bridge_git_blob": "dba93212c8b68240f20a2a5082333c9a7dc65c41",
+        "ready_seen": true,
+        "cancel_refusal": true,
+        "late_descendant_write": false,
+        "stop_descendant_invariant_passed": true,
+        "kind": "POSIX model-free SIGTERM-ignoring descendant; native untested"
+      }
     }
   },
   "artifact_recovery": {
@@ -270,6 +277,44 @@
       "new_native_execution": false,
       "windows_accepted": false,
       "frozen_adapter_sha256": "02b9263e543eb464e6b58f1f74960c98d5aec4ec117baddfcf22b4d5dd4c84b2"
+    },
+    "fifth_2026_11_13_0814": {
+      "parent": "87cf3b087ee76f1f575266f8110956849b46ad5b",
+      "roles": [
+        {
+          "role": "corpus",
+          "source_head": "6bd1b5667c4ffae05b0219408d34f616930426d8",
+          "integration_commit": "45a147aea6023efc6953f3d45da7bf5f32ad2011",
+          "files": 4,
+          "scope": "TRAIN-only coral m0 composed failure-witness overlay, synthetic and archived guard"
+        },
+        {
+          "role": "training",
+          "source_head": "e36fbd72b22ab9cf76ad2a03f8f3d827a28872ff",
+          "integration_commit": "53c42c42e5df96e2442444a853ca586c27ce15c4",
+          "files": 6,
+          "scope": "raw evaluation receipt/lease strengthening and model-free regression"
+        },
+        {
+          "role": "evaluation",
+          "source_head": "9c26275f70262907e143374cbb468930cf74eb32",
+          "integration_commit": "d1970e584ce9da090969ced3060f4d13a6526c5d",
+          "files": 4,
+          "scope": "independent POSIX bridge process-group descendant review and full-module audit"
+        }
+      ],
+      "controls_source_head": "ed09d214b971e38aa78992b0aef0530a2aade349",
+      "controls_not_imported": true,
+      "bridge_fix_commit": "dc97b11cb261d9cbceebdf5d4c6f1d616af60313",
+      "bridge_git_blob": "dba93212c8b68240f20a2a5082333c9a7dc65c41",
+      "ci_head": "578324faefdad3c3fca4c78ce936d5d11daac9a0",
+      "ci_url": "https://github.com/techrote/cybersand/actions/runs/43391302345",
+      "independent_passed": 43,
+      "independent_skipped": 2,
+      "full_workflow_green": false,
+      "model_gain_measured": false,
+      "new_native_execution": false,
+      "windows_accepted": false
     }
   }
 }

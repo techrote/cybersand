@@ -1,7 +1,7 @@
 {
   "experiment": "WB-ART-SLM-001",
   "date": "2026-11-13",
-  "status": "Fourth intake: 17 role-owned paths imported; new independent suites 22 PASS/1 archive SKIP, Controls 10/11 PASS with diagnostic-string assertion mismatch; real model/native/Windows HOLD",
+  "status": "Fifth intake: 14 role-owned paths, bounded POSIX child-group Stop repair; independent exact-source 43 PASS/2 archive SKIP; Controls diagnostic assertion still fails full smoke; model/native/Windows HOLD",
   "source": {
     "main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
     "main_preserves": [
@@ -62,26 +62,33 @@
     "tests": "experiments/wb-art-slm-001/integration/test_local_art_bridge.py",
     "runbook": "experiments/wb-art-slm-001/integration/README.md",
     "protocol": "loopback LM Studio /v1/chat/completions; content JSON operations; one-turn text-only",
-    "validation": "Previous exact-source 385bb41f: 78 PASS/4 private archive SKIP. New import 4e45dc68 workflow 43383988875: independent latest-role job 22 PASS/1 archive SKIP; main smoke fails 1 of 11 Controls audit methods because expected 'readback' but actual refusal 'stored native crop disagrees with receipt chain'. This is NOT a passing full workflow, no actual model/native/Windows.",
+    "validation": "Exact source 578324fa: independent job 43 PASS/2 SKIP including actual imported bridge POSIX descendant probe; full offline-smoke still RED on Controls diagnostic-only readback expectation. No real model/native/Windows.",
     "no_actual_model_loaded_this_run": true,
     "no_native_execution_this_run": true,
     "no_windows_execution_this_run": true,
-    "independent_review": "PENDING: Evaluation independent security/provider review of latest Integration-written host scope and child lifecycle; CI is not that review.",
+    "independent_review": "Evaluation 9c26275f reviewed exact prior bridge blob 481475d5 and demonstrated a SIGTERM-resistant descendant leak in source-equivalent test. Integration repaired group kill; imported independent full-module audit PASS against new blob dba93212. Host-scope/Windows/native independent review remains PENDING.",
     "new_protocol_tests_after_import": "Five forged-receipt adverse subcases included in one bridge method; all four test methods PASS in both actual GitHub Actions runs 43364062901/43364068843.",
     "receipt_binding": "Exact prompt, host seed, pinned adapter hash, LFM model identity, native_execution=false, compiler hash, focus size, material, EOS, Art operation hash and allowed tool/material",
     "receipt_hardening_commit": "d2f6a3266e6f522a6a5f8e8a3d9afc3cf315efab",
     "adverse_regressions_commit": "ddbc2b9b3ba8e4ab0423c50b21dd7fb85333e6bb",
-    "exact_head_ci": "4e45dc68114669bd9a93063bd9d35fe692268879",
+    "exact_head_ci": "578324faefdad3c3fca4c78ce936d5d11daac9a0",
     "offline_ci_workflow": ".github/workflows/wb-art-slm-001-smoke.yml",
     "offline_ci_urls": [
-      "https://github.com/techrote/cybersand/actions/runs/43383988875",
-      "https://github.com/techrote/cybersand/actions/runs/43383850451"
+      "https://github.com/techrote/cybersand/actions/runs/43391302345"
     ],
     "offline_ci_scope": "Historical 78 PASS is from prior head; new source has Controls diagnostic-only test failure and independently qualified additional suites. Do not claim current all-pass.",
-    "stop_cancellation": "With HTTP request fully read, socket EOF from Workbench Stop/disconnect terminates owned local inference (POSIX process group, Windows child), releases one-job lock, and returns zero geometry; deadline also terminates. Exact handler-to-fake-child socket Stop and next-request test PASS on hosted Linux. No real model/Windows process tree/Godot Stop tested.",
-    "stop_cancellation_commit": "4e5aed803320bc3629b01f83a48b6c8729c8213d",
+    "stop_cancellation": "POSIX: after TERM, send KILL to owned process group EVEN when direct parent already reaped; actual bridge module + independent synthetic same-group descendant test PASS on hosted Ubuntu at 578324fa. No real model, Windows process-tree, native epoch/Stop or save/reopen acceptance.",
+    "stop_cancellation_commit": "dc97b11cb261d9cbceebdf5d4c6f1d616af60313",
     "stop_tests_commit": "0fc6f9cedeb5b147fe86cb61446354f38db16d8a",
-    "scope_precedence": "Workbench appends native host XYWH, allowed material, enabled shapes and selected material after editable Guidance. Bridge reads the LAST matching field to reject earlier Guidance examples spoofing host scope; adverse synthetic request test passes."
+    "scope_precedence": "Workbench appends native host XYWH, allowed material, enabled shapes and selected material after editable Guidance. Bridge reads the LAST matching field to reject earlier Guidance examples spoofing host scope; adverse synthetic request test passes.",
+    "exact_source_stop_probe": {
+      "bridge_git_blob": "dba93212c8b68240f20a2a5082333c9a7dc65c41",
+      "cancel_refusal": true,
+      "late_descendant_write": false,
+      "stop_descendant_invariant_passed": true,
+      "run": "https://github.com/techrote/cybersand/actions/runs/43391302345",
+      "scope": "synthetic child of local inference; Linux POSIX only"
+    }
   },
   "training_lease": {
     "published_active": false,
@@ -94,33 +101,33 @@
   "workers": {
     "integration": {
       "branch": "codex/wb-art-slm-001",
-      "next": "Controls owned failure repair -> green exact-head CI -> review source-compatible #565 successor and real adapter/native Windows/Linux; preserve deterministic baseline."
+      "next": "Controls source-owner fixes its diagnostic substring and full CI goes green; then compatible #565 runtime + authentic adapter-to-native Windows/Linux/Stop/Undo/save acceptance. Do not adopt pilot."
     },
     "controls": {
       "branch": "codex/wb-art-slm-controls",
       "observed_head": "ed09d214b971e38aa78992b0aef0530a2aade349",
-      "next": "Repair role-owned unit-test diagnostic expectation: tampered native crop is correctly rejected as 'stored native crop disagrees with receipt chain', but test expects 'readback'. Preserve refusal and rerun all 11 then source-compatible 32-pair native qualification.",
+      "next": "Repair 'readback' vs 'stored native crop disagrees with receipt chain' assertion without weakening refusal, independently qualify and hand exact role head.",
       "imported_commit": "ad77b9fbaf02a0c81414ba2e2e7f5732b61a5a7d",
       "continuation_imported_commit": "6d3cab90ed5849adece993b3f1c2e6c92a36e2ff"
     },
     "corpus": {
       "branch": "codex/wb-art-slm-corpus",
-      "observed_head": "9f67881fbfbdf05883e646943319d9a9f014f640",
-      "next": "Validate v3 source-index plan against recovered admitted archive and hand exact original TRAIN indices to Training; do not substitute modified ordered JSONL as admitted TRAIN.",
+      "observed_head": "6bd1b5667c4ffae05b0219408d34f616930426d8",
+      "next": "Verify original admitted TRAIN positions of v4 coral m0 overlay with recovered archive and relay to Training as opt-in, not final-set feedback.",
       "imported_commit": "36d63deb0eb13174e670ec0c46381a1a50390655",
       "continuation_imported_commit": "d15bf4c76cda06a773f4ab25a3cba5ef336634d2"
     },
     "training": {
       "branch": "codex/wb-art-slm-training",
-      "observed_head": "c53f8ef052b7f20a9cf7e4de7d2b50530bfa11f1",
-      "next": "Verify saved evidence and private lease before launching anything; exported original 34 accepted predictions = 68 short-ID cases and raw completions. Only Training may execute bounded new candidate and same DEV comparison.",
+      "observed_head": "e36fbd72b22ab9cf76ad2a03f8f3d827a28872ff",
+      "next": "Inspect private run-parent/lease and pinned model/corpus before any one authorized bounded new candidate; preserve untouched final.",
       "imported_commit": "f98b6c11f83bfdc3fd9e9cdc3bbf3f5fd389bdd0",
       "continuation_imported_commit": "1fcff712cae69ab0f8edfa0019b69063a43e243c"
     },
     "evaluation": {
       "branch": "codex/wb-art-slm-evaluation",
-      "observed_head": "f18ddcf72e4ce8f6e3a897df25818d84620ec439",
-      "next": "Independent Review Integration bridge Stop/scope/receipt; account for 3 blind near-duplicate pairs in visual scorer; later source-compatible native/Windows evidence.",
+      "observed_head": "9c26275f70262907e143374cbb468930cf74eb32",
+      "next": "Independently review post-fix host-scope/preflight/Windows-child-tree caveats; then native visual and stopped-prefix testing when upstream qualifies.",
       "imported_commit": "0bdc089793c2c69a0680dfd0c8278bca45f6ac6f",
       "continuation_imported_commit": "4bd334afcdc8ef06ce87feb37353b6d3e49bcc6a"
     }
@@ -295,6 +302,31 @@
       "windows_graphical": false,
       "baseline_model_unchanged": true,
       "production": "Draft/HOLD"
+    },
+    "fifth_2026_11_13_0814": {
+      "source_before": "87cf3b087ee76f1f575266f8110956849b46ad5b",
+      "roles": {
+        "corpus": {
+          "head": "6bd1b5667c4ffae05b0219408d34f616930426d8",
+          "import": "45a147aea6023efc6953f3d45da7bf5f32ad2011",
+          "files": 4
+        },
+        "training": {
+          "head": "e36fbd72b22ab9cf76ad2a03f8f3d827a28872ff",
+          "import": "53c42c42e5df96e2442444a853ca586c27ce15c4",
+          "files": 6
+        },
+        "evaluation": {
+          "head": "9c26275f70262907e143374cbb468930cf74eb32",
+          "import": "d1970e584ce9da090969ced3060f4d13a6526c5d",
+          "files": 4
+        }
+      },
+      "bridge_stop_fix": "dc97b11cb261d9cbceebdf5d4c6f1d616af60313",
+      "ci": "43391302345; 43 PASS/2 SKIP independent job; Controls fail in main smoke",
+      "model_training": false,
+      "current_native": false,
+      "windows": false
     }
   }
 }
