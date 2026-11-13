@@ -8,9 +8,11 @@ application receipts. Rejected model proposals remain publishable research.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import zipfile
 
@@ -23,6 +25,18 @@ REPOSITORY = "techrote/cybersand"
 CORPUS_RUN = 43506373969
 CORPUS_ARTIFACT = "agent-painter-native-" + contracts.FOUNDATION_SOURCE
 ARMS = ("baseline", "candidate")
+PUBLICATION_FILES = {
+    "experiments/agent_painter/lanes/smol/package.py",
+    "experiments/agent_painter/lanes/smol/tests/test_package.py",
+    "experiments/agent_painter/lanes/smol/publication.py",
+    "experiments/agent_painter/lanes/smol/publication-request.json",
+    "experiments/agent_painter/lanes/smol/README.md",
+    ".github/workflows/agent-painter-smol-publication.yml",
+    ".github/workflows/agent-painter-smol-native.yml",
+}
+PACKAGING_STEP = "Verify checkpoint bytes and package transparent research evidence"
+NATIVE_STEP = "Rebuild unchanged native authority and verify actual raw model drawings"
+NATIVE_JOB = "Current-source native replay and immutable evidence"
 
 
 def require(condition, message):
@@ -80,11 +94,168 @@ def verify_environments(directory, source, tree, run_id, attempt, request):
                               for item in files.values()),
                 arm + ": incomplete model download inventory")
         receipts[arm], downloads[arm] = receipt, download
-    require(receipts["baseline"]["hostname"] != receipts["candidate"]["hostname"],
-            "baseline and candidate must use separate hosted VMs")
+    # Hosted VM image hostnames can repeat. The API registration proof below,
+    # not the guest hostname or shared matrix key, establishes separate jobs.
+    require(receipts["baseline"]["runner_name"] != receipts["candidate"]["runner_name"],
+            "baseline and candidate must use separate runner registrations")
     require(downloads["baseline"]["files"] == downloads["candidate"]["files"],
             "baseline and candidate model bytes differ")
     return receipts, downloads
+
+
+def verify_job_assignments(record, environments, source, run_id, attempt, *, recovery):
+    """Bind immutable model receipts to saved authoritative Jobs API records."""
+    expected = {"schema_version": 1, "repository": REPOSITORY, "source_sha": source,
+                "run_id": run_id, "run_attempt": attempt}
+    require(all(record.get(key) == value for key, value in expected.items()),
+            "job assignment source/run/attempt mismatch")
+    base = f"/repos/{REPOSITORY}/actions/runs/{run_id}"
+    require(record.get("api_path") in (base + "/jobs", base + f"/attempts/{attempt}/jobs"),
+            "job assignment API route differs from producer")
+    response = record.get("response", {})
+    jobs = response.get("jobs", [])
+    require(isinstance(jobs, list) and jobs and response.get("total_count") == len(jobs)
+            and len({row.get("id") for row in jobs}) == len(jobs), "incomplete Jobs API response")
+    selected = {}
+    for arm in (*ARMS, "native"):
+        name = arm + " on independent CPU VM" if arm in ARMS else NATIVE_JOB
+        matches = [row for row in jobs if row.get("name") == name]
+        require(len(matches) == 1, "missing/duplicate authoritative job assignment: " + arm)
+        job = matches[0]
+        require(job.get("run_id") == run_id and job.get("run_attempt") == attempt
+                and job.get("head_sha") == source and type(job.get("id")) is int and job["id"] > 0
+                and type(job.get("runner_id")) is int and job["runner_id"] > 0
+                and job.get("runner_group_name") == "GitHub Actions"
+                and "ubuntu-24.04" in job.get("labels", []), arm + ": wrong producer job/runner assignment")
+        if arm in ARMS:
+            require(job.get("status") == "completed" and job.get("conclusion") == "success"
+                    and job.get("runner_name") == environments[arm]["runner_name"],
+                    arm + ": successful hosted assignment does not match environment receipt")
+        else:
+            steps = job.get("steps", [])
+            native_steps = [row for row in steps if row.get("name") == NATIVE_STEP]
+            require(len(native_steps) == 1 and native_steps[0].get("status") == "completed"
+                    and native_steps[0].get("conclusion") == "success", "producer native execution/build step failed")
+            failures = [row for row in steps if row.get("conclusion") in ("failure", "cancelled", "timed_out")]
+            require(all(row.get("name") == PACKAGING_STEP and row.get("conclusion") == "failure" for row in failures),
+                    "producer failed outside the preserved publication step")
+            if recovery:
+                require(job.get("status") == "completed" and job.get("conclusion") in ("success", "failure")
+                        and (job.get("conclusion") != "failure" or bool(failures)),
+                        "recovery requires a completed producer native job with an explained publication failure")
+            else:
+                require(job.get("status") in ("in_progress", "completed")
+                        and job.get("conclusion") in (None, "success"), "direct publication native job is not active/successful")
+        selected[arm] = {key: job[key] for key in ("id", "run_id", "run_attempt", "head_sha", "name",
+                                                  "runner_id", "runner_name", "runner_group_name", "status", "conclusion")}
+    require(len({selected[arm]["id"] for arm in ARMS}) == 2
+            and len({selected[arm]["runner_id"] for arm in ARMS}) == 2,
+            "baseline and candidate share a job or runner registration")
+    return selected
+
+
+def workflow_without_packaging(text):
+    marker = "      - name: " + PACKAGING_STEP
+    require(text.count(marker) == 1, "publication workflow packaging step is ambiguous")
+    start = text.index(marker)
+    next_step = re.search(r"(?m)^      - (?:name|uses):", text[start + len(marker):])
+    require(next_step is not None, "publication workflow packaging step has no boundary")
+    end = start + len(marker) + next_step.start()
+    return text[:start] + text[end:]
+
+
+def validate_publication_delta(producer_files, publisher_files, workflow_before=None, workflow_after=None):
+    """The execution source cannot drift during an independently pinned repair."""
+    changed = sorted(name for name in set(producer_files) | set(publisher_files)
+                     if producer_files.get(name) != publisher_files.get(name))
+    require(set(changed) <= PUBLICATION_FILES, "publisher changed non-publication execution source: "
+            + ", ".join(sorted(set(changed) - PUBLICATION_FILES)))
+    workflow = ".github/workflows/agent-painter-smol-native.yml"
+    if workflow in changed:
+        require(workflow_before is not None and workflow_after is not None
+                and workflow_without_packaging(workflow_before) == workflow_without_packaging(workflow_after),
+                "publisher changed workflow execution outside the packaging step")
+    return changed
+
+
+def git_tree(root):
+    output = subprocess.check_output(["git", "ls-tree", "-rz", "HEAD"], cwd=root)
+    return {entry.split(b"\t", 1)[1].decode(): entry.split(b"\t", 1)[0].decode()
+            for entry in output.split(b"\0") if entry}
+
+
+def verify_publication_sources(producer_root, producer_source, publisher_root, publisher_source):
+    from native.runtime import source_identity
+    producer_root, publisher_root = Path(producer_root).resolve(), Path(publisher_root).resolve()
+    producer = source_identity(producer_root, producer_source)
+    publisher = source_identity(publisher_root, publisher_source)
+    allowed_binary = "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
+    for root in {producer_root, publisher_root}:
+        dirty = subprocess.check_output(["git", "diff", "--name-only", "HEAD"], cwd=root, text=True).splitlines()
+        require(set(dirty) <= {allowed_binary}, "publication checkout has uncommitted tracked changes")
+    if producer_source != publisher_source:
+        subprocess.run(["git", "merge-base", "--is-ancestor", producer_source, publisher_source],
+                       cwd=publisher_root, check=True)
+    workflow = ".github/workflows/agent-painter-smol-native.yml"
+    changed = validate_publication_delta(git_tree(producer_root), git_tree(publisher_root),
+                                        (producer_root / workflow).read_text(), (publisher_root / workflow).read_text())
+    return producer, publisher, changed
+
+
+def verify_artifact_custody(directory, record, source, run_id, attempt, *, recovery):
+    """Re-read downloaded ZIP bytes and match every extracted producer member."""
+    expected = {"schema_version": 1, "repository": REPOSITORY, "source_sha": source,
+                "run_id": run_id, "run_attempt": attempt}
+    require(all(record.get(key) == value for key, value in expected.items()),
+            "artifact custody source/run/attempt mismatch")
+    entries = record.get("artifacts", [])
+    components = [entry.get("component") for entry in entries]
+    required = {"baseline", "candidate", "native", "build"} if recovery else {"baseline", "candidate"}
+    require(len(components) == len(set(components)) and required <= set(components)
+            and set(components) <= {"baseline", "candidate", "native", "build"},
+            "producer artifact component inventory incomplete")
+    ids, result = set(), []
+    for entry in entries:
+        component, artifact = entry["component"], entry["artifact"]
+        identity = artifact.get("workflow_run", {})
+        require(type(artifact.get("id")) is int and artifact["id"] > 0 and artifact["id"] not in ids
+                and artifact.get("name") == f"smol-{component}-{source}-{run_id}-{attempt}"
+                and identity.get("id") == run_id and identity.get("head_sha") == source
+                and artifact.get("expired") is False, "producer artifact API identity mismatch: " + component)
+        ids.add(artifact["id"])
+        archive_file = common.relative_file(directory, entry["archive_path"])
+        measured = sha(archive_file)
+        require(common.SHA256.fullmatch(str(entry.get("archive_sha256", "")))
+                and measured == entry["archive_sha256"]
+                and archive_file.stat().st_size == entry.get("archive_bytes") == artifact.get("size_in_bytes"),
+                "producer ZIP hash/size mismatch: " + component)
+        require(artifact.get("digest") in (None, "sha256:" + measured),
+                "producer artifact API digest differs from downloaded ZIP")
+        prefix = entry.get("member_prefix", "")
+        require(prefix in ("", "evidence/") and (not prefix or component == "build"),
+                "unsupported producer ZIP prefix")
+        target = directory / {"baseline": "baseline", "candidate": "candidate", "native": "smol-native", "build": ""}[component]
+        members = []
+        with zipfile.ZipFile(archive_file) as stream:
+            require(stream.testzip() is None, "producer ZIP CRC failure")
+            for item in stream.infolist():
+                if item.is_dir():
+                    continue
+                require(item.filename.startswith(prefix) and (item.external_attr >> 16) & 0o170000 in (0, 0o100000),
+                        "unsafe producer ZIP member")
+                name = item.filename[len(prefix):]
+                require(name and not Path(name).is_absolute() and ".." not in Path(name).parts
+                        and "\\" not in name and name not in members, "unsafe/duplicate producer ZIP member")
+                path = common.relative_file(target, name)
+                require(path.stat().st_size == item.file_size
+                        and sha(path) == hashlib.sha256(stream.read(item)).hexdigest(),
+                        "extracted producer bytes differ from original ZIP: " + name)
+                members.append(name)
+        require(bool(members), "empty producer artifact ZIP")
+        result.append({"component": component, "artifact_id": artifact["id"], "artifact_name": artifact["name"],
+                       "archive_sha256": measured, "archive_bytes": entry["archive_bytes"],
+                       "member_count": len(members), "api_digest_present": artifact.get("digest") is not None})
+    return result
 
 
 def verify_evaluation(directory, arm, source, run_id, attempt, download):
@@ -328,29 +499,61 @@ def verify_regressions(directory):
             "results_sha256": sha(directory / "results.json")}
 
 
-def package(directory, output, source):
+def package(directory, output, source, *, producer_root=None, producer_run_id=None,
+            producer_run_attempt=None, job_assignments=None, artifact_custody=None):
     directory, output = Path(directory).resolve(), Path(output).resolve()
     require(not output.exists(), "immutable release output already exists")
     require(os.environ.get("GITHUB_ACTIONS") == "true"
             and os.environ.get("RUNNER_ENVIRONMENT") == "github-hosted"
             and os.environ.get("RUNNER_OS") == "Linux", "publication requires a Linux GitHub-hosted runner")
     from native_replay import verify_packet
-    from native.runtime import ROOT, source_identity
-    # Native qualification legitimately replaces the tracked retained binary.
-    # Verify the frozen clean source inventory, then bind that freshly built
-    # binary independently below. The model-execution guard stays unchanged.
-    source_record = source_identity(ROOT, source)
-    require(os.environ.get("GITHUB_SHA") == source and os.environ.get("GITHUB_REPOSITORY") == REPOSITORY,
-            "publication repository/source environment mismatch")
-    run_id, attempt = int(os.environ["GITHUB_RUN_ID"]), int(os.environ["GITHUB_RUN_ATTEMPT"])
-    require(run_id > 0 and attempt > 0, "positive run/attempt required")
-    tree = subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], cwd=PAINTER, text=True).strip()
-    request = read(LANE / "run-request.json")
+    from native.runtime import ROOT
+    require(os.environ.get("GITHUB_REPOSITORY") == REPOSITORY, "publication repository environment mismatch")
+    publisher_source = os.environ["GITHUB_SHA"]
+    publisher_run, publisher_attempt = int(os.environ["GITHUB_RUN_ID"]), int(os.environ["GITHUB_RUN_ATTEMPT"])
+    run_id = publisher_run if producer_run_id is None else producer_run_id
+    attempt = publisher_attempt if producer_run_attempt is None else producer_run_attempt
+    require(all(type(value) is int and value > 0 for value in (run_id, attempt, publisher_run, publisher_attempt)),
+            "positive producer/publisher run/attempt required")
+    recovery = (source, run_id, attempt) != (publisher_source, publisher_run, publisher_attempt)
+    require(not recovery or (producer_root is not None and producer_run_id is not None
+                             and producer_run_attempt is not None), "recovery needs an explicit original producer checkout/run/attempt")
+    producer_root = Path(producer_root or ROOT).resolve()
+    source_record, publisher_record, changed_files = verify_publication_sources(producer_root, source, ROOT, publisher_source)
+    tree = source_record["source_tree"]
+    producer = {"source_sha": source, "source_tree": tree, "run_id": run_id, "run_attempt": attempt,
+                "source_inputs_sha256": source_record["source_inputs_sha256"]}
+    publisher = {"source_sha": publisher_source, "source_tree": publisher_record["source_tree"],
+                 "run_id": publisher_run, "run_attempt": publisher_attempt,
+                 "source_inputs_sha256": publisher_record["source_inputs_sha256"],
+                 "job_id": os.environ.get("GITHUB_JOB"), "runner_name": os.environ.get("RUNNER_NAME"),
+                 "verifier_path": "experiments/agent_painter/lanes/smol/package.py", "verifier_sha256": sha(__file__),
+                 "publication_only_changes": changed_files,
+                 "publication_files_sha256": {name: sha(ROOT / name) for name in changed_files if (ROOT / name).is_file()},
+                 "producer_execution_reused": recovery}
+    request = read(producer_root / "experiments/agent_painter/lanes/smol/run-request.json")
     require(request == read(directory / "build/request.json") and request["candidate_steps"] == 120
             and request["checkpoint_every"] == 40 and request["training_seconds"] == 1200
             and request["evaluation_seconds"] == 1200 and request["generation_tokens"] == 1024
             and request["final_access"] is False, "published request differs from frozen bounded iteration")
     environments, downloads = verify_environments(directory, source, tree, run_id, attempt, request)
+    publication = directory / "publication"
+    jobs_path = Path(job_assignments or publication / "job-assignments.json").resolve()
+    artifacts_path = Path(artifact_custody or publication / "producer-artifacts.json").resolve()
+    for path in (jobs_path, artifacts_path):
+        require(path.is_relative_to(publication.resolve()) and path.is_file() and not path.is_symlink(),
+                "publication custody records must be saved under evidence/publication")
+    publisher_receipt = read(publication / "publisher-receipt.json")
+    expected_publisher = {"schema_version": 1, "repository": REPOSITORY,
+                          "operation": "recover" if recovery else "capture",
+                          "source_sha": publisher_source, "source_tree": publisher_record["source_tree"],
+                          "run_id": publisher_run, "run_attempt": publisher_attempt,
+                          "job_id": os.environ.get("GITHUB_JOB"), "runner_name": os.environ.get("RUNNER_NAME"),
+                          "runner_environment": "github-hosted", "os": "Linux", "arch": "X64"}
+    require(all(publisher_receipt.get(key) == value for key, value in expected_publisher.items()),
+            "publication downloader identity differs from actual publisher")
+    assignments = verify_job_assignments(read(jobs_path), environments, source, run_id, attempt, recovery=recovery)
+    artifacts = verify_artifact_custody(directory, read(artifacts_path), source, run_id, attempt, recovery=recovery)
     evaluations = {arm: verify_evaluation(directory / arm / "evaluation", arm, source, run_id, attempt, downloads[arm])
                    for arm in ARMS}
     require(evaluations["baseline"]["checkpoint"] is None
@@ -383,11 +586,23 @@ def package(directory, output, source):
     for name in ("godot-cpp.log", "native.log", "abi-floor.log", "import.log"):
         require((directory / "build" / name).is_file(), "missing source build log: " + name)
     regressions = verify_regressions(directory / "regressions")
+    verification = publication / "verification.json"
+    require(not verification.exists(), "refusing to overwrite a publication verification record")
+    common.write_json(verification, {
+        "schema_version": 1, "producer": producer, "publisher": publisher,
+        "job_assignments_sha256": sha(jobs_path), "producer_artifact_custody_sha256": sha(artifacts_path),
+        "verified_job_assignments": assignments, "verified_producer_artifacts": artifacts,
+        "training": training, "native_verification_sha256": native["native_verification_sha256"],
+        "gallery": gallery, "retained_native_regressions": regressions,
+        "hostname_policy": "Guest hostnames may repeat; distinct numeric GitHub job and runner registrations are required.",
+        "model_training_or_inference_during_publication": False, "native_execution_during_publication": False,
+    })
     components = {arm: inventory_files(directory / arm) for arm in ARMS}
     components["native"] = inventory_files(directory / "smol-native")
     components["build"] = [("build/" + name, path) for name, path in inventory_files(directory / "build")]
     components["build"].append(("native-build.json", directory / "native-build.json"))
     components["build"].extend(("regressions/" + name, path) for name, path in inventory_files(directory / "regressions"))
+    components["build"].extend(("publication/" + name, path) for name, path in inventory_files(publication))
     output.mkdir(parents=True)
     assets = [archive(output / f"smol-{name}-{source[:12]}-{run_id}-{attempt}.zip", files)
               for name, files in components.items()]
@@ -396,8 +611,11 @@ def package(directory, output, source):
     require(sha(standalone) == gallery["index_sha256"], "standalone gallery differs from verified original")
     assets.append({"file": standalone.name, "bytes": standalone.stat().st_size, "sha256": sha(standalone)})
     manifest = {
-        "schema": "agent-painter-smol-release-v1", "repository": REPOSITORY,
+        "schema": "agent-painter-smol-release-v2", "repository": REPOSITORY,
         "source_sha": source, "source_tree": tree, "workflow_run_id": run_id, "workflow_run_attempt": attempt,
+        "producer": producer, "publisher": publisher,
+        "publication_verification_sha256": sha(verification),
+        "verified_job_assignments": assignments, "verified_producer_artifacts": artifacts,
         "request": request, "corpus": {"source_sha": contracts.FOUNDATION_SOURCE, "run_id": CORPUS_RUN,
                                       "artifact": CORPUS_ARTIFACT, "manifest_sha256": contracts.MANIFEST_SHA256,
                                       "development_sha256": contracts.DEVELOPMENT_SHA256},
@@ -424,8 +642,15 @@ def main():
     parser.add_argument("--directory", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--source-sha", required=True)
+    parser.add_argument("--producer-root", type=Path, help="clean original checkout for publication-only recovery")
+    parser.add_argument("--producer-run-id", type=int)
+    parser.add_argument("--producer-run-attempt", type=int)
+    parser.add_argument("--job-assignments", type=Path, help="saved authoritative Jobs API record")
+    parser.add_argument("--artifact-custody", type=Path, help="saved downloaded producer artifact custody")
     args = parser.parse_args()
-    result = package(args.directory, args.output, args.source_sha)
+    result = package(args.directory, args.output, args.source_sha, producer_root=args.producer_root,
+                     producer_run_id=args.producer_run_id, producer_run_attempt=args.producer_run_attempt,
+                     job_assignments=args.job_assignments, artifact_custody=args.artifact_custody)
     print(json.dumps({"source_sha": result["source_sha"], "training": result["training"],
                       "development_counts": result["development_counts"], "assets": result["assets"]}, sort_keys=True))
 

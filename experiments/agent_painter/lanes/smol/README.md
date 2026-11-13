@@ -1,5 +1,36 @@
 # Smol painter: first bounded DEVELOPMENT iteration
 
+## Executed first candidate and publication repair
+
+The original producer source is
+`fef6654ecd0828f765af1a13d2d10469013a3ea6`,
+[run 43522896533](https://github.com/techrote/cybersand/actions/runs/43522896533).
+It completed 120 real optimizer updates, with atomic checkpoint readback at
+steps 40, 80 and 120. The candidate emitted true EOS for all six DEVELOPMENT
+requests, complete JSON for five, and one compiler-accepted program at both host
+seeds. The untuned arm accepted zero. The accepted pipe program changes the
+TRAIN T-network's diameter from five to three but retains one upward branch and
+three endpoints; it does not fulfill the requested three-branch manifold with
+five endpoints. These are protocol results, not useful-painter qualification.
+
+Both independent hosted jobs report the generic hostname `runnervm8axu0`.
+Their authoritative GitHub runner IDs differ: baseline `1000115344`, candidate
+`1000115378`. The original package's hostname-uniqueness predicate therefore
+rejects valid separate assignments. The repair binds original job IDs, runner
+IDs, run/attempt, source and original environment receipts. Hostnames remain
+descriptive metadata.
+
+`agent-painter-smol-publication.yml` consumes the explicit
+`publication-request.json` to recover completed original artifacts. It installs
+its own hosted CPU tensor-readback environment, verifies GitHub artifact ZIP
+size/SHA/CRC and every extracted member, and rechecks original checkpoints,
+native material receipts, PNGs and gallery. It never instantiates a model or
+reruns native drawing. A clean checkout of the original producer supplies the
+original source inventory; the new publisher's source/tree/run are recorded
+separately. The original training/native source is never relabelled. The native
+workflow uses the same authoritative assignment collection for future direct
+publication. Read the actual run and release receipts for completion status.
+
 This lane consumes the shared foundation at
 `2a565df45efc568eb96a2166e0b77f299e289625`, the original native-admitted corpus at
 `633920373a3d406a2ede61ce4137c324f76be23b`, and the exact public

@@ -1,0 +1,108 @@
+name: Smol painter existing-evidence publication
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths: ['experiments/agent_painter/lanes/smol/publication-request.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-smol-publication-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publication:
+    name: Verify original Smol evidence and publish with separate publisher identity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    permissions:
+      contents: write
+      actions: read
+    defaults:
+      run:
+        working-directory: publisher
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      PRODUCER_SOURCE: fef6654ecd0828f765af1a13d2d10469013a3ea6
+      PRODUCER_RUN: '43522896533'
+      PRODUCER_ATTEMPT: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: publisher
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: fef6654ecd0828f765af1a13d2d10469013a3ea6
+          path: producer
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Establish hosted CPU checkpoint-readback environment
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C ../producer rev-parse HEAD)" = "$PRODUCER_SOURCE"
+          python3 -m venv "$RUNNER_TEMP/smol-publication"
+          "$RUNNER_TEMP/smol-publication/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/smol-publication/bin/python" -m pip install 'Pillow==13.0.0' 'PyYAML==6.0.3' 'jsonschema==4.26.0' 'safetensors==0.8.0' 'numpy==2.5.4'
+          "$RUNNER_TEMP/smol-publication/bin/python" -m pip check
+      - name: Verify publication repair contracts
+        run: |
+          set -euo pipefail
+          mkdir -p publication-checks
+          "$RUNNER_TEMP/smol-publication/bin/python" -m unittest discover -s experiments/agent_painter/lanes/smol/tests -p 'test_*.py' -v 2>&1 | tee publication-checks/lane-tests.log
+          "$RUNNER_TEMP/smol-publication/bin/python" -m unittest discover -s experiments/agent_painter/tests -p 'test_training.py' -v 2>&1 | tee publication-checks/training-contracts.log
+          python3 tools/ci/check_ci_provider_policy.py > publication-checks/provider.json
+          python3 tools/ci/check_ci_scheduling_policy.py --output publication-checks/scheduling.json
+      - name: Collect immutable producer artifacts and authoritative job assignments
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/smol-publication/bin/python" experiments/agent_painter/lanes/smol/publication.py recover \
+            --directory evidence --request experiments/agent_painter/lanes/smol/publication-request.json
+      - name: Reverify original checkpoints native cells and gallery without execution
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/smol-publication/bin/python" experiments/agent_painter/lanes/smol/package.py \
+            --directory evidence --output release --source-sha "$PRODUCER_SOURCE" \
+            --producer-root "$GITHUB_WORKSPACE/producer" --producer-run-id "$PRODUCER_RUN" \
+            --producer-run-attempt "$PRODUCER_ATTEMPT" \
+            --job-assignments evidence/publication/job-assignments.json \
+            --artifact-custody evidence/publication/producer-artifacts.json
+      - name: Publish original results with explicit publication repair
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="agent-painter-smol-${PRODUCER_SOURCE:0:12}-${PRODUCER_RUN}-${PRODUCER_ATTEMPT}"
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          text = f"""Bounded Smol DEVELOPMENT research evidence, with original producer source `{os.environ['PRODUCER_SOURCE']}` and run {os.environ['PRODUCER_RUN']} / attempt {os.environ['PRODUCER_ATTEMPT']} preserved.
+
+          Publication repair source: `{os.environ['GITHUB_SHA']}`; publisher run {os.environ['GITHUB_RUN_ID']} / attempt {os.environ['GITHUB_RUN_ATTEMPT']}. The original jobs received distinct GitHub runner registrations but shared a generic hostname. This verifier uses authoritative job/runner assignments instead of hostname uniqueness. The original packaging failure remains in its run; no optimizer, model generation or native drawing was repeated for this repair.
+
+          Read MANIFEST.json for actual optimizer counts, strict six-prompt/twelve-seed-view denominators, native gates and both producer/publisher identities. smol-gallery.html is the byte-identical original native comparison. Original PNGs are material readbacks, not framebuffer captures. Valid native structure does not establish requested-layout fulfillment or artistic quality. Rejected outputs remain visible; FINAL targets are excluded. Draft/HOLD, unmerged.
+          """
+          Path(os.environ['RUNNER_TEMP'], 'smol-publication-release.md').write_text(text)
+          PY
+          gh release create "$tag" release/* --target "$PRODUCER_SOURCE" --prerelease \
+            --title "Smol painter DEVELOPMENT (${PRODUCER_SOURCE:0:12})" \
+            --notes-file "$RUNNER_TEMP/smol-publication-release.md"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: smol-publication-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            publisher/publication-checks/
+            publisher/evidence/publication/
+            publisher/release/MANIFEST.json
+            publisher/release/SHA256SUMS.txt
+          if-no-files-found: warn
+          retention-days: 90

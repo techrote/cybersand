@@ -247,13 +247,18 @@ jobs:
       - name: Rebuild unchanged native authority and verify actual raw model drawings
         run: bash experiments/agent_painter/lanes/smol/ci_native.sh
       - name: Verify checkpoint bytes and package transparent research evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           "$RUNNER_TEMP/smol-native/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
           "$RUNNER_TEMP/smol-native/bin/python" -m pip install 'safetensors==0.8.0' 'numpy==2.5.4'
           "$RUNNER_TEMP/smol-native/bin/python" -m unittest discover -s experiments/agent_painter/tests -p 'test_training.py' -v 2>&1 | tee evidence/build/pinned-training-contracts.log
           "$RUNNER_TEMP/smol-native/bin/python" -m unittest discover -s experiments/agent_painter/lanes/smol/tests -p 'test_*.py' -v 2>&1 | tee evidence/build/pinned-lane-contracts.log
-          "$RUNNER_TEMP/smol-native/bin/python" experiments/agent_painter/lanes/smol/package.py --directory evidence --output release --source-sha "$GITHUB_SHA"
+          "$RUNNER_TEMP/smol-native/bin/python" experiments/agent_painter/lanes/smol/publication.py capture --directory evidence
+          "$RUNNER_TEMP/smol-native/bin/python" experiments/agent_painter/lanes/smol/package.py --directory evidence --output release --source-sha "$GITHUB_SHA" \
+            --job-assignments evidence/publication/job-assignments.json \
+            --artifact-custody evidence/publication/producer-artifacts.json
       - name: Publish first Smol DEVELOPMENT iteration without quality promotion
         env:
           GH_TOKEN: ${{ github.token }}
