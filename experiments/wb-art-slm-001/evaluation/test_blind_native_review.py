@@ -77,7 +77,9 @@ if __name__ == '__main__':
     p = argparse.ArgumentParser()
     p.add_argument('--packet', type=Path)
     a = p.parse_args()
-    unittest.main(argv=['test_blind_native_review.py'], exit=False)
+    result = unittest.main(argv=['test_blind_native_review.py'], exit=False)
+    if not result.result.wasSuccessful():
+        raise SystemExit(1)
     if a.packet:
         with tempfile.TemporaryDirectory() as tmp:
             result = build(a.packet, Path(tmp) / 'blind')
