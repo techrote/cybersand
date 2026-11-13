@@ -38,10 +38,12 @@ if a.mode in ('orphan-descendant', 'stop-descendant'):
     # fake trainer exits or receives Stop. Its delayed write detects leakage.
     ready = root/'descendant_ready'
     late = root/'descendant_late_write'
+    # Soft Stop is at wall 4 - save margin 2 seconds. A 1.3s write
+    # could PRECEDE Stop; postpone the soft-stop fixture write beyond it.
     child_code = ("import pathlib,signal,sys,time; "
                   "signal.signal(signal.SIGTERM, signal.SIG_IGN); "
                   "pathlib.Path(sys.argv[1]).write_text('ready'); "
-                  "time.sleep(1.3); "
+                  f"time.sleep({3.0 if a.mode == 'stop-descendant' else 1.3}); "
                   "pathlib.Path(sys.argv[2]).write_text('late')")
     subprocess.Popen([sys.executable, '-c', child_code, str(ready), str(late)],
                      stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
