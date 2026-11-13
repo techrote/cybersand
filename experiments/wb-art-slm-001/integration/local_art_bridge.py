@@ -224,15 +224,17 @@ def make_handler(config: argparse.Namespace, runner=run_inference):
 
         def send_json(self, code: int, obj: dict):
             data = json.dumps(obj, separators=(",", ":"), allow_nan=False).encode("utf-8")
-            self.send_response(code)
-            self.send_header("Content-Type", "application/json")
-            self.send_header("Cache-Control", "no-store")
-            self.send_header("Content-Length", str(len(data)))
-            self.end_headers()
             try:
+                self.send_response(code)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Cache-Control", "no-store")
+                self.send_header("Content-Length", str(len(data)))
+                self.end_headers()
                 self.wfile.write(data)
-            except (BrokenPipeError, ConnectionResetError):
-                pass  # Stop/closed Workbench request must never trigger an Art retry.
+            except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
+                # A stopped Workbench may close before even the response headers.
+                # Never retry an inference just because the response cannot send.
+                pass
 
         def do_GET(self):
             if self.path == "/v1/models":
