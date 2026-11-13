@@ -233,3 +233,59 @@ Run fresh identically seeded Worlds with the same compatible native build;
 verify receipts and image/readback equality where expected, inspect v1.1
 gallery outputs, and retain all failures. Until that happens, the baseline
 documents an actual defect, **not an established v1.1 improvement**.
+
+
+## Strict native v1/v1.1 paired admission — 13 November 2026
+
+`audit_v11_native_pairs.py` is the **fail-closed post-run auditor** for the
+32-case `make_v11_native_pairs.py` fixture. It does not draw pixels,
+synthesize World readbacks, or confer success on a compiler-only result.
+First run the unmodified native replay with `--history each`; then run the
+independent `evaluation/verify_native_replay.py` against its entire output
+directory. Only a globally passing `verified-admission-receipts.json` can
+enter the pair auditor.
+
+The auditor enforces exact 32/16 fixture and alias coverage; source/native
+hash pins; unchanged run input/custody, process and native receipt hashes; all
+15 original global native gates; identical paired program/seed; separate
+compiler and operation identities; per-case native completion and
+Undo/Redo/save/reopen checks (rather than one per theme); bounded/canonical
+local evidence paths; native readback and PNG hashes; material 0/58 and
+filled-cell closure. It reports each case's **actual stored-material**
+top/middle/bottom cell counts and upper-third share, with 16 paired deltas.
+A positive spatial delta is *not* automatic visual or human admission.
+
+From repository root, using a separately pinned qualified Workbench runtime,
+an exact `v11-pairs.json` created without overwriting past inputs, and the
+**source-matched** native runner/verifier:
+
+```sh
+python3 experiments/wb-art-slm-001/controls/make_v11_native_pairs.py --out v11-pairs.json
+# Execute through the pinned native replay runner with --history each.
+# Independently verify the whole native output before the following command:
+python3 experiments/wb-art-slm-001/controls/audit_v11_native_pairs.py \
+  --pairs v11-pairs.json --native /path/to/verified-native-output \
+  --source-sha EXACT_40_HEX --native-sha EXACT_64_HEX \
+  --out native-v11-spatial-result.json
+python3 -m unittest discover -s experiments/wb-art-slm-001/controls \
+  -p 'test_audit_v11_native_pairs.py' -v
+```
+
+The original `evaluation/run_native_replay.py` and verifier are still pinned to
+the historical Linux pilot; they cannot be relabelled to qualify current main
+or Windows. A compatible independently qualified #564/#565 successor requires
+source-matched runner/verifier custody from Integration/Evaluation.
+
+Seven **synthetic contract** tests passed locally on Python 3 (structural
+fixture, tampered readback, mutated input, missing Stop gate, history omission,
+bad source identity and path traversal). These are not executed native cases.
+The compiler's version-1.1 candidate passed 6/6 focused tests, alongside
+12/12 frozen v1 tests, in the Integration offline Linux CI run
+[43369954009](https://github.com/techrote/cybersand/actions/runs/43369954009)
+on 13 November; that overall run nevertheless **failed** in the separate
+Training job-guard suite because `filelock` was not installed. No claim that
+the complete run passed is made.
+
+**HOLD:** No new v1.1 native paired run, per-case readback, Windows qualification
+or reviewed visual improvement has been established. Step-400 inference and
+the existing opt-in bridge remain pinned to admitted v1 geometry.
