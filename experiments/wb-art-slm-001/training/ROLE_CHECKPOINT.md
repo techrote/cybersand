@@ -458,3 +458,32 @@ and the private run-parent lease can actually be inspected, run at most
 one separately identified balanced-keyword candidate, preserving all
 frozen original raw failures and benchmark denominators. Draft #567
 remains HOLD; no Ready, merge or production default changes.
+
+
+---
+
+## Follow-up — exact-source CI NameError repaired (13 Nov 2026)
+
+**Trigger and exact upstream evidence.** Integration Draft #567 Actions run [43407805432](https://github.com/techrote/cybersand/actions/runs/43407805432) at combined head `22741283b6e7984d7fd8ebe0c93211e9fe2e9507` failed the Training-only step: **15/17 tests passed; two ERROR**. The two new native-independent POSIX process-descendant tests call `time.sleep(1.5)` but the file lacked top-level `import time`; the `time` imported inside the synthetic worker source string does not define a name in the test module. This is a test harness NameError, not a demonstrated process-fencing failure or pass.
+
+**Narrow correction.** Training-owned `test_job_guard.py` gained exactly one standard-library import after `import textwrap`; no assertion, child-process behavior, deadline, runtime default, guard, lease or production file changed.
+
+- Old Training head: `0aee867ef5f3a09184980d84eb7c40472a5cfad7`.
+- Correction commit: [`11a476d19d4d1d137d3ecc50cf8bfc02e0984a72`](https://github.com/techrote/cybersand/commit/11a476d19d4d1d137d3ecc50cf8bfc02e0984a72).
+- Exact old test Git blob: `b9a058b2bc6cee8ad8f9827854e5662a19f2361b`.
+- Exact fixed test Git blob: `c9f88caf568e70463f7b097b83452ff2bc18fe34`.
+- GitHub readback and byte-for-byte old/new comparison confirm precisely that one added import and both original descendant tests present. This is **published-source/diff verification, NOT a 17/17 execution result**.
+
+**Executable qualification handoff.** The available environment cannot clone GitHub (DNS unavailable) and contains no exact-source checkout of the Training `job_guard.py` + test suite; consequently this run does **not** claim local 17/17 or combined 31/31. Integration should import only the corrected test blob with the expected previous blob, then execute:
+
+```bash
+python -m pip install --no-deps filelock==4.2.4
+python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_job_guard.py' -v
+python -m unittest discover -s experiments/wb-art-slm-001/training -p 'test_evaluation_guard.py' -v
+```
+
+Require the full exact-head [WB-ART-SLM offline workflow](https://github.com/techrote/cybersand/actions/workflows/wb-art-slm-001-smoke.yml) green, not merely successful collection or the separate independent job; preserve both adversarial tests and native/Windows qualifications as separate gates.
+
+**Model-run preparation and remaining real blocker.** The four original user-saved archives were actually materialized in a private working directory, their sizes and SHA-256 matched the pinned `ARTIFACTS.json` identities, and adapter/resume and native/model evidence contents were inspected (frozen LFM2.5-350M step400, official base revision `9921cd4d82c0e3986887aa4b376f9446729ef8a3`). The present environment lacks the **pinned base-model snapshot** and `transformers` / `peft` runtime; no active private training run-parent/lease can be inspected here. No model training or inference was started, and no model-quality improvement is claimed. Corpus owns `failure_contrast_replay_v5.json` at `6195f180`, but the currently published Training `curriculum.py` advertises only `shuffled-v1` and `keyword-replay-v1`; a verified v5 original-index consumer must be made available before representing a training run as v5. This is a concrete execution blocker, not a reason to add generic safety infrastructure.
+
+**Next priority:** Integration imports the one-line correction and validates the 17-job/14-eval suites; Training secures the permitted pinned base/runtime and intact private lease, consumes v5 manifest without touching Corpus owner files, then trains one new separately identified, full-resume-capable 400-step candidate. Retain the original 24 DEV and 12 keywords for raw first-pass scoring and hand all accepted/rejected cases to the actual native gallery owner. **Draft/HOLD**; no changes to Integration, #564/#565, NeuroRunner, model weights, production defaults or schedules.
