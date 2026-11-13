@@ -17,7 +17,8 @@ class ReviewTests(unittest.TestCase):
                'excluded': [{'group_id': 'g3', 'theme': 'coral'}],
                'items': [{'id': 'q001', 'group_id': 'g1', 'theme': 'roots', 'cohort': 'development'},
                          {'id': 'q002', 'group_id': 'g1', 'theme': 'roots', 'cohort': 'development'},
-                         {'id': 'q003', 'group_id': 'g2', 'theme': 'ribs', 'cohort': 'keyword'},
+                         {'id': 'q003', 'prediction_id': 'keyword-ribs', 'group_id': 'g2', 'theme': 'ribs', 'cohort': 'keyword',
+                          'symbolic_theme_correct': False, 'symbolic_motif_correct': True},
                          {'id': 'q004', 'group_id': 'g4', 'theme': 'veins', 'cohort': 'keyword'}]}
         self.key = self.root / 'key.json'
         self.key.write_text(json.dumps(key))
@@ -47,6 +48,8 @@ class ReviewTests(unittest.TestCase):
         self.assertEqual(out['subjective_quality_1to5']['ratings'], 2)
         self.assertEqual(out['threshold_80_pct'], 'PROVISIONAL_RATER_ONLY')
         self.assertEqual(out['go_no_go'], 'HOLD')
+        self.assertEqual(out['symbolic_failures_despite_native_pass'][0]['prediction_id'], 'keyword-ribs')
+        self.assertEqual(len(out['blind_theme_confusions']), 2)
 
     def test_partial_is_never_promotion(self):
         data = json.loads(json.dumps(self.data))
