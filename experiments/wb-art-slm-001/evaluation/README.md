@@ -202,3 +202,10 @@ Offline reproduction with a frozen self-contained HTML file:
       --html /private/review/blind_model_review.html \
       --expected-html-sha256 5f554c67c928d6f940126d07c529df89694a42d6cdeb7a65c7b9c4413f354877
     python3 evaluation/test_audit_blind_stimulus.py
+
+
+## Native PNG pixel morphology (development stimulus, independent)
+
+The [pixel-level auditor](measure_native_stimulus_pixels.py), [adversarial tests](test_measure_native_stimulus_pixels.py), [executed blind manifest](pixel_stimulus_morphology_audit.json) and [dated checkpoint](PIXEL_MORPHOLOGY_CHECKPOINT_2026-11-13.md) measure actual foreground occupancy, aligned two-seed Jaccard and cross-request near-duplicate images. The decoder checks RGB8 96×96 PNG CRC, bounded decompression, native colours and all card/seed IDs, and requires the frozen HTML SHA-256; it does not open the answer key. Six local tests passed.
+
+The historical model-output review has 34 cards/68 native material-display PNGs. Median within-request seed Jaccard is 0.320558; 14/34 are below 0.2. In addition to the exact q004/q007 repetition, two **nonidentical** repeated-looking pairs qualify at the explicitly exploratory both-seed 0.85 Jaccard cutoff: q003/q032 (0.879/0.967) and q020/q029 (0.995/0.991), giving 31 near-stimulus clusters. These are blind pixel diagnostics, not new human recognition scores, not independent structural groups, and not current-main/Windows/native reruns. The original 36 model-request denominator and 34/36 first-pass rate stay unchanged.
