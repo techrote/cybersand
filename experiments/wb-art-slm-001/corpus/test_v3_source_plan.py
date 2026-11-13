@@ -117,5 +117,31 @@ class SourcePlanTests(unittest.TestCase):
             self.validate(source=altered)
 
 
+class ArchivedSourcePlanTests(unittest.TestCase):
+    def test_recreate_plan_from_original_executed_archive(self):
+        import os
+        from pathlib import Path
+        import tempfile
+
+        folder = Path(os.environ.get('WB_ART_SLM_CORPUS_DIR', str(Path(__file__).parent)))
+        required = ('train.jsonl', 'dev.jsonl', 'final.jsonl',
+                    'native_cases.json', 'manifest.json', 'admission.json')
+        if not all((folder / f).is_file() for f in required):
+            self.skipTest('original native-executed corpus archive not mounted')
+        import build_modifier_replay as v3
+        with tempfile.TemporaryDirectory() as tmp:
+            candidate = Path(tmp) / 'v3'
+            v3.build(folder, candidate)
+            output = Path(tmp) / 'original_source_plan.json'
+            receipt = plan.build(folder, candidate, output)
+            created = __import__('json').loads(output.read_text())
+            self.assertEqual(created['source_train_sha256'],
+                             '972826e1af15a6babaff6e68e4c57d790c0c060a2befe050b4156c5f8ee05f66')
+            self.assertEqual(created['first_400_source_indices_sha256'],
+                             '09e6c4bc2898beec649ca48ae42f3cc9b9067789974a87013464633eb5a41162')
+            self.assertEqual(receipt['plan_sha256'], plan.sha(output.read_bytes()))
+            self.assertEqual(len(created['indices']), 400)
+
+
 if __name__ == '__main__':
     unittest.main()
