@@ -18,6 +18,7 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 | How do PAINT, selection, clipboard, Art focus and cursor-centred zoom remain aligned at fractional origins? | [Picking and zoom](../systems/material-appearance-and-rendering.md#picking-and-zoom-at-fractional-camera-positions) and [private interface](interfaces-and-message-contracts.md#camera-presentation-and-picking) |
 | How are glow and vapour kept aligned without a full-resolution offscreen world? | [Effect alignment](../systems/material-appearance-and-rendering.md#glow-and-vapour-during-fractional-scrolling) and [buffer capacities](configuration-reference.md#camera-effect-buffer-capacities) |
 | How do I run and accept the Windows camera candidate, and which results remain pending? | [Camera runbook](../operations/native-pixel-scrolling.md) and its separately scoped [audit](../audits/2026-11-13-native-pixel-scrolling.md) |
+| Which cells does gameplay recording retain at fractional camera positions, and does its ROI move when I pan? | [Camera recording bounds](../operations/gameplay-recording.md#camera-recording-bounds) |
 
 The [camera retrieval questions](retrieval-questions-native-pixel-scrolling.json)
 are additive; frozen historical question sets are unchanged.

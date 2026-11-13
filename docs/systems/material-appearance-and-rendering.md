@@ -77,6 +77,12 @@ without another mouse event. Active drag anchors remain world coordinates.
 Agent image observations describe the actual rounded pixel crop with
 fractional world bounds.
 
+Gameplay recording freezes an integer rectangle enclosing the presented view:
+floor the start, ceil the far edge and clamp to the actual world. Partially
+visible right/bottom cells are retained. The
+[recorder contract](../operations/gameplay-recording.md#camera-recording-bounds)
+owns the explicit ROI override, copied extent and fixed-session behavior.
+
 Wheel zoom preserves a continuous world anchor under the cursor; toolbar zoom
 uses the content centre. The snapped display origin is never fed back into
 that calculation, so opposite zoom changes do not accumulate rounding drift.

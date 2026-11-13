@@ -1458,16 +1458,25 @@ func recording_runtime_identity() -> Dictionary:
 
 
 func recording_configuration() -> Dictionary:
-	var roi: Rect2i = Rect2i(
-		floori(camera_origin.x),
-		floori(camera_origin.y),
-		current_view_size.x,
-		current_view_size.y
+	# Enclose the displayed view, including partially visible edge cells. The
+	# requested camera can differ from this origin after display-pixel rounding.
+	var presented: Vector2 = presentation_camera_origin()
+	var extent: Vector2i = world_extent.max(Vector2i.ZERO)
+	var start: Vector2i = Vector2i(floori(presented.x), floori(presented.y)).clamp(
+		Vector2i.ZERO, extent
 	)
+	# Add scalar components before ceil so a float32 Vector2 sum cannot erase a
+	# small fractional remainder at the far edge.
+	var end: Vector2i = Vector2i(
+		ceili(presented.x + float(current_view_size.x)),
+		ceili(presented.y + float(current_view_size.y))
+	).clamp(Vector2i.ZERO, extent)
+	var roi: Rect2i = Rect2i(start, (end - start).max(Vector2i.ZERO))
 	var result: Dictionary = {
 		"capture_hz": DEFAULT_RECORDING_HZ,
 		"queue_capacity": DEFAULT_RECORDING_QUEUE_CAPACITY,
 		"roi": roi,
+		"world_extent": world_extent,
 		"retain_raw_ids": true,
 		"selected_material_id_at_start": selected_material_id,
 		"selected_paint_slot_at_start": selected_paint_slot,

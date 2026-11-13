@@ -86,6 +86,23 @@
         "../tools/ci/run_workbench_qualification.py",
         "../.github/workflows/wb-art-paint-qualification.yml"
       ]
+    },
+    {
+      "id": "PIXEL-CAMERA-006",
+      "query": "Which cells does gameplay recording retain at a fractional camera position, and does its recorded ROI move when I pan or zoom?",
+      "canonical": [
+        "operations/gameplay-recording.md"
+      ],
+      "facts": [
+        "The default ROI encloses the actual presented origin and view size using floor at the start and ceil at the end, retaining partially visible right and bottom cells.",
+        "Main copies the actual world extent into recording configuration; the recorder clamps against it, keeps the legacy 1024-square fallback for callers that omit it and rejects nonpositive supplied dimensions.",
+        "An explicit --record-roi overrides camera-derived bounds, and the admitted integer ROI stays fixed for the entire recording session."
+      ],
+      "sources": [
+        "../godot/scripts/main.gd",
+        "../godot/scripts/gameplay_recorder.gd",
+        "../godot/tests/test_gameplay_recorder.gd"
+      ]
     }
   ]
 }

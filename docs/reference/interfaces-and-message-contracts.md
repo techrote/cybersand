@@ -26,6 +26,7 @@ owns their sampling semantics.
 | `Main.configure_pixel_camera(material)` | Supplies the physical sample map to the palette and scene masks without a native call |
 | `Main.world_position_from_local_point(local)` | Continuous world point under a local point, using the displayed origin |
 | `Main.world_cell_from_local_point(local)` | Integer cell sampled at the pointer's physical pixel centre; `(-1,-1)` outside valid content/world |
+| `Main.recording_configuration()` | Default integer recording ROI encloses the presented view using floor/ceil bounds; copies actual `world_extent` for the recorder's clamp |
 | `PixelCamera.presentation_origin` | Converts through content size/offset and `get_screen_transform`; returns a presentation value without mutating camera state |
 | `PixelCamera.screen_to_world` / `screen_to_cell` | Subtract exact screen translation, then multiply the shared reciprocal; the cell form samples a physical pixel centre |
 | `PixelCamera.content_contains_screen_sample` | Uses the shader's half-open physical content bounds, avoiding inverse-transform roundoff at fitted edges |
@@ -44,6 +45,12 @@ replacement camera position. Sources:
 [Main](../../godot/scripts/main.gd),
 [Workbench](../../godot/scripts/shared_workbench.gd) and
 [agent observations](../../godot/scripts/art_batch_panel.gd).
+
+The [recorder's private configuration](../operations/gameplay-recording.md#camera-recording-bounds)
+accepts an optional positive `world_extent: Vector2i`, defaulting to the legacy
+1024² extent for existing callers. Explicit recording ROI overrides remain
+integer world rectangles, fixed when the session begins; they do not become
+camera-follow regions.
 
 The new bounded desktop [trial-body continuation](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 keeps the eleven-float body ABI unchanged. Main sends only copied values:

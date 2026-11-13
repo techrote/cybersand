@@ -441,6 +441,7 @@ def camera(args):
             print(f"FAIL {label}: {error}", flush=True)
 
     qualify("camera-coordinates", "test_native_pixel_camera", "NATIVE_PIXEL_CAMERA_RESULT")
+    qualify("camera-recording", "test_gameplay_recorder", "GAMEPLAY_RECORDER_RESULT")
     qualify("camera-framebuffer", "test_native_pixel_scrolling_render",
             "NATIVE_PIXEL_SCROLLING_RESULT", graphical=True)
     qualify("camera-effects", "test_native_camera_effects_render",

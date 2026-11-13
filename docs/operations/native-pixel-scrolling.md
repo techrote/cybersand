@@ -82,13 +82,18 @@ python tools/ci/run_workbench_qualification.py camera --godot /path/to/Godot_v4.
 On Windows, use the console executable with the same command arguments. On
 Linux, the command needs an X11 display; hosted execution supplies Xvfb. The
 runner imports the project, executes coordinate/native editing assertions, then
-runs actual framebuffer scrolling, production glow/vapour fixtures and the
+runs the actual gameplay recorder at fractional camera positions, framebuffer
+scrolling, production glow/vapour fixtures and the
 existing material, water, vapour-history and crossfade preservation cases. It
 requires completion markers and retains source hashes, logs and frames.
 Headless parsing cannot satisfy either graphical fixture.
 Native-mapped partial Water and the actual PAINT fill raster are also checked
 at fractional camera positions. Independent cases continue after a failure to
 retain their diagnostics; the overall camera/package gate still fails.
+The recorder case checks the retained material bytes at partially visible
+right/bottom cells, fixed-session bounds and actual-world
+clamping. The camera campaign has nine invocations including import; older
+eight-invocation results retain their original source scope in the audit.
 
 The existing
 [Workbench workflow](../../.github/workflows/wb-art-paint-qualification.yml)

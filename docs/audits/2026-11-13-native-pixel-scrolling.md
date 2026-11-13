@@ -11,13 +11,18 @@ related-documents: [../operations/native-pixel-scrolling.md, ../systems/material
 # Native-resolution pixel scrolling — 13 November 2026
 
 **Draft / HOLD; [PR #566](https://github.com/techrote/cybersand/pull/566).**
-The complete source-camera gate passes on actual Linux OpenGL and Windows
-ANGLE, including exact display-pixel pans, fractional zoom, fitted edges,
+The historical application/test source `a8f2735796b5` passed the complete
+source-camera gate on actual Linux OpenGL and Windows ANGLE, including exact
+display-pixel pans, fractional zoom, fitted edges,
 PAINT, partial Water, glow/vapour and legacy material preservation. Both
-platforms also pass the installed campaign and all 36 authoring regressions.
-The source-matched Windows evaluation archive is published and its downloaded
-ZIP checksum is verified. Owner desktop/DPI and hardware-pacing acceptance
-remain pending; no merge is authorized.
+platforms also passed its installed campaign and all 36 authoring regressions.
+That source-matched Windows evaluation archive is published and its downloaded
+ZIP checksum is verified. The [recorder-edge follow-up](#recorder-edge-review-follow-up)
+changes application and test source beyond that baseline; its fresh-source
+Linux headless regressions pass, while refreshed hosted qualification is
+pending. The historical archive does not contain this correction. Owner
+desktop/DPI and hardware-pacing acceptance remain pending; no merge is
+authorized.
 
 ## Source and integration identity
 
@@ -31,8 +36,8 @@ remain pending; no merge is authorized.
 | Initial implementation identity | `a1a896bb45753c820e1d6109df57de4e65be33af`, tree `f8aad8b10cd39d3cf65a7dd0fb8e1349217b08b0` |
 | Physical sample shader source | `1755b2195e4d38c6030ae287ac2eb8e070da62ef`, tree `90373b770b5bb112a38b3322e5de6f5e70b85545` |
 | Production camera source | `7758c34fa4dcc48462d934761f2a84938907ff81`, tree `38e981252433670a14a2ec935556c7ea9f0ce77b`; physical picking bounds and Tower label alignment |
-| Qualified application/test source | `a8f2735796b5814c95edba857a0a8fa62250be42`, tree `8307a2155bce8665a082e7e01b0e0390dcf4d1e2`; production camera/shader bytes remain identical to the recorded sources |
-| Later registration/evidence checkpoints | Compatibility registration and audit only; no application, test-fixture, native or packaging source changes after the qualified application/test source |
+| Previously qualified application/test source | `a8f2735796b5814c95edba857a0a8fa62250be42`, tree `8307a2155bce8665a082e7e01b0e0390dcf4d1e2`; production camera/shader bytes were identical to the recorded sources |
+| Registration/evidence-only checkpoints through reviewed head | `cfd54aadbeec27846795220542727fa816ab6fac` and `0158e2dfb538fc3de8e1bfda91bcc387341b4c13`; no application, test-fixture, native or packaging changes between the qualified source and that reviewed head |
 | Main/#564 compatibility | Final #562-main + latest #564 + registered camera source passes 3,755 runtime checks; newer #563-main compatibility is separately scoped below |
 
 The source tree is isolated from both upstream branches and preserves #564's
@@ -617,3 +622,117 @@ The retained runtime/provenance gates and separate Palette gate remain distinct
 from the scoped camera campaign. The exact-source records above and linked
 hosted artifacts retain commands, elapsed times, runtime hashes, original
 failures, workflow results and the remaining acceptance limits.
+
+## Recorder-edge review follow-up
+
+The 13 November review of `0158e2dfb538fc3de8e1bfda91bcc387341b4c13`
+identified a P2 omission in `Main.recording_configuration()`. It floored the
+requested camera and retained exactly `current_view_size` cells, even when the
+presented view intersected another cell at the right or bottom edge. For a
+displayed origin `(63.25, 31.75)` and a `240 × 135` view, the old rectangle was
+`Rect2i(63, 31, 240, 135)`. The enclosing rectangle is
+`Rect2i(63, 31, 241, 136)`, including column 303, row 166 and their corner.
+This numerical example is source derivation; the original review did not claim
+a reproduced runtime failure.
+
+The focused correction derives the default ROI from
+`presentation_camera_origin()`, floors each start, ceils each scalar
+origin-plus-view-size end and clamps to the actual world extent. It preserves
+the display's rounding: a fractional requested camera that presents at an
+integral origin does not acquire an unnecessary extra cell.
+
+The recorder previously applied a second hard-coded 1024² clamp. Main now
+passes the copied actual `world_extent`; `GameplayRecorder.start_recording()`
+uses and records that positive extent, retains the legacy 1024² fallback for
+existing callers and rejects nonpositive supplied dimensions. Explicit
+`--record-roi` still overrides the camera bounds. Once admitted, a session's
+integer ROI stays fixed while the camera moves. The
+[canonical recorder contract](../operations/gameplay-recording.md#camera-recording-bounds)
+owns these semantics. No shader, native source, snapshot layout, physics or
+material-rendering change is required.
+
+`test_gameplay_recorder.gd` supplies the focused Main-to-recorder regression:
+actual immutable RG8 publications must retain distinct right, bottom and
+corner material IDs, including a later corner delta. Its configuration cases
+cover integral and fractional presented origins, world bounds, fixed-session
+behavior and worlds beyond the legacy extent. The separate CLI-override mode
+checks `--record-roi`; it is not part of the default hosted camera case. The
+existing camera qualification runner includes this recorder case in both source and
+installed campaigns on Linux and Windows, for nine invocations including
+import. Its counted `GAMEPLAY_RECORDER_RESULT` receipt is distinct from the
+older eight-invocation camera receipts; the legacy success marker remains for
+existing consumers.
+
+### Local regression reproduction and correction
+
+The first new recorder fixture ran against unchanged `0158e2dfb538` production
+source under Godot 4.7 on Linux. It completed **150 checks with 52 failures**,
+exit 52, in 2.482 seconds. The retained log explicitly reports omitted cells
+`(303, 31)`, `(63, 166)` and `(303, 166)`. This is a runtime reproduction through
+Main's configuration and the recorder's immutable snapshot consumer, not a
+manual gameplay or framebuffer reproduction. The initial fixture SHA-256 was
+`67843ee82ab560f2946ed480ceaa592a818ec9a6fff028c294c95ca0a4630bf1`.
+The final fixture additionally tests both no-ROI fallback cases and compares
+the admitted ROI before/after panning independently of expected edge bounds;
+the differing assertion totals therefore do not imply an unchanged fixture.
+
+The corrected working tree was tested before its publication commit was
+assigned. These exact file hashes identify the executed delta on `0158e2dfb538`:
+
+| Executed source | SHA-256 |
+| --- | --- |
+| `godot/scripts/main.gd` | `861ffcbb05ac235897292bd2feaac3c90cd1654448566d1c01d7ffd8bb9da16b` |
+| `godot/scripts/gameplay_recorder.gd` | `48fb8b7aa3feb17792a70370df43b6f2a0a91e8823c1606945912791d414cefa` |
+| `godot/tests/test_gameplay_recorder.gd` | `c1a98479a6aed825ec757b6314115e0872d53aae1f98e2577f5a1cbdd028e337` |
+| `tools/ci/run_workbench_qualification.py` | `69715b12b95a849176de8b6f331b77aaf33a7b9e8deb9fb7ec80165741a74c65` |
+
+| Local execution | Result | Elapsed |
+| --- | --- | --- |
+| Godot 4.7 headless project import | PASS | 5.531 s |
+| Recorder, including prior threaded output/provenance/finalization cases | 165 checks, 0 failures | 1.970 s |
+| Separate explicit CLI ROI/cadence/queue override mode | 8 checks, 0 failures | 1.819 s |
+| Camera coordinates and native editing | 1,373 checks, 0 failures | 5.530 s |
+
+Import used a 180-second watchdog; each test used 300 seconds. The harness
+requires a positive counted completion receipt and rejects error-pattern output.
+The test command is `Godot --headless --audio-driver Dummy --path godot --script
+res://tests/test_gameplay_recorder.gd`; the separate CLI run appends
+`-- --recording-roi-override-test --record-roi=1000,700,100,120 --record-hz=120
+--record-queue=0`. Camera qualification substitutes
+`res://tests/test_native_pixel_camera.gd`. Exact commands, source hashes,
+elapsed times, exits and logs are under `build/recorder-edge-qualification/`,
+in `recorder-before`, `recorder-after`, `recorder-cli`, `camera-after` and
+`local-runtime-results.json`.
+
+The freshly restored engine, native extension and Rapier bytes match all three
+hashes in [local runtime custody](#local-runtime-custody). All 87 native inputs
+and the checked build configuration match retained run 43323028725; the fresh
+proof is `build/recorder-edge-qualification/runtime/source-reuse-proof.json`.
+This is verified source-identical runtime reuse, not a local native rebuild.
+
+The first documentation check encountered six missing companion references in
+the fresh workspace. Restoring the five exact files from the documentation
+workflow's pinned companion commit `6a58311982941b75f46e22109a0829e5acb83c7e`
+resolved them without changing historical references. Blob IDs and hashes are
+retained in `build/recorder-edge-qualification/docs/companion-restoration.json`.
+Documentation then passes with 131 documents and 255 canonical claims; M11
+passes 18 records and 28 hashes. Frozen retrieval retains 31/32 canonical hits
+within five, and the additive camera set finds all six, including the recorder
+contract at rank 2. The repository identity gate still reports the existing
+four bridge-source mismatches per platform and the local Linux runtime's
+published-provenance/LFS differences. Those runtime-identity failures remain
+separate from the passing documentation checks; no retained runtime was
+published by this local qualification.
+
+**Refreshed hosted qualification is pending for this follow-up.** The earlier
+`a8f2735796b5` graphical passes, artifacts and performance observations above
+remain historical evidence for that source. They do not qualify the modified
+application or recorder fixture. The local headless results do not substitute
+for fresh Linux/Windows graphics, installed-source qualification or a new
+source-matched Windows evaluation archive.
+
+The correction leaves the integration HOLD intact. #564 acceptance, resulting
+main/native/graphical/Palette gates, physical Windows display scaling,
+representative hardware pacing and owner acceptance remain separate. Preserve
+the reviewed shader transition's reachable ancestry when reconciling the
+stack; this follow-up neither changes that transition nor authorizes a merge.
