@@ -1,7 +1,7 @@
 {
   "experiment": "WB-ART-SLM-001",
   "date": "2026-11-13",
-  "status": "all four role checkpoints imported serially; opt-in bridge protocol tested; no compatible native successor; production HOLD",
+  "status": "four updated role checkpoints imported in exact files; bridge owns cancel/deadline; model-free hosted CI green; source-compatible native/Windows HOLD",
   "source": {
     "main": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
     "main_preserves": [
@@ -10,7 +10,7 @@
     ],
     "upstream_workbench_564": "6319ab1d94d85d01c9cdb44d973a92d224bfa9aa",
     "upstream_combined_565": "d66499ec3409fb657875fca7dbd0f234cf28ca49",
-    "upstream_565_status": "Draft/HOLD: request-4 workflow 43358127824 failed on Windows original MATERIAL_LAB_UI graphical real shared Workbench installation deadline at 15 FPS (211 assertions, 1 failure); Linux full source-matched runtime job passed. No published successor or Windows package. This is upstream ownership.",
+    "upstream_565_status": "Draft/HOLD at d66499ec3409fb657875fca7dbd0f234cf28ca49: full source-matched Linux passed, request-4 Windows MATERIAL_LAB_UI graphical Workbench comparison deadline failed; no qualified successor/Windows package (workflow 43358127824).",
     "historical_linux_pilot": "90719c72b9fcf90593fb7878354051ad601b47fd",
     "pilot_is_not_current_or_windows": true,
     "role_branches_seed": "01f2cfcea66839066431b6d241f186be00cecf27",
@@ -62,58 +62,66 @@
     "tests": "experiments/wb-art-slm-001/integration/test_local_art_bridge.py",
     "runbook": "experiments/wb-art-slm-001/integration/README.md",
     "protocol": "loopback LM Studio /v1/chat/completions; content JSON operations; one-turn text-only",
-    "validation": "GitHub-hosted Ubuntu 24.04 Python 3.12 offline exact-head run 43364062901 and 43364068843 SUCCESS at source 95ed04dcada3beb0b79f9b289c4a630d0b581261: 4 bridge methods incl five forged receipt cases, 18 v1/v1.1 compiler methods, 1 aliases, 2 synthetic corpus, 4 applicable Training sampler; two private-archive dependent suites skipped; Python compileall success. No real native/Windows/model execution.",
+    "validation": "GitHub-hosted Ubuntu Python 3.12 exact-head success runs 43370081617 and 43370087593 on 373f00712d7a3647138a7638e6fddbcb16fd7603: 7 bridge tests incl actual subprocess Stop/deadline, socket EOF and fake HTTP; 18 compiler, 1 native alias, 2 corpus synthetic, 4 Training curriculum, 10 guarded-process, 2 controls archive-free, 3 Corpus balance, 3 Evaluation blind-review tests passed (50 executed methods); archive-required cases skipped. No authentic model/native/Windows.",
     "no_actual_model_loaded_this_run": true,
     "no_native_execution_this_run": true,
     "no_windows_execution_this_run": true,
-    "independent_review": "pending (evaluation reviewed historical native packet, not yet bridge implementation)",
+    "independent_review": "pending: this Integration-authored Stop/client socket assembly specifically needs independent Evaluation adversarial review and actual Godot cancellation test.",
     "new_protocol_tests_after_import": "Five forged-receipt adverse subcases included in one bridge method; all four test methods PASS in both actual GitHub Actions runs 43364062901/43364068843.",
     "receipt_binding": "Exact prompt, host seed, pinned adapter hash, LFM model identity, native_execution=false, compiler hash, focus size, material, EOS, Art operation hash and allowed tool/material",
     "receipt_hardening_commit": "d2f6a3266e6f522a6a5f8e8a3d9afc3cf315efab",
     "adverse_regressions_commit": "ddbc2b9b3ba8e4ab0423c50b21dd7fb85333e6bb",
-    "exact_head_ci": "95ed04dcada3beb0b79f9b289c4a630d0b581261",
+    "exact_head_ci": "373f00712d7a3647138a7638e6fddbcb16fd7603",
     "offline_ci_workflow": ".github/workflows/wb-art-slm-001-smoke.yml",
     "offline_ci_urls": [
-      "https://github.com/techrote/cybersand/actions/runs/43364062901",
-      "https://github.com/techrote/cybersand/actions/runs/43364068843"
+      "https://github.com/techrote/cybersand/actions/runs/43370081617",
+      "https://github.com/techrote/cybersand/actions/runs/43370087593"
     ],
-    "offline_ci_scope": "No binary assets, private corpus, neural inference, training, native Godot, Windows, visual or human acceptance; external review pending."
+    "offline_ci_scope": "No binary assets, private corpus, neural inference, training, native Godot, Windows, visual or human acceptance; external review pending.",
+    "stop_cancellation": "Opt-in bridge now monitors HTTP socket while local inference is running; client Stop/disconnect or whole-process deadline terminates its owned subprocess and never releases a late batch; single-job lock freed. POSIX process-group termination exercised via synthetic child; Windows termination unqualified.",
+    "stop_cancellation_commit": "4e5aed803320bc3629b01f83a48b6c8729c8213d",
+    "stop_tests_commit": "d168f7c21f20c4591f5309e84260687a5c9f8ca9"
   },
   "training_lease": {
     "published_active": false,
     "role_branch": "codex/wb-art-slm-training",
     "private_run_parent_lock": "not accessible from shared Git, training role must inspect before launch",
     "duplicate_step400_forbidden": true,
-    "durable_cross_run_role_lease": "not yet implemented; Training checkpoint requires this plus whole-process deadline before heavy work"
+    "durable_cross_run_role_lease": "Training implemented guarded job_guard.py with durable PID/token/fingerprint/heartbeat lease, shared FileLock, strict whole-process budget and checkpoint margin; 10 model-free subprocess tests passed on Linux; Windows controller and real model not qualified.",
+    "active_lease_visibility": "Private run-parent lease not accessible through this source branch: cannot assert no running job on another authorized machine."
   },
   "workers": {
     "integration": {
       "branch": "codex/wb-art-slm-001",
-      "next": "Have Evaluation independently run and review hardened bridge protocol against actual compatible Art panel; stage opt-in launch only after source-compatible #565 passes Windows/Lab gate."
+      "next": "Obtain independent bridge/Stop review; adopt only source-compatible qualified #565 successor preserving main #563, test one actual LFM adapter request plus native Stop/history/save/reopen on Windows and Linux; HOLD until then."
     },
     "controls": {
       "branch": "codex/wb-art-slm-controls",
-      "observed_head": "ed2720e33e3b1695b130d3af54d4c0b928ec4a63",
-      "next": "Execute paired v1/v1.1 coral native fixtures with recorded short aliases and identical starting Worlds on qualified compatible runtime; preserve v1 adapter hash.",
-      "imported_commit": "ad77b9fbaf02a0c81414ba2e2e7f5732b61a5a7d"
+      "observed_head": "a75f90956f18dedd5f7c8641cc126ba2d2040718",
+      "next": "Run 32 v1/v1.1 paired native coral fixtures with history=each on a compatible published runtime; report readback/upper occupancy and individual receipt gates.",
+      "imported_commit": "ad77b9fbaf02a0c81414ba2e2e7f5732b61a5a7d",
+      "continuation_imported_commit": "6d3cab90ed5849adece993b3f1c2e6c92a36e2ff"
     },
     "corpus": {
       "branch": "codex/wb-art-slm-corpus",
-      "observed_head": "791dc710c099064c67ed8102366dd797d0d1b7da",
-      "next": "Coordinate immutable literal-first TRAIN order vs Training's keyword-replay policy; check differences in unique traces/groups, and do not claim either is tested model gain.",
-      "imported_commit": "36d63deb0eb13174e670ec0c46381a1a50390655"
+      "observed_head": "9f9a462fca152f092e7d2a6af0e1a4291ec080ef",
+      "next": "Handoff pinned v2 balanced replay manifest to Training; quantify unique trace/group/phrasing exposure under the exact proposed sampler before any model claim.",
+      "imported_commit": "36d63deb0eb13174e670ec0c46381a1a50390655",
+      "continuation_imported_commit": "d15bf4c76cda06a773f4ab25a3cba5ef336634d2"
     },
     "training": {
       "branch": "codex/wb-art-slm-training",
-      "observed_head": "729343a22e300128d77bb3cfd4475411fef36f15",
-      "next": "Implement durable cross-run lease and strict process-wide deadline/checkpoint margin before one new model training, then compare same dev and literal-word requests; do not rerun frozen step 400.",
-      "imported_commit": "f98b6c11f83bfdc3fd9e9cdc3bbf3f5fd389bdd0"
+      "observed_head": "4da1233017057b36295c7a7bda48e0d2fb992c30",
+      "next": "Inspect private run-parent lease and frozen base/runtime availability; only then one new named bounded curriculum model job with full resume, never redo baseline.",
+      "imported_commit": "f98b6c11f83bfdc3fd9e9cdc3bbf3f5fd389bdd0",
+      "continuation_imported_commit": "1fcff712cae69ab0f8edfa0019b69063a43e243c"
     },
     "evaluation": {
       "branch": "codex/wb-art-slm-evaluation",
-      "observed_head": "07f7e191ec4c98a447de9616018961ada959754e",
-      "next": "Independently adversarial-review Integration's bridge request/context and output receipt gates; later replay actual new model/native on compatible #565 successor, keep final set sealed.",
-      "imported_commit": "0bdc089793c2c69a0680dfd0c8278bca45f6ac6f"
+      "observed_head": "8a533c5762e58727b344714d0c1828d6f24fa1c5",
+      "next": "Independently adversarial-review bridge socket cancellation/late result, HTTP host contract and output gates; then coordinate actual blind native review without opening answer key.",
+      "imported_commit": "0bdc089793c2c69a0680dfd0c8278bca45f6ac6f",
+      "continuation_imported_commit": "4bd334afcdc8ef06ce87feb37353b6d3e49bcc6a"
     }
   },
   "baseline": {
@@ -124,7 +132,7 @@
     "final_assessment_untouched": true,
     "deterministic_one_word_baseline_retained": true
   },
-  "promotion": "Draft #567 HOLD; #565 exact-head Windows request-4 failure; no Ready/merge/default change or current-source native/Windows proof",
+  "promotion": "Draft #567 HOLD; 50 executed model-free methods are not authentic model/current-main/native/Windows qualification. No Ready/merge/default promotion.",
   "integration_import": {
     "checkpoint_parent": "fc7d8b9114d3b19c8e3037dc9ceabd242f955904",
     "controls": {
@@ -158,6 +166,42 @@
     "integration_post_import": "0bdc089793c2c69a0680dfd0c8278bca45f6ac6f",
     "topology": "four serial fast-forward commits on shared branch; exact role-owned blobs copied without edits; 21 file changes, no main/native/physics source changes",
     "validation": "GitHub compare fc7d8b91...0bdc0897 ahead 4, files match exactly 5+5+6+5 and no other paths",
-    "integration_final_docs_checkpoint": "2eb48b7911c3248e9b37214712258ca86bdbf6cc"
+    "integration_final_docs_checkpoint": "2eb48b7911c3248e9b37214712258ca86bdbf6cc",
+    "continuation": {
+      "parent": "1fe52bbda9c656a38e9617326d23fbf7fb2f6730",
+      "serial_roles": [
+        {
+          "role": "controls",
+          "source_head": "a75f90956f18dedd5f7c8641cc126ba2d2040718",
+          "integration_commit": "6d3cab90ed5849adece993b3f1c2e6c92a36e2ff",
+          "changed_paths": 7,
+          "scope": "archived native coral baseline receipt audit and paired --history each"
+        },
+        {
+          "role": "corpus",
+          "source_head": "9f9a462fca152f092e7d2a6af0e1a4291ec080ef",
+          "integration_commit": "d15bf4c76cda06a773f4ab25a3cba5ef336634d2",
+          "changed_paths": 4,
+          "scope": "balanced v2 theme/phrasing candidate, actual training order only"
+        },
+        {
+          "role": "training",
+          "source_head": "4da1233017057b36295c7a7bda48e0d2fb992c30",
+          "integration_commit": "1fcff712cae69ab0f8edfa0019b69063a43e243c",
+          "changed_paths": 5,
+          "scope": "durable file lock and process-wide training supervisor; no training"
+        },
+        {
+          "role": "evaluation",
+          "source_head": "8a533c5762e58727b344714d0c1828d6f24fa1c5",
+          "integration_commit": "4bd334afcdc8ef06ce87feb37353b6d3e49bcc6a",
+          "changed_paths": 6,
+          "scope": "34-card/68-image blinded historical native review stimulus and sealed scoring"
+        }
+      ],
+      "diff_qualification": "GitHub compare prior shared head to 373f00712: 8 commits/25 modified paths, all under experiment or its dedicated smoke workflow. Every role path is exact-source blob SHA with expected-head fast-forward; no other source modified.",
+      "modeled_gain": "none measured; frozen 400-step model unchanged",
+      "CI": "50 executed applicable model-free methods PASS; archived-native/corpus suites not executed on hosted runner"
+    }
   }
 }
