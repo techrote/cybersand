@@ -126,11 +126,67 @@ boundary are unchanged. The inherited verifier now requires all 231 discovered
 catalogue cases, including the 22 accepted capability controls. The original
 37 Workbench stages, all combined/installed fixtures and deadlines remain intact.
 
-At this accepted-main replacement checkpoint, qualification is **IN PROGRESS / HOLD**.
-Fresh uninstrumented Windows/Linux execution, standalone package verification,
-runtime publication and actual complete final gates are required. PR #565 will
-supply exact terminal source/run/artifact/checksum results. No earlier pass or
-diagnostic is relabelled as qualification of the replacement source.
+### Retained 5 FPS failures and request 4
+
+Request 2 subsequently failed the mounted Lab/Workbench four-worker author case:
+44 checks, two failures, no completed native World receipt. Its one-worker
+author/reopen passed 102/37 checks, but the comparison consumed about 296 seconds
+of the unchanged 300-second service limit. This was an execution failure, not a
+stale-branch-lease refusal. [Original artifact 14005115930](https://github.com/techrote/cybersand/actions/runs/43345030561/artifacts/14005115930)
+has SHA256 `c20a202d8fa341dd70bdc032cdea9bc1b1e3f03da532275ec287d0d776e5be6d`.
+
+Request 3, [run 43347141410](https://github.com/techrote/cybersand/actions/runs/43347141410),
+froze source `4e41501a56b25de5defdaedbd990b34b13a41c13` and tree
+`16ebe643f92340a0ce3f75b74e32585c25ba779c`. Linux passed the complete 231-case
+catalogue, original Lab cases, all 37 Workbench stages, all four mounted
+author/reopen cases (278 checks) and all 12 installed stages. Independent review
+verified all 89 native/841 build inputs, 67 PNG identities and 22 original frames.
+Windows passed its catalogue with exactly three registered POSIX-only skips,
+all original Lab headless/graphical cases and all 37 Workbench stages. The mounted
+one-worker author comparison then exhausted its unchanged 300-second deadline:
+44 checks, two failures, no completed native World receipt. Packaging, runtime
+publication and final-gate dispatch correctly stopped. [Original Windows artifact 14005626551](https://github.com/techrote/cybersand/actions/runs/43347141410/artifacts/14005626551)
+has SHA256 `6a1af145571473ebb9b9519d795bf2c82c3f04fa146aa9d886ad8ce7aa4c398f`.
+Neither failed source is a qualified combined Windows application.
+
+A second isolated [Windows diagnostic 43355051094](https://github.com/techrote/cybersand/actions/runs/43355051094)
+ran the exact `4e41501a` source and rebuilt DLL without source edits. Both 5 FPS
+author cases failed on the same host; exact native requests without Godot passed
+in 50.656/51.937 seconds. At 1 FPS, both unchanged author/reopen pairs completed
+102/37 checks: one worker took 169.297/27.703 seconds, four workers
+169.891/26.656 seconds. These are complete process wall times, not native-only
+timings. All assertions and the original 180/60/300-second compile, execute and
+service limits remained intact. Failed authors have no claimed reopen result.
+External phase tracing and generation-aware process/host CPU sampling were kept
+outside source custody. [Original diagnostic artifact 14006388186](https://github.com/techrote/cybersand/actions/runs/43355051094/artifacts/14006388186)
+has SHA256 `3dbf796a43483a1bceeaca21792201727164b2bddc01ffee33474809cd7dc049`.
+Instrumented diagnostic results are not release qualification.
+
+Independent phase and CPU readback identifies aggregate authoring starvation:
+at 5 FPS Godot used 3.37–3.49 of four cores during compilation, while the
+`world.cpp` compiler received only 0.17–0.20 core over its sampled lifetime.
+Compiles took 103–122 seconds. The whole-job deadline cancelled the one-worker
+candidate execution and the four-worker candidate compile; neither failure was
+a child 180-second compile timeout. At 1 FPS Godot used 0.65–0.70 core, the
+compiler received 0.82–0.85 core, compiles took 19.47–19.69 seconds, and the
+primary native authoring jobs completed in 60.625/60.172 seconds. All 298
+retained file hashes and 89/841 before/after input ledgers match; the DLL is
+unchanged. All nine sampled cases matched the exact root process generation,
+with no sampler errors and no sampled owned survivors after cleanup. Other
+host competitors were small; the failure reproduced without a prior full
+campaign. These controls justify a capture-only resource correction.
+
+Request 4 therefore reduces only the private combined graphical capture to
+**1 FPS**, including the identical installed replay, and updates its guard and
+publication request sequence. Original Lab captures remain at 15 FPS; product
+frame rates, all application/native source, physics defaults, worker ownership,
+save formats, assertions, native work and deadlines remain unchanged.
+
+The replacement remains **IN PROGRESS / HOLD** until fresh uninstrumented
+Windows/Linux execution, standalone package verification, runtime publication
+and actual complete final gates pass. PR #565 supplies exact terminal
+source/run/artifact/checksum results. No earlier pass or diagnostic is relabelled
+as qualification of this replacement.
 
 ## Merge sequence and follow-on boundary
 

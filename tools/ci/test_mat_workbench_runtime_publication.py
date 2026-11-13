@@ -157,7 +157,7 @@ class IntegrationPublication(unittest.TestCase):
                     userdata = Path(env["APPDATA"])
                     self_outer.assertFalse(userdata.is_relative_to(source))
                     self_outer.assertEqual(env["APPDATA"], env["XDG_DATA_HOME"])
-                    self_outer.assertEqual(kwargs["max_fps"], 5)
+                    self_outer.assertEqual(kwargs["max_fps"], 1)
                     self_outer.assertEqual(subject.lab.GRAPHICAL_MAX_FPS, 15)
                     userdata.mkdir(parents=True, exist_ok=True)
                     (userdata / "saved-layout.json").write_text('{"saved":true}\n')

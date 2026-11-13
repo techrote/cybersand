@@ -47,10 +47,11 @@ _verify_lab_bundle = lab.verify_materials_bundle
 # Engine.get_version_info().string uses the display spelling; --version has
 # engine.GODOT_VERSION. The original publisher also authenticates archive bytes.
 GODOT_DISPLAY_VERSION = "4.7-stable (official)"
-# Windows diagnostic 43342275664: two software-rendered windows capped at 15 FPS
-# starved the first compile past 180s; at 5 FPS both compiled in 25s each.
-# Bound this combined capture only; inherited Lab captures retain 15 FPS.
-COMBINED_GRAPHICAL_MAX_FPS = 5
+# Windows diagnostic 43355051094: the same 5 FPS comparison exhausted its
+# unchanged deadline at both worker counts; 1 FPS completed both author/reopen
+# pairs. Bound only this combined capture; inherited Lab captures retain 15 FPS
+# and product frame rates, native work, assertions and deadlines are unchanged.
+COMBINED_GRAPHICAL_MAX_FPS = 1
 
 
 def __getattr__(name):
