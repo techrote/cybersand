@@ -402,3 +402,12 @@ original-source sampler policy, with raw DEVELOPMENT outcomes and no final
 feedback. The added witness addresses a data-exposure gap; it demonstrates
 **zero model-score improvement until a controlled model evaluation is run**.
 Draft PR #567 remains HOLD, and the frozen step-400 adapter is unchanged.
+
+
+## Sixth corpus checkpoint — archived TRAIN/DEV split and receipt-custody audit
+
+**13 November 2026; corpus role.** Recovered the exact owner's `wb_art_slm_001_executed_corpus.zip` (2,311,486 bytes; SHA-256 `2d2de250731eeea825339e89f752ab8ebc65f3a929daa2c692120d985566948a`). New `audit_split_custody.py` works directly on that immutable ZIP and verifies admission/manifest hashes, all 864 archived native-case operation inputs, and every TRAIN/DEV completion against its post-modifier structural group, original program/host context, compiled geometry and per-case passing receipt. It checks normalized prompt and actual program leakage (not just nominal IDs), confirms p0/p1 trace pairs, and refuses tampered targets, operations, receipts, duplicate IDs and cross-split prompts. The FINAL split is **byte-hashed only**; its prompts and completions are not parsed or fed into development.
+
+**Executed:** `WB_ART_SLM_CORPUS_ARCHIVE=/absolute/path/wb_art_slm_001_executed_corpus.zip python -m unittest discover -s experiments/wb-art-slm-001/corpus -p 'test_audit_split_custody.py' -v`: **4/4 PASS**, including six adversarial mutation subcases against source records. The standalone audit returned 1,152 TRAIN / 192 DEV records, 672 two-phrasing native trace pairs, 72 TRAIN / 12 DEV groups, zero TRAIN↔DEV prompt/program leakage, and 12 manifest-declared FINAL structural groups. The original FINAL SHA was verified without inspecting those examples. Tests ran locally on Python 3 against the owner-saved ZIP, not on GitHub Actions or inside a native World.
+
+**Qualification:** This strengthens **archived dataset integrity**, not native execution or learned pattern accuracy. The original global native receipts packet and historical image bytes were not independently replayed. No changes were made to the original admitted data, compiler, v1–v4 curriculum order, evaluator, training, model weights, physics/defaults, Integration state or PR. No current-main/Windows execution, human visual assessment, or FINAL feedback occurred. Training and Integration may consume this read-only audit after exact-head review; Draft #567 remains HOLD.
