@@ -533,11 +533,32 @@ def main():
         final_eval = None
         if not args.skip_final_eval:
             final_eval = evaluate(model, tokenizer, dev_rows, system, device, args.max_new_tokens, args.eval_count, output / "after.json", args.compiler)
-        import resource
-        summary = {"status": "training_executed", "global_step": step, "sample_cursor": cursor, "checkpoint": str(checkpoint), "frozen_base_unchanged": True, "frozen_base_sha256": frozen_hash, "trainable_parameters": config["trainable_parameters"], "total_parameters": config["total_parameters"], "processed_input_tokens": sum(e["processed_input_tokens"] for e in history), "supervised_target_tokens": sum(e["supervised_target_tokens"] for e in history), "training_step_seconds": sum(e["seconds"] for e in history), "wall_seconds_this_process": time.monotonic() - t0, "peak_rss_kib": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss, "final_eval": final_eval, "native_evaluation": "Requires separately executed native gallery/readback; this trainer does not claim it", "config": config}
+        summary = {"status": "training_executed", "global_step": step, "sample_cursor": cursor, "checkpoint": str(checkpoint), "frozen_base_unchanged": True, "frozen_base_sha256": frozen_hash, "trainable_parameters": config["trainable_parameters"], "total_parameters": config["total_parameters"], "processed_input_tokens": sum(e["processed_input_tokens"] for e in history), "supervised_target_tokens": sum(e["supervised_target_tokens"] for e in history), "training_step_seconds": sum(e["seconds"] for e in history), "wall_seconds_this_process": time.monotonic() - t0, "peak_rss_kib": peak_rss_kib(), "final_eval": final_eval, "native_evaluation": "Requires separately executed native gallery/readback; this trainer does not claim it", "config": config}
         write_json(output / "summary.json", summary)
         write_json(output / "job.json", {"pid": os.getpid(), "state": "completed", "global_step": step, "completed_at_unix": time.time()})
         print(canonical({"event": "complete", "step": step, "checkpoint": str(checkpoint), "seconds": summary["wall_seconds_this_process"]}), flush=True)
+
+
+
+
+def peak_rss_kib():
+    """Best-effort peak resident-set size in KiB, or None if unsupported.
+
+    Linux/BSD resource.ru_maxrss is in KiB; macOS returns bytes.
+    Native Windows does not provide the resource module. Memory telemetry
+    must never invalidate a successfully saved LoRA checkpoint.
+    """
+    if os.name == "nt" or sys.platform == "win32":
+        return None
+    try:
+        import resource
+        rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    except (ImportError, AttributeError, OSError, ValueError):
+        return None
+    if not isinstance(rss, (int, float)) or not math.isfinite(rss) or rss < 0:
+        return None
+    return math.ceil(rss / 1024) if sys.platform == "darwin" else int(rss)
+
 
 
 def request_stop(signum, frame):
