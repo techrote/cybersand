@@ -110,7 +110,7 @@ jobs:
       - name: Execute real native/Workbench safety and physics regression
         run: |
           set -euo pipefail
-          for test in test_workbench_presentation_coherence test_pr566_mask_coherent_native_world test_pr593_mask_coherent_production test_pr593_mask_coherent_edit_crossfade test_pr593_mask_coherent_dense_budget test_workbench_input test_workbench_fleet_session test_workbench_physics_play; do
+          for test in test_workbench_presentation_coherence test_pr566_mask_coherent_native_world test_pr593_mask_coherent_production test_pr593_mask_coherent_dense_budget test_workbench_input test_workbench_fleet_session test_workbench_physics_play; do
             echo "PR566_LINUX_TEST $test"
             timeout 360 "$GODOT_BIN" --headless --path godot --script "res://tests/$test.gd" > "evidence/$test.log" 2>&1 || { tail -100 "evidence/$test.log"; exit 1; }
             tail -4 "evidence/$test.log"
@@ -121,6 +121,13 @@ jobs:
           set -euo pipefail
           bash tools/ci/prepare_linux_display.sh > evidence/display-setup.log 2>&1
           mkdir -p evidence/frames evidence/reports evidence/logs
+          # Previous texture readback must run with a real graphical driver.
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            timeout 240 "$GODOT_BIN" --rendering-method gl_compatibility --display-driver x11 \
+              --path godot --script res://tests/test_pr593_mask_coherent_edit_crossfade.gd \
+              > evidence/logs/native-edit-crossfade-gl.log 2>&1 || \
+                { tail -100 evidence/logs/native-edit-crossfade-gl.log; exit 1; }
+          tail -8 evidence/logs/native-edit-crossfade-gl.log
           for trial in nofire fire; do
             for camera in free follow; do
               for mode in mask guarded; do

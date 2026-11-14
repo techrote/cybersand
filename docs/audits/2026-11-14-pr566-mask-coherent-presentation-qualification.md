@@ -77,9 +77,16 @@ presentation pass. The oracle checks its deadline every 32 scanned cells and
 fails closed on exhaustion. The hosted 12-actor dense/empty timing probe
 records p95/p99; this does not replace physical Windows GPU acceptance.
 
-A dedicated source-bound native Workbench PAINT fixture inserts/erases
-temporally smoothed Fire, then verifies the genuine previous GPU texture, the
-actual live Kestrel overlay veto during blend and release after expiry.
+A dedicated source-bound native Workbench PAINT fixture inserts and
+erases temporally smoothed Fire, then reads the genuine previous GPU texture
+under actual GL/ANGLE or X11 rendering. The old-material CPU occupancy set
+must cover any remaining old GPU Fire pixel; it is permitted to overestimate
+previous GPU occupancy when the ping-pong texture advances again. Paused
+native PAINT can invalidate the source-bound actor pose revision, so the
+production overlay is conservatively hidden until a new coupled pose exists.
+The independent material-clearance oracle checks active/expired blend
+against source-traceable material. Live moving-contact physical owner
+acceptance remains separate.
 The specialised Windows/Linux workflows run the new fixtures and have
 pull-request and parent/main branch triggers, subject to the retained exact
 PR566 native binary provenance lock. Future native changes need an updated

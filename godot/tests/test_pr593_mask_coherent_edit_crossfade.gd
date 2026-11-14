@@ -95,9 +95,20 @@ func _run() -> void:
 								var old: Image = host.previous_texture.get_image() if graphical else null
 								var old_pixel: int = -1
 								if graphical:
+									require(old!=null and not old.is_empty()
+										and old.get_size()==host.image.get_size(),
+										"graphical previous GPU texture has the actual World extent")
 									if old != null and not old.is_empty():
 										old_pixel=old.get_pixel(CELL.x,CELL.y).r8
-									require(old_pixel==6,"graphical previous GPU texture still contains Fire")
+									# A subsequent accepted texture upload can advance
+									# the previous GPU slot again. Old CPU occupancy
+									# may therefore overestimate GPU occupancy but
+									# must never omit a nonempty previous pixel.
+									require(old_pixel==0 or old_pixel==6,
+										"graphical old GPU readback is empty or prior Fire")
+									require(old_pixel==0
+										or host._presentation_previous_occupied.has(pixel_id),
+										"visible prior GPU Fire is covered by guard history")
 								else:
 									require(host._presentation_previous_occupied.has(pixel_id) \
 										and not host._presentation_previous_unknown,
