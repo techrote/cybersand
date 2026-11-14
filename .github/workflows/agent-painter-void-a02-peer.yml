@@ -1,0 +1,76 @@
+name: VOID A02 original public/peer spatial witness (NOT TRAIN)
+
+on:
+  push:
+    branches: [codex/agent-painter-void-568]
+    paths:
+      - 'experiments/agent_painter/lanes/void/a02_peer_audit.py'
+      - 'experiments/agent_painter/lanes/void/test_a02_peer_audit.py'
+      - '.github/workflows/agent-painter-void-a02-peer.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: void-a02-peer-${ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  public-peer-readonly:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${ github.sha }}
+          persist-credentials: false
+      - name: Verify immutable source and run cheap fail-closed regressions
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/void-a02-policy.json
+          python3 -m py_compile experiments/agent_painter/lanes/void/{a02_peer_audit,test_a02_peer_audit}.py
+          python3 experiments/agent_painter/lanes/void/test_a02_peer_audit.py
+      - name: Download three original GitHub-hosted evidence ZIPs (no model/FINAL extraction)
+        env:
+          GH_TOKEN: ${ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/void-a02-peer
+          gh api repos/techrote/cybersand/actions/artifacts/14113396057/zip > evidence/void-a02-peer/void.zip
+          gh api repos/techrote/cybersand/actions/artifacts/14111800549/zip > evidence/void-a02-peer/sprocket.zip
+          gh api repos/techrote/cybersand/actions/artifacts/14076703326/zip > evidence/void-a02-peer/public.zip
+      - name: Recompute exact source-bound Architecture material comparison
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/void/a02_peer_audit.py \
+            --void-zip evidence/void-a02-peer/void.zip \
+            --sprocket-zip evidence/void-a02-peer/sprocket.zip \
+            --public-zip evidence/void-a02-peer/public.zip \
+            > evidence/void-a02-peer/comparison.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("evidence/void-a02-peer/comparison.json").read_text())
+          assert d["status"] == "READ_ONLY_SPATIAL_WITNESS"
+          assert d["opened_splits"] == ["TRAIN", "DEVELOPMENT"] and not d["final_targets_opened"]
+          assert d["target"]["native_seed_masks_identical"] and d["target"]["material58_cells"] == 524
+          assert len(d["neighbours"]) == 6
+          assert not d["reviewer_global_independence_approved"]
+          assert d["new_shared_train_groups"] == d["model_optimizer_updates"] == 0
+          print("READ-ONLY original-byte spatial witness PASS; global admission HOLD")
+          for x in d["neighbours"]:
+              print(x["name"], x["split"], x["material58_cells"], x["same_coordinate_iou"])
+          PY
+          rm -f evidence/void-a02-peer/{void,sprocket,public}.zip
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: void-a02-peer-audit-${ github.sha }}-${ github.run_id }}
+          path: evidence/void-a02-peer/comparison.json
+          if-no-files-found: warn
+          retention-days: 90
