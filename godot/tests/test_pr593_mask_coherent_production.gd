@@ -42,11 +42,19 @@ func until(predicate: Callable) -> bool:
 
 
 func _set_actual_rapier_pose(pose: Transform2D) -> bool:
-	# This is the authoritative real RID, not a presentation-frame override.
-	PhysicsServer2D.body_set_state(rid,PhysicsServer2D.BODY_STATE_TRANSFORM,pose)
+	# The production bridge retains the last *measured* Rapier pose in its
+	# _transforms cache; modifying only BODY_STATE_TRANSFORM on the RID would
+	# leave body_transform() stale until a physical step. Use its real
+	# reset_body() operation, which updates BOTH the RID and this canonical
+	# cache without touching native World material or display-frame bytes.
+	bridge.reset_body(0,pose.origin,pose.get_rotation())
 	var observed: Transform2D = bridge.body_transform(0)
+	var rid_pose: Transform2D = PhysicsServer2D.body_get_state(
+		rid,PhysicsServer2D.BODY_STATE_TRANSFORM)
 	return observed.origin.distance_to(pose.origin)<0.001 \
-		and absf(wrapf(observed.get_rotation()-pose.get_rotation(),-PI,PI))<0.001
+		and rid_pose.origin.distance_to(pose.origin)<0.001 \
+		and absf(wrapf(observed.get_rotation()-pose.get_rotation(),-PI,PI))<0.001 \
+		and absf(wrapf(rid_pose.get_rotation()-pose.get_rotation(),-PI,PI))<0.001
 
 
 func _render_scene(label: String, expected: Transform2D,
