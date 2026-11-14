@@ -4,6 +4,8 @@ on:
     branches: [codex/agent-painter-sprocket-568]
     paths:
       - experiments/agent_painter/lanes/sprocket/raw-refusal-request-v1.json
+      - experiments/agent_painter/lanes/sprocket/raw_refusals_v1.py
+      - experiments/agent_painter/lanes/sprocket/test_raw_refusals_v1.py
 permissions:
   contents: read
   actions: read

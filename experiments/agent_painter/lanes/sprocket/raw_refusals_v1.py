@@ -29,6 +29,26 @@ def digest(s):
 def read(p):
     return json.loads(Path(p).read_text(encoding="utf-8"))
 
+def _strict_json_valid(text):
+    """Derive JSON validity from preserved raw text; refuse duplicate keys/NaN/Infinity."""
+    def unique_pairs(pairs):
+        obj = {}
+        for key, value in pairs:
+            if key in obj:
+                raise ValueError("duplicate JSON object key")
+            obj[key] = value
+        return obj
+
+    def reject_constant(value):
+        raise ValueError("non-finite JSON constant: " + value)
+
+    try:
+        json.loads(text, object_pairs_hook=unique_pairs, parse_constant=reject_constant)
+    except (ValueError, TypeError):
+        return False
+    return True
+
+
 def classify(row):
     raw = row["raw"]
     ids = row["output_token_ids"]
@@ -38,11 +58,15 @@ def classify(row):
             "missing unchanged prompt/raw text")
     for k in ("text_decoded", "eos_terminated", "json_valid", "program_valid", "first_pass_accepted"):
         require(type(raw[k]) is bool, "invalid strict first-pass flag " + k)
+    expected_eos = ids[-1] == 5 and 5 not in ids[:-1]
+    require(raw["eos_terminated"] == expected_eos,
+            "terminal EOS flag/token mismatch")
+    require(raw["json_valid"] == _strict_json_valid(raw["raw_text"]),
+            "strict JSON flag/raw text mismatch")
     require(not raw["first_pass_accepted"] or
             (raw["eos_terminated"] and raw["json_valid"] and raw["program_valid"]),
             "first-pass assertion without EOS, JSON and schema")
     require(not raw["program_valid"] or raw["json_valid"], "schema claimed without JSON")
-    require(not raw["eos_terminated"] or (ids[-1] == 5 and 5 not in ids[:-1]), "wrong terminal EOS")
     views = row["seed_results"]
     require(type(views) is list and len(views) == 2 and {x["seed"] for x in views} == SEEDS,
             "missing/duplicate original seed variant")

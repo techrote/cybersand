@@ -19,7 +19,7 @@ def fake(family, group, arm, mode="valid"):
         "prompt": "request " + group,
         "output_token_ids": ids, "output_tokens": len(ids),
         "raw": {
-            "token_ids": ids[:], "raw_text": "{}",
+            "token_ids": ids[:], "raw_text": "{" if mode in ("bad_json", "no_eos") else "{}",
             "text_decoded": mode != "bad_decode", "eos_terminated": eos,
             "json_valid": json_ok or mode == "bad_decode",
             "program_valid": valid, "first_pass_accepted": valid and eos},
@@ -83,6 +83,45 @@ class RawRefusalRegression(unittest.TestCase):
         row["output_token_ids"][-1] = 11
         row["raw"]["token_ids"][-1] = 11
         with self.assertRaisesRegex(ValueError, "terminal EOS"):
+            classify(row)
+
+
+    def test_false_eos_flag_with_true_terminal_id_fails(self):
+        row = fake("greebles", "g", "untuned", "no_eos")
+        row["output_token_ids"] = [111, 5]
+        row["raw"]["token_ids"] = [111, 5]
+        row["output_tokens"] = 2
+        with self.assertRaisesRegex(ValueError, "terminal EOS flag"):
+            classify(row)
+
+    def test_json_flag_false_for_valid_raw_text_fails(self):
+        row = fake("greebles", "g", "step96", "bad_json")
+        row["raw"]["raw_text"] = "{}"
+        with self.assertRaisesRegex(ValueError, "strict JSON flag"):
+            classify(row)
+
+    def test_json_flag_true_for_invalid_raw_text_fails(self):
+        row = fake("greebles", "g", "step96")
+        row["raw"]["raw_text"] = "{"
+        with self.assertRaisesRegex(ValueError, "strict JSON flag"):
+            classify(row)
+
+    def test_duplicate_json_object_keys_refused(self):
+        row = fake("greebles", "g", "step96")
+        row["raw"]["raw_text"] = '{"x":1,"x":2}'
+        with self.assertRaisesRegex(ValueError, "strict JSON flag"):
+            classify(row)
+
+    def test_nonfinite_json_constants_refused(self):
+        row = fake("greebles", "g", "step96")
+        row["raw"]["raw_text"] = '{"x":NaN}'
+        with self.assertRaisesRegex(ValueError, "strict JSON flag"):
+            classify(row)
+
+    def test_nested_duplicate_json_keys_refused(self):
+        row = fake("greebles", "g", "step96")
+        row["raw"]["raw_text"] = '{"outer":{"a":1,"a":2}}'
+        with self.assertRaisesRegex(ValueError, "strict JSON flag"):
             classify(row)
 
     def test_false_native_pass_fails(self):
