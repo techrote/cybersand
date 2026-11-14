@@ -214,7 +214,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 150
     permissions:
-      contents: write
+      contents: read
       actions: read
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -254,20 +254,64 @@ jobs:
           "$RUNNER_TEMP/smol-native/bin/python" experiments/agent_painter/lanes/smol/package.py --directory evidence --output release --source-sha "$GITHUB_SHA" \
             --job-assignments evidence/publication/job-assignments.json \
             --artifact-custody evidence/publication/producer-artifacts.json
-      - name: Publish first Smol DEVELOPMENT iteration without quality promotion
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Record exact-source read-only Actions delivery (no GitHub release request)
         run: |
           set -euo pipefail
-          tag="agent-painter-smol-${GITHUB_SHA:0:12}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
-          cat > "$RUNNER_TEMP/smol-release.md" <<'NOTES'
-          Bounded SMOL worker iteration for CyberSand issue #568, on independent baseline and candidate GitHub-hosted CPU VMs. Candidate real optimizer steps, atomic checkpoints and original raw first-pass DEVELOPMENT outputs are retained. Six structural requests produce twelve host-seed views per arm. FINAL is excluded.
-
-          The native archive contains the side-by-side gallery/index.html, original PNGs only for accepted model outputs, actual native receipts/readback, strict refusals for all rejected views, and exact source/runtime custody. A safety-only native pass can coexist with zero accepted model drawings. Read MANIFEST.json and model-native-summary.json for actual counts; workflow success does not certify useful painter quality.
-
-          The training corpus retains its original source633 identity. Native replay is rebuilt at this iteration's exact source. Checkpoints and release assets are immutable; SHA256SUMS.txt binds their bytes. Independent Draft/HOLD lane; no merge or default promotion.
-          NOTES
-          gh release create "$tag" release/* --target "$GITHUB_SHA" --prerelease --title "Smol painter DEVELOPMENT (${GITHUB_SHA:0:12})" --notes-file "$RUNNER_TEMP/smol-release.md"
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          output = Path("release")
+          manifest = json.loads((output / "MANIFEST.json").read_text())
+          if (manifest.get("source_sha") != os.environ["GITHUB_SHA"]
+                  or manifest.get("workflow_run_id") != int(os.environ["GITHUB_RUN_ID"])
+                  or manifest.get("workflow_run_attempt") != int(os.environ["GITHUB_RUN_ATTEMPT"])):
+              raise SystemExit("source/run identity differs from packaged model-native evidence")
+          for name in ("MANIFEST.json", "SHA256SUMS.txt", "smol-gallery.html"):
+              if not (output / name).is_file() or (output / name).stat().st_size == 0:
+                  raise SystemExit("missing verified research asset: " + name)
+          record = {
+              "schema": "smol-direct-actions-delivery-v1",
+              "delivery": "github-actions-artifact",
+              "github_release_published": False,
+              "source_sha": os.environ["GITHUB_SHA"],
+              "producer": manifest["producer"],
+              "publisher": manifest["publisher"],
+              "bundle_artifact": f"smol-release-{os.environ['GITHUB_SHA']}-{os.environ['GITHUB_RUN_ID']}-{os.environ['GITHUB_RUN_ATTEMPT']}",
+              "gallery_artifact": f"smol-gallery-{os.environ['GITHUB_SHA']}-{os.environ['GITHUB_RUN_ID']}-{os.environ['GITHUB_RUN_ATTEMPT']}",
+              "retention_days": 90,
+              "final_targets_opened": False,
+              "claim_limits": [
+                  "Model training and native execution are separately source-qualified by original receipts.",
+                  "Native acceptance does not demonstrate prompt conformity or useful visual painting.",
+                  "Actions artifacts expire after 90 days; no GitHub release was created."
+              ]
+          }
+          path = output / "PUBLICATION.json"
+          with path.open("x", encoding="utf-8") as stream:
+              json.dump(record, stream, indent=2, sort_keys=True)
+              stream.write("\\n")
+          with (output / "SHA256SUMS.txt").open("a", encoding="utf-8") as stream:
+              stream.write(hashlib.sha256(path.read_bytes()).hexdigest() + "  PUBLICATION.json\\n")
+          print(json.dumps({"delivery": record["delivery"], "github_release_published": False,
+                            "bundle_artifact": record["bundle_artifact"], "retention_days": 90}))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: smol-release-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: release/
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: smol-gallery-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            release/smol-gallery.html
+            release/smol-native-*.zip
+            release/MANIFEST.json
+            release/SHA256SUMS.txt
+            release/PUBLICATION.json
+          if-no-files-found: error
+          retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
