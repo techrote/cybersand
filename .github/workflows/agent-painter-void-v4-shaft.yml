@@ -1,0 +1,70 @@
+name: VOID v4 vertical-shaft architecture source-only pilot (NOT TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-void-568]
+    paths:
+      - 'experiments/agent_painter/lanes/void/v4_shaft_proposals.json'
+      - 'experiments/agent_painter/lanes/void/v4_shaft_probe.py'
+      - 'experiments/agent_painter/lanes/void/test_v4_shaft.py'
+      - '.github/workflows/agent-painter-void-v4-shaft.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: void-v4-shaft-source-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Exact source, policy and adversarial model-free geometry regressions
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/void-v4-policy.json
+          python3 -m py_compile experiments/agent_painter/lanes/void/v4_shaft_probe.py experiments/agent_painter/lanes/void/test_v4_shaft.py
+          python3 experiments/agent_painter/lanes/void/test_v4_shaft.py
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/native-original
+      - name: Verify original TRAIN/DEVELOPMENT-only signatures and compile both host seeds
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/void/v4_shaft_probe.py \
+            --corpus evidence/native-original/corpus \
+            --proposals experiments/agent_painter/lanes/void/v4_shaft_proposals.json \
+            --previous experiments/agent_painter/lanes/void/v3_research_proposals.json \
+            --output evidence/void-v4-shaft/source-only.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("evidence/void-v4-shaft/source-only.json").read_text())
+          assert d["status"]=="SOURCE_ONLY_PASS"
+          assert d["original_manifest_sha256"]=="2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
+          assert d["seed_preflights"]==2 and d["independent_composition_hypotheses"]==1
+          assert d["original_split_custody"]["TRAIN"]["structural_groups"]==6
+          assert d["original_split_custody"]["DEVELOPMENT"]["structural_groups"]==6
+          assert d["quarantined_old_architecture"]=="void-v3-A01"
+          assert d["review_status"]=="PENDING_GLOBAL_SPATIAL_AND_HELDOUT_REVIEW"
+          assert not d["global_independence_approved"] and not d["original_public_exact_signature_collision"]
+          assert d["native_positive_views"]==d["new_train_groups"]==d["optimizer_updates"]==d["model_generated_paintings"]==0
+          assert not d["final_opened"]
+          print("Source-only PASS; A02 remains unadmitted/reviewer HOLD")
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: void-v4-shaft-source-${{ github.sha }}-${{ github.run_id }}
+          path: evidence/void-v4-shaft/
+          if-no-files-found: warn
+          retention-days: 90
