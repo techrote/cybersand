@@ -1,20 +1,20 @@
 # ENG-LAB-001 / Windows 11 NVIDIA hardware comparison.
 # All cases run the same tested native Workbench, Needle, and no-input capture.
 [CmdletBinding()]
-param([switch]$Smoke, [switch]$AllowOtherAdapter, [ValidateSet('opengl3','opengl3_angle')][string]$RenderingDriver='opengl3')
+param([switch]$Smoke, [switch]$Scripted, [switch]$FullScripted, [switch]$AllowOtherAdapter, [ValidateSet('opengl3','opengl3_angle')][string]$RenderingDriver='opengl3')
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $Root = (Resolve-Path -LiteralPath (Split-Path -Parent $MyInvocation.MyCommand.Path)).Path
 $Engine = Join-Path $Root 'Godot_v4.7-stable_win64_console.exe'
 $Project = Join-Path $Root 'godot'
 $ManifestPath = Join-Path $Root 'evaluation-manifest.json'
-$Source = '50a87a0a11388887a87f38dd11072f8b319756f2'
-$Out = Join-Path $Root ('Benchmark-Results\NVIDIA-' + (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + $PID)
+$Source = (Get-Content -LiteralPath $ManifestPath -Raw -Encoding UTF8 | ConvertFrom-Json).application_commit
+$Out = Join-Path $Root ('Benchmark-Results\' + $(if($Scripted){'Test-It-'}else{'NVIDIA-'}) + (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + $PID)
 New-Item -ItemType Directory -Path $Out -Force | Out-Null
 $ReportPath = Join-Path $Out 'summary.json'
 $Report = @{
- schema='eng-lab-001-owner-nvidia-v1'; source=$Source
- mode=$(if($Smoke){'smoke'}else{'full'})
+ schema=$(if($Scripted){'eng-lab-scripted-owner-zip-v1'}else{'eng-lab-001-owner-nvidia-v1'}); source=$Source
+ mode=$(if($Scripted){$(if($Smoke){'scripted-smoke'}elseif($FullScripted){'scripted-full'}else{'scripted-four-families'})}elseif($Smoke){'smoke'}else{'full'})
  status='incomplete'; complete=$false; cases=@(); order=@()
  created=(Get-Date).ToString('o')
 }
@@ -78,14 +78,15 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat) {
  New-Item -ItemType Directory -Path $User -Force|Out-Null
  $env:APPDATA=$User
  $env:XDG_DATA_HOME=$User
- Write-Host "CASE ${Name}: actual 1024-square World, physical Needle, native Water" -ForegroundColor Cyan
+ Write-Host "CASE ${Name}: actual $(if($Scripted){'2048-square scripted'}else{'1024-square passive'}) World, physical Needle, native Water" -ForegroundColor Cyan
  $Arguments=@('--audio-driver','Dummy','--rendering-method','gl_compatibility',
               '--rendering-driver',$RenderingDriver,'--max-fps','60',
               '--path',('"' + $Project + '"'),
-              '--script','res://tests/bench_engine_lab_water_family.gd','--',
+              '--script',$(if($Scripted){'res://tests/bench_engine_lab_test_it.gd'}else{'res://tests/bench_engine_lab_water_family.gd'}),'--',
               "--family=$Family","--workers=$Workers","--repeat=$Repeat",
               ('--receipt="' + $Receipt + '"'))
- Godot-Run $Name $Arguments 360
+ if($Scripted) { $Arguments += '--engine-lab-scripted' }
+ Godot-Run $Name $Arguments $(if($Scripted){900}else{360})
  Require (Test-Path -LiteralPath $Receipt -PathType Leaf) "$Name missing test receipt"
  $Data=Get-Content -LiteralPath $Receipt -Raw -Encoding UTF8 | ConvertFrom-Json
  $B=$Data.benchmark; $I=$B.identity
