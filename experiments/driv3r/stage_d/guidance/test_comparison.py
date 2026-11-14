@@ -38,6 +38,19 @@ class ComparisonTests(unittest.TestCase):
         self.assertFalse(result["native_execution_verified"])
         self.assertEqual(original, q)
 
+    def test_candidate_display_order_does_not_change_host_identity(self):
+        q = record()
+        original = analyze_shadow_comparison(**q)
+        q["forks"][0]["legal_candidates"].reverse()
+        q["forks"][1]["legal_candidates"].reverse()
+        shuffled = analyze_shadow_comparison(**q)
+        self.assertEqual(original["candidate_set_sha256_by_fork"],
+                         shuffled["candidate_set_sha256_by_fork"])
+        self.assertEqual(original["first_choice_divergence"],
+                         shuffled["first_choice_divergence"])
+        self.assertEqual(original["first_consequential_divergence"],
+                         shuffled["first_consequential_divergence"])
+
     def test_rejects_unauthorized_candidate(self):
         q = record()
         q["forks"][0]["choices"]["A3"] = "not_host_legal"
