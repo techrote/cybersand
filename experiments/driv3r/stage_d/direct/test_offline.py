@@ -94,5 +94,43 @@ class FixtureTests(unittest.TestCase):
         self.assertEqual(r["sequential_native_receipts"],0)
 
 
+
+    def test_heldout_dispatch_is_sealed_even_for_known_topologies(self):
+        # Fixture construction/topology checks are allowed; policy outcomes
+        # must not be materialized before the separate evaluation gate.
+        for f, policy in (
+            (d.wall_fixture("switchback", "heldout"), "contour_astar"),
+            (d.routing_fixture("offset_gates", "heldout"), "astar"),
+        ):
+            with self.subTest(fixture=f.fixture_id):
+                with self.assertRaisesRegex(ValueError, "Held-out behavioral outcomes"):
+                    d.run_episode(f, policy)
+
+    def test_replay_incompatible_seed_rejected_before_execution(self):
+        f = d.routing_fixture("gate", "development")
+        for seed in (-1, 4294967296, True, 0.5, "17", None):
+            with self.subTest(seed=seed):
+                with self.assertRaisesRegex(ValueError, "Seed"):
+                    d.run_episode(f, "astar", seed=seed)
+        record = d.run_episode(f, "astar", seed=4294967295)
+        self.assertEqual(record["seed"], 4294967295)
+
+    def test_replay_incompatible_macro_menu_rejected(self):
+        f = d.routing_fixture("gate", "development")
+        for menu in ((), (2,), (1, 1), (2, 1), (1, 3),
+                     (1, 2, 2), (1, 9), (1, True), [1, 4, 2],
+                     "1", None):
+            with self.subTest(menu=menu):
+                with self.assertRaisesRegex(ValueError, "Macro menu"):
+                    d.run_episode(f, "astar", lengths=menu)
+        record = d.run_episode(f, "astar", lengths=[1, 2, 4, 8])
+        self.assertEqual(record["macro_lengths"], (1, 2, 4, 8))
+
+    def test_unknown_policy_rejected_without_partial_record(self):
+        f = d.routing_fixture("gate", "development")
+        with self.assertRaisesRegex(ValueError, "Unsupported offline policy"):
+            d.run_episode(f, "unversioned_model_policy")
+
+
 if __name__ == "__main__":
     unittest.main()
