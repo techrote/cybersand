@@ -7,26 +7,26 @@
 
 The independently re-audited original [96-step training](https://github.com/techrote/cybersand/actions/runs/43563494771) used 12 native-positive TRAIN seed rows but only **six independent structures**. The strict [DEVELOPMENT comparison](https://github.com/techrote/cybersand/actions/runs/43536717867) admitted 1/6 unique step96 generations (2/12 seed views). Genuine [native replay](https://github.com/techrote/cybersand/actions/runs/43543003937) changed 620 cells per host view but **failed** the requested vertical room/shaft geometry. Syntax/optimizers/native painting are not artistic conformance. Do not repeat old-corpus dose sweeps.
 
-The following **18 candidates** are *composition hypotheses*, not teacher examples, compiler-valid programs, native-admitted cases, or structural novelty proofs. Each would require an actual model-target-independent version-2 program and positive native Art material replay. Candidate IDs are local proposals, not official corpus IDs. Do not copy an existing held-out DEVELOPMENT design into TRAIN. Sealed FINAL targets/images must not be opened.
+The following **18 revised candidates** are *composition hypotheses*, not teacher examples, compiler-valid programs, native-admitted cases, or structural novelty proofs. Each would require an actual model-target-independent version-2 program and positive native Art material replay. Candidate IDs are local proposals, not official corpus IDs. Do not copy an existing held-out DEVELOPMENT design into TRAIN. Sealed FINAL targets/images must not be opened.
 
 ## Six proposed Greeble composition groups
 
 | ID | Distinct composition | Semantic/visual witness |
 | --- | --- | --- |
 | G01 | Dominant cassette plus two small service clusters around a broad access void | Unequal panel hierarchy, three separated clusters, continuous negative-space channel |
-| G02 | Four independent corner assemblies surrounding a large empty central opening | Four isolated clusters and central void; axis-aligned panels |
-| G03 | Cantilevered vertical cassette spine, progressively offset, with open side bays | Several stacked panel levels and clear lateral negative space, not simply repeated ribs |
-| G04 | Nested pair of differently sized inset/plate hierarchies | Distinct nested composition, not just changed border/density |
-| G05 | Two remote machine banks with repeating narrow-rib motifs and open center gap | Mirrored bank silhouette and maintained open access, no implied pipe connection |
-| G06 | Step-diagonal *placement* of orthogonal panels with one deliberately missing interval | Asymmetric panel grouping and substantial missing module; strictly side elevation |
+| G02 | Three asymmetric panel islands biased toward one boundary, leaving TWO open-to-edge longitudinal channels | Three-island non-enclosing adjacency and dual exterior-connected negative-space paths; **not** four modules around an enclosed center |
+| G03 | Three separated horizontal equipment bands with unequal module counts and a continuous perpendicular through-channel | Non-spine horizontal bands, interrupted rows, two axes of exterior-accessible void; no central vertical rib/spine |
+| G04 | One large inset panel separated from two small adjacent grille/service panels in a second bay | Three nonoverlapping panels with unequal detail hierarchy and a free access lane; **no nested overlapping panel boxes** (v2 prohibits this) |
+| G05 | One three-panel staggered ribs/plates bank and one isolated tall vent panel with an open cross-bay corridor | Asymmetric 3+1 bank membership, distinct horizontal/vertical clearance channels; not mirror/translation as novelty |
+| G06 | Two adjoining-but-separated two-panel clusters with a third isolated service bay | Cluster cardinalities 2+2+1 and two disjoint open exterior routes; not merely staggered coordinates or a missing interval |
 
 ## Six proposed connected Pipework composition groups
 
 | ID | Distinct topology | Semantic/physical witness |
 | --- | --- | --- |
 | P01 | Branching tree whose lateral branch itself branches | Connected; cycle rank 0; at least two degree-3 junctions |
-| P02 | Comb distribution tree with orthogonal trunk and three outlet teeth | Connected; cycle rank 0; three distinct branch nodes |
-| P03 | One closed rectangular circuit with a terminal spur from a corner | Connected; cycle rank 1; exactly one terminal spur |
+| P02 | One **degree-four orthogonal cross-hub** with four terminal legs | Connected; cycle rank 0; **one degree-4 node, four endpoints**; not the DEVELOPMENT three-outlet manifold |
+| P03 | Orthogonal ring with an internal cross-chord between two explicit perimeter T nodes | Connected; **cycle rank 2, zero endpoints**, two degree-3 junctions; no spur, unlike held-out closed-loop-with-tap |
 | P04 | One closed ring with external branches at two different corners | Connected; cycle rank 1; two terminal branches |
 | P05 | Two orthogonal loops meeting at one explicit junction, plus a terminal spur | Connected; cycle rank 2; no accidental contact or undeclared crossing |
 | P06 | Four-cell orthogonal service mesh with perimeter and internal junctions | Connected; cycle rank 4; no hidden intersections |
@@ -38,13 +38,44 @@ Every proposed Pipework program must use explicit nodes/edges, declared connecte
 | ID | Distinct composition | Semantic/physical witness |
 | --- | --- | --- |
 | A01 | Horizontal utility hall with three unequal side alcoves | Central corridor plus three attached openings; requested geometric clearance |
-| A02 | Open machinery well crossed by a supported walkway, with side service bays | Spanning platform, distinct support/room geometry, clear negative-space well |
+| A02 | Ground-level L-shaped service passage with one blind side equipment pocket and perimeter entry/exit | Orthogonal two-turn route with ground-level non-bridge connections; **no elevated bridge, tower-to-tower walkway or central underbridge void** |
 | A03 | Open-air courtyard void framed by separated low building masses | Multiple distinct masses, central empty region, explicit doorway route |
 | A04 | Horizontal transit gallery with alternating upper/lower maintenance recesses | Alternating alcove adjacency and uninterrupted central passage |
-| A05 | Staggered standalone platforms connected by bounded stairs/supports | Separate platform/floor/support roles, stair geometry and clearance |
-| A06 | One-sided excavation with two projecting supported gantries and perimeter exit | Gantry/support relationships, large open void and exit |
+| A05 | Ground-level compartmented loading hall with alternating support buttresses and adjacent service openings | No stairs or raised landing (avoids original TRAIN stair/landing composition); continuous ground-level route with distinct support/door adjacency |
+| A06 | Two blind, ground-level excavation pockets cut into a continuous outer perimeter, linked by a side return tunnel | No spanning gantry or tower bridge; explicit low-level return route, separate wall/support graph and exterior egress |
 
 All geometry must be exactly axis-aligned 2D side elevation. Do not infer jump/climb/gravity playability from mere cell-clearance checks. Each composition must pass independent reviewer split analysis: these proposals are **not established as disjoint** from existing TRAIN/DEVELOPMENT/FINAL structural groups.
+
+## Reviewer P2 holdout-screen disposition (14 November 2026)
+
+The independent [reviewer found five near-collisions](https://github.com/techrote/cybersand/pull/576#issuecomment-6873502903) with the **original public DEVELOPMENT** split. The former **G02, G03, P02, P03, A02 are RETIRED** and must not be generated/admitted under the original descriptions. Earlier proposals G04 (nested boxes) also violated strict v2 separation; G05/G06 mere mirroring/offset was insufficient. Revisions above are **new tentative hypotheses, NOT split-approved or admitted**. The full paper list is not a certified set of 18 independent groups; 0/18 new groups are admitted.
+
+For reviewer triage the *closest public original* and a required differentiating witness are:
+
+| Candidate | Closest original public composition / risk | Independently demonstrable witness required before approval |
+| --- | --- | --- |
+| G01 | TRAIN `greebles/service_cluster/v1` — hierarchy overlap | Three disjoint clusters, access-channel connectivity, not merely same cassette plus detail |
+| G02 | DEVELOPMENT `greebles/open_center_modules/v1` — former four-around-center RETIRED | Three boundary-biased islands with **two exterior-connected void channels**, not enclosed central hole |
+| G03 | DEVELOPMENT `greebles/spine_assembly/v1` — former vertical spine RETIRED | Several horizontal bands separated by a perpendicular through-route, no central spine |
+| G04 | TRAIN `greebles/service_cluster/v1` — nested/overlapping v2 geometry impossible | Three disjoint differently sized panels, grille/inset group hierarchy, tested clearance |
+| G05 | General TRAIN/DEVELOPMENT machine-bank motifs — mirrored duplicate risk | Asymmetric 3+1 panel-component membership and two independent void passages |
+| G06 | Public Greeble open-center/spine motifs — coordinate-only novelty risk | Explicit 2+2+1 cluster adjacency graph, not a rescaled/offset module set |
+| P01 | Existing TRAIN `pipework` T-junction motif — branch overlap | Two degree-3 nodes, four leaves, no loops; full explicit node/edge proof |
+| P02 | DEVELOPMENT `pipework/three_branch_manifold/v1` — former comb RETIRED | One degree-4 cross hub, four terminals, no three-branch manifold pattern |
+| P03 | DEVELOPMENT `pipework/closed_loop_with_tap/v1` — former one-loop spur RETIRED | One chorded ring with two independent faces, two degree-3 nodes, **no endpoints** |
+| P04 | DEVELOPMENT `pipework/closed_loop_with_tap/v1` | One loop with **two** genuinely separate external spurs and two endpoints |
+| P05 | Public held-out loop/tap family | Two loops intersecting at **one** degree-4 articulation node, one separate terminal spur |
+| P06 | Public loop/tap and branching topologies | 3×3 lattice, **four** bounded orthogonal faces, explicit 4-cycle rank |
+| A01 | Original TRAIN/DEVELOPMENT room/corridor layouts | Three unequal alcove attachment nodes along a single ground-level corridor |
+| A02 | DEVELOPMENT `architecture/bridge_between_towers/v1` — former bridge RETIRED | L-shaped **ground-level** pocket route, no elevated span/tower adjacency |
+| A03 | DEVELOPMENT bridge-between-towers — courtyard void may alias | Perimeter-ground doorway route among separate low masses; no suspended route |
+| A04 | Original architecture service routes | Alternating upper/lower recess **adjacency** on one uninterrupted gallery |
+| A05 | TRAIN `architecture/stair_and_landing_hall/v1` — former stair proposal RETIRED | Continuous at-grade route through support-buttressed bays, no stair/raised landing |
+| A06 | DEVELOPMENT bridge-between-towers — gantry may alias | Blind ground-level pockets and lateral return path; no spanning platforms/tower bridge |
+
+**Strict compiler-first prototypes:** [`proposal_pipework.py`](proposal_pipework.py) contains six concrete P01–P06 v2 node/edge graphs, including the two reviewer-requested replacements. [`test_proposal_pipework.py`](test_proposal_pipework.py) and a separate [GitHub-hosted source-screen workflow](../../../../.github/workflows/agent-painter-sprocket-proposal.yml) evaluate all six at original host seeds, frozen source-compiler identity, strict bounds and original public TRAIN/DEVELOPMENT structural signatures. Even a successful run only proves **compiler feasibility and coarse-signature noncollision**, never actual disjointness or native admission. Reviewer must examine graphs, operation overlaps and source-built original PNGs before selection. The original `FINAL` JSONL/targets/images are not read by the screener; public manifest metadata remains allowed.
+
+**Required admission tuple (one per candidate):** closest original TRAIN/DEVELOPMENT structural group; independent graph/room-route/panel-hierarchy distinction (not seed, position, width or wording); unchanged first-pass strict v2 JSON and exact compiler/operation hashes within budgets; source-built native Art two-seed material readbacks and receipts with PNG SHA-256, protection/Stop/history gates and actual changed-cell counts; independent reviewer partition-safety verdict; only then a shepherd-owned versioned common TRAIN corpus. If any signature collision or reviewer ambiguity remains, hold rather than weakening the split checks. Avoid using hidden FINAL data for any such approval. The proposed 60-request evaluation suite is a **separate future freeze**, never derived from these teacher programs.
 
 ## Shared native admission and evaluation requirements
 
@@ -62,4 +93,4 @@ All geometry must be exactly axis-aligned 2D side elevation. Do not infer jump/c
 - First run a measured small pilot. Keep all first-pass token IDs, true EOS, raw malformed completions, strict schema/compiler refusals, genuine gradients, frozen-base equality and atomic checkpoint readback. Expand optimization only on held-out evidence, not falling TRAIN loss.
 - Use original unchanged DEVELOPMENT and the independently frozen expanded suite; score per distinct request and family, separate host-seed native results, and demand real source-built Art/material/PNG proof plus human visual acceptance before a useful vN freeze. Max two active hosted training VMs for this lane; one model per VM; never train solely because of an hourly tick.
 
-**Disposition on 14 November 2026:** No newly native-admitted TRAIN groups, frozen 60-request suite, useful Sprocket candidate or authorized new experiment is created by this document. Keep Draft/HOLD, unchanged FINAL protection and no default provider promotion.
+**Disposition on 14 November 2026 (post-review P2 amendment):** Previous overlapping candidates retired; six concrete Pipework compiler prototypes submitted for independent source-screening. No newly native-admitted TRAIN groups, frozen 60-request suite, useful Sprocket candidate or authorized new experiment is created by this document. Keep Draft/HOLD, unchanged FINAL protection and no default provider promotion.
