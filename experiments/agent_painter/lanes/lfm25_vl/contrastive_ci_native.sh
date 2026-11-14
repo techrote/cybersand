@@ -48,6 +48,7 @@ chmod +x "$GODOT_BIN"
 if ! timeout 1200 "$GODOT_BIN" --headless --path godot --editor --quit > evidence/build/import.log 2>&1; then tail -120 evidence/build/import.log; exit 1; fi
 "$RUNNER_TEMP/lfm-native/bin/python" experiments/agent_painter/lanes/lfm25_vl/contrastive_native.py \
   --proposals experiments/agent_painter/lanes/lfm25_vl/contrastive_proposals_v1.json \
+  --disposition experiments/agent_painter/lanes/lfm25_vl/contrastive_disposition.json \
   --corpus evidence/original-native/corpus \
   --godot "$GODOT_BIN" --runtime-manifest evidence/native-build.json \
   --source-sha "$GITHUB_SHA" --output evidence/lfm-contrastive-native

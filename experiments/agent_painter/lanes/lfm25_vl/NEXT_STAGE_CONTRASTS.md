@@ -132,3 +132,49 @@ the original PNG/readbacks before any positive Art claim.
 
 This document is an engineering handoff, not a model quality claim or an
 authorization to merge/promote a provider.
+
+## 14 November retrospective original native Art proof — no second native run
+
+Original [native research Actions #43587733967](https://github.com/techrote/cybersand/actions/runs/43587733967)
+at source `abef683ceaa0fb2782e2d4b65db2c4c3c475e52d` **FAILED the
+common post-run verifier** because its `process-result.json` recorded
+`inputs_unchanged: true`, while the frozen common verifier requires
+`input_unchanged: true`. This is an exact metadata spelling error, not a
+failed Godot Art execution. Original archived job/receipt status remains
+FAILED and must never be relabeled SUCCESS.
+
+The actual failure artifact
+[#14111581483](https://github.com/techrote/cybersand/actions/runs/43587733967/artifacts/14111581483)
+was downloaded and SHA-256 verified as
+`e90014c8883bb89e1caaebfdb00cf28f2078604553a6b8de803e6caf9305aebf`.
+Its ZIP contains 62 verified CRC members. The Godot process exited 0,
+all six original seed cases reported positive native applications,
+and 271 engine assertions passed, with one representative
+Stop/history/reopen check per composition. **The original lane verifier's
+six case rows all had success=false because of the single global gate.**
+
+A separately dispatched **model-free, new-runner retrospective audit**
+[Actions #43589453856](https://github.com/techrote/cybersand/actions/runs/43589453856)
+at source `cf81f8c88af605b399e096781f4f472342380202` downloaded the **original
+ZIP bytes** again, verified their complete digest/CRC, and ran the unmodified
+shared native verifier against an ephemeral copy that renamed **only that
+one verified true custody key**. The original ZIP, process bytes,
+failed verification file and job result were preserved unchanged.
+The new audit completed SUCCESS: **148 independent native verification
+checks; 6/6 actual native readbacks, receipt chains, original PNGs and
+structural checks PASS**. The six views are **three hand-authored designs
+at two host seeds**, not six independent TRAIN groups and not LFM model output.
+
+Original native affected material counts by design: G-C1 **1,021 / 1,029**;
+P-C2 **701 / 701**; A-C3 **1,019 / 1,019**. The two A-C3 images are
+identical in output but do not create a fourth independent design. C3 remains
+explicit **P2 QUARANTINED** as an Architecture near-alias risk against original
+TRAIN and SPROCKET A07, notwithstanding actual physical execution. C1/C2
+still await **global** reviewer/shepherd independence checks and admission.
+**New shared TRAIN 0; optimizer updates 0; useful model vN 0.**
+Artifact and receipt details are in the permanent issue #568 checkpoint.
+
+Future *new* native runs are opt-in only through an explicitly revised
+`contrastive-native-request.json` with sequence **2**, and the repaired
+four-view, two-design native wrapper. This documentation and source repair
+does not itself trigger another expensive Godot rebuild or training job.

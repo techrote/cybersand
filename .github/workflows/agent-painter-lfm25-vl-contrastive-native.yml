@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   source-built-native:
-    name: Six native Art research seed views, three distinct hand-authored designs; NOT TRAIN
+    name: Four native Art research seed views, two non-quarantined hand-authored designs; NOT TRAIN
     runs-on: ubuntu-24.04
     timeout-minutes: 150
     steps:
@@ -33,7 +33,7 @@ jobs:
           p=Path("experiments/agent_painter/lanes/lfm25_vl/contrastive-native-request.json")
           r=json.loads(p.read_text(encoding="utf-8"))
           assert r["schema"]=="cybersand.lfm25_vl.contrastive-native-research/1"
-          assert r["sequence"]==1
+          assert r["sequence"]==2
           assert r["proposal_path"]=="experiments/agent_painter/lanes/lfm25_vl/contrastive_proposals_v1.json"
           assert r["original_native_corpus_source"]=="633920373a3d406a2ede61ce4137c324f76be23b"
           assert r["original_manifest_sha256"]=="2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
@@ -66,12 +66,13 @@ jobs:
           assert s["original_native_corpus_source_sha"] == "633920373a3d406a2ede61ce4137c324f76be23b"
           assert s["original_manifest_sha256"] == "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
           assert s["native_verifier_passed"] is True
-          assert s["runtime_unchanged"] is s["harness_unchanged"] is s["inputs_unchanged"] is True
-          assert s["actual_native_verified_views"] == s["host_seed_variants"] == 6
-          assert s["independent_hand_authored_compositions"] == 3
-          assert len(set(s["verified_case_ids"])) == 6
+          assert s["runtime_unchanged"] is s["harness_unchanged"] is s["input_unchanged"] is True
+          assert s["actual_native_verified_views"] == s["host_seed_variants"] == 4
+          assert s["independent_hand_authored_compositions"] == 2
+          assert len(set(s["verified_case_ids"])) == 4
           assert s["new_common_train_admissions"] == s["new_model_completions"] == s["optimizer_updates"] == 0
           assert s["final_targets_opened"] is False
+          assert s["quarantined_candidate_ids"] == ["lfm-c3-gantry-room-and-underdeck-stairs"]
           print("Native Art research PASS, NOT trained-model output and NOT shared TRAIN")
           PY
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
