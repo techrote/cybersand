@@ -483,20 +483,29 @@ func architectural_form_views(project: Dictionary) -> bool:
 		check(button.is_visible_in_tree() and Rect2(Vector2.ZERO, Vector2(panel.size)).encloses(button.get_global_rect()), "configured form action stays visible: " + button.text)
 	await framebuffer("architecture-form-overview", panel)
 	var scroll: ScrollContainer = panel.get_child(0)
-	for slot: int in 3:
-		panel._style_tabs.current_tab = slot
-		for frame: int in 2: await process_frame
-		scroll.ensure_control_visible(panel._style_tabs)
-		await process_frame
-		await framebuffer("architecture-form-style-%d" % (slot + 1), panel)
+	# Five compact cards are simultaneous siblings, not tabs. Capture the
+	# entire row once and assert that each slot remains visible at 1280px.
+	check(panel._style_controls.size() == 5, "five architectural style slots present in owner authoring form")
+	var previous_rect := Rect2()
+	for slot: int in panel._style_controls.size():
+		var card: PanelContainer = panel._style_controls[slot].card
+		var rect: Rect2 = card.get_global_rect()
+		check(scroll.is_ancestor_of(card) and card.is_visible_in_tree(),
+			"architectural style %d is visible in the same scroll container" % (slot + 1))
+		check(rect.end.x <= float(panel.size.x),
+			"architectural style %d fits within the 1280px form without horizontal scrolling" % (slot + 1))
+		if slot > 0:
+			check(rect.position.x > previous_rect.position.x and is_equal_approx(rect.position.y, previous_rect.position.y),
+				"architectural style %d is to the right of its predecessor, not on a tab or new row" % (slot + 1))
+		previous_rect = rect
 		report.cases.append({"case": "architectural-form-view", "slot": slot,
-			"preset_id": project.styles[slot].preset.id, "root_size": [root.size.x, root.size.y],
-			"embedded": panel.is_embedded(), "display": DisplayServer.get_name(),
-			"capture": "architecture-form-style-%d.png" % (slot + 1) if DisplayServer.get_name() != "headless" else null})
+			"preset_id": project.styles[slot].preset.id if slot < project.styles.size() else "disabled-placeholder",
+			"root_size": [root.size.x, root.size.y], "embedded": panel.is_embedded(),
+			"display": DisplayServer.get_name(),
+			"capture": "architecture-form-overview.png" if DisplayServer.get_name() != "headless" else null})
 	scroll.scroll_vertical = 10000
 	await process_frame
 	await framebuffer("architecture-form-files-and-actions", panel)
-	panel._style_tabs.current_tab = 0
 	scroll.scroll_vertical = 0
 	root.content_scale_size = former_scale
 	root.size = former_size
