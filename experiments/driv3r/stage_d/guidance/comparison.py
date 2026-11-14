@@ -70,7 +70,8 @@ def analyze_shadow_comparison(*, forks: list[dict], rollouts: dict[str, list[dic
 
     first_choice, first_effect = None, None
     seen_snapshots = set()
-    candidate_hashes = []
+    candidate_id_hashes = []
+    predicted_effect_hashes = []
     for number, fork in enumerate(forks):
         _fail(isinstance(fork, dict), f"fork {number} must be a record")
         snapshot = fork.get("snapshot_id")
@@ -93,7 +94,8 @@ def analyze_shadow_comparison(*, forks: list[dict], rollouts: dict[str, list[dic
               f"fork {number} contains a nonlegal choice")
         # A model-facing order shuffle is not a new host candidate set.
         # Predicted effects are separately keyed by stable candidate identity.
-        candidate_hashes.append(_hash_record({"ids": sorted(candidates), "effects": effects}))
+        candidate_id_hashes.append(_hash_record(sorted(candidates)))
+        predicted_effect_hashes.append(_hash_record(effects))
         if first_choice is None and len(set(choices.values())) > 1:
             first_choice = {"decision_index": number, "snapshot_id": snapshot}
         if first_effect is None and len({effects[c] for c in choices.values()}) > 1:
@@ -127,12 +129,15 @@ def analyze_shadow_comparison(*, forks: list[dict], rollouts: dict[str, list[dic
                        "reported_committed_cells": total_committed,
                        "reported_productive_cells": total_productive,
                        "reported_net_objective_progress_cells": total_progress}
-    return {"protocol": "cybersand.driv3r.d1b-shadow-comparison/0",
+    return {"protocol": "cybersand.driv3r.d1b-shadow-comparison/1",
             "evidence_class": "synthetic", "native_execution_verified": False,
             "scenario_sha256": scenario_sha256, "source_revision": source_revision,
             "config_sha256": dict(config_sha256), "seed": seed,
-            "frozen_forks": len(forks), "candidate_set_sha256_by_fork": candidate_hashes,
+            "frozen_forks": len(forks),
+            "candidate_id_set_sha256_by_fork": candidate_id_hashes,
+            "predicted_effect_catalog_sha256_by_fork": predicted_effect_hashes,
             "first_choice_divergence": first_choice,
             "first_consequential_divergence": first_effect,
             "post_fork_reported_metrics": totals,
-            "limitation": "predicted effects and supplied rollout counts only; no native causal qualification"}
+            "limitation": "candidate ID hashes are NOT legal-footprint hashes; predicted effects "
+                          "and supplied rollout counts only, no native causal qualification"}
