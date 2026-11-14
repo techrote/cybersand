@@ -161,3 +161,23 @@ M1 accepted source remains `8fa90de6be209ed0b7bd125039e6ec8b332fb1a6`, schema `e
 The hypothetical `false_undo` counter now covers **every** shadow UNDO whose deterministic reference is not UNDO, including cases where a regression's only admissible hypothetical reference is STOP because Undo eligibility/receipt is absent. `inadmissible_undo` remains a separate overlapping safety-risk counter, not a substitute for the confusion matrix. Repeated **metric-identical** before/after UNDO proposals are counted as oscillation *risk* even if synthetic snapshot identifiers change between retries; distinct metric pairs are not. Matching metrics alone cannot prove actual native oscillation or World identity.
 
 Cheap isolated qualification: `python3 -m unittest discover -s experiments/driv3r/stage_d/guidance -p 'test_feedback*.py' -v`. Six new adversarial cases cover STOP-vs-UNDO, absent hypothetical receipt, admissible but unwarranted Undo, and same/different metric-pair retries. Tests do not authorize or execute material rollback or model inference.
+
+
+### Typed host-geometry information boundary (14 Nov 2026, offline)
+
+The three matched A1/A2/A3 shadow views previously validated host geometry
+**field names** but not their **value shapes**. This allowed a value such as
+`{"clearance_cells":{"critic_verdict":"UNDO"}}` to pass the name allowlist
+and enter every model-visible arm as purported geometry. The lane-local
+`geometry_guard.py` now requires bounded integer clearance samples, paired
+integer coordinates, signed distance/progress counts, bounded wall identifiers
+and exact lowercase SHA-256 mask digests. It copies lists before exposure and
+rejects booleans, nonfinite numbers, arbitrary nested payloads and freeform text.
+The existing scalar and two-sample clearance fixtures remain supported.
+
+This is structural information isolation, **not** proof that the supplying host
+computed accurate geometry or did not encode guidance numerically. Native source
+and permissions remain host-owned; no painter lane or accepted M1 contract
+was altered. The five new cheap tests in `test_geometry_guard.py` exercise the
+local validator only; final combined-suite and M1 conformance require separate
+exact-source verification.

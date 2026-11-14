@@ -13,6 +13,8 @@ import re
 import struct
 from typing import Mapping
 
+from .geometry_guard import validate_host_geometry
+
 PROTOCOL = "cybersand.driv3r.d1b-channel-shadow/0"
 MAX_TILE_CELLS = 4096
 # Deliberately narrow host-geometry pilot vocabulary; additional fields need
@@ -168,9 +170,10 @@ def make_shadow_arms(*, snapshot_id: str, world_sha256: str,
                  (first.x, first.y, first.width, first.height) for c in channels),
              "paired pilot requires identical tile coordinates")
     catalog, legal_sha = _catalog(legal_candidates)
-    geometry_copy = json.loads(json.dumps(geometry, allow_nan=False, sort_keys=True))
-    _require(type(geometry_copy) is dict and set(geometry_copy) <= GEOMETRY_KEYS,
-             "unregistered host geometry key could leak hidden guidance/critic information")
+    # Key allowlisting alone does not prevent hidden guidance/critic payloads
+    # from being smuggled into a legitimate host geometry attribute.
+    geometry_copy = json.loads(json.dumps(validate_host_geometry(geometry),
+                                          allow_nan=False, sort_keys=True))
     result = {}
     for arm in ("A1", "A2", "A3"):
         used = [c for c in channels if c is first or
