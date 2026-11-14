@@ -87,8 +87,16 @@ def validate(summary, preflight, receipt, progress, *, arm, source_sha, run_id=N
     require(type(history) is list and len(history) == steps, "incomplete history")
     require(type(progress) is list and len(progress) == steps, "incomplete progress")
     require(history == progress, "checkpoint history differs from optimizer log")
-    require(summary.get("sample_ids_this_job") == [e.get("sample_id") for e in progress],
-            "sample order mismatch")
+    # Verify the original balanced cycle over 12 native-admitted TRAIN seed rows
+    # (six independent structures). Repeating a single row is not a full dose.
+    order = config.get("sample_order")
+    require(type(order) is list and len(order) == 12
+            and all(type(sample) is str and sample for sample in order)
+            and len(set(order)) == 12, "invalid original TRAIN sampler inventory")
+    observed = [event.get("sample_id") for event in progress]
+    require(observed == [order[index % 12] for index in range(steps)],
+            "optimizer sample order differs from original TRAIN sampler")
+    require(summary.get("sample_ids_this_job") == observed, "sample order mismatch")
     for index, event in enumerate(progress, 1):
         require(isinstance(event, dict), "malformed optimizer event")
         require(exact_int(event.get("global_step"), index)
@@ -101,6 +109,26 @@ def validate(summary, preflight, receipt, progress, *, arm, source_sha, run_id=N
                     "invalid optimizer " + key)
         require(type(event.get("loss_tokens")) is int and event["loss_tokens"] > 0,
                 "missing supervised tokens")
+        require(type(event.get("sequence_tokens")) is int
+                and event["sequence_tokens"] >= event["loss_tokens"],
+                "invalid supervised sequence length")
+        for key in ("prompt_bytes", "completion_bytes"):
+            require(type(event.get(key)) is int and event[key] > 0,
+                    "invalid training payload " + key)
+        elapsed = event.get("seconds")
+        require(type(elapsed) in (int, float) and math.isfinite(elapsed) and elapsed >= 0,
+                "invalid optimizer step duration")
+    totals = {
+        "loss_tokens_this_job": sum(e["loss_tokens"] for e in progress),
+        "sequence_tokens_this_job": sum(e["sequence_tokens"] for e in progress),
+        "bytes_this_job": sum(e["prompt_bytes"] + e["completion_bytes"] for e in progress),
+    }
+    for field, total in totals.items():
+        require(exact_int(summary.get(field), total),
+                "aggregate TRAIN receipt mismatch: " + field)
+    require(summary.get("first_loss") == progress[0]["loss"]
+            and summary.get("last_loss") == progress[-1]["loss"],
+            "TRAIN first/last loss mismatch")
     if run_id is not None:
         require(str(run_id).isdigit(), "invalid hosted run ID")
         runner = summary.get("runner")
