@@ -53,7 +53,7 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat) {
  New-Item -ItemType Directory -Path $User -Force|Out-Null
  $env:APPDATA=$User
  $env:XDG_DATA_HOME=$User
- Write-Host "CASE $Name: actual 1024-square World, physical Needle, native Water" -ForegroundColor Cyan
+ Write-Host "CASE ${Name}: actual 1024-square World, physical Needle, native Water" -ForegroundColor Cyan
  $Arguments=@('--audio-driver','Dummy','--rendering-method','gl_compatibility',
               '--rendering-driver',$RenderingDriver,'--max-fps','60',
               '--path',('"' + $Project + '"'),
