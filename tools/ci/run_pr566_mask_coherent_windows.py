@@ -122,6 +122,12 @@ def main():
     execute("full-production-actor-pose-admission",base+["--headless","--path",str(ROOT/"godot"),
             "--script","res://tests/test_pr593_mask_coherent_production.gd"],
             os.environ.copy(),target/"logs/full-production-admission.log",210)
+    execute("native-material-edit-crossfade",base+["--headless","--path",str(ROOT/"godot"),
+            "--script","res://tests/test_pr593_mask_coherent_edit_crossfade.gd"],
+            os.environ.copy(),target/"logs/native-edit-crossfade.log",210)
+    execute("dense-multi-actor-budget",base+["--headless","--path",str(ROOT/"godot"),
+            "--script","res://tests/test_pr593_mask_coherent_dense_budget.gd"],
+            os.environ.copy(),target/"logs/dense-budget.log",120)
     results=[]
     for fire in ("nofire","fire"):
         for camera in ("free","follow"):

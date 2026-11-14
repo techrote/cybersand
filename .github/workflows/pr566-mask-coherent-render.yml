@@ -5,7 +5,7 @@ name: PR566 mask-coherent flyer presentation candidate
 # graphical rendering, independent of the preceding A/B experiment.
 on:
   push:
-    branches: [codex/pr566-mask-coherent-flyer-20261114]
+    branches: [codex/pr566-mask-coherent-flyer-20261114, codex/native-pixel-scrolling-20261113, main]
     paths:
       - '.github/workflows/pr566-mask-coherent-render.yml'
       - 'godot/scripts/main.gd'
@@ -14,10 +14,26 @@ on:
       - 'godot/tests/test_workbench_presentation_coherence.gd'
       - 'godot/tests/test_pr566_mask_coherent_native_world.gd'
       - 'godot/tests/test_pr593_mask_coherent_production.gd'
+      - 'godot/tests/test_pr593_mask_coherent_edit_crossfade.gd'
+      - 'godot/tests/test_pr593_mask_coherent_dense_budget.gd'
       - 'godot/tests/test_workbench_physics_play.gd'
       - 'godot/tests/test_pr566_mask_coherent_ab.gd'
       - 'tools/ci/run_pr566_mask_coherent_windows.py'
       - 'tools/ci/reduce_pr566_mask_coherent_ab.py'
+  pull_request:
+    branches: [codex/native-pixel-scrolling-20261113, main]
+    paths:
+      - 'godot/scripts/main.gd'
+      - 'godot/scripts/physical_actor_session.gd'
+      - 'godot/scripts/workbench_presentation_coherence.gd'
+      - 'godot/tests/test_pr593_mask_coherent_production.gd'
+      - 'godot/tests/test_pr593_mask_coherent_edit_crossfade.gd'
+      - 'godot/tests/test_pr593_mask_coherent_dense_budget.gd'
+      - 'godot/tests/test_workbench_physics_play.gd'
+      - 'godot/tests/test_workbench_presentation_coherence.gd'
+      - 'godot/tests/test_pr566_mask_coherent_ab.gd'
+      - 'tools/ci/reduce_pr566_mask_coherent_ab.py'
+      - 'tools/ci/run_pr566_mask_coherent_windows.py'
   workflow_dispatch:
 permissions:
   contents: read

@@ -60,3 +60,30 @@ Each Fire arm inserted **exactly 20 actual Fire cells** through the real nozzle;
 The appropriate next gate is **Owner physical Windows 11 GPU retest** on the guarded candidate, particularly Fire ON→OFF, high-speed Free/Follow camera and movements near/through authored sand, water and hard terrain, then consider a separately qualified retained-snapshot interpolation/design if the guard's fail-closed holds remain objectionable in material-dense scenes. Do not replace the guard with unconditionally live pose as a purported repair.
 
 **Disposition:** this is a source-qualified **candidate** staged on [Draft #593](https://github.com/techrote/cybersand/pull/593). Parent #566 remains Draft/HOLD, both PRs unmerged, and `main` unchanged by this work. No Ready/merge tag or release was performed.
+
+
+## Independent review finisher follow-up (14 November 2026)
+
+An invalid or missing display receipt is not permission to fall back to a live Rapier pose.
+Main validates the uploaded material revision, World generation, physics session and
+epoch; the Workbench overlay additionally requires per-actor generation and pose
+identity. It hides affected actor geometry during invalid receipt/resync instead
+of displaying unchecked physical transforms. A separate no-receipt render_parts()
+API is deliberately retained for non-rendering shape inspection clients.
+
+Production safety scanning is now globally bounded across actors: at most
+24,000 World-cell tests and a 2,000 microsecond monotonic time budget per
+presentation pass. The oracle checks its deadline every 32 scanned cells and
+fails closed on exhaustion. The hosted 12-actor dense/empty timing probe
+records p95/p99; this does not replace physical Windows GPU acceptance.
+
+A dedicated source-bound native Workbench PAINT fixture inserts/erases
+temporally smoothed Fire, then verifies the genuine previous GPU texture, the
+actual live Kestrel overlay veto during blend and release after expiry.
+The specialised Windows/Linux workflows run the new fixtures and have
+pull-request and parent/main branch triggers, subject to the retained exact
+PR566 native binary provenance lock. Future native changes need an updated
+qualified runtime before the gate can accept that new baseline.
+
+Exact-head CI and owner physical Windows GPU/DPI/VSync acceptance still
+must be checked. Keep #593 and #566 Draft/HOLD and unmerged.
