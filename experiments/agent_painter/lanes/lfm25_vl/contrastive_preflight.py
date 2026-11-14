@@ -93,10 +93,12 @@ def preflight(item: dict) -> list[dict]:
         leaves = [i for i, d in enumerate(degree) if d == 1]
         rising = sum(c["nodes"][i][0] == c["nodes"][graph[i][0]][0]
                      and c["nodes"][i][1] < c["nodes"][graph[i][0]][1] for i in leaves)
-        if (sorted(degree) != [1, 1, 1, 1, 1, 3, 3, 3] or rising != 3
+        falling = sum(c["nodes"][i][0] == c["nodes"][graph[i][0]][0]
+                      and c["nodes"][i][1] > c["nodes"][graph[i][0]][1] for i in leaves)
+        if (sorted(degree) != [1, 1, 1, 1, 1, 1, 4, 4] or rising != 2 or falling != 2
                 or c["diameter"] != 3 or c["fittings"] is not True
                 or p["requirements"] != {"connected": True, "cycles": 0}):
-            raise ValueError("not the independently specified five-terminal three-riser tree")
+            raise ValueError("not the independently specified six-terminal dual-cross network")
     else:
         kinds = sorted(c["kind"] for c in components)
         if (kinds != ["floor", "platform", "platform", "room", "stairs", "support", "support", "wall"]
@@ -116,7 +118,7 @@ def preflight(item: dict) -> list[dict]:
             raise ValueError("compiler-only proposal could not be independently verified")
         sem = compiled["semantic"]
         if p["family"] == "pipework" and (
-                len(sem["endpoints"]) != 5 or len(sem["junctions"]) != 3
+                len(sem["endpoints"]) != 6 or len(sem["junctions"]) != 2
                 or sem["expected_cycles"] != 0 or len(sem["diameter_probes"]) != 7):
             raise ValueError("host compiled graph topology/probe disagreement")
         if p["family"] == "architecture" and (
