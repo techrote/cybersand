@@ -49,3 +49,22 @@ All source remains confined to the existing Draft/HOLD LFM branch. The next
 productive model-quality action depends on shepherd/reviewer approval of
 structurally new, positively native-admitted TRAIN examples and a shared
 frozen expanded DEVELOPMENT suite.
+
+## 14 November 2026 — full historical TRAIN cycle and aggregate guard
+
+The lane's original fresh48/fresh120 completion gate additionally checks that
+all 12 unique native-admitted TRAIN **seed rows** occur in the exact
+`config.sample_order` round-robin sequence for every optimizer event. These
+represent only six independent structures, not 12 independent designs. A
+correct step count or a self-consistent forged history repeating one row does
+not satisfy the gate. It also cross-checks loss-bearing and sequence-token
+totals, prompt/completion byte totals, first/last loss values and finite
+optimizer-step durations against the original checkpoint history and progress
+log. Model-free adversarial tests cover sampler omissions/duplication,
+reordered examples, missing bytes and incorrect aggregate values.
+
+This source-only safeguard remains bound to the existing 12-TRAIN-row
+fresh48/fresh120 campaign. Any novel curriculum, model-numerical recipe or
+fresh-versus-continued experiment needs its own versioned contract and fresh
+hosted qualification. This does not imply more optimizer updates, native
+painting, unseen FINAL access or a useful painter candidate.
