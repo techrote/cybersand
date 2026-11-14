@@ -56,7 +56,9 @@ jobs:
       - name: Checkout exact isolated source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: ${{ github.sha }}
+          # On PR events github.sha is a synthetic merge commit, not PR HEAD.
+          # Qualify the exact authored source; push/dispatch still use github.sha.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
           lfs: false
           fetch-depth: 0
@@ -70,6 +72,8 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p evidence
+          expected_head='${{ github.event.pull_request.head.sha || github.sha }}'
+          test "$(git rev-parse HEAD)" = "$expected_head"
           git merge-base --is-ancestor 214de85adef2aaabc8e26de8612a3bf27cc1a081 HEAD
           git diff --exit-code 214de85adef2aaabc8e26de8612a3bf27cc1a081 HEAD -- \
             native godot/native_extension godot/scripts/workbench_physics_bridge.gd \
