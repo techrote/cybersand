@@ -51,6 +51,25 @@ class CatalogPreflightTests(unittest.TestCase):
         with self.assertRaises(m.PreflightError):
             m.model_presentation_hash(result, {ids[0]: float("nan")})
 
+    def test_presentation_hash_binds_world_context_not_just_local_moves(self):
+        # Candidate membership can be identical for different World bounds.
+        # The model-facing hash must nevertheless distinguish those contexts.
+        original = self.catalog()
+        wider = m.legal_catalog(
+            self.before, self.options,
+            width=self.f.width + 1, height=self.f.height,
+            legal_cell=self.f.legal,
+        )
+        self.assertEqual(original["catalog"], wider["catalog"])
+        self.assertEqual(
+            original["synthetic_legal_catalog_sha256"],
+            wider["synthetic_legal_catalog_sha256"],
+        )
+        self.assertNotEqual(m.model_presentation_hash(original),
+                            m.model_presentation_hash(wider))
+        self.assertEqual(m.model_presentation_hash(original),
+                         m.model_presentation_hash(copy.deepcopy(original)))
+
     def test_presentation_rejects_stale_and_counterfeit_catalog_custody(self):
         good = self.catalog()
         self.assertEqual(m.model_presentation_hash(good),
