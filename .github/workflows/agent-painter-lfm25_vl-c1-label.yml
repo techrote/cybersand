@@ -1,0 +1,104 @@
+name: Agent painter LFM C1 original-source label and official processor (NO TRAIN)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "experiments/agent_painter/lanes/lfm25_vl/C1_LABEL_FRAMING_REVIEW_V1.json"
+      - "experiments/agent_painter/lanes/lfm25_vl/c1_label_review.py"
+      - "experiments/agent_painter/lanes/lfm25_vl/test_c1_label_review.py"
+      - ".github/workflows/agent-painter-lfm25_vl-c1-label.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lfm-c1-label-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  c1-official-label:
+    name: Exact model pin, source label, official processor EOS (no training)
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == true
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Fixed-source review and adversarial source tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/c1-label
+          git rev-parse HEAD > evidence/c1-label/source-sha.txt
+          python3 experiments/agent_painter/lanes/lfm25_vl/test_c1_label_review.py -v 2>&1 | tee evidence/c1-label/model-free-tests.log
+          python3 experiments/agent_painter/lanes/lfm25_vl/c1_label_review.py --output evidence/c1-label/source-only.json
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Install the already-qualified CPU LFM environment (no base model weights)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/lfm-c1-label-venv"
+          "$RUNNER_TEMP/lfm-c1-label-venv/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/lfm-c1-label-venv/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/lfm-c1-label-venv/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torchvision==0.29.2+cpu'
+          "$RUNNER_TEMP/lfm-c1-label-venv/bin/python" -m pip install -r experiments/agent_painter/training/requirements-lfm25_vl.lock
+          "$RUNNER_TEMP/lfm-c1-label-venv/bin/python" -m pip check
+          "$RUNNER_TEMP/lfm-c1-label-venv/bin/python" -m pip freeze --all > evidence/c1-label/pip-freeze.txt
+          sha256sum experiments/agent_painter/training/requirements{,-lfm25_vl}.lock > evidence/c1-label/requirements.sha256
+      - name: Verify exact public original processor files, not a substitute text model
+        shell: bash
+        env:
+          SNAPSHOT: ${{ runner.temp }}/lfm-c1-official-small-files
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/lfm-c1-label-venv/bin/python" - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          from huggingface_hub import HfApi, snapshot_download
+
+          profile = json.loads(Path("experiments/agent_painter/lanes/lfm25_vl/profile.json").read_text())
+          model_id, revision = profile["model_id"], profile["revision"]
+          info = HfApi(token=False).model_info(model_id, revision=revision, files_metadata=True)
+          if info.sha != revision or info.private or info.gated:
+              raise ValueError("official pinned public model revision is not accessible")
+          card = info.card_data or {}
+          if any(card.get(k) != v for k, v in (
+              ("license", "other"), ("license_name", "lfm1.0"), ("license_link", "LICENSE"))):
+              raise ValueError("unreviewed model license")
+          required = {k: v for k, v in profile["required_hashes"].items() if k != "model.safetensors"}
+          if len(required) != 8:
+              raise ValueError("expected eight original small model files")
+          snapshot_download(model_id, revision=revision, allow_patterns=list(required),
+                            local_dir=os.environ["SNAPSHOT"], max_workers=2, token=False)
+          for name, digest in required.items():
+              path = Path(os.environ["SNAPSHOT"]) / name
+              if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
+                  raise ValueError("official processor small-file hash mismatch: " + name)
+          print("Eight exact public original processor/license files verified; no base weights downloaded")
+          PY
+      - name: Measure complete C1 label using the official Lfm2VlProcessor
+        shell: bash
+        env:
+          SNAPSHOT: ${{ runner.temp }}/lfm-c1-official-small-files
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 240s "$RUNNER_TEMP/lfm-c1-label-venv/bin/python" experiments/agent_painter/lanes/lfm25_vl/c1_label_review.py             --snapshot "$SNAPSHOT" --output evidence/c1-label/official-processor-framing.json             2>&1 | tee evidence/c1-label/official-processor-output.log
+          df -h > evidence/c1-label/disk-after.txt
+      - name: Publish original-source/official-processor receipt, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lfm-c1-label-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/c1-label/
+          if-no-files-found: warn
+          retention-days: 90
