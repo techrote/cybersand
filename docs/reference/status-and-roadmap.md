@@ -4,11 +4,19 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-06
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## PressureFlow per-run head repair — 2026-11-06 experimental Draft
+
+[The 6 November source-matched native record](../audits/2026-11-06-pf-run-head-repair.md)
+qualifies a bounded local-Y candidate in a native three-arm differential matrix
+but reports a *negative* synthetic stress-canvas result (2.50 → 3.80 ms head
+preparation); real workbench, sanitizer and worst-case top-scan budget proof
+are pending. No admission, merge, default or pressure-law change is claimed.
 
 ## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05
 

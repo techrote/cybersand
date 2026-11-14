@@ -22,6 +22,11 @@ keeps production correction, #353-B migration and #355/#356 separately gated;
 #354 remains open. Exact source, failed attempts, review and platform outcomes
 belong to the [findings audit](audits/2026-11-04-mat354-findings.md) and PR ledger.
 
+PressureFlow per-run head repair: [6 November 2026 stacked Draft and negative
+native timing record](audits/2026-11-06-pf-run-head-repair.md), plus the
+[bounded optimization architecture](architecture/pressure-optimization.md).
+It is not accepted on main and does not alter the Water default.
+
 Liquid reassessment #359: [current-main implementation and evidence audit](audits/2026-11-03-lcb-reassessment.md),
 [canonical family/material policy](architecture/liquid-solver-family-policy.md),
 [ordinary application comparison paths](operations/lcb-manual-comparison-ux.md)

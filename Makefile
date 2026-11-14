@@ -15,7 +15,7 @@ GENERATION_OPT_THREADED_OBJECTS := $(patsubst native/src/%.cpp,$(BUILD_DIR)/worl
 GENERATION_SAN_OBJECTS := $(patsubst native/src/%.cpp,$(BUILD_DIR)/worldgen-objects/sanitized/%.o,$(GENERATION_SOURCES))
 GENERATION_SAN_THREADED_OBJECTS := $(patsubst native/src/%.cpp,$(BUILD_DIR)/worldgen-objects/sanitized-threaded/%.o,$(GENERATION_SOURCES))
 CORE_HEADERS := $(wildcard native/include/cybersand/*.hpp native/include/cybersand/*.h native/src/*.hpp native/src/*.inc)
-TEST_SOURCES := native/tests/test_lcb_inertial.cpp native/tests/test_water_inertial.cpp native/tests/test_world.cpp native/tests/test_liquid_solver_policy.cpp native/tests/test_lcb_pressure.cpp native/tests/test_pressure_moving_mask.cpp native/tests/test_pressure_setup_capacity.cpp native/tests/test_water_cellular_yield.cpp native/tests/test_water_normalization.cpp native/tests/test_liquid_run_receipt.cpp native/tests/test_liquid_construction_refusal.cpp native/tests/test_quantity_ledger.cpp native/tests/test_ballistic_water.cpp native/tests/test_workbench_pressure_heads.cpp
+TEST_SOURCES := native/tests/test_lcb_inertial.cpp native/tests/test_water_inertial.cpp native/tests/test_world.cpp native/tests/test_liquid_solver_policy.cpp native/tests/test_lcb_pressure.cpp native/tests/test_pressure_moving_mask.cpp native/tests/test_pressure_setup_capacity.cpp native/tests/test_water_cellular_yield.cpp native/tests/test_water_normalization.cpp native/tests/test_liquid_run_receipt.cpp native/tests/test_liquid_construction_refusal.cpp native/tests/test_quantity_ledger.cpp native/tests/test_ballistic_water.cpp native/tests/test_workbench_pressure_heads.cpp native/tests/test_pressure_run_repair.cpp
 TEST_HEADERS := $(wildcard native/tests/*.inc native/tests/*.hpp)
 BENCH_SOURCES := native/bench/benchmark.cpp
 PHYSICS_CHARACTERISATION_SOURCES := $(SIMULATION_SOURCES) native/src/render_snapshot.cpp native/bench/physics_characterisation.cpp
@@ -35,6 +35,10 @@ $(BUILD_DIR)/benchmark: $(SIMULATION_SOURCES) $(CORE_HEADERS) $(BENCH_SOURCES) |
 
 # Match the runtime's -O3 build without cross-translation-unit LTO. The test-only
 # literal oracle remains independent from the production chunk-run function.
+# Same-source local-Y repair preflight/tick benchmark for three canvas-sized proxies.
+$(BUILD_DIR)/pf_run_head_repair: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/bench/pf_run_head_repair.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -DNDEBUG $(SIMULATION_SOURCES) native/bench/pf_run_head_repair.cpp -o $@
+
 $(BUILD_DIR)/render_copy_benchmark: $(CORE_SOURCES) $(CORE_HEADERS) native/bench/render_copy.cpp native/tests/render_copy_reference.hpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O3 -DNDEBUG $(CORE_SOURCES) native/bench/render_copy.cpp -o $@
 

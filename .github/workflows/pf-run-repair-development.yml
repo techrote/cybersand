@@ -1,0 +1,99 @@
+name: PressureFlow per-run repair branch qualification
+
+on:
+  push:
+    branches:
+      - codex/pf-run-head-repair-20261106
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pf-run-repair-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
+
+jobs:
+  source-package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - name: Record identity and package source for offline native development
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/pf-run
+          git rev-parse HEAD > build/pf-run/source_sha.txt
+          git status --porcelain > build/pf-run/source_status.txt
+          python3 - <<'PY'
+          import os, subprocess, tarfile
+          names = subprocess.check_output(["git", "ls-files", "-z"]).decode().split("\0")
+          def include(name):
+              if not name or not os.path.isfile(name):
+                  return False
+              if name.startswith(("docs/images/", "godot/assets/", "godot/addons/", "godot/.godot/", "external/", "third_party/binaries/")):
+                  return False
+              return not name.lower().endswith((".png", ".jpg", ".jpeg", ".webp", ".gif", ".mp4", ".ogg", ".wav", ".flac", ".pdf", ".glb", ".blend", ".dll", ".so", ".dylib", ".exe", ".pck", ".woff", ".ttf", ".otf"))
+          kept = [n for n in names if include(n)]
+          with tarfile.open("build/pf-run/source.tar.gz", "w:gz", compresslevel=1) as out:
+              for path in kept:
+                  out.add(path, recursive=False)
+          print(f"Packaged {len(kept)} tracked source files; {os.path.getsize('build/pf-run/source.tar.gz')} bytes")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pf-run-source-${{ github.sha }}
+          path: build/pf-run/
+          retention-days: 3
+          if-no-files-found: error
+
+  native-candidate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq g++-13
+      - name: Record exact source and toolchain
+        run: |
+          mkdir -p build/pf-run
+          git rev-parse HEAD | tee build/pf-run/sha.txt
+          g++-13 --version | head -1 | tee build/pf-run/compiler.txt
+      - name: Build focused native tests
+        run: make CXX=g++-13 build/tests
+      - name: LCB-002
+        run: ./build/tests 'LCB-002'
+      - name: Workbench parallel
+        run: ./build/tests 'Workbench parallel'
+      - name: Candidate three-arm per-run differential
+        run: ./build/tests 'PressureFlow per-run'
+      - name: Complete candidate native test suite
+        run: ./build/tests
+      - name: Documentation and repository checks independently
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          mkdir -p build/pf-run/validation
+          failures=0
+          for script in tools/ci/check_docs.py tools/ci/check_m11_consistency.py tools/ci/check_repository.py; do
+            name="$(basename "$script" .py)"
+            python3 "$script" > "build/pf-run/validation/$name.log" 2>&1
+            rc=$?
+            printf '%s exit=%s\n' "$name" "$rc"
+            tail -n 25 "build/pf-run/validation/$name.log"
+            if [ "$rc" -ne 0 ]; then failures=1; fi
+          done
+          exit "$failures"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pf-run-validation-${{ github.sha }}
+          path: build/pf-run/validation/
+          retention-days: 7
+          if-no-files-found: warn
