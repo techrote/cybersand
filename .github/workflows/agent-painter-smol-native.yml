@@ -289,9 +289,9 @@ jobs:
           path = output / "PUBLICATION.json"
           with path.open("x", encoding="utf-8") as stream:
               json.dump(record, stream, indent=2, sort_keys=True)
-              stream.write("\\n")
+              stream.write("\n")
           with (output / "SHA256SUMS.txt").open("a", encoding="utf-8") as stream:
-              stream.write(hashlib.sha256(path.read_bytes()).hexdigest() + "  PUBLICATION.json\\n")
+              stream.write(hashlib.sha256(path.read_bytes()).hexdigest() + "  PUBLICATION.json\n")
           print(json.dumps({"delivery": record["delivery"], "github_release_published": False,
                             "bundle_artifact": record["bundle_artifact"], "retention_days": 90}))
           PY
