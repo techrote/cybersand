@@ -330,6 +330,35 @@ def build(args: argparse.Namespace) -> dict:
         evidence / "smoke-scripted-ANGLE.log", 1200)
     if not smoke["one-click-ANGLE-control"]["ok"]:
         raise RuntimeError("Bundled actual PowerShell one-click graphical smoke failed")
+    # Do not accept a green benchmark that could not export its promised ZIP.
+    # Verify actual per-case evidence inside the portable ZIP, not merely the
+    # runner's exit code or a summary file outside the archive.
+    completed_zips = sorted((stage / "Benchmark-Results").glob("Test-It-*.zip"))
+    if len(completed_zips) != 1:
+        raise RuntimeError("One-click Test It did not create exactly one zipped evidence bundle")
+    with zipfile.ZipFile(completed_zips[0]) as evidence_archive:
+        if evidence_archive.testzip() is not None:
+            raise RuntimeError("Scripted Test It evidence ZIP CRC/integrity failure")
+        expected = {"summary.json", "w1-r1-freemass.json", "setup-gate-canvas.json",
+                    "w1-r1-freemass-stdout.log", "w1-r1-freemass-stderr.log"}
+        if not expected.issubset(set(evidence_archive.namelist())):
+            raise RuntimeError("Scripted evidence bundle missing portable case/input files")
+        summary = json.loads(evidence_archive.read("summary.json"))
+        case = json.loads(evidence_archive.read("w1-r1-freemass.json"))
+        if (summary.get("status") != "passed" or not summary.get("complete")
+                or len(summary.get("cases",[])) != 1
+                or case.get("status") != "passed" or not case.get("input_tape",{}).get("complete")
+                or len(case.get("input_tape",{}).get("observed",{}).get("events",[])) != 8
+                or case.get("reference",{}).get("generated_material_sha256")
+                != "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a"):
+            raise RuntimeError("Scripted evidence ZIP has no verified native/Needle input results")
+        fixture_bytes = evidence_archive.read("setup-gate-canvas.json")
+        if hashlib.sha256(fixture_bytes).hexdigest() != (
+                "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954"):
+            raise RuntimeError("Evidence bundle lost the exact owner source canvas")
+        smoke["one-click-zip"] = {
+            "ok":True,"zip_sha256":sha(completed_zips[0]),
+            "bytes":completed_zips[0].stat().st_size,"entries":len(evidence_archive.namelist())}
 
     receipt = {
         "schema": "eng-lab-001-gpu-packaging-receipt-v1",
