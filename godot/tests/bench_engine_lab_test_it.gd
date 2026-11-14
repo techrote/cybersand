@@ -245,6 +245,8 @@ func _finish() -> void:
 		"native_solver":{"requested":FAMILY[family],"applied":applied_policy,
 			"minimum_rule_radius":native_radius,"construction_receipt":construction_receipt},
 		"world_size":[WORLD.x,WORLD.y],
+		"native_worker_request_readback":int(_host.latest_snapshot.native_worker_request) if _host != null and _host.latest_snapshot != null else -1,
+		"active_actor_tick":int(actor_last.get("physical_tick",-1)),
 		"viewport":[_host.current_view_size.x,_host.current_view_size.y] if _host!=null else [],
 		"actual_window":[root.size.x,root.size.y],
 		"camera_origin":[CAMERA_ORIGIN.x,CAMERA_ORIGIN.y],
