@@ -112,11 +112,7 @@ func _run() -> void:
 					return host.pending_microscenario_apply.is_empty() and host._physical_epoch>old_epoch and host.physical_actor_session != null and host._physical_terrain_ready),
 					"actual Rapier actor and native World adopted"):
 				var ready: bool = await until(func() -> bool:
-					return host.image != null and host.latest_snapshot != null and
-						host.last_uploaded_world_generation==host.latest_snapshot.render_world_generation and
-						host.last_uploaded_revision==host.latest_snapshot.world_revision and
-						host.image.get_pixel(260,345).r8==58 and host.image.get_pixel(237,355).r8==58 and
-						not host.workbench_display_frame().is_empty())
+					return host.image != null and host.latest_snapshot != null and host.last_uploaded_world_generation==host.latest_snapshot.render_world_generation and host.last_uploaded_revision==host.latest_snapshot.world_revision and host.image.get_pixel(260,345).r8==58 and host.image.get_pixel(237,355).r8==58 and not host.workbench_display_frame().is_empty())
 				if require(ready,"real native Wall cells acknowledged in uploaded material texture"):
 					bridge = host.physical_actor_session.bridge
 					rid = bridge._body_rids[0]
@@ -140,6 +136,8 @@ func _run() -> void:
 					# live production Main._process presentation callback.
 					host.set_physics_process(false)
 					host.set_process(false)
+					var original_world_bytes: PackedByteArray = host.image.get_data()
+					var original_session_tick: int = host.physical_actor_session.tick
 					if host.paused: ui.toggle_pause()
 					require(not host.paused,"production admission is active during play")
 					var original_blend_hz: int = host.render_snapshot_hz
@@ -195,6 +193,10 @@ func _run() -> void:
 						invalid_frame["epoch"]=int(invalid_frame.get("epoch",0))+1
 						require(host._safe_workbench_presentation_poses(invalid_frame).is_empty(),
 							"real production admission rejects mismatched native epoch")
+					require(host.image.get_data()==original_world_bytes,
+						"full renderer admission and scripted RID poses did not mutate displayed material bytes")
+					require(host.physical_actor_session.tick==original_session_tick,
+						"presentation-only test never advances authoritative Rapier simulation")
 					_set_actual_rapier_pose(bound)
 	host.queue_free()
 	OS.set_environment("CYBERSAND_DIAG_FLYER_POSE",original_environment)
