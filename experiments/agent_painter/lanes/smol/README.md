@@ -21,6 +21,23 @@ This check is deliberately pinned to the existing six-structure, fresh120
 contract. A new curriculum must have its own reviewed version, not reuse these
 historical constants.
 
+The independent [original native TRAIN sampler proof
+43563054821](https://github.com/techrote/cybersand/actions/runs/43563054821)
+then ran on a separate standard GitHub-hosted Ubuntu VM at exact source
+`e2aec931e364e150167683f544e6039e55db7e03`, job `132350777881`,
+**SUCCESS**. It downloaded the *actual original* source633 positive native
+artifact, revalidated its **12 TRAIN rows / six structural groups** and
+original material readbacks, then compared the lane's reconstructed order
+against the shared real trainer's sampler; **exact order MATCH**. The
+TRAIN ID-order SHA-256 is
+`9209cc4ea49ed24c9bf3d2e2ba7adf421072534f695317664a0b1f8f245c68ee`.
+Its 616-byte [read-only artifact
+14101520436](https://github.com/techrote/cybersand/actions/runs/43563054821/artifacts/14101520436)
+has Actions-declared ZIP SHA-256
+`93ea1198c056d9f2ed157c9b8ba439b0c6dde8446a29b42834010390afc4dcdc`.
+This is genuine original-TRAIN native-admission *readback*, not a new model
+training operation, new native execution or a result on DEVELOPMENT/FINAL.
+
 The source-bound [GitHub-hosted model-free regression run
 43562869141](https://github.com/techrote/cybersand/actions/runs/43562869141)
 at source `1e1748f0e7d174a77d24fdbcab504bc8f542b1a2` passed
