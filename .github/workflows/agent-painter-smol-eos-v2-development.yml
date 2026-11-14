@@ -1,0 +1,190 @@
+name: SMOL EOS-v2 frozen DEVELOPMENT raw first-pass diagnosis
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths: [experiments/agent_painter/lanes/smol/eos-v2-development-request.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: smol-eos-v2-development-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  request:
+    name: Verify immutable v2 proof, original native cohort and raw-only scope
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Source-bound exact request
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_REF" = refs/heads/codex/agent-painter-smol-568
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("experiments/agent_painter/lanes/smol/eos-v2-development-request.json").read_text())
+          expected={
+           "schema":"cybersand.agent-painter.smol-eos-v2-development/1",
+           "sequence":1,
+           "trainer_source_sha":"11ba1f1915362d3d127edfbe37fe9e30c57eb8b9",
+           "supervision_policy":"smol-upstream-terminal-eos-v2",
+           "proof_run_id":"43644330105",
+           "proof_artifact":"smol-eos-v2-fresh-43644330105-1",
+           "proof_checkpoint":"checkpoint-000002",
+           "native_corpus_source_sha":"633920373a3d406a2ede61ce4137c324f76be23b",
+           "native_corpus_run_id":"43506373969",
+           "native_corpus_artifact":"agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b",
+           "native_manifest_sha256":"2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc",
+           "development_sha256":"8c73edd82d9289a78721ef7968ab2f939f858b666a106731709bc2d80b347572",
+           "split":"DEVELOPMENT","unique_prompts":6,"host_seed_views":12,
+           "max_new_tokens":512,"compare_untuned_parent":True,
+           "training_forbidden":True,"native_execution":False,
+           "read_final_targets":False,"draft_hold":True}
+          if r!=expected: raise SystemExit("evaluation request differs from reviewed exact contract")
+          print("Accepted frozen DEVELOPMENT 6 prompts/12 host seeds, no training/native/FINAL")
+          PY
+      - name: Source regression and CI policy
+        run: |
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m unittest discover -s experiments/agent_painter/lanes/smol -p test_evaluate.py -v
+
+  diagnose:
+    name: Genuine CPU raw untuned versus terminal-EOS-v2 step2; no native writes
+    needs: request
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: 'default'
+      MKL_CBWR: 'COMPATIBLE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - name: Checkout exact lane evaluator
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: lane
+          persist-credentials: false
+      - name: Checkout exact independently qualified EOS-v2 trainer
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 11ba1f1915362d3d127edfbe37fe9e30c57eb8b9
+          path: trainer
+          persist-credentials: false
+      - name: Bind evaluator and trainer source independently
+        run: |
+          set -euo pipefail
+          test "$(git -C lane rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C trainer rev-parse HEAD)" = "11ba1f1915362d3d127edfbe37fe9e30c57eb8b9"
+          mkdir -p trainer/experiments/agent_painter/lanes/smol trainer/evidence/provenance
+          cp lane/experiments/agent_painter/lanes/smol/evaluate.py trainer/experiments/agent_painter/lanes/smol/evaluate.py
+          sha256sum lane/experiments/agent_painter/lanes/smol/evaluate.py trainer/experiments/agent_painter/lanes/smol/evaluate.py > trainer/evidence/provenance/evaluator-hashes.txt
+          git -C lane rev-parse HEAD > trainer/evidence/provenance/lane-source.txt
+          git -C trainer rev-parse HEAD > trainer/evidence/provenance/trainer-source.txt
+          lscpu > trainer/evidence/provenance/cpu.txt
+      - name: Original native-admitted structural corpus
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: trainer/evidence/native
+      - name: Original independently reviewed real EOS-v2 optimizer checkpoint
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: smol-eos-v2-fresh-43644330105-1
+          run-id: '43644330105'
+          github-token: ${{ github.token }}
+          path: trainer/evidence/fresh
+      - name: Preflight source, DEVELOPMENT, checkpoint and objective
+        working-directory: trainer
+        run: |
+          set -euo pipefail
+          test "$(sha256sum evidence/native/corpus/admitted-corpus.json | cut -d' ' -f1)" = 2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc
+          test "$(sha256sum evidence/native/corpus/development.jsonl | cut -d' ' -f1)" = 8c73edd82d9289a78721ef7968ab2f939f858b666a106731709bc2d80b347572
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          s=json.loads(Path("evidence/fresh/summary.json").read_text())
+          c=s["config"]
+          if not(s["status"]=="completed" and s["actual_training"] and s["global_step"]==2
+           and s["optimizer_steps_this_job"]==2
+           and c["source_sha"]=="11ba1f1915362d3d127edfbe37fe9e30c57eb8b9"
+           and c["supervision_policy"]=="smol-upstream-terminal-eos-v2"
+           and c["native_source_sha"]=="633920373a3d406a2ede61ce4137c324f76be23b"
+           and c["corpus_manifest_sha256"]=="2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"):
+            raise SystemExit("source or real v2 optimizer identity mismatch")
+          Path("evidence/provenance/optimizer-identity.json").write_text(json.dumps({
+           "trainer_source":c["source_sha"],"policy":c["supervision_policy"],
+           "actual_updates":s["global_step"],"native_source":c["native_source_sha"],
+           "original_run":43644330105,"no_training":True,"no_native":True,
+           "final_targets_opened":False},indent=2)+"\n")
+          PY
+      - name: Install portable pinned CPU environment and validate atomic checkpoint
+        working-directory: trainer
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/eos-v2-diagnose"
+          "$RUNNER_TEMP/eos-v2-diagnose/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/eos-v2-diagnose/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/eos-v2-diagnose/bin/python" -m pip check
+          "$RUNNER_TEMP/eos-v2-diagnose/bin/python" -m pip freeze --all > evidence/provenance/pip-freeze.txt
+          "$RUNNER_TEMP/eos-v2-diagnose/bin/python" - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0,str(Path("experiments/agent_painter/training").resolve()))
+          from common import verify_checkpoint
+          r=verify_checkpoint(Path("evidence/fresh/checkpoint-000002"))
+          assert r["global_step"]==2 and r["config"]["supervision_policy"]=="smol-upstream-terminal-eos-v2"
+          print("Atomic checkpoint verified")
+          PY
+      - name: Evaluate actual unmodified first-pass tokens under immutable DEVELOPMENT cohort
+        working-directory: trainer
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/eos-v2-diagnose/bin/python" experiments/agent_painter/training/download_model.py --profile smol --output "$RUNNER_TEMP/eos-v2-parent"
+          cp "$RUNNER_TEMP/eos-v2-parent/download_receipt.json" evidence/provenance/model-download.json
+          timeout --signal=TERM --kill-after=30s 2400s "$RUNNER_TEMP/eos-v2-diagnose/bin/python" experiments/agent_painter/lanes/smol/evaluate.py \
+            --model "$RUNNER_TEMP/eos-v2-parent" --corpus evidence/native/corpus \
+            --checkpoint evidence/fresh/checkpoint-000002 \
+            --training-source 11ba1f1915362d3d127edfbe37fe9e30c57eb8b9 \
+            --output evidence/raw-development --max-new-tokens 512
+      - name: Preserve exact denominator and deny claims of native quality
+        if: success()
+        working-directory: trainer
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("evidence/raw-development/summary.json").read_text())
+          assert r["training_source_sha"]=="11ba1f1915362d3d127edfbe37fe9e30c57eb8b9"
+          assert r["development_seed_cases"]==12 and r["development_unique_prompt_count"]==6
+          assert r["development_structural_groups"]==6 and r["max_new_tokens"]==512
+          assert r["native_execution"] is False and r["final_targets_accessed"] is False
+          assert r["corpus_manifest_sha256"]=="2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
+          print(json.dumps({"untuned_base":r["untuned_base"],"v2_step2":r["trained_candidate"],"native_executed":False},indent=2))
+          PY
+      - name: Preserve every original completion, raw refusal and partial receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: smol-eos-v2-development-raw-${{ github.run_id }}-${{ github.run_attempt }}
+          path: trainer/evidence/raw-development/
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Preserve independent source, model and environment receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: smol-eos-v2-development-provenance-${{ github.run_id }}-${{ github.run_attempt }}
+          path: trainer/evidence/provenance/
+          retention-days: 90
+          if-no-files-found: warn
