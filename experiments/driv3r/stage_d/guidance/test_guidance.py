@@ -109,7 +109,12 @@ class StudyTests(unittest.TestCase):
                              critic={"last": "KEEP"})
         self.assertEqual(len(views), 4)
         self.assertEqual(len({v["candidate_set_sha256"] for v in views.values()}), 1)
-        self.assertTrue(all(v["input_hashes"] == views["combined"]["input_hashes"] for v in views.values()))
+        self.assertEqual(views["geometry_only"]["input_hashes"],
+                         {"geometry": stable_hash({"clearance": 5})})
+        self.assertEqual(set(views["guidance_only"]["input_hashes"]), {"guidance"})
+        self.assertEqual(set(views["critic_only"]["input_hashes"]), {"critic"})
+        self.assertEqual(set(views["combined"]["input_hashes"]),
+                         {"geometry", "guidance", "critic"})
         self.assertIsNone(views["geometry_only"]["guidance"])
         self.assertIsNone(views["guidance_only"]["geometry"])
         self.assertIsNone(views["critic_only"]["geometry"])
@@ -128,6 +133,51 @@ class StudyTests(unittest.TestCase):
         self.assertIsNone(views["C_geometry_critic"]["guidance"])
         self.assertIsNotNone(views["D_geometry_guidance_critic"]["critic"])
         self.assertEqual(len({v["candidate_set_sha256"] for v in views.values()}), 1)
+
+    def test_withheld_guidance_and_critic_cannot_leak_through_input_hashes(self):
+        common = dict(snapshot_id="world:3", candidate_ids=["left", "right"],
+                      geometry={"clearance": 3},
+                      guidance={"secret": "original"}, critic={"verdict": "KEEP"})
+        original = matched_arms(**common)
+        guided = matched_arms(**{**common, "guidance": {"secret": "changed"}})
+        critiqued = matched_arms(**{**common, "critic": {"verdict": "UNDO"}})
+        self.assertEqual(original["geometry_only"], guided["geometry_only"])
+        self.assertEqual(original["geometry_only"], critiqued["geometry_only"])
+        self.assertEqual(original["critic_only"], guided["critic_only"])
+        self.assertEqual(original["guidance_only"], critiqued["guidance_only"])
+        self.assertNotEqual(original["combined"], guided["combined"])
+        self.assertNotEqual(original["combined"], critiqued["combined"])
+        self.assertEqual(set(original["combined"]["input_hashes"]),
+                         {"geometry", "guidance", "critic"})
+        reordered = matched_arms(**{**common, "candidate_ids": ["right", "left"]})
+        self.assertEqual(original["combined"]["candidate_set_sha256"],
+                         reordered["combined"]["candidate_set_sha256"])
+        # Candidate display order itself is retained; only identity is canonical.
+        self.assertNotEqual(original["combined"]["candidate_ids"],
+                            reordered["combined"]["candidate_ids"])
+
+    def test_factorial_hidden_fingerprints_do_not_contaminate_controls(self):
+        common = dict(snapshot_id="world:4", candidate_ids=["a", "b"],
+                      geometry={"clearance": 7}, guidance={"source": "g0"},
+                      critic={"source": "c0"})
+        original = factorial_arms(**common)
+        alternate_guide = factorial_arms(**{**common, "guidance": {"source": "g1"}})
+        alternate_critic = factorial_arms(**{**common, "critic": {"source": "c1"}})
+        self.assertEqual(original["A_geometry"], alternate_guide["A_geometry"])
+        self.assertEqual(original["A_geometry"], alternate_critic["A_geometry"])
+        self.assertEqual(original["C_geometry_critic"],
+                         alternate_guide["C_geometry_critic"])
+        self.assertEqual(original["B_geometry_guidance"],
+                         alternate_critic["B_geometry_guidance"])
+        self.assertNotEqual(original["D_geometry_guidance_critic"],
+                            alternate_guide["D_geometry_guidance_critic"])
+        self.assertNotEqual(original["D_geometry_guidance_critic"],
+                            alternate_critic["D_geometry_guidance_critic"])
+        self.assertEqual(set(original["A_geometry"]["input_hashes"]), {"geometry"})
+        self.assertEqual(set(original["B_geometry_guidance"]["input_hashes"]),
+                         {"geometry", "guidance"})
+        self.assertEqual(set(original["C_geometry_critic"]["input_hashes"]),
+                         {"geometry", "critic"})
 
     def test_serialized_shadow_cases_and_hysteresis(self):
         data = json.loads((Path(__file__).parent / "fixtures.json").read_text())
