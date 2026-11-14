@@ -86,6 +86,13 @@ jobs:
           bash tools/ci/prepare_linux_display.sh > evidence/display-setup.log 2>&1
           xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
             python3 tools/architecture/qualify.py --godot "$GODOT_BIN" --project godot --output evidence/architecture --graphical --legacy-regressions
+          # This integrated candidate includes accepted GEN-008 Flatten. Exercise
+          # actual material-baseline author/reopen, file-faults and a quarantined
+          # native owner in the same source-matched mounted Workbench. The
+          # existing full GEN-008 campaign remains separate and unchanged.
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            python3 tools/ci/run_flatten_qualification.py --godot "$GODOT_BIN" --project godot \
+              --evidence evidence/flatten-integration --cases 512x1
       - name: Retain original Linux results and actual native previews
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -222,6 +229,11 @@ jobs:
         run: |
           python tools/architecture/qualify.py --godot $env:GODOT_EXE --project godot --output evidence/architecture --graphical --legacy-regressions --legacy-reference evidence/windows-base/legacy-materials.json
           if ($LASTEXITCODE -ne 0) { throw 'Windows architectural qualification failed' }
+      - name: Verify combined GEN-007 plus accepted GEN-008 Flatten native Workbench
+        shell: pwsh
+        run: |
+          python tools/ci/run_flatten_qualification.py --godot $env:GODOT_EXE --project godot --evidence evidence/flatten-integration --cases 512x1
+          if ($LASTEXITCODE -ne 0) { throw 'Combined Windows architecture/Flatten qualification failed' }
       - name: Package source-matched Windows owner candidate
         shell: pwsh
         run: |
@@ -257,6 +269,8 @@ jobs:
           }
           python tools/architecture/qualify.py --godot (Join-Path $validation 'Godot_v4.7-stable_win64_console.exe') --project (Join-Path $validation 'godot') --output evidence/package --suite owner --graphical
           if ($LASTEXITCODE -ne 0) { throw 'Delivered ZIP author/reopen failed' }
+          python tools/ci/run_flatten_qualification.py --godot (Join-Path $validation 'Godot_v4.7-stable_win64_console.exe') --project (Join-Path $validation 'godot') --package $validation --evidence evidence/package-flatten --cases 512x1
+          if ($LASTEXITCODE -ne 0) { throw 'Delivered ZIP combined architecture/Flatten author and reopen failed' }
       - name: Retain Windows owner evaluation ZIP and exact archive hash
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
