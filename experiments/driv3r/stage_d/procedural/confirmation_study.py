@@ -54,35 +54,90 @@ def permitted_reachability(permitted, initial):
             'all_initial_islands_globally_reachable':occupied_domains == 1}
 
 
-def audit_events(initial, allowed, result, final):
-    """Reconstruct synthetic edits; cursor travel and route plans never paint."""
-    material = set(initial); steps = 0
-    for event in result['events']:
+def audit_events(initial, allowed, result, final, scalar=None, max_hops=120):
+    """Independently reconstruct edits AND verify each synthetic brush-up/plan.
+
+    This is synthetic material/event replay, NOT host/native route admission.
+    The live logical cursor may travel brush-up only; a plan may only paint
+    exactly its ordered, previously empty, 4-neighbour, permission-safe cells.
+    """
+    material = set(initial)
+    cursor = min(initial)
+    awaiting_plan = False
+    pending_new = None
+    steps = low = transport_hops = 0
+    for index, event in enumerate(result['events']):
+        kind = event['kind']
         if event['before'] != policy.cell_sha(material):
-            raise AssertionError('synthetic material before-hash mismatch')
-        if event['kind'] in ('BRUSH_UP_ROUTE', 'BRIDGE_PATH_SYNTHETIC'):
-            if event['before'] != event['after']:
-                raise AssertionError('cursor move/route plan modified material')
+            raise AssertionError(f'event {index}: synthetic material before-hash mismatch')
+        if event.get('native_receipt') is not None:
+            raise AssertionError('synthetic event cannot assert native receipt')
+        if kind == 'BRUSH_UP_ROUTE':
+            if awaiting_plan or pending_new is not None:
+                raise AssertionError('unfinished bridge before brush-up')
             route = [tuple(p) for p in event['path']]
-            if not route or not all(p in allowed for p in route):
-                raise AssertionError('synthetic path outside permitted mask')
-            for p, q in zip(route,route[1:]):
-                if abs(p[0]-q[0]) + abs(p[1]-q[1]) != 1:
-                    raise AssertionError('non-cardinal step in synthetic path')
-        elif event['kind'] == 'SYNTHETIC_BRIDGE_PAINT':
-            p = tuple(event['point'])
-            if p not in allowed or p in material:
+            if not route or len(route) - 1 > max_hops or not all(p in allowed for p in route):
+                raise AssertionError('brush-up route missing, over budget or forbidden')
+            if (route[0] != cursor or route[0] != tuple(event['from'])
+                    or route[-1] != tuple(event['to'])):
+                raise AssertionError('synthetic cursor teleport or false route endpoints')
+            if not all(abs(p[0]-q[0]) + abs(p[1]-q[1]) == 1 for p,q in zip(route,route[1:])):
+                raise AssertionError('non-cardinal synthetic brush-up')
+            if event['before'] != event['after'] or event.get('synthetic_only') is not True:
+                raise AssertionError('brush-up material change or false native status')
+            cursor = route[-1]
+            transport_hops += len(route) - 1
+            awaiting_plan = True
+        elif kind == 'BRIDGE_PATH_SYNTHETIC':
+            if not awaiting_plan or pending_new is not None:
+                raise AssertionError('bridge plan without immediately preceding brush-up')
+            route = [tuple(p) for p in event['path']]
+            if (not route or route[0] != cursor or route[0] not in material
+                    or route[-1] not in material or not all(p in allowed for p in route)):
+                raise AssertionError('bridge path not anchored or permitted')
+            if not all(abs(p[0]-q[0]) + abs(p[1]-q[1]) == 1 for p,q in zip(route,route[1:])):
+                raise AssertionError('non-cardinal synthetic bridge plan')
+            if event['before'] != event['after']:
+                raise AssertionError('bridge planning modified material')
+            new = [point for point in route if point not in material]
+            if not new or len(set(new)) != len(new):
+                raise AssertionError('bridge plan must contain unique new material cells')
+            pending_new = new
+            cursor = route[-1]
+            awaiting_plan = False
+        elif kind == 'SYNTHETIC_BRIDGE_PAINT':
+            point = tuple(event['point'])
+            if pending_new is None or not pending_new or point != pending_new.pop(0):
+                raise AssertionError('paint missing or differs from recorded bridge plan')
+            if point not in allowed or point in material:
                 raise AssertionError('duplicate or prohibited new material')
-            material.add(p); steps += 1
+            if scalar is not None:
+                below = scalar[point] < policy.THRESHOLD
+                if event['below_soft_threshold'] is not below:
+                    raise AssertionError('synthetic guidance threshold label mismatch')
+                low += int(below)
+            material.add(point)
+            steps += 1
             if event['after'] != policy.cell_sha(material):
                 raise AssertionError('synthetic material after-hash mismatch')
+            if not pending_new:
+                pending_new = None
         else:
             raise AssertionError('unknown event kind')
+    if awaiting_plan or pending_new is not None:
+        raise AssertionError('unfinished synthetic brush/plan sequence')
     if material != final or steps != result['new_cells'] or result['material_sha256'] != policy.cell_sha(final):
         raise AssertionError('final material or edit count mismatch')
+    if result['brush_up_hops'] != transport_hops:
+        raise AssertionError('reported brush-up count differs from executed paths')
+    if scalar is not None and result['below_soft_threshold_cells'] != low:
+        raise AssertionError('reported guidance violations differ from edit events')
+    if result['events_sha256'] != policy.sha(policy.encoded(result['events'])):
+        raise AssertionError('event hash mismatch')
+    if result['components'] != len(policy.components(final)):
+        raise AssertionError('material connectivity summary mismatch')
 
-
-def run(out: Path, names=None):
+def run(out: Path, names=None, *, allow_unqualified_shadow=False):
     root = Path(__file__).resolve().parent
     frozen = verify_frozen_input(root)
     if policy.VERSION != 'd2.synthetic-topology-pareto/1' or tuple(policy.POLICIES) != tuple(frozen['policy_arm_names']):
@@ -93,6 +148,8 @@ def run(out: Path, names=None):
     policy_bytes = (root / 'pareto_study.py').read_bytes()
     actual_policy_blob = hashlib.sha1(b'blob ' + str(len(policy_bytes)).encode() + b'\0' + policy_bytes).hexdigest()
     exact_policy_source = actual_policy_blob == POLICY_GIT_BLOB
+    if not exact_policy_source and not allow_unqualified_shadow:
+        raise ValueError('unqualified policy source; explicit allow_unqualified_shadow required')
     out = Path(out); out.mkdir(parents=True, exist_ok=True)
     requested = set(names) if names is not None else {c['id'] for c in frozen['cases']}
     if not requested <= {c['id'] for c in frozen['cases']}:
@@ -103,6 +160,11 @@ def run(out: Path, names=None):
         if name not in requested:
             continue
         seed = registered['seed']; allowed, initial, scalar = ff.fixture(name, seed)
+        guide_expected = struct.pack('<1024H', *(scalar[(x,y)] for y in range(32) for x in range(32)))
+        if (ff.cells_sha(allowed) != registered['hard_permitted_sha256']
+                or ff.cells_sha(initial) != registered['initial_material_sha256']
+                or ff.digest(guide_expected) != registered['guidance_u16le_sha256']):
+            raise ValueError('frozen per-case permission/material/guidance hash mismatch')
         case_dir = out / name; case_dir.mkdir(exist_ok=True)
         original_view = policy.png(initial, allowed)
         guide_bytes = struct.pack('<1024H',*(scalar[(x,y)] for y in range(32) for x in range(32)))
@@ -115,7 +177,7 @@ def run(out: Path, names=None):
             weight = 0 if strict else int(policy_name.split('-')[1])
             result, after = policy.run_bridge(allowed, initial, scalar, budget=44,
                                               weight=weight, strict=strict, max_hops=120)
-            audit_events(initial, allowed, result, after)
+            audit_events(initial, allowed, result, after, scalar)
             control, ctrl_after = policy.guidance_greedy(allowed,initial,scalar,result['new_cells'])
             if len(ctrl_after - initial) != result['new_cells']:
                 raise AssertionError('unequal actual paint budget')
@@ -160,8 +222,10 @@ def run(out: Path, names=None):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--out',required=True,type=Path)
+    parser.add_argument('--allow-unqualified-shadow', action='store_true',
+                        help='explicitly permit labelled, non-source-qualified local debugging')
     args=parser.parse_args()
-    result, h = run(args.out)
+    result, h = run(args.out, allow_unqualified_shadow=args.allow_unqualified_shadow)
     print(ff.encode({'cases':len(result['cases']),'sha256':h,
                      'qualification':result['qualification']}).decode())
 

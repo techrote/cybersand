@@ -64,4 +64,37 @@ class ConfirmationStudyTests(unittest.TestCase):
             self.assertGreater(first['cases'][0]['policies']['weighted-0']['new_cells'],0)
             self.assertTrue(all(v['components']>1 for v in first['cases'][-1]['policies'].values()))
 
+
+    def test_synthetic_cursor_teleport_is_not_hidden_by_unchanged_material_hashes(self):
+        allowed, initial, scalar = fixture('nested-courtyard', 1402)
+        report, after = p.run_bridge(allowed, initial, scalar, 44, 0, False, 120)
+        audit_events(initial, allowed, report, after, scalar)
+        move = next(e for e in report['events'] if e['kind'] == 'BRUSH_UP_ROUTE')
+        move['from'] = [0, 0]
+        report['events_sha256'] = p.sha(p.encoded(report['events']))
+        with self.assertRaisesRegex(AssertionError, 'cursor teleport'):
+            audit_events(initial, allowed, report, after, scalar)
+
+    def test_unexecuted_plan_and_corrupt_scalar_labels_refused(self):
+        allowed, initial, scalar = fixture('nested-courtyard', 1402)
+        report, after = p.run_bridge(allowed, initial, scalar, 44, 0, False, 120)
+        painted = next(e for e in report['events'] if e['kind'] == 'SYNTHETIC_BRIDGE_PAINT')
+        painted['below_soft_threshold'] = not painted['below_soft_threshold']
+        report['events_sha256'] = p.sha(p.encoded(report['events']))
+        with self.assertRaisesRegex(AssertionError, 'guidance threshold'):
+            audit_events(initial, allowed, report, after, scalar)
+        fresh, after = p.run_bridge(allowed, initial, scalar, 44, 0, False, 120)
+        fresh['events'] = fresh['events'][:-1]
+        fresh['events_sha256'] = p.sha(p.encoded(fresh['events']))
+        with self.assertRaises(AssertionError):
+            audit_events(initial, allowed, fresh, after, scalar)
+
+    def test_exact_policy_required_unless_provisional_shadow_explicit(self):
+        import confirmation_study as study
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch.object(study, 'POLICY_GIT_BLOB', '0' * 40):
+                with self.assertRaisesRegex(ValueError, 'unqualified policy source'):
+                    study.run(Path(tmp))
+
 if __name__ == '__main__':unittest.main()
