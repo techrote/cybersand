@@ -121,9 +121,12 @@ def audit_shadow_cases(cases: list[dict], *, max_forward_decisions: int = 36,
                      "shadow undo proposals exceed authorised research bound")
             if not (eligible and receipt):
                 failures["inadmissible_undo"] += 1
-            if reference == "KEEP":
+            if reference != "UNDO":
                 failures["false_undo"] += 1
-            pair_sig = _digest({"before": before, "after": after})
+            # Compare *metric* pairs, not volatile snapshot identifiers: a
+            # retried edit can generate new IDs for identical objective states.
+            pair_sig = _digest({"before": {k: v for k, v in before.items() if k != "snapshot_id"},
+                                "after": {k: v for k, v in after.items() if k != "snapshot_id"}})
             if pair_sig in seen_pairs:
                 failures["oscillation_risk"] += 1
             seen_pairs.add(pair_sig)
