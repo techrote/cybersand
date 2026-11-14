@@ -597,12 +597,20 @@ func mixed_style_authoring(reopening: bool) -> void:
 			await framebuffer(label + "-zone-overlay", dialog)
 			dialog._zone_toggle.button_pressed = false
 		var prior_epoch: int = host._physical_epoch
+		# Terrain-only installation replaces the native World, not a Rapier actor.
+		# Record both native transaction identities rather than requiring an actor epoch.
+		var prior_world_generation: int = int(host.latest_snapshot.render_world_generation) if host.latest_snapshot != null else -1
+		var prior_request_serial: int = int(host.tower_context.get("scenario_request_serial", -1))
 		dialog.confirmed.emit()
 		dialog.hide()
 		if not await until(func() -> bool: return installed() and str(wb._generated_active.get("sha256", "")) == str(packet.sha256),
 			label + " installs independently verified source materials"): return
-		check(host._physical_epoch != prior_epoch,
-			label + " commits a real new native Workbench construction")
+		check(host.latest_snapshot != null and
+			int(host.latest_snapshot.render_world_generation) > prior_world_generation and
+			int(host.tower_context.get("scenario_request_serial", -1)) > prior_request_serial,
+			label + " commits a fresh native Workbench World and acknowledged request")
+		check(host.physical_actor_session == null and host._physical_epoch == prior_epoch,
+			label + " terrain-only construction preserves the absent actor epoch")
 		var receipt: Dictionary = host.tower_context.get("liquid_construction_receipt", {})
 		check(receipt.get("generated_source_sha256", "") == packet.sha256,
 			label + " native owner independently acknowledges exact generated materials")
