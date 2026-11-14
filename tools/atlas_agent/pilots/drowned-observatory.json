@@ -1,0 +1,50 @@
+{
+  "source_sha": "c4aab63eed538a25687c66d368b0801d2d2e04d0",
+  "collection": "drowned-observatory",
+  "lane": "art-curation",
+  "description": "Sculpted golden apex and symmetric bronze crown ribs attached to the broken star dome",
+  "rectangle_edits": [
+    {
+      "feature_id": "broken-star-dome",
+      "rectangles": [
+        [
+          66,
+          0,
+          16,
+          1,
+          118
+        ],
+        [
+          65,
+          1,
+          3,
+          8,
+          52
+        ],
+        [
+          80,
+          1,
+          3,
+          8,
+          52
+        ],
+        [
+          53,
+          9,
+          6,
+          6,
+          52
+        ],
+        [
+          89,
+          9,
+          6,
+          6,
+          52
+        ]
+      ],
+      "note": "Sculpted golden apex and symmetric bronze crown ribs attached to the broken star dome"
+    }
+  ],
+  "edits": []
+}
