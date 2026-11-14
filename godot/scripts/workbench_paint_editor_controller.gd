@@ -9,6 +9,7 @@ const Shapes = preload("res://scripts/workbench_paint_editor_shapes.gd")
 const History = preload("res://scripts/workbench_paint_editor_history.gd")
 const Setup = preload("res://scripts/workbench_setup.gd")
 const Store = preload("res://scripts/workbench_generated_map.gd")
+const MaterialBaseline = preload("res://scripts/workbench_material_baseline.gd")
 const TOOLS := ["Brush","Eraser","Line","Rectangle","Outline","Select","Fill","Paste"]
 const MAX_CELLS := 262144
 const MAX_HISTORY := 32
@@ -92,6 +93,7 @@ func history_replaying() -> bool:
 
 func history_available(action: String) -> bool:
 	if action not in ["undo","redo"] or busy() or host == null or not host.paused: return false
+	if bench.is_flatten_pending(): return false
 	if bench.has_method("art_history_guard") and not str(bench.art_history_guard()).is_empty(): return false
 	if action == "redo" and _save_hold: return false
 	var stack: Array = _undo_stack if action == "undo" else _redo_stack
@@ -267,6 +269,14 @@ func installed() -> void:
 	invalidate_history("World replaced")
 	if _overlay != null: _overlay.invalidate()
 
+func flattened() -> void:
+	# Admission guarantees no planner/edit/receipt remains. Retire only the old
+	# construction history; preserve tools, clipboard and the current native World.
+	cancel_preview()
+	_save_hold = false
+	invalidate_history("Authored baseline flattened")
+	if _overlay != null: _overlay.invalidate()
+
 func cancel_preview() -> void:
 	dragging = false
 	drag_erase = false
@@ -287,13 +297,16 @@ func cancel() -> void:
 
 func _source(state: Dictionary) -> Dictionary:
 	return {"generation":int(state.get("generation",-1)),"revision":int(state.get("revision",-1)),
-		"tick":int(state.get("tick",-1))}
+		"tick":int(state.get("tick",-1)),"authoring_generation":int(state.get("authoring_generation",1))}
 
 func _current() -> Dictionary:
 	return host.simulation_worker.paint_state() if host != null else {}
 
 func _ready_to_author(allow_hold: bool = false, continuing_history: bool = false) -> bool:
 	if host == null or bench.applied.is_empty(): return false
+	if bench.is_flatten_pending() or bool(_current().get("flatten_busy",false)):
+		_say("Wait for Flatten material capture and baseline adoption.")
+		return false
 	if _planner != null or not _operation.is_empty() or (not continuing_history and not _history_replay.is_empty()) \
 			or not host.pending_microscenario_apply.is_empty() or bench.step_pending \
 			or host.simulation_worker.has_failed() or bool(_current().get("busy",true)) \
@@ -402,7 +415,8 @@ func _request(kind: String, state: Dictionary) -> Dictionary:
 	if bench.applied.get("source",[]).size() == 3:
 		guards.append(Rect2i(int(bench.applied.source[0]),int(bench.applied.source[1]),4,24))
 	return {"kind":kind,"expected_generation":int(state.generation),
-		"expected_revision":int(state.revision),"expected_tick":int(state.tick),"protected":guards}
+		"expected_revision":int(state.revision),"expected_tick":int(state.tick),
+		"expected_authoring_generation":int(state.get("authoring_generation",1)),"protected":guards}
 
 func _queue_capture(kind: String, region: Rect2i, seed: Vector2i = Vector2i.ZERO,
 		expected_source: Dictionary = {}) -> bool:
@@ -465,6 +479,7 @@ func _begin_plan(job: Dictionary, label: String) -> bool:
 	finish_agent_history()
 	job.setup = bench.applied.duplicate(true)
 	job.generated = bench._generated_active.duplicate(true)
+	job.material_baseline = bench._material_baseline.duplicate(false)
 	job.extent = extent()
 	job.fence = _source(_current())
 	job.label = label
@@ -552,7 +567,10 @@ func _plan(job: Dictionary) -> Dictionary:
 		var error: String = Setup.validate(candidate)
 		if not error.is_empty(): return {"accepted":false,"error":error}
 		var body: String = JSON.stringify(candidate)
-		if not job.generated.is_empty():
+		if not job.get("material_baseline",{}).is_empty():
+			error = MaterialBaseline.validate_document(candidate,job.material_baseline)
+			if not error.is_empty(): return {"accepted":false,"error":error}
+		elif not job.generated.is_empty():
 			body = JSON.stringify({"format":Store.FORMAT,"version":1,
 				"generation":Store.provenance(job.generated),"starting_setup":candidate})
 		elif Setup.rectangles(candidate).has("error"):
@@ -560,7 +578,7 @@ func _plan(job: Dictionary) -> Dictionary:
 		if body.to_utf8_buffer().size() > Setup.BYTE_LIMIT:
 			return {"accepted":false,"error":"Restored authoring state exceeds the file budget."}
 	else:
-		var prepared: Dictionary = History.prepare(job.setup,cells,job.generated)
+		var prepared: Dictionary = History.prepare(job.setup,cells,job.generated,job.get("material_baseline",{}))
 		if not prepared.accepted: return prepared
 		candidate = prepared.setup
 	return {"accepted":true,"error":"","cells":cells,"setup":candidate}
@@ -687,6 +705,7 @@ func _receive(receipt: Dictionary) -> void:
 			var job := {"tool":"Fill","region":receipt.region,"materials":receipt.materials,
 				"seed":operation.seed,"material":operation.material,"setup":bench.applied.duplicate(true),
 				"generated":bench._generated_active.duplicate(true),"extent":extent(),
+				"material_baseline":bench._material_baseline.duplicate(false),
 				"fence":_source(receipt),"label":"Fill"}
 			_start_planner(job)
 		return
@@ -725,7 +744,7 @@ func _receive_edit(operation: Dictionary, receipt: Dictionary, current: Dictiona
 		_notify_history(job,receipt,false)
 		return
 	var prepared: Dictionary = {"accepted":true,"setup":operation.planned.setup} if complete \
-		else History.prepare(job.setup,receipt.cells,job.generated)
+		else History.prepare(job.setup,receipt.cells,job.generated,job.get("material_baseline",{}))
 	var before_edits: Array = job.setup.edits.duplicate(true)
 	if prepared.accepted:
 		bench.applied.edits = prepared.setup.edits.duplicate(true)
@@ -845,6 +864,7 @@ func _start_reverse(action: String, continuing_history: bool = false) -> bool:
 		"override_edits":record.before_edits if action == "undo" else record.after_edits,
 		"history_action":action,"history_record":record,"setup":bench.applied.duplicate(true),
 		"generated":bench._generated_active.duplicate(true),"extent":extent(),
+		"material_baseline":bench._material_baseline.duplicate(false),
 		"fence":_source(_current()),"label":action.capitalize()+" "+str(record.label)}
 	return _start_planner(job)
 

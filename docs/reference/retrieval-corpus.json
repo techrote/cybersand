@@ -1,9 +1,10 @@
 {
   "version": 1,
-  "reviewed": "2026-11-12",
+  "reviewed": "2026-11-13",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "operations/wb-art-paint-integrated-candidate.md",
+    "operations/gen008-flatten-qualification.md",
     "systems/workbench-direct-art-batches.md",
     "systems/workbench-art-providers.md",
     "MATERIAL_LAB.md",

@@ -1,0 +1,647 @@
+name: 'GEN-008 Flatten + accepted MAT-AUTH/Workbench source-matched native runtime publication'
+
+# Temporary branch-scoped publisher. Runtime/manifests are deliberately absent
+# from this filter, and existing ready-for-review acceptance gates are unchanged.
+# Complete catalogue/native authoring, real target-OS Lab cases, graphical
+# captures and a tested self-contained Windows package precede publication.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/gen008-flatten-qualification.yml'
+      - 'tools/ci/gen008_flatten_runtime_publication.py'
+      - 'tools/ci/lcb001_shared_contract_runtime_publication.py'
+      - 'tools/ci/test_gen008_flatten_runtime_publication.py'
+      - 'tools/ci/test_materials_lab_package.py'
+      - 'tools/package_gen008_flatten_candidate.py'
+      - 'tools/ci/run_workbench_qualification.py'
+      - 'tools/ci/run_flatten_qualification.py'
+      - 'tools/ci/check_windows_package_modules.ps1'
+      - 'tools/ci/stage_windows_vc_runtime.ps1'
+  push:
+    branches: [feat/gen008-flatten-material-baseline]
+    # Explicit source-bound publication request; normal native edits do not dispatch a publisher.
+    # Workflow/helper changes run lightweight guards; absent request means no build.
+    paths:
+      - 'tools/ci/gen008_flatten_publish_request.json'
+      - '.github/workflows/gen008-flatten-qualification.yml'
+      - 'tools/ci/gen008_flatten_runtime_publication.py'
+      - 'tools/ci/lcb001_shared_contract_runtime_publication.py'
+      - 'tools/ci/test_gen008_flatten_runtime_publication.py'
+      - 'tools/ci/test_materials_lab_package.py'
+      - 'tools/package_gen008_flatten_candidate.py'
+      - 'tools/ci/run_workbench_qualification.py'
+      - 'tools/ci/run_flatten_qualification.py'
+      - 'tools/ci/check_windows_package_modules.ps1'
+      - 'tools/ci/stage_windows_vc_runtime.ps1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gen008-flatten-qualification-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+  LIBGL_ALWAYS_SOFTWARE: '1'
+  LP_NUM_THREADS: '2'
+  GALLIVM_PERF: nopt
+  CYBERSAND_CI_WATCHDOG_SCALE: '1'
+  CYBERSAND_LAB_CXX: /usr/bin/g++-13
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  publisher-guards:
+    name: validate staged publisher without building runtimes
+    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/feat/gen008-flatten-material-baseline') || (github.event_name == 'pull_request' && github.head_ref == 'feat/gen008-flatten-material-baseline' && github.base_ref == 'main'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact preparation head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+      - name: Run adversarial publisher guards and CI-provider policy
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_gen008_flatten_runtime_publication.py
+          python3 tools/ci/test_materials_lab_runtime_publication.py
+          python3 tools/ci/test_materials_lab_package.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/check_ci_provider_policy.py
+
+  admission:
+    needs: publisher-guards
+    name: require an explicit GEN-008 Flatten + accepted MAT-AUTH/Workbench publication request
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/feat/gen008-flatten-material-baseline'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      armed: ${{ steps.gate.outputs.armed }}
+    steps:
+      - name: Check out exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+      - name: Validate request and exact branch lease before any runtime build
+        id: gate
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_gen008_flatten_runtime_publication.py
+          python3 tools/ci/test_materials_lab_runtime_publication.py
+          python3 tools/ci/test_materials_lab_package.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          if test -f 'tools/ci/gen008_flatten_publish_request.json'; then
+            python3 tools/ci/gen008_flatten_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+            echo 'armed=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'armed=false' >> "$GITHUB_OUTPUT"
+            echo 'No explicit GEN-008 Flatten + accepted MAT-AUTH/Workbench publish request. Build and publication disabled.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  native-contracts:
+    name: native stored-material contract and ASan/UBSan
+    needs: admission
+    if: needs.admission.outputs.armed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Check out exact native contract source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Execute real stored-material, nonmutation, scale and refusal contracts
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          git rev-parse HEAD > evidence/source-commit.txt
+          git rev-parse HEAD^{tree} > evidence/source-tree.txt
+          g++-13 --version > evidence/compiler.txt
+          timeout 1200 make CXX=g++-13 material-baseline-test > evidence/native.log 2>&1
+          timeout 2400 make CXX=g++-13 material-baseline-sanitize > evidence/sanitized.log 2>&1
+      - name: Preserve original native contracts and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen008-flatten-native-contracts-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90
+
+  catalogue-linux:
+    name: complete source-bound GEN-008 Flatten + accepted MAT-AUTH/Workbench catalogue suite on Linux
+    needs: admission
+    if: needs.admission.outputs.armed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    outputs:
+      artifact_attempt: ${{ steps.artifact.outputs.attempt }}
+    steps:
+      - name: Check out exact source and retained compatibility ancestry
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Execute every discovered catalogue test with the real native compiler
+        run: |
+          set -euo pipefail
+          python3 tools/ci/gen008_flatten_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          python3 tools/ci/gen008_flatten_runtime_publication.py catalogue-tests --platform linux --source-sha "$GITHUB_SHA" --bundle build/gen008-flatten-catalogue-linux
+      - name: Record artifact attempt
+        if: always()
+        id: artifact
+        run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+      - name: Retain complete original catalogue evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen008-flatten-catalogue-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen008-flatten-catalogue-linux/
+          if-no-files-found: error
+          retention-days: 90
+
+  linux:
+    needs: [admission, catalogue-linux]
+    name: build and execute the Linux GEN-008 Flatten + accepted MAT-AUTH/Workbench runtime
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/feat/gen008-flatten-material-baseline' && needs.admission.outputs.armed == 'true'
+    runs-on: ubuntu-24.04
+    # Complete native build, import and seven unshortened current-policy cases.
+    timeout-minutes: 360
+    outputs:
+      artifact_attempt: ${{ steps.artifact.outputs.attempt }}
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+
+      - name: Validate publisher guards and unchanged source
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_gen008_flatten_runtime_publication.py
+          python3 tools/ci/test_materials_lab_runtime_publication.py
+          python3 tools/ci/test_materials_lab_package.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/gen008_flatten_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+
+      - name: Fetch pinned Linux Rapier only
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+
+      - name: Prepare pinned SCons and godot-cpp
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Build exact Linux runtime and record canonical inputs
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          timeout 35m tools/build_pinned_godot_cpp.sh linux
+          timeout 20m tools/build_native_extension.sh
+          {
+            echo 'Build host: GitHub-hosted Ubuntu 24.04; Linux x86_64 target'
+            echo "godot-cpp=$GODOT_CPP_COMMIT; SCons=4.10.1"
+            g++-13 --version | head -n 1
+            ld --version | head -n 1
+            sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.linux.template_debug.x86_64.a"
+          } > "$RUNNER_TEMP/toolchain.txt"
+          python3 tools/ci/gen008_flatten_runtime_publication.py record --platform linux --source-sha "$GITHUB_SHA" --runtime "$CYBERSAND_NATIVE_OUTPUT" --toolchain "$RUNNER_TEMP/toolchain.txt" --bundle build/gen008-flatten-linux
+
+      - name: Restore same-source Linux catalogue qualification
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: gen008-flatten-catalogue-linux-${{ github.run_id }}-${{ needs.catalogue-linux.outputs.artifact_attempt }}
+          path: build/gen008-flatten-linux
+
+      - name: Execute all required GEN-008 Flatten + accepted MAT-AUTH/Workbench cases on Linux
+        run: |
+          set -euo pipefail
+          timeout 10m curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 --output "$RUNNER_TEMP/godot-linux.zip" "$GODOT_URL"
+          python3 tools/ci/gen008_flatten_runtime_publication.py test --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/gen008-flatten-linux
+          bash tools/ci/prepare_linux_display.sh
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' python3 tools/ci/gen008_flatten_runtime_publication.py graphical --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/gen008-flatten-linux
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' python3 tools/ci/gen008_flatten_runtime_publication.py workbench --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/gen008-flatten-linux
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' python3 tools/ci/gen008_flatten_runtime_publication.py flatten --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/gen008-flatten-linux
+
+      - name: Record artifact attempt
+        if: always()
+        id: artifact
+        run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+
+      - name: Retain Linux runtime and execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen008-flatten-runtime-attempt-${{ github.run_attempt }}-linux-${{ github.run_id }}
+          path: build/gen008-flatten-linux/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows-build:
+    needs: admission
+    name: cross-build the Windows GEN-008 Flatten + accepted MAT-AUTH/Workbench runtime
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/feat/gen008-flatten-material-baseline' && needs.admission.outputs.armed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    outputs:
+      artifact_attempt: ${{ steps.artifact.outputs.attempt }}
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+
+      - name: Validate publisher guards and unchanged source
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_gen008_flatten_runtime_publication.py
+          python3 tools/ci/test_materials_lab_runtime_publication.py
+          python3 tools/ci/test_materials_lab_package.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/gen008_flatten_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+
+      - name: Prepare pinned SCons and godot-cpp
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Prepare exact LLVM-MinGW
+        run: |
+          set -euo pipefail
+          timeout 10m curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          test -x "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++"
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then
+            ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          fi
+
+      - name: Build exact Windows runtime and record canonical inputs
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
+        run: |
+          set -euo pipefail
+          timeout 35m tools/build_pinned_godot_cpp.sh windows
+          timeout 20m tools/build_native_extension_windows.sh
+          mkdir -p build/gen008-flatten-windows
+          "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > build/gen008-flatten-windows/windows-imports.txt
+          {
+            echo 'Build host: GitHub-hosted Ubuntu 24.04; Windows x86_64 target'
+            echo "godot-cpp=$GODOT_CPP_COMMIT; SCons=4.10.1"
+            echo "LLVM-MinGW=20260826 UCRT; archive SHA-256=$LLVM_MINGW_SHA256"
+            "$WINDOWS_CXX" --version | head -n 1
+            "$LLVM_MINGW_ROOT/bin/ld.lld" --version
+            sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.windows.template_debug.x86_64.a"
+          } > "$RUNNER_TEMP/toolchain.txt"
+          python3 tools/ci/gen008_flatten_runtime_publication.py record --platform windows --source-sha "$GITHUB_SHA" --runtime "$CYBERSAND_NATIVE_OUTPUT" --toolchain "$RUNNER_TEMP/toolchain.txt" --bundle build/gen008-flatten-windows
+
+      - name: Record artifact attempt
+        if: always()
+        id: artifact
+        run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+
+      - name: Retain Windows build for actual Windows execution
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen008-flatten-build-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen008-flatten-windows/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows-execution:
+    name: execute Windows GEN-008 Flatten + accepted MAT-AUTH/Workbench cases
+    needs: windows-build
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/feat/gen008-flatten-material-baseline'
+    runs-on: windows-2022
+    timeout-minutes: 360
+    env:
+      CYBERSAND_LAB_CXX: 'C:\mingw64\bin\g++.exe'
+      GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+    outputs:
+      artifact_attempt: ${{ steps.artifact.outputs.attempt }}
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Validate publisher guards and unchanged source
+        run: |
+          set -euo pipefail
+          python tools/ci/test_gen008_flatten_runtime_publication.py
+          python tools/ci/test_materials_lab_runtime_publication.py
+          python tools/ci/test_materials_lab_package.py
+          python tools/ci/gen008_flatten_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+
+      - name: Restore exact Windows build
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: gen008-flatten-build-windows-${{ github.run_id }}-${{ needs.windows-build.outputs.artifact_attempt }}
+          path: build/gen008-flatten-windows
+
+      - name: Fetch pinned Windows Rapier only
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          echo "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" | sha256sum --check --strict
+
+      - name: Exercise Windows storage fences and measured engine before retained suites
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          python - <<'PYCODE'
+          import os, pathlib, shutil, subprocess, sys
+          sys.path.insert(0, 'tools/ci')
+          import gen008_flatten_runtime_publication as profile
+          bundle = pathlib.Path('build/gen008-flatten-windows')
+          profile.engine.verify_bundle(bundle, 'windows', os.environ['GITHUB_SHA'], validated=False)
+          runtime = profile.engine.ROOT / profile.engine.RUNTIMES['windows']
+          shutil.copyfile(bundle / runtime.name, runtime)
+          godot, _ = profile.engine.windows.prepare_godot(pathlib.Path(os.environ['RUNNER_TEMP']) / 'godot-windows.zip')
+          subprocess.run([sys.executable, 'tools/ci/run_flatten_qualification.py',
+              '--godot', str(godot), '--project', 'godot',
+              '--evidence', 'build/gen008-flatten-platform-preflight', '--cases', '512x1'], check=True)
+          PYCODE
+
+      - name: Retain original bounded Windows platform diagnostic
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen008-flatten-windows-platform-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen008-flatten-platform-preflight/
+          if-no-files-found: ignore
+          retention-days: 90
+
+      # The early diagnostic does not replace any source/platform/package gate.
+      # The complete twelve-record Flatten inventory remains mandatory below.
+      - name: Execute all required GEN-008 Flatten + accepted MAT-AUTH/Workbench cases on Windows
+        run: |
+          set -euo pipefail
+          python tools/ci/gen008_flatten_runtime_publication.py catalogue-tests --platform windows --source-sha "$GITHUB_SHA" --bundle build/gen008-flatten-windows
+          python tools/ci/gen008_flatten_runtime_publication.py test --platform windows --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-windows.zip" --bundle build/gen008-flatten-windows
+          python tools/ci/gen008_flatten_runtime_publication.py graphical --platform windows --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-windows.zip" --bundle build/gen008-flatten-windows
+          python tools/ci/gen008_flatten_runtime_publication.py workbench --platform windows --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-windows.zip" --bundle build/gen008-flatten-windows
+          python tools/ci/gen008_flatten_runtime_publication.py flatten --platform windows --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-windows.zip" --bundle build/gen008-flatten-windows
+
+      - name: Record artifact attempt
+        if: always()
+        id: artifact
+        run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+
+      - name: Retain Windows runtime and execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen008-flatten-runtime-attempt-${{ github.run_attempt }}-windows-${{ github.run_id }}
+          path: build/gen008-flatten-windows/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows-package:
+    name: package and execute a self-contained Windows GEN-008 Flatten + accepted MAT-AUTH/Workbench
+    needs: windows-execution
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/feat/gen008-flatten-material-baseline'
+    runs-on: windows-2022
+    timeout-minutes: 150
+    env:
+      CYBERSAND_LAB_CXX: 'C:\mingw64\bin\g++.exe'
+      GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+    steps:
+      - name: Check out exact source and complete retained ancestry
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Select the qualified Python series
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore the actual Windows-qualified runtime and evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: gen008-flatten-runtime-attempt-${{ needs.windows-execution.outputs.artifact_attempt }}-windows-${{ github.run_id }}
+          path: build/gen008-flatten-windows
+      - name: Fetch pinned runtime and immutable Godot notices
+        run: |
+          set -euo pipefail
+          python tools/ci/gen008_flatten_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          mkdir -p "$RUNNER_TEMP/godot-notices"
+          for notice in LICENSE.txt COPYRIGHT.txt; do
+            curl --fail --location --retry 3 --connect-timeout 20 --max-time 300 --output "$RUNNER_TEMP/godot-notices/$notice" "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$notice"
+          done
+      - name: Stage the signed app-local Microsoft runtime and licences
+        shell: pwsh
+        run: |
+          $notices = Join-Path $env:RUNNER_TEMP 'godot-notices'
+          $runtimeLicense = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 -o $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime licence download failed' }
+          curl.exe -fL --retry 3 -o $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft VS redistribution licence download failed' }
+          ./tools/ci/stage_windows_vc_runtime.ps1 -Output (Join-Path $env:RUNNER_TEMP 'gen008-flatten-vc-runtime') -License $runtimeLicense -DeveloperLicense $developerLicense
+
+      - name: Build a clean offline source/history/toolchain evaluation package
+        run: |
+          set -euo pipefail
+          python tools/ci/test_materials_lab_package.py
+          python tools/package_gen008_flatten_candidate.py build --source-sha "$GITHUB_SHA" --bundle build/gen008-flatten-windows --godot-archive "$RUNNER_TEMP/godot-windows.zip" --engine-notices "$RUNNER_TEMP/godot-notices" --vc-runtime "$RUNNER_TEMP/gen008-flatten-vc-runtime" --output "$RUNNER_TEMP/gen008-flatten-evaluation"
+      - name: Execute the delivered package using only bundled authoring prerequisites
+        run: |
+          set -euo pipefail
+          python tools/package_gen008_flatten_candidate.py smoke --output "$RUNNER_TEMP/gen008-flatten-evaluation" --evidence build/gen008-flatten-package-execution
+          python tools/package_gen008_flatten_candidate.py verify --output "$RUNNER_TEMP/gen008-flatten-evaluation"
+          python - <<'PYCODE'
+          import hashlib, os, pathlib, shutil
+          output = pathlib.Path('build/gen008-flatten-evaluation')
+          output.mkdir(parents=True)
+          archive = pathlib.Path(shutil.make_archive(str(output / ('CyberSand-Flatten-Windows-' + os.environ['GITHUB_SHA'][:12])), 'zip', pathlib.Path(os.environ['RUNNER_TEMP']) / 'gen008-flatten-evaluation'))
+          with archive.open('rb') as stream:
+              digest = hashlib.file_digest(stream, 'sha256').hexdigest()
+          archive.with_suffix('.zip.sha256').write_text(digest + '  ' + archive.name + '\n', encoding='ascii')
+          PYCODE
+      - name: Retain successful easy-launch Windows evaluation ZIP
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen008-flatten-windows-evaluation-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen008-flatten-evaluation/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 90
+      - name: Retain original package execution evidence including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen008-flatten-package-execution-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen008-flatten-package-execution/
+          if-no-files-found: ignore
+          retention-days: 90
+
+  publish:
+    name: fast-forward the source branch with both validated runtimes
+    needs: [native-contracts, linux, windows-execution, windows-package]
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/feat/gen008-flatten-material-baseline'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    outputs:
+      published_sha: ${{ steps.publish.outputs.published_sha }}
+    steps:
+      - name: Check out the exact built source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+
+      - name: Require the feature branch to remain at the built source
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_gen008_flatten_runtime_publication.py
+          python3 tools/ci/test_materials_lab_runtime_publication.py
+          python3 tools/ci/test_materials_lab_package.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/gen008_flatten_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          git lfs install --local
+
+      - name: Restore passed Linux runtime and evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: gen008-flatten-runtime-attempt-${{ needs.linux.outputs.artifact_attempt }}-linux-${{ github.run_id }}
+          path: build/gen008-flatten-linux
+
+      - name: Restore passed Windows runtime and evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: gen008-flatten-runtime-attempt-${{ needs.windows-execution.outputs.artifact_attempt }}-windows-${{ github.run_id }}
+          path: build/gen008-flatten-windows
+
+      - name: Verify complete matching provenance and stage only the four runtime paths
+        run: |
+          set -euo pipefail
+          python3 tools/ci/gen008_flatten_runtime_publication.py stage --source-sha "$GITHUB_SHA" --linux-bundle build/gen008-flatten-linux --windows-bundle build/gen008-flatten-windows
+          git add -- godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/runtime-provenance.linux.json godot/addons/cybersand_native/runtime-provenance.json
+          python3 tools/ci/gen008_flatten_runtime_publication.py check-index --source-sha "$GITHUB_SHA"
+          git diff --check --cached
+          git diff --exit-code
+
+      - name: Commit and fast-forward only the unchanged feature branch
+        id: publish
+        run: |
+          set -euo pipefail
+          python3 tools/ci/gen008_flatten_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          python3 tools/ci/gen008_flatten_runtime_publication.py check-index --source-sha "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(native): publish source-matched Linux and Windows runtimes'
+          test "$(git rev-list --parents -n 1 HEAD)" = "$(git rev-parse HEAD) $GITHUB_SHA"
+          # The exact single-parent check proves this update only appends to
+          # the built SHA. The lease atomically refuses any changed remote tip,
+          # including a concurrent reset; it cannot overwrite concurrent work.
+          # The LFS pre-push hook uploads only the new runtime objects.
+          git push --force-with-lease="refs/heads/feat/gen008-flatten-material-baseline:$GITHUB_SHA" origin HEAD:refs/heads/feat/gen008-flatten-material-baseline
+          echo "published_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          {
+            echo '### GEN-008 Flatten + accepted MAT-AUTH/Workbench runtime publication'
+            echo "Built source: $GITHUB_SHA"
+            echo "Runtime publication commit: $(git rev-parse HEAD)"
+            echo 'Both exact runtimes passed target-OS Lab/native authoring and graphical capture; the self-contained Windows package also passed actual authoring with its bundled prerequisites.'
+            echo 'The existing full ready-for-review validation gates remain required on the resulting PR head.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  dispatch-existing-gates:
+    name: request unchanged full automated gates on the published Draft head
+    needs: publish
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/feat/gen008-flatten-material-baseline'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - name: Check out the exact four-path publication child
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ needs.publish.outputs.published_sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Dispatch the existing manual workflows under an exact branch lease
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PUBLISHED_SHA: ${{ needs.publish.outputs.published_sha }}
+        run: |
+          set -euo pipefail
+          python3 tools/ci/gen008_flatten_runtime_publication.py dispatch-existing --source-sha "$GITHUB_SHA" --published-sha "$PUBLISHED_SHA" --output build/gen008-flatten-existing-gates.json
+      - name: Retain the request receipt without claiming downstream success
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen008-flatten-existing-gates-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen008-flatten-existing-gates.json
+          if-no-files-found: error
+          retention-days: 90

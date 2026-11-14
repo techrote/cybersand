@@ -755,7 +755,7 @@ func apply_playable_session(selection: Dictionary, policy: PackedInt32Array,
 func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, extent: Vector2i,
 		policy: PackedInt32Array, normalize_water: bool, radius: int, response: String,
 		preserve_cells: bool = false, convert_liquid_inventory: bool = false, resume_play: bool = false,
-		generated_packet: Dictionary = {}) -> bool:
+		generated_packet: Dictionary = {}, material_baseline: Dictionary = {}) -> bool:
 	if shared_workbench == null: return false
 	if not pending_microscenario_apply.is_empty():
 		microscenario_error = "Wait for the pending workbench installation."
@@ -780,8 +780,9 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 		"workbench_actors":actors}
 	# Saved normalization belongs to the starting recipe. A retained flyer
 	# edit must not round live Water because an earlier recipe used it.
-	if not generated_packet.is_empty() and (preserve_cells or not rectangles.is_empty()):
-		microscenario_error = "Generated terrain requires an empty fresh construction recipe."
+	if (not generated_packet.is_empty() or not material_baseline.is_empty()) and (preserve_cells or not rectangles.is_empty()) \
+			or (not generated_packet.is_empty() and not material_baseline.is_empty()):
+		microscenario_error = "A standalone terrain baseline requires one empty fresh construction recipe."
 		return false
 	var normalize_now := normalize_water and (not preserve_cells or convert_liquid_inventory)
 	var settings := {"intent":"exploratory","normalization":"water-normalize-v1" if normalize_now else "",
@@ -792,6 +793,8 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 	# second World, and never enters the saved v2 starting-setup schema.
 	if not generated_packet.is_empty():
 		settings["workbench_generated"] = generated_packet
+	if not material_baseline.is_empty():
+		settings["workbench_material_baseline"] = material_baseline
 	# Developer-only explicit C2048 opt-in. Omitted means the native C1024 default.
 	if workbench_water_options.get("pressure_gas_compartment_capacity",1024) is int:
 		settings["pressure_gas_compartment_capacity"] = int(workbench_water_options.get("pressure_gas_compartment_capacity",1024))

@@ -212,7 +212,11 @@ Save refuses while any shared mutation slot or unconsumed receipt remains,
 including agent drawing, ordinary brush commands and World transitions. Retry
 after they settle to record the start recipe. It does not snapshot an evolved
 simulation. Actors, selected instance, solver settings and generated-map
-identity retain the existing #542 contracts. Flatten / #548 remains separate.
+identity retain the existing #542 contracts. The GEN-008 candidate now supplies
+[material-only Flatten](../architecture/shared-workbench-authoring-data.md#flatten-and-storage-compatibility).
+PAINT overlays and their Undo/Redo preserve Empty over that baseline. Successful
+Flatten retires previous history and advances an authoring-generation fence even
+when the paused native generation/revision/tick stay unchanged. It does not Save.
 
 ## Exact-source native and desktop qualification — 11 November 2026
 

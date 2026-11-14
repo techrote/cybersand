@@ -1,0 +1,462 @@
+#!/usr/bin/env python3
+"""GEN-008 profile over the accepted MAT/Workbench four-path publication engine.
+
+Keep every inherited build, target-OS, graphical, source-input, request and
+branch-lease gate. Add the complete native-backed Flatten/fresh-process matrix;
+neither an old Workbench receipt nor a partial/headless Flatten run can publish.
+This module never pushes a branch: the named workflow owns the leased append.
+"""
+from __future__ import annotations
+
+import argparse
+from importlib.util import module_from_spec, spec_from_file_location
+import json
+import os
+from pathlib import Path, PurePosixPath, PureWindowsPath
+import re
+import sys
+
+_spec = spec_from_file_location(
+    "_gen008_private_mat_workbench_publication",
+    Path(__file__).with_name("mat_workbench_runtime_publication.py"))
+workbench = module_from_spec(_spec)
+_spec.loader.exec_module(workbench)
+engine = workbench.engine
+_previous_workflow, _previous_request = engine.WORKFLOW, engine.REQUEST
+engine.BRANCH = "feat/gen008-flatten-material-baseline"
+engine.WORKFLOW = ".github/workflows/gen008-flatten-qualification.yml"
+engine.REQUEST = "tools/ci/gen008_flatten_publish_request.json"
+engine.EVIDENCE = "docs/audits/2026-11-13-gen008-flatten-qualification.md"
+engine.BUNDLE_PREFIX = "gen008-flatten-runtime-attempt-" + os.environ.get("GITHUB_RUN_ATTEMPT", "1")
+engine.REQUEST_VALUE = {
+    "schema": "gen008-flatten-runtime-publish-request-v1",
+    "family": "shared-workbench-material-baseline",
+    "variant": "uint16le-stored-materials-same-live-world",
+    "scope": "source-matched-linux-windows-flatten-save-fresh-reopen-and-retained-regressions",
+    "intent": "publish-source-matched-runtimes",
+}
+engine.BUILD_EXACT = (set(engine.BUILD_EXACT) - {_previous_workflow, _previous_request}) | {
+    engine.WORKFLOW, engine.REQUEST, engine.EVIDENCE,
+    "tools/ci/gen008_flatten_runtime_publication.py",
+    "tools/ci/test_gen008_flatten_runtime_publication.py",
+    "tools/ci/run_flatten_qualification.py",
+    "tools/package_gen008_flatten_candidate.py",
+}
+_verify_workbench_bundle = workbench.verify_materials_bundle
+CASES = ((512, 1), (1024, 1), (2048, 1), (512, 4))
+OWNER_FAILURE_SCRIPT = "tests/test_workbench_flatten_owner_failure.gd"
+SOURCE_PATHS = (
+    "scripts/main.gd", "scripts/shared_workbench.gd", "scripts/simulation_worker.gd",
+    "scripts/microscenario_host.gd",
+    "scripts/workbench_setup.gd", "scripts/workbench_material_baseline.gd",
+    "scripts/workbench_generated_map.gd", "scripts/workbench_paint_editor_controller.gd",
+    "scripts/workbench_paint_editor_executor.gd", "scripts/workbench_paint_editor_history.gd", "scripts/art_batch_executor.gd",
+    "tests/test_workbench_flatten.gd", "tests/test_workbench_material_baseline.gd",
+    "tests/flatten_save_fault_child.gd",
+)
+
+
+def __getattr__(name):
+    return getattr(workbench, name)
+
+
+def flatten_labels() -> list[str]:
+    return ["flatten-import", "standalone-format-adversarial", *[
+        f"side-{side}-workers-{workers}-{phase}" for side, workers in CASES
+        for phase in ("author", "reopen")], "owner-failure-author", "owner-failure-reopen"]
+
+
+def evidence_files(directory: Path) -> dict[str, str]:
+    result = {}
+    for path in sorted((directory / "flatten").rglob("*")):
+        engine.require(not path.is_symlink(), "Flatten evidence cannot contain a symlink")
+        if path.is_file():
+            result[path.relative_to(directory).as_posix()] = engine.runner.sha256(path)
+    return result
+
+
+def verify_storage_faults(directory: Path, platform: str) -> dict:
+    import run_workbench_qualification as wb
+    report = workbench.lab.read_json(directory / "storage-faults.json")
+    engine.require(report.get("schema") == "gen008-flatten-storage-faults-v1" and
+                   report.get("status") == "passed" and report.get("completed") is True and
+                   report.get("platform") == platform, "Storage-fault execution is incomplete or on the wrong OS")
+    expected = ["locked-target", "locked-source"] if platform == "windows" else ["partial-write", "process-termination"]
+    rows = report.get("cases", [])
+    engine.require(isinstance(rows, list) and [row.get("kind") for row in rows] == expected,
+                   "Storage-fault coverage is incomplete")
+    for row in rows:
+        kind = row["kind"]
+        engine.require(row.get("operation") == ("production-native-replacement" if kind == "locked-source"
+                                                 else "production-baseline-writer"),
+                       "Storage fault did not exercise the required production operation")
+        engine.require(re.fullmatch(r"[0-9a-f]{64}", str(row.get("prior_sha256", ""))) is not None and
+                       row.get("prior_sha256") == row.get("after_sha256") and row.get("retry_ok") is True and
+                       re.fullmatch(r"[0-9a-f]{64}", str(row.get("retry_sha256", ""))) is not None and
+                       row.get("retry_sha256") != row.get("prior_sha256") and row.get("attempted_plane_bytes") == 524288,
+                       "Failed Save did not preserve the original named start and permit a real retry")
+        logs = directory / "storage-faults"
+        phases = {}
+        for phase in ("prepare", "recover"):
+            text = (logs / f"{kind}-{phase}.log").read_text(encoding="utf-8")
+            engine.require(len(re.findall(r"(?m)^FLATTEN_STORAGE_RESULT ", text)) == 1,
+                           "Storage-fault setup/recovery receipt is missing or ambiguous")
+            receipt = wb.completion(text, "FLATTEN_STORAGE_RESULT")
+            phases[phase] = receipt
+            expected_hash = row["prior_sha256"] if phase == "prepare" else row["retry_sha256"]
+            engine.require(receipt.get("phase") == phase and receipt.get("error") == "" and
+                           receipt.get("after_sha256") == expected_hash,
+                           "Storage setup/recovery receipt differs from original saved bytes")
+        refusal_log = (logs / f"{kind}-refusal.log").read_text(encoding="utf-8")
+        if kind == "process-termination":
+            engine.require(row.get("exit_code") == -25 and row.get("signal") == 25 and
+                           row.get("file_size_limit_bytes") == 65536 and row.get("partial_temporary_bytes") == [65536] and
+                           row.get("explicit_refusal") is False and "FLATTEN_STORAGE_WRITING " in refusal_log and
+                           "FLATTEN_STORAGE_RESULT " not in refusal_log,
+                           "Process-fault case did not die during a real partial temporary-file write")
+        else:
+            engine.require(len(re.findall(r"(?m)^FLATTEN_STORAGE_RESULT ", refusal_log)) == 1,
+                           "Storage-fault refusal receipt is missing or ambiguous")
+            receipt = wb.completion(refusal_log, "FLATTEN_STORAGE_RESULT")
+            engine.require(row.get("exit_code") == 0 and row.get("explicit_refusal") is True and
+                           row.get("partial_temporary_bytes") == [] and bool(receipt.get("error")) and
+                           receipt.get("phase") == "refusal" and receipt.get("prior_sha256") == row["prior_sha256"] and
+                           receipt.get("after_sha256") == row["prior_sha256"],
+                           "Recoverable Save fault was not explicitly refused with original bytes intact")
+            if kind == "partial-write":
+                engine.require(row.get("file_size_limit_bytes") == 65536,
+                               "Partial-write fixture omitted the actual OS storage-capacity bound")
+            if kind == "locked-source":
+                source_hash = row.get("source_sha256_before")
+                engine.require(re.fullmatch(r"[0-9a-f]{64}", str(source_hash)) is not None and
+                               source_hash == row.get("source_sha256_after") == row.get("retry_sha256") and
+                               source_hash != row.get("prior_sha256") and
+                               type(row.get("source_size_bytes")) is int and
+                               524288+52 < row["source_size_bytes"] <= 524288+52+1024*1024 and
+                               row.get("target_unlocked") is True and
+                               row.get("locked_source_desired_access") == 0x80000000 and
+                               row.get("locked_source_share_mode") == 3 and
+                               row.get("retry_used_same_source") is True and
+                               row.get("source_exists_after_retry") is False,
+                               "Locked-source failure did not preserve both files and retry the same complete source")
+                prepared, recovered = phases["prepare"], phases["recover"]
+                source, target = prepared.get("source_path", ""), prepared.get("path", "")
+                engine.require(isinstance(source,str) and isinstance(target,str) and source != target and
+                               PureWindowsPath(source).is_absolute() and PureWindowsPath(target).is_absolute() and
+                               PureWindowsPath(source).parent == PureWindowsPath(target).parent and
+                               all(item.get("source_path") == source and item.get("path") == target and
+                                   item.get("operation") == "production-native-replacement" and
+                                   item.get("native_api") == "CyberDemoBridge.replace_material_baseline_file"
+                                   for item in (prepared,receipt,recovered)),
+                               "Locked-source original child logs do not identify the same production native replacement")
+                probes = row.get("delete_access_probes", {})
+                engine.require(isinstance(probes,dict) and
+                               probes == workbench.lab.read_json(logs / "locked-source-probes.json") and
+                               probes.get("schema") == "gen008-windows-source-lock-probes-v1" and
+                               type(probes.get("pid")) is int and probes["pid"] > 0 and
+                               probes.get("held_source_desired_access") == 0x80000000 and
+                               probes.get("held_source_share_mode") == 3,
+                               "Locked-source original access probes are missing or do not hold a real READ handle")
+                for name,path,opened,error in (("source",source,False,32),("target",target,True,0)):
+                    probe = probes.get(name,{})
+                    engine.require(isinstance(probe,dict) and
+                                   PureWindowsPath(str(probe.get("path",""))) == PureWindowsPath(path) and
+                                   probe.get("desired_access") == 0x10000 and probe.get("share_mode") == 7 and
+                                   probe.get("creation_disposition") == 3 and probe.get("flags_and_attributes") == 0x80 and
+                                   probe.get("opened") is opened and probe.get("win32_error") == error,
+                                   "Windows nonmutating DELETE-access probes do not prove a locked source and unlocked target")
+                engine.require(prepared.get("source_sha256_after") == source_hash and
+                               prepared.get("source_exists_after") is True and
+                               receipt.get("source_sha256_before") == receipt.get("source_sha256_after") == source_hash and
+                               receipt.get("source_exists_after") is True and
+                               recovered.get("source_sha256_before") == recovered.get("after_sha256") == source_hash and
+                               recovered.get("source_sha256_after") == "" and
+                               recovered.get("source_exists_after") is False and
+                               recovered.get("retry_used_same_source") is True,
+                               "Locked-source original bytes or same-source retry disagree with the summary")
+                retained = {"locked-source-bytes/"+name: digest for name,digest in (
+                    ("target-before.bin",row["prior_sha256"]),
+                    ("target-after-refusal.bin",row["prior_sha256"]),
+                    ("source-before.bin",source_hash),
+                    ("source-after-refusal.bin",source_hash),
+                    ("target-after-retry.bin",source_hash))}
+                engine.require(row.get("retained_files_sha256") == retained and
+                               all((logs/name).is_file() and not (logs/name).is_symlink() and
+                                   engine.runner.sha256(logs/name) == digest for name,digest in retained.items()) and
+                               all((logs/"locked-source-bytes"/name).stat().st_size == row["source_size_bytes"]
+                                   for name in ("source-before.bin","source-after-refusal.bin","target-after-retry.bin")),
+                               "Locked-source original file bytes are missing, changed or differ from the reported retry")
+    return {"status": "passed", "report_sha256": engine.runner.sha256(directory / "storage-faults.json")}
+
+
+def verify_flatten_cases(directory: Path, platform: str, native_sha: str,
+                         project: Path, engine_sha: str) -> list[dict]:
+    import run_workbench_qualification as wb
+    records = workbench.verify_results(directory / "results.json", flatten_labels())
+    summary = workbench.lab.read_json(directory / "qualification.json")
+    engine.require(summary == {"status": "passed", "cases": [list(case) for case in CASES], "graphical": True,
+                               "storage_faults": verify_storage_faults(directory,platform)},
+                   "Flatten qualification matrix is partial, failed or headless")
+    expected_os = "Windows" if platform == "windows" else "Linux"
+    engine.require(re.fullmatch(r"[0-9a-f]{64}",str(engine_sha)) is not None,
+                   "Pinned Godot engine identity is missing")
+    for entry in records:
+        engine.require(type(entry.get("sampled_peak_rss_bytes")) is int and entry["sampled_peak_rss_bytes"] > 0
+                       and type(entry.get("os_peak_rss_bytes")) is int and entry["os_peak_rss_bytes"] > 0,
+                       "Original process memory evidence is missing")
+        executable = entry.get("engine_executable", "")
+        command = entry.get("command", [])
+        path = PureWindowsPath(executable) if platform == "windows" else PurePosixPath(executable)
+        engine.require(isinstance(executable,str) and path.is_absolute() and
+                       path.name == ("Godot_v4.7-stable_win64.exe" if platform == "windows" else "Godot_v4.7-stable_linux.x86_64") and
+                       isinstance(command,list) and command and command[0] == executable and
+                       entry.get("measurement_target") == "godot-engine-process" and
+                       entry.get("engine_executable_sha256") == engine_sha and
+                       type(entry.get("pid")) is int and entry["pid"] > 0,
+                       "Process memory must measure the exact pinned Godot engine, not its console wrapper")
+    format_log = (directory / "standalone-format-adversarial.log").read_text(encoding="utf-8")
+    engine.require(len(re.findall(r"(?m)^WORKBENCH_MATERIAL_BASELINE ", format_log)) == 1,
+                   "Material format completion is missing or ambiguous")
+    wb.completion(format_log, "WORKBENCH_MATERIAL_BASELINE")
+    pairs = {}
+    normal_end = 2+2*len(CASES)
+    for entry in records[2:normal_end]:
+        label = entry["label"]
+        match = re.fullmatch(r"side-(512|1024|2048)-workers-(1|4)-(author|reopen)", label)
+        engine.require(match is not None, "Unregistered Flatten execution")
+        side, workers, phase = int(match[1]), int(match[2]), match[3]
+        text = (directory / (label + ".log")).read_text(encoding="utf-8")
+        engine.require(len(re.findall(r"(?m)^FLATTEN_RESULT ", text)) == 1,
+                       "Flatten completion is missing or ambiguous")
+        receipt = wb.completion(text, "FLATTEN_RESULT")
+        engine.require(receipt == entry.get("completion") and receipt.get("completed") is True and
+                       receipt.get("phase") == phase and receipt.get("side") == side and
+                       receipt.get("workers") == workers and receipt.get("canonical_bytes") == 2*side*side and
+                       type(receipt.get("pid")) is int and receipt["pid"] == entry["pid"],
+                       "Flatten result differs from its original complete process receipt")
+        identity = receipt.get("source_identity", {})
+        engine.require(identity.get("os") == expected_os and identity.get("display", "").lower() in
+                       ({"windows"} if platform == "windows" else {"x11"}) and
+                       identity.get("godot") == workbench.GODOT_DISPLAY_VERSION,
+                       "Flatten requires actual pinned graphical target-OS execution")
+        engine.require(identity.get("native_sha256") == native_sha and
+                       all(identity.get(path) == engine.runner.sha256(project / path) for path in SOURCE_PATHS),
+                       "Flatten runtime or authored source differs from the qualified bundle")
+        required_phases = ({"startup", "generate", "construction", "simulation", "flatten_paused",
+                            "flatten_playing", "post_flatten_history", "save", "complete"}
+                           if phase == "author" else {"startup", "reopen", "continued_authoring", "complete"})
+        if phase == "author" and side == 512:
+            required_phases.add("failure_atomicity")
+        engine.require(all(receipt.get("phases", {}).get(key) is True for key in required_phases),
+                       "Flatten skipped a required execution phase")
+        witnesses = receipt.get("native_material_witnesses", [])
+        engine.require(isinstance(witnesses, list) and witnesses and
+                       len({row.get("label") for row in witnesses}) == len(witnesses) and
+                       all(row.get("bytes") == 2*side*side and
+                           re.fullmatch(r"[0-9a-f]{64}", str(row.get("sha256", ""))) for row in witnesses),
+                       "Flatten omitted complete native material readback")
+        indexed = {row["label"]: row for row in witnesses}
+        if phase == "author":
+            engine.require({"before-simulation", "simulation-derived-materials", "after-flatten",
+                            "post-flatten-edits-before-later-simulation", "later-simulation-excluded-from-save"}.issubset(indexed),
+                           "Flatten omitted a native simulation or identity witness")
+            engine.require(indexed["before-simulation"]["sha256"] != indexed["simulation-derived-materials"]["sha256"] and
+                           indexed["simulation-derived-materials"]["sha256"] == indexed["after-flatten"]["sha256"] and
+                           indexed["post-flatten-edits-before-later-simulation"]["sha256"] !=
+                           indexed["later-simulation-excluded-from-save"]["sha256"],
+                           "Native material witnesses do not prove simulation capture and unchanged Flatten")
+            for field in ("generation", "native_generation", "tick", "revision"):
+                engine.require(indexed["simulation-derived-materials"].get(field) == indexed["after-flatten"].get(field),
+                               "Paused Flatten changed native World identity or transient boundary: " + field)
+        else:
+            engine.require("fresh-process-reconstructed-plane" in indexed,
+                           "Fresh-process native reconstruction readback is missing")
+        required_images = ({"flatten-identical-live-world.png", "flatten-explicitly-saved.png"}
+                           if phase == "author" else {"flatten-reopened-and-continued.png"})
+        frames = directory / (label + "-frames")
+        engine.require(all((frames / name).is_file() and
+                           (frames / name).read_bytes().startswith(b"\x89PNG\r\n\x1a\n") for name in required_images),
+                       "Flatten is missing original graphical framebuffer evidence")
+        instance = receipt.get("process_instance", "")
+        engine.require(re.fullmatch(r"[0-9a-f]{32}", str(instance)) is not None,
+                       "Fresh-process instance identity is missing")
+        if phase == "author":
+            pairs[(side, workers)] = receipt
+        else:
+            previous = pairs[(side, workers)]
+            engine.require(previous["process_instance"] != instance and previous["pid"] != receipt["pid"] and
+                           previous["source_identity"] == identity,
+                           "Reopen did not use a new process with identical source/runtime bytes")
+    verify_owner_failure_cases(directory,records[normal_end:],platform,native_sha,project)
+    return records
+
+
+def verify_owner_failure_cases(directory: Path, records: list[dict], platform: str,
+                               native_sha: str, project: Path) -> None:
+    import run_workbench_qualification as wb
+    engine.require([entry.get("label") for entry in records] == ["owner-failure-author","owner-failure-reopen"],
+                   "Native owner recovery requires both original processes after the complete normal matrix")
+    author = None
+    for entry,phase in zip(records,("author","reopen")):
+        text = (directory/(entry["label"]+".log")).read_text(encoding="utf-8")
+        engine.require(len(re.findall(r"(?m)^FLATTEN_OWNER_FAILURE_RESULT ",text)) == 1,
+                       "Native owner recovery completion is missing or ambiguous")
+        receipt = wb.completion(text,"FLATTEN_OWNER_FAILURE_RESULT")
+        engine.require(receipt == entry.get("completion") and receipt.get("schema") == "gen008-flatten-owner-failure-v1"
+                       and receipt.get("completed") is True and receipt.get("phase") == phase,
+                       "Native owner recovery receipt differs from its original complete process")
+        identity = receipt.get("source_identity",{})
+        engine.require(identity.get("os") == ("Windows" if platform=="windows" else "Linux") and
+                       identity.get("display","").lower() == ("windows" if platform=="windows" else "x11") and
+                       identity.get("godot") == workbench.GODOT_DISPLAY_VERSION and
+                       identity.get("native_sha256") == native_sha and
+                       all(identity.get(path) == engine.runner.sha256(project/path)
+                           for path in (*SOURCE_PATHS,OWNER_FAILURE_SCRIPT)),
+                       "Native owner recovery did not use the exact graphical source/runtime and fixture")
+        engine.require(re.fullmatch(r"[0-9a-f]{32}",str(receipt.get("process_instance",""))) is not None and
+                       type(receipt.get("pid")) is int and receipt["pid"] > 0 and receipt["pid"] == entry.get("pid"),
+                       "Native owner recovery omitted its original process identity")
+        for field in ("expected_plane_sha256","saved_plane_sha256","saved_baseline_sha256","saved_file_sha256"):
+            engine.require(re.fullmatch(r"[0-9a-f]{64}",str(receipt.get(field,""))) is not None,
+                           "Native owner recovery omitted a complete saved-plane identity: "+field)
+        engine.require(type(receipt.get("failure_count")) in (int,float) and receipt["failure_count"] == 1 and
+                       receipt.get("failure_reason") == "active scheduling-core capacity exhausted",
+                       "Native owner recovery did not retain the genuine native capacity failure")
+        engine.require(receipt["saved_plane_sha256"] == receipt["expected_plane_sha256"] and
+                       receipt.get("side") == 512 and receipt.get("canonical_bytes") == 524288,
+                       "Native owner recovery omitted its exact complete decoded authored plane")
+        if phase=="author":
+            failure = receipt.get("failure_snapshot",{})
+            before,after = receipt.get("owner_before_save",{}),receipt.get("owner_after_save",{})
+            engine.require(failure.get("simulation_failed") is True and type(failure.get("tick_failure_count")) is int and
+                           failure["tick_failure_count"] == 1 and
+                           type(failure.get("failed_tick_index")) is int and failure["failed_tick_index"] >= 1 and
+                           failure.get("last_tick_error") == receipt["failure_reason"],
+                           "Native owner recovery contains only a synthetic failure flag, not a native failure snapshot")
+            engine.require(receipt.get("owner_preserved") is True and isinstance(before,dict) and before and before==after,
+                           "Saving acknowledged data changed or replaced the quarantined native owner/history")
+            integers=("host_instance","worker_instance","generation","authoring_generation","paint_epoch","agent_epoch",
+                      "tick","revision","baseline_bytes","undo_entries","redo_entries")
+            engine.require(all(type(before.get(field)) is int for field in integers) and
+                           before["host_instance"] != 0 and before["worker_instance"] != 0 and
+                           before["generation"] > 0 and before["authoring_generation"] >= 2 and
+                           before["paint_epoch"] > 0 and before["agent_epoch"] > 0 and
+                           before["tick"] >= 0 and failure["failed_tick_index"] > before["tick"] and
+                           before["undo_entries"] >= 0 and before["redo_entries"] >= 0 and
+                           before.get("has_failed") is True and before.get("failure_snapshot") == failure and
+                           before["baseline_bytes"] == 524288 and before.get("baseline_sha256") == receipt["saved_baseline_sha256"] and
+                           all(re.fullmatch(r"[0-9a-f]{64}",str(before.get(field,""))) is not None
+                               for field in ("setup_sha256","history_sha256")) and
+                           isinstance(before.get("physical"),dict) and {"session","bodies"}.issubset(before["physical"]) and
+                           type(before["physical"].get("session")) is int and before["physical"]["session"] != 0 and
+                           isinstance(before["physical"].get("bodies"),list) and before["physical"]["bodies"] and
+                           all(isinstance(body,list) and len(body)==2 and
+                               all(type(value) is int and value != 0 for value in body) for body in before["physical"]["bodies"]) and
+                           type(receipt.get("history_entries_before_fault")) is int and
+                           before["undo_entries"] == receipt["history_entries_before_fault"] >= 3,
+                           "Native owner recovery lacks unchanged native/physical identity and acknowledged-history evidence")
+            required_fences={"prepared_transaction","native_capture_lease","pending_flatten","pending_manual_edit",
+                             "pending_agent_edit","pending_step","failed_flatten","failed_reset","failed_restore",
+                             "unconfirmed_legacy_recipe"}
+            engine.require(all(receipt.get("fence_checks",{}).get(name) is True for name in required_fences),
+                           "Native owner recovery weakened a pending-edit/capture/transaction or failed-owner fence")
+            engine.require(receipt.get("pre_fault_native_plane_sha256") == receipt["expected_plane_sha256"],
+                           "Native pre-fault stored cells differ from the independent authored expectation")
+            author=receipt
+        else:
+            engine.require(receipt.get("continued_authoring") is True and
+                           receipt.get("reconstructed_plane_sha256") == author["expected_plane_sha256"] and
+                           all(receipt.get(field) == author[field] for field in
+                               ("expected_plane_sha256","saved_plane_sha256","saved_baseline_sha256","saved_file_sha256","failure_count","failure_reason")),
+                           "Fresh recovery did not reconstruct the exact saved material plane and continue authoring")
+            engine.require(receipt["process_instance"] != author["process_instance"] and receipt["pid"] != author["pid"] and
+                           identity == author["source_identity"],
+                           "Native owner recovery reused a process or changed its tested source/runtime")
+
+
+def verify_flatten(directory: Path, platform: str, source: str, native_sha: str) -> dict:
+    report = workbench.lab.read_json(directory / "flatten.json")
+    workbench.lab.verify_context(report, source)
+    engine.require(report.get("schema") == "gen008-flatten-source-qualification-v1" and
+                   report.get("platform") == platform and report.get("native_sha256") == native_sha and
+                   report.get("status") == "passed" and report.get("completed") is True,
+                   "Flatten execution identity is incomplete or different")
+    engine.require(report.get("files_sha256") == evidence_files(directory), "Flatten evidence changed")
+    engine_sha = workbench.lab.read_json(directory / "validation.json")["godot"]["runtime_sha256"]
+    verify_flatten_cases(directory / "flatten", platform, native_sha, engine.ROOT / "godot", engine_sha)
+    return report
+
+
+def verify_materials_bundle(directory: Path, platform: str, source: str) -> dict:
+    manifest = _verify_workbench_bundle(directory, platform, source)
+    verify_flatten(directory, platform, source, manifest["sha256"])
+    engine.require(manifest.get("gen008_flatten_execution_sha256") == engine.runner.sha256(directory / "flatten.json"),
+                   "Flatten execution receipt differs from its runtime manifest")
+    return manifest
+
+
+# Only this privately loaded original receives the additional stage/package gate.
+# Its ordinary workbench command still completes before the new Flatten command.
+workbench.lab.verify_materials_bundle = verify_materials_bundle
+
+
+def flatten(args: argparse.Namespace) -> None:
+    import run_flatten_qualification as runner
+    workbench.lab.require_platform(args.platform)
+    manifest = _verify_workbench_bundle(args.bundle, args.platform, args.source_sha)
+    output = args.bundle / "flatten"
+    engine.require(not output.exists(), "Do not overwrite earlier Flatten execution evidence")
+    if args.platform == "windows":
+        godot, _ = engine.windows.prepare_godot(args.godot_archive)
+    else:
+        engine.require(engine.runner.sha256(args.godot_archive) == engine.GODOT_LINUX_SHA256,
+                       "Linux Godot archive changed")
+        godot = args.godot_archive.with_suffix("") / "Godot_v4.7-stable_linux.x86_64"
+    report = engine.context(args.source_sha) | {
+        "schema": "gen008-flatten-source-qualification-v1", "platform": args.platform,
+        "native_sha256": manifest["sha256"], "completed": False, "status": "running", "files_sha256": {},
+    }
+    engine.write_json(args.bundle / "flatten.json", report)
+    summary = {"status": "running", "cases": [list(case) for case in CASES], "graphical": True}
+    try:
+        summary["storage_faults"] = runner.flatten(argparse.Namespace(godot=godot, project=engine.ROOT / "godot",
+                                         evidence=output, package=None, headless=False, cases=CASES))
+        summary["status"] = "passed"
+        engine.write_json(output / "qualification.json", summary)
+        engine_sha = workbench.lab.read_json(args.bundle / "validation.json")["godot"]["runtime_sha256"]
+        verify_flatten_cases(output, args.platform, manifest["sha256"], engine.ROOT / "godot", engine_sha)
+        engine.require(engine.input_ledgers(args.source_sha) == {key: manifest[key] for key in ("source_inputs", "build_inputs")},
+                       "Build/test source changed during Flatten qualification")
+        engine.require(engine.runtime_identity(engine.ROOT / engine.RUNTIMES[args.platform], args.platform)["sha256"] == manifest["sha256"],
+                       "Runtime changed during Flatten qualification")
+        report.update(status="passed", completed=True)
+    except Exception as error:
+        summary.update(status="failed", error=str(error))
+        report.update(status="failed", error=str(error))
+        raise
+    finally:
+        engine.write_json(output / "qualification.json", summary)
+        report["files_sha256"] = evidence_files(args.bundle)
+        engine.write_json(args.bundle / "flatten.json", report)
+    manifest.update(gen008_flatten_execution_sha256=engine.runner.sha256(args.bundle / "flatten.json"),
+                    gen008_flatten_scope="Complete 512/1024/2048 uint16 stored-material planes, same live World, "
+                    "manual/agent history, failure atomicity, separate-process Save/reopen, graphics and process RSS; retained MAT/Workbench gates")
+    engine.write_json(engine.manifest_path(args.bundle, args.platform), manifest)
+    verify_materials_bundle(args.bundle, args.platform, args.source_sha)
+
+
+def main() -> int:
+    if len(sys.argv) > 1 and sys.argv[1] == "flatten":
+        parser = argparse.ArgumentParser(description=__doc__)
+        parser.add_argument("command")
+        parser.add_argument("--source-sha", required=True)
+        parser.add_argument("--platform", choices=["linux", "windows"], required=True)
+        parser.add_argument("--bundle", type=Path, required=True)
+        parser.add_argument("--godot-archive", type=Path, required=True)
+        flatten(parser.parse_args())
+        return 0
+    return workbench.main()
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

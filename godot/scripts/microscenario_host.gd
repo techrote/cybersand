@@ -122,6 +122,8 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 			options.workbench_retain_cells = controlled_setup.get("workbench_retain_cells",false)
 			if controlled_setup.has("workbench_generated"):
 				options.workbench_generated = controlled_setup.workbench_generated
+			if controlled_setup.has("workbench_material_baseline"):
+				options.workbench_material_baseline = controlled_setup.workbench_material_baseline
 			if controlled_setup.has("pressure_gas_compartment_capacity"):
 				options.pressure_gas_compartment_capacity = controlled_setup.pressure_gas_compartment_capacity
 			if controlled_setup.get("workbench_convert_liquid_inventory",false):
