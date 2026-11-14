@@ -46,7 +46,7 @@ func run() -> void:
 		var current: Rect2 = panel._style_controls[index].card.get_global_rect()
 		if current.position.x <= previous.position.x or current.position.y != previous.position.y: columns_visible = false
 	check(columns_visible, "all five style cards share a single horizontal row; no tabs")
-	check(panel._style_controls[4].card.get_global_rect().end.x <= panel.get_global_rect().end.x, "fifth style column is visible at 1280px width")
+	check(panel._style_controls[4].card.get_global_rect().end.x <= float(panel.size.x), "fifth style column is visible at 1280px width")
 	check(Store.recipe_hash(panel.project()) == Store.recipe_hash(Project.default_project()), "default form exactly represents the declarative project")
 	var bounds := Rect2i(Vector2i.ZERO,root.size)
 	check(bounds.encloses(Rect2i(panel.position,panel.size)), "first-open Architectural form fits the viewport")
