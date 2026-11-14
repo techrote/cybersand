@@ -124,6 +124,17 @@ Original failures were retained and repaired before the final campaign:
 - The pinned runtime returns HTTP500 `server_error` for an oversized decision
   batch. The first probe expected HTTP400 and failed; the source now checks that
   exact capacity refusal and verifies a valid request still works afterward.
+- Independent actual-native review of the first published source
+  `c5329498937ef97df0f9459a3c754e61dd6bf05d` found that reset dispatch could clear
+  cancellation which arrived after request publication. A paused-Godot
+  reproduction retained a generation change and loss of a painted marker after
+  cancellation; that source cannot pass A7 even if its earlier cohort succeeds.
+  The repair clears only the prior episode's fence before reset publication,
+  serializes that boundary against out-of-band cancellation, and never deletes
+  cancellation in native dispatch. The real regression pauses Godot, publishes
+  reset, establishes cancellation, then resumes and requires unchanged native
+  generation and materials. An already admitted reset remains truthfully recorded
+  if cancellation arrives during installation.
 
 The final campaign runs both candidate orders, keeps wrong or early STOP choices,
 tests a real model timeout and cancellation while a request is outstanding, then

@@ -124,6 +124,7 @@ class NativeSession:
         self._log = None
         self._sequence = 0
         self._lock = threading.Lock()
+        self._cancel_lock = threading.Lock()
         self._closed = False
         self._poisoned = False
         self._full_materials: list[int] | None = None
@@ -230,16 +231,23 @@ class NativeSession:
                 raise NativeError("Invalid native request deadline")
             if self._sequence >= 256:
                 raise NativeError("Native session request budget exhausted")
-            if kind == "reset" and cancel_event is not None and cancel_event.is_set():
-                raise NativeError("Cancelled before explicit episode reset")
-            self._sequence += 1
-            if cancel_event is not None and cancel_event.is_set():
-                self.cancel()
-            request = {"protocol_version": 1, "request_id": self._sequence, "kind": kind,
-                       "expires_unix": time.time() + seconds, **(fields or {})}
-            if len(_canonical(request)) > 65536:
-                raise NativeError("Request exceeds native transport bound")
-            _atomic(self.output / f"request-{self._sequence:06d}.json", request)
+            # An explicit new episode may retire the previous episode's Stop,
+            # but never a cancellation delivered after this request is published.
+            # The separate lock also orders out-of-band cancel() against clearing
+            # the old marker; the RPC lock alone cannot protect that boundary.
+            with self._cancel_lock:
+                if kind == "reset":
+                    if cancel_event is not None and cancel_event.is_set():
+                        raise NativeError("Cancelled before explicit episode reset")
+                    (self.output / "cancel").unlink(missing_ok=True)
+                self._sequence += 1
+                if cancel_event is not None and cancel_event.is_set():
+                    (self.output / "cancel").touch(exist_ok=True)
+                request = {"protocol_version": 1, "request_id": self._sequence, "kind": kind,
+                           "expires_unix": time.time() + seconds, **(fields or {})}
+                if len(_canonical(request)) > 65536:
+                    raise NativeError("Request exceeds native transport bound")
+                _atomic(self.output / f"request-{self._sequence:06d}.json", request)
             response = self._wait_file(self.output / f"response-{self._sequence:06d}.json", seconds + 5,
                                        cancel_event=cancel_event)
             if response.get("protocol_version") != 1 or response.get("request_id") != self._sequence:
@@ -298,8 +306,9 @@ class NativeSession:
 
     def cancel(self) -> None:
         """Out-of-band permanent episode fence; does not wait for the RPC lock."""
-        if self.output.exists():
-            (self.output / "cancel").touch(exist_ok=True)
+        with self._cancel_lock:
+            if self.output.exists():
+                (self.output / "cancel").touch(exist_ok=True)
 
     def stop(self, reason: str = "host Stop") -> dict:
         # Reason is retained locally; it cannot change the native authorization.

@@ -137,22 +137,52 @@ func observation(cells: PackedInt32Array, suffix: String = "after") -> Dictionar
 		"capture_receipt":capture_receipt.duplicate(true),
 		"image_kind":"native stored-material visualization, not a framebuffer screenshot"}
 
-func fresh(name: String) -> bool:
-	if not name in ["wall-v1", "fuzzy-v1"]: return false
-	if not await until(ready): return false
+func reset_fence() -> Dictionary:
+	var reason := ""
+	var status := "cancelled"
+	if cancelled(): reason = "Cancelled before fixture admission or during installation"
+	elif request_deadline > 0 and Time.get_unix_time_from_system() >= request_deadline:
+		reason = "Fixture request deadline expired"
+		status = "refused"
+	if reason.is_empty(): return {}
+	retired = true
+	art.stop(reason)
+	return {"status":status, "reason":reason, "reset_admitted":false}
+
+func fresh(name: String) -> Dictionary:
+	if not name in ["wall-v1", "fuzzy-v1"]:
+		return {"status":"refused", "reason":"Unknown fixture", "reset_admitted":false}
+	if not await until(ready):
+		return {"status":"failed", "reason":fatal, "reset_admitted":false}
+	var fence := reset_fence()
+	if not fence.is_empty(): return fence
 	art.stop("DRIV3R explicit new episode")
 	var generation: int = worker.paint_state().generation
 	var data: Dictionary = Setup.fresh(PackedInt32Array(bench.applied.liquid_policy), Vector2i(512, 512))
 	data.edits = [[8, 8, 1, 57, 28], [28, 24, 6, 8, 28]]
-	if not bench.apply(data): fatal = "Fixture admission failed: " + str(bench.message); return false
-	if not await until(func() -> bool: return ready() and int(worker.paint_state().generation) > generation): return false
-	if not host.paused or not editor._undo_stack.is_empty(): fatal = "New fixture must be paused with clean history"; return false
+	# Recheck immediately at the actual Workbench admission. Dispatch never
+	# clears the cancellation marker; a new marker belongs to this request.
+	fence = reset_fence()
+	if not fence.is_empty(): return fence
+	if not bench.apply(data):
+		fatal = "Fixture admission failed: " + str(bench.message)
+		return {"status":"failed", "reason":fatal, "reset_admitted":false}
+	if not await until(func() -> bool: return ready() and int(worker.paint_state().generation) > generation):
+		return {"status":"failed", "reason":fatal, "reset_admitted":true}
+	if not host.paused or not editor._undo_stack.is_empty():
+		fatal = "New fixture must be paused with clean history"
+		return {"status":"failed", "reason":fatal, "reset_admitted":true}
 	fixture = name
-	retired = cancelled()
 	cumulative_changed = 0
 	action_count = 0
-	if retired: art.stop("Cancelled during fresh fixture installation")
-	return true
+	fence = reset_fence()
+	if not fence.is_empty():
+		# Installation was already admitted. Return its actual new generation
+		# and readback, without claiming cancellation rolled the World back.
+		fence["reset_admitted"] = true
+		return fence
+	retired = false
+	return {"status":"completed", "reason":"", "reset_admitted":true}
 
 func integer(value: Variant) -> bool:
 	return (value is int or value is float) and is_finite(float(value)) and floor(float(value)) == float(value)
@@ -284,12 +314,9 @@ func dispatch(request: Dictionary) -> Dictionary:
 	if request.kind == "reset":
 		if request.size() != 5 or not request.get("fixture") is String:
 			return {"status":"refused", "reason":"Invalid fixture request"}
-		# Only this explicit new-episode boundary may clear an earlier Stop.
-		# A new cancellation arriving during fixture installation is retained.
-		if FileAccess.file_exists(directory + "/cancel"): DirAccess.remove_absolute(directory + "/cancel")
-		if not await fresh(str(request.fixture)):
-			return {"status":"refused", "reason":"Unknown or failed fixture"}
-		return {"status":"cancelled" if retired else "completed", "reason":"", "observation":observation(await capture())}
+		var reset := await fresh(str(request.fixture))
+		reset["observation"] = observation(await capture())
+		return reset
 	var before := await capture()
 	if before.is_empty(): return {"status":"failed", "reason":fatal}
 	observation(before, "before")

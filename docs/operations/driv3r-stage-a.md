@@ -132,6 +132,14 @@ record validation and fresh native replay are separate checks. Replay must
 execute the recorded choices through the same host/native authority and compare
 original material states; reading a saved JSON success flag is insufficient.
 
+An explicit reset may open a new episode after an earlier Stop. Its prior
+cancellation fence is cleared by the host before request publication under the
+cancellation lock. Native dispatch never clears cancellation: a later fence must
+refuse fixture admission, preserving the existing generation and material bytes.
+The real regression freezes Godot across this publication boundary to make the
+race reproducible. Cancellation after fixture admission is recorded as an actual
+interrupted reset, without claiming that already admitted work never occurred.
+
 ## Reproduce the bounded qualification
 
 Cheap offline tests do not acquire model weights or start native processes:

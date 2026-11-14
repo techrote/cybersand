@@ -8,11 +8,14 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+import signal
 import subprocess
 import tempfile
 import threading
 import time
+from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 
 from experiments.driv3r.native import NativeError, NativeSession, verify_observation
 
@@ -99,6 +102,53 @@ def run_native_regressions(repo_root, godot, output_dir, source_sha, runtime_man
         malformed = native._request("apply", {"operations": "not an array"})
         check("native malformed request refused", malformed["status"] == "refused"
               and malformed["receipt"]["actual_changed_cells"] == 0)
+        # Freeze only this owned child so cancellation is certainly delivered
+        # after reset publication and before Godot can dispatch it. Previously
+        # native reset erased this new marker and silently replaced the World.
+        marked = action()["observation"]
+        pending_path = output_dir / f"request-{native._sequence + 1:06d}.json"
+        reset_cancel = threading.Event()
+        reset_result, reset_errors = {}, []
+        def request_cancelled_reset():
+            try:
+                reset_result.update(native.reset(timeout=20, cancel_event=reset_cancel))
+            except Exception as exc:
+                reset_errors.append(f"{type(exc).__name__}: {exc}")
+        reset_thread = threading.Thread(target=request_cancelled_reset)
+        os.kill(native.process.pid, signal.SIGSTOP)
+        try:
+            reset_thread.start()
+            deadline = time.monotonic() + 5
+            while not pending_path.exists() and time.monotonic() < deadline:
+                time.sleep(0.005)
+            if not pending_path.exists():
+                raise AssertionError("Reset race control did not publish its request")
+            reset_cancel.set()
+            while not (output_dir / "cancel").exists() and time.monotonic() < deadline:
+                time.sleep(0.005)
+            if not (output_dir / "cancel").exists():
+                raise AssertionError("Reset race control did not publish cancellation")
+        finally:
+            os.kill(native.process.pid, signal.SIGCONT)
+            reset_thread.join(timeout=30)
+        after_reset_cancel = reset_result.get("observation", {})
+        check("reset cancellation after publication preserves native generation and materials",
+              not reset_thread.is_alive() and not reset_errors and reset_cancel.is_set()
+              and reset_result.get("status") == "cancelled" and reset_result.get("reset_admitted") is False
+              and after_reset_cancel.get("retired") is True
+              and after_reset_cancel.get("generation") == marked["generation"]
+              and after_reset_cancel.get("world_material_sha256") == marked["world_material_sha256"]
+              and (output_dir / "cancel").exists(),
+              status=reset_result.get("status"), reset_admitted=reset_result.get("reset_admitted"),
+              before_generation=marked["generation"], after_generation=after_reset_cancel.get("generation"),
+              before_world_sha256=marked["world_material_sha256"],
+              after_world_sha256=after_reset_cancel.get("world_material_sha256"), errors=reset_errors)
+        recovered = native.reset()
+        check("explicit new reset after cancellation creates a fresh native epoch",
+              recovered["status"] == "completed" and recovered["reset_admitted"] is True
+              and recovered["observation"]["generation"] > marked["generation"]
+              and recovered["observation"]["retired"] is False
+              and recovered["observation"]["world_material_sha256"] == initial["world_material_sha256"])
         final = native.observe()["observation"]
         check("negative suite retains exact fixture", final["world_material_sha256"] == initial["world_material_sha256"])
     cleanup = json.loads((output_dir / "cleanup.json").read_text())
@@ -112,6 +162,55 @@ def run_native_regressions(repo_root, godot, output_dir, source_sha, runtime_man
 
 
 class NativeEvidenceTests(unittest.TestCase):
+    def test_out_of_band_cancel_is_serialized_with_reset_publication(self):
+        """A cancellation contending with old-marker removal survives publication."""
+        with tempfile.TemporaryDirectory() as tmp:
+            native = NativeSession(tmp, "/unused/godot", Path(tmp) / "rpc", "a" * 40)
+            native.output.mkdir()
+            native.process = SimpleNamespace(poll=lambda: None)
+            native.cancel()
+            marker = native.output / "cancel"
+            attempted, completed = threading.Event(), threading.Event()
+            def cancel_at_clear():
+                attempted.set()
+                native.cancel()
+                completed.set()
+            contender = threading.Thread(target=cancel_at_clear)
+            original_unlink = Path.unlink
+            def controlled_unlink(path, *args, **kwargs):
+                if path == marker:
+                    contender.start()
+                    self.assertTrue(attempted.wait(timeout=1))
+                    self.assertFalse(completed.wait(timeout=0.05),
+                                     "Out-of-band cancellation must wait until reset publication")
+                return original_unlink(path, *args, **kwargs)
+            with patch.object(Path, "unlink", controlled_unlink), patch.object(native, "_wait_file", return_value={
+                    "protocol_version":1, "request_id":1, "status":"cancelled"}):
+                native.reset()
+            contender.join(timeout=1)
+            self.assertFalse(contender.is_alive())
+            self.assertTrue(completed.is_set())
+            self.assertTrue(marker.exists())
+            self.assertTrue((native.output / "request-000001.json").exists())
+
+    def test_reset_rechecks_event_after_clearing_previous_marker(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            native = NativeSession(tmp, "/unused/godot", Path(tmp) / "rpc", "a" * 40)
+            native.output.mkdir()
+            native.process = SimpleNamespace(poll=lambda: None)
+            native.cancel()
+            marker = native.output / "cancel"
+            cancel = threading.Event()
+            original_unlink = Path.unlink
+            def cancel_during_clear(path, *args, **kwargs):
+                if path == marker:
+                    cancel.set()
+                return original_unlink(path, *args, **kwargs)
+            with patch.object(Path, "unlink", cancel_during_clear), patch.object(native, "_wait_file", return_value={
+                    "protocol_version":1, "request_id":1, "status":"cancelled"}):
+                native.reset(cancel_event=cancel)
+            self.assertTrue(marker.exists(), "A newly cancelled reset must publish with its fence intact")
+
     def test_unsafe_paths_refused_before_file_read(self):
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaisesRegex(NativeError, "Unsafe native evidence path"):
