@@ -81,6 +81,22 @@ def preflight(item: dict) -> list[dict]:
                 or any(not (c["box"][0] + c["box"][2] <= 40 or c["box"][0] >= 56)
                        for c in components)):
             raise ValueError("missing six-panel two-bank/empty-central-chase witness")
+        # Three *paired* vertical tiers, not merely three arbitrary panels on
+        # each side. Preserve the full-height centre chase already required
+        # above; x-bank counts alone do not prove a 3-by-2 composition.
+        banks = (
+            sorted((c["box"] for c in components if c["box"][0] + c["box"][2] <= 40),
+                   key=lambda box: box[1]),
+            sorted((c["box"] for c in components if c["box"][0] >= 56),
+                   key=lambda box: box[1]),
+        )
+        if any(len(bank) != 3 or any(
+                bank[i][1] + bank[i][3] + 4 > bank[i + 1][1]
+                for i in range(2)) for bank in banks):
+            raise ValueError("greebles must have three separated tiers per bank")
+        if any(abs((2 * left[1] + left[3]) - (2 * right[1] + right[3])) > 16
+               for left, right in zip(*banks)):
+            raise ValueError("greebles require paired three-tier bank alignment")
     elif p["family"] == "pipework":
         c = components[0]
         degree = [0] * len(c["nodes"])

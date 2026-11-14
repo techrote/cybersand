@@ -63,6 +63,20 @@ class ContrastPreflightTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             subject.preflight(bad)
 
+    def test_greeble_dislocated_right_bank_not_three_paired_tiers(self):
+        # Six still-schema-correct panel records, five permitted details, all
+        # three panels per bank and a full-height empty centre chase. Their
+        # altered vertical positions must not pass the literal tier witness.
+        bad = copy.deepcopy(self.items["greebles"])
+        bad["program"]["components"][3]["box"][1] = 52
+        bad["program"]["components"][5]["box"][1] = 75
+        p = bad["program"]
+        self.assertEqual(sum(c["box"][0] < 40 for c in p["components"]), 3)
+        self.assertEqual(sum(c["box"][0] >= 56 for c in p["components"]), 3)
+        subject.compiler.validate_program(p)
+        with self.assertRaisesRegex(ValueError, "paired three-tier"):
+            subject.preflight(bad)
+
     def test_structural_signature_ignores_only_style_for_pipe(self):
         p = self.items["pipework"]["program"]
         q = copy.deepcopy(p)
