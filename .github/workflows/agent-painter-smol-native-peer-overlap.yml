@@ -1,0 +1,98 @@
+name: SMOL v2 native material peer comparison (research only)
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths:
+      - experiments/agent_painter/lanes/smol/native-mask-overlap-request.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: smol-native-peer-audit-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  original-native-material-review:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Enforce lane ownership, source and immutable original experiment leases
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_REF" = "refs/heads/codex/agent-painter-smol-568"
+          test "$RUNNER_ENVIRONMENT" = "github-hosted"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("experiments/agent_painter/lanes/smol/native-mask-overlap-request.json").read_text())
+          assert r == {
+              "schema": "cybersand.smol-native-peer-mask-request/1",
+              "sequence": 1,
+              "smol_run": 43601281142, "smol_artifact_id": 14117110667,
+              "sprocket_run": 43587600137, "sprocket_artifact_id": 14111800549,
+              "void_run": 43601866007, "void_artifact_id": 14116463694,
+              "study": ["SMOL-G06-vs-SPROCKET-G09", "SMOL-A01-vs-VOID-A02-v5"],
+              "seeds": [104729, 130363],
+              "original_bytes_only": True,
+              "native_execution": False, "model_training": False,
+              "global_admission": False, "final_access": False,
+              "draft_hold": True,
+          }
+          PY
+          python3 -m unittest discover -s experiments/agent_painter/lanes/smol -p test_native_mask_peer_audit.py -v
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/smol-peer-schedule.json
+      - name: Download three immutable original Art evidence ZIPs and check entire archive digests
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/smol-peer
+          download() {
+            local name="$1" id="$2" expected="$3"
+            curl -fLsS --retry 2 --max-time 300 \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/techrote/cybersand/actions/artifacts/$id/zip" \
+              -o "evidence/smol-peer/$name.zip"
+            echo "$expected  evidence/smol-peer/$name.zip" | sha256sum --check --strict
+          }
+          download smol 14117110667 71ddc40478e06e3350f05eecd5e16ed77c082300f066be97bbccf8afb2370ff1
+          download sprocket 14111800549 3a7397883b146a28da990f0a37b891897285c2c7c81cd9dd2aaa3895d0d196dd
+          download void 14116463694 d8f1c1dbce65ef14d392a7bd557bd89e8af21563da14d4a5a61b84386285944b
+          {
+            git rev-parse HEAD
+            git rev-parse 'HEAD^{tree}'
+            sha256sum evidence/smol-peer/{smol,sprocket,void}.zip
+          } > evidence/smol-peer/source-and-archive-identities.txt
+      - name: Compare actual 96x96 source-built material readbacks (never FINAL)
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/smol/native_mask_peer_audit.py \
+            --smol evidence/smol-peer/smol.zip \
+            --sprocket evidence/smol-peer/sprocket.zip \
+            --void evidence/smol-peer/void.zip \
+            --output evidence/smol-peer/report.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("evidence/smol-peer/report.json").read_text())
+          assert d["status"]=="READ_ONLY_ORIGINAL_NATIVE_MASK_WITNESS"
+          assert d["physical_seed_views_read"]==10 and len(d["same_seed_peer_pairs"])==4
+          assert d["new_native_executions"]==d["new_optimizer_steps"]==d["new_model_generated_views"]==d["new_shared_train_admissions"]==0
+          assert d["shared_train_admission"]=="HOLD" and not d["global_structural_independence_proven"] and not d["final_targets_opened"]
+          print(json.dumps(d["same_seed_peer_pairs"], sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: smol-native-peer-witness-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/smol-peer/report.json
+            evidence/smol-peer/source-and-archive-identities.txt
+          if-no-files-found: warn
+          retention-days: 90
