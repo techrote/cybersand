@@ -1,0 +1,138 @@
+name: PR 566 published artifact byte readback
+
+on:
+  push:
+    branches: [codex/pr566-artifact-readback-20261114]
+    paths: [.github/workflows/pr566-artifact-readback.yml]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pr566-original-artifact-readback-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  transfer-original:
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/pr566-artifact-readback-20261114'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Authenticate and transfer the published original archive bytes
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p transfer/parts
+          gh api repos/techrote/cybersand/actions/artifacts/14096690267 > transfer/artifact-metadata.json
+          python3 - <<'PYCODE'
+          import json
+          from pathlib import Path
+          metadata = json.loads(Path('transfer/artifact-metadata.json').read_text())
+          assert metadata['id'] == 14096690267
+          assert metadata['name'] == 'native-pixel-integrated-windows-evaluation-214de85adef2aaabc8e26de8612a3bf27cc1a081-43537909868-1'
+          assert metadata['size_in_bytes'] == 721859445
+          assert metadata['digest'] == 'sha256:4941dc4948812aff50f3c57665433c7f6c6f4d344e3fd58df64bdbaa75a051bf'
+          assert metadata['expired'] is False
+          assert metadata['workflow_run']['id'] == 43537909868
+          assert metadata['workflow_run']['head_sha'] == '214de85adef2aaabc8e26de8612a3bf27cc1a081'
+          PYCODE
+          gh api repos/techrote/cybersand/actions/artifacts/14096690267/zip > transfer/published-original.zip
+          python3 - <<'PYCODE'
+          import hashlib
+          import json
+          import os
+          import zipfile
+          from pathlib import Path
+          root = Path('transfer')
+          archive = root / 'published-original.zip'
+          expected_sha = '4941dc4948812aff50f3c57665433c7f6c6f4d344e3fd58df64bdbaa75a051bf'
+          def sha(path):
+              result = hashlib.sha256()
+              with path.open('rb') as stream:
+                  for block in iter(lambda: stream.read(8 * 1024 * 1024), b''):
+                      result.update(block)
+              return result.hexdigest()
+          assert archive.stat().st_size == 721859445
+          assert sha(archive) == expected_sha
+          with zipfile.ZipFile(archive) as original:
+              assert original.testzip() is None
+              members = [{'path': item.filename, 'bytes': item.file_size, 'crc32': f'{item.CRC:08x}'}
+                         for item in original.infolist()]
+          chunk_bytes = 256 * 1024 * 1024
+          parts = []
+          offset = 0
+          with archive.open('rb') as stream:
+              for number in range(3):
+                  path = root / 'parts' / f'part-{number:03d}'
+                  remaining = min(chunk_bytes, archive.stat().st_size - offset)
+                  expected_part_bytes = remaining
+                  with path.open('wb') as target:
+                      while remaining:
+                          block = stream.read(min(8 * 1024 * 1024, remaining))
+                          assert block, 'Unexpected end of original archive'
+                          target.write(block)
+                          remaining -= len(block)
+                  assert path.stat().st_size == expected_part_bytes
+                  parts.append({'path': path.relative_to(root).as_posix(), 'offset': offset,
+                                'bytes': expected_part_bytes, 'sha256': sha(path)})
+                  offset += expected_part_bytes
+              assert stream.read(1) == b''
+          assert offset == 721859445
+          assert [part['bytes'] for part in parts] == [268435456, 268435456, 184988533]
+          manifest = {
+              'schema': 'cybersand-original-artifact-transfer-v1',
+              'scope': 'Opaque-byte transfer of an already-published artifact; no candidate build, repackaging or execution.',
+              'repository': 'techrote/cybersand',
+              'candidate_source': '214de85adef2aaabc8e26de8612a3bf27cc1a081',
+              'candidate_tree': '603fa56ad5fcdddcc64084d79975d42ad28753c3',
+              'original_run_id': 43537909868,
+              'original_artifact_id': 14096690267,
+              'original_bytes': 721859445,
+              'original_sha256': expected_sha,
+              'original_zip_crc_pass': True,
+              'original_members': members,
+              'transfer_commit': os.environ['GITHUB_SHA'],
+              'transfer_ref': os.environ['GITHUB_REF'],
+              'transfer_run_id': int(os.environ['GITHUB_RUN_ID']),
+              'transfer_attempt': int(os.environ['GITHUB_RUN_ATTEMPT']),
+              'parts': parts,
+          }
+          (root / 'transfer-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+          print(json.dumps(manifest, indent=2))
+          PYCODE
+      - name: Retain original bytes part 000 and custody manifest
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pr566-original-readback-${{ github.run_id }}-${{ github.run_attempt }}-part-000
+          path: |
+            transfer/parts/part-000
+            transfer/transfer-manifest.json
+            transfer/artifact-metadata.json
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 90
+      - name: Retain original bytes part 001 and custody manifest
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pr566-original-readback-${{ github.run_id }}-${{ github.run_attempt }}-part-001
+          path: |
+            transfer/parts/part-001
+            transfer/transfer-manifest.json
+            transfer/artifact-metadata.json
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 90
+      - name: Retain original bytes part 002 and custody manifest
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pr566-original-readback-${{ github.run_id }}-${{ github.run_attempt }}-part-002
+          path: |
+            transfer/parts/part-002
+            transfer/transfer-manifest.json
+            transfer/artifact-metadata.json
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 90
