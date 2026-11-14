@@ -227,7 +227,7 @@ class GateTests(unittest.TestCase):
         original = p.read_text()
         # Whitespace-changing rewrite is semantically equal, but is not the
         # exact canonical line emitted by the qualified shared trainer.
-        p.write_text("".join(json.dumps(json.loads(line)) + "\\n"
+        p.write_text("".join(json.dumps(json.loads(line)) + "\n"
                              for line in original.splitlines()))
         with self.assertRaisesRegex(ValueError, "bytes"):
             verify_completion(self.summary, 0, self.checkpoint)
