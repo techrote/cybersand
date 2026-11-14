@@ -103,10 +103,10 @@
       }
     },
     {
-      "id": "lfm-c2-three-riser-five-terminal-manifold",
+      "id": "lfm-c2-dual-cross-six-terminal-network",
       "family": "pipework",
-      "request": "A connected, uniformly three-cell-wide, orthogonal industrial manifold on one horizontal header, with exactly three separately upward risers, five graph endpoints total and three distinct tee junctions; no loops or hidden crossings.",
-      "witness": "Eight explicit graph nodes, seven edges, degree multiset [1,1,1,1,1,3,3,3], exactly three upward endpoint risers, zero cycles, all segments 3-cell diameter, fittings true. Unlike the learned single tee.",
+      "request": "A connected orthogonal uniform three-cell-diameter two-hub manifold: two distinct four-way cross junctions joined by one horizontal trunk, with six graph endpoints (left, right, two up and two down), zero cycles, and visible uniform-diameter fitting collars.",
+      "witness": "Eight graph nodes with degree multiset [1,1,1,1,1,1,4,4]; two explicit four-way junctions, four vertical endpoint arms and two horizontal terminals. Not the near-held-out three-riser/five-terminal tree, and not a single tee; constant diameter 3.",
       "program": {
         "version": 2,
         "family": "pipework",
@@ -120,36 +120,36 @@
             "kind": "pipe_network",
             "nodes": [
               [
-                8,
-                72
+                12,
+                56
               ],
               [
-                22,
-                72
+                32,
+                56
               ],
               [
-                48,
-                72
+                64,
+                56
               ],
               [
-                74,
-                72
+                84,
+                56
               ],
               [
-                88,
-                72
+                32,
+                20
               ],
               [
-                22,
-                28
+                32,
+                84
               ],
               [
-                48,
-                28
+                64,
+                20
               ],
               [
-                74,
-                28
+                64,
+                84
               ]
             ],
             "edges": [
@@ -166,7 +166,7 @@
                 3
               ],
               [
-                3,
+                1,
                 4
               ],
               [
@@ -178,7 +178,7 @@
                 6
               ],
               [
-                3,
+                2,
                 7
               ]
             ],
