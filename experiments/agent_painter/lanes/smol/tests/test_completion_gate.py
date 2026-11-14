@@ -20,10 +20,36 @@ def fixture(root):
     cp = root / gate.CHECKPOINT
     (cp / "adapter").mkdir(parents=True)
     (cp / "adapter" / "adapter_model.safetensors").write_bytes(b"synthetic-test-only")
-    (cp / "inventory.json").write_text('{"fixture":"non-model data"}')
+    (cp / "adapter" / "adapter_config.json").write_text('{"fixture":"model-free"}')
+    (cp / "training_state.pt").write_bytes(b"synthetic optimizer fixture")
     config = {"source_sha": SHA, "profile": "smol",
               "native_source_sha": gate.NATIVE_SOURCE,
-              "corpus_manifest_sha256": gate.CORPUS}
+              "corpus_manifest_sha256": gate.CORPUS,
+              "train_sha256": gate.contracts.TRAIN_SHA256,
+              "compiler_sha256": gate.contracts.COMPILER_SHA256,
+              "seed": 568, "device": "cpu", "dtype": "float32", "threads": 1,
+              "max_length": 2048, "rank": 8, "alpha": 16, "dropout": 0.05,
+              "learning_rate": 0.0005, "model": gate.contracts.common.profile("smol"),
+              "numerics": {"profile": "portable-cpu-fp32-v1"},
+              "native_execution_by_trainer": False, "final_targets_opened": False,
+              "sample_order": [f"synthetic-{i}" for i in range(12)]}
+    events = [{"global_step": i, "sample_cursor": i,
+               "sample_id": config["sample_order"][(i-1) % 12],
+               "loss": 5.0/i, "gradient_norm": 0.1,
+               "loss_tokens": 12, "sequence_tokens": 24,
+               "prompt_bytes": 20, "completion_bytes": 30,
+               "seconds": 0.01} for i in range(1, 121)]
+    (root / "progress.jsonl").write_text(
+        "".join(json.dumps(e) + "\n" for e in events))
+    runtime = {"synthetic": "model-free"}
+    (cp / "receipt.json").write_text(json.dumps({
+        "global_step": 120, "sample_cursor": 120, "config": config,
+        "history": events, "numerical_runtime": runtime,
+        "frozen_base_sha256": "1"*64}))
+    inventory = {p.relative_to(cp).as_posix(): {
+        "sha256": hashlib.sha256(p.read_bytes()).hexdigest(), "bytes": p.stat().st_size}
+        for p in cp.rglob("*") if p.is_file()}
+    (cp / "inventory.json").write_text(json.dumps(inventory))
     summary = {
         "status": "completed", "actual_training": True,
         "global_step": 120, "sample_cursor": 120,
@@ -32,6 +58,12 @@ def fixture(root):
         "adapter_changed": True, "resume": None,
         "native_execution": False, "model_quality_claim": False,
         "config": config,
+        "sample_ids_this_job": [e["sample_id"] for e in events],
+        "loss_tokens_this_job": 1440, "sequence_tokens_this_job": 2880,
+        "bytes_this_job": 6000, "first_loss": 5.0, "last_loss": 5.0/120,
+        "numerical_runtime": runtime, "frozen_base_sha256": "1"*64,
+        "adapter_before_sha256": "2"*64, "adapter_after_sha256": "3"*64,
+        "checkpoint_bytes": sum(p.stat().st_size for p in cp.rglob("*") if p.is_file()),
         "checkpoint_inventory_sha256": hashlib.sha256(
             (cp / "inventory.json").read_bytes()).hexdigest(),
     }
@@ -43,8 +75,6 @@ def fixture(root):
             "final_targets_opened": False}
     (root / "summary.json").write_text(json.dumps(summary))
     (root / "lane-receipt.json").write_text(json.dumps(lane))
-    (cp / "receipt.json").write_text(json.dumps(
-        {"global_step": 120, "sample_cursor": 120, "config": config}))
     return root
 
 
@@ -127,6 +157,42 @@ class Fresh120PromotionTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "resume"):
                 gate.verify_completion(root, 0, SHA)
 
+
+
+    def test_truncated_progress_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = fixture(tmp)
+            progress = root / "progress.jsonl"
+            progress.write_text("\n".join(progress.read_text().splitlines()[:119]) + "\n")
+            with self.assertRaisesRegex(ValueError, "progress trace"):
+                gate.verify_completion(root, 0, SHA)
+
+    def test_corrupted_optimizer_bytes_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = fixture(tmp)
+            (root / gate.CHECKPOINT / "training_state.pt").write_bytes(b"corrupted")
+            with self.assertRaisesRegex(ValueError, "hash mismatch"):
+                gate.verify_completion(root, 0, SHA)
+
+    def test_wrong_training_partition_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = fixture(tmp)
+            mutate_json(root / "summary.json", "config", {
+                **json.loads((root / "summary.json").read_text())["config"],
+                "train_sha256": "0"*64})
+            # The mismatch between summary/receipt is already sufficient.
+            with self.assertRaisesRegex(ValueError, "config|train_sha256"):
+                gate.verify_completion(root, 0, SHA)
+
+    def test_optimizer_progress_reordering_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = fixture(tmp)
+            progress = root / "progress.jsonl"
+            lines = progress.read_text().splitlines()
+            lines[2], lines[3] = lines[3], lines[2]
+            progress.write_text("\n".join(lines) + "\n")
+            with self.assertRaisesRegex(ValueError, "checkpoint history"):
+                gate.verify_completion(root, 0, SHA)
 
     def test_direct_delivery_does_not_request_forbidden_release(self):
         workflow = (SCRIPT.parents[4] / ".github/workflows/agent-painter-smol-native.yml").read_text()
