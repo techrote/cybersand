@@ -25,9 +25,18 @@ def _require(ok: bool, message: str) -> None:
         raise EvidenceError(message)
 
 
-def _canonical(value: Any) -> Any:
-    """Accept original tuples and losslessly JSON-roundtripped event arrays."""
-    return json.loads(json.dumps(value, sort_keys=True, separators=(",", ":")))
+def _canonical(value: Any) -> str:
+    """Canonical JSON *text*: tuple/list-compatible, but type-exact numbers.
+
+    Python object equality would treat 2.0 == 2 and True == 1, admitting
+    modified coordinates or counters in supposed source-replayed evidence.
+    Original tuple points and JSON-decoded list points remain equivalent.
+    """
+    try:
+        return json.dumps(value, sort_keys=True, separators=(",", ":"),
+                          allow_nan=False)
+    except (TypeError, ValueError, OverflowError) as exc:
+        raise EvidenceError("Noncanonical or nonfinite synthetic evidence") from exc
 
 
 def verify_episode(f: d.Fixture, record: dict[str, Any]) -> dict[str, Any]:
@@ -39,6 +48,13 @@ def verify_episode(f: d.Fixture, record: dict[str, Any]) -> dict[str, Any]:
     """
     _require(f.split == "development", "Behavioral validation is development-only")
     _require(type(record) is dict, "Episode must be an object")
+    _require(set(record) == {
+        "experiment_version", "fixture", "fixture_sha256", "split", "policy",
+        "seed", "macro_lengths", "source_kind", "native_qualified",
+        "sequential_native_receipts", "path", "events", "metrics",
+    }, "Unexpected/missing offline episode field (possible native claim)")
+    _require(type(record["path"]) is list,
+             "Offline path must be an ordered list of positions")
     _require(record.get("experiment_version") == d.VERSION, "Wrong episode version")
     _require(record.get("fixture") == f.fixture_id and
              record.get("fixture_sha256") == f.sha256 and record.get("split") == f.split,
@@ -65,8 +81,12 @@ def verify_episode(f: d.Fixture, record: dict[str, Any]) -> dict[str, Any]:
     rng = random.Random(seed)
     stop_reason = None
     for index, event in enumerate(events):
-        _require(type(event) is dict and event.get("seq") == index,
-                 "Nonmonotonic or missing event sequence")
+        _require(type(event) is dict and set(event) == {
+            "seq", "observation", "choice_id", "simulated_post_position",
+            "native_receipt_ref", "simulated_path_sha256",
+        }, "Unexpected/missing offline event field (possible native claim)")
+        _require(type(event["seq"]) is int and event["seq"] == index,
+                 "Nonmonotonic or noninteger event sequence")
         _require(pos != f.target, "Episode continued after arrival")
         expected_options = d.candidates(f, pos, lengths)
         expected_observation = d.observation_stub(f, pos, path, expected_options, index)
@@ -122,6 +142,8 @@ def compare_matched(f: d.Fixture,
     _require(f.split == "development", "Cannot evaluate held-out behavior")
     _require(type(arms) is dict and 2 <= len(arms) <= 8,
              "Need 2-8 independently named arms")
+    _require(all(type(name) is str and bool(name) for name in arms),
+             "Arm names must be nonempty strings")
     names = sorted(arms)
     for name in names:
         _require(type(name) is str and bool(name) and
