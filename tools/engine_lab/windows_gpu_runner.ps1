@@ -92,13 +92,20 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat) {
  $B=$Data.benchmark; $I=$B.identity
  $Expected=@{freemass='freemass_v1';pressure='pressure_flow_v1';cellular='cellular_yield_v1';inertial='inertial_cellular_v1'}[$Family]
  $Variant=$(if($Family -eq 'pressure'){'cached_dormant'}else{'reference'})
- $Actual=@($Data.applied_native_policy.assignments|Where-Object {$_.material -eq 3})
- Require ($Data.ok -eq $true -and @($Data.failures).Count -eq 0 -and $B.status -eq 'passed') "$Name source/native benchmark refused or incomplete"
+ $Actual=@($(if($Scripted){$Data.native_solver.applied.assignments}else{$Data.applied_native_policy.assignments})|Where-Object {$_.material -eq 3})
+ if($Scripted) {
+   Require ($Data.status -eq 'passed' -and @($Data.failures).Count -eq 0 -and $B.status -eq 'passed') "$Name scripted native benchmark refused or incomplete"
+   Require ($Data.input_tape.complete -eq $true -and @($Data.input_tape.observed.events).Count -eq 8 -and [string]$Data.input_tape.observed.error -eq '') "$Name physics-tick script was truncated/refused"
+   Require ($Data.reference.json_sha256 -eq 'b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954' -and $Data.reference.generated_material_sha256 -eq '71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a' -and $Data.reference.native_receipts -eq 256) "$Name not the verified owner 2048-square source"
+ } else {
+   Require ($Data.ok -eq $true -and @($Data.failures).Count -eq 0 -and $B.status -eq 'passed') "$Name source/native benchmark refused or incomplete"
+ }
  Require ($Actual.Count -eq 1 -and $Actual[0].applied_family -eq $Expected -and $Actual[0].applied_variant -eq $Variant) "$Name native applied Water differs from request"
  Require ($I.source_revision -eq $Source -and $I.native_runtime_sha256 -eq $script:NativeHash) "$Name source/native runtime identity mismatch"
  Require ($Data.native_worker_request_readback -eq $Workers -and $Data.active_actor_tick -gt 0) "$Name actual native workers/Needle not admitted"
  Require ($B.native_ticks -gt 0 -and $B.rapier_steps -gt 0 -and $B.frame_count -gt 10) "$Name no real physics progression"
- Require ($Data.world_size[0] -eq 1024 -and $Data.world_size[1] -eq 1024) "$Name incorrect World dimensions"
+ $RequiredSize=$(if($Scripted){2048}else{1024})
+ Require ($Data.world_size[0] -eq $RequiredSize -and $Data.world_size[1] -eq $RequiredSize) "$Name incorrect World dimensions"
  $Adapter=[string]$I.video_adapter
  Require ($Adapter -ne '' -and $I.rendering_driver -match 'opengl') "$Name driver/adapter unavailable or not native OpenGL"
  if(-not $AllowOtherAdapter) {
@@ -107,11 +114,14 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat) {
  $Current=@{
     name=$Name;family=$Family;workers=$Workers;repeat=$Repeat;passed=$true
     adapter=$Adapter;rendering_driver=$I.rendering_driver
-    window=$Data.window_size;fixture_sha256=$Data.fixture_sha256
+    window=$(if($Scripted){$Data.actual_window}else{$Data.window_size})
+    fixture_sha256=$(if($Scripted){$Data.reference.json_sha256}else{$Data.fixture_sha256})
     source=$I.source_revision;main_sha256=$I.main_script_sha256
     worker_sha256=$I.worker_script_sha256;native_sha256=$I.native_runtime_sha256
-    policy_hash=$Data.applied_native_policy.policy_hash
-    native_radius=$Data.minimum_native_rule_radius
+    policy_hash=$(if($Scripted){$Data.native_solver.applied.policy_hash}else{$Data.applied_native_policy.policy_hash})
+    native_radius=$(if($Scripted){$Data.native_solver.minimum_rule_radius}else{$Data.minimum_native_rule_radius})
+    input_event_count=$(if($Scripted){@($Data.input_tape.observed.events).Count}else{0})
+    input_contract_sha256=$(if($Scripted){$Data.input_tape.contract_sha256}else{''})
     native_hz=$B.actual_native_hz;rapier_hz=$B.actual_rapier_hz
     frame_p95_ms=$B.frame_interval_ms.p95;frame_p99_ms=$B.frame_interval_ms.p99
     native_solve_p95_ms=$B.native_completed_tick_cost_ms.p95
@@ -152,7 +162,12 @@ try {
  Godot-Run 'import' @('--headless','--path',('"' + $Project + '"'),'--editor','--quit') 240
  $Plan=@()
  if($Smoke) { $Plan+=,@('freemass',1,1) }
- else {
+ elseif($Scripted -and -not $FullScripted) {
+   $Order=@('freemass','pressure','cellular','inertial')
+   foreach($Family in $Order) {$Plan+=,@($Family,1,1)}
+   [array]::Reverse($Order)
+   foreach($Family in $Order) {$Plan+=,@($Family,1,2)}
+ } else {
    foreach($W in @(1,4)) {
      $Order=$(if($W -eq 1){@('freemass','pressure','cellular','inertial')}else{@('cellular','inertial','freemass','pressure')})
      foreach($Family in $Order) {$Plan+=,@($Family,$W,1)}
@@ -166,7 +181,7 @@ try {
  Require ($Report.cases.Count -eq $Plan.Count) 'Not every requested arm completed'
  $Report.complete=$true
  $Report.status='passed'
- $Report.notes=@('Real NVIDIA OpenGL, not ANGLE; no GPU busy or scanout measurement',
+ $Report.notes=@('Scripted Test It drives the same admitted Needle command path at fixed completed physics ticks; no human timing variance', 'Real NVIDIA OpenGL, not ANGLE; no GPU busy or scanout measurement',
  'Inertial requires rule radius3, other family arms typically radius2',
  'This is baseline render ACK from #602 ancestry, not the separate #585 gated experiment',
  'Pass certifies the apparatus and positive clock progression, not a preferred Water law')
@@ -181,6 +196,20 @@ try {
  Write-Host "Preserved diagnostic files: $Out"
  exit 1
 } finally {
+ if($Scripted) {
+   # ZIP lives NEXT TO, not inside, the run folder. Successful and failed
+   # campaigns both become one portable evidence bundle, including raw inputs.
+   try {
+     Add-Type -AssemblyName System.IO.Compression.FileSystem
+     $Zip=Join-Path (Split-Path -Parent $Out) ((Split-Path -Leaf $Out)+'.zip')
+     if(Test-Path -LiteralPath $Zip) {throw 'Cannot overwrite Test It evidence ZIP'}
+     [System.IO.Compression.ZipFile]::CreateFromDirectory($Out,$Zip,[System.IO.Compression.CompressionLevel]::Optimal,$false)
+     Write-Host "TEST_IT_RESULT_ZIP $Zip" -ForegroundColor Green
+     Write-Host "ZIP_SHA256 $(Hash $Zip)"
+   } catch {
+     Write-Host ("TEST_IT_ZIP_FAILED: "+$_.Exception.Message) -ForegroundColor Red
+   }
+ }
  $env:APPDATA=$OldAppData
  $env:XDG_DATA_HOME=$OldDataHome
  $env:CYBERSAND_SOURCE_REVISION=$OldSource
