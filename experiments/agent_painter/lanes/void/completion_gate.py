@@ -25,6 +25,24 @@ MODEL = "dotlabs/void.1"
 REVISION = "9c2be5087772867d45961abd11f6b35110617563"
 NATIVE = "633920373a3d406a2ede61ce4137c324f76be23b"
 CORPUS = "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
+# Frozen, native-admitted corpus #633 / split TRAIN identities, not claimant inputs.
+# A different admitted curriculum requires a separately versioned campaign gate.
+TRAIN_SHA256 = "5cb437db0663d15496adced3c255c32a5a274d99a69dd6113938b2dbc15ddbb1"
+COMPILER_SHA256 = "4d8559805df1ff5f3f23277a7bca98e47fa8feb53337aa79e8546d0bb89132f6"
+TRAIN_IDS = frozenset((
+    "greebles-service_cluster-v1-s104729",
+    "greebles-service_cluster-v1-s130363",
+    "greebles-switchboard_stack-v1-s104729",
+    "greebles-switchboard_stack-v1-s130363",
+    "pipework-two_elbow_route-v1-s104729",
+    "pipework-two_elbow_route-v1-s130363",
+    "pipework-tee_distribution-v1-s104729",
+    "pipework-tee_distribution-v1-s130363",
+    "architecture-paired_doorway_rooms-v1-s104729",
+    "architecture-paired_doorway_rooms-v1-s130363",
+    "architecture-stair_and_landing_hall-v1-s104729",
+    "architecture-stair_and_landing_hall-v1-s130363",
+))
 CPU_ENV = {"ATEN_CPU_CAPABILITY": "default", "MKL_CBWR": "COMPATIBLE",
            "OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1",
            "OMP_DYNAMIC": "FALSE", "MKL_DYNAMIC": "FALSE"}
@@ -95,9 +113,10 @@ def _source_contract(summary: dict, expected_source: str) -> list[str]:
     for field, name in (("trainer_sha256", "train.py"), ("contract_sha256", "common.py")):
         if c.get(field) != _sha(TRAINING / name):
             raise ValueError("source-matched trainer/contract mismatch: " + field)
-    for field in ("train_sha256", "compiler_sha256"):
-        if not isinstance(c.get(field), str) or not HEX64.fullmatch(c[field]):
-            raise ValueError("native corpus/compiler SHA missing: " + field)
+    for field, pinned in (("train_sha256", TRAIN_SHA256),
+                          ("compiler_sha256", COMPILER_SHA256)):
+        if c.get(field) != pinned:
+            raise ValueError("frozen native TRAIN/compiler digest mismatch: " + field)
     cpu = c.get("numerics")
     if (not isinstance(cpu, dict) or cpu.get("profile") != "portable-cpu-fp32-v1" or
             cpu.get("effective") != CPU_EFFECTIVE or
@@ -107,9 +126,10 @@ def _source_contract(summary: dict, expected_source: str) -> list[str]:
             not HEX64.fullmatch(cpu["torch_build_sha256"])):
         raise ValueError("pinned portable-cpu-fp32-v1 numerical identity mismatch")
     order = c.get("sample_order")
-    if (not isinstance(order, list) or len(order) != 12 or
-            any(not isinstance(x, str) or not x for x in order) or len(set(order)) != 12):
-        raise ValueError("twelve distinct TRAIN sample-order IDs required")
+    if (not isinstance(order, list) or len(order) != len(TRAIN_IDS) or
+            any(not isinstance(x, str) for x in order) or
+            len(set(order)) != len(TRAIN_IDS) or set(order) != TRAIN_IDS):
+        raise ValueError("sample_order differs from native-admitted frozen TRAIN rows")
     return order
 
 
