@@ -33,7 +33,7 @@ class C1PeerTests(unittest.TestCase):
     def test_dislocated_right_bank_rejected(self):
         altered = copy.deepcopy(self.c1)
         altered["components"][3]["box"][1] = 50
-        altered["components"][5]["box"][1] = 78
+        altered["components"][5]["box"][1] = 75
         self.assertFalse(subject.paired_tiers(subject.panel_boxes(altered)))
 
     def test_cross_chase_versus_gap_is_not_just_panel_count(self):
