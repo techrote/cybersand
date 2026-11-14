@@ -34,10 +34,10 @@ function Save-Report {
  $Report.elapsed_seconds=[Math]::Round(((Get-Date)-$Started).TotalSeconds,3)
  [IO.File]::WriteAllText($ReportPath,($Report|ConvertTo-Json -Depth 24)+[Environment]::NewLine,[Text.UTF8Encoding]::new($false))
 }
-function Godot-Run([string]$Name,[string[]]$Args,[int]$TimeoutSeconds) {
+function Godot-Run([string]$Name,[string[]]$Arguments,[int]$TimeoutSeconds) {
  $Stdout=Join-Path $Out ($Name+'-stdout.log')
  $Stderr=Join-Path $Out ($Name+'-stderr.log')
- $Process=Start-Process -FilePath $Engine -ArgumentList $Args -PassThru -NoNewWindow -RedirectStandardOutput $Stdout -RedirectStandardError $Stderr
+ $Process=Start-Process -FilePath $Engine -ArgumentList $Arguments -PassThru -NoNewWindow -RedirectStandardOutput $Stdout -RedirectStandardError $Stderr
  if(-not $Process.WaitForExit($TimeoutSeconds*1000)) {
    try {$Process.Kill()} catch {}
    throw "$Name timed out after $TimeoutSeconds seconds; retained $Stdout and $Stderr"
