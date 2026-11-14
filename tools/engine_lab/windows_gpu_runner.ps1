@@ -151,6 +151,11 @@ try {
  $script:NativeHash=Hash $Native
  $ExpectedNative=$M.native_runtime.cybersand_runtime.sha256
  Require ($script:NativeHash -eq $ExpectedNative) 'Native runtime hash mismatch'
+ if($Scripted) {
+   $Ref=Join-Path $Project 'tests\fixtures\engine_lab\setup-gate-canvas.json'
+   Require ((Hash $Ref) -eq 'b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954') 'Installed source gate canvas differs from owner-provided JSON'
+   Copy-Item -LiteralPath $Ref -Destination (Join-Path $Out 'setup-gate-canvas.json')
+ }
  $Report.godot_sha256=Hash $Engine
  $Report.requested_driver=$RenderingDriver
  $Report.native_sha256=$script:NativeHash
@@ -203,7 +208,14 @@ try {
      Add-Type -AssemblyName System.IO.Compression.FileSystem
      $Zip=Join-Path (Split-Path -Parent $Out) ((Split-Path -Leaf $Out)+'.zip')
      if(Test-Path -LiteralPath $Zip) {throw 'Cannot overwrite Test It evidence ZIP'}
-     [System.IO.Compression.ZipFile]::CreateFromDirectory($Out,$Zip,[System.IO.Compression.CompressionLevel]::Optimal,$false)
+     # Only portable evidence goes in the single ZIP. Ignore per-process
+     # sandbox userdata and Godot import caches; never leak local user files.
+     $Archive=[IO.Compression.ZipFile]::Open($Zip,[IO.Compression.ZipArchiveMode]::Create)
+     try {
+       foreach($Entry in (Get-ChildItem -LiteralPath $Out -File | Sort-Object Name)) {
+         [void][IO.Compression.ZipFileExtensions]::CreateEntryFromFile($Archive,$Entry.FullName,$Entry.Name,[IO.Compression.CompressionLevel]::Optimal)
+       }
+     } finally { $Archive.Dispose() }
      Write-Host "TEST_IT_RESULT_ZIP $Zip" -ForegroundColor Green
      Write-Host "ZIP_SHA256 $(Hash $Zip)"
    } catch {
