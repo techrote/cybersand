@@ -33,4 +33,5 @@ jobs:
           python3 experiments/driv3r/d_common/v1/verify.py
           python3 -m unittest discover -s experiments/driv3r/d_common/v1 -p 'test_*.py' -v
       - name: Confirm no heavy workload
-        run: echo 'Schema and synthetic conformance only: no native process, weights, API calls or training'
+        run: |
+          echo 'Schema and synthetic conformance only: no native process, weights, API calls or training'
