@@ -32,7 +32,7 @@ jobs:
           import json
           from pathlib import Path
           r=json.loads(Path("experiments/agent_painter/lanes/void/v4-shaft-native-request.json").read_text())
-          assert r["schema"]=="void-v4-shaft-native-research/1" and r["sequence"]==1
+          assert r["schema"]=="void-v4-shaft-native-research/1" and r["sequence"]==2
           for k in ("original_train_dev_only","native_research","no_training","no_shared_admission","no_final","draft_hold","pending_global_review"):
               assert r[k] is True
           assert r["model"]=="dotlabs/void.1@9c2be5087772867d45961abd11f6b35110617563"
@@ -67,6 +67,33 @@ jobs:
           run-id: '43506373969'
           github-token: ${{ github.token }}
           path: evidence/original-native
+      - name: Fail closed before expensive native build on prior-proposal lease and split custody
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/build
+          python3 - <<'PY'
+          from pathlib import Path
+          sh=Path("experiments/agent_painter/lanes/void/v4_shaft_ci_native.sh").read_text(encoding="utf-8")
+          assert "--proposals experiments/agent_painter/lanes/void/v4_shaft_proposals.json" in sh
+          assert "--previous experiments/agent_painter/lanes/void/v3_research_proposals.json" in sh
+          assert "--previous experiments/agent_painter/lanes/void/v4_shaft_proposals.json" not in sh
+          PY
+          python3 experiments/agent_painter/lanes/void/v4_shaft_probe.py \
+            --corpus evidence/original-native/corpus \
+            --proposals experiments/agent_painter/lanes/void/v4_shaft_proposals.json \
+            --previous experiments/agent_painter/lanes/void/v3_research_proposals.json \
+            --output evidence/build/v4-pre-native-source-screen.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("evidence/build/v4-pre-native-source-screen.json").read_text())
+          old=json.loads(Path("evidence/void-v4-source-qualified/source-only.json").read_text())
+          assert d==old and d["status"]=="SOURCE_ONLY_PASS"
+          assert d["quarantined_old_architecture"]=="void-v3-A01"
+          assert d["seed_preflights"]==2
+          assert not d["global_independence_approved"]
+          assert d["native_positive_views"]==d["new_train_groups"]==d["optimizer_updates"]==0
+          PY
       - name: Rebuild source-built Godot/native C++ and verify actual Art material/PNG receipts
         run: bash experiments/agent_painter/lanes/void/v4_shaft_ci_native.sh
       - name: Separate native execution from global TRAIN and model evaluation
