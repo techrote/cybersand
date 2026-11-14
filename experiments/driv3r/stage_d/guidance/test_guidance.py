@@ -129,6 +129,23 @@ class StudyTests(unittest.TestCase):
         self.assertIsNotNone(views["D_geometry_guidance_critic"]["critic"])
         self.assertEqual(len({v["candidate_set_sha256"] for v in views.values()}), 1)
 
+    def test_serialized_shadow_cases_and_hysteresis(self):
+        data = json.loads((Path(__file__).parent / "fixtures.json").read_text())
+        self.assertEqual(data["status"], "SYNTHETIC_ONLY_NOT_NATIVE_OBSERVATIONS")
+        params = data["hysteresis"]
+        hysteresis = Hysteresis(params["exit_below"], params["reenter_at_or_above"])
+        engaged = params["initial_engaged"]
+        for step in params["sequence"]:
+            engaged, event = hysteresis.assess(step["scalar"], engaged)
+            self.assertEqual((engaged, event), (step["engaged"], step["event"]))
+        for case in data["shadow_cases"]:
+            verdict = shadow_verdict(before=CriticSnapshot(**case["before"]),
+                                     after=CriticSnapshot(**case["after"]),
+                                     undo_eligible=case["undo_eligible"],
+                                     verified_native_receipt=case["verified_native_receipt"])
+            self.assertEqual(verdict["decision"], case["expected"], case["id"])
+            self.assertFalse(verdict["native_material_changed_by_critic"])
+
     def test_shadow_keep_undo_stop_without_mutation(self):
         before = CriticSnapshot("before", 10.0, 0, 2)
         better = CriticSnapshot("after", 11.0, 0, 3)
