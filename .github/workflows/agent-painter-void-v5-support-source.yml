@@ -1,0 +1,61 @@
+name: VOID v5 anchored support source qualification (NOT TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-void-568]
+    paths:
+      - 'experiments/agent_painter/lanes/void/v5_support_*'
+      - 'experiments/agent_painter/lanes/void/test_v5_support.py'
+      - '.github/workflows/agent-painter-void-v5-support-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: void-v5-support-source-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  strict-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Check exact source, scheduling and eight adversarial tests
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          mkdir -p evidence/void-v5
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output evidence/void-v5/policy.json
+          python3 -m py_compile experiments/agent_painter/lanes/void/{v5_support_probe,test_v5_support}.py
+          python3 experiments/agent_painter/lanes/void/test_v5_support.py 2>&1 | tee evidence/void-v5/tests.log
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/original-native
+      - name: Validate original actual native corpus identities and new compiler-only revision
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/void/v5_support_probe.py \
+            --corpus evidence/original-native/corpus --output evidence/void-v5/source-only.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("evidence/void-v5/source-only.json").read_text())
+          assert d["status"]=="SOURCE_ONLY_PASS"
+          assert len(d["source_views"])==2 and d["floor_anchored_posts"]==2
+          assert d["independent_new_structures"]==d["native_positive_views"]==d["train_admitted_groups"]==d["optimizer_steps"]==0
+          assert not d["final_opened"] and d["global_review"]=="HOLD"
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: void-v5-source-${{ github.sha }}-${{ github.run_id }}
+          path: evidence/void-v5/
+          if-no-files-found: warn
+          retention-days: 90
