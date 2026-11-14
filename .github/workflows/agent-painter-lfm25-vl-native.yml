@@ -37,7 +37,7 @@ jobs:
           actual=json.loads(Path("experiments/agent_painter/lanes/lfm25_vl/native-request.json").read_text())
           expected={
             "schema":"cybersand.agent-painter.lfm25-vl-native-replay/1",
-            "sequence":1,
+            "sequence":2,
             "evaluation_run":43536363400,
             "evaluation_source":"984b595b3b612341adc9ca0a4112698b5a7f6743",
             "training_run":43529993326,
