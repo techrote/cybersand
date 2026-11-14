@@ -39,6 +39,46 @@ partitioned by whole structural composition rather than seed or paraphrase.
 Later workers may expand the corpus through the same native-admission process.
 The historical #567 TRAIN/DEV/FINAL corpus and adapter are not consumed or edited.
 
+## Proposed SMOL-only terminal-EOS v2 supervision (14 November 2026; REVIEW/HOLD)
+
+**Status: implementation candidate, not independently accepted, not yet a
+qualified new training objective.** An authentic pinned-upstream tokenizer
+experiment [#43633994935](https://github.com/techrote/cybersand/actions/runs/43633994935)
+and subsequent real TRAIN-only [12/12 seed-row census
+#43638680729](https://github.com/techrote/cybersand/actions/runs/43638680729)
+demonstrated that the original `encode_row` supervised upstream assistant
+`<|im_end|>\\n`: one real EOS2 followed by an LF198 presentation token. Strict
+inference requires terminal EOS. The historical CPU proofs, checkpoints and
+negative candidate outcomes remain valid **as executed**, but they did not
+qualify terminal-EOS-supervised labels.
+
+An **explicitly versioned, SMOL-only** `smol-upstream-terminal-eos-v2` policy
+in `common.encode_row` now *proposes* removing exactly the observed post-EOS
+presentation LF after byte-exact upstream template rendering. It checks pinned
+EOS2 and LF198 identities, unchanged complete canonical JSON, unmodified
+system/user prefix, retokenization identity for every preceding token, a single
+terminal supervised EOS and no truncation; all other suffixes fail closed.
+Legitimate EOS delimiters inside the **masked prefix** remain permitted.
+The historical `legacy-eos-presence-v1` path is retained for evidence review;
+the new `train.py` selects v2 only for `smol`. All other model adapters are
+unchanged. Checkpoints bind the new policy in their immutable configuration and
+source/contract digests: **do not resume historical v1 optimizer states** against
+the changed objective. A fresh new-stage optimizer cannot be described as an
+exact continuation.
+
+Source-matched, **nontraining** proof is separately scoped by
+`.github/workflows/agent-painter-smol-eos-v2.yml`: pinned genuine tokenizer
+files (no weights), original positively admitted TRAIN artifact only,
+12 seed rows / six structures, source/token hashes, positive/adversarial
+mock-tokenizer tests, full upstream masking and an immutable receipt.
+This does **not** add shared TRAIN examples, open DEVELOPMENT/FINAL targets,
+run native Art, establish model quality, or qualify a new optimizer.
+The independent reviewer must inspect the exact new #569 head and hosted
+evidence. Before any model lane consumes this objective for a new campaign,
+require a source-matched fresh-VM **two-update + separate-VM checkpoint
+continuation proof**, then independent acceptance. Keep all PRs Draft/HOLD
+and treat any queued/running job as unqualified.
+
 ## Actions entry point
 
 `.github/workflows/agent-painter-train.yml` supports `workflow_call` and explicit
