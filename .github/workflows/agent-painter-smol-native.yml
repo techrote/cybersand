@@ -187,7 +187,8 @@ jobs:
           # Also reject false-green zero exits without exact step120 receipt/inventory.
           python3 experiments/agent_painter/lanes/smol/completion_gate.py \
             --training evidence/candidate/training --exit-code "$status" \
-            --source-sha "$GITHUB_SHA" | tee evidence/candidate/fresh120-promotion.json
+            --source-sha "$GITHUB_SHA" \
+            --corpus evidence/original-native/corpus | tee evidence/candidate/fresh120-promotion.json
       - name: Frozen raw first-pass DEVELOPMENT evaluation
         run: |
           set -euo pipefail
