@@ -88,6 +88,29 @@ func _run() -> void:
 	check(not Coherence.assess(rotation_bound,rotation_live,rotate,image).safe,
 		"intermediate rotation checks all swept material, not only endpoints")
 	_paint(image,135,135,0)
+	# Exact counterexample from 2026-11-14 independent review. All samples at
+	# t=0,1/3,2/3,1 miss this material cell, yet the true moving rectangle
+	# contains the *cell centre* at t=0.1833333333.
+	var counter_start := Transform2D(0.25,Vector2(100,100))
+	var counter_end := Transform2D(0.75,Vector2(98,98))
+	var witness_t: float = 0.18333333333333333
+	var witness_pose := Transform2D(0.25 + 0.5 * witness_t,
+		Vector2(100,100).lerp(Vector2(98,98),witness_t))
+	var witness_local: Vector2 = witness_pose.affine_inverse() * Vector2(94.5,100.5)
+	check(absf(witness_local.x)<5.0 and absf(witness_local.y)<3.0,
+		"pre-fix counterexample actually penetrates full continuous sweep")
+	_paint(image,94,100,58)
+	var counter_result: Dictionary = Coherence.assess(
+		counter_start,counter_end,rectangles,image)
+	print("PR593_SWEEP_COUNTEREXAMPLE ",JSON.stringify({
+		"start":[100,100,0.25],"end":[98,98,0.75],
+		"cell":[94,100],"cell_centre":[94.5,100.5],
+		"witness_t":witness_t,
+		"witness_local":[witness_local.x,witness_local.y],
+		"result":counter_result}))
+	check(not counter_result.safe and counter_result.reason=="material_in_swept_mask",
+		"continuous swept coverage rejects material missed by four sampled poses")
+	_paint(image,94,100,0)
 	check(not Coherence.assess(original,moved,[],image).safe,"empty collider set refused")
 	check(not Coherence.assess(original,moved,rectangles,null).safe,"missing World refused")
 	var results := {"schema":"workbench-presentation-coherence-v1",
