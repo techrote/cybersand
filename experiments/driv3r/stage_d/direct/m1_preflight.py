@@ -127,6 +127,73 @@ def legal_catalog(before: Sequence[int], options: Sequence[Any], *,
     }
 
 
+def _verified_presentation_catalog(catalog: Mapping[str, Any]) -> list[dict[str, Any]]:
+    """Reject mutation of a synthetic legal menu after host-side preflight.
+
+    This establishes custody of the *synthetic* admission view only; the
+    downstream native host must still independently compute true legality.
+    A presentation hash must never launder a forged native or edited menu.
+    """
+    required = {
+        "version", "world_size", "source_kind", "catalog",
+        "synthetic_legal_catalog_sha256", "native_legal_catalog_sha256",
+    }
+    _require(type(catalog) is dict and set(catalog) == required,
+             "Presentation requires an exact synthetic catalog envelope")
+    _require(catalog["version"] == VERSION and
+             catalog["source_kind"] == "offline_geometry_only" and
+             catalog["native_legal_catalog_sha256"] is None,
+             "Presentation cannot accept native or mismatched catalog custody")
+    size = catalog["world_size"]
+    _require(type(size) is list and len(size) == 2 and
+             all(type(n) is int and 1 <= n <= 65536 for n in size),
+             "Presentation catalog has invalid World dimensions")
+    rows = catalog["catalog"]
+    _require(type(rows) is list and 1 <= len(rows) <= 33 and
+             type(catalog["synthetic_legal_catalog_sha256"]) is str and
+             catalog["synthetic_legal_catalog_sha256"] == _hash(rows),
+             "Presentation catalog digest is stale or forged")
+    ids = []
+    origin = None
+    for item in rows:
+        _require(type(item) is dict and set(item) == {
+            "id", "mode", "cursor_before", "cursor_after", "swept_xy",
+            "brush_state", "material_effect", "swept_cell_limit",
+        }, "Presentation catalog contains a malformed action")
+        cid = item["id"]
+        _require(type(cid) is str and _ID.fullmatch(cid) is not None,
+                 "Presentation catalog contains an invalid ID")
+        before = _point(item["cursor_before"], *size)
+        after = _point(item["cursor_after"], *size)
+        _require(origin is None or before == origin,
+                 "Presentation catalog mixes cursor origins")
+        origin = before
+        swept = item["swept_xy"]
+        _require(type(swept) is list and item["brush_state"] == "up" and
+                 item["material_effect"] == "none" and
+                 type(item["swept_cell_limit"]) is int and
+                 item["swept_cell_limit"] == 8,
+                 "Presentation catalog changes inert brush semantics")
+        if cid == "STOP":
+            _require(item["mode"] == "stop" and not swept and before == after,
+                     "Presentation catalog contains a mutating STOP")
+        else:
+            _require(item["mode"] == "cursor_move" and 1 <= len(swept) <= 8,
+                     "Presentation catalog contains an invalid movement")
+            cursor = before
+            for raw_point in swept:
+                point = _point(raw_point, *size)
+                _require(abs(point[0] - cursor[0]) +
+                         abs(point[1] - cursor[1]) == 1,
+                         "Presentation catalog contains a noncardinal sweep")
+                cursor = point
+            _require(cursor == after, "Presentation catalog endpoint differs from sweep")
+        ids.append(cid)
+    _require(ids == sorted(set(ids)) and ids.count("STOP") == 1,
+             "Presentation catalog IDs must be unique, sorted and include STOP")
+    return rows
+
+
 def model_presentation_hash(catalog: Mapping[str, Any],
                             annotations: Mapping[str, Any] | None = None,
                             order: Sequence[str] | None = None) -> str:
@@ -134,8 +201,8 @@ def model_presentation_hash(catalog: Mapping[str, Any],
 
     Experimental scores/annotations/order cannot be used as admission data.
     """
-    offered = {item["id"]: item for item in catalog["catalog"]}
-    _require(len(offered) == len(catalog["catalog"]), "Duplicate host IDs")
+    rows = _verified_presentation_catalog(catalog)
+    offered = {item["id"]: item for item in rows}
     notes = dict(annotations or {})
     _require(all(type(k) is str and k in offered for k in notes),
              "Annotation must reference an admitted candidate")
