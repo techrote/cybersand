@@ -193,7 +193,8 @@ func cancel_benchmark() -> void:
 func _stop_benchmark(reason: String) -> void:
 	if not recorder.running:
 		return
-	host.engine_lab_benchmark_active = false if is_instance_valid(host) else false
+	if is_instance_valid(host):
+		host.engine_lab_benchmark_active = false
 	recorder.abort(reason, Time.get_ticks_usec())
 	_save_report()
 
