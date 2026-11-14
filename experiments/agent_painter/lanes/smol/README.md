@@ -1,5 +1,35 @@
 # Smol painter: first bounded DEVELOPMENT iteration
 
+## Fresh120 training promotion safety — 14 November 2026
+
+**Scope:** Future runs of the existing opt-in `agent-painter-smol-native.yml`
+fresh120 campaign. The former workflow admitted trainer exit code 2
+(`stopped-checkpoint-saved`) and any positive global step as a green
+"candidate" job; that could have unlocked DEVELOPMENT/native comparison for
+an interrupted step40/80 checkpoint mislabeled as a 120-step result.
+This is a **latent future-run defect**, not a challenge to the original
+completed fresh120 producer at source `fef6654ecd0828f765af1a13d2d10469013a3ea6`.
+
+The lane-owned `completion_gate.py` now requires **trainer exit 0**, completed
+status, exactly **120 fresh optimizer updates**, step and sample cursor 120,
+unchanged frozen base, changed adapter, actual-training and exact checkpoint
+readback receipts, the original native-corpus identity, source/model profile
+identity, matching lane receipt, and actual `checkpoint-000120` receipt/
+inventory/adapter files. Any partial/failed trainer remains **non-promotable**
+and the existing `if: always()` Actions upload preserves its partial/failure
+evidence. No model training or native Art was run to test this gate.
+
+[Hosted model-free gate regression run 43547593074](https://github.com/techrote/cybersand/actions/runs/43547593074),
+job `132302411294`, **SUCCESS on source `75fd7baf8a6d27b432e684c04d2685cdd9f79475`**:
+10/10 synthetic positive/negative receipt tests PASS, source/wiring check PASS,
+CI-provider and scheduling checks PASS. These fixtures are explicitly *not*
+real optimizer receipts; the repaired gate's next full training execution is
+not claimed. The comparison evidence and prior 0/2 request-conforming
+Pipework result remain unchanged. The next useful model improvement requires
+new, independently reviewed and positively native-admitted structural TRAIN
+data, not another training run on the six original groups. Draft/HOLD and FINAL
+custody remain unchanged.
+
 ## Model-free request-conformance check — 14 November 2026
 
 The [strict source-bound semantic audit](https://github.com/techrote/cybersand/actions/runs/43542371297)
