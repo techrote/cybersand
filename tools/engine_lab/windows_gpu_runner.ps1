@@ -42,8 +42,11 @@ function Godot-Run([string]$Name,[string[]]$Arguments,[int]$TimeoutSeconds) {
    try {$Process.Kill()} catch {}
    throw "$Name timed out after $TimeoutSeconds seconds; retained $Stdout and $Stderr"
  }
- if($Process.ExitCode -ne 0) {
-   throw "$Name returned exit code $($Process.ExitCode); retained $Stdout and $Stderr"
+ $Process.Refresh()
+ $Code=$Process.ExitCode
+ Write-Host ("ENGINE_LAB_PROCESS {0} type={1} id={2} exited={3} code={4}" -f $Name,$Process.GetType().FullName,$Process.Id,$Process.HasExited,$Code)
+ if($null -eq $Code -or [int]$Code -ne 0) {
+   throw "$Name returned exit code $Code; retained $Stdout and $Stderr"
  }
 }
 function Run-Case([string]$Family,[int]$Workers,[int]$Repeat) {
