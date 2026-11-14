@@ -13,6 +13,7 @@ SCRIPT = Path(__file__).resolve().parents[1] / "completion_gate.py"
 spec = importlib.util.spec_from_file_location("smol_completion_gate", SCRIPT)
 gate = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(gate)
+REAL_FROZEN_TRAIN_ORDER = gate.frozen_train_order
 SHA = "a" * 40
 
 
@@ -265,7 +266,7 @@ class Fresh120PromotionTests(unittest.TestCase):
         with mock.patch.object(gate.contracts, "frozen_manifest", return_value=admission), \
              mock.patch.object(gate.contracts.common, "load_training_corpus",
                                return_value=(rows, admission)) as loader:
-            expected = gate.frozen_train_order(Path("synthetic-corpus"))
+            expected = REAL_FROZEN_TRAIN_ORDER(Path("synthetic-corpus"))
             self.assertEqual(len(expected), 12)
             self.assertEqual(set(expected), {r["id"] for r in rows})
             loader.assert_called_once_with(Path("synthetic-corpus"))
@@ -274,7 +275,7 @@ class Fresh120PromotionTests(unittest.TestCase):
              mock.patch.object(gate.contracts.common, "load_training_corpus",
                                return_value=(rows, admission)):
             with self.assertRaisesRegex(ValueError, "TRAIN family"):
-                gate.frozen_train_order(Path("synthetic-corpus"))
+                REAL_FROZEN_TRAIN_ORDER(Path("synthetic-corpus"))
 
     def test_direct_delivery_does_not_request_forbidden_release(self):
         workflow = (SCRIPT.parents[4] / ".github/workflows/agent-painter-smol-native.yml").read_text()
