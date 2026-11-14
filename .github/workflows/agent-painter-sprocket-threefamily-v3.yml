@@ -1,0 +1,70 @@
+name: SPROCKET v3 Greeble and orthographic Architecture prospective compiler screen
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/threefamily-v3-request.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sprocket-threefamily-v3-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-screen:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Check explicit request and current dedicated HEAD
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 - <<'PY'
+          import json,os
+          req=json.load(open('experiments/agent_painter/lanes/sprocket/threefamily-v3-request.json'))
+          assert req == {
+            'schema':'cybersand.agent-painter.sprocket-threefamily-source-screen/1',
+            'sequence':1,
+            'source_native_run':43506373969,
+            'source_native_sha':'633920373a3d406a2ede61ce4137c324f76be23b',
+            'composition_groups':4,'host_seed_views':8,
+            'compiler_only':True,'native_execution':False,
+            'model_training':False,'final_targets_opened':False,
+            'shared_train_admission':False,'draft_hold':True,
+          }
+          assert os.environ['GITHUB_REF']=='refs/heads/codex/agent-painter-sprocket-568'
+          assert os.environ['RUNNER_ENVIRONMENT']=='github-hosted'
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/sprocket-v3-scheduling.json
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/source633
+      - name: Strict original TRAIN and DEVELOPMENT v3 source screen and negative tests
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s experiments/agent_painter/lanes/sprocket -p 'test_threefamily_v3.py' -v
+          python3 experiments/agent_painter/lanes/sprocket/threefamily_v3.py \
+            --corpus evidence/source633/corpus \
+            --output evidence/sprocket-threefamily-v3/screen.json
+          python3 - <<'PY'
+          import json
+          j=json.load(open('evidence/sprocket-threefamily-v3/screen.json'))
+          assert j['candidate_compositions']==4 and j['compiler_seed_views']==8
+          assert j['shared_train_groups_admitted']==0 and not j['final_targets_opened']
+          assert j['native_cases_executed']==0 and j['model_generated_views']==0
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-threefamily-v3-compiler-only-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/sprocket-threefamily-v3/
+          if-no-files-found: warn
+          retention-days: 90

@@ -1,0 +1,133 @@
+name: Agent painter SPROCKET frozen DEVELOPMENT first-pass comparison
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/development-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-sprocket-development-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  request:
+    name: Admit explicit frozen DEV evaluation; no FINAL content
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    outputs:
+      pilot_run_id: ${{ steps.admit.outputs.pilot_run_id }}
+      training_artifact: ${{ steps.admit.outputs.training_artifact }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Check source, original corpus, model and unique training checkpoint
+        id: admit
+        env:
+          SOURCE_REF: ${{ github.ref }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/development.py
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          from pathlib import Path
+          row = json.loads(Path("experiments/agent_painter/lanes/sprocket/development-request.json").read_text())
+          required = {
+              "schema": "cybersand.agent-painter.sprocket-development/1",
+              "model": "kandivault/sprocket-500m",
+              "model_revision": "eb157d4ddddc4619e661d4a2426bb2dd000fc668",
+              "training_source": "591b83bc383b31a0ae2e3031b4a501b0a88ddc39",
+              "native_source": "633920373a3d406a2ede61ce4137c324f76be23b",
+              "corpus_run_id": "43506373969",
+              "corpus_manifest_sha256": "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc",
+              "checkpoint_step": 16,
+              "max_new_tokens": 512,
+              "arms": ["untuned", "step16"],
+              "development_only": True,
+              "final_targets_forbidden": True,
+              "evaluation_attempt": 2,
+          }
+          if (os.environ["SOURCE_REF"] != "refs/heads/codex/agent-painter-sprocket-568" or
+                  not re.fullmatch("[a-f0-9]{40}", os.environ["SOURCE_SHA"]) or
+                  any(row.get(k) != v for k,v in required.items()) or
+                  set(row) != set(required) | {"pilot_run_id"}):
+              raise SystemExit("non-frozen development comparison request")
+          if not isinstance(row["pilot_run_id"], str) or not re.fullmatch("[1-9][0-9]{8,13}", row["pilot_run_id"]):
+              raise SystemExit("invalid pilot run ID")
+          artifact = "agent-painter-sprocket-pilot-591b83bc383b31a0ae2e3031b4a501b0a88ddc39"
+          with open(os.environ["GITHUB_OUTPUT"],"a") as out:
+              out.write("pilot_run_id=" + row["pilot_run_id"] + "\n")
+              out.write("training_artifact=" + artifact + "\n")
+          print("Frozen source, model, cohort, two arms and finite token budget admitted")
+          PY
+
+  compare:
+    name: Pinned CPU root Sprocket untuned vs 16-step strict first-pass
+    needs: request
+    runs-on: ubuntu-24.04
+    timeout-minutes: 80
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: 'default'
+      MKL_CBWR: 'COMPATIBLE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/native
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: ${{ needs.request.outputs.training_artifact }}
+          run-id: ${{ needs.request.outputs.pilot_run_id }}
+          github-token: ${{ github.token }}
+          path: evidence/previous-training
+      - name: Install exactly pinned GitHub-hosted CPU model environment
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/painter-sprocket-dev"
+          "$RUNNER_TEMP/painter-sprocket-dev/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/painter-sprocket-dev/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/painter-sprocket-dev/bin/python" -m pip check
+          mkdir -p evidence/development-environment
+          "$RUNNER_TEMP/painter-sprocket-dev/bin/python" -m pip freeze --all > evidence/development-environment/pip-freeze.txt
+          lscpu > evidence/development-environment/cpu.txt
+      - name: Download real root Instruct model with full official byte identity
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/painter-sprocket-dev/bin/python" experiments/agent_painter/training/download_model.py --profile sprocket --output "$RUNNER_TEMP/painter-sprocket-model"
+          cp "$RUNNER_TEMP/painter-sprocket-model/download_receipt.json" evidence/development-environment/model-download.json
+      - name: Evaluate untouched DEVELOPMENT, all raw rejections retained; never claim native painting
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 2700s "$RUNNER_TEMP/painter-sprocket-dev/bin/python" experiments/agent_painter/lanes/sprocket/development.py \
+            --model "$RUNNER_TEMP/painter-sprocket-model" \
+            --checkpoint evidence/previous-training/checkpoint-000016 \
+            --corpus evidence/native/corpus \
+            --output evidence/development \
+            --max-new-tokens 512
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-painter-sprocket-development-${{ github.sha }}
+          path: |
+            evidence/development/
+            evidence/development-environment/
+          if-no-files-found: warn
+          retention-days: 90

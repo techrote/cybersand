@@ -1,128 +1,31 @@
-# Sprocket root Instruct lane
+# SPROCKET agent-painter lane — Greebles / Pipework / Architecture
 
-**Current implementation:** model-specific adapter and local source/tokenizer/meta
-preflight, prepared on 2026-11-13. Real optimizer, checkpoint and fresh-runner
-continuation qualification must come from the shared hosted workflow receipts.
-The local checks below do not establish training or painter quality.
+**Owner:** CyberSand Sprocket training worker. **Coordination:** [issue #568](https://github.com/techrote/cybersand/issues/568). **Gate:** independent Draft/HOLD only. This is experimental training, not a default-provider proposal or owner-accepted artwork.
 
-## Pinned upstream contract
+This model is the **root Instruct** `kandivault/sprocket-500m@eb157d4ddddc4619e661d4a2426bb2dd000fc668`, NOT the separate `chat/` model. The qualified shared parent [PR #569](https://github.com/techrote/cybersand/pull/569) at `2a565df45efc568eb96a2166e0b77f299e289625` has already verified the exact root tokenizer/Jinja, EOS 5, 182 allowed projection modules, 4,739,072 rank-8 LoRA parameters, true optimizer updates and fresh-VM full-state continuation in [run 43515770587](https://github.com/techrote/cybersand/actions/runs/43515770587). The released independent proof is [Sprocket preflight](https://github.com/techrote/cybersand/releases/tag/agent-painter-preflight-sprocket-2a565df45efc-43515770587-1). The two-update proof says nothing about model artistic quality; its raw 128-token inference failed EOS/JSON and correctly applied no cells.
 
-Use only `kandivault/sprocket-500m` at
-`eb157d4ddddc4619e661d4a2426bb2dd000fc668`, with an empty subfolder.
-The [pinned model card](https://huggingface.co/kandivault/sprocket-500m/blob/eb157d4ddddc4619e661d4a2426bb2dd000fc668/README.md)
-identifies the root `model.safetensors` as the Instruct export; the separate
-`chat/` checkpoint has different weights. The root
-[export record](https://huggingface.co/kandivault/sprocket-500m/blob/eb157d4ddddc4619e661d4a2426bb2dd000fc668/export_provenance.json)
-records `checkpoints/500m_sft_final.pt`, iteration 1192. The same pinned model card
-declares Apache-2.0; the root snapshot does not contain a separate LICENSE file.
-The reviewed metadata and framing files are all byte-bound in `profile.json`.
+## First measured pilot
 
-The [root configuration](https://huggingface.co/kandivault/sprocket-500m/blob/eb157d4ddddc4619e661d4a2426bb2dd000fc668/config.json)
-uses built-in `LlamaForCausalLM`, 26 layers, hidden width 1280, intermediate width
-3584, 20 attention heads and 4 KV heads, a 32,000-entry vocabulary, tied
-embeddings and a 2048-token context. No remote code is needed. The downloader
-must retain only root allowlisted files and verify every required SHA-256,
-including the root weights:
-`1a9fd1066f3f0873c4f5ae99b75beab3b0721100f45b036f9e255611b220d864`.
+The opt-in `pilot-request.json` is the sole push trigger of [agent-painter-sprocket.yml](../../../../.github/workflows/agent-painter-sprocket.yml). The workflow admits a fixed request and calls the already source-qualified common trainer, using **16 real update targets**, one GitHub-hosted `ubuntu-24.04` CPU VM, a 45-minute overall job timeout and 20-minute trainer deadline. It preserves completed atomically written per-step checkpoints and actual failed/partial receipts. The wrapper downloads the public official model afresh, verifies pinned root hashes and loads the model without remote code. No worker-local files, GPU or paid runners are used. One bounded raw 128-token output after training is recorded unchanged, with full EOS/JSON rejection rather than hidden repairs.
 
-The [actual root Jinja template](https://huggingface.co/kandivault/sprocket-500m/blob/eb157d4ddddc4619e661d4a2426bb2dd000fc668/chat_template.jinja)
-supports system, user and assistant messages. The adapter uses that file through
-`apply_chat_template` and verifies its exact hash and rendered token prefix.
-The training prefix is a system message, then a user message, each ended with
-`<|end|>`, followed by `<|assistant|>`. The completion is the complete canonical
-program JSON followed by one `<|end|>`. EOS is 5; PAD is 1; BOS is 0 and is not
-inserted. PAD remains distinct from EOS. Literal control tokens in message
-content are refused. Inference uses exactly the same prefix as training.
+The immutable native corpus comes from native source `633920373a3d406a2ede61ce4137c324f76be23b`, [run 43506373969](https://github.com/techrote/cybersand/actions/runs/43506373969) and manifest SHA-256 `2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc`. It contains **12 TRAIN / 12 DEVELOPMENT / 6 FINAL** over disjoint six/six/three structural groups. Only TRAIN supplies optimizer targets. The sealed FINAL partition must not be opened for candidate selection, previews or tuning; seed variants are not independent designs. The original native engine source, corpus and authoring schema remain untouched.
 
-`encode_row` reuses the audited shared completion-only encoder, then requires an
-exact prompt boundary, exact full target byte roundtrip, no control tokens in
-content, and one final supervised EOS. Over-budget examples fail without
-truncation. `encode_prompt` also refuses a prefix that consumes the whole model
-context. The shared strict completion validator owns generated JSON/EOS
-acceptance; the lane supplies no repair, chat substitution or fallback model.
+The first push that adds this request creates a source-unique Actions artifact `agent-painter-sprocket-pilot-<full SHA>`. Do not resubmit while any matching run is queued/running; an hourly schedule tick alone never warrants dispatch. The shared proof trainer's 16-step cap is deliberate, and checkpoint-per-step publication can be sizeable. A later larger training campaign needs a separately versioned lane-owned wrapper with bounded checkpoint intervals, deadline, RSS/storage budget and exact resume identity, not an unreviewed change to the common contract.
 
-## Local preflight actually executed
+## Success criteria and next iterations
 
-The small upstream files were downloaded at the full revision and hashed.
-The weight SHA-256 and 1,002,207,984-byte size were checked against the
-[pinned Hugging Face LFS metadata](https://huggingface.co/api/models/kandivault/sprocket-500m/revision/eb157d4ddddc4619e661d4a2426bb2dd000fc668?blobs=true).
-A bounded HTTP range read inspected only the 26,864-byte safetensors header:
-236 tensors, 501,090,560 stored parameters, all BF16. **No full model-weight
-download, inference or optimizer execution occurred locally.** The hosted
-downloader still has to hash the complete weight bytes before model loading.
+On completed run, independently inspect source/model/data/recipe receipts, actual optimizer count, nonzero gradients, frozen-base equality, checkpoint state/inventories, loss-bearing sample coverage, wall time/RSS and raw token/EOS/JSON validity. The raw probe is a diagnostic, **not** a native painting or representative DEVELOPMENT denominator. Next compare untuned root and tuned adapter under the same untouched DEVELOPMENT requests (all original raw failures included). Apply strictly admitted programs through the real native Art owner, verify acknowledgements/changed material cells/readback and original PNGs, then assess structure and visual utility. Greebles require hierarchy and deliberate negative space; pipework requires continuous same-diameter topology; architecture must remain perpendicular orthographic side elevation with legible openings and appropriately requested clearances. Literal geometry clearance is not gameplay physics.
 
-The real tokenizer inspected all twelve positively native-admitted TRAIN rows
-from source `633920373a3d406a2ede61ce4137c324f76be23b`. The shared admission loader
-verified their source/runtime/compiler, receipts, readbacks and original PNG
-hashes. No FINAL target or image was opened. Both host seeds (104729 and 130363)
-have the same token counts within each structural group:
+Coordinate an expanded comparable frozen 60-request DEVELOPMENT rubric with the shepherd/reviewer, never with FINAL labels. Keep the #567 twelve-theme corpus and adapters as historical controls, not newly learned three-family art. After a genuinely useful frozen vN, compare a fresh-from-pinned-parent vN+1 with a continuation **from an immutable copy** of vN using the same new TRAIN recipe, matched optimizer-stage budgets and separate hosted VMs with distinct leases/artifacts. Reset optimizer for that paired improvement rather than conflating with full-state resume. One worker may manage two separate GitHub-hosted runner VMs; never put two models into one VM or dispatch duplicative runs. All model PRs remain Draft/HOLD until explicit owner authority.
 
-| TRAIN structure | Prefix tokens | JSON plus EOS tokens | Complete tokens |
-| --- | ---: | ---: | ---: |
-| Greebles service cluster | 70 | 216 | 286 |
-| Greebles switchboard stack | 66 | 216 | 282 |
-| Pipework two-elbow route | 77 | 112 | 189 |
-| Pipework tee distribution | 73 | 112 | 185 |
-| Architecture paired doorway rooms | 78 | 167 | 245 |
-| Architecture stair and landing hall | 84 | 189 | 273 |
+## Frozen DEVELOPMENT first-pass instrument (prepared, not yet run)
 
-All twelve preserve the exact inference prefix, complete JSON bytes and one
-supervised EOS. The architecture and PEFT adapter were instantiated only on the
-meta device for shape inspection, using the shared pinned environment
-(PyTorch 2.15.0+cpu, Transformers 5.22.2 and PEFT 0.21.2). The allowed targets are
-`q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, and `down_proj`
-inside each of the 26 language layers: exactly 182 modules. At rank 8 this yields
-364 trainable tensors and 4,739,072 parameters. Embeddings, output head, norms
-and every base weight remain frozen. Runtime validation checks every module
-name, tensor shape, trainable name and the frozen parameter count, and rejects
-meta tensors as training inputs.
+The lane-only [development.py](development.py) and [development workflow](../../../../.github/workflows/agent-painter-sprocket-development.yml) are staged for an explicitly requested first-pass **untuned root vs step-16 adapter** comparison. Do **not** write `development-request.json` until the exact pilot run has completed successfully, its final adapter/checkpoint inventories are source/byte-qualified, and no duplicate evaluation job is pending. The request freezes the exact training job/run ID; it is not generated from a generic latest-artifact lookup.
 
-FP32 base parameter storage is 2,004,362,240 bytes. Rank-8 adapter parameters,
-their gradients and Adam's two FP32 moments add 75,825,152 bytes. These are tensor
-storage calculations, not peak-RSS measurements: activation storage, libraries,
-mapped source tensors, serialization/readback and allocator overhead remain
-additional. The nine required snapshot files total 1,004,491,500 bytes; runner
-provisioning must separately provide space for its installed environment and
-immutable checkpoints. Actual elapsed time, peak RSS and continuation errors
-belong in the hosted receipts.
+The evaluator reads the existing admitted **DEVELOPMENT** partition, verifies original native admission/hashes and checks six disjoint structure groups with two fixed seed variants (12 rows total). It never opens FINAL targets or images, never optimizes on DEVELOPMENT, and uses each unchanged language request once per model arm, with greedy 512-token no-repair decoding. Full token IDs, raw strings, EOS/JSON/validation failures and any compiler-proposed seed variants remain included in the denominator. Actual native application is **not** performed by this instrument; `native_execution=false` and zero actual native paintings are mandatory. Only a separate exact-source actual Art execution/readback/PNG run can make a native-painting claim.
 
-## Re-run the focused preflight
+The comparison runs on a **separate** standard CPU Actions VM, distinct from the training VM. The owner permitted up to two independent VMs managed by this worker, never two simultaneous trainers on the same host. A failed baseline or zero strict accepts remains a valuable diagnostic. A candidate cannot be promoted by training loss alone; improve the recipe/corpus only through new positively native-admitted TRAIN material, and preserve the sealed FINAL partition.
 
-The tests accept a directory containing the exact root small files or the
-complete shared-downloader snapshot. They never load model weight tensors and
-never perform a forward pass. With an environment provisioned from the shared
-`training/requirements.lock`:
+## Read-only archive qualification (14 November 2026)
 
-```sh
-python experiments/agent_painter/lanes/sprocket/test_adapter.py \
-  --model /tmp/sprocket-root \
-  --corpus evidence/native/corpus --meta -v
-```
-
-Without `--model`, only dependency-free import/profile guards run; tokenizer and
-meta checks report explicit skips. Without `--corpus`, native TRAIN verification
-reports a skip. A skipped check is not a qualification result. The full command
-exercises modified-template/EOS refusal, special-token injection refusal,
-Unicode framing, complete-budget rejection, all admitted TRAIN rows, the actual
-meta LoRA inventory, exact PEFT/module recipe guards and refusal of accidentally
-trainable base weights.
-
-## Shared trainer handoff
-
-`adapter.py` is Torch-free until model/meta functions are called. The common
-trainer must establish its one-thread portable FP32 CPU profile before importing
-Torch, verify the whole public model snapshot, and bind this adapter, profile and
-framing identity into checkpoints. `load_base`, `encode_row`, `encode_prompt`,
-`validate_trainable` and `set_training_mode` are the lane entry points. The shared
-trainer owns LoRA construction, finite loss/gradient checks, real AdamW updates,
-frozen-base fingerprints, checkpoint serialization/readback and exact-config
-fresh-runner resume. The lane pins rank 8, alpha 16, dropout 0.05, bias `none`,
-`CAUSAL_LM`, with no saved non-LoRA modules, DoRA, RS-LoRA or per-module rank/alpha
-overrides. A different recipe requires an explicit lane change and new run
-identity; it cannot silently continue these checkpoints.
-
-The next required execution is the bounded rank-8 two-step proof followed by a
-separate hosted runner resuming checkpoint 1 to step 2. Keep the base/data/code/
-numerical recipe identical for that comparison. Wider training, development
-quality evaluation and corpus expansion belong to the later Sprocket worker;
-the root checkpoint, native authority and sealed FINAL partition stay fixed.
+The opt-in [fresh96 evidence audit](../../../../.github/workflows/agent-painter-sprocket-audit.yml) verifies the **unchanged original** 96/96-step Actions artifact from run 43529482591, source 25b24bf80c593b115321387a2a0374dd5ff02548. It downloads its original complete training checkpoint to a fresh GitHub-hosted VM, compares preflight / optimizer progress / summary / final checkpoint / campaign receipt, and uses common `verify_checkpoint` to hash every retained adapter, optimizer and metadata file. Local adversarial, model-free tests attempt false full-step, provenance, sample-order and training-quality promotions. This audit never starts a model, opens FINAL, performs training or infers useful painting, and is not a new checkpoint version. Its new lane-only Python sources change future `adapter_identity()` fingerprints: **do not attempt to resume an older checkpoint under the new source identity**. New TRAIN structural groups still require shepherd/reviewer approval and a separately qualified versioned training campaign.

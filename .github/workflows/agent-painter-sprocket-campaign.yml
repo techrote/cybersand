@@ -1,0 +1,119 @@
+name: Agent painter SPROCKET bounded fresh 96-step campaign
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/campaign-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-sprocket-campaign-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  admit:
+    name: Admit exact Sprocket new-stage TRAIN request
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Validate immutable inputs and restricted training budget
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/campaign.py
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          request = json.loads(Path('experiments/agent_painter/lanes/sprocket/campaign-request.json').read_text())
+          required = {
+              'schema': 'cybersand.agent-painter.sprocket-campaign-request/1',
+              'experiment': 'sprocket-fresh-96-001', 'sequence': 1,
+              'model': 'kandivault/sprocket-500m',
+              'revision': 'eb157d4ddddc4619e661d4a2426bb2dd000fc668',
+              'shared_source': '2a565df45efc568eb96a2166e0b77f299e289625',
+              'native_source': '633920373a3d406a2ede61ce4137c324f76be23b',
+              'corpus_run_id': 43506373969,
+              'corpus_manifest_sha256': '2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc',
+              'global_steps': 96, 'checkpoint_every': 24, 'trainer_seconds': 2400,
+              'one_model_process_per_vm': True, 'max_concurrent_model_vms': 2,
+              'train_split': 'TRAIN', 'final_targets_opened': False, 'draft_hold': True,
+          }
+          if request != required:
+              raise SystemExit('Sprocket campaign request differs from fixed source/data/budget contract')
+          if (os.environ['GITHUB_REF'] != 'refs/heads/codex/agent-painter-sprocket-568'
+                  or not re.fullmatch(r'[a-f0-9]{40}', os.environ['GITHUB_SHA'])):
+              raise SystemExit('wrong GitHub branch/commit')
+          print('New-stage fresh 96-step TRAIN-only campaign admitted; no useful-painter claim')
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/sprocket-scheduling.json
+
+  train:
+    name: Separate GitHub CPU VM, authentic 96-step LoRA candidate
+    needs: admit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: 'default'
+      MKL_CBWR: 'COMPATIBLE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/native
+      - name: Install pinned portable CPU environment
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/sprocket-campaign"
+          "$RUNNER_TEMP/sprocket-campaign/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/sprocket-campaign/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/sprocket-campaign/bin/python" -m pip check
+          mkdir -p evidence/environment
+          "$RUNNER_TEMP/sprocket-campaign/bin/python" -m pip freeze --all > evidence/environment/pip-freeze.txt
+          lscpu > evidence/environment/cpu.txt
+      - name: Download original pinned root Instruct model and verify official hashes
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/sprocket-campaign/bin/python" experiments/agent_painter/training/download_model.py --profile sprocket --output "$RUNNER_TEMP/sprocket-pinned"
+          cp "$RUNNER_TEMP/sprocket-pinned/download_receipt.json" evidence/environment/model-download.json
+      - name: Execute bounded genuine updates and retain partial/failure checkpoint evidence
+        run: |
+          set +e
+          timeout --signal=TERM --kill-after=120s 2580s "$RUNNER_TEMP/sprocket-campaign/bin/python" experiments/agent_painter/lanes/sprocket/campaign.py \
+            --source-sha "$GITHUB_SHA" --model "$RUNNER_TEMP/sprocket-pinned" \
+            --corpus evidence/native/corpus --output evidence/campaign \
+            --steps 96 --checkpoint-every 24 --max-seconds 2400
+          rc=$?
+          echo "sprocket-campaign exit=$rc (0 complete; 2 genuine partial; other failure)"
+          if [ "$rc" -eq 2 ]; then
+            test -s evidence/campaign/summary.json
+            echo 'PARTIAL genuine training; preserve checkpoint artifacts, but report job FAILURE until target steps are complete'
+            exit 2
+          fi
+          exit "$rc"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-painter-sprocket-campaign-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/campaign/
+            evidence/environment/
+          if-no-files-found: warn
+          retention-days: 90

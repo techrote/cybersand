@@ -1,0 +1,118 @@
+name: SPROCKET prospective Pipework source-built native qualification (no TRAIN admission)
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/proposal-native-request.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sprocket-proposal-native-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-locked-preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Validate explicit prospective source-built native request and branch policy
+        run: |
+          set -euo pipefail
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/proposal_native.py
+          python3 - <<'PY'
+          import json, os
+          path="experiments/agent_painter/lanes/sprocket/proposal-native-request.json"
+          request=json.load(open(path))
+          assert request == {
+            "schema":"cybersand.agent-painter.sprocket-pipework-native-proposal/1",
+            "sequence":1,
+            "original_native_run":43506373969,
+            "original_native_source":"633920373a3d406a2ede61ce4137c324f76be23b",
+            "strict_compiler_screen_run":43573078415,
+            "strict_compiler_screen_source":"eaf2ba2ff5d5b4d5c7709714bca136e9f8e6c28c",
+            "prospective_structures":6,
+            "host_seed_views":12,
+            "native_test":True, "shared_train_admission":False,
+            "model_training":False,"final_targets_opened":False,"draft_hold":True
+          }
+          assert os.environ["GITHUB_REF"]=="refs/heads/codex/agent-painter-sprocket-568"
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/sprocket-proposal-native-scheduling.json
+
+  native-replay:
+    needs: source-locked-preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          lfs: true
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/source633
+      - name: Install minimal verifier and screen six public split-safe, nonmodel proposals
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/build
+          python3 -m venv "$RUNNER_TEMP/sprocket-native"
+          "$RUNNER_TEMP/sprocket-native/bin/python" -m pip install 'Pillow==13.0.0'
+          "$RUNNER_TEMP/sprocket-native/bin/python" experiments/agent_painter/lanes/sprocket/proposal_native.py \
+            --stage preflight \
+            --corpus evidence/source633/corpus --output evidence/sprocket-proposal-preflight \
+            --source-sha "$GITHUB_SHA"
+      - name: Build pinned source and execute 12 real two-seed prospective Pipework Art cases
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum -c --strict
+          "$RUNNER_TEMP/sprocket-native/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt > evidence/build/install-scons.log 2>&1
+          export GODOT_CPP_ROOT="$RUNNER_TEMP/sprocket-godot-cpp"
+          export SCONS_PYTHON="$RUNNER_TEMP/sprocket-native/bin/python"
+          export SCONS_JOBS=4
+          export CYBERSAND_REAL_CXX=/usr/bin/g++-13
+          export LINUX_CXX=/usr/bin/g++-13
+          export CYBERSAND_NATIVE_OUTPUT="$RUNNER_TEMP/sprocket-native.so"
+          mkdir -p "$GODOT_CPP_ROOT"
+          git -C "$GODOT_CPP_ROOT" init
+          git -C "$GODOT_CPP_ROOT" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 600 git -C "$GODOT_CPP_ROOT" fetch --depth=1 origin 101ae38034304346a46ea9ea84ae156d3e860496 > evidence/build/godot-cpp-fetch.log 2>&1
+          git -C "$GODOT_CPP_ROOT" checkout --detach FETCH_HEAD
+          if ! timeout 3600 bash tools/build_pinned_godot_cpp.sh linux > evidence/build/godot-cpp.log 2>&1; then tail -100 evidence/build/godot-cpp.log; exit 1; fi
+          if ! timeout 3600 bash tools/build_native_extension.sh > evidence/build/native.log 2>&1; then tail -100 evidence/build/native.log; exit 1; fi
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          bash tools/check_linux_runtime_floor.sh > evidence/build/abi-floor.log 2>&1
+          python3 experiments/agent_painter/native/runtime.py stamp --source-sha "$GITHUB_SHA" --output evidence/native-build.json
+          timeout 600 curl -fsSL --retry 3 -o "$RUNNER_TEMP/sprocket-godot.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/sprocket-godot.zip" | sha256sum -c --strict
+          mkdir -p "$RUNNER_TEMP/sprocket-godot"
+          unzip -q "$RUNNER_TEMP/sprocket-godot.zip" -d "$RUNNER_TEMP/sprocket-godot"
+          GODOT_BIN="$RUNNER_TEMP/sprocket-godot/Godot_v4.7-stable_linux.x86_64"
+          chmod +x "$GODOT_BIN"
+          "$GODOT_BIN" --version > evidence/build/godot-version.txt
+          "$RUNNER_TEMP/sprocket-native/bin/python" experiments/agent_painter/lanes/sprocket/proposal_native.py \
+            --stage execute \
+            --corpus evidence/source633/corpus --output evidence/sprocket-proposal-native \
+            --source-sha "$GITHUB_SHA" --godot "$GODOT_BIN" \
+            --runtime-manifest evidence/native-build.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-pipework-prospective-native-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/build/
+            evidence/native-build.json
+            evidence/sprocket-proposal-preflight/
+            evidence/sprocket-proposal-native/
+          if-no-files-found: warn
+          retention-days: 90

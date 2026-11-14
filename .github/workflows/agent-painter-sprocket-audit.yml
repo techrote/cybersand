@@ -1,0 +1,63 @@
+name: Agent painter SPROCKET immutable fresh96 evidence audit
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/audit_96.py
+      - experiments/agent_painter/lanes/sprocket/test_audit_96.py
+      - .github/workflows/agent-painter-sprocket-audit.yml
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-sprocket-audit-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Independently verify original trainer and final checkpoint; no model download
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Model-free positive and adversarial source tests
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/sprocket/test_audit_96.py
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/sprocket-audit-schedule.json
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-sprocket-campaign-25b24bf80c593b115321387a2a0374dd5ff02548-43529482591-1
+          run-id: '43529482591'
+          github-token: ${{ github.token }}
+          path: evidence/original-training
+      - name: Download independent positively native-admitted original TRAIN evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/original-native
+      - name: Validate original real 96-step training and byte-complete final checkpoint
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("evidence/original-training")
+          matches = list(p.rglob("summary.json"))
+          if len(matches) != 1:
+              raise SystemExit("expected exactly one archived original training summary")
+          target = matches[0].parent
+          if not (target / "checkpoint-000096" / "inventory.json").is_file():
+              raise SystemExit("original final checkpoint not found")
+          print("Original run source artifacts discovered:", target)
+          Path("/tmp/sprocket-original-evidence-path").write_text(str(target))
+          PY
+          python3 experiments/agent_painter/lanes/sprocket/audit_96.py \
+            --output "$(cat /tmp/sprocket-original-evidence-path)" \
+            --corpus evidence/original-native/corpus
