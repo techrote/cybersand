@@ -4,7 +4,7 @@
   "id": "arched-viaduct",
   "name": "Arched Viaduct",
   "module": "arcade",
-  "module_version": 1,
+  "module_version": 2,
   "theme": "ruins",
   "geometry": {
     "room_size": 80,

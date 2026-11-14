@@ -147,14 +147,18 @@ func new_native_algorithms() -> void:
 		for preset: Dictionary in catalogue:
 			if preset.module == module: found = preset.duplicate(true)
 		if not check(not found.is_empty(), "native module has a selectable builtin preset: " + module): continue
-		check(int(found.module_version) == 1 and Project.validate_preset(found).is_empty(),
-			"new module has valid explicit native version and geometry: " + module)
+		check(int(found.module_version) == 2 and Project.validate_preset(found).is_empty(),
+			"owner-reviewed module has valid explicit v2 identity and geometry: " + module)
+		var archived: Dictionary = found.duplicate(true)
+		archived.module_version = 1
+		check(Project.validate_preset(archived).is_empty(),
+			"earlier native v1 generated-start recipes remain importable: " + module)
 		var configured_project: Dictionary = Project.default_project()
 		configured_project.styles = [{"enabled":true,"share":100.0,"preset":found}]
 		var compilation: Dictionary = Project.compile(configured_project)
 		if not check(compilation.get("ok",false), "new module compiles into native recipe: " + module): continue
 		check(compilation.recipe.modules.size() == 1 and compilation.recipe.modules[0].module == module and
-			int(compilation.recipe.modules[0].version) == 1, "new native module identity is preserved")
+			int(compilation.recipe.modules[0].version) == 2, "refined native module v2 identity is preserved")
 		if not ClassDB.class_exists(&"CyberWorldGenerator"): continue
 		var generator: Variant = ClassDB.instantiate(&"CyberWorldGenerator")
 		var admitted: Dictionary = generator.configure(compilation.recipe)
@@ -250,7 +254,8 @@ func native_identity_edges() -> void:
 	var versions := {}
 	for entry: Dictionary in catalogue.modules:
 		versions[str(entry.id) + ":" + str(entry.version)] = true
-	check(versions.has_all(["arcology:1","arcology:2","vault:1","vault:2","aqueduct:1"]),"native catalogue exposes exact legacy and architectural module versions")
+	check(versions.has_all(["arcology:1","arcology:2","vault:1","vault:2","aqueduct:1",
+		"terraced:1","terraced:2","hex_hive:1","hex_hive:2","arcade:1","arcade:2"]),"native catalogue exposes exact legacy and architectural module versions")
 
 func run() -> void:
 	hostile_json()

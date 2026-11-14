@@ -26,7 +26,7 @@
         "id": "skyline-terraces",
         "name": "Skyline Terraces",
         "module": "terraced",
-        "module_version": 1,
+        "module_version": 2,
         "theme": "ruins",
         "geometry": {
           "room_size": 80,
@@ -36,9 +36,9 @@
           "shaft_width": 10
         },
         "materials": {
-          "wall": 109,
+          "wall": 58,
           "floor": 111,
-          "window": 120
+          "window": 121
         },
         "apertures": {},
         "deterioration": 0.02
@@ -53,7 +53,7 @@
         "id": "cellular-hive",
         "name": "Cellular Hive",
         "module": "hex_hive",
-        "module_version": 1,
+        "module_version": 2,
         "theme": "industrial",
         "geometry": {
           "room_size": 64,
@@ -64,8 +64,8 @@
         },
         "materials": {
           "wall": 130,
-          "floor": 70,
-          "window": 120
+          "floor": 65,
+          "window": 121
         },
         "apertures": {},
         "deterioration": 0
@@ -80,7 +80,7 @@
         "id": "arched-viaduct",
         "name": "Arched Viaduct",
         "module": "arcade",
-        "module_version": 1,
+        "module_version": 2,
         "theme": "ruins",
         "geometry": {
           "room_size": 80,

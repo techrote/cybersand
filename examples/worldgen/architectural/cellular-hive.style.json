@@ -4,7 +4,7 @@
   "id": "cellular-hive",
   "name": "Cellular Hive",
   "module": "hex_hive",
-  "module_version": 1,
+  "module_version": 2,
   "theme": "industrial",
   "geometry": {
     "room_size": 64,
@@ -15,8 +15,8 @@
   },
   "materials": {
     "wall": 130,
-    "floor": 70,
-    "window": 120
+    "floor": 65,
+    "window": 121
   },
   "apertures": {},
   "deterioration": 0

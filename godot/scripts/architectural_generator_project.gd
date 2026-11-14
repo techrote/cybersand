@@ -13,7 +13,7 @@ static func _preset(identity: String, label: String, module: String, theme: Stri
 		room: int, floor_height: int, wall: int, door: int, shaft: int,
 		wall_material: int, floor_material: int, window_material: int, damage: float) -> Dictionary:
 	return {"format":PRESET_FORMAT,"version":1,"id":identity,"name":label,
-		"module":module,"module_version":2 if module in ["arcology","vault"] else 1,"theme":theme,
+		"module":module,"module_version":2,"theme":theme,
 		"geometry":{"room_size":room,"floor_height":floor_height,
 			"wall_thickness":wall,"door_width":door,"shaft_width":shaft},
 		"materials":{"wall":wall_material,"floor":floor_material,"window":window_material},
@@ -31,8 +31,8 @@ static func builtin_presets() -> Array:
         _preset("thermal-foundry","Thermal Foundry","vault","industrial",16,24,2,4,0,104,131,72,0.0),
         _preset("earthen-terraces","Earthen Terraces","arcology","ruins",128,80,4,20,0,102,109,55,0.30),
         _preset("orbital-observatory","Orbital Observatory","arcology","industrial",96,64,2,14,12,130,114,121,0.0),
-		_preset("skyline-terraces","Skyline Terraces","terraced","ruins",80,40,3,12,10,109,111,120,0.02),
-		_preset("cellular-hive","Cellular Hive","hex_hive","industrial",64,56,3,10,0,130,70,120,0.0),
+		_preset("skyline-terraces","Skyline Terraces","terraced","ruins",80,40,3,12,10,58,111,121,0.02),
+		_preset("cellular-hive","Cellular Hive","hex_hive","industrial",64,56,3,10,0,130,65,121,0.0),
 		_preset("arched-viaduct","Arched Viaduct","arcade","ruins",80,64,3,10,0,98,49,121,0.0)
 	]
 
@@ -80,8 +80,8 @@ static func validate_preset(preset: Variant) -> String:
 		return "Style name must be a nonempty string of at most 128 characters."
 	if not preset.module is String or preset.module not in ["arcology","vault","terraced","hex_hive","arcade"]:
 		return "Unknown native architectural module."
-	var expected_version: int = 2 if preset.module in ["arcology","vault"] else 1
-	if not _number(preset.module_version,expected_version,expected_version):
+	var allowed_versions: Array = [2] if preset.module in ["arcology","vault"] else [1, 2]
+	if not _number(preset.module_version,1,2) or int(preset.module_version) not in allowed_versions:
 		return "Incorrect version for native module " + str(preset.module) + "."
 	if not preset.theme is String or preset.theme not in ["industrial","ruins","garden","basalt","dry_cavern","wet_cavern"]:
 		return "Unknown native style theme."

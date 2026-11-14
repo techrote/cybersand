@@ -97,6 +97,33 @@ geometry fit, module versions and preparation/raster limits. A configuration
 which is syntactically valid as a project can still fail native admission with a
 specific error. The installed World is untouched by that refusal.
 
+### Owner-reviewed structural refinements (14 November 2026)
+
+The Windows owner playtest accepted the three algorithms' visual contrast and the
+five-column form. The following small refinements use new **native module v2**
+identities. The original v1 samplers remain registered so saved v1 recipes
+can reproduce their exact material outputs.
+
+- **Skyline Terraces v2** uses Reinforced Concrete (58) in load-bearing walls
+  instead of Rammed Earth (109). Frosted Glass (121) replaces the regular
+  Glass Block (120), with glazing extended through the two-cell interior
+  facade lip while retaining structural floor bands.
+- **Cellular Hive v2** replaces straight modulo-X accent bars with Rusted Steel
+  (65) reinforcement that follows the staggered six-sided chamber envelope.
+  The builtin no longer exposes Ceramic Tile (70) in broad structural trim;
+  Frosted Glass (121) appears only in defined window strips.
+- **Arched Viaduct v2** replaces misaligned empty pier-foot cutouts with
+  centred solid Steel Plate (62) load-bearing inlays. Arch profiles, original
+  material contrasts and supporting decks are otherwise unchanged.
+
+**Material texture policy:** the shader renders material textures using
+absolute world coordinates. Painting and pasting the same material therefore
+exposes the same periodic pattern phase, but not an invisible simulation
+layer. Prefer subtly textured or irregular materials for broad architecture
+surfaces; reserve conspicuously periodic ones for small deliberate accents.
+This change neither retimes world textures nor modifies material simulation
+or copy/paste behavior.
+
 ## Three new native architectural geometry algorithms
 
 The three additions are independently registered schema-4 native samplers,
@@ -104,9 +131,9 @@ not additional material skins on Arcology/Vault:
 
 | Module | Preset | Geometry |
 |---|---|---|
-| `terraced` v1 | Skyline Terraces | Stepped, receding floors, exposed ledges, staggered partitions and an optional service shaft |
-| `hex_hive` v1 | Cellular Hive | Staggered six-sided chamber cutouts within a solid web, with optional vertical connecting ports |
-| `arcade` v1 | Arched Viaduct | Repeated quadratic arch soffits, piers, elevated decks and optional pier apertures |
+| `terraced` v1/v2 | Skyline Terraces | Stepped, receding floors, exposed ledges, staggered partitions and an optional service shaft |
+| `hex_hive` v1/v2 | Cellular Hive | Staggered six-sided chamber cutouts within a solid web, with optional vertical connecting ports |
+| `arcade` v1/v2 | Arched Viaduct | Repeated quadratic arch soffits, piers, elevated decks and optional pier apertures |
 
 All sample from immutable prepared parameters in module-local coordinates,
 without live World access, neighbor-chunk dependencies or mutable RNG state.

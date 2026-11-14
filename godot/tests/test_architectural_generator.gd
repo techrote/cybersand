@@ -310,7 +310,7 @@ func native_algorithm_gallery() -> void:
 		samples[algorithm] = data.cells
 		var png_us := preview("new-algorithm-" + algorithm, data.cells, Vector2i(512,512))
 		report.cases.append({"case":"new-native-architectural-algorithm", "algorithm":algorithm,
-			"module_version":1, "seed":project.seed, "material_sha256":data.material_sha256,
+			"module_version":int(style.module_version), "seed":project.seed, "material_sha256":data.material_sha256,
 			"recipe_sha256":data.recipe_sha256, "preview_colour_and_png_us":png_us})
 	check(samples.size() == 3, "three new native architectural algorithm maps rendered")
 	if samples.size() == 3:

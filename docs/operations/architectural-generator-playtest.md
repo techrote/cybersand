@@ -26,7 +26,9 @@ Thirteen built-ins are available, including Civic Atrium, Transit Spine,
 Basalt Archive, Solar Conservatory, Thermal Foundry, Earthen Terraces,
 Orbital Observatory, **Skyline Terraces**, **Cellular Hive** and **Arched Viaduct**.
 The last three are new native geometry algorithms rather than recoloured
-Arcology/Vault structures.
+Arcology/Vault structures. Their refined v2 presets incorporate the owner's
+structural material, window, hex-support and pier-footing comments. Previously
+saved v1 recipes remain reproducible.
 
 
 1. Open **New from generator… → Architectural Generator…**.
