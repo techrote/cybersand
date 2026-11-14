@@ -57,9 +57,10 @@ func _run() -> void:
 	if active:
 		var start_usec: int = Time.get_ticks_usec()
 		print("ENGINE_LAB_MOUNT_INITIAL ", JSON.stringify(panel._read_sample(start_usec)))
-		expect(panel.recorder.begin(panel._identity(),start_usec,500000),
-			"test-only bounded 0.5s benchmark")
-		host.engine_lab_benchmark_active = true
+		panel.benchmark_duration_usec = 500000 # Test-only; actual UI retains 10s.
+		panel.begin_benchmark()
+		expect(panel.recorder.running and host.engine_lab_benchmark_active,
+			"real Engine Lab launch button arms a bounded current-World capture")
 		expect(await _wait(func() -> bool: return panel.recorder.finished,30000),
 			"actual Main clock capture completes without controller input")
 		var report: Dictionary = panel.recorder.outcome
@@ -79,6 +80,14 @@ func _run() -> void:
 		expect(not panel._last_report_path.is_empty()
 			and FileAccess.file_exists(panel._last_report_path),
 			"one JSON report persisted after capture, not per frame")
+		panel.begin_benchmark()
+		expect(panel.recorder.running and host.engine_lab_benchmark_active,
+			"second current-World capture arms cleanly")
+		panel.cancel_benchmark()
+		expect(panel.recorder.outcome.get("status","") == "incomplete"
+			and panel.recorder.outcome.get("reason","") == "cancelled_by_owner"
+			and not host.engine_lab_benchmark_active,
+			"cancelled benchmark retains incomplete receipt and disarms Main counters")
 	panel.hide()
 	expect(not host.engine_lab_benchmark_active, "closing Engine Lab disarms read-only counters")
 	_finish(host)
