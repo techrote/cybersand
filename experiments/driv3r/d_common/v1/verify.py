@@ -107,7 +107,7 @@ def validate_bundle(records: list[dict], *, evidence_root: Path | None = None) -
         episodes.setdefault(eid, []).append(row["sequence"])
         if row["type"] == "provenance":
             evidence_classes.setdefault(eid, set()).add(row["evidence_class"])
-        if row["type"] == "action" and row["execution_status"] == "committed" and row["brush_state"] != "up":
+        if row["type"] == "action" and row["execution_status"] in ("committed", "partial") and row["brush_state"] != "up":
             material_mutation_by_episode[eid] = True
         if row["type"] == "reversal" and row["status"] == "applied" and row["mechanism"] == "UNDO_MATERIAL_EDIT":
             material_mutation_by_episode[eid] = True
@@ -204,15 +204,15 @@ def validate_bundle(records: list[dict], *, evidence_root: Path | None = None) -
                          row["native_receipt_artifact"] is None and
                          row["world_postcondition"] is None,
                          "Unexecuted candidate claims native receipt/post-state")
-            if row["execution_status"] == "committed":
+            if row["execution_status"] in ("committed", "partial"):
                 _require(row["world_postcondition"] is not None,
-                         "Committed action missing post-state")
+                         "Committed/partial action missing post-state")
                 _require(_same_world_dimensions(world, row["world_postcondition"]),
                          "Committed action silently changed World shape/identity")
                 if row["brush_state"] != "up":
                     _require(row["native_receipt_ref"] is not None and
                              row["native_receipt_artifact"] is not None,
-                             "Committed material action requires exact native receipt artifact")
+                             "Committed/partial material action requires exact native receipt artifact")
                     _require(row["native_receipt_artifact"]["format"] == "json",
                              "Native receipt artifact must be JSON")
                     receipts_by_episode.setdefault(eid, set()).add(
@@ -222,8 +222,11 @@ def validate_bundle(records: list[dict], *, evidence_root: Path | None = None) -
                              for a, b in zip(row["path"], row["path"][1:])),
                          "Physical travel or paint path is not cardinal-contiguous")
         elif name == "reversal":
-            resolve(row["source_action_ref"], "action")
+            previous_action = resolve(row["source_action_ref"], "action")
             resolve(row["history_anchor_ref"])
+            if previous_action["world_postcondition"] is not None:
+                _require(previous_action["world_postcondition"] == row["before_world"],
+                         "Reversal is not fenced to preceding action post-state")
             _require(row["brush_lifted"] is True, "Reversal must lift brush")
             cursor_only = row["mechanism"] != "UNDO_MATERIAL_EDIT"
             _require(row["preserve_material_edits"] is cursor_only,
@@ -287,6 +290,8 @@ def validate_bundle(records: list[dict], *, evidence_root: Path | None = None) -
                              row["final_world"]["width_cells"] *
                              row["final_world"]["height_cells"],
                              "Native full World byte extent does not match dimensions")
+                    _require(row["native"]["sha256"] == row["final_world"]["world_material_sha256"],
+                             "Native full World artifact hash differs from final World identity")
                 included = {(blob["path"], blob["sha256"])
                             for blob in row["native_receipts"]}
                 _require(receipts_by_episode.get(eid, set()).issubset(included),
