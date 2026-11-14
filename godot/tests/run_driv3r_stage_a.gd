@@ -68,7 +68,7 @@ func load_fixture_catalog() -> bool:
 				for value: Variant in edit:
 					if not integer(value): fatal = "Noninteger fixture"; return false
 				if edit[0] < 0 or edit[1] < 0 or edit[2] < 1 or edit[3] < 1 \
-					or edit[0] + edit[2] > 96 or edit[1] + edit[3] > 96 or edit[4] not in [28, 58]:
+					or edit[0] + edit[2] > 96 or edit[1] + edit[3] > 96 or int(edit[4]) not in [28, 58]:
 					fatal = "Fixture outside fixed authority"; return false
 				visits += int(edit[2] * edit[3])
 				normalized.append([int(edit[0]), int(edit[1]), int(edit[2]), int(edit[3]), int(edit[4])])

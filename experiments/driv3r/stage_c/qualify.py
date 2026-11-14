@@ -138,7 +138,7 @@ def run(args):
     case_hash = hashlib.sha256(CATALOG.read_bytes()).hexdigest()
     request_path = CATALOG.with_name("qualification-request.json")
     request = json.loads(request_path.read_text())
-    if (request != {"schema": "driv3r-stage-c-request-v1", "sequence": 3,
+    if (request != {"schema": "driv3r-stage-c-request-v1", "sequence": 4,
                     "stage_b_source": ORIGINAL_STAGE_B, "stage_b_release_sha256": BASELINE_RELEASE_SHA256,
                     "frozen_case_sha256": case_hash, "draft_hold": True}):
         raise Refusal("Stage C qualification request not frozen or not matched")

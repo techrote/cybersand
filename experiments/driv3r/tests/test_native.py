@@ -239,6 +239,7 @@ class NativeEvidenceTests(unittest.TestCase):
         self.assertEqual(leading_spaces, [], "GDScript mixed indentation causes native parser refusal")
         self.assertIn("func framebuffer()", harness)
         self.assertIn("func bounded_integer(", harness)
+        self.assertIn("int(edit[4]) not in [28, 58]", harness)
 
     def test_unsafe_paths_refused_before_file_read(self):
         with tempfile.TemporaryDirectory() as tmp:
