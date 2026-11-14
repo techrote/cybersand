@@ -1,0 +1,202 @@
+name: PR593 portable Windows GPU playtest ZIP (Draft/HOLD)
+
+# Packaging-only branch; payload comes from exact qualified PR593 GDScript
+# source commit, with unmodified source-qualified PR566 native binary.
+on:
+  push:
+    branches: [codex/pr593-win-evaluation-zip-20261114]
+    paths:
+      - '.github/workflows/pr593-windows-playtest-zip.yml'
+      - 'tools/ci/package_pr593_mask_coherent_windows.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pr593-packaging-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  windows-test-zip:
+    name: Build, clean-extract and smoke-test portable Windows 11 ZIP
+    if: github.repository == 'techrote/cybersand'
+    runs-on: windows-2022
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: bash
+    env:
+      PR593_SOURCE: 27d98572ab6f4d69c578bd3f4b907291bfb7da06
+      PR566_NATIVE_SOURCE: 214de85adef2aaabc8e26de8612a3bf27cc1a081
+      PR593_ARCHIVE_NAME: CyberSand-PR593-Mask-Coherent-Windows-27d98572ab6f.zip
+
+    steps:
+      - name: Checkout packaging code with exact PR593 ancestry
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          lfs: false
+          fetch-depth: 0
+
+      - name: Select Python 3.12 for portable archive + manifest checks
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Reject any changed production source and preserve hashes
+        run: |
+          set -euo pipefail
+          mkdir -p evidence build/pr593-zip
+          git merge-base --is-ancestor "$PR593_SOURCE" HEAD
+          git merge-base --is-ancestor "$PR566_NATIVE_SOURCE" "$PR593_SOURCE"
+          git diff --exit-code "$PR593_SOURCE" HEAD -- godot native/include native/src materials examples/worldgen
+          git diff --exit-code "$PR566_NATIVE_SOURCE" "$PR593_SOURCE" -- native/include native/src godot/native_extension
+          git rev-parse HEAD > evidence/packaging-head.txt
+          git rev-parse "$PR593_SOURCE" > evidence/evaluation-source-sha.txt
+          git rev-parse "$PR593_SOURCE^{tree}" > evidence/evaluation-source-tree.txt
+          python -m py_compile tools/ci/package_pr593_mask_coherent_windows.py
+
+      - name: Restore verified original PR566 Windows GDExtension
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: native-pixel-integrated-build-windows-43537909868-1
+          repository: techrote/cybersand
+          run-id: 43537909868
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/pr566-qualified
+
+      - name: Pull and validate exact Windows Rapier2D GDExtension
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          echo 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' | sha256sum --check --strict
+
+      - name: Download original official Godot 4.7 Windows runtime and licences
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 \
+            --output "$RUNNER_TEMP/godot-win47.zip" \
+            'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          mkdir -p "$RUNNER_TEMP/godot-notices"
+          for notice in LICENSE.txt COPYRIGHT.txt; do
+            curl --fail --location --retry 3 --connect-timeout 20 --max-time 300 \
+              --output "$RUNNER_TEMP/godot-notices/$notice" \
+              "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$notice"
+          done
+
+      - name: Stage signed app-local x64 Visual C++ runtime and redistribution licences
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $notices = Join-Path $env:RUNNER_TEMP 'godot-notices'
+          $runtimeLicense = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 -o $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime license download failed' }
+          curl.exe -fL --retry 3 -o $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Visual Studio 2022 redistribution license download failed' }
+          ./tools/ci/stage_windows_vc_runtime.ps1 -Output (Join-Path $env:RUNNER_TEMP 'pr593-vc-runtime') -License $runtimeLicense -DeveloperLicense $developerLicense
+
+      - name: Stage exact Git-tree Workbench with qualified native Windows DLL
+        run: |
+          set -euo pipefail
+          python tools/ci/package_pr593_mask_coherent_windows.py build \
+            --origin build/pr566-qualified \
+            --godot-archive "$RUNNER_TEMP/godot-win47.zip" \
+            --notices "$RUNNER_TEMP/godot-notices" \
+            --vc-runtime "$RUNNER_TEMP/pr593-vc-runtime" \
+            --output build/pr593-payload | tee evidence/stage.log
+
+      - name: Produce conventional portable ZIP with full payload SHA256 inventory
+        run: |
+          set -euo pipefail
+          python tools/ci/package_pr593_mask_coherent_windows.py zip \
+            --output build/pr593-payload \
+            --archive "build/pr593-zip/$PR593_ARCHIVE_NAME" | tee evidence/archive.log
+          sha256sum "build/pr593-zip/$PR593_ARCHIVE_NAME" > evidence/playtest-zip.sha256
+          test -s "build/pr593-zip/$PR593_ARCHIVE_NAME"
+
+      - name: Extract using Windows .NET ZIP implementation and verify each file
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $archive = (Resolve-Path "build/pr593-zip/$env:PR593_ARCHIVE_NAME").Path
+          $destination = 'C:\cs593'
+          if (Test-Path $destination) { throw 'Unexpected pre-existing extraction directory' }
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $reader=[System.IO.Compression.ZipFile]::OpenRead($archive)
+          try {
+            $names=@($reader.Entries | ForEach-Object { $_.FullName })
+            $max=($names | ForEach-Object { $_.Length } | Measure-Object -Maximum).Maximum
+            if ($names.Count -lt 500 -or $max -gt 210 -or (8+$max) -ge 260) { throw 'Windows archive path / inventory invalid' }
+            $rootNames = @($names | Where-Object { $_ -notlike '*/*' })
+            foreach ($name in @('Open Workbench.cmd','Compare original mask pose.cmd','README.txt','candidate-manifest.json')) {
+              if ($rootNames -notcontains $name) { throw "Missing Windows shell root member $name" }
+            }
+          } finally { $reader.Dispose() }
+          [System.IO.Compression.ZipFile]::ExtractToDirectory($archive,$destination)
+          python tools/ci/package_pr593_mask_coherent_windows.py verify --output $destination
+          if ($LASTEXITCODE -ne 0) { throw 'Clean extraction changed package hash inventory' }
+          $shell=New-Object -ComObject Shell.Application
+          $zip=$shell.NameSpace($archive)
+          if ($null -eq $zip -or $null -eq $zip.ParseName('Open Workbench.cmd')) { throw 'Windows Shell handler cannot open playtest launcher in ZIP' }
+          @{ extracted_to=$destination; members=$names.Count; max_relative_path=$max; shell_zip='passed' } |
+            ConvertTo-Json | Set-Content -Path evidence/windows-clean-extraction.json -Encoding UTF8
+
+      - name: Execute clean-extracted Godot Workbench import and safety/native startup smoke
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root='C:\cs593'
+          $engine=Join-Path $root 'Godot_v4.7-stable_win64_console.exe'
+          $project=Join-Path $root 'godot'
+          & $engine --version | Set-Content evidence/godot-version.txt
+          if ($LASTEXITCODE -ne 0) { throw 'Bundled Godot failed --version' }
+          & $engine --headless --path $project --editor --quit *> evidence/windows-import.log
+          if ($LASTEXITCODE -ne 0) { Get-Content evidence/windows-import.log -Tail 50; throw 'Bundled project import failed' }
+          foreach ($test in @('test_workbench_presentation_coherence','test_pr566_mask_coherent_native_world','test_workbench_input')) {
+            & $engine --headless --path $project --script ("res://tests/"+$test+".gd") *> ("evidence/"+$test+".log")
+            if ($LASTEXITCODE -ne 0) { Get-Content ("evidence/"+$test+".log") -Tail 80; throw "Clean-extraction Godot test failed: $test" }
+          }
+          'passed' | Set-Content evidence/clean-extraction-smoke-status.txt
+
+      - name: Real clean-extracted Windows ANGLE flight, Fire ON and OFF
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $env:CYBERSAND_RECOIL_TRIAL='fire'
+          $env:CYBERSAND_DIAG_FLYER_POSE=''
+          $env:CYBERSAND_POSE_AB_CAMERA='free'
+          $env:CYBERSAND_POSE_AB_CAPTURE_DIR=Join-Path $PWD 'evidence/package-frames'
+          $env:CYBERSAND_RECOIL_OUTPUT=Join-Path $PWD 'evidence/package-flight.json'
+          New-Item -ItemType Directory -Force $env:CYBERSAND_POSE_AB_CAPTURE_DIR | Out-Null
+          & 'C:\cs593\Godot_v4.7-stable_win64_console.exe' \
+            --rendering-method gl_compatibility --rendering-driver opengl3_angle \
+            --path 'C:\cs593\godot' --script res://tests/test_pr566_mask_coherent_ab.gd \
+            *> evidence/clean-extracted-graphical-flight.log
+          if ($LASTEXITCODE -ne 0) { Get-Content evidence/clean-extracted-graphical-flight.log -Tail 80; throw 'Packaged Windows graphical flight failed' }
+          python -c "import json,pathlib; p=pathlib.Path('evidence/package-flight.json');d=json.loads(p.read_text());assert not d['failures'] and d['actual_fire_inserts']==20 and len(d['frame_captures'])==8 and d['presentation_guard_totals']['safe_live']>0;print('PR593_PACKAGED_WINDOWS_GRAPHICS_PASS',d['presentation_guard_totals'])"
+          if ($LASTEXITCODE -ne 0) { throw 'Package graphical receipts invalid' }
+
+      - name: Retain standalone owner test ZIP and SHA256 checksum
+        if: success()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CyberSand-PR593-Windows-GPU-Evaluation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pr593-zip/
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
+
+      - name: Retain exact ZIP-build and extraction qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: PR593-Windows-ZIP-Qualification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
