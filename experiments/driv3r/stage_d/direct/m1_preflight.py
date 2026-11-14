@@ -15,7 +15,7 @@ from typing import Any, Callable, Mapping, Sequence
 M1_SOURCE_COMMIT = "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6"
 M1_SCHEMA_SHA256 = "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d"
 M1_PROTOCOL = "cybersand.driv3r.d-common/1"
-VERSION = "d1a-m1-offline-preflight/2"
+VERSION = "d1a-m1-offline-preflight/3"
 _ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]{0,95}$")
 
 
@@ -38,6 +38,28 @@ def _canonical(value: Any) -> bytes:
 
 def _hash(value: Any) -> str:
     return hashlib.sha256(_canonical(value)).hexdigest()
+
+
+_CARDINAL = {"E": (1, 0), "N": (0, -1), "S": (0, 1), "W": (-1, 0)}
+
+
+def _validate_directional_sweep(candidate_id: str, origin: tuple[int, int],
+                                swept: Sequence[Sequence[int]]) -> None:
+    """Bind E/N/S/W + 1/2/4/8 candidate IDs to exact straight cell footprints.
+
+    Cardinal adjacency alone permits an E2 candidate to bend, or W2 to travel
+    east, despite the model and the trajectory audit interpreting that ID as a
+    particular control. This is an offline preflight invariant, not a native
+    admission decision.
+    """
+    match = re.fullmatch(r"([ENSW])([1248])", candidate_id)
+    _require(match is not None, "Invalid directional movement candidate ID")
+    dx, dy = _CARDINAL[match.group(1)]
+    length = int(match.group(2))
+    _require(len(swept) == length and all(
+        tuple(cell) == (origin[0] + dx * step, origin[1] + dy * step)
+        for step, cell in enumerate(swept, start=1)
+    ), "Movement candidate ID does not match its straight swept footprint")
 
 
 def assert_approved_schema(root: Path) -> str:
@@ -114,6 +136,7 @@ def legal_catalog(before: Sequence[int], options: Sequence[Any], *,
                          "legality authority must return boolean")
                 swept.append(list(point))
                 cursor = point
+            _validate_directional_sweep(cid, origin, swept)
             end, mode = cursor, "cursor_move"
         canonical.append({
             "id": cid, "mode": mode, "cursor_before": list(origin),
@@ -192,6 +215,7 @@ def _verified_presentation_catalog(catalog: Mapping[str, Any]) -> list[dict[str,
                          "Presentation catalog contains a noncardinal sweep")
                 cursor = point
             _require(cursor == after, "Presentation catalog endpoint differs from sweep")
+            _validate_directional_sweep(cid, before, swept)
         ids.append(cid)
     _require(ids == sorted(set(ids)) and ids.count("STOP") == 1,
              "Presentation catalog IDs must be unique, sorted and include STOP")

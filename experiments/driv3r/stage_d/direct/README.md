@@ -20,6 +20,12 @@ The reconstructed workspace contained the GitHub-exact D-1A Python package, **no
 ---
 
 
+## Directional-control integrity (subsequent source change)
+
+The offline M1 preflight adapter **v3** now validates complete declared action semantics: `E/N/S/W` direction and an exact `1/2/4/8` straight swept-cell footprint. Cardinal-adjacent, collision-free geometry alone is insufficient: an `E2` that bends, a `W2` moving east, or an `E1` with two swept cells is rejected. Both synthetic catalog admission and rehashed model-presentation auditing enforce this invariant. Accepted D-COMMON v1 and native action authority remain unchanged.
+
+Two additional adversarial test methods cover admission and post-hash presentation tampering. **The earlier 62/62 full-suite result predates this source revision; current-head execution of the expanded lane suite is still required.** No model/native/held-out campaign was run.
+
 ## What is implemented
 
 - Deterministic versioned 36-decision fixtures: 3 distinct irregular selected-wall profiles and 4 material-Z avoidance geometries in **development**, plus 2 different wall profiles and 2 different routing topologies in **heldout**. Split is by hardcoded structural family, *not merely RNG seed*.

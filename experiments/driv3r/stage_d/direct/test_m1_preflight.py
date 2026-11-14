@@ -163,6 +163,44 @@ class CatalogPreflightTests(unittest.TestCase):
             m.legal_catalog(p, self.options, width=True, height=self.f.height,
                             legal_cell=self.f.legal)
 
+
+    def test_directional_ids_bind_to_straight_swept_cells(self):
+        # Cardinal legal geometry is insufficient when its model-facing
+        # direction or macro length is false.
+        x, y = self.before
+        tampered = (
+            ("E2", [(x + 1, y), (x + 1, y + 1)]),
+            ("E1", [(x + 1, y), (x + 2, y)]),
+            ("W2", [(x + 1, y), (x + 2, y)]),
+            ("CURVE", [(x + 1, y)]),
+        )
+        for cid, path in tampered:
+            with self.subTest(cid=cid, path=path):
+                self.assertTrue(all(self.f.legal(point) for point in path))
+                options = [
+                    {"candidate_id": "STOP", "path": [], "stop": True},
+                    {"candidate_id": cid, "path": path, "stop": False},
+                ]
+                with self.assertRaisesRegex(m.PreflightError, "candidate ID|Movement"):
+                    self.catalog(options)
+
+    def test_rehashed_presentation_rejects_bent_and_wrong_length_macros(self):
+        # Recomputing a synthetic hash is not native admission or permission.
+        x, y = self.before
+        for mismatch in ("bent", "length"):
+            forged = copy.deepcopy(self.catalog())
+            move = next(row for row in forged["catalog"] if row["id"] == "E2")
+            if mismatch == "bent":
+                move["swept_xy"] = [[x + 1, y], [x + 1, y + 1]]
+                move["cursor_after"] = [x + 1, y + 1]
+            else:
+                move["swept_xy"] = [[x + 1, y]]
+                move["cursor_after"] = [x + 1, y]
+            forged["synthetic_legal_catalog_sha256"] = m._hash(forged["catalog"])
+            with self.subTest(mismatch=mismatch):
+                with self.assertRaisesRegex(m.PreflightError, "Movement"):
+                    m.model_presentation_hash(forged)
+
     def test_schema_digest_checks_actual_bytes(self):
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp)/"experiments/driv3r/d_common/v1/interface.schema.json"
