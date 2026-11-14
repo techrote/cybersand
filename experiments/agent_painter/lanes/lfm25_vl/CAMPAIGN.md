@@ -109,3 +109,17 @@ new freeze follows. Structurally new native-admitted TRAIN groups require a
 identities. The next justified model-training step remains dependent on the
 shepherd/reviewer-controlled, disjoint structural curriculum expansion and
 shared DEVELOPMENT suite.
+
+### Exact 92-path language-only and EOS framing follow-up
+
+The gate's completed-model identity now also refuses a substituted LoRA target
+expression, any mismatch in the **full exact set of 92 qualified language
+projections** (rather than only their count), an altered EOS token (official
+assistant EOS = 7), and enabling images/tools inside the original
+text-only fine-tuning profile. The target set is derived explicitly from
+16 language layers (48 FFN targets, 24 attention targets and 20 convolution
+targets); no vision/projector LoRA target is admitted. This is still **a
+source-only future-checkpoint guard**, not a newly trained adapter or proof
+of physically unchanged vision/projector tensors. Positive tensor-byte
+preservation remains owned by the original shared trainer and checkpoint
+verification. New synthetic negative tests cover each added refusal.
