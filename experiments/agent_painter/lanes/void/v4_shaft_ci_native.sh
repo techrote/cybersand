@@ -47,7 +47,7 @@ chmod +x "$GODOT_BIN"
 if ! timeout 1200 "$GODOT_BIN" --headless --path godot --editor --quit > evidence/build/import.log 2>&1; then tail -120 evidence/build/import.log; exit 1; fi
 "$RUNNER_TEMP/void-native/bin/python" experiments/agent_painter/lanes/void/v4_shaft_native.py \
   --proposals experiments/agent_painter/lanes/void/v4_shaft_proposals.json \
-  --previous experiments/agent_painter/lanes/void/v4_shaft_proposals.json \
+  --previous experiments/agent_painter/lanes/void/v3_research_proposals.json \
   --corpus evidence/original-native/corpus \
   --godot "$GODOT_BIN" --runtime-manifest evidence/native-build.json \
   --source-sha "$GITHUB_SHA" --output evidence/void-v4-shaft-native
