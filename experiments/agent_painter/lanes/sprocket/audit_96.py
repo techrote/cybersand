@@ -7,6 +7,7 @@ The original training source/run and positive native TRAIN source are fixed.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -15,7 +16,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "training"))
-from common import profile, read_json, sha256_file, verify_checkpoint
+from common import load_training_corpus, profile, read_json, sha256_file, verify_checkpoint
 
 SOURCE = "25b24bf80c593b115321387a2a0374dd5ff02548"
 RUN = "43529482591"
@@ -24,6 +25,9 @@ REVISION = "eb157d4ddddc4619e661d4a2426bb2dd000fc668"
 NATIVE_SOURCE = "633920373a3d406a2ede61ce4137c324f76be23b"
 CORPUS_SHA = "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
 STEPS = 96
+# Frozen, original native-admitted TRAIN/compiler identities (not arbitrary hex receipts).
+TRAIN_SHA = "5cb437db0663d15496adced3c255c32a5a274d99a69dd6113938b2dbc15ddbb1"
+COMPILER_SHA = "4d8559805df1ff5f3f23277a7bca98e47fa8feb53337aa79e8546d0bb89132f6"
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
 
 
@@ -63,8 +67,10 @@ def validate(summary, preflight, checkpoint, progress, campaign):
     require(config.get("source_sha") == SOURCE
             and config.get("profile") == "sprocket"
             and config.get("native_source_sha") == NATIVE_SOURCE
-            and config.get("corpus_manifest_sha256") == CORPUS_SHA,
-            "trainer/native/corpus source custody differs")
+            and config.get("corpus_manifest_sha256") == CORPUS_SHA
+            and config.get("train_sha256") == TRAIN_SHA
+            and config.get("compiler_sha256") == COMPILER_SHA,
+            "trainer/native/TRAIN/compiler source custody differs")
     model = config.get("model")
     require(type(model) is dict and model.get("model_id") == MODEL
             and model.get("revision") == REVISION and model.get("subfolder") == ""
@@ -143,7 +149,54 @@ def validate(summary, preflight, checkpoint, progress, campaign):
             "wrapper receipt cannot certify full fresh96 completion")
 
 
-def check(output):
+def expected_native_sampler(rows, seed=568):
+    """Independent reconstruction of the foundation's family-balanced sampler.
+
+    Consume only positively native-admitted TRAIN rows; NEVER open FINAL targets.
+    A self-declared list of twelve distinct sample IDs is not sufficient proof.
+    """
+    buckets = {}
+    for row in rows:
+        require(row.get("split") == "TRAIN" and type(row.get("id")) is str
+                and row.get("family") in ("greebles", "pipework", "architecture"),
+                "non-TRAIN row or invalid family in sampler")
+        buckets.setdefault(row["family"], []).append(row["id"])
+    require(set(buckets) == {"greebles", "pipework", "architecture"}
+            and all(len(ids) == 4 for ids in buckets.values())
+            and len({item for ids in buckets.values() for item in ids}) == 12,
+            "not the original four-seed-row-per-family TRAIN partition")
+    for ids in buckets.values():
+        ids.sort(key=lambda name: hashlib.sha256(f"{seed}:{name}".encode()).digest())
+    return [buckets[family][i] for i in range(4) for family in sorted(buckets)]
+
+
+def verify_native_train_custody(config, corpus_dir):
+    """Actual gate: hash original native manifest, reread admitted TRAIN, bind IDs.
+
+    This is distinct from the model-free synthetic receipt fixture. The common
+    native loader independently revalidates positive material/PNG receipts.
+    """
+    root = Path(corpus_dir)
+    require(root.is_dir() and not root.is_symlink(), "missing actual native corpus")
+    manifest_path = root / "admitted-corpus.json"
+    require(manifest_path.is_file() and not manifest_path.is_symlink()
+            and sha256_file(manifest_path) == CORPUS_SHA,
+            "wrong or missing immutable native-admitted corpus manifest")
+    rows, manifest = load_training_corpus(root)
+    require(manifest.get("source_sha") == NATIVE_SOURCE
+            and manifest.get("compiler_sha256") == COMPILER_SHA
+            and manifest.get("split_files", {}).get("TRAIN", {}).get("sha256") == TRAIN_SHA,
+            "original native TRAIN/compiler identity is not independently corroborated")
+    groups = {row.get("group_id", row.get("structural_group")) for row in rows}
+    require(len(groups) == 6 and all(
+        sum(row.get("group_id", row.get("structural_group")) == group for row in rows) == 2
+        for group in groups), "original TRAIN group/seed multiplicity differs")
+    require(config.get("sample_order") == expected_native_sampler(rows, 568),
+            "training order differs from positively native-admitted TRAIN IDs")
+    print("Original native TRAIN: 12/12 positive readbacks, six structures; exact sampler order PASS")
+
+
+def check(output, corpus_dir):
     require(output.is_dir() and not output.is_symlink(), "missing/symlinked artifact output")
     summary_file = output / "summary.json"
     summary = read_json(summary_file)
@@ -169,9 +222,12 @@ def check(output):
             if line.strip():
                 progress.append(json.loads(line))
     validate(summary, preflight, checkpoint, progress, campaign)
+    verify_native_train_custody(summary["config"], corpus_dir)
     print(json.dumps({"audit": "historical-sprocket-fresh96",
                       "source": SOURCE, "run_id": RUN,
                       "optimizer_steps": 96, "checkpoint_inventory": "byte-verified",
+                      "original_train_native_admission": "12/12 revalidated",
+                      "original_train_order": "independently reproduced",
                       "quality_evidence": False, "native_execution_by_audit": False,
                       "result": "PASS"}, sort_keys=True))
 
@@ -179,4 +235,7 @@ def check(output):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
-    check(parser.parse_args().output)
+    parser.add_argument("--corpus", type=Path, required=True,
+                        help="Original native artifact corpus; mandatory for real receipt audit")
+    args = parser.parse_args()
+    check(args.output, args.corpus)

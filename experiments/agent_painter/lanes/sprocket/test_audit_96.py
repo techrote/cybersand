@@ -6,7 +6,8 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from audit_96 import SOURCE, MODEL, REVISION, NATIVE_SOURCE, CORPUS_SHA, RUN, STEPS, validate
+from audit_96 import (SOURCE, MODEL, REVISION, NATIVE_SOURCE, CORPUS_SHA,
+                      TRAIN_SHA, COMPILER_SHA, RUN, STEPS, validate, expected_native_sampler)
 
 
 def fixture():
@@ -14,6 +15,7 @@ def fixture():
     config = {
         "source_sha": SOURCE, "profile": "sprocket",
         "native_source_sha": NATIVE_SOURCE, "corpus_manifest_sha256": CORPUS_SHA,
+        "train_sha256": TRAIN_SHA, "compiler_sha256": COMPILER_SHA,
         "model": {"model_id": MODEL, "revision": REVISION, "subfolder": "", "trust_remote_code": False},
         "device": "cpu", "dtype": "float32", "threads": 1, "seed": 568,
         "max_length": 2048, "rank": 8, "alpha": 16, "dropout": 0.05,
@@ -80,6 +82,8 @@ class HistoricalProofGate(unittest.TestCase):
         for key, value in [
             ("source_sha", "0" * 40), ("native_source_sha", "1" * 40),
             ("corpus_manifest_sha256", "2" * 64),
+            ("train_sha256", "1" * 64),
+            ("compiler_sha256", "2" * 64),
             ("model", {"model_id": "substituted", "revision": REVISION, "subfolder": ""}),
             ("numerics", {"profile": "faster-than-reviewed"}),
             ("final_targets_opened", True), ("threads", 2),
@@ -129,12 +133,40 @@ class HistoricalProofGate(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate(*v)
 
+    def test_original_native_sampler_and_relabel_refusal(self):
+        rows = [
+            {"id": f"{family}-{group}-s{seed}", "family": family,
+             "split": "TRAIN", "group_id": f"{family}-{group}"}
+            for family in ("greebles", "pipework", "architecture")
+            for group in ("first", "second") for seed in (104729, 130363)
+        ]
+        first = expected_native_sampler(rows, 568)
+        self.assertEqual(len(first), 12)
+        self.assertEqual(len(set(first)), 12)
+        self.assertEqual(first, expected_native_sampler(list(reversed(rows)), 568))
+        self.assertNotEqual(first, expected_native_sampler(rows, 569))
+        bad = deepcopy(rows)
+        bad[0]["split"] = "FINAL"
+        with self.assertRaises(ValueError):
+            expected_native_sampler(bad, 568)
+        bad = deepcopy(rows)
+        bad[0]["id"] = bad[1]["id"]
+        with self.assertRaises(ValueError):
+            expected_native_sampler(bad, 568)
+        bad = deepcopy(rows)
+        bad[0]["family"] = "architecture"
+        with self.assertRaises(ValueError):
+            expected_native_sampler(bad, 568)
+
     def test_historical_workflow_is_model_free_read_only(self):
         path = Path(__file__).resolve().parents[4] / ".github/workflows/agent-painter-sprocket-audit.yml"
         s = path.read_text(encoding="utf-8")
         self.assertIn("audit_96.py", s)
         self.assertIn("test_audit_96.py", s)
         self.assertIn("43529482591", s)
+        self.assertIn("43506373969", s)
+        self.assertIn("agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b", s)
+        self.assertIn("--corpus evidence/original-native/corpus", s)
         self.assertIn("contents: read", s)
         self.assertNotIn("download_model.py", s)
         self.assertNotIn("train.py", s)
