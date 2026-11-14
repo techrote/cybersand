@@ -1,0 +1,63 @@
+name: VOID v5 original-byte service slot semantics (NOT TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-void-568]
+    paths:
+      - 'experiments/agent_painter/lanes/void/v5_service_slots.py'
+      - 'experiments/agent_painter/lanes/void/test_v5_service_slots.py'
+      - '.github/workflows/agent-painter-void-v5-service-slots.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: void-v5-service-slots
+  cancel-in-progress: false
+jobs:
+  original-evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Exact source, hosted provider and twelve source/geometry regressions
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          mkdir -p evidence/void-v5-service
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output evidence/void-v5-service/policy.json
+          python3 -m unittest discover -s experiments/agent_painter/lanes/void -p test_v5_service_slots.py -v 2>&1 | tee evidence/void-v5-service/tests.log
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: void-v5-support-native-64b5f1ca5b0f65ffbf9a7645a0d0828d35657f08-43601866007
+          run-id: '43601866007'
+          github-token: ${{ github.token }}
+          path: evidence/original-void-v5
+      - name: Check actual original native readbacks and clarify side-slot semantics
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/void/v5_service_slots.py \
+            --original-artifact evidence/original-void-v5 \
+            --output evidence/void-v5-service/semantics.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("evidence/void-v5-service/semantics.json").read_text())
+          assert d["status"]=="READ_ONLY_SEMANTICS_PASS" and d["global_id"]=="ARCH-568-R01"
+          assert d["native"]["independently_checked_original_native_views"]==2
+          assert d["program"]["side_service_slot_widths"]==[3,3]
+          assert d["shared_train_groups"]==d["optimizer_steps"]==d["model_paintings"]==0
+          assert d["native"]["new_native_art_operations"]==0
+          assert not d["final_opened"] and not d["frozen_useful_model"]
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: void-v5-service-slot-semantics
+          path: evidence/void-v5-service/
+          if-no-files-found: warn
+          retention-days: 90
