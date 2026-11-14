@@ -1,0 +1,62 @@
+name: VOID v3 three-family source-only research preflight
+on:
+  push:
+    branches: [codex/agent-painter-void-568]
+    paths:
+      - 'experiments/agent_painter/lanes/void/v3_research_proposals.json'
+      - 'experiments/agent_painter/lanes/void/v3_research_probe.py'
+      - '.github/workflows/agent-painter-void-v3-probe.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: void-v3-source-{{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: {{ github.sha }}
+          persist-credentials: false
+      - name: Verify exact source and CI policy
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/void-v3-scheduling.json
+          python3 -m py_compile experiments/agent_painter/lanes/void/v3_research_probe.py
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: {{ github.token }}
+          path: evidence/native-original
+      - name: Strict historical TRAIN/DEVELOPMENT and source compiler screen
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/void/v3_research_probe.py \
+            --corpus evidence/native-original/corpus \
+            --proposals experiments/agent_painter/lanes/void/v3_research_proposals.json \
+            --old-proposals experiments/agent_painter/lanes/void/v2_pipe_proposals.json \
+            --output evidence/void-v3/source-only.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("evidence/void-v3/source-only.json").read_text())
+          assert x["status"]=="SOURCE_ONLY_PASS"
+          assert (x["seed_preflights"],x["putative_new_signatures"],x["styles_not_new_groups"])==(8,3,1)
+          assert x["original_groups"]=={"TRAIN":6,"DEVELOPMENT":6}
+          assert x["native_positive"]==x["new_train_groups"]==x["optimizer_updates"]==0
+          assert not x["final_opened"]
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: void-v3-source-{{ github.sha }}-{{ github.run_id }}
+          path: evidence/void-v3/
+          if-no-files-found: warn
+          retention-days: 90
