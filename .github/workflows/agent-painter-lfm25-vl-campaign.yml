@@ -112,6 +112,13 @@ jobs:
             --output evidence/training --steps ${{ matrix.arm.steps }} \
             --max-seconds 2700 --max-length 2048 --threads 1 --seed 568 \
             --checkpoint-every ${{ matrix.arm.checkpoint_every }}
+      - name: Require exact training completion and checkpoint custody before inference
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/lfm-campaign/bin/python" experiments/agent_painter/lanes/lfm25_vl/campaign_gate.py \
+            --output evidence/training --arm "${{ matrix.arm.name }}" \
+            --source-sha "${{ github.sha }}" --run-id "${{ github.run_id }}"
+
       - name: One raw original post-training first pass, without repair
         run: |
           set -euo pipefail
