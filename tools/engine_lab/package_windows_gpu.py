@@ -193,6 +193,16 @@ def build(args: argparse.Namespace) -> dict:
             gpu_benchmark_launcher(mode).encode("utf-8"))
     shutil.copyfile(ROOT / "tools/engine_lab/windows_gpu_runner.ps1",
                     stage / "Run-NVIDIA-Benchmarks.ps1")
+    (stage / "Run-Test-It.ps1").write_text(
+        "param([switch]$Full)\n"
+        "$RootDir = Split-Path -Parent $MyInvocation.MyCommand.Path\n"
+        "$Runner = Join-Path $RootDir 'Run-NVIDIA-Benchmarks.ps1'\n"
+        "if ($Full) { & $Runner -Scripted -FullScripted } else { & $Runner -Scripted }\n",
+        encoding="utf-8")
+    (stage / "Test it (scripted).cmd").write_bytes((
+        '@echo off\r\nsetlocal\r\ncd /d "%~dp0"\r\n'
+        'powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0Run-Test-It.ps1"\r\n'
+        'pause\r\n').encode("utf-8"))
     (stage / "README - Engine Lab GPU.txt").write_text(
         "CyberSand ENG-LAB-001 — Windows 11/NVIDIA Workbench research build\n"
         "Draft/HOLD. Not a production build. Does NOT contain RENDER-ACK-002 gating.\n\n"
@@ -216,6 +226,20 @@ def build(args: argparse.Namespace) -> dict:
         "each case prepares a fresh native World, warms up and then samples.\n"
         "Raw JSON and process logs: Benchmark-Results/NVIDIA-*/\n"
         "Please return summary.json plus the individual w*.json files.\n\n"
+        "TEST IT: Open Workbench (NVIDIA).cmd, then Engine Lab, then click\n"
+        "'Test it -> ZIP'. No physical mouse/keyboard timing enters the test.\n"
+        "The Test It script regenerates the owner's exact 2048x2048\n"
+        "setup-gate-canvas native material cells and proves its SHA-256 and\n"
+        "all 256 original generation receipts BEFORE each World starts.\n"
+        "It commands the real Needle at fixed COMPLETED PHYSICS TICKS, logs\n"
+        "the accepted tick, applied action and per-tick body consequences,\n"
+        "and measures native/Rapier steps, Workbench holds and render cadence.\n"
+        "It runs all four Water families with two repeats by default (8 runs).\n"
+        "Each Test It session creates ONE ZIP inside Benchmark-Results.\n"
+        "If any trial fails, the partial evidence is still zipped as INCOMPLETE.\n"
+        "Use Run-Test-It.ps1 -Full for 16 runs including four native workers.\n"
+        "This is deterministic command scheduling, not a guarantee of\n"
+        "bit-identical asynchronous simulation across independent processes.\n\n"
         "Native solver families: FreeMass/reference, PressureFlow/cached_dormant,\n"
         "Cellular Yield/reference and Inertial Cellular/reference.\n"
         "Inertial's required native radius3 differs from the usual radius2;\n"
@@ -251,7 +275,7 @@ def build(args: argparse.Namespace) -> dict:
         "project": project,
         "file_sha256": files,
         "policy_default": "baseline-no-render-ack-gating",
-        "launchers": ["Open Workbench (NVIDIA).cmd",
+        "launchers": ["Open Workbench (NVIDIA).cmd", "Test it (scripted).cmd",
                       "Benchmark (Quick) NVIDIA.cmd", "Benchmark (Full) NVIDIA.cmd"],
     }
     (stage / "evaluation-manifest.json").write_text(
@@ -302,8 +326,8 @@ def build(args: argparse.Namespace) -> dict:
         [str(powershell),"-NoProfile","-NonInteractive",
          "-ExecutionPolicy","Bypass","-File",
          str(stage / "Run-NVIDIA-Benchmarks.ps1"),
-         "-Smoke","-AllowOtherAdapter","-RenderingDriver","opengl3_angle"],
-        evidence / "smoke-quick-ANGLE.log", 600)
+         "-Scripted","-Smoke","-AllowOtherAdapter","-RenderingDriver","opengl3_angle"],
+        evidence / "smoke-scripted-ANGLE.log", 1200)
     if not smoke["one-click-ANGLE-control"]["ok"]:
         raise RuntimeError("Bundled actual PowerShell one-click graphical smoke failed")
 
