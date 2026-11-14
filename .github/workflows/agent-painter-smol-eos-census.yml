@@ -1,0 +1,78 @@
+name: SMOL original TRAIN EOS-tail census (no TRAIN mutation)
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths:
+      - experiments/agent_painter/lanes/smol/original_train_eos_census.py
+      - .github/workflows/agent-painter-smol-eos-census.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: smol-original-eos-census-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  authentic-train-tails:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Exact head / hosted-only policy and initial failure evidence
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$GITHUB_REF" = refs/heads/codex/agent-painter-smol-568
+          test "$GITHUB_REPOSITORY" = techrote/cybersand
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/smol-census-policy.json
+          mkdir -p evidence/smol-eos-census
+          printf '%s\n' "$GITHUB_SHA" > evidence/smol-eos-census/source-head.txt
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/original-native
+      - name: Pinned isolated tokenizer and native-custody dependencies (no model weights)
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/smol-eos-census"
+          "$RUNNER_TEMP/smol-eos-census/bin/python" -m pip install \
+            'huggingface-hub==2.4.0' 'tokenizers==0.23.3' 'transformers==5.22.2' \
+            'jinja2==3.1.6' 'markupsafe==3.0.3' \
+            'Pillow==13.0.0' 'PyYAML==6.0.3' 'jsonschema==4.26.0'
+          "$RUNNER_TEMP/smol-eos-census/bin/python" -m pip check
+          "$RUNNER_TEMP/smol-eos-census/bin/python" -m pip freeze --all > evidence/smol-eos-census/pip-freeze.txt
+          "$RUNNER_TEMP/smol-eos-census/bin/python" experiments/agent_painter/lanes/smol/original_train_eos_census.py --self-test
+      - name: Download pinned official tokenizer/config small files only
+        env:
+          HF_HUB_DISABLE_XET: '1'
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=20s 600s "$RUNNER_TEMP/smol-eos-census/bin/python" - <<'PY'
+          import os
+          from huggingface_hub import snapshot_download
+          snapshot_download(repo_id="HuggingFaceTB/SmolLM2-135M-Instruct",
+                            revision="12fd25f77366fa6b3b4b768ec3050bf629380bac",
+                            allow_patterns=["config.json","tokenizer.json","tokenizer_config.json"],
+                            local_dir=os.environ["RUNNER_TEMP"]+"/smol-census-tokenizer")
+          PY
+      - name: Authenticate all 12 positive TRAIN labels and review-only P01 (no fix or FINAL access)
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=20s 300s "$RUNNER_TEMP/smol-eos-census/bin/python" \
+            experiments/agent_painter/lanes/smol/original_train_eos_census.py \
+            --corpus evidence/original-native/corpus \
+            --snapshot "$RUNNER_TEMP/smol-census-tokenizer" \
+            --source "$GITHUB_SHA" \
+            --output evidence/smol-eos-census/census.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: smol-original-eos-census-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/smol-eos-census/
+          if-no-files-found: warn
+          retention-days: 90
