@@ -7,6 +7,8 @@ const DURATION_USEC: int = 10000000
 const REFRESH_USEC: int = 250000
 
 var host: Control
+# Tests can shorten an otherwise unchanged passive observation; UI remains 10s.
+var benchmark_duration_usec: int = DURATION_USEC
 var recorder: CyberEngineLabPassiveRecorder = Recorder.new()
 var _live: Label
 var _message: Label
@@ -176,7 +178,7 @@ func begin_benchmark() -> void:
 	if host.paused:
 		_message.text = "Refused: press Play and allow the scene to run first"
 		return
-	if not recorder.begin(_identity(), Time.get_ticks_usec(), DURATION_USEC):
+	if not recorder.begin(_identity(), Time.get_ticks_usec(), benchmark_duration_usec):
 		_message.text = "Refused: recorder not in a valid state"
 		return
 	host.engine_lab_benchmark_active = true
