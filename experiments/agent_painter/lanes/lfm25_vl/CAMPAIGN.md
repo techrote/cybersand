@@ -68,3 +68,44 @@ fresh48/fresh120 campaign. Any novel curriculum, model-numerical recipe or
 fresh-versus-continued experiment needs its own versioned contract and fresh
 hosted qualification. This does not imply more optimizer updates, native
 painting, unseen FINAL access or a useful painter candidate.
+
+## 14 November 2026 — frozen TRAIN/compiler and complete-model custody (P3)
+
+The historical `fresh48`/`fresh120` promotion gate now checks **more than
+self-consistent training receipts**: `config.train_sha256` must equal the original
+native-admitted TRAIN split
+`5cb437db0663d15496adced3c255c32a5a274d99a69dd6113938b2dbc15ddbb1`,
+and `config.compiler_sha256` the admitted compiler
+`4d8559805df1ff5f3f23277a7bca98e47fa8feb53337aa79e8546d0bb89132f6`.
+It also binds the exact **12 original individual seed-row IDs and their sampler
+order**, independently recovered from the two original hosted training job logs
+[48-step job 132245201791](https://github.com/techrote/cybersand/actions/runs/43529993326/job/132245201791)
+and [120-step job 132245201772](https://github.com/techrote/cybersand/actions/runs/43529993326/job/132245201772).
+Both logs show the same 12-row ordered cycle, repeated 4 or 10 times. These
+remain only **six distinct structural TRAIN groups**.
+
+The gate checks the official complete multimodal model's nine root-file SHA-256
+identities in both declared profile and actual downloader receipt, loader name,
+LFM1.0 license notice, reviewed 92 language target paths/LoRA count and
+frozen CPU/training hyperparameters. The existing downloader and shared
+trainer retain responsibility for hashing **actual downloaded bytes and
+performing optimizer updates**: model-free tests use synthetic receipts and
+are not an independent downloaded-weight, checkpoint or training proof.
+
+[Hosted source-only 10-test gate qualification](https://github.com/techrote/cybersand/actions/runs/43563409930)
+completed SUCCESS at source `a958909c87c53dcab4b7c8722123bf003cdca3c4`
+with 10/10 Python unittest methods, including explicit collusion against
+split/compiler/model hashes, synthetic rows, changing the original order,
+altered license/LoRA metadata, broken model downloader receipts and changed
+training hyperparameters. The preceding intermediate run
+[43563374086](https://github.com/techrote/cybersand/actions/runs/43563374086)
+failed because the corresponding test fixtures had not yet been updated; it
+remains failure evidence and is not relabelled.
+
+This is only a **historical-dose-specific completion integrity repair**, not a
+training, inference or native-painting result, and no model-quality claim or
+new freeze follows. Structurally new native-admitted TRAIN groups require a
+**new versioned campaign contract**, rather than bypassing the original frozen
+identities. The next justified model-training step remains dependent on the
+shepherd/reviewer-controlled, disjoint structural curriculum expansion and
+shared DEVELOPMENT suite.
