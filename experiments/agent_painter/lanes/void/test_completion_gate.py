@@ -215,7 +215,8 @@ class GateTests(unittest.TestCase):
         p.write_text(original)
         rows = [json.loads(line) for line in original.splitlines()]
         rows[5]["loss"] += 0.5
-        p.write_text("".join(json.dumps(row) + "\n" for row in rows))
+        p.write_text("".join(json.dumps(row, sort_keys=True, separators=(",", ":"),
+                                        ensure_ascii=False, allow_nan=False) + "\n" for row in rows))
         with self.assertRaisesRegex(ValueError, "differs"):
             verify_completion(self.summary, 0, self.checkpoint)
         p.write_text("\n".join(original.splitlines()[:119]) + "\n")
