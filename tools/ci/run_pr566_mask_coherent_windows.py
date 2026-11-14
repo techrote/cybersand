@@ -110,6 +110,12 @@ def main():
     # Host import can be headless; only *rendered* trials require a display.
     execute("editor-import",base+["--headless","--path",str(ROOT/"godot"),
                       "--editor","--quit"],os.environ.copy(),target/"logs/import.log",180)
+    execute("coherence-unit",base+["--headless","--path",str(ROOT/"godot"),
+            "--script","res://tests/test_workbench_presentation_coherence.gd"],
+            os.environ.copy(),target/"logs/coherence-unit.log",120)
+    execute("workbench-input-regression",base+["--headless","--path",str(ROOT/"godot"),
+            "--script","res://tests/test_workbench_input.gd"],
+            os.environ.copy(),target/"logs/workbench-input.log",180)
     results=[]
     for fire in ("nofire","fire"):
         for camera in ("free","follow"):
