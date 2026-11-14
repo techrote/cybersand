@@ -1,0 +1,38 @@
+name: VOID model-free checkpoint promotion regression
+on:
+  push:
+    branches: ['codex/agent-painter-void-568']
+    paths:
+      - 'experiments/agent_painter/lanes/void/completion_gate.py'
+      - 'experiments/agent_painter/lanes/void/test_completion_gate.py'
+      - '.github/workflows/agent-painter-void-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-painter-void-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-and-negative-controls:
+    name: Verify synthetic full-checkpoint/partial/failure controls only
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Source identity, pure Python tests and policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_ACTIONS" = true
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 -m py_compile experiments/agent_painter/lanes/void/completion_gate.py experiments/agent_painter/lanes/void/test_completion_gate.py
+          python3 -m unittest discover -s experiments/agent_painter/lanes/void -p 'test_completion_gate.py' -v
+          python3 tools/ci/check_ci_provider_policy.py
+          echo "MODEL-FREE ONLY: no model download, training, native replay, or quality claim"
