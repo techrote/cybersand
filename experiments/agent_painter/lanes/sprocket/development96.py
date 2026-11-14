@@ -66,7 +66,7 @@ def validate_campaign(directory, checkpoint_directory, selected):
                            ("sample_cursor", 96), ("checkpoint", "checkpoint-000096"),
                            ("checkpoint_readback_exact", True),
                            ("frozen_base_unchanged", True),
-                           ("adapter_changed", True), ("resume", False),
+                           ("adapter_changed", True), ("resume", None),
                            ("native_execution", False)):
         ensure(summary.get(key) == required, "campaign summary mismatch: " + key)
     checkpoint = verify_checkpoint(checkpoint_directory)
