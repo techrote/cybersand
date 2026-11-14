@@ -124,8 +124,8 @@ class GateTests(unittest.TestCase):
                 config["sample_order"][2] = config["sample_order"][1]
             elif kind == "wrong_cycle":
                 # History/summary collusion cannot change the pinned sampler.
-                items[3][15]["sample_id"] = "TRAIN-4"
-                items[0]["sample_ids_this_job"][15] = "TRAIN-4"
+                items[3][15]["sample_id"] = "TRAIN-6"
+                items[0]["sample_ids_this_job"][15] = "TRAIN-6"
             elif kind == "missing":
                 del config["sample_order"]
             elif kind == "short":
