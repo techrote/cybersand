@@ -46,6 +46,7 @@ class PairedEvidenceTests(unittest.TestCase):
         record = d.run_episode(self.route, "astar")
         self.assert_rejected(record, lambda r: r.__setitem__("native_qualified", True))
         self.assert_rejected(record, lambda r: r.__setitem__("sequential_native_receipts", 1))
+        self.assert_rejected(record, lambda r: r.__setitem__("sequential_native_receipts", False))
         self.assert_rejected(record, lambda r: r["events"][0].__setitem__("native_receipt_ref", "fake"))
 
     def test_unknown_native_claim_fields_are_rejected(self):
