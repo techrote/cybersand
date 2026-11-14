@@ -56,6 +56,8 @@ jobs:
           assert s["actual_verified_native_views"]==8 and s["distinct_structural_proposals"]==3 and s["nonindependent_style_variants"]==1
           assert s["admitted_common_train_groups"]==s["optimizer_steps"]==0
           assert s["sealed_final_opened"] is False
+          assert s["reference_manifest_sha256"]=="2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
+          assert s["quarantined_candidate_ids"]==["void-v3-A01"]
           print("RESEARCH native PASS; NOT shared TRAIN admission")
           PY
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
