@@ -24,6 +24,38 @@ CORPUS_SHA = "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
 MODEL_ID = "LiquidAI/LFM2.5-VL-450M"
 MODEL_REVISION = "fc6221ca597f3315e4f82fc2df606783267b34ba"
 ARMS = {"fresh48": 48, "fresh120": 120}
+# Immutable TRAIN-only identities from original native-admitted source633 corpus
+# and original actual 48/120 hosted optimizer log. Seed variants are NOT
+# independent structural groups. Changing this curriculum requires a new gate.
+TRAIN_SHA = "5cb437db0663d15496adced3c255c32a5a274d99a69dd6113938b2dbc15ddbb1"
+COMPILER_SHA = "4d8559805df1ff5f3f23277a7bca98e47fa8feb53337aa79e8546d0bb89132f6"
+ORIGINAL_SAMPLE_ORDER = (
+    "architecture-stair_and_landing_hall-v1-s130363",
+    "greebles-switchboard_stack-v1-s104729",
+    "pipework-tee_distribution-v1-s130363",
+    "architecture-paired_doorway_rooms-v1-s104729",
+    "greebles-switchboard_stack-v1-s130363",
+    "pipework-tee_distribution-v1-s104729",
+    "architecture-stair_and_landing_hall-v1-s104729",
+    "greebles-service_cluster-v1-s104729",
+    "pipework-two_elbow_route-v1-s130363",
+    "architecture-paired_doorway_rooms-v1-s130363",
+    "greebles-service_cluster-v1-s130363",
+    "pipework-two_elbow_route-v1-s104729",
+)
+# Exact approved upstream snapshot root-file SHA-256 identities. The normal
+# downloader independently hashes bytes; this post-run gate does not download.
+MODEL_HASHES = {
+    "LICENSE": "4d28ca14dedc0b3d0fcc2b3339f0e79931faa33874f3d24f522183a8fc70068c",
+    "README.md": "666cc6b49fcdec9ddd378081c47df5aa11679c12a4a05cbbb436a3107f04ee3b",
+    "chat_template.jinja": "309e586e2eda3d7f2db1e2a045bfb07f4c83798b23f7ac587954426302d508e9",
+    "config.json": "ab0de32d57b83b8b0cbb4526e096cf1e8adc1d8b6a09cb55df38597866eae53f",
+    "generation_config.json": "40d17f9ec64c97e8fd5400540960b6a9761ed6d6acc0b1ab6a6656055e4755b3",
+    "processor_config.json": "622b75b531b3f49b1cdf4f90626c34e5ffb4f8bba2b8637807af0462398ae718",
+    "tokenizer.json": "f3910942aa907c48b0cc20ec426ee38bfa8dcda8feecf035ced981918cb30f14",
+    "tokenizer_config.json": "aed83606e95db808fc4d5312bf117605360e770bfef5a6028c348c3981ce143a",
+    "model.safetensors": "2f6deb5dd43707de5cfe3c59470d3bccf4c3112a810a74570499f4728d412eea",
+}
 
 
 def require(condition, reason):
@@ -63,15 +95,41 @@ def validate(summary, preflight, receipt, progress, *, arm, source_sha, run_id=N
     require(config.get("native_source_sha") == CORPUS_SOURCE
             and config.get("corpus_manifest_sha256") == CORPUS_SHA,
             "native corpus identity mismatch")
+    require(config.get("train_sha256") == TRAIN_SHA
+            and config.get("compiler_sha256") == COMPILER_SHA,
+            "original native-admitted TRAIN/compiler bytes mismatch")
     model = config.get("model")
     require(isinstance(model, dict) and model.get("model_id") == MODEL_ID
             and model.get("revision") == MODEL_REVISION, "official model revision mismatch")
+    require(model.get("required_hashes") == MODEL_HASHES
+            and model.get("loader") == "Lfm2VlForConditionalGeneration"
+            and model.get("trust_remote_code") is False
+            and model.get("license") == "lfm1.0"
+            and model.get("card_license") == "other"
+            and model.get("expected_inventory", {}).get("language_linear_targets") == 92
+            and model.get("expected_inventory", {}).get("lora_parameters") == 2998272,
+            "original complete multimodal model/LoRA/license profile mismatch")
+    model_files = config.get("model_files")
+    require(isinstance(model_files, dict) and set(model_files) == set(MODEL_HASHES)
+            and all(isinstance(model_files[name], dict)
+                    and model_files[name].get("sha256") == expected
+                    and type(model_files[name].get("bytes")) is int
+                    and model_files[name]["bytes"] > 0
+                    for name, expected in MODEL_HASHES.items()),
+            "official pinned downloaded-model file receipt mismatch")
     numerics = config.get("numerics")
     require(isinstance(numerics, dict)
             and numerics.get("profile") == "portable-cpu-fp32-v1",
             "unqualified numerical recipe")
     require(config.get("device") == "cpu" and config.get("dtype") == "float32"
             and exact_int(config.get("threads"), 1), "CPU numerical boundary changed")
+    require(exact_int(config.get("seed"), 568)
+            and exact_int(config.get("max_length"), 2048)
+            and exact_int(config.get("rank"), 8)
+            and exact_int(config.get("alpha"), 16)
+            and config.get("dropout") == 0.05
+            and config.get("learning_rate") == 0.0005,
+            "unqualified historical LFM dose/trainer configuration")
     require(config.get("final_targets_opened") is False, "FINAL access claimed")
     require(preflight.get("config") == config and preflight.get("resume") is None,
             "preflight configuration/resume mismatch")
@@ -93,6 +151,8 @@ def validate(summary, preflight, receipt, progress, *, arm, source_sha, run_id=N
     require(type(order) is list and len(order) == 12
             and all(type(sample) is str and sample for sample in order)
             and len(set(order)) == 12, "invalid original TRAIN sampler inventory")
+    require(tuple(order) == ORIGINAL_SAMPLE_ORDER,
+            "sampler inventory is not the original admitted TRAIN identity/order")
     observed = [event.get("sample_id") for event in progress]
     require(observed == [order[index % 12] for index in range(steps)],
             "optimizer sample order differs from original TRAIN sampler")
