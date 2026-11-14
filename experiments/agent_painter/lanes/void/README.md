@@ -141,3 +141,28 @@ rows. The meta-only checks instantiate architecture/LoRA shapes without model
 weights, inference or optimization. Hosted real training and fresh-runner
 resume receipts remain separate required evidence; do not relabel these tests
 as training.
+
+## Exact fresh120 promotion-gate custody — 14 November 2026
+
+The lane-only `completion_gate.py` is an extra fail-closed **promotion** check,
+not another native admission or independent proof that the synthetic test fixture
+performed training. It requires all 120 original canonical `progress.jsonl`
+optimizer events, complete native-parent/model/source/numerics identities,
+checkpoint inventory and adapter readback. Following independent P3 review, it
+also pins the **actual original positively native-admitted TRAIN split** SHA-256
+`5cb437db0663d15496adced3c255c32a5a274d99a69dd6113938b2dbc15ddbb1`,
+the original compiler SHA-256
+`4d8559805df1ff5f3f23277a7bca98e47fa8feb53337aa79e8546d0bb89132f6`,
+and the exact set of twelve TRAIN row IDs from the source633 immutable artifact.
+The full historical corpus manifest is
+`2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc`.
+Neither DEVELOPMENT nor sealed FINAL target rows are used in this guard.
+
+The model-free positive fixture uses **synthetic** adapter/optimizer bytes and
+events but real frozen source/split ID constants; adversarial fixtures reject
+valid-looking substituted TRAIN/compiler digests or missing/extra/duplicate
+TRAIN row IDs before touching candidate application. New native-admitted
+curricula must receive a **separately versioned campaign gate**, not silently
+alter these pinned v1 identities or resume an incompatible checkpoint.
+Original fresh120 training and model-native evidence retain their own qualified
+source/run identity; this guard does not retroactively upgrade semantic quality.
