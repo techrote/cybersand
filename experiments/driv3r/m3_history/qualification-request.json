@@ -18,7 +18,7 @@
   "exact_harness": "res://tests/run_driv3r_m3_history.gd",
   "host_owned_brush_up_relocation_only": true,
   "retention": "original_failures_and_all_native_material_readbacks",
-  "request_attempt": 2,
+  "request_attempt": 3,
   "no_merge_or_ready": true,
-  "amendment": "First hosted attempt stopped before material admission on inherited-ready vs derived-harness hash ambiguity; now require exact source-hashed child marker while retaining strict parent/native identity checks."
+  "amendment": "Second attempt proved the headless session still launched the old Stage A script. Corrected both headless/graphical paths to use the explicit allowlisted harness and added an offline regression checking both."
 }
