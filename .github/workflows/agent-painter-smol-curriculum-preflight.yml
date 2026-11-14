@@ -9,6 +9,8 @@ on:
       - 'experiments/agent_painter/lanes/smol/test_curriculum_witness.py'
       - 'experiments/agent_painter/lanes/smol/curriculum_preview.py'
       - 'experiments/agent_painter/lanes/smol/test_curriculum_preview.py'
+      - 'experiments/agent_painter/lanes/smol/visible_split_neighbours.py'
+      - 'experiments/agent_painter/lanes/smol/test_visible_split_neighbours.py'
       - '.github/workflows/agent-painter-smol-curriculum-preflight.yml'
   workflow_dispatch:
 permissions:
@@ -50,6 +52,14 @@ jobs:
           python3 experiments/agent_painter/lanes/smol/curriculum_preflight.py \
             --corpus evidence/native/corpus \
             --receipt evidence/smol-proposals-screen.json
+      - name: Independently check visible TRAIN/DEV pipe topology aliases (read-only; never FINAL)
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s experiments/agent_painter/lanes/smol -p 'test_visible_split_neighbours.py' -v
+          python3 experiments/agent_painter/lanes/smol/visible_split_neighbours.py \
+            --corpus evidence/native/corpus \
+            --proposals experiments/agent_painter/lanes/smol/curriculum_proposals_v2.json \
+            --output evidence/smol-visible-split-neighbours.json
       - name: Source-screened compiler-only review gallery (NOT Godot or model output)
         run: |
           set -euo pipefail
@@ -62,6 +72,7 @@ jobs:
           name: smol-curriculum-screen-${{ github.sha }}-${{ github.run_attempt }}
           path: |
             evidence/smol-proposals-screen.json
+            evidence/smol-visible-split-neighbours.json
             evidence/smol-compiler-review/
           retention-days: 90
           if-no-files-found: warn
