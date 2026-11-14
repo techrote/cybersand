@@ -75,6 +75,7 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           python3 -m unittest discover -s experiments/agent_painter/lanes/smol -p 'test_curriculum_witness.py' -v
           python3 -m unittest discover -s experiments/agent_painter/lanes/smol -p 'test_visible_split_neighbours.py' -v
+          python3 -m pip install 'Pillow==13.0.0'
           python3 experiments/agent_painter/lanes/smol/native_research_v2.py \
             --stage preflight --source-sha "$GITHUB_SHA" \
             --corpus evidence/source633/corpus \
