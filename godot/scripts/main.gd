@@ -4,6 +4,7 @@ const PixelCamera = preload("res://scripts/pixel_camera_transform.gd")
 const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
 const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
 const PhysicalSession = preload("res://scripts/physical_actor_session.gd")
+const WorkbenchPresentationCoherence = preload("res://scripts/workbench_presentation_coherence.gd")
 const PhysicalOverlay = preload("res://scripts/physical_actor_overlay.gd")
 const PhysicalLoadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
@@ -1597,6 +1598,16 @@ var material_appearance_program: ImageTexture
 var render_channels: int = 1
 var render_image_format: Image.Format = Image.FORMAT_R8
 var _uploaded_workbench_frame: Dictionary = {}
+# Changed-pixel old occupancy from the *previous* GPU texture, sampled before
+# accepting each patch. Only consulted while palette snapshot_blend < 1.
+# An oversized/full refresh is unknown rather than optimistically empty.
+const PRESENTATION_PREVIOUS_PATCH_LIMIT: int = 16384
+var _presentation_previous_occupied: Dictionary = {}
+var _presentation_previous_unknown: bool = true
+var workbench_presentation_last: Dictionary = {}
+var workbench_presentation_totals: Dictionary = {
+	"frames":0,"safe_live":0,"blocked_material":0,"blocked_unknown":0,
+	"blocked_other":0,"cells_examined":0}
 var last_uploaded_render_snapshot_serial: int = 0
 var last_uploaded_world_generation: int = -1
 var last_render_patch_count: int = 0
@@ -1985,8 +1996,14 @@ func _process(delta: float) -> void:
 		(latest_snapshot.physical_usables if physical_actor_session != null else latest_snapshot.actor_usables) if latest_snapshot != null else {},
 		presentation_camera_origin(), current_view_size, view_content_rect()
 	)
+	# Select between revision-matched and real Rapier poses only when the
+	# complete swept native collider footprint is empty in both currently
+	# visible material textures. Never mutate the mask-bound frame itself.
+	var workbench_mask_frame: Dictionary = workbench_display_frame()
+	var safe_workbench_poses: Dictionary = _safe_workbench_presentation_poses(workbench_mask_frame)
 	physical_actor_overlay.present(
-		physical_actor_session.render_parts(workbench_display_frame()) if physical_actor_session != null else [],
+		physical_actor_session.render_parts(workbench_mask_frame,safe_workbench_poses)
+			if physical_actor_session != null else [],
 		presentation_camera_origin(), current_view_size, view_content_rect())
 	update_worker_frame_state()
 	update_shader_parameters()
@@ -3123,6 +3140,58 @@ func consume_worker_snapshot() -> void:
 	gameplay_recorder.ingest_snapshot(snapshot)
 
 
+# Render-world pixel safety gate. Moving pixels are never copied or shifted;
+# the live pose is admitted only if its entire swept mask has no displayed
+# stored material. Existing bound-pose behavior remains the fail-closed path.
+func _safe_workbench_presentation_poses(frame: Dictionary) -> Dictionary:
+	var poses: Dictionary = {}
+	if shared_workbench == null or paused or physical_actor_session == null or image == null:
+		return poses
+	if OS.get_environment("CYBERSAND_DIAG_FLYER_POSE") == "mask":
+		return poses
+	var bridge: Variant = physical_actor_session.bridge
+	if bridge == null or not bridge is WorkbenchBridge:
+		return poses
+	if frame.get("session",-1) != bridge._session or frame.get("epoch",-1) != bridge._epoch \
+			or frame.get("world_generation",-1) != last_uploaded_world_generation \
+			or frame.get("revision",-1) != last_uploaded_revision:
+		return poses
+	var blend_active: bool = cadence_lod_enabled and render_snapshot_hz > 0 \
+		and float(Time.get_ticks_usec()-snapshot_blend_start_usec) \
+			< 1000000.0/float(render_snapshot_hz)
+	var summary: Dictionary = {"safe_live":0,"blocked_material":0,
+		"blocked_unknown":0,"blocked_other":0,"cells_examined":0}
+	var instances: Dictionary = frame.get("instances",{})
+	for slot: int in range(bridge._members.size()):
+		var member: Dictionary = bridge._members[slot]
+		var entry: Dictionary = instances.get(int(member.instance_id),{})
+		if entry.get("generation",-1) != member.generation or not entry.get("pose") is Transform2D:
+			summary.blocked_other += 1
+			continue
+		var bound_pose: Transform2D = entry.pose
+		var live_pose: Transform2D = bridge.body_transform(slot)
+		if bound_pose.is_equal_approx(live_pose):
+			continue
+		var decision: Dictionary = WorkbenchPresentationCoherence.assess(
+			bound_pose,live_pose,bridge._rects[slot],image,
+			_presentation_previous_occupied,_presentation_previous_unknown,blend_active)
+		summary.cells_examined += int(decision.scanned)
+		if decision.safe:
+			poses[slot] = live_pose
+			summary.safe_live += 1
+		elif decision.reason == "material_in_swept_mask":
+			summary.blocked_material += 1
+		elif decision.reason == "previous_texture_unbounded":
+			summary.blocked_unknown += 1
+		else:
+			summary.blocked_other += 1
+	workbench_presentation_last = summary
+	workbench_presentation_totals.frames += 1
+	for key: String in summary:
+		workbench_presentation_totals[key] = int(workbench_presentation_totals.get(key,0)) + int(summary[key])
+	return poses
+
+
 func workbench_display_frame() -> Dictionary:
 	if shared_workbench == null or latest_snapshot == null: return {}
 	# Static material bytes can span multiple native ticks. Prefer the most
@@ -3149,6 +3218,8 @@ func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 			# Only an accepted World replacement invalidates presentation history.
 			# Full refreshes also occur during resync and every fallback frame.
 			if snapshot.render_world_generation != last_uploaded_world_generation:
+				_presentation_previous_occupied.clear()
+				_presentation_previous_unknown = true
 				reset_vapour_trail()
 			last_uploaded_world_generation = snapshot.render_world_generation
 			last_uploaded_render_snapshot_serial = snapshot.render_snapshot_serial
@@ -4514,6 +4585,10 @@ func upload_texture(material_cells: PackedByteArray, world_revision: int) -> voi
 	if image == null or texture == null or previous_texture == null:
 		return
 	var start_usec: int = Time.get_ticks_usec()
+	# This legacy full-image update cannot cheaply retain every old pixel;
+	# refuse speculative live poses until the shader's old-texture fade ends.
+	_presentation_previous_occupied.clear()
+	_presentation_previous_unknown = true
 	image.set_data(
 		world_extent.x,
 		world_extent.y,
@@ -4544,6 +4619,31 @@ func upload_texture_patches(
 	return true
 
 
+# Called against the old CPU image before its patches are applied. Outside
+# these rectangles the old and new GPU textures contain the same material.
+# Retain old *nonempty* pixels only, subject to a strict scan/memory budget.
+func _capture_previous_presentation_occupancy(rectangles: PackedInt32Array) -> void:
+	_presentation_previous_occupied.clear()
+	_presentation_previous_unknown = false
+	if image == null or texture == null or previous_texture == null:
+		_presentation_previous_unknown = true
+		return
+	var changed: int = 0
+	for offset: int in range(0,rectangles.size(),RENDER_PATCH_METADATA_STRIDE):
+		var cells: int = int(rectangles[offset+2])*int(rectangles[offset+3])
+		if cells > PRESENTATION_PREVIOUS_PATCH_LIMIT-changed:
+			_presentation_previous_unknown = true
+			return
+		changed += cells
+	for offset: int in range(0,rectangles.size(),RENDER_PATCH_METADATA_STRIDE):
+		var left: int = rectangles[offset]
+		var top: int = rectangles[offset+1]
+		for y: int in range(top,top+rectangles[offset+3]):
+			for x: int in range(left,left+rectangles[offset+2]):
+				if image.get_pixel(x,y).r8 != 0:
+					_presentation_previous_occupied[y*world_extent.x+x] = true
+
+
 func apply_render_patches_to_image(
 	patch_rectangles: PackedInt32Array,
 	patch_cells: PackedByteArray,
@@ -4556,6 +4656,7 @@ func apply_render_patches_to_image(
 	)
 	if not last_render_patch_validation_error.is_empty():
 		return false
+	_capture_previous_presentation_occupancy(patch_rectangles)
 	for metadata_offset: int in range(
 		0,
 		patch_rectangles.size(),
