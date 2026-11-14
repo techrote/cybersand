@@ -51,8 +51,13 @@ func _initialize() -> void:
 		push_error("ENGINE_LAB_WATER: invalid case options")
 		quit(2)
 		return
-	if DisplayServer.get_name() == "headless" or Engine.get_version_info().string != EXPECTED_GODOT:
-		push_error("ENGINE_LAB_WATER: pinned graphical Godot 4.7 required")
+	var version: Dictionary = Engine.get_version_info()
+	print("ENGINE_LAB_WATER_ENGINE ",JSON.stringify({"display":DisplayServer.get_name(),
+		"version":version,"adapter":RenderingServer.get_video_adapter_name()}))
+	# The external runner authenticates the *exact* official Godot binary via
+	# --version and its SHA-256. Engine.version_info.string omits the build SHA.
+	if DisplayServer.get_name() == "headless" or int(version.get("major",-1)) != 4 or int(version.get("minor",-1)) != 7:
+		push_error("ENGINE_LAB_WATER: real graphical Godot 4.7 required")
 		quit(2)
 		return
 	ProjectSettings.set_setting("cybersand/native_worker_threads", workers)
