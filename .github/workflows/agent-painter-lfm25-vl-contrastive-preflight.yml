@@ -1,0 +1,58 @@
+name: LFM2.5-VL contrastive v1 research compiler and visible splits (NOT TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - 'experiments/agent_painter/lanes/lfm25_vl/contrastive_proposals_v1.json'
+      - 'experiments/agent_painter/lanes/lfm25_vl/contrastive_preflight.py'
+      - 'experiments/agent_painter/lanes/lfm25_vl/test_contrastive_preflight.py'
+      - '.github/workflows/agent-painter-lfm25-vl-contrastive-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: lfm25-contrastive-research-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  compiler-and-visible-split:
+    name: Three exact family contrasts; model-free, no FINAL or Art execution
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Exact owner lane and GitHub-hosted source identity
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/codex/agent-painter-lfm25-vl-568"
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/lfm-contrast-ci-policy.json
+      - name: Adversarial independent model-free compiler controls
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s experiments/agent_painter/lanes/lfm25_vl -p 'test_contrastive_preflight.py' -v
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/original-native
+      - name: Source-633 original TRAIN and DEVELOPMENT byte hashes, split screen, real v2 compiler
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/lfm25_vl/contrastive_preflight.py \
+            --corpus evidence/original-native/corpus \
+            --receipt evidence/lfm25-contrastive-v1-screen.json
+      - name: Preserve original source-screening or failure receipts (NOT positive native admission)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lfm25-contrastive-research-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/lfm25-contrastive-v1-screen.json
+          retention-days: 90
+          if-no-files-found: warn

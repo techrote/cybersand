@@ -1,0 +1,35 @@
+name: LFM2.5-VL campaign source-only completion guard
+
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - .github/workflows/agent-painter-lfm25-vl-campaign.yml
+      - .github/workflows/agent-painter-lfm25-vl-gate-check.yml
+      - experiments/agent_painter/lanes/lfm25_vl/campaign_gate.py
+      - experiments/agent_painter/lanes/lfm25_vl/test_campaign_gate.py
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lfm25-vl-model-free-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  receipts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Reject partial, stale and mislabelled model receipt fixtures
+        run: |
+          set -euo pipefail
+          python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/campaign_gate.py experiments/agent_painter/lanes/lfm25_vl/test_campaign_gate.py
+          python3 experiments/agent_painter/lanes/lfm25_vl/test_campaign_gate.py
+          python3 experiments/agent_painter/lanes/lfm25_vl/campaign_gate.py --help
+      - name: Enforce repository GitHub Actions provider policy
+        run: |
+          python3 tools/ci/check_ci_provider_policy.py

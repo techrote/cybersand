@@ -1,0 +1,143 @@
+name: LFM2.5-VL matched fresh CPU dose experiment
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - experiments/agent_painter/lanes/lfm25_vl/campaign-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: lfm25-vl-campaign-001
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 24
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Confirm exact static request and prior evaluation completion
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_REF: ${{ github.ref }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$SOURCE_REF" = refs/heads/codex/agent-painter-lfm25-vl-568
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          request = json.loads(Path("experiments/agent_painter/lanes/lfm25_vl/campaign-request.json").read_text())
+          expected = json.loads('{"schema":"cybersand.agent-painter.lfm25-vl-cpu-dose/1","experiment":"lfm25-vl-three-family-dose-001","base_model":"LiquidAI/LFM2.5-VL-450M","revision":"fc6221ca597f3315e4f82fc2df606783267b34ba","parent_qualification":"2a565df45efc568eb96a2166e0b77f299e289625","native_source":"633920373a3d406a2ede61ce4137c324f76be23b","corpus_run_id":43506373969,"corpus_artifact":"agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b","corpus_manifest_sha256":"2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc","development_predecessor_run_id":43529485853,"train_split":"TRAIN","arms":[{"name":"fresh48","steps":48,"checkpoint_every":16},{"name":"fresh120","steps":120,"checkpoint_every":40}],"maximum_active_training_runner_vms":2,"one_model_process_per_vm":true,"frozen_vision_and_projector":true,"stock_cpu_numerical_recipe":"portable-cpu-fp32-v1","license":"LFM Open License v1.0","sealed_final_targets_not_read":true,"experimental_only":true,"keep_draft":true}')
+          if request != expected:
+              raise SystemExit("unreviewed LFM campaign request")
+          print("Qualified two independent fresh-from-parent CPU dose arms; no FINAL access")
+          PY
+          # Evaluation must finish and pass before consuming additional model VM slots.
+          for i in $(seq 1 80); do
+            status="$(gh api repos/techrote/cybersand/actions/runs/43529485853 --jq .status)"
+            if test "$status" = completed; then
+              conclusion="$(gh api repos/techrote/cybersand/actions/runs/43529485853 --jq .conclusion)"
+              test "$conclusion" = success
+              echo "Predecessor first-pass diagnostic complete: $conclusion"
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "Predecessor remained active beyond bounded wait" >&2
+          exit 1
+
+  train:
+    needs: preflight
+    name: ${{ matrix.arm.name }} pinned CPU LoRA and checkpoints
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        arm:
+          - {name: fresh48, steps: 48, checkpoint_every: 16}
+          - {name: fresh120, steps: 120, checkpoint_every: 40}
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: default
+      MKL_CBWR: COMPATIBLE
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          path: evidence/native
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+      - name: Prepare pinned portable CPU trainer
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/lfm-campaign"
+          "$RUNNER_TEMP/lfm-campaign/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/lfm-campaign/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/lfm-campaign/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torchvision==0.29.2+cpu'
+          "$RUNNER_TEMP/lfm-campaign/bin/python" -m pip install -r experiments/agent_painter/training/requirements-lfm25_vl.lock
+          "$RUNNER_TEMP/lfm-campaign/bin/python" -m pip check
+          mkdir -p evidence/diagnostics
+          "$RUNNER_TEMP/lfm-campaign/bin/python" -m pip freeze --all > evidence/diagnostics/pip-freeze.txt
+          git rev-parse HEAD > evidence/diagnostics/training-source.txt
+          lscpu > evidence/diagnostics/cpu.txt
+          df -h > evidence/diagnostics/disk-before.txt
+      - name: Download exact official complete multimodal model
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/lfm-campaign/bin/python" experiments/agent_painter/training/download_model.py --profile lfm25_vl --output "$RUNNER_TEMP/lfm-model"
+          cp "$RUNNER_TEMP/lfm-model/download_receipt.json" evidence/diagnostics/model-download.json
+          LFM25_SNAPSHOT="$RUNNER_TEMP/lfm-model" PAINTER_CORPUS=evidence/native/corpus "$RUNNER_TEMP/lfm-campaign/bin/python" experiments/agent_painter/lanes/lfm25_vl/test_adapter.py 2>&1 | tee evidence/diagnostics/adapter-tests.txt
+      - name: Execute genuine fresh optimizer updates with atomic checkpoint readback
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=60s 3000s "$RUNNER_TEMP/lfm-campaign/bin/python" experiments/agent_painter/training/train.py \
+            --profile lfm25_vl --model "$RUNNER_TEMP/lfm-model" --corpus evidence/native/corpus \
+            --output evidence/training --steps ${{ matrix.arm.steps }} \
+            --max-seconds 2700 --max-length 2048 --threads 1 --seed 568 \
+            --checkpoint-every ${{ matrix.arm.checkpoint_every }}
+      - name: Require exact training completion and checkpoint custody before inference
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/lfm-campaign/bin/python" experiments/agent_painter/lanes/lfm25_vl/campaign_gate.py \
+            --output evidence/training --arm "${{ matrix.arm.name }}" \
+            --source-sha "${{ github.sha }}" --run-id "${{ github.run_id }}"
+
+      - name: One raw original post-training first pass, without repair
+        run: |
+          set -euo pipefail
+          checkpoint="$(printf 'checkpoint-%06d' ${{ matrix.arm.steps }})"
+          timeout --signal=TERM --kill-after=30s 360s "$RUNNER_TEMP/lfm-campaign/bin/python" experiments/agent_painter/training/infer.py \
+            --model "$RUNNER_TEMP/lfm-model" --checkpoint "evidence/training/$checkpoint" \
+            --prompt 'Draw a bounded greeble panel with an inset and fasteners.' \
+            --output evidence/training/inference --seed 104729 --max-new-tokens 256 --threads 1
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: lfm25-vl-${{ matrix.arm.name }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/training/
+          if-no-files-found: warn
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: lfm25-vl-${{ matrix.arm.name }}-environment-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/diagnostics/
+          if-no-files-found: warn
+          retention-days: 90

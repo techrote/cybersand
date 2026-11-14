@@ -1,0 +1,155 @@
+name: LFM2.5-VL fresh48 vs fresh120 held-out DEVELOPMENT comparison
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - experiments/agent_painter/lanes/lfm25_vl/dose-evaluation-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: lfm25-vl-dose-development-001
+  cancel-in-progress: false
+
+jobs:
+  admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Exact request, source and completed training archive custody
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_REF: ${{ github.ref }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$SOURCE_REF" = refs/heads/codex/agent-painter-lfm25-vl-568
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/evaluate
+          python3 experiments/agent_painter/lanes/lfm25_vl/test-evaluation
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          actual=json.loads(Path('experiments/agent_painter/lanes/lfm25_vl/dose-evaluation-request.json').read_text())
+          expected={
+            "schema":"cybersand.agent-painter.lfm25-vl-dose-development/1",
+            "experiment":"lfm25-vl-dose-001-development-001",
+            "training_run_id":43529993326,
+            "training_source_sha":"1c9cf2ef8760177e0c1d095052c27fcf200a5cb3",
+            "model_id":"LiquidAI/LFM2.5-VL-450M",
+            "model_revision":"fc6221ca597f3315e4f82fc2df606783267b34ba",
+            "native_source_sha":"633920373a3d406a2ede61ce4137c324f76be23b",
+            "corpus_run_id":43506373969,
+            "corpus_manifest_sha256":"2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc",
+            "split":"DEVELOPMENT",
+            "arms":[
+              {"name":"fresh48","step":48,"artifact_id":14088040106,"artifact_sha256":"6644524b86858b5a0a3c2b4cd1f282872b452b734c5ef7fcece7b33cc0e0f1cc"},
+              {"name":"fresh120","step":120,"artifact_id":14088541525,"artifact_sha256":"8c7634b05cc11546e46e1d643808909fbfd5a457ce43e4f12a9bba106aa50454"}
+            ],
+            "max_new_tokens":384,
+            "independent_requests_per_arm":6,
+            "seed_views_per_arm":12,
+            "reuse_original_completion_across_host_seeds":True,
+            "sealed_final_targets_not_read":True,
+            "no_hidden_repair":True,
+            "no_native_execution_claim":True,
+            "one_model_process_per_vm":True,
+            "keep_draft":True
+          }
+          if actual != expected:
+            raise SystemExit('Unreviewed dose DEVELOPMENT request, refusing model work')
+          PY
+          test "$(gh api repos/techrote/cybersand/actions/runs/43529993326 --jq '.conclusion')" = success
+          for item in '14088040106 sha256:6644524b86858b5a0a3c2b4cd1f282872b452b734c5ef7fcece7b33cc0e0f1cc' '14088541525 sha256:8c7634b05cc11546e46e1d643808909fbfd5a457ce43e4f12a9bba106aa50454'; do
+            set -- $item
+            artifact_id="$1"; expected_digest="$2"
+            gh api "repos/techrote/cybersand/actions/artifacts/$artifact_id" |
+              EXPECTED_DIGEST="$expected_digest" TRAINING_SOURCE=1c9cf2ef8760177e0c1d095052c27fcf200a5cb3 python3 -c '
+          import json,os,sys
+          d=json.load(sys.stdin)
+          assert not d["expired"] and d["digest"]==os.environ["EXPECTED_DIGEST"]
+          assert d["workflow_run"]["head_sha"]==os.environ["TRAINING_SOURCE"]
+          print("qualified Actions metadata artifact",d["id"])'
+          done
+          echo "Both genuine complete training archives admitted by metadata; DEV only"
+
+  development:
+    name: ${{ matrix.arm.name }} strict six-prompt DEVELOPMENT
+    needs: admission
+    runs-on: ubuntu-24.04
+    timeout-minutes: 48
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        arm:
+          - {name: fresh48, step: 48}
+          - {name: fresh120, step: 120}
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: default
+      MKL_CBWR: COMPATIBLE
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          path: evidence/native
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: lfm25-vl-${{ matrix.arm.name }}-1c9cf2ef8760177e0c1d095052c27fcf200a5cb3-43529993326-1
+          path: evidence/candidate
+          run-id: '43529993326'
+          github-token: ${{ github.token }}
+      - name: Install pinned CPU evaluator, record execution environment
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/lfm-dose-development"
+          "$RUNNER_TEMP/lfm-dose-development/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/lfm-dose-development/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/lfm-dose-development/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torchvision==0.29.2+cpu'
+          "$RUNNER_TEMP/lfm-dose-development/bin/python" -m pip install -r experiments/agent_painter/training/requirements-lfm25_vl.lock
+          "$RUNNER_TEMP/lfm-dose-development/bin/python" -m pip check
+          mkdir -p evidence/evaluation
+          "$RUNNER_TEMP/lfm-dose-development/bin/python" -m pip freeze --all > evidence/evaluation/pip-freeze.txt
+          lscpu > evidence/evaluation/cpu.txt
+          git rev-parse HEAD > evidence/evaluation/evaluation-source.txt
+      - name: Load exact complete model with source-pinned license and hashes
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/lfm-dose-development/bin/python" experiments/agent_painter/training/download_model.py --profile lfm25_vl --output "$RUNNER_TEMP/lfm-model"
+          cp "$RUNNER_TEMP/lfm-model/download_receipt.json" evidence/evaluation/model-download.json
+      - name: Evaluate each distinct DEVELOPMENT language request exactly once
+        run: |
+          set -euo pipefail
+          checkpoint="$(printf 'checkpoint-%06d' ${{ matrix.arm.step }})"
+          test -f "evidence/candidate/$checkpoint/inventory.json"
+          timeout --signal=TERM --kill-after=30s 2200s "$RUNNER_TEMP/lfm-dose-development/bin/python" experiments/agent_painter/lanes/lfm25_vl/evaluate \
+            --model "$RUNNER_TEMP/lfm-model" --corpus evidence/native/corpus \
+            --variant tuned --checkpoint "evidence/candidate/$checkpoint" \
+            --output "evidence/evaluation/${{ matrix.arm.name }}" \
+            --manifest-sha256 2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc \
+            --max-new-tokens 384 \
+            --expected-training-source-sha 1c9cf2ef8760177e0c1d095052c27fcf200a5cb3 \
+            --expected-global-step ${{ matrix.arm.step }}
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: lfm25-vl-dose-development-${{ matrix.arm.name }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/evaluation/
+          if-no-files-found: warn
+          retention-days: 90

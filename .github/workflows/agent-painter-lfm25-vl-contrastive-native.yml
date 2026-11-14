@@ -1,0 +1,88 @@
+name: LFM2.5-VL three-family unadmitted contrastive native Art research
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - 'experiments/agent_painter/lanes/lfm25_vl/contrastive-native-request.json'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: lfm25-contrastive-native-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-built-native:
+    name: Four native Art research seed views, two non-quarantined hand-authored designs; NOT TRAIN
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Explicit first research lease, exact source, owner boundary and provider policy
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$GITHUB_REF" = "refs/heads/codex/agent-painter-lfm25-vl-568"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("experiments/agent_painter/lanes/lfm25_vl/contrastive-native-request.json")
+          r=json.loads(p.read_text(encoding="utf-8"))
+          assert r["schema"]=="cybersand.lfm25_vl.contrastive-native-research/1"
+          assert r["sequence"]==2
+          assert r["proposal_path"]=="experiments/agent_painter/lanes/lfm25_vl/contrastive_proposals_v1.json"
+          assert r["original_native_corpus_source"]=="633920373a3d406a2ede61ce4137c324f76be23b"
+          assert r["original_manifest_sha256"]=="2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
+          assert r["source_only_preflight_run_id"]==43587401536
+          for key in ("native_research","no_training","no_shared_admission","no_final","draft_hold"):
+              assert r[key] is True
+          PY
+          python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/contrastive_native.py
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/lfm-native-ci-policy.json
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/original-native
+      - name: Exact-source native C++ and Godot 4.7 rebuilt, original Art readback verified
+        run: |
+          set -euo pipefail
+          bash experiments/agent_painter/lanes/lfm25_vl/contrastive_ci_native.sh
+      - name: Research-only custody and native qualification; never promote TRAIN
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=Path("evidence/lfm-contrastive-native/lfm-contrastive-native-summary.json")
+          s=json.loads(p.read_text(encoding="utf-8"))
+          assert s["actual_native_source_sha"] == os.environ["GITHUB_SHA"]
+          assert s["original_native_corpus_source_sha"] == "633920373a3d406a2ede61ce4137c324f76be23b"
+          assert s["original_manifest_sha256"] == "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
+          assert s["native_verifier_passed"] is True
+          assert s["runtime_unchanged"] is s["harness_unchanged"] is s["input_unchanged"] is True
+          assert s["actual_native_verified_views"] == s["host_seed_variants"] == 4
+          assert s["independent_hand_authored_compositions"] == 2
+          assert len(set(s["verified_case_ids"])) == 4
+          assert s["new_common_train_admissions"] == s["new_model_completions"] == s["optimizer_updates"] == 0
+          assert s["final_targets_opened"] is False
+          assert s["quarantined_candidate_ids"] == ["lfm-c3-gantry-room-and-underdeck-stairs"]
+          print("Native Art research PASS, NOT trained-model output and NOT shared TRAIN")
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: lfm25-contrastive-native-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            evidence/lfm-contrastive-native/
+            evidence/native-build.json
+            evidence/build/
+            evidence/regressions/
+          if-no-files-found: warn
+          retention-days: 90

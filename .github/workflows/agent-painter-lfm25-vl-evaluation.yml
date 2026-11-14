@@ -1,0 +1,148 @@
+name: Agent painter LFM2.5-VL matched DEVELOPMENT first passes
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - experiments/agent_painter/lanes/lfm25_vl/evaluation-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-lfm25-vl-eval-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  request:
+    name: Check source-pinned baseline/candidate evaluation lease
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    outputs:
+      pilot_run: ${{ steps.contract.outputs.pilot_run }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify exact request, model, corpus, source and sealed FINAL policy
+        id: contract
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+          SOURCE_REF: ${{ github.ref }}
+        run: |
+          set -euo pipefail
+          python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/evaluate
+          python3 experiments/agent_painter/lanes/lfm25_vl/test-evaluation
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          from pathlib import Path
+          req = json.loads(Path("experiments/agent_painter/lanes/lfm25_vl/evaluation-request.json").read_text())
+          expected = {
+              "schema": "cybersand.agent-painter.lfm25-vl-development-eval/1",
+              "experiment": "lfm25-vl-pilot-001-development-002",
+              "pilot_run_id": "43521497210",
+              "training_source_sha": "a8284c90050499cc1bf5c33dd0992741891c146b",
+              "training_artifact": "agent-painter-lfm25-vl-pilot-a8284c90050499cc1bf5c33dd0992741891c146b",
+              "checkpoint": "checkpoint-000016",
+              "model": "LiquidAI/LFM2.5-VL-450M",
+              "model_revision": "fc6221ca597f3315e4f82fc2df606783267b34ba",
+              "native_source": "633920373a3d406a2ede61ce4137c324f76be23b",
+              "corpus_run_id": "43506373969",
+              "corpus_artifact": "agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b",
+              "corpus_manifest_sha256": "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc",
+              "split": "DEVELOPMENT",
+              "variants": ["base", "tuned"],
+              "max_new_tokens": 384,
+              "sealed_final_targets_not_read": True,
+              "one_model_process_per_runner": True,
+              "no_native_execution_claim": True,
+          }
+          if req != expected:
+              raise SystemExit("LFM evaluation request differs from immutable reviewed contract")
+          if os.environ["SOURCE_REF"] != "refs/heads/codex/agent-painter-lfm25-vl-568":
+              raise SystemExit("wrong LFM lane source branch")
+          if not re.fullmatch(r"[0-9a-f]{40}", os.environ["SOURCE_SHA"]):
+              raise SystemExit("invalid evaluation source commit")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              out.write("pilot_run=43521497210\n")
+          print("Accepted two independent CPU inference jobs; no training, no native claims")
+          PY
+
+  first-pass:
+    name: ${{ matrix.variant }} full original DEVELOPMENT first pass
+    needs: request
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        variant: [base, tuned]
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: 'default'
+      MKL_CBWR: 'COMPATIBLE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          path: evidence/native
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: matrix.variant == 'tuned'
+        with:
+          name: agent-painter-lfm25-vl-pilot-a8284c90050499cc1bf5c33dd0992741891c146b
+          path: evidence/candidate
+          run-id: ${{ needs.request.outputs.pilot_run }}
+          github-token: ${{ github.token }}
+      - name: Provision pinned CPU inference environment
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/painter-evaluation"
+          "$RUNNER_TEMP/painter-evaluation/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/painter-evaluation/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/painter-evaluation/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torchvision==0.29.2+cpu'
+          "$RUNNER_TEMP/painter-evaluation/bin/python" -m pip install -r experiments/agent_painter/training/requirements-lfm25_vl.lock
+          "$RUNNER_TEMP/painter-evaluation/bin/python" -m pip check
+          mkdir -p evidence/evaluation
+          "$RUNNER_TEMP/painter-evaluation/bin/python" -m pip freeze --all > evidence/evaluation/pip-freeze.txt
+          lscpu > evidence/evaluation/cpu.txt
+      - name: Retrieve verified official complete model, not a text-only substitute
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/painter-evaluation/bin/python" experiments/agent_painter/training/download_model.py --profile lfm25_vl --output "$RUNNER_TEMP/painter-model"
+          cp "$RUNNER_TEMP/painter-model/download_receipt.json" evidence/evaluation/model-download.json
+      - name: Preserve every raw DEVELOPMENT first pass, EOS and topology preview
+        env:
+          ARM: ${{ matrix.variant }}
+        run: |
+          set -euo pipefail
+          checkpoint=()
+          if test "$ARM" = tuned; then
+            checkpoint=(--checkpoint evidence/candidate/checkpoint-000016)
+          fi
+          timeout --signal=TERM --kill-after=30s 2100s "$RUNNER_TEMP/painter-evaluation/bin/python" experiments/agent_painter/lanes/lfm25_vl/evaluate \
+            --model "$RUNNER_TEMP/painter-model" --corpus evidence/native/corpus \
+            --variant "$ARM" "${checkpoint[@]}" --output "evidence/evaluation/$ARM" \
+            --manifest-sha256 2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc \
+            --max-new-tokens 384 \
+            --expected-training-source-sha a8284c90050499cc1bf5c33dd0992741891c146b \
+            --expected-global-step 16
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-painter-lfm25-vl-dev-${{ matrix.variant }}-${{ github.sha }}
+          path: evidence/evaluation/
+          if-no-files-found: warn
+          retention-days: 90
