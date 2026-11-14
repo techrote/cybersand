@@ -15,7 +15,7 @@ from typing import Any, Callable, Mapping, Sequence
 M1_SOURCE_COMMIT = "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6"
 M1_SCHEMA_SHA256 = "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d"
 M1_PROTOCOL = "cybersand.driv3r.d-common/1"
-VERSION = "d1a-m1-offline-preflight/1"
+VERSION = "d1a-m1-offline-preflight/2"
 _ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]{0,95}$")
 
 
@@ -214,8 +214,21 @@ def model_presentation_hash(catalog: Mapping[str, Any],
     _require(len(ordered) == len(offered) and
              all(type(v) is str for v in ordered) and
              set(ordered) == set(offered), "Presentation must be a permutation")
-    return _hash([{"host_candidate": offered[cid],
-                   "soft_annotation": notes.get(cid)} for cid in ordered])
+    # Separate model presentation identity must include its World context:
+    # distinct Worlds may offer identical local legal candidates. The catalog
+    # digest remains a *synthetic membership* digest, not a native receipt.
+    return _hash({
+        "adapter_version": VERSION,
+        "m1_schema_sha256": M1_SCHEMA_SHA256,
+        "world_size": catalog["world_size"],
+        "source_kind": catalog["source_kind"],
+        "synthetic_legal_catalog_sha256":
+            catalog["synthetic_legal_catalog_sha256"],
+        "presented_candidates": [
+            {"host_candidate": offered[cid], "soft_annotation": notes.get(cid)}
+            for cid in ordered
+        ],
+    })
 
 
 def preflight_episode(fixture: Any, record: dict[str, Any],
