@@ -7,10 +7,11 @@ authorize optimization or replace the shared foundation's native admission.
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 from pathlib import Path
 
-from adapter import CyberSandVoidByteTokenizer, encode_row
+from adapter import (CyberSandVoidByteTokenizer, FRAMING_ID, MAX_SEQUENCE_TOKENS, encode_row)
 from v5_service_slots import (
     CROP_SHA, CORPUS, MODEL, PRODUCER, PROGRAM_SHA, SEEDS,
     native_audit, program_witness,
@@ -93,6 +94,20 @@ def validate(doc):
             and witness["side_service_slot_widths"] == [3, 3]
             and witness["central_geometric_clearance"] == 5,
             "nomination teacher source or clearance differs")
+    # The label mask and byte budget must use the existing common trainer's
+    # literal SYSTEM, rather than drifting into a lane-invented new framing.
+    trainer = ROOT.parents[1] / "training" / "train.py"
+    tree = ast.parse(trainer.read_text(encoding="utf-8"))
+    system_values = [
+        node.value for node in tree.body if isinstance(node, ast.Assign)
+        and any(isinstance(target, ast.Name) and target.id == "SYSTEM"
+                for target in node.targets)
+    ]
+    require(len(system_values) == 1 and ast.literal_eval(system_values[0]) == SYSTEM,
+            "shared frozen training instruction differs")
+    require(FRAMING_ID == "cybersand-void-task-v1"
+            and MAX_SEQUENCE_TOKENS == MODEL_CONTEXT,
+            "reviewed byte framing/context changed")
     completion = json.dumps(program, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
     try:
         encoded = encode_row(CyberSandVoidByteTokenizer(), {
