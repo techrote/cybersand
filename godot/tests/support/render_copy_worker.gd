@@ -3,6 +3,11 @@ extends "res://scripts/simulation_worker.gd"
 const Trace = preload("res://tests/support/render_copy_trace.gd")
 var trace = Trace.new()
 var withhold_ack: bool = false
+# Test-only delay. Never acknowledge unaccepted Main material; the pending
+# serial is queued by the real Main acceptance path and released on test frames.
+var ack_delay_usec: int = 0
+var _delayed_ack_serial: int = 0
+var _delayed_ack_due_usec: int = 0
 var refresh_sequence: int = 0
 var calls_in_refresh: int = 0
 var pending_high_water: int = 0
@@ -24,10 +29,30 @@ func take_latest_snapshot(after: int) -> CyberSimulationSnapshot:
 	return result
 
 func acknowledge_render_snapshot(serial: int) -> void:
-	trace.record("ack_withheld" if withhold_ack else "ack_issue", {"serial": serial})
-	if not withhold_ack:
+	if withhold_ack:
+		trace.record("ack_withheld", {"serial":serial})
+		return
+	trace.record("ack_issue", {"serial":serial})
+	if ack_delay_usec > 0:
+		_delayed_ack_serial = maxi(_delayed_ack_serial,serial)
+		if _delayed_ack_due_usec == 0:
+			_delayed_ack_due_usec = Time.get_ticks_usec() + ack_delay_usec
+		trace.record("ack_queued_delayed", {"serial":serial,"due_usec":_delayed_ack_due_usec})
+	else:
 		super.acknowledge_render_snapshot(serial)
-		trace.record("ack_visible", {"serial": serial})
+		trace.record("ack_visible", {"serial":serial})
+
+
+func flush_delayed_ack(force: bool = false) -> void:
+	if _delayed_ack_serial <= 0:
+		return
+	if not force and Time.get_ticks_usec() < _delayed_ack_due_usec:
+		return
+	var released_serial: int = _delayed_ack_serial
+	_delayed_ack_serial = 0
+	_delayed_ack_due_usec = 0
+	super.acknowledge_render_snapshot(released_serial)
+	trace.record("ack_visible", {"serial":released_serial,"delayed":true})
 
 func request_render_full_refresh() -> void:
 	trace.record("full_request")
