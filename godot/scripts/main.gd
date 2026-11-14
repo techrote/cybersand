@@ -1985,8 +1985,14 @@ func _process(delta: float) -> void:
 		(latest_snapshot.physical_usables if physical_actor_session != null else latest_snapshot.actor_usables) if latest_snapshot != null else {},
 		presentation_camera_origin(), current_view_size, view_content_rect()
 	)
+	# PR566 isolated presentation-only diagnostic: default retains the exact
+	# native material-revision-bound mask pose; optional 'live' displays the
+	# current Rapier RID pose. No physics/World/ACK/recorder changes.
+	var physical_display_frame: Dictionary = workbench_display_frame()
+	if shared_workbench != null and OS.get_environment("CYBERSAND_DIAG_FLYER_POSE") == "live":
+		physical_display_frame = {}
 	physical_actor_overlay.present(
-		physical_actor_session.render_parts(workbench_display_frame()) if physical_actor_session != null else [],
+		physical_actor_session.render_parts(physical_display_frame) if physical_actor_session != null else [],
 		presentation_camera_origin(), current_view_size, view_content_rect())
 	update_worker_frame_state()
 	update_shader_parameters()
