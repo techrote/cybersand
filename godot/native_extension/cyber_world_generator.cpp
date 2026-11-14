@@ -508,9 +508,16 @@ gen::Recipe parse_recipe(const Dictionary& input, std::uint64_t revision) {
         recipe.limits.max_fields = limit("max_fields", recipe.limits.max_fields);
         recipe.limits.max_aggregates = limit("max_aggregates", recipe.limits.max_aggregates);
         recipe.limits.max_modifiers = limit("max_modifiers", recipe.limits.max_modifiers);
-        if (limits.has("max_operations_per_chunk")) recipe.limits.max_operations_per_chunk =
-            static_cast<std::uint64_t>(bounded_integer(limits["max_operations_per_chunk"], 1,
-                static_cast<std::int64_t>(recipe.limits.max_operations_per_chunk), "limits.max_operations_per_chunk"));
+        if (limits.has("max_operations_per_chunk")) {
+            // Explicit architectural schema-4 projects can compose five
+            // independent masked native samplers. Raise ONLY their opt-in
+            // charged-work ceiling; schemas 1/2/3 keep the historical 64M cap.
+            const auto maximum = recipe.schema == gen::kArchitecturalSchemaVersion ?
+                INT64_C(160000000) : static_cast<std::int64_t>(recipe.limits.max_operations_per_chunk);
+            recipe.limits.max_operations_per_chunk = static_cast<std::uint64_t>(
+                bounded_integer(limits["max_operations_per_chunk"], 1, maximum,
+                    "limits.max_operations_per_chunk"));
+        }
     }
     if (input.has("catalogue")) {
         const auto catalogue = array_value(input["catalogue"], recipe.limits.max_themes, "catalogue");
