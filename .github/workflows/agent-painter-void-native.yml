@@ -1,0 +1,98 @@
+name: VOID immutable step120 model-output native replay
+on:
+  push:
+    branches: [codex/agent-painter-void-568]
+    paths: ['experiments/agent_painter/lanes/void/native-request.json']
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-void-native-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  native:
+    name: Exact-source native Art execution and material readback
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: One-shot native request, immutable source and standard-host custody
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$GITHUB_ACTIONS" = true
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          req = json.loads(Path("experiments/agent_painter/lanes/void/native-request.json").read_text())
+          assert req == {
+            "schema": "cybersand.agent-painter.void-native-replay/1",
+            "sequence": 1,
+            "model_source": "7d90bf5294d16a8644694a4c8a6a36a5227fa3c0",
+            "model_run": 43530053171,
+            "model_artifact": "void-120-development-7d90bf5294d16a8644694a4c8a6a36a5227fa3c0-43530053171-1",
+            "corpus_source": "633920373a3d406a2ede61ce4137c324f76be23b",
+            "corpus_run": 43506373969,
+            "corpus_artifact": "agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b",
+            "model": "dotlabs/void.1@9c2be5087772867d45961abd11f6b35110617563",
+            "split": "DEVELOPMENT",
+            "native_requested": True,
+            "final_forbidden": True,
+            "no_model_inference": True,
+            "draft_hold": True,
+          }
+          print("VOID source-locked native replay admitted; no model jobs requested")
+          PY
+          python3 -m py_compile experiments/agent_painter/lanes/void/native_replay.py
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/void-ci-policy.json
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: void-120-development-7d90bf5294d16a8644694a4c8a6a36a5227fa3c0-43530053171-1
+          run-id: '43530053171'
+          github-token: ${{ github.token }}
+          path: evidence/development
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/original-native
+      - name: Rebuild native C++ and run real Godot Art on untouched accepted VOID outputs
+        run: bash experiments/agent_painter/lanes/void/ci_native.sh
+      - name: Verify no model-prediction relabeling
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          s=json.loads(Path("evidence/void-native/void-native-summary.json").read_text())
+          assert s["original_model_generations_per_arm"] == 6
+          assert s["original_host_seed_views_per_arm"] == 12
+          assert s["accepted_seed_views"] == 2
+          assert s["independent_accepted_generations"] == 1
+          assert s["native_verifier_passed"] is True
+          assert s["native_verified_views"] == 2
+          assert s["sealed_final_opened"] is False
+          assert all(x["endpoints"] == 3 and x["degree_three_junctions"] == 1 for x in s["topology"])
+          print("Two source-built native material views verified; held-out 5-endpoint manifold semantic FAIL")
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: void-native-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/void-native/
+            evidence/build/
+            evidence/native-build.json
+            evidence/regressions/
+          if-no-files-found: warn
+          retention-days: 90
