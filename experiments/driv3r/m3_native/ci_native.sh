@@ -57,7 +57,8 @@ echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/ad
 python3 -m venv "$RUNNER_TEMP/driv3r-python"
 export DRIV3R_PYTHON="$RUNNER_TEMP/driv3r-python/bin/python"
 "$DRIV3R_PYTHON" -m pip install --require-hashes -r tools/requirements-build.txt > "$evidence/build/install-scons.log" 2>&1
-"$DRIV3R_PYTHON" -m pip install 'Pillow==13.0.0' > "$evidence/build/install-pillow.log" 2>&1
+"$DRIV3R_PYTHON" -m pip install 'Pillow==13.0.0' 'jsonschema==4.26.0' > "$evidence/build/install-pillow-and-jsonschema.log" 2>&1
+"$DRIV3R_PYTHON" -c 'import jsonschema; from experiments.driv3r.d_common.v1.verify import validate_bundle; print("M1 validator available")' > "$evidence/build/validator-import-preflight.log" 2>&1
 "$DRIV3R_PYTHON" -m pip freeze > "$evidence/build/python-environment.txt"
 export GODOT_CPP_ROOT="$RUNNER_TEMP/driv3r-godot-cpp"
 export SCONS_PYTHON="$DRIV3R_PYTHON"
