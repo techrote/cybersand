@@ -41,6 +41,7 @@ class C2SteppedV2Tests(unittest.TestCase):
         p["components"][0]["nodes"][3][1] = 43
         # Keep independent edges valid so the explicit elevation guard fires.
         p["components"][0]["nodes"][8][1] = 20
+        p["components"][0]["nodes"][5][1] = 43
         with self.assertRaisesRegex(ValueError, "distinct diagonal elevations"):
             subject.validate_stepped_structure(p)
 
