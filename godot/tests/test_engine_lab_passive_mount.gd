@@ -62,6 +62,10 @@ func _run() -> void:
 		expect(await _wait(func() -> bool: return panel.recorder.finished,30000),
 			"actual Main clock capture completes without controller input")
 		var report: Dictionary = panel.recorder.outcome
+		print("ENGINE_LAB_MOUNT_DIAGNOSTIC ", JSON.stringify({"status":report.get("status","absent"),
+			"reason":report.get("reason","absent"),"frames":report.get("frame_count",-1),
+			"native_ticks":report.get("native_ticks",-1),"elapsed":report.get("elapsed_seconds",-1),
+			"last":report.get("raw_samples",[]).back() if not report.get("raw_samples",[]).is_empty() else {}}))
 		expect(report.get("status","") == "passed" and report.frame_count > 2,
 			"real per-frame passive capture qualifies")
 		expect(report.native_ticks > 0 and report.actual_native_hz > 0.0,
