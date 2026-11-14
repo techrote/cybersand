@@ -45,17 +45,12 @@ func _run() -> void:
 		var old_epoch: int = host._physical_epoch
 		if require(ui.apply(recipe),"real World with authored Wall accepted"):
 			if require(await until(func() -> bool:
-					return host.pending_microscenario_apply.is_empty() and
-						host._physical_epoch>old_epoch and host.physical_actor_session != null and
-						host._physical_terrain_ready),
+					return host.pending_microscenario_apply.is_empty() and host._physical_epoch>old_epoch and host.physical_actor_session != null and host._physical_terrain_ready),
 					"native World, actor and Rapier graph adopted"):
 				# ImageTexture's accepted copied bytes are the actual material
 				# visible behind the actor, not a synthetic test canvas.
 				var uploaded: bool = await until(func() -> bool:
-					return host.latest_snapshot != null and
-						host.last_uploaded_world_generation == host.latest_snapshot.render_world_generation and
-						host.last_uploaded_revision == host.latest_snapshot.world_revision and
-						host.image != null and host.image.get_pixel(260,345).r8 == 58)
+					return host.latest_snapshot != null and host.last_uploaded_world_generation == host.latest_snapshot.render_world_generation and host.last_uploaded_revision == host.latest_snapshot.world_revision and host.image != null and host.image.get_pixel(260,345).r8 == 58)
 				require(uploaded,"authored Wall present in accepted GPU material image")
 				if uploaded:
 					var bridge = host.physical_actor_session.bridge
