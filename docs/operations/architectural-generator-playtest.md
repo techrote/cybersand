@@ -22,8 +22,11 @@ Five compact style cards now appear side by side without tabs. Enable any one
 to five, select the preset and enter its share. Slots four and five initially
 start disabled; **Equal shares** balances all enabled styles in one click.
 Preset descriptions/material details are on hover, not printed into the panel.
-Ten built-ins are available, including Civic Atrium, Transit Spine, Basalt Archive,
-Solar Conservatory, Thermal Foundry, Earthen Terraces and Orbital Observatory.
+Thirteen built-ins are available, including Civic Atrium, Transit Spine,
+Basalt Archive, Solar Conservatory, Thermal Foundry, Earthen Terraces,
+Orbital Observatory, **Skyline Terraces**, **Cellular Hive** and **Arched Viaduct**.
+The last three are new native geometry algorithms rather than recoloured
+Arcology/Vault structures.
 
 
 1. Open **New from generator… → Architectural Generator…**.

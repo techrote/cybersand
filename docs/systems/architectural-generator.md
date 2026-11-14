@@ -97,6 +97,33 @@ geometry fit, module versions and preparation/raster limits. A configuration
 which is syntactically valid as a project can still fail native admission with a
 specific error. The installed World is untouched by that refusal.
 
+## Three new native architectural geometry algorithms
+
+The three additions are independently registered schema-4 native samplers,
+not additional material skins on Arcology/Vault:
+
+| Module | Preset | Geometry |
+|---|---|---|
+| `terraced` v1 | Skyline Terraces | Stepped, receding floors, exposed ledges, staggered partitions and an optional service shaft |
+| `hex_hive` v1 | Cellular Hive | Staggered six-sided chamber cutouts within a solid web, with optional vertical connecting ports |
+| `arcade` v1 | Arched Viaduct | Repeated quadratic arch soffits, piers, elevated decks and optional pier apertures |
+
+All sample from immutable prepared parameters in module-local coordinates,
+without live World access, neighbor-chunk dependencies or mutable RNG state.
+Door/window switches affect geometry independently; disabling automatic tunnels
+suppresses the separate candidate macro-network but not each style's own voids.
+
+The three built-in presets and a combined
+`examples/worldgen/architectural/three-algorithms.project.json` showcase
+the algorithms. A new native material gallery captures individual 512-square
+renders and measures pairwise structural differences. The three original
+styles and their resolved recipes are unchanged.
+
+For four/five active styles, the project compiler explicitly raises its
+maximum charged operations to 160 million per 128-cell chunk, within the
+native 1-billion hard bound. One-to-three-style recipe identities retain
+the existing default budget.
+
 ## Project and preset format
 
 The compiler is
@@ -132,7 +159,7 @@ network routes, when enabled, are carved after these modifiers as before.
 Additional selectable built-in styles are Civic Atrium, Transit Spine, Basalt Archive,
 Solar Conservatory, Thermal Foundry, Earthen Terraces and Orbital Observatory.
 They combine existing native module families with contrasting room dimensions,
-solid materials, glazing, shafts and bounded deterioration. All ten built-ins
+solid materials, glazing, shafts and bounded deterioration. The original ten built-ins
 have matching declarative JSON files under `examples/worldgen/architectural/`.
 The existing three-style default and legacy native recipes are unchanged.
 
