@@ -66,9 +66,13 @@ def point(value: Any, label: str) -> list[int]:
 
 def validate_operations(operations: Any, focus: list[int], material: int,
                         max_cells: int = 1024) -> set[tuple[int, int]]:
-    """Stage A intentionally supports a narrow existing Art rectangle subset."""
+    """Bound existing Art rectangles/pixels; count visits separately from union.
+
+    Pixel order is retained in the audit candidate. Native painting uses the
+    footprint; a path provider owns and verifies any movement interpretation.
+    """
     if type(operations) is not list or not 1 <= len(operations) <= 16:
-        raise Refusal("Expected 1..16 host-compiled Art rectangles")
+        raise Refusal("Expected 1..16 host-compiled Art rectangles/pixel sets")
     if type(focus) is not list or len(focus) != 4:
         raise Refusal("Invalid host focus")
     x, y, w, h = [integer(v, 0, 512, "focus") for v in focus]
@@ -79,17 +83,35 @@ def validate_operations(operations: Any, focus: list[int], material: int,
     cells: set[tuple[int, int]] = set()
     visits = 0
     for op in operations:
-        exact(op, {"shape", "material", "x0", "y0", "x1", "y1"}, "Art rectangle")
-        if op["shape"] != "rectangle" or type(op["material"]) is not int or op["material"] != material:
+        if type(op) is not dict or op.get("shape") not in ("rectangle", "pixels"):
+            raise Refusal("Unsupported host Art shape")
+        if type(op.get("material")) is not int or op["material"] != material:
             raise Refusal("Shape/material outside host authority")
-        x0, y0, x1, y1 = [integer(op[k], 0, 511, k) for k in ("x0", "y0", "x1", "y1")]
-        if not (x <= x0 <= x1 < x+w and y <= y0 <= y1 < y+h):
-            raise Refusal("Action outside authorized focus")
-        visits += (x1-x0+1)*(y1-y0+1)
+        if op["shape"] == "rectangle":
+            exact(op, {"shape", "material", "x0", "y0", "x1", "y1"}, "Art rectangle")
+            x0, y0, x1, y1 = [integer(op[k], 0, 511, k) for k in ("x0", "y0", "x1", "y1")]
+            if not (x <= x0 <= x1 < x+w and y <= y0 <= y1 < y+h):
+                raise Refusal("Action outside authorized focus")
+            visits += (x1-x0+1)*(y1-y0+1)
+            points = ((a, b) for b in range(y0, y1+1) for a in range(x0, x1+1))
+        else:
+            exact(op, {"shape", "material", "points"}, "Art pixels")
+            if type(op["points"]) is not list or not 1 <= len(op["points"]) <= max_cells:
+                raise Refusal("Invalid or over-budget pixel collection")
+            points = [tuple(point(p, "Art pixel")) for p in op["points"]]
+            if any(not (x <= a < x+w and y <= b < y+h) for a, b in points):
+                raise Refusal("Action outside authorized focus")
+            visits += len(points)
         if visits > max_cells:
             raise Refusal("Action exceeds candidate-visit budget")
-        cells.update((a, b) for b in range(y0, y1+1) for a in range(x0, x1+1))
+        cells.update(points)
     return cells
+
+
+def operation_visits(operations: list[dict]) -> int:
+    """Only call after validate_operations; native budgets count repeated visits."""
+    return sum(len(op["points"]) if op["shape"] == "pixels" else
+               (op["x1"]-op["x0"]+1)*(op["y1"]-op["y0"]+1) for op in operations)
 
 
 def validate_observation(value: Any) -> None:

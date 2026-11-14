@@ -18,6 +18,12 @@ original failed attempts, actual model decisions, native receipts, performance
 and gate dispositions belong to the Stage A execution report and issue ledger.
 The implementation must remain Draft until a separate owner decision.
 
+**Subsequent Owner direction:** Stage B and a conditional modest Stage C were
+explicitly authorized after the qualified Stage A checkpoint. The
+[Stage B guide](driv3r-stage-b.md) owns that continuation and its usefulness gate;
+the Stage A boundary below records the earlier checkpoint, not a prohibition on
+that later explicit instruction.
+
 ## Source ownership and reuse
 
 The candidate starts from shared [Draft #569](https://github.com/techrote/cybersand/pull/569)
@@ -189,8 +195,10 @@ fuzzy-tool feasibility must be reported separately using actual outcomes and
 cold/warm CPU measurements. Windows, graphical Codespaces, reference probability
 parity and broad authoring quality are not established by Linux headless tests.
 
-Stage B microtask research, Stage C three-family galleries, model training,
-scheduled workers and production integration require further owner direction.
+At the Stage A checkpoint, Stage B microtask research and Stage C expansion
+required further Owner direction. The later [Stage B continuation](driv3r-stage-b.md)
+records that explicit authorization and the conditional C gate. Model training,
+scheduled workers and production integration still require further Owner direction.
 The shared native authority and model-hosting code should retain one integration
 owner while independent future policies, fixtures and evaluations use versioned
 interfaces. Do not close #570 or advance the Draft automatically.

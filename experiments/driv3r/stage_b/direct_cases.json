@@ -1,0 +1,79 @@
+{
+  "schema": "driv3r-stage-b-direct-cases-v1",
+  "freeze": "Stage B geometry and scoring frozen before held-out model evaluation; no response-dependent repairs",
+  "coordinates": "Integer material cells; x increases right, y increases down; clearance is Manhattan distance to nonpaintable material",
+  "cases": [
+    {
+      "id": "b-direct-dev-straight-v1",
+      "split": "development",
+      "category": "straight_offset",
+      "fixture": {"id": "b-direct-dev-straight-v1", "edits": [[8, 8, 1, 24, 28]]},
+      "start": [11, 16],
+      "target": [11, 19],
+      "objective": "Draw a connected one-cell trace to target [11,19]. Keep exactly three cells of Manhattan clearance from the protected wall, avoid revisiting cells, and choose STOP as soon as the target is reached. Coordinates increase right and down.",
+      "paraphrase": "Move and paint cardinally from the current position to [11,19] while staying three Manhattan cells from the wall. Do not retrace. Finish with STOP immediately upon arrival; positive y points down.",
+      "max_decisions": 8,
+      "success": {"require_explicit_stop": true, "max_movements": 7, "max_retraces": 0, "desired_clearance_cells": 3, "min_clearance_cells": 3, "max_clearance_cells": 3, "nonincreasing_offset_error": false, "expected_shortest_legal_moves": 3}
+    },
+    {
+      "id": "b-direct-dev-recovery-v1",
+      "split": "development",
+      "category": "offset_recovery",
+      "fixture": {"id": "b-direct-dev-recovery-v1", "edits": [[20, 12, 1, 18, 28]]},
+      "start": [24, 17],
+      "target": [22, 18],
+      "objective": "Paint a connected trace to [22,18], recovering toward two cells of Manhattan wall clearance. Never increase the absolute error from the desired two-cell offset, never enter clearance below two, avoid retracing, and choose STOP at the target. Positive y points down.",
+      "paraphrase": "Reach [22,18] with a painted cardinal path. Reduce or retain, but never worsen, the error from two Manhattan cells of wall separation. Keep at least two cells clear, visit each position once, then STOP on arrival. Coordinates grow rightward and downward.",
+      "max_decisions": 8,
+      "success": {"require_explicit_stop": true, "max_movements": 7, "max_retraces": 0, "desired_clearance_cells": 2, "min_clearance_cells": 2, "max_clearance_cells": 4, "nonincreasing_offset_error": true, "expected_shortest_legal_moves": 3}
+    },
+    {
+      "id": "b-direct-held-corner-v1",
+      "split": "held_out",
+      "category": "corner",
+      "fixture": {"id": "b-direct-held-corner-v1", "edits": [[8, 16, 9, 1, 28], [16, 8, 1, 9, 28]]},
+      "start": [15, 18],
+      "target": [18, 15],
+      "objective": "Continue a connected painted trace around the outside of this corner to [18,15]. Prefer two Manhattan cells of clearance; cardinal steps may temporarily use three, but never use less than two or more than three. Do not retrace, and choose STOP immediately at the target. Positive y points down.",
+      "paraphrase": "Turn around the wall corner and finish at [18,15]. Draw on every cardinal move while keeping wall separation between two and three Manhattan cells, ideally two. Never revisit a position. Select STOP on arrival; x grows right and y grows down.",
+      "max_decisions": 8,
+      "success": {"require_explicit_stop": true, "max_movements": 7, "max_retraces": 0, "desired_clearance_cells": 2, "min_clearance_cells": 2, "max_clearance_cells": 3, "nonincreasing_offset_error": false, "expected_shortest_legal_moves": 6}
+    },
+    {
+      "id": "b-direct-held-recovery-v1",
+      "split": "held_out",
+      "category": "offset_recovery",
+      "fixture": {"id": "b-direct-held-recovery-v1", "edits": [[8, 8, 1, 24, 28]]},
+      "start": [13, 20],
+      "target": [10, 22],
+      "objective": "Draw a connected trace to [10,22] while recovering a two-cell Manhattan offset from the wall. Never increase the absolute error from two and never go below two cells of clearance. Avoid revisiting positions and choose STOP at the target. Positive y points down.",
+      "paraphrase": "Return toward the desired wall separation of two Manhattan cells and reach [10,22]. Paint each cardinal move. Offset error must never increase and clearance must remain at least two. Do not retrace; STOP immediately when the target is reached. Coordinates increase right and down.",
+      "max_decisions": 8,
+      "success": {"require_explicit_stop": true, "max_movements": 7, "max_retraces": 0, "desired_clearance_cells": 2, "min_clearance_cells": 2, "max_clearance_cells": 5, "nonincreasing_offset_error": true, "expected_shortest_legal_moves": 5}
+    },
+    {
+      "id": "b-direct-held-blocked-v1",
+      "split": "held_out",
+      "category": "blocked_preferred_move",
+      "fixture": {"id": "b-direct-held-blocked-v1", "edits": [[21, 19, 1, 3, 28]]},
+      "start": [20, 20],
+      "target": [23, 20],
+      "objective": "Draw a short connected trace to [23,20], routing around the protected obstacle even when the necessary move temporarily increases target distance. Do not revisit cells or paint the obstacle. Choose STOP immediately at the target. Coordinates increase right and down.",
+      "paraphrase": "Reach [23,20] with a short painted cardinal path around the obstruction. An initial move away from the target is allowed when required by the obstacle. Preserve protected material, avoid retracing, and STOP upon arrival. Positive x is right and positive y is down.",
+      "max_decisions": 8,
+      "success": {"require_explicit_stop": true, "max_movements": 7, "max_retraces": 0, "desired_clearance_cells": null, "min_clearance_cells": 1, "max_clearance_cells": null, "nonincreasing_offset_error": false, "expected_shortest_legal_moves": 7}
+    },
+    {
+      "id": "b-direct-held-stop-v1",
+      "split": "held_out",
+      "category": "early_stop",
+      "fixture": {"id": "b-direct-held-stop-v1", "edits": [[20, 20, 1, 9, 28], [24, 24, 1, 1, 58]]},
+      "start": [24, 24],
+      "target": [24, 24],
+      "objective": "The target [24,24] has already been reached and painted. Finish with STOP now. No additional movement or painting is needed. Coordinates increase right and down.",
+      "paraphrase": "The current position is the completed target [24,24]. End the episode by selecting STOP without adding a movement or painted cell; the requested trace is already complete.",
+      "max_decisions": 3,
+      "success": {"require_explicit_stop": true, "max_movements": 0, "max_retraces": 0, "desired_clearance_cells": null, "min_clearance_cells": 1, "max_clearance_cells": null, "nonincreasing_offset_error": false, "expected_shortest_legal_moves": 0}
+    }
+  ]
+}

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .contracts import Refusal, digest
+from .contracts import Refusal, digest, operation_visits
 from .controller import validate_episode, write_json
 from .native import verify_observation
 
@@ -37,7 +37,7 @@ def replay_episode(record: dict, native, original_native_directory: Path, output
         original = step["native_response"]
         verify_observation(original_native_directory, original["observation"])
         action = step["selected_action"]
-        cells = sum((op["x1"]-op["x0"]+1)*(op["y1"]-op["y0"]+1) for op in action["operations"])
+        cells = operation_visits(action["operations"])
         replayed = native.apply(action["operations"], expected_generation=current["generation"],
                                 expected_revision=current["revision"], expected_tick=current["tick"],
                                 action_id=action["id"], cell_budget=cells)

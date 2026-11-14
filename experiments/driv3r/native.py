@@ -160,15 +160,20 @@ class NativeSession:
         else:
             from experiments.agent_painter.native.runtime import development_runtime
             runtime = development_runtime(self.root, self.source_sha, self.godot)
+        from .stage_b.catalog import catalogs
+        _, catalog_hashes = catalogs(self.root)
         runtime.update({"driv3r_harness_sha256": _digest(self.root / "godot/tests/run_driv3r_stage_a.gd"),
                         "driv3r_native_client_sha256": _digest(Path(__file__)),
+                        "driv3r_fixture_catalog_sha256": catalog_hashes,
                         "session_id": self.session_id, "parent_pid": os.getpid()})
         self._identities = {path: _digest(path) for path in
                             (self.root / "godot/tests/run_driv3r_stage_a.gd", Path(__file__), native, rapier, self.godot)}
+        self._identities.update({self.root / path: sha for path, sha in catalog_hashes.items()})
         _atomic(self.output / "runtime-custody.json", runtime)
         env = os.environ.copy()
         env.update(DRIV3R_NATIVE_DIRECTORY=str(self.output), DRIV3R_NATIVE_SESSION=self.session_id,
                    DRIV3R_SOURCE_SHA=self.source_sha, DRIV3R_PARENT_PID=str(os.getpid()),
+                   DRIV3R_FIXTURE_HASHES=json.dumps(catalog_hashes),
                    GODOT_SILENCE_ROOT_WARNING="1")
         # Isolate Workbench settings/save state from all other local sessions.
         user_dir = self.output / "user"

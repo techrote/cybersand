@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-14",
+  "scope": "Additive explicitly authorized Stage B continuation; original Stage A and frozen historical question objects remain unchanged. Code, native execution and usefulness are distinct.",
+  "questions": [
+    {
+      "id": "DRIV3R-B01",
+      "query": "What did the Owner authorize after the qualified DRIV3R Stage A checkpoint, and when may Stage C proceed?",
+      "canonical": ["operations/driv3r-stage-b.md"],
+      "facts": ["Stage B was explicitly authorized after qualified Stage A ee95f547; the same PR580 stays Draft/HOLD with original evidence preserved.", "Modest Stage C requires the predeclared useful-behavior threshold plus custody, safety, replay and cleanup; source implementation or publication alone does not pass it.", "No training, scheduled workers, production-default change, Ready promotion, merge or closing570 is authorized."],
+      "sources": ["operations/driv3r-stage-b.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "DRIV3R-B02",
+      "query": "How does DRIV3R Stage B distinguish reversible observation compaction from removing geometry information?",
+      "canonical": ["operations/driv3r-stage-b.md"],
+      "facts": ["Canonical and compact prompts preserve the same semantic view through exact decoder equality, using tables, material runs and cardinal path sequences.", "Complete original observations, source identities, programs, candidate arrays and responses remain in audit records; audit separation is not byte-for-byte whole-episode compression.", "The separate direct-only host-metrics ablation removes computed geometry while retaining crop, coordinates, target, history and task requirements.", "Paired order/paraphrase probes use original native states and do not execute alternative choices."],
+      "sources": ["operations/driv3r-stage-b.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "DRIV3R-B03",
+      "query": "Does the direction and distance path-modulation fixture move a physical vehicle, and what does vector preservation mean?",
+      "canonical": ["operations/driv3r-stage-b.md"],
+      "facts": ["A first genuine decision selects a bounded cardinal direction and distance in a no-paint planning transition; a later decision selects a host path algorithm.", "The chosen endpoint remains exact even if the intent is poor, with contiguous cardinal paths, at most two transverse cells and at most three times the selected direct distance.", "Native execution paints the unique path mask and advances the host cursor after acknowledgement; it is not a physical vehicle simulation.", "Ordered paths, endpoint error, travelled length, coverage and retraces remain separate from actual native material and receipt verification."],
+      "sources": ["operations/driv3r-stage-b.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "DRIV3R-B04",
+      "query": "How are direct and fuzzy success measured, and what prevents weak baseline or graph-completion claims in Stage B?",
+      "canonical": ["operations/driv3r-stage-b.md"],
+      "facts": ["Direct success requires explicit STOP at target plus native-confirmed movement, clearance and retrace bounds; its generic task_complete flag intentionally stays false.", "Fuzzy success requires actual coverage, connectivity or support, zero spill and consistent native receipts; SKIP graph completion alone is not success.", "Direct compares a local geometric search on the same visible observation, while vector compares both straight and geometry-aware selectors; matching ordinary code at higher cost is not incremental value.", "Held-out random controls use three frozen seeds and include STOP; primary and baseline episodes receive real native execution and replay."],
+      "sources": ["operations/driv3r-stage-b.md"],
+      "revision_sensitive": true
+    }
+  ]
+}

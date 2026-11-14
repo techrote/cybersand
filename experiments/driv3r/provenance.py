@@ -23,6 +23,7 @@ ACCEPTED_BASE = "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742"
 SOURCE_SCOPES = shared_runtime.SOURCE_SCOPES + [
     "experiments/driv3r", "godot/tests/run_driv3r_stage_a.gd",
     ".github/workflows/driv3r-stage-a.yml",
+    ".github/workflows/driv3r-stage-b.yml",
 ]
 SOURCE_SUFFIXES = {".gd", ".tscn", ".godot", ".cpp", ".hpp", ".h", ".inc",
                    ".py", ".json", ".sh", ".yml", ".yaml", ".md"}

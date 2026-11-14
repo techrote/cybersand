@@ -1,0 +1,89 @@
+name: DRIV3R Stage B frozen decision-control qualification
+on:
+  push:
+    branches: [research/570-driv3r-stage-a]
+    paths: ['experiments/driv3r/stage_b/qualification-request.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: driv3r-stage-b-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    name: Frozen Stage B CPU cohort and actual native geometry
+    # Ordinary PR checks reuse Stage A's cheap test discovery. No regular push,
+    # pull request or schedule acquires weights or starts this heavyweight job.
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/research/570-driv3r-stage-a' && (github.event_name == 'workflow_dispatch' || github.event_name == 'push')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Build pinned dependencies and execute the frozen Stage B campaign
+        # The outer bound reserves fifteen minutes for original failure evidence
+        # packaging/upload even when the source build or campaign reaches its cap.
+        run: timeout --signal=TERM --kill-after=60 9900 bash experiments/driv3r/ci_stage_b.sh
+      - name: Package original Stage B evidence and verify archived bytes
+        if: always()
+        run: |
+          set -euo pipefail
+          python3 -m experiments.driv3r.stage_b.provenance package --directory evidence/driv3r-stage-b --output release-stage-b --source-sha "$GITHUB_SHA"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: driv3r-stage-b-evidence-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/driv3r-stage-b/
+            release-stage-b/
+          if-no-files-found: error
+          retention-days: 90
+
+  publish-evidence:
+    name: Preserve completed Stage B research evidence
+    needs: qualify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: driv3r-stage-b-evidence-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: downloaded
+      - name: Verify completed qualification and publish original research assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cd downloaded/release-stage-b
+          sha256sum --check --strict SHA256SUMS.txt
+          python3 - <<'PY'
+          import json, os
+          manifest = json.load(open('MANIFEST.json'))
+          assert manifest['schema'] == 'driv3r-stage-b-publication-v1'
+          assert manifest['source_sha'] == os.environ['GITHUB_SHA']
+          assert manifest['publication_eligible'] is True
+          assert manifest['draft_hold'] is True and manifest['publication_is_acceptance'] is False
+          PY
+          tag="driv3r-stage-b-${GITHUB_SHA:0:12}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          cat > "$RUNNER_TEMP/driv3r-stage-b-release.md" <<'NOTES'
+          Original bounded Stage B evidence for issue #570 on the recorded source: frozen direct-drive, meaningful procedural choices, direction/distance plus displacement-preserving path modulation, conventional/seeded baselines and paired order/paraphrase/encoding probes.
+
+          Behavioral failures and any usefulness HOLD remain in the original reports. A completed safe experiment and research publication do not establish policy superiority, generalization, or a Stage C gate pass. Inspect execution/summary.json and the original model/native records.
+
+          The ZIP retains source/model/runtime identities, exact questions/distributions, native acknowledgements/readbacks, original material PNGs, replay, partial failures and measured costs. Material visualizations are not framebuffer screenshots. The manifest and SHA256 inventory bind the original bytes to this exact source and Actions run.
+
+          Draft/HOLD. No merge, Ready promotion, training, scheduled workers, or production-default change. Any separately authorized conditional Stage C expansion requires its own recorded evidence.
+          NOTES
+          gh release create "$tag" ./* --target "$GITHUB_SHA" --prerelease --title "DRIV3R Stage B research (${GITHUB_SHA:0:12})" --notes-file "$RUNNER_TEMP/driv3r-stage-b-release.md"

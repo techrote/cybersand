@@ -1,0 +1,101 @@
+{
+  "schema": "driv3r-stage-b-fuzzy-cases-v1",
+  "cases": [
+    {
+      "id": "b-fuzzy-dev-bridge",
+      "split": "development",
+      "fixture": {"id": "b-fuzzy-dev-bridge", "edits": [[52,12,8,2,58],[72,12,8,2,58]]},
+      "cursor": [60,12],
+      "target": [71,13],
+      "objective": "Connect the two horizontal paint58 pads with one continuous two-cell-thick bridge. The left pad occupies x52..59,y12..13 and the right pad x72..79,y12..13. Fill their gap at x60..71,y12..13. Add no paint outside that gap. Coordinates increase right and down; all ranges are inclusive.",
+      "paraphrase": "Join the existing pads on rows12 and13, from the pad ending at x59 to the pad beginning at x72. The new bridge must cover every cell x60 through71 on those two rows, with no new cells elsewhere. Use one offered tool or stop. Coordinates increase right and down; bounds are inclusive.",
+      "subgoal": "Existing material58: left rectangle [52,12,8,2], right rectangle [72,12,8,2]. The gap is 12 columns wide and two rows high. Rectangle notation is [x,y,width,height]. Select one complete tool/profile; a short or displaced patch can be legal without connecting both pads.",
+      "candidates": [
+        {"id":"TOOL_A","profile":"span8","label":"Place an 8-by-2 platform at [60,12,8,2].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"platform","box":[60,12,8,2]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}},
+        {"id":"TOOL_B","profile":"span12","label":"Place a 12-by-2 platform at [60,12,12,2].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"platform","box":[60,12,12,2]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}},
+        {"id":"TOOL_C","profile":"span12-row15","label":"Place a 12-by-2 platform at [60,15,12,2].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"platform","box":[60,15,12,2]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}}
+      ],
+      "evaluation": {"kind":"connection","required_rectangles":[[60,12,12,2]],"allowed_new_rectangles":[[60,12,12,2]],"connectivity":[{"from":[59,12],"to":[72,12]}],"support_columns":[]}
+    },
+    {
+      "id": "b-fuzzy-dev-support",
+      "split": "development",
+      "fixture": {"id":"b-fuzzy-dev-support","edits":[[52,20,20,2,58],[52,34,20,2,58]]},
+      "cursor": [60,22],
+      "target": [61,33],
+      "objective": "Support the marked roof span at columns60 and61 continuously down to the base. The roof occupies x52..71,y20..21 and the base x52..71,y34..35. Add a two-cell-wide column only at x60..61,y22..33. Support elsewhere does not satisfy the marked span. Add no paint outside that rectangle. Ranges are inclusive.",
+      "paraphrase": "Under the roof's two marked columns x60 and x61, fill the full vertical gap between the roof ending on row21 and the base starting on row34. The required column is x60..61,y22..33; keep every other empty cell clear. Existing roof and base both span x52..71. Bounds are inclusive.",
+      "subgoal": "Existing material58 roof [52,20,20,2] and base [52,34,20,2]. The marked load path is at x60..61 and requires 12 rows of new material from y22 through33. Rectangle notation is [x,y,width,height]. Choose one support profile.",
+      "candidates": [
+        {"id":"TOOL_A","profile":"column2-height12","label":"Place a 2-by-12 support at [60,22,2,12].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"support","box":[60,22,2,12]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}},
+        {"id":"TOOL_B","profile":"column2-height8","label":"Place a 2-by-8 support at [60,22,2,8].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"support","box":[60,22,2,8]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}},
+        {"id":"TOOL_C","profile":"column2-x68","label":"Place a 2-by-12 support at [68,22,2,12].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"support","box":[68,22,2,12]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}}
+      ],
+      "evaluation": {"kind":"support","required_rectangles":[[60,22,2,12]],"allowed_new_rectangles":[[60,22,2,12]],"connectivity":[],"support_columns":[{"x":60,"top_y":21,"bottom_y":34},{"x":61,"top_y":21,"bottom_y":34}]}
+    },
+    {
+      "id": "b-fuzzy-held-vertical-link",
+      "split": "held_out",
+      "fixture": {"id":"b-fuzzy-held-vertical-link","edits":[[18,52,2,8,58],[18,72,2,8,58]]},
+      "cursor": [18,60],
+      "target": [19,71],
+      "objective": "Join the separated vertical paint58 bars at x18..19. The upper bar covers y52..59 and the lower bar y72..79. Fill the entire two-column gap x18..19,y60..71, maintaining a continuous material58 connection. Add no cells outside the gap. Coordinates increase right and down; ranges are inclusive.",
+      "paraphrase": "Continue the upper bar on columns18 and19 down to the lower bar. Its missing segment runs from row60 through row71 inclusive. Both columns must be filled through that gap and all other empty cells must remain empty. The existing bars occupy y52..59 and y72..79.",
+      "subgoal": "Existing upper bar [18,52,2,8] and lower bar [18,72,2,8], both material58. There are 12 missing rows between them on columns18 and19. Rectangle notation is [x,y,width,height]. Select one complete vertical connector profile.",
+      "candidates": [
+        {"id":"TOOL_A","profile":"column2-x21","label":"Place a 2-by-12 support at [21,60,2,12].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"support","box":[21,60,2,12]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}},
+        {"id":"TOOL_B","profile":"column2-height8","label":"Place a 2-by-8 support at [18,60,2,8].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"support","box":[18,60,2,8]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}},
+        {"id":"TOOL_C","profile":"column2-height12","label":"Place a 2-by-12 support at [18,60,2,12].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"support","box":[18,60,2,12]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}}
+      ],
+      "evaluation": {"kind":"connection","required_rectangles":[[18,60,2,12]],"allowed_new_rectangles":[[18,60,2,12]],"connectivity":[{"from":[18,59],"to":[18,72]}],"support_columns":[]}
+    },
+    {
+      "id": "b-fuzzy-held-narrow-support",
+      "split": "held_out",
+      "fixture": {"id":"b-fuzzy-held-narrow-support","edits":[[52,52,24,2,58],[52,70,24,2,58]]},
+      "cursor": [66,54],
+      "target": [67,69],
+      "objective": "Build a continuous two-cell-wide support at x66..67 between the roof ending at y53 and the base beginning at y70. The roof is x52..75,y52..53 and the base x52..75,y70..71. Fill x66..67,y54..69 completely and leave surrounding empty cells clear. A wider column is unwanted even if it connects. Ranges are inclusive.",
+      "paraphrase": "Connect the roof to its base with exactly columns66 and67 filled from row54 through69. Do not widen the support into column68 or beyond. Roof material58 occupies [52,52,24,2], base material58 [52,70,24,2], using [x,y,width,height] notation. Choose a single offered profile.",
+      "subgoal": "The required vertical load paths are columns66 and67. Their existing upper endpoints are on y53 and lower endpoints on y70. Sixteen new rows, y54..69, must be filled. Adjacent empty cells are not part of the requested support. Rectangle notation is [x,y,width,height].",
+      "candidates": [
+        {"id":"TOOL_A","profile":"column4-height16","label":"Place a 4-by-16 support at [66,54,4,16].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"support","box":[66,54,4,16]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}},
+        {"id":"TOOL_B","profile":"column2-height16","label":"Place a 2-by-16 support at [66,54,2,16].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"support","box":[66,54,2,16]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}},
+        {"id":"TOOL_C","profile":"column2-height12","label":"Place a 2-by-12 support at [66,54,2,12].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"support","box":[66,54,2,12]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}}
+      ],
+      "evaluation": {"kind":"support","required_rectangles":[[66,54,2,16]],"allowed_new_rectangles":[[66,54,2,16]],"connectivity":[],"support_columns":[{"x":66,"top_y":53,"bottom_y":70},{"x":67,"top_y":53,"bottom_y":70}]}
+    },
+    {
+      "id": "b-fuzzy-held-coverage",
+      "split": "held_out",
+      "fixture": {"id":"b-fuzzy-held-coverage","edits":[[12,82,8,2,58]]},
+      "cursor": [20,82],
+      "target": [35,83],
+      "objective": "Extend the existing two-row strip rightward to column35, filling every cell x20..35,y82..83. Existing material58 covers x12..19,y82..83. Keep the extension exactly two rows high and do not add paint anywhere else. Repainting existing strip cells cannot replace covering the missing right end. Ranges are inclusive.",
+      "paraphrase": "On rows82 and83, complete the requested strip through x35. Columns12..19 already contain material58; the missing rectangle is x20..35 on both rows. Preserve the two-row thickness and leave other empty cells untouched. Cover the full missing region with one tool.",
+      "subgoal": "Existing strip [12,82,8,2]. The empty target [20,82,16,2] starts immediately to its right and contains 32 cells. Rectangle notation is [x,y,width,height]. Choose one finite extension profile; all offered profiles are legal to execute.",
+      "candidates": [
+        {"id":"TOOL_A","profile":"span16-height2","label":"Place a 16-by-2 platform at [20,82,16,2].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"platform","box":[20,82,16,2]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}},
+        {"id":"TOOL_B","profile":"span16-x16","label":"Place a 16-by-2 platform at [16,82,16,2].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"platform","box":[16,82,16,2]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}},
+        {"id":"TOOL_C","profile":"span16-height4","label":"Place a 16-by-4 platform at [20,82,16,4].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"platform","box":[20,82,16,4]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}}
+      ],
+      "evaluation": {"kind":"coverage","required_rectangles":[[20,82,16,2]],"allowed_new_rectangles":[[20,82,16,2]],"connectivity":[],"support_columns":[]}
+    },
+    {
+      "id": "b-fuzzy-held-dogleg",
+      "split": "held_out",
+      "fixture": {"id":"b-fuzzy-held-dogleg","edits":[[52,84,8,2,58],[72,84,8,2,58],[64,84,4,2,28]]},
+      "cursor": [58,78],
+      "target": [72,84],
+      "objective": "Connect the left pad x52..59,y84..85 to the right pad x72..79,y84..85 over the protected obstacle x64..67,y84..85. Use the requested overhead path: top span x58..73,y76..77 plus risers x58..59,y78..83 and x72..73,y78..83. Fill that path completely and add no new paint elsewhere. Ranges are inclusive.",
+      "paraphrase": "Build the complete overhead connection between two pads on rows84 and85, left x52..59 and right x72..79. The reserved path is a top band x58..73 on rows76..77, with two vertical legs beneath it at x58..59 and x72..73 through rows78..83. Complete both legs and the band, leaving all other empty cells clear and obstacle x64..67,y84..85 untouched.",
+      "subgoal": "Existing material58 pads [52,84,8,2] and [72,84,8,2]; protected28 obstacle [64,84,4,2]. The top span is above both pads. Each full riser profile includes its top-span overlap and two existing pad rows, so legitimate anchor overdraw is possible. Rectangle notation is [x,y,width,height].",
+      "candidates": [
+        {"id":"TOOL_A","profile":"span-only","label":"Place the top platform [58,76,16,2].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"platform","box":[58,76,16,2]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}},
+        {"id":"TOOL_B","profile":"span-left-column","label":"Place top platform [58,76,16,2] and left support [58,76,2,10].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"platform","box":[58,76,16,2]},{"kind":"support","box":[58,76,2,10]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}},
+        {"id":"TOOL_C","profile":"span-two-columns","label":"Place top platform [58,76,16,2], left support [58,76,2,10] and right support [72,76,2,10].","program":{"version":2,"family":"architecture","variation":0,"components":[{"kind":"platform","box":[58,76,16,2]},{"kind":"support","box":[58,76,2,10]},{"kind":"support","box":[72,76,2,10]}],"requirements":{"route":[],"clearance":3,"region":[0,0,96,96]}}}
+      ],
+      "evaluation": {"kind":"connection","required_rectangles":[[58,76,16,2],[58,78,2,6],[72,78,2,6]],"allowed_new_rectangles":[[58,76,16,2],[58,78,2,6],[72,78,2,6]],"connectivity":[{"from":[59,84],"to":[72,84]}],"support_columns":[]}
+    }
+  ]
+}

@@ -12,6 +12,8 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 For S1-2B-DRIV3R Stage A, resident d1 single-choice inference, finite vehicle/fuzzy-tool candidates, native readback/replay and explicit qualification, retrieve the [decision-controller guide](../operations/driv3r-stage-a.md). Its [additive questions](retrieval-questions-driv3r.json) keep source implementation separate from actual acceptance evidence.
 
+For the explicitly authorized Stage B continuation, retrieve [frozen evaluation and vector modulation](../operations/driv3r-stage-b.md) and its [additive Stage B questions](retrieval-questions-driv3r-stage-b.json). These own development/held-out separation, reversible prompt encoding versus geometry ablation, stronger baselines and the conditional Stage C gate.
+
 For Greebles/Pipework/Architecture programs, native admission and split custody, the original PNG gallery, hosted CPU optimizer/resume proof and four model-worker interfaces, retrieve the [agent-painter foundation](../operations/agent-painter-foundation.md).
 
 For the combined #562 Materials Lab / #564 Workbench candidate, original source ancestry, shared history preservation, standalone evaluation and #563 merge-order boundaries, read the [combined qualification record](../audits/2026-11-12-mat-auth-workbench-integration.md).

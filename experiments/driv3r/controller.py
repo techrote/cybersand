@@ -10,7 +10,7 @@ import time
 
 from . import PROTOCOL
 from .contracts import (Refusal, canonical, digest, integer, finite, validate_candidates,
-                        validate_decision, validate_operations, TERMINAL_STATUSES)
+                        validate_decision, validate_operations, operation_visits, TERMINAL_STATUSES)
 from .providers import observation, permitted, world_identity
 
 
@@ -126,7 +126,7 @@ def execute_candidate(native, action: dict, observed: dict, *, remaining_cells: 
         raise Refusal("Candidate exceeds remaining changed-cell budget")
     receipt = native.apply(action["operations"], expected_generation=current["generation"],
                            expected_revision=current["revision"], expected_tick=current["tick"],
-                           action_id=action["id"], cell_budget=max(1, len(cells)),
+                           action_id=action["id"], cell_budget=operation_visits(action["operations"]),
                            timeout=remaining(), cancel_event=cancel_event)
     details = receipt.get("receipt", {})
     after = receipt.get("observation", {})
@@ -349,11 +349,18 @@ def validate_episode(record: dict) -> dict:
             selected = validate_decision(row["decision"], row["observation"], row["candidates"])
             if selected != row["selected_action"]:
                 raise Refusal("Executed action differs from chosen host candidate")
-            if record["policy"] == D1Policy.name:
+            answer_identity = row["decision"]["model_identity"]
+            answer_raw = row["decision"].get("raw") or {}
+            is_model = (bool(answer_identity.get("repository")) or answer_identity.get("kind") == "model"
+                        or ("request" in answer_raw and "raw_response" in answer_raw))
+            if is_model or record["policy"] == D1Policy.name or record["policy"].startswith("d1-q8-stage-b-"):
                 from .backend import parse_choice_response
+                from .stage_b.representation import request_for_policy
                 answer = row["decision"]
                 raw = answer["raw"]
-                if (raw["status"] != "ok" or raw["request"] != D1Policy.request(row["observation"], row["candidates"])
+                request = (D1Policy.request(row["observation"], row["candidates"]) if record["policy"] == D1Policy.name
+                           else request_for_policy(record["policy"], row["observation"], row["candidates"]))
+                if (raw["status"] != "ok" or raw["request"] != request
                         or raw["model_identity"] != answer["model_identity"] or raw["backend_identity"] != answer["backend_identity"]):
                     raise Refusal("Original model request or identity mismatch")
                 parsed = parse_choice_response(raw["raw_response"], "next_action", [c["id"] for c in row["candidates"]])
@@ -364,12 +371,10 @@ def validate_episode(record: dict) -> dict:
                 if not result.get("controller_prefix_consistent", result["controller_consistent"]) or not result["receipt"]["readback_matches"]:
                     raise Refusal("Episode contains unverified native application")
                 predicted = before["materials"].copy()
-                for op in selected["operations"]:
-                    for y in range(op["y0"], op["y1"]+1):
-                        for x in range(op["x0"], op["x1"]+1):
-                            if not permitted(before, x, y):
-                                raise Refusal("Recorded action is outside host authority")
-                            predicted[y*96+x] = 58
+                for x, y in validate_operations(selected["operations"], row["observation"]["permissions"]["focus"], 58):
+                    if not permitted(before, x, y):
+                        raise Refusal("Recorded action is outside host authority")
+                    predicted[y*96+x] = 58
                 state = result["observation"]
                 count = sum(a != b for a, b in zip(before["materials"], state["materials"], strict=True))
                 full_action = row["host_status"] == "applied"

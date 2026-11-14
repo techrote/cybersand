@@ -34,6 +34,47 @@ var parent_pid := 0
 var request_deadline := 0.0
 var request_id := 0
 var fatal := ""
+var fixture_catalog := {}
+
+func load_fixture_catalog() -> bool:
+	var expected: Variant = JSON.parse_string(OS.get_environment("DRIV3R_FIXTURE_HASHES"))
+	if not expected is Dictionary or expected.size() != 3:
+		fatal = "Missing frozen fixture catalog identities"; return false
+	for family: String in ["direct", "fuzzy", "vector"]:
+		var relative := "experiments/driv3r/stage_b/" + family + "_cases.json"
+		var path := ProjectSettings.globalize_path("res://../" + relative)
+		if not FileAccess.file_exists(path) or FileAccess.get_sha256(path) != expected.get(relative):
+			fatal = "Fixture catalog identity mismatch"; return false
+		var file := FileAccess.open(path, FileAccess.READ)
+		if file == null or file.get_length() > 262144:
+			fatal = "Fixture catalog size refused"; return false
+		var data: Variant = JSON.parse_string(file.get_as_text())
+		file.close()
+		if not data is Dictionary or data.get("schema") != "driv3r-stage-b-" + family + "-cases-v1" \
+			or not data.get("cases") is Array or data.cases.is_empty() or data.cases.size() > 16:
+			fatal = "Invalid fixture catalog schema"; return false
+		for item: Variant in data.cases:
+			if not item is Dictionary or not item.get("fixture") is Dictionary:
+				fatal = "Invalid fixture entry"; return false
+			var entry: Dictionary = item.fixture
+			if not entry.get("id") is String or not entry.id.begins_with("b-" + family + "-") \
+				or fixture_catalog.has(entry.id) or not entry.get("edits") is Array or entry.edits.size() > 32:
+				fatal = "Invalid fixture identifier or edits"; return false
+			var visits := 0
+			var normalized: Array = []
+			for edit: Variant in entry.edits:
+				if not edit is Array or edit.size() != 5:
+					fatal = "Invalid fixture rectangle"; return false
+				for value: Variant in edit:
+					if not integer(value): fatal = "Noninteger fixture"; return false
+				if edit[0] < 0 or edit[1] < 0 or edit[2] < 1 or edit[3] < 1 \
+					or edit[0] + edit[2] > 96 or edit[1] + edit[3] > 96 or int(edit[4]) not in [28, 58]:
+					fatal = "Fixture outside fixed authority"; return false
+				visits += int(edit[2] * edit[3])
+				normalized.append([int(edit[0]), int(edit[1]), int(edit[2]), int(edit[3]), int(edit[4])])
+			if visits > 4096: fatal = "Fixture cell bound exceeded"; return false
+			fixture_catalog[entry.id] = normalized
+	return true
 
 func _initialize() -> void:
 	ProjectSettings.set_setting("cybersand/native_worker_threads", 1)
@@ -150,7 +191,7 @@ func reset_fence() -> Dictionary:
 	return {"status":status, "reason":reason, "reset_admitted":false}
 
 func fresh(name: String) -> Dictionary:
-	if not name in ["wall-v1", "fuzzy-v1"]:
+	if not name in ["wall-v1", "fuzzy-v1"] and not fixture_catalog.has(name):
 		return {"status":"refused", "reason":"Unknown fixture", "reset_admitted":false}
 	if not await until(ready):
 		return {"status":"failed", "reason":fatal, "reset_admitted":false}
@@ -159,7 +200,7 @@ func fresh(name: String) -> Dictionary:
 	art.stop("DRIV3R explicit new episode")
 	var generation: int = worker.paint_state().generation
 	var data: Dictionary = Setup.fresh(PackedInt32Array(bench.applied.liquid_policy), Vector2i(512, 512))
-	data.edits = [[8, 8, 1, 57, 28], [28, 24, 6, 8, 28]]
+	data.edits = fixture_catalog[name].duplicate(true) if fixture_catalog.has(name) else [[8, 8, 1, 57, 28], [28, 24, 6, 8, 28]]
 	# Recheck immediately at the actual Workbench admission. Dispatch never
 	# clears the cancellation marker; a new marker belongs to this request.
 	fence = reset_fence()
@@ -337,6 +378,7 @@ func run() -> void:
 	parent_pid = int(OS.get_environment("DRIV3R_PARENT_PID"))
 	startup_msec = Time.get_ticks_msec()
 	if directory.is_empty() or session_id.is_empty(): quit(2); return
+	if not load_fixture_catalog(): push_error(fatal); quit(2); return
 	set_meta("cybersand_feature", "shared_workbench")
 	host = load("res://main.tscn").instantiate()
 	host.set_script(FocusHost)

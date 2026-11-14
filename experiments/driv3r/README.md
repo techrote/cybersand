@@ -1,5 +1,14 @@
 # S1-2B-DRIV3R — Stage A
 
+**Owner-authorized Stage B continuation:** the qualified Stage A checkpoint is
+`ee95f547f31fb1ac9cdd34536bf36dffe7af1d0c`. See the
+[Stage B operating guide](../../docs/operations/driv3r-stage-b.md) and
+[frozen protocol](stage_b/protocol.json) for held-out direct/fuzzy comparisons,
+reversible prompt compaction, paired probes and direction/distance plus path
+modulation. The separate [workflow](../../.github/workflows/driv3r-stage-b.yml)
+requires an explicit Stage B request. Keep the same PR #580 Draft/HOLD. Original
+Stage A evidence remains frozen; new source needs its own qualification.
+
 Opt-in, no-training investigation for [issue #570](https://github.com/techrote/cybersand/issues/570).
 One resident official d1-2B Q8 CPU process answers typed `choice` questions; the
 host validates IDs, state freshness and permissions before invoking the existing
