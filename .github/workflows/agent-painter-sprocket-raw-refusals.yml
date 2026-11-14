@@ -1,0 +1,98 @@
+name: SPROCKET immutable raw DEVELOPMENT refusal comparison
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/raw-refusal-request-v1.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sprocket-raw-refusals-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  source-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify immutable one-shot source and safety
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_REF" = refs/heads/codex/agent-painter-sprocket-568
+          test "$GITHUB_REPOSITORY" = techrote/cybersand
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/raw-policy.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          actual=json.loads(Path('experiments/agent_painter/lanes/sprocket/raw-refusal-request-v1.json').read_text())
+          expected={
+            'schema':'cybersand.sprocket-raw-refusal-request/1','sequence':1,'source_only':True,
+            'model':'kandivault/sprocket-500m','revision':'eb157d4ddddc4619e661d4a2426bb2dd000fc668',
+            'corpus_sha256':'2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc',
+            'original_16_run':43523253619,'original_16_artifact':14083354475,
+            'original_16_sha256':'686f67190766d71667b8e78c9a58bdcd121070eff1b75bad21327ac63f3d6b2a',
+            'original_96_run':43536717867,'original_96_artifact':14089867633,
+            'original_96_sha256':'991d2f2c0a578d935c839d5e5b4650ad8b9b9116348a54e873340f59f115ff23',
+            'new_train_groups':0,'optimizer_updates':0,'native_views':0,
+            'final_opened':False,'draft_hold':True}
+          if actual!=expected: raise SystemExit('read-only DEVELOPMENT evidence request changed')
+          PY
+          mkdir -p evidence/raw-refusals
+          printf '%s\n' "$GITHUB_SHA" > evidence/raw-refusals/source-head.txt
+          printf '%s\n' '{"status":"STARTED_PARTIAL","native":0,"train":0,"final_opened":false}' > evidence/raw-refusals/partial.json
+      - name: Positive and adversarial source tests
+        run: |
+          set -euo pipefail
+          PYTHONPATH=experiments/agent_painter/lanes/sprocket python3 -m unittest discover -s experiments/agent_painter/lanes/sprocket -p test_raw_refusals_v1.py -v
+      - name: Freshly download and hash both original hosted DEVELOPMENT ZIPs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/originals"
+          for entry in '14083354475 686f67190766d71667b8e78c9a58bdcd121070eff1b75bad21327ac63f3d6b2a early' '14089867633 991d2f2c0a578d935c839d5e5b4650ad8b9b9116348a54e873340f59f115ff23 late'; do
+            read -r artifact digest stage <<< "$entry"
+            curl -fLsS --retry 2 --max-time 180 -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' "https://api.github.com/repos/techrote/cybersand/actions/artifacts/$artifact/zip" -o "$RUNNER_TEMP/originals/$stage.zip"
+            printf '%s  %s\n' "$digest" "$RUNNER_TEMP/originals/$stage.zip" | sha256sum -c -
+          done
+          python3 - <<'PY'
+          import os,zipfile,json,hashlib
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])/'originals'
+          receipt={}
+          for stage in ('early','late'):
+            p=root/(stage+'.zip')
+            with zipfile.ZipFile(p) as z:
+              members=z.infolist()
+              names=[m.filename for m in members]
+              if not members or len(members)>30 or len(names)!=len(set(names)) or z.testzip():
+                raise RuntimeError('original ZIP member/CRC failure')
+              for m in members:
+                path=Path(m.filename)
+                if path.is_absolute() or '..' in path.parts or m.file_size>1000000:
+                  raise RuntimeError('unsafe original archive member')
+              dest=root/stage
+              dest.mkdir()
+              z.extractall(dest)
+            receipt[stage]={'zip_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'zip_bytes':p.stat().st_size,'member_count':len(members),'crc':'PASS'}
+          Path('evidence/raw-refusals/original-bytes.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          PY
+      - name: Classify original raw token outputs with zero repair/retry
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/sprocket/raw_refusals_v1.py --early "$RUNNER_TEMP/originals/early" --late "$RUNNER_TEMP/originals/late" --output evidence/raw-refusals/taxonomy.json
+          rm evidence/raw-refusals/partial.json
+          echo 'No training; no model loading; no native Art; no FINAL' > evidence/raw-refusals/scope.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-raw-refusals-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/raw-refusals/
+          if-no-files-found: warn
+          retention-days: 90
