@@ -14,7 +14,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: void-a02-peer-${ github.ref }}
+  group: void-a02-peer-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: ${ github.sha }}
+          ref: ${{ github.sha }}
           persist-credentials: false
       - name: Verify immutable source and run cheap fail-closed regressions
         run: |
@@ -37,7 +37,7 @@ jobs:
           python3 experiments/agent_painter/lanes/void/test_a02_peer_audit.py
       - name: Download three original GitHub-hosted evidence ZIPs (no model/FINAL extraction)
         env:
-          GH_TOKEN: ${ github.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           mkdir -p evidence/void-a02-peer
@@ -70,7 +70,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: void-a02-peer-audit-${ github.sha }}-${ github.run_id }}
+          name: void-a02-peer-audit-${{ github.sha }}-${{ github.run_id }}
           path: evidence/void-a02-peer/comparison.json
           if-no-files-found: warn
           retention-days: 90
