@@ -31,12 +31,14 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
       - name: Fixed-source review and adversarial source tests
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p evidence/c1-label
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha || github.sha }}"
           git rev-parse HEAD > evidence/c1-label/source-sha.txt
           python3 experiments/agent_painter/lanes/lfm25_vl/test_c1_label_review.py -v 2>&1 | tee evidence/c1-label/model-free-tests.log
           python3 experiments/agent_painter/lanes/lfm25_vl/c1_label_review.py --output evidence/c1-label/source-only.json
@@ -98,7 +100,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: lfm-c1-label-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          name: lfm-c1-label-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: evidence/c1-label/
           if-no-files-found: warn
           retention-days: 90
