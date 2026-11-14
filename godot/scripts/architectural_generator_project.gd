@@ -13,7 +13,7 @@ static func _preset(identity: String, label: String, module: String, theme: Stri
 		room: int, floor_height: int, wall: int, door: int, shaft: int,
 		wall_material: int, floor_material: int, window_material: int, damage: float) -> Dictionary:
 	return {"format":PRESET_FORMAT,"version":1,"id":identity,"name":label,
-		"module":module,"module_version":2,"theme":theme,
+		"module":module,"module_version":2 if module in ["arcology","vault"] else 1,"theme":theme,
 		"geometry":{"room_size":room,"floor_height":floor_height,
 			"wall_thickness":wall,"door_width":door,"shaft_width":shaft},
 		"materials":{"wall":wall_material,"floor":floor_material,"window":window_material},
