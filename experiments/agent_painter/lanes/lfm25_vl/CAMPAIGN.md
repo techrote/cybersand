@@ -168,3 +168,52 @@ The request and bounded one-shot workflow are lane-owned
 constant trigger does **not** run at each scheduled worker turn, and no
 additional training VM or peer lease was created. Future structural TRAIN
 expansion still needs a new versioned contract and shepherd/reviewer approval.
+
+## 14 November 2026 — independent inspection of original native PNGs and material bytes
+
+A separate read-only examination of the **actual previously produced** [native
+run 43547938574](https://github.com/techrote/cybersand/actions/runs/43547938574)
+and [original artifact 14095216369](https://github.com/techrote/cybersand/actions/runs/43547938574/artifacts/14095216369)
+re-downloaded the original 5,177,905-byte ZIP. Its independently computed
+SHA-256 is **`5c3fcad50dadb6128ef3cd4f6630bae044305d0bc09f1e11c80ec2d9e22c10dc`**,
+exactly matching GitHub's published artifact digest. All **71 ZIP members**
+pass CRC. This is an independent historical-artifact inspection, not another
+hosted workflow, training run, inference call or native World mutation.
+
+All four source-built, model-derived 96×96 Hard Wall (ID 58) views were
+opened visually and checked: their original signed 32-bit material readback
+buffers match the corresponding L-mode material PNG pixels **exactly 4/4**,
+and the original RGB PNG and readback SHA-256 identities match the retained
+native-verifier receipts. Actual occupied cells are 370 for each fresh48
+seed view and 600 for each fresh120 seed view; only IDs 0 and 58 occur.
+
+| Candidate / independent generation | Seed views | Actual graph / pipe width | Request conformance |
+| --- | --- | --- | --- |
+| fresh48, 48 real updates | 104729, 130363 | One connected T; 3 endpoints, 1 upward terminal, 0 cycles; diameter 3 | **0/2** |
+| fresh120, 120 real updates | 104729, 130363 | **Same nodes and edges** and T; 3 endpoints, 1 upward terminal, 0 cycles; diameter **5** | **0/2** |
+
+The requested held-out DEVELOPMENT manifold requires **five endpoints, three
+upward terminal branches and uniform diameter three**. The two generated
+programs are graph-identical apart from the diameter change. Their seeds
+produce four native render variants but only **two independent language
+generations**. The extra 72 updates therefore changed pipe thickness, not
+the failed topology. This is direct native-pixel/model-program evidence of
+failure to generalize to the held-out structure; no useful vN is justified.
+
+**Research-integrity boundary:** this inspection read only the original
+model-native DEVELOPMENT result archive and did not open a FINAL split file,
+FINAL native image or FINAL candidate for tuning or selection. During
+source/interface review, however, the public `recipes.py` source was
+inspected; that file itself includes publicly readable definitions for all
+partitions, including FINAL-labelled recipe definitions. Those definitions
+were **not used** for this audit, training, prompt design or model selection.
+Future truly blind FINAL adjudication should therefore be independently
+controlled rather than relying on source recipe secrecy.
+
+**Next dependency:** shepherd/reviewer-approved **18–36 structurally distinct,
+positively native-admitted TRAIN groups** and the independently frozen
+60-request/five-formulation DEVELOPMENT suite. No optimizer retry on the
+original six structural TRAIN groups, no unapproved shadow benchmark and no
+historical checkpoint overwrite. This section records a stronger visual
+and original-container custody inspection, not an improvement in model
+quality. Draft/HOLD, no merge or default-provider promotion.
