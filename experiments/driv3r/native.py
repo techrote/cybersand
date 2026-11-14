@@ -208,11 +208,19 @@ class NativeSession:
                                         stdout=self._log, stderr=subprocess.STDOUT, start_new_session=True)
         try:
             ready = self._wait_file(self.output / "ready.json", self.startup_timeout)
+            parent_harness = self.root / "godot/tests/run_driv3r_stage_a.gd"
+            permitted_ready_hashes = {_digest(harness_path), _digest(parent_harness)}
             if ready.get("pid") != self.process.pid or ready.get("session_id") != self.session_id \
                     or ready.get("source_sha") != self.source_sha or ready.get("backend") != "CyberNativeCellWorld" \
                     or ready.get("native_sha256") != _digest(native) or ready.get("rapier_sha256") != rapier_hash \
-                    or ready.get("harness_sha256") != _digest(harness_path):
+                    or ready.get("harness_sha256") not in permitted_ready_hashes:
                 raise NativeError("Mounted native process identity mismatch")
+            if self.harness_script != "res://tests/run_driv3r_stage_a.gd":
+                marker = self._wait_file(self.output / "m3-harness-active.json", 10)
+                if marker.get("kind") != "driv3r_m3_derived_history" or (
+                        marker.get("script_sha256") != _digest(harness_path)
+                        or marker.get("brush_up_logical_cursor_only") is not True):
+                    raise NativeError("Derived M3 harness child source identity is unproven")
             _atomic(self.output / "startup.json", {"elapsed_seconds": time.monotonic() - started,
                                                    "command": command, "ready": ready})
         except BaseException:
