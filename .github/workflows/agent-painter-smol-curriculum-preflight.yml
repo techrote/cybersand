@@ -5,6 +5,8 @@ on:
     paths:
       - 'experiments/agent_painter/lanes/smol/curriculum_proposals_v2.json'
       - 'experiments/agent_painter/lanes/smol/curriculum_preflight.py'
+      - 'experiments/agent_painter/lanes/smol/curriculum_witness.py'
+      - 'experiments/agent_painter/lanes/smol/test_curriculum_witness.py'
       - '.github/workflows/agent-painter-smol-curriculum-preflight.yml'
   workflow_dispatch:
 permissions:
@@ -32,6 +34,10 @@ jobs:
           run-id: '43506373969'
           github-token: ${{ github.token }}
           path: evidence/native
+      - name: Adversarial independent composition controls
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s experiments/agent_painter/lanes/smol -p 'test_curriculum_witness.py' -v
       - name: Strict proposal-only screening (no FINAL, training, or native)
         run: |
           set -euo pipefail

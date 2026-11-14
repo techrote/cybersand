@@ -9,6 +9,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 import compiler
+from curriculum_witness import inspect as inspect_composition
 
 MANIFEST = "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
 SOURCE = "633920373a3d406a2ede61ce4137c324f76be23b"
@@ -110,9 +111,11 @@ def run(corpus, proposals):
         for split in ("TRAIN", "DEVELOPMENT"):
             if key in known[split]:
                 raise ValueError(item["id"] + ": structural collision with original " + split)
+        composition = inspect_composition(item)
         details = preflight(item)
         evidence.append({"id": item["id"], "family": item["family"],
                          "structural_signature_sha256": hashlib.sha256(key.encode()).hexdigest(),
+                         "literal_composition_witness": composition,
                          "compiled_seed_variants": details})
     return {"status": "COMPILER_PREFLIGHT_ONLY_PENDING_REVIEW_AND_POSITIVE_NATIVE_ADMISSION",
             "proposal_sha256": sha(proposals), "native_manifest_sha256": MANIFEST,

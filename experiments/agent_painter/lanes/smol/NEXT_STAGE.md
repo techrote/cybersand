@@ -28,3 +28,14 @@ readbacks/receipts/original PNGs, freeze one common TRAIN curriculum, and
 separately lock the shared 60-request DEVELOPMENT suite before training.
 The three proposals must not be passed to SMOL optimization or treated as
 independent admitted groups before those gates. All PRs Draft/HOLD.
+
+### Independent literal-composition assertions (14 November)
+
+The lane now records a second, source-defined **composition witness** alongside the
+compiler's coarse structural signature. It fails closed if the G06 missing-cassette
+gap/ascending grid placement disappears, if P01 loses the geometrically upward
+nested degree-3/degree-4 split, or if A01's individually aligned bay access doors
+and five-cell corridor disappear. Adversarial tests exercise these distinct failures.
+This is a stronger **model-free review screen**, not an independent proof of
+cross-lane novelty, real Art application, rendered aesthetics, gravity playability,
+or admission. Reviewer/shepherd still own global identity and native decisions.
