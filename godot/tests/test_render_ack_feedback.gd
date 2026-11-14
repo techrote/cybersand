@@ -91,14 +91,21 @@ func _test_native_ack_case(keep_acknowledging: bool) -> void:
 	worker.acknowledge_render_snapshot(initial.render_snapshot_serial)
 	var last_serial: int = initial.render_snapshot_serial
 	var saw_escalation: bool = false
-	var edit_count: int = 12 if keep_acknowledging else 300
+	var edit_count: int = 12 if keep_acknowledging else 275
+	var escalation_count: int = 0
 	for i: int in range(edit_count):
-		var x: int = 110 + (i % 25) * 17
-		var y: int = 110 + (i / 25) * 17
-		if not _expect_edit(worker, x, y):
+		# One cell, two distinct nonempty immobile materials. Unlike scattered
+		# default-demo coordinates, every native source turn MUST be a change,
+		# even with paused simulation, so missing ACK is the controlled variable.
+		var material: int = CyberCellWorld.WALL if i % 2 == 0 else CyberCellWorld.STONE
+		if not _expect_edit(worker, 500, 200, material):
 			break
 		var received: CyberSimulationSnapshot = await _wait_render(worker, last_serial)
 		if received == null:
+			var trace: Dictionary = worker.read_render_ack_trace(0)
+			print("RENDER_ACK_NO_PUBLICATION ", JSON.stringify({
+				"at_edit":i, "last_render_serial":last_serial,
+				"tail":trace.events.slice(maxi(0,trace.events.size()-12))}))
 			_expect(false, "native changed-render publication after edit %d" % i)
 			break
 		_expect(received.render_world_generation == initial.render_world_generation,
@@ -108,7 +115,9 @@ func _test_native_ack_case(keep_acknowledging: bool) -> void:
 			worker.acknowledge_render_snapshot(last_serial)
 		else:
 			var recent: Dictionary = worker.read_render_ack_trace(0)
-			if _trace_contains(recent.events, "pending_capacity_escalation"):
+			escalation_count = recent.events.filter(
+				func(row: Dictionary) -> bool: return row.get("event", "") == "pending_capacity_escalation").size()
+			if escalation_count >= 2:
 				saw_escalation = true
 				break
 	worker.stop_worker()
@@ -123,20 +132,29 @@ func _test_native_ack_case(keep_acknowledging: bool) -> void:
 		_expect(not _trace_contains(events, "pending_capacity_escalation"),
 			"ordinary acknowledged sparse edits cannot overflow the pending journal")
 	else:
-		_expect(saw_escalation, "withholding ACK must demonstrate pending-capacity escalation")
+		_expect(saw_escalation, "withholding ACK must demonstrate two full refreshes")
 		_expect(_trace_contains(events, "native_snapshot", "pending_capacity_escalation"),
 			"worker overflow requested an actual native full packet")
-		var reason_found: bool = false
+		var reasons: Array[String] = []
 		for row: Dictionary in events:
 			if row.event == "pending_capacity_escalation":
-				reason_found = (int(row.pending_rectangles) > 256 or
-					int(row.pending_bytes) > int(row.byte_limit))
+				reasons.append(str(row.reason))
+				_expect(int(row.pending_rectangles) > 256 or
+					int(row.pending_bytes) > int(row.byte_limit),
+					"overflow must record its strict measured threshold")
 				_expect(int(row.acknowledged_serial) < int(row.pending_serial),
 					"overflow has truly unacknowledged material serial")
-		_expect(reason_found, "overflow event must record the strict measured threshold")
+		print("RENDER_ACK_ESCALATIONS ", JSON.stringify({
+			"reasons":reasons, "last_serial":last_serial,
+			"full_native_packets":events.filter(
+				func(row: Dictionary) -> bool:
+					return row.get("event","") == "native_snapshot" and row.get("full",false)).size()}))
+		_expect("pending_rectangles" in reasons, "accumulating sparse rectangles exceeded 256")
+		_expect("pending_bytes" in reasons,
+			"after full recovery, one new delta exceeded full-image pending-byte cap")
 
 
-func _expect_edit(worker: CyberSimulationWorker, x: int, y: int) -> bool:
-	var queued: bool = worker.queue_emit_disc(x, y, 0, CyberCellWorld.WALL)
+func _expect_edit(worker: CyberSimulationWorker, x: int, y: int, material: int) -> bool:
+	var queued: bool = worker.queue_emit_disc(x, y, 0, material)
 	_expect(queued, "one native source edit admitted")
 	return queued
