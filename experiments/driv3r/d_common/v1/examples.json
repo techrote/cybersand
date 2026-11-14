@@ -1,5 +1,5 @@
 {
-  "description": "Synthetic shape-valid examples only. Hashes and blobs are placeholders; not model, native or replay evidence.",
+  "description": "Five deliberately synthetic, non-native conformance fixtures. Guiding layer uses a 512x512 canvas only as a test example; contract accepts larger dimensions. Hash placeholders do not certify real bytes or native execution.",
   "fixtures": [
     {
       "protocol": "cybersand.driv3r.d-common/1",
@@ -41,7 +41,11 @@
         "reenter_at_or_above": 21000
       },
       "native_material_authority": false,
-      "authoring_seed": 17
+      "authoring_seed": 17,
+      "canvas_size": [
+        512,
+        512
+      ]
     },
     {
       "protocol": "cybersand.driv3r.d-common/1",
@@ -57,7 +61,9 @@
         "revision": 7,
         "tick": 0,
         "material_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
-        "world_material_sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+        "world_material_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "width_cells": 512,
+        "height_cells": 512
       },
       "cursor": [
         12,
@@ -130,7 +136,9 @@
         "revision": 7,
         "tick": 0,
         "material_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
-        "world_material_sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+        "world_material_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "width_cells": 512,
+        "height_cells": 512
       },
       "candidate_set_sha256": "7777777777777777777777777777777777777777777777777777777777777777",
       "candidate_id": "CURVE_PAUSE",
@@ -158,7 +166,9 @@
         "candidate_safety_label": "legal"
       },
       "execution_status": "candidate",
-      "native_receipt_ref": null
+      "native_receipt_ref": null,
+      "native_receipt_artifact": null,
+      "world_postcondition": null
     },
     {
       "protocol": "cybersand.driv3r.d-common/1",
@@ -185,7 +195,9 @@
         "revision": 7,
         "tick": 0,
         "material_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
-        "world_material_sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+        "world_material_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "width_cells": 512,
+        "height_cells": 512
       },
       "after_world": {
         "id": "synthetic-native-fixture",
@@ -193,12 +205,15 @@
         "revision": 7,
         "tick": 0,
         "material_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
-        "world_material_sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+        "world_material_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "width_cells": 512,
+        "height_cells": 512
       },
       "native_undo_receipt_ref": null,
       "actual_material_cells_changed": 0,
       "status": "applied",
-      "reason_code": "cursor_only_recovery"
+      "reason_code": "cursor_only_recovery",
+      "native_undo_receipt_artifact": null
     },
     {
       "protocol": "cybersand.driv3r.d-common/1",
@@ -206,26 +221,14 @@
       "record_id": "provenance-001",
       "episode_id": "fixture-001",
       "sequence": 4,
-      "source_commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-      "source_tree": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-      "base_commit": "cccccccccccccccccccccccccccccccccccccccc",
-      "interface_schema_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
       "experiment_id": "d-common-synthetic",
       "arm": "fixture",
       "split": "pilot",
-      "scenario_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
       "algorithm": {
         "name": "synthetic-boundary-walk",
         "version": "0.0",
         "seed": 17,
         "recipe_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-      },
-      "model": null,
-      "native": {
-        "path": "fixtures/world.i32le",
-        "sha256": "8888888888888888888888888888888888888888888888888888888888888888",
-        "bytes": 1048576,
-        "format": "i32le"
       },
       "guidance_ref": "guide-001",
       "episode_record_refs": [
@@ -234,28 +237,14 @@
         "action-001",
         "reversal-001"
       ],
-      "final_world": {
-        "id": "synthetic-native-fixture",
-        "generation": 1,
-        "revision": 7,
-        "tick": 0,
-        "material_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
-        "world_material_sha256": "2222222222222222222222222222222222222222222222222222222222222222"
-      },
       "outcome": "partial",
       "metrics": {
         "decisions": 1,
         "material_cells_changed": 0
       },
       "replay": "not_attempted",
-      "artifacts": [
-        {
-          "path": "fixtures/guide.u16le",
-          "sha256": "3333333333333333333333333333333333333333333333333333333333333333",
-          "bytes": 128,
-          "format": "u16le"
-        }
-      ]
+      "artifacts": [],
+      "evidence_class": "synthetic"
     }
   ]
 }
