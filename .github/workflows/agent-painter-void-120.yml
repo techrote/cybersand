@@ -86,7 +86,8 @@ jobs:
           # Always preserve the artifact below, but only a genuine exit-0,
           # fully checkpointed 120/120 run unlocks DEVELOPMENT.
           "$RUNNER_TEMP/void-120/bin/python" experiments/agent_painter/lanes/void/completion_gate.py \
-            --summary evidence/training/summary.json --exit-code "$code"
+            --summary evidence/training/summary.json --exit-code "$code" \
+            --checkpoint evidence/training/checkpoint-000120
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
