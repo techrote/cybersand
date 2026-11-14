@@ -48,6 +48,9 @@ def fixture(root: Path) -> tuple[dict, Path]:
                            "numerics_sha256": sha(TRAINING / "numerics.py"),
                            "torch_version": "2.15.0+cpu",
                            "torch_build_sha256": "3"*64}}
+    # An additional hash-verified upstream metadata entry is legitimate under
+    # the shared model downloader's permissive audited-file allowlist.
+    config["model_files"]["extra-metadata.json"] = {"sha256": "e"*64, "bytes": 64}
     summary = {"schema_version": 1, "status": "completed", "global_step": 120,
                "optimizer_steps_this_job": 120, "sample_cursor": 120,
                "checkpoint": CHECKPOINT, "actual_training": True,
@@ -175,8 +178,6 @@ class GateTests(unittest.TestCase):
 
     def test_additional_hashed_upstream_metadata_allowed(self):
         # The audited downloader permits extra matched public metadata files.
-        self.summary["config"]["model_files"]["extra-metadata.json"] = {
-            "sha256": "e"*64, "bytes": 64}
         self.assertTrue(verify_completion(self.summary, 0, self.checkpoint)["promotable"])
         self.summary["config"]["model_files"]["extra-metadata.json"]["sha256"] = "bad"
         with self.assertRaisesRegex(ValueError, "model snapshot"):
