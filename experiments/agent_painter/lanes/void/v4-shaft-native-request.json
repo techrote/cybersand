@@ -1,6 +1,6 @@
 {
   "schema": "void-v4-shaft-native-research/1",
-  "sequence": 1,
+  "sequence": 2,
   "source_branch": "codex/agent-painter-void-568",
   "model": "dotlabs/void.1@9c2be5087772867d45961abd11f6b35110617563",
   "reference_corpus_source": "633920373a3d406a2ede61ce4137c324f76be23b",
@@ -16,5 +16,7 @@
   "no_shared_admission": true,
   "no_final": true,
   "draft_hold": true,
-  "pending_global_review": true
+  "pending_global_review": true,
+  "previous_failed_run_id": 43591734501,
+  "previous_failure": "original native Godot/C++ build succeeded, but pre-native A01 reference path wrongly pointed at new A02 proposals; StopIteration, no native Art cases. Original failed artifact retained as 14112438405. Corrected before this one-shot second dispatch."
 }
