@@ -1,0 +1,152 @@
+name: PR593 physical Windows GPU owner evaluation (source-pinned)
+
+# Isolated packaging branch; PR #593, PR #566 and main are never modified.
+on:
+  push:
+    branches: [ci/pr593-owner-windows-9628729a-20261114]
+    paths:
+      - '.github/workflows/pr593-physical-evaluation.yml'
+      - 'tools/ci/package_pr593_physical_eval.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pr593-owner-evaluation-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  windows-portable:
+    name: Build and exercise self-contained exact-source PR593 Windows ZIP
+    if: github.repository == 'techrote/cybersand'
+    runs-on: windows-2022
+    timeout-minutes: 110
+    defaults:
+      run:
+        shell: bash
+    env:
+      PR593_SHA: 9628729af052b417aa8a64e56f7e7bcdf4f2e876
+    steps:
+      - name: Checkout isolated, reproducible packaging source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          lfs: false
+          fetch-depth: 0
+
+      - name: Set up pinned Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Require current PR head and exact-source Windows/Linux green CI
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "$PR593_SHA" HEAD
+          python - <<'PY'
+          import json,os,urllib.request
+          src=os.environ['PR593_SHA']
+          def get(path):
+              req=urllib.request.Request('https://api.github.com/repos/techrote/cybersand/'+path,
+                  headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],
+                           'Accept':'application/vnd.github+json',
+                           'X-GitHub-Api-Version':'2022-11-28'})
+              with urllib.request.urlopen(req,timeout=30) as r:return json.load(r)
+          pr=get('pulls/593')
+          assert pr['head']['sha']==src and pr['draft'], 'PR #593 HEAD changed; refuse obsolete package'
+          assert pr['base']['sha']=='214de85adef2aaabc8e26de8612a3bf27cc1a081'
+          for run_id in (43648093562,43648093611):
+              ci=get('actions/runs/'+str(run_id))
+              assert ci['head_sha']==src and ci['status']=='completed' and ci['conclusion']=='success', 'CI not qualified'
+          print('PR593_PACKAGE_SOURCE_QUALIFIED',src,'Windows+Linux exact-head CI PASS')
+          PY
+
+      - name: Restore byte-qualified unchanged PR566 native Windows DLL
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: native-pixel-integrated-build-windows-43537909868-1
+          repository: techrote/cybersand
+          run-id: 43537909868
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/pr566-qualified
+
+      - name: Materialize pinned Rapier x64 and official Godot 4.7 archive/notices
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          echo 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' | sha256sum -c --strict
+          curl --fail --location --retry 3 --connect-timeout 30 --max-time 600 \
+            --output "$RUNNER_TEMP/godot-4.7-win.zip" \
+            'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          mkdir -p "$RUNNER_TEMP/pr593-notices"
+          for notice in LICENSE.txt COPYRIGHT.txt; do
+            curl --fail --location --retry 3 --connect-timeout 20 --max-time 300 \
+              --output "$RUNNER_TEMP/pr593-notices/$notice" \
+              "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$notice"
+          done
+
+      - name: Stage signed app-local Microsoft VC runtime and distribution licenses
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $notices = Join-Path $env:RUNNER_TEMP 'pr593-notices'
+          $runtimeLicense = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 -o $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft VC runtime license download failed' }
+          curl.exe -fL --retry 3 -o $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft VS license download failed' }
+          ./tools/ci/stage_windows_vc_runtime.ps1 -Output (Join-Path $env:RUNNER_TEMP 'pr593-vc-runtime') -License $runtimeLicense -DeveloperLicense $developerLicense
+
+      - name: Build standalone Windows 11 source-pinned physical candidate
+        run: |
+          set -euo pipefail
+          python tools/ci/package_pr593_physical_eval.py build \
+            --native-stage build/pr566-qualified \
+            --godot-zip "$RUNNER_TEMP/godot-4.7-win.zip" \
+            --notices "$RUNNER_TEMP/pr593-notices" \
+            --vc "$RUNNER_TEMP/pr593-vc-runtime" \
+            --output "$RUNNER_TEMP/pr593-packed" \
+            --archive 'delivery/CyberSand-593-Windows-9628729a.zip'
+
+      - name: Unzip the actual delivered Windows package into a clean folder
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if (Test-Path -LiteralPath 'C:\cs593') { throw 'Unexpected pre-existing package directory' }
+          Expand-Archive -LiteralPath 'delivery/CyberSand-593-Windows-9628729a.zip' -DestinationPath 'C:\cs593'
+          if (-not (Test-Path -LiteralPath 'C:\cs593\Open Guarded Workbench.cmd')) {
+            throw 'Owner launcher missing in the extracted package'
+          }
+
+      - name: Verify every extracted payload hash and run installed Godot tests
+        run: |
+          set -euo pipefail
+          python tools/ci/package_pr593_physical_eval.py verify --output C:/cs593
+          python tools/ci/package_pr593_physical_eval.py smoke \
+            --output C:/cs593 --evidence build/pr593-physical-evidence
+          python -m json.tool build/pr593-physical-evidence/summary.json > /dev/null
+
+      - name: Publish physical owner ZIP, SHA256 and source identity
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CyberSand-PR593-GPU-Evaluation-9628729a-${{ github.run_id }}
+          path: delivery/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Preserve installed Windows logs including on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: PR593-installed-Windows-evidence-${{ github.run_id }}
+          path: build/pr593-physical-evidence/
+          if-no-files-found: ignore
+          retention-days: 90
