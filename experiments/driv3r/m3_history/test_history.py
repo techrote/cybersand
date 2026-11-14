@@ -22,6 +22,13 @@ class HistoryPilotOfflineTests(unittest.TestCase):
         n=NativeSession(".","/not-running","/not-running/out","a"*40)
         self.assertEqual(n.harness_script,"res://tests/run_driv3r_stage_a.gd")
 
+
+    def test_headless_and_graphical_select_same_explicit_harness(self):
+        import inspect
+        source=inspect.getsource(NativeSession.start)
+        self.assertEqual(source.count('"--script", self.harness_script]'),2)
+        self.assertNotIn('"--script", "res://tests/run_driv3r_stage_a.gd"]',source)
+
     def test_exact_m3_harness_is_host_allowlisted(self):
         n=HistorySession(".","/not-running","/not-running/out","a"*40)
         self.assertEqual(n.harness_script,HISTORY_HARNESS)
