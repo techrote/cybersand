@@ -1,7 +1,10 @@
 name: RENDER-UPLOAD-001 source-bound publication research
 
 # Owner-authorized isolated Draft experiment; no production/default/runtime changes.
-# Workflow-only compiler-provisioning recovery of original run 43526839423:
+# Workflow-only independent performance collection after retained integration
+# failures in runs 43526839423 and 43529389276. Materials integration stays
+# FAILED/HOLD; this job does not rerun it or establish production acceptance.
+# Original full qualification apparatus:
 # cb09cc5ff2d697c82019b35c2f8b1d15fc739e97 retains the full six-job matrix.
 # Its other five groups keep their original executed source and artifacts; they
 # are not relabelled as final-head passes. This follow-up runs Windows dense only.
@@ -75,8 +78,19 @@ jobs:
           folder = pathlib.Path('build') / ('render-upload-windows-' + os.environ['RESEARCH_GROUP']) / 'provisioning'
           folder.mkdir(parents=True, exist_ok=True)
           receipt = {'schema': 'render-upload-workflow-only-recovery-v1', 'original_source': original,
-                     'original_run_id': 43526839423, 'scope': 'Windows dense-authoring only',
+                     'original_run_id': 43526839423, 'scope': 'Windows dense-authoring performance only',
                      'inherited_evidence': 'Other five groups retain their original source/artifacts; no final-head execution claimed',
+                     'integration_status': 'FAILED/HOLD', 'integration_executed_this_run': False,
+                     'production_acceptance': 'HOLD; no production acceptance',
+                     'retained_integration_failures': [
+                         {'source': original, 'run_id': 43526839423, 'artifact_id': 14086401823,
+                          'reason': 'Materials isolated native comparison rejected unused lambda captures under Clang -Werror',
+                          'passed': 11, 'failed': 1, 'blocked': 1},
+                         {'source': '05de72312c2dbc7868c5e9bada2aecbfb679f200', 'run_id': 43529389276,
+                          'artifact_id': 14087766231,
+                          'reason': 'Materials isolated native /compile_test exceeded its hardcoded 180-second limit; dependent reopen blocked',
+                          'passed': 11, 'failed': 1, 'blocked': 1}],
+                     'current_required_gates': 'Unchanged API probe and texture/framebuffer correctness before any timing',
                      'ok': False}
           try:
               head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
@@ -95,7 +109,7 @@ jobs:
               receipt['compiler'] = {'path': str(compiler), 'version': version.strip(),
                                      'sha256': hashlib.sha256(compiler.read_bytes()).hexdigest(),
                                      'size': compiler.stat().st_size,
-                                     'role': 'Isolated Materials Lab native comparator only; retained application DLL unchanged'}
+                                     'role': 'Available Lab comparator compiler; no integration/comparator execution in this performance follow-up; retained application DLL unchanged'}
               receipt['ok'] = True
           except BaseException as error:
               receipt['failure'] = type(error).__name__ + ': ' + str(error)
@@ -122,11 +136,6 @@ jobs:
           from run_windows_godot_regressions import prepare_godot
           prepare_godot(pathlib.Path(os.environ['RUNNER_TEMP']) / 'render-upload-godot-windows.zip')
           PYCODE
-      - name: Qualify mounted candidate integration before expensive timing
-        if: matrix.group == 'dense-authoring'
-        run: |
-          set -euo pipefail
-          python tools/render_upload/run_regressions.py --godot "$RUNNER_TEMP/render-upload-godot-windows/Godot_v4.7-stable_win64_console.exe" --rendering-driver opengl3_angle --source-sha "$RESEARCH_SOURCE_SHA" --output "build/render-upload-windows-$RESEARCH_GROUP/integration" --cache-root "$RUNNER_TEMP/render-upload-integration-userdata"
       - name: Execute source-matched correctness and sequential same-host ABBA twice
         run: |
           set -euo pipefail
