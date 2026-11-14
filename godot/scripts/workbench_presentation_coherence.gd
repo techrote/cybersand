@@ -2,10 +2,13 @@ extends RefCounted
 
 # PR566: presentation-only swept-mask clearance. The native World remains
 # authoritative; this oracle never edits stored cells, Rapier or mask state.
-# It uses the same world-cell-centre, oriented-rectangle inclusion test as
-# CyberNativeCellWorld::rasterize_transform_in. Conservative radius bounds can
-# reject an otherwise safe live pose, but cannot declare a material-bearing
-# swept footprint safe (including the previous texture during a crossfade).
+# It uses CyberNativeCellWorld::rasterize_transform_in's world-cell-centre
+# oriented rectangle geometry. IMPORTANT: point samples alone are NOT a
+# continuous sweep. To preserve conservative safety, *each sampled rectangle*
+# is enlarged by a rigorously bounded half-interval displacement: translation
+# plus rotation of the furthest collider point. This covers all intermediate
+# poses, with expected false refusals, without increasing the sample count.
+# Every check includes current and active previous-texture occupancy.
 const MAX_SHIFT_CELLS: float = 32.0
 const MAX_ROTATION_SWEEP_CELLS: float = 32.0
 const MAX_SWEEP_STEPS: int = 32
@@ -15,13 +18,24 @@ const EDGE_EPSILON: float = 0.0001
 static func _refuse(reason: String, scanned: int = 0) -> Dictionary:
 	return {"safe":false,"reason":reason,"scanned":scanned}
 
-static func _touches_body(point: Vector2, pose: Transform2D, rectangles: Array) -> bool:
+static func _is_rigid(pose: Transform2D) -> bool:
+	# The swept-motion proof assumes actual Rapier-style rigid transforms.
+	# Refuse scale, skew or reflections rather than silently discarding them.
+	return absf(pose.x.length_squared()-1.0) <= EDGE_EPSILON \
+		and absf(pose.y.length_squared()-1.0) <= EDGE_EPSILON \
+		and absf(pose.x.dot(pose.y)) <= EDGE_EPSILON \
+		and pose.x.cross(pose.y) > 0.0
+
+
+static func _touches_body(point: Vector2, pose: Transform2D, rectangles: Array,
+		padding: float = 0.0) -> bool:
 	var local: Vector2 = pose.affine_inverse() * point
 	for rectangle: Dictionary in rectangles:
 		var centre: Vector2 = rectangle.get("center",Vector2.INF)
 		var size: Vector2 = rectangle.get("size",Vector2.ZERO)
 		var d: Vector2 = local - centre
-		if absf(d.x) <= size.x * 0.5 + EDGE_EPSILON and absf(d.y) <= size.y * 0.5 + EDGE_EPSILON:
+		if absf(d.x) <= size.x * 0.5 + padding + EDGE_EPSILON \
+				and absf(d.y) <= size.y * 0.5 + padding + EDGE_EPSILON:
 			return true
 	return false
 
@@ -34,6 +48,8 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 		return _refuse("missing_world_or_geometry")
 	if not bound_pose.is_finite() or not live_pose.is_finite():
 		return _refuse("nonfinite_pose")
+	if not _is_rigid(bound_pose) or not _is_rigid(live_pose):
+		return _refuse("nonrigid_pose")
 	if previous_blend_active and previous_unknown:
 		return _refuse("previous_texture_unbounded")
 	var radius: float = 0.0
@@ -54,6 +70,19 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 		return {"safe":true,"reason":"same_pose","scanned":0}
 	var sweep: float = maxf(displacement,rotational_sweep)
 	var steps: int = clampi(ceili(sweep),1,MAX_SWEEP_STEPS)
+	# PROOF (shortest-angle, linearly interpolated rigid motion):
+	# For any t in [0,1], a sampled time i/steps exists within 1/(2steps).
+	# For any point q in any local collider rectangle, |q| <= radius.
+	# Relative to that sample, the world's translation is at most
+	# displacement/(2steps), and its rotated location moves by at most
+	# 2*radius*sin(abs(angle)/(4steps)) <= radius*abs(angle)/(2steps).
+	# Therefore a *true continuously swept* occupied cell centre must lie
+	# in the sampled shape's Euclidean dilation by:
+	# (displacement + radius*abs(angle))/(2steps).
+	# Checking local AABBs expanded by this radius is a superset of the
+	# Euclidean dilation. No material can escape between discrete samples.
+	# EDGE_EPSILON absorbs float32/world-cell centre rounding.
+	var padding: float = (displacement + rotational_sweep) / (2.0 * float(steps))
 	var poses: Array[Transform2D] = []
 	for i: int in range(steps+1):
 		var weight: float = float(i) / float(steps)
@@ -84,6 +113,7 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 			if not occupied: continue
 			var cell := Vector2(float(x)+0.5,float(y)+0.5)
 			for pose: Transform2D in poses:
-				if _touches_body(cell,pose,rectangles):
+				if _touches_body(cell,pose,rectangles,padding):
 					return _refuse("material_in_swept_mask",scanned)
-	return {"safe":true,"reason":"empty_swept_mask","scanned":scanned}
+	return {"safe":true,"reason":"empty_swept_mask","scanned":scanned,
+		"steps":steps,"dilation_cells":padding}
