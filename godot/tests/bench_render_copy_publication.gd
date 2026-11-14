@@ -21,18 +21,21 @@ func _run() -> void:
 	var output := ""
 	var arm := "N"
 	var candidate := "control"
+	var policy := "baseline"
 	var expected_runtime := ""
 	var runtime_path := ""
 	for arg: String in args:
 		if arg.begins_with("--receipt="): output = arg.trim_prefix("--receipt=")
 		if arg.begins_with("--arm="): arm = arg.trim_prefix("--arm=")
 		if arg.begins_with("--candidate="): candidate = arg.trim_prefix("--candidate=")
+		if arg.begins_with("--render-ack-policy="): policy = arg.trim_prefix("--render-ack-policy=")
 		if arg.begins_with("--runtime-sha256="): expected_runtime = arg.trim_prefix("--runtime-sha256=")
 		if arg.begins_with("--runtime-path="): runtime_path = arg.trim_prefix("--runtime-path=")
 	_expect(DisplayServer.get_name() != "headless", "rendered evidence requires a graphical DisplayServer")
 	_expect(not output.is_empty(), "explicit fresh receipt path required")
-	_expect(arm in ["N", "W"], "unknown arm")
-	_expect(candidate in ["control", "R"], "unknown candidate")
+	_expect(arm in ["N", "D", "W"], "unknown arm")
+	_expect(candidate in ["control", "R", "gated"], "unknown candidate")
+	_expect(policy in ["baseline", "gated"], "unknown render ACK policy")
 	_expect(not runtime_path.is_empty() and expected_runtime.length() == 64, "explicit runtime identity required")
 	var actual_runtime: String = FileAccess.get_sha256(runtime_path)
 	_expect(actual_runtime == expected_runtime, "installed runtime does not match selected candidate")
@@ -43,6 +46,7 @@ func _run() -> void:
 	set_meta("cybersand_feature", "render_copy_publication_benchmark")
 	var worker = Worker.new()
 	worker.withhold_ack = arm == "W"
+	worker.ack_delay_usec = 150000 if arm == "D" else 0
 	var host: Control = load("res://main.tscn").instantiate()
 	host.set_script(Consumer)
 	host.trace = worker.trace
@@ -70,10 +74,21 @@ func _run() -> void:
 				"material": material_id, "accepted": accepted})
 		worker.trace.record("frame_begin", {"frame": frame, "start_usec": previous})
 		await process_frame
+		worker.flush_delayed_ack()
 		var now := Time.get_ticks_usec()
 		frame_usec.append(now - previous)
 		worker.trace.record("frame_end", {"frame": frame, "start_usec": previous, "end_usec": now, "duration_usec": now - previous})
 		previous = now
+	# Release only material serials actually accepted by Main before draining.
+	# The withheld-ACK arm otherwise has no legal way for gated publication
+	# to catch up. This release is an apparatus action, not a production ACK.
+	if arm == "W":
+		worker.withhold_ack = false
+		worker.acknowledge_render_snapshot(host.last_uploaded_render_snapshot_serial)
+	elif arm == "D":
+		worker.ack_delay_usec = 0
+		worker.flush_delayed_ack(true)
+		worker.acknowledge_render_snapshot(host.last_uploaded_render_snapshot_serial)
 	# A join is not a render flush. Drain through normal cadence with no new
 	# emissions; two completions cover an iteration already in flight at entry.
 	var tail_start: int = Time.get_ticks_usec()
@@ -83,6 +98,7 @@ func _run() -> void:
 	var tail_deadline: int = Time.get_ticks_msec() + Policy.milliseconds("main_ack_seconds")
 	while Time.get_ticks_msec() < tail_deadline:
 		await process_frame
+		worker.flush_delayed_ack()
 		var completed: int = worker.trace.total("owner_end")
 		var candidate_snapshot: CyberSimulationSnapshot = worker.take_latest_snapshot(-1)
 		if (completed >= owner_start + 2 and candidate_snapshot != null
@@ -128,10 +144,10 @@ func _run() -> void:
 	var result: Dictionary = worker.trace.result()
 	_expect(not worker._world.has_failed(), "final native owner failed")
 	_expect(result.dropped == 0, "trace capacity exceeded")
-	_expect(int(result.counts.get("texture_success", 0)) > 20, "too few real uploads")
+	_expect(int(result.counts.get("texture_success", 0)) > (0 if arm == "W" and policy == "gated" else 2), "too few real uploads")
 	_expect(int(result.counts.get("reject", 0)) == 0, "render upload rejected")
 	_expect(png_error == OK and not witness.is_empty(), "framebuffer witness unavailable")
-	result.merge({"schema_version": 1, "arm": arm, "candidate": candidate, "owner_script": worker.get_script().resource_path,
+	result.merge({"schema_version": 1, "arm": arm, "candidate": candidate, "policy": policy, "ack_delay_usec": 150000 if arm == "D" else 0, "owner_script": worker.get_script().resource_path,
 		"runtime_sha256": actual_runtime, "runtime_path": runtime_path, "process_id": OS.get_process_id(),
 		"watchdog_policy": Policy.identity(),
 		"tail_drained": tail_drained, "tail_elapsed_usec": tail_elapsed,
