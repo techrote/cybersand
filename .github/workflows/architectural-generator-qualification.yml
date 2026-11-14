@@ -267,10 +267,16 @@ jobs:
             $path = Join-Path $validation $entry.Name
             if ((Get-FileHash $path -Algorithm SHA256).Hash.ToLowerInvariant() -ne $entry.Value) { throw "Extracted package file mismatch: $($entry.Name)" }
           }
+          # Godot is allowed to update imported asset metadata in the *test
+          # extraction* during editor import. Re-run the independent Flatten
+          # package integrity gate from a second pristine extraction, never
+          # from a directory already touched by the architecture owner test.
+          $flattenValidation = Join-Path $env:RUNNER_TEMP 'architecture-flatten-package-validation'
+          Expand-Archive $archive $flattenValidation
+          python tools/ci/run_flatten_qualification.py --godot (Join-Path $flattenValidation 'Godot_v4.7-stable_win64_console.exe') --project (Join-Path $flattenValidation 'godot') --package $flattenValidation --evidence evidence/package-flatten --cases 512x1
+          if ($LASTEXITCODE -ne 0) { throw 'Delivered ZIP combined architecture/Flatten author and reopen failed' }
           python tools/architecture/qualify.py --godot (Join-Path $validation 'Godot_v4.7-stable_win64_console.exe') --project (Join-Path $validation 'godot') --output evidence/package --suite owner --graphical
           if ($LASTEXITCODE -ne 0) { throw 'Delivered ZIP author/reopen failed' }
-          python tools/ci/run_flatten_qualification.py --godot (Join-Path $validation 'Godot_v4.7-stable_win64_console.exe') --project (Join-Path $validation 'godot') --package $validation --evidence evidence/package-flatten --cases 512x1
-          if ($LASTEXITCODE -ne 0) { throw 'Delivered ZIP combined architecture/Flatten author and reopen failed' }
       - name: Retain Windows owner evaluation ZIP and exact archive hash
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
