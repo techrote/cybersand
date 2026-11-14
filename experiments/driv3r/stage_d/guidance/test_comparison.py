@@ -44,12 +44,25 @@ class ComparisonTests(unittest.TestCase):
         q["forks"][0]["legal_candidates"].reverse()
         q["forks"][1]["legal_candidates"].reverse()
         shuffled = analyze_shadow_comparison(**q)
-        self.assertEqual(original["candidate_set_sha256_by_fork"],
-                         shuffled["candidate_set_sha256_by_fork"])
+        self.assertEqual(original["candidate_id_set_sha256_by_fork"],
+                         shuffled["candidate_id_set_sha256_by_fork"])
+        self.assertEqual(original["predicted_effect_catalog_sha256_by_fork"],
+                         shuffled["predicted_effect_catalog_sha256_by_fork"])
         self.assertEqual(original["first_choice_divergence"],
                          shuffled["first_choice_divergence"])
         self.assertEqual(original["first_consequential_divergence"],
                          shuffled["first_consequential_divergence"])
+
+    def test_effect_predictions_do_not_change_candidate_id_identity(self):
+        q = record()
+        original = analyze_shadow_comparison(**q)
+        q["forks"][0]["candidate_effect_sha256"]["L"] = D("f")
+        changed = analyze_shadow_comparison(**q)
+        self.assertEqual(original["candidate_id_set_sha256_by_fork"],
+                         changed["candidate_id_set_sha256_by_fork"])
+        self.assertNotEqual(original["predicted_effect_catalog_sha256_by_fork"],
+                            changed["predicted_effect_catalog_sha256_by_fork"])
+        self.assertNotIn("legal_candidate_set_sha256", changed)
 
     def test_rejects_unauthorized_candidate(self):
         q = record()
