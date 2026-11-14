@@ -1,0 +1,104 @@
+name: LFM2.5-VL original dose checkpoint custody re-audit
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - experiments/agent_painter/lanes/lfm25_vl/historical-custody-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: lfm25-vl-original-custody-001
+  cancel-in-progress: false
+
+jobs:
+  historical-custody:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Admit immutable source and artifact request
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("experiments/agent_painter/lanes/lfm25_vl/historical-custody-request.json")
+          actual = json.loads(p.read_text())
+          expected = {
+            "schema": "cybersand.lfm25_vl.original-custody-audit/1",
+            "source": "1c9cf2ef8760177e0c1d095052c27fcf200a5cb3",
+            "run_id": 43529993326,
+            "arms": [
+              {"name": "fresh48", "artifact_id": 14088040106, "steps": 48,
+               "github_zip_sha256": "6644524b86858b5a0a3c2b4cd1f282872b452b734c5ef7fcece7b33cc0e0f1cc"},
+              {"name": "fresh120", "artifact_id": 14088541525, "steps": 120,
+               "github_zip_sha256": "8c7634b05cc11546e46e1d643808909fbfd5a457ce43e4f12a9bba106aa50454"},
+            ],
+            "uses_original_raw_artifacts": True,
+            "no_model_download": True,
+            "no_training": True,
+            "no_final_access": True,
+            "no_model_quality_claim": True,
+            "draft_hold": True,
+          }
+          if actual != expected:
+              raise SystemExit("historical source/arm/artifact request changed")
+          print("Immutable original-dose evidence request admitted; no model training")
+          PY
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: lfm25-vl-fresh48-1c9cf2ef8760177e0c1d095052c27fcf200a5cb3-43529993326-1
+          path: original/fresh48
+          run-id: '43529993326'
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: lfm25-vl-fresh120-1c9cf2ef8760177e0c1d095052c27fcf200a5cb3-43529993326-1
+          path: original/fresh120
+          run-id: '43529993326'
+          github-token: ${{ github.token }}
+      - name: Independently check actual historical file inventories and optimizer receipts
+        run: |
+          set -euo pipefail
+          mkdir -p historical-audit
+          python3 experiments/agent_painter/lanes/lfm25_vl/campaign_gate.py \
+            --output original/fresh48 --arm fresh48 \
+            --source-sha 1c9cf2ef8760177e0c1d095052c27fcf200a5cb3 \
+            --run-id 43529993326 | tee historical-audit/fresh48.json
+          python3 experiments/agent_painter/lanes/lfm25_vl/campaign_gate.py \
+            --output original/fresh120 --arm fresh120 \
+            --source-sha 1c9cf2ef8760177e0c1d095052c27fcf200a5cb3 \
+            --run-id 43529993326 | tee historical-audit/fresh120.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          report = {
+              "schema": "cybersand.lfm25_vl.original-custody-audit-result/1",
+              "audit_source": Path(".git/HEAD").read_text().strip(),
+              "original_training_source": "1c9cf2ef8760177e0c1d095052c27fcf200a5cb3",
+              "original_run_id": 43529993326,
+              "original_artifact_ids": [14088040106, 14088541525],
+              "inner_checkpoint_inventory_bytes_rehashed": True,
+              "outer_original_artifact_zip_bytes_rehashed": False,
+              "models_loaded": 0,
+              "optimizer_updates_executed": 0,
+              "native_art_operations_executed": 0,
+              "model_quality_claim": False,
+              "arms": [json.loads((Path("historical-audit") / name).read_text())
+                       for name in ("fresh48.json", "fresh120.json")],
+          }
+          Path("historical-audit/report.json").write_text(json.dumps(report, indent=2) + "\n")
+          PY
+      - name: Save result or failure diagnostics without adapter tensors
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lfm25-vl-original-48-120-custody-${{ github.sha }}-${{ github.run_id }}
+          path: historical-audit/
+          if-no-files-found: warn
+          retention-days: 90
