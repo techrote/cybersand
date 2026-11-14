@@ -5,6 +5,8 @@ on:
     paths:
       - experiments/agent_painter/lanes/sprocket/proposal_pipework.py
       - experiments/agent_painter/lanes/sprocket/test_proposal_pipework.py
+      - experiments/agent_painter/lanes/sprocket/peer_topology.py
+      - experiments/agent_painter/lanes/sprocket/test_peer_topology.py
       - .github/workflows/agent-painter-sprocket-proposal.yml
   workflow_dispatch:
 
@@ -31,6 +33,7 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           mkdir -p evidence/sprocket-proposals
           python3 experiments/agent_painter/lanes/sprocket/test_proposal_pipework.py 2>&1 | tee evidence/sprocket-proposals/tests.log
+          python3 experiments/agent_painter/lanes/sprocket/test_peer_topology.py 2>&1 | tee evidence/sprocket-proposals/peer-topology.log
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py --output evidence/sprocket-proposals/scheduling-policy.json
       - name: Download original native-positive public corpus; never open FINAL
