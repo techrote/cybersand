@@ -592,12 +592,14 @@ func mixed_style_authoring(reopening: bool) -> void:
 			label + " has complete 512-square native material and receipts")
 		if not reopening:
 			check_style_diagnostics(project, label)
+			dialog._zone_toggle.button_pressed = true
+			check(dialog._zone_overlay.visible, label + " shows the real zone overlay in the captured graphical frame")
 			await framebuffer(label + "-zone-overlay", dialog)
+			dialog._zone_toggle.button_pressed = false
 		var prior_epoch: int = host._physical_epoch
 		dialog.confirmed.emit()
 		dialog.hide()
-		if not await until(func() -> bool: return installed() and
-				str(wb._generated_active.get("sha256", "")) == str(packet.sha256),
+		if not await until(func() -> bool: return installed() and str(wb._generated_active.get("sha256", "")) == str(packet.sha256),
 			label + " installs independently verified source materials"): return
 		check(host._physical_epoch != prior_epoch,
 			label + " commits a real new native Workbench construction")
