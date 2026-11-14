@@ -20,7 +20,7 @@ func _world() -> Image:
 	image.fill(Color(0,0,0,1))
 	return image
 
-func _set(image: Image, x: int, y: int, id: int) -> void:
+func _paint(image: Image, x: int, y: int, id: int) -> void:
 	image.set_pixel(x,y,Color(float(id)/255.0,0.0,0.0,1.0))
 
 func _run() -> void:
@@ -32,26 +32,26 @@ func _run() -> void:
 		"clear swept ordinary body admits live pose")
 	check(Coherence.assess(original,original,rectangles,image).reason == "same_pose",
 		"exact same pose does not consume a scan")
-	_set(image,91,90,6)
+	_paint(image,91,90,6)
 	check(Coherence.assess(original,moved,rectangles,image).reason == "material_in_swept_mask",
 		"Fire in intermediate swept footprint blocks speculative live pose")
-	_set(image,91,90,4)
+	_paint(image,91,90,4)
 	check(not Coherence.assess(original,moved,rectangles,image).safe,
 		"Smoke blocks just like Fire")
-	_set(image,91,90,2)
+	_paint(image,91,90,2)
 	check(not Coherence.assess(original,moved,rectangles,image).safe,
 		"granular Sand mask penetration blocked")
-	_set(image,91,90,3)
+	_paint(image,91,90,3)
 	check(not Coherence.assess(original,moved,rectangles,image).safe,
 		"Water mask penetration blocked")
-	_set(image,91,90,58)
+	_paint(image,91,90,58)
 	check(not Coherence.assess(original,moved,rectangles,image).safe,
 		"hard Wall penetration blocked")
-	_set(image,91,90,0)
-	_set(image,150,150,6)
+	_paint(image,91,90,0)
+	_paint(image,150,150,6)
 	check(Coherence.assess(original,moved,rectangles,image).safe,
 		"distant Fire never freezes clean flyer")
-	_set(image,150,150,0)
+	_paint(image,150,150,0)
 	var old := {90*image.get_width()+91:true}
 	check(not Coherence.assess(original,moved,rectangles,image,old,false,true).safe,
 		"previous material retained by palette crossfade blocks live pose")
@@ -75,19 +75,19 @@ func _run() -> void:
 	var wings_live := Transform2D(0.0,Vector2(85,130))
 	check(Coherence.assess(wings_bound,wings_live,wings,image).safe,
 		"compound body with multiple rectangles passes in free air")
-	_set(image,74,130,6)
+	_paint(image,74,130,6)
 	check(not Coherence.assess(wings_bound,wings_live,wings,image).safe,
 		"material in just one compound rectangle blocks entire body")
-	_set(image,74,130,0)
+	_paint(image,74,130,0)
 	var rotate := [{"center":Vector2(10,0),"size":Vector2(10,4)}]
 	var rotation_bound := Transform2D(0.0,Vector2(128,128))
 	var rotation_live := Transform2D(PI/2.0,Vector2(128,128))
 	check(Coherence.assess(rotation_bound,rotation_live,rotate,image).safe,
 		"rotated collider sweep passes clear World")
-	_set(image,135,135,6)
+	_paint(image,135,135,6)
 	check(not Coherence.assess(rotation_bound,rotation_live,rotate,image).safe,
 		"intermediate rotation checks all swept material, not only endpoints")
-	_set(image,135,135,0)
+	_paint(image,135,135,0)
 	check(not Coherence.assess(original,moved,[],image).safe,"empty collider set refused")
 	check(not Coherence.assess(original,moved,rectangles,null).safe,"missing World refused")
 	var results := {"schema":"workbench-presentation-coherence-v1",
