@@ -52,6 +52,41 @@ class StageCOfflineTests(unittest.TestCase):
         self.assertEqual(len(r["frozen_case_sha256"]),64)
         self.assertEqual(r["stage_b_source"],STAGE_B_SOURCE)
 
+    def test_pipe_network_provider_offers_real_legal_art_not_box_forgery(self):
+        from experiments.driv3r import PROTOCOL
+        from experiments.driv3r.stage_c.qualify import StageCNativeToolProvider
+        from experiments.driv3r.stage_b import fuzzy
+        from experiments.driv3r.contracts import validate_candidates
+        for case, pseudo in prepare_cases():
+            for reversed_order in (False, True):
+                with self.subTest(case=case["id"], reverse=reversed_order):
+                    provider=StageCNativeToolProvider(pseudo, reverse_order=reversed_order)
+                    native={"materials":fuzzy._fixture_materials(pseudo),
+                            "width":96,"height":96,"focus":[0,0,96,96],
+                            "protected_rectangles":[[40,40,8,8]]}
+                    obs={"protocol":PROTOCOL,"episode_id":case["id"],"step":0,"mode":"fuzzy",
+                         "objective":case["objective"],"subgoal":case["subgoal"],
+                         "world":{"id":"offline-test","generation":1,"revision":1,"tick":0,
+                                  "material_sha256":"a"*64,"world_material_sha256":"b"*64},
+                         "permissions":{"focus":[0,0,96,96],"material":58,
+                                        "protected_rectangles":[[40,40,8,8]]},
+                         "cursor":case["cursor"],"target":case["target"],
+                         "local":{"origin":[0,0],"width":1,"height":1,"materials":[0]},
+                         "geometry":{},"history":[],
+                         "budgets":{"decisions_remaining":3,"changed_cells_remaining":1024,
+                                    "wall_seconds_remaining":90.0},"previous_native_ack":None}
+                    options=provider.candidates(native,obs)
+                    validate_candidates(options,obs)
+                    self.assertEqual({x["id"] for x in options},
+                                     {o["id"] for o in pseudo["candidates"]}|{"STOP","SKIP"})
+                    tools=[x for x in options if x["kind"]=="tool"]
+                    self.assertEqual(len(tools),3)
+                    if case["family"]=="pipework":
+                        for action in tools:
+                            self.assertEqual(action["predicted"]["proposed_boxes"],[])
+                            self.assertGreaterEqual(len(action["predicted"]["proposed_nodes"]),2)
+                            self.assertTrue(action["operations"])
+
     def test_unknown_target_or_model_generated_program_cannot_enter(self):
         from experiments.driv3r.stage_c.qualify import CATALOG
         original=json.loads(CATALOG.read_text())

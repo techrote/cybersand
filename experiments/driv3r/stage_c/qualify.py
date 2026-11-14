@@ -20,7 +20,8 @@ import traceback
 
 from PIL import Image
 from experiments.agent_painter.compiler import compile_program
-from experiments.driv3r.contracts import Refusal, digest
+from experiments.driv3r.contracts import Refusal, digest, validate_candidates, validate_operations
+from experiments.driv3r.providers import candidate, permitted
 from experiments.driv3r.controller import EpisodeController, write_json
 from experiments.driv3r.native import NativeSession
 from experiments.driv3r.provenance import ROOT, runtime_custody
@@ -104,6 +105,50 @@ def prepare_cases() -> list[tuple[dict, dict]]:
     return prepared
 
 
+
+class StageCNativeToolProvider(fuzzy.FuzzyCaseProvider):
+    """Stage B bounded authority with v2 pipe-network candidate metadata.
+
+    Stage B's panel/architecture effects read component["box"], whereas
+    pipework components have nodes/edges, not a box. Do not change #568 or
+    the qualified Stage B provider: bind the same compiled operations and
+    native permissions here, with explicit real pipe-network nodes.
+    """
+
+    def candidates(self, native: dict, observation: dict) -> list[dict]:
+        if self.case["candidates"][0]["program"]["family"] != "pipework":
+            return super().candidates(native, observation)
+        result = []
+        if not self.complete():
+            for option in self.case["candidates"]:
+                compiled = _compiled(option)
+                footprint = validate_operations(compiled["operations"], fuzzy.FOCUS, 58)
+                if not all(permitted(native, x, y) for x, y in footprint):
+                    continue
+                program = option["program"]
+                nodes = deepcopy(program["components"][0]["nodes"])
+                effects = {"program": deepcopy(program),
+                           "program_sha256": compiled["program_sha256"],
+                           "compiler_sha256": compiled["compiler_sha256"],
+                           "operations_sha256": compiled["operations_sha256"],
+                           "proposed_boxes": [],
+                           "proposed_nodes": nodes,
+                           "pipe_diameter": program["components"][0]["diameter"],
+                           "cell_visits": compiled["estimated_cell_work"]}
+                result.append(candidate(option["id"], "tool", option["label"],
+                                        compiled["operations"], profile=option["profile"],
+                                        graph_node="one_tool", predicted=effects))
+            result.append(candidate("SKIP", "skip",
+                                    "Skip the available tool choice without painting",
+                                    graph_node="one_tool"))
+        result.append(candidate("STOP", "stop", "Stop now without painting"))
+        if self.reverse_order:
+            result.reverse()
+        validate_candidates(result, observation)
+        self._issued = {action["id"]: digest(action) for action in result}
+        return result
+
+
 def _frame_check(session: NativeSession, before: dict, output: Path) -> dict:
     capture = session.frame(timeout=35)
     if capture.get("status") != "completed":
@@ -138,7 +183,7 @@ def run(args):
     case_hash = hashlib.sha256(CATALOG.read_bytes()).hexdigest()
     request_path = CATALOG.with_name("qualification-request.json")
     request = json.loads(request_path.read_text())
-    if (request != {"schema": "driv3r-stage-c-request-v1", "sequence": 4,
+    if (request != {"schema": "driv3r-stage-c-request-v1", "sequence": 5,
                     "stage_b_source": ORIGINAL_STAGE_B, "stage_b_release_sha256": BASELINE_RELEASE_SHA256,
                     "frozen_case_sha256": case_hash, "draft_hold": True}):
         raise Refusal("Stage C qualification request not frozen or not matched")
@@ -172,7 +217,7 @@ def run(args):
                     identifier = case["id"]+"-model"
                     record = EpisodeController(max_decisions=3,max_changed_cells=1024,
                         max_wall_seconds=180,request_seconds=90).run(
-                            native=native,provider=fuzzy.FuzzyCaseProvider(pseudo),
+                            native=native,provider=StageCNativeToolProvider(pseudo),
                             policy=SemanticPolicy(backend),episode_id=identifier,output=output/identifier)
                     score = fuzzy.score_episode(pseudo,record)
                     write_json(output/identifier/"score.json",score)
