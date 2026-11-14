@@ -48,6 +48,37 @@ class PairedEvidenceTests(unittest.TestCase):
         self.assert_rejected(record, lambda r: r.__setitem__("sequential_native_receipts", 1))
         self.assert_rejected(record, lambda r: r["events"][0].__setitem__("native_receipt_ref", "fake"))
 
+    def test_unknown_native_claim_fields_are_rejected(self):
+        # An otherwise replayable synthetic trace may not carry a second,
+        # unverified namespace for a forged material readback or receipt.
+        record = d.run_episode(self.route, "astar")
+        self.assert_rejected(record, lambda r: r.__setitem__(
+            "native_world_sha256", "a" * 64))
+        self.assert_rejected(record, lambda r: r["events"][0].__setitem__(
+            "native_art_receipt", {"accepted": True}))
+        self.assert_rejected(record, lambda r: r["events"][0]["observation"].__setitem__(
+            "native_snapshot_ref", "invented"))
+
+    def test_numeric_type_spoof_does_not_pass_canonical_replay(self):
+        record = d.run_episode(self.route, "astar")
+        self.assert_rejected(record, lambda r: r["events"][0].__setitem__("seq", False))
+        self.assert_rejected(record, lambda r: r["events"][1].__setitem__("seq", True))
+        def float_path(r):
+            p = r["path"][0]
+            r["path"][0] = (float(p[0]), p[1])
+        self.assert_rejected(record, float_path)
+        def float_cursor(r):
+            p = r["events"][0]["simulated_post_position"]
+            r["events"][0]["simulated_post_position"] = (float(p[0]), p[1])
+        self.assert_rejected(record, float_cursor)
+        self.assert_rejected(record, lambda r: r["metrics"].__setitem__(
+            "attempted_decisions", float(r["metrics"]["attempted_decisions"])))
+
+    def test_nonfinite_evidence_is_refused(self):
+        record = d.run_episode(self.route, "astar")
+        self.assert_rejected(record, lambda r: r["events"][0]["observation"].__setitem__(
+            "selected_wall_distance", float("nan")))
+
     def test_tampered_choice_and_seed_rejected(self):
         record = d.run_episode(self.route, "astar")
         self.assert_rejected(record, lambda r: r["events"][0].__setitem__("choice_id", "STOP"))
