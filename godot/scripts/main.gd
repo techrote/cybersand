@@ -3241,11 +3241,14 @@ func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 			last_uploaded_world_generation = snapshot.render_world_generation
 			last_uploaded_render_snapshot_serial = snapshot.render_snapshot_serial
 			if shared_workbench != null: _uploaded_workbench_frame = snapshot.render_context.get("workbench_display",{})
+			# Record before the call so the Main→worker receipt interval is
+			# nonnegative on the common monotonic clock (and still observable
+			# when a diagnostic worker intentionally withholds an ACK).
+			_trace_render_ack_main("main_ack_issued", {"render_serial":snapshot.render_snapshot_serial,
+				"render_generation":snapshot.render_world_generation})
 			simulation_worker.acknowledge_render_snapshot(
 				snapshot.render_snapshot_serial
 			)
-			_trace_render_ack_main("main_ack_issued", {"render_serial":snapshot.render_snapshot_serial,
-				"render_generation":snapshot.render_world_generation})
 		else:
 			reject_render_snapshot(snapshot)
 
