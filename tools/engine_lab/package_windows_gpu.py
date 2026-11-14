@@ -257,7 +257,26 @@ def build(args: argparse.Namespace) -> dict:
     (stage / "evaluation-manifest.json").write_text(
         json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
-    # Smoke the freshly staged copy rather than the Actions checkout.
+    with zipfile.ZipFile(out, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=6,
+                         allowZip64=True) as package:
+        # Freeze and seal the exact Git-archive bytes BEFORE Godot's importer
+        # can rewrite .import descriptor line endings or create editor caches.
+        # Never package imported/modified files from the smoke copy.
+        for name in sorted(files):
+            package.write(stage / name, name)
+        package.write(stage / "evaluation-manifest.json", "evaluation-manifest.json")
+    with zipfile.ZipFile(out) as package:
+        bad = package.testzip()
+        if bad:
+            raise RuntimeError("Evaluation ZIP integrity error: " + bad)
+        names = set(package.namelist())
+        if names != set(files) | {"evaluation-manifest.json"}:
+            raise RuntimeError("Bundled payload inventory differs from frozen source manifest")
+        for name, expected in files.items():
+            if hashlib.sha256(package.read(name)).hexdigest() != expected:
+                raise RuntimeError("Bundled file changed after source capture: " + name)
+    # Execute smoke on the post-archive stage. These tests may legitimately
+    # rewrite generated Godot .import caches without changing the sealed ZIP.
     engine = str(stage / console.name)
     smoke = {}
     smoke["import"] = run(
@@ -288,19 +307,6 @@ def build(args: argparse.Namespace) -> dict:
     if not smoke["one-click-ANGLE-control"]["ok"]:
         raise RuntimeError("Bundled actual PowerShell one-click graphical smoke failed")
 
-    with zipfile.ZipFile(out, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=6,
-                         allowZip64=True) as package:
-        # Copy only the pre-smoke manifest inventory plus the manifest itself.
-        # Exclude generated .godot imports and test Benchmark-Results files.
-        for name in sorted(files):
-            package.write(stage / name, name)
-        package.write(stage / "evaluation-manifest.json", "evaluation-manifest.json")
-    with zipfile.ZipFile(out) as package:
-        bad = package.testzip()
-        if bad:
-            raise RuntimeError("Evaluation ZIP integrity error: " + bad)
-        if "evaluation-manifest.json" not in package.namelist():
-            raise RuntimeError("Missing evaluation manifest in ZIP")
     receipt = {
         "schema": "eng-lab-001-gpu-packaging-receipt-v1",
         "status": "passed", "source": source, "packager": git("rev-parse", "HEAD"),
