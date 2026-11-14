@@ -65,6 +65,11 @@ class DevelopmentRecoveryTests(unittest.TestCase):
         self.assertTrue(all(0 <= row["remaining_decisions_after_choice"] <= 35
                             for row in a["decision_windows"]))
 
+    def test_direct_oracle_continuation_does_not_unseal_heldout(self):
+        f = d.routing_fixture("offset_gates", "heldout")
+        with self.assertRaisesRegex(ValueError, "Held-out behavioral"):
+            r._oracle_continuation(f, f.start, (1,), 36)
+
     def test_heldout_behavior_stays_sealed(self):
         f = d.routing_fixture("offset_gates", "heldout")
         with self.assertRaisesRegex(ValueError, "Held-out behavioral"):

@@ -28,6 +28,7 @@ def _oracle_continuation(fixture: d.Fixture, origin: d.Point,
     same legal menu and remaining *decision* cap, rather than estimating
     decisions from distance/maximum macro length.
     """
+    d.require_development_fixture(fixture)
     if not 0 <= capacity <= fixture.budget or not fixture.legal(origin):
         raise ValueError("Invalid hypothetical rescue origin/budget")
     position = origin

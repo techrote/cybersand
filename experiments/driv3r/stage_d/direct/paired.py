@@ -47,6 +47,10 @@ def verify_episode(f: d.Fixture, record: dict[str, Any]) -> dict[str, Any]:
     a purported 'native' flag or receipt must not pass this verifier.
     """
     _require(f.split == "development", "Behavioral validation is development-only")
+    try:
+        d.require_development_fixture(f)
+    except ValueError as exc:
+        raise EvidenceError(str(exc)) from exc
     _require(type(record) is dict, "Episode must be an object")
     _require(set(record) == {
         "experiment_version", "fixture", "fixture_sha256", "split", "policy",

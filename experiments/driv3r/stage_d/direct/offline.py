@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 from dataclasses import dataclass
+from functools import lru_cache
 import hashlib
 import heapq
 import json
@@ -93,6 +94,9 @@ def wall_fixture(family: str, split: str) -> Fixture:
                         [14, 13, 12, 11] + [11]*4,
     }
     profile = tuple(profiles[family])
+    canonical_split = "development" if family in ("step", "recess", "bulge") else "heldout"
+    if split != canonical_split:
+        raise ValueError("Frozen wall fixture family/split mismatch")
     y0 = 2
     wall: set[Point] = set()
     for i, x in enumerate(profile):
@@ -135,6 +139,10 @@ def routing_fixture(family: str, split: str) -> Fixture:
         "offset_gates": ((2, 8), (25, 8)),
         "nested_corners": ((2, 10), (25, 10)),
     }
+    canonical_split = ("development" if family in
+                       ("gate", "slalom", "hook", "culdesac") else "heldout")
+    if split != canonical_split:
+        raise ValueError("Frozen routing fixture family/split mismatch")
     start, target = pairs[family]
     # Additional protected islands test that legal checks apply to all blocker types.
     protected = frozenset({(27, 16), (27, 17)})
@@ -328,6 +336,26 @@ def score_episode(f: Fixture, path: list[Point], attempts: int, stop: str) -> di
     return result
 
 
+@lru_cache(maxsize=1)
+def _approved_development_sources() -> frozenset[tuple[str, str]]:
+    """Immutable ID/content allowlist; manifest topology may be read, not scored."""
+    return frozenset((case.fixture_id, case.sha256)
+                     for case in fixtures() if case.split == "development")
+
+
+def require_development_fixture(f: Fixture) -> None:
+    """Reject held-out relabels and unversioned fixture mutations before scoring.
+
+    A caller can construct a Fixture or use dataclasses.replace to change its
+    split without going through a factory. An explicit split label alone is
+    therefore not sufficient custody for sealed outcome generation.
+    """
+    if type(f) is not Fixture or f.split != "development":
+        raise ValueError("Held-out behavioral outcomes are sealed")
+    if (f.fixture_id, f.sha256) not in _approved_development_sources():
+        raise ValueError("Unpinned or altered development fixture; new version required")
+
+
 def run_episode(f: Fixture, policy: str, seed: int = 0,
                 lengths: tuple[int,...] = (1,)) -> dict[str,Any]:
     """One frozen DEVELOPMENT-only episode. No inferred native success claims.
@@ -336,8 +364,7 @@ def run_episode(f: Fixture, policy: str, seed: int = 0,
     In particular, merely knowing a held-out fixture topology cannot unlock
     its behavioral outcomes during synthetic preparation.
     """
-    if f.split != "development":
-        raise ValueError("Held-out behavioral outcomes are sealed")
+    require_development_fixture(f)
     if policy not in {"astar", "contour_astar", "random_legal"}:
         raise ValueError("Unsupported offline policy")
     if type(seed) is not int or not 0 <= seed <= 4294967295:

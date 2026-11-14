@@ -2,6 +2,7 @@
 import copy
 import json
 import unittest
+from dataclasses import replace
 
 from experiments.driv3r.stage_d.direct import offline as d
 from experiments.driv3r.stage_d.direct import paired as p
@@ -133,6 +134,11 @@ class PairedEvidenceTests(unittest.TestCase):
         self.assertIsNotNone(choice)
         self.assertIsNotNone(geom)
         self.assertGreaterEqual(geom, choice)
+
+    def test_relabelled_heldout_cannot_enter_synthetic_replay(self):
+        spoof = replace(d.wall_fixture("switchback", "heldout"), split="development")
+        with self.assertRaisesRegex(p.EvidenceError, "Unpinned"):
+            p.verify_episode(spoof, {})
 
     def test_heldout_outcomes_remain_unopened(self):
         heldout = d.wall_fixture("switchback", "heldout")

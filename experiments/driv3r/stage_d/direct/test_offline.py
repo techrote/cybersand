@@ -1,5 +1,6 @@
 """Cheap deterministic-only tests; deliberately not a native/held-out evaluation."""
 import unittest
+from dataclasses import replace
 
 from experiments.driv3r.stage_d.direct import offline as d
 
@@ -125,6 +126,31 @@ class FixtureTests(unittest.TestCase):
                     d.run_episode(f, "astar", lengths=menu)
         record = d.run_episode(f, "astar", lengths=[1, 2, 4, 8])
         self.assertEqual(record["macro_lengths"], (1, 2, 4, 8))
+
+    def test_frozen_structural_families_cannot_be_relabelled(self):
+        # Merely requesting 'development' must never unlock a sealed family.
+        for constructor, name in ((d.wall_fixture, "switchback"),
+                                  (d.wall_fixture, "double_notch"),
+                                  (d.routing_fixture, "offset_gates"),
+                                  (d.routing_fixture, "nested_corners")):
+            with self.subTest(family=name):
+                with self.assertRaisesRegex(ValueError, "Frozen .* fixture family/split"):
+                    constructor(name, "development")
+        with self.assertRaisesRegex(ValueError, "Frozen .* fixture family/split"):
+            d.wall_fixture("step", "heldout")
+
+    def test_relabelled_heldout_and_mutated_development_sources_cannot_dispatch(self):
+        # A dataclass replacement bypasses the family constructors. The
+        # source-identity check must reject it without producing any outcome.
+        for sealed in self.sealed:
+            with self.subTest(fixture=sealed.fixture_id):
+                spoof = replace(sealed, split="development")
+                with self.assertRaisesRegex(ValueError, "Unpinned"):
+                    d.run_episode(spoof, "astar")
+        good = d.routing_fixture("gate", "development")
+        with self.assertRaisesRegex(ValueError, "Unpinned"):
+            d.run_episode(replace(good, material_z=frozenset()), "astar")
+        self.assertEqual(d.require_development_fixture(good), None)
 
     def test_unknown_policy_rejected_without_partial_record(self):
         f = d.routing_fixture("gate", "development")
