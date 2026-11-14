@@ -1,0 +1,66 @@
+name: VOID A02 v5 split-held admission nomination (NOT TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-void-568]
+    paths:
+      - 'experiments/agent_painter/lanes/void/a02_admission_nomination_v1.json'
+      - 'experiments/agent_painter/lanes/void/a02_admission_nomination.py'
+      - 'experiments/agent_painter/lanes/void/test_a02_admission_nomination.py'
+      - '.github/workflows/agent-painter-void-a02-nomination.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: void-a02-nomination
+  cancel-in-progress: false
+jobs:
+  review-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Exact hosted source and adversarial nomination guards
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          mkdir -p evidence/void-a02-nomination
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output evidence/void-a02-nomination/policy.json
+          python3 -m unittest discover -s experiments/agent_painter/lanes/void -p test_a02_admission_nomination.py -v 2>&1 | tee evidence/void-a02-nomination/tests.log
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: void-v5-support-native-64b5f1ca5b0f65ffbf9a7645a0d0828d35657f08-43601866007
+          run-id: '43601866007'
+          github-token: ${{ github.token }}
+          path: evidence/void-original-a02-v5
+      - name: Original native material-backed nomination; never admit TRAIN
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/void/a02_admission_nomination.py \
+            --original-native evidence/void-original-a02-v5 \
+            --output evidence/void-a02-nomination/nomination-verification.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("evidence/void-a02-nomination/nomination-verification.json").read_text())
+          assert d["status"] == "NOMINATION_SOURCE_PASS_NOT_ADMITTED"
+          assert d["original_native_readbacks_verified"] == 2
+          assert d["reviewed_teacher_compositions"] == 1
+          assert d["complete_byte_tokens_including_eos"] <= 2048
+          assert d["true_eos_token"] == 258 and d["full_completion_supervised"]
+          assert d["new_train_groups"] == d["optimizer_steps"] == 0
+          assert d["requires_global_split_decision"] and not d["final_opened"]
+          assert d["original_zip_rehashed_this_job"] is False
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: void-a02-v5-split-held-nomination-${{ github.sha }}
+          path: evidence/void-a02-nomination/
+          if-no-files-found: warn
+          retention-days: 90
