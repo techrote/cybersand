@@ -65,7 +65,7 @@ class SmolPeerWitness(unittest.TestCase):
         a=smol_fixture()
         a["proposals"][1]["program"]["components"][0]["edges"]=[
             [0,1],[1,2],[1,3],[3,4],[3,5],[1,6]]
-        with self.assertRaisesRegex(ValueError,"pipe graph"):
+        with self.assertRaisesRegex(ValueError,"undeclared pipe node"):
             s.compare(LF,a)
 
     def test_bad_edges_refused(self):
