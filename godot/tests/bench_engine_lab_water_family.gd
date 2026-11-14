@@ -30,6 +30,7 @@ var errors: Array[String] = []
 var assertions: int = 0
 var fixture_hash: String = ""
 var configured_policy_hash: String = ""
+var required_rule_radius: int = 2
 var observed_policy: Dictionary = {}
 var actor_initial: Dictionary = {}
 var actor_final: Dictionary = {}
@@ -139,8 +140,11 @@ func _requested_policy() -> PackedInt32Array:
 		check(false,"no explicit native choice for Water " + str(wanted.family) + "/" + str(wanted.variant))
 		return selected
 	var validation: Dictionary = bridge.validate_liquid_policy(selected)
-	if not check(bool(validation.get("accepted",validation.get("ok",false))),
+	if not check(bool(validation.get("accepted",false)),
 		"native policy validator must admit family " + family):
+		return PackedInt32Array()
+	required_rule_radius = int(validation.get("receipt",{}).get("minimum_rule_radius",2))
+	if not check(required_rule_radius in [2,3], "admitted native geometry radius must be 2 or 3"):
 		return PackedInt32Array()
 	return selected
 
@@ -151,6 +155,7 @@ func _common_fixture(policy: PackedInt32Array) -> Dictionary:
 	d.next_id = 2
 	d.selected = 1
 	d.material = WATER_MATERIAL
+	d.rule_radius = required_rule_radius
 	# Every variant receives these identical source rectangle stamps. The
 	# complete World is finite and built by the normal native prepared path.
 	# Two reservoirs, an obstructing weir and overhead Sand stimulate movement
@@ -171,6 +176,9 @@ func _common_fixture(policy: PackedInt32Array) -> Dictionary:
 	# actor spawn, material, physical options, edit order and rate knobs.
 	var without_policy: Dictionary = d.duplicate(true)
 	without_policy.liquid_policy = []
+	# IN is admitted only at radius3, normal other Water families at radius2.
+	# Preserve identical authored cells/actors and disclose this necessary geometry confound.
+	without_policy.rule_radius = 0
 	fixture_hash = JSON.stringify(without_policy).sha256_text()
 	check(Setup.validate(d).is_empty(),"fixture schema valid")
 	return d
@@ -195,6 +203,7 @@ func _finish() -> void:
 		"worker_request":workers,"repetition":repetition,
 		"fixture_sha256":fixture_hash,
 		"policy_sha256":configured_policy_hash,
+		"minimum_native_rule_radius":required_rule_radius,
 		"applied_native_policy":observed_policy,
 		"native_construction_receipt":native_workbench_receipt,
 		"world_size":[WORLD_EXTENT.x,WORLD_EXTENT.y],
