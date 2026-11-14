@@ -116,6 +116,9 @@ def main():
     execute("workbench-input-regression",base+["--headless","--path",str(ROOT/"godot"),
             "--script","res://tests/test_workbench_input.gd"],
             os.environ.copy(),target/"logs/workbench-input.log",180)
+    execute("native-world-wall-clearance",base+["--headless","--path",str(ROOT/"godot"),
+            "--script","res://tests/test_pr566_mask_coherent_native_world.gd"],
+            os.environ.copy(),target/"logs/native-world-clearance.log",180)
     results=[]
     for fire in ("nofire","fire"):
         for camera in ("free","follow"):

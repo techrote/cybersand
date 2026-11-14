@@ -12,6 +12,7 @@ on:
       - 'godot/scripts/physical_actor_session.gd'
       - 'godot/scripts/workbench_presentation_coherence.gd'
       - 'godot/tests/test_workbench_presentation_coherence.gd'
+      - 'godot/tests/test_pr566_mask_coherent_native_world.gd'
       - 'godot/tests/test_pr566_mask_coherent_ab.gd'
       - 'tools/ci/run_pr566_mask_coherent_windows.py'
       - 'tools/ci/reduce_pr566_mask_coherent_ab.py'
