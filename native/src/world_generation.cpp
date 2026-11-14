@@ -1158,8 +1158,11 @@ ModuleRegistry ModuleRegistry::builtins() {
     r.add({"vault", 2, 28, [](const auto& i, auto seed) { return std::make_shared<Vault>(i, seed); }});
     r.add({"aqueduct", 1, 24, [](const auto& i, auto) { return std::make_shared<Aqueduct>(i); }});
     r.add({"terraced", 1, 48, [](const auto& i, auto seed) { return std::make_shared<TerracedHabitat>(i, seed); }});
+    r.add({"terraced", 2, 48, [](const auto& i, auto seed) { return std::make_shared<TerracedHabitat>(i, seed); }});
     r.add({"hex_hive", 1, 112, [](const auto& i, auto) { return std::make_shared<HexHive>(i); }});
+    r.add({"hex_hive", 2, 112, [](const auto& i, auto) { return std::make_shared<HexHive>(i); }});
     r.add({"arcade", 1, 60, [](const auto& i, auto seed) { return std::make_shared<ViaductArcade>(i, seed); }});
+    r.add({"arcade", 2, 60, [](const auto& i, auto seed) { return std::make_shared<ViaductArcade>(i, seed); }});
     return r;
 }
 
@@ -1399,7 +1402,7 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
     for (const auto& m : recipe.modules) module_ids.insert(m.id);
     for (auto& m : recipe.modules) {
         identifier(m.module); validate_rect(m.bounds);
-        if ((m.module == "terraced" || m.module == "hex_hive" || m.module == "arcade") && m.version == 1)
+        if ((m.module == "terraced" || m.module == "hex_hive" || m.module == "arcade") && (m.version == 1 || m.version == 2))
             require(recipe.schema == kArchitecturalSchemaVersion, "new architectural modules require schema 4");
         if ((m.module == "arcology" || m.module == "vault") && m.version == 2) {
             require(recipe.schema == kArchitecturalSchemaVersion, "architectural module v2 requires recipe schema 4");

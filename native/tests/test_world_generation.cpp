@@ -1199,6 +1199,51 @@ void independent_architectural_algorithms() {
         "terraced, hex_hive and arcade generate distinct native material geometry");
 }
 
+
+void refined_architectural_details() {
+    const auto module_at = [](const std::string& id, std::uint32_t version) {
+        Recipe recipe;
+        recipe.schema = kArchitecturalSchemaVersion;
+        recipe.candidate = Candidate::Strata;
+        recipe.parameters.surface_y = -100;
+        recipe.chunk_size = 64;
+        recipe.seed = 19177;
+        auto m = instance("geometry", id, {0, 0, 256, 256});
+        m.version = version;
+        m.parameters = {{"bay_width", 64}, {"floor_height", 48}, {"wall", 3},
+            {"door_width", 10}, {"shaft_width", 0}, {"automatic_doors", 1},
+            {"automatic_windows", 1}, {"wall_material", 58}, {"floor_material", 65},
+            {"window_material", 121}, {"accent_material", 65}};
+        recipe.modules.push_back(m);
+        return Generator::compile(recipe);
+    };
+    const auto terrace_old = module_at("terraced", 1), terrace_new = module_at("terraced", 2);
+    require(terrace_old->sample(13, 200) == Material::RustedSteel &&
+        terrace_new->sample(13, 200) == Material::FrostedGlass,
+        "terraces v2 glazing fills the inner wall lip while v1 remains stable");
+    const auto hive_old = module_at("hex_hive", 1), hive_new = module_at("hex_hive", 2);
+    require(hive_old->sample(64, 10) == Material::RustedSteel &&
+        hive_new->sample(64, 10) == Material::ReinforcedConcrete,
+        "hive v2 removes the straight vertical accent pillar while v1 remains stable");
+    require(hive_old->sample(57, 32) == Material::ReinforcedConcrete &&
+        hive_new->sample(57, 32) == Material::RustedSteel,
+        "hive v2 reinforcing accent follows its diagonal hex wall");
+    const auto arcade_old = module_at("arcade", 1), arcade_new = module_at("arcade", 2);
+    require(arcade_old->sample(0, 40) == Material::Empty &&
+        arcade_old->sample(63, 40) == Material::Empty,
+        "arcade v1 keeps its archived empty pier ports for generated-start compatibility");
+    require(arcade_new->sample(0, 40) == Material::SteelPlate &&
+        arcade_new->sample(63, 40) == Material::SteelPlate,
+        "arcade v2 symmetric load-bearing pier-foot metal inlays");
+    for (const auto& selected : {terrace_new, hive_new, arcade_new}) {
+        const auto entire = selected->generate({0, 0});
+        require(entire.state == ResultState::Ready, "refined algorithm completes a native chunk");
+        auto sliced = selected->begin({0, 0});
+        while (sliced->state() == ResultState::Pending) (void)sliced->advance(29);
+        same_cells(sliced->result(), entire, "refined architectural geometry is slicing invariant");
+    }
+}
+
 } // namespace
 
 int main() {
@@ -1222,6 +1267,7 @@ int main() {
         architectural_vault_controls();
         architectural_arcology_apertures_and_jobs();
         independent_architectural_algorithms();
+        refined_architectural_details();
         std::cout << "PASS procedural generation: candidate/order/partition determinism, signed seams, "
                      "theme hierarchy/exclusions, broad/fine/hard controls, bounded modules, "
                      "incremental ownership/cancel/stale identity, invalid input and capacity controls; "

@@ -889,7 +889,8 @@ Dictionary CyberWorldGenerator::get_catalogue() const {
         item["id"] = String(module.c_str());
         item["version"] = 1;
         modules.push_back(item);
-        if (module == "arcology" || module == "vault") {
+        if (module == "arcology" || module == "vault" || module == "terraced" ||
+            module == "hex_hive" || module == "arcade") {
             Dictionary versioned = item.duplicate();
             versioned["version"] = 2;
             versioned["minimum_recipe_schema"] = gen::kArchitecturalSchemaVersion;

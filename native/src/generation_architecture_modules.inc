@@ -40,8 +40,10 @@ struct ArchitectureForm {
 class TerracedHabitat final : public FeatureSampler {
     ArchitectureForm p_;
     std::uint64_t seed_;
+    bool refined_;
 public:
-    TerracedHabitat(const ModuleInstance& i, std::uint64_t seed) : p_(i), seed_(seed) {}
+    TerracedHabitat(const ModuleInstance& i, std::uint64_t seed)
+        : p_(i), seed_(seed), refined_(i.version == 2) {}
     std::optional<Material> sample(const ModuleContext& c, Material) const override {
         const auto x = c.x - p_.bounds.x, y = c.y - p_.bounds.y;
         if (p_.in_shaft(x)) return Material::Empty;
@@ -56,6 +58,12 @@ public:
         const auto offset = static_cast<std::int64_t>(hash_xy(seed_, level, 0, 901) %
             static_cast<std::uint64_t>(std::max<std::int64_t>(1, p_.bay / 3)));
         const bool partition = (inner_x + offset) % p_.bay < p_.wall;
+        // v2 glass spans the facade and its formerly exposed inner lip;
+        // load-bearing floor bands and independent inner doorways stay intact.
+        if (refined_ && p_.windows && fy >= p_.wall + 3 &&
+            fy < p_.level - p_.wall - 3 &&
+            (inner_x < p_.wall + 2 ||
+                x >= p_.bounds.width - inset - p_.wall - 2)) return p_.glazing;
         if (partition && !outer && p_.doors && fy >= p_.level - p_.wall - p_.door &&
             fy < p_.level - p_.wall) return Material::Empty;
         if (outer && p_.windows && fy >= p_.wall + 3 &&
@@ -70,8 +78,9 @@ public:
 // 2. HexHive: staggered flat-topped six-sided chambers with vertical ports.
 class HexHive final : public FeatureSampler {
     ArchitectureForm p_;
+    bool refined_;
 public:
-    explicit HexHive(const ModuleInstance& i) : p_(i) {
+    explicit HexHive(const ModuleInstance& i) : p_(i), refined_(i.version == 2) {
         require(p_.bay >= 2 * p_.wall + 12 && p_.level >= 2 * p_.wall + 12,
             "hex_hive requires twelve cells of chamber clearance");
     }
@@ -82,6 +91,7 @@ public:
             y < p_.wall || y >= p_.bounds.height - p_.wall) return p_.shell;
         const auto column = x / p_.bay;
         const auto rx = p_.bay / 2 - p_.wall, ry = p_.level / 2 - p_.wall;
+        bool reinforce_hex_wall = false;
         for (auto col = column - 1; col <= column + 1; ++col) {
             const auto cx = col * p_.bay + p_.bay / 2;
             const auto stagger = positive_mod(col, 2) * (p_.level / 2);
@@ -95,7 +105,16 @@ public:
                 return Material::Empty;
             if (p_.windows && dx < rx / 2 && dy >= ry && dy <= ry + p_.wall + 1)
                 return p_.glazing;
+            if (refined_) {
+                // The reinforcing member runs within the hexagonal wall web,
+                // not the old straight x%bays stripe. A cavity has precedence.
+                const auto ex = rx + p_.wall, ey = ry + p_.wall;
+                if (dx <= ex && dy <= ey &&
+                    (dx <= ex / 2 || 2 * dy * ex <= 4 * ey * (ex - dx)))
+                    reinforce_hex_wall = true;
+            }
         }
+        if (refined_) return reinforce_hex_wall ? p_.accent : p_.shell;
         return x % p_.bay < p_.wall ? p_.accent : p_.shell;
     }
 };
@@ -104,8 +123,10 @@ public:
 class ViaductArcade final : public FeatureSampler {
     ArchitectureForm p_;
     std::uint64_t seed_;
+    bool refined_;
 public:
-    ViaductArcade(const ModuleInstance& i, std::uint64_t seed) : p_(i), seed_(seed) {}
+    ViaductArcade(const ModuleInstance& i, std::uint64_t seed)
+        : p_(i), seed_(seed), refined_(i.version == 2) {}
     std::optional<Material> sample(const ModuleContext& c, Material) const override {
         const auto x = c.x - p_.bounds.x, y = c.y - p_.bounds.y;
         if (p_.in_shaft(x)) return Material::Empty;
@@ -118,7 +139,14 @@ public:
         const auto roof = p_.wall + rise +
             (p_.level - p_.wall - rise) * dx * dx / (radius * radius);
         if (dx < radius && fy >= roof) return Material::Empty;
-        if (p_.doors && (bx < p_.wall || bx >= p_.bay - p_.wall) &&
+        if (refined_) {
+            // Symmetric load-bearing metal inlay centred on the vertical pier
+            // instead of an off-centre open cutout in its structural footing.
+            const auto foot_height = std::min(p_.door, 2 * p_.wall + 1);
+            if (std::min(bx, p_.bay - bx) <= p_.wall &&
+                fy >= p_.level - p_.wall - foot_height &&
+                fy < p_.level - p_.wall) return Material::SteelPlate;
+        } else if (p_.doors && (bx < p_.wall || bx >= p_.bay - p_.wall) &&
             fy >= p_.level - p_.door - p_.wall && fy < p_.level - p_.wall)
             return Material::Empty;
         if (p_.windows && fy > p_.wall + 2 && fy < roof - 2 &&
