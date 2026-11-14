@@ -1603,12 +1603,17 @@ var _uploaded_workbench_frame: Dictionary = {}
 # accepting each patch. Only consulted while palette snapshot_blend < 1.
 # An oversized/full refresh is unknown rather than optimistically empty.
 const PRESENTATION_PREVIOUS_PATCH_LIMIT: int = 16384
+# Render-only guard work is capped globally across all Workbench bodies.
+# Reaching a budget preserves the uploaded bound poses instead of stalling
+# the frame or presenting geometry without a material-clearance proof.
+const PRESENTATION_FRAME_SCAN_BUDGET: int = 24000
+const PRESENTATION_FRAME_TIME_BUDGET_USEC: int = 2000
 var _presentation_previous_occupied: Dictionary = {}
 var _presentation_previous_unknown: bool = true
 var workbench_presentation_last: Dictionary = {}
 var workbench_presentation_totals: Dictionary = {
 	"frames":0,"safe_live":0,"blocked_material":0,"blocked_unknown":0,
-	"blocked_other":0,"cells_examined":0}
+	"blocked_other":0,"budget_vetoes":0,"cells_examined":0,"elapsed_usec":0}
 var last_uploaded_render_snapshot_serial: int = 0
 var last_uploaded_world_generation: int = -1
 var last_render_patch_count: int = 0
@@ -3169,7 +3174,8 @@ func _present_physical_actor_overlay(frame: Dictionary) -> void:
 func _safe_workbench_presentation_poses(frame: Dictionary) -> Dictionary:
 	var poses: Dictionary = {}
 	workbench_presentation_last = {"status":"inactive","safe_live":0,
-		"blocked_material":0,"blocked_unknown":0,"blocked_other":0,"cells_examined":0}
+		"blocked_material":0,"blocked_unknown":0,"blocked_other":0,
+		"budget_vetoes":0,"cells_examined":0,"elapsed_usec":0}
 	if shared_workbench == null or paused or physical_actor_session == null or image == null:
 		return poses
 	if OS.get_environment("CYBERSAND_DIAG_FLYER_POSE") == "mask":
@@ -3182,8 +3188,11 @@ func _safe_workbench_presentation_poses(frame: Dictionary) -> Dictionary:
 	var blend_active: bool = cadence_lod_enabled and render_snapshot_hz > 0 \
 		and float(Time.get_ticks_usec()-snapshot_blend_start_usec) \
 			< 1000000.0/float(render_snapshot_hz)
+	var started_usec: int = Time.get_ticks_usec()
+	var deadline_usec: int = started_usec + PRESENTATION_FRAME_TIME_BUDGET_USEC
 	var summary: Dictionary = {"safe_live":0,"blocked_material":0,
-		"blocked_unknown":0,"blocked_other":0,"cells_examined":0}
+		"blocked_unknown":0,"blocked_other":0,"budget_vetoes":0,
+		"cells_examined":0,"elapsed_usec":0}
 	var instances: Dictionary = frame.get("instances",{})
 	for slot: int in range(bridge._members.size()):
 		var member: Dictionary = bridge._members[slot]
@@ -3195,9 +3204,15 @@ func _safe_workbench_presentation_poses(frame: Dictionary) -> Dictionary:
 		var live_pose: Transform2D = bridge.body_transform(slot)
 		if bound_pose.is_equal_approx(live_pose):
 			continue
+		var remaining: int = PRESENTATION_FRAME_SCAN_BUDGET-int(summary.cells_examined)
+		if remaining <= 0 or Time.get_ticks_usec() >= deadline_usec:
+			summary.budget_vetoes += 1
+			summary.blocked_other += 1
+			continue
 		var decision: Dictionary = WorkbenchPresentationCoherence.assess(
 			bound_pose,live_pose,bridge._rects[slot],image,
-			_presentation_previous_occupied,_presentation_previous_unknown,blend_active)
+			_presentation_previous_occupied,_presentation_previous_unknown,blend_active,
+			mini(remaining,WorkbenchPresentationCoherence.MAX_SCAN_CELLS),deadline_usec)
 		summary.cells_examined += int(decision.scanned)
 		if decision.safe:
 			poses[slot] = live_pose
@@ -3207,7 +3222,10 @@ func _safe_workbench_presentation_poses(frame: Dictionary) -> Dictionary:
 		elif decision.reason == "previous_texture_unbounded":
 			summary.blocked_unknown += 1
 		else:
+			if decision.reason in ["scan_budget","time_budget"]:
+				summary.budget_vetoes += 1
 			summary.blocked_other += 1
+	summary.elapsed_usec = Time.get_ticks_usec()-started_usec
 	workbench_presentation_totals.frames += 1
 	for key: String in summary:
 		workbench_presentation_totals[key] = int(workbench_presentation_totals.get(key,0)) + int(summary[key])

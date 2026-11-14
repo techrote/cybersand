@@ -43,7 +43,7 @@ static func _touches_body(point: Vector2, pose: Transform2D, rectangles: Array,
 static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: Array,
 		world_pixels: Image, previous_occupied: Dictionary = {},
 		previous_unknown: bool = false, previous_blend_active: bool = false,
-		max_scan_cells: int = MAX_SCAN_CELLS) -> Dictionary:
+		max_scan_cells: int = MAX_SCAN_CELLS, deadline_usec: int = 0) -> Dictionary:
 	if world_pixels == null or world_pixels.is_empty() or rectangles.is_empty():
 		return _refuse("missing_world_or_geometry")
 	if not bound_pose.is_finite() or not live_pose.is_finite():
@@ -105,6 +105,11 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 	for y: int in range(first_y,last_y+1):
 		for x: int in range(first_x,last_x+1):
 			scanned += 1
+			# A shared Main deadline caps guard work across all actors, not
+			# just each body's rectangular scan. A timeout always refuses.
+			if deadline_usec > 0 and (scanned & 31) == 0 \
+					and Time.get_ticks_usec() >= deadline_usec:
+				return _refuse("time_budget",scanned)
 			# Empty pixels need no shape testing. Previous material is tracked
 			# only where last accepted patch replaced a nonempty old cell.
 			var occupied: bool = world_pixels.get_pixel(x,y).r8 != 0

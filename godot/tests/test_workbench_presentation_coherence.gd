@@ -167,6 +167,15 @@ func _run() -> void:
 		"skewed pose fails closed")
 	check(Coherence.assess(original,moved,rectangles,image,{},false,false,0).reason=="scan_budget",
 		"zero scan budget fails closed")
+	var expired_deadline: int = Time.get_ticks_usec()-1
+	var timed_out: Dictionary = Coherence.assess(original,moved,rectangles,image,
+		{},false,false,Coherence.MAX_SCAN_CELLS,expired_deadline)
+	check(not timed_out.safe and timed_out.reason=="time_budget" and
+			int(timed_out.scanned)<=32,
+		"expired global time deadline fails closed before admitting live pose")
+	check(Coherence.assess(original,moved,rectangles,image,
+			{},false,false,Coherence.MAX_SCAN_CELLS,0).safe,
+		"unlimited diagnostic guard remains backward-compatible")
 	check(Coherence.assess(original,moved,[],image).reason=="missing_world_or_geometry",
 		"missing collider geometry fails closed")
 	check(not Coherence.assess(original,moved,[],image).safe,"empty collider set refused")
