@@ -26,7 +26,7 @@ def sha(data: bytes) -> str:
 
 
 def expected_request(root: Path = ROOT) -> dict:
-    return {"schema":"driv3r-stage-c-request-v1","sequence":2,
+    return {"schema":"driv3r-stage-c-request-v1","sequence":3,
             "stage_b_source":STAGE_B_SOURCE,
             "stage_b_release_sha256":STAGE_B_RELEASE_SHA256,
             "frozen_case_sha256":sha((root/CASE_PATH).read_bytes()),"draft_hold":True}

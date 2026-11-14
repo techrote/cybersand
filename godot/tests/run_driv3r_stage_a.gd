@@ -229,8 +229,8 @@ func integer(value: Variant) -> bool:
 	return (value is int or value is float) and is_finite(float(value)) and floor(float(value)) == float(value)
 
 func bounded_integer(value: Variant, minimum: float, maximum: float) -> bool:
-    # Refuse out-of-range JSON numbers before any Variant -> int/Vector2i cast.
-    return integer(value) and float(value) >= minimum and float(value) <= maximum
+	# Refuse out-of-range JSON numbers before any Variant -> int/Vector2i cast.
+	return integer(value) and float(value) >= minimum and float(value) <= maximum
 
 func operation_points(operations: Variant, limit: int) -> Dictionary:
 	if not operations is Array or operations.is_empty() or operations.size() > MAX_OPERATIONS:
@@ -276,7 +276,7 @@ func apply(request: Dictionary, before: PackedInt32Array) -> Dictionary:
 	else:
 		for key: String in ["generation", "revision", "tick"]:
 			if not bounded_integer(request.get("expected_" + key), 0.0, 2147483647.0) \
-                    or int(request["expected_" + key]) != int(current[key]):
+					or int(request["expected_" + key]) != int(current[key]):
 				refusal = "Stale native " + key
 	if refusal.is_empty() and (not integer(request.get("cell_budget")) or request.cell_budget < 1 or request.cell_budget > MAX_CELLS):
 		refusal = "Cell budget must be 1..1024"
@@ -348,24 +348,25 @@ func apply(request: Dictionary, before: PackedInt32Array) -> Dictionary:
 			"partial_prefix_within_authority":prefix_safe, "action_id":request.get("action_id", "")}}
 
 func framebuffer() -> Dictionary:
-    # A true Window/Viewport framebuffer, not a stored-material PNG.
-    # Opt-in graphical sessions only; this request never modifies World material.
-    if OS.get_environment("DRIV3R_FRAME_CAPTURE") != "1" or DisplayServer.get_name() == "headless":
-        return {"status":"refused", "reason":"Graphical framebuffer capture not enabled"}
-    for i in 3: await process_frame
-    await RenderingServer.frame_post_draw
-    var texture := root.get_texture()
-    if texture == null: return {"status":"failed", "reason":"Root viewport has no render texture"}
-    var picture: Image = texture.get_image()
-    if picture.is_empty() or picture.get_width() < 64 or picture.get_height() < 64:
-        return {"status":"failed", "reason":"No usable graphical viewport frame"}
-    var filename := "frame-%06d.png" % request_id
-    var path := directory + "/" + filename
-    if picture.save_png(path) != OK:
-        return {"status":"failed", "reason":"Framebuffer PNG write failed"}
-    return {"status":"completed", "reason":"", "frame":{"path":filename,
-        "width":picture.get_width(), "height":picture.get_height(),
-        "sha256":FileAccess.get_sha256(path), "capture_type":"godot-root-viewport-framebuffer"}}
+	# A true Window/Viewport framebuffer, not a stored-material PNG.
+	# Opt-in graphical sessions only; this request never modifies World material.
+	if OS.get_environment("DRIV3R_FRAME_CAPTURE") != "1" or DisplayServer.get_name() == "headless":
+		return {"status":"refused", "reason":"Graphical framebuffer capture not enabled"}
+	for i in range(3):
+		await process_frame
+	await RenderingServer.frame_post_draw
+	var texture := root.get_texture()
+	if texture == null: return {"status":"failed", "reason":"Root viewport has no render texture"}
+	var picture: Image = texture.get_image()
+	if picture.is_empty() or picture.get_width() < 64 or picture.get_height() < 64:
+		return {"status":"failed", "reason":"No usable graphical viewport frame"}
+	var filename := "frame-%06d.png" % request_id
+	var path := directory + "/" + filename
+	if picture.save_png(path) != OK:
+		return {"status":"failed", "reason":"Framebuffer PNG write failed"}
+	return {"status":"completed", "reason":"", "frame":{"path":filename,
+		"width":picture.get_width(), "height":picture.get_height(),
+		"sha256":FileAccess.get_sha256(path), "capture_type":"godot-root-viewport-framebuffer"}}
 
 func dispatch(request: Dictionary) -> Dictionary:
 	if request.get("protocol_version") != 1 or request.get("request_id") != request_id \
@@ -378,9 +379,9 @@ func dispatch(request: Dictionary) -> Dictionary:
 		or request_deadline > Time.get_unix_time_from_system() + 120:
 		return {"status":"refused", "reason":"Expired or excessive request deadline"}
 	if request.kind == "frame":
-        if request.size() != 4: return {"status":"refused", "reason":"Invalid framebuffer request"}
-        return await framebuffer()
-    if request.kind == "reset":
+		if request.size() != 4: return {"status":"refused", "reason":"Invalid framebuffer request"}
+		return await framebuffer()
+	if request.kind == "reset":
 		if request.size() != 5 or not request.get("fixture") is String:
 			return {"status":"refused", "reason":"Invalid fixture request"}
 		var reset := await fresh(str(request.fixture))

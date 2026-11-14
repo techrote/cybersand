@@ -1,6 +1,6 @@
 {
   "schema": "driv3r-stage-c-request-v1",
-  "sequence": 2,
+  "sequence": 3,
   "stage_b_source": "2ea0f09c8fbbead7386f47232b0a61cff59bdfdc",
   "stage_b_release_sha256": "17b22a80463594575ea28cb688a5b5ab155366b1127d09c3198aef853cae3ce6",
   "frozen_case_sha256": "5aebb13c0f59a2503a30913bb5b6dafb3e10ef25f9243229c636ca3f42f2115f",

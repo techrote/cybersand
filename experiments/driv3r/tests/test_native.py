@@ -231,6 +231,15 @@ class NativeEvidenceTests(unittest.TestCase):
                 native.reset(cancel_event=cancel)
             self.assertTrue(marker.exists(), "A newly cancelled reset must publish with its fence intact")
 
+    def test_godot_harness_indentation_stays_tab_consistent(self):
+        root = Path(__file__).resolve().parents[3]
+        harness = (root / "godot/tests/run_driv3r_stage_a.gd").read_text(encoding="utf-8")
+        leading_spaces = [i for i, line in enumerate(harness.splitlines(), 1)
+                          if line.startswith(" ")]
+        self.assertEqual(leading_spaces, [], "GDScript mixed indentation causes native parser refusal")
+        self.assertIn("func framebuffer()", harness)
+        self.assertIn("func bounded_integer(", harness)
+
     def test_unsafe_paths_refused_before_file_read(self):
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaisesRegex(NativeError, "Unsafe native evidence path"):
