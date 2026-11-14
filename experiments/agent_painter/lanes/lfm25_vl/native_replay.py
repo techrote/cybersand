@@ -14,9 +14,10 @@ import sys
 PAINTER = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PAINTER))
 from compiler import compile_program, parse_program
-from native.run import execute, native_cases, write_json
+sys.path.insert(0, str(PAINTER / "native"))
+from run import execute, native_cases, write_json
 from native.runtime import ROOT, digest, verify as verify_runtime
-from native.verify import verify as verify_native
+from verify import verify as verify_native
 
 EVAL = "984b595b3b612341adc9ca0a4112698b5a7f6743"
 TRAIN = "1c9cf2ef8760177e0c1d095052c27fcf200a5cb3"
