@@ -66,10 +66,10 @@ func _run() -> void:
 		var prior_epoch: int = host._physical_epoch
 		if require(ui.apply(recipe),"actual authored World and Kestrel installed"):
 			if require(await until(func() -> bool:
-					return host.pending_microscenario_apply.is_empty()
-						and host._physical_epoch>prior_epoch
-						and host.physical_actor_session != null and host._physical_terrain_ready
-						and host.image!=null
+					return host.pending_microscenario_apply.is_empty() \
+						and host._physical_epoch>prior_epoch \
+						and host.physical_actor_session != null and host._physical_terrain_ready \
+						and host.image!=null \
 						and host._valid_workbench_mask_frame(host.workbench_display_frame())),
 					"actual native material and bound actor frame uploaded"):
 				require(host.paused,"native editing while physics paused")
@@ -78,14 +78,14 @@ func _run() -> void:
 				var pixel_id: int = CELL.y*host.image.get_width()+CELL.x
 				if await _native_edit(6):
 					if require(await until(func() -> bool:
-							return host.image.get_pixel(CELL.x,CELL.y).r8==6
+							return host.image.get_pixel(CELL.x,CELL.y).r8==6 \
 								and host._valid_workbench_mask_frame(host.workbench_display_frame())),
 							"real Fire pixel uploaded after native PAINT edit"):
 						if await _native_edit(0):
 							if require(await until(func() -> bool:
-									return host.image.get_pixel(CELL.x,CELL.y).r8==0
-										and host._presentation_previous_occupied.has(pixel_id)
-										and not host._presentation_previous_unknown
+									return host.image.get_pixel(CELL.x,CELL.y).r8==0 \
+										and host._presentation_previous_occupied.has(pixel_id) \
+										and not host._presentation_previous_unknown \
 										and host._valid_workbench_mask_frame(host.workbench_display_frame())),
 									"native erase creates tracked old-only Fire pixel"):
 								var old: Image = host.previous_texture.get_image()
