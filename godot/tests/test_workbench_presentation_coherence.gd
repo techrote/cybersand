@@ -136,12 +136,12 @@ func _run() -> void:
 	# a real native Kestrel is 9x6, so this also becomes a production-path
 	# adversarial case in the authored native-World integration fixture.
 	var kestrel_size: Array = [{"center":Vector2.ZERO,"size":Vector2(9,6)}]
-	var kestrel_start := Transform2D(0.0,Vector2(240,360))
-	var kestrel_end := Transform2D(0.5,Vector2(242,358))
-	_paint(image,237,355,58)
+	var kestrel_start := Transform2D(0.0,Vector2(40,60))
+	var kestrel_end := Transform2D(0.5,Vector2(42,58))
+	_paint(image,37,55,58)
 	check(Coherence.assess(kestrel_start,kestrel_end,kestrel_size,image).reason=="material_in_swept_mask",
 		"combined translate/rotate 9x6 Kestrel blocks intermittent wall cell")
-	_paint(image,237,355,0)
+	_paint(image,37,55,0)
 
 	# False-refusal cost is deliberately visible and bounded. Here the
 	# continuously translated body ends at y=102 while the material cell's
