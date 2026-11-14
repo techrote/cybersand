@@ -62,21 +62,23 @@ class CatalogPreflightTests(unittest.TestCase):
                 self.catalog(opts)
 
     def test_endpoint_valid_but_middle_crosses_material_z(self):
-        pos = self.f.start
-        # Construct a blocked swept cell. Whole-segment legality, rather
-        # than merely endpoint-range checks, must reject it.
+        # Both start and endpoint are legal, but one intermediate cell is Z.
+        # This must fail despite a legal destination (endpoint-only trap).
         selected = None
-        for p in self.f.material_z:
-            for q in ((p[0]-1,p[1]), (p[0]+1,p[1]), (p[0],p[1]-1), (p[0],p[1]+1)):
-                if self.f.legal(q):
-                    selected = (q, p)
+        for blocked in sorted(self.f.material_z):
+            for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                start = (blocked[0] - dx, blocked[1] - dy)
+                end = (blocked[0] + dx, blocked[1] + dy)
+                if self.f.legal(start) and self.f.legal(end):
+                    selected = (start, blocked, end)
                     break
             if selected:
                 break
         self.assertIsNotNone(selected)
-        origin, blocked = selected
+        origin, blocked, endpoint = selected
+        self.assertTrue(self.f.legal(origin) and self.f.legal(endpoint))
         options = [{"candidate_id": "STOP", "path": [], "stop": True},
-                   {"candidate_id": "BAD", "path": [blocked], "stop": False}]
+                   {"candidate_id": "BAD", "path": [blocked, endpoint], "stop": False}]
         with self.assertRaisesRegex(m.PreflightError, "Swept segment"):
             m.legal_catalog(origin, options, width=self.f.width, height=self.f.height,
                             legal_cell=self.f.legal)
