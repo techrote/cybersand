@@ -182,17 +182,12 @@ jobs:
             --source-sha "$GITHUB_SHA" --model "$RUNNER_TEMP/smol-model" \
             --corpus evidence/original-native/corpus --output evidence/candidate/training \
             --steps 120 --checkpoint-every 40 --max-seconds 1200 || status=$?
-          # Shared trainer exit2 preserves a real partial checkpoint at its deadline.
-          # Its actual step count remains visible; a crash/timeout is still failure.
-          if test "$status" -ne 0 && test "$status" -ne 2; then exit "$status"; fi
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-          summary = json.loads(Path('evidence/candidate/training/summary.json').read_text())
-          assert summary['actual_training'] is True and summary['global_step'] > 0
-          assert summary['checkpoint_readback_exact'] is True
-          assert summary['status'] in ('completed', 'stopped-checkpoint-saved')
-          PY
+          # A nonzero (including partial checkpoint exit2) preserves its evidence
+          # via if: always() artifact upload but NEVER promotes to DEVELOPMENT/native.
+          # Also reject false-green zero exits without exact step120 receipt/inventory.
+          python3 experiments/agent_painter/lanes/smol/completion_gate.py \
+            --training evidence/candidate/training --exit-code "$status" \
+            --source-sha "$GITHUB_SHA" | tee evidence/candidate/fresh120-promotion.json
       - name: Frozen raw first-pass DEVELOPMENT evaluation
         run: |
           set -euo pipefail
