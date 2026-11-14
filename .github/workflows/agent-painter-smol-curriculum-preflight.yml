@@ -7,6 +7,8 @@ on:
       - 'experiments/agent_painter/lanes/smol/curriculum_preflight.py'
       - 'experiments/agent_painter/lanes/smol/curriculum_witness.py'
       - 'experiments/agent_painter/lanes/smol/test_curriculum_witness.py'
+      - 'experiments/agent_painter/lanes/smol/curriculum_preview.py'
+      - 'experiments/agent_painter/lanes/smol/test_curriculum_preview.py'
       - '.github/workflows/agent-painter-smol-curriculum-preflight.yml'
   workflow_dispatch:
 permissions:
@@ -38,16 +40,28 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m unittest discover -s experiments/agent_painter/lanes/smol -p 'test_curriculum_witness.py' -v
+      - name: Lossless compiler-only visual preview regressions
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s experiments/agent_painter/lanes/smol -p 'test_curriculum_preview.py' -v
       - name: Strict proposal-only screening (no FINAL, training, or native)
         run: |
           set -euo pipefail
           python3 experiments/agent_painter/lanes/smol/curriculum_preflight.py \
             --corpus evidence/native/corpus \
             --receipt evidence/smol-proposals-screen.json
+      - name: Source-screened compiler-only review gallery (NOT Godot or model output)
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/smol/curriculum_preview.py \
+            --corpus evidence/native/corpus \
+            --output evidence/smol-compiler-review
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: smol-curriculum-screen-${{ github.sha }}-${{ github.run_attempt }}
-          path: evidence/smol-proposals-screen.json
+          path: |
+            evidence/smol-proposals-screen.json
+            evidence/smol-compiler-review/
           retention-days: 90
           if-no-files-found: warn
