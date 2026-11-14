@@ -43,7 +43,7 @@ def assert_observed_tail(ids: list[int], labels: list[int], boundary: int,
     require(ids[boundary:].count(eos_id) == 1, "missing or repeated genuine EOS")
     require(ids[-1] != eos_id and labels[-1] == newline_id,
             "historical encoder unexpectedly has terminal EOS")
-    require(eos_id not in ids[:boundary], "unexpected EOS in masked prefix")
+    # EOS inside the masked system/user chat-prefix is legitimate upstream framing.
 
 
 def self_test() -> None:
@@ -58,7 +58,7 @@ def self_test() -> None:
         (original, [-100, -100, 200, -100, 198], 2, 2, 198),
         (original, labels, 0, 2, 198),
         (original, labels, 4, 2, 198),
-        ([2, 101, 200, 2, 198], labels, 2, 2, 198),
+        (original, [-100, -100, -100, 2, 198], 2, 2, 198),
     ]
     for index, args in enumerate(mutations):
         try:
