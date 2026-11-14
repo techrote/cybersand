@@ -1,5 +1,40 @@
 # Smol painter: first bounded DEVELOPMENT iteration
 
+## Full checkpoint/progress promotion corroboration — 14 November 2026
+
+**Future native-campaign source hardening only.** The first model-free gate
+checked the step120 summary, receipt and inventory-file hash, but not every
+checkpoint member or the recorded optimizer-event sequence. A corrupted
+`training_state.pt` or adapter member could therefore survive a superficial
+self-consistent inventory digest. The existing common trainer already performs
+tensor-state readback when saving; this lane adds an independent fail-closed
+*promotion* check rather than changing the qualified shared trainer.
+
+The updated lane-owned `completion_gate.py` invokes the frozen shared
+`common.verify_checkpoint()` to hash **every** checkpoint member, compare
+file sizes and reject missing/extra files. It also checks the original pinned
+model revision, TRAIN and compiler digests, portable one-thread CPU recipe,
+exact 12-row sample order, all **120** optimizer progress records, their exact
+checkpoint receipt-history equality, positive finite loss/gradients, sequential
+step/cursor and sample IDs, aggregate token/byte receipts, unchanged frozen
+base and changed adapter fingerprints. This remains tied to **the original
+fresh120 six-structure curriculum**; new corpus/fresh-vs-continued experiments
+require an explicitly versioned gate. No DEVELOPMENT or FINAL targets are
+opened by the gate.
+
+[Hosted synthetic model-free regression 43557943601](https://github.com/techrote/cybersand/actions/runs/43557943601)
+at exact code/test head `bfc83799e2778671028ea93a7da8a4eeb4c0c538`
+passed **18/18 tests**, including truncated/reordered progress, rehashed
+zero-gradient fraud, corrupted optimizer bytes, changed source/split, wrong
+model and delivery receipts. An earlier intermediate implementation produced
+[failed run 43557880909](https://github.com/techrote/cybersand/actions/runs/43557880909)
+because its original adversarial test still expected the weaker receipt-only
+error; that test was updated to rehash its deliberately modified fixture and
+assert the independent semantic mismatch. The earlier failure remains evidence.
+These are **synthetic adversarial receipts**, not proof of genuine optimizer
+updates or successful native painting. Actual full training/readback and
+structurally useful output remain independently required.
+
 ## Future native evidence delivery — read-only Actions artifacts (14 November 2026)
 
 The next **explicitly requested** `agent-painter-smol-native.yml` campaign no longer
