@@ -33,6 +33,10 @@ jobs:
           test "$(git hash-object experiments/agent_painter/lanes/lfm25_vl/contrastive_proposals_v1.json)" = "226ce959c68a9e2649e88fe15c10713437cf82be"
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/lfm-c2b-ci.json
+      - name: Initialize fail-closed receipt for any early test/download failure
+        run: |
+          mkdir -p evidence
+          printf '{"status":"FAIL_OR_INCOMPLETE_NO_ADMISSION","final_targets_opened":false,"native_executions":0,"admitted_train_groups":0,"optimizer_updates":0}\n' > evidence/lfm-c2b-stepped-review-only.json
       - name: Adversarial stepped topology and source-only tests
         run: |
           set -euo pipefail
