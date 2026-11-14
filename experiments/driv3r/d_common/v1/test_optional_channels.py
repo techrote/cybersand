@@ -254,7 +254,9 @@ class OptionalGuidanceContractTests(unittest.TestCase):
         from test_interface import ContractV1Tests
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder)
-            rows=ContractV1Tests()._constructed_native_byte_fixture(root)
+            base_fixture = ContractV1Tests()
+            base_fixture.setUp()
+            rows=base_fixture._constructed_native_byte_fixture(root)
             signal=make_channel("signed_distance/v1","distance")
             blob=signal["values"]
             raw=b"\x00"*blob["bytes"]
