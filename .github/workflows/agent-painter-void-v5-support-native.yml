@@ -1,0 +1,102 @@
+name: VOID v5 source-built anchored A02 Art (NOT TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-void-568]
+    paths: ['experiments/agent_painter/lanes/void/v5-support-native-request.json']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: void-v5-support-native-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  exact-source-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Exact source, research-only lease, policy and mandatory original native source receipt
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/void-v5-native-policy.json
+          python3 -m py_compile experiments/agent_painter/lanes/void/{v5_support_native,v5_support_probe}.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("experiments/agent_painter/lanes/void/v5-support-native-request.json").read_text())
+          assert r["schema"]=="void-v5-support-native-research/1" and r["sequence"]==1
+          assert r["source_only_run"]==43601586552
+          assert r["source_only_head"]=="fe34bcac8870b313cf3e1622c1065849328fdf95"
+          assert r["original_native_run"]==43592303518 and r["original_native_artifact"]==14113396057
+          assert r["original_manifest_sha256"]=="2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
+          for k in ("research_only","no_training","no_shared_admission","no_final","draft_hold","pending_global_review","one_nonindependent_variant"):
+              assert r[k] is True
+          PY
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: void-v5-source-fe34bcac8870b313cf3e1622c1065849328fdf95-43601586552
+          run-id: '43601586552'
+          github-token: ${{ github.token }}
+          path: evidence/v5-original-source-screen
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/original-native
+      - name: Original immutable source, A01 quarantine and exact qualified v5 revision before expensive build
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/build
+          python3 experiments/agent_painter/lanes/void/test_v5_support.py > evidence/build/v5-adversarial-tests.log 2>&1
+          python3 experiments/agent_painter/lanes/void/v5_support_probe.py \
+            --corpus evidence/original-native/corpus \
+            --output evidence/build/v5-pre-native-source-screen.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          current=json.loads(Path("evidence/build/v5-pre-native-source-screen.json").read_text())
+          old=json.loads(Path("evidence/v5-original-source-screen/source-only.json").read_text())
+          assert current==old and current["status"]=="SOURCE_ONLY_PASS"
+          assert len(current["source_views"])==2 and current["floor_anchored_posts"]==2
+          assert current["original_A01_quarantined"]=="void-v3-A01"
+          assert current["independent_new_structures"]==current["train_admitted_groups"]==current["optimizer_steps"]==0
+          assert current["final_opened"] is False
+          script=Path("experiments/agent_painter/lanes/void/v5_support_ci_native.sh").read_text()
+          assert "--parent experiments/agent_painter/lanes/void/v4_shaft_proposals.json" in script
+          assert "--previous experiments/agent_painter/lanes/void/v3_research_proposals.json" in script
+          PY
+      - name: Source-build pinned Godot and native C++, execute two actual Art variants, verify stored cells and original PNGs
+        run: bash experiments/agent_painter/lanes/void/v5_support_ci_native.sh
+      - name: Distinguish one nonindependent teacher variant from model/native admission
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("evidence/void-v5-support-native/void-v5-support-native-summary.json").read_text())
+          assert d["native_verifier_passed"] and d["actual_verified_native_views"]==2
+          assert d["distinct_structural_proposals"]==0 and d["nonindependent_style_variants"]==1
+          assert d["reference_manifest_sha256"]=="2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
+          assert d["quarantined_previous_id"]=="void-v3-A01" and d["review_status"]=="PENDING_NEW_NATIVE_AND_GLOBAL_REVIEW"
+          assert d["admitted_common_train_groups"]==d["optimizer_steps"]==0
+          assert d["sealed_final_opened"] is False and d["readback_original_pngs_in_evidence"] is True
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: void-v5-support-native-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            evidence/void-v5-support-native/
+            evidence/native-build.json
+            evidence/build/
+            evidence/regressions/
+          if-no-files-found: warn
+          retention-days: 90
