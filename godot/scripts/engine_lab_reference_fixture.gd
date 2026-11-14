@@ -40,6 +40,16 @@ func materialize(tree: SceneTree) -> Dictionary:
 		return _refuse("wrong material digest or canvas extent")
 	if setup.actors.size() != 1 or str(setup.actors[0].model) != "needle" 		or int(setup.actors[0].id) != 1 or setup.actors[0].spawn != [200.0,200.0]:
 		return _refuse("reference actor differs from owner Needle spawn")
+	# Mirror the admitted saved-generated-start loader's numeric type
+	# canonicalization before submitting to the real native preparer.
+	for key: String in ["version","next_id","selected","rule_radius","material","brush"]:
+		setup[key] = int(setup[key])
+	for key: String in ["extent","source","liquid_policy"]:
+		setup[key] = Array(PackedInt32Array(setup[key]))
+	for i: int in setup.edits.size():
+		setup.edits[i] = Array(PackedInt32Array(setup.edits[i]))
+	for actor: Dictionary in setup.actors:
+		actor.id = int(actor.id)
 	if not ClassDB.class_exists(&"CyberWorldGenerator"):
 		return _refuse("pinned source-matched native generator unavailable")
 	var generator: Object = ClassDB.instantiate(&"CyberWorldGenerator")
