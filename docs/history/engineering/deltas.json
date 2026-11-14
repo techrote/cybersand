@@ -96,5 +96,47 @@
         "refresh_draft": false
       }
     ]
+  },
+  "post_cutoff_observations": {
+    "observed_utc": "2026-11-14 05:15:21 UTC",
+    "accepted_main_sha": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742",
+    "interpretation": "Frozen M1 assessment scope stays 274 open records; later arrivals are protected and indexed separately, without a false full-assessment claim.",
+    "items": [
+      {
+        "number": 583,
+        "url": "https://github.com/techrote/cybersand/pull/583",
+        "title": "RENDER-ACK-001: trace native patch backlog, ACK latency and full-refresh causes",
+        "state": "open",
+        "draft": true,
+        "created_at": "2026-11-14T04:57:42Z",
+        "head_sha": "10fb4ed5e8b0b3e0028697e4dedf1f4e48fa8ba2",
+        "base_sha": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742",
+        "base_ref": "main",
+        "scope_role": "post-cutoff protected active work",
+        "coverage_depth": "D1-body-and-metadata only",
+        "related": [
+          577,
+          578,
+          566
+        ],
+        "protected": true,
+        "retirement_state": "not-authorised",
+        "summary": "New render-ACK diagnostic investigation. The author reports exact-head Linux/Windows native controls and an actual graphical Windows software-driver normal-versus-withheld-ACK comparison; a non-synthetic owner NVIDIA trace and production changes remain gated.",
+        "evidence_limit": "Full PR body and current PR identity read; original artifacts, source and tests not independently excavated or rerun in this post-cutoff check.",
+        "body_qualified_source_sha": "10fb4ed5e8b0b3e0028697e4dedf1f4e48fa8ba2",
+        "body_reported_run_url": "https://github.com/techrote/cybersand/actions/runs/43560334573",
+        "action": "Protect existing branch and link as current successor/diagnostic evidence for later reconciliation; no mutation or retirement."
+      }
+    ],
+    "capture_artifact": {
+      "number": 584,
+      "url": "https://github.com/techrote/cybersand/pull/584",
+      "branch": "archaeology/571-m1-knowledge-capture",
+      "initial_published_commit": "6232a809c3fcb1ea51d5c899b7cfe4efe870edd7",
+      "validated_tree": "faf19bcb4508a25ae7cc4527fd423eca127fa289",
+      "draft": true,
+      "merged": false,
+      "scope_role": "new capture artifact; excluded from historical intake"
+    }
   }
 }
