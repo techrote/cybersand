@@ -12,6 +12,25 @@ ROOT = Path(__file__).parent / "qualified-corpus"
 
 
 class RecoveryTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls._scratch = None
+        if ROOT.exists():
+            cls.source = ROOT
+        else:
+            # An exact-source checkout creates its own ephemeral DEVELOPMENT
+            # fixtures. Nothing is added to Git or sent to Actions.
+            from runner import run
+            cls._scratch = tempfile.TemporaryDirectory()
+            cls.source = Path(cls._scratch.name) / "qualified-corpus"
+            catalogue = Path(__file__).parent / "corpus/development-recipes.json"
+            run(catalogue, cls.source)
+
+    @classmethod
+    def tearDownClass(cls):
+        if cls._scratch is not None:
+            cls._scratch.cleanup()
+
     def test_route_cardinal_and_deterministic(self):
         allowed = {(x,y) for x in range(4) for y in range(4)} - {(1,0),(1,1),(1,2)}
         expected = [(0,0),(0,1),(0,2),(0,3),(1,3),(2,3),(2,2),(2,1),(2,0)]
@@ -31,7 +50,7 @@ class RecoveryTests(unittest.TestCase):
 
     def test_original_replay_and_identical_initial_fixture(self):
         for name in ("hilbert-reentry","moore-reentry","serpentine-reentry"):
-            folder = ROOT / name
+            folder = self.source / name
             recipe, curve, scalar, _ = read_episode(folder)
             original = json.loads((folder/"manifest.json").read_bytes())
             virtual = run_arm(recipe,curve,scalar,"virtual_future")
@@ -50,7 +69,7 @@ class RecoveryTests(unittest.TestCase):
             self.assertEqual(run_arm(recipe,curve,scalar,"routed_future"),routed)
 
     def test_route_failure_refuses_transfer(self):
-        folder = ROOT / "moore-reentry"
+        folder = self.source / "moore-reentry"
         recipe, curve, scalar, _ = read_episode(folder)
         # A mask confined to the first 16 points prohibits every future seek;
         # no optimistic transfer through protected terrain may occur.
@@ -62,7 +81,7 @@ class RecoveryTests(unittest.TestCase):
 
     def test_stop_and_restart_differ_from_future(self):
         for name in ("hilbert-reentry","moore-reentry","serpentine-reentry"):
-            recipe,curve,scalar,_=read_episode(ROOT / name)
+            recipe,curve,scalar,_=read_episode(self.source / name)
             future=run_arm(recipe,curve,scalar,"virtual_future")
             stop=run_arm(recipe,curve,scalar,"stop")
             restart=run_arm(recipe,curve,scalar,"tile_restart")
@@ -74,7 +93,7 @@ class RecoveryTests(unittest.TestCase):
     def test_tampering_rehashed_artifact_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
             folder = Path(tmp)
-            source = ROOT / "moore-reentry"
+            source = self.source / "moore-reentry"
             for path in source.iterdir():
                 if path.is_file():
                     (folder/path.name).write_bytes(path.read_bytes())
@@ -92,7 +111,7 @@ class RecoveryTests(unittest.TestCase):
             self.assertEqual(read_episode(folder)[0]["family"],"guided_coverage")
 
     def test_study_three_matched_cases(self):
-        result=study(ROOT)
+        result=study(self.source)
         self.assertEqual(len(result["matched_cases"]),3)
         self.assertFalse(result["native_replay_verified"])
         report={case["case"]:case for case in result["matched_cases"]}
