@@ -160,7 +160,8 @@ def validate_model_output(development: Path, host: dict):
                     raise ValueError("Compiled output was repaired or substituted")
                 input_hashes[compiled_path.relative_to(development).as_posix()] = digest(compiled_path)
                 examples.append({"id": f"void-{arm}-{case_id}", "family": program["family"],
-                                 "seed": expected["seed"], "program": program, "compiled": compiled})
+                                 "split": "DEVELOPMENT", "seed": expected["seed"],
+                                 "program": program, "compiled": compiled})
             elif compiled_path.exists():
                 raise ValueError("Rejected output carries compiled substitution")
             rows.append({"case": case_id, "arm": arm, "group": expected["group"],
@@ -197,7 +198,8 @@ def main():
     write_json(output / "input-cases.json", native_cases(document))
     harness = ROOT / "godot/tests/run_agent_painter_foundation.gd"
     my_script = Path(__file__).resolve()
-    custody.update({"harness_sha256": digest(harness),
+    custody.update({"claim": "Source-built Godot native Art execution of unrepaired VOID first-pass DEVELOPMENT predictions; no TRAIN admission",
+                    "harness_sha256": digest(harness),
                     "input_manifest_sha256": digest(output / "input-cases.json"),
                     "candidates_sha256": digest(output / "candidates.json"),
                     "model_development_sha256": digest(dev / "summary.json"),
@@ -240,6 +242,9 @@ def main():
     except (ValueError, KeyError, OSError, TypeError) as error:
         report = {"passed": False, "cases": [], "failures": ["Verification incomplete: " + str(error)]}
     write_json(output / "native-verification.json", report)
+    print(json.dumps({"native_verifier_failures": report.get("failures", []),
+                      "native_verifier_global_gates": report.get("global_gates", {}),
+                      "native_verifier_cases": len(report.get("cases", []))}, sort_keys=True), flush=True)
     passed = {x["id"]: x for x in report.get("cases", []) if x.get("success") is True}
     for row in rows:
         row["native_verified"] = row["native_case_id"] in passed if row["accepted"] else False
