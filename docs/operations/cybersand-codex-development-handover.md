@@ -10,6 +10,10 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## DRIV3R Stage A candidate — 2026-11-14
+
+The owner-authorized #570 Stage A uses the [decision-controller handoff](driv3r-stage-a.md) on an independent branch from qualified #569. Preserve resident inference and native admission ownership, original failed decisions and the exact execution report. Source implementation is not gate completion. Stop at the qualified Draft/HOLD handoff; Stage B/C, schedules, training, production defaults and merge remain separately owner-gated.
+
 ## Agent-painter foundation — 2026-11-13
 
 Owner-authorized implementation on current accepted #564/#565 main follows the [foundation handoff](agent-painter-foundation.md). Consume its qualified source/corpus/runner interfaces and issue #568 checkpoint before starting a model lane. The frozen #567 donor is read-only. No schedules, full model campaigns or merge are authorized by this foundation task.

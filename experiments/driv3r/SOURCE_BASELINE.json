@@ -1,0 +1,31 @@
+{
+  "schema": "driv3r-stage-a-source-intake-v1",
+  "inspected_date_utc": "2026-11-14",
+  "repository": "techrote/cybersand",
+  "investigation": "https://github.com/techrote/cybersand/issues/570",
+  "authorization": "Owner Stage A execution mission on 14 November 2026 supersedes issue-only planning HOLD; Draft/HOLD and Stage B/C boundary remain",
+  "accepted_main": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742",
+  "accepted_main_tree": "05d2960d569719cdc85b44228950eb14fa0d4c66",
+  "foundation": {
+    "pr": 569,
+    "draft": true,
+    "merged": false,
+    "branch": "codex/agent-painter-foundation-568",
+    "source_sha": "2a565df45efc568eb96a2166e0b77f299e289625",
+    "source_tree": "30aa0bf1130ada37d5273ceb533f0e0c91caec14",
+    "original_native_admission_sha": "633920373a3d406a2ede61ce4137c324f76be23b",
+    "native_admission_run": 43506373969,
+    "hosted_profile_preflight_run": 43515770587
+  },
+  "read_only_lane_owners": [
+    {"pr": 573, "branch": "codex/agent-painter-smol-568", "head": "aeab8ca0a90ae044771a55b9d521c805eadfe5b8", "owned_paths": ["experiments/agent_painter/lanes/smol", ".github/workflows/agent-painter-smol*.yml"]},
+    {"pr": 574, "branch": "codex/agent-painter-void-568", "head": "7d90bf5294d16a8644694a4c8a6a36a5227fa3c0", "owned_paths": ["experiments/agent_painter/lanes/void", ".github/workflows/agent-painter-void*.yml"]},
+    {"pr": 575, "branch": "codex/agent-painter-lfm25-vl-568", "head": "1c9cf2ef8760177e0c1d095052c27fcf200a5cb3", "owned_paths": ["experiments/agent_painter/lanes/lfm25_vl", ".github/workflows/agent-painter-lfm25-vl*.yml"]},
+    {"pr": 576, "branch": "codex/agent-painter-sprocket-568", "head": "25b24bf80c593b115321387a2a0374dd5ff02548", "owned_paths": ["experiments/agent_painter/lanes/sprocket", ".github/workflows/agent-painter-sprocket*.yml"]}
+  ],
+  "latest_material_ledger_read": "https://github.com/techrote/cybersand/issues/568#issuecomment-6867975775",
+  "shared_contract_risk_not_modified": "Lane adapter fingerprints include evaluator files. DRIV3R does not touch training, checkpoints, corpus or their identity contracts.",
+  "dedicated_branch": "research/570-driv3r-stage-a",
+  "stacked_base": "codex/agent-painter-foundation-568",
+  "historical_donors": "PRs 567 and 531 are read-only historical references; no implementation imported from their obsolete transport branches."
+}

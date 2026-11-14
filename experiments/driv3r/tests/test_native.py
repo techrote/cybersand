@@ -1,0 +1,145 @@
+"""Offline evidence refusals plus opt-in actual Godot/native RPC regressions.
+
+Set DRIV3R_NATIVE_GODOT and DRIV3R_NATIVE_OUTPUT to run the real suite; ordinary
+offline runs make no claim that the deliberately skipped native suite passed.
+"""
+from __future__ import annotations
+
+import json
+import os
+from pathlib import Path
+import subprocess
+import tempfile
+import threading
+import time
+import unittest
+
+from experiments.driv3r.native import NativeError, NativeSession, verify_observation
+
+
+def run_native_regressions(repo_root, godot, output_dir, source_sha, runtime_manifest=None) -> dict:
+    output_dir = Path(output_dir)
+    checks = []
+    def check(label, passed, **details):
+        row = {"label": label, "passed": bool(passed), **details}
+        checks.append(row)
+        (output_dir / "checks.json").write_text(json.dumps(checks, indent=2) + "\n")
+        if not passed:
+            raise AssertionError(label)
+    with NativeSession(repo_root, godot, output_dir, source_sha, runtime_manifest=runtime_manifest) as native:
+        initial = native.reset()["observation"]
+        check("fixture uses authoritative protected material", initial["materials"][20 * 96 + 8] == 28)
+        def action(x=12, y=25, material=58, state=None, operations=None, budget=1, cancel_event=None):
+            o = state or native.latest_observation
+            return native.apply(operations or [{"shape": "rectangle", "x0": x, "y0": y,
+                                                "x1": x, "y1": y, "material": material}],
+                                expected_generation=o["generation"], expected_revision=o["revision"],
+                                expected_tick=o["tick"], action_id="native-regression", cell_budget=budget,
+                                cancel_event=cancel_event)
+        first = action()
+        check("real first native cell", first["status"] == "completed" and first["receipt"]["actual_changed_cells"] == 1)
+        second = action(y=26)
+        check("same persistent World second native cell", second["status"] == "completed"
+              and second["receipt"]["actual_changed_cells"] == 1
+              and second["observation"]["world_id"] == initial["world_id"])
+        for label, result in [
+            ("stale revision", action(y=27, state=initial)),
+            ("unauthorized material", action(y=27, material=28)),
+            ("out of focus", action(x=96)),
+            ("malformed action", action(operations=[{"shape":"rectangle","x0":12,"y0":27,"x1":12,"y1":27,"material":58,"override":True}])),
+            ("cell budget", action(operations=[{"shape":"rectangle","x0":12,"y0":27,"x1":14,"y1":27,"material":58}]))
+        ]:
+            check(label + " refused without mutation", result["status"] == "refused"
+                  and result["receipt"]["actual_changed_cells"] == 0
+                  and result["receipt"]["before_world_sha256"] == result["receipt"]["after_world_sha256"])
+        protected = action(x=8, y=20)
+        check("protected material native no-op", protected["status"] == "completed"
+              and protected["receipt"]["actual_changed_cells"] == 0
+              and protected["receipt"]["terminal"]["excluded"] == 1
+              and protected["observation"]["materials"][20 * 96 + 8] == 28)
+        guard = action(x=40, y=40)
+        check("protected rectangle native no-op", guard["status"] == "completed"
+              and guard["receipt"]["actual_changed_cells"] == 0
+              and guard["receipt"]["terminal"]["excluded"] == 1)
+        before = native.latest_observation["world_material_sha256"]
+        expired = native._request("observe", {"expires_unix": time.time() - 10})
+        after = native.observe()["observation"]["world_material_sha256"]
+        check("expired request refused with unchanged native state", expired["status"] == "refused" and before == after)
+        stopped = native.stop("qualification STOP")
+        late = action(y=27)
+        check("explicit STOP retires native epoch", stopped["status"] == "stopped" and stopped["observation"]["retired"])
+        check("late action after STOP has zero native changes", late["status"] == "refused" and late["receipt"]["actual_changed_cells"] == 0)
+        resumed = native.reset()["observation"]
+        check("explicit new episode has distinct generation", resumed["generation"] > initial["generation"]
+              and resumed["world_material_sha256"] == initial["world_material_sha256"])
+        cancel = threading.Event()
+        cancel.set()
+        cancelled = action(cancel_event=cancel)
+        check("cancelled decision cannot paint", cancelled["status"] == "refused" and cancelled["receipt"]["actual_changed_cells"] == 0)
+        native.reset()
+        next_id = native._sequence + 1
+        pending_path = output_dir / f"request-{next_id:06d}.json"
+        pending_cancel = threading.Event()
+        def cancel_pending():
+            deadline = time.monotonic() + 10
+            while time.monotonic() < deadline and not pending_path.exists():
+                time.sleep(0.001)
+            pending_cancel.set()
+        thread = threading.Thread(target=cancel_pending)
+        thread.start()
+        outstanding = action(cancel_event=pending_cancel)
+        thread.join(timeout=1)
+        after_cancel = native.observe()
+        check("cancellation while RPC outstanding retires without unintended cells",
+              pending_cancel.is_set() and after_cancel["observation"]["retired"]
+              and outstanding["receipt"]["actual_changed_cells"] == 0
+              and after_cancel["observation"]["world_material_sha256"] == initial["world_material_sha256"],
+              status=outstanding["status"])
+        native.reset()
+        malformed = native._request("apply", {"operations": "not an array"})
+        check("native malformed request refused", malformed["status"] == "refused"
+              and malformed["receipt"]["actual_changed_cells"] == 0)
+        final = native.observe()["observation"]
+        check("negative suite retains exact fixture", final["world_material_sha256"] == initial["world_material_sha256"])
+    cleanup = json.loads((output_dir / "cleanup.json").read_text())
+    check("Godot process and descendants cleaned", cleanup["graceful"] and cleanup["exit_code"] == 0)
+    result = {"schema_version": 1, "passed": all(row["passed"] for row in checks),
+              "checks": checks, "source_sha": source_sha,
+              "development_only": runtime_manifest is None,
+              "claim": "actual Workbench Art/native material receipts; no neural inference in this control suite"}
+    (output_dir / "native-regressions.json").write_text(json.dumps(result, indent=2) + "\n")
+    return result
+
+
+class NativeEvidenceTests(unittest.TestCase):
+    def test_unsafe_paths_refused_before_file_read(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaisesRegex(NativeError, "Unsafe native evidence path"):
+                verify_observation(Path(tmp), {"width":96, "height":96, "focus":[0,0,96,96],
+                                             "allowed_materials":[58], "material_path":"../secret"})
+
+    def test_missing_native_dimensions_refused(self):
+        with self.assertRaisesRegex(NativeError, "dimensions"):
+            verify_observation(Path("."), {})
+
+    def test_unbounded_deadlines_refused(self):
+        for timeout in [0, -1, float("inf"), float("nan"), 111]:
+            with self.subTest(timeout=timeout), self.assertRaises(NativeError):
+                NativeSession(".", "/does/not/exist", "/does/not/exist", "a" * 40, timeout=timeout)
+
+    def test_short_source_identity_refused(self):
+        with self.assertRaises(NativeError):
+            NativeSession(".", "/does/not/exist", "/does/not/exist", "short")
+
+    @unittest.skipUnless(os.getenv("DRIV3R_NATIVE_GODOT"), "opt-in real Godot/native suite not requested")
+    def test_actual_native(self):
+        root = Path(__file__).resolve().parents[3]
+        sha = subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
+        output = os.environ["DRIV3R_NATIVE_OUTPUT"]
+        result = run_native_regressions(root, os.environ["DRIV3R_NATIVE_GODOT"], output, sha,
+                                        os.environ.get("DRIV3R_NATIVE_MANIFEST"))
+        self.assertTrue(result["passed"])
+
+
+if __name__ == "__main__":
+    unittest.main()
