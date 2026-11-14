@@ -69,6 +69,50 @@ class ContrastPreflightTests(unittest.TestCase):
         q["components"][0]["diameter"] = 5
         self.assertEqual(subject.signature(p), subject.signature(q))
 
+    def test_dual_cross_not_isomorphic_to_pinned_peer_graphs(self):
+        """Necessary topology comparison only; NOT global TRAIN admission.
+
+        Read-only pinned sources:
+          SPROCKET P01-P06: proposal_pipework.py blob
+            3fd5fa0157eb0572ca7ee6fbe979a94fbadbed5b
+          SPROCKET R09/R10: rich_pipework_v2.py blob
+            37d9b7d3f698d5e851e213043d8d43c5f2c9750a
+          VOID P01/P04/P05/P06/P07: pinned witness in peer_topology.py blob
+            9f5c87705d6b4452941f65fc43d64b44d871383b
+            (original VOID producer 54161e2217f709ffb8b23634f21efa351411395f)
+          SMOL P01: curriculum_proposals_v2.json blob
+            0b0adae3c02d1ccc9bda2cdca393f272ca7ecf63
+
+        Degree-multiset inequality proves non-isomorphism to these known
+        graphs, NOT spatial/semantic novelty, held-out safety or native
+        approval. Source changes need new pinned comparative review.
+        """
+        graph = self.items["pipework"]["program"]["components"][0]
+        degrees = [0] * len(graph["nodes"])
+        for a, b in graph["edges"]:
+            degrees[a] += 1
+            degrees[b] += 1
+        actual = tuple(sorted(degrees))
+        self.assertEqual(actual, (1, 1, 1, 1, 1, 1, 4, 4))
+        self.assertEqual(len(graph["edges"]) - len(graph["nodes"]) + 1, 0)
+        peers = {
+            "sprocket-P01/void-P01": (1, 1, 1, 1, 3, 3),
+            "sprocket-P02": (1, 1, 1, 1, 4),
+            "sprocket-P03/void-P07": (2, 2, 2, 2, 3, 3),
+            "sprocket-P04/void-P04": (1, 1, 2, 2, 3, 3),
+            "sprocket-P05": (1, 2, 2, 2, 2, 2, 3, 4),
+            "sprocket-P06/void-P06": (2, 2, 2, 2, 3, 3, 3, 3, 4),
+            "void-P05": (1, 2, 2, 2, 2, 2, 3, 4),
+            "smol-P01": (1, 1, 1, 1, 1, 3, 4),
+            "sprocket-R09": (1, 1, 1, 2, 2, 3, 3, 3),
+            "sprocket-R10": (1, 1, 2, 2, 3, 3, 3, 3, 3, 3),
+        }
+        self.assertEqual(len(peers), 10)
+        for name, seq in peers.items():
+            with self.subTest(peer=name):
+                self.assertEqual(tuple(sorted(seq)), seq)
+                self.assertNotEqual(actual, seq)
+
     def test_no_final_file_in_visible_split_function(self):
         import inspect
         src = inspect.getsource(subject.original_visible_splits)
