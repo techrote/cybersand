@@ -32,6 +32,17 @@ receipts distinguish these versions and resolved controls. Selecting schema 4
 does not claim that its different identity is interchangeable with a saved
 legacy fingerprint, even where the resulting material cells happen to agree.
 
+The existing typed-spatial fingerprint includes its conservative preparation
+memory ledger, which uses C++ structure sizes. Consequently libstdc++ Linux and
+libc++ Windows can have different native fingerprints/receipts for the same
+canonical recipe and identical material output. This implementation preserves
+that legacy identity rule. Qualification compares complete receipts against an
+independently built accepted base on the **same platform**, and compares canonical
+recipes/materials separately across platforms. Generated-start v1 checks those
+receipts on reopen; moving a saved typed map between differing runtime ABIs is
+not a supported portability claim. A future identity correction would require
+an explicit version and migration policy.
+
 ```json
 {
   "schema": 4,

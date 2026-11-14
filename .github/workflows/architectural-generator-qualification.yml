@@ -17,6 +17,7 @@ concurrency:
   group: architecture-ab-${{ github.event_name }}-${{ github.event_name == 'push' && github.ref || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'push' }}
 env:
+  ARCHITECTURE_BASE_SHA: ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742
   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
   GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
@@ -101,11 +102,14 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
+          fetch-depth: 0
       - name: Prepare exact pinned Windows build inputs
         run: |
           set -euo pipefail
-          mkdir -p evidence build/architecture-windows
+          mkdir -p evidence build/architecture-windows build/architecture-windows-base
           git rev-parse HEAD > evidence/source-commit.txt
+          GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach "$RUNNER_TEMP/architecture-immutable-base" "$ARCHITECTURE_BASE_SHA"
+          git -C "$RUNNER_TEMP/architecture-immutable-base" rev-parse HEAD > evidence/immutable-base-commit.txt
           python3 tools/ci/check_ci_provider_policy.py > evidence/provider.json
           python3 -m venv "$RUNNER_TEMP/scons"
           "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt > evidence/scons-install.log 2>&1
@@ -131,10 +135,26 @@ jobs:
           timeout 3600 bash tools/build_pinned_godot_cpp.sh windows > evidence/build-godot-cpp.log 2>&1 || { tail -120 evidence/build-godot-cpp.log; exit 1; }
           timeout 3600 bash tools/build_native_extension_windows.sh > evidence/build-native.log 2>&1 || { tail -160 evidence/build-native.log; exit 1; }
           python3 tools/ci/native_candidate_identity.py build/architecture-windows --create
+      - name: Build immutable accepted-base DLL with the same pinned toolchain
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ github.workspace }}/build/architecture-windows-base/cybersand_native.windows.x86_64.dll
+        run: |
+          set -euo pipefail
+          timeout 3600 bash "$RUNNER_TEMP/architecture-immutable-base/tools/build_native_extension_windows.sh" > evidence/build-immutable-base.log 2>&1 || { tail -160 evidence/build-immutable-base.log; exit 1; }
+          python3 "$RUNNER_TEMP/architecture-immutable-base/tools/ci/native_candidate_identity.py" "$GITHUB_WORKSPACE/build/architecture-windows-base" --create
+          sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.windows.template_debug.x86_64.a" > evidence/shared-godot-cpp.sha256
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: architecture-windows-runtime-${{ github.run_id }}
           path: build/architecture-windows/
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: architecture-windows-base-${{ github.run_id }}
+          path: build/architecture-windows-base/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -152,10 +172,15 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: architecture-windows-runtime-${{ github.run_id }}
           path: build/architecture-windows
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: architecture-windows-base-${{ github.run_id }}
+          path: build/architecture-windows-base
       - name: Verify and install same-source native runtime and official Godot
         shell: pwsh
         run: |
@@ -175,10 +200,27 @@ jobs:
           $engine = Join-Path $env:RUNNER_TEMP 'godot'
           Expand-Archive $zip $engine
           'GODOT_EXE=' + (Join-Path $engine 'Godot_v4.7-stable_win64_console.exe') | Out-File -Append $env:GITHUB_ENV
+      - name: Independently verify and execute immutable accepted-base Windows reference
+        shell: pwsh
+        run: |
+          $base = Join-Path $env:RUNNER_TEMP 'architecture-immutable-base'
+          $env:GIT_LFS_SKIP_SMUDGE = '1'
+          git worktree add --detach $base $env:ARCHITECTURE_BASE_SHA
+          if ($LASTEXITCODE -ne 0) { throw 'Immutable-base checkout failed' }
+          Remove-Item Env:GIT_LFS_SKIP_SMUDGE
+          $candidate = (Resolve-Path build/architecture-windows-base).Path
+          python (Join-Path $base 'tools/ci/native_candidate_identity.py') $candidate
+          if ($LASTEXITCODE -ne 0) { throw 'Immutable-base source/runtime custody failed' }
+          Copy-Item (Join-Path $candidate 'cybersand_native.windows.x86_64.dll') (Join-Path $base 'godot/addons/cybersand_native/bin/') -Force
+          $rapier = 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+          Copy-Item $rapier (Join-Path $base $rapier) -Force
+          if ((Get-FileHash (Join-Path $base $rapier) -Algorithm SHA256).Hash.ToLowerInvariant() -ne $env:RAPIER_WINDOWS_SHA256) { throw 'Immutable-base Rapier pin mismatch' }
+          python tools/architecture/qualify.py --godot $env:GODOT_EXE --project (Join-Path $base 'godot') --source-root $base --output evidence/windows-base --suite legacy-reference
+          if ($LASTEXITCODE -ne 0) { throw 'Immutable-base Windows capture failed' }
       - name: Execute exact-source native materials, UI, author and independent reopen
         shell: pwsh
         run: |
-          python tools/architecture/qualify.py --godot $env:GODOT_EXE --project godot --output evidence/architecture --graphical --legacy-regressions
+          python tools/architecture/qualify.py --godot $env:GODOT_EXE --project godot --output evidence/architecture --graphical --legacy-regressions --legacy-reference evidence/windows-base/legacy-materials.json
           if ($LASTEXITCODE -ne 0) { throw 'Windows architectural qualification failed' }
       - name: Package source-matched Windows owner candidate
         shell: pwsh

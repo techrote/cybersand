@@ -77,6 +77,10 @@ recipe, fingerprint and receipt hashes matched for `district-arcology`,
 `sidechained-arcology`, `typed-categorical-districts`, `hierarchy-multi-district`
 and `gen007-deepworks`. A separate native oracle freezes six schema-1/2/3 module-v1
 fingerprints and 24 signed-chunk material hashes; all remain unchanged.
+The six fixed fingerprint snapshots were captured on Linux/libstdc++; the
+schema-2/3 fingerprint assertions are explicitly scoped to that ABI. Their
+material hashes remain unconditional. Other-platform complete receipt identity
+requires the independently built same-platform baseline described below.
 
 The owner campaign opened the panel, disabled tunnels/windows, generated 1024²,
 cancelled a changed request, rejected stale admission, restored the previous
@@ -174,3 +178,38 @@ limits. A Windows package and actual graphical execution require hosted results;
 human Windows 11 acceptance at the owner's display scale remains separate from
 automation. Follow the [owner checklist](../operations/architectural-generator-playtest.md)
 and keep the PR Draft/HOLD.
+
+## First hosted attempt: compatibility-reference correction
+
+The first hosted run,
+[43547442838](https://github.com/techrote/cybersand/actions/runs/43547442838),
+tested source `a32e3aeb26a57222cec72915cf282b87e6b6f83d`. Its pinned Windows
+DLL had SHA-256
+`284885299ccae733b83a7742075ede258824c6e8cef16a9fc967428e0b6b7f40`.
+Windows native/compiler/UI and all existing regression scripts passed. Actual
+graphical owner authoring passed 34 checks and separate-process reopen passed
+19, both with zero failures. The final legacy-reference comparison failed and
+correctly stopped packaging; this attempt is **not** a complete qualification PASS.
+
+All five legacy material and canonical recipe hashes matched the immutable
+Linux baseline. Only the schema-2/3 native fingerprints and receipt hashes
+differed. Independent source review traced this to the unchanged typed-spatial
+fingerprint's `sizeof`-based memory ledger. The correct repair is an independently
+built Windows accepted-base reference with the same pinned toolchain, retaining
+all-field exact comparisons there and separate cross-platform material/recipe
+comparisons. No legacy production fingerprint or material algorithm is changed.
+
+The Windows process-memory sampler also observed the console launcher's small
+working set, not the engine child. Those initial Windows RSS values are invalid
+as engine measurements. Subsequent qualification records mark Windows engine
+memory unavailable; Linux high-water measurements remain valid.
+
+On the frozen source above, a separate actual-dialog benchmark, using normal
+process frames, measured request-to-verified-ready at **1.008064 s for 512²**
+and **4.160945 s for 1024²**, seed 161803, all switches on. This local headless
+measurement included compilation, generation, copy, colour conversion, texture
+creation and scheduling in a standalone dialog; it did not include an active
+Workbench World or first displayed frame. It passed seven checks with no source
+drift. Final graphical timing and package results belong to the exact-head
+[Draft/HOLD PR #582](https://github.com/techrote/cybersand/pull/582) and its retained
+workflow artifacts.

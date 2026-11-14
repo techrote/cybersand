@@ -13,6 +13,29 @@ var report: Dictionary = {"schema": 1, "cases": []}
 var host: Control
 var wb: Control
 var dialog: ConfirmationDialog
+var preview_clock: PreviewClock
+
+class PreviewClock extends Node:
+	# Observe the real dialog after its normal process turn, without accelerating
+	# generation. The first draw callback runs before any screenshot encoding.
+	var dialog: ConfirmationDialog
+	var sample: Dictionary = {}
+
+	func _ready() -> void:
+		process_priority = 1000
+		if DisplayServer.get_name() != "headless":
+			RenderingServer.frame_post_draw.connect(_frame_drawn)
+
+	func begin() -> void:
+		sample = {"request_started_us": Time.get_ticks_usec(), "ready_us": 0, "first_frame_drawn_us": null}
+
+	func _process(_delta: float) -> void:
+		if not sample.is_empty() and int(sample.ready_us) == 0 and dialog._phase == "ready":
+			sample.ready_us = Time.get_ticks_usec()
+
+	func _frame_drawn() -> void:
+		if not sample.is_empty() and sample.first_frame_drawn_us == null and int(sample.ready_us) > 0:
+			sample.first_frame_drawn_us = Time.get_ticks_usec()
 
 func _initialize() -> void:
 	ProjectSettings.set_setting("cybersand/native_worker_threads", 1)
@@ -388,10 +411,68 @@ func paint_completed() -> bool:
 		if bool(state.get(key, false)): return false
 	return true
 
-func framebuffer(label: String) -> void:
+func framebuffer(label: String, popup: Window = null) -> void:
 	if DisplayServer.get_name() == "headless": return
 	await RenderingServer.frame_post_draw
-	check(root.get_texture().get_image().save_png(output_dir().path_join(label + ".png")) == OK, "original framebuffer " + label)
+	var viewport: Viewport = popup if popup != null and not popup.is_embedded() else root
+	check(viewport.get_texture().get_image().save_png(output_dir().path_join(label + ".png")) == OK, "original framebuffer " + label)
+
+func preview_ready(label: String) -> bool:
+	if not await until(func() -> bool: return dialog._phase == "ready" or dialog._status.text.begins_with("Refused"), label + " finishes"): return false
+	if not check(dialog._phase == "ready", label + " accepted"): return false
+	await framebuffer(label, dialog)
+	var timing: Dictionary = preview_clock.sample.duplicate(true)
+	preview_clock.sample.clear()
+	if not check(int(timing.ready_us) >= int(timing.request_started_us), "normal process turn records preview readiness"): return false
+	var graphical: bool = DisplayServer.get_name() != "headless"
+	if not check((timing.first_frame_drawn_us != null) == graphical, "first drawn frame is recorded only on a real display"): return false
+	if graphical:
+		check(int(timing.first_frame_drawn_us) >= int(timing.ready_us), "first complete preview draw follows ready state")
+	var packet: Dictionary = dialog._ready_packet
+	timing.merge({"case": "ui-preview-latency", "label": label, "extent": [packet.extent.x, packet.extent.y],
+		"seed": packet.recipe.seed, "recipe_sha256": packet.recipe_sha256, "material_sha256": packet.sha256,
+		"request_to_ready_us": int(timing.ready_us) - int(timing.request_started_us),
+		"request_to_first_drawn_frame_us": int(timing.first_frame_drawn_us) - int(timing.request_started_us) if graphical else null,
+		"native_configure_to_ready_us": int(timing.ready_us) - int(dialog._start_usec),
+		"display": DisplayServer.get_name(), "status": dialog._status.text,
+		"scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation."})
+	report.cases.append(timing)
+	return true
+
+func architectural_form_views(project: Dictionary) -> bool:
+	var former_size: Vector2i = root.size
+	var former_scale: Vector2i = root.content_scale_size
+	root.content_scale_size = Vector2i.ZERO
+	root.size = Vector2i(1280, 720)
+	dialog._architecture_button.pressed.emit()
+	var panel: ConfirmationDialog = dialog._architecture
+	if not check(panel.set_project(project), "focused panel accepts owner controls"): return false
+	for frame: int in 4: await process_frame
+	var bounds := Rect2i(Vector2i.ZERO, root.size) if panel.is_embedded() else DisplayServer.screen_get_usable_rect(root.current_screen)
+	check(bounds.encloses(Rect2i(panel.position, panel.size)), "configured Architectural form fits 1280x720 viewport or native work area")
+	for button: Button in [panel.get_ok_button(), panel.get_cancel_button()]:
+		check(button.is_visible_in_tree() and Rect2(Vector2.ZERO, Vector2(panel.size)).encloses(button.get_global_rect()), "configured form action stays visible: " + button.text)
+	await framebuffer("architecture-form-overview", panel)
+	var scroll: ScrollContainer = panel.get_child(0)
+	for slot: int in 3:
+		panel._style_tabs.current_tab = slot
+		for frame: int in 2: await process_frame
+		scroll.ensure_control_visible(panel._style_tabs)
+		await process_frame
+		await framebuffer("architecture-form-style-%d" % (slot + 1), panel)
+		report.cases.append({"case": "architectural-form-view", "slot": slot,
+			"preset_id": project.styles[slot].preset.id, "root_size": [root.size.x, root.size.y],
+			"embedded": panel.is_embedded(), "display": DisplayServer.get_name(),
+			"capture": "architecture-form-style-%d.png" % (slot + 1) if DisplayServer.get_name() != "headless" else null})
+	scroll.scroll_vertical = 10000
+	await process_frame
+	await framebuffer("architecture-form-files-and-actions", panel)
+	panel._style_tabs.current_tab = 0
+	scroll.scroll_vertical = 0
+	root.content_scale_size = former_scale
+	root.size = former_size
+	for frame: int in 2: await process_frame
+	return true
 
 func authoring(reopening: bool) -> void:
 	if OS.get_environment("CYBERSAND_ARCHITECTURE_REQUIRE_GRAPHICS") == "1":
@@ -404,28 +485,47 @@ func authoring(reopening: bool) -> void:
 	host = current_scene
 	wb = host.shared_workbench
 	dialog = wb._generated_dialog
+	preview_clock = PreviewClock.new()
+	preview_clock.dialog = dialog
+	root.add_child(preview_clock)
 	if not await until(installed, "ordinary Shared Workbench native World ready"): return
 	var saved := {}
 	if reopening:
 		saved = Store.read_named(SAVE_NAME)
 		if not check(saved.get("generated", false), "fresh process reads generated-start v1"): return
 		wb._name.text = SAVE_NAME
+		preview_clock.begin()
 		if not check(wb.load_setup(), "ordinary Load start reconstructs embedded recipe"): return
 	else:
 		dialog.open_new()
-		dialog._architecture_button.pressed.emit()
 		var project: Dictionary = Project.default_project()
 		project.automatic_tunnels = false
 		project.automatic_windows = false
-		if not check(dialog._architecture.set_project(project), "focused panel accepts owner controls"): return
+		if not await architectural_form_views(project): return
+		var small: Dictionary = project.duplicate(true)
+		small.extent = [512, 512]
+		if not check(dialog._architecture.set_project(small), "512 preview prelude accepts same styles and controls"): return
+		var prelude_epoch: int = host._physical_epoch
+		preview_clock.begin()
 		dialog._architecture._apply()
-	if not await until(func() -> bool: return dialog._phase == "ready" or dialog._status.text.begins_with("Refused"), "architectural native preview finishes"): return
-	if not check(dialog._phase == "ready", "architectural native preview accepted"): return
+		if not await preview_ready("architecture-preview-512"): return
+		check(dialog._ready_packet.cells.size() == 512 * 512 and host._physical_epoch == prelude_epoch, "512 preview is complete without replacing installed World")
+		dialog._architecture_button.pressed.emit()
+		if not check(dialog._architecture.set_project(project), "restore owner 1024 configuration after measured prelude"): return
+		preview_clock.begin()
+		dialog._architecture._apply()
+	if not await preview_ready("architecture-preview-reopened" if reopening else "architecture-preview-new"): return
 	var packet: Dictionary = dialog._ready_packet.duplicate(true)
 	var chunk_side: int = int(packet.recipe.chunk_size)
 	check(packet.cells.size() == 1024 * 1024 and packet.receipt_hashes.size() == (1024 / chunk_side) * (1024 / chunk_side), "complete 1024-square native map and receipts")
-	await framebuffer("architecture-preview-reopened" if reopening else "architecture-preview-new")
 	if not reopening:
+		var material_texture: Texture2D = dialog._preview.texture
+		dialog._zone_toggle.button_pressed = true
+		check(dialog._zone_overlay.visible and dialog._zone_overlay.texture != null, "optional zone overlay is visible over complete native material preview")
+		await framebuffer("architecture-preview-overlay-on", dialog)
+		dialog._zone_toggle.button_pressed = false
+		await framebuffer("architecture-preview-overlay-off", dialog)
+		check(not dialog._zone_overlay.visible and dialog._preview.texture == material_texture and dialog.attests(packet), "overlay toggling preserves authoritative native texture, materials and provenance")
 		var old_epoch: int = host._physical_epoch
 		var next_project: Dictionary = dialog._architecture_project.duplicate(true)
 		next_project.seed = 271828
@@ -439,12 +539,11 @@ func authoring(reopening: bool) -> void:
 		check(not dialog.attests(packet), "cancelled or superseded work cannot attest prior material bytes")
 		check(dialog.restore_previous_preview() and dialog.attests(packet), "previous accepted preview and settings are recoverable before installation")
 		var previous_sha: String = packet.sha256
+		preview_clock.begin()
 		check(dialog.start_architectural(next_project), "regenerate complete edited configuration")
-		if not await until(func() -> bool: return dialog._phase == "ready" or dialog._status.text.begins_with("Refused"), "edited native preview finishes"): return
-		if not check(dialog._phase == "ready", "edited native preview accepted"): return
+		if not await preview_ready("architecture-preview-changed"): return
 		packet = dialog._ready_packet.duplicate(true)
 		check(packet.sha256 != previous_sha and dialog._architecture_project.seed == 271828, "edited seed, geometry and shares reach actual native output")
-		await framebuffer("architecture-preview-changed")
 	dialog.confirmed.emit()
 	dialog.hide()
 	if not await until(func() -> bool: return installed() and not wb._generated_active.is_empty(), "source map committed by existing native owner"): return
@@ -511,6 +610,7 @@ func run() -> void:
 		report_file.store_string(JSON.stringify(report, "\t", true, true) + "\n")
 		report_file.close()
 	if host != null:
+		preview_clock.queue_free()
 		host.queue_free()
 		await process_frame
 		await process_frame

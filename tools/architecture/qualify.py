@@ -7,7 +7,6 @@ identified as such and is never promoted to graphical owner acceptance.
 from __future__ import annotations
 
 import argparse
-import ctypes
 import hashlib
 import json
 import os
@@ -20,6 +19,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[2]
 VERSION = "4.7.stable.official.5b4e0cb0f"
+LEGACY_BASE = "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742"
 SCRIPT_FAILURE = re.compile(r"SCRIPT ERROR:|Parse Error:|Failed to load script|GDExtension library not found")
 
 
@@ -35,19 +35,8 @@ def memory_bytes(child: subprocess.Popen) -> int | None:
             return int(match[1]) * 1024 if match else None
         except OSError:
             return None
-    if os.name == "nt":
-        class Counters(ctypes.Structure):
-            _fields_ = [("cb", ctypes.c_ulong), ("PageFaultCount", ctypes.c_ulong)] + [
-                (name, ctypes.c_size_t) for name in (
-                    "PeakWorkingSetSize", "WorkingSetSize", "QuotaPeakPagedPoolUsage",
-                    "QuotaPagedPoolUsage", "QuotaPeakNonPagedPoolUsage", "QuotaNonPagedPoolUsage",
-                    "PagefileUsage", "PeakPagefileUsage")]
-        counters = Counters()
-        counters.cb = ctypes.sizeof(counters)
-        query = ctypes.windll.psapi.GetProcessMemoryInfo
-        query.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_ulong]
-        if query(int(child._handle), ctypes.byref(counters), counters.cb):
-            return int(counters.PeakWorkingSetSize)
+    # Godot's Windows console executable launches the engine as a child.
+    # Measuring the console wrapper (~5 MB) would mislabel engine memory.
     return None
 
 
@@ -81,7 +70,9 @@ def run(name: str, command: list[str], env: dict[str, str], output: Path,
         passed = passed and bool(completion)
     result = {"case": name, "command": command, "returncode": code, "timed_out": timed_out,
               "wall_seconds": time.monotonic() - began, "peak_resident_bytes": peak or None,
-              "peak_memory_scope": "Godot process high-water RSS sampled while alive; excludes runner and display server",
+              "peak_memory_scope": ("Unavailable: Windows console launcher starts a separate engine; its child working set was not measured"
+                                    if os.name == "nt" else
+                                    "Godot process high-water RSS sampled while alive; excludes runner and display server"),
               "log_sha256": sha(log), "completion": completion, "passed": bool(passed)}
     (output / f"{name}-process.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({k: result[k] for k in ("case", "passed", "wall_seconds", "peak_resident_bytes", "completion")}), flush=True)
@@ -90,10 +81,10 @@ def run(name: str, command: list[str], env: dict[str, str], output: Path,
     return result
 
 
-def source_identity(project: Path) -> dict:
+def source_identity(project: Path, source_root: Path = ROOT) -> dict:
     try:
-        commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
-        tree = subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], cwd=ROOT, text=True).strip()
+        commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=source_root, text=True).strip()
+        tree = subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], cwd=source_root, text=True).strip()
     except subprocess.CalledProcessError:
         commit, tree = "unavailable", "unavailable"
     native = project / "addons/cybersand_native/bin" / (
@@ -101,10 +92,10 @@ def source_identity(project: Path) -> dict:
     if not native.is_file() or native.read_bytes().startswith(b"version https://git-lfs.github.com/spec/v1"):
         raise ValueError("Source-matched native runtime is absent or is an LFS pointer")
     inputs = {}
-    for directory in (ROOT / "native/include", ROOT / "native/src", ROOT / "godot/native_extension"):
+    for directory in (source_root / "native/include", source_root / "native/src", source_root / "godot/native_extension"):
         for path in sorted(directory.rglob("*")):
             if path.is_file():
-                inputs[path.relative_to(ROOT).as_posix()] = sha(path)
+                inputs[path.relative_to(source_root).as_posix()] = sha(path)
     scripts = {}
     for path in sorted(project.rglob("*")):
         if path.is_file() and path.suffix == ".gd" and ".godot" not in path.parts:
@@ -115,25 +106,54 @@ def source_identity(project: Path) -> dict:
             "runtime_custody": "caller must supply same-source build receipt; hashes alone do not prove compilation"}
 
 
+def compare_legacy(actual: dict, reference: dict, portable: dict) -> list[dict]:
+    if reference.get("source_commit") != LEGACY_BASE or portable.get("source_commit") != LEGACY_BASE:
+        raise ValueError("Legacy references must identify the exact immutable accepted base")
+    if set(actual["profiles"]) != set(portable["profiles"]) or set(reference["profiles"]) != set(portable["profiles"]):
+        raise ValueError("Legacy reference profile set is incomplete or changed")
+    complete = {"case": "legacy-material-equivalence", "passed": actual["profiles"] == reference["profiles"],
+                "reference_base": reference["source_commit"], "profiles": len(reference["profiles"]),
+                "scope": "all captured fields, including native fingerprint and receipt, equal same-platform immutable base"}
+    # Existing schema2/3 identity includes an ABI-dependent sizeof memory ledger.
+    # Preserve that identity while independently requiring portable raster and
+    # canonical recipe equality. The complete comparison above is never reduced.
+    portable_keys = ("bounds", "cells", "schema", "recipe_sha256", "material_sha256")
+    cross_platform = {"case": "legacy-cross-platform-material-equivalence",
+                      "passed": all(actual["profiles"][name][key] == expected[key]
+                                    for name, expected in portable["profiles"].items() for key in portable_keys),
+                      "reference_base": portable["source_commit"], "profiles": len(portable["profiles"]),
+                      "fields": list(portable_keys), "scope": "exact canonical recipes and native material bytes against retained Linux base"}
+    return [complete, cross_platform]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--godot", type=Path, required=True)
     parser.add_argument("--project", type=Path, default=ROOT / "godot")
+    parser.add_argument("--source-root", type=Path, default=ROOT,
+                        help="source checkout associated with the supplied runtime (separate for immutable-base capture)")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--profile", type=Path, help="isolated user directory retained across author/reopen")
     parser.add_argument("--graphical", action="store_true")
-    parser.add_argument("--suite", choices=("all", "native", "owner", "ui"), default="all")
+    parser.add_argument("--suite", choices=("all", "native", "owner", "ui", "legacy", "legacy-reference"), default="all")
     parser.add_argument("--legacy-regressions", action="store_true")
+    parser.add_argument("--legacy-reference", type=Path,
+                        help="complete same-platform receipt from --suite legacy-reference at the immutable base")
     parser.add_argument("--timeout", type=int, default=1800)
     args = parser.parse_args()
+    if args.legacy_reference and not (args.legacy_regressions or args.suite == "legacy"):
+        parser.error("--legacy-reference requires --legacy-regressions or --suite legacy")
     project, output, engine = args.project.resolve(), args.output.resolve(), args.godot.resolve()
+    source_root = args.source_root.resolve()
     output.mkdir(parents=True, exist_ok=True)
     profile = (args.profile or output / "profile").resolve()
     profile.mkdir(parents=True, exist_ok=True)
     version = subprocess.check_output([str(engine), "--version"], timeout=30, text=True).strip()
     if version != VERSION:
         raise ValueError(f"Godot pin mismatch: {version}")
-    identity = source_identity(project)
+    identity = source_identity(project, source_root)
+    if args.suite == "legacy-reference" and identity["source_commit"] != LEGACY_BASE:
+        raise ValueError("Legacy reference must execute the exact immutable accepted-base checkout")
     identity.update({"godot_version": version, "godot_sha256": sha(engine), "platform": sys.platform,
                      "graphical_requested": args.graphical, "suite": args.suite})
     (output / "source-runtime-identity.json").write_text(json.dumps(identity, indent=2) + "\n", encoding="utf-8")
@@ -169,6 +189,7 @@ def main() -> int:
             tests.append(("gen007_inspection", "res://tests/test_gen007_inspection.gd",
                           r"GEN007_INSPECTION: [1-9][0-9]* assertions; 0 failures; completed="))
             tests.append(("workbench_canvas", "res://tests/test_workbench_canvas.gd", r"WORKBENCH_CANVAS [1-9][0-9]* checks, 0 failures"))
+        if args.legacy_regressions or args.suite in ("legacy", "legacy-reference"):
             tests.append(("legacy-materials", str(ROOT / "tools/architecture/capture_legacy.gd"),
                           r"ARCHITECTURE_LEGACY checks=5 failures=0"))
             env["CYBERSAND_LEGACY_OUTPUT"] = str(output / "legacy-materials.json")
@@ -186,20 +207,33 @@ def main() -> int:
             results.append(result)
             if not result["passed"]:
                 break
-        if args.legacy_regressions and results[-1]["case"] == "legacy-materials" and results[-1]["passed"]:
-            reference = json.loads((ROOT / "tools/architecture/legacy-materials-ac0d9fb9.json").read_text(encoding="utf-8"))
+        if (args.legacy_regressions or args.suite == "legacy") and results[-1]["case"] == "legacy-materials" and results[-1]["passed"]:
+            portable = json.loads((ROOT / "tools/architecture/legacy-materials-ac0d9fb9.json").read_text(encoding="utf-8"))
+            reference = portable
+            if args.legacy_reference:
+                reference = json.loads(args.legacy_reference.read_text(encoding="utf-8"))
+                if (reference.get("platform") != sys.platform or reference.get("godot_version") != VERSION
+                        or not reference.get("capture_qualification_passed", False)):
+                    raise ValueError("Legacy reference must be a completed, source-stable capture for this platform and Godot pin")
             actual = json.loads((output / "legacy-materials.json").read_text(encoding="utf-8"))
-            comparison = {"case": "legacy-material-equivalence", "passed": actual["profiles"] == reference["profiles"],
-                          "reference_base": reference["source_commit"], "profiles": len(reference["profiles"])}
-            results.append(comparison)
-            (output / "legacy-material-comparison.json").write_text(json.dumps(comparison, indent=2) + "\n", encoding="utf-8")
-            print(json.dumps(comparison), flush=True)
-    final_identity = source_identity(project)
+            comparisons = compare_legacy(actual, reference, portable)
+            results.extend(comparisons)
+            (output / "legacy-material-comparison.json").write_text(json.dumps(comparisons, indent=2) + "\n", encoding="utf-8")
+            for comparison in comparisons:
+                print(json.dumps(comparison), flush=True)
+    final_identity = source_identity(project, source_root)
     stable = all(identity[key] == final_identity[key] for key in
                  ("runtime_sha256", "source_inputs_sha256", "project_scripts_sha256"))
     results.append({"case": "source-stability", "passed": stable,
                     "scope": "native input bytes, runtime bytes and executed project scripts unchanged throughout campaign"})
     passed = all(item["passed"] for item in results)
+    if args.suite == "legacy-reference" and passed:
+        receipt_path = output / "legacy-materials.json"
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        receipt.update({"source_commit": identity["source_commit"], "source_tree": identity["source_tree"],
+                        "runtime_sha256": identity["runtime_sha256"], "platform": sys.platform,
+                        "godot_version": VERSION, "capture_qualification_passed": True})
+        receipt_path.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     manifest = {"schema": 1, "passed": passed, "cases": results, "source_commit": identity["source_commit"],
                 "runtime_sha256": identity["runtime_sha256"], "graphical_requested": args.graphical,
                 "failures": sum(not item["passed"] for item in results)}
