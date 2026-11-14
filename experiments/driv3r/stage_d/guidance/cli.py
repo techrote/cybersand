@@ -37,7 +37,8 @@ def main() -> None:
     meta = export_bundle(args.prefix, field, seed=args.seed,
                          centre_density=args.density, source_png_sha256=origin_hash,
                          authoring_parameters=authoring)
-    print(f"scalar_sha256={meta['values']['sha256']} preview_sha256={meta['display']['sha256']}")
+    manifest_sha = sha256(args.prefix.with_suffix(".json").read_bytes()).hexdigest()
+    print(f"scalar_sha256={meta['values']['sha256']} preview_sha256={meta['display']['sha256']} manifest_sha256={manifest_sha}")
 
 
 if __name__ == "__main__":

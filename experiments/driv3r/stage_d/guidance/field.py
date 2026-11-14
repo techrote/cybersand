@@ -282,8 +282,8 @@ def load_bundle(prefix: Path) -> tuple[GuidanceField, dict]:
         raise ValueError("unsupported bundle encoding or preview")
     field = GuidanceField.from_raw(w, h, field_path.read_bytes(), x, y)
     expected = speckle_png(field, seed=manifest["seed"], centre_density=manifest["centre_density"])
-    if expected != display_path.read_bytes():
-        raise ValueError("bundle preview is inconsistent with numeric field and render seed")
+    if decode_png8(expected) != decode_png8(display_path.read_bytes()):
+        raise ValueError("bundle preview pixels are inconsistent with numeric field and render seed")
     return field, manifest
 
 
