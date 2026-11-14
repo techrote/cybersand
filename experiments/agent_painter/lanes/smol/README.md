@@ -1,5 +1,39 @@
 # Smol painter: first bounded DEVELOPMENT iteration
 
+## Frozen TRAIN sampler corroboration — 14 November 2026
+
+**Future fresh120 run safety, not a new trained candidate.** An independent
+inspection found that the preceding promotion gate accepted any twelve
+self-declared unique TRAIN IDs, provided its checkpoint and 120 progress
+records repeated the same order. Such a self-consistent but invented sampler
+could pass the standalone gate even while the shared trainer's original
+positive-native intake would separately refuse corrupted corpus input.
+
+The lane-only gate now **requires the unchanged original native-admitted corpus**
+at `--corpus evidence/original-native/corpus` before a candidate can reach
+DEVELOPMENT/native replay. It revalidates the frozen manifest and all twelve
+TRAIN native admissions with the shared, read-only `load_training_corpus()`
+contract, reconstructs the original seed-568 balanced-family sampler, and
+requires the checkpoint's claimed `config.sample_order` to match **those
+independently reconstructed row IDs, in order**. It reads TRAIN evidence and
+split-group metadata; it **does not open DEVELOPMENT or sealed FINAL targets**.
+This check is deliberately pinned to the existing six-structure, fresh120
+contract. A new curriculum must have its own reviewed version, not reuse these
+historical constants.
+
+The source-bound [GitHub-hosted model-free regression run
+43562869141](https://github.com/techrote/cybersand/actions/runs/43562869141)
+at source `1e1748f0e7d174a77d24fdbcab504bc8f542b1a2` passed
+**20/20 tests** plus CI provider and scheduling checks. New tests cover an
+internally consistent fake TRAIN ID sequence and exercise the actual
+deterministic sampler against a synthetic stub. The first two intermediate
+source/test runs [43562774695](https://github.com/techrote/cybersand/actions/runs/43562774695)
+and [43562818223](https://github.com/techrote/cybersand/actions/runs/43562818223)
+failed while the synthetic unit harness was adjusted; their failures remain
+visible. These model-free results **do not** prove a new fully executed
+training-to-native campaign. Existing trained model quality and the original
+native T-pipe outcome remain unchanged.
+
 ## Full checkpoint/progress promotion corroboration — 14 November 2026
 
 **Future native-campaign source hardening only.** The first model-free gate
