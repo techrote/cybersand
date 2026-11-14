@@ -37,7 +37,7 @@ func settled() -> bool:
 	return not editor.busy() and not host.simulation_worker.paint_state().busy
 func local(cell: Vector2i) -> Vector2:
 	var area: Rect2=host.view_content_rect()
-	return area.position+(Vector2(cell)+Vector2(0.5,0.5)-Vector2(host.camera_origin.floor()))*area.size/Vector2(host.current_view_size)
+	return area.position+(Vector2(cell)+Vector2(0.5,0.5)-Vector2(host.presentation_camera_origin()))*area.size/Vector2(host.current_view_size)
 func gesture(tool: String,from: Vector2i,to: Vector2i,id: int=58,button: int=MOUSE_BUTTON_LEFT) -> void:
 	editor.tools.select(editor.TOOLS.find(tool))
 	bench._tool.select(0)

@@ -4,11 +4,27 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-13
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
 # Local build and validation
+
+## Native-resolution camera qualification
+
+The [camera runbook](native-pixel-scrolling.md) owns the source/installed test
+command and Windows acceptance steps. The scoped Workbench workflow rebuilds
+both native target libraries and executes the coordinate/native-editing test
+plus actual scrolling and effect-buffer framebuffer tests before publishing a
+camera-labelled Windows candidate. The same cases then execute in a copied
+non-Git installation. Headless shader parsing is not graphical qualification.
+
+The camera tests are automatically discovered by the full Godot suite. The
+`_render` suffix selects real display execution on Linux; Windows headless
+excludes those cases, so this workflow explicitly invokes Windows ANGLE.
+No change to the normal Draft suppression or retained-runtime provenance gate
+is implied. Exact source, runtime hashes, executed results and local display
+limitations belong to the [dated audit](../audits/2026-11-13-native-pixel-scrolling.md).
 
 ## Source-built Windows candidate validation — 2026-11-08
 

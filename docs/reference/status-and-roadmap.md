@@ -4,11 +4,26 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-12
+last-reviewed: 2026-11-13
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## Native-resolution camera candidate — 2026-11-13
+
+**Implemented unmerged candidate; owner acceptance pending.** The
+[camera presentation contract](../systems/material-appearance-and-rendering.md#native-resolution-pixel-scrolling)
+keeps continuous camera state, samples the nearest world cell after final-pixel
+translation and aligns picking, overlays, cursor zoom and small effect buffers.
+The branch incorporates accepted #565 main `ac0d9fb9` through normal merge
+`b1e2e9b1`; its [final integration record](../audits/2026-11-13-native-pixel-final-integration.md)
+distinguishes the combined-source campaign from earlier stacked results.
+It changes no native physics, material or save contract. The
+[runbook](../operations/native-pixel-scrolling.md) and
+[audit](../audits/2026-11-13-native-pixel-scrolling.md) distinguish implementation,
+source-built qualification, Windows delivery and human acceptance. Keep Draft;
+no merge or Ready promotion is authorized by this camera task.
 
 ## Materials Lab v1 — 2026-11-11
 

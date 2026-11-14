@@ -13,6 +13,7 @@ class PresentationMain:
 	extends "res://scripts/main.gd"
 	var suppress_consumption: bool = false
 	var main_callbacks: int = 0
+	var presentation_frame: Dictionary = {}
 
 	func _actor_window_has_focus() -> bool:
 		return true
@@ -20,6 +21,22 @@ class PresentationMain:
 	func _process(delta: float) -> void:
 		main_callbacks += 1
 		super._process(delta)
+		# Capture only after the ordinary Main callback has presented every
+		# layer. A process_frame waiter can otherwise observe deferred Container
+		# layout after this callback, before Main publishes that new layout.
+		presentation_frame = {
+			"callback":main_callbacks, "process_frame":Engine.get_process_frames(),
+			"requested_origin":camera_origin, "presented_origin":presentation_camera_origin(),
+			"view_size":Vector2(current_view_size), "content":view_content_rect(),
+			"screen":world_view.get_viewport().get_final_transform() * world_view.get_global_transform_with_canvas(),
+			"target_origin":playable_course_overlay._origin, "target_view":playable_course_overlay._view_size,
+			"target_content":Rect2(playable_course_overlay.position,playable_course_overlay.size),
+			"actor_origin":physical_actor_overlay._origin, "actor_view":physical_actor_overlay._view_size,
+			"actor_content":Rect2(physical_actor_overlay.position,physical_actor_overlay.size),
+			"terrain_origin":world_shader.get_shader_parameter("camera_origin_px"),
+			"native_serial":latest_snapshot.serial if latest_snapshot != null else 0,
+			"world_generation":latest_snapshot.render_world_generation if latest_snapshot != null else -1,
+			"actor_epoch":_physical_epoch}
 
 	func consume_worker_snapshot() -> void:
 		if not suppress_consumption:
@@ -50,6 +67,42 @@ func bounded(predicate: Callable, message: String) -> bool:
 
 func targets_ready() -> bool:
 	return desktop.playable_course_overlay.visible and not desktop.playable_course_overlay.course_identity.is_empty()
+
+
+func current_presentation_layout(after_callback: int) -> bool:
+	var frame: Dictionary = desktop.presentation_frame
+	return not frame.is_empty() and int(frame.callback) > after_callback \
+		and frame.screen == desktop.world_view.get_viewport().get_final_transform() * desktop.world_view.get_global_transform_with_canvas() \
+		and frame.content == desktop.view_content_rect() and frame.view_size == Vector2(desktop.current_view_size)
+
+
+func presentation_layers_agree(frame: Dictionary) -> bool:
+	return frame.target_origin == frame.presented_origin and frame.actor_origin == frame.presented_origin \
+		and frame.terrain_origin == frame.presented_origin \
+		and frame.target_view == frame.view_size and frame.actor_view == frame.view_size \
+		and frame.target_content == frame.content and frame.actor_content == frame.content
+
+
+func vector_receipt(value: Vector2) -> Array[float]:
+	return [value.x,value.y]
+
+
+func screen_receipt(value: Transform2D) -> Dictionary:
+	return {"x":vector_receipt(value.x),"y":vector_receipt(value.y),"origin":vector_receipt(value.origin)}
+
+
+func presentation_receipt(after_callback: int) -> Dictionary:
+	var frame: Dictionary = desktop.presentation_frame
+	return {"after_callback_exclusive":after_callback,"published_callback":frame.callback,
+		"observed_callback":desktop.main_callbacks,"published_process_frame":frame.process_frame,
+		"requested_origin":vector_receipt(frame.requested_origin),"presented_origin":vector_receipt(frame.presented_origin),
+		"target_origin":vector_receipt(frame.target_origin),"actor_origin":vector_receipt(frame.actor_origin),
+		"terrain_origin":vector_receipt(frame.terrain_origin),"view_size":vector_receipt(frame.view_size),
+		"content_position":vector_receipt(frame.content.position),"content_size":vector_receipt(frame.content.size),
+		"physical_transform":screen_receipt(frame.screen),
+		"native_serial":frame.native_serial,"world_generation":frame.world_generation,"actor_epoch":frame.actor_epoch,
+		"current_layout_acknowledged":current_presentation_layout(after_callback),
+		"exact_published_layers_agree":presentation_layers_agree(frame)}
 
 
 func sample_ready(after_sequence: int = 0) -> bool:
@@ -123,6 +176,8 @@ func capture_graphical(rig: StringName, camera: String) -> void:
 		return
 	var directory: String = OS.get_environment("CYBERSAND_PLAY_UI007_CAPTURE_DIR")
 	if directory.is_empty():
+		directory = OS.get_environment("CYBERSAND_TEST_ARTIFACT_DIR")
+	if directory.is_empty():
 		directory = OS.get_user_data_dir().path_join("play-ui007")
 	var created: Error = DirAccess.make_dir_recursive_absolute(directory)
 	expect(created == OK, "graphical capture directory is writable")
@@ -162,6 +217,14 @@ func test_sequence(rig: StringName) -> bool:
 		return false
 	if not await bounded(Callable(self, "targets_ready"), "current lap targets are visibly presented"):
 		return false
+	var follow_callback: int = desktop.main_callbacks
+	row.first_target_observation = {"main_callback":follow_callback,
+		"published_physical_transform":screen_receipt(desktop.presentation_frame.screen),
+		"observed_physical_transform":screen_receipt(desktop.world_view.get_viewport().get_final_transform() * desktop.world_view.get_global_transform_with_canvas()),
+		"root_size":vector_receipt(root.size)}
+	if not await bounded(Callable(self, "current_presentation_layout").bind(follow_callback),
+		"a new actual Main callback presents the observed follow layout"):
+		return false
 	var overlay: Control = desktop.playable_course_overlay
 	var identity: Dictionary = overlay.course_identity.duplicate(true)
 	row.initial_identity = identity
@@ -176,17 +239,29 @@ func test_sequence(rig: StringName) -> bool:
 		"target overlay cannot intercept controls or cover the actual actor layer")
 	expect(not desktop.physical_actor_overlay._parts.is_empty(), "actual Rapier actor parts remain presented")
 	pure_presentation_controls(rig)
-	expect(overlay._origin == desktop.camera_origin.floor() and overlay._view_size == Vector2(desktop.current_view_size)
-		and overlay.position == desktop.view_content_rect().position and overlay.size == desktop.view_content_rect().size,
+	expect(overlay._origin == desktop.presentation_camera_origin() and overlay._view_size == Vector2(desktop.current_view_size)
+		and overlay.position == desktop.view_content_rect().position and overlay.size == desktop.view_content_rect().size
+		and presentation_layers_agree(desktop.presentation_frame),
 		"follow camera target and actor content transforms agree")
+	row.follow_presentation = presentation_receipt(follow_callback)
 	await capture_graphical(rig, "follow")
+	var overview_callback: int = desktop.main_callbacks
+	var overview_epoch: int = desktop._physical_epoch
+	var overview_generation: int = desktop.latest_snapshot.render_world_generation
+	var overview_session: Variant = desktop.physical_actor_session
 	parse_key(KEY_F, true)
 	parse_key(KEY_F, false)
 	await process_frame
 	await process_frame
-	expect(not desktop.camera_follow_enabled and overlay._origin == Vector2(Course.VIEW.position)
-		and overlay._view_size == Vector2(Course.VIEW.size),
+	if not await bounded(Callable(self, "current_presentation_layout").bind(overview_callback),
+		"a new actual Main callback presents the observed overview layout"):
+		return false
+	expect(not desktop.camera_follow_enabled and desktop.camera_origin == Vector2(Course.VIEW.position)
+		and overlay._origin == desktop.presentation_camera_origin() and overlay._view_size == Vector2(Course.VIEW.size)
+		and desktop._physical_epoch == overview_epoch and desktop.latest_snapshot.render_world_generation == overview_generation
+		and desktop.physical_actor_session == overview_session and presentation_layers_agree(desktop.presentation_frame),
 		"real F input maps targets onto the authored overview without rebuilding")
+	row.overview_presentation = presentation_receipt(overview_callback)
 	await capture_graphical(rig, "overview")
 	parse_key(KEY_F, true)
 	parse_key(KEY_F, false)
@@ -306,16 +381,50 @@ func test_sequence(rig: StringName) -> bool:
 	return true
 
 
+func record_return_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		row.return_input.gui_events.append({"kind":"motion","position":vector_receipt(event.position),
+			"button_mask":event.button_mask})
+	elif event is InputEventMouseButton:
+		row.return_input.gui_events.append({"kind":"button","position":vector_receipt(event.position),
+			"button_mask":event.button_mask,"button_index":event.button_index,"pressed":event.pressed})
+
+
+func record_return_pressed() -> void:
+	row.return_input.pressed_signals += 1
+
+
 func click_return_button() -> void:
 	var button: Button = desktop.playable_session_panel.return_button
-	var position: Vector2 = button.get_global_rect().get_center()
+	var popup: PopupPanel = desktop.playable_session_panel
+	# An embedded Popup cannot update its own hover tracking through push_input.
+	# Route the complete pointer sequence through its root/embedder, using the
+	# actual popup transform, so normal hit testing reaches the real button.
+	var position: Vector2 = Vector2(popup.position) + popup.get_final_transform() * button.get_global_rect().get_center()
+	row.return_input = {"root_position":vector_receipt(position),"popup_position":vector_receipt(popup.position),
+		"popup_transform":screen_receipt(popup.get_final_transform()),
+		"button_position":vector_receipt(button.get_global_rect().position),"button_size":vector_receipt(button.size),
+		"hover_before":button.is_hovered(),"gui_events":[],"pressed_signals":0}
+	button.gui_input.connect(record_return_gui_input)
+	button.pressed.connect(record_return_pressed)
+	var motion := InputEventMouseMotion.new()
+	motion.position = position
+	motion.global_position = position
+	root.push_input(motion, true)
+	row.return_input.hover_after_motion = button.is_hovered()
 	for pressed: bool in [true,false]:
 		var event := InputEventMouseButton.new()
 		event.position = position
 		event.global_position = position
 		event.button_index = MOUSE_BUTTON_LEFT
+		event.button_mask = MOUSE_BUTTON_MASK_LEFT if pressed else 0
 		event.pressed = pressed
-		button.get_viewport().push_input(event, true)
+		root.push_input(event, true)
+	var buttons: Array = row.return_input.gui_events.filter(func(event: Dictionary) -> bool: return event.kind == "button")
+	expect(row.return_input.hover_after_motion and row.return_input.pressed_signals == 1 and buttons.size() == 2
+		and buttons[0].pressed and buttons[0].button_mask == MOUSE_BUTTON_MASK_LEFT
+		and not buttons[1].pressed and buttons[1].button_mask == 0,
+		"root pointer hit testing delivers press/release and the actual Return button signal")
 
 
 func run() -> void:
@@ -345,6 +454,21 @@ func run() -> void:
 		success = await test_sequence(rig)
 	var session: Variant = desktop.physical_actor_session
 	var teardown_started: int = Time.get_ticks_usec()
+	if success and DisplayServer.get_name() != "headless":
+		# A parent-focus transition from the earlier popup lifecycle may still
+		# queue hide. Acknowledge native root focus and drain that lifecycle
+		# before the final real pointer test opens the popup again.
+		row.return_native_focus = {"before":root.has_focus(),"requested_process_frame":Engine.get_process_frames()}
+		root.grab_focus()
+		var focused: bool = await bounded(Callable(root,"has_focus"), "native root window acknowledges focus before Return input")
+		row.return_native_focus.acknowledged = focused
+		if focused:
+			await RenderingServer.frame_post_draw
+			focused = root.has_focus()
+			row.return_native_focus.after_rendered_frame = focused
+			row.return_native_focus.rendered_process_frame = Engine.get_process_frames()
+			expect(focused, "native root focus remains current after the deferred popup lifecycle")
+		success = focused
 	if success:
 		desktop.playable_session_panel.show_selection()
 		var button: Button = desktop.playable_session_panel.return_button
@@ -363,7 +487,7 @@ func run() -> void:
 			expect(button.is_visible_in_tree()
 				and Rect2(Vector2.ZERO, Vector2(desktop.playable_session_panel.size)).encloses(button.get_global_rect()),
 				"graphical Return button is visible and fully inside the popup")
-			row.return_activation = "actual_viewport_mouse_press_release"
+			row.return_activation = "actual_root_viewport_mouse_motion_press_release"
 			click_return_button()
 		var navigated: bool = await bounded(Callable(self,"launcher_ready"), "actual Return button callback reaches the launcher")
 		row.return_button_navigation = navigated

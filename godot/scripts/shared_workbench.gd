@@ -948,7 +948,8 @@ func _set_view(origin: Vector2, size: Vector2i) -> void:
 	var extent := Setup.extent_of(applied)
 	host.current_view_size = size.min(extent)
 	host.camera_origin = origin.clamp(Vector2.ZERO,Vector2(extent-host.current_view_size))
-	host.update_worker_frame_state()
+	# Panning/zooming only changes presentation. The Workbench's native active
+	# region is the fixed authored canvas, published once by Main each frame.
 
 func focus_selected() -> void:
 	var state := body_state(selected_id())
@@ -964,12 +965,23 @@ func set_camera(index: int) -> void:
 	else:
 		_set_view(host.camera_origin,ZOOMS[_zoom])
 
-func zoom_by(direction: int) -> void:
+func zoom_by(direction: int, local_anchor: Vector2 = Vector2.INF) -> void:
 	if applied.is_empty(): return
-	var centre := Vector2(host.camera_origin) + Vector2(host.current_view_size)*0.5
+	var old_content: Rect2 = host.view_content_rect()
+	if not old_content.has_area(): return
+	if not local_anchor.is_finite() or not old_content.has_point(local_anchor):
+		local_anchor = old_content.get_center()
+	# Anchor the continuous camera, retaining its subpixel remainder. Feeding
+	# the snapped presentation back into camera state accumulates zoom drift.
+	var anchor: Vector2 = host.PixelCamera.local_to_world(local_anchor,host.camera_origin,
+		host.current_view_size,old_content)
 	_zoom = clampi(_zoom+direction,0,ZOOMS.size()-1)
 	_camera.select(0)
-	_set_view(centre-Vector2(ZOOMS[_zoom])*0.5,ZOOMS[_zoom])
+	_set_view(host.camera_origin,ZOOMS[_zoom])
+	# Extent clamping can change the aspect ratio, hence the content rectangle.
+	var origin: Vector2 = host.PixelCamera.origin_for_anchor(anchor,local_anchor,
+		host.current_view_size,host.view_content_rect())
+	_set_view(origin,host.current_view_size)
 
 func _input(event: InputEvent) -> void:
 	if paint_editor != null and paint_editor.key_input(event):
@@ -1020,7 +1032,8 @@ func _world_input(event: InputEvent) -> void:
 			if _pan: _camera.select(0)
 			return
 		if event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
-			zoom_by(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1)
+			zoom_by(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1,event.position)
+			if paint_editor != null: paint_editor.cursor = host.world_cell_from_local_point(event.position)
 			return
 		if event.button_index not in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]: return
 		_commit_field()
@@ -1030,11 +1043,11 @@ func _world_input(event: InputEvent) -> void:
 		if _pan:
 			var area: Rect2 = host.view_content_rect()
 			if area.has_area(): _set_view(Vector2(host.camera_origin)-event.relative*Vector2(host.current_view_size)/area.size,host.current_view_size)
+			if paint_editor != null: paint_editor.cursor = host.world_cell_from_local_point(event.position)
 			return
 	else: return
-	var pixel: Vector2i = host.view_pixel_from_local_point(event.position)
-	if pixel.x < 0: return
-	var pos := Vector2i(host.camera_origin.floor()) + pixel
+	var pos: Vector2i = host.world_cell_from_local_point(event.position)
+	if pos.x < 0: return
 	if _drag_button == 0 or pos == _last_cell: return
 	_last_cell = pos
 	if _drag_button == MOUSE_BUTTON_RIGHT or _tool.selected == 0:
@@ -1049,6 +1062,9 @@ func _world_input(event: InputEvent) -> void:
 			_position[1].value = pos.y
 			move_selected()
 		4: place_source(pos)
+
+func update_camera() -> void:
+	if not applied.is_empty() and _camera.selected == 1: focus_selected()
 
 func _process(_delta: float) -> void:
 	if host == null: return
@@ -1072,11 +1088,9 @@ func _process(_delta: float) -> void:
 	if not _reload_rollback.is_empty() and host.pending_microscenario_apply.is_empty():
 		Fleet.restore_registry(_reload_rollback)
 		_reload_rollback.clear()
-	if not applied.is_empty() and _camera.selected == 1: focus_selected()
 	if Time.get_ticks_msec()-_last_status_ms < 150: return
 	_last_status_ms = Time.get_ticks_msec()
-	var cursor: Vector2i = host.view_pixel_from_local_point(host.world_view.get_local_mouse_position())
-	if cursor.x >= 0: cursor += Vector2i(host.camera_origin.floor())
+	var cursor: Vector2i = host.world_cell_from_local_point(host.world_view.get_local_mouse_position())
 	var context: Dictionary = host.tower_context
 	var source: Dictionary = context.get("workbench_source",{})
 	if _stream_was_active and not source.get("stream_enabled",false):

@@ -4,11 +4,19 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+Native-resolution camera candidate: [controls and Windows acceptance](operations/native-pixel-scrolling.md),
+[presentation and sampling contract](systems/material-appearance-and-rendering.md#native-resolution-pixel-scrolling),
+[private coordinate interfaces](reference/interfaces-and-message-contracts.md#camera-presentation-and-picking)
+and [source/platform evidence](audits/2026-11-13-native-pixel-scrolling.md).
+The candidate now incorporates accepted #565 through a normal merge and remains
+Draft; the [final integration record](audits/2026-11-13-native-pixel-final-integration.md)
+separates its resulting-source qualification from earlier camera/Workbench artifacts.
 
 Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.
 

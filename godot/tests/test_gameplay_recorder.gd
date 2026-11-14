@@ -3,7 +3,9 @@ extends SceneTree
 const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 
 const Recorder = preload("res://scripts/gameplay_recorder.gd")
+const Main = preload("res://scripts/main.gd")
 
+var _checks: int = 0
 var _failures: int = 0
 
 
@@ -12,14 +14,223 @@ func _init() -> void:
 
 
 func _run() -> void:
-	_test_patch_reconstruction_and_overflow()
-	_test_actor_only_motion_and_representation()
-	_test_threaded_output_and_provenance()
-	_test_async_finalization()
-	_test_incomplete_disposition()
+	if OS.get_cmdline_user_args().has("--recording-roi-override-test"):
+		_test_explicit_roi_override()
+	else:
+		_test_camera_recording_bounds()
+		_test_fractional_camera_recording()
+		_test_recording_world_extents()
+		_test_patch_reconstruction_and_overflow()
+		_test_actor_only_motion_and_representation()
+		_test_threaded_output_and_provenance()
+		_test_async_finalization()
+		_test_incomplete_disposition()
 	if _failures == 0:
 		print("Gameplay recorder regression passed")
+	print("GAMEPLAY_RECORDER_RESULT " + JSON.stringify({"checks": _checks, "failures": _failures}))
 	quit(_failures)
+
+
+func _camera_host(
+		origin: Vector2,
+		view_size: Vector2i = Vector2i(240, 135),
+		extent: Vector2i = Vector2i(1024, 1024),
+		pixels_per_cell: float = 4.0
+) -> Control:
+	# Keep Main out of the scene tree: these tests exercise its real camera and
+	# recording methods without starting another simulation or application UI.
+	var host = Main.new()
+	host.world_view = TextureRect.new()
+	host.add_child(host.world_view)
+	host.world_view.size = Vector2(view_size) * pixels_per_cell
+	host.current_view_size = view_size
+	host.world_extent = extent
+	host.camera_origin = origin
+	return host
+
+
+func _test_camera_recording_bounds() -> void:
+	var cases: Array[Dictionary] = [
+		{"name": "both fractional edges", "camera": Vector2(63.25, 31.75),
+			"presented": Vector2(63.25, 31.75), "roi": Rect2i(63, 31, 241, 136)},
+		{"name": "fractional right edge", "camera": Vector2(63.25, 31.0),
+			"presented": Vector2(63.25, 31.0), "roi": Rect2i(63, 31, 241, 135)},
+		{"name": "fractional bottom edge", "camera": Vector2(63.0, 31.75),
+			"presented": Vector2(63.0, 31.75), "roi": Rect2i(63, 31, 240, 136)},
+		{"name": "integral origin", "camera": Vector2(63.0, 31.0),
+			"presented": Vector2(63.0, 31.0), "roi": Rect2i(63, 31, 240, 135)},
+		{"name": "display rounding down", "camera": Vector2(63.1, 31.1),
+			"presented": Vector2(63.0, 31.0), "roi": Rect2i(63, 31, 240, 135)},
+		{"name": "display rounding up", "camera": Vector2(63.9, 31.9),
+			"presented": Vector2(64.0, 32.0), "roi": Rect2i(64, 32, 240, 135)},
+		{"name": "top left clamp", "camera": Vector2(-0.25, -0.75),
+			"presented": Vector2.ZERO, "roi": Rect2i(0, 0, 240, 135)},
+		{"name": "fractional last cells", "camera": Vector2(783.75, 888.75),
+			"presented": Vector2(783.75, 888.75), "roi": Rect2i(783, 888, 241, 136)},
+		{"name": "bottom right clamp", "camera": Vector2(784.25, 889.25),
+			"presented": Vector2(784.0, 889.0), "roi": Rect2i(784, 889, 240, 135)},
+		{"name": "view larger than world", "camera": Vector2(4.25, 8.75),
+			"world": Vector2i(120, 90), "presented": Vector2.ZERO,
+			"roi": Rect2i(0, 0, 120, 90)},
+		{"name": "one axis larger than world", "camera": Vector2(4.25, 31.75),
+			"world": Vector2i(120, 1024), "presented": Vector2(0.0, 31.75),
+			"roi": Rect2i(0, 31, 120, 136)},
+		{"name": "fractional display scale", "camera": Vector2(63.25, 31.75),
+			"scale": 2.5, "presented": Vector2(63.2, 31.6),
+			"roi": Rect2i(63, 31, 241, 136)},
+	]
+	for entry: Dictionary in cases:
+		var extent: Vector2i = entry.get("world", Vector2i(1024, 1024))
+		var host = _camera_host(entry.camera, Vector2i(240, 135), extent, float(entry.get("scale", 4.0)))
+		var presented: Vector2 = host.presentation_camera_origin()
+		_expect(presented.is_equal_approx(entry.presented), "%s: unexpected presented camera origin" % entry.name)
+		var config: Dictionary = host.recording_configuration()
+		_expect(config.roi == entry.roi, "%s: recording bounds %s do not match %s" % [entry.name, config.roi, entry.roi])
+		_expect(config.get("world_extent", Vector2i.ZERO) == extent, "%s: actual world extent was not copied" % entry.name)
+		host.free()
+
+	# With no laid-out content, Main uses its clamped continuous camera. This
+	# represented remainder disappears in a float32 Vector2 sum with the view
+	# size, so the end bound must be calculated using scalar components.
+	var host = _camera_host(Vector2(63.000003814697265625, 31.0))
+	host.world_view.size = Vector2.ZERO
+	_expect(host.presentation_camera_origin().x > 63.0, "small fractional origin was lost before ROI calculation")
+	_expect(host.recording_configuration().roi == Rect2i(63, 31, 241, 135), "small fractional edge was lost when adding the view width")
+	host.free()
+
+
+func _region_snapshot(
+		serial: int,
+		published_usec: int,
+		region: Rect2i,
+		materials: Dictionary,
+		full_refresh: bool
+) -> CyberSimulationSnapshot:
+	var snapshot: CyberSimulationSnapshot = _base_snapshot(serial, published_usec)
+	snapshot.render_snapshot_serial = serial
+	snapshot.render_full_refresh = full_refresh
+	snapshot.render_patch_rectangles = PackedInt32Array([
+		region.position.x, region.position.y, region.size.x, region.size.y, 0, region.size.x * 2,
+	])
+	snapshot.render_patch_cells.resize(region.size.x * region.size.y * 2)
+	snapshot.render_patch_cells.fill(0)
+	for world_cell: Vector2i in materials:
+		var local_cell: Vector2i = world_cell - region.position
+		var offset: int = (local_cell.y * region.size.x + local_cell.x) * 2
+		snapshot.render_patch_cells[offset] = int(materials[world_cell])
+		snapshot.render_patch_cells[offset + 1] = 173
+	return snapshot
+
+
+func _expect_recorded_cell(recorder, frame: PackedByteArray, world_cell: Vector2i, material_id: int, label: String) -> void:
+	var roi: Rect2i = recorder._roi
+	if not roi.has_point(world_cell):
+		_expect(false, "%s: visible cell %s was excluded from recording ROI %s" % [label, world_cell, roi])
+		return
+	var local_cell: Vector2i = world_cell - roi.position
+	var index: int = local_cell.y * roi.size.x + local_cell.x
+	_expect(index < frame.size() and frame[index] == material_id, "%s: recorded material ID was omitted or changed" % label)
+
+
+func _test_fractional_camera_recording() -> void:
+	# Repeat beyond the legacy 1024-square extent to test Main -> Recorder
+	# admission as well as retention of the actual visible edge material IDs.
+	for origin: Vector2 in [Vector2(63.25, 31.75), Vector2(1400.25, 1100.75)]:
+		var extent: Vector2i = Vector2i(1024, 1024) if origin.x < 1024.0 else Vector2i(2048, 1536)
+		var host = _camera_host(origin, Vector2i(240, 135), extent)
+		var expected_roi: Rect2i = Rect2i(floori(origin.x), floori(origin.y), 241, 136)
+		var config: Dictionary = host.recording_configuration()
+		config.capture_hz = 60
+		config.queue_capacity = 2
+		var recorder = Recorder.new()
+		var start_error: Error = recorder.start_recording(config, {"source": "fractional-camera-test"}, false)
+		_expect(start_error == OK, "fractional-camera recording failed to start")
+		if start_error != OK:
+			host.free()
+			continue
+		_expect(recorder._roi == expected_roi, "recorder admission changed the displayed cell bounds")
+		var admitted_roi: Rect2i = recorder._roi
+		_expect(recorder._config.get("world_extent", []) == [extent.x, extent.y], "recorder did not retain actual world extent")
+		var right: Vector2i = expected_roi.position + Vector2i(240, 0)
+		var bottom: Vector2i = expected_roi.position + Vector2i(0, 135)
+		var corner: Vector2i = expected_roi.position + Vector2i(240, 135)
+		var base_usec: int = Time.get_ticks_usec() + 100
+		recorder.ingest_snapshot(_region_snapshot(1, base_usec, expected_roi, {
+			expected_roi.position: 6, right: 23, bottom: 24, corner: 25,
+		}, true))
+		_expect(recorder._primed, "full publication did not prime the presented camera ROI")
+		_expect(recorder._queue.size() == 1, "presented camera full frame was not retained")
+		if recorder._queue.size() == 1:
+			var first: PackedByteArray = recorder._queue[0].material_ids
+			_expect(first.size() == expected_roi.size.x * expected_roi.size.y, "recorded frame omitted an edge row or column")
+			_expect_recorded_cell(recorder, first, expected_roi.position, 6, "first visible cell")
+			_expect_recorded_cell(recorder, first, right, 23, "partially visible right edge")
+			_expect_recorded_cell(recorder, first, bottom, 24, "partially visible bottom edge")
+			_expect_recorded_cell(recorder, first, corner, 25, "partially visible corner")
+
+		# A session freezes its admitted integer ROI, even when the camera moves
+		# and a newly requested configuration would use a different rectangle.
+		host.camera_origin += Vector2(12.5, 8.5)
+		_expect(host.recording_configuration().roi != expected_roi, "camera movement did not exercise a different default ROI")
+		_expect(recorder._roi == admitted_roi, "camera movement changed the active recording ROI")
+		recorder.ingest_snapshot(_region_snapshot(2, base_usec + 20000, Rect2i(corner, Vector2i.ONE), {corner: 28}, false))
+		_expect(recorder._queue.size() == 2, "visible corner delta was not retained")
+		if recorder._queue.size() == 2:
+			_expect_recorded_cell(recorder, recorder._queue[0].material_ids, corner, 25, "immutable first corner frame")
+			_expect_recorded_cell(recorder, recorder._queue[1].material_ids, corner, 28, "updated corner frame")
+			var recorded_config: Dictionary = recorder._queue[1].metadata.recording_configuration
+			_expect(recorded_config.roi == [expected_roi.position.x, expected_roi.position.y, 241, 136], "frame metadata did not preserve the fixed ROI")
+			_expect(recorded_config.get("world_extent", []) == [extent.x, extent.y], "frame metadata lost the actual world extent")
+		recorder.stop_recording()
+		host.free()
+
+
+func _test_recording_world_extents() -> void:
+	var cases: Array[Dictionary] = [
+		{"config": {}, "roi": Rect2i(0, 0, 1024, 1024), "extent": [1024, 1024]},
+		{"config": {"world_extent": Vector2i(2048, 1536)},
+			"roi": Rect2i(0, 0, 2048, 1536), "extent": [2048, 1536]},
+		{"config": {"roi": Rect2i(1000, 1000, 100, 100)},
+			"roi": Rect2i(1000, 1000, 24, 24), "extent": [1024, 1024]},
+		{"config": {"roi": Rect2i(60, 45, 10, 10), "world_extent": Vector2i(64, 48)},
+			"roi": Rect2i(60, 45, 4, 3), "extent": [64, 48]},
+		{"config": {"roi": Rect2i(2000, 1500, 100, 80), "world_extent": Vector2i(2048, 1536)},
+			"roi": Rect2i(2000, 1500, 48, 36), "extent": [2048, 1536]},
+	]
+	for entry: Dictionary in cases:
+		var recorder = Recorder.new()
+		var start_error: Error = recorder.start_recording(entry.config, {"source": "extent-test"}, false)
+		_expect(start_error == OK, "valid recording world extent was rejected")
+		_expect(recorder._roi == entry.roi, "recorder did not clamp ROI against its supplied or legacy world extent")
+		_expect(recorder._config.get("world_extent", []) == entry.extent, "recording extent metadata disagrees with its admission bounds")
+		recorder.stop_recording()
+	for extent: Vector2i in [Vector2i(0, 48), Vector2i(64, 0), Vector2i(-1, 48), Vector2i(64, -1)]:
+		var recorder = Recorder.new()
+		var start_error: Error = recorder.start_recording({"world_extent": extent, "roi": Rect2i(0, 0, 4, 3)}, {}, false)
+		_expect(start_error == ERR_INVALID_PARAMETER, "nonpositive recording extent was accepted: %s" % extent)
+		_expect(not recorder.is_active(), "invalid recording extent opened an active session")
+		recorder.stop_recording()
+
+
+func _test_explicit_roi_override() -> void:
+	# Separate invocation keeps process-wide CLI overrides out of the default
+	# camera cases: -- --recording-roi-override-test
+	# --record-roi=1000,700,100,120 --record-hz=120 --record-queue=0
+	var host = _camera_host(Vector2(63.25, 31.75), Vector2i(240, 135), Vector2i(1050, 768))
+	var config: Dictionary = host.recording_configuration()
+	_expect(config.roi == Rect2i(1000, 700, 100, 120), "explicit CLI ROI did not override the presented camera bounds")
+	_expect(int(config.capture_hz) == 60, "CLI recording cadence clamp changed")
+	_expect(int(config.queue_capacity) == 1, "CLI recording queue clamp changed")
+	_expect(config.get("world_extent", Vector2i.ZERO) == Vector2i(1050, 768), "CLI ROI override discarded actual world extent")
+	var recorder = Recorder.new()
+	var start_error: Error = recorder.start_recording(config, {"source": "cli-override-test"}, false)
+	_expect(start_error == OK, "CLI ROI recording failed to start")
+	_expect(recorder._roi == Rect2i(1000, 700, 50, 68), "CLI ROI was not clamped to the actual world bounds")
+	_expect(recorder._config.get("world_extent", []) == [1050, 768], "CLI recording extent was not retained")
+	host.camera_origin = Vector2(100.75, 80.25)
+	_expect(host.recording_configuration().roi == Rect2i(1000, 700, 100, 120), "camera movement changed the explicit CLI ROI")
+	recorder.stop_recording()
+	host.free()
 
 
 func _base_snapshot(serial: int, published_usec: int) -> CyberSimulationSnapshot:
@@ -457,6 +668,7 @@ func _test_incomplete_disposition() -> void:
 
 
 func _expect(condition: bool, message: String) -> void:
+	_checks += 1
 	if condition:
 		return
 	_failures += 1

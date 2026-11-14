@@ -1,5 +1,6 @@
 extends Control
 
+const PixelCamera = preload("res://scripts/pixel_camera_transform.gd")
 const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
 const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
 const PhysicalSession = preload("res://scripts/physical_actor_session.gd")
@@ -1457,16 +1458,25 @@ func recording_runtime_identity() -> Dictionary:
 
 
 func recording_configuration() -> Dictionary:
-	var roi: Rect2i = Rect2i(
-		floori(camera_origin.x),
-		floori(camera_origin.y),
-		current_view_size.x,
-		current_view_size.y
+	# Enclose the displayed view, including partially visible edge cells. The
+	# requested camera can differ from this origin after display-pixel rounding.
+	var presented: Vector2 = presentation_camera_origin()
+	var extent: Vector2i = world_extent.max(Vector2i.ZERO)
+	var start: Vector2i = Vector2i(floori(presented.x), floori(presented.y)).clamp(
+		Vector2i.ZERO, extent
 	)
+	# Add scalar components before ceil so a float32 Vector2 sum cannot erase a
+	# small fractional remainder at the far edge.
+	var end: Vector2i = Vector2i(
+		ceili(presented.x + float(current_view_size.x)),
+		ceili(presented.y + float(current_view_size.y))
+	).clamp(Vector2i.ZERO, extent)
+	var roi: Rect2i = Rect2i(start, (end - start).max(Vector2i.ZERO))
 	var result: Dictionary = {
 		"capture_hz": DEFAULT_RECORDING_HZ,
 		"queue_capacity": DEFAULT_RECORDING_QUEUE_CAPACITY,
 		"roi": roi,
+		"world_extent": world_extent,
 		"retain_raw_ids": true,
 		"selected_material_id_at_start": selected_material_id,
 		"selected_paint_slot_at_start": selected_paint_slot,
@@ -1937,7 +1947,6 @@ func _exit_tree() -> void:
 
 func _process(delta: float) -> void:
 	if shared_workbench == null:
-		tower_panel.refresh(tower_active,tower_floor,tower_context)
 		_refresh_microscenario_controls()
 	frame_time_ms = delta * 1000.0
 	maximum_frame_time_ms = maxf(maximum_frame_time_ms, frame_time_ms)
@@ -1962,21 +1971,23 @@ func _process(delta: float) -> void:
 		maximum_collider_time_ms,
 		rapier_bridge.last_hard_surface_build_time_ms()
 	)
+	update_camera(delta)
+	if shared_workbench == null:
+		tower_panel.refresh(tower_active,tower_floor,tower_context)
 	update_brush_preview()
 	handle_painting()
-	update_camera(delta)
 	_present_playable_course_targets()
 	actor_prototype_overlay.present(
 		latest_snapshot.actor_prototypes if latest_snapshot != null else {},
-		camera_origin.floor(), current_view_size, view_content_rect()
+		presentation_camera_origin(), current_view_size, view_content_rect()
 	)
 	usable_overlay.present(
 		(latest_snapshot.physical_usables if physical_actor_session != null else latest_snapshot.actor_usables) if latest_snapshot != null else {},
-		camera_origin.floor(), current_view_size, view_content_rect()
+		presentation_camera_origin(), current_view_size, view_content_rect()
 	)
 	physical_actor_overlay.present(
 		physical_actor_session.render_parts(workbench_display_frame()) if physical_actor_session != null else [],
-		camera_origin.floor(), current_view_size, view_content_rect())
+		presentation_camera_origin(), current_view_size, view_content_rect())
 	update_worker_frame_state()
 	update_shader_parameters()
 
@@ -3609,7 +3620,7 @@ func _present_playable_course_targets() -> void:
 		"source_tick":_playable_course_progress.last_source_tick,
 		"physics_tick":_playable_course_progress.last_physics_tick,
 		"target_index":_playable_course_progress.target_index},
-		camera_origin.floor(), current_view_size, view_content_rect())
+		presentation_camera_origin(), current_view_size, view_content_rect())
 
 
 # Only the authored PLAY course uses this copied controller adapter. All
@@ -4042,7 +4053,7 @@ func actor_pointer_aim_at(pointer: Vector2) -> Vector2:
 	var content: Rect2 = view_content_rect()
 	if not pointer.is_finite() or content.size.x <= 0.0 or content.size.y <= 0.0 or not content.has_point(pointer):
 		return Vector2.ZERO
-	var world_point: Vector2 = camera_origin.floor() + (pointer - content.position) / content.size * Vector2(current_view_size)
+	var world_point: Vector2 = world_position_from_local_point(pointer)
 	return (world_point - character_centre()).normalized()
 
 
@@ -4161,7 +4172,11 @@ func refresh_actor_prototypes() -> void:
 
 
 func update_camera(delta: float) -> void:
-	if shared_workbench != null: return
+	if shared_workbench != null:
+		# Resolve follow before the parent publishes terrain, overlays and picking
+		# for this frame. The child process used to move it after publication.
+		shared_workbench.update_camera()
+		return
 	if water_controlled_run_active(): return
 	if _blacksite_keyboard_blocked(): return
 	var pan_input: Vector2 = Vector2(
@@ -4208,9 +4223,75 @@ func character_centre() -> Vector2:
 
 func clamped_camera_origin(candidate: Vector2) -> Vector2:
 	return Vector2(
-		clampf(candidate.x, 0.0, float(world_extent.x - current_view_size.x)),
-		clampf(candidate.y, 0.0, float(world_extent.y - current_view_size.y))
+		clampf(candidate.x, 0.0, float(maxi(0, world_extent.x - current_view_size.x))),
+		clampf(candidate.y, 0.0, float(maxi(0, world_extent.y - current_view_size.y)))
 	)
+
+
+func presentation_camera_origin() -> Vector2:
+	var content := view_content_rect()
+	if content.size.x <= 0.0 or content.size.y <= 0.0: return clamped_camera_origin(camera_origin)
+	return PixelCamera.screen_to_world(_world_view_screen_transform() * content.position,
+		presentation_camera_screen_transform())
+
+
+func _world_view_screen_transform() -> Transform2D:
+	if not world_view.is_inside_tree(): return Transform2D.IDENTITY
+	# CanvasItem.get_screen_transform() omits the Window's final stretch when
+	# embedded subwindows are enabled. Compose the renderer's viewport/canvas
+	# transform with this item's global transform exactly once so translation
+	# and picking address framebuffer pixels, including canvas_items stretch.
+	return world_view.get_viewport_transform() * world_view.get_global_transform()
+
+
+func presentation_camera_screen_transform() -> Transform2D:
+	return PixelCamera.presentation_screen_transform(camera_origin, current_view_size,
+		view_content_rect(), _world_view_screen_transform(),
+		Vector2(maxi(0, world_extent.x-current_view_size.x), maxi(0, world_extent.y-current_view_size.y)))
+
+
+func configure_pixel_camera(material: ShaderMaterial) -> void:
+	var content := view_content_rect()
+	var screen := _world_view_screen_transform()
+	var mapping := presentation_camera_screen_transform()
+	var enabled := content.size.x > 0.0 and content.size.y > 0.0 and PixelCamera.is_axis_aligned(mapping)
+	material.set_shader_parameter("native_pixel_mapping_enabled", enabled)
+	if not enabled: return
+	material.set_shader_parameter("content_screen_origin", screen * content.position)
+	material.set_shader_parameter("content_screen_size", Vector2(screen.x.x, screen.y.y) * content.size)
+	material.set_shader_parameter("world_zero_screen", mapping.origin)
+	material.set_shader_parameter("world_units_per_screen_pixel", PixelCamera.world_units_per_screen_pixel(mapping))
+
+
+func world_position_from_local_point(local: Vector2) -> Vector2:
+	return PixelCamera.screen_to_world(_world_view_screen_transform() * local,
+		presentation_camera_screen_transform())
+
+
+func _world_view_pointer_screen_position(local: Vector2, screen: Transform2D) -> Vector2:
+	var physical := screen * local
+	# Godot localizes native mouse coordinates through float32 viewport and
+	# Control inverses. Reprojection can put an integer pixel boundary a few
+	# ULPs below itself, selecting the previous pixel (or the letterbox).
+	# Restore only this float32 roundoff band; ordinary fractional positions
+	# still address their containing pixel. Continuous zoom anchors do not use
+	# this input-only reconstruction, and the shader's sample math is unchanged.
+	var integer := physical.round()
+	var magnitude := physical.abs().max(screen.origin.abs()).max(Vector2.ONE)
+	var roundoff := magnitude * (2.0 * 1.1920928955078125e-7)
+	if absf(physical.x - integer.x) <= roundoff.x: physical.x = integer.x
+	if absf(physical.y - integer.y) <= roundoff.y: physical.y = integer.y
+	return physical
+
+
+func world_cell_from_local_point(local: Vector2) -> Vector2i:
+	var content := view_content_rect()
+	if not local.is_finite(): return Vector2i(-1, -1)
+	var screen := _world_view_screen_transform()
+	var sample_position := _world_view_pointer_screen_position(local, screen).floor() + Vector2(0.5, 0.5)
+	if not PixelCamera.content_contains_screen_sample(sample_position, content, screen): return Vector2i(-1, -1)
+	var cell := Vector2i(PixelCamera.screen_to_world(sample_position, presentation_camera_screen_transform()).floor())
+	return cell if Rect2i(Vector2i.ZERO, world_extent).has_point(cell) else Vector2i(-1, -1)
 
 
 func update_worker_frame_state() -> void:
@@ -4269,9 +4350,9 @@ func view_pixel_from_local_point(mouse: Vector2) -> Vector2i:
 	return view_pixel
 
 
-func brush_outline_points(view_pixel: Vector2i) -> PackedVector2Array:
+func brush_outline_points(world_cell: Vector2i) -> PackedVector2Array:
 	var points := PackedVector2Array()
-	if view_pixel.x < 0 or view_pixel.y < 0:
+	if world_cell.x < 0 or world_cell.y < 0:
 		return points
 	var content_rect: Rect2 = view_content_rect()
 	if content_rect.size.x <= 0.0 or content_rect.size.y <= 0.0:
@@ -4279,9 +4360,9 @@ func brush_outline_points(view_pixel: Vector2i) -> PackedVector2Array:
 	var scale: Vector2 = content_rect.size / Vector2(current_view_size)
 	var dimensions: Vector2i = brush_dimensions()
 	var start: Vector2 = Vector2(
-		view_pixel.x - int((dimensions.x - 1) / 2),
-		view_pixel.y - int((dimensions.y - 1) / 2)
-	)
+		world_cell.x - int((dimensions.x - 1) / 2),
+		world_cell.y - int((dimensions.y - 1) / 2)
+	) - presentation_camera_origin()
 	if brush_shape == "circle":
 		var centre: Vector2 = (
 			content_rect.position
@@ -4316,10 +4397,10 @@ func update_brush_preview() -> void:
 	):
 		brush_preview.visible = false
 		return
-	var view_pixel: Vector2i = view_pixel_from_local_point(
+	var world_cell: Vector2i = world_cell_from_local_point(
 		world_view.get_local_mouse_position()
 	)
-	var points: PackedVector2Array = brush_outline_points(view_pixel)
+	var points: PackedVector2Array = brush_outline_points(world_cell)
 	brush_preview.visible = not points.is_empty()
 	if brush_preview.visible:
 		brush_preview.points = points
@@ -4378,10 +4459,10 @@ func handle_painting() -> void:
 	if actor_prototype_panel != null and actor_prototype_panel.visible: return
 	if microscenario_panel != null and microscenario_panel.modal_open(): return
 	if tower_profile_panel != null and tower_profile_panel.visible: return
-	var view_pixel: Vector2i = view_pixel_from_local_point(
+	var world_cell: Vector2i = world_cell_from_local_point(
 		world_view.get_local_mouse_position()
 	)
-	if view_pixel.x < 0:
+	if world_cell.x < 0:
 		return
 
 	var emitted_material_id: int = brush_material_for_buttons(
@@ -4395,11 +4476,9 @@ func handle_painting() -> void:
 	if emitted_material_id != CyberCellWorld.EMPTY and coherent_liquid_emission:
 		emission_flags = CyberCellWorld.EMISSION_FLAG_COHERENT_LIQUID
 
-	var world_x: int = floori(camera_origin.x) + view_pixel.x
-	var world_y: int = floori(camera_origin.y) + view_pixel.y
 	queue_brush_footprint_mutation(
-		world_x,
-		world_y,
+		world_cell.x,
+		world_cell.y,
 		emitted_material_id,
 		emission_flags
 	)
@@ -4676,8 +4755,9 @@ func update_shader_parameters() -> void:
 	)
 	world_shader.set_shader_parameter(
 		"camera_origin_px",
-		Vector2(floori(camera_origin.x), floori(camera_origin.y))
+		presentation_camera_origin()
 	)
+	configure_pixel_camera(world_shader)
 	var sampled_player_visible: bool = (
 		not player_uses_barrel()
 		and (latest_snapshot == null or latest_snapshot.actor_prototypes.is_empty())
@@ -4990,14 +5070,14 @@ func setup_vapour_trail_pipeline() -> void:
 		viewport.use_hdr_2d = true
 		viewport.render_target_clear_mode = SubViewport.CLEAR_MODE_ALWAYS
 		viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
-		viewport.size = current_view_size
+		viewport.size = current_view_size + Vector2i.ONE
 		add_child(viewport)
 		var shader_material: ShaderMaterial = ShaderMaterial.new()
 		shader_material.shader = trail_shader
 		var source: ColorRect = ColorRect.new()
 		source.name = "VapourTrailSource"
 		source.color = Color.WHITE
-		source.size = Vector2(current_view_size)
+		source.size = Vector2(viewport.size)
 		source.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		source.material = shader_material
 		viewport.add_child(source)
@@ -5038,12 +5118,14 @@ func update_vapour_trail() -> void:
 		return
 	# Resize both generations together. Resizing only the alternating target
 	# drops the first history frame and can revive a buffer after rapid resizes.
-	if vapour_trail_viewports[0].size != current_view_size or vapour_trail_viewports[1].size != current_view_size:
+	# The fractional view can include one more cell on its right/bottom edges.
+	var history_size := current_view_size + Vector2i.ONE
+	if vapour_trail_viewports[0].size != history_size or vapour_trail_viewports[1].size != history_size:
 		reset_vapour_trail()
 		for resized: SubViewport in vapour_trail_viewports:
-			resized.size = current_view_size
+			resized.size = history_size
 			var source: ColorRect = resized.get_child(0) as ColorRect
-			source.size = Vector2(current_view_size)
+			source.size = Vector2(history_size)
 	var frame: int = Engine.get_process_frames()
 	if frame == vapour_trail_frame:
 		return
@@ -5057,17 +5139,19 @@ func update_vapour_trail() -> void:
 	var history: int = 1 - target
 	var viewport: SubViewport = vapour_trail_viewports[target]
 	vapour_trail_viewports[history].render_target_update_mode = SubViewport.UPDATE_DISABLED
-	var origin: Vector2 = Vector2(floori(camera_origin.x), floori(camera_origin.y))
+	# History remains on the integer world grid; only the final palette lookup
+	# uses the fractional presentation origin. This is not camera quantization.
+	var origin: Vector2 = presentation_camera_origin().floor()
 	var shader_material: ShaderMaterial = vapour_trail_shaders[target]
 	shader_material.set_shader_parameter("world_texture", texture)
 	shader_material.set_shader_parameter(
 		"world_size_px", Vector2(world_extent.x, world_extent.y))
-	shader_material.set_shader_parameter("view_size_px", Vector2(current_view_size))
+	shader_material.set_shader_parameter("view_size_px", Vector2(history_size))
 	shader_material.set_shader_parameter("camera_origin_px", origin)
 	shader_material.set_shader_parameter("history_origin_px", vapour_trail_origins[history])
 	shader_material.set_shader_parameter(
 		"delta_seconds",
-		delta_seconds if vapour_trail_viewports[history].size == current_view_size else 0.0
+		delta_seconds if vapour_trail_viewports[history].size == history_size else 0.0
 	)
 	shader_material.set_shader_parameter(
 		"condition_projection_enabled", 1.0 if render_channels == 2 else 0.0)
@@ -5076,16 +5160,23 @@ func update_vapour_trail() -> void:
 	vapour_trail_latest = target
 	world_shader.set_shader_parameter("vapour_trail_texture", viewport.get_texture())
 	world_shader.set_shader_parameter("vapour_trail_origin_px", origin)
+	world_shader.set_shader_parameter("vapour_trail_size_px", Vector2(history_size))
 	world_shader.set_shader_parameter("vapour_trail_strength", 1.0)
 
 
 func update_glow_parameters(content_rect: Rect2) -> void:
 	if glow_viewport == null or glow_source_shader == null or glow_overlay == null:
 		return
-	var downsampled_size: Vector2i = Vector2i(
-		maxi(80, current_view_size.x / 2),
-		maxi(45, current_view_size.y / 2)
-	)
+	# Keep the source on a fixed two-world-cell grid. Odd view dimensions must
+	# not stretch that grid. Five guard texels cover the composite's four-texel
+	# halo plus filtering; the extra far texel covers a partial camera step.
+	var source_cells := Vector2(2.0, 2.0)
+	var guard := Vector2i(5, 5)
+	var downsampled_size := Vector2i(maxi(80,ceili(current_view_size.x / 2.0)),
+		maxi(45,ceili(current_view_size.y / 2.0))) + guard * 2 + Vector2i.ONE
+	var origin := presentation_camera_origin()
+	var source_origin := (origin / source_cells).floor() * source_cells - Vector2(guard) * source_cells
+	var source_view := Vector2(downsampled_size) * source_cells
 	if glow_viewport.size != downsampled_size:
 		glow_viewport.size = downsampled_size
 		glow_source.position = Vector2.ZERO
@@ -5096,11 +5187,10 @@ func update_glow_parameters(content_rect: Rect2) -> void:
 		"world_size_px",
 		Vector2(world_extent.x, world_extent.y)
 	)
-	glow_source_shader.set_shader_parameter("view_size_px", Vector2(current_view_size))
-	glow_source_shader.set_shader_parameter(
-		"camera_origin_px",
-		Vector2(floori(camera_origin.x), floori(camera_origin.y))
-	)
+	glow_source_shader.set_shader_parameter("view_size_px", source_view)
+	glow_source_shader.set_shader_parameter("camera_origin_px", source_origin)
+	glow_composite_shader.set_shader_parameter("source_uv_offset", (origin - source_origin) / source_view)
+	glow_composite_shader.set_shader_parameter("source_uv_scale", Vector2(current_view_size) / source_view)
 	glow_source_shader.set_shader_parameter(
 		"condition_projection_enabled",
 		1.0 if render_channels == 2 else 0.0

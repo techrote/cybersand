@@ -905,12 +905,7 @@ func _report_tick_failure() -> void:
 	ui.message("Simulation stopped. " + recovery + str(native_world.get_last_tick_error()))
 
 func _world_pointer() -> Vector2i:
-	var content: Rect2 = view_content_rect()
-	var local: Vector2 = world_view.get_local_mouse_position()
-	if not content.has_point(local) or content.size.x <= 0 or content.size.y <= 0:
-		return Vector2i(-1, -1)
-	var point: Vector2 = camera_origin.floor() + (local - content.position) / content.size * Vector2(current_view_size)
-	return Vector2i(point.floor())
+	return world_cell_from_local_point(world_view.get_local_mouse_position())
 
 func queue_brush_mutation(
 		world_x: int,

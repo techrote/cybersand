@@ -33,6 +33,8 @@ env:
   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
   RAPIER_WINDOWS_SHA256: b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7
   CYBERSAND_CI_WATCHDOG_SCALE: '1'
+  WORKBENCH_INTEGRATED: ${{ github.ref_name == 'codex/wb-art-paint-integrated-20261111' || github.ref_name == 'codex/native-pixel-scrolling-20261113' }}
+  CAMERA_QUALIFICATION: ${{ github.ref_name == 'codex/native-pixel-scrolling-20261113' }}
 
 jobs:
   linux-real:
@@ -110,6 +112,31 @@ jobs:
             tail -160 evidence/import.log
             exit 1
           fi
+      - name: Qualify source camera coordinates and actual display-pixel scrolling
+        id: camera_source
+        if: env.CAMERA_QUALIFICATION == 'true'
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          LP_NUM_THREADS: '2'
+          GALLIVM_PERF: nopt
+        run: |
+          set -euo pipefail
+          bash tools/ci/prepare_linux_display.sh > evidence/camera-display-setup.log 2>&1
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            python3 tools/ci/run_workbench_qualification.py camera --godot "$GODOT_BIN" \
+            --project godot --evidence evidence/camera-source
+      - name: Retain source camera results before longer Linux regressions
+        if: ${{ always() && env.CAMERA_QUALIFICATION == 'true' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-pixel-camera-linux-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/camera-source/*.log
+            evidence/camera-source/*.json
+            evidence/camera-source/frames/
+            evidence/camera-source/*-frames/
+          if-no-files-found: warn
+          retention-days: 90
       - name: Validate installed profiles and real X11 generate, install, paint, save and reopen
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
@@ -120,15 +147,22 @@ jobs:
           bash tools/ci/prepare_linux_display.sh > evidence/display-setup.log 2>&1
           python3 tools/ci/run_workbench_qualification.py stage-linux --output "$RUNNER_TEMP/wb-art-paint-package"
           combined=()
-          if test "$GITHUB_REF_NAME" = codex/wb-art-paint-integrated-20261111; then combined=(--combined); fi
+          if test "$WORKBENCH_INTEGRATED" = true; then combined=(--combined); fi
           xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
             python3 tools/ci/run_workbench_qualification.py installed --godot "$GODOT_BIN" \
             --package "$RUNNER_TEMP/wb-art-paint-package" --scratch "$RUNNER_TEMP/wb-art-paint-installed" \
             --evidence evidence/installed "${combined[@]}"
+          if test "$CAMERA_QUALIFICATION" = true; then
+            xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+              python3 tools/ci/run_workbench_qualification.py camera --godot "$GODOT_BIN" \
+              --project "$RUNNER_TEMP/wb-art-paint-installed/complete/godot" --evidence evidence/camera-installed
+          fi
       - name: Execute accepted agent regressions and integrated PAINT suites
         # Keep independent regression evidence when installed validation fails.
         # A prior failure still fails this job and prevents candidate publication.
-        if: ${{ !cancelled() && steps.native_runtime.outcome == 'success' && steps.godot_runtime.outcome == 'success' }}
+        # Camera iterations already collect all independent graphical cases;
+        # run the long authoring campaign once that source gate succeeds.
+        if: ${{ !cancelled() && steps.native_runtime.outcome == 'success' && steps.godot_runtime.outcome == 'success' && (env.CAMERA_QUALIFICATION != 'true' || steps.camera_source.outcome == 'success') }}
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
           LP_NUM_THREADS: '2'
@@ -136,7 +170,7 @@ jobs:
         run: |
           set -euo pipefail
           paint=()
-          if test "$GITHUB_REF_NAME" = codex/wb-art-paint-integrated-20261111; then paint=(--paint); fi
+          if test "$WORKBENCH_INTEGRATED" = true; then paint=(--paint); fi
           xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
             python3 tools/ci/run_workbench_qualification.py regressions --godot "$GODOT_BIN" \
             --project godot --evidence evidence/regressions "${paint[@]}"
@@ -273,6 +307,25 @@ jobs:
           (& $exe --version) | Set-Content evidence/godot-version.txt
           if (((Get-Content evidence/godot-version.txt) -join ' ') -notmatch '4.7.stable.official.5b4e0cb0f') { throw 'Godot version mismatch' }
           'GODOT_EXE=' + $exe | Out-File -Append -FilePath $env:GITHUB_ENV
+      - name: Qualify source camera coordinates and actual Windows ANGLE scrolling
+        id: camera_source
+        if: env.CAMERA_QUALIFICATION == 'true'
+        shell: pwsh
+        run: |
+          python tools/ci/run_workbench_qualification.py camera --godot $env:GODOT_EXE --project godot --evidence evidence/camera-source
+          if ($LASTEXITCODE -ne 0) { throw 'Native-resolution camera qualification failed' }
+      - name: Retain source camera results before longer Windows regressions
+        if: ${{ always() && env.CAMERA_QUALIFICATION == 'true' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-pixel-camera-windows-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/camera-source/*.log
+            evidence/camera-source/*.json
+            evidence/camera-source/frames/
+            evidence/camera-source/*-frames/
+          if-no-files-found: warn
+          retention-days: 90
       - name: Package a source-matched owner desktop candidate
         shell: pwsh
         run: |
@@ -295,7 +348,8 @@ jobs:
           ./tools/ci/stage_windows_vc_runtime.ps1 -Output $vcRuntime -License $runtimeLicense -DeveloperLicense $developerLicense
           $engine = Join-Path (Split-Path $env:GODOT_EXE) 'Godot_v4.7-stable_win64.exe'
           $guide = 'docs/operations/explore001-desktop-playtest.md'
-          if ($env:GITHUB_REF_NAME -eq 'codex/wb-art-paint-integrated-20261111') { $guide = 'docs/operations/wb-art-paint-integrated-candidate.md' }
+          if ($env:WORKBENCH_INTEGRATED -eq 'true') { $guide = 'docs/operations/wb-art-paint-integrated-candidate.md' }
+          if ($env:CAMERA_QUALIFICATION -eq 'true') { $guide = 'docs/operations/native-pixel-scrolling.md' }
           python tools/package_explore001_candidate.py --engine $engine --engine-notices $notices --vc-runtime $vcRuntime --native-candidate build/wb-art-paint-windows --output build/wb-art-paint-desktop-candidate --readme $guide
           if ($LASTEXITCODE -ne 0) { throw 'Desktop packaging refused' }
       - name: Exercise the delivered Windows GUI in fresh non-Git installations
@@ -305,23 +359,29 @@ jobs:
           $validation = Join-Path $env:RUNNER_TEMP 'wb-art-paint-installed'
           $packagedEngine = Join-Path $candidate 'Godot_v4.7-stable_win64_console.exe'
           $combined = @()
-          if ($env:GITHUB_REF_NAME -eq 'codex/wb-art-paint-integrated-20261111') { $combined = @('--combined') }
+          if ($env:WORKBENCH_INTEGRATED -eq 'true') { $combined = @('--combined') }
           python tools/ci/run_workbench_qualification.py installed --godot $packagedEngine --package $candidate --scratch $validation --evidence evidence/installed @combined
           if ($LASTEXITCODE -ne 0) { throw 'Installed Windows graphical qualification failed' }
           ./tools/ci/check_windows_package_modules.ps1 -Package (Join-Path $validation 'complete') -Evidence 'evidence/installed/runtime-modules.json'
+          if ($env:CAMERA_QUALIFICATION -eq 'true') {
+            $installedEngine = Join-Path $validation 'complete/Godot_v4.7-stable_win64_console.exe'
+            $installedProject = Join-Path $validation 'complete/godot'
+            python tools/ci/run_workbench_qualification.py camera --godot $installedEngine --project $installedProject --evidence evidence/camera-installed
+            if ($LASTEXITCODE -ne 0) { throw 'Installed native-resolution camera qualification failed' }
+          }
       - name: Execute accepted agent regressions and integrated PAINT suites on the same DLL
-        if: ${{ !cancelled() && steps.native_runtime.outcome == 'success' && steps.godot_runtime.outcome == 'success' }}
+        if: ${{ !cancelled() && steps.native_runtime.outcome == 'success' && steps.godot_runtime.outcome == 'success' && (env.CAMERA_QUALIFICATION != 'true' || steps.camera_source.outcome == 'success') }}
         shell: pwsh
         run: |
           $paint = @()
-          if ($env:GITHUB_REF_NAME -eq 'codex/wb-art-paint-integrated-20261111') { $paint = @('--paint') }
+          if ($env:WORKBENCH_INTEGRATED -eq 'true') { $paint = @('--paint') }
           python tools/ci/run_workbench_qualification.py regressions --godot $env:GODOT_EXE --project godot --evidence evidence/regressions @paint
           if ($LASTEXITCODE -ne 0) { throw 'Source-matched Windows authoring regression failed' }
       - name: Retain qualified standalone Windows owner candidate
         if: success()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: wb-art-paint-windows-desktop-${{ github.sha }}
+          name: ${{ env.CAMERA_QUALIFICATION == 'true' && 'native-pixel-scrolling' || 'wb-art-paint' }}-windows-desktop-${{ github.sha }}
           path: build/wb-art-paint-desktop-candidate/
           if-no-files-found: error
           retention-days: 90

@@ -435,8 +435,8 @@ func _selector_and_geometry() -> void:
 	var overlay: CyberActorPrototypeOverlay = desktop.actor_prototype_overlay
 	overlay.present(visual_context, origin, desktop.current_view_size, content)
 	_expect(content == Rect2(0, 175, 800, 450) and overlay.position == content.position \
-		and overlay.size == content.size and overlay._origin == origin.floor(),
-		"extended overlay diverges from the terrain's integer aspect-fit transform")
+		and overlay.size == content.size and overlay._origin == origin,
+		"extended overlay discarded the supplied fractional aspect-fit transform")
 	var polygon: PackedVector2Array = overlay.body_polygon(0)
 	var center := Vector2(46.0, 34.0)
 	var half := Vector2(6.0, 4.0)
@@ -444,7 +444,7 @@ func _selector_and_geometry() -> void:
 		half, Vector2(-half.x, half.y)]
 	_expect(polygon.size() == 4, "rotated overlay hull is not a four-corner rectangle")
 	for index: int in range(4):
-		var expected: Vector2 = (center + corners[index].rotated(0.4) - origin.floor()) \
+		var expected: Vector2 = (center + corners[index].rotated(0.4) - origin) \
 			* content.size / Vector2(320, 180)
 		_expect(polygon[index].distance_to(expected) < 0.0001, "overlay drew legacy dimensions or an unrotated rig hull")
 	var line: PackedVector2Array = overlay.anchor_line(0)
@@ -459,11 +459,11 @@ func _selector_and_geometry() -> void:
 	desktop.character_position = Vector2(40.0, 30.0)
 	desktop.camera_origin = origin
 	var local_pointer: Vector2 = content.position + Vector2(600.0, 200.0)
-	var world_pointer: Vector2 = origin.floor() + Vector2(600.0, 200.0) / content.size * Vector2(320, 180)
+	var world_pointer: Vector2 = desktop.presentation_camera_origin() + Vector2(600.0, 200.0) / content.size * Vector2(320, 180)
 	# The real projection accepts explicit local coordinates so headless Window
 	# stretch/OS pointer state is not mistaken for interactive acceptance.
 	_expect(desktop.actor_pointer_aim_at(local_pointer).distance_to((world_pointer - center).normalized()) < 0.0001,
-		"actual pointer projection disagrees with floored terrain camera, letterbox or rig centre")
+		"actual pointer projection disagrees with displayed terrain camera, letterbox or rig centre")
 	_expect(desktop.actor_pointer_aim_at(Vector2(200.0, 80.0)) == Vector2.ZERO,
 		"pointer in the letterbox invented a world aim target")
 	desktop.latest_snapshot = saved_snapshot

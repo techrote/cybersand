@@ -4,11 +4,22 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-12
+last-reviewed: 2026-11-13
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Native-resolution camera continuation — 2026-11-13
+
+The camera branch retains its original history and now incorporates accepted
+#565 main `ac0d9fb9` through normal merge `b1e2e9b1`. Start with the
+[camera runbook](native-pixel-scrolling.md) and
+[original source audit](../audits/2026-11-13-native-pixel-scrolling.md) and
+[final integration record](../audits/2026-11-13-native-pixel-final-integration.md). Preserve
+shared Undo/Redo and Art panel features, complete scoped Windows/Linux graphics
+and editing qualification, and keep the PR Draft until owner acceptance. Native
+sources and retained-runtime identity are not changed by camera presentation.
 
 ## Materials Lab Windows evaluation — 2026-11-12
 

@@ -56,6 +56,9 @@ def verify_lfs_payload(name: str, data: bytes, pins: dict) -> None:
 
 
 def completion(text: str, marker: str) -> dict:
+    if marker in ("MATERIAL_PRESENTATION_RENDER:", "WATER_PRESENTATION_RENDER:",
+                  "MATERIAL_VAPOUR_PIPELINE:", "PALETTE_CROSSFADE_RENDER_RESULT"):
+        return presentation_completion(text, marker)
     lines = [line[len(marker):].strip() for line in text.splitlines() if line.startswith(marker + " ")]
     if not lines:
         raise RuntimeError(f"Required completion marker is absent: {marker}")
@@ -73,6 +76,41 @@ def completion(text: str, marker: str) -> dict:
         result = {"checks": int(match[1]), "failures": int(match[2])}
     if not isinstance(result.get("checks"), int) or result["checks"] < 1 or result.get("failures") not in (0, []):
         raise RuntimeError(f"Incomplete or failing checks: {marker} {tail}")
+    return result
+
+
+def presentation_completion(text: str, marker: str) -> dict:
+    """Accept original graphical receipts without inventing assertion counts."""
+    contexts = [json.loads(line.partition(" ")[2]) for line in text.splitlines()
+                if line.startswith("PALETTE_QUALIFICATION_CONTEXT ")]
+    if not contexts or any(row.get("display_server") in (None, "", "headless")
+                           or not row.get("backend") for row in contexts):
+        raise RuntimeError(f"{marker} lacks an actual graphical runtime context")
+    lines = [line for line in text.splitlines() if line.startswith(marker + " ")]
+    if len(lines) != 1:
+        raise RuntimeError(f"{marker} needs exactly one complete graphical receipt")
+    line = lines[0]
+    if marker == "PALETTE_CROSSFADE_RENDER_RESULT":
+        result = json.loads(line[len(marker):].strip())
+        if (type(result.get("assertions")) is not int or result["assertions"] < 1
+                or result.get("failures") != 0 or result.get("material_slots") != 132
+                or result.get("conditions") != [0, 128, 255] or result.get("blends") != [0, 0.5, 1]):
+            raise RuntimeError("Incomplete or failing material crossfade receipt")
+    elif marker == "MATERIAL_VAPOUR_PIPELINE:":
+        found = re.fullmatch(r"MATERIAL_VAPOUR_PIPELINE: actual pixels, (\d+) assertions, 0 failures", line)
+        if found is None or int(found[1]) < 1:
+            raise RuntimeError("Incomplete or failing production vapour history receipt")
+        result = {"assertions": int(found[1]), "failures": 0}
+    else:
+        expected = ("MATERIAL_PRESENTATION_RENDER: actual pixels passed (time override, still scenery, anchoring, "
+                    "crossfade endpoints, conditions, all 132 ID slots, invalid bounds, growth blockers, "
+                    "vapour footprint, half-resolution single-cell fireworks)"
+                    if marker == "MATERIAL_PRESENTATION_RENDER:" else
+                    "WATER_PRESENTATION_RENDER: actual pixels coverage=2/4 at 2x, 8/16 at 4x; oriented right edge passed")
+        if line != expected:
+            raise RuntimeError(f"Missing positive graphical completion: {marker}")
+        result = {"positive_completion": line, "assertion_count_reported": False}
+    result["runtime_contexts"] = contexts
     return result
 
 
@@ -376,13 +414,66 @@ def regressions(args):
     combined_authoring(runner, project, "source-combined")
 
 
+def camera(args):
+    """Prove display-pixel motion on the actual source or installed project."""
+    runner = Runner(args)
+    project = args.project.resolve()
+    commit, tree, _ = native_candidate_identity.source(ROOT)
+    runner.env["CYBERSAND_SOURCE_REVISION"] = commit
+    runner.env["CYBERSAND_TEST_ARTIFACT_DIR"] = str(runner.evidence / "frames")
+    source_files = {"project.godot": digest(project / "project.godot")}
+    for directory in ("scripts", "shaders", "tests"):
+        source_files.update({p.relative_to(project).as_posix(): digest(p)
+                             for p in sorted((project / directory).rglob("*"))
+                             if p.is_file() and p.suffix in (".gd", ".gdshader")})
+    (runner.evidence / "source-identity.json").write_text(
+        json.dumps({"source_commit": commit, "source_tree": tree,
+                    "project": str(project), "godot": str(args.godot.resolve()),
+                    "godot_sha256": digest(args.godot.resolve()),
+                    "executed_source_sha256": source_files}, indent=2)+"\n",
+        encoding="utf-8")
+    runner.godot(project, "camera-import")
+    failed_cases = []
+
+    def qualify(label, script, marker, *, graphical=False, env=None):
+        # Each fixture is an independent process. Preserve every original
+        # failure, but still collect the other rendering/preservation oracles.
+        # Any failed case keeps the overall camera and packaging gates closed.
+        try:
+            runner.godot(project, label, script, marker, graphical=graphical, env=env)
+        except Exception as error:
+            failed_cases.append(label)
+            print(f"FAIL {label}: {error}", flush=True)
+
+    qualify("camera-coordinates", "test_native_pixel_camera", "NATIVE_PIXEL_CAMERA_RESULT")
+    qualify("camera-recording", "test_gameplay_recorder", "GAMEPLAY_RECORDER_RESULT")
+    qualify("camera-framebuffer", "test_native_pixel_scrolling_render",
+            "NATIVE_PIXEL_SCROLLING_RESULT", graphical=True)
+    qualify("camera-effects", "test_native_camera_effects_render",
+            "NATIVE_CAMERA_EFFECTS_RESULT", graphical=True)
+    # These existing independent oracles protect material shading, partial
+    # Water, history lifetime and ANGLE crossfade while coordinates change.
+    for script, marker in (
+            ("material_presentation", "MATERIAL_PRESENTATION_RENDER:"),
+            ("water_presentation", "WATER_PRESENTATION_RENDER:"),
+            ("material_vapour_pipeline", "MATERIAL_VAPOUR_PIPELINE:"),
+            ("palette_crossfade", "PALETTE_CROSSFADE_RENDER_RESULT")):
+        frames = runner.evidence / (script + "-frames")
+        qualify("preserve-"+script, "test_"+script+"_render", marker,
+                graphical=True, env={"CYBERSAND_PRESENTATION_EVIDENCE": str(frames),
+                                     "CYBERSAND_SHADER_CAPTURE": str(frames),
+                                     "CYBERSAND_PALETTE_CROSSFADE_OUTPUT": str(frames)})
+    if failed_cases:
+        raise RuntimeError("Camera qualification failed: " + ", ".join(failed_cases))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="mode", required=True)
     stage = sub.add_parser("stage-linux")
     stage.add_argument("--output", type=Path, required=True)
     stage.set_defaults(run=stage_linux)
-    for name, function in (("installed", installed), ("regressions", regressions)):
+    for name, function in (("installed", installed), ("regressions", regressions), ("camera", camera)):
         command = sub.add_parser(name)
         command.add_argument("--godot", type=Path, required=True)
         command.add_argument("--evidence", type=Path, required=True)
@@ -393,7 +484,8 @@ def main():
             command.add_argument("--combined", action="store_true")
         else:
             command.add_argument("--project", type=Path, required=True)
-            command.add_argument("--paint", action="store_true")
+            if name == "regressions":
+                command.add_argument("--paint", action="store_true")
     args = parser.parse_args()
     outcome = {"mode": args.mode, "status": "running"}
     try:

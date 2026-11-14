@@ -18,7 +18,7 @@ func _ready() -> void:
 
 func present(parts: Array, origin: Vector2, view_size: Vector2i, content: Rect2) -> void:
 	_parts = parts.duplicate(true)
-	_origin = origin.floor()
+	_origin = origin
 	_view_size = Vector2(view_size)
 	position = content.position
 	size = content.size
