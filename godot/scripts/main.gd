@@ -42,6 +42,13 @@ var physical_actor_overlay: CyberPhysicalActorOverlay
 var _workbench_wait_sample: int = -1
 var _workbench_collider_frame: int = -1
 var shared_workbench: Control
+# ENGINE-LAB-001: opt-in live diagnostic pacing; default behavior unchanged.
+var engine_lab_wait_native_sample: bool = true
+var engine_lab_ack_delay_frames: int = 0
+var _engine_lab_pending_ack_serial: int = 0
+var _engine_lab_pending_ack_frames: int = 0
+var engine_lab_scripted_input: bool = false
+var _engine_lab_scripted_start_tick: int = 0
 # WCX/BW-001 experimental construction options for the next workbench build
 # (ballistic Water parcels, IN-B1 signed law). Empty keeps every default.
 var workbench_water_options: Dictionary = {}
@@ -1963,6 +1970,7 @@ func _exit_tree() -> void:
 
 
 func _process(delta: float) -> void:
+	_engine_lab_pump_ack()
 	if shared_workbench == null:
 		_refresh_microscenario_controls()
 	frame_time_ms = delta * 1000.0
@@ -2044,7 +2052,7 @@ func _physics_process(_delta: float) -> void:
 			_workbench_wait_sample = -1
 			return
 		# A single step can restart a previously unpublished paused frame.
-		if _workbench_wait_sample >= 0 and physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample and not single_step: return
+		if engine_lab_wait_native_sample and _workbench_wait_sample >= 0 and physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample and not single_step: return
 	if paused or simulation_worker.has_failed():
 		physical_trial_input.armed = false
 	if simulation_worker.has_failed():
@@ -3169,6 +3177,61 @@ func _present_physical_actor_overlay(frame: Dictionary) -> void:
 		presentation_camera_origin(),current_view_size,view_content_rect())
 
 
+# Native render ACK is mandatory. Delay only an accepted, uploaded serial.
+func _engine_lab_ack_uploaded_snapshot(serial: int) -> void:
+	if engine_lab_ack_delay_frames == 0:
+		simulation_worker.acknowledge_render_snapshot(serial)
+		return
+	_engine_lab_pending_ack_serial = maxi(_engine_lab_pending_ack_serial,serial)
+	_engine_lab_pending_ack_frames = engine_lab_ack_delay_frames
+
+
+func _engine_lab_pump_ack() -> void:
+	if _engine_lab_pending_ack_serial <= 0: return
+	_engine_lab_pending_ack_frames -= 1
+	if _engine_lab_pending_ack_frames > 0: return
+	simulation_worker.acknowledge_render_snapshot(_engine_lab_pending_ack_serial)
+	_engine_lab_pending_ack_serial = 0
+	_engine_lab_pending_ack_frames = 0
+
+
+func engine_lab_set_ack_delay(frames: int) -> void:
+	engine_lab_ack_delay_frames = clampi(frames,0,4)
+	if engine_lab_ack_delay_frames == 0 and _engine_lab_pending_ack_serial > 0:
+		simulation_worker.acknowledge_render_snapshot(_engine_lab_pending_ack_serial)
+		_engine_lab_pending_ack_serial = 0
+		_engine_lab_pending_ack_frames = 0
+
+
+func engine_lab_set_render_hz(target_hz: int) -> void:
+	render_snapshot_hz = clampi(target_hz,1,1000)
+	simulation_worker.set_render_snapshot_hz(render_snapshot_hz)
+	snapshot_blend_start_usec = Time.get_ticks_usec()
+
+
+func engine_lab_set_rapier_hz(target_hz: int) -> void:
+	# The flight solver demands a fixed 1/60 simulation delta each step.
+	# Deliberately change callback cadence only, not the physics step size:
+	# non-60Hz settings therefore change wall-clock simulation speed.
+	Engine.physics_ticks_per_second = clampi(target_hz,1,1000)
+
+
+func engine_lab_set_scripted_input(enabled: bool) -> bool:
+	if not enabled:
+		engine_lab_scripted_input = false
+		if physical_actor_session != null and shared_workbench != null:
+			var slot: int = physical_actor_session.slot_for_instance(shared_workbench.selected_id())
+			if slot >= 0:
+				physical_actor_session.cancel_input(slot,physical_actor_session.epoch,&"human")
+		return true
+	if shared_workbench == null or paused or physical_actor_session == null \
+			or shared_workbench.pilot_slot < 0:
+		return false
+	engine_lab_scripted_input = true
+	_engine_lab_scripted_start_tick = physical_actor_session.tick
+	return true
+
+
 # Render-world pixel safety gate. Only a completely clear swept footprint
 # may use live Rapier presentation; there is no unchecked fallback.
 func _safe_workbench_presentation_poses(frame: Dictionary) -> Dictionary:
@@ -3266,9 +3329,7 @@ func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 			last_uploaded_world_generation = snapshot.render_world_generation
 			last_uploaded_render_snapshot_serial = snapshot.render_snapshot_serial
 			if shared_workbench != null: _uploaded_workbench_frame = snapshot.render_context.get("workbench_display",{})
-			simulation_worker.acknowledge_render_snapshot(
-				snapshot.render_snapshot_serial
-			)
+			_engine_lab_ack_uploaded_snapshot(snapshot.render_snapshot_serial)
 		else:
 			reject_render_snapshot(snapshot)
 
@@ -4175,6 +4236,19 @@ func _workbench_key(key: Key) -> bool:
 
 func _publish_workbench_keyboard() -> void:
 	if physical_actor_session == null or shared_workbench.pilot_slot < 0: return
+	# Repeatable input follows completed Rapier steps, independent of FPS.
+	if engine_lab_scripted_input:
+		if paused: return
+		var elapsed: int = maxi(0,physical_actor_session.tick-_engine_lab_scripted_start_tick)
+		var phase: int = int(elapsed / 60) % 4
+		var movement: Vector2 = [Vector2.RIGHT,Vector2.UP,Vector2.LEFT,Vector2.DOWN][phase]
+		var action: Dictionary = {"move":movement,"aim":movement,
+			"effort":1.0,"trim":0.0,"primary":false,
+			"secondary":false,"auxiliary":false}
+		var ports: Dictionary = {"q":false,"e":false,"s":false,"boost":false}
+		physical_actor_session.submit_workbench_action(
+			shared_workbench.selected_id(),action,ports,false)
+		return
 	if paused or simulation_worker.has_failed() or not pending_microscenario_apply.is_empty() or not _actor_window_has_focus() \
 		or get_viewport().gui_get_focus_owner() is LineEdit or get_viewport().gui_get_focus_owner() is TextEdit:
 		if not _actor_input_rearm: cancel_playable_course_input()
