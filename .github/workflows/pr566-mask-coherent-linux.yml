@@ -12,6 +12,9 @@ on:
       - 'godot/scripts/workbench_presentation_coherence.gd'
       - 'godot/tests/test_pr566_mask_coherent_native_world.gd'
       - 'godot/tests/test_workbench_presentation_coherence.gd'
+      - 'godot/tests/test_pr566_mask_coherent_ab.gd'
+      - 'godot/tests/test_pr593_mask_coherent_production.gd'
+      - 'tools/ci/reduce_pr566_mask_coherent_ab.py'
   workflow_dispatch:
 permissions:
   contents: read
@@ -88,36 +91,45 @@ jobs:
       - name: Execute real native/Workbench safety and physics regression
         run: |
           set -euo pipefail
-          for test in test_workbench_presentation_coherence test_pr566_mask_coherent_native_world test_workbench_input test_workbench_fleet_session test_workbench_physics_play; do
+          for test in test_workbench_presentation_coherence test_pr566_mask_coherent_native_world test_pr593_mask_coherent_production test_workbench_input test_workbench_fleet_session test_workbench_physics_play; do
             echo "PR566_LINUX_TEST $test"
             timeout 360 "$GODOT_BIN" --headless --path godot --script "res://tests/$test.gd" > "evidence/$test.log" 2>&1 || { tail -100 "evidence/$test.log"; exit 1; }
             tail -4 "evidence/$test.log"
           done
 
-      - name: Capture actual Linux X11 GL Fire/Smoke and guarded overlay
+      - name: Capture all eight original Linux X11 GL A/B cohorts
         run: |
           set -euo pipefail
           bash tools/ci/prepare_linux_display.sh > evidence/display-setup.log 2>&1
-          for camera in free follow; do
-            mkdir -p "evidence/frames/$camera"
-            CYBERSAND_RECOIL_TRIAL=fire \
-            CYBERSAND_DIAG_FLYER_POSE=guarded \
-            CYBERSAND_POSE_AB_CAMERA="$camera" \
-            CYBERSAND_POSE_AB_CAPTURE_DIR="$PWD/evidence/frames/$camera" \
-            CYBERSAND_RECOIL_OUTPUT="$PWD/evidence/$camera.json" \
-              xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
-              timeout 300 "$GODOT_BIN" --rendering-method gl_compatibility --display-driver x11 \
-                --path godot --script res://tests/test_pr566_mask_coherent_ab.gd \
-                > "evidence/$camera.log" 2>&1 || { tail -100 "evidence/$camera.log"; exit 1; }
+          mkdir -p evidence/frames evidence/reports evidence/logs
+          for trial in nofire fire; do
+            for camera in free follow; do
+              for mode in mask guarded; do
+                arm="${trial}-${mode}-${camera}"
+                mkdir -p "evidence/frames/$arm"
+                echo "PR593_LINUX_AB_ARM $arm"
+                CYBERSAND_RECOIL_TRIAL="$trial" \
+                CYBERSAND_DIAG_FLYER_POSE="$mode" \
+                CYBERSAND_POSE_AB_CAMERA="$camera" \
+                CYBERSAND_POSE_AB_CAPTURE_DIR="$PWD/evidence/frames/$arm" \
+                CYBERSAND_RECOIL_OUTPUT="$PWD/evidence/reports/$arm.json" \
+                  xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+                  timeout 300 "$GODOT_BIN" --rendering-method gl_compatibility --display-driver x11 \
+                    --path godot --script res://tests/test_pr566_mask_coherent_ab.gd \
+                    > "evidence/logs/$arm.log" 2>&1 || { tail -100 "evidence/logs/$arm.log"; exit 1; }
+              done
+            done
           done
+          python3 tools/ci/reduce_pr566_mask_coherent_ab.py evidence evidence/summary.json | tee evidence/reducer-console.log
           python3 - <<'PY'
-          import json,pathlib
-          for camera in ('free','follow'):
-              d=json.loads(pathlib.Path('evidence/'+camera+'.json').read_text())
-              assert not d['failures'] and d['os']=='Linux' and d['trial']=='fire' and d['pose_mode']=='guarded'
-              assert d['actual_fire_inserts']==20 and len(d['frame_captures'])==8
-              assert d['presentation_guard_totals']['safe_live']>0
-              print('PR566_LINUX_GRAPHICS',camera,len(d['samples']),d['presentation_guard_totals'])
+          import json
+          from pathlib import Path
+          x=json.loads(Path('evidence/summary.json').read_text())
+          assert x['platform']=='Linux' and len(x['comparisons'])==4 and len(x['arms'])==8
+          assert all(row['maximum_Rapier_position_difference']==0.0 and row['maximum_Rapier_velocity_difference']==0.0 for row in x['comparisons'])
+          assert sum(len(row['frames']) for row in x['arms'].values())==64
+          assert all(row['guarded_live_admissions']>0 for row in x['comparisons'])
+          print('PR593_LINUX_ALL_EIGHT_GL_AND_RAPIER_PASS',x['comparisons'])
           PY
 
       - name: Preserve independent exact-source Linux logs and real frames

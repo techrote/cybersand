@@ -43,8 +43,14 @@ def parse_one(output,fire,mode,camera):
         raise AssertionError(f"{arm} arm label mismatch")
     if doc.get("source_parent") != "214de85adef2aaabc8e26de8612a3bf27cc1a081":
         raise AssertionError(f"{arm} PR566 parent mismatch")
-    if doc.get("os") != "Windows" or doc.get("display_server") in (None,"headless"):
-        raise AssertionError(f"{arm} did not use Windows graphical display")
+    platform=doc.get("os")
+    display=str(doc.get("display_server",""))
+    if platform not in ("Windows","Linux") or display.lower() in ("","headless"):
+        raise AssertionError(f"{arm} did not use actual Windows/Linux graphical display")
+    if platform=="Windows" and display.lower()!="windows":
+        raise AssertionError(f"{arm} must use native Windows DisplayServer")
+    if platform=="Linux" and display.lower()!="x11":
+        raise AssertionError(f"{arm} must use native Linux X11 DisplayServer")
     if ("gl_compatibility" not in str(doc.get("render_driver","")) and
             "gl_compatibility" not in str(doc.get("render_driver","")).lower()):
         raise AssertionError(f"{arm} not a GL Compatibility rendering process")
@@ -84,7 +90,7 @@ def parse_one(output,fire,mode,camera):
         raise AssertionError(f"{arm} never admitted a safe live pose")
     # ABL runs may skip a tick at screenshot handoff, so compare keyed physics.
     indexed={int(row["tick"]):row for row in samples}
-    return {"arm":arm,"godot":doc["godot"],"display":doc["display_server"],
+    return {"arm":arm,"os":platform,"godot":doc["godot"],"display":doc["display_server"],
             "renderer":doc["render_driver"],"native_frames":doc["native_frames"],
             "real_fire_inserts":doc["actual_fire_inserts"],
             "sample_count":len(samples),"mode":mode,"camera":camera,
@@ -111,7 +117,7 @@ def reduce(root):
     for fire,mode,camera in EXPECTED:
         row=parse_one(root,fire,mode,camera)
         groups[row["arm"]]=row
-    identities={(r["godot"],r["display"],r["renderer"]) for r in groups.values()}
+    identities={(r["os"],r["godot"],r["display"],r["renderer"]) for r in groups.values()}
     if len(identities)!=1: raise AssertionError("A/B runtime/display renderer identities differ")
     comparisons=[]
     for fire in FIRE:
@@ -139,10 +145,15 @@ def reduce(root):
                 "fire_insertions":[a["real_fire_inserts"],b["real_fire_inserts"]]})
     for row in groups.values():
         row.pop("_physics")
+    platform=next(iter(groups.values()))["os"]
+    native_sha=("6c7811b78c12e34a68931f83f2fd505c20078c089bce245a9be8be6e02e6d04d"
+                if platform=="Windows" else
+                "44c906356a98c84b09c01f6e83bcae2391a4c0e39c5c632431a4a3f4cc1578e9")
     out={"schema":"pr566-mask-coherent-flyer-ab-v1","source_pr":566,
+         "platform":platform,"native_runtime_sha256":native_sha,
          "native_build_run":43537909868,
-         "native_windows_binary_sha256":"6c7811b78c12e34a68931f83f2fd505c20078c089bce245a9be8be6e02e6d04d",
-         "context":"Windows hosted GL Compatibility / ANGLE graphical + real native World and Rapier; no assertion of a dedicated hardware GPU",
+         "native_windows_binary_sha256":native_sha if platform=="Windows" else None,
+         "context":(platform+" hosted GL Compatibility + real native World and Rapier; no assertion of a dedicated hardware GPU"),
          "cohort_count":len(groups),"comparisons":comparisons,"arms":groups,
          "interpretation_rules":[
            "Only material-free swept native mask positions may draw the live Rapier pose; vetoed frames remain revision-matched.",
@@ -162,7 +173,7 @@ def main():
     for x in result["comparisons"]:
         print("PR566_MASK_COHERENT_PAIR",json.dumps(x,sort_keys=True))
     print("PR566_MASK_COHERENT_SUMMARY",json.dumps({"groups":len(result["arms"]),
-          "pairs":len(result["comparisons"]),"native_sha256":result["native_windows_binary_sha256"]}))
+          "pairs":len(result["comparisons"]),"native_sha256":result["native_runtime_sha256"]}))
     return 0
 
 

@@ -119,6 +119,9 @@ def main():
     execute("native-world-wall-clearance",base+["--headless","--path",str(ROOT/"godot"),
             "--script","res://tests/test_pr566_mask_coherent_native_world.gd"],
             os.environ.copy(),target/"logs/native-world-clearance.log",180)
+    execute("full-production-actor-pose-admission",base+["--headless","--path",str(ROOT/"godot"),
+            "--script","res://tests/test_pr593_mask_coherent_production.gd"],
+            os.environ.copy(),target/"logs/full-production-admission.log",210)
     results=[]
     for fire in ("nofire","fire"):
         for camera in ("free","follow"):
