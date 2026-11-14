@@ -27,6 +27,8 @@ const DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC: int = 16667
 const HARD_SURFACE_SNAPSHOT_INTERVAL_USEC: int = 250000
 const RENDER_PATCH_METADATA_STRIDE: int = 6
 const MAX_PENDING_RENDER_PATCHES: int = 256
+const RENDER_ACK_POLICY_BASELINE: String = "baseline"
+const RENDER_ACK_POLICY_GATED: String = "gated"
 const RENDER_ACK_TRACE_MAX_EVENTS: int = 4096
 const MAX_BRUSH_FOOTPRINT_CELLS: int = 4096
 const MAX_PENDING_BRUSH_COMMANDS: int = 8
@@ -951,6 +953,9 @@ var _published_render_payload_generation: int = -1
 var _published_render_patch_rectangles: PackedInt32Array = PackedInt32Array()
 var _published_render_patch_cells: PackedByteArray = PackedByteArray()
 var _acknowledged_render_snapshot_serial: int = 0
+# RENDER-ACK-002: private, pre-start, immutable worker policy; never a second material owner.
+var _render_ack_policy: String = RENDER_ACK_POLICY_BASELINE
+var _render_ack_capture_deferred: bool = false # Worker-owned trace transition only.
 var _render_full_refresh_requested: bool = false
 # RENDER-ACK-001: all optional trace samples are copied values. The worker
 # never writes files, and tracing is enabled only before its thread starts.
@@ -2167,6 +2172,19 @@ func take_latest_snapshot(after_serial: int) -> CyberSimulationSnapshot:
 
 # Opt-in trace for diagnosis only. Called before start_worker; does not alter
 # native snapshot policy, ACK admission, simulation pacing, or texture uploads.
+# Policy must be fixed before the synchronous initial snapshot and native owner thread.
+# The default remains byte-for-byte baseline at the publication decision.
+func configure_render_ack_policy(policy: String) -> bool:
+	if _thread.is_started() or policy not in [RENDER_ACK_POLICY_BASELINE, RENDER_ACK_POLICY_GATED]:
+		return false
+	_render_ack_policy = policy
+	return true
+
+
+func render_ack_policy() -> String:
+	return _render_ack_policy
+
+
 func enable_render_ack_trace() -> bool:
 	if _thread.is_started():
 		return false
@@ -2736,13 +2754,39 @@ func _publish_snapshot(
 		and acknowledged_render_serial >= _pending_render_snapshot_serial
 	):
 		_clear_pending_render_patches()
-	if (
+	var render_capture_due: bool = (
 		force_render_full_refresh
 		or (
 			_world.revision != _snapshot_world_revision
 			and now_usec - _last_render_snapshot_usec >= render_snapshot_interval_usec
 		)
-	):
+	)
+	# A successfully uploaded material packet must be ACKed before the next
+	# ordinary native capture. The World retains its dirty chunks, so repeated
+	# writes coalesce at the native authority without concatenating old bytes.
+	# Explicit full refresh and World replacement always bypass this gate.
+	var defer_native_render: bool = (
+		_render_ack_policy == RENDER_ACK_POLICY_GATED
+		and not force_render_full_refresh
+		and _pending_render_snapshot_serial > acknowledged_render_serial
+	)
+	if _render_ack_trace_enabled:
+		if render_capture_due and defer_native_render and not _render_ack_capture_deferred:
+			_render_ack_capture_deferred = true
+			_trace_render_ack("native_capture_deferred", {
+				"pending_serial":_pending_render_snapshot_serial,
+				"acknowledged_serial":acknowledged_render_serial,
+				"captured_revision":_snapshot_world_revision,
+				"current_revision":int(_world.revision),
+				"world_generation":_world_generation})
+		elif not defer_native_render and _render_ack_capture_deferred:
+			_render_ack_capture_deferred = false
+			_trace_render_ack("native_capture_resumed", {
+				"reason":"forced_full" if force_render_full_refresh else "acknowledged",
+				"pending_serial":_pending_render_snapshot_serial,
+				"acknowledged_serial":acknowledged_render_serial,
+				"world_generation":_world_generation})
+	if render_capture_due and not defer_native_render:
 		var render_exchange_start_usec: int = Time.get_ticks_usec()
 		if _world.has_method(&"take_render_snapshot"):
 			var render_packet: Dictionary = _take_native_render_snapshot(

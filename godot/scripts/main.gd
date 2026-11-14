@@ -1838,6 +1838,14 @@ func _ready() -> void:
 	update_worker_frame_state()
 	_publish_physical_body_state()
 	simulation_worker.set_render_snapshot_hz(render_snapshot_hz)
+	# RENDER-ACK-002 is a private experiment, never a production preference.
+	# Configure before start_worker publishes its initial synchronous packet.
+	var requested_render_ack_policy: String = "baseline"
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--render-ack-policy="):
+			requested_render_ack_policy = arg.trim_prefix("--render-ack-policy=")
+	if not simulation_worker.configure_render_ack_policy(requested_render_ack_policy):
+		push_error("Unsupported render ACK policy: " + requested_render_ack_policy)
 	_begin_render_ack_trace()
 	worker_start_error = simulation_worker.start_worker(CHARACTER_SPAWN)
 	if worker_start_error != OK:

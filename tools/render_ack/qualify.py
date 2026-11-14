@@ -17,6 +17,7 @@ BAD_LOG = re.compile(r"(?m)^(?:SCRIPT ERROR:|Parse Error:|ERROR: Failed to load 
 TESTS = [
     ("handoff", "res://tests/test_render_patch_handoff_regression.gd", "Render patch handoff regression passed"),
     ("ack_feedback", "res://tests/test_render_ack_feedback.gd", "RENDER_ACK_FEEDBACK:"),
+    ("ack_policy", "res://tests/test_render_ack_policy.gd", "RENDER_ACK_POLICY:"),
 ]
 
 
@@ -35,8 +36,8 @@ def run(command: list[str], output: Path, limit: int, marker: str = "") -> dict:
         result["exit_code"] = process.returncode
         result["ok"] = (process.returncode == 0 and not BAD_LOG.search(log)
                         and (not marker or marker in log)
-                        and (marker != "RENDER_ACK_FEEDBACK:" or
-                             bool(re.search(r"RENDER_ACK_FEEDBACK: \d+ assertions, 0 failures", log))))
+                        and (marker not in ("RENDER_ACK_FEEDBACK:", "RENDER_ACK_POLICY:") or
+                             bool(re.search(re.escape(marker) + r" \d+ assertions, 0 failures", log))))
     except subprocess.TimeoutExpired as error:
         log = str(error) + "\n" + str(error.stdout) + "\n" + str(error.stderr)
         result["failure"] = "timeout"
