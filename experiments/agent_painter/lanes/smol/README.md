@@ -1,5 +1,57 @@
 # Smol painter: first bounded DEVELOPMENT iteration
 
+## Retrospective audit of the **actual** original fresh120 checkpoint — 14 November 2026
+
+**Source-matched historical evidence verified; not a new candidate or training run.**
+The one-shot [GitHub-hosted SMOL historical-custody re-audit
+43567120322](https://github.com/techrote/cybersand/actions/runs/43567120322)
+completed **SUCCESS**, independent job
+[132363265541](https://github.com/techrote/cybersand/actions/runs/43567120322/job/132363265541),
+at audit source **`6987508dd126eeb92ca7dd05a248e908478ccd7b`**.
+It freshly downloaded the **original real** candidate artifact from the
+historical producer [43522896533](https://github.com/techrote/cybersand/actions/runs/43522896533),
+not a synthetic completion-gate fixture. This matters because the latest
+20/20 source-only negative controls had previously **not** been executed
+against that full original checkpoint and optimizer trace.
+
+- **Original actual trainer/native producer:** `fef6654ecd0828f765af1a13d2d10469013a3ea6`;
+  candidate artifact **14085125908**, 84,003,303 bytes, Actions downloader
+  independently reports matching downloaded ZIP SHA-256
+  `c5d7cb88bda1e8ff9c4624ca5b95a1997f4913d97a993ad0310c720620d1f3e9`.
+  The original **whole producer workflow remains FAILED** from its downstream
+  publication/hostname stage. The model-training artifact is independently valid;
+  the parent run has not been retrospectively relabelled successful.
+- **Original native positive admission:** source
+  `633920373a3d406a2ede61ce4137c324f76be23b`, run **43506373969**,
+  artifact **14076703326**, separate download ZIP SHA-256
+  `50a9ad9b255b2a57180edf5558ca2b47dab9affd9ef9d2438f9011d648f81f39`.
+  The gate independently revalidated the exact native-admitted original
+  **12 TRAIN rows / six structural groups**, shared compiler, readbacks and
+  sampler. No DEVELOPMENT or FINAL target/image was opened by this audit.
+- **Actual gate result:** `promotable=true` for the **original** completed
+  **120/120 optimizer events**, genuine unchanged-base/changed-adapter checkpoint,
+  exact full checkpoint member inventory and sample/history accounting.
+  Checkpoint120 inventory SHA-256:
+  `8cea64447c7593b1b3623b2f26e676293edfa5b5893d7d39b6e623eb43378bf1`;
+  optimizer progress trace SHA-256:
+  `8d81d6fed8e94d9a3e01e1119be60a6ae7e4f22c06849bdfefda465a30185405`.
+  The new audit made **no optimizer updates, raw generation or native painting**.
+- **Read-only evidence receipt:** [artifact
+  14103126534](https://github.com/techrote/cybersand/actions/runs/43567120322/artifacts/14103126534),
+  two small JSON records, 90-day retention, Actions ZIP SHA-256
+  `ab98fcf7eb057401792f8bfe0d1682b610107470ef22b31383a2bf5d2432b4a1`.
+  The workflow is `agent-painter-smol-historical-audit.yml`; it is explicitly
+  source-bounded and does not retrain on pushes outside its own file.
+
+**Research disposition unchanged:** the original fresh120 candidate's
+compiler-accepted 1/6 DEVELOPMENT programs and 2/12 native seed views do
+**not** satisfy the requested five-endpoint Pipework topology (0/2
+request-conforming Pipework groups). This audit promotes historical
+**checkpoint-custody validity only**, not useful artwork. The next justified
+training stage depends on shepherd/reviewer-approved, structurally novel,
+positively native-admitted TRAIN examples and a separately versioned curriculum;
+the unopened FINAL split remains excluded.
+
 ## Frozen TRAIN sampler corroboration — 14 November 2026
 
 **Future fresh120 run safety, not a new trained candidate.** An independent
