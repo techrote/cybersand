@@ -1,5 +1,6 @@
 """Pure offline deterministic tests; no native/held-out/model operations."""
 import copy
+import json
 import unittest
 
 from experiments.driv3r.stage_d.direct.trajectory import compare_simulated_effects as audit
@@ -63,6 +64,13 @@ class SyntheticEffectTests(unittest.TestCase):
         c = record(["N1", "E1"], [(0, -1), (1, -1)], ["q1", "q2"],
                    [(0, 0), (0, -1), (1, -1)])
         self.assertEqual(audit({"a": a, "b": b, "c": c})["first_geometric_divergence_index"], 0)
+
+    def test_json_roundtrip_does_not_create_false_divergence(self):
+        a = record(["E1"], [(1, 0)], ["p1"], [(0, 0), (1, 0)])
+        b = json.loads(json.dumps(a))
+        v = audit({"a": a, "b": b})
+        self.assertIsNone(v["first_geometric_divergence_index"])
+        self.assertEqual(v["common_simulated_path_prefix_cells"], 2)
 
     def test_reject_empty_or_malformed_arms(self):
         for arms in ({}, {"a": {}}, {"a": {}, "b": {}}, {"a": record([],[],[],[(0,0)]), "b": {"events":[], "path":[]}}):
