@@ -263,6 +263,8 @@ def simulate(recipe):
                       original_volume_sha256=points_hash(original))
         cursor=min(original,key=lambda p:(min(abs(p[0]-q[0])+abs(p[1]-q[1]) for q in edge),p))
         visited.add(cursor)
+        walker_policy=recipe.get("walker_policy","boundary_biased")
+        assert walker_policy in ("boundary_biased","random_legal")
         for _ in range(budget):
             options=next_to(cursor,original)
             if not options:
@@ -278,7 +280,13 @@ def simulate(recipe):
             def score(p):
                 distance=min(abs(p[0]-q[0])+abs(p[1]-q[1]) for q in edge)
                 return abs(distance-recipe.get("boundary_offset",2)),rng.next()%7,p
-            stroke(min(options,key=score),"erase")
+            selected=(min(options,key=score) if walker_policy=="boundary_biased"
+                      else rng.choose(sorted(options)))
+            log("SYNTHETIC_CHOICE",generator="weathering_worm",
+                legal_points=sorted(map(list,options)),chosen=selected,
+                policy=walker_policy,legal_catalog_sha256=points_hash(options),
+                native_legal_catalog=False,model_decision=False)
+            stroke(selected,"erase")
     elif family=="branching_growth":
         lines=htree(w//2,h//2,min(w,h)//2,recipe.get("depth",3))
         skeleton={p for a,b in lines for p in raster(a,b)}
@@ -340,11 +348,19 @@ def simulate(recipe):
                     log("TRAPPED",reason="no viable future four-point reentry",at_index=i)
                     break
                 j=candidates[0]
-                if policy=="backtrack" and contiguous:
-                    reverse(contiguous[-1],"BACKTRACK_CURSOR")
-                else:
-                    log("BRUSH_UP_SEEK_FUTURE",to=coordinates[j],
-                        continuous_physical_path_verified=False,material_preserved=True)
+                # Backtracking a single cursor step is different from a
+                # future-point reposition; neither paints or undoes material.
+                if policy=="backtrack" and len(contiguous)>1:
+                    reverse(contiguous[-2],"BACKTRACK_CURSOR")
+                old_hash=points_hash(material)
+                log("BRUSH_UP_SEEK_FUTURE",from_cursor=cursor,to=coordinates[j],
+                    policy=policy,virtual_offline_transfer=True,
+                    continuous_physical_path_verified=False,material_preserved=True,
+                    material_before_sha256=old_hash,material_after_sha256=old_hash,
+                    native_receipt=None)
+                cursor=coordinates[j]
+                contiguous.clear()  # a new logical segment, never a hidden brush stroke
+                assert points_hash(material)==old_hash
                 log("GUIDANCE_REENTRY",from_index=i,to_index=j,skipped=j-i,
                     lookahead_unvisited=4,reentry_guidance_u16=scalar[coordinates[j]])
                 i=j
@@ -374,10 +390,8 @@ def simulate(recipe):
                 after=material,midpoint_captured=midpoint is not None)
 
 
-def write(recipe, folder):
-    result=simulate(recipe)
-    folder=Path(folder)
-    folder.mkdir(parents=True,exist_ok=True)
+def artifact_bytes(recipe, result):
+    """All synthetic artifacts are rederived on replay, not merely hash checked."""
     w,h=recipe["canvas"]
     field=b"".join(struct.pack("<H",result["guidance"][x,y])
                    for y in range(h) for x in range(w))
@@ -391,6 +405,14 @@ def write(recipe, folder):
         "before.png":image(w,h,result["before"]),
         "midpoint.png":image(w,h,result["midpoint"]),
         "after.png":image(w,h,result["after"])}
+    return files
+
+
+def write(recipe, folder):
+    result=simulate(recipe)
+    folder=Path(folder)
+    folder.mkdir(parents=True,exist_ok=True)
+    files=artifact_bytes(recipe,result)
     manifest=dict(version=VERSION,summary=result["summary"],
         qualification="OFFLINE_SYNTHETIC_ONLY",native_replay_verified=False,
         model_decisions=0,provenance=dict(native=None,model=None,native_receipt=None,
@@ -410,19 +432,28 @@ def write(recipe, folder):
 def replay(folder):
     folder=Path(folder)
     manifest=json.loads((folder/"manifest.json").read_text())
+    assert manifest["version"]==VERSION
     assert manifest["qualification"]=="OFFLINE_SYNTHETIC_ONLY"
     assert manifest["native_replay_verified"] is False
-    assert manifest["provenance"]["source_python_sha256"]==sha(Path(__file__).read_bytes())
-    for name,meta in manifest["artifacts"].items():
-        data=(folder/name).read_bytes()
-        assert len(data)==meta["bytes"] and sha(data)==meta["sha256"],name
+    assert manifest["model_decisions"]==0
+    provenance=manifest["provenance"]
+    assert provenance["source_python_sha256"]==sha(Path(__file__).read_bytes())
+    assert provenance["native"] is None and provenance["model"] is None
+    assert provenance["native_receipt"] is None
     recipe=json.loads((folder/"recipe.json").read_text())
     fresh=simulate(recipe)
     assert fresh["summary"]==manifest["summary"]
-    assert packed(fresh["records"])==(folder/"events.json").read_bytes()
-    assert packed(fresh["track"])==(folder/"trajectory.json").read_bytes()
-    assert packed(fresh["geometry"])==(folder/"geometry.json").read_bytes()
-    assert image(*recipe["canvas"],fresh["after"])==(folder/"after.png").read_bytes()
+    assert fresh["midpoint_captured"]==manifest["midpoint_captured"]
+    assert manifest["failures"]==[e for e in fresh["records"] if e["kind"] in
+                                  ("TRAPPED","REJECT_REVISIT","REJECT_OUT_OF_BOUNDS")]
+    expected=artifact_bytes(recipe,fresh)
+    assert set(expected)==set(manifest["artifacts"])
+    # An attacker can recalculate a manifest hash; each item must also match
+    # the independently reconstructed raster/field/trajectory byte-for-byte.
+    for name,data in expected.items():
+        meta=manifest["artifacts"][name]
+        assert meta==dict(bytes=len(data),sha256=sha(data)),name
+        assert (folder/name).read_bytes()==data,name
     return True
 
 

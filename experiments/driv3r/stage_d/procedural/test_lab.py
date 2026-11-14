@@ -117,6 +117,59 @@ class OfflineD2(unittest.TestCase):
             with self.assertRaises((AssertionError,ValueError)):
                 simulate(invalid)
 
+    def test_reentry_has_explicit_unpainted_virtual_seek(self):
+        for recovery in ("backtrack","relocate"):
+            recipe=dict(default_recipes()[2],recovery=recovery)
+            result=simulate(recipe)
+            events=result["records"]
+            seeks=[e for e in events if e["kind"]=="BRUSH_UP_SEEK_FUTURE"]
+            enters=[e for e in events if e["kind"]=="GUIDANCE_REENTRY"]
+            self.assertTrue(enters)
+            self.assertEqual(len(seeks),len(enters))
+            for seek,entry in zip(seeks,enters):
+                self.assertEqual(seek["to"],
+                                 result["geometry"]["ordered_curve"][entry["to_index"]])
+                self.assertTrue(seek["virtual_offline_transfer"])
+                self.assertFalse(seek["continuous_physical_path_verified"])
+                self.assertTrue(seek["material_preserved"])
+                self.assertEqual(seek["material_before_sha256"],
+                                 seek["material_after_sha256"])
+                self.assertIsNone(seek["native_receipt"])
+            for event in events:
+                if event["kind"]=="REVERSAL" and event["semantics"]=="BACKTRACK_CURSOR":
+                    self.assertGreater(len(event["reverse_trace"]),1)
+
+    def test_manifest_rehash_does_not_forge_replay(self):
+        import hashlib
+        from lab import packed
+        with tempfile.TemporaryDirectory() as root:
+            path=Path(root)
+            write(default_recipes()[2],path)
+            file=path/"guidance-preview.png"
+            changed=file.read_bytes()+b"NOT-A-REAL-PIXEL"
+            file.write_bytes(changed)
+            manifest=json.loads((path/"manifest.json").read_text())
+            manifest["artifacts"]["guidance-preview.png"]={
+                "bytes":len(changed),"sha256":hashlib.sha256(changed).hexdigest()}
+            (path/"manifest.json").write_bytes(packed(manifest))
+            with self.assertRaises(AssertionError):
+                replay(path)
+
+    def test_weathering_random_legal_control_is_source_matched(self):
+        recipe=default_recipes()[0]
+        a=simulate(dict(recipe,walker_policy="boundary_biased"))
+        b=simulate(dict(recipe,walker_policy="random_legal"))
+        self.assertEqual(a["before"],b["before"])
+        self.assertEqual(a["guidance"],b["guidance"])
+        self.assertEqual(a["geometry"],b["geometry"])
+        self.assertTrue(any(e["kind"]=="SYNTHETIC_CHOICE" for e in a["records"]))
+        for result in (a,b):
+            for e in result["records"]:
+                if e["kind"]=="SYNTHETIC_CHOICE":
+                    self.assertIn(list(e["chosen"]),e["legal_points"])
+                    self.assertFalse(e["native_legal_catalog"])
+                    self.assertFalse(e["model_decision"])
+
 
 if __name__=="__main__":
     unittest.main()
