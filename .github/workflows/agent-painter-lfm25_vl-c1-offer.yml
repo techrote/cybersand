@@ -25,10 +25,26 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
-      - name: Check out the exact source
-        uses: actions/checkout@v4
+      - name: Check out the exact PR-head source, never the synthetic merge
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
+      - name: Verify checkout identity before consuming research receipts
+        shell: bash
+        env:
+          EXPECTED_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/c1
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "$EXPECTED_SOURCE_SHA" || {
+            echo "Wrong C1 review source: expected $EXPECTED_SOURCE_SHA, got $actual" >&2
+            exit 1
+          }
+          printf '%s\n' "$actual" > evidence/c1/actual-source-sha.txt
+          printf '%s\n' "$GITHUB_SHA" > evidence/c1/orchestration-source-sha.txt
+          python3 tools/ci/check_ci_provider_policy.py
       - name: Verify original research artifact and conditional review packet
         shell: bash
         env:
@@ -36,7 +52,6 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p evidence/c1
-          printf '%s\n' "$GITHUB_SHA" > evidence/c1/orchestration-source-sha.txt
           curl --fail --location --silent --show-error --retry 3 \
             -H "Authorization: Bearer ${GH_TOKEN}" \
             -H "Accept: application/vnd.github+json" \
@@ -52,7 +67,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lfm-c1-conditional-review-${{ github.sha }}-${{ github.run_id }}
+          name: lfm-c1-conditional-review-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: evidence/c1/
           if-no-files-found: error
           retention-days: 90
