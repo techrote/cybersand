@@ -1,0 +1,58 @@
+name: Agent painter LFM C1 conditional-review custody (NO TRAIN)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "experiments/agent_painter/lanes/lfm25_vl/C1_SHARED_ADMISSION_REVIEW_OFFER.json"
+      - "experiments/agent_painter/lanes/lfm25_vl/check_c1_review_offer.py"
+      - "experiments/agent_painter/lanes/lfm25_vl/contrastive_proposals_v1.json"
+      - ".github/workflows/agent-painter-lfm25_vl-c1-offer.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: lfm-c1-review-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  original-c1-conditional-review:
+    name: Verify original failed-source C1 evidence (no training)
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Check out the exact source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify original research artifact and conditional review packet
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/c1
+          printf '%s\n' "$GITHUB_SHA" > evidence/c1/orchestration-source-sha.txt
+          curl --fail --location --silent --show-error --retry 3 \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14111581483/zip" \
+            --output "$RUNNER_TEMP/original-lfm-native.zip"
+          echo "e90014c8883bb89e1caaebfdb00cf28f2078604553a6b8de803e6caf9305aebf  $RUNNER_TEMP/original-lfm-native.zip" | sha256sum --check --strict
+          python3 experiments/agent_painter/lanes/lfm25_vl/check_c1_review_offer.py \
+            --original-zip "$RUNNER_TEMP/original-lfm-native.zip" \
+            --output evidence/c1/conditional-review-verification.json
+          python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/check_c1_review_offer.py
+      - name: Preserve partial or success evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lfm-c1-conditional-review-${{ github.sha }}-${{ github.run_id }}
+          path: evidence/c1/
+          if-no-files-found: error
+          retention-days: 90
