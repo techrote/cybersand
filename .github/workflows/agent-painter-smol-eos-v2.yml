@@ -5,6 +5,7 @@ on:
     paths:
       - 'experiments/agent_painter/training/common.py'
       - 'experiments/agent_painter/training/train.py'
+      - 'experiments/agent_painter/training/README.md'
       - 'experiments/agent_painter/training/test_smol_eos_policy.py'
       - 'experiments/agent_painter/training/smol_eos_v2_qualify.py'
       - '.github/workflows/agent-painter-smol-eos-v2.yml'
