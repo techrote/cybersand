@@ -95,7 +95,7 @@ func _run() -> void:
 								var frame: Dictionary = host.workbench_display_frame().duplicate(true)
 								var bound: Transform2D = original_frame.instances[1].pose
 								require(bound.origin.distance_to(Vector2(240,360))<0.1,
-									"original native Kestrel pose retained across paused PAINT edits"
+									"original native Kestrel pose retained across paused PAINT edits")
 								var bytes: PackedByteArray = host.image.get_data()
 								var tick: int = host.physical_actor_session.tick
 								var bridge = host.physical_actor_session.bridge
@@ -111,7 +111,7 @@ func _run() -> void:
 									bridge._rects[0],host.image,host._presentation_previous_occupied,
 									host._presentation_previous_unknown,true)
 								require(not pixel_clearance.safe and pixel_clearance.reason=="material_in_swept_mask",
-									"actual previous GPU Fire cell blocks the geometrically swept native mask"
+									"actual previous GPU Fire cell blocks the geometrically swept native mask")
 								host.snapshot_blend_start_usec=Time.get_ticks_usec()
 								host._present_physical_actor_overlay(frame)
 								var blocked: Dictionary=host.workbench_presentation_last.duplicate(true)
@@ -119,30 +119,30 @@ func _run() -> void:
 									require(int(blocked.get("blocked_material",0))>0
 										and int(blocked.get("safe_live",0))==0
 										and _shown().distance_to(bound.origin)<0.001,
-										"bound actor refuses old GPU Fire during active crossfade"
+										"bound actor refuses old GPU Fire during active crossfade")
 								else:
 									require(str(blocked.get("status"))=="invalid_frame"
 										and host.physical_actor_overlay._parts.is_empty(),
-										"paused PAINT revision change hides actor instead of using stale Rapier pose"
+										"paused PAINT revision change hides actor instead of using stale Rapier pose")
 								host.snapshot_blend_start_usec=Time.get_ticks_usec()-2000000
 								var after_blend: Dictionary = Clearance.assess(bound,proposed_pose,
 									bridge._rects[0],host.image,host._presentation_previous_occupied,
 									host._presentation_previous_unknown,false)
 								require(after_blend.safe,
-									"after crossfade expiry old-only Fire no longer blocks empty swept World"
+									"after crossfade expiry old-only Fire no longer blocks empty swept World")
 								host._present_physical_actor_overlay(frame)
 								var released: Dictionary=host.workbench_presentation_last.duplicate(true)
 								if valid_after_edit:
 									require(int(released.get("safe_live",0))>0
 										and _shown().distance_to(Vector2(CELL))<0.001,
-										"elapsed blend admits live actor when display receipt is current"
+										"elapsed blend admits live actor when display receipt is current")
 								else:
 									require(str(released.get("status"))=="invalid_frame"
 										and host.physical_actor_overlay._parts.is_empty(),
-										"expired blend does not override still-stale native display receipt"
+										"expired blend does not override still-stale native display receipt")
 								require(host.image.get_data()==bytes
 									and host.physical_actor_session.tick==tick,
-									"render safety never mutated World or advanced Rapier tick"
+									"render safety never mutated World or advanced Rapier tick")
 								print("PR593_NATIVE_EDIT_CROSSFADE_CASE ",JSON.stringify({
 									"old_gpu_material":old.get_pixel(CELL.x,CELL.y).r8,
 									"new_cpu_material":host.image.get_pixel(CELL.x,CELL.y).r8,
