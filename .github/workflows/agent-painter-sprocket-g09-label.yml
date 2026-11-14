@@ -1,0 +1,73 @@
+name: SPROCKET G09 proposed root-tokenizer label review (no TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/G09_PROPOSED_LABEL_REVIEW_V1.json
+      - experiments/agent_painter/lanes/sprocket/g09_label_review.py
+      - experiments/agent_painter/lanes/sprocket/test_g09_label_review.py
+      - .github/workflows/agent-painter-sprocket-g09-label.yml
+permissions:
+  contents: read
+concurrency:
+  group: sprocket-g09-label-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  exact-root-tokenizer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify source, runner and scheduling
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_REF" = refs/heads/codex/agent-painter-sprocket-568
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$GITHUB_REPOSITORY" = techrote/cybersand
+          test "$(git hash-object experiments/agent_painter/lanes/sprocket/threefamily_v3.py)" = b3ac98a8cd06158b39a2f58776fab845046f245f
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/sprocket-label-scheduling.json
+      - name: Run proposal-only source and adversarial tests
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s experiments/agent_painter/lanes/sprocket -p 'test_g09_label_review.py' -v
+          python3 experiments/agent_painter/lanes/sprocket/g09_label_review.py --output /tmp/sprocket-label-source-only.json
+      - name: Install exact review tokenizer packages without a model trainer
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/g09-tokenizer"
+          "$RUNNER_TEMP/g09-tokenizer/bin/python" -m pip install 'huggingface-hub==2.4.0' 'tokenizers==0.23.3' 'transformers==5.22.2'
+          "$RUNNER_TEMP/g09-tokenizer/bin/python" -m pip check
+      - name: Download only public pinned root tokenizer/config small files
+        env:
+          HF_HUB_DISABLE_XET: '1'
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/g09-label
+          timeout --signal=TERM --kill-after=20s 600s "$RUNNER_TEMP/g09-tokenizer/bin/python" - <<'PY'
+          from huggingface_hub import snapshot_download
+          import os
+          snapshot_download(repo_id="kandivault/sprocket-500m",
+                            revision="eb157d4ddddc4619e661d4a2426bb2dd000fc668",
+                            allow_patterns=["config.json", "tokenizer.json", "tokenizer_config.json", "special_tokens_map.json", "chat_template.jinja"],
+                            local_dir=os.environ["RUNNER_TEMP"] + "/g09-root")
+          PY
+      - name: Verify actual root Jinja, token IDs, EOS and complete target
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=20s 300s "$RUNNER_TEMP/g09-tokenizer/bin/python" \
+            experiments/agent_painter/lanes/sprocket/g09_label_review.py \
+            --snapshot "$RUNNER_TEMP/g09-root" \
+            --output evidence/g09-label/receipt.json
+          "$RUNNER_TEMP/g09-tokenizer/bin/python" -m pip freeze --all > evidence/g09-label/pip-freeze.txt
+          printf '%s\n' "$GITHUB_SHA" > evidence/g09-label/source-head.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-g09-label-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/g09-label/
+          if-no-files-found: warn
+          retention-days: 90
