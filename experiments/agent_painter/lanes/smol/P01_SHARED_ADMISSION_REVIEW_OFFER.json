@@ -42,13 +42,15 @@
       "material_cells": 596,
       "material_sha256": "0bf6340f40e3666963bcb38b4ef2cab851ba986f40a6a74bad133e7314d260f2",
       "png_sha256": "23c13d07ecf74a0e4aac754b1cb72068c342ea8d8b03737f3f8bbc3590b0f447",
-      "receipt_sha256": "ebec028b9759e591a603b325248d7190f103d85db53b72b64573c952dc5ff0ab"
+      "receipt_sha256": "ebec028b9759e591a603b325248d7190f103d85db53b72b64573c952dc5ff0ab",
+      "materials_png_sha256": "da07b73adc3821a9906a4448bc5b3756955a161cd93acda177dea10717670c69"
     },
     "130363": {
       "material_cells": 596,
       "material_sha256": "3f898da3dace95fc616ed37f85ef226b9de91f61636acb683819a708fdfd3392",
       "png_sha256": "ea6d1795b6756c114e63690d64f4650836e516f6f250891f4f3c4e38e984d676",
-      "receipt_sha256": "eaea97e1a35a817a12e34242bbaf99d39493e0453965ef772e093164fe9ce079"
+      "receipt_sha256": "eaea97e1a35a817a12e34242bbaf99d39493e0453965ef772e093164fe9ce079",
+      "materials_png_sha256": "3270b871bcdc9b28784d87bd56bb6f51cfd9479330bb141c441dbf5dbc40b8bb"
     }
   },
   "training_steps": 0,
