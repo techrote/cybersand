@@ -1,0 +1,151 @@
+name: Agent painter SMOL continued CPU training (full-state checkpoint)
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths:
+      - experiments/agent_painter/lanes/smol/continuation-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-smol-continuation-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  request:
+    name: Admit one immutable SMOL full-state continuation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Guard distinct parent corpus/run and bounded continuation stage
+        env:
+          CURRENT_REF: ${{ github.ref }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          wanted = {
+            "schema": "cybersand.agent-painter.smol-fullstate-continuation/1",
+            "experiment": "smol-pilot-001-c128",
+            "reason": "128-step optimizer continuation of source-pinned 16-step supervised pilot; not a model-quality promotion",
+            "trainer_source_sha": "d8e2a7759c361f3e50660e301b9ad5a0208685c4",
+            "model_revision": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
+            "resume_run_id": "43520836201",
+            "resume_artifact": "agent-painter-smol-pilot-d8e2a7759c361f3e50660e301b9ad5a0208685c4",
+            "resume_checkpoint": "checkpoint-000016",
+            "resume_adapter_sha256": "d6329fd5ab350dd274b18ffb318cd5014c5d75b115e37f21e329346aadacda5a",
+            "native_corpus_run_id": "43506373969",
+            "native_corpus_artifact": "agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b",
+            "native_manifest_sha256": "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc",
+            "global_target_step": 128,
+            "checkpoint_interval": 16,
+            "max_optimizer_seconds": 1800,
+            "final_targets_forbidden": True,
+            "hosted_trainer_processes": 1,
+            "requires_native_result": False,
+            "draft_hold": True,
+          }
+          actual = json.loads(Path("experiments/agent_painter/lanes/smol/continuation-request.json").read_text())
+          if actual != wanted or os.environ["CURRENT_REF"] != "refs/heads/codex/agent-painter-smol-568":
+            raise SystemExit("unqualified continuation request; refused")
+          print("Source-pinned single-runner continuation request accepted")
+          PY
+
+  train:
+    name: True step 16 to 128 continuation on new standard CPU runner
+    needs: request
+    runs-on: ubuntu-24.04
+    timeout-minutes: 48
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: 'default'
+      MKL_CBWR: 'COMPATIBLE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - name: Check out exact *original* trainer source for full-state compatibility
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: d8e2a7759c361f3e50660e301b9ad5a0208685c4
+          persist-credentials: false
+      - name: Verify trainer identity and record distinct orchestration source
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "d8e2a7759c361f3e50660e301b9ad5a0208685c4"
+          mkdir -p evidence/smol-continuation-environment
+          git rev-parse HEAD > evidence/smol-continuation-environment/trainer-source.txt
+          printf '%s\n' "${{ github.sha }}" > evidence/smol-continuation-environment/orchestration-source.txt
+          lscpu > evidence/smol-continuation-environment/cpu.txt
+          df -h > evidence/smol-continuation-environment/disk-before.txt
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/native
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-smol-pilot-d8e2a7759c361f3e50660e301b9ad5a0208685c4
+          run-id: '43520836201'
+          github-token: ${{ github.token }}
+          path: evidence/previous-training
+      - name: Reject changed corpus, checkpoint adapter or different source contract
+        run: |
+          set -euo pipefail
+          test "$(sha256sum evidence/native/corpus/admitted-corpus.json | cut -d' ' -f1)" = "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
+          test "$(sha256sum evidence/previous-training/checkpoint-000016/adapter/adapter_model.safetensors | cut -d' ' -f1)" = "d6329fd5ab350dd274b18ffb318cd5014c5d75b115e37f21e329346aadacda5a"
+          test "$(test -f evidence/previous-training/checkpoint-000016/inventory.json; echo $?)" = '0'
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("evidence/previous-training/checkpoint-000016/receipt.json").read_text())
+          c=x["config"]
+          assert c["source_sha"] == "d8e2a7759c361f3e50660e301b9ad5a0208685c4"
+          assert c["native_source_sha"] == "633920373a3d406a2ede61ce4137c324f76be23b"
+          assert c["profile"] == "smol"
+          assert c["numerics"]["profile"] == "portable-cpu-fp32-v1"
+          print("Verified checkpoint full-state provenance for step 16")
+          PY
+      - name: Prepare full pinned CPU runtime on this VM
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/smol-continued"
+          "$RUNNER_TEMP/smol-continued/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/smol-continued/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/smol-continued/bin/python" -m pip check
+          "$RUNNER_TEMP/smol-continued/bin/python" -m pip freeze --all > evidence/smol-continuation-environment/pip-freeze.txt
+      - name: Download exact public base and restore optimizer state; train to 128
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/smol-continued/bin/python" experiments/agent_painter/training/download_model.py \
+            --profile smol --output "$RUNNER_TEMP/smol-model"
+          cp "$RUNNER_TEMP/smol-model/download_receipt.json" evidence/smol-continuation-environment/model-download.json
+          timeout --signal=TERM --kill-after=30s 1900s "$RUNNER_TEMP/smol-continued/bin/python" experiments/agent_painter/training/train.py \
+            --profile smol --model "$RUNNER_TEMP/smol-model" --corpus evidence/native/corpus \
+            --resume evidence/previous-training/checkpoint-000016 \
+            --output evidence/smol-continuation --steps 128 --checkpoint-every 16 \
+            --max-seconds 1800 --threads 1
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-painter-smol-continue-${{ github.sha }}
+          path: evidence/smol-continuation/
+          retention-days: 90
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-painter-smol-continue-${{ github.sha }}-environment
+          path: evidence/smol-continuation-environment/
+          retention-days: 90
+          if-no-files-found: warn

@@ -1,0 +1,96 @@
+name: SMOL original native TRAIN sampler proof
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths: [.github/workflows/agent-painter-smol-corpus-order.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: smol-native-train-order-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify-original-train-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify exact checkout, source scope and provider
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/smol-policy.json
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          path: evidence/original-native
+          run-id: 43506373969
+          github-token: ${{ github.token }}
+      - name: Independently check positive native TRAIN and original balanced sampler
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/train-order
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+          import sys
+
+          root = Path("experiments/agent_painter").resolve()
+          sys.path[:0] = [str(root/"training"), str(root/"lanes"/"smol")]
+          import completion_gate as gate
+          from common import load_training_corpus, sha256_file
+          from train import sampler
+
+          directory = Path("evidence/original-native/corpus")
+          train_order = gate.frozen_train_order(directory)
+          rows, manifest = load_training_corpus(directory)
+          independent = [rows[i]["id"] for i in sampler(rows, 568)]
+          if train_order != independent or len(rows) != 12 or len(set(train_order)) != 12:
+              raise ValueError("reviewed native TRAIN order differs from shared sampler")
+          if manifest["source_sha"] != gate.NATIVE_SOURCE:
+              raise ValueError("native source mismatch")
+          if sha256_file(directory / "admitted-corpus.json") != gate.CORPUS:
+              raise ValueError("original native manifest hash mismatch")
+          if len(manifest["structural_groups"]["TRAIN"]) != 6:
+              raise ValueError("original TRAIN group count mismatch")
+          receipt = {
+              "schema": "cybersand.smol.original-native-train-order/1",
+              "source_sha": os.environ["GITHUB_SHA"],
+              "source_tree": subprocess.check_output(["git","rev-parse","HEAD^{tree}"],text=True).strip(),
+              "native_source_sha": manifest["source_sha"],
+              "native_manifest_sha256": gate.CORPUS,
+              "train_file_sha256": manifest["split_files"]["TRAIN"]["sha256"],
+              "train_rows": len(rows),
+              "train_structural_groups": len(manifest["structural_groups"]["TRAIN"]),
+              "host_seed": 568,
+              "train_ids_order_sha256": hashlib.sha256(
+                  json.dumps(train_order,sort_keys=True,separators=(",",":")).encode()).hexdigest(),
+              "actual_verified_native_train_rows": True,
+              "shared_sampler_equal": True,
+              "training": False,
+              "model_download": False,
+              "native_execution": False,
+              "development_targets_opened": False,
+              "final_targets_opened": False,
+          }
+          out = Path("evidence/train-order/original-train-order.json")
+          out.write_text(json.dumps(receipt,sort_keys=True,indent=2)+"\n")
+          print(json.dumps(receipt,sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: smol-original-native-train-order-${{ github.sha }}-${{ github.run_id }}
+          path: evidence/train-order/
+          if-no-files-found: warn
+          retention-days: 90

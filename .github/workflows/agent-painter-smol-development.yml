@@ -1,0 +1,137 @@
+name: Agent painter SMOL DEVELOPMENT baseline comparison
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths:
+      - experiments/agent_painter/lanes/smol/evaluation-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-smol-development-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  request:
+    name: Verify first frozen SMOL evaluation cohort and exact training artifact
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    outputs:
+      training_run_id: ${{ steps.contract.outputs.training_run_id }}
+      training_sha: ${{ steps.contract.outputs.training_sha }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Fail closed on changed experiment, source or sealed-FINAL policy
+        id: contract
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          request = json.loads(Path("experiments/agent_painter/lanes/smol/evaluation-request.json").read_text())
+          expected = {
+              "schema": "cybersand.agent-painter.smol-evaluation-request/1",
+              "experiment": "smol-pilot-001-development",
+              "training_source_sha": "d8e2a7759c361f3e50660e301b9ad5a0208685c4",
+              "training_run_id": "43520836201",
+              "training_artifact": "agent-painter-smol-pilot-d8e2a7759c361f3e50660e301b9ad5a0208685c4",
+              "training_checkpoint": "checkpoint-000016",
+              "expected_adapter_sha256": "d6329fd5ab350dd274b18ffb318cd5014c5d75b115e37f21e329346aadacda5a",
+              "native_source_sha": "633920373a3d406a2ede61ce4137c324f76be23b",
+              "native_corpus_run_id": "43506373969",
+              "native_corpus_artifact": "agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b",
+              "native_corpus_manifest_sha256": "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc",
+              "split": "DEVELOPMENT",
+              "max_new_tokens": 512,
+              "read_final_targets": False,
+              "requires_native_execution": False,
+          }
+          if request != expected:
+              raise SystemExit("SMOL DEVELOPMENT evaluation request changed or malformed")
+          if os.environ["GITHUB_REF"] != "refs/heads/codex/agent-painter-smol-568":
+              raise SystemExit("wrong lane ref")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+              f.write("training_run_id=43520836201\n")
+              f.write("training_sha=d8e2a7759c361f3e50660e301b9ad5a0208685c4\n")
+          PY
+      - name: Refuse DEVELOPMENT tampering and sealed-FINAL access without model downloads
+        run: python3 -m unittest discover -s experiments/agent_painter/lanes/smol -p 'test_evaluate.py' -v
+
+  compare:
+    name: Strict unchanged DEVELOPMENT base-versus-trained proposals (no native writes)
+    needs: request
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: 'default'
+      MKL_CBWR: 'COMPATIBLE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/native
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-smol-pilot-d8e2a7759c361f3e50660e301b9ad5a0208685c4
+          run-id: ${{ needs.request.outputs.training_run_id }}
+          github-token: ${{ github.token }}
+          path: evidence/training
+      - name: Verify source and native/candidate hashes before model downloads
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(sha256sum evidence/native/corpus/admitted-corpus.json | cut -d' ' -f1)" = "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
+          test "$(sha256sum evidence/training/checkpoint-000016/adapter/adapter_model.safetensors | cut -d' ' -f1)" = "d6329fd5ab350dd274b18ffb318cd5014c5d75b115e37f21e329346aadacda5a"
+          mkdir -p evidence/smol-environment
+          git rev-parse HEAD > evidence/smol-environment/evaluation-source.txt
+          lscpu > evidence/smol-environment/cpu.txt
+      - name: Install exact hosted CPU training environment
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/smol-evaluate"
+          "$RUNNER_TEMP/smol-evaluate/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/smol-evaluate/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/smol-evaluate/bin/python" -m pip check
+          "$RUNNER_TEMP/smol-evaluate/bin/python" -m pip freeze --all > evidence/smol-environment/pip-freeze.txt
+      - name: Download original pinned model, run independent first-pass DEVELOPMENT diagnostic
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/smol-evaluate/bin/python" experiments/agent_painter/training/download_model.py \
+            --profile smol --output "$RUNNER_TEMP/smol-evaluate-model"
+          cp "$RUNNER_TEMP/smol-evaluate-model/download_receipt.json" evidence/smol-environment/model-download.json
+          timeout --signal=TERM --kill-after=30s 2400s "$RUNNER_TEMP/smol-evaluate/bin/python" experiments/agent_painter/lanes/smol/evaluate.py \
+            --model "$RUNNER_TEMP/smol-evaluate-model" \
+            --corpus evidence/native/corpus \
+            --checkpoint evidence/training/checkpoint-000016 \
+            --training-source "${{ needs.request.outputs.training_sha }}" \
+            --output evidence/smol-development --max-new-tokens 512
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-painter-smol-development-${{ github.sha }}
+          path: evidence/smol-development/
+          retention-days: 90
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-painter-smol-development-${{ github.sha }}-environment
+          path: evidence/smol-environment/
+          retention-days: 90
+          if-no-files-found: warn

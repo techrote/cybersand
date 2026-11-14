@@ -1,0 +1,147 @@
+name: SMOL 128-step held-out DEVELOPMENT diagnosis
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths: ['experiments/agent_painter/lanes/smol/c128-evaluation-request.json']
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-smol-c128-eval-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  development:
+    name: Strict frozen-cohort step128 versus original base (no native writes)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: 'default'
+      MKL_CBWR: 'COMPATIBLE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Admit exactly one source-pinned, evaluation-only request
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          expected = {
+            "schema": "cybersand.agent-painter.smol-c128-development/1",
+            "experiment": "smol-source-d8-fullstate-c128-first-pass",
+            "trainer_source_sha": "d8e2a7759c361f3e50660e301b9ad5a0208685c4",
+            "training_run_id": "43522585277",
+            "training_artifact": "agent-painter-smol-continue-8a29abb8e7708d6e163d595e38a145f60eb7276e",
+            "training_artifact_sha256": "9a40ac4816323c8d7d5656ed54edd8aa0e493b66ce71dcda83e4051dcb0a310b",
+            "training_checkpoint": "checkpoint-000128",
+            "native_source_sha": "633920373a3d406a2ede61ce4137c324f76be23b",
+            "native_run_id": "43506373969",
+            "native_artifact": "agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b",
+            "corpus_manifest_sha256": "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc",
+            "split": "DEVELOPMENT",
+            "max_new_tokens": 512,
+            "native_execution": False,
+            "read_final_targets": False,
+            "train": False,
+          }
+          actual = json.loads(Path("experiments/agent_painter/lanes/smol/c128-evaluation-request.json").read_text())
+          if os.environ["GITHUB_REF"] != "refs/heads/codex/agent-painter-smol-568" or actual != expected:
+              raise SystemExit("invalid or mutated step128 evaluation request")
+          print("Admitted exact frozen 128-step checkpoint evaluation; no training or FINAL access")
+          PY
+      - name: Run existing pure DEVELOPMENT custody tests
+        run: |
+          python3 -m unittest discover -s experiments/agent_painter/lanes/smol -p 'test_evaluate.py' -v
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/native
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-smol-continue-8a29abb8e7708d6e163d595e38a145f60eb7276e
+          run-id: '43522585277'
+          github-token: ${{ github.token }}
+          path: evidence/continuation
+      - name: Independently verify native custody and complete c128 checkpoint
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/smol-c128-environment
+          git rev-parse HEAD > evidence/smol-c128-environment/orchestration-source.txt
+          lscpu > evidence/smol-c128-environment/cpu.txt
+          test "$(sha256sum evidence/native/corpus/admitted-corpus.json | cut -d' ' -f1)" = "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("evidence/continuation/checkpoint-000128")
+          r = json.loads((p / "receipt.json").read_text())
+          c = r["config"]
+          assert r["global_step"] == 128 and r["sample_cursor"] == 128
+          assert c["source_sha"] == "d8e2a7759c361f3e50660e301b9ad5a0208685c4"
+          assert c["native_source_sha"] == "633920373a3d406a2ede61ce4137c324f76be23b"
+          assert c["profile"] == "smol"
+          assert c["numerics"]["profile"] == "portable-cpu-fp32-v1"
+          assert (p / "inventory.json").is_file()
+          assert (p / "adapter/adapter_model.safetensors").is_file()
+          print("Checkpoint128 metadata, source, profile, numerics and required inventory present")
+          PY
+      - name: Install pinned CPU stack
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/smol-c128-eval"
+          "$RUNNER_TEMP/smol-c128-eval/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/smol-c128-eval/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/smol-c128-eval/bin/python" -m pip check
+          "$RUNNER_TEMP/smol-c128-eval/bin/python" -m pip freeze --all > evidence/smol-c128-environment/pip-freeze.txt
+      - name: Download exact upstream model and measure raw DEVELOPMENT first passes
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/smol-c128-eval/bin/python" experiments/agent_painter/training/download_model.py --profile smol --output "$RUNNER_TEMP/smol-c128-base"
+          cp "$RUNNER_TEMP/smol-c128-base/download_receipt.json" evidence/smol-c128-environment/model-download.json
+          timeout --signal=TERM --kill-after=30s 2400s "$RUNNER_TEMP/smol-c128-eval/bin/python" experiments/agent_painter/lanes/smol/evaluate.py \
+            --model "$RUNNER_TEMP/smol-c128-base" \
+            --checkpoint evidence/continuation/checkpoint-000128 \
+            --corpus evidence/native/corpus \
+            --training-source d8e2a7759c361f3e50660e301b9ad5a0208685c4 \
+            --output evidence/smol-c128-development --max-new-tokens 512
+      - name: Refuse false native or FINAL success claims
+        if: success()
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("evidence/smol-c128-development/summary.json").read_text())
+          assert x["training_checkpoint"] == "checkpoint-000128"
+          assert x["development_seed_cases"] == 12
+          assert x["development_unique_prompt_count"] == 6
+          assert x["development_structural_groups"] == 6
+          assert x["native_execution"] is False and x["final_targets_accessed"] is False
+          assert x["model_scores_are_not_visual_or_native_success"] is True
+          print("Evidence is first-pass DEVELOPMENT/compile-only; not native success")
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-painter-smol-c128-development-${{ github.sha }}
+          path: evidence/smol-c128-development/
+          retention-days: 90
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-painter-smol-c128-development-${{ github.sha }}-environment
+          path: evidence/smol-c128-environment/
+          retention-days: 90
+          if-no-files-found: warn
