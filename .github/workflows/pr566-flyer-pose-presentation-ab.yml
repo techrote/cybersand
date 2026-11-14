@@ -23,6 +23,7 @@ concurrency:
 
 jobs:
   windows-angle-render:
+    if: ${{ github.event_name != 'push' || !contains(github.event.head_commit.message, '[reduce-only]') }}
     name: Real Godot/Rapier eight-arm Windows ANGLE framebuffer capture
     runs-on: windows-2022
     timeout-minutes: 85
@@ -102,5 +103,54 @@ jobs:
         with:
           name: pr566-flyer-presentation-windows-${{ github.run_id }}-${{ github.run_attempt }}
           path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
+
+  preserved-evidence-reducer:
+    if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[reduce-only]') }}
+    name: Independently reduce the original eight Windows ANGLE trials
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Checkout exact diagnostic reducer
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 8
+      - name: Restore immutable original 8-arm PNGs and physical traces
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pr566-flyer-presentation-windows-43583366027-1
+          repository: techrote/cybersand
+          run-id: 43583366027
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: evidence
+      - name: Verify source and validate all eight original-host observations
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 214de85adef2aaabc8e26de8612a3bf27cc1a081 HEAD
+          test "$(cat evidence/diagnostic-head.txt)" = '1905b0087b044a0798dde6a24e4ddcc56c0f4c59'
+          python3 tools/ci/reduce_pr566_flyer_pose_ab.py evidence evidence/summary.json | tee evidence/reducer-qualification.log
+          python3 -m json.tool evidence/summary.json >/dev/null
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('evidence/summary.json').read_text())
+          assert len(d['comparisons'])==4 and len(d['arms'])==8
+          assert all(x['maximum_Rapier_position_difference']==0.0 and x['maximum_Rapier_velocity_difference']==0.0 for x in d['comparisons'])
+          assert sum(len(x['frames']) for x in d['arms'].values())==64
+          print('PR566_ORIGINAL_WINDOWS_RAW_EVIDENCE_VERIFIED all 8 arms, 64 PNGs, four matched Rapier comparisons')
+          PY
+      - name: Preserve verified reducer and exact-source original evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pr566-flyer-presentation-reduced-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/summary.json
+            evidence/reducer-qualification.log
+            evidence/diagnostic-head.txt
+            evidence/diagnostic-tree.txt
           if-no-files-found: warn
           retention-days: 90

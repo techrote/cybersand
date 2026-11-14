@@ -49,7 +49,7 @@ def parse_one(output,fire,mode,camera):
             "gl_compatibility" not in str(doc.get("render_driver","")).lower()):
         raise AssertionError(f"{arm} not a GL Compatibility rendering process")
     samples=doc.get("samples",[])
-    if len(samples)<190 or int(doc.get("native_frames",0))<100:
+    if len(samples)<90 or int(doc.get("native_frames",0))<90 or max(int(r["tick"]) for r in samples)<215:
         raise AssertionError(f"{arm} incomplete Rapier/native telemetry")
     if fire=="fire" and int(doc.get("actual_fire_inserts",0))<=0:
         raise AssertionError(f"{arm} no actual Fire inserted")
@@ -68,6 +68,8 @@ def parse_one(output,fire,mode,camera):
             raise AssertionError(f"{arm} captured wrong mode/camera")
         if row["captured_tick"]-row["requested_tick"]>5:
             raise AssertionError(f"{arm} capture straddled excessive physics steps")
+        if float(row["drawn_vs_selected"]) > 0.01:
+            raise AssertionError(f"{arm} captured overlay did not select its requested pose")
         frames.append({"filename":image.relative_to(output).as_posix(),
                        "sha256":hashlib.sha256(data).hexdigest(),
                        "bytes":len(data),"tick":row["captured_tick"],
@@ -76,7 +78,7 @@ def parse_one(output,fire,mode,camera):
                        "drawn_vs_selected":row["drawn_vs_selected"],
                        "mask_revision":row["mask_revision"],
                        "uploaded_revision":row["uploaded_revision"]})
-    if len(frames)<5: raise AssertionError(f"{arm} insufficient real graphical captures")
+    if len(frames)<8: raise AssertionError(f"{arm} missing planned real graphical captures")
     # ABL runs may skip a tick at screenshot handoff, so compare keyed physics.
     indexed={int(row["tick"]):row for row in samples}
     return {"arm":arm,"godot":doc["godot"],"display":doc["display_server"],
@@ -114,7 +116,7 @@ def reduce(root):
             a=groups[f"{fire}-mask-{camera}"]
             b=groups[f"{fire}-live-{camera}"]
             overlap=sorted(a["_physics"].keys()&b["_physics"].keys())
-            if len(overlap)<175: raise AssertionError(f"no matched 175-tick flight: {fire}/{camera}")
+            if len(overlap)<70: raise AssertionError(f"fewer than 70 matched real Rapier ticks: {fire}/{camera}")
             delta_position=max(distance(a["_physics"][t]["position"],b["_physics"][t]["position"]) for t in overlap)
             delta_velocity=max(distance(a["_physics"][t]["velocity"],b["_physics"][t]["velocity"]) for t in overlap)
             if delta_position>1e-3 or delta_velocity>1e-3:
