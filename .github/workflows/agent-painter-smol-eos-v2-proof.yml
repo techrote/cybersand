@@ -1,0 +1,186 @@
+name: SMOL versioned terminal-EOS-v2 CPU optimizer and continuation proof
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths:
+      - experiments/agent_painter/lanes/smol/eos-v2-proof-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-smol-eos-v2-proof-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  request:
+    name: Exact frozen source and independent VM proof request
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Reject source, recipe or corpus substitution
+        env:
+          ACTUAL_SOURCE: ${{ github.sha }}
+          ACTUAL_REF: ${{ github.ref }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$ACTUAL_SOURCE"
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          request = json.loads(Path("experiments/agent_painter/lanes/smol/eos-v2-proof-request.json").read_text())
+          expected = {
+              "schema": "cybersand.agent-painter.smol-eos-v2-proof/1",
+              "sequence": 1,
+              "objective_source_sha": "11ba1f1915362d3d127edfbe37fe9e30c57eb8b9",
+              "objective": "smol-upstream-terminal-eos-v2",
+              "original_corpus_source_sha": "633920373a3d406a2ede61ce4137c324f76be23b",
+              "original_corpus_run_id": "43506373969",
+              "original_corpus_artifact": "agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b",
+              "corpus_manifest_sha256": "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc",
+              "model_revision": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
+              "fresh_steps": 2,
+              "resume_from_step": 1,
+              "resume_target_step": 2,
+              "max_trainers_active": 2,
+              "trainers_per_vm": 1,
+              "final_targets_forbidden": True,
+              "draft_hold": True,
+          }
+          if request != expected:
+              raise SystemExit("SMOL EOS-v2 proof request differs from exact reviewed authorization")
+          if os.environ["ACTUAL_REF"] != "refs/heads/codex/agent-painter-smol-568":
+              raise SystemExit("wrong lane branch")
+          print("Exact source-only approved v2 objective; 2 actual optimizer steps, separate VM continuation")
+          PY
+      - name: Review source, CI/provider policy and changed files
+        run: |
+          set -euo pipefail
+          python3 tools/ci/check_ci_provider_policy.py
+
+  fresh:
+    name: Genuine terminal-EOS-v2 steps 1 and 2, independent hosted CPU VM
+    needs: request
+    permissions:
+      contents: read
+      actions: read
+    uses: techrote/cybersand/.github/workflows/agent-painter-train.yml@11ba1f1915362d3d127edfbe37fe9e30c57eb8b9
+    with:
+      source-sha: '11ba1f1915362d3d127edfbe37fe9e30c57eb8b9'
+      profile: smol
+      corpus-run-id: '43506373969'
+      corpus-artifact: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+      output-artifact: smol-eos-v2-fresh-${{ github.run_id }}-${{ github.run_attempt }}
+      steps: 2
+      inference-proof: false
+
+  resume:
+    name: Full optimizer-state checkpoint 1 to step 2 on separate hosted CPU VM
+    needs: fresh
+    permissions:
+      contents: read
+      actions: read
+    uses: techrote/cybersand/.github/workflows/agent-painter-train.yml@11ba1f1915362d3d127edfbe37fe9e30c57eb8b9
+    with:
+      source-sha: '11ba1f1915362d3d127edfbe37fe9e30c57eb8b9'
+      profile: smol
+      corpus-run-id: '43506373969'
+      corpus-artifact: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+      output-artifact: smol-eos-v2-resume-${{ github.run_id }}-${{ github.run_attempt }}
+      steps: 2
+      resume-artifact: smol-eos-v2-fresh-${{ github.run_id }}-${{ github.run_attempt }}
+      resume-run-id: ${{ github.run_id }}
+      resume-checkpoint: checkpoint-000001
+
+  compare:
+    name: Verify exact v2 provenance and complete independent-VM continuation
+    needs: [fresh, resume]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 11ba1f1915362d3d127edfbe37fe9e30c57eb8b9
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: smol-eos-v2-fresh-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/fresh
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: smol-eos-v2-resume-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/resume
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: smol-eos-v2-fresh-${{ github.run_id }}-${{ github.run_attempt }}-environment
+          path: evidence/fresh-environment
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: smol-eos-v2-resume-${{ github.run_id }}-${{ github.run_attempt }}-environment
+          path: evidence/resume-environment
+      - name: Check true optimizer identity and terminal supervised EOS on all original TRAIN rows
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/verification
+          test "$(git rev-parse HEAD)" = '11ba1f1915362d3d127edfbe37fe9e30c57eb8b9'
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          expected_source = "11ba1f1915362d3d127edfbe37fe9e30c57eb8b9"
+          expected_corpus = "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
+          receipt = {"schema_version": 1, "source_sha": expected_source,
+                     "objective": "smol-upstream-terminal-eos-v2",
+                     "native_corpus_source_sha": "633920373a3d406a2ede61ce4137c324f76be23b",
+                     "fresh": {}, "resume": {}, "scope": "TRAIN-only optimizer/continuation; no painting, new admission or usefulness claim"}
+          for arm, expected_updates in (("fresh", 2), ("resume", 1)):
+              folder = Path("evidence") / arm
+              summary = json.loads((folder / "summary.json").read_text())
+              preflight = json.loads((folder / "preflight.json").read_text())
+              config = summary["config"]
+              if summary["status"] != "completed" or not summary["actual_training"] or summary["global_step"] != 2:
+                  raise SystemExit(arm + ": missing genuine completed optimizer steps")
+              if summary["optimizer_steps_this_job"] != expected_updates or not summary["adapter_changed"] or not summary["frozen_base_unchanged"] or not summary["checkpoint_readback_exact"]:
+                  raise SystemExit(arm + ": gradient/optimizer/base/checkpoint gate failed")
+              if config["source_sha"] != expected_source or config["supervision_policy"] != "smol-upstream-terminal-eos-v2":
+                  raise SystemExit(arm + ": new-objective source or policy mismatch")
+              if config["native_source_sha"] != "633920373a3d406a2ede61ce4137c324f76be23b" or config["corpus_manifest_sha256"] != expected_corpus:
+                  raise SystemExit(arm + ": original native TRAIN custody mismatch")
+              masks = preflight["mask_checks"]
+              if len(masks) != 12 or any(not x["supervised_eos_terminal"] for x in masks):
+                  raise SystemExit(arm + ": terminal supervised EOS not verified across 12 TRAIN seed rows")
+              if arm == "resume" and (not summary["resume"] or summary["resume"]["from_step"] != 1 or not summary["resume"]["restored_all_state_exactly"]):
+                  raise SystemExit("resume: original full state not restored")
+              receipt[arm] = {"summary": summary, "mask_checks": masks,
+                              "artifact_origins": json.loads((Path("evidence") / (arm+"-environment") / "artifact-origins.json").read_text())}
+          Path("evidence/verification/identity.json").write_text(json.dumps(receipt, indent=2) + "\n")
+          PY
+      - name: Verify all stored state and compare unchanged float tolerances
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/painter-verify"
+          "$RUNNER_TEMP/painter-verify/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/painter-verify/bin/python" -m pip install 'safetensors==0.8.0' 'numpy==2.5.4'
+          "$RUNNER_TEMP/painter-verify/bin/python" experiments/agent_painter/training/compare_resume.py \
+            --fresh evidence/fresh/checkpoint-000002 \
+            --resumed evidence/resume/checkpoint-000002 \
+            --output evidence/verification/full-state-comparison.json
+          "$RUNNER_TEMP/painter-verify/bin/python" - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("evidence/verification/full-state-comparison.json").read_text())
+          assert r["passed"] and r["global_step"] == 2
+          assert r["atol"] == 1e-6 and r["rtol"] == 1e-5
+          print(json.dumps({key:r[key] for key in ("passed","global_step","maximum_adapter_absolute_difference","maximum_optimizer_absolute_difference","adapter_bitwise_equal","optimizer_bitwise_equal","atol","rtol")}))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: smol-eos-v2-verification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/verification/
+          retention-days: 90
+          if-no-files-found: warn
