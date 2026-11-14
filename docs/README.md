@@ -78,6 +78,11 @@ and [bounded scenario reuse](operations/lcb-scenario-catalogue.md#current-main-r
 All four families are landed; #360–#363 own the remaining comparison/tools/contact
 and decision work. Historical pre-merge records below retain their dated scope.
 
+Engine Lab Phase A: [passive Workbench clock benchmark](operations/engine-lab-passive-benchmark.md)
+is a Draft/HOLD #599/#602 measurement tool, not a live physics-rate or synchronisation switch.
+Compare the four existing Water families only after its exact-source/real-host evidence is accepted;
+RENDER-ACK-002 remains a separate FURTHER RESEARCH transport experiment.
+
 Stopped PLAY recovery: [canonical ownership and controls](systems/player-control-playground.md#stopped-composed-session-recovery), [preserved failure and current-main reconciliation](audits/2026-10-31-play-stopped-session-recovery.md), and [PR #332 qualification ledger](https://github.com/techrote/cybersand/pull/332). PACE004 #334 is merged (main `070c7a22`, apparatus only) but its exact-head hosted campaign remains a separate PLAY lane.
 
 Native render copy: [canonical bridge contract](architecture/rendering-and-gameplay-bridges.md#how-are-rg8-regions-copied) and [current-main R reconciliation](audits/2026-11-01-render-copy-production-reconciliation.md).
