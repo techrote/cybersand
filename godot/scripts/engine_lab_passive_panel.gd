@@ -12,6 +12,7 @@ var benchmark_duration_usec: int = DURATION_USEC
 var recorder: CyberEngineLabPassiveRecorder = Recorder.new()
 var _live: Label
 var _message: Label
+var _test_it_button: Button
 var _capture_button: Button
 var _cancel_button: Button
 var _last_refresh_usec: int = 0
@@ -49,8 +50,13 @@ func _ready() -> void:
 	column.add_child(_live)
 	var buttons := HBoxContainer.new()
 	column.add_child(buttons)
+	_test_it_button = Button.new()
+	_test_it_button.text = "Test it → ZIP"
+	_test_it_button.tooltip_text = "Runs the exact 2048-square owner gate canvas in fresh processes with physics-tick-scripted Needle inputs; writes one evidence ZIP."
+	_test_it_button.pressed.connect(_start_test_it)
+	buttons.add_child(_test_it_button)
 	_capture_button = Button.new()
-	_capture_button.text = "Benchmark current World / 10s"
+	_capture_button.text = "Passive 10s"
 	_capture_button.pressed.connect(begin_benchmark)
 	buttons.add_child(_capture_button)
 	_cancel_button = Button.new()
@@ -60,9 +66,9 @@ func _ready() -> void:
 	buttons.add_child(_cancel_button)
 	var explain := Label.new()
 	explain.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	explain.text = ("No simulated input is injected. Do not operate the controls during sampling. "
-		+ "This does NOT reset the World, replay a deterministic start or change physics. "
-		+ "For A/B, independently restore the same named starting scene first.")
+	explain.text = ("Test it runs a SEPARATE, source-matched, scripted reference-canvas benchmark; "
+		+ "its tick-addressed Needle inputs are automatic and its reports are bundled as one ZIP. "
+		+ "Passive 10s measures only the current World with no injected input.")
 	column.add_child(explain)
 	_message = Label.new()
 	_message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -167,6 +173,29 @@ func _read_sample(now_usec: int) -> Dictionary:
 		"render_upload_ms":host.upload_time_ms,
 		"hold_counts":host.engine_lab_coupling_counts(),
 	}
+
+
+func _start_test_it() -> void:
+	# A single click launches the isolated owner-GPU harness; this Workbench
+	# retains its own World. The runner creates fresh independent native owners.
+	# Source checkout / non-Windows stays read-only until a qualified package
+	# places the launcher beside the pinned Godot executable.
+	if OS.get_name() != "Windows":
+		_message.text = "Test it launcher is packaged for Windows 11 NVIDIA only."
+		return
+	var base: String = OS.get_executable_path().get_base_dir()
+	var runner: String = base.path_join("Run-Test-It.ps1")
+	if not FileAccess.file_exists(runner):
+		_message.text = "Run-Test-It.ps1 not installed beside the packaged Godot executable."
+		return
+	var pid: int = OS.create_process("powershell.exe",[
+		"-NoProfile","-ExecutionPolicy","Bypass","-File",runner],true)
+	if pid <= 0:
+		_message.text = "Windows refused the isolated PowerShell Test it launcher."
+		return
+	_message.text = "Test it launched (PID %d). The script runs without your inputs. One ZIP will appear under:\n%s" % [
+		pid, base.path_join("Benchmark-Results")]
+	print("ENGINE_LAB_TEST_IT_LAUNCHED ",pid," ",base.path_join("Benchmark-Results"))
 
 
 func begin_benchmark() -> void:
