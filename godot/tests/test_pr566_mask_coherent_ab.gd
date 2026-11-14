@@ -250,6 +250,7 @@ func _run() -> void:
 				if not capture_dir.is_empty():
 					verify(actual_captures >= 6,"actual graphical frames captured")
 				verify(not observations.is_empty(),"Rapier and presentation observations exist")
+	var guard_totals: Dictionary = host.workbench_presentation_totals.duplicate(true)
 	host.queue_free()
 	await process_frame
 	await process_frame
@@ -270,7 +271,7 @@ func _run() -> void:
 		"nonzero_pose_gap_samples":nonzero_pose_gap_samples,
 		"max_pose_gap":max_pose_gap,
 		"max_live_mask_xor":max_live_mask_xor,
-		"presentation_guard_totals":host.workbench_presentation_totals.duplicate(true),
+		"presentation_guard_totals":guard_totals,
 		"frame_captures":frames,
 		"emitters":emitter_events,"samples":observations
 	}
