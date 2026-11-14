@@ -70,6 +70,29 @@ was uploaded, GitHub archive digest
 `sha256:ee83c7b86f0495929a1e02f451797a74ff0d54ff11f77d0688e08f41a089d483`.
 **This is compiler-only research screening, not positive native teacher admission.**
 
+## Reviewer P2 near-alias quarantine — immutable research remains diagnostic
+
+At the independent reviewer's [PR #575 checkpoint 6876249432](https://github.com/techrote/cybersand/pull/575#issuecomment-6876249432),
+the independently checked corrected compiler proposal screen was PASS, but
+**Architecture C3 is P2 HOLD as a prospective near-alias**. Its hall, stair,
+supported platforms and horizontal route substantially overlap the original
+public **TRAIN** `architecture/stair_and_landing_hall/v1` and new SPROCKET
+A07 (hall + two supported service platforms). A nonmatching coarse source
+`structural_signature` is insufficient to prove spatial/compositional
+independence. Do not approve A-C3 as a novel TRAIN structural group, even if
+its original native research Art replay completes successfully.
+
+The explicit lane-owned `contrastive_disposition.json` retains the
+original producer source and the reviewer's provenance, **quarantines C3**,
+and marks C1/C2 as **pending** global review; all have
+`train_admitted=false`. This does not rewrite, cancel, relabel or invalidate
+the already-dispatched six-view native research archive. A-C3's resulting
+material/PNG receipts (if produced) remain useful diagnostic evidence about
+native execution, **not** independent TRAIN curriculum. The shepherd/reviewer
+must choose one prototype or approve a materially different, spatially
+distinguishable Architecture replacement with an adjacency/clearance witness.
+No new architecture native run or training is dispatched on this review alone.
+
 ## Native research qualification (separate producer identity)
 
 The dedicated source-owned `contrastive_native.py`,
