@@ -30,7 +30,7 @@ jobs:
     env:
       PYTHONUTF8: '1'
       GODOT_SILENCE_ROOT_WARNING: '1'
-      QUALIFIED_SOURCE: 50a87a0a11388887a87f38dd11072f8b319756f2
+      QUALIFIED_SOURCE: 6a6a70609126e67bdbb972937a53e186d6da9be5
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -74,14 +74,14 @@ jobs:
             --source-sha "$QUALIFIED_SOURCE" \
             --godot-archive "$RUNNER_TEMP/eng-lab-gpu-godot.zip" \
             --godot-notices "$RUNNER_TEMP/eng-lab-gpu-notices" \
-            --output "build/eng-lab-gpu-evaluation/CyberSand-EngineLab-NVIDIA-Windows-50a87a0a.zip" \
+            --output "build/eng-lab-gpu-evaluation/CyberSand-EngineLab-NVIDIA-Windows-6a6a7060.zip" \
             --evidence "build/eng-lab-gpu-evaluation/evidence"
           python - <<'PY'
           import json
           from pathlib import Path
           p = Path('build/eng-lab-gpu-evaluation/evidence/packaging-receipt.json')
           r = json.loads(p.read_text(encoding='utf-8'))
-          assert r['source'] == '50a87a0a11388887a87f38dd11072f8b319756f2'
+          assert r['source'] == '6a6a70609126e67bdbb972937a53e186d6da9be5'
           assert r['status'] == 'passed' and all(c['ok'] for c in r['smoke'].values())
           print("PACKAGE_CANDIDATE_QUALIFIED", json.dumps({
             "zip":r["zip"],"sha256":r["zip_sha256"],
@@ -92,9 +92,9 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: CyberSand-EngineLab-NVIDIA-Windows-50a87a0a-${{ github.run_id }}
+          name: CyberSand-EngineLab-NVIDIA-Windows-6a6a7060-${{ github.run_id }}
           path: |
-            build/eng-lab-gpu-evaluation/CyberSand-EngineLab-NVIDIA-Windows-50a87a0a.zip
+            build/eng-lab-gpu-evaluation/CyberSand-EngineLab-NVIDIA-Windows-6a6a7060.zip
             build/eng-lab-gpu-evaluation/evidence/packaging-receipt.json
             build/eng-lab-gpu-evaluation/evidence/packaging-error.txt
             build/eng-lab-gpu-evaluation/evidence/smoke-*.log
