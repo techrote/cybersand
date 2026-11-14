@@ -27,6 +27,7 @@ const DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC: int = 16667
 const HARD_SURFACE_SNAPSHOT_INTERVAL_USEC: int = 250000
 const RENDER_PATCH_METADATA_STRIDE: int = 6
 const MAX_PENDING_RENDER_PATCHES: int = 256
+const RENDER_ACK_TRACE_MAX_EVENTS: int = 4096
 const MAX_BRUSH_FOOTPRINT_CELLS: int = 4096
 const MAX_PENDING_BRUSH_COMMANDS: int = 8
 const PARTICIPATION_SAMPLE_INTERVAL_USEC: int = 250000
@@ -951,6 +952,16 @@ var _published_render_patch_rectangles: PackedInt32Array = PackedInt32Array()
 var _published_render_patch_cells: PackedByteArray = PackedByteArray()
 var _acknowledged_render_snapshot_serial: int = 0
 var _render_full_refresh_requested: bool = false
+# RENDER-ACK-001: all optional trace samples are copied values. The worker
+# never writes files, and tracing is enabled only before its thread starts.
+var _render_ack_trace_enabled: bool = false
+var _render_ack_trace_mutex: Mutex = Mutex.new()
+var _render_ack_trace_events: Array[Dictionary] = []
+var _render_ack_trace_sequence: int = 0
+var _render_ack_trace_evicted: int = 0
+var _render_ack_arrival_usec: int = 0 # Mutex-owned, written alongside ACK serial.
+var _render_ack_latched_serial: int = 0 # Worker-exclusive.
+var _render_ack_pending_since_usec: int = 0 # Worker-exclusive, diagnostics only.
 var _fallback_render_snapshot_serial: int = 0
 var _snapshot_hard_surface_revision: int = -1
 var _snapshot_hard_surface_epoch: int = -1
@@ -2154,21 +2165,111 @@ func take_latest_snapshot(after_serial: int) -> CyberSimulationSnapshot:
 	return result
 
 
+# Opt-in trace for diagnosis only. Called before start_worker; does not alter
+# native snapshot policy, ACK admission, simulation pacing, or texture uploads.
+func enable_render_ack_trace() -> bool:
+	if _thread.is_started():
+		return false
+	_render_ack_trace_enabled = true
+	return true
+
+
+func read_render_ack_trace(after_sequence: int) -> Dictionary:
+	if not _render_ack_trace_enabled:
+		return {"enabled":false, "events":[], "last_sequence":0, "evicted_total":0}
+	_render_ack_trace_mutex.lock()
+	var fresh: Array[Dictionary] = []
+	for row: Dictionary in _render_ack_trace_events:
+		if int(row.sequence) > after_sequence:
+			fresh.append(row.duplicate(true))
+	var result: Dictionary = {"enabled":true, "events":fresh,
+		"last_sequence":_render_ack_trace_sequence, "evicted_total":_render_ack_trace_evicted}
+	_render_ack_trace_mutex.unlock()
+	return result
+
+
+func _trace_render_ack(event_name: String, fields: Dictionary = {}) -> void:
+	if not _render_ack_trace_enabled:
+		return
+	var row: Dictionary = {"source":"worker", "event":event_name,
+		"at_usec":Time.get_ticks_usec()}
+	for key: Variant in fields:
+		row[key] = fields[key]
+	_render_ack_trace_mutex.lock()
+	_render_ack_trace_sequence += 1
+	row["sequence"] = _render_ack_trace_sequence
+	if _render_ack_trace_events.size() >= RENDER_ACK_TRACE_MAX_EVENTS:
+		_render_ack_trace_events.pop_front()
+		_render_ack_trace_evicted += 1
+	_render_ack_trace_events.append(row)
+	_render_ack_trace_mutex.unlock()
+
+
+# Returns only the reason, without altering the original strict > thresholds.
+static func render_pending_capacity_reason(bytes: int, metadata_ints: int, byte_limit: int) -> String:
+	var over_bytes: bool = bytes > byte_limit
+	var over_patches: bool = metadata_ints > MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE
+	if over_bytes and over_patches: return "both"
+	if over_bytes: return "pending_bytes"
+	if over_patches: return "pending_rectangles"
+	return ""
+
+
+func _trace_native_render_packet(packet: Dictionary, requested_full: bool,
+		call_reason: String, acknowledged_serial: int) -> void:
+	if not _render_ack_trace_enabled:
+		return
+	var payload: PackedByteArray = packet.get("cells", PackedByteArray())
+	var rectangles: PackedInt32Array = packet.get("rectangles", PackedInt32Array())
+	var native_status: int = int(packet.get("status", -1))
+	var full: bool = bool(packet.get("full_refresh", false))
+	var reason: String = "delta"
+	if native_status == 3:
+		reason = "native_capacity_exceeded"
+	elif native_status == 2:
+		reason = "native_exchange_backpressure"
+	elif requested_full:
+		reason = call_reason
+	elif full:
+		reason = "native_internal_full_refresh"
+	elif payload.is_empty():
+		reason = "no_payload"
+	_trace_render_ack("native_snapshot", {"reason":reason, "call_reason":call_reason,
+		"native_status":native_status, "native_serial":int(packet.get("serial",0)),
+		"requested_full":requested_full, "full":full,
+		"native_rectangles":rectangles.size() / RENDER_PATCH_METADATA_STRIDE,
+		"native_bytes":payload.size(), "acknowledged_serial":acknowledged_serial,
+		"pending_serial_before":_pending_render_snapshot_serial,
+		"pending_rectangles_before":_pending_render_patch_rectangles.size() / RENDER_PATCH_METADATA_STRIDE,
+		"pending_bytes_before":_pending_render_patch_cells.size(),
+		"world_generation":_world_generation})
+
+
 func acknowledge_render_snapshot(render_snapshot_serial: int) -> void:
 	if render_snapshot_serial <= 0:
 		return
+	var ack_usec: int = Time.get_ticks_usec() if _render_ack_trace_enabled else 0
 	_mutex.lock()
+	var previous_serial: int = _acknowledged_render_snapshot_serial
 	_acknowledged_render_snapshot_serial = maxi(
 		_acknowledged_render_snapshot_serial,
 		render_snapshot_serial
 	)
+	if _render_ack_trace_enabled and _acknowledged_render_snapshot_serial > previous_serial:
+		_render_ack_arrival_usec = ack_usec
 	_mutex.unlock()
+	if _render_ack_trace_enabled:
+		_trace_render_ack("ack_arrived", {"serial":render_snapshot_serial,
+			"previous_serial":previous_serial,
+			"advanced":render_snapshot_serial > previous_serial,
+			"ack_written_usec":ack_usec})
 
 
 func request_render_full_refresh() -> void:
 	_mutex.lock()
 	_render_full_refresh_requested = true
 	_mutex.unlock()
+	_trace_render_ack("explicit_full_request_received")
 
 
 func _apply_emissions(local_emissions: Array, local_cell_emissions: Array) -> void:
@@ -2604,16 +2705,32 @@ func _publish_snapshot(
 	var render_generation_advanced: bool = false
 	var acknowledged_render_serial: int = 0
 	var render_full_refresh_requested: bool = false
+	var ack_arrival_usec: int = 0
 	_mutex.lock()
 	acknowledged_render_serial = _acknowledged_render_snapshot_serial
 	render_full_refresh_requested = _render_full_refresh_requested
+	ack_arrival_usec = _render_ack_arrival_usec
 	_render_full_refresh_requested = false
 	_mutex.unlock()
 	_observe_render_acknowledgement(acknowledged_render_serial)
+	if _render_ack_trace_enabled and acknowledged_render_serial != _render_ack_latched_serial:
+		_trace_render_ack("ack_latched", {"serial":acknowledged_render_serial,
+			"previous_latched":_render_ack_latched_serial, "ack_written_usec":ack_arrival_usec,
+			"latch_delay_usec":maxi(0, now_usec - ack_arrival_usec),
+			"pending_serial":_pending_render_snapshot_serial,
+			"pending_rectangles":_pending_render_patch_rectangles.size() / RENDER_PATCH_METADATA_STRIDE,
+			"pending_bytes":_pending_render_patch_cells.size()})
+		_render_ack_latched_serial = acknowledged_render_serial
+	var worker_reset_full: bool = force_render_full_refresh
+	var generation_full: bool = _world_generation != _pending_render_world_generation
 	force_render_full_refresh = (
-		force_render_full_refresh or render_full_refresh_requested
-		or _world_generation != _pending_render_world_generation
+		force_render_full_refresh or render_full_refresh_requested or generation_full
 	)
+	if _render_ack_trace_enabled and force_render_full_refresh:
+		_trace_render_ack("worker_force_full", {"reset_or_startup":worker_reset_full,
+			"explicit_request":render_full_refresh_requested, "generation_changed":generation_full,
+			"acknowledged_serial":acknowledged_render_serial,
+			"pending_serial":_pending_render_snapshot_serial})
 	if (
 		_pending_render_snapshot_serial > 0
 		and acknowledged_render_serial >= _pending_render_snapshot_serial
@@ -2631,14 +2748,39 @@ func _publish_snapshot(
 			var render_packet: Dictionary = _take_native_render_snapshot(
 				force_render_full_refresh
 			)
+			if _render_ack_trace_enabled:
+				var call_reason: String = "normal_delta"
+				if worker_reset_full: call_reason = "startup_or_reset"
+				elif generation_full: call_reason = "world_generation_changed"
+				elif render_full_refresh_requested: call_reason = "explicit_request"
+				_trace_native_render_packet(render_packet, force_render_full_refresh,
+					call_reason, acknowledged_render_serial)
 			_append_native_render_packet(render_packet)
+			var pending_byte_limit: int = maxi(CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT,
+				_workbench_extent.x * _workbench_extent.y) * 2
 			if (
-				_pending_render_patch_cells.size()
-				> maxi(CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT,_workbench_extent.x*_workbench_extent.y) * 2
+				_pending_render_patch_cells.size() > pending_byte_limit
 				or _pending_render_patch_rectangles.size()
 				> MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE
 			):
-				_append_native_render_packet(_take_native_render_snapshot(true))
+				if _render_ack_trace_enabled:
+					_trace_render_ack("pending_capacity_escalation", {
+						"reason":render_pending_capacity_reason(_pending_render_patch_cells.size(),
+							_pending_render_patch_rectangles.size(), pending_byte_limit),
+						"pending_rectangles":_pending_render_patch_rectangles.size() / RENDER_PATCH_METADATA_STRIDE,
+						"pending_bytes":_pending_render_patch_cells.size(),
+						"rectangle_limit":MAX_PENDING_RENDER_PATCHES,
+						"byte_limit":pending_byte_limit,
+						"pending_since_usec":_render_ack_pending_since_usec,
+						"pending_age_usec":maxi(0, Time.get_ticks_usec() - _render_ack_pending_since_usec)
+							if _render_ack_pending_since_usec > 0 else -1,
+						"acknowledged_serial":acknowledged_render_serial,
+						"pending_serial":_pending_render_snapshot_serial,
+						"world_generation":_world_generation})
+				var recovery_packet: Dictionary = _take_native_render_snapshot(true)
+				_trace_native_render_packet(recovery_packet, true, "pending_capacity_escalation",
+					acknowledged_render_serial)
+				_append_native_render_packet(recovery_packet)
 			if _pending_render_full_refresh:
 				_snapshot_cells = _pending_render_patch_cells.duplicate()
 		else:
@@ -2974,6 +3116,13 @@ func _observe_render_acknowledgement(_serial: int) -> void:
 
 
 func _clear_pending_render_patches() -> void:
+	if _render_ack_trace_enabled:
+		_trace_render_ack("pending_cleared_by_ack", {
+			"pending_serial":_pending_render_snapshot_serial,
+			"pending_rectangles":_pending_render_patch_rectangles.size() / RENDER_PATCH_METADATA_STRIDE,
+			"pending_bytes":_pending_render_patch_cells.size(),
+			"pending_since_usec":_render_ack_pending_since_usec})
+		_render_ack_pending_since_usec = 0
 	_pending_render_full_refresh = false
 	_pending_render_patch_rectangles = PackedInt32Array()
 	_pending_render_patch_cells = PackedByteArray()
@@ -2999,6 +3148,8 @@ func _append_native_render_packet(packet: Dictionary) -> void:
 	)
 	if packet_cells.is_empty() or packet_rectangles.is_empty():
 		return
+	if _render_ack_trace_enabled and _render_ack_pending_since_usec == 0:
+		_render_ack_pending_since_usec = Time.get_ticks_usec()
 
 	var packet_serial: int = int(packet.get("serial", 0))
 	var packet_channels: int = int(packet.get("channels", 2))
@@ -3029,3 +3180,10 @@ func _append_native_render_packet(packet: Dictionary) -> void:
 	_pending_render_snapshot_serial = maxi(_pending_render_snapshot_serial+1,packet_serial)
 	_pending_render_channels = packet_channels
 	_pending_render_payload_generation += 1
+	if _render_ack_trace_enabled:
+		_trace_render_ack("pending_accumulated", {"native_serial":packet_serial,
+			"native_full":packet_full_refresh, "pending_serial":_pending_render_snapshot_serial,
+			"pending_full":_pending_render_full_refresh,
+			"pending_rectangles":_pending_render_patch_rectangles.size() / RENDER_PATCH_METADATA_STRIDE,
+			"pending_bytes":_pending_render_patch_cells.size(),
+			"world_generation":_world_generation})

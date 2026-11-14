@@ -1515,6 +1515,7 @@ func toggle_gameplay_recording() -> void:
 		return
 	# A full immutable render publication primes the recorder's private ROI. The
 	# recorder never reaches back into mutable World storage.
+	_trace_render_ack_main("main_full_refresh_requested", {"reason":"recording_started"})
 	simulation_worker.request_render_full_refresh()
 	print("REC-001 recording started: ", gameplay_recorder.session_path())
 	_refresh_recording_button()
@@ -1594,6 +1595,13 @@ var last_render_patch_bytes: int = 0
 var last_render_was_full_refresh: bool = false
 var rejected_render_snapshot_count: int = 0
 var last_rejected_render_snapshot_serial: int = -1
+# RENDER-ACK-001 only: bounded main/worker event capture, off by default.
+# Use -- --render-ack-trace to enable one on-disk JSONL per Main instance.
+var _render_ack_trace_file: FileAccess
+var _render_ack_trace_main_events: Array[Dictionary] = []
+var _render_ack_trace_worker_sequence: int = 0
+var _render_ack_trace_evicted_total: int = 0
+var _render_ack_trace_last_flush_usec: int = 0
 var last_render_patch_validation_error: String = ""
 var last_render_publication_usec: int = -1
 var measured_render_publication_hz: float = 0.0
@@ -1830,6 +1838,7 @@ func _ready() -> void:
 	update_worker_frame_state()
 	_publish_physical_body_state()
 	simulation_worker.set_render_snapshot_hz(render_snapshot_hz)
+	_begin_render_ack_trace()
 	worker_start_error = simulation_worker.start_worker(CHARACTER_SPAWN)
 	if worker_start_error != OK:
 		for body: RigidBody2D in rigid_bodies:
@@ -1889,6 +1898,11 @@ func _ready() -> void:
 		simulation_worker.acknowledge_render_snapshot(
 			latest_snapshot.render_snapshot_serial
 		)
+		_trace_render_ack_main("initial_upload_accepted", {
+			"render_serial":latest_snapshot.render_snapshot_serial,
+			"render_generation":latest_snapshot.render_world_generation,
+			"full":latest_snapshot.render_full_refresh,
+			"patch_bytes":latest_snapshot.render_patch_cells.size()})
 	elif latest_snapshot != null:
 		reject_render_snapshot(latest_snapshot)
 	update_shader_parameters()
@@ -1932,6 +1946,8 @@ func _exit_tree() -> void:
 	_close_prepared_reference_bodies()
 	_close_physical_actors()
 	simulation_worker.stop_worker()
+	_flush_render_ack_trace(true)
+	_render_ack_trace_file = null
 	rapier_bridge.shutdown()
 
 
@@ -1942,6 +1958,7 @@ func _process(delta: float) -> void:
 	frame_time_ms = delta * 1000.0
 	maximum_frame_time_ms = maxf(maximum_frame_time_ms, frame_time_ms)
 	consume_worker_snapshot()
+	_flush_render_ack_trace()
 	_advance_prepared_physical_candidate()
 	if _pending_physical_candidate == null and shared_workbench == null: refresh_actor_usables()
 	gameplay_recorder.poll_finalization()
@@ -3124,9 +3141,83 @@ func workbench_display_frame() -> Dictionary:
 	return _uploaded_workbench_frame
 
 
+# Private diagnostic JSONL. No per-frame disk writes or worker-thread I/O.
+# The worker holds immutable copied event values behind its independent mutex;
+# the Main thread batches both sources to one bounded, periodic file.
+func _begin_render_ack_trace() -> void:
+	if not OS.get_cmdline_user_args().has("--render-ack-trace"):
+		return
+	var path: String = "user://render-ack-%d-%d.jsonl" % [
+		OS.get_process_id(), Time.get_ticks_usec()]
+	_render_ack_trace_file = FileAccess.open(path, FileAccess.WRITE)
+	if _render_ack_trace_file == null:
+		push_warning("RENDER-ACK-001 could not create diagnostic file: " + path)
+		return
+	if not simulation_worker.enable_render_ack_trace():
+		_render_ack_trace_file = null
+		push_warning("RENDER-ACK-001 trace must be enabled before worker startup")
+		return
+	_render_ack_trace_last_flush_usec = Time.get_ticks_usec()
+	print("RENDER_ACK_TRACE_PATH ", ProjectSettings.globalize_path(path))
+	_trace_render_ack_main("trace_started", {
+		"schema":"render-ack-feedback-v1", "source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
+		"engine_version":Engine.get_version_info().get("string", "unknown"),
+		"rendering_method":RenderingServer.get_current_rendering_method(),
+		"rendering_driver":RenderingServer.get_current_rendering_driver_name(),
+		"adapter":RenderingServer.get_video_adapter_name()})
+
+
+func _trace_render_ack_main(event_name: String, fields: Dictionary = {}) -> void:
+	if _render_ack_trace_file == null:
+		return
+	var row: Dictionary = {"source":"main", "event":event_name,
+		"at_usec":Time.get_ticks_usec()}
+	for key: Variant in fields:
+		row[key] = fields[key]
+	_render_ack_trace_main_events.append(row)
+
+
+func _flush_render_ack_trace(force: bool = false) -> void:
+	if _render_ack_trace_file == null:
+		return
+	var now_usec: int = Time.get_ticks_usec()
+	if not force and now_usec - _render_ack_trace_last_flush_usec < 500000 			and _render_ack_trace_main_events.size() < 256:
+		return
+	var collected: Dictionary = simulation_worker.read_render_ack_trace(
+		_render_ack_trace_worker_sequence)
+	var rows: Array[Dictionary] = _render_ack_trace_main_events
+	_render_ack_trace_main_events = []
+	for event: Dictionary in collected.get("events", []):
+		rows.append(event)
+	var evicted: int = int(collected.get("evicted_total", 0))
+	if evicted > _render_ack_trace_evicted_total:
+		rows.append({"source":"main", "event":"trace_ring_evicted",
+			"at_usec":now_usec, "evicted_since_last_flush":evicted - _render_ack_trace_evicted_total,
+			"evicted_total":evicted})
+	_render_ack_trace_evicted_total = evicted
+	_render_ack_trace_worker_sequence = int(collected.get("last_sequence", 0))
+	rows.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		return int(a.at_usec) < int(b.at_usec))
+	for row: Dictionary in rows:
+		_render_ack_trace_file.store_line(JSON.stringify(row))
+	_render_ack_trace_file.flush()
+	_render_ack_trace_last_flush_usec = now_usec
+
+
 func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	# Shared production upload/ACK path, exercised by rendered qualification.
 	if snapshot.render_snapshot_serial > last_uploaded_render_snapshot_serial:
+		var upload_start_usec: int = Time.get_ticks_usec() if _render_ack_trace_file != null else 0
+		_trace_render_ack_main("main_render_received", {
+			"status_snapshot_serial":snapshot.serial,
+			"render_serial":snapshot.render_snapshot_serial,
+			"render_generation":snapshot.render_world_generation,
+			"render_generated_usec":snapshot.render_generated_usec,
+			"age_usec":maxi(0, upload_start_usec - snapshot.render_generated_usec),
+			"full":snapshot.render_full_refresh,
+			"patch_rectangles":snapshot.render_patch_rectangles.size() / RENDER_PATCH_METADATA_STRIDE,
+			"patch_bytes":snapshot.render_patch_cells.size(),
+			"last_accepted_serial":last_uploaded_render_snapshot_serial})
 		record_render_payload(snapshot)
 		var render_uploaded: bool = upload_texture_patches(
 			snapshot.render_patch_rectangles,
@@ -3134,6 +3225,14 @@ func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 			snapshot.world_revision,
 			snapshot.render_channels
 		)
+		_trace_render_ack_main("main_upload_completed", {
+			"status_snapshot_serial":snapshot.serial,
+			"render_serial":snapshot.render_snapshot_serial,
+			"accepted":render_uploaded,
+			"upload_duration_usec":maxi(0, Time.get_ticks_usec() - upload_start_usec),
+			"patch_bytes":snapshot.render_patch_cells.size(),
+			"full":snapshot.render_full_refresh,
+			"validation_error":last_render_patch_validation_error if not render_uploaded else ""})
 		if render_uploaded:
 			# Only an accepted World replacement invalidates presentation history.
 			# Full refreshes also occur during resync and every fallback frame.
@@ -3142,6 +3241,11 @@ func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 			last_uploaded_world_generation = snapshot.render_world_generation
 			last_uploaded_render_snapshot_serial = snapshot.render_snapshot_serial
 			if shared_workbench != null: _uploaded_workbench_frame = snapshot.render_context.get("workbench_display",{})
+			# Record before the call so the Main→worker receipt interval is
+			# nonnegative on the common monotonic clock (and still observable
+			# when a diagnostic worker intentionally withholds an ACK).
+			_trace_render_ack_main("main_ack_issued", {"render_serial":snapshot.render_snapshot_serial,
+				"render_generation":snapshot.render_world_generation})
 			simulation_worker.acknowledge_render_snapshot(
 				snapshot.render_snapshot_serial
 			)
@@ -4614,6 +4718,9 @@ func validate_render_patch_payload(
 
 
 func reject_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
+	_trace_render_ack_main("main_full_refresh_requested", {
+		"reason":"render_payload_rejected", "render_serial":snapshot.render_snapshot_serial,
+		"validation_error":last_render_patch_validation_error})
 	rejected_render_snapshot_count += 1
 	if snapshot.render_snapshot_serial != last_rejected_render_snapshot_serial:
 		push_error(
