@@ -84,6 +84,24 @@ def mutate_json(path, key, value):
     path.write_text(json.dumps(obj))
 
 
+
+def rehash_checkpoint(root):
+    """Model-free adversarial fixture: deliberately keep modified bytes internally self-consistent."""
+    cp = root / gate.CHECKPOINT
+    inventory = json.loads((cp / "inventory.json").read_text())
+    for name in ("receipt.json", "training_state.pt"):
+        path = cp / name
+        inventory[name] = {"sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                           "bytes": path.stat().st_size}
+    (cp / "inventory.json").write_text(json.dumps(inventory))
+    summary_path = root / "summary.json"
+    summary = json.loads(summary_path.read_text())
+    summary["checkpoint_inventory_sha256"] = hashlib.sha256(
+        (cp / "inventory.json").read_bytes()).hexdigest()
+    summary["checkpoint_bytes"] = sum(p.stat().st_size for p in cp.rglob("*") if p.is_file())
+    summary_path.write_text(json.dumps(summary))
+
+
 class Fresh120PromotionTests(unittest.TestCase):
     def test_complete_fresh120_is_promotable(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -138,6 +156,7 @@ class Fresh120PromotionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = fixture(tmp)
             mutate_json(root / gate.CHECKPOINT / "receipt.json", "sample_cursor", 119)
+            rehash_checkpoint(root)
             with self.assertRaisesRegex(ValueError, "sample_cursor"):
                 gate.verify_completion(root, 0, SHA)
 
@@ -192,6 +211,30 @@ class Fresh120PromotionTests(unittest.TestCase):
             lines[2], lines[3] = lines[3], lines[2]
             progress.write_text("\n".join(lines) + "\n")
             with self.assertRaisesRegex(ValueError, "checkpoint history"):
+                gate.verify_completion(root, 0, SHA)
+
+
+    def test_zero_gradient_with_rehashed_receipts_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = fixture(tmp)
+            cp = root / gate.CHECKPOINT
+            events = [json.loads(line) for line in (root / "progress.jsonl").read_text().splitlines()]
+            events[10]["gradient_norm"] = 0.0
+            (root / "progress.jsonl").write_text("".join(json.dumps(e) + "\n" for e in events))
+            mutate_json(cp / "receipt.json", "history", events)
+            rehash_checkpoint(root)
+            with self.assertRaisesRegex(ValueError, "gradient_norm"):
+                gate.verify_completion(root, 0, SHA)
+
+    def test_relabelled_model_revision_with_rehashed_receipt_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = fixture(tmp)
+            summary_path = root / "summary.json"
+            summary = json.loads(summary_path.read_text())
+            summary["config"]["model"]["revision"] = "0"*40
+            # The checkpoint receipt independently retains the original pin.
+            summary_path.write_text(json.dumps(summary))
+            with self.assertRaisesRegex(ValueError, "config"):
                 gate.verify_completion(root, 0, SHA)
 
     def test_direct_delivery_does_not_request_forbidden_release(self):
