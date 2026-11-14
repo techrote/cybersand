@@ -1,0 +1,66 @@
+name: SPROCKET fitted Pipework v2 compiler and novelty screen (no native or TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/rich_pipework_v2.py
+      - experiments/agent_painter/lanes/sprocket/test_rich_pipework_v2.py
+      - .github/workflows/agent-painter-sprocket-rich-pipework.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-sprocket-fitted-v2-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  source-compiler-screen:
+    name: Fitted pipe geometry / original public split / independent topology
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify exact source, repository policy, model-free adversarial tests
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          mkdir -p evidence/sprocket-fitted-v2
+          python3 experiments/agent_painter/lanes/sprocket/test_rich_pipework_v2.py 2>&1 | tee evidence/sprocket-fitted-v2/tests.log
+          python3 tools/ci/check_ci_provider_policy.py 2>&1 | tee evidence/sprocket-fitted-v2/provider.log
+          python3 tools/ci/check_ci_scheduling_policy.py --output evidence/sprocket-fitted-v2/scheduling.json
+      - name: Retrieve original immutable positive native corpus; FINAL unopened
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/original-native
+      - name: Strict source compiler, split signature and enriched fitted screen
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/sprocket/rich_pipework_v2.py \
+            --corpus evidence/original-native/corpus \
+            --output evidence/sprocket-fitted-v2/compiler-screen.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("evidence/sprocket-fitted-v2/compiler-screen.json").read_text())
+          assert r["groups"]==2 and r["compiler_seed_views"]==4
+          assert r["original_public_split_checked"] is True
+          assert r["native_positive_views"]==r["new_train_groups_admitted"]==0
+          assert r["final_targets_opened"] is False
+          assert all(all(v["collars"]>0 for v in p["views"]) for p in r["candidates"])
+          print("PASS: two fitted source-compiled designs; 0 native admissions, 0 TRAIN, 0 FINAL")
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-rich-pipework-v2-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/sprocket-fitted-v2/
+          if-no-files-found: warn
+          retention-days: 90
