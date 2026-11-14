@@ -1,0 +1,134 @@
+name: SMOL original fresh120 checkpoint custody re-audit
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths:
+      - .github/workflows/agent-painter-smol-historical-audit.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: smol-original-fresh120-custody-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    name: Independent original candidate checkpoint and TRAIN custody
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify current source and original run/artifact identities
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          mkdir -p evidence/audit
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+          from pathlib import Path
+          repo = "techrote/cybersand"
+          expected_source = "fef6654ecd0828f765af1a13d2d10469013a3ea6"
+          run_id = 43522896533
+          def api(suffix):
+              req = urllib.request.Request(
+                  f"https://api.github.com/repos/{repo}/{suffix}",
+                  headers={"Authorization": "Bearer " + os.environ["GH_TOKEN"],
+                           "Accept": "application/vnd.github+json",
+                           "X-GitHub-Api-Version": "2022-11-28"})
+              with urllib.request.urlopen(req, timeout=30) as response:
+                  return json.load(response)
+          producer = api(f"actions/runs/{run_id}")
+          assert producer["head_sha"] == expected_source, "original trainer source changed"
+          assert producer["status"] == "completed", "original producer is unfinished"
+          assert producer["head_branch"] == "codex/agent-painter-smol-568"
+          # The producer's later hostname/publication stage failed. Do not relabel
+          # the entire historical run successful; audit the actual model artifact.
+          assert producer["conclusion"] == "failure", "unexpected historical run disposition"
+          artifacts = api(f"actions/runs/{run_id}/artifacts")["artifacts"]
+          expected = {
+              14085125908: ("smol-candidate-fef6654ecd0828f765af1a13d2d10469013a3ea6-43522896533-1",
+                           "sha256:c5d7cb88bda1e8ff9c4624ca5b95a1997f4913d97a993ad0310c720620d1f3e9"),
+          }
+          evidence = []
+          for aid, (name, digest) in expected.items():
+              matched = [x for x in artifacts if x["id"] == aid]
+              assert len(matched) == 1, f"missing exact original artifact {aid}"
+              artifact = matched[0]
+              assert artifact["name"] == name and artifact["digest"] == digest
+              assert artifact["expired"] is False, "historical artifact expired"
+              evidence.append({"id": aid, "name": name, "github_reported_sha256": digest,
+                               "size_in_bytes": artifact["size_in_bytes"]})
+          output = {
+              "schema": "cybersand.agent-painter.smol-historical-custody/1",
+              "audit_source_sha": os.environ["GITHUB_SHA"],
+              "audit_run_id": int(os.environ["GITHUB_RUN_ID"]),
+              "original_model_trainer_sha": expected_source,
+              "original_model_run_id": run_id,
+              "original_overall_run_conclusion": producer["conclusion"],
+              "original_artifact_metadata": evidence,
+              "native_source_sha": "633920373a3d406a2ede61ce4137c324f76be23b",
+              "native_run_id": 43506373969,
+              "original_train_rows": 12,
+              "original_independent_train_structures": 6,
+              "evaluation_or_native_model_execution_performed": False,
+              "optimizer_execution_performed": False,
+              "final_targets_opened": False,
+          }
+          Path("evidence/audit/provenance.json").write_text(json.dumps(output, indent=2) + "\n")
+          print(json.dumps(output))
+          PY
+      - name: Download unchanged historical real fresh120 trainer artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: smol-candidate-fef6654ecd0828f765af1a13d2d10469013a3ea6-43522896533-1
+          run-id: 43522896533
+          github-token: ${{ github.token }}
+          path: evidence/candidate
+      - name: Download separately admitted original native corpus
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: 43506373969
+          github-token: ${{ github.token }}
+          path: evidence/original-native
+      - name: Re-audit actual optimizer receipts, adapter inventory and independently native-admitted TRAIN sampler
+        run: |
+          set -euo pipefail
+          python3 -m py_compile experiments/agent_painter/lanes/smol/completion_gate.py
+          test -f evidence/candidate/training/summary.json
+          test -f evidence/candidate/training/checkpoint-000120/inventory.json
+          test -f evidence/original-native/corpus/admitted-corpus.json
+          python3 experiments/agent_painter/lanes/smol/completion_gate.py \
+            --training evidence/candidate/training \
+            --exit-code 0 \
+            --source-sha fef6654ecd0828f765af1a13d2d10469013a3ea6 \
+            --corpus evidence/original-native/corpus \
+            | tee evidence/audit/promotion.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path("evidence/audit/promotion.json").read_text())
+          assert report["promotable"] is True
+          assert report["completed_step"] == 120
+          assert report["trace"]["optimizer_events"] == 120
+          assert report["source_sha"] == "fef6654ecd0828f765af1a13d2d10469013a3ea6"
+          assert report["final_targets_accessed"] is False
+          print("ORIGINAL_REAL_FRESH120_CHECKPOINT_AND_NATIVE_TRAIN_CUSTODY_PASS")
+          PY
+      - name: Preserve bounded audit receipts including failure evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: smol-historical-custody-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/audit/
+          if-no-files-found: error
+          retention-days: 90
