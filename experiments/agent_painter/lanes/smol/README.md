@@ -1,5 +1,31 @@
 # Smol painter: first bounded DEVELOPMENT iteration
 
+## Future native evidence delivery — read-only Actions artifacts (14 November 2026)
+
+The next **explicitly requested** `agent-painter-smol-native.yml` campaign no longer
+calls the denied GitHub Releases API or requests `contents: write`. After
+successful source-matched training, first-pass DEVELOPMENT evaluation, native
+replay, and verified packaging, the same native job records
+`release/PUBLICATION.json` (`github_release_published=false`) and appends its
+SHA-256 to `SHA256SUMS.txt`. The complete `release/` bundle and the small
+gallery/native-PNG packet are uploaded as separately named, 90-day
+`smol-release-<source>-<run>-<attempt>` and `smol-gallery-...` GitHub Actions
+artifacts. A failed/partial trainer cannot reach packaging; the existing
+`if: always()` model/build uploads still retain its original failure receipts.
+This changes **future delivery only**, not any prior immutable producer or
+publication evidence, and does not authorize a new run or a useful model freeze.
+
+The [model-free source-bound publication regression](../../../../.github/workflows/agent-painter-smol-gate.yml)
+exercises delivery receipt creation, SHA256SUMS newline/hash correctness,
+wrong-source refusal, missing/denied GitHub Releases usage and the existing
+partial-step promotion controls using **synthetic fixtures only**. Its hosted
+run is independently tracked in issue #568; it is not evidence of a new
+trained model, native painting or verification of an as-yet-unrun full future
+publication. Previous source `fef6654ecd0828f765af1a13d2d10469013a3ea6`
+remains the genuine fresh120 model/native producer and the separate
+`aeab8ca0a90ae044771a55b9d521c805eadfe5b8` the publication-only
+producer. No original artifacts have been overwritten.
+
 ## Fresh120 training promotion safety — 14 November 2026
 
 **Scope:** Future runs of the existing opt-in `agent-painter-smol-native.yml`
