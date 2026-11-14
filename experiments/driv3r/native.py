@@ -202,7 +202,7 @@ class NativeSession:
                        "--script", self.harness_script]
         else:
             command = [str(self.godot), "--headless", "--path", str(self.root / "godot"),
-                       "--script", "res://tests/run_driv3r_stage_a.gd"]
+                       "--script", self.harness_script]
         started = time.monotonic()
         self.process = subprocess.Popen(command, env=env, stdin=subprocess.DEVNULL,
                                         stdout=self._log, stderr=subprocess.STDOUT, start_new_session=True)
