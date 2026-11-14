@@ -10,6 +10,12 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## DRIV3R Stage A decision-controller candidate — 2026-11-14
+
+**Current continuation:** the Owner explicitly requested [Stage B evaluation](../operations/driv3r-stage-b.md) and conditional modest Stage C after the predeclared usefulness threshold. Qualified Stage A source `ee95f547f31fb1ac9cdd34536bf36dffe7af1d0c` and its original artifacts remain frozen. New source and held-out outcomes require separate qualification; keep the same Draft PR #580, no schedules, training, default changes or merge.
+
+The [independent #570 foundation](../operations/driv3r-stage-a.md) consumes qualified #569 source for a resident d1-2B Q8 backend and bounded native direct-drive/fuzzy-tool episodes. Actual inference, native execution, cancellation, replay and resource gates require the separate source-qualified report and #570 ledger. The earlier Stage A boundary did not automatically authorize later work; the explicit Owner continuation above supplies the current scope. No painter-lane takeover, training, scheduled worker, production-default change or merge is authorized.
+
 ## Agent-painter shared foundation — 2026-11-13
 
 The [opt-in three-family foundation](../operations/agent-painter-foundation.md) starts from accepted merged #564/#565 main. It adds new semantic teachers, native admission and bounded hosted optimizer/resume machinery, including distinct VOID, root Sprocket and actual LFM2.5-VL adapters alongside the qualified Smol proof; actual run/source receipts live in issue #568. The owner has authorized four model workers after applicable preflight plus shepherd/reviewer, with up to two separate Actions VMs per worker. Full model training, Codespaces benchmarking and default promotion remain separate. Historical #567, physics and native Art authority are unchanged; keep the new PR Draft/HOLD.

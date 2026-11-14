@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-14",
+  "scope": "Additive Stage A DRIV3R candidate-contract questions. Existing frozen and historical question objects remain unchanged. Implementation, actual execution and owner acceptance are distinct.",
+  "questions": [
+    {
+      "id": "DRIV3R-01",
+      "query": "How does S1-2B-DRIV3R Stage A reuse the agent-painter foundation without taking over the four training lanes?",
+      "canonical": ["operations/driv3r-stage-a.md"],
+      "facts": [
+        "The independent #570 candidate starts from qualified #569 source2a565 and accepted mainac0d; #568's four generative painter lanes retain ownership.",
+        "DRIV3R selects its own next bounded host-proposed action, separately from #568's optional d1 post-proposal action-veto study.",
+        "The existing compiler, native Art authority and runtime verifier are reused; no production-default inference or material-law change is introduced."
+      ],
+      "sources": ["operations/driv3r-stage-a.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "DRIV3R-02",
+      "query": "Which resident d1 backend and question types does the DRIV3R Stage A controller actually support?",
+      "canonical": ["operations/driv3r-stage-a.md"],
+      "facts": [
+        "The pinned official Q8 GGUF uses llama.cpp b11960/v0.8.0 through /v1/systemone in a resident CPU process, not chat completions.",
+        "The Stage A adapter supports ordinary single choice and rejects unsupported fields including multiple.",
+        "Named questions assess the same input state; their answers do not automatically feed into one another.",
+        "Raw candidate probabilities and confidence are retained; no application calibration or reference-model probability parity is presumed."
+      ],
+      "sources": ["operations/driv3r-stage-a.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "DRIV3R-03",
+      "query": "Can a DRIV3R model decision write arbitrary coordinates or bypass native permissions, and what proves actual painting?",
+      "canonical": ["operations/driv3r-stage-a.md"],
+      "facts": [
+        "The model chooses a stable candidate ID; the host owns exact operations, material, focus, budgets, freshness and Stop authority.",
+        "The native harness mounts the existing Workbench and verifies receipts against original full-World and crop material readbacks.",
+        "Material-derived PNGs are not framebuffer screenshots, and model choices or success flags alone do not establish native mutation.",
+        "Offline record validation and fresh native replay are distinct checks."
+      ],
+      "sources": ["operations/driv3r-stage-a.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "DRIV3R-04",
+      "query": "What can trigger heavyweight DRIV3R Stage A qualification, and does completion authorize Stage B training or scheduled workers?",
+      "canonical": ["operations/driv3r-stage-a.md"],
+      "facts": [
+        "Only manual dispatch or an explicit qualification-request change on the dedicated branch enters heavyweight work; ordinary PR updates run cheap offline tests.",
+        "Each A1-A8 gate requires actual source-qualified evidence and is reported PASS, FAIL, PARTIAL or BLOCKED.",
+        "Stage A ends at the Draft/HOLD owner checkpoint; Stage B/C, training, schedules, production defaults and merge are not automatically authorized.",
+        "Research artifact publication does not itself establish acceptance."
+      ],
+      "sources": ["operations/driv3r-stage-a.md"],
+      "revision_sensitive": true
+    }
+  ]
+}

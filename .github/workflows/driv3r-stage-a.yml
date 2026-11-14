@@ -1,0 +1,121 @@
+name: DRIV3R Stage A resident decision and native qualification
+on:
+  push:
+    branches: [research/570-driv3r-stage-a]
+    paths: ['experiments/driv3r/qualification-request.json']
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'experiments/driv3r/**'
+      - 'godot/tests/run_driv3r_stage_a.gd'
+      - '.github/workflows/driv3r-stage-a.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: driv3r-stage-a-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  contracts:
+    name: Offline decision, ordering and refusal contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: workspace/source
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: workspace/source
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Run cheap offline tests and repository policies
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/contracts
+          python3 -m pip install --require-hashes -r tools/requirements-ci-audit.txt
+          python3 -m pip install 'Pillow==13.0.0' 'jsonschema==4.26.0'
+          python3 -m experiments.driv3r.provenance request --source-sha "$GITHUB_SHA" --output evidence/contracts/request.json
+          python3 -m unittest discover -s experiments/driv3r/tests -p 'test_*.py' -v 2>&1 | tee evidence/contracts/tests.log
+          python3 tools/ci/check_ci_provider_policy.py > evidence/contracts/ci-provider.json
+          python3 tools/ci/check_ci_scheduling_policy.py --output evidence/contracts/scheduling.json
+          python3 tools/ci/check_docs.py > evidence/contracts/docs.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: driv3r-stage-a-contracts-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: workspace/source/evidence/contracts/
+          if-no-files-found: error
+          retention-days: 90
+
+  qualify:
+    name: Source-built native World and genuine resident d1 Q8 decisions
+    needs: contracts
+    # PR updates run offline tests only. A request-file push or explicit manual
+    # dispatch is the only entry to this bounded heavyweight job.
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/research/570-driv3r-stage-a')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Build pinned native dependencies and run frozen Stage A cohort
+        run: bash experiments/driv3r/ci_stage_a.sh
+      - name: Retain original evidence with independently read-back hashes
+        if: always()
+        run: |
+          set -euo pipefail
+          python3 -m experiments.driv3r.provenance package --directory evidence/driv3r --output release --source-sha "$GITHUB_SHA"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: driv3r-stage-a-evidence-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/driv3r/
+            release/
+          if-no-files-found: error
+          retention-days: 90
+
+  publish-evidence:
+    name: Preserve immutable Stage A research evidence
+    needs: qualify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: driv3r-stage-a-evidence-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: downloaded
+      - name: Verify asset bytes and publish research prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cd downloaded/release
+          sha256sum --check --strict SHA256SUMS.txt
+          tag="driv3r-stage-a-${GITHUB_SHA:0:12}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          cat > "$RUNNER_TEMP/driv3r-release.md" <<'NOTES'
+          Original bounded Stage A evidence for issue #570: official d1-2B Q8 resident CPU decisions and actual native Workbench authoring on the recorded source. Read the execution report for each acceptance gate, failures and measured costs; publication itself is not a gate pass.
+
+          The ZIP preserves original questions, model responses, native receipts/readbacks, material-derived PNGs, replay results, source/runtime/model identities and measurement logs. Images are material readback visualizations, not framebuffer screenshots. MANIFEST.json and SHA256SUMS.txt bind the archive bytes to this exact source and Actions run.
+
+          Draft/HOLD. No training, production-default changes, scheduled workers, Stage B/C launch or merge.
+          NOTES
+          gh release create "$tag" ./* --target "$GITHUB_SHA" --prerelease --title "DRIV3R Stage A research (${GITHUB_SHA:0:12})" --notes-file "$RUNNER_TEMP/driv3r-release.md"
