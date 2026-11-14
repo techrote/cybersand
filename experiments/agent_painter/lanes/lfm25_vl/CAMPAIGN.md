@@ -11,3 +11,41 @@ The explicit, fixed `campaign-request.json` authorizes **two independent ordinar
 The workflow waits for corrected evaluation's confirmed success before opening training VMs, avoiding excessive simultaneous model load. It installs the exact model/dependencies from scratch on each hosted runner, performs a genuine TRAIN-only optimizer, records full atomic checkpoint readbacks, resource receipts and one unrepaired original first-pass probe. It does **not** self-label candidates useful, invoke native Art or open FINAL. These two dose levels are a syntax-learning experiment rather than a fresh-versus-continued-vN paired comparison (which requires a useful frozen vN).
 
 The existing shared bounded workflow and model adapter remain unchanged; the pilot's original training source/checkpoint and historical #567 are untouched. A later candidate must pass the common DEVELOPMENT suite and **actual native acknowledgement/material readback/original PNG**, plus structure-specific qualitative assessment. Additional native-admitted structural TRAIN diversity is to be coordinated with the shepherd; overfitting this tiny initial corpus remains a serious risk.
+
+
+## 14 November 2026: source-only completion and promotion gate
+
+After the source-qualified real fresh48/fresh120 CPU campaigns, strict DEVELOPMENT and
+corrected native replay, both candidates remain **not useful**: each accepted
+only one of six independent language requests, and the four genuinely executed
+native seed views are T pipes rather than the requested five-endpoint manifold.
+The corrected native run is
+[43547938574](https://github.com/techrote/cybersand/actions/runs/43547938574);
+native material application and independent verifier pass are distinct from
+**0/4 request-conforming native views**. Historical producer/evaluator/native
+sources and artifacts are immutable. No further training on the unchanged six
+TRAIN structural groups is justified.
+
+The original bounded CPU dose workflow now invokes lane-owned
+`campaign_gate.py` **after** the shared trainer and **before** its single
+post-training inference probe. It requires the exact 48/120 fresh optimizer
+step/cursor/history sequence; completed status; the actual source/run identity;
+official complete model revision; original native-admitted TRAIN corpus identity;
+portable FP32 numerics; frozen-base/changed-adapter receipts; full checkpoint
+file-inventory hash verification; and no FINAL/native/quality promotion claim.
+A partial checkpoint is retained by `upload-artifact: if: always()`, but it
+cannot be labelled a completed candidate. This gate is scoped to the original
+12-row dose request and intentionally **must be versioned for any new corpus,
+fresh/warm pair or new checkpoint target**. It is not a training-quality test
+or a retroactive modification of the historical completed jobs.
+
+`test_campaign_gate.py` exercises successful 48/120 fixtures and independent
+failure cases for partial/stale/model/corpus/numerical/run/history/gradient/
+resume/quality claims; it also checks the required workflow ordering. The
+[model-free hosted guard run 43553331689](https://github.com/techrote/cybersand/actions/runs/43553331689)
+completed SUCCESS with source tests and CI-provider-policy validation, without
+downloading model weights, training, inference, native painting or FINAL access.
+All source remains confined to the existing Draft/HOLD LFM branch. The next
+productive model-quality action depends on shepherd/reviewer approval of
+structurally new, positively native-admitted TRAIN examples and a shared
+frozen expanded DEVELOPMENT suite.
