@@ -1,4 +1,4 @@
-"""Pre-M1 shadow-only matched observation and bounded critic fixtures.
+"""Synthetic matched observations and bounded critic fixtures (local /1 isolation).
 
 No model inference, real native Undo, permission changes or native World mutation.
 """
@@ -22,9 +22,13 @@ def matched_arms(*, snapshot_id: str, candidate_ids: list[str], geometry: Mappin
     Withheld information is explicitly null; no arm is allowed to smuggle
     the omitted data through a summary.
     """
-    if not snapshot_id or not candidate_ids or len(set(candidate_ids)) != len(candidate_ids):
+    if (not isinstance(snapshot_id, str) or not snapshot_id or
+            not isinstance(candidate_ids, list) or not candidate_ids or
+            any(not isinstance(cid, str) or not cid for cid in candidate_ids) or
+            len(set(candidate_ids)) != len(candidate_ids)):
         raise ValueError("snapshot and unique candidate IDs required")
-    candidate_hash = stable_hash(candidate_ids)
+    # Display order is not host candidate-set identity.
+    candidate_hash = stable_hash(sorted(candidate_ids))
     inputs = {"geometry": deepcopy(dict(geometry)), "guidance": deepcopy(dict(guidance)),
               "critic": deepcopy(dict(critic))}
     if any(not isinstance(x, dict) for x in inputs.values()):
@@ -36,13 +40,19 @@ def matched_arms(*, snapshot_id: str, candidate_ids: list[str], geometry: Mappin
         "combined": (True, True, True),
     }
     result = {}
+    full_hashes = {name: stable_hash(value) for name, value in inputs.items()}
     for arm, use in flags.items():
+        visible_hashes = {name: full_hashes[name]
+                          for name, enabled in zip(("geometry", "guidance", "critic"), use)
+                          if enabled}
         view = {
-            "protocol": "cybersand.driv3r.d1b-shadow/0",
+            "protocol": "cybersand.driv3r.d1b-shadow/1",
             "status": "synthetic_pre_m1_no_native_authority",
             "arm": arm, "snapshot_id": snapshot_id,
             "candidate_ids": list(candidate_ids), "candidate_set_sha256": candidate_hash,
-            "input_hashes": {name: stable_hash(value) for name, value in inputs.items()},
+            # Do not leak fingerprints of withheld signals into the model view.
+            # The caller keeps all source digests in a separate research audit.
+            "input_hashes": visible_hashes,
         }
         view.update({name: deepcopy(inputs[name]) if enabled else None
                     for name, enabled in zip(("geometry", "guidance", "critic"), use)})
@@ -116,5 +126,11 @@ def factorial_arms(*, snapshot_id: str, candidate_ids: list[str], geometry: Mapp
         view["geometry"] = deepcopy(isolated["geometry_only"]["geometry"])
         view["guidance"] = deepcopy(isolated["combined"]["guidance"]) if include_guidance else None
         view["critic"] = deepcopy(isolated["combined"]["critic"]) if include_critic else None
+        # Rebuild visibility after restoring the common host-geometry baseline;
+        # never inherit hashes of excluded guidance/critique signals.
+        view["input_hashes"] = {
+            name: stable_hash(view[name]) for name in ("geometry", "guidance", "critic")
+            if view[name] is not None
+        }
         result[arm] = view
     return result
