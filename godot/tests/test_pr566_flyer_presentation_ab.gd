@@ -200,6 +200,8 @@ func _run() -> void:
 				verify(ui.toggle_pause(),"begin actual 60Hz Rapier flight")
 				var starting_tick: int = host.physical_actor_session.tick
 				var last_seen: int = -1
+				var capture_targets: Array[int] = [45,60,75,90,110,135,165,195]
+				var next_capture: int = 0
 				var deadline: int = Time.get_ticks_msec() + WATCHDOG_MS
 				while host.physical_actor_session.tick - starting_tick < SAMPLE_TICKS and \
 						Time.get_ticks_msec() < deadline and not host.simulation_worker.has_failed():
@@ -213,8 +215,13 @@ func _run() -> void:
 					_read_emitters()
 					var record: Dictionary = _measure(elapsed)
 					observations.append(record)
-					if not capture_dir.is_empty() and elapsed in [45,60,75,90,110,135,165,195]:
-						await _capture(elapsed,record)
+					# A real GPU readback can skip simulation ticks. Trigger on the
+					# first observed tick at/after each requested capture threshold.
+					if not capture_dir.is_empty() and next_capture < capture_targets.size() \
+							and elapsed >= capture_targets[next_capture]:
+						var target_tick: int = capture_targets[next_capture]
+						next_capture += 1
+						await _capture(target_tick,record)
 					if elapsed % 30 == 0:
 						print("PR566_RECOIL_SAMPLE ",JSON.stringify(record))
 				host.pilot_action.clear()
@@ -237,7 +244,7 @@ func _run() -> void:
 					verify(actual_fire_inserts == 0,"no-Fire control emitted no Fire")
 				verify(matched_mask_samples > 20,"rendered mask-pose revision tied to uploaded material")
 				if not capture_dir.is_empty():
-					verify(actual_captures >= 5,"actual graphical frames captured")
+					verify(actual_captures >= 6,"actual graphical frames captured")
 				verify(not observations.is_empty(),"Rapier and presentation observations exist")
 	host.queue_free()
 	await process_frame
