@@ -46,7 +46,13 @@ func run() -> void:
 		var current: Rect2 = panel._style_controls[index].card.get_global_rect()
 		if current.position.x <= previous.position.x or current.position.y != previous.position.y: columns_visible = false
 	check(columns_visible, "all five style cards share a single horizontal row; no tabs")
-	check(panel._style_controls[4].card.get_global_rect().end.x <= float(panel.size.x), "fifth style column is visible at 1280px width")
+	# Compare controls in the same global canvas space: a native popup may
+	# have a nonzero screen origin, especially in Windows/headless execution.
+	var style_scroll: ScrollContainer = panel.get_child(0)
+	var card_right: float = panel._style_controls[4].card.get_global_rect().end.x
+	var viewport_right: float = style_scroll.get_global_rect().end.x
+	check(card_right <= viewport_right + 1.0,
+		"fifth style column is visible without horizontal scrolling at 1280px (card %.1f, viewport %.1f)" % [card_right, viewport_right])
 	check(Store.recipe_hash(panel.project()) == Store.recipe_hash(Project.default_project()), "default form exactly represents the declarative project")
 	var bounds := Rect2i(Vector2i.ZERO,root.size)
 	check(bounds.encloses(Rect2i(panel.position,panel.size)), "first-open Architectural form fits the viewport")
