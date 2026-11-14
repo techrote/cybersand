@@ -2,11 +2,16 @@
 from __future__ import annotations
 
 import copy
+import hashlib
+from pathlib import Path
+import struct
+import tempfile
 import unittest
+import zlib
 
 from jsonschema.exceptions import ValidationError
 
-from verify import ContractError, records_from_examples, validate_bundle
+from verify import ContractError, SCHEMA, records_from_examples, validate_bundle
 
 
 class ContractV1Tests(unittest.TestCase):
@@ -184,6 +189,91 @@ class ContractV1Tests(unittest.TestCase):
 
     def test_applied_material_undo_requires_post_world(self):
         self.reject(lambda rows: rows[3].__setitem__("after_world", None))
+
+
+    def _constructed_native_byte_fixture(self, root: Path):
+        """Byte-custody example only, NOT actual Godot execution evidence."""
+        rows = copy.deepcopy(self.rows)
+        def put(path, payload, fmt):
+            location = root / path
+            location.parent.mkdir(parents=True, exist_ok=True)
+            location.write_bytes(payload)
+            return {"path":path, "sha256":hashlib.sha256(payload).hexdigest(),
+                    "bytes":len(payload), "format":fmt}
+
+        def png():
+            def chunk(kind, data):
+                return (struct.pack(">I",len(data)) + kind + data +
+                        struct.pack(">I",zlib.crc32(kind + data) & 0xFFFFFFFF))
+            signature=b"\x89PNG\r\n\x1a\n"
+            ihdr=struct.pack(">IIBBBBB",1,1,8,2,0,0,0)
+            return signature + chunk(b"IHDR",ihdr) + chunk(b"IDAT",zlib.compress(b"\x00\x00\x00\x00")) + chunk(b"IEND",b"")
+        rows[0]["values"] = put("guide/guide.u16le", b"\x00" * 128, "u16le")
+        rows[0]["display"] = put("guide/speckles.png", png(), "png")
+        rows[1]["local_material"] = put("native/crop.i32le", b"\x00" * 256, "i32le")
+        full_world = put("native/full.i32le", b"\x00" * (512*512*4), "i32le")
+        for world in (rows[1]["world"], rows[2]["world_precondition"],
+                      rows[3]["before_world"], rows[3]["after_world"]):
+            world["world_material_sha256"] = full_world["sha256"]
+        rows[-1].update({
+            "evidence_class":"native", "source_commit":"a" * 40,
+            "source_tree":"b" * 40, "base_commit":"c" * 40,
+            "interface_schema_sha256": hashlib.sha256(SCHEMA.read_bytes()).hexdigest(),
+            "scenario_sha256":"d" * 64, "model":None,
+            "native":full_world, "native_receipts":[],
+            "final_world":copy.deepcopy(rows[1]["world"])
+        })
+        return rows
+
+    def test_bounded_byte_custody_accepts_constructed_artifacts(self):
+        with tempfile.TemporaryDirectory() as folder:
+            result = validate_bundle(self._constructed_native_byte_fixture(Path(folder)),
+                                     evidence_root=Path(folder))
+            self.assertTrue(result["evidence_bytes_verified"])
+            # This demonstrates byte checking, not source-matched native qualification.
+
+    def test_byte_custody_detects_corrupt_artifact(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)
+            rows=self._constructed_native_byte_fixture(root)
+            (root / rows[0]["values"]["path"]).write_bytes(b"\xff" * 128)
+            with self.assertRaises(ContractError):
+                validate_bundle(rows, evidence_root=root)
+
+    def test_final_world_hash_binds_real_bytes(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)
+            rows=self._constructed_native_byte_fixture(root)
+            rows[-1]["final_world"]["world_material_sha256"]="0" * 64
+            with self.assertRaises(ContractError):
+                validate_bundle(rows, evidence_root=root)
+
+    def test_native_source_schema_sha_must_match(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)
+            rows=self._constructed_native_byte_fixture(root)
+            rows[-1]["interface_schema_sha256"]="f" * 64
+            with self.assertRaises(ContractError):
+                validate_bundle(rows, evidence_root=root)
+
+    def test_unverified_partial_material_write_rejected(self):
+        def change(rows):
+            action=rows[2]
+            action["execution_status"]="partial"
+            action["mode"]="add_material"
+            action["brush_state"]="add"
+            action["operation_sha256"]="a" * 64
+            # No real receipt, no post-state, and synthetic provenance.
+        self.reject(change)
+
+    def test_reversal_requires_exact_source_action_post_state(self):
+        def change(rows):
+            action=rows[2]
+            action["execution_status"]="committed"
+            action["world_postcondition"]=copy.deepcopy(action["world_precondition"])
+            rows[3]["before_world"]["revision"] += 1
+            rows[3]["after_world"]["revision"] += 1
+        self.reject(change)
 
 
 if __name__ == "__main__":
