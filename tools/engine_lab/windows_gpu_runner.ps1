@@ -1,7 +1,7 @@
 # ENG-LAB-001 / Windows 11 NVIDIA hardware comparison.
 # All cases run the same tested native Workbench, Needle, and no-input capture.
 [CmdletBinding()]
-param([switch]$Smoke, [switch]$AllowOtherAdapter)
+param([switch]$Smoke, [switch]$AllowOtherAdapter, [ValidateSet('opengl3','opengl3_angle')][string]$RenderingDriver='opengl3')
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $Root = (Resolve-Path -LiteralPath (Split-Path -Parent $MyInvocation.MyCommand.Path)).Path
@@ -55,7 +55,7 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat) {
  $env:XDG_DATA_HOME=$User
  Write-Host "CASE $Name: actual 1024-square World, physical Needle, native Water" -ForegroundColor Cyan
  $Arguments=@('--audio-driver','Dummy','--rendering-method','gl_compatibility',
-              '--rendering-driver','opengl3','--max-fps','60',
+              '--rendering-driver',$RenderingDriver,'--max-fps','60',
               '--path',('"' + $Project + '"'),
               '--script','res://tests/bench_engine_lab_water_family.gd','--',
               "--family=$Family","--workers=$Workers","--repeat=$Repeat",
@@ -116,6 +116,7 @@ try {
  $ExpectedNative=$M.native_runtime.cybersand_runtime.'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll'.sha256
  Require ($script:NativeHash -eq $ExpectedNative) 'Native runtime hash mismatch'
  $Report.godot_sha256=Hash $Engine
+ $Report.requested_driver=$RenderingDriver
  $Report.native_sha256=$script:NativeHash
  $Report.machine_gpus=@(Get-CimInstance Win32_VideoController | ForEach-Object {@{name=$_.Name;driver=$_.DriverVersion}})
  $env:CYBERSAND_SOURCE_REVISION=$Source
