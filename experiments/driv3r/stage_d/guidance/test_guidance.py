@@ -71,6 +71,7 @@ class FieldTests(unittest.TestCase):
             self.assertEqual(restored, f)
             self.assertEqual(manifest["values"]["sha256"], f.sha256)
             self.assertFalse(manifest["native_material_authority"])
+            self.assertEqual(manifest["source_kind"], "manual_scalar")
             with p.with_suffix(".u16le").open("ab") as target:
                 target.write(b"z")
             with self.assertRaises(ValueError):
