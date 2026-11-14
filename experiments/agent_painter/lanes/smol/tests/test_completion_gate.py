@@ -128,5 +128,69 @@ class Fresh120PromotionTests(unittest.TestCase):
                 gate.verify_completion(root, 0, SHA)
 
 
+    def test_direct_delivery_does_not_request_forbidden_release(self):
+        workflow = (SCRIPT.parents[4] / ".github/workflows/agent-painter-smol-native.yml").read_text()
+        self.assertNotIn("gh release create", workflow)
+        self.assertNotIn("contents: write", workflow)
+        self.assertIn("contents: read", workflow)
+        self.assertIn("name: smol-release-", workflow)
+        self.assertIn("name: smol-gallery-", workflow)
+        self.assertIn("path: release/", workflow)
+        self.assertIn("if-no-files-found: error", workflow)
+        self.assertIn('delivery": "github-actions-artifact"', workflow)
+        self.assertIn('github_release_published": False', workflow)
+
+    def test_actions_delivery_receipt_matches_source_and_hashes(self):
+        """Execute only the embedded pure receipt code with synthetic files."""
+        import os
+        import subprocess
+        import sys
+        import textwrap
+
+        workflow = (SCRIPT.parents[4] / ".github/workflows/agent-painter-smol-native.yml").read_text()
+        marker = "      - name: Record exact-source read-only Actions delivery"
+        self.assertEqual(workflow.count(marker), 1)
+        block = workflow.split(marker, 1)[1].split(
+            "      - uses: actions/upload-artifact@", 1)[0]
+        self.assertEqual(block.count("python3 - <<'PY'"), 1)
+        code = textwrap.dedent(block.split("python3 - <<'PY'\n", 1)[1].split(
+            "\n          PY", 1)[0])
+        env = {**os.environ, "GITHUB_SHA": SHA, "GITHUB_RUN_ID": "12345",
+               "GITHUB_RUN_ATTEMPT": "1"}
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "release"
+            out.mkdir()
+            manifest = {"source_sha": SHA, "workflow_run_id": 12345,
+                        "workflow_run_attempt": 1,
+                        "producer": {"training": "synthetic-test-only"},
+                        "publisher": {"source": SHA}}
+            (out / "MANIFEST.json").write_text(json.dumps(manifest))
+            (out / "SHA256SUMS.txt").write_text("abc  placeholder\n")
+            (out / "smol-gallery.html").write_text("<html>fixture only</html>")
+            run = subprocess.run([sys.executable, "-c", code], cwd=tmp, env=env,
+                                 capture_output=True, text=True)
+            self.assertEqual(run.returncode, 0, run.stderr)
+            record_path = out / "PUBLICATION.json"
+            receipt = json.loads(record_path.read_text())
+            self.assertEqual(receipt["source_sha"], SHA)
+            self.assertEqual(receipt["delivery"], "github-actions-artifact")
+            self.assertFalse(receipt["github_release_published"])
+            self.assertEqual(receipt["retention_days"], 90)
+            self.assertEqual(receipt["bundle_artifact"], f"smol-release-{SHA}-12345-1")
+            lines = (out / "SHA256SUMS.txt").read_text().splitlines()
+            self.assertEqual(len(lines), 2)
+            self.assertEqual(lines[1], hashlib.sha256(record_path.read_bytes()).hexdigest()
+                             + "  PUBLICATION.json")
+            # A contradictory source must refuse without creating a delivery receipt.
+            record_path.unlink()
+            manifest["source_sha"] = "b" * 40
+            (out / "MANIFEST.json").write_text(json.dumps(manifest))
+            failed = subprocess.run([sys.executable, "-c", code], cwd=tmp, env=env,
+                                    capture_output=True, text=True)
+            self.assertNotEqual(failed.returncode, 0)
+            self.assertIn("source/run identity differs", failed.stderr)
+            self.assertFalse(record_path.exists())
+
+
 if __name__ == "__main__":
     unittest.main()
