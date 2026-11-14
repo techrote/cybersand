@@ -30,7 +30,31 @@ def _require(obj, key, expected):
 
 
 
-def verify_trace(training, summary, receipt, config):
+def frozen_train_order(corpus: Path) -> list[str]:
+    """Reconstruct the actual reviewed TRAIN sampler from positive native evidence.
+
+    This reads TRAIN rows and their native receipts only. The sealed FINAL
+    contents and DEVELOPMENT targets are never opened.
+    """
+    manifest = contracts.frozen_manifest(corpus)
+    rows, admission = contracts.common.load_training_corpus(corpus)
+    if admission != manifest or len(rows) != 12:
+        raise ValueError("non-promotable SMOL fresh120: frozen TRAIN corpus changed")
+    buckets: dict[str, list[int]] = {}
+    for index, row in enumerate(rows):
+        buckets.setdefault(row["family"], []).append(index)
+    if set(buckets) != {"greebles", "pipework", "architecture"}:
+        raise ValueError("non-promotable SMOL fresh120: TRAIN family partition changed")
+    for indexes in buckets.values():
+        indexes.sort(key=lambda i: hashlib.sha256(
+            f"568:{rows[i]['id']}".encode("utf-8")).digest())
+    indexes = [buckets[family][i]
+               for i in range(max(map(len, buckets.values())))
+               for family in sorted(buckets) if i < len(buckets[family])]
+    return [rows[index]["id"] for index in indexes]
+
+
+def verify_trace(training, summary, receipt, config, expected_order):
     """Model-free corroboration of the real trainer's checkpoint and progress."""
     selected = contracts.common.profile("smol")
     for key, expected in {
@@ -52,6 +76,8 @@ def verify_trace(training, summary, receipt, config):
     order = config.get("sample_order")
     if type(order) is not list or len(order) != 12 or len(set(order)) != 12 or not all(type(x) is str and x for x in order):
         raise ValueError("non-promotable SMOL fresh120: invalid frozen TRAIN order")
+    if order != expected_order:
+        raise ValueError("non-promotable SMOL fresh120: frozen TRAIN sample order differs from native-admitted rows")
     raw = (training / "progress.jsonl").read_bytes()
     lines = raw.decode("utf-8").splitlines()
     if len(lines) != TARGET or any(not line.strip() for line in lines):
@@ -100,7 +126,7 @@ def verify_trace(training, summary, receipt, config):
     return {"optimizer_events": TARGET, "progress_sha256": hashlib.sha256(raw).hexdigest()}
 
 
-def verify_completion(training: Path, exit_code: int, source_sha: str) -> dict:
+def verify_completion(training: Path, exit_code: int, source_sha: str, corpus: Path) -> dict:
     if type(exit_code) is not int or exit_code != 0:
         raise ValueError("non-promotable SMOL fresh120: trainer exit must be 0; partial checkpoint is evidence only")
     if len(source_sha) != 40 or any(c not in "0123456789abcdef" for c in source_sha):
@@ -162,7 +188,7 @@ def verify_completion(training: Path, exit_code: int, source_sha: str) -> dict:
         _require(receipt, k, v)
     checkpoint_bytes = sum(p.stat().st_size for p in checkpoint.rglob("*") if p.is_file())
     _require(summary, "checkpoint_bytes", checkpoint_bytes)
-    trace = verify_trace(training, summary, receipt, config)
+    trace = verify_trace(training, summary, receipt, config, frozen_train_order(corpus))
     return {
         "trace": trace,
         "schema": "cybersand.agent-painter.smol-fresh120-promotion/1",
@@ -178,8 +204,10 @@ def main() -> None:
     parser.add_argument("--training", type=Path, required=True)
     parser.add_argument("--exit-code", type=int, required=True)
     parser.add_argument("--source-sha", required=True)
+    parser.add_argument("--corpus", type=Path, required=True,
+                        help="unchanged native-admitted original corpus; reads TRAIN only")
     args = parser.parse_args()
-    print(json.dumps(verify_completion(args.training, args.exit_code, args.source_sha), sort_keys=True))
+    print(json.dumps(verify_completion(args.training, args.exit_code, args.source_sha, args.corpus), sort_keys=True))
 
 
 if __name__ == "__main__":
