@@ -1,0 +1,106 @@
+name: PR566 flyer overlay pose A/B - Windows rendered frames
+
+# Graphical diagnostic only. Consume the already-qualified PR #566 native
+# DLL by exact hash; A/B modifies GDScript overlay selection, not native bytes.
+on:
+  push:
+    branches: [codex/pr566-flyer-pose-presentation-ab-20261114]
+    paths:
+      - '.github/workflows/pr566-flyer-pose-presentation-ab.yml'
+      - 'godot/scripts/main.gd'
+      - 'godot/tests/test_pr566_flyer_presentation_ab.gd'
+      - 'tools/ci/run_pr566_flyer_pose_ab_windows.py'
+      - 'tools/ci/reduce_pr566_flyer_pose_ab.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pr566-flyer-pose-ab-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  windows-angle-render:
+    name: Real Godot/Rapier eight-arm Windows ANGLE framebuffer capture
+    runs-on: windows-2022
+    timeout-minutes: 85
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout only isolated presentation branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          lfs: false
+          fetch-depth: 10
+
+      - name: Select qualified Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Verify exact PR566 ancestry and presentation-only source scope
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          git merge-base --is-ancestor 214de85adef2aaabc8e26de8612a3bf27cc1a081 HEAD
+          git diff --exit-code 214de85adef2aaabc8e26de8612a3bf27cc1a081 HEAD -- native godot/native_extension godot/scripts/workbench_physics_bridge.gd godot/scripts/physical_actor_session.gd godot/scripts/physical_actor_overlay.gd
+          git diff --name-only 214de85adef2aaabc8e26de8612a3bf27cc1a081 HEAD > evidence/changed-files.txt
+          python - <<'PY'
+          from pathlib import Path
+          allowed = {
+            'godot/scripts/main.gd',
+            'godot/tests/test_pr566_flyer_presentation_ab.gd',
+            'tools/ci/run_pr566_flyer_pose_ab_windows.py',
+            'tools/ci/reduce_pr566_flyer_pose_ab.py',
+            '.github/workflows/pr566-flyer-pose-presentation-ab.yml',
+          }
+          found = set(Path('evidence/changed-files.txt').read_text().splitlines())
+          if found != allowed:
+              raise SystemExit('Unexpected A/B source paths: ' + repr(sorted(found ^ allowed)))
+          PY
+          git rev-parse HEAD > evidence/diagnostic-head.txt
+          git rev-parse HEAD^{tree} > evidence/diagnostic-tree.txt
+
+      - name: Restore *previously qualified* PR566 Windows native binary
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: native-pixel-integrated-build-windows-43537909868-1
+          repository: techrote/cybersand
+          run-id: 43537909868
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/pr566-qualified
+
+      - name: Fetch exact pinned Rapier2D Windows DLL
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          echo 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' | sha256sum --check --strict
+
+      - name: Fetch official Godot 4.7 Windows runtime
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/pr566-godot-4.7.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+
+      - name: Execute actual Windows graphical and physical pose A/B
+        run: |
+          set -euo pipefail
+          python tools/ci/run_pr566_flyer_pose_ab_windows.py \
+            --godot-zip "$RUNNER_TEMP/pr566-godot-4.7.zip" \
+            --engine-directory "$RUNNER_TEMP/pr566-godot-extracted" \
+            --evidence evidence | tee evidence/runner-summary.log
+          python -m json.tool evidence/summary.json >/dev/null
+
+      - name: Preserve every original framebuffer, pose/collision ledger and failure log
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pr566-flyer-presentation-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
