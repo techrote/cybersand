@@ -42,6 +42,15 @@ def synthetic_dump(code=CODE,tid=7,address=0x140001234,module_name='C:\\syntheti
     struct.pack_into('<I',raw_exception,0,code);struct.pack_into('<Q',raw_exception,16,address)
     return bytes(data),bytes(data[context_at:context_at+1232]),bytes(raw_exception)
 
+def with_extra_dump_streams(data, extra):
+    """Move the directory without disturbing any original stream/context RVA."""
+    data=bytearray(data);count,directory=struct.unpack_from('<II',data,8)
+    rows=bytes(data[directory:directory+12*count]);new_directory=len(data)
+    data.extend(rows)
+    for row in extra:data.extend(struct.pack('<III',*row))
+    struct.pack_into('<II',data,8,count+len(extra),new_directory)
+    return data
+
 def synthetic_load_hash(root,event,identity):
     """Synthetic file-ID receipt; never a Windows load observation."""
     sequence=0
@@ -50,7 +59,7 @@ def synthetic_load_hash(root,event,identity):
     file_id=bytes.fromhex('12'*16)
     original={'volume':123,'file_id':file_id.hex(),'bytes':identity['bytes']}
     (root/name).write_bytes(struct.pack('<Q16sQ32s',123,file_id,identity['bytes'],bytes.fromhex(identity['sha256'])))
-    event['load_hash']={'valid':True,'record':name,'milliseconds':1,'limit_ms':15000,'helper_pid':101,
+    event['load_hash']={'valid':True,'record':name,'milliseconds':1,'limit_ms':contract.CAPTURE_MS,'helper_pid':101,
                        'helper_exit':0,'helper_joined':True,'helper_terminated':False,'timed_out':False,
                        'original_file':original,'file':original|{'sha256':identity['sha256']}}
 
@@ -78,7 +87,7 @@ class CaptureTests(unittest.TestCase):
                  'code':CODE,'address':0x140001234,'loader_breakpoint':False,'continued_as':contract.NOT_HANDLED},
                 {'type':'capture','event_id':index,'pid':pid,'tid':tid,'prefix':prefix,'capture_exit':0,
                  'capture_ms':10,'timed_out':False,'context_bytes':1232,'exception_bytes':152,
-                 'helper_pid':91,'helper_joined':True,'helper_terminated':False,'helper_control':False,'capture_limit_ms':15000}])
+                 'helper_pid':91,'helper_joined':True,'helper_terminated':False,'helper_control':False,'capture_limit_ms':contract.CAPTURE_MS}])
         code=CODE if mode in ('crash','child-crash') else 124 if mode=='hang' else 0
         if mode!='hang':
             self.events.append({'type':'exit','pid':pid,'tid':tid,'code':code})
@@ -152,8 +161,29 @@ class CaptureTests(unittest.TestCase):
         self.reject('disguised')
 
     def test_capture_deadline_is_strict(self):
-        self.fixture();next(e for e in self.events if e['type']=='capture')['capture_ms']=15001
+        self.fixture();next(e for e in self.events if e['type']=='capture')['capture_ms']=contract.CAPTURE_MS+1
         self.reject('Failed/late')
+
+    def test_capture_after_former_limit_retains_fault_identity(self):
+        self.fixture()
+        for event in self.events:
+            if event['type']=='capture':event['capture_ms']=20000
+        self.events[0]['timeout_ms']=self.receipt['timeout_ms']=campaign.policy.CONTROL_MS
+        self.events[-1]['elapsed_ms']=40040
+        result=contract.verify_capture(self.root,self.events,self.receipt)
+        self.assertEqual(result['effective_exit'],CODE)
+        self.assertEqual(len(result['captures']),2)
+
+    def test_load_hash_after_former_limit_keeps_join_and_file_identity(self):
+        self.fixture('normal')
+        event=next(e for e in self.events if e['type']=='process')
+        synthetic_load_hash(self.root,event,{'sha256':'1'*64,'bytes':1234})
+        event['load_hash']['milliseconds']=20000
+        result=contract.read_load_identities(self.root,self.events)
+        self.assertEqual(result[event['image']],{'sha256':'1'*64,'bytes':1234})
+        event['load_hash']['helper_joined']=False
+        with self.assertRaisesRegex(ValueError,'joined ownership'):
+            contract.read_load_identities(self.root,self.events)
 
     def test_process_deadline_is_strict(self):
         self.fixture('normal');self.events[-1]['elapsed_ms']=15001
@@ -248,6 +278,16 @@ class CaptureTests(unittest.TestCase):
         next(e for e in self.events if e['type']=='process' and not e['root'])['image']='C:\\other.exe'
         with self.assertRaisesRegex(ValueError,'identity receipt mismatch'):self.bind()
 
+    def test_android_keytool_and_console_host_are_still_unregistered_children(self):
+        for image in (r'C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\8.0.504-1\x64\bin\keytool.exe',
+                      r'C:\Windows\System32\conhost.exe'):
+            self.bound_fixture('normal')
+            self.events.insert(-2,{'type':'process','pid':22,'tid':23,'root':False,
+                                   'image':image,'base':0x160000000,'load_hash':None})
+            self.identities[image]={'hash_status':'not_requested'}
+            with self.subTest(image=image),self.assertRaisesRegex(ValueError,'Unexpected debuggee executable'):
+                self.bind()
+
     def test_both_runtime_modules_required_on_actual_engine_owner(self):
         self.bound_fixture('normal');self.images['C:\\synthetic-control.exe']['requires_runtime']=True
         for index,name in enumerate(('native','rapier')):
@@ -288,6 +328,52 @@ class CaptureTests(unittest.TestCase):
     def test_full_memory_dump_flags_refused(self):
         self.fixture();data=bytearray((self.root/'fault-2.dmp').read_bytes());struct.pack_into('<Q',data,24,0x1002)
         with self.assertRaisesRegex(ValueError,'bounded MiniDump'):contract.dump_identity(data)
+
+    def test_observed_avx_context_and_zero_unused_slots_keep_fault_crossjoins(self):
+        self.fixture('handled');path=self.root/'fault-2.dmp';data=bytearray(path.read_bytes())
+        context=bytes(data[400:1632])+b'\0'*(3263-1232);context_at=len(data);data.extend(context)
+        struct.pack_into('<II',data,68+160,len(context),context_at)
+        struct.pack_into('<Q',data,24,0x201000)
+        path.write_bytes(with_extra_dump_streams(data,[(0,0,0)]*4))
+        result=contract.verify_capture(self.root,self.events,self.receipt);contract.verify_control('handled',result)
+        identity=result['captures'][0]['identity']
+        self.assertEqual(identity['dump_format_schema'],'play-windows-minidump-v2')
+        self.assertEqual(identity['dump_flags'],0x201000)
+        self.assertEqual(identity['exception_context_bytes'],3263)
+        self.assertEqual(identity['unused_stream_slots'],4)
+        self.assertEqual(identity['stream_types'],[3,4,6])
+
+    def test_every_unregistered_header_bit_and_missing_requested_bit_is_refused(self):
+        data,_,_=synthetic_dump()
+        values=[0,0x200000]+[0x1000|(1<<bit) for bit in range(64) if bit not in (12,21)]
+        for flags in values:
+            changed=bytearray(data);struct.pack_into('<Q',changed,24,flags)
+            with self.subTest(flags=hex(flags)),self.assertRaisesRegex(ValueError,'bounded MiniDump'):
+                contract.dump_identity(changed)
+
+    def test_unused_slots_cannot_hide_payload_or_nonzero_location(self):
+        data,_,_=synthetic_dump()
+        for row in ((0,1,0),(0,0,1),(0,1,len(data)-1)):
+            with self.subTest(row=row),self.assertRaisesRegex(ValueError,'Nonempty unused'):
+                contract.dump_identity(with_extra_dump_streams(data,[row]))
+
+    def test_unused_slots_do_not_hide_duplicate_meaningful_streams(self):
+        data,_,_=synthetic_dump()
+        with self.assertRaisesRegex(ValueError,'Duplicate/truncated'):
+            contract.dump_identity(with_extra_dump_streams(data,[(0,0,0),(3,52,236)]))
+
+    def test_full_memory_stream_is_refused_even_with_forged_normal_header(self):
+        data,_,_=synthetic_dump()
+        with self.assertRaisesRegex(ValueError,'Full-memory minidump stream'):
+            contract.dump_identity(with_extra_dump_streams(data,[(9,0,0)]))
+
+    def test_extended_exception_context_has_an_explicit_capacity(self):
+        data,_,_=synthetic_dump();data=bytearray(data);at=len(data)
+        size=contract.DUMP_FORMAT['max_exception_context_bytes']+1
+        data.extend(b'\0'*size);struct.pack_into('<II',data,68+160,size,at)
+        struct.pack_into('<Q',data,24,0x201000)
+        with self.assertRaisesRegex(ValueError,'oversized exception'):
+            contract.dump_identity(data)
 
     def test_exception_parameters_crossjoin_raw_record(self):
         self.fixture();data=bytearray((self.root/'fault-2.exception').read_bytes())
@@ -333,7 +419,7 @@ class CaptureTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'debug event handle file identity'):self.bind()
 
     def test_load_hash_deadline_and_join_are_enforced(self):
-        for field,value in (('milliseconds',15001),('helper_joined',False),('helper_exit',124)):
+        for field,value in (('milliseconds',contract.CAPTURE_MS+1),('helper_joined',False),('helper_exit',124)):
             self.bound_fixture('normal');event=next(e for e in self.events if e['type']=='process')
             event['load_hash'][field]=value
             with self.subTest(field=field),self.assertRaisesRegex(ValueError,'load-time hash failed'):self.bind()
@@ -362,7 +448,7 @@ class ManifestTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'inventory mismatch'):campaign.verify_manifest(self.root)
 
     def test_incomplete_campaign_is_not_an_offline_pass(self):
-        campaign.write(self.root/'campaign.json',{'schema':'play-windows-crash-campaign-v3','completed':False})
+        campaign.write(self.root/'campaign.json',{'schema':'play-windows-crash-campaign-v7','completed':False})
         campaign.write(self.root/'MANIFEST.json',{path.name:{'sha256':contract.sha(path),'bytes':path.stat().st_size}
             for path in self.root.iterdir() if path.name!='MANIFEST.json'})
         with self.assertRaisesRegex(ValueError,'campaign is incomplete'):campaign.verify_directory(self.root,'a'*40)
@@ -379,15 +465,25 @@ class OfflineCompositionTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name)
         self.head='a'*40;self.canonical={}
-        report=self.report={'schema':'play-windows-crash-campaign-v3','completed':True,'errors':[],'fixture_attempts':1,
+        report=self.report={'schema':'play-windows-crash-campaign-v7','completed':True,'errors':[],'fixture_attempts':1,
+            'watchdog_policy':campaign.policy.POLICY,
+            'dump_format':copy.deepcopy(campaign.DUMP_FORMAT),
             'original_failed_run':41175131563,'original_failed_source':campaign.BASE,'original_failure_still_blocking':True,
             'paths':{'source':'C:\\source','output':'C:\\evidence'},'source':{'commit':self.head,'tree':'b'*40,'inputs':{}},
             'runtime':{},'controls':{},'tools':{},
-            'build':{'builds':[],'compiler':{'path':'C:\\compiler\\cl.exe','sha256':'3'*64,'bytes':1234}},
+            'build':{'schema':'play-windows-diagnostic-build-v2','builds':[],'probes':[],
+                     'toolchain':copy.deepcopy(campaign.TOOLCHAIN),'removed_override_names':[],'sdk_environment':{},
+                     'observed_tools':{role:copy.deepcopy(campaign.TOOLCHAIN[role]) for role in ('compiler','linker')}},
             'assertion_footer_present':True,
             'status':'no_process_failure_observed',
             'engine':{'version':campaign.windows.GODOT_VERSION,'archive_sha512':campaign.windows.GODOT_SHA512,
                       'archive_bytes':campaign.ENGINE_ARCHIVE_BYTES,'executables':campaign.ENGINE_FILES}}
+        self.environment={'APPDATA':r'C:\profile','JAVA_HOME':r'C:\jdk','PATH':'unchanged path'}
+        report['environment_sha256']=campaign.environment_sha256(self.environment)
+        report['dump_timeout_environment_sha256']=campaign.environment_sha256(self.environment|{'CYBERSAND_CRASH_DUMP_TIMEOUT_CONTROL':'1'})
+        with mock.patch.object(campaign,'path_is_absent',return_value=True):
+            self.import_environment,report['import_environment']=campaign.copied_import_environment(self.environment,report['paths'])
+        campaign.write(self.root/'import-environment.json',report['import_environment'])
         (self.root/'tools').mkdir();(self.root/'version.log').write_text(campaign.windows.GODOT_VERSION+'\n')
         python={'path':'C:\\python.exe','sha256':'4'*64,'bytes':4321}
         report['build_ownership_controls']={'python':python,'results':{}}
@@ -396,21 +492,36 @@ class OfflineCompositionTests(unittest.TestCase):
             identity=campaign.build_control_identity(python,mode)
             report['build_ownership_controls']['results'][mode]=synthetic_operation(
                 self.root/('build-control-'+mode),command,identity,report['paths']['source'],
-                mode=mode,timeout=3 if mode=='orphan-hang' else 15)
+                mode=mode,timeout=campaign.policy.ORPHAN_CONTROL_SECONDS if mode=='orphan-hang' else campaign.policy.OPERATION_SECONDS)
         campaign.write(self.root/'build-ownership-controls.json',report['build_ownership_controls'])
+        for role in ('compiler','linker'):
+            operation=role+'-version-operation';command=campaign.version_command(role);identity=campaign.version_identity(role)
+            directory=self.root/'tools'/operation
+            result=synthetic_operation(directory,command,identity,'C:\\evidence\\tools')
+            log=('clang version 20.1.8\nTarget: x86_64-pc-windows-msvc\n' if role=='compiler' else 'LLD 20.1.8\n')
+            (directory/'process.log').write_text(log)
+            result['log_sha256']=contract.sha(directory/'process.log');campaign.write(directory/'result.json',result)
+            report['build']['probes'].append({'operation':operation,'command':command,'identity':identity,
+                                            'status':'passed','result':result})
         for role,name,extension in (('broker','windows_crash_debugger','cpp'),('control','windows_crash_control','c')):
             binary=self.root/'tools'/f'{name}.exe';binary.write_bytes(b'MZsynthetic-'+role.encode())
+            for suffix in ('.obj','.pdb'):(self.root/'tools'/(name+suffix)).write_bytes(b'synthetic-'+suffix.encode())
             source_path=f'tools/play/{name}.{extension}';self.canonical[source_path]=b'synthetic source\n'
             tool={'path':'C:\\evidence\\tools\\'+name+'.exe','sha256':contract.sha(binary),'bytes':binary.stat().st_size}
             report['tools'][role]=tool
             source_hash=hashlib.sha256(self.canonical[source_path]).hexdigest()
-            identity={'source':source_path,'source_sha256':source_hash,'compiler':report['build']['compiler']}
-            command=campaign.sdk_command(report['build']['compiler']['path'],ntpath.join('C:\\source',source_path.replace('/','\\')),
-                tool['path'],'C:\\evidence\\tools\\'+name+'.obj','C:\\evidence\\tools\\'+name+'.pdb',extension)
-            result=synthetic_operation(self.root/'tools'/(name+'-operation'),command,identity,'C:\\evidence\\tools')
-            report['build']['builds'].append({'source':source_path,'returncode':0,'seconds':result['seconds'],
-                'source_sha256':source_hash,'binary_sha256':tool['sha256'],'binary_bytes':tool['bytes'],
-                'operation':name+'-operation','identity':identity,'command':command,'result':result,'status':'passed'})
+            target={'source':source_path,'source_sha256':source_hash,'status':'passed','phases':[],
+                    **{key:campaign.retained_identity(self.root/'tools'/(name+suffix))
+                       for key,suffix in (('binary','.exe'),('object','.obj'),('pdb','.pdb'))}}
+            for stage in ('compile','link'):
+                identity=campaign.build_identity(stage,source_path,source_hash,obj=target['object'] if stage=='link' else None)
+                obj='C:\\evidence\\tools\\'+name+'.obj';pdb='C:\\evidence\\tools\\'+name+'.pdb'
+                command=(campaign.compile_command(ntpath.join('C:\\source',source_path.replace('/','\\')),obj,extension)
+                         if stage=='compile' else campaign.link_command(obj,tool['path'],pdb,extension))
+                operation=name+'-'+stage+'-operation'
+                result=synthetic_operation(self.root/'tools'/operation,command,identity,'C:\\evidence\\tools')
+                target['phases'].append({'operation':operation,'identity':identity,'command':command,'result':result,'status':'passed'})
+            report['build']['builds'].append(target)
         campaign.write(self.root/'tools/build.json',report['build'])
         for path in (campaign.windows.NATIVE,campaign.windows.RAPIER):
             report['source']['inputs'][path]={'working_sha256':'d'*64,'working_bytes':1234}
@@ -425,7 +536,7 @@ class OfflineCompositionTests(unittest.TestCase):
         case=CaptureTests();case.root=directory;case.control_image=self.report['tools']['control']['path']
         case.fixture('handled' if mode=='dump-writer-timeout' else mode if control else 'normal')
         events=case.events;receipt=case.receipt;images,runtimes=campaign.bindings(self.report,controls=control)
-        limit=500 if mode=='hang' else 15000 if control else 240000 if name=='import' else 180000
+        limit=campaign.policy.case_limit_ms(name,campaign.FIXTURE)
         receipt['timeout_ms']=events[0]['timeout_ms']=limit
         if mode=='hang':events[-1]['elapsed_ms']=limit
         if mode=='dump-writer-timeout':
@@ -454,6 +565,9 @@ class OfflineCompositionTests(unittest.TestCase):
         events[0]['command_line']=' '.join(contract.windows_quote(arg) for arg in receipt['debuggee_command'])
         receipt['broker_command']=[self.report['tools']['broker']['path'],'--output','C:\\evidence\\'+name,
                                    '--timeout-ms',str(limit),'--',*receipt['debuggee_command']]
+        receipt['environment_sha256']=(self.report['import_environment']['effective_environment_sha256'] if name=='import' else
+            self.report['dump_timeout_environment_sha256'] if mode=='dump-writer-timeout' else self.report['environment_sha256'])
+        if name=='import':receipt['environment_custody_sha256']=contract.sha(self.root/'import-environment.json')
         identities={path:{'sha256':identity['sha256'],'bytes':identity['bytes']} for path,identity in (images|runtimes).items()}
         for event in events:
             path=event.get('image') if event['type']=='process' else event.get('path') if event['type']=='module' else None
@@ -472,6 +586,12 @@ class OfflineCompositionTests(unittest.TestCase):
     def test_full_offline_composition_reads_every_original_case(self):
         self.assertEqual(campaign.verify_directory(self.root,self.head)['status'],'no_process_failure_observed')
 
+    def test_resealed_watchdog_policy_substitution_is_refused(self):
+        self.report['watchdog_policy']=dict(self.report['watchdog_policy'],operation_seconds=99999)
+        campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'watchdog policy'):
+            campaign.verify_directory(self.root,self.head)
+
     def test_resealed_missing_owned_build_control_is_refused(self):
         del self.report['build_ownership_controls']['results']['orphan-hang']
         campaign.seal(self.root,self.report)
@@ -479,7 +599,7 @@ class OfflineCompositionTests(unittest.TestCase):
             campaign.verify_directory(self.root,self.head)
 
     def test_resealed_changed_compile_command_is_refused(self):
-        row=self.report['build']['builds'][0]
+        row=self.report['build']['builds'][0]['phases'][0]
         row['command'].remove('/WX')
         campaign.write(self.root/'tools/build.json',self.report['build'])
         campaign.seal(self.root,self.report)
@@ -487,11 +607,113 @@ class OfflineCompositionTests(unittest.TestCase):
             campaign.verify_directory(self.root,self.head)
 
     def test_resealed_missing_build_join_is_refused(self):
-        operation=self.root/'tools/windows_crash_debugger-operation/result.json'
+        operation=self.root/'tools/windows_crash_debugger-compile-operation/result.json'
         result=contract.read_json(operation);result['job_joined']=False
         campaign.write(operation,result)
         campaign.seal(self.root,self.report)
         with self.assertRaisesRegex(ValueError,'ownership/cleanup'):
+            campaign.verify_directory(self.root,self.head)
+
+    def test_resealed_toolchain_substitution_is_refused(self):
+        self.report['build']['toolchain']['linker']['sha256']='0'*64
+        campaign.write(self.root/'tools/build.json',self.report['build']);campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'toolchain receipt differs'):
+            campaign.verify_directory(self.root,self.head)
+
+    def test_resealed_superseded_llvm_pin_is_refused(self):
+        toolchain=self.report['build']['toolchain']
+        toolchain['schema']='play-windows-clang-lld-v1'
+        toolchain['compiler']['sha256']='51ace51d190c6f09af277bb8d6354b3fb2fd8495cae3d80dcb1c36c2d1a816d4'
+        campaign.write(self.root/'tools/build.json',self.report['build']);campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'toolchain receipt differs'):
+            campaign.verify_directory(self.root,self.head)
+
+    def test_resealed_msvc_linker_fallback_is_refused(self):
+        row=self.report['build']['builds'][0]['phases'][1]
+        row['command'][0]=r'C:\compiler\link.exe'
+        campaign.write(self.root/'tools/build.json',self.report['build']);campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'build command/source identity'):
+            campaign.verify_directory(self.root,self.head)
+
+    def test_resealed_missing_link_phase_is_refused(self):
+        self.report['build']['builds'][0]['phases'].pop()
+        campaign.write(self.root/'tools/build.json',self.report['build']);campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'compile and link phase inventory'):
+            campaign.verify_directory(self.root,self.head)
+
+    def test_resealed_wrong_link_input_or_symbols_are_refused(self):
+        for suffix,expected in (('.obj','object'),('.pdb','pdb')):
+            path=self.root/'tools'/('windows_crash_debugger'+suffix)
+            original=path.read_bytes();path.write_bytes(b'replaced linked artifact')
+            campaign.seal(self.root,self.report)
+            with self.subTest(suffix=suffix),self.assertRaisesRegex(ValueError,'diagnostic '+expected+' differs'):
+                campaign.verify_directory(self.root,self.head)
+            path.write_bytes(original)
+
+    def test_resealed_failed_linker_cannot_hide_behind_compiler_success(self):
+        row=self.report['build']['builds'][0]['phases'][1]
+        directory=self.root/'tools'/row['operation']
+        result=row['result'];result.update(status='failed',root_exit=19)
+        result['samples'][-1]['exited_observed'][0]['exit_code']=19
+        (directory/'samples.jsonl').write_text(''.join(json.dumps(sample)+'\n' for sample in result['samples']))
+        campaign.write(directory/'result.json',result)
+        campaign.write(self.root/'tools/build.json',self.report['build']);campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'ownership/deadline reduction'):
+            campaign.verify_directory(self.root,self.head)
+
+    def test_resealed_missing_version_probe_is_refused(self):
+        self.report['build']['probes'].pop()
+        campaign.write(self.root/'tools/build.json',self.report['build']);campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'version probe inventory'):
+            campaign.verify_directory(self.root,self.head)
+
+    def test_historical_v4_campaign_is_not_relabelled_as_llvm_evidence(self):
+        self.report['schema']='play-windows-crash-campaign-v4';campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'campaign is incomplete'):
+            campaign.verify_directory(self.root,self.head)
+
+    def test_historical_v5_campaign_is_not_relabelled_as_new_dump_evidence(self):
+        self.report['schema']='play-windows-crash-campaign-v5';campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'campaign is incomplete'):
+            campaign.verify_directory(self.root,self.head)
+
+    def test_historical_v6_campaign_is_not_relabelled_as_import_environment_evidence(self):
+        self.report['schema']='play-windows-crash-campaign-v6';campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'campaign is incomplete'):
+            campaign.verify_directory(self.root,self.head)
+
+    def test_resealed_import_policy_or_cached_settings_cannot_override_source(self):
+        original=copy.deepcopy(self.report['import_environment'])
+        variants=[copy.deepcopy(original) for _ in range(3)]
+        variants[0]['policy']['removed_names'].append('PATH')
+        variants[1]['guard_paths'].pop()
+        variants[2]['guard_paths'][0]['absent']=False
+        for changed in variants:
+            self.report['import_environment']=changed;campaign.write(self.root/'import-environment.json',changed)
+            campaign.seal(self.root,self.report)
+            with self.assertRaisesRegex(ValueError,'policy differs|not absent'):
+                campaign.verify_directory(self.root,self.head)
+
+    def test_resealed_import_custody_must_match_actual_process_receipt(self):
+        self.report['import_environment']['original_java_home'][0]['value']=r'C:\other-jdk'
+        campaign.write(self.root/'import-environment.json',self.report['import_environment']);campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'custody attached to wrong process'):
+            campaign.verify_directory(self.root,self.head)
+
+    def test_import_environment_cannot_leak_to_control_or_original_fixture(self):
+        for name in ('control-normal',campaign.FIXTURE):
+            path=self.root/name/'process.json';original=contract.read_json(path)
+            for changed in (original|{'environment_sha256':self.report['import_environment']['effective_environment_sha256']},
+                            original|{'environment_custody_sha256':contract.sha(self.root/'import-environment.json')}):
+                campaign.write(path,changed);campaign.seal(self.root,self.report)
+                with self.subTest(name=name),self.assertRaisesRegex(ValueError,'environment differs|custody attached to wrong process'):
+                    campaign.verify_directory(self.root,self.head)
+            campaign.write(path,original)
+
+    def test_receipt_cannot_expand_source_declared_dump_format(self):
+        self.report['dump_format']['allowed_output_flags'].append(0x1002)
+        campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'dump format differs from source'):
             campaign.verify_directory(self.root,self.head)
 
     def test_resealed_wrong_actual_fixture_command_is_refused(self):

@@ -1,0 +1,1263 @@
+{
+  "captured_runtime_identities": {
+    "D:\\a\\cybersand\\cybersand\\source\\godot\\addons\\cybersand_native\\bin\\cybersand_native.windows.x86_64.dll": {
+      "bytes": 4825088,
+      "sha256": "e66b9b04b546b09cb4feea204373faf12a7248abf1701da88fc6ecf87b666ecb"
+    },
+    "D:\\a\\cybersand\\cybersand\\source\\godot\\addons\\godot-rapier2d\\bin\\libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": {
+      "bytes": 9987072,
+      "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    }
+  },
+  "captures": [
+    {
+      "dump": {
+        "bytes": 76235,
+        "name": "fault-8016-2632-702.dmp",
+        "sha256": "191dbdad5ec18a61d76bc9141f631c51ba30cd49de54fea1e4e078e7aa24e1c6"
+      },
+      "engine_loaded_base": "0x7ff72faa0000",
+      "frame_rvas": [
+        "0x3e1e7c1",
+        "0x3e1e8dd",
+        "0x54730b",
+        "0x3e2d108",
+        "0x5fed1",
+        "0x5249f",
+        "0x5253e",
+        "0x10c9"
+      ],
+      "pointee_memory_availability": [
+        {
+          "address": "0x16ac1eb1058",
+          "captured": false,
+          "eight_bytes_hex": null,
+          "role": "r13_list_node_candidate"
+        },
+        {
+          "address": "0x16ac1eb1060",
+          "captured": false,
+          "eight_bytes_hex": null,
+          "role": "r13_plus_8_loaded_pointer"
+        },
+        {
+          "address": "0xfeeefeeefeeefeee",
+          "captured": false,
+          "eight_bytes_hex": null,
+          "role": "rcx_object_pointer"
+        },
+        {
+          "address": "0xfeeefeeefeef000e",
+          "captured": false,
+          "eight_bytes_hex": null,
+          "role": "rdx_read_address"
+        }
+      ],
+      "raw_context": {
+        "bytes": 1232,
+        "name": "fault-8016-2632-702.context",
+        "sha256": "18e5ea2f023d92d003e99553c17ed0013f28b73bd726a353c7d1ca72402292ac"
+      },
+      "raw_exception": {
+        "bytes": 152,
+        "name": "fault-8016-2632-702.exception",
+        "sha256": "30ceb02574011ecc9cb15ba471764ac3c7f4bda65fe15cbd4a24952c80f0ea9b"
+      },
+      "registers": {
+        "r10": "0x16abd630000",
+        "r11": "0xc7edfefc0",
+        "r12": "0xfeeefeeefeeefeee",
+        "r13": "0x16ac1eb1058",
+        "r14": "0x0",
+        "r15": "0x16ac43c62f0",
+        "r8": "0x16ac4be1050",
+        "r9": "0x1",
+        "rax": "0x1",
+        "rbp": "0x16ac43c6310",
+        "rbx": "0xfeeefeeefeeefeee",
+        "rcx": "0xfeeefeeefeeefeee",
+        "rdi": "0x16abef46280",
+        "rdx": "0xfeeefeeefeef000e",
+        "rip": "0x7ff7338be7c1",
+        "rsi": "0x0",
+        "rsp": "0xc7edff020"
+      },
+      "stack": {
+        "bytes": 4064,
+        "dump_rva": 67811,
+        "start": "0xc7edff020"
+      },
+      "stop": {
+        "header_hex": "09040100",
+        "reason": "Unsupported handler/chained/frame-pointer/prolog state",
+        "rva": "0x13f5"
+      },
+      "thread_count": 14,
+      "thread_id": 2632
+    },
+    {
+      "dump": {
+        "bytes": 76235,
+        "name": "fault-8016-2632-703.dmp",
+        "sha256": "4178cb1b6c86fef896f76c6d7284415b68cc8def814009adc274cb8b4c6bb4b0"
+      },
+      "engine_loaded_base": "0x7ff72faa0000",
+      "frame_rvas": [
+        "0x3e1e7c1",
+        "0x3e1e8dd",
+        "0x54730b",
+        "0x3e2d108",
+        "0x5fed1",
+        "0x5249f",
+        "0x5253e",
+        "0x10c9"
+      ],
+      "pointee_memory_availability": [
+        {
+          "address": "0x16ac1eb1058",
+          "captured": false,
+          "eight_bytes_hex": null,
+          "role": "r13_list_node_candidate"
+        },
+        {
+          "address": "0x16ac1eb1060",
+          "captured": false,
+          "eight_bytes_hex": null,
+          "role": "r13_plus_8_loaded_pointer"
+        },
+        {
+          "address": "0xfeeefeeefeeefeee",
+          "captured": false,
+          "eight_bytes_hex": null,
+          "role": "rcx_object_pointer"
+        },
+        {
+          "address": "0xfeeefeeefeef000e",
+          "captured": false,
+          "eight_bytes_hex": null,
+          "role": "rdx_read_address"
+        }
+      ],
+      "raw_context": {
+        "bytes": 1232,
+        "name": "fault-8016-2632-703.context",
+        "sha256": "18e5ea2f023d92d003e99553c17ed0013f28b73bd726a353c7d1ca72402292ac"
+      },
+      "raw_exception": {
+        "bytes": 152,
+        "name": "fault-8016-2632-703.exception",
+        "sha256": "30ceb02574011ecc9cb15ba471764ac3c7f4bda65fe15cbd4a24952c80f0ea9b"
+      },
+      "registers": {
+        "r10": "0x16abd630000",
+        "r11": "0xc7edfefc0",
+        "r12": "0xfeeefeeefeeefeee",
+        "r13": "0x16ac1eb1058",
+        "r14": "0x0",
+        "r15": "0x16ac43c62f0",
+        "r8": "0x16ac4be1050",
+        "r9": "0x1",
+        "rax": "0x1",
+        "rbp": "0x16ac43c6310",
+        "rbx": "0xfeeefeeefeeefeee",
+        "rcx": "0xfeeefeeefeeefeee",
+        "rdi": "0x16abef46280",
+        "rdx": "0xfeeefeeefeef000e",
+        "rip": "0x7ff7338be7c1",
+        "rsi": "0x0",
+        "rsp": "0xc7edff020"
+      },
+      "stack": {
+        "bytes": 4064,
+        "dump_rva": 67811,
+        "start": "0xc7edff020"
+      },
+      "stop": {
+        "header_hex": "09040100",
+        "reason": "Unsupported handler/chained/frame-pointer/prolog state",
+        "rva": "0x13f5"
+      },
+      "thread_count": 14,
+      "thread_id": 2632
+    },
+    {
+      "dump": {
+        "bytes": 76235,
+        "name": "fault-8016-2632-704.dmp",
+        "sha256": "87b7c7226a264be956db9057790e6c61fa7aab737a4bc6ce406741b855cb168c"
+      },
+      "engine_loaded_base": "0x7ff72faa0000",
+      "frame_rvas": [
+        "0x3e1e7c1",
+        "0x3e1e8dd",
+        "0x54730b",
+        "0x3e2d108",
+        "0x5fed1",
+        "0x5249f",
+        "0x5253e",
+        "0x10c9"
+      ],
+      "pointee_memory_availability": [
+        {
+          "address": "0x16ac1eb1058",
+          "captured": false,
+          "eight_bytes_hex": null,
+          "role": "r13_list_node_candidate"
+        },
+        {
+          "address": "0x16ac1eb1060",
+          "captured": false,
+          "eight_bytes_hex": null,
+          "role": "r13_plus_8_loaded_pointer"
+        },
+        {
+          "address": "0xfeeefeeefeeefeee",
+          "captured": false,
+          "eight_bytes_hex": null,
+          "role": "rcx_object_pointer"
+        },
+        {
+          "address": "0xfeeefeeefeef000e",
+          "captured": false,
+          "eight_bytes_hex": null,
+          "role": "rdx_read_address"
+        }
+      ],
+      "raw_context": {
+        "bytes": 1232,
+        "name": "fault-8016-2632-704.context",
+        "sha256": "a496b6f769303f88030d76efb839f4714e2e32900a8ecde19c7f39349eb5d109"
+      },
+      "raw_exception": {
+        "bytes": 152,
+        "name": "fault-8016-2632-704.exception",
+        "sha256": "30ceb02574011ecc9cb15ba471764ac3c7f4bda65fe15cbd4a24952c80f0ea9b"
+      },
+      "registers": {
+        "r10": "0x16abd630000",
+        "r11": "0xc7edfefc0",
+        "r12": "0xfeeefeeefeeefeee",
+        "r13": "0x16ac1eb1058",
+        "r14": "0x0",
+        "r15": "0x16ac43c62f0",
+        "r8": "0x16ac4be1050",
+        "r9": "0x1",
+        "rax": "0x1",
+        "rbp": "0x16ac43c6310",
+        "rbx": "0xfeeefeeefeeefeee",
+        "rcx": "0xfeeefeeefeeefeee",
+        "rdi": "0x16abef46280",
+        "rdx": "0xfeeefeeefeef000e",
+        "rip": "0x7ff7338be7c1",
+        "rsi": "0x0",
+        "rsp": "0xc7edff020"
+      },
+      "stack": {
+        "bytes": 4064,
+        "dump_rva": 67811,
+        "start": "0xc7edff020"
+      },
+      "stop": {
+        "header_hex": "09040100",
+        "reason": "Unsupported handler/chained/frame-pointer/prolog state",
+        "rva": "0x13f5"
+      },
+      "thread_count": 14,
+      "thread_id": 2632
+    }
+  ],
+  "diagnostic_observation": {
+    "artifact_bytes": 7131522,
+    "artifact_id": 13060835779,
+    "artifact_sha256": "e153c6c74920926cebdc8b11f0310e3d71303ebcb5dc1d333a8a66ae9dc7ac0e",
+    "canonical_input_count": 795,
+    "job_id": 124673495567,
+    "manifest_entries_verified": 144,
+    "original_campaign_errors": [],
+    "original_campaign_status": "observed_process_failure",
+    "run_attempt": 1,
+    "run_id": 41247373741,
+    "source_commit": "319d507a7d974ef3b5a1913366b0d1b7152d204c",
+    "source_tree": "368a9455f35dc028fac7b3032557fe70e63abb4a",
+    "unchanged_file_count": 145
+  },
+  "disposition": "original_post_footer_access_violation_reproduced_unresolved",
+  "engine": {
+    "archive_bytes": 83764371,
+    "archive_crc_verified": true,
+    "archive_sha256": "02a5312236f4e0209c78bcb2f52135b1963e6b8888c873c9cee81459e60bcd71",
+    "archive_sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+    "crash_attempt": 1,
+    "crash_run": 41247373741,
+    "crash_source": "319d507a7d974ef3b5a1913366b0d1b7152d204c",
+    "download_url": "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip",
+    "downloaded_utc": "2026-10-31T22:48:00.896880+00:00",
+    "engine_bytes": 178485256,
+    "engine_executed_in_this_investigation": false,
+    "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "matches_actual_crash_module_identity": true,
+    "release_metadata_url": "https://api.github.com/repos/godotengine/godot-builds/releases/tags/4.7-stable",
+    "schema": "official-engine-static-investigation-v1"
+  },
+  "fault_instruction": {
+    "bytes_hex": "8b02",
+    "intel_syntax": "mov eax,DWORD PTR [rdx]",
+    "loaded_address": "0x7ff7338be7c1",
+    "preceding_address_formation": "lea rdx,[rcx+0x120]",
+    "qualification": "The actual context records RDX=0xfeeefeeefeef000e; Windows exception parameters report a read with address all ones. The exact matching on-disk instruction is reported without attributing the original allocation or first corrupting write.",
+    "reported_exception_parameters": [
+      0,
+      "0xffffffffffffffff"
+    ],
+    "rva": "0x3e1e7c1"
+  },
+  "frame_derivation": {
+    "all_three_frame_sequences_match": true,
+    "frames": [
+      {
+        "direct_call_before_return": {
+          "bytes_hex": "e8d3feffff",
+          "instruction_rva": "0x3e1e8d8",
+          "matches_current_function_begin": true,
+          "target_rva": "0x3e1e7b0"
+        },
+        "disassembly": {
+          "bytes": 4439,
+          "name": "unwound-function-3e1e7b0.txt",
+          "sha256": "1c303870957dc5b3a4aa9cc107ef6e9f4ae76cf7698f852d88084edb696662cd"
+        },
+        "function_begin_rva": "0x3e1e7b0",
+        "function_end_rva": "0x3e1e8c4",
+        "index": 0,
+        "inferred_source_role": "RefCounted::reference",
+        "lookup_rva": "0x3e1e7c1",
+        "operations": [
+          {
+            "bytes": 32,
+            "operation": "UWOP_ALLOC_SMALL"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff040",
+            "register": "rbx",
+            "value": "0xfeeefeeefeeefeee"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff048",
+            "register": "rsi",
+            "value": "0x0"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff050",
+            "register": "rdi",
+            "value": "0x16abef46280"
+          }
+        ],
+        "pc": "0x7ff7338be7c1",
+        "return_address": "0x7ff7338be8dd",
+        "return_address_location": "0xc7edff058",
+        "return_address_stack_offset": 56,
+        "role_is_symbolized": false,
+        "rsp": "0xc7edff020",
+        "rva": "0x3e1e7c1",
+        "stack_offset": 0,
+        "unwind_codes_hex": "0732033002600170",
+        "unwind_header_hex": "01070400",
+        "unwind_rva": "0xa8de3e4"
+      },
+      {
+        "direct_call_before_return": {
+          "bytes_hex": "e8c5758d03",
+          "instruction_rva": "0x547306",
+          "matches_current_function_begin": true,
+          "target_rva": "0x3e1e8d0"
+        },
+        "disassembly": {
+          "bytes": 1470,
+          "name": "unwound-function-3e1e8d0.txt",
+          "sha256": "78e7a335278b76e6f4e5ad8e644d7ebb821fb16c97c0adc6a69d9652ee47cc92"
+        },
+        "function_begin_rva": "0x3e1e8d0",
+        "function_end_rva": "0x3e1e91b",
+        "index": 1,
+        "inferred_source_role": "RefCounted::init_ref",
+        "lookup_rva": "0x3e1e8dc",
+        "operations": [
+          {
+            "bytes": 48,
+            "operation": "UWOP_ALLOC_SMALL"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff090",
+            "register": "rbx",
+            "value": "0x0"
+          }
+        ],
+        "pc": "0x7ff7338be8dd",
+        "return_address": "0x7ff72ffe730b",
+        "return_address_location": "0xc7edff098",
+        "return_address_stack_offset": 120,
+        "role_is_symbolized": false,
+        "rsp": "0xc7edff060",
+        "rva": "0x3e1e8dd",
+        "stack_offset": 64,
+        "unwind_codes_hex": "05520130",
+        "unwind_header_hex": "01050200",
+        "unwind_rva": "0xa8de3f0"
+      },
+      {
+        "disassembly": {
+          "bytes": 14969,
+          "name": "unwound-function-5472a0.txt",
+          "sha256": "88179f754fc27d28f7b12048986d09a242f545de612a144dc691a058dc0e4ff5"
+        },
+        "function_begin_rva": "0x5472a0",
+        "function_end_rva": "0x5476b3",
+        "index": 2,
+        "inferred_source_role": "GDScriptLanguage::finish",
+        "lookup_rva": "0x54730a",
+        "operations": [
+          {
+            "bytes": 88,
+            "operation": "UWOP_ALLOC_SMALL"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff0f8",
+            "register": "rbx",
+            "value": "0x16ac4344210"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff100",
+            "register": "rsi",
+            "value": "0x1"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff108",
+            "register": "rdi",
+            "value": "0x2"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff110",
+            "register": "rbp",
+            "value": "0x16ac1aba020"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff118",
+            "register": "r12",
+            "value": "0x16ac0bdfa70"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff120",
+            "register": "r13",
+            "value": "0x16ac1aa0690"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff128",
+            "register": "r14",
+            "value": "0x16abef46280"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff130",
+            "register": "r15",
+            "value": "0x1"
+          }
+        ],
+        "pc": "0x7ff72ffe730b",
+        "return_address": "0x7ff7338cd108",
+        "return_address_location": "0xc7edff138",
+        "return_address_stack_offset": 280,
+        "role_is_symbolized": false,
+        "rsp": "0xc7edff0a0",
+        "rva": "0x54730b",
+        "stack_offset": 128,
+        "unwind_codes_hex": "10a20c300b600a70095008c006d004e002f0",
+        "unwind_header_hex": "01100900",
+        "unwind_rva": "0xa6fd8cc"
+      },
+      {
+        "direct_call_before_return": {
+          "bytes_hex": "e8ffd0dc03",
+          "instruction_rva": "0x5fecc",
+          "matches_current_function_begin": true,
+          "target_rva": "0x3e2cfd0"
+        },
+        "disassembly": {
+          "bytes": 9168,
+          "name": "unwound-function-3e2cfd0.txt",
+          "sha256": "a97f99cf58ec8195f382fa47513ac7ed8baf3aadd5ec2e5b6d564d9e64b4bd47"
+        },
+        "function_begin_rva": "0x3e2cfd0",
+        "function_end_rva": "0x3e2d217",
+        "index": 3,
+        "inferred_source_role": "ScriptServer::finish_languages",
+        "lookup_rva": "0x3e2d107",
+        "operations": [
+          {
+            "bytes": 136,
+            "operation": "UWOP_ALLOC_LARGE"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff1c8",
+            "register": "rbx",
+            "value": "0x16abe967df0"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff1d0",
+            "register": "rsi",
+            "value": "0x0"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff1d8",
+            "register": "rdi",
+            "value": "0x16abbba84b0"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff1e0",
+            "register": "rbp",
+            "value": "0xc7edff248"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff1e8",
+            "register": "r12",
+            "value": "0x6"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff1f0",
+            "register": "r13",
+            "value": "0xc7edff2d0"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff1f8",
+            "register": "r14",
+            "value": "0x6"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff200",
+            "register": "r15",
+            "value": "0x16abd63cba0"
+          }
+        ],
+        "pc": "0x7ff7338cd108",
+        "return_address": "0x7ff72faffed1",
+        "return_address_location": "0xc7edff208",
+        "return_address_stack_offset": 488,
+        "role_is_symbolized": false,
+        "rsp": "0xc7edff140",
+        "rva": "0x3e2d108",
+        "stack_offset": 288,
+        "unwind_codes_hex": "130111000c300b600a70095008c006d004e002f0",
+        "unwind_header_hex": "01130a00",
+        "unwind_rva": "0xa8de9b4"
+      },
+      {
+        "direct_call_before_return": {
+          "bytes_hex": "e841d70000",
+          "instruction_rva": "0x5249a",
+          "matches_current_function_begin": true,
+          "target_rva": "0x5fbe0"
+        },
+        "disassembly": {
+          "bytes": 41024,
+          "name": "unwound-function-5fbe0.txt",
+          "sha256": "45788a03f2a0caea22e21fbeaa9c05f4e2892c755e5dabad3c031de9c3f13125"
+        },
+        "function_begin_rva": "0x5fbe0",
+        "function_end_rva": "0x60714",
+        "index": 4,
+        "inferred_source_role": "Main::cleanup",
+        "lookup_rva": "0x5fed0",
+        "operations": [
+          {
+            "bytes": 88,
+            "operation": "UWOP_ALLOC_SMALL"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff268",
+            "register": "rbx",
+            "value": "0x0"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff270",
+            "register": "rsi",
+            "value": "0x16abd671370"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff278",
+            "register": "rdi",
+            "value": "0x16abbba84b0"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff280",
+            "register": "rbp",
+            "value": "0x0"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff288",
+            "register": "r12",
+            "value": "0x6"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff290",
+            "register": "r13",
+            "value": "0x6"
+          }
+        ],
+        "pc": "0x7ff72faffed1",
+        "return_address": "0x7ff72faf249f",
+        "return_address_location": "0xc7edff298",
+        "return_address_stack_offset": 632,
+        "role_is_symbolized": false,
+        "rsp": "0xc7edff210",
+        "rva": "0x5fed1",
+        "stack_offset": 496,
+        "unwind_codes_hex": "0ca2083007600670055004c002d0",
+        "unwind_header_hex": "010c0700",
+        "unwind_rva": "0xa6d88d8"
+      },
+      {
+        "direct_call_before_return": {
+          "bytes_hex": "e802feffff",
+          "instruction_rva": "0x52539",
+          "matches_current_function_begin": true,
+          "target_rva": "0x52340"
+        },
+        "disassembly": {
+          "bytes": 6811,
+          "name": "unwound-function-52340.txt",
+          "sha256": "6c22cbe9f7e56218dbe93b8aa630d5258b8dfd0c92ecf1bed756c616a6fa52a0"
+        },
+        "function_begin_rva": "0x52340",
+        "function_end_rva": "0x52504",
+        "index": 5,
+        "inferred_source_role": null,
+        "lookup_rva": "0x5249e",
+        "operations": [
+          {
+            "bytes": 928,
+            "operation": "UWOP_ALLOC_LARGE"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff640",
+            "register": "rbx",
+            "value": "0x16abbba84b0"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff648",
+            "register": "rsi",
+            "value": "0x6"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff650",
+            "register": "rdi",
+            "value": "0x30"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff658",
+            "register": "rbp",
+            "value": "0x7ff73a5ce768"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff660",
+            "register": "r12",
+            "value": "0x6"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff668",
+            "register": "r13",
+            "value": "0x16abd63cce0"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff670",
+            "register": "r14",
+            "value": "0x0"
+          }
+        ],
+        "pc": "0x7ff72faf249f",
+        "return_address": "0x7ff72faf253e",
+        "return_address_location": "0xc7edff678",
+        "return_address_stack_offset": 1624,
+        "role_is_symbolized": false,
+        "rsp": "0xc7edff2a0",
+        "rva": "0x5249f",
+        "stack_offset": 640,
+        "unwind_codes_hex": "110174000a3009600870075006c004d002e0",
+        "unwind_header_hex": "01110900",
+        "unwind_rva": "0xa6d67cc"
+      },
+      {
+        "direct_call_before_return": {
+          "bytes_hex": "e8f79e5c06",
+          "instruction_rva": "0x10c4",
+          "matches_current_function_begin": false,
+          "target_rva": "0x65cafc0"
+        },
+        "disassembly": {
+          "bytes": 1891,
+          "name": "unwound-function-52510.txt",
+          "sha256": "26bdf2eb0bb1f36b8042db3ff40f5ce5d3e07472fb1abbfd7b531342f267e338"
+        },
+        "function_begin_rva": "0x52510",
+        "function_end_rva": "0x5256f",
+        "index": 6,
+        "inferred_source_role": null,
+        "lookup_rva": "0x5253d",
+        "operations": [
+          {
+            "bytes": 56,
+            "operation": "UWOP_ALLOC_SMALL"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff6b8",
+            "register": "rbx",
+            "value": "0x7ff73a5ce760"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff6c0",
+            "register": "rsi",
+            "value": "0x6"
+          }
+        ],
+        "pc": "0x7ff72faf253e",
+        "return_address": "0x7ff72faa10c9",
+        "return_address_location": "0xc7edff6c8",
+        "return_address_stack_offset": 1704,
+        "role_is_symbolized": false,
+        "rsp": "0xc7edff680",
+        "rva": "0x5253e",
+        "stack_offset": 1632,
+        "unwind_codes_hex": "066202300160",
+        "unwind_header_hex": "01060300",
+        "unwind_rva": "0xa6d67e4"
+      },
+      {
+        "direct_call_before_return": {
+          "bytes_hex": "e81afcffff",
+          "instruction_rva": "0x13f1",
+          "matches_current_function_begin": true,
+          "target_rva": "0x1010"
+        },
+        "disassembly": {
+          "bytes": 13855,
+          "name": "unwound-function-1010.txt",
+          "sha256": "83fd1d0ee1b7f2fd8b45f643b4398a4de1f7cb2b84ff9b7c070ac9875abcba99"
+        },
+        "function_begin_rva": "0x1010",
+        "function_end_rva": "0x13da",
+        "index": 7,
+        "inferred_source_role": null,
+        "lookup_rva": "0x10c8",
+        "operations": [
+          {
+            "bytes": 88,
+            "operation": "UWOP_ALLOC_SMALL"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff728",
+            "register": "rbx",
+            "value": "0x0"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff730",
+            "register": "rsi",
+            "value": "0x0"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff738",
+            "register": "rdi",
+            "value": "0x0"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff740",
+            "register": "rbp",
+            "value": "0x0"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff748",
+            "register": "r12",
+            "value": "0x0"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff750",
+            "register": "r13",
+            "value": "0x0"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff758",
+            "register": "r14",
+            "value": "0x0"
+          },
+          {
+            "operation": "UWOP_PUSH_NONVOL",
+            "read_address": "0xc7edff760",
+            "register": "r15",
+            "value": "0x0"
+          }
+        ],
+        "pc": "0x7ff72faa10c9",
+        "return_address": "0x7ff72faa13f6",
+        "return_address_location": "0xc7edff768",
+        "return_address_stack_offset": 1864,
+        "role_is_symbolized": false,
+        "rsp": "0xc7edff6d0",
+        "rva": "0x10c9",
+        "stack_offset": 1712,
+        "unwind_codes_hex": "10a20c300b600a70095008c006d004e002f0",
+        "unwind_header_hex": "01100900",
+        "unwind_rva": "0xa6d4004"
+      }
+    ],
+    "method": "Restricted offline x64 PE unwind metadata plus retained raw context and captured stack; independently matched prolog stack effects and direct call sites. No unsupported handler, chain, frame pointer or unknown module is guessed.",
+    "official_spec_url": "https://learn.microsoft.com/en-us/cpp/build/exception-handling-x64",
+    "raw_stack_candidates_are_not_frames": true,
+    "startup_tail_call": {
+      "caller_target_rva": "0x65cafc0",
+      "disassembly": {
+        "bytes": 1869,
+        "sha256": "515556dd2df131163cb0ed667c74e51577980d13a4562cce6c376a057583f0e9"
+      },
+      "stack_restoration_rva": "0x65cafca",
+      "tail_jump_rva": "0x65cafce",
+      "tail_jump_target_rva": "0x52510"
+    }
+  },
+  "game_result": {
+    "assertion_footer": "LIQUID_DESKTOP_DEFAULT_HOST: 86 assertions; 0 failures",
+    "effective_exit": 3221225477,
+    "elapsed_ms": 66797,
+    "exception_captures": 3,
+    "fixture": "test_liquid_desktop_default_host",
+    "fixture_attempts": 1,
+    "module_unload_events": 0,
+    "timed_out": false
+  },
+  "limits": [
+    "Custom restricted offline x64 unwind derivation using exact authenticated PE metadata and captured stack bytes; not a WinDbg symbolized stack.",
+    "No function names or source lines are established by PDB or COFF symbols. Source correlations must be identified as inferences.",
+    "Raw stack words outside the metadata-derived frames remain candidates only; stale module addresses are not promoted to frames.",
+    "No unsupported unwind opcode, handler/chained entry, frame-pointer state or unknown module is guessed.",
+    "Pointer poisoning is a clue; neither the allocation/free history nor the first corrupting write is captured by this analysis."
+  ],
+  "new_runtime_attempt_from_forensic_analysis": false,
+  "next_isolation": {
+    "causal_counterfactual": "If needed, separately source-bound matched custom builds of pinned Godot with and without only upstream117991, same fixture/runtime inputs, symbols matched to each custom binary. The unmodified custom baseline must reproduce before interpreting a patched result; original official-engine evidence remains separate.",
+    "interpretation": "A same-instruction failure would implicate script resource/base-reference teardown without gameplay execution; a clean result would not clear an intermittent original failure. Extensions remain loaded, so this would not exclude extension startup/teardown effects.",
+    "minimal_pair": "Separate fresh processes on the unchanged original project and exact pinned engine: empty script-loader control versus loading the original fixture GDScript and Main PackedScene as resources without instantiating or running them, then normal exit under the same strict debugger.",
+    "status": "proposed_not_executed"
+  },
+  "original_failure": {
+    "exit_code": 3221225477,
+    "run_id": 41175131563,
+    "source": "aa74448bad7ec77e5f152d9179a417ce76430009"
+  },
+  "original_source_reduction": {
+    "assertion_footer_present": true,
+    "captured_exception_count": 3,
+    "effective_exit": 3221225477,
+    "original_failure_still_blocking": true,
+    "source_commit": "319d507a7d974ef3b5a1913366b0d1b7152d204c",
+    "source_tree": "368a9455f35dc028fac7b3032557fe70e63abb4a",
+    "status": "observed_process_failure",
+    "verified": true
+  },
+  "pinned_godot_source": {
+    "commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "html_url": "https://github.com/godotengine/godot/commit/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "source_files": {
+      "core/object/ref_counted.cpp": "374b0b381b1985259b16782d8845730aa164148d",
+      "core/object/ref_counted.h": "0eab2fafec31a9017141551f062f7362af10fb34",
+      "core/object/script_language.cpp": "a2322a4fc16743fc0f18718888c71539d18ff07d",
+      "core/templates/self_list.h": "9446c7f1974e3d3a4dee37c5405d3fbc6fc91c0d",
+      "main/main.cpp": "b8a7c6c356564f2ac76d6b7a74e6becf4f85e527",
+      "modules/gdscript/gdscript.cpp": "f9f9567ec29718f6ef5e659e98c8a3f37a1b16c8",
+      "modules/gdscript/gdscript.h": "b88596b6fe478afe47ff3f4b0d097b0a98db0a96"
+    },
+    "tree": "a74f51b5f510fdacf72be7d8f8d598e7b7c192cd"
+  },
+  "project_source_comparison": {
+    "dynamic_script_source_scan": {
+      "accepted_complete_execution": {
+        "matching_lines": [],
+        "pattern": "GDScript\\.new|source_code|\\.reload\\(|set_script\\(|take_over_path"
+      },
+      "original": {
+        "matching_lines": [],
+        "pattern": "GDScript\\.new|source_code|\\.reload\\(|set_script\\(|take_over_path"
+      },
+      "reviewed_recovery_candidate": {
+        "matching_lines": [],
+        "pattern": "GDScript\\.new|source_code|\\.reload\\(|set_script\\(|take_over_path"
+      }
+    },
+    "fixture_delta": "Only a shared Watchdogs preload and two 20-second operation waits changed to the source policy; fixture gameplay/assertion/retirement logic did not change.",
+    "qualification": "Static comparison, not evidence that newer source fixes or reproduces the historical access violation.",
+    "refs": {
+      "accepted_complete_execution": "15b3a4012b9d5998e808fb371792dd7a71398507",
+      "original": "aa74448bad7ec77e5f152d9179a417ce76430009",
+      "reviewed_recovery_candidate": "02454f3aa6a6130d375727d1aa28113772f658e4"
+    },
+    "selected_file_identities": {
+      "godot/main.tscn": {
+        "accepted_complete_execution": {
+          "blob": "ba3be59daa9ee1a9f8d1b015c92e747675a8a986",
+          "sha256": "de1039e09ece8ca4bf6a22a995399b897cf8e080f3ac436f33ddd268402aabf1"
+        },
+        "original": {
+          "blob": "ba3be59daa9ee1a9f8d1b015c92e747675a8a986",
+          "sha256": "de1039e09ece8ca4bf6a22a995399b897cf8e080f3ac436f33ddd268402aabf1"
+        },
+        "reviewed_recovery_candidate": {
+          "blob": "ba3be59daa9ee1a9f8d1b015c92e747675a8a986",
+          "sha256": "de1039e09ece8ca4bf6a22a995399b897cf8e080f3ac436f33ddd268402aabf1"
+        }
+      },
+      "godot/project.godot": {
+        "accepted_complete_execution": {
+          "blob": "3055b7976da5d9378d226805492554b75717a1a1",
+          "sha256": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa"
+        },
+        "original": {
+          "blob": "3055b7976da5d9378d226805492554b75717a1a1",
+          "sha256": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa"
+        },
+        "reviewed_recovery_candidate": {
+          "blob": "3055b7976da5d9378d226805492554b75717a1a1",
+          "sha256": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa"
+        }
+      },
+      "godot/scripts/prepared_reference_body_session.gd": {
+        "accepted_complete_execution": {
+          "blob": "164f3a9c1998af6c57c6521d71c172bcaf86125c",
+          "sha256": "73992c1e6dc65252ba23398c3902ad077bc7f4efb4541ab07416115bddbe6f77"
+        },
+        "original": {
+          "blob": "164f3a9c1998af6c57c6521d71c172bcaf86125c",
+          "sha256": "73992c1e6dc65252ba23398c3902ad077bc7f4efb4541ab07416115bddbe6f77"
+        },
+        "reviewed_recovery_candidate": {
+          "blob": "164f3a9c1998af6c57c6521d71c172bcaf86125c",
+          "sha256": "73992c1e6dc65252ba23398c3902ad077bc7f4efb4541ab07416115bddbe6f77"
+        }
+      },
+      "godot/scripts/rapier_physics_bridge.gd": {
+        "accepted_complete_execution": {
+          "blob": "87eea1f36b11375eb40be6a833433871000fbb2e",
+          "sha256": "44585c25307569590937a0d0f51099438fcaacc16b385efca66ff78184909c37"
+        },
+        "original": {
+          "blob": "87eea1f36b11375eb40be6a833433871000fbb2e",
+          "sha256": "44585c25307569590937a0d0f51099438fcaacc16b385efca66ff78184909c37"
+        },
+        "reviewed_recovery_candidate": {
+          "blob": "87eea1f36b11375eb40be6a833433871000fbb2e",
+          "sha256": "44585c25307569590937a0d0f51099438fcaacc16b385efca66ff78184909c37"
+        }
+      },
+      "godot/scripts/rigid_body_coupling.gd": {
+        "accepted_complete_execution": {
+          "blob": "bcdce56a0cefbfebd4c7d54cc7f2b50eb543110c",
+          "sha256": "a3f5562be71adcdb209b6c45a7e67374bc05a419816b195c48e65d1e0e66d142"
+        },
+        "original": {
+          "blob": "bcdce56a0cefbfebd4c7d54cc7f2b50eb543110c",
+          "sha256": "a3f5562be71adcdb209b6c45a7e67374bc05a419816b195c48e65d1e0e66d142"
+        },
+        "reviewed_recovery_candidate": {
+          "blob": "bcdce56a0cefbfebd4c7d54cc7f2b50eb543110c",
+          "sha256": "a3f5562be71adcdb209b6c45a7e67374bc05a419816b195c48e65d1e0e66d142"
+        }
+      },
+      "godot/scripts/simulation_snapshot.gd": {
+        "accepted_complete_execution": {
+          "blob": "263c0566881dcc8745721c7af8dc9c6bfc118303",
+          "sha256": "8c7ca1429e8aa0010c0f0aec1ce77d35a7e70ca8fa0d00fa43d2116382c138d0"
+        },
+        "original": {
+          "blob": "263c0566881dcc8745721c7af8dc9c6bfc118303",
+          "sha256": "8c7ca1429e8aa0010c0f0aec1ce77d35a7e70ca8fa0d00fa43d2116382c138d0"
+        },
+        "reviewed_recovery_candidate": {
+          "blob": "263c0566881dcc8745721c7af8dc9c6bfc118303",
+          "sha256": "8c7ca1429e8aa0010c0f0aec1ce77d35a7e70ca8fa0d00fa43d2116382c138d0"
+        }
+      },
+      "godot/tests/fixtures/lcb/desktop_default_commit_barrier.gd": {
+        "accepted_complete_execution": {
+          "blob": "08612d63fd34f9ebd2355f237e14adb84dc66ec8",
+          "sha256": "a50faad3f173b589479305c45089aa2fa5112273c7a0dc4cb7e4405fe639546d"
+        },
+        "original": {
+          "blob": "08612d63fd34f9ebd2355f237e14adb84dc66ec8",
+          "sha256": "a50faad3f173b589479305c45089aa2fa5112273c7a0dc4cb7e4405fe639546d"
+        },
+        "reviewed_recovery_candidate": {
+          "blob": "08612d63fd34f9ebd2355f237e14adb84dc66ec8",
+          "sha256": "a50faad3f173b589479305c45089aa2fa5112273c7a0dc4cb7e4405fe639546d"
+        }
+      },
+      "godot/tests/fixtures/lcb/desktop_default_equipment_refusal.gd": {
+        "accepted_complete_execution": {
+          "blob": "975160001231af19754f5e9597daf167c830777b",
+          "sha256": "d7dc91da6684d62999c4456a3412beb846af275d97d44acdc5c0879847b163ee"
+        },
+        "original": {
+          "blob": "975160001231af19754f5e9597daf167c830777b",
+          "sha256": "d7dc91da6684d62999c4456a3412beb846af275d97d44acdc5c0879847b163ee"
+        },
+        "reviewed_recovery_candidate": {
+          "blob": "975160001231af19754f5e9597daf167c830777b",
+          "sha256": "d7dc91da6684d62999c4456a3412beb846af275d97d44acdc5c0879847b163ee"
+        }
+      },
+      "godot/tests/fixtures/lcb/desktop_default_held_owner.gd": {
+        "accepted_complete_execution": {
+          "blob": "1b1334c88bd7597c528d80bb49af0c10ead3dd11",
+          "sha256": "b2c91507d80e9a80f956918663fe214cdc7dc6121f2623e63c6af6a73664fb47"
+        },
+        "original": {
+          "blob": "1b1334c88bd7597c528d80bb49af0c10ead3dd11",
+          "sha256": "b2c91507d80e9a80f956918663fe214cdc7dc6121f2623e63c6af6a73664fb47"
+        },
+        "reviewed_recovery_candidate": {
+          "blob": "1b1334c88bd7597c528d80bb49af0c10ead3dd11",
+          "sha256": "b2c91507d80e9a80f956918663fe214cdc7dc6121f2623e63c6af6a73664fb47"
+        }
+      },
+      "godot/tests/fixtures/lcb/desktop_default_play_observer.gd": {
+        "accepted_complete_execution": {
+          "blob": "36bad5c9942b501f476a31bcf785921f6b93d308",
+          "sha256": "0c60697bcaefc228725f243befdda624d64b4f323c37b03075cf0508baa43059"
+        },
+        "original": {
+          "blob": "36bad5c9942b501f476a31bcf785921f6b93d308",
+          "sha256": "0c60697bcaefc228725f243befdda624d64b4f323c37b03075cf0508baa43059"
+        },
+        "reviewed_recovery_candidate": {
+          "blob": "36bad5c9942b501f476a31bcf785921f6b93d308",
+          "sha256": "0c60697bcaefc228725f243befdda624d64b4f323c37b03075cf0508baa43059"
+        }
+      },
+      "godot/tests/fixtures/lcb/desktop_default_terrain_refusal.gd": {
+        "accepted_complete_execution": {
+          "blob": "cc39cce050b1553916531a6ae04374c359b2dd0a",
+          "sha256": "112fc62462c4c4181777b22dc21807ac6033e1448bf5a4280f28810b12901a52"
+        },
+        "original": {
+          "blob": "cc39cce050b1553916531a6ae04374c359b2dd0a",
+          "sha256": "112fc62462c4c4181777b22dc21807ac6033e1448bf5a4280f28810b12901a52"
+        },
+        "reviewed_recovery_candidate": {
+          "blob": "cc39cce050b1553916531a6ae04374c359b2dd0a",
+          "sha256": "112fc62462c4c4181777b22dc21807ac6033e1448bf5a4280f28810b12901a52"
+        }
+      },
+      "godot/tests/test_liquid_desktop_default_host.gd": {
+        "accepted_complete_execution": {
+          "blob": "0c5cd28c2bf018b55587e6f994aeeefcf9369424",
+          "sha256": "aac6d1cba59a44d285dd74b2f55256fd45d78d94c3ffcf48f545c09513f87bd3"
+        },
+        "original": {
+          "blob": "dc27ad83816a893cb8fcf0a0a36d4f84bd22fa88",
+          "sha256": "cab90770f6287976959a574557d8d37cce731bbd48d230a9e4291ef4e34f80ee"
+        },
+        "reviewed_recovery_candidate": {
+          "blob": "0c5cd28c2bf018b55587e6f994aeeefcf9369424",
+          "sha256": "aac6d1cba59a44d285dd74b2f55256fd45d78d94c3ffcf48f545c09513f87bd3"
+        }
+      }
+    },
+    "tree_identities": {
+      "accepted_complete_execution": {
+        "godot/addons": "96d2f19fdca4ca2ae4fcefd4f247567e94453be0",
+        "godot/tests/fixtures/lcb": "6bba2d2e8331f4b8ffb8a17cb59fd0c9783497dc",
+        "native": "fc6adf8e6f6834fc709aadf94010f7a17db5b5d9",
+        "root": "d93c91e1f5a6b2c4fa66a151f23731e29b72323f"
+      },
+      "original": {
+        "godot/addons": "96d2f19fdca4ca2ae4fcefd4f247567e94453be0",
+        "godot/tests/fixtures/lcb": "6bba2d2e8331f4b8ffb8a17cb59fd0c9783497dc",
+        "native": "fc6adf8e6f6834fc709aadf94010f7a17db5b5d9",
+        "root": "3e11e03480e5e584c623db6fb71bc2e259887519"
+      },
+      "reviewed_recovery_candidate": {
+        "godot/addons": "96d2f19fdca4ca2ae4fcefd4f247567e94453be0",
+        "godot/tests/fixtures/lcb": "6bba2d2e8331f4b8ffb8a17cb59fd0c9783497dc",
+        "native": "fc6adf8e6f6834fc709aadf94010f7a17db5b5d9",
+        "root": "cf8607853b25dc04a61125a9f46dd89a299c14cf"
+      }
+    },
+    "unchanged_lifecycle_functions": {
+      "godot/scripts/main.gd::_close_pending_physical_candidate": {
+        "body_sha256": {
+          "accepted_complete_execution": "cb4fa468d7145cb6cdae17dfb1fe28854f5797dd387eb4ae1a4d2f9d9355ec44",
+          "original": "cb4fa468d7145cb6cdae17dfb1fe28854f5797dd387eb4ae1a4d2f9d9355ec44",
+          "reviewed_recovery_candidate": "cb4fa468d7145cb6cdae17dfb1fe28854f5797dd387eb4ae1a4d2f9d9355ec44"
+        },
+        "identical": true,
+        "present": true
+      },
+      "godot/scripts/main.gd::_close_prepared_reference_bodies": {
+        "body_sha256": {
+          "accepted_complete_execution": "6d79caef0f7cc0cf841c22177a6e1b42194e738847a2669571825f42d35cd60b",
+          "original": "6d79caef0f7cc0cf841c22177a6e1b42194e738847a2669571825f42d35cd60b",
+          "reviewed_recovery_candidate": "6d79caef0f7cc0cf841c22177a6e1b42194e738847a2669571825f42d35cd60b"
+        },
+        "identical": true,
+        "present": true
+      },
+      "godot/scripts/main.gd::_exit_tree": {
+        "body_sha256": {
+          "accepted_complete_execution": "6d05a27b9a7ffb6888349d0f596e4352dad6918ba5906e7f56586543cc3df22e",
+          "original": "6d05a27b9a7ffb6888349d0f596e4352dad6918ba5906e7f56586543cc3df22e",
+          "reviewed_recovery_candidate": "6d05a27b9a7ffb6888349d0f596e4352dad6918ba5906e7f56586543cc3df22e"
+        },
+        "identical": true,
+        "present": true
+      },
+      "godot/scripts/rapier_physics_bridge.gd::shutdown": {
+        "body_sha256": {
+          "accepted_complete_execution": "3a7887349aeadb002aa334cecd2cdaefbf185e27adb35b0dbb8a423fbdbae0d2",
+          "original": "3a7887349aeadb002aa334cecd2cdaefbf185e27adb35b0dbb8a423fbdbae0d2",
+          "reviewed_recovery_candidate": "3a7887349aeadb002aa334cecd2cdaefbf185e27adb35b0dbb8a423fbdbae0d2"
+        },
+        "identical": true,
+        "present": true
+      },
+      "godot/scripts/simulation_worker.gd::stop_worker": {
+        "body_sha256": {
+          "accepted_complete_execution": "e061a44f2e06cf122d511ac789c968d5d03fb922ff47c79d3357eb6bcdbfcc99",
+          "original": "e061a44f2e06cf122d511ac789c968d5d03fb922ff47c79d3357eb6bcdbfcc99",
+          "reviewed_recovery_candidate": "e061a44f2e06cf122d511ac789c968d5d03fb922ff47c79d3357eb6bcdbfcc99"
+        },
+        "identical": true,
+        "present": true
+      }
+    }
+  },
+  "recorded_utc": "2026-10-31T23:00:55.729176+00:00",
+  "runtime_changes": false,
+  "schema": "play-windows-crash-forensic-receipt-v1",
+  "source_correlated_inference": {
+    "interpretation": "The matched instruction/call structure is consistent with reference initialization while GDScriptLanguage::finish iterates SelfList<GDScript>, reached through ScriptServer::finish_languages and Main::cleanup. The caller loads R12 from [R13+8] and passes it to the inferred init_ref routine; SelfList::_self is its second pointer field.",
+    "missing_evidence": [
+      "The list node and object heap bytes are not present in the bounded original dump.",
+      "The preceding allocation/free history and first corrupting write are not captured.",
+      "No matched symbol file or controlled engine-fix counterfactual has established this CyberSand cause."
+    ],
+    "r12": "0xfeeefeeefeeefeee",
+    "r13": "0x16ac1eb1058",
+    "status": "targeted_lead_not_proven_root_cause"
+  },
+  "supplemental_file_identities": {
+    "derive_godot_crash_frames.py": {
+      "bytes": 15171,
+      "sha256": "0091a872f1aaa2a4227ba8b66b0702f051aa26061eef1be7e6faaf367dd818ab"
+    },
+    "exception-registers41247373741.json": {
+      "bytes": 5634,
+      "sha256": "5f61c56088c54b7f95d8a917df7919f57da0e3bce1464b689fc456d97a3dbef9"
+    },
+    "forensic-frames41247373741.json": {
+      "bytes": 79337,
+      "sha256": "d7ad9d8e3d67e2c20af5f940d8fb8aa8f95ad81db2b21f0acc5f3231d3a999c3"
+    },
+    "godot47-windows-official/identity.json": {
+      "bytes": 975,
+      "sha256": "2c88ae160b70321d45a329b252d740c205060b0817511cde81c61d977b8e5c54"
+    },
+    "godot47-windows-official/objdump-headers.txt": {
+      "bytes": 29156880,
+      "sha256": "d64da8ef2b92fe68941874fd69e4aadbcd552afb7e9ba2e776e8b7f0e55cf412"
+    },
+    "godot47-windows-official/official-release-assets.json": {
+      "bytes": 12188,
+      "sha256": "078d1045b88476e1d44aace516cd34eb616423ea256b31d170d9b7dd1f9a6d47"
+    },
+    "godot47-windows-official/pe-investigation.json": {
+      "bytes": 8809,
+      "sha256": "fa0af3ef08f9153c0f00e4757a6fe6ee1b61f355d656886e7ab7600284045de2"
+    },
+    "godot47-windows-official/source-identity.json": {
+      "bytes": 2308,
+      "sha256": "e7b4276d976c6de692994f6698871dbcd2d4a72e2214ce4d9d7fba8143d541c4"
+    },
+    "readback41247373741.json": {
+      "bytes": 67160,
+      "sha256": "e79f9f35a874461d58a7a16a9b608c5bf058d8fd25fe9342fa418a4bdf7c42eb"
+    },
+    "source-comparison41247373741.json": {
+      "bytes": 77719,
+      "sha256": "12704fd40595a59dfe61b14c27391842399b2353aa06d1f35f424d0a276ae118"
+    }
+  },
+  "symbol_availability": {
+    "official_docs_url": "https://docs.godotengine.org/en/4.7/engine_details/development/compiling/introduction_to_the_buildsystem.html#debugging-symbols",
+    "official_windows_symbol_asset_present": false,
+    "pe": {
+      "coff_symbol_count": 0,
+      "coff_symbol_offset": 0,
+      "debug_directory_bytes": 0,
+      "debug_directory_rva": 0,
+      "pdb_guid_available": false
+    },
+    "qualification": "No matched PDB/COFF names or source lines were obtained. Custom-build symbols are not assigned to the original executable.",
+    "release_url": "https://github.com/godotengine/godot-builds/releases/tag/4.7-stable"
+  },
+  "upstream_corroboration": {
+    "added_lines": 5,
+    "change": "Release base_cache under TOOLS_ENABLED and base in GDScript::clear before the finish traversal advances to a potentially released script.",
+    "changed_file": "modules/gdscript/gdscript.cpp",
+    "closed_at": "2026-06-18T20:20:25Z",
+    "confirmed": true,
+    "deleted_lines": 0,
+    "fix_absent_from_exact_pinned_source": true,
+    "fix_number": 117991,
+    "fix_url": "https://github.com/godotengine/godot/pull/117991",
+    "issue_number": 117975,
+    "issue_url": "https://github.com/godotengine/godot/issues/117975",
+    "merge_commit": "0dd6299f7146362d36b130ac1dc42406cfb3ede6",
+    "merged_at": "2026-06-18T20:20:24Z",
+    "milestone": "4.8",
+    "qualification": "Known upstream bug with structurally matching failure path; not proof that this run has the same allocation/free cause."
+  }
+}

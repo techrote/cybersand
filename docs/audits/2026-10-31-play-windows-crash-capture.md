@@ -2,13 +2,25 @@
 title: PLAY Windows post-summary exception capture apparatus
 status: Current
 document-kind: audit
-scope: Opt-in unchanged-fixture Windows debugger diagnostic, retained original failure, exact source and process evidence, and unexecuted hosted qualification
+scope: Opt-in unchanged-fixture Windows debugger diagnostic, reproduced original access violation, exact-image forensic evidence and unresolved source cause
 canonical-for: []
 last-reviewed: 2026-10-31
 related-documents: [../operations/local-build-and-validation.md, ../operations/github-development-and-release.md, ../operations/current-and-historical-validation.md, 2026-10-31-play-ui007-desktop-readiness.md, 2026-10-25-lcb003-desktop-native-default-host.md]
 ---
 
 # Windows exception capture — 2026-10-31
+
+The [first hosted v7 attempt](#original-fixture-reached--v7-hosted-observation)
+reached the unchanged original fixture, retained its 86-assertion/zero-failure
+footer, and reproduced the process-ending `0xC0000005`. Exact-image
+disassembly and a bounded offline frame derivation identify a script-finalization
+lead that matches a known upstream Godot lifetime bug; the original allocation
+history and a causal counterfactual remain unavailable. No crash repair is
+asserted. The [v7 import-environment correction](#scoped-editor-import-environment--v7),
+[v6 dump-reader correction](#bounded-dbghelp-output-reader--v6) and
+[LLVM source-pin correction](#llvm-source-pin-correction--toolchain-identity-v2)
+remain separately versioned. Original production/fixture source and every
+prior failure are preserved.
 
 ## Original blocking result and narrow purpose
 
@@ -464,3 +476,673 @@ debugger attempt did not observe a process failure; it is not a repair,
 ordinary Windows qualification, graphical test, hardware test or human-play
 acceptance. Symbol availability may limit stack naming even when raw registers,
 stack bytes and module identities are retained.
+
+## Owner-authorized watchdogs and retained compiler failure — v4
+
+The 31 October 2026 owner handoff explicitly replaces obsolete short execution
+budgets with generous watchdogs. This successor starts from original #321 head
+`b890069877c7b197cf21ddf96cd00128ccbf09ad`, tree
+`40ba7d568d3991f3e5394a1a2ab5da4b8649cd50`. Its diagnostic source is separate
+from current-main timeout/shader integration: `godot`, `native`, `third_party`,
+`tools/ci` and the ordinary Godot workflow remain byte-identical to original
+failed source `aa74448bad7ec77e5f152d9179a417ce76430009`. Importing current main
+would invalidate that original-source equality check. The historical fixture's
+two internal 20-second waits also remain exact; current-main qualification owns
+their independent modernization. This explicit reproduction exception must not
+be mistaken for the current production CI policy.
+
+### Original compiler refusal, independently read back
+
+[Run 41196344488, attempt 1](https://github.com/techrote/cybersand/actions/runs/41196344488)
+ran the above b890 source. Artifact `13041371268` contains 6,378,256 bytes with
+SHA-256 `553f66d9d5c5f611d31a827d51a71c923da65843c538f0fef3d0ac541215a503`.
+The ZIP CRC, all 25 sealed campaign entries, original owned-build receipts and
+original ownership controls were independently checked with the **b890 readers**.
+The actual normal parent/child, nonzero-exit and orphan-hang controls passed
+their respective positive/negative oracles. Their observed wall times were
+0.507788, 0.104820 and 2.419895 seconds; all three jobs were joined.
+
+The diagnostic compiler was MSVC `14.44.35207`, `HostX64/x64/cl.exe`, 677,776
+bytes, SHA-256 `fe251ef50a1545b1b0835ee17b1e785459712b38d79e45b5c1d3d28970a36619`.
+The raw compiler job recorded four processes. `cl.exe`, `link.exe` and the
+observed console host exited zero. `vctip.exe` remained alive until the owner
+requested job termination at 13.590305 seconds, retaining its observed exit124.
+The complete job was joined at 13.691117 seconds. The 15-second operation
+reserved its last 1.5 seconds for cleanup, so the compiler operation correctly
+remained failed even though its root exited zero. The game fixture was never
+reached: `fixture_attempts` is zero.
+
+Microsoft's [BuildXL MSVC tool definition](https://github.com/microsoft/BuildXL/blob/main/Public/Sdk/Experimental/Msvc/VisualCpp/visualCpp.dsc)
+identifies VCTIP as a possible surviving compiler child used for telemetry.
+That does not prove this particular child would finish naturally after 15
+seconds. This successor allows the actual contained job to demonstrate its
+result. It does not ignore, detach, rename or globally terminate a process,
+modify compiler binaries, or infer a successful join from the root's exit.
+No undocumented telemetry environment key is assumed to prevent child creation.
+
+### Versioned execution policy and unchanged ownership
+
+[`windows_crash_policy.py`](../../tools/play/windows_crash_policy.py) is the
+single policy source for this original-source apparatus. Both execution and
+offline reduction import it. The exact policy is retained in `campaign.json`;
+compiler `/D` arguments select the same capture/case bounds in the C++ broker,
+whose source refuses compilation without those explicit definitions. The
+campaign, broker and owned-build schemas advance to v4, v3 and v2 respectively.
+Older evidence continues to require its original source readers.
+
+| Operation | v4 watchdog |
+|---|---:|
+| Owned SDK compilation, Git evidence operations, engine version probe | 300 seconds |
+| Each ordinary exception-control process | 300 seconds |
+| Required module hash and dump helper | 300 seconds, capped by remaining parent time |
+| Godot import | 1,200 seconds |
+| Original standalone complex fixture process | 3,600 seconds |
+| Hosted job / diagnostic stage | 180 / 150 minutes |
+| Owned-operation cleanup reserve | Up to 10 seconds within its existing watchdog |
+| Outer broker cleanup observation | 10 seconds, then bounded termination/join observation |
+
+The deliberately hung ownership, debuggee and dump-writer controls retain
+their separate 3-second, 500-millisecond and 1-second injected boundaries.
+The dump-writer control's parent stays 15 seconds. These are explicit adverse
+controls, not implicit normal-workload limits. The materialization stage gets
+20 minutes; the whole-job ceiling covers it plus the sequential diagnostic
+stage and artifact collection. No elapsed performance target is introduced.
+
+The former fixed 160-sample cap would still cut off a 300-second operation
+near 16 seconds. Sample capacity now derives from the prescribed watchdog and
+10-Hz interval with four samples of headroom; portable verification derives
+the same bound. Every raw sample, observed process image, creation time, CPU
+time, exit code, log size and final empty-job state remains retained. The
+32-process limit, creation-time Job/handle membership, no-breakaway policy,
+nonzero-exit propagation and strict observed join requirements are unchanged.
+An unjoined process, late exit or watchdog termination cannot pass.
+
+### Qualification of the successor
+
+The Windows campaign adds an actual 20-second child that exits zero and an
+actual 20-second child that exits19. Each requires the child execution marker,
+exact two-process accounting, observed child identity, full natural join and
+wall time beyond the former 15-second limit; the latter must retain both
+nonzero exits and its failed operation status while satisfying the negative
+control oracle. Existing normal/nonzero/orphan controls remain mandatory.
+
+Local portable qualification passes **27 owned-build tests and 57
+crash/artifact tests**, normally and under `python -O`. The additions exercise
+30-second successful and late-failing modeled operations beyond both old
+limits, a full 300-second modeled hang with observed termination/join,
+invalid/nonfinite bounds, slow command execution/exit propagation, false
+fast-execution receipts, late-child failure, capture/hash completion beyond
+15 seconds, unjoined hash refusal and resealed policy substitution.
+These virtual-clock and mock-Win32 controls do not claim actual Windows
+execution. The provider-policy check and whitespace check also pass.
+Historical M11 integrity passes. Local documentation/repository checks retain
+the same six absent companion-workspace expected-fact inputs (source provenance,
+Web threading, development wrapper/guide and browser results); these are
+reported as failures, not dismissed as successful checks. No protected source
+or runtime/provenance manifest was changed to address them.
+
+Fresh exact-source hosted ownership controls, SDK builds, debugger controls,
+import and the one original fixture attempt remain required. If VCTIP still
+does not leave its owned job before the generous watchdog, that attempt must
+retain the complete partial evidence and remain failed; no basename exception
+is authorized. A later successful diagnostic will mean only that one exact
+debugger attempt observed no process failure. It cannot establish the cause
+or repair of original access violation `0xC0000005` in run41175131563.
+
+## Diagnostic-only clang-cl and lld successor — v5
+
+The owner authorized a change to the diagnostic toolchain after the generous
+MSVC attempt still failed before reaching the game. This successor starts at
+#329 head 2be6d0a388d1c4dfb607df04ac59dca7a9879ac6, tree
+e24efbbb1bd4888f7011e36f2cfed92d635706fe. The original production, native,
+runtime, fixture and ordinary-CI source fence remains unchanged. The C++ broker
+and C exception-control source also remain byte-identical to that v4 attempt.
+Only their compiler/linker configuration, custody readers, tests, policy
+envelope and dedicated workflow change.
+
+### Preserved 300-second MSVC failure
+
+[Run 41235058997, attempt 1](https://github.com/techrote/cybersand/actions/runs/41235058997),
+job 124636953307, retained artifact 13055585103: 6,604,663 bytes, SHA-256
+6473233612d17000653554eca5c8b5b3551adfcedb8853fd7d1a407ba2faf95f.
+Independent readback verified the ZIP CRC, all 33 sealed entries, 795 scoped
+source inputs, all 15 source-matched Python reader files, native/Rapier
+provenance, all five actual ownership controls and the original failed build
+reduction. The full v4 campaign reader correctly rejects the incomplete
+campaign. No old receipt, process status, timeout or manifest was rewritten.
+
+The same pinned MSVC binary recorded cl.exe PID 724, link.exe PID 4396 and
+conhost.exe PID 6364 exiting zero by 7.446344 seconds. Its vctip.exe descendant,
+PID 2080 with creation identity 134379491098269622, was first observed at
+3.019958 seconds and remained the only live owned process after compilation.
+The owner requested termination at 290.001062 seconds, reserving the last
+10 seconds of the existing 300-second operation. VCTIP exited 124 and the job
+was joined at 290.102039 seconds. The completed executable/PDB do not turn
+this operation into a pass. The retained fixture-attempt count is zero.
+
+Normal child and nonzero controls completed in 0.508659 and 0.104513 seconds.
+The deliberate orphan was terminated and joined in 2.415143 seconds.
+The 20-second natural-success and late-exit-19 controls completed in
+20.092628 and 20.102585 seconds, with their exact positive/negative outcomes.
+These actual observations validate the enlarged ownership-control path;
+they provide no game, import or debugger exception-capture result.
+
+Microsoft documents [VSCEIP registry opt-out](https://learn.microsoft.com/en-us/visualstudio/ide/visual-studio-experience-improvement-program)
+for optional diagnostic data, without promising zero helper creation or a
+bounded VCTIP lifetime. Its [BuildXL implementation](https://github.com/microsoft/BuildXL/blob/aab9f814e31aa8a05607bbc4f051e44eb6e2afc7/Public/Src/FrontEnd/Ninja/NinjaPipConstructor.cs)
+also recognizes the long-lived compiler child. Neither source establishes an
+invocation-local switch satisfying this apparatus's strict natural-join
+contract. The owner selected a separately declared LLVM diagnostic build;
+no registry opt-out, hidden compiler flag, process-name exception, tool
+deletion, prewarmed helper or global process termination is introduced.
+
+### Exact LLVM identity and build custody
+
+GitHub's [Windows-2022 inventory](https://github.com/actions/runner-images/blob/4da2307112a0fad2fd2ecaca8ba7d08683b8c581/images/windows/Windows2022-Readme.md)
+lists LLVM 20.1.8. The source selects the existing fixed paths under
+C:\Program Files\LLVM\bin and refuses a missing or different installation.
+It does not search PATH or silently switch compiler families. The pins below
+were derived by extracting only the two executable members from the
+[official LLVM 20.1.8 installer](https://github.com/llvm/llvm-project/releases/tag/llvmorg-20.1.8),
+after checking its published release-asset size and SHA-256. The installer
+was inspected locally, not executed or committed.
+
+This table preserves the initial declaration. The compiler digest was derived
+from an incomplete alias extraction, as established after the first hosted
+attempt and corrected in the toolchain identity v2 section below.
+
+| Official file | Bytes | SHA-256 |
+|---|---:|---|
+| LLVM-20.1.8-win64.exe | 385,658,654 | 3197846a2b19063687dd56e93e34cd941e3548d907f23a6131571321bdf9fe7b |
+| bin/clang-cl.exe | 101,879,296 | 51ace51d190c6f09af277bb8d6354b3fb2fd8495cae3d80dcb1c36c2d1a816d4 |
+| bin/lld-link.exe | 67,509,760 | 6590ac0122cd5e11fcd05cc9cd5b7ad01cb89961487b9b81c4330fb59abcb5d9 |
+
+The existing x64 developer-shell setup supplies Windows SDK and static CRT
+headers/libraries. Their selected environment paths and versions are retained
+as context; they are not claimed to be a newly content-pinned SDK distribution.
+The two LLVM executables are size/hash checked before work and after each
+owned operation; observed identities, including a mismatch, are retained.
+Separate version probes must report release 20.1.8 and the
+compiler's x86_64-pc-windows-msvc target. Their original logs, identities,
+process samples and observed exits are retained.
+
+Each tool is compiled to a retained object with clang-cl /c, then linked by an
+explicit lld-link invocation in its own owned job. There is no driver-selected
+MSVC linker fallback. Compiler warnings remain errors, optimization stays
+disabled, /Z7 CodeView and /MT static CRT stay explicit, and lld emits full
+PDBs with warnings treated as errors. LLVM documents the
+[clang-cl interface](https://clang.llvm.org/docs/UsersManual.html#clang-cl)
+and [Windows lld/PDB support](https://lld.llvm.org/windows_support.html).
+The new compiler disables automatic default config files and removes only
+compiler-flag/config override environment names from its private build
+environment; the original game environment is preserved.
+
+Build schema v2 binds each compile phase to its canonical source and pinned
+toolchain, and each link phase to the exact retained object bytes as well.
+The object, executable and PDB identities are independently checked offline.
+Campaign schema v5 requires both owned version probes and both compile/link
+phases for each of the two diagnostic tools. All original debugger controls
+remain mandatory, including normal exit, handled access violation, unhandled
+fault, child fault, hung target and hung dump writer. Their real Windows
+execution must qualify the new compiler before the original game is attempted.
+
+The unchanged owned-build v2 format retains its honest 10-Hz observation
+scope. New LLVM phase/version acceptance adds a stricter cross-check:
+the final Job total-process count must equal the number of distinct observed
+exits. A short-lived unobserved child therefore fails the LLVM phase even if
+the generic historical reducer can establish an empty job. Every observed
+exit must be zero, every job must join naturally, and any timeout, termination,
+late exit, nonzero child or missing final ownership observation still fails.
+The MSVC failures keep their original readers and original failed status.
+
+### Watchdogs and qualification limits
+
+Every owned operation remains bounded by 300 seconds, including its existing
+cleanup reserve. The additional two LLVM version probes and explicit separate
+compile/link phases require a larger sequential envelope, not a larger
+per-operation limit. Policy v2 records a 180-minute diagnostic stage and
+270-minute hosted job; the workflow includes 45 minutes for sequential
+dependency materialization and headroom for source/readback/artifact work.
+Import, original fixture, dump/hash work and all injected adverse-control
+deadlines remain unchanged from v4.
+The executed v4 workflow had a 240-minute job and 45-minute materialization
+stage; its policy still declared a 180-minute job and its older narrative
+retained a 20-minute materialization stage.
+Those original records remain intact; v5 aligns its policy and workflow.
+
+Portable validation passes 32 ownership/build tests and 64 crash/artifact
+tests, normally and with Python assertions disabled. Provider, documentation,
+current repository identity, historical M11 and whitespace checks pass.
+Retrieval keeps 32/32 canonical top-five hits, 19 top-one hits and MRR 0.7536;
+these lexical scores do not establish answer correctness. The repository
+identity check explicitly reports unmaterialized runtime pointers here.
+Added controls reject same-size compiler/linker substitution, wrong
+release/target, ambient compiler-flag overrides, version-probe failure,
+unobserved short-lived child exits, MSVC linker fallback, missing link phase,
+failed linker after compiler success, altered objects/PDBs and historical
+v4 receipts presented as v5. These are reducer, filesystem and mock-operation
+checks; they are not Windows compilation or runtime evidence.
+
+The exact resulting source must still pass its first hosted Windows attempt:
+all ownership controls, pinned LLVM probes/builds, debugger controls, import
+and one original fixture execution. Any compilation incompatibility or
+different installed LLVM identity remains a visible failure with preserved
+partial evidence. A later successful diagnostic cannot identify the cause
+of the original 0xC0000005 by itself, repair it, or qualify current-main
+gameplay/shader integration.
+
+## LLVM source-pin correction — toolchain identity v2
+
+The first v5 hosted execution is retained as a failed attempt:
+[run41237817139, attempt1](https://github.com/techrote/cybersand/actions/runs/41237817139),
+job124645182793, at source `ae884cbec3f80ef50e9f1d24b355696118e337e8`,
+tree `df51b62ddcd36ee940194ffedfef133de869ca90`.
+Artifact13056233530 is 2,310,109 bytes with SHA-256
+`52157861890fdc7fff45915e198a86533f1c09113848a183510fb2e139bef7af`.
+Independent readback verified the ZIP CRC, all 25 sealed entries, 795
+canonical inputs, 15 retained Python helper identities, the runtime proof,
+and all five actual ownership controls using the original source readers.
+The normal, nonzero, orphan, slow-child and late-child-failure observations
+retained their required outcomes and joined their owned jobs.
+
+The campaign stopped at `Pinned LLVM compiler executable differs or is missing`.
+The installed `C:\Program Files\LLVM\bin\clang-cl.exe` was 101,879,296 bytes,
+SHA-256 `57e32b1ea2456f12f97bf802453171bbff12d56b2c486b4eca0c75343c0cda2c`.
+No compiler/linker version probe, compilation, debugger control, import or
+original fixture ran; `fixture_attempts` remained zero. The mismatch check
+preceded the linker check, so that run does not establish its installed linker
+identity. The original v5 full-campaign reader correctly rejects the incomplete
+campaign. Its records are not rerun or relabelled as successful evidence.
+
+The initial pin derivation paired the archive-declared compiler size with a
+digest of an incomplete local extraction. The local `clang-cl.exe` file with
+digest `51ace51d190c6f09af277bb8d6354b3fb2fd8495cae3d80dcb1c36c2d1a816d4`
+is only 85,983,232 bytes. That digest cannot identify the declared
+101,879,296-byte executable. This was an apparatus provenance error.
+
+The same official installer was checked again against the published size and
+SHA-256 above. A completed stream extraction with 7-Zip 23.01 on Linux
+(`7zz x -so LLVM-20.1.8-win64.exe bin/clang-cl.exe`, then the equivalent
+`bin/lld-link.exe` command) exited zero for each member. Actual byte counts
+and SHA-256 digests were measured together only after each process exited.
+Separate completed extractions of `bin/clang.exe` and `bin/lld.exe` match
+their respective aliases. The NSIS listing records the compiler names at
+the same data offset, and likewise the linker names. The extraction's
+`7zz` executable was 2,763,304 bytes, SHA-256
+`c7f8769e2bc8df6bcbfba34571ee0340670a52dec824dbac844dd3b5bd1a69e1`.
+These are archive byte checks, not Windows execution evidence.
+
+| Complete official member | Observed bytes | SHA-256 |
+|---|---:|---|
+| bin/clang-cl.exe and bin/clang.exe | 101,879,296 | 57e32b1ea2456f12f97bf802453171bbff12d56b2c486b4eca0c75343c0cda2c |
+| bin/lld-link.exe and bin/lld.exe | 67,509,760 | 6590ac0122cd5e11fcd05cc9cd5b7ad01cb89961487b9b81c4330fb59abcb5d9 |
+
+Toolchain identity `play-windows-clang-lld-v2` corrects only the compiler
+digest; its fixed path, actual size, version/target probes and linker pin
+remain unchanged. Campaign v5 and build v2 retain their structural formats
+and bind to the exact source-declared toolchain identity. A resealed old
+toolchain-v1 receipt is rejected by the successor reader. The workflow,
+budgets, original debugger/control source, process containment and production
+source fence are unchanged. No installation or additional child-process
+exception is introduced.
+
+Focused portable controls additionally exercise both sides of the erroneous
+size/hash pairing: a full file whose digest differs and a truncated file
+whose size differs. Both preserve the actual observation and declaration,
+refuse every launch, and leave build/probe inventories empty. The corrected
+toolchain still requires its own first hosted execution, including all
+version, compilation, debugger, import and fixture gates. The original
+`aa74448bad7ec77e5f152d9179a417ce76430009` / run41175131563
+`0xC0000005` remains unexplained and blocking.
+
+This correction was checked on parent `ae884cbec3f80ef50e9f1d24b355696118e337e8`
+plus the four tracked files in branch
+`codex/play-windows-llvm-materialization-20261031`: this audit, the campaign
+runner and its two existing focused test files. All 33 ownership/build and
+65 crash/artifact tests pass normally and with Python assertions disabled.
+Documentation, repository identity, historical M11, provider and whitespace
+checks pass; runtime libraries remain unmaterialized local pointers.
+Retrieval remains 32/32 canonical top-five hits, 19 top-one hits and
+MRR 0.7536, with answer sufficiency still a separate review. The protected
+production scopes remain byte-identical to the original failing source.
+
+## Bounded DbgHelp output reader — v6
+
+[Run41241255117, attempt1](https://github.com/techrote/cybersand/actions/runs/41241255117),
+job124655448204, remains a failed v5 campaign at source
+`7a5f6029be1018715fb6a411e5b0232b1e9bd0de`, tree
+`b580dc264005864c8b319d3f3b92475d9d5a4f58`.
+Artifact13058045489 is 7,015,149 bytes with SHA-256
+`697a2690a2cabd4177595ba423c55a1a7f66231d57d9f55c8494227fb2ed21c3`.
+Its 79 ZIP members pass CRC checks; independent original-source readback
+verifies 71 sealed campaign entries, 795 canonical inputs, all 15 retained
+Python helper identities, runtime provenance and all five actual build
+ownership controls. Both installed LLVM tools match the corrected official
+pins. Both version probes and all four compile/link operations pass: each
+has exactly one observed process, exit zero and natural empty-job completion.
+The two tool builds retain their objects, executables and PDB identities.
+
+The normal debugger control passed. The handled first-chance access-violation
+control captured its dump, forwarded the exception and exited zero in 63 ms,
+but the original reader rejected its header with
+`Dump flags differ from bounded MiniDumpNormal/ThreadInfo contract`.
+The campaign stopped there with zero fixture attempts; unhandled/child/hang
+and dump-timeout debugger controls, import and the game fixture were not run.
+The original source reader still rejects this campaign as incomplete.
+
+The dump `fault-6704-2376-6.dmp` is 146,124 bytes, SHA-256
+`b38fef4665c71edfb36b4d845665d2c8f06eb88b4afc08dbd0e96e48b7000bae`.
+Its flags are `0x201000`: requested `MiniDumpWithThreadInfo` (`0x1000`) plus
+`MiniDumpWithAvxXStateContext` (`0x200000`). Microsoft documents the latter
+as AVX register-context information in
+[MINIDUMP_TYPE](https://learn.microsoft.com/en-us/windows/win32/api/minidumpapiset/ne-minidumpapiset-minidump_type).
+The unchanged, source-verified C++ producer requested only
+`MiniDumpNormal | MiniDumpWithThreadInfo`; this records the actual output
+of that hosted invocation, not a universal DbgHelp default or a newly pinned
+DbgHelp DLL identity.
+
+There are 13 directory slots: nine meaningful, unique streams and four
+all-zero slots. Microsoft identifies stream type zero as the reserved
+`UnusedStream` value in
+[MINIDUMP_STREAM_TYPE](https://learn.microsoft.com/en-us/windows/win32/api/minidumpapiset/ne-minidumpapiset-minidump_stream_type).
+The old reader would also reject those repeated zero slots as duplicates.
+The actual dump retains one thread, four modules, a 133,856-byte fault stack
+and 3,263-byte exception and thread contexts. The existing stopped raw
+context remains 1,232 bytes. After recognizing only the observed header and
+zero-slot forms, exception identity/parameters, RIP/RSP/RBP, stack bounds
+and loaded-module identities crossjoin with the retained raw evidence.
+This partial forensic readback does not change the original failed result.
+
+Campaign v6 declares source-bound minidump format `play-windows-minidump-v2`.
+It accepts only exact output flags `0x1000` or `0x201000`, counts and records
+only exact `(type=0, size=0, RVA=0)` unused slots, and preserves uniqueness
+and bounds checks for every meaningful stream. The existing 64 MiB dump
+ceiling remains; extended exception contexts now have an explicit 64 KiB
+ceiling and must contain the full 1,232-byte x64 context. Full-memory stream
+type nine is refused even if a header omits its full-memory bit; Microsoft
+identifies [MINIDUMP_MEMORY64_LIST](https://learn.microsoft.com/en-us/windows/win32/api/minidumpapiset/ns-minidumpapiset-minidump_memory64_list)
+as the full-memory representation. Unknown flags, missing requested flags,
+nonempty unused slots, duplicate meaningful streams, out-of-file data and
+fault/context/module mismatches remain failures. A receipt cannot enlarge
+the source-declared format, and a resealed v5 campaign cannot become v6.
+
+The four-file correction changes only the reader, campaign format, existing
+contract tests and this audit. The C++ producer, compiler commands, workflow,
+watchdogs, ownership controls and original production/fixture source remain
+unchanged. Portable controls cover the observed AVX/zero-slot form and its
+adverse variations. The exact v6 source still needs its own first hosted
+attempt through every debugger control, import and one original fixture.
+The original run41175131563 `0xC0000005` remains unexplained and blocking.
+
+Local validation used parent `7a5f6029be1018715fb6a411e5b0232b1e9bd0de`
+plus this four-file delta on `codex/play-windows-minidump-reader-20261031`.
+All 73 crash/artifact and 33 ownership/build tests pass normally and with
+Python assertions disabled. Original normal-control evidence and the handled
+control's raw dump/context/event/module evidence independently crossjoin
+under the successor reader; the full original campaign remains rejected.
+Documentation, repository identity, historical M11, provider and whitespace
+checks pass. Retrieval remains 32/32 canonical top-five hits, 19 top-one
+hits and MRR 0.7536, without implying answer correctness. Protected production
+scopes still match the original failed source byte for byte; local runtime
+libraries remain unmaterialized pointers, so no new Windows execution is
+claimed by these portable checks.
+
+## Scoped editor-import environment — v7
+
+[Run41242988776, attempt1](https://github.com/techrote/cybersand/actions/runs/41242988776),
+job124660539105, remains a failed v6 campaign at source
+`1fdebd99b7ce6dbff16c4fa64a268ebded0b909b`, tree
+`a4991c42b132a38200d9e431d0cdc6d2c2cdcca3`.
+Artifact13057774865 is 7,106,479 bytes with SHA-256
+`5e6caf2dd5c331a910d13d9cb4bf75fe5d0409100fedb0107e5ec0edd96b22b5`.
+All 137 ZIP members pass CRC checks. Independent readback using its 15
+source-matched Python readers verifies 129 sealed entries, 795 canonical
+inputs, runtime provenance, all five build-ownership controls, both LLVM
+version probes and all four compile/link operations. All six debugger
+controls satisfy their intended contracts: normal completion, handled
+first-chance fault, unhandled fault, child fault, hang and dump-writer timeout.
+The control failures remain required negative observations, not game passes.
+
+Import's raw capture completed naturally with effective exit zero after
+154,437 ms, and all four observed processes exited. Its pinned console
+launcher was PID5248 and engine PID2084. At 4,500 ms the debugger also observed
+PID2976 at
+`C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\8.0.504-1\x64\bin\keytool.exe`
+and PID5792 at `C:\Windows\System32\conhost.exe`. Their load hashes were
+explicitly not requested. The strict reader correctly refused
+`Unexpected debuggee executable`; the campaign never reached the original
+fixture and retains `fixture_attempts=0`. All 130 retained campaign files
+remain hash-identical before and after the independent forensic readback.
+The original full campaign still fails as incomplete.
+
+The pinned engine's primary source explains a specific editor-startup path.
+Godot 4.7's Android
+[export registration](https://github.com/godotengine/godot/blob/4.7-stable/platform/android/export/export.cpp)
+defaults `export/android/java_sdk_path` from `JAVA_HOME`.
+[Export initialization](https://github.com/godotengine/godot/blob/4.7-stable/platform/android/export/export_plugin.cpp)
+calls `_create_editor_debug_keystore_if_needed()`, obtains
+`java_sdk_path/bin/keytool.exe`, and returns before spawning a process if
+that file is absent. With a usable Java SDK and no debug keystore, it invokes
+keytool to create the editor's Android signing key. This is a source-supported
+explanation of the observed child path; the old campaign did not retain its
+JAVA_HOME value, editor-settings files or keytool command line, so those are
+not retroactively claimed as measured inputs.
+
+An empty Java setting resolves to relative `bin/keytool.exe`; clearing
+JAVA_HOME alone is therefore insufficient evidence. Godot's
+[command-line parser](https://github.com/godotengine/godot/blob/4.7-stable/main/main.cpp)
+sets the working directory to the `--path` project, and
+[Windows file access](https://github.com/godotengine/godot/blob/4.7-stable/drivers/windows/file_access_windows.cpp)
+resolves relative paths against that working directory.
+[Editor settings](https://github.com/godotengine/godot/blob/4.7-stable/editor/settings/editor_settings.cpp)
+can also load an existing explicit SDK setting from versions 4.7, 4.6, 4.5,
+4.4, 4.3 or the older `editor_settings-4.tres` fallback.
+[Editor paths](https://github.com/godotengine/godot/blob/4.7-stable/editor/file_system/editor_paths.cpp)
+use a self-contained configuration if `_sc_` or `._sc_` exists beside the
+engine; otherwise the
+[Windows configuration path](https://github.com/godotengine/godot/blob/4.7-stable/platform/windows/os_windows.cpp)
+is `APPDATA/Godot`. The protected original project contains no Android Java
+SDK editor-setting override.
+
+Campaign v7 declares `play-windows-editor-import-environment-v1`. It copies
+the already-sanitized launch environment and removes only case variants of
+JAVA_HOME for editor import. PATH, APPDATA, ANDROID_HOME and every other
+remaining variable retain their original values. The six possible settings
+files, both self-contained markers and project-relative `bin/keytool.exe`
+must all be absent. Existing files, directories, dangling links, ambiguous
+or missing APPDATA, relative APPDATA and access errors stop the attempt.
+The same absence checks run again immediately before the import launch.
+No settings file or keystore is created, deleted or rewritten by the harness.
+
+The sealed import-custody file records the original JAVA_HOME path, the
+APPDATA path required to interpret the checks, their exact guarded paths,
+and digests of the original and copied environment mappings. Other
+environment values are not dumped. The record is written before its
+preconditions are accepted, preserving an observed cached-settings failure.
+Each actual debugger process receipt binds the digest of its launch mapping;
+only import additionally binds the custody-file digest. Offline reduction
+requires the exact source-declared policy and path inventory, original
+control/game mapping, and prescribed dump-timeout-control exception. A
+receipt cannot add removals, omit an absence guard, retain a recorded
+present/unknown path, transfer import custody to a control/game process, or
+relabel a historical v6 campaign as v7. Offline reduction checks the sealed
+observations and source-matched launch logic; it does not independently
+re-observe the former host filesystem. Unexpected keytool/conhost children still fail
+the unchanged executable binding; they receive no allowed-image entry.
+
+This four-file successor changes the campaign runner, its two existing
+portable test files and this audit. It preserves the pinned engine, original
+C++ debugger and injected controls, workflow, command arguments, watchdogs,
+strict process ownership, production/fixture source and every previous raw
+attempt. Fresh source-matched Windows execution remains required through
+all gates and the single original fixture. The original source
+`aa74448bad7ec77e5f152d9179a417ce76430009` / run41175131563
+post-footer `0xC0000005` remains unexplained and blocking.
+
+Local validation uses parent `1fdebd99b7ce6dbff16c4fa64a268ebded0b909b`
+plus the four-file delta on `codex/play-windows-import-environment-20261031`.
+The portable controls exercise every cached-setting/relative-keytool guard,
+original environment preservation through the real campaign argument flow,
+late prelaunch changes, sealed refusal before import/game launch, receipt
+substitution and unchanged unexpected-child refusal. Windows execution is
+not inferred from these synthetic launch and offline custody controls.
+All 42 ownership/environment and 78 crash/artifact tests pass normally and
+with Python assertions disabled. Documentation, repository identity,
+historical M11, provider and whitespace checks pass. Retrieval remains
+32/32 canonical top-five hits, 19 top-one hits and MRR 0.7536, with answer
+sufficiency separate. Protected production scopes still match the original
+failed source byte for byte; local runtime libraries remain unmaterialized
+pointers.
+
+## Original fixture reached — v7 hosted observation
+
+[Run41247373741, attempt1](https://github.com/techrote/cybersand/actions/runs/41247373741),
+job124673495567, executed diagnostic source
+`319d507a7d974ef3b5a1913366b0d1b7152d204c`, tree
+`368a9455f35dc028fac7b3032557fe70e63abb4a`. This is the published equivalent
+of reviewed local v7 commit `0a1938ed57025292cefcecc2cf0a66ee3d4e0285`.
+The protected production and original fixture remain at
+`aa74448bad7ec77e5f152d9179a417ce76430009`.
+
+[Artifact13060835779](https://github.com/techrote/cybersand/actions/runs/41247373741/artifacts/13060835779)
+is 7,131,522 bytes, SHA-256
+`e153c6c74920926cebdc8b11f0310e3d71303ebcb5dc1d333a8a66ae9dc7ac0e`.
+All 152 ZIP members pass CRC checks. An independent readback using the
+15 source-matched Python readers authenticates 144 sealed entries and 795
+canonical inputs, including the LLVM identities, ownership controls, all
+six intended debugger controls, import environment custody and runtime
+provenance. All 145 retained campaign files remain unchanged. The full
+original reducer accepts the evidence as `observed_process_failure`, with
+`completed=true`, `errors=[]` and `original_failure_still_blocking=true`.
+Accepting a complete diagnostic record does not make the game process pass.
+
+The one original fixture attempt printed
+`LIQUID_DESKTOP_DEFAULT_HOST: 86 assertions; 0 failures`, then exited
+`3221225477` (`0xC0000005`) after 66,797 ms, without timing out. The actual
+engine was PID8016, and its initial main thread TID2632 produced two
+first-chance and one second-chance capture at the same instruction. All
+three exceptions were forwarded as not handled. Each dump is 76,235 bytes;
+each contains 14 threads and a 4,064-byte fault-thread stack. Both selected
+native runtime modules were still loaded; no module-unload event appears
+in this fixture capture. These observations do not assign blame to an
+extension, an engine subsystem or a particular project object.
+
+The versioned [forensic receipt](2026-10-31-play-windows-crash-forensics.json)
+binds the original artifact, three dump/context/exception identities, all
+general registers, exact executable, source comparison, disassembly hashes
+and supplemental analysis records. This documentation checkpoint adds no
+runtime execution and changes no debugger, game, fixture or engine input.
+
+### Exact executable and bounded frame derivation
+
+The official Windows archive is 83,764,371 bytes, SHA-256
+`02a5312236f4e0209c78bcb2f52135b1963e6b8888c873c9cee81459e60bcd71`.
+It matches both the release asset digest and the source-pinned SHA-512.
+Its GUI executable is 178,485,256 bytes, SHA-256
+`b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8`,
+equal to the actual engine's load-stop file identity. Static inspection
+does not execute that downloaded binary.
+
+The exact PE image has zero COFF symbols and an empty debug directory, so
+there is no CodeView/PDB GUID to match. The official 4.7 release assets
+provide no Windows symbol package. Godot's
+[4.7 build documentation](https://docs.godotengine.org/en/4.7/engine_details/development/compiling/introduction_to_the_buildsystem.html#debugging-symbols)
+also explains that official binaries omit debugging symbols. Symbols from
+a different custom build cannot be assigned to this original image.
+
+The captured RIP is `0x7ff7338be7c1`, engine RVA `0x03e1e7c1`.
+At that RVA the authenticated instruction bytes are `8b 02`,
+`mov eax,DWORD PTR [rdx]`. The preceding instruction computes
+`rdx = rcx + 0x120`. Actual RCX/RBX/R12 are
+`0xfeeefeeefeeefeee`, and RDX is `0xfeeefeeefeef000e`.
+The Windows exception record reports a read with address
+`0xffffffffffffffff`. The repeated fill-like value is a lifetime/corruption
+clue, not an allocation history or proof of the first invalid write.
+
+The restricted offline derivation follows Microsoft's
+[x64 unwind metadata](https://learn.microsoft.com/en-us/cpp/build/exception-handling-x64)
+using the exact image's `.pdata`, raw context and captured stack bytes.
+It accepts only the supported complete-prolog operations, requires one
+matching function extent for every used control address, and checks the
+disassembled prolog stack effects. All three retained captures yield the
+same sequence:
+
+| Frame | Engine RVA | Return-address slot from original RSP | Source-correlated role, not a symbol result |
+| --- | --- | --- | --- |
+| 0 | `0x3e1e7c1` | 56 bytes | `RefCounted::reference` |
+| 1 | `0x3e1e8dd` | 120 bytes | `RefCounted::init_ref` |
+| 2 | `0x54730b` | 280 bytes | `GDScriptLanguage::finish` |
+| 3 | `0x3e2d108` | 488 bytes | `ScriptServer::finish_languages` |
+| 4 | `0x5fed1` | 632 bytes | `Main::cleanup` |
+| 5 | `0x5249f` | 1,624 bytes | Unassigned |
+| 6 | `0x5253e` | 1,704 bytes | Unassigned |
+| 7 | `0x10c9` | 1,864 bytes | Unassigned |
+
+The next handler-bearing entry at lookup RVA `0x13f5` is outside this
+restricted derivation and stops it explicitly. The startup caller's
+intermediate target `0x65cafc0` restores its stack then tail-jumps to
+`0x52510`, consistent with the recovered caller. Other module-looking words
+in the raw stack are not promoted to frames. This is not a WinDbg-symbolized
+stack or source-line attribution.
+
+The role inference uses separately authenticated Godot commit
+`5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88`, including
+[RefCounted](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/core/object/ref_counted.cpp),
+[GDScript finalization](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/modules/gdscript/gdscript.cpp),
+[SelfList](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/core/templates/self_list.h),
+[ScriptServer](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/core/object/script_language.cpp)
+and [Main cleanup](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/main/main.cpp).
+The inferred finalizer loads the poisoned value from `[r13+8]` before calling
+the inferred initializer. R13 is `0x16ac1eb1058`; the source's `SelfList::_self`
+is its second pointer member. The bounded dump does not contain that list
+node, the corresponding heap allocation or its free history.
+
+### Upstream corroboration and project comparison
+
+Upstream [Godot issue117975](https://github.com/godotengine/godot/issues/117975)
+records a sanitizer-confirmed script-finalization use-after-free with the
+same source-level sequence. Its explanation is that releasing the current
+script can also release a base script already selected as the next list
+element. [PR117991](https://github.com/godotengine/godot/pull/117991) merged
+on 2026-06-18 as `0dd6299f7146362d36b130ac1dc42406cfb3ede6` and adds five
+lines to clear `base_cache` and `base` within `GDScript::clear()`. Those lines
+are absent from the authenticated pinned 4.7 source. This is strong
+corroboration of a specific hypothesis; the original CyberSand dump does
+not establish the same allocation/free sequence, and no engine-fix
+counterfactual has run.
+
+Static reconciliation compares original `aa74448bad7ec77e5f152d9179a417ce76430009`,
+accepted complete-execution source `15b3a4012b9d5998e808fb371792dd7a71398507`
+and reviewed recovery candidate `02454f3aa6a6130d375727d1aa28113772f658e4`.
+All three retain identical native source and addon trees, the complete LCB
+helper-fixture directory, project/main scene, Prepared owner, Rapier bridge,
+coupling and snapshot files. Main's exit/candidate-retirement bodies,
+`SimulationWorker.stop_worker()` with its thread join, and Rapier shutdown
+are also identical. The failing fixture changes only by adding the shared
+watchdog preload and replacing two 20-second waits with source-policy waits.
+Its five inherited helper scripts and gameplay/assertion/retirement sequence
+remain unchanged. The examined production/fixture/helper scopes contain no
+explicit dynamic script-source construction, reload or script replacement
+matching the recorded scan. This is a bounded static comparison, not proof
+that the newer script graph fixes or reproduces the old crash.
+
+The smallest proposed isolation is a **separate** diagnostic pair on the
+unchanged original project and pinned engine: an empty loader control and
+a loader that opens the original fixture GDScript plus Main PackedScene as
+resources, never instantiates gameplay, then exits normally under the same
+strict debugger. A same-instruction failure would narrow the problem to
+resource/base-reference teardown before gameplay; a clean result would not
+clear an intermittent original failure. Extensions remain loaded in both
+cases. A later causal counterfactual would require separately identified
+custom pinned-engine builds with and without only the upstream fix, and
+reproduction in the custom baseline before interpreting a patched result.
+Neither proposal is executed by this evidence checkpoint. The original
+official-engine campaign and its failed disposition remain unchanged.
+
+This evidence-only checkpoint passes documentation and repository identity
+checks, retained M11 integrity, and whitespace review. Frozen retrieval
+remains 32/32 canonical top-five hits, 19 top-one hits and MRR 0.7536; answer
+sufficiency remains separate. The forensic derivation preserves all 145
+original campaign files and crosschecks all three raw contexts against
+their dump registers. These checks neither constitute a new Windows run
+nor resolve the original failing process.
