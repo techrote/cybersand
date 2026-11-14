@@ -3,6 +3,7 @@ extends SceneTree
 # Real native PAINT edits -> GPU old/new textures -> production Main/overlay.
 # Physical stepping stays disabled only for deterministic observation.
 const Setup = preload("res://scripts/workbench_setup.gd")
+const Clearance = preload("res://scripts/workbench_presentation_coherence.gd")
 const WATCHDOG_MS: int = 90000
 const CELL: Vector2i = Vector2i(240,368)
 var host: Control
@@ -76,54 +77,78 @@ func _run() -> void:
 				require(host.cadence_lod_enabled,"real material crossfade enabled")
 				host.render_snapshot_hz=1
 				var pixel_id: int = CELL.y*host.image.get_width()+CELL.x
+				var original_frame: Dictionary = host.workbench_display_frame().duplicate(true)
 				if await _native_edit(6):
 					if require(await until(func() -> bool:
-							return host.image.get_pixel(CELL.x,CELL.y).r8==6 \
-								and host._valid_workbench_mask_frame(host.workbench_display_frame())),
+							return host.image.get_pixel(CELL.x,CELL.y).r8==6),
 							"real Fire pixel uploaded after native PAINT edit"):
 						if await _native_edit(0):
 							if require(await until(func() -> bool:
 									return host.image.get_pixel(CELL.x,CELL.y).r8==0 \
 										and host._presentation_previous_occupied.has(pixel_id) \
-										and not host._presentation_previous_unknown \
-										and host._valid_workbench_mask_frame(host.workbench_display_frame())),
+										and not host._presentation_previous_unknown),
 									"native erase creates tracked old-only Fire pixel"):
 								var old: Image = host.previous_texture.get_image()
 								require(old!=null and not old.is_empty()
 									and old.get_pixel(CELL.x,CELL.y).r8==6,
 									"actual previous GPU texture still contains Fire")
 								var frame: Dictionary = host.workbench_display_frame().duplicate(true)
-								var bound: Transform2D = frame.instances[1].pose
+								var bound: Transform2D = original_frame.instances[1].pose
 								require(bound.origin.distance_to(Vector2(240,360))<0.1,
-									"bound native Kestrel unchanged by material edits")
+									"original native Kestrel pose retained across paused PAINT edits"
 								var bytes: PackedByteArray = host.image.get_data()
 								var tick: int = host.physical_actor_session.tick
 								var bridge = host.physical_actor_session.bridge
 								host.set_physics_process(false)
 								host.set_process(false)
 								host.paused=false # worker remains physically paused
-								bridge.reset_body(0,Vector2(CELL),0.0)
+								var proposed_pose := Transform2D(0.0,Vector2(CELL))
+								bridge.reset_body(0,proposed_pose.origin,proposed_pose.get_rotation())
+								# An edit while physically paused may invalidate the old pose
+								# receipt. Never synthesize a matching receipt to force admission.
+								var valid_after_edit: bool = host._valid_workbench_mask_frame(frame)
+								var pixel_clearance: Dictionary = Clearance.assess(bound,proposed_pose,
+									bridge._rects[0],host.image,host._presentation_previous_occupied,
+									host._presentation_previous_unknown,true)
+								require(not pixel_clearance.safe and pixel_clearance.reason=="material_in_swept_mask",
+									"actual previous GPU Fire cell blocks the geometrically swept native mask"
 								host.snapshot_blend_start_usec=Time.get_ticks_usec()
 								host._present_physical_actor_overlay(frame)
 								var blocked: Dictionary=host.workbench_presentation_last.duplicate(true)
-								require(int(blocked.get("blocked_material",0))>0
-									and int(blocked.get("safe_live",0))==0
-									and _shown().distance_to(bound.origin)<0.001,
-									"real old GPU Fire vetoes live overlay during crossfade")
+								if valid_after_edit:
+									require(int(blocked.get("blocked_material",0))>0
+										and int(blocked.get("safe_live",0))==0
+										and _shown().distance_to(bound.origin)<0.001,
+										"bound actor refuses old GPU Fire during active crossfade"
+								else:
+									require(str(blocked.get("status"))=="invalid_frame"
+										and host.physical_actor_overlay._parts.is_empty(),
+										"paused PAINT revision change hides actor instead of using stale Rapier pose"
 								host.snapshot_blend_start_usec=Time.get_ticks_usec()-2000000
+								var after_blend: Dictionary = Clearance.assess(bound,proposed_pose,
+									bridge._rects[0],host.image,host._presentation_previous_occupied,
+									host._presentation_previous_unknown,false)
+								require(after_blend.safe,
+									"after crossfade expiry old-only Fire no longer blocks empty swept World"
 								host._present_physical_actor_overlay(frame)
 								var released: Dictionary=host.workbench_presentation_last.duplicate(true)
-								require(int(released.get("safe_live",0))>0
-									and _shown().distance_to(Vector2(CELL))<0.001,
-									"elapsed blend releases previously blocked live pose")
+								if valid_after_edit:
+									require(int(released.get("safe_live",0))>0
+										and _shown().distance_to(Vector2(CELL))<0.001,
+										"elapsed blend admits live actor when display receipt is current"
+								else:
+									require(str(released.get("status"))=="invalid_frame"
+										and host.physical_actor_overlay._parts.is_empty(),
+										"expired blend does not override still-stale native display receipt"
 								require(host.image.get_data()==bytes
 									and host.physical_actor_session.tick==tick,
-									"render safety never mutated World or advanced Rapier tick")
+									"render safety never mutated World or advanced Rapier tick"
 								print("PR593_NATIVE_EDIT_CROSSFADE_CASE ",JSON.stringify({
 									"old_gpu_material":old.get_pixel(CELL.x,CELL.y).r8,
 									"new_cpu_material":host.image.get_pixel(CELL.x,CELL.y).r8,
-									"revision":host.last_uploaded_revision,"blocked":blocked,
-									"released":released,"receipts":receipts}))
+									"revision":host.last_uploaded_revision,"frame_current":valid_after_edit,
+									"pixel_clearance":pixel_clearance,"expired_clearance":after_blend,
+									"blocked":blocked,"released":released,"receipts":receipts}))
 	host.queue_free()
 	await process_frame
 	await process_frame
