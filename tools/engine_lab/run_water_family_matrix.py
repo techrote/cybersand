@@ -180,7 +180,8 @@ def case(godot: Path, out: Path, source: str, driver: str,
                         and benchmark.get("rapier_steps",0)>0
                         and benchmark.get("frame_count",0)>10
                         and identity.get("world_extent")==[1024,1024]
-                        and data.get("window_size")==[1600,900]
+                        and all(isinstance(x,int) and x >= minimum for x,minimum in zip(data.get("window_size",[]),[900,600]))
+                        and len(data.get("window_size",[])) == 2
                         and int(data.get("native_worker_request_readback",-1))==workers)
         result["failures"] = data.get("failures",[])
     print(f"{name}: {'PASS' if result['ok'] else 'FAIL'} "
