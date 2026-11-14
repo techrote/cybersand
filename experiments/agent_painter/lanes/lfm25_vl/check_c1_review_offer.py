@@ -53,15 +53,13 @@ def verify(*, offer_path: Path, proposal_path: Path, original_zip: Path) -> dict
        selection["independent_structural_groups"] == 1, "review-only group")
     fail = offer["fail_closed"]
     for key in ("original_teacher_hand_authored_not_model_generated",
-                "final_target_or_image_opened", "new_native_executions_for_this_offer",
-                "new_common_train_groups", "optimizer_updates",
-                "useful_model_vN_freezes", "no_auto_merge_no_provider_promotion"):
-        desired = key not in ("final_target_or_image_opened", "new_native_executions_for_this_offer",
-                              "new_common_train_groups", "optimizer_updates",
-                              "useful_model_vN_freezes")
-        ok(fail[key] is desired if isinstance(desired, bool) and desired else fail[key] == 0
-           if key not in ("final_target_or_image_opened",) else fail[key] is False,
-           "fail-closed field " + key)
+                "no_auto_merge_no_provider_promotion"):
+        ok(fail[key] is True, "required true field " + key)
+    ok(fail["final_target_or_image_opened"] is False, "FINAL must remain sealed")
+    for key in ("new_native_executions_for_this_offer", "new_common_train_groups",
+                "optimizer_updates", "useful_model_vN_freezes"):
+        ok(type(fail[key]) is int and fail[key] == 0,
+           "review packet cannot claim new model/native results: " + key)
     for key in ("candidate_c2_not_in_this_offer", "candidate_c3_quarantined",
                 "requires_reviewer_global_yes_and_shepherd_lease_before_native_common_admission",
                 "must_keep_original_failed_run_and_retrospective_audit_separate"):
@@ -72,8 +70,7 @@ def verify(*, offer_path: Path, proposal_path: Path, original_zip: Path) -> dict
        and originals["original_failed_job_reclassified"] is False, "retain failed original")
     ok(originals["original_failure_key"] == "inputs_unchanged" and
        originals["expected_verifier_key"] == "input_unchanged", "custody spelling")
-    ok(originals["native_pilot_source_sha"] == SOURCE_SHA
-       if False else originals["native_pilot_source_sha"] ==
+    ok(originals["native_pilot_source_sha"] ==
        "633920373a3d406a2ede61ce4137c324f76be23b", "native original pilot")
     ok(originals["original_corpus_manifest_sha256"] == CORPUS_SHA256, "original corpus")
     ok(originals["original_proposal_file_sha256"] == digest(proposals_bytes) ==
