@@ -1,0 +1,22 @@
+{
+  "schema": "driv3r-m3-qualification-request-v1",
+  "issue": "https://github.com/techrote/cybersand/issues/570",
+  "owner_gate": "M3 one real Workbench observe-act-brush-up-recover",
+  "approved_m1_source_sha": "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6",
+  "approved_m1_schema_sha256": "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d",
+  "m2_preflight_source_sha": "9f09a1b11634a03e56b748887d93b7fb8e96601d",
+  "pilot_fixture": "wall-v1",
+  "legal_action": "MOVE_DOWN_ONE",
+  "max_real_native_paint_actions": 1,
+  "max_logical_recoveries": 1,
+  "max_native_sessions_including_replay": 2,
+  "expected_changed_cells": 1,
+  "allow_model": false,
+  "allow_formal_AB": false,
+  "allow_native_undo": false,
+  "allow_gpu": false,
+  "allow_training": false,
+  "workflow_mode": "one_explicit_source_matched_hosted_run",
+  "retain_original_failed_attempts": true,
+  "no_merge_or_ready": true
+}
