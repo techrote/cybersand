@@ -1,0 +1,83 @@
+name: Agent painter SMOL v2 authentic terminal EOS (nontraining)
+on:
+  push:
+    branches: [codex/agent-painter-foundation-568]
+    paths:
+      - 'experiments/agent_painter/training/common.py'
+      - 'experiments/agent_painter/training/train.py'
+      - 'experiments/agent_painter/training/test_smol_eos_policy.py'
+      - 'experiments/agent_painter/training/smol_eos_v2_qualify.py'
+      - '.github/workflows/agent-painter-smol-eos-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-smol-eos-v2-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  pinned-real-tokenizer:
+    name: Original TRAIN (12 seed rows) + authentic tokenizer, no optimizer
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Exact source, bounded model-free tests, provider policy
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          mkdir -p evidence/smol-v2
+          printf '%s\n' "$GITHUB_SHA" > evidence/smol-v2/source-head.txt
+          python3 -m unittest discover -s experiments/agent_painter/training -p test_smol_eos_policy.py -v 2>&1 | tee evidence/smol-v2/adversarial-tests.log
+          python3 tools/ci/check_ci_provider_policy.py > evidence/smol-v2/provider.json
+          python3 tools/ci/check_ci_scheduling_policy.py --output evidence/smol-v2/schedule.json
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/native
+      - name: Install only tokenizer and framing dependencies on this hosted VM
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/smol-v2"
+          "$RUNNER_TEMP/smol-v2/bin/python" -m pip install \
+            'transformers==5.22.2' 'tokenizers==0.23.3' \
+            'huggingface-hub==2.4.0' 'jinja2==3.1.6'
+          "$RUNNER_TEMP/smol-v2/bin/python" -m pip check
+          "$RUNNER_TEMP/smol-v2/bin/python" -m pip freeze --all > evidence/smol-v2/pip-freeze.txt
+      - name: Download pinned public tokenizer/config files, not model weights
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=20s 300s "$RUNNER_TEMP/smol-v2/bin/python" - <<'PY'
+          from huggingface_hub import hf_hub_download
+          import sys
+          sys.path.insert(0, 'experiments/agent_painter/training')
+          from common import profile
+          p = profile('smol', require_supported=True)
+          for name in ('tokenizer.json', 'tokenizer_config.json', 'config.json'):
+              hf_hub_download(repo_id=p['model_id'], revision=p['revision'],
+                              filename=name, local_dir='/tmp/smol-v2-tokenizer',
+                              token=False)
+          PY
+      - name: Verify unaltered TRAIN-only native admission, real template and loss masks
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=20s 300s "$RUNNER_TEMP/smol-v2/bin/python" \
+            experiments/agent_painter/training/smol_eos_v2_qualify.py \
+              --native evidence/native/corpus \
+              --tokenizer /tmp/smol-v2-tokenizer \
+              --output evidence/smol-v2/receipt.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: agent-painter-smol-eos-v2-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/smol-v2/
+          if-no-files-found: warn
+          retention-days: 90
