@@ -1,0 +1,67 @@
+name: SPROCKET strict Pipework proposal screen (no training or native admission)
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/proposal_pipework.py
+      - experiments/agent_painter/lanes/sprocket/test_proposal_pipework.py
+      - .github/workflows/agent-painter-sprocket-proposal.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-sprocket-proposal-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  screen:
+    name: Frozen TRAIN/DEVELOPMENT collision + strict compiler source screen
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Check exact source and model-free adversarial controls
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          mkdir -p evidence/sprocket-proposals
+          python3 experiments/agent_painter/lanes/sprocket/test_proposal_pipework.py 2>&1 | tee evidence/sprocket-proposals/tests.log
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output evidence/sprocket-proposals/scheduling-policy.json
+      - name: Download original native-positive public corpus; never open FINAL
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/original-native
+      - name: Compile two seeded views per proposal, refuse original held-out signature collisions
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/sprocket/proposal_pipework.py \
+            --corpus evidence/original-native/corpus \
+            --output evidence/sprocket-proposals/compiled-screen.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("evidence/sprocket-proposals/compiled-screen.json").read_text())
+          assert r["reviewable_structures"] == 6 and r["host_seed_views_compiled"] == 12
+          assert r["status"] == "compiler-only-not-native-admitted"
+          assert r["final_targets_opened"] is False
+          assert all(v["native_admitted"] is False and v["train_eligible"] is False
+                     for v in r["candidates"])
+          print("PASS six candidate graph structures, 12 strict compiled host views")
+          print("Native positives: 0; approved TRAIN: 0; FINAL targets opened: false")
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-proposal-screen-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/sprocket-proposals/
+          if-no-files-found: warn
+          retention-days: 90
