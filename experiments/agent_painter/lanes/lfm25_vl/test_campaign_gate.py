@@ -21,10 +21,14 @@ def fixture(steps=48):
         "numerics": {"profile": "portable-cpu-fp32-v1"},
         "device": "cpu", "dtype": "float32", "threads": 1,
         "final_targets_opened": False,
+        "sample_order": [f"TRAIN-{i}" for i in range(1, 13)],
     }
     progress = [
-        {"global_step": step, "sample_cursor": step, "sample_id": f"TRAIN-{step}",
-         "loss": 1 / step, "gradient_norm": 0.5, "loss_tokens": 200}
+        {"global_step": step, "sample_cursor": step,
+         "sample_id": f"TRAIN-{1 + (step - 1) % 12}",
+         "loss": 1 / step, "gradient_norm": 0.5, "loss_tokens": 200,
+         "sequence_tokens": 245, "prompt_bytes": 90,
+         "completion_bytes": 130, "seconds": 0.25}
         for step in range(1, steps + 1)
     ]
     summary = {
@@ -36,6 +40,10 @@ def fixture(steps=48):
         "adapter_before_sha256": "a" * 64, "adapter_after_sha256": "b" * 64,
         "frozen_base_sha256": "c" * 64, "config": config,
         "sample_ids_this_job": [event["sample_id"] for event in progress],
+        "loss_tokens_this_job": sum(e["loss_tokens"] for e in progress),
+        "sequence_tokens_this_job": sum(e["sequence_tokens"] for e in progress),
+        "bytes_this_job": sum(e["prompt_bytes"] + e["completion_bytes"] for e in progress),
+        "first_loss": progress[0]["loss"], "last_loss": progress[-1]["loss"],
         "runner": {"github_run_id": "43529993326"},
     }
     preflight = {"config": config, "resume": None, "train_rows": 12,
@@ -105,6 +113,50 @@ class GateTests(unittest.TestCase):
                 items[0]["sample_ids_this_job"][0] = "other"
             elif kind == "wrong_run":
                 items[0]["runner"]["github_run_id"] = "other"
+            with self.subTest(kind=kind), self.assertRaises(ValueError):
+                self.valid(items)
+
+    def test_original_train_cycle_refusals(self):
+        for kind in ("duplicate", "wrong_cycle", "missing", "short"):
+            items = deepcopy(fixture())
+            config = items[0]["config"]
+            if kind == "duplicate":
+                config["sample_order"][2] = config["sample_order"][1]
+            elif kind == "wrong_cycle":
+                # History/summary collusion cannot change the pinned sampler.
+                items[3][15]["sample_id"] = "TRAIN-4"
+                items[0]["sample_ids_this_job"][15] = "TRAIN-4"
+            elif kind == "missing":
+                del config["sample_order"]
+            elif kind == "short":
+                config["sample_order"].pop()
+            with self.subTest(kind=kind), self.assertRaises(ValueError):
+                self.valid(items)
+
+    def test_optimizer_aggregate_and_payload_refusals(self):
+        for kind in ("loss_total", "sequence_total", "byte_total", "first_loss",
+                     "last_loss", "short_sequence", "missing_bytes",
+                     "nan_elapsed", "zero_completion"):
+            items = deepcopy(fixture())
+            summary, _, _, progress = items
+            if kind == "loss_total":
+                summary["loss_tokens_this_job"] -= 1
+            elif kind == "sequence_total":
+                summary["sequence_tokens_this_job"] += 1
+            elif kind == "byte_total":
+                summary["bytes_this_job"] += 1
+            elif kind == "first_loss":
+                summary["first_loss"] += 1
+            elif kind == "last_loss":
+                summary["last_loss"] += 1
+            elif kind == "short_sequence":
+                progress[0]["sequence_tokens"] = 199
+            elif kind == "missing_bytes":
+                del progress[0]["prompt_bytes"]
+            elif kind == "nan_elapsed":
+                progress[0]["seconds"] = float("nan")
+            elif kind == "zero_completion":
+                progress[0]["completion_bytes"] = 0
             with self.subTest(kind=kind), self.assertRaises(ValueError):
                 self.valid(items)
 
