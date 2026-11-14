@@ -1,0 +1,216 @@
+name: CyberSand PF gas — bounded eight-barrel stage CPU profile
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pf-gas-stage-cpu-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  BASELINE_SHA: 24a8bbe8ccf0d17196ebbab580b924930a964584
+  CANDIDATE_SHA: b7f151f85676ffc6b2ea87f3e5c6165b890727e0
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+  GODOT_WINDOWS_SHA512: 41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  GIT_LFS_SKIP_SMUDGE: '1'
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+
+jobs:
+  build-diagnostic-runtimes:
+    name: Same compiler, same temporary CPU probes, two original native sources
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out original #493/#505 diagnostic tools; preserve immutable source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify source scope and historic benchmark not repeated
+        run: |
+          set -euo pipefail
+          git diff --check
+          python tools/ci/check_ci_provider_policy.py
+          python tools/ci/pf_gas_acceptance.py check
+          python -m unittest discover -s tools/ci -p test_pf_gas_acceptance.py -v
+          git fetch --no-tags origin "$CANDIDATE_SHA"
+          mkdir -p build/pf-stage-cpu/source
+          git worktree add --detach "$RUNNER_TEMP/pf-cpu-base" "$BASELINE_SHA"
+          git worktree add --detach "$RUNNER_TEMP/pf-cpu-opt" "$CANDIDATE_SHA"
+          python tools/ci/pf_gas_cpu_instrument.py \
+            --baseline "$RUNNER_TEMP/pf-cpu-base" \
+            --candidate "$RUNNER_TEMP/pf-cpu-opt" \
+            --out build/pf-stage-cpu/source
+      - name: Install pinned SCons, godot-cpp and LLVM-MinGW
+        timeout-minutes: 18
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__=="4.10.1"'
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 1100 \
+            -o "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          test -x "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++"
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then
+            ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          fi
+      - name: Build one pinned godot-cpp input using accepted C2048 toolchain
+        timeout-minutes: 26
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+        run: |
+          set -euo pipefail
+          export GODOT_CPP_ROOT="$RUNNER_TEMP/godot-cpp"
+          export SCONS_PYTHON="$RUNNER_TEMP/scons/bin/python"
+          export LLVM_MINGW_ROOT="$RUNNER_TEMP/llvm-mingw"
+          "$RUNNER_TEMP/pf-cpu-base/tools/build_pinned_godot_cpp.sh" windows
+      - name: Compile source-matched TWO diagnostic Windows GDExtensions, with same flags
+        timeout-minutes: 35
+        run: |
+          set -euo pipefail
+          export GODOT_CPP_ROOT="$RUNNER_TEMP/godot-cpp"
+          export SCONS_PYTHON="$RUNNER_TEMP/scons/bin/python"
+          export SCONS_JOBS=2
+          export LLVM_MINGW_ROOT="$RUNNER_TEMP/llvm-mingw"
+          export WINDOWS_CXX="$LLVM_MINGW_ROOT/bin/x86_64-w64-mingw32-g++"
+          for role in baseline candidate; do
+            src="$RUNNER_TEMP/pf-cpu-base"
+            test "$role" != "candidate" || src="$RUNNER_TEMP/pf-cpu-opt"
+            mkdir -p "build/pf-stage-cpu/$role"
+            export CYBERSAND_NATIVE_OUTPUT="$GITHUB_WORKSPACE/build/pf-stage-cpu/$role/cybersand_native.windows.x86_64.dll"
+            "$src/tools/build_native_extension_windows.sh"
+            file "$CYBERSAND_NATIVE_OUTPUT" | grep -q 'PE32+ executable (DLL).*x86-64'
+            test "$(stat -c %s "$CYBERSAND_NATIVE_OUTPUT")" -gt 1000000
+          done
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,subprocess
+          base=pathlib.Path("build/pf-stage-cpu")
+          source=json.loads((base/"source/probe-patch-identities.json").read_text())
+          def git(*args):
+              return subprocess.check_output(["git",*args],text=True).strip()
+          for role,root in (("baseline",os.environ["RUNNER_TEMP"]+"/pf-cpu-base"),
+                            ("candidate",os.environ["RUNNER_TEMP"]+"/pf-cpu-opt")):
+              directory=base/role
+              dll=directory/"cybersand_native.windows.x86_64.dll"
+              ident=source[role]
+              sha=hashlib.sha256(dll.read_bytes()).hexdigest()
+              revision=git("-C",root,"rev-parse","HEAD")
+              tree=git("-C",root,"rev-parse","HEAD^{tree}")
+              manifest={
+                "source_commit":revision,"source_tree_sha":tree,
+                "native_sha256":sha,
+                "compiler":"LLVM-MinGW 20260826 UCRT; SHA256="+os.environ["LLVM_MINGW_SHA256"],
+                "build_flags":"-std=c++20 -O3 -DNDEBUG -DWINDOWS_ENABLED -shared -pthread; SCons=4.10.1",
+                "build_profile":"Godot 4.7 template_debug; godot-cpp="+os.environ["GODOT_CPP_COMMIT"],
+                "build_job_url":f"https://github.com/techrote/cybersand/actions/runs/{os.environ['GITHUB_RUN_ID']}",
+                "profile_instrumented":True,
+                "probe_kind":"gas window GetProcessTimes whole process CPU, GetThreadTimes owner-only; diagnostic source diff attached",
+                "probe_patch_source_sha256":ident["patch_source_sha256"],
+                "probe_files":ident["paths"],
+              }
+              (directory/"source-build.json").write_text(json.dumps(manifest,indent=2,sort_keys=True)+"\n")
+              print(f"PF_DIAGNOSTIC_SOURCE_BUILT {role} {revision} DLL_SHA256={sha}")
+          PY
+      - name: Retain exact patch, compiler provenance and both diagnostic DLLs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf-gas-cpu-instrumented-runtimes-${{ github.run_id }}
+          path: |
+            build/pf-stage-cpu/
+          if-no-files-found: warn
+          retention-days: 90
+
+  real-eight-barrel-profile:
+    name: Real Windows Godot 59-material eight-barrel gas CPU attribution
+    needs: [build-diagnostic-runtimes]
+    runs-on: windows-2022
+    timeout-minutes: 160
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Preserve exact LF line endings
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - name: Check out stable acceptance harness
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore exactly those TWO diagnostic DLLs built in this one workflow
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pf-gas-cpu-instrumented-runtimes-${{ github.run_id }}
+          path: build/pf-stage-cpu
+      - name: Stage original accepted-main Godot/Rapier host and test-only worker observer
+        timeout-minutes: 20
+        run: |
+          set -euo pipefail
+          git worktree add --detach "$RUNNER_TEMP/pf-cpu-app" "$BASELINE_SHA"
+          git -C "$RUNNER_TEMP/pf-cpu-app" lfs install --local
+          git -C "$RUNNER_TEMP/pf-cpu-app" lfs pull \
+            --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          python tools/ci/pf_gas_cpu_host.py \
+            --app "$RUNNER_TEMP/pf-cpu-app" \
+            --original-fixture godot/tests/performance/water_factorial_stress.gd \
+            --out build/pf-stage-cpu/host-evidence
+          test "$(stat -c %s "$RUNNER_TEMP/pf-cpu-app/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll")" -gt 1000000
+      - name: Execute bounded single-host PF on/off, two-core, B-C-C-B with real actor/splash receipts
+        timeout-minutes: 130
+        run: |
+          set -euo pipefail
+          python tools/ci/pf_gas_cpu_run.py \
+            --app "$RUNNER_TEMP/pf-cpu-app" --binaries build/pf-stage-cpu \
+            --out build/pf-stage-cpu/experiment \
+            --godot-url "$GODOT_WINDOWS_URL" \
+            --godot-sha512 "$GODOT_WINDOWS_SHA512" \
+            --godot-version "$GODOT_VERSION"
+      - name: Preserve every raw CPU, native, actor, spray, build and host receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf-gas-eight-barrel-cpu-profile-${{ github.run_id }}
+          path: |
+            build/pf-stage-cpu/source/probe-patch-identities.json
+            build/pf-stage-cpu/host-evidence/
+            build/pf-stage-cpu/experiment/identities/*.json
+            build/pf-stage-cpu/experiment/toolchain/
+            build/pf-stage-cpu/experiment/ABBA/
+          if-no-files-found: warn
+          retention-days: 90

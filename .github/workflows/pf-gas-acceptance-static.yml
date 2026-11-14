@@ -1,0 +1,49 @@
+name: CyberSand PF gas acceptance — rapid subset integrity (no benchmark)
+
+on:
+  push:
+    branches: [perf/pf-gas-acceptance-20261107]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pf-gas-acceptance-static
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    name: Verify exact inherited factorial and source-bound acceptance tools
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+          fetch-depth: 32
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify generator and source-only scope
+        run: |
+          set -euo pipefail
+          git diff --check
+          python tools/ci/check_ci_provider_policy.py
+          python tools/ci/pf_gas_acceptance.py check
+      - name: Verify fail-closed rapid selection, ordering and provenance
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tools/ci -p test_pf_gas_acceptance.py -v
+      - name: Verify original #493 generator, fixture and full factorial workflow unchanged
+        run: |
+          set -euo pipefail
+          BASE=b62eb26a867c08e9933d507a4699bb02be7c10d1
+          git merge-base --is-ancestor "$BASE" HEAD
+          for path in tools/ci/stress_water_factorial.py \
+                      godot/tests/performance/water_factorial_stress.gd \
+                      .github/workflows/stress-water-factorial-windows.yml; do
+            git show "$BASE:$path" | cmp - "$path"
+          done
+          echo "BASELINE_HARNESS_IDENTICAL: all three historical #493 files"
