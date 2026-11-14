@@ -1,0 +1,182 @@
+name: GEN006 dynamic full-World native continuation (experimental)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'native/include/cybersand/gen006_dynamic_full_world_stage.hpp'
+      - 'native/include/cybersand/gen006_dynamic_bundle_admission.hpp'
+      - 'native/tests/gen006_dynamic_full_world_continuation.cpp'
+      - 'native/tests/gen006_dynamic_static_residency_bridge.cpp'
+      - 'docs/audits/2026-11-07-gen006-dynamic-full-world-stage.md'
+      - 'tools/experiments/gen006_dynamic_full_world_qualification.py'
+      - '.github/workflows/gen006-dynamic-full-world-continuation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gen006-dynamic-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  ubuntu-native:
+    name: Ubuntu 24.04 native signed-seam continuation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Checkout exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Checkout pinned #512 native source for READ-ONLY interop
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: af5ab47e210bac53d70b51e923588a4ad630aea9
+          path: source512
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Compile and execute original native World
+        shell: bash
+        timeout-minutes: 35
+        run: |
+          set -euo pipefail
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/experiments/gen006_dynamic_full_world_qualification.py
+          test "$(git -C source512 rev-parse HEAD)" = "af5ab47e210bac53d70b51e923588a4ad630aea9"
+          test "$(git -C source512 hash-object native/src/world.cpp)" = "ac2ef2e65f2baf4ef0799f2be93de872bc7e9dfd"
+          test "$(git -C source512 hash-object native/include/cybersand/world.hpp)" = "8afc3959b41d2281d9c16dc7320475a960f44de6"
+          test "$(git -C source512 hash-object native/src/world_chunk_checkpoint.inc)" = "a2c13748c02ffe29e208cb8d5a07d4b2b49fb5ea"
+          git -C source512 rev-parse 'HEAD^{tree}' > build/gen006-dynamic/bridge-source512-tree.txt
+          git hash-object native/tests/gen006_dynamic_static_residency_bridge.cpp > build/gen006-dynamic/bridge-test-blob.txt
+          g++-13 -std=c++20 -O0 -g0 -pthread -I source512/native/include \
+            source512/native/src/world.cpp source512/native/src/material_rules.cpp \
+            source512/native/src/scheduler_geometry.cpp source512/native/src/settled_world_discovery.cpp \
+            source512/native/src/world_generation.cpp source512/native/src/generation_fields.cpp \
+            source512/native/src/generation_typed_fields.cpp source512/native/src/generation_spatial.cpp \
+            source512/native/src/generation_grammar.cpp source512/native/src/generation_planes.cpp \
+            native/tests/gen006_dynamic_static_residency_bridge.cpp \
+            -o build/gen006-dynamic/bridge > build/gen006-dynamic/bridge-compile.log 2>&1 || { cat build/gen006-dynamic/bridge-compile.log; exit 1; }
+          sha256sum build/gen006-dynamic/bridge > build/gen006-dynamic/bridge-binary.sha256
+          for workers in 1 4; do
+            build/gen006-dynamic/bridge "build/gen006-dynamic/static-$workers.g6c" "$workers" | tee "build/gen006-dynamic/bridge-$workers.log"
+            build/gen006-dynamic/bridge "build/gen006-dynamic/static-$workers.g6c" "$workers" --reopen | tee "build/gen006-dynamic/bridge-cold-$workers.log"
+            build/gen006-dynamic/bridge "build/gen006-dynamic/static-$workers.g6c" "$workers" --resume-partial | tee "build/gen006-dynamic/bridge-partial-$workers.log"
+            grep -q "GEN006_BRIDGE_SHARED_WORLD_STATIC_WITH_LIVE_DYNAMIC_PASS configured_workers=$workers" "build/gen006-dynamic/bridge-$workers.log"
+            grep -q "GEN006_BRIDGE_COLD_STATIC_READBACK_PASS configured_workers=$workers" "build/gen006-dynamic/bridge-cold-$workers.log"
+            grep -q "GEN006_BRIDGE_COLD_PARTIAL_DYNAMIC_REJOIN_PASS configured_workers=$workers" "build/gen006-dynamic/bridge-partial-$workers.log"
+            grep -q "absent_dynamic_ticks=8 absent_observed_workers_max=1" "build/gen006-dynamic/bridge-$workers.log"
+          done
+      - name: Preserve compiler, source and actual native results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-dynamic-ubuntu-${{ github.run_id }}
+          path: build/gen006-dynamic/
+          retention-days: 45
+          if-no-files-found: warn
+
+  windows-native:
+    name: Windows Server 2022 native signed-seam continuation
+    runs-on: windows-2022
+    timeout-minutes: 40
+    steps:
+      - name: Preserve LF source bytes
+        shell: cmd
+        run: |
+          git config --global core.autocrlf false
+          if errorlevel 1 exit /b 1
+          git config --global core.eol lf
+          if errorlevel 1 exit /b 1
+      - name: Checkout exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Checkout pinned #512 native source for READ-ONLY interop
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: af5ab47e210bac53d70b51e923588a4ad630aea9
+          path: source512
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Compile actual native World using LLVM Clang under MSVC
+        shell: cmd
+        timeout-minutes: 35
+        run: |
+          for /f "tokens=*" %%i in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath') do set "GEN006_VSROOT=%%i"
+          if not defined GEN006_VSROOT exit /b 1
+          call "%GEN006_VSROOT%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          set "GEN006_CXX=%ProgramFiles%\LLVM\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" set "GEN006_CXX=%GEN006_VSROOT%\VC\Tools\Llvm\x64\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" exit /b 1
+          python tools\ci\check_ci_provider_policy.py
+          if errorlevel 1 exit /b 1
+          python tools\experiments\gen006_dynamic_full_world_qualification.py
+          if errorlevel 1 exit /b 1
+          for /f %%i in ('git -C source512 rev-parse HEAD') do set "BRIDGE_SOURCE512_HEAD=%%i"
+          if not "%BRIDGE_SOURCE512_HEAD%"=="af5ab47e210bac53d70b51e923588a4ad630aea9" exit /b 1
+          for /f %%i in ('git -C source512 hash-object native/src/world.cpp') do set "BRIDGE_WORLD_CPP=%%i"
+          if not "%BRIDGE_WORLD_CPP%"=="ac2ef2e65f2baf4ef0799f2be93de872bc7e9dfd" exit /b 1
+          for /f %%i in ('git -C source512 hash-object native/include/cybersand/world.hpp') do set "BRIDGE_WORLD_HPP=%%i"
+          if not "%BRIDGE_WORLD_HPP%"=="8afc3959b41d2281d9c16dc7320475a960f44de6" exit /b 1
+          for /f %%i in ('git -C source512 hash-object native/src/world_chunk_checkpoint.inc') do set "BRIDGE_CHECKPOINT=%%i"
+          if not "%BRIDGE_CHECKPOINT%"=="a2c13748c02ffe29e208cb8d5a07d4b2b49fb5ea" exit /b 1
+          git -C source512 rev-parse HEAD > build\gen006-dynamic\bridge-source512-head.txt
+          git hash-object native/tests/gen006_dynamic_static_residency_bridge.cpp > build\gen006-dynamic\bridge-test-blob.txt
+          "%GEN006_CXX%" -std=c++20 -O0 -I source512/native/include source512/native/src/world.cpp source512/native/src/material_rules.cpp source512/native/src/scheduler_geometry.cpp source512/native/src/settled_world_discovery.cpp source512/native/src/world_generation.cpp source512/native/src/generation_fields.cpp source512/native/src/generation_typed_fields.cpp source512/native/src/generation_spatial.cpp source512/native/src/generation_grammar.cpp source512/native/src/generation_planes.cpp native/tests/gen006_dynamic_static_residency_bridge.cpp -o build\gen006-dynamic\bridge.exe > build\gen006-dynamic\bridge-compile.log 2>&1
+          if errorlevel 1 (type build\gen006-dynamic\bridge-compile.log & exit /b 1)
+          build\gen006-dynamic\bridge.exe build\gen006-dynamic\static-1.g6c 1 > build\gen006-dynamic\bridge-1.log 2>&1
+          if errorlevel 1 (type build\gen006-dynamic\bridge-1.log & exit /b 1)
+          build\gen006-dynamic\bridge.exe build\gen006-dynamic\static-1.g6c 1 --reopen > build\gen006-dynamic\bridge-cold-1.log 2>&1
+          if errorlevel 1 (type build\gen006-dynamic\bridge-cold-1.log & exit /b 1)
+          build\gen006-dynamic\bridge.exe build\gen006-dynamic\static-1.g6c 1 --resume-partial > build\gen006-dynamic\bridge-partial-1.log 2>&1
+          if errorlevel 1 (type build\gen006-dynamic\bridge-partial-1.log & exit /b 1)
+          build\gen006-dynamic\bridge.exe build\gen006-dynamic\static-4.g6c 4 > build\gen006-dynamic\bridge-4.log 2>&1
+          if errorlevel 1 (type build\gen006-dynamic\bridge-4.log & exit /b 1)
+          build\gen006-dynamic\bridge.exe build\gen006-dynamic\static-4.g6c 4 --reopen > build\gen006-dynamic\bridge-cold-4.log 2>&1
+          if errorlevel 1 (type build\gen006-dynamic\bridge-cold-4.log & exit /b 1)
+          build\gen006-dynamic\bridge.exe build\gen006-dynamic\static-4.g6c 4 --resume-partial > build\gen006-dynamic\bridge-partial-4.log 2>&1
+          if errorlevel 1 (type build\gen006-dynamic\bridge-partial-4.log & exit /b 1)
+          type build\gen006-dynamic\bridge-1.log
+          type build\gen006-dynamic\bridge-cold-1.log
+          type build\gen006-dynamic\bridge-partial-1.log
+          type build\gen006-dynamic\bridge-4.log
+          type build\gen006-dynamic\bridge-cold-4.log
+          type build\gen006-dynamic\bridge-partial-4.log
+          findstr /C:"GEN006_BRIDGE_SHARED_WORLD_STATIC_WITH_LIVE_DYNAMIC_PASS configured_workers=1" build\gen006-dynamic\bridge-1.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_BRIDGE_SHARED_WORLD_STATIC_WITH_LIVE_DYNAMIC_PASS configured_workers=4" build\gen006-dynamic\bridge-4.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_BRIDGE_COLD_STATIC_READBACK_PASS configured_workers=1" build\gen006-dynamic\bridge-cold-1.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_BRIDGE_COLD_PARTIAL_DYNAMIC_REJOIN_PASS configured_workers=1" build\gen006-dynamic\bridge-partial-1.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_BRIDGE_COLD_STATIC_READBACK_PASS configured_workers=4" build\gen006-dynamic\bridge-cold-4.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"GEN006_BRIDGE_COLD_PARTIAL_DYNAMIC_REJOIN_PASS configured_workers=4" build\gen006-dynamic\bridge-partial-4.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"absent_dynamic_ticks=8 absent_observed_workers_max=1" build\gen006-dynamic\bridge-1.log
+          if errorlevel 1 exit /b 1
+          findstr /C:"absent_dynamic_ticks=8 absent_observed_workers_max=1" build\gen006-dynamic\bridge-4.log
+          if errorlevel 1 exit /b 1
+      - name: Preserve compiler, source and actual native results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-dynamic-windows-${{ github.run_id }}
+          path: build/gen006-dynamic/
+          retention-days: 45
+          if-no-files-found: warn
