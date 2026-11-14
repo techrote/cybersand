@@ -76,10 +76,11 @@ jobs:
             --run-id 43529993326 | tee historical-audit/fresh120.json
           python3 - <<'PY'
           import json
+          import subprocess
           from pathlib import Path
           report = {
               "schema": "cybersand.lfm25_vl.original-custody-audit-result/1",
-              "audit_source": Path(".git/HEAD").read_text().strip(),
+              "audit_source": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
               "original_training_source": "1c9cf2ef8760177e0c1d095052c27fcf200a5cb3",
               "original_run_id": 43529993326,
               "original_artifact_ids": [14088040106, 14088541525],
