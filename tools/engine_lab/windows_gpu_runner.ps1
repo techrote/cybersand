@@ -203,6 +203,7 @@ try {
  $ExitStatus=1
 } finally {
  if($Scripted) {
+   $Zip=$null
    # ZIP lives NEXT TO, not inside, the run folder. Successful and failed
    # campaigns both become one portable evidence bundle, including raw inputs.
    try {
