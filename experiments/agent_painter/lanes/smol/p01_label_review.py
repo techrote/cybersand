@@ -104,6 +104,15 @@ def review(proposal=None, program=None, snapshot=None):
                              "prompt":proposal["request"],"completion":completion},
                              proposal["system"], 2048)
         ids, labels, boundary = (encoded[key] for key in ("input_ids", "labels", "boundary"))
+        print("SMOL_PINNED_EOS_WITNESS " + json.dumps({
+            "total_tokens":len(ids), "boundary":boundary,
+            "eos_id":tokenizer.eos_token_id,
+            "eos_positions_in_supervised_suffix":[i for i,x in enumerate(ids[boundary:],start=boundary)
+                                                   if x == tokenizer.eos_token_id],
+            "tail_token_ids":ids[-12:], "tail_label_ids":labels[-12:],
+            "tail_decoded":tokenizer.decode(ids[-12:],skip_special_tokens=False),
+            "prefix_mask_exact":labels[:boundary] == [-100]*boundary,
+            "supervised_mask_exact":labels[boundary:] == ids[boundary:]}, sort_keys=True))
         check(0 < boundary < len(ids) <= 2048 and labels[:boundary] == [-100]*boundary
               and labels[boundary:] == ids[boundary:]
               and ids[-1] == labels[-1] == tokenizer.eos_token_id
