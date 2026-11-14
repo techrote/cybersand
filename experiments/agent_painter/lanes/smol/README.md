@@ -1,5 +1,52 @@
 # Smol painter: first bounded DEVELOPMENT iteration
 
+## Separate source-d8 checkpoint128 diagnosis — 14 November 2026
+
+The earlier [full-state continuation](https://github.com/techrote/cybersand/actions/runs/43522585277)
+completed optimizer updates 17–128 using the **original exact trainer source**
+`d8e2a7759c361f3e50660e301b9ad5a0208685c4`; it is **not** the
+independent fresh120 trainer/native producer. The dedicated lane-owned
+[read-only comparison](https://github.com/techrote/cybersand/actions/runs/43535795817)
+was admitted at orchestration source
+`1a349d9d115fbf789b7f28c80c2c4b7b2f65545a`. It consumed the existing
+checkpoint-000128 from run43522585277 and the original 633 native-admitted
+DEVELOPMENT manifest unchanged. The runner performed no optimizer updates,
+native Art operations or FINAL access.
+
+The result is **execution PASS, useful painting FAIL**. On **six distinct
+language prompts, twelve deterministic seed views**, untuned base had
+**0/6 true EOS, 0/6 strict JSON, 0/6 compiler-accepted prompts**.
+The 128-step adapter had **6/6 true EOS, 6/6 strict JSON,
+1/6 compiler-accepted prompts, 2/12 compiler-accepted seed views**.
+The latter are two compilations of **one** raw Pipework completion, not two
+independent paintings; native execution was not attempted. The generated
+five-cell-diameter T graph is exactly three endpoints and one branch,
+not the requested three upward branches/five endpoints. The separate fresh120
+comparison used a different trainer source and 1024 rather than 512
+generation-token budget; do not describe these as a controlled step-count A/B.
+
+Original first-pass refusals are preserved: both Greebles structures invent
+detail names outside v2; one Architecture request invents the `tower` kind and
+wrong requirements, the other invents ` chamber`; the closed-loop Pipework
+request reuses the tee and invents a `closed` requirement. The accepted manifold
+request remains a semantically incorrect TRAIN tee. No candidate freeze or
+model-native quality claim follows from this evaluation.
+
+**Source/evidence custody:** [workflow and one-shot request](../../../.github/workflows/agent-painter-smol-c128-evaluate.yml),
+[artifact #14089354253](https://github.com/techrote/cybersand/actions/runs/43535795817/artifacts/14089354253),
+artifact ZIP SHA-256 `cca74539cd94fd9284ac1d6b6841b308f33810f51bf08d68b25c9f8fa6a5597a`,
+and [environment artifact #14089129245](https://github.com/techrote/cybersand/actions/runs/43535795817/artifacts/14089129245).
+The original downloaded evaluation ZIP passed CRC and SHA verification. Exact
+trainer, frozen native corpus and new evaluation source identities are separate;
+published comparisons and both original checkpoint candidates remain unchanged.
+
+**Next research:** coordinate a new common, structurally diverse,
+positively native-admitted TRAIN corpus with the shepherd. Re-evaluate all
+four model lanes against fixed independent structural groups, and retain raw
+rejection evidence; do not expand source-d8 training by blindly replaying
+its six original TRAIN structures.
+
+
 ## Executed first candidate and publication repair
 
 The original producer source is
