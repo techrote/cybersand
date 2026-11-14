@@ -324,6 +324,8 @@ public:
     // A thrown tick quarantines this World until clear() or replacement. No
     // rollback, in-place retry, or replay of pending/partially applied events.
     [[nodiscard]] bool has_failed() const noexcept;
+    // Exclusive-owner diagnostic only, not a concurrent synchronization probe.
+    [[nodiscard]] bool is_tick_in_progress() const noexcept { return tick_in_progress_; }
     void quarantine_external_coupling() noexcept;
     [[nodiscard]] std::uint64_t completed_tick_index() const noexcept;
     [[nodiscard]] std::uint64_t tick_index() const noexcept;

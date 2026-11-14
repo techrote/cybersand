@@ -2,12 +2,15 @@
 
 #include "cyber_native_cell_world.hpp"
 #include "cyber_observation_values.hpp"
+#include "material_baseline_file.hpp"
 #include "cybersand/demo_snapshot.hpp"
 #include "cybersand/interaction_rules.hpp"
 #include "cybersand/material_rules.hpp"
 #include "cybersand/material_appearance.hpp"
+#include "cybersand/material_baseline.hpp"
 #include <bit>
 #include <algorithm>
+#include <chrono>
 #include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/classes/file_access.hpp>
 #include <godot_cpp/core/class_db.hpp>
@@ -460,6 +463,65 @@ public:
     // support 4096, so authored paint must not report a save as replayable
     // until this exact native constructor is present.
     [[nodiscard]] std::int64_t workbench_start_rectangle_capacity() const { return 32768; }
+
+    [[nodiscard]] Dictionary replace_material_baseline_file(const String& temporary, const String& target) const {
+        Dictionary out;
+        out["ok"] = false;
+        try {
+            const auto error = material_baseline_file::replace(temporary, target);
+            out["error"] = error;
+            out["ok"] = error.is_empty();
+        } catch (const std::exception& error) { out["error"] = String(error.what()); }
+        return out;
+    }
+
+    // Bounded value validation shared by staging, persistence and fresh prepared
+    // reconstruction. No World access and no per-cell GDScript crossing.
+    [[nodiscard]] Dictionary validate_material_baseline(const PackedByteArray& cells, Vector2i extent) const {
+        Dictionary out;
+        out["ok"] = false;
+        try {
+            const auto bytes = std::span<const std::uint8_t>{cells.ptr(), static_cast<std::size_t>(cells.size())};
+            cybersand::material_baseline::validate(bytes, extent.x, extent.y);
+            out["sha256"] = String(cybersand::Sha256::hex(cybersand::Sha256::of(bytes)).c_str());
+            out["byte_count"] = cells.size();
+            out["ok"] = true;
+            out["error"] = String();
+        } catch (const std::exception& error) { out["error"] = String(error.what()); }
+        return out;
+    }
+
+    // Called by the existing exclusive simulation owner. Flatten receives one
+    // owned immutable payload and receipt; capture never calls install(), clears
+    // a mask, replaces World, resets tick, or changes physical/actor state.
+    [[nodiscard]] Dictionary capture_material_baseline(const Ref<CyberNativeCellWorld>& adapter) const {
+        Dictionary out;
+        out["ok"] = false;
+        const auto started = std::chrono::steady_clock::now();
+        try {
+            if (adapter.is_null() || !adapter->world_ || !adapter->workbench_)
+                throw std::invalid_argument("Material baseline capture requires an installed native Workbench");
+            const auto extent = adapter->extent_;
+            const auto length = cybersand::material_baseline::byte_count(extent.x, extent.y);
+            PackedByteArray cells;
+            if (cells.resize(static_cast<std::int64_t>(length)) != OK) throw std::bad_alloc();
+            cybersand::material_baseline::copy(*adapter->world_, {cells.ptrw(), length}, extent.x, extent.y);
+            const auto copied = std::chrono::steady_clock::now();
+            out["schema"] = cybersand::material_baseline::kSchema;
+            out["extent"] = extent;
+            out["cells"] = cells;
+            out["sha256"] = String(cybersand::Sha256::hex(cybersand::Sha256::of({cells.ptr(), length})).c_str());
+            out["native_generation"] = static_cast<std::int64_t>(adapter->liquid_policy_session_generation_);
+            out["revision"] = static_cast<std::int64_t>(adapter->revision_);
+            out["tick"] = static_cast<std::int64_t>(adapter->world_->completed_tick_index());
+            out["copy_usec"] = std::chrono::duration_cast<std::chrono::microseconds>(copied-started).count();
+            out["capture_usec"] = std::chrono::duration_cast<std::chrono::microseconds>(
+                std::chrono::steady_clock::now()-started).count();
+            out["ok"] = true;
+            out["error"] = String();
+        } catch (const std::exception& error) { out["error"] = String(error.what()); }
+        return out;
+    }
 
     [[nodiscard]] bool build_tuned_world(const Ref<CyberNativeCellWorld>& adapter,
         const PackedInt32Array& rectangles, const PackedInt32Array& profile) {
@@ -1028,6 +1090,12 @@ protected:
                              &CyberDemoBridge::liquid_policy_with_pressure_gas);
         ClassDB::bind_method(D_METHOD("workbench_start_rectangle_capacity"),
             &CyberDemoBridge::workbench_start_rectangle_capacity);
+        ClassDB::bind_method(D_METHOD("replace_material_baseline_file", "temporary", "target"),
+            &CyberDemoBridge::replace_material_baseline_file);
+        ClassDB::bind_method(D_METHOD("validate_material_baseline", "cells", "extent"),
+            &CyberDemoBridge::validate_material_baseline);
+        ClassDB::bind_method(D_METHOD("capture_material_baseline", "world"),
+            &CyberDemoBridge::capture_material_baseline);
         ClassDB::bind_method(D_METHOD("prepare_liquid_world", "world", "rectangles", "profile", "policy",
             "water_fills", "liquid_policy", "options"), &CyberDemoBridge::prepare_liquid_world);
         ClassDB::bind_method(D_METHOD("prepare_liquid_level", "world", "payload", "profile", "policy",

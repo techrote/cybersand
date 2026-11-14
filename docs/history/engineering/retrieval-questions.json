@@ -1,0 +1,181 @@
+{
+  "version": 1,
+  "authority": "historical-non-authoritative",
+  "purpose": "Explicit historical routing and chunk-authority development checks, not held-out truth evaluation. Current owner authority is deliberately outside this corpus.",
+  "questions": [
+    {
+      "id": "H01",
+      "query": "What did original MAT-003 S2A packed carrier evidence actually show, and does it permanently require four-byte cells?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/state.md"
+      ],
+      "facts": [
+        "Eight-byte accepted carrier differs from old four-byte baseline.",
+        "S2A-only new readback; safe representation and access-method result are separate."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/state.md"
+      ]
+    },
+    {
+      "id": "H02",
+      "query": "Why was gas-cache #533 rejected despite a passing larger replay, and was its performance tested against current main?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/simulation.md"
+      ],
+      "facts": [
+        "Small churn counterexample failed physical parity.",
+        "Original headless timing baseline predates #522; no demonstrated current-main incremental gain."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/simulation.md"
+      ]
+    },
+    {
+      "id": "H03",
+      "query": "Was upward signed IN liquid motion forbidden permanently, or did IN-B1 change that?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/simulation.md"
+      ],
+      "facts": [
+        "Signed IN-B1 is an accepted opt-in policy; unsigned v1 limits remain scoped."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/simulation.md"
+      ]
+    },
+    {
+      "id": "H04",
+      "query": "What historical reset and respawn assumptions changed in Flatten #548 and active #572?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/state.md"
+      ],
+      "facts": [
+        "Revised scope preserves live World and material occupancy baseline.",
+        "Current ordinary Save/Undo intent is separate and outside the historical corpus."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/state.md"
+      ]
+    },
+    {
+      "id": "H05",
+      "query": "Which abandoned actor playground, actor catalogue and per-flyer preferences are useful Workbench donors?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/runtime.md"
+      ],
+      "facts": [
+        "#262 maps, #409 actor/usables, #402 preferences have selective donor value.",
+        "Current flyer/barrel support is only partial satisfaction."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/runtime.md"
+      ]
+    },
+    {
+      "id": "H06",
+      "query": "What does the final OFF-CPU DOMINATED finding in #456 fail to prove?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/runtime.md"
+      ],
+      "facts": [
+        "Quantized CPU occupancy without interval propagation limits the causal claim.",
+        "Historical result is not universal Rapier causality."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/runtime.md"
+      ]
+    },
+    {
+      "id": "H07",
+      "query": "Why do source ledgers distinguish implemented, integrated, verified and owner-accepted?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/governance.md"
+      ],
+      "facts": [
+        "Never-integrated repair differs from regression.",
+        "Bounded test success does not mean programme or owner acceptance."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/governance.md"
+      ]
+    },
+    {
+      "id": "H08",
+      "query": "Which capture ownership experiments had separate repair findings and what smaller fresh-directory donors survived?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/state.md"
+      ],
+      "facts": [
+        "#478 and #479 have different ownership gaps; #487/#506 reuse bounded adapters."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/state.md"
+      ]
+    },
+    {
+      "id": "H09",
+      "query": "Is the SOL cutter stack #519 active again because prepared declared destruction sounds promising?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/simulation.md"
+      ],
+      "facts": [
+        "Explicit pause remains; current owner exploration is no restart permission."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/simulation.md"
+      ]
+    },
+    {
+      "id": "H10",
+      "query": "What is missing from recovered original evidence in this archaeology capture?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md"
+      ],
+      "facts": [
+        "Missing local bundles stay missing; recovered bytes, historical assertions and current qualification differ."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md"
+      ]
+    }
+  ]
+}

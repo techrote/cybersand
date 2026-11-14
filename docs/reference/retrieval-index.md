@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -39,7 +39,12 @@ For the current combined Draft, standalone generator repairs, native stored-mate
 For shared baseline/edits/actors versus live session, Save versus Flatten,
 desktop/agent/remote convergence and the required combined regression, retrieve
 the [authoring data contract](../architecture/shared-workbench-authoring-data.md).
-It distinguishes Approved direction and Planned successors from current source.
+It distinguishes the current GEN-008 candidate from historical proposals. For
+the uint16 little-endian container, unchanged live World, authoring-generation
+fence, failure atomicity and legacy readers, use its
+[Flatten and storage section](../architecture/shared-workbench-authoring-data.md#flatten-and-storage-compatibility).
+The [qualification runbook](../operations/gen008-flatten-qualification.md) covers
+actual platform evidence and the manual Save/exit/reopen workflow.
 
 For GEN-007 preview/install, global coordinates, material receipts, authored-start
 save/reopen and capacity limits, retrieve the
@@ -48,6 +53,14 @@ For the Windows bundle launcher and manual acceptance procedure, retrieve the
 [candidate playtest guide](../operations/explore001-desktop-playtest.md).
 The dated [QA findings](../audits/2026-11-08-explore001-integration-qa.md) are
 historical evidence, separately scoped from accepted-main availability.
+
+For the optional GEN-007 Architectural Generator project (one to five coexisting
+style zones, geometry dimensions, independently configurable aperture flags,
+thirteen built-in presets, native algorithm v1/v2 and source identity), use the
+[architectural-generator contract](../systems/architectural-generator.md)
+and [owner evaluation guide](../operations/architectural-generator-playtest.md).
+PR #582 is a separate Draft/HOLD candidate; standalone qualification is not
+integrated-main or retained-runtime publication.
 
 ## Branch reconciliation and design choices
 
@@ -465,5 +478,3 @@ coalesced publication counts, use the [player-control contract](../systems/playe
 How do I place multiple independently configured flyers with a passive barrel, select granular and liquid responses, paint a large canvas and save an authored start? Use the [desktop workbench controls and format](../systems/player-control-playground.md#development-workbench-on-desktop) and its [qualification record](../audits/2026-11-04-workbench-consolidation.md). Tuning retention and lifetime corrections are in the [cleanup evidence](../audits/2026-11-04-workbench394-cleanup.md); MAT source admission is [separate](../audits/2026-11-04-workbench394-material-source-transition.md).
 
 For #394 owner acceptance, accepted-main pressure reconciliation and final gate status, use the [resulting-source qualification record](../audits/2026-11-04-workbench394-ready-validation.md). Current workbench controls remain in the player playground guide.
-
-- [Architectural Generator](../systems/architectural-generator.md): native tunnel/door/window controls, fixed geometry, embedded presets, connected zone coverage and unchanged generated-start persistence; [owner evaluation](../operations/architectural-generator-playtest.md).

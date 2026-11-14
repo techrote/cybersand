@@ -4,11 +4,17 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-14
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+For deliberate historical research, use the isolated
+[engineering archaeology index](history/engineering/README.md). It is excluded
+from default current-answer retrieval and grants no implementation authority.
+Current clarified intent is separate in the
+[14 November owner decision record](decisions/2026-11-14-owner-authoring-intent.md).
 
 Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.
 
@@ -23,9 +29,17 @@ MoltenGlass H1 from this Materials Lab continuation.
 Current Draft: [integrated PAINT + agent Workbench](operations/wb-art-paint-integrated-candidate.md), including standalone generator profiles, native stored-material receipts and one edit ordering boundary. Component contracts: [direct drawing](systems/workbench-direct-art-batches.md), [provider connection/context/scanlines](systems/workbench-art-providers.md), and [full PAINT editor](systems/paint-editor-bounded-shapes.md).
 
 Shared authoring: [approved data contract and convergence plan](architecture/shared-workbench-authoring-data.md)
-separates Current generated-start saves from Planned material-only Flatten and
-defines the common desktop/agent/remote foundation. #542 Ready qualification is
-owner-authorized; no merge or #548 implementation is authorized.
+defines the common desktop/agent/remote foundation and the GEN-008 candidate
+material-only Flatten contract: two bytes per cell, unchanged live World, explicit
+Save. The [qualification and Owner workflow](operations/gen008-flatten-qualification.md)
+keeps implementation evidence and human acceptance separate. Keep #548 Draft/HOLD.
+
+GEN-007 Architectural Generator [Draft/HOLD, owner-reviewed](systems/architectural-generator.md):
+five simultaneous style columns, thirteen built-in presets, versioned native
+Terraces/Hive/Viaduct algorithms, deterministic zone allocation and source-bound
+preview/install. See the [Windows owner walkthrough](operations/architectural-generator-playtest.md).
+Standalone Linux/Windows qualification passed; integrated-main qualification
+and retained-runtime publication remain separate. No merge is yet authorised.
 
 EXPLORE-001 review candidate: [generated-map contract](systems/explore001-generated-playable-maps.md),
 [Windows candidate/playtest](operations/explore001-desktop-playtest.md), and
@@ -616,5 +630,3 @@ For final Gate Aâ€“E PASS, the landed stack, the bounded #200 policy founda
 the [current roadmap checkpoint](reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23),
 the [pressure reference entry](reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)
 and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).
-
-- [Architectural Generator Phase A/B](systems/architectural-generator.md): opt-in apertures, fixed dimensions, composable style projects and finite zone quotas; [owner walkthrough](operations/architectural-generator-playtest.md).
