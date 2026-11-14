@@ -1,0 +1,75 @@
+name: SPROCKET G09 three-band semantic source qualification (no training)
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/g09-semantics-v1-request.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sprocket-g09-semantic-v1-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  g09-hierarchy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Lock GitHub VM, source and one-shot nontraining request
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git hash-object experiments/agent_painter/lanes/sprocket/threefamily_v3.py)" = b3ac98a8cd06158b39a2f58776fab845046f245f
+          python3 - <<'PY'
+          import json,os
+          p='experiments/agent_painter/lanes/sprocket/g09-semantics-v1-request.json'
+          request=json.load(open(p))
+          assert request == {
+            'schema':'cybersand.sprocket-g09-semantic-request/1',
+            'sequence':1,
+            'original_native_run':43587600137,
+            'original_native_producer':'63ee8b2b561068a72e0652e54b6e4193cb47d5e6',
+            'original_corpus_run':43506373969,
+            'source_only':True,'training':False,'new_native':False,
+            'new_train_admission':False,'final_targets_opened':False,
+            'draft_hold':True,
+          }, 'unexpected request or escalation'
+          assert os.environ['GITHUB_ACTIONS']=='true'
+          assert os.environ['RUNNER_ENVIRONMENT']=='github-hosted'
+          assert os.environ['GITHUB_REF']=='refs/heads/codex/agent-painter-sprocket-568'
+          assert os.environ['GITHUB_REPOSITORY']=='techrote/cybersand'
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/sprocket-g09-scheduling.json
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/source633
+      - name: Verify exact public TRAIN/DEVELOPMENT and adversarial G09 hierarchy
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s experiments/agent_painter/lanes/sprocket -p 'test_g09_semantics_v1.py' -v
+          python3 experiments/agent_painter/lanes/sprocket/g09_semantics_v1.py \
+            --corpus evidence/source633/corpus \
+            --output evidence/sprocket-g09-v1/witness.json
+          python3 - <<'PY'
+          import json
+          p=json.load(open('evidence/sprocket-g09-v1/witness.json'))
+          assert p['program_spatial_witness']['bands']==3
+          assert len(p['compiled_host_seed_views'])==2
+          assert p['new_shared_train_groups']==0 and p['optimizer_updates']==0
+          assert p['new_native_views']==0 and p['model_generated_views']==0
+          assert p['final_targets_opened'] is False
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-g09-semantic-v1-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/sprocket-g09-v1/
+          if-no-files-found: warn
+          retention-days: 90
