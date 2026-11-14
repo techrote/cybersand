@@ -4,6 +4,23 @@ extends "res://tests/run_driv3r_stage_a.gd"
 ## real shared PAINT editor Undo/Redo route. This is NOT a native cursor tool
 ## and neither relocation nor brush-up motion ever mutates native materials.
 
+
+# Godot reports the inherited parent script in parent.run()'s ready receipt.
+# A separate, immutable child marker binds *this derived harness* to the
+# exact source bytes before the inherited request loop is ever started.
+func _initialize() -> void:
+	var output: String = OS.get_environment("DRIV3R_NATIVE_DIRECTORY")
+	if output.is_empty():
+		quit(2)
+		return
+	if not write_json(output+"/m3-harness-active.json",{
+			"kind":"driv3r_m3_derived_history",
+			"script_sha256":FileAccess.get_sha256("res://tests/run_driv3r_m3_history.gd"),
+			"brush_up_logical_cursor_only":true}):
+		quit(2)
+		return
+	super._initialize()
+
 const M3_START := Vector2i(12, 24)
 const M3_MAX_LOGICAL_MOVES := 12
 var m3_cursor := M3_START
