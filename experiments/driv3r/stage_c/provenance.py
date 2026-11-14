@@ -26,7 +26,7 @@ def sha(data: bytes) -> str:
 
 
 def expected_request(root: Path = ROOT) -> dict:
-    return {"schema":"driv3r-stage-c-request-v1","sequence":1,
+    return {"schema":"driv3r-stage-c-request-v1","sequence":2,
             "stage_b_source":STAGE_B_SOURCE,
             "stage_b_release_sha256":STAGE_B_RELEASE_SHA256,
             "frozen_case_sha256":sha((root/CASE_PATH).read_bytes()),"draft_hold":True}
@@ -46,9 +46,23 @@ def source(source_sha: str, root: Path = ROOT) -> dict:
                       cwd=root).returncode:
         raise ValueError("Stage C source does not descend from frozen Stage B")
     data = inherited(source_sha,root)
-    if any(path not in data["source_inputs"] for path in REQUIRED):
-        raise ValueError("Stage C source inputs omitted from immutable custody")
+    # Stage A's immutable source scope deliberately did not know about the
+    # future Stage C workflow. Extend custody here, without altering Stage A
+    # or Stage B's previously qualified inventory/implementation.
+    inputs = dict(data["source_inputs"])
+    new_workflow = ".github/workflows/driv3r-stage-c.yml"
+    current = (root/new_workflow).read_bytes()
+    committed = subprocess.check_output(["git","show","HEAD:"+new_workflow],cwd=root)
+    if current != committed:
+        raise ValueError("Stage C workflow differs from committed source")
+    inputs[new_workflow] = sha(current.replace(b"\r\n",b"\n"))
+    if any(path not in inputs for path in REQUIRED):
+        raise ValueError("Stage C source inputs omitted from extended immutable custody")
+    extended_sha = sha(json.dumps(inputs,sort_keys=True,separators=(",",":")).encode("utf-8"))
     return {**data,"schema":"driv3r-stage-c-source-custody-v1",
+            "source_inputs":dict(sorted(inputs.items())),
+            "source_inputs_sha256":extended_sha,
+            "stage_c_workflow_sha256":inputs[new_workflow],
             "stage_b_source":STAGE_B_SOURCE,"stage_a_source":ACCEPTED_STAGE_A,
             "frozen_case_sha256":sha((root/CASE_PATH).read_bytes()),
             "frozen_request":validate_request(root)}
