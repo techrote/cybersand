@@ -49,6 +49,30 @@ across seeds. G06 and P01 show small host-seed changes without changing their
 requested high-level composition. The actual images demonstrate native material
 placement, not artistic richness. No model generated any of these six images.
 
+## Important P01 teaching-label distinction — 14 November 2026
+
+The source-locked P01 `smol_p01_nested_branch_tree` is a legitimate
+**seven-node, five-endpoint nested fan** with one lower degree-three tee and one
+upper degree-four cross. It is **not** a literal solution to the *original held-out*
+`pipework/three_branch_manifold/v1` DEVELOPMENT request. Recomputing the already
+committed `semantic_audit.graph_metrics` against P01's unchanged original
+`curriculum_proposals_v2.json` yields **5 endpoints, 1 tee, 1 cross,
+1 upward riser originating at the dominant lower horizontal trunk, 0 cycles,
+3-cell diameter**. That DEVELOPMENT request requires **5 endpoints, 3 tees,
+0 crosses, 3 distinct upward risers, 0 cycles, diameter 3**. The P01 upper
+cross has three outgoing *destinations* (left, right, above); it has only one
+vertical branch leaving the lower trunk. Treating these as three *upward
+branches* would confuse geometric intent with topological endpoint count.
+
+This does **not** invalidate P01's own, explicitly different nested-junction
+request or its original qualified native research. Nor does it mean a new
+teacher should copy the held-out three-riser motif. It is a source-level
+negative label-alignment witness to help the independent reviewer keep
+TRAIN novelty and held-out request fulfillment separate. The focused
+`test_p01_is_not_heldout_three_upward_riser_manifold` regression will
+refuse inadvertent semantic relabeling; it does not access FINAL, admit
+new teacher rows, train, render, or execute the native engine.
+
 ## Next custody and scientific gates
 
 1. **Shared shepherd/global curriculum owner:** assign immutable globally

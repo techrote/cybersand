@@ -7,6 +7,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from curriculum_witness import inspect
+from semantic_audit import graph_metrics, PIPE_REQUIREMENTS
 
 CASES = {x["family"]: x for x in json.loads(
     Path(__file__).with_name("curriculum_proposals_v2.json").read_text())["proposals"]}
@@ -45,6 +46,29 @@ class CompositionWitnessTests(unittest.TestCase):
 
     def test_pipe_rejects_diameter_style_only_change(self):
         self.invalid("pipework", lambda p: p["components"][0].update(diameter=5))
+
+    def test_p01_is_not_heldout_three_upward_riser_manifold(self):
+        """P01 is a legitimate nested fan, not a mislabeled DEVELOPMENT example.
+
+        The five endpoints and diameter agree, but an upper left/right/up fan
+        is NOT three distinct risers rising from the lower horizontal trunk.
+        Keep this explicit distinction when proposing future TRAIN labels.
+        """
+        observed = graph_metrics(CASES["pipework"]["program"])
+        heldout = PIPE_REQUIREMENTS["pipework/three_branch_manifold/v1"]
+        self.assertEqual(observed["endpoints"], 5)
+        self.assertEqual(observed["diameter"], 3)
+        self.assertEqual(observed["cycles"], 0)
+        self.assertEqual(observed["connected_components"], 1)
+        self.assertEqual(
+            (observed["tees"], observed["crosses"], observed["upward_branches"]),
+            (1, 1, 1),
+        )
+        self.assertEqual(
+            (heldout["tees"], heldout["crosses"], heldout["upward_branches"]),
+            (3, 0, 3),
+        )
+        self.assertFalse(all(observed[k] == v for k, v in heldout.items()))
 
     def test_architecture_door_alignment(self):
         self.invalid("architecture",
