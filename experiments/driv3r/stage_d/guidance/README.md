@@ -1,6 +1,6 @@
 # D-1B: soft guidance and shadow critic — independent preparatory lane
 
-**Status: OWNER-ACCEPTED M1 / M2 LANE PREPARATION / DRAFT-HOLD.** Owner research roadmap: [#570](https://github.com/techrote/cybersand/issues/570#issuecomment-6877408001). Shared five-record interchange is the **unaccepted** [D-COMMON-001 v1 candidate](https://github.com/techrote/cybersand/pull/594). This lane is stacked at original candidate source `b117bfb1a59b557d8c54da01751819b00bf95836`; candidate validation does not mean owner acceptance. Keep this code **outside** native driver/permissions and outside D-1A/D-2 until exact SHA approval.
+**Status: OWNER-ACCEPTED M1 / M2 LANE PREPARATION / DRAFT-HOLD.** Owner research roadmap: [#570](https://github.com/techrote/cybersand/issues/570#issuecomment-6877408001). Shared five-record interchange is the now **M1-accepted** [D-COMMON-001 v1 contract](https://github.com/techrote/cybersand/pull/594), pinned to `8fa90de6be209ed0b7bd125039e6ec8b332fb1a6`. This lane was originally stacked on earlier source `b117bfb1a59b557d8c54da01751819b00bf95836`; that ancestry is not the approved contract. Keep the research implementation outside native driver/permissions and other D-1A/D-2 lanes. Native integration remains owner-gated.
 
 ## M1 acceptance and M2 lane adaptation — 14 November 2026
 
