@@ -103,9 +103,10 @@ jobs:
          needs.ready_scope.outputs.required == 'true')))
     runs-on: ubuntu-24.04
     # The combined sanitizer builds can consume more than 40 minutes before
-    # the final shared-library/benchmark gate begins. Keep their existing
-    # per-command bounds and allow the full required job to finish.
-    timeout-minutes: 90
+    # the final shared-library/benchmark gate begins. The complete 165-test
+    # single-process ASan+UBSan suite has retained ~20-minute execution evidence,
+    # so preserve that lifetime/order coverage instead of truncating it at 15m.
+    timeout-minutes: 120
     env:
       CC: gcc-13
       CXX: g++-13
@@ -173,7 +174,7 @@ jobs:
       - name: Compile and run ASan plus UBSan
         run: |
           timeout 15m make build/tests_sanitized
-          timeout 15m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 ./build/tests_sanitized
+          timeout 30m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 ./build/tests_sanitized
 
       - name: Build and characterize sanitized settled-regions regression
         run: timeout 20m /usr/bin/time -v make build/test_settled_regions_sanitized

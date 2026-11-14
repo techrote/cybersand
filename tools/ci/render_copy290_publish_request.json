@@ -1,0 +1,14 @@
+{
+  "schema": "render-copy290-publish-request-v1",
+  "intent": "publish-source-matched-four-path-runtimes",
+  "request_sequence": 1,
+  "authorized_parent_sha": "f53ac63e22a4e0d635e0594be45d370e55ec2c98",
+  "owner_comment_id": 6508864864,
+  "owner_comment_sha256": "9b552f7767fdd75d02a4915f62957951e5e6a27e588577e8c5b7fc0f52552894",
+  "outputs": [
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json"
+  ]
+}
