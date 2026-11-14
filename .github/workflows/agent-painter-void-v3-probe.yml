@@ -5,6 +5,7 @@ on:
     paths:
       - 'experiments/agent_painter/lanes/void/v3_research_proposals.json'
       - 'experiments/agent_painter/lanes/void/v3_research_probe.py'
+      - 'experiments/agent_painter/lanes/void/test_v3_custody.py'
       - '.github/workflows/agent-painter-void-v3-probe.yml'
 permissions:
   contents: read
@@ -28,7 +29,8 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/void-v3-scheduling.json
-          python3 -m py_compile experiments/agent_painter/lanes/void/v3_research_probe.py
+          python3 -m py_compile experiments/agent_painter/lanes/void/v3_research_probe.py experiments/agent_painter/lanes/void/v3_native_research.py
+          python3 experiments/agent_painter/lanes/void/test_v3_custody.py
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
@@ -50,6 +52,8 @@ jobs:
           assert x["status"]=="SOURCE_ONLY_PASS"
           assert (x["seed_preflights"],x["putative_new_signatures"],x["styles_not_new_groups"])==(8,3,1)
           assert x["original_groups"]=={"TRAIN":6,"DEVELOPMENT":6}
+          assert x["original_manifest_sha256"]=="2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
+          assert x["quarantined_candidate_ids"]==["void-v3-A01"] and x["globally_admitted_signatures"]==0
           assert x["native_positive"]==x["new_train_groups"]==x["optimizer_updates"]==0
           assert not x["final_opened"]
           PY
