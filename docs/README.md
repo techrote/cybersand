@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
@@ -74,6 +74,8 @@ and decision work. Historical pre-merge records below retain their dated scope.
 Stopped PLAY recovery: [canonical ownership and controls](systems/player-control-playground.md#stopped-composed-session-recovery), [preserved failure and current-main reconciliation](audits/2026-10-31-play-stopped-session-recovery.md), and [PR #332 qualification ledger](https://github.com/techrote/cybersand/pull/332). PACE004 #334 is merged (main `070c7a22`, apparatus only) but its exact-head hosted campaign remains a separate PLAY lane.
 
 Native render copy: [canonical bridge contract](architecture/rendering-and-gameplay-bridges.md#how-are-rg8-regions-copied) and [current-main R reconciliation](audits/2026-11-01-render-copy-production-reconciliation.md).
+
+GPU material publication: [default path and opt-in RENDER-UPLOAD-001 experiment](systems/material-appearance-and-rendering.md#opt-in-material-publication-experiment), [two-texture identity and recovery](architecture/rendering-and-gameplay-bridges.md#experimental-two-texture-publication-and-recovery), and [source-qualified investigation](audits/2026-11-13-render-upload-investigation.md). [#577](https://github.com/techrote/cybersand/issues/577) is independent of camera #566; the experiment remains Draft/HOLD and full-image publication remains the default.
 
 CI scheduling and capacity: [canonical execution contract](operations/ci-execution-and-performance.md), [qualification evidence](audits/2026-11-01-ci-scheduling-qualification.md), [all-workflow audit](audits/2026-11-01-ci-workflow-audit.md), and [Linux display setup qualification](audits/2026-11-03-linux-display-mesa-utils-removal.md).
 

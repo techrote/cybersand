@@ -1,0 +1,150 @@
+name: RENDER-UPLOAD-001 source-bound publication research
+
+# Owner-authorized isolated Draft experiment; no production/default/runtime changes.
+# Workflow-only independent performance collection after retained integration
+# failures in runs 43526839423 and 43529389276. Materials integration stays
+# FAILED/HOLD; this job does not rerun it or establish production acceptance.
+# Original full qualification apparatus:
+# cb09cc5ff2d697c82019b35c2f8b1d15fc739e97 retains the full six-job matrix.
+# Its other five groups keep their original executed source and artifacts; they
+# are not relabelled as final-head passes. This follow-up runs Windows dense only.
+# Admission below refuses any source delta beyond this workflow file.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/render-upload-research.yml'
+      - 'tools/render_upload/**'
+      - 'godot/scripts/main.gd'
+      - 'godot/scripts/render_upload*'
+      - 'godot/shaders/render_upload_copy.gdshader'
+      - 'godot/tests/*render_upload*'
+      - 'godot/tests/support/render_upload_profile_host.gd'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+concurrency:
+  group: render-upload-research-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+  CYBERSAND_CI_WATCHDOG_SCALE: '1'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  windows:
+    name: Windows ANGLE / ${{ matrix.group }} / correctness and paired ABBA
+    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'research/render-upload-001') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/research/render-upload-001'))
+    runs-on: windows-2022
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - group: dense-authoring
+            cases: dense_2048_w1,full_2048_w1,coverage_2048_w1,manual_2048_w1,burst_2048_w1
+    env:
+      # Same supported Materials Lab compiler admission as accepted gdextension
+      # and mat-workbench-runtime-publication workflows; no warning suppression.
+      CYBERSAND_LAB_CXX: 'C:\mingw64\bin\g++.exe'
+      RESEARCH_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      RESEARCH_GROUP: ${{ matrix.group }}
+      RESEARCH_CASES: ${{ matrix.cases }}
+    steps:
+      - name: Check out the exact research head without unrelated LFS platforms
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.RESEARCH_SOURCE_SHA }}
+          fetch-depth: 0
+          lfs: false
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Authenticate workflow-only recovery and the supported Lab compiler
+        run: |
+          set -euo pipefail
+          python - <<'PYCODE'
+          import hashlib, json, os, pathlib, subprocess
+          original = 'cb09cc5ff2d697c82019b35c2f8b1d15fc739e97'
+          workflow = '.github/workflows/render-upload-research.yml'
+          folder = pathlib.Path('build') / ('render-upload-windows-' + os.environ['RESEARCH_GROUP']) / 'provisioning'
+          folder.mkdir(parents=True, exist_ok=True)
+          receipt = {'schema': 'render-upload-workflow-only-recovery-v1', 'original_source': original,
+                     'original_run_id': 43526839423, 'scope': 'Windows dense-authoring performance only',
+                     'inherited_evidence': 'Other five groups retain their original source/artifacts; no final-head execution claimed',
+                     'integration_status': 'FAILED/HOLD', 'integration_executed_this_run': False,
+                     'production_acceptance': 'HOLD; no production acceptance',
+                     'retained_integration_failures': [
+                         {'source': original, 'run_id': 43526839423, 'artifact_id': 14086401823,
+                          'reason': 'Materials isolated native comparison rejected unused lambda captures under Clang -Werror',
+                          'passed': 11, 'failed': 1, 'blocked': 1},
+                         {'source': '05de72312c2dbc7868c5e9bada2aecbfb679f200', 'run_id': 43529389276,
+                          'artifact_id': 14087766231,
+                          'reason': 'Materials isolated native /compile_test exceeded its hardcoded 180-second limit; dependent reopen blocked',
+                          'passed': 11, 'failed': 1, 'blocked': 1}],
+                     'current_required_gates': 'Unchanged API probe and texture/framebuffer correctness before any timing',
+                     'ok': False}
+          try:
+              head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+              receipt['executed_source'] = head
+              if head != os.environ['RESEARCH_SOURCE_SHA']:
+                  raise RuntimeError('Checkout differs from the requested exact research head')
+              subprocess.run(['git', 'merge-base', '--is-ancestor', original, head], check=True)
+              changed = subprocess.check_output(['git', 'diff', '--name-only', original, head], text=True).splitlines()
+              receipt['changed_paths'] = changed
+              if changed != [workflow]:
+                  raise RuntimeError('Workflow-only recovery cannot admit changed rendering, harness, native or other source')
+              compiler = pathlib.Path(os.environ['CYBERSAND_LAB_CXX'])
+              if not compiler.is_file():
+                  raise RuntimeError('Supported Materials Lab compiler is unavailable: ' + str(compiler))
+              version = subprocess.check_output([str(compiler), '--version'], text=True, timeout=30)
+              receipt['compiler'] = {'path': str(compiler), 'version': version.strip(),
+                                     'sha256': hashlib.sha256(compiler.read_bytes()).hexdigest(),
+                                     'size': compiler.stat().st_size,
+                                     'role': 'Available Lab comparator compiler; no integration/comparator execution in this performance follow-up; retained application DLL unchanged'}
+              receipt['ok'] = True
+          except BaseException as error:
+              receipt['failure'] = type(error).__name__ + ': ' + str(error)
+              raise
+          finally:
+              (folder / 'recovery.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+              print(json.dumps(receipt, sort_keys=True))
+          PYCODE
+      - name: Materialize retained Windows native and Rapier runtimes
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$RESEARCH_SOURCE_SHA"
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          python tools/ci/check_ci_provider_policy.py
+          python -m unittest discover -s tools/render_upload -p 'test_*.py'
+      - name: Authenticate the pinned Windows archive and actual sibling engine
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 30 --max-time 600 --output "$RUNNER_TEMP/render-upload-godot-windows.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          python - <<'PYCODE'
+          import os, pathlib, sys
+          sys.path.insert(0, 'tools/ci')
+          from run_windows_godot_regressions import prepare_godot
+          prepare_godot(pathlib.Path(os.environ['RUNNER_TEMP']) / 'render-upload-godot-windows.zip')
+          PYCODE
+      - name: Execute source-matched correctness and sequential same-host ABBA twice
+        run: |
+          set -euo pipefail
+          python tools/render_upload/run_campaign.py --godot "$RUNNER_TEMP/render-upload-godot-windows/Godot_v4.7-stable_win64_console.exe" --rendering-driver opengl3_angle --source-sha "$RESEARCH_SOURCE_SHA" --output "build/render-upload-windows-$RESEARCH_GROUP" --cache-root "$RUNNER_TEMP/render-upload-userdata" --cases "$RESEARCH_CASES" --frames 240 --warmup 30 --rounds 2
+      - name: Retain raw observations, identities and original failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: render-upload-windows-${{ matrix.group }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/render-upload-windows-${{ matrix.group }}/
+          if-no-files-found: warn
+          retention-days: 90

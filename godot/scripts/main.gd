@@ -10,6 +10,7 @@ const PlayerCourse = preload("res://scripts/player_playground_course.gd")
 const PlayableCourseLap = preload("res://scripts/playable_course_lap.gd")
 const PlayableCourseOverlay = preload("res://scripts/playable_course_overlay.gd")
 const SnapshotPublicationCounter = preload("res://scripts/snapshot_publication_counter.gd")
+const RenderUploadExperiment = preload("res://scripts/render_upload_experiment.gd")
 const FACE_TUNING := ["workbench_face_budget","workbench_face_speed","workbench_face_period","workbench_face_min_height"]
 const PlayableSessionPanel = preload("res://scripts/playable_session_panel.gd")
 const DEFAULT_PLAYABLE_OPTIONS: Dictionary = {"controls":"keyboard_gamepad", "rules":"lap", "camera":"follow"}
@@ -1580,8 +1581,21 @@ var lockstep_main_fenced_steps: int = 0
 var lockstep_main_unfenced_steps: int = 0
 
 var image: Image
-var texture: ImageTexture
-var previous_texture: ImageTexture
+var texture: Texture2D
+var previous_texture: Texture2D
+# RENDER-UPLOAD-001 research only. Empty override follows the private launch
+# switch; absent --render-upload=drawable preserves ImageTexture publication.
+var render_upload_strategy_override: String = ""
+var render_upload_status: Dictionary = {"requested": "full", "active": "full", "fallback_reason": ""}
+var render_upload_metrics: Dictionary = {}
+var _render_upload_experiment: RefCounted
+var _render_upload_context: Dictionary = {}
+var _render_upload_context_pending: bool = false
+var _render_upload_rectangles := PackedInt32Array()
+var _render_upload_last_ok: bool = true
+var _render_upload_fallback_pending: bool = false
+var _render_upload_disabled_reason: String = ""
+var _render_upload_local_serial: int = 0
 var material_appearance_lut: ImageTexture
 var material_appearance_program: ImageTexture
 var render_channels: int = 1
@@ -1925,6 +1939,9 @@ func _notification(what: int) -> void:
 
 
 func _exit_tree() -> void:
+	if _render_upload_experiment != null:
+		_render_upload_experiment.close()
+		_render_upload_experiment = null
 	if gameplay_recorder.is_active():
 		var stopped: Dictionary = gameplay_recorder.stop_recording()
 		print("REC-001 recording finalized at exit: ", JSON.stringify(stopped))
@@ -3150,6 +3167,9 @@ func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 
 
 func record_render_payload(snapshot: CyberSimulationSnapshot) -> void:
+	_render_upload_context = {"serial": snapshot.render_snapshot_serial,
+		"generation": snapshot.render_world_generation, "full": snapshot.render_full_refresh}
+	_render_upload_context_pending = true
 	var publication_usec: int = Time.get_ticks_usec()
 	if last_render_publication_usec >= 0 and publication_usec > last_render_publication_usec:
 		var instantaneous_hz: float = 1000000.0 / float(
@@ -4427,8 +4447,68 @@ func view_content_rect() -> Rect2:
 
 
 func create_render_textures() -> void:
+	if _render_upload_experiment != null:
+		_render_upload_experiment.close()
+		_render_upload_experiment = null
+	_render_upload_fallback_pending = false
+	var requested := _requested_render_upload_strategy()
+	render_upload_status = {"requested": requested, "active": "full", "fallback_reason": ""}
+	if requested == "drawable":
+		if not _render_upload_disabled_reason.is_empty():
+			render_upload_status.fallback_reason = _render_upload_disabled_reason
+		elif DisplayServer.get_name() == "headless":
+			render_upload_status.fallback_reason = "drawable experiment requires a graphical backend"
+		elif not ClassDB.class_exists(&"DrawableTexture2D"):
+			render_upload_status.fallback_reason = "pinned DrawableTexture2D API unavailable"
+		else:
+			var candidate = RenderUploadExperiment.new()
+			var serial: int = int(_render_upload_context.get("serial", 0))
+			var generation: int = int(_render_upload_context.get("generation", -1))
+			if candidate.initialize(image, serial, generation):
+				_render_upload_experiment = candidate
+				texture = candidate.current
+				previous_texture = candidate.previous
+				_render_upload_local_serial = serial
+				_render_upload_context_pending = false
+				render_upload_status.active = "drawable"
+				render_upload_status["canary"] = candidate.canary_result.duplicate(true)
+				render_upload_metrics = candidate.last_metrics.duplicate(true)
+				_report_render_upload_state()
+				return
+			render_upload_status.fallback_reason = candidate.last_error
+			candidate.close()
+	elif requested != "full":
+		render_upload_status.fallback_reason = "unknown private strategy; using full ImageTexture publication"
 	texture = ImageTexture.create_from_image(image)
 	previous_texture = ImageTexture.create_from_image(image)
+	_render_upload_context_pending = false
+	render_upload_metrics = {"mode": "full_initialize", "logical_staging_bytes": world_extent.x * world_extent.y * render_channels * 2,
+		"completion_measured": false}
+	_report_render_upload_state()
+
+
+func _report_render_upload_state() -> void:
+	# Private research admission/fallback receipt; ordinary launches stay quiet.
+	# This is emitted only at lifecycle transitions, never per successful update.
+	if render_upload_status.get("requested", "full") != "drawable":
+		return
+	var state := render_upload_status.duplicate(true)
+	state["process_id"] = OS.get_process_id()
+	state["dimensions"] = [world_extent.x, world_extent.y]
+	state["display_server"] = DisplayServer.get_name()
+	state["renderer"] = RenderingServer.get_current_rendering_method()
+	state["driver"] = RenderingServer.get_current_rendering_driver_name()
+	state["video_adapter"] = RenderingServer.get_video_adapter_name() if DisplayServer.get_name() != "headless" else "headless"
+	print("RENDER_UPLOAD_STATE ", JSON.stringify(state))
+
+
+func _requested_render_upload_strategy() -> String:
+	if not render_upload_strategy_override.is_empty():
+		return render_upload_strategy_override
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--render-upload="):
+			return argument.trim_prefix("--render-upload=")
+	return "full"
 
 
 func upload_texture(material_cells: PackedByteArray, world_revision: int) -> void:
@@ -4442,6 +4522,8 @@ func upload_texture(material_cells: PackedByteArray, world_revision: int) -> voi
 		render_image_format,
 		material_cells
 	)
+	_render_upload_rectangles = PackedInt32Array([0, 0, world_extent.x, world_extent.y, 0,
+		world_extent.x * render_channels])
 	finish_texture_upload(world_revision, start_usec)
 
 
@@ -4461,8 +4543,9 @@ func upload_texture_patches(
 		patch_channels
 	):
 		return false
+	_render_upload_rectangles = patch_rectangles
 	finish_texture_upload(world_revision, start_usec)
-	return true
+	return _render_upload_last_ok
 
 
 func apply_render_patches_to_image(
@@ -4632,10 +4715,15 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	# Ping-pong two GPU textures. The shader blends movable occupancy from the
 	# previous snapshot to the current one, masking the intentional two-cell
 	# sparse-flight leap without changing authoritative physics or collisions.
-	var old_current_texture: ImageTexture = texture
-	texture = previous_texture
-	previous_texture = old_current_texture
+	_render_upload_last_ok = true
+	if _render_upload_experiment == null:
+		var old_current_texture: Texture2D = texture
+		texture = previous_texture
+		previous_texture = old_current_texture
 	update_render_texture()
+	_render_upload_context_pending = false
+	if not _render_upload_last_ok:
+		return
 	world_view.texture = texture
 	world_shader.set_shader_parameter("current_world_texture", texture)
 	world_shader.set_shader_parameter("previous_world_texture", previous_texture)
@@ -4647,7 +4735,89 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 
 
 func update_render_texture() -> void:
-	texture.update(image)
+	if _render_upload_experiment != null:
+		var context := _next_render_upload_context()
+		if _render_upload_fallback_pending:
+			_recover_full_render_publication(context)
+			return
+		var result: Dictionary = _render_upload_experiment.publish(image, _render_upload_rectangles,
+			int(context.serial), int(context.generation), bool(context.full))
+		if not result.accepted:
+			_render_upload_last_ok = false
+			_render_upload_fallback_pending = true
+			last_render_patch_validation_error = str(result.error)
+			render_upload_status.fallback_reason = str(result.error)
+			_render_upload_disabled_reason = str(result.error)
+			render_upload_status["waiting_for_full_refresh"] = true
+			_report_render_upload_state()
+			return
+		texture = result.current
+		previous_texture = result.previous
+		render_upload_metrics = result.metrics
+		return
+	var start_usec := Time.get_ticks_usec()
+	(texture as ImageTexture).update(image)
+	render_upload_metrics = {"mode": "full_update", "logical_staging_bytes": world_extent.x * world_extent.y * render_channels,
+		"texture_update_usec": Time.get_ticks_usec() - start_usec, "completion_measured": false}
+
+
+func _next_render_upload_context() -> Dictionary:
+	if _render_upload_context_pending:
+		_render_upload_local_serial = maxi(_render_upload_local_serial, int(_render_upload_context.serial))
+		return _render_upload_context
+	# Existing synchronous/fixture calls have no worker render serial. Their
+	# complete CPU image still advances one local publication ordinal per call.
+	_render_upload_local_serial = maxi(_render_upload_local_serial,
+		int(_render_upload_experiment.accepted_serial)) + 1
+	return {"serial": _render_upload_local_serial,
+		"generation": _render_upload_experiment.accepted_generation,
+		"full": _render_upload_has_complete_rectangle()}
+
+
+func _render_upload_has_complete_rectangle() -> bool:
+	for offset: int in range(0, _render_upload_rectangles.size(), RENDER_PATCH_METADATA_STRIDE):
+		if _render_upload_rectangles[offset] == 0 and _render_upload_rectangles[offset + 1] == 0 \
+				and _render_upload_rectangles[offset + 2] == world_extent.x \
+				and _render_upload_rectangles[offset + 3] == world_extent.y:
+			return true
+	return false
+
+
+func _recover_full_render_publication(context: Dictionary) -> void:
+	# A refused candidate does not change either accepted drawable. Keep that
+	# valid display until native supplies an explicit complete refresh. Only this
+	# exceptional recovery reads GPU data; normal publications never do.
+	if int(context.serial) <= int(_render_upload_experiment.accepted_serial) \
+			or int(context.generation) < int(_render_upload_experiment.accepted_generation):
+		_render_upload_last_ok = false
+		last_render_patch_validation_error = "drawable fallback refuses stale publication identity"
+		return
+	if not bool(context.full) or not _render_upload_has_complete_rectangle():
+		_render_upload_last_ok = false
+		last_render_patch_validation_error = "drawable fallback is waiting for a complete native refresh"
+		return
+	var old_current: Image = texture.get_image()
+	if old_current == null or old_current.is_empty() or old_current.get_size() != world_extent:
+		_render_upload_last_ok = false
+		last_render_patch_validation_error = "drawable fallback could not preserve the last accepted current image"
+		return
+	old_current.convert(render_image_format)
+	var fallback_previous := ImageTexture.create_from_image(old_current)
+	var fallback_current := ImageTexture.create_from_image(image)
+	if fallback_previous == null or fallback_current == null:
+		_render_upload_last_ok = false
+		last_render_patch_validation_error = "drawable fallback ImageTexture allocation failed"
+		return
+	texture = fallback_current
+	previous_texture = fallback_previous
+	_render_upload_experiment.close()
+	_render_upload_experiment = null
+	_render_upload_fallback_pending = false
+	render_upload_status.active = "full"
+	render_upload_status["waiting_for_full_refresh"] = false
+	render_upload_metrics = {"mode": "full_recovery", "logical_staging_bytes": world_extent.x * world_extent.y * render_channels * 2,
+		"exceptional_readback": true, "completion_measured": false}
+	_report_render_upload_state()
 
 
 func update_shader_parameters() -> void:

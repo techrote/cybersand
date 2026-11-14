@@ -6,7 +6,7 @@ status: Current
 scope: Native publication outcomes, Godot render consumption and current gameplay commands; resource lifetime and wire layouts are linked
 keywords: [RenderBridge, GameplayBridge, RG8, immutable snapshot, full texture upload, backpressure, emission queue]
 related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../systems/material-appearance-and-rendering.md]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-13
 ---
 
 # Rendering and gameplay bridges
@@ -74,7 +74,8 @@ No. **Current:** [main `apply_render_patches_to_image`](../../godot/scripts/main
 validates dimensions, channel count, offsets and exact byte sizes for the full
 packet before constructing/blitting patches. It updates a persistent CPU Image.
 `upload_texture_patches` then calls `ImageTexture.update` on the **full** backing
-image. A 1024×1024 RG8 upload is 2,097,152 bytes regardless of a tiny edit.
+image in the default path. A 1024×1024 RG8 submission supplies 2,097,152 logical
+source bytes regardless of a tiny edit; this is not a measured hardware transfer.
 
 Desktop acknowledges a render serial only after successful consumption.
 Malformed/empty/stale or unacceptable full-refresh data is rejected and requests
@@ -109,9 +110,54 @@ without changing cell state. `K` controls presentation smoothing; `H` controls
 publication cadence. Neither is a strict simulation-accuracy switch.
 [Appearance](../systems/material-appearance-and-rendering.md) owns shader details.
 
-**Planned:** true GPU subregion submission, palette-change records, measured
-compression/coalescing and tuned production snapshot defaults. Lower native
-copy volume does not establish any of those features.
+**Planned:** production partial GPU publication, palette-change records, measured
+compression/coalescing and tuned production snapshot defaults. The independent
+default-off experiment below does not promote them. Lower native copy volume
+does not establish physical GPU transfer savings.
+
+## Experimental two-texture publication and recovery
+
+**Current on the isolated RENDER-UPLOAD-001 research branch, Draft/HOLD:**
+the private `--render-upload=drawable` mode keeps the same native producer,
+worker retention, immutable snapshot ownership and Main ACK boundary.
+[Main](../../godot/scripts/main.gd) forwards the accepted render serial,
+World generation and full-refresh marker to the
+[experimental publisher](../../godot/scripts/render_upload_experiment.gd).
+The [appearance contract](../systems/material-appearance-and-rendering.md#opt-in-material-publication-experiment)
+owns the API, staging, memory and measurement distinction; the
+[dated audit](../audits/2026-11-13-render-upload-investigation.md) owns execution
+and the architecture recommendation for [#577](https://github.com/techrote/cybersand/issues/577).
+
+Each of two drawable texture slots has a bounded dirty-tile journal. An accepted
+CPU patch marks both journals; before a slot becomes current, all its pending
+rectangles are copied from the final persistent CPU Image. Only the updated
+slot's journal is cleared. Its peer remains the preceding accepted snapshot,
+including material conditions and neighbor samples. A reused slot can be two or
+more publications old, so applying only the latest dirty patch is explicitly
+insufficient. Serial gaps are allowed because the existing worker retains
+unacknowledged changes; repeated/decreasing serials and decreasing World
+generations are refused. A generation change requires an explicit complete
+full refresh, not just a reused material revision number.
+
+The helper validates image format, geometry, identity and staging capacity and
+prepares every source texture before modifying a target. Source textures remain
+referenced until `RenderingServer.frame_post_draw`. The experiment bounds the
+journal to 4,096 tiles and pending staging to 128 MiB / 64 batches; it does not
+read or mutate a native World. Per-blit completion is not returned by Godot's
+experimental API, so a successful enqueue is not a measured GPU-completion
+receipt. The startup byte canary and rendered platform tests provide separate
+evidence, not a new native-authority contract.
+
+An application-side refusal leaves both accepted drawable textures and their
+identities unchanged. Main withholds the render ACK and requests the existing
+full-refresh path. It keeps the last valid display until a complete fresh
+publication arrives; exceptional fallback reads the last accepted current
+texture once to preserve it as the previous `ImageTexture`, constructs a new
+current `ImageTexture` from the complete CPU image, and disables the experiment
+for that Main instance. No per-publication full readback occurs on the ordinary
+experimental path. Source-generation/serial checks still apply during recovery.
+World replacement still resets vapour only after accepted publication, and
+same-World full resynchronization retains the existing presentation-history rule.
 
 ## Which gameplay command path exists today?
 

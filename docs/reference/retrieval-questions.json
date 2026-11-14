@@ -285,12 +285,13 @@
         "systems/material-appearance-and-rendering.md"
       ],
       "facts": [
-        "Current RG8 CPU patches are sparse, but ImageTexture.update uploads the whole 1024-square two-byte texture (2,097,152 bytes).",
-        "True GPU subregion upload is not implemented; patch work and GPU upload cost must be measured separately."
+        "The current default accepts sparse RG8 CPU patches but ImageTexture.update submits the whole backing image: 2,097,152 logical bytes at 1024 square, not independently measured physical GPU traffic.",
+        "RENDER-UPLOAD-001 adds a private default-off DrawableTexture2D staging/blit experiment on an isolated Draft research branch; production partial publication and hardware performance acceptance remain separate, and CPU patch/submission cost is not completed GPU transfer time."
       ],
       "sources": [
         "../godot/scripts/main.gd::upload_texture_patches",
-        "../godot/scripts/web_demo_controller.gd"
+        "../godot/scripts/web_demo_controller.gd",
+        "../godot/scripts/render_upload_experiment.gd"
       ]
     },
     {

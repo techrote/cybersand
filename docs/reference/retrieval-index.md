@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -237,6 +237,8 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Historical powder measurements, barrel sinking and reversible soliding | [Baseline tooling](../operations/physics-characterisation.md), [issue #9 results](../audits/2026-09-09-physics-characterisation.md), [future soliding plan](../operations/physics-characterisation-plan.md) |
 | Pinned Rapier acquisition and verification | [Rapier runbook](../operations/rapier-2d-migration-runbook.md) |
 | Native snapshots, dirty retention, GPU uploads | [Rendering/gameplay bridges](../architecture/rendering-and-gameplay-bridges.md) |
+| Can sparse material publications avoid the full texture submission, and does this depend on the camera? | [Opt-in RENDER-UPLOAD-001 experiment and cost limits](../systems/material-appearance-and-rendering.md#opt-in-material-publication-experiment), then [source-qualified investigation](../audits/2026-11-13-render-upload-investigation.md); production defaults are unchanged |
+| How does partial publication preserve both previous/current textures and recover without acknowledging stale content? | [Two-texture publication and recovery](../architecture/rendering-and-gameplay-bridges.md#experimental-two-texture-publication-and-recovery) |
 | Desktop gameplay-state recording, frame format, bounded drops and evidence limits | [Gameplay recording](../operations/gameplay-recording.md), [ownership](../architecture/data-ownership-and-lifetimes.md) |
 | CYSD1 content, import/export ownership, exact resume | [Level saves and replay](level-saves-and-replay.md) |
 | Hash coverage, parity, deterministic boundaries | [Determinism](../architecture/determinism-and-boundary-transfers.md) |
