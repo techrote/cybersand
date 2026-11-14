@@ -19,7 +19,7 @@ import subprocess
 import sys
 import time
 
-from common import (ROOT, canonical, digest_json, encode_row, load_training_corpus,
+from common import (ROOT, SMOL_SUPERVISION_POLICY_V2, canonical, digest_json, encode_row, load_training_corpus,
                     profile, read_json, sha256_file, verify_checkpoint, verify_file, write_json)
 from numerics import configure_cpu
 from lane_adapters import adapter_for, adapter_identity
@@ -178,10 +178,15 @@ def train(args):
     base, tokenizer = load_base(args.model, selected)
     adapter = adapter_for(selected)
     encoder = adapter.encode_row if adapter else encode_row
-    encoded = [encoder(tokenizer, row, SYSTEM, args.max_length) for row in rows]
+    supervision_policy = SMOL_SUPERVISION_POLICY_V2 if args.profile == "smol" else "model-specific-unchanged-v1"
+    if args.profile == "smol":
+        encoded = [encode_row(tokenizer, row, SYSTEM, args.max_length,
+                              supervision_policy=supervision_policy) for row in rows]
+    else:
+        encoded = [encoder(tokenizer, row, SYSTEM, args.max_length) for row in rows]
     order = sampler(rows, args.seed)
     packages = {name: importlib.metadata.version(name) for name in (*PACKAGES, *selected.get("additional_packages", []))}
-    config = {"schema_version": 1, "profile": args.profile, "model": selected,
+    config = {"schema_version": 1, "profile": args.profile, "supervision_policy": supervision_policy, "model": selected,
               "model_files": read_json(args.model / "download_receipt.json")["files"],
               "source_sha": source_sha(), "native_source_sha": admission["source_sha"],
               "corpus_manifest_sha256": sha256_file(args.corpus / "admitted-corpus.json"),
@@ -246,7 +251,10 @@ def train(args):
                "trainable_parameters": sum(p.numel() for p in trainable),
                "all_parameters": sum(p.numel() for p in model.parameters()), "resume": resumed,
                "mask_checks": [{"id": item["id"], "prompt_tokens": item["boundary"], "loss_tokens": item["target_tokens"],
-                                "supervised_eos": tokenizer.eos_token_id in item["input_ids"][item["boundary"]:]} for item in encoded]})
+                                "supervised_eos": tokenizer.eos_token_id in item["input_ids"][item["boundary"]:],
+                                "supervised_eos_terminal": item["input_ids"][-1] == tokenizer.eos_token_id
+                                    and item["input_ids"][item["boundary"] :].count(tokenizer.eos_token_id) == 1}
+                               for item in encoded]})
     training_started = time.monotonic()
     starting_step = step
     last_saved = -1
