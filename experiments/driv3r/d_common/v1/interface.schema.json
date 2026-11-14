@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/techrote/cybersand/experiments/driv3r/d_common/v1/interface.schema.json",
   "title": "CyberSand DRIV3R D-COMMON-001 versioned interface contract candidate",
-  "description": "Five strict versioned records. World dimensions are explicit, guidance semantics are under owner review, and actual native execution requires receipts with byte-level custody. Further native/semantic invariants in README.md.",
+  "description": "Five strict versioned records; explicit dynamic World dimensions; mandatory positive scalar guidance core plus optional typed, semantic-bound channels; three distinct reversal operations; strict actual-native evidence custody; synthetic-only lightweight exploration.",
   "oneOf": [
     {
       "$ref": "#/$defs/observation"
@@ -98,7 +98,9 @@
             "jsonl",
             "json",
             "csv",
-            "bin"
+            "bin",
+            "i16le",
+            "vec2_i16le"
           ]
         }
       }
@@ -176,7 +178,8 @@
         "history_sha256",
         "rules",
         "budget",
-        "feedback_views"
+        "feedback_views",
+        "guidance_channel_handling"
       ],
       "properties": {
         "protocol": {
@@ -386,6 +389,40 @@
             }
           },
           "maxItems": 8
+        },
+        "guidance_channel_handling": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "unsupported_policy",
+            "used_channel_ids",
+            "ignored_channels"
+          ],
+          "properties": {
+            "unsupported_policy": {
+              "enum": [
+                "reject_unsupported",
+                "ignore_with_audit"
+              ]
+            },
+            "used_channel_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,95}$"
+              },
+              "uniqueItems": true,
+              "maxItems": 8
+            },
+            "ignored_channels": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ignored_guidance_channel"
+              },
+              "maxItems": 8
+            }
+          },
+          "description": "Admission accounting for every optional channel. A positive scalar baseline remains independently mandatory when a guidance record is referenced. Suppressed channels must appear in ignored_channels with their immutable values hash."
         }
       }
     },
@@ -409,7 +446,8 @@
         "hysteresis",
         "native_material_authority",
         "authoring_seed",
-        "canvas_size"
+        "canvas_size",
+        "optional_channels"
       ],
       "properties": {
         "protocol": {
@@ -467,7 +505,7 @@
         },
         "encoding": {
           "const": "u16le_higher_is_better_zero_is_neutral",
-          "description": "Provisional interoperability baseline only; other guidance meanings and signed/vector encodings remain open for owner review. See guidance-encoding-review.md."
+          "description": "Mandatory positive u16le scalar core with 0 neutral and higher values more preferred. Auxiliary channels are optional and independently typed; neither core nor auxiliary controls native authority."
         },
         "speckle": {
           "type": "object",
@@ -537,6 +575,14 @@
         },
         "canvas_size": {
           "$ref": "#/$defs/canvas_size"
+        },
+        "optional_channels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/guidance_channel"
+          },
+          "maxItems": 8,
+          "description": "A1: []; A2: separate attraction/avoidance/steering signals; A3: positive scalar plus typed geometric distance/flow features. Unsupported channels must never be silently consumed."
         }
       }
     },
@@ -552,6 +598,7 @@
         "observation_ref",
         "world_precondition",
         "candidate_set_sha256",
+        "legal_candidate_set_sha256",
         "candidate_id",
         "actor",
         "mode",
@@ -597,7 +644,8 @@
         },
         "candidate_set_sha256": {
           "type": "string",
-          "pattern": "^[a-f0-9]{64}$"
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Hash of the complete candidate presentation/decision contract (may vary by policy/annotation). Never substitute this for legal_candidate_set_sha256 in matched A1/A2/A3 comparisons."
         },
         "candidate_id": {
           "type": "string",
@@ -744,6 +792,11 @@
             }
           ],
           "description": "Observed native post-action World fence/readback; required for committed actions."
+        },
+        "legal_candidate_set_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Hash of host-offered LEGAL recovery candidate IDs and exact admissible native effects/limits, canonically sorted by candidate ID; excludes prompt text, optional guide values, guide-derived scores and presentation order. Mandatory identical across A1/A2/A3 when observed native geometry/cursor/rules match. Full host catalog remains retained in experiment-native evidence."
         }
       }
     },
@@ -1177,6 +1230,216 @@
       ],
       "minItems": 2,
       "maxItems": 2
+    },
+    "guidance_channel": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional, independently versioned and byte-custodied typed guidance signal. Cannot modify native World permissions. Unknown semantic IDs may only be used through an explicitly registered consumer or deliberately ignored with an immutable record.",
+      "required": [
+        "channel_id",
+        "signal_class",
+        "semantic_id",
+        "encoding",
+        "units",
+        "scale",
+        "zero_meaning",
+        "positive_meaning",
+        "negative_meaning",
+        "reference_id",
+        "canvas_size",
+        "frame",
+        "values",
+        "producer",
+        "native_material_authority"
+      ],
+      "properties": {
+        "channel_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,95}$",
+          "description": "Unique stable within a guidance record"
+        },
+        "signal_class": {
+          "enum": [
+            "preference",
+            "geometry_metric"
+          ],
+          "description": "Preference strength and geometry-derived facts are independent signal categories"
+        },
+        "semantic_id": {
+          "type": "string",
+          "pattern": "^(?:[a-z][a-z0-9_]*|experimental\\.[a-z][a-z0-9_.-]*)/v[1-9][0-9]{0,2}$",
+          "maxLength": 96
+        },
+        "encoding": {
+          "enum": [
+            "u16le",
+            "i16le",
+            "vec2_i16le"
+          ],
+          "description": "One or two row-major signed/unsigned 16-bit little-endian samples per cell; values.format must match"
+        },
+        "units": {
+          "enum": [
+            "normalized_0_1",
+            "normalized_signed",
+            "cells",
+            "world_unit_vector",
+            "custom"
+          ],
+          "description": "Physical meaning of decoded signed/unsigned sample after applying exact rational scale"
+        },
+        "scale": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "properties": {
+            "numerator": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4294967295
+            },
+            "denominator": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4294967295
+            }
+          },
+          "description": "Real-value scaling per stored component = encoded_int*numerator/denominator; no implicit float semantics"
+        },
+        "zero_meaning": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 160
+        },
+        "positive_meaning": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 160
+        },
+        "negative_meaning": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 160
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reference_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,95}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "canvas_size": {
+          "$ref": "#/$defs/canvas_size"
+        },
+        "frame": {
+          "$ref": "#/$defs/rect"
+        },
+        "values": {
+          "$ref": "#/$defs/blob"
+        },
+        "producer": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "producer_id",
+            "revision",
+            "source_sha256",
+            "parameters_sha256",
+            "seed"
+          ],
+          "properties": {
+            "kind": {
+              "enum": [
+                "airbrush",
+                "imported_png",
+                "procedural",
+                "derived_geometry",
+                "composite",
+                "manual"
+              ]
+            },
+            "producer_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,95}$"
+            },
+            "revision": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "source_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "parameters_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "seed": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4294967295
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "description": "Source trace for the specific signal transformation, not just the base guidance record."
+        },
+        "native_material_authority": {
+          "const": false
+        }
+      }
+    },
+    "ignored_guidance_channel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "channel_id",
+        "semantic_id",
+        "values_sha256",
+        "reason"
+      ],
+      "properties": {
+        "channel_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,95}$"
+        },
+        "semantic_id": {
+          "type": "string",
+          "pattern": "^(?:[a-z][a-z0-9_]*|experimental\\.[a-z][a-z0-9_.-]*)/v[1-9][0-9]{0,2}$",
+          "maxLength": 96
+        },
+        "values_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reason": {
+          "enum": [
+            "unsupported_semantics",
+            "explicit_information_ablation"
+          ]
+        }
+      }
     }
   }
 }

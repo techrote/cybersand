@@ -1,5 +1,5 @@
 {
-  "description": "Five deliberately synthetic, non-native conformance fixtures. Guiding layer uses a 512x512 canvas only as a test example; contract accepts larger dimensions. Hash placeholders do not certify real bytes or native execution.",
+  "description": "Synthetic A1 baseline with mandatory positive scalar u16le field, zero optional channels, explicit empty admission accounting and 512×512 test World. Other A2/A3 synthetic variants are constructed and checked by test_interface.py. Placeholder digests do NOT evidence native execution.",
   "fixtures": [
     {
       "protocol": "cybersand.driv3r.d-common/1",
@@ -45,7 +45,8 @@
       "canvas_size": [
         512,
         512
-      ]
+      ],
+      "optional_channels": []
     },
     {
       "protocol": "cybersand.driv3r.d-common/1",
@@ -121,7 +122,12 @@
         "material_cell_budget": 1024,
         "wall_seconds_remaining": 3600
       },
-      "feedback_views": []
+      "feedback_views": [],
+      "guidance_channel_handling": {
+        "unsupported_policy": "reject_unsupported",
+        "used_channel_ids": [],
+        "ignored_channels": []
+      }
     },
     {
       "protocol": "cybersand.driv3r.d-common/1",
@@ -168,7 +174,8 @@
       "execution_status": "candidate",
       "native_receipt_ref": null,
       "native_receipt_artifact": null,
-      "world_postcondition": null
+      "world_postcondition": null,
+      "legal_candidate_set_sha256": "8888888888888888888888888888888888888888888888888888888888888888"
     },
     {
       "protocol": "cybersand.driv3r.d-common/1",

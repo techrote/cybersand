@@ -22,6 +22,23 @@ PROTOCOL = "cybersand.driv3r.d-common/1"
 MAX_GUIDANCE_TILE_CELLS = 16_777_216
 MAX_LOCAL_CROP_CELLS = 4_194_304
 MAX_ARTIFACT_BYTES = 134_217_728
+MAX_OPTIONAL_GUIDANCE_BYTES = 134_217_728
+# Built-in semantics are normative wire meanings, not model instructions.
+# Unknown experimental IDs require a separately registered consumer, or explicit audited omission.
+CHANNEL_PRESETS = {
+    "soft_attraction/v1": ("preference","u16le","normalized_0_1",1,65535,
+                           "no_extra_attraction","greater_attraction",None,False),
+    "soft_avoidance/v1": ("preference","u16le","normalized_0_1",1,65535,
+                          "no_soft_avoidance","greater_soft_avoidance",None,False),
+    "signed_preference/v1": ("preference","i16le","normalized_signed",1,32767,
+                             "neutral","attraction","repulsion",False),
+    "signed_distance/v1": ("geometry_metric","i16le","cells",1,1,
+                           "on_reference_boundary","outside_reference","inside_reference",True),
+    "flow_vector_xy/v1": ("geometry_metric","vec2_i16le","world_unit_vector",1,32767,
+                           "no_direction","+x_right_+y_down","-x_left_-y_up",False),
+}
+ENCODED_CELL_BYTES = {"u16le":2,"i16le":2,"vec2_i16le":4}
+
 
 
 class ContractError(ValueError):
@@ -68,7 +85,9 @@ def _artifacts(record: dict) -> list[dict]:
     if name == "observation":
         return [record["local_material"]] + [view["artifact"] for view in record["feedback_views"]]
     if name == "guidance":
-        return [record["values"]] + ([record["display"]] if record["display"] is not None else [])
+        return ([record["values"]] +
+                ([record["display"]] if record["display"] is not None else []) +
+                [channel["values"] for channel in record["optional_channels"]])
     if name == "action":
         return ([record["native_receipt_artifact"]] if record["native_receipt_artifact"] is not None else [])
     if name == "reversal":
@@ -80,7 +99,82 @@ def _artifacts(record: dict) -> list[dict]:
     return []
 
 
-def validate_bundle(records: list[dict], *, evidence_root: Path | None = None) -> dict[str, Any]:
+
+def _validate_guidance_channel(channel: dict, canvas: tuple[int, int]) -> None:
+    _require(tuple(channel["canvas_size"]) == canvas,
+             "Optional channel canvas size differs from positive scalar baseline")
+    _require(_rect_fits(channel["frame"], canvas),
+             "Optional channel footprint extends outside its canvas")
+    _, _, w, h = channel["frame"]
+    _require(w * h <= MAX_GUIDANCE_TILE_CELLS, "Optional channel tile too large")
+    encoding = channel["encoding"]
+    blob = channel["values"]
+    _require(blob["format"] == encoding, "Channel encoding and artifact format mismatch")
+    _require(blob["bytes"] == w * h * ENCODED_CELL_BYTES[encoding],
+             "Optional channel byte count is inconsistent with encoding/extent")
+    _require(channel["native_material_authority"] is False,
+             "Guidance channel cannot grant native material authority")
+    semantic = channel["semantic_id"]
+    if semantic in CHANNEL_PRESETS:
+        (signal_class, expected_encoding, units, num, den,
+         zero, positive, negative, requires_reference) = CHANNEL_PRESETS[semantic]
+        _require((channel["signal_class"], encoding, channel["units"],
+                  channel["scale"]["numerator"], channel["scale"]["denominator"],
+                  channel["zero_meaning"], channel["positive_meaning"],
+                  channel["negative_meaning"]) ==
+                 (signal_class, expected_encoding, units, num, den,
+                  zero, positive, negative),
+                 "Built-in channel semantics changed without an interface version bump: " + semantic)
+        if requires_reference:
+            _require(channel["reference_id"] is not None,
+                     "Signed-distance channel requires a named reference boundary")
+    else:
+        _require(semantic.startswith("experimental."),
+                 "Unknown built-in semantic ID; do not silently reinterpret")
+
+
+def compare_initial_matched_actions(arms: dict[str, list[dict]]) -> dict:
+    """Pure contract-level paired audit, NOT native execution or fitness.
+
+    Compare the host-legal candidate-set digest and equivalent native material
+    state/cursor BEFORE the first different selected ID. Experimental guide
+    content, model prompts, and full candidate-presentation hashes may differ.
+    Choice divergence is only a proxy; first *consequential* material/trajectory
+    divergence requires separate native readbacks. After choices diverge, the
+    host must recompute legal sets independently for the now-different Worlds.
+    """
+    _require(len(arms) >= 2 and all(type(v) is list and v for v in arms.values()),
+             "At least two nonempty matched action traces required")
+    names = sorted(arms)
+    n = min(len(arms[name]) for name in names)
+    first = None
+    for i in range(n):
+        rows = [arms[name][i] for name in names]
+        _require(all(row["type"] == "action" and row["sequence"] >= 0 for row in rows),
+                 "Matched traces require action records")
+        def state_key(row: dict) -> tuple:
+            world = row["world_precondition"]
+            # Independent Worlds have different IDs/epochs; compare observed bytes
+            # and cursor, not process-local identity or the guide representation.
+            return (world["width_cells"],world["height_cells"],
+                    world["material_sha256"],world["world_material_sha256"],
+                    tuple(row["cursor_before"]))
+        _require(all(state_key(row) == state_key(rows[0]) for row in rows[1:]),
+                 "Native geometry/cursor diverged before first differing choice")
+        _require(all(row["legal_candidate_set_sha256"] ==
+                     rows[0]["legal_candidate_set_sha256"] for row in rows[1:]),
+                 "Unequal legal recovery candidates on the same paired native state")
+        if len({row["candidate_id"] for row in rows}) > 1:
+            first = i
+            break
+    return {"first_choice_divergence_index":first,
+            "common_prefix_actions":first if first is not None else n,
+            "paired_actions_examined":(first + 1) if first is not None else n,
+            "legal_candidate_catalog_equal_until_divergence":True,
+            "requires_native_effects_to_identify_consequential_divergence":True}
+
+def validate_bundle(records: list[dict], *, evidence_root: Path | None = None,
+                    supported_semantics: set[str] | None = None) -> dict[str, Any]:
     """Validate five record types and cross-record semantics.
 
     Synthetic records may omit source/native artifacts and have no native
@@ -92,6 +186,7 @@ def validate_bundle(records: list[dict], *, evidence_root: Path | None = None) -
     schema = json.loads(schema_bytes)
     Draft202012Validator.check_schema(schema)
     validator = Draft202012Validator(schema)
+    supported_semantics = set(CHANNEL_PRESETS) if supported_semantics is None else set(supported_semantics)
     _require(type(records) is list and bool(records), "Expected a nonempty record list")
     indexed: dict[str, dict] = {}
     episodes: dict[str, list[int]] = {}
@@ -138,6 +233,16 @@ def validate_bundle(records: list[dict], *, evidence_root: Path | None = None) -
             _require(row["native_material_authority"] is False, "Guidance must not grant material authority")
             if row["display"] is not None:
                 _require(row["display"]["format"] == "png", "Speckle display should be PNG")
+            channel_ids = set()
+            total_channel_bytes = 0
+            for channel in row["optional_channels"]:
+                _require(channel["channel_id"] not in channel_ids,
+                         "Duplicate optional channel ID")
+                channel_ids.add(channel["channel_id"])
+                _validate_guidance_channel(channel, tuple(row["canvas_size"]))
+                total_channel_bytes += channel["values"]["bytes"]
+            _require(total_channel_bytes <= MAX_OPTIONAL_GUIDANCE_BYTES,
+                     "Optional guidance channels exceed bounded byte budget")
         elif name == "observation":
             guidance = resolve(row["guidance_ref"], "guidance")
             resolve(row["last_action_ref"], "action")
@@ -149,6 +254,33 @@ def validate_bundle(records: list[dict], *, evidence_root: Path | None = None) -
             _require(_in_rect(row["cursor"], row["rules"]["focus"]), "Cursor outside host focus")
             if row["target"] is not None:
                 _require(_inside(row["target"], world), "Target outside current World")
+            handling = row["guidance_channel_handling"]
+            used = handling["used_channel_ids"]
+            ignored = handling["ignored_channels"]
+            declared = {channel["channel_id"]: channel for channel in guidance["optional_channels"]} if guidance else {}
+            used_set = set(used)
+            ignored_ids = [item["channel_id"] for item in ignored]
+            ignored_set = set(ignored_ids)
+            _require(len(ignored_ids) == len(ignored_set) and
+                     not used_set.intersection(ignored_set),
+                     "Duplicate or both-consumed-and-ignored guidance channel")
+            _require(used_set.union(ignored_set) == set(declared),
+                     "Every declared optional channel needs an explicit usage decision")
+            _require(handling["unsupported_policy"] == "ignore_with_audit" or not ignored,
+                     "Reject-unsupported policy cannot ignore channels")
+            for item in ignored:
+                target = declared[item["channel_id"]]
+                _require(item["semantic_id"] == target["semantic_id"] and
+                         item["values_sha256"] == target["values"]["sha256"],
+                         "Ignored channel lacks exact immutable semantic/data identity")
+            for channel_id in used:
+                target = declared[channel_id]
+                _require(target["semantic_id"] in supported_semantics,
+                         "Unregistered optional semantic ID claimed as consumed")
+            for item in ignored:
+                if item["reason"] == "unsupported_semantics":
+                    _require(declared[item["channel_id"]]["semantic_id"] not in supported_semantics,
+                             "Supported channel cannot be mislabelled unsupported")
             if guidance is not None:
                 _require(tuple(guidance["canvas_size"]) == size,
                          "Guidance canvas dimensions differ from observed World")
