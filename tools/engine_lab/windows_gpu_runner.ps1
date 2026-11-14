@@ -113,7 +113,7 @@ try {
  Require ($M.godot.version -eq '4.7.stable.official.5b4e0cb0f' -and (Hash $Engine) -eq $M.godot.console_sha256) 'Bundled Godot version/hash mismatch'
  $Native=Join-Path $Project 'addons\cybersand_native\bin\cybersand_native.windows.x86_64.dll'
  $script:NativeHash=Hash $Native
- $ExpectedNative=$M.native_runtime.cybersand_runtime.'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll'.sha256
+ $ExpectedNative=$M.native_runtime.cybersand_runtime.sha256
  Require ($script:NativeHash -eq $ExpectedNative) 'Native runtime hash mismatch'
  $Report.godot_sha256=Hash $Engine
  $Report.requested_driver=$RenderingDriver
