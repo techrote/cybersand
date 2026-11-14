@@ -58,6 +58,17 @@ func _run() -> void:
 	expect(r.observe(sample(1800000,48,40)) == false,
 		"cannot silently append after successful completion")
 
+	# Godot Object.get_instance_id() is a signed 64-bit handle. A valid
+	# identity may have the sign bit set; only zero is an invalid sentinel.
+	var signed_owner := Recorder.new()
+	expect(signed_owner.begin({},1000000,600000), "signed owner fixture starts")
+	var negative_identity: Dictionary = sample(1000000,0,0)
+	negative_identity.rapier_owner_id = -9223371963974547928
+	expect(signed_owner.observe(negative_identity),
+		"valid signed-negative Object instance ID is admitted")
+	signed_owner.abort("completed_unit_boundary",1100000)
+	expect(signed_owner.outcome.reason == "completed_unit_boundary", "signed owner retains normal abort cause")
+
 	var reset := Recorder.new()
 	expect(reset.begin({},1000000,800000), "reset fixture starts")
 	expect(reset.observe(sample(1000000,100,100)), "reset initial")
