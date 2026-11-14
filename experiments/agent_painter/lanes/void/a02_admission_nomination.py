@@ -94,9 +94,12 @@ def validate(doc):
             and witness["central_geometric_clearance"] == 5,
             "nomination teacher source or clearance differs")
     completion = json.dumps(program, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
-    encoded = encode_row(CyberSandVoidByteTokenizer(), {
-        "id": "A02-V5-REVIEW-ONLY", "prompt": prompt, "completion": completion,
-    }, SYSTEM, MODEL_CONTEXT)
+    try:
+        encoded = encode_row(CyberSandVoidByteTokenizer(), {
+            "id": "A02-V5-REVIEW-ONLY", "prompt": prompt, "completion": completion,
+        }, SYSTEM, MODEL_CONTEXT)
+    except UnicodeError as exc:
+        raise ValueError("invalid strict UTF-8 byte sequence in nomination") from exc
     require(encoded["input_ids"][-1] == 258 and encoded["labels"][-1] == 258
             and len(encoded["input_ids"]) <= MODEL_CONTEXT,
             "VOID complete byte sequence or true EOS differs")
