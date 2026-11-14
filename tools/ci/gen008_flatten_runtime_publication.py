@@ -12,7 +12,7 @@ import argparse
 from importlib.util import module_from_spec, spec_from_file_location
 import json
 import os
-from pathlib import Path, PureWindowsPath
+from pathlib import Path, PurePosixPath, PureWindowsPath
 import re
 import sys
 
@@ -206,7 +206,7 @@ def verify_flatten_cases(directory: Path, platform: str, native_sha: str,
                        "Original process memory evidence is missing")
         executable = entry.get("engine_executable", "")
         command = entry.get("command", [])
-        path = PureWindowsPath(executable) if platform == "windows" else Path(executable)
+        path = PureWindowsPath(executable) if platform == "windows" else PurePosixPath(executable)
         engine.require(isinstance(executable,str) and path.is_absolute() and
                        path.name == ("Godot_v4.7-stable_win64.exe" if platform == "windows" else "Godot_v4.7-stable_linux.x86_64") and
                        isinstance(command,list) and command and command[0] == executable and

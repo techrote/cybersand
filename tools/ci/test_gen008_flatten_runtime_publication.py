@@ -97,9 +97,9 @@ class PublicationIdentity(unittest.TestCase):
             console.write_bytes(b"wrapper fixture")
             with self.assertRaises(ValueError): runner.direct_engine(console,"win32")
             engine.write_bytes(b"engine fixture")
-            self.assertEqual(runner.direct_engine(console,"win32"),engine)
-            self.assertEqual(runner.direct_engine(engine,"win32"),engine)
-            self.assertEqual(runner.direct_engine(console,"linux"),console)
+            self.assertEqual(runner.direct_engine(console,"win32"),engine.resolve())
+            self.assertEqual(runner.direct_engine(engine,"win32"),engine.resolve())
+            self.assertEqual(runner.direct_engine(console,"linux"),console.resolve())
 
 
 class FlattenReceiptAdmission(unittest.TestCase):
