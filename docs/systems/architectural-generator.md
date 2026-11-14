@@ -105,7 +105,7 @@ Projects use `format: "cybersand.architectural-project"`, `version: 1` and
 `planner: "connected-hilbert-v1"`. Their complete example is
 [`three-style.project.json`](../../examples/worldgen/architectural/three-style.project.json).
 It embeds a seed, signed source origin, square extent, zone scale, three global
-aperture switches, corridor width and one to three style slots. Each slot holds
+aperture switches, corridor width and one to five style slots. Each slot holds
 selection, requested percentage and a full preset definition.
 
 Style presets use `format: "cybersand.architectural-style"`, `version: 1`, a stable
@@ -115,7 +115,7 @@ theme, geometry, material roles, optional aperture overrides and a bounded
 non-finite values and executable content. No arbitrary scripts, dynamic native
 libraries or external inheritance are loaded.
 
-The built-in examples are:
+The default built-in examples are:
 
 | Preset | Geometry | Material treatment |
 | --- | --- | --- |
@@ -128,6 +128,18 @@ into an Empty material modifier restricted to that style. Its deterioration
 fraction controls a noise threshold, **not a promised percentage of removed
 wall cells**. It can break traversal, support and windows by design. Automated
 network routes, when enabled, are carved after these modifiers as before.
+
+Additional selectable built-in styles are Civic Atrium, Transit Spine, Basalt Archive,
+Solar Conservatory, Thermal Foundry, Earthen Terraces and Orbital Observatory.
+They combine existing native module families with contrasting room dimensions,
+solid materials, glazing, shafts and bounded deterioration. All ten built-ins
+have matching declarative JSON files under `examples/worldgen/architectural/`.
+The existing three-style default and legacy native recipes are unchanged.
+
+The authoring dialog now shows **five compact horizontal style columns**, no tabs.
+The last two start disabled; enable them and use **Equal shares** to allocate 100%.
+At typical desktop widths all five fit in a row; smaller windows can scroll.
+Extended materials and aperture metadata are available on hover.
 
 [`custom-masonry-court.style.json`](../../examples/worldgen/architectural/custom-masonry-court.style.json)
 is a separate user-authored example: different bay/floor dimensions, masonry

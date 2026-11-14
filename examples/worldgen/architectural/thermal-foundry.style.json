@@ -1,0 +1,23 @@
+{
+  "format": "cybersand.architectural-style",
+  "version": 1,
+  "id": "thermal-foundry",
+  "name": "Thermal Foundry",
+  "module": "vault",
+  "module_version": 2,
+  "theme": "industrial",
+  "geometry": {
+    "room_size": 16,
+    "floor_height": 24,
+    "wall_thickness": 2,
+    "door_width": 4,
+    "shaft_width": 0
+  },
+  "materials": {
+    "wall": 104,
+    "floor": 131,
+    "window": 72
+  },
+  "apertures": {},
+  "deterioration": 0
+}

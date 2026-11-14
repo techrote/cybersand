@@ -69,8 +69,8 @@ func hostile_json() -> void:
 	unknown[7] = "not a JSON object key"
 	refused(unknown,"non-string project key")
 	unknown = Project.default_project()
-	unknown.styles.append(unknown.styles[0].duplicate(true))
-	refused(unknown,"four slots exceed the finite prototype bound")
+	for _i: int in 3: unknown.styles.append(unknown.styles[0].duplicate(true))
+	refused(unknown,"six slots exceed the five-style bound")
 	for path: Array in [["styles",0,"share"], ["styles",0,"enabled"]]:
 		for value: Variant in [null,"true",{},[]]: bad(path,value,"malformed selection or quota")
 	for value: Variant in [-1, 101, INF, NAN]: bad(["styles",0,"share"],value,"nonfinite/out-of-range quota")
@@ -107,6 +107,37 @@ func component_count(zones: Dictionary, slot: int) -> int:
 					visited[cell] = true
 					queue.append(cell)
 	return count
+
+func expanded_styles() -> void:
+	var presets: Array = Project.builtin_presets()
+	check(presets.size() >= 10, "ten or more selectable built-in styles")
+	var ids := {}
+	for preset: Dictionary in presets:
+		check(Project.validate_preset(preset).is_empty(), "built-in style passes validation: " + str(preset.id))
+		check(not ids.has(preset.id), "unique built-in style ID: " + str(preset.id))
+		ids[preset.id] = true
+	var five := Project.default_project()
+	for index: int in range(3,5):
+		five.styles.append({"enabled":true,"share":0.0,"preset":presets[index].duplicate(true)})
+	for index: int in 5: five.styles[index].share = [25.0,25.0,25.0,12.5,12.5][index]
+	for seed: int in [161803,271828,314159]:
+		five.seed = seed
+		for scale: int in [64,128,256]:
+			five.zone_scale = scale
+			var result: Dictionary = Project.compile(five)
+			if not check(result.get("ok",false), "five-style seeded plan: %d/%d" % [seed,scale]): continue
+			check(result.coverage.size() == 5 and result.recipe.modules.size() == 5, "five independent native modules and zone reports")
+			for entry: Dictionary in result.coverage:
+				check(component_count(result.zones,int(entry.slot)) == 1 and absf(float(entry.achieved_percent)-float(entry.requested_percent)) <= 2.0, "five-style connected quota")
+			if seed == 161803 and scale == 64 and ClassDB.class_exists(&"CyberWorldGenerator"):
+				var generator: Variant = ClassDB.instantiate(&"CyberWorldGenerator")
+				var configured: Dictionary = generator.configure(result.recipe)
+				check(configured.get("ok",false), "five-style native admission: " + str(configured.get("error","")))
+				if configured.get("ok",false):
+					var chunk: Dictionary = generator.generate_chunk(Vector2i.ZERO)
+					check(chunk.get("ok",false), "five-style native material raster")
+	five.styles.append({"enabled":false,"share":0.0,"preset":presets[5]})
+	refused(five,"six style slots refused")
 
 func planner_invariants() -> void:
 	for seed: int in range(64):
@@ -192,6 +223,7 @@ func native_identity_edges() -> void:
 
 func run() -> void:
 	hostile_json()
+	expanded_styles()
 	planner_invariants()
 	native_identity_edges()
 	print("ARCHITECTURAL_PROJECT_CONTRACT checks=%d failures=%d" % [checks,failures])

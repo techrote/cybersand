@@ -6,7 +6,7 @@ const FORMAT := "cybersand.architectural-project"
 const PRESET_FORMAT := "cybersand.architectural-style"
 const PLANNER := "connected-hilbert-v1"
 const MAX_BYTES := 262144
-const MAX_STYLES := 3
+const MAX_STYLES := 5
 const Generated = preload("res://scripts/workbench_generated_map.gd")
 
 static func _preset(identity: String, label: String, module: String, theme: String,
@@ -23,7 +23,14 @@ static func builtin_presets() -> Array:
 	return [
 		_preset("industrial-service","Industrial Service","vault","industrial",32,32,2,8,12,62,66,72,0.0),
 		_preset("habitation-arcology","Habitation / Arcology","arcology","industrial",64,48,3,12,16,58,70,121,0.0),
-		_preset("overgrown-ruins","Overgrown / Ruined Construction","arcology","garden",96,64,3,14,10,42,97,55,0.20)
+		_preset("overgrown-ruins","Overgrown / Ruined Construction","arcology","garden",96,64,3,14,10,42,97,55,0.20),
+        _preset("civic-atrium","Civic Atrium","arcology","ruins",80,56,2,18,0,98,111,120,0.0),
+        _preset("transit-spine","Transit Spine","arcology","industrial",128,32,3,12,20,114,66,72,0.0),
+        _preset("basalt-archive","Basalt Archive","vault","basalt",64,64,4,12,0,100,101,123,0.05),
+        _preset("solar-conservatory","Solar Conservatory","arcology","garden",48,96,2,10,0,113,129,120,0.04),
+        _preset("thermal-foundry","Thermal Foundry","vault","industrial",16,24,2,4,0,104,131,72,0.0),
+        _preset("earthen-terraces","Earthen Terraces","arcology","ruins",128,80,4,20,0,102,109,55,0.30),
+        _preset("orbital-observatory","Orbital Observatory","arcology","industrial",96,64,2,14,12,130,114,121,0.0)
 	]
 
 static func default_project() -> Dictionary:
@@ -166,7 +173,7 @@ static func compile(input: Variant) -> Dictionary:
 	if side < 2 or side > 16 or (side & (side-1)) != 0:
 		return _failure("Choose a zone scale giving a square 2×2, 4×4, 8×8 or 16×16 planning grid (native limit: 256 blocks).")
 	if not input.styles is Array or input.styles.is_empty() or input.styles.size() > MAX_STYLES:
-		return _failure("Select one to three architectural style slots.")
+		return _failure("Select one to five architectural style slots.")
 	var selected: Array[int] = []
 	var total_share := 0.0
 	for slot: int in input.styles.size():

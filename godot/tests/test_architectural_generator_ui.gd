@@ -38,7 +38,15 @@ func run() -> void:
 	for frame: int in 4: await process_frame
 	check(panel.visible, "Architecture form is reachable from the ordinary generator dialog")
 	check(dialog._profile.selected == original_profile and dialog._ready_packet.is_empty(), "opening the form leaves source selection and installed proposal untouched")
-	check(panel._style_controls.size() == 3, "three independently editable style slots")
+	check(panel._style_controls.size() == 5, "five independently editable style columns")
+	check(panel._style_controls[0].chooser.item_count >= 10, "expanded architectural preset catalogue is available")
+	var columns_visible := true
+	for index: int in range(1,5):
+		var previous: Rect2 = panel._style_controls[index - 1].card.get_global_rect()
+		var current: Rect2 = panel._style_controls[index].card.get_global_rect()
+		if current.position.x <= previous.position.x or current.position.y != previous.position.y: columns_visible = false
+	check(columns_visible, "all five style cards share a single horizontal row; no tabs")
+	check(panel._style_controls[4].card.get_global_rect().end.x <= panel.get_global_rect().end.x, "fifth style column is visible at 1280px width")
 	check(Store.recipe_hash(panel.project()) == Store.recipe_hash(Project.default_project()), "default form exactly represents the declarative project")
 	var bounds := Rect2i(Vector2i.ZERO,root.size)
 	check(bounds.encloses(Rect2i(panel.position,panel.size)), "first-open Architectural form fits the viewport")
@@ -73,7 +81,7 @@ func run() -> void:
 	write_json(preset_path, custom)
 	check(panel.import_style(preset_path,0), "user-authored declarative style is imported")
 	check(panel.project().styles[0].preset.id == custom.id and panel.project().styles[0].preset.materials.wall == 62, "custom stable identity and material choice survive import")
-	check(panel._style_controls[0].description.text.contains("Doors: preset Off") and panel._style_controls[0].description.text.contains("Windows: preset Off"), "custom aperture overrides are explicit in the owner-facing preset description")
+	check(panel._style_controls[0].description.tooltip_text.contains("Doors: preset Off") and panel._style_controls[0].description.tooltip_text.contains("Windows: preset Off"), "custom aperture overrides are explicit in the owner-facing preset description")
 	check(panel.save_project(project_path), "save stores complete custom preset")
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(preset_path))
 	check(panel.load_project(project_path), "custom project reloads after original external preset is deleted")
@@ -117,7 +125,7 @@ func run() -> void:
 	dialog._start()
 	check(dialog._phase == "idle" and dialog._status.text.contains("exact nonnegative integer"), "shared preview input refuses a fractional seed before any native proposal")
 	check(panel._style_controls[0].geometry.door_width.editable, "Arcology door width remains editable")
-	check(not panel._style_controls[1].enabled.button_pressed and not panel._style_controls[2].enabled.button_pressed, "missing slots are shown as unselected placeholders")
+	check(not panel._style_controls[1].enabled.button_pressed and not panel._style_controls[2].enabled.button_pressed and not panel._style_controls[3].enabled.button_pressed and not panel._style_controls[4].enabled.button_pressed, "missing slots are shown as unselected placeholders")
 	var pair: Dictionary = Project.default_project()
 	pair.styles.resize(2)
 	pair.styles[1].share = 55.0
@@ -178,6 +186,18 @@ func run() -> void:
 		var support_report: Dictionary = dialog._configuration.get("route_validation",{})
 		check(support_report.get("passed",false) and not support_report.get("supports_passed",true), "real final support removal remains distinct from passage clearance")
 		check(dialog._phase == "idle" and dialog.get_ok_button().disabled and dialog._status.text.contains("Required semantic support"), "schema4 missing required support is refused with its native diagnosis")
+	var five: Dictionary = Project.default_project()
+	var catalogue: Array = Project.builtin_presets()
+	for slot: int in range(3, 5):
+		five.styles.append({"enabled": true, "share": 0.0, "preset": catalogue[slot].duplicate(true)})
+	for slot: int in 5: five.styles[slot].share = [25.0,25.0,25.0,12.5,12.5][slot]
+	check(panel.set_project(five), "five active styles can be loaded in one project")
+	panel._choose_style(7, 4)
+	check(panel.project().styles[4].preset.id == "thermal-foundry" and panel._style_controls[4].enabled.button_pressed, "fifth column changes its own style independently")
+	panel._equalize_shares()
+	var equalized: Dictionary = panel.project()
+	check(equalized.styles.size() == 5 and absf(equalized.styles[4].share - 20.0) < 0.001, "equal shares button balances five active styles")
+	check(Project.compile(equalized).get("ok", false), "five-column edited project compiles")
 	for path: String in [project_path,preset_path,invalid_path]:
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
 	owner.queue_free()

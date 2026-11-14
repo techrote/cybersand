@@ -5,11 +5,11 @@ extends ConfirmationDialog
 const Project = preload("res://scripts/architectural_generator_project.gd")
 const MAX_FILE_BYTES := 1024 * 1024
 const DIMENSIONS := [
-	["room_size", "Typical room / bay size", 12, 256],
-	["floor_height", "Floor height (Arcology)", 16, 256],
-	["wall_thickness", "Wall thickness", 1, 5],
-	["door_width", "Door aperture width", 2, 64],
-	["shaft_width", "Service shaft width (Arcology; 0 = off)", 0, 64],
+	["room_size", "Room / bay", 12, 256],
+	["floor_height", "Floor", 16, 256],
+	["wall_thickness", "Wall", 1, 5],
+	["door_width", "Door", 2, 64],
+	["shaft_width", "Shaft", 0, 64],
 ]
 
 signal project_compiled(result: Dictionary)
@@ -27,7 +27,8 @@ var _tunnels := CheckButton.new()
 var _doors := CheckButton.new()
 var _windows := CheckButton.new()
 var _style_controls: Array[Dictionary] = []
-var _style_tabs := TabContainer.new()
+var _style_strip := HBoxContainer.new()
+var _summary := Label.new()
 var _status := Label.new()
 var _files := FileDialog.new()
 var _file_action := ""
@@ -65,100 +66,132 @@ func _note(parent: Container, text: String) -> Label:
 func mount() -> void:
 	if _mounted: return
 	_mounted = true
-	title = "Architectural Generator · Styles and dimensions"
-	ok_button_text = "Generate native preview"
-	cancel_button_text = "Keep previous settings"
+	title = "Architectural Generator"
+	ok_button_text = "Generate preview"
+	cancel_button_text = "Close"
 	dialog_hide_on_ok = false
 	exclusive = true
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	add_child(scroll)
 	var body := VBoxContainer.new()
 	body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	body.add_theme_constant_override("separation", 10)
+	body.add_theme_constant_override("separation", 7)
 	scroll.add_child(body)
-	_note(body, "Configure a finite architectural starting map. Preview and installation use the existing native GEN-007 generator. Installing the preview replaces the current map after your confirmation.")
+
 	var row := _row(body)
-	for entry: Array in [["Seed", _seed, 0, 9007199254740991], ["World X", _x, -1000000, 1000000], ["World Y", _y, -1000000, 1000000]]:
+	for entry: Array in [["Seed", _seed, 0, 9007199254740991],
+			["X", _x, -1000000, 1000000], ["Y", _y, -1000000, 1000000]]:
 		var control: SpinBox = entry[1]
 		control.min_value = entry[2]
 		control.max_value = entry[3]
 		control.rounded = true
 		if control == _seed:
-			# Range's rounded/step snapping loses units near the largest exact
-			# JSON integer. Preserve the exact value; the compiler rejects fractions.
 			control.step = 0
 			control.rounded = false
 			control.custom_arrow_step = 1.0
-		control.custom_minimum_size.x = 112
+		control.custom_minimum_size.x = 120 if control == _seed else 85
 		_field(row, entry[0], control)
-	row = _row(body)
-	for side: int in [512, 1024]: _extent.add_item("%d × %d" % [side, side], side)
-	for side: int in [16, 32, 64, 128, 256, 512]: _zone_scale.add_item("%d cells" % side, side)
-	_field(row, "Map size", _extent)
-	_field(row, "Zone planning block", _zone_scale)
+	for side: int in [512, 1024]: _extent.add_item("%d²" % side, side)
+	for side: int in [16, 32, 64, 128, 256, 512]: _zone_scale.add_item("%d" % side, side)
+	_field(row, "Map", _extent)
+	_field(row, "Zone", _zone_scale)
+	_zone_scale.tooltip_text = "Style-zone planning block size in cells."
 	_corridor.min_value = 2
 	_corridor.max_value = 64
 	_corridor.rounded = true
-	_corridor.custom_minimum_size.x = 96
-	_field(row, "Corridor width (global)", _corridor)
+	_corridor.custom_minimum_size.x = 66
+	_field(row, "Corridor", _corridor)
+
 	row = _row(body)
-	_tunnels.text = "Automatic tunnels"
-	_doors.text = "Automatic doors"
-	_windows.text = "Automatic windows"
-	for toggle: CheckButton in [_tunnels, _doors, _windows]: row.add_child(toggle)
-	_note(body, "Tunnels carve the shared automatic network across districts. Turning them off preserves explicit authored routes. Doors are material apertures, not interactive actors. Windows affect Arcology façades; service shafts remain independent.")
-	_note(body, "Choose up to three styles. Enabled shares must total 100%. Coverage measures assigned zone area, including empty space; it is not material occupancy. Geometry applies uniformly to every prepared module of that style.")
-	_style_tabs.custom_minimum_size.y = 300
-	_style_tabs.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	body.add_child(_style_tabs)
-	for slot: int in 3:
+	for toggle: CheckButton in [_tunnels, _doors, _windows]:
+		row.add_child(toggle)
+	_tunnels.text = "Tunnels"
+	_doors.text = "Doors"
+	_windows.text = "Windows"
+	_tunnels.tooltip_text = "Automatic shared-network cuts; explicit paths remain."
+	_doors.tooltip_text = "Automatic material openings, not interactive doors."
+	_windows.tooltip_text = "Arcology façade glazing/openings."
+	var equal := Button.new()
+	equal.text = "Equal shares"
+	equal.tooltip_text = "Split 100% evenly among enabled styles."
+	equal.pressed.connect(_equalize_shares)
+	row.add_child(equal)
+	_summary.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_summary.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	row.add_child(_summary)
+
+	_style_strip.add_theme_constant_override("separation", 6)
+	_style_strip.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	body.add_child(_style_strip)
+	for slot: int in Project.MAX_STYLES:
+		var frame := PanelContainer.new()
+		frame.custom_minimum_size.x = 184
+		frame.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		_style_strip.add_child(frame)
+		var margin := MarginContainer.new()
+		for edge: String in ["left", "right", "top", "bottom"]:
+			margin.add_theme_constant_override("margin_" + edge, 7)
+		frame.add_child(margin)
 		var card := VBoxContainer.new()
-		card.name = "Style %d" % (slot + 1)
-		card.add_theme_constant_override("separation", 8)
-		_style_tabs.add_child(card)
-		row = _row(card)
+		card.add_theme_constant_override("separation", 5)
+		margin.add_child(card)
+		var heading := _row(card)
 		var enabled := CheckBox.new()
-		enabled.text = "Include style"
-		row.add_child(enabled)
-		var chooser := OptionButton.new()
-		chooser.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		chooser.fit_to_longest_item = false
-		chooser.custom_minimum_size.x = 190
-		chooser.clip_text = true
-		_field(row, "Preset", chooser)
+		enabled.text = "#%d" % (slot + 1)
+		enabled.tooltip_text = "Include this style in the generated map."
+		heading.add_child(enabled)
 		var share := _spin(0, 100, 0, false)
 		share.step = 0
 		share.custom_arrow_step = 0.1
 		share.suffix = "%"
-		_field(row, "Target area", share)
+		share.tooltip_text = "Assigned zone area, including Empty cells."
+		share.custom_minimum_size.x = 78
+		share.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		heading.add_child(share)
+		var chooser := OptionButton.new()
+		chooser.fit_to_longest_item = false
+		chooser.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		chooser.clip_text = true
+		chooser.custom_minimum_size.x = 135
+		card.add_child(chooser)
 		var grid := GridContainer.new()
 		grid.columns = 2
-		grid.add_theme_constant_override("h_separation", 16)
+		grid.add_theme_constant_override("h_separation", 5)
+		grid.add_theme_constant_override("v_separation", 3)
 		card.add_child(grid)
 		var dimensions := {}
 		for spec: Array in DIMENSIONS:
 			var knob := _spin(spec[2], spec[3], spec[2])
-			_field(grid, spec[1] + " (cells)", knob)
+			knob.custom_minimum_size.x = 74
+			knob.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			if spec[0] in ["floor_height", "shaft_width"]:
+				knob.tooltip_text = "Arcology only. Shaft 0 disables the service shaft." if spec[0] == "shaft_width" else "Arcology only."
+			_field(grid, spec[1], knob)
 			dimensions[spec[0]] = knob
 		var description := _note(card, "")
-		_style_controls.append({"enabled": enabled, "chooser": chooser, "share": share,
-			"geometry": dimensions, "description": description})
+		description.add_theme_font_size_override("font_size", 11)
+		description.clip_text = true
+		_style_controls.append({"card": frame, "enabled": enabled, "chooser": chooser,
+			"share": share, "geometry": dimensions, "description": description})
 		chooser.item_selected.connect(_choose_style.bind(slot))
+		enabled.toggled.connect(func(_value: bool) -> void: _update_summary())
+		share.value_changed.connect(func(_value: float) -> void: _update_summary())
+
 	row = _row(body)
-	for action: Array in [["Save project…", "save"], ["Load project…", "load"], ["Import style JSON…", "style"]]:
+	for action: Array in [["Save…", "save"], ["Load…", "load"], ["Import style…", "style"]]:
 		var button := Button.new()
 		button.text = action[0]
 		button.pressed.connect(_choose_file.bind(action[1]))
 		row.add_child(button)
-	for slot: int in 3: _import_slot.add_item("Style %d" % (slot + 1), slot)
-	_field(row, "Import into", _import_slot)
-	_note(body, "Project files embed all selected style definitions. Saved generated maps embed the resolved native recipe, so reopening never needs an external preset file. Expert recipes remain available through Choose profile file in the main generator dialog.")
+	for slot: int in Project.MAX_STYLES: _import_slot.add_item("#%d" % (slot + 1), slot)
+	_field(row, "Into", _import_slot)
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	body.add_child(_status)
 	_files.access = FileDialog.ACCESS_FILESYSTEM
-	_files.add_filter("*.json", "Architectural project or style JSON")
+	_files.add_filter("*.json", "Architectural JSON")
 	_files.file_selected.connect(_file_selected)
 	add_child(_files)
 	confirmed.connect(_apply)
@@ -181,7 +214,7 @@ func open_project(value: Dictionary = {}) -> void:
 	else:
 		_sync_controls()
 	_fit_bounds()
-	popup_centered_clamped(Vector2i(860, 720), 0.92)
+	popup_centered_clamped(Vector2i(1190, 635), 0.96)
 
 func _select_id(control: OptionButton, id: int) -> void:
 	for index: int in control.item_count:
@@ -200,23 +233,26 @@ func _sync_controls() -> void:
 	_tunnels.set_pressed_no_signal(bool(_project.automatic_tunnels))
 	_doors.set_pressed_no_signal(bool(_project.automatic_doors))
 	_windows.set_pressed_no_signal(bool(_project.automatic_windows))
-	var defaults: Dictionary = Project.default_project()
+	var presets: Array = Project.builtin_presets()
 	for slot: int in _style_controls.size():
 		var controls: Dictionary = _style_controls[slot]
-		var style: Dictionary = _project.styles[slot] if slot < _project.styles.size() else {"enabled": false, "share": 0.0, "preset": defaults.styles[slot].preset}
+		var fallback: Dictionary = presets[slot]
+		var style: Dictionary = _project.styles[slot] if slot < _project.styles.size() else {
+			"enabled": false, "share": 0.0, "preset": fallback}
 		var preset: Dictionary = style.preset
 		controls.enabled.set_pressed_no_signal(bool(style.enabled))
 		controls.share.set_value_no_signal(float(style.share))
 		controls.chooser.clear()
 		var selected := -1
-		for index: int in defaults.styles.size():
-			var builtin: Dictionary = defaults.styles[index].preset
+		for index: int in presets.size():
+			var builtin: Dictionary = presets[index]
 			controls.chooser.add_item(str(builtin.name))
 			if str(builtin.id) == str(preset.id): selected = index
 		if selected == -1:
 			controls.chooser.add_item(str(preset.name) + " (custom)")
 			selected = controls.chooser.item_count - 1
 		controls.chooser.select(selected)
+		controls.chooser.tooltip_text = str(preset.name)
 		for spec: Array in DIMENSIONS:
 			var control: SpinBox = controls.geometry[spec[0]]
 			if spec[0] == "room_size":
@@ -226,11 +262,34 @@ func _sync_controls() -> void:
 				control.max_value = 4 if preset.module == "vault" else 5
 			control.set_value_no_signal(int(preset.geometry[spec[0]]))
 			control.editable = not (spec[0] in ["floor_height", "shaft_width"] and preset.module != "arcology")
-		controls.description.text = "%s · %s v%d · theme %s\nWall / floor / window materials: %s / %s / %s.\nDoors: %s · Windows: %s · Deterioration: %.1f%%" % [
-			str(preset.id), str(preset.module), int(preset.module_version), str(preset.theme),
-			str(preset.materials.wall), str(preset.materials.floor), str(preset.materials.window),
-			_aperture_label(preset,"automatic_doors"), _aperture_label(preset,"automatic_windows"), 100.0*float(preset.deterioration)]
+		controls.description.text = "%s · %s" % [str(preset.module).capitalize(), str(preset.theme).replace("_", " ")]
+		controls.description.tooltip_text = "Style: %s\nWall / floor / window materials: %s / %s / %s\nDoors: %s · Windows: %s · Deterioration: %.1f%%" % [
+			str(preset.id), str(preset.materials.wall), str(preset.materials.floor),
+			str(preset.materials.window), _aperture_label(preset,"automatic_doors"),
+			_aperture_label(preset,"automatic_windows"), 100.0 * float(preset.deterioration)]
 	_syncing = false
+	_update_summary()
+
+func _update_summary() -> void:
+	if _syncing: return
+	var total := 0.0
+	var selected := 0
+	for controls: Dictionary in _style_controls:
+		if controls.enabled.button_pressed:
+			selected += 1
+			total += controls.share.value
+	_summary.text = "%d styles · %.1f%% / 100%%" % [selected, total]
+	_summary.tooltip_text = "Enabled style shares must total 100%. Inactive styles are ignored."
+
+func _equalize_shares() -> void:
+	var enabled: Array[Dictionary] = []
+	for controls: Dictionary in _style_controls:
+		if controls.enabled.button_pressed: enabled.append(controls)
+	if enabled.is_empty(): return
+	var each := 100.0 / enabled.size()
+	for index: int in enabled.size():
+		enabled[index].share.value = each if index < enabled.size() - 1 else 100.0 - each * index
+	_update_summary()
 
 func _aperture_label(preset: Dictionary, key: String) -> String:
 	if not preset.apertures.has(key): return "inherit global switch"
@@ -259,20 +318,20 @@ func project() -> Dictionary:
 	return value
 
 func _ensure_slot(value: Dictionary, slot: int) -> void:
-	var defaults: Dictionary = Project.default_project()
+	var presets: Array = Project.builtin_presets()
 	while value.styles.size() <= slot:
 		var index: int = value.styles.size()
-		value.styles.append({"enabled": false, "share": 0.0, "preset": defaults.styles[index].preset.duplicate(true)})
+		value.styles.append({"enabled": false, "share": 0.0, "preset": presets[index].duplicate(true)})
 
 func _choose_style(index: int, slot: int) -> void:
 	if _syncing: return
-	var defaults: Dictionary = Project.default_project()
-	if index >= defaults.styles.size(): return
+	var presets: Array = Project.builtin_presets()
+	if index >= presets.size(): return
 	_project = project()
 	_ensure_slot(_project, slot)
-	_project.styles[slot].preset = defaults.styles[index].preset.duplicate(true)
+	_project.styles[slot].preset = presets[index].duplicate(true)
 	_sync_controls()
-	_status.text = "Preset selected. Dimensions are fixed for this style; Generate validates the complete project."
+	_status.text = ""
 
 func set_project(value: Dictionary) -> bool:
 	var result: Dictionary = Project.compile(value)
@@ -284,7 +343,7 @@ func set_project(value: Dictionary) -> bool:
 		return false
 	_project = result.project.duplicate(true)
 	_sync_controls()
-	_status.text = "Project loaded. All preset definitions are embedded; native admission occurs when generating the preview."
+	_status.text = "Project loaded."
 	return true
 
 func _apply() -> void:
@@ -331,7 +390,7 @@ func import_style(path: String, slot: int) -> bool:
 		_status.text = "Refused · " + str(parsed.error)
 		return false
 	if slot < 0 or slot >= _style_controls.size():
-		_status.text = "Refused · Select one of the three style slots."
+		_status.text = "Refused · Select one of the five style slots."
 		return false
 	var candidate: Dictionary = project()
 	_ensure_slot(candidate, slot)

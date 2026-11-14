@@ -1,0 +1,23 @@
+{
+  "format": "cybersand.architectural-style",
+  "version": 1,
+  "id": "solar-conservatory",
+  "name": "Solar Conservatory",
+  "module": "arcology",
+  "module_version": 2,
+  "theme": "garden",
+  "geometry": {
+    "room_size": 48,
+    "floor_height": 96,
+    "wall_thickness": 2,
+    "door_width": 10,
+    "shaft_width": 0
+  },
+  "materials": {
+    "wall": 113,
+    "floor": 129,
+    "window": 120
+  },
+  "apertures": {},
+  "deterioration": 0.04
+}

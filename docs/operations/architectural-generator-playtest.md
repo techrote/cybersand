@@ -18,6 +18,14 @@ editing is required for the ordinary workflow.
 
 ## Make the three-style map
 
+Five compact style cards now appear side by side without tabs. Enable any one
+to five, select the preset and enter its share. Slots four and five initially
+start disabled; **Equal shares** balances all enabled styles in one click.
+Preset descriptions/material details are on hover, not printed into the panel.
+Ten built-ins are available, including Civic Atrium, Transit Spine, Basalt Archive,
+Solar Conservatory, Thermal Foundry, Earthen Terraces and Orbital Observatory.
+
+
 1. Open **New from generator… → Architectural Generator…**.
 2. Leave size at **1024 × 1024**, planning blocks at **64 cells**, and the three
    style shares at **45 / 30 / 25**. Set seed **161803**.
