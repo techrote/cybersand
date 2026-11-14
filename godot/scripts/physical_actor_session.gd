@@ -786,7 +786,7 @@ func accept_equipment_feedback(snapshot_value: Dictionary) -> int:
 	return accepted
 
 
-func render_parts(display_frame: Dictionary = {}) -> Array:
+func render_parts(display_frame: Dictionary = {}, presentation_poses: Dictionary = {}) -> Array:
 	var result: Array = []
 	for index: int in range(_rigs.size()):
 		var parts: Array = _catalogue[index].parts
@@ -795,7 +795,12 @@ func render_parts(display_frame: Dictionary = {}) -> Array:
 		for part_index: int in range(actor_bodies.size()):
 			var body: RigidBody2D = actor_bodies[part_index]
 			var body_index: int = _body_offsets[index]+part_index
-			var physical_pose: Transform2D = bridge.display_pose(body_index,display_frame) if bridge is WorkbenchBridge else bridge.body_transform(body_index)
+			# Only the visual mesh can be live ahead of the uploaded material
+			# mask. The main host admits this pose only after swept-cell clearance.
+			var physical_pose: Transform2D = (
+				presentation_poses[body_index] if presentation_poses.has(body_index)
+				else (bridge.display_pose(body_index,display_frame)
+					if bridge is WorkbenchBridge else bridge.body_transform(body_index)))
 			if str(parts[part_index].get("shape","rectangle"))=="rectangle_union":
 				var shape_index: int=0
 				for child in body.get_children():
