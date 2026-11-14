@@ -225,6 +225,8 @@ func _run() -> void:
 						host._present_physical_actor_overlay(source_frame)
 						require(not host.physical_actor_overlay._parts.is_empty(),
 							"valid bound frame restores the original actor overlay")
+					require(host.physical_actor_session.render_parts().size()>0,
+						"receipt-free geometry inspection API remains available")
 					require(host.image.get_data()==original_world_bytes,
 						"full renderer admission and scripted RID poses did not mutate displayed material bytes")
 					require(host.physical_actor_session.tick==original_session_tick,

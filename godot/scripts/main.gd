@@ -3164,7 +3164,7 @@ func _present_physical_actor_overlay(frame: Dictionary) -> void:
 		presentation_frame = {}
 	var admitted: Dictionary = _safe_workbench_presentation_poses(presentation_frame)
 	physical_actor_overlay.present(
-		physical_actor_session.render_parts(presentation_frame,admitted)
+		physical_actor_session.render_parts(presentation_frame,admitted,shared_workbench != null)
 			if physical_actor_session != null else [],
 		presentation_camera_origin(),current_view_size,view_content_rect())
 
