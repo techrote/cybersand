@@ -42,8 +42,13 @@ function Godot-Run([string]$Name,[string[]]$Arguments,[int]$TimeoutSeconds) {
    try {$Process.Kill()} catch {}
    throw "$Name timed out after $TimeoutSeconds seconds; retained $Stdout and $Stderr"
  }
+ $Process.WaitForExit()
  $Process.Refresh()
- $Code=$Process.ExitCode
+ # PowerShell 5.1's Start-Process -PassThru wrapper may surface ExitCode as
+ # null after timed wait even when the .NET Process already completed. Read
+ # the actual Process ExitCode property via reflection, without converting
+ # absence to a claimed successful return.
+ $Code=$Process.GetType().GetProperty('ExitCode').GetValue($Process,$null)
  Write-Host ("ENGINE_LAB_PROCESS {0} type={1} id={2} exited={3} code={4}" -f $Name,$Process.GetType().FullName,$Process.Id,$Process.HasExited,$Code)
  if($null -eq $Code -or [int]$Code -ne 0) {
    throw "$Name returned exit code $Code; retained $Stdout and $Stderr"
