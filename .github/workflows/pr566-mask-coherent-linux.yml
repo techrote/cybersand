@@ -1,0 +1,130 @@
+name: PR566 mask-coherent presentation Linux source-bound verification
+
+# Complement Windows ANGLE: exact PR566 qualified Linux SO, real native World,
+# 1/4 worker source-equivalent readbacks, and real GL graphical Kestrel frames.
+on:
+  push:
+    branches: [codex/pr566-mask-coherent-flyer-20261114]
+    paths:
+      - '.github/workflows/pr566-mask-coherent-linux.yml'
+      - 'godot/scripts/main.gd'
+      - 'godot/scripts/physical_actor_session.gd'
+      - 'godot/scripts/workbench_presentation_coherence.gd'
+      - 'godot/tests/test_pr566_mask_coherent_native_world.gd'
+      - 'godot/tests/test_workbench_presentation_coherence.gd'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: pr566-mask-linux-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  actual-linux:
+    name: Linux Godot 4.7 native/Rapier and mask-coherent GL test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Exact branch source checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          lfs: false
+          fetch-depth: 0
+
+      - name: Source ancestry
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          git merge-base --is-ancestor 214de85adef2aaabc8e26de8612a3bf27cc1a081 HEAD
+          git diff --exit-code 214de85adef2aaabc8e26de8612a3bf27cc1a081 HEAD -- native godot/native_extension godot/scripts/workbench_physics_bridge.gd godot/scripts/simulation_worker.gd
+          git rev-parse HEAD > evidence/source-head.txt
+          git rev-parse HEAD^{tree} > evidence/source-tree.txt
+
+      - name: Restore exact-source Linux native SO
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: native-pixel-integrated-runtime-attempt-1-linux-43537909868
+          repository: techrote/cybersand
+          run-id: 43537909868
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/pr566-linux
+
+      - name: Verify Linux runtime and pinned Rapier
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          base=pathlib.Path('build/pr566-linux')
+          provenance=json.loads((base/'runtime-provenance.linux.json').read_text())
+          binary=base/'libcybersand_native.linux.x86_64.so'
+          assert provenance['source_commit']=='214de85adef2aaabc8e26de8612a3bf27cc1a081'
+          assert hashlib.sha256(binary.read_bytes()).hexdigest()==provenance['sha256']=='44c906356a98c84b09c01f6e83bcae2391a4c0e39c5c632431a4a3f4cc1578e9'
+          for path,identity in provenance['source_inputs'].items():
+              actual=hashlib.sha256(pathlib.Path(path).read_bytes().replace(b'\r\n',b'\n')).hexdigest()
+              if actual!=identity: raise RuntimeError('Native input differs from qualified SO: '+path)
+          print('PR566_LINUX_QUALIFIED_NATIVE ',provenance['sha256'])
+          PY
+          mkdir -p godot/addons/cybersand_native/bin
+          cp build/pr566-linux/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum -c --strict
+
+      - name: Acquire exact Godot Linux 4.7 and import project
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot-4.7.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot-4.7.zip" | sha256sum -c --strict
+          mkdir "$RUNNER_TEMP/godot-4.7"
+          unzip -q "$RUNNER_TEMP/godot-4.7.zip" -d "$RUNNER_TEMP/godot-4.7"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot-4.7" -maxdepth 1 -type f -name 'Godot*' | head -1)"
+          chmod +x "$GODOT_BIN"
+          "$GODOT_BIN" --version > evidence/godot-version.txt
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+          timeout 180 "$GODOT_BIN" --headless --path godot --editor --quit > evidence/import.log 2>&1
+
+      - name: Execute real native/Workbench safety and physics regression
+        run: |
+          set -euo pipefail
+          for test in test_workbench_presentation_coherence test_pr566_mask_coherent_native_world test_workbench_input test_workbench_fleet_session test_workbench_physics_play; do
+            echo "PR566_LINUX_TEST $test"
+            timeout 360 "$GODOT_BIN" --headless --path godot --script "res://tests/$test.gd" > "evidence/$test.log" 2>&1 || { tail -100 "evidence/$test.log"; exit 1; }
+            tail -4 "evidence/$test.log"
+          done
+
+      - name: Capture actual Linux X11 GL Fire/Smoke and guarded overlay
+        run: |
+          set -euo pipefail
+          bash tools/ci/prepare_linux_display.sh > evidence/display-setup.log 2>&1
+          for camera in free follow; do
+            mkdir -p "evidence/frames/$camera"
+            CYBERSAND_RECOIL_TRIAL=fire \
+            CYBERSAND_DIAG_FLYER_POSE=guarded \
+            CYBERSAND_POSE_AB_CAMERA="$camera" \
+            CYBERSAND_POSE_AB_CAPTURE_DIR="$PWD/evidence/frames/$camera" \
+            CYBERSAND_RECOIL_OUTPUT="$PWD/evidence/$camera.json" \
+              xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+              timeout 300 "$GODOT_BIN" --rendering-method gl_compatibility --display-driver x11 \
+                --path godot --script res://tests/test_pr566_mask_coherent_ab.gd \
+                > "evidence/$camera.log" 2>&1 || { tail -100 "evidence/$camera.log"; exit 1; }
+          done
+          python3 - <<'PY'
+          import json,pathlib
+          for camera in ('free','follow'):
+              d=json.loads(pathlib.Path('evidence/'+camera+'.json').read_text())
+              assert not d['failures'] and d['os']=='Linux' and d['trial']=='fire' and d['pose_mode']=='guarded'
+              assert d['actual_fire_inserts']==20 and len(d['frame_captures'])==8
+              assert d['presentation_guard_totals']['safe_live']>0
+              print('PR566_LINUX_GRAPHICS',camera,len(d['samples']),d['presentation_guard_totals'])
+          PY
+
+      - name: Preserve independent exact-source Linux logs and real frames
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pr566-mask-coherent-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
