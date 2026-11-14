@@ -11,6 +11,8 @@ import json
 import re
 import struct
 
+from .information import PROTOCOL as SHADOW_PROTOCOL, _catalog, _hashable
+
 M1_COMMIT = "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6"
 M1_SCHEMA_SHA256 = "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d"
 PROTOCOL = "cybersand.driv3r.d-common/1"
@@ -99,11 +101,20 @@ def project_m1_guidance(arms: dict, *, canvas_size: tuple[int, int], record_id: 
     for arm in ("A1", "A2", "A3"):
         pair = arms[arm]
         view, audit = pair["model_view"], pair["audit_only"]
-        _must(view["protocol"] == "cybersand.driv3r.d1b-channel-shadow/0" and
+        _must(view["protocol"] == SHADOW_PROTOCOL and
               view["evidence_class"] == "synthetic_pre_m1" and
+              audit["protocol"] == SHADOW_PROTOCOL and audit["arm"] == arm and
+              audit["unregistered_channels_used"] == [] and
               audit["native_material_authority"] is False and
               audit["native_execution_verified"] is False,
               "native/mismatched source not admissible to synthetic M1 projection")
+        _must(audit["legal_candidate_set_sha256"] == view["legal_candidate_set_sha256"],
+              "audit legal candidate set hash mismatch")
+        # Recompute from the exact host-supplied footprint catalog. A supplied
+        # digest alone cannot establish that the catalog is internally coherent.
+        _catalog_rows, computed_legal_sha = _catalog(view["legal_candidates"])
+        _must(computed_legal_sha == view["legal_candidate_set_sha256"],
+              "source legal candidate set hash mismatch")
         common = (view["snapshot_id"], view["world_sha256"], view["source_revision"],
                   view["legal_candidate_set_sha256"], json.dumps(view["host_geometry"], sort_keys=True),
                   json.dumps(view["legal_candidates"], sort_keys=True))
@@ -114,6 +125,10 @@ def project_m1_guidance(arms: dict, *, canvas_size: tuple[int, int], record_id: 
               set(d["semantic_id"] for d in view["guidance"]), "model-visible channels disagree with audit")
         for item in view["guidance"]:
             _must(_meta(item) in used, "hidden channel metadata leaked/mismatched")
+            # Validate EVERY consumed copy against its declared byte/hash
+            # provenance, not just the last one retained by all_views below.
+            # A1/A2 core tampering was otherwise masked by the A3 copy.
+            _raw(item)
         _must(len(used) + len(ignored) <= 9, "too many channels")
         for item in used + ignored:
             semantic = item["semantic_id"]
@@ -139,6 +154,9 @@ def project_m1_guidance(arms: dict, *, canvas_size: tuple[int, int], record_id: 
         if arm == "A3":
             expected |= {k for k, d in descriptors.items() if k != CORE and d["meta"]["signal_class"] == "geometry"}
         _must(used == expected, "arm consumed wrong information set")
+        _must(arms[arm]["audit_only"]["model_view_sha256"] ==
+              _hashable(arms[arm]["model_view"]),
+              "model-view provenance hash mismatch")
     artifacts = {}
     all_views = {d["semantic_id"]: d for a in arms.values() for d in a["model_view"]["guidance"]}
     optional = []
