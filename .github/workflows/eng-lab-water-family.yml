@@ -1,7 +1,8 @@
 name: ENG-LAB-001 Phase B / four Water families with real Needle and native/Rapier clocks
 
-# Research-only; stacked on #602. CI starts with one case per platform.
-# Promote to full 16-case matrix only after the reference smoke passes.
+# Research-only; stacked on #602. The source-verified FreeMass/Needle
+# graphical smoke passed on Linux and Windows at c25d... predecessor.
+# Now run complete balanced 16-process per-host matrix.
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -23,7 +24,7 @@ env:
   GODOT_SILENCE_ROOT_WARNING: '1'
   MATRIX_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
   # First complete reference application smoke before high-cost comparison.
-  WATER_MATRIX_MODE: smoke
+  WATER_MATRIX_MODE: full
 
 defaults:
   run:
