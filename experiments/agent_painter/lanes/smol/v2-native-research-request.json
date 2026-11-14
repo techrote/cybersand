@@ -1,6 +1,6 @@
 {
   "schema": "cybersand.agent-painter.smol-v2-native-research/1",
-  "sequence": 1,
+  "sequence": 2,
   "candidate_ids": [
     "smol_g06_stepped_absence",
     "smol_p01_nested_branch_tree",
