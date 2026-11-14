@@ -4,11 +4,22 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-04
-related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
+last-reviewed: 2026-11-06
+related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md, ../audits/2026-11-06-pf-run-head-repair-draft.md]
 ---
 
 # Status and foundational roadmap
+
+## Experimental per-run PressureFlow head repair — 2026-11-06
+
+**Draft / REPAIR REQUIRED, not main:** Stacked [PR #472](https://github.com/techrote/cybersand/pull/472)
+adds preallocated dirty-Y run repair and a native differential matrix against
+experimental #406's pinned source `4a80af2a891332176a3912a235582d77d076a185`.
+No native compile, sanitizer or matched canvas cost measurement has qualified
+this source in the authoring environment. The unchanged main pressure law,
+execution-v4 history, production defaults and accepted runtime provenance
+must not be silently replaced. See the [dated scoped audit](../audits/2026-11-06-pf-run-head-repair-draft.md).
+
 
 ## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05
 

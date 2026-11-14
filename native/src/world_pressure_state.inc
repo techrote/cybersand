@@ -207,7 +207,7 @@ struct World::PressureState {
     struct HeadRowTask {
         std::size_t begin = 0, end = 0, group = 0, wakes = 0, wake_base = 0;
         std::int32_t first_row = 0, last_row = 0;
-        std::uint64_t rows = 0, finals = 0, skipped = 0, scanned = 0;
+        std::uint64_t rows = 0, finals = 0, skipped = 0, scanned = 0, wake_nanoseconds = 0;
         bool deferred = false;
         pressure_column_detail::PressureColumnFailure error{};
     };

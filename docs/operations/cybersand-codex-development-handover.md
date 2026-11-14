@@ -4,11 +4,22 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-04
-related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
+last-reviewed: 2026-11-06
+related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md, ../audits/2026-11-06-pf-run-head-repair-draft.md]
 ---
 
 # Development handover
+
+## Experimental PressureFlow per-run head repair — 2026-11-06
+
+[Draft #472](https://github.com/techrote/cybersand/pull/472) is an independent
+stacked optimisation candidate on #406 at pinned `4a80af2a891332176a3912a235582d77d076a185`.
+It retains gas-wide head invalidation and the original pressure law, with
+unqualified local-Y per-run preflight, parallel owner merges and A/B/C native
+regression assertions. Before any integration, obtain source-matched actual
+native exactness, sanitizer, Godot and stress-canvas performance evidence.
+Current stop and reproducer: [dated Draft evidence](../audits/2026-11-06-pf-run-head-repair-draft.md).
+
 
 ## Ballistic Water experiment (#362) — 2026-11-05
 

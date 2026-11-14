@@ -153,11 +153,14 @@ void World::rebuild_pressure_index() {
         chunk->pressure->gas_dirty_queued = false;
         ++pressure_->optimization.gas_index_chunks;
     }
-    if (chunks_.size() > cache.capacity) {
+    if (chunks_.size() > cache.capacity ||
+        cache.column_width != static_cast<std::size_t>(config_.chunk_size) ||
+        chunks_.size() > cache.column_y_dirty.size() / std::max<std::size_t>(1U, cache.column_width)) {
         cache.complete = false;
         cache.status = PressureOptimizationStatus::ReferenceCapacityFallback;
         return;
     }
+    std::fill(cache.column_y_dirty.begin(), cache.column_y_dirty.end(), PressureCache::DirtyY{});
     cache.column_order.clear(); cache.row_order.clear();
     cache.columns.clear(); cache.rows.clear();
     cache.dirty_columns.clear(); cache.dirty_rows.clear();
@@ -203,7 +206,10 @@ void World::rebuild_pressure_index() {
     if (cache.wake_words_per_chunk != 0U && wake_words <= cache.wake_clean.capacity()) {
         cache.wake_clean.assign(wake_words, std::uint64_t{0}); ++cache.wake_resets;
     } else cache.wake_clean.clear();
-    for (std::size_t i = 0; i < cache.columns.size(); ++i) cache.mark(true, i, 0, config_.chunk_size - 1);
+    for (std::size_t i = 0; i < cache.columns.size(); ++i) {
+        cache.columns[i].full_height_dirty = true;
+        cache.mark(true, i, 0, config_.chunk_size - 1);
+    }
     for (std::size_t i = 0; i < cache.rows.size(); ++i) cache.mark(false, i, 0, config_.chunk_size - 1);
     ++pressure_->optimization.index_rebuilds;
 }
@@ -259,6 +265,14 @@ void World::invalidate_pressure_input(ChunkCoord coord, std::int32_t min_x, std:
             ++pressure_->optimization.gas_dirty_chunks_queued;
         }
     }
+    if (cache.complete) {
+        const auto slot = static_cast<std::size_t>(chunk->pressure->gas_chunk_slot);
+        if (slot >= cache.column_order.size() ||
+            cache.column_order[slot].x != coord.x || cache.column_order[slot].y != coord.y ||
+            !cache.mark_y(slot, min_x, max_x, min_y, max_y)) {
+            cache.cold(); return;
+        }
+    }
     cache.mark(true, chunk->pressure->column_group, min_x, max_x);
     invalidate_pressure_certificates(coord, min_x, min_y, max_x, max_y);
     clear_pressure_wake(cache, [this](ChunkCoord c) { return find_chunk(c); }, config_.chunk_size,
@@ -299,7 +313,9 @@ PressureOptimizationSnapshot World::pressure_optimization_snapshot() const {
     out.wake_resets = cache.wake_resets;
     for (const auto word : cache.wake_clean) out.wake_clean_cells += static_cast<std::size_t>(std::popcount(word));
     out.wake_capacity_bytes = cache.wake_clean.capacity() * sizeof(std::uint64_t);
-    out.derived_capacity_bytes = out.wake_capacity_bytes + sizeof(PressureCache) +
+    out.run_repair_capacity_bytes = cache.column_y_dirty.capacity() * sizeof(PressureCache::DirtyY) +
+        cache.prospective_rows.capacity() * sizeof(std::array<std::uint64_t,16>);
+    out.derived_capacity_bytes = out.wake_capacity_bytes + out.run_repair_capacity_bytes + sizeof(PressureCache) +
         (cache.column_order.capacity() + cache.row_order.capacity()) * sizeof(ChunkCoord) +
         (cache.columns.capacity() + cache.rows.capacity()) * sizeof(PressureCache::Group) +
         (cache.dirty_columns.capacity() + cache.dirty_rows.capacity()) * sizeof(std::size_t) + out.gas_capacity_bytes;

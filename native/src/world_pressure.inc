@@ -407,23 +407,151 @@ void World::prepare_pressure_tick() {
                 if (cache->dormant) cache->certificate_contents_cold=true;
                 // Gauges and Empty labels feed the x+-2 wake samples (#201 P1).
                 cache->wake_reset();
-                for (std::size_t i = 0; i < cache->columns.size(); ++i)
+                for (std::size_t i = 0; i < cache->columns.size(); ++i) {
+                    cache->columns[i].full_height_dirty = true;
                     cache->mark(true, i, 0, config_.chunk_size - 1);
+                }
             }
-            std::uint64_t estimated = 0;
-            for (const auto group : cache->dirty_columns) {
-                const auto& column = cache->columns[group];
-                std::uint64_t count = 0;
-                for (const auto word : column.dirty) count += static_cast<std::uint64_t>(std::popcount(word));
-                estimated += count * (column.last - column.first) * static_cast<std::uint64_t>(config_.chunk_size);
-            }
-            // A changed base column may alter a complete row interpolation.
-            // Reserve the full resident row closure before publishing any head.
-            if (!cache->dirty_columns.empty() || !cache->dirty_rows.empty())
-                estimated += static_cast<std::uint64_t>(chunks_.size()) *
-                    static_cast<std::uint64_t>(config_.chunk_size) * static_cast<std::uint64_t>(config_.chunk_size);
-            if (estimated <= cache->config.head_repair_cell_budget) cache->use_heads = true;
-            else cache->status = PressureOptimizationStatus::ReferenceBudgetFallback;
+            // Preflight is read-only and owner-only: no derived slot is changed
+            // until the entire run/floor/top-load dependency closure and its
+            // worst-case full-width row repair fit the unchanged cell budget.
+            const auto preflight = [&]() -> bool {
+                using U = std::uint64_t;
+                auto& work = state.optimization;
+                const auto started = Clock::now();
+                U probes=0, selected_runs=0, dirty_spans=0, base_candidates=0, row_candidates=0;
+                const auto finish = [&](bool accepted) {
+                    work.head_preflight_probes += probes;
+                    work.head_preflight_runs += selected_runs;
+                    work.head_preflight_dirty_spans += dirty_spans;
+                    work.head_candidate_base_cells += base_candidates;
+                    work.head_candidate_row_cells += row_candidates;
+                    work.head_preflight_nanoseconds += static_cast<U>(
+                        std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now()-started).count());
+                    return accepted;
+                };
+                const auto refuse = [&](bool capacity) {
+                    cache->status = capacity ? PressureOptimizationStatus::ReferenceCapacityFallback
+                                             : PressureOptimizationStatus::ReferenceBudgetFallback;
+                    if (!capacity) ++work.head_preflight_budget_rejections;
+                    return finish(false);
+                };
+                const auto width = static_cast<std::size_t>(config_.chunk_size);
+                if (cache->column_width != width || cache->prospective_rows.size() < cache->rows.size() ||
+                    cache->column_order.size() > cache->column_y_dirty.size()/std::max<std::size_t>(1U,width))
+                    return refuse(true);
+                for (std::size_t i=0; i<cache->rows.size(); ++i)
+                    cache->prospective_rows[i] = cache->rows[i].dirty;
+
+                const auto budget = cache->config.head_repair_cell_budget;
+                // The distinct, explicit preflight-probe guard is not a hidden
+                // relaxation of the derived-work cell budget.
+                const auto probe_limit = budget > std::numeric_limits<U>::max()/4U ?
+                    std::numeric_limits<U>::max() : budget*4U;
+                const auto add = [](U& total, U amount) {
+                    if (total > std::numeric_limits<U>::max()-amount) return false;
+                    total += amount; return true;
+                };
+                const auto possible_row = [&](std::size_t position, std::int32_t y) {
+                    const auto* chunk = find_chunk(cache->column_order[position]);
+                    if (chunk == nullptr) return false;
+                    const auto row_group=chunk->pressure->row_group;
+                    if (row_group >= cache->rows.size()) return false;
+                    cache->prospective_rows[row_group][static_cast<std::size_t>(y)/64U] |=
+                        std::uint64_t{1} << (static_cast<unsigned>(y)%64U);
+                    return true;
+                };
+                for (const auto group : cache->dirty_columns) {
+                    if (group>=cache->columns.size()) return refuse(true);
+                    const auto& column=cache->columns[group];
+                    if (column.first>=column.last || column.last>cache->column_order.size()) return refuse(true);
+                    for (std::int32_t lx=0; lx<config_.chunk_size; ++lx) {
+                        if (!column.test(lx)) continue;
+                        bool chain_dirty=false, open=false, run_tainted=false, run_dirty=false;
+                        std::size_t first_position=column.first;
+                        std::int32_t first_local=0;
+                        U run_cells=0;
+                        const auto close_run = [&](std::size_t last_position, std::int32_t last_local,
+                                                   bool floor_dirty) {
+                            if (!open) return true;
+                            const bool selected=run_tainted || run_dirty || floor_dirty;
+                            open=false;
+                            if (!selected) return true;
+                            if (!add(selected_runs,1U) || !add(base_candidates,run_cells)) return false;
+                            // Entire selected run, not a clipped edit interval.
+                            for (auto pos=first_position; pos<=last_position; ++pos) {
+                                const auto first=pos==first_position ? first_local : 0;
+                                const auto last=pos==last_position ? last_local : config_.chunk_size-1;
+                                for (auto ly=first; ly<=last; ++ly)
+                                    if (!possible_row(pos,ly)) return false;
+                            }
+                            return true;
+                        };
+                        for (auto pos=column.first;pos<column.last;++pos) {
+                            if (pos>column.first &&
+                                cache->column_order[pos-1].y+1 != cache->column_order[pos].y) {
+                                if (!close_run(pos-1,config_.chunk_size-1,false)) return refuse(true);
+                                chain_dirty=false;
+                            }
+                            auto* chunk=find_chunk(cache->column_order[pos]);
+                            if (chunk == nullptr) return refuse(true);
+                            if (column.full_height_dirty ||
+                                (cache->column_y_dirty[pos*width+static_cast<std::size_t>(lx)].first !=
+                                    std::numeric_limits<std::uint16_t>::max()))
+                                if (!add(dirty_spans,1U)) return refuse(false);
+                            const auto x=cache->column_order[pos].x*config_.chunk_size+lx;
+                            for (std::int32_t ly=0;ly<config_.chunk_size;++ly) {
+                                if (!add(probes,1U) || probes>probe_limit) return refuse(false);
+                                const auto y=cache->column_order[pos].y*config_.chunk_size+ly;
+                                const auto index=static_cast<std::size_t>(ly)*width+static_cast<std::size_t>(lx);
+                                const auto material=chunk->cells[index].material_value();
+                                const bool masked=transient_obstacle_at(x,y)!=0U;
+                                const bool dirty=cache->y_dirty(group,pos,lx,ly);
+                                const bool water=material==Material::Water && !masked;
+                                if (water) {
+                                    if (!open) {
+                                        open=true; run_tainted=chain_dirty; run_dirty=false;
+                                        first_position=pos; first_local=ly; run_cells=0;
+                                    }
+                                    if (!add(run_cells,1U)) return refuse(false);
+                                    run_dirty=run_dirty || dirty;
+                                    chain_dirty=chain_dirty || dirty;
+                                } else {
+                                    if (dirty) {
+                                        if (!add(base_candidates,1U) || !possible_row(pos,ly)) return refuse(true);
+                                    }
+                                    const auto floor_position=ly==0 ? pos-1 : pos;
+                                    const auto floor_local=ly==0 ? config_.chunk_size-1 : ly-1;
+                                    if (!close_run(floor_position,floor_local,dirty)) return refuse(true);
+                                    // An unmasked liquid is transparent to the
+                                    // upward load scan; a boundary cuts the cone,
+                                    // but a dirty boundary itself can change it.
+                                    const bool transparent=!masked &&
+                                        MaterialRules::descriptor(material).state==MaterialState::Liquid;
+                                    chain_dirty=dirty || (transparent && chain_dirty);
+                                }
+                            }
+                        }
+                        if (!close_run(column.last-1,config_.chunk_size-1,false)) return refuse(true);
+                    }
+                }
+                // The prospective masks include pre-existing dirty rows and
+                // every base row which *might* change. They are not published:
+                // actual row dirty bits still come only from put_base deltas.
+                for (std::size_t g=0;g<cache->rows.size();++g) {
+                    const auto& row=cache->rows[g];
+                    U marked=0;
+                    for (const auto word:cache->prospective_rows[g])
+                        if (!add(marked,static_cast<U>(std::popcount(word)))) return refuse(false);
+                    const auto width_cells=static_cast<U>(row.last-row.first)*width;
+                    if (marked!=0 && width_cells>std::numeric_limits<U>::max()/marked) return refuse(false);
+                    if (!add(row_candidates,marked*width_cells)) return refuse(false);
+                }
+                U estimated=base_candidates;
+                if (!add(estimated,row_candidates) || estimated>budget) return refuse(false);
+                return finish(true);
+            };
+            cache->use_heads = preflight();
         }
         if (!cache->use_heads) {
             ++state.optimization.reference_fallbacks;
@@ -1184,6 +1312,7 @@ void World::compute_pressure_heads() {
     };
 
     using HeadTask = PressureState::HeadColumnTask;
+    const auto column_started = std::chrono::steady_clock::now();
     const auto prepare_columns = [&](HeadTask& task, std::size_t group) {
         const auto begin = task.begin, end = task.end;
         for (std::int32_t local_x = 0; local_x < size; ++local_x) {
@@ -1191,7 +1320,7 @@ void World::compute_pressure_heads() {
             ++task.columns;
             // Each slot in a visited column receives exactly one base head:
             // either kNoHead or the result of closing its vertical Water run.
-            task.writes += (end - begin) * static_cast<std::size_t>(size);
+            if (!cached) task.writes += (end - begin) * static_cast<std::size_t>(size);
             const auto x = coordinates[begin].x * size + local_x;
             // Walk the chunk column; runs never bridge an unallocated chunk.
             bool open = false;
@@ -1200,8 +1329,11 @@ void World::compute_pressure_heads() {
             std::int64_t run_top = 0;
             std::int64_t total = 0;
             std::optional<std::int64_t> top;
+            bool chain_dirty=false, run_tainted=false, run_dirty=false;
             const auto close_run = [&](std::size_t floor_chunk, std::int32_t floor_local, std::int64_t floor_y,
-                                       bool supported) {
+                                       bool supported, bool floor_dirty) {
+                if (cached && !(run_tainted || run_dirty || floor_dirty)) { open=false; return; }
+                if (cached) top=top_pressure(x,run_top);
                 auto chunk_position = run_chunk;
                 auto local = run_local;
                 for (std::int64_t y = run_top; y <= floor_y; ++y) {
@@ -1223,6 +1355,7 @@ void World::compute_pressure_heads() {
                         }
                     }
                     ++task.heads;
+                    if (cached) ++task.writes;
                     if (++local == size) {
                         local = 0;
                         ++chunk_position;
@@ -1234,9 +1367,14 @@ void World::compute_pressure_heads() {
             };
             for (auto position = begin; position < end; ++position) {
                 const auto coord = coordinates[position];
-                if (open && position > begin && coordinates[position - 1].y + 1 != coord.y) {
-                    // The run's floor sits above an unallocated (Empty) chunk.
-                    close_run(position - 1, size - 1, coordinates[position - 1].y * size + size - 1, false);
+                if (position > begin && coordinates[position - 1].y + 1 != coord.y) {
+                    // A nonresident (Empty) chunk terminates *every* pressure
+                    // dependency, not only an open Water run. The preflight
+                    // already resets chain_dirty here unconditionally; commit
+                    // must make the same selection before derived writes.
+                    if (open)
+                        close_run(position - 1, size - 1, coordinates[position - 1].y * size + size - 1, false, false);
+                    chain_dirty=false;
                 }
                 auto& chunk = *find_chunk(coord);
                 for (std::int32_t local_y = 0; local_y < size; ++local_y) {
@@ -1244,7 +1382,9 @@ void World::compute_pressure_heads() {
                     const auto index = static_cast<std::size_t>(local_y) * static_cast<std::size_t>(size) +
                                        static_cast<std::size_t>(local_x);
                     const auto material = chunk.cells[index].material_value();
-                    const bool water = material == Material::Water && transient_obstacle_at(x, y) == 0U;
+                    const bool masked = transient_obstacle_at(x, y) != 0U;
+                    const bool water = material == Material::Water && !masked;
+                    const bool dirty = cached && cache->y_dirty(group,position,local_x,local_y);
                     if (water) {
                         if (!open) {
                             open = true;
@@ -1252,21 +1392,30 @@ void World::compute_pressure_heads() {
                             run_local = local_y;
                             run_top = y;
                             total = 0;
-                            top = top_pressure(x, y);
+                            run_tainted=chain_dirty; run_dirty=false;
+                            top = cached ? std::nullopt : top_pressure(x, y);
                         }
                         total += cell_quantity(chunk, index);
+                        run_dirty=run_dirty || dirty;
+                        chain_dirty=chain_dirty || dirty;
                         continue;
                     }
-                    put_base(chunk, position, index, kNoHead);
-                    if (open) {
-                        const bool supported = !(material == Material::Empty && transient_obstacle_at(x, y) == 0U);
-                        close_run(position, local_y, y - 1, supported);
+                    if (!cached || dirty) {
+                        put_base(chunk, position, index, kNoHead);
+                        if (cached) ++task.writes;
                     }
+                    if (open) {
+                        const bool supported = !(material == Material::Empty && !masked);
+                        close_run(position, local_y, y - 1, supported, dirty);
+                    }
+                    const bool transparent = !masked &&
+                        MaterialRules::descriptor(material).state == MaterialState::Liquid;
+                    chain_dirty=dirty || (transparent && chain_dirty);
                 }
             }
             if (open) {
                 const auto last = coordinates[end - 1];
-                close_run(end - 1, size - 1, last.y * size + size - 1, false);
+                close_run(end - 1, size - 1, last.y * size + size - 1, false, false);
             }
         }
     };
@@ -1281,6 +1430,7 @@ void World::compute_pressure_heads() {
         for (auto position = task.begin; position < task.end; ++position)
             cache->merge_row_marks(find_chunk(coordinates[position])->pressure->row_group,
                                    cache->column_row_marks[position]);
+        cache->retire_y(task.group,task.begin,task.end);
         cache->columns[task.group].dirty = {};
         cache->columns[task.group].queued = false;
     };
@@ -1330,6 +1480,10 @@ void World::compute_pressure_heads() {
         }
     }
     if (cached) cache->dirty_columns.clear();
+    state.optimization.head_column_nanoseconds += static_cast<std::uint64_t>(
+        std::chrono::duration_cast<std::chrono::nanoseconds>(
+            std::chrono::steady_clock::now()-column_started).count());
+    const auto row_started=std::chrono::steady_clock::now();
 
     // Row pass: resolve lidded heads within contiguous Water row segments, then
     // wake sleeping blocks whose cells have an actionable gradient.
@@ -1435,6 +1589,7 @@ void World::compute_pressure_heads() {
             if (segment_open && pending) resolve(pending_from, previous_x, {});
 
             }
+            const auto wake_started=std::chrono::steady_clock::now();
             // Actionable-gradient wake for cells in sleeping blocks (same stencil
             // and start dead band as the kernel).
             //
@@ -1537,6 +1692,9 @@ void World::compute_pressure_heads() {
                     }
                 }
             }
+            task.wake_nanoseconds += static_cast<std::uint64_t>(
+                std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    std::chrono::steady_clock::now()-wake_started).count());
         }
     };
     // Owner-only certificate invalidation of one run of changed final heads
@@ -1579,6 +1737,7 @@ void World::compute_pressure_heads() {
     const auto merge_rows = [&](const RowTask& task) {
         state.optimization.rows_recomputed += task.rows;
         state.optimization.final_cells_written += task.finals;
+        state.optimization.head_wake_worker_nanoseconds += task.wake_nanoseconds;
         if (cached) {
             cache->wake_segments_skipped += task.skipped;
             cache->wake_segments_scanned += task.scanned;
@@ -1675,6 +1834,9 @@ void World::compute_pressure_heads() {
         }
     }
     if (cached) cache->dirty_rows.clear();
+    state.optimization.head_row_nanoseconds += static_cast<std::uint64_t>(
+        std::chrono::duration_cast<std::chrono::nanoseconds>(
+            std::chrono::steady_clock::now()-row_started).count());
 }
 
 bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* effects) {
