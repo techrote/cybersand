@@ -1,0 +1,36 @@
+name: DRIV3R D-common v1 contract conformance
+on:
+  push:
+    branches: [research/570-d-common-interfaces-v1]
+    paths:
+      - 'experiments/driv3r/d_common/**'
+      - '.github/workflows/driv3r-d-common.yml'
+  pull_request:
+    paths:
+      - 'experiments/driv3r/d_common/**'
+      - '.github/workflows/driv3r-d-common.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: driv3r-d-common-${{ github.ref }}-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Install schema checker
+        run: python3 -m pip install --user --disable-pip-version-check 'jsonschema==4.26.0'
+      - name: Validate five interface records and adverse cases
+        run: |
+          python3 experiments/driv3r/d_common/v1/verify.py
+          python3 -m unittest discover -s experiments/driv3r/d_common/v1 -p 'test_*.py' -v
+      - name: Confirm no heavy workload
+        run: echo 'Schema and synthetic conformance only: no native process, weights, API calls or training'
