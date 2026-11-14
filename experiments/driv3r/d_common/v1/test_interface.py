@@ -73,5 +73,118 @@ class ContractV1Tests(unittest.TestCase):
         self.reject(lambda rows: rows[1]["local_material"].__setitem__("bytes", 100))
 
 
+    def test_variable_world_and_coordinates_above_511_supported(self):
+        guidance, obs, action, reversal, _ = self.rows
+        guidance["canvas_size"] = [2048, 1024]
+        for world in (obs["world"], action["world_precondition"],
+                      reversal["before_world"], reversal["after_world"]):
+            world["width_cells"], world["height_cells"] = 2048, 1024
+        obs["rules"]["focus"] = [0, 0, 800, 700]
+        obs["cursor"] = [700, 600]
+        obs["target"] = [710, 600]
+        action["cursor_before"] = action["cursor_after"] = [700, 600]
+        action["path"] = [[700, 600]]
+        reversal["cursor_before"] = [700, 600]
+        reversal["cursor_after"] = [699, 600]
+        self.assertEqual(validate_bundle(self.rows)["validated"], 5)
+
+    def test_non_square_world_supported(self):
+        guidance, obs, action, reversal, _ = self.rows
+        guidance["canvas_size"] = [640, 1024]
+        for world in (obs["world"], action["world_precondition"],
+                      reversal["before_world"], reversal["after_world"]):
+            world["width_cells"], world["height_cells"] = 640, 1024
+        self.assertEqual(validate_bundle(self.rows)["validated"], 5)
+
+    def test_world_too_small_for_focus_refused(self):
+        def change(rows):
+            for world in (rows[1]["world"], rows[2]["world_precondition"],
+                          rows[3]["before_world"], rows[3]["after_world"]):
+                world["width_cells"] = 64
+            rows[0]["canvas_size"][0] = 64
+        self.reject(change)
+
+    def test_guidance_canvas_must_equal_world(self):
+        self.reject(lambda rows: rows[0].__setitem__("canvas_size", [640, 512]))
+
+    def test_guidance_tile_must_fit_canvas_not_global_512(self):
+        self.reject(lambda rows: rows[0].__setitem__("frame", [510, 0, 8, 8]))
+
+    def test_cursor_must_remain_inside_authorized_focus(self):
+        def change(rows):
+            rows[1]["cursor"] = [100, 24]
+            rows[2]["cursor_before"] = [100, 24]
+            rows[2]["cursor_after"] = [100, 24]
+            rows[2]["path"] = [[100, 24]]
+        self.reject(change)
+
+    def test_native_crop_within_dynamic_world(self):
+        self.reject(lambda rows: rows[1].__setitem__("local_crop", [509, 0, 8, 8]))
+
+    def test_unexecuted_candidate_cannot_claim_post_world(self):
+        self.reject(lambda rows: rows[2].__setitem__("world_postcondition",
+                                                   copy.deepcopy(rows[2]["world_precondition"])))
+
+    def test_unexecuted_candidate_cannot_claim_hashed_receipt(self):
+        self.reject(lambda rows: rows[2].__setitem__("native_receipt_artifact", {
+            "path":"receipts/fake.json", "sha256":"a" * 64, "bytes":100, "format":"json"}))
+
+    def test_synthetic_provenance_may_omit_native_identity(self):
+        self.assertNotIn("source_commit", self.rows[-1])
+        self.assertNotIn("native", self.rows[-1])
+        self.assertEqual(validate_bundle(self.rows)["validated"], 5)
+
+    def test_synthetic_cannot_claim_native_replay(self):
+        self.reject(lambda rows: rows[-1].__setitem__("replay", "pass"))
+
+    def test_applied_material_undo_needs_changed_native_world_and_receipt(self):
+        def change(rows):
+            rev = rows[3]
+            rev["mechanism"] = "UNDO_MATERIAL_EDIT"
+            rev["preserve_material_edits"] = False
+            rev["native_undo_receipt_ref"] = "receipt-undo-001"
+            rev["native_undo_receipt_artifact"] = {
+                "path":"receipts/undo.json", "sha256":"b" * 64, "bytes":100, "format":"json"}
+            rev["actual_material_cells_changed"] = 1
+            # Same before/after hash is not a real native Undo.
+        self.reject(change)
+
+    def test_cursor_only_relocation_cannot_invent_native_receipt(self):
+        self.reject(lambda rows: rows[3].__setitem__("native_undo_receipt_artifact", {
+            "path":"receipts/fake.json", "sha256":"c" * 64, "bytes":100, "format":"json"}))
+
+    def test_actual_material_mutation_requires_native_provenance(self):
+        def change(rows):
+            action = rows[2]
+            action["mode"] = "add_material"
+            action["brush_state"] = "add"
+            action["operation_sha256"] = "a" * 64
+            action["execution_status"] = "committed"
+            action["native_receipt_ref"] = "receipt-001"
+            action["native_receipt_artifact"] = {
+                "path":"receipts/add.json", "sha256":"d" * 64, "bytes":100, "format":"json"}
+            action["world_postcondition"] = copy.deepcopy(action["world_precondition"])
+            action["world_postcondition"]["revision"] += 1
+            action["world_postcondition"]["world_material_sha256"] = "e" * 64
+            # Provenance remains 'synthetic', so this must refuse.
+        self.reject(change)
+
+    def test_native_claim_requires_verified_evidence_root(self):
+        def change(rows):
+            provenance=rows[-1]
+            provenance.update({
+                "evidence_class":"native", "source_commit":"a" * 40,
+                "source_tree":"b" * 40, "base_commit":"c" * 40,
+                "interface_schema_sha256":"d" * 64, "scenario_sha256":"e" * 64,
+                "model":None, "native":{"path":"native/world.i32le",
+                  "sha256":"f" * 64, "bytes":512*512*4, "format":"i32le"},
+                "native_receipts":[], "final_world":copy.deepcopy(rows[1]["world"])
+            })
+        self.reject(change)
+
+    def test_applied_material_undo_requires_post_world(self):
+        self.reject(lambda rows: rows[3].__setitem__("after_world", None))
+
+
 if __name__ == "__main__":
     unittest.main()
