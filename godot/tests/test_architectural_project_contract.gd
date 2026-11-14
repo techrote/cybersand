@@ -110,7 +110,7 @@ func component_count(zones: Dictionary, slot: int) -> int:
 
 func expanded_styles() -> void:
 	var presets: Array = Project.builtin_presets()
-	check(presets.size() >= 10, "ten or more selectable built-in styles")
+	check(presets.size() >= 13, "thirteen or more selectable built-in styles")
 	var ids := {}
 	for preset: Dictionary in presets:
 		check(Project.validate_preset(preset).is_empty(), "built-in style passes validation: " + str(preset.id))
@@ -135,9 +135,40 @@ func expanded_styles() -> void:
 				check(configured.get("ok",false), "five-style native admission: " + str(configured.get("error","")))
 				if configured.get("ok",false):
 					var chunk: Dictionary = generator.generate_chunk(Vector2i.ZERO)
-					check(chunk.get("ok",false), "five-style native material raster")
+					check(chunk.get("ok",false), "five-style native material raster: " + str(chunk.get("error","")))
 	five.styles.append({"enabled":false,"share":0.0,"preset":presets[5]})
 	refused(five,"six style slots refused")
+
+func new_native_algorithms() -> void:
+	var catalogue: Array = Project.builtin_presets()
+	var outputs := {}
+	for module: String in ["terraced","hex_hive","arcade"]:
+		var found: Dictionary = {}
+		for preset: Dictionary in catalogue:
+			if preset.module == module: found = preset.duplicate(true)
+		if not check(not found.is_empty(), "native module has a selectable builtin preset: " + module): continue
+		check(int(found.module_version) == 1 and Project.validate_preset(found).is_empty(),
+			"new module has valid explicit native version and geometry: " + module)
+		var configured_project: Dictionary = Project.default_project()
+		configured_project.styles = [{"enabled":true,"share":100.0,"preset":found}]
+		var compilation: Dictionary = Project.compile(configured_project)
+		if not check(compilation.get("ok",false), "new module compiles into native recipe: " + module): continue
+		check(compilation.recipe.modules.size() == 1 and compilation.recipe.modules[0].module == module and
+			int(compilation.recipe.modules[0].version) == 1, "new native module identity is preserved")
+		if not ClassDB.class_exists(&"CyberWorldGenerator"): continue
+		var generator: Variant = ClassDB.instantiate(&"CyberWorldGenerator")
+		var admitted: Dictionary = generator.configure(compilation.recipe)
+		if not check(admitted.get("ok",false), "new native module admitted: " + module + " " + str(admitted.get("error",""))): continue
+		var cells: PackedByteArray = PackedByteArray()
+		for cy: int in 2:
+			for cx: int in 2:
+				var packet: Dictionary = generator.generate_chunk(Vector2i(cx,cy))
+				if check(packet.get("ok",false), "new module sampled: " + module + " " + str(packet.get("error",""))):
+					cells.append_array(packet.cells)
+		outputs[module] = Store.digest(cells)
+	check(outputs.size() == 3 and outputs.terraced != outputs.hex_hive and
+		outputs.hex_hive != outputs.arcade and outputs.arcade != outputs.terraced,
+		"three new native algorithms produce materially distinct deterministic geometry")
 
 func planner_invariants() -> void:
 	for seed: int in range(64):
@@ -224,6 +255,7 @@ func native_identity_edges() -> void:
 func run() -> void:
 	hostile_json()
 	expanded_styles()
+	new_native_algorithms()
 	planner_invariants()
 	native_identity_edges()
 	print("ARCHITECTURAL_PROJECT_CONTRACT checks=%d failures=%d" % [checks,failures])

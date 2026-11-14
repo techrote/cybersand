@@ -30,7 +30,10 @@ static func builtin_presets() -> Array:
         _preset("solar-conservatory","Solar Conservatory","arcology","garden",48,96,2,10,0,113,129,120,0.04),
         _preset("thermal-foundry","Thermal Foundry","vault","industrial",16,24,2,4,0,104,131,72,0.0),
         _preset("earthen-terraces","Earthen Terraces","arcology","ruins",128,80,4,20,0,102,109,55,0.30),
-        _preset("orbital-observatory","Orbital Observatory","arcology","industrial",96,64,2,14,12,130,114,121,0.0)
+        _preset("orbital-observatory","Orbital Observatory","arcology","industrial",96,64,2,14,12,130,114,121,0.0),
+		_preset("skyline-terraces","Skyline Terraces","terraced","ruins",80,40,3,12,10,109,111,120,0.02),
+		_preset("cellular-hive","Cellular Hive","hex_hive","industrial",64,56,3,10,0,130,70,120,0.0),
+		_preset("arched-viaduct","Arched Viaduct","arcade","ruins",80,64,3,10,0,98,49,121,0.0)
 	]
 
 static func default_project() -> Dictionary:
@@ -75,8 +78,11 @@ static func validate_preset(preset: Variant) -> String:
 	if not _identifier(preset.id): return "Style id must be 1–64 lowercase letters, digits, hyphens or underscores."
 	if not preset.name is String or preset.name.strip_edges().is_empty() or preset.name.length() > 128:
 		return "Style name must be a nonempty string of at most 128 characters."
-	if not preset.module is String or preset.module not in ["arcology","vault"] or not _number(preset.module_version,2,2):
-		return "Styles require the native arcology or vault module, version 2."
+	if not preset.module is String or preset.module not in ["arcology","vault","terraced","hex_hive","arcade"]:
+		return "Unknown native architectural module."
+	var expected_version: int = 2 if preset.module in ["arcology","vault"] else 1
+	if not _number(preset.module_version,expected_version,expected_version):
+		return "Incorrect version for native module " + str(preset.module) + "."
 	if not preset.theme is String or preset.theme not in ["industrial","ruins","garden","basalt","dry_cavern","wet_cavern"]:
 		return "Unknown native style theme."
 	var dimensions := ["room_size","floor_height","wall_thickness","door_width","shaft_width"]
@@ -202,7 +208,7 @@ static func compile(input: Variant) -> Dictionary:
 	project.corridor_width = int(project.corridor_width)
 	for style: Dictionary in project.styles:
 		style.preset.version = 1
-		style.preset.module_version = 2
+		style.preset.module_version = int(style.preset.module_version)
 		for key: String in style.preset.geometry: style.preset.geometry[key] = int(style.preset.geometry[key])
 		for key: String in style.preset.materials: style.preset.materials[key] = int(style.preset.materials[key])
 	var count: int = side*side
@@ -267,6 +273,11 @@ static func compile(input: Variant) -> Dictionary:
 			"limits":{"max_work":1000000,"max_scratch_bytes":262144}}],
 			"nodes":[{"id":"architectural-zone","kind":"assigned_region","reference":PLANNER}]},
 		"modules":[],"fields":[],"modifiers":[]}
+	if selected.size() > 3:
+		# Five masked samplers exceed the legacy 64M/chunk preflight even
+		# when their work is deterministic. Opt in to a bounded higher ceiling
+		# only for expanded compositions; preserve 1-3 style recipe identities.
+		recipe.limits = {"max_operations_per_chunk":160000000}
 	for slot: int in selected:
 		var preset: Dictionary = project.styles[slot].preset
 		var g: Dictionary = preset.geometry
@@ -283,10 +294,11 @@ static func compile(input: Variant) -> Dictionary:
 		var parameters := {"wall":g.wall_thickness,"door_width":g.door_width,
 			"automatic_doors":1 if doors else 0,"wall_material":preset.materials.wall,
 			"accent_material":preset.materials.floor}
-		if preset.module == "vault":
-			# One prepared maze, clipped by an immutable category mask; never a
-			# different district_size or room solver for every sampled cell.
+		if preset.module in ["vault","terraced","hex_hive","arcade"]:
+			# One global geometric anchor, independently clipped by a zone mask.
+			# Avoid restarting rooms/arches at every zone's bounding rectangle.
 			bounds = [project.origin[0],project.origin[1],extent.x,extent.y]
+		if preset.module == "vault":
 			if extent.x % int(g.room_size) != 0 or extent.x / int(g.room_size) > 64:
 				return _failure("%s: Vault room size must divide the map extent, with at most 64 rooms per axis." % preset.name)
 			parameters.cell_size = g.room_size
@@ -295,7 +307,7 @@ static func compile(input: Variant) -> Dictionary:
 				"shaft_width":g.shaft_width,"automatic_windows":1 if windows else 0,
 				"floor_material":preset.materials.floor,"partition_material":preset.materials.wall,
 				"window_material":preset.materials.window,"shaft_material":preset.materials.floor})
-		recipe.modules.append({"id":prefix,"module":preset.module,"version":2,
+		recipe.modules.append({"id":prefix,"module":preset.module,"version":preset.module_version,
 			"bounds":bounds,"parameters":parameters,"application":"spatial:"+mask})
 		recipe.modifiers.append({"id":prefix+"-theme","bounds":bounds,
 			"application":"spatial:"+mask,"themes":{"weights":{preset.theme:1}}})

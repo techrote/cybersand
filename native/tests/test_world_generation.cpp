@@ -1154,6 +1154,51 @@ void architectural_arcology_apertures_and_jobs() {
         "schema 4 rejects exhausted native work budget before raster publication");
 }
 
+
+void independent_architectural_algorithms() {
+    std::set<std::vector<Material>> unique;
+    for (const std::string id : {"terraced", "hex_hive", "arcade"}) {
+        Recipe recipe;
+        recipe.schema = kArchitecturalSchemaVersion;
+        recipe.candidate = Candidate::Strata;
+        recipe.parameters.surface_y = -100;
+        recipe.chunk_size = 64;
+        recipe.seed = 19177;
+        auto module = instance("algorithm", id, {0, 0, 256, 256});
+        module.version = 1;
+        module.parameters = {{"bay_width", 64}, {"floor_height", 48}, {"wall", 3},
+            {"door_width", 10}, {"shaft_width", 0}, {"automatic_doors", 1},
+            {"automatic_windows", 1}, {"wall_material", 58}, {"floor_material", 70},
+            {"window_material", 121}, {"accent_material", 66}};
+        recipe.modules.push_back(module);
+        const auto generator = Generator::compile(recipe);
+        std::vector<Material> signature;
+        for (const auto coord : {ChunkCoord{0, 0}, ChunkCoord{1, 0}, ChunkCoord{0, 1}}) {
+            const auto ready = generator->generate(coord);
+            require(ready.state == ResultState::Ready, id + " raster ready");
+            signature.insert(signature.end(), ready.cells.begin(), ready.cells.end());
+            auto job = generator->begin(coord);
+            while (job->state() == ResultState::Pending) (void)job->advance(23);
+            same_cells(job->result(), ready, id + " chunk slicing deterministic");
+        }
+        unique.insert(std::move(signature));
+        auto off = recipe;
+        off.modules[0].parameters["automatic_doors"] = 0;
+        off.modules[0].parameters["automatic_windows"] = 0;
+        const auto closed = Generator::compile(off);
+        require(closed->generate({0, 0}).state == ResultState::Ready,
+            id + " independent aperture switches remain valid");
+        auto invalid = recipe; invalid.schema = kHierarchySchemaVersion;
+        rejects([&] { (void)Generator::compile(invalid); },
+            id + " requires explicit schema-4 opt-in");
+        invalid = recipe; invalid.modules[0].parameters["wall_material"] = 3;
+        rejects([&] { (void)Generator::compile(invalid); },
+            id + " rejects non-structural wall materials");
+    }
+    require(unique.size() == 3,
+        "terraced, hex_hive and arcade generate distinct native material geometry");
+}
+
 } // namespace
 
 int main() {
@@ -1176,6 +1221,7 @@ int main() {
         architectural_district_doors_and_validation();
         architectural_vault_controls();
         architectural_arcology_apertures_and_jobs();
+        independent_architectural_algorithms();
         std::cout << "PASS procedural generation: candidate/order/partition determinism, signed seams, "
                      "theme hierarchy/exclusions, broad/fine/hard controls, bounded modules, "
                      "incremental ownership/cancel/stale identity, invalid input and capacity controls; "

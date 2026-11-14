@@ -39,7 +39,7 @@ func run() -> void:
 	check(panel.visible, "Architecture form is reachable from the ordinary generator dialog")
 	check(dialog._profile.selected == original_profile and dialog._ready_packet.is_empty(), "opening the form leaves source selection and installed proposal untouched")
 	check(panel._style_controls.size() == 5, "five independently editable style columns")
-	check(panel._style_controls[0].chooser.item_count >= 10, "expanded architectural preset catalogue is available")
+	check(panel._style_controls[0].chooser.item_count >= 13, "three new native algorithms join the expanded preset catalogue")
 	var columns_visible := true
 	for index: int in range(1,5):
 		var previous: Rect2 = panel._style_controls[index - 1].card.get_global_rect()

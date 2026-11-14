@@ -261,7 +261,7 @@ func _sync_controls() -> void:
 			elif spec[0] == "wall_thickness":
 				control.max_value = 4 if preset.module == "vault" else 5
 			control.set_value_no_signal(int(preset.geometry[spec[0]]))
-			control.editable = not (spec[0] in ["floor_height", "shaft_width"] and preset.module != "arcology")
+			control.editable = not (spec[0] in ["floor_height", "shaft_width"] and preset.module == "vault")
 		controls.description.text = "%s · %s" % [str(preset.module).capitalize(), str(preset.theme).replace("_", " ")]
 		controls.description.tooltip_text = "Style: %s\nWall / floor / window materials: %s / %s / %s\nDoors: %s · Windows: %s · Deterioration: %.1f%%" % [
 			str(preset.id), str(preset.materials.wall), str(preset.materials.floor),

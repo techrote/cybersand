@@ -1,0 +1,23 @@
+{
+  "format": "cybersand.architectural-style",
+  "version": 1,
+  "id": "arched-viaduct",
+  "name": "Arched Viaduct",
+  "module": "arcade",
+  "module_version": 1,
+  "theme": "ruins",
+  "geometry": {
+    "room_size": 80,
+    "floor_height": 64,
+    "wall_thickness": 3,
+    "door_width": 10,
+    "shaft_width": 0
+  },
+  "materials": {
+    "wall": 98,
+    "floor": 49,
+    "window": 121
+  },
+  "apertures": {},
+  "deterioration": 0
+}
