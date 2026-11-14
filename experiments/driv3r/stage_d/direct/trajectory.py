@@ -40,8 +40,8 @@ def compare_simulated_effects(arms: Mapping[str, dict[str, Any]]) -> dict[str, A
     event_present = []
     for index in range(max_steps):
         cursors.append(tuple(
-            arms[name]["events"][index]["simulated_post_position"]
-            if index < len(arms[name]["events"]) else arms[name]["path"][-1]
+            tuple(arms[name]["events"][index]["simulated_post_position"])
+            if index < len(arms[name]["events"]) else tuple(arms[name]["path"][-1])
             for name in names
         ))
         path_digests.append(tuple(
@@ -61,7 +61,7 @@ def compare_simulated_effects(arms: Mapping[str, dict[str, Any]]) -> dict[str, A
     paths = [arms[name]["path"] for name in names]
     shared_cells = 0
     for cell_set in zip(*paths):
-        if any(cell != cell_set[0] for cell in cell_set[1:]):
+        if any(tuple(cell) != tuple(cell_set[0]) for cell in cell_set[1:]):
             break
         shared_cells += 1
 
