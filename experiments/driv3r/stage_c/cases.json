@@ -694,7 +694,7 @@
         39,
         35
       ],
-      "objective": "Build a detailed 28 by 24 machine panel [12,12,28,24] with a one-cell frame, grille (crosshatched vertical and horizontal bars), density 2 and four corner fasteners. A pure vertical rib or inset pattern is insufficient.",
+      "objective": "Build a detailed 28 by 24 machine panel [12,12,28,24] with a one-cell frame, grille (crosshatched vertical and horizontal bars), density 1 and four corner fasteners. A pure vertical rib or inset pattern is insufficient.",
       "paraphrase": "Choose the framed cross-grid grille pattern for [12,12,28,24], not a rib-only or raised inset variant. Preserve the bounded exterior and interior voids.",
       "subgoal": "Evaluate true crossbar grille geometry against other legal detailed-panel alternatives.",
       "target_candidate_id": "GRILLE_PANEL",
@@ -717,7 +717,7 @@
                   24
                 ],
                 "detail": "grille",
-                "density": 2,
+                "density": 1,
                 "border": 1,
                 "fasteners": true
               }
@@ -745,7 +745,7 @@
                   24
                 ],
                 "detail": "ribs",
-                "density": 2,
+                "density": 1,
                 "border": 1,
                 "fasteners": true
               }
@@ -773,7 +773,7 @@
                   24
                 ],
                 "detail": "plates",
-                "density": 2,
+                "density": 1,
                 "border": 1,
                 "fasteners": true
               }
