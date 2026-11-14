@@ -27,6 +27,30 @@ def require_reference_manifest_sha256(screened):
     return actual
 
 
+def facing_equal_room_near_alias(program):
+    """Witness the risky *motif*, not graph equality with original held-outs.
+
+    Two equal-level/equal-sized rooms with opposed facing side doors and
+    horizontal circulation resembles original TRAIN paired_doorway_rooms and
+    DEVELOPMENT bridge_between_towers. A different SHA is not split safety.
+    """
+    if program["family"] != "architecture":
+        return False
+    rooms=[c for c in program["components"] if c["kind"]=="room"]
+    if len(rooms)!=2:
+        return False
+    left,right=sorted(rooms,key=lambda c:c["box"][0])
+    lbox,rbox=left["box"],right["box"]
+    doors_l=left.get("openings",[])
+    doors_r=right.get("openings",[])
+    route=program.get("requirements",{}).get("route",[])
+    return bool(
+        lbox[1]==rbox[1] and lbox[2:]==rbox[2:]
+        and len(doors_l)==len(doors_r)==1
+        and doors_l[0]["side"]=="right" and doors_r[0]["side"]=="left"
+        and len(route)==2 and route[0][1]==route[1][1]
+    )
+
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
 
 def verify(corpus, proposals, old_proposals):
@@ -60,6 +84,8 @@ def verify(corpus, proposals, old_proposals):
         p=parse_program(json.dumps(c["program"],sort_keys=True,separators=(",",":")))
         if p["family"]!=EXPECTED[name]: raise ValueError("wrong family")
         sig=digest(structural_signature(p))
+        if name=="void-v3-A01" and not facing_equal_room_near_alias(p):
+            raise ValueError("A01 quarantine witness changed; require new peer split review")
         if name=="void-v3-P05-fitted":
             if (c["classification"]!="style-variant-not-a-new-train-group"
                     or c["same_graph_as"]!="void-pipe-P05" or sig!=oldsig
@@ -81,7 +107,7 @@ def verify(corpus, proposals, old_proposals):
             if p["family"]=="pipework" and (not s["fittings"] or len(s["endpoints"])!=1 or len(s["junctions"])!=2 or s["expected_cycles"]!=2 or metrics["diameter_probes_passed"]!=len(s["edges"])):
                 raise ValueError("pipe fitting/topology/diameter witness failed")
             views.append({"seed":seed,"operations_sha256":v["operations_sha256"],"rectangles":v["operation_count"],"cells":v["unique_cells"],"metrics":metrics,"fitting_count":len(s.get("fittings",[])),"native_executed":False})
-        out.append({"id":name,"program_sha256":digest(p),"signature_sha256":sig,"classification":c["classification"],"original_public_signature_collision":sig in historical,"global_peer_review":"pending","views":views})
+        out.append({"id":name,"program_sha256":digest(p),"signature_sha256":sig,"classification":c["classification"],"original_public_signature_collision":sig in historical,"global_peer_review":"pending","near_alias_review":("QUARANTINE_POTENTIAL_NEAR_ALIAS" if name in QUARANTINED_NEAR_ALIAS else "PENDING"),"views":views})
     return {"status":"SOURCE_ONLY_PASS","cases":out,"original_manifest_sha256":MANIFEST,
             "quarantined_candidate_ids":list(QUARANTINED_NEAR_ALIAS),
             "globally_admitted_signatures":0,"putative_new_signatures":len(signatures),
