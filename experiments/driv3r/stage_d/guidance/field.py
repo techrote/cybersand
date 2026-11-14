@@ -244,7 +244,8 @@ def export_bundle(prefix: Path, field: GuidanceField, *, seed: int, centre_densi
     field_path.parent.mkdir(parents=True, exist_ok=True)
     manifest = {
         "format": "cybersand.driv3r.guidance-bundle/0",
-        "source_kind": "imported_png" if source_png_sha256 else "procedural",
+        "source_kind": ("imported_png" if source_png_sha256 else
+                        ("airbrush" if authoring_parameters is not None else "manual_scalar")),
         "encoding": ENCODING,
         "frame": [field.x, field.y, field.width, field.height],
         "values": {"file": field_path.name, "bytes": len(numeric), "sha256": _digest(numeric)},
