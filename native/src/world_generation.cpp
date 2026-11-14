@@ -433,6 +433,7 @@ public:
         return Material::LimestoneBlock;
     }
 };
+#include "generation_architecture_modules.inc"
 } // namespace
 
 struct Generator::Impl {
@@ -1156,6 +1157,9 @@ ModuleRegistry ModuleRegistry::builtins() {
     r.add({"vault", 1, 24, [](const auto& i, auto seed) { return std::make_shared<Vault>(i, seed); }});
     r.add({"vault", 2, 28, [](const auto& i, auto seed) { return std::make_shared<Vault>(i, seed); }});
     r.add({"aqueduct", 1, 24, [](const auto& i, auto) { return std::make_shared<Aqueduct>(i); }});
+    r.add({"terraced", 1, 48, [](const auto& i, auto seed) { return std::make_shared<TerracedHabitat>(i, seed); }});
+    r.add({"hex_hive", 1, 112, [](const auto& i, auto) { return std::make_shared<HexHive>(i); }});
+    r.add({"arcade", 1, 60, [](const auto& i, auto seed) { return std::make_shared<ViaductArcade>(i, seed); }});
     return r;
 }
 
@@ -1170,7 +1174,7 @@ std::vector<Theme> Generator::builtin_themes() {
         {"garden", {"natural", "built"}, true, {Material::LimestoneBlock, Material::PackedEarth, Material::Plant, Material::Water}, {}}
     };
 }
-std::vector<std::string> Generator::builtin_modules() { return {"arcology", "vault", "aqueduct"}; }
+std::vector<std::string> Generator::builtin_modules() { return {"arcology", "vault", "aqueduct", "terraced", "hex_hive", "arcade"}; }
 
 std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleRegistry& registry) {
     require((recipe.schema == kSchemaVersion || recipe.schema == kTypedSchemaVersion ||
@@ -1395,6 +1399,8 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
     for (const auto& m : recipe.modules) module_ids.insert(m.id);
     for (auto& m : recipe.modules) {
         identifier(m.module); validate_rect(m.bounds);
+        if ((m.module == "terraced" || m.module == "hex_hive" || m.module == "arcade") && m.version == 1)
+            require(recipe.schema == kArchitecturalSchemaVersion, "new architectural modules require schema 4");
         if ((m.module == "arcology" || m.module == "vault") && m.version == 2) {
             require(recipe.schema == kArchitecturalSchemaVersion, "architectural module v2 requires recipe schema 4");
             // Explicit module values override inherited global defaults. Keep
