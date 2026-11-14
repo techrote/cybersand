@@ -1,0 +1,155 @@
+name: World-art preview real GUI qualification
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'godot/tools/world_art_*'
+      - 'godot/tools/world_design_pack_adapter.gd'
+      - 'godot/tests/world_art_preview_smoke.gd'
+      - 'godot/tests/test_world_design_pack_adapter.gd'
+      - 'docs/tools/world-art-preview.md'
+      - 'tools/world_art_preview_launcher.py'
+      - '.github/workflows/world-art-preview.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: world-art-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+env:
+  ART_REVISION: 05632d52e8bfb6ac302da1158653505ae203fbf6
+  GODOT_SILENCE_ROOT_WARNING: '1'
+
+jobs:
+  linux-opengl-llvmpipe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+          persist-credentials: false
+      - name: Read-only checkout of the exact #454 art sources
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 05632d52e8bfb6ac302da1158653505ae203fbf6
+          path: art-source
+          lfs: false
+          persist-credentials: false
+      - name: Prepare Godot 4.7 stable on Linux
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 \
+            -o "$RUNNER_TEMP/godot.zip" \
+            'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/engine"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/engine"
+          chmod +x "$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64"
+          "$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64" --headless --version
+      - name: Compile/import scripts and run exact RG8 geometry oracles
+        shell: bash
+        run: |
+          set -euo pipefail
+          GODOT="$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64"
+          python3 tools/world_art_preview_launcher.py --godot "$GODOT" --adapter-oracle \
+            2>&1 | tee build-world-art-adapter.log
+      - name: Launch the standalone scene via the documented Godot CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            timeout 180 python3 tools/world_art_preview_launcher.py \
+            --godot "$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64" \
+            --art-root="$GITHUB_WORKSPACE/art-source/docs/world-design" \
+            --design-revision="$ART_REVISION" --rendering-driver=opengl3 --quit-after=120 \
+            2>&1 | tee build-world-art-launch.log
+          if grep -Eq 'SCRIPT ERROR|Parse Error|ERROR: Error loading extension' build-world-art-launch.log; then exit 1; fi
+      - name: Run actual interactive GUI with screenshot and 120-feature coverage
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/world-art-linux
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            timeout 1500 python3 tools/world_art_preview_launcher.py \
+            --godot "$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64" \
+            --art-root="$GITHUB_WORKSPACE/art-source/docs/world-design" \
+            --design-revision="$ART_REVISION" --rendering-driver=opengl3 \
+            --export-root="$GITHUB_WORKSPACE/build/world-art-linux/exports" \
+            --smoke-output="$GITHUB_WORKSPACE/build/world-art-linux" \
+            2>&1 | tee build/world-art-linux/execution.log
+          if grep -Eq 'SCRIPT ERROR|Parse Error|ERROR: Error loading extension' build/world-art-linux/execution.log; then exit 1; fi
+      - name: Preserve Godot framebuffer evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: world-art-preview-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/world-art-linux/
+            build-world-art-adapter.log
+            build-world-art-launch.log
+          if-no-files-found: warn
+          retention-days: 30
+
+  windows-angle:
+    runs-on: windows-2022
+    timeout-minutes: 35
+    defaults:
+      run:
+        shell: bash
+    env:
+      GODOT_WINDOWS_SHA512: 41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+          persist-credentials: false
+      - name: Read-only exact #454 world art
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 05632d52e8bfb6ac302da1158653505ae203fbf6
+          path: art-source
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Download source-pinned Windows Godot and verify archive
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 900 \
+            -o "$RUNNER_TEMP/world-art-godot.zip" \
+            'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          python -c 'import hashlib,os; p=os.path.join(os.environ["RUNNER_TEMP"],"world-art-godot.zip"); assert hashlib.sha512(open(p,"rb").read()).hexdigest()==os.environ["GODOT_WINDOWS_SHA512"]'
+          python -c 'import zipfile,os; d=os.environ["RUNNER_TEMP"]; zipfile.ZipFile(os.path.join(d,"world-art-godot.zip")).extractall(os.path.join(d,"world-art-engine"))'
+      - name: Import scripts and execute real Windows ANGLE GUI smoke
+        run: |
+          set -euo pipefail
+          mkdir -p build/world-art-windows
+          ENGINE="$RUNNER_TEMP/world-art-engine/Godot_v4.7-stable_win64_console.exe"
+          python tools/world_art_preview_launcher.py --godot "$ENGINE" --adapter-oracle \
+            2>&1 | tee build/world-art-windows/import.log
+          python tools/world_art_preview_launcher.py --godot "$ENGINE" \
+            --rendering-driver=opengl3_angle \
+            --art-root="$GITHUB_WORKSPACE/art-source/docs/world-design" \
+            --design-revision="$ART_REVISION" \
+            --export-root="$GITHUB_WORKSPACE/build/world-art-windows/exports" \
+            --smoke-output="$GITHUB_WORKSPACE/build/world-art-windows" \
+            2>&1 | tee build/world-art-windows/execution.log
+          if grep -Eq 'SCRIPT ERROR|Parse Error|ERROR: Error loading extension' build/world-art-windows/execution.log; then exit 1; fi
+      - name: Preserve ANGLE original framebuffer evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: world-art-preview-windows-angle-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/world-art-windows/
+          if-no-files-found: warn
+          retention-days: 30
