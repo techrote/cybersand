@@ -8,6 +8,7 @@ import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from campaign_gate import (
     validate, TRAIN_SHA, COMPILER_SHA, ORIGINAL_SAMPLE_ORDER, MODEL_HASHES,
+    TARGET_EXPRESSION, TARGET_PATHS,
 )
 
 SOURCE = "e" * 40
@@ -24,6 +25,10 @@ def fixture(steps=48):
                   "trust_remote_code": False, "license": "lfm1.0",
                   "card_license": "other",
                   "required_hashes": dict(MODEL_HASHES),
+                  "lora_targets": TARGET_EXPRESSION,
+                  "lora_target_paths": sorted(TARGET_PATHS),
+                  "framing": {"eos_token_id": 7, "images": False,
+                              "tools": False},
                   "expected_inventory": {"language_linear_targets": 92,
                                          "lora_parameters": 2998272}},
         "model_files": {name: {"sha256": sha, "bytes": 1024}
@@ -162,6 +167,14 @@ class GateTests(unittest.TestCase):
              lambda c: c["model_files"].pop("model.safetensors")),
             ("wrong license", lambda c: c["model"].update(card_license="apache-2.0")),
             ("wrong loader", lambda c: c["model"].update(loader="Lfm2Model")),
+            ("wrong LoRA expression",
+             lambda c: c["model"].update(lora_targets="q_proj")),
+            ("wrong LoRA target",
+             lambda c: c["model"]["lora_target_paths"].__setitem__(0, "vision.q_proj")),
+            ("wrong EOS",
+             lambda c: c["model"]["framing"].update(eos_token_id=2)),
+            ("image mode enabled",
+             lambda c: c["model"]["framing"].update(images=True)),
             ("wrong LoRA inventory",
              lambda c: c["model"]["expected_inventory"].update(lora_parameters=1)),
             ("wrong seed", lambda c: c.update(seed=999)),
