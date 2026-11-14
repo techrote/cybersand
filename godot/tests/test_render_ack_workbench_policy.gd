@@ -14,3 +14,8 @@ func _initialize() -> void:
 	ProjectSettings.set_setting("cybersand/native_worker_threads", worker_count)
 	print("RENDER_ACK_WORKBENCH: workers=", worker_count)
 	super._initialize()
+
+# Software-rendered 2048-square setup may exceed the generic 30-second UI
+# watchdog on Windows Basic Render Driver. Preserve the original predicate.
+func wait_for(predicate: Callable, millis: int = 120000) -> bool:
+	return await super.wait_for(predicate, millis)
