@@ -1,0 +1,93 @@
+name: SMOL P01 original-native admission offer (review only)
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths:
+      - experiments/agent_painter/lanes/smol/P01_SHARED_ADMISSION_REVIEW_OFFER.json
+      - experiments/agent_painter/lanes/smol/check_p01_admission_review.py
+      - .github/workflows/agent-painter-smol-p01-offer.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: smol-p01-review-only-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  verify-native-offer:
+    name: Rehash original Art ZIP and two P01 material/receipt seed views; no TRAIN
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Pin exact GitHub-hosted source and CI policy
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = "github-hosted"
+          test "$GITHUB_REF" = "refs/heads/codex/agent-painter-smol-568"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/smol-p01-scheduling.json
+      - name: Fetch immutable original GitHub Actions native archive (not a repack)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/p01-review
+          gh api /repos/techrote/cybersand/actions/artifacts/14117110667/zip \
+            > evidence/p01-review/original-native.zip
+          test -s evidence/p01-review/original-native.zip
+          echo '71ddc40478e06e3350f05eecd5e16ed77c082300f066be97bbccf8afb2370ff1  evidence/p01-review/original-native.zip' | sha256sum -c -
+      - name: Native Art byte and semantic proof
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check 'Pillow==13.0.0'
+          python3 experiments/agent_painter/lanes/smol/check_p01_admission_review.py \
+            --offer experiments/agent_painter/lanes/smol/P01_SHARED_ADMISSION_REVIEW_OFFER.json \
+            --proposals experiments/agent_painter/lanes/smol/curriculum_proposals_v2.json \
+            --original-zip evidence/p01-review/original-native.zip \
+            --output evidence/p01-review/verification.json
+          python3 - <<'PY'
+          import copy, json, tempfile
+          from pathlib import Path
+          from experiments.agent_painter.lanes.smol.check_p01_admission_review import check
+          root=Path("experiments/agent_painter/lanes/smol")
+          offer=json.loads((root/"P01_SHARED_ADMISSION_REVIEW_OFFER.json").read_text())
+          original=root/"curriculum_proposals_v2.json"
+          archive=Path("evidence/p01-review/original-native.zip")
+          cases=[
+            ("fabricated-admission",lambda x: x.update(admitted_train_groups=1)),
+            ("misleading-heldout",lambda x: x["observed_topology"].update(tees=3)),
+            ("tampered-image",lambda x: x["cases"]["104729"].update(png_sha256="0"*64)),
+            ("seed-duplication",lambda x: x.update(structural_groups=2)),
+          ]
+          for label,mutate in cases:
+            bad=copy.deepcopy(offer)
+            mutate(bad)
+            with tempfile.TemporaryDirectory() as temp:
+              path=Path(temp)/"invalid.json"
+              path.write_text(json.dumps(bad))
+              try:
+                check(path,original,archive)
+              except ValueError:
+                print("Refused "+label)
+              else:
+                raise AssertionError("failed to reject "+label)
+          receipt=json.loads(Path("evidence/p01-review/verification.json").read_text())
+          assert receipt["status"]=="PASS_REVIEW_ONLY_NOT_SHARED_TRAIN_ADMISSION"
+          assert receipt["original_seed_views_verified"]==2
+          assert receipt["independent_structural_groups"]==1
+          assert receipt["raster_pixels_verified"]==36864
+          assert receipt["admitted_train_groups"]==receipt["training_steps"]==0
+          print("P01 source/native offer PASS; TRAIN remains HOLD")
+          PY
+      - name: Preserve review-only receipts on success or failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: smol-p01-review-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/p01-review/verification.json
+          if-no-files-found: warn
+          retention-days: 90
