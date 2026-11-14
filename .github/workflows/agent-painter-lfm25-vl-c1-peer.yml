@@ -1,0 +1,66 @@
+name: LFM C1 pinned Greebles cross-lane source-box review (NOT TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - 'experiments/agent_painter/lanes/lfm25_vl/c1_peer_review.py'
+      - 'experiments/agent_painter/lanes/lfm25_vl/test_c1_peer_review.py'
+      - '.github/workflows/agent-painter-lfm25-vl-c1-peer.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: lfm25-c1-peer-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-box-review:
+    name: Four pinned peer programs; no model, Art, FINAL or admission
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Exact lane, provider policy and source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/codex/agent-painter-lfm25-vl-568"
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/lfm-c1-ci-policy.json
+      - name: Adversarial model-free peer witness tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s experiments/agent_painter/lanes/lfm25_vl -p 'test_c1_peer_review.py' -v
+      - name: Fetch two exact peer source blobs (not models or held-out targets)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/c1-peer
+          curl --fail --silent --show-error --location --retry 2 --connect-timeout 10 --max-time 45 \
+            'https://raw.githubusercontent.com/techrote/cybersand/ea056e395295f1fd3f8ed64c039b746555060d61/experiments/agent_painter/lanes/void/v3_research_proposals.json' \
+            --output evidence/c1-peer/void-v3.json
+          curl --fail --silent --show-error --location --retry 2 --connect-timeout 10 --max-time 45 \
+            'https://raw.githubusercontent.com/techrote/cybersand/917425fee7c2b4a5ede2d9d8bbf085d4b4091d63/experiments/agent_painter/lanes/sprocket/threefamily_v3.py' \
+            --output evidence/c1-peer/sprocket-v3.py
+      - name: Verify pinned blobs and compare literal panel-box motifs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/lfm25_vl/c1_peer_review.py \
+            --lfm experiments/agent_painter/lanes/lfm25_vl/contrastive_proposals_v1.json \
+            --void evidence/c1-peer/void-v3.json \
+            --sprocket evidence/c1-peer/sprocket-v3.py \
+            --output evidence/c1-peer/receipt.json
+      - name: Preserve bounded positive or partial/failure receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lfm-c1-peer-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/c1-peer/receipt.json
+          if-no-files-found: warn
+          retention-days: 90
