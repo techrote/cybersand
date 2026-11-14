@@ -75,7 +75,9 @@ def legal_catalog(before: Sequence[int], options: Sequence[Any], *,
              "World dimensions invalid under frozen M1 schema")
     _require(callable(legal_cell), "Explicit legality authority required")
     origin = _point(before, width, height)
-    _require(bool(legal_cell(origin)), "Pre-decision position blocked")
+    origin_admission = legal_cell(origin)
+    _require(type(origin_admission) is bool and origin_admission,
+             "Pre-decision position blocked or authority did not return boolean")
     _require(type(options) in (tuple, list) and 1 <= len(options) <= 33,
              "Invalid bounded candidate menu")
     canonical = []
@@ -106,8 +108,10 @@ def legal_catalog(before: Sequence[int], options: Sequence[Any], *,
                 point = _point(p, width, height)
                 _require(abs(point[0] - cursor[0]) + abs(point[1] - cursor[1]) == 1,
                          "Noncardinal, discontinuous or duplicate swept step")
-                _require(bool(legal_cell(point)),
-                         "Swept segment crosses forbidden, protected or material-Z cell")
+                admitted = legal_cell(point)
+                _require(type(admitted) is bool and admitted,
+                         "Swept segment crosses forbidden, protected or material-Z cell; "
+                         "legality authority must return boolean")
                 swept.append(list(point))
                 cursor = point
             end, mode = cursor, "cursor_move"
