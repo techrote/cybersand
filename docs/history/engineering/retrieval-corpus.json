@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "authority": "historical-non-authoritative",
+  "retrieval": "explicit-history-only",
+  "policy": "historical-isolation-v1",
+  "documents": [
+    "history/engineering/README.md",
+    "history/engineering/REPORT.md",
+    "history/engineering/SCHEMA.md",
+    "history/engineering/families/simulation.md",
+    "history/engineering/families/state.md",
+    "history/engineering/families/runtime.md",
+    "history/engineering/families/governance.md",
+    "history/engineering/views/coverage.md",
+    "history/engineering/views/salvage.md",
+    "history/engineering/views/doctrine.md",
+    "history/engineering/views/opportunities.md",
+    "history/engineering/sources/m0-report.md",
+    "history/engineering/qa/review.md"
+  ],
+  "link_expansion": false,
+  "cache_policy": "No persistent cache is read by the repository evaluator. External indexes must rebuild with per-chunk authority; do not reuse undifferentiated old chunks."
+}

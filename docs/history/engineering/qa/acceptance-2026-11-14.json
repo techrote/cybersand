@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "authority": "historical-non-authoritative",
+  "reviewed_utc": "2026-11-14T05:41:13.958705+00:00",
+  "reviewed_capture_head": "f73526282cffd3b81c332d84124c5567b3599d08",
+  "accepted_main": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742",
+  "owner_authorisation": "https://github.com/techrote/cybersand/issues/571#issuecomment-6872536702",
+  "authorisation_scope": "Owner explicitly authorised review/refinement, Ready and merge of #584; M2 proposal preparation only, no successor creation before text approval.",
+  "independent_review": "Substantive capture, individual coverage, sampled four fates, owner intent and all 372 evidence manifest entries independently checked; one parser-key defect found and rechecked after correction.",
+  "resolved_defect": "Quoted, whitespace-padded, indented and JSON-escaped authority keys now use one shared field reader in retrieval and documentation validation. Unsupported key syntax and duplicate authority declarations fail closed.",
+  "changed_source_sha256": {
+    "tools/docs/retrieval_policy.py": "4ef09f096a61ba30f6c16b3465537e0baca27dc6d8637680dc4c877503848203",
+    "tools/docs/retrieval_eval.py": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+    "tools/ci/check_docs.py": "69cec3189b81770c26b368884f37c6351a5a2a150ac0c57aa06cfec9e5e55e5e",
+    "tools/ci/test_historical_retrieval.py": "0b38f09152af71322ed95f7decb0d7dcea9902d1225f42e861eb73354cf938cd"
+  },
+  "validation": {
+    "validation_contract_tests": 33,
+    "historical_containment_tests": 16,
+    "test_status": "passed",
+    "archive_check": "passed; 274 assessed,582 indexed,98 findings",
+    "docs_check": "passed; 132 docs,257 canonical claims,3880 links,749 anchors",
+    "independent_recheck": "accepted; no remaining merge blocker identified",
+    "evidence_custody_recheck": "372/372 manifest entries match; three nested original archive hashes match",
+    "retrieval": {
+      "frozen": {
+        "created_utc": "2026-11-14T05:40:33.672896+00:00",
+        "document_count": 132,
+        "chunk_count": 1762,
+        "summary": {
+          "questions": 32,
+          "canonical_hit_at_1": 19,
+          "canonical_hit_at_k": 30,
+          "mrr_at_k": 0.7318,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        },
+        "fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+        "evaluator_sha256": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+        "authority_policy_sha256": "4ef09f096a61ba30f6c16b3465537e0baca27dc6d8637680dc4c877503848203",
+        "corpus_manifest_sha256": "a0829ecd3b436466042fe260dce4756e43c698dc833bd42b24aecac86cfb2216",
+        "authority_mismatches": 0
+      },
+      "challenges": {
+        "created_utc": "2026-11-14T05:40:35.451433+00:00",
+        "document_count": 132,
+        "chunk_count": 1762,
+        "summary": {
+          "questions": 164,
+          "canonical_hit_at_1": 129,
+          "canonical_hit_at_k": 162,
+          "mrr_at_k": 0.8713,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        },
+        "fixture_sha256": "37a9702dd65001d45ccc0b508bd713d5cffa435c8e8b5c8bc64a1eaf3ab25880",
+        "evaluator_sha256": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+        "authority_policy_sha256": "4ef09f096a61ba30f6c16b3465537e0baca27dc6d8637680dc4c877503848203",
+        "corpus_manifest_sha256": "a0829ecd3b436466042fe260dce4756e43c698dc833bd42b24aecac86cfb2216",
+        "authority_mismatches": 0
+      },
+      "owner": {
+        "created_utc": "2026-11-14T05:40:35.933085+00:00",
+        "document_count": 132,
+        "chunk_count": 1762,
+        "summary": {
+          "questions": 6,
+          "canonical_hit_at_1": 4,
+          "canonical_hit_at_k": 4,
+          "mrr_at_k": 0.6667,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        },
+        "fixture_sha256": "9fdb9037f4b992256d81a621968e83bc3cd34d6030f34d467461c817ead3b37d",
+        "evaluator_sha256": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+        "authority_policy_sha256": "4ef09f096a61ba30f6c16b3465537e0baca27dc6d8637680dc4c877503848203",
+        "corpus_manifest_sha256": "a0829ecd3b436466042fe260dce4756e43c698dc833bd42b24aecac86cfb2216",
+        "authority_mismatches": 0
+      },
+      "historical": {
+        "created_utc": "2026-11-14T05:40:36.112540+00:00",
+        "document_count": 13,
+        "chunk_count": 331,
+        "summary": {
+          "questions": 10,
+          "canonical_hit_at_1": 7,
+          "canonical_hit_at_k": 10,
+          "mrr_at_k": 0.8033,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        },
+        "fixture_sha256": "a0e5a6828dc014014cfdf0fcee9fb7d4fdf01d01ce050e1ade5ee4c759e9ad22",
+        "evaluator_sha256": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+        "authority_policy_sha256": "4ef09f096a61ba30f6c16b3465537e0baca27dc6d8637680dc4c877503848203",
+        "corpus_manifest_sha256": "cc5d22a677d0f6e5c072965e276ae9143919b8b55dd79940eb10f069c62f13fa",
+        "authority_mismatches": 0
+      }
+    }
+  },
+  "limits": [
+    "Prior M1 validation/custody records remain dated evidence, unchanged.",
+    "Owner-route misses and stale current Markdown remain for separately authorised reconciliation.",
+    "No engine runtime behavior or performance was altered or newly qualified by these local checks.",
+    "Hosted exact-head Ready checks and merge outcome are recorded in PR584 and governing issue571, not inferred from local tests."
+  ]
+}

@@ -14,6 +14,11 @@ import math
 from pathlib import Path
 import re
 
+try:
+    from .retrieval_policy import POLICY_VERSION, HISTORICAL_AUTHORITY, require_authority, frontmatter_field
+except ImportError:  # direct CLI execution
+    from retrieval_policy import POLICY_VERSION, HISTORICAL_AUTHORITY, require_authority, frontmatter_field
+
 STOP = set("a an and are as at be been but by can do does for from had has have how i if in into is it its may me my no not of on or our should so that the their them there these they this those to too was we were what when where which who why will with would you your".split())
 FOCUSED = {"architecture", "systems", "operations", "reference", "decisions", "research"}
 
@@ -25,15 +30,19 @@ def metadata_and_body(text: str) -> tuple[dict, str]:
     if text.startswith("---\n"):
         header, body = text[4:].split("\n---", 1)
         for line in header.splitlines():
-            if ":" in line and not line.startswith(" "):
-                key, value = line.split(":", 1)
-                metadata[key] = value.strip()
+            field = frontmatter_field(line)
+            if field is not None:
+                key, value = field
+                if key == "authority" and key in metadata:
+                    raise ValueError("Duplicate frontmatter authority")
+                metadata[key] = value
         return metadata, body.strip()
     return metadata, text
 
-def selected_paths(root: Path) -> list[Path]:
+def selected_paths(root: Path, historical: bool = False) -> list[Path]:
+    root = root.resolve()
     docs = root / "docs"
-    manifest = docs / "reference/retrieval-corpus.json"
+    manifest = docs / ("history/engineering/retrieval-corpus.json" if historical else "reference/retrieval-corpus.json")
     if manifest.exists():
         entries = json.loads(manifest.read_text(encoding="utf-8-sig"))["documents"]
         paths = [(docs / (entry if isinstance(entry, str) else entry["path"])).resolve() for entry in entries]
@@ -44,11 +53,19 @@ def selected_paths(root: Path) -> list[Path]:
         missing = [str(p) for p in paths if not p.is_file()]
         if missing:
             raise ValueError("Missing corpus documents: " + ", ".join(missing))
+        for path in paths:
+            meta, _ = metadata_and_body(path.read_text(encoding="utf-8-sig"))
+            require_authority(path, root, historical=historical, metadata=meta)
         return sorted(paths, key=lambda p: p.relative_to(root).as_posix())
+    if historical:
+        raise ValueError("Explicit historical corpus manifest is required")
     paths = [p for p in docs.rglob("*.md")
              if p.relative_to(docs).parts[0] in FOCUSED
              or p.relative_to(docs).as_posix() == "README.md"]
     paths.extend(p for p in (root / "README.md", root / "AGENTS.md") if p.exists())
+    for path in paths:
+        meta, _ = metadata_and_body(path.read_text(encoding="utf-8-sig"))
+        require_authority(path, root, historical=False, metadata=meta)
     return sorted(paths, key=lambda p: p.relative_to(root).as_posix())
 
 def split_section(text: str, max_words: int) -> list[str]:
@@ -56,11 +73,21 @@ def split_section(text: str, max_words: int) -> list[str]:
     words = text.split()
     return [" ".join(words[start:start+max_words]) for start in range(0, len(words), max_words)]
 
-def chunk_document(path: Path, root: Path, max_words: int) -> list[dict]:
+def chunk_document(path: Path, root: Path, max_words: int, historical: bool = False) -> list[dict]:
+    path, root = path.resolve(), root.resolve()
     text = path.read_text(encoding="utf-8-sig").replace("\r\n", "\n")
     meta, body = metadata_and_body(text)
+    authority = require_authority(path, root, historical=historical, metadata=meta)
     title = meta.get("title", next((line[2:] for line in body.splitlines() if line.startswith("# ")), path.stem))
     envelope = "\n".join(f"{key}: {meta[key]}" for key in ("document-kind", "status", "scope", "canonical-for", "last-reviewed") if key in meta)
+    if historical:
+        envelope = (f"authority: {HISTORICAL_AUTHORITY}\nretrieval-mode: explicit-history-only\n"
+                    "status: Historical evidence; NOT current instructions or implementation approval\n"
+                    f"source-status: {meta.get('status', 'unlabelled')} (historical source label only)\n"
+                    f"scope: {meta.get('scope', 'Historical engineering evidence')}\n"
+                    f"last-reviewed: {meta.get('last-reviewed', 'unknown')}")
+    else:
+        envelope = f"authority: {authority}\n" + envelope
     sections = []
     headings = []
     lines = []
@@ -86,14 +113,15 @@ def chunk_document(path: Path, root: Path, max_words: int) -> list[dict]:
     for heading, text in sections:
         for part, chunk in enumerate(split_section(text, max_words), 1):
             rendered = f"Document: {title}\nPath: {relative}\n{envelope}\nSection: {heading}\n{chunk}"
-            result.append({"path": relative, "title": title, "heading": heading, "part": part, "text": rendered})
+            result.append({"path": relative, "title": title, "heading": heading, "part": part, "authority": authority, "retrieval_policy": POLICY_VERSION, "text": rendered})
     return result
 
-def evaluate(root: Path, queries: Path, output: Path, k: int, max_words: int):
+def evaluate(root: Path, queries: Path, output: Path, k: int, max_words: int, historical: bool = False):
     if k < 1 or max_words < 1:
         raise ValueError("k and max-words must be positive")
-    paths = selected_paths(root)
-    chunks = [c for p in paths for c in chunk_document(p, root, max_words)]
+    paths = selected_paths(root, historical)
+    manifest_path = root / "docs" / ("history/engineering/retrieval-corpus.json" if historical else "reference/retrieval-corpus.json")
+    chunks = [c for p in paths for c in chunk_document(p, root, max_words, historical)]
     if not chunks:
         raise ValueError("Retrieval corpus contains no nonempty text chunks")
     counts = [Counter(tokens(c["text"])) for c in chunks]
@@ -125,11 +153,18 @@ def evaluate(root: Path, queries: Path, output: Path, k: int, max_words: int):
         "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
     }
     report = {
+        "retrieval_policy": POLICY_VERSION,
+        "authority": HISTORICAL_AUTHORITY if historical else "current-documentation",
+        "historical_opt_in": historical,
+        "link_expansion": False,
+        "cache_policy": "No persistent cache is read; external caches require rebuild with this policy and per-chunk authority.",
         "created_utc": datetime.now(timezone.utc).isoformat(), "corpus_root": str(root),
-        "method": {"name":"heading-chunk BM25 lexical development baseline", "k":k,"maximum_body_words":max_words,"overlap_words":0,"k1":1.2,"b":0.75,"metadata":"title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present","query_expansion":False,"stemming":False,"reranker":False,"embeddings":False,"corpus_policy":"explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"},
+        "method": {"name":"heading-chunk BM25 lexical development baseline", "k":k,"maximum_body_words":max_words,"overlap_words":0,"k1":1.2,"b":0.75,"metadata":"title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present","query_expansion":False,"stemming":False,"reranker":False,"embeddings":False,"corpus_policy":("explicit isolated historical manifest required; every chunk is historical non-authoritative" if historical else "explicit current manifest if present; otherwise focused directories plus navigation README/AGENTS; historical paths and tagged copies rejected")},
         "fixture_sha256": hashlib.sha256(queries.read_bytes()).hexdigest(),
         "evaluator_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-        "corpus_manifest_sha256": hashlib.sha256((root / "docs/reference/retrieval-corpus.json").read_bytes()).hexdigest() if (root / "docs/reference/retrieval-corpus.json").is_file() else None,
+        "corpus_manifest_sha256": hashlib.sha256(manifest_path.read_bytes()).hexdigest() if manifest_path.is_file() else None,
+        "corpus_manifest": manifest_path.relative_to(root).as_posix(),
+        "authority_policy_sha256": hashlib.sha256((Path(__file__).parent / "retrieval_policy.py").read_bytes()).hexdigest(),
         "corpus": [{"path":p.relative_to(root).as_posix(),"sha256":hashlib.sha256(p.read_bytes()).hexdigest(),"bytes":p.stat().st_size} for p in paths],
         "document_count":len(paths),"chunk_count":n,"summary":summary,"results":rows
     }
@@ -152,5 +187,6 @@ if __name__ == "__main__":
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--k",type=int,default=5)
     parser.add_argument("--max-words",type=int,default=420)
+    parser.add_argument("--historical", action="store_true", help="Explicitly select the isolated historical corpus; never mixes current answers")
     args = parser.parse_args()
-    evaluate(args.root.resolve(),args.queries.resolve(),args.output.resolve(),args.k,args.max_words)
+    evaluate(args.root.resolve(),args.queries.resolve(),args.output.resolve(),args.k,args.max_words,args.historical)

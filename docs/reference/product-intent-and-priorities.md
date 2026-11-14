@@ -10,6 +10,16 @@ related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approxim
 
 # Product intent and priorities
 
+## Owner clarification — 2026-11-14
+
+The [dated owner clarification](../decisions/2026-11-14-owner-authoring-intent.md)
+records the current paint-and-play Workbench direction, convincing behaviour,
+prepared-destruction exploration, Save/Flatten intent, live material audition,
+Strata presentation, broad canvases and game-time catch-up. Use that scoped record
+for these questions. Earlier dated passages below preserve their original scope;
+neither this clarification nor historical execution wording grants new work or
+merge permission.
+
 ## Shared workbench convergence — 2026-11-08
 
 **Approved:** exploratory desktop, painting, agent and remote implementations

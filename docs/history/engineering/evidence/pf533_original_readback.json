@@ -1,0 +1,61 @@
+{
+  "authority": "historical-non-authoritative",
+  "source_receipt": {
+    "authority": "historical-non-authoritative",
+    "artifact_id": 13579714630,
+    "run_id": 42387965594,
+    "zip_sha256": "c1626a070e6bebd79d56cd2004adb788d6010d2f9eb9cd0470dea7054d339174",
+    "zip_bytes": 29101,
+    "zip_crc_ok": true,
+    "checks": [
+      {
+        "arm": "B1",
+        "original_log_hash_matches": true,
+        "reduction_record_matches_raw": true,
+        "cpu_seconds": 66.03999999999999,
+        "headless": true
+      },
+      {
+        "arm": "C1",
+        "original_log_hash_matches": true,
+        "reduction_record_matches_raw": true,
+        "cpu_seconds": 65.03999999999999,
+        "headless": true
+      },
+      {
+        "arm": "C2",
+        "original_log_hash_matches": true,
+        "reduction_record_matches_raw": true,
+        "cpu_seconds": 65.76,
+        "headless": true
+      },
+      {
+        "arm": "B2",
+        "original_log_hash_matches": true,
+        "reduction_record_matches_raw": true,
+        "cpu_seconds": 64.28,
+        "headless": true
+      }
+    ],
+    "base_source": "81bbd5ff5cf366159e2b8a630609359c13560080",
+    "candidate_source": "fa1b2e398acb1986158cb1652b49c935227416ca",
+    "native_tick_p50_paired_gains_percent": [
+      2.707224331859894,
+      -2.2326886131318324
+    ],
+    "median_native_tick_p50_gain_percent": 0.23726785936403072,
+    "median_whole_run_cpu_gain_percent": -0.39409654234559344,
+    "inspection": "offline original-byte/log/reduction readback only; zero engine executions",
+    "limitations": [
+      "Snapshot simulation_time_ms is elapsed native tick wall time, not gas-stage or process CPU",
+      "GDScript workbench lacks native physical-state hash and full gas/Water conservation ledger",
+      "Ordinary asynchronous native/Rapier scheduling may give different actor/jet timing; no physical identity claimed",
+      "Two same-host paired repetitions of one 2048x1024 canvas do not establish universal performance",
+      "No merger or production runtime publication is authorized by this experimental measurement",
+      "Complete-run process-tree CPU includes setup/renderer/actor cost, not gas-stage CPU",
+      "Native parity failure is separately source-anchored recorded review evidence; native job logs not downloaded in this receipt.",
+      "Per-snapshot raw timing arrays are absent; do not claim regeneration of each run quantile."
+    ]
+  },
+  "qualification_limit": "Original retained observations inspected only; no candidate execution or present-platform qualification."
+}
