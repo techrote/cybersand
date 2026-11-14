@@ -291,6 +291,35 @@ func compiler_contracts() -> void:
 	write_json("project-default.json", input)
 	write_json("project-custom.json", imported.get("project", {}))
 
+func native_algorithm_gallery() -> void:
+	var samples := {}
+	var builtins: Array = Project.builtin_presets()
+	for algorithm: String in ["terraced", "hex_hive", "arcade"]:
+		var style: Dictionary = {}
+		for preset: Dictionary in builtins:
+			if preset.module == algorithm: style = preset.duplicate(true)
+		if not check(not style.is_empty(), "gallery includes native algorithm: " + algorithm): continue
+		var project: Dictionary = Project.default_project()
+		project.seed = 161803
+		project.extent = [512,512]
+		project.styles = [{"enabled":true,"share":100.0,"preset":style}]
+		var compiled: Dictionary = Project.compile(project)
+		if not check(compiled.get("ok",false), "single native algorithm compiles: " + algorithm): continue
+		var data: Dictionary = generation(compiled.recipe, Rect2i(0,0,512,512))
+		if not data.has("cells"): continue
+		samples[algorithm] = data.cells
+		var png_us := preview("new-algorithm-" + algorithm, data.cells, Vector2i(512,512))
+		report.cases.append({"case":"new-native-architectural-algorithm", "algorithm":algorithm,
+			"module_version":1, "seed":project.seed, "material_sha256":data.material_sha256,
+			"recipe_sha256":data.recipe_sha256, "preview_colour_and_png_us":png_us})
+	check(samples.size() == 3, "three new native architectural algorithm maps rendered")
+	if samples.size() == 3:
+		for pair: Array in [["terraced","hex_hive"],["terraced","arcade"],["hex_hive","arcade"]]:
+			var delta: int = changed_cells(samples[pair[0]],samples[pair[1]])
+			check(delta > 1000, "native geometry differs across " + str(pair))
+			report.cases.append({"case":"native-algorithm-difference",
+				"first":pair[0],"second":pair[1],"different_material_cells":delta})
+
 func native_contracts() -> void:
 	compiler_contracts()
 	var hashes: Dictionary = {}
@@ -597,7 +626,9 @@ func run() -> void:
 	report.os = OS.get_name()
 	report.display = DisplayServer.get_name()
 	if check(ClassDB.class_exists(&"CyberWorldGenerator"), "native generator runtime available"):
-		if phase == "native": native_contracts()
+		if phase == "native":
+			native_algorithm_gallery()
+			native_contracts()
 		elif phase in ["author", "reopen"]: await authoring(phase == "reopen")
 		else: check(false, "unknown qualification phase")
 	check(complete, "mandatory complete " + phase + " phase")
