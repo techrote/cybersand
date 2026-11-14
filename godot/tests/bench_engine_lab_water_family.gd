@@ -259,6 +259,15 @@ func _finish() -> void:
 func _run() -> void:
 	_host = load("res://main.tscn").instantiate()
 	root.add_child(_host)
+	# Project startup defaults to 1920x1080. Resize AFTER the Main scene is
+	# adopted; resizing in SceneTree._initialize is overwritten by Main startup.
+	root.mode = Window.MODE_WINDOWED
+	root.size = RENDER_WINDOW
+	await process_frame
+	if not check(root.size == RENDER_WINDOW,
+		"graphical host admits exact 1600x900 window before World construction"):
+		await _finish()
+		return
 	if not check(await _wait_for(Callable(self,"_initial_ready"),INSTALL_TIMEOUT_MS),
 		"Shared Workbench first native World installed"):
 		await _finish()
@@ -297,6 +306,10 @@ func _run() -> void:
 		await _finish()
 		return
 	_host.shared_workbench._set_view(CAMERA_ORIGIN,CAMERA_VIEW)
+	# A secondary Workbench popup may request viewport refit; re-assert before
+	# sampling and independently verify again in the final receipt.
+	root.size = RENDER_WINDOW
+	await process_frame
 	check(_host.current_view_size == CAMERA_VIEW
 		and _host.camera_origin == CAMERA_ORIGIN,
 		"identical viewport and interest window to each other campaign arm")
