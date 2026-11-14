@@ -11,6 +11,34 @@
 - Verification: `python3 -m unittest discover -s experiments/driv3r/stage_d/guidance -p 'test_m1_compat.py' -v` — **10/10 offline synthetic tests PASS**, locally using exact GitHub-committed blobs `310eaa28505e80ae1e6d6b01b3eafc3ea646a53b` (adapter) and `7b90fe83154dcf0b561c1c39e986ca6086451e88` (tests). These tests verify wire-field mapping and adversarial rejection, **not** complete M1 five-record semantic conformance, actual native evidence or the previously committed D-1B suites.
 - **Gates:** The M1 contract itself is accepted; the D-1B lane remains **Draft/HOLD**. No branch rebase or shared-workflow repair has been performed by this lane due to exclusive write ownership. M2 single-owner reconciliation and full schema/cross-record qualification remain pending; M3 native execution and M4 formal A/B comparisons require later separate approval.
 
+## M2 lane-only provenance hardening (14 November 2026)
+
+The synthetic adapter now checks **every arm-visible numeric channel copy** against
+its declared raw byte length and SHA-256. Previously A1/A2 corruption of the
+mandatory scalar could be obscured by a valid later A3 copy during
+semantic-ID de-duplication. It also recomputes the canonical legal-candidate
+digest from strict host-declared footprints, checks the original producer's
+per-arm model-view hash, requires matching audit arm/protocol/host-catalog
+identity, and rejects nonempty unregistered-channel use. No legal-candidate
+set or native permission may be derived from guidance.
+
+The `test_m1_compat.py` fixture now invokes the actual lane-local
+`information.make_shadow_arms` producer rather than manufacturing incomplete
+audit stubs. Six additional adversarial methods cover hidden early/middle-arm
+scalar corruption, altered model-view digests, host-catalog mutation despite
+matched arms, legal-catalog ledger drift and undeclared channel semantics.
+Its 16 cases remain **synthetic**. Run:
+
+```bash
+python3 -m unittest discover -s experiments/driv3r/stage_d/guidance -p 'test_*.py' -v
+```
+
+These newly committed tests have **not** been independently executed in
+this run. A green generic Stage A workflow does not establish their success.
+The single M2 integration owner must perform exact-source offline-suite and
+five-record M1 validation after reconciliation. No native execution, image
+conditioning, real Undo or experimental dispatch is authorized by this patch.
+
 ## Capabilities and limits
 
 - Pure-stdlib deterministic, world-aligned scalar preference field `H` in unsigned **u16 little-endian**, with row-major numeric bytes, dimensions, world origin and SHA-256. A scalar zero is **neutral**, not illegal. Hard exclusions remain exclusively native.
