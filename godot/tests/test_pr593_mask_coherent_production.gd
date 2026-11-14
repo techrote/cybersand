@@ -157,6 +157,9 @@ func _run() -> void:
 					# without changing the same actual physical RID.
 					OS.set_environment("CYBERSAND_DIAG_FLYER_POSE","mask")
 					_render_scene("mask_baseline",bound,"bound","baseline")
+					require(host.workbench_presentation_last.get("status")=="mask_baseline"
+						and int(host.workbench_presentation_last.get("safe_live",-1))==0,
+						"mask baseline reports inactive admission, never stale safe-live statistics")
 					OS.set_environment("CYBERSAND_DIAG_FLYER_POSE","")
 					# Active previous-texture crossfade: unknown old material
 					# must fall back even though today's World is clear.
@@ -201,6 +204,27 @@ func _run() -> void:
 						invalid_frame["epoch"]=int(invalid_frame.get("epoch",0))+1
 						require(host._safe_workbench_presentation_poses(invalid_frame).is_empty(),
 							"real production admission rejects mismatched native epoch")
+						host._present_physical_actor_overlay(invalid_frame)
+						require(host.physical_actor_overlay._parts.is_empty(),
+							"invalid epoch hides final overlay rather than leaking unchecked live pose")
+						require(host.workbench_presentation_last.get("status")=="invalid_frame",
+							"invalid epoch produces an explicit diagnostic")
+						var bad_generation: Dictionary = source_frame.duplicate(true)
+						bad_generation.instances[1].generation = member.generation + 1
+						host._present_physical_actor_overlay(bad_generation)
+						require(host.physical_actor_overlay._parts.is_empty(),
+							"invalid actor generation cannot draw live Rapier pose")
+						var bad_revision: Dictionary = source_frame.duplicate(true)
+						bad_revision.revision = int(bad_revision.revision) + 1
+						host._present_physical_actor_overlay(bad_revision)
+						require(host.physical_actor_overlay._parts.is_empty(),
+							"wrong uploaded revision cannot draw actor through material")
+						host._present_physical_actor_overlay({})
+						require(host.physical_actor_overlay._parts.is_empty(),
+							"missing display frame cannot draw unchecked live pose")
+						host._present_physical_actor_overlay(source_frame)
+						require(not host.physical_actor_overlay._parts.is_empty(),
+							"valid bound frame restores the original actor overlay")
 					require(host.image.get_data()==original_world_bytes,
 						"full renderer admission and scripted RID poses did not mutate displayed material bytes")
 					require(host.physical_actor_session.tick==original_session_tick,

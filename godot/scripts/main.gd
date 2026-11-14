@@ -2000,12 +2000,7 @@ func _process(delta: float) -> void:
 	# Select between revision-matched and real Rapier poses only when the
 	# complete swept native collider footprint is empty in both currently
 	# visible material textures. Never mutate the mask-bound frame itself.
-	var workbench_mask_frame: Dictionary = workbench_display_frame()
-	var safe_workbench_poses: Dictionary = _safe_workbench_presentation_poses(workbench_mask_frame)
-	physical_actor_overlay.present(
-		physical_actor_session.render_parts(workbench_mask_frame,safe_workbench_poses)
-			if physical_actor_session != null else [],
-		presentation_camera_origin(), current_view_size, view_content_rect())
+	_present_physical_actor_overlay(workbench_display_frame())
 	update_worker_frame_state()
 	update_shader_parameters()
 
@@ -3141,22 +3136,49 @@ func consume_worker_snapshot() -> void:
 	gameplay_recorder.ingest_snapshot(snapshot)
 
 
-# Render-world pixel safety gate. Moving pixels are never copied or shifted;
-# the live pose is admitted only if its entire swept mask has no displayed
-# stored material. Existing bound-pose behavior remains the fail-closed path.
+# A Workbench receipt must describe the actual uploaded material texture,
+# physical session and epoch. Absent/stale receipts never authorize a live
+# Rapier fallback; the actor is temporarily hidden until a valid receipt.
+func _valid_workbench_mask_frame(frame: Dictionary) -> bool:
+	if shared_workbench == null or physical_actor_session == null:
+		return false
+	var bridge: Variant = physical_actor_session.bridge
+	return bridge is WorkbenchBridge \
+		and frame.get("session",-1) == bridge._session \
+		and frame.get("epoch",-1) == bridge._epoch \
+		and frame.get("world_generation",-1) == last_uploaded_world_generation \
+		and frame.get("revision",-1) == last_uploaded_revision \
+		and frame.get("instances") is Dictionary
+
+
+# Main._process dispatches through here. Both the guard and the default
+# bound-overlay renderer receive one, identically validated frame.
+func _present_physical_actor_overlay(frame: Dictionary) -> void:
+	var presentation_frame: Dictionary = frame
+	if shared_workbench != null and not _valid_workbench_mask_frame(frame):
+		presentation_frame = {}
+	var admitted: Dictionary = _safe_workbench_presentation_poses(presentation_frame)
+	physical_actor_overlay.present(
+		physical_actor_session.render_parts(presentation_frame,admitted)
+			if physical_actor_session != null else [],
+		presentation_camera_origin(),current_view_size,view_content_rect())
+
+
+# Render-world pixel safety gate. Only a completely clear swept footprint
+# may use live Rapier presentation; there is no unchecked fallback.
 func _safe_workbench_presentation_poses(frame: Dictionary) -> Dictionary:
 	var poses: Dictionary = {}
+	workbench_presentation_last = {"status":"inactive","safe_live":0,
+		"blocked_material":0,"blocked_unknown":0,"blocked_other":0,"cells_examined":0}
 	if shared_workbench == null or paused or physical_actor_session == null or image == null:
 		return poses
 	if OS.get_environment("CYBERSAND_DIAG_FLYER_POSE") == "mask":
+		workbench_presentation_last.status = "mask_baseline"
+		return poses
+	if not _valid_workbench_mask_frame(frame):
+		workbench_presentation_last.status = "invalid_frame"
 		return poses
 	var bridge: Variant = physical_actor_session.bridge
-	if bridge == null or not bridge is WorkbenchBridge:
-		return poses
-	if frame.get("session",-1) != bridge._session or frame.get("epoch",-1) != bridge._epoch \
-			or frame.get("world_generation",-1) != last_uploaded_world_generation \
-			or frame.get("revision",-1) != last_uploaded_revision:
-		return poses
 	var blend_active: bool = cadence_lod_enabled and render_snapshot_hz > 0 \
 		and float(Time.get_ticks_usec()-snapshot_blend_start_usec) \
 			< 1000000.0/float(render_snapshot_hz)
@@ -3186,10 +3208,11 @@ func _safe_workbench_presentation_poses(frame: Dictionary) -> Dictionary:
 			summary.blocked_unknown += 1
 		else:
 			summary.blocked_other += 1
-	workbench_presentation_last = summary
 	workbench_presentation_totals.frames += 1
 	for key: String in summary:
 		workbench_presentation_totals[key] = int(workbench_presentation_totals.get(key,0)) + int(summary[key])
+	summary["status"] = "guarded"
+	workbench_presentation_last = summary
 	return poses
 
 
