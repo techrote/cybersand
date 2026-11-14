@@ -92,3 +92,29 @@ def shadow_verdict(*, before: CriticSnapshot, after: CriticSnapshot,
         "execution": "shadow_only_no_material_rollback",
         "native_material_changed_by_critic": False,
     }
+
+
+def factorial_arms(*, snapshot_id: str, candidate_ids: list[str], geometry: Mapping,
+                   guidance: Mapping, critic: Mapping) -> dict[str, dict]:
+    """Formal-design A/B/C/D information availability, not executed A/B results.
+
+    The geometric host baseline is shared by every arm. The independently
+    isolated views from matched_arms are diagnostic information ablations.
+    """
+    isolated = matched_arms(snapshot_id=snapshot_id, candidate_ids=candidate_ids,
+                            geometry=geometry, guidance=guidance, critic=critic)
+    specifications = {
+        "A_geometry": ("geometry_only", False, False),
+        "B_geometry_guidance": ("guidance_only", True, False),
+        "C_geometry_critic": ("critic_only", False, True),
+        "D_geometry_guidance_critic": ("combined", True, True),
+    }
+    result = {}
+    for arm, (origin, include_guidance, include_critic) in specifications.items():
+        view = deepcopy(isolated[origin])
+        view["arm"] = arm
+        view["geometry"] = deepcopy(isolated["geometry_only"]["geometry"])
+        view["guidance"] = deepcopy(isolated["combined"]["guidance"]) if include_guidance else None
+        view["critic"] = deepcopy(isolated["combined"]["critic"]) if include_critic else None
+        result[arm] = view
+    return result

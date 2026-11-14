@@ -9,7 +9,7 @@ from experiments.driv3r.stage_d.guidance.field import (
     import_png8, load_bundle, radial_airbrush, rgba_png, speckle_png,
 )
 from experiments.driv3r.stage_d.guidance.study import (
-    CriticSnapshot, matched_arms, shadow_verdict, stable_hash,
+    CriticSnapshot, factorial_arms, matched_arms, shadow_verdict, stable_hash,
 )
 
 
@@ -115,6 +115,18 @@ class StudyTests(unittest.TestCase):
         source["clearance"] = -1
         self.assertEqual(views["combined"]["geometry"]["clearance"], 5)
         self.assertEqual(stable_hash({"a": 1, "b": 2}), stable_hash({"b": 2, "a": 1}))
+
+    def test_factorial_geometry_baseline(self):
+        views = factorial_arms(snapshot_id="world:g:2", candidate_ids=["a", "b"],
+                               geometry={"clearance": 4}, guidance={"preference": 2000},
+                               critic={"shadow": "not_actuated"})
+        self.assertEqual(len(views), 4)
+        self.assertTrue(all(v["geometry"] == {"clearance": 4} for v in views.values()))
+        self.assertIsNone(views["A_geometry"]["guidance"])
+        self.assertIsNone(views["B_geometry_guidance"]["critic"])
+        self.assertIsNone(views["C_geometry_critic"]["guidance"])
+        self.assertIsNotNone(views["D_geometry_guidance_critic"]["critic"])
+        self.assertEqual(len({v["candidate_set_sha256"] for v in views.values()}), 1)
 
     def test_shadow_keep_undo_stop_without_mutation(self):
         before = CriticSnapshot("before", 10.0, 0, 2)

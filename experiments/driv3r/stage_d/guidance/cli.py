@@ -29,8 +29,14 @@ def main() -> None:
         field = radial_airbrush(args.width, args.height, center_x=args.center_x,
                                 center_y=args.center_y, radius_cells=args.radius,
                                 hardness=args.hardness, gradient_length=args.gradient_length)
+    authoring = None if args.source_png else {
+        "center_x": args.center_x, "center_y": args.center_y,
+        "radius_cells": args.radius, "hardness": args.hardness,
+        "gradient_length": args.gradient_length,
+    }
     meta = export_bundle(args.prefix, field, seed=args.seed,
-                         centre_density=args.density, source_png_sha256=origin_hash)
+                         centre_density=args.density, source_png_sha256=origin_hash,
+                         authoring_parameters=authoring)
     print(f"scalar_sha256={meta['values']['sha256']} preview_sha256={meta['display']['sha256']}")
 
 

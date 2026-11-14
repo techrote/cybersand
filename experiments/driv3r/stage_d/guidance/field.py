@@ -232,7 +232,8 @@ def speckle_png(field: GuidanceField, *, seed: int, centre_density: float = 0.8)
 
 
 def export_bundle(prefix: Path, field: GuidanceField, *, seed: int, centre_density: float,
-                  source_png_sha256: str | None = None) -> dict:
+                  source_png_sha256: str | None = None,
+                  authoring_parameters: dict | None = None) -> dict:
     """Save raw numeric values + independent PNG preview + manifest with content hashes."""
     prefix = Path(prefix)
     numeric = field.raw()
@@ -253,6 +254,7 @@ def export_bundle(prefix: Path, field: GuidanceField, *, seed: int, centre_densi
         "centre_density": centre_density,
         "conversion": CONVERSION if source_png_sha256 else None,
         "source_png_sha256": source_png_sha256,
+        "authoring_parameters": authoring_parameters,
         "native_material_authority": False,
         "contract_status": "pre_m1_d1b_local_not_d_common_conformant"
     }
