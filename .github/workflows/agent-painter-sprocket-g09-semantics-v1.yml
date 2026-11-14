@@ -4,6 +4,7 @@ on:
     branches: [codex/agent-painter-sprocket-568]
     paths:
       - experiments/agent_painter/lanes/sprocket/g09-semantics-v1-request.json
+      - experiments/agent_painter/lanes/sprocket/g09_semantics_v1.py
 permissions:
   contents: read
   actions: read
