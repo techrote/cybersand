@@ -1,0 +1,103 @@
+name: Agent painter VOID v0 bounded candidate and raw DEVELOPMENT A/B
+on:
+  push:
+    branches: ['codex/agent-painter-void-568']
+    paths: ['experiments/agent_painter/lanes/void/campaign-request.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: void-v0-candidate-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  train:
+    name: VOID v0 real 16-step CPU pilot
+    uses: ./.github/workflows/agent-painter-train.yml
+    with:
+      source-sha: ${{ github.sha }}
+      corpus-artifact: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+      corpus-run-id: '43506373969'
+      output-artifact: void-v0-16-${{ github.run_id }}-${{ github.run_attempt }}
+      profile: void
+      steps: 16
+      inference-proof: true
+
+  first_pass:
+    name: Untuned parent versus v0 on original DEVELOPMENT requests
+    needs: [train]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 42
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: 'default'
+      MKL_CBWR: 'COMPATIBLE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Verify exact experiment lease and compile evaluator
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 -m py_compile experiments/agent_painter/lanes/void/evaluate.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          req=json.loads(Path("experiments/agent_painter/lanes/void/campaign-request.json").read_text())
+          assert req["id"] == "void-v0-16" and req["profile"] == "void"
+          assert req["steps"] == 16 and req["development_arms"] == ["base", "adapter"]
+          assert req["sealed_final_opened"] is False
+          PY
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/native
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: void-v0-16-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/training
+      - name: Install reviewed public CPU model environment
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/painter-void-eval"
+          "$RUNNER_TEMP/painter-void-eval/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/painter-void-eval/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/painter-void-eval/bin/python" -m pip check
+          mkdir -p evidence/eval-env
+          "$RUNNER_TEMP/painter-void-eval/bin/python" -m pip freeze --all > evidence/eval-env/pip-freeze.txt
+          lscpu > evidence/eval-env/cpu.txt
+          timeout --signal=TERM --kill-after=30s 900s \
+            "$RUNNER_TEMP/painter-void-eval/bin/python" experiments/agent_painter/training/download_model.py \
+            --profile void --output "$RUNNER_TEMP/painter-void-model"
+          cp "$RUNNER_TEMP/painter-void-model/download_receipt.json" evidence/eval-env/model-download.json
+      - name: Compare raw first passes on all 12 DEVELOPMENT requests
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 1600s \
+            "$RUNNER_TEMP/painter-void-eval/bin/python" \
+            experiments/agent_painter/lanes/void/evaluate.py \
+            --model "$RUNNER_TEMP/painter-void-model" \
+            --checkpoint evidence/training/checkpoint-000016 \
+            --corpus evidence/native/corpus \
+            --output evidence/evaluation --max-new-tokens 768
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: void-v0-16-development-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/evaluation/
+            evidence/eval-env/
+          if-no-files-found: warn
+          retention-days: 90

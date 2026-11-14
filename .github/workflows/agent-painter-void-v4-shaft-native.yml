@@ -1,0 +1,125 @@
+name: VOID v4 A02 source-built native Art (NOT TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-void-568]
+    paths: ['experiments/agent_painter/lanes/void/v4-shaft-native-request.json']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: void-v4-shaft-native-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  exact-source-native:
+    name: A02 vertical-shaft two seed native research; no model/training
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Exact source, owner lease, research-only and CI provider checks
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/void-v4-native-policy.json
+          python3 -m py_compile experiments/agent_painter/lanes/void/v4_shaft_native.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("experiments/agent_painter/lanes/void/v4-shaft-native-request.json").read_text())
+          assert r["schema"]=="void-v4-shaft-native-research/1" and r["sequence"]==2
+          for k in ("original_train_dev_only","native_research","no_training","no_shared_admission","no_final","draft_hold","pending_global_review"):
+              assert r[k] is True
+          assert r["model"]=="dotlabs/void.1@9c2be5087772867d45961abd11f6b35110617563"
+          assert r["proposal_path"]=="experiments/agent_painter/lanes/void/v4_shaft_proposals.json"
+          assert r["source_screen_run_id"]==43591527079
+          assert r["source_screen_source_sha"]=="42ce70cd040a1f93d999b1588f6c0b9154c3aeed"
+          assert r["original_manifest_sha256"]=="2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
+          PY
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: void-v4-shaft-source-42ce70cd040a1f93d999b1588f6c0b9154c3aeed-43591527079
+          run-id: '43591527079'
+          github-token: ${{ github.token }}
+          path: evidence/void-v4-source-qualified
+      - name: Verify original prior source-only receipt without rewriting it
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("experiments/agent_painter/lanes/void/v4-shaft-native-request.json").read_text())
+          p=json.loads(Path("evidence/void-v4-source-qualified/source-only.json").read_text())
+          assert p["status"]=="SOURCE_ONLY_PASS" and p["candidate_id"]=="void-v4-A02"
+          assert p["signature_sha256"]==r["source_screen_signature_sha256"]
+          assert p["original_manifest_sha256"]==r["original_manifest_sha256"]
+          assert p["seed_preflights"]==2 and not p["global_independence_approved"]
+          assert not p["final_opened"] and p["native_positive_views"]==p["new_train_groups"]==p["optimizer_updates"]==0
+          PY
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/original-native
+      - name: Fail closed before expensive native build on prior-proposal lease and split custody
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/build
+          python3 - <<'PY'
+          from pathlib import Path
+          sh=Path("experiments/agent_painter/lanes/void/v4_shaft_ci_native.sh").read_text(encoding="utf-8")
+          assert "--proposals experiments/agent_painter/lanes/void/v4_shaft_proposals.json" in sh
+          assert "--previous experiments/agent_painter/lanes/void/v3_research_proposals.json" in sh
+          assert "--previous experiments/agent_painter/lanes/void/v4_shaft_proposals.json" not in sh
+          PY
+          python3 experiments/agent_painter/lanes/void/v4_shaft_probe.py \
+            --corpus evidence/original-native/corpus \
+            --proposals experiments/agent_painter/lanes/void/v4_shaft_proposals.json \
+            --previous experiments/agent_painter/lanes/void/v3_research_proposals.json \
+            --output evidence/build/v4-pre-native-source-screen.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("evidence/build/v4-pre-native-source-screen.json").read_text())
+          old=json.loads(Path("evidence/void-v4-source-qualified/source-only.json").read_text())
+          assert d==old and d["status"]=="SOURCE_ONLY_PASS"
+          assert d["quarantined_old_architecture"]=="void-v3-A01"
+          assert d["seed_preflights"]==2
+          assert not d["global_independence_approved"]
+          assert d["native_positive_views"]==d["new_train_groups"]==d["optimizer_updates"]==0
+          PY
+      - name: Rebuild source-built Godot/native C++ and verify actual Art material/PNG receipts
+        run: bash experiments/agent_painter/lanes/void/v4_shaft_ci_native.sh
+      - name: Separate native execution from global TRAIN and model evaluation
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("evidence/void-v4-shaft-native/void-v4-shaft-native-summary.json").read_text())
+          assert x["native_verifier_passed"] is True and x["actual_verified_native_views"]==2
+          assert x["distinct_structural_proposals"]==1 and x["nonindependent_style_variants"]==0
+          assert x["quarantined_previous_id"]=="void-v3-A01"
+          assert x["review_status"]=="PENDING_GLOBAL_SPATIAL_AND_HELDOUT_REVIEW"
+          assert x["reference_manifest_sha256"]=="2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
+          assert x["admitted_common_train_groups"]==x["optimizer_steps"]==0
+          assert x["sealed_final_opened"] is False and x["readback_original_pngs_in_evidence"] is True
+          print("Original native A02 two-view PASS; still unadmitted teacher research")
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: void-v4-shaft-native-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            evidence/void-v4-shaft-native/
+            evidence/native-build.json
+            evidence/build/
+            evidence/regressions/
+          if-no-files-found: warn
+          retention-days: 90

@@ -1,0 +1,177 @@
+name: VOID original fresh120 checkpoint and native TRAIN custody audit
+on:
+  push:
+    branches: [codex/agent-painter-void-568]
+    paths:
+      - .github/workflows/agent-painter-void-historical-custody.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: void-original-fresh120-custody-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  original-evidence-audit:
+    name: Independent immutable original checkpoint and positive native TRAIN audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Validate exact audit source and historical producer/artifact identities
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_ACTIONS" = true
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          mkdir -p evidence/audit
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+          from pathlib import Path
+
+          def get(suffix):
+              req = urllib.request.Request(
+                  "https://api.github.com/repos/techrote/cybersand/" + suffix,
+                  headers={"Authorization": "Bearer " + os.environ["GH_TOKEN"],
+                           "Accept": "application/vnd.github+json",
+                           "X-GitHub-Api-Version": "2022-11-28"})
+              with urllib.request.urlopen(req, timeout=30) as response:
+                  return json.load(response)
+
+          expected = [
+              {"run": 43530053171, "head": "7d90bf5294d16a8644694a4c8a6a36a5227fa3c0",
+               "artifact": 14087659446,
+               "name": "void-120-training-7d90bf5294d16a8644694a4c8a6a36a5227fa3c0-43530053171-1",
+               "digest": "sha256:c4b0533adc7410558f1de76e14b730d760de8ecd783c3fa40b14967cdbad13e2"},
+              {"run": 43506373969, "head": "633920373a3d406a2ede61ce4137c324f76be23b",
+               "artifact": 14076703326,
+               "name": "agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b",
+               "digest": "sha256:50a9ad9b255b2a57180edf5558ca2b47dab9affd9ef9d2438f9011d648f81f39"},
+          ]
+          for item in expected:
+              run = get(f"actions/runs/{item['run']}")
+              assert (run["head_sha"] == item["head"] and run["status"] == "completed"
+                      and run["conclusion"] == "success"), "historical producer identity/status changed"
+              artifacts = get(f"actions/runs/{item['run']}/artifacts")["artifacts"]
+              match = [a for a in artifacts if a["id"] == item["artifact"]]
+              assert len(match) == 1, "original artifact missing"
+              a = match[0]
+              assert a["name"] == item["name"] and a["digest"] == item["digest"]
+              assert a["expired"] is False and a["size_in_bytes"] > 0
+              item["size_in_bytes"] = a["size_in_bytes"]
+          Path("evidence/audit/provenance.json").write_text(
+              json.dumps({"schema": "void-original-custody/1",
+                          "audit_source": os.environ["GITHUB_SHA"],
+                          "audit_run": int(os.environ["GITHUB_RUN_ID"]),
+                          "originals": expected,
+                          "training_or_model_inference": False,
+                          "native_model_painting": False,
+                          "final_targets_opened": False}, indent=2) + "\n")
+          print("PINNED_ORIGINAL_PRODUCER_AND_ARTIFACT_METADATA_PASS")
+          PY
+      - name: Download real original fresh120 trainer checkpoint
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: void-120-training-7d90bf5294d16a8644694a4c8a6a36a5227fa3c0-43530053171-1
+          run-id: 43530053171
+          github-token: ${{ github.token }}
+          path: evidence/training
+      - name: Download original independently native-admitted corpus
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: 43506373969
+          github-token: ${{ github.token }}
+          path: evidence/native
+      - name: Re-verify original 120 optimizer receipts against actual positive native TRAIN and immutable sampler
+        run: |
+          set -euo pipefail
+          python3 -m py_compile experiments/agent_painter/lanes/void/completion_gate.py
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import sys
+          from pathlib import Path
+
+          root = Path("experiments/agent_painter")
+          sys.path[:0] = [str(root / "lanes/void"), str(root / "training")]
+          from common import load_training_corpus, digest_json, sha256_file
+          from completion_gate import (verify_completion, TRAIN_SEED_ORDER,
+                                       TRAIN_SEED_ORDER_SHA256, TRAIN_SHA256,
+                                       COMPILER_SHA256, CORPUS, NATIVE)
+
+          native = Path("evidence/native/corpus")
+          assert sha256_file(native / "admitted-corpus.json") == CORPUS
+          rows, manifest = load_training_corpus(native)  # TRAIN only; never open FINAL content
+          assert manifest["source_sha"] == NATIVE
+          assert manifest["compiler_sha256"] == COMPILER_SHA256
+          assert manifest["split_files"]["TRAIN"]["sha256"] == TRAIN_SHA256
+          assert len(rows) == 12
+          assert len(manifest["structural_groups"]["TRAIN"]) == 6
+          groups = {}
+          for row in rows:
+              groups.setdefault(row["family"], []).append(row["id"])
+          for family, values in groups.items():
+              values.sort(key=lambda row_id: hashlib.sha256(
+                  ("568:" + row_id).encode("utf-8")).digest())
+          order = [groups[family][i] for i in range(max(map(len, groups.values())))
+                   for family in sorted(groups) if i < len(groups[family])]
+          assert tuple(order) == TRAIN_SEED_ORDER
+          assert digest_json(order) == TRAIN_SEED_ORDER_SHA256
+          assert set(order) == {r["id"] for r in rows}
+
+          summaries = list(Path("evidence/training").rglob("summary.json"))
+          assert len(summaries) == 1, "original training summary missing or ambiguous"
+          directory = summaries[0].parent
+          summary = json.loads(summaries[0].read_text(encoding="utf-8"))
+          checkpoint = directory / "checkpoint-000120"
+          assert summary["config"]["sample_order"] == order
+          audited = verify_completion(
+              summary, 0, checkpoint,
+              source_sha="7d90bf5294d16a8644694a4c8a6a36a5227fa3c0")
+          assert audited["promotable"] is True
+          assert audited["verified_optimizer_receipts"] == 120
+          assert summary["global_step"] == 120
+          report = {
+              "schema": "void-original-real120-promotion/1",
+              "audit_source": __import__("os").environ["GITHUB_SHA"],
+              "original_trainer_source": summary["config"]["source_sha"],
+              "native_source": NATIVE,
+              "native_admission_manifest_sha256": CORPUS,
+              "original_train_sha256": TRAIN_SHA256,
+              "original_compiler_sha256": COMPILER_SHA256,
+              "train_row_count": len(rows),
+              "independent_train_structural_groups": 6,
+              "exact_seed568_sampler_order_sha256": TRAIN_SEED_ORDER_SHA256,
+              "original_progress_sha256": sha256_file(directory / "progress.jsonl"),
+              "original_checkpoint_inventory_sha256": audited["checkpoint_inventory_sha256"],
+              "original_receipt_count": audited["verified_optimizer_receipts"],
+              "checkpoint_file_count": audited["verified_checkpoint_files"],
+              "checkpoint_promotion_contract": "historical training custody only",
+              "model_quality_claim": False,
+              "model_inference_or_native_paint_this_run": False,
+              "final_targets_opened": False,
+          }
+          Path("evidence/audit/promotion.json").write_text(json.dumps(report, indent=2) + "\n")
+          print(json.dumps(report, sort_keys=True))
+          print("ORIGINAL_REAL_VOID_120_AND_NATIVE_TRAIN_SAMPLER_CUSTODY_PASS")
+          PY
+      - name: Preserve limited real evidence receipts on success or failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: void-original-custody-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/audit/
+          if-no-files-found: warn
+          retention-days: 90

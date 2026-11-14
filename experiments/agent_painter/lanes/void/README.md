@@ -141,3 +141,77 @@ rows. The meta-only checks instantiate architecture/LoRA shapes without model
 weights, inference or optimization. Hosted real training and fresh-runner
 resume receipts remain separate required evidence; do not relabel these tests
 as training.
+
+## Exact fresh120 promotion-gate custody — 14 November 2026
+
+The lane-only `completion_gate.py` is an extra fail-closed **promotion** check,
+not another native admission or independent proof that the synthetic test fixture
+performed training. It requires all 120 original canonical `progress.jsonl`
+optimizer events, complete native-parent/model/source/numerics identities,
+checkpoint inventory and adapter readback. Following independent P3 review, it
+also pins the **actual original positively native-admitted TRAIN split** SHA-256
+`5cb437db0663d15496adced3c255c32a5a274d99a69dd6113938b2dbc15ddbb1`,
+the original compiler SHA-256
+`4d8559805df1ff5f3f23277a7bca98e47fa8feb53337aa79e8546d0bb89132f6`,
+and the exact set of twelve TRAIN row IDs from the source633 immutable artifact.
+The full historical corpus manifest is
+`2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc`.
+Neither DEVELOPMENT nor sealed FINAL target rows are used in this guard.
+
+The model-free positive fixture uses **synthetic** adapter/optimizer bytes and
+events but real frozen source/split ID constants; adversarial fixtures reject
+valid-looking substituted TRAIN/compiler digests or missing/extra/duplicate
+TRAIN row IDs before touching candidate application. New native-admitted
+curricula must receive a **separately versioned campaign gate**, not silently
+alter these pinned v1 identities or resume an incompatible checkpoint.
+Original fresh120 training and model-native evidence retain their own qualified
+source/run identity; this guard does not retroactively upgrade semantic quality.
+
+
+## Exact seed568 sampler and real original fresh120 re-audit — 14 November 2026
+
+The independent reviewer subsequently found that a self-consistent **permutation**
+of the twelve genuine native-admitted TRAIN IDs could pass the earlier promotion
+gate. The [lane-only correction](completion_gate.py) now freezes their exact
+**family-interleaved, per-family SHA256(seed568:row-id)** order from the original
+source633 curriculum, not just their set membership. Canonical compact-JSON
+order SHA-256:
+`9209cc4ea49ed24c9bf3d2e2ba7adf421072534f695317664a0b1f8f245c68ee`.
+The synthetic positive fixture now uses that order; an adversarial fixture
+swaps two valid IDs and rehashes/rebuilds all 120 optimizer events, canonical
+progress bytes, receipt and checkpoint inventory, and must be rejected.
+[Exact-source hosted model-free regression #43567424687](https://github.com/techrote/cybersand/actions/runs/43567424687)
+completed SUCCESS, **16/16 tests PASS**. This fixes a future-run downstream
+custody gate; the synthetic fixture is not genuine training evidence.
+
+More importantly, a separate ordinary GitHub-hosted
+[original-evidence audit #43567614273](https://github.com/techrote/cybersand/actions/runs/43567614273),
+executed at source `9c6b86dc03ddedd018337f169e6da1fc082a265f`,
+downloaded **the actual unchanged original** fresh120 optimizer/checkpoint
+artifact `14087659446` from producer
+[#43530053171](https://github.com/techrote/cybersand/actions/runs/43530053171)
+(source `7d90bf5294d16a8644694a4c8a6a36a5227fa3c0`), plus
+the separately admitted actual original source633 native-corpus artifact
+`14076703326` from
+[#43506373969](https://github.com/techrote/cybersand/actions/runs/43506373969).
+The audit checked producer status, exact artifact names and published digests,
+then **revalidated all twelve actual TRAIN native programs, material readbacks,
+receipts and compiler geometry**, independently rebuilt the deterministic
+seed568 order from those rows, and applied the corrected completion gate to
+the **original real** training summary, 120 optimizer events, inventory and
+serialized checkpoint members. **PASS, 120/120 receipts, eight checkpoint
+inventory files, six distinct TRAIN structures.** Original progress SHA-256
+`2bf580ca2cfddb0bb6d38ca2aeda9a38858420633b5170bef1d4fb47a9ca65a4`;
+original checkpoint inventory SHA-256
+`41ca76d96d107a210fa9a8515fc2d01b22bb61e842dd938987b69556afd55e0c`.
+Small provenance/promotion report retained in
+[artifact #14103291995](https://github.com/techrote/cybersand/actions/runs/43567614273/artifacts/14103291995).
+
+This re-audit verifies historical **actual checkpoint custody**, not new
+optimizer execution, new model inference, native application or model quality.
+No sealed FINAL target/image was inspected. Its original candidate still has
+only **1/6 distinct DEVELOPMENT compiler-accepted prompts**, **2/2 native seed
+views from one accepted prompt**, and **zero request-conforming multi-branch
+Pipework designs**. No useful `vN` is frozen. Further training remains blocked
+on shepherd/reviewer-positive admission of structurally novel TRAIN groups and
+a separately versioned expanded curriculum.

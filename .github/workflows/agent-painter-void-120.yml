@@ -1,0 +1,163 @@
+name: VOID painter fresh120 bounded CPU campaign and strict DEVELOPMENT
+on:
+  push:
+    branches: [codex/agent-painter-void-568]
+    paths: ['experiments/agent_painter/lanes/void/iteration-120-request.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-void-120-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  train:
+    name: Fresh VOID 120-step source-pinned CPU candidate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 44
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: 'default'
+      MKL_CBWR: 'COMPATIBLE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Source and one-shot campaign request admission
+        run: |
+          set -euo pipefail
+          test "$GITHUB_ACTIONS" = true
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          req=json.loads(Path("experiments/agent_painter/lanes/void/iteration-120-request.json").read_text())
+          expected={"schema_version":1,"id":"void-fresh-120-v1","profile":"void",
+            "parent_checkpoint":"dotlabs/void.1@9c2be5087772867d45961abd11f6b35110617563",
+            "qualified_foundation_sha":"2a565df45efc568eb96a2166e0b77f299e289625",
+            "native_corpus_source_sha":"633920373a3d406a2ede61ce4137c324f76be23b",
+            "native_corpus_run_id":43506373969,"training_steps":120,
+            "checkpoint_every":40,"max_training_seconds":1800,"max_generation_tokens":1024,
+            "development_distinct_requests":6,"development_host_seed_views":12,
+            "baseline":"untuned-pinned-parent","trainer_per_vm":1,"max_active_training_jobs":2,
+            "stage":"fresh-from-parent-not-an-exact-resume","sealed_final_opened":False,
+            "native_execution_claim":False,"request_sequence":2}
+          if req != expected:
+              raise SystemExit("frozen one-shot campaign request mismatch")
+          PY
+          python3 -m unittest discover -s experiments/agent_painter/lanes/void -p 'test_completion_gate.py' -v
+          mkdir -p evidence/env
+          git rev-parse HEAD > evidence/env/source.txt
+          lscpu > evidence/env/cpu.txt
+          df -h > evidence/env/disk-before.txt
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/native
+      - name: Install pinned CPU model dependencies and reproduce VOID contracts
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/void-120"
+          "$RUNNER_TEMP/void-120/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/void-120/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/void-120/bin/python" -m pip check
+          "$RUNNER_TEMP/void-120/bin/python" -m pip freeze --all > evidence/env/pip-freeze.txt
+          sha256sum experiments/agent_painter/training/requirements.lock > evidence/env/requirements.sha256
+          "$RUNNER_TEMP/void-120/bin/python" -m unittest discover -s experiments/agent_painter/lanes/void -p 'test_*.py' -v 2>&1 | tee evidence/env/void-contracts.log
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/void-120/bin/python" experiments/agent_painter/training/download_model.py --profile void --output "$RUNNER_TEMP/void-model"
+          cp "$RUNNER_TEMP/void-model/download_receipt.json" evidence/env/model-download.json
+      - name: Real optimizer, finite deadline and atomic checkpoints
+        run: |
+          set -euo pipefail
+          code=0
+          timeout --signal=TERM --kill-after=45s 1900s "$RUNNER_TEMP/void-120/bin/python" experiments/agent_painter/lanes/void/campaign_120.py --source-sha "$GITHUB_SHA" --model "$RUNNER_TEMP/void-model" --corpus evidence/native/corpus --output evidence/training || code=$?
+          # Always preserve the artifact below, but only a genuine exit-0,
+          # fully checkpointed 120/120 run unlocks DEVELOPMENT.
+          "$RUNNER_TEMP/void-120/bin/python" experiments/agent_painter/lanes/void/completion_gate.py \
+            --summary evidence/training/summary.json --exit-code "$code" \
+            --checkpoint evidence/training/checkpoint-000120 --source-sha "$GITHUB_SHA"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: void-120-training-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/training/
+          if-no-files-found: warn
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: void-120-environment-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/env/
+          if-no-files-found: warn
+          retention-days: 90
+
+  development:
+    name: Independently hosted six-prompt raw base/candidate A-B
+    needs: [train]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 43
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: 'default'
+      MKL_CBWR: 'COMPATIBLE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/native
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: void-120-training-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/training
+      - name: Exact model environment and independent runner source
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          mkdir -p evidence/eval-env
+          lscpu > evidence/eval-env/cpu.txt
+          python3 -m venv "$RUNNER_TEMP/void-eval-120"
+          "$RUNNER_TEMP/void-eval-120/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/void-eval-120/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/void-eval-120/bin/python" -m pip check
+          "$RUNNER_TEMP/void-eval-120/bin/python" -m pip freeze --all > evidence/eval-env/pip-freeze.txt
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/void-eval-120/bin/python" experiments/agent_painter/training/download_model.py --profile void --output "$RUNNER_TEMP/void-model"
+          cp "$RUNNER_TEMP/void-model/download_receipt.json" evidence/eval-env/model-download.json
+      - name: Raw single-pass inference, independent host-seed compilation and refusals
+        run: |
+          set -euo pipefail
+          checkpoint=$(python3 -c 'import json; print(json.load(open("evidence/training/summary.json"))["checkpoint"])')
+          [[ "$checkpoint" =~ ^checkpoint-[0-9]{6}$ ]]
+          timeout --signal=TERM --kill-after=45s 1900s "$RUNNER_TEMP/void-eval-120/bin/python" experiments/agent_painter/lanes/void/evaluate.py --model "$RUNNER_TEMP/void-model" --checkpoint "evidence/training/$checkpoint" --corpus evidence/native/corpus --output evidence/evaluation --max-new-tokens 1024
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: void-120-development-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/evaluation/
+            evidence/eval-env/
+          if-no-files-found: warn
+          retention-days: 90

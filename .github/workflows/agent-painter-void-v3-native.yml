@@ -1,0 +1,73 @@
+name: VOID v3 three-family research native Art (NOT TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-void-568]
+    paths: ['experiments/agent_painter/lanes/void/v3-native-request.json']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: void-v3-three-family-native-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-built-native-research:
+    name: Exactly eight two-seed native Art views; 3 new hypotheses + 1 style, NO TRAIN
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Explicit research lease, exact source and provider policy
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("experiments/agent_painter/lanes/void/v3-native-request.json").read_text())
+          assert r["schema"]=="void-v3-three-family-native-research/1" and r["sequence"]==1
+          for k in ("original_train_dev_only","native_research","no_training","no_shared_admission","no_final","draft_hold"):
+              assert r[k] is True
+          assert r["proposal_path"]=="experiments/agent_painter/lanes/void/v3_research_proposals.json"
+          PY
+          python3 -m py_compile experiments/agent_painter/lanes/void/v3_native_research.py
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/void-v2-native-policy.json
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/original-native
+      - name: Rebuild exact-source native extension and verify real Art proposal material/PNG
+        run: bash experiments/agent_painter/lanes/void/v3_ci_native.sh
+      - name: Keep native-positive distinct from shared TRAIN admission
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          s=json.loads(Path("evidence/void-v3-native/void-v3-native-summary.json").read_text())
+          assert s["native_verifier_passed"] is True
+          assert s["actual_verified_native_views"]==8 and s["distinct_structural_proposals"]==3 and s["nonindependent_style_variants"]==1
+          assert s["admitted_common_train_groups"]==s["optimizer_steps"]==0
+          assert s["sealed_final_opened"] is False
+          assert s["reference_manifest_sha256"]=="2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
+          assert s["quarantined_candidate_ids"]==["void-v3-A01"]
+          print("RESEARCH native PASS; NOT shared TRAIN admission")
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: void-v3-native-research-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            evidence/void-v3-native/
+            evidence/native-build.json
+            evidence/build/
+            evidence/regressions/
+          if-no-files-found: warn
+          retention-days: 90

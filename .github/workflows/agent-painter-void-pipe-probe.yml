@@ -1,0 +1,61 @@
+name: VOID v2 source-only pipe topology screen
+on:
+  push:
+    branches: [codex/agent-painter-void-568]
+    paths:
+      - 'experiments/agent_painter/lanes/void/v2_pipe_proposals.json'
+      - 'experiments/agent_painter/lanes/void/v2_pipe_probe.py'
+      - '.github/workflows/agent-painter-void-pipe-probe.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: void-pipe-proposal-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-only:
+    name: Frozen TRAIN/DEVELOPMENT metadata and strict compiler; NO native/training
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Source and GitHub-hosted policy preflight
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/void-pipe-policy.json
+          python3 -m py_compile experiments/agent_painter/lanes/void/v2_pipe_probe.py
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/reference-native
+      - name: Execute strict original split and pipe compiler screening
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/void/v2_pipe_probe.py \
+            --corpus evidence/reference-native/corpus \
+            --proposals experiments/agent_painter/lanes/void/v2_pipe_proposals.json \
+            --output evidence/void-proposal/probe.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("evidence/void-proposal/probe.json").read_text())
+          assert (r["status"],r["distinct_compositions"],r["seed_compilations"])==("SOURCE_ONLY_PASS",5,10)
+          assert r["original_public_groups_screened"] == {"TRAIN":6,"DEVELOPMENT":6}
+          assert (r["real_native_replays"],r["native_admitted_rows"],r["optimizer_updates"]) == (0,0,0)
+          assert not r["final_targets_opened"]
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: void-pipe-proposal-${{ github.sha }}-${{ github.run_id }}
+          path: evidence/void-proposal/
+          if-no-files-found: warn
+          retention-days: 90
