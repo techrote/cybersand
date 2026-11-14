@@ -210,7 +210,7 @@ class NativeSession:
             ready = self._wait_file(self.output / "ready.json", self.startup_timeout)
             if ready.get("pid") != self.process.pid or ready.get("session_id") != self.session_id \
                     or ready.get("source_sha") != self.source_sha or ready.get("backend") != "CyberNativeCellWorld" \
-                    or ready.get("native_sha256") != _digest(native) or ready.get("rapier_sha256") != rapier_hash
+                    or ready.get("native_sha256") != _digest(native) or ready.get("rapier_sha256") != rapier_hash \
                     or ready.get("harness_sha256") != _digest(harness_path):
                 raise NativeError("Mounted native process identity mismatch")
             _atomic(self.output / "startup.json", {"elapsed_seconds": time.monotonic() - started,
