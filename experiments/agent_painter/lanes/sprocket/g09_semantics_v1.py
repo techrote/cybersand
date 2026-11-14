@@ -10,6 +10,10 @@ import argparse
 from copy import deepcopy
 import json
 from pathlib import Path
+import sys
+
+PAINTER_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(PAINTER_ROOT))
 
 from compiler import canonical_json, compile_program, parse_program
 from threefamily_v3 import HOST_SEEDS, evaluate, program_for
