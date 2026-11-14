@@ -68,7 +68,7 @@ def fixture(root: Path) -> tuple[dict, Path]:
                "frozen_base_sha256": summary["frozen_base_sha256"], "history": history,
                "numerical_runtime": summary["numerical_runtime"]}
     (checkpoint / "receipt.json").write_text(json.dumps(receipt))
-    (root / "progress.jsonl").write_text("".join(json.dumps(e) + "\n" for e in history))
+    (root / "progress.jsonl").write_text("".join(json.dumps(e, sort_keys=True,\n        separators=(",", ":"), ensure_ascii=False, allow_nan=False) + "\n" for e in history))
     inventory = {p.relative_to(checkpoint).as_posix(): {"sha256": sha(p), "bytes": p.stat().st_size}
                  for p in sorted(checkpoint.rglob("*")) if p.is_file()}
     (checkpoint / "inventory.json").write_text(json.dumps(inventory))
@@ -219,6 +219,17 @@ class GateTests(unittest.TestCase):
             verify_completion(self.summary, 0, self.checkpoint)
         p.write_text("\n".join(original.splitlines()[:119]) + "\n")
         with self.assertRaisesRegex(ValueError, "exactly 120"):
+            verify_completion(self.summary, 0, self.checkpoint)
+        p.write_text(original)
+
+    def test_semantically_equal_but_noncanonical_optimizer_bytes_refused(self):
+        p = self.checkpoint.parent / "progress.jsonl"
+        original = p.read_text()
+        # Whitespace-changing rewrite is semantically equal, but is not the
+        # exact canonical line emitted by the qualified shared trainer.
+        p.write_text("".join(json.dumps(json.loads(line)) + "\\n"
+                             for line in original.splitlines()))
+        with self.assertRaisesRegex(ValueError, "bytes"):
             verify_completion(self.summary, 0, self.checkpoint)
         p.write_text(original)
 

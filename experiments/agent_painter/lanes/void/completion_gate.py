@@ -128,6 +128,10 @@ def _progress_guard(summary: dict, checkpoint: Path, history: list[dict], order:
             raise ValueError("malformed original progress.jsonl event") from exc
         if observed != event:
             raise ValueError("original progress.jsonl differs from checkpoint history")
+        canonical = json.dumps(event, sort_keys=True, separators=(",", ":"),
+                               ensure_ascii=False, allow_nan=False)
+        if line != canonical:
+            raise ValueError("original optimizer event bytes are not canonical training output")
         for k in ("loss", "seconds", "gradient_norm", "sequence_tokens",
                   "loss_tokens", "prompt_bytes", "completion_bytes"):
             if type(event.get(k)) not in (int, float) or not math.isfinite(event[k]):
