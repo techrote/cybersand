@@ -180,8 +180,53 @@ func complete_native_materials() -> PackedByteArray:
 
 func large_adaptive_fill() -> bool:
 	if map_side<1024: return true
+	var previous_origin: Vector2 = host.camera_origin
+	var previous_size: Vector2i = host.current_view_size
+	var overview := large_fill_view_geometry()
+	# A minified overview may omit a particular native cell from the physical
+	# pixel grid. Inspect this exact enclosure at more than one pixel per cell
+	# before sending the same real Rectangle/Outline gestures to PAINT.
+	bench._set_view(Vector2(LARGE_FILL_REGION.position-Vector2i(7,7)),Vector2i(400,400))
+	await process_frame
+	await process_frame
+	var inspected := large_fill_view_geometry()
+	var selectable := check(float(inspected.physical_pixels_per_cell[0])>=1.0
+		and float(inspected.physical_pixels_per_cell[1])>=1.0,
+		"large Fill inspection exposes every native cell at physical scale at least one")
+	selectable = check(inspected.first_pick==[560,64] and inspected.last_pick==[945,449],
+		"large Fill real gesture endpoints pick the exact required native enclosure") and selectable
+	print("WB_COMBINED_LARGE_FILL_VIEW ",JSON.stringify({"overview":overview,"inspection":inspected}))
+	var completed := false
+	if selectable: completed = await large_adaptive_fill_inspected()
+	bench._set_view(previous_origin,previous_size)
+	await process_frame
+	var restored := check(host.camera_origin==previous_origin and host.current_view_size==previous_size,
+		"large Fill inspection restores the previous camera for subsequent authoring")
+	return completed and restored
+
+func large_fill_view_geometry() -> Dictionary:
+	var view: Control = host.world_view
+	var content: Rect2 = host.view_content_rect()
+	# Compose the renderer's physical transform independently of Main's helper.
+	var screen := view.get_viewport().get_final_transform()*view.get_global_transform_with_canvas()
+	var basis := Vector2(screen.x.x,screen.y.y)*content.size/Vector2(host.current_view_size)
+	var first: Vector2i = host.world_cell_from_local_point(local(LARGE_FILL_REGION.position))
+	var last: Vector2i = host.world_cell_from_local_point(local(LARGE_FILL_REGION.end-Vector2i.ONE))
+	return {"root_size":[root.size.x,root.size.y],"world_view_size":[view.size.x,view.size.y],
+		"view_size":[host.current_view_size.x,host.current_view_size.y],
+		"requested_origin":[host.camera_origin.x,host.camera_origin.y],
+		"physical_pixels_per_cell":[basis.x,basis.y],"first_pick":[first.x,first.y],"last_pick":[last.x,last.y]}
+
+func large_adaptive_fill_inspected() -> bool:
 	if not await gesture("Rectangle",LARGE_FILL_REGION.position,LARGE_FILL_REGION.end-Vector2i.ONE,0): return false
 	if not await gesture("Outline",LARGE_FILL_REGION.position,LARGE_FILL_REGION.end-Vector2i.ONE,58): return false
+	var enclosure := await capture(LARGE_FILL_REGION)
+	var enclosure_exact := enclosure.size()==LARGE_FILL_REGION.get_area()
+	for index: int in enclosure.size():
+		var x: int = index%LARGE_FILL_REGION.size.x
+		var y: int = index/LARGE_FILL_REGION.size.x
+		if enclosure[index]!=(58 if x in [0,385] or y in [0,385] else 0): enclosure_exact=false
+	if not check(enclosure_exact,"large Fill begins with the exact native Empty interior and enclosing boundary"): return false
 	# No selection: this enclosed 384-square interior exceeds the initial
 	# 256-square capture and must trigger the bounded adaptive Fill path.
 	editor.selection = Rect2i()

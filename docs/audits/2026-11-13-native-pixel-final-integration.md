@@ -4,7 +4,7 @@ status: Current
 document-kind: evidence
 scope: Accepted #565 reconciliation, controlled application performance, resulting-source platform qualification and Windows delivery for Draft #566
 canonical-for: []
-last-reviewed: 2026-11-13
+last-reviewed: 2026-11-14
 related-documents: [2026-11-13-native-pixel-scrolling.md, 2026-11-12-mat-auth-workbench-integration.md, ../operations/native-pixel-scrolling.md, ../systems/material-appearance-and-rendering.md]
 ---
 
@@ -459,3 +459,86 @@ the broader historical graphical fixture now includes the additional correctness
 cases and therefore has a new source hash. The published follow-up must complete
 its own full platform/performance/package campaign. No application, camera,
 recorder, shader, native, physics or authoring implementation is modified.
+
+## Installed large-Fill fixture selectability repair (2026-11-14)
+
+The exact `f8041847bc7627b3fdd3d7426d45f646f79995fd` campaign
+[43524865177](https://github.com/techrote/cybersand/actions/runs/43524865177)
+passes both source application campaigns, both performance campaigns and all
+four separately dispatched downstream gates. Its installed Windows
+[package job 132255724278](https://github.com/techrote/cybersand/actions/runs/43524865177/job/132255724278)
+nevertheless fails the combined 1024-square authoring fixture. No failed ZIP is
+published. Microsoft .NET extraction has verified all 21,019 files, the Shell
+ZIP handler has opened the archive and copied both launchers plus README, and
+bundled Git compatibility plus all four Materials Lab installed cases pass.
+This provides actual Windows confirmation of the preceding empty-directory
+repair; interactive Explorer GUI use remains untested.
+
+The first combined-authoring failure expects 147,456 Fill cells, but the native
+receipt completes 147,840 cells, with the same requested, checked, changed and
+applied counts. There is no native error, incomplete prefix or timeout. Nine
+later required-phase failures follow the early return. Source combined cases
+use a 512-square World, so their success does not cover this installed
+1024-square adaptive-Fill path. The original Windows failure artifact
+`14088539002` is 1,165,666 bytes with SHA-256
+`2871325db411c037d7d064f2f72c3ae9ef77fe4e48b92a6e10a0e1b28e32a4b5`.
+
+An external diagnostic subclass runs the unchanged fixture and production
+source with pinned Godot 4.7, the source-built Linux native runtime and actual
+X11/OpenGL presentation. It traces the requested endpoint, physical sample,
+published shader cell and actual Main pick, then captures native cells after
+the real PAINT Rectangle/Outline input events and before Fill. The ordinary
+Linux layout has a 1,880-by-710 logical WorldView, a 0.75 physical stretch and a
+960-by-540-cell view: 71/72 physical pixels per cell. Both requested corners
+remain selectable, the native enclosure is exactly 386 by 386, and Fill
+completes the required 384 by 384 interior. The complete author flow passes
+218 checks, including two diagnostic capture checks.
+
+The same-source Windows performance geometry records a 708-high WorldView.
+A discriminating Linux counterexample changes only the real toolbar's minimum
+height by two logical pixels, allowing its parent container to allocate that
+708-high view. The resulting physical scale is 59/60 pixels per cell. The
+requested first corner `(560,64)` remains exact, while `(945,449)` addresses a
+pixel displaying `(945,450)` in both Main picking and the published shader
+mapping. Independent native readback verifies all 149,382 cells in the actual
+386-by-387 enclosure: 1,542 boundary cells are material 58 and all 147,840
+interior cells are Empty. Fill then completes exactly 147,840 and the original
+assertion fails. This reproduces the fixture defect and exact failure count;
+the failed Windows process itself did not log its endpoints, so the diagnostic
+does not invent a direct geometry trace for that original process.
+
+The narrow fixture repair temporarily inspects the unchanged enclosure in a
+400-by-400-cell view. Before the existing gestures it requires at least one
+physical pixel per cell and exact endpoint picks, and records both overview
+and inspection geometry. A native capture independently checks the complete
+Empty interior and material-58 boundary before Fill. The original 147,456-cell
+receipt assertion, every post-Fill native material check, full-World save
+comparison and fresh-process reopen checks remain unchanged. The previous
+camera origin and view size are restored and checked before subsequent
+authoring. No capacity, deadline, worker configuration, input implementation,
+camera mapping, shader, native code or material rule is changed.
+
+The repaired fixture SHA-256 is
+`f59e80e3174526ace3e55ec9e4da8410a4fcbecc7b4b7ace857e4444c6b5d927`.
+Actual local X11 execution at the reproduced 708-high layout passes 222 author
+checks and 54 fresh-process reopen checks for each of one and four workers.
+The inspection basis is 1.3275 physical pixels per cell and its requested
+corners are exact; both Fill receipts complete 147,456 cells. Independent
+readback verifies all 148,996 cells in each of eight large-enclosure captures
+before Fill, after Fill and at reopen, plus fourteen original PNG hashes and
+dimensions. Each author run's complete prepared native material digest matches
+its own fresh reopen. The production engine and native hashes remain the
+identified pinned runtime bytes.
+
+The external Python observer initially raises a path-indexing TypeError during
+its final protected-file rehash, after all four Godot processes have exited
+zero and stored their complete receipts. The original exception is retained;
+a separate read-only hash closure corrects path joining and verifies the same
+original logs and source bytes. It neither reruns an application case nor
+changes repository source. This observer defect is separate from the four
+successful executed cases.
+
+Local evidence describes this unpublished test-only delta on `f8041847`, not
+new acceptance of that failed delivery. Its published successor must complete
+fresh exact-source qualification and every actual extracted Windows case;
+the earlier source and performance successes retain their original identities.
