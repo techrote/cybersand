@@ -123,3 +123,48 @@ source-only future-checkpoint guard**, not a newly trained adapter or proof
 of physically unchanged vision/projector tensors. Positive tensor-byte
 preservation remains owned by the original shared trainer and checkpoint
 verification. New synthetic negative tests cover each added refusal.
+
+## 14 November 2026 — original real fresh48/fresh120 checkpoint re-audit
+
+[Source-matched hosted audit run 43564102311](https://github.com/techrote/cybersand/actions/runs/43564102311)
+(job [132354055084](https://github.com/techrote/cybersand/actions/runs/43564102311/job/132354055084))
+**completed SUCCESS** at exact audit source
+`3dc3696e6eb834fd06e964c69492e10925f5f379`. It used one fresh ordinary
+GitHub-hosted CPU runner and downloaded the original **two real** Actions
+training artifacts from [producer run 43529993326](https://github.com/techrote/cybersand/actions/runs/43529993326):
+fresh48 artifact `14088040106` (GitHub ZIP SHA256
+`6644524b86858b5a0a3c2b4cd1f282872b452b734c5ef7fcece7b33cc0e0f1cc`)
+and fresh120 artifact `14088541525` (GitHub ZIP SHA256
+`8c7634b05cc11546e46e1d643808909fbfd5a457ce43e4f12a9bba106aa50454`).
+
+On the actual extracted historic checkpoint bytes the **new full strict gate
+passed both arms**, reading and SHA256-verifying all original checkpoint
+inventory members (adapter, optimizer, license and receipts) and reconciling
+`progress.jsonl`, 48/120 complete optimizer histories, exact pinned
+source/model/native corpus/TRAIN/compiler IDs, original sampler cycle,
+hyperparameters and official 92-language-projection/EOS boundaries. The
+real output JSON lines explicitly report `fresh48 global_step=48` and
+`fresh120 global_step=120`, each
+`status=training-completion-and-custody-pass` with
+`model_quality_claim=false`.
+
+The audit exported only a small **1062-byte** public result artifact
+[#14101970767](https://github.com/techrote/cybersand/actions/runs/43564102311/artifacts/14101970767),
+GitHub-reported SHA256
+`a7b026d073ec54ba14137409c67bb753c181047acd450b744fc78afd29907126`.
+It did not re-upload checkpoint tensors or model weights, perform any additional
+training/gradient steps, download/reload the full model, inspect FINAL, execute
+native Art or judge images. It verified original **inner file inventories
+and receipts**, but did **not independently rehash the outer original artifact
+ZIP bytes**; those digests above are GitHub-published metadata. The original
+train jobs remain separately qualified; the new audit is a stronger
+**retrospective custody check**, not a fresh optimizer result, candidate freeze
+or artistic success. Exact source and original producer identities must remain
+distinct.
+
+The request and bounded one-shot workflow are lane-owned
+`historical-custody-request.json` and
+`.github/workflows/agent-painter-lfm25-vl-historical-custody.yml`; their
+constant trigger does **not** run at each scheduled worker turn, and no
+additional training VM or peer lease was created. Future structural TRAIN
+expansion still needs a new versioned contract and shepherd/reviewer approval.
