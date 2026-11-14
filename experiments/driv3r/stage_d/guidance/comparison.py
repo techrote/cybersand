@@ -91,7 +91,9 @@ def analyze_shadow_comparison(*, forks: list[dict], rollouts: dict[str, list[dic
         _arms(choices, f"fork {number} choices")
         _fail(all(choice in candidates for choice in choices.values()),
               f"fork {number} contains a nonlegal choice")
-        candidate_hashes.append(_hash_record({"ids": candidates, "effects": effects}))
+        # A model-facing order shuffle is not a new host candidate set.
+        # Predicted effects are separately keyed by stable candidate identity.
+        candidate_hashes.append(_hash_record({"ids": sorted(candidates), "effects": effects}))
         if first_choice is None and len(set(choices.values())) > 1:
             first_choice = {"decision_index": number, "snapshot_id": snapshot}
         if first_effect is None and len({effects[c] for c in choices.values()}) > 1:
