@@ -1,0 +1,136 @@
+# B3 — source-typed handoff certificates (experimental research)
+
+**Date:** 2026-11-09  
+**Repository baseline:** `techrote/cybersand` accepted `main` `d4b18e7f06839b35c8f6a66195206da0f33c5fa3` (merged #542); no production source edited.  
+**Status:** RESEARCH ONLY. No accepted solver selection, physics law, momentum theorem, speedup or runtime qualification.  
+**Scope owner:** `research/solver-certificates/handoff/**` only.  
+**Run:** `python3 -m unittest discover -s research/solver-certificates/handoff -v` (standard library only).
+
+## Falsifiable claim and boundary
+
+**Claim.** In the *single-authority abstract state machine* in `handoff_contract.py`, for any finite sequence of accepted Water ownership transfers that obey the specified preconditions, each payload portion has one authoritative representation, the exact sum of all Water quantities is unchanged, and a duplicated or expired command does not repeat a transfer. Granular and Rapier records remain separate physical authorities and interact through observations, not by silently converting their mass to Water or to cells. This is a theorem about the defined abstract model, **not** about the actual Godot/native implementation.
+
+**Falsifier:** a programmatically constructible sequence of admitted intents where a successful commit changes Water total, produces two owners for the same token/portion, accepts a wrong body/sample/revision/epoch, or a refusal mutates its source-bound model identity. Also challenge source replacement with the same revision, malformed velocities, capacity overflow, sidecar changes and crash/restore semantics. The model explicitly lacks crash durability and cannot qualify restart.
+
+### Proof sketch (induction)
+
+Let `I(S)` assert (1) all identities in a state's dictionary are unique and nonempty; (2) each Water identity has exactly one owner in {FreeMass, PressureFlow, IN, ballistic}; (3) `sum Water(amount + PF overfill) + external_consumed = initial_water + external_produced`; and (4) IN holds only whole Water cells. Initial states satisfying `World.start` meet `I` by construction. An accepted full transfer replaces the sole source record with one destination record of equal amount and a new owner. An accepted partial transfer (only FM/PF/non-IN) reduces source amount by `q` and adds one fresh suffixed identity of `q`; `q>0`, `q<src.amount`, and destination is not already present. PF overfill sources refuse. Consequently the Water sum is unchanged. Granular and Rapier are never eligible source/target for Water transfer. Failed guards leave all records unchanged; duplicate replay returns a receipt without mutation; commits require a matching generation/epoch, source revision/amount/owner and contact witness tied to `(epoch, body, sample, payload)` at the exclusive fence. Thus `I(S')` holds. A candidate state is validated **before** authoritative record swap. This is a finite inductive argument over abstract transitions. It does not prove the runtime's real command ownership or crash atomicity.
+
+## Source-grounded constraints (not invented runtime capabilities)
+
+- [Current liquid policy](../../../docs/architecture/liquid-solver-family-policy.md) selects a liquid solver per *material at World creation*, immutable within that World. Dynamically choosing bulk representation per contact would require a new opted-in, independently admitted contract; this research does **not** implement it.
+- [Current liquid lifecycle](../../../docs/architecture/liquid-state-transition-matrix.md) requires family-owned state to follow the cell and be retired without duplication, every write to wake/invalidate relevant state, and future-affecting state in versioned physical hash. The research model's SHA-256 identity is **not** CyberSand `physical_hash`.
+- [Ballistic Water experiment](../../../docs/architecture/ballistic-water-v1.md) and [#406](https://github.com/techrote/cybersand/pull/406): bounded parcel owner, exact mass quantum transfers, Water PF pressurized-source refusal, CY/IN whole-cell source and IN deposit, serial parcel pass, saved ledger, q256 signed-vertical parcels. `IN-B1` is opt-in; ordinary IN v1 disallows negative vertical velocity. This model tests that option with an explicit flag; it does not implement real q256→q16 conversion, velocity saturation or body force.
+- [Rapier coupling](../../../docs/architecture/rigid-body-and-cellular-coupling.md): native World owns material; Rapier owns its bodies on Godot main thread; bounded observations do not assert energy or momentum conservation. Contact samples must not be used as a second material authority. [#474](https://github.com/techrote/cybersand/pull/474) opt-in lockstep is separately source-qualified and has a fallback after 500ms; this research model does not strengthen its real production guarantees.
+- [#470](https://github.com/techrote/cybersand/pull/470), [#471](https://github.com/techrote/cybersand/pull/471) and [#522](https://github.com/techrote/cybersand/pull/522) have already supplied independent current-main optimization work. Do not reframe them as this proof's results or reimplement them.
+
+## Single bounded experiment
+
+Scenario: a Rapier body (ID 7) contacts bulk Water at native sample 42; signed upward q256 ballistic launch transfers 256 Water units into a parcel, then reintegrates into IN. Without the separately opted-in signed vertical IN-B1 law, upward reentry refuses unchanged. With that option explicitly admitted in the abstract model, it commits, and granular and Rapier authorities retain their identities. The impulse tag is **not proof of force/momentum conservation**: the before/after `sum(q*v_q256)` is recorded, and status remains `UNVERIFIED_INPUT_DECLARED` even with a tag. The abstraction intentionally does not supply the real interface for contact impulse, deposition capacity, masked terrain, PF gas or full save/restore.
+
+Independent negative controls: PF overfill source refuses, fractional IN ingress refuses, Water-to-Rapier/Granular conversion refuses, stale/no-fence/duplicate/token mismatch refuses, missing contact and forged `(body,payload,sample)` association refuses, malformed velocity refuses unchanged. A 256-member family of partial launches and returns tests deterministic quantity identity; that finite sample does not constitute a proof of actual runtime correctness.
+
+### Qualification and performance cost
+
+`python3 -m unittest discover ... -v`: **18/18 PASS** on local Python 3.13.5. `python3 -m compileall`: **PASS**. No native/Godot/Windows execution, no actual physics hashes or end-to-end FPS measurements. These are **deterministic model-oracle** results only.
+
+Same local host, isolated Python model, five repeats × 60 alternating FM↔ballistic transfers; median microseconds/transfer: **20.21** with 16 unrelated granular records; **139.02** with 256; **1,024.75** with 2,048. This reference code intentionally copies the dictionary and scans whole state for model invariant checks. **It is O(N), not production-fast.** Report no CyberSand speedup and do not copy the current implementation into the hot path.
+
+A *hypothetical production* receipt core could instead perform O(1) bounded map lookups, generation/epoch/lease checks, delta inventory bookkeeping, plus O(changed-cells) updates to activity/physical-hash dependencies; that proposal is not verified. For a budget of 200 transfers × 14 local guards: ~2,800 simple checks, ≤400 dictionary lookups and ≤200 journal entries **before** native boundary/collider/solver/caching expenses. Real time and memory require B4 profiling and an unchanged-law full-host correctness oracle.
+
+## Independent review / next increment
+
+1. B4: try adversarial counterexamples in model and real replay; validate whether any sufficient one-writer handshake can be mapped to actual #406/CYPS4 receipts under real worker/actor ownership. Benchmark *total* impact, not a made-up per-cell micro-speedup.
+2. B2: connect contact witness generation/epoch and influence-region invalidation, especially stale body samples and long-range PF pressure/gas dependency. A copied witness without state/solver revision is not a safe skip certificate.
+3. B5: decide whether a minimal opt-in **prepare/commit/reject** interface is useful for *one* actual gameplay scenario; retain original immutable per-material policy unless a separate physical-law/architecture decision authorizes a new representation transfer.
+
+**Open blockers:** no source-qualified production transition API for arbitrary FM/PF/IN switches; no tested reentry capacity/location/wall conditions; no controlled momentum conversion/impulse units; no independently verified crash-atomic persistence or cross-platform execution; model one-writer assumption requires actual worker fence. All remain `UNVERIFIED`. No production or physics default changes are proposed.
+
+## 2026-11-09 second bounded experiment — World-bound signed-IN admission
+
+**Exact parent:** B3 Draft PR #555 `cee5f39954736687b23bd4d31602bb160d41326f`, on accepted main `d4b18e7f06839b35c8f6a66195206da0f33c5fa3`.
+**Pre-registered falsifier:** an unsigned/default abstract World accepts a negative-vertical-velocity transfer into IN merely because the untrusted `Intent.allow_signed_inertial` boolean is true. This is a *source-typed admission* counterexample, not a mass-conservation counterexample or evidence that native World accepts the transfer.
+
+**Observed static model bug (before this correction):** `commit` checked only the request flag. It never checked an applied World capability. Thus `World.start(3,[Record("w", FREE_MASS,256)])` and an `Intent` targeting IN with `next_velocity_q256=(16,-8)` and `allow_signed_inertial=True` passed its signed-IN guard despite the model having no signed-IN World declaration. Exact integer quantity remained 256, masking the incorrect law admission.
+
+**Corrective research law (conditional):** for every finite transfer sequence through this model, a committed request with `target=IN` and `vy<0` entails **both** `intent.allow_signed_inertial` and `world.signed_inertial_world_enabled`, provided World construction is the sole authority for the latter and no unmodelled mutations occur. This follows by the added guard before candidate construction; accepted commit copies the option into its successor World. The condition is checked *before* mutation. All other previously admitted transfers retain their original test contracts. The option participates in the model identity digest and rejects non-boolean initial values.
+
+**Source-critical bound:** on accepted main `d4b18e7f`, native `WorldConfig::inertial_signed_vertical` defaults false, the constructor requires a valid applied IN material assignment, and `World::impart_inertial_velocity` refuses negative `dvy` when its signed parameter is disabled (see `native/include/cybersand/world.hpp`, `native/src/world.cpp`, `native/src/world_inertial.inc`). The actual World is *not* reconfigured by this model. A bare model boolean is not a cryptographic attestation, actual native receipt, physical-state hash, applied material-policy proof, or proof that dynamic FM→IN is admissible. The model cannot yet bind `World` creation policy, material family, generation, CYPS extension identity and source-built runtime in a production-reusable certificate. Any unknown or untrusted native readback must refuse.
+
+**Independent controls:** default World + caller flag must refuse, explicitly opt-in research World + caller flag may commit, opt-in World without caller flag must refuse, malformed World option must refuse at construction; no momentum correctness or runtime cost claim. B4 and B5 should challenge the missing authenticated-native-policy seam before considering an opt-in consumer. No default switch, production edits, native campaign, or physics admission.
+
+
+**Executed independent 12-case negative-control truth table:** CPython 3.13.5, local, command
+`python3 research/solver-certificates/handoff/signed_policy_negative_control.py`: 12/12 PASS, including the one minimal legacy-positive/revised-negative request. Local exact Git blob `35c172712440f1ca223d62f911e827ea4c245317` matched the file fetched from the Draft branch after publication. This **executes only the standalone predicate oracle**, not the full `handoff_contract.py` / `test_handoff_contract.py` suite or a CyberSand native build. The published authored suite now defines 20 tests, but the two new integration-level tests remain **UNEXECUTED** in this run; hosted CI and independent review must not treat the 12-case oracle as suite qualification.
+
+**Cost boundary:** the additional World capability check is one boolean read per attempted *negative-vy IN admission* in the reference model; the publication does not alter any native per-cell loop or benchmark total-tick cost. An actual native binding would require a trusted applied-World-policy receipt and measured overhead with physical-hash parity, not a caller-provided boolean.
+
+## 2026-11-09 third bounded experiment — replay acknowledgement is not live authority
+
+**Exact experiment input:** accepted main `d4b18e7f06839b35c8f6a66195206da0f33c5fa3`, B3 parent `90a410f43b7d74cea7b8189b7bb283b66ea70be5` (model blob `ca0d68fbd70ec18df1cd5831949dd218f6004431`); review witnesses: [B4 comment](https://github.com/techrote/cybersand/pull/555#issuecomment-6753577821) and [B5 comment](https://github.com/techrote/cybersand/pull/555#issuecomment-6753689179). All three source changes here stay within the B3 research subtree.
+
+**Pre-registered falsifier:** an accepted token is replayed after an epoch change, with `fenced=False`, or following a synthetic World generation/policy replacement; the API response must **not** be classified as a new current-authority transaction. Altering payload velocity, generation, or audit provenance without changing the token must still refuse; receipt requests cannot mutate Water quantity, owner, revision, contact state or epoch.
+
+**Negative finding retained:** the parent model returned `status="IDEMPOTENT"` from its accepted-token branch *before* revalidating current fence and epoch. This was inert at the state-machine level (no second transfer), but ambiguous for downstream interpretation. The source-critical threat is a consumer treating a historical success as permission to spawn a parcel or apply a fresh impulse. It does **not** refute quantity conservation.
+
+**Narrow correction:** `ReceiptStatus` is now typed (`REFUSED`, `COMMITTED`, `HISTORICAL_ACK_ONLY`). A matching accepted-token replay yields `HISTORICAL_ACK_ONLY` with the original commit epoch and destination; no World mutation occurs, including when the current fence is absent. A mismatched fingerprint yields `TOKEN_REUSE`. The model version increments to B3-RESEARCH-2. All receipt fields remain model-only observations, **never** a reusable engine authorization.
+
+**Non-amplification lemma (infinite family):** for any accepted transfer token `t`, any finite number `n >= 0` of exact matching replays interspersed with arbitrary epoch increments and provided the accepted ledger entry persists unmodified, each replay returns `HISTORICAL_ACK_ONLY` and leaves World state unchanged. Proof: the accepted-token branch checks the fingerprint and returns `replace(old_receipt, status=HISTORICAL_ACK_ONLY)` before all mutation/candidate paths; independent of `fenced`, `now_epoch` and record state. The claim is **only** about replay operations, not concurrent operations, crash persistence, ABA-proof restoration, forged ledgers or external edits. State outside the exclusive writer is an explicit adversarial assumption violation.
+
+**Adversarial authored controls:** original Rapier-contact launch, epoch 1 accepted; replay with/without fence; advance to epoch 2 then replay unfenced; synthetic generation/policy replacement; same-token changed velocity, audit tag or generation; retain exact Water ownership and source identity. The new tests must be run against this exact published Git head before independent integration. No execution or runtime parity is inferred from merely adding tests.
+
+**Cost accounting:** the replay lookup existed in the parent: this correction replaces a constant-size receipt status and adds no full-record scan. The whole Python reference model still executes O(N) quantity/momentum scans and copies for normal transfers. No native tick reduction, physical hash, genuine current fence, Rapier impulse, source-authenticated contact, or saved-state replay validation is claimed.
+
+**B4/B5 challenge request:** construct a consumer that attempts a fresh ballistic force from a cached `HISTORICAL_ACK_ONLY` receipt and demonstrate that it refuses without a new native World-owned fenced command. B2 should invalidate live region/contact certificates on generation, epoch, body-sample or applied-policy changes. The proposed consumer must separately bind trusted native applied policy, material/parcel source identity, World incarnation, worker fence, physical hash and body sample—none is proven by this isolated model.
+
+### Executed shadow oracle qualification (not published-model execution)
+
+The independent self-contained witness `historical_replay_shadow_check.py` is retained alongside the authored integration tests. Its exact Git blob `cb40fcefbd2713b212c7c6052630dd85ccaf4097` matches the local CPython-executed file (checked by `git hash-object`): `python historical_replay_shadow_check.py` prints `PASS 768 shadow replays + 48 fingerprint-spoof refusals; zero state mutations`. This varies generation, epoch, signed policy and fence, but it is deliberately only a *shadow implementation of the replay branch*. It does **not** execute the imported `handoff_contract.py`, the 22 authored tests, native CyberSand or any real Rapier producer.
+
+Exact-source model qualification remains a distinct blocker: run the full 22 tests against the exact Draft head and challenge a cached **original** `COMMITTED` receipt under current native fence/policy/epoch/physical-hash conditions. No standalone receipt grants operational permission.
+
+
+## 2026-11-10 fourth bounded experiment — prepared source sidecars cannot drift silently
+
+**Pre-registration:** [#555 comment 6755541679](https://github.com/techrote/cybersand/pull/555#issuecomment-6755541679), previous exact Draft head d9ad65194e3482f91be2cd64aa3d0690e53ee263, accepted main d4b18e7f06839b35c8f6a66195206da0f33c5fa3. Reviewed model Git blob before changing: 2b2ca9912aab12980983302d6218471e037016e7. Research only; no production ownership or policy changes.
+
+**Observed negative control:** the previous source guard compared only revision, owner and amount. A Water Record replaced between prepare and commit with the *same* three fields but different velocity_q256 or body_id passed those checks, despite carrying changed future-affecting state. This is a provenance/sidecar admission gap in the B3 abstraction, not evidence of a CyberSand native error, nor a failure of the abstract mass sum theorem.
+
+**New narrow law:** for a newly committed (non-replay) Intent i, the current source's exact canonical tuple (id,owner,amount,revision,overfill,(vx,vy),body_id) equals the value-copied source snapshot obtained when prepare created i. This follows directly from the comparison before trial construction. If the tuple differs, return SOURCE_DRIFT and leave the model state unchanged. Snapshot is included in the accepted-token fingerprint, so a same-token alternate snapshot is TOKEN_REUSE. The tuple is bounded and deterministic; it is **not** an authenticated producer receipt, SHA, or native physical hash. Retrying after drift requires a fresh prepare at the same fenced epoch. Other guards and model quantity invariant remain in place. Version tag becomes B3-RESEARCH-3.
+
+**Adversarial evidence:** locally executed standalone CPython oracle python source_drift_oracle.py, source Git blob from the local file 8697e1a4b72a6d2fa990d9d9223cad6b78d7e1d7: **4,228/4,228 changed velocity/body tuples pass the old three-field guard and refuse under exact tuple comparison**, plus an unchanged-source positive, no-mutation refusal and a deliberately preserved A→B→A counterexample. New exact-model tests are authored for same-revision velocity substitution, body-ID substitution, mutable nested velocity alias and forged accepted-token source snapshots. **The full published B3 unittest suite has NOT yet been executed against this new head**; the standalone oracle must not be substituted for integration qualification.
+
+**Scope and limitations:** a snapshot comparison *cannot* detect writes that change a field and restore its exact original value before commit (ABA); it also cannot detect an adversary who can forge both the Intent and the World, authenticate Rapier contact/sample custody, prove rollback/CYPS4/physical-hash parity, or authorize dynamic per-material bulk solver changes. A trusted native World-issued generation/epoch plus full source mutation-counter (incremented on every future-affecting write), current authoritative fence, immutable worker packet and actual applied World policy would be required for a stronger opt-in consumer. B2's accepted-payload alias falsifier reinforces that stable authoritative effects are separately necessary. All mismatches remain UNVERIFIED or typed refusal, never accepted physics.
+
+**Cost envelope:** preparing the source value snapshot copies 7 fixed fields including two integer velocity components; admission adds one fixed-size tuple equality and token fingerprints include that tuple. Bounded model complexity O(1) per attempted transfer *for this guard*, before dictionaries and the existing model's O(N) Water total, momentum and candidate validation. No native microseconds, allocations, 1/4 real-worker parity, or speed claim are established. Never attach this Python checker to a per-cell hot path.
+
+**Requested independent tests:** B4 execute the published B3 suite and attempt same-revision velocity/sidecar substitution plus native receiver pin/provenance forgery. B2 require monotone invalidation on every World/material/actor mutation and UNKNOWN=>RECOMPUTE, missing authoritative barrier=>BLOCKED. B5 independently source-verify the accepted payload and applied-policy boundary before recommending any opt-in consumer. Keep Draft/HOLD.
+
+
+## 2026-11-10 B3-RESEARCH-4 — signed-IN seed and restored-state policy validation
+
+Independent B4 discovered that the previous model could **start** with a negative
+vertical IN velocity even when its construction-bound signed policy was false,
+although a new transfer with that velocity was refused. The model now enforces
+the same signed-IN seed predicate at `World.start` and in explicitly invoked
+`World.assert_invariants`. This closes a model-level admission gap under trusted
+construction/transition premises; it does not prove native restore correctness.
+
+Full exact-source identities, induction argument, preregistered falsifier,
+independent checker, bounded cost and remaining limitations are in
+[SEED-IN-POLICY-20261110.md](SEED-IN-POLICY-20261110.md).
+The standalone signed-policy checker executed 38 independent predicate controls,
+but the exact B3 model and expanded suite **have not been executed** at this
+head. Model-only Draft/HOLD remains in force; B4/B5 independent review required.
+
+## 2026-11-10 B3-RESEARCH-5 — caller-held seed alias custody
+
+B4 independently showed that the previous B3-RESEARCH-4 model accepted a caller-supplied mutable velocity list as an unsigned IN seed, then leaked later list mutations into World state without an epoch/revision transition. [New bounded proof, exact source identities, counterexample and qualification limits](SEED-ALIAS-CUSTODY-20261110.md). `World.start` now validates exact integer fields and owns a fresh two-integer tuple per initial Record, and `assert_invariants` rejects list-backed purported restored records. Correctness is conditional on the research model's exclusive writer and admitted transitions; this is not a real runtime guarantee.
+
+The updated module has **28 authored deterministic test methods**. An independent semantic shadow confirmed 23 accepted alias controls, one expected signed-policy refusal and five malformed-value refusals, including reproduction of the old alias exposure; it did **not** execute the published 28-method suite. No native or production physics tests, tick measurements, physical hashes, workbench acceptance, MAT-AUTH or policy authorization are claimed. B5's independent unversioned applied-policy mutation falsifier remains open. Draft/HOLD pending exact-head independent B4/B5 replay.
+
+## 2026-11-10 B3-RESEARCH-6 — applied World-policy pin and retained spoof boundary
+
+B5's unversioned signed-policy mutation counterexample was confirmed by inspecting source at B3-RESEARCH-5. New research-only guard disallows ordinary post-construction signed-policy assignment; an Intent captures and fingerprints the policy at prepare and a fresh commit refuses `POLICY_DRIFT` if the destination World has a different model policy. Cross-World same-generation replays now refuse even where the original amount, record and epoch match, while historical acknowledgements remain non-authoritative. [Exact source identities, scoped proof, preregistered falsifier and negative evidence](APPLIED-POLICY-CUSTODY-20261110.md).
+
+Standalone independently authored and locally executed 14-case matrix reproduces three old policy-upgrade exposures, 14 setter rejections and 14 cross-World policy mismatches; three deliberate raw-`__dict__` forgeries remain **successful** when paired with forged fresh intents. These show why a Python value pin cannot replace authenticated native policy custody. Four more exact-model tests are authored (**32 total**) but **the exact published B3 module suite has not been executed** at this head. Draft/HOLD; B4 and B5 independent qualification requested. No native World, material law, worker, Rapier, physical hash, saved state or performance claim changed.
