@@ -10,6 +10,7 @@ import random
 from typing import Any, Mapping
 
 from . import offline as d
+from . import trajectory
 
 VERSION = "d1a-paired-audit/1"
 POLICIES = frozenset(("astar", "contour_astar", "random_legal"))
@@ -159,6 +160,7 @@ def compare_matched(f: d.Fixture,
         "post_divergence_candidate_matching_claimed": False,
         "arm_metrics": {name: arms[name]["metrics"] for name in names},
         "arm_path_sha256": {name: d.digest(arms[name]["path"]) for name in names},
+        "synthetic_effect_audit": trajectory.compare_simulated_effects(arms),
     }
 
 
