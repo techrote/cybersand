@@ -33,6 +33,7 @@ def main() -> None:
     for name in ("corpus", "godot", "runtime-manifest", "source-sha", "output"):
         parser.add_argument("--" + name, required=True)
     parser.add_argument("--proposals", default=str(FILE))
+    parser.add_argument("--disposition", required=True)
     args = parser.parse_args()
     corpus = Path(args.corpus)
     proposals = Path(args.proposals)
@@ -52,8 +53,28 @@ def main() -> None:
     write_json(out / "pre-native-source-screen.json", screened)
 
     document = json.loads(proposals.read_text(encoding="utf-8"))
+    disposition_path = Path(args.disposition)
+    disposition = json.loads(disposition_path.read_text(encoding="utf-8"))
+    if (disposition.get("schema") != "cybersand.lfm25_vl.contrastive-review-disposition/1"
+            or disposition.get("source_screen_producer_sha")
+                != "44721f3b116cb0eedfea36965be4c20274d4a5e3"
+            or disposition.get("native_research_producer_sha")
+                != "abef683ceaa0fb2782e2d4b65db2c4c3c475e52d"
+            or disposition.get("not_common_train") is not True
+            or disposition.get("final_targets_opened") is not False):
+        raise ValueError("exact previous failed native source and reviewer disposition required")
+    status = {x["id"]: x for x in disposition["entries"]}
+    if set(status) != {x["id"] for x in document["proposals"]}:
+        raise ValueError("reviewer disposition missing or adding original candidates")
+    quarantined = [key for key, value in status.items()
+                   if value["disposition"].startswith("QUARANTINED_")]
+    if quarantined != ["lfm-c3-gantry-room-and-underdeck-stairs"]:
+        raise ValueError("expected explicit C3 P2 quarantine, no waiver")
+    active = [item for item in document["proposals"] if item["id"] not in quarantined]
+    if len(active) != 2 or {x["family"] for x in active} != {"greebles", "pipework"}:
+        raise ValueError("only Greebles and Pipework are cleared for native research retry")
     cases = []
-    for candidate in document["proposals"]:
+    for candidate in active:
         p = candidate["program"]
         for seed in SEEDS:
             compiled = compile_program(p, seed=seed, focus=(0, 0, 96, 96),
@@ -65,8 +86,8 @@ def main() -> None:
                 "split": "UNADMITTED_RESEARCH_PROPOSAL", "proposal_group_id": candidate["id"],
                 "program": p, "compiled": compiled, "training_approved": False,
             })
-    if len(cases) != 6:
-        raise ValueError("expected exactly three original designs and two host seeds each")
+    if len(cases) != 4:
+        raise ValueError("expected exactly two non-quarantined designs and two host seeds each")
 
     candidate_document = {
         "schema_version": 1, "purpose": "unadmitted-contrastive-native-research",
@@ -82,6 +103,7 @@ def main() -> None:
         "proposal_sha256": sha(proposals),
         "original_manifest_sha256": MANIFEST,
         "original_split_screen_sha256": digest(out / "pre-native-source-screen.json"),
+        "review_disposition_sha256": sha(disposition_path),
         "input_manifest_sha256": digest(out / "input-cases.json"),
         "candidates_sha256": digest(out / "candidates.json"),
         "workers": 1,
@@ -116,11 +138,12 @@ def main() -> None:
         result["runtime_unchanged"] = False
         result["runtime_error"] = str(error)
     result["harness_unchanged"] = digest(harness) == custody["harness_sha256"]
-    result["inputs_unchanged"] = all((
+    result["input_unchanged"] = all((
         digest(out / "input-cases.json") == custody["input_manifest_sha256"],
         digest(out / "candidates.json") == custody["candidates_sha256"],
         digest(out / "pre-native-source-screen.json") == custody["original_split_screen_sha256"],
         sha(proposals) == custody["proposal_sha256"],
+        sha(disposition_path) == custody["review_disposition_sha256"],
     ))
     write_json(out / "process-result.json", result)
     try:
@@ -138,9 +161,11 @@ def main() -> None:
         "native_verifier_passed": verified.get("passed") is True,
         "runtime_unchanged": result["runtime_unchanged"],
         "harness_unchanged": result["harness_unchanged"],
-        "inputs_unchanged": result["inputs_unchanged"],
-        "independent_hand_authored_compositions": 3,
-        "host_seed_variants": 6,
+        "input_unchanged": result["input_unchanged"],
+        "independent_hand_authored_compositions": 2,
+        "host_seed_variants": 4,
+        "quarantined_candidate_ids": quarantined,
+        "review_disposition_sha256": custody["review_disposition_sha256"],
         "actual_native_verified_views": len(good),
         "verified_case_ids": [r["id"] for r in good],
         "verified_affected_material_cells": [r.get("affected_cells") for r in good],
@@ -154,9 +179,9 @@ def main() -> None:
     write_json(out / "lfm-contrastive-native-summary.json", summary)
     print(json.dumps(summary, sort_keys=True), flush=True)
     if not all((
-        summary["native_verifier_passed"], len(good) == 6,
+        summary["native_verifier_passed"], len(good) == 4,
         summary["runtime_unchanged"], summary["harness_unchanged"],
-        summary["inputs_unchanged"],
+        summary["input_unchanged"],
     )):
         raise SystemExit("Native research failed or incomplete; retain evidence, no TRAIN admission")
 
