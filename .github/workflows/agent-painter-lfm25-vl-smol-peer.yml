@@ -1,0 +1,61 @@
+name: LFM pinned SMOL source geometry audit (NO TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - 'experiments/agent_painter/lanes/lfm25_vl/smol_peer_review.py'
+      - 'experiments/agent_painter/lanes/lfm25_vl/test_smol_peer_review.py'
+      - '.github/workflows/agent-painter-lfm25-vl-smol-peer.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: lfm-smol-source-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  original-source-geometry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Confirm source branch, hosted runner, policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/codex/agent-painter-lfm25-vl-568
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/lfm-smol-policy.json
+      - name: Adversarial Python source-contract tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s experiments/agent_painter/lanes/lfm25_vl -p 'test_smol_peer_review.py' -v
+      - name: Download original pinned SMOL research proposals
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/smol-peer
+          curl --fail --silent --show-error --location --retry 2 --connect-timeout 10 --max-time 45 \
+            'https://raw.githubusercontent.com/techrote/cybersand/6e412178c9b71cb0196d8e35408470077b50f884/experiments/agent_painter/lanes/smol/curriculum_proposals_v2.json' \
+            --output evidence/smol-peer/smol-original.json
+      - name: Verify source Git blobs and compare original geometry
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/lfm25_vl/smol_peer_review.py \
+            --lfm experiments/agent_painter/lanes/lfm25_vl/contrastive_proposals_v1.json \
+            --smol evidence/smol-peer/smol-original.json \
+            --output evidence/smol-peer/source-receipt.json
+      - name: Preserve source receipt including failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lfm-smol-source-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/smol-peer/source-receipt.json
+          if-no-files-found: warn
+          retention-days: 90
