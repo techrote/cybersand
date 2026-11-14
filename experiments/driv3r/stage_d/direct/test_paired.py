@@ -90,6 +90,18 @@ class PairedEvidenceTests(unittest.TestCase):
         with self.assertRaises(p.EvidenceError):
             p.compare_matched(self.route, {"a": a, "b": b})
 
+    def test_choice_and_simulated_effect_divergence_are_distinct(self):
+        result = p.run_development_pair(self.route, seed=13)
+        effect = result["synthetic_effect_audit"]
+        self.assertFalse(effect["native_qualified"])
+        self.assertEqual(effect["first_consequential_native_divergence"], "not_measured")
+        self.assertEqual(effect["post_divergence_candidate_parity"], "not_asserted")
+        choice = result["first_choice_divergence_index"]
+        geom = effect["first_geometric_divergence_index"]
+        self.assertIsNotNone(choice)
+        self.assertIsNotNone(geom)
+        self.assertGreaterEqual(geom, choice)
+
     def test_heldout_outcomes_remain_unopened(self):
         heldout = d.wall_fixture("switchback", "heldout")
         with self.assertRaises(p.EvidenceError):
