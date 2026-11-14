@@ -18,5 +18,8 @@
   "allow_training": false,
   "workflow_mode": "one_explicit_source_matched_hosted_run",
   "retain_original_failed_attempts": true,
-  "no_merge_or_ready": true
+  "no_merge_or_ready": true,
+  "request_attempt": 2,
+  "amendment": "Corrected isolated native venv to install pinned jsonschema validator before source build; exact original attempt remains retained",
+  "unchanged_scope": "one original native paint, one brush-up backtrack, one independent replay"
 }
