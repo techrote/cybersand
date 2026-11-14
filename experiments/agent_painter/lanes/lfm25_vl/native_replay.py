@@ -135,7 +135,8 @@ def collect(corpus, evidence):
                     raise ValueError("Original compiled output substituted or altered")
                 original_hashes[f"{arm}/{index:02d}/compiled-only.json"] = sha(source_compiled)
                 examples.append({"id": case_id, "family": program["family"],
-                                 "seed": row["seed"], "program": program, "compiled": compiled})
+                                 "seed": row["seed"], "split": "DEVELOPMENT",
+                                 "program": program, "compiled": compiled})
                 totals[arm]["compiler_accepted_views"] += 1
                 net = program["components"][0]
                 edges, nodes = net["edges"], net["nodes"]
@@ -188,7 +189,10 @@ def main():
     script = Path(__file__).resolve()
     before.update({"harness_sha256": digest(harness), "script_sha256": digest(script),
                    "candidate_sha256": digest(output / "candidates.json"),
+                   "candidates_sha256": digest(output / "candidates.json"),
                    "input_sha256": digest(output / "input-cases.json"),
+                   "input_manifest_sha256": digest(output / "input-cases.json"),
+                   "claim": "Actual source-built native Art replay of original LFM DEVELOPMENT completions; model output unchanged; no teacher substitution",
                    "model_training_source": TRAIN, "model_evaluation_source": EVAL,
                    "original_native_corpus_source": CORPUS, "original_corpus_sha256": MANIFEST,
                    "original_model_output_hashes": hashes})
@@ -212,7 +216,7 @@ def main():
     after = verify_runtime(ROOT, stamp, args.source_sha, godot)
     result["runtime_unchanged"] = all(before.get(k) == v for k, v in after.items())
     result["harness_unchanged"] = digest(harness) == before["harness_sha256"]
-    result["inputs_unchanged"] = (
+    result["input_unchanged"] = (
         digest(output / "input-cases.json") == before["input_sha256"]
         and digest(output / "candidates.json") == before["candidate_sha256"]
         and digest(script) == before["script_sha256"]
@@ -242,7 +246,7 @@ def main():
     print(json.dumps({k: v for k, v in summary.items() if k != "cases"}, sort_keys=True), flush=True)
     if (not report.get("passed") or summary["native_verified_views"] != 4
             or not all(result.get(k) for k in ("runtime_unchanged",
-                                               "harness_unchanged", "inputs_unchanged"))):
+                                               "harness_unchanged", "input_unchanged"))):
         raise SystemExit("Actual native Art/readback not fully qualified; preserve all evidence")
 
 
