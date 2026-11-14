@@ -1,0 +1,44 @@
+name: SMOL fresh120 partial-promotion regression
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths:
+      - experiments/agent_painter/lanes/smol/completion_gate.py
+      - experiments/agent_painter/lanes/smol/tests/test_completion_gate.py
+      - .github/workflows/agent-painter-smol-native.yml
+      - .github/workflows/agent-painter-smol-gate.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: smol-model-free-promotion-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify exact tracked source and run negative controls
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 -m py_compile experiments/agent_painter/lanes/smol/completion_gate.py
+          python3 -m unittest discover -s experiments/agent_painter/lanes/smol/tests -p 'test_completion_gate.py' -v
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/smol-ci-scheduling.json
+      - name: Confirm future native workflow consumes the fail-closed gate
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s = Path(".github/workflows/agent-painter-smol-native.yml").read_text()
+          assert "--training evidence/candidate/training --exit-code" in s
+          assert "--source-sha \"$GITHUB_SHA\"" in s
+          assert "stopped-checkpoint-saved')" not in s
+          assert "if: always()" in s
+          print("Partial checkpoint is non-promotable; failure artifact upload preserved")
+          PY
