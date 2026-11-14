@@ -253,7 +253,16 @@ func native_identity_edges() -> void:
 	var catalogue: Dictionary = catalogue_generator.get_catalogue()
 	var versions := {}
 	for entry: Dictionary in catalogue.modules:
-		versions[str(entry.id) + ":" + str(entry.version)] = true
+		var identity: String = str(entry.id) + ":" + str(entry.version)
+		versions[identity] = true
+		var architectural: bool = str(entry.id) in ["terraced", "hex_hive", "arcade"]
+		var versioned_legacy: bool = str(entry.id) in ["arcology", "vault"] and int(entry.version) == 2
+		if architectural or versioned_legacy:
+			check(int(entry.get("minimum_recipe_schema", -1)) == 4,
+				"schema-4-only catalogue variant declares its minimum schema: " + identity)
+		else:
+			check(not entry.has("minimum_recipe_schema"),
+				"legacy module metadata remains free of schema-4 restrictions: " + identity)
 	check(versions.has_all(["arcology:1","arcology:2","vault:1","vault:2","aqueduct:1",
 		"terraced:1","terraced:2","hex_hive:1","hex_hive:2","arcade:1","arcade:2"]),"native catalogue exposes exact legacy and architectural module versions")
 

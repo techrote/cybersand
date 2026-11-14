@@ -6,6 +6,9 @@ const Project = preload("res://scripts/architectural_generator_project.gd")
 const Store = preload("res://scripts/workbench_generated_map.gd")
 const Palette = preload("res://scripts/material_appearance_lut.gd")
 const SAVE_NAME := "architecture-ab-qualification"
+const FIVE_SAVE_NAME := "architecture-five-styles-qualification"
+const SPARSE_SAVE_NAME := "architecture-sparse-slots-qualification"
+const GeneratorDialog = preload("res://scripts/workbench_generator_dialog.gd")
 var checks := 0
 var failures := 0
 var complete := false
@@ -512,7 +515,110 @@ func architectural_form_views(project: Dictionary) -> bool:
 	for frame: int in 2: await process_frame
 	return true
 
-func authoring(reopening: bool) -> void:
+func mixed_style_project(sparse: bool) -> Dictionary:
+	var project: Dictionary = Project.default_project()
+	project.extent = [512, 512]
+	project.zone_scale = 64
+	project.seed = 314159 if sparse else 161803
+	project.automatic_tunnels = false
+	var presets: Array = Project.builtin_presets()
+	project.styles.clear()
+	for slot: int in 5:
+		var selected: bool = not sparse or slot in [0, 2, 4]
+		var weight: float = 20.0 if not sparse else (35.0 if slot in [0, 2] else 30.0 if slot == 4 else 0.0)
+		var preset_index: int = slot if not sparse else [0, 1, 11, 3, 12][slot]
+		project.styles.append({"enabled":selected, "share":weight if selected else 0.0,
+			"preset":presets[preset_index].duplicate(true)})
+	return project
+
+func check_style_diagnostics(project: Dictionary, label: String) -> void:
+	var compiled: Dictionary = dialog._architecture_result
+	var expected_slots: Array[int] = []
+	for slot: int in project.styles.size():
+		if bool(project.styles[slot].enabled): expected_slots.append(slot)
+	check(dialog._zone_diagnostics.visible and compiled.coverage.size() == expected_slots.size(),
+		label + " reports every enabled zone after actual native preview completion")
+	check(dialog._zone_toggle.visible and dialog._zone_overlay.texture != null,
+		label + " has a real style-zone overlay texture")
+	check(not dialog._accepted_proposal.is_empty() and dialog.attests(dialog._ready_packet),
+		label + " preserves verified native proposal after zone diagnostic rendering")
+	if dialog._zone_overlay.texture == null: return
+	var image: Image = dialog._zone_overlay.texture.get_image()
+	var zones: Dictionary = compiled.zones
+	var actual_names := {}
+	for entry: Dictionary in compiled.coverage:
+		var slot: int = int(entry.slot)
+		var expected_name: String = GeneratorDialog.ZONE_COLOUR_NAMES[slot]
+		var expected_colour: Color = GeneratorDialog.ZONE_COLOURS[slot]
+		actual_names[expected_name] = true
+		check(slot in expected_slots and dialog._zone_palette_index(slot) == slot,
+			label + " uses the original style slot for the legend and raster: " + str(slot))
+		check(dialog._zone_diagnostics.text.contains(expected_name + " · " + str(entry.name) + ":"),
+			label + " identifies style " + str(slot + 1) + " by its own colour and name")
+		var block: int = zones.cells.find(slot)
+		if check(block >= 0, label + " assigned real zone blocks to style slot " + str(slot)):
+			var colour: Color = image.get_pixel(block % int(zones.width), int(block / int(zones.width)))
+			check(absf(colour.r - expected_colour.r) < 0.01 and
+				absf(colour.g - expected_colour.g) < 0.01 and
+				absf(colour.b - expected_colour.b) < 0.01 and
+				absf(colour.a - expected_colour.a) < 0.01,
+				label + " paints style " + str(slot + 1) + " with its matching legend colour")
+	check(actual_names.size() == expected_slots.size(),
+		label + " assigns distinct colour names to every active style slot")
+	for slot: int in 5:
+		if slot not in expected_slots:
+			check(not dialog._zone_diagnostics.text.contains(
+				GeneratorDialog.ZONE_COLOUR_NAMES[slot] + " · "),
+				label + " does not invent legends for disabled style slot " + str(slot + 1))
+
+func mixed_style_authoring(reopening: bool) -> void:
+	for sparse: bool in [false, true]:
+		var label: String = "sparse-slots-1-3-5" if sparse else "five-active-styles"
+		var save_name: String = SPARSE_SAVE_NAME if sparse else FIVE_SAVE_NAME
+		var project: Dictionary = mixed_style_project(sparse)
+		var packet: Dictionary = {}
+		if reopening:
+			var saved: Dictionary = Store.read_named(save_name)
+			if not check(saved.get("generated", false), label + " saved manifest is a generated-start v1"): return
+			wb._name.text = save_name
+			preview_clock.begin()
+			if not check(wb.load_setup(), label + " begins fresh-process reconstruction"): return
+		else:
+			preview_clock.begin()
+			if not check(dialog.start_architectural(project), label + " starts native preview from actual Shared Workbench"): return
+		if not await preview_ready(label + ("-reopened" if reopening else "-new")): return
+		packet = dialog._ready_packet.duplicate(true)
+		check(packet.cells.size() == 512 * 512 and packet.receipt_hashes.size() > 0,
+			label + " has complete 512-square native material and receipts")
+		if not reopening:
+			check_style_diagnostics(project, label)
+			await framebuffer(label + "-zone-overlay", dialog)
+		var prior_epoch: int = host._physical_epoch
+		dialog.confirmed.emit()
+		dialog.hide()
+		if not await until(func() -> bool: return installed() and
+				str(wb._generated_active.get("sha256", "")) == str(packet.sha256),
+			label + " installs independently verified source materials"): return
+		check(host._physical_epoch != prior_epoch,
+			label + " commits a real new native Workbench construction")
+		var receipt: Dictionary = host.tower_context.get("liquid_construction_receipt", {})
+		check(receipt.get("generated_source_sha256", "") == packet.sha256,
+			label + " native owner independently acknowledges exact generated materials")
+		if not reopening:
+			wb._name.text = save_name
+			if not check(wb.save_setup(), label + " saves source-bound generated start"): return
+			var saved: Dictionary = Store.read_named(save_name)
+			check(saved.get("generated", false) and
+				saved.generation.recipe_sha256 == packet.recipe_sha256,
+				label + " saved identity preserves the exact built recipe")
+		report.cases.append({"case":"multistyle-reopen" if reopening else "multistyle-author",
+			"selection":label, "source_sha256":packet.sha256, "recipe_sha256":packet.recipe_sha256,
+			"native_receipts":packet.receipt_hashes.size(), "slot_count":5,
+			"enabled_slots":[0,2,4] if sparse else [0,1,2,3,4],
+			"display":DisplayServer.get_name()})
+	complete = true
+
+func authoring(reopening: bool, multistyle: bool = false) -> void:
 	if OS.get_environment("CYBERSAND_ARCHITECTURE_REQUIRE_GRAPHICS") == "1":
 		if not check(DisplayServer.get_name() != "headless", "requested graphical acceptance has an actual display"): return
 	root.size = Vector2i(1600, 1000)
@@ -527,6 +633,9 @@ func authoring(reopening: bool) -> void:
 	preview_clock.dialog = dialog
 	root.add_child(preview_clock)
 	if not await until(installed, "ordinary Shared Workbench native World ready"): return
+	if multistyle:
+		await mixed_style_authoring(reopening)
+		return
 	var saved := {}
 	if reopening:
 		saved = Store.read_named(SAVE_NAME)
@@ -639,6 +748,8 @@ func run() -> void:
 			native_algorithm_gallery()
 			native_contracts()
 		elif phase in ["author", "reopen"]: await authoring(phase == "reopen")
+		elif phase in ["multistyle-author", "multistyle-reopen"]:
+			await authoring(phase == "multistyle-reopen", true)
 		else: check(false, "unknown qualification phase")
 	check(complete, "mandatory complete " + phase + " phase")
 	var report_file := FileAccess.open(output_dir().path_join("architecture-" + phase + ".json"), FileAccess.WRITE)

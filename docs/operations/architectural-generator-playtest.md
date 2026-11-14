@@ -16,6 +16,21 @@ its source commit and file hashes. Keep all bundled files together. The launcher
 uses the bundled Godot/native runtime; no source compilation or manual JSON
 editing is required for the ordinary workflow.
 
+## Five-style and sparse-slot graphical acceptance
+
+The integration finisher now independently exercises **five enabled styles**
+and **non-contiguous enabled slots 1, 3 and 5** in a live Shared Workbench.
+For each case, the graphical runner generates a real 512-square native preview,
+compares the legend names and overlay pixel colours using the original slot
+indices, verifies preservation of the attested proposal after diagnostics,
+installs it into the native owner, saves the generated-start manifest, and
+loads it into a new process, verifying exact source/material receipts again.
+
+The overlay uses five distinct slot colours (Orange, Blue, Green, Violet and
+Pink); disabled slots do not acquire phantom legend entries. These tests run
+in the same Linux/Windows source-matched pipeline and from the delivered ZIP
+in addition to the existing 1024-square owner acceptance.
+
 ## Make the three-style map
 
 Five compact style cards now appear side by side without tabs. Enable any one

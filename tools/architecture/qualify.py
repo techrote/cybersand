@@ -178,7 +178,7 @@ def main() -> int:
             tests.append(("ui", "res://tests/test_architectural_generator_ui.gd",
                           r"ARCHITECTURAL_UI checks=[1-9][0-9]* failures=0"))
         if args.suite in ("all", "owner"):
-            for phase in ("author", "reopen"):
+            for phase in ("author", "reopen", "multistyle-author", "multistyle-reopen"):
                 tests.append((phase, "res://tests/test_architectural_generator.gd",
                               rf"ARCHITECTURE_RESULTS phase={phase} checks=([1-9][0-9]*) failures=0 complete=true"))
         if args.legacy_regressions:
@@ -195,7 +195,7 @@ def main() -> int:
             env["CYBERSAND_LEGACY_OUTPUT"] = str(output / "legacy-materials.json")
         for phase, script, marker in tests:
             env["CYBERSAND_ARCHITECTURE_PHASE"] = phase
-            graphical = args.graphical and phase in ("ui", "author", "reopen")
+            graphical = args.graphical and phase in ("ui", "author", "reopen", "multistyle-author", "multistyle-reopen")
             env["CYBERSAND_ARCHITECTURE_REQUIRE_GRAPHICS"] = "1" if graphical else "0"
             display_flags = ["--headless"]
             if graphical:

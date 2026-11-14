@@ -14,8 +14,13 @@ const PROFILE_MAX_BYTES := 1024 * 1024
 const PACKAGED_PROFILES := "res://authoring/worldgen"
 const CHECKOUT_PROFILES := "res://../examples/worldgen"
 const ARCHITECTURAL_PROFILE := "architectural-project://active"
-const ZONE_COLOURS := [Color(0.95,0.61,0.25,0.25), Color(0.25,0.68,0.98,0.25), Color(0.45,0.88,0.43,0.25)]
-const ZONE_COLOUR_NAMES := ["Orange", "Blue", "Green"]
+# Slot-indexed palette. The legend and raster must use the identical mapping:
+# style slots can be sparse (e.g. 0/2/4), not simply positions in coverage.
+const ZONE_COLOURS := [
+	Color(0.95,0.61,0.25,0.25), Color(0.25,0.68,0.98,0.25),
+	Color(0.45,0.88,0.43,0.25), Color(0.78,0.48,0.95,0.25),
+	Color(0.98,0.38,0.68,0.25)]
+const ZONE_COLOUR_NAMES := ["Orange", "Blue", "Green", "Violet", "Pink"]
 
 var _workbench: Control
 var _profile := OptionButton.new()
@@ -410,6 +415,10 @@ func restore_previous_preview() -> bool:
 	get_ok_button().disabled = false
 	return true
 
+func _zone_palette_index(slot: int) -> int:
+	# Keep legend and overlay in lockstep, including non-contiguous slot IDs.
+	return posmod(slot, ZONE_COLOURS.size())
+
 func _show_zone_diagnostics() -> void:
 	_zone_toggle.visible = _architecture_active
 	_zone_diagnostics.visible = _architecture_active
@@ -419,7 +428,7 @@ func _show_zone_diagnostics() -> void:
 	var lines: Array[String] = []
 	for entry: Dictionary in _architecture_result.coverage:
 		lines.append("%s · %s: target %.2f%% → assigned %.2f%% · %d blocks · %d component(s)" % [
-			ZONE_COLOUR_NAMES[int(entry.slot)], str(entry.name), float(entry.requested_percent), float(entry.achieved_percent), int(entry.blocks), int(entry.components)])
+			ZONE_COLOUR_NAMES[_zone_palette_index(int(entry.slot))], str(entry.name), float(entry.requested_percent), float(entry.achieved_percent), int(entry.blocks), int(entry.components)])
 	_zone_diagnostics.text = "Style-zone area (including empty space)\n" + "\n".join(lines)
 	var zones: Dictionary = _architecture_result.zones
 	var width := int(zones.width)
@@ -428,7 +437,7 @@ func _show_zone_diagnostics() -> void:
 	for y: int in height:
 		for x: int in width:
 			var slot := int(zones.cells[y*width+x])
-			img.set_pixel(x, y, ZONE_COLOURS[slot % ZONE_COLOURS.size()])
+			img.set_pixel(x, y, ZONE_COLOURS[_zone_palette_index(slot)])
 	_zone_overlay.texture = ImageTexture.create_from_image(img)
 	_zone_overlay.visible = _zone_toggle.button_pressed
 
