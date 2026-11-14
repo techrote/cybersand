@@ -11,7 +11,7 @@ const FIRE_END: int = 100
 
 class PilotHost extends "res://scripts/main.gd":
 	var pilot_action: Dictionary = {}
-	var pilot_ports := {"q":false,"e":false,"s":false,"boost":true}
+	var pilot_ports := {"q":false,"e":false,"s":false,"boost":false}
 
 	func _publish_workbench_keyboard() -> void:
 		if pilot_action.is_empty() or paused or shared_workbench == null or physical_actor_session == null:
@@ -150,7 +150,7 @@ func _run() -> void:
 	if verify(await _wait_for(func() -> bool: return ui != null and not ui.applied.is_empty()),
 			"default Workbench installed"):
 		var config: Dictionary = Setup.fresh(PackedInt32Array(ui.applied.liquid_policy),Vector2i(512,512))
-		config.actors = [Setup.instance("kestrel",1,Vector2(240,260))]
+		config.actors = [Setup.instance("kestrel",1,Vector2(240,360))]
 		config.next_id = 2
 		config.selected = 1
 		config.fire = false
@@ -160,8 +160,8 @@ func _run() -> void:
 			if verify(await _wait_for(func() -> bool:
 					return host.pending_microscenario_apply.is_empty() and host._physical_epoch > old_epoch and host.physical_actor_session != null and host._physical_terrain_ready),
 					"isolated native/Rapier World installed"):
-				host.pilot_action = {"move":Vector2(0.0,-1.0),"trim":0.45,
-					"primary":true,"effort":1.0}
+				host.pilot_action = {"move":Vector2(0.0,-0.6),"trim":0.32,
+					"primary":false,"effort":1.0}
 				verify(ui.toggle_pause(),"begin actual 60Hz Rapier flight")
 				var starting_tick: int = host.physical_actor_session.tick
 				var last_seen: int = -1
@@ -182,6 +182,16 @@ func _run() -> void:
 						print("PR566_RECOIL_SAMPLE ",JSON.stringify(record))
 				host.pilot_action.clear()
 				if ui.fire_enabled: ui._fire.set_pressed(false)
+				var terminal: Dictionary = host.physical_actor_session.workbench_actor_state(1)
+				print("PR566_RECOIL_TERMINAL ",JSON.stringify({
+					"tick":last_seen,
+					"worker_failed":host.simulation_worker.has_failed(),
+					"host_paused":host.paused,
+					"actor_position":_xy(terminal.get("position",Vector2.ZERO)),
+					"actor_velocity":_xy(terminal.get("linear_velocity",Vector2.ZERO)),
+					"native_error":str(host.latest_snapshot.last_tick_error)
+						if host.latest_snapshot != null else "no_snapshot"
+				}))
 				verify(last_seen >= SAMPLE_TICKS,"completed controlled 220-tick real Rapier flight")
 				verify(valid_native_frames > 12,"native response telemetry was actually published")
 				if trial == "fire":
