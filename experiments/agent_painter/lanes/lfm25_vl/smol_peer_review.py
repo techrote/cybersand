@@ -79,6 +79,7 @@ def tree(p):
     adj = [set() for _ in nodes]
     seen = set()
     cells = set()
+    edge_cells = []
     for edge in edges:
         if (not isinstance(edge,list) or len(edge)!=2 or
             any(type(v) is not int or not 0<=v<len(nodes) for v in edge)):
@@ -94,9 +95,19 @@ def tree(p):
             raise ValueError("diagonal/zero edge")
         adj[a].add(b); adj[b].add(a)
         if x == u:
-            cells.update((x,k) for k in range(min(y,v),max(y,v)+1))
+            segment={(x,k) for k in range(min(y,v),max(y,v)+1)}
         else:
-            cells.update((k,y) for k in range(min(x,u),max(x,u)+1))
+            segment={(k,y) for k in range(min(x,u),max(x,u)+1)}
+        # Every interior node/crossing must be explicit in the graph. A degree
+        # multiset cannot detect branch relocation through an undeclared node.
+        if any(tuple(node) in segment for i,node in enumerate(nodes) if i not in (a,b)):
+            raise ValueError("undeclared pipe node on edge centerline")
+        for (c,d), other in edge_cells:
+            allowed={tuple(nodes[j]) for j in ({a,b} & {c,d})}
+            if (segment & other) != allowed:
+                raise ValueError("undeclared pipe crossing or overlapping edges")
+        edge_cells.append(((a,b),segment))
+        cells.update(segment)
     visited={0}; todo=[0]
     while todo:
         for v in adj[todo.pop()] - visited:
