@@ -158,9 +158,7 @@ func _run() -> void:
 		var old_epoch: int = host._physical_epoch
 		if verify(ui.apply(config),"isolated clean native/Rapier flight prepared"):
 			if verify(await _wait_for(func() -> bool:
-					return host.pending_microscenario_apply.is_empty() and
-						host._physical_epoch > old_epoch and host.physical_actor_session != null and
-						host._physical_terrain_ready),
+					return host.pending_microscenario_apply.is_empty() and host._physical_epoch > old_epoch and host.physical_actor_session != null and host._physical_terrain_ready),
 					"isolated native/Rapier World installed"):
 				host.pilot_action = {"move":Vector2(0.0,-1.0),"trim":0.45,
 					"primary":true,"effort":1.0}
