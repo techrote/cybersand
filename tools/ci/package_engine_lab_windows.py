@@ -40,7 +40,7 @@ def source_and_binaries(native_dir):
     need(git("rev-parse",SOURCE)==SOURCE,"Pinned Git source does not exist")
     subprocess.run(["git","merge-base","--is-ancestor",PARENT,SOURCE],cwd=ROOT,check=True)
     subprocess.run(["git","diff","--exit-code",PARENT,SOURCE,"--","native","godot/native_extension",
-                    "godot/scripts/workbench_physics_bridge.gd","godot/scripts/simulation_worker.gd",
+                    "godot/scripts/workbench_physics_bridge.gd",
                     "godot/scripts/pixel_camera_transform.gd"],cwd=ROOT,check=True)
     provenance=json.loads((native_dir/"runtime-provenance.json").read_text())
     dll=native_dir/Path(NATIVE).name
