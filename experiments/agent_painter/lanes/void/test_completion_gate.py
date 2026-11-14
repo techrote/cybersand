@@ -7,7 +7,9 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from completion_gate import CHECKPOINT, verify_completion as strict_verify, TRAINING, CPU_EFFECTIVE, CORPUS, NATIVE
+from completion_gate import (CHECKPOINT, verify_completion as strict_verify,
+                             TRAINING, CPU_EFFECTIVE, CORPUS, NATIVE,
+                             TRAIN_SHA256, COMPILER_SHA256, TRAIN_IDS)
 
 SOURCE = "d" * 40
 
@@ -25,7 +27,9 @@ def fixture(root: Path) -> tuple[dict, Path]:
     (checkpoint / "adapter").mkdir(parents=True)
     (checkpoint / "adapter/adapter_model.safetensors").write_bytes(b"synthetic adapter fixture only")
     (checkpoint / "training_state.pt").write_bytes(b"synthetic optimizer fixture only")
-    order = [f"synthetic-train-{i}" for i in range(12)]
+    # Synthetic tensors and optimizer receipts, but genuine immutable TRAIN IDs.
+    # Promotion must fail if any of the 12 reviewed native-admitted row IDs differs.
+    order = sorted(TRAIN_IDS)
     history = [{"global_step": i, "sample_cursor": i, "sample_id": order[(i-1) % 12],
                 "gradient_norm": 1.0, "loss": 2.0-i/1000, "seconds": 0.01,
                 "sequence_tokens": 750, "loss_tokens": 320,
@@ -38,7 +42,7 @@ def fixture(root: Path) -> tuple[dict, Path]:
                   n: {"sha256": d, "bytes": 123} for n, d in profile["required_hashes"].items()},
               "trainer_sha256": sha(TRAINING / "train.py"),
               "contract_sha256": sha(TRAINING / "common.py"),
-              "train_sha256": "1"*64, "compiler_sha256": "2"*64,
+              "train_sha256": TRAIN_SHA256, "compiler_sha256": COMPILER_SHA256,
               "device": "cpu", "dtype": "float32", "threads": 1, "seed": 568,
               "max_length": 2048, "rank": 8, "alpha": 16, "dropout": 0.05,
               "learning_rate": 0.0005, "native_execution_by_trainer": False,
@@ -88,6 +92,27 @@ class GateTests(unittest.TestCase):
         self.assertTrue(result["promotable"])
         self.assertEqual(result["verified_optimizer_receipts"], 120)
         self.assertEqual(result["verified_checkpoint_files"], 3)
+        self.assertEqual(set(self.summary["config"]["sample_order"]), TRAIN_IDS)
+
+    def test_frozen_native_train_and_compiler_identity_refused(self):
+        # All digests are syntactically valid; no self-consistent summary may
+        # substitute a different native TRAIN split or compiler.
+        for field in ("train_sha256", "compiler_sha256"):
+            with self.subTest(field=field):
+                bad = json.loads(json.dumps(self.summary))
+                bad["config"][field] = "f" * 64
+                with self.assertRaisesRegex(ValueError, "frozen native TRAIN/compiler"):
+                    verify_completion(bad, 0, self.checkpoint)
+        for change in (
+                lambda a: a.__setitem__(0, "unknown-train-id"),
+                lambda a: a.__setitem__(0, a[1]),
+                lambda a: a.pop(0),
+        ):
+            with self.subTest(change=change.__code__.co_firstlineno):
+                bad = json.loads(json.dumps(self.summary))
+                change(bad["config"]["sample_order"])
+                with self.assertRaisesRegex(ValueError, "native-admitted frozen TRAIN rows"):
+                    verify_completion(bad, 0, self.checkpoint)
 
     def test_partial_and_nonzero_exit_refused(self):
         for code in (1, 2, 124, 137):
