@@ -3003,9 +3003,9 @@
       ],
       "facts": [
         "Approved convergence shares native authority, baseline reconstruction, acknowledged edits and persistence; interface permissions and budgets may differ.",
-        "Current generated-start v1 reconstructs the authored start, not evolved simulation. Planned Flatten captures stored material IDs into a standalone tick-zero baseline, discards old reconstruction dependencies and does not Save automatically.",
-        "Existing Setup-v2 and generated-start v1 remain supported; standalone snapshot encoding and rollback budgets are Planned, with no Flatten implementation in PR542.",
-        "The integration join must verify human and agent edits after fresh-process regeneration/load and stale proposal refusal after World replacement."
+        "Generated-start v1 reconstructs the authored start. GEN-008 captures current stored IDs into a uint16 little-endian standalone baseline, discards old reconstruction/history dependencies, preserves the same live World/tick/physics, and does not Save automatically.",
+        "Existing Setup-v2 and generated-start v1 remain supported. Standalone material-baseline v1 is bounded, integrity-checked and atomically saved; no physical checkpoint or Undo Flatten is promised. The earlier reset/respawn proposal was withdrawn on 11 November 2026.",
+        "The integration join verifies acknowledged human and agent edits after fresh-process load, stale proposal refusal after World replacement, and an independent authoring-generation fence when Flatten leaves native generation/revision/tick unchanged."
       ],
       "sources": [
         "architecture/shared-workbench-authoring-data.md"

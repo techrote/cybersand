@@ -121,8 +121,11 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         // Nothing in this input exposes a mutable World, or admits post-commit
         // chunk mutation. Edits are ordered starting-map marks, not live state.
         const bool generated = options.has("workbench_generated");
+        const bool material_baseline = options.has("workbench_material_baseline");
         Dictionary generated_claim;
+        Dictionary baseline_claim;
         PackedByteArray generated_cells;
+        PackedByteArray baseline_cells;
         Array generated_edits;
         String generated_expected_material_sha;
         if (generated) {
@@ -197,6 +200,32 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             for (std::int64_t i = 0; i < generated_cells.size(); ++i)
                 if (!cybersand::valid_material(static_cast<std::uint16_t>(generated_cells[i])))
                     throw std::invalid_argument("Generated-grid contains an invalid material ID");
+        }
+        if (material_baseline) {
+            if (!workbench || generated || retain || default_demo || level_payload != nullptr ||
+                options["workbench_material_baseline"].get_type() != Variant::DICTIONARY ||
+                !rectangles.is_empty() || !water_fills.is_empty())
+                throw std::invalid_argument("Material baseline requires a fresh exclusive workbench constructor");
+            baseline_claim = options["workbench_material_baseline"];
+            if (baseline_claim.size() != 5 ||
+                baseline_claim.get("schema",Variant()).get_type() != Variant::INT ||
+                baseline_claim.get("extent",Variant()).get_type() != Variant::VECTOR2I ||
+                baseline_claim.get("cells",Variant()).get_type() != Variant::PACKED_BYTE_ARRAY ||
+                baseline_claim.get("sha256",Variant()).get_type() != Variant::STRING ||
+                baseline_claim.get("edits",Variant()).get_type() != Variant::ARRAY ||
+                static_cast<std::int64_t>(baseline_claim["schema"]) != cybersand::material_baseline::kSchema ||
+                static_cast<Vector2i>(baseline_claim["extent"]) != extent)
+                throw std::invalid_argument("Malformed or unsupported material baseline schema or extent");
+            baseline_cells = baseline_claim["cells"];
+            generated_edits = baseline_claim["edits"];
+            if (generated_edits.size() > 32768)
+                throw std::length_error("Material baseline subsequent edit capacity exceeded");
+            const auto bytes = std::span<const std::uint8_t>{baseline_cells.ptr(),
+                static_cast<std::size_t>(baseline_cells.size())};
+            cybersand::material_baseline::validate(bytes, extent.x, extent.y);
+            const auto actual = prepared_liquid_detail::digest(cybersand::Sha256::of(bytes));
+            if (actual != static_cast<String>(baseline_claim["sha256"]))
+                throw std::invalid_argument("Material baseline integrity mismatch");
         }
         if (retain && (!adapter->workbench_ || adapter->extent_ != extent))
             throw std::invalid_argument("Live content requires the retained workbench extent");
@@ -373,9 +402,13 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             struct Tuple { cybersand::Material material = cybersand::Material::Empty;
                 std::uint16_t a = 0; std::uint8_t b = 0; };
             std::vector<Tuple> map(static_cast<std::size_t>(extent.x) * extent.y);
-            if (generated) {
+            if (generated || material_baseline) {
+                const auto baseline_bytes = std::span<const std::uint8_t>{baseline_cells.ptr(),
+                    static_cast<std::size_t>(baseline_cells.size())};
                 for (std::int32_t y = 0; y < extent.y; ++y) for (std::int32_t x = 0; x < extent.x; ++x) {
-                    const auto id = generated_cells[static_cast<std::size_t>(y) * extent.x + x];
+                    const auto index = static_cast<std::size_t>(y) * extent.x + x;
+                    const auto id = material_baseline ? cybersand::material_baseline::decode(baseline_bytes, index)
+                        : static_cast<std::uint16_t>(generated_cells[static_cast<std::int64_t>(index)]);
                     const auto material = static_cast<cybersand::Material>(id);
                     const auto& initial = cybersand::MaterialRules::descriptor(material);
                     map[static_cast<std::size_t>(y) * extent.x + x] = {
@@ -424,7 +457,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 for (auto dy = y; dy < y+h; ++dy) for (auto dx = x; dx < x+w; ++dx)
                     map[static_cast<std::size_t>(dy) * extent.x + dx] = {cybersand::Material::Water, mass, coherence};
             }
-            if (generated) {
+            if (generated || material_baseline) {
                 // Bound total generated-start replay work independently of
                 // rectangle count and file size. These are construction writes,
                 // not arbitrary tick-time native World ownership.
@@ -487,9 +520,10 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                         }
                     }
                 }
-                std::vector<std::uint8_t> expected(map.size());
+                const std::size_t stride = material_baseline ? 2U : 1U;
+                std::vector<std::uint8_t> expected(map.size() * stride, 0);
                 for (std::size_t i = 0; i < map.size(); ++i)
-                    expected[i] = static_cast<std::uint8_t>(map[i].material);
+                    expected[i * stride] = static_cast<std::uint8_t>(map[i].material);
                 generated_expected_material_sha = prepared_liquid_detail::digest(cybersand::Sha256::of(
                     {expected.data(), expected.size()}));
             }
@@ -507,6 +541,12 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             // Binding a host digest does not establish a native definition compiler.
             input.setup.coverage = cybersand::setup::SetupCoverage::RegisteredDefinitionAndPayload;
             input.setup.gaps = cybersand::setup::kKnownSetupGaps;
+            if (material_baseline) {
+                // Exact reserve prevents geometric reallocation of a dense
+                // 2048-square baseline's temporary prepared tuples.
+                input.cells.reserve(static_cast<std::size_t>(std::count_if(map.begin(),map.end(),
+                    [](const Tuple& cell) { return cell.material != cybersand::Material::Empty; })));
+            }
             for (std::int32_t y = 0; y < extent.y; ++y) for (std::int32_t x = 0; x < extent.x; ++x) {
                 const auto& cell = map[static_cast<std::size_t>(y) * extent.x+x];
                 if (cell.material != cybersand::Material::Empty)
@@ -538,18 +578,23 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         pending->reset_demo_coupling = default_demo;
         pending->extent = extent;
         pending->world->configure_transient_obstacles({0, 0, extent.x, extent.y}, workbench);
-        if (generated) {
+        if (generated || material_baseline) {
             // Authoritative material-ID equality is not render-copy equality:
             // copy_material_cells() intentionally dithers fractional Water and
             // overlays in-flight ballistic parcels. Only stored_material()
             // reflects the constructed World that native physics will tick.
             // This is one bounded native construction-time scan, never a
             // per-cell GDScript call or a tick-path traversal.
-            std::vector<std::uint8_t> readback(static_cast<std::size_t>(extent.x) * extent.y);
-            for (std::int32_t y = 0; y < extent.y; ++y) {
-                for (std::int32_t x = 0; x < extent.x; ++x)
-                    readback[static_cast<std::size_t>(y) * extent.x + x] =
-                        static_cast<std::uint8_t>(pending->world->stored_material(x, y));
+            const std::size_t stride = material_baseline ? 2U : 1U;
+            std::vector<std::uint8_t> readback(static_cast<std::size_t>(extent.x) * extent.y * stride);
+            if (material_baseline) {
+                cybersand::material_baseline::copy(*pending->world, readback, extent.x, extent.y);
+            } else {
+                for (std::int32_t y = 0; y < extent.y; ++y) {
+                    for (std::int32_t x = 0; x < extent.x; ++x)
+                        readback[static_cast<std::size_t>(y) * extent.x + x] =
+                            static_cast<std::uint8_t>(pending->world->stored_material(x, y));
+                }
             }
             const auto installed_digest = prepared_liquid_detail::digest(cybersand::Sha256::of(
                 {readback.data(), readback.size()}));
@@ -739,6 +784,12 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 pending->receipt["generated_generator_seed"] = generated_claim["generator_seed"];
                 pending->receipt["generated_receipt_hashes"] = generated_claim["receipt_hashes"];
                 pending->receipt["generated_edit_count"] = generated_edits.size();
+            }
+            if (material_baseline) {
+                pending->receipt["material_baseline_schema"] = cybersand::material_baseline::kSchema;
+                pending->receipt["material_baseline_source_sha256"] = baseline_claim["sha256"];
+                pending->receipt["material_baseline_prepared_material_sha256"] = generated_expected_material_sha;
+                pending->receipt["material_baseline_edit_count"] = generated_edits.size();
             }
             if (retain) pending->receipt["workbench_conversion"] = conversion_receipt;
             pending->receipt["workbench_extent"] = extent;

@@ -46,13 +46,16 @@ static func native_materials() -> PackedInt32Array:
 
 static func request_error(request: Dictionary) -> String:
 	for key: Variant in request:
-		if key not in ["kind","cells","region","rect","expected_generation","expected_revision","expected_tick","expected_before","protected","source_allowed"]:
+		if key not in ["kind","cells","region","rect","expected_generation","expected_revision","expected_tick","expected_authoring_generation","expected_before","protected","source_allowed"]:
 			return "Unknown paint request field."
 	if request.get("kind", "") not in ["edit", "capture"]:
 		return "Unknown paint request."
 	for field: String in ["expected_generation", "expected_revision", "expected_tick"]:
 		if not request.get(field) is int or int(request[field]) < 0:
 			return "A current native generation, revision and tick are required."
+	if request.has("expected_authoring_generation") and (not request.expected_authoring_generation is int \
+			or int(request.expected_authoring_generation) < 1):
+		return "A current authored-baseline generation is required."
 	var guards: Variant = request.get("protected", [])
 	if not guards is Array or guards.size() > MAX_GUARDS:
 		return "Protection rectangle capacity exceeded."
@@ -138,6 +141,8 @@ func step(world: Variant, context: Dictionary) -> Dictionary:
 		failure = "Operation cancelled."
 		termination = "cancelled"
 	elif int(context.generation) != int(command.expected_generation): failure = "Native World was replaced."
+	elif int(context.get("authoring_generation",1)) != int(command.get("expected_authoring_generation",1)):
+		failure = "Authoring history was replaced."
 	elif int(context.tick) != int(command.expected_tick): failure = "Simulation advanced; source state is no longer current."
 	elif int(context.revision) != _revision: failure = "Another edit changed the native source."
 	elif int(context.settings_revision) != int(command._settings_revision): failure = "Construction settings changed."
@@ -210,6 +215,7 @@ func _finish(termination: String, reason: String, context: Dictionary) -> Dictio
 		"status": status, "termination": termination, "reason": reason,
 		"requested_cells": count, "checked": checked, "applied": applied, "changed": changed,
 		"generation": int(command.expected_generation), "revision": _revision,
+		"authoring_generation":int(context.get("authoring_generation",1)),
 		"tick": int(command.expected_tick), "observed_generation": int(context.generation),
 		"backend": "CyberNativeCellWorld", "slices": slices,
 		"maximum_slice_usec": maximum_slice_usec, "elapsed_usec": Time.get_ticks_usec() - _started_usec,
