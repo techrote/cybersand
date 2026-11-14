@@ -39,6 +39,7 @@
     "source_producer_sha": "af673d4497f199d2ce10a6aa7ff1b89dffc23c37",
     "source_program_key": "STUDIES['G09']['program']",
     "program_version": 2,
+    "program_sha256": "62fc07e8e27a67c020acd023a2285ddf21fc4f5f8701fbf8e52ae0943893ee51",
     "family": "greebles",
     "detail_kinds": [
       "ribs",
@@ -106,6 +107,18 @@
       0.02941176
     ],
     "fresh_independent_reviewer_original_files_verification": "https://github.com/techrote/cybersand/issues/568#issuecomment-6880352516"
+  },
+  "proposed_training_label_gate": {
+    "status": "NOT_AUTHORED_NOT_ADMITTED",
+    "request": null,
+    "complete_target_json": null,
+    "target_eos_token_id": 5,
+    "eos_appended_and_verified": false,
+    "root_instruct_jinja_verified_for_new_row": false,
+    "positive_shared_native_train_receipt": null,
+    "global_structural_group_id": null,
+    "ready_for_optimizer": false,
+    "reason": "The source-built teacher research description and canonical program digest are not a trained example. Shared #569 owner must independently specify, review, serialize and token-check an exact request plus complete canonical JSON and EOS, allocate the split-safe global group, and run a new positive native TRAIN admission."
   },
   "safety_and_next_gate": {
     "research_teacher_only": true,

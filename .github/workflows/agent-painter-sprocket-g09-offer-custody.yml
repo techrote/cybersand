@@ -1,0 +1,60 @@
+name: SPROCKET G09 review packet original-native custody (no TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/G09_SHARED_ADMISSION_REVIEW_OFFER.json
+      - experiments/agent_painter/lanes/sprocket/g09_offer_custody.py
+      - experiments/agent_painter/lanes/sprocket/test_g09_offer_custody.py
+      - .github/workflows/agent-painter-sprocket-g09-offer-custody.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sprocket-g09-offer-custody-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  original-source-native-custody:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify GitHub-hosted source and safety policy
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_REF" = refs/heads/codex/agent-painter-sprocket-568
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$GITHUB_REPOSITORY" = techrote/cybersand
+          test "$(git hash-object experiments/agent_painter/lanes/sprocket/threefamily_v3.py)" = b3ac98a8cd06158b39a2f58776fab845046f245f
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/sprocket-g09-offer-scheduling.json
+      - name: Verify original native artifact registry digest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          digest="$(gh api repos/techrote/cybersand/actions/artifacts/14111800549 --jq .digest)"
+          test "$digest" = sha256:3a7397883b146a28da990f0a37b891897285c2c7c81cd9dd2aaa3895d0d196dd
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sprocket-threefamily-v3-prospective-native-63ee8b2b561068a72e0652e54b6e4193cb47d5e6-43587600137-1
+          run-id: '43587600137'
+          github-token: ${{ github.token }}
+          path: evidence/original
+      - name: Verify unchanged native source program, receipts and adversarial negatives
+        env:
+          G09_ORIGINAL_NATIVE_DIR: evidence/original/sprocket-v3-native
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s experiments/agent_painter/lanes/sprocket -p 'test_g09_offer_custody.py' -v
+          python3 experiments/agent_painter/lanes/sprocket/g09_offer_custody.py --native "$G09_ORIGINAL_NATIVE_DIR" --output evidence/g09-offer-custody/receipt.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-g09-offer-custody-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/g09-offer-custody/
+          if-no-files-found: warn
+          retention-days: 90
