@@ -39,7 +39,7 @@ class ContrastPreflightTests(unittest.TestCase):
         with self.assertRaises(Exception):
             subject.preflight(bad)
 
-    def test_invalid_five_endpoint_witness_refused(self):
+    def test_invalid_six_terminal_witness_refused(self):
         bad = copy.deepcopy(self.items["pipework"])
         bad["program"]["components"][0]["edges"].pop()
         with self.assertRaises(Exception):
@@ -48,7 +48,7 @@ class ContrastPreflightTests(unittest.TestCase):
     def test_semantic_diameter_drift_refused(self):
         bad = copy.deepcopy(self.items["pipework"])
         bad["program"]["components"][0]["diameter"] = 5
-        with self.assertRaisesRegex(ValueError, "five-terminal"):
+        with self.assertRaisesRegex(ValueError, "six-terminal"):
             subject.preflight(bad)
 
     def test_architecture_missing_route_refused(self):
