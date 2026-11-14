@@ -1,0 +1,47 @@
+name: SMOL v2 curriculum candidates compiler and held-out split screen
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths:
+      - 'experiments/agent_painter/lanes/smol/curriculum_proposals_v2.json'
+      - 'experiments/agent_painter/lanes/smol/curriculum_preflight.py'
+      - '.github/workflows/agent-painter-smol-curriculum-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: smol-curriculum-preflight
+  cancel-in-progress: false
+jobs:
+  screen:
+    name: Version-2 compiler and visible original TRAIN/DEV split screening only
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Exact source and branch
+        run: |
+          test "$GITHUB_REF" = "refs/heads/codex/agent-painter-smol-568"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/native
+      - name: Strict proposal-only screening (no FINAL, training, or native)
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/smol/curriculum_preflight.py \
+            --corpus evidence/native/corpus \
+            --receipt evidence/smol-proposals-screen.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: smol-curriculum-screen-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/smol-proposals-screen.json
+          retention-days: 90
+          if-no-files-found: warn
