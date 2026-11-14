@@ -1,0 +1,75 @@
+name: PF504 gas-stage CPU retained-evidence independent replay (no native rebuild)
+on:
+  push:
+    branches: [codex/pf504-stress-gas-cpu-20261107]
+    paths:
+      - tools/ci/pf504_gas_cpu_readback.py
+      - .github/workflows/pf504-gas-cpu-replay.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  revalidate-source-matched-workbench:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ORIGINAL_RUN: "42357179356"
+      ORIGINAL_ARTIFACT_ID: "13568138870"
+      ORIGINAL_ARTIFACT_DIGEST: sha256:2dc85818dd9648ad6f8bf1fa1af96423d899be0bc08fe119814e3565b1e0e874
+    steps:
+      - name: Checkout exact independent analysis helper
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Verify CI policy and locked evidence origin
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/ci/pf504_gas_cpu_readback.py
+          python3 tools/ci/check_ci_provider_policy.py
+          metadata="$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$ORIGINAL_ARTIFACT_ID")"
+          echo "$metadata" | python3 -c '
+          import json,sys,os
+          j=json.load(sys.stdin)
+          assert j["id"]==int(os.environ["ORIGINAL_ARTIFACT_ID"])
+          assert not j["expired"]
+          assert j.get("digest")==os.environ["ORIGINAL_ARTIFACT_DIGEST"]
+          assert j["workflow_run"]["id"]==int(os.environ["ORIGINAL_RUN"])
+          print("PF504_EVIDENCE_LOCK_PASS",j["id"],j["digest"])
+          '
+          mkdir -p evidence
+          gh run download "$ORIGINAL_RUN" --name pf504-real-stress-gas-process-cpu-profile-BCCB --dir evidence
+          test -s evidence/stress-B1.log
+          test -s evidence/stress-C1.log
+          test -s evidence/stress-C2.log
+          test -s evidence/stress-B2.log
+          grep -Fx "baseline=24a8bbe8ccf0d17196ebbab580b924930a964584" evidence/source-identities.txt
+          grep -Fx "candidate=186452b9f035961325ad71917a76ba8834e30bcf" evidence/source-identities.txt
+          grep -Fx "harness=bc267754e523d869f85756ca2b85fca9f740e183" evidence/source-identities.txt
+      - name: Independently replay real Godot receipts and zero-safe process CPU analysis
+        run: |
+          set -euo pipefail
+          python3 tools/ci/pf504_gas_cpu_readback.py evidence
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("evidence/gas-stage-cpu-profile.json").read_text())
+          assert len(d["original_reports"])==4
+          assert all(x["pf504_stage_profiler"]["worker_observed_peak"]==4
+                     for x in d["original_reports"].values())
+          assert all(x["_profile_delta"]["gas_reference_passes"]==240 and
+                     x["_profile_delta"]["gas_reuses"]==0 and
+                     x["_profile_delta"]["reference_fallbacks"]==240
+                     for x in d["original_reports"].values())
+          for field in ("gas_reuses","gas_component_reuses","gas_cache_builds"):
+              assert d["gas_work_per_tick"][field]["baseline_per_tick"]==0
+              assert d["gas_work_per_tick"][field]["candidate_per_tick"]==0
+          print("PF504_GAS_STAGE_CPU_REPLAY_PASS",d["schema"])
+          PY
+      - name: Retain original source-matched evidence and independent CPU report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pf504-gas-stage-cpu-replay-validated
+          path: evidence/
+          retention-days: 90
+          if-no-files-found: warn
