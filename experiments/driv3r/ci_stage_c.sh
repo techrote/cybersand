@@ -5,7 +5,7 @@
 set -euo pipefail
 test -n "${RUNNER_TEMP:-}"
 test -n "${GITHUB_SHA:-}"
-evidence="${DRIV3R_STAGE_B_EVIDENCE:-evidence/driv3r-stage-c}"
+evidence="${DRIV3R_STAGE_C_EVIDENCE:-evidence/driv3r-stage-c}"
 test ! -e "$evidence"
 mkdir -p "$evidence/build"
 phase="request-and-source"
@@ -77,6 +77,14 @@ export GODOT_BIN="$RUNNER_TEMP/driv3r-stage-c-godot/Godot_v4.7-stable_linux.x86_
 chmod +x "$GODOT_BIN"
 "$GODOT_BIN" --version > "$evidence/build/godot-version.txt"
 if ! timeout 1200 "$GODOT_BIN" --headless --path godot --editor --quit > "$evidence/build/import.log" 2>&1; then tail -100 "$evidence/build/import.log"; exit 1; fi
+
+phase="actual-native-preflight"
+# Repair qualification runs real Godot before any model acquisition.
+export DRIV3R_NATIVE_GODOT="$GODOT_BIN"
+export DRIV3R_NATIVE_OUTPUT="$evidence/build/native-preflight"
+export DRIV3R_NATIVE_MANIFEST="$evidence/native-build.json"
+"$DRIV3R_PYTHON" -m unittest experiments.driv3r.tests.test_native.NativeEvidenceTests.test_actual_native -v > "$evidence/build/native-preflight.log" 2>&1 || { tail -100 "$evidence/build/native-preflight.log"; exit 1; }
+unset DRIV3R_NATIVE_GODOT DRIV3R_NATIVE_OUTPUT DRIV3R_NATIVE_MANIFEST
 
 phase="graphical-headless-display"
 # Real software-rendered Godot framebuffer, not headless material PNGs.
