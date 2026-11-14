@@ -96,8 +96,15 @@ def main() -> int:
                 if data.get("failures") != []:
                     raise RuntimeError(f"{name}: Workbench correctness failures: {data.get('failures')}")
                 obs = data.get("observations",{})
-                if not obs.get("native_tick",0) > 0:
-                    raise RuntimeError(f"{name}: simulation never progressed")
+                # A paused/replaced Workbench can finish at tick zero. The
+                # independent simulation and Rapier receipts, plus observed
+                # physical material insertion, prove real earlier progress.
+                source_receipt = obs.get("source", {})
+                if (int(source_receipt.get("inserted", 0)) <= 0
+                        or len(obs.get("body_rows", [])) < 3
+                        or not obs.get("near_actor")
+                        or not obs.get("distant_actor")):
+                    raise RuntimeError(f"{name}: missing actual Workbench material/actor progress")
                 row.update({"world_extent": "2048x2048", "completed_tick":obs.get("native_tick"),
                             "worker_step_ms":obs.get("worker_step_ms"),
                             "native_simulation_ms":obs.get("last_native_ms"),
