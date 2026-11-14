@@ -55,6 +55,7 @@ jobs:
           if req != expected:
               raise SystemExit("frozen one-shot campaign request mismatch")
           PY
+          python3 -m unittest discover -s experiments/agent_painter/lanes/void -p 'test_completion_gate.py' -v
           mkdir -p evidence/env
           git rev-parse HEAD > evidence/env/source.txt
           lscpu > evidence/env/cpu.txt
@@ -82,15 +83,10 @@ jobs:
           set -euo pipefail
           code=0
           timeout --signal=TERM --kill-after=45s 1900s "$RUNNER_TEMP/void-120/bin/python" experiments/agent_painter/lanes/void/campaign_120.py --source-sha "$GITHUB_SHA" --model "$RUNNER_TEMP/void-model" --corpus evidence/native/corpus --output evidence/training || code=$?
-          if test "$code" -ne 0 && test "$code" -ne 2; then exit "$code"; fi
-          "$RUNNER_TEMP/void-120/bin/python" - <<'PY'
-          import json
-          from pathlib import Path
-          s=json.loads(Path("evidence/training/summary.json").read_text())
-          if not(s["actual_training"] is True and s["global_step"] >= 1 and s["global_step"] <= 120 and s["checkpoint_readback_exact"] is True and s["frozen_base_unchanged"] is True):
-              raise SystemExit("training proof/readback/step bound failed")
-          print(json.dumps({"status":s["status"],"actual_steps":s["global_step"],"checkpoint":s["checkpoint"],"wall_seconds":s["wall_seconds"],"peak_rss_kib":s["peak_rss_kib"]}))
-          PY
+          # Always preserve the artifact below, but only a genuine exit-0,
+          # fully checkpointed 120/120 run unlocks DEVELOPMENT.
+          "$RUNNER_TEMP/void-120/bin/python" experiments/agent_painter/lanes/void/completion_gate.py \
+            --summary evidence/training/summary.json --exit-code "$code"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
