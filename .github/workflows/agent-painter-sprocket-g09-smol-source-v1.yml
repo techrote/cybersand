@@ -1,0 +1,68 @@
+name: SPROCKET G09 vs SMOL G06 pinned source contrast (no training)
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/g09-smol-source-v1-request.json
+permissions:
+  contents: read
+concurrency:
+  group: sprocket-g09-smol-source-v1
+  cancel-in-progress: false
+jobs:
+  source-contrast:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Enforce immutable request and hosted-source policy
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git hash-object experiments/agent_painter/lanes/sprocket/threefamily_v3.py)" = b3ac98a8cd06158b39a2f58776fab845046f245f
+          python3 - <<'PY'
+          import json,os
+          d=json.load(open('experiments/agent_painter/lanes/sprocket/g09-smol-source-v1-request.json'))
+          assert d=={"schema":"cybersand.sprocket-g09-smol-source-request/1","sequence":1,
+            "sprocket_native_run":43587600137,"smol_native_run":43601281142,
+            "source_only":True,"training":False,"new_native":False,
+            "train_admission":False,"final_opened":False,"draft_hold":True}
+          for k,v in {"GITHUB_ACTIONS":"true","RUNNER_ENVIRONMENT":"github-hosted",
+            "GITHUB_REPOSITORY":"techrote/cybersand",
+            "GITHUB_REF":"refs/heads/codex/agent-painter-sprocket-568"}.items():
+            assert os.environ.get(k)==v,(k,os.environ.get(k))
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/sprocket-g09-smol-schedule.json
+      - name: Fetch SHA-locked original SMOL G06 proposal source
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/g09-smol
+          curl -fsSL --retry 2 --max-time 30 \
+            https://raw.githubusercontent.com/techrote/cybersand/6e412178c9b71cb0196d8e35408470077b50f884/experiments/agent_painter/lanes/smol/curriculum_proposals_v2.json \
+            -o evidence/g09-smol/smol-v2.json
+          test "$(git hash-object evidence/g09-smol/smol-v2.json)" = 0b0adae3c02d1ccc9bda2cdca393f272ca7ecf63
+      - name: Source contrast and adversarial guards
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s experiments/agent_painter/lanes/sprocket \
+            -p 'test_g09_smol_visual_structure_v1.py' -v
+          python3 experiments/agent_painter/lanes/sprocket/g09_smol_visual_structure_v1.py \
+            --sprocket experiments/agent_painter/lanes/sprocket/threefamily_v3.py \
+            --smol evidence/g09-smol/smol-v2.json --output evidence/g09-smol/contrast.json
+          python3 - <<'PY'
+          import json
+          x=json.load(open('evidence/g09-smol/contrast.json'))
+          assert x["disposition"]=="PAIRWISE_SOURCE_DISTINCT_GLOBAL_REVIEW_HOLD"
+          assert not x["globally_distinct"] and x["new_train_groups"]==0
+          assert x["new_native_views"]==0 and x["optimizer_updates"]==0 and not x["final_opened"]
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-g09-smol-source-v1
+          path: evidence/g09-smol/contrast.json
+          if-no-files-found: warn
+          retention-days: 90
