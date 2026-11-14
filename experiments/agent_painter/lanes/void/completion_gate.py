@@ -78,8 +78,15 @@ def _source_contract(summary: dict, expected_source: str) -> list[str]:
     if c.get("model") != profile or profile.get("model_id") != MODEL or profile.get("revision") != REVISION:
         raise ValueError("pinned VOID model/profile revision mismatch")
     files = c.get("model_files")
-    if not isinstance(files, dict) or set(files) != set(profile["required_hashes"]):
+    if not isinstance(files, dict) or not set(profile["required_hashes"]).issubset(files):
         raise ValueError("pinned model file inventory mismatch")
+    # The audited downloader may also fetch optional metadata. Verify each
+    # extra hash/size without misrepresenting it as a new immutable model pin.
+    for name, item in files.items():
+        if (not isinstance(name, str) or not isinstance(item, dict) or
+                not isinstance(item.get("sha256"), str) or not HEX64.fullmatch(item["sha256"]) or
+                type(item.get("bytes")) is not int or item["bytes"] <= 0):
+            raise ValueError("invalid model snapshot file receipt: " + str(name))
     for name, digest in profile["required_hashes"].items():
         item = files[name]
         if (not isinstance(item, dict) or item.get("sha256") != digest or

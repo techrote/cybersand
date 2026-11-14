@@ -173,6 +173,15 @@ class GateTests(unittest.TestCase):
 
 
 
+    def test_additional_hashed_upstream_metadata_allowed(self):
+        # The audited downloader permits extra matched public metadata files.
+        self.summary["config"]["model_files"]["extra-metadata.json"] = {
+            "sha256": "e"*64, "bytes": 64}
+        self.assertTrue(verify_completion(self.summary, 0, self.checkpoint)["promotable"])
+        self.summary["config"]["model_files"]["extra-metadata.json"]["sha256"] = "bad"
+        with self.assertRaisesRegex(ValueError, "model snapshot"):
+            verify_completion(self.summary, 0, self.checkpoint)
+
     def test_source_model_native_and_numerical_substitutions_refused(self):
         changes = [("source_sha", "0"*40), ("native_source_sha", "0"*40),
                    ("corpus_manifest_sha256", "0"*64), ("trainer_sha256", "0"*64),
