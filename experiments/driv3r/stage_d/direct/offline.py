@@ -83,8 +83,8 @@ def wall_fixture(family: str, split: str) -> Fixture:
     profiles = {
         "step": [10]*7 + [11, 12, 13, 14] + [14]*6 + [13, 12, 11, 10] + [10]*9,
         "recess": [12]*5 + [11, 10, 9, 8] + [8]*7 + [9, 10, 11, 12] + [12]*10,
-        "bulge": [9]*6 + [10, 11, 12, 13, 14, 15] + [15]*5 +
-                 [14, 13, 12, 11, 10, 9] + [9]*7,
+        "bulge": [9]*6 + [10, 11, 12, 13, 14] + [14]*6 +
+                 [13, 12, 11, 10, 9] + [9]*8,
         "switchback": [11]*3 + [12, 13, 14, 15, 16] + [16]*4 +
                       [15, 14, 13, 12, 11, 10, 9] + [9]*4 +
                       [10, 11, 12, 13] + [13]*3,
@@ -259,11 +259,16 @@ def select_candidate(f: Fixture, pos: Point, options: tuple[Candidate,...],
         raise ValueError(f"Unknown policy {policy}")
     if pos == f.target:
         return options[0]
-    path = shortest_path(f,pos,f.target,contour=(f.task=="wall_offset"))
+    path = shortest_path(f,pos,f.target,contour=(policy=="contour_astar" and f.task=="wall_offset"))
     if len(path) < 2:
         return options[0]
-    next_cell = path[1]
-    return next(c for c in options if not c.stop and c.path[0] == next_cell)
+    # A macro is admissible only if its *entire* swept trajectory is a
+    # prefix of the newly computed reference path, never endpoint-only.
+    matching = [c for c in options if not c.stop and
+                list(c.path) == path[1:1+len(c.path)]]
+    if not matching:
+        raise AssertionError("A* proposed no admitted first step")
+    return max(matching,key=lambda c: len(c.path))
 
 
 def observation_stub(f: Fixture, position: Point, path: list[Point],
