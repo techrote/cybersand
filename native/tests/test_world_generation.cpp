@@ -22,7 +22,9 @@ using cybersand::ChunkCoord;
 using cybersand::Material;
 using namespace cybersand::generation;
 
+std::uint64_t assertions = 0;
 void require(bool value, const std::string& message) {
+    ++assertions;
     if (!value) throw std::runtime_error(message);
 }
 
@@ -715,7 +717,7 @@ void validation_rejects_invalid_recipes_and_graphs() {
         mutate(recipe);
         rejects([&] { (void)Generator::compile(recipe); }, reason);
     };
-    invalid([](Recipe& r) { r.schema = kHierarchySchemaVersion + 1; }, "unknown schema rejected");
+    invalid([](Recipe& r) { r.schema = kArchitecturalSchemaVersion + 1; }, "unknown schema rejected");
     invalid([](Recipe& r) { r.revision = 0; }, "zero revision rejected");
     invalid([](Recipe& r) { r.chunk_size = 0; }, "zero chunk size rejected");
     invalid([](Recipe& r) { r.chunk_size = -1; }, "negative chunk size rejected");
@@ -871,6 +873,270 @@ void registry_refusals_and_coordinate_domain() {
     rejects([&] { (void)Generator::compile(outside); }, "out-of-range authored rectangle rejected");
 }
 
+void architectural_legacy_receipts() {
+    // Captured from accepted ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742 before
+    // editing the native sources. Both raster and recipe receipts are frozen.
+    constexpr std::array<std::array<std::uint64_t, 2>, 3> fingerprints{{
+        {{UINT64_C(0xe172f9ab15c2613f), UINT64_C(0xcd58e7db5c96e158)}},
+        {{UINT64_C(0x43644f82d5207e65), UINT64_C(0xd7a067a6fd8a82ca)}},
+        {{UINT64_C(0xd8e300cab007581b), UINT64_C(0xe86dd96298d0c7ac)}}
+    }};
+    constexpr std::array<std::array<std::uint64_t, 4>, 2> materials{{
+        {{UINT64_C(0x8c156fab4401f727), UINT64_C(0x82f477b9a18ffd6f), UINT64_C(0xace786d140321e3b), UINT64_C(0x1c12a376053439df)}},
+        {{UINT64_C(0xf22216e99aab7376), UINT64_C(0x1e87c43a5b43c2db), UINT64_C(0xd12088c2f3e4117b), UINT64_C(0xf2e7764351482c24)}}
+    }};
+    constexpr std::array names{"arcology", "vault"};
+    constexpr std::array chunks{ChunkCoord{-1, -1}, ChunkCoord{0, -1}, ChunkCoord{-1, 0}, ChunkCoord{0, 0}};
+    for (std::uint32_t schema = 1; schema <= 3; ++schema) for (std::size_t m = 0; m < names.size(); ++m) {
+        Recipe recipe;
+        recipe.schema = schema; recipe.seed = 123456; recipe.chunk_size = 64;
+        recipe.candidate = Candidate::DistrictGrammar;
+        recipe.parameters.room_size = 32; recipe.parameters.district_size = 128;
+        recipe.modules.push_back(instance("legacy-building", names[m], {-96, -96, 192, 192}));
+        const auto generator = Generator::compile(recipe);
+        require(generator->fingerprint() == fingerprints[schema - 1][m], "legacy schema and v1 module fingerprint unchanged");
+        for (std::size_t c = 0; c < chunks.size(); ++c) {
+            const auto result = generator->generate(chunks[c]);
+            require(result.state == ResultState::Ready && result.content_hash == materials[m][c],
+                "legacy schema and v1 module signed-chunk raster unchanged");
+        }
+    }
+    Recipe recipe;
+    recipe.candidate = Candidate::DistrictGrammar; recipe.chunk_size = 64;
+    const auto legacy = Generator::compile(recipe);
+    recipe.schema = kArchitecturalSchemaVersion;
+    const auto current = Generator::compile(recipe);
+    require(recipe_algorithm_version(recipe.schema) == 5 && current->fingerprint() != legacy->fingerprint(),
+        "explicit architectural algorithm has a separate receipt identity");
+    same_cells(legacy->generate({-1, -1}), current->generate({-1, -1}),
+        "schema 4 defaults preserve derived District openings and automatic tunnel raster");
+}
+
+Recipe architectural_recipe() {
+    Recipe recipe;
+    recipe.schema = kArchitecturalSchemaVersion;
+    recipe.seed = 72; recipe.chunk_size = 64;
+    recipe.candidate = Candidate::DistrictGrammar;
+    recipe.parameters.district_size = 128;
+    recipe.parameters.room_size = 32;
+    recipe.parameters.wall_thickness = 3;
+    recipe.architecture.automatic_tunnels = false;
+    recipe.architecture.door_width = 7;
+    recipe.themes.weights = {{"industrial", 1}};
+    recipe.parameters.detail = 0;
+    return recipe;
+}
+
+void architectural_tunnels_paths_and_context() {
+    auto recipe = architectural_recipe();
+    auto registry = ModuleRegistry::builtins();
+    add_sampler(registry, "solid", [](const ModuleContext&, Material) { return Material::Metal; });
+    recipe.modules.push_back(instance("solid-test-canvas", "solid", {-256, -256, 512, 512}));
+    FieldNode route; route.id = "route-context"; route.kind = FieldKind::Context; route.context = "route";
+    recipe.fields.push_back(route);
+    const auto disabled = Generator::compile(recipe, registry);
+    recipe.architecture.automatic_tunnels = true;
+    const auto enabled = Generator::compile(recipe, registry);
+    std::size_t removed = 0;
+    constexpr std::array chunks{ChunkCoord{-1, -1}, ChunkCoord{0, -1}, ChunkCoord{-1, 0}, ChunkCoord{0, 0}};
+    for (const auto chunk : chunks) {
+        const auto off = disabled->generate(chunk, "field:route-context");
+        const auto on = enabled->generate(chunk, "field:route-context");
+        require(off.state == ResultState::Ready && on.state == ResultState::Ready, "architectural tunnel proposals complete");
+        for (std::size_t cell_index = 0; cell_index < off.cells.size(); ++cell_index) {
+            require(off.cells[cell_index] == Material::Metal && off.diagnostics[cell_index] == 0,
+                "tunnel-off preserves module material and never advertises disabled route context");
+            if (on.cells[cell_index] != off.cells[cell_index]) {
+                ++removed;
+                require(on.cells[cell_index] == Material::Empty && on.diagnostics[cell_index] == 1,
+                    "only the automatic macro-network stage removes test-canvas material");
+                const auto x = chunk.x * 64 + static_cast<std::int64_t>(cell_index % 64);
+                const auto y = chunk.y * 64 + static_cast<std::int64_t>(cell_index / 64);
+                const auto trace = enabled->explain(x, y);
+                require(std::any_of(trace.contributions.begin(), trace.contributions.end(), [](const auto& c) {
+                    return c.stage == "candidate_route" && c.id == "macro-network";
+                }), "tunnel-on differences have actual native macro-network provenance");
+                const auto off_trace = disabled->explain(x, y);
+                require(std::none_of(off_trace.contributions.begin(), off_trace.contributions.end(), [](const auto& c) {
+                    return c.stage == "candidate_route";
+                }), "disabled network has no carving receipt");
+            }
+        }
+    }
+    require(removed > 200, "automatic tunnel control visibly affects a bounded signed-coordinate canvas");
+    recipe.architecture.automatic_tunnels = false;
+    GuidePath path; path.id = "authored-empty-route"; path.points = {{-120, -32}, {120, -32}}; path.width = 6;
+    recipe.paths.push_back(path);
+    GuidePath painted; painted.id = "authored-material-route"; painted.points = {{-32, -120}, {-32, 120}};
+    painted.width = 4; painted.material = Material::Copper; painted.priority = 1; recipe.paths.push_back(painted);
+    auto guided = Generator::compile(recipe, registry);
+    require(guided->sample(-80, -32) == Material::Empty && guided->sample(-32, -80) == Material::Copper,
+        "tunnel-off preserves both explicit carved and material guide paths");
+    HardOverride block; block.id = "owner-block"; block.bounds = {-81, -33, 3, 3}; block.material = Material::StainedGlass;
+    recipe.overrides.push_back(block);
+    require(Generator::compile(recipe, registry)->sample(-80, -32) == Material::StainedGlass,
+        "hard material authority remains later than explicit routes");
+    recipe.candidate = Candidate::Strata;
+    recipe.modules.clear(); recipe.paths.clear(); recipe.overrides.clear();
+    recipe.parameters.surface_y = -256; recipe.parameters.relief = 0;
+    recipe.parameters.feature_scale = 16; recipe.parameters.warp = 0;
+    recipe.parameters.cave_threshold = .5; recipe.parameters.fluid_level = 1000000;
+    const auto strata_off = Generator::compile(recipe, registry);
+    recipe.architecture.automatic_tunnels = true;
+    const auto strata_on = Generator::compile(recipe, registry);
+    std::size_t cave_empty = 0, cave_solid = 0;
+    for (const auto chunk : chunks) {
+        const auto off = strata_off->generate(chunk), on = strata_on->generate(chunk);
+        same_cells(off, on, "automatic network toggle does not modify real Strata cave generation");
+        for (const auto material : off.cells) {
+            if (material == Material::Empty) ++cave_empty;
+            else ++cave_solid;
+        }
+    }
+    require(cave_empty > 100 && cave_solid > 100,
+        "Strata independence uses actual mixed cave output, without a masking replacement module");
+}
+
+void architectural_district_doors_and_validation() {
+    auto recipe = architectural_recipe();
+    const auto open = Generator::compile(recipe);
+    recipe.architecture.automatic_doors = false;
+    const auto closed = Generator::compile(recipe);
+    std::size_t apertures = 0;
+    for (std::int64_t y = 0; y < 32; ++y) {
+        if (open->sample(0, y) == Material::Empty) ++apertures;
+        require(closed->sample(0, y) != Material::Empty, "doors-off closes the entire District wall");
+        require(open->sample(0, y) == open->sample(-32, y - 32), "District doorway has consistent signed world ownership");
+    }
+    require(apertures == 7, "District configured doorway is exactly seven cells wide");
+    require(open->sample(10, 10) == closed->sample(10, 10), "door toggle preserves unrelated room interior");
+    require(open->fingerprint() != closed->fingerprint() && !closed->accepts(open->generate({0, 0})),
+        "door changes invalidate stale native proposal receipts");
+    for (const auto width : {1U, 27U, 65U}) {
+        auto bad = recipe; bad.architecture.door_width = width;
+        rejects([&] { (void)Generator::compile(bad); }, "invalid District aperture geometry rejected");
+    }
+    auto bad = recipe; bad.architecture.version = 2;
+    rejects([&] { (void)Generator::compile(bad); }, "unknown architectural controls version rejected");
+    bad = recipe; bad.schema = kHierarchySchemaVersion;
+    rejects([&] { (void)Generator::compile(bad); }, "legacy recipe cannot silently acquire new controls");
+    bad = recipe; bad.parameters.room_size = 31.5;
+    rejects([&] { (void)Generator::compile(bad); }, "new architectural fixed dimensions are integer cells");
+    bad = recipe; bad.parameters.wall_thickness = 12; bad.parameters.room_size = 16;
+    rejects([&] { (void)Generator::compile(bad); }, "walls cannot consume entire room interior");
+    bad = recipe; HardOverride hard; hard.id = "torn-room"; hard.bounds = {0, 0, 64, 64};
+    hard.parameters = {{Parameter::RoomSize, 24}}; bad.overrides.push_back(hard);
+    rejects([&] { (void)Generator::compile(bad); }, "new geometry cannot change per cell through candidate overrides");
+    recipe.architecture.automatic_doors = true; recipe.architecture.door_width = 26;
+    require(Generator::compile(recipe)->sample(0, 3) == Material::Empty, "largest fitting aperture accepted");
+}
+
+void architectural_vault_controls() {
+    auto recipe = architectural_recipe(); recipe.candidate = Candidate::Strata;
+    auto module = instance("service", "vault", {-64, -64, 128, 128}); module.version = 2;
+    module.parameters = {{"cell_size", 32}, {"wall", 2}, {"door_width", 7},
+        {"wall_material", static_cast<double>(Material::SteelPlate)}, {"accent_material", static_cast<double>(Material::Copper)}};
+    recipe.modules.push_back(module);
+    const auto open = Generator::compile(recipe);
+    recipe.architecture.automatic_doors = false;
+    const auto closed = Generator::compile(recipe);
+    require(closed->recipe().modules.front().parameters.at("automatic_doors") == 0,
+        "Vault v2 inherits and records global door default");
+    std::size_t opening = 0, changed = 0;
+    for (std::int64_t y = -64; y < 64; ++y) {
+        if (open->sample(-64, y) == Material::Empty) ++opening;
+        require(closed->sample(-64, y) == Material::SteelPlate, "doors-off closes the exterior Vault maze entrance");
+        for (std::int64_t x = -64; x < 64; ++x) {
+            const auto a = open->sample(x, y), b = closed->sample(x, y);
+            if (a != b) {
+                ++changed;
+                require(a == Material::Empty && b == Material::SteelPlate,
+                    "Vault door change replaces only maze apertures with structural material");
+            }
+        }
+    }
+    require(opening == 7 && changed > 100, "Vault v2 produces exact seven-cell doors throughout its maze");
+    recipe.modules[0].parameters["automatic_doors"] = 1;
+    require(Generator::compile(recipe)->generate({0, 0}).cells == open->generate({0, 0}).cells,
+        "explicit module door setting overrides inherited default");
+    recipe.modules[0].parameters["door_width"] = 2;
+    const auto narrow = Generator::compile(recipe);
+    opening = 0;
+    for (std::int64_t y = -64; y < 64; ++y) if (narrow->sample(-64, y) == Material::Empty) ++opening;
+    require(opening == 2, "minimum Vault v2 opening is two cells rather than rounded away");
+    for (const auto& [key, value] : std::map<std::string, double>{{"cell_size", 15}, {"door_width", 29},
+            {"automatic_doors", .5}, {"wall_material", 0}}) {
+        auto bad = recipe; bad.modules[0].parameters[key] = value;
+        rejects([&] { (void)Generator::compile(bad); }, "invalid Vault dimension/control/static material rejected");
+    }
+    auto bad = recipe; bad.modules[0].version = 1;
+    rejects([&] { (void)Generator::compile(bad); }, "Vault v1 rejects new parameters instead of reinterpreting them");
+    bad = recipe; bad.schema = kHierarchySchemaVersion; bad.architecture = {};
+    rejects([&] { (void)Generator::compile(bad); }, "Vault v2 requires explicit schema 4");
+}
+
+void architectural_arcology_apertures_and_jobs() {
+    auto recipe = architectural_recipe(); recipe.candidate = Candidate::Strata;
+    auto module = instance("habitation", "arcology", {-96, -64, 192, 128}); module.version = 2;
+    module.parameters = {{"bay_width", 32}, {"floor_height", 48}, {"wall", 3}, {"shaft_width", 10}, {"door_width", 8}};
+    recipe.modules.push_back(module);
+    const auto open = Generator::compile(recipe);
+    recipe.modules[0].parameters["automatic_windows"] = 0;
+    const auto no_windows = Generator::compile(recipe);
+    require(open->sample(-96, -54) == Material::DarkGlass && no_windows->sample(-96, -54) == Material::ReinforcedConcrete,
+        "Arcology facade window glass becomes structural wall");
+    require(open->sample(-96, -31) == Material::Empty && no_windows->sample(-96, -31) == Material::ReinforcedConcrete,
+        "Arcology empty facade window apertures close with windows-off");
+    require(open->sample(-64, -54) == Material::DarkGlass && no_windows->sample(-64, -54) == Material::IndustrialBrick,
+        "repeating bay windows visibly close without relying on map perimeter");
+    require(open->sample(-64, -26) == Material::Empty && no_windows->sample(-64, -26) == Material::Empty,
+        "window toggle preserves independently enabled bay doorways");
+    recipe.architecture.automatic_doors = false;
+    const auto solid = Generator::compile(recipe);
+    require(solid->sample(-64, -26) == Material::IndustrialBrick, "doors-off closes the separate bay doorway");
+    for (std::int64_t y = -61; y < -16; ++y)
+        require(solid->sample(-64, y) == Material::IndustrialBrick, "windows and doors off form a continuous bay wall");
+    for (const auto& generator : {open, no_windows, solid}) {
+        require(generator->sample(-5, -64) == Material::Empty && generator->sample(4, -64) == Material::Empty &&
+            generator->sample(-6, -64) != Material::Empty && generator->sample(5, -64) != Material::Empty,
+            "aperture controls preserve exact ten-cell service shaft independently");
+        require(generator->sample(-70, -16) == Material::SteelGrating, "aperture controls preserve floor geometry");
+    }
+    recipe.modules[0].parameters["shaft_width"] = 0;
+    require(Generator::compile(recipe)->sample(0, -64) == Material::SteelGrating,
+        "zero shaft width explicitly closes service shaft independently");
+    for (const auto& [key, value] : std::map<std::string, double>{{"bay_width", 12}, {"floor_height", 12},
+            {"wall", 16}, {"shaft_width", 65}, {"door_width", 43}, {"automatic_windows", .5}, {"floor_material", 3}}) {
+        auto bad = recipe; bad.modules[0].parameters[key] = value;
+        if (key == "bay_width") bad.modules[0].parameters["wall"] = 6;
+        rejects([&] { (void)Generator::compile(bad); }, "invalid Arcology dimension/control/static material rejected");
+    }
+    auto short_floor = recipe;
+    short_floor.modules[0].parameters["floor_height"] = 20;
+    require(Generator::compile(short_floor)->sample(-64, -54) == Material::IndustrialBrick,
+        "short floors remain available with windows explicitly disabled");
+    short_floor.modules[0].parameters["automatic_windows"] = 1;
+    rejects([&] { (void)Generator::compile(short_floor); },
+        "windows-on refuses a floor lacking visible window clearance instead of silently omitting windows");
+    short_floor.modules[0].parameters["floor_height"] = 21;
+    require(Generator::compile(short_floor)->sample(-64, -59) == Material::DarkGlass,
+        "minimum fitting window band retains real glass and an independent aperture");
+    const auto reference = open->generate({-1, -1});
+    auto sliced = open->begin({-1, -1});
+    while (sliced->state() == ResultState::Pending) (void)sliced->advance(17);
+    require(sliced->result().receipt_hash == reference.receipt_hash, "versioned modules retain work-slice deterministic receipts");
+    auto concurrent = std::async(std::launch::async, [open] { return open->generate({-1, -1}); });
+    (void)open->generate({0, 0});
+    require(concurrent.get().receipt_hash == reference.receipt_hash, "versioned modules retain worker/request-order determinism");
+    auto cancelled = open->begin({0, 0}); (void)cancelled->advance(13); cancelled->cancel();
+    require(cancelled->state() == ResultState::Cancelled && cancelled->result().cells.empty() && cancelled->result().receipt_hash == 0,
+        "cancelled versioned generation publishes no partial raster");
+    recipe.limits.max_operations_per_chunk = 1;
+    auto exhausted = Generator::compile(recipe)->begin({0, 0});
+    require(exhausted->state() == ResultState::Failed && exhausted->completed_cells() == 0 && exhausted->result().cells.empty(),
+        "schema 4 rejects exhausted native work budget before raster publication");
+}
+
 } // namespace
 
 int main() {
@@ -888,9 +1154,16 @@ int main() {
         module_failures_and_work_budget();
         validation_rejects_invalid_recipes_and_graphs();
         registry_refusals_and_coordinate_domain();
+        architectural_legacy_receipts();
+        architectural_tunnels_paths_and_context();
+        architectural_district_doors_and_validation();
+        architectural_vault_controls();
+        architectural_arcology_apertures_and_jobs();
         std::cout << "PASS procedural generation: candidate/order/partition determinism, signed seams, "
                      "theme hierarchy/exclusions, broad/fine/hard controls, bounded modules, "
-                     "incremental ownership/cancel/stale identity, invalid input and capacity controls\n";
+                     "incremental ownership/cancel/stale identity, invalid input and capacity controls; "
+                     "schema4 architecture, independent tunnels/doors/windows, v1 receipts and v2 dimensions; "
+                  << assertions << " assertions\n";
         return 0;
     } catch (const std::exception& error) {
         std::cerr << "FAIL procedural generation: " << error.what() << '\n';

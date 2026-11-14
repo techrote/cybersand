@@ -241,6 +241,14 @@ double module_parameter(const ModuleInstance& instance, const std::string& key, 
 void module_keys(const ModuleInstance& instance, const std::set<std::string>& allowed) {
     for (const auto& [key, v] : instance.parameters) { (void)v; require(allowed.contains(key), "unknown module parameter: " + key); }
 }
+Material structural_module_material(const ModuleInstance& instance, const std::string& key, Material fallback) {
+    const auto raw = module_parameter(instance, key, static_cast<double>(fallback), 0,
+        static_cast<double>(kMaterialDefinitions.size() - 1));
+    const auto material = static_cast<Material>(static_cast<std::uint16_t>(raw));
+    require(valid_material(material) && material_definition(material).state == MaterialState::Solid &&
+        !material_definition(material).movable, "module structural material must be a static solid: " + key);
+    return material;
+}
 
 class Arcology final : public FeatureSampler {
     RectI64 bounds_;
@@ -274,13 +282,81 @@ public:
     }
 };
 
+// A separately registered version keeps v1's historical raster and dimensions
+// intact. All geometry is prepared once per instance, never varied per cell.
+class ArchitecturalArcology final : public FeatureSampler {
+    RectI64 bounds_;
+    std::int64_t bay_, floor_, wall_, shaft_, door_;
+    bool doors_, windows_;
+    Material wall_material_, floor_material_, partition_material_, accent_material_, window_material_, shaft_material_;
+public:
+    explicit ArchitecturalArcology(const ModuleInstance& i) : bounds_(i.bounds) {
+        module_keys(i, {"bay_width", "floor_height", "wall", "shaft_width", "door_width",
+            "automatic_doors", "automatic_windows", "wall_material", "floor_material",
+            "partition_material", "accent_material", "window_material", "shaft_material"});
+        bay_ = static_cast<std::int64_t>(module_parameter(i, "bay_width", 48, 12, 256));
+        floor_ = static_cast<std::int64_t>(module_parameter(i, "floor_height", 32, 12, 256));
+        wall_ = static_cast<std::int64_t>(module_parameter(i, "wall", 3, 1, 16));
+        shaft_ = static_cast<std::int64_t>(module_parameter(i, "shaft_width", 10, 0, 64));
+        door_ = static_cast<std::int64_t>(module_parameter(i, "door_width", 12, 2, 64));
+        doors_ = module_parameter(i, "automatic_doors", 1, 0, 1) != 0;
+        windows_ = module_parameter(i, "automatic_windows", 1, 0, 1) != 0;
+        require(bay_ > 2 * wall_ && floor_ > 2 * wall_ && door_ <= floor_ - 2 * wall_,
+            "arcology v2 door/floor/bay geometry leaves no structural wall or room interior");
+        require(!windows_ || floor_ >= 2 * wall_ + door_ + 7,
+            "arcology v2 windows need floor_height >= 2*wall + door_width + 7; increase floor height, reduce door/wall dimensions or disable windows");
+        require(bounds_.width >= bay_ && bounds_.height >= floor_ && shaft_ + 2 * wall_ < bounds_.width,
+            "arcology v2 bounds must fit a bay, floor, shaft and shell");
+        wall_material_ = structural_module_material(i, "wall_material", Material::ReinforcedConcrete);
+        floor_material_ = structural_module_material(i, "floor_material", Material::SteelGrating);
+        partition_material_ = structural_module_material(i, "partition_material", Material::IndustrialBrick);
+        accent_material_ = structural_module_material(i, "accent_material", Material::NeonCyan);
+        window_material_ = structural_module_material(i, "window_material", Material::DarkGlass);
+        shaft_material_ = structural_module_material(i, "shaft_material", Material::CableBundle);
+    }
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x = c.x - bounds_.x, y = c.y - bounds_.y;
+        const auto shaft_start = bounds_.width / 2 - shaft_ / 2;
+        const bool shaft = shaft_ > 0 && x >= shaft_start && x < shaft_start + shaft_;
+        if (shaft) return Material::Empty;
+        if (y < wall_ || y >= bounds_.height - wall_) return floor_material_;
+        const auto fy = y % floor_, bx = x % bay_;
+        const bool facade = x < wall_ || x >= bounds_.width - wall_;
+        if (!facade && fy < wall_) return floor_material_;
+        if (facade || bx < wall_) {
+            // Outer facades have windows only. Internal bay walls have a
+            // separate, bottom-aligned doorway and a window above it.
+            if (!facade && doors_ && fy >= floor_ - wall_ - door_ && fy < floor_ - wall_)
+                return Material::Empty;
+            const auto window_start = wall_ + 2;
+            const auto window_end = floor_ - wall_ - door_ - 2;
+            if (windows_ && fy >= window_start && fy < window_end)
+                return fy >= window_end - 2 ? Material::Empty : window_material_;
+            return facade ? wall_material_ : partition_material_;
+        }
+        if (shaft_ > 0 && (x == shaft_start - 1 || x == shaft_start + shaft_)) return shaft_material_;
+        if (fy == wall_ && bx > bay_ / 2) return accent_material_;
+        return Material::Empty;
+    }
+};
+
 class Vault final : public FeatureSampler {
     RectI64 bounds_;
     std::int64_t pitch_, wall_, door_, nx_, ny_;
     std::vector<std::uint8_t> exits_;
+    bool version2_ = false, doors_ = true;
+    std::optional<Material> wall_material_, accent_material_;
 public:
     Vault(const ModuleInstance& i, std::uint64_t seed) : bounds_(i.bounds) {
-        module_keys(i, {"cell_size", "wall", "door_width"});
+        version2_ = i.version == 2;
+        if (version2_) {
+            module_keys(i, {"cell_size", "wall", "door_width", "automatic_doors", "wall_material", "accent_material"});
+            doors_ = module_parameter(i, "automatic_doors", 1, 0, 1) != 0;
+            if (i.parameters.contains("wall_material"))
+                wall_material_ = structural_module_material(i, "wall_material", Material::ReinforcedConcrete);
+            if (i.parameters.contains("accent_material"))
+                accent_material_ = structural_module_material(i, "accent_material", Material::NeonCyan);
+        } else module_keys(i, {"cell_size", "wall", "door_width"});
         pitch_ = static_cast<std::int64_t>(module_parameter(i, "cell_size", 32, 12, 128));
         wall_ = static_cast<std::int64_t>(module_parameter(i, "wall", 2, 1, 4));
         door_ = static_cast<std::int64_t>(module_parameter(i, "door_width", 8, 2, static_cast<double>(pitch_ - 2 * wall_)));
@@ -316,14 +392,18 @@ public:
         const auto x = c.x - bounds_.x, y = c.y - bounds_.y;
         const auto lx = x % pitch_, ly = y % pitch_;
         const auto exits = exits_[static_cast<std::size_t>((y / pitch_) * nx_ + x / pitch_)];
-        const bool horizontal_door = std::abs(ly - pitch_ / 2) < door_ / 2;
-        const bool vertical_door = std::abs(lx - pitch_ / 2) < door_ / 2;
-        if ((lx < wall_ && horizontal_door && (exits & 4U)) ||
+        const auto aperture_start = pitch_ / 2 - door_ / 2;
+        const bool horizontal_door = version2_ ? ly >= aperture_start && ly < aperture_start + door_ :
+            std::abs(ly - pitch_ / 2) < door_ / 2;
+        const bool vertical_door = version2_ ? lx >= aperture_start && lx < aperture_start + door_ :
+            std::abs(lx - pitch_ / 2) < door_ / 2;
+        if (doors_ && ((lx < wall_ && horizontal_door && (exits & 4U)) ||
             (lx >= pitch_ - wall_ && horizontal_door && (exits & 1U)) ||
             (ly < wall_ && vertical_door && (exits & 8U)) ||
-            (ly >= pitch_ - wall_ && vertical_door && (exits & 2U))) return Material::Empty;
-        if (lx < wall_ || ly < wall_ || lx >= pitch_ - wall_ || ly >= pitch_ - wall_) return c.palette.rock;
-        if (lx == wall_ && ly == wall_) return c.palette.accent;
+            (ly >= pitch_ - wall_ && vertical_door && (exits & 2U)))) return Material::Empty;
+        if (lx < wall_ || ly < wall_ || lx >= pitch_ - wall_ || ly >= pitch_ - wall_)
+            return wall_material_.value_or(c.palette.rock);
+        if (lx == wall_ && ly == wall_) return accent_material_.value_or(c.palette.accent);
         return Material::Empty;
     }
 };
@@ -526,8 +606,14 @@ struct Generator::Impl {
         const auto door_half = std::max<std::int64_t>(2, pitch / 8);
         const bool vx = lx < wall || lx >= pitch - wall;
         const bool hy = ly < wall || ly >= pitch - wall;
-        if (vx && std::abs(ly - pitch / 2) >= door_half) return palette.rock;
-        if (hy && std::abs(lx - pitch / 2) >= door_half) return palette.surface;
+        const auto width = static_cast<std::int64_t>(recipe.architecture.door_width);
+        const auto opening = [&](std::int64_t position) {
+            if (!recipe.architecture.automatic_doors) return false;
+            return width == 0 ? std::abs(position - pitch / 2) < door_half :
+                position >= pitch / 2 - width / 2 && position < pitch / 2 - width / 2 + width;
+        };
+        if (vx && !opening(ly)) return palette.rock;
+        if (hy && !opening(lx)) return palette.surface;
         if ((lx == wall || ly == wall) && unit(hash_xy(recipe.seed, floor_div(x, pitch), floor_div(y, pitch), 60)) < p.detail)
             return palette.accent;
         return Material::Empty;
@@ -599,7 +685,7 @@ struct Generator::Impl {
             state == MaterialState::Liquid ? 1.0 : 0.0,
             static_cast<double>(y) - surface,
             std::abs(right - left) / spacing,
-            candidate != Candidate::Strata && network(x, y, p.corridor_width) ? 1.0 : 0.0,
+            recipe.architecture.automatic_tunnels && candidate != Candidate::Strata && network(x, y, p.corridor_width) ? 1.0 : 0.0,
             static_cast<std::uint16_t>(material)};
     }
 
@@ -867,7 +953,8 @@ struct Generator::Impl {
         snapshot(GenerationStage::Modifiers);
         // Network/paths reserve connective space after structural modules. A hard
         // authored override below is the explicit way to block that connection.
-        if (candidate != Candidate::Strata && network(x, y, p.corridor_width)) record("candidate_route", "macro-network", Material::Empty);
+        if (recipe.architecture.automatic_tunnels && candidate != Candidate::Strata && network(x, y, p.corridor_width))
+            record("candidate_route", "macro-network", Material::Empty);
         for (const auto& path : recipe.paths)
             if (path_distance2({static_cast<double>(x), static_cast<double>(y)}, path.points) <= path.width * path.width / 4.0)
                 record("guide_path", path.id, path.material);
@@ -1065,7 +1152,9 @@ const ModuleFactory& ModuleRegistry::find(const std::string& id, std::uint32_t v
 ModuleRegistry ModuleRegistry::builtins() {
     ModuleRegistry r;
     r.add({"arcology", 1, 32, [](const auto& i, auto) { return std::make_shared<Arcology>(i); }});
+    r.add({"arcology", 2, 40, [](const auto& i, auto) { return std::make_shared<ArchitecturalArcology>(i); }});
     r.add({"vault", 1, 24, [](const auto& i, auto seed) { return std::make_shared<Vault>(i, seed); }});
+    r.add({"vault", 2, 28, [](const auto& i, auto seed) { return std::make_shared<Vault>(i, seed); }});
     r.add({"aqueduct", 1, 24, [](const auto& i, auto) { return std::make_shared<Aqueduct>(i); }});
     return r;
 }
@@ -1084,13 +1173,41 @@ std::vector<Theme> Generator::builtin_themes() {
 std::vector<std::string> Generator::builtin_modules() { return {"arcology", "vault", "aqueduct"}; }
 
 std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleRegistry& registry) {
-    require((recipe.schema == kSchemaVersion || recipe.schema == kTypedSchemaVersion || recipe.schema == kHierarchySchemaVersion) && recipe.revision > 0, "unsupported schema or zero revision");
-    require(recipe.schema >= kTypedSchemaVersion || recipe.spatial.empty(), "typed spatial fields require schema 2 or 3");
-    require(recipe.schema == kHierarchySchemaVersion || recipe.grammar.empty(), "semantic hierarchy requires schema 3");
+    require((recipe.schema == kSchemaVersion || recipe.schema == kTypedSchemaVersion ||
+        recipe.schema == kHierarchySchemaVersion || recipe.schema == kArchitecturalSchemaVersion) &&
+        recipe.revision > 0, "unsupported schema or zero revision");
+    require(recipe.schema >= kTypedSchemaVersion || recipe.spatial.empty(), "typed spatial fields require schema 2, 3 or 4");
+    require(recipe.schema >= kHierarchySchemaVersion || recipe.grammar.empty(), "semantic hierarchy requires schema 3 or 4");
+    require(recipe.architecture.version == 1, "unsupported architectural controls version");
+    require(recipe.schema == kArchitecturalSchemaVersion || (recipe.architecture.automatic_tunnels &&
+        recipe.architecture.automatic_doors && recipe.architecture.door_width == 0),
+        "architectural controls require explicit recipe schema 4");
+    require(recipe.architecture.door_width == 0 || (recipe.architecture.door_width >= 2 && recipe.architecture.door_width <= 64),
+        "architectural door_width must be zero (legacy derived) or 2..64 cells");
     require(recipe.chunk_size >= 8 && recipe.chunk_size <= 256, "generation chunk_size must be 8..256");
     require(parse_candidate(candidate_name(recipe.candidate)).has_value(), "invalid candidate");
     for (std::size_t i = 0; i < kParameterCount; ++i) validate_parameter(static_cast<Parameter>(i), value(recipe.parameters, static_cast<Parameter>(i)));
     require(std::floor(recipe.parameters.district_size) == recipe.parameters.district_size, "district_size must be an integer");
+    if (recipe.schema == kArchitecturalSchemaVersion) {
+        require(std::floor(recipe.parameters.room_size) == recipe.parameters.room_size &&
+            std::floor(recipe.parameters.wall_thickness) == recipe.parameters.wall_thickness &&
+            recipe.parameters.room_size > 2 * recipe.parameters.wall_thickness &&
+            recipe.architecture.door_width <= recipe.parameters.room_size - 2 * recipe.parameters.wall_thickness,
+            "architectural District room/wall/door dimensions must be integer cells with interior clearance");
+        const auto fixed_geometry = [](const std::vector<ParameterEdit>& edits) {
+            for (const auto& edit : edits) require(edit.parameter != Parameter::RoomSize && edit.parameter != Parameter::WallThickness,
+                "schema 4 room_size/wall_thickness are global; use fixed module instances for different geometry");
+        };
+        for (const auto& theme : recipe.catalogue) fixed_geometry(theme.parameters);
+        for (const auto& brush : recipe.strokes) fixed_geometry(brush.parameters);
+        for (const auto& hard : recipe.overrides) fixed_geometry(hard.parameters);
+        for (const auto& modifier : recipe.modifiers) {
+            fixed_geometry(modifier.parameters);
+            for (const auto& mapping : modifier.mappings)
+                require(mapping.parameter != Parameter::RoomSize && mapping.parameter != Parameter::WallThickness,
+                    "schema 4 room_size/wall_thickness cannot vary per cell; use fixed module instances");
+        }
+    }
     const auto& limits = recipe.limits;
     require(limits.max_themes > 0 && limits.max_themes <= 64 && limits.max_strokes <= 64 &&
         limits.max_points_per_path > 0 && limits.max_points_per_path <= 128 && limits.max_paths <= 64 &&
@@ -1278,6 +1395,13 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
     for (const auto& m : recipe.modules) module_ids.insert(m.id);
     for (auto& m : recipe.modules) {
         identifier(m.module); validate_rect(m.bounds);
+        if ((m.module == "arcology" || m.module == "vault") && m.version == 2) {
+            require(recipe.schema == kArchitecturalSchemaVersion, "architectural module v2 requires recipe schema 4");
+            // Explicit module values override inherited global defaults. Keep
+            // the resolved value in the native recipe and its fingerprint.
+            if (!m.parameters.contains("automatic_doors"))
+                m.parameters.emplace("automatic_doors", recipe.architecture.automatic_doors ? 1.0 : 0.0);
+        }
         (void)impl->compile_mask(m.application, m.exclusion, m.strength);
         require(m.parameters.size() <= 32 && m.after.size() <= limits.max_modules, "module argument capacity exceeded");
         for (const auto& [name, v] : m.parameters) { identifier(name); require(std::isfinite(v), "non-finite module parameter"); }
@@ -1309,7 +1433,11 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
         impl->cost += neighbor_cost * 2;
     }
     auto& h = impl->fingerprint;
-    hash_word(h, recipe.schema == kHierarchySchemaVersion ? kHierarchyAlgorithmVersion : recipe.schema == kTypedSchemaVersion ? kTypedAlgorithmVersion : kAlgorithmVersion); hash_word(h, recipe.schema); hash_word(h, recipe.seed);
+    hash_word(h, recipe_algorithm_version(recipe.schema)); hash_word(h, recipe.schema); hash_word(h, recipe.seed);
+    if (recipe.schema == kArchitecturalSchemaVersion) {
+        hash_word(h, recipe.architecture.version); hash_word(h, recipe.architecture.automatic_tunnels);
+        hash_word(h, recipe.architecture.automatic_doors); hash_word(h, recipe.architecture.door_width);
+    }
     hash_word(h, recipe.revision); hash_word(h, static_cast<std::uint64_t>(recipe.chunk_size)); hash_word(h, static_cast<std::uint64_t>(recipe.candidate));
     for (std::size_t i = 0; i < kParameterCount; ++i) hash_real(h, value(recipe.parameters, static_cast<Parameter>(i)));
     hash_word(h, recipe.catalogue.size());

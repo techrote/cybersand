@@ -1,0 +1,23 @@
+{
+  "format": "cybersand.architectural-style",
+  "version": 1,
+  "id": "industrial-service",
+  "name": "Industrial Service",
+  "module": "vault",
+  "module_version": 2,
+  "theme": "industrial",
+  "geometry": {
+    "room_size": 32,
+    "floor_height": 32,
+    "wall_thickness": 2,
+    "door_width": 8,
+    "shaft_width": 12
+  },
+  "materials": {
+    "wall": 62,
+    "floor": 66,
+    "window": 72
+  },
+  "apertures": {},
+  "deterioration": 0.0
+}

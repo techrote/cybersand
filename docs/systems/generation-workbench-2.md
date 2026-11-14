@@ -11,6 +11,14 @@ related-documents: [procedural-world-generation.md, procedural-generation-fields
 
 # Generation Workbench 2 inspection and transactional authoring
 
+## Focused architectural authoring
+
+[Architectural Generator Phase A/B](architectural-generator.md) is a separate
+focused form under the ordinary Shared Workbench's **New from generator** flow.
+It compiles self-contained style projects into the same native recipes. This
+general-purpose generation workbench and its advanced JSON remain available.
+Schema 4 / algorithm 5 and module v2 are explicit; older recipe semantics remain.
+
 ## What is the current scope?
 
 **Current implementation, GEN-007 / #193:** the opt-in
