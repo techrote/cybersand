@@ -15,6 +15,17 @@ COMPILER="4d8559805df1ff5f3f23277a7bca98e47fa8feb53337aa79e8546d0bb89132f6"
 NATIVE="633920373a3d406a2ede61ce4137c324f76be23b"
 EXPECTED={"void-v3-G01":"greebles","void-v3-G02":"greebles","void-v3-A01":"architecture","void-v3-P05-fitted":"pipework"}
 SEEDS=(104729,130363)
+# Independent reviewer 2026-11-14: native-positive does not confer split
+# independence. The paired-facing-room A01 is quarantined for near-alias risk.
+QUARANTINED_NEAR_ALIAS=("void-v3-A01",)
+
+def require_reference_manifest_sha256(screened):
+    """Only publish the digest that the frozen-corpus screen actually verified."""
+    actual=screened.get("original_manifest_sha256")
+    if actual != MANIFEST:
+        raise ValueError("missing/foreign verified original native manifest SHA-256")
+    return actual
+
 
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
 
@@ -71,7 +82,9 @@ def verify(corpus, proposals, old_proposals):
                 raise ValueError("pipe fitting/topology/diameter witness failed")
             views.append({"seed":seed,"operations_sha256":v["operations_sha256"],"rectangles":v["operation_count"],"cells":v["unique_cells"],"metrics":metrics,"fitting_count":len(s.get("fittings",[])),"native_executed":False})
         out.append({"id":name,"program_sha256":digest(p),"signature_sha256":sig,"classification":c["classification"],"original_public_signature_collision":sig in historical,"global_peer_review":"pending","views":views})
-    return {"status":"SOURCE_ONLY_PASS","cases":out,"putative_new_signatures":len(signatures),
+    return {"status":"SOURCE_ONLY_PASS","cases":out,"original_manifest_sha256":MANIFEST,
+            "quarantined_candidate_ids":list(QUARANTINED_NEAR_ALIAS),
+            "globally_admitted_signatures":0,"putative_new_signatures":len(signatures),
             "styles_not_new_groups":1,"seed_preflights":len(out)*2,
             "original_groups":{"TRAIN":6,"DEVELOPMENT":6},"native_positive":0,
             "new_train_groups":0,"optimizer_updates":0,"model_generated_paintings":0,"final_opened":False}
