@@ -330,7 +330,23 @@ def score_episode(f: Fixture, path: list[Point], attempts: int, stop: str) -> di
 
 def run_episode(f: Fixture, policy: str, seed: int = 0,
                 lengths: tuple[int,...] = (1,)) -> dict[str,Any]:
-    """One frozen offline episode. No inferred native success claims."""
+    """One frozen DEVELOPMENT-only episode. No inferred native success claims.
+
+    Reject records that the independent verifier could not subsequently replay.
+    In particular, merely knowing a held-out fixture topology cannot unlock
+    its behavioral outcomes during synthetic preparation.
+    """
+    if f.split != "development":
+        raise ValueError("Held-out behavioral outcomes are sealed")
+    if policy not in {"astar", "contour_astar", "random_legal"}:
+        raise ValueError("Unsupported offline policy")
+    if type(seed) is not int or not 0 <= seed <= 4294967295:
+        raise ValueError("Seed must be a bounded unsigned 32-bit integer")
+    if (type(lengths) not in (tuple, list) or not lengths or
+        any(type(n) is not int or n not in (1, 2, 4, 8) for n in lengths) or
+        list(lengths) != sorted(set(lengths)) or 1 not in lengths):
+        raise ValueError("Macro menu must be unique, sorted and include unit movement")
+    lengths = tuple(lengths)
     rng = random.Random(seed)
     pos = f.start
     path: list[Point] = [pos]
