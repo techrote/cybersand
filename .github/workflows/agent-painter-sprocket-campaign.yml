@@ -104,8 +104,8 @@ jobs:
           echo "sprocket-campaign exit=$rc (0 complete; 2 genuine partial; other failure)"
           if [ "$rc" -eq 2 ]; then
             test -s evidence/campaign/summary.json
-            echo 'PARTIAL genuine training; inspect actual global_step and checkpoint; not target-complete'
-            exit 0
+            echo 'PARTIAL genuine training; preserve checkpoint artifacts, but report job FAILURE until target steps are complete'
+            exit 2
           fi
           exit "$rc"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
