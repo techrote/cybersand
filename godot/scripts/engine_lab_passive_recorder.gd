@@ -58,8 +58,8 @@ func observe(sample: Dictionary) -> bool:
 	var rapier: int = int(sample.get("rapier_steps", -1))
 	var generation: int = int(sample.get("world_generation", -1))
 	var render_serial: int = int(sample.get("render_serial", -1))
-	var owner_id: int = int(sample.get("rapier_owner_id", -1))
-	if at_usec < started_usec or tick < 0 or rapier < 0 or generation <= 0 or render_serial < 0 or owner_id < 0:
+	var owner_id: int = int(sample.get("rapier_owner_id", 0))
+	if at_usec < started_usec or tick < 0 or rapier < 0 or generation <= 0 or render_serial < 0 or owner_id == 0:
 		abort("invalid_clock_or_ownership_sample", maxi(at_usec, started_usec))
 		return false
 	if bool(sample.get("paused", true)) or bool(sample.get("simulation_failed", false)):
