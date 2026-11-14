@@ -58,6 +58,27 @@ MODEL_HASHES = {
 }
 
 
+# Qualified anchored expression: no vision/projector/embedding LoRA targets.
+TARGET_EXPRESSION = (
+    r"^model\.language_model\.layers\.(?:(?:0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15)"
+    r"\.feed_forward\.(?:w1|w2|w3)|(?:2|5|8|10|12|14)"
+    r"\.self_attn\.(?:q_proj|k_proj|v_proj|out_proj)|"
+    r"(?:0|1|3|4|6|7|9|11|13|15)\.conv\.(?:in_proj|out_proj))$"
+)
+ATTN_LAYERS = frozenset({2, 5, 8, 10, 12, 14})
+TARGET_PATHS = frozenset(
+    f"model.language_model.layers.{layer}.{module}"
+    for layer in range(16)
+    for module in (
+        ("feed_forward.w1", "feed_forward.w2", "feed_forward.w3")
+        + (("self_attn.q_proj", "self_attn.k_proj", "self_attn.v_proj",
+            "self_attn.out_proj") if layer in ATTN_LAYERS
+           else ("conv.in_proj", "conv.out_proj"))
+    )
+)
+assert len(TARGET_PATHS) == 92
+
+
 def require(condition, reason):
     if not condition:
         raise ValueError(reason)
@@ -101,6 +122,16 @@ def validate(summary, preflight, receipt, progress, *, arm, source_sha, run_id=N
     model = config.get("model")
     require(isinstance(model, dict) and model.get("model_id") == MODEL_ID
             and model.get("revision") == MODEL_REVISION, "official model revision mismatch")
+    paths = model.get("lora_target_paths")
+    require(model.get("lora_targets") == TARGET_EXPRESSION
+            and type(paths) is list and len(paths) == 92
+            and all(type(path) is str for path in paths)
+            and set(paths) == TARGET_PATHS,
+            "unqualified language-only projection inventory")
+    require(model.get("framing", {}).get("eos_token_id") == 7
+            and model.get("framing", {}).get("images") is False
+            and model.get("framing", {}).get("tools") is False,
+            "unqualified text-only EOS/framing boundary")
     require(model.get("required_hashes") == MODEL_HASHES
             and model.get("loader") == "Lfm2VlForConditionalGeneration"
             and model.get("trust_remote_code") is False
