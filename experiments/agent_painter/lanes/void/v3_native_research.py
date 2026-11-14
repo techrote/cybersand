@@ -17,7 +17,7 @@ import time
 
 LANE = Path(__file__).resolve().parent
 sys.path.insert(0, str(LANE))
-from v3_research_probe import verify as screen
+from v3_research_probe import verify as screen, require_reference_manifest_sha256
 
 PAINTER = LANE.parents[1]
 sys.path.insert(0, str(PAINTER))
@@ -48,6 +48,7 @@ def main() -> None:
     write_json(out / "pre-native-source-screen.json", screened)
     if screened["status"] != "SOURCE_ONLY_PASS" or screened["seed_preflights"] != 8:
         raise ValueError("strict frozen reference and graph preflight required")
+    reference_manifest_sha256 = require_reference_manifest_sha256(screened)
     doc = json.loads(proposals.read_text(encoding="utf-8"))
     cases = []
     for entry in doc["candidates"]:
@@ -110,7 +111,8 @@ def main() -> None:
     write_json(out / "native-verification.json",report)
     completed = [r for r in report.get("cases",[]) if r.get("success") is True]
     outcome = {"native_source_sha":a.source_sha,
-               "proposal_sha256":digest(proposals), "reference_manifest_sha256":screened.get("original_manifest_sha256",None),
+               "proposal_sha256":digest(proposals), "reference_manifest_sha256":reference_manifest_sha256,
+               "quarantined_candidate_ids":screened["quarantined_candidate_ids"],
                "native_verifier_passed":report.get("passed") is True,
                "independent_source_compilations":8,
                "distinct_structural_proposals":3, "nonindependent_style_variants":1, "actual_verified_native_views":len(completed),
