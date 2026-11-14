@@ -82,7 +82,6 @@ func materialize(tree: SceneTree) -> Dictionary:
 					cells[(y-origin.y)*size.x+(x-origin.x)] = src[ly*step+lx]
 			receipts.append(str(p.receipt_hash))
 			# Yield on every chunk to preserve GUI and cancellation opportunity.
-			if not tree.is_inside_tree(): return _refuse("fixture generation tree disposed")
 			await tree.process_frame
 	var digest: String = Store.digest(cells)
 	if digest != OUTPUT_SHA256: return _refuse("generated native material digest differs: " + digest)
