@@ -3,6 +3,8 @@
 import copy,json
 from pathlib import Path
 import unittest
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
 from compiler import compile_program
 from v5_support_probe import witness,OLD_SHA
 ROOT=Path(__file__).resolve().parent
