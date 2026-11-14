@@ -9,7 +9,8 @@ import unittest
 
 from completion_gate import (CHECKPOINT, verify_completion as strict_verify,
                              TRAINING, CPU_EFFECTIVE, CORPUS, NATIVE,
-                             TRAIN_SHA256, COMPILER_SHA256, TRAIN_IDS)
+                             TRAIN_SHA256, COMPILER_SHA256, TRAIN_IDS,
+                             TRAIN_SEED_ORDER, TRAIN_SEED_ORDER_SHA256)
 
 SOURCE = "d" * 40
 
@@ -27,9 +28,9 @@ def fixture(root: Path) -> tuple[dict, Path]:
     (checkpoint / "adapter").mkdir(parents=True)
     (checkpoint / "adapter/adapter_model.safetensors").write_bytes(b"synthetic adapter fixture only")
     (checkpoint / "training_state.pt").write_bytes(b"synthetic optimizer fixture only")
-    # Synthetic tensors and optimizer receipts, but genuine immutable TRAIN IDs.
-    # Promotion must fail if any of the 12 reviewed native-admitted row IDs differs.
-    order = sorted(TRAIN_IDS)
+    # Synthetic tensors and optimizer receipts, but the genuine native-admitted
+    # seed-568 family-interleaved TRAIN order, not lexically sorted row IDs.
+    order = list(TRAIN_SEED_ORDER)
     history = [{"global_step": i, "sample_cursor": i, "sample_id": order[(i-1) % 12],
                 "gradient_norm": 1.0, "loss": 2.0-i/1000, "seconds": 0.01,
                 "sequence_tokens": 750, "loss_tokens": 320,
@@ -93,6 +94,10 @@ class GateTests(unittest.TestCase):
         self.assertEqual(result["verified_optimizer_receipts"], 120)
         self.assertEqual(result["verified_checkpoint_files"], 3)
         self.assertEqual(set(self.summary["config"]["sample_order"]), TRAIN_IDS)
+        self.assertEqual(self.summary["config"]["sample_order"], list(TRAIN_SEED_ORDER))
+        digest = hashlib.sha256(json.dumps(list(TRAIN_SEED_ORDER), sort_keys=True,
+                               separators=(",", ":"), ensure_ascii=False).encode()).hexdigest()
+        self.assertEqual(digest, TRAIN_SEED_ORDER_SHA256)
 
     def test_frozen_native_train_and_compiler_identity_refused(self):
         # All digests are syntactically valid; no self-consistent summary may
@@ -113,6 +118,37 @@ class GateTests(unittest.TestCase):
                 change(bad["config"]["sample_order"])
                 with self.assertRaisesRegex(ValueError, "native-admitted frozen TRAIN rows"):
                     verify_completion(bad, 0, self.checkpoint)
+
+    def test_self_consistent_swapped_native_train_order_refused(self):
+        # A malicious or defective producer can self-consistently rewrite all
+        # 120 history events and progress bytes to a permutation of real IDs.
+        # That must still be impossible for the frozen seed568 shared sampler.
+        bad = json.loads(json.dumps(self.summary))
+        swapped = list(TRAIN_SEED_ORDER)
+        swapped[0], swapped[1] = swapped[1], swapped[0]
+        self.assertEqual(set(swapped), TRAIN_IDS)
+        bad["config"]["sample_order"] = swapped
+        bad["sample_ids_this_job"] = [swapped[i % 12] for i in range(120)]
+        receipt_path = self.checkpoint / "receipt.json"
+        receipt = json.loads(receipt_path.read_text())
+        receipt["config"] = bad["config"]
+        for i, event in enumerate(receipt["history"]):
+            event["sample_id"] = bad["sample_ids_this_job"][i]
+        receipt_path.write_text(json.dumps(receipt))
+        progress_path = self.checkpoint.parent / "progress.jsonl"
+        progress_path.write_text("".join(
+            json.dumps(event, sort_keys=True, separators=(",", ":"),
+                       ensure_ascii=False, allow_nan=False) + "\n"
+            for event in receipt["history"]))
+        inventory_path = self.checkpoint / "inventory.json"
+        inventory = json.loads(inventory_path.read_text())
+        inventory["receipt.json"] = {
+            "sha256": sha(receipt_path), "bytes": receipt_path.stat().st_size}
+        inventory_path.write_text(json.dumps(inventory))
+        bad["checkpoint_inventory_sha256"] = sha(inventory_path)
+        self.assertEqual(inventory["receipt.json"]["sha256"], sha(receipt_path))
+        with self.assertRaisesRegex(ValueError, "native seed568 TRAIN sampler order"):
+            verify_completion(bad, 0, self.checkpoint)
 
     def test_partial_and_nonzero_exit_refused(self):
         for code in (1, 2, 124, 137):

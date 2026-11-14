@@ -43,6 +43,25 @@ TRAIN_IDS = frozenset((
     "architecture-stair_and_landing_hall-v1-s104729",
     "architecture-stair_and_landing_hall-v1-s130363",
 ))
+TRAIN_SEED_ORDER = (
+    "architecture-stair_and_landing_hall-v1-s130363",
+    "greebles-switchboard_stack-v1-s104729",
+    "pipework-tee_distribution-v1-s130363",
+    "architecture-paired_doorway_rooms-v1-s104729",
+    "greebles-switchboard_stack-v1-s130363",
+    "pipework-tee_distribution-v1-s104729",
+    "architecture-stair_and_landing_hall-v1-s104729",
+    "greebles-service_cluster-v1-s104729",
+    "pipework-two_elbow_route-v1-s130363",
+    "architecture-paired_doorway_rooms-v1-s130363",
+    "greebles-service_cluster-v1-s130363",
+    "pipework-two_elbow_route-v1-s104729",
+)
+TRAIN_SEED_ORDER_SHA256 = "9209cc4ea49ed24c9bf3d2e2ba7adf421072534f695317664a0b1f8f245c68ee"
+
+# Independently reconstructed from the original native-admitted split and the
+# shared train.py seed-568 family-interleaving algorithm. The exact order/digest
+# is frozen for this original 120-step contract, never read from the claimant.
 CPU_ENV = {"ATEN_CPU_CAPABILITY": "default", "MKL_CBWR": "COMPATIBLE",
            "OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1",
            "OMP_DYNAMIC": "FALSE", "MKL_DYNAMIC": "FALSE"}
@@ -130,6 +149,12 @@ def _source_contract(summary: dict, expected_source: str) -> list[str]:
             any(not isinstance(x, str) for x in order) or
             len(set(order)) != len(TRAIN_IDS) or set(order) != TRAIN_IDS):
         raise ValueError("sample_order differs from native-admitted frozen TRAIN rows")
+    if order != list(TRAIN_SEED_ORDER):
+        raise ValueError("sample_order differs from frozen native seed568 TRAIN sampler order")
+    canonical_order = json.dumps(order, sort_keys=True, separators=(",", ":"),
+                                 ensure_ascii=False, allow_nan=False).encode("utf-8")
+    if hashlib.sha256(canonical_order).hexdigest() != TRAIN_SEED_ORDER_SHA256:
+        raise ValueError("frozen native TRAIN sampler order digest mismatch")
     return order
 
 
