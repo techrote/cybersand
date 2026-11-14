@@ -46,6 +46,20 @@ func drain_art(worker: RefCounted) -> Dictionary:
 	worker._consume_art()
 	return worker.art_take_result()
 
+# Script-initialized Nodes are not automatically owned by their script object
+# before mount(). This is only for the unmounted Save fixture; mounted scene
+# children remain owned by their parent and are not freed separately.
+func free_detached_script_nodes(owner: Object) -> void:
+	if not is_instance_valid(owner): return
+	for property: Dictionary in owner.get_property_list():
+		if (int(property.usage) & PROPERTY_USAGE_SCRIPT_VARIABLE) == 0: continue
+		var value: Variant = owner.get(property.name)
+		if typeof(value) != TYPE_OBJECT or not is_instance_valid(value) or not (value is Node): continue
+		var node: Node = value
+		if node.get_parent() != null: continue
+		free_detached_script_nodes(node)
+		node.free()
+
 func save_file_case(worker: RefCounted,save_host: Control,save_editor: Control,workers: int) -> bool:
 	# Exercise the public Save method and real atomic file writer. The worker's
 	# controlled extraction boundary removes timing from the regression; every
@@ -116,14 +130,11 @@ func save_file_case(worker: RefCounted,save_host: Control,save_editor: Control,w
 	panel.free()
 	bench.paint_editor = null
 	bench.host = null
-	# These controls were deliberately never mounted in a SceneTree. Release
-	# their constructor-owned UI fields, including the two RefCounted panels.
+	# This fixture deliberately never mounts its Workbench in the SceneTree.
+	# Free detached, script-constructed controls recursively: GEN-007 adds a
+	# nested architecture dialog whose own UI fields are otherwise orphaned.
 	for owner: Object in [bench._generated_dialog,bench.water_spray,bench.equipment,bench]:
-		for property: Dictionary in owner.get_property_list():
-			if (int(property.usage)&PROPERTY_USAGE_SCRIPT_VARIABLE)==0: continue
-			var value: Variant = owner.get(property.name)
-			if typeof(value)==TYPE_OBJECT and is_instance_valid(value) and value is Node:
-				if value.get_parent()==null: value.free()
+		free_detached_script_nodes(owner)
 	bench.free()
 	return true
 
