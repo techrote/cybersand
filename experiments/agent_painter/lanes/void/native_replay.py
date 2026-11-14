@@ -19,7 +19,8 @@ import time
 PAINTER = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PAINTER))
 from compiler import compile_program, parse_program
-from native.run import execute, native_cases, write_json
+sys.path.insert(0, str(PAINTER / "native"))
+from run import execute, native_cases, write_json
 from native.runtime import ROOT, digest, verify as verify_runtime
 from native.verify import verify as verify_native
 
