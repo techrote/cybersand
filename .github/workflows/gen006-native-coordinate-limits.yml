@@ -1,0 +1,115 @@
+name: GEN006 native signed-coordinate admission limits (experimental)
+on:
+  push:
+    branches: [experiment/gen006-native-cyps-scaling-20261106]
+    paths:
+      - .github/workflows/gen006-native-coordinate-limits.yml
+      - native/tests/test_gen006_coordinate_limits.cpp
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gen006-native-coordinate-limits
+  cancel-in-progress: false
+jobs:
+  native-linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Execute real native signed-coordinate limits on GCC Linux
+        shell: bash
+        timeout-minutes: 18
+        run: |
+          set -euo pipefail
+          mkdir -p build/gen006-coord
+          python tools/ci/check_ci_provider_policy.py
+          git rev-parse HEAD > build/gen006-coord/source.txt
+          git rev-parse 'HEAD^{tree}' >> build/gen006-coord/source.txt
+          git hash-object native/src/world.cpp >> build/gen006-coord/source.txt
+          git hash-object native/include/cybersand/world.hpp >> build/gen006-coord/source.txt
+          git hash-object native/tests/test_gen006_coordinate_limits.cpp >> build/gen006-coord/source.txt
+          test "$(git hash-object native/src/world.cpp)" = "aed1bb10e480493397f5c5eac8ba2336f495b9f9"
+          test "$(git hash-object native/include/cybersand/world.hpp)" = "bb2f6e33dd1ad8e4a2b2aec7b34ccfb8229b6cb3"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          g++-13 --version > build/gen006-coord/compiler.txt 2>&1
+          g++-13 -std=c++20 -O2 -DNDEBUG -pthread -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/tests/test_gen006_coordinate_limits.cpp \
+            -o build/gen006-coord/probe > build/gen006-coord/compile.log 2>&1 || \
+            { cat build/gen006-coord/compile.log; exit 1; }
+          build/gen006-coord/probe 2>&1 | tee build/gen006-coord/native.log
+      - name: Preserve native Linux originals, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-coordinate-linux-evidence
+          path: |
+            build/gen006-coord/source.txt
+            build/gen006-coord/compiler.txt
+            build/gen006-coord/compile.log
+            build/gen006-coord/native.log
+          if-no-files-found: warn
+          retention-days: 45
+  native-windows:
+    runs-on: windows-2022
+    timeout-minutes: 25
+    steps:
+      - name: Keep LF source identity on Windows
+        shell: cmd
+        run: |
+          git config --global core.autocrlf false
+          if errorlevel 1 exit /b 1
+          git config --global core.eol lf
+          if errorlevel 1 exit /b 1
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - name: Execute real native signed-coordinate limits on LLVM-Clang Windows
+        shell: cmd
+        timeout-minutes: 22
+        run: |
+          mkdir build\gen006-coord
+          python tools\ci\check_ci_provider_policy.py
+          if errorlevel 1 exit /b 1
+          git rev-parse HEAD > build\gen006-coord\source.txt
+          git rev-parse "HEAD^{tree}" >> build\gen006-coord\source.txt
+          git hash-object native/src/world.cpp >> build\gen006-coord\source.txt
+          git hash-object native/include/cybersand/world.hpp >> build\gen006-coord\source.txt
+          git hash-object native/tests/test_gen006_coordinate_limits.cpp >> build\gen006-coord\source.txt
+          python -c "import subprocess; h=lambda p:subprocess.check_output(['git','hash-object',p],text=True).strip(); assert h('native/src/world.cpp')=='aed1bb10e480493397f5c5eac8ba2336f495b9f9'; assert h('native/include/cybersand/world.hpp')=='bb2f6e33dd1ad8e4a2b2aec7b34ccfb8229b6cb3'"
+          if errorlevel 1 exit /b 1
+          set "GEN006_VSROOT="
+          for /d %%V in ("%ProgramFiles%\Microsoft Visual Studio\2022\*") do if exist "%%~fV\Common7\Tools\VsDevCmd.bat" set "GEN006_VSROOT=%%~fV"
+          if not defined GEN006_VSROOT exit /b 1
+          call "%GEN006_VSROOT%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          set "GEN006_CXX=%ProgramFiles%\LLVM\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" set "GEN006_CXX=%GEN006_VSROOT%\VC\Tools\Llvm\x64\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" exit /b 1
+          "%GEN006_CXX%" --version > build\gen006-coord\compiler.txt 2>&1
+          if errorlevel 1 exit /b 1
+          "%GEN006_CXX%" -std=c++20 -O2 -DNDEBUG -I native/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/tests/test_gen006_coordinate_limits.cpp -o build\gen006-coord\probe.exe > build\gen006-coord\compile.log 2>&1
+          if errorlevel 1 (type build\gen006-coord\compile.log & exit /b 1)
+          build\gen006-coord\probe.exe > build\gen006-coord\native.log 2>&1
+          if errorlevel 1 (type build\gen006-coord\native.log & exit /b 1)
+          type build\gen006-coord\native.log
+      - name: Preserve native Windows originals, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-coordinate-windows-evidence
+          path: |
+            build/gen006-coord/source.txt
+            build/gen006-coord/compiler.txt
+            build/gen006-coord/compile.log
+            build/gen006-coord/native.log
+          if-no-files-found: warn
+          retention-days: 45

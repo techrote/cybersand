@@ -1,0 +1,193 @@
+name: GEN006 native CYPS Linux-Windows interchange (experimental)
+on:
+  push:
+    branches: [experiment/gen006-native-cyps-scaling-20261106]
+    paths:
+      - .github/workflows/gen006-native-cross-os.yml
+      - tools/experiments/gen006_cross_os_probe.py
+      - native/tests/test_gen006_native_restart.cpp
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gen006-native-cross-os
+  cancel-in-progress: false
+jobs:
+  linux-produce:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Build native World and emit source-pinned CYPS
+        shell: bash
+        timeout-minutes: 20
+        run: |
+          set -euo pipefail
+          mkdir -p build/gen006-xos
+          python tools/ci/check_ci_provider_policy.py
+          g++-13 --version > build/gen006-xos/compiler.txt 2>&1
+          g++-13 -std=c++20 -O2 -DNDEBUG -pthread -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/tests/test_gen006_native_restart.cpp \
+            -o build/gen006-xos/probe > build/gen006-xos/compile.log 2>&1 || \
+            { cat build/gen006-xos/compile.log; exit 1; }
+          python tools/experiments/gen006_cross_os_probe.py produce \
+            --native build/gen006-xos/probe --out build/gen006-xos \
+            2>&1 | tee build/gen006-xos/producer.log
+      - name: Preserve original Linux CYPS and receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-xos-linux-originals
+          path: build/gen006-xos/producer/
+          if-no-files-found: warn
+          retention-days: 45
+      - name: Preserve producer compiler and original traces
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-xos-linux-producer-trace
+          path: |
+            build/gen006-xos/compiler.txt
+            build/gen006-xos/compile.log
+            build/gen006-xos/producer.log
+            build/gen006-xos/witness.json
+          if-no-files-found: warn
+          retention-days: 45
+
+  windows-consume-and-produce:
+    needs: linux-produce
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - name: Keep LF source identities
+        shell: cmd
+        run: |
+          git config --global core.autocrlf false
+          if errorlevel 1 exit /b 1
+          git config --global core.eol lf
+          if errorlevel 1 exit /b 1
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore genuine Linux producer files
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: gen006-xos-linux-originals
+          path: build/gen006-xos/inbound
+      - name: Compile actual native World in Windows x64 MSVC environment
+        shell: cmd
+        timeout-minutes: 22
+        run: |
+          python tools\ci\check_ci_provider_policy.py
+          if errorlevel 1 exit /b 1
+          set "GEN006_VSROOT="
+          for /d %%V in ("%ProgramFiles%\Microsoft Visual Studio\2022\*") do if exist "%%~fV\Common7\Tools\VsDevCmd.bat" set "GEN006_VSROOT=%%~fV"
+          if not defined GEN006_VSROOT exit /b 1
+          call "%GEN006_VSROOT%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          set "GEN006_CXX=%ProgramFiles%\LLVM\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" set "GEN006_CXX=%GEN006_VSROOT%\VC\Tools\Llvm\x64\bin\clang++.exe"
+          if not exist "%GEN006_CXX%" exit /b 1
+          "%GEN006_CXX%" --version > build\gen006-xos\compiler.txt 2>&1
+          if errorlevel 1 exit /b 1
+          "%GEN006_CXX%" -std=c++20 -O2 -DNDEBUG -I native/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/tests/test_gen006_native_restart.cpp -o build\gen006-xos\probe.exe > build\gen006-xos\compile.log 2>&1
+          if errorlevel 1 (type build\gen006-xos\compile.log & exit /b 1)
+      - name: Restore Linux-produced CYPS in actual Windows native World
+        shell: cmd
+        timeout-minutes: 5
+        run: |
+          python tools\experiments\gen006_cross_os_probe.py consume --native build\gen006-xos\probe.exe --input build\gen006-xos\inbound --out build\gen006-xos\result > build\gen006-xos\check.log 2>&1
+          if errorlevel 1 (type build\gen006-xos\check.log & exit /b 1)
+          type build\gen006-xos\check.log
+      - name: Independently produce native Windows CYPS bytes
+        if: always()
+        shell: cmd
+        timeout-minutes: 5
+        run: |
+          if not exist build\gen006-xos\probe.exe exit /b 1
+          python tools\experiments\gen006_cross_os_probe.py produce --native build\gen006-xos\probe.exe --out build\gen006-xos --compare-input build\gen006-xos\inbound > build\gen006-xos\producer.log 2>&1
+          if errorlevel 1 (type build\gen006-xos\producer.log & exit /b 1)
+          type build\gen006-xos\producer.log
+      - name: Preserve original Windows CYPS and receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-xos-windows-originals
+          path: build/gen006-xos/producer/
+          if-no-files-found: warn
+          retention-days: 45
+      - name: Preserve Windows native cross-OS evidence and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-xos-windows-trace
+          path: |
+            build/gen006-xos/compiler.txt
+            build/gen006-xos/compile.log
+            build/gen006-xos/check.log
+            build/gen006-xos/producer.log
+            build/gen006-xos/result/witness.json
+            build/gen006-xos/witness.json
+          if-no-files-found: warn
+          retention-days: 45
+
+  linux-consume-windows:
+    needs: windows-consume-and-produce
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore original Windows producer files
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: gen006-xos-windows-originals
+          path: build/gen006-xos/inbound
+      - name: Compile actual native Linux World and resume Windows checkpoint
+        shell: bash
+        timeout-minutes: 20
+        run: |
+          set -euo pipefail
+          python tools/ci/check_ci_provider_policy.py
+          g++-13 --version > build/gen006-xos/compiler.txt 2>&1
+          g++-13 -std=c++20 -O2 -DNDEBUG -pthread -I native/include \
+            native/src/world.cpp native/src/material_rules.cpp \
+            native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp \
+            native/tests/test_gen006_native_restart.cpp \
+            -o build/gen006-xos/probe > build/gen006-xos/compile.log 2>&1 || \
+            { cat build/gen006-xos/compile.log; exit 1; }
+          python tools/experiments/gen006_cross_os_probe.py consume \
+            --native build/gen006-xos/probe --input build/gen006-xos/inbound \
+            --out build/gen006-xos/result 2>&1 | tee build/gen006-xos/check.log
+      - name: Preserve Linux native cross-OS evidence and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-xos-linux-consumer-trace
+          path: |
+            build/gen006-xos/compiler.txt
+            build/gen006-xos/compile.log
+            build/gen006-xos/check.log
+            build/gen006-xos/result/witness.json
+          if-no-files-found: warn
+          retention-days: 45
