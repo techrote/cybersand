@@ -1,0 +1,65 @@
+name: VOID original first-pass refusal audit
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    paths:
+      - 'experiments/agent_painter/lanes/void/raw_firstpass_audit.py'
+      - 'experiments/agent_painter/lanes/void/test_raw_firstpass_audit.py'
+      - 'experiments/agent_painter/lanes/void/V6_ORIGINAL_FIRSTPASS_REFUSAL_AUDIT.md'
+      - '.github/workflows/agent-painter-void-raw-refusals.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: void-original-firstpass-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  original-raw-firstpass:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Establish exact lane source and refusal-only custody
+        env:
+          EXPECTED_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+          ORCHESTRATION_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SOURCE"
+          python3 tools/ci/check_ci_provider_policy.py
+          mkdir -p "$RUNNER_TEMP/void-refusal-evidence"
+          printf '%s\n' "$EXPECTED_SOURCE" > "$RUNNER_TEMP/void-refusal-evidence/literal-source-head.txt"
+          printf '%s\n' "$ORCHESTRATION_SHA" > "$RUNNER_TEMP/void-refusal-evidence/orchestration-sha.txt"
+          printf '%s\n' 'ORIGINAL DEVELOPMENT RAW EVIDENCE ONLY; TRAIN=0; NATIVE=0; FINAL UNOPENED' > "$RUNNER_TEMP/void-refusal-evidence/limits.txt"
+      - name: Model-free refusal verifier tests
+        run: |
+          python3 -m unittest discover -s experiments/agent_painter/lanes/void -p 'test_raw_firstpass_audit.py' -v
+      - name: Download original public producer archives and independently verify all first passes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api /repos/techrote/cybersand/actions/artifacts/14084102379/zip > "$RUNNER_TEMP/void-original-16.zip"
+          gh api /repos/techrote/cybersand/actions/artifacts/14088647201/zip > "$RUNNER_TEMP/void-original-120.zip"
+          python3 experiments/agent_painter/lanes/void/raw_firstpass_audit.py \
+            --step16 "$RUNNER_TEMP/void-original-16.zip" \
+            --step120 "$RUNNER_TEMP/void-original-120.zip" \
+            --output "$RUNNER_TEMP/void-refusal-evidence/receipt.json"
+      - name: Preserve successful or partial failure evidence, without original teacher assets
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: void-original-raw-refusal-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/void-refusal-evidence/
+          if-no-files-found: warn
+          retention-days: 90
