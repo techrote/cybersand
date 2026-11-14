@@ -439,16 +439,34 @@ gen::SpatialDefinition spatial_definition(const Variant& input) {
 gen::Recipe parse_recipe(const Dictionary& input, std::uint64_t revision) {
     fields(input, {"schema", "seed", "chunk_size", "candidate", "parameters", "themes",
                    "strokes", "paths", "overrides", "modules", "limits", "catalogue",
-                   "fields", "aggregates", "modifiers", "spatial", "spatial_limits", "grammar", "semantic_planes"}, "recipe");
+                   "fields", "aggregates", "modifiers", "spatial", "spatial_limits", "grammar", "semantic_planes", "architecture"}, "recipe");
     gen::Recipe recipe;
     recipe.revision = revision;
     if (input.has("schema")) recipe.schema = static_cast<std::uint32_t>(bounded_integer(
-        input["schema"], 1, 3, "schema"));
+        input["schema"], 1, 4, "schema"));
     if (recipe.schema < 2 && (input.has("spatial") || input.has("spatial_limits")))
-        invalid("recipe.schema", "typed spatial declarations require schema 2 or 3");
+        invalid("recipe.schema", "typed spatial declarations require schema 2, 3 or 4");
     if (input.has("grammar")) {
-        if (recipe.schema != 3) invalid("recipe.schema", "semantic hierarchy requires schema 3");
+        if (recipe.schema < 3) invalid("recipe.schema", "semantic hierarchy requires schema 3 or 4");
         recipe.grammar = grammar_definition(input["grammar"]);
+    }
+    if (input.has("architecture")) {
+        if (recipe.schema != gen::kArchitecturalSchemaVersion)
+            invalid("recipe.schema", "architectural controls require opt-in schema 4");
+        const auto architecture = dictionary_value(input["architecture"], "architecture");
+        fields(architecture, {"version", "automatic_tunnels", "automatic_doors", "door_width"}, "architecture");
+        recipe.architecture.version = static_cast<std::uint32_t>(bounded_integer(
+            required(architecture, "version", "architecture"), 1, 1, "architecture.version"));
+        for (const auto* key : {"automatic_tunnels", "automatic_doors"}) {
+            if (!architecture.has(key)) continue;
+            if (architecture[key].get_type() != Variant::BOOL)
+                invalid(std::string("architecture.") + key, "expected a boolean");
+            if (std::string(key) == "automatic_tunnels")
+                recipe.architecture.automatic_tunnels = static_cast<bool>(architecture[key]);
+            else recipe.architecture.automatic_doors = static_cast<bool>(architecture[key]);
+        }
+        if (architecture.has("door_width")) recipe.architecture.door_width = static_cast<std::uint32_t>(
+            bounded_integer(architecture["door_width"], 0, 64, "architecture.door_width"));
     }
     if (input.has("seed")) recipe.seed = static_cast<std::uint64_t>(bounded_integer(
         input["seed"], 0, std::numeric_limits<std::int64_t>::max(), "seed"));
@@ -490,9 +508,16 @@ gen::Recipe parse_recipe(const Dictionary& input, std::uint64_t revision) {
         recipe.limits.max_fields = limit("max_fields", recipe.limits.max_fields);
         recipe.limits.max_aggregates = limit("max_aggregates", recipe.limits.max_aggregates);
         recipe.limits.max_modifiers = limit("max_modifiers", recipe.limits.max_modifiers);
-        if (limits.has("max_operations_per_chunk")) recipe.limits.max_operations_per_chunk =
-            static_cast<std::uint64_t>(bounded_integer(limits["max_operations_per_chunk"], 1,
-                static_cast<std::int64_t>(recipe.limits.max_operations_per_chunk), "limits.max_operations_per_chunk"));
+        if (limits.has("max_operations_per_chunk")) {
+            // Explicit architectural schema-4 projects can compose five
+            // independent masked native samplers. Raise ONLY their opt-in
+            // charged-work ceiling; schemas 1/2/3 keep the historical 64M cap.
+            const auto maximum = recipe.schema == gen::kArchitecturalSchemaVersion ?
+                INT64_C(160000000) : static_cast<std::int64_t>(recipe.limits.max_operations_per_chunk);
+            recipe.limits.max_operations_per_chunk = static_cast<std::uint64_t>(
+                bounded_integer(limits["max_operations_per_chunk"], 1, maximum,
+                    "limits.max_operations_per_chunk"));
+        }
     }
     if (input.has("catalogue")) {
         const auto catalogue = array_value(input["catalogue"], recipe.limits.max_themes, "catalogue");
@@ -824,8 +849,7 @@ Dictionary CyberWorldGenerator::inspect_cell(Vector2i position) const {
         result["revision"] = static_cast<std::int64_t>(revision_);
         result["adapter_serial"] = static_cast<std::int64_t>(revision_);
         result["recipe_schema"] = generator_->recipe().schema;
-        result["algorithm"] = generator_->recipe().schema == gen::kHierarchySchemaVersion ? gen::kHierarchyAlgorithmVersion :
-            generator_->recipe().schema == gen::kTypedSchemaVersion ? gen::kTypedAlgorithmVersion : gen::kAlgorithmVersion;
+        result["algorithm"] = gen::recipe_algorithm_version(generator_->recipe().schema);
         generation_semantic_details(result, generator_->semantic_plan(), trace.ancestry);
         return result;
     } catch (const std::exception& error) { return failure(error.what()); }
@@ -840,8 +864,7 @@ Dictionary CyberWorldGenerator::inspect_generation(Vector2i position, const Stri
     result["adapter_serial"] = static_cast<std::int64_t>(revision_);
     result["fingerprint"] = hexadecimal(generator_->fingerprint());
     result["recipe_schema"] = generator_->recipe().schema;
-    result["algorithm"] = generator_->recipe().schema == gen::kHierarchySchemaVersion ? gen::kHierarchyAlgorithmVersion :
-        generator_->recipe().schema == gen::kTypedSchemaVersion ? gen::kTypedAlgorithmVersion : gen::kAlgorithmVersion;
+    result["algorithm"] = gen::recipe_algorithm_version(generator_->recipe().schema);
     result["identity_checked"] = true;
     result["preview_comparison"] = "caller must compare copied material with the accepted preview at this identity";
     return result;
@@ -866,6 +889,12 @@ Dictionary CyberWorldGenerator::get_catalogue() const {
         item["id"] = String(module.c_str());
         item["version"] = 1;
         modules.push_back(item);
+        if (module == "arcology" || module == "vault") {
+            Dictionary versioned = item.duplicate();
+            versioned["version"] = 2;
+            versioned["minimum_recipe_schema"] = gen::kArchitecturalSchemaVersion;
+            modules.push_back(versioned);
+        }
     }
     for (const auto candidate : {gen::Candidate::Strata, gen::Candidate::FlowNetwork, gen::Candidate::DistrictGrammar})
         candidates.push_back(gen::candidate_name(candidate));
@@ -881,6 +910,8 @@ Dictionary CyberWorldGenerator::get_catalogue() const {
     result["minimum_chunk_size"] = 8;
     result["maximum_chunk_size"] = 256;
     result["hierarchy_schema_version"] = gen::kHierarchySchemaVersion;
+    result["architectural_schema_version"] = gen::kArchitecturalSchemaVersion;
+    result["architectural_algorithm_version"] = gen::kArchitecturalAlgorithmVersion;
     result["grammar_schema_version"] = gen::kGrammarSchemaVersion;
     result["grammar_algorithm_version"] = gen::kGrammarAlgorithmVersion;
     Array field_kinds, field_contexts, contexts;

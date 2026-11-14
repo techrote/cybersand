@@ -105,6 +105,12 @@ func check_workbench() -> void:
 	await process_frame
 	expect(app.generator != null and app.active_revision > 0, "Workbench did not configure its private native generator")
 	expect(app.parameter_inputs.size() == 12 and app.tool_picker.item_count == 11, "Authoring controls are incomplete")
+	var module_ids := {}
+	for index: int in app.module_picker.item_count:
+		var id: String = app.module_picker.get_item_text(index)
+		expect(not module_ids.has(id), "Versioned native catalogue duplicated the legacy module picker: " + id)
+		module_ids[id] = true
+	expect(module_ids.has_all(["arcology", "vault", "aqueduct"]), "Legacy module choices remain accessible")
 	if app.generator == null:
 		app.queue_free()
 		return

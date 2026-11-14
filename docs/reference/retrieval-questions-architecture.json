@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-14",
+  "purpose": "Additive architectural-generator current-source navigation; no historical queries modified.",
+  "questions": [
+    {
+      "id": "ARCHITECTURE-APERTURES",
+      "query": "How can I independently disable GEN-007 automatic tunnels doors and windows while preserving authored routes and old recipes?",
+      "canonical": [
+        "systems/architectural-generator.md"
+      ],
+      "facts": [
+        "Schema 4 algorithm 5 and Arcology/Vault module v2 are opt-in; schemas 1–3 and module v1 retain legacy output.",
+        "Automatic tunnels suppress only the candidate network; authored paths and semantic passages remain explicit.",
+        "Door apertures and Arcology window glass/holes have independent controls; windows off restores structural wall material."
+      ],
+      "sources": [
+        "systems/architectural-generator.md"
+      ]
+    },
+    {
+      "id": "ARCHITECTURE-ZONE-QUOTAS",
+      "query": "How does Architectural Generator guarantee style zone coverage and connected districts for a 1024 map with 45 30 25 shares?",
+      "canonical": [
+        "systems/architectural-generator.md"
+      ],
+      "facts": [
+        "The finite 256-block grid uses largest remainders and seeded Hilbert intervals, compiled into native categorical assignments.",
+        "Shares measure zone area, not occupied materials; the default 115/77/64 blocks achieve 44.921875/30.078125/25 percent.",
+        "One four-connected component per selected style is guaranteed, but material/player connectivity is not; quota error above 2 percentage points refuses."
+      ],
+      "sources": [
+        "systems/architectural-generator.md"
+      ]
+    },
+    {
+      "id": "ARCHITECTURE-OWNER-FLOW",
+      "query": "How do I select architectural styles import a custom preset generate preview paint save and reopen a CyberSand map?",
+      "canonical": [
+        "operations/architectural-generator-playtest.md",
+        "systems/architectural-generator.md"
+      ],
+      "facts": [
+        "The focused panel is under Shared Workbench New from generator; three built-in style presets and embedded custom JSON use the existing native pipeline.",
+        "Install confirms World replacement; rejected/cancelled proposals preserve the installed World and the prior verified preview is explicitly restorable.",
+        "Project JSON embeds presets; generated-start v1 embeds the resolved recipe, verifies fresh-process native reconstruction and retains painted/erased edits without external preset files."
+      ],
+      "sources": [
+        "operations/architectural-generator-playtest.md",
+        "systems/architectural-generator.md"
+      ]
+    }
+  ]
+}

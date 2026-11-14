@@ -1,0 +1,102 @@
+{
+  "format": "cybersand.architectural-project",
+  "version": 1,
+  "planner": "connected-hilbert-v1",
+  "seed": 161803,
+  "origin": [
+    0,
+    0
+  ],
+  "extent": [
+    1024,
+    1024
+  ],
+  "zone_scale": 64,
+  "automatic_tunnels": false,
+  "automatic_doors": true,
+  "automatic_windows": true,
+  "corridor_width": 12,
+  "styles": [
+    {
+      "enabled": true,
+      "share": 34,
+      "preset": {
+        "format": "cybersand.architectural-style",
+        "version": 1,
+        "id": "skyline-terraces",
+        "name": "Skyline Terraces",
+        "module": "terraced",
+        "module_version": 1,
+        "theme": "ruins",
+        "geometry": {
+          "room_size": 80,
+          "floor_height": 40,
+          "wall_thickness": 3,
+          "door_width": 12,
+          "shaft_width": 10
+        },
+        "materials": {
+          "wall": 109,
+          "floor": 111,
+          "window": 120
+        },
+        "apertures": {},
+        "deterioration": 0.02
+      }
+    },
+    {
+      "enabled": true,
+      "share": 33,
+      "preset": {
+        "format": "cybersand.architectural-style",
+        "version": 1,
+        "id": "cellular-hive",
+        "name": "Cellular Hive",
+        "module": "hex_hive",
+        "module_version": 1,
+        "theme": "industrial",
+        "geometry": {
+          "room_size": 64,
+          "floor_height": 56,
+          "wall_thickness": 3,
+          "door_width": 10,
+          "shaft_width": 0
+        },
+        "materials": {
+          "wall": 130,
+          "floor": 70,
+          "window": 120
+        },
+        "apertures": {},
+        "deterioration": 0
+      }
+    },
+    {
+      "enabled": true,
+      "share": 33,
+      "preset": {
+        "format": "cybersand.architectural-style",
+        "version": 1,
+        "id": "arched-viaduct",
+        "name": "Arched Viaduct",
+        "module": "arcade",
+        "module_version": 1,
+        "theme": "ruins",
+        "geometry": {
+          "room_size": 80,
+          "floor_height": 64,
+          "wall_thickness": 3,
+          "door_width": 10,
+          "shaft_width": 0
+        },
+        "materials": {
+          "wall": 98,
+          "floor": 49,
+          "window": 121
+        },
+        "apertures": {},
+        "deterioration": 0
+      }
+    }
+  ]
+}

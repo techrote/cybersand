@@ -10,6 +10,17 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Architectural Generator Phase A/B — 2026-11-14
+
+The dedicated Draft/HOLD candidate adds [configurable architectural generation](../systems/architectural-generator.md):
+independent tunnel/door/window controls, fixed module dimensions, three embedded
+style presets, deterministic finite connected zones with measured quotas, and a
+focused Shared Workbench entry. Source schema 4 / algorithm 5 and Arcology/Vault
+v2 preserve opt-in compatibility; generated-start v1 remains unchanged. Runtime
+qualification and Windows owner evaluation are separate gates. No GEN-006,
+Flatten, batch/agent or simulation ownership is included.
+
+
 ## Materials Lab v1 — 2026-11-11
 
 Separate [PR #563](https://github.com/techrote/cybersand/pull/563) replaces the

@@ -910,7 +910,7 @@ func _pick_context_material() -> void:
 
 func _build_profile_dialog() -> void:
 	profile_dialog = Window.new()
-	profile_dialog.title = "World generation / schema 1, 2 and 3 profiles"
+	profile_dialog.title = "World generation / schema 1–4 profiles"
 	profile_dialog.size = Vector2i(960, 740)
 	profile_dialog.min_size = Vector2i(620, 460)
 	profile_dialog.visible = false
@@ -956,8 +956,12 @@ func _populate_catalogue(catalogue: Dictionary) -> void:
 		var prior_module: String = module_picker.get_item_text(module_picker.selected)
 		var prior_parameters: String = module_parameters.text
 		module_picker.clear()
+		var listed_modules := {}
 		for item: Dictionary in modules:
-			module_picker.add_item(str(item.id))
+			var module_id := str(item.id)
+			if listed_modules.has(module_id): continue
+			listed_modules[module_id] = true
+			module_picker.add_item(module_id)
 		_select_text(module_picker, prior_module)
 		if module_picker.get_item_text(module_picker.selected) == prior_module:
 			module_parameters.text = prior_parameters

@@ -1,0 +1,79 @@
+{
+  "environment": "Linux x86_64; Godot4.7 official; pinned godot-cpp; local GCC14.2 and ld2.44 drift permitted; source-built immutable base",
+  "godot": "4.7-stable (official)",
+  "profiles": {
+    "district-arcology": {
+      "bounds": [
+        -256,
+        -128,
+        512,
+        512
+      ],
+      "cells": 262144,
+      "fingerprint": "c98389a22be141da",
+      "material_sha256": "f783a15c61c5d84532f01d5c7a2491c3c3677aa5a7e46e941a514d805bad24da",
+      "receipt_sha256": "ae3ece3413e4922a6b507472899b5e4cc5a56cc4e9e5620a6d9c69f92a62acd2",
+      "recipe_sha256": "1d30e2b13c33a8e375aa9a191be249a0b19fbacbc3d6a44607a4635cb176a2d3",
+      "schema": 1.0
+    },
+    "gen007-deepworks": {
+      "bounds": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "cells": 65536,
+      "fingerprint": "5f512fa7de534bec",
+      "material_sha256": "545bf121b7d843a85e8a2515684e3c5c26c531f44d2599d3a8121a96377e5b4a",
+      "receipt_sha256": "4869f7765cf0f967e8b6d60fa45da6d165c70821dd9489b0d57360537d8ca587",
+      "recipe_sha256": "d16b7ebd37363929e7fb6281b0fcbca300ce7bb707487d59b4a02abef3eaac5f",
+      "schema": 3.0
+    },
+    "hierarchy-multi-district": {
+      "bounds": [
+        -128,
+        -128,
+        256,
+        256
+      ],
+      "cells": 65536,
+      "fingerprint": "8d6feac54243484e",
+      "material_sha256": "84ba8bcdc456a4708af27e5a811234f95810af4c111c5ae03810dfed61f64271",
+      "receipt_sha256": "ef43f9b555902ba8e58807d8c6728a66fec9fde7a56455ebb82d68432d93fecb",
+      "recipe_sha256": "27b0a5cb50e8bbab0390edf4d5a3d8de8edbc82860c0343829f966db94c954fa",
+      "schema": 3.0
+    },
+    "sidechained-arcology": {
+      "bounds": [
+        -256,
+        0,
+        512,
+        512
+      ],
+      "cells": 262144,
+      "fingerprint": "8343efa0f7f89a25",
+      "material_sha256": "7ae373b992fe753abb2c565724c11492a2cf6ed391989dc0d8d8ee259c7fa165",
+      "receipt_sha256": "332cc0f4a54afa4592aa4844df70654c630e149677ad5fdc5bd6b597863597fa",
+      "recipe_sha256": "a5d45c1f6cdab08304a49cdf28a32d3231940c702720c3a3d084ec3e178c5948",
+      "schema": 1.0
+    },
+    "typed-categorical-districts": {
+      "bounds": [
+        -64,
+        -64,
+        128,
+        128
+      ],
+      "cells": 16384,
+      "fingerprint": "97e69941c4c3d05b",
+      "material_sha256": "9997656036653cf2f58bf7277d368cbf01a5ef494f2c7ea0d17e1a35cd8029bd",
+      "receipt_sha256": "eddc16cc8fc52904423414c2e469e8435ec15d9d581e0d3014eac4e6ecd57948",
+      "recipe_sha256": "26863c2a7cd413081ed5e0110ca1a8bf3f79f60c1f821b704ca2394158dd5b5c",
+      "schema": 2.0
+    }
+  },
+  "runtime_sha256": "13285c2ea063be57a363c00134d9680ab5bd8118e7eb9e4cea2fbbf338680c33",
+  "schema": 1,
+  "source_commit": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742"
+}

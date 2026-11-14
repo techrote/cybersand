@@ -10,6 +10,17 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Architectural Generator candidate — 2026-11-14
+
+The owner-authorized Phase A plus bounded Phase B implementation starts at
+`ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742` on
+`feat/gen007-architectural-generator-ab`. Read the [architectural contract](../systems/architectural-generator.md)
+and [owner walkthrough](architectural-generator-playtest.md). Its focused
+project form uses existing native generation and ordinary Shared Workbench
+preview/install/persistence. Keep the single PR Draft/HOLD. Preserve other active
+Flatten, agent, streaming and camera/rendering branches; none is a dependency.
+
+
 ## Materials Lab Windows evaluation — 2026-11-12
 
 [Draft #562](https://github.com/techrote/cybersand/pull/562) carries the

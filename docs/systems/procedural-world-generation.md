@@ -83,6 +83,16 @@ chunks with edited generation recipes. See [storage](world-storage-and-interest-
 The native fresh-chunk installer below is a usable integration primitive; it is
 not a completed residency manager.
 
+## Architectural schema 4 extension
+
+The opt-in [Architectural Generator](architectural-generator.md) adds recipe
+schema 4 / algorithm 5, independent automatic tunnel and door controls, and
+Arcology/Vault module v2. Its finite style project compiles to ordinary native
+categorical masks and prepared modules. Legacy schemas 1–3 and module v1 keep
+their original semantics and deterministic output; exact runtime comparison is
+part of the focused qualification. The linked contract owns aperture, fixed
+geometry, quota, project and prototype-limit details.
+
 ## How are themes, subsets and supersets resolved?
 
 The recipe catalogue is a validated directed acyclic graph. A theme has an ID,

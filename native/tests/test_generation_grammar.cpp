@@ -1303,6 +1303,52 @@ void indexed_grammar_matches_independent_bruteforce() {
         "index allocations obey declared prepared memory budget");
 }
 
+
+void architectural_switches_preserve_semantic_passages() {
+    auto recipe = integration_recipe(Candidate::DistrictGrammar);
+    recipe.schema = kArchitecturalSchemaVersion;
+    recipe.architecture.automatic_tunnels = false;
+    recipe.architecture.automatic_doors = false;
+    ModuleInstance vault;
+    vault.id = "sealed-district"; vault.module = "vault"; vault.version = 2;
+    vault.bounds = {-64, -64, 128, 128};
+    vault.parameters = {{"cell_size", 16}, {"wall", 2}, {"door_width", 6}};
+    recipe.modules.push_back(vault);
+    const auto generator = Generator::compile(recipe);
+    require(generator->validate_routes().passed && !generator->validate_routes().routes.empty(),
+        "tunnels and doors off preserve explicitly required semantic passages across sealed modules");
+    const auto& plan = *generator->semantic_plan();
+    const auto bounds = plan.bounds();
+    std::int64_t block_x = 0, block_y = 0;
+    bool selected = false;
+    for (const auto& route : plan.routes()) if (route.required && route.type == "passage") {
+        for (const auto& point : route.points) {
+            const auto x = static_cast<std::int64_t>(point.x), y = static_cast<std::int64_t>(point.y);
+            if (x < bounds.x || y < bounds.y || x >= bounds.x + bounds.width || y >= bounds.y + bounds.height) continue;
+            const auto trace = generator->explain(x, y);
+            require(trace.material == Material::Empty && std::any_of(trace.contributions.begin(), trace.contributions.end(),
+                [](const auto& entry) { return entry.stage == "semantic_route"; }),
+                "surviving aperture reports explicit semantic route authority");
+            require(std::none_of(trace.contributions.begin(), trace.contributions.end(),
+                [](const auto& entry) { return entry.stage == "candidate_route"; }),
+                "semantic restoration does not re-enable disabled automatic macro-network");
+            if (!selected) { block_x = x; block_y = y; selected = true; }
+        }
+    }
+    require(selected, "semantic control fixture selected an independently known route centre");
+    HardOverride block;
+    block.id = "explicit-owner-conflict"; block.bounds = {block_x, block_y, 1, 1}; block.material = Material::Metal;
+    recipe.overrides.push_back(block);
+    const auto blocked = Generator::compile(recipe);
+    require(blocked->sample(block_x, block_y) == Material::Metal && !blocked->validate_routes().passed,
+        "blocked required passage retains owner material and an actionable failed route report");
+    require(std::any_of(blocked->validate_routes().routes.begin(), blocked->validate_routes().routes.end(),
+        [](const auto& route) { return !route.passed && route.blocked_centres > 0 && !route.detail.empty(); }),
+        "schema 4 exposes the specific blocked required route instead of promising connectivity");
+    require(generator->validate_routes().passed && generator->sample(block_x, block_y) == Material::Empty,
+        "failed proposal validation cannot damage the accepted immutable generator");
+}
+
 } // namespace
 int main() {
     try {
@@ -1322,6 +1368,7 @@ int main() {
         unused_and_omitted_external_bindings();
         omitted_manual_peer_removes_join();
         manually_joined_socket_materials();
+        architectural_switches_preserve_semantic_passages();
         std::cout << "PASS semantic grammar: " << assertions << " assertions\n";
         return 0;
     } catch (const std::exception& error) {
