@@ -37,7 +37,7 @@ comparison = paired.run_development_pair(dev, seed=13)
 assert comparison["native_qualified"] is False
 ```
 
-**Historical qualification status (before 14 Nov M1 update):** The previously added `test_paired.py` methods had not been executed on a Python checkout. Prior Stage A workflow success does **not** qualify these tests; that workflow discovers `experiments/driv3r/tests/**`, not this exclusive Stage D-1A lane. An independently implemented, offline JavaScript A*/contour cross-check of the seven development geometries returned wall steps **33/29/35** and A→B legal shortest paths **35/25/33/31** (all within 36); that is not equivalent to executing the Python suite or a native run. Run both unittest modules on a suitable Python environment and retain original failure output before any M1/integration claim.
+**Qualification history:** [M2 integration PR #600](https://github.com/techrote/cybersand/pull/600) ran the then-current **30/30 D-1A tests** at exact integrated source `9f09a1b11634a03e56b748887d93b7fb8e96601d` ([Actions run 43623698285](https://github.com/techrote/cybersand/actions/runs/43623698285)). The subsequent 10-method M1 preflight module and the new safety/recovery tests were **not** part of that frozen snapshot. Changes made after the M2 snapshot also require a fresh, exact-head full-lane Python run before claiming current-source qualification. Stage A workflow success by itself is not sufficient. The earlier independent JavaScript cross-check of the seven development reference geometries returned wall steps **33/29/35** and A→B shortest paths **35/25/33/31**, without native execution.
 
 Default runner executes **development fixtures only**. Held-out fixtures are manifested for source custody and cheap structural checks; no held-out model outcome is inspected. All JSONL data are offline simulation events and may not be described as native receipts, paintings or visual renderings.
 
@@ -65,6 +65,14 @@ m1_preflight.assert_approved_schema(Path.cwd())
 ```
 
 **Qualification disclosure:** This checkpoint compiled both added files and executed a standalone pure-Python preflight harness (16 positive/adverse assertions, PASS) against the new adapter logic. The *combined exact-checkout* D-1A suite, including new `test_m1_preflight.py`, remains **pending**; do not label a normal Stage A CI green check as the D-1A test result. Neither the standalone harness nor the new tests have measured native controller effectiveness.
+
+## Synthetic recovery-shepherd opportunity audit (subsequent lane-only development)
+
+`recovery.py` first verifies each original **development-only** trajectory with the unchanged `paired.verify_episode`, then compares the actually selected action to an independently recomputed conventional contour/A* choice at each recorded pre-decision cursor. It records the first **oracle-choice disagreement** as a possible intervention point, not proof of a mistake or neural-model value. At most one purely hypothetical deterministic continuation from that point is explored, **after** preserving the original recorded choice, under the same legal swept-segment rules and exact remaining 36-decision budget. A chosen STOP remains terminal: it cannot be fictitiously resumed or undone.
+
+The module never changes an episode, computes held-out behavioural outcomes, authorises edits, reads model predictions or fabricates native receipts. `test_recovery.py` adds focused oracle identity, deterministic macro, replay-tamper, terminal-STOP, zero-budget and held-out-seal checks. In parallel, `run_episode` now rejects held-out policy dispatch, unsupported/unbounded seeds and irregular action-macro menus **before** emitting an irreplayable source record; `test_offline.py` adds four regression methods for these inputs.
+
+**Current-source qualification remains pending:** the new 7 recovery tests, four input/split tests and preceding 10 M1 preflight tests must be executed alongside the original 30 at the newest branch head (nominally **51 methods**, subject to actual discovery). Authored test counts are not execution results. An integration owner can consume this read-only synthetic opportunity report for M3/M4 study design but it is not a native recovery session or a substitute for an owner-authorised campaign.
 
 ## Explicit further gates
 
