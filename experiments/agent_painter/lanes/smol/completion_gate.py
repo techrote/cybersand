@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Fail-closed SMOL fresh120 training promotion gate; partial checkpoints remain evidence.
 
-This is purely model-free and does not inspect TRAIN/DEVELOPMENT/FINAL examples.
-The existing native workflow must not run DEVELOPMENT/native replay unless the
-one fresh 120-step training job completed its exact requested global target.
+This is model-free: it revalidates the original TRAIN rows and native
+admission/readback to independently reconstruct the frozen sampler. It does
+not open DEVELOPMENT or sealed FINAL targets. The existing native workflow
+must not start DEVELOPMENT/native replay unless one fresh 120-step training
+job completed its exact requested global target.
 """
 from __future__ import annotations
 
