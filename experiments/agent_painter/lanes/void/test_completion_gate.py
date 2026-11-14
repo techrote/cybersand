@@ -7,7 +7,13 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from completion_gate import CHECKPOINT, verify_completion
+from completion_gate import CHECKPOINT, verify_completion as strict_verify, TRAINING, CPU_EFFECTIVE, CORPUS, NATIVE
+
+SOURCE = "d" * 40
+
+
+def verify_completion(summary: dict, code: int, checkpoint: Path) -> dict:
+    return strict_verify(summary, code, checkpoint, source_sha=SOURCE)
 
 
 def sha(path: Path) -> str:
@@ -19,21 +25,47 @@ def fixture(root: Path) -> tuple[dict, Path]:
     (checkpoint / "adapter").mkdir(parents=True)
     (checkpoint / "adapter/adapter_model.safetensors").write_bytes(b"synthetic adapter fixture only")
     (checkpoint / "training_state.pt").write_bytes(b"synthetic optimizer fixture only")
-    history = [{"global_step": i, "sample_cursor": i,
-                "sample_id": f"synthetic-train-{i % 12}", "gradient_norm": 1.0}
+    order = [f"synthetic-train-{i}" for i in range(12)]
+    history = [{"global_step": i, "sample_cursor": i, "sample_id": order[(i-1) % 12],
+                "gradient_norm": 1.0, "loss": 2.0-i/1000, "seconds": 0.01,
+                "sequence_tokens": 750, "loss_tokens": 320,
+                "prompt_bytes": 300, "completion_bytes": 319}
                for i in range(1, 121)]
+    profile = json.loads((TRAINING / "model_profiles.json").read_text())["profiles"]["void"]
+    config = {"schema_version": 1, "profile": "void", "source_sha": SOURCE,
+              "native_source_sha": NATIVE, "corpus_manifest_sha256": CORPUS,
+              "model": profile, "model_files": {
+                  n: {"sha256": d, "bytes": 123} for n, d in profile["required_hashes"].items()},
+              "trainer_sha256": sha(TRAINING / "train.py"),
+              "contract_sha256": sha(TRAINING / "common.py"),
+              "train_sha256": "1"*64, "compiler_sha256": "2"*64,
+              "device": "cpu", "dtype": "float32", "threads": 1, "seed": 568,
+              "max_length": 2048, "rank": 8, "alpha": 16, "dropout": 0.05,
+              "learning_rate": 0.0005, "native_execution_by_trainer": False,
+              "final_targets_opened": False, "sample_order": order,
+              "numerics": {"profile": "portable-cpu-fp32-v1",
+                           "effective": CPU_EFFECTIVE,
+                           "numerics_sha256": sha(TRAINING / "numerics.py"),
+                           "torch_version": "2.15.0+cpu",
+                           "torch_build_sha256": "3"*64}}
     summary = {"schema_version": 1, "status": "completed", "global_step": 120,
                "optimizer_steps_this_job": 120, "sample_cursor": 120,
                "checkpoint": CHECKPOINT, "actual_training": True,
                "checkpoint_readback_exact": True, "frozen_base_unchanged": True,
                "adapter_changed": True, "resume": None, "native_execution": False,
-               "model_quality_claim": False, "config": {"synthetic": "model-free"},
+               "model_quality_claim": False, "config": config,
+               "loss_tokens_this_job": 120*320, "sequence_tokens_this_job": 120*750,
+               "bytes_this_job": 120*(300+319), "first_loss": history[0]["loss"],
+               "last_loss": history[-1]["loss"],
+               "numerical_runtime": {"synthetic": "model-free"},
                "frozen_base_sha256": "b" * 64,
                "adapter_before_sha256": "a" * 64, "adapter_after_sha256": "c" * 64,
                "sample_ids_this_job": [e["sample_id"] for e in history]}
     receipt = {"global_step": 120, "sample_cursor": 120, "config": summary["config"],
-               "frozen_base_sha256": summary["frozen_base_sha256"], "history": history}
+               "frozen_base_sha256": summary["frozen_base_sha256"], "history": history,
+               "numerical_runtime": summary["numerical_runtime"]}
     (checkpoint / "receipt.json").write_text(json.dumps(receipt))
+    (root / "progress.jsonl").write_text("".join(json.dumps(e) + "\n" for e in history))
     inventory = {p.relative_to(checkpoint).as_posix(): {"sha256": sha(p), "bytes": p.stat().st_size}
                  for p in sorted(checkpoint.rglob("*")) if p.is_file()}
     (checkpoint / "inventory.json").write_text(json.dumps(inventory))
@@ -139,6 +171,65 @@ class GateTests(unittest.TestCase):
                 verify_completion(self.summary, 0, self.checkpoint)
         p.write_text(orig)
 
+
+
+    def test_source_model_native_and_numerical_substitutions_refused(self):
+        changes = [("source_sha", "0"*40), ("native_source_sha", "0"*40),
+                   ("corpus_manifest_sha256", "0"*64), ("trainer_sha256", "0"*64),
+                   ("threads", 2), ("final_targets_opened", True)]
+        for key, new in changes:
+            with self.subTest(field=key), self.assertRaisesRegex(ValueError, "identity|contract"):
+                bad = json.loads(json.dumps(self.summary))
+                bad["config"][key] = new
+                verify_completion(bad, 0, self.checkpoint)
+        for section, key, replacement in (
+                ("model", "revision", "0"*40), ("model_files", "model.safetensors", None),
+                ("numerics", "profile", "fake"), ("numerics", "numerics_sha256", "0"*64)):
+            with self.subTest(field=key), self.assertRaises(ValueError):
+                bad = json.loads(json.dumps(self.summary))
+                if section == "model_files":
+                    bad["config"][section][key]["sha256"] = "0"*64
+                else:
+                    bad["config"][section][key] = replacement
+                verify_completion(bad, 0, self.checkpoint)
+        with self.assertRaisesRegex(ValueError, "source"):
+            strict_verify(self.summary, 0, self.checkpoint, source_sha="wrong")
+
+    def test_missing_modified_or_short_progress_refused(self):
+        p = self.checkpoint.parent / "progress.jsonl"
+        original = p.read_text()
+        p.unlink()
+        with self.assertRaisesRegex(ValueError, "progress"):
+            verify_completion(self.summary, 0, self.checkpoint)
+        p.write_text(original)
+        rows = [json.loads(line) for line in original.splitlines()]
+        rows[5]["loss"] += 0.5
+        p.write_text("".join(json.dumps(row) + "\n" for row in rows))
+        with self.assertRaisesRegex(ValueError, "differs"):
+            verify_completion(self.summary, 0, self.checkpoint)
+        p.write_text("\n".join(original.splitlines()[:119]) + "\n")
+        with self.assertRaisesRegex(ValueError, "exactly 120"):
+            verify_completion(self.summary, 0, self.checkpoint)
+        p.write_text(original)
+
+    def test_missing_loss_and_supervised_token_receipts_refused(self):
+        p = self.checkpoint / "receipt.json"
+        baseline = p.read_text()
+        for change in (lambda x: x["history"][0].pop("loss_tokens"),
+                       lambda x: x["history"][0].update(loss=float("nan")),
+                       lambda x: x["history"][0].update(loss_tokens=0),
+                       lambda x: x["history"][0].update(sample_id="wrong")):
+            r = json.loads(baseline)
+            change(r)
+            p.write_text(json.dumps(r))
+            inventory = self.checkpoint / "inventory.json"
+            manifest = json.loads(inventory.read_text())
+            manifest["receipt.json"] = {"sha256": sha(p), "bytes": p.stat().st_size}
+            inventory.write_text(json.dumps(manifest))
+            bad = dict(self.summary, checkpoint_inventory_sha256=sha(inventory))
+            with self.assertRaises(ValueError):
+                verify_completion(bad, 0, self.checkpoint)
+        p.write_text(baseline)
 
 if __name__ == "__main__":
     unittest.main()

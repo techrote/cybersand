@@ -19,6 +19,25 @@ CHECKPOINT = "checkpoint-000120"
 HEX64 = re.compile(r"[0-9a-f]{64}\Z")
 
 
+COMMIT = re.compile(r"[0-9a-f]{40}\Z")
+TRAINING = Path(__file__).resolve().parents[2] / "training"
+MODEL = "dotlabs/void.1"
+REVISION = "9c2be5087772867d45961abd11f6b35110617563"
+NATIVE = "633920373a3d406a2ede61ce4137c324f76be23b"
+CORPUS = "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
+CPU_ENV = {"ATEN_CPU_CAPABILITY": "default", "MKL_CBWR": "COMPATIBLE",
+           "OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1",
+           "OMP_DYNAMIC": "FALSE", "MKL_DYNAMIC": "FALSE"}
+CPU_EFFECTIVE = {
+    "environment": CPU_ENV, "aten_cpu_capability": "DEFAULT",
+    "intraop_threads": 1, "interop_threads": 1, "mkl_available": True,
+    "mkldnn_enabled": False, "float32_matmul_precision": "highest",
+    "cpu_autocast_enabled": False, "default_dtype": "torch.float32",
+    "default_device": "cpu", "deterministic_algorithms": True,
+    "deterministic_warn_only": False,
+}
+
+
 def _sha(path: Path) -> str:
     h = hashlib.sha256()
     with path.open("rb") as stream:
@@ -31,7 +50,102 @@ def _read_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _checkpoint_guard(summary: dict, checkpoint: Path) -> dict:
+
+def _source_contract(summary: dict, expected_source: str) -> list[str]:
+    """Require independent pinned source, model, corpus and CPU identities.
+
+    The synthetic test fixture intentionally has fake tensor bytes. This gate
+    checks declared identity and optimizer receipts; it cannot authenticate
+    training or replace the original independently qualified native evidence.
+    """
+    if not isinstance(expected_source, str) or not COMMIT.fullmatch(expected_source):
+        raise ValueError("exact producer source SHA required")
+    c = summary.get("config")
+    if not isinstance(c, dict):
+        raise ValueError("missing source/model/native/numerical training config")
+    fixed = {
+        "schema_version": 1, "profile": "void", "source_sha": expected_source,
+        "native_source_sha": NATIVE, "corpus_manifest_sha256": CORPUS,
+        "device": "cpu", "dtype": "float32", "threads": 1, "seed": 568,
+        "max_length": 2048, "rank": 8, "alpha": 16, "dropout": 0.05,
+        "learning_rate": 0.0005, "native_execution_by_trainer": False,
+        "final_targets_opened": False,
+    }
+    for k, v in fixed.items():
+        if type(c.get(k)) is not type(v) or c[k] != v:
+            raise ValueError("source/model/native/numerical identity mismatch: " + k)
+    profile = _read_json(TRAINING / "model_profiles.json")["profiles"]["void"]
+    if c.get("model") != profile or profile.get("model_id") != MODEL or profile.get("revision") != REVISION:
+        raise ValueError("pinned VOID model/profile revision mismatch")
+    files = c.get("model_files")
+    if not isinstance(files, dict) or set(files) != set(profile["required_hashes"]):
+        raise ValueError("pinned model file inventory mismatch")
+    for name, digest in profile["required_hashes"].items():
+        item = files[name]
+        if (not isinstance(item, dict) or item.get("sha256") != digest or
+                type(item.get("bytes")) is not int or item["bytes"] <= 0):
+            raise ValueError("pinned model file bytes mismatch: " + name)
+    for field, name in (("trainer_sha256", "train.py"), ("contract_sha256", "common.py")):
+        if c.get(field) != _sha(TRAINING / name):
+            raise ValueError("source-matched trainer/contract mismatch: " + field)
+    for field in ("train_sha256", "compiler_sha256"):
+        if not isinstance(c.get(field), str) or not HEX64.fullmatch(c[field]):
+            raise ValueError("native corpus/compiler SHA missing: " + field)
+    cpu = c.get("numerics")
+    if (not isinstance(cpu, dict) or cpu.get("profile") != "portable-cpu-fp32-v1" or
+            cpu.get("effective") != CPU_EFFECTIVE or
+            cpu.get("numerics_sha256") != _sha(TRAINING / "numerics.py") or
+            cpu.get("torch_version") != "2.15.0+cpu" or
+            not isinstance(cpu.get("torch_build_sha256"), str) or
+            not HEX64.fullmatch(cpu["torch_build_sha256"])):
+        raise ValueError("pinned portable-cpu-fp32-v1 numerical identity mismatch")
+    order = c.get("sample_order")
+    if (not isinstance(order, list) or len(order) != 12 or
+            any(not isinstance(x, str) or not x for x in order) or len(set(order)) != 12):
+        raise ValueError("twelve distinct TRAIN sample-order IDs required")
+    return order
+
+
+def _progress_guard(summary: dict, checkpoint: Path, history: list[dict], order: list[str]) -> None:
+    progress = checkpoint.parent / "progress.jsonl"
+    if not progress.is_file() or progress.is_symlink():
+        raise ValueError("missing original optimizer progress.jsonl")
+    lines = progress.read_text(encoding="utf-8").splitlines()
+    if len(lines) != TARGET:
+        raise ValueError("progress.jsonl must contain exactly 120 original optimizer events")
+    loss_tokens = sequence_tokens = written_bytes = 0
+    for i, (line, event) in enumerate(zip(lines, history), 1):
+        try:
+            observed = json.loads(line, parse_constant=lambda c: (_ for _ in ()).throw(ValueError(c)))
+        except (ValueError, TypeError) as exc:
+            raise ValueError("malformed original progress.jsonl event") from exc
+        if observed != event:
+            raise ValueError("original progress.jsonl differs from checkpoint history")
+        for k in ("loss", "seconds", "gradient_norm", "sequence_tokens",
+                  "loss_tokens", "prompt_bytes", "completion_bytes"):
+            if type(event.get(k)) not in (int, float) or not math.isfinite(event[k]):
+                raise ValueError("missing finite optimizer loss/tokens/gradient: " + k)
+        for k in ("sequence_tokens", "loss_tokens", "prompt_bytes", "completion_bytes"):
+            if type(event[k]) is not int or event[k] <= 0:
+                raise ValueError("missing positive supervised-token/byte count: " + k)
+        if (event["loss"] < 0 or event["seconds"] <= 0 or event["gradient_norm"] <= 0 or
+                event["sequence_tokens"] < event["loss_tokens"] or
+                event["sample_id"] != order[(i - 1) % len(order)]):
+            raise ValueError("invalid optimizer loss/sample order or supervised-token evidence")
+        loss_tokens += event["loss_tokens"]
+        sequence_tokens += event["sequence_tokens"]
+        written_bytes += event["prompt_bytes"] + event["completion_bytes"]
+    aggregates = {
+        "loss_tokens_this_job": loss_tokens, "sequence_tokens_this_job": sequence_tokens,
+        "bytes_this_job": written_bytes, "first_loss": history[0]["loss"],
+        "last_loss": history[-1]["loss"],
+    }
+    for k, v in aggregates.items():
+        if type(summary.get(k)) is not type(v) or summary[k] != v:
+            raise ValueError("summary disagrees with complete original optimizer log: " + k)
+
+
+def _checkpoint_guard(summary: dict, checkpoint: Path, order: list[str]) -> dict:
     if checkpoint.name != CHECKPOINT or checkpoint.is_symlink() or not checkpoint.is_dir():
         raise ValueError("required complete checkpoint directory missing or symlinked")
     required_paths = {"inventory.json", "receipt.json", "training_state.pt",
@@ -85,11 +199,14 @@ def _checkpoint_guard(summary: dict, checkpoint: Path) -> dict:
                 isinstance(event["gradient_norm"], bool) or not math.isfinite(event["gradient_norm"]) or
                 event["gradient_norm"] <= 0):
             raise ValueError("optimizer history step/cursor/sample/gradient mismatch")
+    if receipt.get("numerical_runtime") != summary.get("numerical_runtime"):
+        raise ValueError("numerical runtime receipt differs from summary")
+    _progress_guard(summary, checkpoint, history, order)
     return {"checkpoint_inventory_sha256": summary["checkpoint_inventory_sha256"],
             "verified_optimizer_receipts": len(history), "verified_checkpoint_files": len(inventory)}
 
 
-def verify_completion(summary: dict, exit_code: int, checkpoint: Path) -> dict:
+def verify_completion(summary: dict, exit_code: int, checkpoint: Path, *, source_sha: str) -> dict:
     if type(exit_code) is not int or exit_code != 0:
         raise ValueError("trainer exit must be zero; partial/failure is non-promotable")
     if not isinstance(summary, dict):
@@ -112,7 +229,8 @@ def verify_completion(summary: dict, exit_code: int, checkpoint: Path) -> dict:
             not HEX64.fullmatch(summary["adapter_after_sha256"]) or
             summary["adapter_before_sha256"] == summary["adapter_after_sha256"]):
         raise ValueError("adapter change receipt is absent or inconsistent")
-    verified = _checkpoint_guard(summary, checkpoint)
+    order = _source_contract(summary, source_sha)
+    verified = _checkpoint_guard(summary, checkpoint, order)
     return {"status": summary["status"], "actual_steps": summary["global_step"],
             "checkpoint": summary["checkpoint"], "wall_seconds": summary.get("wall_seconds"),
             "peak_rss_kib": summary.get("peak_rss_kib"), "promotable": True, **verified}
@@ -123,9 +241,10 @@ def main() -> None:
     parser.add_argument("--summary", type=Path, required=True)
     parser.add_argument("--exit-code", type=int, required=True)
     parser.add_argument("--checkpoint", type=Path, required=True)
+    parser.add_argument("--source-sha", required=True)
     args = parser.parse_args()
     summary = _read_json(args.summary)
-    print(json.dumps(verify_completion(summary, args.exit_code, args.checkpoint), sort_keys=True))
+    print(json.dumps(verify_completion(summary, args.exit_code, args.checkpoint, source_sha=args.source_sha), sort_keys=True))
 
 
 if __name__ == "__main__":
