@@ -7,7 +7,8 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "docs"))
 import retrieval_eval as retrieval
-from retrieval_policy import HISTORICAL_AUTHORITY
+from retrieval_policy import HISTORICAL_AUTHORITY, require_authority
+import check_docs
 
 
 class HistoricalRetrievalTests(unittest.TestCase):
@@ -91,6 +92,43 @@ class HistoricalRetrievalTests(unittest.TestCase):
         self.current.write_text("---\nauthority: [historical-non-authoritative]\n---\n# Copied archive\nOld rule.\n")
         with self.assertRaisesRegex(ValueError, "Unsupported retrieval authority"):
             retrieval.selected_paths(self.root)
+
+    def test_authority_key_spellings_cannot_hide_historical_copies(self):
+        for key in ('"authority"', "'authority'", 'authority ', '  authority', r'"\u0061uthority"'):
+            with self.subTest(key=key):
+                text = f"---\n{key}: {HISTORICAL_AUTHORITY}\n---\n# Copied archive\nOld rule.\n"
+                self.current.write_text(text)
+                self.manifest.write_text(json.dumps({"documents": ["systems/current.md"]}))
+                with self.assertRaisesRegex(ValueError, "Authority boundary"):
+                    retrieval.selected_paths(self.root)
+                with self.assertRaisesRegex(ValueError, "Authority boundary"):
+                    retrieval.chunk_document(self.current, self.root, 20)
+                with self.assertRaisesRegex(ValueError, "Authority boundary"):
+                    require_authority(self.current, self.root, historical=False, metadata=check_docs.metadata(text))
+                self.manifest.unlink()
+                with self.assertRaisesRegex(ValueError, "Authority boundary"):
+                    retrieval.selected_paths(self.root)
+
+    def test_duplicate_authority_declarations_fail_closed(self):
+        text = f"---\nauthority: {HISTORICAL_AUTHORITY}\n\"authority\": current-documentation\n---\nOld rule.\n"
+        for parser in (retrieval.metadata_and_body, check_docs.metadata):
+            with self.subTest(parser=parser.__module__):
+                with self.assertRaisesRegex(ValueError, "Duplicate frontmatter authority"):
+                    parser(text)
+
+    def test_unsupported_authority_key_syntax_is_rejected(self):
+        text = f"---\n&label authority: {HISTORICAL_AUTHORITY}\n---\nOld rule.\n"
+        for parser in (retrieval.metadata_and_body, check_docs.metadata):
+            with self.subTest(parser=parser.__module__):
+                with self.assertRaisesRegex(ValueError, "Unsupported frontmatter key"):
+                    parser(text)
+
+    def test_shared_key_reader_preserves_simple_block_lists(self):
+        text = '---\n"authority" : owner-confirmed-intent\ncanonical-for:\n  - owner-intent\n---\n# Current intent\n'
+        meta = check_docs.metadata(text)
+        self.assertEqual(meta["canonical-for"], ["owner-intent"])
+        self.assertEqual(meta["authority"], "owner-confirmed-intent")
+        self.assertEqual(retrieval.metadata_and_body(text)[0]["authority"], "owner-confirmed-intent")
 
     def test_symlink_alias_does_not_escape_archive_classification(self):
         alias = self.root / "docs/systems/alias.md"

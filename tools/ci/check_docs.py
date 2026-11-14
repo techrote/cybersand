@@ -16,7 +16,7 @@ import sys
 from urllib.parse import unquote, urlsplit
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "docs"))
-from retrieval_policy import require_authority
+from retrieval_policy import require_authority, frontmatter_field
 from engineering_history import check as check_history
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -39,9 +39,11 @@ def metadata(text: str) -> dict:
     result = {}
     key = None
     for line in header.splitlines():
-        if re.match(r"^[a-z][a-z0-9-]*:", line):
-            key, value = line.split(":", 1)
-            value = value.strip()
+        field = frontmatter_field(line)
+        if field is not None:
+            key, value = field
+            if key == "authority" and key in result:
+                raise ValueError("Duplicate frontmatter authority")
             if value.startswith("[") and value.endswith("]"):
                 result[key] = [v.strip().strip("\"'") for v in value[1:-1].split(",") if v.strip()]
             elif value:
@@ -108,11 +110,12 @@ def check(root: Path) -> dict:
         # Repository README/AGENTS are explicit navigation exceptions.
         if path.parent == root and path.name in {"README.md", "AGENTS.md"}:
             continue
-        meta = metadata(text)
         try:
+            meta = metadata(text)
             require_authority(path, root, historical=False, metadata=meta)
         except ValueError as exc:
-            errors.append(str(exc))
+            errors.append(f"{relative}: {exc}")
+            continue
         if meta.get("document-kind") == "navigation":
             errors.append(f"Navigation page cannot be a default answer document: {relative}")
         for field in sorted(REQUIRED - meta.keys()):

@@ -15,9 +15,9 @@ from pathlib import Path
 import re
 
 try:
-    from .retrieval_policy import POLICY_VERSION, HISTORICAL_AUTHORITY, require_authority
+    from .retrieval_policy import POLICY_VERSION, HISTORICAL_AUTHORITY, require_authority, frontmatter_field
 except ImportError:  # direct CLI execution
-    from retrieval_policy import POLICY_VERSION, HISTORICAL_AUTHORITY, require_authority
+    from retrieval_policy import POLICY_VERSION, HISTORICAL_AUTHORITY, require_authority, frontmatter_field
 
 STOP = set("a an and are as at be been but by can do does for from had has have how i if in into is it its may me my no not of on or our should so that the their them there these they this those to too was we were what when where which who why will with would you your".split())
 FOCUSED = {"architecture", "systems", "operations", "reference", "decisions", "research"}
@@ -30,9 +30,12 @@ def metadata_and_body(text: str) -> tuple[dict, str]:
     if text.startswith("---\n"):
         header, body = text[4:].split("\n---", 1)
         for line in header.splitlines():
-            if ":" in line and not line.startswith(" "):
-                key, value = line.split(":", 1)
-                metadata[key] = value.strip()
+            field = frontmatter_field(line)
+            if field is not None:
+                key, value = field
+                if key == "authority" and key in metadata:
+                    raise ValueError("Duplicate frontmatter authority")
+                metadata[key] = value
         return metadata, body.strip()
     return metadata, text
 

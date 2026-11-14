@@ -4,11 +4,42 @@ This protects the repository evaluator/ingestion path, not external indexes.
 External importers must use the same selection and chunk envelopes and rebuild
 older caches. Source prose, including an old 'Approved' status, is never authority.
 """
+import json
 from pathlib import Path
+import re
 
 POLICY_VERSION = "historical-isolation-v1"
 HISTORICAL_AUTHORITY = "historical-non-authoritative"
 HISTORICAL_PREFIXES = ("docs/history", "docs/audits")
+
+
+def frontmatter_field(line: str) -> tuple[str, str] | None:
+    """Read a field in the documented flat metadata subset, or fail closed.
+
+    Both documentation validation and retrieval must recognize the same keys.
+    Quoted keys, whitespace before ':' and indented fields must not hide an
+    authority declaration. Indented simple-list entries belong to their parent.
+    This deliberately does not implement arbitrary YAML keys, anchors or tags.
+    """
+    stripped = line.strip()
+    if not stripped or stripped.startswith("#"):
+        return None
+    if line[:1].isspace() and stripped.startswith("- "):
+        return None
+    if ":" not in stripped:
+        raise ValueError("Unsupported frontmatter field syntax")
+    key, value = stripped.split(":", 1)
+    key = key.strip()
+    if key.startswith('"'):
+        try:
+            key = json.loads(key)
+        except (ValueError, TypeError) as exc:
+            raise ValueError("Unsupported frontmatter key syntax") from exc
+    elif key.startswith("'") and key.endswith("'"):
+        key = key[1:-1].replace("''", "'")
+    if not isinstance(key, str) or not re.fullmatch(r"[a-z][a-z0-9-]*", key):
+        raise ValueError("Unsupported frontmatter key syntax")
+    return key, value.strip()
 
 
 def historical_path(path: Path, root: Path) -> bool:
