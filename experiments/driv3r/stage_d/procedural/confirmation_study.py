@@ -89,6 +89,10 @@ def run(out: Path, names=None):
         raise ValueError('policy interface changed since preregistration')
     if policy.WIDTH != 32 or policy.HEIGHT != 32 or policy.THRESHOLD != 48000:
         raise ValueError('policy geometry/threshold changed')
+    # Actual Git blob of the imported policy, not merely an advertised source ID.
+    policy_bytes = (root / 'pareto_study.py').read_bytes()
+    actual_policy_blob = hashlib.sha1(b'blob ' + str(len(policy_bytes)).encode() + b'\\0' + policy_bytes).hexdigest()
+    exact_policy_source = actual_policy_blob == POLICY_GIT_BLOB
     out = Path(out); out.mkdir(parents=True, exist_ok=True)
     requested = set(names) if names is not None else {c['id'] for c in frozen['cases']}
     if not requested <= {c['id'] for c in frozen['cases']}:
@@ -133,11 +137,11 @@ def run(out: Path, names=None):
         cases.append({'id':name, 'seed':seed, 'registered':registered,
                       'reachability':reach,'original_png_sha256':ff.digest(original_view),
                       'policies':policies})
-    report = {'version':VERSION,'qualification':'PRE_REGISTERED_SYNTHETIC_OFFLINE_ONLY',
+    report = {'version':VERSION,'qualification':('PRE_REGISTERED_SYNTHETIC_OFFLINE_ONLY' if exact_policy_source\n                                  else 'UNQUALIFIED_LOCAL_POLICY_REIMPLEMENTATION'),
               'freeze_commit':FROZEN_COMMIT,
               'frozen_fixture_sha256':FROZEN_FIXTURE_SHA256,
               'frozen_manifest_sha256':FROZEN_MANIFEST_SHA256,
-              'policy_git_blob_sha1':POLICY_GIT_BLOB,
+              'policy_git_blob_sha1':POLICY_GIT_BLOB,\n              'actual_policy_git_blob_sha1':actual_policy_blob,\n              'policy_source_verified':exact_policy_source,
               'native_executed':False, 'native_receipts':0,
               'model_inference':False,'model_training':False,
               'material_undo':'HOST_NATIVE_RECEIPT_REQUIRED_NOT_TESTED',
