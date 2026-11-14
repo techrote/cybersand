@@ -111,6 +111,64 @@ func _run() -> void:
 	check(not counter_result.safe and counter_result.reason=="material_in_swept_mask",
 		"continuous swept coverage rejects material missed by four sampled poses")
 	_paint(image,94,100,0)
+	# Pure sub-cell translation: neither endpoint contains the cell centre;
+	# the continuous path does. One sample per endpoint is not a proof.
+	var point_rect: Array = [{"center":Vector2.ZERO,"size":Vector2(0.2,0.2)}]
+	var point_start := Transform2D(0.0,Vector2(100.1,100.5))
+	var point_end := Transform2D(0.0,Vector2(100.9,100.5))
+	_paint(image,100,100,3)
+	check(Coherence.assess(point_start,point_end,point_rect,image).reason=="material_in_swept_mask",
+		"subcell translation catches material between two outside endpoints")
+	_paint(image,100,100,0)
+
+	# Rotation alone: a long, thin offset rectangle crosses a material
+	# centre exactly halfway through, while both endpoints and intermediate
+	# original 1-cell pose samples miss the pixel.
+	var thin: Array = [{"center":Vector2(5.0,0.0),"size":Vector2(8.0,0.15)}]
+	var rot_start := Transform2D(-0.15,Vector2(128.5,128.5))
+	var rot_end := Transform2D(0.15,Vector2(128.5,128.5))
+	_paint(image,133,128,6)
+	check(Coherence.assess(rot_start,rot_end,thin,image).reason=="material_in_swept_mask",
+		"pure rotation catches thin off-axis intermediate cell")
+	_paint(image,133,128,0)
+
+	# Independent Kestrel-sized 9x6 analogue to the reported 10x6 example;
+	# a real native Kestrel is 9x6, so this also becomes a production-path
+	# adversarial case in the authored native-World integration fixture.
+	var kestrel_size: Array = [{"center":Vector2.ZERO,"size":Vector2(9,6)}]
+	var kestrel_start := Transform2D(0.0,Vector2(240,360))
+	var kestrel_end := Transform2D(0.5,Vector2(242,358))
+	_paint(image,237,355,58)
+	check(Coherence.assess(kestrel_start,kestrel_end,kestrel_size,image).reason=="material_in_swept_mask",
+		"combined translate/rotate 9x6 Kestrel blocks intermittent wall cell")
+	_paint(image,237,355,0)
+
+	# False-refusal cost is deliberately visible and bounded. Here the
+	# continuously translated body ends at y=102 while the material cell's
+	# centre is at y=102.5, yet rectangular dilation safely rejects it.
+	var straight_rect: Array = [{"center":Vector2.ZERO,"size":Vector2(4,4)}]
+	_paint(image,101,102,6)
+	var padding_cost: Dictionary = Coherence.assess(Transform2D(0,Vector2(100,100)),
+		Transform2D(0,Vector2(102,100)),straight_rect,image)
+	check(not padding_cost.safe and padding_cost.reason=="material_in_swept_mask",
+		"conservative dilation can refuse a nonintersecting near-graze")
+	print("PR593_SWEEP_DILATION_FALSE_REFUSAL ",JSON.stringify(padding_cost))
+	_paint(image,101,102,0)
+
+	# Arbitrary non-rigid input must not be silently normalized into a
+	# smaller untested rigid sweep. Main-thread Rapier supplies rigid poses.
+	var scaled := Transform2D(0.0,Vector2(85,90))
+	scaled.x *= 1.01
+	check(Coherence.assess(scaled,moved,rectangles,image).reason=="nonrigid_pose",
+		"scaled pose fails closed")
+	var sheared := Transform2D(0.0,Vector2(85,90))
+	sheared.y += Vector2(0.1,0.0)
+	check(Coherence.assess(sheared,moved,rectangles,image).reason=="nonrigid_pose",
+		"skewed pose fails closed")
+	check(Coherence.assess(original,moved,rectangles,image,{},false,false,0).reason=="scan_budget",
+		"zero scan budget fails closed")
+	check(Coherence.assess(original,moved,[],image).reason=="missing_world_or_geometry",
+		"missing collider geometry fails closed")
 	check(not Coherence.assess(original,moved,[],image).safe,"empty collider set refused")
 	check(not Coherence.assess(original,moved,rectangles,null).safe,"missing World refused")
 	var results := {"schema":"workbench-presentation-coherence-v1",
