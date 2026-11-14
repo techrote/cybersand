@@ -4,7 +4,7 @@ import hashlib
 import struct
 import unittest
 
-from m1_compat import M1_COMMIT, M1_SCHEMA_SHA256, PRESETS, project_m1_guidance
+from experiments.driv3r.stage_d.guidance.m1_compat import (M1_COMMIT, M1_SCHEMA_SHA256, PRESETS, project_m1_guidance)
 
 
 def desc(semantic, values):
