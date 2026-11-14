@@ -61,7 +61,8 @@ def verify_episode(f: d.Fixture, record: dict[str, Any]) -> dict[str, Any]:
              "Fixture identity/source digest/split mismatch")
     _require(record.get("source_kind") == "offline_simulation_only" and
              record.get("native_qualified") is False and
-             record.get("sequential_native_receipts") == 0,
+             type(record.get("sequential_native_receipts")) is int and
+             record["sequential_native_receipts"] == 0,
              "Offline evidence claims native execution or receipts")
     policy = record.get("policy")
     seed = record.get("seed")
@@ -159,7 +160,7 @@ def compare_matched(f: d.Fixture,
         before = [events[index]["observation"] for events in starts]
         identities = [(view["position"], view["candidate_set_sha256"])
                       for view in before]
-        _require(len({json.dumps(_canonical(identity), sort_keys=True) for identity in identities}) == 1,
+        _require(len({_canonical(identity) for identity in identities}) == 1,
                  "Unequal legal candidates or positions before choice divergence")
         choices = [events[index]["choice_id"] for events in starts]
         if len(set(choices)) != 1:
