@@ -34,6 +34,31 @@ jobs:
           mkdir -p evidence/sprocket-proposals
           python3 experiments/agent_painter/lanes/sprocket/test_proposal_pipework.py 2>&1 | tee evidence/sprocket-proposals/tests.log
           python3 experiments/agent_painter/lanes/sprocket/test_peer_topology.py 2>&1 | tee evidence/sprocket-proposals/peer-topology.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from experiments.agent_painter.lanes.sprocket.proposal_pipework import GRAPHS
+          from experiments.agent_painter.lanes.sprocket.peer_topology import (
+              PEER_SOURCE_SHA, PEER_BLOB_SHA, peer_matches)
+          entries=[{"legacy_id":key,
+                    "peer_graph_matches":peer_matches(item["nodes"],item["edges"]),
+                    "global_train_admission":False}
+                   for key,item in GRAPHS.items()]
+          collisions=[x for x in entries if x["peer_graph_matches"]]
+          assert len(entries)==6 and len(collisions)==4, "peer research snapshot has changed"
+          report={"schema":"cybersand.sprocket-peer-topology-review/1",
+                  "status":"global-curriculum-HOLD-not-an-admission",
+                  "peer_source_sha":PEER_SOURCE_SHA,"peer_blob_sha":PEER_BLOB_SHA,
+                  "same_graph_peer_duplicates":len(collisions),
+                  "reviewed_local_proposals":len(entries),
+                  "new_shared_train_groups_admitted":0,
+                  "candidate_results":entries,
+                  "warning":"Only pinned VOID witness set checked; shepherd owns complete global registry"}
+          Path("evidence/sprocket-proposals/peer-topology-screen.json").write_text(
+              json.dumps(report,indent=2,sort_keys=True)+"\n")
+          print("Peer graph non-novel:",[(x["legacy_id"],x["peer_graph_matches"]) for x in collisions])
+          print("Shared TRAIN admission: HOLD; zero admitted")
+          PY
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py --output evidence/sprocket-proposals/scheduling-policy.json
       - name: Download original native-positive public corpus; never open FINAL
