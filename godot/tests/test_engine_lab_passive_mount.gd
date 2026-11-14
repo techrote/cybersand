@@ -56,6 +56,7 @@ func _run() -> void:
 	expect(active, "actual native World progresses under no injected input")
 	if active:
 		var start_usec: int = Time.get_ticks_usec()
+		print("ENGINE_LAB_MOUNT_INITIAL ", JSON.stringify(panel._read_sample(start_usec)))
 		expect(panel.recorder.begin(panel._identity(),start_usec,500000),
 			"test-only bounded 0.5s benchmark")
 		host.engine_lab_benchmark_active = true
