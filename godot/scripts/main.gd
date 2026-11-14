@@ -1590,6 +1590,96 @@ var _engine_lab_workbench_no_snapshot_holds: int = 0
 var _engine_lab_lockstep_holds: int = 0
 
 
+# ENG-LAB scripted Test It: disabled outside explicit research process args.
+# This source-owned injection is made inside the existing Workbench physical
+# callback *before* Rapier's advance. One flight action is chosen by completed
+# physical tick, not by variable render-frame or human keypress wall timing.
+var engine_lab_replay_active: bool = false
+var engine_lab_replay_source_epoch: int = -1
+var engine_lab_replay_source_generation: int = -1
+var engine_lab_replay_tick_zero: int = -1
+var engine_lab_replay_tape: Array[Dictionary] = []
+var engine_lab_replay_events: Array[Dictionary] = []
+var engine_lab_replay_error: String = ""
+var _engine_lab_last_replay_segment: int = -1
+
+
+func engine_lab_begin_tape(segments: Array[Dictionary]) -> bool:
+	if engine_lab_replay_active or not OS.get_cmdline_user_args().has("--engine-lab-scripted") 		or physical_actor_session == null or shared_workbench == null 		or shared_workbench.selected_id() != 1 or shared_workbench.pilot_slot < 0 		or latest_snapshot == null or simulation_worker.has_failed():
+		return false
+	var previous_tick: int = -1
+	for segment: Dictionary in segments:
+		if segment.size() != 2 or not segment.has_all(["tick","move"]) 			or not segment.tick is int or int(segment.tick) <= previous_tick 			or int(segment.tick) > 120 or not segment.move is Array or segment.move.size() != 2:
+			return false
+		for number: Variant in segment.move:
+			if not (number is int or number is float) or not is_finite(float(number)) 				or absf(float(number)) > 1.0: return false
+		previous_tick = int(segment.tick)
+	if segments.is_empty() or segments[0].tick != 0: return false
+	engine_lab_replay_tape = segments.duplicate(true)
+	engine_lab_replay_events.clear()
+	engine_lab_replay_error = ""
+	_engine_lab_last_replay_segment = -1
+	engine_lab_replay_source_epoch = physical_actor_session.epoch
+	engine_lab_replay_source_generation = int(latest_snapshot.render_world_generation)
+	engine_lab_replay_tick_zero = physical_actor_session.tick
+	engine_lab_replay_active = true
+	return true
+
+
+func _engine_lab_replay_workbench_input() -> void:
+	if not engine_lab_replay_active: return
+	if paused or physical_actor_session == null or simulation_worker.has_failed() 		or latest_snapshot == null or physical_actor_session.epoch != engine_lab_replay_source_epoch 		or int(latest_snapshot.render_world_generation) != engine_lab_replay_source_generation:
+		engine_lab_replay_error = "scripted_replay_actor_or_world_owner_changed"
+		engine_lab_replay_active = false
+		return
+	var tick: int = physical_actor_session.tick
+	var relative: int = tick - engine_lab_replay_tick_zero
+	var selected: int = -1
+	for i: int in engine_lab_replay_tape.size():
+		if int(engine_lab_replay_tape[i].tick) <= relative: selected = i
+		else: break
+	if selected < 0:
+		engine_lab_replay_error = "scripted_replay_tick_before_origin"
+		engine_lab_replay_active = false
+		return
+	var entry: Dictionary = engine_lab_replay_tape[selected]
+	var axis: Array = entry.move
+	var accepted: bool = physical_actor_session.submit_workbench_action(
+		1,{"move":Vector2(float(axis[0]),float(axis[1]))},
+		{"q":false,"e":false,"s":false,"boost":false},false)
+	if not accepted:
+		engine_lab_replay_error = "scripted_replay_command_refused_at_tick_%d_%s" % [
+			relative, str(physical_actor_session.last_error)]
+		engine_lab_replay_active = false
+		return
+	if selected != _engine_lab_last_replay_segment:
+		_engine_lab_last_replay_segment = selected
+		engine_lab_replay_events.append({
+			"input_index":selected,"requested_physical_tick":int(entry.tick),
+			"accepted_physical_tick":relative,"session_tick":tick,
+			"world_generation":engine_lab_replay_source_generation,
+			"native_tick_at_admission":int(latest_snapshot.tick_index),
+			"wall_usec":Time.get_ticks_usec(),
+			"move":[float(axis[0]),float(axis[1])],
+			"accepted_commands":physical_actor_session.accepted_commands,
+			"actor_epoch":physical_actor_session.epoch
+		})
+
+
+func engine_lab_tape_receipt() -> Dictionary:
+	return {"active":engine_lab_replay_active,
+		"error":engine_lab_replay_error,
+		"source_epoch":engine_lab_replay_source_epoch,
+		"source_generation":engine_lab_replay_source_generation,
+		"tick_zero":engine_lab_replay_tick_zero,
+		"segments":engine_lab_replay_tape.duplicate(true),
+		"events":engine_lab_replay_events.duplicate(true)}
+
+
+func engine_lab_end_tape() -> void:
+	engine_lab_replay_active = false
+
+
 func engine_lab_coupling_counts() -> Dictionary:
 	return {"workbench_sample":_engine_lab_workbench_sample_holds,
 		"workbench_terrain":_engine_lab_workbench_terrain_holds,
@@ -4078,6 +4168,9 @@ func _workbench_key(key: Key) -> bool:
 
 func _publish_workbench_keyboard() -> void:
 	if physical_actor_session == null or shared_workbench.pilot_slot < 0: return
+	if engine_lab_replay_active:
+		_engine_lab_replay_workbench_input()
+		return
 	if paused or simulation_worker.has_failed() or not pending_microscenario_apply.is_empty() or not _actor_window_has_focus() \
 		or get_viewport().gui_get_focus_owner() is LineEdit or get_viewport().gui_get_focus_owner() is TextEdit:
 		if not _actor_input_rearm: cancel_playable_course_input()
