@@ -9,6 +9,7 @@ source-built native seed readbacks remain mandatory before shared admission.
 from __future__ import annotations
 
 import argparse
+from copy import deepcopy
 from collections import Counter
 from hashlib import sha256
 import json
@@ -77,7 +78,7 @@ def program_for(identifier: str) -> dict:
     return {
         "version": 2, "family": "pipework", "variation": 0,
         "components": [{
-            "kind": "pipe_network", "nodes": item["nodes"], "edges": item["edges"],
+            "kind": "pipe_network", "nodes": deepcopy(item["nodes"]), "edges": deepcopy(item["edges"]),
             "diameter": 3, "fittings": False,
         }],
         "requirements": {"connected": True, "cycles": item["cycles"]},
