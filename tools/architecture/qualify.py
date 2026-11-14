@@ -21,6 +21,9 @@ ROOT = Path(__file__).resolve().parents[2]
 VERSION = "4.7.stable.official.5b4e0cb0f"
 LEGACY_BASE = "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742"
 SCRIPT_FAILURE = re.compile(r"SCRIPT ERROR:|Parse Error:|Failed to load script|GDExtension library not found")
+# The unmounted Workbench edit-order fixture is subject to the same strict
+# leaked-resource check as the main Godot regression runner.
+WORKBENCH_LEAK = re.compile(r"(?mi)^(?:ERROR: .*RID allocations.*leaked at exit|WARNING: .*RIDs.*leaked|WARNING: .*ObjectDB instances.*leaked)")
 
 
 def sha(path: Path) -> str:
@@ -68,6 +71,8 @@ def run(name: str, command: list[str], env: dict[str, str], output: Path,
     passed = code == 0 and not timed_out and not SCRIPT_FAILURE.search(text)
     if marker:
         passed = passed and bool(completion)
+    if name == "workbench_edit_ordering":
+        passed = passed and not WORKBENCH_LEAK.search(text)
     result = {"case": name, "command": command, "returncode": code, "timed_out": timed_out,
               "wall_seconds": time.monotonic() - began, "peak_resident_bytes": peak or None,
               "peak_memory_scope": ("Unavailable: Windows console launcher starts a separate engine; its child working set was not measured"
@@ -189,6 +194,8 @@ def main() -> int:
             tests.append(("gen007_inspection", "res://tests/test_gen007_inspection.gd",
                           r"GEN007_INSPECTION: [1-9][0-9]* assertions; 0 failures; completed="))
             tests.append(("workbench_canvas", "res://tests/test_workbench_canvas.gd", r"WORKBENCH_CANVAS [1-9][0-9]* checks, 0 failures"))
+            tests.append(("workbench_edit_ordering", "res://tests/test_workbench_edit_ordering.gd",
+                          r'EDIT_ORDER_RESULT .*"failures":0')
         if args.legacy_regressions or args.suite in ("legacy", "legacy-reference"):
             tests.append(("legacy-materials", str(ROOT / "tools/architecture/capture_legacy.gd"),
                           r"ARCHITECTURE_LEGACY checks=5 failures=0"))
