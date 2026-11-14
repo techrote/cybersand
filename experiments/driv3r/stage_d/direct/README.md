@@ -11,18 +11,31 @@
 - Strictly sequential **synthetic** observation → action → new observation loop (36 attempted decisions maximum), with original option-list hashes, immutable fixture hash, ordered events, deterministic path hash, honest STOP and first-pass failures.
 - Geometry metrics: exact selected-wall distance, fraction within 6–10-cell band, mean/max deviation, wall-route progress, legal endpoint arrival, route inefficiency versus shortest A*, revisits/retraces, false STOP, collisions and material-Z/protected violations. Native counters are explicitly zero / not performed.
 - Narrow staging view `observation_stub`: candidate IDs, geometry, budgets, simulated positions and explicit NULL native fences/receipts. It is deliberately **not** a D-COMMON or native observation.
+- **Synthetic evidence integrity:** `paired.verify_episode` regenerates each legal candidate menu and full observation, confirms a sequential policy- and seed-reproducible choice, checks swept cells, STOP and arrival, all intermediate simulated positions and path digests, and independently recomputes every final metric. It explicitly **rejects claimed native receipts**, malformed/altered sequence, unbounded macros, forged choices, edited offered candidates, metric tampering, and held-out behavioral evaluation. JSON/JSONL round trips are supported.
+- **Matched development-only comparison:** `paired.compare_matched` requires the same fixture hash and identical macro/action menu; checks identical positions and legal candidate-set hashes **only until the first differing chosen action**. It records the first consequential decision-divergence index, avoids false post-divergence parity claims and retains full metric records of both strong geometric and seeded random-legal arms. No representation A1/A2/A3 model experiments are dispatched before M1.
 
 ## Commands
 
 From repository root, with Python 3.11+ and no extra dependencies:
 
 ```sh
-python -m unittest experiments.driv3r.stage_d.direct.test_offline -v
+python -m unittest experiments.driv3r.stage_d.direct.test_offline experiments.driv3r.stage_d.direct.test_paired -v
 python -m experiments.driv3r.stage_d.direct.offline --manifest
 python -m experiments.driv3r.stage_d.direct.offline --policy astar
 python -m experiments.driv3r.stage_d.direct.offline --policy random_legal --seed 17 --output /tmp/d1a-random.jsonl
 python -m experiments.driv3r.stage_d.direct.offline --policy contour_astar --macro
 ```
+
+To audit a source-pinned development pair programmatically:
+
+```python
+from experiments.driv3r.stage_d.direct import offline, paired
+dev = next(f for f in offline.fixtures() if f.fixture_id == "route_gate_v1")
+comparison = paired.run_development_pair(dev, seed=13)
+assert comparison["native_qualified"] is False
+```
+
+**Qualification status:** The newly added `test_paired.py` methods are authored, but were not executed on a Python checkout in this run. Prior Stage A workflow success does **not** qualify these tests; that workflow discovers `experiments/driv3r/tests/**`, not this exclusive Stage D-1A lane. An independently implemented, offline JavaScript A*/contour cross-check of the seven development geometries returned wall steps **33/29/35** and A→B legal shortest paths **35/25/33/31** (all within 36); that is not equivalent to executing the Python suite or a native run. Run both unittest modules on a suitable Python environment and retain original failure output before any M1/integration claim.
 
 Default runner executes **development fixtures only**. Held-out fixtures are manifested for source custody and cheap structural checks; no held-out model outcome is inspected. All JSONL data are offline simulation events and may not be described as native receipts, paintings or visual renderings.
 
