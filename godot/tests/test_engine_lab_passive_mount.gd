@@ -27,12 +27,15 @@ func _wait(predicate: Callable, timeout_ms: int = 120000) -> bool:
 	return false
 
 
+func _source_ready(host: Control) -> bool:
+	return (host.shared_workbench != null and not host.shared_workbench.applied.is_empty()
+		and host.latest_snapshot != null and not host.simulation_worker.has_failed())
+
+
 func _run() -> void:
 	var host: Control = load("res://main.tscn").instantiate()
 	root.add_child(host)
-	var ready: bool = await _wait(func() -> bool:
-		return host.shared_workbench != null and not host.shared_workbench.applied.is_empty()
-			and host.latest_snapshot != null and not host.simulation_worker.has_failed())
+	var ready: bool = await _wait(Callable(self, "_source_ready").bind(host))
 	expect(ready, "real shared Workbench source available")
 	if not ready:
 		_finish(host)
