@@ -198,8 +198,16 @@ def load_training_corpus(directory, compiler_file=None):
     return rows, manifest
 
 
-def encode_row(tokenizer, row, system, max_length):
-    """Completion-only labels with a real EOS; never truncate long examples."""
+SMOL_SUPERVISION_POLICY_V2 = "smol-upstream-terminal-eos-v2"
+
+
+def encode_row(tokenizer, row, system, max_length, *, supervision_policy="legacy-eos-presence-v1"):
+    """Completion-only labels; v2 is an explicit, fail-closed SMOL objective.
+
+    Historical v1 receipts/checkpoints are retained as executed, not repaired.
+    Only the documented upstream assistant *presentation* LF after EOS2 is
+    excluded in SMOL v2; the JSON bytes, upstream prefix and EOS are unchanged.
+    """
     messages = [{"role": "system", "content": system}, {"role": "user", "content": row["prompt"]}]
     prefix = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
     full = tokenizer.apply_chat_template(messages + [{"role": "assistant", "content": row["completion"]}], tokenize=False, add_generation_prompt=False)
@@ -207,6 +215,22 @@ def encode_row(tokenizer, row, system, max_length):
         raise ValueError("unstable chat template prefix")
     ids = tokenizer.encode(full, add_special_tokens=False)
     prefix_ids = tokenizer.encode(prefix, add_special_tokens=False)
+    if supervision_policy == SMOL_SUPERVISION_POLICY_V2:
+        # The pinned SMOL Instruct template appends exactly <|im_end|>\n to
+        # the assistant's canonical JSON. EOS in masked system/user messages
+        # is legitimate; the supervised completion must contain only one EOS.
+        if tokenizer.eos_token_id != 2 or tokenizer.eos_token != "<|im_end|>":
+            raise ValueError("SMOL v2 requires pinned upstream EOS2")
+        if full[len(prefix):] != row["completion"] + "<|im_end|>\n":
+            raise ValueError("SMOL v2 upstream assistant suffix changed")
+        if len(ids) < 2 or ids[-2:] != [2, 198]:
+            raise ValueError("SMOL v2 requires authentic EOS2 plus LF198 tail")
+        trimmed = tokenizer.encode(full[:-1], add_special_tokens=False)
+        if trimmed != ids[:-1]:
+            raise ValueError("SMOL v2 retokenization changes bytes before presentation LF")
+        ids = trimmed
+    elif supervision_policy != "legacy-eos-presence-v1":
+        raise ValueError("unknown supervision policy")
     boundary = 0
     for left, right in zip(ids, prefix_ids):
         if left != right:
@@ -219,9 +243,15 @@ def encode_row(tokenizer, row, system, max_length):
         raise ValueError(f"{row['id']}: {len(ids)} tokens exceeds {max_length}; no truncation")
     if boundary >= len(ids) or tokenizer.eos_token_id not in ids[boundary:]:
         raise ValueError("completion must supervise true EOS")
+    if supervision_policy == SMOL_SUPERVISION_POLICY_V2:
+        if ids[-1] != 2 or ids[boundary:].count(2) != 1:
+            raise ValueError("SMOL v2 requires one terminal supervised EOS2")
     return {"id": row["id"], "input_ids": ids, "labels": [-100] * boundary + ids[boundary:],
             "prefix_ids": prefix_ids, "boundary": boundary, "target_tokens": len(ids) - boundary,
-            "prompt_bytes": len(row["prompt"].encode()), "completion_bytes": len(row["completion"].encode())}
+            "prompt_bytes": len(row["prompt"].encode()), "completion_bytes": len(row["completion"].encode()),
+            "supervision_policy": supervision_policy,
+            "supervised_eos_terminal": ids[-1] == tokenizer.eos_token_id
+                                        and ids[boundary:].count(tokenizer.eos_token_id) == 1}
 
 
 def strict_completion(tokenizer, generated_ids, validator=None):
