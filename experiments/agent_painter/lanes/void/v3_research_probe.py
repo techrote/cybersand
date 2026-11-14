@@ -14,6 +14,10 @@ DEV="8c73edd82d9289a78721ef7968ab2f939f858b666a106731709bc2d80b347572"
 COMPILER="4d8559805df1ff5f3f23277a7bca98e47fa8feb53337aa79e8546d0bb89132f6"
 NATIVE="633920373a3d406a2ede61ce4137c324f76be23b"
 EXPECTED={"void-v3-G01":"greebles","void-v3-G02":"greebles","void-v3-A01":"architecture","void-v3-P05-fitted":"pipework"}
+EXPECTED_REVIEW={"void-v3-G01":"PENDING_GLOBAL_REVIEW",
+                 "void-v3-G02":"PENDING_GLOBAL_REVIEW",
+                 "void-v3-A01":"QUARANTINE_POTENTIAL_NEAR_ALIAS",
+                 "void-v3-P05-fitted":"STYLE_VARIANT_NOT_NEW_GROUP"}
 SEEDS=(104729,130363)
 # Independent reviewer 2026-11-14: native-positive does not confer split
 # independence. The paired-facing-room A01 is quarantined for near-alias risk.
@@ -81,6 +85,7 @@ def verify(corpus, proposals, old_proposals):
     for c in d["candidates"]:
         name=c["id"]
         if c["training_admitted"] is not False: raise ValueError("false TRAIN admission")
+        if c.get("review_status") != EXPECTED_REVIEW[name]: raise ValueError("global review/quarantine disposition changed")
         p=parse_program(json.dumps(c["program"],sort_keys=True,separators=(",",":")))
         if p["family"]!=EXPECTED[name]: raise ValueError("wrong family")
         sig=digest(structural_signature(p))
