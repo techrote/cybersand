@@ -35,12 +35,16 @@ jobs:
           set -euo pipefail
           python3 -m unittest discover -s experiments/agent_painter/lanes/sprocket -p 'test_g09_label_review.py' -v
           python3 experiments/agent_painter/lanes/sprocket/g09_label_review.py --output /tmp/sprocket-label-source-only.json
+          mkdir -p evidence/g09-label
+          cp /tmp/sprocket-label-source-only.json evidence/g09-label/source-only.json
+          printf '%s\n' "$GITHUB_SHA" > evidence/g09-label/source-head.txt
       - name: Install exact review tokenizer packages without a model trainer
         run: |
           set -euo pipefail
           python3 -m venv "$RUNNER_TEMP/g09-tokenizer"
-          "$RUNNER_TEMP/g09-tokenizer/bin/python" -m pip install 'huggingface-hub==2.4.0' 'tokenizers==0.23.3' 'transformers==5.22.2'
+          "$RUNNER_TEMP/g09-tokenizer/bin/python" -m pip install 'huggingface-hub==2.4.0' 'tokenizers==0.23.3' 'transformers==5.22.2' 'jinja2==3.1.6' 'markupsafe==3.0.3'
           "$RUNNER_TEMP/g09-tokenizer/bin/python" -m pip check
+          "$RUNNER_TEMP/g09-tokenizer/bin/python" -m pip freeze --all > evidence/g09-label/pip-freeze.txt
       - name: Download only public pinned root tokenizer/config small files
         env:
           HF_HUB_DISABLE_XET: '1'
