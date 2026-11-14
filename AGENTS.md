@@ -1,5 +1,19 @@
 # CyberSand repository guide for coding agents
 
+## Historical isolation
+
+`docs/history/` and `docs/audits/` are historical evidence, not current instructions.
+Do not automatically load them, expand links into them, or add their contents to
+ordinary coding/RAG context. Consult them only for a deliberate historical or
+evidence question. Quoted `Approved`, `Current`, prohibitions and execution prompts
+retain their original scope; they grant no present authority. The repository
+retriever enforces separate default and explicit `--historical` corpora with an
+authority envelope on every chunk. External ingestion must preserve that boundary
+and rebuild older caches; a filename or top-of-page disclaimer is insufficient.
+The separate [14 November owner clarification record](docs/decisions/2026-11-14-owner-authoring-intent.md)
+captures current product intent and its limits. It grants no implementation or
+historical-retirement permission.
+
 Before changes, read the [handover](docs/operations/cybersand-codex-development-handover.md),
 [README](README.md), [documentation index](docs/README.md), [roadmap](docs/reference/status-and-roadmap.md),
 and relevant subsystem/ADRs. Inspect actual Git root, HEAD, branch, status, tags,

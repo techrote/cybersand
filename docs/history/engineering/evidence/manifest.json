@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "authority": "historical-non-authoritative",
+  "originals": [
+    {
+      "name": "mat003-s2a-timing-39876455400.zip",
+      "run_id": 39876455400,
+      "artifact_id": 12468697797,
+      "source_url": "https://github.com/techrote/cybersand/actions/runs/39876455400/artifacts/12468697797",
+      "bytes": 517177,
+      "sha256": "9de681dde221093dcd740673f50a9549240d1858c86c44c1f85182696dc0a1db",
+      "hosted_expiry_at_capture": "2026-11-22T00:13:13Z",
+      "capture_status": "original bytes downloaded; ZIP CRC and recorded hash verified",
+      "verification_receipt": "mat003_original_s2a_readback.json",
+      "scope_limit": "224 process S2A readback only; not historical four-campaign requalification.",
+      "bundle_path": "originals/mat003-s2a-timing-39876455400.zip",
+      "additional_recovery_url": "https://chatgpt.com/library?file_id=libfile_8ecbe1bfec748191a5791c01936ccb88&account_id=personal"
+    },
+    {
+      "name": "pf201-actual-workbench-stress-canvas-BCCB.zip",
+      "run_id": 42387965594,
+      "artifact_id": 13579714630,
+      "source_url": "https://github.com/techrote/cybersand/actions/runs/42387965594/artifacts/13579714630",
+      "bytes": 29101,
+      "sha256": "c1626a070e6bebd79d56cd2004adb788d6010d2f9eb9cd0470dea7054d339174",
+      "hosted_expiry_at_capture": "2027-02-05T15:46:04Z",
+      "capture_status": "original bytes downloaded; ZIP CRC and recorded hash verified",
+      "verification_receipt": "pf533_original_readback.json",
+      "scope_limit": "Headless Workbench, pre-#522 baseline, four process records; no candidate execution.",
+      "bundle_path": "originals/pf201-actual-workbench-stress-canvas-BCCB.zip"
+    },
+    {
+      "name": "retrieval-39472204492.zip",
+      "run_id": 39472204492,
+      "artifact_id": 12288075182,
+      "source_url": "https://github.com/techrote/cybersand/actions/runs/39472204492/artifacts/12288075182",
+      "bytes": 790623,
+      "sha256": "229f86f07a90ba83392b42a6a65abaceba3ad5da3ecd53f9e261307a22ac781b",
+      "hosted_expiry_at_capture": "2026-11-19T18:09:09Z",
+      "capture_status": "original bytes downloaded; ZIP CRC and recorded hash verified",
+      "verification_receipt": "187_retrieval_capture.json",
+      "scope_limit": "Original retrieval context/results ZIP; no reattestation of old answers.",
+      "bundle_path": "originals/retrieval-39472204492.zip"
+    }
+  ],
+  "portable_bundle": {
+    "status": "durably saved; completed ZIP independently reread against all manifest sizes and hashes",
+    "name": "CyberSand_M1_Evidence_2026-11-14.zip",
+    "recovery_url": "https://chatgpt.com/library?file_id=libfile_1484471ec8288191b35023fea19b5bac&account_id=personal",
+    "library_file_id": "libfile_1484471ec8288191b35023fea19b5bac",
+    "bytes": 17155403,
+    "sha256": "9a5c29abfa495a3814a50f5c5143e34e1d05f00b3a6acb7e577eef651f61f307",
+    "source_files": 372,
+    "zip_entries": 374,
+    "uncompressed_source_bytes": 77611690,
+    "verification": "ZIP CRC and every manifest size/hash independently reread from completed ZIP; zero mismatches.",
+    "created_utc": "2026-11-14T05:06:44.909187+00:00",
+    "contents": "Complete intake issue/PR bodies and metadata; collected discussions/reviews/patch responses; three original ZIPs; readbacks; full local retrieval outputs and command results. No working checkout or model weights.",
+    "access_limit": "Private owner-custodied recovery location; requires authorized access. Not a public mirror or promise that every historical original is present.",
+    "library_version": 1
+  },
+  "gaps": [
+    {
+      "items": [
+        366
+      ],
+      "state": "not recovered",
+      "description": "49.6 MB local-only original raw bundle; retained historical hashes/analysis are not bytes acquired."
+    },
+    {
+      "items": [
+        463
+      ],
+      "state": "not recovered",
+      "description": "971 MiB local-only raw capture. INCONCLUSIVE result and retracted causal attribution remain bounded."
+    },
+    {
+      "items": [
+        358
+      ],
+      "state": "partial later repair evidence only",
+      "description": "Earlier original raw bundle not reacquired; do not equate later repair archive with the earlier campaign."
+    },
+    {
+      "items": [
+        151
+      ],
+      "state": "not reacquired",
+      "description": "Private analysis originals / old original receipt bundles cited historically; no new custody claimed."
+    },
+    {
+      "items": [
+        154,
+        305
+      ],
+      "state": "historically retained, not reacquired in M1",
+      "description": "cybersand-slop-evidence-20261105.zip mentioned by prior source; SHA256 a3a0b8b570d0ab59da96340526a50cb2ec51f2dee8729d37b749d9e717ca215e. Do not count as newly captured originals."
+    },
+    {
+      "items": [
+        580
+      ],
+      "state": "published recovery route known; original model results not reduced",
+      "description": "Stage B release succeeds at 2ea0f09c8fbbead7386f47232b0a61cff59bdfdc; workflow success is not usefulness qualification.",
+      "source_url": "https://github.com/techrote/cybersand/releases/tag/driv3r-stage-b-2ea0f09c8fbb-43546244572-1"
+    }
+  ],
+  "custody_policy": "Raw public-source API captures and original evidence are retained separately from the code tree. Private recovery links require custodian access and are not public mirrors. Missing bytes stay explicit; capture does not authorise retirement."
+}

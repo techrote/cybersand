@@ -1,0 +1,35 @@
+{
+  "authority": "historical-non-authoritative",
+  "source_receipt": {
+    "kind": "archived-data-only-readback-no-candidate-run",
+    "artifact_sha256": "9de681dde221093dcd740673f50a9549240d1858c86c44c1f85182696dc0a1db",
+    "zip_entries": 450,
+    "sealed_files_verified": 448,
+    "seal_errors": [],
+    "raw_process_records": 224,
+    "pairs": 112,
+    "contrasts": 16,
+    "tick_samples": 57344,
+    "input_samples": 57344,
+    "median_process_pair_ratios": {
+      "A01-source-word-e8": 1.0015999519821799,
+      "A02-word-padded-e8": 1.0254594869049456,
+      "A03-word-c72-packed-e8": 1.4960451250685098,
+      "A04-word-c80-packed-e8": 1.5116526074088716,
+      "A05-word-c72-aligned-e8": 1.0199070752898094,
+      "A06-word-c80-aligned-e8": 1.0179658691337465,
+      "A07-word-c72-split-e8": 1.0000087289491484,
+      "A08-word-c80-split-e8": 1.0019420213175274,
+      "A09-word-e8-e16": 0.6911810513563384,
+      "A10-padded-e8-e16": 0.5233790716252653,
+      "A11-c72-packed-e8-e16": 0.092018616112277,
+      "A12-c80-packed-e8-e16": 0.09203881894289785,
+      "A13-c72-aligned-e8-e16": 0.5321599457362267,
+      "A14-c80-aligned-e8-e16": 0.5298153052633773,
+      "A15-c72-split-e8-e16": 0.7231838174149142,
+      "A16-c80-split-e8-e16": 0.7239401484964657
+    },
+    "scope": "Original S2A only; raw timing arithmetic and file seals, not native semantic verifier or cross-platform rerun."
+  },
+  "qualification_limit": "Original retained observations inspected only; no candidate execution or present-platform qualification."
+}

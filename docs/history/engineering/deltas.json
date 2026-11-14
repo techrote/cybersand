@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "authority": "historical-non-authoritative",
+  "m0_to_intake": {
+    "main_changed": false,
+    "m0_utc": "2026-11-14T00:29:51Z",
+    "intake_utc": "2026-11-14T04:19:41.117Z",
+    "new_items": [
+      580,
+      581,
+      582
+    ],
+    "removed_open_items": [],
+    "changed_heads": [
+      {
+        "number": 566,
+        "m0_head_sha": "f8041847bc7627b3fdd3d7426d45f646f79995fd",
+        "intake_head_sha": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+        "status": "protected moving source; source-qualified claims remain pinned"
+      },
+      {
+        "number": 572,
+        "m0_head_sha": "0b026f6bd6c1c8ffbe5ef458a8f2b6aebccc13f3",
+        "intake_head_sha": "8055a4a46f58b7afcd245ee344db2beb34ffb69c",
+        "status": "protected moving source; source-qualified claims remain pinned"
+      },
+      {
+        "number": 573,
+        "m0_head_sha": "aeab8ca0a90ae044771a55b9d521c805eadfe5b8",
+        "intake_head_sha": "88b422c89a201cc0f7e2efb9613299d879043caa",
+        "status": "protected moving source; source-qualified claims remain pinned"
+      },
+      {
+        "number": 574,
+        "m0_head_sha": "7d90bf5294d16a8644694a4c8a6a36a5227fa3c0",
+        "intake_head_sha": "4156afcc10f65c9ba6a797ca76432599b773ac91",
+        "status": "protected moving source; source-qualified claims remain pinned"
+      },
+      {
+        "number": 575,
+        "m0_head_sha": "1c9cf2ef8760177e0c1d095052c27fcf200a5cb3",
+        "intake_head_sha": "710a59479b9c26b764132af1a6b4b30e04890b56",
+        "status": "protected moving source; source-qualified claims remain pinned"
+      },
+      {
+        "number": 576,
+        "m0_head_sha": "25b24bf80c593b115321387a2a0374dd5ff02548",
+        "intake_head_sha": "f77a49b62d911d19be69207ede33d0127f52983e",
+        "status": "protected moving source; source-qualified claims remain pinned"
+      }
+    ]
+  },
+  "final_refresh": {
+    "state": "verified before capture PR creation",
+    "refresh_utc": "2026-11-14 04:56:47 UTC",
+    "main_sha": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742",
+    "main_changed": false,
+    "open_issues": 93,
+    "open_prs": 181,
+    "draft_prs": 161,
+    "non_draft_prs": 20,
+    "new_open_items": [],
+    "no_longer_open": [],
+    "changed_pr_heads": [
+      {
+        "number": 576,
+        "intake_head_sha": "f77a49b62d911d19be69207ede33d0127f52983e",
+        "refresh_head_sha": "046721d52d45fc831d79c595a36d2f56155184d2",
+        "head_ref": "codex/agent-painter-sprocket-568"
+      },
+      {
+        "number": 575,
+        "intake_head_sha": "710a59479b9c26b764132af1a6b4b30e04890b56",
+        "refresh_head_sha": "658d0aef7b8cdf015ed6aee4244e0b43a33d541b",
+        "head_ref": "codex/agent-painter-lfm25-vl-568"
+      },
+      {
+        "number": 574,
+        "intake_head_sha": "4156afcc10f65c9ba6a797ca76432599b773ac91",
+        "refresh_head_sha": "ada3eeb1dfda08d96acbabac83dd22aa0ecfec0f",
+        "head_ref": "codex/agent-painter-void-568"
+      },
+      {
+        "number": 573,
+        "intake_head_sha": "88b422c89a201cc0f7e2efb9613299d879043caa",
+        "refresh_head_sha": "4bef83f8465323331b3699fcd589cf98f597d285",
+        "head_ref": "codex/agent-painter-smol-568"
+      }
+    ],
+    "protected_items": "All existing source branches untouched by this capture; a later head does not inherit earlier qualification.",
+    "own_capture_pr": "Not yet created at this refresh and excluded from historical intake scope.",
+    "draft_status_changes": [
+      {
+        "number": 566,
+        "intake_draft": true,
+        "refresh_draft": false
+      }
+    ]
+  }
+}

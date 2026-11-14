@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "purpose": "New owner-intent development cohort; frozen and challenge fixtures remain unchanged. Routing does not prove answer correctness.",
+  "questions": [
+    {
+      "id": "OI01",
+      "query": "What does the owner want CyberSand and Workbench to become?",
+      "canonical": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "facts": [
+        "Paint-and-play authoring system with accessible controls; integrate useful capabilities through Workbench."
+      ],
+      "sources": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ]
+    },
+    {
+      "id": "OI02",
+      "query": "Should saving a settled canvas flatten everything and destroy the session Undo history?",
+      "canonical": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "facts": [
+        "Save desired evolved layout without unexpected live Undo destruction.",
+        "Explicit two-byte material Flatten differs from ordinary Save and a full checkpoint."
+      ],
+      "sources": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ]
+    },
+    {
+      "id": "OI03",
+      "query": "Must physical simulation be scientifically consistent even when authored effects feel better?",
+      "canonical": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "facts": [
+        "Convincing over consistent; authored alternatives welcome.",
+        "Correctness checks and failed evidence retain scoped meanings."
+      ],
+      "sources": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ]
+    },
+    {
+      "id": "OI04",
+      "query": "Does prepared declared destruction require automatic whole-building stability and storage-sized chunks?",
+      "canonical": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "facts": [
+        "Prepared declaration exploratory; blast/cut rolling pieces desired.",
+        "Fracture pieces are not specified as storage chunks."
+      ],
+      "sources": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ]
+    },
+    {
+      "id": "OI05",
+      "query": "Should persistent areas catch up with real offline time or game time, and can transitions pause briefly?",
+      "canonical": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "facts": [
+        "Game time, occasional few-second transition acceptable, optional simulate ahead."
+      ],
+      "sources": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ]
+    },
+    {
+      "id": "OI06",
+      "query": "Are Materials Lab comparison tabs and a separate Strata Theatre enough for Workbench authoring?",
+      "canonical": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "facts": [
+        "Live Workbench material audition desired.",
+        "Four-layer Strata should be available as a Workbench option."
+      ],
+      "sources": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ]
+    }
+  ]
+}

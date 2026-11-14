@@ -15,6 +15,10 @@ import re
 import sys
 from urllib.parse import unquote, urlsplit
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "docs"))
+from retrieval_policy import require_authority
+from engineering_history import check as check_history
+
 ROOT = Path(__file__).resolve().parents[2]
 STATUSES = {"Current", "Approved", "Approved design", "Planned", "Deferred", "Rejected", "Ambiguous"}
 KINDS = {"contract", "design", "decision", "guide", "runbook", "reference", "evidence", "navigation", "research"}
@@ -105,6 +109,10 @@ def check(root: Path) -> dict:
         if path.parent == root and path.name in {"README.md", "AGENTS.md"}:
             continue
         meta = metadata(text)
+        try:
+            require_authority(path, root, historical=False, metadata=meta)
+        except ValueError as exc:
+            errors.append(str(exc))
         if meta.get("document-kind") == "navigation":
             errors.append(f"Navigation page cannot be a default answer document: {relative}")
         for field in sorted(REQUIRED - meta.keys()):
@@ -194,6 +202,14 @@ def check(root: Path) -> dict:
                     errors.append(f"{qid}: missing expected-fact source {source_path}")
     except (OSError, ValueError, KeyError, TypeError) as exc:
         errors.append(f"Cannot validate retrieval questions: {exc}")
+    # Isolated history is not answer material, but its maintained records and
+    # generated views still need a normal CI integrity gate.
+    if (docs / "history/engineering/coverage.json").is_file():
+        try:
+            history = check_history(root)
+            errors.extend("Historical capture: " + error for error in history["errors"])
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            errors.append(f"Cannot validate historical capture: {exc}")
     return {"status":"failed" if errors else "passed", "documents":len(paths), "navigation_link_documents":len(link_paths)-len(paths), "canonical_claims":len(owners), "local_links":link_count, "heading_anchors":anchor_count, "questions":question_count, "errors":errors,"warnings":warnings,
             "limitations":["Does not verify source semantics or runtime claims", "Does not fetch external URLs", "Does not rewrite or reattest historical audits", "Retrieval quality requires the separate lexical evaluation and expected-fact review"]}
 

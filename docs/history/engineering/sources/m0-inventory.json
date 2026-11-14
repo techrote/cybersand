@@ -1,0 +1,4704 @@
+{
+  "snapshot_utc": "2026-11-14T00:29:51Z",
+  "main_sha": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742",
+  "main_tree": "05d2960d569719cdc85b44228950eb14fa0d4c66",
+  "scope": [
+    {
+      "name": "Soliding, granular contact and rigid-body coupling",
+      "issues": 13,
+      "prs": 45,
+      "total": 58,
+      "ids": [
+        8,
+        10,
+        11,
+        12,
+        23,
+        66,
+        67,
+        68,
+        70,
+        82,
+        83,
+        281,
+        282,
+        283,
+        336,
+        338,
+        339,
+        341,
+        342,
+        343,
+        346,
+        347,
+        348,
+        349,
+        350,
+        351,
+        364,
+        365,
+        366,
+        368,
+        372,
+        373,
+        378,
+        387,
+        393,
+        399,
+        400,
+        407,
+        411,
+        413,
+        416,
+        418,
+        421,
+        423,
+        429,
+        433,
+        438,
+        441,
+        444,
+        450,
+        452,
+        455,
+        460,
+        461,
+        463,
+        466,
+        510,
+        519
+      ]
+    },
+    {
+      "name": "Water, liquid solvers and liquid performance",
+      "issues": 14,
+      "prs": 27,
+      "total": 41,
+      "ids": [
+        21,
+        25,
+        33,
+        35,
+        45,
+        84,
+        90,
+        95,
+        200,
+        201,
+        202,
+        203,
+        212,
+        258,
+        259,
+        260,
+        261,
+        358,
+        359,
+        360,
+        361,
+        362,
+        363,
+        370,
+        375,
+        376,
+        379,
+        383,
+        404,
+        472,
+        475,
+        476,
+        480,
+        488,
+        493,
+        505,
+        515,
+        520,
+        521,
+        532,
+        533
+      ]
+    },
+    {
+      "name": "Cell carrier, epochs and semantic state",
+      "issues": 7,
+      "prs": 7,
+      "total": 14,
+      "ids": [
+        14,
+        18,
+        20,
+        204,
+        208,
+        211,
+        218,
+        219,
+        220,
+        221,
+        230,
+        231,
+        235,
+        238
+      ]
+    },
+    {
+      "name": "Streaming, checkpointing and durable edits",
+      "issues": 1,
+      "prs": 17,
+      "total": 18,
+      "ids": [
+        194,
+        415,
+        422,
+        426,
+        435,
+        442,
+        448,
+        458,
+        459,
+        486,
+        490,
+        507,
+        511,
+        512,
+        513,
+        514,
+        518,
+        523
+      ]
+    },
+    {
+      "name": "Materials catalogue, chemistry and Lab",
+      "issues": 9,
+      "prs": 4,
+      "total": 13,
+      "ids": [
+        30,
+        160,
+        162,
+        352,
+        353,
+        354,
+        355,
+        356,
+        384,
+        386,
+        395,
+        397,
+        398
+      ]
+    },
+    {
+      "name": "Actors, traversal and composed gameplay",
+      "issues": 12,
+      "prs": 18,
+      "total": 30,
+      "ids": [
+        131,
+        132,
+        133,
+        134,
+        147,
+        148,
+        149,
+        210,
+        224,
+        262,
+        263,
+        264,
+        268,
+        270,
+        271,
+        272,
+        304,
+        308,
+        327,
+        328,
+        337,
+        380,
+        381,
+        385,
+        389,
+        392,
+        402,
+        409,
+        484,
+        540
+      ]
+    },
+    {
+      "name": "Rendering, graphical startup and platform diagnostics",
+      "issues": 2,
+      "prs": 25,
+      "total": 27,
+      "ids": [
+        188,
+        290,
+        295,
+        298,
+        301,
+        309,
+        312,
+        316,
+        321,
+        326,
+        329,
+        333,
+        335,
+        345,
+        401,
+        403,
+        417,
+        449,
+        456,
+        509,
+        539,
+        554,
+        555,
+        556,
+        566,
+        577,
+        578
+      ]
+    },
+    {
+      "name": "Recording and review evidence",
+      "issues": 2,
+      "prs": 3,
+      "total": 5,
+      "ids": [
+        130,
+        135,
+        419,
+        424,
+        432
+      ]
+    },
+    {
+      "name": "Generation, maps, atlas and capture tooling",
+      "issues": 6,
+      "prs": 14,
+      "total": 20,
+      "ids": [
+        184,
+        186,
+        187,
+        454,
+        457,
+        462,
+        467,
+        468,
+        469,
+        478,
+        479,
+        487,
+        497,
+        498,
+        500,
+        501,
+        506,
+        536,
+        549,
+        579
+      ]
+    },
+    {
+      "name": "Workbench editing, agent collaboration and transport",
+      "issues": 10,
+      "prs": 10,
+      "total": 20,
+      "ids": [
+        525,
+        526,
+        527,
+        528,
+        529,
+        530,
+        531,
+        541,
+        543,
+        545,
+        546,
+        547,
+        548,
+        550,
+        551,
+        552,
+        557,
+        558,
+        559,
+        572
+      ]
+    },
+    {
+      "name": "Painter model/controller research",
+      "issues": 2,
+      "prs": 6,
+      "total": 8,
+      "ids": [
+        567,
+        568,
+        569,
+        570,
+        573,
+        574,
+        575,
+        576
+      ]
+    },
+    {
+      "name": "Programme governance, investigation and policy",
+      "issues": 14,
+      "prs": 3,
+      "total": 17,
+      "ids": [
+        79,
+        85,
+        86,
+        87,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        305,
+        388,
+        517,
+        534,
+        571
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "number": 8,
+      "kind": "issue",
+      "title": "Physics: characterise and improve granular interactions, barrel support and reversible soliding",
+      "url": "https://github.com/techrote/cybersand/issues/8",
+      "created_at": "2026-09-08T23:13:59Z",
+      "updated_at": "2026-09-20T09:18:23Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 10,
+      "kind": "issue",
+      "title": "Physics: support the player on powders and control granular/liquid exchange",
+      "url": "https://github.com/techrote/cybersand/issues/10",
+      "created_at": "2026-09-08T23:14:51Z",
+      "updated_at": "2026-09-20T09:19:01Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 11,
+      "kind": "issue",
+      "title": "Physics: stop barrel creep with impact embedding and granular support",
+      "url": "https://github.com/techrote/cybersand/issues/11",
+      "created_at": "2026-09-08T23:15:18Z",
+      "updated_at": "2026-09-24T21:18:04Z",
+      "comments": 5,
+      "labels": []
+    },
+    {
+      "number": 12,
+      "kind": "issue",
+      "title": "Scalable reversible soliding: large-world acceleration, Rapier macro-dynamics and fracture",
+      "url": "https://github.com/techrote/cybersand/issues/12",
+      "created_at": "2026-09-08T23:15:50Z",
+      "updated_at": "2026-10-27T20:42:41Z",
+      "comments": 17,
+      "labels": []
+    },
+    {
+      "number": 14,
+      "kind": "issue",
+      "title": "Architecture decision: reconcile Cell, liquid and sparse-motion experiment evidence",
+      "url": "https://github.com/techrote/cybersand/issues/14",
+      "created_at": "2026-09-10T19:39:33Z",
+      "updated_at": "2026-10-22T20:07:07Z",
+      "comments": 11,
+      "labels": []
+    },
+    {
+      "number": 18,
+      "kind": "issue",
+      "title": "Architecture experiment: compare compact liquid flow memory inline and in sidecars",
+      "url": "https://github.com/techrote/cybersand/issues/18",
+      "created_at": "2026-09-10T19:40:24Z",
+      "updated_at": "2026-09-20T21:27:59Z",
+      "comments": 7,
+      "labels": []
+    },
+    {
+      "number": 20,
+      "kind": "issue",
+      "title": "Architecture experiment: gate and test bounded sparse ballistic material transfer",
+      "url": "https://github.com/techrote/cybersand/issues/20",
+      "created_at": "2026-09-10T19:40:28Z",
+      "updated_at": "2026-09-18T20:46:44Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 21,
+      "kind": "PR",
+      "title": "Research preparation: Water Feel Lab, storage costs and ownership protocols",
+      "url": "https://github.com/techrote/cybersand/pull/21",
+      "created_at": "2026-09-12T10:35:24Z",
+      "updated_at": "2026-09-12T10:39:22Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 23,
+      "kind": "PR",
+      "title": "Prototype bounded near-rest reversible soliding",
+      "url": "https://github.com/techrote/cybersand/pull/23",
+      "created_at": "2026-09-13T08:07:34Z",
+      "updated_at": "2026-09-13T16:41:37Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 25,
+      "kind": "PR",
+      "title": "H gate: append-only Water Feel capture and explicit blind reveal",
+      "url": "https://github.com/techrote/cybersand/pull/25",
+      "created_at": "2026-09-13T16:32:40Z",
+      "updated_at": "2026-09-18T23:11:15Z",
+      "comments": 8,
+      "labels": []
+    },
+    {
+      "number": 30,
+      "kind": "issue",
+      "title": "MicroScenarios programme: exploratory framework, interaction workflow and showcase roadmap",
+      "url": "https://github.com/techrote/cybersand/issues/30",
+      "created_at": "2026-09-18T18:21:53Z",
+      "updated_at": "2026-09-20T09:18:33Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 33,
+      "kind": "PR",
+      "title": "Water H-gate synthesis: evidence, surface metrics and programme disposition",
+      "url": "https://github.com/techrote/cybersand/pull/33",
+      "created_at": "2026-09-18T21:28:34Z",
+      "updated_at": "2026-09-18T23:14:55Z",
+      "comments": 5,
+      "labels": []
+    },
+    {
+      "number": 35,
+      "kind": "PR",
+      "title": "Draft: #26 Water leveling characterization and bounded candidates",
+      "url": "https://github.com/techrote/cybersand/pull/35",
+      "created_at": "2026-09-18T23:33:13Z",
+      "updated_at": "2026-09-19T00:43:10Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 45,
+      "kind": "issue",
+      "title": "Water architecture experiment: transmit head through saturated connected bodies",
+      "url": "https://github.com/techrote/cybersand/issues/45",
+      "created_at": "2026-09-19T01:49:54Z",
+      "updated_at": "2026-10-23T01:29:50Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 66,
+      "kind": "issue",
+      "title": "Stage 3B: add certified local replacement and bridge/merge fast paths",
+      "url": "https://github.com/techrote/cybersand/issues/66",
+      "created_at": "2026-09-19T18:02:57Z",
+      "updated_at": "2026-09-19T18:02:57Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 67,
+      "kind": "issue",
+      "title": "Stage 3B: add publication aggregates and staged digest compatibility",
+      "url": "https://github.com/techrote/cybersand/issues/67",
+      "created_at": "2026-09-19T18:02:58Z",
+      "updated_at": "2026-09-19T18:02:58Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 68,
+      "kind": "issue",
+      "title": "Stage 3B: formalize typed local/subregion observation contract",
+      "url": "https://github.com/techrote/cybersand/issues/68",
+      "created_at": "2026-09-19T18:02:59Z",
+      "updated_at": "2026-09-19T18:02:59Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 70,
+      "kind": "issue",
+      "title": "Stage 3B: execute registered campaign and publish parent exit packet",
+      "url": "https://github.com/techrote/cybersand/issues/70",
+      "created_at": "2026-09-19T18:03:03Z",
+      "updated_at": "2026-09-19T18:03:03Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 79,
+      "kind": "issue",
+      "title": "REM-000: Development-claims remediation programme and closure authority",
+      "url": "https://github.com/techrote/cybersand/issues/79",
+      "created_at": "2026-09-20T01:45:10Z",
+      "updated_at": "2026-09-24T21:18:02Z",
+      "comments": 5,
+      "labels": []
+    },
+    {
+      "number": 82,
+      "kind": "issue",
+      "title": "REM-003: Bring player↔granular interaction to production acceptance",
+      "url": "https://github.com/techrote/cybersand/issues/82",
+      "created_at": "2026-09-20T01:46:38Z",
+      "updated_at": "2026-09-25T13:22:10Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 83,
+      "kind": "issue",
+      "title": "REM-004: Bring rigid-body↔granular coupling to production acceptance",
+      "url": "https://github.com/techrote/cybersand/issues/83",
+      "created_at": "2026-09-20T01:47:08Z",
+      "updated_at": "2026-09-25T15:08:33Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 84,
+      "kind": "issue",
+      "title": "REM-005: Repair Water H-gate blind capture and formal-study evidence integrity",
+      "url": "https://github.com/techrote/cybersand/issues/84",
+      "created_at": "2026-09-20T01:47:43Z",
+      "updated_at": "2026-09-20T01:47:43Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 85,
+      "kind": "issue",
+      "title": "REM-006: Reconcile current documentation, counters, platform evidence and programme routing",
+      "url": "https://github.com/techrote/cybersand/issues/85",
+      "created_at": "2026-09-20T01:48:17Z",
+      "updated_at": "2026-09-20T01:48:17Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 86,
+      "kind": "issue",
+      "title": "REM-007: Harden completion, implementation ownership and validation-precondition controls",
+      "url": "https://github.com/techrote/cybersand/issues/86",
+      "created_at": "2026-09-20T01:48:51Z",
+      "updated_at": "2026-09-24T15:13:35Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 87,
+      "kind": "issue",
+      "title": "REM-008: Final forensic re-audit and closure certification",
+      "url": "https://github.com/techrote/cybersand/issues/87",
+      "created_at": "2026-09-20T01:49:23Z",
+      "updated_at": "2026-09-20T21:27:55Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 90,
+      "kind": "issue",
+      "title": "WEX-000: Water hybrid, saturated-head and compartment-pressure extension programme",
+      "url": "https://github.com/techrote/cybersand/issues/90",
+      "created_at": "2026-09-20T12:43:33Z",
+      "updated_at": "2026-09-24T17:44:22Z",
+      "comments": 8,
+      "labels": []
+    },
+    {
+      "number": 95,
+      "kind": "issue",
+      "title": "WEX-005: Synthesize Water extension evidence and reconcile #45 routing",
+      "url": "https://github.com/techrote/cybersand/issues/95",
+      "created_at": "2026-09-20T12:46:50Z",
+      "updated_at": "2026-10-23T01:29:48Z",
+      "comments": 6,
+      "labels": []
+    },
+    {
+      "number": 130,
+      "kind": "issue",
+      "title": "REC programme: long-term gameplay capture and review recording infrastructure",
+      "url": "https://github.com/techrote/cybersand/issues/130",
+      "created_at": "2026-09-25T13:19:10Z",
+      "updated_at": "2026-09-25T13:21:51Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 131,
+      "kind": "issue",
+      "title": "TEST-UX programme: long-term desktop testbench ergonomics, authoring and HUD",
+      "url": "https://github.com/techrote/cybersand/issues/131",
+      "created_at": "2026-09-25T13:19:11Z",
+      "updated_at": "2026-09-25T13:21:53Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 132,
+      "kind": "issue",
+      "title": "PCHAR programme: long-term alternative player representations and pixel-engine coupling",
+      "url": "https://github.com/techrote/cybersand/issues/132",
+      "created_at": "2026-09-25T13:19:13Z",
+      "updated_at": "2026-10-18T17:24:54Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 133,
+      "kind": "issue",
+      "title": "PENV programme: long-term player/environment tuning profiles and traversal model",
+      "url": "https://github.com/techrote/cybersand/issues/133",
+      "created_at": "2026-09-25T13:19:14Z",
+      "updated_at": "2026-09-25T13:21:58Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 134,
+      "kind": "issue",
+      "title": "PLAY-VAL programme: long-term recorded gameplay tuning and owner-review campaigns",
+      "url": "https://github.com/techrote/cybersand/issues/134",
+      "created_at": "2026-09-25T13:19:16Z",
+      "updated_at": "2026-09-25T13:22:00Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 135,
+      "kind": "issue",
+      "title": "REC-001: Restore low-overhead material-state recording for desktop tuning",
+      "url": "https://github.com/techrote/cybersand/issues/135",
+      "created_at": "2026-09-25T13:21:31Z",
+      "updated_at": "2026-09-25T15:30:25Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 147,
+      "kind": "issue",
+      "title": "PENV-002: Replace failed step/knee/clamber traversal with local-contour traversal",
+      "url": "https://github.com/techrote/cybersand/issues/147",
+      "created_at": "2026-09-26T02:24:19Z",
+      "updated_at": "2026-09-26T02:35:38Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 148,
+      "kind": "PR",
+      "title": "PENV-002: replace failed traversal with local-contour bands",
+      "url": "https://github.com/techrote/cybersand/pull/148",
+      "created_at": "2026-09-26T02:31:08Z",
+      "updated_at": "2026-09-26T02:44:38Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 149,
+      "kind": "issue",
+      "title": "P0 recovery: five desktop comparison builds; owner decides retention, modification and removal",
+      "url": "https://github.com/techrote/cybersand/issues/149",
+      "created_at": "2026-09-26T02:35:25Z",
+      "updated_at": "2026-10-18T05:06:44Z",
+      "comments": 5,
+      "labels": []
+    },
+    {
+      "number": 150,
+      "kind": "issue",
+      "title": "INV-000: CyberSand current-state, performance and consistency investigation — master tracker",
+      "url": "https://github.com/techrote/cybersand/issues/150",
+      "created_at": "2026-10-01T06:09:54Z",
+      "updated_at": "2026-10-01T21:08:07Z",
+      "comments": 6,
+      "labels": []
+    },
+    {
+      "number": 151,
+      "kind": "issue",
+      "title": "INV-001: Establish exact repository, loaded-runtime and comparison-checkpoint identity",
+      "url": "https://github.com/techrote/cybersand/issues/151",
+      "created_at": "2026-10-01T06:11:32Z",
+      "updated_at": "2026-10-01T21:06:19Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 152,
+      "kind": "issue",
+      "title": "INV-002: Audit the full recent feature/history ledger and actual runtime activation",
+      "url": "https://github.com/techrote/cybersand/issues/152",
+      "created_at": "2026-10-01T06:12:00Z",
+      "updated_at": "2026-10-01T21:06:41Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 153,
+      "kind": "issue",
+      "title": "INV-003: Map runtime costs and test claims; deliver the first overview and measurement plan",
+      "url": "https://github.com/techrote/cybersand/issues/153",
+      "created_at": "2026-10-01T06:12:28Z",
+      "updated_at": "2026-10-01T21:07:01Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 154,
+      "kind": "issue",
+      "title": "INV-004: Characterize Windows desktop performance across preserved and matched configurations",
+      "url": "https://github.com/techrote/cybersand/issues/154",
+      "created_at": "2026-10-01T06:13:01Z",
+      "updated_at": "2026-11-05T21:55:08Z",
+      "comments": 4,
+      "labels": []
+    },
+    {
+      "number": 155,
+      "kind": "issue",
+      "title": "INV-005: Characterize native, coupled-desktop, lifecycle and material consistency",
+      "url": "https://github.com/techrote/cybersand/issues/155",
+      "created_at": "2026-10-01T06:13:33Z",
+      "updated_at": "2026-10-01T06:13:33Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 156,
+      "kind": "issue",
+      "title": "INV-006: Isolate regression causes with evidence-backed, owner-approved experiments",
+      "url": "https://github.com/techrote/cybersand/issues/156",
+      "created_at": "2026-10-01T06:14:00Z",
+      "updated_at": "2026-10-30T21:48:02Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 157,
+      "kind": "issue",
+      "title": "INV-007: Deliver the consolidated project overview, evidence package and owner decision handoff",
+      "url": "https://github.com/techrote/cybersand/issues/157",
+      "created_at": "2026-10-01T06:14:33Z",
+      "updated_at": "2026-10-01T06:14:33Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 160,
+      "kind": "issue",
+      "title": "MAT-002: preserve aqueous phase quantity and bound Water-driven quenching",
+      "url": "https://github.com/techrote/cybersand/issues/160",
+      "created_at": "2026-10-18T06:07:16Z",
+      "updated_at": "2026-10-18T06:44:59Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 162,
+      "kind": "PR",
+      "title": "WAT-002: conserve Water phase quantity and scale hot-material quenching-archive",
+      "url": "https://github.com/techrote/cybersand/pull/162",
+      "created_at": "2026-10-18T06:37:52Z",
+      "updated_at": "2026-10-22T19:38:56Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 184,
+      "kind": "PR",
+      "title": "Build Grey Area 51: five connected concrete bunker tiles",
+      "url": "https://github.com/techrote/cybersand/pull/184",
+      "created_at": "2026-10-19T20:54:55Z",
+      "updated_at": "2026-10-19T20:58:09Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 186,
+      "kind": "PR",
+      "title": "Add RAG guides for producing polished multilayer maps",
+      "url": "https://github.com/techrote/cybersand/pull/186",
+      "created_at": "2026-10-20T02:03:27Z",
+      "updated_at": "2026-10-20T02:03:27Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 187,
+      "kind": "PR",
+      "title": "docs: add a complete polished-map authoring guide for agents",
+      "url": "https://github.com/techrote/cybersand/pull/187",
+      "created_at": "2026-10-20T17:56:07Z",
+      "updated_at": "2026-10-20T18:10:55Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 188,
+      "kind": "PR",
+      "title": "Propose a Water flow render plane and opt-in seam-fix presentation (docs only)",
+      "url": "https://github.com/techrote/cybersand/pull/188",
+      "created_at": "2026-10-20T19:02:45Z",
+      "updated_at": "2026-10-23T01:21:25Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 194,
+      "kind": "issue",
+      "title": "GEN-006: runtime world streaming, persistent mutations and recipe reconciliation",
+      "url": "https://github.com/techrote/cybersand/issues/194",
+      "created_at": "2026-10-20T21:19:49Z",
+      "updated_at": "2026-11-07T17:51:56Z",
+      "comments": 30,
+      "labels": []
+    },
+    {
+      "number": 200,
+      "kind": "issue",
+      "title": "LCB-001: Corrected pressure backend and per-material liquid solver/state contract",
+      "url": "https://github.com/techrote/cybersand/issues/200",
+      "created_at": "2026-10-22T20:02:29Z",
+      "updated_at": "2026-10-26T00:14:07Z",
+      "comments": 5,
+      "labels": []
+    },
+    {
+      "number": 201,
+      "kind": "issue",
+      "title": "LCB-002: Add bounded pressure caching and pressure-aware dormant liquid arms",
+      "url": "https://github.com/techrote/cybersand/issues/201",
+      "created_at": "2026-10-22T20:02:43Z",
+      "updated_at": "2026-11-07T13:44:55Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 202,
+      "kind": "issue",
+      "title": "LCB-003: Full multi-solver manual liquid comparison application and scenarios",
+      "url": "https://github.com/techrote/cybersand/issues/202",
+      "created_at": "2026-10-22T20:02:44Z",
+      "updated_at": "2026-10-26T00:14:09Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 203,
+      "kind": "issue",
+      "title": "LCB-004: Publish and qualify the full manual multi-solver liquid comparison build",
+      "url": "https://github.com/techrote/cybersand/issues/203",
+      "created_at": "2026-10-22T20:02:45Z",
+      "updated_at": "2026-10-26T00:14:11Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 204,
+      "kind": "issue",
+      "title": "MAT-003PREPASS: material-state contracts, epoch widening and 64/72/80-bit cell-carrier experiments",
+      "url": "https://github.com/techrote/cybersand/issues/204",
+      "created_at": "2026-10-22T20:06:37Z",
+      "updated_at": "2026-10-24T00:44:12Z",
+      "comments": 11,
+      "labels": []
+    },
+    {
+      "number": 208,
+      "kind": "PR",
+      "title": "MAT-003PREPASS: isolated carrier and native World correctness",
+      "url": "https://github.com/techrote/cybersand/pull/208",
+      "created_at": "2026-10-22T20:37:41Z",
+      "updated_at": "2026-10-24T11:52:35Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 210,
+      "kind": "issue",
+      "title": "ACT-IK-001: Add the capability-advertised Runner joint-reference owner and actual-host receipts",
+      "url": "https://github.com/techrote/cybersand/issues/210",
+      "created_at": "2026-10-22T21:11:42Z",
+      "updated_at": "2026-10-24T22:12:16Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 211,
+      "kind": "PR",
+      "title": "MAT-003PREPASS S2: qualify S2F/twins and admit paired S2A timing",
+      "url": "https://github.com/techrote/cybersand/pull/211",
+      "created_at": "2026-10-22T22:44:28Z",
+      "updated_at": "2026-10-24T11:52:36Z",
+      "comments": 4,
+      "labels": []
+    },
+    {
+      "number": 212,
+      "kind": "issue",
+      "title": "LCB-005: Implement non-pressure inertial cellular liquid solver for manual comparison",
+      "url": "https://github.com/techrote/cybersand/issues/212",
+      "created_at": "2026-10-22T22:57:22Z",
+      "updated_at": "2026-10-26T00:14:12Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 218,
+      "kind": "issue",
+      "title": "MAT-003PREPASS S2P: diagnose packed-layout overhead and qualify compact prototypes",
+      "url": "https://github.com/techrote/cybersand/issues/218",
+      "created_at": "2026-10-23T00:47:16Z",
+      "updated_at": "2026-10-23T08:03:24Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 219,
+      "kind": "issue",
+      "title": "MAT-003PREPASS WCLEAR-001: qualify real wide-epoch clear events and prepare separate admission",
+      "url": "https://github.com/techrote/cybersand/issues/219",
+      "created_at": "2026-10-23T00:47:17Z",
+      "updated_at": "2026-10-23T01:55:07Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 220,
+      "kind": "issue",
+      "title": "MAT-003PREPASS C128-001: native u128 and dual64 untimed World feasibility",
+      "url": "https://github.com/techrote/cybersand/issues/220",
+      "created_at": "2026-10-23T00:47:18Z",
+      "updated_at": "2026-10-23T08:48:21Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 221,
+      "kind": "PR",
+      "title": "MAT-003 continuation: packed diagnosis, WCLEAR apparatus and C128 feasibility",
+      "url": "https://github.com/techrote/cybersand/pull/221",
+      "created_at": "2026-10-23T00:59:22Z",
+      "updated_at": "2026-10-24T11:52:37Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 224,
+      "kind": "PR",
+      "title": "ACT-IK-001: opt-in Runner joint-reference host, owned motor receipts and adversarial fixtures",
+      "url": "https://github.com/techrote/cybersand/pull/224",
+      "created_at": "2026-10-23T02:11:28Z",
+      "updated_at": "2026-10-24T22:28:54Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 230,
+      "kind": "PR",
+      "title": "MAT-003PREPASS D: GEN-006 semantic state, lifecycle and persistence contracts",
+      "url": "https://github.com/techrote/cybersand/pull/230",
+      "created_at": "2026-10-23T15:19:14Z",
+      "updated_at": "2026-10-25T21:08:34Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 231,
+      "kind": "PR",
+      "title": "MAT-003PREPASS C: independent carrier evidence audit and conditional synthesis",
+      "url": "https://github.com/techrote/cybersand/pull/231",
+      "created_at": "2026-10-23T15:19:39Z",
+      "updated_at": "2026-10-25T20:58:53Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 235,
+      "kind": "PR",
+      "title": "MAT-003: repair Windows correctness readback verifier",
+      "url": "https://github.com/techrote/cybersand/pull/235",
+      "created_at": "2026-10-23T16:46:38Z",
+      "updated_at": "2026-10-24T11:52:39Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 238,
+      "kind": "PR",
+      "title": "MAT-003: archived readback, neutral tails and capture-state evidence",
+      "url": "https://github.com/techrote/cybersand/pull/238",
+      "created_at": "2026-10-24T02:03:41Z",
+      "updated_at": "2026-10-24T11:52:41Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 258,
+      "kind": "PR",
+      "title": "LCB: expose copied inertial ledgers and actual worker participation",
+      "url": "https://github.com/techrote/cybersand/pull/258",
+      "created_at": "2026-10-25T21:47:53Z",
+      "updated_at": "2026-10-26T00:09:02Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 259,
+      "kind": "PR",
+      "title": "LCB: observe real prepared states with complete native scientific accounting",
+      "url": "https://github.com/techrote/cybersand/pull/259",
+      "created_at": "2026-10-25T22:48:42Z",
+      "updated_at": "2026-10-26T00:02:01Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 260,
+      "kind": "PR",
+      "title": "LCB-003: retain single actors during native-default solver changes",
+      "url": "https://github.com/techrote/cybersand/pull/260",
+      "created_at": "2026-10-25T23:22:50Z",
+      "updated_at": "2026-10-26T00:01:37Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 261,
+      "kind": "PR",
+      "title": "docs: preserve controlled LCB session handover and desktop testing guide",
+      "url": "https://github.com/techrote/cybersand/pull/261",
+      "created_at": "2026-10-26T00:13:00Z",
+      "updated_at": "2026-10-26T00:16:11Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 262,
+      "kind": "PR",
+      "title": "feat(playground): 22 distinct maps, agile players and live NPC tools",
+      "url": "https://github.com/techrote/cybersand/pull/262",
+      "created_at": "2026-10-26T02:24:10Z",
+      "updated_at": "2026-10-26T09:51:48Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 263,
+      "kind": "issue",
+      "title": "PLAY-COMP-000: Composable desktop gameplay host (revised epic; preserves PLAY-ASYNC history)",
+      "url": "https://github.com/techrote/cybersand/issues/263",
+      "created_at": "2026-10-26T19:59:08Z",
+      "updated_at": "2026-11-01T00:59:56Z",
+      "comments": 45,
+      "labels": []
+    },
+    {
+      "number": 264,
+      "kind": "issue",
+      "title": "PLAY-ASYNC-001: ADR-015 candidate and baseline (conditional on #273)",
+      "url": "https://github.com/techrote/cybersand/issues/264",
+      "created_at": "2026-10-26T20:01:06Z",
+      "updated_at": "2026-10-26T23:10:52Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 268,
+      "kind": "issue",
+      "title": "PLAY-COMP-003: Shared playable-session input, camera and gameplay UI (#268)",
+      "url": "https://github.com/techrote/cybersand/issues/268",
+      "created_at": "2026-10-26T20:02:48Z",
+      "updated_at": "2026-10-31T05:14:27Z",
+      "comments": 13,
+      "labels": []
+    },
+    {
+      "number": 270,
+      "kind": "issue",
+      "title": "PLAY-COMP-005: Qualify and promote composable desktop gameplay (#270)",
+      "url": "https://github.com/techrote/cybersand/issues/270",
+      "created_at": "2026-10-26T20:04:10Z",
+      "updated_at": "2026-11-03T22:22:44Z",
+      "comments": 29,
+      "labels": []
+    },
+    {
+      "number": 271,
+      "kind": "issue",
+      "title": "PLAY-COMP-006: Deferred Sand/Water player-mode integration (#271)",
+      "url": "https://github.com/techrote/cybersand/issues/271",
+      "created_at": "2026-10-26T20:04:12Z",
+      "updated_at": "2026-10-26T23:12:28Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 272,
+      "kind": "PR",
+      "title": "PLAY-ASYNC-001: dedicated async player World owner architecture, protocol and desktop baseline",
+      "url": "https://github.com/techrote/cybersand/pull/272",
+      "created_at": "2026-10-26T21:54:31Z",
+      "updated_at": "2026-10-26T23:12:56Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 281,
+      "kind": "issue",
+      "title": "SOL-DETACH-001: native solid-tree support loss → Rapier toppling and rolling",
+      "url": "https://github.com/techrote/cybersand/issues/281",
+      "created_at": "2026-10-27T20:27:05Z",
+      "updated_at": "2026-11-04T11:47:03Z",
+      "comments": 17,
+      "labels": []
+    },
+    {
+      "number": 282,
+      "kind": "PR",
+      "title": "SOL-DETACH-000: prioritize real native solid-tree detachment ahead of Stage 3B optimization",
+      "url": "https://github.com/techrote/cybersand/pull/282",
+      "created_at": "2026-10-27T20:42:07Z",
+      "updated_at": "2026-10-27T20:44:51Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 283,
+      "kind": "PR",
+      "title": "[FROZEN EVIDENCE ARCHIVE] SOL-DETACH-001: native tree detachment, compound coupling and cause qualification",
+      "url": "https://github.com/techrote/cybersand/pull/283",
+      "created_at": "2026-10-27T22:20:39Z",
+      "updated_at": "2026-10-31T21:44:22Z",
+      "comments": 31,
+      "labels": []
+    },
+    {
+      "number": 290,
+      "kind": "PR",
+      "title": "perf(native): copy full-frame render cells per chunk run",
+      "url": "https://github.com/techrote/cybersand/pull/290",
+      "created_at": "2026-10-28T23:16:51Z",
+      "updated_at": "2026-10-29T23:12:16Z",
+      "comments": 25,
+      "labels": []
+    },
+    {
+      "number": 295,
+      "kind": "PR",
+      "title": "ci(render-copy290): unarmed exact-source/LFS publisher preflight (review only)",
+      "url": "https://github.com/techrote/cybersand/pull/295",
+      "created_at": "2026-10-29T04:48:31Z",
+      "updated_at": "2026-10-29T22:31:52Z",
+      "comments": 5,
+      "labels": []
+    },
+    {
+      "number": 298,
+      "kind": "PR",
+      "title": "ci(render-copy290): read-only paired Linux/Windows Godot host evidence producer",
+      "url": "https://github.com/techrote/cybersand/pull/298",
+      "created_at": "2026-10-29T14:53:13Z",
+      "updated_at": "2026-10-29T22:31:54Z",
+      "comments": 7,
+      "labels": []
+    },
+    {
+      "number": 301,
+      "kind": "PR",
+      "title": "build(render-copy290): publish source-matched four-path LFS runtimes",
+      "url": "https://github.com/techrote/cybersand/pull/301",
+      "created_at": "2026-10-29T21:13:41Z",
+      "updated_at": "2026-10-29T23:39:38Z",
+      "comments": 9,
+      "labels": []
+    },
+    {
+      "number": 304,
+      "kind": "PR",
+      "title": "test(play): render gameplay while real native phase jobs are held",
+      "url": "https://github.com/techrote/cybersand/pull/304",
+      "created_at": "2026-10-29T23:44:19Z",
+      "updated_at": "2026-11-03T22:45:58Z",
+      "comments": 4,
+      "labels": []
+    },
+    {
+      "number": 305,
+      "kind": "issue",
+      "title": "Scheduswarm coordination ledger",
+      "url": "https://github.com/techrote/cybersand/issues/305",
+      "created_at": "2026-10-30T13:37:38Z",
+      "updated_at": "2026-11-09T22:03:54Z",
+      "comments": 53,
+      "labels": []
+    },
+    {
+      "number": 308,
+      "kind": "PR",
+      "title": "PLAY: qualify integrated churn and recover stopped composed sessions",
+      "url": "https://github.com/techrote/cybersand/pull/308",
+      "created_at": "2026-10-30T19:24:29Z",
+      "updated_at": "2026-10-31T02:25:27Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 309,
+      "kind": "issue",
+      "title": "PLAY-PACE-003: bound cold graphical startup and identify shader-compilation stalls",
+      "url": "https://github.com/techrote/cybersand/issues/309",
+      "created_at": "2026-10-30T19:55:49Z",
+      "updated_at": "2026-10-31T23:35:07Z",
+      "comments": 9,
+      "labels": []
+    },
+    {
+      "number": 312,
+      "kind": "PR",
+      "title": "[NONQUALIFYING] Isolate Windows palette compiler paths (#309)",
+      "url": "https://github.com/techrote/cybersand/pull/312",
+      "created_at": "2026-10-30T22:36:11Z",
+      "updated_at": "2026-10-31T02:29:01Z",
+      "comments": 4,
+      "labels": []
+    },
+    {
+      "number": 316,
+      "kind": "PR",
+      "title": "[NONQUALIFYING / NO-GO] Windows palette decomposition feasibility (#309)",
+      "url": "https://github.com/techrote/cybersand/pull/316",
+      "created_at": "2026-10-31T03:43:52Z",
+      "updated_at": "2026-10-31T04:06:57Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 321,
+      "kind": "PR",
+      "title": "PLAY diagnostic: capture the original Windows desktop exit without masking failure",
+      "url": "https://github.com/techrote/cybersand/pull/321",
+      "created_at": "2026-10-31T06:57:55Z",
+      "updated_at": "2026-10-31T11:31:57Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 326,
+      "kind": "PR",
+      "title": "[DRAFT] PLAY-PACE-003: bound the ANGLE palette compile and remove the X8000 trigger (#309)",
+      "url": "https://github.com/techrote/cybersand/pull/326",
+      "created_at": "2026-10-31T11:31:43Z",
+      "updated_at": "2026-10-31T11:55:55Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 327,
+      "kind": "PR",
+      "title": "[DRAFT] Keep the desktop launch window entirely on one screen",
+      "url": "https://github.com/techrote/cybersand/pull/327",
+      "created_at": "2026-10-31T12:09:44Z",
+      "updated_at": "2026-10-31T12:09:44Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 328,
+      "kind": "PR",
+      "title": "[DRAFT][test-only][reference] PLAY_UI005: local mouse-input test flake, fix and evidence",
+      "url": "https://github.com/techrote/cybersand/pull/328",
+      "created_at": "2026-10-31T13:09:51Z",
+      "updated_at": "2026-10-31T13:09:51Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 329,
+      "kind": "PR",
+      "title": "PLAY: let original-source Windows exception diagnostics finish and retain late failures",
+      "url": "https://github.com/techrote/cybersand/pull/329",
+      "created_at": "2026-10-31T19:36:54Z",
+      "updated_at": "2026-10-31T23:17:44Z",
+      "comments": 6,
+      "labels": []
+    },
+    {
+      "number": 333,
+      "kind": "PR",
+      "title": "[DRAFT / NO MERGE] Reconcile PR #290 published render-copy stack with PLAY main",
+      "url": "https://github.com/techrote/cybersand/pull/333",
+      "created_at": "2026-10-31T22:05:29Z",
+      "updated_at": "2026-10-31T22:07:28Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 335,
+      "kind": "PR",
+      "title": "[DRAFT / NO MERGE] Render publication: graphical ACK feedback, strict E and native R isolation",
+      "url": "https://github.com/techrote/cybersand/pull/335",
+      "created_at": "2026-10-31T22:28:40Z",
+      "updated_at": "2026-10-31T23:29:00Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 336,
+      "kind": "PR",
+      "title": "[DRAFT] Diagnose rigid/cellular displacement: replay, topology and push-chain NO-GO",
+      "url": "https://github.com/techrote/cybersand/pull/336",
+      "created_at": "2026-10-31T22:37:57Z",
+      "updated_at": "2026-10-31T22:38:42Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 337,
+      "kind": "PR",
+      "title": "docs(play): reconcile accepted policy and candidate qualification handoff",
+      "url": "https://github.com/techrote/cybersand/pull/337",
+      "created_at": "2026-10-31T23:30:33Z",
+      "updated_at": "2026-10-31T23:39:44Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 338,
+      "kind": "PR",
+      "title": "A2 topology-diverse recapture: bounded push-chain primary NO-GO",
+      "url": "https://github.com/techrote/cybersand/pull/338",
+      "created_at": "2026-11-01T00:04:41Z",
+      "updated_at": "2026-11-01T00:04:41Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 339,
+      "kind": "PR",
+      "title": "Measure granular entry momentum and bearing response timing",
+      "url": "https://github.com/techrote/cybersand/pull/339",
+      "created_at": "2026-11-01T01:01:00Z",
+      "updated_at": "2026-11-01T01:01:00Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 341,
+      "kind": "PR",
+      "title": "Discriminate granular braking and admission: Y1 high-value, A2 partial",
+      "url": "https://github.com/techrote/cybersand/pull/341",
+      "created_at": "2026-11-01T04:14:34Z",
+      "updated_at": "2026-11-01T04:14:34Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 342,
+      "kind": "PR",
+      "title": "Qualify Y1 post-arrest clearance: exact accounting and sustained clearance from sample 706",
+      "url": "https://github.com/techrote/cybersand/pull/342",
+      "created_at": "2026-11-01T07:51:23Z",
+      "updated_at": "2026-11-01T07:51:23Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 343,
+      "kind": "PR",
+      "title": "Qualify Y1 granular bearing and plan combined category-wide contact response",
+      "url": "https://github.com/techrote/cybersand/pull/343",
+      "created_at": "2026-11-01T09:14:36Z",
+      "updated_at": "2026-11-01T14:10:29Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 345,
+      "kind": "PR",
+      "title": "experiment(render): qualify strict baseline accounting on production R",
+      "url": "https://github.com/techrote/cybersand/pull/345",
+      "created_at": "2026-11-01T14:02:34Z",
+      "updated_at": "2026-11-01T15:58:04Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 346,
+      "kind": "PR",
+      "title": "experiment: implement GCR-001 and retain R2 qualification NO-GO",
+      "url": "https://github.com/techrote/cybersand/pull/346",
+      "created_at": "2026-11-01T16:59:43Z",
+      "updated_at": "2026-11-01T17:09:42Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 347,
+      "kind": "PR",
+      "title": "SOL-DETACH-001: native structural detachment and conservative local displacement",
+      "url": "https://github.com/techrote/cybersand/pull/347",
+      "created_at": "2026-11-01T17:07:33Z",
+      "updated_at": "2026-11-04T15:24:20Z",
+      "comments": 4,
+      "labels": []
+    },
+    {
+      "number": 348,
+      "kind": "PR",
+      "title": "experiment: qualify GCR-A1 admission fix; physical response remains NO-GO",
+      "url": "https://github.com/techrote/cybersand/pull/348",
+      "created_at": "2026-11-01T19:11:57Z",
+      "updated_at": "2026-11-01T19:14:16Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 349,
+      "kind": "PR",
+      "title": "Compose native detachment with one compound GCR response owner",
+      "url": "https://github.com/techrote/cybersand/pull/349",
+      "created_at": "2026-11-02T01:30:30Z",
+      "updated_at": "2026-11-02T01:33:12Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 350,
+      "kind": "PR",
+      "title": "experiment: qualify mass-scaled GCR capacity and owner controls",
+      "url": "https://github.com/techrote/cybersand/pull/350",
+      "created_at": "2026-11-02T20:12:05Z",
+      "updated_at": "2026-11-02T20:16:18Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 351,
+      "kind": "PR",
+      "title": "experiment: compare granular budgets, rest and editable flyer controls",
+      "url": "https://github.com/techrote/cybersand/pull/351",
+      "created_at": "2026-11-02T21:24:53Z",
+      "updated_at": "2026-11-03T00:47:35Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 352,
+      "kind": "issue",
+      "title": "MAT-AUTH-000: Canonical material authoring — architecture, provenance and gated issue chain",
+      "url": "https://github.com/techrote/cybersand/issues/352",
+      "created_at": "2026-11-02T21:35:02Z",
+      "updated_at": "2026-11-11T21:50:25Z",
+      "comments": 7,
+      "labels": []
+    },
+    {
+      "number": 353,
+      "kind": "issue",
+      "title": "MAT-AUTH-001: Generate canonical material catalogue, capabilities and mirrors with exact parity",
+      "url": "https://github.com/techrote/cybersand/issues/353",
+      "created_at": "2026-11-02T21:36:00Z",
+      "updated_at": "2026-11-11T21:50:27Z",
+      "comments": 9,
+      "labels": []
+    },
+    {
+      "number": 354,
+      "kind": "issue",
+      "title": "MAT-AUTH-002: Reproduce and correct material cooling/retry liveness under bounded scheduling",
+      "url": "https://github.com/techrote/cybersand/issues/354",
+      "created_at": "2026-11-02T21:36:48Z",
+      "updated_at": "2026-11-11T21:50:28Z",
+      "comments": 4,
+      "labels": []
+    },
+    {
+      "number": 355,
+      "kind": "issue",
+      "title": "MAT-AUTH-003: Versioned reaction effects, eligibility diagnostics and conflict-safe authoring",
+      "url": "https://github.com/techrote/cybersand/issues/355",
+      "created_at": "2026-11-02T21:37:35Z",
+      "updated_at": "2026-11-11T21:50:29Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 356,
+      "kind": "issue",
+      "title": "MAT-AUTH-004: Materials Lab browser, effective-property inspector and safe material authoring",
+      "url": "https://github.com/techrote/cybersand/issues/356",
+      "created_at": "2026-11-02T21:38:27Z",
+      "updated_at": "2026-11-11T21:50:30Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 358,
+      "kind": "PR",
+      "title": "feat(materials): add paired walls and finite Water curing",
+      "url": "https://github.com/techrote/cybersand/pull/358",
+      "created_at": "2026-11-03T03:20:07Z",
+      "updated_at": "2026-11-04T10:19:53Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 359,
+      "kind": "issue",
+      "title": "LCB-REASSESS: Audit landed liquid solvers, application paths and comparison evidence",
+      "url": "https://github.com/techrote/cybersand/issues/359",
+      "created_at": "2026-11-03T19:57:21Z",
+      "updated_at": "2026-11-03T21:11:26Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 360,
+      "kind": "issue",
+      "title": "LCB-FEEL: Playable four-family liquid comparison with actual multithreaded profiling",
+      "url": "https://github.com/techrote/cybersand/issues/360",
+      "created_at": "2026-11-03T19:58:03Z",
+      "updated_at": "2026-11-04T02:24:15Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 361,
+      "kind": "issue",
+      "title": "IN-TOOLS: Opt-in inertial liquid leaks, drains, nozzles and gameplay usables",
+      "url": "https://github.com/techrote/cybersand/issues/361",
+      "created_at": "2026-11-03T19:58:50Z",
+      "updated_at": "2026-11-05T03:26:40Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 362,
+      "kind": "issue",
+      "title": "WATER-CONTACT: Compare Rapier-driven splashes and investigate real ballistic spray",
+      "url": "https://github.com/techrote/cybersand/issues/362",
+      "created_at": "2026-11-03T19:59:37Z",
+      "updated_at": "2026-11-03T19:59:37Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 363,
+      "kind": "issue",
+      "title": "LCB-DECIDE: Evidence-based solver gameplay profiles, retention and promotion gates",
+      "url": "https://github.com/techrote/cybersand/issues/363",
+      "created_at": "2026-11-03T20:00:20Z",
+      "updated_at": "2026-11-03T20:00:20Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 364,
+      "kind": "issue",
+      "title": "SOL-CONTACT-002: Repair persistent embedded-Sand penetration under revision-safe contact sampling",
+      "url": "https://github.com/techrote/cybersand/issues/364",
+      "created_at": "2026-11-03T20:14:45Z",
+      "updated_at": "2026-11-04T15:24:25Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 365,
+      "kind": "issue",
+      "title": "SOL-RESTORE-001: Restore one stable lattice-congruent aggregate through an atomic ownership handoff",
+      "url": "https://github.com/techrote/cybersand/issues/365",
+      "created_at": "2026-11-03T20:15:02Z",
+      "updated_at": "2026-11-04T01:09:36Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 366,
+      "kind": "PR",
+      "title": "test: separate GCR-LA quiet creep, dynamic burial and powered sliding",
+      "url": "https://github.com/techrote/cybersand/pull/366",
+      "created_at": "2026-11-03T20:26:51Z",
+      "updated_at": "2026-11-03T20:28:32Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 368,
+      "kind": "PR",
+      "title": "test: isolate GCR-LA timing, withdrawal and blocked-event burial",
+      "url": "https://github.com/techrote/cybersand/pull/368",
+      "created_at": "2026-11-03T21:25:40Z",
+      "updated_at": "2026-11-03T21:29:43Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 370,
+      "kind": "PR",
+      "title": "LCB-FEEL #360: four-family liquid comparison — admission preflight and playable route",
+      "url": "https://github.com/techrote/cybersand/pull/370",
+      "created_at": "2026-11-03T22:40:53Z",
+      "updated_at": "2026-11-04T07:08:05Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 372,
+      "kind": "PR",
+      "title": "feat: qualify granular-only event response in the painting playground",
+      "url": "https://github.com/techrote/cybersand/pull/372",
+      "created_at": "2026-11-04T02:30:05Z",
+      "updated_at": "2026-11-04T02:42:12Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 373,
+      "kind": "PR",
+      "title": "experiment: selective granular arrival response fails joint qualification",
+      "url": "https://github.com/techrote/cybersand/pull/373",
+      "created_at": "2026-11-04T03:01:50Z",
+      "updated_at": "2026-11-04T03:26:50Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 375,
+      "kind": "PR",
+      "title": "feat: add repeatable powder burst and stream comparisons",
+      "url": "https://github.com/techrote/cybersand/pull/375",
+      "created_at": "2026-11-04T09:20:59Z",
+      "updated_at": "2026-11-04T09:23:05Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 376,
+      "kind": "PR",
+      "title": "WATER-CONTACT #362 Phase A: four-family Rapier impact discrimination (evidence only)",
+      "url": "https://github.com/techrote/cybersand/pull/376",
+      "created_at": "2026-11-04T09:39:12Z",
+      "updated_at": "2026-11-04T13:11:40Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 378,
+      "kind": "PR",
+      "title": "docs: independent SOL347 physical-blocker review and bounded repair finding",
+      "url": "https://github.com/techrote/cybersand/pull/378",
+      "created_at": "2026-11-04T10:28:10Z",
+      "updated_at": "2026-11-04T10:28:10Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 379,
+      "kind": "PR",
+      "title": "IN-TOOLS #361: bounded gameplay architecture and test admission",
+      "url": "https://github.com/techrote/cybersand/pull/379",
+      "created_at": "2026-11-04T10:34:01Z",
+      "updated_at": "2026-11-05T03:28:04Z",
+      "comments": 17,
+      "labels": []
+    },
+    {
+      "number": 380,
+      "kind": "PR",
+      "title": "feat: add fleet boost and live powder sources, fix edge alignment",
+      "url": "https://github.com/techrote/cybersand/pull/380",
+      "created_at": "2026-11-04T11:01:54Z",
+      "updated_at": "2026-11-04T11:04:04Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 381,
+      "kind": "PR",
+      "title": "feat: add saved flyer spawn, Burst shortcut and compact review UI",
+      "url": "https://github.com/techrote/cybersand/pull/381",
+      "created_at": "2026-11-04T11:46:22Z",
+      "updated_at": "2026-11-04T11:53:23Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 383,
+      "kind": "PR",
+      "title": "IN-TOOLS #361-A: opt-in exact-metered physical Liquid Drain",
+      "url": "https://github.com/techrote/cybersand/pull/383",
+      "created_at": "2026-11-04T12:48:56Z",
+      "updated_at": "2026-11-04T21:44:50Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 384,
+      "kind": "PR",
+      "title": "MAT-AUTH-001 #353-B: generated Main names and scoped consumer proof",
+      "url": "https://github.com/techrote/cybersand/pull/384",
+      "created_at": "2026-11-04T13:11:56Z",
+      "updated_at": "2026-11-05T11:29:50Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 385,
+      "kind": "PR",
+      "title": "feat: add data-authored flyers and compound Scooper review",
+      "url": "https://github.com/techrote/cybersand/pull/385",
+      "created_at": "2026-11-04T13:37:01Z",
+      "updated_at": "2026-11-04T14:52:26Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 386,
+      "kind": "PR",
+      "title": "MAT-SOL: source-pinned protected-consumer REPAIR evidence",
+      "url": "https://github.com/techrote/cybersand/pull/386",
+      "created_at": "2026-11-04T14:30:41Z",
+      "updated_at": "2026-11-04T14:37:20Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 387,
+      "kind": "PR",
+      "title": "fix: preserve entry side for powder against translated compound hulls",
+      "url": "https://github.com/techrote/cybersand/pull/387",
+      "created_at": "2026-11-04T14:44:23Z",
+      "updated_at": "2026-11-04T14:52:23Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 388,
+      "kind": "PR",
+      "title": "ACTIVE-LEDGER-001: unified workstream inventory and deterministic status dashboard",
+      "url": "https://github.com/techrote/cybersand/pull/388",
+      "created_at": "2026-11-04T15:55:37Z",
+      "updated_at": "2026-11-05T14:20:39Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 389,
+      "kind": "PR",
+      "title": "feat: try a braced U-shaped Scooper with matched retention tests",
+      "url": "https://github.com/techrote/cybersand/pull/389",
+      "created_at": "2026-11-04T16:21:50Z",
+      "updated_at": "2026-11-04T16:59:54Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 392,
+      "kind": "PR",
+      "title": "WORKBENCH-001: shared two-map development sandbox and mixed-body acceptance",
+      "url": "https://github.com/techrote/cybersand/pull/392",
+      "created_at": "2026-11-04T18:48:36Z",
+      "updated_at": "2026-11-04T18:50:23Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 393,
+      "kind": "PR",
+      "title": "SOL #347: repair public refusal and authoritative readback contracts",
+      "url": "https://github.com/techrote/cybersand/pull/393",
+      "created_at": "2026-11-04T19:43:06Z",
+      "updated_at": "2026-11-04T20:04:12Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 395,
+      "kind": "PR",
+      "title": "MAT-AUTH-002 #354-B: narrow MoltenGlass cooling deadline and source transition",
+      "url": "https://github.com/techrote/cybersand/pull/395",
+      "created_at": "2026-11-04T21:09:48Z",
+      "updated_at": "2026-11-04T23:07:41Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 397,
+      "kind": "issue",
+      "title": "MAT-AUTH-002 follow-up: diagnose H1 epoch-wrap cost and record performance disposition",
+      "url": "https://github.com/techrote/cybersand/issues/397",
+      "created_at": "2026-11-04T22:55:56Z",
+      "updated_at": "2026-11-04T22:55:56Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 398,
+      "kind": "issue",
+      "title": "MAT-AUTH-002 follow-up: decide the CYPS import contract for pre-H1 sleeping MoltenGlass",
+      "url": "https://github.com/techrote/cybersand/issues/398",
+      "created_at": "2026-11-04T22:55:57Z",
+      "updated_at": "2026-11-04T22:55:57Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 399,
+      "kind": "PR",
+      "title": "test(physical): establish owner readback before retention baseline",
+      "url": "https://github.com/techrote/cybersand/pull/399",
+      "created_at": "2026-11-04T23:12:21Z",
+      "updated_at": "2026-11-05T13:22:57Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 400,
+      "kind": "PR",
+      "title": "LA-SELECTIVE: real-body qualification and opt-in stale-response guard",
+      "url": "https://github.com/techrote/cybersand/pull/400",
+      "created_at": "2026-11-05T01:22:31Z",
+      "updated_at": "2026-11-05T03:19:46Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 401,
+      "kind": "PR",
+      "title": "PLAY-WIN-CRASH: diagnostic Godot #117991 Windows A/B experiment",
+      "url": "https://github.com/techrote/cybersand/pull/401",
+      "created_at": "2026-11-05T02:35:47Z",
+      "updated_at": "2026-11-06T22:26:09Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 402,
+      "kind": "PR",
+      "title": "Workbench: saved per-flyer controls, tuning and pixel thrusters",
+      "url": "https://github.com/techrote/cybersand/pull/402",
+      "created_at": "2026-11-05T02:57:00Z",
+      "updated_at": "2026-11-05T16:33:33Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 403,
+      "kind": "PR",
+      "title": "PLAY-PACE-003 successor: ANGLE FXC attribution, negative shader experiments, pacing probe",
+      "url": "https://github.com/techrote/cybersand/pull/403",
+      "created_at": "2026-11-05T03:24:08Z",
+      "updated_at": "2026-11-05T03:24:08Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 404,
+      "kind": "PR",
+      "title": "IN-TOOLS #361: current-main successor admission and Windows causal gate",
+      "url": "https://github.com/techrote/cybersand/pull/404",
+      "created_at": "2026-11-05T03:27:50Z",
+      "updated_at": "2026-11-07T15:01:07Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 407,
+      "kind": "PR",
+      "title": "SOL: correct energy guard precision without changing response impulses",
+      "url": "https://github.com/techrote/cybersand/pull/407",
+      "created_at": "2026-11-05T04:19:38Z",
+      "updated_at": "2026-11-05T04:19:38Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 409,
+      "kind": "PR",
+      "title": "Workbench: compose player rigs, native fields and physical usables",
+      "url": "https://github.com/techrote/cybersand/pull/409",
+      "created_at": "2026-11-05T04:56:44Z",
+      "updated_at": "2026-11-05T04:56:44Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 411,
+      "kind": "PR",
+      "title": "SOL chamber: exact 520-member geometry, selective equilibrium and forced penetration evidence",
+      "url": "https://github.com/techrote/cybersand/pull/411",
+      "created_at": "2026-11-05T06:40:09Z",
+      "updated_at": "2026-11-05T07:03:30Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 413,
+      "kind": "PR",
+      "title": "SOL/GCR: opt-in opposing-normal support normalization (bounded experiment) -slop",
+      "url": "https://github.com/techrote/cybersand/pull/413",
+      "created_at": "2026-11-05T07:53:22Z",
+      "updated_at": "2026-11-05T19:23:10Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 415,
+      "kind": "PR",
+      "title": "GEN-006: experimental durable save/ACK fault and eviction refusal fixture -slop",
+      "url": "https://github.com/techrote/cybersand/pull/415",
+      "created_at": "2026-11-05T08:16:40Z",
+      "updated_at": "2026-11-05T19:23:13Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 416,
+      "kind": "PR",
+      "title": "SOL chamber cost: isolate response generation from observation with 24 matched pairs",
+      "url": "https://github.com/techrote/cybersand/pull/416",
+      "created_at": "2026-11-05T08:18:31Z",
+      "updated_at": "2026-11-05T08:18:31Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 417,
+      "kind": "PR",
+      "title": "INV-004: source-pinned MicroScenario frame-copy cost discriminator (diagnostic) -slop",
+      "url": "https://github.com/techrote/cybersand/pull/417",
+      "created_at": "2026-11-05T08:22:34Z",
+      "updated_at": "2026-11-05T19:23:24Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 418,
+      "kind": "PR",
+      "title": "SOL/GCR: passivity-safe fallback for opt-in active-normal normalization -slop",
+      "url": "https://github.com/techrote/cybersand/pull/418",
+      "created_at": "2026-11-05T08:41:36Z",
+      "updated_at": "2026-11-05T19:23:26Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 419,
+      "kind": "PR",
+      "title": "REC-001: bounded offline v2 gameplay evidence comparison viewer",
+      "url": "https://github.com/techrote/cybersand/pull/419",
+      "created_at": "2026-11-05T08:46:41Z",
+      "updated_at": "2026-11-05T17:53:39Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 421,
+      "kind": "PR",
+      "title": "SOL active-normal candidate: bounded value refinement with unchanged capacity controls",
+      "url": "https://github.com/techrote/cybersand/pull/421",
+      "created_at": "2026-11-05T09:20:15Z",
+      "updated_at": "2026-11-05T09:20:15Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 422,
+      "kind": "PR",
+      "title": "GEN-006: native material-only rehydration negative control and actual 1/4-worker continuation",
+      "url": "https://github.com/techrote/cybersand/pull/422",
+      "created_at": "2026-11-05T09:21:21Z",
+      "updated_at": "2026-11-05T09:23:20Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 423,
+      "kind": "PR",
+      "title": "SOL: expose opt-in passivity fallback provenance and qualify one million contacts -slop",
+      "url": "https://github.com/techrote/cybersand/pull/423",
+      "created_at": "2026-11-05T09:52:26Z",
+      "updated_at": "2026-11-05T19:23:28Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 424,
+      "kind": "PR",
+      "title": "REC-001: observed-event bookmark index for retained gameplay recordings (experimental)",
+      "url": "https://github.com/techrote/cybersand/pull/424",
+      "created_at": "2026-11-05T09:56:38Z",
+      "updated_at": "2026-11-05T18:50:58Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 426,
+      "kind": "PR",
+      "title": "GEN-006: real native generator session-fence and cancelled demand admission probe",
+      "url": "https://github.com/techrote/cybersand/pull/426",
+      "created_at": "2026-11-05T10:16:37Z",
+      "updated_at": "2026-11-05T16:22:11Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 429,
+      "kind": "PR",
+      "title": "Reject clipping-only mixed-body repair and qualify Rapier gravity/damping",
+      "url": "https://github.com/techrote/cybersand/pull/429",
+      "created_at": "2026-11-05T10:58:43Z",
+      "updated_at": "2026-11-05T22:35:33Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 432,
+      "kind": "PR",
+      "title": "REC-001: hosted Windows recorder OFF/ON path cost and real encoding evidence (experimental)",
+      "url": "https://github.com/techrote/cybersand/pull/432",
+      "created_at": "2026-11-05T11:44:32Z",
+      "updated_at": "2026-11-05T16:46:25Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 433,
+      "kind": "PR",
+      "title": "SOL live active-normal: refuse invalid rigid-body inputs before contact",
+      "url": "https://github.com/techrote/cybersand/pull/433",
+      "created_at": "2026-11-05T11:45:32Z",
+      "updated_at": "2026-11-05T14:47:06Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 435,
+      "kind": "PR",
+      "title": "GEN-006: native selective checkpoint domain and owner-pin refusal probe",
+      "url": "https://github.com/techrote/cybersand/pull/435",
+      "created_at": "2026-11-05T12:11:17Z",
+      "updated_at": "2026-11-05T12:14:21Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 438,
+      "kind": "PR",
+      "title": "SOL #433: actual Windows/MSVC source-locked red-green and valid-path parity -slop",
+      "url": "https://github.com/techrote/cybersand/pull/438",
+      "created_at": "2026-11-05T13:45:07Z",
+      "updated_at": "2026-11-05T19:28:54Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 441,
+      "kind": "PR",
+      "title": "SOL: refuse malformed live copied contact bins before impulse arithmetic",
+      "url": "https://github.com/techrote/cybersand/pull/441",
+      "created_at": "2026-11-05T14:44:21Z",
+      "updated_at": "2026-11-05T18:45:07Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 442,
+      "kind": "PR",
+      "title": "GEN-006: actual native cross-chunk semantic bundle partial-admission control -slop",
+      "url": "https://github.com/techrote/cybersand/pull/442",
+      "created_at": "2026-11-05T15:12:54Z",
+      "updated_at": "2026-11-05T19:25:55Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 444,
+      "kind": "PR",
+      "title": "SOL: cleanly refuse unrepresentable derived contact geometry",
+      "url": "https://github.com/techrote/cybersand/pull/444",
+      "created_at": "2026-11-05T15:50:19Z",
+      "updated_at": "2026-11-05T17:30:15Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 448,
+      "kind": "PR",
+      "title": "GEN-006: test native private-staged all-or-none semantic bundle control -slop",
+      "url": "https://github.com/techrote/cybersand/pull/448",
+      "created_at": "2026-11-05T17:13:12Z",
+      "updated_at": "2026-11-05T19:26:00Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 449,
+      "kind": "PR",
+      "title": "INV-004: source-matched Windows physics session/Rapier stage timing ABBA",
+      "url": "https://github.com/techrote/cybersand/pull/449",
+      "created_at": "2026-11-05T17:21:44Z",
+      "updated_at": "2026-11-05T23:37:27Z",
+      "comments": 7,
+      "labels": []
+    },
+    {
+      "number": 450,
+      "kind": "PR",
+      "title": "SOL experiment: bound active-normal mixed-face closing per face (value-only) -slop",
+      "url": "https://github.com/techrote/cybersand/pull/450",
+      "created_at": "2026-11-05T17:43:30Z",
+      "updated_at": "2026-11-05T19:26:02Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 452,
+      "kind": "PR",
+      "title": "SOL: reject copied Bin means outside tangent extrema (A01)",
+      "url": "https://github.com/techrote/cybersand/pull/452",
+      "created_at": "2026-11-05T18:42:23Z",
+      "updated_at": "2026-11-05T18:46:39Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 454,
+      "kind": "PR",
+      "title": "World design: consolidate 15 collections into one high-detail atlas refinement [design-only]",
+      "url": "https://github.com/techrote/cybersand/pull/454",
+      "created_at": "2026-11-05T20:13:33Z",
+      "updated_at": "2026-11-07T04:39:19Z",
+      "comments": 116,
+      "labels": []
+    },
+    {
+      "number": 455,
+      "kind": "PR",
+      "title": "SOL safety: compose dependent input/bin/derived guards",
+      "url": "https://github.com/techrote/cybersand/pull/455",
+      "created_at": "2026-11-05T20:54:39Z",
+      "updated_at": "2026-11-05T21:18:30Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 456,
+      "kind": "PR",
+      "title": "INV-004: classify Rapier bridge wall time by calling-thread CPU time",
+      "url": "https://github.com/techrote/cybersand/pull/456",
+      "created_at": "2026-11-05T21:46:14Z",
+      "updated_at": "2026-11-07T00:40:40Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 457,
+      "kind": "PR",
+      "title": "Tooling: shared Godot world-design pack capture adapter (requires graphical qualification)",
+      "url": "https://github.com/techrote/cybersand/pull/457",
+      "created_at": "2026-11-05T21:53:18Z",
+      "updated_at": "2026-11-06T01:25:01Z",
+      "comments": 4,
+      "labels": []
+    },
+    {
+      "number": 458,
+      "kind": "PR",
+      "title": "GEN-006: Windows/Linux checkpoint lifetime probes — reader lease and staged-writer GC (experimental)",
+      "url": "https://github.com/techrote/cybersand/pull/458",
+      "created_at": "2026-11-06T03:13:16Z",
+      "updated_at": "2026-11-06T05:08:02Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 459,
+      "kind": "PR",
+      "title": "GEN-006: native CYPS whole-World snapshot scope and exclusive-owner latency probe (experimental)",
+      "url": "https://github.com/techrote/cybersand/pull/459",
+      "created_at": "2026-11-06T06:07:51Z",
+      "updated_at": "2026-11-07T00:15:52Z",
+      "comments": 15,
+      "labels": []
+    },
+    {
+      "number": 460,
+      "kind": "PR",
+      "title": "fix(sol): initialize aggregate mass before the first impulse",
+      "url": "https://github.com/techrote/cybersand/pull/460",
+      "created_at": "2026-11-06T10:48:24Z",
+      "updated_at": "2026-11-06T10:50:19Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 461,
+      "kind": "PR",
+      "title": "experiment(sol): qualify contact/gravity ordering on cut structures",
+      "url": "https://github.com/techrote/cybersand/pull/461",
+      "created_at": "2026-11-06T11:57:50Z",
+      "updated_at": "2026-11-06T17:44:04Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 462,
+      "kind": "PR",
+      "title": "Repair: world-design capture R1–R4, N1 and source provenance (dependent Draft)",
+      "url": "https://github.com/techrote/cybersand/pull/462",
+      "created_at": "2026-11-06T12:58:12Z",
+      "updated_at": "2026-11-06T20:49:56Z",
+      "comments": 7,
+      "labels": []
+    },
+    {
+      "number": 463,
+      "kind": "PR",
+      "title": "evidence(sol): bearing-gate diagnostic on #461 — inconclusive (not for merge)",
+      "url": "https://github.com/techrote/cybersand/pull/463",
+      "created_at": "2026-11-06T16:23:50Z",
+      "updated_at": "2026-11-06T17:45:17Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 466,
+      "kind": "PR",
+      "title": "feat(workbench): release cut structures and fix normal-brush admission",
+      "url": "https://github.com/techrote/cybersand/pull/466",
+      "created_at": "2026-11-06T18:54:04Z",
+      "updated_at": "2026-11-07T03:06:26Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 467,
+      "kind": "PR",
+      "title": "Repair: harden final capture claim release and alias containment",
+      "url": "https://github.com/techrote/cybersand/pull/467",
+      "created_at": "2026-11-06T19:54:14Z",
+      "updated_at": "2026-11-06T20:49:58Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 468,
+      "kind": "PR",
+      "title": "[DRAFT / NO MERGE] Independent real-process live-claim recovery adversary",
+      "url": "https://github.com/techrote/cybersand/pull/468",
+      "created_at": "2026-11-06T20:02:48Z",
+      "updated_at": "2026-11-06T20:07:15Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 469,
+      "kind": "PR",
+      "title": "[DRAFT] Repair R1-D: reject live-owner claim recovery and verify on both OSes",
+      "url": "https://github.com/techrote/cybersand/pull/469",
+      "created_at": "2026-11-06T20:36:02Z",
+      "updated_at": "2026-11-06T22:51:27Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 472,
+      "kind": "PR",
+      "title": "[EXPERIMENTAL] PF cached run-head repair with bounded dirty-Y preflight",
+      "url": "https://github.com/techrote/cybersand/pull/472",
+      "created_at": "2026-11-06T21:16:44Z",
+      "updated_at": "2026-11-06T22:45:07Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 475,
+      "kind": "PR",
+      "title": "[Draft research] PressureFlow C1024/C2048/C4096 native gas-capacity qualification",
+      "url": "https://github.com/techrote/cybersand/pull/475",
+      "created_at": "2026-11-06T21:36:33Z",
+      "updated_at": "2026-11-07T00:42:38Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 476,
+      "kind": "PR",
+      "title": "[Draft / NO-GO] Bounded per-run PressureFlow head repair and differential qualification",
+      "url": "https://github.com/techrote/cybersand/pull/476",
+      "created_at": "2026-11-06T21:45:02Z",
+      "updated_at": "2026-11-06T21:51:55Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 478,
+      "kind": "PR",
+      "title": "[DRAFT] Capture R1-D recovery identity: PID namespace and process generation",
+      "url": "https://github.com/techrote/cybersand/pull/478",
+      "created_at": "2026-11-06T22:19:15Z",
+      "updated_at": "2026-11-06T23:44:37Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 479,
+      "kind": "PR",
+      "title": "fix(capture): R1-D Linux process visibility and reserved no-clobber claim archives",
+      "url": "https://github.com/techrote/cybersand/pull/479",
+      "created_at": "2026-11-06T22:24:43Z",
+      "updated_at": "2026-11-06T22:51:31Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 480,
+      "kind": "PR",
+      "title": "IN-TOOLS #361: current-main gameplay implementation successor",
+      "url": "https://github.com/techrote/cybersand/pull/480",
+      "created_at": "2026-11-06T22:37:29Z",
+      "updated_at": "2026-11-07T20:42:41Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 484,
+      "kind": "PR",
+      "title": "[DRAFT][AUTOMATED ACCEPT] Current-main integrated gameplay acceptance package",
+      "url": "https://github.com/techrote/cybersand/pull/484",
+      "created_at": "2026-11-06T23:42:47Z",
+      "updated_at": "2026-11-07T20:32:18Z",
+      "comments": 5,
+      "labels": []
+    },
+    {
+      "number": 486,
+      "kind": "PR",
+      "title": "GEN-006: persistent opt-in native streaming + Godot visual demo (sharded Worlds prototype)",
+      "url": "https://github.com/techrote/cybersand/pull/486",
+      "created_at": "2026-11-07T00:36:42Z",
+      "updated_at": "2026-11-07T13:59:52Z",
+      "comments": 39,
+      "labels": []
+    },
+    {
+      "number": 487,
+      "kind": "PR",
+      "title": "[DRAFT] Interactive Godot World Art Preview — production RG8 shaders, live reload and export",
+      "url": "https://github.com/techrote/cybersand/pull/487",
+      "created_at": "2026-11-07T00:43:18Z",
+      "updated_at": "2026-11-07T01:33:50Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 488,
+      "kind": "PR",
+      "title": "test(perf): representative stress-canvas PF/ballistic/splash Windows qualification",
+      "url": "https://github.com/techrote/cybersand/pull/488",
+      "created_at": "2026-11-07T00:46:00Z",
+      "updated_at": "2026-11-07T01:01:08Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 490,
+      "kind": "PR",
+      "title": "GEN-006 support: reproduce chunk rebind and qualify a no-ABI restore guard",
+      "url": "https://github.com/techrote/cybersand/pull/490",
+      "created_at": "2026-11-07T00:50:17Z",
+      "updated_at": "2026-11-07T01:09:39Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 493,
+      "kind": "PR",
+      "title": "test(perf): exhaustive matched 360-configuration Water stress factorial, three repeats",
+      "url": "https://github.com/techrote/cybersand/pull/493",
+      "created_at": "2026-11-07T01:28:32Z",
+      "updated_at": "2026-11-07T01:52:56Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 497,
+      "kind": "issue",
+      "title": "MAP-AUTO: API-backed Godot render/critique workflow for CyberSand atlas workers",
+      "url": "https://github.com/techrote/cybersand/issues/497",
+      "created_at": "2026-11-07T02:17:50Z",
+      "updated_at": "2026-11-07T18:10:47Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 498,
+      "kind": "issue",
+      "title": "MAP-AUTO-01: Unattended Godot atlas renders with immutable image evidence",
+      "url": "https://github.com/techrote/cybersand/issues/498",
+      "created_at": "2026-11-07T02:19:01Z",
+      "updated_at": "2026-11-07T02:19:01Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 500,
+      "kind": "issue",
+      "title": "MAP-AUTO-03: Connect three CyberSand Atlas lanes to render–critique–revise",
+      "url": "https://github.com/techrote/cybersand/issues/500",
+      "created_at": "2026-11-07T02:19:04Z",
+      "updated_at": "2026-11-07T18:04:17Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 501,
+      "kind": "issue",
+      "title": "MAP-AUTO-04: Native four-plane atlas authoring and capture acceptance",
+      "url": "https://github.com/techrote/cybersand/issues/501",
+      "created_at": "2026-11-07T02:19:06Z",
+      "updated_at": "2026-11-07T02:19:06Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 505,
+      "kind": "PR",
+      "title": "test(perf): source-matched PF gas acceptance screen on complete factorial foundation",
+      "url": "https://github.com/techrote/cybersand/pull/505",
+      "created_at": "2026-11-07T02:46:37Z",
+      "updated_at": "2026-11-07T09:03:16Z",
+      "comments": 8,
+      "labels": []
+    },
+    {
+      "number": 506,
+      "kind": "PR",
+      "title": "[DRAFT] MAP-AUTO-01 #498: unattended Godot atlas capture (PNG + manifest)",
+      "url": "https://github.com/techrote/cybersand/pull/506",
+      "created_at": "2026-11-07T02:56:01Z",
+      "updated_at": "2026-11-07T03:51:33Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 507,
+      "kind": "PR",
+      "title": "GEN-006 support: real native surface tick crash versus durable Empty-intent control",
+      "url": "https://github.com/techrote/cybersand/pull/507",
+      "created_at": "2026-11-07T03:08:09Z",
+      "updated_at": "2026-11-07T03:44:47Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 509,
+      "kind": "PR",
+      "title": "PLAY-WIN-CRASH: qualify retained #117991-patched Godot as independent Windows runtime candidate (no pin change)",
+      "url": "https://github.com/techrote/cybersand/pull/509",
+      "created_at": "2026-11-07T03:12:39Z",
+      "updated_at": "2026-11-07T03:24:03Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 510,
+      "kind": "PR",
+      "title": "experiment(workbench): small brick debris, material visuals and responsive cuts",
+      "url": "https://github.com/techrote/cybersand/pull/510",
+      "created_at": "2026-11-07T03:59:35Z",
+      "updated_at": "2026-11-07T05:44:05Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 511,
+      "kind": "PR",
+      "title": "GEN-006 support: actual Godot framebuffer acceptance of simulation pin and recovery",
+      "url": "https://github.com/techrote/cybersand/pull/511",
+      "created_at": "2026-11-07T04:12:09Z",
+      "updated_at": "2026-11-07T12:23:52Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 512,
+      "kind": "PR",
+      "title": "GEN-006: shared-World G6KC1 static checkpoint, durable generation-fenced eviction and restart",
+      "url": "https://github.com/techrote/cybersand/pull/512",
+      "created_at": "2026-11-07T04:58:58Z",
+      "updated_at": "2026-11-07T13:27:40Z",
+      "comments": 13,
+      "labels": []
+    },
+    {
+      "number": 513,
+      "kind": "PR",
+      "title": "GEN-006: real NVIDIA Windows playtest and bounded IPC read repair (human pending)",
+      "url": "https://github.com/techrote/cybersand/pull/513",
+      "created_at": "2026-11-07T05:03:23Z",
+      "updated_at": "2026-11-07T10:33:22Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 514,
+      "kind": "PR",
+      "title": "GEN-006 support: real accepted-main physics parity and shared-World re-admission gate",
+      "url": "https://github.com/techrote/cybersand/pull/514",
+      "created_at": "2026-11-07T05:07:40Z",
+      "updated_at": "2026-11-07T11:12:18Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 515,
+      "kind": "PR",
+      "title": "[EXPERIMENT] PF504 real 2048×1024 workbench stress-canvas source-matched B-C-C-B",
+      "url": "https://github.com/techrote/cybersand/pull/515",
+      "created_at": "2026-11-07T05:24:51Z",
+      "updated_at": "2026-11-07T09:03:14Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 517,
+      "kind": "PR",
+      "title": "chore: prune default-branch Web trigger and correct stale navigation authority",
+      "url": "https://github.com/techrote/cybersand/pull/517",
+      "created_at": "2026-11-07T05:51:48Z",
+      "updated_at": "2026-11-07T23:47:21Z",
+      "comments": 4,
+      "labels": []
+    },
+    {
+      "number": 518,
+      "kind": "PR",
+      "title": "[DRAFT] GEN-006 G6J1 bounded durable edit journal and crash-restart fixture",
+      "url": "https://github.com/techrote/cybersand/pull/518",
+      "created_at": "2026-11-07T05:59:17Z",
+      "updated_at": "2026-11-07T14:02:37Z",
+      "comments": 10,
+      "labels": []
+    },
+    {
+      "number": 519,
+      "kind": "PR",
+      "title": "experiment(workbench): cut outcomes and reusable physics findings — benched",
+      "url": "https://github.com/techrote/cybersand/pull/519",
+      "created_at": "2026-11-07T06:26:21Z",
+      "updated_at": "2026-11-07T11:56:33Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 520,
+      "kind": "PR",
+      "title": "[EXPERIMENT] PF504 gas-stage process CPU attribution on real workbench stress-canvas",
+      "url": "https://github.com/techrote/cybersand/pull/520",
+      "created_at": "2026-11-07T08:40:55Z",
+      "updated_at": "2026-11-07T09:08:16Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 521,
+      "kind": "PR",
+      "title": "[EXPERIMENT] PF504 final real 2048×1024 gas CPU, worker and physics qualification",
+      "url": "https://github.com/techrote/cybersand/pull/521",
+      "created_at": "2026-11-07T08:45:33Z",
+      "updated_at": "2026-11-07T09:03:09Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 523,
+      "kind": "PR",
+      "title": "GEN-006: actual native signed-seam dynamic continuation and fenced full-World staging",
+      "url": "https://github.com/techrote/cybersand/pull/523",
+      "created_at": "2026-11-07T10:52:41Z",
+      "updated_at": "2026-11-07T21:42:03Z",
+      "comments": 14,
+      "labels": []
+    },
+    {
+      "number": 525,
+      "kind": "issue",
+      "title": "WB-AGENT-000: Agent authoring in the existing shared workbench — scope and acceptance",
+      "url": "https://github.com/techrote/cybersand/issues/525",
+      "created_at": "2026-11-07T12:18:06Z",
+      "updated_at": "2026-11-08T17:54:12Z",
+      "comments": 54,
+      "labels": []
+    },
+    {
+      "number": 526,
+      "kind": "issue",
+      "title": "WB-AGENT-001: Authoritative observe / prepare / apply tools in the shared workbench",
+      "url": "https://github.com/techrote/cybersand/issues/526",
+      "created_at": "2026-11-07T12:18:52Z",
+      "updated_at": "2026-11-08T04:55:20Z",
+      "comments": 11,
+      "labels": []
+    },
+    {
+      "number": 527,
+      "kind": "issue",
+      "title": "WB-AGENT-002: Bounded stepping, human interruption and Sand-hopper acceptance harness",
+      "url": "https://github.com/techrote/cybersand/issues/527",
+      "created_at": "2026-11-07T12:19:27Z",
+      "updated_at": "2026-11-07T14:33:25Z",
+      "comments": 4,
+      "labels": []
+    },
+    {
+      "number": 528,
+      "kind": "issue",
+      "title": "WB-AGENT-003: In-client Agent panel, asynchronous OpenAI tools and real desktop acceptance",
+      "url": "https://github.com/techrote/cybersand/issues/528",
+      "created_at": "2026-11-07T12:20:16Z",
+      "updated_at": "2026-11-08T15:34:56Z",
+      "comments": 24,
+      "labels": []
+    },
+    {
+      "number": 529,
+      "kind": "PR",
+      "title": "[DRAFT] WB-AGENT #526: authoritative native/host observe–prepare–apply",
+      "url": "https://github.com/techrote/cybersand/pull/529",
+      "created_at": "2026-11-07T13:00:36Z",
+      "updated_at": "2026-11-08T05:45:02Z",
+      "comments": 28,
+      "labels": []
+    },
+    {
+      "number": 530,
+      "kind": "PR",
+      "title": "[DRAFT] WB-AGENT #527: native Sand-hopper control, bounded Step and Stop",
+      "url": "https://github.com/techrote/cybersand/pull/530",
+      "created_at": "2026-11-07T13:19:03Z",
+      "updated_at": "2026-11-08T11:06:58Z",
+      "comments": 52,
+      "labels": []
+    },
+    {
+      "number": 531,
+      "kind": "PR",
+      "title": "[DRAFT] WB-AGENT #525/#528: provider-neutral shared authoring workbench",
+      "url": "https://github.com/techrote/cybersand/pull/531",
+      "created_at": "2026-11-07T13:33:57Z",
+      "updated_at": "2026-11-10T00:23:13Z",
+      "comments": 99,
+      "labels": []
+    },
+    {
+      "number": 532,
+      "kind": "PR",
+      "title": "perf(pf): sparsify authoritative gas relabel work in active gameplay",
+      "url": "https://github.com/techrote/cybersand/pull/532",
+      "created_at": "2026-11-07T13:50:48Z",
+      "updated_at": "2026-11-07T17:03:20Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 533,
+      "kind": "PR",
+      "title": "perf(pf): certify stable gas compartments during global topology churn (#201)",
+      "url": "https://github.com/techrote/cybersand/pull/533",
+      "created_at": "2026-11-07T14:03:31Z",
+      "updated_at": "2026-11-07T18:04:39Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 534,
+      "kind": "PR",
+      "title": "docs: record owner physics convergence and gameplay-first product sequence",
+      "url": "https://github.com/techrote/cybersand/pull/534",
+      "created_at": "2026-11-07T16:35:19Z",
+      "updated_at": "2026-11-08T03:44:57Z",
+      "comments": 4,
+      "labels": []
+    },
+    {
+      "number": 536,
+      "kind": "PR",
+      "title": "[DRAFT] MAP-AUTO-03 #500: source-pinned three-lane real-Godot pilot with structural quality gate",
+      "url": "https://github.com/techrote/cybersand/pull/536",
+      "created_at": "2026-11-07T17:41:12Z",
+      "updated_at": "2026-11-07T18:12:40Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 539,
+      "kind": "PR",
+      "title": "ci(native): permanently run #292 extreme-copy regressions on main pushes",
+      "url": "https://github.com/techrote/cybersand/pull/539",
+      "created_at": "2026-11-07T20:36:15Z",
+      "updated_at": "2026-11-13T21:52:38Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 540,
+      "kind": "PR",
+      "title": "[DRAFT][TEST-ONLY] Physics gameplay: source-matched 1/4-worker participation and pacing",
+      "url": "https://github.com/techrote/cybersand/pull/540",
+      "created_at": "2026-11-07T20:57:30Z",
+      "updated_at": "2026-11-07T22:10:44Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 541,
+      "kind": "issue",
+      "title": "EXPLORE-001 — GEN-007 procedural terrain → ordinary playable shared workbench",
+      "url": "https://github.com/techrote/cybersand/issues/541",
+      "created_at": "2026-11-07T22:41:27Z",
+      "updated_at": "2026-11-09T22:03:53Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 543,
+      "kind": "issue",
+      "title": "PAINT-001: comprehensive shared-workbench multi-material painting editor",
+      "url": "https://github.com/techrote/cybersand/issues/543",
+      "created_at": "2026-11-08T11:57:24Z",
+      "updated_at": "2026-11-11T01:05:22Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 545,
+      "kind": "PR",
+      "title": "[DRAFT] WB-REMOTE-001: host-authorized JSONL control of real Godot/native workbench",
+      "url": "https://github.com/techrote/cybersand/pull/545",
+      "created_at": "2026-11-08T12:43:12Z",
+      "updated_at": "2026-11-08T18:36:49Z",
+      "comments": 8,
+      "labels": []
+    },
+    {
+      "number": 546,
+      "kind": "issue",
+      "title": "WB-AGENT-004: Configurable API execution, persistent telemetry and model benchmarking",
+      "url": "https://github.com/techrote/cybersand/issues/546",
+      "created_at": "2026-11-08T15:54:23Z",
+      "updated_at": "2026-11-08T15:54:23Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 547,
+      "kind": "PR",
+      "title": "[DRAFT] WB-REMOTE Codespaces: authenticated persistent agent iteration",
+      "url": "https://github.com/techrote/cybersand/pull/547",
+      "created_at": "2026-11-08T15:55:20Z",
+      "updated_at": "2026-11-08T20:35:04Z",
+      "comments": 8,
+      "labels": []
+    },
+    {
+      "number": 548,
+      "kind": "issue",
+      "title": "GEN-008-FLAT-001: Flatten current materials into a 2-byte/cell authored baseline",
+      "url": "https://github.com/techrote/cybersand/issues/548",
+      "created_at": "2026-11-08T15:58:07Z",
+      "updated_at": "2026-11-11T01:17:31Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 549,
+      "kind": "issue",
+      "title": "WORLD-STEER-001 — Human-curated design knowledge, authoring traces and hierarchical generative steering",
+      "url": "https://github.com/techrote/cybersand/issues/549",
+      "created_at": "2026-11-08T16:24:24Z",
+      "updated_at": "2026-11-13T23:46:20Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 550,
+      "kind": "PR",
+      "title": "[DRAFT] INTEGRATION PAINT-001: register bounded-shapes doc in retrieval corpus",
+      "url": "https://github.com/techrote/cybersand/pull/550",
+      "created_at": "2026-11-08T16:50:46Z",
+      "updated_at": "2026-11-11T00:55:01Z",
+      "comments": 3,
+      "labels": []
+    },
+    {
+      "number": 551,
+      "kind": "PR",
+      "title": "[DRAFT] WB-REMOTE MCP: private ChatGPT tool adapter and native acceptance harness",
+      "url": "https://github.com/techrote/cybersand/pull/551",
+      "created_at": "2026-11-08T19:37:43Z",
+      "updated_at": "2026-11-08T20:04:32Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 552,
+      "kind": "PR",
+      "title": "[DRAFT] WB-API provider-neutral Responses/NVIDIA/Ollama agent over native #547",
+      "url": "https://github.com/techrote/cybersand/pull/552",
+      "created_at": "2026-11-08T20:54:54Z",
+      "updated_at": "2026-11-09T00:14:42Z",
+      "comments": 4,
+      "labels": []
+    },
+    {
+      "number": 554,
+      "kind": "PR",
+      "title": "research(B4): independent source-matched HS-PKT ABBA reduction and evidence gate",
+      "url": "https://github.com/techrote/cybersand/pull/554",
+      "created_at": "2026-11-09T21:51:47Z",
+      "updated_at": "2026-11-10T15:47:08Z",
+      "comments": 40,
+      "labels": []
+    },
+    {
+      "number": 555,
+      "kind": "PR",
+      "title": "research(B3): source-typed solver handoff model, conservation proof and adversarial oracle",
+      "url": "https://github.com/techrote/cybersand/pull/555",
+      "created_at": "2026-11-09T21:56:47Z",
+      "updated_at": "2026-11-10T07:43:27Z",
+      "comments": 21,
+      "labels": []
+    },
+    {
+      "number": 556,
+      "kind": "PR",
+      "title": "research(B2): conservative two-phase region invalidation and falsification oracle",
+      "url": "https://github.com/techrote/cybersand/pull/556",
+      "created_at": "2026-11-09T22:03:15Z",
+      "updated_at": "2026-11-10T08:57:30Z",
+      "comments": 29,
+      "labels": []
+    },
+    {
+      "number": 557,
+      "kind": "PR",
+      "title": "docs: AGENT-PAINT-001 exploratory model-authoring evidence and canvas fixture",
+      "url": "https://github.com/techrote/cybersand/pull/557",
+      "created_at": "2026-11-09T23:05:42Z",
+      "updated_at": "2026-11-09T23:27:42Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 558,
+      "kind": "issue",
+      "title": "WB-COMMS-001: make agent painting communication and verified editing throughput efficient",
+      "url": "https://github.com/techrote/cybersand/issues/558",
+      "created_at": "2026-11-10T19:10:08Z",
+      "updated_at": "2026-11-10T19:38:28Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 559,
+      "kind": "issue",
+      "title": "WB-ART-002: rebuild permissive agent art workbench from main — direct drawing, persistent collaboration and LM Studio",
+      "url": "https://github.com/techrote/cybersand/issues/559",
+      "created_at": "2026-11-10T19:34:10Z",
+      "updated_at": "2026-11-10T21:47:05Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 566,
+      "kind": "PR",
+      "title": "Native display-pixel camera scrolling with aligned Workbench tools",
+      "url": "https://github.com/techrote/cybersand/pull/566",
+      "created_at": "2026-11-13T01:01:34Z",
+      "updated_at": "2026-11-13T23:59:08Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 567,
+      "kind": "PR",
+      "title": "WB-ART-SLM-001: executable pattern compiler, native corpus and model bootstrap",
+      "url": "https://github.com/techrote/cybersand/pull/567",
+      "created_at": "2026-11-13T02:28:35Z",
+      "updated_at": "2026-11-13T13:12:32Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 568,
+      "kind": "issue",
+      "title": "WB-ART-SLM-HOSTED — Four parallel agent-painter models, GitHub Actions training and permanent worker ledger",
+      "url": "https://github.com/techrote/cybersand/issues/568",
+      "created_at": "2026-11-13T15:58:51Z",
+      "updated_at": "2026-11-13T23:55:44Z",
+      "comments": 38,
+      "labels": []
+    },
+    {
+      "number": 569,
+      "kind": "PR",
+      "title": "Agent painter: shared three-family native and CPU training foundation (#568)",
+      "url": "https://github.com/techrote/cybersand/pull/569",
+      "created_at": "2026-11-13T19:45:02Z",
+      "updated_at": "2026-11-13T22:15:51Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 570,
+      "kind": "issue",
+      "title": "S1-2B-DRIV3R — d1-2B decision-driven Workbench authoring (fuzzy tools + direct drive)",
+      "url": "https://github.com/techrote/cybersand/issues/570",
+      "created_at": "2026-11-13T19:51:16Z",
+      "updated_at": "2026-11-13T19:51:16Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 571,
+      "kind": "issue",
+      "title": "Engineering archaeology, technical salvage & backlog rationalisation — historical knowledge consolidation and clean break",
+      "url": "https://github.com/techrote/cybersand/issues/571",
+      "created_at": "2026-11-13T20:25:34Z",
+      "updated_at": "2026-11-13T20:25:34Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 572,
+      "kind": "PR",
+      "title": "GEN-008-FLAT-001: native Flatten / Bake History and standalone authored baselines",
+      "url": "https://github.com/techrote/cybersand/pull/572",
+      "created_at": "2026-11-13T22:06:30Z",
+      "updated_at": "2026-11-14T00:15:48Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 573,
+      "kind": "PR",
+      "title": "SMOL painter: independent hosted three-family pilot (#568)",
+      "url": "https://github.com/techrote/cybersand/pull/573",
+      "created_at": "2026-11-13T22:37:36Z",
+      "updated_at": "2026-11-13T23:48:28Z",
+      "comments": 1,
+      "labels": []
+    },
+    {
+      "number": 574,
+      "kind": "PR",
+      "title": "VOID painter: bounded hosted candidate and strict base/adapter evaluation (#568)",
+      "url": "https://github.com/techrote/cybersand/pull/574",
+      "created_at": "2026-11-13T22:41:59Z",
+      "updated_at": "2026-11-13T23:50:23Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 575,
+      "kind": "PR",
+      "title": "LFM2.5-VL painter: source-pinned independent CPU pilot (#568)",
+      "url": "https://github.com/techrote/cybersand/pull/575",
+      "created_at": "2026-11-13T22:42:32Z",
+      "updated_at": "2026-11-13T23:54:37Z",
+      "comments": 2,
+      "labels": []
+    },
+    {
+      "number": 576,
+      "kind": "PR",
+      "title": "WB-ART-SLM SPROCKET — root Instruct hosted painter pilot (#568)",
+      "url": "https://github.com/techrote/cybersand/pull/576",
+      "created_at": "2026-11-13T22:42:33Z",
+      "updated_at": "2026-11-13T23:45:34Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 577,
+      "kind": "issue",
+      "title": "RENDER-UPLOAD-001 — Incremental GPU material texture publication and full-image submission optimisation",
+      "url": "https://github.com/techrote/cybersand/issues/577",
+      "created_at": "2026-11-13T22:53:41Z",
+      "updated_at": "2026-11-14T00:11:56Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 578,
+      "kind": "PR",
+      "title": "RENDER-UPLOAD-001: opt-in incremental texture publication research",
+      "url": "https://github.com/techrote/cybersand/pull/578",
+      "created_at": "2026-11-13T23:24:05Z",
+      "updated_at": "2026-11-14T00:11:57Z",
+      "comments": 0,
+      "labels": []
+    },
+    {
+      "number": 579,
+      "kind": "issue",
+      "title": "WORLD-STEER-BATCH-001 — Native Workbench Batch Lab, prompt optimisation and map-module harvesting",
+      "url": "https://github.com/techrote/cybersand/issues/579",
+      "created_at": "2026-11-13T23:45:37Z",
+      "updated_at": "2026-11-13T23:45:37Z",
+      "comments": 0,
+      "labels": []
+    }
+  ],
+  "pulls": [
+    {
+      "number": 21,
+      "url": "https://github.com/techrote/cybersand/pull/21",
+      "draft": true,
+      "head_sha": "11ea3d0f9335d3dee5ed8d63bd633d4d54cdb5d1",
+      "head_ref": "codex/research-preparation-2026-09-12",
+      "base_ref": "codex/issue-19-water-feel-lab-sync",
+      "base_sha": "d39e31f03f2e39b0022d507b79fbee5c2439436d"
+    },
+    {
+      "number": 23,
+      "url": "https://github.com/techrote/cybersand/pull/23",
+      "draft": true,
+      "head_sha": "0b96ce2a2fd5f68560575d4c4db8b0ea2f3b3758",
+      "head_ref": "codex/issue-12-soliding",
+      "base_ref": "main",
+      "base_sha": "3b1747a493d6ffb01661dcf4111f1b32ae89dbac"
+    },
+    {
+      "number": 25,
+      "url": "https://github.com/techrote/cybersand/pull/25",
+      "draft": true,
+      "head_sha": "7606dc93fbe64c9a25320c9d2b9c50c95f618db1",
+      "head_ref": "codex/h-gate-capture-ux",
+      "base_ref": "main",
+      "base_sha": "3b1747a493d6ffb01661dcf4111f1b32ae89dbac"
+    },
+    {
+      "number": 33,
+      "url": "https://github.com/techrote/cybersand/pull/33",
+      "draft": true,
+      "head_sha": "f8f7dec652f0659b20a127d0a7002c09f1ebf795",
+      "head_ref": "codex/water-h-gate-synthesis-2026-09-18",
+      "base_ref": "main",
+      "base_sha": "781a2d7cb5d5a66bf1cff8fc6654e0ab708e419c"
+    },
+    {
+      "number": 35,
+      "url": "https://github.com/techrote/cybersand/pull/35",
+      "draft": true,
+      "head_sha": "7068efa5caea3798e42f80d25d147dce1f870030",
+      "head_ref": "codex/issue-26-water-leveling",
+      "base_ref": "main",
+      "base_sha": "781a2d7cb5d5a66bf1cff8fc6654e0ab708e419c"
+    },
+    {
+      "number": 148,
+      "url": "https://github.com/techrote/cybersand/pull/148",
+      "draft": false,
+      "head_sha": "0c5439bbe0b0de996185bf6ec7b3e6766dc5f0a8",
+      "head_ref": "penv/issue-147-local-contour-traversal",
+      "base_ref": "main",
+      "base_sha": "23227bc4d660b516306f111b7a7e4398208afa5d"
+    },
+    {
+      "number": 162,
+      "url": "https://github.com/techrote/cybersand/pull/162",
+      "draft": false,
+      "head_sha": "19f7ff43ecc494185226d1fff07dc21ef4a220fb",
+      "head_ref": "mat/phase-quantity-quench",
+      "base_ref": "main",
+      "base_sha": "ec05d7227885bda59bf72a5889b004296b9a07e5"
+    },
+    {
+      "number": 184,
+      "url": "https://github.com/techrote/cybersand/pull/184",
+      "draft": true,
+      "head_sha": "1a84e87d22d490f17d79e50b538e62fc4ede0dff",
+      "head_ref": "scene/grey-area-51",
+      "base_ref": "main",
+      "base_sha": "02f9c890dc4faf0bf132a95acbc13a4d9cdc002f"
+    },
+    {
+      "number": 186,
+      "url": "https://github.com/techrote/cybersand/pull/186",
+      "draft": false,
+      "head_sha": "5f287b9af7bbe7af13778fd41515208d55b1b717",
+      "head_ref": "docs/polished-map-production-guide",
+      "base_ref": "main",
+      "base_sha": "fc015a77d3b851fef4ea7734923bcdb3762a19a5"
+    },
+    {
+      "number": 187,
+      "url": "https://github.com/techrote/cybersand/pull/187",
+      "draft": false,
+      "head_sha": "fa05be4e8c0e492a500862c7ab91863ada3c90e4",
+      "head_ref": "docs/map-authoring-guide-20261020",
+      "base_ref": "main",
+      "base_sha": "4f3685b71366218e82e7c2188e4ecdf27553f4cf"
+    },
+    {
+      "number": 188,
+      "url": "https://github.com/techrote/cybersand/pull/188",
+      "draft": true,
+      "head_sha": "c5dd006d1e857e6d00e5e24bae81f21962f423ac",
+      "head_ref": "claude/dazzling-nobel-943f75",
+      "base_ref": "main",
+      "base_sha": "69ded481a853abb0eefd5edcc79d5dffca10b1f2"
+    },
+    {
+      "number": 208,
+      "url": "https://github.com/techrote/cybersand/pull/208",
+      "draft": false,
+      "head_sha": "20d7e85da912267f31db91c846548e0f5639097a",
+      "head_ref": "codex/mat-003prepass-foundation",
+      "base_ref": "main",
+      "base_sha": "3e9f0e6dcbfdb9c122c8c555dac43e7b4d926e5f"
+    },
+    {
+      "number": 211,
+      "url": "https://github.com/techrote/cybersand/pull/211",
+      "draft": false,
+      "head_sha": "b6033aab449a8dab4dc091cca92ce741a18d6fe8",
+      "head_ref": "codex/mat-003prepass-s2-feasibility",
+      "base_ref": "codex/mat-003prepass-foundation",
+      "base_sha": "20d7e85da912267f31db91c846548e0f5639097a"
+    },
+    {
+      "number": 221,
+      "url": "https://github.com/techrote/cybersand/pull/221",
+      "draft": false,
+      "head_sha": "800e16f02d4f87c5e38757a702ff8f098bc886fa",
+      "head_ref": "codex/mat003-continuation",
+      "base_ref": "codex/mat-003prepass-s2-feasibility",
+      "base_sha": "b6033aab449a8dab4dc091cca92ce741a18d6fe8"
+    },
+    {
+      "number": 224,
+      "url": "https://github.com/techrote/cybersand/pull/224",
+      "draft": false,
+      "head_sha": "993a47044119dedd54db8f1327e957949c478bb3",
+      "head_ref": "feat/act-ik-001-joint-owner",
+      "base_ref": "main",
+      "base_sha": "def212203ad12234236c4c6bb262c0546bd55b3d"
+    },
+    {
+      "number": 230,
+      "url": "https://github.com/techrote/cybersand/pull/230",
+      "draft": true,
+      "head_sha": "0d6d71301c5ce24d2dd1a80fe99cb1ac11bfb5a4",
+      "head_ref": "docs/mat003prepass-gen006-state-contract-20261023",
+      "base_ref": "main",
+      "base_sha": "1f9336388f11be39abaae340a781a5eef52115d4"
+    },
+    {
+      "number": 231,
+      "url": "https://github.com/techrote/cybersand/pull/231",
+      "draft": true,
+      "head_sha": "3510e6d1bf1e4e3b3be0299f0a8d7c2bd97bce45",
+      "head_ref": "review/mat003prepass-c-carrier-synthesis-20261023",
+      "base_ref": "codex/mat003-continuation",
+      "base_sha": "7648e94fd8954d235ffd2723dc67b290dfe2e9e3"
+    },
+    {
+      "number": 235,
+      "url": "https://github.com/techrote/cybersand/pull/235",
+      "draft": false,
+      "head_sha": "c20d83360bee37cd9342904a7cfd05e5e5ec9f81",
+      "head_ref": "codex/mat003-readback-verifier-repair-20261023",
+      "base_ref": "codex/mat003-continuation",
+      "base_sha": "800e16f02d4f87c5e38757a702ff8f098bc886fa"
+    },
+    {
+      "number": 238,
+      "url": "https://github.com/techrote/cybersand/pull/238",
+      "draft": false,
+      "head_sha": "7084438425a2025210d4451572dd17d2e1d59961",
+      "head_ref": "codex/mat003-overnight-requalification",
+      "base_ref": "codex/mat003-readback-verifier-repair-20261023",
+      "base_sha": "c20d83360bee37cd9342904a7cfd05e5e5ec9f81"
+    },
+    {
+      "number": 258,
+      "url": "https://github.com/techrote/cybersand/pull/258",
+      "draft": false,
+      "head_sha": "fec2c73a33e146c63398849a1d128cf45c0ba59b",
+      "head_ref": "codex/lcb004-observer",
+      "base_ref": "main",
+      "base_sha": "9e53a5b1b501e0667037b8502d3c1d15089211f5"
+    },
+    {
+      "number": 259,
+      "url": "https://github.com/techrote/cybersand/pull/259",
+      "draft": false,
+      "head_sha": "513bf479e0c069ce492c9e1b6806a7978ae60461",
+      "head_ref": "codex/lcb004-science",
+      "base_ref": "main",
+      "base_sha": "56422c050bd5ed2ceb5f816b1269748764e2dcb7"
+    },
+    {
+      "number": 260,
+      "url": "https://github.com/techrote/cybersand/pull/260",
+      "draft": true,
+      "head_sha": "86f95617d2966f9071e9fe8bdd334ea3888fa5cd",
+      "head_ref": "codex/lcb003-actor-host",
+      "base_ref": "main",
+      "base_sha": "9e53a5b1b501e0667037b8502d3c1d15089211f5"
+    },
+    {
+      "number": 261,
+      "url": "https://github.com/techrote/cybersand/pull/261",
+      "draft": false,
+      "head_sha": "7880635dae4b1229d286c66df123f102b8f3423a",
+      "head_ref": "codex/lcb-session-handover",
+      "base_ref": "main",
+      "base_sha": "9e53a5b1b501e0667037b8502d3c1d15089211f5"
+    },
+    {
+      "number": 262,
+      "url": "https://github.com/techrote/cybersand/pull/262",
+      "draft": false,
+      "head_sha": "70ec119381a2cb9abab5d40ed3314fb07c9b1736",
+      "head_ref": "codex/player-playground-maps",
+      "base_ref": "main",
+      "base_sha": "9e53a5b1b501e0667037b8502d3c1d15089211f5"
+    },
+    {
+      "number": 272,
+      "url": "https://github.com/techrote/cybersand/pull/272",
+      "draft": true,
+      "head_sha": "00c76b338f65f15d01d7b8c2cba8ebc1a5b23753",
+      "head_ref": "codex/play-async-001-architecture",
+      "base_ref": "main",
+      "base_sha": "9e53a5b1b501e0667037b8502d3c1d15089211f5"
+    },
+    {
+      "number": 282,
+      "url": "https://github.com/techrote/cybersand/pull/282",
+      "draft": true,
+      "head_sha": "c087ca8569f1df394d67cdc4dbe1c6b46c2bcfb2",
+      "head_ref": "docs/sol-structural-detachment-primary-20261027",
+      "base_ref": "main",
+      "base_sha": "c9ebe39c6cab086b7f7207ee3d80a6de2cb21f59"
+    },
+    {
+      "number": 283,
+      "url": "https://github.com/techrote/cybersand/pull/283",
+      "draft": true,
+      "head_sha": "254235ec4c3d58782bba44b478caca86bf57c856",
+      "head_ref": "work/sol281-native-detachment-20261027",
+      "base_ref": "docs/sol-structural-detachment-primary-20261027",
+      "base_sha": "c087ca8569f1df394d67cdc4dbe1c6b46c2bcfb2"
+    },
+    {
+      "number": 290,
+      "url": "https://github.com/techrote/cybersand/pull/290",
+      "draft": true,
+      "head_sha": "ddf812f34c533f654f1488b9115eb0256305a288",
+      "head_ref": "claude/render-copy-per-run",
+      "base_ref": "main",
+      "base_sha": "aac0feb65e2268b74975892ce1df81e04e1a7e40"
+    },
+    {
+      "number": 295,
+      "url": "https://github.com/techrote/cybersand/pull/295",
+      "draft": true,
+      "head_sha": "6f57b584fba3104287dcaa4ba96e3dded7a32b90",
+      "head_ref": "prep/render-copy290-publisher-20261029",
+      "base_ref": "claude/render-copy-per-run",
+      "base_sha": "ddf812f34c533f654f1488b9115eb0256305a288"
+    },
+    {
+      "number": 298,
+      "url": "https://github.com/techrote/cybersand/pull/298",
+      "draft": true,
+      "head_sha": "c6accb68370405a4b0f30302e0f9d18a911b090b",
+      "head_ref": "verify/render-copy290-host-producer-20261029",
+      "base_ref": "prep/render-copy290-publisher-20261029",
+      "base_sha": "6f57b584fba3104287dcaa4ba96e3dded7a32b90"
+    },
+    {
+      "number": 301,
+      "url": "https://github.com/techrote/cybersand/pull/301",
+      "draft": false,
+      "head_sha": "b5e415784d5e0884684869dd622883dacf3c9de5",
+      "head_ref": "publish/render-copy290-runtime-20261029",
+      "base_ref": "verify/render-copy290-host-producer-20261029",
+      "base_sha": "c6accb68370405a4b0f30302e0f9d18a911b090b"
+    },
+    {
+      "number": 304,
+      "url": "https://github.com/techrote/cybersand/pull/304",
+      "draft": true,
+      "head_sha": "6ac0f63e6e484da47cf00e5d60eac2c6646cac9c",
+      "head_ref": "codex/play-busy001c-rendered-20261029",
+      "base_ref": "main",
+      "base_sha": "89020b9eb6d540383a5bb64b58dcd29a87592c32"
+    },
+    {
+      "number": 308,
+      "url": "https://github.com/techrote/cybersand/pull/308",
+      "draft": false,
+      "head_sha": "2443a78378d649df588efeac9db7c54084473329",
+      "head_ref": "codex/play-life006-integrated-stress-20261030",
+      "base_ref": "main",
+      "base_sha": "b55ce690f9a3d2ca3026674a2e9c6a7635966f59"
+    },
+    {
+      "number": 312,
+      "url": "https://github.com/techrote/cybersand/pull/312",
+      "draft": true,
+      "head_sha": "5de468478c37c8ae9e2d446ba348d4e3ecf54bd6",
+      "head_ref": "codex/play-pace003-windows-diagnosis-20261030",
+      "base_ref": "codex/play-pace003-cold-start-20261030",
+      "base_sha": "62d3f6cf12340a2124773695b98915dda5f16907"
+    },
+    {
+      "number": 316,
+      "url": "https://github.com/techrote/cybersand/pull/316",
+      "draft": true,
+      "head_sha": "8bdebfa3f81e4c1c6a98df3bada2a23955096610",
+      "head_ref": "codex/play-pace003-palette-decomposition-20261031",
+      "base_ref": "main",
+      "base_sha": "0bf28d5760aed989a79386de03ef4fc6171fef42"
+    },
+    {
+      "number": 321,
+      "url": "https://github.com/techrote/cybersand/pull/321",
+      "draft": true,
+      "head_sha": "b890069877c7b197cf21ddf96cd00128ccbf09ad",
+      "head_ref": "codex/play-windows-exception-capture-20261031",
+      "base_ref": "codex/play-ui007-desktop-readiness-20261031",
+      "base_sha": "b255bd83d24c8656724f5f067b6e3ecd80f88bbb"
+    },
+    {
+      "number": 326,
+      "url": "https://github.com/techrote/cybersand/pull/326",
+      "draft": true,
+      "head_sha": "1afe20c0b2abbffaf3e41ac1e1588b862274c52c",
+      "head_ref": "claude/palette-fxc-cost",
+      "base_ref": "codex/play-pace003-cold-start-20261030",
+      "base_sha": "dc324f7a9e27835a7efade57b6b7f1efd6c3ef82"
+    },
+    {
+      "number": 327,
+      "url": "https://github.com/techrote/cybersand/pull/327",
+      "draft": true,
+      "head_sha": "c2ada0a8ce80871e2ce5c28bd9f039e1d1fd235a",
+      "head_ref": "claude/window-placement",
+      "base_ref": "main",
+      "base_sha": "400ec4c6c365324ec7ddeee4aad38c600ce802b6"
+    },
+    {
+      "number": 328,
+      "url": "https://github.com/techrote/cybersand/pull/328",
+      "draft": true,
+      "head_sha": "6e30e42e496d80c5f71c595888c1e1237e7c07f6",
+      "head_ref": "claude/ui005-real-cursor-click",
+      "base_ref": "claude/palette-fxc-cost",
+      "base_sha": "1afe20c0b2abbffaf3e41ac1e1588b862274c52c"
+    },
+    {
+      "number": 329,
+      "url": "https://github.com/techrote/cybersand/pull/329",
+      "draft": true,
+      "head_sha": "d53ae1204ebb992d8ebfe265b6ea1ed211dc3f21",
+      "head_ref": "codex/play-windows-capture-successor-20261031",
+      "base_ref": "codex/play-windows-exception-capture-20261031",
+      "base_sha": "b890069877c7b197cf21ddf96cd00128ccbf09ad"
+    },
+    {
+      "number": 333,
+      "url": "https://github.com/techrote/cybersand/pull/333",
+      "draft": true,
+      "head_sha": "21d44e43e071d2d5777c2ed46a92f59675639599",
+      "head_ref": "prepass/render-copy290-play-integration-20261031",
+      "base_ref": "main",
+      "base_sha": "adaaa37ae35ffcdaa961b80353be3a23b805c0cc"
+    },
+    {
+      "number": 335,
+      "url": "https://github.com/techrote/cybersand/pull/335",
+      "draft": true,
+      "head_sha": "902fc5b518855911c1b6761a7165573843e567ed",
+      "head_ref": "codex/render-publication-abc-20261031",
+      "base_ref": "main",
+      "base_sha": "15b3a4012b9d5998e808fb371792dd7a71398507"
+    },
+    {
+      "number": 336,
+      "url": "https://github.com/techrote/cybersand/pull/336",
+      "draft": true,
+      "head_sha": "7e04e8fde1496c5f32d3f83099ec2a6bfb6bb7d6",
+      "head_ref": "codex/physical-detachment-abc-20261031",
+      "base_ref": "main",
+      "base_sha": "15b3a4012b9d5998e808fb371792dd7a71398507"
+    },
+    {
+      "number": 337,
+      "url": "https://github.com/techrote/cybersand/pull/337",
+      "draft": true,
+      "head_sha": "6568391099351677f57e307b123e89bfd8db26f5",
+      "head_ref": "codex/play-integration-handoff-final-20261031",
+      "base_ref": "codex/play-pace004-qualified-20261031",
+      "base_sha": "4f3decc242633fb621d76b7529ef87b420dbd87a"
+    },
+    {
+      "number": 338,
+      "url": "https://github.com/techrote/cybersand/pull/338",
+      "draft": true,
+      "head_sha": "61f0398e5a6d63432be681dc4a4d32da769f2b20",
+      "head_ref": "codex/physical-detachment-a2-20261031",
+      "base_ref": "codex/physical-detachment-abc-20261031",
+      "base_sha": "7e04e8fde1496c5f32d3f83099ec2a6bfb6bb7d6"
+    },
+    {
+      "number": 339,
+      "url": "https://github.com/techrote/cybersand/pull/339",
+      "draft": true,
+      "head_sha": "8b4e53d76881f15ad400a3f4137c69c28daf0571",
+      "head_ref": "codex/granular-bearing-pre-overlap-20261101",
+      "base_ref": "codex/physical-detachment-a2-20261031",
+      "base_sha": "61f0398e5a6d63432be681dc4a4d32da769f2b20"
+    },
+    {
+      "number": 341,
+      "url": "https://github.com/techrote/cybersand/pull/341",
+      "draft": true,
+      "head_sha": "064a3306dc3a87c3a88172003e42c8e426cb73e1",
+      "head_ref": "codex/granular-bearing-candidates-20261101",
+      "base_ref": "codex/granular-bearing-pre-overlap-20261101",
+      "base_sha": "8b4e53d76881f15ad400a3f4137c69c28daf0571"
+    },
+    {
+      "number": 342,
+      "url": "https://github.com/techrote/cybersand/pull/342",
+      "draft": true,
+      "head_sha": "1afd03a078393875281ccf335ddabed78c2f4466",
+      "head_ref": "codex/y1-post-arrest-clearance-20261101",
+      "base_ref": "codex/granular-bearing-candidates-20261101",
+      "base_sha": "064a3306dc3a87c3a88172003e42c8e426cb73e1"
+    },
+    {
+      "number": 343,
+      "url": "https://github.com/techrote/cybersand/pull/343",
+      "draft": true,
+      "head_sha": "2aff460c60f36c0f209b67fe682d0f8b9e5e0f83",
+      "head_ref": "codex/y1-production-envelope-20261101",
+      "base_ref": "main",
+      "base_sha": "25ce0731d89b9540c2d95cfa8bae321c37e6e118"
+    },
+    {
+      "number": 345,
+      "url": "https://github.com/techrote/cybersand/pull/345",
+      "draft": true,
+      "head_sha": "2461a6a9da130a39dcf2578059f3d47337db4c58",
+      "head_ref": "codex/render-retention-production-20261101",
+      "base_ref": "main",
+      "base_sha": "809fd30dfac0c5e127302997075be9c4b279e5aa"
+    },
+    {
+      "number": 346,
+      "url": "https://github.com/techrote/cybersand/pull/346",
+      "draft": true,
+      "head_sha": "be24013012242a4a8724227432d962df1035d148",
+      "head_ref": "codex/gcr001-category-contact-20261101",
+      "base_ref": "main",
+      "base_sha": "a8f08a67fea3c58f6df7473cbae1831334fcc04e"
+    },
+    {
+      "number": 347,
+      "url": "https://github.com/techrote/cybersand/pull/347",
+      "draft": true,
+      "head_sha": "1598115c9065239cc1eaec11e99077274b457be1",
+      "head_ref": "sol-detach-001-current-main",
+      "base_ref": "main",
+      "base_sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1"
+    },
+    {
+      "number": 348,
+      "url": "https://github.com/techrote/cybersand/pull/348",
+      "draft": true,
+      "head_sha": "be1847464803bab0f74d184d60d77aea5e384228",
+      "head_ref": "codex/gcr-admission-only-20261101",
+      "base_ref": "codex/gcr001-category-contact-20261101",
+      "base_sha": "be24013012242a4a8724227432d962df1035d148"
+    },
+    {
+      "number": 349,
+      "url": "https://github.com/techrote/cybersand/pull/349",
+      "draft": true,
+      "head_sha": "d1978c14e40cc037f03c6a661e92e15aa0537415",
+      "head_ref": "codex/gcr-detachment-integration-20261101",
+      "base_ref": "main",
+      "base_sha": "a8f08a67fea3c58f6df7473cbae1831334fcc04e"
+    },
+    {
+      "number": 350,
+      "url": "https://github.com/techrote/cybersand/pull/350",
+      "draft": true,
+      "head_sha": "d3e90e6bffa99a7724a4b94d5ec3840d80f0604a",
+      "head_ref": "codex/gcr-load-aware-20261102",
+      "base_ref": "codex/gcr-detachment-integration-20261101",
+      "base_sha": "d1978c14e40cc037f03c6a661e92e15aa0537415"
+    },
+    {
+      "number": 351,
+      "url": "https://github.com/techrote/cybersand/pull/351",
+      "draft": true,
+      "head_sha": "8ce36b0e41c9292ab0b1f02cf7789450082a67b5",
+      "head_ref": "codex/gcr-rest-comparison-20261102",
+      "base_ref": "codex/gcr-load-aware-20261102",
+      "base_sha": "d3e90e6bffa99a7724a4b94d5ec3840d80f0604a"
+    },
+    {
+      "number": 358,
+      "url": "https://github.com/techrote/cybersand/pull/358",
+      "draft": true,
+      "head_sha": "7383946a3ed384966e9e5fb72553fc267f9aacb7",
+      "head_ref": "codex/paired-materials-20261103",
+      "base_ref": "main",
+      "base_sha": "3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d"
+    },
+    {
+      "number": 366,
+      "url": "https://github.com/techrote/cybersand/pull/366",
+      "draft": true,
+      "head_sha": "029c214e7e3530ebbee63927c725f832d18ff34a",
+      "head_ref": "codex/gcr-creep-investigation-20261103",
+      "base_ref": "codex/gcr-rest-comparison-20261102",
+      "base_sha": "8ce36b0e41c9292ab0b1f02cf7789450082a67b5"
+    },
+    {
+      "number": 368,
+      "url": "https://github.com/techrote/cybersand/pull/368",
+      "draft": true,
+      "head_sha": "43028e4999c3038d5d83d77140461329f16364d3",
+      "head_ref": "codex/gcr-causal-tests-20261103",
+      "base_ref": "codex/gcr-creep-investigation-20261103",
+      "base_sha": "029c214e7e3530ebbee63927c725f832d18ff34a"
+    },
+    {
+      "number": 370,
+      "url": "https://github.com/techrote/cybersand/pull/370",
+      "draft": true,
+      "head_sha": "fbe82bcab8f821aac442c2bf59eb57b279717873",
+      "head_ref": "claude/lcb360-feel",
+      "base_ref": "main",
+      "base_sha": "070c7a22ad51ea9206931cd9d56fd1e7cfe212aa"
+    },
+    {
+      "number": 372,
+      "url": "https://github.com/techrote/cybersand/pull/372",
+      "draft": true,
+      "head_sha": "23bd83abf64e741764e02a8fa0eb4ca15a50aa24",
+      "head_ref": "codex/gcr-granular-events-20261104",
+      "base_ref": "codex/gcr-causal-tests-20261103",
+      "base_sha": "43028e4999c3038d5d83d77140461329f16364d3"
+    },
+    {
+      "number": 373,
+      "url": "https://github.com/techrote/cybersand/pull/373",
+      "draft": true,
+      "head_sha": "22fb5026edda2ea95e620ad4c15b491f4fc115a8",
+      "head_ref": "codex/gcr-selective-events-20261104",
+      "base_ref": "codex/gcr-granular-events-20261104",
+      "base_sha": "23bd83abf64e741764e02a8fa0eb4ca15a50aa24"
+    },
+    {
+      "number": 375,
+      "url": "https://github.com/techrote/cybersand/pull/375",
+      "draft": true,
+      "head_sha": "7c2c5fe3c92137eb6ab55768d3bec6ae4b33db63",
+      "head_ref": "codex/gcr-powder-review-tests-20261104",
+      "base_ref": "codex/gcr-selective-events-20261104",
+      "base_sha": "22fb5026edda2ea95e620ad4c15b491f4fc115a8"
+    },
+    {
+      "number": 376,
+      "url": "https://github.com/techrote/cybersand/pull/376",
+      "draft": true,
+      "head_sha": "61535212529459fc30c5bd7d4db8c0a7631ccb57",
+      "head_ref": "claude/rapier-water-splash-discrimination-dc6b5c",
+      "base_ref": "main",
+      "base_sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1"
+    },
+    {
+      "number": 378,
+      "url": "https://github.com/techrote/cybersand/pull/378",
+      "draft": true,
+      "head_sha": "8e25c3a9c2c18b5b22c95d641601a07eea81c195",
+      "head_ref": "docs/sol347-independent-physical-review-20261104",
+      "base_ref": "main",
+      "base_sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1"
+    },
+    {
+      "number": 379,
+      "url": "https://github.com/techrote/cybersand/pull/379",
+      "draft": false,
+      "head_sha": "e7e404b696fb9fc48cdadc95a69baf3a6f5fc6d1",
+      "head_ref": "docs/in-tools-361-admission-20261104",
+      "base_ref": "main",
+      "base_sha": "751edc0b495dc85484ad5509a7c95f863651c76b"
+    },
+    {
+      "number": 380,
+      "url": "https://github.com/techrote/cybersand/pull/380",
+      "draft": true,
+      "head_sha": "dff9032397900a2c411c6d7b27ac89ef340d7063",
+      "head_ref": "codex/gcr-flight-review-controls-20261104",
+      "base_ref": "codex/gcr-powder-review-tests-20261104",
+      "base_sha": "7c2c5fe3c92137eb6ab55768d3bec6ae4b33db63"
+    },
+    {
+      "number": 381,
+      "url": "https://github.com/techrote/cybersand/pull/381",
+      "draft": true,
+      "head_sha": "b759e9ea05f274eb01eec7163b0cdc47c83b7c43",
+      "head_ref": "codex/gcr-repeatable-flight-ui-20261104",
+      "base_ref": "codex/gcr-flight-review-controls-20261104",
+      "base_sha": "dff9032397900a2c411c6d7b27ac89ef340d7063"
+    },
+    {
+      "number": 383,
+      "url": "https://github.com/techrote/cybersand/pull/383",
+      "draft": true,
+      "head_sha": "8f99d391f35708e665810e6732a6777baa7c2cf5",
+      "head_ref": "feat/in-tools-361a-metered-liquid-drain",
+      "base_ref": "main",
+      "base_sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1"
+    },
+    {
+      "number": 384,
+      "url": "https://github.com/techrote/cybersand/pull/384",
+      "draft": true,
+      "head_sha": "3d537d1a62e9b7eca546c63ffd4ec6e7654d5957",
+      "head_ref": "feat/mat-auth-353b-display-names-20261104",
+      "base_ref": "main",
+      "base_sha": "751edc0b495dc85484ad5509a7c95f863651c76b"
+    },
+    {
+      "number": 385,
+      "url": "https://github.com/techrote/cybersand/pull/385",
+      "draft": true,
+      "head_sha": "5e79f2be994b652f9aef658e2075650631581427",
+      "head_ref": "codex/gcr-authored-compound-scooper-20261104",
+      "base_ref": "codex/gcr-repeatable-flight-ui-20261104",
+      "base_sha": "b759e9ea05f274eb01eec7163b0cdc47c83b7c43"
+    },
+    {
+      "number": 386,
+      "url": "https://github.com/techrote/cybersand/pull/386",
+      "draft": true,
+      "head_sha": "b661a6f354f8c51e79759d22ad4573a875964b43",
+      "head_ref": "audit/mat-sol-protected-consumer-20261104",
+      "base_ref": "main",
+      "base_sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1"
+    },
+    {
+      "number": 387,
+      "url": "https://github.com/techrote/cybersand/pull/387",
+      "draft": true,
+      "head_sha": "350a9814fe50609b8eb664a8896fb9e3d5e69dd0",
+      "head_ref": "codex/gcr-scooper-leak-investigation-20261104",
+      "base_ref": "codex/gcr-authored-compound-scooper-20261104",
+      "base_sha": "5e79f2be994b652f9aef658e2075650631581427"
+    },
+    {
+      "number": 388,
+      "url": "https://github.com/techrote/cybersand/pull/388",
+      "draft": true,
+      "head_sha": "f6c72cd037c5cb3dc39ec26d1b515ab0c01911db",
+      "head_ref": "docs/active-work-ledger-001-20261104",
+      "base_ref": "main",
+      "base_sha": "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc"
+    },
+    {
+      "number": 389,
+      "url": "https://github.com/techrote/cybersand/pull/389",
+      "draft": true,
+      "head_sha": "38d3059e40986c7f869e60cf2097169763129ecf",
+      "head_ref": "codex/gcr-scooper-u-hull-20261104",
+      "base_ref": "codex/gcr-scooper-leak-investigation-20261104",
+      "base_sha": "350a9814fe50609b8eb664a8896fb9e3d5e69dd0"
+    },
+    {
+      "number": 392,
+      "url": "https://github.com/techrote/cybersand/pull/392",
+      "draft": true,
+      "head_sha": "f763b08545a6bf0874aaaf01fc38d23a60b3ebcd",
+      "head_ref": "feat/workbench-001-shared-sandbox-20261104",
+      "base_ref": "main",
+      "base_sha": "0103de80d11304388868f89f7b26c672ad6100ad"
+    },
+    {
+      "number": 393,
+      "url": "https://github.com/techrote/cybersand/pull/393",
+      "draft": true,
+      "head_sha": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+      "head_ref": "fix/sol347-facade-refusal-20261104-095628",
+      "base_ref": "sol-detach-001-current-main",
+      "base_sha": "1598115c9065239cc1eaec11e99077274b457be1"
+    },
+    {
+      "number": 395,
+      "url": "https://github.com/techrote/cybersand/pull/395",
+      "draft": true,
+      "head_sha": "1dd0d9975bf118cb082ac32dadce328b12f57e2b",
+      "head_ref": "fix/mat354b-moltenglass-deadline-20261104",
+      "base_ref": "main",
+      "base_sha": "751edc0b495dc85484ad5509a7c95f863651c76b"
+    },
+    {
+      "number": 399,
+      "url": "https://github.com/techrote/cybersand/pull/399",
+      "draft": true,
+      "head_sha": "d9101dab7a98d41cae219a7de94165e386eb811f",
+      "head_ref": "codex/pr383-retention-readback-tests",
+      "base_ref": "feat/in-tools-361a-metered-liquid-drain",
+      "base_sha": "8f99d391f35708e665810e6732a6777baa7c2cf5"
+    },
+    {
+      "number": 400,
+      "url": "https://github.com/techrote/cybersand/pull/400",
+      "draft": true,
+      "head_sha": "a38098b1a807fc3ac7b60166e75b217dd7bc629e",
+      "head_ref": "codex/experiment-la-selective-sol-feasibility-20261105",
+      "base_ref": "codex/workbench-consolidation-retry-20261104",
+      "base_sha": "77c60b8e0f9b17192a4e04b20cd37ec55096c2c3"
+    },
+    {
+      "number": 401,
+      "url": "https://github.com/techrote/cybersand/pull/401",
+      "draft": true,
+      "head_sha": "aad8e76432ae51ac6acfec635f1a223c2822f0cf",
+      "head_ref": "experiment/pr379-godot117991-windows-ab-20261105",
+      "base_ref": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90"
+    },
+    {
+      "number": 402,
+      "url": "https://github.com/techrote/cybersand/pull/402",
+      "draft": true,
+      "head_sha": "80bae8847fc2428a213f8b0e5e1c8fcd7e1b80ff",
+      "head_ref": "codex/flyer-options-20261105",
+      "base_ref": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90"
+    },
+    {
+      "number": 403,
+      "url": "https://github.com/techrote/cybersand/pull/403",
+      "draft": true,
+      "head_sha": "54efc5f876cf57fb1a18a5b441f85d111229835b",
+      "head_ref": "claude/play-pace003-successor-graphics",
+      "base_ref": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90"
+    },
+    {
+      "number": 404,
+      "url": "https://github.com/techrote/cybersand/pull/404",
+      "draft": true,
+      "head_sha": "20e668ce66536f9365d07718bfbb5266a2f8502c",
+      "head_ref": "feat/in-tools-361-current-main-admission-20261105",
+      "base_ref": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90"
+    },
+    {
+      "number": 407,
+      "url": "https://github.com/techrote/cybersand/pull/407",
+      "draft": true,
+      "head_sha": "bbca191544f6a578ee14323c08d48021904893f7",
+      "head_ref": "codex/sol-energy-precision-20261105",
+      "base_ref": "fix/sol347-facade-refusal-20261104-095628",
+      "base_sha": "e4c2649e82d943554f4dc6a0634336770cda08f6"
+    },
+    {
+      "number": 409,
+      "url": "https://github.com/techrote/cybersand/pull/409",
+      "draft": true,
+      "head_sha": "6bdab8ef59e1d7b9771718ebe07dd799c1e06ed3",
+      "head_ref": "codex/workbench-player-usables-20261105",
+      "base_ref": "codex/flyer-options-20261105",
+      "base_sha": "80bae8847fc2428a213f8b0e5e1c8fcd7e1b80ff"
+    },
+    {
+      "number": 411,
+      "url": "https://github.com/techrote/cybersand/pull/411",
+      "draft": true,
+      "head_sha": "b424032b925fd890421d3e94ed0524988445b5fb",
+      "head_ref": "codex/sol-chamber-yielding-20261105",
+      "base_ref": "codex/experiment-la-selective-sol-feasibility-20261105",
+      "base_sha": "a38098b1a807fc3ac7b60166e75b217dd7bc629e"
+    },
+    {
+      "number": 413,
+      "url": "https://github.com/techrote/cybersand/pull/413",
+      "draft": true,
+      "head_sha": "95d7bf1e3b5a7125d257717f11874b023bb23b77",
+      "head_ref": "experiment/sol-active-normal-weight-20261105",
+      "base_ref": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90"
+    },
+    {
+      "number": 415,
+      "url": "https://github.com/techrote/cybersand/pull/415",
+      "draft": true,
+      "head_sha": "d6312b8430158a4cdf8d602c9eacdd0da4ee8b28",
+      "head_ref": "experiment/gen006-save-ack-fault-20261105",
+      "base_ref": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90"
+    },
+    {
+      "number": 416,
+      "url": "https://github.com/techrote/cybersand/pull/416",
+      "draft": true,
+      "head_sha": "3e0bf637c9f2cdb660bd55cf8bc33d2da779e4f9",
+      "head_ref": "codex/sol-response-cost-20261105",
+      "base_ref": "codex/sol-chamber-yielding-20261105",
+      "base_sha": "b424032b925fd890421d3e94ed0524988445b5fb"
+    },
+    {
+      "number": 417,
+      "url": "https://github.com/techrote/cybersand/pull/417",
+      "draft": true,
+      "head_sha": "6d9b56bfdf677d749b6b345f284412fcf4a4f941",
+      "head_ref": "perf/inv154-microscenario-frame-copy-probe-20261105",
+      "base_ref": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90"
+    },
+    {
+      "number": 418,
+      "url": "https://github.com/techrote/cybersand/pull/418",
+      "draft": true,
+      "head_sha": "15a78545498fb0a179cebb57680aac48cc773122",
+      "head_ref": "sol/active-normal-passivity-fallback-20261105",
+      "base_ref": "experiment/sol-active-normal-weight-20261105",
+      "base_sha": "95d7bf1e3b5a7125d257717f11874b023bb23b77"
+    },
+    {
+      "number": 419,
+      "url": "https://github.com/techrote/cybersand/pull/419",
+      "draft": true,
+      "head_sha": "980c3df0a136feeea41a297b67587f8efd4899c7",
+      "head_ref": "tools/rec001-offline-comparison-20261105",
+      "base_ref": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90"
+    },
+    {
+      "number": 421,
+      "url": "https://github.com/techrote/cybersand/pull/421",
+      "draft": true,
+      "head_sha": "4cd9ca193176e315f8e81316e2221b275cdccbde",
+      "head_ref": "codex/sol-normal-active-20261105",
+      "base_ref": "codex/sol-response-cost-20261105",
+      "base_sha": "3e0bf637c9f2cdb660bd55cf8bc33d2da779e4f9"
+    },
+    {
+      "number": 422,
+      "url": "https://github.com/techrote/cybersand/pull/422",
+      "draft": true,
+      "head_sha": "6a21a04c2fce6e5db05c59dcf188dd266131accb",
+      "head_ref": "experiment/gen006-native-material-only-20261105",
+      "base_ref": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90"
+    },
+    {
+      "number": 423,
+      "url": "https://github.com/techrote/cybersand/pull/423",
+      "draft": true,
+      "head_sha": "bd15df28ef8bf94d0cb65c7ad705769db3ff66b9",
+      "head_ref": "sol/active-normal-fallback-provenance-20261105",
+      "base_ref": "sol/active-normal-passivity-fallback-20261105",
+      "base_sha": "15a78545498fb0a179cebb57680aac48cc773122"
+    },
+    {
+      "number": 424,
+      "url": "https://github.com/techrote/cybersand/pull/424",
+      "draft": true,
+      "head_sha": "e7f2b6f4adf2355e6e6541d6d7e73745da64211f",
+      "head_ref": "tools/rec001-observation-bookmarks-20261105",
+      "base_ref": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90"
+    },
+    {
+      "number": 426,
+      "url": "https://github.com/techrote/cybersand/pull/426",
+      "draft": true,
+      "head_sha": "c71092480ff535aa8c7d16b966829188d3e8fafa",
+      "head_ref": "experiment/gen006-native-demand-fence-20261105",
+      "base_ref": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90"
+    },
+    {
+      "number": 429,
+      "url": "https://github.com/techrote/cybersand/pull/429",
+      "draft": true,
+      "head_sha": "67f93a28bc05fc3b90beec9ea32e60f0864af642",
+      "head_ref": "codex/sol-active-normal-live-20261105",
+      "base_ref": "codex/sol-normal-active-20261105",
+      "base_sha": "4cd9ca193176e315f8e81316e2221b275cdccbde"
+    },
+    {
+      "number": 432,
+      "url": "https://github.com/techrote/cybersand/pull/432",
+      "draft": true,
+      "head_sha": "cc2fdbcc23f7df3524ac24952823a31715c89b4e",
+      "head_ref": "tools/rec001-windows-recorder-cost-probe-20261105",
+      "base_ref": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90"
+    },
+    {
+      "number": 433,
+      "url": "https://github.com/techrote/cybersand/pull/433",
+      "draft": true,
+      "head_sha": "bbbc423344ca1d72764557ddacba690b75ea04d7",
+      "head_ref": "sol/live-active-normal-body-domain-guard-20261105",
+      "base_ref": "codex/sol-active-normal-live-20261105",
+      "base_sha": "dfc2833eab5b8e3f81e2f2798b0066562ed41e0b"
+    },
+    {
+      "number": 435,
+      "url": "https://github.com/techrote/cybersand/pull/435",
+      "draft": true,
+      "head_sha": "d6d9c6b8a1249fa109145e74066b799a6a8a9aca",
+      "head_ref": "experiment/gen006-selective-domain-refusal-20261105",
+      "base_ref": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90"
+    },
+    {
+      "number": 438,
+      "url": "https://github.com/techrote/cybersand/pull/438",
+      "draft": true,
+      "head_sha": "a6dbc6a555c709cb2ce5fb84f9f4256e13f2ac93",
+      "head_ref": "sol/433-msvc-redgreen-host-20261105",
+      "base_ref": "sol/live-active-normal-body-domain-guard-20261105",
+      "base_sha": "bbbc423344ca1d72764557ddacba690b75ea04d7"
+    },
+    {
+      "number": 441,
+      "url": "https://github.com/techrote/cybersand/pull/441",
+      "draft": true,
+      "head_sha": "3eb07e6616798dda49083858e5549aec4c8d0cd7",
+      "head_ref": "sol/live-bin-domain-guard-20261105",
+      "base_ref": "sol/live-active-normal-body-domain-guard-20261105",
+      "base_sha": "bbbc423344ca1d72764557ddacba690b75ea04d7"
+    },
+    {
+      "number": 442,
+      "url": "https://github.com/techrote/cybersand/pull/442",
+      "draft": true,
+      "head_sha": "8edfed45a2c78c3bfc5327440bc2f3d1fd312108",
+      "head_ref": "experiment/gen006-native-bundle-partial-admission-20261105",
+      "base_ref": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90"
+    },
+    {
+      "number": 444,
+      "url": "https://github.com/techrote/cybersand/pull/444",
+      "draft": true,
+      "head_sha": "79f791fb484d738592a629bb8c0457e9ffa40df5",
+      "head_ref": "sol/live-derived-geometry-refusal-20261105",
+      "base_ref": "sol/live-bin-domain-guard-20261105",
+      "base_sha": "3eb07e6616798dda49083858e5549aec4c8d0cd7"
+    },
+    {
+      "number": 448,
+      "url": "https://github.com/techrote/cybersand/pull/448",
+      "draft": true,
+      "head_sha": "fe212c4ddc19234f869ddbbbf9a890b877136935",
+      "head_ref": "experiment/gen006-native-private-stage-20261105",
+      "base_ref": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90"
+    },
+    {
+      "number": 449,
+      "url": "https://github.com/techrote/cybersand/pull/449",
+      "draft": true,
+      "head_sha": "2e937ee37532b06d46fa49205ff2e51c1a9baa2e",
+      "head_ref": "perf/inv154-physics-stage-abba-20261105",
+      "base_ref": "perf/inv154-physics-wrapper-attribution-20261105",
+      "base_sha": "e2b4dd0f97d03af1a3f50ededb246d824350d942"
+    },
+    {
+      "number": 450,
+      "url": "https://github.com/techrote/cybersand/pull/450",
+      "draft": true,
+      "head_sha": "5b0f0744a35d0d2dd0acbf6990254b46bf584b27",
+      "head_ref": "sol/mixed-face-envelope-probe-20261105",
+      "base_ref": "codex/sol-active-normal-live-20261105",
+      "base_sha": "275ce1ee692739b35f400adcf9532f7e89284cfb"
+    },
+    {
+      "number": 452,
+      "url": "https://github.com/techrote/cybersand/pull/452",
+      "draft": true,
+      "head_sha": "14b0f1d0c9a30d4ccd919b3dad91f46031912e39",
+      "head_ref": "sol/bin-mean-range-guard-20261105",
+      "base_ref": "sol/live-bin-domain-guard-20261105",
+      "base_sha": "3eb07e6616798dda49083858e5549aec4c8d0cd7"
+    },
+    {
+      "number": 454,
+      "url": "https://github.com/techrote/cybersand/pull/454",
+      "draft": true,
+      "head_sha": "c4aab63eed538a25687c66d368b0801d2d2e04d0",
+      "head_ref": "design/world-atlas-015-refinement-20261105",
+      "base_ref": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90"
+    },
+    {
+      "number": 455,
+      "url": "https://github.com/techrote/cybersand/pull/455",
+      "draft": true,
+      "head_sha": "d959fdba821d0e259ae41402dd52c9a38b878446",
+      "head_ref": "sol/safety-composition-20261105",
+      "base_ref": "codex/sol-active-normal-live-20261105",
+      "base_sha": "275ce1ee692739b35f400adcf9532f7e89284cfb"
+    },
+    {
+      "number": 456,
+      "url": "https://github.com/techrote/cybersand/pull/456",
+      "draft": true,
+      "head_sha": "df3985e389e0a5f6ea18b1eefea231aefae21689",
+      "head_ref": "perf/inv154-space-step-threadtime-20261105",
+      "base_ref": "perf/inv154-physics-stage-abba-20261105",
+      "base_sha": "2e937ee37532b06d46fa49205ff2e51c1a9baa2e"
+    },
+    {
+      "number": 457,
+      "url": "https://github.com/techrote/cybersand/pull/457",
+      "draft": true,
+      "head_sha": "cff6c7f947147a250e5a5c3bb9d46b0df39b376c",
+      "head_ref": "tools/world-design-godot-capture-20261105",
+      "base_ref": "main",
+      "base_sha": "06522e300dcf91efbab0ac8f4f4370af72cf2029"
+    },
+    {
+      "number": 458,
+      "url": "https://github.com/techrote/cybersand/pull/458",
+      "draft": true,
+      "head_sha": "9f51e8edabe327ff7e0936fbcf35b358c2b02439",
+      "head_ref": "experiment/gen006-windows-reader-lease-20261106",
+      "base_ref": "main",
+      "base_sha": "06522e300dcf91efbab0ac8f4f4370af72cf2029"
+    },
+    {
+      "number": 459,
+      "url": "https://github.com/techrote/cybersand/pull/459",
+      "draft": true,
+      "head_sha": "cb17c05ccadd87bc15b46dc2a7455e71c356ee34",
+      "head_ref": "experiment/gen006-native-cyps-scaling-20261106",
+      "base_ref": "main",
+      "base_sha": "06522e300dcf91efbab0ac8f4f4370af72cf2029"
+    },
+    {
+      "number": 460,
+      "url": "https://github.com/techrote/cybersand/pull/460",
+      "draft": true,
+      "head_sha": "61924a9788f507620706dfa19d28dc12d819156b",
+      "head_ref": "codex/sol-structure-cut-20261106",
+      "base_ref": "fix/sol347-facade-refusal-20261104-095628",
+      "base_sha": "e4c2649e82d943554f4dc6a0634336770cda08f6"
+    },
+    {
+      "number": 461,
+      "url": "https://github.com/techrote/cybersand/pull/461",
+      "draft": true,
+      "head_sha": "cba3c0de35c4fae410b2fa16fa821524308c1ce8",
+      "head_ref": "codex/sol-contact-gravity-order-20261106",
+      "base_ref": "codex/sol-structure-cut-20261106",
+      "base_sha": "61924a9788f507620706dfa19d28dc12d819156b"
+    },
+    {
+      "number": 462,
+      "url": "https://github.com/techrote/cybersand/pull/462",
+      "draft": true,
+      "head_sha": "282ed9dd13a9d17607650ca17d9ddb494ae62863",
+      "head_ref": "tools/world-design-capture-repair-r1-r5-20261106",
+      "base_ref": "tools/world-design-godot-capture-20261105",
+      "base_sha": "cff6c7f947147a250e5a5c3bb9d46b0df39b376c"
+    },
+    {
+      "number": 463,
+      "url": "https://github.com/techrote/cybersand/pull/463",
+      "draft": true,
+      "head_sha": "29c3c0107ded12abe6f57b9a5feaee4931e6fbf8",
+      "head_ref": "claude/sol-bearing-gate-diagnostic-20261106",
+      "base_ref": "codex/sol-contact-gravity-order-20261106",
+      "base_sha": "cba3c0de35c4fae410b2fa16fa821524308c1ce8"
+    },
+    {
+      "number": 466,
+      "url": "https://github.com/techrote/cybersand/pull/466",
+      "draft": true,
+      "head_sha": "b140265d1a2ef2fd76787f8048dbcc5e9fa545ac",
+      "head_ref": "codex/sol-workbench-law-20261106",
+      "base_ref": "codex/sol-contact-gravity-order-20261106",
+      "base_sha": "cba3c0de35c4fae410b2fa16fa821524308c1ce8"
+    },
+    {
+      "number": 467,
+      "url": "https://github.com/techrote/cybersand/pull/467",
+      "draft": true,
+      "head_sha": "e9dc1da27ca18e8efa964209fcd2de4d9546a255",
+      "head_ref": "tools/world-design-capture-final-repair-independent-20261106",
+      "base_ref": "tools/world-design-capture-repair-r1-r5-20261106",
+      "base_sha": "282ed9dd13a9d17607650ca17d9ddb494ae62863"
+    },
+    {
+      "number": 468,
+      "url": "https://github.com/techrote/cybersand/pull/468",
+      "draft": true,
+      "head_sha": "bcccfe806af9cfd504479ed5f16d82c49310efb6",
+      "head_ref": "tools/world-design-capture-live-claim-probe-20261106",
+      "base_ref": "tools/world-design-capture-final-repair-independent-20261106",
+      "base_sha": "e9dc1da27ca18e8efa964209fcd2de4d9546a255"
+    },
+    {
+      "number": 469,
+      "url": "https://github.com/techrote/cybersand/pull/469",
+      "draft": true,
+      "head_sha": "14d879ee9a300c659c0b8211a86921018c0e80c1",
+      "head_ref": "tools/world-design-capture-live-owner-repair-20261106",
+      "base_ref": "tools/world-design-capture-final-repair-independent-20261106",
+      "base_sha": "e9dc1da27ca18e8efa964209fcd2de4d9546a255"
+    },
+    {
+      "number": 472,
+      "url": "https://github.com/techrote/cybersand/pull/472",
+      "draft": true,
+      "head_sha": "18d40ca9e18e133b78f85323f53103e018c58a7d",
+      "head_ref": "sol6/pf-run-head-repair-20261106-2100",
+      "base_ref": "claude/water-ballistic-hybrid",
+      "base_sha": "4a80af2a891332176a3912a235582d77d076a185"
+    },
+    {
+      "number": 475,
+      "url": "https://github.com/techrote/cybersand/pull/475",
+      "draft": true,
+      "head_sha": "5c207762a424cc3c7507c74f500403ef48b9e362",
+      "head_ref": "research/pf-gas-capacity-native-20261106-gpt6-2120",
+      "base_ref": "main",
+      "base_sha": "7e2c2fd1aa2759590d63d5dfb53ce9e4c0a76e4b"
+    },
+    {
+      "number": 476,
+      "url": "https://github.com/techrote/cybersand/pull/476",
+      "draft": true,
+      "head_sha": "5d8ab2ef09530c19c6013e21667a57725771a0a1",
+      "head_ref": "codex/pf-run-head-repair-20261106",
+      "base_ref": "claude/water-ballistic-hybrid",
+      "base_sha": "4a80af2a891332176a3912a235582d77d076a185"
+    },
+    {
+      "number": 478,
+      "url": "https://github.com/techrote/cybersand/pull/478",
+      "draft": true,
+      "head_sha": "8116c6245757c3dceb3b38af01da2e29c9c82448",
+      "head_ref": "tools/world-design-capture-identity-fencing-20261106",
+      "base_ref": "tools/world-design-capture-live-owner-repair-20261106",
+      "base_sha": "14d879ee9a300c659c0b8211a86921018c0e80c1"
+    },
+    {
+      "number": 479,
+      "url": "https://github.com/techrote/cybersand/pull/479",
+      "draft": true,
+      "head_sha": "cae8333a49232aee84e06bf92893bf09c11f1e7d",
+      "head_ref": "tools/world-design-capture-final-r1d-visibility-archive-repair-20261106",
+      "base_ref": "tools/world-design-capture-live-owner-repair-20261106",
+      "base_sha": "14d879ee9a300c659c0b8211a86921018c0e80c1"
+    },
+    {
+      "number": 480,
+      "url": "https://github.com/techrote/cybersand/pull/480",
+      "draft": true,
+      "head_sha": "22abca9bee82aca984f92501442e9323d9c4e588",
+      "head_ref": "feat/in-tools-361-implementation-20261106",
+      "base_ref": "main",
+      "base_sha": "7e2c2fd1aa2759590d63d5dfb53ce9e4c0a76e4b"
+    },
+    {
+      "number": 484,
+      "url": "https://github.com/techrote/cybersand/pull/484",
+      "draft": true,
+      "head_sha": "296476c077e6974227efab0f9c3710f4457929fa",
+      "head_ref": "qualification/current-main-gameplay-acceptance-20261106",
+      "base_ref": "main",
+      "base_sha": "1f82dac1cebc9b38a319153354e4bcc774289417"
+    },
+    {
+      "number": 486,
+      "url": "https://github.com/techrote/cybersand/pull/486",
+      "draft": true,
+      "head_sha": "43dc378593050cb7de67389e62d3c672243e3de4",
+      "head_ref": "feat/gen006-native-streaming-vertical-slice-20261107",
+      "base_ref": "main",
+      "base_sha": "81bbd5ff5cf366159e2b8a630609359c13560080"
+    },
+    {
+      "number": 487,
+      "url": "https://github.com/techrote/cybersand/pull/487",
+      "draft": true,
+      "head_sha": "a3f469eb4d91bf3c0c41134f684d439e5e7fff2c",
+      "head_ref": "tools/world-art-interactive-preview-20261107",
+      "base_ref": "main",
+      "base_sha": "4c2c97323d862afdd3ec6730017127cc8e4ec05c"
+    },
+    {
+      "number": 488,
+      "url": "https://github.com/techrote/cybersand/pull/488",
+      "draft": true,
+      "head_sha": "65398578facf68dfb6d1228e3f5cf7f1e221a078",
+      "head_ref": "perf/stress-canvas-pf-ballistic-splash-20261107",
+      "base_ref": "main",
+      "base_sha": "4c2c97323d862afdd3ec6730017127cc8e4ec05c"
+    },
+    {
+      "number": 490,
+      "url": "https://github.com/techrote/cybersand/pull/490",
+      "draft": true,
+      "head_sha": "1ba23f233e2a18a54381d91f4a7f2c2142d953f7",
+      "head_ref": "qa/gen006-native-record-coordinate-binding-20261107",
+      "base_ref": "feat/gen006-native-streaming-vertical-slice-20261107",
+      "base_sha": "15f06644001790ed751fe2754be59ff453bdab9c"
+    },
+    {
+      "number": 493,
+      "url": "https://github.com/techrote/cybersand/pull/493",
+      "draft": true,
+      "head_sha": "b62eb26a867c08e9933d507a4699bb02be7c10d1",
+      "head_ref": "perf/water-factorial-stress-20261107",
+      "base_ref": "main",
+      "base_sha": "3d953ed1c1f5bd0bcf582359d47863689b9e2310"
+    },
+    {
+      "number": 505,
+      "url": "https://github.com/techrote/cybersand/pull/505",
+      "draft": true,
+      "head_sha": "305c9c522fe5ae1241b8efe69856548f12f37cea",
+      "head_ref": "perf/pf-gas-acceptance-20261107",
+      "base_ref": "perf/water-factorial-stress-20261107",
+      "base_sha": "b62eb26a867c08e9933d507a4699bb02be7c10d1"
+    },
+    {
+      "number": 506,
+      "url": "https://github.com/techrote/cybersand/pull/506",
+      "draft": true,
+      "head_sha": "7b960b5eac5b7a4ed159ade97b1093a1b623ac19",
+      "head_ref": "claude/godot-atlas-unattended-render-af7b88",
+      "base_ref": "tools/world-art-interactive-preview-20261107",
+      "base_sha": "a3f469eb4d91bf3c0c41134f684d439e5e7fff2c"
+    },
+    {
+      "number": 507,
+      "url": "https://github.com/techrote/cybersand/pull/507",
+      "draft": true,
+      "head_sha": "18443d473213aabdc68963121fa42bad417fe968",
+      "head_ref": "qa/gen006-surface-crash-ownership-loss-20261107",
+      "base_ref": "feat/gen006-native-streaming-vertical-slice-20261107",
+      "base_sha": "7f87204a405df13468385f7b4127792789ffcac3"
+    },
+    {
+      "number": 509,
+      "url": "https://github.com/techrote/cybersand/pull/509",
+      "draft": true,
+      "head_sha": "1e27aa66a8385fb0d12288dfd3b9d9b73ea8eb49",
+      "head_ref": "qualification/godot117991-production-candidate-20261107",
+      "base_ref": "main",
+      "base_sha": "24a8bbe8ccf0d17196ebbab580b924930a964584"
+    },
+    {
+      "number": 510,
+      "url": "https://github.com/techrote/cybersand/pull/510",
+      "draft": true,
+      "head_sha": "53d642b8b0c7b773318ed1660a657d38e9ec6800",
+      "head_ref": "codex/workbench-small-cut-debris-20261107",
+      "base_ref": "codex/sol-workbench-law-20261106",
+      "base_sha": "b140265d1a2ef2fd76787f8048dbcc5e9fa545ac"
+    },
+    {
+      "number": 511,
+      "url": "https://github.com/techrote/cybersand/pull/511",
+      "draft": true,
+      "head_sha": "d93597e5909d2ac0fd481181d2c015838e8badb8",
+      "head_ref": "qa/gen006-visible-pin-recovery-20261107",
+      "base_ref": "feat/gen006-native-streaming-vertical-slice-20261107",
+      "base_sha": "5d04639f922d9e67240cdf8106656547c187be0a"
+    },
+    {
+      "number": 512,
+      "url": "https://github.com/techrote/cybersand/pull/512",
+      "draft": true,
+      "head_sha": "af5ab47e210bac53d70b51e923588a4ad630aea9",
+      "head_ref": "feat/gen006-shared-world-pristine-release-20261107",
+      "base_ref": "main",
+      "base_sha": "81bbd5ff5cf366159e2b8a630609359c13560080"
+    },
+    {
+      "number": 513,
+      "url": "https://github.com/techrote/cybersand/pull/513",
+      "draft": true,
+      "head_sha": "22f2724d6c237125016378d5f5a08c82e281524b",
+      "head_ref": "qa/gen006-windows-desktop-playtest-20261107",
+      "base_ref": "feat/gen006-native-streaming-vertical-slice-20261107",
+      "base_sha": "d6c4b09005b2e0ced9052c0a4591fdac128d039e"
+    },
+    {
+      "number": 514,
+      "url": "https://github.com/techrote/cybersand/pull/514",
+      "draft": true,
+      "head_sha": "1126dc5fdbadb74eaa82f91f16f7af99c9065ddc",
+      "head_ref": "qa/gen006-shared-world-parity-readmission-20261107",
+      "base_ref": "feat/gen006-shared-world-pristine-release-20261107",
+      "base_sha": "7b366c201fd521a7b9bfc21fe7a9b2485f456828"
+    },
+    {
+      "number": 515,
+      "url": "https://github.com/techrote/cybersand/pull/515",
+      "draft": true,
+      "head_sha": "2668234933902b0b9e8d962f9f40038338bd6683",
+      "head_ref": "codex/pf504-real-workbench-stress-20261107",
+      "base_ref": "codex/pf-gas-exact-hotpath-20261107",
+      "base_sha": "186452b9f035961325ad71917a76ba8834e30bcf"
+    },
+    {
+      "number": 517,
+      "url": "https://github.com/techrote/cybersand/pull/517",
+      "draft": true,
+      "head_sha": "ac1c94785f3fe32dc7e75b7deec202adf9ba37d1",
+      "head_ref": "chore/repository-housekeeping-20261107",
+      "base_ref": "main",
+      "base_sha": "1f82dac1cebc9b38a319153354e4bcc774289417"
+    },
+    {
+      "number": 518,
+      "url": "https://github.com/techrote/cybersand/pull/518",
+      "draft": true,
+      "head_sha": "35919475a8c924a6924d37b9fee4bd5b9ff0cc09",
+      "head_ref": "experiment/gen006-storage-journal-20261107",
+      "base_ref": "main",
+      "base_sha": "d3c24e88c7633b2457cd7635af9c887d97a74c2b"
+    },
+    {
+      "number": 519,
+      "url": "https://github.com/techrote/cybersand/pull/519",
+      "draft": true,
+      "head_sha": "6d768ce3169bc708c816f5c193957b44571adb1d",
+      "head_ref": "codex/workbench-rectangle-core-20261107",
+      "base_ref": "codex/workbench-small-cut-debris-20261107",
+      "base_sha": "53d642b8b0c7b773318ed1660a657d38e9ec6800"
+    },
+    {
+      "number": 520,
+      "url": "https://github.com/techrote/cybersand/pull/520",
+      "draft": true,
+      "head_sha": "58eeb688bf511eb77969822f53f0b23911102707",
+      "head_ref": "codex/pf504-stress-gas-cpu-20261107",
+      "base_ref": "codex/pf504-real-workbench-stress-20261107",
+      "base_sha": "2668234933902b0b9e8d962f9f40038338bd6683"
+    },
+    {
+      "number": 521,
+      "url": "https://github.com/techrote/cybersand/pull/521",
+      "draft": true,
+      "head_sha": "3710c894242b263b28720d27e95f3ef37a9a48ff",
+      "head_ref": "test/pf504-fullsize-cpu-physics-20261107",
+      "base_ref": "codex/pf504-real-workbench-stress-20261107",
+      "base_sha": "2668234933902b0b9e8d962f9f40038338bd6683"
+    },
+    {
+      "number": 523,
+      "url": "https://github.com/techrote/cybersand/pull/523",
+      "draft": true,
+      "head_sha": "61a534a90b6fac539c8196788458831023b247f8",
+      "head_ref": "experiment/gen006-native-dynamic-fullworld-20261107",
+      "base_ref": "main",
+      "base_sha": "81bbd5ff5cf366159e2b8a630609359c13560080"
+    },
+    {
+      "number": 529,
+      "url": "https://github.com/techrote/cybersand/pull/529",
+      "draft": true,
+      "head_sha": "8f07084aeb4c8fbda5caf371ad791848c120fedf",
+      "head_ref": "feature/wb-agent-authoring-foundation-526-20261107",
+      "base_ref": "main",
+      "base_sha": "1f82dac1cebc9b38a319153354e4bcc774289417"
+    },
+    {
+      "number": 530,
+      "url": "https://github.com/techrote/cybersand/pull/530",
+      "draft": true,
+      "head_sha": "f55ca2b044b0130fd503864c2b82fc1e6bcae8a9",
+      "head_ref": "feat/wb-agent-527-sand-hopper-native-control-20261107",
+      "base_ref": "main",
+      "base_sha": "1f82dac1cebc9b38a319153354e4bcc774289417"
+    },
+    {
+      "number": 531,
+      "url": "https://github.com/techrote/cybersand/pull/531",
+      "draft": true,
+      "head_sha": "4282332e5bda324062764412848e98981b47c1c7",
+      "head_ref": "codex/wb-agent-528-panel-openai-20261107",
+      "base_ref": "main",
+      "base_sha": "1f82dac1cebc9b38a319153354e4bcc774289417"
+    },
+    {
+      "number": 532,
+      "url": "https://github.com/techrote/cybersand/pull/532",
+      "draft": true,
+      "head_sha": "dce10ccefc395e598aaf2338ccbf58a210b239f8",
+      "head_ref": "sol/pf-gas-selective-bootstrap-20261107",
+      "base_ref": "main",
+      "base_sha": "81bbd5ff5cf366159e2b8a630609359c13560080"
+    },
+    {
+      "number": 533,
+      "url": "https://github.com/techrote/cybersand/pull/533",
+      "draft": true,
+      "head_sha": "fa1b2e398acb1986158cb1652b49c935227416ca",
+      "head_ref": "agent/pf201-selective-gas-cache-20261107",
+      "base_ref": "main",
+      "base_sha": "81bbd5ff5cf366159e2b8a630609359c13560080"
+    },
+    {
+      "number": 534,
+      "url": "https://github.com/techrote/cybersand/pull/534",
+      "draft": false,
+      "head_sha": "62422e83a40ab571c3b920accf2d0579d79a6c12",
+      "head_ref": "docs/owner-priority-reset-20261107",
+      "base_ref": "main",
+      "base_sha": "1f82dac1cebc9b38a319153354e4bcc774289417"
+    },
+    {
+      "number": 536,
+      "url": "https://github.com/techrote/cybersand/pull/536",
+      "draft": true,
+      "head_sha": "e1f4dcade2531ebe542a764b34a4f2c158b25d7d",
+      "head_ref": "feat/map-auto03-three-lane-pilot-20261107",
+      "base_ref": "main",
+      "base_sha": "662ed4d88c08070dbb6f313931146a23e3631471"
+    },
+    {
+      "number": 539,
+      "url": "https://github.com/techrote/cybersand/pull/539",
+      "draft": false,
+      "head_sha": "5d8c41a4eb03ec4bd1779feae85273d5af4a6df0",
+      "head_ref": "ci/copy292-main-branch-regression-20261107",
+      "base_ref": "main",
+      "base_sha": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742"
+    },
+    {
+      "number": 540,
+      "url": "https://github.com/techrote/cybersand/pull/540",
+      "draft": true,
+      "head_sha": "0a9481c93ad89986bd9f65e219bc51e2bfd01028",
+      "head_ref": "qualification/physics-worker-1v4-20261107",
+      "base_ref": "qualification/current-main-gameplay-acceptance-20261106",
+      "base_sha": "296476c077e6974227efab0f9c3710f4457929fa"
+    },
+    {
+      "number": 545,
+      "url": "https://github.com/techrote/cybersand/pull/545",
+      "draft": true,
+      "head_sha": "b7c6204625dad14fdf15430f7872d9841cf92afd",
+      "head_ref": "feature/wb-remote-file-bridge-20261108",
+      "base_ref": "codex/wb-agent-528-panel-openai-20261107",
+      "base_sha": "3cb6792abb904f912790ef077affa12570804250"
+    },
+    {
+      "number": 547,
+      "url": "https://github.com/techrote/cybersand/pull/547",
+      "draft": true,
+      "head_sha": "2b6b8f4ae7da631a81d7393ed01c7940f54bfe93",
+      "head_ref": "feature/wb-remote-codespaces-iteration-20261108",
+      "base_ref": "feature/wb-remote-file-bridge-20261108",
+      "base_sha": "b7c6204625dad14fdf15430f7872d9841cf92afd"
+    },
+    {
+      "number": 550,
+      "url": "https://github.com/techrote/cybersand/pull/550",
+      "draft": true,
+      "head_sha": "9e4a25596e4c810d037ffb5f54f9bd98c108e7eb",
+      "head_ref": "integration/paint001-corpus-registration-20261108",
+      "base_ref": "feat/paint001-shape-planner-20261108",
+      "base_sha": "e4bfd9899286c94c6c5de3a15eae0005ac3a8916"
+    },
+    {
+      "number": 551,
+      "url": "https://github.com/techrote/cybersand/pull/551",
+      "draft": true,
+      "head_sha": "f45cd5e49260b712cf420c6c2b02c2efe117dcd6",
+      "head_ref": "feature/wb-remote-mcp-chat-adapter-20261108",
+      "base_ref": "feature/wb-remote-codespaces-iteration-20261108",
+      "base_sha": "2b6b8f4ae7da631a81d7393ed01c7940f54bfe93"
+    },
+    {
+      "number": 552,
+      "url": "https://github.com/techrote/cybersand/pull/552",
+      "draft": true,
+      "head_sha": "be7b5d472333a43b47d95cce43158c3948a17ccd",
+      "head_ref": "feature/wb-api-agent-provider-neutral-20261108",
+      "base_ref": "feature/wb-remote-codespaces-iteration-20261108",
+      "base_sha": "2b6b8f4ae7da631a81d7393ed01c7940f54bfe93"
+    },
+    {
+      "number": 554,
+      "url": "https://github.com/techrote/cybersand/pull/554",
+      "draft": true,
+      "head_sha": "fbf7ed6ab734ecbe11deb60da5eb31330fe144ab",
+      "head_ref": "research/b4-hs470-independent-abba-20261109",
+      "base_ref": "main",
+      "base_sha": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3"
+    },
+    {
+      "number": 555,
+      "url": "https://github.com/techrote/cybersand/pull/555",
+      "draft": true,
+      "head_sha": "108898983bf0485d0f5d462cedfae5a96ee42c15",
+      "head_ref": "research/b3-handoff-proof-20261109",
+      "base_ref": "main",
+      "base_sha": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3"
+    },
+    {
+      "number": 556,
+      "url": "https://github.com/techrote/cybersand/pull/556",
+      "draft": true,
+      "head_sha": "47931f30a33f9e8072deb7f29f95d52b935e425f",
+      "head_ref": "research/b2-region-invalidation-20261109",
+      "base_ref": "main",
+      "base_sha": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3"
+    },
+    {
+      "number": 557,
+      "url": "https://github.com/techrote/cybersand/pull/557",
+      "draft": true,
+      "head_sha": "722b8afbd9a7a732f0ee5c38c817163a39facc9b",
+      "head_ref": "docs/agent-paint-001-evidence-20261109",
+      "base_ref": "main",
+      "base_sha": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3"
+    },
+    {
+      "number": 566,
+      "url": "https://github.com/techrote/cybersand/pull/566",
+      "draft": true,
+      "head_sha": "f8041847bc7627b3fdd3d7426d45f646f79995fd",
+      "head_ref": "codex/native-pixel-scrolling-20261113",
+      "base_ref": "main",
+      "base_sha": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742"
+    },
+    {
+      "number": 567,
+      "url": "https://github.com/techrote/cybersand/pull/567",
+      "draft": true,
+      "head_sha": "bac120981fdd9aecaab0dc8368c421fa390cc269",
+      "head_ref": "codex/wb-art-slm-001",
+      "base_ref": "main",
+      "base_sha": "63f8b1ba6559906fe85f3ad0269aa296e4141d67"
+    },
+    {
+      "number": 569,
+      "url": "https://github.com/techrote/cybersand/pull/569",
+      "draft": true,
+      "head_sha": "2a565df45efc568eb96a2166e0b77f299e289625",
+      "head_ref": "codex/agent-painter-foundation-568",
+      "base_ref": "main",
+      "base_sha": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742"
+    },
+    {
+      "number": 572,
+      "url": "https://github.com/techrote/cybersand/pull/572",
+      "draft": true,
+      "head_sha": "0b026f6bd6c1c8ffbe5ef458a8f2b6aebccc13f3",
+      "head_ref": "feat/gen008-flatten-material-baseline",
+      "base_ref": "main",
+      "base_sha": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742"
+    },
+    {
+      "number": 573,
+      "url": "https://github.com/techrote/cybersand/pull/573",
+      "draft": true,
+      "head_sha": "aeab8ca0a90ae044771a55b9d521c805eadfe5b8",
+      "head_ref": "codex/agent-painter-smol-568",
+      "base_ref": "codex/agent-painter-foundation-568",
+      "base_sha": "2a565df45efc568eb96a2166e0b77f299e289625"
+    },
+    {
+      "number": 574,
+      "url": "https://github.com/techrote/cybersand/pull/574",
+      "draft": true,
+      "head_sha": "7d90bf5294d16a8644694a4c8a6a36a5227fa3c0",
+      "head_ref": "codex/agent-painter-void-568",
+      "base_ref": "codex/agent-painter-foundation-568",
+      "base_sha": "2a565df45efc568eb96a2166e0b77f299e289625"
+    },
+    {
+      "number": 575,
+      "url": "https://github.com/techrote/cybersand/pull/575",
+      "draft": true,
+      "head_sha": "1c9cf2ef8760177e0c1d095052c27fcf200a5cb3",
+      "head_ref": "codex/agent-painter-lfm25-vl-568",
+      "base_ref": "codex/agent-painter-foundation-568",
+      "base_sha": "2a565df45efc568eb96a2166e0b77f299e289625"
+    },
+    {
+      "number": 576,
+      "url": "https://github.com/techrote/cybersand/pull/576",
+      "draft": true,
+      "head_sha": "25b24bf80c593b115321387a2a0374dd5ff02548",
+      "head_ref": "codex/agent-painter-sprocket-568",
+      "base_ref": "codex/agent-painter-foundation-568",
+      "base_sha": "2a565df45efc568eb96a2166e0b77f299e289625"
+    },
+    {
+      "number": 578,
+      "url": "https://github.com/techrote/cybersand/pull/578",
+      "draft": true,
+      "head_sha": "3eccbdf11ecf054389e246db99eeefa332a506e7",
+      "head_ref": "research/render-upload-001",
+      "base_ref": "main",
+      "base_sha": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742"
+    }
+  ],
+  "method": "Metadata inventory and nine representative deep pilot families; not full historical adjudication.",
+  "authority": "historical-non-authoritative",
+  "retrieval": "explicit-history-only",
+  "original_capture_sha256": "b921f9e388fd87e35aa8d99e45b83fdfbe12031da0e8398f9d4f6e2b5c33b46c",
+  "envelope_note": "Original snapshot fields preserved; original source bytes also retained in portable evidence bundle."
+}
