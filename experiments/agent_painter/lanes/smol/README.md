@@ -1,5 +1,37 @@
 # Smol painter: first bounded DEVELOPMENT iteration
 
+## Model-free request-conformance check — 14 November 2026
+
+The [strict source-bound semantic audit](https://github.com/techrote/cybersand/actions/runs/43542371297)
+passed at audit orchestration source `f16c7397ec596e9ca3d586a7c6e9da30929ea1e1`.
+It fetched the **unchanged original** checkpoint128 raw DEVELOPMENT
+outputs from run `43535795817` (evaluation source `1a349d9d115fbf789b7f28c80c2c4b7b2f65545a`;
+training source `d8e2a7759c361f3e50660e301b9ad5a0208685c4`).
+GitHub metadata matched original artifact ID `14089354253` and published
+SHA-256 `cca74539cd94fd9284ac1d6b6841b308f33810f51bf08d68b25c9f8fa6a5597a`;
+the audit records this as **GitHub metadata**, not an independently rehashed
+original outer ZIP. Both seed views per unique prompt were checked against the
+same original raw-completion digest; no regenerated model text or JSON repair.
+
+Five pure tests and the actual original 12-view-per-arm analysis passed.
+Untuned: **0/6** unique compiler-accepted requests. Trained checkpoint128:
+**1/6** compiler-accepted unique requests, **2/12** accepted seed views,
+but **0 request-conforming Pipework requests**. The accepted manifold
+completion has one tee, three endpoints and one upward branch; the original
+request requires three tees, five endpoints and three upward branches.
+The new audit separately scores the two frozen Pipework request constraints,
+not Greebles/Architecture semantics, and does **not** claim an all-family
+semantic score, model-native painting, gameplay traversal or visual utility.
+
+[Read-only audit artifact #14092078289](https://github.com/techrote/cybersand/actions/runs/43542371297/artifacts/14092078289)
+has Actions-reported SHA-256
+`5bda3add28156a510123a81fd94b3921f4298f392f88481d0f045dba3149b2bb`.
+No new training, FINAL readback, native Art or model freeze occurred. The
+shepherd's [cross-lane curriculum handoff](https://github.com/techrote/cybersand/issues/568#issuecomment-6868838048)
+requires review and genuine source-qualified admission before any expanded
+TRAIN dataset may be consumed. Do not substitute this score for the future
+frozen common 60-request benchmark.
+
 ## Separate source-d8 checkpoint128 diagnosis — 14 November 2026
 
 The earlier [full-state continuation](https://github.com/techrote/cybersand/actions/runs/43522585277)
