@@ -103,7 +103,7 @@ class NativeSession:
     def __init__(self, repo_root: Path | str, godot: Path | str, output_dir: Path | str,
                  source_sha: str, *, timeout: float = 60.0,
                  startup_timeout: float = 180.0, runtime_manifest: Path | str | None = None,
-                 graphical: bool = False):
+                 graphical: bool = False, harness_script: str = "res://tests/run_driv3r_stage_a.gd"):
         if os.name != "posix":
             raise NativeError("Stage A persistent native process ownership is POSIX-only")
         if not re.fullmatch(r"[0-9a-f]{40}", source_sha):
@@ -114,6 +114,11 @@ class NativeSession:
             raise NativeError("Startup timeout must be in (0, 240] seconds")
         if type(graphical) is not bool:
             raise NativeError("Graphical option must be boolean")
+        allowed = ("res://tests/run_driv3r_stage_a.gd",
+                   "res://tests/run_driv3r_m3_history.gd")
+        if harness_script not in allowed or type(harness_script) is not str:
+            raise NativeError("Unknown native harness script; source-allowlisted only")
+        self.harness_script = harness_script
         self.graphical = graphical
         self.root = Path(repo_root).resolve()
         self.godot = Path(godot).resolve()
@@ -166,13 +171,15 @@ class NativeSession:
             runtime = development_runtime(self.root, self.source_sha, self.godot)
         from .stage_b.catalog import catalogs
         _, catalog_hashes = catalogs(self.root)
-        runtime.update({"driv3r_harness_sha256": _digest(self.root / "godot/tests/run_driv3r_stage_a.gd"),
+        harness_path = self.root / "godot/tests" / self.harness_script.rsplit("/",1)[-1]
+        runtime.update({"driv3r_harness_sha256": _digest(harness_path),
                         "driv3r_native_client_sha256": _digest(Path(__file__)),
                         "driv3r_fixture_catalog_sha256": catalog_hashes,
                         "session_id": self.session_id, "parent_pid": os.getpid(),
                         "display_mode": "graphical-framebuffer" if self.graphical else "headless"})
         self._identities = {path: _digest(path) for path in
-                            (self.root / "godot/tests/run_driv3r_stage_a.gd", Path(__file__), native, rapier, self.godot)}
+                            (self.root / "godot/tests/run_driv3r_stage_a.gd", harness_path,
+                             Path(__file__), native, rapier, self.godot)}
         self._identities.update({self.root / path: sha for path, sha in catalog_hashes.items()})
         _atomic(self.output / "runtime-custody.json", runtime)
         env = os.environ.copy()
@@ -192,7 +199,7 @@ class NativeSession:
                 raise NativeError("Graphical qualification requires an explicit display")
             command = [str(self.godot), "--rendering-method", "gl_compatibility",
                        "--path", str(self.root / "godot"),
-                       "--script", "res://tests/run_driv3r_stage_a.gd"]
+                       "--script", self.harness_script]
         else:
             command = [str(self.godot), "--headless", "--path", str(self.root / "godot"),
                        "--script", "res://tests/run_driv3r_stage_a.gd"]
@@ -203,7 +210,8 @@ class NativeSession:
             ready = self._wait_file(self.output / "ready.json", self.startup_timeout)
             if ready.get("pid") != self.process.pid or ready.get("session_id") != self.session_id \
                     or ready.get("source_sha") != self.source_sha or ready.get("backend") != "CyberNativeCellWorld" \
-                    or ready.get("native_sha256") != _digest(native) or ready.get("rapier_sha256") != rapier_hash:
+                    or ready.get("native_sha256") != _digest(native) or ready.get("rapier_sha256") != rapier_hash
+                    or ready.get("harness_sha256") != _digest(harness_path):
                 raise NativeError("Mounted native process identity mismatch")
             _atomic(self.output / "startup.json", {"elapsed_seconds": time.monotonic() - started,
                                                    "command": command, "ready": ready})
