@@ -32,7 +32,7 @@ request reuses the tee and invents a `closed` requirement. The accepted manifold
 request remains a semantically incorrect TRAIN tee. No candidate freeze or
 model-native quality claim follows from this evaluation.
 
-**Source/evidence custody:** [workflow and one-shot request](../../../.github/workflows/agent-painter-smol-c128-evaluate.yml),
+**Source/evidence custody:** [workflow and one-shot request](../../../../.github/workflows/agent-painter-smol-c128-evaluate.yml),
 [artifact #14089354253](https://github.com/techrote/cybersand/actions/runs/43535795817/artifacts/14089354253),
 artifact ZIP SHA-256 `cca74539cd94fd9284ac1d6b6841b308f33810f51bf08d68b25c9f8fa6a5597a`,
 and [environment artifact #14089129245](https://github.com/techrote/cybersand/actions/runs/43535795817/artifacts/14089129245).
