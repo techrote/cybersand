@@ -51,6 +51,57 @@ class CatalogPreflightTests(unittest.TestCase):
         with self.assertRaises(m.PreflightError):
             m.model_presentation_hash(result, {ids[0]: float("nan")})
 
+    def test_presentation_rejects_stale_and_counterfeit_catalog_custody(self):
+        good = self.catalog()
+        self.assertEqual(m.model_presentation_hash(good),
+                         m.model_presentation_hash(copy.deepcopy(good)))
+        modified = copy.deepcopy(good)
+        move = next(row for row in modified["catalog"] if row["id"] == "E1")
+        move["cursor_after"] = list(self.before)
+        with self.assertRaisesRegex(m.PreflightError, "digest"):
+            m.model_presentation_hash(modified)
+        forged_native = copy.deepcopy(good)
+        forged_native["native_legal_catalog_sha256"] = "f" * 64
+        with self.assertRaisesRegex(m.PreflightError, "native"):
+            m.model_presentation_hash(forged_native)
+        forged_field = copy.deepcopy(good)
+        forged_field["native_receipt"] = {"accepted": True}
+        with self.assertRaisesRegex(m.PreflightError, "envelope"):
+            m.model_presentation_hash(forged_field)
+        wrong_dimensions = copy.deepcopy(good)
+        wrong_dimensions["world_size"][0] = True
+        with self.assertRaisesRegex(m.PreflightError, "dimensions"):
+            m.model_presentation_hash(wrong_dimensions)
+
+    def test_presentation_rechecks_sweep_even_with_rehashed_digest(self):
+        # A caller can always recompute a synthetic hash. The presentation
+        # helper must still reject contradictory candidate geometry.
+        for corrupt in ("sweep", "stop", "cursor_origin"):
+            modified = copy.deepcopy(self.catalog())
+            move = next(row for row in modified["catalog"] if row["id"] == "E1")
+            if corrupt == "sweep":
+                move["swept_xy"][0] = list(self.before)  # zero-length cardinal step
+            elif corrupt == "stop":
+                stop = next(row for row in modified["catalog"] if row["id"] == "STOP")
+                stop["brush_state"] = "down"
+            else:
+                move["cursor_before"][0] += 1  # mixed pre-decision cursor
+            modified["synthetic_legal_catalog_sha256"] = m._hash(modified["catalog"])
+            with self.subTest(corrupt=corrupt):
+                with self.assertRaises(m.PreflightError):
+                    m.model_presentation_hash(modified)
+
+    def test_legality_authority_must_return_real_booleans(self):
+        # A truthy string such as "DENY" must never admit a cell.
+        with self.assertRaisesRegex(m.PreflightError, "boolean"):
+            m.legal_catalog(self.before, self.options, width=self.f.width,
+                            height=self.f.height, legal_cell=lambda _: "DENY")
+        with self.assertRaisesRegex(m.PreflightError, "boolean"):
+            m.legal_catalog(self.before, self.options, width=self.f.width,
+                            height=self.f.height,
+                            legal_cell=lambda p: "ALLOW" if p != self.before else True)
+        self.assertIsInstance(self.catalog()["synthetic_legal_catalog_sha256"], str)
+
     def test_stop_is_inert_and_unique(self):
         stop = next(o for o in self.catalog()["catalog"] if o["id"] == "STOP")
         self.assertEqual(stop["swept_xy"], [])
