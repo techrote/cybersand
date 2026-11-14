@@ -13,7 +13,7 @@ import json
 from pathlib import Path, PurePosixPath
 import zipfile
 
-AUDIT_ID = "void-original-development-firstpass-refusals-v1"
+AUDIT_ID = "void-original-development-firstpass-refusals-v2"
 MODEL = "dotlabs/void.1"
 REVISION = "9c2be5087772867d45961abd11f6b35110617563"
 NATIVE_SOURCE = "633920373a3d406a2ede61ce4137c324f76be23b"
@@ -34,6 +34,31 @@ def require(value, why):
         raise ValueError(why)
 
 
+def independent_strict_json_valid(raw_text):
+    """Match shared strict_json independently; reject duplicate keys and NaN/Infinity."""
+    def unique(pairs):
+        result = {}
+        for key, item in pairs:
+            if key in result:
+                raise ValueError("duplicate JSON key: " + key)
+            result[key] = item
+        return result
+
+    def nonfinite(value):
+        raise ValueError("non-finite JSON constant: " + value)
+
+    try:
+        json.loads(raw_text, object_pairs_hook=unique, parse_constant=nonfinite)
+    except (ValueError, TypeError):
+        return False
+    return True
+
+
+def canonical_digest(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"),
+                                     ensure_ascii=False, allow_nan=False).encode("utf-8")).hexdigest()
+
+
 def category(output):
     if output["first_pass_accepted"]:
         return "compiler_accepted_not_semantically_scored"
@@ -46,7 +71,7 @@ def category(output):
     return "malformed_json_rejected"
 
 
-def verify_raw(output, receipt, raw_bytes, batch_bytes):
+def verify_raw(output, receipt, raw_bytes, batch_bytes, compiled_bytes=None):
     require(isinstance(output, dict) and isinstance(receipt, dict), "invalid receipt objects")
     require(type(output.get("raw_text")) is str and raw_bytes == output["raw_text"].encode("utf-8", "strict"),
             "original raw completion bytes differ")
@@ -64,13 +89,33 @@ def verify_raw(output, receipt, raw_bytes, batch_bytes):
             and all(type(output.get(k)) is bool and output[k] == receipt.get(k)
                     for k in ("eos_terminated", "json_valid", "program_valid", "first_pass_accepted")),
             "raw/receipt program or token decision differs")
+    require(output["json_valid"] is independent_strict_json_valid(output["raw_text"]),
+            "recorded JSON-valid flag contradicts independent strict parser")
+    require(receipt.get("completion_sha256") == hashlib.sha256(raw_bytes).hexdigest(),
+            "original receipt completion SHA-256 differs")
+    require(type(receipt.get("compiler_accepted")) is bool and
+            receipt["compiler_accepted"] == output["first_pass_accepted"],
+            "compiled acceptance flag contradicts raw first pass")
+    require(not output["first_pass_accepted"] or eos,
+            "accepted first pass did not end in one true EOS")
     require(output["first_pass_accepted"] <= output["program_valid"] <= output["json_valid"],
             "acceptance chain inconsistent")
     require(receipt.get("native_execution") is False and receipt.get("native_acknowledged_cells") is None
             and receipt.get("visual_quality_claim") is False,
             "compiler evidence falsely promoted to native/art result")
+    batch = json.loads(batch_bytes)
     if not output["first_pass_accepted"]:
-        require(json.loads(batch_bytes) == [], "rejected completion emitted native operations")
+        require(batch == [] and compiled_bytes is None and receipt.get("operations_sha256") is None,
+                "rejected completion emitted or claimed compiled operations")
+    else:
+        require(compiled_bytes is not None and type(batch) is list and len(batch) > 0,
+                "accepted completion missing compiled operations")
+        compiled = json.loads(compiled_bytes)
+        digest = canonical_digest(batch)
+        require(type(compiled) is dict and compiled.get("operations") == batch and
+                compiled.get("operations_sha256") == digest and
+                receipt.get("operations_sha256") == digest,
+                "accepted operations disagree with original compiled/receipt SHA-256")
     return {"category": category(output), "eos": eos, "json": output["json_valid"],
             "program": output["program_valid"], "compiler_accepted": output["first_pass_accepted"],
             "tokens": len(tokens), "failure": output.get("failure"),
@@ -118,7 +163,10 @@ def audit_archive(path: Path, stage: str):
                     return z.read(directory + "/" + filename)
                 receipt = json.loads(read("receipt.json"))
                 raw = json.loads(read("raw-output.json"))
-                case = verify_raw(raw, receipt, read("completion.txt"), read("art_batch.json"))
+                compiled_name = directory + "/compiled.json"
+                compiled_bytes = read("compiled.json") if compiled_name in names else None
+                case = verify_raw(raw, receipt, read("completion.txt"),
+                                  read("art_batch.json"), compiled_bytes=compiled_bytes)
                 require(case["tokens"] <= contract["limit"]
                         and receipt.get("arm") == arm and receipt.get("family") in
                         {"architecture", "greebles", "pipework"} and
