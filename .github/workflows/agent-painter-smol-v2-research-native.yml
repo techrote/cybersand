@@ -1,0 +1,109 @@
+name: SMOL v2 G06/P01/A01 positive-native research (no TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths:
+      - experiments/agent_painter/lanes/smol/v2-native-research-request.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: smol-v2-native-research-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-locked-preflight:
+    name: Source633 split, reviewer lease and six compiler candidates
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Authorize exactly reviewed designs and one bounded native research execution
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$GITHUB_REF" = refs/heads/codex/agent-painter-smol-568
+          python3 -m py_compile experiments/agent_painter/lanes/smol/native_research_v2.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("experiments/agent_painter/lanes/smol/v2-native-research-request.json").read_text())
+          assert r == {
+              "schema": "cybersand.agent-painter.smol-v2-native-research/1",
+              "sequence": 1, "candidate_ids": [
+                  "smol_g06_stepped_absence",
+                  "smol_p01_nested_branch_tree",
+                  "smol_a01_unequal_alcove_hall",
+              ],
+              "reviewer_comment": 6877658992,
+              "corpus_run": 43506373969,
+              "corpus_source_sha": "633920373a3d406a2ede61ce4137c324f76be23b",
+              "compiler_only_run": 43581583313,
+              "compiler_only_source_sha": "b47957ce7e2e82df7ea66d2f219dac5daad559de",
+              "native_view_target": 6, "structural_groups": 3,
+              "research_only": True, "shared_train_admission": False,
+              "optimizer_training": False, "model_inference": False,
+              "final_access": False, "draft_hold": True,
+          }
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/smol-v2-native-scheduling.json
+  native-research:
+    name: Build current C++/Godot, execute 6 seeded Art cases, independently verify material/PNG
+    needs: source-locked-preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+          lfs: true
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/source633
+      - name: Recheck admitted original TRAIN/DEVELOPMENT only; six source-compiled cases, zero TRAIN admission
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 -m unittest discover -s experiments/agent_painter/lanes/smol -p 'test_curriculum_witness.py' -v
+          python3 -m unittest discover -s experiments/agent_painter/lanes/smol -p 'test_visible_split_neighbours.py' -v
+          python3 experiments/agent_painter/lanes/smol/native_research_v2.py \
+            --stage preflight --source-sha "$GITHUB_SHA" \
+            --corpus evidence/source633/corpus \
+            --output evidence/smol-v2-preflight
+      - name: Build source-matched native owner, run Art and preserve readback/png evidence
+        run: bash experiments/agent_painter/lanes/smol/ci_native_research_v2.sh
+      - name: Refuse TRAIN and model success claims
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("evidence/smol-v2-native/smol-v2-native-summary.json").read_text())
+          assert x["native_passed"] is True and x["verified_native_views"]==6
+          assert x["distinct_structural_groups"]==3
+          assert {y["family"] for y in x["cases"]}=={"greebles","pipework","architecture"}
+          assert x["admitted_train_groups"]==x["optimizer_steps"]==x["model_outputs"]==0
+          assert x["final_targets_opened"] is False
+          print("SMOL v2 six actual native research views PASS; TRAIN remains HOLD")
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: smol-v2-native-research-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/build/
+            evidence/native-build.json
+            evidence/smol-v2-preflight/
+            evidence/smol-v2-native/
+            evidence/regressions/
+          if-no-files-found: warn
+          retention-days: 90
