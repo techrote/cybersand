@@ -46,9 +46,8 @@ class HistoryPilotOfflineTests(unittest.TestCase):
         self.assertTrue(all(0<=x<96 and 0<=y<96 for x,y in steps))
 
     def test_native_undo_and_logical_branch_not_conflated(self):
-        old={"id":"source","generation":4,"revision":8,"tick":0,
-             "material_sha256":"0"*64,"world_material_sha256":"1"*64,
-             "width_cells":512,"height_cells":512}
+        old={"world_id":"source","generation":4,"revision":8,"tick":0,
+             "material_sha256":"0"*64,"world_material_sha256":"1"*64}
         changed={**old,"revision":9,"material_sha256":"f"*64,
                  "world_material_sha256":"f"*64}
         s=_record_reversal("fixture",3,"BRANCH","RELOCATE_TO_BRANCH",
