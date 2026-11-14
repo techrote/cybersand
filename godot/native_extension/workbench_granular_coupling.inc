@@ -265,10 +265,11 @@ Dictionary CyberNativeCellWorld::workbench_body_result(std::size_t id) const {
     using cybersand::gcr::Vec;
     using cybersand::gcr::length;
     const double gain=contact_gain_/1000.;
-    Vec legacy{}, correction{};
+    Vec legacy{}, correction{}, exhaust_raw{};
     std::int64_t gx_sum=0, gy_sum=0, ax_sum=0, ay_sum=0, event_moment=0, arrival_moment=0;
     double legacy_moment=0, legacy_cost=0, area=0, radius=0;
     std::int64_t arrivals=0, missing=0, misaligned=0, contacts=0, displaced=0, unresolved=0;
+    std::int64_t exhaust_fire=0, exhaust_smoke=0;
     std::array<const cybersand::gcr::Bin*,8*8> bins{};
     std::size_t bin_count=0;
     for (int i=owner.first; i<owner.first+owner.count; ++i) {
@@ -293,6 +294,10 @@ Dictionary CyberNativeCellWorld::workbench_body_result(std::size_t id) const {
         area+=shape_area; correction=correction+Vec{obs.correction.x*shape_area,obs.correction.y*shape_area};
         contacts+=obs.contacts+world_->transient_contact_count(proxy);
         displaced+=obs.displaced; unresolved+=obs.unresolved;
+        exhaust_fire+=obs.exhaust_unresolved_fire;
+        exhaust_smoke+=obs.exhaust_unresolved_smoke;
+        exhaust_raw=exhaust_raw+Vec{obs.exhaust_unresolved_raw_impulse.x,
+                                    obs.exhaust_unresolved_raw_impulse.y};
         for (const auto& bin : workbench_->bins[proxy]) bins[bin_count++]=&bin;
         const double c=std::cos(b.rotation), s=std::sin(b.rotation);
         for (double x : {-static_cast<double>(b.half_size.x),static_cast<double>(b.half_size.x)})
@@ -355,6 +360,10 @@ Dictionary CyberNativeCellWorld::workbench_body_result(std::size_t id) const {
     row["mass"]=body.mass; row["inertia"]=body.inertia; row["gravity"]=owner.gravity;
     row["external_drive"]=owner.external_drive; row["proxy_count"]=owner.count;
     row["contacts"]=contacts; row["displaced"]=displaced; row["unresolved"]=unresolved;
+    row["diag_exhaust_unresolved_fire"]=exhaust_fire;
+    row["diag_exhaust_unresolved_smoke"]=exhaust_smoke;
+    row["diag_exhaust_unresolved_raw_impulse"]=sampled_vec(exhaust_raw.x,exhaust_raw.y);
+    row["diag_exhaust_unresolved_recoil_suppressed"]=diagnostic_suppress_exhaust_unresolved_recoil();
     row["normal_accepted"]=passive.normal; row["tangent_accepted"]=passive.tangent;
     row["event_accepted"]=sampled_vec(event.x,event.y); row["event_torque"]=event_torque; row["arrival_count"]=arrivals;
     row["arrival_missing"]=missing; row["arrival_misaligned"]=misaligned;

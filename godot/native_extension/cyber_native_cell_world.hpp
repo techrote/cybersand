@@ -190,6 +190,10 @@ private:
         std::uint64_t contacts = 0;
         std::uint64_t displaced = 0;
         std::uint64_t unresolved = 0;
+        // Diagnostic-only readback: unresolved light-gas recoil before capping.
+        std::uint64_t exhaust_unresolved_fire = 0;
+        std::uint64_t exhaust_unresolved_smoke = 0;
+        Vector2 exhaust_unresolved_raw_impulse{};
     };
     struct BodyDiagnostic {
         Vector2 displacement{};

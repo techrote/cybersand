@@ -12,6 +12,7 @@
 #include <bit>
 #include <chrono>
 #include <cstdio>
+#include <cstdlib>
 #include <cmath>
 #include <numbers>
 #include <span>
@@ -53,6 +54,16 @@ constexpr double kMaximumGranularBearingImpulse = 20.0;
 constexpr double kGranularSettleVelocity = 4.0;
 constexpr double kMaximumGranularBearingCorrection = 0.5;
 constexpr double kGranularBearingCorrectionFraction = 0.99;
+
+// Experiment-only process switch. Never edits the World/mask, never affects
+// successful relocation or any non-Fire/Smoke contact response.
+[[nodiscard]] bool diagnostic_suppress_exhaust_unresolved_recoil() {
+    static const bool active = []() {
+        const char* value = std::getenv("CYBERSAND_DIAG_SUPPRESS_EXHAUST_UNRESOLVED_RECOIL");
+        return value != nullptr && value[0] == '1' && value[1] == '\0';
+    }();
+    return active;
+}
 
 [[nodiscard]] Vector2 normalized_or_zero(Vector2 value) {
     const auto length = value.length();
@@ -656,9 +667,21 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
     if (target.x < 0 || !world_->relocate_stored_cell(x, y, target.x, target.y)) {
         ++observation.unresolved;
         const auto impulse = -outward * displacement_gain_;
+        const bool exhaust = material == cybersand::Material::Fire ||
+                             material == cybersand::Material::Smoke;
+        if (exhaust) {
+            if (material == cybersand::Material::Fire) ++observation.exhaust_unresolved_fire;
+            else ++observation.exhaust_unresolved_smoke;
+            observation.exhaust_unresolved_raw_impulse += impulse;
+        }
         if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
-        if (!workbench_ || !cybersand::MaterialRules::supports_granular_load(material))
-            record_impulse(body_id, impulse);
+        // AB-only: suppress precisely the unresolved Fire/Smoke recoil to the
+        // Rapier body, retaining the complete stored material and diagnostics.
+        // All other contacts, pressure, successful ejections and wrenches remain.
+        const bool suppressed = workbench_ && exhaust &&
+            diagnostic_suppress_exhaust_unresolved_recoil();
+        if ((!workbench_ || !cybersand::MaterialRules::supports_granular_load(material))
+            && !suppressed) record_impulse(body_id, impulse);
         return;
     }
     ++observation.displaced;
