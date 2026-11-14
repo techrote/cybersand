@@ -68,7 +68,8 @@ def fixture(root: Path) -> tuple[dict, Path]:
                "frozen_base_sha256": summary["frozen_base_sha256"], "history": history,
                "numerical_runtime": summary["numerical_runtime"]}
     (checkpoint / "receipt.json").write_text(json.dumps(receipt))
-    (root / "progress.jsonl").write_text("".join(json.dumps(e, sort_keys=True,\n        separators=(",", ":"), ensure_ascii=False, allow_nan=False) + "\n" for e in history))
+    (root / "progress.jsonl").write_text("".join(json.dumps(e, sort_keys=True,
+        separators=(",", ":"), ensure_ascii=False, allow_nan=False) + "\n" for e in history))
     inventory = {p.relative_to(checkpoint).as_posix(): {"sha256": sha(p), "bytes": p.stat().st_size}
                  for p in sorted(checkpoint.rglob("*")) if p.is_file()}
     (checkpoint / "inventory.json").write_text(json.dumps(inventory))
