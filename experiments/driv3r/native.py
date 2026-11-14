@@ -102,7 +102,8 @@ class NativeSession:
 
     def __init__(self, repo_root: Path | str, godot: Path | str, output_dir: Path | str,
                  source_sha: str, *, timeout: float = 60.0,
-                 startup_timeout: float = 180.0, runtime_manifest: Path | str | None = None):
+                 startup_timeout: float = 180.0, runtime_manifest: Path | str | None = None,
+                 graphical: bool = False):
         if os.name != "posix":
             raise NativeError("Stage A persistent native process ownership is POSIX-only")
         if not re.fullmatch(r"[0-9a-f]{40}", source_sha):
@@ -111,6 +112,9 @@ class NativeSession:
             raise NativeError("RPC timeout must be in (0, 110] seconds")
         if not math.isfinite(startup_timeout) or not 0 < startup_timeout <= 240:
             raise NativeError("Startup timeout must be in (0, 240] seconds")
+        if type(graphical) is not bool:
+            raise NativeError("Graphical option must be boolean")
+        self.graphical = graphical
         self.root = Path(repo_root).resolve()
         self.godot = Path(godot).resolve()
         self.output = Path(output_dir).resolve()
@@ -165,7 +169,8 @@ class NativeSession:
         runtime.update({"driv3r_harness_sha256": _digest(self.root / "godot/tests/run_driv3r_stage_a.gd"),
                         "driv3r_native_client_sha256": _digest(Path(__file__)),
                         "driv3r_fixture_catalog_sha256": catalog_hashes,
-                        "session_id": self.session_id, "parent_pid": os.getpid()})
+                        "session_id": self.session_id, "parent_pid": os.getpid(),
+                        "display_mode": "graphical-framebuffer" if self.graphical else "headless"})
         self._identities = {path: _digest(path) for path in
                             (self.root / "godot/tests/run_driv3r_stage_a.gd", Path(__file__), native, rapier, self.godot)}
         self._identities.update({self.root / path: sha for path, sha in catalog_hashes.items()})
@@ -174,15 +179,23 @@ class NativeSession:
         env.update(DRIV3R_NATIVE_DIRECTORY=str(self.output), DRIV3R_NATIVE_SESSION=self.session_id,
                    DRIV3R_SOURCE_SHA=self.source_sha, DRIV3R_PARENT_PID=str(os.getpid()),
                    DRIV3R_FIXTURE_HASHES=json.dumps(catalog_hashes),
-                   GODOT_SILENCE_ROOT_WARNING="1")
+                   GODOT_SILENCE_ROOT_WARNING="1",
+                   DRIV3R_FRAME_CAPTURE="1" if self.graphical else "0")
         # Isolate Workbench settings/save state from all other local sessions.
         user_dir = self.output / "user"
         user_dir.mkdir()
         env["XDG_DATA_HOME"] = str(user_dir)
         env["XDG_CONFIG_HOME"] = str(user_dir)
         self._log = (self.output / "godot.log").open("w", encoding="utf-8")
-        command = [str(self.godot), "--headless", "--path", str(self.root / "godot"),
-                   "--script", "res://tests/run_driv3r_stage_a.gd"]
+        if self.graphical:
+            if not env.get("DISPLAY"):
+                raise NativeError("Graphical qualification requires an explicit display")
+            command = [str(self.godot), "--rendering-method", "gl_compatibility",
+                       "--path", str(self.root / "godot"),
+                       "--script", "res://tests/run_driv3r_stage_a.gd"]
+        else:
+            command = [str(self.godot), "--headless", "--path", str(self.root / "godot"),
+                       "--script", "res://tests/run_driv3r_stage_a.gd"]
         started = time.monotonic()
         self.process = subprocess.Popen(command, env=env, stdin=subprocess.DEVNULL,
                                         stdout=self._log, stderr=subprocess.STDOUT, start_new_session=True)
@@ -308,6 +321,24 @@ class NativeSession:
                                        "expected_revision": expected_revision, "expected_tick": expected_tick,
                                        "action_id": action_id, "cell_budget": cell_budget},
                              cancel_event=cancel_event, timeout=timeout)
+
+    def frame(self, *, timeout: float | None = None) -> dict:
+        """Request original graphical framebuffer PNG, never a material-derived image."""
+        result = self._request("frame", timeout=timeout)
+        if result.get("status") != "completed":
+            return result
+        frame = result.get("frame")
+        expected = f"frame-{self._sequence:06d}.png"
+        if not isinstance(frame, dict) or frame.get("path") != expected or (
+                frame.get("capture_type") != "godot-root-viewport-framebuffer"):
+            raise NativeError("Invalid framebuffer capture identity")
+        path = self.output / expected
+        if not path.is_file() or _digest(path) != frame.get("sha256") or (
+                not path.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")):
+            raise NativeError("Framebuffer missing, altered, or not PNG")
+        if any(type(frame.get(key)) is not int or frame[key] < 64 for key in ("width", "height")):
+            raise NativeError("Invalid framebuffer dimensions")
+        return result
 
     def cancel(self) -> None:
         """Out-of-band permanent episode fence; does not wait for the RPC lock."""

@@ -55,6 +55,26 @@ def run_native_regressions(repo_root, godot, output_dir, source_sha, runtime_man
             check(label + " refused without mutation", result["status"] == "refused"
                   and result["receipt"]["actual_changed_cells"] == 0
                   and result["receipt"]["before_world_sha256"] == result["receipt"]["after_world_sha256"])
+        # JSON can carry numbers far beyond native int/Vector2i capacity.
+        # A refusal must be structured; it must not crash, overflow or mutate.
+        for label, operations in [
+            ("huge positive pixel X", [{"shape":"pixels","material":58,"points":[[1e200, 25]]}]),
+            ("huge negative pixel Y", [{"shape":"pixels","material":58,"points":[[12, -1e200]]}]),
+            ("large finite pixel X", [{"shape":"pixels","material":58,"points":[[2147483648, 25]]}]),
+            ("huge rectangle X", [{"shape":"rectangle","material":58,"x0":12,"x1":1e200,"y0":25,"y1":25}]),
+        ]:
+            before = native.latest_observation
+            response = action(operations=operations)
+            after = response.get("observation", {})
+            check(label + " refused before integer conversion without mutation",
+                  response.get("status") == "refused" and
+                  response.get("receipt", {}).get("actual_changed_cells") == 0 and
+                  after.get("world_material_sha256") == before.get("world_material_sha256") and
+                  after.get("generation") == before.get("generation") and
+                  after.get("revision") == before.get("revision") and
+                  after.get("tick") == before.get("tick"))
+        no_frame = native.frame()
+        check("headless framebuffer refused", no_frame.get("status") == "refused")
         protected = action(x=8, y=20)
         check("protected material native no-op", protected["status"] == "completed"
               and protected["receipt"]["actual_changed_cells"] == 0

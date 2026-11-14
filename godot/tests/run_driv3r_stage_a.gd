@@ -68,7 +68,7 @@ func load_fixture_catalog() -> bool:
 				for value: Variant in edit:
 					if not integer(value): fatal = "Noninteger fixture"; return false
 				if edit[0] < 0 or edit[1] < 0 or edit[2] < 1 or edit[3] < 1 \
-					or edit[0] + edit[2] > 96 or edit[1] + edit[3] > 96 or int(edit[4]) not in [28, 58]:
+					or edit[0] + edit[2] > 96 or edit[1] + edit[3] > 96 or edit[4] not in [28, 58]:
 					fatal = "Fixture outside fixed authority"; return false
 				visits += int(edit[2] * edit[3])
 				normalized.append([int(edit[0]), int(edit[1]), int(edit[2]), int(edit[3]), int(edit[4])])
@@ -228,6 +228,10 @@ func fresh(name: String) -> Dictionary:
 func integer(value: Variant) -> bool:
 	return (value is int or value is float) and is_finite(float(value)) and floor(float(value)) == float(value)
 
+func bounded_integer(value: Variant, minimum: float, maximum: float) -> bool:
+    # Refuse out-of-range JSON numbers before any Variant -> int/Vector2i cast.
+    return integer(value) and float(value) >= minimum and float(value) <= maximum
+
 func operation_points(operations: Variant, limit: int) -> Dictionary:
 	if not operations is Array or operations.is_empty() or operations.size() > MAX_OPERATIONS:
 		return {"error":"Operation count must be 1..16"}
@@ -255,7 +259,7 @@ func operation_points(operations: Variant, limit: int) -> Dictionary:
 			pairs = op.points
 		for pair: Variant in pairs:
 			if not pair is Array or pair.size() != 2 or not integer(pair[0]) or not integer(pair[1]) \
-				or not FOCUS.has_point(Vector2i(pair[0], pair[1])):
+				or not bounded_integer(pair[0], 0.0, 95.0) or not bounded_integer(pair[1], 0.0, 95.0):
 				return {"error":"Out of focus or malformed pixel"}
 			points[int(pair[1]) * 512 + int(pair[0])] = true
 		visits += pairs.size()
@@ -271,7 +275,8 @@ func apply(request: Dictionary, before: PackedInt32Array) -> Dictionary:
 		refusal = "Invalid action ID"
 	else:
 		for key: String in ["generation", "revision", "tick"]:
-			if not integer(request.get("expected_" + key)) or int(request["expected_" + key]) != int(current[key]):
+			if not bounded_integer(request.get("expected_" + key), 0.0, 2147483647.0) \
+                    or int(request["expected_" + key]) != int(current[key]):
 				refusal = "Stale native " + key
 	if refusal.is_empty() and (not integer(request.get("cell_budget")) or request.cell_budget < 1 or request.cell_budget > MAX_CELLS):
 		refusal = "Cell budget must be 1..1024"
@@ -342,6 +347,26 @@ func apply(request: Dictionary, before: PackedInt32Array) -> Dictionary:
 			"readback_matches":exact, "receipts_reconstruct_materials":receipts_match,
 			"partial_prefix_within_authority":prefix_safe, "action_id":request.get("action_id", "")}}
 
+func framebuffer() -> Dictionary:
+    # A true Window/Viewport framebuffer, not a stored-material PNG.
+    # Opt-in graphical sessions only; this request never modifies World material.
+    if OS.get_environment("DRIV3R_FRAME_CAPTURE") != "1" or DisplayServer.get_name() == "headless":
+        return {"status":"refused", "reason":"Graphical framebuffer capture not enabled"}
+    for i in 3: await process_frame
+    await RenderingServer.frame_post_draw
+    var texture := root.get_texture()
+    if texture == null: return {"status":"failed", "reason":"Root viewport has no render texture"}
+    var picture: Image = texture.get_image()
+    if picture.is_empty() or picture.get_width() < 64 or picture.get_height() < 64:
+        return {"status":"failed", "reason":"No usable graphical viewport frame"}
+    var filename := "frame-%06d.png" % request_id
+    var path := directory + "/" + filename
+    if picture.save_png(path) != OK:
+        return {"status":"failed", "reason":"Framebuffer PNG write failed"}
+    return {"status":"completed", "reason":"", "frame":{"path":filename,
+        "width":picture.get_width(), "height":picture.get_height(),
+        "sha256":FileAccess.get_sha256(path), "capture_type":"godot-root-viewport-framebuffer"}}
+
 func dispatch(request: Dictionary) -> Dictionary:
 	if request.get("protocol_version") != 1 or request.get("request_id") != request_id \
 		or not request.get("kind") is String:
@@ -352,7 +377,10 @@ func dispatch(request: Dictionary) -> Dictionary:
 	if not is_finite(request_deadline) or request_deadline <= Time.get_unix_time_from_system() \
 		or request_deadline > Time.get_unix_time_from_system() + 120:
 		return {"status":"refused", "reason":"Expired or excessive request deadline"}
-	if request.kind == "reset":
+	if request.kind == "frame":
+        if request.size() != 4: return {"status":"refused", "reason":"Invalid framebuffer request"}
+        return await framebuffer()
+    if request.kind == "reset":
 		if request.size() != 5 or not request.get("fixture") is String:
 			return {"status":"refused", "reason":"Invalid fixture request"}
 		var reset := await fresh(str(request.fixture))
