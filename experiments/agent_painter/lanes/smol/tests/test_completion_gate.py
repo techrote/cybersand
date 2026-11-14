@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 SCRIPT = Path(__file__).resolve().parents[1] / "completion_gate.py"
 spec = importlib.util.spec_from_file_location("smol_completion_gate", SCRIPT)
@@ -103,10 +104,19 @@ def rehash_checkpoint(root):
 
 
 class Fresh120PromotionTests(unittest.TestCase):
+    def setUp(self):
+        # Model-free receipts stand in for native evidence in unit tests only.
+        # Production always rechecks real native-admitted TRAIN rows.
+        patcher = mock.patch.object(
+            gate, "frozen_train_order",
+            return_value=[f"synthetic-{i}" for i in range(12)])
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
     def test_complete_fresh120_is_promotable(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = fixture(tmp)
-            verdict = gate.verify_completion(root, 0, SHA)
+            verdict = gate.verify_completion(root, 0, SHA, root)
             self.assertTrue(verdict["promotable"])
             self.assertFalse(verdict["training"])
             self.assertFalse(verdict["final_targets_accessed"])
@@ -115,42 +125,42 @@ class Fresh120PromotionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = fixture(tmp)
             with self.assertRaisesRegex(ValueError, "exit must be 0"):
-                gate.verify_completion(root, 2, SHA)
+                gate.verify_completion(root, 2, SHA, root)
 
     def test_partial_checkpoint_with_zero_exit_is_still_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = fixture(tmp)
             mutate_json(root / "summary.json", "global_step", 40)
             with self.assertRaisesRegex(ValueError, "global_step"):
-                gate.verify_completion(root, 0, SHA)
+                gate.verify_completion(root, 0, SHA, root)
 
     def test_completed_flag_mismatch_is_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = fixture(tmp)
             mutate_json(root / "summary.json", "status", "stopped-checkpoint-saved")
             with self.assertRaisesRegex(ValueError, "status"):
-                gate.verify_completion(root, 0, SHA)
+                gate.verify_completion(root, 0, SHA, root)
 
     def test_fake_bool_and_optimizer_shortfall_are_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = fixture(tmp)
             mutate_json(root / "summary.json", "optimizer_steps_this_job", True)
             with self.assertRaisesRegex(ValueError, "optimizer_steps_this_job"):
-                gate.verify_completion(root, 0, SHA)
+                gate.verify_completion(root, 0, SHA, root)
 
     def test_lane_receipt_contradiction_is_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = fixture(tmp)
             mutate_json(root / "lane-receipt.json", "status", "FAILED")
             with self.assertRaisesRegex(ValueError, "status"):
-                gate.verify_completion(root, 0, SHA)
+                gate.verify_completion(root, 0, SHA, root)
 
     def test_mutated_inventory_hash_is_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = fixture(tmp)
             (root / gate.CHECKPOINT / "inventory.json").write_text("mutated")
             with self.assertRaisesRegex(ValueError, "checkpoint_inventory_sha256"):
-                gate.verify_completion(root, 0, SHA)
+                gate.verify_completion(root, 0, SHA, root)
 
     def test_checkpoint_receipt_contradiction_is_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -158,23 +168,23 @@ class Fresh120PromotionTests(unittest.TestCase):
             mutate_json(root / gate.CHECKPOINT / "receipt.json", "sample_cursor", 119)
             rehash_checkpoint(root)
             with self.assertRaisesRegex(ValueError, "sample_cursor"):
-                gate.verify_completion(root, 0, SHA)
+                gate.verify_completion(root, 0, SHA, root)
 
     def test_missing_adapter_is_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = fixture(tmp)
             (root / gate.CHECKPOINT / "adapter" / "adapter_model.safetensors").unlink()
             with self.assertRaisesRegex(ValueError, "missing/empty"):
-                gate.verify_completion(root, 0, SHA)
+                gate.verify_completion(root, 0, SHA, root)
 
     def test_wrong_source_and_changed_training_lineage_are_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = fixture(tmp)
             with self.assertRaisesRegex(ValueError, "source_sha"):
-                gate.verify_completion(root, 0, "b"*40)
+                gate.verify_completion(root, 0, "b"*40, root)
             mutate_json(root / "summary.json", "resume", {"from_step": 16})
             with self.assertRaisesRegex(ValueError, "resume"):
-                gate.verify_completion(root, 0, SHA)
+                gate.verify_completion(root, 0, SHA, root)
 
 
 
@@ -184,14 +194,14 @@ class Fresh120PromotionTests(unittest.TestCase):
             progress = root / "progress.jsonl"
             progress.write_text("\n".join(progress.read_text().splitlines()[:119]) + "\n")
             with self.assertRaisesRegex(ValueError, "progress trace"):
-                gate.verify_completion(root, 0, SHA)
+                gate.verify_completion(root, 0, SHA, root)
 
     def test_corrupted_optimizer_bytes_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = fixture(tmp)
             (root / gate.CHECKPOINT / "training_state.pt").write_bytes(b"corrupted")
             with self.assertRaisesRegex(ValueError, "hash mismatch"):
-                gate.verify_completion(root, 0, SHA)
+                gate.verify_completion(root, 0, SHA, root)
 
     def test_wrong_training_partition_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -201,7 +211,7 @@ class Fresh120PromotionTests(unittest.TestCase):
                 "train_sha256": "0"*64})
             # The mismatch between summary/receipt is already sufficient.
             with self.assertRaisesRegex(ValueError, "config|train_sha256"):
-                gate.verify_completion(root, 0, SHA)
+                gate.verify_completion(root, 0, SHA, root)
 
     def test_optimizer_progress_reordering_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -211,7 +221,7 @@ class Fresh120PromotionTests(unittest.TestCase):
             lines[2], lines[3] = lines[3], lines[2]
             progress.write_text("\n".join(lines) + "\n")
             with self.assertRaisesRegex(ValueError, "checkpoint history"):
-                gate.verify_completion(root, 0, SHA)
+                gate.verify_completion(root, 0, SHA, root)
 
 
     def test_zero_gradient_with_rehashed_receipts_refused(self):
@@ -224,7 +234,7 @@ class Fresh120PromotionTests(unittest.TestCase):
             mutate_json(cp / "receipt.json", "history", events)
             rehash_checkpoint(root)
             with self.assertRaisesRegex(ValueError, "gradient_norm"):
-                gate.verify_completion(root, 0, SHA)
+                gate.verify_completion(root, 0, SHA, root)
 
     def test_relabelled_model_revision_with_rehashed_receipt_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -235,7 +245,36 @@ class Fresh120PromotionTests(unittest.TestCase):
             # The checkpoint receipt independently retains the original pin.
             summary_path.write_text(json.dumps(summary))
             with self.assertRaisesRegex(ValueError, "config"):
-                gate.verify_completion(root, 0, SHA)
+                gate.verify_completion(root, 0, SHA, root)
+
+    def test_self_consistent_fake_train_ids_cannot_promote(self):
+        """The claimed config+progress order cannot authorize itself."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = fixture(tmp)
+            with mock.patch.object(gate, "frozen_train_order",
+                                   return_value=[f"actual-native-{i}" for i in range(12)]):
+                with self.assertRaisesRegex(ValueError, "frozen TRAIN sample order"):
+                    gate.verify_completion(root, 0, SHA, root)
+
+    def test_frozen_order_uses_verified_native_train_only(self):
+        """Model-free stub checks the deterministic sampler and native intake call."""
+        rows = [{"family": family, "id": f"{family}-{i}"}
+                for family in ("greebles", "pipework", "architecture")
+                for i in range(4)]
+        admission = {"source_sha": gate.NATIVE_SOURCE, "state": "native-admitted"}
+        with mock.patch.object(gate.contracts, "frozen_manifest", return_value=admission), \
+             mock.patch.object(gate.contracts.common, "load_training_corpus",
+                               return_value=(rows, admission)) as loader:
+            expected = gate.frozen_train_order(Path("synthetic-corpus"))
+            self.assertEqual(len(expected), 12)
+            self.assertEqual(set(expected), {r["id"] for r in rows})
+            loader.assert_called_once_with(Path("synthetic-corpus"))
+        rows[0]["family"] = "unreviewed"
+        with mock.patch.object(gate.contracts, "frozen_manifest", return_value=admission), \
+             mock.patch.object(gate.contracts.common, "load_training_corpus",
+                               return_value=(rows, admission)):
+            with self.assertRaisesRegex(ValueError, "TRAIN family"):
+                gate.frozen_train_order(Path("synthetic-corpus"))
 
     def test_direct_delivery_does_not_request_forbidden_release(self):
         workflow = (SCRIPT.parents[4] / ".github/workflows/agent-painter-smol-native.yml").read_text()
