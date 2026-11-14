@@ -174,10 +174,7 @@ jobs:
           $env:CYBERSAND_POSE_AB_CAPTURE_DIR=Join-Path $PWD 'evidence/package-frames'
           $env:CYBERSAND_RECOIL_OUTPUT=Join-Path $PWD 'evidence/package-flight.json'
           New-Item -ItemType Directory -Force $env:CYBERSAND_POSE_AB_CAPTURE_DIR | Out-Null
-          & 'C:\cs593\Godot_v4.7-stable_win64_console.exe' \
-            --rendering-method gl_compatibility --rendering-driver opengl3_angle \
-            --path 'C:\cs593\godot' --script res://tests/test_pr566_mask_coherent_ab.gd \
-            *> evidence/clean-extracted-graphical-flight.log
+          & 'C:\cs593\Godot_v4.7-stable_win64_console.exe' --rendering-method gl_compatibility --rendering-driver opengl3_angle --path 'C:\cs593\godot' --script res://tests/test_pr566_mask_coherent_ab.gd *> evidence/clean-extracted-graphical-flight.log
           if ($LASTEXITCODE -ne 0) { Get-Content evidence/clean-extracted-graphical-flight.log -Tail 80; throw 'Packaged Windows graphical flight failed' }
           python -c "import json,pathlib; p=pathlib.Path('evidence/package-flight.json');d=json.loads(p.read_text());assert not d['failures'] and d['actual_fire_inserts']==20 and len(d['frame_captures'])==8 and d['presentation_guard_totals']['safe_live']>0;print('PR593_PACKAGED_WINDOWS_GRAPHICS_PASS',d['presentation_guard_totals'])"
           if ($LASTEXITCODE -ne 0) { throw 'Package graphical receipts invalid' }
