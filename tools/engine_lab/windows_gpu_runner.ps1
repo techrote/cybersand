@@ -37,21 +37,38 @@ function Save-Report {
 function Godot-Run([string]$Name,[string[]]$Arguments,[int]$TimeoutSeconds) {
  $Stdout=Join-Path $Out ($Name+'-stdout.log')
  $Stderr=Join-Path $Out ($Name+'-stderr.log')
- $Process=Start-Process -FilePath $Engine -ArgumentList $Arguments -PassThru -NoNewWindow -RedirectStandardOutput $Stdout -RedirectStandardError $Stderr
- if(-not $Process.WaitForExit($TimeoutSeconds*1000)) {
-   try {$Process.Kill()} catch {}
-   throw "$Name timed out after $TimeoutSeconds seconds; retained $Stdout and $Stderr"
- }
- $Process.WaitForExit()
- $Process.Refresh()
- # PowerShell 5.1's Start-Process -PassThru wrapper may surface ExitCode as
- # null after timed wait even when the .NET Process already completed. Read
- # the actual Process ExitCode property via reflection, without converting
- # absence to a claimed successful return.
- $Code=$Process.GetType().GetProperty('ExitCode').GetValue($Process,$null)
- Write-Host ("ENGINE_LAB_PROCESS {0} type={1} id={2} exited={3} code={4}" -f $Name,$Process.GetType().FullName,$Process.Id,$Process.HasExited,$Code)
- if($null -eq $Code -or [int]$Code -ne 0) {
-   throw "$Name returned exit code $Code; retained $Stdout and $Stderr"
+ # Windows PowerShell 5.1 Start-Process -PassThru sometimes gives an unowned
+ # Process proxy whose ExitCode is null or throws 'not started by this object'.
+ # Instead create/start the actual .NET Process and pump BOTH pipes concurrently.
+ $Info=New-Object System.Diagnostics.ProcessStartInfo
+ $Info.FileName=$Engine
+ $Info.Arguments=($Arguments -join ' ')
+ $Info.WorkingDirectory=$Root
+ $Info.UseShellExecute=$false
+ $Info.RedirectStandardOutput=$true
+ $Info.RedirectStandardError=$true
+ $Info.CreateNoWindow=$false
+ $Child=New-Object System.Diagnostics.Process
+ $Child.StartInfo=$Info
+ try {
+   Require ([bool]$Child.Start()) "$Name failed to start native Godot executable"
+   $OutTask=$Child.StandardOutput.ReadToEndAsync()
+   $ErrTask=$Child.StandardError.ReadToEndAsync()
+   $Exited=$Child.WaitForExit($TimeoutSeconds*1000)
+   if(-not $Exited) {
+     try { $Child.Kill() } catch {}
+     [void]$Child.WaitForExit(10000)
+   }
+   [IO.File]::WriteAllText($Stdout,[string]$OutTask.Result,[Text.UTF8Encoding]::new($false))
+   [IO.File]::WriteAllText($Stderr,[string]$ErrTask.Result,[Text.UTF8Encoding]::new($false))
+   if(-not $Exited) { throw "$Name exceeded $TimeoutSeconds seconds; retained $Stdout and $Stderr" }
+   $Code=[int]$Child.ExitCode
+   Write-Host ("ENGINE_LAB_PROCESS {0} id={1} exit_code={2}" -f $Name,$Child.Id,$Code)
+   if($Code -ne 0) {
+     throw "$Name returned exit code $Code; retained $Stdout and $Stderr"
+   }
+ } finally {
+   $Child.Dispose()
  }
 }
 function Run-Case([string]$Family,[int]$Workers,[int]$Repeat) {
