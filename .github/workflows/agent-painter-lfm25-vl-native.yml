@@ -1,0 +1,124 @@
+name: LFM2.5-VL immutable 48/120 model-output native replay
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths: ['experiments/agent_painter/lanes/lfm25_vl/native-request.json']
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-lfm25-vl-native-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  native:
+    name: Source-built native Art model-output material readback
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Admit exact one-shot immutable model/native source request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$GITHUB_ACTIONS" = true
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          actual=json.loads(Path("experiments/agent_painter/lanes/lfm25_vl/native-request.json").read_text())
+          expected={
+            "schema":"cybersand.agent-painter.lfm25-vl-native-replay/1",
+            "sequence":1,
+            "evaluation_run":43536363400,
+            "evaluation_source":"984b595b3b612341adc9ca0a4112698b5a7f6743",
+            "training_run":43529993326,
+            "training_source":"1c9cf2ef8760177e0c1d095052c27fcf200a5cb3",
+            "native_corpus_run":43506373969,
+            "native_corpus_source":"633920373a3d406a2ede61ce4137c324f76be23b",
+            "native_corpus_sha256":"2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc",
+            "model":"LiquidAI/LFM2.5-VL-450M@fc6221ca597f3315e4f82fc2df606783267b34ba",
+            "split":"DEVELOPMENT",
+            "fresh48_artifact_id":14090715152,
+            "fresh120_artifact_id":14089866157,
+            "no_retraining":True,
+            "no_json_repair":True,
+            "final_forbidden":True,
+            "draft_hold":True,
+          }
+          if actual != expected:
+            raise SystemExit("Unreviewed LFM native replay request")
+          print("Exact bounded source-pinned native qualification request admitted")
+          PY
+          python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/native_replay.py
+          bash -n experiments/agent_painter/lanes/lfm25_vl/ci_native.sh
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/lfm-scheduling-policy.json
+          test "$(gh api repos/techrote/cybersand/actions/runs/43536363400 --jq '.conclusion')" = success
+          for item in '14090715152 sha256:c2982e219ceaded06ae46b699edcd193003c23f505b47af333a3d260593d4d34' '14089866157 sha256:eb8c6b98f00ba810704d87f18590eb5af116b6c99fd88c56b83c8dbde8f90b99'; do
+            set -- $item
+            gh api "repos/techrote/cybersand/actions/artifacts/$1" |
+              EXPECTED="$2" EXPECTED_SOURCE=984b595b3b612341adc9ca0a4112698b5a7f6743 python3 -c '
+          import json,os,sys
+          a=json.load(sys.stdin)
+          assert not a["expired"] and a["digest"] == os.environ["EXPECTED"]
+          assert a["workflow_run"]["head_sha"] == os.environ["EXPECTED_SOURCE"]
+          print("Original development artifact admitted:",a["id"])'
+          done
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: lfm25-vl-dose-development-fresh48-984b595b3b612341adc9ca0a4112698b5a7f6743-43536363400-1
+          run-id: '43536363400'
+          github-token: ${{ github.token }}
+          path: evidence/model-evaluation/fresh48
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: lfm25-vl-dose-development-fresh120-984b595b3b612341adc9ca0a4112698b5a7f6743-43536363400-1
+          run-id: '43536363400'
+          github-token: ${{ github.token }}
+          path: evidence/model-evaluation/fresh120
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/original-native
+      - name: Build pinned native runtime and execute original LFM model proposals
+        run: bash experiments/agent_painter/lanes/lfm25_vl/ci_native.sh
+      - name: Require native material readback, not only compiler preview
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          summary=json.loads(Path("evidence/lfm-native/lfm-native-summary.json").read_text())
+          assert summary["independent_model_generations_per_arm"] == 6
+          assert summary["host_seed_views_per_arm"] == 12
+          assert summary["compiler_accepted_host_views"] == 4
+          assert summary["native_verified_views"] == 4
+          assert summary["native_verifier_passed"] is True
+          assert summary["final_targets_opened"] is False
+          assert len(summary["topology"]) == 4
+          print("Actual native execution verified; topology/visual usefulness separate")
+          for item in summary["topology"]:
+            print(item)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: lfm25-vl-native-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/lfm-native/
+            evidence/build/
+            evidence/native-build.json
+            evidence/regressions/
+          if-no-files-found: warn
+          retention-days: 90
