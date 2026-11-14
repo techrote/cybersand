@@ -23,6 +23,7 @@ $OldDataHome=$env:XDG_DATA_HOME
 $OldSource=$env:CYBERSAND_SOURCE_REVISION
 $Started=Get-Date
 $First=$null
+$ExitStatus=1
 
 function Require([bool]$Condition,[string]$Message) {
  if(-not $Condition) { throw $Message }
@@ -191,20 +192,21 @@ try {
  'This is baseline render ACK from #602 ancestry, not the separate #585 gated experiment',
  'Pass certifies the apparatus and positive clock progression, not a preferred Water law')
  Save-Report
- Write-Host "SUCCESS: completed; retain $Out and send summary.json plus w*.json files" -ForegroundColor Green
- exit 0
+ Write-Host "SUCCESS: measurements complete; sealing one evidence ZIP." -ForegroundColor Green
+ $ExitStatus=0
 } catch {
  $Report.complete=$false; $Report.status='incomplete'
  $Report.error=[string]$_.Exception.Message
  Save-Report
  Write-Host ("INCOMPLETE: "+$Report.error) -ForegroundColor Red
  Write-Host "Preserved diagnostic files: $Out"
- exit 1
+ $ExitStatus=1
 } finally {
  if($Scripted) {
    # ZIP lives NEXT TO, not inside, the run folder. Successful and failed
    # campaigns both become one portable evidence bundle, including raw inputs.
    try {
+     Add-Type -AssemblyName System.IO.Compression
      Add-Type -AssemblyName System.IO.Compression.FileSystem
      $Zip=Join-Path (Split-Path -Parent $Out) ((Split-Path -Leaf $Out)+'.zip')
      if(Test-Path -LiteralPath $Zip) {throw 'Cannot overwrite Test It evidence ZIP'}
@@ -219,6 +221,12 @@ try {
      Write-Host "TEST_IT_RESULT_ZIP $Zip" -ForegroundColor Green
      Write-Host "ZIP_SHA256 $(Hash $Zip)"
    } catch {
+     $ExitStatus=1
+     $Report.complete=$false
+     $Report.status='incomplete'
+     $Report.error="Evidence ZIP creation/refusal: "+$_.Exception.Message
+     Save-Report
+     if($Zip -and (Test-Path -LiteralPath $Zip)) { Remove-Item -LiteralPath $Zip -Force }
      Write-Host ("TEST_IT_ZIP_FAILED: "+$_.Exception.Message) -ForegroundColor Red
    }
  }
@@ -226,3 +234,4 @@ try {
  $env:XDG_DATA_HOME=$OldDataHome
  $env:CYBERSAND_SOURCE_REVISION=$OldSource
 }
+exit $ExitStatus
