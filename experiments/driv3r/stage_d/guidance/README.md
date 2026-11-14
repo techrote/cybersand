@@ -31,3 +31,53 @@ Do not commit generated binary fixtures as unquestioned empirical evidence. Keep
 4. Future native path must use host-originated exact before/after World fences, actual receipt hashes, fresh observations, at most six owner-authorised Undo attempts per 36-forward-decision episode, and oscillation detection. Silent fallbacks, inferred receipts or binary-field substitution from visual speckles are prohibited.
 
 **Next useful work:** add fixture-level feedback and image/structured information-accounting test coverage; then seek approved contract adapter and independent native owner to qualify original receipt custody and real rollback before any formal comparisons.
+
+
+## Proposed parallel A1/A2/A3 comparison — local synthetic audit only
+
+The owner has selected a **representation-neutral extensible D-COMMON v1 candidate**:
+the positive u16 scalar remains mandatory, optional typed guidance channels
+require explicitly declared semantics, encoding, frame, dimensions and
+provenance. A1 is scalar-only; A2 is experimental typed multi-channel guidance;
+A3 explicitly separates scalar preference from geometric measurements.
+This is **design direction, not M1 acceptance**. Never modify D-COMMON from
+this lane; wait for the exact owner-approved SHA and schema digest in #570.
+
+The independent \`comparison.py\` checks paired **frozen-decision forks** under
+\`d1b-shadow-comparison/0\`. Each frozen fork contains exactly **one**
+host-supplied legal candidate list, source-World SHA, predicted candidate-effect
+hashes, and the A1/A2/A3 choices. It reports the earliest *candidate-ID*
+divergence separately from the earliest *predicted-effect* divergence: two
+different action IDs may be semantically equivalent under the host's prediction.
+Predicted equivalence does **not** certify the resulting native World. Every arm
+must use the same source snapshot and same admissible options **at that fork**.
+
+After the first consequential fork the resulting Worlds would diverge. Their
+later observations and legal recovery candidates must be recalculated from
+their own actual state; do **not** assume that later independently evolving
+Worlds can be represented as one shared state or force an identical candidate
+set on them. Instead compare equal *opportunities* at frozen forks and then
+separate matched-budget follow-through from independent rollouts. The auditor
+reports submitted productive cells, committed cells and net objective progress
+per arm, and rejects productive counts exceeding committed counts. These
+supplied numbers are presently **synthetic illustrations**, not actual native
+measurements. No causal effect or model performance claim is supported.
+
+Experiment controls for the future owner-approved study: identical initial
+World, scenario SHA, model weights/backend, legal action space, decision budget,
+prompt cost accounting and seeded order; arm-specific configuration SHA;
+matched host-geometry and information-preserving ablations to separate extra
+information from encoding effects. Once native evidence is authorized, source
+the \`productive_cells\` metric from qualified post-World geometry, report
+negative progress and failures, and establish exact receipt/provenance custody.
+The shadow comparator deliberately refuses \`evidence_class=native\`; a new
+owner-qualified native path must not silently reuse the local synthetic type.
+
+Pre-M1 offline qualification of this **new comparison-only slice**:
+\`python -m unittest discover -s experiments/driv3r/stage_d/guidance -p test_comparison.py -v\`
+on a temporary isolated copy of the exact source passed **7/7** on 2026-11-14,
+covering cosmetic vs consequential divergence, illegal candidates, missing
+effect sources, forged native claims, bad source revisions, invalid rollout
+counts, and unmatched arm/snapshot sets. This is **not** evidence that the
+original 12 \`test_guidance.py\` methods executed, nor independent GitHub CI
+qualification of the whole D-1B lane.
