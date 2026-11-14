@@ -1,0 +1,112 @@
+name: SMOL source-pinned first-pass request-conformance audit
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths: ['experiments/agent_painter/lanes/smol/semantic-audit-request.json']
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-painter-smol-semantic-audit-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    name: Model-free original-development topology audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Bind source run and immutable Actions artifact before readback
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          mkdir -p evidence/smol-semantic-audit
+          python3 - <<'PY'
+          import json,os,urllib.request
+          from pathlib import Path
+          req=json.loads(Path("experiments/agent_painter/lanes/smol/semantic-audit-request.json").read_text())
+          expected={
+            "schema":"cybersand.agent-painter.smol-structural-audit-request/1",
+            "source_run_id":43535795817,
+            "source_artifact_id":14089354253,
+            "source_artifact_name":"agent-painter-smol-c128-development-1a349d9d115fbf789b7f28c80c2c4b7b2f65545a",
+            "published_artifact_sha256":"cca74539cd94fd9284ac1d6b6841b308f33810f51bf08d68b25c9f8fa6a5597a",
+            "evaluation_source_sha":"1a349d9d115fbf789b7f28c80c2c4b7b2f65545a",
+            "trainer_source_sha":"d8e2a7759c361f3e50660e301b9ad5a0208685c4",
+            "native_corpus_source_sha":"633920373a3d406a2ede61ce4137c324f76be23b",
+            "corpus_manifest_sha256":"2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc",
+            "max_new_tokens":512,"read_final":False,"train":False,"native_execution":False
+          }
+          if req!=expected:
+              raise SystemExit("unrecognized source-bound SMOL request")
+          headers={"Authorization":"Bearer "+os.environ["GH_TOKEN"],
+                   "Accept":"application/vnd.github+json",
+                   "X-GitHub-Api-Version":"2022-11-28"}
+          def api(path):
+              url="https://api.github.com/repos/techrote/cybersand/"+path
+              with urllib.request.urlopen(urllib.request.Request(url,headers=headers),timeout=30) as r:
+                  return json.load(r)
+          run=api("actions/runs/43535795817")
+          artifact=api("actions/artifacts/14089354253")
+          if (run["status"],run["conclusion"],run["head_sha"],run["head_branch"]) != (
+              "completed","success",req["evaluation_source_sha"],"codex/agent-painter-smol-568"):
+              raise SystemExit("original evaluation source/status mismatch")
+          if (artifact["id"],artifact["name"],artifact["workflow_run"]["id"],
+              artifact["workflow_run"]["head_sha"],artifact["digest"]) != (
+              req["source_artifact_id"],req["source_artifact_name"],req["source_run_id"],
+              req["evaluation_source_sha"],"sha256:"+req["published_artifact_sha256"]):
+              raise SystemExit("original artifact metadata mismatch")
+          Path("evidence/smol-semantic-audit/source-custody.json").write_text(json.dumps({
+              "request":req,"source_run_url":run["html_url"],"artifact_id":artifact["id"],
+              "source_artifact_size":artifact["size_in_bytes"],
+              "actions_reported_digest":artifact["digest"],
+              "digest_limit":"GitHub metadata; not an independently rehashed original ZIP",
+              "audit_source_sha":os.environ["GITHUB_SHA"]
+          },indent=2)+"\n")
+          PY
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-smol-c128-development-1a349d9d115fbf789b7f28c80c2c4b7b2f65545a
+          path: evidence/source-development
+          run-id: 43535795817
+          github-token: ${{ github.token }}
+      - name: Execute pure structural tests and audit original raw generations
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s experiments/agent_painter/lanes/smol/tests -p 'test_semantic_audit.py' -v 2>&1 | tee evidence/smol-semantic-audit/tests.log
+          python3 experiments/agent_painter/lanes/smol/semantic_audit.py \
+            --input evidence/source-development \
+            --output evidence/smol-semantic-audit/results.json \
+            --training-source d8e2a7759c361f3e50660e301b9ad5a0208685c4 \
+            --evaluation-source 1a349d9d115fbf789b7f28c80c2c4b7b2f65545a \
+            --corpus-manifest 2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc \
+            --max-new-tokens 512 | tee evidence/smol-semantic-audit/summary.txt
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("evidence/smol-semantic-audit/results.json").read_text())
+          a=r["arms"]["untuned-base"]
+          b=r["arms"]["trained-candidate"]
+          assert (a["compiler_accepted_requests"],b["compiler_accepted_requests"])==(0,1)
+          assert (a["compiler_accepted_views"],b["compiler_accepted_views"])==(0,2)
+          assert b["pipe_semantic_conforming_requests"]==0
+          assert not r["native_execution"] and not r["training"] and not r["final_opened"]
+          print("Exactly one compilable unique T; zero request-conforming Pipework proposals")
+          PY
+          sha256sum evidence/source-development/summary.json evidence/smol-semantic-audit/results.json > evidence/smol-semantic-audit/SHA256SUMS.txt
+          python3 tools/ci/check_ci_provider_policy.py > evidence/smol-semantic-audit/provider-check.json
+          python3 tools/ci/check_ci_scheduling_policy.py --output evidence/smol-semantic-audit/schedule-check.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: smol-semantic-audit-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/smol-semantic-audit/
+          if-no-files-found: warn
+          retention-days: 90
