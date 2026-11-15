@@ -1,7 +1,7 @@
 """Pure-CPU hypothetical D-1B fork-controls regression tests."""
 import copy
 import unittest
-from .fork_probe import compare_frozen_fork
+from experiments.driv3r.stage_d.guidance.fork_probe import compare_frozen_fork
 
 
 def sample():
