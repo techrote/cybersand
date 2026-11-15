@@ -4,6 +4,7 @@ on:
     branches: [codex/agent-painter-sprocket-568]
     paths:
       - experiments/agent_painter/lanes/sprocket/r10-mask-proximity-request.json
+      - experiments/agent_painter/lanes/sprocket/test_r10_native_mask_proximity.py
       - .github/workflows/agent-painter-sprocket-r10-mask-proximity.yml
 permissions:
   contents: read

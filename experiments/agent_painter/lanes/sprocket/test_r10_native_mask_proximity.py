@@ -38,8 +38,8 @@ class R10SpatialTests(unittest.TestCase):
         self.assertEqual(metrics(a,b,0)["iou"],0)
         self.assertEqual(metrics(a,b,1)["candidate_within_reference_radius3_cells"],1)
         self.assertEqual(metrics(a,b,1)["reference_within_candidate_radius3_cells"],1)
-        self.assertNotIn(96,vicinity({95},0))
-        self.assertIn(96,vicinity({95},1))
+        self.assertNotIn(96,vicinity({95},1))
+        self.assertIn(191,vicinity({95},1))
         self.assertEqual(metrics({0},{0},0)["iou"],1)
 
     def test_bad_masks_fail_closed(self):
