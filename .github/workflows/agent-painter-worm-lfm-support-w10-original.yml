@@ -1,0 +1,66 @@
+name: WORM LFM support - W10 original optimizer and raw EOS7 audit
+on:
+  push:
+    branches: [research/612-worm-lfm-support]
+    paths:
+      - '.github/workflows/agent-painter-worm-lfm-support-w10-original.yml'
+      - 'experiments/agent_painter/worm/support_lfm/w10_original_receipt_audit.py'
+      - 'experiments/agent_painter/worm/support_lfm/test_w10_original_receipt_audit.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: worm-lfm-support-w10-receipts
+  cancel-in-progress: false
+jobs:
+  audit:
+    name: Verify immutable original W10 optimizer, adapters, raw EOS7 and teacher ceiling
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Source policy and adversarial zero-optimizer tests
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/w10-support-policy.json
+          PYTHONPATH=experiments/agent_painter/worm/support_lfm python3 -m unittest -v test_w10_original_receipt_audit
+      - name: Retrieve exact original W10 45-update producer ZIP (no model run)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          sha=d060b7f15555b5830b96501cfc7b216b7479c7bd0ed0c8cccf7c06a96685fa1b
+          test "$(gh api repos/techrote/cybersand/actions/artifacts/14178680634 --jq .digest)" = "sha256:$sha"
+          curl --fail --location --silent --show-error --retry 3 --connect-timeout 20 --max-time 420 \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14178680634/zip" \
+            -o "$RUNNER_TEMP/original-w10.zip"
+          echo "$sha  $RUNNER_TEMP/original-w10.zip" | sha256sum -c
+      - name: Independent W10 source-faithful checkpoint and held-out attribution audit
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/worm/support_lfm/w10_original_receipt_audit.py \
+            --artifact "$RUNNER_TEMP/original-w10.zip" --out w10-support-original
+          python3 - <<'PY'
+          import json
+          r=json.load(open("w10-support-original/report.json"))
+          assert r["genuine_AdamW_updates"]==45 and r["checkpoint_members"]==36
+          assert r["before"]["EOS7"]==0 and r["after"]["EOS7"]==17
+          assert r["after"]["legal"]==14 and r["after"]["score_teacher"]==3
+          assert r["after"]["changed"]==0 and r["model_PNGs"]==0
+          print("PASS W10 exact original checkpoint and raw token integrity; useful steering REWORK")
+          PY
+      - name: Retain evidence, including partial failure if produced
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-lfm-support-w10-original-audit
+          path: w10-support-original/
+          if-no-files-found: warn
+          retention-days: 45
