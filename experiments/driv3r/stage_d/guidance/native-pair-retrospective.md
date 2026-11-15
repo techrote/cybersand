@@ -1,5 +1,16 @@
 # D-1B — read-only original native worm-pair retrospective (15 Nov 2026)
 
+**Reverification status (15 Nov 2026):** The recorded figures below were
+produced by the earlier retrospective verifier. New D-1B source at commit
+`7123ad18a0c04a51a28e680bf45811fbf335a57a` additionally requires
+every archived raw Q8 System One answer to re-parse consistently with the
+selected native action, complete numeric hints for **all legal cardinal
+moves**, and matching presentation digests. **The two original ZIPs have not
+yet been rerun under these stronger checks.** The 13/36 maximum-scent count
+and prior JSON hash are therefore *historical findings pending re-verification*,
+not newly qualified output. This does not negate the separate #611 native
+source evidence; it limits what this lane can presently claim.
+
 **Evidence class:** independently checked **archived real native material readbacks** from a separate owner's source-qualified #611 pilot. This is **not** a D-1B native session, D-1B formal A/B, actual feedback/Undo, visual d1 inference, artistic acceptance, or new training. This lane only reads copies of existing artifact ZIPs. No permissions or materials are modified.
 
 ## Immutable source and custody
