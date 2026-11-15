@@ -126,7 +126,7 @@ jobs:
       - name: Source-fenced W9 48-step real six-code logits and two-world long PNGs
         run: |
           set -euo pipefail
-          timeout --signal=TERM --kill-after=50s 1790s "$RUNNER_TEMP/lfm-w9-gallery/bin/python" experiments/agent_painter/lanes/lfm25_vl/worm_w9_scored_crn_v1.py \
+          timeout --signal=TERM --kill-after=50s 1790s "$RUNNER_TEMP/lfm-w9-gallery/bin/python" experiments/agent_painter/lanes/lfm25_vl/worm_w9_long48_crn_v1.py \
             --model "$RUNNER_TEMP/lfm-w9-gallery-model" \
             --worm-root worm-w0/experiments/agent_painter/worm/common \
             --support-root worm-support/experiments/agent_painter/worm/support_lfm \
