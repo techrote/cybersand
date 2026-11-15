@@ -1,0 +1,80 @@
+name: VOID A02 v5 original-native visible-split spatial re-audit (NOT TRAIN)
+
+on:
+  push:
+    branches: [codex/agent-painter-void-568]
+    paths:
+      - 'experiments/agent_painter/lanes/void/a02_v5_spatial_comparison.py'
+      - 'experiments/agent_painter/lanes/void/test_a02_v5_spatial_comparison.py'
+      - '.github/workflows/agent-painter-void-v5-spatial.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: void-v5-spatial-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  pinned-original-native-spatial:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Source, policy, and adversarial regression preflight
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/void-v5-spatial-policy.json
+          python3 -m py_compile experiments/agent_painter/lanes/void/{a02_v5_spatial_comparison,test_a02_v5_spatial_comparison}.py
+          python3 experiments/agent_painter/lanes/void/test_a02_v5_spatial_comparison.py -v
+      - name: Download three pinned, original source-built GitHub artifact ZIPs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/void-a02-v5-spatial
+          gh api repos/techrote/cybersand/actions/artifacts/14113396057/zip > evidence/void-a02-v5-spatial/v4.zip
+          gh api repos/techrote/cybersand/actions/artifacts/14116463694/zip > evidence/void-a02-v5-spatial/v5.zip
+          gh api repos/techrote/cybersand/actions/artifacts/14076703326/zip > evidence/void-a02-v5-spatial/public.zip
+      - name: Verify original native and public TRAIN/DEVELOPMENT Architecture only
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/void/a02_v5_spatial_comparison.py \
+            --v4-zip evidence/void-a02-v5-spatial/v4.zip \
+            --v5-zip evidence/void-a02-v5-spatial/v5.zip \
+            --public-zip evidence/void-a02-v5-spatial/public.zip \
+            --output evidence/void-a02-v5-spatial/result.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("evidence/void-a02-v5-spatial/result.json")
+          r=json.loads(p.read_text(encoding="utf8"))
+          assert r["status"] == "READ_ONLY_A02_V5_SPATIAL_COMPARISON"
+          assert r["opened_splits"] == ["TRAIN","DEVELOPMENT"] and not r["final_targets_opened"]
+          assert (r["original_native_v4_cells"],r["original_native_v5_cells"],
+                  r["added_v5_cells"],r["removed_v5_cells"]) == (524,662,138,0)
+          assert r["distinct_architecture_compositions"] == 1 and r["v5_host_seed_views"] == 2
+          assert len(r["per_visible_original_architecture_group"]) == 4
+          assert r["new_native_executions"] == r["new_train_admissions"] == r["new_optimizer_steps"] == 0
+          assert r["model_generated_paintings"] == 0 and r["global_split_admission"] == "REVIEW_ONLY_HOLD"
+          print("READ-ONLY original-v5 spatial witness PASS; global TRAIN admission HOLD")
+          for x in r["per_visible_original_architecture_group"]:
+              print(f'{x["split"]}/{x["group"]}: v4 IoU {x["v4_iou"]:.6f} -> v5 {x["v5_iou"]:.6f}; '
+                    f'near3 v4 {x["v4_near3"]:.6f} -> v5 {x["v5_near3"]:.6f}')
+          PY
+          rm -f evidence/void-a02-v5-spatial/{v4,v5,public}.zip
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: void-a02-v5-spatial-${{ github.sha }}-${{ github.run_id }}
+          path: evidence/void-a02-v5-spatial/result.json
+          if-no-files-found: warn
+          retention-days: 90
