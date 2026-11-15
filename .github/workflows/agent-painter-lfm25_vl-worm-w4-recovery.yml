@@ -1,0 +1,136 @@
+name: LFM2.5-VL WORM W4 exact-checkpoint evaluation recovery
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - experiments/agent_painter/lanes/lfm25_vl/worm-w4-recovery-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: lfm25-vl-worm-w4-step180-recovery-43701525721
+  cancel-in-progress: false
+
+jobs:
+  evaluate-checkpoint-only:
+    name: Read W4 atomic step180, real raw model decisions and six PNG rollouts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 48
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: default
+      MKL_CBWR: COMPATIBLE
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - name: Checkout exact evaluation source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Checkout frozen host W0
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: worm-w0
+          persist-credentials: false
+      - name: Checkout immutable LFM support-v2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: cc27b3206cb61f98432fa95b799c9b9ff508c2bc
+          path: worm-support
+          persist-credentials: false
+      - name: Exact source, single-run salvage request and regression preflight
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C worm-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object worm-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          test "$(git -C worm-support rev-parse HEAD)" = cc27b3206cb61f98432fa95b799c9b9ff508c2bc
+          test "$(git hash-object worm-support/experiments/agent_painter/worm/support_lfm/curriculum.py)" = f205a3a9f33632aeaafa2daa8ce25b2484bc6032
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          request = json.loads(Path("experiments/agent_painter/lanes/lfm25_vl/worm-w4-recovery-request.json").read_text())
+          assert request == {
+              "schema": "cybersand.worm.lfm-w4-recovery-request/1",
+              "evaluation_only": True,
+              "original_failed_training_run": 43701525721,
+              "original_training_sha": "45af748feec0da7c25200aad959d0c2214fcb68e",
+              "immutable_source_artifact": 14156798033,
+              "original_zip_sha256": "0076fdded794ddcbe1153aaeee0b36e9e9f652e2b35b68eb665cde1326ebde53",
+              "checkpoint": "checkpoint-000180",
+              "new_optimizer_updates": 0,
+              "model_revision": "fc6221ca597f3315e4f82fc2df606783267b34ba",
+              "paired_world_seeds": [2101, 2102],
+              "sealed_FINAL_opened": False,
+              "native_execution": False,
+              "Draft_HOLD": True,
+          }
+          PY
+          python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/worm_train_w4_v1.py experiments/agent_painter/lanes/lfm25_vl/worm_eval_w4_recovery_v1.py
+          python3 -m unittest discover -s experiments/agent_painter/lanes/lfm25_vl -p test_worm_w4_shadow.py -v
+          python3 -m unittest discover -s worm-w0/experiments/agent_painter/worm/common -p test_worm.py -v
+          python3 -m unittest discover -s worm-support/experiments/agent_painter/worm/support_lfm -p test_curriculum.py -v
+          python3 tools/ci/check_ci_provider_policy.py
+          mkdir -p evidence/diagnostics
+          git rev-parse HEAD > evidence/diagnostics/evaluator-source.txt
+          git -C worm-w0 rev-parse HEAD > evidence/diagnostics/worm-source.txt
+          git -C worm-support rev-parse HEAD > evidence/diagnostics/support-source.txt
+          lscpu > evidence/diagnostics/cpu.txt
+          df -h > evidence/diagnostics/disk-before.txt
+      - name: Fetch exact original public GitHub-hosted failure artifact and atomic checkpoint
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          digest="$(gh api repos/techrote/cybersand/actions/artifacts/14156798033 --jq .digest)"
+          test "$digest" = "sha256:0076fdded794ddcbe1153aaeee0b36e9e9f652e2b35b68eb665cde1326ebde53"
+          mkdir -p evidence/prior
+          gh run download 43701525721 -R techrote/cybersand --name lfm25-vl-worm-w4-support-v2-fresh-45af748feec0da7c25200aad959d0c2214fcb68e-43701525721-1 --dir evidence/prior
+          test -f evidence/prior/worm-training/checkpoint-000180/inventory.json
+          test -f evidence/prior/worm-training/failure.json
+          test -f evidence/prior/worm-training/untrained-first-passes.json
+          echo "$digest" > evidence/diagnostics/original-artifact-digest.txt
+          df -h > evidence/diagnostics/disk-after-artifact.txt
+      - name: Install exact pinned original official-LFM CPU stack
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/lfm-w4-recover"
+          "$RUNNER_TEMP/lfm-w4-recover/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/lfm-w4-recover/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/lfm-w4-recover/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torchvision==0.29.2+cpu'
+          "$RUNNER_TEMP/lfm-w4-recover/bin/python" -m pip install -r experiments/agent_painter/training/requirements-lfm25_vl.lock
+          "$RUNNER_TEMP/lfm-w4-recover/bin/python" -m pip check
+          "$RUNNER_TEMP/lfm-w4-recover/bin/python" -m pip freeze --all > evidence/diagnostics/pip-freeze.txt
+      - name: Download and verify original full LiquidAI LFM2.5-VL checkpoint
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/lfm-w4-recover/bin/python" experiments/agent_painter/training/download_model.py --profile lfm25_vl --output "$RUNNER_TEMP/lfm-w4-model"
+          cp "$RUNNER_TEMP/lfm-w4-model/download_receipt.json" evidence/diagnostics/model-download.json
+          LFM25_SNAPSHOT="$RUNNER_TEMP/lfm-w4-model" "$RUNNER_TEMP/lfm-w4-recover/bin/python" experiments/agent_painter/lanes/lfm25_vl/test_adapter.py > evidence/diagnostics/adapter-tests.txt 2>&1
+      - name: Verify producer step180 and run genuine first-pass paired-model W0 PNG recovery
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=45s 1700s "$RUNNER_TEMP/lfm-w4-recover/bin/python" experiments/agent_painter/lanes/lfm25_vl/worm_eval_w4_recovery_v1.py \
+            --model "$RUNNER_TEMP/lfm-w4-model" \
+            --worm-root worm-w0/experiments/agent_painter/worm/common \
+            --support-root worm-support/experiments/agent_painter/worm/support_lfm \
+            --original evidence/prior/worm-training \
+            --output evidence/recovered-evaluation
+      - name: Preserve original source and output, including partial failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lfm25-vl-worm-w4-step180-recovery-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/recovered-evaluation/
+            evidence/diagnostics/
+          if-no-files-found: warn
+          retention-days: 90
