@@ -35,12 +35,23 @@ func run() -> void:
 	var owner := Control.new()
 	root.add_child(owner)
 	var dialog := Dialog.new()
+	# The architectural popup is nested under this Window, not the root.
+	# Headless embedding must apply to both Viewports before either popup.
+	if DisplayServer.get_name() == "headless":
+		dialog.gui_embed_subwindows = true
 	owner.add_child(dialog)
 	dialog.mount(owner)
 	dialog.open_new()
 	var original_profile: int = dialog._profile.selected
 	dialog._architecture_button.pressed.emit()
 	var panel: ConfirmationDialog = dialog._architecture
+	if DisplayServer.get_name() == "headless":
+		# popup_centered_clamped queries a nonexistent OS display in headless
+		# mode. Supply the same 1190x635 bounded popup used by the graphical
+		# case, explicitly within the synthetic 1280x720 root viewport.
+		panel.max_size = Vector2i(1248,656)
+		panel.size = Vector2i(1190,635)
+		panel.position = Vector2i(45,32)
 	for frame: int in 4: await process_frame
 	check(panel.visible, "Architecture form is reachable from the ordinary generator dialog")
 	check(dialog._profile.selected == original_profile and dialog._ready_packet.is_empty(), "opening the form leaves source selection and installed proposal untouched")
