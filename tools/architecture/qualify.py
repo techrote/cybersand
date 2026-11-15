@@ -195,7 +195,7 @@ def main() -> int:
                           r"GEN007_INSPECTION: [1-9][0-9]* assertions; 0 failures; completed="))
             tests.append(("workbench_canvas", "res://tests/test_workbench_canvas.gd", r"WORKBENCH_CANVAS [1-9][0-9]* checks, 0 failures"))
             tests.append(("workbench_edit_ordering", "res://tests/test_workbench_edit_ordering.gd",
-                          r'EDIT_ORDER_RESULT .*"failures":0')
+                          r'EDIT_ORDER_RESULT .*"failures":0'))
         if args.legacy_regressions or args.suite in ("legacy", "legacy-reference"):
             tests.append(("legacy-materials", str(ROOT / "tools/architecture/capture_legacy.gd"),
                           r"ARCHITECTURE_LEGACY checks=5 failures=0"))
