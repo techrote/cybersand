@@ -20,7 +20,8 @@ sys.path.insert(0, str(LANE.parents[1] / "training"))
 from common import (canonical, digest_json, relative_file, sha256_file,
                     strict_json, verify_file, write_json)
 from dev60_prefix_probe_v1 import (MODEL_ID, REVISION, MAX_CONTEXT, SYSTEM,
-                                   obtain_small_files, verify_local_source)
+                                   obtain_small_files, verify_local_source,
+                                   load_qualified_adapter)
 
 CORPUS_MANIFEST_SHA256 = "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc"
 ORIGINAL_NATIVE_SOURCE = "633920373a3d406a2ede61ce4137c324f76be23b"
@@ -154,7 +155,7 @@ def main():
     if profile.get("model_id") != MODEL_ID or profile.get("revision") != REVISION or profile["framing"]["eos_token_id"] != 7:
         raise ValueError("profile/model identity mismatch")
     files = obtain_small_files(args.processor_dir, profile)
-    import adapter
+    adapter = load_qualified_adapter()
     processor = adapter.load_processor(args.processor_dir, profile)
     receipt = encode_references(cases, processor, adapter)
     if len(receipt) != 12 or len({x["group_id"] for x in receipt}) != 6:

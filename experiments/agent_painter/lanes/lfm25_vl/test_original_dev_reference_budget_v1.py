@@ -2,6 +2,8 @@
 from __future__ import annotations
 import hashlib
 import json
+import sys
+import types
 from pathlib import Path
 import sys
 import tempfile
@@ -65,6 +67,22 @@ class DevelopmentBudgetTests(unittest.TestCase):
 
     def read(self):
         return gate.select_visible_development(self.corpus, expected_manifest_sha256=self.digest)
+
+    def test_reference_path_refuses_ambient_adapter_impostor(self):
+        impostor = types.ModuleType("adapter")
+        impostor.MODEL_ID = "wrong-cached-adapter"
+        previous = sys.modules.get("adapter")
+        sys.modules["adapter"] = impostor
+        try:
+            actual = gate.load_qualified_adapter()
+            self.assertIsNot(actual, impostor)
+            self.assertEqual(actual.MODEL_ID, gate.MODEL_ID)
+            self.assertEqual(Path(actual.__file__).resolve(), (gate.LANE / "adapter.py").resolve())
+        finally:
+            if previous is None:
+                sys.modules.pop("adapter", None)
+            else:
+                sys.modules["adapter"] = previous
 
     def test_six_whole_groups_twelve_rows_without_final_files(self):
         rows, custody = self.read()

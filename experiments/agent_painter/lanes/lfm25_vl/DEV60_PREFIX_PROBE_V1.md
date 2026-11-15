@@ -13,7 +13,11 @@ DEVELOPMENT groups and must **never** become benchmark results or training data.
 The probe is lane-owned and restricted to the existing single #575 Draft/HOLD
 branch. It refuses local adapter, profile, common framing and training source
 blob drift against qualified source 2a565df45efc568eb96a2166e0b77f299e289625
-*before import*. It downloads only original pinned small model/processor
+*before import*. The source-verified adapter is now loaded by exact file path
+rather than an ambient `import adapter`: a pre-cached `sys.modules["adapter"]`
+impostor cannot replace the qualified on-disk adapter. A regression checks that
+boundary without downloading model files. This is local process-custody hardening,
+not a claim to defend against a compromised runner. It downloads only original pinned small model/processor
 files, checks their existing reviewed SHA-256 hashes, model-card LFM 1.0
 attribution, then loads Lfm2VlProcessor through the unchanged adapter.
 The complete 450M VL weights are **not** downloaded for this static task;

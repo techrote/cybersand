@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -105,6 +106,25 @@ def verify_local_source():
     return checked
 
 
+def load_qualified_adapter():
+    """Load exact path after checking original Git blobs, ignoring sys.modules.
+
+    An ambient import adapter could resolve a different pre-cached or earlier
+    sys.path module even when the on-disk qualified adapter hash is correct.
+    This source-custody gate is not a defense against a compromised runner.
+    """
+    verify_local_source()
+    path = LANE / "adapter.py"
+    spec = importlib.util.spec_from_file_location("_lfm25_vl_verified_adapter", path)
+    if spec is None or spec.loader is None:
+        raise ValueError("cannot load exact qualified LFM adapter path")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    if Path(module.__file__).resolve() != path.resolve():
+        raise ValueError("loaded adapter is not the qualified local file")
+    return module
+
+
 def verify_model_files(snapshot, profile):
     files = {k: v for k, v in profile["required_hashes"].items() if k != "model.safetensors"}
     for name, expected in files.items():
@@ -152,8 +172,7 @@ def main():
                    "model_inference": 0, "optimizer_updates": 0, "native_executions": 0}
     else:
         files = obtain_small_files(args.processor_dir, profile)
-        sys.path.insert(0, str(LANE))
-        import adapter
+        adapter = load_qualified_adapter()
         tokenizer = adapter.load_processor(args.processor_dir, profile)
         receipts = []
         for row in rows:

@@ -22,6 +22,10 @@ The probe uses source-lock checks for the untouched original adapter, profile
 and shared trainer framing; downloads only eight original pinned processor/
 license small files, uses the full **official** `Lfm2VlProcessor`, and invokes
 the unchanged `adapter.encode_row` including its full end-at-EOS supervision.
+The loader now resolves the hash-checked local adapter by exact file path,
+ignoring any ambient pre-cached `sys.modules["adapter"]`; a model-free adversarial
+test exercises this custody boundary. Neither upstream adapter nor framing was
+changed.
 No base model weights are downloaded. This is a reference representability test,
 not a new full-model preflight, training, an evaluation generation, visual/native
 painting or a model-quality pass. The frozen vision/projector, 92 LoRA projections,

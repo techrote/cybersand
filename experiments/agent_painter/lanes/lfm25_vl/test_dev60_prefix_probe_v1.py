@@ -1,6 +1,8 @@
 """Source-only adversarial tests; never download model or read corpus/FINAL."""
 import importlib.util
 from pathlib import Path
+import sys
+import types
 import unittest
 
 MODULE = Path(__file__).with_name("dev60_prefix_probe_v1.py")
@@ -12,6 +14,23 @@ spec.loader.exec_module(probe)
 class ProbeTests(unittest.TestCase):
     def setUp(self):
         self.rows = probe.synthetic_rows()
+
+    def test_cached_impostor_cannot_replace_verified_adapter(self):
+        impostor = types.ModuleType("adapter")
+        impostor.MODEL_ID = "impostor-cached-module"
+        previous = sys.modules.get("adapter")
+        sys.modules["adapter"] = impostor
+        try:
+            actual = probe.load_qualified_adapter()
+            self.assertIsNot(actual, impostor)
+            self.assertEqual(actual.MODEL_ID, probe.MODEL_ID)
+            self.assertEqual(actual.REVISION, probe.REVISION)
+            self.assertEqual(Path(actual.__file__).resolve(), (probe.LANE / "adapter.py").resolve())
+        finally:
+            if previous is None:
+                sys.modules.pop("adapter", None)
+            else:
+                sys.modules["adapter"] = previous
 
     def test_exact_cross_product(self):
         self.assertEqual(len(self.rows), 60)
