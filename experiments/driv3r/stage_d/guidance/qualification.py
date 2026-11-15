@@ -23,9 +23,9 @@ LANE = "experiments/driv3r/stage_d/guidance"
 SCHEMA = "experiments/driv3r/d_common/v1/interface.schema.json"
 M1_COMMIT = "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6"
 M1_SCHEMA_SHA256 = "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d"
-# 191 prior methods plus 8 read-only native guidance calibration regressions.
+# 199 prior methods plus 16 four-stream/critic sample custody regressions.
 # Fail closed if a module disappears or the suite silently shortens.
-MIN_TESTS = 199
+MIN_TESTS = 215
 REQUIRED_MODULES = frozenset({
     "test_comparison.py", "test_feedback_audit.py", "test_feedback_edgecases.py",
     "test_fork_probe.py",
@@ -34,7 +34,7 @@ REQUIRED_MODULES = frozenset({
     "test_snapshot_identity.py", "test_trajectory_audit.py", "test_worm_morphology.py",
     "test_worm_morphology_binding.py", "test_worm_shift_nulls.py", "test_worm_trace.py",
     "test_qualification.py", "test_native_pair_shadow.py",
-    "test_native_guidance_rank.py",
+    "test_native_guidance_rank.py", "test_fleet_samples.py",
 })
 SHA = re.compile(r"[a-f0-9]{40}\Z")
 FOOTER = re.compile(r"^Ran ([0-9]+) tests? in [0-9.]+s$", re.MULTILINE)
