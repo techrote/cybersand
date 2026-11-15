@@ -83,5 +83,17 @@
   "ready": false,
   "production_default": false,
   "retain_failures": true,
-  "status": "OWNER_DISPATCH_FRANKENLAYER_M0"
+  "status": "OWNER_DISPATCH_FRANKENLAYER_M0",
+  "dispatch_attempt": 2,
+  "previous_attempt": {
+    "run_id": 43763793994,
+    "head": "eb581f7cfd55a16d22927337d528efe771bd939e",
+    "result": "compiler_fail_before_inference",
+    "failure": "literal backslash-n emitted by patch_runtime.py",
+    "failure_artifacts": [
+      14181540671,
+      14181895408
+    ]
+  },
+  "repair_source": "aeafa478d210ca1f3a5f0e873d3c55195d2774cf"
 }
