@@ -9,7 +9,7 @@ from __future__ import annotations
 import ast
 from pathlib import Path
 
-VERSION = "d1a-source-test-inventory/5"
+VERSION = "d1a-source-test-inventory/6"
 LANE = "experiments/driv3r/stage_d/direct"
 # Floors fixed against the independently inspected, 130-method source at
 # f969338fe4ece101c283a2a304764cdae662645c, plus this scoped repair.
@@ -22,6 +22,7 @@ REQUIRED_METHODS = {
     "test_inventory.py": 7,
     "test_line_character.py": 8,
     "test_macro_oracle.py": 7,
+    "test_m3_wire_preflight.py": 11,
     "test_m1_preflight.py": 20,
     "test_offline.py": 15,
     "test_paired.py": 16,
