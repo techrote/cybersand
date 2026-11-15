@@ -78,7 +78,7 @@ jobs:
       - name: Matched original W0 random, wall and fidget PNG baselines
         run: |
           set -euo pipefail
-          python3 "$RUNNER_TEMP/pinned-worm.py" --seeds 211,223 --steps 72 --output evidence/worm/baselines > evidence/worm/baseline-receipts.jsonl
+          python3 "$RUNNER_TEMP/worm/common/worm.py" --seeds 211,223 --steps 72 --output evidence/worm/baselines > evidence/worm/baseline-receipts.jsonl
           test "$(find evidence/worm/baselines -name '*.png' | wc -l)" -eq 18
           test "$(find evidence/worm/baselines -name '*.json' | wc -l)" -eq 18
           (cd evidence/worm/baselines && sha256sum *.png *.json) > evidence/worm/baseline-checksums.txt
