@@ -16,10 +16,10 @@ class C2cSourceTests(unittest.TestCase):
     def test_distinct_wide_offset_graph(self):
         witness = subject.v2.validate_stepped_structure(self.doc["program"])
         self.assertEqual(witness["degree_multiset"], [1]*6 + [2]*2 + [4]*2)
-        self.assertEqual(witness["crosses"], [[18, 31], [79, 62]])
-        self.assertEqual(witness["elbows"], [[60, 31], [60, 62]])
+        self.assertEqual(witness["crosses"], [[22, 31], [76, 62]])
+        self.assertEqual(witness["elbows"], [[54, 31], [54, 62]])
         self.assertEqual(witness["cycle_count"], 0)
-        self.assertEqual(len(subject.centreline(self.doc["program"])), 179)
+        self.assertEqual(len(subject.centreline(self.doc["program"])), 181)
         # These deliberate C2b->C2c revisions retain the same required topology.
         self.assertEqual(subject.legacy.signature(self.doc["program"]),
                          subject.legacy.signature(subject.v2.read_document()["program"]))
@@ -66,6 +66,20 @@ class C2cSourceTests(unittest.TestCase):
         self.assertNotIn('("TRAIN", "DEVELOPMENT", "FINAL")', code)
         self.assertIn("readback_sha256", code)
         self.assertNotIn("native.execute", inspect.getsource(subject.screen))
+
+    def test_short_terminal_fitting_creates_enclosed_microhole_and_is_rejected(self):
+        # Retain exact failed-VM counterexample from source-only C2c attempt.
+        p = copy.deepcopy(self.doc["program"])
+        p["components"][0]["nodes"] = [
+            [6,31],[18,31],[60,31],[60,62],[79,62],
+            [91,62],[18,16],[18,47],[79,46],[79,77]]
+        for seed in (104729, 130363):
+            with self.subTest(seed=seed):
+                with self.assertRaisesRegex(subject.legacy.compiler.CompilerError,
+                                            "native pipe enclosed-loop count differs from graph"):
+                    subject.legacy.compiler.compile_program(
+                        p, seed=seed, focus=(0,0,96,96),
+                        material=58, allowed_materials=(58,))
 
     def test_mutated_lineage_fails_closed(self):
         changed = copy.deepcopy(self.doc)

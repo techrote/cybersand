@@ -11,8 +11,8 @@
     104729,
     130363
   ],
-  "request": "Draw connected, strictly orthographic, nominal-three-cell pipework with six terminal ends and two real four-way crosses. Use an asymmetric wide-span stepped bridge: a compact upper-left junction, a narrow central drop displaced away from the three held-out riser columns, and a lower-right junction. Keep two vertical terminal arms on each cross, exterior horizontal terminals, two explicit orthogonal elbows, no hidden crossings, no cycles and fitting collars only at joints. Avoid a repeated three-riser motif.",
-  "witness": "Six terminals, two degree-four crosses at (18,31) and (79,62), two genuine right-angle elbows at (60,31) and (60,62), one 31-cell central descending backbone at x60, two spatially separated side-column crosses x18/x79, nominal diameter 3, no cycles. Intended 96x96 source-only replacement for C2b, never a new TRAIN row.",
+  "request": "Draw connected strictly orthographic nominal-three-cell Pipework with six terminal ends and two true four-way crosses. Use a wide, asymmetric and visibly stepped backbone with a high left junction at x22, a central offset drop at x54, and a lower right junction at x76. Two real right-angle elbows, no hidden crossings, no enclosed loops, no narrow sections, and allow localized fitting collars only. Keep external terminal stubs long enough that collar and junction footprints cannot enclose tiny background holes. Avoid the old three-riser manifold x28/48/68 silhouette.",
+  "witness": "Six terminals, two degree-four crosses at (22,31) and (76,62), two genuine right-angle elbows at (54,31) and (54,62); a 31-cell central descending backbone at x54, with longer and independently spaced terminal arms to avoid fitting-induced 1-pixel enclosed voids. Degree multiset [1×6,2×2,4×2], no cycles, diameter 3, collars at joints. Spatially revised C2b topology, not a new independent TRAIN group.",
   "program": {
     "version": 2,
     "family": "pipework",
@@ -26,23 +26,23 @@
         "kind": "pipe_network",
         "nodes": [
           [
-            6,
+            4,
             31
           ],
           [
-            18,
+            22,
             31
           ],
           [
-            60,
+            54,
             31
           ],
           [
-            60,
+            54,
             62
           ],
           [
-            79,
+            76,
             62
           ],
           [
@@ -50,19 +50,19 @@
             62
           ],
           [
-            18,
+            22,
             16
           ],
           [
-            18,
+            22,
             47
           ],
           [
-            79,
+            76,
             46
           ],
           [
-            79,
+            76,
             77
           ]
         ],
