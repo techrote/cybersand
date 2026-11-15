@@ -1,0 +1,34 @@
+# C2c — wide-offset stepped Pipework repair (source-only, REVIEW/HOLD)
+
+15 November 2026 UTC. This additive proposal follows the independent [C2b P2 REVISE](https://github.com/techrote/cybersand/pull/575#issuecomment-6886211186): despite a real Z-step, C2b's sustained x=29/47/68 segments tracked held-out DEVELOPMENT's x=28/48/68 three-riser motif. **Preserve C2 original, C2b, original FAILED native producer, and every earlier source/CI receipt unchanged.** No native Art, model inference, optimizer, TRAIN admission or frozen candidate is claimed.
+
+## C2c geometry and scope
+
+- Separately versioned literal proposal: `c2_offset_proposal_v3.json`. Two degree-four crosses at **(18,31)** and **(80,62)**; two actual degree-two elbow bends at **(60,31)** and **(60,62)**. A wider, left-heavy upper arm, shorter 31-cell central drop at x60 and right-side lower cross replace C2b's x29/47/68 riser-aligned contour.
+- Outer terminals: (6,31), (18,16), (18,47), (92,62), (80,46), (80,77). The ten-node tree has nine orthogonal edges, six leaves, two crosses, two elbows, zero cycles, width 3 and localized fitting collars. This is still **one authored research design**, regardless of host seed count.
+- Source preflight reuses v2 true topology/clearance validation plus native compiler/rasterized structure checks on two fixed host seeds. Neither compiler acceptance nor a valid graph proves native material success or artistic independence.
+- Independent reviewer/shepherd retain global whole-structure/split decision. The lane-owned comparison does **not** define an unapproved numerical admission threshold.
+
+## Native-readback near-neighbour screening (not C2c native painting)
+
+Freshly downloaded original public [source633 archive #14076703326](https://github.com/techrote/cybersand/actions/runs/43506373969/artifacts/14076703326): whole-ZIP SHA256 `50a9ad9b255b2a57180edf5558ca2b47dab9affd9ef9d2438f9011d648f81f39`, **286/286 CRC**, manifest SHA256 `2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc`. Inspected only original TRAIN/DEVELOPMENT Pipework readback masks (four distinct structural groups × two host seeds); **FINAL file and images unopened**. Raw `int32le` masks are SHA-256 checked against source-native receipt and original admitted-row custody. The report measures a **candidate graph centreline directional near-neighbour proxy**, not compiler-produced painted pixels: candidate centreline pixels within Chebyshev distance ≤3 of material-58 cells in each original native view.
+
+| Original visible structure | Seed | C2b centreline (205 pixels) | C2c centreline (180 pixels) |
+| --- | ---: | ---: | ---: |
+| DEVELOPMENT three_branch_manifold | 104729 | 162/205 = 79.02% | **44/180 = 24.44%** |
+| DEVELOPMENT three_branch_manifold | 130363 | 144/205 = 70.24% | **36/180 = 20.00%** |
+| DEVELOPMENT closed_loop_with_tap | 104729 | 63/205 = 30.73% | 51/180 = 28.33% |
+| DEVELOPMENT closed_loop_with_tap | 130363 | 94/205 = 45.85% | 57/180 = 31.67% |
+| TRAIN two_elbow_route | 104729 | 51/205 = 24.88% | 38/180 = 21.11% |
+| TRAIN two_elbow_route | 130363 | 86/205 = 41.95% | 29/180 = 16.11% |
+| TRAIN tee_distribution | 104729 | 47/205 = 22.93% | 43/180 = 23.89% |
+| TRAIN tee_distribution | 130363 | 55/205 = 26.83% | 35/180 = 19.44% |
+
+**Interpretation:** C2c moves sustained columns away from the visible held-out three-riser x positions, reducing the specific reviewer-reported proximity by over 45 percentage points on both original seeds. The C2b and C2c denominators differ because the new centreline is shorter. This *does not imply semantic generalization, global split-safety or actual native diameter/connectivity*. The native material mask is only the comparator; C2c material images do **not yet exist**. The comparison has **no selection threshold** and explicitly requires an independent qualitative/whole-peer review before native admission.
+
+## Remaining gates
+
+1. Run new exact-source GitHub-hosted CPU source/corpus/receipt verification; retain any failed receipts and actual hashes. Do not claim success from workflow existence.
+2. Ask independent reviewer to judge C2c against original visible TRAIN/DEVELOPMENT *whole images* and all peer compositions, beyond the numerical near-neighbour proxy. Shepherd controls registry and split decision.
+3. Only after a favorable review, request a **new successful source-built native** execution on two seeds with actual PNG/readback/acknowledgement/protection/history, then a distinct global TRAIN admission. Do not turn this original source-only analysis into a new native-positive receipt.
+4. Separately require shared frozen 60-request/five-formulation DEVELOPMENT suite and newly positive split-safe TRAIN structures before longer LFM CPU optimization. Maintain sole Draft #575, preserve exact LFM2.5-VL model/LoRA/EOS, sealed FINAL and all failed historical records.
