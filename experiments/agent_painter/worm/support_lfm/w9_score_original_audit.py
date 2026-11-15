@@ -141,7 +141,7 @@ def audit(artifact, out=None):
             for seed in SEEDS:
                 for policy in ("learned","flat"):
                     key=(family,seed,policy)
-                    stem="gallery/%s-%s-%s" % key
+                    stem="gallery/%s-%s-%s" % (family,policy,seed)
                     record=read_json(z,stem+".json")
                     rows=read_json(z,stem+"-scores.json")
                     png=z.read(PREFIX+stem+".png")
