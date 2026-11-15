@@ -3337,7 +3337,7 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 		var material_key: Array = [last_uploaded_world_generation,last_uploaded_revision,
 			last_uploaded_render_snapshot_serial,resolved.current_texture_id,resolved.previous_texture_id,
 			resolved.previous_blend_active,_presentation_previous_unknown]
-		var legacy_poses: Dictionary = _safe_workbench_presentation_poses(frame) if mode != "coherent" else {}
+		var legacy_poses: Dictionary = _safe_workbench_presentation_poses(frame,resolved.previous_blend_active) if mode != "coherent" else {}
 		# Rotate equally among admitted bodies, and bootstrap missing visual
 		# certificates before spending remaining work on already visible peers.
 		# A bounded deadline cannot permanently starve higher actor slots.
@@ -3912,7 +3912,7 @@ func engine_lab_set_scripted_input(enabled: bool) -> bool:
 # Retained original guarded policy for explicit baseline diagnostics. The
 # coherent resolver above retains its visual timeline and may request bounded
 # contact refinement; this original policy retains the coarse oracle pass.
-func _safe_workbench_presentation_poses(frame: Dictionary) -> Dictionary:
+func _safe_workbench_presentation_poses(frame: Dictionary, blend_active: bool) -> Dictionary:
 	var poses: Dictionary = {}
 	# The resolved frame needs an accurate source reason even when the trace
 	# recorder is off, particularly after an interactive A/B policy switch.
@@ -3929,9 +3929,9 @@ func _safe_workbench_presentation_poses(frame: Dictionary) -> Dictionary:
 		workbench_presentation_last.status = "invalid_frame"
 		return poses
 	var bridge: Variant = physical_actor_session.bridge
-	var blend_active: bool = cadence_lod_enabled and render_snapshot_hz > 0 \
-		and float(Time.get_ticks_usec()-snapshot_blend_start_usec) \
-			< 1000000.0/float(render_snapshot_hz)
+	# Original keeps its source-selection policy, but must certify against the
+	# same frozen blend that this presentation frame will submit to the shader.
+	# Re-reading time here could drop old material at a crossfade boundary.
 	var started_usec: int = Time.get_ticks_usec()
 	var deadline_usec: int = started_usec + PRESENTATION_FRAME_TIME_BUDGET_USEC
 	var summary: Dictionary = {"safe_live":0,"blocked_material":0,
