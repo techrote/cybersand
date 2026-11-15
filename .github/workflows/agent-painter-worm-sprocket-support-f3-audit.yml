@@ -38,9 +38,15 @@ jobs:
             https://api.github.com/repos/techrote/cybersand/actions/artifacts/14183924474/zip \
             -o evidence/f3-independent/original-f3.zip
           echo "5eb64e5f7d5335809f631aa11caf9edbfcf1a67f546601d5d14e795cc61f7af6  evidence/f3-independent/original-f3.zip" | sha256sum -c -
+          # The shared W0 head may move; replay only the producer's exact pinned W0.
+          curl --fail --silent --show-error --location --max-time 60 \
+            https://raw.githubusercontent.com/techrote/cybersand/4bb9d6e1d0d0d78183f87d1e3c29648edafacf61/experiments/agent_painter/worm/common/worm.py \
+            -o evidence/f3-independent/pinned-original-w0.py
+          echo "81c3923cb38d7f196b99986806216388c34ebc27fd4976e168b3b370c25a323e  evidence/f3-independent/pinned-original-w0.py" | sha256sum -c -
       - name: Independently replay actual W0 state, PNGs, source receipts and all 512 score decisions
         env:
           SPROCKET_F3_ORIGINAL_ZIP: "${{ github.workspace }}/evidence/f3-independent/original-f3.zip"
+          SPROCKET_F3_PINNED_W0: "${{ github.workspace }}/evidence/f3-independent/pinned-original-w0.py"
         run: |
           set -euo pipefail
           python3 -m py_compile \
@@ -81,6 +87,7 @@ jobs:
           name: worm-sprocket-support-F3-original-independent-${{ github.sha }}
           path: |
             evidence/f3-independent/auditor-source-sha.txt
+            evidence/f3-independent/pinned-original-w0.py
             evidence/f3-independent/adversarial-tests.txt
             evidence/f3-independent/audit-report.json
             evidence/f3-independent/audit-report-stdout.json
