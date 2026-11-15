@@ -10,8 +10,9 @@ Same experimental W0 `cybersand.worm.observation-action/0-experimental`: `STRAIG
 
 - `train.jsonl`: 12 distinct obstacle-world seeds 1101–1112, three families, two non-model source policies, first 32 observed decisions or until Stop.
 - `development.jsonl`: separate obstacle seeds 2101–2106 with identical procedure; **never** optimize on these labels. Multiple trajectories or themes sharing a seed remain within the same split and are **not independent design structures**.
+- **Adverse companion**: `adverse-train.jsonl` (6 distinct local motif groups × 3 families × 4 tick formulations = 72 records) and `adverse-development.jsonl` (4 disjoint motifs × 3 × 4 = 48 records) cover blocked fronts, blind alleys with/without retrace, repeated/visited arms, rare STOP and junctions. These are explicitly **synthetic LOCAL counterfactual observations**, NOT claims of W0-replayed world states or native Art receipts. Do not treat four tick formulations as four independent designs; do not optimize on adverse DEVELOPMENT. The first W0-replayed `train.jsonl` and `development.jsonl` are unchanged.
 - `world_group`, exact decision IDs, plain `prompt`, and `target_action` are present. The prompt is **plain UTF-8 text**, *not* an LFM chat template or proof of token fit. LFM primary alone wraps it using pinned official `Lfm2VlProcessor`, chooses EOS7 and owns the versioned WORM LoRA recipe.
-- The generator rejects duplicate example identities, cross-split obstacle groups, illegal labels or unknown action strings. No private held-out complete-scene Art targets/images are used.
+- The generator rejects duplicate example identities, cross-split obstacle/motif groups, illegal labels or unknown action strings. No private held-out complete-scene Art targets/images are used.
 
 ## Reproduce now
 
@@ -37,6 +38,6 @@ pairs = evaluate_policy("lfm-raw-stepNN", choose, seeds=(2101,2102), steps=48)
 # Each (record, metadata) holds W0 events/raw_choice, host applied action, obstacles.
 ```
 
-`choose` must invoke the genuine pinned model with the current observation. It MUST NOT see a DEVELOPMENT `target_action`, use answer repair, teacher fallback, hidden retries or altered host legality. W0 invokes the genuine policy once per decision and caps these evaluations at 512 actions; real-time native integration is a later separate W4 gate. If model outputs `"LEFT\n"`, it is **invalid** as a raw W0 action and remains invalid in the receipt.
+`choose` must invoke the genuine pinned model with the current observation. It MUST NOT see a DEVELOPMENT `target_action`, use answer repair, teacher fallback, hidden retries or altered host legality. W0 invokes the genuine policy once per decision through its immutable deep-copied observation and caps these evaluations at 512 actions; real-time native integration is a later separate W4 gate. If model outputs `"LEFT\n"`, it is **invalid** as a raw W0 action and remains invalid in the receipt.
 
 The workflow does **not** report model-vs-baseline because no model endpoint/explicit optimiser lease has been provided. Current output is support-source evidence only. LFM primary can consume exact corpus hash, prompt-v1 format, held-out action interface and W0 PNG schema before launching its own CPU model training. The owner-authoritative Art2 complete-scene FINAL remains sealed.
