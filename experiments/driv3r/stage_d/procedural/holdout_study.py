@@ -122,5 +122,4 @@ def main():
     print(json.dumps({'cases':len(result['cases']), 'sha256':sha(data),
                       'qualification':result['qualification']}))
 
-
 if __name__ == '__main__': main()
