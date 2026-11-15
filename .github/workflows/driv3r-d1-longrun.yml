@@ -1,0 +1,206 @@
+name: DRIV3R M1 — 128/64 decision matched d1 mutant worm galleries
+
+on:
+  pull_request:
+    paths:
+      - 'experiments/driv3r/mutagen/**'
+      - '.github/workflows/driv3r-d1-longrun.yml'
+  push:
+    branches: [research/620-d1-m1-long-trajectory]
+    paths: ['experiments/driv3r/mutagen/longrun-request.json']
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: driv3r-m1-long-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  cheap:
+    name: M1 no-model contract and negative-case regressions
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Test M1 invariants and old M0 Q8 editing without model download
+        run: |
+          set -euo pipefail
+          python3 -m pip install 'numpy==2.5.4' 'Pillow==13.0.0'
+          python3 -m compileall -q experiments/driv3r/mutagen
+          python3 -m unittest discover -s experiments/driv3r/mutagen -p 'test_*.py' -v
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py
+
+  actual_long:
+    name: Real Q8 d1 worm intent — ${{ matrix.arm }}  (max ${{ matrix.steps }} decisions per world)
+    needs: cheap
+    if: github.event_name == 'push' && github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/research/620-d1-m1-long-trajectory'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - {arm: stock, steps: 128}
+          - {arm: mlp_scoop, steps: 128}
+          - {arm: attn_gouge, steps: 128}
+          - {arm: conv_scrape_10, steps: 64}
+          - {arm: conv_scrape_25, steps: 64}
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Admit exact one-shot M1 cohort and source branch identity
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/d1-m1-${{ matrix.arm }}
+          python3 - <<'PY'
+          import json,os,subprocess
+          from pathlib import Path
+          actual=json.loads(Path('experiments/driv3r/mutagen/longrun-request.json').read_text())
+          expected={
+            'schema':'driv3r-d1-mutagen-longrun-request/1',
+            'objective':'owner-approved-matched-128-64-d1-worm-personality-study',
+            'source_donor':'f3ab63a856a9dc9f0abe61d82fa26c8433d14f3b',
+            'original_d1_gguf_sha256':'073313d92b53b0ac8193db6e906cb3c78a98183d244b15b7b8f5426115c6738c',
+            'w0_source_sha':'4bb9d6e1d0d0d78183f87d1e3c29648edafacf61',
+            'seeds':[570,2111],
+            'families':['greebles','pipework','architecture'],
+            'arms':[{'arm':'stock','steps':128},
+                    {'arm':'mlp_scoop','steps':128},
+                    {'arm':'attn_gouge','steps':128},
+                    {'arm':'conv_scrape_10','steps':64},
+                    {'arm':'conv_scrape_25','steps':64}],
+            'cpu_model_processes_per_vm':1,
+            'max_parallel_separate_vms':2,
+            'training':False,'native_workbench':False,
+            'sealed_final_opened':False,'paid_api':False,
+            'draft_hold':True,'allow_merge':False}
+          if actual!=expected: raise SystemExit('M1 immutable request mismatch')
+          assert os.getenv('GITHUB_REF')=='refs/heads/research/620-d1-m1-long-trajectory'
+          got=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          Path('evidence/d1-m1-${{ matrix.arm }}/source_sha.txt').write_text(got+'\n')
+          Path('evidence/d1-m1-${{ matrix.arm }}/request.json').write_text(json.dumps(actual,sort_keys=True,indent=2)+'\n')
+          print('EXACT SOURCE FROZEN:',got)
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Fetch source-pinned unmodified W0 obstacle and legal-action host
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git rev-parse FETCH_HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/m1-pinned-worm.py"
+          test "$(git hash-object "$RUNNER_TEMP/m1-pinned-worm.py")" = 8979b6f0296e81051194bacc907992d38e006605
+          sha256sum "$RUNNER_TEMP/m1-pinned-worm.py" > evidence/d1-m1-${{ matrix.arm }}/w0-source.sha256
+      - name: Restore exact minimal M0 CPU environment and record runner
+        run: |
+          set -euo pipefail
+          python3 -m pip install 'numpy==2.5.4'
+          python3 -m unittest discover -s experiments/driv3r/mutagen -p 'test_*.py' -v
+          lscpu > evidence/d1-m1-${{ matrix.arm }}/cpu.txt
+          df -h > evidence/d1-m1-${{ matrix.arm }}/disk-before.txt
+      - name: Fetch unchanged official Q8 donor and exact pinned System One backend
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=35s 1250s python3 -m experiments.driv3r.backend acquire \
+            --runtime-dir "$RUNNER_TEMP/d1-m1-runtime" \
+            --evidence evidence/d1-m1-${{ matrix.arm }}/acquisition --timeout-seconds 1200
+          cp "$RUNNER_TEMP/d1-m1-runtime/runtime-manifest.json" evidence/d1-m1-${{ matrix.arm }}/runtime-manifest.json
+      - name: Prepare exact stock or independently carved Q8 128/64-step specimen
+        run: |
+          set -euo pipefail
+          donor="$RUNNER_TEMP/d1-m1-runtime/d1-2B-Q8_0.gguf"
+          variant="$RUNNER_TEMP/d1-m1-${{ matrix.arm }}.gguf"
+          if [ "${{ matrix.arm }}" = "stock" ]; then
+            ln -s "$donor" "$variant"
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from experiments.driv3r.backend import PINS
+          target=Path('evidence/d1-m1-stock/mutation-receipt.json')
+          target.write_text(json.dumps({'status':'UNCHANGED_Q8_STOCK_CONTROL',
+            'donor_sha256':PINS['model']['sha256'],'model_mutated':False},indent=2)+'\n')
+          PY
+          else
+            python3 -m experiments.driv3r.mutagen.spoon \
+              --donor "$donor" --output "$variant" --mode "${{ matrix.arm }}" \
+              --receipt evidence/d1-m1-${{ matrix.arm }}/mutation-receipt.json \
+              --inventory evidence/d1-m1-${{ matrix.arm }}/original-tensor-inventory.json
+          fi
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from experiments.driv3r.backend import sha256_file
+          arm='${{ matrix.arm }}'
+          expected={
+             'mlp_scoop':'d71d5bc2347067dcdd1f77176b666de536bd23c23789a2188b55b9994cdb60fc',
+             'attn_gouge':'76b24e724b23e9bf6977459d979c4d0c2f39c41a45d0d2c0673c07aa0558cd11'}
+          value=sha256_file(Path('${{ runner.temp }}')/('d1-m1-'+arm+'.gguf'))
+          if arm in expected and value!=expected[arm]:
+              raise SystemExit('Original M0 winning model bytes changed; refuse false longitudinal comparison')
+          print('Carved model SHA256:',value)
+          PY
+      - name: Real resident d1 typed direction choices on TWO matched worlds x THREE families
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=60s 4050s python3 -m experiments.driv3r.mutagen.longrun \
+            --arm "${{ matrix.arm }}" --steps ${{ matrix.steps }} --seeds 570 2111 \
+            --model "$RUNNER_TEMP/d1-m1-${{ matrix.arm }}.gguf" \
+            --donor "$RUNNER_TEMP/d1-m1-runtime/d1-2B-Q8_0.gguf" \
+            --runtime-manifest "$RUNNER_TEMP/d1-m1-runtime/runtime-manifest.json" \
+            --w0 "$RUNNER_TEMP/m1-pinned-worm.py" \
+            --output evidence/d1-m1-${{ matrix.arm }}/run
+      - name: Hash all original successful and failed run evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          df -h > evidence/d1-m1-${{ matrix.arm }}/disk-after.txt
+          (cd evidence/d1-m1-${{ matrix.arm }} && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > evidence/d1-m1-${{ matrix.arm }}/SHA256SUMS.txt
+      - name: Preserve raw responses, real W0 PNGs, mutations and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: driv3r-d1-m1-${{ matrix.arm }}-${{ github.sha }}
+          path: evidence/d1-m1-${{ matrix.arm }}/
+          if-no-files-found: warn
+          retention-days: 90
+
+  compare:
+    name: Read-only matched M1 assessment and original PNG contact gallery
+    needs: [cheap,actual_long]
+    if: always() && github.event_name == 'push' && github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/research/620-d1-m1-long-trajectory'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: driv3r-d1-m1-*-${{ github.sha }}
+          path: original
+          merge-multiple: false
+      - name: Assess identical W0 starting observations and plot actual original PNGs
+        run: |
+          set -euo pipefail
+          python3 -m pip install 'Pillow==13.0.0'
+          python3 -m experiments.driv3r.mutagen.compare_longrun \
+            --root original --sha "$GITHUB_SHA" --out evidence/d1-m1-comparison
+      - name: Preserve missing arms and originally sourced comparisons
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: driv3r-d1-m1-matched-gallery-${{ github.sha }}
+          path: evidence/d1-m1-comparison/
+          if-no-files-found: warn
+          retention-days: 90
