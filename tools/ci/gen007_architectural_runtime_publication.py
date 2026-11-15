@@ -26,7 +26,7 @@ engine.WORKFLOW = ".github/workflows/architectural-generator-qualification.yml"
 engine.REQUEST = "tools/ci/gen007_architectural_publish_request.json"
 engine.EVIDENCE = "docs/audits/2026-11-14-architectural-generator-local.md"
 engine.PRESSURE_CASE = "godot/tests/test_architectural_generator.gd"
-engine.BUNDLE_PREFIX = "gen007-architecture-runtime"
+engine.BUNDLE_PREFIX = "architecture-validated"
 engine.REQUEST_VALUE = {
     "schema": "gen007-architecture-runtime-publish-request-v1",
     "family": "gen007-architectural-generator",
