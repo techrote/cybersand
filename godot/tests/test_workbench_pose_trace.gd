@@ -92,12 +92,15 @@ func _run() -> void:
 		setup.selected = 1
 		setup.edits.append([260,345,5,1,58])
 		var previous_epoch: int = host._physical_epoch
-		if check(ui.apply(setup),"real authored World with real physical Kestrel requested") and \
-				check(await until(func() -> bool:
-					return host.pending_microscenario_apply.is_empty() and
-						host._physical_epoch>previous_epoch and
-						host.physical_actor_session!=null and host._physical_terrain_ready),
-					"physical native installation accepted"):
+		var installed: bool = check(ui.apply(setup),
+			"real authored World with real physical Kestrel requested")
+		if installed:
+			installed = check(await until(func() -> bool:
+				return host.pending_microscenario_apply.is_empty() and
+					host._physical_epoch>previous_epoch and
+					host.physical_actor_session!=null and host._physical_terrain_ready),
+				"physical native installation accepted")
+		if installed:
 			if check(await until(func() -> bool: return host.image!=null and
 					host.latest_snapshot!=null and
 					host.last_uploaded_revision==host.latest_snapshot.world_revision and
