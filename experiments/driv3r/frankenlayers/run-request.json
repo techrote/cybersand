@@ -84,5 +84,15 @@
   "production_default": false,
   "retain_failures": true,
   "phase": "skelehound-aerohound-plus-branchwitch-buoyancy",
-  "status": "OWNER_DISPATCH_FRANKENLAYER_PHASE2"
+  "status": "OWNER_DISPATCH_FRANKENLAYER_PHASE2",
+  "hound_retry": {
+    "reason": "phase2 infer.py argparse did not admit newly registered modes",
+    "previous_run_id": 43767623107,
+    "failed_before_model_request": true,
+    "repair_source": "85ce6e0631698f36fb7a2a07434f92f7a50a3774",
+    "retry_matrix": [
+      "skelehound",
+      "aerohound"
+    ]
+  }
 }
