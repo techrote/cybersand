@@ -172,7 +172,7 @@ def generate(model, tokenizer, selected, prompt, legal, *, max_tokens=10):
     # No stripping, JSON repair, retries, fallback teacher or other model-output edits.
     mapped = CODE_ACTIONS.get(decoded)
     valid = eos and mapped in legal and mapped in ACTIONS
-    return {"raw_text": decoded, "raw_action": mapped if valid else decoded,
+    return {"raw_text": decoded, "raw_action": mapped if valid else "MODEL_REFUSED",
             "token_ids": out, "eos_terminated": eos,
             "raw_legal": mapped in legal, "valid_first_pass": valid,
             "input_tokens": len(ids), "output_tokens": len(out),
