@@ -35,10 +35,8 @@ func run() -> void:
 	var owner := Control.new()
 	root.add_child(owner)
 	var dialog := Dialog.new()
-	# The architectural popup is nested under this Window, not the root.
-	# Headless embedding must apply to both Viewports before either popup.
-	if DisplayServer.get_name() == "headless":
-		dialog.gui_embed_subwindows = true
+	# Do not embed the child form into this 720px parent window: the
+	# 1280px root viewport owns embedded popup geometry for headless tests.
 	owner.add_child(dialog)
 	dialog.mount(owner)
 	dialog.open_new()
