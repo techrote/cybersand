@@ -37,6 +37,8 @@ def guide_for(w, h, seed, arm):
 def run_one(scene, seed, arm, steps=192):
     if scene not in SCENES or arm not in ARMS or seed not in SEEDS:
         raise ValueError("unregistered development scenario")
+    if type(steps) is not int or not 1 <= steps <= 512:
+        raise ValueError("steps must be an integer between 1 and 512")
     spec = recipe(scene, seed, "wayward", steps)
     w, h = spec["canvas"]
     allowed = environment(w, h, scene)
