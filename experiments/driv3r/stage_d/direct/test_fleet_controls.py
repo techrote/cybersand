@@ -96,6 +96,10 @@ class FourStreamControls(unittest.TestCase):
         with self.assertRaises(fleet.ControlRefused):
             fleet.replay_matched_controls(self.slots[1], corrupt)
         corrupt = deepcopy(report)
+        corrupt["oracle"]["predecessor_probes"] += 1
+        with self.assertRaises(fleet.ControlRefused):
+            fleet.replay_matched_controls(self.slots[1], corrupt)
+        corrupt = deepcopy(report)
         del corrupt["arms"][1]
         with self.assertRaises(fleet.ControlRefused):
             fleet.replay_matched_controls(self.slots[1], corrupt)
