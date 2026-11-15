@@ -130,6 +130,15 @@ def validate_source(value: dict, source: str, native_hash: str, tree: str, ledge
 def verify_case_results(directory: Path, report: dict) -> None:
     source, platform = report["source_commit"], report["platform"]
     native_hash = report["runtime"]["sha256"]
+    manifest = read_json(engine.manifest_path(directory, platform))
+    # These fields are specific to the architectural receipt. The shared
+    # verifier binds the manifest to Git, but does not know this report schema;
+    # bind it back to that verified build ledger before consuming the receipt.
+    engine.require(report.get("source_tree") == manifest.get("source_tree")
+                   and isinstance(report.get("source_inputs"), dict)
+                   and bool(report["source_inputs"])
+                   and report["source_inputs"] == manifest.get("source_inputs"),
+                   "Execution source tree/input ledger differs from the built manifest")
     receipts = report.get("receipts")
     required = {"architecture", "identity", "flatten"}
     if platform == "windows":
@@ -202,6 +211,7 @@ def accept(args: argparse.Namespace) -> None:
     report = {
         "schema_version": 1, "source_commit": args.source_sha,
         "source_tree": manifest["source_tree"], "platform": args.platform,
+        "source_inputs": manifest["source_inputs"],
         "runtime": {key: manifest[key] for key in ("artifact", "sha256", "size")},
         "godot": godot, "rapier_sha256": rapier_sha,
         "status": "passed", "completed": True, "results": [],

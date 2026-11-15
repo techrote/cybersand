@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-13
+last-reviewed: 2026-11-15
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -21,9 +21,9 @@ legacy Setup-v2/generated-start-v1 compatibility. The [qualification runbook](..
 links source-matched execution and Owner acceptance; no merge is authorized.
 The 11 November revised issue supersedes the former reset/respawn/rollback proposal.
 
-## Architectural Generator Phase A/B + owner-refined v2 — 2026-11-14
+## Architectural Generator Phase A/B + owner-refined v2 — 2026-11-15
 
-**Separate Draft/HOLD PR #582, not part of accepted main.** The
+**PR #582 remains unmerged under explicit owner hold.** The
 [architectural generator specification](../systems/architectural-generator.md)
 describes thirteen composable presets, five simultaneous style columns,
 global automatic tunnel/door/window controls and per-preset native material
@@ -32,10 +32,19 @@ Cellular Hive and Arched Viaduct algorithms, and generated-start replay.
 The [owner walkthrough](../operations/architectural-generator-playtest.md)
 covers graphical preview, installation and save/reopen; owner assessment
 accepted the distinctive geometries while identifying future per-style
-palette and aperture authoring improvements. Standalone source-matched
-Linux/Windows and Windows packaged-copy tests passed. Compatibility with
-the subsequent GEN-008/archaeology main and retained-runtime publication
-require a separately qualified integration head. **No merge authority yet.**
+palette and aperture authoring improvements. Arched Viaduct v2 remains the
+owner-accepted fixed reference. Source-matched Linux/Windows graphical and
+Windows packaged-copy qualification includes the integrated GEN-008 Flatten
+author/reopen and failure-recovery cases.
+
+The current repair closes the retained-runtime publication path on the existing
+PR branch; its four-file publication and final-head Documentation/provenance,
+palette and broad CI remain pending until their actual receipts are verified.
+The [strict publication contract](../systems/architectural-generator.md#retained-runtime-publication)
+supersedes the previous source-only merge proposal. Routine native/Godot
+architecture tests and bounded publisher guards continue on accepted-main CI
+after integration; the full graphical/package campaign stays explicit.
+**Ready-for-review is a CI state; no merge is authorised.**
 
 ## Materials Lab v1 — 2026-11-11
 

@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-14
+last-reviewed: 2026-11-15
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
@@ -34,12 +34,15 @@ material-only Flatten contract: two bytes per cell, unchanged live World, explic
 Save. The [qualification and Owner workflow](operations/gen008-flatten-qualification.md)
 keeps implementation evidence and human acceptance separate. Keep #548 Draft/HOLD.
 
-GEN-007 Architectural Generator [Draft/HOLD, owner-reviewed](systems/architectural-generator.md):
+GEN-007 Architectural Generator [merge hold, owner-reviewed](systems/architectural-generator.md):
 five simultaneous style columns, thirteen built-in presets, versioned native
 Terraces/Hive/Viaduct algorithms, deterministic zone allocation and source-bound
 preview/install. See the [Windows owner walkthrough](operations/architectural-generator-playtest.md).
-Standalone Linux/Windows qualification passed; integrated-main qualification
-and retained-runtime publication remain separate. No merge is yet authorised.
+The integrated GEN-008 candidate has source-matched Linux/Windows and packaged
+replay evidence. Strict retained-runtime publication on PR #582 and the new
+head's broad checks remain pending at this repair checkpoint. Routine native,
+Godot and publisher-guard regressions continue beyond the feature branch.
+No merge is authorised.
 
 EXPLORE-001 review candidate: [generated-map contract](systems/explore001-generated-playable-maps.md),
 [Windows candidate/playtest](operations/explore001-desktop-playtest.md), and

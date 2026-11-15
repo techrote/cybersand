@@ -4,13 +4,13 @@ status: Current
 document-kind: guide
 scope: Windows owner walkthrough for the source-matched Phase A and B candidate
 canonical-for: [architectural-generator-owner-evaluation]
-last-reviewed: 2026-11-14
+last-reviewed: 2026-11-15
 related-documents: [../systems/architectural-generator.md, ../systems/explore001-generated-playable-maps.md, explore001-desktop-playtest.md]
 ---
 
 # Architectural Generator — owner walkthrough
 
-This is a **Draft/HOLD evaluation candidate**. Extract the complete Windows
+This is an **evaluation candidate under owner merge hold**. Extract the complete Windows
 package, then double-click **Open Workbench.cmd**. The package manifest records
 its source commit and file hashes. Keep all bundled files together. The launcher
 uses the bundled Godot/native runtime; no source compilation or manual JSON
@@ -54,7 +54,7 @@ saved v1 recipes remain reproducible.
 4. Inspect the material preview and optionally enable **Show style-zone overlay**.
    The legend must report 115 / 77 / 64 blocks, or 44.921875% / 30.078125% / 25%.
    These are zone areas including empty rooms, not amounts of wall material.
-5. Open the Architectural Generator again. In the Habitation tab change bay size
+5. Open the Architectural Generator again. In the Habitation style card change bay size
    or floor height, select seed **271828**, and change shares to **40 / 35 / 25**.
    Generate another complete preview. Then try seed **314159** with the original
    shares. Layout and native room/maze detail should vary deterministically.
@@ -123,5 +123,8 @@ the exact seed/configuration for any fault. Check the first dialog at your norma
 window size, the three toggle comparisons, visibly different style geometry,
 coverage legend, regeneration, Stop/recovery, installation, real painting,
 erasure and fresh-process reopen. Automated material captures do not establish
-Windows graphical quality or human usability acceptance. Keep the PR Draft/HOLD
-until the owner decides on integration.
+Windows graphical quality or human usability acceptance. Arched Viaduct v2 is
+the owner-accepted visual reference; runtime and qualification repairs preserve
+its geometry. Evaluate the final package's integration and usability against
+that accepted reference. The PR remains unmerged until the owner explicitly
+approves it, regardless of the Draft or Ready-for-review state used for CI.

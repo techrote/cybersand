@@ -2,10 +2,10 @@
 title: Architectural Generator Phase A and B
 status: Current
 document-kind: contract
-scope: Opt-in schema-4 architectural controls, module-v2 apertures and bounded three-style project compilation
+scope: Opt-in schema-4 architectural controls, versioned native geometry and bounded one-to-five-style project compilation
 canonical-for: [architectural-generator-controls, architectural-style-projects, architectural-zone-coverage]
 keywords: [architecture, GEN-007, styles, zones, coverage, tunnels, doors, windows, Hilbert, Arcology, Vault]
-last-reviewed: 2026-11-14
+last-reviewed: 2026-11-15
 related-documents: [procedural-world-generation.md, procedural-typed-spatial-fields.md, procedural-hierarchical-generation.md, generation-workbench-2.md, explore001-generated-playable-maps.md, ../operations/architectural-generator-playtest.md]
 ---
 
@@ -17,7 +17,9 @@ project compiler plans finite style zones; native GEN-007 produces every terrain
 cell. The ordinary generated-start preview, confirmed World replacement, painting
 and recipe-based save/reopen remain the authority. This source contract describes
 the candidate; platform execution and owner acceptance belong to its dated
-qualification report and Draft PR.
+qualification report and [PR #582](https://github.com/techrote/cybersand/pull/582).
+The PR remains under an explicit **do not merge** instruction. Ready-for-review
+state permits full CI execution; it does not grant merge approval.
 
 The [dated local qualification record](../audits/2026-11-14-architectural-generator-local.md)
 retains source identities, numerical comparisons and original native previews.
@@ -115,6 +117,11 @@ can reproduce their exact material outputs.
 - **Arched Viaduct v2** replaces misaligned empty pier-foot cutouts with
   centred solid Steel Plate (62) load-bearing inlays. Arch profiles, original
   material contrasts and supporting decks are otherwise unchanged.
+
+The owner accepted **Arched Viaduct v2** at source
+`2ef35d46d7506b58f05a963c6ab3d650c1876da5` as the fixed visual reference.
+Runtime publication and qualification repairs preserve that geometry and its
+version identity; further architectural refinement requires separate scope.
 
 **Material texture policy:** the shader renders material textures using
 absolute world coordinates. Painting and pasting the same material therefore
@@ -275,9 +282,46 @@ reconstruction. Actual timings and original captured material PNGs are retained
 with runtime/source identities. They are native-material captures; headless PNGs
 are not graphical Windows acceptance.
 
-The opt-in qualification workflow builds source-matched Linux and Windows
-extensions and uses the existing standalone Workbench packaging path. Draft/HOLD
-remains in force. Windows owner evaluation must independently inspect actual
-layout, interactive controls, paint/erase and save/reopen. No general architectural
-solver, variable-size room packing, semantic route generator, automatic edit
-rebase, streaming World, camera optimization or agent authoring is included.
+The [architectural qualification workflow](../../.github/workflows/architectural-generator-qualification.yml)
+builds source-matched Linux and Windows extensions and uses the existing
+standalone Workbench packaging path. Its graphical campaign covers all five
+style cards, sparse enabled slots 1/3/5, native preview/install, normal and
+multistyle author/reopen, edit ordering, legacy material equivalence, and GEN-008
+Flatten author/reopen with native-owner failure recovery. The Windows owner ZIP
+is independently extracted and replayed; Flatten uses a separate pristine
+extraction. These checks preserve the accepted Flatten contract rather than
+adding a second Flatten implementation to the generator.
+
+Routine coverage survives the feature branch: the broad
+[GDExtension workflow](../../.github/workflows/gdextension.yml) discovers the
+architectural native-material, project-contract and UI test scripts on Linux
+and Windows, while [Native CI](../../.github/workflows/native.yml) runs the
+native generation suites. The architectural workflow also runs its bounded
+publisher-guard tests on pull requests and `main` pushes. The expensive full
+graphical/package campaign remains restricted to feature-branch pushes or an
+explicit workflow dispatch. Headless regression coverage and publisher unit
+tests do not replace the full graphical publication campaign.
+
+### Retained runtime publication
+
+The owner-authorized repair publishes the source-matched Linux SO, Windows DLL
+and their two provenance records **on the existing PR branch**. It supersedes
+the earlier source-only merge proposal. The
+[publisher](../../tools/ci/gen007_architectural_runtime_publication.py) admits both
+platforms only after the graphical, native, persistence, legacy and package
+checks above pass. Each acceptance report carries the native source-input
+ledger and source tree from its verified build manifest, and the independent
+bundle verifier checks them against the execution identity and retained
+receipt hashes. Missing or mismatched source evidence fails publication.
+
+The write is limited to the four runtime/provenance paths and requires an
+unchanged branch tip. A successful build or downloadable evaluation ZIP alone
+does not establish retained-runtime publication. After the four-file commit,
+the new PR head still needs fresh Documentation/provenance, palette backend and
+all applicable broad repository checks. No source-provenance exception, merge
+or automatic approval is part of this path.
+
+Windows owner evaluation must independently inspect actual layout, interactive
+controls, paint/erase and save/reopen. No general architectural solver,
+variable-size room packing, semantic route generator, automatic edit rebase,
+streaming World, camera optimization or agent authoring is included.

@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "frozen_date": "2026-11-14",
-  "purpose": "Additive architectural-generator current-source navigation; no historical queries modified.",
+  "frozen_date": "2026-11-15",
+  "purpose": "Architectural-generator current-source navigation; catalogue expectation corrected and publication coverage added on 2026-11-15; no historical queries modified.",
   "questions": [
     {
       "id": "ARCHITECTURE-APERTURES",
@@ -41,12 +41,27 @@
         "systems/architectural-generator.md"
       ],
       "facts": [
-        "The focused panel is under Shared Workbench New from generator; three built-in style presets and embedded custom JSON use the existing native pipeline.",
+        "The focused panel is under Shared Workbench New from generator; thirteen built-in presets and embedded custom JSON use the existing native pipeline, with one to five side-by-side style cards and three enabled by default.",
         "Install confirms World replacement; rejected/cancelled proposals preserve the installed World and the prior verified preview is explicitly restorable.",
         "Project JSON embeds presets; generated-start v1 embeds the resolved recipe, verifies fresh-process native reconstruction and retains painted/erased edits without external preset files."
       ],
       "sources": [
         "operations/architectural-generator-playtest.md",
+        "systems/architectural-generator.md"
+      ]
+    },
+    {
+      "id": "ARCHITECTURE-RUNTIME-PUBLICATION",
+      "query": "What qualifies retained Architectural Generator Linux and Windows runtimes, and which regression checks continue after the feature branch?",
+      "canonical": [
+        "systems/architectural-generator.md"
+      ],
+      "facts": [
+        "Publication requires source-input/tree identity, source-matched target-OS native and graphical architecture/Flatten evidence, and independently extracted Windows package replay.",
+        "Only the two runtime libraries and two provenance records may be published on the unchanged PR branch; the resulting head still needs strict provenance, palette and broad CI, and no merge is authorized.",
+        "Routine native and Godot architecture tests plus bounded publisher guards continue on main; the expensive full graphical/package campaign remains feature-branch or explicitly dispatched work."
+      ],
+      "sources": [
         "systems/architectural-generator.md"
       ]
     }

@@ -1,8 +1,9 @@
 name: Architectural Generator A+B source qualification
 on:
   push:
-    branches: [feat/gen007-architectural-generator-ab]
+    branches: [main, feat/gen007-architectural-generator-ab]
     paths:
+      - '.gitattributes'
       - '.github/workflows/architectural-generator-qualification.yml'
       - 'native/**'
       - 'godot/**'
@@ -12,6 +13,20 @@ on:
       - 'tools/ci/gen007_architectural_runtime_publication.py'
       - 'tools/ci/gen007_architectural_publish_request.json'
       - 'tools/ci/test_gen007_architectural_runtime_publication.py'
+      - 'tools/ci/lcb001_shared_contract_runtime_publication.py'
+      - 'tools/ci/test_lcb001_shared_contract_runtime_publication.py'
+  pull_request:
+    paths:
+      - '.gitattributes'
+      - '.github/workflows/architectural-generator-qualification.yml'
+      - 'native/**'
+      - 'godot/**'
+      - 'tools/architecture/**'
+      - 'examples/worldgen/**'
+      - 'tools/ci/gen007_architectural*'
+      - 'tools/ci/test_gen007_architectural*'
+      - 'tools/ci/lcb001_shared_contract_runtime_publication.py'
+      - 'tools/ci/test_lcb001_shared_contract_runtime_publication.py'
   workflow_dispatch:
 permissions:
   contents: read
@@ -47,6 +62,9 @@ jobs:
           python3 tools/ci/check_ci_provider_policy.py
   linux:
     needs: publisher-guards
+    # Keep the bounded guards on ordinary PR/main changes. Full pinned builds,
+    # graphical replay and packaging are explicit or confined to this campaign.
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/feat/gen007-architectural-generator-ab')
     name: Linux native GEN-007 and graphical Workbench
     runs-on: ubuntu-24.04
     timeout-minutes: 180
@@ -149,6 +167,7 @@ jobs:
           retention-days: 90
   windows-build:
     needs: publisher-guards
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/feat/gen007-architectural-generator-ab')
     name: Pinned source-matched Windows DLL
     runs-on: ubuntu-24.04
     timeout-minutes: 120
