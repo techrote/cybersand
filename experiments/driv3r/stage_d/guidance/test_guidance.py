@@ -1,4 +1,5 @@
 """Cheap, isolated stdlib tests for experimental guidance; no native Worlds."""
+from hashlib import sha256
 import json
 from pathlib import Path
 import tempfile
@@ -36,6 +37,17 @@ class FieldTests(unittest.TestCase):
                                             radius_cells=5, hardness=0.2, gradient_length=0.9))
         with self.assertRaises(ValueError):
             radial_airbrush(1, 1, center_x=0, center_y=0, radius_cells=0)
+
+    def test_scalar_tuple_and_world_frame_cannot_alias_or_overflow(self):
+        values = [0, 65535]
+        with self.assertRaisesRegex(ValueError, "immutable tuple"):
+            GuidanceField(2, 1, values)
+        with self.assertRaisesRegex(ValueError, "frame exceeds"):
+            GuidanceField(2, 1, (0, 65535), x=2**31 - 1)
+        canonical = GuidanceField.from_raw(2, 1, b"\\x00\\x00\\xff\\xff")
+        self.assertEqual(canonical.values, (0, 65535))
+        values[0] = 123
+        self.assertEqual(canonical.values, (0, 65535))
 
     def test_speckles_not_numeric_truth(self):
         f = GuidanceField(8, 1, (65535,) * 8)
@@ -90,6 +102,30 @@ class FieldTests(unittest.TestCase):
             p.with_suffix(".json").write_text(json.dumps(document))
             with self.assertRaises(ValueError):
                 load_bundle(p)
+
+    def test_external_manifest_pin_rejects_metadata_drift(self):
+        field = GuidanceField(2, 1, (100, 65535))
+        with tempfile.TemporaryDirectory() as d:
+            prefix = Path(d) / "guide"
+            export_bundle(prefix, field, seed=17, centre_density=.6,
+                          authoring_parameters={"radius_cells": 3})
+            manifest_path = prefix.with_suffix(".json")
+            pinned = sha256(manifest_path.read_bytes()).hexdigest()
+            restored, _ = load_bundle(prefix, expected_manifest_sha256=pinned)
+            self.assertEqual(restored, field)
+            meta = json.loads(manifest_path.read_text())
+            meta["authoring_parameters"]["radius_cells"] = 999
+            manifest_path.write_text(json.dumps(meta))
+            with self.assertRaisesRegex(ValueError, "manifest SHA-256 mismatch"):
+                load_bundle(prefix, expected_manifest_sha256=pinned)
+            with self.assertRaisesRegex(ValueError, "manifest SHA-256 mismatch"):
+                load_bundle(prefix, expected_manifest_sha256="not-a-sha")
+
+    def test_hysteresis_rejects_truthy_nonboolean_state(self):
+        hysteresis = Hysteresis(100, 200)
+        for state in (1, 0, "False", None):
+            with self.subTest(state=state), self.assertRaisesRegex(ValueError, "boolean"):
+                hysteresis.assess(99, state)
 
     def test_hysteresis_neutral_not_forbidden(self):
         h = Hysteresis(100, 200)
@@ -195,6 +231,26 @@ class StudyTests(unittest.TestCase):
                                      verified_native_receipt=case["verified_native_receipt"])
             self.assertEqual(verdict["decision"], case["expected"], case["id"])
             self.assertFalse(verdict["native_material_changed_by_critic"])
+
+    def test_shadow_rejects_truthy_control_flags_and_untyped_metrics(self):
+        before = CriticSnapshot("before", 10, 0, 2)
+        after = CriticSnapshot("after", 9, 1, 2)
+        for flag in ("false", 1, None):
+            with self.subTest(flag=flag), self.assertRaisesRegex(ValueError, "boolean"):
+                shadow_verdict(before=before, after=after,
+                               undo_eligible=flag, verified_native_receipt=True)
+            with self.assertRaisesRegex(ValueError, "boolean"):
+                shadow_verdict(before=before, after=after,
+                               undo_eligible=True, verified_native_receipt=flag)
+        for score in (True, "1", float("nan"), float("inf")):
+            with self.subTest(score=score), self.assertRaisesRegex(ValueError, "invalid shadow"):
+                CriticSnapshot("bad", score, 0, 0)
+        for snapshot_id in (123, "", "x" * 97):
+            with self.subTest(snapshot_id=snapshot_id), self.assertRaisesRegex(ValueError, "invalid shadow"):
+                CriticSnapshot(snapshot_id, 1.0, 0, 0)
+        with self.assertRaisesRegex(ValueError, "typed before/after"):
+            shadow_verdict(before={"snapshot_id": "before"}, after=after,
+                           undo_eligible=True, verified_native_receipt=True)
 
     def test_shadow_keep_undo_stop_without_mutation(self):
         before = CriticSnapshot("before", 10.0, 0, 2)

@@ -70,7 +70,8 @@ class CriticSnapshot:
 
     def __post_init__(self) -> None:
         from math import isfinite
-        if not self.snapshot_id or not isfinite(self.goal_score):
+        if (type(self.snapshot_id) is not str or not 1 <= len(self.snapshot_id) <= 96 or
+                type(self.goal_score) not in (int, float) or not isfinite(self.goal_score)):
             raise ValueError("invalid shadow snapshot")
         if isinstance(self.violations, bool) or not isinstance(self.violations, int) or self.violations < 0:
             raise ValueError("invalid violation count")
@@ -85,6 +86,10 @@ def shadow_verdict(*, before: CriticSnapshot, after: CriticSnapshot,
     Eligibility is only a hypothetical control supplied by host. UNDO never
     dispatches history; a later native owner must separately qualify rollback.
     """
+    if type(before) is not CriticSnapshot or type(after) is not CriticSnapshot:
+        raise ValueError("shadow verdict requires typed before/after snapshots")
+    if type(undo_eligible) is not bool or type(verified_native_receipt) is not bool:
+        raise ValueError("hypothetical Undo eligibility/receipt flags must be boolean")
     if before.snapshot_id == after.snapshot_id:
         raise ValueError("before and after must be different frozen snapshots")
     regression = after.violations > before.violations or after.goal_score < before.goal_score

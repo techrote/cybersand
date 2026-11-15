@@ -208,3 +208,27 @@ and permissions remain host-owned; no painter lane or accepted M1 contract
 was altered. The five new cheap tests in `test_geometry_guard.py` exercise the
 local validator only; final combined-suite and M1 conformance require separate
 exact-source verification.
+
+### D-1B scalar/critic provenance guards (15 Nov 2026)
+
+The frozen 16-bit scalar field now refuses mutable list-backed storage and
+coordinate frames that overflow the bounded World coordinate domain; native
+material values and permissions remain untouched. The local hysteresis
+state and hypothetical KEEP/UNDO/STOP eligibility/receipt flags must be actual
+booleans. Typed shadow snapshots require finite non-boolean numeric scores and
+bounded string identities. An untyped or truthy string such as `"false"`
+cannot become a hypothetical Undo authorization.
+
+The guidance bundle loader now accepts an **optional out-of-band**
+`expected_manifest_sha256`. The CLI already prints the exact manifest digest;
+record it independently alongside the numeric and preview hashes when provenance
+matters. Without the external digest, raw/preview hashes authenticate artifact
+bytes **only** and do not protect editable authoring metadata. The bundle format
+and frozen M1 contract/schema were not changed.
+
+Added four no-model/no-native regression methods in `test_guidance.py`:
+mutable scalar alias and frame overflow; manifest metadata drift; truthy
+hysteresis state; and truthy shadow receipt/eligibility plus malformed
+snapshot metrics. These are test implementations, **not yet an executed
+exact-head full-suite qualification**. The repository's scoped CI jobs must
+not be substituted for the standalone Python tests without their logs.

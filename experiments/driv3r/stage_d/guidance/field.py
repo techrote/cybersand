@@ -46,6 +46,10 @@ class GuidanceField:
             raise ValueError("field exceeds bounded cell budget")
         _within(self.x, 0, 2**31 - 1, "x")
         _within(self.y, 0, 2**31 - 1, "y")
+        if type(self.values) is not tuple:
+            raise ValueError("guidance scalar storage must be an immutable tuple")
+        if self.x + self.width > 2**31 or self.y + self.height > 2**31:
+            raise ValueError("field frame exceeds bounded world coordinates")
         if len(self.values) != self.width * self.height:
             raise ValueError("field scalar count must equal width * height")
         for v in self.values:
@@ -265,9 +269,22 @@ def export_bundle(prefix: Path, field: GuidanceField, *, seed: int, centre_densi
     return manifest
 
 
-def load_bundle(prefix: Path) -> tuple[GuidanceField, dict]:
+def load_bundle(prefix: Path, *, expected_manifest_sha256: str | None = None) -> tuple[GuidanceField, dict]:
+    """Load numeric/preview artifacts; optionally require an external manifest pin.
+
+    Raw and preview hashes alone cannot authenticate editable manifest metadata.
+    The caller must retain the CLI-emitted manifest SHA-256 independently when
+    authoring provenance must be source-fenced.
+    """
     prefix = Path(prefix)
-    manifest = json.loads(prefix.with_suffix(".json").read_text(encoding="utf-8"))
+    manifest_bytes = prefix.with_suffix(".json").read_bytes()
+    if expected_manifest_sha256 is not None:
+        valid = (type(expected_manifest_sha256) is str and
+                 len(expected_manifest_sha256) == 64 and
+                 all(c in "0123456789abcdef" for c in expected_manifest_sha256))
+        if not valid or _digest(manifest_bytes) != expected_manifest_sha256:
+            raise ValueError("bundle manifest SHA-256 mismatch")
+    manifest = json.loads(manifest_bytes.decode("utf-8"))
     if manifest.get("format") != "cybersand.driv3r.guidance-bundle/0" or manifest.get("native_material_authority") is not False:
         raise ValueError("unknown/unsafe guidance bundle")
     x, y, w, h = manifest["frame"]
@@ -301,6 +318,8 @@ class Hysteresis:
     def assess(self, value: int, engaged: bool) -> tuple[bool, str]:
         """Return updated flag and a *proposal only*; no native write/undo implied."""
         _within(value, 0, 65535, "guidance value")
+        if type(engaged) is not bool:
+            raise ValueError("engaged must be a boolean")
         if engaged and value < self.exit_below:
             return False, "propose_recovery"
         if not engaged and value >= self.reenter_at_or_above:
