@@ -1,0 +1,270 @@
+"""Four-stream D-1A matched offline controls; NOT a model/native fleet.
+
+The frozen 36-decision fixtures and the accepted M1 contract are read-only.
+An experimental 128-decision overlay is admitted only after the bounded
+geometric oracle finishes under an explicit predecessor-probe cap.
+"""
+from __future__ import annotations
+
+import hashlib
+import json
+import random
+from typing import Any
+
+VERSION = "d1a-four-stream-controls/1"
+M1_COMMIT = "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6"
+M1_SCHEMA_SHA256 = "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d"
+POLICIES = ("astar_or_contour", "random_legal", "random_legal_persistent_v1")
+# Model families are intended future streams, NOT loaded checkpoint identities.
+SLOTS = (
+    ("d1a-wrangler-01", "d1-2B-Q4", "wall_step_v1", 103),
+    ("d1a-wrangler-02", "LFM2.5-350M", "route_gate_v1", 211),
+    ("d1a-wrangler-03", "Sprocket-500M", "wall_recess_v1", 307),
+    ("d1a-wrangler-04", "SmolLM2-135M", "route_hook_v1", 401),
+)
+MACROS = (1, 2, 4, 8)
+MAX_HORIZON = 128
+MAX_ORACLE_PROBES = 3_000_000
+
+
+class ControlRefused(ValueError):
+    """An input or resource gate prevented source-qualified offline controls."""
+
+
+def digest(data: Any) -> str:
+    return hashlib.sha256(json.dumps(data, sort_keys=True, separators=(",", ":"),
+                                     allow_nan=False).encode("utf8")).hexdigest()
+
+
+def _lane_modules():
+    from . import offline, budget_oracle
+    return offline, budget_oracle
+
+
+def _get_fixture(fixture_id: str):
+    offline, _ = _lane_modules()
+    by_id = {f.fixture_id: f for f in offline.fixtures() if f.split == "development"}
+    if fixture_id not in by_id:
+        raise ControlRefused("Unknown or held-out fixture: outcomes remain sealed")
+    fixture = by_id[fixture_id]
+    offline.require_development_fixture(fixture)
+    return fixture
+
+
+def validate_slot(slot: dict[str, Any], *, require_native: bool = False) -> None:
+    """Reject fabricated execution identities and mismatched control recipes."""
+    if type(slot) is not dict or slot.get("version") != VERSION:
+        raise ControlRefused("Unknown handoff version")
+    i = slot.get("slot_index")
+    if type(i) is not int or not 0 <= i < len(SLOTS):
+        raise ControlRefused("Not a registered slot")
+    wrangler, family, fixture_id, seed = SLOTS[i]
+    if (slot.get("wrangler_id"), slot.get("requested_model_family"),
+        slot.get("fixture_id"), slot.get("seed")) != (wrangler, family, fixture_id, seed):
+        raise ControlRefused("Slot identity/source mismatch")
+    if (slot.get("m1_commit"), slot.get("m1_schema_sha256")) != (M1_COMMIT, M1_SCHEMA_SHA256):
+        raise ControlRefused("M1 identity mismatch")
+    if slot.get("source_kind") != "synthetic_development_only":
+        raise ControlRefused("Synthetic controls cannot masquerade as native/model outcomes")
+    if any(slot.get(k) is not None for k in
+           ("model_checkpoint_sha256", "github_run_id", "github_job_id", "resident_pid",
+            "native_world_sha256", "native_receipt_artifact")):
+        raise ControlRefused("Unverified real execution or model identity in planned slot")
+    if slot.get("active_worms") != 0 or slot.get("sequential_native_receipts") != 0:
+        raise ControlRefused("Planned synthetic slots cannot be counted as live worms")
+    if slot.get("native_qualified") is not False or require_native:
+        raise ControlRefused("No D-1A native execution or 128-turn host qualification")
+    f = _get_fixture(fixture_id)
+    if slot.get("fixture_sha256") != f.sha256:
+        raise ControlRefused("Fixture source fingerprint changed")
+    if slot.get("synthetic_run_id") != digest([VERSION, i, wrangler, fixture_id, f.sha256, seed]):
+        raise ControlRefused("Synthetic run identity altered")
+
+
+def make_slots() -> tuple[dict[str, Any], ...]:
+    """Four distinct planned streams; never pretend to load any model."""
+    result = []
+    for i, (wrangler, family, fixture_id, seed) in enumerate(SLOTS):
+        f = _get_fixture(fixture_id)
+        record = {
+            "version": VERSION, "slot_index": i, "wrangler_id": wrangler,
+            "requested_model_family": family, "model_checkpoint_sha256": None,
+            "github_run_id": None, "github_job_id": None, "resident_pid": None,
+            "native_world_sha256": None, "native_receipt_artifact": None,
+            "fixture_id": fixture_id, "fixture_sha256": f.sha256,
+            "fixture_split": "development", "frozen_fixture_budget": f.budget,
+            "seed": seed, "source_kind": "synthetic_development_only",
+            "m1_commit": M1_COMMIT, "m1_schema_sha256": M1_SCHEMA_SHA256,
+            "native_qualified": False, "sequential_native_receipts": 0,
+            "active_worms": 0, "status": "planned_offline_controls",
+            "policies": list(POLICIES), "macro_lengths": list(MACROS),
+            "native_logical_move_cap_unmodified": 64,
+            "native_128_turn_approved": False,
+            "synthetic_run_id": digest([VERSION, i, wrangler, fixture_id, f.sha256, seed]),
+        }
+        validate_slot(record)
+        result.append(record)
+    if len({r["synthetic_run_id"] for r in result}) != 4:
+        raise ControlRefused("Duplicate stream run identities")
+    return tuple(result)
+
+
+def _rollout(f, policy: str, seed: int, horizon: int) -> dict[str, Any]:
+    """Source-matched synthetic cursor sweep, never a brush/material receipt."""
+    offline, _ = _lane_modules()
+    rng = random.Random(seed)
+    pos = f.start
+    path = [pos]
+    events = []
+    stop = "budget_exhausted"
+    for decision in range(horizon):
+        if pos == f.target:
+            stop = "arrived"
+            break
+        options = offline.candidates(f, pos, MACROS)
+        if not options or options[0].candidate_id != "STOP":
+            raise ControlRefused("Frozen legal menu did not contain STOP")
+        real_policy = ("contour_astar" if f.task == "wall_offset" else "astar") if policy == "astar_or_contour" else policy
+        choice = offline.select_candidate(f, pos, options, real_policy, rng)
+        if choice not in options or any(not f.legal(p) for p in choice.path):
+            raise ControlRefused("Illegal proposed movement or swept path")
+        before = pos
+        if choice.stop:
+            stop = ("no_legal_moves" if policy == "random_legal_persistent_v1"
+                    and not any(not c.stop for c in options) else "policy_stop")
+        else:
+            path.extend(choice.path)
+            pos = choice.path[-1]
+        events.append({
+            "decision": decision, "before": list(before),
+            "legal_set_sha256": offline.digest([c.source() for c in options]),
+            "choice_id": choice.candidate_id, "swept_cells": [list(p) for p in choice.path],
+            "after": list(pos), "path_sha256": offline.digest(path),
+            "native_receipt_ref": None,
+        })
+        if choice.stop:
+            break
+    else:
+        if pos == f.target:
+            stop = "arrived"
+    score = offline.score_episode(f, path, len(events), stop)
+    return {
+        "policy": policy, "seed": seed, "synthetic_decision_budget": horizon,
+        "source_kind": "synthetic_development_only", "native_qualified": False,
+        "sequential_native_receipts": 0, "material_effect": "none",
+        "final_cursor": list(pos), "events": events, "path": [list(p) for p in path],
+        "metrics": score, "trajectory_sha256": digest([list(p) for p in path]),
+        "record_sha256": digest([events, score]),
+    }
+
+
+def run_matched_controls(slot: dict[str, Any], *, horizon: int = 36,
+                         oracle_probe_cap: int = MAX_ORACLE_PROBES) -> dict[str, Any]:
+    """Run three synthetic controls only after a bounded oracle preflight.
+
+    128 is an independent synthetic overlay, not a mutation of the sealed
+    36-turn fixture or a native 64-logical-move-limit extension.
+    """
+    validate_slot(slot)
+    if type(horizon) is not int or horizon not in (36, MAX_HORIZON):
+        raise ControlRefused("Only 36 or synthetic 128 decision horizons admitted")
+    if type(oracle_probe_cap) is not int or not 1 <= oracle_probe_cap <= MAX_ORACLE_PROBES:
+        raise ControlRefused("Oracle work cap must be <= 3 million probes")
+    f = _get_fixture(slot["fixture_id"])
+    _, budget_oracle = _lane_modules()
+    from . import offline
+    clearance = (lambda p: offline.wall_distance(f, p)) if f.task == "wall_offset" else None
+    try:
+        oracle = budget_oracle.bounded_optimal_route(
+            f.width, f.height, f.start, f.target, f.legal, MACROS,
+            clearance, decision_budget=horizon, max_predecessor_probes=oracle_probe_cap)
+    except budget_oracle.PlanningBudgetExceeded as exc:
+        return {
+            "version": VERSION, "slot_index": slot["slot_index"],
+            "synthetic_run_id": slot["synthetic_run_id"],
+            "horizon": horizon, "state": "ORACLE_RESOURCE_EXHAUSTED",
+            "error": str(exc), "oracle_probe_cap": oracle_probe_cap,
+            "arms": [], "native_qualified": False, "sequential_native_receipts": 0,
+            "model_outcome": None,
+        }
+    arms = [_rollout(f, policy, slot["seed"], horizon) for policy in POLICIES]
+    first_menus = {a["events"][0]["legal_set_sha256"] for a in arms if a["events"]}
+    if len(first_menus) != 1:
+        raise ControlRefused("Matched-control initial legal menus differ")
+    return {
+        "version": VERSION, "slot_index": slot["slot_index"],
+        "synthetic_run_id": slot["synthetic_run_id"],
+        "fixture_id": f.fixture_id, "fixture_sha256": f.sha256,
+        "horizon": horizon, "state": "SYNTHETIC_CONTROLS_COMPLETE",
+        "frozen_fixture_budget": f.budget, "source_kind": "synthetic_development_only",
+        "oracle": {"version": oracle["version"],
+                   "objective": oracle["objective"],
+                   "predecessor_probes": oracle["predecessor_probes"],
+                   "probe_cap": oracle["predecessor_probe_cap"],
+                   "feasible_arrival_within_budget": oracle["feasible_arrival_within_budget"],
+                   "optimal_cost_within_budget": oracle["optimal_cost_within_budget"]},
+        "common_initial_legal_set_sha256": next(iter(first_menus), None),
+        "arms": arms, "native_qualified": False,
+        "sequential_native_receipts": 0, "model_outcome": None,
+        "native_128_turn_approved": False,
+    }
+
+
+def replay_matched_controls(slot: dict[str, Any], report: dict[str, Any]) -> bool:
+    """Reject altered synthetic evidence; do not evaluate any held-out case."""
+    validate_slot(slot)
+    if report.get("state") != "SYNTHETIC_CONTROLS_COMPLETE":
+        raise ControlRefused("Resource-exhausted/incomplete report has no success replay")
+    f = _get_fixture(slot["fixture_id"])
+    if (report.get("synthetic_run_id") != slot["synthetic_run_id"] or
+        report.get("fixture_sha256") != f.sha256 or
+        report.get("horizon") not in (36, 128)):
+        raise ControlRefused("Report/source/horizon mismatch")
+    original = report.get("arms")
+    if type(original) is not list or len(original) != len(POLICIES):
+        raise ControlRefused("Missing or extra matched control arms")
+    for index, policy in enumerate(POLICIES):
+        expected = _rollout(f, policy, slot["seed"], report["horizon"])
+        if original[index] != expected:
+            raise ControlRefused("Episode replay mismatch (including first-pass negative results)")
+    if report.get("sequential_native_receipts") != 0 or report.get("native_qualified") is not False:
+        raise ControlRefused("Synthetic replay report forged native qualification")
+    return True
+
+
+def compact_handoff(slots: tuple[dict[str, Any], ...],
+                    reports: tuple[dict[str, Any], ...]) -> dict[str, Any]:
+    """Commander/Ethologist summary without laundering model or native claims."""
+    if len(slots) != 4 or len(reports) != 4:
+        raise ControlRefused("Require four independently named streams")
+    if len({s["synthetic_run_id"] for s in slots}) != 4:
+        raise ControlRefused("Duplicate synthetic run identity")
+    summary = []
+    for slot, report in zip(slots, reports):
+        validate_slot(slot)
+        if report.get("synthetic_run_id") != slot["synthetic_run_id"]:
+            raise ControlRefused("Wrong paired slot report")
+        if report.get("state") == "SYNTHETIC_CONTROLS_COMPLETE":
+            replay_matched_controls(slot, report)
+        elif report.get("state") != "ORACLE_RESOURCE_EXHAUSTED":
+            raise ControlRefused("Unqualified report state")
+        summary.append({
+            "wrangler_id": slot["wrangler_id"],
+            "requested_model_family": slot["requested_model_family"],
+            "synthetic_run_id": slot["synthetic_run_id"],
+            "fixture_id": slot["fixture_id"], "seed": slot["seed"],
+            "horizon": report["horizon"], "state": report["state"],
+            "oracle_predecessor_probes": report.get("oracle", {}).get("predecessor_probes"),
+            "oracle_probe_cap": report.get("oracle", {}).get("probe_cap", report.get("oracle_probe_cap")),
+            "arm_metrics": {a["policy"]: a["metrics"] for a in report["arms"]},
+            "source_kind": "synthetic_development_only",
+            "native_receipts": 0, "model_outcome": None,
+        })
+    return {
+        "version": VERSION, "recipient_roles": ["Wormfleet Commander", "Worm Ethologist"],
+        "m1_commit": M1_COMMIT, "m1_schema_sha256": M1_SCHEMA_SHA256,
+        "streams": summary, "native_64_logical_move_limit_unchanged": True,
+        "four_loaded_models": False, "native_128_approved": False,
+        "heldout_outcomes_evaluated": False,
+        "cohort_sha256": digest(summary),
+    }
