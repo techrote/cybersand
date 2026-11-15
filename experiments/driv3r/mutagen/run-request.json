@@ -15,5 +15,6 @@
   "training": false,
   "paid_api": false,
   "keep_draft": true,
-  "allow_merge": false
+  "allow_merge": false,
+  "retry_reason": "conv_scrape-actual-shortconv-gguf-selector"
 }
