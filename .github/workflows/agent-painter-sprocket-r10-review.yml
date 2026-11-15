@@ -4,11 +4,12 @@ on:
     branches: [codex/agent-painter-sprocket-568]
     paths:
       - experiments/agent_painter/lanes/sprocket/r10-visible-native-request.json
+      - .github/workflows/agent-painter-sprocket-r10-review.yml
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: sprocket-r10-review-${{ github.ref }
+  group: sprocket-r10-review-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   source-locked-review:
@@ -44,7 +45,7 @@ jobs:
           python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/sprocket-r10-scheduling.json
       - name: Download ORIGINAL GitHub ZIP bytes by immutable artifact IDs
         env:
-          GH_TOKEN: ${{ github.token }
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           mkdir -p evidence/r10-review/original
@@ -78,7 +79,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: sprocket-r10-original-review-${{ github.sha }-${{ github.run_id }-${{ github.run_attempt }
+          name: sprocket-r10-original-review-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             evidence/r10-review/receipt.json
             evidence/r10-review/source-head.txt
