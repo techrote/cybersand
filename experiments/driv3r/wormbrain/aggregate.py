@@ -90,7 +90,7 @@ def main():
     reports={}
     traces={}
     for mode in MODES:
-        root=a.root/mode/"execution"
+        root=a.root/mode
         s=root/"execution/summary.json"
         t=root/"original-decisions.json"
         if not s.is_file() or not t.is_file():
