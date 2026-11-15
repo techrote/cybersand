@@ -13,6 +13,7 @@ import importlib.util
 import io
 import json
 import math
+import os
 import re
 import zipfile
 import zlib
@@ -36,7 +37,11 @@ def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 def load_w0():
-    source = Path(__file__).resolve().parent.parent / "common" / "worm.py"
+    # The live shared branch evolved after the original F3 producer's pinned W0.
+    # Never replay F3 using that altered source; CI downloads the original
+    # immutable W0 commit and verifies its complete SHA-256 separately.
+    source = Path(os.environ.get("SPROCKET_F3_PINNED_W0",
+          str(Path(__file__).resolve().parent.parent / "common" / "worm.py")))
     require(source.is_file() and digest(source.read_bytes()) == W0_FILE_SHA,
             "pinned common W0 source mismatch")
     spec = importlib.util.spec_from_file_location("original_pinned_worm_w0", source)
