@@ -156,3 +156,41 @@ Each reviewed transition below authenticates its retained source commit and
 exact LF hashes. The immutable baseline catalogue lock is not edited. The
 transition chain requires retaining the named commits, so eventual integration
 must use a merge commit rather than squash or rebase.
+
+
+### PR #618 source checkpoint
+
+Reviewed source commit: `1e7fac9eb909b982c961f34eefe7859430728de8`, tree
+`0d33bdc063d3c05aeca1941ab004ba894de5dbc0`. The implementation review compared
+these three protected consumers with accepted main. Wave-owned construction,
+transport, wake and physical-state additions are conditional on the opt-in
+World; catalogue IDs, definitions, digest inputs and admitted production
+policy/physical formats are unchanged. The shared receiver-capacity expression
+now returns zero when already full; all legal legacy receivers retain the same
+capacity. No immutable lock or historical transition is rewritten.
+
+The reviewed `world_quantity.inc` addition changes only the number of Water
+cells after conservative bulk transport; it cannot create a quantity source
+or sink. `world_pressure.inc` changes only Wave's versioned complete-state
+identity and explicit unsupported continuation refusal. `world.cpp` wires the
+conditional side state, bulk passes, wakes, edits and validated carrier bounds.
+
+Local execution at this checkpoint includes the expanded 22-case optimized
+native suite (build and execution passed with identical before/after input
+digest `4b4bd578807f3d5e94aa837758690ad319d9b00692faba98d778d3ea4e5087a5`),
+the Godot 4.7 development fixture suite (4,981 assertions, zero failures), the unchanged Linux runtime-floor check, three publisher/package
+adversarial tests, thirty inherited publisher guards, documentation/M11 and
+retrieval checks. Later exact-source adapter, sanitizer, target-OS, complete legacy-family
+and exact-head CI results remain separately identified in the PR ledger.
+The first local ASan/UBSan execution passed all 21 predecessor cases but failed
+at LeakSanitizer shutdown because this local environment runs under ptrace;
+that process is recorded as failed, and hosted leak checking is not disabled.
+The source review authenticates this bounded transition; it does not waive
+those runtime gates or assert merge approval. PR #618 is the tracking issue
+for these three transition entries.
+
+| Protected path | Previously admitted LF SHA-256 | Reviewed LF SHA-256 |
+|---|---|---|
+| `native/src/world.cpp` | `36f928740f554cde7542bc16e8ef897317ea51f3897af665ff6bb7f9e1ca812b` | `9600f625792929db95481f45cca2233716df921ff5001a052d0839de043ff384` |
+| `native/src/world_pressure.inc` | `899ada71b89d30ba063e047bdd5b02346948008f1b7c0bec9fa0f2272e4d86ec` | `a545d153f0f68c930837c59be449ac455b3fd35f36e268f21cffbfc940cb6da9` |
+| `native/src/world_quantity.inc` | `d9e6835d092193e4976c728d90121c6dee4b421337e056b5fc3c74975491af6e` | `1dc5ac99aacb1bac6a41edb0aa7479ed4dbef2b493e1d26b02e185aaff9c3e1d` |

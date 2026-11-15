@@ -1789,6 +1789,8 @@ bool CyberNativeCellWorld::diagnostic_fill_rect(Vector2i origin, Vector2i size,
         !in_bounds(origin.x, origin.y) || !in_bounds(static_cast<std::int64_t>(origin.x) + size.x - 1,
                                                    static_cast<std::int64_t>(origin.y) + size.y - 1)) return false;
     const auto value = static_cast<cybersand::Material>(material);
+    if (world_->wave_flow_enabled() && value == cybersand::Material::Water && state_b != 0)
+        return false; // Do not report success for an unsupported coherent write.
     const auto state_a = value == cybersand::Material::Water
         ? world_->config().water_experiment_policy.maximum()
         : static_cast<std::uint16_t>(cybersand::MaterialRules::descriptor(value).initial_state_a);

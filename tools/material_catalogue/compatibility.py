@@ -333,6 +333,29 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/material_rules.cpp',
  'pr': 563},)
 
 
+# Reviewed default-off WAVE-MT-001 source; original catalogue lock stays immutable.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': '36f928740f554cde7542bc16e8ef897317ea51f3897af665ff6bb7f9e1ca812b',
+  'to_lf_sha256': '9600f625792929db95481f45cca2233716df921ff5001a052d0839de043ff384',
+  'source_commit': '1e7fac9eb909b982c961f34eefe7859430728de8',
+  'record': 'docs/audits/2026-11-15-wave-mt-001-completion.md',
+  'issue': 618,
+  'pr': 618},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': '899ada71b89d30ba063e047bdd5b02346948008f1b7c0bec9fa0f2272e4d86ec',
+  'to_lf_sha256': 'a545d153f0f68c930837c59be449ac455b3fd35f36e268f21cffbfc940cb6da9',
+  'source_commit': '1e7fac9eb909b982c961f34eefe7859430728de8',
+  'record': 'docs/audits/2026-11-15-wave-mt-001-completion.md',
+  'issue': 618,
+  'pr': 618},
+ {'path': 'native/src/world_quantity.inc',
+  'from_lf_sha256': 'd9e6835d092193e4976c728d90121c6dee4b421337e056b5fc3c74975491af6e',
+  'to_lf_sha256': '1dc5ac99aacb1bac6a41edb0aa7479ed4dbef2b493e1d26b02e185aaff9c3e1d',
+  'source_commit': '1e7fac9eb909b982c961f34eefe7859430728de8',
+  'record': 'docs/audits/2026-11-15-wave-mt-001-completion.md',
+  'issue': 618,
+  'pr': 618})
+
 class CompatibilityError(ValueError):
     """An actionable source or baseline mismatch; never repairs the source."""
 

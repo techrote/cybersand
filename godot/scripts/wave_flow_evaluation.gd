@@ -22,10 +22,12 @@ var _display_due: float = 0.0
 var _status_due: float = 0.0
 var _last_ticks: int = 0
 var _previous_physics_rate: int = 60
+var _previous_project_physics_rate: int = 60
 
 
 func _ready() -> void:
 	_previous_physics_rate = Engine.physics_ticks_per_second
+	_previous_project_physics_rate = int(ProjectSettings.get_setting("physics/common/physics_ticks_per_second", 60))
 	var background := ColorRect.new()
 	background.color = Color("111821")
 	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -66,8 +68,10 @@ func _ready() -> void:
 	column.add_child(rates)
 	tick_rate = _number(rates, "Native ticks/s", 1, 120, 60)
 	physics_rate = _number(rates, "Rapier ticks/s", 30, 120, 60)
-	physics_rate.value_changed.connect(func(value: float) -> void: Engine.physics_ticks_per_second = int(value))
-	_label(rates, "Changing a solver, substeps, size or worker count takes effect on Reset.", 15)
+	physics_rate.value_changed.connect(_set_physics_rate)
+	_set_physics_rate(physics_rate.value)
+	var reset_hint: Label = _label(rates, "Apply scene, solver, size, workers and substeps with Reset.", 15)
+	reset_hint.custom_minimum_size.x = 380
 	status_label = _label(column, "Loading native runtime…", 16)
 	view = TextureRect.new()
 	view.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -122,6 +126,13 @@ func _button(parent: Node, text: String, action: Callable) -> Button:
 	button.pressed.connect(action)
 	parent.add_child(button)
 	return button
+
+
+func _set_physics_rate(value: float) -> void:
+	# The established Rapier bridge reads its step length from ProjectSettings.
+	# Update both clocks so 120 steps/s means 1/120-second steps, not double speed.
+	ProjectSettings.set_setting("physics/common/physics_ticks_per_second", int(value))
+	Engine.physics_ticks_per_second = int(value)
 
 
 func reset_scene() -> bool:
@@ -236,4 +247,5 @@ func _status(achieved_rate: float) -> void:
 
 func _exit_tree() -> void:
 	Engine.physics_ticks_per_second = _previous_physics_rate
+	ProjectSettings.set_setting("physics/common/physics_ticks_per_second", _previous_project_physics_rate)
 	if lab != null: lab.close()

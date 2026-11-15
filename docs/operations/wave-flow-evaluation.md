@@ -57,7 +57,8 @@ A requested count is not a claim that every worker performed useful work.
 
 Sizes are 256², 512², 1024² and 2048². Native rate accepts 1–120 ticks/s and
 Rapier rate accepts 30–120 ticks/s. The evaluator uses the existing native pool
-and manually stepped Rapier bridge. The UI's native dispatch is synchronous
+and manually stepped Rapier bridge; changing Rapier rate updates both cadence
+and physical step length, and leaving restores the ordinary rate. The UI's native dispatch is synchronous
 with a bounded catch-up budget (four ticks or 8 ms between dispatches); one
 native tick is indivisible. Achieved native rate, complete native tick duration
 and display FPS are reported separately. A slow comparison law may therefore
@@ -99,6 +100,16 @@ strict `WAVE_FLOW` completion record containing each required section. A missing
 section, failure or nonzero process exit is not a pass. Target OS/runtime/source
 qualification and benchmark evidence belong to the PR's final qualification
 record; the existence of this script is not execution evidence.
+
+`Godot --path godot --script res://tests/test_wave_flow_render.gd` requires a real
+rendering display. It drives the actual scene/solver menus, Reset/Run/Pause
+controls and native fixtures, checks their layout and submitted Water pixels,
+and retains four raw screenshots plus a JSON receipt. The captures cover a dam
+break, interacting crests, the actual Rapier barrel and the actual Needle.
+The output directory is `CYBERSAND_TEST_ARTIFACT_DIR`, or
+`CYBERSAND_PRESENTATION_EVIDENCE`, or `user://wave-flow-render`. Hosted software
+rendering proves this rendered route; it does not establish physical GPU or
+human playtesting acceptance.
 
 Implementation: [evaluation screen](../../godot/scripts/wave_flow_evaluation.gd),
 [shared fixture owner](../../godot/scripts/wave_flow_session.gd),

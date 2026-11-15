@@ -37,6 +37,9 @@ func native_configuration() -> void:
 	expect(applied.enabled and applied.substeps == 3 and applied.workers_requested == 4, "readback is the applied Wave config")
 	var before: String = world.get_physical_state_hash()
 	var generation: int = world.get_liquid_policy_session_generation()
+	expect(not world.diagnostic_fill_rect(Vector2i(10, 10), Vector2i.ONE, 3, 1)
+		and not world.water_experiment_fill_rect(Vector2i(10, 10), Vector2i.ONE, 255, 1)
+		and world.get_physical_state_hash() == before, "unsupported coherent Water writes explicitly refuse without mutation")
 	for invalid: Dictionary in [{"wave_substeps":0}, {"wave_substeps":9}, {"wave_substeps":1.5}, {"wave_flow":"yes"}, {"extent":Vector2i(8192, 8192)}]:
 		var request: Dictionary = {"wave_flow":true, "extent":Vector2i(256, 256)}
 		request.merge(invalid, true)
@@ -184,13 +187,22 @@ func run() -> void:
 		fixture_matrix()
 	# Exercise the same visible controls as Test It.cmd, even in headless CI.
 	if failures == 0:
+		var previous_engine_rate: int = Engine.physics_ticks_per_second
+		var previous_project_rate: int = int(ProjectSettings.get_setting("physics/common/physics_ticks_per_second", 60))
 		var screen: Variant = Evaluation.instantiate()
 		root.add_child(screen)
 		await process_frame
 		expect(screen.lab != null and screen.lab.world != null and screen.lab.status().enabled, "evaluation UI constructs the actual Wave World")
+		screen.physics_rate.value = 120
+		expect(Engine.physics_ticks_per_second == 120
+			and ProjectSettings.get_setting("physics/common/physics_ticks_per_second") == 120,
+			"physics rate applies both cadence and the bridge timestep")
 		screen.solver_picker.select(1)
 		expect(screen.reset_scene() and not screen.lab.status().enabled, "UI Reset applies actual legacy comparison")
 		screen.free()
+		expect(Engine.physics_ticks_per_second == previous_engine_rate
+			and ProjectSettings.get_setting("physics/common/physics_ticks_per_second") == previous_project_rate,
+			"closing evaluation restores both ordinary physics rate settings")
 	await process_frame
 	await process_frame
 	print("WAVE_FLOW_OBSERVATIONS: ", JSON.stringify(observations))
