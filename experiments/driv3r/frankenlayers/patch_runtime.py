@@ -31,8 +31,8 @@ def patch(root:Path):
     if original.count(LOOP_MARKER)!=1 or original.count(LAST_MARKER)!=1:
         raise RuntimeError("Pinned LFM3 graph markers changed; refusing fuzzy patch")
     if '#include <cstdlib>' not in original:
-        original=original.replace('#include "../llama-memory-hybrid-iswa.h"\\n',
-            '#include "../llama-memory-hybrid-iswa.h"\\n#include <cstdlib>\\n#include <string>\\n#include <vector>\\n')
+        original=original.replace('#include "../llama-memory-hybrid-iswa.h"\n',
+            '#include "../llama-memory-hybrid-iswa.h"\n#include <cstdlib>\n#include <string>\n#include <vector>\n')
     flow_code=f'''    // CyberSand #619 experimental System One layer surgery.
     // Only the decision graph is modified; normal completion/recurrent execution stays stock.
     std::vector<int> d1_flow;
@@ -62,7 +62,7 @@ def patch(root:Path):
 '''
     patched=original.replace(LOOP_MARKER,flow_code)
     patched=patched.replace(LAST_MARKER,
-        '        if (d1_step + 1 == d1_flow.size() && inp_out_ids) {\\n')
+        '        if (d1_step + 1 == d1_flow.size() && inp_out_ids) {\n')
     path.write_text(patched)
     return {
         "schema":"cybersand-d1-frankenlayers-runtime-patch/1",
