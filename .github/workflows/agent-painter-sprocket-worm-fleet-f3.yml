@@ -58,7 +58,7 @@ jobs:
             "f1_run":43765853789,
             "f2_source":"b44038a2e26850bf5f97457243f1b2f9c018d2ca",
             "f2_run":43766586563,
-            "preflight_revision":2,
+            "preflight_revision":3,
             "four_seeds":[8111,8123,8147,8161],
             "four_families":["greebles","pipework","architecture","greebles"],
             "per_worm_decisions":128,
