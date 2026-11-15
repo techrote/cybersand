@@ -180,6 +180,16 @@ jobs:
           $result = Get-Content -LiteralPath $files[0].FullName -Raw | ConvertFrom-Json
           if (-not $result.complete -or $result.status -ne 'passed' -or $result.source -ne $env:GITHUB_SHA -or @($result.cases).Count -ne 12 -or @($result.pairs).Count -ne 6) { throw 'Incomplete source-matched comparison' }
           Write-Host ('COHERENCE_TEST_IT_PASS '+(@{source=$result.source;cases=@($result.cases).Count;pairs=@($result.pairs).Count;physical_acceptance=$result.physical_acceptance}|ConvertTo-Json -Compress))
+      - name: Collect installed results under one artifact root
+        if: always()
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $results = 'C:\cscoherence\Test-It-Results'
+          if (Test-Path -LiteralPath $results) {
+            New-Item -ItemType Directory -Path 'evidence' -Force | Out-Null
+            Copy-Item -LiteralPath $results -Destination 'evidence/Test-It-Results' -Recurse -Force
+          }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: CyberSand-Coherence-Windows-${{ github.run_id }}
@@ -191,8 +201,6 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: Camera-Coherence-Windows-Evidence-${{ github.run_id }}
-          path: |
-            evidence/
-            C:/cscoherence/Test-It-Results/
+          path: evidence/
           if-no-files-found: warn
           retention-days: 90
