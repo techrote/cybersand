@@ -2,6 +2,32 @@
 
 **Status:** independent **development-only** preparatory fixtures and oracle policies, not native or model qualification. #570; [owner D roadmap](https://github.com/techrote/cybersand/issues/570#issuecomment-6877408001). The five-record [D-COMMON-001 contract](https://github.com/techrote/cybersand/pull/594) received **M1 owner acceptance on 14 Nov 2026** at source commit `8fa90de6be209ed0b7bd125039e6ec8b332fb1a6`, schema SHA-256 `ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d` ([#570 freeze record](https://github.com/techrote/cybersand/issues/570#issuecomment-6881686675)). **M2 offline integration preparation is permitted; native/model experiments, merges and formal A1/A2/A3 comparisons are not.**
 
+## Complete offline-source census and immutable-stack fence (15 November 2026)
+
+The launcher now refuses **partial discovery**, not merely a low aggregate
+unittest count. `inventory.py` anchors all 13 expected test modules and their
+source-method floors; 139 named unittest methods are now authored (the original
+130 plus seven census tests and two extra source-fence adversarial tests).
+It statically parses the exact source files and requires the executed unittest
+count to equal the current parsed count. Missing/renamed modules, removed
+methods, symlinked source, parse failures, skipped tests and mismatched
+discovery are fail-closed.
+
+The source fence additionally rejects *any* dirty or untracked repository path
+and compares frozen accepted M1 source against HEAD, refusing every committed
+change outside `experiments/driv3r/stage_d/direct/**`. This prevents source
+attestation with modified shared imports, native code or frozen evidence.
+Frozen schema bytes and exact M1 ancestry remain independently verified.
+
+**Actual bounded qualification:** 17/17 scoped Python tests PASS on four
+Git-blob-identical committed Python files, with the M1 dependency stubbed.
+This is explicitly **not** a completed 139-method exact-checkout suite:
+the full source tree could not be executed in this tool environment. The
+existing Stage A/M2 runs do not qualify the present D-1A HEAD. Execute the
+normal `qualification` command on a clean exact checkout and retain its
+original stdout JSON and stderr unittest log. No D-1A native/model campaign
+has been authorised or run.
+
 ## Exact-checkout offline qualification launcher (15 November 2026)
 
 The D-1A lane now contains a fail-closed CPU-only qualification launcher: `qualification.py` and eight direct regression methods. It checks (1) the accepted M1 source is an ancestor of HEAD, (2) the actual M1 schema bytes match the owner-approved SHA-256, and (3) the entire D-1A lane is clean before and after invoking normal unittest discovery. It refuses missing/ambiguous output, fewer than the 122 pre-harness methods, any skipped/failing test, timeout, and source changes during testing. The full original failure log is printed to stderr and its SHA-256 recorded in a JSON summary on stdout.
