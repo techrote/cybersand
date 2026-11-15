@@ -22,7 +22,9 @@ func _initialize() -> void:
 	super._initialize()
 
 const M3_START := Vector2i(12, 24)
-const M3_MAX_LOGICAL_MOVES := 12
+# M4 source-only bound: up to 36 actual d1 decisions, 12 host follow-on cells
+# and at most 8 brush-up recovery steps. No change to native material authority.
+const M3_MAX_LOGICAL_MOVES := 64
 var m3_cursor := M3_START
 var m3_anchors: Dictionary = {}
 var m3_moves := 0

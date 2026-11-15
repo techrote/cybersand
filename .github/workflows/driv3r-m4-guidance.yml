@@ -1,0 +1,150 @@
+name: DRIV3R M4 36-decision matched A1 A2 A3 native pilot
+on:
+  pull_request:
+    paths:
+      - 'experiments/driv3r/m4/**'
+      - 'godot/tests/run_driv3r_m3_history.gd'
+      - '.github/workflows/driv3r-m4-guidance.yml'
+  push:
+    branches: [research/570-m4-a1a2a3-native]
+    paths: ['experiments/driv3r/m4/qualification-request.json']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: driv3r-m4-first-pilot-${{ github.run_id }}
+  cancel-in-progress: false
+jobs:
+  cheap:
+    name: Frozen M1/M3 and M4 typed-channel comparison safety
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Confirm frozen source and prior native history compatibility
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 8fa90de6be209ed0b7bd125039e6ec8b332fb1a6 HEAD
+          git merge-base --is-ancestor 98320dab1e248820576c30dd6da5591d2e6ad9a4 HEAD
+          echo 'ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d  experiments/driv3r/d_common/v1/interface.schema.json' | sha256sum --check --strict
+      - name: Run M4 source/typed semantic/matched legal candidate tests
+        run: |
+          set -euo pipefail
+          python3 -m pip install --user --disable-pip-version-check 'jsonschema==4.26.0'
+          python3 -m compileall -q experiments/driv3r/m4
+          python3 -m unittest discover -s experiments/driv3r/m4 -p 'test_*.py' -v
+          python3 -m unittest discover -s experiments/driv3r/d_common/v1 -p 'test_*.py' -v
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py
+  gate:
+    name: Verify earlier short model-selected native episode before any M4 run
+    needs: cheap
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/research/570-m4-a1a2a3-native'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - id: earlier
+        name: Admit only an exact-source qualified resident short-native run
+        run: |
+          python3 - <<'PY'
+          import json,os
+          r=json.load(open('experiments/driv3r/m4/qualification-request.json'))
+          assert r['schema']=='driv3r-m4-a1a2a3-36-request-v1'
+          assert r['max_model_decisions_per_arm']==36
+          assert r['eligible_arms']==['A1','A2','A3']
+          assert r['short_qualification_run_id']>0
+          sha=r['short_qualified_source_sha']
+          assert len(sha)==40 and all(c in '0123456789abcdef' for c in sha)
+          expected=f"driv3r-m3-q8-short-{sha}-{r['short_qualification_run_id']}-1"
+          assert r['short_artifact_name']==expected
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              f.write(f"run_id={r['short_qualification_run_id']}\n")
+              f.write(f"artifact_name={expected}\n")
+          PY
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          run-id: ${{ steps.earlier.outputs.run_id }}
+          name: ${{ steps.earlier.outputs.artifact_name }}
+          repository: techrote/cybersand
+          github-token: ${{ github.token }}
+          path: prior
+      - name: Independently check exact prior native Q8 outcome and replay
+        run: |
+          python3 - <<'PY'
+          import json,pathlib
+          x=json.loads(pathlib.Path('prior/execution/summary.json').read_text())
+          r=json.loads(pathlib.Path('experiments/driv3r/m4/qualification-request.json').read_text())
+          assert x['source_sha']==r['short_qualified_source_sha']
+          assert x['status']=='PASS' and x['short_model_selected_native_gate'] is True
+          assert x['valid_model_selected_material_actions']>=2
+          assert x['native_replay']['native_replay']=='PASS'
+          assert x['resident_model_process_reaped'] is True
+          print('Prior resident native Q8 short episode source and artifacts: PASS')
+          PY
+  native:
+    name: Original real native Q8 36 decisions — ${{ matrix.arm }}
+    needs: [cheap, gate]
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 140
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        arm: [A1, A2, A3]
+    env:
+      DRIV3R_M4_ARM: ${{ matrix.arm }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Source-build official pinned Q8 and execute source-matched native M4 episode
+        run: timeout --signal=TERM --kill-after=60 7800 bash experiments/driv3r/m4/ci_compare.sh
+      - name: Always retain original model/native/receipt and failure traces
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: driv3r-m4-${{ matrix.arm }}-${{ github.sha }}-${{ github.run_id }}
+          path: evidence/driv3r-m4-${{ matrix.arm }}/
+          if-no-files-found: warn
+          retention-days: 90
+  aggregate:
+    name: Compare first choice, first native effect and recovery leverage
+    needs: [gate, native]
+    if: always() && needs.gate.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: driv3r-m4-*-${{ github.sha }}-${{ github.run_id }}
+          path: source-artifacts
+          merge-multiple: false
+      - name: Prepare one copy per independent original guidance arm
+        run: |
+          set -euo pipefail
+          mkdir -p compared
+          for arm in A1 A2 A3; do
+            original="source-artifacts/driv3r-m4-${arm}-${GITHUB_SHA}-${GITHUB_RUN_ID}"
+            if test -d "$original"; then ln -s "../$original" "compared/$arm"; fi
+          done
+      - name: Compare only source-matched native original evidence
+        run: python3 -m experiments.driv3r.m4.aggregate --root compared --output compared/aggregate.json
+      - name: Retain incomplete or successful comparison including all negative findings
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: driv3r-m4-comparison-${{ github.sha }}-${{ github.run_id }}
+          path: compared/aggregate.json
+          if-no-files-found: warn
+          retention-days: 90
