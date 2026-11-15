@@ -1,0 +1,123 @@
+name: SPROCKET WORM-001 W4 trained-only exact-checkpoint recovery
+on:
+  push:
+    branches:
+      - codex/agent-painter-sprocket-568
+    paths:
+      - experiments/agent_painter/lanes/sprocket/worm-eval-request-v4-recovery.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: sprocket-worm-eval-v4-recovery-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  eval-worm:
+    name: Pinned W4 trained-only model with three W0 controls; no repeat of costly untuned originals
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      ATEN_CPU_CAPABILITY: default
+      MKL_CBWR: COMPATIBLE
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Check immutable W4 recovery lease and repository policy
+        id: lease
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/worm-v4-recovery
+          python3 - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          r=json.loads(Path('experiments/agent_painter/lanes/sprocket/worm-eval-request-v4-recovery.json').read_text())
+          expected="{\"schema\":\"cybersand.worm.sprocket-eval-request/4-recovery\",\"experiment\":\"sprocket-worm-v4-action-code-001-online-recovery\",\"training_source\":\"c14795efe978dadeaa9e0da60f6273e18ab17b4d\",\"training_run_id\":43710874563,\"training_artifact\":\"sprocket-worm-v4-c14795efe978dadeaa9e0da60f6273e18ab17b4d\",\"model\":\"kandivault/sprocket-500m\",\"model_revision\":\"eb157d4ddddc4619e661d4a2426bb2dd000fc668\",\"w0_git_commit\":\"4bb9d6e1d0d0d78183f87d1e3c29648edafacf61\",\"checkpoint\":\"checkpoint-000096\",\"steps\":24,\"keep_draft\":true,\"native\":false,\"sealed_final_forbidden\":true}"
+          if r!=json.loads(expected): raise SystemExit('versioned WORM v4 evaluation lease mismatch')
+          if os.environ['GITHUB_REF']!='refs/heads/codex/agent-painter-sprocket-568': raise SystemExit('unexpected branch')
+          Path('evidence/worm-v4-recovery/source-sha.txt').write_text(subprocess.check_output(['git','rev-parse','HEAD'],text=True))
+          Path('evidence/worm-v4-recovery/request.json').write_text(json.dumps(r,sort_keys=True,indent=2)+'\n')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              f.write('run='+str(r['training_run_id'])+'\n')
+              f.write('artifact='+r['training_artifact']+'\n')
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/worm_rollout_v4_recovery.py
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: ${{ steps.lease.outputs.artifact }}
+          path: evidence/previous-v4
+          run-id: ${{ steps.lease.outputs.run }}
+          github-token: ${{ github.token }}
+      - name: Verify actual completed 96-step source-bound checkpoint
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('evidence/previous-v4/campaign')
+          s=json.loads((p/'summary.json').read_text())
+          c=json.loads((p/'preflight.json').read_text())['config']
+          assert s['actual_training'] is True and s['status']=='complete'
+          assert s['steps']==s['target_steps']==96 and s['checkpoint']=='checkpoint-000096'
+          assert s['frozen_base_equal'] and s['adapter_changed']
+          assert not s['native_execution'] and not s['sealed_final_opened']
+          assert c['schema']=='cybersand.worm.sprocket-steering-code-v4'
+          assert c['source_sha']=='c14795efe978dadeaa9e0da60f6273e18ab17b4d'
+          assert c['model']['model_id']=='kandivault/sprocket-500m'
+          assert c['model']['revision']=='eb157d4ddddc4619e661d4a2426bb2dd000fc668'
+          assert c['worm_common_git_commit']=='4bb9d6e1d0d0d78183f87d1e3c29648edafacf61'
+          assert c['worm_support_git_commit']=='2b6534ac21542805f4bda123f67e9624d21e39d7'
+          assert c['literal_train_eval_overlap']==0
+          assert (p/'checkpoint-000096/inventory.json').is_file()
+          print('Original 96 real steps and immutable checkpoint receipts accepted for visual evaluation only')
+          PY
+      - name: Retrieve original immutable W0 engine-owned walker
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git rev-parse FETCH_HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/pinned-worm.py"
+          test "$(git hash-object "$RUNNER_TEMP/pinned-worm.py")" = 8979b6f0296e81051194bacc907992d38e006605
+          sha256sum "$RUNNER_TEMP/pinned-worm.py" > evidence/worm-v4-recovery/pinned-w0.sha256
+          python3 -m py_compile "$RUNNER_TEMP/pinned-worm.py"
+      - name: Install reviewed portable CPU FP32 and pinned Sprocket root model
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/painter-training"
+          "$RUNNER_TEMP/painter-training/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/painter-training/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/painter-training/bin/python" -m pip check
+          "$RUNNER_TEMP/painter-training/bin/python" -m pip freeze --all > evidence/worm-v4-recovery/pip-freeze.txt
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/painter-training/bin/python" experiments/agent_painter/training/download_model.py --profile sprocket --output "$RUNNER_TEMP/painter-model"
+          cp "$RUNNER_TEMP/painter-model/download_receipt.json" evidence/worm-v4-recovery/model-download.json
+      - name: Recover original W4 trained first-pass decisions/PNGs and same-seed W0 controls (untuned partial preserved)
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 1700s "$RUNNER_TEMP/painter-training/bin/python" experiments/agent_painter/lanes/sprocket/worm_rollout_v4_recovery.py \
+            --model "$RUNNER_TEMP/painter-model" --w0 "$RUNNER_TEMP/pinned-worm.py" \
+            --checkpoint evidence/previous-v4/campaign/checkpoint-000096 \
+            --training-source c14795efe978dadeaa9e0da60f6273e18ab17b4d \
+            --steps 24 --output evidence/worm-v4-recovery/results
+      - name: Preserve checksums and partial/failure evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          df -h > evidence/worm-v4-recovery/disk-after.txt
+          (cd evidence/worm-v4-recovery && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > evidence/worm-v4-recovery/SHA256SUMS.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-worm-eval-v4-recovery-${{ github.sha }}
+          path: evidence/worm-v4-recovery/
+          if-no-files-found: warn
+          retention-days: 90
