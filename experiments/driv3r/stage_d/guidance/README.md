@@ -1,5 +1,42 @@
 # D-1B: soft guidance and shadow critic — independent preparatory lane
 
+## Frozen shadow snapshot identity audit — 15 November 2026
+
+A substantive cross-case consistency weakness in `feedback_audit.audit_shadow_cases`
+allowed two separately SHA-256-sealed hypothetical cases to reuse the same
+`snapshot_id` while asserting different frozen goal-score, violation-count or
+progress-count metrics. Per-case hashing cannot detect this contradictory
+*cross-case* identity claim, so reference KEEP/UNDO/STOP accounting could
+silently compare inconsistent versions of the supposedly same snapshot.
+
+The auditor now binds every scenario-local frozen snapshot ID to its first
+validated metric tuple and rejects a conflicting reuse, including resealed
+cases. Reuses with identical metrics remain legal (e.g., after-to-before
+continuity or a revisited frozen state); different IDs are still permitted to
+describe metric-identical retry attempts for the separate oscillation-risk
+analysis. No new native state or hash identity is inferred from these synthetic
+metric tuples.
+
+**Exact committed Git blob verification and local offline qualification:**
+`feedback_audit.py` blob `d5796d3d1579aeef4d5d5637c0df4e061efe9e05`,
+`test_snapshot_identity.py` blob `99d80802fa985e96bcd294b532d55a1b5409ea08`,
+`test_feedback_audit.py` `658ef918c33fb13bc0ae2f7c574ff6b5ec9d0806`,
+`test_feedback_edgecases.py` `382777dca3f86eea07bbc671d5a5fa7e607b163b`,
+and unchanged `shadow_policy.py` `baccf7f367c25cdfcaa9637dcd05d387ab68b9aa`.
+All five original/blob-reproduced files matched the code actually run locally.
+**21/21 focused stdlib tests passed**: the original 16 feedback tests plus
+five new identity/continuity tests. Commands:
+`python3 -m unittest discover -s experiments/driv3r/stage_d/guidance -p 'test_feedback*.py' -v`
+and separately `-p 'test_snapshot_identity.py'`.
+
+This is a **focused byte-verified subset, not the full 23-file D-1B suite**,
+and not integrated five-record M1 conformance. PR #596 stays Draft/HOLD.
+Accepted source `8fa90de6be209ed0b7bd125039e6ec8b332fb1a6` and schema
+`ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d`
+remain unmodified. No real material Undo, multimodal input, native action,
+model inference, paid use, formal A/B, merge or Ready promotion.
+
+
 **Status: OWNER-ACCEPTED M1 / M2 LANE PREPARATION / DRAFT-HOLD.** Owner research roadmap: [#570](https://github.com/techrote/cybersand/issues/570#issuecomment-6877408001). Shared five-record interchange is the now **M1-accepted** [D-COMMON-001 v1 contract](https://github.com/techrote/cybersand/pull/594), pinned to `8fa90de6be209ed0b7bd125039e6ec8b332fb1a6`. This lane was originally stacked on earlier source `b117bfb1a59b557d8c54da01751819b00bf95836`; that ancestry is not the approved contract. Keep the research implementation outside native driver/permissions and other D-1A/D-2 lanes. Native integration remains owner-gated.
 
 ## Independent frozen-arm object custody — 15 November 2026
