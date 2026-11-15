@@ -33,6 +33,28 @@ class WormContracts(unittest.TestCase):
         self.assertEqual(record['events'][0]['raw_choice'], 'TELEPORT')
         self.assertEqual(record['events'][0]['applied'], 'STOP')
 
+    def test_live_callback_custody(self):
+        def invalid(obs):
+            obs['legal'].clear()  # should not mutate host state or receipt
+            return 'TELEPORT'
+        record = run(4, 'callback', 'pipework', 9, selector=invalid)
+        self.assertEqual(record['steps_executed'], 1)
+        e = record['events'][0]
+        self.assertIn('STOP', e['observation']['legal'])
+        self.assertEqual(e['raw_choice'], 'TELEPORT')
+        self.assertFalse(e['raw_legal'])
+        self.assertEqual(e['applied'], 'STOP')
+        self.assertEqual(record['metrics']['invalid_raw_choices'], 1)
+        def steer(obs):
+            return 'STRAIGHT' if 'STRAIGHT' in obs['legal'] else 'RETRACE' if 'RETRACE' in obs['legal'] else 'STOP'
+        a = run(11, 'callback', 'architecture', 60, selector=steer)
+        self.assertEqual(a, run(11, 'callback', 'architecture', 60, selector=steer))
+        self.assertGreater(a['steps_executed'], 1)
+        with self.assertRaises(ValueError):
+            run(11, 'callback', 'greebles')
+        with self.assertRaises(TypeError):
+            run(11, 'callback', 'greebles', selector=lambda obs: None)
+
     def test_stop_and_actual_png(self):
         record = run(8, 'replay', 'architecture', 40, raw_actions=['STOP'])
         self.assertEqual(record['steps_executed'], 1)
