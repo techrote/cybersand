@@ -10,6 +10,16 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+## Architectural Generator project controls
+
+[Architectural Generator](../systems/architectural-generator.md) owns explicit
+schema-4/algorithm-5 tunnel/door controls, Arcology/Vault v2 dimensions and windows,
+and the version-1 embedded project/style format. The focused form exposes global
+corridor width and per-style fixed geometry. Zone shares measure assigned area;
+the finite 256-block native planner bound and ±2 percentage-point refusal are
+explicit. Legacy generation defaults are unchanged.
+
+
 The bounded [desktop trial-body constructor](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 has exactly one existing barrel8×14 or Ripper18×8 rectangle and uses the shared
 body packet/capacity limits unchanged. At least two actual physics frames and

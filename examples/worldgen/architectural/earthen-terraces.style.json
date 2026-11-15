@@ -1,0 +1,23 @@
+{
+  "format": "cybersand.architectural-style",
+  "version": 1,
+  "id": "earthen-terraces",
+  "name": "Earthen Terraces",
+  "module": "arcology",
+  "module_version": 2,
+  "theme": "ruins",
+  "geometry": {
+    "room_size": 128,
+    "floor_height": 80,
+    "wall_thickness": 4,
+    "door_width": 20,
+    "shaft_width": 0
+  },
+  "materials": {
+    "wall": 102,
+    "floor": 109,
+    "window": 55
+  },
+  "apertures": {},
+  "deterioration": 0.3
+}

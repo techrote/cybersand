@@ -1,0 +1,23 @@
+{
+  "format": "cybersand.architectural-style",
+  "version": 1,
+  "id": "orbital-observatory",
+  "name": "Orbital Observatory",
+  "module": "arcology",
+  "module_version": 2,
+  "theme": "industrial",
+  "geometry": {
+    "room_size": 96,
+    "floor_height": 64,
+    "wall_thickness": 2,
+    "door_width": 14,
+    "shaft_width": 12
+  },
+  "materials": {
+    "wall": 130,
+    "floor": 114,
+    "window": 121
+  },
+  "apertures": {},
+  "deterioration": 0
+}
