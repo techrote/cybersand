@@ -67,6 +67,14 @@ def validate_slot(slot: dict[str, Any], *, require_native: bool = False) -> None
         raise ControlRefused("M1 identity mismatch")
     if slot.get("source_kind") != "synthetic_development_only":
         raise ControlRefused("Synthetic controls cannot masquerade as native/model outcomes")
+    if (slot.get("fixture_split") != "development" or
+        slot.get("frozen_fixture_budget") != 36 or
+        slot.get("policies") != list(POLICIES) or
+        slot.get("macro_lengths") != list(MACROS) or
+        slot.get("status") != "planned_offline_controls" or
+        slot.get("native_logical_move_cap_unmodified") != 64 or
+        slot.get("native_128_turn_approved") is not False):
+        raise ControlRefused("Control recipe, split or 64-move host boundary changed")
     if any(slot.get(k) is not None for k in
            ("model_checkpoint_sha256", "github_run_id", "github_job_id", "resident_pid",
             "native_world_sha256", "native_receipt_artifact")):
