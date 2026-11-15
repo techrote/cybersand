@@ -143,7 +143,7 @@ original PNG gallery, model/adapter/checkpoint/recipe identities, source SHA,
 artifact hashes, wall/CPU time, peak RSS, token count and at least the following
 non-interchangeable denominators:
 
-- **60 language requests**, 20 per family, 15 per formulation, 5 per
+- **60 language requests**, 20 per family, 12 per formulation, 5 per
   structure. Macro-aggregate per family and per whole group before any
   across-form average; do not treat paraphrases as independent evidence.
 - **120 potential host-seed views**, with explicit attempted/executed/accepted
