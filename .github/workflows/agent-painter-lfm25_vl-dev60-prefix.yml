@@ -1,0 +1,92 @@
+name: Agent painter LFM official processor provisional DEV60 prefix (NO TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - 'experiments/agent_painter/lanes/lfm25_vl/dev60_prefix_probe_v1.py'
+      - 'experiments/agent_painter/lanes/lfm25_vl/test_dev60_prefix_probe_v1.py'
+      - '.github/workflows/agent-painter-lfm25_vl-dev60-prefix.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: lfm25-dev60-provisional-prefix-v1-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  genuine-processor-prefix:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: 'default'
+      MKL_CBWR: 'COMPATIBLE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Exact branch/source, provider, scheduling and syntax before download
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/codex/agent-painter-lfm25-vl-568
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/lfm-dev60-scheduling.json
+          python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/dev60_prefix_probe_v1.py
+          python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/test_dev60_prefix_probe_v1.py
+          mkdir -p evidence
+          printf '%s\n' '{"status":"FAIL_OR_INCOMPLETE_NO_QUALIFICATION","dev60_frozen":false,"model_inference":0,"optimizer_updates":0,"native_executions":0}' > evidence/failure.json
+          git rev-parse HEAD > evidence/source.txt
+          lscpu > evidence/cpu.txt
+      - name: Adversarial source-only tests (before expensive environment)
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s experiments/agent_painter/lanes/lfm25_vl -p 'test_dev60_prefix_probe_v1.py' -v
+      - name: Install exact qualified CPU environment for official processor
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/painter-lfm-prefix"
+          "$RUNNER_TEMP/painter-lfm-prefix/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/painter-lfm-prefix/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/painter-lfm-prefix/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torchvision==0.29.2+cpu'
+          "$RUNNER_TEMP/painter-lfm-prefix/bin/python" -m pip install -r experiments/agent_painter/training/requirements-lfm25_vl.lock
+          "$RUNNER_TEMP/painter-lfm-prefix/bin/python" -m pip check
+          "$RUNNER_TEMP/painter-lfm-prefix/bin/python" -m pip freeze --all > evidence/pip-freeze.txt
+      - name: Authenticate exact LFM small files and encode all 60 synthetic prefixes
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/painter-lfm-prefix/bin/python" \
+            experiments/agent_painter/lanes/lfm25_vl/dev60_prefix_probe_v1.py \
+            --processor-dir "$RUNNER_TEMP/lfm-original-processor-only" \
+            --output evidence/synthetic-prefixes
+          test ! -e evidence/synthetic-prefixes/INCOMPLETE.json
+          "$RUNNER_TEMP/painter-lfm-prefix/bin/python" - <<'PY'
+          import json
+          from pathlib import Path
+          evidence=json.loads(Path("evidence/synthetic-prefixes/summary.json").read_text())
+          assert evidence["status"]=="PASS_PROVISIONAL_SYNTHETIC_PREFIX_ONLY_NOT_DEV60_READY"
+          assert evidence["rows"]==60
+          assert evidence["target_representability_checked"] is False
+          assert evidence["dev60_frozen"] is False
+          assert evidence["model_weights_downloaded"] is False
+          assert evidence["model_inference"]==evidence["optimizer_updates"]==evidence["native_executions"]==0
+          PY
+          rm evidence/failure.json
+      - name: Retain original partial/failure and processor-prefix source receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lfm25-dev60-provisional-prefix-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            evidence/failure.json
+            evidence/source.txt
+            evidence/cpu.txt
+            evidence/pip-freeze.txt
+            evidence/synthetic-prefixes/
+          if-no-files-found: warn
+          retention-days: 90
