@@ -49,6 +49,10 @@ def patch(root:Path):
             d1_flow = {cpp_list(FLOWS["scrambled_eggs"])};
         }} else if (mode == "branchwitch") {{
             d1_flow = {cpp_list(FLOWS["branchwitch"])};
+        }} else if (mode == "skelehound") {{
+            d1_flow = {cpp_list(FLOWS["skelehound"])};
+        }} else if (mode == "aerohound") {{
+            d1_flow = {cpp_list(FLOWS["aerohound"])};
         }} else {{
             throw std::runtime_error("Unknown CYBERSAND_D1_FRANKEN_FLOW: " + mode);
         }}
