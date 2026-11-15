@@ -124,6 +124,7 @@ def decode_png8(png: bytes) -> tuple[int, int, bytes]:
     if not png.startswith(PNG_SIG):
         raise ValueError("invalid PNG signature")
     pos, header, data, ended = len(PNG_SIG), None, bytearray(), False
+    seen_idat, closed_idat = False, False
     while pos + 12 <= len(png):
         length = struct.unpack_from(">I", png, pos)[0]
         end = pos + 12 + length
@@ -134,6 +135,10 @@ def decode_png8(png: bytes) -> tuple[int, int, bytes]:
         if expected != (zlib.crc32(tag + part) & 0xffffffff):
             raise ValueError("PNG CRC mismatch")
         pos = end
+        # PNG requires IHDR first and a single contiguous IDAT run. Allowing
+        # ancillary chunks to split IDAT can produce nonportable imports.
+        if header is None and tag != b"IHDR":
+            raise ValueError("PNG IHDR must be the first chunk")
         if tag == b"IHDR":
             if header is not None or length != 13:
                 raise ValueError("duplicate/invalid PNG header")
@@ -144,8 +149,9 @@ def decode_png8(png: bytes) -> tuple[int, int, bytes]:
                 raise ValueError("PNG exceeds bounded dimensions")
             header = (width, height, mode)
         elif tag == b"IDAT":
-            if header is None:
-                raise ValueError("PNG IDAT before header")
+            if closed_idat:
+                raise ValueError("PNG IDAT chunks must be consecutive")
+            seen_idat = True
             data.extend(part)
             if len(data) > 128 * 1024 * 1024:
                 raise ValueError("PNG compressed payload too large")
@@ -154,8 +160,11 @@ def decode_png8(png: bytes) -> tuple[int, int, bytes]:
                 raise ValueError("invalid PNG end")
             ended = True
             break
-        elif tag == b"tRNS" or (tag and not (tag[0] & 32)):
-            raise ValueError("unsupported PNG critical/transparency chunk")
+        else:
+            if seen_idat:
+                closed_idat = True
+            if tag == b"tRNS" or (tag and not (tag[0] & 32)):
+                raise ValueError("unsupported PNG critical/transparency chunk")
     if not ended or header is None or not data:
         raise ValueError("incomplete PNG")
     width, height, mode = header
