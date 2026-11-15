@@ -7,7 +7,7 @@ import unittest
 
 from experiments.driv3r.wormbrain.body_lab.body_v2 import (
     BodyOptions, SyntheticBody, synthetic_rollout, showcase,
-    SYNTHETIC_TURN_CEILING, digest,
+    SYNTHETIC_TURN_CEILING, digest, replay_synthetic_actions,
 )
 from experiments.driv3r.wormbrain.body_lab.preflight import (
     HostView, Lease, Refusal, new_ink_from_readbacks,
@@ -154,6 +154,34 @@ class BodyV2(unittest.TestCase):
                 self.assertEqual(doc["native_receipts"],0)
                 self.assertLessEqual(doc["logical_cursor_moves"],512)
                 self.assertNotEqual(doc["initial_world_sha256"], doc["final_world_sha256"])
+
+
+    def test_source_matched_receipt_replay_refuses_forged_outcome(self):
+        original=synthetic_rollout(lease("replay"), options=BodyOptions(4,True,True),
+                                   seed=580, turns=35)
+        result=replay_synthetic_actions(lease("replay"),original.initial,
+                    BodyOptions(4,True,True),original.trace,
+                    expected_final_sha256=digest(original.material))
+        self.assertEqual(result.view(),original.view())
+        self.assertEqual(result.cursor,original.cursor)
+        tampered=json.loads(json.dumps(original.trace))
+        tampered[0]["total_ink_cells"] += 1
+        with self.assertRaises(Refusal):
+            replay_synthetic_actions(lease("replay"),original.initial,
+                                     BodyOptions(4,True,True),tampered)
+        with self.assertRaises(Refusal):
+            replay_synthetic_actions(lease("replay"),original.initial,
+                                     BodyOptions(4,True,True),original.trace,
+                                     expected_final_sha256="0"*64)
+
+    def test_host_does_not_treat_128_synthetic_turns_as_native_budget(self):
+        b=synthetic_rollout(lease("budget"), options=BodyOptions(4,True,True),
+                            turns=128)
+        self.assertLessEqual(len(b.trace),128)
+        with self.assertRaises(Refusal):
+            synthetic_rollout(lease("overrun"),turns=129)
+        self.assertEqual(b.observation()["evidence_class"],"model-free-synthetic")
+        self.assertFalse(b.observation()["native_execution"])
 
 
 if __name__=="__main__":
