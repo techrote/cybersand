@@ -7,7 +7,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from curriculum import (TRAIN_SEEDS, DEV_SEEDS, canonical, checked_splits,
-                        evaluate_policy, fresh_directions, oracle, prompt,
+                        evaluate_policy, fresh_directions, oracle, prompt, adverse_rows,
                         rollout, rows, save_gallery, statistics, worm)
 
 
@@ -81,6 +81,20 @@ class LfmWormSupportTests(unittest.TestCase):
         b[0]["world_group"] = a[0]["world_group"]
         with self.assertRaises(ValueError):
             checked_splits(a, b)
+
+    def test_separate_adverse_local_motifs_and_honest_provenance(self):
+        train, dev = adverse_rows("train"), adverse_rows("development")
+        self.assertEqual(len(train), 72)
+        self.assertEqual(len(dev), 48)
+        self.assertFalse({x["world_group"] for x in train} &
+                         {x["world_group"] for x in dev})
+        self.assertIn("STOP", {x["target_action"] for x in train})
+        self.assertIn("RETRACE", {x["target_action"] for x in train})
+        self.assertTrue(all(x["observation_source"].startswith("counterfactual")
+                            for x in train + dev))
+        self.assertTrue(all(x["target_action"] in x["host_legal"] for x in train + dev))
+        checked_splits(rows("train", 4) + train,
+                       rows("development", 4) + dev)
 
     def test_adverse_obstacle_and_recovery_action(self):
         o = {"heading":0, "family":"architecture", "tick":9,
