@@ -1,0 +1,51 @@
+name: DRIV3R Body Lab - model-free preflight
+on:
+  push:
+    branches: [research/570-wormbrain-body-lab]
+    paths:
+      - 'experiments/driv3r/wormbrain/body_lab/**'
+      - '.github/workflows/driv3r-worm-body-lab.yml'
+  pull_request:
+    paths:
+      - 'experiments/driv3r/wormbrain/body_lab/**'
+      - '.github/workflows/driv3r-worm-body-lab.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: driv3r-body-lab-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  model-free:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Model-free tests and compilation
+        run: |
+          set -euo pipefail
+          python3 -m compileall -q experiments/driv3r/wormbrain/body_lab
+          python3 -m unittest -v experiments.driv3r.wormbrain.body_lab.test_preflight
+      - name: Four synthetic original PNGs and source ledger
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/bodylab"
+          python3 -m experiments.driv3r.wormbrain.body_lab.preflight --out "$RUNNER_TEMP/bodylab/original-synthetic" > "$RUNNER_TEMP/bodylab/demo.log"
+          git rev-parse HEAD > "$RUNNER_TEMP/bodylab/source.txt"
+          sha256sum experiments/driv3r/wormbrain/body_lab/*.py > "$RUNNER_TEMP/bodylab/source-files.sha256"
+          grep -q '"verified_active_model_processes": 0' "$RUNNER_TEMP/bodylab/original-synthetic/manifest.json"
+          grep -q '"native_receipts": 0' "$RUNNER_TEMP/bodylab/original-synthetic/manifest.json"
+      - name: Preserve original model-free artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: driv3r-body-lab-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/bodylab/
+          if-no-files-found: warn
+          retention-days: 30
