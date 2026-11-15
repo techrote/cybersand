@@ -39,7 +39,7 @@ def choose(model, tokenizer, adapter, observation):
     choice = tokenizer.decode(payload, skip_special_tokens=False)
     decoded = objective.CODE_TO_ACTION.get(choice)
     permitted = eos and decoded in observation["legal"] and all(i >= 16 for i in payload)
-    host_choice = decoded if permitted else raw
+    host_choice = decoded if permitted else "<INVALID_W4_CODE>"  # explicit engine refusal, no action repair
     return host_choice, {"observation": observation, "prompt": text, "prefix_ids": prefix,
                          "completion_ids": ids, "raw_output": raw, "raw_model_code": choice,
                          "eos5": eos, "parsed_action_exact": decoded if permitted else None,
