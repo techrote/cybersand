@@ -81,6 +81,74 @@ def prompt(observation: dict) -> str:
     )
 
 
+
+# Independently labelled LOCAL counterfactual motifs, NOT W0 world executions.
+# They deliberately expose missing STOP/blocked-front/recovery classes without
+# inventing fake Godot cells or mistaking rotated patterns for new world groups.
+ADVERSE_MOTIFS = {
+    "train": (
+        ("front_wall_two_exits", (".....", ".....", "..@#.", ".....", "....."), True),
+        ("sealed_with_backtrack", (".....", "..#..", ".#@#.", "..#..", "....."), True),
+        ("sealed_no_backtrack", (".###.", ".###.", ".#@#.", ".###.", ".###."), False),
+        ("visited_arms", (".....", "..+..", "..@+.", "..+..", "....."), True),
+        ("single_straight_corridor", ("..#..", "..#..", "..@..", "..#..", "..#.."), True),
+        ("open_three_way", (".....", ".....", "..@..", ".....", "....."), True),
+    ),
+    "development": (
+        ("left_only_offset_corner", (".....", ".....", "..@#.", "..#..", "....."), True),
+        ("right_only_offset_corner", (".....", "..#..", "..@#.", ".....", "....."), True),
+        ("visited_backtracking_pocket", (".....", "..+..", "..@+.", "..#..", "....."), True),
+        ("closed_crook_stop", ("..#..", "..#..", "..@#.", "..#..", "..#.."), False),
+    ),
+}
+
+
+def adverse_rows(split: str) -> list[dict]:
+    """Local synthetic counterexamples with their own non-native provenance."""
+    if split not in ADVERSE_MOTIFS:
+        raise ValueError("unknown adversarial split")
+    result = []
+    for motif, grid, has_history in ADVERSE_MOTIFS[split]:
+        assert len(grid) == 5 and all(len(r) == 5 for r in grid)
+        assert grid[2][2] == "@"
+        for family in worm.FAMILIES:
+            # Four tick formulations share ONE motif group; not independent scenes.
+            for tick in (5, 6, 18, 19):
+                legal = []
+                for name, yy, xx in (("STRAIGHT", 2, 3), ("LEFT", 1, 2), ("RIGHT", 3, 2)):
+                    if grid[yy][xx] != "#":
+                        legal.append(name)
+                fresh = sum(grid[yy][xx] == "." for yy, xx in ((2, 3), (1, 2), (3, 2)))
+                if fresh >= 2:
+                    legal.append("BRANCH")
+                if has_history:
+                    legal.append("RETRACE")
+                legal.append("STOP")
+                obs = {
+                    "x": 48, "y": 48, "heading": 0,
+                    "local_5x5": list(grid), "legal": legal,
+                    "last_actions": ["STRAIGHT"] if has_history else [],
+                    "family": family, "tick": tick,
+                }
+                label = oracle(obs)
+                assert label in legal
+                result.append({
+                    "version": "worm-lfm-adverse-local-v1",
+                    "split": split,
+                    "world_group": "counterfactual-motif-" + split + "-" + motif,
+                    "id": f"counterfactual-{split}-{motif}-{family}-{tick}",
+                    "source_policy": "none-synthetic-local-observation",
+                    "source_contract": "synthetic-local-from-w0-vocabulary-not-world-replay",
+                    "observation_source": "counterfactual-no-world-or-native-receipt",
+                    "observation": obs,
+                    "prompt": prompt(obs),
+                    "target_action": label,
+                    "target_is_teacher": True,
+                    "host_legal": legal,
+                })
+    return result
+
+
 def rows(split: str, steps: int = 32) -> list[dict]:
     if split not in ("train", "development") or not 1 <= steps <= 512:
         raise ValueError("bad split or steps")
@@ -260,9 +328,12 @@ def main() -> None:
         parser.error("steps must be 1..512")
     args.output.mkdir(parents=True, exist_ok=True)
     train, dev = rows("train"), rows("development")
-    checked_splits(train, dev)
+    adverse_train, adverse_dev = adverse_rows("train"), adverse_rows("development")
+    checked_splits(train + adverse_train, dev + adverse_dev)
     hashes = {}
-    for name, data in (("train.jsonl", train), ("development.jsonl", dev)):
+    for name, data in (("train.jsonl", train), ("development.jsonl", dev),
+                       ("adverse-train.jsonl", adverse_train),
+                       ("adverse-development.jsonl", adverse_dev)):
         raw = b"".join(canonical(r) for r in data)
         (args.output / name).write_bytes(raw)
         hashes[name] = hashlib.sha256(raw).hexdigest()
@@ -271,7 +342,8 @@ def main() -> None:
         "version": VERSION, "prompt_version": PROMPT_VERSION,
         "host_source": COMMON_SOURCE_SHA, "train_world_seeds": list(TRAIN_SEEDS),
         "development_world_seeds": list(DEV_SEEDS), "train_rows": len(train),
-        "development_rows": len(dev), "hashes": hashes,
+        "development_rows": len(dev), "adverse_train_rows": len(adverse_train),
+        "adverse_development_rows": len(adverse_dev), "hashes": hashes,
         "gallery_png_count": sum(f["file"].endswith(".png") for f in gallery["files"]),
         "gallery_manifest_sha256": hashlib.sha256(canonical(gallery)).hexdigest(),
         "only_train_can_optimize": True, "no_native_execution": True,
