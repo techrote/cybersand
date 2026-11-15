@@ -10,6 +10,7 @@ Authority: [WORM-001 issue #612](https://github.com/techrote/cybersand/issues/61
 - **One raw action**: `STRAIGHT`, `LEFT`, `RIGHT`, `BRANCH`, `RETRACE`, `STOP` (uppercase). BRANCH records a junction and legally takes a fresh arm, RETRACE returns to previous path position.
 - **Host-owned safety**: bounded 24–256 grid and at most 4096 steps; deterministic host RNG, obstacle truth, legal move list, Stop and invalid raw choice refusal/fallback. Every tick retains original raw choice separately from applied action.
 - **Three non-learned policies**: random legal, deterministic right-hand wall preference, and theme-biased fidget heuristic. They supply controls for future comparisons. No trained model is claimed. External raw action sequence replay is a transport demonstration, not context-sensitive inference.
+- **Live model adapter**: `run(..., mode='callback', selector=fn)` invokes `fn(deepcopy(observation))` after host legality is computed on **every step**. The unmodified returned raw text is recorded separately from the applied, host-authorized action; callback mutations cannot change a legal list or receipt. Only a primary worker may supply model-backed `fn`. Non-string results fail rather than being reinterpreted.
 - **Outputs**: actual standard-library PNGs and paired canonical JSON traces; each emitted file SHA256 is printed to stdout. These are **source-faithful sandbox rasterizations**, not authentic native Godot readbacks.
 
 ## Run locally (Python standard library only)
@@ -20,6 +21,21 @@ python3 experiments/agent_painter/worm/common/worm.py --seeds 11,29 --steps 420 
 ~~~
 
 The second command creates 18 PNG and 18 corresponding JSON outputs: 3 themes × 3 non-model controllers × 2 obstacle seeds. To exercise host refusal, pass `--replay-actions actions.json` containing a JSON array of model strings or a newline-separated list. Invalid actions are visible in receipts; they cannot bypass host legality.
+
+## Live WORM action selection
+
+~~~python
+from worm import run
+
+def choose(obs):
+    # Replace with one bounded genuine model generation in the primary lane.
+    return 'LEFT' if 'LEFT' in obs['legal'] else 'RETRACE'
+
+record = run(11, 'callback', 'pipework', steps=240, selector=choose)
+# Compare original raw_choice and host-applied actions; identical seed/budget controls.
+~~~
+
+This demo selector is deterministic hand-code, **not learned**. Model primaries must preserve raw completion, pin/model/checkpoint/recipe receipts, bound output size and latency and compare to random/wall/fidget on matched seeds. Invalid choices are contained by the host; do not repair raw output before recording.
 
 ## Ownership / next experiments
 
