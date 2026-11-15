@@ -19,7 +19,7 @@ Source donor: exact original successful owner Frankenlayers read-only commit `41
 | BRANCHWITCH_restore12 | 21 | Restore another sliding-attention layer |
 | BRANCHWITCH_drop21 | 19 | Further drop a late convolution, preserving grafted layer 10 |
 
-Every flow uses exact, ordered layer numbers with final layer 23 preserved. Each is **a different executed network**, not ten copies of the same checkpoint. The donor Q8 weights are identical across flow arms; the modified decision graph is selected by the process environment. No arbitrary reordering, no scrambled eggs.
+Every flow uses exact layer numbers with final layer 23 preserved. GREYHOUND descendants remain in ascending order; BRANCHWITCH descendants preserve its **intentional 11→10 re-execution** except the explicit no-repeat control. Each is **a different executed network**, not ten copies of the same checkpoint. The donor Q8 weights are identical across flow arms; the modified decision graph is selected by the process environment. No arbitrary scrambled reordering, no Scrambled Eggs.
 
 ## Cloud experiment and evidence
 
