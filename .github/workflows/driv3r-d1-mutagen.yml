@@ -44,7 +44,7 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        mode: [mlp_scoop, conv_scrape, attn_gouge]
+        mode: [conv_scrape] # exact-source recovery only; successful MLP/attention never re-run
     env:
       PYTHONUNBUFFERED: '1'
       OMP_NUM_THREADS: '2'
@@ -70,6 +70,7 @@ jobs:
                     'donor_sha256':'073313d92b53b0ac8193db6e906cb3c78a98183d244b15b7b8f5426115c6738c',
                     'w0_commit':'4bb9d6e1d0d0d78183f87d1e3c29648edafacf61',
                     'modes':['mlp_scoop','conv_scrape','attn_gouge'],
+                    'retry_reason':'conv_scrape-actual-shortconv-gguf-selector',
                     'cpu_inference':True,'native_workbench':False,
                     'training':False,'paid_api':False,
                     'keep_draft':True,'allow_merge':False}
