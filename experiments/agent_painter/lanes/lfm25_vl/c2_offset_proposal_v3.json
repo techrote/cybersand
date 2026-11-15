@@ -1,0 +1,112 @@
+{
+  "schema": "cybersand.lfm25_vl.c2-offset-research/3",
+  "status": "REVIEW_ONLY_SOURCE_SCREEN_NO_NATIVE_NO_TRAIN",
+  "revision_of": "lfm-c2b-offset-stepped-two-cross-six-terminal-network",
+  "id": "lfm-c2c-wide-asymmetric-bridge-two-cross-six-terminal-network",
+  "original_c2_source_blob": "226ce959c68a9e2649e88fe15c10713437cf82be",
+  "c2b_proposal_sha256": "100dd9b188c2b2c96ab5d3680a929606b1dfd69f40cb524730f4da8915b739b2",
+  "original_native_source": "633920373a3d406a2ede61ce4137c324f76be23b",
+  "original_manifest_sha256": "2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc",
+  "host_seeds": [
+    104729,
+    130363
+  ],
+  "request": "Draw connected, strictly orthographic, nominal-three-cell pipework with six terminal ends and two real four-way crosses. Use an asymmetric wide-span stepped bridge: a compact upper-left junction, a narrow central drop displaced away from the three held-out riser columns, and a lower-right junction. Keep two vertical terminal arms on each cross, exterior horizontal terminals, two explicit orthogonal elbows, no hidden crossings, no cycles and fitting collars only at joints. Avoid a repeated three-riser motif.",
+  "witness": "Six terminals, two degree-four crosses at (18,31) and (80,62), two genuine right-angle elbows at (60,31) and (60,62), one 31-cell central descending backbone at x60, two spatially separated side-column crosses x18/x80, nominal diameter 3, no cycles. Intended 96x96 source-only replacement for C2b, never a new TRAIN row.",
+  "program": {
+    "version": 2,
+    "family": "pipework",
+    "variation": 0,
+    "requirements": {
+      "connected": true,
+      "cycles": 0
+    },
+    "components": [
+      {
+        "kind": "pipe_network",
+        "nodes": [
+          [
+            6,
+            31
+          ],
+          [
+            18,
+            31
+          ],
+          [
+            60,
+            31
+          ],
+          [
+            60,
+            62
+          ],
+          [
+            80,
+            62
+          ],
+          [
+            92,
+            62
+          ],
+          [
+            18,
+            16
+          ],
+          [
+            18,
+            47
+          ],
+          [
+            80,
+            46
+          ],
+          [
+            80,
+            77
+          ]
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            1,
+            6
+          ],
+          [
+            1,
+            7
+          ],
+          [
+            4,
+            8
+          ],
+          [
+            4,
+            9
+          ]
+        ],
+        "diameter": 3,
+        "fittings": true
+      }
+    ]
+  }
+}
