@@ -40,6 +40,7 @@ var initial_sample: Dictionary = {}
 var fixture: Dictionary = {}
 var native_radius: int = 2
 var started_usec: int = 0
+var _waiting_epoch: int = -1
 
 
 func _initialize() -> void:
@@ -85,6 +86,23 @@ func _until(predicate: Callable, milliseconds: int) -> bool:
 			return false
 		await process_frame
 	return false
+
+
+func _ready_initial() -> bool:
+	return host!=null and is_instance_valid(host) and host.shared_workbench!=null and \
+		not host.shared_workbench.applied.is_empty()
+
+
+func _ready_native() -> bool:
+	return host.pending_microscenario_apply.is_empty() and \
+		host._physical_epoch>_waiting_epoch and host.physical_actor_session!=null and \
+		host._physical_terrain_ready
+
+
+func _ready_upload() -> bool:
+	return host.latest_snapshot!=null and host.image!=null and \
+		host.last_uploaded_revision==host.latest_snapshot.world_revision and \
+		not host.workbench_display_frame().is_empty()
 
 
 func _policy(ui: Control) -> PackedInt32Array:
@@ -217,9 +235,7 @@ func _run() -> void:
 	root.add_child(host)
 	root.mode=Window.MODE_WINDOWED
 	root.size=Vector2i(1600,900)
-	if not check(await _until(func() -> bool:
-			return host.shared_workbench!=null and \
-				not host.shared_workbench.applied.is_empty(),MAX_SETUP_MSEC),
+	if not check(await _until(Callable(self,"_ready_initial"),MAX_SETUP_MSEC),
 			"initial source-bound Workbench ready"):
 		await _finish(null)
 		return
@@ -238,24 +254,17 @@ func _run() -> void:
 	var setup: Dictionary=fixture.setup.duplicate(true)
 	setup.liquid_policy=Array(policy)
 	setup.rule_radius=native_radius
-	var old_epoch: int=host._physical_epoch
+	_waiting_epoch=host._physical_epoch
 	if not check(ui.apply(setup,false,0,false,false,fixture.packet),
 			"generated World and Needle submitted through real native preparer"):
 		await _finish(ui)
 		return
-	if not check(await _until(func() -> bool:
-			return host.pending_microscenario_apply.is_empty() and \
-				host._physical_epoch>old_epoch and \
-				host.physical_actor_session!=null and host._physical_terrain_ready,
-			MAX_SETUP_MSEC),"native material + real Needle + terrain adopted"):
+	if not check(await _until(Callable(self,"_ready_native"),MAX_SETUP_MSEC),
+			"native material + real Needle + terrain adopted"):
 		await _finish(ui)
 		return
-	if not check(await _until(func() -> bool:
-			return host.latest_snapshot!=null and \
-				host.image!=null and host.last_uploaded_revision == \
-				host.latest_snapshot.world_revision and \
-				not host.workbench_display_frame().is_empty(),
-			MAX_SETUP_MSEC),"uploaded current material and mask-bound actor receipt ready"):
+	if not check(await _until(Callable(self,"_ready_upload"),MAX_SETUP_MSEC),
+			"uploaded current material and mask-bound actor receipt ready"):
 		await _finish(ui)
 		return
 	check(ui.applied.get("extent",[]) == [2048,2048],
