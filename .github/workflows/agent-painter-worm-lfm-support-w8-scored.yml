@@ -1,0 +1,59 @@
+name: WORM LFM support - W8 original scored CRN images
+on:
+  push:
+    branches: [research/612-worm-lfm-support]
+    paths:
+      - '.github/workflows/agent-painter-worm-lfm-support-w8-scored.yml'
+      - 'experiments/agent_painter/worm/support_lfm/w8_score_original_audit.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: worm-lfm-support-w8-scored-original
+  cancel-in-progress: false
+jobs:
+  audit:
+    name: Replay 18 W8 original PNGs, 288 legal-scored actions and three CRN worlds
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Pin GitHub hosted source and provider policy
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/worm-w8-scored-scheduling.json
+          python3 -m py_compile experiments/agent_painter/worm/support_lfm/w8_score_original_audit.py
+      - name: Download original completed LFM-primary hosted scorer
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(gh api repos/techrote/cybersand/actions/artifacts/14171533194 --jq .digest)" = "sha256:027a7e92568a45f2276c19cf72edd4584a8cba56e837349fa5c7a3240ed0447c"
+          curl --fail --location --silent --show-error --retry 3 --connect-timeout 20 --max-time 240 -H "Authorization: Bearer ${GH_TOKEN}" "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14171533194/zip" -o "$RUNNER_TEMP/original-w8-score.zip"
+          echo "027a7e92568a45f2276c19cf72edd4584a8cba56e837349fa5c7a3240ed0447c  $RUNNER_TEMP/original-w8-score.zip" | sha256sum -c
+      - name: Audit primary receipts, original PNG bytes and independent source actions
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/worm/support_lfm/w8_score_original_audit.py --artifact "$RUNNER_TEMP/original-w8-score.zip" --self-test --output w8-scored-audit-receipt | tee /tmp/w8-audit.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open("w8-scored-audit-receipt/report.json"))
+          assert r["original_pngs_replayed"]==18 and r["original_scorer_decisions"]==288
+          assert r["actual_model_scored_decisions"]==144 and r["independent_obstacle_worlds"]==3
+          assert r["per_world_coverage_delta"]==[1,2,0] and r["model_raw_unmasked_top_RETRACE"]==144
+          print("Original source-faithful W0 pixel audit PASS; learned usefulness not established")
+          PY
+      - name: Retain original PNGs and audit receipts even when validation fails
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-lfm-support-w8-scored-original-pngs
+          path: w8-scored-audit-receipt/
+          if-no-files-found: warn
+          retention-days: 45
