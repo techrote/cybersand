@@ -40,6 +40,13 @@ func native_configuration() -> void:
 	expect(not world.diagnostic_fill_rect(Vector2i(10, 10), Vector2i.ONE, 3, 1)
 		and not world.water_experiment_fill_rect(Vector2i(10, 10), Vector2i.ONE, 255, 1)
 		and world.get_physical_state_hash() == before, "unsupported coherent Water writes explicitly refuse without mutation")
+	var revision: int = world.get_revision()
+	world.emit_disc(20, 20, 2, 3, 1)
+	expect(world.get_physical_state_hash() == before and world.get_revision() == revision
+		and "coherent" in str(world.get_last_tick_error()).to_lower(), "coherent disc emission refuses the entire brush before mutation")
+	world.paint_disc(30, 20, 2, 3, 1)
+	expect(world.get_physical_state_hash() == before and world.get_revision() == revision,
+		"coherent paint follows the same pre-mutation refusal")
 	for invalid: Dictionary in [{"wave_substeps":0}, {"wave_substeps":9}, {"wave_substeps":1.5}, {"wave_flow":"yes"}, {"extent":Vector2i(8192, 8192)}]:
 		var request: Dictionary = {"wave_flow":true, "extent":Vector2i(256, 256)}
 		request.merge(invalid, true)

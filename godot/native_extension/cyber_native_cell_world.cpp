@@ -397,6 +397,11 @@ void CyberNativeCellWorld::emit_disc(std::int64_t centre_x, std::int64_t centre_
         return;
     }
     const auto material = static_cast<cybersand::Material>(material_id);
+    if (world_->wave_flow_enabled() && material == cybersand::Material::Water &&
+        (emission_flags & 1) != 0) {
+        last_tick_error_ = "Wave Flow does not support coherent Water emission";
+        return; // Refuse the complete brush before any cell or revision changes.
+    }
     const auto& definition = cybersand::MaterialRules::descriptor(material);
     const auto radius_squared = radius * radius;
     bool changed = false;
@@ -2291,6 +2296,10 @@ bool CyberNativeCellWorld::water_experiment_fill_rect(
         !in_bounds(static_cast<std::int64_t>(origin.x) + size.x - 1,
                    static_cast<std::int64_t>(origin.y) + size.y - 1)) {
         return false;
+    }
+    if (world_->wave_flow_enabled() && coherence != 0) {
+        last_tick_error_ = "Wave Flow does not support coherent Water emission";
+        return false; // Validate the entire fill before its first native write.
     }
     const auto& policy = world_->config().water_experiment_policy;
     const auto mass = static_cast<std::uint16_t>(

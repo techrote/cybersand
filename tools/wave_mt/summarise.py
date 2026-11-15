@@ -48,6 +48,12 @@ def main() -> int:
             print(f"Source `{source['head']}`{dirty}; native source digest `{source['source_sha256']}`.")
             print(f"\n{machine['platform']}; {machine.get('cpu_model') or machine.get('processor') or machine['machine']}; "
                   f"{machine['logical_cpus']} logical CPUs. Build: {metadata['arguments']['build_label']}.")
+            retained_count = len(rows) + len(failures)
+            if (metadata.get("completed_rows") != metadata.get("planned_rows") or
+                    metadata.get("completed_rows") != retained_count or
+                    metadata.get("failed_rows") != len(failures)):
+                print("\n**Campaign coverage is incomplete or disagrees with its retained CSV.**")
+                failed = True
             if metadata.get("source_changed_during_run"):
                 print("\n**Source changed during this campaign; source custody needs review.**")
                 failed = True

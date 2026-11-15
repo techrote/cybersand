@@ -17,6 +17,9 @@ HERE = pathlib.Path(__file__).resolve().parent
 spec = importlib.util.spec_from_file_location("wave_run_matrix", HERE / "run_matrix.py")
 runner = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(runner)
+summary_spec = importlib.util.spec_from_file_location("wave_summary", HERE / "summarise.py")
+summary = importlib.util.module_from_spec(summary_spec)
+summary_spec.loader.exec_module(summary)
 
 HEADER = ("size,scene,family,variant,workers_requested,workers_configured,workers_observed,"
           "warm_ticks,measured_ticks,wave_substeps,tick_p50_ms,tick_p95_ms,tick_max_ms,native_ticks_per_s\n")
@@ -88,6 +91,36 @@ class MatrixContractTests(unittest.TestCase):
         self.assertEqual(result, 1)
         self.assertEqual(rows[0]["status"], "PASS")
         self.assertTrue(metadata["source_changed_during_run"])
+
+
+class SummaryCoverageTests(unittest.TestCase):
+    def summarize(self, planned, completed):
+        with tempfile.TemporaryDirectory() as directory:
+            out = pathlib.Path(directory) / "matrix.csv"
+            out.write_text(HEADER.rstrip() + ",repeat,peak_rss_bytes,status,error\n" +
+                           ROW.rstrip() + ",0,1024,PASS,\n")
+            metadata = {"source": IDENTITY, "machine": {"platform": "test OS", "machine": "test CPU", "logical_cpus": 4},
+                        "arguments": {"build_label": "test compiler"}, "planned_rows": planned, "failed_rows": 0}
+            if completed is not None:
+                metadata["completed_rows"] = completed
+            out.with_suffix(".metadata.json").write_text(json.dumps(metadata))
+            with patch.object(summary.sys, "argv", ["summarise", str(out)]), contextlib.redirect_stdout(io.StringIO()) as text:
+                result = summary.main()
+            return result, text.getvalue()
+
+    def test_complete_campaign_reports_success(self):
+        result, _ = self.summarize(1, 1)
+        self.assertEqual(result, 0)
+
+    def test_partial_csv_is_not_complete_evidence(self):
+        result, output = self.summarize(2, 2)
+        self.assertEqual(result, 1)
+        self.assertIn("coverage is incomplete", output)
+
+    def test_interrupted_campaign_is_not_complete_evidence(self):
+        result, output = self.summarize(2, None)
+        self.assertEqual(result, 1)
+        self.assertIn("coverage is incomplete", output)
 
 
 if __name__ == "__main__":

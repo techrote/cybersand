@@ -194,3 +194,29 @@ for these three transition entries.
 | `native/src/world.cpp` | `36f928740f554cde7542bc16e8ef897317ea51f3897af665ff6bb7f9e1ca812b` | `9600f625792929db95481f45cca2233716df921ff5001a052d0839de043ff384` |
 | `native/src/world_pressure.inc` | `899ada71b89d30ba063e047bdd5b02346948008f1b7c0bec9fa0f2272e4d86ec` | `a545d153f0f68c930837c59be449ac455b3fd35f36e268f21cffbfc940cb6da9` |
 | `native/src/world_quantity.inc` | `d9e6835d092193e4976c728d90121c6dee4b421337e056b5fc3c74975491af6e` | `1dc5ac99aacb1bac6a41edb0aa7479ed4dbef2b493e1d26b02e185aaff9c3e1d` |
+
+
+## Retained publication attempt 1 and repair
+
+Source `9f1a9c866f488f3c0dff430b1e6dcddcccf3d899`, tree
+`1ef30afc063b8ef720fb5cf97c8266cd78bc080a`, ran in
+[publication attempt 43735033954](https://github.com/techrote/cybersand/actions/runs/43735033954).
+All 22 native cases passed in normal, ASan/UBSan (with leak checking) and TSan.
+Both pinned runtime builds succeeded; the actual Linux runtime passed the
+unchanged floor, including CXXABI 1.3.9. Each target OS passed the unchanged
+liquid policy (642 assertions), PressureFlow reference (1,934 assertions) and
+PressureFlow/Rapier (3,589 assertions) controls.
+
+The new Wave coherence-refusal assertion exposed an uncaught native exception
+in `water_experiment_fill_rect`; the sibling `emit_disc`/`paint_disc` path had
+the same missing preflight. Linux and Windows Wave execution failed, and the
+publisher correctly withheld validated manifests, the package and the runtime
+append. The first failure is retained; it is not a successful publication.
+
+The repair adds explicit pre-mutation checks at the two public live emitters.
+The original failing assertion remains; two new assertions require unchanged
+complete state and render revision after rejected disc/paint emission. This
+changes the adapter's runtime inputs and therefore requests fresh builds of
+both targets. The Wave native law and protected-source hashes are unchanged.
+The benchmark reducer also now refuses interrupted/truncated campaigns whose
+planned/completed/retained row counts disagree; its nine contract tests pass.
