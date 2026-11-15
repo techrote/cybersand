@@ -1,4 +1,4 @@
-name: DRIV3R #619 Frankenlayers YOLO
+name: "DRIV3R #619 Frankenlayers YOLO"
 
 on:
   pull_request:
@@ -72,7 +72,7 @@ jobs:
           assert r['max_parallel']==2 and r['cpu_inference'] is True
           assert r['native_workbench'] is False and r['training'] is False
           assert r['paid_api'] is False and r['merge'] is False
-          assert set(r['flows'])==set(FLOWS)
+          assert set(r['flows'])==set(FLOWS)-{'stock'}
           assert r['flows']=={k:list(v) for k,v in FLOWS.items() if k!='stock'}
           Path('evidence/${{ matrix.mode }}/request.json').write_text(json.dumps(r,indent=2)+'\n')
           PY
