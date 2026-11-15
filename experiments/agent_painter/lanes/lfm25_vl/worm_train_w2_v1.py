@@ -292,7 +292,7 @@ def main():
         history.append(event)
         print(canonical({"event": "real-worm-optimizer-step", **event}), flush=True)
         (args.output / "progress.jsonl").open("a").write(canonical(event) + "\n")
-        if step % 2 == 0 or step == args.steps:
+        if step % 10 == 0 or step == args.steps:
             last_checkpoint = save_checkpoint(args.output, model, tokenizer,
                 state_for(optimizer, scheduler, step, step, config, frozen_before, history),
                 runtime)
