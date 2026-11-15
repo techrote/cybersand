@@ -1,0 +1,90 @@
+name: WORM SPROCKET support independent S2 live-CRN W0 audit
+on:
+  push:
+    branches: [research/612-worm-sprocket-support]
+    paths:
+      - experiments/agent_painter/worm/support_sprocket/audit_s2_live.py
+      - .github/workflows/agent-painter-worm-sprocket-support-s2-audit.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: worm-sprocket-support-s2-audit-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  original-s2-independent-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Source, provider and syntax preflight
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/worm-sprocket-s2
+          git rev-parse HEAD > evidence/worm-sprocket-s2/audit-source.txt
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m py_compile experiments/agent_painter/worm/support_sprocket/audit_s2_live.py
+      - name: Retrieve original immutable S2 hosted artifact, read-only
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os,urllib.request,urllib.error,urllib.parse
+          url='https://api.github.com/repos/techrote/cybersand/actions/artifacts/14169781247/zip'
+          req=urllib.request.Request(url,headers={'Authorization':'Bearer '+os.environ['GITHUB_TOKEN'],
+                    'Accept':'application/vnd.github+json',
+                    'X-GitHub-Api-Version':'2022-11-28'})
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self,req,fp,code,msg,headers,newurl): return None
+          try:
+              urllib.request.build_opener(NoRedirect).open(req,timeout=40)
+              raise RuntimeError('missing GitHub artifact redirect')
+          except urllib.error.HTTPError as e:
+              if e.code not in (301,302,303,307,308): raise
+              signed=e.headers.get('Location','')
+          host=urllib.parse.urlparse(signed)
+          if host.scheme!='https' or not ((host.hostname or '').endswith('.blob.core.windows.net')
+              or (host.hostname or '').endswith('.githubusercontent.com')
+              or (host.hostname or '').endswith('.github.com')):
+              raise RuntimeError('untrusted artifact redirect')
+          with urllib.request.urlopen(signed,timeout=90) as resp: blob=resp.read(400_001)
+          if not 0<len(blob)<400_000: raise RuntimeError('missing or oversized original S2 ZIP')
+          open('/tmp/worm-primary-S2-original.zip','wb').write(blob)
+          PY
+      - name: Pin exact shepherd W0 source without editing shared W0
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git rev-parse FETCH_HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > /tmp/immutable-w0-s2.py
+          test "$(sha256sum /tmp/immutable-w0-s2.py | cut -c1-64)" = 81c3923cb38d7f196b99986806216388c34ebc27fd4976e168b3b370c25a323e
+      - name: Recalculate 135 original model-score actions and replay 30 original W0 PNGs
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/worm/support_sprocket/audit_s2_live.py             /tmp/worm-primary-S2-original.zip --trusted-w0 /tmp/immutable-w0-s2.py             --output evidence/worm-sprocket-s2/s2-original-audit.json             | tee evidence/worm-sprocket-s2/console.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('evidence/worm-sprocket-s2/s2-original-audit.json'))
+          assert r['W0_full_json_and_pixel_exact_replays']==30
+          assert r['real_model_score_decisions']==r['all_raw_logit_top_LEFT']==135
+          assert r['model_rollouts']==12 and r['matched_controls']==18
+          assert r['trained_PNGs_identical_within_seed_temperature_across_three_families']
+          assert r['optimizer_updates']==r['native_Godot_paintings']==0
+          PY
+          sha256sum /tmp/worm-primary-S2-original.zip /tmp/immutable-w0-s2.py             > evidence/worm-sprocket-s2/original-input-sha256.txt
+          (cd evidence/worm-sprocket-s2 && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum)             > evidence/worm-sprocket-s2/SHA256SUMS.txt
+      - name: Retain success or partial failure receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-sprocket-support-s2-independent
+          path: evidence/worm-sprocket-s2/
+          retention-days: 30
+          if-no-files-found: warn
