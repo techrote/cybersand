@@ -1,0 +1,113 @@
+name: WORM LFM support independent primary W3 artifact replay
+on:
+  push:
+    branches:
+      - research/612-worm-lfm-support
+    paths:
+      - experiments/agent_painter/worm/support_lfm/primary_gallery_audit.py
+      - experiments/agent_painter/worm/support_lfm/test_primary_gallery_audit.py
+      - .github/workflows/agent-painter-worm-lfm-support-primary-audit.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: worm-lfm-w3-forensic-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify-original-w3-artifact:
+    name: W3 original raw first-pass and W0 pixel/legality audit (not training)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - name: Checkout support-owned exact HEAD
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify test suite, source and CI policy
+        run: |
+          python3 -m unittest discover -s experiments/agent_painter/worm/support_lfm -p 'test_primary_gallery_audit.py' -v
+          python3 tools/ci/check_ci_provider_policy.py
+          git rev-parse HEAD
+      - name: Fetch immutable primary W3 artifact, check exact bytes and extract *only WORM gallery*
+        env:
+          GH_TOKEN: ${{ github.token }}
+          W3_ZIP_SHA256: bfa823bb08585b401315404c6b4e3b62a7f051889ece1fcd4bf2e58dde6929bc
+          W3_ARTIFACT_ID: '14155788664'
+          W3_RUN_ID: '43698987144'
+          W3_SOURCE: 9f9a6a6dcb0cf9a9c36378dda50c1e2a8156d347
+          OUTPUT: ${{ runner.temp }}/lfm-worm-primary-w3-audit
+        run: |
+          mkdir -p "${OUTPUT}"
+          curl --fail --silent --show-error --location --retry 2 --max-time 240 \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/techrote/cybersand/actions/artifacts/${W3_ARTIFACT_ID}/zip" \
+            --output "${OUTPUT}/source-artifact.zip"
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,zipfile
+          root=pathlib.Path(os.environ['OUTPUT'])
+          raw=(root/'source-artifact.zip').read_bytes()
+          got=hashlib.sha256(raw).hexdigest()
+          assert got==os.environ['W3_ZIP_SHA256'],('immutable original ZIP hash mismatch',got)
+          with zipfile.ZipFile(root/'source-artifact.zip') as z:
+              assert z.testzip() is None,'original W3 artifact CRC corrupt'
+              prefix='worm-training/gallery/'
+              found=[n for n in z.namelist() if n.startswith(prefix) and not n.endswith('/')]
+              assert len(found)==27,(len(found),found)
+              gallery=root/'gallery'
+              gallery.mkdir()
+              for name in found:
+                  short=name[len(prefix):]
+                  assert short and '/' not in short and '\\' not in short and short not in ('.','..')
+                  data=z.read(name)
+                  assert len(data)<3_000_000,'gallery member unexpectedly large'
+                  (gallery/short).write_bytes(data)
+              summary=json.loads(z.read('worm-training/summary.json'))
+              assert summary['source_sha']==os.environ['W3_SOURCE']
+              assert summary['status']=='completed' and summary['optimizer_updates']==90
+              assert summary['requested_updates']==90 and summary['native_execution'] is False
+              (root/'primary-summary-original.json').write_bytes(
+                  z.read('worm-training/summary.json'))
+          (root/'provenance.json').write_text(json.dumps({
+             'original_artifact_id':int(os.environ['W3_ARTIFACT_ID']),
+             'original_run_id':int(os.environ['W3_RUN_ID']),
+             'original_source_sha':os.environ['W3_SOURCE'],
+             'original_zip_sha256':got,
+             'gallery_original_files':len(found),
+             'auditor_checkout_sha':os.popen('git rev-parse HEAD').read().strip(),
+             'label':'support secondary receipt, NOT fresh model evaluation or native painting'
+          },sort_keys=True)+'\n')
+          print('Original W3 ZIP hash/CRC/source/galleries PASS',len(found),'files')
+          PY
+          rm -f "${OUTPUT}/source-artifact.zip"
+      - name: Independently replay first-pass raw choices, host legality and all PNG pixels
+        env:
+          OUTPUT: ${{ runner.temp }}/lfm-worm-primary-w3-audit
+        run: |
+          python3 experiments/agent_painter/worm/support_lfm/primary_gallery_audit.py \
+            --gallery "${OUTPUT}/gallery" --seed 2101 --budget 32 --report "${OUTPUT}/audit.json"
+          python3 - <<'PY'
+          import json,os,pathlib
+          root=pathlib.Path(os.environ['OUTPUT'])
+          report=json.loads((root/'audit.json').read_bytes())
+          assert report['schema']=='worm-lfm-primary-gallery-audit-v1'
+          assert len(report['metrics'])==12 and len(report['matched_pairs'])==9
+          assert len(report['original_file_hashes'])==27
+          print('ORIGINAL W3 MODEL-VS-MATCHED-CONTROL host replay PASS')
+          for pair in report['matched_pairs']:
+              print(pair['family'],'against',pair['model_vs'],
+                    'unique-cell delta',pair['unique_cell_delta'],
+                    'model raw max-streak',pair['model_max_same_raw_streak'])
+          PY
+      - name: Preserve source/partial/failure receipts, original PNGs and independent report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: worm-lfm-support-independent-w3-${{ github.sha }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/lfm-worm-primary-w3-audit/
+          if-no-files-found: warn
+          retention-days: 21
