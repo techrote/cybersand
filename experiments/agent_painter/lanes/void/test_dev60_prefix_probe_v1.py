@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -37,6 +38,29 @@ class ProvisionalPrefixTests(unittest.TestCase):
         self.assertFalse(receipt["model_inference"])
         self.assertEqual(len(receipt["prefixes"]), 60)
         self.assertEqual(len({r["prefix_ids_sha256"] for r in receipt["prefixes"]}), 60)
+
+    def test_immutable_reviewed_source_bytes(self):
+        for filename, expected in (("adapter.py", gate.PINNED_ADAPTER_BLOB_SHA1),
+                                   ("profile.json", gate.PINNED_PROFILE_BLOB_SHA1)):
+            source = gate.HERE / filename
+            self.assertEqual(gate._pinned_file_bytes(source, expected), source.read_bytes())
+            with tempfile.TemporaryDirectory() as directory:
+                changed = Path(directory) / filename
+                changed.write_bytes(source.read_bytes() + b"\n# intentional drift\n")
+                with self.assertRaisesRegex(ValueError, "unreviewed VOID pinned source"):
+                    gate._pinned_file_bytes(changed, expected)
+
+    def test_canonical_request_set_identity(self):
+        original = gate.audit(self.rows, 1024)
+        reordered = gate.audit(list(reversed(self.rows)), 1024)
+        self.assertEqual(original["request_set_sha256"], reordered["request_set_sha256"])
+        self.assertEqual(original["adapter_git_blob_sha1"], gate.PINNED_ADAPTER_BLOB_SHA1)
+        self.assertEqual(original["profile_git_blob_sha1"], gate.PINNED_PROFILE_BLOB_SHA1)
+        other = copy.deepcopy(self.rows)
+        other[0]["prompt"] += " changed"
+        other[0]["prompt_sha256"] = hashlib.sha256(other[0]["prompt"].encode("utf-8")).hexdigest()
+        self.assertNotEqual(original["request_set_sha256"],
+                            gate.audit(other, 1024)["request_set_sha256"])
 
     def test_boundary_and_overshoot(self):
         max_prefix = gate.audit(self.rows, 1)["max_prefix_tokens"]

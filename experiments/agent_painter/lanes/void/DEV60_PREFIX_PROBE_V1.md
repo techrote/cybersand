@@ -16,6 +16,12 @@ It then computes the 60 real VOID encoded-prefix byte/token IDs and hashes, auth
 
 The report's mandatory marker is **PROVISIONAL_PREFIX_ONLY_NOT_DEV60_READY**, including explicit target_representability_checked=false, dev60_frozen=false, model_inference=false, new_native_operations=0, new_train_admissions=0, final_targets_opened=false. A source-only PASS is never DEV60 acceptance.
 
+## Exact source-byte custody and provisional request identity
+
+The source gate independently verifies the **actual complete on-disk bytes** of `adapter.py` and `profile.json` against their Git blob SHA-1 IDs at the immutable qualified foundation source `2a565df45efc568eb96a2166e0b77f299e289625`, **before importing/executing** the lane adapter. A different tokenizer implementation or profile, even if it retains the same declarative model/framing fields, fails closed and needs a newly versioned and hosted-qualified source identity. A symlinked source file is refused. This is local Git-byte identity, not a claim of a security boundary against arbitrary pre-loaded Python modules or compromised runner code.
+
+The report additionally includes `adapter_git_blob_sha1`, `profile_git_blob_sha1` and a canonical `request_set_sha256` over all 60 literal request rows. Permuting row order preserves the manifest identity; changing a prompt and recomputing its individual prompt SHA changes the manifest identity. None of these digests signifies independently admitted structures, reference-target representability, or a frozen benchmark.
+
 ## Invocation and test
 
 With a separately supplied target-free provisional request file:

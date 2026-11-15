@@ -6,6 +6,8 @@ on:
     paths:
       - 'experiments/agent_painter/lanes/void/dev60_prefix_probe_v1.py'
       - 'experiments/agent_painter/lanes/void/test_dev60_prefix_probe_v1.py'
+      - 'experiments/agent_painter/lanes/void/adapter.py'
+      - 'experiments/agent_painter/lanes/void/profile.json'
       - '.github/workflows/agent-painter-void-dev60-prefix.yml'
   workflow_dispatch:
 
@@ -25,7 +27,7 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
-      - name: Provider, scheduling, and 10 adversarial source tests
+      - name: Provider, scheduling, and 12 adversarial source tests
         run: |
           set -euo pipefail
           test "$RUNNER_ENVIRONMENT" = github-hosted

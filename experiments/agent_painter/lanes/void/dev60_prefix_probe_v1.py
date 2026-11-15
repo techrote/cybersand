@@ -2,13 +2,17 @@
 from __future__ import annotations
 import argparse
 import hashlib
+import importlib
 import json
 from pathlib import Path
-import adapter
 
 SYSTEM = ("Return only one valid CyberSand painter program JSON object. "
           "Follow the requested structure. Do not set host seeds, material permissions or focus.")
 SYSTEM_SHA256 = "2beaa9dbcd9a006c6bdeb4b0f96fd56fdb50eb0cfc4e8056b7f64bb30a21661c"
+HERE = Path(__file__).resolve().parent
+# Exact reviewed source at qualified foundation 2a565df45efc568eb96a2166e0b77f299e289625.
+PINNED_ADAPTER_BLOB_SHA1 = "5c1df9e90345090162485482de0bf258cd14292e"
+PINNED_PROFILE_BLOB_SHA1 = "ae77df4a9f53c56d700163e66acf7d16263291aa"
 FAMILIES = ("greebles", "pipework", "architecture")
 FORMS = {f"F{i}" for i in range(5)}
 KEYS = {"id", "family", "group_id", "formulation_id", "prompt", "prompt_sha256"}
@@ -16,6 +20,17 @@ KEYS = {"id", "family", "group_id", "formulation_id", "prompt", "prompt_sha256"}
 
 def digest(data):
     return hashlib.sha256(data).hexdigest()
+
+
+def _pinned_file_bytes(path, expected_blob_sha1):
+    """Reject source drift before executing the reviewed local adapter."""
+    if path.is_symlink() or not path.is_file():
+        raise ValueError("missing or symlinked VOID pinned source: " + path.name)
+    raw = path.read_bytes()
+    header = ("blob " + str(len(raw)) + "\0").encode("ascii")
+    if hashlib.sha1(header + raw).hexdigest() != expected_blob_sha1:
+        raise ValueError("unreviewed VOID pinned source bytes: " + path.name)
+    return raw
 
 
 def strict_json(raw):
@@ -39,7 +54,9 @@ def audit(rows, ceiling):
         raise ValueError("positive fixed integer ceiling required")
     if digest(SYSTEM.encode("utf-8")) != SYSTEM_SHA256:
         raise ValueError("VOID historical system instruction mismatch")
-    profile = strict_json((Path(__file__).parent / "profile.json").read_bytes())
+    _pinned_file_bytes(HERE / "adapter.py", PINNED_ADAPTER_BLOB_SHA1)
+    profile = strict_json(_pinned_file_bytes(HERE / "profile.json", PINNED_PROFILE_BLOB_SHA1))
+    adapter = importlib.import_module("adapter")
     if (profile["model_id"], profile["revision"], profile["max_sequence_tokens"],
         profile["vocabulary_size"], profile["special_token_ids"],
         profile["framing"]["id"]) != (adapter.MODEL_ID, adapter.REVISION, 2048,
@@ -86,11 +103,17 @@ def audit(rows, ceiling):
     if any(forms != FORMS for forms in groups.values()):
         raise ValueError("must provide all five formulations per group")
     report.sort(key=lambda r: r["id"])
+    canonical_rows = json.dumps(sorted(rows, key=lambda row: row["id"]),
+                                sort_keys=True, ensure_ascii=False,
+                                separators=(",", ":"), allow_nan=False).encode("utf-8")
     return {"status": "PROVISIONAL_PREFIX_ONLY_NOT_DEV60_READY",
             "model_id": adapter.MODEL_ID, "revision": adapter.REVISION,
             "framing": adapter.FRAMING_ID, "automatic_bos": False,
             "terminal_eos_id": 258, "context_tokens": 2048,
             "system_sha256": SYSTEM_SHA256, "provisional_ceiling": ceiling,
+            "adapter_git_blob_sha1": PINNED_ADAPTER_BLOB_SHA1,
+            "profile_git_blob_sha1": PINNED_PROFILE_BLOB_SHA1,
+            "request_set_sha256": digest(canonical_rows),
             "requests": 60, "groups": 12,
             "max_prefix_tokens": max(r["prefix_tokens"] for r in report),
             "min_headroom": min(r["headroom_after_ceiling"] for r in report),
