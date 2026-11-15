@@ -1,0 +1,164 @@
+name: WORM LFM support W4 original recovery two-seed audit
+on:
+  push:
+    branches: [research/612-worm-lfm-support]
+    paths:
+      - .github/workflows/agent-painter-worm-lfm-support-w4-recovery-audit.yml
+      - experiments/agent_painter/worm/support_lfm/primary_gallery_audit.py
+      - experiments/agent_painter/worm/support_lfm/motif_metrics.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: worm-lfm-support-w4-original-recovery-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  audit-original-recovery:
+    name: Two original W4 seeds, 24 PNGs, first-pass legality and family-collapse
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      EVIDENCE: ${{ runner.temp }}/lfm-w4-original-forensics
+      ORIGINAL_RUN: '43706057786'
+      ORIGINAL_ARTIFACT: '14159141242'
+      ORIGINAL_SHA256: '6c06000a9532238b3a05d340af07153fee3c16aedee6e6dd256d114969578ad0'
+      ORIGINAL_GALLERY_MANIFEST_SHA256: 'fe1a9b529d73be0df63223a71e355e6a7a8adcc8afa9e49143531e9a1bf8b549'
+    steps:
+      - name: Checkout exact support branch source; no model or optimizer
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Source and fail-closed W0 replay tests
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git hash-object experiments/agent_painter/worm/common/worm.py |
+            grep -Fx 8979b6f0296e81051194bacc907992d38e006605
+          python3 -m py_compile experiments/agent_painter/worm/support_lfm/primary_gallery_audit.py
+          python3 -m unittest discover -s experiments/agent_painter/worm/support_lfm -p test_primary_gallery_audit.py -v
+          python3 tools/ci/check_ci_provider_policy.py
+          mkdir -p "$EVIDENCE"
+          git rev-parse HEAD > "$EVIDENCE/auditor-source-sha.txt"
+      - name: Fetch exact immutable original W4 evaluation-only recovery artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          got="$(gh api "repos/techrote/cybersand/actions/artifacts/${ORIGINAL_ARTIFACT}" --jq .digest)"
+          test "$got" = "sha256:${ORIGINAL_SHA256}"
+          gh run download "$ORIGINAL_RUN" -R techrote/cybersand \
+            --name lfm25-vl-worm-w4-step180-recovery-3b711d81a38e85b3c4daa395f1ca70980a4373e0-43706057786-1 \
+            --dir "$EVIDENCE/original"
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib
+          root=pathlib.Path(os.environ['EVIDENCE'])
+          p=root/'original/recovered-evaluation'
+          summary=json.loads((p/'summary.json').read_bytes())
+          assert summary['status']=='evaluation-complete-not-producer-success'
+          assert summary['optimizer_updates_in_this_run']==0
+          assert summary['producer_steps_verified']==180
+          assert summary['producer_run']==43701525721
+          assert summary['producer_source']=='45af748feec0da7c25200aad959d0c2214fcb68e'
+          assert summary['producer_artifact_id']==14156798033
+          assert summary['producer_artifact_zip_sha256']=='0076fdded794ddcbe1153aaeee0b36e9e9f652e2b35b68eb665cde1326ebde53'
+          assert summary['checkpoint']=='checkpoint-000180'
+          assert summary['official_model_revision']=='fc6221ca597f3315e4f82fc2df606783267b34ba'
+          assert summary['native_godot_executions']==0 and summary['sealed_FINAL_opened'] is False
+          g=p/'gallery'
+          files=sorted(f for f in g.iterdir() if f.is_file() and not f.is_symlink())
+          assert len(files)==54 and len(list(g.glob('*.png')))==24
+          assert len(list(g.glob('*-raw-first-passes.json')))==6
+          lines=[f.name+'\t'+hashlib.sha256(f.read_bytes()).hexdigest() for f in files]
+          aggregate=hashlib.sha256(('\n'.join(lines)+'\n').encode()).hexdigest()
+          assert aggregate==os.environ['ORIGINAL_GALLERY_MANIFEST_SHA256'],aggregate
+          (root/'source-receipt.json').write_text(json.dumps({
+            'source':'LFM W4 evaluation-only original recovery, zero new optimizer',
+            'original_run':int(os.environ['ORIGINAL_RUN']),
+            'original_artifact_id':int(os.environ['ORIGINAL_ARTIFACT']),
+            'github_original_zip_digest':os.environ['ORIGINAL_SHA256'],
+            'gallery_manifest_sha256':aggregate,
+            'files':len(files), 'pngs':24, 'model_first_pass_files':6,
+            'producer_run':summary['producer_run'],
+            'producer_original_job_status':'FAILED after 180 real training steps',
+            'sealed_final_opened':False,'native':False,
+          },sort_keys=True,indent=2)+'\n')
+          print('Pinned original W4 evaluation-only gallery: 54/54 hash/identity PASS')
+          PY
+      - name: Replay BOTH W4 held-out seeds and produce independent matched statistics
+        run: |
+          set -euo pipefail
+          gallery="$EVIDENCE/original/recovered-evaluation/gallery"
+          for seed in 2101 2102; do
+            python3 experiments/agent_painter/worm/support_lfm/primary_gallery_audit.py \
+              --gallery "$gallery" --seed "$seed" --budget 48 \
+              --report "$EVIDENCE/audit-seed-${seed}.json"
+          done
+          python3 - <<'PY'
+          import json,os,pathlib,collections
+          root=pathlib.Path(os.environ['EVIDENCE'])
+          reports=[json.loads((root/f'audit-seed-{seed}.json').read_bytes()) for seed in (2101,2102)]
+          assert all(r['schema']=='worm-lfm-primary-gallery-audit-v2' for r in reports)
+          assert all(len(r['metrics'])==12 and len(r['matched_pairs'])==9 and len(r['original_file_hashes'])==27 for r in reports)
+          by_seed={}
+          for r in reports:
+              seed=r['seed']; model={q['family']:q for q in r['metrics'] if q['policy']=='model'}
+              assert set(model)=={'greebles','pipework','architecture'}
+              assert all(q['raw_decisions']==48 and q['genuine_eos']==48 for q in model.values())
+              # Three family labels may yield precisely the SAME world image; these are
+              # 3 requests, not 3 independent worlds or art styles.
+              images=[q['original_png_sha256'] for q in model.values()]
+              by_seed[str(seed)]={
+                'model_png_families_identical':len(set(images))==1,
+                'distinct_model_pngs_across_themes':len(set(images)),
+                'per_family':{f:{
+                    'model_cells':q['metrics']['unique_cells'],
+                    'legal_raw':q['raw_legal_choices'],
+                    'invalid_raw':q['raw_rejected_or_missing_eos'],
+                    'host_fallback':q['metrics']['host_fallback_count'],
+                    'raw_cycle':q['raw_cycle'],
+                    'model_png_sha256':q['original_png_sha256'],
+                } for f,q in model.items()},
+                'against_controls':{
+                    f"{p['family']}-{p['model_vs']}":{
+                      'unique_cell_delta':p['unique_cell_delta'],
+                      'equal_executed_decisions':p['equal_executed_decisions'],
+                    } for p in r['matched_pairs']},
+              }
+          all_models=[q for r in reports for q in r['metrics'] if q['policy']=='model']
+          summary={
+            'schema':'worm-lfm-support-w4-original-recovery-audit-v1',
+            'producer_failed_run':43701525721,
+            'successful_evaluation_only_run':43706057786,
+            'new_optimizer_updates':0,'native_godot':False,
+            'seeds':[2101,2102], 'requested_decisions_per_family_seed':48,
+            'family_requests':6,'independent_obstacle_worlds':2,
+            'model_raw_decisions':sum(q['raw_decisions'] for q in all_models),
+            'model_raw_legal':sum(q['raw_legal_choices'] for q in all_models),
+            'model_eos':sum(q['genuine_eos'] for q in all_models),
+            'model_raw_invalid':sum(q['raw_rejected_or_missing_eos'] for q in all_models),
+            'distinct_model_image_bytes':len(set(q['original_png_sha256'] for q in all_models)),
+            'each_seed':by_seed,
+            'limitations':'Two source-faithful W0 Python obstacle worlds only; repeated family results are pseudoreplicates, host fallback is NOT model skill, no native Godot evidence.'
+          }
+          assert summary['model_raw_decisions']==288
+          assert summary['model_eos']==288
+          assert summary['model_raw_invalid']==36
+          assert summary['distinct_model_image_bytes']==2
+          assert all(s['model_png_families_identical'] for s in by_seed.values())
+          (root/'independent-summary.json').write_text(json.dumps(summary,sort_keys=True,indent=2)+'\n')
+          print('Original W4 BOTH seeds 24/24 PNGs replayed, raw choices',summary['model_raw_decisions'],
+                'invalid',summary['model_raw_invalid'],
+                'distinct model images',summary['distinct_model_image_bytes'])
+          PY
+      - name: Preserve original W4 gallery, independent reports and failure/partial receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-lfm-support-w4-original-audit-${{ github.sha }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/lfm-w4-original-forensics/
+          retention-days: 30
+          if-no-files-found: warn
