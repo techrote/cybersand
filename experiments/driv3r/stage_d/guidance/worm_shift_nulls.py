@@ -1,7 +1,8 @@
 """Read-only, deterministic shifted-field controls for synthetic line-worm ink.
 
 The input MUST be an independently generated bind_synthetic_worm_morphology
-report; this module recomputes its synthetic motion/topology audits but cannot\nverify host/native authenticity.
+report; this module recomputes its synthetic motion/topology audits but cannot
+verify host/native authenticity.
 Toroidal translations preserve the field's value histogram, not its alignment
 with authored ink destinations. These posthoc nulls are descriptive and cannot
 establish causal model steering, visual input, or genuine material edits.
