@@ -9,7 +9,7 @@
     "606": "2632422aa67ee9acdc347089cd54c36e518c713a",
     "609": "01a8416761ba3477a2587d7b07a854945b0f0286"
   },
-  "scope": "Changed retained files at source freeze; documentation/report files excluded from hash self-reference. Git tree is authoritative. Does not import or establish acceptance of moving #609 source.",
+  "scope": "Changed retained files; committed Git blob bytes are authoritative. Map excludes itself. Runtime application remains 9a354683 while qualification apparatus can receive source-mapped corrections.",
   "files": [
     {
       "path": ".github/workflows/camera-stack-reconciliation.yml",
@@ -21,7 +21,7 @@
           "blob_sha256": null
         }
       ],
-      "candidate_sha256": "3d687c4c479d19be7d6ec69a6ee30a855214788863decdf839b981c95a8074c8",
+      "candidate_sha256": "33b1701e1feb745dd32312d5e8f33e8cf71d899d04c5573ceb54a851b41b3928",
       "byte_identical_to_inspected_heads": [],
       "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
     },
@@ -1334,22 +1334,22 @@
     },
     {
       "path": "tools/ci/check_windows_evaluation_zip.ps1",
-      "disposition": "KEEP WITH MODIFICATION",
+      "disposition": "KEEP",
       "origins": [
-        {
-          "component": "main",
-          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
-          "blob_sha256": null
-        },
         {
           "component": "566",
           "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
           "blob_sha256": "d57373acb528fc8cbd10c57171e83224ac46b3175a962eb3b862a61ac79e6398"
         }
       ],
-      "candidate_sha256": "ab2292fbbb1182c5bef9693f97c71c7669fd0704fae270643f110314b491f646",
-      "byte_identical_to_inspected_heads": [],
-      "reason": "Reconciled camera delta against accepted-main source; preserve intervening authoring functionality."
+      "candidate_sha256": "d57373acb528fc8cbd10c57171e83224ac46b3175a962eb3b862a61ac79e6398",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained #566 Windows evaluation helper; committed LF blob is authoritative, independent of checkout CRLF conversion."
     },
     {
       "path": "tools/ci/package_camera_stack_windows.py",
@@ -1375,7 +1375,7 @@
           "blob_sha256": null
         }
       ],
-      "candidate_sha256": "3fb02a03462d9971c99dd29d6460cee1d5c591f1b1e6d2e787f93720cbba1669",
+      "candidate_sha256": "21e3132cc8d45dd29d368f30ed23e891afc3de5287cd0f25749560fbcd66bd9d",
       "byte_identical_to_inspected_heads": [],
       "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
     },
@@ -1503,6 +1503,15 @@
         "godot/scripts/workbench_pose_trace.gd"
       ],
       "reason": "No moving implementation imported. One overlay seam and documented signature adaptation admit eventual root-cause-supported delta."
+    },
+    {
+      "component": "606",
+      "disposition": "SUPERSEDED",
+      "paths": [
+        ".github/workflows/engine-lab-qualification.yml",
+        "tools/ci/package_engine_lab_windows.py"
+      ],
+      "reason": "Original #566/#593 ancestry and native runtime pins predate accepted GEN-007. Replaced by exact accepted-main runtime custody and installed reconciliation runner; original evidence remains on its branch."
     }
   ],
   "preserved_native_scope": [
@@ -1513,5 +1522,7 @@
     "third_party/native-toolchain.lock.json",
     "third_party/godot-runtime.lock.json",
     "godot/third_party/rapier2d.lock.json"
-  ]
+  ],
+  "hash_scope": "SHA-256 of committed Git blob bytes, including Git-normalized LF for PowerShell; platform checkout line endings do not change source identity.",
+  "application_qualified_commit": "9a3546836fbdecf7c97e13395428ad147eb59f71"
 }

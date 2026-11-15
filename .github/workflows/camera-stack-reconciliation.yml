@@ -2,6 +2,20 @@ name: CAMERA-STACK-RECON-001 exact-source graphical integration
 on:
   push:
     branches: [integration/camera-stack-reconciliation-20261115]
+    paths:
+      - '.gitattributes'
+      - '.github/workflows/camera-stack-reconciliation.yml'
+      - '.github/workflows/rapier-bvh-build.yml'
+      - 'godot/**'
+      - 'native/**'
+      - 'tools/ci/**'
+      - 'tools/architecture/**'
+      - 'tools/package_explore001_candidate.py'
+      - 'examples/worldgen/**'
+      - 'third_party/**'
+      - 'THIRD_PARTY_NOTICES.md'
+      - 'LICENSE_STATUS.md'
+      - 'AGENTS.md'
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
@@ -196,6 +210,41 @@ jobs:
           Expand-Archive -LiteralPath $archive -DestinationPath 'C:\Camera Stack Evaluation'
           python tools/ci/package_camera_stack_windows.py verify --output 'C:\Camera Stack Evaluation'
           if ($LASTEXITCODE -ne 0) { throw 'Extracted package integrity failed' }
+      - name: Focused installed cross-clock diagnosis before full acceptance
+        timeout-minutes: 12
+        run: |
+          $ErrorActionPreference='Stop'
+          @'
+          import argparse,json,os,pathlib,sys
+          sys.path.insert(0,'tools/ci')
+          from run_workbench_qualification import Runner
+          from package_camera_stack_windows import verify,write_json
+          root=pathlib.Path.cwd()
+          installed=pathlib.Path('C:/Camera Stack Evaluation')
+          evidence=root/'evidence/installed-cross-clocks'
+          evidence.mkdir(parents=True,exist_ok=True)
+          manifest=verify(installed)
+          if manifest['source_commit']!=os.environ['SOURCE_SHA']:
+              raise RuntimeError('Focused installed source differs from workflow source')
+          write_json(evidence/'source.json',{key:manifest[key] for key in (
+              'source_commit','source_tree','accepted_main','native_build_commit',
+              'native_sha256','rapier_sha256','godot_version')})
+          engine=installed/'Godot_v4.7-stable_win64.exe'
+          runner=Runner(argparse.Namespace(godot=engine,evidence=evidence))
+          for key in list(runner.env):
+              if key.startswith(('CYBERSAND_','FLATTEN_','WB_','PAINT_')):
+                  del runner.env[key]
+          runner.env.update(CYBERSAND_SOURCE_REVISION=os.environ['SOURCE_SHA'],
+              CYBERSAND_EVAL_SOURCE_SHA=os.environ['SOURCE_SHA'],
+              LOCALAPPDATA=str(evidence/'userdata/local'))
+          common=[str(engine),'--audio-driver','Dummy','--path',str(installed/'godot')]
+          runner.execute('focused-import',common+['--headless','--editor','--quit'],timeout=240)
+          runner.execute('focused-cross-clocks',common+['--rendering-method','gl_compatibility',
+              '--rendering-driver','opengl3_angle','--max-fps','60',
+              '--script','res://tests/test_camera_stack_clocks.gd'],
+              marker='CAMERA_STACK_CLOCKS_RESULT',timeout=300)
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Installed cross-clock gate failed; original logs retained before full suite' }
       - name: Parse and invoke the actual packaged one-command runner
         timeout-minutes: 95
         run: |
@@ -221,14 +270,20 @@ jobs:
           compression-level: 0
           if-no-files-found: error
           retention-days: 90
-      - name: Retain original Windows failures and graphical receipts
+      - name: Retain Windows setup and focused installed diagnosis
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: camera-stack-windows-setup-${{ env.SOURCE_SHA }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Retain original Windows installed failures and graphical receipts
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: camera-stack-windows-evidence-${{ env.SOURCE_SHA }}-${{ github.run_attempt }}
-          path: |
-            evidence/
-            C:/Camera Stack Evaluation/Test-It-Results/
+          path: C:/Camera Stack Evaluation/Test-It-Results/
           if-no-files-found: warn
           retention-days: 90
   linux-performance:

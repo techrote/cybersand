@@ -24,9 +24,11 @@ $Started = [DateTime]::UtcNow
 $Deadline = $Started.AddMinutes($TotalTimeoutMinutes)
 $CaseResults = @{}
 $Receipts = @{}
+$LastProcessDirectory = $null
 $Summary = [ordered]@{schema = 'camera-stack-installed-execution-v1'; status = 'running'; complete = $false
     source_commit = 'unverified'; source_tree = ''; driver = $RenderingDriver; platform = 'Windows'
-    automated = [bool]$Automated; physical_gpu_acceptance = 'pending'; cases = @(); errors = @()}
+    automated = [bool]$Automated; physical_gpu_acceptance = 'pending'; cases = @(); errors = @()
+    godot_version_checks = @()}
 [void](New-Item -ItemType Directory -Path $CaseRoot -Force)
 
 function Require([bool]$Condition, [string]$Message) {
@@ -54,7 +56,7 @@ function Package-Path([string]$Relative) {
     return $Path
 }
 
-function Verify-Package {
+function Verify-Package([string]$Phase) {
     $Manifest = Json (Join-Path $Root 'CAMERA-STACK-MANIFEST.json')
     Require ($Manifest.schema -eq 'camera-stack-windows-evaluation-v1') 'Wrong evaluation manifest'
     Require ($Manifest.source_commit -match '^[0-9a-f]{40}$' -and $Manifest.source_tree -match '^[0-9a-f]{40}$') 'Application source identity missing'
@@ -96,8 +98,17 @@ function Verify-Package {
             Require ($Hash -eq $Entry.Value) ('Native source differs from retained build: ' + $Entry.Name)
         } finally { $Algorithm.Dispose() }
     }
-    $Version = (& $Console --version | Select-Object -First 1).Trim()
-    Require ($LASTEXITCODE -eq 0 -and $Version -eq $Manifest.godot_version) 'Bundled Godot version mismatch'
+    # Measure the same actual engine image used by every case without relying
+    # on the console launcher or the shell's shared LASTEXITCODE. Keep its own
+    # bounded process receipt and both original output streams.
+    $VersionDirectory = Join-Path $Output ('version-' + $Phase)
+    [void](New-Item -ItemType Directory -Path $VersionDirectory -Force)
+    $VersionText = Execute-Godot ('version-' + $Phase) @('--version') 30 $VersionDirectory @{}
+    $VersionLines = @($VersionText -split "`r?`n" | ForEach-Object { $_.Trim() } | Where-Object { $_.Length -gt 0 })
+    $Summary.godot_version_checks += @{phase = $Phase; expected = $Manifest.godot_version; observed = $VersionLines}
+    Require ($VersionLines.Count -eq 1 -and $VersionLines[0] -ceq $Manifest.godot_version) (
+        'Bundled Godot version mismatch: expected ' + $Manifest.godot_version + '; observed ' + ($VersionLines -join ' | '))
+    $Version = $VersionLines[0]
     $Summary.source_commit = $Manifest.source_commit
     $Summary.source_tree = $Manifest.source_tree
     $Summary.native_build_commit = $Manifest.native_build_commit
@@ -118,8 +129,24 @@ function Quote([string]$Value) {
     return '"' + $Escaped + '"'
 }
 
+function Write-Failure-Evidence([string]$Directory) {
+    if (-not $Directory) { return }
+    foreach ($Name in @('process.json', 'stdout.log', 'stderr.log')) {
+        $Path = Join-Path $Directory $Name
+        if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { continue }
+        try {
+            $Text = [string](Get-Content -LiteralPath $Path -Raw -Encoding UTF8)
+            if ($Text.Length -gt 14000) { $Text = '[tail, original full file retained]' + "`n" + $Text.Substring($Text.Length - 14000) }
+            Write-Host ('BEGIN FAILED PROCESS EVIDENCE ' + $Path)
+            Write-Host $Text
+            Write-Host ('END FAILED PROCESS EVIDENCE ' + $Name)
+        } catch { Write-Warning ('Could not echo diagnostic file ' + $Path + ': ' + $_.Exception.Message) }
+    }
+}
+
 function Execute-Godot([string]$Name, [string[]]$Arguments, [int]$Timeout,
                        [string]$Directory, [hashtable]$Environment) {
+    $Script:LastProcessDirectory = $Directory
     $Remaining = [int][Math]::Floor(($Deadline - [DateTime]::UtcNow).TotalSeconds)
     Require ($Remaining -gt 0) 'Whole-run deadline reached; remaining cases were not executed'
     $Timeout = [Math]::Min($Timeout, $Remaining)
@@ -250,7 +277,7 @@ function Validate-Case($Case, [string]$Text, [string]$Directory) {
 }
 
 try {
-    $Manifest = Verify-Package
+    $Manifest = Verify-Package 'before'
     $Summary.windows = Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version, BuildNumber
     $Summary.gpu = @(Get-CimInstance Win32_VideoController | ForEach-Object {
         @{name = $_.Name; driver = $_.DriverVersion; horizontal = $_.CurrentHorizontalResolution
@@ -300,6 +327,7 @@ try {
             $Row.error = [string]$_.Exception.Message
             $Summary.errors += ($Case.name + ': ' + $Row.error)
             Write-Host ('FAIL ' + $Case.name + ': ' + $Row.error) -ForegroundColor Red
+            Write-Failure-Evidence $Directory
         } finally {
             $Row.files_sha256 = @{}
             foreach ($File in @(Get-ChildItem -LiteralPath $Directory -File -Recurse)) {
@@ -309,7 +337,7 @@ try {
             Save-Summary
         }
     }
-    [void](Verify-Package)
+    [void](Verify-Package 'after')
     $Summary.complete = ($Summary.errors.Count -eq 0 -and $Summary.cases.Count -eq @($Plan.cases).Count)
     $Summary.status = if ($Summary.complete) { 'passed' } else { 'failed' }
 } catch {
@@ -317,6 +345,7 @@ try {
     $Summary.status = 'failed'
     $Summary.complete = $false
     Write-Host ('TEST IT FAILED: ' + $_.Exception.Message) -ForegroundColor Red
+    Write-Failure-Evidence $LastProcessDirectory
 } finally {
     Save-Summary
     try {
