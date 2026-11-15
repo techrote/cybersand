@@ -335,3 +335,29 @@ passed seven independent pure-helper cases (four new, three original);
 source-matched full lane discovery and DEVELOPMENT replay/integration tests
 still require qualification. No held-out controller outcomes or real native
 receipts were executed.
+
+## Deterministic lexicographic macro oracle (development-only)
+
+`macro_oracle.py` adds a stronger *planning* comparator for the separately
+labelled 1/2/4/8-cell macro arm. The earlier A* baseline minimizes cardinal
+distance and compresses a selected path into macros; it need not minimize the
+number of macro decisions. The new reverse-Dijkstra reference minimizes
+(decisions, swept-cell distance) for material-Z A→B routing. For selected-wall
+contours, it lexicographically minimizes (6–10-cell band departures,
+backwards-Y steps, decisions, swept-cell distance). Every intermediate
+swept cell requires an explicit host-like boolean legality response; no
+distractor wall is substituted for the selected wall. The wrapper
+`audit_development_macro_plan` rejects non-pinned or held-out fixtures
+*before* geometry calculation. A 36-decision budget is enforced.
+
+The first local focused test execution failed 1/6 due to an incorrect *test
+expectation*: distance 14 with macro lengths 1/2/4/8 needs 3 decisions
+(8+4+2), not 2. The expectation was repaired without altering the algorithm.
+Final isolated exact-module Python tests: **7/7 PASS**, with independent
+forward-Dijkstra agreement on **3,012 random routing starting states** and
+**3,809 random selected-wall starting states**, zero observed mismatches.
+This is **offline-only** and does not claim that the complete repository suite
+or native Workbench control passed. The complete authored D-1A inventory is
+now **146** tests across 14 modules, still requiring exact-branch checkout
+qualification. The existing v1 episode policies and first-pass trajectories
+are unchanged; held-out outcomes remain sealed.
