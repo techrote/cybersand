@@ -8,7 +8,7 @@ from holdout_fixtures import shape, preregister
 from fragility_study import decode_synthetic_rgba_png, encode
 
 ROOT = Path(__file__).resolve().parent
-MANIFEST = ROOT / 'holdout-prereg-v1.json'
+MANIFEST = ROOT / 'corpus' / 'holdout-prereg-v1.json'
 
 class HoldoutStudyTests(unittest.TestCase):
     def test_manifest_and_source_pins(self):
