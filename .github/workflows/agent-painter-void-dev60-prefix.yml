@@ -1,0 +1,36 @@
+name: VOID provisional DEV60 prefix probe (source only, NOT FROZEN)
+
+on:
+  push:
+    branches: [codex/agent-painter-void-568]
+    paths:
+      - 'experiments/agent_painter/lanes/void/dev60_prefix_probe_v1.py'
+      - 'experiments/agent_painter/lanes/void/test_dev60_prefix_probe_v1.py'
+      - '.github/workflows/agent-painter-void-dev60-prefix.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: void-dev60-prefix-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  static-prefix-source-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Provider, scheduling, and 10 adversarial source tests
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/void-dev60-policy.json
+          python3 -m py_compile experiments/agent_painter/lanes/void/{adapter,dev60_prefix_probe_v1,test_dev60_prefix_probe_v1}.py
+          python3 experiments/agent_painter/lanes/void/test_dev60_prefix_probe_v1.py -v
