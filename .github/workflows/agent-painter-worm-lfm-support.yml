@@ -57,7 +57,11 @@ jobs:
               data=(root/name).read_bytes()
               assert hashlib.sha256(data).hexdigest()==sha
               rows=[json.loads(line) for line in data.splitlines()]
-              assert len(rows)==manifest['train_rows' if name.startswith('train') else 'development_rows']
+              expected = {'train.jsonl':'train_rows',
+                          'development.jsonl':'development_rows',
+                          'adverse-train.jsonl':'adverse_train_rows',
+                          'adverse-development.jsonl':'adverse_development_rows'}[name]
+              assert len(rows)==manifest[expected]
               assert all(r['target_action'] in r['host_legal'] for r in rows)
           summary=json.loads((root/'gallery'/'summary.json').read_bytes())
           assert len(summary['reports'])==24
