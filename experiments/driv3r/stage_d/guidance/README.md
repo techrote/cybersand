@@ -1,5 +1,23 @@
 # D-1B: soft guidance and shadow critic — independent preparatory lane
 
+## Strict PNG guidance-import structure — 15 November 2026
+
+The import decoder now rejects PNG ancillary chunks *before* the required
+first IHDR and rejects IDAT streams interrupted by any other chunk. Both
+cases previously passed despite correct CRCs, producing nonconforming PNG
+input whose interpretation could vary across readers. Consecutive split
+IDAT chunks and trailing valid ancillary chunks remain permitted.
+This is **source-only authoring/input integrity**, not native material,
+permission, image-conditioned model observation or framebuffer verification.
+
+Four new `test_png_structure.py` regression methods cover valid consecutive
+IDAT, non-first IHDR, interrupted IDAT and trailing ancillary cases.
+A focused independent Python chunk-order reproducer demonstrated the
+old acceptance and proposed rejection behaviour. **Those four committed
+tests and the complete exact-HEAD D-1B suite were not executed against
+the fetched GitHub source in this environment.** The M1 five-record
+conformance run and native M2 absorption are still outstanding.
+
 ## Shifted-null canonical-replay integrity repair — 15 November 2026
 
 The earlier shifted-null reader checked its input report's internal SHA-256
