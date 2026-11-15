@@ -79,6 +79,11 @@ class SprocketSupportWormTests(unittest.TestCase):
         self.assertFalse({x["observation_sha256"] for x in train}
                          & {x["observation_sha256"] for x in dev})
         self.assertEqual(set(manifest["action_histograms"]["TRAIN"]), set(curriculum.ACTIONS))
+        for split in ("TRAIN", "DEVELOPMENT"):
+            counts = manifest["action_histograms"][split]
+            self.assertLess(counts["STOP"] / manifest["counts"][split], 0.1)
+            self.assertGreater(counts["BRANCH"], 0)
+            self.assertGreater(counts["RETRACE"], 0)
         for row in train + dev:
             self.assertIn(row["target"], row["observation"]["legal"])
             self.assertTrue(row["input"].endswith("\nACTION="))
