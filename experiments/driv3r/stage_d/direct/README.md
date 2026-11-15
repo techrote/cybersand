@@ -2,6 +2,27 @@
 
 **Status:** independent **development-only** preparatory fixtures and oracle policies, not native or model qualification. #570; [owner D roadmap](https://github.com/techrote/cybersand/issues/570#issuecomment-6877408001). The five-record [D-COMMON-001 contract](https://github.com/techrote/cybersand/pull/594) received **M1 owner acceptance on 14 Nov 2026** at source commit `8fa90de6be209ed0b7bd125039e6ec8b332fb1a6`, schema SHA-256 `ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d` ([#570 freeze record](https://github.com/techrote/cybersand/issues/570#issuecomment-6881686675)). **M2 offline integration preparation is permitted; native/model experiments, merges and formal A1/A2/A3 comparisons are not.**
 
+## Replay-gated synthetic cursor gallery (15 November 2026)
+
+`visualize.py` adds an **offline, DEVELOPMENT-only** raster comparison of the same strong contour/A* and seeded random-legal policies on identical original grids and 36-decision budgets. Seven frozen DEVELOPMENT topologies × two controls give **14 PNGs per seed/macro configuration**; the four sealed held-out families are **never dispatched** to controller evaluation. The output depicts **synthetic brush-up cursor movement only**, NOT Workbench PAINT, native material, a true framebuffer, resident d1 outputs, or aesthetically accepted artwork.
+
+Every trajectory is independently replay-verified through `paired.verify_episode` **before rasterization**, and paired controls are checked against matching original legal menus until first action divergence. Deterministic stdlib RGB PNG encoding shows selected-wall 6–10-cell offset region, selected-wall identity vs decoys, material-Z/protected blockers, original cursor traces, retraces, start/target and route outcomes. The JSON manifest binds original fixture SHA, event and path records, policy, full metrics, PNG SHA-256, reproducible index, selected commit and explicit no-native/no-model qualifiers. Source-fencing refuses a mismatched HEAD or a dirty D-1A worktree; an existing output directory cannot be silently overwritten.
+
+From a clean checkout at the exact commit under review:
+
+```sh
+sha="$(git rev-parse HEAD)"
+python3 -m unittest experiments.driv3r.stage_d.direct.test_visualize -v
+python3 -m experiments.driv3r.stage_d.direct.visualize \
+  --source-sha "$sha" --seed 13 --output "build/d1a-cursor-$sha"
+# Independently labelled optional macro arm (1/2/4/8 cells):
+python3 -m experiments.driv3r.stage_d.direct.visualize \
+  --source-sha "$sha" --seed 13 --macro --output "build/d1a-cursor-macro-$sha"
+python3 -m unittest discover -s experiments/driv3r/stage_d/direct -p 'test_*.py' -v
+```
+
+**Qualification boundary:** Ten new Python regression methods authored (**122 D-1A tests total**), covering source replay, exact raster decoding/CRC, selected-wall vs decoy, held-out refusal, native-counterfeit rejection, source fencing, hash provenance, deterministic gallery equality and refusal to overwrite. The two new **committed** source blobs match locally syntax-compiled Python files (renderer `c49310549bb82120844a5d0623f92e634360c29b`, tests `079a074b165f136da28c73f17bdced4c2f0fb46d`). A small isolated scratch-injected render/manifest smoke passed, **not** the source-matched full test suite. Execution of all 122 tests against current-head real `offline.py` and `paired.py` remains open, as does M2/M3 native-adapter review. No native/model/gated campaigns authorized for D-1A.
+
 ## Cursor-line character for the owner's drawing-worm hypothesis (15 Nov 2026)
 
 Issue [#570 owner correction](https://github.com/techrote/cybersand/issues/570#issuecomment-6889195672) prioritises an eccentric but bounded **line-steering worm brain**, not A* superiority. The lane-only `line_character.py` adds a **descriptive** geometry fingerprint for original DEVELOPMENT paths: cardinal heading distribution and entropy, clockwise/counterclockwise turns, reversals, straight runs, repeated cursor cells, retraced undirected edges, closed loops and footprint bounds. None is treated as an art-quality score or success/failure by itself. A loop or detour may be desirable worm behaviour. Pen-state/material and steerability cannot be inferred from cursor geometry alone.
