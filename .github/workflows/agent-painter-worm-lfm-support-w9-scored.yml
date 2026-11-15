@@ -1,0 +1,61 @@
+name: WORM LFM support - W9 original scorer and PNG replay
+on:
+  push:
+    branches: [research/612-worm-lfm-support]
+    paths:
+      - '.github/workflows/agent-painter-worm-lfm-support-w9-scored.yml'
+      - 'experiments/agent_painter/worm/support_lfm/w9_score_original_audit.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: worm-lfm-support-w9-scored-source-fenced
+  cancel-in-progress: false
+jobs:
+  verify:
+    name: Audit 18 original W9 PNGs, 288 host choices, and 144 genuine model scores
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Check exact GitHub-hosted runtime/source, no training
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output "$RUNNER_TEMP/worm-w9-scored-schedule.json"
+          python3 -m py_compile experiments/agent_painter/worm/support_lfm/w9_score_original_audit.py
+      - name: Retrieve original W9 checkpoint-only PNG artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(gh api repos/techrote/cybersand/actions/artifacts/14175901169 --jq .digest)" = "sha256:82890ec0b306a7174785f0f923ae874c16bd303a7864ff0428ea8963d4f4162b"
+          curl --fail --location --silent --show-error --retry 3 --connect-timeout 20 --max-time 240 -H "Authorization: Bearer ${GH_TOKEN}" "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14175901169/zip" -o "$RUNNER_TEMP/w9-source-scored.zip"
+          echo "82890ec0b306a7174785f0f923ae874c16bd303a7864ff0428ea8963d4f4162b  $RUNNER_TEMP/w9-source-scored.zip" | sha256sum -c
+      - name: Independent source-faithful original 96x96 PNG/sampling audit
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/worm/support_lfm/w9_score_original_audit.py --artifact "$RUNNER_TEMP/w9-source-scored.zip" --self-test --output w9-scored-source-audit | tee "$RUNNER_TEMP/w9-audit.json"
+          python3 - <<'PY'
+          import json
+          r=json.load(open("w9-scored-source-audit/report.json"))
+          assert r["original_pngs_source_replayed"]==18
+          assert r["original_scorer_decisions_checked"]==288
+          assert r["model_logit_decisions_checked"]==144
+          assert r["raw_EOS7_valid"]==0 and r["raw_first_pass_refusals"]==9
+          assert r["unmasked_top_LEFT"]==144 and r["independent_worlds"]==3
+          print("W9 original PNG/CRN audit PASS; learned steering REWORK")
+          PY
+      - name: Retain source-readback PNGs/report on success or failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-lfm-support-w9-original-96x96-scored-pngs
+          path: w9-scored-source-audit/
+          if-no-files-found: warn
+          retention-days: 45
