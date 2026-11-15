@@ -31,7 +31,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p evidence
-          python3 -m unittest discover -s experiments/agent_painter/worm/support_sprocket -p test_curriculum.py -v 2>&1 | tee evidence/tests.txt
+          python3 -m unittest discover -s experiments/agent_painter/worm/support_sprocket -p 'test_*.py' -v 2>&1 | tee evidence/tests.txt
       - name: Generate synthetic TRAIN/DEV and paired original PNG gallery
         shell: bash
         run: |
@@ -44,6 +44,16 @@ jobs:
           test "$(wc -l < evidence/sprocket-support/dataset/development.jsonl)" -gt 30
           git rev-parse HEAD > evidence/source-sha.txt
           find evidence/sprocket-support -type f -print0 | sort -z | xargs -0 sha256sum > evidence/sha256sums.txt
+      - name: Six-action TRAIN/DEV literal-prompt proof and original W0 RIGHT-stress PNGs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/worm/support_sprocket/probes_v1.py --output evidence/sprocket-v1 > evidence/sprocket-v1-summary.json
+          test "$(wc -l < evidence/sprocket-v1/probes/constructed-train.jsonl)" -eq 54
+          test "$(wc -l < evidence/sprocket-v1/probes/constructed-development.jsonl)" -eq 36
+          test "$(wc -l < evidence/sprocket-v1/probes/balanced-train-view.jsonl)" -eq 54
+          test "$(find evidence/sprocket-v1/right-control -maxdepth 1 -name '*.png' | wc -l)" -eq 6
+          find evidence/sprocket-v1 -type f -print0 | sort -z | xargs -0 sha256sum > evidence/sprocket-v1-sha256sums.txt
       - name: Preserve original gallery, data, source, failure and test receipts
         if: always()
         uses: actions/upload-artifact@v4

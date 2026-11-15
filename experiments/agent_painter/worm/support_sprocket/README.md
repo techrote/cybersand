@@ -26,3 +26,15 @@ Outputs: synthetic dataset/train.jsonl and dataset/development.jsonl with canoni
 The teacher is intentionally simple: Greebles favours frequent turns, Pipework longer straight tracks, Architecture rhythmic orthogonal segments. It can BRANCH, RETRACE and STOP, but cannot plan entire buildings, guarantee loops, predict playability or establish art quality. W0 output is a source-faithful PNG grid raster, not actual native Godot material cells. Train a SPROCKET WORM model only under the primary's explicit unique training lease; this support lane never runs an optimizer.
 
 The primary should compare genuine model first-pass choices and rollouts against all paired same-seed baselines, tracking illegal decisions, EOS, blank/uninteresting traces, branches, retraces, revisits, coverage and visual interest. No hidden action repairs or cherry-picked only-success images. Publish exact source commit, TRAIN/DEVELOPMENT hashes, action counts and gallery receipt hashes in issue #612, cross-link #568, and request independent visual review before any useful-version claim.
+
+
+## V1: six-action anti-collapse probes and replayed RIGHT-only stress
+
+To generate independent, **support-only** v1 sidecars (without altering the v0 data):
+\`python3 experiments/agent_painter/worm/support_sprocket/probes_v1.py --output /tmp/sprocket-v1\`
+
+The first genuinely trained SPROCKET WORM policies learned legal EOS framing but collapsed overwhelmingly to STRAIGHT (W1) and then RIGHT (W2 static probes); the primary also measured literal model-prompt overlap across its source TRAIN/EVAL worlds. V1 therefore supplies **54 constructed TRAIN local-motif action examples** (3 variants × 6 labels × 3 themes), **36 constructed DEVELOPMENT probes** (2 different variants × 6 × 3), and a **54-row TRAIN-only family/action-balanced candidate sampling view** (3 per pair, preferring up to two genuine W0-observed TRAIN rows). The validator fails closed on literal input overlap across **all original support v0 and new v1** TRAIN/DEV rows, and on conflicting labels for identical prompts. All masks/targets are legal according to the imported W0 contract.
+
+These LOCAL counterfactuals are *not* executed world states, independent structures, native Art admissions, or actual learned decisions. Their coordinates/variants do not prove semantic novelty; they are diagnostic failure probes. Never optimize against DEVELOPMENT; the primary owns all eventual model-training leases/recipe revisions. The unchanged original v0 corpus remains separate.
+
+Six additional genuine **W0 source-faithful, model-free** 384×384 PNGs and paired JSON receipts replay a deliberately constant RIGHT raw controller on the same two gallery world seeds × three themes. Raw policy choices and host substitutions are recorded separately. This does **not** purport to reproduce the trained W2 model, whose own original online evaluation is authoritative. The support Actions workflow runs all tests and retains versioned JSONL/PNG/source SHA-256 evidence.
