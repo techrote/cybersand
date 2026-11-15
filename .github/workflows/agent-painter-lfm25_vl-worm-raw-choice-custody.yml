@@ -1,0 +1,42 @@
+name: LFM2.5-VL WORM exact raw-choice/W0 host custody (NO MODEL)
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - experiments/agent_painter/lanes/lfm25_vl/worm_train_w7_v1.py
+      - experiments/agent_painter/lanes/lfm25_vl/test_worm_w7_raw_choice_v2.py
+      - .github/workflows/agent-painter-lfm25_vl-worm-raw-choice-custody.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lfm25-vl-worm-raw-choice-custody
+  cancel-in-progress: false
+
+jobs:
+  exact-w0-raw-choice:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - name: Source checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Immutable W0 host checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: pinned-w0
+          persist-credentials: false
+      - name: Verify original host and execute raw EOS/legality regressions
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C pinned-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object pinned-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/worm_train_w7_v1.py experiments/agent_painter/lanes/lfm25_vl/test_worm_w7_raw_choice_v2.py
+          PYTHONPATH=experiments/agent_painter/lanes/lfm25_vl:experiments/agent_painter/training:pinned-w0/experiments/agent_painter/worm/common python3 -m unittest -v experiments/agent_painter/lanes/lfm25_vl/test_worm_w7_raw_choice_v2.py
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/lfm-raw-choice-scheduling.json

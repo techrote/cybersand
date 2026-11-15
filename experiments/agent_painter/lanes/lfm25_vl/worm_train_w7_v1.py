@@ -152,6 +152,25 @@ def dataset(support):
     }
 
 
+def classify_first_pass(tokenizer, token_ids, legal):
+    """Preserve original decoded choice; keep EOS syntax distinct from W0 legality.
+
+    A digit+EOS7 can be host-illegal. Return that actual choice to W0 so its
+    raw_choice/STOP event remains source-faithful. Never apply a truncated digit.
+    """
+    eos = bool(token_ids) and token_ids[-1] == tokenizer.eos_token_id
+    decoded = tokenizer.decode(token_ids, skip_special_tokens=True)
+    # No trimming, retry, synthetic output repair or prompt-dependent fallback.
+    mapped = CODE_ACTIONS.get(decoded)
+    syntactic = bool(eos and mapped in ACTIONS)
+    legal_choice = mapped in legal
+    return {"raw_text": decoded, "decoded_action": mapped,
+            "raw_action": mapped if syntactic else "MODEL_REFUSED",
+            "token_ids": list(token_ids), "eos_terminated": eos,
+            "raw_syntactic_eos": syntactic, "raw_legal": legal_choice,
+            "valid_first_pass": bool(syntactic and legal_choice)}
+
+
 def generate(model, tokenizer, selected, prompt, legal, *, max_tokens=10):
     from lane_adapters import encode_prompt
     import torch
@@ -167,14 +186,9 @@ def generate(model, tokenizer, selected, prompt, legal, *, max_tokens=10):
                              eos_token_id=tokenizer.eos_token_id,
                              pad_token_id=tokenizer.pad_token_id,
                              use_cache=True)[0, len(ids):].tolist()
-    eos = bool(out) and out[-1] == tokenizer.eos_token_id
-    decoded = tokenizer.decode(out, skip_special_tokens=True)
-    # No stripping, JSON repair, retries, fallback teacher or other model-output edits.
-    mapped = CODE_ACTIONS.get(decoded)
-    valid = eos and mapped in legal and mapped in ACTIONS
-    return {"raw_text": decoded, "raw_action": mapped if valid else "MODEL_REFUSED",
-            "token_ids": out, "eos_terminated": eos,
-            "raw_legal": mapped in legal, "valid_first_pass": valid,
+    # Keep the original valid digit even when host-illegal; W0 owns refusal.
+    # A missing EOS or malformed code must never be accepted as an action.
+    return {**classify_first_pass(tokenizer, out, legal),
             "input_tokens": len(ids), "output_tokens": len(out),
             "seconds": time.monotonic() - started}
 
