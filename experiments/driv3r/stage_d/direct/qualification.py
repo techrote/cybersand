@@ -15,10 +15,11 @@ import subprocess
 import sys
 
 from .m1_preflight import M1_SCHEMA_SHA256, M1_SOURCE_COMMIT, assert_approved_schema
+from .inventory import TestInventoryError, audit_test_inventory
 
 VERSION = "d1a-exact-head-offline-qualification/1"
 LANE = "experiments/driv3r/stage_d/direct"
-MINIMUM_TESTS = 122  # Historic pre-harness method count; prevents silent under-discovery.
+MINIMUM_TESTS = 130  # Independently inspected pre-inventory suite floor at f969338f.
 _SHA = re.compile(r"[0-9a-f]{40}\Z")
 _RESULT = re.compile(r"^Ran (\d+) tests? in [\d.]+s$", re.MULTILINE)
 _SKIPPED = re.compile(r"skipped=(\d+)")
@@ -60,9 +61,19 @@ def source_fence(root: Path) -> str:
     ancestor = _git(root, "merge-base", "--is-ancestor", M1_SOURCE_COMMIT, sha)
     if ancestor.returncode != 0:
         raise QualificationError("Accepted M1 source is not an ancestor of tested HEAD")
-    dirty = _git(root, "status", "--porcelain", "--untracked-files=all", "--", LANE)
+    # An exact commit is not a source guarantee if shared imports or other
+    # worktree paths have been edited. Fail on any tracked or untracked change.
+    dirty = _git(root, "status", "--porcelain", "--untracked-files=all")
     if dirty.returncode or dirty.stdout.strip():
-        raise QualificationError("D-1A source/tests dirty or Git status unavailable")
+        raise QualificationError("Source worktree dirty or Git status unavailable")
+    # This stacked branch is D-1A-exclusive: immutable M1 plus lane files.
+    # Reject even committed changes to shared contracts, frozen evidence or
+    # production code; HEAD ancestry alone would not detect such changes.
+    changed = _git(root, "diff", "--name-only", M1_SOURCE_COMMIT, sha)
+    if changed.returncode or any(
+        not name.startswith(LANE + "/") for name in changed.stdout.splitlines()
+    ):
+        raise QualificationError("HEAD differs from accepted M1 outside D-1A lane")
     try:
         assert_approved_schema(root)
     except (OSError, ValueError) as exc:
@@ -76,6 +87,10 @@ def run_qualification(root: Path, timeout_seconds: int = 180) -> tuple[dict, str
         raise QualificationError("CPU test timeout must be 1..600 seconds")
     root = root.resolve()
     source_sha = source_fence(root)
+    try:
+        inventory = audit_test_inventory(root)
+    except TestInventoryError as exc:
+        raise QualificationError("Offline source test inventory refused") from exc
     command = [sys.executable, "-m", "unittest", "discover", "-s", LANE,
                "-p", "test_*.py", "-v"]
     try:
@@ -88,6 +103,9 @@ def run_qualification(root: Path, timeout_seconds: int = 180) -> tuple[dict, str
         log = raw.decode("utf-8", "replace") if isinstance(raw, bytes) else raw
         returncode, timed_out = 124, True
     result = parse_unittest_result(log, returncode)
+    if result["test_count"] != inventory["method_count"]:
+        result["passed"] = False
+        result["reason"] = "discovery_count_does_not_match_source_inventory"
     try:
         final_head = source_fence(root)
         same_source = source_sha == final_head
@@ -98,6 +116,7 @@ def run_qualification(root: Path, timeout_seconds: int = 180) -> tuple[dict, str
         "approved_m1_commit": M1_SOURCE_COMMIT,
         "approved_m1_schema_sha256": M1_SCHEMA_SHA256,
         "minimum_expected_test_count": MINIMUM_TESTS,
+        "source_test_inventory": inventory,
         "test_command": command, "timeout_seconds": timeout_seconds,
         "returncode": returncode, "timed_out": timed_out,
         "source_stable_and_clean_after_tests": same_source,
