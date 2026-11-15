@@ -337,6 +337,9 @@ func classic_gentek_gallery() -> void:
 		var project: Dictionary = Project.default_project()
 		project.seed = 271828
 		project.extent = [512,512]
+		# Isolate the Gentek geometry in the retained gallery. Automatic shared
+		# macro tunnels remain an independent normal Workbench control.
+		project.automatic_tunnels = false
 		project.styles = [{"enabled":true,"share":100.0,"preset":style}]
 		var compiled: Dictionary = Project.compile(project)
 		if not check(compiled.get("ok",false), "classic project compiles: " + algorithm): continue
