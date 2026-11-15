@@ -60,34 +60,74 @@ jobs:
           path: evidence/previous-v6
           run-id: ${{ steps.lease.outputs.run }}
           github-token: ${{ github.token }}
-      - name: Verify real original W6 producer before reading checkpoint
+      - name: Verify original failed producer and the separately qualified step24 checkpoint
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import json
+          import hashlib,json
           from pathlib import Path
-          p=Path('evidence/previous-v6/campaign')
-          s=json.loads((p/'summary.json').read_text())
+          root=Path('evidence/previous-v6')
+          p=root/'campaign'
+          assert not (p/'summary.json').exists(), 'original run is NOT a successful completed job'
+          assert not (p/'trained-six-way-first-scores.json').exists(), 'unexpected claim of final scores'
           cfg=json.loads((p/'preflight.json').read_text())['config']
-          assert s['actual_training'] is True and s['status']=='complete'
-          assert s['steps']==s['target_steps']==24 and s['checkpoint']=='checkpoint-000024'
-          assert s['frozen_base_equal'] and s['adapter_changed']
-          assert not s['native_execution'] and not s['sealed_final_opened']
+          lease=json.loads((p/'lease.json').read_text())
           assert cfg['schema']=='cybersand.worm.sprocket-family-counterfactual-v6'
           assert cfg['source_sha']=='fbeece84ff2609e564bb43b7f40ecde1d80ef187'
+          assert lease['source_sha']==cfg['source_sha']
+          assert lease['run_id']=='43743251862' and int(lease['steps'])==24
           assert cfg['model']['model_id']=='kandivault/sprocket-500m'
           assert cfg['model']['revision']=='eb157d4ddddc4619e661d4a2426bb2dd000fc668'
+          assert cfg['model']['subfolder']==''
           assert cfg['worm_common_git_commit']=='4bb9d6e1d0d0d78183f87d1e3c29648edafacf61'
           assert cfg['worm_support_git_commit']=='2b6534ac21542805f4bda123f67e9624d21e39d7'
           assert cfg['training_pair_count']>=6 and cfg['heldout_pair_count']>=1
-          progress=(p/'progress.jsonl').read_text().splitlines()
-          events=[json.loads(line) for line in progress]
+          assert cfg['literal_train_eval_overlap']==0
+          assert cfg['synthetic_not_native'] is True and cfg['final_opened'] is False
+          events=[json.loads(line) for line in (p/'progress.jsonl').read_text().splitlines()]
           assert len(events)==24 and [e['step'] for e in events]==list(range(1,25))
           assert all(len(e['ids'])==len(e['targets'])==2 and
                      e['targets'][0]!=e['targets'][1] and e['loss_tokens']==2 and
                      e['grad_norm']>0 for e in events)
-          assert (p/'checkpoint-000024/inventory.json').is_file()
-          print('Original 24 two-presentation optimizer steps and complete source receipt PASS')
+          # Entire failed original upload remains immutable. Never convert its run to success.
+          hashes=(root/'SHA256SUMS.txt').read_text().splitlines()
+          assert len(hashes)>=75
+          for line in hashes:
+              expected,relative=line.split('  ',1)
+              f=root/relative.removeprefix('./')
+              assert f.is_file() and hashlib.sha256(f.read_bytes()).hexdigest()==expected, f
+          inventories={}
+          for step in (12,24):
+              ck=p/f'checkpoint-{step:06d}'
+              inventory=json.loads((ck/'inventory.json').read_text())
+              assert len(inventory)>=8
+              for name,entry in inventory.items():
+                  f=ck/name
+                  assert f.is_file() and f.stat().st_size==entry['bytes']
+                  assert hashlib.sha256(f.read_bytes()).hexdigest()==entry['sha256'], f
+              receipt=json.loads((ck/'receipt.json').read_text())
+              assert receipt['global_step']==receipt['sample_cursor']==step
+              assert receipt['history']==events[:step]
+              assert receipt['config']==cfg
+              assert len(receipt['frozen_base_sha256'])==64
+              assert (ck/'training_state.pt').stat().st_size>10_000_000
+              inventories[step]=inventory
+          assert inventories[12]['adapter/adapter_model.safetensors']['sha256']!=inventories[24]['adapter/adapter_model.safetensors']['sha256']
+          output=Path('evidence/worm-score-v6-e1/producer-salvage-note.json')
+          output.write_text(json.dumps({
+             'producer_run_id':43743251862,'producer_job_id':132900838675,
+             'producer_conclusion':'failure','producer_exit_code':137,
+             'qualified_optimizer_updates':24,'checkpoint':'checkpoint-000024',
+             'checkpoint_inventories_verified':[12,24],
+             'original_artifact_id':14174007244,
+             'original_artifact_upload_digest_sha256':'6a53462bd4518272eb304b1b9d35e494a6ee894012ce10069f2d78f3a577b24c',
+             'entire_original_member_sha256_verified':len(hashes),
+             'raw_trained_static_probe_available':(p/'trained-raw-first-pass.json').is_file(),
+             'post_optimization_summary_missing':True,
+             'qualification':'step24 checkpoint only; NOT successful producer job or fully qualified training campaign',
+             'native':False,'sealed_final_opened':False
+          },sort_keys=True,indent=2)+'\\n')
+          print('Original W6 producer FAIL / exit137 retained; separately valid step24 optimizer/checkpoint evidence PASS')
           PY
       - name: Obtain original pinned W0 host and independently preserve its source
         run: |
