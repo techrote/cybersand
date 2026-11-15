@@ -96,6 +96,28 @@ class InformationTests(unittest.TestCase):
         self.assertNotEqual(result["A1"]["audit_only"]["model_view_sha256"],
                             changed["A1"]["audit_only"]["model_view_sha256"])
 
+    def test_mutating_one_model_view_cannot_contaminate_other_frozen_arms(self):
+        # Previously all three model views referenced the SAME catalog and
+        # host_geometry dictionaries, defeating independent control custody.
+        q = scenario()
+        original = copy.deepcopy(q)
+        output = make_shadow_arms(**q)
+        a1 = output["A1"]["model_view"]
+        a2 = output["A2"]["model_view"]
+        a3 = output["A3"]["model_view"]
+        before_a2 = copy.deepcopy(a2)
+        before_a3 = copy.deepcopy(a3)
+        a1["host_geometry"]["clearance_cells"][0] = 12345
+        a1["legal_candidates"][0]["swept_xy"][0][0] = 9876
+        a1["legal_candidates"][1]["destination_xy"][0] = 9876
+        self.assertEqual(a2, before_a2)
+        self.assertEqual(a3, before_a3)
+        self.assertEqual(q, original)
+        from experiments.driv3r.stage_d.guidance.information import _hashable
+        self.assertEqual(output["A2"]["audit_only"]["model_view_sha256"], _hashable(a2))
+        self.assertEqual(output["A3"]["audit_only"]["model_view_sha256"], _hashable(a3))
+        self.assertNotEqual(output["A1"]["audit_only"]["model_view_sha256"], _hashable(a1))
+
     def test_reject_unregistered_and_mismatched_semantics(self):
         with self.assertRaisesRegex(ValueError, "unregistered"):
             channel(semantic_id="unregistered/new")
