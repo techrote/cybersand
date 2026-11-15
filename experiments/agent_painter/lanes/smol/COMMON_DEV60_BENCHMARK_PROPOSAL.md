@@ -65,8 +65,11 @@ blind review. If an invariant cannot honestly be expressed in all forms,
 revise the *whole* five-prompt set **before freeze** rather than silently
 discarding a difficult formulation. Do not tune these prompts against SMOL's
 known malformed JSON responses, P01 coordinates, old TRAIN patterns or other
-lanes' sample outputs. Model-specific chat templates are applied by the
-respective pinned official loader **outside** this canonical request text.
+lanes' sample outputs. Model-specific **framing and tokenization** are applied by the separately
+qualified adapter **outside** the canonical request bytes. An upstream chat
+template is used only when the pinned model actually has one. In particular,
+VOID is a genuine base, non-chat model: its authorized framing is
+`cybersand-void-task-v1`, not a substituted chat template.
 
 **Family-wide requirements across all five forms:** Greebles require visible,
 recognizable panels/components and the assignment's intended negative space;
@@ -108,20 +111,87 @@ implicit alternate interpretations.
 
 Suggested manifest keys, for review only: `version`, `native_source_sha`,
 `admission_manifest_sha256`, `schema_sha256`, `compiler_sha256`,
-`seed_pair`, `groups`, `requests`, `manifest_sha256`. Never fabricate
-a provisional SHA for missing slot 3/4 teacher data.
+`seed_pair`, `groups`, `requests`, `model_evaluation_contracts`,
+`manifest_sha256`. Each `model_evaluation_contracts` entry must bind the
+exact model revision, qualified adapter/framing/tokenizer/EOS identities,
+model context length, pre-frozen generated-token ceiling, and the checksum
+of its 60-row static token-budget preflight (see below). Store the raw common
+request UTF-8 hashes independently of model-specific encoded prefix hashes.
+Never fabricate a provisional SHA for missing slot 3/4 teacher data.
+
+### Mandatory per-model static representability/budget gate (before freeze)
+
+**The canonical 60 request UTF-8 byte strings are identical across the four
+models; their token sequences and budgets are not.** The shepherd must approve
+one separately versioned evaluation adapter per model, using the model's
+already-qualified framing/tokenizer/EOS contract: official upstream chat
+framing **where applicable**, but VOID's explicit *non-chat*
+`cybersand-void-task-v1` with its strict 259-symbol UTF-8 byte tokenizer,
+terminal EOS ID `258`, and no automatic BOS. The SMOL lane keeps its genuine
+SmolLM2 upstream chat framing and reviewed terminal-EOS-v2 training identity.
+Do not swap loaders, change framing between benchmark arms, infer tokenizer
+identity from architecture family, or insert model-specific instructions into
+the shared request.
+
+Before seeing **any model completion on DEV60**, evaluate all 60 finalized
+requests through each model's exact authorized prompt encoder, with no teacher
+completion supplied, and record the 60 prefix-token counts and exact encoded
+prefix digests. Independently inspect the *reference teacher programs* through
+the authorized model tokenizer **offline**, solely to check that their target
+serialization is representable within the chosen output ceiling. Never expose
+reference operations/JSON, native target images or teacher token IDs to
+model inference or optimization. The inspector may see DEVELOPMENT references;
+the model and training process may not. Count terminal EOS and relevant wrapper
+tokens under the actually reviewed encoder, not an approximate character ratio.
+
+For each model, **choose and freeze a model-specific** `max_new_tokens` and
+`model_context_tokens` before inference, and hard-refuse if *any* of the 60
+encoded prefixes violates
+`prefix_tokens + max_new_tokens <= model_context_tokens` or if a reference
+program's authentic encoded completion (including required EOS) cannot fit
+within the output ceiling. No prompt truncation, target truncation, dynamic
+per-request budget expansion, partial-output continuation, schema repair,
+retry or adaptive inference is permitted. A model that cannot satisfy this
+static gate is **not DEV60-ready**, rather than quietly receiving a smaller
+cohort. The freeze record must include for each model its minimum headroom,
+maximum prefix length, reference completion token range, chosen ceiling,
+context length, exact tokenizer/framing hashes, and an independently verified
+60-row preflight receipt. The common UTF-8 prompts are stable; their token
+budgets are explicitly *not* claimed equivalent across tokenizer families.
+
+The VOID original TRAIN evidence gives a specific warning, **not** a proposed
+DEV60 ceiling: its longest supervised target was `486` byte tokens including
+EOS, maximum full training sequence `837`, and model context `2048`; the
+original VOID six-request DEVELOPMENT evaluator allowed `1024` generated
+byte tokens. A nominal `512` subword-token limit cannot be imposed on VOID
+without its own representability/context evidence. Do not invent limits for
+SMOL, SPROCKET or LFM2.5-VL before checking their exact pinned encoders. A
+new cap is a **new protocol**, never retroactively interchangeable with those
+historical six-request scores. Tokenization controls must also account for
+any official multimodal processor framing where relevant, without adding an
+unapproved image input.
+
+DEV60 needs a **new manifest-driven, versioned evaluator** consuming the
+approved 60 rows and their preflight receipts. The historical six-request/
+twelve-seed evaluator is source-bound to its original manifest and must not
+be renamed or counted as DEV60. These are pre-freeze specification gates,
+not a claim that a frozen manifest, new groups or actual static preflight
+already exists.
 
 ## 4. Raw first-pass and native execution rules
 
-Each model receives the *same frozen request bytes*, with its own *pinned,
-upstream-authentic* chat framing and EOS; greedy single first pass, recorded
-token IDs, text bytes, stop reason, terminal EOS, JSON parse and compiler
-rejection, all without repair, retries, hidden teacher fallback, selection
-among candidates or model-specific extra hints. A shared nominal generation
-budget of 512 new tokens is the baseline proposal, but report each model's
-actual tokens and output bytes because different tokenizers do not imply
-equal language capacity. Any truncation counts as a failed first pass; never
-continue generation privately to fabricate compliance.
+Each model receives the **same frozen request UTF-8 bytes**, encoded with its
+**separately qualified model-specific framing/tokenizer/EOS** (official chat
+framing only if applicable; VOID uses its documented non-chat task format).
+Execute one greedy first pass against its **pre-frozen, statically verified
+model-specific token ceiling**, recording original prompt/encoded-prefix
+hashes, completion token IDs/text bytes, stop reason, terminal authentic EOS,
+JSON parse and compiler rejection. Keep a first pass that exhausts its frozen
+budget as a **failed terminal-EOS completion**, not an invitation to continue,
+retry, repair, select another candidate or inject a teacher fallback. No
+per-model prompt hints, silent truncation or chat framing substitution.
+The output-token counts and nominal budget values are not tokenization-
+equivalent across models; report them with the encoder identity and context.
 
 The compiler independently enforces schema/legal operations, then the **native
 Art host** separately controls material whitelist, focus/seed, work budgets,
@@ -138,7 +208,8 @@ and native safety separate; no 'syntactically valid == good painting' shortcut.
 
 ## 5. Reporting and decision thresholds
 
-Publish immutable raw per-request records, per-seed native receipts (or refusal),
+Publish immutable raw per-request records, the pre-frozen four-model static
+prefix/representability budget receipts, per-seed native receipts (or refusal),
 original PNG gallery, model/adapter/checkpoint/recipe identities, source SHA,
 artifact hashes, wall/CPU time, peak RSS, token count and at least the following
 non-interchangeable denominators:
