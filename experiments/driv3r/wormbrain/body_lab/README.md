@@ -22,3 +22,29 @@ From repository root: `python3 -m unittest -v experiments.driv3r.wormbrain.body_
 ## Handoff
 
 Commander: own genuine runtime dispatch, runner lease/health/PID attestations and benchmark one vs two resident models per 4-vCPU runner before claiming four live worms. This lab owns only the native-inert body preflight, not expensive inference execution. Ethologist: the four gallery PNGs are **synthetic prototypes**, not creative results attributable to d1-2B/LFM/SmolLM/Sprocket. Next Body Lab work: request a narrow integration-owner handoff for new opt-in native adapter and qualify the 36-turn original safety envelope with live readback/count repair before expanding to 128. No training, merging, Ready or production default changes.
+
+
+## BODY-V2 opt-in expressive host controls (second checkpoint, 15 Nov 2026)
+
+New independent `body_v2.py` is **model-free synthetic**, not an alteration to the real #611 pilot. It retains per-lease isolated World, rejects arbitrary model coordinates and accepts only a digest-fenced **host-offered action ID**. One versioned proposed vocabulary, **not yet wire-compatible with the current native M1 move adapter**, is `INK_{N,E,S,W}_{1..4}`, `LIFT_{N,E,S,W}_{1..4}`, `SAVE_ANCHOR`, `RETRACE_1` and `STOP`. Every ink stroke validates *all* intermediate cells as native-empty and unprotected; pen-up may cross only Empty or the worm's OWN previously drawn material, never foreign material or protected cells. `RETRACE_1` is precisely one adjacent previously visited cursor cell, **not teleportation or material Undo**. Anchor markers are bounded to four, and cannot grant relocation. `STOP` fences all late choices.
+
+The model-facing **local observation** adds a bounded 7×7 occupancy matrix (empty/own ink/foreign/protection/edge), recent physical cursor positions, source-local material hash, menu digest, persistent visited counts and separate **new material cells** versus **cursor logical moves**. Source-matched replay compares every offered menu, original choice, action receipt, World hash and final stored synthetic material. This is **same-code replay**, not independent/native requalification.
+
+The current synthetic-only horizon is explicitly capped at **128 decisions, 128 new cells and 512 logical cursor steps** and is NEVER propagated into #611's 36/36/64/8 native envelope. Four World instances are isolated and never counted as four active model processes. No actual per-runner 1-vs-2 SLM benchmark occurs here.
+
+### First original hosted four-arm pilot
+
+At exact source `352616e8e40faffcd233e2dc3061d7b866a808f6`, [opt-in Actions #43769849173](https://github.com/techrote/cybersand/actions/runs/43769849173) **SUCCESS**, **20/20** model-free tests. The [unaltered original 22-entry ZIP #14183912019](https://github.com/techrote/cybersand/actions/runs/43769849173/artifacts/14183912019), outer SHA-256 `2ed8336e6dc297ba06dd4b97b7b4439c7d52686c5ebfcd9263fa35a8bfa2cc5c`, ZIP CRC PASS and individually manifested original PNG/trace SHA-256 checks, contains four **96×96 synthetic** alternative controls sharing the initial seeded World and host-owned deterministic choice algorithm:
+
+| Variant | Actual synthetic decisions | Unique new synthetic ink cells | Controls enabled |
+| --- | ---: | ---: | --- |
+| One-cell ink only | 85 | 84 | cardinal 1-cell ink, STOP |
+| 1–4-cell ink | 59 | 117 | swept ink, STOP |
+| Swept ink + pen-up | 128 | 128 | swept ink, pen-up crawl, STOP |
+| Swept ink + pen-up + anchors | 128 | 128 | above + SAVE_ANCHOR + single-step RETRACE |
+
+The synthetic 128-turn arms hit the **synthetic 128-cell ink ceiling**; they do **not** demonstrate native performance or model intelligence. The run's drawn images were inspected: each has a locally coherent zigzag/trunk-like geometry; pen-up variants extend over wider separated regions. These are illustrations of how a body/action set changes a **seeded procedural walker**, not results attributable to a learned wormbrain or human quality rankings. The four alternatives share seed but have different action catalogues and therefore are not a causal model-policy comparison.
+
+At subsequent source `81a1d8c3ff9b201640fcac5fb03847aba5fd763c`, [exact-HEAD CI #43770004754](https://github.com/techrote/cybersand/actions/runs/43770004754) **SUCCESS** (22/22 pure-stdlib methods, including adversarial original-action replay and forged-receipt refusal); [separate rerun #43770009410](https://github.com/techrote/cybersand/actions/runs/43770009410) also SUCCESS. These are source-only tests, no model process or Godot native paint.
+
+**Commander handshake:** Commander owns resident model/runner PID attestations and quota; Body Lab offers the versioned `SyntheticBody.observation() / menu() / choose(choice, menu_digest, original_response)` candidate contract. A real runner may reuse the *vocabulary and tests* only after integrating its own source-authenticated native host observation and per-swept-cell receipt, plus separate 128-turn M3 cursor/history/paint/Stop proof. Do not substitute this Python World for current native source or count synthetic material SHA as a native receipt. The exact next engineering gate is a **native-inert integration adapter** mapping the proposed IDs to Commander choices and refusing old-host limits before any new native session.
