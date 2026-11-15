@@ -8,7 +8,7 @@ from tempfile import TemporaryDirectory
 
 from curriculum import (TRAIN_SEEDS, DEV_SEEDS, canonical, checked_splits,
                         evaluate_policy, fresh_directions, oracle, prompt, adverse_rows,
-                        rollout, rows, save_gallery, statistics, worm)
+                        rollout, rows, save_gallery, statistics, worm, split_distinct_actions)
 
 
 class LfmWormSupportTests(unittest.TestCase):
@@ -74,6 +74,22 @@ class LfmWormSupportTests(unittest.TestCase):
                 self.assertLessEqual(r["metrics"]["decision_count"], 20)
                 self.assertGreaterEqual(r["metrics"]["coverage_free_fraction"], 0)
                 self.assertLessEqual(r["metrics"]["invalid_raw_rate"], 1)
+
+    def test_exact_prompt_disjointness_v2_includes_initial_world_aliases(self):
+        # W0 identical local observations can occur under *different* world seeds.
+        raw_train, raw_dev = rows("train", steps=12), rows("development", steps=12)
+        self.assertTrue({x["prompt"] for x in raw_train} &
+                        {x["prompt"] for x in raw_dev})
+        train, dev, audit = split_distinct_actions()
+        self.assertEqual(audit["literal_cross_split_prompt_overlap"], 0)
+        self.assertGreater(audit["distinct_overlapping_prompt_count"], 0)
+        self.assertGreater(audit["removed_train_for_exact_development_prompt"], 0)
+        self.assertEqual(len(train), len({x["prompt"] for x in train}))
+        self.assertEqual(len(dev), len({x["prompt"] for x in dev}))
+        self.assertFalse({x["prompt"] for x in train} & {x["prompt"] for x in dev})
+        self.assertEqual(len(audit["retained_train_worlds"]), 12)
+        checked_splits(train + adverse_rows("train"),
+                       dev + adverse_rows("development"))
 
     def test_heldout_train_leakage_is_fail_closed(self):
         a = rows("train", 3)
