@@ -86,6 +86,9 @@ class ScentAblationTests(unittest.TestCase):
         with self.assertRaises(ValueError):run_one("fake",23,"attract")
         with self.assertRaises(ValueError):run_one("ring",12,"attract")
         with self.assertRaises(ValueError):run_one("ring",23,"fake")
+        with self.assertRaises(ValueError):run_one("ring",23,"attract",steps=513)
+        with self.assertRaises(ValueError):run_one("ring",23,"attract",steps=0)
+        with self.assertRaises(ValueError):run_one("ring",23,"attract",steps=True)
         with tempfile.TemporaryDirectory() as folder:
             corpus(folder)
             target=Path(folder)/"ring-seed23-mirror_x"/"after.png"
