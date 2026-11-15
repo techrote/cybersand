@@ -1,0 +1,92 @@
+name: WORM LFM support W5 original two-world W4 comparison
+on:
+  push:
+    branches: [research/612-worm-lfm-support]
+    paths:
+      - .github/workflows/agent-painter-worm-lfm-support-w5-original-audit.yml
+      - experiments/agent_painter/worm/support_lfm/w5_original_audit.py
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: worm-lfm-support-w5-original
+  cancel-in-progress: false
+jobs:
+  audit:
+    name: Original W5 versus W4 W0-trace and PNG replay
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout support audit source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Source invariants and adversarial W0 audit regressions
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git hash-object experiments/agent_painter/worm/common/worm.py | grep -Fx 8979b6f0296e81051194bacc907992d38e006605
+          python3 -m py_compile experiments/agent_painter/worm/support_lfm/w5_original_audit.py
+          python3 -m unittest discover -s experiments/agent_painter/worm/support_lfm -p test_primary_gallery_audit.py -v
+          python3 tools/ci/check_ci_provider_policy.py
+          mkdir -p evidence-w5
+          git rev-parse HEAD > evidence-w5/executed-support-source-sha.txt
+      - name: Download two immutable ORIGINAL model policy artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(gh api repos/techrote/cybersand/actions/artifacts/14160506840 --jq .digest)" = "sha256:c4facc56ed60a01b6c4fdca227ccb98f81542323bc0d49f2b0065279460d7c8e"
+          test "$(gh api repos/techrote/cybersand/actions/artifacts/14159141242 --jq .digest)" = "sha256:6c06000a9532238b3a05d340af07153fee3c16aedee6e6dd256d114969578ad0"
+          mkdir -p evidence-w5/w5 evidence-w5/w4
+          gh run download 43708515103 -R techrote/cybersand --name lfm25-vl-worm-w5-support-v2-fresh-47b9657891416bf3a54ca78566b9499e4607c8e8-43708515103-1 --dir evidence-w5/w5
+          gh run download 43706057786 -R techrote/cybersand --name lfm25-vl-worm-w4-step180-recovery-3b711d81a38e85b3c4daa395f1ca70980a4373e0-43706057786-1 --dir evidence-w5/w4
+          python3 - <<'PY'
+          import json,pathlib
+          r=pathlib.Path("evidence-w5")
+          w5=json.loads((r/"w5/worm-training/summary.json").read_bytes())
+          w4=json.loads((r/"w4/recovered-evaluation/summary.json").read_bytes())
+          sampler=json.loads((r/"w5/worm-training/sampler-receipt.json").read_bytes())
+          assert w5["status"]=="completed" and w5["actual_training"] is True
+          assert w5["optimizer_updates"]==w5["requested_updates"]==120
+          assert w5["source_sha"]=="47b9657891416bf3a54ca78566b9499e4607c8e8"
+          assert w5["checkpoint"]=="checkpoint-000120"
+          assert w5["model_revision"]=="fc6221ca597f3315e4f82fc2df606783267b34ba"
+          assert w5["sealed_FINAL_opened"] is False
+          assert w5["sampler_version"]=="lfm-worm-w5-family-world-majority-v1"
+          assert sampler["version"]=="lfm-worm-w5-family-quota-balanced-v1"
+          assert w4["status"]=="evaluation-complete-not-producer-success"
+          assert w4["optimizer_updates_in_this_run"]==0 and w4["producer_steps_verified"]==180
+          assert w4["producer_run"]==43701525721
+          assert w4["official_model_revision"]==w5["model_revision"]
+          assert w4["sealed_FINAL_opened"] is False
+          print("Original W5/W4 source, model and sampler-label discrepancy: PASS")
+          PY
+      - name: Replay 48 original PNGs and matched W4-to-W5 policy trajectories
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/worm/support_lfm/w5_original_audit.py --w4-gallery evidence-w5/w4/recovered-evaluation/gallery --w5-gallery evidence-w5/w5/worm-training/gallery --out evidence-w5/independent-comparison.json
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.loads(pathlib.Path("evidence-w5/independent-comparison.json").read_bytes())
+          assert len(r["cases"])==6 and r["model_decisions_per_version"]==288
+          assert r["gallery_manifest"]["W5"]["sha256"]=="5d6d21f0130241c8a3474ecc5b3072ede3040a0d6ae52f012103d280cbd53f9f"
+          assert r["gallery_manifest"]["W4"]["sha256"]=="fe1a9b529d73be0df63223a71e355e6a7a8adcc8afa9e49143531e9a1bf8b549"
+          assert all(c["W5_raw_action_counts"]=={"RIGHT":48} for c in r["cases"])
+          assert all(c["W4_raw_action_counts"]=={"STRAIGHT":48} for c in r["cases"])
+          assert all(c["W5_unique_cells"]==4 and c["delta_unique_cells"]<0 for c in r["cases"])
+          assert all(c["W5_invalid_raw"]==0 for c in r["cases"])
+          assert all(all(v.values()) for v in r["family_model_pngs_identical"].values())
+          print("W4/W5 48 source-faithful PNGs; W5 288 RIGHT actions; 2-world coverage regression PASS")
+          PY
+          mkdir -p evidence-w5/original-W5-PNGs
+          cp evidence-w5/w5/worm-training/gallery/*.png evidence-w5/original-W5-PNGs/
+      - name: Preserve evidence and partial failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-lfm-support-w5-original-replay
+          path: evidence-w5/
+          retention-days: 30
+          if-no-files-found: warn
