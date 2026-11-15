@@ -46,6 +46,59 @@ jobs:
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py
 
+  archived_pair:
+    name: Reconcile original dual-worm native evidence (NO model/Godot rerun)
+    needs: cheap
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Retrieve EXACT successful original free-worm evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          run-id: 43678354515
+          name: driv3r-worm-free-313b836b3c9ce2c60e4659e3763df140f84347a6-43678354515
+          repository: techrote/cybersand
+          github-token: ${{ github.token }}
+          path: archived/free
+      - name: Retrieve EXACT successful original guided-worm evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          run-id: 43678354515
+          name: driv3r-worm-soft-313b836b3c9ce2c60e4659e3763df140f84347a6-43678354515
+          repository: techrote/cybersand
+          github-token: ${{ github.token }}
+          path: archived/soft
+      - name: Independently check archived Q8 turn counts, exact native material replay and first divergence
+        run: |
+          python3 -m experiments.driv3r.wormbrain.aggregate \
+            --root archived \
+            --expected-source 313b836b3c9ce2c60e4659e3763df140f84347a6 \
+            --output archived-comparison/aggregate.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('archived-comparison/aggregate.json')
+          r=json.loads(p.read_text())
+          assert r['status']=='NATIVE_WORM_PAIR_SOURCE_VERIFIED'
+          assert r['source_sha']=='313b836b3c9ce2c60e4659e3763df140f84347a6'
+          assert r['audit_kind']=='original_native_artifact_reconciliation_no_model_or_native_rerun'
+          assert r['first_choice_divergence_on_matched_world'] is not None
+          assert r['first_consequential_native_divergence'] is not None
+          print('Original REAL Q8 + independent native replay: paired, source verified')
+          PY
+      - name: Retain original evidence comparison, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: driv3r-worm-original-pair-reconcile-${{ github.sha }}-${{ github.run_id }}
+          path: archived-comparison/aggregate.json
+          if-no-files-found: warn
+          retention-days: 90
+
   gate:
     name: Admit original successful M4 actual native Q8 evidence
     needs: cheap
