@@ -8,6 +8,7 @@ model choice or claim a native Workbench receipt.
 """
 from __future__ import annotations
 
+from functools import lru_cache
 from math import isfinite
 from typing import Callable
 
@@ -28,8 +29,9 @@ def bounded_optimal_route(
 
     Routing minimizes (decisions, swept distance); wall tracing minimizes
     (out-of-band swept cells, backwards-Y cells, decisions, swept distance)
-    subject to the hard decision horizon. Every macro's swept cells are
-    checked, including the end and excluding its already admitted origin.
+    subject to the hard decision horizon. Source geometry must be an
+    immutable snapshot; legality and clearance are memoized. Every macro's
+    swept cells are checked, including the end and excluding its origin.
     The exact-k dynamic programme keeps the choice at each (k, origin) state,
     rather than prematurely pruning a feasible more-expensive short route.
     """
@@ -42,6 +44,7 @@ def bounded_optimal_route(
         raise ValueError("Decision budget must be in 1..144")
     start, target = tuple(start), tuple(target)
 
+    @lru_cache(maxsize=None)
     def legal(p: Point) -> bool:
         if not (0 <= p[0] < width and 0 <= p[1] < height):
             return False
@@ -53,6 +56,7 @@ def bounded_optimal_route(
     if not legal(start) or not legal(target):
         raise ValueError("Start or target blocked by hard permissions")
 
+    @lru_cache(maxsize=None)
     def penalty(p: Point) -> int:
         if selected_clearance is None:
             return 0
