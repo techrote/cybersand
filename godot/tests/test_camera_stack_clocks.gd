@@ -5,12 +5,15 @@ extends SceneTree
 # physical GPU motion smoothness. #609 owns the latter diagnosis and repair.
 const Setup = preload("res://scripts/workbench_setup.gd")
 const WAIT_MS: int = 45000
+const STARTUP_SAMPLE_INTERVAL_MS: int = 1000
+const STARTUP_MAX_SAMPLES: int = 56 # Six stage events plus terminal stay below 64 rows.
 var host: Control
 var ui: Control
 var menu: Window
 var checks: int = 0
 var failures: Array[String] = []
 var evidence: Array[Dictionary] = []
+var startup_evidence: Array[Dictionary] = []
 
 func _initialize() -> void:
 	_run.call_deferred()
@@ -22,20 +25,146 @@ func check(ok: bool, reason: String) -> bool:
 		push_error("CAMERA_STACK_CLOCKS: "+reason)
 	return ok
 
-func wait_for(predicate: Callable, timeout_ms: int = WAIT_MS) -> bool:
+func startup_snapshot(snapshot: CyberSimulationSnapshot) -> Dictionary:
+	if snapshot == null: return {"present":false}
+	# Immutable publication scalars only: no cell, body, terrain or recipe copies.
+	var context: Dictionary = snapshot.lab_context
+	var scenario: Dictionary = context.get("microscenario",{})
+	return {"present":true,"object_id":snapshot.get_instance_id(),"serial":snapshot.serial,
+		"published_usec":snapshot.published_usec,"tick":snapshot.tick_index,
+		"world_generation":snapshot.render_world_generation,"epoch":snapshot.rigid_body_epoch,
+		"render_serial":snapshot.render_snapshot_serial,"render_tick":snapshot.render_tick_index,
+		"backend":snapshot.backend_name,"paused":snapshot.paused,
+		"failed":snapshot.simulation_failed,"failed_tick":snapshot.failed_tick_index,
+		"tick_failure_count":snapshot.tick_failure_count,"error":snapshot.last_tick_error.left(512),
+		"install_serial":int(context.get("scenario_request_serial",0)),
+		"install_applied":bool(context.get("scenario_request_applied",false)),
+		"micro_active":bool(context.get("micro_active",false)),
+		"status":str(context.get("status","")).left(512),
+		"workbench_refusal":str(context.get("workbench_refusal","")).left(512),
+		"scenario_failed":bool(scenario.get("failed",false)),
+		"scenario_error":str(scenario.get("error","")).left(512)}
+
+func startup_state() -> Dictionary:
+	var state: Dictionary = {"sampled_usec":Time.get_ticks_usec(),
+		"host_present":is_instance_valid(host),"process_frames":Engine.get_process_frames(),
+		"physics_frames":Engine.get_physics_frames(),"display_server":DisplayServer.get_name()}
+	if not is_instance_valid(host): return state
+	state["main"] = {"object_id":host.get_instance_id(),"inside_tree":host.is_inside_tree(),
+		"node_ready":host.is_node_ready(),"processing":host.is_processing(),"paused":host.paused,
+		"worker_start_error":int(host.worker_start_error),"rapier_start_error":int(host.rapier_start_error),
+		"consumed_serial":host.consumed_snapshot_serial,
+		"uploaded_serial":host.last_uploaded_render_snapshot_serial,
+		"uploaded_world_generation":host.last_uploaded_world_generation,
+		"physical_epoch":host._physical_epoch,"terrain_ready":host._physical_terrain_ready,
+		"pending_install":not host.pending_microscenario_apply.is_empty(),
+		"pending_install_serial":int(host.pending_microscenario_apply.get("serial",0)),
+		"prepared_ready_sent":host._prepared_physical_ready_sent,
+		"error":host.microscenario_error.left(512)}
+	state["main_snapshot"] = startup_snapshot(host.latest_snapshot)
+	var session: CyberPhysicalActorSession = host.physical_actor_session
+	state["session"] = {"present":is_instance_valid(session)}
+	if is_instance_valid(session):
+		state.session.merge({"object_id":session.get_instance_id(),"epoch":session.epoch,
+			"tick":session.tick,"error":session.last_error.left(512)})
+	var candidate: RefCounted = host._pending_physical_candidate
+	state["candidate"] = {"present":candidate != null}
+	if candidate != null:
+		# ready()/pose_unchanged() refresh physics; diagnostics must not call them.
+		state.candidate.merge({"object_id":candidate.get_instance_id(),
+			"terrain_installed":candidate.get("_terrain_installed"),
+			"terrain_ready":candidate.get("_terrain_ready"),
+			"verified_physics_frames":candidate.get("_verified_physics_frames"),
+			"error":str(candidate.get("last_error")).left(512)})
+	var worker: CyberSimulationWorker = host.simulation_worker
+	state["worker"] = {"present":worker != null}
+	if worker != null:
+		# Copy bounded control scalars while locked; retain only an immutable
+		# snapshot reference after unlock. Never inspect the mutable native World.
+		worker._mutex.lock()
+		var published: CyberSimulationSnapshot = worker._published_snapshot
+		var controls: Dictionary = {"object_id":worker.get_instance_id(),
+			"running":worker._running,"paused":worker._paused,
+			"reset_requested":worker._reset_requested,"world_change_inflight":worker._world_change_inflight,
+			"lab_request_pending":not worker._lab_request.is_empty(),
+			"lab_request_revision":worker._lab_request_revision,
+			"prepared_publication_present":not worker._prepared_physical_publication.is_empty(),
+			"prepared_serial":int(worker._prepared_physical_publication.get("serial",0)),
+			"prepared_candidate_id":int(worker._prepared_physical_publication.get("instance_id",0)),
+			"prepared_ready_present":not worker._prepared_physical_ready.is_empty(),
+			"prepared_ready":bool(worker._prepared_physical_ready.get("ready",false)),
+			"prepared_reason":str(worker._prepared_physical_ready.get("reason","")).left(512),
+			"acknowledged_serial":worker._acknowledged_render_snapshot_serial}
+		worker._mutex.unlock()
+		controls["thread_started"] = worker._thread.is_started()
+		controls["thread_alive"] = worker._thread.is_alive()
+		state.worker.merge(controls)
+		state["worker_snapshot"] = startup_snapshot(published)
+	var workbench: Control = host.shared_workbench
+	state["workbench"] = {"present":is_instance_valid(workbench)}
+	if is_instance_valid(workbench):
+		state.workbench.merge({"object_id":workbench.get_instance_id(),
+			"applied":not workbench.applied.is_empty(),"busy":workbench.busy(),
+			"pending_request_serial":workbench._pending_request_serial,
+			"message":workbench.message.left(512)})
+	return state
+
+func startup_stage(attempt: Dictionary, stage: String, started_usec: int, finished_usec: int = -1) -> void:
+	var row: Dictionary = {"attempt":attempt.attempt,"event":"stage","stage":stage,
+		"started_usec":started_usec,"finished_usec":finished_usec,
+		"elapsed_ms":null if finished_usec < 0 else float(finished_usec-started_usec)/1000.0}
+	if finished_usec >= 0: attempt.stages.append(row)
+	print("CAMERA_STACK_CLOCKS_STARTUP ",JSON.stringify(row))
+
+func startup_terminal(attempt: Dictionary, reason: String) -> void:
+	if attempt.is_empty(): return
+	var row: Dictionary = {"attempt":attempt.attempt,"event":"terminal","reason":reason,
+		"elapsed_wait_ms":Time.get_ticks_msec()-int(attempt.wait_started_ms),"state":startup_state()}
+	attempt["terminal"] = row
+	print("CAMERA_STACK_CLOCKS_STARTUP ",JSON.stringify(row))
+
+func wait_for(predicate: Callable, timeout_ms: int = WAIT_MS, startup: Dictionary = {}) -> bool:
 	var until: int = Time.get_ticks_msec()+timeout_ms
+	var last_sample_ms: int = -STARTUP_SAMPLE_INTERVAL_MS
+	if not startup.is_empty(): startup["wait_started_ms"] = until-timeout_ms
+	var terminal_reason: String = "deadline"
 	while Time.get_ticks_msec()<until:
-		if predicate.call(): return true
-		if host != null and host.simulation_worker.has_failed(): break
+		if predicate.call():
+			startup_terminal(startup,"predicate")
+			return true
+		if host != null and host.simulation_worker.has_failed():
+			terminal_reason = "worker-failure"
+			break
+		if not startup.is_empty() and startup.samples.size()<STARTUP_MAX_SAMPLES \
+				and Time.get_ticks_msec()-last_sample_ms>=STARTUP_SAMPLE_INTERVAL_MS:
+			var row: Dictionary = {"attempt":startup.attempt,"event":"sample","state":startup_state()}
+			startup.samples.append(row)
+			print("CAMERA_STACK_CLOCKS_STARTUP ",JSON.stringify(row))
+			last_sample_ms = Time.get_ticks_msec()
 		await process_frame
+	startup_terminal(startup,terminal_reason)
 	return false
 
 func mount() -> bool:
 	set_meta("cybersand_feature","shared_workbench")
-	host = load("res://main.tscn").instantiate()
+	var attempt: Dictionary = {"attempt":startup_evidence.size()+1,"timeout_ms":WAIT_MS,
+		"sample_interval_ms":STARTUP_SAMPLE_INTERVAL_MS,"sample_limit":STARTUP_MAX_SAMPLES,
+		"stages":[],"samples":[],"terminal":{}}
+	startup_evidence.append(attempt)
+	var stage_started: int = Time.get_ticks_usec()
+	startup_stage(attempt,"load",stage_started)
+	var scene: PackedScene = load("res://main.tscn")
+	startup_stage(attempt,"load",stage_started,Time.get_ticks_usec())
+	stage_started = Time.get_ticks_usec()
+	startup_stage(attempt,"instantiate",stage_started)
+	host = scene.instantiate()
+	startup_stage(attempt,"instantiate",stage_started,Time.get_ticks_usec())
+	stage_started = Time.get_ticks_usec()
+	startup_stage(attempt,"add_child",stage_started)
 	root.add_child(host)
+	startup_stage(attempt,"add_child",stage_started,Time.get_ticks_usec())
 	if not check(await wait_for(func() -> bool:
-		return host.shared_workbench != null and not host.shared_workbench.applied.is_empty()),
+		return host.shared_workbench != null and not host.shared_workbench.applied.is_empty(),WAIT_MS,attempt),
 		"real Workbench mounted"): return false
 	ui = host.shared_workbench
 	menu = ui.engine_lab
@@ -235,5 +364,5 @@ func _run() -> void:
 		"source_commit":OS.get_environment("CYBERSAND_EVAL_SOURCE_SHA"),
 		"runtime_identity":{"os":OS.get_name(),"display_server":DisplayServer.get_name(),
 			"godot":Engine.get_version_info().string},
-		"physical_gpu_smoothness":"not established","cases":evidence}))
+		"physical_gpu_smoothness":"not established","startup":startup_evidence,"cases":evidence}))
 	quit(int(not failures.is_empty()))

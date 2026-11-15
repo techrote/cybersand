@@ -1002,17 +1002,17 @@
     },
     {
       "path": "godot/tests/test_camera_stack_clocks.gd",
-      "disposition": "KEEP",
+      "disposition": "KEEP WITH MODIFICATION",
       "origins": [
         {
           "component": "reconciliation",
-          "commit": null,
-          "blob_sha256": null
+          "commit": "9a3546836fbdecf7c97e13395428ad147eb59f71",
+          "blob_sha256": "00834a3be17058fd264110a1a2b0eb75edd9cb44d8dfcb8bb563964a005c80e2"
         }
       ],
-      "candidate_sha256": "00834a3be17058fd264110a1a2b0eb75edd9cb44d8dfcb8bb563964a005c80e2",
+      "candidate_sha256": "41de233173f734e0927221e887dc8042bee75c589b85abd48e7ee484fc8dc3e6",
       "byte_identical_to_inspected_heads": [],
-      "reason": "New genuine native/Rapier mismatched-clock cases, live UI camera selection, identity and positive successful-upload ACK evidence."
+      "reason": "Retain all 59 real native/graphical clock checks, original 45000ms mount deadline and predicates. Add bounded read-only startup stage/state receipts after a retained unexplained Windows mount admission failure; no application or timing policy change."
     },
     {
       "path": "godot/tests/test_camera_stack_recording.gd",
