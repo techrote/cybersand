@@ -1,0 +1,146 @@
+name: LFM2.5-VL WORM W7 source-fenced 96-stimulus trained-model sensitivity
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - experiments/agent_painter/lanes/lfm25_vl/worm-w7-sensitivity-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: lfm25-vl-worm-w7-checkpoint120-heldout-sensitivity-v1
+  cancel-in-progress: false
+
+jobs:
+  frozen-checkpoint-model-eval:
+    name: Actual full-model EOS7/6-code sensitivity against four unseen W0 worlds
+    runs-on: ubuntu-24.04
+    timeout-minutes: 48
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: default
+      MKL_CBWR: COMPATIBLE
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - name: Checkout exact LFM Draft evaluator
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Checkout frozen W0 host source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: worm-w0
+          persist-credentials: false
+      - name: Checkout exact independent support challenge code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: fa5b3de4e779b6e0ac564abac809fe580627a2f6
+          path: worm-challenge
+          persist-credentials: false
+      - name: Validate immutable W7 producer, source scope and bounded evaluation request
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C worm-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object worm-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          test "$(git -C worm-challenge rev-parse HEAD)" = fa5b3de4e779b6e0ac564abac809fe580627a2f6
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("experiments/agent_painter/lanes/lfm25_vl/worm-w7-sensitivity-request.json")
+          r=json.loads(p.read_text())
+          assert r == {
+              "schema":"cybersand.worm.lfm-w7-sensitivity/1",
+              "mode":"zero-optimizer-trained-checkpoint-evaluation",
+              "original_failed_producer_run":43721719510,
+              "producer_source":"7b3a39cbc27e12f41b5cc1f232a9a09ec4a8be93",
+              "producer_checkpoint":"checkpoint-000120",
+              "producer_artifact":14166720580,
+              "producer_zip_sha256":"259d40640392e4ccd922b8d51e754795ea9d95503d26c6429c8fe4ac05cce1d9",
+              "challenge_source":"fa5b3de4e779b6e0ac564abac809fe580627a2f6",
+              "challenge_run":43725817191,
+              "challenge_artifact":14165324490,
+              "challenge_zip_sha256":"458db32c6239536f6cbd4f421fc76356f734be4f9b7f9efb850a208875f42794",
+              "challenge_sha256":"f07fae41a0416d13d587a2be02bec54e23178fc46fc6bb66b3ed0aa710d20faf",
+              "model_revision":"fc6221ca597f3315e4f82fc2df606783267b34ba",
+              "W0_source":"4bb9d6e1d0d0d78183f87d1e3c29648edafacf61",
+              "independent_worlds":[3101,3103,3109,3119],
+              "model_first_pass_requests":96,"new_optimizer_updates":0,
+              "native_execution":False,"sealed_FINAL_opened":False,
+              "Draft_HOLD":True,
+          }
+          PY
+          python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/worm_train_w7_v1.py experiments/agent_painter/lanes/lfm25_vl/worm_w7_sensitivity_eval_v1.py
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/lfm-w7-ci-scheduling.json
+          mkdir -p evidence/diagnostics
+          git rev-parse HEAD > evidence/diagnostics/evaluator-source.txt
+          git -C worm-w0 rev-parse HEAD > evidence/diagnostics/w0-source.txt
+          git -C worm-challenge rev-parse HEAD > evidence/diagnostics/challenge-source.txt
+          lscpu > evidence/diagnostics/cpu.txt
+          df -h > evidence/diagnostics/disk-before.txt
+      - name: Download original failed W7 checkpoint and frozen support challenge
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(gh api repos/techrote/cybersand/actions/artifacts/14166720580 --jq .digest)" = "sha256:259d40640392e4ccd922b8d51e754795ea9d95503d26c6429c8fe4ac05cce1d9"
+          test "$(gh api repos/techrote/cybersand/actions/artifacts/14165324490 --jq .digest)" = "sha256:458db32c6239536f6cbd4f421fc76356f734be4f9b7f9efb850a208875f42794"
+          mkdir -p evidence/prior evidence/challenge
+          gh run download 43721719510 -R techrote/cybersand --name lfm25-vl-worm-w7-balanced-codes-fresh-7b3a39cbc27e12f41b5cc1f232a9a09ec4a8be93-43721719510-1 --dir evidence/prior
+          gh run download 43725817191 -R techrote/cybersand --name worm-lfm-support-w7-heldout-stimulus --dir evidence/challenge
+          test -f evidence/prior/worm-training/checkpoint-000120/inventory.json
+          test -f evidence/prior/worm-training/progress.jsonl
+          test -f evidence/challenge/challenge-v1/challenge.jsonl
+          python3 - <<'PY'
+          import hashlib,pathlib
+          p=pathlib.Path("evidence/challenge/challenge-v1/challenge.jsonl")
+          assert hashlib.sha256(p.read_bytes()).hexdigest()=="f07fae41a0416d13d587a2be02bec54e23178fc46fc6bb66b3ed0aa710d20faf"
+          assert len(pathlib.Path("evidence/prior/worm-training/progress.jsonl").read_text().splitlines())==120
+          PY
+          df -h > evidence/diagnostics/disk-after-prior.txt
+      - name: Install original pinned full LFM CPU numerical packages
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/lfm-w7-eval"
+          "$RUNNER_TEMP/lfm-w7-eval/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/lfm-w7-eval/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/lfm-w7-eval/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torchvision==0.29.2+cpu'
+          "$RUNNER_TEMP/lfm-w7-eval/bin/python" -m pip install -r experiments/agent_painter/training/requirements-lfm25_vl.lock
+          "$RUNNER_TEMP/lfm-w7-eval/bin/python" -m pip check
+          "$RUNNER_TEMP/lfm-w7-eval/bin/python" -m pip freeze --all > evidence/diagnostics/pip-freeze.txt
+      - name: Download unchanged official full multimodal LFM and validate reviewed adapter
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/lfm-w7-eval/bin/python" experiments/agent_painter/training/download_model.py --profile lfm25_vl --output "$RUNNER_TEMP/lfm-w7-model"
+          cp "$RUNNER_TEMP/lfm-w7-model/download_receipt.json" evidence/diagnostics/model-download.json
+          LFM25_SNAPSHOT="$RUNNER_TEMP/lfm-w7-model" "$RUNNER_TEMP/lfm-w7-eval/bin/python" experiments/agent_painter/lanes/lfm25_vl/test_adapter.py > evidence/diagnostics/adapter-tests.txt 2>&1
+      - name: Evaluate actual 96 raw EOS7 completions and six-digit score sensitivity
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=45s 1950s "$RUNNER_TEMP/lfm-w7-eval/bin/python" experiments/agent_painter/lanes/lfm25_vl/worm_w7_sensitivity_eval_v1.py \
+            --model "$RUNNER_TEMP/lfm-w7-model" \
+            --worm-root worm-w0/experiments/agent_painter/worm/common \
+            --original evidence/prior/worm-training \
+            --challenge evidence/challenge/challenge-v1/challenge.jsonl \
+            --support-challenge worm-challenge/experiments/agent_painter/worm/support_lfm/stimulus_challenge_w7.py \
+            --output evidence/sensitivity
+      - name: Preserve exact output and partial original first-pass evidence on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lfm25-vl-worm-w7-sensitivity-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/sensitivity/
+            evidence/diagnostics/
+          if-no-files-found: warn
+          retention-days: 90
