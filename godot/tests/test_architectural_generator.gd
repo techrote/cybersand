@@ -323,6 +323,41 @@ func native_algorithm_gallery() -> void:
 			report.cases.append({"case":"native-algorithm-difference",
 				"first":pair[0],"second":pair[1],"different_material_cells":delta})
 
+func classic_gentek_gallery() -> void:
+	var ids: Array[String] = ["trestle","stacked_arcade","flying_buttress","sawtooth_gallery",
+		"cantilever_spine","rib_vault","nested_arcade","suspended_deck"]
+	var builtins: Array = Project.builtin_presets()
+	var hashes := {}
+	var samples := {}
+	for algorithm: String in ids:
+		var style: Dictionary = {}
+		for preset: Dictionary in builtins:
+			if preset.module == algorithm: style = preset.duplicate(true)
+		if not check(not style.is_empty(), "classic gallery includes: " + algorithm): continue
+		var project: Dictionary = Project.default_project()
+		project.seed = 271828
+		project.extent = [512,512]
+		project.styles = [{"enabled":true,"share":100.0,"preset":style}]
+		var compiled: Dictionary = Project.compile(project)
+		if not check(compiled.get("ok",false), "classic project compiles: " + algorithm): continue
+		var data: Dictionary = generation(compiled.recipe, Rect2i(0,0,512,512))
+		if not data.has("cells"): continue
+		check(not hashes.has(data.material_sha256), "classic full-map geometry differs: " + algorithm)
+		hashes[data.material_sha256] = algorithm
+		samples[algorithm] = data.cells
+		var png_us := preview("classic-gentek-" + algorithm, data.cells, Vector2i(512,512))
+		report.cases.append({"case":"gentek-classic-001","algorithm":algorithm,"preset_id":style.id,
+			"module_version":int(style.module_version),"seed":project.seed,"material_sha256":data.material_sha256,
+			"recipe_sha256":data.recipe_sha256,"preview_colour_and_png_us":png_us})
+	check(samples.size() == 8 and hashes.size() == 8, "eight classic Genteks render distinct native maps")
+	if samples.size() == 8:
+		for algorithm: String in ids:
+			if algorithm == "trestle": continue
+			var delta: int = changed_cells(samples[algorithm],samples["trestle"],true)
+			check(delta > 1024, algorithm + " differs in occupied/empty geometry from trestle")
+			report.cases.append({"case":"gentek-classic-structural-difference","algorithm":algorithm,
+				"against":"trestle","occupied_empty_difference_cells":delta})
+
 func native_contracts() -> void:
 	compiler_contracts()
 	var hashes: Dictionary = {}
@@ -756,6 +791,7 @@ func run() -> void:
 	if check(ClassDB.class_exists(&"CyberWorldGenerator"), "native generator runtime available"):
 		if phase == "native":
 			native_algorithm_gallery()
+			classic_gentek_gallery()
 			native_contracts()
 		elif phase in ["author", "reopen"]: await authoring(phase == "reopen")
 		elif phase in ["multistyle-author", "multistyle-reopen"]:

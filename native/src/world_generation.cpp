@@ -434,6 +434,7 @@ public:
     }
 };
 #include "generation_architecture_modules.inc"
+#include "generation_architecture_classic.inc"
 } // namespace
 
 struct Generator::Impl {
@@ -1163,6 +1164,14 @@ ModuleRegistry ModuleRegistry::builtins() {
     r.add({"hex_hive", 2, 112, [](const auto& i, auto) { return std::make_shared<HexHive>(i); }});
     r.add({"arcade", 1, 60, [](const auto& i, auto seed) { return std::make_shared<ViaductArcade>(i, seed); }});
     r.add({"arcade", 2, 60, [](const auto& i, auto seed) { return std::make_shared<ViaductArcade>(i, seed); }});
+    r.add({"trestle", 1, 48, [](const auto& i, auto) { return std::make_shared<TrestleFrame>(i); }});
+    r.add({"stacked_arcade", 1, 56, [](const auto& i, auto) { return std::make_shared<StackedArcade>(i); }});
+    r.add({"flying_buttress", 1, 48, [](const auto& i, auto) { return std::make_shared<FlyingButtress>(i); }});
+    r.add({"sawtooth_gallery", 1, 44, [](const auto& i, auto) { return std::make_shared<SawtoothGallery>(i); }});
+    r.add({"cantilever_spine", 1, 52, [](const auto& i, auto seed) { return std::make_shared<CantileverSpine>(i, seed); }});
+    r.add({"rib_vault", 1, 48, [](const auto& i, auto) { return std::make_shared<RibVault>(i); }});
+    r.add({"nested_arcade", 1, 60, [](const auto& i, auto) { return std::make_shared<NestedArcade>(i); }});
+    r.add({"suspended_deck", 1, 44, [](const auto& i, auto) { return std::make_shared<SuspendedDeck>(i); }});
     return r;
 }
 
@@ -1177,7 +1186,11 @@ std::vector<Theme> Generator::builtin_themes() {
         {"garden", {"natural", "built"}, true, {Material::LimestoneBlock, Material::PackedEarth, Material::Plant, Material::Water}, {}}
     };
 }
-std::vector<std::string> Generator::builtin_modules() { return {"arcology", "vault", "aqueduct", "terraced", "hex_hive", "arcade"}; }
+std::vector<std::string> Generator::builtin_modules() {
+    return {"arcology", "vault", "aqueduct", "terraced", "hex_hive", "arcade",
+        "trestle", "stacked_arcade", "flying_buttress", "sawtooth_gallery",
+        "cantilever_spine", "rib_vault", "nested_arcade", "suspended_deck"};
+}
 
 std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleRegistry& registry) {
     require((recipe.schema == kSchemaVersion || recipe.schema == kTypedSchemaVersion ||
@@ -1402,7 +1415,12 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
     for (const auto& m : recipe.modules) module_ids.insert(m.id);
     for (auto& m : recipe.modules) {
         identifier(m.module); validate_rect(m.bounds);
-        if ((m.module == "terraced" || m.module == "hex_hive" || m.module == "arcade") && (m.version == 1 || m.version == 2))
+        const bool schema4_architecture =
+            m.module == "terraced" || m.module == "hex_hive" || m.module == "arcade" ||
+            m.module == "trestle" || m.module == "stacked_arcade" || m.module == "flying_buttress" ||
+            m.module == "sawtooth_gallery" || m.module == "cantilever_spine" ||
+            m.module == "rib_vault" || m.module == "nested_arcade" || m.module == "suspended_deck";
+        if (schema4_architecture && (m.version == 1 || m.version == 2))
             require(recipe.schema == kArchitecturalSchemaVersion, "new architectural modules require schema 4");
         if ((m.module == "arcology" || m.module == "vault") && m.version == 2) {
             require(recipe.schema == kArchitecturalSchemaVersion, "architectural module v2 requires recipe schema 4");

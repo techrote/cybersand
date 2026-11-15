@@ -1200,6 +1200,37 @@ void independent_architectural_algorithms() {
 }
 
 
+void classic_architectural_genteks() {
+    const std::array<std::string,8> ids{"trestle","stacked_arcade","flying_buttress",
+        "sawtooth_gallery","cantilever_spine","rib_vault","nested_arcade","suspended_deck"};
+    std::set<std::vector<Material>> unique;
+    for (const auto& id : ids) {
+        Recipe recipe; recipe.schema=kArchitecturalSchemaVersion; recipe.candidate=Candidate::Strata;
+        recipe.parameters.surface_y=-100; recipe.chunk_size=64; recipe.seed=271828;
+        auto module=instance("classic",id,{0,0,256,256}); module.version=1;
+        module.parameters={{"bay_width",96},{"floor_height",80},{"wall",3},{"door_width",10},
+            {"shaft_width",0},{"automatic_doors",1},{"automatic_windows",1},
+            {"wall_material",62},{"floor_material",66},{"window_material",121},{"accent_material",114}};
+        recipe.modules.push_back(module);
+        const auto generator=Generator::compile(recipe);
+        std::vector<Material> signature; std::size_t occupied=0;
+        for (const auto coord : {ChunkCoord{0,0},ChunkCoord{1,0},ChunkCoord{0,1},ChunkCoord{1,1}}) {
+            const auto ready=generator->generate(coord);
+            require(ready.state==ResultState::Ready,id+" classic raster ready");
+            occupied+=static_cast<std::size_t>(std::count_if(ready.cells.begin(),ready.cells.end(),
+                [](Material m){return m!=Material::Empty;}));
+            signature.insert(signature.end(),ready.cells.begin(),ready.cells.end());
+            auto job=generator->begin(coord); while(job->state()==ResultState::Pending)(void)job->advance(31);
+            same_cells(job->result(),ready,id+" classic slicing deterministic");
+        }
+        require(occupied>512 && occupied<4*64*64-512,id+" has structure and negative space");
+        unique.insert(std::move(signature));
+        auto invalid=recipe; invalid.schema=kHierarchySchemaVersion;
+        rejects([&]{(void)Generator::compile(invalid);},id+" requires schema 4");
+    }
+    require(unique.size()==ids.size(),"eight classic Genteks produce distinct native geometry");
+}
+
 void refined_architectural_details() {
     const auto module_at = [](const std::string& id, std::uint32_t version) {
         Recipe recipe;
@@ -1267,6 +1298,7 @@ int main() {
         architectural_vault_controls();
         architectural_arcology_apertures_and_jobs();
         independent_architectural_algorithms();
+        classic_architectural_genteks();
         refined_architectural_details();
         std::cout << "PASS procedural generation: candidate/order/partition determinism, signed seams, "
                      "theme hierarchy/exclusions, broad/fine/hard controls, bounded modules, "

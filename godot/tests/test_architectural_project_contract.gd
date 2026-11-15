@@ -174,6 +174,39 @@ func new_native_algorithms() -> void:
 		outputs.hex_hive != outputs.arcade and outputs.arcade != outputs.terraced,
 		"three new native algorithms produce materially distinct deterministic geometry")
 
+func classic_genteks() -> void:
+	var ids: Array[String] = ["trestle","stacked_arcade","flying_buttress","sawtooth_gallery",
+		"cantilever_spine","rib_vault","nested_arcade","suspended_deck"]
+	var presets: Array = Project.builtin_presets()
+	var hashes := {}
+	for module: String in ids:
+		var found: Dictionary = {}
+		for preset: Dictionary in presets:
+			if preset.module == module: found = preset.duplicate(true)
+		if not check(not found.is_empty(), "classic Gentek builtin: " + module): continue
+		check(int(found.module_version) == 1 and Project.validate_preset(found).is_empty(),
+			"classic Gentek has valid v1 identity: " + module)
+		var bad_version: Dictionary = found.duplicate(true)
+		bad_version.module_version = 2
+		check(not Project.validate_preset(bad_version).is_empty(), "classic Gentek refuses v2: " + module)
+		var configured: Dictionary = Project.default_project()
+		configured.styles = [{"enabled":true,"share":100.0,"preset":found}]
+		configured.extent = [512,512]
+		var compiled: Dictionary = Project.compile(configured)
+		if not check(compiled.get("ok",false), "classic Gentek compiles: " + module): continue
+		check(compiled.recipe.modules.size() == 1 and compiled.recipe.modules[0].module == module and
+			int(compiled.recipe.modules[0].version) == 1, "classic identity reaches recipe: " + module)
+		if not ClassDB.class_exists(&"CyberWorldGenerator"): continue
+		var generator: Variant = ClassDB.instantiate(&"CyberWorldGenerator")
+		var admitted: Dictionary = generator.configure(compiled.recipe)
+		if not check(admitted.get("ok",false), "classic native admission: " + module): continue
+		var chunk: Dictionary = generator.generate_chunk(Vector2i.ZERO)
+		if check(chunk.get("ok",false), "classic native raster: " + module):
+			var digest: String = Store.digest(chunk.cells)
+			check(not hashes.has(digest), "classic first-chunk geometry differs: " + module)
+			hashes[digest] = module
+	check(hashes.size() == 8, "eight classic Genteks produce distinct first-chunk material geometry")
+
 func planner_invariants() -> void:
 	for seed: int in range(64):
 		for scale: int in [64,128,256]:
@@ -270,6 +303,7 @@ func run() -> void:
 	hostile_json()
 	expanded_styles()
 	new_native_algorithms()
+	classic_genteks()
 	planner_invariants()
 	native_identity_edges()
 	print("ARCHITECTURAL_PROJECT_CONTRACT checks=%d failures=%d" % [checks,failures])

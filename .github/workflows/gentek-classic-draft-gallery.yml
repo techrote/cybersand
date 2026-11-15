@@ -1,0 +1,84 @@
+name: GENTEK-CLASSIC-001 draft native gallery
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'native/**'
+      - 'godot/**'
+      - 'examples/worldgen/architectural/**'
+      - '.github/workflows/gentek-classic-draft-gallery.yml'
+permissions:
+  contents: write
+  actions: read
+  pull-requests: read
+jobs:
+  gallery:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'experiment/gentek-classic-001-20261115'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+      GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+      GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Focused native tests
+        run: timeout 3600 make -j2 worldgen-test CXX=g++-13
+      - name: Fetch pinned dependencies
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum -c --strict
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          git init "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 600 git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+      - name: Build source-matched Linux extension
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          timeout 3600 bash tools/build_pinned_godot_cpp.sh linux
+          timeout 3600 bash tools/build_native_extension.sh
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+      - name: Render actual native material previews
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 -o "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum -c --strict
+          mkdir -p "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          chmod +x "$GODOT_BIN"
+          mkdir -p build/gentek-classic-gallery
+          CYBERSAND_ARCHITECTURE_PHASE=native CYBERSAND_ARCHITECTURE_OUTPUT="$GITHUB_WORKSPACE/build/gentek-classic-gallery"             timeout 3600 "$GODOT_BIN" --headless --path godot --script res://tests/test_architectural_generator.gd
+          test "$(find build/gentek-classic-gallery -maxdepth 1 -name 'classic-gentek-*.png' | wc -l)" -eq 8
+      - name: Retain complete evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek-classic-gallery-${{ github.run_id }}
+          path: build/gentek-classic-gallery/
+          if-no-files-found: error
+          retention-days: 90
+      - name: Publish preview PNGs on the Draft branch
+        run: |
+          set -euo pipefail
+          mkdir -p docs/images/gentek-classic
+          cp build/gentek-classic-gallery/classic-gentek-*.png docs/images/gentek-classic/
+          cp build/gentek-classic-gallery/architecture-native.json docs/images/gentek-classic/
+          git add docs/images/gentek-classic
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs(gentek): publish CLASSIC-001 native preview gallery'
+          git push origin HEAD:"${{ github.head_ref }}"

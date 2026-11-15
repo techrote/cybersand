@@ -11,9 +11,10 @@ const Generated = preload("res://scripts/workbench_generated_map.gd")
 
 static func _preset(identity: String, label: String, module: String, theme: String,
 		room: int, floor_height: int, wall: int, door: int, shaft: int,
-		wall_material: int, floor_material: int, window_material: int, damage: float) -> Dictionary:
+		wall_material: int, floor_material: int, window_material: int, damage: float,
+		module_version: int = 2) -> Dictionary:
 	return {"format":PRESET_FORMAT,"version":1,"id":identity,"name":label,
-		"module":module,"module_version":2,"theme":theme,
+		"module":module,"module_version":module_version,"theme":theme,
 		"geometry":{"room_size":room,"floor_height":floor_height,
 			"wall_thickness":wall,"door_width":door,"shaft_width":shaft},
 		"materials":{"wall":wall_material,"floor":floor_material,"window":window_material},
@@ -33,7 +34,15 @@ static func builtin_presets() -> Array:
         _preset("orbital-observatory","Orbital Observatory","arcology","industrial",96,64,2,14,12,130,114,121,0.0),
 		_preset("skyline-terraces","Skyline Terraces","terraced","ruins",80,40,3,12,10,58,111,121,0.02),
 		_preset("cellular-hive","Cellular Hive","hex_hive","industrial",64,56,3,10,0,130,65,121,0.0),
-		_preset("arched-viaduct","Arched Viaduct","arcade","ruins",80,64,3,10,0,98,49,121,0.0)
+		_preset("arched-viaduct","Arched Viaduct","arcade","ruins",80,64,3,10,0,98,49,121,0.0),
+		_preset("steel-trestle","Steel Trestle","trestle","industrial",72,64,3,10,0,62,66,121,0.0,1),
+		_preset("stacked-arcade","Stacked Arcade","stacked_arcade","ruins",96,96,3,12,0,98,111,121,0.0,1),
+		_preset("flying-buttress","Flying Buttress","flying_buttress","ruins",96,80,3,12,0,104,114,120,0.0,1),
+		_preset("sawtooth-gallery","Sawtooth Gallery","sawtooth_gallery","industrial",64,56,2,10,0,113,114,121,0.0,1),
+		_preset("cantilever-spine","Cantilever Spine","cantilever_spine","industrial",96,72,3,10,0,130,114,121,0.0,1),
+		_preset("rib-vault","Rib Vault","rib_vault","basalt",80,80,3,10,0,100,101,123,0.0,1),
+		_preset("nested-arcade","Nested Arcade","nested_arcade","ruins",96,80,3,10,0,104,119,120,0.0,1),
+		_preset("suspended-deck","Suspended Deck","suspended_deck","industrial",96,72,3,10,0,62,66,121,0.0,1)
 	]
 
 static func default_project() -> Dictionary:
@@ -78,9 +87,12 @@ static func validate_preset(preset: Variant) -> String:
 	if not _identifier(preset.id): return "Style id must be 1–64 lowercase letters, digits, hyphens or underscores."
 	if not preset.name is String or preset.name.strip_edges().is_empty() or preset.name.length() > 128:
 		return "Style name must be a nonempty string of at most 128 characters."
-	if not preset.module is String or preset.module not in ["arcology","vault","terraced","hex_hive","arcade"]:
+	if not preset.module is String or preset.module not in ["arcology","vault","terraced","hex_hive","arcade",
+			"trestle","stacked_arcade","flying_buttress","sawtooth_gallery",
+			"cantilever_spine","rib_vault","nested_arcade","suspended_deck"]:
 		return "Unknown native architectural module."
-	var allowed_versions: Array = [2] if preset.module in ["arcology","vault"] else [1, 2]
+	var allowed_versions: Array = [2] if preset.module in ["arcology","vault"] else \
+		([1,2] if preset.module in ["terraced","hex_hive","arcade"] else [1])
 	if not _number(preset.module_version,1,2) or int(preset.module_version) not in allowed_versions:
 		return "Incorrect version for native module " + str(preset.module) + "."
 	if not preset.theme is String or preset.theme not in ["industrial","ruins","garden","basalt","dry_cavern","wet_cavern"]:
@@ -101,6 +113,12 @@ static func validate_preset(preset: Variant) -> String:
 		return "Door opening must fit between Arcology floors."
 	if not _number(g.shaft_width,0,64): return "Service shaft width must be 0 (disabled) or 4–64 cells."
 	if int(g.shaft_width) > 0 and int(g.shaft_width) < 4: return "Service shaft width must be 0 (disabled) or 4–64 cells."
+	if preset.module in ["stacked_arcade","nested_arcade"] and int(g.room_size) < 4*int(g.wall_thickness)+12:
+		return "This Gentek needs room size at least 4 × wall thickness + 12 cells."
+	if preset.module in ["stacked_arcade","nested_arcade"] and int(g.floor_height) < 4*int(g.wall_thickness)+12:
+		return "This Gentek needs floor height at least 4 × wall thickness + 12 cells."
+	if preset.module == "sawtooth_gallery" and int(g.room_size)/2 < 2*int(g.wall_thickness)+4:
+		return "Sawtooth Gallery needs half-bay width at least 2 × wall thickness + 4 cells."
 	error = _keys(preset.materials,["wall","floor","window"],["wall","floor","window"],"Style materials")
 	if not error.is_empty(): return error
 	for key: String in preset.materials:
@@ -294,7 +312,9 @@ static func compile(input: Variant) -> Dictionary:
 		var parameters := {"wall":g.wall_thickness,"door_width":g.door_width,
 			"automatic_doors":1 if doors else 0,"wall_material":preset.materials.wall,
 			"accent_material":preset.materials.floor}
-		if preset.module in ["vault","terraced","hex_hive","arcade"]:
+		if preset.module in ["vault","terraced","hex_hive","arcade","trestle","stacked_arcade",
+				"flying_buttress","sawtooth_gallery","cantilever_spine","rib_vault",
+				"nested_arcade","suspended_deck"]:
 			# One global geometric anchor, independently clipped by a zone mask.
 			# Avoid restarting rooms/arches at every zone's bounding rectangle.
 			bounds = [project.origin[0],project.origin[1],extent.x,extent.y]

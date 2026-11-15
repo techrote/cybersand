@@ -888,10 +888,16 @@ Dictionary CyberWorldGenerator::get_catalogue() const {
         Dictionary item;
         item["id"] = String(module.c_str());
         item["version"] = 1;
-        const bool schema4_only = module == "terraced" || module == "hex_hive" || module == "arcade";
+        const bool schema4_only =
+            module == "terraced" || module == "hex_hive" || module == "arcade" ||
+            module == "trestle" || module == "stacked_arcade" || module == "flying_buttress" ||
+            module == "sawtooth_gallery" || module == "cantilever_spine" ||
+            module == "rib_vault" || module == "nested_arcade" || module == "suspended_deck";
+        const bool has_v2 = module == "arcology" || module == "vault" ||
+            module == "terraced" || module == "hex_hive" || module == "arcade";
         if (schema4_only) item["minimum_recipe_schema"] = gen::kArchitecturalSchemaVersion;
         modules.push_back(item);
-        if (module == "arcology" || module == "vault" || schema4_only) {
+        if (has_v2) {
             Dictionary versioned = item.duplicate();
             versioned["version"] = 2;
             versioned["minimum_recipe_schema"] = gen::kArchitecturalSchemaVersion;
