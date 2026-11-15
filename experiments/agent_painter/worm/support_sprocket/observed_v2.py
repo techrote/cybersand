@@ -152,6 +152,12 @@ def write_dataset(out):
     train, td = make_observed("TRAIN", TRAIN_WORLDS)
     dev, dd = make_observed("DEVELOPMENT", DEV_WORLDS)
     ta = {r["observation_sha256"] for r in train}
+    # Seed-disjoint worlds can expose *identical local W0 observations*, notably
+    # the protected unobstructed starting area. Remove these from held-out DEV
+    # rather than silently labeling identical inputs as independent samples.
+    previous_dev = len(dev)
+    dev = [r for r in dev if r["observation_sha256"] not in ta]
+    cross_split_removed = previous_dev - len(dev)
     da = {r["observation_sha256"] for r in dev}
     if ta & da:
         raise AssertionError("cross-split W0 observation overlap")
@@ -167,7 +173,8 @@ def write_dataset(out):
               "kind": "observed W0 synthetic action policy, NOT model/native/FINAL",
               "split_observation_intersection": 0,
               "group_count": {"TRAIN": len(TRAIN_WORLDS), "DEVELOPMENT": len(DEV_WORLDS)},
-              "deduplication": {"TRAIN": td, "DEVELOPMENT": dd}}
+              "deduplication": {"TRAIN": td, "DEVELOPMENT": dd},
+              "identical_local_observations_removed_from_development": cross_split_removed}
     for label, rows in (("TRAIN", train), ("DEVELOPMENT", dev)):
         payload = b"".join(canonical(r) + b"\n" for r in rows)
         name = label.lower() + ".jsonl"
