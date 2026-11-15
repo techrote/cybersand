@@ -44,7 +44,7 @@ class FieldTests(unittest.TestCase):
             GuidanceField(2, 1, values)
         with self.assertRaisesRegex(ValueError, "frame exceeds"):
             GuidanceField(2, 1, (0, 65535), x=2**31 - 1)
-        canonical = GuidanceField.from_raw(2, 1, b"\\x00\\x00\\xff\\xff")
+        canonical = GuidanceField.from_raw(2, 1, bytes.fromhex("0000ffff"))
         self.assertEqual(canonical.values, (0, 65535))
         values[0] = 123
         self.assertEqual(canonical.values, (0, 65535))
