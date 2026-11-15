@@ -228,11 +228,19 @@ def build_four_streams(sources: list[dict]) -> dict:
     rows = [build_stream(src) for src in sources]
     for key in ("stream_id", "seed", "snapshot_id"):
         _check(len({r[key] for r in rows}) == 4, f"duplicate {key} between sample streams")
-    # Distinct source World + material bytes prevent counting four aliases as
-    # four independent seeds. Identical initial source Worlds need a separate
-    # controlled paired-state study, not this four-stream isolation fixture.
-    _check(len({(r["world_sha256"], r["material_sha256"]) for r in rows}) == 4,
-           "duplicate source World/material pair across streams")
+    # Requiring only unique (World, material) *pairs* permitted aliasing the
+    # same World under a different material digest (and vice versa). That is a
+    # source-isolation confound when presented as four independent worm Worlds.
+    # Both declared source identities must be distinct; original bytes remain
+    # UNVERIFIED here and must be checked by the consuming host.
+    _check(len({r["world_sha256"] for r in rows}) == 4,
+           "duplicate World/material source alias: World")
+    _check(len({r["material_sha256"] for r in rows}) == 4,
+           "duplicate World/material source alias: material")
+    # Equal software revision is required for a same-protocol fleet comparison;
+    # different Worlds and seeds do not justify silently mixing host versions.
+    _check(len({src["source_revision"] for src in sources}) == 1,
+           "mixed source revisions in one matched fleet comparison")
     body = {"protocol": PROTOCOL, "accepted_m1_source": M1_COMMIT,
             "accepted_m1_schema_sha256": M1_SCHEMA_SHA256,
             "evidence_class": "synthetic_offline_inputs_only", "sample_stream_count": 4,
