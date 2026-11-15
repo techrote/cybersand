@@ -9,26 +9,26 @@ from experiments.driv3r.stage_d.guidance import qualification as q
 
 class QualificationTests(unittest.TestCase):
     def test_complete_pass(self):
-        self.assertTrue(q.parse_unittest("Ran 181 tests in 3.00s\n\nOK\n", 0)["passed"])
+        self.assertTrue(q.parse_unittest("Ran 185 tests in 3.00s\n\nOK\n", 0)["passed"])
 
     def test_missing_and_duplicate_footer(self):
-        for log in ("OK\n", "Ran 181 tests in 1.0s\nRan 181 tests in 1.0s\nOK\n"):
+        for log in ("OK\n", "Ran 185 tests in 1.0s\nRan 185 tests in 1.0s\nOK\n"):
             with self.subTest(log=log):
                 self.assertFalse(q.parse_unittest(log, 0)["passed"])
 
     def test_incomplete_cohort(self):
-        for count in (158, 167, 168, 169, 170, 172, 173, 180):
+        for count in (158, 167, 168, 169, 170, 172, 173, 180, 181, 184):
             with self.subTest(count=count):
                 self.assertFalse(q.parse_unittest(f"Ran {count} tests in 1.0s\n\nOK\n", 0)["passed"])
 
     def test_skips_are_not_passes(self):
-        self.assertFalse(q.parse_unittest("Ran 181 tests in 1.0s\n\nOK (skipped=1)\n", 0)["passed"])
+        self.assertFalse(q.parse_unittest("Ran 185 tests in 1.0s\n\nOK (skipped=1)\n", 0)["passed"])
 
     def test_failed_returncode_is_not_pass(self):
-        self.assertFalse(q.parse_unittest("Ran 181 tests in 1.0s\n\nOK\n", 1)["passed"])
+        self.assertFalse(q.parse_unittest("Ran 185 tests in 1.0s\n\nOK\n", 1)["passed"])
 
     def test_failed_suite_is_not_pass(self):
-        self.assertFalse(q.parse_unittest("Ran 181 tests in 1.0s\n\nFAILED (failures=1)\n", 1)["passed"])
+        self.assertFalse(q.parse_unittest("Ran 185 tests in 1.0s\n\nFAILED (failures=1)\n", 1)["passed"])
 
     def test_invalid_timeout_fails_before_access(self):
         for t in (True, 0, -1, 601, 3.1, "180"):

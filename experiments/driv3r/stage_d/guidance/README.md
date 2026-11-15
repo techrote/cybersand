@@ -1,5 +1,23 @@
 # D-1B: soft guidance and shadow critic — independent preparatory lane
 
+## Original Q8 answer/complete-candidate binding — 15 November 2026
+
+The read-only original #611 native archive auditor now re-parses the **original
+typed System One** answer using the existing read-only backend parser, matching
+raw probability distribution, chosen ID and logged selection. It independently
+re-hashes the presented candidate order and whole question/state payload, and
+requires **all** legal MOVE directions to appear in numeric hints. A previously
+omitted high-scent legal move could bias the retrospective's reported 13/36
+highest-guide rate even when remaining hints had correct scalar bytes.
+Four adversarial tests exercise correct raw output, substituted selected ID,
+an omitted legal hint with re-sealed presentation, and invalid raw probability.
+Minimum declared complete-suite count: **185**. No replay of original archive
+ZIPs or full exact-head suite is claimed by this source change: the prior
+13/36 observation is **pending re-verification** under the stricter auditor.
+This is read-only evidence binding, not new model inference, native material
+editing, actual Undo, image-conditioned d1, formal A/B or causal proof.
+
+
 ## Commit-history write-scope qualification — 15 November 2026
 
 The offline qualifier now inspects every **non-merge commit's** changed paths

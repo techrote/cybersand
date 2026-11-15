@@ -15,6 +15,8 @@ import struct
 import sys
 from zipfile import ZipFile
 
+from experiments.driv3r.backend import BackendRefusal, parse_choice_response
+
 PROTOCOL = "cybersand.driv3r.d1b-native-pair-retrospective/1"
 M1_COMMIT = "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6"
 SOURCE = "313b836b3c9ce2c60e4659e3763df140f84347a6"
@@ -114,6 +116,44 @@ def _verify_world_readback(z: ZipFile, req: dict, resp: dict,
                  "native material delta differs from sole expected 0-to-58 cell")
 
 
+def _canonical_digest(value: object) -> str:
+    """Exact original #611 JSON digest; independent of claimed archive digest."""
+    return sha256(json.dumps(value, sort_keys=True, separators=(",", ":"),
+                            allow_nan=False).encode("utf-8")).hexdigest()
+
+
+def _verify_original_model_choice(turn: dict) -> None:
+    """Verify raw Q8 choice and every offered move; no model/native execution."""
+    state = turn["model_state"]
+    offered = turn["exact_candidate_ids_in_presented_order"]
+    _require(type(offered) is list and len(offered) >= 2 and
+             len(offered) == len(set(offered)) and
+             all(type(x) is str and x for x in offered) and
+             state["eligible_moves"] == offered,
+             "archived presented/eligible candidate list mismatch")
+    # The max-scent statistic is invalid if a higher-scent LEGAL move has
+    # disappeared from the archived hints even if all remaining hints match.
+    _require(set(state["candidate_hints"]) == {x for x in offered if x in MOVES},
+             "missing or foreign legal movement hint")
+    questions = turn["questions"]
+    _require(questions["worm_move"]["type"] == "choice" and
+             set(questions["worm_move"]["criteria"]) == set(offered),
+             "model criteria do not match offered legal candidate IDs")
+    _require(turn["presented_order_sha256"] == _canonical_digest(offered) and
+             turn["presentation_sha256"] == _canonical_digest({
+                 "state": state, "questions": questions, "ordered_candidates": offered}),
+             "original model presentation SHA-256 mismatch")
+    original = turn["original_response"]
+    _require(original["status"] == "ok", "original model response not successful")
+    try:
+        parsed = parse_choice_response(original["raw_response"], "worm_move", offered)
+    except (BackendRefusal, KeyError, TypeError, ValueError) as exc:
+        raise ValueError("original Q8 response invalid") from exc
+    _require(parsed == turn["parsed_choice"] and
+             parsed["candidate_id"] == turn["chosen_candidate"],
+             "archived chosen ID differs from original Q8 response")
+
+
 def audit_arm(path: Path, expected_mode: str, expected_decisions: int = 36) -> dict:
     """Bind model-selected legal controls to actual archived native material changes."""
     _require(expected_mode in ("free", "soft") and type(expected_decisions) is int and
@@ -150,6 +190,7 @@ def audit_arm(path: Path, expected_mode: str, expected_decisions: int = 36) -> d
         observations = []
         for i in range(expected_decisions):
             t = _read_json(z, f"execution/model/turn-{i:02}.json")
+            _verify_original_model_choice(t)
             state, choice = t["model_state"], t["chosen_candidate"]
             _require(t["index"] == i and t["mode"] == expected_mode and
                      state["position"] == previous_cursor and

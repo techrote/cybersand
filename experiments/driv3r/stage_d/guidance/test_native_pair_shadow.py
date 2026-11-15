@@ -94,5 +94,55 @@ class RetrospectiveGuardTests(unittest.TestCase):
                 s.audit_arm('/not-found', mode, count)
 
 
+class OriginalModelBindingTests(unittest.TestCase):
+    def _turn(self):
+        ids = ["MOVE_N", "MOVE_E", "STOP"]
+        probs = {"MOVE_N": 0.7, "MOVE_E": 0.2, "STOP": 0.1}
+        state = {"eligible_moves": ids[:],
+                 "candidate_hints": {"MOVE_N": {}, "MOVE_E": {}}}
+        questions = {"worm_move": {"type": "choice", "criteria": dict.fromkeys(ids, "x")}}
+        turn = {"model_state": state, "questions": questions,
+                "exact_candidate_ids_in_presented_order": ids[:],
+                "chosen_candidate": "MOVE_N",
+                "parsed_choice": {"candidate_id": "MOVE_N",
+                                  "probabilities": probs.copy(), "confidence": 0.7},
+                "original_response": {"status": "ok", "raw_response": {
+                    "usage": {"input_tokens": 5, "output_tokens": 0},
+                    "answers": {"worm_move": {"type": "choice", "choice": "MOVE_N",
+                                "probabilities": probs.copy(), "confidence": 0.7}}}}}
+        self._seal(turn)
+        return turn
+
+    def _seal(self, turn):
+        ids = turn["exact_candidate_ids_in_presented_order"]
+        turn["presented_order_sha256"] = s._canonical_digest(ids)
+        turn["presentation_sha256"] = s._canonical_digest({
+            "state": turn["model_state"], "questions": turn["questions"],
+            "ordered_candidates": ids})
+
+    def test_valid_original_raw_q8_binding(self):
+        self.assertIsNone(s._verify_original_model_choice(self._turn()))
+
+    def test_changed_logged_selected_action_rejected(self):
+        t = self._turn()
+        t["chosen_candidate"] = "MOVE_E"
+        with self.assertRaisesRegex(ValueError, "differs from original Q8"):
+            s._verify_original_model_choice(t)
+
+    def test_missing_legal_move_hint_rejected_even_after_reseal(self):
+        t = self._turn()
+        del t["model_state"]["candidate_hints"]["MOVE_E"]
+        self._seal(t)
+        with self.assertRaisesRegex(ValueError, "missing or foreign"):
+            s._verify_original_model_choice(t)
+
+    def test_tampered_model_probability_distribution_rejected(self):
+        t = self._turn()
+        t["original_response"]["raw_response"]["answers"]["worm_move"][
+            "probabilities"]["MOVE_E"] = 0.9
+        with self.assertRaisesRegex(ValueError, "original Q8 response invalid"):
+            s._verify_original_model_choice(t)
+
+
 if __name__ == '__main__':
     unittest.main()
