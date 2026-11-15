@@ -30,5 +30,6 @@
   "zero_optimizer": true,
   "synthetic_not_native": true,
   "sealed_final_opened": false,
-  "draft_hold": true
+  "draft_hold": true,
+  "preflight_revision": 2
 }
