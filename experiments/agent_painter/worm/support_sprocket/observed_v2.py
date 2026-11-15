@@ -9,14 +9,40 @@ from __future__ import annotations
 import argparse
 from collections import Counter
 import hashlib
+import importlib.util
 import json
+import os
 from pathlib import Path
 import sys
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import curriculum as old
-worm = old.worm
+
+# The current stacked #614 parent contains W0 before the shepherd-added
+# observation callback. Reuse exact source-pinned W0 v2 on a separate read-only
+# file rather than edit common, guess a transport, or simulate W0 locally.
+W0_COMMIT = "4bb9d6e1d0d0d78183f87d1e3c29648edafacf61"
+W0_SHA256 = "81c3923cb38d7f196b99986806216388c34ebc27fd4976e168b3b370c25a323e"
+def load_pinned_w0():
+    name = os.environ.get("SPROCKET_W0_PINNED_PATH")
+    if not name:
+        raise RuntimeError("SPROCKET_W0_PINNED_PATH required: download W0 source commit exactly")
+    path = Path(name).resolve()
+    if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != W0_SHA256:
+        raise ValueError("pinned W0 source missing or modified")
+    spec = importlib.util.spec_from_file_location("worm_w0_pinned_support_v2", path)
+    if spec is None or spec.loader is None:
+        raise ValueError("cannot load pinned W0")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    if "selector" not in module.run.__code__.co_varnames:
+        raise ValueError("pinned W0 callback API absent")
+    if tuple(module.ACTIONS) != tuple(old.ACTIONS):
+        raise ValueError("W0 action vocabulary mismatch")
+    return module
+
+worm = load_pinned_w0()
 
 VERSION = "sprocket-support-observed-v2"
 POLICIES = ("groove", "contour", "corridor")
@@ -169,7 +195,8 @@ def write_dataset(out):
               "policies": list(POLICIES), "families": list(FAMILIES),
               "train_world_seeds": TRAIN_WORLDS, "development_world_seeds": DEV_WORLDS,
               "source_code_sha256": sha(Path(__file__).read_bytes()),
-              "w0_host": "unchanged imported common/worm.py",
+              "w0_host": "read-only externally pinned W0 callback source",
+              "w0_source_commit": W0_COMMIT, "w0_source_sha256": W0_SHA256,
               "kind": "observed W0 synthetic action policy, NOT model/native/FINAL",
               "split_observation_intersection": 0,
               "group_count": {"TRAIN": len(TRAIN_WORLDS), "DEVELOPMENT": len(DEV_WORLDS)},
