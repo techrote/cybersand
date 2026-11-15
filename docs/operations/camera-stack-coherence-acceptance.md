@@ -30,9 +30,11 @@ application source and retained native builds.
 4. Close CyberSand completely. Open **Open Original Presentation.cmd**, use
    the same setup and settings, and repeat the movement. It restores the
    original guarded actor selection and live camera following. Both launchers
-   use the same physics, optimized clearance oracle and repaired material
-   history/ACK behavior. This compares the original temporal-selection/camera
-   policy; the application is not a byte-identical historical #593 build.
+   use the same physics, bounded material scans and repaired material history/ACK
+   behavior. The original also retains coarse swept-clearance sampling; the
+   corrected version can refine a false near-contact veto conservatively.
+   This compares the original temporal-selection/camera policy and coarse guard
+   with the correction; it is not a byte-identical historical #593 build.
 5. **Open Mask Baseline.cmd** supplies the older material-bound display as an
    additional comparison. Its lower motion cadence is expected when native
    material publication is slow.

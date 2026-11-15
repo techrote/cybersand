@@ -3282,8 +3282,11 @@ func _assess_workbench_presented_sweep(start: Transform2D, target: Transform2D,
 		rectangles,image,_presentation_previous_occupied,_presentation_previous_unknown,
 		context.previous_blend_active,mini(remaining,WorkbenchPresentationCoherence.MAX_SCAN_CELLS),
 		context.deadline_usec,_presentation_previous_image,true,
-		_presentation_current_bytes,_presentation_previous_bytes,remaining)
+		_presentation_current_bytes,_presentation_previous_bytes,remaining,true)
 	summary.cells_examined += int(result.scanned)
+	if bool(result.get("refined",false)):
+		summary.refined_queries += 1
+		if bool(result.safe): summary.refined_clear += 1
 	return result
 
 
@@ -3314,7 +3317,7 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 		"valid":false,"reason":"invalid_frame","resolve_usec":0,"upload_cache_usec":cache_usec}
 	var summary: Dictionary = {"safe_live":0,"blocked_material":0,"blocked_unknown":0,
 		"blocked_other":0,"budget_vetoes":0,"cells_examined":0,"elapsed_usec":0,
-		"intentional_holds":0,"withheld":0}
+		"intentional_holds":0,"withheld":0,"refined_queries":0,"refined_clear":0}
 	var bridge: Variant = physical_actor_session.bridge if physical_actor_session != null else null
 	var identity: Array = [bridge._session,bridge._epoch,last_uploaded_world_generation] \
 		if bridge is WorkbenchBridge else []
@@ -3907,11 +3910,13 @@ func engine_lab_set_scripted_input(enabled: bool) -> bool:
 
 
 # Retained original guarded policy for explicit baseline diagnostics. The
-# coherent resolver above shares its oracle but retains its visual timeline.
+# coherent resolver above retains its visual timeline and may request bounded
+# contact refinement; this original policy retains the coarse oracle pass.
 func _safe_workbench_presentation_poses(frame: Dictionary) -> Dictionary:
 	var poses: Dictionary = {}
-	var tracing: bool = workbench_pose_trace.active
-	if tracing: _workbench_pose_trace_reasons.clear()
+	# The resolved frame needs an accurate source reason even when the trace
+	# recorder is off, particularly after an interactive A/B policy switch.
+	_workbench_pose_trace_reasons = {}
 	workbench_presentation_last = {"status":"inactive","safe_live":0,
 		"blocked_material":0,"blocked_unknown":0,"blocked_other":0,
 		"budget_vetoes":0,"cells_examined":0,"elapsed_usec":0}
@@ -3937,17 +3942,17 @@ func _safe_workbench_presentation_poses(frame: Dictionary) -> Dictionary:
 		var member: Dictionary = bridge._members[slot]
 		var entry: Dictionary = instances.get(int(member.instance_id),{})
 		if entry.get("generation",-1) != member.generation or not entry.get("pose") is Transform2D:
-			if tracing: _workbench_pose_trace_reasons[slot] = "actor_receipt_invalid"
+			_workbench_pose_trace_reasons[slot] = "actor_receipt_invalid"
 			summary.blocked_other += 1
 			continue
 		var bound_pose: Transform2D = entry.pose
 		var live_pose: Transform2D = bridge.body_transform(slot)
 		if bound_pose.is_equal_approx(live_pose):
-			if tracing: _workbench_pose_trace_reasons[slot] = "same_pose"
+			_workbench_pose_trace_reasons[slot] = "same_pose"
 			continue
 		var remaining: int = PRESENTATION_FRAME_SCAN_BUDGET-int(summary.cells_examined)
 		if remaining <= 0 or Time.get_ticks_usec() >= deadline_usec:
-			if tracing: _workbench_pose_trace_reasons[slot] = "shared_budget"
+			_workbench_pose_trace_reasons[slot] = "shared_budget"
 			summary.budget_vetoes += 1
 			summary.blocked_other += 1
 			continue
@@ -3956,7 +3961,7 @@ func _safe_workbench_presentation_poses(frame: Dictionary) -> Dictionary:
 			_presentation_previous_occupied,_presentation_previous_unknown,blend_active,
 			mini(remaining,WorkbenchPresentationCoherence.MAX_SCAN_CELLS),deadline_usec,
 			_presentation_previous_image)
-		if tracing: _workbench_pose_trace_reasons[slot] = str(decision.reason)
+		_workbench_pose_trace_reasons[slot] = str(decision.reason)
 		summary.cells_examined += int(decision.scanned)
 		if decision.safe:
 			poses[slot] = live_pose

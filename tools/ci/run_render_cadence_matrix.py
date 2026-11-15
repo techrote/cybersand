@@ -211,7 +211,8 @@ def run_case(args, condition, presentation):
              "Missing or rewinding selected presentation timeline")
         if condition["camera"] == "follow":
             residual = contract["follow_target_minus_selected_world_cells"]
-            need(residual is not None and residual["max"] <= 1e-6,
+            need(residual is not None and residual["count"] > 0
+                 and residual["maximum"] is not None and residual["maximum"] <= 1e-6,
                  "Follow target differs from selected pose")
     result = {"name": name, "condition": condition, "cadence_mode": cadence,
               "presentation_mode": pose_selection, "fire_schedule": data["fire_schedule"], "display": data["display"], "passed": True,

@@ -7,12 +7,13 @@ extends RefCounted
 # continuous sweep. To preserve conservative safety, *each sampled rectangle*
 # is enlarged by a rigorously bounded half-interval displacement: translation
 # plus rotation of the furthest collider point. This covers all intermediate
-# poses, with expected false refusals, without increasing the sample count.
-# Every check includes current and active previous-texture occupancy.
+# poses, with expected false refusals. Coherent callers may refine a material
+# refusal once, using the same proof and at most MAX_SWEEP_STEPS intervals.
+# Every pass includes current and active previous-texture occupancy.
 const MAX_SHIFT_CELLS: float = 32.0
 const MAX_ROTATION_SWEEP_CELLS: float = 32.0
 const MAX_SWEEP_STEPS: int = 32
-const MAX_SCAN_CELLS: int = 12000
+const MAX_SCAN_CELLS: int = 12000 # Fine-geometry cells per pass; Main also caps both passes together.
 const EDGE_EPSILON: float = 0.0001
 
 static func _refuse(reason: String, scanned: int = 0) -> Dictionary:
@@ -47,7 +48,52 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 		previous_world_pixels: Image = null, require_footprint_clear: bool = false,
 		current_material_bytes: PackedByteArray = PackedByteArray(),
 		previous_material_bytes: PackedByteArray = PackedByteArray(),
-		max_empty_scan_cells: int = 0) -> Dictionary:
+		max_empty_scan_cells: int = 0, refine_material_contacts: bool = false) -> Dictionary:
+	var coarse: Dictionary = _assess_motion(bound_pose,live_pose,rectangles,
+		world_pixels,previous_occupied,previous_unknown,previous_blend_active,
+		max_scan_cells,deadline_usec,previous_world_pixels,require_footprint_clear,
+		current_material_bytes,previous_material_bytes,max_empty_scan_cells,0)
+	if not refine_material_contacts or bool(coarse.safe) \
+			or coarse.reason != "material_in_swept_mask" \
+			or float(coarse.get("dilation_cells",0.0)) == 0.0 \
+			or int(coarse.get("steps",MAX_SWEEP_STEPS)) >= MAX_SWEEP_STEPS:
+		return coarse
+	# The coarse proof deliberately overestimates motion between samples. Near
+	# real contacts its roughly half-cell dilation can touch terrain although
+	# the entire actual interpolated motion is clear. Refine that uncertainty
+	# with the SAME continuous-coverage proof, up to the existing 32 intervals.
+	# A coarse hit is never permission to ignore material, and no time, scan,
+	# provenance or previous-texture refusal is retried as a clearance success.
+	var capacity: int = max_empty_scan_cells if max_empty_scan_cells > 0 else max_scan_cells
+	var remaining: int = capacity-int(coarse.scanned)
+	var refined: Dictionary
+	if remaining <= 0:
+		refined = _refuse("scan_budget")
+	elif deadline_usec > 0 and Time.get_ticks_usec() >= deadline_usec:
+		refined = _refuse("time_budget")
+	else:
+		refined = _assess_motion(bound_pose,live_pose,rectangles,
+			world_pixels,previous_occupied,previous_unknown,previous_blend_active,
+			mini(max_scan_cells,remaining),deadline_usec,previous_world_pixels,require_footprint_clear,
+			current_material_bytes,previous_material_bytes,
+			remaining if max_empty_scan_cells > 0 else 0,MAX_SWEEP_STEPS)
+	# Both passes spend the same shared allowance and cooperative deadline.
+	refined.scanned = int(refined.scanned)+int(coarse.scanned)
+	refined.refined = true
+	refined.coarse_steps = int(coarse.steps)
+	refined.coarse_dilation_cells = float(coarse.dilation_cells)
+	if bool(refined.safe): refined.reason = "refined_swept_mask"
+	return refined
+
+
+static func _assess_motion(bound_pose: Transform2D, live_pose: Transform2D, rectangles: Array,
+		world_pixels: Image, previous_occupied: Dictionary,
+		previous_unknown: bool, previous_blend_active: bool,
+		max_scan_cells: int, deadline_usec: int,
+		previous_world_pixels: Image, require_footprint_clear: bool,
+		current_material_bytes: PackedByteArray,
+		previous_material_bytes: PackedByteArray,
+		max_empty_scan_cells: int, minimum_steps: int) -> Dictionary:
 	if world_pixels == null or world_pixels.is_empty() or rectangles.is_empty():
 		return _refuse("missing_world_or_geometry")
 	if not bound_pose.is_finite() or not live_pose.is_finite():
@@ -79,7 +125,7 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 	if not require_footprint_clear and displacement <= EDGE_EPSILON and rotational_sweep <= EDGE_EPSILON:
 		return {"safe":true,"reason":"same_pose","scanned":0}
 	var sweep: float = maxf(displacement,rotational_sweep)
-	var steps: int = clampi(ceili(sweep),1,MAX_SWEEP_STEPS)
+	var steps: int = clampi(maxi(ceili(sweep),minimum_steps),1,MAX_SWEEP_STEPS)
 	# PROOF (shortest-angle, linearly interpolated rigid motion):
 	# For any t in [0,1], a sampled time i/steps exists within 1/(2steps).
 	# For any point q in any local collider rectangle, |q| <= radius.
@@ -136,7 +182,8 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 	# copies/counts execute in native Image/PackedByteArray code. All channels
 	# must be zero (conservative for conditioned Empty); both GPU images count.
 	# Charge the whole rectangle to the shared frame cell budget even if this
-	# fast proof fails. The 12K fine-geometry cap remains unchanged.
+	# fast proof fails. The 12K fine-geometry cap applies to each pass; the
+	# optional refinement also spends the query's remaining shared allowance.
 	if cells <= max_empty_scan_cells and (cells > max_scan_cells or cells*2 <= max_empty_scan_cells):
 		if deadline_usec > 0 and Time.get_ticks_usec() >= deadline_usec:
 			return _refuse("time_budget")
@@ -195,6 +242,9 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 				var local: Vector2 = inverse_pose*cell
 				for box: Vector4 in boxes:
 					if absf(local.x-box.x)<=box.z and absf(local.y-box.y)<=box.w:
-						return _refuse("material_in_swept_mask",pre_scanned+scanned)
+						var refused: Dictionary = _refuse("material_in_swept_mask",pre_scanned+scanned)
+						refused.steps = steps
+						refused.dilation_cells = padding
+						return refused
 	return {"safe":true,"reason":"empty_swept_mask","scanned":pre_scanned+scanned,
 		"steps":steps,"dilation_cells":padding}

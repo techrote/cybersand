@@ -30,6 +30,15 @@ pose. A newer native receipt may rejoin only with a later actual sampled Rapier
 step. Session/epoch/World replacement resets the timeline; temporary stale
 receipts do not erase an advanced selection. Picking uses the displayed actor.
 
+Near contact, a coarse sampled sweep can reject clear motion because its
+continuous-coverage dilation reaches nearby terrain. The coherent policy may
+refine that material veto once to 32 intervals, retaining the same rigorous
+coverage bound and both visible textures. Both passes charge the same frame
+cell allowance and original deadline; time, capacity, identity and unknown
+previous-texture refusals never become permission to draw. Successful refinement
+is recorded as `refined_swept_mask`. The original comparison retains coarse
+sampling, so its conservative false refusals remain observable.
+
 This is a monotonic presentation timeline, not physics interpolation or a visual
 offset. It preserves native material and Rapier authority. Unknown sample time
 stays unknown; a bounded sample-serial journal supplies provenance without

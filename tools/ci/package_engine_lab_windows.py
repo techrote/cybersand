@@ -235,9 +235,11 @@ Python, Git or repository installation is required.
    Try fast movement, contact/dense materials, and normal camera pan/zoom.
 3. Close CyberSand completely. Open Original Presentation.cmd and repeat the
    same setup/settings. This preserves the original guarded source selection
-   and live Follow while using the same physics, optimized clearance oracle
-   and repaired ACK/history. It is a temporal-policy comparison, not a
-   byte-identical historical application.
+   and live Follow while using the same physics, bounded material scans
+   and repaired ACK/history. Original retains coarse swept sampling; the
+   corrected mode also uses bounded conservative refinement. This compares
+   presentation policy and guards within the integrated application, not a
+   byte-identical historical PR593 application.
 4. Open Mask Baseline.cmd supplies the older material-bound display comparison.
 5. Double-click Test It.cmd to collect six matched original/candidate pairs,
    ordinarily a few minutes on a hardware GPU. Slow machines can take longer.
@@ -358,6 +360,9 @@ def smoke(output,evidence):
         ("dense-budget",["--headless","--script","res://tests/test_pr593_mask_coherent_dense_budget.gd"],120,"PR593_GUARD_DENSE_BUDGET_RESULT"),
         ("temporal",["--headless","--script","res://tests/test_workbench_temporal_presentation.gd"],240,"TEMPORAL_PRESENTATION_RESULT"),
         ("temporal-dense",["--headless","--script","res://tests/test_workbench_temporal_dense.gd"],240,"TEMPORAL_DENSE_RESULT"),
+        ("temporal-contact",["--headless","--script","res://tests/test_workbench_temporal_contact.gd"],240,"TEMPORAL_CONTACT_RESULT"),
+        ("temporal-contact-graphical",["--rendering-driver","opengl3_angle","--rendering-method","gl_compatibility",
+         "--audio-driver","Dummy","--max-fps","60","--script","res://tests/test_workbench_temporal_contact.gd"],300,"TEMPORAL_CONTACT_RESULT"),
         ("materials",["--headless","--script","res://tests/test_material_lab_catalogue.gd"],180,"MATERIAL_LAB_CATALOGUE"),
         ("architecture-contract",["--headless","--script","res://tests/test_architectural_project_contract.gd"],180,"ARCHITECTURAL_PROJECT_CONTRACT"),
         ("architecture-native",["--headless","--script","res://tests/test_architectural_generator.gd"],300,"ARCHITECTURE_RESULTS"),
@@ -398,6 +403,8 @@ def smoke(output,evidence):
         env["CYBERSAND_DIAG_FLYER_POSE"]=""
         if name=="temporal-dense":
             env["CYBERSAND_TEMPORAL_DENSE_OUTPUT"]=str((evidence/"temporal-dense").resolve())
+        if name in {"temporal-contact","temporal-contact-graphical"}:
+            env["CYBERSAND_TEMPORAL_CONTACT_OUTPUT"]=str((evidence/name).resolve())
         group="paint-persistence" if name in {"paint-author","paint-reopen"} else name
         if name in {"architecture-author","architecture-reopen"}: group="architecture-persistence"
         if name in {"flatten-author","flatten-reopen"}: group="flatten-persistence"

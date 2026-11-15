@@ -35,6 +35,7 @@ def main():
     cases = [
         ('temporal', 'test_workbench_temporal_presentation', 'TEMPORAL_PRESENTATION_RESULT', {}, False),
         ('temporal-dense', 'test_workbench_temporal_dense', 'TEMPORAL_DENSE_RESULT', {}, False),
+        ('temporal-contact', 'test_workbench_temporal_contact', 'TEMPORAL_CONTACT_RESULT', {}, False),
         ('pose-trace', 'test_workbench_pose_trace', 'POSE_TRACE_RESULT', {}, False),
         ('engine-lab', 'test_workbench_engine_lab', 'ENGINE_LAB_RESULT', {}, False),
         ('clearance', 'test_workbench_presentation_coherence', 'WORKBENCH_PRESENTATION_COHERENCE_RESULT', {}, False),
@@ -57,6 +58,7 @@ def main():
     if args.graphical:
         cases += [
             ('temporal-graphical', 'test_workbench_temporal_presentation', 'TEMPORAL_PRESENTATION_RESULT', {}, True),
+            ('temporal-contact-graphical', 'test_workbench_temporal_contact', 'TEMPORAL_CONTACT_RESULT', {}, True),
             ('legacy-crossfade-graphical', 'test_pr593_mask_coherent_edit_crossfade', 'PR593_NATIVE_EDIT_CROSSFADE_RESULT', legacy, True),
             ('camera-framebuffer', 'test_native_pixel_scrolling_render', 'NATIVE_PIXEL_SCROLLING_RESULT', {}, True),
             ('camera-effects', 'test_native_camera_effects_render', 'NATIVE_CAMERA_EFFECTS_RESULT', {}, True),
@@ -86,8 +88,10 @@ def main():
                      'opengl3_angle' if os.name == 'nt' else 'opengl3', '--max-fps', '60']
                     if graphical else ['--headless'])
         command += ['--script', 'res://tests/' + script + '.gd']
-        if script in ('test_workbench_temporal_presentation','test_workbench_temporal_dense'):
-            flag = '--temporal-evidence=' if script == 'test_workbench_temporal_presentation' else '--temporal-dense-evidence='
+        if script in ('test_workbench_temporal_presentation','test_workbench_temporal_dense','test_workbench_temporal_contact'):
+            flag = {'test_workbench_temporal_presentation': '--temporal-evidence=',
+                    'test_workbench_temporal_dense': '--temporal-dense-evidence=',
+                    'test_workbench_temporal_contact': '--temporal-contact-evidence='}[script]
             command += ['--', flag + str(folder)]
         row = {'name': name, 'command': command, 'graphical': graphical, 'status': 'failed'}
         started = time.monotonic()

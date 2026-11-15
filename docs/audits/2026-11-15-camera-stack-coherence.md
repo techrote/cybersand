@@ -105,8 +105,9 @@ cooperative query deadline, not a hard whole-stage scheduling guarantee.
 Byte-capture cost is included in the consuming frame's resolver total and
 reported separately. Large nonempty/rotated custom geometry can still reach an
 explicit conservative capacity refusal; universal extreme-contact performance
-is not established. The comparison launcher shares the optimized oracle while
-restoring the original temporal selection and camera policy.
+is not established. The comparison launcher shares the bounded scan and byte
+cache optimizations while retaining coarse sweep sampling and the original
+temporal selection and camera policy.
 
 ## Isolated actual production-path evidence
 
@@ -203,6 +204,69 @@ regressions while authenticating the current-main runtime instead. The ordinary
 Godot regression runner also discovers the new temporal test files automatically.
 This replaces an inapplicable old-runtime campaign, without weakening its source
 check or substituting the old native binary into the integrated application.
+
+## Recorded 2048-square contact counterexample and refinement
+
+Intermediate source `3f9b2239112485a7c7dea81e494e2e5c69156b7d`, workflow
+`43759469486`, passed all 24 Linux production cases and the integrated graphical
+generator, Flatten and author/reopen stages. Its six Linux flight captures also
+completed, but the matrix wrapper looked up `max` in an analyzer distribution
+whose field is `maximum`. The original failed summary is retained. A strict
+corrected replay passes all six captures; missing/empty/null or excessive Follow
+residuals still fail. Before/after hashes authenticate all 37 raw inputs.
+
+Independent reduction finds legacy selected-time rewinds of 1, 2 and 1 for
+Follow60, Free60 and slow-native; the coherent arms have zero rewinds, unknown
+visible source times or withholding, and exactly zero Follow-target residual.
+Every selected pose matches its recorded Rapier state. Paired position, velocity
+and angle agree exactly at 868, 859 and 1,008 common completed steps.
+
+These intermediate results nevertheless expose visible forward catch-up after
+material-safety holds. The Free60 release moves 41.42 pixels relative to terrain
+while live physics advances 18.97 pixels. At 2 Hz native, the first release moves
+62.05 pixels while live physics advances 4.45 pixels; a later settling hold lasts
+482.80 ms through release. This is why zero source rewinds alone is insufficient.
+The captures use llvmpipe, achieving only 10.93–12.50 Main submissions per second.
+Their coherent resolver medians are 0.130–0.160 ms, including upload-byte capture;
+these rates and costs are intermediate hosted evidence, not physical acceptance.
+
+Regenerating the exact native chunk and applying all 705 reference edits proves
+the remaining refusals can be conservative sweep overestimation. The recorded
+Needle step 64→72 crosses clear space near Marble cells (196,224)/(196,225), but
+five intervals enlarge each sample by 0.65924 cells and falsely reach them.
+Sixteen intervals reduce that valid coverage bound to 0.20601 cells and clear.
+Step 96→104 similarly overestimates the nearby Marble floor at row 236. All
+recorded intermediate footprints are clear. The slow-native case has Fire OFF
+and no active previous-texture blend, excluding those as necessary causes.
+
+The correction permits one bounded refinement to the existing 32-interval
+maximum after a coarse material veto. It uses the same continuous rigid-sweep
+proof against current and genuinely visible previous material; it never treats
+discrete samples alone as clearance. Both passes consume the existing shared
+24,000-cell allowance and original two-millisecond cooperative deadline. A
+successful refinement is explicit in the existing `refined_swept_mask` reason.
+The original comparison keeps the coarse guard as well as its old actor/camera
+policy. This is a geometric precision correction, without physics changes,
+arbitrary smoothing, an offset, or an unconditional live-pose fallback.
+
+The new actual Main/Needle/native-World contact regression passes 129 headless
+checks and 130 graphical checks across 30 observations. It authenticates all
+16,384 uploaded chunk material IDs, reproduces the original coarse fallbacks,
+and advances both corrected cases directly to the requested actual RID poses.
+The graphical run reads erased Marble from the actual previous GPU texture;
+current-only and old-only true obstructions still refuse. Sixteen cell-capacity
+controls, expired deadlines, unknown previous images and genuine Marble crossing
+also remain conservative. These are controlled recorded-pose replays, not a
+second execution of the original physics flight.
+
+The post-refinement eight-actor run passes 3,150 checks across 146 submissions
+without retries. Its ordinary Main phase displays 885 live and 43 held actor
+observations with no withholding; all eight actors reach native terrain contact.
+One full-refresh frame still withholds three actors under the shared deadline,
+then recovers. No refinement query occurs in that dense run. Complete resolver
+median/p95/maximum are 0.912/2.874/6.210 ms on the shared local host; unpaired
+timing variation does not establish a performance gain. Final full-flight and
+installed-package results are tied to their exact source in workflow artifacts.
 
 The owner procedure is in the [acceptance guide](../operations/camera-stack-coherence-acceptance.md).
 Hosted Windows rendering and local Linux software rendering are qualification
