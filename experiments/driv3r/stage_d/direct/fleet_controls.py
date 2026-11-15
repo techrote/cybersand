@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import json
 import random
+from pathlib import Path
 from typing import Any
 
 VERSION = "d1a-four-stream-controls/1"
@@ -203,6 +204,8 @@ def run_matched_controls(slot: dict[str, Any], *, horizon: int = 36,
                    "probe_cap": oracle["predecessor_probe_cap"],
                    "feasible_arrival_within_budget": oracle["feasible_arrival_within_budget"],
                    "optimal_cost_within_budget": oracle["optimal_cost_within_budget"]},
+        "oracle_source_sha256": hashlib.sha256(Path(budget_oracle.__file__).read_bytes()).hexdigest(),
+        "offline_source_sha256": hashlib.sha256(Path(offline.__file__).read_bytes()).hexdigest(),
         "common_initial_legal_set_sha256": next(iter(first_menus), None),
         "arms": arms, "native_qualified": False,
         "sequential_native_receipts": 0, "model_outcome": None,
@@ -223,12 +226,18 @@ def replay_matched_controls(slot: dict[str, Any], report: dict[str, Any]) -> boo
     original = report.get("arms")
     if type(original) is not list or len(original) != len(POLICIES):
         raise ControlRefused("Missing or extra matched control arms")
-    for index, policy in enumerate(POLICIES):
-        expected = _rollout(f, policy, slot["seed"], report["horizon"])
-        if original[index] != expected:
-            raise ControlRefused("Episode replay mismatch (including first-pass negative results)")
-    if report.get("sequential_native_receipts") != 0 or report.get("native_qualified") is not False:
-        raise ControlRefused("Synthetic replay report forged native qualification")
+    oracle = report.get("oracle")
+    if type(oracle) is not dict:
+        raise ControlRefused("Oracle provenance absent")
+    probe_cap = oracle.get("probe_cap")
+    if type(probe_cap) is not int or not 1 <= probe_cap <= MAX_ORACLE_PROBES:
+        raise ControlRefused("Invalid oracle probe cap")
+    # Re-execute exact bounded oracle and all three controls; compare the
+    # complete record, including oracle cost, source bytes and negative arms.
+    expected = run_matched_controls(slot, horizon=report["horizon"],
+                                    oracle_probe_cap=probe_cap)
+    if report != expected:
+        raise ControlRefused("Source/oracle/control replay mismatch")
     return True
 
 
@@ -246,7 +255,17 @@ def compact_handoff(slots: tuple[dict[str, Any], ...],
             raise ControlRefused("Wrong paired slot report")
         if report.get("state") == "SYNTHETIC_CONTROLS_COMPLETE":
             replay_matched_controls(slot, report)
-        elif report.get("state") != "ORACLE_RESOURCE_EXHAUSTED":
+        elif report.get("state") == "ORACLE_RESOURCE_EXHAUSTED":
+            cap = report.get("oracle_probe_cap")
+            if (type(cap) is not int or not 1 <= cap <= MAX_ORACLE_PROBES or
+                report.get("arms") != [] or report.get("sequential_native_receipts") != 0 or
+                report.get("native_qualified") is not False or
+                report.get("model_outcome") is not None):
+                raise ControlRefused("Invalid resource-exhaustion evidence")
+            if report != run_matched_controls(slot, horizon=report["horizon"],
+                                              oracle_probe_cap=cap):
+                raise ControlRefused("Resource-exhaustion replay mismatch")
+        else:
             raise ControlRefused("Unqualified report state")
         summary.append({
             "wrangler_id": slot["wrangler_id"],
@@ -268,3 +287,34 @@ def compact_handoff(slots: tuple[dict[str, Any], ...],
         "heldout_outcomes_evaluated": False,
         "cohort_sha256": digest(summary),
     }
+
+def main() -> int:
+    """CLI: exact-source-gated CPU-only matched controls; never dispatch native."""
+    import argparse
+    from .qualification import source_fence
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--horizon", type=int, choices=(36, 128), default=36)
+    parser.add_argument("--oracle-probe-cap", type=int, default=MAX_ORACLE_PROBES)
+    parser.add_argument("--output", type=Path, help="Optional local JSON handoff path")
+    args = parser.parse_args()
+    root = Path(__file__).resolve().parents[4]
+    source_sha = source_fence(root)
+    slots = make_slots()
+    reports = tuple(run_matched_controls(slot, horizon=args.horizon,
+                                         oracle_probe_cap=args.oracle_probe_cap)
+                    for slot in slots)
+    handoff = compact_handoff(slots, reports)
+    handoff["source_commit"] = source_sha
+    handoff["all_four_controls_completed"] = all(
+        report["state"] == "SYNTHETIC_CONTROLS_COMPLETE" for report in reports)
+    payload = json.dumps(handoff, sort_keys=True, indent=2) + "\n"
+    if args.output is not None:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(payload, encoding="utf-8")
+    else:
+        print(payload, end="")
+    return 0 if handoff["all_four_controls_completed"] else 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
