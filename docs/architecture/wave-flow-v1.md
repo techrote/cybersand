@@ -71,12 +71,16 @@ of a contiguous chunk column (64 columns at the default 128-cell chunk size).
    a falling curtain of thin cells exerts no pressure.
 2. **Flux pass** (owns its faces). For each face between two cells in the same
    row: `flux += gain × (head left − head right)`, minus symmetric 1/128 damping,
-   then limited (below). A nonzero flux loses at least one fixed-point unit per
-   round, so rounding cannot retain perpetual unforced motion. Only the top
-   32 rows of a stack originate a restoring response; exposed faces can pour.
+   then limited (below). Only the top 32 rows of a stack originate a restoring
+   response; exposed faces can pour. Two exceptions make rest possible
+   ([coming to rest](#coming-to-rest)): small flux is damped hard and discarded
+   across a level face, and a film on a solid floor levels directly.
 3. **Apply pass** (owns its cells). Each cell gains what its left face carries
    and loses what its right face carries. Both sides evaluate the same pure
-   function of the face, so mass is conserved exactly.
+   function of the face, so mass is conserved exactly. Flux is held in 1/4096
+   of a unit; the whole units a face moves in a round come from a stateless
+   threshold that is spread evenly over the rows of a column and over
+   successive rounds, so the rows of one face together move the rounded total.
 
 Why head is "weight above" rather than "height of the surface": moving one unit
 sideways in a row then changes potential energy by exactly the head difference,
@@ -84,6 +88,33 @@ for any mixture of full, thin and falling cells. The retained flux therefore
 cannot gain energy from a mis-stated surface. Three earlier variants that used
 a surface height each pumped energy into the pool
 ([negative results](../audits/2026-11-15-wave-mt-001-wave-flow.md#negative-results)).
+
+### Coming to rest
+
+Law version 1 never came to rest once it had been disturbed. Each face rounded
+its sub-unit flux to whole units with an independent random threshold. Across
+the 32 responding rows that is about ±3 units of noise per face per round, and
+the solver's deliberately low damping (1/128) amplified it into a permanent
+slosh: adjacent columns traded about 25 units every few ticks, for ever. Only a
+level pool that nothing had ever touched stopped being solved. Version 2 makes
+rest reachable with four rules, none of which adds stored state:
+
+| Rule | Value | What it does |
+|---|---|---|
+| Evenly spread rounding | additive sequence over rows and rounds, per-column offset | The rows of a face move the rounded total, not a random sample of it: far less noise, same average, rows still out of step |
+| Calm band (`kCalm`) | flux below ⅛ unit per round loses ⅛ per round | Absorbs what rounding leaves behind. A real wave is in this range only near its turning points, where its energy is in the heads |
+| Rest rule (`kRestHead`, `kStick`) | heads within 1 unit and flux in the calm band → flux is discarded | One unit cannot level a one-unit step (it only flips it). What remains moves a unit only down a step of two or more, which strictly levels and therefore ends |
+| Films | two partly filled cells that both rest on a solid floor exchange ¼ of their difference per round, at least one unit, with no momentum | Less than a cell of Water carries no wave worth keeping, and with momentum it crept for tens of thousands of ticks |
+
+Rest is exact: no cell changes and every retained flux is zero. That state is a
+fixed point of the three passes, so a chunk at rest can stop being solved
+without changing any later result. Measured consequences are in the
+[completion record](../audits/2026-11-15-wave-mt-001-completion.md#2026-11-15-claude-review-rest-and-identity-repair).
+
+The costs are deliberate and bounded. Rested columns may differ by one unit
+(1/255 of a cell) from their neighbours. Ripples whose flux never leaves the
+calm band (roughly 8 units of amplitude, 3% of a cell) die within tens of
+ticks instead of fading slowly. A film has no waves at all.
 
 ### Limits that keep it stable
 
@@ -93,7 +124,7 @@ a surface height each pumped energy into the pool
 | Inertia per face (`kCoast`) | 16 units per round | Small flows keep their momentum and make waves; large flows relax without overshoot |
 | Downhill share | head difference ÷ (8 × responding rows) | The explicit-diffusion bound: two columns cannot swap places in one round |
 | Pour into an empty cell | ¼ of the source cell | A pair of columns cannot invert |
-| Dry-floor film | 24 units with adhesion enabled; zero with it disabled | A supported spill does not thin out forever |
+| Residual film | A cell resting on a solid floor keeps 24 units with adhesion enabled; zero with it disabled | A supported spill does not thin out forever, on a floor or at the edge of a ledge (the per-cell Water law's rule) |
 | Receiver capacity | At most half its remaining uint16 capacity from each adjacent face | Simultaneous arrivals cannot overflow a cell |
 | Sealed-stack inflow stop | Top mass at least 32,000 units | Stops additional inflow before the carrier limit |
 | Derived head | At most 2²⁶ units | Bounds arithmetic for extreme legal sealed columns |
@@ -132,12 +163,17 @@ are a numerical capacity contract, not a high-pressure physical model.
 
 ### Sparse work
 
-- A chunk is solved while its Water moved recently, or an owner edit, kernel
-  write or body mask touched it; its eight neighbours are solved with it. After
-  30 quiet ticks it stops. Every one-unit change and nonzero active face flux
-  retains work; falling trickles cannot sleep halfway through a chunk crossing.
-  A truly level dormant pool dispatches no strip tasks; resident metadata checks
-  still have a small cost.
+- A chunk is solved until it is at exact rest, and again when an owner edit,
+  kernel write, body mask or region re-entry touches it; its eight neighbours
+  are solved with it. Rest means 30 consecutive ticks in which no cell changed
+  and every retained flux was zero. Every one-unit change and nonzero face flux
+  retains work, so a falling trickle cannot sleep halfway through a chunk
+  crossing and Water that is still draining is still solved. A pool at rest
+  dispatches no strip tasks; resident metadata checks still have a small cost.
+- Disturbed Water does come to rest ([coming to rest](#coming-to-rest)). How
+  long that takes is the time the Water really needs to stop: about a thousand
+  ticks for a splashed pool, several thousand for a sheet one or two cells
+  deep, and tens of thousands for a thin sheet draining off a long flat ledge.
 - Inside a solved chunk, a column with no Water is skipped, and a half-chunk
   that is entirely empty is skipped.
 - Workers never allocate. Before the passes the owner admits any missing
@@ -191,9 +227,12 @@ weight metadata, quiet/wake eligibility and the sparse skip state, in addition
 to the ordinary cells, masks, regions, policies and quantity ledger. Diagnostic
 timing, participant counts and allocation capacities are excluded. This Wave
 identity deliberately binds resident solver chunks; legacy complete hashes keep
-their existing empty-resident equivalence and byte stream. Legacy `state_hash`
-and `content_hash` remain their documented narrower projections and are not
-complete Wave continuation identities.
+their existing empty-resident equivalence and byte stream. `state_hash` of a
+Wave World binds the same solver state (version, substeps, round, flux, weight
+and support metadata, sleep and skip state), so two Worlds with equal cells and
+different retained momentum never share it; for every other World it keeps its
+historical definition and value. `content_hash` remains the documented
+cells-and-temperature projection and is not a continuation identity.
 
 **Not persisted:** physical format version **0** means unsupported.
 `save_physical_state` throws for a Wave World, and `restore_physical_state` rejects
@@ -254,7 +293,11 @@ the World is quarantined as failed, rather than wrapping the value.
   the Water work. Resulting-source benchmark CSVs, rather than inherited
   timings, determine the cost compared with other laws.
 - **Waves are small-amplitude.** Above roughly four cells of amplitude the
-  inertia limit turns wave motion into relaxation.
+  inertia limit turns wave motion into relaxation. Below roughly 3% of a cell
+  the rest rules end a ripple quickly; films carry no waves.
+- **Thin sheets drain slowly.** A sheet a cell or two deep on a long flat ledge
+  takes tens of thousands of ticks to finish running off, and is solved (not
+  asleep) until it has. Rested Water is level to one unit, not exactly level.
 - **Falling Water loses sideways momentum**; waterfalls drop straight.
 - **Deep reservoirs drain through their top 32 rows and their exposed face.**
 - **Water-owned material interactions are limited.** Sand can sink and active

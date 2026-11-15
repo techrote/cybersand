@@ -5323,6 +5323,9 @@ std::uint64_t World::state_hash() const noexcept {
                                    : (*chunk->temperatures)[index]);
         }
     }
+    // wave_flow_v1 retained flux is authoritative: equal cells with different
+    // momentum are different states. Absent for every other World.
+    hash_wave_state(hash);
     return hash;
 }
 

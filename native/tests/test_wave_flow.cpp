@@ -780,6 +780,166 @@ void tall_extreme_column_preserves_head_sign() {
     require(!world.has_failed(), "tall legal column quarantined the World");
 }
 
+
+struct WaveSnapshot {
+    std::vector<std::uint16_t> mass;
+    std::vector<std::int32_t> flux;
+    [[nodiscard]] bool operator==(const WaveSnapshot&) const = default;
+};
+
+WaveSnapshot snapshot(const World& world, int width, int height) {
+    WaveSnapshot result;
+    for (int y = 0; y < height; ++y)
+        for (int x = 0; x < width; ++x) {
+            result.mass.push_back(world.stored_material(x, y) == Material::Water ? world.stored_state_a(x, y) : 0);
+            result.flux.push_back(world.wave_flow_flux(x, y));
+        }
+    return result;
+}
+
+// Ticks until no Wave chunk is solved, or -1 if the budget runs out first.
+int ticks_until_rest(World& world, int budget) {
+    for (int tick = 1; tick <= budget; ++tick) {
+        (void)world.tick();
+        if (world.wave_flow_diagnostics().last_solved_chunks == 0U) return tick;
+    }
+    return -1;
+}
+
+// Law version 1 never rested once disturbed: rounding every face to whole
+// units at random fed a permanent slosh, so only a never-touched level pool
+// stopped being solved. Rest must be reached from a real disturbance, at every
+// depth, and must be a fixed point: solving the rested Water again changes
+// neither a cell nor a retained flux.
+void disturbed_water_reaches_exact_rest() {
+    struct Case { int depth, budget; };
+    for (const auto item : {Case{1, 9000}, Case{3, 7000}, Case{12, 5000}, Case{48, 4000}}) {
+        const int width = 192, height = 128;
+        const auto name = "depth " + std::to_string(item.depth);
+        World world(config(4));
+        box(world, width, height);
+        const int surface = height - 1 - item.depth;
+        rect(world, 1, surface, width - 2, item.depth, Material::Water);
+        rect(world, 90, surface - 30, 12, 12, Material::Water); // a splash
+        rect(world, 30, surface - 3, 4, 3, Material::Water);    // and a ripple
+        const auto quantity = world.water_quantity({0, 0, width, height});
+        const auto rested = ticks_until_rest(world, item.budget);
+        require(rested > 0, name + ": disturbed Water was still being solved after " + std::to_string(item.budget) + " ticks");
+        require(world.water_quantity({0, 0, width, height}) == quantity, name + ": coming to rest changed the Water quantity");
+        check_well_formed(world, width, height, name.c_str());
+        // Level to the unit: whole units cannot do better than a one-unit step.
+        for (int x = 1; x + 1 < width - 1; ++x) {
+            const auto here = static_cast<std::int64_t>(world.water_quantity({x, 0, 1, height}));
+            const auto next = static_cast<std::int64_t>(world.water_quantity({x + 1, 0, 1, height}));
+            require(std::llabs(here - next) <= 1, name + ": rested columns differ by more than one unit at x=" + std::to_string(x));
+        }
+        for (int y = 0; y < height; ++y)
+            for (int x = 0; x < width; ++x)
+                require(world.wave_flow_flux(x, y) == 0, name + ": rested Water retains flux");
+        // Leaving and re-entering the simulation region wakes every chunk.
+        // Solving the rested Water again must change nothing, and it must
+        // fall asleep again.
+        const auto before = snapshot(world, width, height);
+        world.set_simulation_region(RectI64{8192, 8192, 64, 64});
+        (void)world.tick();
+        world.set_simulation_region(std::nullopt);
+        (void)world.tick();
+        require(world.wave_flow_diagnostics().last_solved_chunks > 0U, name + ": re-entry did not wake the rested Water");
+        for (int tick = 0; tick < 2 * WaveFlowParameters::kSleepAfter; ++tick) (void)world.tick();
+        require(snapshot(world, width, height) == before, name + ": solving rested Water again changed it");
+        require(world.wave_flow_diagnostics().last_solved_chunks == 0U, name + ": rested Water did not fall asleep again");
+    }
+}
+
+// Less than a cell of Water on a solid floor levels directly and stops: no
+// momentum, at least one unit a round while two cells differ by more than one.
+void films_level_and_rest() {
+    const int width = 160, height = 48;
+    {
+        // A film across the whole floor with a hump in the middle.
+        World world(config(2));
+        box(world, width, height);
+        for (int x = 1; x < width - 1; ++x)
+            require(world.set_cell_state(x, height - 2, Material::Water, x >= 70 && x < 90 ? 200 : 60, 0), "film seed refused");
+        const auto quantity = world.water_quantity({0, 0, width, height});
+        const auto rested = ticks_until_rest(world, 4000);
+        require(rested > 0, "a film with a hump never came to rest");
+        require(world.water_quantity({0, 0, width, height}) == quantity, "levelling a film changed its quantity");
+        for (int x = 1; x + 1 < width - 1; ++x)
+            require(std::abs(static_cast<int>(world.stored_state_a(x, height - 2)) -
+                             static_cast<int>(world.stored_state_a(x + 1, height - 2))) <= 1,
+                    "rested film cells differ by more than one unit");
+        for (int x = 0; x < width; ++x) require(world.wave_flow_flux(x, height - 2) == 0, "rested film retains flux");
+    }
+    {
+        // A puddle on a dry floor spreads, keeps its residual film and stops.
+        World world(config(2));
+        box(world, width, height);
+        for (int x = 70; x < 90; ++x)
+            require(world.set_cell_state(x, height - 2, Material::Water, 230, 0), "puddle seed refused");
+        const auto quantity = world.water_quantity({0, 0, width, height});
+        const auto rested = ticks_until_rest(world, 4000);
+        require(rested > 0, "a puddle on a dry floor never came to rest");
+        require(world.water_quantity({0, 0, width, height}) == quantity, "a spreading puddle changed its quantity");
+        require(count(world, width, height, Material::Water) > 20U, "the puddle did not spread");
+        check_well_formed(world, width, height, "puddle");
+    }
+}
+
+// state_hash() is the hash hosts compare for "same state". Two Worlds with the
+// same cells and different retained flux continue differently, so they must not
+// share it. The Worlds differ only in where a one-cell body sat for one tick:
+// on the right-hand column (freezing the face between the columns) or in the
+// air above it. Afterwards every cell is equal and only the momentum differs.
+void state_hash_binds_retained_momentum() {
+    const int width = 64, height = 64;
+    const int left = 31, right = 32, top = height - 3, bottom = height - 2;
+    const auto build = [&](bool freeze_face) {
+        auto world = std::make_unique<World>(config(1));
+        box(*world, width, height);
+        rect(*world, left - 1, top, 1, 2, Material::Wall);
+        rect(*world, right + 1, top, 1, 2, Material::Wall);
+        world->set(left, bottom, Material::Water);
+        world->set(right, bottom, Material::Water);
+        require(world->set_cell_state(left, top, Material::Water, 22, 0) &&
+                    world->set_cell_state(right, top, Material::Water, 20, 0), "momentum fixture seed refused");
+        world->configure_transient_obstacles({0, 0, width, height});
+        require(world->set_transient_obstacle(right, freeze_face ? top : top - 1, 1), "momentum fixture body refused");
+        (void)world->tick();
+        world->clear_transient_obstacles();
+        world->clear_transient_contact_observations();
+        (void)world->tick();
+        (void)world->tick();
+        return world;
+    };
+    const auto moving = build(false), delayed = build(true);
+    for (int y = 0; y < height; ++y)
+        for (int x = 0; x < width; ++x)
+            require(moving->stored_material(x, y) == delayed->stored_material(x, y) &&
+                        moving->stored_state_a(x, y) == delayed->stored_state_a(x, y) &&
+                        moving->stored_state_b(x, y) == delayed->stored_state_b(x, y),
+                    "momentum fixture: the two Worlds' cells differ");
+    require(moving->content_hash() == delayed->content_hash(), "momentum fixture: content differs");
+    require(moving->stored_state_a(left, top) == 22U && moving->stored_state_a(right, top) == 20U,
+            "momentum fixture: Water already moved, so the cells no longer isolate momentum");
+    require(moving->wave_flow_flux(left, top) != delayed->wave_flow_flux(left, top) ||
+                moving->wave_flow_flux(left, bottom) != delayed->wave_flow_flux(left, bottom),
+            "momentum fixture: both Worlds retain the same flux");
+    require(moving->state_hash() != delayed->state_hash(),
+            "equal cells with different retained flux share one state hash");
+    require(moving->physical_state_hash() != delayed->physical_state_hash(),
+            "equal cells with different retained flux share one physical identity");
+    // Different rounds per tick is a different law even before the first tick.
+    World one(config(1, 1)), three(config(1, 3));
+    require(one.state_hash() != three.state_hash(), "state hash ignores the Wave substep count");
+    // Worlds without Wave Flow keep their historical hash definition.
+    WorldConfig plain;
+    World first(plain), second(plain);
+    first.set(3, 3, Material::Sand);
+    second.set(3, 3, Material::Sand);
+    require(first.state_hash() == second.state_hash(), "plain Worlds lost their state hash");
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -816,6 +976,9 @@ int main(int argc, char** argv) {
         {"extreme legal overfill conserves and remains editable", extreme_legal_overfill_conserves_and_remains_editable},
         {"coordinate extrema refuse before mutation", coordinate_extrema_refuse_before_mutation},
         {"tall extreme column preserves head sign", tall_extreme_column_preserves_head_sign},
+        {"disturbed water reaches exact rest", disturbed_water_reaches_exact_rest},
+        {"films level and rest", films_level_and_rest},
+        {"state hash binds retained momentum", state_hash_binds_retained_momentum},
     };
     int failures = 0, executed = 0;
     for (const auto& test : tests) {

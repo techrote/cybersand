@@ -577,6 +577,7 @@ private:
     void wake_wave_chunk(Chunk& chunk) noexcept;
     void reset_wave_cell(std::int64_t x, std::int64_t y) noexcept;
     void apply_wave_population(std::int64_t delta);
+    void hash_wave_state(std::uint64_t& hash) const;
     void wave_write_mass(Chunk& chunk, std::size_t at, std::int32_t before, std::int32_t after,
                          WaveHalf& half) noexcept;
     bool inertial_enabled_ = false;

@@ -11,7 +11,9 @@
 namespace cybersand {
 
 struct WaveFlowParameters {
-    static constexpr std::uint16_t kVersion = 1;
+    // 2: low-discrepancy transfer rounding, the rest rule and direct film
+    // levelling. Version 1 Water never came to rest once disturbed.
+    static constexpr std::uint16_t kVersion = 2;
     static constexpr std::int32_t kFluxShift = 12;      // flux sub-units per mass unit
     static constexpr std::int32_t kActiveRows = 32;     // rows below a surface that respond to head
     static constexpr std::int32_t kGain = 32;           // sub-units per unit of head per tick
@@ -22,8 +24,21 @@ struct WaveFlowParameters {
     // A face may level 1/2^(kLevelShift + d) of its head difference per round,
     // d = ceil(log2(responding rows)) <= 5: 1/8 for one row, 1/256 for 32.
     static constexpr std::int32_t kLevelShift = 3;
-    static constexpr std::int32_t kSleepAfter = 30;     // quiet ticks before a chunk stops being solved
+    // A chunk stops being solved after this many consecutive ticks in which no
+    // cell changed and every retained flux was zero. That is a fixed point of
+    // the law: solving the chunk again would change nothing.
+    static constexpr std::int32_t kSleepAfter = 30;
     static constexpr std::int32_t kWakePeak = 1;        // even one conserved unit must finish travelling
+    // Rest. Whole units cannot level a one-unit step between two cells (moving
+    // one only flips it), so a face whose heads differ by at most kRestHead
+    // discards a flux below kStick. Flux below kCalm (an eighth of a unit per
+    // round) loses 1/8 per round instead of 1/128: the residue of rounding to
+    // whole units is absorbed, while a real wave is in that range only near
+    // its turning points, where its energy is in the heads.
+    static constexpr std::int32_t kRestHead = 1;
+    static constexpr std::int32_t kStick = 512;
+    static constexpr std::int32_t kCalm = 512;
+    static constexpr std::int32_t kCalmDampShift = 3;
     static constexpr std::int32_t kMaximumMass = 32'000; // stop inflow to a sealed stack at this threshold
     static constexpr std::int32_t kMaximumHead = 1 << 26; // bounded derived head for extreme sealed columns
     static constexpr std::uint8_t kMaximumSubsteps = 8;

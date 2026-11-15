@@ -8,7 +8,8 @@
 //   apply   move the whole-unit part of every flux; both sides of a face
 //           evaluate the same pure function, so mass is conserved exactly.
 // No pass depends on task order, so the result is identical for every worker
-// count. Chunks whose Water has been quiet stop being solved until woken.
+// count. A chunk stops being solved once it is at exact rest (no cell changed
+// and every retained flux is zero) and is solved again when woken.
 
 // Per-strip result of one tick for half of a chunk; reduced by the owner.
 struct World::WaveHalf {
@@ -106,16 +107,20 @@ namespace {
 }
 
 // Whole mass units moved through a face in one round. The sub-unit part of the
-// flux is resolved by a stateless per-face, per-round dither: the expected
-// transfer equals the flux, and identical rows do not move in lockstep.
+// flux is resolved by a stateless threshold that is evenly spread over the rows
+// of a column and over successive rounds (an additive low-discrepancy sequence
+// with a per-column offset). The transfer still averages to the flux and rows
+// still do not move in lockstep, but the rows of one face together move the
+// rounded total instead of a random sample of it. Independent random rounding
+// injected enough noise to keep a settled pool sloshing for ever.
 [[nodiscard]] inline std::int32_t wave_transfer(std::int32_t flux, std::int64_t x, std::int64_t y,
                                                 std::uint32_t round) noexcept {
     if (flux == 0) return 0;
-    std::uint32_t k = static_cast<std::uint32_t>(x) * 73856093U ^
-                      static_cast<std::uint32_t>(y) * 19349663U ^ round * 83492791U;
+    std::uint32_t k = static_cast<std::uint32_t>(x) * 73856093U;
     k ^= k >> 15;
     k *= 0x2C1B3C6DU;
     k ^= k >> 12;
+    k += static_cast<std::uint32_t>(y) * 3093U + round * 2333U;
     return (flux + static_cast<std::int32_t>(k & 4095U)) >> WaveFlowParameters::kFluxShift;
 }
 
@@ -170,6 +175,42 @@ WaveFlowDiagnostics World::wave_flow_diagnostics() const noexcept {
                             wave_->tasks.capacity() * sizeof(WaveState::Task) +
                             wave_->scratch.capacity() * sizeof(WaveState::Scratch) + sizeof(WaveState);
     return result;
+}
+
+// The legacy state_hash() contribution of a Wave World: everything that can
+// change a later tick beyond the cells themselves. Two Worlds with equal cells
+// and different retained momentum are different states. Mirrors the fields the
+// versioned physical identity binds; absent for every other World.
+void World::hash_wave_state(std::uint64_t& hash) const {
+    if (wave_ == nullptr) return;
+    for (const char c : std::string_view{"wave_flow_v1"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+    hash_integer(hash, WaveFlowParameters::kVersion);
+    hash_integer(hash, config_.wave_flow.substeps);
+    hash_integer(hash, wave_->round);
+    std::vector<ChunkCoord> coordinates;
+    coordinates.reserve(chunks_.size());
+    for (const auto& [coord, chunk] : chunks_) {
+        (void)chunk;
+        coordinates.push_back(coord);
+    }
+    std::sort(coordinates.begin(), coordinates.end());
+    for (const auto coord : coordinates) {
+        const auto* chunk = find_chunk(coord);
+        if (chunk == nullptr || chunk->wave == nullptr) continue;
+        const auto& wave = *chunk->wave;
+        hash_integer(hash, coord.x);
+        hash_integer(hash, coord.y);
+        hash_integer(hash, wave.quiet);
+        hash_integer(hash, static_cast<std::uint8_t>(wave.woken));
+        for (const auto value : wave.clean) hash_integer(hash, static_cast<std::uint8_t>(value));
+        for (const auto value : wave.dry_reset) hash_integer(hash, static_cast<std::uint8_t>(value));
+        for (const auto value : wave.dry) hash_integer(hash, value);
+        for (std::size_t i = 0; i < wave.flux.size(); ++i) {
+            hash_integer(hash, wave.flux[i]);
+            hash_integer(hash, wave.weight[i]);
+            hash_integer(hash, wave.meta[i]);
+        }
+    }
 }
 
 void World::reset_wave_cell(std::int64_t x, std::int64_t y) noexcept {
@@ -580,24 +621,58 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                 // flux with no restoring force would pump energy into the surface.
                 if (code == 0U) { wave.flux[i] = 0; continue; }
                 const auto head = wave.weight[i] - other->wave->weight[j];
+                // Whether the cell rests on something solid (or on the edge of
+                // what is solved, which is treated as a floor).
+                const auto supported = [&](const Chunk* owner, std::size_t at) noexcept {
+                    if (ly + 1 < size) return (owner->wave->meta[at + stride] & WaveChunk::kSolid) != 0U;
+                    const auto* under = owner->wave->below;
+                    const auto column = static_cast<std::int32_t>(at - row);
+                    return under == nullptr || !under->wave->included(column, 0) ||
+                           (under->wave->meta[static_cast<std::size_t>(column)] & WaveChunk::kSolid) != 0U;
+                };
+                if (a != 0 && b != 0 && ((meta_a | meta_b) & WaveChunk::kFull) == 0U) {
+                    // A film: two partly filled cells that both rest on a solid
+                    // floor. Less than a cell of Water carries no wave worth
+                    // keeping, and momentum would let it creep for thousands
+                    // of ticks. It levels directly instead: a quarter of the
+                    // difference per round, at least one unit, never when the
+                    // cells differ by one unit or less, and never out of the
+                    // residual film a supported cell keeps. Nothing is remembered.
+                    if (supported(&chunk, i) && supported(other, j)) {
+                        const auto difference = a - b;
+                        const auto spare = std::max(0, std::max(a, b) - film);
+                        const auto units = std::abs(difference) <= P::kRestHead
+                            ? 0 : std::min((std::abs(difference) + 2) >> 2, spare);
+                        const auto direct = (difference > 0 ? units : -units) * (1 << P::kFluxShift);
+                        wave.flux[i] = direct;
+                        wave.half[task.half].pending_flux = wave.half[task.half].pending_flux || direct != 0;
+                        continue;
+                    }
+                }
                 const auto previous = wave.flux[i];
+                // Flux below kCalm is damped hard. A real wave only passes
+                // through that range near its turning points, where its energy
+                // is in the heads, so it loses almost nothing; the residue that
+                // rounding whole units leaves behind stays in that range and is
+                // absorbed instead of ringing at the solver's low damping.
+                const auto speed = std::abs(previous);
                 const auto damping = previous == 0 ? 0
-                    : (previous > 0 ? 1 : -1) * std::max(1, std::abs(previous) / (1 << P::kDampShift));
+                    : (previous > 0 ? 1 : -1) * std::max(1, speed >> (speed < P::kCalm ? P::kCalmDampShift : P::kDampShift));
                 auto flux = static_cast<std::int64_t>(previous) - damping +
                             static_cast<std::int64_t>(head) * (code == WaveChunk::kGainConfined ? P::kGainConfined : P::kGain);
+                // Rest rule: one unit cannot level a one-unit step (it only
+                // flips it), so a small flux across such a step is discarded.
+                // What remains is a strictly levelling process, which ends.
+                if (a != 0 && b != 0 && std::abs(head) <= P::kRestHead && std::abs(flux) < P::kStick) flux = 0;
                 const bool rightward = flux > 0;
                 auto available = rightward ? a : b;
                 const auto destination_mass = rightward ? b : a;
                 if (destination_mass == 0) {
-                    // Keep a residual film on a dry floor.
-                    const auto* target = rightward ? other : &chunk;
-                    const auto at = rightward ? j : i;
-                    bool floor = true;
-                    if (ly + 1 < size) floor = (target->wave->meta[at + stride] & WaveChunk::kSolid) != 0U;
-                    else if (const auto* under = target->wave->below; under != nullptr &&
-                             under->wave->included(static_cast<std::int32_t>(at - row), 0))
-                        floor = (under->wave->meta[at - row] & WaveChunk::kSolid) != 0U;
-                    if (floor) available -= film;
+                    // A cell resting on a solid floor keeps a residual film
+                    // wherever it pours to, the rule the per-cell Water law
+                    // uses. Keyed on the destination's floor instead, a ledge
+                    // drained to its last units for a very long time.
+                    if (rightward ? supported(&chunk, i) : supported(other, j)) available -= film;
                     // Pouring into an empty cell is one-directional; a quarter of
                     // the cell per round cannot invert a pair of columns.
                     available >>= 2;

@@ -393,3 +393,136 @@ independent Astra review are **pending** at this entry. Prior native,
 sanitizer, benchmark and target-OS successes remain attributed to their recorded
 source; they are not reported as future passes. Merge and auto-merge remain
 unauthorized.
+
+## 2026-11-15: Claude review, rest and identity repair
+
+Claude (Fable 5.2) took PR #618 over at `bf16ca69ddf4b7b9a8daaa6a6cd4409e0e68aab4`,
+tree `487cab300e1c9e679b6d469c5a095953bbfb9a13`, and reviewed the solver source
+rather than the ledger. Every final-head workflow of that commit had passed or
+was still running its benchmark matrix. Two defects were found that those gates
+could not see, and both are repaired here. This changes native source, so the
+runtimes, package and every source-sensitive gate of the predecessor head are
+invalidated and must be earned again by the resulting head.
+
+### Finding 1: disturbed Water never came to rest
+
+**Observed on `bf16ca69` (local Windows, MSVC 19.38 `/O2`, 512² box, 4 workers,
+20,000 ticks, one round per tick).** `first asleep` is the first tick on which
+no Wave chunk was solved.
+
+| Scene | First asleep | Still solved at tick 20,000 | Lateral units moved, ticks 18,001-20,000 | Cost at tick 20,000 |
+|---|---:|---:|---:|---:|
+| Level pool, never touched | 31 | 0 chunks | 0 | 0.001 ms |
+| Same pool after one splash | never | 10 chunks | 23,071,362 | 1.31 ms |
+| Dam break | never | 7 chunks | 12,963,852 | 1.01 ms |
+| Three terraces | never | 14 chunks | 5,894,214 | 1.37 ms |
+| Six separate basins | never | 6 chunks | 6,211,018 | 0.62 ms |
+
+Only the never-touched pool slept, and that is the pool the benchmark's `idle`
+scene measures. Its near-zero cost was real but did not describe Water that had
+ever moved. The original #617 source had the same permanent motion; its 30-tick
+sleep threshold hid it by stopping Water that was still moving, which the #618
+liveness repair (correctly) removed.
+
+**Cause.** A sample of column totals on consecutive ticks showed adjacent
+columns trading about 25 units every few ticks with all 32 responding rows of a
+face carrying the same flux (about 0.43 unit per round each). Each row rounded
+that flux to whole units with an independent random threshold: about ±2.8 units
+of noise per face per round. The law damps flux by only 1/128 per round, so
+every wavelength rings about eight times above the noise that feeds it.
+
+**Repair (law version 2).** Described in the
+[design reference](../architecture/wave-flow-v1.md#coming-to-rest): evenly
+spread rounding, a hard-damped calm band, a rest rule for level faces, direct
+levelling of films, and the per-cell law's residual-film rule (a supported cell
+keeps its film wherever it pours). No stored state is added.
+
+**Result (same machine, same scenes, repaired source).**
+
+| Scene | First asleep, 1 round per tick | First asleep, 3 rounds per tick |
+|---|---:|---:|
+| Pool after one splash, 512² | 1,141 | 401 |
+| Six separate basins, 512² | 1,971 | 678 |
+| Dam break, 512² | about 14,000 (still levelling until then) | 4,330 |
+| Pool 1, 2, 3, 5, 8, 16, 33, 64 cells deep after a splash | 7,683 / 5,457 / 4,106 / 3,057 / 2,318 / 1,686 / 1,178 / 1,137 | not run |
+| Pool after one splash, 1024² | 1,278 | not run |
+| Three terraces, 512² | not within 60,000 (net drainage continues) | not run |
+
+After rest the cost is the `idle` cost (0.001-0.002 ms a tick at 512²) and
+nothing moves. Quantity was exact in every run.
+
+**What it costs.**
+
+- Interference, same probe scene: constructive ratio 1.93 (was 2.06, ideal 2),
+  destructive peak ratio 0.25 (was 0.22, ideal 0), RMS superposition error
+  0.074 (was 0.094), RMS cancellation error 0.044 (was 0.103), speed 0.499
+  cells a tick (was 0.505). The dam, U-tube, waterfall and body scenes agree
+  with the predecessor to about 1%.
+- Complete ticks while Water is moving are unchanged within run-to-run noise
+  (eight matrix rows at 1024² and 2048², one run each, local).
+- Rested neighbouring columns may differ by one unit. Ripples below roughly 3%
+  of a cell end quickly. Films carry no waves.
+
+**Negative results kept.**
+
+- Evenly spread rounding alone cut the permanent motion about 2.5 times
+  (23.1 to 9.0 million units per 2,000 ticks in the splashed pool) and did not
+  end it: the remaining rounding error still rings at the solver's damping.
+- Constant friction on every flux did reach rest at 16 or 32 sub-units a round
+  (not at 8), but it removes energy from real waves all through their cycle: a
+  0.2-cell wave would be gone in about 160 ticks. Rejected for the calm band,
+  which a real wave only crosses near its turning points.
+- A stick threshold below the calm band's equilibrium flux (256 against 512)
+  left sheets two to four cells deep ringing by a few units for ever: a
+  two-unit step could build more flux than the rest rule would discard.
+- Thin sheets still drain slowly. In the terraces scene the top ledge was
+  losing exactly one unit a tick at tick 30,000. With the earlier destination-
+  keyed film rule the same scene came to rest only at tick 139,821. Water that
+  is still draining is, correctly, still solved; this is a speed limit of the
+  law, not a liveness defect, and it is listed under Limits.
+
+### Finding 2: `state_hash()` ignored retained momentum
+
+The versioned physical identity (6) bound the retained flux; the legacy
+`World::state_hash()`, which the C API and the Godot adapter expose as the state
+hash, did not. Two Wave Worlds with equal cells and different flux, or with
+different rounds per tick, shared it and then diverged. `state_hash()` of a
+Wave World now also binds law version, rounds per tick, round counter and the
+per-chunk solver state. Worlds without Wave Flow execute no new code and keep
+their historical values.
+
+### Regressions
+
+Three native cases were added (25 in total). Each fails on `bf16ca69` with the
+defect it names and passes on the repaired source:
+
+| Case | Failure on `bf16ca69` |
+|---|---|
+| `disturbed water reaches exact rest` (depths 1, 3, 12, 48; rest is level to one unit, holds no flux, and solving it again changes nothing) | `depth 1: disturbed Water was still being solved after 9000 ticks` |
+| `films level and rest` | `a film with a hump never came to rest` |
+| `state hash binds retained momentum` (two Worlds differing only in where a body sat for one tick) | `equal cells with different retained flux share one state hash` |
+
+In the first case the rest ticks are 2,009, 1,664, 1,403 and 1,105 for the
+four depths, identical for one and four workers; the budgets are 9,000 to 4,000.
+
+### Reviewed and not changed
+
+- Strip ownership, the three barriers, the same-function-on-both-sides apply
+  pass and the region freeze were re-read against the source. No race,
+  conservation hole or worker-count dependence was found.
+- Water-owned pair reactions remain an intentional limit of the experiment. A
+  bounded way to restore them without the per-cell cost (strips collect Water
+  cells that touch a reactive material; the owner runs the shared reaction
+  stage on them in coordinate order) was prototyped on the superseded #617
+  branch and is not part of this PR.
+- A one-to-three-unit cell at a ledge edge still cannot pour (a quarter of it
+  rounds to zero). It is at rest, not stalled work.
+
+### Evidence level
+
+The measurements above are local, single-machine development results. They
+justify the repair; they are not the qualification of the resulting head.
+Hosted native, sanitizer, target-OS, package and matched-benchmark results for
+that head are recorded in the PR ledger. The hosted `idle` scene still measures
+a pool that was never disturbed; rest after disturbance is asserted by the
+native regression above, not by the benchmark matrix.
