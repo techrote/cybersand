@@ -2,6 +2,39 @@
 
 **Status:** independent **development-only** preparatory fixtures and oracle policies, not native or model qualification. #570; [owner D roadmap](https://github.com/techrote/cybersand/issues/570#issuecomment-6877408001). The five-record [D-COMMON-001 contract](https://github.com/techrote/cybersand/pull/594) received **M1 owner acceptance on 14 Nov 2026** at source commit `8fa90de6be209ed0b7bd125039e6ec8b332fb1a6`, schema SHA-256 `ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d` ([#570 freeze record](https://github.com/techrote/cybersand/issues/570#issuecomment-6881686675)). **M2 offline integration preparation is permitted; native/model experiments, merges and formal A1/A2/A3 comparisons are not.**
 
+## Supplementary forward-Y selected-wall feasibility (15 November 2026)
+
+The v2 strict selected-wall horizon verifies 6–10-cell clearance across entire
+movement macros but allows backward-Y detours. Its reachability result cannot
+be read as evidence of a *forward* uninterrupted trace. The new **separate**
+`d1a-selected-wall-monotone-band-horizon/1` ablation in `band_horizon.py`
+calculates the exact minimum legal macro decisions needed to reach the target
+while each swept cursor cell remains within the selected wall's band **and
+forward Y never decreases**. A source-replay-verified DEVELOPMENT audit records
+per-choice remaining decision slack, the first original backwards-Y step,
+sticky original-prefix compliance and whether a hypothetical 36-decision
+continuation could still satisfy that stronger condition.
+
+A backwards-Y recovery maneuver may be artistically valid and necessary.
+The monotone result is therefore an intentionally stricter **diagnostic
+counterfactual**, not a redefinition of acceptance or a requirement for
+controller success. Frozen original episodes, score fields, held-out fixture
+identities and accepted M1 records remain unchanged.
+
+**Source qualification boundary:** Five extra unittest methods authored;
+**101 total** D-1A tests pending current-head execution. Independent local
+forward-BFS cross-check of the algorithm on **75 seeded synthetic grids and
+3,600 possible starts yielded 0 discrepancies**, plus three representative
+assertions passed. That comparison used a scratch reproduction, **not**
+the committed Python module or its two new DEVELOPMENT replay tests.
+The full current-head suite and independent M2/M3 native adapter review remain
+open. No model/native/held-out campaigns or receipts occurred.
+
+```sh
+python -m unittest experiments.driv3r.stage_d.direct.test_band_horizon -v
+python -m unittest discover -s experiments/driv3r/stage_d/direct -p 'test_*.py' -v
+```
+
 ## Exact remaining-decision horizon (M2 offline diagnostic, 15 November 2026)
 
 **New lane-only source:** `horizon.py` and `test_horizon.py`, version
