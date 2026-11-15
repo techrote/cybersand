@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - name: Python support tests: real processes + adversarial state/PNG replay
+      - name: Four W0 process tests and adversarial state replay
         run: |
           set -euo pipefail
           mkdir -p evidence/fleet-four-v1
