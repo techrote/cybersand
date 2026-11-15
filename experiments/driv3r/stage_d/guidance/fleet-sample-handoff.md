@@ -56,10 +56,16 @@ never in the model view. The exported record is a **D-1B research preview**, not
 a replacement for M1's typed source schema or native safety checks.
 
 build_four_streams refuses fewer/more than four sources, duplicate stream
-IDs, seeds or snapshot IDs, and duplicate (world_sha256, material_sha256)
-pairs. Each stream must be independently reverified by the integrating host.
-Four prepared synthetic streams imply **zero** actual model PIDs or resident
-worms; only Commander's real leases/PIDs/job IDs can establish concurrency.
+IDs, seeds or snapshot IDs, **any repeated World digest, any repeated material
+digest, or mixed host source revisions**. Previously distinct World/material
+*tuples* were enough: two nominally separate sources could alias one World
+while only varying a material hash (or vice versa). Such a bundle is now
+rejected, even when all four seeds differ. The four sources must use the same
+software revision but distinct declared World and material identities.
+**These hashes are declarations, not authentication of original World
+bytes.** Each stream must still be independently reverified by the
+integrating host. Four synthetic streams imply **zero** model PIDs or resident
+worms; only Commander's original leases/PIDs/job IDs establish concurrency.
 
 ## Reproduction (offline stdlib; no GitHub Actions dispatch)
 
