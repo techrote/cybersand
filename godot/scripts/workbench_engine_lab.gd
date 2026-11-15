@@ -14,6 +14,7 @@ var _output: TextEdit
 var _capturing: bool = false
 var _trace_running: bool = false
 var _trace_scripted: bool = false
+var _test_it_process_pid: int = -1
 var _default_fps: int = 0
 var _default_vsync: int = 1
 var _default_rapier_hz: int = 60
@@ -222,6 +223,7 @@ func mount(controller: Control,wb: Control) -> void:
 	_button(pose_trace_buttons,"Trace poses: manual",func() -> void: start_pose_trace(false))
 	_button(pose_trace_buttons,"Trace poses: scripted",func() -> void: start_pose_trace(true))
 	_button(pose_trace_buttons,"Stop trace",finish_pose_trace)
+	_button(controls,"TEST IT → ZIP (automated 2048 Needle / Free & Follow A/B)",launch_test_it)
 	_note(controls,"Writes JSON Lines to the local Godot user-data directory. Captures each Main overlay frame, up to the explicit 12,000-frame buffer; dropped frames are counted.")
 	_output = TextEdit.new()
 	_output.editable = false
@@ -343,6 +345,30 @@ func start_benchmark(scripted: bool) -> void:
 		"guard":guard},"  ")
 	_status.text = "Saved "+ProjectSettings.globalize_path(filename) if file != null else "Capture completed, file could not be saved"
 	_capturing = false
+
+# Launch a fresh-proc deterministic suite. This is deliberately separate from
+# the existing authored World, uses bundled Godot and one local ZIP, and does
+# not silently install tools or upload anything. Duplicate clicks are refused.
+func launch_test_it() -> void:
+	if OS.get_name() != "Windows":
+		_status.text = "Test It executable is Windows-only. Use the native CI fixture on other hosts."
+		return
+	if _test_it_process_pid > 0 and OS.is_process_running(_test_it_process_pid):
+		_status.text = "Test It is already running as process %d." % _test_it_process_pid
+		return
+	var test_file: String = ProjectSettings.globalize_path("res://../Run-Test-It.ps1")
+	if not FileAccess.file_exists(test_file):
+		_status.text = "Missing packaged Run-Test-It.ps1; extract the complete current ZIP."
+		return
+	var process: int = OS.create_process("powershell.exe",
+		PackedStringArray(["-NoProfile","-ExecutionPolicy","Bypass","-File",test_file,"-Compare"]),true)
+	if process <= 0:
+		_status.text = "Failed to start Test It PowerShell process; run Test It.cmd instead."
+		return
+	_test_it_process_pid = process
+	_status.text = ("Test It started in separate process %d. Results: Test-It-Results/*.zip. "+
+		"Close or pause this Workbench to avoid sharing GPU load.") % process
+
 
 func start_pose_trace(scripted: bool) -> void:
 	if _capturing: return
