@@ -33,5 +33,12 @@
   "native_material_effects": false,
   "experimental_stage": "fixed-original-native-snapshot-shadow-only",
   "followon_native_128_turns": "NOT_AUTHORIZED_BY_THIS_REQUEST",
-  "status": "OWNER_BOUNDED_SHADOW_REQUEST"
+  "status": "OWNER_BOUNDED_SHADOW_REQUEST",
+  "dispatch_attempt": 2,
+  "previous_attempt": {
+    "head": "f2d45b595fd96db304a5580a2028e825c5d54e17",
+    "outcome": "blocked_by_cheap_preflight",
+    "code_fix": "a918685bebed38e41f7f7984d68f47f4e01702f8",
+    "preflight_success_run": 43747210739
+  }
 }
