@@ -43,9 +43,132 @@ jobs:
     timeout-minutes: 95
     strategy:
       fail-fast: false
-      max-parallel: 10
+      max-parallel: 8
       matrix:
-        mode: [greyhound, branchwitch, greyhound_restore5, greyhound_restore7, greyhound_restore12, greyhound_restore16, branchwitch_no_repeat10, branchwitch_restore8, branchwitch_restore12, branchwitch_drop21]
+        mode: [greyhound, branchwitch, greyhound_restore5, greyhound_restore7, greyhound_restore12, greyhound_restore16, branchwitch_no_repeat10, branchwitch_restore8]
+    env:
+      PYTHONUNBUFFERED: '1'
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Admit exact owner-bounded destructive layer-flow request
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/${{ matrix.mode }}
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          from experiments.driv3r.frankenlayers.patch_runtime import FLOWS
+          r=json.loads(Path('experiments/driv3r/frankenlayers/run-request-m2.json').read_text())
+          from experiments.driv3r.frankenlayers.test_ten_brains import TenBrains
+          allowed=list(TenBrains.NAMES)
+          expected={
+            'schema':'cybersand-d1-frankenlayers-ten-brains-request/1',
+            'owner_authorization':'Use unique GREYHOUND/BRANCHWITCH descendants; never Scrambled Eggs; max-parallel 10',
+            'q8_sha256':'073313d92b53b0ac8193db6e906cb3c78a98183d244b15b7b8f5426115c6738c',
+            'llama_commit':'8642541b255bfb5dc39cd351a178be09013a55d6',
+            'source_franken_results':'4143a5891c7133af10b95e7db462fb42bb134392',
+            'modes':allowed,
+            'flows':{name:list(FLOWS[name]) for name in allowed},
+            'max_parallel':10,'cpu_inference':True,
+            'native_workbench':False,'training':False,'paid_api':False,
+            'merge':False,'ready':False,'production_default':False,
+            'preserve_original_failures':True,
+            'dispatch_attempt':2,
+            'first_failed_preflight_run':43768682038}
+          if r!=expected: raise SystemExit('Unexpected ten-brain M2 cloud request')
+          if os.getenv('GITHUB_REF')!='refs/heads/research/620-franken-mutagen-ten-brains':
+              raise SystemExit('Wrong branch')
+          Path('evidence/${{ matrix.mode }}/request.json').write_text(json.dumps(r,indent=2)+'\n')
+          PY
+      - name: Obtain immutable Q8 donor and pinned runtime manifest
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30 1250 python3 -m experiments.driv3r.backend acquire \
+            --runtime-dir "$RUNNER_TEMP/d1-franken-donor" \
+            --evidence "evidence/${{ matrix.mode }}/donor-acquisition" --timeout-seconds 1200
+          python3 - <<'PY'
+          import json,hashlib,os
+          from pathlib import Path
+          m=json.loads(Path(os.environ['RUNNER_TEMP']+'/d1-franken-donor/runtime-manifest.json').read_text())
+          p=Path(m['model'])
+          assert hashlib.sha256(p.read_bytes()).hexdigest()=='073313d92b53b0ac8193db6e906cb3c78a98183d244b15b7b8f5426115c6738c'
+          print(p)
+          PY
+      - name: Fetch and patch exact llama.cpp b11960 LFM3 decision graph
+        run: |
+          set -euo pipefail
+          export LLAMA_ROOT="$RUNNER_TEMP/franken-llama"
+          git init "$LLAMA_ROOT"
+          git -C "$LLAMA_ROOT" remote add origin https://github.com/ggml-org/llama.cpp.git
+          git -C "$LLAMA_ROOT" fetch --depth=1 origin 8642541b255bfb5dc39cd351a178be09013a55d6
+          git -C "$LLAMA_ROOT" checkout --detach FETCH_HEAD
+          test "$(git -C "$LLAMA_ROOT" rev-parse HEAD)" = 8642541b255bfb5dc39cd351a178be09013a55d6
+          python3 -m experiments.driv3r.frankenlayers.patch_runtime \
+            --llama-root "$LLAMA_ROOT" --receipt "evidence/${{ matrix.mode }}/runtime-patch.json"
+          git -C "$LLAMA_ROOT" diff -- src/models/lfm3.cpp > "evidence/${{ matrix.mode }}/lfm3.patch"
+      - name: Build the actually modified CPU inference runtime
+        run: |
+          set -euo pipefail
+          export LLAMA_ROOT="$RUNNER_TEMP/franken-llama"
+          cmake -S "$LLAMA_ROOT" -B "$LLAMA_ROOT/build" \
+            -DCMAKE_BUILD_TYPE=Release -DGGML_NATIVE=OFF -DLLAMA_CURL=OFF \
+            -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF
+          cmake --build "$LLAMA_ROOT/build" --config Release --target llama-server -j2
+          test -x "$LLAMA_ROOT/build/bin/llama-server"
+          sha256sum "$LLAMA_ROOT/build/bin/llama-server" > "evidence/${{ matrix.mode }}/llama-server.sha256"
+          ldd "$LLAMA_ROOT/build/bin/llama-server" > "evidence/${{ matrix.mode }}/llama-server.ldd.txt"
+      - name: Obtain unchanged source-pinned W0 legal-action host
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/franken-w0.py"
+          test "$(git hash-object "$RUNNER_TEMP/franken-w0.py")" = 8979b6f0296e81051194bacc907992d38e006605
+      - name: REAL stock-vs-Frankenbrain System One directional inference
+        run: |
+          set -euo pipefail
+          export MODEL_PATH
+          MODEL_PATH="$(python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          print(json.loads(Path(os.environ['RUNNER_TEMP']+'/d1-franken-donor/runtime-manifest.json').read_text())['model'])
+          PY
+          )"
+          timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers.infer \
+            --binary "$RUNNER_TEMP/franken-llama/build/bin/llama-server" \
+            --model "$MODEL_PATH" --w0 "$RUNNER_TEMP/franken-w0.py" \
+            --mode '${{ matrix.mode }}' --source-sha "$GITHUB_SHA" \
+            --output "evidence/${{ matrix.mode }}/inference"
+      - name: Preserve original evidence and failures
+        if: always()
+        run: |
+          set -euo pipefail
+          lscpu > "evidence/${{ matrix.mode }}/cpu.txt"
+          (cd "evidence/${{ matrix.mode }}" && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > "evidence/${{ matrix.mode }}/SHA256SUMS.txt"
+      - name: Upload exact Frankenbrain evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: driv3r-franken-${{ matrix.mode }}-${{ github.sha }}-${{ github.run_id }}
+          path: evidence/${{ matrix.mode }}/
+          if-no-files-found: warn
+          retention-days: 90
+
+  brain_aux:
+    name: Real Q8 System One Frankenbrain — ${{ matrix.mode }}
+    needs: cheap
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/research/620-franken-mutagen-ten-brains'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 95
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        mode: [branchwitch_restore12, branchwitch_drop21]
     env:
       PYTHONUNBUFFERED: '1'
       OMP_NUM_THREADS: '2'
