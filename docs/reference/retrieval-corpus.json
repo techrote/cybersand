@@ -24,6 +24,7 @@
     "architecture/lcb-pressure-inertial-handoff.md",
     "architecture/pressure-flow-v1.md",
     "architecture/ballistic-water-v1.md",
+    "architecture/wave-flow-v1.md",
     "architecture/inertial-cellular-v1.md",
     "architecture/simulation-tick-and-threading.md",
     "architecture/shared-workbench-authoring-data.md",
@@ -591,6 +592,10 @@
     {
       "path": "audits/2026-11-06-coupling-lockstep-feasibility.md",
       "reason": "Dated preregistered COUPLING-LOCKSTEP-001 feasibility evidence: async run-to-run races, opt-in lockstep same-host bit identity, Windows/Linux divergence sources and cost. Canonical current routing belongs to the determinism, threading, coupling and interface contracts."
+    },
+    {
+      "path": "audits/2026-11-15-wave-mt-001-wave-flow.md",
+      "reason": "Dated experimental-branch evidence for WAVE-MT-001 wave_flow_v1: baseline and source-matched tick matrix, interference probes, negative results. Retrieve the law, limits and controls through the wave flow reference."
     },
     {
       "path": "audits/2026-11-05-wcx-ballistic-water.md",

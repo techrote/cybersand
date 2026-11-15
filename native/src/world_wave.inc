@@ -11,12 +11,13 @@
 // count. Chunks whose Water has been quiet stop being solved until woken.
 
 // Per-strip result of one tick for half of a chunk; reduced by the owner.
-struct World::WaveHalf {
+struct alignas(64) World::WaveHalf {
     std::int32_t min_x = 0, min_y = 0, max_x = -1, max_y = -1;
     std::int32_t peak = 0;
     std::int32_t non_empty_delta = 0;
     std::uint64_t moved = 0;
     std::uint32_t invalid = 0;
+    std::uint32_t transitions = 0; // cells that became or stopped being Water
     void touch(std::int32_t x, std::int32_t y) noexcept {
         if (max_x < min_x) { min_x = max_x = x; min_y = max_y = y; return; }
         min_x = std::min(min_x, x); max_x = std::max(max_x, x);
@@ -29,6 +30,7 @@ struct World::WaveChunk {
     static constexpr std::uint8_t kFull = 4, kSolid = 8, kWet = 16;
     // Bits 5-7: ceil(log2) of the responding rows of the cell's stack (0..5).
     static constexpr std::uint8_t kDepthShift = 5;
+    static constexpr std::uint8_t kSaturated = 7; // depth code of a stack at the carrier ceiling
     explicit WaveChunk(std::size_t count, std::size_t columns)
         : flux(count, 0), weight(count, 0), meta(count, 0), dry(columns, 0) {}
     std::vector<std::int32_t> flux;   // authoritative: retained flux through the right face
@@ -313,7 +315,12 @@ void World::wave_column_task(std::size_t task_index) noexcept {
             const auto length = std::min(end - r + 1, P::kActiveRows);
             std::uint8_t depth = 0;
             while ((1 << depth) < length) ++depth;
-            for (auto k = r; k <= end && k < r + P::kActiveRows; ++k)
+            // Overfill collects in the top cell of a sealed stack while inflow
+            // arrives at any row, so a stack at the carrier ceiling is marked
+            // whole and refuses further inflow.
+            const bool saturated = mass[r] >= P::kMaximumMass;
+            if (saturated) depth = WaveChunk::kSaturated;
+            for (auto k = r; k <= end && (saturated || k < r + P::kActiveRows); ++k)
                 flags[k] = static_cast<std::uint8_t>(flags[k] | (depth << WaveChunk::kDepthShift));
             r = end + 1;
         }
@@ -387,6 +394,7 @@ void World::wave_write_mass(Chunk& chunk, std::size_t at, std::int32_t before, s
         // The retained flux of this face is left alone here: the apply pass of
         // the neighbouring strip may still be reading it.
         --half.non_empty_delta;
+        ++half.transitions;
         return;
     }
     const auto column = at % static_cast<std::size_t>(config_.chunk_size);
@@ -397,6 +405,7 @@ void World::wave_write_mass(Chunk& chunk, std::size_t at, std::int32_t before, s
         cell.set_state_b(0);
         cell.set_epoch(update_epoch_);
         ++half.non_empty_delta;
+        ++half.transitions;
     }
     cell.set_state_a(static_cast<std::uint16_t>(after));
 }
@@ -469,7 +478,7 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                 if (code == 0U) { wave.flux[i] = 0; continue; }
                 const auto head = wave.weight[i] - other->wave->weight[j];
                 const auto previous = wave.flux[i];
-                auto flux = static_cast<std::int64_t>(previous) - (previous >> P::kDampShift) +
+                auto flux = static_cast<std::int64_t>(previous) - previous / (1 << P::kDampShift) +
                             static_cast<std::int64_t>(head) * (code == WaveChunk::kGainConfined ? P::kGainConfined : P::kGain);
                 const bool rightward = flux > 0;
                 auto available = rightward ? a : b;
@@ -494,7 +503,7 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                     const auto depth = std::max(meta_a >> WaveChunk::kDepthShift, meta_b >> WaveChunk::kDepthShift);
                     const auto downhill = (head > 0) == rightward ? std::abs(head) >> (P::kLevelShift + depth) : 0;
                     available = std::min(available >> 1, std::max(P::kCoast, downhill));
-                    if (destination_mass >= P::kMaximumMass) available = 0;
+                    if (((rightward ? meta_b : meta_a) >> WaveChunk::kDepthShift) == WaveChunk::kSaturated) available = 0;
                 }
                 const auto cap = available <= 0 ? std::int64_t{0} : static_cast<std::int64_t>(available) << P::kFluxShift;
                 flux = rightward ? std::min(flux, cap) : std::max(flux, -cap);
@@ -685,22 +694,26 @@ void World::advance_wave_flow(TickStats& stats) {
     // Owner-side reduction: activity, render dirtiness and occupancy.
     started = Clock::now();
     std::uint64_t invalid = 0;
+    std::int64_t population = 0;
     for (const auto& entry : state.sorted) {
         auto& chunk = *entry.chunk;
         auto& wave = *chunk.wave;
         std::int32_t peak = 0, delta = 0;
+        std::uint32_t transitions = 0;
         WaveHalf bounds;
         for (const auto& half : wave.half) {
             peak = std::max(peak, half.peak);
             delta += half.non_empty_delta;
             diagnostics.moved_units += half.moved;
             invalid += half.invalid;
+            transitions += half.transitions;
             if (half.max_x >= half.min_x) { bounds.touch(half.min_x, half.min_y); bounds.touch(half.max_x, half.max_y); }
         }
         wave.woken = false;
         if (peak >= P::kWakePeak) wave.quiet = 0;
         else if (wave.quiet < static_cast<std::uint32_t>(P::kSleepAfter)) ++wave.quiet;
         chunk.non_empty_cell_count = static_cast<std::size_t>(static_cast<std::int64_t>(chunk.non_empty_cell_count) + delta);
+        population += delta;
         if (bounds.max_x < bounds.min_x) continue;
         chunk.changed_this_tick = true;
         if (!chunk.dirty) {
@@ -715,10 +728,13 @@ void World::advance_wave_flow(TickStats& stats) {
         }
         // Other materials react to Water that arrived or left: keep the
         // touched activity blocks (and their border neighbours) scheduled.
-        if (peak < P::kWakePeak && delta == 0) continue;
+        if (peak < P::kWakePeak && transitions == 0U) continue;
         const auto block = config_.activity_block_size;
-        for (auto by = bounds.min_y / block; by <= bounds.max_y / block; ++by)
-            for (auto bx = bounds.min_x / block; bx <= bounds.max_x / block; ++bx) {
+        // One cell of margin: a neighbour of a changed cell may sit in the next block.
+        const auto wake_min_x = std::max(bounds.min_x - 1, 0), wake_max_x = std::min(bounds.max_x + 1, size - 1);
+        const auto wake_min_y = std::max(bounds.min_y - 1, 0), wake_max_y = std::min(bounds.max_y + 1, size - 1);
+        for (auto by = wake_min_y / block; by <= wake_max_y / block; ++by)
+            for (auto bx = wake_min_x / block; bx <= wake_max_x / block; ++bx) {
                 auto& activity = chunk.activity_blocks[static_cast<std::size_t>(by) *
                     static_cast<std::size_t>(chunk.activity_blocks_per_axis) + static_cast<std::size_t>(bx)];
                 activity.active = true;
@@ -727,11 +743,22 @@ void World::advance_wave_flow(TickStats& stats) {
             }
         chunk.active = true;
         const auto origin_x = entry.coord.x * size, origin_y = entry.coord.y * size;
-        wake_cell_neighborhood(origin_x + bounds.min_x, origin_y + bounds.min_y, false);
-        wake_cell_neighborhood(origin_x + bounds.max_x, origin_y + bounds.min_y, false);
-        wake_cell_neighborhood(origin_x + bounds.min_x, origin_y + bounds.max_y, false);
-        wake_cell_neighborhood(origin_x + bounds.max_x, origin_y + bounds.max_y, false);
+        // Walk the perimeter one activity block at a time so blocks in
+        // neighbouring chunks along a touched edge are woken, not only corners.
+        for (auto x = bounds.min_x;; x = std::min(x + block, bounds.max_x)) {
+            wake_cell_neighborhood(origin_x + x, origin_y + bounds.min_y, false);
+            wake_cell_neighborhood(origin_x + x, origin_y + bounds.max_y, false);
+            if (x == bounds.max_x) break;
+        }
+        for (auto y = bounds.min_y;; y = std::min(y + block, bounds.max_y)) {
+            wake_cell_neighborhood(origin_x + bounds.min_x, origin_y + y, false);
+            wake_cell_neighborhood(origin_x + bounds.max_x, origin_y + y, false);
+            if (y == bounds.max_y) break;
+        }
     }
+    // Spreading changes how many cells hold Water without changing its
+    // quantity: keep the native ledger's cell population exact.
+    apply_wave_population(population);
     diagnostics.merge_nanoseconds += elapsed(started);
     if (invalid != 0) throw std::runtime_error("wave_flow produced a Water mass outside its carrier");
 }

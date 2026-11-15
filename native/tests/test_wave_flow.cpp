@@ -293,6 +293,29 @@ void other_materials_still_interact() {
     check_well_formed(world, n, n, "sand");
 }
 
+// Spreading changes how many cells hold Water; the native quantity ledger must
+// follow, or a later erase or reaction underflows it.
+void ledger_population_follows_spreading() {
+    const int n = 128;
+    World world(config());
+    box(world, n, n);
+    rect(world, 40, 100, 10, 26, Material::Water);
+    const auto painted = world.quantity_ledger().material_cells[static_cast<std::size_t>(Material::Water)];
+    require(painted == 260U, "ledger did not count painted Water cells");
+    for (int tick = 0; tick < 400; ++tick) (void)world.tick();
+    const auto cells = count(world, n, n, Material::Water);
+    require(cells != 260U, "Water did not spread");
+    require(world.quantity_ledger().material_cells[static_cast<std::size_t>(Material::Water)] == cells,
+            "ledger Water cell population differs from stored cells");
+    // Erasing every spread cell must not underflow the ledger.
+    for (int y = 0; y < n; ++y)
+        for (int x = 0; x < n; ++x)
+            if (world.stored_material(x, y) == Material::Water) world.set(x, y, Material::Empty);
+    require(world.quantity_ledger().material_cells[static_cast<std::size_t>(Material::Water)] == 0U,
+            "ledger kept Water cells after erasing all Water");
+    require(world.water_quantity({0, 0, n, n}) == 0U, "Water remained after erase");
+}
+
 void chunk_capacity_is_an_explicit_outcome() {
     auto cfg = config();
     cfg.maximum_chunk_count = 2;
@@ -324,6 +347,7 @@ int main() {
         {"sealed passage equalises", sealed_passage_equalises},
         {"bodies block water and receive contacts", bodies_block_water_and_receive_contacts},
         {"other materials still interact", other_materials_still_interact},
+        {"ledger population follows spreading", ledger_population_follows_spreading},
         {"chunk capacity is an explicit outcome", chunk_capacity_is_an_explicit_outcome},
     };
     int failures = 0;

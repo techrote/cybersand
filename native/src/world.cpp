@@ -939,7 +939,7 @@ World::World(WorldConfig config)
         wave_->maximum = config_.water_experiment_policy.maximum();
         wave_->film = config_.water_experiment_policy.film() / 2;
         wave_->sorted.reserve(config_.maximum_chunk_count);
-        wave_->grow.reserve(config_.maximum_chunk_count);
+        wave_->grow.reserve(config_.maximum_chunk_count * 4U);
         wave_->tasks.reserve(config_.maximum_chunk_count * 2U);
         wave_->scratch.reserve(config_.maximum_chunk_count * 2U);
     }
@@ -3101,6 +3101,7 @@ void World::clear() {
     ++hard_surface_revision_;
     hard_surface_full_refresh_required_ = true;
     if (pressure_ != nullptr) pressure_->reset();
+    if (wave_ != nullptr) { wave_->round = 0; wave_->diagnostics = {}; }
     inertial_ledger_ = {};
     initialize_settled_discovery();
 }

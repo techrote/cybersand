@@ -65,6 +65,19 @@ which matched Windows and Linux. The default launch is unchanged. Remaining
 steps (input capture, terrain-installation fence, workbench measurement,
 semaphore wake) are separate and need their own registration.
 
+## Wave flow Water solver experiment (WAVE-MT-001) — 2026-11-15
+
+Experimental branch `claude/cybersand-wave-mt-001-9d38c0` (Draft PR) adds the
+opt-in `wave_flow_v1` bulk Water law described in the
+[wave flow reference](../architecture/wave-flow-v1.md); measurements, rejected
+candidates and open qualification are in the
+[dated record](../audits/2026-11-15-wave-mt-001-wave-flow.md). It is off by
+default, is not a policy family and has no Godot path. The branch edits
+`native/src/world.cpp`, `world.hpp` and `world_pressure.inc`, so published
+runtime provenance is stale for it and any reviewed protected-source transition
+must be re-chained before it could merge. Do not merge without the owner's
+decision.
+
 ## Ballistic Water experiment (#362) — 2026-11-05
 
 Experimental branch `claude/water-ballistic-hybrid` (Draft PR) adds BW-001

@@ -569,6 +569,7 @@ private:
     void wave_flux_task(std::size_t task_index) noexcept;
     void wave_apply_task(std::size_t task_index) noexcept;
     void wake_wave_chunk(Chunk& chunk) noexcept;
+    void apply_wave_population(std::int64_t delta);
     void wave_write_mass(Chunk& chunk, std::size_t at, std::int32_t before, std::int32_t after,
                          WaveHalf& half) noexcept;
     bool inertial_enabled_ = false;

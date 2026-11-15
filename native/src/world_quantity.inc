@@ -174,6 +174,14 @@ void World::initialize_quantity_ledger(const QuantityConstructionSeed& seed) {
     quantity_ = initialized;
 }
 
+// wave_flow_v1 moves conserved Water between cells in bulk; only the number of
+// cells holding Water changes, with no source or sink.
+void World::apply_wave_population(std::int64_t delta) {
+    if (delta == 0) return;
+    auto& cells = quantity_.material_cells[static_cast<std::uint8_t>(Material::Water)];
+    cells = quantity_apply(cells, delta);
+}
+
 void World::record_quantity_transition(Material before, std::uint16_t before_visible,
     std::uint16_t before_overfill, Material after, std::uint16_t after_visible,
     std::uint16_t after_overfill, JobEffects* effects, QuantityCause cause,
