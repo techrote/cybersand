@@ -36,6 +36,7 @@ SUPPORT_SHA = "cc27b3206cb61f98432fa95b799c9b9ff508c2bc"
 SUPPORT_BLOB = "f205a3a9f33632aeaafa2daa8ce25b2484bc6032"
 ACTIONS = ("STRAIGHT", "LEFT", "RIGHT", "BRANCH", "RETRACE", "STOP")
 FAMILIES = ("greebles", "pipework", "architecture")
+SAMPLER_VERSION = "lfm-worm-w5-family-quota-balanced-v1"
 SYSTEM = ("You are a tiny procedural CyberSand worm steering brain. "
           "Return exactly ONE uppercase token from the listed legal actions. "
           "Do not describe the drawing. The host controls materials, obstacles, limits and Stop.")
@@ -336,7 +337,7 @@ def main():
     if any(sample_distribution[family]["action_counts"] != quotas for family in FAMILIES):
         raise ValueError("W5 sampler did not honor all six action quotas")
     write_json(args.output / "sampler-receipt.json", {
-        "version": "lfm-worm-w5-family-quota-balanced-v1",
+        "version": SAMPLER_VERSION,
         "deterministic_seed": 1612570,
         "global_updates": 120,
         "distinct_source_sample_ids": len(set(schedule)),
@@ -430,7 +431,7 @@ def main():
         "trained_exact_teacher_matches": sum(x["raw_text"] == x["expected"] for x in trained),
         "trained_distinct_valid_choices": sorted({x["raw_text"] for x in trained if x["valid_first_pass"]}),
         "balanced_teacher_schedule": False,
-        "sampler_version": "lfm-worm-w5-family-world-majority-v1",
+        "sampler_version": SAMPLER_VERSION,
         "sampler_receipt": sample_distribution,
         "synthetic_novel_input_test_only": True,
         "support_source": SUPPORT_SHA,
