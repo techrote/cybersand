@@ -78,8 +78,8 @@ jobs:
             'native_workbench':False,'training':False,'paid_api':False,
             'merge':False,'ready':False,'production_default':False,
             'preserve_original_failures':True,
-            'dispatch_attempt':2,
-            'first_failed_preflight_run':43768682038}
+            'dispatch_attempt':3,
+            'failed_preflight_runs':[43768682038,43768837500]}
           if r!=expected: raise SystemExit('Unexpected ten-brain M2 cloud request')
           if os.getenv('GITHUB_REF')!='refs/heads/research/620-franken-mutagen-ten-brains':
               raise SystemExit('Wrong branch')
@@ -201,8 +201,8 @@ jobs:
             'native_workbench':False,'training':False,'paid_api':False,
             'merge':False,'ready':False,'production_default':False,
             'preserve_original_failures':True,
-            'dispatch_attempt':2,
-            'first_failed_preflight_run':43768682038}
+            'dispatch_attempt':3,
+            'failed_preflight_runs':[43768682038,43768837500]}
           if r!=expected: raise SystemExit('Unexpected ten-brain M2 cloud request')
           if os.getenv('GITHUB_REF')!='refs/heads/research/620-franken-mutagen-ten-brains':
               raise SystemExit('Wrong branch')
