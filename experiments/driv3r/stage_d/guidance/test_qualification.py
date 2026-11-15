@@ -17,7 +17,9 @@ class QualificationTests(unittest.TestCase):
                 self.assertFalse(q.parse_unittest(log, 0)["passed"])
 
     def test_incomplete_cohort(self):
-        for count in (148, 158):\n            with self.subTest(count=count):\n                self.assertFalse(q.parse_unittest(f"Ran {count} tests in 1.0s\n\nOK\n", 0)["passed"])
+        for count in (148, 158):
+            with self.subTest(count=count):
+                self.assertFalse(q.parse_unittest(f"Ran {count} tests in 1.0s\n\nOK\n", 0)["passed"])
 
     def test_skips_are_not_passes(self):
         self.assertFalse(q.parse_unittest("Ran 159 tests in 1.0s\n\nOK (skipped=1)\n", 0)["passed"])
