@@ -107,12 +107,12 @@ namespace {
 }
 
 // Whole mass units moved through a face in one round. The sub-unit part of the
-// flux is resolved by a stateless threshold that is evenly spread over the rows
-// of a column and over successive rounds (an additive low-discrepancy sequence
-// with a per-column offset). The transfer still averages to the flux and rows
-// still do not move in lockstep, but the rows of one face together move the
-// rounded total instead of a random sample of it. Independent random rounding
-// injected enough noise to keep a settled pool sloshing for ever.
+// flux is resolved by a stateless additive threshold sequence over rows and
+// rounds, with a per-column offset. For a constant flux, the average transfer
+// over all 4096 round phases equals that flux. A single column's aggregate can
+// still differ from its rounded total in a given round. Spreading the thresholds
+// reduces the observed sampling noise without moving identical rows in lockstep;
+// independent random rounding had kept disturbed pools sloshing indefinitely.
 [[nodiscard]] inline std::int32_t wave_transfer(std::int32_t flux, std::int64_t x, std::int64_t y,
                                                 std::uint32_t round) noexcept {
     if (flux == 0) return 0;
@@ -634,10 +634,12 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                     // A film: two partly filled cells that both rest on a solid
                     // floor. Less than a cell of Water carries no wave worth
                     // keeping, and momentum would let it creep for thousands
-                    // of ticks. It levels directly instead: a quarter of the
-                    // difference per round, at least one unit, never when the
-                    // cells differ by one unit or less, and never out of the
-                    // residual film a supported cell keeps. Nothing is remembered.
+                    // of ticks. It levels directly instead: about a quarter of
+                    // the difference while the donor is above the adhesion
+                    // threshold and the cells differ by more than one unit.
+                    // Each face budgets from the pre-apply donor mass. Two faces
+                    // can leave it below the threshold, which stops later outflow
+                    // rather than guaranteeing a minimum residue. Nothing is remembered.
                     if (supported(&chunk, i) && supported(other, j)) {
                         const auto difference = a - b;
                         const auto spare = std::max(0, std::max(a, b) - film);
@@ -662,16 +664,17 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                             static_cast<std::int64_t>(head) * (code == WaveChunk::kGainConfined ? P::kGainConfined : P::kGain);
                 // Rest rule: one unit cannot level a one-unit step (it only
                 // flips it), so a small flux across such a step is discarded.
-                // What remains is a strictly levelling process, which ends.
+                // Larger flux retains its wave inertia until damping calms it.
                 if (a != 0 && b != 0 && std::abs(head) <= P::kRestHead && std::abs(flux) < P::kStick) flux = 0;
                 const bool rightward = flux > 0;
                 auto available = rightward ? a : b;
                 const auto destination_mass = rightward ? b : a;
                 if (destination_mass == 0) {
-                    // A cell resting on a solid floor keeps a residual film
-                    // wherever it pours to, the rule the per-cell Water law
-                    // uses. Keyed on the destination's floor instead, a ledge
-                    // drained to its last units for a very long time.
+                    // A supported donor uses the adhesion threshold wherever
+                    // it pours, as the per-cell Water law does. This is a
+                    // start-of-round threshold, not a minimum final mass.
+                    // Keyed on the destination's floor instead, a ledge drained
+                    // to its last units for a very long time.
                     if (rightward ? supported(&chunk, i) : supported(other, j)) available -= film;
                     // Pouring into an empty cell is one-directional; a quarter of
                     // the cell per round cannot invert a pair of columns.

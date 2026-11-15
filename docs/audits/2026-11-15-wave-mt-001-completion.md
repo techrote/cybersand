@@ -542,3 +542,83 @@ Hosted native, sanitizer, target-OS, package and matched-benchmark results for
 that head are recorded in the PR ledger. The hosted `idle` scene still measures
 a pool that was never disturbed; rest after disturbance is asserted by the
 native regression above, not by the benchmark matrix.
+
+## 2026-11-15: law 2 threshold and rounding clarification
+
+The implementation-team source review following the rest and identity repair
+found two statements above that were stronger than the actual numerical law.
+This section corrects those statements without rewriting the retained local
+observations or changing law version 2 arithmetic. It is not the final
+independent Astra acceptance review.
+
+### Supported films use a threshold, not a guaranteed minimum
+
+The earlier phrase "a supported cell keeps its film wherever it pours" is too
+strong. The 24-unit adhesion amount gates supported outflow using the mass at
+the start of the apply pass. Each face independently computes its transfer
+from that same donor. Two-sided outflow can therefore take a donor below the
+threshold; later outflow then stops. This agrees with the existing per-cell
+Water rule's threshold semantics. It does not establish a hard 24-unit floor.
+
+An actual native `World` probe at
+`b5b7b1a010e97cd1994b18ced7ee20660e837366`, built with local GCC 14.2, exercised
+both rows below on solid support, with donor centres at x=63 and x=127 and
+workers 1 and 4. Every tick retained the exact total Water quantity.
+
+| Initial supported row | After one tick | Total Water | Result after disabling adhesion |
+|---|---|---:|---|
+| `[1, 25, 1]` | `[2, 23, 2]` | 27 | `[9, 9, 9]` |
+| `[1, 32, 1]` | `[9, 16, 9]` | 34 | `[11, 12, 11]` |
+
+All eight combinations reached sleep at tick 32. Pausing outside the region
+and returning woke them, and solving them again left their content unchanged.
+Disabling adhesion woke the residues and allowed further levelling to the
+values shown. Complete physical hashes matched across worker counts. No
+conservation, carrier overflow or false-rest defect was reproduced. The first
+scratch probe had an invalid chunk-capacity configuration and refused before
+executing a tick; that failed setup and the corrected execution are retained
+separately in the review evidence.
+
+**Design choice.** Preserve the existing threshold law and document it
+accurately. A strict residual minimum would require sharing a donor budget
+between both outgoing faces and would change the experimental transport law.
+There is no correctness reason for that change in these reproductions.
+Reversing this choice would require a versioned numerical change, new
+cross-face ownership/conservation tests and renewed physical/performance
+qualification. Supported adhesion residue may remain uneven by more than one
+unit; the one-unit levelness result above belongs to the rested pool fixtures,
+not every legal supported film.
+
+The new native case `supported film uses an adhesion threshold` exercises both
+rows and seams, exact quantity, zero retained flux at rest, pause/re-entry,
+adhesion-disable wake/levelling and worker-count continuation identity. The
+standalone Wave suite now registers 26 cases. No existing assertion or
+conservation threshold is weakened.
+
+### Additive rounding has a time-average guarantee
+
+The earlier statement that rows of a face move their exact rounded aggregate
+in every round is also too strong. A source-expression evaluation with x=0,
+rows y=0 through 31 and a fixed flux of 512 sub-units per row gives an ideal
+aggregate of four whole units. Across all 4096 round phases, the actual
+aggregate ranges from one to seven units and averages exactly four. This
+small arithmetic witness is not a native performance or fluid experiment.
+
+The corrected contract is exact average transfer for a constant flux over the
+full threshold phase cycle. Reduced sampling noise in a changing fluid is an
+observed result of the retained development experiments, not a theorem that
+every column transfers its rounded total in each round. Comments and the
+current design reference now state that scope, and no rounding expression is
+changed.
+
+### Requalification boundary
+
+These changes add a native regression and correct comments and current
+documentation. The protected `world.cpp` bytes remain at the reviewed
+`09a34956642a203ae9b725875f0773001ab70bc22b478a904588604c7de866c1`
+transition; no protected-source record is rewritten. Native input bytes still
+change, so publication request 7 rebuilds both runtimes and the Windows
+evaluation package. The prior publication and any predecessor CI results are
+retained as intermediate evidence and cannot qualify the resulting final
+HEAD. Complete hosted qualification and the fresh independent Astra review
+remain required at that final source identity.

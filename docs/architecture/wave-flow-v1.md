@@ -79,8 +79,9 @@ of a contiguous chunk column (64 columns at the default 128-cell chunk size).
    and loses what its right face carries. Both sides evaluate the same pure
    function of the face, so mass is conserved exactly. Flux is held in 1/4096
    of a unit; the whole units a face moves in a round come from a stateless
-   threshold that is spread evenly over the rows of a column and over
-   successive rounds, so the rows of one face together move the rounded total.
+   additive threshold sequence over rows and successive rounds. For a constant
+   flux its average over all 4096 round phases is exact; a column's aggregate
+   can still differ from its rounded total in any one round.
 
 Why head is "weight above" rather than "height of the surface": moving one unit
 sideways in a row then changes potential energy by exactly the head difference,
@@ -101,20 +102,21 @@ rest reachable with four rules, none of which adds stored state:
 
 | Rule | Value | What it does |
 |---|---|---|
-| Evenly spread rounding | additive sequence over rows and rounds, per-column offset | The rows of a face move the rounded total, not a random sample of it: far less noise, same average, rows still out of step |
+| Additive rounding | sequence over rows and rounds, per-column offset | Spreads thresholds to reduce the observed sampling noise; a constant flux has the same average over 4096 round phases, and rows remain out of step |
 | Calm band (`kCalm`) | flux below ⅛ unit per round loses ⅛ per round | Absorbs what rounding leaves behind. A real wave is in this range only near its turning points, where its energy is in the heads |
-| Rest rule (`kRestHead`, `kStick`) | heads within 1 unit and flux in the calm band → flux is discarded | One unit cannot level a one-unit step (it only flips it). What remains moves a unit only down a step of two or more, which strictly levels and therefore ends |
-| Films | two partly filled cells that both rest on a solid floor exchange ¼ of their difference per round, at least one unit, with no momentum | Less than a cell of Water carries no wave worth keeping, and with momentum it crept for tens of thousands of ticks |
+| Rest rule (`kRestHead`, `kStick`) | heads within 1 unit and flux in the calm band → flux is discarded | Removes small momentum that would only flip a one-unit step; larger flux still follows the inertial law |
+| Films | two partly filled cells on a solid floor exchange about ¼ of their difference with no momentum, while the donor exceeds the adhesion threshold and the difference exceeds 1 unit | Removes the long-lived creep of supported films; adhesion can leave an uneven residue |
 
 Rest is exact: no cell changes and every retained flux is zero. That state is a
 fixed point of the three passes, so a chunk at rest can stop being solved
 without changing any later result. Measured consequences are in the
 [completion record](../audits/2026-11-15-wave-mt-001-completion.md#2026-11-15-claude-review-rest-and-identity-repair).
 
-The costs are deliberate and bounded. Rested columns may differ by one unit
-(1/255 of a cell) from their neighbours. Ripples whose flux never leaves the
-calm band (roughly 8 units of amplitude, 3% of a cell) die within tens of
-ticks instead of fading slowly. A film has no waves at all.
+The costs are deliberate and bounded. The rested pool regressions allow
+neighbouring column totals to differ by one unit (1/255 of a cell). Supported
+adhesion residue can remain more uneven, as described below. Ripples whose flux
+never leaves the calm band (roughly 8 units of amplitude, 3% of a cell) die within
+tens of ticks instead of fading slowly. A film has no waves at all.
 
 ### Limits that keep it stable
 
@@ -124,13 +126,23 @@ ticks instead of fading slowly. A film has no waves at all.
 | Inertia per face (`kCoast`) | 16 units per round | Small flows keep their momentum and make waves; large flows relax without overshoot |
 | Downhill share | head difference ÷ (8 × responding rows) | The explicit-diffusion bound: two columns cannot swap places in one round |
 | Pour into an empty cell | ¼ of the source cell | A pair of columns cannot invert |
-| Residual film | A cell resting on a solid floor keeps 24 units with adhesion enabled; zero with it disabled | A supported spill does not thin out forever, on a floor or at the edge of a ledge (the per-cell Water law's rule) |
+| Adhesion threshold | 24 units with adhesion enabled; zero with it disabled | Stops continued thinning of a supported spill; the final residue can be below the threshold and can remain uneven |
 | Receiver capacity | At most half its remaining uint16 capacity from each adjacent face | Simultaneous arrivals cannot overflow a cell |
 | Sealed-stack inflow stop | Top mass at least 32,000 units | Stops additional inflow before the carrier limit |
 | Derived head | At most 2²⁶ units | Bounds arithmetic for extreme legal sealed columns |
 
 These are **bounded-approximation choices**, not physics. Their visible cost is
 that bulk surges are sedate at one round per tick; see [limits](#limits).
+
+The adhesion amount is a threshold for starting supported pouring or direct
+film levelling, not a hard minimum mass. Like the per-cell Water law, a cell that starts above the threshold
+can finish below it. Each film face uses the donor's mass before the apply pass;
+two-sided outflow can therefore leave a supported row `[1, 25, 1]` at `[2, 23, 2]`,
+or `[1, 32, 1]` at `[9, 16, 9]`. Quantity is unchanged. With adhesion enabled these
+residues stop moving even though neighbouring masses differ by more than one
+unit. Disabling adhesion wakes them and permits further levelling. The native
+threshold regression checks both examples across strip and chunk seams with
+one and four workers, including stable rest and region re-entry.
 
 ### Sealed passages
 
@@ -297,7 +309,8 @@ the World is quarantined as failed, rather than wrapping the value.
   the rest rules end a ripple quickly; films carry no waves.
 - **Thin sheets drain slowly.** A sheet a cell or two deep on a long flat ledge
   takes tens of thousands of ticks to finish running off, and is solved (not
-  asleep) until it has. Rested Water is level to one unit, not exactly level.
+  asleep) until it has. The rested pool fixtures are level to one unit;
+  supported adhesion residue can remain more uneven.
 - **Falling Water loses sideways momentum**; waterfalls drop straight.
 - **Deep reservoirs drain through their top 32 rows and their exposed face.**
 - **Water-owned material interactions are limited.** Sand can sink and active

@@ -851,8 +851,8 @@ void disturbed_water_reaches_exact_rest() {
     }
 }
 
-// Less than a cell of Water on a solid floor levels directly and stops: no
-// momentum, at least one unit a round while two cells differ by more than one.
+// A supported film above the adhesion threshold levels directly and stops:
+// no momentum, at least one unit a round while the cells differ by more than one.
 void films_level_and_rest() {
     const int width = 160, height = 48;
     {
@@ -883,6 +883,74 @@ void films_level_and_rest() {
         require(world.water_quantity({0, 0, width, height}) == quantity, "a spreading puddle changed its quantity");
         require(count(world, width, height, Material::Water) > 20U, "the puddle did not spread");
         check_well_formed(world, width, height, "puddle");
+    }
+}
+
+// Adhesion is a threshold for starting supported flow, not a minimum final
+// mass. Both owned faces use the same pre-apply donor, so two-sided outflow can
+// leave it below that threshold. The residue must conserve quantity, sleep at
+// a real fixed point, and level further when adhesion is disabled.
+void supported_film_uses_an_adhesion_threshold() {
+    for (const int center : {63, 127}) { // half-strip and chunk seams
+        for (const auto middle : {std::uint16_t{25}, std::uint16_t{32}}) {
+            const auto run = [&](std::uint32_t workers) {
+                World world(config(workers));
+                rect(world, center - 2, 0, 5, 1, Material::Wall);
+                rect(world, center - 2, 4, 5, 1, Material::Wall);
+                rect(world, center - 2, 1, 1, 3, Material::Wall);
+                rect(world, center + 2, 1, 1, 3, Material::Wall);
+                require(world.set_cell_state(center - 1, 3, Material::Water, 1, 0) &&
+                            world.set_cell_state(center, 3, Material::Water, middle, 0) &&
+                            world.set_cell_state(center + 1, 3, Material::Water, 1, 0),
+                        "adhesion threshold fixture seed refused");
+                const RectI64 region{center - 2, 0, 5, 5};
+                const auto quantity = world.water_quantity(region);
+                const auto masses = [&] {
+                    return std::array<std::uint16_t, 3>{world.stored_state_a(center - 1, 3),
+                        world.stored_state_a(center, 3), world.stored_state_a(center + 1, 3)};
+                };
+                const auto expected = middle == 25U ? std::array<std::uint16_t, 3>{2, 23, 2}
+                                                   : std::array<std::uint16_t, 3>{9, 16, 9};
+                (void)world.tick();
+                require(masses() == expected, "two-sided supported outflow lost its threshold semantics");
+                require(world.water_quantity(region) == quantity, "two-sided film outflow changed quantity");
+                const auto assert_stable_rest = [&] {
+                    for (int tick = 0; tick < 2 * WaveFlowParameters::kSleepAfter; ++tick) {
+                        (void)world.tick();
+                        require(masses() == expected, "adhesion residue changed while coming to rest");
+                        require(world.water_quantity(region) == quantity, "adhesion residue changed quantity");
+                    }
+                    require(world.wave_flow_diagnostics().last_solved_chunks == 0U,
+                            "adhesion residue never stopped being solved");
+                    require(world.wave_flow_flux(center - 1, 3) == 0 && world.wave_flow_flux(center, 3) == 0,
+                            "rested adhesion residue retains momentum");
+                };
+                assert_stable_rest();
+                const auto resting_content = world.content_hash();
+                world.set_simulation_region(RectI64{8192, 8192, 64, 64});
+                (void)world.tick();
+                world.set_simulation_region(std::nullopt);
+                (void)world.tick();
+                require(world.wave_flow_diagnostics().last_solved_chunks > 0U,
+                        "region re-entry did not wake adhesion residue");
+                assert_stable_rest();
+                require(world.content_hash() == resting_content, "re-solving adhesion residue changed its content");
+
+                world.set_liquid_surface_adhesion_enabled(false);
+                for (int tick = 0; tick < 2 * WaveFlowParameters::kSleepAfter; ++tick) {
+                    (void)world.tick();
+                    require(world.water_quantity(region) == quantity, "disabling adhesion changed film quantity");
+                }
+                const auto levelled = masses();
+                require(std::abs(static_cast<int>(levelled[0]) - levelled[1]) <= 1 &&
+                            std::abs(static_cast<int>(levelled[1]) - levelled[2]) <= 1,
+                        "disabling adhesion did not let the residue level");
+                require(world.wave_flow_diagnostics().last_solved_chunks == 0U,
+                        "film did not return to rest with adhesion disabled");
+                return world.physical_state_hash();
+            };
+            require(run(1) == run(4), "adhesion threshold continuation depends on the worker count");
+        }
     }
 }
 
@@ -978,6 +1046,7 @@ int main(int argc, char** argv) {
         {"tall extreme column preserves head sign", tall_extreme_column_preserves_head_sign},
         {"disturbed water reaches exact rest", disturbed_water_reaches_exact_rest},
         {"films level and rest", films_level_and_rest},
+        {"supported film uses an adhesion threshold", supported_film_uses_an_adhesion_threshold},
         {"state hash binds retained momentum", state_hash_binds_retained_momentum},
     };
     int failures = 0, executed = 0;
