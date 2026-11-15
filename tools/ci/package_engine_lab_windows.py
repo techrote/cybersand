@@ -62,7 +62,9 @@ def project_from_git(output,dll,rapier):
     files=["godot","examples/worldgen","THIRD_PARTY_NOTICES.md","LICENSE_STATUS.md",
            "third_party/godot-runtime.lock.json","third_party/native-toolchain.lock.json",
            "third_party/rapier-bvh-build.lock.json",
-           "docs/audits/2026-11-14-pr566-mask-coherent-presentation-qualification.md"]
+           "docs/audits/2026-11-14-pr566-mask-coherent-presentation-qualification.md",
+           "docs/operations/engine-lab-pose-tracing.md",
+           "tools/ci/analyze_pose_trace.py"]
     tar=subprocess.check_output(["git","archive","--format=tar",SOURCE,"--",*files],cwd=ROOT,timeout=90)
     count=0
     with tarfile.open(fileobj=io.BytesIO(tar)) as archive:
@@ -146,7 +148,7 @@ Godot: 4.7.stable.official.5b4e0cb0f
 Rapier Windows x64 module SHA256: RAPIER_SHA256
 
 ## Start
-Extract the INNER CyberSand-593-Windows-9628729a.zip from the GitHub Actions
+Extract the INNER CyberSand-EngineLab-Windows-<source>.zip from the GitHub Actions
 artifact into a fresh writable folder, e.g. C:\\CyberSand593. Keep all files
 together. Double-click Open Guarded Workbench.cmd; it imports the project with
 the bundled Godot console, then launches the actual GUI Workbench.
@@ -161,6 +163,16 @@ Open the Workbench and click Engine Lab... on its top toolbar.
 Use the FPS cap, VSync, Pixel and Rapier tick targets, material publication target, ACK delay and coupling toggles LIVE. Native worker count is saved for the NEXT full launch.
 The advanced override enables rates up to 1000 Hz without repeated popups. The 10-second scripted benchmark saves actual-clock JSON in user data.
 Non-60 cadence intentionally changes simulation speed because the flight integrator stays fixed at 1/60 per completed step.
+
+## Actual screen-frame pose trace
+Start Play with a selected Needle flyer. In Engine Lab, click Trace poses:
+manual or Trace poses: scripted. Both record every Main overlay frame for
+up to ten seconds, then save a bounded JSONL file to the local user data
+directory (the menu shows its path). No disk I/O occurs during flight.
+Compare Free / Follow and Guarded / Mask Baseline with matched settings.
+See docs/operations/engine-lab-pose-tracing.md for the full procedure,
+and tools/ci/analyze_pose_trace.py for causal event classification.
+This is an instrumentation build, not physical acceptance.
 
 ## Physical acceptance
 - [ ] Confirm Windows 11 OS build, GPU model/driver, resolution/Hz,
@@ -278,6 +290,7 @@ def smoke(output,evidence):
         ("crossfade",["--headless","--script","res://tests/test_pr593_mask_coherent_edit_crossfade.gd"],210,"PR593_NATIVE_EDIT_CROSSFADE_RESULT"),
         ("dense-budget",["--headless","--script","res://tests/test_pr593_mask_coherent_dense_budget.gd"],120,"PR593_GUARD_DENSE_BUDGET_RESULT"),
         ("engine-lab",["--headless","--script","res://tests/test_workbench_engine_lab.gd"],180,"ENGINE_LAB_RESULT"),
+        ("pose-trace",["--headless","--script","res://tests/test_workbench_pose_trace.gd"],180,"POSE_TRACE_RESULT"),
         ("engine-lab-gui",["--rendering-method","gl_compatibility","--script","res://tests/test_workbench_engine_lab.gd"],180,"ENGINE_LAB_RESULT"),
         ("graphical",["--rendering-method","gl_compatibility","--quit-after","180","--","--workbench"],120,"Rapier2D")
     ]
