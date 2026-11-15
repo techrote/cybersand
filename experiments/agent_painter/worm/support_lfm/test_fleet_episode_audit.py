@@ -65,7 +65,7 @@ class FleetAuditFixtureTests(unittest.TestCase):
                    "workflow_run_id": 10001+i, "pid": 6000+i, "pid_start_ticks": 7000+i,
                    "seed": seed, "family": "greebles", "model_id": "LiquidAI/LFM2.5-VL-450M",
                    "model_revision": MODEL_REV, "w0_source_sha": W0_SHA,
-                   "source_sha": "b"*64, "checkpoint_sha256": "c"*64,
+                   "source_sha": "b"*40, "checkpoint_sha256": "c"*64,
                    "original_producer_zip_sha256": "d"*64,
                    "native_execution": False, "optimizer_updates": 0}
         for name, extension, data in (
