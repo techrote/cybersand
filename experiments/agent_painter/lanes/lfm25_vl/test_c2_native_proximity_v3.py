@@ -16,10 +16,10 @@ class C2cSourceTests(unittest.TestCase):
     def test_distinct_wide_offset_graph(self):
         witness = subject.v2.validate_stepped_structure(self.doc["program"])
         self.assertEqual(witness["degree_multiset"], [1]*6 + [2]*2 + [4]*2)
-        self.assertEqual(witness["crosses"], [[18, 31], [80, 62]])
+        self.assertEqual(witness["crosses"], [[18, 31], [79, 62]])
         self.assertEqual(witness["elbows"], [[60, 31], [60, 62]])
         self.assertEqual(witness["cycle_count"], 0)
-        self.assertEqual(len(subject.centreline(self.doc["program"])), 180)
+        self.assertEqual(len(subject.centreline(self.doc["program"])), 179)
         self.assertNotEqual(subject.legacy.signature(self.doc["program"]),
                             subject.legacy.signature(subject.v2.read_document()["program"]))
 
@@ -35,7 +35,7 @@ class C2cSourceTests(unittest.TestCase):
         self.assertIsNone(receipt["numeric_auto_accept_threshold"])
 
     def test_chebyshev_proxy_uses_deduplicated_centreline_denominator(self):
-        points = {(0,0), (5,5), (9,9)}
+        points = {(0,0), (5,5), (10,10)}
         native = frozenset({(0,3), (6,6)})
         result = subject.coverage(points, native)
         self.assertEqual(result["candidate_centreline_pixels"], 3)

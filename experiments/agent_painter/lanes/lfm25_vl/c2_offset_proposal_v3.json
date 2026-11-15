@@ -12,7 +12,7 @@
     130363
   ],
   "request": "Draw connected, strictly orthographic, nominal-three-cell pipework with six terminal ends and two real four-way crosses. Use an asymmetric wide-span stepped bridge: a compact upper-left junction, a narrow central drop displaced away from the three held-out riser columns, and a lower-right junction. Keep two vertical terminal arms on each cross, exterior horizontal terminals, two explicit orthogonal elbows, no hidden crossings, no cycles and fitting collars only at joints. Avoid a repeated three-riser motif.",
-  "witness": "Six terminals, two degree-four crosses at (18,31) and (80,62), two genuine right-angle elbows at (60,31) and (60,62), one 31-cell central descending backbone at x60, two spatially separated side-column crosses x18/x80, nominal diameter 3, no cycles. Intended 96x96 source-only replacement for C2b, never a new TRAIN row.",
+  "witness": "Six terminals, two degree-four crosses at (18,31) and (79,62), two genuine right-angle elbows at (60,31) and (60,62), one 31-cell central descending backbone at x60, two spatially separated side-column crosses x18/x79, nominal diameter 3, no cycles. Intended 96x96 source-only replacement for C2b, never a new TRAIN row.",
   "program": {
     "version": 2,
     "family": "pipework",
@@ -42,11 +42,11 @@
             62
           ],
           [
-            80,
+            79,
             62
           ],
           [
-            92,
+            91,
             62
           ],
           [
@@ -58,11 +58,11 @@
             47
           ],
           [
-            80,
+            79,
             46
           ],
           [
-            80,
+            79,
             77
           ]
         ],
