@@ -5,7 +5,10 @@ import struct
 import unittest
 from copy import deepcopy
 
-from worm_shift_nulls import audit_shifted_field_nulls
+try:
+    from .worm_shift_nulls import audit_shifted_field_nulls
+except ImportError:
+    from experiments.driv3r.stage_d.guidance.worm_shift_nulls import audit_shifted_field_nulls
 
 
 def digest(o):
