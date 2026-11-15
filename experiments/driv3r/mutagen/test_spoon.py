@@ -19,7 +19,7 @@ def fake_gguf(path):
     def string(s):
         b=s.encode()
         return struct.pack("<Q",len(b))+b
-    names=["blk.8.ffn_gate.weight","blk.1.ssm_in.weight",
+    names=["blk.8.ffn_gate.weight","blk.1.shortconv.in_proj.weight",
            "blk.2.attn_q.weight"]+[f"unused.{i}.weight" for i in range(97)]
     raw=bytearray(b"GGUF")
     raw+=struct.pack("<IQQ",3,len(names),1)
