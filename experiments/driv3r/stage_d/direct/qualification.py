@@ -17,7 +17,7 @@ import sys
 from .m1_preflight import M1_SCHEMA_SHA256, M1_SOURCE_COMMIT, assert_approved_schema
 from .inventory import TestInventoryError, audit_test_inventory
 
-VERSION = "d1a-exact-head-offline-qualification/1"
+VERSION = "d1a-exact-head-offline-qualification/2"
 LANE = "experiments/driv3r/stage_d/direct"
 MINIMUM_TESTS = 130  # Independently inspected pre-inventory suite floor at f969338f.
 _SHA = re.compile(r"[0-9a-f]{40}\Z")
