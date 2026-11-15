@@ -1,0 +1,48 @@
+{
+  "schema": "driv3r-m4-a1a2a3-36-request-v1",
+  "owner_gate": "M4 A1/A2/A3 three matched 36-decision native Q8 episodes",
+  "authorized_by": "CyberSand owner: short model-selected native followed by 36-decision A1/A2/A3 comparisons",
+  "m1_frozen_sha": "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6",
+  "m1_schema_sha256": "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d",
+  "short_qualified_source_sha": "abc49d4d676061298b39349af11eaa4ae534cee1",
+  "short_qualification_run_id": 43656647282,
+  "short_original_artifact_id": 14138288613,
+  "short_artifact_name": "driv3r-m3-q8-short-abc49d4d676061298b39349af11eaa4ae534cee1-43656647282-1",
+  "short_native_gate": "4/4 real resident d1 native selections with exact original replay verified",
+  "eligible_arms": [
+    "A1",
+    "A2",
+    "A3"
+  ],
+  "max_model_decisions_per_arm": 36,
+  "max_native_material_edits_per_arm": 56,
+  "max_model_recovery_interventions_per_arm": 8,
+  "max_auto_after_recovery_edits_per_arm": 12,
+  "max_concurrent_native_model_jobs": 3,
+  "fixture": "wall-v1",
+  "seed": 570,
+  "starting_world": [
+    512,
+    512
+  ],
+  "focus": [
+    0,
+    0,
+    96,
+    96
+  ],
+  "scenario": "guided_coverage_initial_single_development_seed",
+  "same_host_legal_candidate_set_at_matched_native_state": true,
+  "explicit_optional_typed_guidance": true,
+  "retain_first_choice_and_consequential_native_divergence": true,
+  "allow_model": true,
+  "allow_formal_AB": true,
+  "allow_training": false,
+  "allow_paid_inference": false,
+  "allow_multimodal_projector": false,
+  "allow_24_episode_confirmation": false,
+  "allow_merge": false,
+  "no_ready_promotion": true,
+  "classify_early_stop_as_real_outcome": true,
+  "retain_original_failures": true
+}
