@@ -5,6 +5,8 @@ The host alone owns bounds, obstacles, legal moves, seeded randomness and Stop.
 Raw model actions may be replayed, but replay is transport, not learned policy.
 """
 from __future__ import annotations
+from collections.abc import Callable
+from copy import deepcopy
 import argparse
 import hashlib
 import json
@@ -35,13 +37,18 @@ def initial_world(seed: int, size: int = 96) -> set[tuple[int, int]]:
 
 
 def run(seed: int, mode: str = 'fidget', family: str = 'greebles',
-        steps: int = 240, size: int = 96, raw_actions: list[str] | None = None) -> dict:
-    if mode not in POLICIES + ('replay',) or family not in FAMILIES:
+        steps: int = 240, size: int = 96, raw_actions: list[str] | None = None,
+        selector: Callable[[dict], str] | None = None) -> dict:
+    if mode not in POLICIES + ('replay', 'callback') or family not in FAMILIES:
         raise ValueError('unknown mode or family')
     if not (0 <= steps <= 4096) or not (24 <= size <= 256):
         raise ValueError('unbounded steps/size')
     if mode == 'replay' and raw_actions is None:
         raise ValueError('replay requires raw actions')
+    if mode == 'callback' and selector is None:
+        raise ValueError('callback requires selector')
+    if selector is not None and mode != 'callback':
+        raise ValueError('selector requires callback mode')
     rng = random.Random(seed ^ 0xD431C0DE)
     obstacles = initial_world(seed, size)
     x, y, heading = 7, size // 2, 0
@@ -84,6 +91,11 @@ def run(seed: int, mode: str = 'fidget', family: str = 'greebles',
                        'family': family, 'tick': tick}
         if mode == 'replay':
             raw = raw_actions[tick] if tick < len(raw_actions) else 'STOP'
+        elif mode == 'callback':
+            # Select from the actual current observation, never mutable host state.
+            raw = selector(deepcopy(observation))
+            if not isinstance(raw, str):
+                raise TypeError('selector must return raw text')
         elif mode == 'wall':
             raw = next((a for a in ('RIGHT', 'STRAIGHT', 'LEFT') if a in forward_choices), None)
             if raw is None:
