@@ -9,26 +9,26 @@ from experiments.driv3r.stage_d.guidance import qualification as q
 
 class QualificationTests(unittest.TestCase):
     def test_complete_pass(self):
-        self.assertTrue(q.parse_unittest("Ran 168 tests in 3.00s\n\nOK\n", 0)["passed"])
+        self.assertTrue(q.parse_unittest("Ran 170 tests in 3.00s\n\nOK\n", 0)["passed"])
 
     def test_missing_and_duplicate_footer(self):
-        for log in ("OK\n", "Ran 168 tests in 1.0s\nRan 168 tests in 1.0s\nOK\n"):
+        for log in ("OK\n", "Ran 170 tests in 1.0s\nRan 170 tests in 1.0s\nOK\n"):
             with self.subTest(log=log):
                 self.assertFalse(q.parse_unittest(log, 0)["passed"])
 
     def test_incomplete_cohort(self):
-        for count in (148, 158, 167):
+        for count in (158, 167, 168, 169):
             with self.subTest(count=count):
                 self.assertFalse(q.parse_unittest(f"Ran {count} tests in 1.0s\n\nOK\n", 0)["passed"])
 
     def test_skips_are_not_passes(self):
-        self.assertFalse(q.parse_unittest("Ran 168 tests in 1.0s\n\nOK (skipped=1)\n", 0)["passed"])
+        self.assertFalse(q.parse_unittest("Ran 170 tests in 1.0s\n\nOK (skipped=1)\n", 0)["passed"])
 
     def test_failed_returncode_is_not_pass(self):
-        self.assertFalse(q.parse_unittest("Ran 168 tests in 1.0s\n\nOK\n", 1)["passed"])
+        self.assertFalse(q.parse_unittest("Ran 170 tests in 1.0s\n\nOK\n", 1)["passed"])
 
     def test_failed_suite_is_not_pass(self):
-        self.assertFalse(q.parse_unittest("Ran 168 tests in 1.0s\n\nFAILED (failures=1)\n", 1)["passed"])
+        self.assertFalse(q.parse_unittest("Ran 170 tests in 1.0s\n\nFAILED (failures=1)\n", 1)["passed"])
 
     def test_invalid_timeout_fails_before_access(self):
         for t in (True, 0, -1, 601, 3.1, "180"):
@@ -84,6 +84,41 @@ class QualificationTests(unittest.TestCase):
                         q.source_fence(Path("/missing"))
         self.assertTrue(any(cmd[0] == "diff" and "--no-renames" in cmd
                             for cmd in calls))
+
+    def test_reverted_foreign_write_rejected_despite_clean_final_delta(self):
+        git, calls = self._mock_qualification_git()
+        def fake_git(root, *args):
+            if args[0] == "log":
+                calls.append(args)
+                return CompletedProcess(args, 0,
+                    "experiments/driv3r/stage_d/guidance/qualification.py\n"
+                    "experiments/driv3r/d_common/v1/reverted.py\n", "")
+            return git(root, *args)
+        digest = SimpleNamespace(hexdigest=lambda: q.M1_SCHEMA_SHA256)
+        with patch.object(q, "_git", side_effect=fake_git):
+            with patch.object(Path, "read_bytes", return_value=b"schema"):
+                with patch.object(q.hashlib, "sha256", return_value=digest):
+                    with self.assertRaisesRegex(q.QualificationError,
+                                                "commit history wrote outside"):
+                        q.source_fence(Path("/missing"))
+        self.assertTrue(any(args[:5] == ("log", "-m", "--no-renames",
+                                         "--format=", "--name-only") for args in calls))
+
+    def test_valid_history_reaches_module_discovery(self):
+        git, _calls = self._mock_qualification_git()
+        def fake_git(root, *args):
+            if args[0] == "log":
+                return CompletedProcess(args, 0,
+                    "experiments/driv3r/stage_d/guidance/qualification.py\n", "")
+            return git(root, *args)
+        digest = SimpleNamespace(hexdigest=lambda: q.M1_SCHEMA_SHA256)
+        with patch.object(q, "_git", side_effect=fake_git):
+            with patch.object(Path, "read_bytes", return_value=b"schema"):
+                with patch.object(q.hashlib, "sha256", return_value=digest):
+                    with patch.object(Path, "glob", return_value=[]):
+                        with self.assertRaisesRegex(q.QualificationError,
+                                                    "Required test modules missing"):
+                            q.source_fence(Path("/missing"))
 
 if __name__ == "__main__":
     unittest.main()

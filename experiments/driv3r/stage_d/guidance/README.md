@@ -1,5 +1,19 @@
 # D-1B: soft guidance and shadow critic — independent preparatory lane
 
+## Commit-history write-scope qualification — 15 November 2026
+
+The offline qualifier now inspects every intermediate commit between frozen M1
+and this D-1B head, not just the final tree. An out-of-lane write followed by a
+revert still violates exclusive ownership. The `git log -m --no-renames
+--name-only` command sees merge-parent and both rename-side changes. Two new
+unit fixtures challenge a reverted shared-file edit and allowed lane-only history.
+The minimum complete suite is now **170 tests**.
+
+This is a source-provenance integrity guard, **not an executed full-suite run**.
+Complete exact-HEAD D-1B testing and M1 five-record conformance remain
+outstanding. Native/model/real Undo/production work is not authorised.
+
+
 ## Frozen single-fork guidance/critic interaction probe — 15 November 2026
 
 The lane-local fork_probe.py compares **one identical, source-declared legal candidate

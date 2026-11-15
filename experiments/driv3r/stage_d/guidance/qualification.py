@@ -23,9 +23,9 @@ LANE = "experiments/driv3r/stage_d/guidance"
 SCHEMA = "experiments/driv3r/d_common/v1/interface.schema.json"
 M1_COMMIT = "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6"
 M1_SCHEMA_SHA256 = "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d"
-# 159 previously committed methods plus 9 matched-fork regression methods.
+# 168 previously committed methods plus 2 historical-scope regressions.
 # Fail closed if a module disappears or the suite silently shortens.
-MIN_TESTS = 168
+MIN_TESTS = 170
 REQUIRED_MODULES = frozenset({
     "test_comparison.py", "test_feedback_audit.py", "test_feedback_edgecases.py",
     "test_fork_probe.py",
@@ -105,6 +105,14 @@ def source_fence(root: Path) -> tuple[str, int]:
     paths = [p for p in changed.splitlines() if p]
     if not paths or any(not p.startswith(LANE + "/") for p in paths):
         raise QualificationError("M1-to-head changes outside exclusive D-1B lane or empty")
+    # Final-tree-only scope can hide an unauthorized edit later reverted.
+    # Traverse all intermediate commits; -m includes merge-parent diffs and
+    # --no-renames reveals both source and destination of renamed paths.
+    history = _checked_git(root, "log", "-m", "--no-renames", "--format=",
+                           "--name-only", f"{M1_COMMIT}..{head}", "--")
+    historical_paths = [p for p in history.splitlines() if p]
+    if not historical_paths or any(not p.startswith(LANE + "/") for p in historical_paths):
+        raise QualificationError("commit history wrote outside exclusive D-1B lane or is empty")
     modules = {p.name for p in (root / LANE).glob("test_*.py")}
     if not REQUIRED_MODULES <= modules:
         raise QualificationError("Required test modules missing from checkout")
