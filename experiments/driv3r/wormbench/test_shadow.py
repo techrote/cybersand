@@ -21,6 +21,8 @@ class WormBenchTests(unittest.TestCase):
                          "QuantFactory/SmolLM2-135M-Instruct-GGUF")
         self.assertEqual(MODELS["smol135"]["filename"],
                          "SmolLM2-135M-Instruct.Q4_K_M.gguf")
+        self.assertEqual(MODELS["smol135"]["kind"],"chat")
+        self.assertEqual(MODELS["smol135-grammar"]["kind"],"chat_grammar")
         self.assertEqual(MODELS["sprocket500"]["kind"],"chat")
         self.assertEqual(MODELS["sprocket500-grammar"]["kind"],"chat_grammar")
 
