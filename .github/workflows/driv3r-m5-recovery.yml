@@ -55,6 +55,10 @@ jobs:
                                   "recoveries":arm["recovery_interventions"]}
                           for name,arm in arms.items()})
           PY
+      - name: Independent synthetic material replay and fragility audit
+        run: |
+          python3 -m experiments.driv3r.m5_recovery.audit --output m5-results/independent-audit.json
+          test -s m5-results/independent-audit.json
       - name: Always retain successful or failed original synthetic evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -62,6 +66,7 @@ jobs:
           name: driv3r-m5-offline-${{ github.sha }}-${{ github.run_id }}
           path: |
             m5-results/development.json
+            m5-results/independent-audit.json
             m5-results.stdout.json
           if-no-files-found: warn
           retention-days: 90
