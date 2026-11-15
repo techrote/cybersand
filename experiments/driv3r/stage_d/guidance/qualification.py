@@ -23,11 +23,12 @@ LANE = "experiments/driv3r/stage_d/guidance"
 SCHEMA = "experiments/driv3r/d_common/v1/interface.schema.json"
 M1_COMMIT = "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6"
 M1_SCHEMA_SHA256 = "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d"
-# 149 previously committed test methods plus 10 launcher regression methods.
+# 159 previously committed methods plus 9 matched-fork regression methods.
 # Fail closed if a module disappears or the suite silently shortens.
-MIN_TESTS = 159
+MIN_TESTS = 168
 REQUIRED_MODULES = frozenset({
     "test_comparison.py", "test_feedback_audit.py", "test_feedback_edgecases.py",
+    "test_fork_probe.py",
     "test_geometry_guard.py", "test_guidance.py", "test_information.py",
     "test_m1_compat.py", "test_png_structure.py", "test_shadow_policy.py",
     "test_snapshot_identity.py", "test_trajectory_audit.py", "test_worm_morphology.py",
