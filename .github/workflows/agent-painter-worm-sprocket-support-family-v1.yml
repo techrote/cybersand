@@ -1,0 +1,98 @@
+name: WORM SPROCKET support exact-original family-transfer baseline
+on:
+  push:
+    branches:
+      - research/612-worm-sprocket-support
+    paths:
+      - experiments/agent_painter/worm/support_sprocket/family_transfer_v1.py
+      - .github/workflows/agent-painter-worm-sprocket-support-family-v1.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: worm-sprocket-support-family-v1-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  family-original-w0:
+    name: Source-pinned 36 original receipts, 36 family pairs and 12 original-pixel contacts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Source scope, self-tests, and immutable original download
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/research/612-worm-sprocket-support
+          python3 -m py_compile experiments/agent_painter/worm/support_sprocket/family_transfer_v1.py
+          python3 tools/ci/check_ci_provider_policy.py
+          mkdir -p evidence/family-v1
+          git rev-parse HEAD > evidence/family-v1/source-sha.txt
+          curl -fLSs --retry 3 --connect-timeout 15 --max-time 120 \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14162755501/zip" \
+            -o "$RUNNER_TEMP/original-observed-v2.zip"
+          test "$(sha256sum "$RUNNER_TEMP/original-observed-v2.zip" | cut -d' ' -f1)" = \
+            db1372116a21201d1b9e95ecebae4dce15fd26b018efa2dca4abfaeec1716e83
+      - name: Execute independently reproduced theme-sensitivity comparison
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/worm/support_sprocket/family_transfer_v1.py \
+            --archive "$RUNNER_TEMP/original-observed-v2.zip" \
+            --output evidence/family-v1 > evidence/family-v1/console.txt
+          cat evidence/family-v1/console.txt
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('evidence/family-v1')
+          r=json.loads((p/'family-sensitivity-report.json').read_text())
+          assert r['trials']==36 and r['paired_family_comparisons']==36
+          assert len(r['original_pixel_contacts'])==12
+          assert r['independent_obstacle_worlds']==[211,223]
+          assert r['model_optimizer_updates']==0 and not r['native_execution']
+          assert len(list(p.glob('*.png')))==12
+          assert all(r['summary'][c]['same_trajectory_family_pairs']==6 and
+                     r['summary'][c]['mean_footprint_iou']==1.0 for c in ('random','wall'))
+          assert all(r['summary'][c]['same_trajectory_family_pairs']==0 for
+                     c in ('fidget','groove','contour','corridor'))
+          print('PASS original W0 theme-invariance negative controls and conditional variants')
+          PY
+      - name: Fail-closed altered original archive test
+        run: |
+          set -euo pipefail
+          cp "$RUNNER_TEMP/original-observed-v2.zip" "$RUNNER_TEMP/tampered.zip"
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path(__import__('os').environ['RUNNER_TEMP'])/'tampered.zip'
+          data=bytearray(p.read_bytes())
+          data[32] ^= 1
+          p.write_bytes(data)
+          PY
+          if python3 experiments/agent_painter/worm/support_sprocket/family_transfer_v1.py \
+            --archive "$RUNNER_TEMP/tampered.zip" --output "$RUNNER_TEMP/must-fail" \
+            > evidence/family-v1/tamper-test.txt 2>&1; then
+            echo 'ERROR: tampered original unexpectedly passed'
+            exit 1
+          fi
+          echo 'PASS tampered source ZIP rejected' | tee -a evidence/family-v1/tamper-test.txt
+      - name: Hash and preserve original-pixel result evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          (cd evidence/family-v1 && find . -type f ! -name 'SHA256SUMS.txt' -print0 | sort -z | xargs -0 sha256sum) > evidence/family-v1/SHA256SUMS.txt
+      - name: Preserve finite support evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-sprocket-family-v1-${{ github.sha }}
+          path: evidence/family-v1/
+          if-no-files-found: warn
+          retention-days: 90
