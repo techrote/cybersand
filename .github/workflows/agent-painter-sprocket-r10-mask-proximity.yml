@@ -1,0 +1,88 @@
+name: SPROCKET R10 original native mask vs visible splits (research only)
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/r10-mask-proximity-request.json
+      - .github/workflows/agent-painter-sprocket-r10-mask-proximity.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sprocket-r10-spatial-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  original-native-comparison:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify owned source and sole source request
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_REF" = refs/heads/codex/agent-painter-sprocket-568
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$GITHUB_REPOSITORY" = techrote/cybersand
+          test "$(git hash-object experiments/agent_painter/lanes/sprocket/rich_pipework_v2.py)" = 37d9b7d3f698d5e851e213043d8d43c5f2c9750a
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          j=json.loads(Path("experiments/agent_painter/lanes/sprocket/r10-mask-proximity-request.json").read_text())
+          assert j=={"schema":"cybersand.sprocket-r10-proximity-request/1",
+                      "sequence":1,"candidate":"R10",
+                      "corpus_artifact_id":14076703326,
+                      "native_artifact_id":14109121755,
+                      "predecessor_review_run":43660479415,
+                      "scope":["TRAIN","DEVELOPMENT"],
+                      "model_training":False,"new_native_execution":False,
+                      "final_targets_opened":False,
+                      "shared_train_admission":False,"draft_hold":True}
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/sprocket-r10-spatial-scheduling.json
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/r10_native_mask_proximity.py experiments/agent_painter/lanes/sprocket/test_r10_native_mask_proximity.py
+      - name: Retrieve ORIGINAL GitHub material archives
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/sprocket-r10-spatial/original
+          for item in "14076703326 corpus.zip" "14109121755 native.zip"; do
+            set -- $item
+            curl --fail --show-error --silent --location --retry 3 --max-time 240 \
+              -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/techrote/cybersand/actions/artifacts/$1/zip" \
+              -o "evidence/sprocket-r10-spatial/original/$2"
+          done
+          echo '50a9ad9b255b2a57180edf5558ca2b47dab9affd9ef9d2438f9011d648f81f39  evidence/sprocket-r10-spatial/original/corpus.zip' | sha256sum -c --strict
+          echo 'f7e673c414487668598eb26dc618daa019b2fc83bc70ed373cd574049f20e53c  evidence/sprocket-r10-spatial/original/native.zip' | sha256sum -c --strict
+          printf '%s\n' "$GITHUB_SHA" > evidence/sprocket-r10-spatial/source-head.txt
+      - name: Run positive and adversarial original-byte mask comparisons
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/sprocket-r10-spatial"
+          "$RUNNER_TEMP/sprocket-r10-spatial/bin/python" -m pip install 'Pillow==13.0.0'
+          "$RUNNER_TEMP/sprocket-r10-spatial/bin/python" -m pip check
+          export SPROCKET_R10_CORPUS_ZIP="$PWD/evidence/sprocket-r10-spatial/original/corpus.zip"
+          export SPROCKET_R10_NATIVE_ZIP="$PWD/evidence/sprocket-r10-spatial/original/native.zip"
+          "$RUNNER_TEMP/sprocket-r10-spatial/bin/python" -m unittest discover \
+            -s experiments/agent_painter/lanes/sprocket \
+            -p test_r10_native_mask_proximity.py -v
+          "$RUNNER_TEMP/sprocket-r10-spatial/bin/python" \
+            experiments/agent_painter/lanes/sprocket/r10_native_mask_proximity.py \
+            --corpus-zip "$SPROCKET_R10_CORPUS_ZIP" --rich-zip "$SPROCKET_R10_NATIVE_ZIP" \
+            --output evidence/sprocket-r10-spatial/receipt.json
+          "$RUNNER_TEMP/sprocket-r10-spatial/bin/python" -m pip freeze --all > evidence/sprocket-r10-spatial/pip-freeze.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-r10-spatial-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/sprocket-r10-spatial/receipt.json
+            evidence/sprocket-r10-spatial/source-head.txt
+            evidence/sprocket-r10-spatial/pip-freeze.txt
+          if-no-files-found: warn
+          retention-days: 90
