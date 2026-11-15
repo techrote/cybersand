@@ -10,7 +10,7 @@ from experiments.driv3r.wormbench.shadow import (
 class WormBenchTests(unittest.TestCase):
     def test_q4_is_exact_optional_pin_and_never_default(self):
         self.assertEqual(PINS["model"]["quantization"],"Q8_0")
-        self.assertEqual(PINS["optional_q4"]["quantization"],"Q4_K_M")
+        self.assertTrue(PINS["optional_q4"]["filename"].endswith("-Q4_K_M.gguf"))
         self.assertEqual(PINS["optional_q4"]["sha256"],
             "adca5789ad30ae6027e8e936749bb9f19673097492ab26fa1c5b69643ca50b4b")
         self.assertNotEqual(PINS["model"]["sha256"],PINS["optional_q4"]["sha256"])
