@@ -210,9 +210,6 @@ def arm(runtime, donor_or_mutant, label, worm, out, steps, families):
             print(json.dumps({"event":"worm-directional-result","label":label,
                               "family":family,"completed":result["completed"],
                               "decisions":result["actual_model_decisions"]}),flush=True)
-    latencies=[r["latency_seconds"] for r in (
-        json.loads(p.read_text()) for p in out.glob("*-model-choices.json"))
-        if False] # dataset metrics are computed below from original individual logs
     latencies=[]
     for family in families:
         p=out/f"{label}-{family}-{SEED}-model-choices.json"
