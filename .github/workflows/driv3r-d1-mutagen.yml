@@ -1,0 +1,139 @@
+name: DRIV3R d1 MUTAGEN M0 — real Q8 rusty-spoon clouds and worm intent
+
+on:
+  pull_request:
+    paths:
+      - 'experiments/driv3r/mutagen/**'
+      - '.github/workflows/driv3r-d1-mutagen.yml'
+  push:
+    branches: [research/620-d1-rusty-spoon-m0]
+    paths: ['experiments/driv3r/mutagen/run-request.json']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: driv3r-d1-mutagen-m0-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  cheap:
+    name: Synthetic Q8 quant-block surgery and refusal tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify bounded test and immutable source branch
+        run: |
+          set -euo pipefail
+          python3 -m pip install 'numpy==2.5.4'
+          python3 -m compileall -q experiments/driv3r/mutagen
+          python3 -m unittest discover -s experiments/driv3r/mutagen -p 'test_*.py' -v
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py
+
+  actual_mutagen:
+    name: d1-2B Q8 real System One mutation and worm — ${{ matrix.mode }}
+    needs: cheap
+    if: github.event_name == 'push' && github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/research/620-d1-rusty-spoon-m0'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        mode: [mlp_scoop, conv_scrape, attn_gouge]
+    env:
+      PYTHONUNBUFFERED: '1'
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Exact request and distinct research-only owner lease
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/d1-m0-${{ matrix.mode }}
+          python3 - <<'PY'
+          import json,os,subprocess
+          from pathlib import Path
+          file=Path('experiments/driv3r/mutagen/run-request.json')
+          req=json.loads(file.read_text())
+          expected={'schema':'driv3r-d1-mutagen-m0/1',
+                    'goal':'owner-approved-rusty-spoon-first-directional-worm',
+                    'donor_source':'b4079e74207d7a70992c48ebd70e9c7b2016f463',
+                    'donor':'LiquidAI/d1-2B-GGUF/d1-2B-Q8_0.gguf',
+                    'donor_sha256':'073313d92b53b0ac8193db6e906cb3c78a98183d244b15b7b8f5426115c6738c',
+                    'w0_commit':'4bb9d6e1d0d0d78183f87d1e3c29648edafacf61',
+                    'modes':['mlp_scoop','conv_scrape','attn_gouge'],
+                    'cpu_inference':True,'native_workbench':False,
+                    'training':False,'paid_api':False,
+                    'keep_draft':True,'allow_merge':False}
+          if req!=expected: raise SystemExit('Different or unreviewed M0 launch request')
+          if os.environ.get('GITHUB_REF')!='refs/heads/research/620-d1-rusty-spoon-m0':
+              raise SystemExit('Unauthorized mutation runner branch')
+          sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          Path('evidence/d1-m0-${{ matrix.mode }}/source-sha.txt').write_text(sha+'\n')
+          Path('evidence/d1-m0-${{ matrix.mode }}/request.json').write_text(json.dumps(req,indent=2)+'\n')
+          print('Approved experimental d1-2B Q8 fork:',sha)
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Obtain pinned unchanged W0 deterministic legal-action host
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git rev-parse FETCH_HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/m0-pinned-worm.py"
+          test "$(git hash-object "$RUNNER_TEMP/m0-pinned-worm.py")" = 8979b6f0296e81051194bacc907992d38e006605
+          sha256sum "$RUNNER_TEMP/m0-pinned-worm.py" > evidence/d1-m0-${{ matrix.mode }}/w0.sha256
+      - name: Install minimal quant-block instrumentation
+        run: |
+          set -euo pipefail
+          python3 -m pip install 'numpy==2.5.4'
+          python3 -m unittest discover -s experiments/driv3r/mutagen -p 'test_*.py' -v
+          lscpu > evidence/d1-m0-${{ matrix.mode }}/cpu.txt
+          df -h > evidence/d1-m0-${{ matrix.mode }}/disk-before.txt
+      - name: Acquire original immutable official d1 Q8 and exact supported System One runtime
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 1250s python3 -m experiments.driv3r.backend acquire \
+            --runtime-dir "$RUNNER_TEMP/d1-m0-runtime" \
+            --evidence evidence/d1-m0-${{ matrix.mode }}/acquisition --timeout-seconds 1200
+          cp "$RUNNER_TEMP/d1-m0-runtime/runtime-manifest.json" evidence/d1-m0-${{ matrix.mode }}/original-runtime-manifest.json
+      - name: Carve copied Q8 model by deliberate layer/type selection
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 600s python3 -m experiments.driv3r.mutagen.spoon \
+            --donor "$RUNNER_TEMP/d1-m0-runtime/d1-2B-Q8_0.gguf" \
+            --output "$RUNNER_TEMP/d1-m0-${{ matrix.mode }}.gguf" \
+            --mode "${{ matrix.mode }}" \
+            --receipt evidence/d1-m0-${{ matrix.mode }}/mutation-receipt.json \
+            --inventory evidence/d1-m0-${{ matrix.mode }}/original-tensor-inventory.json
+      - name: REAL d1 System One directional worm choices before and after spooning
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=45s 2800s python3 -m experiments.driv3r.mutagen.infer \
+            --runtime-manifest "$RUNNER_TEMP/d1-m0-runtime/runtime-manifest.json" \
+            --original "$RUNNER_TEMP/d1-m0-runtime/d1-2B-Q8_0.gguf" \
+            --model "$RUNNER_TEMP/d1-m0-${{ matrix.mode }}.gguf" \
+            --w0 "$RUNNER_TEMP/m0-pinned-worm.py" \
+            --mode "${{ matrix.mode }}" \
+            --output evidence/d1-m0-${{ matrix.mode }}/inference
+      - name: Preserve independent checksums even on negative or partial results
+        if: always()
+        run: |
+          set -euo pipefail
+          df -h > evidence/d1-m0-${{ matrix.mode }}/disk-after.txt
+          (cd evidence/d1-m0-${{ matrix.mode }} && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > evidence/d1-m0-${{ matrix.mode }}/SHA256SUMS.txt
+      - name: Upload original Q8 mutation and raw model-choice evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: driv3r-d1-m0-${{ matrix.mode }}-${{ github.sha }}
+          path: evidence/d1-m0-${{ matrix.mode }}/
+          if-no-files-found: warn
+          retention-days: 90
