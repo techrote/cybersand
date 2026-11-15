@@ -35,6 +35,8 @@ class FrankenLayerTests(unittest.TestCase):
             text=p.read_text()
             self.assertIn("CYBERSAND_D1_FRANKEN_FLOW",text)
             self.assertIn("if constexpr (decision)",text)
+            self.assertIn('mode == "skelehound"', text)
+            self.assertIn('mode == "aerohound"', text)
             self.assertIn("#include <cstdlib>",text)
             self.assertIn("d1_step + 1 == d1_flow.size()",text)
             self.assertNotIn(r"{\\n", text)
