@@ -44,7 +44,7 @@ def first_pass(model, tokenizer, adapter, rows, label, out):
     model.eval()
     results = []
     for row in rows:
-        prefix = adapter.encode_prompt(tokenizer, row["prompt"], contract.SYSTEM)
+        prefix = adapter.encode_prompt(tokenizer, row["prompt"], objective.SYSTEM)
         with torch.no_grad():
             generated = model.generate(input_ids=torch.tensor([prefix], dtype=torch.long),
                                        do_sample=False, max_new_tokens=12, pad_token_id=1,
@@ -100,7 +100,7 @@ def main(args):
         raise ValueError("W4 code action must encode as exactly one noncontrol token")
     if len({ids[0] for ids in action_token_ids.values()}) != 6:
         raise ValueError("W4 code token collision")
-    encoded = [adapter.encode_row(tokenizer, row, contract.SYSTEM, 2048) for row in train_rows]
+    encoded = [adapter.encode_row(tokenizer, row, objective.SYSTEM, 2048) for row in train_rows]
     if max(len(x["input_ids"]) for x in encoded) > 2048 or any(x["target_tokens"] < 2 for x in encoded):
         raise ValueError("unsafe synthetic framing or truncated action target")
     # Balanced per family/action, with explicit repeated rare motifs and fixed target steps.
@@ -143,7 +143,7 @@ def main(args):
            "shared_checkpoint_contract_sha256": sha256_file(TRAINING / "common.py"),
            "adapter_contract": adapter_identity(selected),
            "chat_template_hash": digest_json(tokenizer.chat_template),
-           "system_hash": digest_json(contract.SYSTEM), "system": contract.SYSTEM,
+           "system_hash": digest_json(objective.SYSTEM), "system": objective.SYSTEM,
            "sample_order": [train_rows[i]["id"] for i in order],
            "literal_train_eval_overlap": generated["literal_prompt_intersection"],
            "numerics": numeric, "packages": packages, "python": platform.python_version(),
