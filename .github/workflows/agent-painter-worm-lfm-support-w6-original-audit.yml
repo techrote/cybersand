@@ -1,0 +1,73 @@
+name: WORM LFM support W6 original W4 source-faithful spatial audit
+on:
+  push:
+    branches: [research/612-worm-lfm-support]
+    paths:
+      - .github/workflows/agent-painter-worm-lfm-support-w6-original-audit.yml
+      - experiments/agent_painter/worm/support_lfm/w6_original_audit.py
+      - experiments/agent_painter/worm/support_lfm/test_w6_original_audit.py
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: worm-lfm-support-w6-original
+  cancel-in-progress: false
+jobs:
+  audit:
+    name: Independent W6 120 optimizer receipts and 48 original W0 PNGs
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Exact source, W0, adversarial unit regressions, runner policy
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git hash-object experiments/agent_painter/worm/common/worm.py | grep -Fx 8979b6f0296e81051194bacc907992d38e006605
+          python3 -m py_compile experiments/agent_painter/worm/support_lfm/w6_original_audit.py
+          python3 -m unittest discover -s experiments/agent_painter/worm/support_lfm -p test_w6_original_audit.py -v
+          python3 -m unittest discover -s experiments/agent_painter/worm/support_lfm -p test_primary_gallery_audit.py -v
+          python3 tools/ci/check_ci_provider_policy.py
+          mkdir -p independent-w6
+          git rev-parse HEAD > independent-w6/source-sha.txt
+      - name: Download pinned original W4 and W6 artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(gh api repos/techrote/cybersand/actions/artifacts/14162279448 --jq .digest)" = "sha256:6f1e96fb3bbf6b86890d253315ae204d3539a7e6dd2c858bf2b96181ebe24fce"
+          test "$(gh api repos/techrote/cybersand/actions/artifacts/14159141242 --jq .digest)" = "sha256:6c06000a9532238b3a05d340af07153fee3c16aedee6e6dd256d114969578ad0"
+          mkdir -p "$RUNNER_TEMP/worm-original/w4" "$RUNNER_TEMP/worm-original/w6"
+          gh run download 43706057786 -R techrote/cybersand --name lfm25-vl-worm-w4-step180-recovery-3b711d81a38e85b3c4daa395f1ca70980a4373e0-43706057786-1 --dir "$RUNNER_TEMP/worm-original/w4"
+          gh run download 43715732784 -R techrote/cybersand --name lfm25-vl-worm-w6-support-v2-fresh-999e60c81dc71b54e20150aa4b97887f22239607-43715732784-1 --dir "$RUNNER_TEMP/worm-original/w6"
+      - name: Audit checkpoints, model-first-passes and host-replay original PNGs
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/worm/support_lfm/w6_original_audit.py \
+            --w4-gallery "$RUNNER_TEMP/worm-original/w4/recovered-evaluation/gallery" \
+            --w6-root "$RUNNER_TEMP/worm-original/w6/worm-training" \
+            --out independent-w6/W6-W4-original-spatial-report.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open("independent-w6/W6-W4-original-spatial-report.json"))
+          assert r["original_PNGs_source_faithfully_replayed"]==48
+          assert r["W6_original_training"]["updates"]==120
+          assert r["W6_original_training"]["checkpoint_member_sha256_checked"]==48
+          assert r["W4_W6_model_PNGs_identical"] and r["W4_W6_raw_first_passes_identical"]
+          assert len([x for x in r["records"] if x["policy"]=="model"])==6
+          print("W6 original action-loop regression, full checkpoint/hash and W0 pixel replay PASS")
+          PY
+          mkdir -p independent-w6/original-W6-model-PNGs
+          cp "$RUNNER_TEMP/worm-original/w6/worm-training/gallery/"*model*.png independent-w6/original-W6-model-PNGs/
+      - name: Preserve compact success and failure evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-lfm-support-w6-original-spatial
+          path: independent-w6/
+          retention-days: 30
+          if-no-files-found: warn
