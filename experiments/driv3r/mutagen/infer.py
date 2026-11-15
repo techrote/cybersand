@@ -118,7 +118,7 @@ class D1Server:
         criteria={a:ACTION_DESCRIPTIONS[a] for a in legal}
         state={"identity":"Small whimsical WORM-001 material trail creature",
                "objective":"Make a lively, slightly deranged but sometimes purposeful line.",
-               "seed":SEED,"x":observation["x"],"y":observation["y"],
+               "seed":getattr(self, "world_seed", SEED),"x":observation["x"],"y":observation["y"],
                "heading":observation["heading"],
                "local_5x5":observation["local_5x5"],
                "last_actions":observation["last_actions"],
