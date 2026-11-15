@@ -256,7 +256,7 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--steps", type=int, default=240)
     args = parser.parse_args()
-    if not 1 <= args.steps <= 128:
+    if not 1 <= args.steps <= 512:
         parser.error("steps must be 1..512")
     args.output.mkdir(parents=True, exist_ok=True)
     train, dev = rows("train"), rows("development")
