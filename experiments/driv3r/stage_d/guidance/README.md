@@ -232,3 +232,30 @@ hysteresis state; and truthy shadow receipt/eligibility plus malformed
 snapshot metrics. These are test implementations, **not yet an executed
 exact-head full-suite qualification**. The repository's scoped CI jobs must
 not be substituted for the standalone Python tests without their logs.
+
+### Shared synthetic shadow-reference policy /1 (15 Nov 2026)
+
+A targeted parity review found that a **decrease in host-declared violation count**
+with unchanged goal score and cursor progress was incorrectly classified as
+`no_progress`, causing a hypothetical UNDO/STOP instead of KEEP. Both the
+single-pair `study.shadow_verdict` and batch `feedback_audit.audit_shadow_cases`
+had copied the same flawed predicate. They now call a single lane-owned pure
+reference function in `shadow_policy.py`, explicitly identified as
+`cybersand.driv3r.d1b-shadow-reference/1` for future source-pinned comparisons.
+
+The policy treats more violations or a lower goal score as regression (even
+if other metrics improve); absent regression, any lower violation count,
+increased goal score, or increased cursor progress counts as improvement.
+An entirely flat outcome still yields shadow UNDO when both hypothetical flags
+are true and STOP otherwise. All decisions remain **non-executable**, with
+zero native material or permission authority. This is a local **reference
+policy semantic revision**, not a change to the owner-frozen D-COMMON M1 schema
+or proof of critic quality. Prior synthetic outcomes using the old duplicated
+policy must be labelled as a different reference revision if compared.
+
+`test_shadow_policy.py` cross-checks both callers and their reason/counter
+accounting for 108 matched metric/control combinations, deliberate violation
+reductions, flat outcomes, conflicting metrics, and strict flags. Run with
+`python3 -m unittest discover -s experiments/driv3r/stage_d/guidance -p 'test_*.py' -v`.
+Unit tests are synthetic only; external M2 owner is responsible for complete
+exact-head and five-record M1 integration qualification.

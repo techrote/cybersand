@@ -9,6 +9,7 @@ from hashlib import sha256
 import json
 import math
 import re
+from .shadow_policy import reference_verdict
 
 PROTOCOL = "cybersand.driv3r.d1b-feedback-audit/0"
 SHA = re.compile(r"[0-9a-f]{64}\Z")
@@ -104,11 +105,9 @@ def audit_shadow_cases(cases: list[dict], *, max_forward_decisions: int = 36,
                  "hypothetical control flags must be booleans")
         choice = case["shadow_choice"]
         _require(type(choice) is str and choice in CHOICES, "invalid shadow choice")
-        regression = (after["violations"] > before["violations"] or
-                      after["goal_score"] < before["goal_score"])
-        stalled = (after["progress_cells"] <= before["progress_cells"] and
-                   after["goal_score"] <= before["goal_score"])
-        reference = ("UNDO" if eligible and receipt else "STOP") if (regression or stalled) else "KEEP"
+        reference, _reference_reason = reference_verdict(
+            before, after, undo_eligible=eligible,
+            verified_native_receipt=receipt)
         reference_counts[reference] += 1
         confusion[reference][choice] += 1
         if choice == "KEEP" and reference != "KEEP":

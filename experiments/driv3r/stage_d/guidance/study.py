@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from hashlib import sha256
 import json
 from typing import Mapping
+from .shadow_policy import reference_verdict
 
 
 def stable_hash(obj: object) -> str:
@@ -92,13 +93,12 @@ def shadow_verdict(*, before: CriticSnapshot, after: CriticSnapshot,
         raise ValueError("hypothetical Undo eligibility/receipt flags must be boolean")
     if before.snapshot_id == after.snapshot_id:
         raise ValueError("before and after must be different frozen snapshots")
-    regression = after.violations > before.violations or after.goal_score < before.goal_score
-    stalled = after.progress_cells <= before.progress_cells and after.goal_score <= before.goal_score
-    if regression or stalled:
-        choice = "UNDO" if undo_eligible and verified_native_receipt else "STOP"
-        cause = "regression" if regression else "no_progress"
-    else:
-        choice, cause = "KEEP", "nonregressive_progress"
+    choice, cause = reference_verdict(
+        {"goal_score": before.goal_score, "violations": before.violations,
+         "progress_cells": before.progress_cells},
+        {"goal_score": after.goal_score, "violations": after.violations,
+         "progress_cells": after.progress_cells},
+        undo_eligible=undo_eligible, verified_native_receipt=verified_native_receipt)
     return {
         "protocol": "cybersand.driv3r.d1b-shadow/0",
         "decision": choice, "reason": cause,
