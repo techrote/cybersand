@@ -1,7 +1,10 @@
 """Offline shape-only aggregator tests; no native/model conclusions."""
 import copy
+import json
 import unittest
-from experiments.driv3r.wormbrain.aggregate import compare
+import tempfile
+from pathlib import Path
+from experiments.driv3r.wormbrain.aggregate import compare, read_original_artifact, M1_SCHEMA_SHA
 
 
 def fixture(mode):
@@ -49,6 +52,44 @@ class WormAggregateTests(unittest.TestCase):
         self.assertEqual(out["first_choice_divergence_on_matched_world"],0)
         self.assertEqual(out["first_consequential_native_divergence"],0)
         self.assertEqual(out["original_episodes"]["soft"]["actual_native_ink_cells"],0)
+
+    def test_original_actions_artifact_nested_execution_layout(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            for mode in ("free","soft"):
+                folder=root/mode/"execution"
+                (folder/"execution").mkdir(parents=True)
+                report=fixture(mode)
+                report.update({"original_model_pid_count":1,
+                               "native_painted_cells":1,
+                               "model_decisions":1})
+                original=trace()
+                original[0]["index"]=0
+                original[0]["original_model_artifact"]="model/turn-00.json"
+                (folder/"execution"/"summary.json").write_text(json.dumps(report))
+                (folder/"original-decisions.json").write_text(json.dumps(original))
+                (folder/"native-replay.json").write_text(json.dumps({
+                    "final_world_sha256":report["final_world_sha256"],
+                    "native_material_actions_replayed":1,
+                    "actual_independent_native_replay":True}))
+                (folder/"bundle-validation.json").write_text(json.dumps({
+                    "schema_sha256":M1_SCHEMA_SHA,
+                    "evidence_bytes_verified":True}))
+            parsed={mode:read_original_artifact(root,mode,expected_source="a"*40)
+                    for mode in ("free","soft")}
+            self.assertEqual(compare({m:p[0] for m,p in parsed.items()},
+                                     {m:p[1] for m,p in parsed.items()})["status"],
+                             "NATIVE_WORM_PAIR_SOURCE_VERIFIED")
+            with self.assertRaises(ValueError):
+                read_original_artifact(root,"free",expected_source="b"*40)
+            (root/"soft"/"execution"/"native-replay.json").unlink()
+            with self.assertRaises(ValueError):
+                read_original_artifact(root,"soft",expected_source="a"*40)
+
+    def test_missing_original_native_arm_is_not_promoted(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertIsNone(read_original_artifact(Path(tmp),"free"))
+            self.assertEqual(compare({}, {})["status"],"INCOMPLETE")
 
     def test_incomplete_does_not_claim_a_native_pair(self):
         self.assertEqual(compare({"free":fixture("free")},{"free":trace()})["status"],
