@@ -2,6 +2,18 @@
 
 **Research-only / Draft-HOLD.** This independent integration-owner cohort is stacked on M4 #608 source ad48cdba21d8b83fe5bb83caed68d4cb0ce1ca1b. The owner-accepted M1 contract and schema are immutable; do not write in D-1A #595, D-1B #596, D-2 #598, #568 or production native files.
 
+## Owner-corrected aim — a slightly deranged line-steering worm brain
+
+The hypothesis is **not** that d1-2B outperforms A*, invents general-purpose pathfinding, or becomes an intelligent art-production supervisor. It is much simpler and more playful:
+
+> Give a little decision brain a pen/brush worm. Let it steer, hesitate, turn, follow things, get distracted, escape corners and occasionally make wonderfully odd lines inside CyberSand.
+
+The host supplies safe, bounded brush/movement choices and executes them; the brain chooses direction and sometimes brush-up recovery. The desired behaviour is *alive-looking, recognisable yet slightly unpredictable line-making*, rather than straight optimal routes. Deterministic controllers are useful references and guardrails, not competitors the worm must defeat. A crooked route, loop, unexpected turn or failed attempt may be interesting output rather than an error, provided material permissions and stop limits are respected.
+
+Success should be evaluated by **watchable evolving strokes**, ability to respond to obstacles and soft steering, controlled variation across seeds/prompts, replayable behaviour, and whether outputs are interesting or useful as weird procedural mark-making. Do not silently optimise away the derangement, force every trial toward a fixed goal, or grade art primarily on A* efficiency, connected components, articulation-point counts or number of completed routes.
+
+M5's existing forced-goal mini-grid and A1/A2/A3 proxy experiments remain **technical plumbing checks**, useful for verifying legal choices, recovery, feedback and simulation provenance. They are not the central hypothesis test. The next genuine experiment is real d1-2B steering a wandering line in native Workbench, with multiple short visual trajectories and a few soft guidance variations.
+
 ## First exact-source DEVELOPMENT findings (15 November 2026)
 
 Isolated [M5 test/audit run 43675043678](https://github.com/techrote/cybersand/actions/runs/43675043678) passed **18/18 unit tests**, regenerated all five matched cases and reconstructed the original synthetic material and legal candidate effects. Audited report SHA-256: dc3ad416aca00ec65850b8974ff49dbc13528085535316dc88f40e417388b373. Cohort SHA-256: 462e6f9f7a16ad090a273c370899476d5ea58f04b9a8cd0ab6f1ba78d15dcc88.
@@ -18,13 +30,13 @@ Isolated [M5 test/audit run 43675043678](https://github.com/techrote/cybersand/a
 
 The fifth, sealed negative case remains physically unreachable and is excluded from the reachability denominator; no policy is credited with completing it.
 
-**Scientific interpretation:** A2/A3 proxy guidance repairs a *weak local* procedural controller and changes actual synthetic material/goal completion, not only its route. But it supplies additional hard-mask-derived pathfinding information. Its aggregate scores are **identical to strong A***: zero demonstrated incremental benefit over well-engineered conventional code, and **zero actual neural evidence**. Connectedness alone was a weak aesthetic/engineering signal: 70/74 added cells were individual articulation points for each strong/proxy completed group, i.e. easily broken narrow traces. This is a meaningful **negative/limiting finding**, not an AI breakthrough.
+**Engineering interpretation (not the art hypothesis):** The A2/A3 proxy diagnostics allowed a goal-seeking pathfinder to escape certain artificial traps, but the extra hard-mask-derived geometry information was sufficient to explain the result. These synthetic proxy runs contained no d1 inference. Likewise, 70/74 new cells being articulation points describes one-cell line geometry; **that is not automatically a defect for a line-drawing worm**. The figures check the harness and show sensitivity to information, but do not judge the interestingness of worm strokes.
 
-**Immediate next design:** contrast two genuine Q8 policies on matched source-qualified native states: (a) per-cell direct-drive, (b) *rare intervention* supervisor invoked only when a deterministic procedural routine stalls, diverges from user-authored intent or presents an aesthetic tradeoff. Keep strong A* or selected-wall controller, greedy and seeded random controls; compare not only reaching the destination but useful **native procedural steps per neural intervention**, robust stroke width/topology, independent art ratings, latency and total CPU/wall cost. Where deterministic code already solves a task perfectly and cheaply, d1 must provide additional artistic value to justify its use.
+**Immediate next design:** use pinned d1 Q8 to steer a **continuous pen-worm**, choosing among short bounded direction/turn/brush-lift choices. Offer soft guides and obstacles, including corners and a dead end; let it recover or change its mind. Preserve every original line and failure. Show side-by-side material images/trajectories, with seeded random and simple wall-following as references. Score subjective line character and steerability alongside legal actions, progress/stall behaviour and latency. Keep the experiment small and amusing.
 
 ## Falsifiable research question
 
-**Can d1-2B add productive procedural painting after genuine blockages, beyond what strong deterministic controllers already achieve, at acceptable latency and cost?**
+**Can a small d1-2B decision brain drive a CyberSand line-drawing worm that wanders, follows soft hints, gets confused, recovers and produces interesting, slightly deranged strokes?**
 
 The first M4 native campaign completed successfully at https://github.com/techrote/cybersand/actions/runs/43659680432, but did not force useful recovery. M5 first source-qualifies **synthetic-only** hard fixtures and control policies. It does NOT invoke d1, execute Godot or produce native receipts.
 
@@ -70,10 +82,10 @@ The isolated workflow runs these only and retains JSON results; failures are ret
 
 This Draft/HOLD increment does NOT authorise native A1/A2/A3 dispatch. The integration owner must separately qualify a source-fenced 512×512 Workbench fixture adapter with actual material readbacks, host legal-candidate parity and original replay. Then, with a new owner-scoped native/model authorisation:
 
-1. Challenge actual pinned resident d1 Q8 on the same **native** obstructed World and legal recovery candidates as deterministic A*, greedy and random controls. Never invent native success from Python simulation.
-2. Freeze common base information, option order/seed, model questions and budgets; perform matched-information ablations in addition to richer A1/A2/A3. Maintain exact optional-channel semantics and source hashes from accepted M1. Save raw probabilities, timeouts, STOP, real receipts and original native replay.
-3. Report first choice versus first consequential divergence on genuinely matched states, never assert legal-catalog equality after actual World divergence. Assess successful dead-end exits, original native new cells after model recovery, visual utility, topology strength (including D-2 articulation fragility), time and compute cost.
-4. Measure **incremental uplift over A*** and over simply allowing a procedural controller to continue, not merely whether the model draws something. Use structurally held-out scenarios frozen before outcome inspection. Repeated early STOP and expensive worse-than-A* cases are negative evidence, not quietly removed.
-5. Integrate D-1B KEEP/UNDO/STOP initially as a shadow critic. Real UNDO_MATERIAL_EDIT is a separate host-approved PAINT history operation with native receipts; brush-up backtrack and relocation preserve material. D-2 can offer candidate algorithms without replacing the host legality authority.
+1. Run an actual pinned resident d1 Q8 as a **direct-drive worm brain** in the source-qualified native Workbench, with host-legal direction/turn/paint/brush-up choices and short bounded sessions. Include a wall, corner and dead end. Never invent native success from Python simulation.
+2. Try the same worm with and without a soft drawn guidance field, and vary the seed or instruction to see whether it can be *steered without being on rails*. Keep legal candidate parity and exact M1 channel semantics. Save raw model answers, failures, Stop, actual PAINT receipts and original native replay.
+3. Publish visible line traces and native-material images, with notes on turns, tangles, escapes, hesitation, revisits and line character. Preserve reproducibility and actual changed-cell accounting. Track runtime/cost only enough to know whether the experience is practical.
+4. Keep A*, greedy and random results as technical controls where helpful, **not the target to beat**. An inefficient but intriguing stroke may be a good worm result. The aesthetic question is whether model choices make the line entertaining and steerable; repeated trivial loops, refusal to paint and total lack of user influence remain problems.
+5. Explore D-1B's KEEP/UNDO/STOP only if it creates appealing hesitation or self-correction; don't turn it into an optimisation judge. Real UNDO_MATERIAL_EDIT remains a host-owned PAINT history action requiring receipts. D-2 can contribute procedural texture/shape tricks without replacing the worm's steering choices.
 
 Do not touch the D-1A/D-1B/D-2 scheduled branch source, accepted M1 bytes, main, #568 painter branch or production defaults. No merge, Ready, training, GPU/API spend, new source-unqualified native claims or broad experiment matrix.
