@@ -19,6 +19,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 85
     strategy:
+      max-parallel: 2
       fail-fast: false
       matrix:
         slot: [0, 1]
