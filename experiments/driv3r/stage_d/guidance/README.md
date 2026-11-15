@@ -2,6 +2,33 @@
 
 **Status: OWNER-ACCEPTED M1 / M2 LANE PREPARATION / DRAFT-HOLD.** Owner research roadmap: [#570](https://github.com/techrote/cybersand/issues/570#issuecomment-6877408001). Shared five-record interchange is the now **M1-accepted** [D-COMMON-001 v1 contract](https://github.com/techrote/cybersand/pull/594), pinned to `8fa90de6be209ed0b7bd125039e6ec8b332fb1a6`. This lane was originally stacked on earlier source `b117bfb1a59b557d8c54da01751819b00bf95836`; that ancestry is not the approved contract. Keep the research implementation outside native driver/permissions and other D-1A/D-2 lanes. Native integration remains owner-gated.
 
+## Independent frozen-arm object custody — 15 November 2026
+
+`information.make_shadow_arms` previously returned A1/A2/A3 model views with
+**aliased mutable host geometry and legal-candidate structures**. A caller
+normalising/redacting or accidentally mutating A1's clearance samples or a
+candidate's nested swept/destination coordinates could silently change the
+other controls *after* their `model_view_sha256` audits were computed. This
+does not establish any model influence, but invalidates independent frozen
+views and could contaminate synthetic paired studies.
+
+The producer now deep-copies host geometry and the complete host-declared
+legal catalog **per arm**. New adversarial
+`test_information.InformationTests.test_mutating_one_model_view_cannot_contaminate_other_frozen_arms`
+mutates A1 nested geometry, swept coordinates and destination, then requires
+A2/A3 to remain byte-content-equivalent to their prior independent records,
+their original view hashes to remain valid, A1's recorded hash to expose its
+own mutation, and the supplied original fixture to remain unchanged.
+Retain the same host-computed legal candidate IDs/footprints/hashes across
+arms at construction; this repair does not grant legal/native authority.
+
+The changed Python and test blobs are committed; **the new regression and
+complete exact-head D-1B Python suite are not independently executed here**.
+Run the full lane suite via
+`python3 -m unittest discover -s experiments/driv3r/stage_d/guidance -p 'test_*.py' -v`
+before source qualification or M2 absorption. The accepted M1 schema and
+native/visual/Undo/formal-comparison gates remain unchanged.
+
 ## Shadow-observation information isolation repair — 14 November 2026
 
 **Boundary:** pure Python/synthetic, lane-only; no changes to the accepted five-record D-COMMON v1 schema or the native owner. A source review found two false-equivalence/information-contamination risks.
