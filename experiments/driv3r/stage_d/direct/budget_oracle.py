@@ -14,16 +14,20 @@ from typing import Callable
 
 from .macro_oracle import CARDINAL, VERSION as UNBOUNDED_VERSION, _require_menu
 
-VERSION = "d1a-decision-budget-constrained-oracle/2"
+VERSION = "d1a-decision-budget-constrained-oracle/3"
 Point = tuple[int, int]
 Cost = tuple[int, int, int, int]
+
+
+class PlanningBudgetExceeded(RuntimeError):
+    """Deterministic CPU-work cap, not an unreachable-path result."""
 
 
 def bounded_optimal_route(
     width: int, height: int, start: Point, target: Point,
     legal_cell: Callable[[Point], bool], lengths: tuple[int, ...] = (1, 2, 4, 8),
     selected_clearance: Callable[[Point], float] | None = None,
-    *, decision_budget: int = 36,
+    *, decision_budget: int = 36, max_predecessor_probes: int = 3_000_000,
 ) -> dict:
     """Find a lexicographically optimal arriving path using <= budget moves.
 
@@ -42,6 +46,9 @@ def bounded_optimal_route(
         raise ValueError("Start must be a bounded integer point")
     if type(decision_budget) is not int or not 1 <= decision_budget <= 144:
         raise ValueError("Decision budget must be in 1..144")
+    if (type(max_predecessor_probes) is not int or
+            not 1 <= max_predecessor_probes <= 50_000_000):
+        raise ValueError("Predecessor probe cap must be in 1..50000000")
     start, target = tuple(start), tuple(target)
 
     @lru_cache(maxsize=None)
@@ -69,6 +76,7 @@ def bounded_optimal_route(
     # different k states: the remaining decision budget is a hard constraint.
     layers: list[dict[Point, Cost]] = [{target: (0, 0, 0, 0)}]
     choice: dict[tuple[int, Point], tuple[str, tuple[Point, ...]]] = {}
+    predecessor_probes = 0
     for k in range(1, decision_budget + 1):
         # An already-reached target attains the global zero-movement bound.
         if start == target:
@@ -78,6 +86,14 @@ def bounded_optimal_route(
             for direction, dx, dy in CARDINAL:
                 swept_penalty = 0
                 for length in range(1, max(lengths) + 1):
+                    # Count search work, including cached and blocked probes. A
+                    # huge grid/horizon must fail explicitly, never be called
+                    # unreachable or silently truncate the optimum.
+                    predecessor_probes += 1
+                    if predecessor_probes > max_predecessor_probes:
+                        raise PlanningBudgetExceeded(
+                            f"Bounded oracle exhausted CPU probe cap "
+                            f"{max_predecessor_probes} before completing search")
                     predecessor = (endpoint[0] + dx*length,
                                    endpoint[1] + dy*length)
                     if not legal(predecessor):
@@ -137,6 +153,8 @@ def bounded_optimal_route(
                       if selected_clearance is not None else "decisions_then_distance"),
         "start": list(start), "target": list(target),
         "decision_budget": decision_budget, "macro_lengths": list(lengths),
+        "predecessor_probes": predecessor_probes,
+        "predecessor_probe_cap": max_predecessor_probes,
         "feasible_arrival_within_budget": winning is not None,
         "optimal_cost_within_budget": list(cost) if cost is not None else None,
         "decisions": actions, "cursor_path": [list(p) for p in path],
