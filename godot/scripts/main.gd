@@ -44,7 +44,7 @@ var _workbench_wait_sample: int = -1
 var _workbench_collider_frame: int = -1
 var shared_workbench: Control
 # Opt-in physical presentation trace. Empty and inactive in normal operation.
-var workbench_pose_trace: RefCounted = WorkbenchPoseTrace.new()
+var workbench_pose_trace = WorkbenchPoseTrace.new()
 var _workbench_pose_trace_reasons: Dictionary = {}
 # ENGINE-LAB-001: opt-in live diagnostic pacing; default behavior unchanged.
 var engine_lab_wait_native_sample: bool = true
