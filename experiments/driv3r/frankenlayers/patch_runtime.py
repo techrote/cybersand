@@ -14,6 +14,16 @@ FLOWS={
     "greyhound": (0,1,2,3,4,6,8,10,14,18,20,22,23),
     "scrambled_eggs": (0,1,2,3,4,5,7,13,9,15,11,6,10,8,12,14,20,21,22,23),
     "branchwitch": (0,1,2,3,4,5,6,7,9,10,11,10,16,17,18,19,20,21,22,23),
+    # M2 purposefully distinct, order-preserving layer-restoration and branch-bias tests.
+    # Each changes the actually executed decision graph; no scramble/STOP-only arm.
+    "greyhound_restore5": (0,1,2,3,4,5,6,8,10,14,18,20,22,23),
+    "greyhound_restore7": (0,1,2,3,4,6,7,8,10,14,18,20,22,23),
+    "greyhound_restore12": (0,1,2,3,4,6,8,10,12,14,18,20,22,23),
+    "greyhound_restore16": (0,1,2,3,4,6,8,10,14,16,18,20,22,23),
+    "branchwitch_no_repeat10": (0,1,2,3,4,5,6,7,9,10,11,16,17,18,19,20,21,22,23),
+    "branchwitch_restore8": (0,1,2,3,4,5,6,7,8,9,10,11,10,16,17,18,19,20,21,22,23),
+    "branchwitch_restore12": (0,1,2,3,4,5,6,7,9,10,11,10,12,16,17,18,19,20,21,22,23),
+    "branchwitch_drop21": (0,1,2,3,4,5,6,7,9,10,11,10,16,17,18,19,20,22,23),
 }
 TARGET=Path("src/models/lfm3.cpp")
 LOOP_MARKER='''    for (int il = 0; il < n_layer; ++il) {
@@ -47,6 +57,22 @@ def patch(root:Path):
             d1_flow = {cpp_list(FLOWS["scrambled_eggs"])};
         }} else if (mode == "branchwitch") {{
             d1_flow = {cpp_list(FLOWS["branchwitch"])};
+        }} else if (mode == "greyhound_restore5") {{
+            d1_flow = {cpp_list(FLOWS["greyhound_restore5"])};
+        }} else if (mode == "greyhound_restore7") {{
+            d1_flow = {cpp_list(FLOWS["greyhound_restore7"])};
+        }} else if (mode == "greyhound_restore12") {{
+            d1_flow = {cpp_list(FLOWS["greyhound_restore12"])};
+        }} else if (mode == "greyhound_restore16") {{
+            d1_flow = {cpp_list(FLOWS["greyhound_restore16"])};
+        }} else if (mode == "branchwitch_no_repeat10") {{
+            d1_flow = {cpp_list(FLOWS["branchwitch_no_repeat10"])};
+        }} else if (mode == "branchwitch_restore8") {{
+            d1_flow = {cpp_list(FLOWS["branchwitch_restore8"])};
+        }} else if (mode == "branchwitch_restore12") {{
+            d1_flow = {cpp_list(FLOWS["branchwitch_restore12"])};
+        }} else if (mode == "branchwitch_drop21") {{
+            d1_flow = {cpp_list(FLOWS["branchwitch_drop21"])};
         }} else {{
             throw std::runtime_error("Unknown CYBERSAND_D1_FRANKEN_FLOW: " + mode);
         }}
