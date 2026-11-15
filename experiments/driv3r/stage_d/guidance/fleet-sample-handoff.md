@@ -105,9 +105,13 @@ geometry parity, neutral raw-byte hashes, and fixed golden custody), giving
 **21** fleet-fixture methods and a fail-closed full-suite minimum of
 **220 methods in 20 modules**. The independent fixture reconstruction matched
 the original golden and computed the repaired golden above, but it is **not**
-a run of the five new committed tests. The current exact-head clean-checkout
-full suite remains **unexecuted**; do not cite Stage A/source-scope CI or
-this separate reconstruction as full-suite proof.
+a run of the five new committed tests. The subsequent source-alias/revision isolation repair adds **three** more
+adversarial methods, for **24 fleet tests and 223 declared test methods in 20
+modules**, independently inventoried from exact GitHub blobs. The golden
+fixture is unchanged because its sources already had distinct World/material
+digests and one revision. The current exact-head clean-checkout **223-test
+suite remains unexecuted**; do not cite Stage A/source-scope CI or a separate
+reconstruction as proof of the committed tests.
 
 ## Commander integration / M2 handoff
 
