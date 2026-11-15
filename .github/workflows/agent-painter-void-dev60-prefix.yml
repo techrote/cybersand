@@ -27,7 +27,7 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
-      - name: Provider, scheduling, and 12 adversarial source tests
+      - name: Provider, scheduling, and 13 adversarial source tests
         run: |
           set -euo pipefail
           test "$RUNNER_ENVIRONMENT" = github-hosted

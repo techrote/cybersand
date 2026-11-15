@@ -50,6 +50,23 @@ class ProvisionalPrefixTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "unreviewed VOID pinned source"):
                     gate._pinned_file_bytes(changed, expected)
 
+    def test_cached_module_cannot_substitute_for_reviewed_adapter(self):
+        # A preimported module must not replace the source that was hashed.
+        impostor = type(sys)("adapter")
+        impostor.MODEL_ID = "unreviewed/foreign"
+        sentinel = object()
+        previous = sys.modules.get("adapter", sentinel)
+        sys.modules["adapter"] = impostor
+        try:
+            result = gate.audit(self.rows, 1024)
+            self.assertEqual(result["model_id"], "dotlabs/void.1")
+            self.assertEqual(result["framing"], "cybersand-void-task-v1")
+        finally:
+            if previous is sentinel:
+                sys.modules.pop("adapter", None)
+            else:
+                sys.modules["adapter"] = previous
+
     def test_canonical_request_set_identity(self):
         original = gate.audit(self.rows, 1024)
         reordered = gate.audit(list(reversed(self.rows)), 1024)

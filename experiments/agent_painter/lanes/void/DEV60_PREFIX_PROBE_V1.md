@@ -35,3 +35,14 @@ Run focused model-free adversarial regression:
     python3 experiments/agent_painter/lanes/void/test_dev60_prefix_probe_v1.py -v
 
 All 60 regression prompts are deliberately **synthetic fake input**, not real or admitted DEVELOPMENT. There is no FINAL access. When the shepherd and reviewer approve a *shared* manifest schema and its six new native-admitted DEVELOPMENT structures, adapt and version this provisional parser to the approved manifest rather than presuming this research-only row shape is canonical. Preserve model-specific pinned framing and perform a separate reference-target fit audit without ever exposing references to inference/training.
+
+## Source-import custody correction (15 November 2026)
+
+After verifying the exact committed Git blobs for the original adapter and
+profile, the provisional checker now loads the adapter directly from that
+checked path with `spec_from_file_location`. A pre-cached
+`sys.modules["adapter"]` value can no longer substitute an unreviewed
+encoder. A new adversarial test deliberately injects a cached impostor and
+verifies that the pinned framing/model is still used. This is bounded source
+custody, not protection against a compromised Python interpreter or runner;
+it changes no qualified model, TRAIN inputs or native painting behavior.

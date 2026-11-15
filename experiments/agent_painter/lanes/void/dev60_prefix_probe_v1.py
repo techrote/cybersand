@@ -2,7 +2,7 @@
 from __future__ import annotations
 import argparse
 import hashlib
-import importlib
+import importlib.util
 import json
 from pathlib import Path
 
@@ -56,7 +56,14 @@ def audit(rows, ceiling):
         raise ValueError("VOID historical system instruction mismatch")
     _pinned_file_bytes(HERE / "adapter.py", PINNED_ADAPTER_BLOB_SHA1)
     profile = strict_json(_pinned_file_bytes(HERE / "profile.json", PINNED_PROFILE_BLOB_SHA1))
-    adapter = importlib.import_module("adapter")
+    # Bind execution to the exact reviewed local file, not a cached 'adapter'
+    # module from sys.modules or an alternative import directory.
+    spec = importlib.util.spec_from_file_location(
+        "cybersand_void_pinned_dev60_adapter", HERE / "adapter.py")
+    if spec is None or spec.loader is None:
+        raise ValueError("cannot load pinned VOID adapter")
+    adapter = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(adapter)
     if (profile["model_id"], profile["revision"], profile["max_sequence_tokens"],
         profile["vocabulary_size"], profile["special_token_ids"],
         profile["framing"]["id"]) != (adapter.MODEL_ID, adapter.REVISION, 2048,
