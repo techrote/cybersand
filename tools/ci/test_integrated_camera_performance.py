@@ -80,6 +80,108 @@ class NativeTickObservationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "World generation"): subject.completed_native_ticks(data)
 
 
+class ClockPhaseTests(unittest.TestCase):
+    def data(self):
+        start = {"sampled_usec": 1_000_000, "world_generation": 3, "uploaded_world_generation": 3,
+                 "physical_epoch": 2, "rapier_bridge_object": 700, "rapier_initialized": True,
+                 "actor_session_object": 800, "actor_session_epoch": 2,
+                 "tick": 7, "completed_rapier_steps": 10, "completed_actor_steps": 10,
+                 "successful_uploads": 4, "snapshot_published_usec": 995_000, "snapshot_age_ms": 5,
+                 "current_uploaded_material_generated_usec": 900_000, "current_uploaded_material_age_ms": 100}
+        first = dict(start, sampled_usec=1_250_000, tick=9, completed_rapier_steps=12,
+                     completed_actor_steps=12, snapshot_published_usec=1_240_000,
+                     snapshot_age_ms=10, current_uploaded_material_age_ms=350)
+        last = dict(first, sampled_usec=1_500_000, tick=10, completed_rapier_steps=15,
+                    completed_actor_steps=15, successful_uploads=5, snapshot_published_usec=1_490_000,
+                    current_uploaded_material_generated_usec=1_400_000, current_uploaded_material_age_ms=100)
+        return {"clock_schema": "integrated-camera-clocks-v1", "measurement_start": start, "frames": [first, last]}
+
+    def test_completed_steps_and_successful_uploads_use_full_phase_elapsed_time(self):
+        result = subject.clock_phase_metrics(self.data())
+        self.assertEqual(result["elapsed_seconds"], .5)
+        self.assertEqual(result["counts"], {"native_ticks": 3, "rapier_steps": 5, "actor_steps": 5,
+                                            "successful_uploads": 1, "rendered_frame_observations": 2})
+        self.assertEqual(result["rates_hz"]["rapier_steps"], 10)
+        self.assertEqual(result["rates_hz"]["successful_uploads"], 2)
+        self.assertEqual(result["ages"]["current_uploaded_material_age_ms"]["max"], 350)
+
+    def test_paused_repeated_status_publications_are_zero_completed_work(self):
+        data = self.data()
+        for frame in data["frames"]:
+            for key in subject.CLOCK_COUNTER_FIELDS.values():
+                frame[key] = data["measurement_start"][key]
+            frame["current_uploaded_material_generated_usec"] = 900_000
+            frame["current_uploaded_material_age_ms"] = (frame["sampled_usec"] - 900_000) / 1000
+        result = subject.clock_phase_metrics(data)
+        for key in ("native_ticks", "rapier_steps", "actor_steps", "successful_uploads"):
+            self.assertEqual(result["counts"][key], 0)
+            self.assertEqual(result["rates_hz"][key], 0)
+        self.assertEqual(result["ages"]["current_uploaded_material_age_ms"]["max"], 600)
+
+    def test_intermediate_identity_replacement_or_counter_restart_is_rejected(self):
+        for key in ("world_generation", "uploaded_world_generation", "physical_epoch",
+                    "rapier_bridge_object", "actor_session_object", "actor_session_epoch"):
+            with self.subTest(identity=key):
+                data = self.data()
+                data["frames"][0][key] += 1
+                with self.assertRaisesRegex(ValueError, "identity changed"):
+                    subject.clock_phase_metrics(data)
+        for key in subject.CLOCK_COUNTER_FIELDS.values():
+            with self.subTest(counter=key):
+                data = self.data()
+                data["frames"][0][key] = data["measurement_start"][key] - 1
+                with self.assertRaisesRegex(ValueError, "counter restarted"):
+                    subject.clock_phase_metrics(data)
+
+    def test_missing_age_and_absent_actor_are_unavailable_not_zero(self):
+        data = self.data()
+        for row in [data["measurement_start"], *data["frames"]]:
+            row.update(actor_session_object=0, actor_session_epoch=0, completed_actor_steps=None)
+            for age, timestamp in subject.CLOCK_AGE_FIELDS.items():
+                row[age] = row[timestamp] = None
+        result = subject.clock_phase_metrics(data)
+        self.assertIsNone(result["counts"]["actor_steps"])
+        self.assertIsNone(result["rates_hz"]["actor_steps"])
+        self.assertEqual(result["ages"]["snapshot_age_ms"], {"count": 0, "unavailable_samples": 2})
+
+    def test_timestamp_cannot_refresh_on_a_repeated_or_failed_upload(self):
+        data = self.data()
+        data["frames"][0].update(current_uploaded_material_generated_usec=1_100_000,
+                                 current_uploaded_material_age_ms=150)
+        with self.assertRaisesRegex(ValueError, "without a successful upload"):
+            subject.clock_phase_metrics(data)
+
+    def test_bad_timestamp_age_or_clock_is_rejected(self):
+        for patch in ({"snapshot_age_ms": -1}, {"snapshot_published_usec": 1_300_000},
+                      {"snapshot_age_ms": 0}, {"sampled_usec": 1_000_000}):
+            with self.subTest(patch=patch):
+                data = self.data()
+                data["frames"][0].update(patch)
+                with self.assertRaises(ValueError): subject.clock_phase_metrics(data)
+
+    def test_legacy_receipt_remains_explicitly_unmeasured(self):
+        self.assertFalse(subject.clock_phase_metrics({})["available"])
+
+    def test_abba_pool_uses_elapsed_weighting_and_keeps_individual_phases(self):
+        arms = []
+        for phase, scale in enumerate((1, 2)):
+            data = self.data()
+            for frame in data["frames"]:
+                frame["sampled_usec"] = 1_000_000 + scale * (frame["sampled_usec"] - 1_000_000)
+                for age, timestamp in subject.CLOCK_AGE_FIELDS.items():
+                    frame[age] = (frame["sampled_usec"] - frame[timestamp]) / 1000
+                frame.update(frame_ms=250 * scale, main_process_ms=1, shader_update_ms=1,
+                             snapshot_consume_ms=1, worker_frame_state_ms=1, godot_process_ms=1)
+            data.update(publications=[], uploads=[], actions=[], summary={"frame_ms": {"p50": 250 * scale, "p95": 250 * scale}})
+            arms.append({"case": "clock-control", "subject": "A", "round": 0, "phase": phase,
+                         "source_commit": "source", "data": data, "process": {}})
+        result = subject.reduce_runs(arms)[0]["subjects"]["A"]["clock_metrics"]
+        self.assertTrue(result["available"])
+        self.assertEqual([phase["rates_hz"]["native_ticks"] for phase in result["phases"]], [6, 3])
+        self.assertEqual(result["pooled_rates_hz"]["native_ticks"], 4)
+        self.assertEqual(result["ages"]["snapshot_age_ms"]["count"], 4)
+
+
 class PhysicalGeometryTests(unittest.TestCase):
     def data(self):
         return {"actual_window": [960,720], "world_extent": [512,512], "worker_capacity": 1,

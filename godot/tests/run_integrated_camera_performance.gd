@@ -12,6 +12,10 @@ class ProfileHost extends "res://scripts/main.gd":
 	var measured_shader_usec := 0
 	var measured_consume_usec := 0
 	var measured_frame_state_usec := 0
+	var measured_successful_uploads := 0
+	var measured_uploaded_generated_usec := 0
+	var measured_uploaded_serial := -1
+	var measured_uploaded_world_generation := -1
 	var pilot_action: Dictionary = {}
 	func _actor_window_has_focus() -> bool: return true
 	func _process(delta: float) -> void:
@@ -29,6 +33,17 @@ class ProfileHost extends "res://scripts/main.gd":
 		var started := Time.get_ticks_usec()
 		super.consume_worker_snapshot()
 		measured_consume_usec = Time.get_ticks_usec() - started
+	func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
+		var prior_serial: int = last_uploaded_render_snapshot_serial
+		super.consume_render_snapshot(snapshot)
+		# Same external hook on both applications. A serial gap is not an
+		# upload count; failed/repeated publications cannot refresh this age.
+		if last_uploaded_render_snapshot_serial > prior_serial \
+				and last_uploaded_render_snapshot_serial == snapshot.render_snapshot_serial:
+			measured_successful_uploads += 1
+			measured_uploaded_generated_usec = snapshot.render_generated_usec
+			measured_uploaded_serial = snapshot.render_snapshot_serial
+			measured_uploaded_world_generation = snapshot.render_world_generation
 	func update_worker_frame_state() -> void:
 		var started := Time.get_ticks_usec()
 		super.update_worker_frame_state()
@@ -58,6 +73,7 @@ var uploaded_serial := -1
 var publication_serial := -1
 var measurement_start_tick := -1
 var measurement_world_generation := -1
+var measurement_start: Dictionary = {}
 var participation_sequence := -1
 var started_usec := 0
 var fixture_hash := ""
@@ -233,7 +249,32 @@ func observe_publication(frame: int) -> void:
 			"full_refresh":host.last_render_was_full_refresh,
 			"submitted_texture_bytes":int(config.side)*int(config.side)*host.render_channels})
 
-func frame_record(frame: int, elapsed_usec: int) -> Dictionary:
+func clock_record(sampled_usec: int) -> Dictionary:
+	var snapshot: CyberSimulationSnapshot = host.latest_snapshot
+	var session: Node2D = host.physical_actor_session
+	var snapshot_usec: int = snapshot.published_usec if snapshot != null else 0
+	var uploaded_usec: int = host.measured_uploaded_generated_usec
+	if host.measured_uploaded_serial != host.last_uploaded_render_snapshot_serial \
+			or host.measured_uploaded_world_generation != host.last_uploaded_world_generation:
+		uploaded_usec = 0
+	return {"sampled_usec":sampled_usec,
+		"tick":snapshot.tick_index if snapshot != null else -1,
+		"world_generation":snapshot.render_world_generation if snapshot != null else -1,
+		"physical_epoch":host._physical_epoch,
+		"rapier_bridge_object":host.rapier_bridge.get_instance_id(),
+		"rapier_initialized":host.rapier_bridge.is_initialized(),
+		"actor_session_object":session.get_instance_id() if session != null else 0,
+		"actor_session_epoch":session.epoch if session != null else 0,
+		"completed_rapier_steps":host.rapier_bridge.manual_step_count(),
+		"completed_actor_steps":session.tick if session != null else null,
+		"successful_uploads":host.measured_successful_uploads,
+		"uploaded_world_generation":host.last_uploaded_world_generation,
+		"snapshot_published_usec":snapshot_usec if snapshot_usec > 0 else null,
+		"snapshot_age_ms":float(sampled_usec-snapshot_usec)/1000.0 if snapshot_usec > 0 else null,
+		"current_uploaded_material_generated_usec":uploaded_usec if uploaded_usec > 0 else null,
+		"current_uploaded_material_age_ms":float(sampled_usec-uploaded_usec)/1000.0 if uploaded_usec > 0 else null}
+
+func frame_record(frame: int, elapsed_usec: int, sampled_usec: int) -> Dictionary:
 	var scale := physical_pixel_scale()
 	var row := {"frame":frame,"frame_ms":float(elapsed_usec)/1000.0,
 		"main_process_ms":float(host.measured_main_usec)/1000.0,
@@ -248,8 +289,8 @@ func frame_record(frame: int, elapsed_usec: int) -> Dictionary:
 		"draw_calls":int(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)),
 		"camera":[host.camera_origin.x,host.camera_origin.y],"view":[host.current_view_size.x,host.current_view_size.y],
 		"physical_pixel_scale":[scale.x,scale.y],
-		"tick":host.latest_snapshot.tick_index if host.latest_snapshot != null else -1,
 		"action_active":not pending_action.is_empty()}
+	row.merge(clock_record(sampled_usec))
 	if RenderingServer.has_method("viewport_get_measured_render_time_cpu"):
 		if not smoke_only:
 			row.viewport_render_cpu_ms = RenderingServer.viewport_get_measured_render_time_cpu(root.get_viewport_rid())
@@ -304,12 +345,15 @@ func finish() -> void:
 		"elapsed_ms":float(Time.get_ticks_usec()-started_usec)/1000.0,"setup_ms":float(setup_usec)/1000.0,
 		"context":Context.identity(get_script().resource_path,host.world_shader.shader if host != null else null),
 		"frames":frames,"publications":publications,"uploads":uploads,"actions":actions,
-		"measurement_start":{"tick":measurement_start_tick,"world_generation":measurement_world_generation},
+		"clock_schema":"integrated-camera-clocks-v1","measurement_start":measurement_start,
+		"clock_scope":"Phase start through last rendered-frame sample; native ticks are the latest Main-observed completed count, Rapier steps are actual bridge space_step completions, and uploads count successful consume_render_snapshot calls. Snapshot age is Main's retained immutable snapshot age. Current uploaded-material age belongs only to the newest successfully uploaded texture source; it excludes previous crossfade texture age and GPU present time.",
 		"camera_motion":observed_camera_motion(),
 		"worker_participation":participation,
 		"scope":"Real mounted Workbench; rendered-frame waits include test scheduling; Main timers include nested work; native tick summary deduplicates observed completed ticks after measurement start, not every native tick. Raw publications can repeat the last tick's values while paused/fenced. GPU timer zero means unavailable, not zero GPU cost. RSS/CPU observation is external. No inference requests.",
 		"measurement_gaps":["No reliable allocation-rate counter","No hardware GPU utilization","Root render timer excludes separate effect viewports; shader timer is CPU submission, not fragment execution",
-			"Godot TIME_PROCESS and TIME_PHYSICS_PROCESS are roughly one-second maximum gauges, not per-frame CPU samples"]}
+			"Godot TIME_PROCESS and TIME_PHYSICS_PROCESS are roughly one-second maximum gauges, not per-frame CPU samples",
+			"Worker wait duration and worker backlog depth are unmeasured",
+			"GPU present timing and previous crossfade-texture age are unmeasured"]}
 	if host != null:
 		result.world_extent = [host.world_extent.x,host.world_extent.y]
 		result.worker_capacity = host.latest_snapshot.scheduler_thread_capacity_hint if host.latest_snapshot != null else 0
@@ -424,12 +468,13 @@ func run() -> void:
 	measurement_world_generation = host.latest_snapshot.render_world_generation
 	var sample_count: int = int(config.get("samples",180))
 	var previous := Time.get_ticks_usec()
+	measurement_start = clock_record(previous)
 	for index: int in range(sample_count):
 		set_camera(index)
 		begin_action(index)
 		await next_frame()
 		var now := Time.get_ticks_usec()
-		frames.append(frame_record(index,now-previous))
+		frames.append(frame_record(index,now-previous,now))
 		previous = now
 		observe_publication(index)
 		observe_action()

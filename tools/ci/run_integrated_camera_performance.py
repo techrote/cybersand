@@ -289,6 +289,67 @@ def completed_native_ticks(data: dict) -> list[dict]:
     return completed
 
 
+CLOCK_IDENTITY_FIELDS = ("world_generation", "uploaded_world_generation", "physical_epoch",
+                         "rapier_bridge_object", "rapier_initialized", "actor_session_object",
+                         "actor_session_epoch")
+CLOCK_COUNTER_FIELDS = {"native_ticks": "tick", "rapier_steps": "completed_rapier_steps",
+                        "actor_steps": "completed_actor_steps", "successful_uploads": "successful_uploads"}
+CLOCK_AGE_FIELDS = {"snapshot_age_ms": "snapshot_published_usec",
+                   "current_uploaded_material_age_ms": "current_uploaded_material_generated_usec"}
+
+
+def clock_phase_metrics(data: dict) -> dict:
+    """Validate copied phase counters; never derive work from publication ordinals."""
+    if data.get("clock_schema") != "integrated-camera-clocks-v1":
+        return {"available": False, "reason": "Legacy apparatus did not capture phase clock/age counters"}
+    start, frames = data["measurement_start"], data["frames"]
+    if not frames:
+        raise ValueError("Clock phase has no measured frames")
+    identity = {key: start[key] for key in CLOCK_IDENTITY_FIELDS}
+    if identity["world_generation"] != identity["uploaded_world_generation"]:
+        raise ValueError("Clock phase starts before its installed World is uploaded")
+    prior = None
+    for row in [start, *frames]:
+        if any(row[key] != identity[key] for key in CLOCK_IDENTITY_FIELDS):
+            raise ValueError("Clock phase World/bridge/session identity changed")
+        if type(row["sampled_usec"]) is not int or row["sampled_usec"] < 0 \
+                or (prior is not None and row["sampled_usec"] <= prior["sampled_usec"]):
+            raise ValueError("Clock sample time is invalid or did not advance")
+        for key in CLOCK_COUNTER_FIELDS.values():
+            value = row[key]
+            absent_actor = key == "completed_actor_steps" and identity["actor_session_object"] == 0
+            if absent_actor:
+                if value is not None:
+                    raise ValueError("Absent actor session must report unavailable actor steps")
+                continue
+            if type(value) is not int or value < 0 or (prior is not None and value < prior[key]):
+                raise ValueError(f"Clock counter restarted or is invalid: {key}")
+        for age, timestamp in CLOCK_AGE_FIELDS.items():
+            value, source_time = row[age], row[timestamp]
+            if source_time is None:
+                if value is not None:
+                    raise ValueError(f"Age lacks its source timestamp: {age}")
+                continue
+            if type(source_time) is not int or not 0 < source_time <= row["sampled_usec"] \
+                    or type(value) not in (int, float) or not math.isfinite(value) \
+                    or not math.isclose(value, (row["sampled_usec"] - source_time) / 1000,
+                                        rel_tol=1e-9, abs_tol=1e-6):
+                raise ValueError(f"Age is invalid or disagrees with its source timestamp: {age}")
+        if prior is not None and row["successful_uploads"] == prior["successful_uploads"] \
+                and row["current_uploaded_material_generated_usec"] != prior["current_uploaded_material_generated_usec"]:
+            raise ValueError("Current uploaded-material timestamp changed without a successful upload")
+        prior = row
+    elapsed = (frames[-1]["sampled_usec"] - start["sampled_usec"]) / 1_000_000
+    counts = {name: (frames[-1][key] - start[key] if start[key] is not None else None)
+              for name, key in CLOCK_COUNTER_FIELDS.items()}
+    counts["rendered_frame_observations"] = len(frames)
+    return {"available": True, "elapsed_seconds": elapsed, "identity": identity, "counts": counts,
+            "rates_hz": {key: count / elapsed if count is not None else None for key, count in counts.items()},
+            "ages": {key: {**summary([frame[key] for frame in frames if frame[key] is not None]),
+                           "unavailable_samples": sum(frame[key] is None for frame in frames)}
+                     for key in CLOCK_AGE_FIELDS}}
+
+
 def reduce_runs(runs: list[dict]) -> list[dict]:
     comparisons = []
     for name in dict.fromkeys(run["case"] for run in runs):
@@ -320,6 +381,23 @@ def reduce_runs(runs: list[dict]) -> list[dict]:
             for metric in ("main_process_ms", "shader_update_ms", "snapshot_consume_ms", "worker_frame_state_ms", "godot_process_ms"):
                 record[metric] = summary([x[metric] for arm in arms for x in arm["data"]["frames"]])
             record["tick_progress"] = [arm["data"].get("tick_progress") for arm in arms]
+            clock_phases = [{"phase": arm["phase"], "round": arm["round"], **clock_phase_metrics(arm["data"])}
+                            for arm in arms]
+            record["clock_metrics"] = {"available": bool(clock_phases) and all(x["available"] for x in clock_phases),
+                                       "phases": clock_phases,
+                                       "scope": "Start-to-last-frame observed native progress, actual completed Rapier space steps and successful upload calls; current uploaded-texture source age excludes previous crossfade texture and GPU present time",
+                                       "unmeasured": ["worker wait duration", "worker backlog depth", "GPU present time",
+                                                      "previous crossfade-texture age"]}
+            if record["clock_metrics"]["available"]:
+                elapsed = sum(phase["elapsed_seconds"] for phase in clock_phases)
+                record["clock_metrics"]["pooled_rates_hz"] = {
+                    key: sum(phase["counts"][key] for phase in clock_phases) / elapsed
+                    if all(phase["counts"][key] is not None for phase in clock_phases) else None
+                    for key in clock_phases[0]["counts"]}
+                record["clock_metrics"]["ages"] = {
+                    key: {**summary([frame[key] for arm in arms for frame in arm["data"]["frames"] if frame[key] is not None]),
+                          "unavailable_samples": sum(frame[key] is None for arm in arms for frame in arm["data"]["frames"])}
+                    for key in CLOCK_AGE_FIELDS}
             record["motion_windows"] = []
             for arm, snapshots in zip(arms, observed_ticks):
                 width = max(1, len(snapshots)//4)
@@ -388,6 +466,7 @@ def main() -> int:
                          "p99 estimates from bounded cohorts are descriptive, not high-confidence tail guarantees",
                          "Main/shader timers overlap; do not add them", "RSS sampling includes startup and World replacement",
                          "Godot process/physics monitors are roughly one-second maximum gauges, not independent per-frame CPU timings",
+                         "Current uploaded-material age excludes previous crossfade texture age and GPU present timing; worker wait duration and backlog depth are unmeasured",
                          "The case matrix spans effects on/off but does not isolate total effects cost with a single-variable toggle pair"]}
     write(output / "report.json", report)
     try:
@@ -415,6 +494,8 @@ def main() -> int:
                     data = json.loads((folder / "runtime.json").read_text(encoding="utf-8"))
                     if not data.get("ok") or data.get("smoke_only") or len(data.get("frames", [])) != args.samples:
                         raise ValueError(f"Incomplete runtime receipt: {folder}")
+                    if not clock_phase_metrics(data)["available"]:
+                        raise ValueError(f"Current apparatus clock/age receipt is missing: {folder}")
                     verify_engine_context(data["context"], engine)
                     if data["context"]["process_id"] != process["announced_engine_pid"]:
                         raise ValueError(f"Actual Godot PID mismatch: {folder}")
