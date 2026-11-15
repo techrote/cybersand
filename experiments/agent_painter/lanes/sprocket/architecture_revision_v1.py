@@ -63,7 +63,7 @@ PROGRAM = {
     "requirements": {
         "route": [[17, 68], [47, 68]],
         "clearance": 3,
-        "region": [0, 0, 96, 96],
+        "region": [2, 2, 92, 92],
     },
 }
 
