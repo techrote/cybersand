@@ -209,6 +209,15 @@ class FleetSamplesTests(unittest.TestCase):
             build_stream(x)
 
 
+    def test_repaired_fixture_golden_digest_is_source_fenced(self):
+        # Independent reconstruction first reproduced the previous published
+        # golden byte-for-byte, then recomputed this revised-control digest.
+        bundle = build_four_streams([fixture(i) for i in range(4)])
+        self.assertEqual(bundle["content_sha256_without_self_digest"],
+                         "dfaffcdceb26751e950b217daf64e55120097094fabead06af16c54f9946ba8e")
+        self.assertNotEqual(bundle["content_sha256_without_self_digest"],
+                            "e81d076d67b94cbf25d70813cfb6eee2f40c5e218c67ad8b20a0ac4973b78b9b")
+
     def test_all_optional_preference_signals_are_neutral_in_sham(self):
         x = fixture()
         x["optional_channels"]["soft_attraction/v1"] = [0, 100, 65535, 1]
