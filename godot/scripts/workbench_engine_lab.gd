@@ -93,6 +93,8 @@ func _section(parent: Control,caption: String) -> void:
 	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 func mount(controller: Control,wb: Control) -> void:
+	# In case callers mount an existing window, hide before force_native.
+	hide()
 	host = controller
 	workbench = wb
 	title = "CyberSand / Engine Lab / performance experiments"
