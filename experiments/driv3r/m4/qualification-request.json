@@ -45,7 +45,13 @@
   "no_ready_promotion": true,
   "classify_early_stop_as_real_outcome": true,
   "retain_original_failures": true,
-  "request_attempt": 2,
+  "request_attempt": 3,
   "first_pass_run_id": 43657883353,
-  "amendment": "A1/A2 first-pass source built all official model/native dependencies, then refused before any comparative model decision because an incorrect identity assertion checked the reference repo LiquidAI/d1-2B rather than pinned LiquidAI/d1-2B-GGUF. The corrected code now asserts exact pinned repository+revision+sha256+bytes+Q8_0. Preserve first-pass failed artifacts and outcomes."
+  "amendment": "A1/A2 first-pass source built all official model/native dependencies, then refused before any comparative model decision because an incorrect identity assertion checked the reference repo LiquidAI/d1-2B rather than pinned LiquidAI/d1-2B-GGUF. The corrected code now asserts exact pinned repository+revision+sha256+bytes+Q8_0. Preserve first-pass failed artifacts and outcomes.",
+  "second_pass_run_id": 43658675299,
+  "repair_note": "Second pass reached genuine d1 model decision and native material write but all arms failed source-side receipt journal assembly: M4 draw omitted actual native post-observation argument of qualified M3 _record_action. Source fixed and covered by an exact-call focused unit test; original failed traces retained. All three arms must be rerun from identical new source.",
+  "retained_failure_runs": [
+    43657883353,
+    43658675299
+  ]
 }
