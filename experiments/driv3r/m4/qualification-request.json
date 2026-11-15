@@ -44,5 +44,8 @@
   "allow_merge": false,
   "no_ready_promotion": true,
   "classify_early_stop_as_real_outcome": true,
-  "retain_original_failures": true
+  "retain_original_failures": true,
+  "request_attempt": 2,
+  "first_pass_run_id": 43657883353,
+  "amendment": "A1/A2 first-pass source built all official model/native dependencies, then refused before any comparative model decision because an incorrect identity assertion checked the reference repo LiquidAI/d1-2B rather than pinned LiquidAI/d1-2B-GGUF. The corrected code now asserts exact pinned repository+revision+sha256+bytes+Q8_0. Preserve first-pass failed artifacts and outcomes."
 }
